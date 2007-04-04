@@ -40,6 +40,18 @@
 
 #define READ_SIZE  32
 
+axis2_status_t AXIS2_CALL axis2_worker_get_original_url(char url[], char ret_url[]);
+
+axis2_char_t *AXIS2_CALL axis2_iis_worker_get_bytes(const axutil_env_t *env,
+													axutil_stream_t *stream);
+
+axis2_status_t AXIS2_CALL start_response(LPEXTENSION_CONTROL_BLOCK lpECB,
+                                    int status,
+                                    const char *reason,
+                                    const char *const *header_names,
+                                    const char *const *header_values,
+                                    unsigned int num_of_headers);
+
 static struct reasons {    
     axis2_char_t *status_code;
 	int status_len;
@@ -96,7 +108,7 @@ axis2_iis_worker_free(
         iis_worker->conf_ctx = NULL;
     }
 
-    AXIS2_FREE(env->allocator, iis_worker->conf_ctx);
+    AXIS2_FREE(env->allocator, iis_worker);
 
     return;
 }
@@ -351,7 +363,7 @@ axis2_status_t write_response(LPEXTENSION_CONTROL_BLOCK lpECB, const void *b, un
     return FALSE;
 }
 
-axis2_status_t start_response(LPEXTENSION_CONTROL_BLOCK lpECB,
+axis2_status_t AXIS2_CALL start_response(LPEXTENSION_CONTROL_BLOCK lpECB,
                                     int status,
                                     const char *reason,
                                     const char *const *header_names,
@@ -437,62 +449,8 @@ axis2_status_t start_response(LPEXTENSION_CONTROL_BLOCK lpECB,
     return FALSE;
 }
 
-char *status_reason(int status)
-{
-    static struct reasons {
-        int status;
-        char *reason;
-    } *r, reasons[] = {
-        { 100, "Continue" },
-        { 101, "Switching Protocols" },
-        { 200, "OK" },
-        { 201, "Created" },
-        { 202, "Accepted" },
-        { 203, "Non-Authoritative Information" },
-        { 204, "No Content" },
-        { 205, "Reset Content" },
-        { 206, "Partial Content" },
-        { 300, "Multiple Choices" },
-        { 301, "Moved Permanently" },
-        { 302, "Moved Temporarily" },
-        { 303, "See Other" },
-        { 304, "Not Modified" },
-        { 305, "Use Proxy" },
-        { 400, "Bad Request" },
-        { 401, "Unauthorized" },
-        { 402, "Payment Required" },
-        { 403, "Forbidden" },
-        { 404, "Not Found" },
-        { 405, "Method Not Allowed" },
-        { 406, "Not Acceptable" },
-        { 407, "Proxy Authentication Required" },
-        { 408, "Request Timeout" },
-        { 409, "Conflict" },
-        { 410, "Gone" },
-        { 411, "Length Required" },
-        { 412, "Precondition Failed" },
-        { 413, "Request Entity Too Large" },
-        { 414, "Request-URI Too Long" },
-        { 415, "Unsupported Media Type" },
-        { 500, "Internal Server Error" },
-        { 501, "Not Implemented" },
-        { 502, "Bad Gateway" },
-        { 503, "Service Unavailable" },
-        { 504, "Gateway Timeout" },
-        { 505, "HTTP Version Not Supported" },
-        { 000, NULL}
-    };
 
-    r = reasons;
-    while (r->status <= status)
-        if (r->status == status)
-            return r->reason;
-        else
-            r++;
-    return "No Reason";
-}
-
-axis2_status_t axis2_worker_get_original_url(char url[], char ret_url[])
+axis2_status_t AXIS2_CALL axis2_worker_get_original_url(char url[], char ret_url[])
 {
 	int i = 0;
 	for (i = 0; i < 7 ; i++)

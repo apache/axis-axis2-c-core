@@ -30,19 +30,19 @@ extern "C"
 
 typedef struct axis2_iis_worker axis2_iis_worker_t;
 	
-    int AXIS2_CALL
-    axis2_iis_worker_process_request(axis2_iis_worker_t *iis_worker,
-        const axutil_env_t *env, 
-        void *r);
+int AXIS2_CALL
+axis2_iis_worker_process_request(axis2_iis_worker_t *iis_worker,
+    const axutil_env_t *env, 
+    void *r);
 
-    axis2_status_t AXIS2_CALL
-    axis2_iis_worker_free(axis2_iis_worker_t *iis_worker,
-        const axutil_env_t *env);
+void AXIS2_CALL
+axis2_iis_worker_free(axis2_iis_worker_t *iis_worker,
+    const axutil_env_t *env);
 
 axis2_iis_worker_t * AXIS2_CALL
 axis2_iis_worker_create(
-    const axutil_env_t *env, 
-    axis2_char_t *repo_path);
+const axutil_env_t *env, 
+axis2_char_t *repo_path);
 
 
 #define AXIS2_IIS_WORKER_PROCESS_REQUEST(iis_worker, env, request)	\

@@ -122,21 +122,24 @@ axis2_status_t init_axis2()
     axutil_thread_pool_t *thread_pool = NULL;
 	axis2_status_t status = FALSE;	
     // We need to init xml readers before we go into threaded env     
-	axiom_xml_reader_init();		
-	
-	status = read_registery_init_data();
- 
-	axutil_error_init();
+	if (!is_inited){		
+		axiom_xml_reader_init();		
+		
+		status = read_registery_init_data();
+	 
+		axutil_error_init();
 
-	axutil_env = axutil_env_create_all(log_file, log_level);
-	if (axutil_env == NULL){
-		return FALSE;
+		axutil_env = axutil_env_create_all(log_file, log_level);
+		if (axutil_env == NULL){
+			return FALSE;
+		}
+		
+		axis2_worker = axis2_iis_worker_create(axutil_env, repo_path);
+		if (axis2_worker == NULL){
+			return FALSE;
+		}	
+		is_inited = TRUE;
 	}
-	
-	axis2_worker = axis2_iis_worker_create(axutil_env, repo_path);
-	if (axis2_worker == NULL){
-		return FALSE;
-	}	
 	return TRUE;
 }
 

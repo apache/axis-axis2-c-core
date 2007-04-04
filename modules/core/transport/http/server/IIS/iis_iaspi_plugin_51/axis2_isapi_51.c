@@ -74,27 +74,14 @@ DWORD WINAPI HttpFilterProc(
 	char url[INTERNET_MAX_URL_LENGTH];
 	char modified_url[INTERNET_MAX_URL_LENGTH];
 
-	DWORD retVal = 0;
-	BOOL(WINAPI * GetHeader)
-		(struct _HTTP_FILTER_CONTEXT * pfc, LPSTR lpszName,
-		 LPVOID lpvBuffer, LPDWORD lpdwSize);
-	BOOL(WINAPI * SetHeader)
-		(struct _HTTP_FILTER_CONTEXT * pfc, LPSTR lpszName,
-		 LPSTR lpszValue);
-	BOOL(WINAPI * AddHeader)
-		(struct _HTTP_FILTER_CONTEXT * pfc, LPSTR lpszName,
-		 LPSTR lpszValue);
 
 	if (notificationType == SF_NOTIFY_PREPROC_HEADERS || 
 		notificationType == SF_NOTIFY_AUTH_COMPLETE)
-	{
-		GetHeader = ((PHTTP_FILTER_PREPROC_HEADERS)pvNotification)->GetHeader;
-		SetHeader = ((PHTTP_FILTER_PREPROC_HEADERS)pvNotification)->SetHeader;
-		//GetHeader(pfc, "URL", url, &bufferLength);
+	{		
 		pfc->GetServerVariable(pfc, "HTTP_URL", url, &bufferLength);			
 		if(get_extension_url(url, modified_url))
 		{
-			SetHeader(pfc, "URL", modified_url);
+			((PHTTP_FILTER_PREPROC_HEADERS)pvNotification)->SetHeader(pfc, "URL", modified_url);
 			return SF_STATUS_REQ_HANDLED_NOTIFICATION;
 		}			
 	}
