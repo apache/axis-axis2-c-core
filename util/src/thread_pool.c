@@ -116,7 +116,7 @@ axutil_init_thread_env(const axutil_env_t *system_env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_free_thread_env(struct axutil_env *thread_env)
+axutil_free_thread_env(struct axutil_env *thread_env)
 {
     if (!thread_env)
     {

@@ -617,7 +617,7 @@ axis2_op_client_worker_func(axutil_thread_t *thd,
     
     if(th_env)
     {
-        axis2_free_thread_env(th_env);
+        axutil_free_thread_env(th_env);
         th_env = NULL;
     }
     axutil_thread_pool_exit_thread(th_pool, thd);
