@@ -75,13 +75,12 @@ DWORD WINAPI HttpFilterProc(
 	char modified_url[INTERNET_MAX_URL_LENGTH];
 
 
-	if (notificationType == SF_NOTIFY_PREPROC_HEADERS || 
-		notificationType == SF_NOTIFY_AUTH_COMPLETE)
+	if (notificationType == SF_NOTIFY_PREPROC_HEADERS)
 	{		
 		pfc->GetServerVariable(pfc, "HTTP_URL", url, &bufferLength);			
 		if(get_extension_url(url, modified_url))
 		{
-			((PHTTP_FILTER_PREPROC_HEADERS)pvNotification)->SetHeader(pfc, "URL", modified_url);
+			((PHTTP_FILTER_PREPROC_HEADERS)pvNotification)->SetHeader(pfc, "url", modified_url);
 			return SF_STATUS_REQ_HANDLED_NOTIFICATION;
 		}			
 	}
