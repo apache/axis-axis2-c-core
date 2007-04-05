@@ -758,13 +758,6 @@ axiom_stax_builder_free(axiom_stax_builder_t *om_builder,
     {
         return;
     }
-
-    if (om_builder->parser)
-    {
-        axiom_xml_reader_free(om_builder->parser, env);
-        om_builder->parser = NULL;
-    }
-
     if (om_builder->declared_namespaces)
     {
         axutil_hash_free(om_builder->declared_namespaces, env);
@@ -783,6 +776,12 @@ axiom_stax_builder_free(axiom_stax_builder_t *om_builder,
             axiom_node_free_tree(om_builder->root_node, env);
             om_builder->root_node = NULL;
         }
+    }
+
+	if (om_builder->parser)
+    {
+        axiom_xml_reader_free(om_builder->parser, env);
+        om_builder->parser = NULL;
     }
     AXIS2_FREE(env->allocator, om_builder);
     return;
