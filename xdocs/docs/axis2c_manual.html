@@ -1376,34 +1376,32 @@ phases or the module specific phases.</p>
 <a name="sim_ser"></a>
 <h1>10. Simple Axis Server</h1>
 
-<p>simple axis server is the inbuilt server of the Axis2/C.<br>
+<p>Simple axis server is the inbuilt HTTP server of Axis2/C.<br>
 </p>
-<pre>./axis2_http_server [-p PORT] [-t TIMEOUT] [-r REPO_PATH][-l LOG_LEVEL] [-f LOG_FILE]</pre>
-<br>
-There are some options that we could give to the server. One can start simple
-axis server without any options. 
-<pre>$./axis2_http_server </pre>
-Then it takes 
+<p>
+Synopsis : 
+<pre>   axis2_http_server [-p PORT] [-t TIMEOUT] [-r REPO_PATH][-l LOG_LEVEL] [-f LOG_FILE]</pre>
+</p>
+<p>
+One can use the following options with simple axis server. 
+<pre>
+        -p PORT          port number to use, default port is 9090
+        -r REPO_PATH     repository path, default is ../
+        -t TIMEOUT       socket read timeout, default is 30 seconds
+        -l LOG_LEVEL     log level, available log levels:
+                         0 - critical    1 - errors 2 - warnings
+                         3 - information 4 - debug  5- trace
+                         Default log level is 4(debug).
+        -f LOG_FILE      log file, default is $AXIS2C_HOME/logs/axis2.log
+                         or axis2.log in current folder if AXIS2C_HOME not set
+        -h               display this help screen.
+</pre>
+</p>
 
-<p>port -&gt; 9090<br>
-repository path -&gt; ../<br>
-time_out -&gt; AXIS2_HTTP_DEFAULT_SO_TIMEOUT (30000 s)<br>
-log_level -&gt; AXIS2_LOG_LEVEL_DEBUG<br>
-log_file -&gt; axis2.log</p>
-as default values. One can use the following options with simple axis server. 
-<pre>[-p PORT] use the port number PORT. The default port is 9090
-[-r REPO_PATH] use the repository path REPO_PATH. The default repository path is ../
-[-t SOCKET_READ_TIMEOUT] set socket read timeout to SOCKET_READ_TIMEOUT. Default timeout is 30 seconds
-[-l LOG_LEVEL] set log level to LOG_LEVEL. Available log levels range from 0(critical only) to 4(debug).Default log level is 4(debug).
-                         
-           AXIS2_LOG_LEVEL_CRITICAL - Log critical errors only 
-           AXIS2_LOG_LEVEL_ERROR - Log errors critical errors 
-           AXIS2_LOG_LEVEL_WARNING - Log warnings and above 
-           AXIS2_LOG_LEVEL_INFO - Log info and above
-           AXIS2_LOG_LEVEL_DEBUG - Log debug and above (default)
-           AXIS2_LOG_LEVEL_TRACE - Log trace messages
-
-[-f LOG_FILE]set log file to LOG_FILE. Default is $AXIS2C_HOME/logs/axis2.log or current folder if AXIS2C_HOME not set.</pre>
+<p>
+Example : 
+<pre>   axis2_http_server -l 3 -p 8080 -r $AXIS2C_HOME  -f /dev/stderr</pre>
+</p>
 
 <a name="apa_mod"></a>
 <h1>11. Deploying in Apache2</h1>
