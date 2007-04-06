@@ -783,7 +783,9 @@ axiom_stax_builder_free(axiom_stax_builder_t *om_builder,
         axiom_xml_reader_free(om_builder->parser, env);
         om_builder->parser = NULL;
     }
+
     AXIS2_FREE(env->allocator, om_builder);
+    
     return;
 }
 
