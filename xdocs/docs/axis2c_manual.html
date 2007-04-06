@@ -13,7 +13,7 @@ Please send your feedback to Apache Axis2/C developer mailing list (<a
     href="mailto:axis-c-dev@apache.org">axis-c-dev@apache.org</a>)</p>
 <p>This document uses the following conventions:
 <ul>
-    <li>The directory each package is intalled is given with an "_INSTALL_DIR" suffix to the package name. For example, the path libxml2 is installed is refered to as LIBXML2_INSTALL_DIR, and likewise.</li></ul></p>
+    <li>The directory each package is installed is given with an "_INSTALL_DIR" suffix to the package name. For example, the path libxml2 is installed is referred to as LIBXML2_INSTALL_DIR, and likewise.</li></ul></p>
 
 <h1 class="western"><a name="toc">Axis2/C Manual</a></h1>
 <ol>
@@ -426,7 +426,7 @@ configuration file is also located in the repository. Following table
 describes the purpose of repository contents.</p>
 
 <table border="1">
-  <caption>Axis2/C Repository Subfolders</caption>
+  <caption>Axis2/C Repository Sub-folders</caption>
   <tbody>
     <tr>
       <th>Folder Name</th>
@@ -534,7 +534,7 @@ corresponding to a service, the shared library implementing the service and
 the service configuration file, services.xml, would be placed. It is because
 of the fact that the engine treats the folders to represent service groups
 and not a single service, the configuration file is called services.xml.
-However, it is alway possible to place a single service inside a single
+However, it is always possible to place a single service inside a single
 folder, as that is the most common use case.</p>
 
 <p>Each sub folder within the services folder should have at least one shared
@@ -644,7 +644,7 @@ context.</p>
 
 <p>There are two more methods that a service should implement. Once a service
 is deployed, the message receiver of the Axis2/C engine would need to create
-a service instance at runtime for the purpose of invoking it. For this, it
+a service instance at run-time for the purpose of invoking it. For this, it
 looks for a method named axis2_create_instance and calls it on the service
 shared library. The engine also looks for a function named
 axis2_remove_instance in the shared library for clean up purposes.</p>
@@ -685,7 +685,7 @@ inside a module, or wrap the client API with another interface, you may need
 to use the axis2_op_client, operation client, API. However for general
 purposes, service client is sufficient.</p>
 
-<p>Behaviour of the service client could be fine tuned with the options
+<p>Behavior of the service client could be fine tuned with the options
 passed to service client. You can set the options by creating an
 axis2_options instance. The bare minimum that you need to set is the endpoint
 URI where the request is to be sent to. An example of this was given in the
@@ -698,7 +698,7 @@ invoking a service operation. The way of invoking an operation depends on 3
 things. Those are,</p>
 <ol>
   <li>The Message Exchange Pattern (MEP)</li>
-  <li>Synchronous/Asynchronous behaviour (Blocking/Non-Blocking)</li>
+  <li>Synchronous/Asynchronous behavior (Blocking/Non-Blocking)</li>
   <li>Two-way or one-way transport</li>
 </ol>
 
@@ -878,10 +878,10 @@ This method will not block for the response. Instead it sets a call back to
 capture the response.<br>
 </p>
 
-<p><strong>Synchronous/Asynchronous Behaviour
+<p><strong>Synchronous/Asynchronous Behavior
 (Blocking/Non-Blocking)</strong></p>
 
-<p>This will determine whether the client would block (Sysnchronous) or
+<p>This will determine whether the client would block (Synchronous) or
 return immediately (Asynchronous) for the response in a in-out MEP
 scenario.<br>
 <em>axis2_svc_client_send_receive</em> or
@@ -893,10 +893,10 @@ scenario.<br>
 <p><strong>Two-way or One-way transport</strong></p>
 
 <p>If the transport is Two-way then only one channel is used .If the
-Transport is One-way then the response would have to come on a seperate
-chanel.<br>
-If we want to use a seperate channel for the response
-<em>SET_USE_SEPERATE_LISTENER</em> option has to be set.</p>
+Transport is One-way then the response would have to come on a separate
+channel.<br>
+If we want to use a separate channel for the response
+<em>set_use_separate_listener</em> option has to be set.</p>
 
 <p>See <a href="#appD">ApendixD</a> for further details on setting
 options.</p>
@@ -912,7 +912,7 @@ invocation using different HTTP methods.</p>
 <pre>axis2_options_set_property(options, env, AXIS2_ENABLE_REST, AXIS2_VALUE_TRUE);</pre>
 
 <p>Default HTTP method used with REST is HTTP POST Method. If someone need
-tochange it to HTTP GET method following needs to be done.</p>
+to change it to HTTP GET method following needs to be done.</p>
 
 <p>REST with HTTP GET</p>
 <pre>axis2_options_set_property(options, env, AXIS2_HTTP_METHOD, AXIS2_HTTP_HEADER_GET);<br></pre>
@@ -947,7 +947,7 @@ data_handler = axiom_data_handler_create(env, image_name, "image/jpeg");
 data_text = axiom_text_create_with_data_handler(env, image_om_node,data_handler, &amp;data_om_node);</pre>
 
 <p>When sending attachments, you can configure the client either to send the
-attachment in the optimised format or in non optimised format. By setting an
+attachment in the optimized format or in non optimized format. By setting an
 option</p>
 <pre>axis2_options_set_enable_mtom(options,env,AXIS2_TRUE);</pre>
 or setting<br>
@@ -958,13 +958,13 @@ in axis2.xml
 <p>If enableMTOM is set to true the attachment would be sent as it is, out of
 the SOAP body, using MIME headers and the payload would have an XOP:Include
 element, referring to the MIME part that contains the binary attachment. In
-case of binary non optimised format,where enable mtom is false the attachment
+case of binary non optimized format,where enable mtom is false the attachment
 content would be sent in the payload itself, as a base64 encoded string.</p>
 <a name="eng_mod"></a> 
 <h1>7. Engaging a Module</h1>
 
 <p>A module is a set of handlers that helps to extend the message processing
-behaviours of Axis2/C SOAP engine. Modules have the concept of being
+behavior of Axis2/C SOAP engine. Modules have the concept of being
 available and engaged. Available means modules are deployed in the system but
 not activated. They will be activated only after being engaged. Every module
 should come with its own module.xml file . This module.xml file specifies the
@@ -1168,7 +1168,7 @@ set them.</p>
 
 <p>Sets the wsa:Replyto header. The "ReplyTo" header contains the endpoint to
 send reply messages The Replyto header is required when the response comes in
-a seperate channel. (when using dual chanel)</p>
+a separate channel. (when using dual chancel)</p>
 <pre>axis2_options_set_fault_to(options, env, fault_to)</pre>
 
 <p>Sets the wsa:FaultTo header.This contains the endpoint to direct fault
@@ -1220,7 +1220,7 @@ axis2_modules_ops.</p>
 </ol>
 
 <p>The module developer implements these functions in its implementation
-file. When creating a module, the memebers of the ops struct functions will
+file. When creating a module, the members of the ops struct functions will
 be assigned these implemented functions.</p>
 
 <p>The following example shows the create function of logging module.</p>
@@ -1243,7 +1243,7 @@ axis2_mod_log_create(const axis2_env_t *env)</font></strong>
     <font color="#4169E1">return</font> module;
 }</pre>
 
-<p>The following code segmement shows the adding of handler create functions
+<p>The following code segment shows the adding of handler create functions
 to the module's hash map that stores handler create functions.</p>
 <pre><strong><font color="#4169E1"><a name="axis2_mod_log_fill_handler_create_func_map"></a>
 axis2_status_t AXIS2_CALL
@@ -1359,8 +1359,8 @@ axis2_log_in_handler_invoke(struct axis2_handler *handler,
 <p>After writing the module, the module.xml file should be written. The
 module.xml file contains all the configuration details for a particular
 module.See </p>
-<a href="#eng_mod">Enging a module</a> part for more details. Some of the
-important details in the module.xml file can be summerized as follows. 
+<a href="#eng_mod">Engaging a module</a> part for more details. Some of the
+important details in the module.xml file can be summarized as follows. 
 <ul>
   <li>The names of the module specific handlers and the phases they are to be
     added in Axis2/C flows.</li>
@@ -1509,7 +1509,7 @@ href="http://localhost/axis2/services">http://localhost/axis2/services</a></p>
         <p>First of all, make sure you have installed <a href='http://www.openssl.org/'>OpenSSL</a> 
         on your machine.</p>
         <p>Then you can start building with SSL client support. 
-        This can be achieved on linux by compiling AXIS2C with the
+        This can be achieved on Linux by compiling AXIS2C with the
         <code>--enable-openssl=yes</code> option.</p>
         <p>Eg: <code><br>
         %./configure --enable-openssl=yes --prefix=${AXIS2C_HOME}/deploy<br>
@@ -1540,7 +1540,7 @@ href="http://localhost/axis2/services">http://localhost/axis2/services</a></p>
       </li>
       <li>Configuration 
         <p>Uncomment the following in the <code>axis2.xml</code> file. This will
-        enable the SSL transport for AXIS2C, by recognising "https" in an end
+        enable the SSL transport for AXIS2C, by recognizing "https" in an end
         point reference (EPR).</p>
         <p><code>&lt;transportSender name="https"
         class="axis2_http_sender"&gt;<br>
@@ -1572,7 +1572,7 @@ href="http://localhost/axis2/services">http://localhost/axis2/services</a></p>
         output bounded by and including:
         <pre>-----BEGIN CERTIFICATE-----
 -----END CERTIFICATE-----</pre></p>
-        <p>On linux if you run the following piece of code, the server
+        <p>On Linux if you run the following piece of code, the server
         certificate will be saved to a file <code>cert.pem</code>:
         <pre>echo |\
 openssl s_client -connect &lt;servername&gt;:&lt;port&gt; 2&gt;&amp;1 |\
@@ -1584,7 +1584,7 @@ sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' &gt; cert.pem</pre></p>
     </ul>
   </li>
   <li>Configuring the server 
-    <p>Here we will only look at the configuration of Apache webserver. Refer
+    <p>Here we will only look at the configuration of Apache web server. Refer
     to the AXIS2C installation guide <a
     href="http://ws.apache.org/axis2/c/docs/installationguide.html#installing-apache2">[link]</a>
     for information on deploying AXIS2C as an apache module.</p>
@@ -1610,7 +1610,7 @@ sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' &gt; cert.pem</pre></p>
 <p>When using a proxy , user can follow two methods.</p>
 <ol>
 <li>Specify Proxy Settings in axis2.xml</li>
-<li>Provide Proxy Settings using service client api</il>
+<li>Provide Proxy Settings using service client API</il>
 </ol>
 
 <h3>Specify Proxy Settings in axis2.xml</h3>
@@ -1622,8 +1622,8 @@ sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' &gt; cert.pem</pre></p>
 &lt;/transportSender&gt;
 </pre>
 <p>then "proxy_host" and "proxy_port" will be use globally.</p>
-<h3>Provide Proxy Settings using service client api</h3>
-<p>One can specify proxy settings using service client api.</p>
+<h3>Provide Proxy Settings using service client API</h3>
+<p>One can specify proxy settings using service client API.</p>
 <pre>
 axis2_svc_client_set_proxy(axis2_svc_client_t *svc_client,
         const axutil_env_t *env,
@@ -1641,7 +1641,7 @@ axis2_svc_client_set_proxy(axis2_svc_client_t *svc_client,
 level elements. They are <em>parameter, transportReciever,
 transportSender,module,phaseOrder</em> and <em>messageReciever</em>. Given
 below is a description about these elements, their sub elements , element
-atributes, possible valuses and their purpose.</p>
+attributes, possible values and their purpose.</p>
 
 <p></p>
 
@@ -1698,7 +1698,7 @@ axisConfiguration in the running system.</p>
             <tr>
               <th>Value</th>
               <th>Description</th>
-              <th>Possibe text of parameter element</th>
+              <th>Possible text of parameter element</th>
             </tr>
             <tr>
               <td>enableMTOM</td>
@@ -1732,7 +1732,7 @@ axisConfiguration in the running system.</p>
             </tr>
             <tr>
               <td>false</td>
-              <td>The parmeter can be changed from the code.</td>
+              <td>The parameter can be changed from the code.</td>
             </tr>
           </tbody>
         </table>
@@ -1745,8 +1745,8 @@ axisConfiguration in the running system.</p>
 
 <h3><em>transportReciever</em></h3>
 
-<p>This element spsecifies the transport Reciever details in an INOUT
-messange exchange scenario. The users can change the transport reciever port
+<p>This element specifies the transport Receiver details in an IN-OUT
+message exchange scenario. The users can change the transport receiver port
 as they wishes.</p>
 
 <p>attributes :- name, class</p>
@@ -1769,7 +1769,7 @@ as they wishes.</p>
       <td>Specify shared library which implements the transport interface</td>
       <td>Name of the shared library. 
 
-        <p>eg:-On Linux if the value is given as <em>foo</em> then shared
+        <p>Eg:-On Linux if the value is given as <em>foo</em> then shared
         library is libfoo.so.</p>
 
         <p>On Windows <em>foo.dll</em>.</p>
@@ -1782,7 +1782,7 @@ as they wishes.</p>
 
 <p>Sub elements of <em>transportReciever</em></p>
 
-<p><em>transportReciever</em> can have zero or more parameters.(prameter
+<p><em>transportReciever</em> can have zero or more parameters.(parameter
 elements) . An example element is shown below.</p>
 
 <table border="1">
@@ -1830,7 +1830,7 @@ elements) . An example element is shown below.</p>
             </tr>
             <tr>
               <td>false</td>
-              <td>The parmeter can be changed from the code.</td>
+              <td>The parameter can be changed from the code.</td>
             </tr>
           </tbody>
         </table>
@@ -1867,7 +1867,7 @@ elements) . An example element is shown below.</p>
       <td>Specify shared library which implements the transport interface</td>
       <td><p>Name of the shared library.</p>
 
-        <p>eg:-On Linux if the value is given as <em>foo</em> then shared
+        <p>Eg:-On Linux if the value is given as <em>foo</em> then shared
         library is libfoo.so.</p>
 
         <p>On Windows <em>foo.dll</em>.</p>
@@ -1880,7 +1880,7 @@ elements) . An example element is shown below.</p>
 
 <p>Sub elements of <em>transportSender</em></p>
 
-<p><em>transportSender</em> can have zero or more parameters.(prameter
+<p><em>transportSender</em> can have zero or more parameters.(parameter
 elements) . An example element is shown below.</p>
 
 <table border="1">
@@ -1905,7 +1905,7 @@ elements) . An example element is shown below.</p>
             <tr>
               <td>PROTOCOL</td>
               <td>Transport protocol used</td>
-              <td>Prtocol version. eg:- HTTP /1.1, HTTP/1.0</td>
+              <td>Protocol version. Eg:- HTTP /1.1, HTTP/1.0</td>
             </tr>
           </tbody>
         </table>
@@ -1928,7 +1928,7 @@ elements) . An example element is shown below.</p>
             </tr>
             <tr>
               <td>false</td>
-              <td>The parmeter can be changed from the code.</td>
+              <td>The parameter can be changed from the code.</td>
             </tr>
           </tbody>
         </table>
@@ -1957,7 +1957,7 @@ engaged for every service in the system.</p>
       <td>the name of the module which is to be engaged globally</td>
       <td>Name of the module. 
 
-        <p>eg:- addressing</p>
+        <p>Eg:- addressing</p>
       </td>
     </tr>
   </tbody>
@@ -2079,7 +2079,7 @@ system predefined phases cannot be changed.</p>
       handlers.</td>
       <td>Based on handler name. 
 
-        <p>eg:- AddressingbasedDispatcher, RequestURIbaseddispatcher</p>
+        <p>Eg:- AddressingbasedDispatcher, RequestURIbaseddispatcher</p>
       </td>
     </tr>
     <tr>
@@ -2087,7 +2087,7 @@ system predefined phases cannot be changed.</p>
       <td>Specify shared library which implements the handler</td>
       <td><p>Name of the shared library.</p>
 
-        <p>eg:-On Linux if the value is given as <em>foo</em> then shared
+        <p>Eg:-On Linux if the value is given as <em>foo</em> then shared
         library is libfoo.so.</p>
 
         <p>On Windows <em>foo.dll</em>.</p>
@@ -2113,17 +2113,17 @@ system predefined phases cannot be changed.</p>
     <tr>
       <td>mep</td>
       <td>Message Exchange Pattern</td>
-      <td>INOUT, INONLY</td>
+      <td>IN-OUT, IN-ONLY</td>
     </tr>
     <tr>
       <td>class</td>
       <td>Specify the shared library which implements the transport interface 
 
-        <p>If not specified Axis2/C default message reciever is used.</p>
+        <p>If not specified Axis2/C default message receiver is used.</p>
       </td>
       <td>Name of the shared library. 
 
-        <p>eg:-On Linux if the value is given as <em>foo</em> then shared
+        <p>Eg:-On Linux if the value is given as <em>foo</em> then shared
         library is libfoo.so.</p>
 
         <p>On Windows <em>foo.dll</em>.</p>
@@ -2143,7 +2143,7 @@ service. The given below is a description of each element.</p>
 
 <p></p>
 
-<p>If services.xml describes a single service the root elemnt is
+<p>If services.xml describes a single service the root element is
 <em>service</em>. If it is describing a service group, then the root element
 is <em>serviceGroup</em>. <em>service</em> will be a child element of
 serviceGroup, if there are multiple services specified in service.xml.</p>
@@ -2166,7 +2166,7 @@ serviceGroup, if there are multiple services specified in service.xml.</p>
       </td>
       <td>Depend on the service or the 
 
-        <p>serviceGroup. eg:- echo,sg_math</p>
+        <p>serviceGroup. Eg:- echo,sg_math</p>
       </td>
     </tr>
   </tbody>
@@ -2207,7 +2207,7 @@ human readable format.</p>
 
 <h3><em><strong>parameter</strong></em></h3>
 
-<p>The service element can have any number of parameters as sub elemnts.</p>
+<p>The service element can have any number of parameters as sub elements.</p>
 
 <table border="1">
   <caption></caption>
@@ -2222,7 +2222,7 @@ human readable format.</p>
       <td>name</td>
       <td>Specify the shared library the service is implemented</td>
       <td>serviceClass</td>
-      <td>the service name. eg:- echo</td>
+      <td>the service name. Eg:- echo</td>
     </tr>
     <tr>
       <td>locked</td>
@@ -2250,7 +2250,7 @@ human readable format.</p>
     <tr>
       <td>name</td>
       <td>name of the operation</td>
-      <td>eg:- echoString</td>
+      <td>Eg:- echoString</td>
     </tr>
   </tbody>
 </table>
@@ -2267,13 +2267,13 @@ parameters may be present.</p>
       <th>Attribute</th>
       <th>Description</th>
       <th>Possible Value</th>
-      <th>Parameter Vlue</th>
+      <th>Parameter Value</th>
     </tr>
     <tr>
       <td>name</td>
-      <td>ws-Addressing action mapping to the operation.</td>
+      <td>WS-Addressing action mapping to the operation.</td>
       <td>wsamapping</td>
-      <td>A URL representing the ws-Addressing action corresponding to the
+      <td>A URL representing the WS-Addressing action corresponding to the
         operation</td>
     </tr>
   </tbody>
@@ -2296,10 +2296,10 @@ optional.</p>
     </tr>
     <tr>
       <td>class</td>
-      <td>Shared library with the message reciever implementation</td>
+      <td>Shared library with the message receiver implementation</td>
       <td>Name of the shared library. 
 
-        <p>eg:-On Linux if the value is given as <em>foo</em> then shared
+        <p>Eg:-On Linux if the value is given as <em>foo</em> then shared
         library is libfoo.so.</p>
 
         <p>On Windows <em>foo.dll</em>.</p>
@@ -2330,14 +2330,14 @@ in Axis2/C. The top level element is <em>module</em>.</p>
     <tr>
       <td>name</td>
       <td>Name of the module</td>
-      <td>eg:- addressing</td>
+      <td>Eg:- addressing</td>
     </tr>
     <tr>
       <td>class</td>
       <td>Specify shared library which implements the module.</td>
       <td>Name of the shared library. 
 
-        <p>eg:-On Linux if the value is given as <em>foo</em> then shared
+        <p>Eg:-On Linux if the value is given as <em>foo</em> then shared
         library is libfoo.so.</p>
 
         <p>On Windows <em>foo.dll</em>.</p>
@@ -2384,7 +2384,7 @@ in Axis2/C. The top level element is <em>module</em>.</p>
 
 <h3><em>Description</em></h3>
 
-<p>No attributes or sub elements. Describes the behaviour of the module. This
+<p>No attributes or sub elements. Describes the behavior of the module. This
 element is optional.</p>
 
 <p></p>
@@ -2417,7 +2417,7 @@ added to a particular flow. Zero or more handlers can be added.</p>
       <td>Specify shared library which implements the handler</td>
       <td><p>Name of the shared library.</p>
 
-        <p>eg:-On Linux if the value is given as <em>foo</em> then shared
+        <p>Eg:-On Linux if the value is given as <em>foo</em> then shared
         library is libfoo.so.</p>
 
         <p>On Windows <em>foo.dll</em>.</p>
@@ -2428,7 +2428,7 @@ added to a particular flow. Zero or more handlers can be added.</p>
 
 <p></p>
 
-<p>sub elemnts of <em>handler</em></p>
+<p>sub elements of <em>handler</em></p>
 
 <p><em>order:</em>- Specify where to put a handler in a particular phase.</p>
 
@@ -2465,7 +2465,7 @@ added to a particular flow. Zero or more handlers can be added.</p>
       <td>after</td>
       <td>Handler should be invoked after the handler specified by after
         handler</td>
-      <td>hadler name</td>
+      <td>handler name</td>
     </tr>
   </tbody>
 </table>
@@ -2537,18 +2537,18 @@ service.</p>
     <tr>
       <td>mep</td>
       <td>Message Exchange Pattern</td>
-      <td>INOUT,INONLY</td>
+      <td>IN-OUT,IN-ONLY</td>
     </tr>
   </tbody>
 </table>
 
-<p>sub elements of <em>operatio</em><em>n</em></p>
+<p>sub elements of <em>operation</em><em>n</em></p>
 
 <p>Any number of parameters can be included as sub elements in the operation
 element.</p>
 
-<p>The <em>messageReciever</em> parameter specifies the message reciever the
-message is intended to. If it is not set, the default message reciever is
+<p>The <em>messageReciever</em> parameter specifies the message receiver the
+message is intended to. If it is not set, the default message receiver is
 used.</p>
 
 <p></p>
@@ -2561,7 +2561,7 @@ messages.</p>
 
 <p><strong>axis2_options_set_action(options, env, action)</strong></p>
 
-<p>Set the ws-addressing action in the addressing header.</p>
+<p>Set the WS-addressing action in the addressing header.</p>
 
 <table border="1">
   <caption></caption>
@@ -2619,8 +2619,8 @@ fault.</p>
 
 <p><strong>axis2_options_set_from(options, env, from)</strong></p>
 
-<p>Some services need to know the source from which the messgae comes. This
-option set the from enfdpoint</p>
+<p>Some services need to know the source from which the message comes. This
+option set the from endpoint</p>
 
 <table border="1">
   <caption></caption>
@@ -2674,7 +2674,7 @@ option set the from enfdpoint</p>
 <p><strong>axis2_options_set_transport_receiver(options, env,
 receiver)</strong></p>
 
-<p>Set the transport reciever in a IN-OUT message exchange scenario.</p>
+<p>Set the transport receiver in a IN-OUT message exchange scenario.</p>
 
 <table border="1">
   <caption></caption>
@@ -2847,7 +2847,7 @@ property)</strong></p>
 
 <p><strong>axis2_options_set_relates_to(options, env, relates_to)</strong></p>
 
-<p>Some times messages may have relations.eg:- echo. This will set for
+<p>Some times messages may have relations.Eg:- echo. This will set for
 related messages</p>
 
 <table border="1">
@@ -2999,8 +2999,8 @@ soap_version_uri)</strong></p>
 <p><strong>axis2_options_set_timeout_in_milli_seconds(options, env,
 timeout_in_milli_seconds)</strong></p>
 
-<p>Set the time out in mili seconds. This is used in asyncronous message
-exchnge scebarios for the call back object to wait for the response.</p>
+<p>Set the time out in milli seconds. This is used in asynchronous message
+exchange scenarios for the call back object to wait for the response.</p>
 
 <table border="1">
   <caption></caption>
@@ -3059,7 +3059,7 @@ to be used to receive response.</p>
     <tr>
       <td>const axis2_bool_t use_separate_listener</td>
       <td>use_separate_listener bool value indicating whether to use a
-        seperate listner or not</td>
+        separate listener or not</td>
     </tr>
   </tbody>
 </table>
@@ -3070,7 +3070,7 @@ to be used to receive response.</p>
 use_separate_listener)</strong></p>
 
 <p>Sets the bool value indicating whether to use a separate listener or not.
-Seperate listener is used when the transport is one way transport.</p>
+Separate listener is used when the transport is one way transport.</p>
 
 <table border="1">
   <caption></caption>
@@ -3090,7 +3090,7 @@ Seperate listener is used when the transport is one way transport.</p>
     <tr>
       <td>const axis2_bool_t use_separate_listener</td>
       <td>use_separate_listener bool value indicating whether to use a
-        seperate listener or not</td>
+        separate listener or not</td>
     </tr>
   </tbody>
 </table>
