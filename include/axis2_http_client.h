@@ -132,6 +132,12 @@ extern "C"
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_client_get_proxy(const axis2_http_client_t *client,
         const axutil_env_t *env);
+
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_client_connect_ssl_host(axis2_http_client_t *client,
+        const axutil_env_t *env,
+        axis2_char_t *host,
+        int port);
     
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_client_set_dump_input_msg(axis2_http_client_t *client,
