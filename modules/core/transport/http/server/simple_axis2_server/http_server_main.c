@@ -192,17 +192,15 @@ void usage(
     fprintf(stdout, " [-l LOG_LEVEL]");
     fprintf(stdout, " [-f LOG_FILE]\n");
     fprintf(stdout, " Options :\n");
-    fprintf(stdout, "\t-p PORT \t use the port number PORT. The default port is"
-            " 9090\n");
-    fprintf(stdout, "\t-r REPO_PATH \t use the repository path REPO_PATH. The"
-            " default repository path is ../\n");
-    fprintf(stdout, "\t-t SOCKET_READ_TIMEOUT\t set socket read timeout to "
-            "SOCKET_READ_TIMEOUT. Default timeout is 30 seconds\n");
-    fprintf(stdout, "\t-l LOG_LEVEL\t set log level to LOG_LEVEL. Available "
-            "log levels range from 0(critical only) to 4(debug)."
+    fprintf(stdout, "\t-p PORT \t port number to use, default port is 9090\n");
+    fprintf(stdout, "\t-r REPO_PATH \t repository path, default is ../\n");
+    fprintf(stdout, "\t-t TIMEOUT\t socket read timeout, default is 30 seconds\n");
+    fprintf(stdout, "\t-l LOG_LEVEL\t log level, available log levels:"
+            "\n\t\t\t 0 - critical    1 - errors 2 - warnings" 
+            "\n\t\t\t 3 - information 4 - debug  5- trace"
             "\n\t\t\t Default log level is 4(debug).\n");
-    fprintf(stdout, "\t-f LOG_FILE\t set log file to LOG_FILE. Default is $AXIS2C_HOME/logs/axis2.log"
-            "\n\t\t\t or current folder if AXIS2C_HOME not set\n");
+    fprintf(stdout, "\t-f LOG_FILE\t log file, default is $AXIS2C_HOME/logs/axis2.log"
+            "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
     fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
 }
 
