@@ -7,15 +7,23 @@
 <body lang="en-US" dir="ltr">
 <h2>Preamble</h2>   
 <p style="margin-bottom: 0in">This document is intended to be a reference
-manual on <a href="http://ws.apache.org/axis2/c">Apache Axis2/C</a> which 
-covers its features and how Axis2/C can be used to provide and consume Web Services.
+manual on <a href="http://ws.apache.org/axis2/c">Apache Axis2/C</a>. This manual 
+details how Axis2/C can be used to provide and consume Web Services.
 Please send your feedback to Apache Axis2/C developer mailing list (<a
-    href="mailto:axis-c-dev@apache.org">axis-c-dev@apache.org</a>)</p>
+    href="mailto:axis-c-dev@apache.org">axis-c-dev@apache.org</a>).
+To subscribe to developer or user mailing lists
+see <a href="http://ws.apache.org/axis2/c/mail-lists.html">here</a>.</p>
+
 <p>This document uses the following conventions:
 <ul>
-    <li>The directory each package is installed is given with an "_INSTALL_DIR" suffix to the package name. For example, the path libxml2 is installed is referred to as LIBXML2_INSTALL_DIR, and likewise.</li></ul></p>
+    <li>The directory each package is installed is given with an "_INSTALL_DIR" 
+suffix to the package name. For example, the path libxml2 is installed is referred 
+to as LIBXML2_INSTALL_DIR, and likewise.
+    </li>
+</ul>
+</p>
 
-<h1 class="western"><a name="toc">Axis2/C Manual</a></h1>
+<h1 class="western"><a name="toc">Axis2/C Manual - Contents</a></h1>
 <ol>
   <li><a href="#quick_start">Quick Start Guide</a></li>
   <li><a href="#repo_fold">Repository Folder</a></li>
@@ -46,21 +54,16 @@ using Axis2/C and consume that service using an Axis2/C client.</p>
 <a href="http://ws.apache.org/axis2/c/download.cgi">download page</a>. Once
 you download the correct binary that suits your platform, all that you
 require to get it running is to extract the package to a folder of your
-choice, set AXIS2C_HOME environment variable to point to this extracted
+choice and set AXIS2C_HOME environment variable to point to this extracted
 folder. On Linux, you may have to set the LD_LIBRARY_PATH environment
 variable to include the lib folder (e.g. add $AXIS2C_HOME/lib). On Windows,
 you would have to add the lib folder to your PATH variable to include the
-Axis2/C dlls to your path. Now you should be able to cd to bin folder of this
-extracted folder and run the simple axis server in one command shell and cd
+Axis2/C DLLs to your path. Now you should be able to change directory to bin folder of this
+extracted folder and run the simple axis server in one command shell and change directory
 to bin/samples in another command shell and run any of the samples there (you
 may have to set the environment variables in this new shell as well). Please
-see the <a
-href="http://ws.apache.org/axis2/c/docs/installationguide.html">installation
+see the <a href="http://ws.apache.org/axis2/c/docs/installationguide.html">installation
 guide</a> for more details. 
-
-<p><br>
-<br>
-</p>
 
 <p>Once you have Axis2/C up and running successfully, you can start writing
 your own services and clients. The following sections detail how to write
@@ -234,7 +237,7 @@ payload.</p>
 <h3>1.1.4 Full Source</h3>
 
 <p>Here is the complete source code for the service : <a
-href="hello/service/hello.c.html">hello.c</a></p>
+href="hello/service/hello_svc.c.html">hello_svc.c</a></p>
 <br>
 
 
@@ -266,14 +269,14 @@ one operation, with the name "greet"<br>
 <p>You can compile the service sample as shown below.</p>
 
 <p>On Linux:</p>
-<pre>gcc -shared -olibhello.so -I$AXIS2C_HOME/include -L$AXIS2C_HOME/lib -laxis2 hello.c</pre>
+<pre>gcc -shared -olibhello.so -I$AXIS2C_HOME/include/axis2-1.0/ -L$AXIS2C_HOME/lib -laxis2 hello_svc.c </pre>
 
 <p>On Windows</p>
 
 <p>to compile,</p>
 <pre>cl.exe /D "WIN32" /D "_WINDOWS" /D "_MBCS"/D"AXIS2_DECLARE_EXPORT" 
 /D "AXIS2_SVR_MULTI_THREADED" /w /nologo $(AXIS2_INCLUDE_PATH)
-$(APACHE_INCLUDE_PATH) /I hello.c</pre>
+$(APACHE_INCLUDE_PATH) /I hello_svc.c</pre>
 
 <p>to link,</p>
 <pre>link.exe /nologo /LIBPATH:$(AXIS2_LIBS)
