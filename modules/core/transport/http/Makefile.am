@@ -1,1 +1,1 @@
-SUBDIRS = util common sender receiver server
+SUBDIRS = sender receiver server
