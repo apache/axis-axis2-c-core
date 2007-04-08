@@ -484,16 +484,17 @@ etc.</p>
 of this manual. This section would cover the service API of Axis2/C in a bit
 more detail.</p>
 
-<p>The axis2_svc_skeleton is an interface. Axis2/C does not provide any
+<p><code>axis2_svc_skeleton</code> is an interface. Axis2/C does not provide any
 concrete implementation of this interface. It is the responsibility of the
 service implementer to implement this interface. To implement the interface,
 one should implement functions adhering to the function pointer signatures of
-the members of axis2_svc_skeleton_ops struct. Then, a create function should
-be written, to create an axis2_svc_skeleton instance, and assign the
+the members of <code>axis2_svc_skeleton_ops</code> struct. Then, a create function should
+be written, to create an <code>axis2_svc_skeleton</code> instance, and assign the
 implementing functions to members of the ops member of service skeleton.</p>
 
-<p>The following table details the function signatures to be implemented by a
-service.</p>
+<p>The following table details the signatures of the 
+function pointer members of <code>axis2_svc_skeleton</code> struct
+to be implemented by a service.</p>
 
 <table border="1">
   <caption></caption>
@@ -503,16 +504,19 @@ service.</p>
       <th>Description</th>
     </tr>
     <tr>
-      <td><pre>axis2_status_t (AXIS2_CALL *
-    free )( axis2_svc_skeleton_t *svc_skeli,
-        const axis2_env_t *env);</pre>
+      <td><pre>int (AXIS2_CALL *
+    init)(axis2_svc_skeleton_t *svc_skeleton,
+        const axutil_env_t *env);</pre>
       </td>
-      <td>Frees the service implementation instance.</td>
+      <td>Initializes the service skeleton object instance. Axis2/C engine 
+          initializes a service skeleon instance once per a deployed service,
+          during the first request to the service.
+      </td>
     </tr>
     <tr>
       <td><pre>axiom_node_t *(AXIS2_CALL*
     invoke )( axis2_svc_skeleton_t *svc_skeli,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *node,
         axis2_msg_ctx_t *msg_ctx);</pre>
       </td>
@@ -520,106 +524,60 @@ service.</p>
         to call the correct functions in this method based on the name of the
         operation being invoked.</td>
     </tr>
+    <tr>
+      <td><pre>axiom_node_t *(AXIS2_CALL*
+    on_fault)(
+        axis2_svc_skeleton_t *svc_skeli,
+        const axutil_env_t *env,
+        axiom_node_t *node); </pre>
+      </td>
+      <td>This method would be called by the engine if a fault is detected.</td>
+    </tr>
+    <tr>
+      <td><pre>axis2_status_t (AXIS2_CALL *
+    free )( axis2_svc_skeleton_t *svc_skeli,
+        const axutil_env_t *env);</pre>
+      </td>
+      <td>Frees the service implementation instance.</td>
+    </tr>
   </tbody>
 </table>
 <br>
 
-<pre>int AXIS2_CALL
-math_free (axis2_svc_skeleton_t *svc_skeleton, const axis2_env_t *env
-{
-    if (svc_skeleton-&gt;ops)
-    {
-        AXIS2_FREE(env-&gt;allocator, svc_skeleton-&gt;ops);
-        svc_skeleton-&gt; ops = NULL;
-    }
-    if(svc_skeleton)
-    {
-      AXIS2_FREE (env-&gt;allocator, svc_skeleton -&gt;ops);
-      svc_skeleton -&gt; NULL;
-    }
-    return AXIS2_SUCCESS;
-}</pre>
-
-<p>The above code shows the free method implementation of the math sample.</p>
-<pre>axiom_node_t* AXIS2_CALL
-math_invoke(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env,
-        axiom_node_t *node,
-        axis2_msg_ctx_t *msg_ctx)
-{
-    if(node)
-    {
-        if(axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
-        {
-            axiom_element_t *element = NULL;
-            element = (axiom_element_t *)axiom_node_get_data_element(node, env);
-            if(element)
-            {
-                axis2_char_t *op_name = axiom_element_get_localname(element, env);
-                if(op_name)
-                {
-                    if(AXIS2_STRCMP(op_name, "add") == 0)
-                        return axis2_math_add(env, node);
-                    if(AXIS2_STRCMP(op_name, "sub") == 0)
-                        return axis2_math_sub(env, node);
-                    if(AXIS2_STRCMP(op_name, "mul") == 0)
-                        return axis2_math_mul(env, node);
-                    if(AXIS2_STRCMP(op_name, "div") == 0)
-                        return axis2_math_div(env, node);
-           vice ERROR: invalid operation invoked\n");
-    return node;
-}</pre>
-
-<p>The above code fragment from math sample shows how the correct method to
-be invoked could be picked from the operation name that comes in the message
-context.</p>
 
 <p>There are two more methods that a service should implement. Once a service
 is deployed, the message receiver of the Axis2/C engine would need to create
 a service instance at run-time for the purpose of invoking it. For this, it
-looks for a method named axis2_create_instance and calls it on the service
+looks for a method named <code>axis2_create_instance</code> and calls it on the service
 shared library. The engine also looks for a function named
-axis2_remove_instance in the shared library for clean up purposes.</p>
-<pre>AXIS2_EXPORT int axis2_get_instance(struct axis2_svc_skeleton **inst,
-        const axis2_env_t *env)
-{
-    *inst = axis2_math_create(env);
-    if(!(*inst))
-    {
-        return AXIS2_FAILURE;
-    }
+<code>axis2_remove_instance</code> in the shared library for clean up purposes.</p>
 
-    return AXIS2_SUCCESS;
-}
+<p>Note that service object instantiation happens once per service. When the first request
+comes to the service, a service skeleton instance would be created and initialized.
+The same object instance would be re-used by subsequent requests. 
+</p>
 
-AXIS2_EXPORT int axis2_remove_instance(axis2_svc_skeleton_t *inst,
-        const axis2_env_t *env)
-{
-    axis2_status_t status = AXIS2_FAILURE;
-    if (inst)
-    {
-        status = axis2_svc_skeleton_free(inst, env);
-    }
-    return status;
-}</pre>
+<p>
+You can find an example on how to implement the service skeleton interface 
+in <a href="hello/service/hello_svc.c.html">hello_svc.c</a> source file, the 
+example used in the <a href="#quick_start">quick start guide</a>. More advanced samples could be found 
+in the samples folder of Axis2/C distribution. 
+</p>
 
-<p>Note that service instantiation happens per request. That means for each
-request, the create method would be called and a new axis2_svc_skeleton
-instance would be created.</p>
 <a name="cli_api"></a> 
 
 <h1>4. Client API</h1>
 
-<p>The primary client API to be used with Axis2/C is axis2_svc_client, the
+<p>The primary client API to be used with Axis2/C is <code>axis2_svc_client</code>, the
 service client API. This is meant to be an easy to use API for consuming
 services. If you want to do more complex tasks, such as invoking a client
 inside a module, or wrap the client API with another interface, you may need
-to use the axis2_op_client, operation client, API. However for general
-purposes, service client is sufficient.</p>
+to use <code>axis2_op_client</code>, the operation client API. For most of the 
+use cases, service client API is sufficient.</p>
 
 <p>Behavior of the service client could be fine tuned with the options
 passed to service client. You can set the options by creating an
-axis2_options instance. The bare minimum that you need to set is the endpoint
+<code>axis2_options</code> instance. The bare minimum that you need to set is the endpoint
 URI where the request is to be sent to. An example of this was given in the
 <a href="#quick_start">quick start guide section</a>.</p>
 
@@ -672,7 +630,7 @@ errors, such as host unknown etc.</p>
       <td>pointer to service client struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>pointer to environment struct</td>
     </tr>
     <tr>
@@ -707,7 +665,7 @@ to the caller.</p>
       <td>pointer to service client struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>pointer to environment struct</td>
     </tr>
     <tr>
@@ -749,7 +707,7 @@ this MEP.</p>
       <td>pointer to service client struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>pointer to environment struct</td>
     </tr>
     <tr>
@@ -785,7 +743,7 @@ response.</p>
       <td>pointer to service client struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>pointer to environment struct</td>
     </tr>
     <tr>
@@ -1135,17 +1093,17 @@ writing a module. They are axis2_module and axis2_handler.</p>
 axis2_modules_ops.</p>
 <ol>
   <li><pre><font color="#4169E1">axis2_status_t (AXIS2_CALL * init ) (axis2_module_t *module, const
-    axis2_env_t *env , axis2_conf_ctx_t *conf_ctx , axis2_module_desc_t
+    axutil_env_t *env , axis2_conf_ctx_t *conf_ctx , axis2_module_desc_t
     *module_desc)</font></pre>
     <p>The module initialisation is done here.</p>
   </li>
   <li><pre><font color="#4169E1">axis2_status_t (AXIS2_CALL * shut_down ) (axis2_module_t *module, const
-    axis2_env_t *env )</font></pre>
+    axutil_env_t *env )</font></pre>
     <p>Handler created function are stored in a hash map. This function will
     remove them from the hash map.</p>
   </li>
   <li><pre><font color="#4169E1">axis2_status_t (AXIS2_CALL *fill_handler_create_func_map )
-    (axis2_module_t *module, const axis2_env_t *env )</font></pre>
+    (axis2_module_t *module, const axutil_env_t *env )</font></pre>
     <p>This function fills the hash map of handler create functions for the
     module.</p>
   </li>
@@ -1157,7 +1115,7 @@ be assigned these implemented functions.</p>
 
 <p>The following example shows the create function of logging module.</p>
 <pre><strong><font color="#4169E1"><a name="axis2_mod_log_create"></a>axis2_module_t *
-axis2_mod_log_create(const axis2_env_t *env)</font></strong>
+axis2_mod_log_create(const axutil_env_t *env)</font></strong>
 {
     axis2_module_t *module = NULL;
     module = AXIS2_MALLOC(env-&gt;allocator, 
@@ -1180,9 +1138,9 @@ to the module's hash map that stores handler create functions.</p>
 <pre><strong><font color="#4169E1"><a name="axis2_mod_log_fill_handler_create_func_map"></a>
 axis2_status_t AXIS2_CALL
 axis2_mod_log_fill_handler_create_func_map(axis2_module_t *module,
-                                            const axis2_env_t *env)</font></strong>
+                                            const axutil_env_t *env)</font></strong>
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    axutil_env_CHECK(env, AXIS2_FAILURE);
     
     module-&gt;handler_create_func_map = axis2_hash_make(env);
     <font color="#4169E1">if</font>(!module-&gt;handler_create_func_map)
@@ -1219,11 +1177,11 @@ is used to create handlers.</p>
 <p>The following example shows the creation of the in handler in the logging
 module.</p>
 <pre>AXIS2_EXTERN axis2_handler_t* AXIS2_CALL
-axis2_log_in_handler_create(const axis2_env_t *env, 
+axis2_log_in_handler_create(const axutil_env_t *env, 
                          axis2_qname_t *qname)
 {
     axis2_handler_t *handler = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
+    axutil_env_CHECK(env, NULL);
     handler = axis2_handler_create(env);
     if (!handler)
     {
@@ -1251,13 +1209,13 @@ respective function pointer to invoke operation of the ops struct.</p>
 function.</p>
 <pre>axis2_status_t AXIS2_CALL
 axis2_log_in_handler_invoke(struct axis2_handler *handler, 
-                         const axis2_env_t *env,
+                         const axutil_env_t *env,
                          struct axis2_msg_ctx *msg_ctx)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_node_t *ret_node = NULL;
 
-    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
+    axutil_env_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env-&gt;error, msg_ctx, AXIS2_FAILURE);
     
     AXIS2_LOG_INFO(env-&gt;log, "Starting logging in handler .........");
@@ -2507,7 +2465,7 @@ messages.</p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2536,7 +2494,7 @@ fault.</p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2566,7 +2524,7 @@ option set the from endpoint</p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2593,7 +2551,7 @@ option set the from endpoint</p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2620,7 +2578,7 @@ receiver)</strong></p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2647,7 +2605,7 @@ transport_in)</strong></p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2676,7 +2634,7 @@ transport_in_protocol)</strong></p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2704,7 +2662,7 @@ transport_in_protocol)</strong></p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2732,7 +2690,7 @@ transport_in_protocol)</strong></p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2761,7 +2719,7 @@ property)</strong></p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2794,7 +2752,7 @@ related messages</p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2823,7 +2781,7 @@ sending end point or another different end point.</p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2853,7 +2811,7 @@ transport_out)</strong></p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2882,7 +2840,7 @@ conf)</strong></p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2916,7 +2874,7 @@ soap_version_uri)</strong></p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2946,7 +2904,7 @@ exchange scenarios for the call back object to wait for the response.</p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -2977,7 +2935,7 @@ to be used to receive response.</p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -3016,7 +2974,7 @@ Separate listener is used when the transport is one way transport.</p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -3046,7 +3004,7 @@ soap_version)</strong></p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
@@ -3075,7 +3033,7 @@ enable_mtom)</strong></p>
       <td>options pointer to options struct</td>
     </tr>
     <tr>
-      <td>const axis2_env_t *env</td>
+      <td>const axutil_env_t *env</td>
       <td>env pointer to environment struct</td>
     </tr>
     <tr>
