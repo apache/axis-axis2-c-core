@@ -99,13 +99,15 @@ include:</p>
     service.</b> <br>
     In our sample, we will have one function that implements the "greet"
     operation. <br>
-    We would name that function "axis2_hello_greet".</li>
-  <li><b>Implement the functions defined by the axis2_svc_skeleton
+    We would name that function <code>axis2_hello_greet</code>.</li>
+  <li><b>Implement the functions defined by the <code>axis2_svc_skeleton</code>
     interface</b><br>
-    axis2_svc_skeleton interface expects the functions free and invoke to be
-    implemented by our service.<br>
-    In our sample, we would implement those and name them as hello_free, and
-    hello_invoke respectively.<br>
+    <code>axis2_svc_skeleton</code> interface expects the functions 
+    <code>init</code>, <code>invoke</code>, <code>on_fault</code>
+    and <code>free</code> to be implemented by our service.<br>
+    In our sample, we would implement those and name them as <code>hello_init</code>, 
+    <code>hello_invoke</code>, <code>hello_on_fault</code>
+    and <code>hello_free</code> respectively.<br>
   </li>
   <li><b>Implement the create function, that would create an instance of
     service skeleton</b><br>
@@ -131,120 +133,59 @@ include:</p>
 
 <h3 class="western">1.1.1 Operation Implementation</h3>
 
-<p>Following is the implementation of the greet operation:</p>
-<pre>axiom_node_t *
-axis2_hello_greet(const axis2_env_t *env, axiom_node_t *node)
-{
-    axiom_node_t *client_greeting_node = NULL;
-    axiom_node_t *return_node = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
-
-    if (node)
-    {
-        client_greeting_node = axiom_node_get_first_child(node, env);
-        if (client_greeting_node &amp;&amp; 
-        axiom_node_get_node_type(client_greeting_node, env) == AXIOM_TEXT)
-        {
-            axiom_text_t *greeting = 
-            (axiom_text_t *)axiom_node_get_data_element(client_greeting_node, env);
-            if (greeting &amp;&amp; axiom_text_get_value(greeting , env))
-            {
-                axis2_char_t *greeting_str = axiom_text_get_value(greeting, env);
-                printf("Client greeted saying \"%s\" \n", greeting_str);
-                return_node = build_greeting_response(env, "Hello Client!");
-            }
-        }
-    }
-    else
-    {
-        AXIS2_ERROR_SET(env-&gt;error, 
-        AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
-        printf("ERROR: invalid XML in request\n");
-        return_node = build_greeting_response(env, "Client! Who are you?");
-    }
-
-    return return_node;
-}</pre>
-<br>
-
+<p>Look for the <code>axis2_hello_greet</code> function in the 
+<a href="hello/service/hello_svc.c.html">hello_svc.c</a> source file. 
+</p>
 
 <p>This function implements the business logic for the greet operation. We
 would be calling this function from our implementation of the invoke
 function. Basically this function receives the request payload as an
-axiom_node, process it to understand the request logic and prepares the
-response as an axiom_node and returns that.</p>
+<code>axiom_node</code>, process it to understand the request logic and prepares the
+response as an <code>axiom_node</code> and returns that.</p>
 
 <h3 class="western">1.1.2 Skeleton Create Method</h3>
 
-<p>Service skeleton creation could be implemented like the following:</p>
-<pre>axis2_svc_skeleton_t *
-axis2_hello_create(const axis2_env_t *env)
-{
-    axis2_svc_skeleton_t *svc_skeleton = NULL;
-    svc_skeleton = AXIS2_MALLOC(env-&gt;allocator,
-            sizeof(axis2_svc_skeleton_t));
+<p>Look for the <code>axis2_hello_create</code> function in the 
+<a href="hello/service/hello_svc.c.html">hello_svc.c</a> source file. 
+</p>
 
-    svc_skeleton-&gt;ops = AXIS2_MALLOC(
-                env-&gt;allocator, sizeof(axis2_svc_skeleton_ops_t));
-
-    svc_skeleton-&gt;func_array = NULL;
-    svc_skeleton-&gt;ops-&gt;free = hello_free;
-    svc_skeleton-&gt;ops-&gt;invoke = hello_invoke;
-
-    return svc_skeleton;
-}</pre>
-<br>
-
-
-<p>The create function creates and returns a new axis2_svc_skeleton instance.
+<p>The create function creates and returns a new <code>axis2_svc_skeleton</code> instance.
 The most important aspect to notice about this function is the function
 pointer assignments to map the interface operations to the corresponding
-functions of our implementation.</p>
-<br>
-
+functions of our implementation.This is done by assigning the ops member of 
+the service skeleton to the addess of the ops struct variable.</p>
 
 <h3>1.1.3 Invoking Operation Implementation</h3>
-
-<h3></h3>
 
 <p>The invoke method of the service skeleton is the point of entry for
 invoking the operations. Hence in our implementation of the invoke function,
 we have to define how the operations are to be called.</p>
-<pre>axiom_node_t* AXIS2_CALL
-hello_invoke(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env,
-        axiom_node_t *node,
-        axis2_msg_ctx_t *msg_ctx)
-{
-    return axis2_hello_greet(env, node);
-}</pre>
-<br>
 
+<p>Look for the <code>hello_invoke</code> function in the 
+<a href="hello/service/hello_svc.c.html">hello_svc.c</a> source file. 
+</p>
 
-<p>In our implementation of the hello_invoke, we call the function
+<p>In our implementation of the <code>hello_invoke</code>, we call the function
 implementing the greet operation. As we have only one operation, the task is
 simple here. If we had multiple operations, we would have to look into the
 information in message context to map to the exact operation. <br>
-Axis2/C engine would call the invoke method with an axiom_node, containing
-the request payload and axis2_msg_ctx instance containing the message context
+Axis2/C engine would call the invoke method with an <code>axiom_node</code>, containing
+the request payload, and <code>axis2_msg_ctx</code> instance, containing the message context
 information, in addition to service skeleton and environment pointers. We
 could use the message context to extract whatever information we deem
 necessary related to the incoming message. The Axis2/C engine expects the
-invoke method to return a pointer to an axiom_node, representing the response
+invoke method to return a pointer to an <code>axiom_node</code>, representing the response
 payload.</p>
 
 <h3>1.1.4 Full Source</h3>
 
 <p>Here is the complete source code for the service : <a
 href="hello/service/hello_svc.c.html">hello_svc.c</a></p>
-<br>
-
 
 <h3>1.1.5 Service Descriptor</h3>
 
 <p>services.xml file contains details on the service that would be read by
-the Axis2/C deployment engine during deployment time. Following shows the
+the Axis2/C deployment engine during server start up time. Following shows the
 contents for the services.xml file for hello service.</p>
 <pre>&lt;service name="hello"&gt;
    &lt;parameter name="ServiceClass" locked="xsd:false"&gt;hello&lt;/parameter&gt;
@@ -274,16 +215,14 @@ one operation, with the name "greet"<br>
 <p>On Windows</p>
 
 <p>to compile,</p>
-<pre>cl.exe /D "WIN32" /D "_WINDOWS" /D "_MBCS"/D"AXIS2_DECLARE_EXPORT" 
-/D "AXIS2_SVR_MULTI_THREADED" /w /nologo $(AXIS2_INCLUDE_PATH)
-$(APACHE_INCLUDE_PATH) /I hello_svc.c</pre>
+<pre>
+cl.exe /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT" /D "AXIS2_SVR_MULTI_THREADED" /w /nologo /I  %AXIS2C_HOME%\include /c hello_svc.c
+</pre>
 
 <p>to link,</p>
-<pre>link.exe /nologo /LIBPATH:$(AXIS2_LIBS)
-/LIBPATH:$(LIBXML2_INSTALL_DIR)\lib
-/LIBPATH:$(APACHE_INSTALL_DIR)\lib 
-/LIBPATH:$(ZLIB_INSTALL_DIR)\lib *.obj $(AXIS2_UTIL).lib $(AXIOM).lib
-$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:hello.dll</pre>
+<pre>
+link.exe /nologo /LIBPATH:%AXIS2C_HOME%\lib axutil.lib axiom.lib axis2_parser.lib axis2_engine.lib /DLL /OUT:hello.dll *.obj
+</pre>
 
 <h3>1.1.7 Deploying the Service</h3>
 
@@ -291,19 +230,15 @@ $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:hello.dll</pre>
 to deploy the service. To deploy the service, you have to create a folder in
 AXIS2C_HOME/services folder named hello and copy the services.xml file and
 the shared library file (libhello.so on Linux or hello.dll on Windows) into
-that folder</p>
+that folder.</p>
 
 <p>To verify that your service has been correctly deployed, you can start the
 simple axis server and then browse the list of deployed services using a Web
 browser. To start the simple axis server you can go to AXIS2C_HOME/bin folder
 and run the executable axis2_http_server. The default url that you can test
-the service list with is <a
-href="http://localhost:9090/axis2/services">http://localhost:9090/axis2/services</a>.You
-should get an entry for the hello service on the page that you get.</p>
-
-<p><br>
-<br>
-</p>
+the service list with is 
+<a href="http://localhost:9090/axis2/services">http://localhost:9090/axis2/services</a>.
+You should get an entry for the hello service on the page that you get.</p>
 
 <h2 class="western" style="margin-top: 0in; margin-bottom: 0in">1.2 Hello
 Client</h2>
@@ -319,17 +254,17 @@ include:</p>
 <ol>
   <li><b>Create the environment to be used by the client.</b> <br>
     Each function in Axis2/C takes a pointer to the environment instance that
-    encapsulates memory allocators, error handler, logging and threading
-    mechanisms. axis2_env_create_all method can be used to create a default,
+    encapsulates memory allocator, error handler, logging and threading
+    mechanisms. <code>axutil_env_create_all</code> method can be used to create a default,
     ready to use environment instance.<br>
   </li>
   <li><b>Create an options instance, and set options</b><br>
-    axis2_options struct can be used to set the client side options. As an
+    <code>axis2_options</code> struct can be used to set the client side options. As an
     example, we can use options to set the endpoint address of the service to
     be consumed by the client.</li>
   <li><b>Create a service client instance, giving the client repository
     folder as a parameter.</b><br>
-    axis2_svc_client struct is meant to be used by users for consuming
+    <code>axis2_svc_client</code> struct is meant to be used by users for consuming
     services. It provides an easy to use API. Service client create method
     takes the location of the repository as a parameter. For the purpose of
     our sample, you can use the AXIS2C_HOME as the repository. The concept of
@@ -338,14 +273,14 @@ include:</p>
   </li>
   <li><b>Set options to service client instance</b><br>
     The options created in an earlier step needs to be set on the service
-    client, indicating that options are meant to be used by the service
+    client, indicating the options that are meant to be used by the service
     client.<br>
   </li>
   <li><b>Send the request and receive the response</b><br>
-    Service client's AXIS2_SVC_CLIENT_SEND_RECEIVE macro could be used to
+    Service client's <code>axis2_svc_client_send_receive</code> method could be used to
     invoke the send receive operation on the service client instance.<br>
-    The send receive operation takes the request payload as an axiom_node and
-    returns the response payload as an axiom_node.</li>
+    The send receive operation takes the request payload as an <code>axiom_node</code> and
+    returns the response payload as an <code>axiom_node</code>.</li>
   <li><b>Process the response</b><br>
     Process the response in line with the client business logic.</li>
 </ol>
@@ -354,15 +289,13 @@ include:</p>
 <pre>    options = axis2_options_create(env);
     address = "http://localhost:9090/axis2/services/hello";
     endpoint_ref = axis2_endpoint_ref_create(env, address);
-    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);</pre>
+    axis2_options_set_to(options, env, endpoint_ref);</pre>
 
-<p>In the above shown section of code, an axis2_options instance is created
+<p>In the above shown section of code, an <code>axis2_options</code> instance is created
 first. Then an endpoint reference instance is created with the address of the
 location of the service. Finally, the created endpoint is set as the "to"
 address of the options. The "to" address indicates where the request should
 be sent to.</p>
-<br>
-
 
 <h3>1.2.2 Using Service Client</h3>
 <pre>    svc_client = axis2_svc_client_create(env, client_home);
@@ -375,17 +308,13 @@ service client instance and use it to send the request and receive the
 response. The code fragment given above shows how options could be set on top
 of service client and how to invoke the send receive operation with request
 payload. Once the response is received, the response payload would be stored
-in the ret_node, which is a pointer to an axiom_node and that could be used
+in the ret_node, which is a pointer to an <code>axiom_node</code> and that could be used
 to further process the response.</p>
-<br>
-
 
 <h3>1.2.3 Full Source</h3>
 
 <p>Here is the complete source code for the client : <a
 href="hello/client/hello.c.html">hello.c</a></p>
-<br>
-
 
 <h3>1.2.4 Compiling the Client</h3>
 
@@ -397,14 +326,14 @@ href="hello/client/hello.c.html">hello.c</a></p>
 <p>On Windows</p>
 
 <p>to compile,</p>
-<pre>cl.exe /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) hello.c /c </pre>
+<pre>
+cl.exe /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /I %AXIS2C_HOME%\include /c hello.c
+</pre>
 
 <p>to link,</p>
-<pre>link.exe /nologo /LIBPATH:$(AXIS2_LIBS)
-/LIBPATH:$(LIBXML2_INSTALL_DIR)\lib
-/LIBPATH:$(APACHE_INSTALL_DIR)\lib 
-/LIBPATH:$(ZLIB_INSTALL_DIR)\lib *.obj $(AXIS2_UTIL).lib $(AXIOM).lib
-$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:hello.exe</pre>
+<pre>
+link.exe /LIBPATH:%AXIS2C_HOME%\lib axutil.lib axiom.lib axis2_parser.lib axis2_engine.lib /OUT:hello.exe *.obj
+</pre>
 
 <h3>1.2.5 Running the Client</h3>
 
