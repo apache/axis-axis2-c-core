@@ -596,8 +596,6 @@ things. Those are,</p>
 combining above three factors. Service client interface provides the
 necessary API calls to achieve this .</p>
 
-<p></p>
-
 <p>Deciding the Message Exchange Pattern (MEP)</p>
 
 <p>There are 2 message exchange patterns.</p>
@@ -607,249 +605,153 @@ necessary API calls to achieve this .</p>
 </ol>
 
 <p>In Out-Only MEP the client doesn't expect a reply from the server. Service
-client provides two methods for invoking Out-Only operations.</p>
+client provides two methods for using Out-Only MEP.</p>
 
 <p></p>
 
-<h3><em>axis2_svc_client_fire_and_forget</em></h3>
+<h3><code>axis2_svc_client_fire_and_forget</code></h3>
 
-<p>Sends a message and forget about it. This method is used to interact with
-a service operation whose MEP is In-Only. That is, there is no opportunity to
+<p>Sends a message and forgets about it. This method is used to interact with
+a service operation whose MEP is In-Only. There is no opportunity to
 get an error from the service via this method; one may still get client-side
-errors, such as host unknown etc.</p>
+errors, such as host unknown.</p>
 
-<table border="1">
-  <caption></caption>
-  <tbody>
-    <tr>
-      <th>Parameter</th>
-      <th>Description</th>
-    </tr>
-    <tr>
-      <td>axis2_svc_client_t *svc_client</td>
-      <td>pointer to service client struct</td>
-    </tr>
-    <tr>
-      <td>const axutil_env_t *env</td>
-      <td>pointer to environment struct</td>
-    </tr>
-    <tr>
-      <td>const axis2_qname_t *op_qname</td>
-      <td>qname of the service operation which is going to be invoked.</td>
-    </tr>
-    <tr>
-      <td>const axiom_node_t *payload</td>
-      <td>pointer to OM node representing the XML payload to be sent</td>
-    </tr>
-  </tbody>
-</table>
+<h3><code>axis2_svc_client_send_robust</code></h3>
 
-<p>return type :- void</p>
+<p>This method too is used to interact with a service operation whose MEP is In-Only. 
+However, unlike <code>axis2_svc_client_fire_and_forget</code>, this function would report 
+an error back to the caller if a fault triggers on server side.</p>
 
-<p></p>
 
-<h3><em>axis2_svc_client_send_robust</em></h3>
+<p>When using Out-In MEP, the client expects a reply from the server. 
+<code>axis2_svc_client_send_receive</code> and <code>axis2_svc_client_send_receive_non_blocking<code> 
+functions support this MEP.</p>
 
-<p>If a fault triggers on server side, this method would report an error back
-to the caller.</p>
+<h3><code>axis2_svc_client_send_receive</code></h3>
 
-<table border="1">
-  <caption></caption>
-  <tbody>
-    <tr>
-      <th>Parameter</th>
-      <th>Description</th>
-    </tr>
-    <tr>
-      <td>axis2_svc_client_t *svc_client</td>
-      <td>pointer to service client struct</td>
-    </tr>
-    <tr>
-      <td>const axutil_env_t *env</td>
-      <td>pointer to environment struct</td>
-    </tr>
-    <tr>
-      <td>const axis2_qname_t *op_qname</td>
-      <td>qname of the service operation which is going to be invoked.</td>
-    </tr>
-    <tr>
-      <td>const axiom_node_t *payload</td>
-      <td>pointer to OM node representing the XML payload to be sent</td>
-    </tr>
-  </tbody>
-</table>
+<p>This method is used to interact with a service operation whose MEP is In-Out.
+Sends an XML request and receives an XML response.</p>
 
-<p>return type:- axis2_status_t</p>
-
-<p>return AXIS2_SUCCESS on success, else AXIS2_FAILURE.</p>
-
-<p></p>
-
-<p>In In-Out MEP, the client expect a reply from the server. The
-axis2_svc_client_send_recieve and axis2_send_receive_non_blocking supports
-this MEP.</p>
-
-<p></p>
-
-<h3><em>axis2_svc_client_send_receive</em></h3>
-
-<p>Sends XML request and receives XML response.</p>
-
-<table border="1">
-  <caption></caption>
-  <tbody>
-    <tr>
-      <th>Parameter</th>
-      <th>Description</th>
-    </tr>
-    <tr>
-      <td>axis2_svc_client_t *svc_client</td>
-      <td>pointer to service client struct</td>
-    </tr>
-    <tr>
-      <td>const axutil_env_t *env</td>
-      <td>pointer to environment struct</td>
-    </tr>
-    <tr>
-      <td>const axis2_qname_t *op_qname</td>
-      <td>qname of the service operation which is going to be invoked.</td>
-    </tr>
-    <tr>
-      <td>const axiom_node_t *payload</td>
-      <td>pointer to OM node representing the XML payload to be sent</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>Returns pointer to the OM node representing the XML response. This method
+<p>Returns a pointer to the AXIOM node representing the XML response. This method
 blocks until the response arrives.</p>
 
-<p></p>
+<h3><code>axis2_send_receive_non_blocking</code></h3>
 
-<h3><em>axis2_send_receive_non_blocking</em></h3>
+<p>This method too, is used to interact with a service operation whose MEP is In-Out.
+Sends XML request and receives XML response, but does not block for response.</p>
 
-<p>Sends XML request and receives XML response, but does not block for
-response.</p>
-
-<table border="1">
-  <caption></caption>
-  <tbody>
-    <tr>
-      <th>Parameter</th>
-      <th>Description</th>
-    </tr>
-    <tr>
-      <td>axis2_svc_client_t *svc_client</td>
-      <td>pointer to service client struct</td>
-    </tr>
-    <tr>
-      <td>const axutil_env_t *env</td>
-      <td>pointer to environment struct</td>
-    </tr>
-    <tr>
-      <td>const axis2_qname_t *op_qname</td>
-      <td>qname of the service operation which is going to be execute</td>
-    </tr>
-    <tr>
-      <td>const axiom_node_t *payload</td>
-      <td>pointer to OM node representing the XML payload to be sent</td>
-    </tr>
-    <tr>
-      <td>axis2_callback_t *callback</td>
-      <td>pointer to callback struct used to capture response</td>
-    </tr>
-  </tbody>
-</table>
-
-<p></p>
-
-<p>Return type :- void<br>
-This method will not block for the response. Instead it sets a call back to
-capture the response.<br>
+<p>This method will not block for the response. Instead it expects the user to set
+a call back to capture the response.<br>
 </p>
 
-<p><strong>Synchronous/Asynchronous Behavior
-(Blocking/Non-Blocking)</strong></p>
-
-<p>This will determine whether the client would block (Synchronous) or
-return immediately (Asynchronous) for the response in a in-out MEP
-scenario.<br>
-<em>axis2_svc_client_send_receive</em> or
-<em>axis2_svc_client_send_receive_non_blocking</em> methods.<br>
+<p>Please have a look at <code>axis2_svc_client.h</code> header file for more information 
+on function signatures of the above mentioned functions.
 </p>
 
-<p></p>
+<h3>Synchronous vs. Asynchronous Behavior (Blocking/Non-Blocking)</h3>
 
-<p><strong>Two-way or One-way transport</strong></p>
+<p>This will determine whether the client would block for the response (synchronous) or would
+return immediately expecting the response to be handled by a callback (asynchronous, in other 
+words non-blocking)  in an Out-In MEP scenario.<br> 
+<code>axis2_svc_client_send_receive</code> operates in synchronous mode, whereas 
+<code>axis2_svc_client_send_receive_non_blocking</code> operates in asynchronous mode.<br>
+</p>
 
-<p>If the transport is Two-way then only one channel is used .If the
-Transport is One-way then the response would have to come on a separate
-channel.<br>
-If we want to use a separate channel for the response
-<em>set_use_separate_listener</em> option has to be set.</p>
+<h3>Two-Way or One-Way Transport</h3>
 
-<p>See <a href="#appD">ApendixD</a> for further details on setting
+<p>If the transport is two-way then only one channel is used, meaning the request would be 
+sent and the response would be received on the same channel.If the
+transport is one-way then the request would be sent on one channel and the response would 
+have to come on a separate channel.<br>
+If we want to use a separate channel for the response, a seperate listner has to be started
+to receive the response, This can be done by setting the seperate listner option to true using 
+<code>axis2_options_set_use_separate_listener</code> function on top of options.</p>
+
+<p>
+Please have a look at the <code>echo_blocking_dual</code> sample to see how to set the separate 
+channel option.
+</p>
+<p>iPlease see <a href="#appD">Apendix D</a> for further details on setting
 options.</p>
+
 <a name="rest"></a> 
 
 <h1>5. REST</h1>
 
-<p>If you want to consume Web services using REST style calls you can use
+<p>Axis2/C comes with plain old XML (POX) like REST support. 
+A given service could be exposed both as a SOAP service as well as a REST service. 
+If you want to consume a Web services using REST style calls you can use
 either the HTTP POST method or HTTP GET method.</p>
 
-<p>The following example code fragments shows how to enable a REST style
-invocation using different HTTP methods.</p>
-<pre>axis2_options_set_property(options, env, AXIS2_ENABLE_REST, AXIS2_VALUE_TRUE);</pre>
+<p>The following example code fragment shows how to enable a REST style
+invocation.</p>
 
-<p>Default HTTP method used with REST is HTTP POST Method. If someone need
+<pre>axis2_options_set_enable_rest(options, env, AXIS2_TRUE);</pre>
+
+<p>
+You can use the same code that you would use with
+a SOAP call and do REST style invocation by just enabling REST using the option 
+setting shown above.</p>
+
+<p>The default HTTP method used with REST is HTTP POST. If someone needs
 to change it to HTTP GET method following needs to be done.</p>
 
-<p>REST with HTTP GET</p>
-<pre>axis2_options_set_property(options, env, AXIS2_HTTP_METHOD, AXIS2_HTTP_HEADER_GET);<br></pre>
+<pre>axis2_options_set_http_method(options, env, AXIS2_HTTP_GET);</pre>
 
-<p>Apart from setting the above options one do not have to do anything
-special to get REST to work You can use the same code that you would use with
-a SOAP call and do rest style invocation.</p>
+<p>
+Please have a look at the <code>echo_rest</code> sample for a complete source
+code on how to use REST.
+</p>
+
 <a name="mtom"></a> 
 
 <h1>6. MTOM</h1>
 
 <p>Axis2/C allows you to send and receive binary data with SOAP messages
-using MTOM/XOP conventions. When sending attachments, you have to use service
-client (svc_client) to perform the send and receive operation, and give the
-binary data as an array.</p>
+using MTOM/XOP conventions. When sending and receiving attachments, you have to use the service
+client (<code>axis2_svc_client</code>) API to perform the send and receive operations,
+and provide or consume binary data in relation to the AXIOM payloads.</p>
 
-<p>In order to send the attachment you need to build AXIOM payload and attach
+<p>In order to send a binary attachment you need to build AXIOM payload and attach
 the data handler with binary content to the payload.</p>
 <pre>&lt;soapenv:Body&gt;
-&lt;ns1:mtomSample xmlns:ns1="http://ws.apache.org/axis2/c/samples/mtom"&gt;
-&lt;ns1:fileName&gt;test.jpg&lt;/ns1:fileName&gt;
-&lt;ns1:image&gt;
-&lt;xop:Include xmlns:xop="http://www.w3.org/2004/08/xop/include" href="cid:1.f399248e-8b39-1db1-3124-0015c53de2e5@apache.org"&gt;&lt;/xop:Include&gt;
-&lt;/ns1:image&gt;
-&lt;/ns1:mtomSample&gt;
+    &lt;ns1:mtomSample xmlns:ns1="http://ws.apache.org/axis2/c/samples/mtom"&gt;
+        &lt;ns1:fileName&gt;test.jpg&lt;/ns1:fileName&gt;
+        &lt;ns1:image&gt;
+            &lt;xop:Include xmlns:xop="http://www.w3.org/2004/08/xop/include" 
+                href="cid:1.f399248e-8b39-1db1-3124-0015c53de2e5@apache.org"&gt;&lt;/xop:Include&gt;
+        &lt;/ns1:image&gt;
+    &lt;/ns1:mtomSample&gt;
 &lt;/soapenv:Body&gt;</pre>
 
 <p>In the above sample payload shown, we place our image file as text within
 an image element</p>
-<pre>image_om_ele = axiom_element_create(env,mtom_om_node, "image", ns1,&amp;image_om_node);
+<pre>image_om_ele = axiom_element_create(env, mtom_om_node, "image", ns1, &amp;image_om_node);
 data_handler = axiom_data_handler_create(env, image_name, "image/jpeg");
-data_text = axiom_text_create_with_data_handler(env, image_om_node,data_handler, &amp;data_om_node);</pre>
+data_text = axiom_text_create_with_data_handler(env, image_om_node, data_handler, &amp;data_om_node);</pre>
 
 <p>When sending attachments, you can configure the client either to send the
 attachment in the optimized format or in non optimized format. By setting an
 option</p>
-<pre>axis2_options_set_enable_mtom(options,env,AXIS2_TRUE);</pre>
+<pre>axis2_options_set_enable_mtom(options, env, AXIS2_TRUE);</pre>
+
 or setting<br>
 
 <pre>&lt;enableMtom&gt;true&lt;/enableMtom&gt;</pre>
 in axis2.xml 
 
-<p>If enableMTOM is set to true the attachment would be sent as it is, out of
+<p>If enableMTOM is set to true, the attachment would be sent as it is, out of
 the SOAP body, using MIME headers and the payload would have an XOP:Include
-element, referring to the MIME part that contains the binary attachment. In
-case of binary non optimized format,where enable mtom is false the attachment
+element, referring to the MIME part that contains the binary attachment. Sending the
+attachment as is, in pure binary format is called binary optimized format. In
+case of binary non optimized format, where enableMTOM is false, the attachment
 content would be sent in the payload itself, as a base64 encoded string.</p>
+
+<p>
+Please have a look at the <code>mtom</code> sample for a complete example on
+how to use MTOM.
+</p>
+
 <a name="eng_mod"></a> 
 <h1>7. Engaging a Module</h1>
 
@@ -1178,7 +1080,7 @@ is used to create handlers.</p>
 module.</p>
 <pre>AXIS2_EXTERN axis2_handler_t* AXIS2_CALL
 axis2_log_in_handler_create(const axutil_env_t *env, 
-                         axis2_qname_t *qname)
+                         axutil_qname_t *qname)
 {
     axis2_handler_t *handler = NULL;
     axutil_env_CHECK(env, NULL);
