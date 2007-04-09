@@ -95,13 +95,14 @@
         <phase name="PreDispatch"/>
         <phase name="Dispatch"/>
         <phase name="PostDispatch"/>
-        <!-- System pre defined phases       -->
+        <!-- End system pre defined phases       -->
         <!-- After PostDispatch phase, module or service author can add any phase as required  -->
+        <!-- User defined phases could be added here -->
         <!--phase name="userphase1"/-->
     </phaseOrder>
     <phaseOrder type="outflow">
         <!-- User defined phases could be added here -->
-	    <!--phase name="RMPhase"/-->
+        <!--phase name="RMPhase"/-->
         <!--phase name="userphase1"/-->
         <!--system predefined phase-->
         <phase name="MessageOut"/>
@@ -109,7 +110,7 @@
     <phaseOrder type="INfaultflow">
         <!-- User defined phases could be added here -->
         <!--phase name="userphase1"/-->
-	    <!--phase name="RMPhase"/-->
+        <!--phase name="RMPhase"/-->
     </phaseOrder>
     <phaseOrder type="Outfaultflow">
         <!-- User defined phases could be added here -->
