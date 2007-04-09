@@ -169,7 +169,7 @@ axis2_http_worker_process_request(
     {
         if (0 == axutil_strcasecmp(axis2_http_request_line_get_method(
                     axis2_http_simple_request_get_request_line(
-                        simple_request, env), env), AXIS2_HTTP_HEADER_POST))
+                        simple_request, env), env), AXIS2_HTTP_POST))
         {
             axis2_http_simple_response_set_status_line(response, env,
                     http_version, 411, "Length Required");
@@ -246,7 +246,7 @@ axis2_http_worker_process_request(
     }
     if (0 == axutil_strcasecmp(axis2_http_request_line_get_method(
                 axis2_http_simple_request_get_request_line(
-                    simple_request, env), env), AXIS2_HTTP_HEADER_GET))
+                    simple_request, env), env), AXIS2_HTTP_GET))
     {
         processed = axis2_http_transport_utils_process_http_get_request
                 (env, msg_ctx, request_body, out_stream,
@@ -294,7 +294,7 @@ axis2_http_worker_process_request(
     }
     else if (0 == axutil_strcasecmp(axis2_http_request_line_get_method(
                 axis2_http_simple_request_get_request_line(
-                    simple_request, env), env), AXIS2_HTTP_HEADER_POST))
+                    simple_request, env), env), AXIS2_HTTP_POST))
     {
         status = axis2_http_transport_utils_process_http_post_request
                 (env, msg_ctx, request_body, out_stream,

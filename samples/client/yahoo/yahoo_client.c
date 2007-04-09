@@ -42,8 +42,6 @@ int main (int argc, char *argv[])
     axis2_svc_client_t* svc_client = NULL;
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
-    axutil_property_t *rest_property = NULL;
-	axutil_property_t *get_property = NULL;
 	axis2_char_t *search_string = NULL;
 
 	if (argc > 1)
@@ -67,13 +65,8 @@ int main (int argc, char *argv[])
     options = axis2_options_create(env);
     axis2_options_set_to(options, env, endpoint_ref);
 
-    rest_property = axutil_property_create(env);
-    axutil_property_set_value(rest_property, env, axutil_strdup (env, AXIS2_VALUE_TRUE));
-    axis2_options_set_property(options, env, AXIS2_ENABLE_REST,
-            rest_property);
-	get_property = axutil_property_create(env);
-	axutil_property_set_value(get_property, env, axutil_strdup(env, AXIS2_HTTP_HEADER_GET));
-	axis2_options_set_property(options, env, AXIS2_HTTP_METHOD, get_property);
+    axis2_options_set_enable_rest(options, env, AXIS2_TRUE);
+    axis2_options_set_http_method(options, env, AXIS2_HTTP_GET);
 
     client_home = AXIS2_GETENV("AXIS2C_HOME");
     if (!client_home || !strcmp (client_home, ""))

@@ -657,6 +657,32 @@ extern "C"
         const axutil_env_t *env);
 
     /**
+     * Sets the bool value indicating whether to enable REST or not.
+     * @param options pointer to options struct
+     * @param env pointer to environment struct
+     * @param enable_rest bool value indicating whether to enable REST 
+     * or not, AXIS2_TRUE to enable, AXIS2_FALSE to disable
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_options_set_enable_rest(axis2_options_t *options,
+        const axutil_env_t *env,
+        const axis2_bool_t enable_rest);
+
+    /**
+     * Sets the HTTP method to be used
+     * @param options pointer to options struct
+     * @param env pointer to environment struct
+     * @param http_method string representing HTTP method to use, 
+     * can be either AXIS2_HTTP_GET or AXIS2_HTTP_POST
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_options_set_http_method(axis2_options_t *options,
+        const axutil_env_t *env,
+        const axis2_char_t *http_method);
+
+    /**
      * Creates the options struct.
      * @param env pointer to environment struct
      * @return a pointer to newly created options struct, or NULL on error 

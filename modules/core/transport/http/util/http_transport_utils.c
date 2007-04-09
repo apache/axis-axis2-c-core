@@ -555,7 +555,7 @@ axis2_http_transport_utils_process_http_get_request(
     op =  axis2_msg_ctx_get_op(msg_ctx, env);
 
     soap_envelope = axis2_http_transport_utils_handle_media_type_url_encoded(
-                env, msg_ctx, request_params, AXIS2_HTTP_HEADER_GET);
+                env, msg_ctx, request_params, AXIS2_HTTP_GET);
     if (! soap_envelope)
     {
         return AXIS2_FALSE;
@@ -1438,8 +1438,8 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
         body_child = axiom_element_create_with_qname(env, NULL, bfc_qname,
                 &body_child_node);
         axiom_soap_body_add_child(soap_body, env, body_child_node);
-        if (0 == axutil_strcmp(method, AXIS2_HTTP_HEADER_GET) ||
-                0 == axutil_strcmp(method, AXIS2_HTTP_HEADER_POST))
+        if (0 == axutil_strcmp(method, AXIS2_HTTP_GET) ||
+                0 == axutil_strcmp(method, AXIS2_HTTP_POST))
         {
             xml_schema_type_t *schema_type = NULL;
             schema_type = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(schema_element,

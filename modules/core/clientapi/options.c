@@ -22,6 +22,7 @@
 #include <axiom_soap_const.h>
 #include <axis2_msg_info_headers.h>
 #include <axutil_array_list.h>
+#include <axis2_http_transport.h>
 
 struct axis2_options
 {
@@ -792,8 +793,6 @@ AXIS2_EXTERN axutil_string_t *AXIS2_CALL
 axis2_options_get_soap_action(const axis2_options_t *options,
     const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return options->soap_action;
 }
 
@@ -834,7 +833,43 @@ axis2_options_set_xml_parser_reset(axis2_options_t *options,
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_options_set_enable_rest(axis2_options_t *options,
+    const axutil_env_t *env,
+    const axis2_bool_t enable_rest)
+{
+    axutil_property_t *rest_property = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    if (enable_rest)
+    {
+        rest_property = axutil_property_create(env);
+        axutil_property_set_value(rest_property, env, axutil_strdup (env, AXIS2_VALUE_TRUE));
+        axis2_options_set_property(options, env, AXIS2_ENABLE_REST,
+            rest_property);
+    }
+    else
+    {
+        rest_property = axutil_property_create(env);
+        axutil_property_set_value(rest_property, env, axutil_strdup (env, AXIS2_VALUE_FALSE));
+        axis2_options_set_property(options, env, AXIS2_ENABLE_REST,
+            rest_property);
+    }
+    return AXIS2_SUCCESS;
+}
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_options_set_http_method(axis2_options_t *options,
+    const axutil_env_t *env,
+    const axis2_char_t *http_method)
+{
+    axutil_property_t *method_property = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
 
-
+    method_property = axutil_property_create(env);
+    axutil_property_set_value(method_property, env, axutil_strdup(env, http_method));
+    axis2_options_set_property(options, env, AXIS2_HTTP_METHOD,
+            method_property);
+    return AXIS2_SUCCESS;
+}
 

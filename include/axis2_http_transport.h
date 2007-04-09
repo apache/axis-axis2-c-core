@@ -110,12 +110,12 @@ extern "C"
 /**
  * HEADER_POST
  */
-#define AXIS2_HTTP_HEADER_POST  "POST"
+#define AXIS2_HTTP_POST  "POST"
 
 /**
  * HEADER_GET
  */
-#define AXIS2_HTTP_HEADER_GET "GET"
+#define AXIS2_HTTP_GET "GET"
 
 /**
  * HEADER_HOST

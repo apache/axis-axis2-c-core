@@ -210,7 +210,7 @@ axis2_http_sender_send(
 			method_value = (axis2_char_t *) axutil_property_get_value (method, env);
 
 		/* The default is POST */
-		if (method_value && 0 == axutil_strcmp(method_value, AXIS2_HTTP_HEADER_GET))
+		if (method_value && 0 == axutil_strcmp(method_value, AXIS2_HTTP_GET))
 		{
 			send_via_get = AXIS2_TRUE;
 		}
