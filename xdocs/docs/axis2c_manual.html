@@ -756,13 +756,13 @@ how to use MTOM.
 <h1>7. Engaging a Module</h1>
 
 <p>A module is a set of handlers that helps to extend the message processing
-behavior of Axis2/C SOAP engine. Modules have the concept of being
-available and engaged. Available means modules are deployed in the system but
+behavior of Axis2/C engine. Modules have the concept of being
+available and engaged associated with them. Available means modules are deployed in the system but
 not activated. They will be activated only after being engaged. Every module
 should come with its own module.xml file . This module.xml file specifies the
-module specific handlers and to what phases they are to be deployed in the
+module specific handlers and to what phases those handlers are to be placed in the
 handler chain. Some of the module specific handlers may be put in to system
-predefined phases.In that case, module.xml file should specify where to put
+predefined phases. In that case, module.xml file should specify where to put
 the handlers relative to the others in that phase. Sometimes a module may
 define its own phase. In that case some of the module specific handlers may be
 put in to that phase. The handlers which are added to the system predefined
@@ -770,23 +770,23 @@ phases (global handlers) are invoked for every message which comes to or goes
 out from the system. The handlers in the module specific phase are invoked
 only for the messages invoking the operations that engage that module.
 Engaging a module means correctly adding the handlers of a particular module
-to one or more phases. A service, operations or the system may engage a
-module. Once the module is engaged the handlers and the operations defined in
+to one or more phases. 
+Once the module is engaged the handlers and the operations defined in
 the module are added to the entity that engaged them.</p>
 
 <p>Before engaging a module following steps has to be followed.</p>
 <ol>
   <li>Write the module.xml file</li>
   <li>Package the module libraries and the module.xml in to a folder which
-    has the name of the module.</li>
+    has the name as that of the module</li>
   <li>Deploy the folder in AXIS2C_INSTALL_DIR/modules</li>
-  <li>Adding the module specific phases in the axis2.xml file.</li>
+  <li>Add the module specific phases in the axis2.xml file</li>
 </ol>
 
 <p>Following is an example of engaging a sample module called logging
 module with Axis2/C:</p>
 
-<h3><strong>Writing the module.xml File</strong></h3>
+<h3>Writing the module.xml File</h3>
 
 <p>In the module.xml file, the handlers of the module and the phases to which
 they are to be added has to be specified. Below is the module.xml file of the
@@ -809,82 +809,46 @@ sample logging module.</p>
            &lt;/Outfaultflow&gt;
         &lt;/module&gt;</pre>
 
-<h3>Packaging and deploying the module</h3>
-<p>The above module.xml file should be copied to a folder by the name "logging" (because the module name is "logging") inside the AXIS2C_INSTALL_DIR/modules folder alongside the module libraries.</p>
+<p>
+In the above shown module configuration file, the name of the module is logging.
+There are two handlers in this module, the LoggingInHandler and the LoggingOutHandler.
+LoggingInHandler is placed in to the PreDispatch phase of in flow. 
+LoggingOutHandler is placed into 
+the MessageOut phase of both the out flow and the fault out flow.
+</p>
 
-<h3><strong>Adding the Module Specific Phases in the axis2.xml
-File</strong></h3>
+<h3>Packaging and Deploying the Module</h3>
+<p>The above module.xml file should be copied to a folder named "logging" 
+(because the module name is "logging") inside the AXIS2C_INSTALL_DIR/modules folder.
+The module libraries containing the handler implementation should also be copied to the 
+same folder. According to the module.xml file shown above, the name of the 
+shared library file should be libaxis2_mod_log.so on Linux and axis2_mod_log.dll on Windows.</p>
 
-<p>The module specific phase has to be added after the system predefined
+<h3>Adding Module Specific Phases to axis2.xml File</h3>
+
+<p>Module specific phase has to be added after the system predefined
 phases. The following example shows where to add the module specific
-phases.</p>
+phases. Look for the <code>phaseOrder</code> elements in the axis2.xml file.
+Note the comment lines:
 <pre>
-    &lt;phaseOrder type="inflow"&gt;
-        &lt;!-- System pre defined phases --&gt;
-        &lt;phase name="TransportIn"/&gt;
-        &lt;phase name="PreDispatch"/&gt;
-        &lt;phase name="Dispatch" class="org.apache.axis2.engine.DispatchPhase"&gt;
-            &lt;handler name="AddressingBasedDispatcher" class="axis2_engine"&gt;
-                &lt;order phase="Dispatch"/&gt;
-            &lt;/handler&gt;
-            &lt;handler name="RequestURIBasedDispatcher" class="axis2_engine"&gt;
-                &lt;order phase="Dispatch"/&gt;
-            &lt;/handler&gt;
-            &lt;handler name="SOAPActionBasedDispatcher" class="axis2_engine"&gt;
-                &lt;order phase="Dispatch"/&gt;
-            &lt;/handler&gt;
-            &lt;handler name="SOAPMessageBodyBasedDispatcher" class="axis2_engine"&gt;
-                &lt;order phase="Dispatch"/&gt;
-            &lt;/handler&gt;
-            &lt;handler name="InstanceDispatcher" class="org.apache.axis2.engine.InstanceDispatcher"&gt;
-                &lt;order phase="PostDispatch"/&gt;
-            &lt;/handler&gt;
-        &lt;/phase&gt;
-        &lt;!-- System pre defined phases --&gt;
-        &lt;!-- After Postdispatch phase module author or or service author can add any phase he want  --&gt;
-        &lt;phase name="OperationInPhase"/&gt;
-        &lt;phase name=""/&gt;
-    &lt;/phaseOrder&gt;
-    
-    &lt;phaseOrder type="outflow"&gt;
-        &lt;!-- user can add his own phases  to this area --&gt;
-        &lt;phase name="OperationOutPhase"/&gt;
-        &lt;phase name=""/&gt;
-        &lt;!--system predefined phase--&gt;
-        &lt;!--these phase will run irrespective of the service--&gt;
-        &lt;phase name="MessageOut"/&gt;
-    &lt;/phaseOrder/&gt;
+        &lt;!-- User defined phases could be added here --&gt;
+</pre>
+You can add user defined phases after that comment line, into any of the flows.
+The <code>type</code> attribute of the <code>phaseOrder</code> element indicates flow.
+</p>
 
-    &lt;phaseOrder type="INfaultflow"&gt;
-        &lt;!-- user can add his own phases  to this area --&gt;
-        &lt;phase name="OperationInFaultPhase"/&gt;
-        &lt;phase name=""/&gt;
-    &lt;/phaseOrder&gt;
+<p>For the example logging module, no user defined phases are required. 
+All the module specific handlers are added to system predefined phases 
+as specified in the module.xml file.</p>
 
-    &lt;phaseOrder type="Outfaultflow"&gt;
-        &lt;!-- user can add his own phases to this area --&gt;
-        &lt;phase name="OperationOutFaultPhase"/&gt;
-        &lt;phase name=""/&gt;
-        &lt;phase name="PolicyDetermination"/&gt;
-        &lt;phase name="MessageOut"/&gt;
-    &lt;/phaseOrder&gt;</pre>
-
-<p>As mentioned in the above example, the user or module author can handle
-his own phases after system predefined phases.In the above example there are
-no specific phases for the logging module. That is all the module specific
-handlers are added to the system predefined phases as mentioned in the
-module.xml file.</p>
-
-<p></p>
-
-<h3>Engaging the Module for Services</h3>
+<h3>Engaging a Module to a Services</h3>
 
 <p>Following is an example of engaging the logging module to the echo
-service.This can be done by simply adding &lt;module ref ="logging"/&gt; in
-the services.xml file. This informs the Axis2 engine that the module
-"logging" should be engaged for this service. The handler inside the module
+service. This can be done by simply adding <code>&lt;module ref ="logging"/&gt;</code> in
+the services.xml file of the echo service. This informs the Axis2/C engine that the module
+"logging" should be engaged for this service. The handlers inside the module
 will be executed in their respective phases as described by the
-"module.xml".</p>
+module.xml.</p>
 <pre>   &lt;service name="echo"&gt;
         &lt;module ref ="logging"/&gt;
         &lt;parameter name="ServiceClass" locked="xsd:false"&gt;echo&lt;/parameter&gt;
@@ -899,38 +863,48 @@ will be executed in their respective phases as described by the
         &lt;/operation&gt;
     &lt;/service&gt;</pre>
 
-<h3>Engaging the Module Globally</h3>
+<p>
+One important thing to note here is that, because the loggimg module's handlers 
+are placed into the global phases, even though the logging module is engaged only to the echo 
+service, the module would be engaged globally. This is a feature of the Axis2 
+architecture, not a bug. However, the handlers in a module can choose to check 
+if a the module has been engaged to a perticualr service when invoked and act 
+accordingly.
+</p>
 
-<p>If we want to engage the module for every service deployed in the Axis2/C
-system, we can add the above entry in the axis2.xml file. This will inform
-the Axis2/C engine to invoke the handler inside the module specific phases
-for every message coming to any service deployed within the engine.</p>
+<h3>Engaging a Module Globally</h3>
 
-<h3>Engaging the Module on the Client Side</h3>
+<p>If we want to engage a module for every service deployed in the Axis2/C
+system, we can add the <code>&lt;module ref ="logging"/&gt;</code> entry in 
+the axis2.xml file. This will inform
+the Axis2/C engine to invoke the handlers associated with the module 
+for every message coming in or going out for all services deployed.</p>
 
-<p>On the client side, if the above &lt;module ref ="logging"/&gt; is added
-in the axis2.xml, logging module-specific handlers will be invoked for every
-request any client sends. If only a particular client wants to engage the
+<h3>Engaging a Module on Client Side</h3>
+
+<p>On client side, if <code>&lt;module ref ="logging"/&gt;</code> is added
+in the axis2.xml, logging module specific handlers will be invoked for every
+request the client sends and every resposne the client receives. 
+If only a particular client wants to engage the
 module it can be done by engaging the module programmatically. This can be
 done by adding the following line in the client code after setting 
 options.</p>
 
-<p>axis2_svc_client_set_options(svc_client, env, options);</p>
-
-<p><em>axis2_svc_client_engage_module(svc_client, env, "module
-name");</em></p>
+<pre>axis2_svc_client_engage_module(svc_client, env, "module-name");</pre>
 
 <p>Remember to replace "module-name" with the name of the module you want to
-engage.</p>
+engage. For example to engage the logging module you can use: </p>
+<pre>axis2_svc_client_engage_module(svc_client, env, "logging");</pre>
 
 <a name="ws_add"></a>
 <h1>8. WS-Addressing</h1>
 
 <p><a href="http://www.w3.org/2002/ws/addr/">WS-Addressing</a> provides
 mechanisms to address Web services and messages. With Axis2/C, you can use
-both WS-Addressing </p>
+both WS-Addressing 
 <a href="http://www.w3.org/TR/ws-addr-core/">version 1.0</a> as well as the
 <a href="http://www.w3.org/Submission/ws-addressing/">submission version</a>. 
+</p>
 
 <p>WS-Addressing can be enabled in the client side using 2 different methods
 in Axis2/C.</p>
