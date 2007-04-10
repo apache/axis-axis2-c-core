@@ -21,19 +21,22 @@
 
 axis2_status_t AXIS2_CALL
 axis2_mod_log_shutdown(axis2_module_t *module,
-                        const axutil_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_mod_log_init(
-        axis2_module_t *module,
-        const axutil_env_t *env,
-        axis2_conf_ctx_t *conf_ctx,
-        axis2_module_desc_t *module_desc);
+    axis2_module_t *module,
+    const axutil_env_t *env,
+    axis2_conf_ctx_t *conf_ctx,
+    axis2_module_desc_t *module_desc);
 
 axis2_status_t AXIS2_CALL
 axis2_mod_log_fill_handler_create_func_map(axis2_module_t *module,
-                                            const axutil_env_t *env);
+    const axutil_env_t *env);
 
+/**
+ * Module operations struct variable with functions assigned to members
+ */
 static const axis2_module_ops_t log_module_ops_var = {
     axis2_mod_log_init,
     axis2_mod_log_shutdown,
@@ -47,6 +50,7 @@ axis2_mod_log_create(const axutil_env_t *env)
     module = AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_module_t));
 
+    /* initialize operations */
     module->ops = &log_module_ops_var;
 
     return module;
@@ -59,7 +63,7 @@ axis2_mod_log_init(
         axis2_conf_ctx_t *conf_ctx,
         axis2_module_desc_t *module_desc)
 {
-    /* Any initialization stuff of mod_log goes here */
+    /* Any initialization stuff related to this module can be here */
     return AXIS2_SUCCESS;
 }
 
@@ -69,17 +73,12 @@ axis2_mod_log_shutdown(axis2_module_t *module,
 {
     if(module->handler_create_func_map)
     {
-        /* TODO
-         *  do the neccessary clean in hash map
-         */
         axutil_hash_free(module->handler_create_func_map, env);
-        module->handler_create_func_map = NULL;
     }
     
     if(module)
     {
         AXIS2_FREE(env->allocator, module);
-        module = NULL;
     }
     return AXIS2_SUCCESS; 
 }
@@ -97,10 +96,12 @@ axis2_mod_log_fill_handler_create_func_map(axis2_module_t *module,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
+
+    /* add in handler */
     axutil_hash_set(module->handler_create_func_map, "LoggingInHandler", 
         AXIS2_HASH_KEY_STRING, axutil_log_in_handler_create);
 
-
+    /* add out handler */
     axutil_hash_set(module->handler_create_func_map, "LoggingOutHandler", 
         AXIS2_HASH_KEY_STRING, axutil_log_out_handler_create);
     
@@ -108,7 +109,8 @@ axis2_mod_log_fill_handler_create_func_map(axis2_module_t *module,
 }
 
 /**
- * Following block distinguish the exposed part of the dll.
+ * Following functions are expected to be there in the module lib 
+ * that helps to create and remove module instances 
  */
 
 AXIS2_EXPORT int 
@@ -135,3 +137,5 @@ axis2_remove_instance(axis2_module_t *inst,
     }
     return status;
 }
+
+

@@ -15,10 +15,6 @@
  * limitations under the License.
  */
 
-/*
-#include <axis2_addr_mod.h>
-#include <axis2_addr.h>
-*/
 #include <axis2_handler_desc.h>
 #include <axutil_array_list.h>
 #include <axiom_soap_const.h>
@@ -33,12 +29,12 @@
 
 axis2_status_t AXIS2_CALL
 axutil_log_in_handler_invoke(struct axis2_handler *handler, 
-                         const axutil_env_t *env,
-                         struct axis2_msg_ctx *msg_ctx);
+    const axutil_env_t *env,
+    struct axis2_msg_ctx *msg_ctx);
 
 AXIS2_EXTERN axis2_handler_t* AXIS2_CALL
 axutil_log_in_handler_create(const axutil_env_t *env, 
-                         axutil_string_t *name) 
+    axutil_string_t *name) 
 {
     axis2_handler_t *handler = NULL;
     
@@ -50,8 +46,6 @@ axutil_log_in_handler_create(const axutil_env_t *env,
         return NULL;
     }
    
-    /* handler init is handled by conf loading, so no need to do it here */
-    
     axis2_handler_set_invoke(handler, env, axutil_log_in_handler_invoke);
 
     return handler;
@@ -60,8 +54,8 @@ axutil_log_in_handler_create(const axutil_env_t *env,
 
 axis2_status_t AXIS2_CALL
 axutil_log_in_handler_invoke(struct axis2_handler *handler, 
-                         const axutil_env_t *env,
-                         struct axis2_msg_ctx *msg_ctx)
+    const axutil_env_t *env,
+    struct axis2_msg_ctx *msg_ctx)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_node_t *ret_node = NULL;
@@ -75,7 +69,8 @@ axutil_log_in_handler_invoke(struct axis2_handler *handler,
     
     if (soap_envelope)
     {
-        axiom_soap_envelope_get_body(soap_envelope, env); /* hack to ensure soab buider state is in sync */
+        /* ensure SOAP buider state is in sync */
+        axiom_soap_envelope_get_body(soap_envelope, env); 
         ret_node = axiom_soap_envelope_get_base_node(soap_envelope, env);
 
         if(ret_node)
@@ -84,10 +79,12 @@ axutil_log_in_handler_invoke(struct axis2_handler *handler,
             om_str = axiom_node_to_string(ret_node, env);
             if(om_str)
             {
-                AXIS2_LOG_INFO(env->log, "Input msg: %s", om_str);
+                AXIS2_LOG_INFO(env->log, "Input message: %s", om_str);
             }
         }
     }
     
     return AXIS2_SUCCESS;
 }
+
+
