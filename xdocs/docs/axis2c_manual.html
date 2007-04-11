@@ -2202,7 +2202,7 @@ messages.</p>
 
 <p><strong>axis2_options_set_action(options, env, action)</strong></p>
 
-<p>Set the WS-addressing action in the addressing header.</p>
+<p>Sets the WS-Addressing action that is to be set in the addressing SOAP headers.</p>
 
 <table border="1">
   <caption></caption>
@@ -2213,15 +2213,15 @@ messages.</p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>const axis2_char_t *action</td>
-      <td>action pointer to action string</td>
+      <td>pointer to action string</td>
     </tr>
   </tbody>
 </table>
@@ -2230,8 +2230,8 @@ messages.</p>
 
 <p><strong>axis2_options_set_fault_to(options, env, fault_to)</strong></p>
 
-<p>Set the end point reference which may recieve the message in a case of
-fault.</p>
+<p>Sets the end point reference which may receive the message in a case of
+a SOAP fault.</p>
 
 <table border="1">
   <caption></caption>
@@ -2242,15 +2242,15 @@ fault.</p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>axis2_endpoint_ref_t *fault_to</td>
-      <td>fault_to pointer to endpoint reference struct representing fault to
+      <td>pointer to endpoint reference struct representing fault to
         address.</td>
     </tr>
   </tbody>
@@ -2261,7 +2261,7 @@ fault.</p>
 <p><strong>axis2_options_set_from(options, env, from)</strong></p>
 
 <p>Some services need to know the source from which the message comes. This
-option set the from endpoint</p>
+option sets the from endpoint</p>
 
 <table border="1">
   <caption></caption>
@@ -2272,15 +2272,15 @@ option set the from endpoint</p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>axis2_endpoint_ref_t *from</td>
-      <td>from pointer to endpoint reference struct representing from to
+      <td>pointer to endpoint reference struct representing from to
         address</td>
     </tr>
   </tbody>
@@ -2299,15 +2299,15 @@ option set the from endpoint</p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>axis2_endpoint_ref_t *to</td>
-      <td>to pointer to endpoint reference struct representing to address</td>
+      <td>pointer to endpoint reference struct representing to address</td>
     </tr>
   </tbody>
 </table>
@@ -2315,7 +2315,7 @@ option set the from endpoint</p>
 <p><strong>axis2_options_set_transport_receiver(options, env,
 receiver)</strong></p>
 
-<p>Set the transport receiver in a IN-OUT message exchange scenario.</p>
+<p>Sets the transport receiver in an OUT-IN message exchange scenario.</p>
 
 <table border="1">
   <caption></caption>
@@ -2326,15 +2326,15 @@ receiver)</strong></p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>axis2_transport_receiver_t *receiver</td>
-      <td>receiver pointer to transport receiver struct</td>
+      <td>pointer to transport receiver struct</td>
     </tr>
   </tbody>
 </table>
@@ -2342,7 +2342,7 @@ receiver)</strong></p>
 <p><strong>axis2_options_set_transport_in(options, env,
 transport_in)</strong></p>
 
-<p>Set transport in description</p>
+<p>Sets transport in description.</p>
 
 <table border="1">
   <caption></caption>
@@ -2353,15 +2353,15 @@ transport_in)</strong></p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>axis2_transport_in_desc_t *transport_in</td>
-      <td>transport_in pointer to transport_in struct</td>
+      <td>pointer to transport_in struct</td>
     </tr>
   </tbody>
 </table>
@@ -2371,7 +2371,7 @@ transport_in)</strong></p>
 <p><strong>axis2_options_set_transport_in_protocol(options, env,
 transport_in_protocol)</strong></p>
 
-<p>Set transport in protocol</p>
+<p>Sets transport in protocol.</p>
 
 <table border="1">
   <caption></caption>
@@ -2382,15 +2382,15 @@ transport_in_protocol)</strong></p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>const AXIS2_TRANSPORT_ENUMS transport_in_protocol</td>
-      <td>in_protocol pointer to in_protocol struct</td>
+      <td>value indicating transport protocol</td>
     </tr>
   </tbody>
 </table>
@@ -2399,7 +2399,7 @@ transport_in_protocol)</strong></p>
 
 <p><strong>axis2_options_set_message_id(options, env, message_id)</strong></p>
 
-<p>Set the soap message Id</p>
+<p>Sets the message ID.</p>
 
 <table border="1">
   <caption></caption>
@@ -2410,15 +2410,15 @@ transport_in_protocol)</strong></p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>const axis2_char_t *message_id</td>
-      <td>message_id pointer to message_id struct</td>
+      <td>message ID string</td>
     </tr>
   </tbody>
 </table>
@@ -2427,7 +2427,7 @@ transport_in_protocol)</strong></p>
 
 <p><strong>axis2_options_set_properties(options, env, properties)</strong></p>
 
-<p>Set the properties hash map.</p>
+<p>Sets the properties hash map.</p>
 
 <table border="1">
   <caption></caption>
@@ -2438,15 +2438,15 @@ transport_in_protocol)</strong></p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>axis2_hash_t *properties</td>
-      <td>properties pointer to properties hash map</td>
+      <td>pointer to properties hash map</td>
     </tr>
   </tbody>
 </table>
@@ -2456,7 +2456,7 @@ transport_in_protocol)</strong></p>
 <p><strong>axis2_options_set_property(options, env, key,
 property)</strong></p>
 
-<p>Set a property with a given key value.</p>
+<p>Sets a property with a given key value.</p>
 
 <table border="1">
   <caption></caption>
@@ -2467,19 +2467,19 @@ property)</strong></p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>const axis2_char_t *property_key</td>
-      <td>property_key property key string</td>
+      <td>property key string</td>
     </tr>
     <tr>
       <td>const void *property</td>
-      <td>property pointer to property to be set</td>
+      <td>pointer to property to be set</td>
     </tr>
   </tbody>
 </table>
@@ -2488,8 +2488,7 @@ property)</strong></p>
 
 <p><strong>axis2_options_set_relates_to(options, env, relates_to)</strong></p>
 
-<p>Some times messages may have relations. Example:- echo. This will set for
-related messages</p>
+<p>Sets the relates to message information.</p>
 
 <table border="1">
   <caption></caption>
@@ -2500,15 +2499,15 @@ related messages</p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>axis2_relates_to_t *relates_to</td>
-      <td>relates_to pointer to relates_to struct</td>
+      <td>pointer to relates_to struct</td>
     </tr>
   </tbody>
 </table>
@@ -2517,8 +2516,8 @@ related messages</p>
 
 <p><strong>axis2_options_set_reply_to(options, env, reply_to)</strong></p>
 
-<p>Sets the reply to address. when the client wants a reply. It may be the
-sending end point or another different end point.</p>
+<p>Sets the reply to address, when the client wants a reply to 
+be sent to another different end point.</p>
 
 <table border="1">
   <caption></caption>
@@ -2529,15 +2528,15 @@ sending end point or another different end point.</p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>axis2_endpoint_ref_t *reply_to</td>
-      <td>reply_to pointer to endpoint reference struct representing reply to
+      <td>pointer to endpoint reference struct representing reply to
         address</td>
     </tr>
   </tbody>
@@ -2548,7 +2547,7 @@ sending end point or another different end point.</p>
 <p><strong>axis2_options_set_transport_out(options, env,
 transport_out)</strong></p>
 
-<p>Set the transport out description.</p>
+<p>Sets the transport out description.</p>
 
 <table border="1">
   <caption></caption>
@@ -2559,15 +2558,15 @@ transport_out)</strong></p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>axis2_transport_out_desc_t *transport_out</td>
-      <td>transport_out pointer to transport out description struct</td>
+      <td>pointer to transport out description struct</td>
     </tr>
   </tbody>
 </table>
@@ -2577,7 +2576,7 @@ transport_out)</strong></p>
 <p><strong>axis2_options_set_sender_transport(options, env, sender_transport,
 conf)</strong></p>
 
-<p>Sets the sender transport</p>
+<p>Sets the sender transport.</p>
 
 <table border="1">
   <caption></caption>
@@ -2588,19 +2587,19 @@ conf)</strong></p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>const AXIS2_TRANSPORT_ENUMS sender_transport</td>
-      <td>sender_transport name of the sender transport to be set</td>
+      <td>name of the sender transport to be set</td>
     </tr>
     <tr>
       <td>axis2_conf_t *conf</td>
-      <td>conf pointer to conf struct, it is from the conf that the transport
+      <td>pointer to conf struct, it is from the conf that the transport
         is picked with the given name</td>
     </tr>
   </tbody>
@@ -2611,7 +2610,7 @@ conf)</strong></p>
 <p><strong>axis2_options_set_soap_version_uri(options, env,
 soap_version_uri)</strong></p>
 
-<p>Sets the soap version URI. SOAP 1.1 URI OR SOAP 1.2 URI</p>
+<p>Sets the SOAP version URI.</p>
 
 <table border="1">
   <caption></caption>
@@ -2622,15 +2621,15 @@ soap_version_uri)</strong></p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>const axis2_char_t *soap_version_uri</td>
-      <td>soap_version_uri URI of the SOAP version to be set</td>
+      <td>URI of the SOAP version to be set</td>
     </tr>
   </tbody>
 </table>
@@ -2640,8 +2639,8 @@ soap_version_uri)</strong></p>
 <p><strong>axis2_options_set_timeout_in_milli_seconds(options, env,
 timeout_in_milli_seconds)</strong></p>
 
-<p>Set the time out in milli seconds. This is used in asynchronous message
-exchange scenarios for the call back object to wait for the response.</p>
+<p>Sets the time out in milli seconds. This is used in asynchronous message
+exchange scenarios to specify how long the the call back object is to wait for the response.</p>
 
 <table border="1">
   <caption></caption>
@@ -2652,15 +2651,15 @@ exchange scenarios for the call back object to wait for the response.</p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>const long timeout_in_milli_seconds</td>
-      <td>timeout_in_milli_seconds timeout in milli seconds</td>
+      <td>timeout in milli seconds</td>
     </tr>
   </tbody>
 </table>
@@ -2672,7 +2671,7 @@ receiver_transport, user_separate_listener)</strong></p>
 
 <p>Sets transport information. Transport information includes the name of the
 sender transport, name of the receiver transport and if a separate listener
-to be used to receive response.</p>
+is to be used to receive response.</p>
 
 <table border="1">
   <caption></caption>
@@ -2683,23 +2682,23 @@ to be used to receive response.</p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>const AXIS2_TRANSPORT_ENUMS sender_transport</td>
-      <td>sender_transport name of sender transport to be used</td>
+      <td>name of sender transport to be used</td>
     </tr>
     <tr>
       <td>const AXIS2_TRANSPORT_ENUMS receiver_transport</td>
-      <td>receiver_transport name of receiver transport to be used</td>
+      <td>name of receiver transport to be used</td>
     </tr>
     <tr>
       <td>const axis2_bool_t use_separate_listener</td>
-      <td>use_separate_listener bool value indicating whether to use a
+      <td>bool value indicating whether to use a
         separate listener or not</td>
     </tr>
   </tbody>
@@ -2711,7 +2710,8 @@ to be used to receive response.</p>
 use_separate_listener)</strong></p>
 
 <p>Sets the bool value indicating whether to use a separate listener or not.
-Separate listener is used when the transport is one way transport.</p>
+Separate listener is used when the transport is one way transport and the 
+message exchange pattern is two way.</p>
 
 <table border="1">
   <caption></caption>
@@ -2722,15 +2722,15 @@ Separate listener is used when the transport is one way transport.</p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>const axis2_bool_t use_separate_listener</td>
-      <td>use_separate_listener bool value indicating whether to use a
+      <td>bool value indicating whether to use a
         separate listener or not</td>
     </tr>
   </tbody>
@@ -2741,7 +2741,7 @@ Separate listener is used when the transport is one way transport.</p>
 <p><strong>axis2_options_set_soap_version(options, env,
 soap_version)</strong></p>
 
-<p>Set the SOAP version. Either AXIOM_SOAP_11 or AXIOM_SOAP_12.</p>
+<p>Sets the SOAP version.</p>
 
 <table border="1">
   <caption></caption>
@@ -2752,15 +2752,15 @@ soap_version)</strong></p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>const int soap_version</td>
-      <td>soap_version soap version</td>
+      <td>soap version, either AXIOM_SOAP_11 or AXIOM_SOAP_12.</td>
     </tr>
   </tbody>
 </table>
@@ -2770,7 +2770,7 @@ soap_version)</strong></p>
 <p><strong>axis2_options_set_enable_mtom(options, env,
 enable_mtom)</strong></p>
 
-<p>Enable/disable MTOM handling when sending binary attachments.</p>
+<p>Enable or disable MTOM handling when sending binary attachments.</p>
 
 <table border="1">
   <caption></caption>
@@ -2781,24 +2781,48 @@ enable_mtom)</strong></p>
     </tr>
     <tr>
       <td>axis2_options_t *options</td>
-      <td>options pointer to options struct</td>
+      <td>pointer to options struct</td>
     </tr>
     <tr>
       <td>const axutil_env_t *env</td>
-      <td>env pointer to environment struct</td>
+      <td>pointer to environment struct</td>
     </tr>
     <tr>
       <td>axis2_bool_t enable_mtom</td>
-      <td>enable_mtom AXIS2_TRUE if MTOM is to be enabled, AXIS2_FALSE</td>
+      <td>AXIS2_TRUE if MTOM is to be enabled, else AXIS2_FALSE</td>
     </tr>
   </tbody>
 </table>
 
 <p></p>
 
-<p>This document describes about various types of options in the
-axis2_options.h. These options are used by the service client before sending
-messages.</p>
+<p><strong>axis2_options_set_enable_rest(options, env,
+enable_rest)</strong></p>
+
+<p>Enable or disable REST support.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axutil_env_t *env</td>
+      <td>pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_bool_t enable_rest</td>
+      <td>AXIS2_TRUE if REST is to be enabled, else AXIS2_FALSE</td>
+    </tr>
+  </tbody>
+</table>
 
 <p></p>
+
 </html>
