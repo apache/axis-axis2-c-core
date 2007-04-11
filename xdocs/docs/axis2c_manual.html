@@ -35,9 +35,9 @@ to as LIBXML2_INSTALL_DIR, and likewise.
   <li><a href="#ws_add">WS-Addressing</a></li>
   <li><a href="#wrt_mod">Writing a Module</a></li>
   <li><a href="#sim_ser">Simple Axis Server</a></li>
-  <li><a href="#apa_mod">Deploying in Apache2</a></li>
+  <li><a href="#mod_axis2">Deploying with Apache2 HTTP Web Server</a></li>
   <li><a href="#ssl_client">Using SSL Client</a></li>
-  <li><a href="#proxy">How to use Proxy</a></li>
+  <li><a href="#proxy">Using Proxy Support</a></li>
   <li><a href="#appA">Appendix A - axis2.xml</a></li>
   <li><a href="#appB">Appendix B - services.xml</a></li>
   <li><a href="#appC">Appendix C - module.xml</a></li>
@@ -906,140 +906,109 @@ both WS-Addressing
 <a href="http://www.w3.org/Submission/ws-addressing/">submission version</a>. 
 </p>
 
-<p>WS-Addressing can be enabled in the client side using 2 different methods
-in Axis2/C.</p>
-<ul>
-  <li>Engaging Addressing module globally in the axis2.xml file 
-    <p>Adding <span style="color: #0000FF">&lt;module
-    ref="addressing"/&gt;</span> in the client side axis2.xml file will add
-    addressing capability to every message the Axis2/C clients send.</p>
-  </li>
-  <li>If we need to add addressing for a specific client , we should do it
-    programmetically by adding the following function call in the client
-    implementation file. 
+<p>WS-Addressing is implemented as a module in Axis2/C. Hence as explained in the previous section, 
+addressing module could be engaged both on client side as well as on server side.</p>
+  
+<p>WS-Addressing module could be globally engaged 
+    by adding <code>&lt;module ref="addressing"/&gt;</code> line to the axis2.xml file.
+</p>
+  
+<p>WS-Addressing module could also be programmetically engaged using following line of code 
+with the service client API <br/>
     <pre>axis2_svc_client_engage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);</pre>
-  </li>
-</ul>
+</p>
+
+<p>
+WS-Addressign related options could be set using the <code>axis2_options</code> struct instance
+on client side. On server side, there are no options to be set, if the addressing module is engaged,
+the server would employ WS-Addressing if the incomming requests have WS-Addressing headers. 
+</p>
 
 <p>There is a mandatory requirement for using WS-Addressing on client side
 with Axis2/C. That is to set a WS-Addressing action that represents the
-operation to be invoked.</p>
+operation to be invoked. Example: </p>
 <pre>axis2_options_set_action(options,env,"http://ws.apache.org/axis2/c/samples/echoString")</pre>
 
 <p>In addition to the action which is mandatory,there are other WS-Addressing
 related headers that could be sent in a message. Axis2/C has support to set
 those headers as options at client level. The following functions are used to
 set them.</p>
+
 <pre>axis2_options_set_reply_to(options, env, reply_to)</pre>
+<p>Sets the <code>wsa:ReplyTo</code> header. The ReplyTo header contains the endpoint to
+send reply messages. The ReplyTo header is required when the response comes in
+a separate channel. (that is when using dual chancel)</p>
 
-<p>Sets the wsa:Replyto header. The "ReplyTo" header contains the endpoint to
-send reply messages The Replyto header is required when the response comes in
-a separate channel. (when using dual chancel)</p>
 <pre>axis2_options_set_fault_to(options, env, fault_to)</pre>
-
-<p>Sets the wsa:FaultTo header.This contains the endpoint to direct fault
+<p>Sets the <code>wsa:FaultTo</code> header.This contains the endpoint to direct fault
 messages.</p>
+
 <pre>axis2_options_set_from(options, env, from)</pre>
-
 <p>Sometimes receiving endpoint requires to know the original sender of the
-message.wsa:From header is used in those cases the above function sets the
-wsa:From header.</p>
-<pre>axis2_options_set_relates_to(options, env, relates_to)</pre>
+message. <code>wsa:From</code> header is used in those cases. Above function sets the
+From header.</p>
 
-<p>Sets the wsa:RelatesTo header.This header contains a unique ID that must
-be a message ID of a previously exchanged message.It helps to identify a
+<pre>axis2_options_set_relates_to(options, env, relates_to)</pre>
+<p>Sets the <code>wsa:RelatesTo</code> header. This header contains a unique ID that must
+be a message ID of a previously exchanged message. It helps to identify a
 previous message that relates to the current message.</p>
 
 <a name="wrt_mod"></a>
 <h1>9. Writing a Module</h1>
 
-<p>A module is an extension point in the Axis2/C engine. Modules are used to
-improve the quality of service in the Axis2/C engine.A SOAP message may
+<p>A module is an extension point in the Axis2/C engine. Modules are primarily used to
+WS-* specifications. In other words quality of service aspects such as security and relaiable 
+messaging could be implemented as modules and deployed with Axis2/C engine. <br/>
+A SOAP message may
 contain any number of header blocks. These header blocks provide various
 processing information. In Axis2/C, these various header blocks are processed
 by modules. Some times modules may add header blocks to a SOAP message.</p>
 
 <p>Normally a module is a collection of handlers. So writing a module mainly
-consists of writing handlers. Axis2/C provides two basic interfaces for
-writing a module. They are axis2_module and axis2_handler.</p>
+consists of writing handlers. There are two interfaces that are important when
+writing a module. They are <code>axis2_module</code> and <code>axis2_handler<code/>.</p>
 
-<p></p>
-
-<p>Every module should have three basic functions as defined in the
-axis2_modules_ops.</p>
+<p>Every module should have three basic functions, that are defined as function pointer members 
+of the <code>axis2_module_ops</code> struct. This struct is defined in <code>axis2_module.h</code>
+header file. </p>
 <ol>
-  <li><pre><font color="#4169E1">axis2_status_t (AXIS2_CALL * init ) (axis2_module_t *module, const
-    axutil_env_t *env , axis2_conf_ctx_t *conf_ctx , axis2_module_desc_t
-    *module_desc)</font></pre>
-    <p>The module initialisation is done here.</p>
+  <li><pre>axis2_status_t (AXIS2_CALL * 
+    init)(axis2_module_t *module, const
+    axutil_env_t *env, 
+    axis2_conf_ctx_t *conf_ctx, 
+    axis2_module_desc_t *module_desc)</pre>
+    <p>This funcion take care of module initialisation.</p>
   </li>
-  <li><pre><font color="#4169E1">axis2_status_t (AXIS2_CALL * shut_down ) (axis2_module_t *module, const
-    axutil_env_t *env )</font></pre>
-    <p>Handler created function are stored in a hash map. This function will
-    remove them from the hash map.</p>
+  <li><pre>axis2_status_t (AXIS2_CALL * 
+    shutdown)(axis2_module_t *module, 
+    const axutil_env_t *env )</font></pre>
+    <p>Shutdown and cleans up the module.</p>
   </li>
-  <li><pre><font color="#4169E1">axis2_status_t (AXIS2_CALL *fill_handler_create_func_map )
-    (axis2_module_t *module, const axutil_env_t *env )</font></pre>
+  <li><pre>axis2_status_t (AXIS2_CALL *
+    fill_handler_create_func_map)(axis2_module_t *module, 
+    const axutil_env_t *env )</pre>
     <p>This function fills the hash map of handler create functions for the
     module.</p>
   </li>
 </ol>
 
-<p>The module developer implements these functions in its implementation
-file. When creating a module, the members of the ops struct functions will
-be assigned these implemented functions.</p>
+<p>The module developer has to implement functions with above signatures and assign them to the 
+members of an <code>axis2_module_ops</code> struct instance. Then that struct instance has to be 
+assigned to the ops member of an <code>axis2_module</code> struct instnce. </p>
 
-<p>The following example shows the create function of logging module.</p>
-<pre><strong><font color="#4169E1"><a name="axis2_mod_log_create"></a>axis2_module_t *
-axis2_mod_log_create(const axutil_env_t *env)</font></strong>
-{
-    axis2_module_t *module = NULL;
-    module = AXIS2_MALLOC(env-&gt;allocator, 
-        <font color="#4169E1">sizeof</font>(axis2_module_t));
+<p>
+<a href="mod_log/mod_log.c.html">mod_log.c</a> has the source for the logging module. 
+Please have a look at the <code>axis2_mod_log_create</code> function in there to 
+see how an <code>axis2_module</code> instance is allocated and how ops are initialized.
+</p>
 
-    
-    module-&gt;ops = AXIS2_MALLOC(
-        env-&gt;allocator, <font color="#4169E1">sizeof</font>(axis2_module_ops_t));
-
-    module-&gt;ops-&gt;shutdown = axis2_mod_log_shutdown;
-    module-&gt;ops-&gt;init = axis2_mod_log_init;
-    module-&gt;ops-&gt;fill_handler_create_func_map = 
-        axis2_mod_log_fill_handler_create_func_map;
-
-    <font color="#4169E1">return</font> module;
-}</pre>
-
-<p>The following code segment shows the adding of handler create functions
-to the module's hash map that stores handler create functions.</p>
-<pre><strong><font color="#4169E1"><a name="axis2_mod_log_fill_handler_create_func_map"></a>
-axis2_status_t AXIS2_CALL
-axis2_mod_log_fill_handler_create_func_map(axis2_module_t *module,
-                                            const axutil_env_t *env)</font></strong>
-{
-    axutil_env_CHECK(env, AXIS2_FAILURE);
-    
-    module-&gt;handler_create_func_map = axis2_hash_make(env);
-    <font color="#4169E1">if</font>(!module-&gt;handler_create_func_map)
-    {
-        AXIS2_ERROR_SET(env-&gt;error, AXIS2_ERROR_NO_MEMORY, 
-            AXIS2_FAILURE);
-        <font color="#4169E1">return</font> AXIS2_FAILURE;
-    }
-    axis2_hash_set(module-&gt;handler_create_func_map, <font color="#666666">"LoggingInHandler"</font>, 
-        AXIS2_HASH_KEY_STRING, axis2_log_in_handler_create);
-
-
-    axis2_hash_set(module-&gt;handler_create_func_map, <font color="#666666">"LoggingOutHandler"</font>, 
-        AXIS2_HASH_KEY_STRING, axis2_log_out_handler_create);
-    
-    <font color="#4169E1">return</font> AXIS2_SUCCESS;
-}</pre>
-
-<p>In the above example the "logging" module adds two handlers.The in handler
-and the out handler that deals with logging along inflow and outflow
+<p><code>axis2_mod_log_fill_handler_create_func_map</code> function adds handler create functions
+to the module's hash map that stores handler create functions.
+In the <a href="mod_log/mod_log.c.html">mod_log.c</a> example the 
+logging module adds two handlers. The in handler
+and the out handler that deals with logging along in-flow and out-flow
 respectively.</p>
 
-<p></p>
 
 <h3>Writing Handlers</h3>
 
@@ -1047,97 +1016,31 @@ respectively.</p>
 execution flow. The engine could have two flows, the in-flow and the
 out-flow. A flow is a collection of phases and a phase in turn is a
 collection of handlers. A handler is invoked when the phase within which it
-lives is invoked. Axis2/C defines an interface called axis2_handler , which
-is used to create handlers.</p>
+lives is invoked. Axis2/C defines an interface called <code>axis2_handler</code>, which
+is to be implemented by all handlers.</p>
 
-<p>The following example shows the creation of the in handler in the logging
-module.</p>
-<pre>AXIS2_EXTERN axis2_handler_t* AXIS2_CALL
-axis2_log_in_handler_create(const axutil_env_t *env, 
-                         axutil_qname_t *qname)
-{
-    axis2_handler_t *handler = NULL;
-    axutil_env_CHECK(env, NULL);
-    handler = axis2_handler_create(env);
-    if (!handler)
-    {
-      return  NULL;
-    }
-   
-    /* handler init is handled by conf loading, so no need to do it here */
-    
-    /* set the base struct's invoke op */
-
-     if (handler-&gt;ops) 
-        handler-&gt;ops-&gt;invoke = axis2_log_in_handler_invoke;
-
-    return handler;
-}</pre>
-
-<p>In the above example the axis2_log_in_handler_invoke function is assigned
-to axis2_handler invoke function pointer. Invoke is called to do the actual
+<p><a href="mod_log/log_in_handler.c.html">log_in_handler.c</a> contains the source 
+code of the in handler of the logging module. Please have a look at 
+<code>axutil_log_in_handler_create</code> function to see how a <code>axis2_handler</code>
+instance is created and how the invoke function implementation, 
+<code>axis2_log_in_handler_invoke</code> is assigned to <code>axis2_handler</code>
+invoke function pointer.
+The invoke is called to do the actual
 work assigned to the handler. The phase that owns the handler is responsible
-for calling invoke of the handler. Those structs that implement the interface
-of the handler should implement the logic for invoke and assign the
-respective function pointer to invoke operation of the ops struct.</p>
+for calling invoke function of the handler.</p>
 
-<p>The following code segment shows the "logging" module in handler invoke
-function.</p>
-<pre>axis2_status_t AXIS2_CALL
-axis2_log_in_handler_invoke(struct axis2_handler *handler, 
-                         const axutil_env_t *env,
-                         struct axis2_msg_ctx *msg_ctx)
-{
-    axiom_soap_envelope_t *soap_envelope = NULL;
-    axiom_node_t *ret_node = NULL;
-
-    axutil_env_CHECK( env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env-&gt;error, msg_ctx, AXIS2_FAILURE);
-    
-    AXIS2_LOG_INFO(env-&gt;log, "Starting logging in handler .........");
-    printf("\n\nStarting logging in handler .........\n\n");
-    
-    soap_envelope = axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
-    
-    if(soap_envelope)
-    {
-        axiom_soap_envelope_get_body(soap_envelope, env);
-
-        ret_node = axiom_soap_envelope_get_base_node(soap_envelope, env);
-
-        if(ret_node)
-        {
-            axis2_char_t *om_str = NULL;
-            om_str = axiom_node_to_string(ret_node, env);
-            if (om_str)
-            {
-                AXIS2_LOG_INFO(env-&gt;log, "Input msg: %s", om_str);
-                printf("Input msg: %s", om_str);
-            }
-        }
-    }
-    
-    return AXIS2_SUCCESS;
-}</pre>
+<p><a href="mod_log/log_out_handler.c.html">log_out_handler.c</a> contains the source 
+code of the out handler of the logging module. The implementation is similar to the in handler,
+except that it is placed along the out-flow when deployed.</p>
 
 <h3>Writing the module.xml File</h3>
 
 <p>After writing the module, the module.xml file should be written. The
 module.xml file contains all the configuration details for a particular
-module.See </p>
-<a href="#eng_mod">Engaging a module</a> part for more details. Some of the
-important details in the module.xml file can be summarized as follows. 
-<ul>
-  <li>The names of the module specific handlers and the phases they are to be
-    added in Axis2/C flows.</li>
-  <li>The relative places of handlers with respect to the other handlers in a
-    given phase.</li>
-  <li>The operations the module is adding to the engaged services.</li>
-  <li>The module specific message receivers.</li>
-</ul>
-
-<p>The handlers defined in a module can be added to Axis2/C system global
-phases or the module specific phases.</p>
+module. Please see 
+<a href="#eng_mod">Engaging a Module</a> section for more details.
+Here is the sample <a href="mod_log/module.xml">module.xml</a> file for logging module.
+</p>
 
 <a name="sim_ser"></a>
 <h1>10. Simple Axis Server</h1>
@@ -1169,217 +1072,237 @@ Example :
 <pre>   axis2_http_server -l 3 -p 8080 -r $AXIS2C_HOME  -f /dev/stderr</pre>
 </p>
 
-<a name="apa_mod"></a>
-<h1>11. Deploying in Apache2</h1>
+<a name="mod_axis2"></a>
+<h1>11. Deploying with Apache HTTP Server Version 2.x</h1>
 
-<p>To build Axis2/C with Apache module, One needs to give the following
-configuration options on Linux platform.</p>
+<h3>Linux Platform</h3>
+<p>To build Axis2/C with Apache HTTP server module, also called mod_axis2,
+one needs to give the following configuration options on Linux platform:</p>
 
-<p>./configure --with-apache2=[path to apache directory]</p>
+<pre>./configure --with-apache2=[path to Apache2 include directory] [other configure options]</pre>
 
-<p><font color="#666666">NOTE: Some Apache2 distributions install APR (Apache
-Portable Run-time) include files in a separate location which is required to
-build mod_axis2. In that case use: ./configure --with-apache2="&lt;apache2
-directory&gt;" --with-apr="&lt;apr include files location&gt;" [other
-configure options]</font></p>
-
-<p>Then build the source tree</p>
-<pre>   
-        make
-        make install</pre>
-
-<p>This will install mod_axis2.so into your
-"&lt;your_path_to_axis2c&gt;/lib"<br>
+<p>
+<font color="#666666">NOTE: Some Apache2 distributions, specially development versions,
+install APR (Apache Portable Run-time) include files in a separate location. 
+In that case, to build mod_axis2, use: 
+<pre>./configure --with-apache2=[path to Apache2 include directory] --with-apr=[path to APR include directory]
+            [other configure options]</pre>
+</font>
 </p>
 
-<p></p>
+<p>Then build the source tree as usual using:
+<pre>    make
+    make install
+</pre>
+</p>
 
-<p>On Win32 platform<br>
-provide the apache2 location in configure.in file in APACHE_INSTALL_DIR</p>
-<pre> Example
-    APACHE_INSTALL_DIR = E:\Apache</pre>
+<p>This will install mod_axis2.so into your AXIS2C_INSTALL_DIR/lib folder.</p>
 
-<p>After compiling the sources build the mod_axis2.dll by issuing the command
-"nmake axis2_apache_module". This will build the mod_axis2.dll and copy it to
-%AXIS2C_HOME%\lib directory.</p>
-<pre>Example
-    C:\axis2c\build\deploy\lib</pre>
+<h3>Windows Platform</h3>
+<p>On Windows platform, you have to provide the Apache2 install location in configure.in file 
+with the setting APACHE_BIN_DIR. Example:
+<pre>APACHE_BIN_DIR = "C:\Program Files\Apache Software Foundation\Apache2.2"</pre>
+</p>
+<p>
+Based on the Apache HTTP server version you are using, you also need to set the setting 
+APACHE_VERSION_IS_2_0_59 in configure.in file. If you are using Apache version 2.0.59,
+this setting should be set to 1, if the version is above that, the setting sould be 0.
+Example:
+<pre>APACHE_VERSION_IS_2_0_59 = 0</pre>
+</p>
 
-<p></p>
+<p>To build the source, you have to run the command command
+<pre>nmake axis2_apache_module</pre>. 
+This will build mod_axis2.dll and copy it to AXIS2C_INSTALL_DIR\lib directory.</p>
 
-<p>Deploying in Apache2 httpd Web Server</p>
+<h3>Deploying mod_axis2</h3>
 
-<p><font color="#666666">NOTE: To do the following tasks, you might need
-super user privileges in your machine.</font></p>
+<p><font color="#666666">NOTE: To execute some of the commands given below, you might require
+super user privileges on your machine.</font></p>
 
-<p>Copy the mod_axis2 <font color="#4169E1">(libmod_axis2.so.0.0.0 on Linux
-and mod_axis2.dll in Windows)</font> to "&lt;apache2 modules directory&gt;"
+<p>Copy the mod_axis2 shared library <font color="#4169E1">(libmod_axis2.so.0.0.0 on Linux
+and mod_axis2.dll on Windows)</font> to Apache2 modules directory
 as mod_axis2.so</p>
-<pre>  Example
-In Linux
+<p>
+On Linux
+<pre>
     cp $AXIS2C_HOME/lib/libmod_axis2.so.0.0.0
       /usr/lib/apache2/modules/mod_axis2.so
-
-In Windows
+</pre>
+On Windows
+<pre>
    copy C:\axis2c\build\deploy\lib\mod_axis2.dll
    C:\Apache2\modules\mod_axis2.so</pre>
+</pre>
 
 <p>Edit the Apache2's configuration file (generally httpd.conf) and add the
-following directives<br>
+following directives at the end of the file.
 </p>
-<pre>Axis2RepoPath /home/dinesh/axis2c/deploy/
-Axis2LogFile  /tmp/axis2.log
-Axis2LogLevel info 
-LoadModule axis2_module /usr/local/apache2/modules/mod_axis2.so
-<Location /axis2>&lt;Location /axis2&gt;
+
+<pre>LoadModule axis2_module MOD_AXIS2_INSTALL_DIR
+Axis2RepoPath AXIS2C_INSTALL_DIR
+Axis2LogFile  PATH_TO_LOG_FILE
+Axis2LogLevel LOG_LEVEL 
+&lt;Location /axis2&gt;
     SetHandler axis2_module
-&lt;/Location&gt;</Location></pre>
+&lt;/Location&gt;</pre>
 
-<p><font color="#666666">NOTE: Axis2 log file path should have write access
-to deamon user account under which Apache2 httpd process is run.</font></p>
-<pre>LOG_LEVEL can be one of following
-        AXIS2_LOG_LEVEL_CRITICAL - Log critical errors only
-        AXIS2_LOG_LEVEL_ERROR - Log errors 
-        AXIS2_LOG_LEVEL_WARNING - Log warnings and above
-        AXIS2_LOG_LEVEL_INFO - Log info and above
-        AXIS2_LOG_LEVEL_DEBUG - Log debug information and above (default)
-        AXIS2_LOG_LEVEL_TRACE - Log trace messages</pre>
-
-<p><font color="#B22222">NOTE: Use forward slashes "/" for path separators in
-&lt;apache2 modules directory&gt;,&lt;axis2 repository path&gt; and &lt;axis2
-log file path&gt;</font></p>
-
-<p>Make sure that the Apache2 user account under which Apache2 is run has the
-correct permissions to above paths</p>
+<p>Plase note that you have to fine tune the above settings to mach your system.<br/><br/>
+MOD_AXIS2_INSTALL_DIR has to be replaced with the full path to mod_axis2.so, 
+as an example, /usr/lib/apache2/modules/mod_axis2.so. <br/><br/>
+AXIS2C_INSTALL_DIR has to be replaced with the full path to Axis2/C repository,
+as an example, /usr/local/axis2. Note that repository path should have read access
+to the deamon user account under which Apache2 httpd process is run.<br/><br/>
+PATH_TO_LOG_FILE has to be replaced with the full path to where you wish to have 
+Axis2/C log file, as an example, /tmp/axis2.log. Note that log file path should have write access
+to the deamon user account under which Apache2 httpd process is run.<br/><br/>
+LOG_LEVEL has to be replaced with one of the following values: crit, error, warn, info, debug, trace.
+These log levels have the following meanings:
 <ul>
-  <li>Read permission to the repository</li>
-  <li>Write permission to the log file</li>
+        <li>crit - log critical errors</li>
+        <li>error - log errors and above</li>
+        <li>warn - log warnings and above</li>
+        <li>info - log information and above</li>
+        <li>debug - log debug information and above, this is the default log level used</li>
+        <li>trace - log trace messages and above</li>
+</ul>
+</p>
+
+<p>To ensure that everything works fine, start Apache2 (restart if it is already running)  and test whether 
+mod_axis2 module is loaded correctly by accessing the URL: <br/>
+<a href="http://localhost/axis2/services">http://localhost/axis2/services</a>.<br/>
+This should show the list of services deployed with Axis2/C. Then you should be able to run clients against
+this endpoint. Example:
+<pre>echo http://localhost/axis2/services/echo</pre> </p>
+<p>
+In case things are not working as expected, here are some tips on how to troubleshoot:
+<ul>
+    <li>Double check the steps you follwed in installing and configuring mod_axis2. 
+        Check if the locations given in httpd.conf are correct, and also folder permissions.</li>
+    <li>Have a look at the axis2.log file for clues as to what is going wrong. You may set the 
+        log level to debug or trace to gather more information</li>
+    <li>In case axis2.log file is not written at all, there is a good chance that mod_axis2 is crashing.
+        You can have a look at the error.log file of Apache2 to get an idea on what is going wrong.
+        This file is usually placed in AXIS2C_INSTALL_DIR/logs folder.</li>
 </ul>
 
-<p>Restart Apache2 and test whether mod_axis2 module is loaded by typing the
-URL</p>
-
-<p><a
-href="http://localhost/axis2/services">http://localhost/axis2/services</a></p>
+</p>
 
 <a name="ssl_client"></a>
 <h1>12. Using SSL Client</h1>
 
-<h3>Using SSL Client</h3>
-<ol>
-  <li>Building and configuring the client 
-    <p>In order to allow an AXIS2C client to communicate with a SSL enabled
-    server, we need to compile AXIS2C with SSL support. </p>
-    <ul>
-      <li>Building with SSL client support
-        <p>First of all, make sure you have installed <a href='http://www.openssl.org/'>OpenSSL</a> 
-        on your machine.</p>
-        <p>Then you can start building with SSL client support. 
-        This can be achieved on Linux by compiling AXIS2C with the
-        <code>--enable-openssl=yes</code> option.</p>
-        <p>Eg: <code><br>
+<h2>Building and Configuring the Client</h3>
+
+<p>In order to allow an Axis2/C client to communicate with a SSL enabled
+    server, we need to compile Axis2/C with SSL support enabled. </p>
+
+<p> To build with SSL client support, first of all, make sure you have installed 
+<a href='http://www.openssl.org/'>OpenSSL</a> on your machine.
+Then you can start building with SSL client support. 
+This can be achieved on Linux by configuring Axis2/C with the
+<code>--enable-openssl=yes</code> option.</p>
+        <p>Example <code><br>
         %./configure --enable-openssl=yes --prefix=${AXIS2C_HOME}/deploy<br>
         %make<br>
         %make install<br>
         </code></p>
-        <p>On windows, set <code>ENABLE_SSL=1</code> in the
-        <code>configure.in</code> file and run the 'nmake all' command.</p>
-      </li>
-      <li><a name="client_chain"></a>Creating the client certificate chain
-        file 
-        <p>If you need SSL client authentication, AXIS2C requires you to
-        provide the client certificate and the private key file in a single
-        file. Such a file which contains both the certificate and relevant
-        private key is called a certificate chain file. Creating such a file
-        is very easy. Assume that the client certificate is stored in a file
-        named <code>client.crt</code> and the private key is stored in a file
-        named <code>client.key</code>. Then the certificate chain file can be
-        created by concatenating the certificate file and the private key
-        file in that order, in to another file, say <code>client.pem</code>.
-        </p>
-        <p>On Linux you can do this easily as follows: <br>
-        </p>
-        <p><code>%cat client.crt client.key &gt; client.pem</code></p>
-        <p>On Windows you can do this by copying the contents of 
-        client.crt and client.key files and saving them in a file 
-        named client.pem using notepad. </p>
-      </li>
-      <li>Configuration 
-        <p>Uncomment the following in the <code>axis2.xml</code> file. This will
-        enable the SSL transport for AXIS2C, by recognizing "https" in an end
-        point reference (EPR).</p>
-        <p><code>&lt;transportSender name="https"
-        class="axis2_http_sender"&gt;<br>
-            &lt;parameter name="PROTOCOL"
-        locked="false"&gt;HTTP/1.1&lt;/parameter&gt;<br>
-        &lt;/transportSender&gt;</code></p>
-        <p>For SSL client to work, the file containing the CA certificate
-        should be given as <code>SERVER_CERT</code> parameter. If you need
-        client authentication, you can also set the parameters to specify the
-        client certificate, private key, and the passphrase for the client
-        private key.</p>
-        <p>Parameter names for these are:</p>
-        <p><code>KEY_FILE</code> - certificate chain file containing the
-        client's certificate and the private key (refer to 2.2 Creating the
-        client certificate chain file <a href="#client_chain">[link]</a>)<br>
-        <code>SSL_PASSPHRASE</code> - passphrase used to encrypt the private
-        key file.</p>
-        <p>Eg.</p>
-        <p><code>&lt;parameter
-        name="SERVER_CERT"&gt;/path/to/ca/certificate&lt;/parameter&gt;</code><br>
-        <code>&lt;parameter
-        name="KEY_FILE"&gt;/path/to/client/certificate/chain/file&lt;/parameter&gt;</code><br>
-        <code>&lt;</code><code><code>parameter
-        name="SSL_</code>PASSPHRASE"&gt;passphrase&lt;/parameter&gt;</code></p>
-        <p>For testing purposes you can use the server's certificate instead
-        of the ca certificate. You can obtain this by running the command
-        <code>openssl s_client -connect
-        &lt;servername&gt;:&lt;port&gt;</code> and coping the portion of the
-        output bounded by and including:
-        <pre>-----BEGIN CERTIFICATE-----
+
+<p>On windows, set <code>ENABLE_SSL=1</code> in the
+<code>configure.in</code> file and run the 'nmake all' command.</p>
+
+<a name="client_chain"></a>
+<h3>Creating the Client Certificate Chain File</h3>
+
+<p>If you need SSL client authentication, Axis2/C requires you to
+provide the client certificate and the private key file in a single
+file. Such a file which contains both the certificate and relevant
+private key is called a certificate chain file. Creating such a file
+is very easy. Assume that the client certificate is stored in a file
+named <code>client.crt</code> and the private key is stored in a file
+named <code>client.key</code>. Then the certificate chain file can be
+created by concatenating the certificate file and the private key
+file in that order, in to another file, say <code>client.pem</code>.
+</p>
+
+<p>On Linux you can do this easily as follows: 
+<code>%cat client.crt client.key &gt; client.pem</code></p>
+<p>On Windows you can do this by copying the contents of 
+client.crt and client.key files and saving them in a file 
+named client.pem using notepad. </p>
+      
+<h3>Configuration</h3>
+
+<p>Uncomment the following in the <code>axis2.xml</code> file. This will
+enable the SSL transport for Axis2/C, by recognizing "https" in an end
+point reference (EPR).</p>
+<p><pre>&lt;transportSender name="https" class="axis2_http_sender"&gt;
+        &lt;parameter name="PROTOCOL" locked="false"&gt;HTTP/1.1&lt;/parameter&gt;
+&lt;/transportSender&gt;</pre></p>
+
+<p>For SSL client to work, the file containing the CA certificate
+should be given as <code>SERVER_CERT</code> parameter in axis2.xml file. If you need
+client authentication, you can also set the parameters in axis2.xml file to specify the
+client certificate, private key, and the passphrase for the client
+private key. Parameter names for these are:</p>
+<p><code>KEY_FILE</code> - certificate chain file containing the
+client's certificate and the private key (Please refer to <a href="#client_chain">creating the
+client certificate chain file</a> section)<br>
+<code>SSL_PASSPHRASE</code> - passphrase used to encrypt the private
+key file.</p>
+<p>Example: </p>
+<p><code>&lt;parameter
+name="SERVER_CERT"&gt;/path/to/ca/certificate&lt;/parameter&gt;</code><br>
+<code>&lt;parameter
+name="KEY_FILE"&gt;/path/to/client/certificate/chain/file&lt;/parameter&gt;</code><br>
+<code>&lt;</code><code><code>parameter
+name="SSL_</code>PASSPHRASE"&gt;passphrase&lt;/parameter&gt;</code></p>
+
+<p>For testing purposes you can use the server's certificate instead
+of the CA certificate. You can obtain this by running the command
+<code>openssl s_client -connect
+&lt;servername&gt;:&lt;port&gt;</code> and copying the portion of the
+output bounded by and including:
+<pre>-----BEGIN CERTIFICATE-----
 -----END CERTIFICATE-----</pre></p>
-        <p>On Linux if you run the following piece of code, the server
-        certificate will be saved to a file <code>cert.pem</code>:
-        <pre>echo |\
+
+<p>On Linux if you run the following piece of code, the server
+certificate will be saved to a file <code>cert.pem</code>:
+<pre>echo |\
 openssl s_client -connect &lt;servername&gt;:&lt;port&gt; 2&gt;&amp;1 |\
 sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' &gt; cert.pem</pre></p>
-        <p>NOTE: Instead of these parameters that are set in the
-        <code>axis2.xml</code>, you can programmatically specify these values
-        too.</p>
-      </li>
-    </ul>
-  </li>
-  <li>Configuring the server 
-    <p>Here we will only look at the configuration of Apache web server. Refer
-    to the AXIS2C installation guide <a
-    href="http://ws.apache.org/axis2/c/docs/installationguide.html#installing-apache2">[link]</a>
-    for information on deploying AXIS2C as an apache module.</p>
-    <p>For a more detailed treatment of SSL configuration please refer to
-    Apache2 SSL/TLS Documentation <a
-    href="http://httpd.apache.org/docs/2.0/ssl/#documentation">[link]</a></p>
-    <p>In the <code>httpd.conf</code> file, add the following configuration
-    statements (in addition to other necessary configuration):</p>
-    <p><code>SSLEngine on<br>
-    SSLCertificateFile /path/to/server/certificate/file<br>
-    SSLCertificateKeyFile /path/to/private/key/file<br>
-    SSLCACertificateFile /path/to/CA/certificate/file<br>
-    SSLVerifyClient require<br>
-    SSLVerifyDepth 1</code></p>
-    <p>NOTE: The last two lines, <code>SSLVerifyClient</code> and
-    <code>SSLVerifyDepth</code> are only needed when you need client
-    authentication.</p>
-  </li>
-</ol>
+
+<p>NOTE: Instead of setting these parameters in the
+<code>axis2.xml</code> file, you can also set these parameters programmatically 
+in your client code.</p>
+  
+<h3>Configuring the Server</h3>
+<p>Here we will only look at the configuration of Apache HTTP Web server. Refer
+to the Axis2/C <a href="http://ws.apache.org/axis2/c/docs/installationguide.html#installing-apache2">
+installation guide</a>
+for information on deploying Axis2/C as an Apache module.</p>
+<p>For a more detailed information on SSL configuration please refer to
+<a href="http://httpd.apache.org/docs/2.0/ssl/#documentation">Apache2 SSL/TLS documentation</a>.</p>
+<p>In the <code>httpd.conf</code> file, add the following configuration
+statements (in addition to other necessary configuration):</p>
+<p><code>SSLEngine on<br>
+SSLCertificateFile /path/to/server/certificate/file<br>
+SSLCertificateKeyFile /path/to/private/key/file<br>
+SSLCACertificateFile /path/to/CA/certificate/file<br>
+SSLVerifyClient require<br>
+SSLVerifyDepth 1</code></p>
+<p>NOTE: The last two lines, <code>SSLVerifyClient</code> and
+<code>SSLVerifyDepth</code> are only needed when you need client
+authentication.</p>
 
 <a name="proxy"></a>
-<h1>13.How to Use Proxy</h1>
-<p>When using a proxy , user can follow two methods.</p>
+<h1>13. Using Proxy Support</h1>
+<p>When using a proxy, there are two methods for specifying proxy settings:</p>
 <ol>
-<li>Specify Proxy Settings in axis2.xml</li>
-<li>Provide Proxy Settings using service client API</il>
+<li>Specify proxy settings in axis2.xml</li>
+<li>Provide proxy settings using service client API</il>
 </ol>
 
-<h3>Specify Proxy Settings in axis2.xml</h3>
+<h3>Specifying Proxy Settings in axis2.xml</h3>
 
 <pre>
 &lt;transportSender name="http" class="axis2_http_sender"&gt;
@@ -1387,16 +1310,15 @@ sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' &gt; cert.pem</pre></p>
    &lt;parameter name="PROXY" proxy_host="127.0.0.1" proxy_port="8080" locked="true"/&gt;
 &lt;/transportSender&gt;
 </pre>
-<p>then "proxy_host" and "proxy_port" will be use globally.</p>
-<h3>Provide Proxy Settings using service client API</h3>
-<p>One can specify proxy settings using service client API.</p>
+
+<h3>Providing Proxy Settings Using Service Client API</h3>
+<p>One can specify proxy settings using using following function with service client:</p>
 <pre>
 axis2_svc_client_set_proxy(axis2_svc_client_t *svc_client,
         const axutil_env_t *env,
         axis2_char_t *proxy_host,
         axis2_char_t *proxy_port);
 </pre>
-<p>Using this function , one can give proxy settings per service.</p>
 
 <a name="appA"></a>
 <h1>Appendix A</h1>
@@ -1405,13 +1327,11 @@ axis2_svc_client_set_proxy(axis2_svc_client_t *svc_client,
 
 <p>The axis2.xml file is the configuration file for Axis2/C. It has 6 top
 level elements. They are <em>parameter, transportReciever,
-transportSender,module,phaseOrder</em> and <em>messageReciever</em>. Given
-below is a description about these elements, their sub elements , element
+transportSender, module, phaseOrder</em> and <em>messageReciever</em>. following 
+sections describe these elements, their sub elements , element
 attributes, possible values and their purpose.</p>
 
-<p></p>
-
-<p><em><strong>axisconfig</strong></em> is the root element</p>
+<p><em><strong>axisconfig</strong></em> is the root element of axis2.xml file.</p>
 
 <table border="1">
   <tbody>
@@ -1426,25 +1346,18 @@ attributes, possible values and their purpose.</p>
   </tbody>
 </table>
 
-<p></p>
-
-<p>The description of the 6 top level elements is given below.</p>
-
-<p></p>
-
 <h3><em>parameter</em></h3>
 
 <p>In Axis2/C a parameter is a name value pair. Each and every top level
 parameter available in the axis2.xml (direct sub elements of root element)
-will be transformed into properties in axisConfiguration. Therefore the top
-level parameters in configuration document can be accessed via
-axisConfiguration in the running system.</p>
+will be stored as parameters as <code>axis2_conf</code>. Therefore the top
+level parameters set in configuration file can be accessed via
+<code>axis2_conf</code> instance in the running system.</p>
 
-<p>sub elements :- none</p>
+<p>Sub elements :- none</p>
 
-<p>attributes:- name , locked</p>
+<p>Attributes :- name, locked</p>
 
-<p></p>
 
 <table border="1">
   <caption></caption>
@@ -1507,15 +1420,13 @@ axisConfiguration in the running system.</p>
   </tbody>
 </table>
 
-<p></p>
+<h3><em>transportReceiver</em></h3>
 
-<h3><em>transportReciever</em></h3>
-
-<p>This element specifies the transport Receiver details in an IN-OUT
+<p>This element specifies the transport receiver details in an IN-OUT
 message exchange scenario. The users can change the transport receiver port
-as they wishes.</p>
+as they wish.</p>
 
-<p>attributes :- name, class</p>
+<p>Attributes :- name, class</p>
 
 <table border="1">
   <caption></caption>
@@ -1526,16 +1437,16 @@ as they wishes.</p>
       <th>Possible values</th>
     </tr>
     <tr>
-      <td>Name</td>
+      <td>name</td>
       <td>Specify which transport protocol is used</td>
-      <td>http(when using http)</td>
+      <td>http (when using HTTP)</td>
     </tr>
     <tr>
-      <td>Class</td>
+      <td>class</td>
       <td>Specify shared library which implements the transport interface</td>
       <td>Name of the shared library. 
 
-        <p>Eg:-On Linux if the value is given as <em>foo</em> then shared
+        <p>Example:- On Linux if the value is given as <em>foo</em> then shared
         library is libfoo.so.</p>
 
         <p>On Windows <em>foo.dll</em>.</p>
@@ -1546,10 +1457,8 @@ as they wishes.</p>
 
 <p></p>
 
-<p>Sub elements of <em>transportReciever</em></p>
-
-<p><em>transportReciever</em> can have zero or more parameters.(parameter
-elements) . An example element is shown below.</p>
+<p>Sub elements :- can have zero or more parameter elements<br/>
+Following table shows possibel parameter values.</p>
 
 <table border="1">
   <caption></caption>
@@ -1611,9 +1520,9 @@ elements) . An example element is shown below.</p>
 
 <h3><em>transportSender</em></h3>
 
-<p>This element specifies the transport senders used to send messages</p>
+<p>This element specifies the transport senders used to send messages.</p>
 
-<p>attributes :- name, class</p>
+<p>Attributes :- name, class</p>
 
 <table border="1">
   <caption></caption>
@@ -1633,7 +1542,7 @@ elements) . An example element is shown below.</p>
       <td>Specify shared library which implements the transport interface</td>
       <td><p>Name of the shared library.</p>
 
-        <p>Eg:-On Linux if the value is given as <em>foo</em> then shared
+        <p>Example:- On Linux if the value is given as <em>foo</em> then shared
         library is libfoo.so.</p>
 
         <p>On Windows <em>foo.dll</em>.</p>
@@ -1644,10 +1553,8 @@ elements) . An example element is shown below.</p>
 
 <p></p>
 
-<p>Sub elements of <em>transportSender</em></p>
-
-<p><em>transportSender</em> can have zero or more parameters.(parameter
-elements) . An example element is shown below.</p>
+<p>Sub elements :- can have zero or more parameter elements<br/>
+Following table shows possibel parameter values.</p>
 
 <table border="1">
   <caption></caption>
@@ -1671,7 +1578,7 @@ elements) . An example element is shown below.</p>
             <tr>
               <td>PROTOCOL</td>
               <td>Transport protocol used</td>
-              <td>Protocol version. Eg:- HTTP /1.1, HTTP/1.0</td>
+              <td>Protocol version. Example:- HTTP /1.1, HTTP/1.0</td>
             </tr>
           </tbody>
         </table>
@@ -1708,7 +1615,7 @@ elements) . An example element is shown below.</p>
 <h3><em>module</em></h3>
 
 <p>This element is optional. It is used when a particular module needs to be
-engaged for every service in the system.</p>
+engaged globally for every service deployed with Axis2/C.</p>
 
 <table border="1">
   <caption></caption>
@@ -1720,10 +1627,9 @@ engaged for every service in the system.</p>
     </tr>
     <tr>
       <td>ref</td>
-      <td>the name of the module which is to be engaged globally</td>
+      <td>Name of the module which is to be engaged globally</td>
       <td>Name of the module. 
-
-        <p>Eg:- addressing</p>
+        <p>Example :- addressing</p>
       </td>
     </tr>
   </tbody>
@@ -1733,8 +1639,8 @@ engaged for every service in the system.</p>
 
 <h3><em>phaseOrder</em></h3>
 
-<p>The order of phases in execution chain has to be configured using phase
-order element.</p>
+<p>The order of phases in a perticular execution chain has to be configured using 
+phaseOrder element.</p>
 
 <table border="1">
   <caption></caption>
@@ -1781,21 +1687,18 @@ message.The types of flows are described below.</p>
     </tr>
     <tr>
       <td>INfaultflow</td>
-      <td>Collection of handlers invoked for a incoming fault message.</td>
+      <td>Collection of handlers invoked for an incoming fault message.</td>
     </tr>
     <tr>
       <td>Outfaultflow</td>
-      <td>Collection of handlers invoked for a outgoing fault message.</td>
+      <td>Collection of handlers invoked for an outgoing fault message.</td>
     </tr>
   </tbody>
 </table>
 
-<p></p>
+<p>Sub elements :- <em>phase</em>:- represents available phases in the execution chain</p>
 
-<p>sub elements of <em>phaseOrder</em></p>
-
-<p><em>phase</em>:- represents available phases in the execution chain. The
-system predefined phases cannot be changed.</p>
+<p>The system predefined phases cannot be changed.</p>
 
 <p>The system predefined phases are,</p>
 <ul>
@@ -1817,19 +1720,14 @@ system predefined phases cannot be changed.</p>
     <tr>
       <td>name</td>
       <td>Specifies the name of the phase</td>
-      <td>TransportIn,Dispatch,PreDispatch,PostDispatch,MessageOut, 
-
+      <td>TransportIn, Dispatch, PreDispatch, PostDispatch, MessageOut
         <p>User defined phases (can have user defined name)</p>
       </td>
     </tr>
   </tbody>
 </table>
 
-<p></p>
-
-<p>sub elements of phase</p>
-
-<p><em>handler</em></p>
+<p>Bub elements of phase element: <em>handler</em></p>
 
 <table border="1">
   <caption></caption>
@@ -1845,7 +1743,7 @@ system predefined phases cannot be changed.</p>
       handlers.</td>
       <td>Based on handler name. 
 
-        <p>Eg:- AddressingbasedDispatcher, RequestURIbaseddispatcher</p>
+        <p>Example:- AddressingbasedDispatcher, RequestURIbaseddispatcher</p>
       </td>
     </tr>
     <tr>
@@ -1853,7 +1751,7 @@ system predefined phases cannot be changed.</p>
       <td>Specify shared library which implements the handler</td>
       <td><p>Name of the shared library.</p>
 
-        <p>Eg:-On Linux if the value is given as <em>foo</em> then shared
+        <p>Example:- On Linux if the value is given as <em>foo</em> then shared
         library is libfoo.so.</p>
 
         <p>On Windows <em>foo.dll</em>.</p>
@@ -1862,9 +1760,7 @@ system predefined phases cannot be changed.</p>
   </tbody>
 </table>
 
-<p></p>
-
-<h3><em>messageReciever</em></h3>
+<h3><em>messageReceiver</em></h3>
 
 <p></p>
 
@@ -1883,15 +1779,12 @@ system predefined phases cannot be changed.</p>
     </tr>
     <tr>
       <td>class</td>
-      <td>Specify the shared library which implements the transport interface 
-
+      <td>Specify the shared library which implements the transport interface.
         <p>If not specified Axis2/C default message receiver is used.</p>
       </td>
       <td>Name of the shared library. 
-
-        <p>Eg:-On Linux if the value is given as <em>foo</em> then shared
+        <p>Example:- On Linux if the value is given as <em>foo</em> then shared
         library is libfoo.so.</p>
-
         <p>On Windows <em>foo.dll</em>.</p>
       </td>
     </tr>
@@ -1903,18 +1796,16 @@ system predefined phases cannot be changed.</p>
 
 <h2 style="margin-bottom: 0in">services.xml</h2>
 
-<p>Configuration of a service is specified using services.xml.Each service or
+<p>Configuration of a service is specified using a services.xml. Each service or
 service archive file need to have a services.xml in order to be a valid
-service. The given below is a description of each element.</p>
-
-<p></p>
+service. Following sections describe elements of services.xml file.</p>
 
 <p>If services.xml describes a single service the root element is
 <em>service</em>. If it is describing a service group, then the root element
-is <em>serviceGroup</em>. <em>service</em> will be a child element of
-serviceGroup, if there are multiple services specified in service.xml.</p>
+is <em>serviceGroup</em>. <em>service</em> element will be a child element of
+serviceGroup, if there are multiple services specified in services.xml.</p>
 
-<h3><em><strong>service/serviceGroup</strong></em></h3>
+<h3><em><strong>service / serviceGroup</strong></em></h3>
 
 <table border="1">
   <caption></caption>
@@ -1926,13 +1817,9 @@ serviceGroup, if there are multiple services specified in service.xml.</p>
     </tr>
     <tr>
       <td>name</td>
-      <td>Name of the service. This will be the name of the archive 
-
-        <p>file for the service.</p>
+      <td>Name of the service or service group. 
       </td>
-      <td>Depend on the service or the 
-
-        <p>serviceGroup. Eg:- echo,sg_math</p>
+      <td>Depends on the service or the service group.<br/> Examples:- echo, sg_math
       </td>
     </tr>
   </tbody>
@@ -1986,14 +1873,14 @@ human readable format.</p>
     </tr>
     <tr>
       <td>name</td>
-      <td>Specify the shared library the service is implemented</td>
+      <td>Specify the name of the shared library that holds the service implementation</td>
       <td>serviceClass</td>
-      <td>the service name. Eg:- echo</td>
+      <td>the service name. Example:- echo</td>
     </tr>
     <tr>
       <td>locked</td>
       <td>Specify whether the parameter can be changed from the code</td>
-      <td>true/false</td>
+      <td>true / false</td>
       <td></td>
     </tr>
   </tbody>
@@ -2001,9 +1888,9 @@ human readable format.</p>
 
 <p></p>
 
-<h3><em><strong>operations</strong></em></h3>
+<h3><em><strong>operation</strong></em></h3>
 
-<p>The operations which the service provide are specified here.</p>
+<p>The operations of the service are specified using operation elements.</p>
 
 <table border="1">
   <caption></caption>
@@ -2016,14 +1903,12 @@ human readable format.</p>
     <tr>
       <td>name</td>
       <td>name of the operation</td>
-      <td>Eg:- echoString</td>
+      <td>Example:- echoString</td>
     </tr>
   </tbody>
 </table>
 
-<p>sub elements of <em>operation</em></p>
-
-<p><em>parameter</em> elements can be present as sub elements. Zero or more
+<p>Sub elements of <em>operation</em>: <em>parameter</em> elements can be present as sub elements. Zero or more
 parameters may be present.</p>
 
 <table border="1">
@@ -2047,9 +1932,9 @@ parameters may be present.</p>
 
 <p></p>
 
-<h3><em><strong>messageReciever</strong></em></h3>
+<h3><em><strong>messageReceiver</strong></em></h3>
 
-<p>An operation specific messageReciver is specified from this. This is
+<p>An operation specific message receiver is specified from this. This is
 optional.</p>
 
 <table border="1">
@@ -2065,7 +1950,7 @@ optional.</p>
       <td>Shared library with the message receiver implementation</td>
       <td>Name of the shared library. 
 
-        <p>Eg:-On Linux if the value is given as <em>foo</em> then shared
+        <p>Example:- On Linux if the value is given as <em>foo</em> then shared
         library is libfoo.so.</p>
 
         <p>On Windows <em>foo.dll</em>.</p>
@@ -2073,15 +1958,14 @@ optional.</p>
     </tr>
   </tbody>
 </table>
+
 <a name="appC"></a>
 <h1>Appendix C</h1>
 
 <h2 style="margin-bottom: 0in">module.xml</h2>
 
-<p>The module.xml provides the configuration details for a particular module
+<p>module.xml file provides the configuration details for a particular module
 in Axis2/C. The top level element is <em>module</em>.</p>
-
-<p></p>
 
 <h3><em>module</em></h3>
 
@@ -2096,14 +1980,14 @@ in Axis2/C. The top level element is <em>module</em>.</p>
     <tr>
       <td>name</td>
       <td>Name of the module</td>
-      <td>Eg:- addressing</td>
+      <td>Example- addressing</td>
     </tr>
     <tr>
       <td>class</td>
       <td>Specify shared library which implements the module.</td>
       <td>Name of the shared library. 
 
-        <p>Eg:-On Linux if the value is given as <em>foo</em> then shared
+        <p>Example-On Linux if the value is given as <em>foo</em> then shared
         library is libfoo.so.</p>
 
         <p>On Windows <em>foo.dll</em>.</p>
@@ -2120,7 +2004,7 @@ in Axis2/C. The top level element is <em>module</em>.</p>
 
 <h3><em>parameter</em></h3>
 
-<p>Any number of parameters can be present.It depends on the module.</p>
+<p>Any number of parameters can be present, depending on the module.</p>
 
 <table border="1">
   <caption></caption>
@@ -2133,14 +2017,13 @@ in Axis2/C. The top level element is <em>module</em>.</p>
     <tr>
       <td>name</td>
       <td>Name of the parameter</td>
-      <td>depends on the module</td>
+      <td>Depends on the module</td>
     </tr>
     <tr>
       <td>locked</td>
       <td>Whether the parameter can be changed from the code</td>
-      <td>true- cannot be changed 
-
-        <p>false- can be changed</p>
+      <td>true - cannot be changed; 
+        <p>false - can be changed</p>
       </td>
     </tr>
   </tbody>
@@ -2150,19 +2033,15 @@ in Axis2/C. The top level element is <em>module</em>.</p>
 
 <h3><em>Description</em></h3>
 
-<p>No attributes or sub elements. Describes the behavior of the module. This
-element is optional.</p>
-
-<p></p>
+<p>Describes the behavior of the module. This element is optional and has 
+no attributes or sub elements. </p>
 
 <h3><em>inflow</em></h3>
 
-<p>Encapsulate details added to the inflow by the module. Zero or one element
-is possible.No attributes.</p>
+<p>Encapsulate details added to the in-flow by the module. Zero or one element
+is possible and does not have any attributes.</p>
 
-<p>sub elements of <em>inflow</em></p>
-
-<p><em>handler</em>:- Contains details about the module specific handlers
+<p>Sub elements of <em>inflow</em> :- <em>handler</em>, contains details about the module specific handlers
 added to a particular flow. Zero or more handlers can be added.</p>
 
 <table border="1">
@@ -2183,7 +2062,7 @@ added to a particular flow. Zero or more handlers can be added.</p>
       <td>Specify shared library which implements the handler</td>
       <td><p>Name of the shared library.</p>
 
-        <p>Eg:-On Linux if the value is given as <em>foo</em> then shared
+        <p>Example:- On Linux if the value is given as <em>foo</em> then shared
         library is libfoo.so.</p>
 
         <p>On Windows <em>foo.dll</em>.</p>
@@ -2194,9 +2073,7 @@ added to a particular flow. Zero or more handlers can be added.</p>
 
 <p></p>
 
-<p>sub elements of <em>handler</em></p>
-
-<p><em>order:</em>- Specify where to put a handler in a particular phase.</p>
+<p>sub elements of <em>handler</em> :- <em>order</em>, specify where to put a handler in a particular phase.</p>
 
 <table border="1">
   <caption></caption>
@@ -2236,7 +2113,7 @@ added to a particular flow. Zero or more handlers can be added.</p>
   </tbody>
 </table>
 
-<p>phase is compulsory. Given below is combinations possible from the other 4
+<p>From the above attributes, phase is compulsory. Given below are combinations possible from the other four
 attributes.</p>
 
 <table border="1">
@@ -2275,17 +2152,15 @@ attributes.</p>
   </tbody>
 </table>
 
-<p></p>
 
-<p><em>outflow</em>,<em>INfaultflow</em>,<em>OUTfaultflow</em> elements have
+<p><em>outflow</em>, <em>INfaultflow</em>, <em>OUTfaultflow</em> elements have
 the same syntax as that of <em>inflow</em>.</p>
 
-<p></p>
 
 <h3><em>operation</em></h3>
 
-<p>This is used when a module wants to add an operation to an engaged
-service.</p>
+<p>This is used when a module wants to add operations to a
+service that engages the module.</p>
 
 <table border="1">
   <caption></caption>
@@ -2297,23 +2172,21 @@ service.</p>
     </tr>
     <tr>
       <td>name</td>
-      <td>Name of the operation(compulsory)</td>
+      <td>Name of the operation (compulsory)</td>
       <td>Depends on the module</td>
     </tr>
     <tr>
       <td>mep</td>
       <td>Message Exchange Pattern</td>
-      <td>IN-OUT,IN-ONLY</td>
+      <td>IN-OUT, IN-ONLY</td>
     </tr>
   </tbody>
 </table>
 
-<p>sub elements of <em>operation</em><em>n</em></p>
-
-<p>Any number of parameters can be included as sub elements in the operation
+<p>Sub elements of <em>operation</em> :- Any number of parameters can be included as sub elements in the operation
 element.</p>
 
-<p>The <em>messageReciever</em> parameter specifies the message receiver the
+<p>The <em>messageReceiver</em> parameter specifies the message receiver the
 message is intended to. If it is not set, the default message receiver is
 used.</p>
 
@@ -2321,8 +2194,10 @@ used.</p>
 <a name="appD"></a>
 <h1>Appendix D</h1>
 
-<p>This document describes about various types of options in the
-axis2_options.h. These options are used by the service client before sending
+<h2 style="margin-bottom: 0in">axis2_options</h2>
+
+<p>This section describes various types of options that can be set with
+<code>axis2_options</code>. These options are used by the service client before sending
 messages.</p>
 
 <p><strong>axis2_options_set_action(options, env, action)</strong></p>
@@ -2613,7 +2488,7 @@ property)</strong></p>
 
 <p><strong>axis2_options_set_relates_to(options, env, relates_to)</strong></p>
 
-<p>Some times messages may have relations.Eg:- echo. This will set for
+<p>Some times messages may have relations. Example:- echo. This will set for
 related messages</p>
 
 <table border="1">
