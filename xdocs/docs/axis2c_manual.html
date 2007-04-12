@@ -26,15 +26,15 @@ to as LIBXML2_INSTALL_DIR, and likewise.
 <h1 class="western"><a name="toc">Axis2/C Manual - Contents</a></h1>
 <ol>
   <li><a href="#quick_start">Quick Start Guide</a></li>
-  <li><a href="#repo_fold">Repository Folder</a></li>
+  <li><a href="#repo_folder">Repository Folder</a></li>
   <li><a href="#svc_api">Service API</a></li>
-  <li><a href="#cli_api">Client API</a></li>
+  <li><a href="#client_api">Client API</a></li>
   <li><a href="#rest">REST</a></li>
   <li><a href="#mtom">MTOM</a></li>
-  <li><a href="#eng_mod">Engaging a Module</a></li>
-  <li><a href="#ws_add">WS-Addressing</a></li>
-  <li><a href="#wrt_mod">Writing a Module</a></li>
-  <li><a href="#sim_ser">Simple Axis Server</a></li>
+  <li><a href="#engaging_module">Engaging a Module</a></li>
+  <li><a href="#ws_addressing">WS-Addressing</a></li>
+  <li><a href="#writing_module">Writing a Module</a></li>
+  <li><a href="#simple_axis_server">Simple Axis Server</a></li>
   <li><a href="#mod_axis2">Deploying with Apache2 HTTP Web Server</a></li>
   <li><a href="#ssl_client">Using SSL Client</a></li>
   <li><a href="#proxy">Using Proxy Support</a></li>
@@ -268,7 +268,7 @@ include:</p>
     services. It provides an easy to use API. Service client create method
     takes the location of the repository as a parameter. For the purpose of
     our sample, you can use the AXIS2C_HOME as the repository. The concept of
-    <a href="#repo_fold">repository</a> is explained in detail in a later
+    <a href="#repo_folder">repository</a> is explained in detail in a later
     section.<br>
   </li>
   <li><b>Set options to service client instance</b><br>
@@ -342,7 +342,7 @@ run the hello executable.</p>
 
 <p style="margin-bottom: 0in"><br>
 </p>
-<a name="repo_fold"></a> 
+<a name="repo_folder"></a> 
 
 <h1>2. Repository Folder</h1>
 
@@ -564,7 +564,7 @@ example used in the <a href="#quick_start">quick start guide</a>. More advanced 
 in the samples folder of Axis2/C distribution. 
 </p>
 
-<a name="cli_api"></a> 
+<a name="client_api"></a> 
 
 <h1>4. Client API</h1>
 
@@ -752,7 +752,7 @@ Please have a look at the <code>mtom</code> sample for a complete example on
 how to use MTOM.
 </p>
 
-<a name="eng_mod"></a> 
+<a name="engaging_module"></a> 
 <h1>7. Engaging a Module</h1>
 
 <p>A module is a set of handlers that helps to extend the message processing
@@ -896,7 +896,7 @@ options.</p>
 engage. For example to engage the logging module you can use: </p>
 <pre>axis2_svc_client_engage_module(svc_client, env, "logging");</pre>
 
-<a name="ws_add"></a>
+<a name="ws_addressing"></a>
 <h1>8. WS-Addressing</h1>
 
 <p><a href="http://www.w3.org/2002/ws/addr/">WS-Addressing</a> provides
@@ -953,7 +953,7 @@ From header.</p>
 be a message ID of a previously exchanged message. It helps to identify a
 previous message that relates to the current message.</p>
 
-<a name="wrt_mod"></a>
+<a name="writing_module"></a>
 <h1>9. Writing a Module</h1>
 
 <p>A module is an extension point in the Axis2/C engine. Modules are primarily used to
@@ -1038,11 +1038,15 @@ except that it is placed along the out-flow when deployed.</p>
 <p>After writing the module, the module.xml file should be written. The
 module.xml file contains all the configuration details for a particular
 module. Please see 
-<a href="#eng_mod">Engaging a Module</a> section for more details.
 Here is the sample <a href="mod_log/module.xml">module.xml</a> file for logging module.
 </p>
 
-<a name="sim_ser"></a>
+<p>Please see <a href="#engaging_module">Engaging a Module</a> section for more details on 
+how to package and deploy the module.
+</p>
+
+
+<a name="simple_axis_server"></a>
 <h1>10. Simple Axis Server</h1>
 
 <p>Simple axis server is the inbuilt HTTP server of Axis2/C.<br>
