@@ -153,7 +153,7 @@ response as an <code>axiom_node</code> and returns that.</p>
 The most important aspect to notice about this function is the function
 pointer assignments to map the interface operations to the corresponding
 functions of our implementation.This is done by assigning the ops member of 
-the service skeleton to the addess of the ops struct variable.</p>
+the service skeleton to the address of the ops struct variable.</p>
 
 <h3>1.1.3 Invoking Operation Implementation</h3>
 
@@ -197,7 +197,7 @@ contents for the services.xml file for hello service.</p>
 
 <p>The service configuration shown above specifies that the name of the
 service is hello. <br>
-The value of the "serviceclass" , "hello" in this case, will be mapped to the
+The value of the "ServiceClass" , "hello" in this case, will be mapped to the
 service implementation by the deployment engine as libhello.so on Linux or
 hello.dll on windows.<br>
 description element contains a brief description of the service. <br>
@@ -235,7 +235,7 @@ that folder.</p>
 <p>To verify that your service has been correctly deployed, you can start the
 simple axis server and then browse the list of deployed services using a Web
 browser. To start the simple axis server you can go to AXIS2C_HOME/bin folder
-and run the executable axis2_http_server. The default url that you can test
+and run the executable axis2_http_server. The default URL that you can test
 the service list with is 
 <a href="http://localhost:9090/axis2/services">http://localhost:9090/axis2/services</a>.
 You should get an entry for the hello service on the page that you get.</p>
@@ -509,7 +509,7 @@ to be implemented by a service.</p>
         const axutil_env_t *env);</pre>
       </td>
       <td>Initializes the service skeleton object instance. Axis2/C engine 
-          initializes a service skeleon instance once per a deployed service,
+          initializes a service skeleton instance once per a deployed service,
           during the first request to the service.
       </td>
     </tr>
@@ -663,15 +663,15 @@ words non-blocking)  in an Out-In MEP scenario.<br>
 sent and the response would be received on the same channel.If the
 transport is one-way then the request would be sent on one channel and the response would 
 have to come on a separate channel.<br>
-If we want to use a separate channel for the response, a seperate listner has to be started
-to receive the response, This can be done by setting the seperate listner option to true using 
+If we want to use a separate channel for the response, a separate listener has to be started
+to receive the response, This can be done by setting the separate listener option to true using 
 <code>axis2_options_set_use_separate_listener</code> function on top of options.</p>
 
 <p>
 Please have a look at the <code>echo_blocking_dual</code> sample to see how to set the separate 
 channel option.
 </p>
-<p>iPlease see <a href="#appD">Apendix D</a> for further details on setting
+<p>Please see <a href="#appD">Appendix D</a> for further details on setting
 options.</p>
 
 <a name="rest"></a> 
@@ -864,11 +864,11 @@ module.xml.</p>
     &lt;/service&gt;</pre>
 
 <p>
-One important thing to note here is that, because the loggimg module's handlers 
+One important thing to note here is that, because the logging module's handlers 
 are placed into the global phases, even though the logging module is engaged only to the echo 
 service, the module would be engaged globally. This is a feature of the Axis2 
 architecture, not a bug. However, the handlers in a module can choose to check 
-if a the module has been engaged to a perticualr service when invoked and act 
+if a the module has been engaged to a particular service when invoked and act 
 accordingly.
 </p>
 
@@ -884,7 +884,7 @@ for every message coming in or going out for all services deployed.</p>
 
 <p>On client side, if <code>&lt;module ref ="logging"/&gt;</code> is added
 in the axis2.xml, logging module specific handlers will be invoked for every
-request the client sends and every resposne the client receives. 
+request the client sends and every response the client receives. 
 If only a particular client wants to engage the
 module it can be done by engaging the module programmatically. This can be
 done by adding the following line in the client code after setting 
@@ -913,15 +913,15 @@ addressing module could be engaged both on client side as well as on server side
     by adding <code>&lt;module ref="addressing"/&gt;</code> line to the axis2.xml file.
 </p>
   
-<p>WS-Addressing module could also be programmetically engaged using following line of code 
+<p>WS-Addressing module could also be programmatically engaged using following line of code 
 with the service client API <br/>
     <pre>axis2_svc_client_engage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);</pre>
 </p>
 
 <p>
-WS-Addressign related options could be set using the <code>axis2_options</code> struct instance
+WS-Addressing related options could be set using the <code>axis2_options</code> struct instance
 on client side. On server side, there are no options to be set, if the addressing module is engaged,
-the server would employ WS-Addressing if the incomming requests have WS-Addressing headers. 
+the server would employ WS-Addressing if the incoming requests have WS-Addressing headers. 
 </p>
 
 <p>There is a mandatory requirement for using WS-Addressing on client side
@@ -957,7 +957,7 @@ previous message that relates to the current message.</p>
 <h1>9. Writing a Module</h1>
 
 <p>A module is an extension point in the Axis2/C engine. Modules are primarily used to
-WS-* specifications. In other words quality of service aspects such as security and relaiable 
+WS-* specifications. In other words quality of service aspects such as security and reliable 
 messaging could be implemented as modules and deployed with Axis2/C engine. <br/>
 A SOAP message may
 contain any number of header blocks. These header blocks provide various
@@ -977,7 +977,7 @@ header file. </p>
     axutil_env_t *env, 
     axis2_conf_ctx_t *conf_ctx, 
     axis2_module_desc_t *module_desc)</pre>
-    <p>This funcion take care of module initialisation.</p>
+    <p>This function take care of module initialization.</p>
   </li>
   <li><pre>axis2_status_t (AXIS2_CALL * 
     shutdown)(axis2_module_t *module, 
@@ -994,7 +994,7 @@ header file. </p>
 
 <p>The module developer has to implement functions with above signatures and assign them to the 
 members of an <code>axis2_module_ops</code> struct instance. Then that struct instance has to be 
-assigned to the ops member of an <code>axis2_module</code> struct instnce. </p>
+assigned to the ops member of an <code>axis2_module</code> struct instance. </p>
 
 <p>
 <a href="mod_log/mod_log.c.html">mod_log.c</a> has the source for the logging module. 
@@ -1106,7 +1106,7 @@ with the setting APACHE_BIN_DIR. Example:
 <p>
 Based on the Apache HTTP server version you are using, you also need to set the setting 
 APACHE_VERSION_IS_2_0_59 in configure.in file. If you are using Apache version 2.0.59,
-this setting should be set to 1, if the version is above that, the setting sould be 0.
+this setting should be set to 1, if the version is above that, the setting should be 0.
 Example:
 <pre>APACHE_VERSION_IS_2_0_59 = 0</pre>
 </p>
@@ -1147,15 +1147,15 @@ Axis2LogLevel LOG_LEVEL
     SetHandler axis2_module
 &lt;/Location&gt;</pre>
 
-<p>Plase note that you have to fine tune the above settings to mach your system.<br/><br/>
+<p>Please note that you have to fine tune the above settings to mach your system.<br/><br/>
 MOD_AXIS2_INSTALL_DIR has to be replaced with the full path to mod_axis2.so, 
 as an example, /usr/lib/apache2/modules/mod_axis2.so. <br/><br/>
 AXIS2C_INSTALL_DIR has to be replaced with the full path to Axis2/C repository,
 as an example, /usr/local/axis2. Note that repository path should have read access
-to the deamon user account under which Apache2 httpd process is run.<br/><br/>
+to the daemon user account under which Apache2 httpd process is run.<br/><br/>
 PATH_TO_LOG_FILE has to be replaced with the full path to where you wish to have 
 Axis2/C log file, as an example, /tmp/axis2.log. Note that log file path should have write access
-to the deamon user account under which Apache2 httpd process is run.<br/><br/>
+to the daemon user account under which Apache2 httpd process is run.<br/><br/>
 LOG_LEVEL has to be replaced with one of the following values: crit, error, warn, info, debug, trace.
 These log levels have the following meanings:
 <ul>
@@ -1177,7 +1177,7 @@ this endpoint. Example:
 <p>
 In case things are not working as expected, here are some tips on how to troubleshoot:
 <ul>
-    <li>Double check the steps you follwed in installing and configuring mod_axis2. 
+    <li>Double check the steps you followed in installing and configuring mod_axis2. 
         Check if the locations given in httpd.conf are correct, and also folder permissions.</li>
     <li>Have a look at the axis2.log file for clues as to what is going wrong. You may set the 
         log level to debug or trace to gather more information</li>
@@ -1326,8 +1326,8 @@ axis2_svc_client_set_proxy(axis2_svc_client_t *svc_client,
 <h2 style="margin-bottom: 0in">axis2.xml</h2>
 
 <p>The axis2.xml file is the configuration file for Axis2/C. It has 6 top
-level elements. They are <em>parameter, transportReciever,
-transportSender, module, phaseOrder</em> and <em>messageReciever</em>. following 
+level elements. They are <em>parameter, transportReceiver,
+transportSender, module, phaseOrder</em> and <em>messageReceiver</em>. following 
 sections describe these elements, their sub elements , element
 attributes, possible values and their purpose.</p>
 
@@ -1458,7 +1458,7 @@ as they wish.</p>
 <p></p>
 
 <p>Sub elements :- can have zero or more parameter elements<br/>
-Following table shows possibel parameter values.</p>
+Following table shows possible parameter values.</p>
 
 <table border="1">
   <caption></caption>
@@ -1554,7 +1554,7 @@ Following table shows possibel parameter values.</p>
 <p></p>
 
 <p>Sub elements :- can have zero or more parameter elements<br/>
-Following table shows possibel parameter values.</p>
+Following table shows possible parameter values.</p>
 
 <table border="1">
   <caption></caption>
@@ -1639,7 +1639,7 @@ engaged globally for every service deployed with Axis2/C.</p>
 
 <h3><em>phaseOrder</em></h3>
 
-<p>The order of phases in a perticular execution chain has to be configured using 
+<p>The order of phases in a particular execution chain has to be configured using 
 phaseOrder element.</p>
 
 <table border="1">
