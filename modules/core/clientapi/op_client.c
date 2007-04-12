@@ -559,10 +559,20 @@ axis2_op_client_free(axis2_op_client_t *op_client,
         axis2_op_ctx_free(op_client->op_ctx, env);
         op_client->op_ctx = NULL;
     }
+    
+    if (op_client->soap_version_uri)
+    {
+        AXIS2_FREE(env->allocator, op_client->soap_version_uri);
+    }
+
+    if (op_client->mep)
+    {
+        AXIS2_FREE(env->allocator, op_client->mep);
+    }
 
 	if(axis2_options_get_xml_parser_reset(op_client->options, env))
 	{
-            axiom_xml_reader_cleanup(); 
+        axiom_xml_reader_cleanup(); 
 	}
 
     AXIS2_FREE(env->allocator, op_client);

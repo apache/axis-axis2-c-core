@@ -155,6 +155,7 @@ axis2_http_sender_send(
     int status_code = -1;
 	axis2_http_simple_response_t *response = NULL;
     axis2_char_t *content_type = NULL;
+    axis2_bool_t content_type_deepl_copy = AXIS2_TRUE;
     axis2_byte_t *output_stream = NULL;
     int output_stream_size = 0;
     axis2_bool_t doing_mtom = AXIS2_FALSE;
@@ -451,15 +452,17 @@ axis2_http_sender_send(
 				content_type = content_type_value;
 			else
 				content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
+
+            content_type_deepl_copy = AXIS2_FALSE;
 		}
 
 		axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_CONTENT_TYPE, content_type);
 
-		/*if (content_type)
+        if (content_type_deepl_copy && content_type)
 		{
-			AXIS2_FREE(env->allocator, content_type);
-			content_type = NULL;
-		}*/
+            AXIS2_FREE(env->allocator, content_type);
+            content_type = NULL;
+        }
 	}
 
     if (0 == axutil_strcmp(sender->http_version,

@@ -324,8 +324,7 @@ axis2_msg_ctx_free(
 
     if (msg_ctx->soap_envelope)
     {
-/*         AXIOM_SOAP_ENVELOPE_FREE(msg_ctx->soap_envelope, env); */
-        msg_ctx->soap_envelope = NULL;
+        axiom_soap_envelope_free(msg_ctx->soap_envelope, env);
     }
 
     if (msg_ctx->fault_soap_envelope)
