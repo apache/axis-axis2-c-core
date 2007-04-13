@@ -1,49 +1,46 @@
-We are pleased to announce the release of Apache Axis2/C version 0.96.
+Apache Axis2/C Team is pleased to announce the release of Apache Axis2/C version 1.0.0
 You can download this release from
 http://ws.apache.org/axis2/c/download.cgi
 
 Key Features
 
-   1. AXIOM, an XML object model optimized for SOAP 1.1/1.2 Messages. This has complete XML infoset support.
-   2. Support for one-way messaging (In-Only) and request response messaging (In-Out)
-   3. Description hierarchy (configuration, service groups, services, operations and messages)
-   4. Directory based deployment model
-   5. Archive based deployment model
-   6. Context hierarchy (corresponding contexts to map to each level of description hierarchy)
-   7. Raw XML message receiver
-   8. Module architecture, mechanism to extend the SOAP processing model
-   9. Module version support
-  10. Transports supports: HTTP
-        o Both simple axis server and Apache2 httpd module for server side 
-        o Client transport with ability to enable SSL support
-  11. Service client and operation client APIs
-  12. REST support (HTTP POST case)
-  13. WS-Addressing, both the submission (2004/08) and final (2005/08) versions
-  14. MTOM/XOP support
-  15. Code generation tool for stub and skeleton generation for a given WSDL (based on Java tool)
-        o Axis Data Binding (ADB) support
-  16. Security module with UsernameToken support
-  17. REST support (HTTP GET case)
-  18. Dynamic invocation support (based on XML schema and WSDL implementations)
-  19. Guththila pull parser support
-  20. WSDL2C code generation tool- with schema code generation
-  21. TCP Monitor - C implementation
-  22. Axis2/C Manual
+   1. Support for one-way messaging (In-Only) and request response messaging (In-Out)
+   2. Client APIs: Easy to use service client API and more advanced operation client API
+   3. Transports supported: HTTP
+         a. Inbuilt HTTP server called simple axis server
+         b. Apache2 httpd module called mod_axis2 for server side
+         c. IIS module for server side
+         d. Client transport with ability to enable SSL support
+         e. libcurl based client transport
+   4. Module architecture, mechanism to extend the SOAP processing model
+   5. WS-Addressing support, both the submission (2004/08) and final (2005/08) versions, implemented as a module
+   6. MTOM/XOP support
+   7. AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages; This has complete XML infoset support
+   8. XML parser abstraction
+         a. Libxml2 wrapper
+         b. Guththila pull parser support
+   9. Both directory based and archive based deployment models for deploying services and modules
+  10. Description hierarchy providing access to static data of Axis2/C runtime (configuration, service groups, services, operations and messages)
+  11. Context hierarchy providing access to dynamic Axis2/C runtime information(corresponding contexts to map to each level of description hierarchy)
+  12. Message receiver abstraction
+         a. Inbuilt raw XML message receiver
+  13. Code generation tool for stub and skeleton generation for a given WSDL (based on Java tool)
+         a. Axis Data Binding (ADB) support
+  14. Transport proxy support
+  15. REST support (more POX like) using both HTTP POST and GET
+  16. Comprehensive documentation
+         a. Axis2/C Manual
 
 Major Changes Since Last Release
-   1. Major Memory leak fixes
-   2. Many Bug Fixes
-   3. Improvement to REST processing
-   4. Improvement to SOAP-Fault processing
-   5. Improvement to mod_axis2 library (plugged with apr pools)
-   6. Visual Studio 7.0 project
-  
-TODOs Remaining for 1.0
-   1. Complete API documentation and API improvements
-   2. Fix further memory leaks
-   3. Put in place a comprehensive functional test framework
 
-  
+   1. Many Bug Fixes
+   2. IIS module for server side
+   3. libcurl based client transport
+   4. Improvements to overall API to make it more user friendly, stable and binary compatible
+   5. Transport proxy support
+   6. Memory leak fixes  
+
 We welcome your early feedback on this implementation.
-Thanks for your interest in Axis2C
--- Apache Axis2C Team -- 
+Thanks for your interest in Axis2/C
+
+-- Apache Axis2/C Team -- 
