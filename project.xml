@@ -22,7 +22,7 @@
   <pomVersion>3</pomVersion>
 
   <!-- a unique name for this project -->
-  <name>Apache Axis2 C</name>
+  <name>Apache Axis2/C</name>
   <id>axis2c</id>
   <groupId>axis2c</groupId>
   <currentVersion>${axis2_version}</currentVersion>
@@ -76,6 +76,30 @@
       <organization>WSO2</organization>
     </developer>
     <developer>
+      <name>Dushshantha Chandradasa</name>
+      <id>dushshantha</id>
+      <email>dushshantha AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <name>Chris Darroch</name>
+      <id>chrisd</id>
+      <email>chrisd AT pearsoncmg.com</email>
+      <organization>Pearson Education Core Technology Group</organization>
+    </developer>
+    <developer>
+      <name>Paul Fremantle</name>
+      <id>pzf</id>
+      <email>paul AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <name>Dimuthu Gamage</name>
+      <id>dimuthucg</id>
+      <email>dimuthuc AT gmail.com</email>
+      <organization>Univerisity of Moratuwa</organization>
+    </developer>
+    <developer>
       <name>Sahan Gamage</name>
       <id>sahan</id>
       <email>sahans AT gmail.com</email>
@@ -88,6 +112,12 @@
       <organization>WSO2</organization>
     </developer>
     <developer>
+      <name>Supun Kamburugamuva</name>
+      <id>supun</id>
+      <email>supun06 AT gmail.com</email>
+      <organization>Univerisity of Moratuwa</organization>
+    </developer>
+    <developer>
       <name>Kaushalye Kapuruge</name>
       <id>kaushalye</id>
       <email>kaushalye AT wso2.com</email>
@@ -97,6 +127,24 @@
       <name>Damitha Kumarage</name>
       <id>damitha</id>
       <email>damitha AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <name>Dumindu Pallewela</name>
+      <id>dumindu</id>
+      <email>dumindu AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <name>Milinda Pathirage</name>
+      <id>milinda</id>
+      <email>milinda.pathirage AT gmail.com</email>
+      <organization>Univerisity of Moratuwa</organization>
+    </developer>
+    <developer>
+      <name>Manjula Peiris</name>
+      <id>manjula</id>
+      <email>manjula AT wso2.com</email>
       <organization>WSO2</organization>
     </developer>
     <developer>
@@ -112,36 +160,6 @@
       <organization>WSO2</organization>
     </developer>
     <developer>
-      <name>Nabeel Yoosuf</name>
-      <id>nabeel</id>
-      <email>nabeel.yoosuf AT gmail.com</email>
-      <organization>Purdue University</organization>
-    </developer>
-    <developer>
-      <name>Dushshantha Chandradasa</name>
-      <id>dushshantha</id>
-      <email>dushshantha@wso2.com</email>
-      <organization>WSO2</organization>
-    </developer>
-    <developer>
-      <name>Chris Darroch</name>
-      <id>chrisd</id>
-      <email>chrisd@pearsoncmg.com</email>
-      <organization>Pearson Education Core Technology Group</organization>
-    </developer>
-    <developer>
-      <name>Dimuthu Gamage</name>
-      <id>dimuthucg</id>
-      <email>dimuthuc AT gmail.com</email>
-      <organization>Univerisity of Moratuwa</organization>
-    </developer>
-    <developer>
-      <name>Paul Fremantle</name>
-      <id>pzf</id>
-      <email>paul AT wso2.com</email>
-      <organization>WSO2</organization>
-    </developer>
-    <developer>
       <name>Davanum Srinivas</name>
       <id>dims</id>
       <email>dims AT wso2.com</email>
@@ -153,6 +171,12 @@
       <email>sanjiva AT wso2.com</email>
       <organization>WSO2</organization>
     </developer>
+    <developer>
+      <name>Nabeel Yoosuf</name>
+      <id>nabeel</id>
+      <email>nabeel.yoosuf AT gmail.com</email>
+      <organization>Purdue University</organization>
+    </developer>    
   </developers>
   <contributors>
     <contributor>
@@ -160,20 +184,6 @@
       <email>jjc AT public.jclark.com</email>
       <roles>
 	<role>Technical Adviser on Building a Portable/Re-usable C library</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Dumindu Pallewela</name>
-      <email>dumindu@wso2.com</email>
-      <roles>
-	<role>Helps to implement Rampart</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Manjula Peiris</name>
-      <email>manjula@wso2.com</email>
-      <roles>
-	<role>Helps to improve overall quality of the code base and improve documentation</role>
       </roles>
     </contributor>
     <contributor>
