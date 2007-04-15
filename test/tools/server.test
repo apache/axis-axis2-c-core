@@ -1,5 +1,0 @@
-#! /bin/sh
-
-cd $AXIS2C_HOME/bin
-./axis2_http_server &
-
