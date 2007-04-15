@@ -38,6 +38,7 @@ to as LIBXML2_INSTALL_DIR, and likewise.
   <li><a href="#mod_axis2">Deploying with Apache2 HTTP Web Server</a></li>
   <li><a href="#ssl_client">Using SSL Client</a></li>
   <li><a href="#proxy">Using Proxy Support</a></li>
+  <li><a href="#wsdl2c">WSDL2C Tool</a></li>
   <li><a href="#appA">Appendix A - axis2.xml</a></li>
   <li><a href="#appB">Appendix B - services.xml</a></li>
   <li><a href="#appC">Appendix C - module.xml</a></li>
@@ -1323,6 +1324,64 @@ axis2_svc_client_set_proxy(axis2_svc_client_t *svc_client,
         axis2_char_t *proxy_host,
         axis2_char_t *proxy_port);
 </pre>
+
+<a name="wsdl2c"></a>
+<h1>14. WSDL2C Tool</h1>
+
+<p>WSDL2C tool that comes with Axis2/Java supports generation of Axis2/C stubs and
+skeletons for WSDL files. This is a Java tool that can be used to generate C code that works with Axis2/C.
+<a href="http://svn.apache.org/viewvc/webservices/axis2/trunk/java">Axis2/Java
+SVN</a> revision 414253 and later versions provide this facility. A basic
+guide on this Java tool can be found <a
+href="http://ws.apache.org/axis2/1_0/userguide2.html#Writing_Web_Services_by_Code_Generating_Skeleton">here.</a></p>
+<p>Before you 
+run the tool, make sure that all the .jar
+library files that comes with Axis2/Java are added to the CLASSPATH environment variable.</p>
+
+<h2>Generating Service Skeletons</h2>
+<p>The tool can be run with the following parameters and generate the
+service skeleton and other required files with ADB (Axis Data Binding) support. </p>
+<pre>
+java org.apache.axis2.wsdl.WSDL2C -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u 
+</pre>
+
+<p>To understand the meanings of the options used with the tool, please have a look 
+at the <a href="http://ws.apache.org/axis2/1_0/userguide2.html#Writing_Web_Services_by_Code_Generating_Skeleton">
+Java tool documentation</a>.</p>
+
+<p>If you need an XML in/out programming model, you can just ignore the data
+binding support. To generate code
+with no data binding support, just replace <code>-d adb -u</code>, that was used in previos command, with <code>-d none</code>.
+<pre>java org.apache.axis2.wsdl.WSDL2C -uri interoptestdoclitparameters.wsdl -ss -sd -d none</pre>
+
+<p>The WSDL file, <code>interoptestdoclitparameters.wsdl</code>, used in above 
+command examples can be found in
+&lt;axis2_src_dir&gt;/test/resources directory. </p>
+
+<p>Once the code is generated, you have to implement the businedd logic for the service.
+For this, locate the skeleton source file from the generated files. 
+To identify the locations where you can place your business logic in line with the 
+operations defined in the WSDL file that you used to generate code, look for the comment lines:
+<pre>/* Todo fill this with the necessary business logic */</pre>
+You may also go through the header files generated and understand the 
+API in line with the WSDL file that you used to generate the code.
+</p>
+
+
+<h2>Generating Client Stubs</h2>
+<p>WSDL2C code generator tool provides support for generating client 
+stubs as well. You can generate the required stubs from a given
+WSDL with the other supporting files. Use following parameters to
+generate the Axis2/C client stub code with ADB support.</p>
+<pre>java WSDL2C -uri interoptestdoclitparameters.wsdl -d adb -u</pre>
+
+<p>In order to ignore the data binding support and use raw XML in/out model,
+just use the following parameters.</p>
+<pre>java WSDL2C -uri interoptestdoclitparameters.wsdl -d none</pre>
+
+<p>Like in the case of service skeletons, you have to fill in the business logic as you require
+in client stubs as well. To do this, you have to go through the header files generated and understand the 
+API in line with the WSDL file that you used to generate the code.</p>
 
 <a name="appA"></a>
 <h1>Appendix A</h1>
