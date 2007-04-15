@@ -15,78 +15,59 @@
 <p>This document will guide you on how to install Axis2/C and run the server
 and client samples on Linux and Microsoft Windows operating systems.</p>
 
-<p>This release comes in two forms, source and binary. Instructions are given
-below to install using any of those two forms.</p>
+<p>This release comes in two forms, source and binary. This document covers both those forms.</p>
 
 <p>Please send your feedback to the developer mailing list: <a
 href="mailto:axis-c-dev@ws.apache.org">axis-c-dev@ws.apache.org</a> (please
 remember to prefix the subject with [Axis2]). To subscribe to developer
-mailing list see <a href="http://ws.apache.org/axis2/c/mail-lists.html">here</a></p>
+mailing list see <a href="http://ws.apache.org/axis2/c/mail-lists.html">here</a>.</p>
 
 <h2>Contents</h2>
 <ul>
-  <li><a href="#linux">Installing and running on Linux</a>
+  <li><a href="#linux">Installing and Running on Linux</a>
     <ul>
-      <li><a href="#linux_binary">Using binary release</a></li>
-      <li><a href="#linux_source">Using source release</a></li>
+      <li><a href="#linux_binary">Using Binary Release</a></li>
+      <li><a href="#linux_source">Using Source Release</a></li>
     </ul>
   </li>
-  <li><a href="#win">Installing and running on Microsoft Windows (win32)</a>
+  <li><a href="#win">Installing and Running on Microsoft Windows (win32)</a>
     <ul>
-      <li><a href="#win_binary">Using the binary release</a>
-        <ul>
-          <li><a href="#bin_req">Requirements</a></li>
-          <li><a href="#bin_binaries">Binaries in the release</a></li>
-          <li><a href="#bin_run">Running the binaries</a></li>
-        </ul>
+      <li><a href="#win_binary">Using Binary Release</a>
       </li>
-      <li><a href="#win_source">Using the source release</a>
-        <ul>
-          <li><a href="#src_req">Requirements</a></li>
-          <li><a href="#edit">Editing Configure.in file</a></li>
-          <li><a href="#src_compile">Compiling the source</a></li>
-          <li><a href="#src_run">Running the binaries</a></li>
-        </ul>
+      <li><a href="#win_source">Using Source Release</a>
       </li>
-    </ul>
-  </li>
-  <li><a href="#installing-apache2">Installing Apache2 Web Server integration
-    module (mod_axis2)</a>
-    <ul>
-      <li><a href="#building-apache2">Building mod_axis2 from source
-      tree</a></li>
-      <li><a href="#deploying-apache2">Deploying in Apache2 Web
-      Server</a></li>
     </ul>
   </li>
 </ul>
+
 <a id="linux"></a>
 
 <h2>1. Installing and Running on Linux</h2>
 
 <p>This can be done using binary or source distributions.(You can download the two distributions <a href="http://ws.apache.org/axis2/c/download.cgi"> here</a>)</p>
 
-<p>To get both the binary and source distributions working, you need libxml2,
-which can be <a href="http://xmlsoft.org/downloads.html">downloaded</a>.</p>
+<p>To get both the binary and source distributions working, you need 
+<a href="http://xmlsoft.org/downloads.html">Libxml2</a>.</p>
 
-<p><b>Note :</b> Most Linux systems have libxml2 installed by default. On MS
-Windows you need to download and install libxml2.</p>
+<p><b>Note :</b> Most Linux systems have Libxml2 installed by default. On MS
+Windows you need to download and install Libxml2.</p>
+
 <a id="linux_binary"></a>
 
-<h3>1.1. Using Binary Release</h3>
+<h3>1.1. Instaling Binary Distribution</h3>
 
-<p>The following steps need to be taken to install and run Axis2/C using
-binary distribution on Linux : - </p>
+<p>The following steps need to be follwed to install and run 
+Axis2/C binary distribution on Linux : - </p>
 <ol>
-  <li>Extract the binary tar package to a folder.</li>
+  <li>Extract the binary tar package to a folder</li>
   <li>Set AXIS2C_HOME environment variable pointing to the location where you
-    have extracted Axis2C
+    have extracted Axis2/C
     <ul>
       <li>AXIS2C_HOME='/your_path_to_axis2c'</li>
       <li>export AXIS2C_HOME</li>
       <p><strong>Note :</strong> You will need to set AXIS2C_HOME only if you
-      need to run Axis2C samples or tests. The reason is that the samples and
-      test codes use AXIS2C_HOME to get the path to Axis2C. To write your own
+      need to run Axis2/C samples. The reason is that the samples
+      use AXIS2C_HOME to get the path to Axis2/C repository. To write your own
       services or clients this is not a requirement.</p>
     </ul>
   </li>
@@ -100,11 +81,11 @@ binary distribution on Linux : - </p>
         </ul>
       </li>
       <li>To see the possible command line options run ./axis2_http_server -h
-        <p><strong>Note :</strong> If you run into shared lib problems, try
-        setting the LD_LIBRARY_PATH</p>
+        <p><strong>Note :</strong> If you run into shared library problems, try
+        setting the LD_LIBRARY_PATH to include the lib folder containing the Axis2/C libs.</p>
         <ul>
-          <li>export
-          LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib</li>
+          <li>LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib</li>
+          <li>export LD_LIBRARY_PATH</li>
         </ul>
       </li>
     </ul>
@@ -124,35 +105,32 @@ binary distribution on Linux : - </p>
       </li>
       <li>To see the possible command line options for sample clients run
         them with '-h' option</li>
-      <p><strong>Note :</strong> If you run into shared lib problems, try
+      <p><strong>Note :</strong> If you run into shared libbrary problems, try
       setting the LD_LIBRARY_PATH</p>
       <ul>
-        <li>export
-        LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib</li>
+          <li>LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib</li>
+          <li>export LD_LIBRARY_PATH</li>
       </ul>
     </ul>
   </li>
 </ol>
-<ai id=linux_source>
-<h3>1. 2. Using Source Release</h3>
 
-<p>The following steps need to be taken to install and run Axis2/C using
+<ai id=linux_source>
+<h3>1.2. Instaling Source Distribution</h3>
+
+<p>The following steps need to be followed to install and run Axis2/C using
 source distribution on Linux : - </p>
 <ol>
-  <li>Extract the source tar package to a folder.</li>
+  <li>Extract the source tar package to a folder</li>
   <li>Set AXIS2C_HOME environment variable pointing to the location where you
-    want to install Axis2C.
+    want to install Axis2/C
     <ul>
       <li>AXIS2C_HOME='/your_desired_path_to_axis2c_installation'</li>
-      <li>export AXIS2C_HOME
-        <ul>
-          <li><strong>Note :</strong> You will need to set AXIS2C_HOME only
-            if you need to run Axis2C samples or tests. The reason is that
-            the samples and test codes use AXIS2C_HOME to get the path to
-            Axis2C. To write your own services or clients this is not a
-            requirement.</li>
-        </ul>
-      </li>
+      <li>export AXIS2C_HOME</li>
+      <p><strong>Note :</strong> You will need to set AXIS2C_HOME only if you
+      need to run Axis2/C samples. The reason is that the samples
+      use AXIS2C_HOME to get the path to Axis2/C repository. To write your own
+      services or clients this is not a requirement.</p>
     </ul>
   </li>
   <li>Then go to the folder where you extracted the source
@@ -165,27 +143,19 @@ source distribution on Linux : - </p>
       <li>This can be done using the following command sequence in the
         directory where you have extracted the source:
         <ul>
-          <li>./configure --prefix=${AXIS2C_HOME}</li>
+          <li>./configure</li>
           <li>make</li>
           <li>make install</li>
         </ul>
       </li>
       <li>Use './configure --help' for possible command line options.</li>
       <li><strong>Note :</strong>If you do not provide a --prefix configure
-        option, it will by default be installed into /usr/local/axis2c
+        option, the default installation would be /usr/local/axis2c
         directory.</li>
       <li>You may need to try Axis2/C with Guththila XML parser. You can do
-        it by giving --enable-guththila=yes
+        that by poviding --enable-guththila=yes option when configuring
         <ul>
           <li>./configure --enable-guththila=yes [other configuration
-          options]</li>
-          <li>make</li>
-          <li>make install</li>
-        </ul>
-      </li>
-      <li>In order to build Rampart (Axis2/C security module)
-        <ul>
-          <li>./configure --enable-rampart=yes [other configuration
           options]</li>
           <li>make</li>
           <li>make install</li>
@@ -195,21 +165,21 @@ source distribution on Linux : - </p>
         samples. <br />
         To build the samples:
         <ul>
-          <li>export
-          LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/axis2c/lib/</li>
+          <li>LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path_you_installed_axis2c/lib/</li>
+          <li>export LD_LIBRARY_PATH</li>
           <li>cd samples</li>
           <li>./configure --prefix=${AXIS2C_HOME}
             --with-axis2_util=${AXIS2C_HOME}/include
             --with-axiom=${AXIS2C_HOME}/include</li>
           <li>make</li>
-          <li>sudo make install</li>
+          <li>make install</li>
         </ul>
       </li>
       <li>Please run "./configure --help" in samples folder for more
         information on configure options.</li>
       <li><strong>Note :</strong> If you do not provide a --prefix configure
         option, samples will by default be installed into
-        "/usr/local/axis2c/samples" directory.</li>
+        "/usr/local/axis2c/bin/samples" directory.</li>
     </ul>
   </li>
   <li>Go to where you installed Axis2/C.</li>
@@ -218,19 +188,18 @@ source distribution on Linux : - </p>
       <li>To start the simple axis server on port 9090 run the following
         command lines
         <ul>
-          <li>cd ${AXIS2C_HOME}/bin</li>
+          <li>cd /path_you_installed_axis2c/bin</li>
           <li>./axis2_http_server</li>
         </ul>
       </li>
-      <li>To see the possible command line options run ./axis2_http_server
-      -h</li>
+      <li>To see the possible command line options run ./axis2_http_server -h</li>
       <li><strong>Note :</strong> You may need to be logged in as a superuser to
-        run the simple axis server.</li>
+        run the simple axis server, if you installed Axis2/C as super user.</li>
     </ul>
   </li>
   <li>Run the sample clients in a new shell using the following command lines
     <ul>
-      <li>cd ${AXIS2C_HOME}/bin/samples</li>
+      <li>cd /path_you_installed_axis2c/bin/samples</li>
       <li>to run client for echo service
         <ul>
           <li>./echo</li>
@@ -246,29 +215,29 @@ source distribution on Linux : - </p>
     </ul>
   </li>
 </ol>
+
 <a id="win"></a>
 
-<h2>2. Installing and Running on Microsoft Windows (win32)</h2>
+<h2>2. Installing and Running on Microsoft Windows</h2>
 
-<p>This too can be done using either binary or source distributions.(You can download the two distributions <a href="http://ws.apache.org/axis2/c/download.cgi"> here</a>)</p>
+<p>This too can be done using either binary or source distributions.
+(You can download the two distributions <a href="http://ws.apache.org/axis2/c/download.cgi"> here</a>)</p>
 
-<p>For both the binary and source distributions, you need to <a
-href="http://xmlsoft.org/downloads.html">download</a> libxml2.</p>
+<p>For both the binary and source distributions, you need to 
+download <a href="http://xmlsoft.org/downloads.html">Libxml2</a>.</p>
 
-<p>(NOTE: most Linux systems have libxml2 by default. On MS Windows you need to
-download and install libxml2)</p>
 <a id="win_binary"></a>
 
-<h3>2. 1. Using Binary Release</h3>
+<h3>2. 1. Instaling Binary Distribution</h3>
 <a id="bin_req"></a>
 
 <h4>2.1.1. Requirements</h4>
 <ul>
   <li>The binaries shipped with this version are compiled with Microsoft
-    Visual Studio Compiler (cl)</li>
+    Visual Studio compiler (cl)</li>
 
-  <p>(Note: you can  <a href="http://msdn.microsoft.com/vstudio/express/downloads/">download Microsoft VSExpress2005 edition</a> from the Microsoft
-  Web site and install it to run these binaries)</p>
+  <p>(Note: you can  <a href="http://msdn.microsoft.com/vstudio/express/downloads/">download Microsoft VSExpress2005 edition</a> 
+  from the Microsoft Web site and install it to run these binaries)</p>
   <li>You also need the following dlls:
     <ul>
       <li>libxml2.dll [http://www.xmlsoft.org - download the version &gt;=
@@ -298,7 +267,7 @@ download and install libxml2)</p>
     <li>lib - library modules</li>
     <li>services - deployed services</li>
     <li>modules - deployed modules</li>
-    <li>include - all include files of Axis2 C</li>
+    <li>include - all include files of Axis2/C</li>
     <li>logs - system and client logs are written to this folder</li>
   </ul>
   <li>Copy libxml2.dll, iconv.dll and zlib1.dll downloaded to
@@ -316,8 +285,8 @@ download and install libxml2)</p>
       (%AXIS2C_HOME%\lib)</li>
     </ul>
   </li>
-  <li>Now everything is set to run the server (C:\axis2c\bin\&gt;
-    axis2_http_server.exe)</li>
+  <li>Now everything is set to run the server<br\>
+   C:\axis2c\bin\&gt;axis2_http_server.exe</li>
   <li>If the server is running successfully you should see the message
     "Started Simple Axis2 HTTP Server..."</li>
   <li>The log is by default created in %AXIS2C_HOME%\logs folder with the
@@ -333,7 +302,7 @@ download and install libxml2)</p>
 </ul>
 <a id="win_source"></a>
 
-<h3>2. 2. Using The Source Release</h3>
+<h3>2. 2. Instaling Source Distribution</h3>
 <a id="src_req"></a>
 
 <h4>2.2.1. Requirements</h4>
@@ -346,7 +315,7 @@ download and install libxml2)</p>
   Include and Lib folders to makefile)</p>
   <li>You also need
     <ul>
-      <li>libxml2 [http://www.xmlsoft.org - download the version &gt;=
+      <li>Libxml2 [http://www.xmlsoft.org - download the version &gt;=
         libxml2-2.6.27.win32]</li>
       <li>iconv [http://www.gnu.org/software/libiconv/ - download the version &gt;=
         iconv-1.9.1.win32]</li>
@@ -360,12 +329,12 @@ download and install libxml2)</p>
 <h4>2.2.3. Editing configure.in File</h4>
 <p>Please edit &lt;source_distribution&gt;\build\win32\configure.in file to include following information. </p>
 <ul>
-  <li>The default paths for libxml2 and iconv are specified in configure.in
+  <li>The default paths for Libxml2 and iconv are specified in configure.in
     <ul>
       <li>Example:If libxml2 is installed into C:\libxml2, edit configure.in file accordingly.</li>
     </ul>
   </li>
-  <li>You can either extract libxml2 to this folder, in which case folder
+  <li>You can either extract Libxml2 to this folder, in which case folder
     structure for C:\libxml2 should look like the following:</li>
 
   <p><img alt="Figure: C:\libxml2 Folder Structure"
@@ -373,15 +342,15 @@ download and install libxml2)</p>
 
   <p>Or extract to a location of your choice and edit the configure.in
   accordingly.</p>
-  <li>You need to have zlib1.dll in a library path. You may copy this dll to
+  <li>You need to have zlib1.dll in a library path. You may copy this DLL to
     libxml2/lib.</li>
-  <li>If you need the parser to use guththila xml parser, ENABLE_GUTHTHILA option should be set to 1 in configure.in
+  <li>If you need the parser to use Guththila XML parser, ENABLE_GUTHTHILA option should be set to 1 in configure.in
     <ul>
       <li>Example: ENABLE_GUTHTHILA  = 1 </li>
     </ul>
   </li>
-
 </ul>
+
 <a id="src_compile"></a>
 
 <h4>2.2.4. Compiling The Source</h4>
@@ -398,7 +367,7 @@ download and install libxml2)</p>
       <li>C:\axis2c\build\win32&gt; vcvars32.bat</li>
     </ul>
     <p>(Note: You may need to set the PATH environment variable to
-    vcvars32.bat if Windows complaints that it cannot find this bat. This file is located in 
+    vcvars32.bat if Windows complaints that it cannot find this batch file. This file is located in 
     &lt;your MS Visual Studio install Directory&gt;\VC\bin directory.)</p>
   </li>
   <li>To build the system and create the binary files in a directory named deploy under build
@@ -434,7 +403,7 @@ download and install libxml2)</p>
         (C:\axis2c\build\deploy)</li>
       <li>Add the path to lib directory to PATH variable
       (%AXIS2C_HOME%\lib)</li>
-      <li>Copy libxml2.dll, iconv.dll and zlib1.dll to axis2c lib folder
+      <li>Copy libxml2.dll, iconv.dll and zlib1.dll to Axis2/C lib folder
         (%AXIS2C_HOME%\lib)</li>
     </ul>
   </li>
@@ -453,109 +422,6 @@ download and install libxml2)</p>
       <li>Example: C:\axis2c\build\deploy\bin\samples&gt; echo.exe</li>
     </ul>
   </li>
-</ul>
-<a id="installing-apache2"></a>
-
-<h3>3. Installing Apache2 Web Server Integration Module (mod_axis2).</h3>
-<a id="building-apache2"></a>
-
-<h4>3.1. Building mod_axis2 From Source Tree</h4>
-
-<h4>3.1.1 On Linux Platform:</h4>
-<ul>
-  <li>Provide the apache2 include files location as configure option
-    ./configure --with-apache2="&lt;apache2 include files location&gt;"
-    [other configure options] - Some apache2 distributions install APR
-    (Apache Portable Runtime) include files in a separate location which is
-    required to build mod_axis2. In that case use
-    <ul>
-      <li>./configure --with-apache2="&lt;apache2 include files location&gt;"
-        --with-apr="&lt;apr include files location&gt;" [other configure
-        options]</li>
-    </ul>
-  </li>
-  <li>Then build the source tree
-    <ul>
-      <li>make</li>
-      <li>make install</li>
-      <p>This will install mod_axis2.so into your
-      "&lt;your_path_to_axis2c&gt;/lib"</p>
-    </ul>
-  </li>
-</ul>
-
-<h4>3.1.2 On Win32 Platform:</h4>
-<ul>
-  <li>Provide the apache2 location in configure.in file in
-    APACHE_BIN_DIR<br /> 
-    eg : APACHE_BIN_DIR = E:\Apache <br /> 
-    Allways use a directory with no spaces in the name.
-    <p>If you have not installed apache2 httpd server, you can download apache2 installation files from <a
-    href="http://httpd.apache.org/download.cgi">here</a> and install it.</p>
-  </li>
-  <li>After compiling the sources (As described in <a
-    href="#win">Section 2</a>) build the mod_axis2.dll by issuing the
-    command "nmake axis2_apache_module" from &lt;axis2c_source_distribution&gt;\build\win32 directory.</li>
-  <li>This will build the mod_axis2.dll and copy it to %AXIS2C_HOME%\lib
-    directory.<br />
-    eg: C:\axis2c\build\deploy\lib</li>
-</ul>
-<a id="deploying-apache2"></a>
-
-<h4>3.2. Deploying in Apache2 Web Server</h4>
-
-<p><b>Note:</b> To do the following tasks you might need super user
-privileges in your machine.</p>
-<ul>
-  <li>Copy the mod_axis2 (libmod_axis2.so.0.0.0 on Linux and mod_axis2.dll in
-    Windows) to "&lt;apache2 modules directory&gt;" (eg:
-    /usr/lib/apache2/modules in Linux or C:\Apache2\modules in Windows) as
-    mod_axis2.so
-    <p>eg: cp $AXIS2C_HOME/lib/libmod_axis2.so.0.0.0
-    /usr/lib/apache2/modules/mod_axis2.so<br />
-    copy C:\axis2c\build\deploy\lib\mod_axis2.dll
-    C:\Apache2\modules\mod_axis2.so</p>
-  </li>
-  <li>Edit Apache2's configuration file (generally httpd.conf) and add
-    the following directive : - 
-    <pre>    LoadModule axis2_module &lt;apache2 modules directory&gt;/mod_axis2.so
-    Axis2RepoPath &lt;axis2 repository path&gt;
-    Axis2LogFile &lt;axis2 log file path&gt;
-    Axis2LogLevel LOG_LEVEL
-    &lt;Location /axis2&gt;
-        SetHandler axis2_module
-    &lt;/Location&gt;    
-    </pre>
-    <p>LOG_LEVEL can be one of following</p>
-    <p>AXIS2_LOG_LEVEL_CRITICAL - Log critical errors only <br />
-    AXIS2_LOG_LEVEL_ERROR - Log errors critical errors <br />
-    AXIS2_LOG_LEVEL_WARNING - Log warnings and above <br />
-    AXIS2_LOG_LEVEL_INFO - Log info and above <br />
-    AXIS2_LOG_LEVEL_DEBUG - Log debug and above (default) <br />
-    AXIS2_LOG_LEVEL_TRACE - Log trace messages</p>
-  </li>
-  <P>An example of a httpd.conf:<br>
-  <PRE> LoadModule axis2_module modules/mod_axis2.dll
-        Axis2RepoPath C:/axis2c/build/deploy
-        Axis2LogFile C:/axis2c/build/deploy/logs
-        Axis2LogLevel AXIS2_LOG_LEVEL_DEBUG
-        &lt;Location /axis2&gt;
-                SetHandler axis2_module
-        &lt;/Location&gt;
-  </PRE></P>
-  <li>Use forward slashes "/" for path seperators in &lt;apache2 modules
-    directory&gt;, &lt;axis2 repository path&gt; and &lt;axis2 log file
-    path&gt;</li>
-  <li>Make sure that the Apache2 user has correct permissions to above
-    paths.<br />
-
-    <ul>
-      <li>Read permission to the repository</li>
-      <li>Write permission to the log file</li>
-    </ul>
-  </li>
-  <li>Restart Apache2 and test whether mod_axis2 module is loaded by typing
-    the URL http://localhost/axis2/services</li>
 </ul>
 </body>
 </html>
