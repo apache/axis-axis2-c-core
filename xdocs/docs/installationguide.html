@@ -5,12 +5,12 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-  <title>Axis2-C Installation Guide</title>
+  <title>Apache Axis2/C Installation Guide</title>
   <meta name="generator" content="Bluefish 1.0.5"/>
 </head>
 
 <body>
-<h1>Axis2/C Installation Guide</h1>
+<h1>Apache Axis2/C Installation Guide</h1>
 
 <p>This document will guide you on how to install Axis2/C and run the server
 and client samples on Linux and Microsoft Windows operating systems.</p>
@@ -54,9 +54,9 @@ Windows you need to download and install Libxml2.</p>
 
 <a id="linux_binary"></a>
 
-<h3>1.1. Instaling Binary Distribution</h3>
+<h3>1.1. Installing Binary Distribution</h3>
 
-<p>The following steps need to be follwed to install and run 
+<p>The following steps need to be followed to install and run 
 Axis2/C binary distribution on Linux : - </p>
 <ol>
   <li>Extract the binary tar package to a folder</li>
@@ -105,7 +105,7 @@ Axis2/C binary distribution on Linux : - </p>
       </li>
       <li>To see the possible command line options for sample clients run
         them with '-h' option</li>
-      <p><strong>Note :</strong> If you run into shared libbrary problems, try
+      <p><strong>Note :</strong> If you run into shared library problems, try
       setting the LD_LIBRARY_PATH</p>
       <ul>
           <li>LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib</li>
@@ -116,7 +116,7 @@ Axis2/C binary distribution on Linux : - </p>
 </ol>
 
 <ai id=linux_source>
-<h3>1.2. Instaling Source Distribution</h3>
+<h3>1.2. Installing Source Distribution</h3>
 
 <p>The following steps need to be followed to install and run Axis2/C using
 source distribution on Linux : - </p>
@@ -153,7 +153,7 @@ source distribution on Linux : - </p>
         option, the default installation would be /usr/local/axis2c
         directory.</li>
       <li>You may need to try Axis2/C with Guththila XML parser. You can do
-        that by poviding --enable-guththila=yes option when configuring
+        that by providing --enable-guththila=yes option when configuring
         <ul>
           <li>./configure --enable-guththila=yes [other configuration
           options]</li>
@@ -228,7 +228,7 @@ download <a href="http://xmlsoft.org/downloads.html">Libxml2</a>.</p>
 
 <a id="win_binary"></a>
 
-<h3>2. 1. Instaling Binary Distribution</h3>
+<h3>2. 1. Installing Binary Distribution</h3>
 <a id="bin_req"></a>
 
 <h4>2.1.1. Requirements</h4>
@@ -238,7 +238,7 @@ download <a href="http://xmlsoft.org/downloads.html">Libxml2</a>.</p>
 
   <p>(Note: you can  <a href="http://msdn.microsoft.com/vstudio/express/downloads/">download Microsoft VSExpress2005 edition</a> 
   from the Microsoft Web site and install it to run these binaries)</p>
-  <li>You also need the following dlls:
+  <li>You also need the following DLLs:
     <ul>
       <li>libxml2.dll [http://www.xmlsoft.org - download the version &gt;=
        libxml2-2.6.27.win32]</li>
@@ -262,7 +262,7 @@ download <a href="http://xmlsoft.org/downloads.html">Libxml2</a>.</p>
 
   <p><em>The above folders contain the following files:</em></p>
   <ul>
-    <li>bin - server and other executables</li>
+    <li>bin - server and other executable</li>
     <li>bin\samples - client samples go here</li>
     <li>lib - library modules</li>
     <li>services - deployed services</li>
@@ -292,7 +292,7 @@ download <a href="http://xmlsoft.org/downloads.html">Libxml2</a>.</p>
   <li>The log is by default created in %AXIS2C_HOME%\logs folder with the
     name axis2.log.</li>
   <li>(Note: You may provide command line options to change the default
-    behaviour. Use the command "axis2_http_server.exe -h" to learn about the
+    behavior. Use the command "axis2_http_server.exe -h" to learn about the
     usage)</li>
   <li>Now you can run any sample client located in %AXIS2C_HOME%\bin\samples\
     <ul>
@@ -302,7 +302,7 @@ download <a href="http://xmlsoft.org/downloads.html">Libxml2</a>.</p>
 </ul>
 <a id="win_source"></a>
 
-<h3>2. 2. Instaling Source Distribution</h3>
+<h3>2. 2. Installing Source Distribution</h3>
 <a id="src_req"></a>
 
 <h4>2.2.1. Requirements</h4>
@@ -383,7 +383,7 @@ download <a href="http://xmlsoft.org/downloads.html">Libxml2</a>.</p>
 
   <p><em>The above folders contain the following files:</em></p>
   <ul>
-    <li>bin - server and other executables</li>
+    <li>bin - server and other executable</li>
     <li>bin\samples - client samples</li>
     <li>lib - library modules</li>
     <li>services - deployed services</li>
@@ -414,7 +414,7 @@ download <a href="http://xmlsoft.org/downloads.html">Libxml2</a>.</p>
   <li>The log is by default created under %AXIS2C_HOME%\logs folder with the
     name axis2.log.</li>
   <li>(Note: you may provide command line options to change the default
-    behaviour. Use the command "axis2_http_server.exe -h" to learn about the
+    behavior. Use the command "axis2_http_server.exe -h" to learn about the
     usage)</li>
   <li>Now you can run any sample client deployed under
     %AXIS2C_HOME%\bin\samples\
