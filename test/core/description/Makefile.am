@@ -9,18 +9,18 @@ test_description_LDADD   =  \
 			../../../axiom/src/om/libaxis2_axiom.la \
 			../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 			-lpthread \
-			$(top_builddir)/modules/core/engine/libaxis2_engine.la \
-			$(top_builddir)/modules/core/transport/http/common/libaxis2_http_common.la \
+			$(top_builddir)/src/core/engine/libaxis2_engine.la \
+			$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
                     $(LIBXML2_LIBS)
                     
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/core/description \
-            -I$(top_builddir)/modules/core/context \
-            -I$(top_builddir)/modules/core/phaseresolver \
-            -I$(top_builddir)/modules/core/deployment \
-            -I$(top_builddir)/modules/core/transport \
-            -I$(top_builddir)/modules/core/engine \
-            -I$(top_builddir)/modules/core/clientapi \
+            -I$(top_builddir)/src/core/description \
+            -I$(top_builddir)/src/core/context \
+            -I$(top_builddir)/src/core/phaseresolver \
+            -I$(top_builddir)/src/core/deployment \
+            -I$(top_builddir)/src/core/transport \
+            -I$(top_builddir)/src/core/engine \
+            -I$(top_builddir)/src/core/clientapi \
 			-I ../../../util/include \
 			-I ../../../axiom/include 
 

@@ -10,6 +10,6 @@ libaxis2_http_util_la_LIBADD=$(top_builddir)/util/src/libaxutil.la \
 
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/core/engine \
+            -I$(top_builddir)/src/core/engine \
             -I$(top_builddir)/util/include \
             -I$(top_builddir)/axiom/include

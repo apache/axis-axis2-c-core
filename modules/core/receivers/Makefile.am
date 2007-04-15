@@ -5,7 +5,7 @@ libaxis2_receivers_la_SOURCES = msg_recv.c \
                                 svr_callback.c
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/core/engine \
-            -I$(top_builddir)/modules/core/util \
+            -I$(top_builddir)/src/core/engine \
+            -I$(top_builddir)/src/core/util \
             -I$(top_builddir)/util/include	\
             -I$(top_builddir)/axiom/include

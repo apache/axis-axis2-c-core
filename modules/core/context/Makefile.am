@@ -8,6 +8,6 @@ libaxis2_context_la_SOURCES =	ctx.c \
                             conf_ctx.c
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/core/engine \
+            -I$(top_builddir)/src/core/engine \
             -I$(top_builddir)/util/include \
             -I$(top_builddir)/axiom/include

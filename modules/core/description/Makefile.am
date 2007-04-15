@@ -14,7 +14,7 @@ libaxis2_description_la_SOURCES =desc.c \
                                 msg.c 
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/core/engine \
+            -I$(top_builddir)/src/core/engine \
             -I$(top_builddir)/util/include \
             -I$(top_builddir)/axiom/include
 

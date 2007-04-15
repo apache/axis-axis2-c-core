@@ -36,7 +36,7 @@ AXIS2_RELEASE_DIR=axis2c-bin-$(RELEASE_VER)-win32
  
 AXIS2_BINDIR   = ..\deploy
 AXIS2_SERVICES = $(AXIS2_BINDIR)\services
-AXIS2_MODULES  = $(AXIS2_BINDIR)\modules
+AXIS2_MODULES  = $(AXIS2_BINDIR)\src
 AXIS2_LIBS     = $(AXIS2_BINDIR)\lib
 AXIS2_BINS     = $(AXIS2_BINDIR)\bin
 AXIS2_INCLUDE  = $(AXIS2_BINDIR)\include
@@ -56,7 +56,7 @@ AXIS2_INTDIR_CORE  = $(AXIS2_INTDIR)\core
 AXIS2_INTDIR_TNS = $(AXIS2_INTDIR)\http_sender
 AXIS2_INTDIR_TNR = $(AXIS2_INTDIR)\http_receiver
 AXIS2_INTDIR_PARSER = $(AXIS2_INTDIR)\axis2_parser
-AXIS2_INTDIR_ADDRESSING = $(AXIS2_INTDIR)\modules\addressing
+AXIS2_INTDIR_ADDRESSING = $(AXIS2_INTDIR)\src\addressing
 AXIS2_INTDIR_SAMPLES = $(AXIS2_INTDIR)\samples
 AXIS2_INTDIR_GUTHTHILA = $(AXIS2_INTDIR)\guththila
 
@@ -101,15 +101,15 @@ AXIS2_INCLUDE_PATH = 	/I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\om  \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\soap \
 		/I$(AXIS2_SOURCE_DIR)\util\include\platforms \
-		/I$(AXIS2_SOURCE_DIR)\modules\core\clientapi \
-		/I$(AXIS2_SOURCE_DIR)\modules\core\deployment \
-		/I$(AXIS2_SOURCE_DIR)\modules\core\description \
-		/I$(AXIS2_SOURCE_DIR)\modules\core\transport \
+		/I$(AXIS2_SOURCE_DIR)\src\core\clientapi \
+		/I$(AXIS2_SOURCE_DIR)\src\core\deployment \
+		/I$(AXIS2_SOURCE_DIR)\src\core\description \
+		/I$(AXIS2_SOURCE_DIR)\src\core\transport \
 		/I$(AXIS2_SOURCE_DIR)\include \
-		/I$(AXIS2_SOURCE_DIR)\modules\core\engine \
-		/I$(AXIS2_SOURCE_DIR)\modules\core\context \
-		/I$(AXIS2_SOURCE_DIR)\modules\core\util \
-		/I$(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\apache2 \
+		/I$(AXIS2_SOURCE_DIR)\src\core\engine \
+		/I$(AXIS2_SOURCE_DIR)\src\core\context \
+		/I$(AXIS2_SOURCE_DIR)\src\core\util \
+		/I$(AXIS2_SOURCE_DIR)\src\core\transport\http\server\apache2 \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\attachments \
 		/I$(LIBXML2_BIN_DIR)\include \
 		/I$(ICONV_BIN_DIR)\include \
@@ -143,36 +143,36 @@ AXIOM_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\om\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\attachments\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\util\*.c
 
-AXIS2_ENGINE_SRC =  $(AXIS2_SOURCE_DIR)\modules\core\addr\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\clientapi\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\context\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\deployment\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\description\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\engine\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\phaseresolver\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\receivers\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\util\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\transport\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\common\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\util\*.c
+AXIS2_ENGINE_SRC =  $(AXIS2_SOURCE_DIR)\src\core\addr\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\clientapi\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\context\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\deployment\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\description\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\engine\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\phaseresolver\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\receivers\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\util\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\transport\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\transport\http\common\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\transport\http\util\*.c
 		
 		
-AXIS2_HTTP_SENDER_SRC = $(AXIS2_SOURCE_DIR)\modules\core\transport\http\sender\*.c
+AXIS2_HTTP_SENDER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\sender\*.c
 
 
 !if "$(ENABLE_SSL)" == "1"
 AXIS2_HTTP_SENDER_SRC = $(AXIS2_HTTP_SENDER_SRC) \
-		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\sender\ssl\*.c
+		$(AXIS2_SOURCE_DIR)\src\core\transport\http\sender\ssl\*.c
 !endif
 !if "$(ENABLE_LIBCURL)" == "1"
 AXIS2_HTTP_SENDER_SRC = $(AXIS2_HTTP_SENDER_SRC) \
-		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\sender\libcurl\*.c
+		$(AXIS2_SOURCE_DIR)\src\core\transport\http\sender\libcurl\*.c
 !endif
 
 
-AXIS2_HTTP_RECEIVER_SRC = $(AXIS2_SOURCE_DIR)\modules\core\transport\http\receiver\*.c 
+AXIS2_HTTP_RECEIVER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\receiver\*.c 
 
-AXIS2_MOD_ADDR_SRC = $(AXIS2_SOURCE_DIR)\modules\mod_addr\*.c
+AXIS2_MOD_ADDR_SRC = $(AXIS2_SOURCE_DIR)\src\mod_addr\*.c
 
 GUTHTHILA_SRC = $(AXIS2_SOURCE_DIR)\guththila\src\*.c
 
@@ -317,13 +317,13 @@ axis2_mod_addr:
 	$(CC) $(CFLAGS) $(AXIS2_MOD_ADDR_SRC) /Fo$(AXIS2_INTDIR_ADDRESSING)\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_ADDRESSING)\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_MODULES)\addressing\$(AXIS2_MOD_ADDR).dll
-	copy $(AXIS2_SOURCE_DIR)\modules\mod_addr\module.xml $(AXIS2_MODULES)\addressing
+	copy $(AXIS2_SOURCE_DIR)\src\mod_addr\module.xml $(AXIS2_MODULES)\addressing
 
 
 
 		
 ##### simple_axis_server
-SIMPLE_AXIS2_SVR_SRC=$(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\simple_axis2_server\http_server_main.c
+SIMPLE_AXIS2_SVR_SRC=$(AXIS2_SOURCE_DIR)\src\core\transport\http\server\simple_axis2_server\http_server_main.c
 axis2_server: 
 	if not exist $(AXIS2_INTDIR)\simple_http_server mkdir $(AXIS2_INTDIR)\simple_http_server
 	
@@ -344,7 +344,7 @@ axis2_core_guththila: axis2_util guththila axis2_parser_with_guththila axiom axi
 
 #apache module 
 
-AXIS2_APACHE_MODULE_SRC=$(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\apache2\*.c
+AXIS2_APACHE_MODULE_SRC=$(AXIS2_SOURCE_DIR)\src\core\transport\http\server\apache2\*.c
 
 axis2_apache_module:
     if not exist $(AXIS2_INTDIR)\apache_module mkdir $(AXIS2_INTDIR)\apache_module
@@ -354,9 +354,9 @@ axis2_apache_module:
 	
 #mod IIS
 
-MOD_IIS_SRC = $(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\iis\*.c \
-	      $(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\IIS\iis_iaspi_plugin_51\*.c 
-DEF_FILE = $(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\IIS\mod_axis2.def
+MOD_IIS_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\server\iis\*.c \
+	      $(AXIS2_SOURCE_DIR)\src\core\transport\http\server\IIS\iis_iaspi_plugin_51\*.c 
+DEF_FILE = $(AXIS2_SOURCE_DIR)\src\core\transport\http\server\IIS\mod_axis2.def
 
 	
 axis2_IIS_module:
@@ -373,11 +373,11 @@ axis2_mod_log:
 	if not exist $(AXIS2_INTDIR_SAMPLES)\mod_log mkdir $(AXIS2_INTDIR_SAMPLES)\mod_log
 	if not exist $(AXIS2_SAMPLES)\logging mkdir $(AXIS2_SAMPLES)\logging
 
-	$(CC) $(CFLAGS)  $(AXIS2_SOURCE_DIR)\modules\mod_log\*.c /Fo$(AXIS2_INTDIR_SAMPLES)\mod_log\ /c
+	$(CC) $(CFLAGS)  $(AXIS2_SOURCE_DIR)\src\mod_log\*.c /Fo$(AXIS2_INTDIR_SAMPLES)\mod_log\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_SAMPLES)\mod_log\*.obj $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_SAMPLES)\logging\axis2_mod_log.dll 
 	
-	copy $(AXIS2_SOURCE_DIR)\modules\mod_log\module.xml $(AXIS2_SAMPLES)\logging
+	copy $(AXIS2_SOURCE_DIR)\src\mod_log\module.xml $(AXIS2_SAMPLES)\logging
 
 #sample services
 
@@ -782,7 +782,7 @@ tcpmon:
 
 ################################# SAVAN #################################################
 
-SAVAN_INTDIR = $(AXIS2_INTDIR)\modules\savan
+SAVAN_INTDIR = $(AXIS2_INTDIR)\src\savan
 
 SAVAN_SRC = $(AXIS2_SOURCE_DIR)\savan\src\client\*.c  \
 			$(AXIS2_SOURCE_DIR)\savan\src\core\*.c \
@@ -850,17 +850,17 @@ SRC_DIR = $(AXIS2_SOURCE_DIR)\util\src\platforms\windows\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\soap\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\attachments\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\util\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\addr\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\clientapi\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\context\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\deployment\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\description\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\engine\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\phaseresolver\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\receivers\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\util\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\wsdl\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\addr\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\clientapi\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\context\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\deployment\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\description\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\engine\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\phaseresolver\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\receivers\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\util\*.c \
+		$(AXIS2_SOURCE_DIR)\src\core\transport\http\*.c \
+		$(AXIS2_SOURCE_DIR)\src\wsdl\*.c \
 
 axis2:
 	$(CC) $(CFLAGS) /Fo $(AXIS2_INCLUDE_PATH) $(SRC_DIR) /D "_WINDLL" /Gm /Zi /c

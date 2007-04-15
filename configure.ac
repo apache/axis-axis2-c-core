@@ -319,30 +319,30 @@ export WRAPPER_DIR
 export prefix 
 
 AC_CONFIG_FILES([Makefile \
-    modules/Makefile \
-    modules/core/Makefile \
-    modules/core/description/Makefile \
-    modules/core/context/Makefile \
-    modules/core/engine/Makefile \
-    modules/core/addr/Makefile \
-    modules/core/phaseresolver/Makefile \
-    modules/core/transport/Makefile \
-    modules/core/transport/http/Makefile \
-    modules/core/transport/http/common/Makefile \
-    modules/core/transport/http/util/Makefile \
-    modules/core/transport/http/sender/Makefile \
-    modules/core/transport/http/sender/ssl/Makefile \
-    modules/core/transport/http/sender/libcurl/Makefile \
-    modules/core/transport/http/receiver/Makefile \
-    modules/core/transport/http/server/simple_axis2_server/Makefile \
-    modules/core/transport/http/server/Makefile \
-    modules/core/transport/http/server/apache2/Makefile \
-    modules/core/deployment/Makefile \
-    modules/core/clientapi/Makefile \
-    modules/core/receivers/Makefile \
-    modules/core/util/Makefile \
-    modules/mod_addr/Makefile \
-    modules/mod_log/Makefile \
+    src/Makefile \
+    src/core/Makefile \
+    src/core/description/Makefile \
+    src/core/context/Makefile \
+    src/core/engine/Makefile \
+    src/core/addr/Makefile \
+    src/core/phaseresolver/Makefile \
+    src/core/transport/Makefile \
+    src/core/transport/http/Makefile \
+    src/core/transport/http/common/Makefile \
+    src/core/transport/http/util/Makefile \
+    src/core/transport/http/sender/Makefile \
+    src/core/transport/http/sender/ssl/Makefile \
+    src/core/transport/http/sender/libcurl/Makefile \
+    src/core/transport/http/receiver/Makefile \
+    src/core/transport/http/server/simple_axis2_server/Makefile \
+    src/core/transport/http/server/Makefile \
+    src/core/transport/http/server/apache2/Makefile \
+    src/core/deployment/Makefile \
+    src/core/clientapi/Makefile \
+    src/core/receivers/Makefile \
+    src/core/util/Makefile \
+    src/mod_addr/Makefile \
+    src/mod_log/Makefile \
     test/Makefile \
     test/core/Makefile \
     test/core/description/Makefile \
@@ -353,7 +353,6 @@ AC_CONFIG_FILES([Makefile \
     test/core/addr/Makefile \
     test/core/transport/Makefile\
     test/core/transport/http/Makefile \
-    test/tools/Makefile \
     ides/Makefile \
     ides/anjuta/Makefile \
     include/Makefile \

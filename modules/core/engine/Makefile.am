@@ -12,28 +12,28 @@ libaxis2_engine_la_SOURCES= ../transport/transport_receiver.c handler.c \
                         	ctx_handler.c \
                         	engine.c
 
-libaxis2_engine_la_LIBADD=$(top_builddir)/modules/core/description/libaxis2_description.la \
-                    $(top_builddir)/modules/core/receivers/libaxis2_receivers.la \
-					$(top_builddir)/modules/core/deployment/libaxis2_deployment.la \
-					$(top_builddir)/modules/core/context/libaxis2_context.la \
-					$(top_builddir)/modules/core/addr/libaxis2_addr.la \
-					$(top_builddir)/modules/core/clientapi/libaxis2_clientapi.la \
-					$(top_builddir)/modules/core/phaseresolver/libaxis2_phaseresolver.la \
-					$(top_builddir)/modules/core/util/libaxis2_core_utils.la \
-					$(top_builddir)/modules/core/transport/http/common/libaxis2_http_common.la \
-					$(top_builddir)/modules/core/transport/http/util/libaxis2_http_util.la \
+libaxis2_engine_la_LIBADD=$(top_builddir)/src/core/description/libaxis2_description.la \
+                    $(top_builddir)/src/core/receivers/libaxis2_receivers.la \
+					$(top_builddir)/src/core/deployment/libaxis2_deployment.la \
+					$(top_builddir)/src/core/context/libaxis2_context.la \
+					$(top_builddir)/src/core/addr/libaxis2_addr.la \
+					$(top_builddir)/src/core/clientapi/libaxis2_clientapi.la \
+					$(top_builddir)/src/core/phaseresolver/libaxis2_phaseresolver.la \
+					$(top_builddir)/src/core/util/libaxis2_core_utils.la \
+					$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+					$(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 					$(top_builddir)/util/src/libaxutil.la \
 					$(top_builddir)/axiom/src/om/libaxis2_axiom.la 
 
 INCLUDES = 	-I$(top_builddir)/include \
-            -I$(top_builddir)/modules/wsdl \
-            -I$(top_builddir)/modules/core/description \
-            -I$(top_builddir)/modules/core/engine \
-            -I$(top_builddir)/modules/core/phaseresolver \
-            -I$(top_builddir)/modules/core/deployment \
-            -I$(top_builddir)/modules/core/context \
-            -I$(top_builddir)/modules/core/util \
-            -I$(top_builddir)/modules/core/clientapi \
+            -I$(top_builddir)/src/wsdl \
+            -I$(top_builddir)/src/core/description \
+            -I$(top_builddir)/src/core/engine \
+            -I$(top_builddir)/src/core/phaseresolver \
+            -I$(top_builddir)/src/core/deployment \
+            -I$(top_builddir)/src/core/context \
+            -I$(top_builddir)/src/core/util \
+            -I$(top_builddir)/src/core/clientapi \
             -I$(top_builddir)/util/include \
             -I$(top_builddir)/axiom/include
 

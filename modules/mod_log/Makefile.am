@@ -7,16 +7,16 @@ libaxis2_mod_log_la_SOURCES = log_in_handler.c \
                                 mod_log.c
 
 libaxis2_mod_log_la_LIBADD =  \
-					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
+					$(top_builddir)/src/core/engine/libaxis2_engine.la \
 					$(top_builddir)/util/src/libaxutil.la \
 					$(top_builddir)/axiom/src/om/libaxis2_axiom.la
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/core/description \
-            -I$(top_builddir)/modules/core/context \
-            -I$(top_builddir)/modules/core/phaseresolver \
-            -I$(top_builddir)/modules/core/engine \
-            -I$(top_builddir)/modules/core/deployment \
+            -I$(top_builddir)/src/core/description \
+            -I$(top_builddir)/src/core/context \
+            -I$(top_builddir)/src/core/phaseresolver \
+            -I$(top_builddir)/src/core/engine \
+            -I$(top_builddir)/src/core/deployment \
             -I$(top_builddir)/util/include\
             -I$(top_builddir)/axiom/include
 
