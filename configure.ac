@@ -341,8 +341,9 @@ AC_CONFIG_FILES([Makefile \
     src/core/clientapi/Makefile \
     src/core/receivers/Makefile \
     src/core/util/Makefile \
-    src/mod_addr/Makefile \
-    src/mod_log/Makefile \
+    src/modules/Makefile \
+    src/modules/mod_addr/Makefile \
+    src/modules/mod_log/Makefile \
     test/Makefile \
     test/core/Makefile \
     test/core/description/Makefile \

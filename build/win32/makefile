@@ -172,7 +172,7 @@ AXIS2_HTTP_SENDER_SRC = $(AXIS2_HTTP_SENDER_SRC) \
 
 AXIS2_HTTP_RECEIVER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\receiver\*.c 
 
-AXIS2_MOD_ADDR_SRC = $(AXIS2_SOURCE_DIR)\src\mod_addr\*.c
+AXIS2_MOD_ADDR_SRC = $(AXIS2_SOURCE_DIR)\src\modules\mod_addr\*.c
 
 GUTHTHILA_SRC = $(AXIS2_SOURCE_DIR)\guththila\src\*.c
 
@@ -317,7 +317,7 @@ axis2_mod_addr:
 	$(CC) $(CFLAGS) $(AXIS2_MOD_ADDR_SRC) /Fo$(AXIS2_INTDIR_ADDRESSING)\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_ADDRESSING)\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_MODULES)\addressing\$(AXIS2_MOD_ADDR).dll
-	copy $(AXIS2_SOURCE_DIR)\src\mod_addr\module.xml $(AXIS2_MODULES)\addressing
+	copy $(AXIS2_SOURCE_DIR)\src\modules\mod_addr\module.xml $(AXIS2_MODULES)\addressing
 
 
 
@@ -373,11 +373,11 @@ axis2_mod_log:
 	if not exist $(AXIS2_INTDIR_SAMPLES)\mod_log mkdir $(AXIS2_INTDIR_SAMPLES)\mod_log
 	if not exist $(AXIS2_SAMPLES)\logging mkdir $(AXIS2_SAMPLES)\logging
 
-	$(CC) $(CFLAGS)  $(AXIS2_SOURCE_DIR)\src\mod_log\*.c /Fo$(AXIS2_INTDIR_SAMPLES)\mod_log\ /c
+	$(CC) $(CFLAGS)  $(AXIS2_SOURCE_DIR)\src\modules\mod_log\*.c /Fo$(AXIS2_INTDIR_SAMPLES)\mod_log\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_SAMPLES)\mod_log\*.obj $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_SAMPLES)\logging\axis2_mod_log.dll 
 	
-	copy $(AXIS2_SOURCE_DIR)\src\mod_log\module.xml $(AXIS2_SAMPLES)\logging
+	copy $(AXIS2_SOURCE_DIR)\src\modules\mod_log\module.xml $(AXIS2_SAMPLES)\logging
 
 #sample services
 
