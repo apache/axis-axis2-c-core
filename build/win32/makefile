@@ -778,6 +778,7 @@ axis2_server_modules: axis2_apache_module axis2_IIS_module
 
 tcpmon: 
 	if not exist $(AXIS2_INTDIR)\tools\tcpmon mkdir $(AXIS2_INTDIR)\tools\tcpmon
+	if not exist $(AXIS2_TOOLS) mkdir $(AXIS2_TOOLS)
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_CRT_SECURE_NO_DEPRECATE" $(AXIS2_INCLUDE_PATH) \
 	/I $(AXIS2_SOURCE_DIR)\tools\tcpmon\include \
 	$(AXIS2_SOURCE_DIR)\tools\tcpmon\src\*.c /Fo$(AXIS2_INTDIR)\tools\tcpmon\ /c
