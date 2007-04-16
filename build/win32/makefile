@@ -785,65 +785,6 @@ tcpmon:
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\tools\tcpmon\*.obj $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib /OUT:$(AXIS2_TOOLS)\tcpmon.exe
 
-################################# SAVAN #################################################
-
-SAVAN_INTDIR = $(AXIS2_INTDIR)\src\savan
-
-SAVAN_SRC = $(AXIS2_SOURCE_DIR)\savan\src\client\*.c  \
-			$(AXIS2_SOURCE_DIR)\savan\src\core\*.c \
-			$(AXIS2_SOURCE_DIR)\savan\src\msgreceivers\*.c \
-			$(AXIS2_SOURCE_DIR)\savan\src\subscribers\*.c \
-			$(AXIS2_SOURCE_DIR)\savan\src\util\*.c \
-			$(AXIS2_SOURCE_DIR)\savan\src\handlers\*.c 
-			
-savan_dirs:
-	if not exist $(AXIS2_BINDIR)\savan mkdir $(AXIS2_BINDIR)\savan
-	if not exist $(AXIS2_BINDIR)\savan\savan mkdir $(AXIS2_BINDIR)\savan\savan
-	if not exist $(AXIS2_BINDIR)\savan\samples mkdir $(AXIS2_BINDIR)\savan\samples
-	if not exist $(AXIS2_BINDIR)\savan\services\listener mkdir $(AXIS2_BINDIR)\savan\services\listener
-	if not exist $(AXIS2_BINDIR)\savan\services\publisher mkdir $(AXIS2_BINDIR)\savan\services\publisher
-	if not exist $(AXIS2_BINDIR)\savan\bin mkdir $(AXIS2_BINDIR)\savan\bin
-	if not exist $(AXIS2_BINDIR)\savan\include mkdir $(AXIS2_BINDIR)\savan\include
-
-	if not exist $(SAVAN_INTDIR) mkdir $(SAVAN_INTDIR)
-	if not exist $(SAVAN_INTDIR)\samples\client\subscriber mkdir $(SAVAN_INTDIR)\samples\client\subscriber
-	if not exist $(SAVAN_INTDIR)\samples\server\listener mkdir $(SAVAN_INTDIR)\samples\server\listener
-	if not exist $(SAVAN_INTDIR)\samples\server\publisher mkdir $(SAVAN_INTDIR)\samples\server\publisher
-
-mod_savan: savan_dirs
-	   
-	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\savan\include $(SAVAN_SRC) /Fo$(SAVAN_INTDIR)\ /c
-	$(LD) $(LDFLAGS) $(SAVAN_INTDIR)\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
-	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_BINDIR)\savan\savan\mod_savan.dll
-	copy $(AXIS2_SOURCE_DIR)\savan\src\data\module.xml $(AXIS2_BINDIR)\savan\savan\
-	
-savan_samples:
-	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\savan\samples\client\subscriber\*.c \
-	/I$(AXIS2_SOURCE_DIR)\savan\include /Fo$(SAVAN_INTDIR)\samples\client\subscriber\ /c
-	$(LD) $(LDFLAGS) $(SAVAN_INTDIR)\samples\client\subscriber\*.obj axutil.lib axiom.lib axis2_parser.lib mod_savan.lib axis2_engine.lib $(LIBS) \
-	/LIBPATH:$(AXIS2_BINDIR)\savan\savan /OUT:$(AXIS2_BINDIR)\savan\bin\subscriber.exe
-	
-	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\savan\samples\server\listener\*.c \
-	/I$(AXIS2_SOURCE_DIR)\savan\include /Fo$(SAVAN_INTDIR)\samples\server\listener\ /c
-	$(LD) $(LDFLAGS) $(SAVAN_INTDIR)\samples\server\listener\*.obj axutil.lib axiom.lib axis2_parser.lib mod_savan.lib axis2_engine.lib $(LIBS) \
-	/LIBPATH:$(AXIS2_BINDIR)\savan\savan /DLL /OUT:$(AXIS2_BINDIR)\savan\services\listener\listener.dll
-	
-	copy $(AXIS2_SOURCE_DIR)\savan\samples\server\listener\services.xml $(AXIS2_BINDIR)\savan\services\listener\
-	
-	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\savan\samples\server\publisher\*.c \
-	/I$(AXIS2_SOURCE_DIR)\savan\include /Fo$(SAVAN_INTDIR)\samples\server\publisher\ /c
-	$(LD) $(LDFLAGS) $(SAVAN_INTDIR)\samples\server\publisher\*.obj axutil.lib axiom.lib axis2_parser.lib mod_savan.lib axis2_engine.lib $(LIBS) \
-	/LIBPATH:$(AXIS2_BINDIR)\savan\savan /DLL /OUT:$(AXIS2_BINDIR)\savan\services\publisher\publisher.dll
-	
-	copy $(AXIS2_SOURCE_DIR)\savan\samples\server\publisher\services.xml $(AXIS2_BINDIR)\savan\services\publisher\
-	
-	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\savan\samples $(AXIS2_BINDIR)\savan\samples
-	
-savan_include:
-	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\savan\include $(AXIS2_BINDIR)\savan\include
-	
-savan: mod_savan savan_samples savan_include
-
 ##############################################################################################
 #axis2.dll
 
