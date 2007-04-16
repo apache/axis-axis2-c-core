@@ -41,6 +41,7 @@ AXIS2_LIBS     = $(AXIS2_BINDIR)\lib
 AXIS2_BINS     = $(AXIS2_BINDIR)\bin
 AXIS2_INCLUDE  = $(AXIS2_BINDIR)\include
 AXIS2_SAMPLES  = $(AXIS2_BINS)\samples
+AXIS2_TOOLS    = $(AXIS2_BINS)\tools
 AXIS2_LOG      = $(AXIS2_BINDIR)\logs
 AXIS2_TESTS    = $(AXIS2_BINDIR)\tests
 AXIS2_TESTS_SYS = $(AXIS2_TESTS)\system_tests
@@ -781,7 +782,7 @@ tcpmon:
 	/I $(AXIS2_SOURCE_DIR)\tools\tcpmon\include \
 	$(AXIS2_SOURCE_DIR)\tools\tcpmon\src\*.c /Fo$(AXIS2_INTDIR)\tools\tcpmon\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\tools\tcpmon\*.obj $(AXUTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib /OUT:$(AXIS2_BINS)\tcpmon.exe
+	$(AXIS2_PARSER).lib /OUT:$(AXIS2_TOOLS)\tcpmon.exe
 
 ################################# SAVAN #################################################
 
@@ -882,5 +883,5 @@ all: $(PARSER)
 
 install: all
 
-dist: all axis2_server_modules savan copy_extra copy_samples copy_vc_projects mv_dist
+dist: all axis2_apache_module tcpmon copy_extra copy_samples copy_vc_projects mv_dist
 
