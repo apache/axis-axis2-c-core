@@ -21,7 +21,7 @@
       Tutorial</a></li>
       <li><a href="#What_is_Pull_Parsing">What is Pull Parsing</a></li>
       <li><a href="#Features_of_OM">Features of AXIOM</a></li>
-      <li><a href="#Where_Does_SOAP_Come_into_Play?">Where does SOAP come
+      <li><a href="#Where_Does_SOAP_Come_into_Play">Where does SOAP come
         into play?</a></li>
     </ul>
   </li>
@@ -126,7 +126,7 @@ height="282" /></p>
 <code>axiom_xml_reader</code> API. Hence the complexities of the pull event
 stream are hidden form the user.</p>
 
-<a id="Where_Does_SOAP_Come_into_Play?"></a>
+<a id="Where_Does_SOAP_Come_into_Play"></a>
 <h3>Where does SOAP come into play?</h3>
 
 <p>In a nutshell SOAP is an information exchange protocol based on XML. SOAP
@@ -264,11 +264,8 @@ be referenced using that pointer.</p>
 <code>my_node</code> pointer, it will return
 <code>AXIOM_ELEMENT</code>.</p>
 
-<div>
-<p></p>
-
 <p><b>Code Listing 1</b></p>
-</div>
+
 <pre>axiom_xml_reader_t&nbsp;*xml_reader&nbsp;=&nbsp;NULL;<br />
 axiom_stax_builder_t&nbsp;*om_builder&nbsp;=&nbsp;NULL;<br />
 axiom_soap_builder_t&nbsp;*soap_builder&nbsp;=&nbsp;NULL;<br />
@@ -290,7 +287,7 @@ builders, namely the <code>axiom_stax_builder_t</code> and the
 information to the XML infoset model to build AXIOM tree.</p>
 
 <p><b>Code Listing 2</b></p>
-</div>
+
 <pre class="code">axiom_namespace_t *ns1 = NULL;
 axiom_namespace_t *ns2 = NULL;
 
@@ -411,9 +408,9 @@ namespace declarations list before setting the own namespace reference.</p>
 <p>The following sample code segment shows how the namespaces are dealt with
 in AXIOM.</p>
 
-<div>
+
 <p><b>Code Listing 6</b></p>
-</div>
+
 <pre class="code">axiom_namespace_t *ns1 = NULL;
 axiom_namespace_t *ns2 = NULL;
 axiom_namespace_t *ns3 = NULL;
@@ -651,10 +648,9 @@ Serialization</b></h3>
 <p>The following code segment shows how to use the AXIOM for completely building
 a document and then serializing it into text pushing the output to the
 console.</p>
-<div>
 <p></p>
 <p><b>Code Listing 10</b></p>
-</div>
+
 <pre>#include&nbsp;&lt;axiom.h&gt;
 #include&nbsp;&lt;axis2_util.h&gt;
 #include&nbsp;&lt;axutil_env.h&gt;
