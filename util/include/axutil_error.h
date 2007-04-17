@@ -558,6 +558,23 @@ extern "C"
         AXIS2_ERROR_LAST
     };
         
+    /** 
+     * \brief Array to hold error messages
+     * Array to hold error messages. Note that array has capacity for 
+     * additional error messages. These are reserved for modules.
+     * In writing a module following steps must be followed in extending axis2c
+     * errors
+     * 1. Declare the start of error messages for the new module.
+          For example in sandesha2 module we have
+          #define SANDESHA2_ERROR_CODES_START (AXIS2_ERROR_LAST + 1000)
+          Above line indicates that the new modules error messages start from 
+          1000 messages after the axis2 last error message.
+       2. New module can use up to 1000 messages for its errors.
+       3. In axis2c documentation an entry about new modules error range must
+          be inserted so that another new module can know about the already
+          occupied spaces. 
+     */
+    const axis2_char_t* axutil_error_messages[AXIS2_ERROR_LAST + 10000];
     struct axutil_error;
 	typedef enum axis2_status_codes axis2_status_codes_t;
 	typedef enum axutil_error_codes axutil_error_codes_t;

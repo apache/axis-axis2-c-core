@@ -18,9 +18,6 @@
 #include <stdlib.h>
 #include "axutil_error_default.h"
 
-/* array to hold error messages */
-const axis2_char_t* axutil_error_messages[AXIS2_ERROR_LAST];
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_error_init()
 {
