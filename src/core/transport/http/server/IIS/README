@@ -1,7 +1,7 @@
 How to configure IIS module for Axis2C
 ________________________________________
 
-Use the Axis2C vc project or makefile to buid the component.
+Use the Axis2/C VC project or makefile to buid the component.
 
 In this document I assume that the mod_axis2_IIS.dll is in the directory 
 c:\axis2c\lib\mod_axis2_IIS.dll and axis2c_home is c:\axis2c
