@@ -930,7 +930,11 @@ axiom_stax_builder_next_with_token(axiom_stax_builder_t *om_builder,
             break;
 
         case AXIOM_XML_READER_SPACE:
-            /* Do nothing */
+            val = axiom_stax_builder_create_om_text(om_builder, env);
+            if (!val)
+            {
+                return -1;
+            }
             break;
 
         case AXIOM_XML_READER_CHARACTER:
@@ -974,5 +978,6 @@ axiom_stax_builder_next_with_token(axiom_stax_builder_t *om_builder,
     }
     return token;
 }
+
 
 
