@@ -24,6 +24,7 @@
 #include <axiom_soap_const.h>
 #include <axiom_soap_body.h>
 #include <axiom_soap_header.h>
+#include <axiom_util.h>
 #include <axis2_listener_manager.h>
 #include <axis2_module_desc.h>
 #include <axutil_array_list.h>
