@@ -238,7 +238,6 @@ axis2_apache2_worker_process_request(
                 body_string_len = axutil_stream_get_len(out_stream, env);
             }
             send_status =  HTTP_INTERNAL_SERVER_ERROR;
-             axis2_msg_ctx_free(fault_ctx, env);
         }
     }
     if (-1 == send_status)
