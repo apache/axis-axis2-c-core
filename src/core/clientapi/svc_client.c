@@ -760,6 +760,17 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
 
     if (!soap_body)
     {
+        axiom_node_t *node =  axiom_soap_envelope_get_base_node(soap_envelope, env);
+        if (node)
+        {
+            axiom_element_t *envelope_element = 
+                (axiom_element_t*) axiom_node_get_data_element(node, env);
+            axiom_util_get_first_child_element_with_localname(envelope_element,     
+                env, node, AXIOM_SOAP_BODY_LOCAL_NAME, &soap_node);
+            if (soap_node){
+                return axiom_node_get_first_element(soap_node, env);
+            }
+        }
         return NULL;
     }
 

@@ -300,7 +300,6 @@ axutil_stream_write_basic(axutil_stream_t *stream,
     if (!buffer)
         return -1;
 
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[axutil_stream_write_basic]  %s %d",(char*)buffer, count);
     
     stream = stream;
     new_len = stream->len + count;
