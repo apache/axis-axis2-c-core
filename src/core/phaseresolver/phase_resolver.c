@@ -1295,7 +1295,7 @@ axis2_phase_resolver_engage_module_to_svc(
                 module_d_qname_l))
             {
                 engaged = AXIS2_TRUE;
-                status = AXIS2_FAILURE;
+                status = AXIS2_SUCCESS;
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                     "Module %s already engaged.", 
                     axutil_qname_get_localpart(module_d_qname, env));
