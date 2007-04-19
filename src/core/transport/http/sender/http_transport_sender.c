@@ -45,6 +45,8 @@ typedef struct axis2_http_transport_sender_impl
 }
 axis2_http_transport_sender_impl_t;
 
+#define AXIS2_WS_RM_ANONYMOUS_URL "http://docs.oasis-open.org/ws-rx/wsmc/200702/anonymous?id="
+
 #define AXIS2_INTF_TO_IMPL(transport_sender) \
                          ((axis2_http_transport_sender_impl_t *)\
                      (transport_sender))
@@ -220,7 +222,8 @@ axis2_http_transport_sender_invoke(
                     AXIS2_WSA_ANONYMOUS_URL_SUBMISSION,
                     axis2_endpoint_ref_get_address(ctx_epr, env)) &&
                 0 != axutil_strcmp(AXIS2_WSA_ANONYMOUS_URL,
-                        axis2_endpoint_ref_get_address(ctx_epr, env)))
+                        axis2_endpoint_ref_get_address(ctx_epr, env)) &&
+                !(axutil_strstr(axis2_endpoint_ref_get_address(ctx_epr, env), AXIS2_WS_RM_ANONYMOUS_URL)))
         {
             epr = ctx_epr;
         }
