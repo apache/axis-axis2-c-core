@@ -1,5 +1,6 @@
 
                           Apache Axis2/C Util
+                          ====================
 
   What is it?
   -----------
@@ -39,12 +40,13 @@
        list, axis-c-user@ws.apache.org' as described at
        http://ws.apache.org/axis2/c/mail-lists.html
 
-     o If you have a bug report for Apache Axis2/C Util please go log a Jira issue
+    o If you have a bug report for Apache Axis2/C Guththila please log-in and create a JIRA issue
        at http://issues.apache.org/jira/browse/AXIS2C
 
-     o If you want to participate in actively developing Apache Axis2/C Util please
+     o If you want to participate actively in developing Apache Axis2/C Guththila please
        subscribe to the `axis-c-dev@ws.apache.org' mailing list as described at
        http://ws.apache.org/axis2/c/mail-lists.html
+
 
   Acknowledgments
   ----------------

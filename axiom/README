@@ -1,5 +1,6 @@
 
                           Apache Axiom/C
+                         ================
 
   What is it?
   -----------
@@ -8,10 +9,7 @@
   refers to the XML infoset model that is initially developed for Apache
   Axis2. This is an effort to implement Apache Axiom in C.
 
-  Please have a look at
-
-  http://ws.apache.org/axis2/c/docs/om_tutorial.html
-
+  Please have a look at http://ws.apache.org/axis2/c/docs/om_tutorial.html
   for an introduction about Apache Axiom/C.
   
   As a project of the Apache Software Foundation, the
@@ -44,12 +42,13 @@
        list, axis-c-user@ws.apache.org' as described at
        http://ws.apache.org/axis2/c/mail-lists.html
 
-     o If you have a bug report for Apache Axiom/C please go log a Jira issue
+    o If you have a bug report for Apache Axis2/C Guththila please log-in and create a JIRA issue
        at http://issues.apache.org/jira/browse/AXIS2C
 
-     o If you want to participate in actively developing Apache Axiom/C please
+     o If you want to participate actively in developing Apache Axis2/C Guththila please
        subscribe to the `axis-c-dev@ws.apache.org' mailing list as described at
        http://ws.apache.org/axis2/c/mail-lists.html
+
 
   Acknowledgments
   ----------------
