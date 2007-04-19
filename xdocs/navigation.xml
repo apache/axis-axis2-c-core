@@ -15,6 +15,10 @@
 	<item name="Mailing Lists" href="list.html"/>
         <item name="Checkout Source Code" href="svn.html"/>
       </item>
+      <item name="Developer Guideline">
+	<item name="Coding Convension" href="coding_conventions.html"/>
+        <item name="Versionning" href="version.html"/>
+      </item>
       <item name="Project Information" href="team-list.html">
         <item name="Project Team" href="team-list.html"/>
         <item name="Source Code"
