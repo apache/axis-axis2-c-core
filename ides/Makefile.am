@@ -1,2 +1,2 @@
-SUBDIRS = anjuta
+SUBDIRS =
 EXTRA_DIST = README vc

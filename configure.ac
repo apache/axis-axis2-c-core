@@ -355,7 +355,6 @@ AC_CONFIG_FILES([Makefile \
     test/core/transport/Makefile\
     test/core/transport/http/Makefile \
     ides/Makefile \
-    ides/anjuta/Makefile \
     include/Makefile \
     axis2c.pc
     ])
