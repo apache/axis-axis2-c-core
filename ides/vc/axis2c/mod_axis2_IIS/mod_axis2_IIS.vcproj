@@ -182,26 +182,26 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\IIS\axis2_iis_out_transport_info.c"
+				RelativePath="..\..\..\..\src\core\transport\http\server\IIS\axis2_iis_out_transport_info.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\IIS\axis2_iis_stream.c"
+				RelativePath="..\..\..\..\src\core\transport\http\server\IIS\axis2_iis_stream.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\IIS\axis2_iis_worker.c"
+				RelativePath="..\..\..\..\src\core\transport\http\server\IIS\axis2_iis_worker.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\IIS\axis2_isapi_plugin.c"
+				RelativePath="..\..\..\..\src\core\transport\http\server\IIS\axis2_isapi_plugin.c"
 				>
 			</File>
 			<Filter
 				Name="IIS_5.1"
 				>
 				<File
-					RelativePath="..\..\..\..\modules\core\transport\http\server\IIS\iis_iaspi_plugin_51\axis2_isapi_51.c"
+					RelativePath="..\..\..\..\src\core\transport\http\server\IIS\iis_iaspi_plugin_51\axis2_isapi_51.c"
 					>
 				</File>
 			</Filter>
@@ -212,23 +212,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\IIS\axis2_iis_constants.h"
+				RelativePath="..\..\..\..\src\core\transport\http\server\IIS\axis2_iis_constants.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\IIS\axis2_iis_out_transport_info.h"
+				RelativePath="..\..\..\..\src\core\transport\http\server\IIS\axis2_iis_out_transport_info.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\IIS\axis2_iis_stream.h"
+				RelativePath="..\..\..\..\src\core\transport\http\server\IIS\axis2_iis_stream.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\IIS\axis2_iis_worker.h"
+				RelativePath="..\..\..\..\src\core\transport\http\server\IIS\axis2_iis_worker.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\IIS\axis2_isapi_plugin.h"
+				RelativePath="..\..\..\..\src\core\transport\http\server\IIS\axis2_isapi_plugin.h"
 				>
 			</File>
 		</Filter>

@@ -182,15 +182,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\..\..\modules\mod_addr\addr_in_handler.c"
+				RelativePath="..\..\..\..\src\modules\mod_addr\addr_in_handler.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\mod_addr\addr_out_handler.c"
+				RelativePath="..\..\..\..\src\modules\mod_addr\addr_out_handler.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\mod_addr\mod_addr.c"
+				RelativePath="..\..\..\..\src\modules\mod_addr\mod_addr.c"
 				>
 			</File>
 		</Filter>

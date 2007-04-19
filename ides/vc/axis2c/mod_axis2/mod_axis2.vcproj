@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="./../../../../include;./../../../../util/include;./../../../../axiom/include;"
+				AdditionalIncludeDirectories="./../../../../include;./../../../../util/include;./../../../../axiom/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;MOD_AXIS2_EXPORTS;AXIS2_DECLARE_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -179,19 +179,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\apache2\apache2_out_transport_info.c"
+				RelativePath="..\..\..\..\src\core\transport\http\server\apache2\apache2_out_transport_info.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\apache2\apache2_stream.c"
+				RelativePath="..\..\..\..\src\core\transport\http\server\apache2\apache2_stream.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\apache2\apache2_worker.c"
+				RelativePath="..\..\..\..\src\core\transport\http\server\apache2\apache2_worker.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\apache2\mod_axis2.c"
+				RelativePath="..\..\..\..\src\core\transport\http\server\apache2\mod_axis2.c"
 				>
 			</File>
 		</Filter>
@@ -201,19 +201,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\apache2\apache2_stream.h"
+				RelativePath="..\..\..\..\src\core\transport\http\server\apache2\apache2_stream.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\apache2\axis2_apache2_out_transport_info.h"
+				RelativePath="..\..\..\..\src\core\transport\http\server\apache2\axis2_apache2_out_transport_info.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\server\apache2\axis2_apache2_worker.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_http_out_transport_info.h"
+				RelativePath="..\..\..\..\src\core\transport\http\server\apache2\axis2_apache2_worker.h"
 				>
 			</File>
 		</Filter>

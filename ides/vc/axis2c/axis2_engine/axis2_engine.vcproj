@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\..\..\..\..\woden\include;.\..\..\..\..\include;.\..\..\..\..\modules\core\deployment;.\..\..\..\..\util\include;.\..\..\..\..\xml_schema\include;.\..\..\..\..\axiom\include;"
+				AdditionalIncludeDirectories=".\..\..\..\..\woden\include;.\..\..\..\..\include;.\..\..\..\..\src\core\deployment;.\..\..\..\..\util\include;.\..\..\..\..\xml_schema\include;.\..\..\..\..\axiom\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_ENGINE_EXPORTS;AXIS2_DECLARE_EXPORT;_CRT_SECURE_NO_DEPRECATE;AXIS2_SVR_MULTI_THREADED;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -187,23 +187,23 @@
 				Name="addr"
 				>
 				<File
-					RelativePath="..\..\..\..\modules\core\addr\any_content_type.c"
+					RelativePath="..\..\..\..\src\core\addr\any_content_type.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\addr\endpoint_ref.c"
+					RelativePath="..\..\..\..\src\core\addr\endpoint_ref.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\addr\msg_info_headers.c"
+					RelativePath="..\..\..\..\src\core\addr\msg_info_headers.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\addr\relates_to.c"
+					RelativePath="..\..\..\..\src\core\addr\relates_to.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\addr\svc_name.c"
+					RelativePath="..\..\..\..\src\core\addr\svc_name.c"
 					>
 				</File>
 			</Filter>
@@ -211,51 +211,51 @@
 				Name="engine"
 				>
 				<File
-					RelativePath="..\..\..\..\modules\core\engine\addr_disp.c"
+					RelativePath="..\..\..\..\src\core\engine\addr_disp.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\engine\axis2_event.h"
+					RelativePath="..\..\..\..\src\core\engine\axis2_disp_checker.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\engine\conf.c"
+					RelativePath="..\..\..\..\src\core\engine\conf.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\engine\ctx_handler.c"
+					RelativePath="..\..\..\..\src\core\engine\ctx_handler.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\engine\disp.c"
+					RelativePath="..\..\..\..\src\core\engine\disp.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\engine\disp_checker.c"
+					RelativePath="..\..\..\..\src\core\engine\disp_checker.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\engine\engine.c"
+					RelativePath="..\..\..\..\src\core\engine\engine.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\engine\handler.c"
+					RelativePath="..\..\..\..\src\core\engine\handler.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\engine\phase.c"
+					RelativePath="..\..\..\..\src\core\engine\phase.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\engine\req_uri_disp.c"
+					RelativePath="..\..\..\..\src\core\engine\req_uri_disp.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\engine\soap_action_disp.c"
+					RelativePath="..\..\..\..\src\core\engine\soap_action_disp.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\engine\soap_body_disp.c"
+					RelativePath="..\..\..\..\src\core\engine\soap_body_disp.c"
 					>
 				</File>
 			</Filter>
@@ -263,35 +263,35 @@
 				Name="clientapi"
 				>
 				<File
-					RelativePath="..\..\..\..\modules\core\clientapi\async_result.c"
+					RelativePath="..\..\..\..\src\core\clientapi\async_result.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\clientapi\callback.c"
+					RelativePath="..\..\..\..\src\core\clientapi\callback.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\clientapi\callback_recv.c"
+					RelativePath="..\..\..\..\src\core\clientapi\callback_recv.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\clientapi\listener_manager.c"
+					RelativePath="..\..\..\..\src\core\clientapi\listener_manager.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\clientapi\op_client.c"
+					RelativePath="..\..\..\..\src\core\clientapi\op_client.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\clientapi\options.c"
+					RelativePath="..\..\..\..\src\core\clientapi\options.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\clientapi\stub.c"
+					RelativePath="..\..\..\..\src\core\clientapi\stub.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\clientapi\svc_client.c"
+					RelativePath="..\..\..\..\src\core\clientapi\svc_client.c"
 					>
 				</File>
 			</Filter>
@@ -299,27 +299,27 @@
 				Name="context"
 				>
 				<File
-					RelativePath="..\..\..\..\modules\core\context\conf_ctx.c"
+					RelativePath="..\..\..\..\src\core\context\conf_ctx.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\context\ctx.c"
+					RelativePath="..\..\..\..\src\core\context\ctx.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\context\msg_ctx.c"
+					RelativePath="..\..\..\..\src\core\context\msg_ctx.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\context\op_ctx.c"
+					RelativePath="..\..\..\..\src\core\context\op_ctx.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\context\svc_ctx.c"
+					RelativePath="..\..\..\..\src\core\context\svc_ctx.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\context\svc_grp_ctx.c"
+					RelativePath="..\..\..\..\src\core\context\svc_grp_ctx.c"
 					>
 				</File>
 			</Filter>
@@ -327,103 +327,55 @@
 				Name="deployment"
 				>
 				<File
-					RelativePath="..\..\..\..\modules\core\deployment\arch_file_data.c"
+					RelativePath="..\..\..\..\src\core\deployment\arch_file_data.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\deployment\arch_reader.c"
+					RelativePath="..\..\..\..\src\core\deployment\arch_reader.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\deployment\axis2_arch_file_data.h"
+					RelativePath="..\..\..\..\src\core\deployment\conf_builder.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\deployment\axis2_arch_reader.h"
+					RelativePath="..\..\..\..\src\core\deployment\conf_init.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\deployment\axis2_conf_builder.h"
+					RelativePath="..\..\..\..\src\core\deployment\dep_engine.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\deployment\axis2_dep_engine.h"
+					RelativePath="..\..\..\..\src\core\deployment\desc_builder.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\deployment\axis2_deployment.h"
+					RelativePath="..\..\..\..\src\core\deployment\module_builder.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\deployment\axis2_desc_builder.h"
+					RelativePath="..\..\..\..\src\core\deployment\phases_info.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\deployment\axis2_module_builder.h"
+					RelativePath="..\..\..\..\src\core\deployment\repos_listener.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\deployment\axis2_repos_listener.h"
+					RelativePath="..\..\..\..\src\core\deployment\svc_builder.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\deployment\axis2_svc_builder.h"
+					RelativePath="..\..\..\..\src\core\deployment\svc_grp_builder.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\deployment\axis2_svc_grp_builder.h"
+					RelativePath="..\..\..\..\src\core\deployment\ws_info.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\deployment\axis2_ws_info.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\modules\core\deployment\axis2_ws_info_list.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\modules\core\deployment\conf_builder.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\modules\core\deployment\conf_init.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\modules\core\deployment\dep_engine.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\modules\core\deployment\desc_builder.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\modules\core\deployment\module_builder.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\modules\core\deployment\phases_info.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\modules\core\deployment\repos_listener.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\modules\core\deployment\svc_builder.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\modules\core\deployment\svc_grp_builder.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\modules\core\deployment\ws_info.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\modules\core\deployment\ws_info_list.c"
+					RelativePath="..\..\..\..\src\core\deployment\ws_info_list.c"
 					>
 				</File>
 			</Filter>
@@ -431,51 +383,51 @@
 				Name="description"
 				>
 				<File
-					RelativePath="..\..\..\..\modules\core\description\desc.c"
+					RelativePath="..\..\..\..\src\core\description\desc.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\description\flow.c"
+					RelativePath="..\..\..\..\src\core\description\flow.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\description\flow_container.c"
+					RelativePath="..\..\..\..\src\core\description\flow_container.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\description\handler_desc.c"
+					RelativePath="..\..\..\..\src\core\description\handler_desc.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\description\module_desc.c"
+					RelativePath="..\..\..\..\src\core\description\module_desc.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\description\msg.c"
+					RelativePath="..\..\..\..\src\core\description\msg.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\description\op.c"
+					RelativePath="..\..\..\..\src\core\description\op.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\description\phase_rule.c"
+					RelativePath="..\..\..\..\src\core\description\phase_rule.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\description\svc.c"
+					RelativePath="..\..\..\..\src\core\description\svc.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\description\svc_grp.c"
+					RelativePath="..\..\..\..\src\core\description\svc_grp.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\description\transport_in_desc.c"
+					RelativePath="..\..\..\..\src\core\description\transport_in_desc.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\description\transport_out_desc.c"
+					RelativePath="..\..\..\..\src\core\description\transport_out_desc.c"
 					>
 				</File>
 			</Filter>
@@ -483,11 +435,11 @@
 				Name="phaseresolver"
 				>
 				<File
-					RelativePath="..\..\..\..\modules\core\phaseresolver\phase_holder.c"
+					RelativePath="..\..\..\..\src\core\phaseresolver\phase_holder.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\phaseresolver\phase_resolver.c"
+					RelativePath="..\..\..\..\src\core\phaseresolver\phase_resolver.c"
 					>
 				</File>
 			</Filter>
@@ -495,15 +447,15 @@
 				Name="receivers"
 				>
 				<File
-					RelativePath="..\..\..\..\modules\core\receivers\msg_recv.c"
+					RelativePath="..\..\..\..\src\core\receivers\msg_recv.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\receivers\raw_xml_in_out_msg_recv.c"
+					RelativePath="..\..\..\..\src\core\receivers\raw_xml_in_out_msg_recv.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\receivers\svr_callback.c"
+					RelativePath="..\..\..\..\src\core\receivers\svr_callback.c"
 					>
 				</File>
 			</Filter>
@@ -511,7 +463,7 @@
 				Name="transport"
 				>
 				<File
-					RelativePath="..\..\..\..\modules\core\transport\transport_receiver.c"
+					RelativePath="..\..\..\..\src\core\transport\transport_receiver.c"
 					>
 				</File>
 				<Filter
@@ -521,39 +473,39 @@
 						Name="common"
 						>
 						<File
-							RelativePath="..\..\..\..\modules\core\transport\http\common\http_header.c"
+							RelativePath="..\..\..\..\src\core\transport\http\common\http_header.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\modules\core\transport\http\common\http_out_transport_info.c"
+							RelativePath="..\..\..\..\src\core\transport\http\common\http_out_transport_info.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\modules\core\transport\http\common\http_request_line.c"
+							RelativePath="..\..\..\..\src\core\transport\http\common\http_request_line.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\modules\core\transport\http\common\http_response_writer.c"
+							RelativePath="..\..\..\..\src\core\transport\http\common\http_response_writer.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\modules\core\transport\http\common\http_simple_request.c"
+							RelativePath="..\..\..\..\src\core\transport\http\common\http_simple_request.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\modules\core\transport\http\common\http_simple_response.c"
+							RelativePath="..\..\..\..\src\core\transport\http\common\http_simple_response.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\modules\core\transport\http\common\http_status_line.c"
+							RelativePath="..\..\..\..\src\core\transport\http\common\http_status_line.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\modules\core\transport\http\common\http_worker.c"
+							RelativePath="..\..\..\..\src\core\transport\http\common\http_worker.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\modules\core\transport\http\common\simple_http_svr_conn.c"
+							RelativePath="..\..\..\..\src\core\transport\http\common\simple_http_svr_conn.c"
 							>
 						</File>
 					</Filter>
@@ -561,11 +513,11 @@
 						Name="util"
 						>
 						<File
-							RelativePath="..\..\..\..\modules\core\transport\http\util\http_chunked_stream.c"
+							RelativePath="..\..\..\..\src\core\transport\http\util\http_chunked_stream.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\modules\core\transport\http\util\http_transport_utils.c"
+							RelativePath="..\..\..\..\src\core\transport\http\util\http_transport_utils.c"
 							>
 						</File>
 					</Filter>
@@ -575,7 +527,7 @@
 				Name="util"
 				>
 				<File
-					RelativePath="..\..\..\..\modules\core\util\core_utils.c"
+					RelativePath="..\..\..\..\src\core\util\core_utils.c"
 					>
 				</File>
 			</Filter>
@@ -598,6 +550,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\core\deployment\axis2_arch_file_data.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\core\deployment\axis2_arch_reader.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\axis2_async_result.h"
 				>
 			</File>
@@ -615,6 +575,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\axis2_conf.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\core\deployment\axis2_conf_builder.h"
 				>
 			</File>
 			<File
@@ -642,7 +606,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\core\deployment\axis2_dep_engine.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\core\deployment\axis2_deployment.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\axis2_desc.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\core\deployment\axis2_desc_builder.h"
 				>
 			</File>
 			<File
@@ -754,6 +730,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\core\deployment\axis2_module_builder.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\axis2_module_desc.h"
 				>
 			</File>
@@ -822,6 +802,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\core\deployment\axis2_repos_listener.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\axis2_rest_sender.h"
 				>
 			</File>
@@ -842,6 +826,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\src\core\deployment\axis2_svc_builder.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\axis2_svc_client.h"
 				>
 			</File>
@@ -851,6 +839,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\axis2_svc_grp.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\core\deployment\axis2_svc_grp_builder.h"
 				>
 			</File>
 			<File
@@ -891,6 +883,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\axis2_util.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\core\deployment\axis2_ws_info.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\src\core\deployment\axis2_ws_info_list.h"
 				>
 			</File>
 			<File
