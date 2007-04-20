@@ -22,7 +22,7 @@ where you placed mod_axis2_IIS.dll (in our example it is c:\axis2c\lib). When cr
 virtual directory, assign execute access to it.
 
 
-By Using the IIS management console, add mod_axis2_IIS.dll as a filter in your IIS/PWS web site. 
+By Using the IIS management console, add mod_axis2_IIS.dll as a filter in your IIS/PWS web site and restart the IIS admin service. 
 
  
 
