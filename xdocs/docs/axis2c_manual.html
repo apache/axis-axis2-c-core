@@ -38,6 +38,7 @@ href="http://ws.apache.org/axis2/c/mail-lists.html">Axis2 site</a>.</p>
   <li><a href="#writing_module">Writing a Module</a></li>
   <li><a href="#simple_axis_server">Simple Axis Server</a></li>
   <li><a href="#mod_axis2">Deploying with Apache2 HTTP Web Server</a></li>
+  <li><a href="#IIS">Deploying with Windows IIS Server</a></li>
   <li><a href="#ssl_client">Using SSL Client</a></li>
   <li><a href="#proxy">Using Proxy Support</a></li>
   <li><a href="#wsdl2c">WSDL2C Tool</a></li>
@@ -1085,7 +1086,7 @@ using Apache version 2.0.59, this setting should be set to 1, if the version
 is above that, the setting should be 0. Example:</p>
 <pre>APACHE_VERSION_IS_2_0_59 = 0</pre>
 
-<p>To build the source, you have to run the command </p>
+<p>To build the source, you have to run the command</p>
 <pre>nmake axis2_apache_module</pre>
 This will build mod_axis2.dll and copy it to AXIS2C_INSTALL_DIR\lib directory.
 
@@ -1168,9 +1169,8 @@ troubleshoot:</p>
     usually placed in the AXIS2C_INSTALL_DIR/logs folder.</li>
 </ul>
 
-<h1><a name="ssl_client">12. Deploying with Windows IIS server</a></h1>
-
-<p><a name="ssl_client">Use the Axis2/C VC project or makefile to buid the
+<h1><a name="IIS">12. Deploying with Windows IIS Server</a></h1>
+<p>Use the Axis2/C VC project or makefile to buid the
 component.</a></p>
 
 <p><a name="ssl_client">In this document I assume that the mod_axis2_IIS.dll
@@ -1202,10 +1202,10 @@ c:\axis2c\lib). When creating this new </a><a name="ssl_client5"
 id="ssl_client5">virtual directory, assign execute access to it.</a></p>
 
 <p><a name="ssl_client">By using the IIS management console, add
-mod_axis2_IIS.dll as a filter in your IIS/PWS web site and restart the IIS admin service.</a></p>
+mod_axis2_IIS.dll as a filter in your IIS/PWS web site and restart the IIS
+admin service.</a></p>
 
 <p><a name="ssl_client"></a></p>
-
 <h1>13. Using SSL Client</h1>
 
 <h2>Building and Configuring the Client</h2>
@@ -1356,7 +1356,7 @@ SVN</a> revision 529533 or later revisions. You can download the <a
 href="http://people.apache.org/dist/axis2/nightly/">Axis2/Java nightly
 build</a> and use those binaries to generate code. Check out a <a
 href="http://ws.apache.org/axis2/1_2/reference.html#wsdl2java">basic
-guide</a> on the Java tool. </p>
+guide</a> on the Java tool.</p>
 
 <p>Before you run the tool, make sure that all the .jar library files that
 come with Axis2/Java are added to the CLASSPATH environment variable.</p>
@@ -1748,7 +1748,7 @@ using phaseOrder element.</p>
     </tr>
     <tr>
       <td>type</td>
-      <td>The flow to which the phase belongs </td>
+      <td>The flow to which the phase belongs</td>
       <td>inflow
 
         <p>outflow</p>
