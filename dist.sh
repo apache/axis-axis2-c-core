@@ -7,6 +7,12 @@ doxygen doxygenconf
 cd ../..
 cp -r xdocs/api/html target/docs/api/
 cp -r target/docs axis2c-src-1.0.0
+cd samples
+make dist
+tar -xf axis2c-src-1.0.0.tar.gz
+mv  axis2c-src-1.0.0 ../axis2c-src-1.0.0
+cd ../axis2c-src-1.0.0
+mv axis2c-src-1.0.0 samples
 
 for i in `find . -name "*.la"`
 do

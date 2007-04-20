@@ -20,4 +20,4 @@ INCLUDES = -I$(AXIS2C_HOME)/include/axis2-1.0 \
 			@UTILINC@ \
 			@AXIOMINC@
 
-EXTRA_DIST=README.txt
+EXTRA_DIST=README.txt echo.mk

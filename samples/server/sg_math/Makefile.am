@@ -8,7 +8,7 @@ samples_DATA=services.xml \
                 div.h div.c div_skeleton.c \
                 Makefile.am Makefile.in
 prglib_DATA=services.xml
-EXTRA_DIST = services.xml
+EXTRA_DIST = services.xml sg_math.mk
 noinst_HEADERS = add.h sub.h mul.h div.h
 libadd_la_SOURCES = add.c add_skeleton.c
 libsub_la_SOURCES = sub.c sub_skeleton.c
