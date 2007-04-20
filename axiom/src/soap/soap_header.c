@@ -565,7 +565,7 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *soap_header,
                 if (axiom_soap_header_qname_matches(env, element_qname, qname) == AXIS2_TRUE)
                 {
                     axiom_node_detach(node, env);
-                    axiom_node_free_tree(node, env);
+                    /* axiom_node_free_tree(node, env); */
                     axutil_hash_set(soap_header->header_blocks, key, AXIS2_HASH_KEY_STRING,
                             NULL);
                     axiom_soap_header_block_free(header_block, env);
