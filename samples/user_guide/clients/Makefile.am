@@ -36,4 +36,5 @@ INCLUDES = -I$(AXIS2C_HOME)/include/axis2-1.0 \
 			@UTILINC@ \
 			@AXIOMINC@
 
-EXTRA_DIST=echo_util.h
+EXTRA_DIST=echo_util.h echo_blocking_addr.mk echo_blocking.mk echo_non_blocking_dual.mk  echo_rest.mk echo_blocking_dual.mk echo_blocking_soap11.mk echo_non_blocking.mk
+
