@@ -195,6 +195,7 @@ axis2_engine_receive(
     axutil_array_list_t *op_specific_phases = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Start:axis2_engine_receive");
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
@@ -289,6 +290,7 @@ axis2_engine_receive(
     }
 
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Axis2 engine receive completed!");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_engine_receive");
 
     return status;
 }
