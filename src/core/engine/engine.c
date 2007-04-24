@@ -355,6 +355,7 @@ axis2_engine_receive_fault(
 {
     axis2_op_ctx_t *op_ctx = NULL;
 
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Start:axis2_engine_receive_fault");
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
@@ -403,6 +404,7 @@ axis2_engine_receive_fault(
             axis2_engine_invoke_phases(engine, env, phases, msg_ctx);
         }
     }
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_engine_receive_fault");
     return AXIS2_SUCCESS;
 }
 
@@ -757,6 +759,7 @@ axis2_engine_resume_receive(
     axis2_conf_t *conf = NULL;
     axutil_array_list_t *phases = NULL;
 
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Start:axis2_engine_resume_receive");
     /* find and invoke the phases */
     conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
     conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
@@ -796,7 +799,7 @@ axis2_engine_resume_receive(
             }
         }
     }
-
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_engine_resume_receive");
     return status;
 }
 
@@ -810,6 +813,7 @@ axis2_engine_resume_send(
     axutil_array_list_t *phases = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Start:axis2_engine_resume_send");
     /* invoke the phases */
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx)
@@ -838,5 +842,6 @@ axis2_engine_resume_send(
             }
         }
     }
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_engine_resume_send");
     return status;
 }
