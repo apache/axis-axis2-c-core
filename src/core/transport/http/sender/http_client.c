@@ -386,6 +386,7 @@ axis2_http_client_recieve_header(
     if (-1 == client->sockfd || ! client->data_stream ||
             AXIS2_FALSE == client->request_sent)
     {
+		AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[axis2c] client data stream  null or socket error");
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_HTTP_REQUEST_NOT_SENT,
                 AXIS2_FAILURE);
         return -1;
@@ -408,6 +409,7 @@ axis2_http_client_recieve_header(
 
         if (read < 0)
         {
+			AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[axis2c] http client , response timed out");
             AXIS2_ERROR_SET(env->error,
                     AXIS2_ERROR_RESPONSE_TIMED_OUT,
                     AXIS2_FAILURE);
