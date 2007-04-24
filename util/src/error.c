@@ -214,7 +214,7 @@ axutil_error_init()
     axutil_error_messages[AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM] =
         "NULL stream in the http chunked stream";
     axutil_error_messages[AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY] =
-        "We got a NULL strem in the response body";
+        "We got a NULL stream in the response body";
     axutil_error_messages[AXIS2_ERROR_NULL_URL] =
         "URL NULL in http client";
     axutil_error_messages[AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL] =
