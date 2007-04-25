@@ -13,6 +13,7 @@ tar -xf axis2c-src-1.0.0.tar.gz
 mv  axis2c-src-1.0.0 ../axis2c-src-1.0.0
 cd ../axis2c-src-1.0.0
 mv axis2c-src-1.0.0 samples
+mv xdocs docs
 
 for i in `find . -name "*.la"`
 do
