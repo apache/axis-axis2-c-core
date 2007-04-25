@@ -97,7 +97,7 @@ axis2_http_svr_thread_free(
 
     if (svr_thread->worker)
     {
-        AXIS2_HTTP_WORKER_FREE(svr_thread->worker, env);
+        axis2_http_worker_free(svr_thread->worker, env);
         svr_thread->worker = NULL;
     }
     if (-1 != svr_thread->listen_socket)
@@ -254,7 +254,7 @@ axis2_svr_thread_worker_func (
             axis2_http_socket_read_timeout);
     request = axis2_simple_http_svr_conn_read_request(svr_conn, thread_env);
     tmp = arg_list->worker;
-    status = AXIS2_HTTP_WORKER_PROCESS_REQUEST(tmp, thread_env, svr_conn,
+    status = axis2_http_worker_process_request(tmp, thread_env, svr_conn,
             request);
     axis2_simple_http_svr_conn_free(svr_conn, thread_env);
     if (request)
@@ -297,7 +297,7 @@ axis2_svr_thread_worker_func (
         thread_env = NULL;
     }
 #ifdef AXIS2_SVR_MULTI_THREADED
-    /*axutil_thread_pool_exit_thread(env->thread_pool, thd);*/
+    axutil_thread_pool_exit_thread(env->thread_pool, thd);
 #endif
 
     return NULL;

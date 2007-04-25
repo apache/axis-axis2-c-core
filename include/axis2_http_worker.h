@@ -86,18 +86,16 @@ extern "C"
     axis2_http_worker_create (const axutil_env_t *env,
         axis2_conf_ctx_t *conf_ctx);
 
-/** Process the request. */
-#define AXIS2_HTTP_WORKER_PROCESS_REQUEST(http_worker, env, svr_conn,\
+/*#define AXIS2_HTTP_WORKER_PROCESS_REQUEST(http_worker, env, svr_conn,\
             simple_request) axis2_http_worker_process_request(\
             http_worker, env, svr_conn, simple_request)
 
-/** Sets the server port.  */
 #define AXIS2_HTTP_WORKER_SET_SVR_PORT(http_worker, env, port) \
                 axis2_http_worker_set_svr_port(http_worker, env, port)
 
-/** Frees the http worker. */
 #define AXIS2_HTTP_WORKER_FREE(http_worker, env) \
                 axis2_http_worker_free(http_worker, env)
+*/
 
 /** @} */
 #ifdef __cplusplus

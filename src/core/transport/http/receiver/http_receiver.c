@@ -216,7 +216,7 @@ axis2_http_server_start(
         return AXIS2_FAILURE;
     }
     worker = axis2_http_worker_create(env, server_impl->conf_ctx);
-    AXIS2_HTTP_WORKER_SET_SVR_PORT(worker, env, server_impl->port);
+    axis2_http_worker_set_svr_port(worker, env, server_impl->port);
     if (! worker)
     {
         axis2_http_svr_thread_free(server_impl->svr_thread, env);
