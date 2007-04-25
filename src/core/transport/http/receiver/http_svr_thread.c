@@ -181,7 +181,6 @@ axis2_http_svr_thread_destroy(
         axutil_network_handler_close_socket(env, svr_thread->listen_socket);
         svr_thread->listen_socket = -1;
     }
-    /* TODO: stop all the child threads */
     return AXIS2_SUCCESS;
 }
 

@@ -114,7 +114,7 @@ axis2_phase_resolver_create_with_config_and_svc(
     phase_resolver->axis2_config = axis2_config;
 
     phase_resolver->svc = svc;
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "svc name is:%s",
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Service name is : %s",
         axis2_svc_get_name(phase_resolver->svc, env));
 
     return phase_resolver;
@@ -363,7 +363,6 @@ axis2_phase_resolver_build_execution_chains(
                 phase_name = axis2_phase_rule_get_name(phase_rule, env);
             }
 
-            /* TODO change this in proper way */
             if (!phase_name || (0 == axutil_strcmp(phase_name, "")))
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_PHASE_IS_NOT_SPECIFED,
@@ -951,7 +950,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
 
         axutil_hash_this(index_i, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "op name is:%s",
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Operation name is : %s",
             axutil_qname_get_localpart(axis2_op_get_qname(op_desc, env), env));
         modules = axis2_op_get_all_modules(op_desc, env);
         module_desc_qname = axis2_module_desc_get_qname(module_desc, env);

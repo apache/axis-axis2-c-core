@@ -807,8 +807,7 @@ axiom_element_get_namespace(axiom_element_t *om_element,
         ns = om_element->ns;
     }
     else
-    {   /* TODO need to change get_namespace and get_qname methods so
-            that default namespace is handled properly */
+    {   
         ns = axiom_element_get_default_namespace(
             om_element, env, ele_node);
 

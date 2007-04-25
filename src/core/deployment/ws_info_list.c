@@ -393,14 +393,6 @@ axis2_ws_info_list_update(axis2_ws_info_list_t *ws_info_list,
     {
         return AXIS2_FAILURE;
     }
-    /* TODO uncomment when hot deployment supported */
-    /*
-    if(AXIS2_TRUE == axis2_dep_engine_is_hot_update(ws_info_list->deployer, 
-        env))
-    {
-        axis2_dep_engine_undeploy(ws_info_list->deployer, env);
-    }
-    */
 
     return axis2_dep_engine_do_deploy(ws_info_list->deployer, env);
 }

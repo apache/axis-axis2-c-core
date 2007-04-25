@@ -156,7 +156,6 @@ apache2_stream_get_char(
     int ret = -1;
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
-    /* TODO implement this */
     return ret;
 }
 

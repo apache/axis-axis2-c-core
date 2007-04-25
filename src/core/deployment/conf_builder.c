@@ -208,7 +208,7 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     {
         axis2_conf_builder_process_disp_order(conf_builder, env, disp_order_node);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "found the custom disptaching \
-            order and continue with that order");
+order and continue with that order");
     }
     else
     {
@@ -218,7 +218,7 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
             return AXIS2_FAILURE;
         }
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "no custom dispatching order \
-            found continue with default dispatcing order");
+found continue with default dispatching order");
     }
 
     /* Process Module refs */
@@ -267,7 +267,6 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
             return AXIS2_FAILURE;
         }
     }
-    /* TODO processing Axis Storages */
 
     param = axutil_param_container_get_param(
         axis2_conf_get_param_container(conf_builder->conf, env), 
@@ -402,8 +401,6 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
         dll_name =
             axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
             class_name);
-        /* TODO
-         * set full dll path here instead of dll lib name only */
          axutil_dll_desc_set_name(dll_desc, env, dll_name);
          axutil_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
         impl_info_param = axutil_param_create(env, class_name, NULL);
@@ -423,8 +420,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
         handler_desc = axis2_handler_get_handler_desc(handler, env);
         axis2_handler_desc_add_param(handler_desc, env, impl_info_param);
 
-        /*disptachClas.getHandlerDesc().setParent(axisConfiguration); */
-         axis2_phase_add_handler_at(disp_phase, env, count, handler);
+        axis2_phase_add_handler_at(disp_phase, env, count, handler);
         count ++;
         qname_itr_has_next = axiom_children_qname_iterator_has_next(disps,
             env);

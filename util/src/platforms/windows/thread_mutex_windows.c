@@ -63,7 +63,7 @@ AXIS2_EXTERN axutil_thread_mutex_t * AXIS2_CALL axutil_thread_mutex_create(axuti
     }
     else
     {
-        /*TODO:support critical_section and nested_mutex*/
+        /* TODO :support critical_section and nested_mutex*/
     }
 
     return mutex;
@@ -94,7 +94,7 @@ axutil_thread_mutex_trylock(axutil_thread_mutex_t *mutex)
 
     if (mutex->type == thread_mutex_critical_section)
     {
-        /*TODO:implement trylock for critical section*/
+        /* TODO :implement trylock for critical section*/
     }
     else
     {

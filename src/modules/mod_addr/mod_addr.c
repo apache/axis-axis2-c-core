@@ -68,9 +68,6 @@ axis2_mod_addr_shutdown(axis2_module_t *module,
 {
     if (module->handler_create_func_map)
     {
-        /* TODO
-         *  do the neccessary clean in hash map
-         */
         axutil_hash_free(module->handler_create_func_map, env);
         module->handler_create_func_map = NULL;
     }

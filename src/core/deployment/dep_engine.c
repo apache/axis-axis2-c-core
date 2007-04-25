@@ -612,15 +612,7 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     {
         return NULL;
     }
-    /*
-     * TODO
-    if (hot_deployment) 
-    {
-        start_search();
-    } 
-    else 
-    {
-    */
+
     if (dep_engine->repos_listener)
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
@@ -852,7 +844,6 @@ axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engin
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     in_phases = axis2_phases_info_get_in_phases(dep_engine->phases_info, env);
-    /* TODO condition checking should be otherway since null value can occur */
     if (in_phases)
     {
         phase0 = (axis2_char_t *) axutil_array_list_get(in_phases, env, 0);
@@ -1049,7 +1040,7 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     temp_path = axutil_stracat(env, module_folder_path, AXIS2_PATH_SEP_STR);
     dll_path = axutil_stracat(env, temp_path, dll_name);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-        "axis2_dep_engine_load_module_dll; dll path is : %s", dll_path);
+        "axis2_dep_engine_load_module_dll: DLL path is : %s", dll_path);
     status =  axutil_dll_desc_set_name(dll_desc, env, dll_path);
     if (AXIS2_SUCCESS != status)
     {
@@ -1127,7 +1118,6 @@ axis2_dep_engine_get_handler_dll(const axis2_dep_engine_t *dep_engine,
     dll_name =
          axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
              class_name);
-    /* TODO set fill dll path here instead of dll lib name only */
     axutil_dll_desc_set_name(dll_desc, env, dll_name);
     axutil_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
     axutil_class_loader_init(env);

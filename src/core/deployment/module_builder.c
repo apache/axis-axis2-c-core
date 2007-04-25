@@ -403,9 +403,6 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         }
         else
         {
-            /* TODO
-             * We don't have a operation constructor taking mepURL as argument.
-             * do we need this? */
             op_desc = axis2_op_create_from_module(env);
         }
 

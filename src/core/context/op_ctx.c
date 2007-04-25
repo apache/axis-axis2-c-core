@@ -240,7 +240,6 @@ axis2_op_ctx_add_msg_ctx(
 
     if (out_msg_ctx && in_msg_ctx)
     {
-        /*TODO:error - completed*/
         axutil_thread_mutex_unlock(op_ctx->mutex);
         return AXIS2_FAILURE;
     }

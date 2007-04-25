@@ -218,7 +218,6 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
             if (!fault_text_node)
                 return AXIS2_FAILURE;
 
-            /* TODO process namespace data */
             axiom_stax_builder_set_lastnode(builder_helper->om_builder, env, fault_text_node);
 
             status = axiom_soap11_builder_helper_process_text(builder_helper, env);

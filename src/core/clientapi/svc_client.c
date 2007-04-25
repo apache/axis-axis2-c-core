@@ -156,9 +156,6 @@ axis2_svc_client_create_for_dynamic_invocation(const axutil_env_t *env,
     wsdl_path = axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR, "woden", NULL);
 
     svc_client->options = axis2_options_create(env);
-    /* TODO: this method should be moved out of core implementation
-    svc_client->svc = axis2_client_utils_create_axis2_svc(env, wsdl_uri,
-        wsdl_svc_qname, endpoint_name, wsdl_path, svc_client->options); */
     if (svc_client->svc)
     {
         axutil_hash_index_t *i = NULL;
@@ -886,7 +883,6 @@ axis2_svc_client_create_op_client(axis2_svc_client_t *svc_client,
 
     if (!op)
     {
-        /*TODO:error - svc does not have the operation*/
         return NULL;
     }
 
@@ -939,8 +935,6 @@ axis2_svc_client_get_own_endpoint_ref(const axis2_svc_client_t *svc_client,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    /*TODO:implement-issue - there's not get_own_endpoint_ref in svc_ctx*/
-
     return NULL;
 }
 
@@ -949,8 +943,6 @@ axis2_svc_client_get_target_endpoint_ref(const axis2_svc_client_t *svc_client,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    /*TODO:implement-issue - there's not get_target_endpoint_ref in svc_ctx*/
 
     return NULL;
 }
@@ -961,8 +953,6 @@ axis2_svc_client_set_target_endpoint_ref(axis2_svc_client_t *svc_client,
     axis2_endpoint_ref_t *target_endpoint_ref)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    /*TODO:implement-issue - there's not set_my_epr in svc_ctx*/
 
     return AXIS2_FAILURE;
 }

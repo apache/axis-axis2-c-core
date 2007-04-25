@@ -688,15 +688,6 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
             axiom_children_qname_iterator_next(params, env);
         param_element = axiom_node_get_data_element(param_node, env);
         param = axutil_param_create(env, NULL, NULL);
-        /* TODO Setting param_element. Do not set element like following.
-         * break it and set 
-         */
-        /*status = AXIS2_PARAM_SET_ELEMENT(param, env, param_node);
-        if(AXIS2_SUCCESS != status)
-        {
-            axutil_param_free(param, env);
-            return status;
-        }*/
 
         /* Setting paramter name */
         att_qname = axutil_qname_create(env, AXIS2_ATTNAME, NULL, NULL);

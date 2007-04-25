@@ -420,7 +420,6 @@ axis2_http_transport_utils_process_http_post_request(
         if (rest_param && 0 == axutil_strcmp(AXIS2_VALUE_TRUE,
                 axutil_param_get_value(rest_param, env)))
         {
-            /* TODO we have to check for NULLs */
             axiom_soap_body_t *def_body = NULL;
             axiom_document_t *om_doc = NULL;
             axiom_node_t *root_node = NULL;
@@ -579,9 +578,6 @@ axis2_http_transport_utils_select_builder_for_mime(
     axutil_stream_t *in_stream,
     axis2_char_t *content_type)
 {
-    /*
-         TODO implement when MTOM support is added
-     */
     return NULL;
 }
 
@@ -590,9 +586,6 @@ axis2_http_transport_utils_is_optimized(
     const axutil_env_t *env,
     axiom_element_t *om_element)
 {
-    /*
-         TODO implement when MTOM support is added
-     */
     return AXIS2_FALSE;
 }
 
@@ -601,28 +594,10 @@ axis2_http_transport_utils_do_write_mtom(
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
-    /*axutil_property_t *property = NULL;
-    axutil_param_t *param = NULL;
-    axis2_char_t *value = NULL;*/
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     return (axis2_msg_ctx_get_doing_mtom(msg_ctx, env));
-
-    /*param =  axis2_msg_ctx_get_parameter(msg_ctx, env, AXIS2_ENABLE_MTOM);
-    if (param)
-        value = axutil_param_get_value(param, env);
-
-    property =  axis2_msg_ctx_get_property(msg_ctx, env,
-            AXIS2_ENABLE_MTOM);
-    if (property)
-        value = (axis2_char_t *)axutil_property_get_value(property, env);
-
-    if (value)
-    {
-        return (axutil_strcmp(value, AXIS2_VALUE_TRUE) == 0);
-    }
-    return AXIS2_FALSE;*/
 }
 
 
@@ -631,9 +606,6 @@ axis2_http_transport_utils_is_doing_rest(
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
-    /*
-        TODO implement when REST support is added
-    */
     return AXIS2_FALSE;
 }
 
@@ -643,9 +615,6 @@ axis2_http_transport_utils_is_doing_rest_through_post(
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
-    /*
-        TODO implement when REST support is added
-    */
     return AXIS2_FALSE;
 }
 

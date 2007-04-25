@@ -305,7 +305,6 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
 
     if(op_client->completed)
     {
-        /**TODO:error completed*/
         return AXIS2_FAILURE;
     }
 
@@ -316,7 +315,6 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
 
     if(!msg_ctx)
     {
-        /*TODO:error msg ctx is null*/
         return AXIS2_FAILURE;
     }
 
@@ -407,7 +405,6 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
         AXIS2_CALLBACK_RECV_ADD_CALLBACK(op_client->callback_recv, env,
             axis2_msg_ctx_get_msg_id(msg_ctx, env),
             op_client->callback);
-        /* TODO: set up reply to */
          axis2_msg_ctx_set_op_ctx(msg_ctx, env, axis2_op_find_op_ctx(op, env,
                 msg_ctx, op_client->svc_ctx));
          axis2_msg_ctx_set_svc_ctx(msg_ctx, env, op_client->svc_ctx);

@@ -390,9 +390,6 @@ axis2_http_transport_sender_invoke(
             epr = NULL;
         }
     }
-    /*
-     * TODO handle errors
-     */
     return AXIS2_SUCCESS;
 }
 

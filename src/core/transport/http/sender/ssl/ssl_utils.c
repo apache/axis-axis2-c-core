@@ -39,8 +39,7 @@ axis2_ssl_utils_initialize_ctx(
 {
     SSL_METHOD *meth = NULL;
     SSL_CTX *ctx = NULL;
-    axis2_char_t *ca_file = server_cert; /*TODO: remove ca_file*/
-    /*axis2_char_t *key_file = NULL;*/
+    axis2_char_t *ca_file = server_cert; 
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -67,7 +66,6 @@ axis2_ssl_utils_initialize_ctx(
 
     /* Load our keys and certificates
      * If we need client certificates it has to be done here
-     * TODO 
      */
     if (key_file) /*can we check if the server needs client auth?*/
     {

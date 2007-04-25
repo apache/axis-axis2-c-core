@@ -172,10 +172,9 @@ axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part,
         header_str_size = axutil_strlen(header_str);
     }
 
-    /* TODO encoding needs to be done, we only support binary as of now,
-       Java supports "base64", "uuencode", "x-uuencode", "x-uue", 
-       "quoted-printable" 
-    */
+    /* TODO: We only support binary as of now,
+       Axis2/Java supports "base64", "uuencode", "x-uuencode", "x-uue", 
+       "quoted-printable" */
     if (mime_body_part->data_handler)
     {
         status = axiom_data_handler_read_from(mime_body_part->data_handler, env,
@@ -201,7 +200,6 @@ axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part,
         }
         return AXIS2_FAILURE;
     }
-    /*TODO char2byte header_str */
     if (header_str)
     {
         memcpy(byte_stream, header_str, header_str_size);

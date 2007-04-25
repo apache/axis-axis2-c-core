@@ -225,7 +225,6 @@ axis2_addr_in_extract_svc_grp_ctx_id(const axutil_env_t *env,
                     axis2_svc_grp_ctx_t *svc_ctx_grp_ctx =  axis2_conf_ctx_get_svc_grp_ctx(conf_ctx, env, grp_id);
                     if (!svc_ctx_grp_ctx)
                     {
-                        /** TODO, set error */
                         return AXIS2_FAILURE;
                     }
                      axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
@@ -236,7 +235,6 @@ axis2_addr_in_extract_svc_grp_ctx_id(const axutil_env_t *env,
         }
         axutil_qname_free(qname, env);
     }
-    /** TODO, set error */
     return AXIS2_FAILURE;
 }
 

@@ -85,7 +85,7 @@ axiom_soap_action_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env)
 {
     AXIS2_LOG_DEBUG(env->log, 
-         AXIS2_LOG_SI, "Checking for service using SOAPAction is a TODO item");
+         AXIS2_LOG_SI, "Checking for service using SOAPAction is not implemented");
     return NULL;
 }
 

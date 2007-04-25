@@ -532,9 +532,6 @@ axis2_http_worker_set_transport_out_config(
 
     config =  axis2_conf_ctx_get_conf(conf_ctx, env);
 
-    /*
-        TODO implement the method
-    */
     return AXIS2_SUCCESS;
 }
 

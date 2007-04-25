@@ -553,7 +553,6 @@ axis2_options_set_sender_transport(axis2_options_t *options,
 
     if (!(options->transport_out))
     {
-        /*TODO:error*/
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -603,10 +602,8 @@ axis2_options_set_transport_info(axis2_options_t *options,
     {
         if (sender_transport != receiver_transport)
         {
-            /*TODO:error*/
             return AXIS2_FAILURE;
         }
-        /*TODO: check the transport is either HTTP or TCP*/
     }
     else
     {

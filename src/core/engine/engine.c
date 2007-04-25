@@ -532,16 +532,7 @@ axis2_engine_create_fault_msg_ctx(
                 axiom_soap_envelope_create_default_soap_envelope(env, AXIOM_SOAP12);
         }
 
-        if (envelope)
-        {
-            /*axiom_soap_body_t *body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env); */
-            /* if (body) */
-            /*{ */
-               /*  axiom_soap_fault_t *fault = AXIOM_SOAP_BODY_GET_FAULT(body, env); */
-                /* TODO: fault processing method */
-            /*} */
-        }
-        else
+        if (!envelope)
         {
             return NULL;
         }

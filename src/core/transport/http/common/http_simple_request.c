@@ -405,9 +405,6 @@ axis2_http_simple_request_get_body_bytes(
         tmp_buf = tmp_buf3;
 
     }
-    /*
-        TODO :STREAM_READ => STREAM_READ_BYTES
-    */
     if (tmp_buf)
     {
         *buf = tmp_buf;

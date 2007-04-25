@@ -103,9 +103,6 @@ axis2_http_response_writer_flush(
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    /*
-        TODO if bufferring is added flush the buffer
-    */
     return AXIS2_FALSE;
 }
 
@@ -153,9 +150,6 @@ axis2_http_response_writer_write_buf(
     {
         return AXIS2_FAILURE;
     }
-    /*
-         TODO handle offset
-     */
     return AXIS2_SUCCESS;
 }
 

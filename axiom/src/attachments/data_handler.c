@@ -121,7 +121,6 @@ AXIS2_EXTERN axis2_byte_t * AXIS2_CALL
 axiom_data_handler_get_input_stream(axiom_data_handler_t *data_handler, 
     const axutil_env_t *env)
 {
-    /*@TODO implement the following*/
     return (axis2_byte_t *)"";
 }
 
@@ -189,9 +188,8 @@ axiom_data_handler_read_from(axiom_data_handler_t *data_handler,
             count = fread(read_stream, 1, read_stream_size, f);
             if (ferror(f) != 0)
             {
-                /*TODO : need to set the correct error code */
                 AXIS2_ERROR_SET(env->error, 
-		    AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                    AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
                 if (byte_stream)
                 {
                     AXIS2_FREE(env->allocator, byte_stream);
@@ -309,7 +307,6 @@ axiom_data_handler_write_to(axiom_data_handler_t *data_handler,
 
         if (ferror(f) != 0)
         {
-            /*TODO : need to set the correct error code */
             return AXIS2_FAILURE;
         }
         fflush(f);

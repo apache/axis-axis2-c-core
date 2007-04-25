@@ -617,9 +617,6 @@ axis2_http_sender_get_header_info(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, response, AXIS2_FAILURE);
 
-    /*
-     * TODO MTOM support (MIME header)
-     */
     headers = axis2_http_simple_response_get_headers(response, env);
     if (headers == NULL)
     {
@@ -637,16 +634,6 @@ axis2_http_sender_get_header_info(
 															  , env), AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
             {
                 axis2_char_t *transfer_encoding = NULL;
-/*                transfer_encoding = */
-/*                     axutil_strdup(AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED, */
-/* 								 env); */
-/*                 property = axutil_property_create(env); */
-/*                 axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST); */
-/*                 axutil_property_set_value(property, env, transfer_encoding); */
-/*                  axis2_msg_ctx_set_property(msg_ctx, env, */
-/* 										   AXIS2_HTTP_HEADER_TRANSFER_ENCODING, */
-/* 										   property); */
-/*                 response_chunked = AXIS2_TRUE; */
                 transfer_encoding =
                     axutil_strdup(env,
 					    AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);

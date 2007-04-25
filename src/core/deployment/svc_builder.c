@@ -205,11 +205,6 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     }
 
     /* process service description */
-    /* TODO this code is changed in new version of axis2. Until that logic
-     * is incorporated I comment out this part and add my own logic to set svc
-     * name
-     */
-	 /* -------------------------service description-------------------- */
     qdesc = axutil_qname_create(env, AXIS2_DESCRIPTION, NULL, NULL);
     desc_element = axiom_element_get_first_child_with_qname(svc_element, env,
         qdesc, svc_node, &desc_node);
@@ -247,9 +242,6 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         axis2_svc_set_svc_wsdl_path(svc_builder->svc, env, wsdl_path);
     }
 
-
-	 /* --------------------services description end -------------------- */
-    /* my logic to get set service name */
     qattname = axutil_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
     name_attr = axiom_element_get_attribute(svc_element, env, qattname);
     svc_name = axiom_attribute_get_value(name_attr, env);
@@ -283,7 +275,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     svc_folder_path =  axutil_file_get_path(svc_folder, env);
     dll_path = axutil_strcat(env, svc_folder_path, AXIS2_PATH_SEP_STR,
         svc_dll_name, NULL);
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "dll path is : %s", dll_path);
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "DLL path is : %s", dll_path);
     status =  axutil_dll_desc_set_name(dll_desc, env, dll_path);
     if (AXIS2_SUCCESS != status)
     {
@@ -302,7 +294,6 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         axutil_dll_desc_free(dll_desc, env);
         return status;
     }
-    /* end of my logic */
     /* processing service wide modules which required to engage globally */
     qmodulest = axutil_qname_create(env, AXIS2_MODULEST, NULL, NULL);
     module_refs = axiom_element_get_children_with_qname(svc_element, env,
@@ -434,22 +425,19 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         op_mep_att = axiom_element_get_attribute(op_element, env, qmep);
         axutil_qname_free(qmep, env);
         qmep = NULL;
-        if (op_mep_att)
-        {
-            mep_url = axiom_attribute_get_value(op_mep_att, env);
-            /*
-            TODO value has to be validate
-            TODO
-             op_descrip.setMessageExchangePattern(mep);
-            */
-        }
         op_name = axiom_attribute_get_value(op_name_att, env);
         qopname = axutil_qname_create(env, op_name, NULL, NULL);
         op_desc = axis2_op_create(env);
-        if(mep_url)
+
+        if (op_mep_att)
         {
-            axis2_op_set_msg_exchange_pattern(op_desc, env, mep_url);
+            mep_url = axiom_attribute_get_value(op_mep_att, env);
+            if(mep_url)
+            {
+                axis2_op_set_msg_exchange_pattern(op_desc, env, mep_url);
+            }
         }
+
         axis2_op_set_qname(op_desc, env, qopname);
 
         axutil_qname_free(qopname, env);

@@ -113,7 +113,7 @@ mul_invoke(axis2_svc_skeleton_t *svc_skeleton,
 
     printf("Math service ERROR: invalid OM parameters in request\n");
 
-    /** TODO: return a SOAP fault here */
+    /** Note: return a SOAP fault here */
     return node;
 }
 

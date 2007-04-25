@@ -195,7 +195,6 @@ axis2_repos_listener_init(axis2_repos_listener_t *repos_listener,
      * there are no services to load
      */
     axis2_repos_listener_check_svcs(repos_listener, env);
-    /* TODO uncomment this when hot update done */
     return axis2_repos_listener_update(repos_listener, env);
 }
 

@@ -248,7 +248,6 @@ axiom_soap_envelope_add_header(axiom_soap_envelope_t *soap_envelope,
     axiom_namespace_t *ns = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    /* TODO : cache SOAP header and soap_envelope instead of looking them up?*/
     if (!soap_envelope->header)
         return NULL;
 
@@ -554,7 +553,7 @@ axiom_soap_envelope_set_soap_version(axiom_soap_envelope_t *soap_envelope,
         ns_uri = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     }
     else
-    {   /** TODO set error */
+    {   
         return AXIS2_FAILURE;
     }
 
