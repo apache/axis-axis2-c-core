@@ -12,8 +12,8 @@ data_DATA= samples/server/axis2.xml README \
 	INSTALL CREDITS COPYING NEWS NOTICE config.guess missing install-sh depcomp config.sub ltmain.sh
 
 logs_DATA=
-docs_DATA=docs/*
-EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE build axis2c_build.sh docs guththila tools AUTHORS NOTICE
+docs_DATA=xdocs/*
+EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE build axis2c_build.sh xdocs guththila tools AUTHORS NOTICE
 
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
