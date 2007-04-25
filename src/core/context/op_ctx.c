@@ -164,6 +164,7 @@ axis2_op_ctx_destroy_mutex(
     if (op_ctx->mutex)
     {
         axutil_thread_mutex_destroy(op_ctx->mutex);
+        op_ctx->mutex = NULL;
     }
 }
 
