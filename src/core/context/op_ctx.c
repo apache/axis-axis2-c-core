@@ -155,6 +155,18 @@ axis2_op_ctx_free(
     return;
 }
 
+AXIS2_EXTERN void AXIS2_CALL
+axis2_op_ctx_destroy_mutex(
+    struct axis2_op_ctx *op_ctx,
+    const axutil_env_t *env)
+{
+
+    if (op_ctx->mutex)
+    {
+        axutil_thread_mutex_destroy(op_ctx->mutex);
+    }
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_ctx_init(
     struct axis2_op_ctx *op_ctx,

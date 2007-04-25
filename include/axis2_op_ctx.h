@@ -229,6 +229,12 @@ extern "C"
     axis2_op_ctx_get_response_written(const axis2_op_ctx_t *op_ctx,
         const axutil_env_t *env);
 
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_op_ctx_destroy_mutex(
+        struct axis2_op_ctx *op_ctx,
+        const axutil_env_t *env);
+
+
 #ifdef __cplusplus
 }
 #endif

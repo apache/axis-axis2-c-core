@@ -108,6 +108,7 @@ axis2_apache2_worker_process_request(
     axis2_char_t *content_type = NULL;
     axis2_http_out_transport_info_t *apache2_out_transport_info = NULL;
     axis2_char_t *ctx_uuid = NULL;
+    axis2_op_ctx_t *op_ctx = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, request, AXIS2_CRITICAL_FAILURE);
@@ -240,9 +241,11 @@ axis2_apache2_worker_process_request(
             send_status =  HTTP_INTERNAL_SERVER_ERROR;
         }
     }
+    
+    op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
+    
     if (-1 == send_status)
     {
-        axis2_op_ctx_t *op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         if (axis2_op_ctx_get_response_written(op_ctx, env))
         {
             send_status = OK;
@@ -259,6 +262,10 @@ axis2_apache2_worker_process_request(
         }
     }
     
+    if (op_ctx)
+    {
+        axis2_op_ctx_destroy_mutex(op_ctx, env);
+    }
     if (body_string)
     {
         ap_rwrite(body_string, body_string_len, request);
