@@ -55,8 +55,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod_axis2_IIS", "mod_axis2_
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "axutil", "axutil\axutil.vcproj", "{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod_savan", "mod_savan\mod_savan.vcproj", "{C781F3DE-8F38-4778-A50F-003D04336A10}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{52AB54B9-4457-4E03-B892-75CC56F22B32}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\..\build\win32\makefile = ..\..\..\build\win32\makefile
@@ -110,10 +108,6 @@ Global
 		{3887B3E3-1A45-40E5-BC95-9C51000C86DB}.Debug|Win32.Build.0 = Debug|Win32
 		{3887B3E3-1A45-40E5-BC95-9C51000C86DB}.Release|Win32.ActiveCfg = Release|Win32
 		{3887B3E3-1A45-40E5-BC95-9C51000C86DB}.Release|Win32.Build.0 = Release|Win32
-		{C781F3DE-8F38-4778-A50F-003D04336A10}.Debug|Win32.ActiveCfg = Debug|Win32
-		{C781F3DE-8F38-4778-A50F-003D04336A10}.Debug|Win32.Build.0 = Debug|Win32
-		{C781F3DE-8F38-4778-A50F-003D04336A10}.Release|Win32.ActiveCfg = Release|Win32
-		{C781F3DE-8F38-4778-A50F-003D04336A10}.Release|Win32.Build.0 = Release|Win32
 		{9CA2AEC7-8781-4B5E-B2A2-C143ABF5E818}.Debug|Win32.ActiveCfg = Debug|Win32
 		{9CA2AEC7-8781-4B5E-B2A2-C143ABF5E818}.Debug|Win32.Build.0 = Debug|Win32
 		{9CA2AEC7-8781-4B5E-B2A2-C143ABF5E818}.Release|Win32.ActiveCfg = Release|Win32
