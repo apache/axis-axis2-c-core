@@ -94,7 +94,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy .\..\..\..\..\modules\mod_addr\module.xml .\..\deploy\modules\addressing"
+				CommandLine="copy .\..\..\..\..\src\modules\mod_addr\module.xml .\..\deploy\modules\addressing"
 			/>
 		</Configuration>
 		<Configuration
