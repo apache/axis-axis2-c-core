@@ -395,8 +395,8 @@ axis2_http_worker_process_request(
         axis2_msg_ctx_t **msg_ctx_map = NULL;
         
         msg_ctx_map =  axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
-
-        axis2_op_ctx_destroy_mutex(op_ctx, env);
+        if(!axis2_op_ctx_is_in_use(op_ctx, env))
+            axis2_op_ctx_destroy_mutex(op_ctx, env);
 
         out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
         in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];

@@ -234,6 +234,33 @@ extern "C"
         struct axis2_op_ctx *op_ctx,
         const axutil_env_t *env);
 
+    /**
+     * Checks whether op_ctx is in use. This is necessary when destroying the
+     * thread mutex at the http_worker to check whether the operation context
+     * is still in use
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return AXIS2_TRUE if still in use, else AXIS2_FALSE         
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_op_ctx_is_in_use(
+        const axis2_op_ctx_t *op_ctx,
+        const axutil_env_t *env);
+
+    /**
+     * Set operation context's is_in_use attribute. This is necessary when 
+     * destroying the thread mutex at the http_worker to check whether the 
+     * operation context is still in use
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return AXIS2_TRUE if still in use, else AXIS2_FALSE         
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_op_ctx_set_in_use(
+        struct axis2_op_ctx *op_ctx,
+        const axutil_env_t *env,
+        axis2_bool_t is_in_use);
+
 
 #ifdef __cplusplus
 }

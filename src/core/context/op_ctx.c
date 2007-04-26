@@ -49,6 +49,7 @@ struct axis2_op_ctx
     /* mutex to synchronize the read/write operations */
     axutil_thread_mutex_t *mutex;
     axis2_bool_t response_written;
+    axis2_bool_t is_in_use;
 };
 
 AXIS2_EXTERN axis2_op_ctx_t *AXIS2_CALL
@@ -73,6 +74,7 @@ axis2_op_ctx_create(const axutil_env_t *env,
     op_ctx->op = NULL;
     op_ctx->op_mep = 0;
     op_ctx->is_complete = AXIS2_FALSE;
+    op_ctx->is_in_use = AXIS2_FALSE;
     op_ctx->op_ctx_map = NULL;
     op_ctx->op_qname = NULL;
     op_ctx->svc_qname = NULL;
@@ -291,6 +293,24 @@ axis2_op_ctx_set_complete(
     axis2_bool_t is_complete)
 {
     op_ctx->is_complete = is_complete;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_op_ctx_is_in_use(
+    const axis2_op_ctx_t *op_ctx,
+    const axutil_env_t *env)
+{
+    return op_ctx->is_in_use;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_op_ctx_set_in_use(
+    struct axis2_op_ctx *op_ctx,
+    const axutil_env_t *env,
+    axis2_bool_t is_in_use)
+{
+    op_ctx->is_in_use = is_in_use;
     return AXIS2_SUCCESS;
 }
 
