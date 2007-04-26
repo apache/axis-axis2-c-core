@@ -146,12 +146,23 @@ axiom_stax_builder_process_attributes(axiom_stax_builder_t *om_builder,
         attr_name = axiom_xml_reader_get_attribute_name_by_number(
             om_builder->parser, env, i);
 
-        attr_name_str = axutil_string_create_assume_ownership(env, &attr_name);
-
+#ifdef WIN32	
+		attr_name_str = axutil_string_create(env, attr_name);
+		axiom_xml_reader_xml_free(om_builder->parser, env, attr_name);
+#else
+		attr_name_str = axutil_string_create_assume_ownership(env, &attr_name);
+#endif
+       
         attr_value = axiom_xml_reader_get_attribute_value_by_number(
             om_builder->parser, env, i);
 
-        attr_value_str = axutil_string_create_assume_ownership(env, &attr_value);
+
+#ifdef WIN32	
+		attr_value_str = axutil_string_create(env, attr_value);
+		axiom_xml_reader_xml_free(om_builder->parser, env, attr_value);
+#else
+		attr_value_str = axutil_string_create_assume_ownership(env, &attr_value);
+#endif
 
         if (attr_name)
         {
@@ -213,7 +224,14 @@ axiom_stax_builder_create_om_text(axiom_stax_builder_t * om_builder,
         return NULL;
     }
 
-	temp_value_str = axutil_string_create_assume_ownership(env, &temp_value);
+	    
+#ifdef WIN32	
+	temp_value_str = axutil_string_create(env, temp_value);
+	axiom_xml_reader_xml_free(om_builder->parser, env, temp_value);
+#else
+    temp_value_str = axutil_string_create_assume_ownership(env, &temp_value);
+#endif
+	
 
     if (axiom_node_is_complete(om_builder->lastnode, env))
     {
@@ -311,10 +329,17 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
         temp_ns_uri = axiom_xml_reader_get_namespace_uri_by_number(
             om_builder->parser, env , i);
 
-        temp_ns_prefix_str = axutil_string_create_assume_ownership(env, &temp_ns_prefix);
-        
-        temp_ns_uri_str = axutil_string_create_assume_ownership(env, &temp_ns_uri);
+#ifdef WIN32	
+		temp_ns_prefix_str = axutil_string_create(env, temp_ns_prefix);
+#else
+		temp_ns_prefix_str = axutil_string_create_assume_ownership(env, &temp_ns_prefix);
+#endif
 
+#ifdef WIN32
+		temp_ns_uri_str = axutil_string_create(env, temp_ns_uri);
+#else
+        temp_ns_uri_str = axutil_string_create_assume_ownership(env, &temp_ns_uri);
+#endif
         if (!temp_ns_prefix || axutil_strcmp(temp_ns_prefix, "xmlns") == 0)
         {
             /** default namespace case */
@@ -357,6 +382,10 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
         }
         axutil_string_free(temp_ns_uri_str, env);
         axutil_string_free(temp_ns_prefix_str, env);
+#ifdef WIN32	
+		axiom_xml_reader_xml_free(om_builder->parser, env, temp_ns_uri);
+		axiom_xml_reader_xml_free(om_builder->parser, env, temp_ns_prefix);
+#endif
         if (!om_ns)
         {
             /* something went wrong */
@@ -414,7 +443,12 @@ axiom_stax_builder_create_om_element(axiom_stax_builder_t *om_builder,
         return NULL;
     }
     
+#ifdef WIN32	
+	temp_localname_str = axutil_string_create(env, temp_localname);
+	axiom_xml_reader_xml_free(om_builder->parser, env, temp_localname);
+#else
     temp_localname_str = axutil_string_create_assume_ownership(env, &temp_localname);
+#endif
     
     om_builder->element_level++;
 
