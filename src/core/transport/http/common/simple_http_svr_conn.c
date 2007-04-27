@@ -166,7 +166,7 @@ axis2_simple_http_svr_conn_read_request(
     AXIS2_ENV_CHECK(env, NULL);
 
     memset(str_line, 0, 2048);
-    while ((read = axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf, 2048)) > 0)
+    while ((read = axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf, 2048 - 1)) > 0)
     {
         axis2_char_t *start = tmp_buf;
         axis2_char_t *end = NULL;
@@ -188,7 +188,7 @@ axis2_simple_http_svr_conn_read_request(
         }
         else
         {
-            read = axutil_stream_read(svr_conn->stream, env, tmp_buf, 2048);
+            read = axutil_stream_read(svr_conn->stream, env, tmp_buf, 2048 - 1);
             if (read > 0)
             {
                 tmp_buf[read] = '\0';
@@ -227,7 +227,7 @@ axis2_simple_http_svr_conn_read_request(
     end_of_line = AXIS2_FALSE;
     while (AXIS2_FALSE == end_of_headers)
     {
-        while ((read = axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf, 2048)) > 0)
+        while ((read = axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf, 2048 - 1)) > 0)
         {
             axis2_char_t *start = tmp_buf;
             axis2_char_t *end = NULL;
@@ -250,26 +250,16 @@ axis2_simple_http_svr_conn_read_request(
             }
             else
             {
-                read = axutil_stream_read(svr_conn->stream, env, tmp_buf, 2048);
+                read = axutil_stream_read(svr_conn->stream, env, tmp_buf, 2048 - 1);
                 if (read > 0)
                 {
                     tmp_buf[read] = '\0';
                     strcat(str_line, tmp_buf);
                 }
             }
+	
         }
-    
-        /*while ((read = axutil_stream_read(svr_conn->stream, env, tmp_buf,
-                1)) > 0)
-        {
-            tmp_buf[read] = '\0';
-            strcat(str_line, tmp_buf);
-            if (0 != strstr(str_line, AXIS2_HTTP_CRLF))
-            {
-                end_of_line = AXIS2_TRUE;
-                break;
-            }
-        }*/
+
         if (AXIS2_TRUE == end_of_line)
         {
             if (0 == axutil_strcmp(str_line, AXIS2_HTTP_CRLF))
