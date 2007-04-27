@@ -501,7 +501,7 @@ axiom_text_get_text(axiom_text_t *om_text,
             if (data_handler_stream)
             {
                 encoded_len = axutil_base64_encode_len(data_handler_stream_size);
-                encoded_str = AXIS2_MALLOC(env->allocator, encoded_len);
+                encoded_str = AXIS2_MALLOC(env->allocator, encoded_len + 2);
                 if (encoded_str)
                 {
                     encoded_len = axutil_base64_encode(encoded_str,
