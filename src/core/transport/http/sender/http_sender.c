@@ -201,6 +201,7 @@ axis2_http_sender_send(
         body_node = axiom_soap_body_get_base_node(soap_body, env);
         if (! body_node)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "body_node is NULL");
             return AXIS2_FAILURE;
         }
         data_out = axiom_node_get_first_element(body_node, env);
@@ -219,6 +220,7 @@ axis2_http_sender_send(
 
     if (! url)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "url is NULL");
         return AXIS2_FAILURE;
     }
 
@@ -231,6 +233,7 @@ axis2_http_sender_send(
     sender->client = axis2_http_client_create(env, url);
     if (! sender->client)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "sender->client is NULL");
         return AXIS2_FAILURE;
     }
 	
@@ -241,16 +244,16 @@ axis2_http_sender_send(
 
 	if (!send_via_get)
 	{
-        axutil_property_t *property = NULL;
+        /*axutil_property_t *property = NULL;*/
 
 		/* We put the client into msg_ctx so that we can free it once the processing
 		 * is done at client side
 		 */
-        property = axutil_property_create(env);
+        /*property = axutil_property_create(env);
         axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
         axutil_property_set_free_func(property, env, axis2_http_client_free_void_arg);
         axutil_property_set_value(property, env, sender->client);
-        axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_CLIENT, property);
+        axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_CLIENT, property);*/
 
 		doing_mtom =  axis2_msg_ctx_get_doing_mtom(msg_ctx, env);
 
@@ -522,6 +525,7 @@ axis2_http_sender_send(
 
     if (status_code < 0)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "status_code < 0");
         return AXIS2_FAILURE;
     }
     response = axis2_http_client_get_response(sender->client, env);
@@ -548,6 +552,8 @@ axis2_http_sender_send(
             if (axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
                 axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "mep is AXIS2_MEP_URI_OUT_ONLY or AXIS2_MEP_URI_ROBUST_OUT_ONLY");
                 return AXIS2_FAILURE;
             }
         }

@@ -244,11 +244,13 @@ axis2_http_transport_sender_invoke(
             AXIS2_TRUE, 0, AXIS2_XML_PARSER_TYPE_BUFFER);
     if (! xml_writer)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Could not create xml_writer");
         return AXIS2_FAILURE;
     }
     om_output = axiom_output_create(env, xml_writer);
     if (! om_output)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Could not create om_output");
         axiom_xml_writer_free(xml_writer, env);
         xml_writer = NULL;
         return AXIS2_FAILURE;
