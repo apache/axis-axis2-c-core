@@ -212,21 +212,21 @@ axis2_http_transport_utils_process_http_post_request(
 
     soap_action = (axis2_char_t*)axutil_string_get_buffer(soap_action_header, env);
     soap_action_len = axutil_string_get_length(soap_action_header, env);
-    
+   
     if (soap_action && (soap_action_len > 0))
     {
         /* remove leading and trailing " s */
         if ('"' == soap_action[0])
         {
-            memmove(soap_action, soap_action + sizeof(axis2_char_t),
-                    soap_action_len + sizeof(axis2_char_t));
+            memmove(soap_action, soap_action + sizeof(char),
+                    soap_action_len - 1 + sizeof(char));
         }
-        if ('"' == soap_action[soap_action_len -1])
+        if ('"' == soap_action[soap_action_len - 2])
         {
-            soap_action[soap_action_len -1] = '\0';
+            soap_action[soap_action_len - 2] = '\0';
         }
     }
-
+ 
     headers = axis2_msg_ctx_get_transport_headers(msg_ctx, env);
     if (headers)
     {
