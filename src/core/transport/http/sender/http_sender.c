@@ -244,7 +244,7 @@ axis2_http_sender_send(
 
 	if (!send_via_get)
 	{
-        /*axutil_property_t *property = NULL;*/
+        axutil_property_t *property = NULL;
 
 		/* We put the client into msg_ctx so that we can free it once the processing
 		 * is done at client side
