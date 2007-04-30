@@ -1,9 +1,8 @@
 <!-- Created By Samisa Abeysinghe -->
 <project name="Axis2C">
-  <title>Axis2/C</title>
   <body>
-    <menu name="Axis2/C">
-      <item name="Home" href="index.html"/>
+      <menu name="Apache Axis2/C">
+      <item name="Apache Axis2/C Home" href="index.html"/>
       <item name="Download Axis2/C" href="download.cgi">
         <item name="Releases" href="download.cgi"/>
       </item>
@@ -15,7 +14,7 @@
 	    <item name="Mailing Lists &amp; Issue Tracking" href="lists_issues.html"/>
         <item name="Checkout Source Code" href="svn.html"/>
       </item>
-      <item name="Developer Guideline">
+      <item name="Developer Guidelines" href="coding_conventions.html">
 	<item name="Coding Convention" href="coding_conventions.html"/>
         <item name="Versionning" href="versioning.html"/>
       </item>
