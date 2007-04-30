@@ -11,8 +11,8 @@
 	<item name="Installation Guide" href="docs/installationguide.html"/>
 	<item name="Axis2/C manual" href="docs/axis2c_manual.html"/>
       </item>
-      <item name="Get Involved" href="list.html">
-	<item name="Mailing Lists" href="list.html"/>
+    <item name="Get Involved" href="list.html">
+	    <item name="Mailing Listsi & Issue Tracking" href="list.html"/>
         <item name="Checkout Source Code" href="svn.html"/>
       </item>
       <item name="Developer Guideline">
