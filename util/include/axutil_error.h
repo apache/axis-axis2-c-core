@@ -557,8 +557,6 @@ extern "C"
 		*/
         AXIS2_ERROR_LAST
     };
-    /* array to hold error messages */
-    const axis2_char_t* axutil_error_messages[AXIS2_ERROR_LAST + 10000];
         
     /** 
      * \brief Array to hold error messages

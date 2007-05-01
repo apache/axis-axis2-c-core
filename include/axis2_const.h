@@ -317,6 +317,8 @@ typedef enum axis2_wsdl_msg_labels
 #define AXIS2_ATTACHMENT_TEMP_DIR "attachmentDIR"
 #define AXIS2_CACHE_ATTACHMENTS "cacheAttachments"
 #define AXIS2_FILE_SIZE_THRESHOLD "sizeThreshold"
+/* op_ctx persistance */
+#define AXIS2_PERSIST_OP_CTX "persistOperationContext"
 
 /******************************************************************************/
 

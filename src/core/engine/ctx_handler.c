@@ -145,24 +145,46 @@ axis2_ctx_handler_invoke(
     else if (op) /*  2. if no op_ctx, create new op_ctx */
     {
         axis2_conf_ctx_t *conf_ctx = NULL;
-        axutil_allocator_switch_to_global_pool(env->allocator);
+        axis2_bool_t use_pools = AXIS2_FALSE;
+        axutil_param_t *param =  axis2_msg_ctx_get_parameter(msg_ctx, env,
+            AXIS2_PERSIST_OP_CTX);
+
+        use_pools = (param && 0 == axutil_strcmp(AXIS2_VALUE_TRUE,
+                axutil_param_get_value(param, env)));
+        if (use_pools)
+        {
+            axutil_allocator_switch_to_global_pool(env->allocator);
+        }
         op_ctx = axis2_op_ctx_create(env, op, NULL);
         if (!op_ctx)
         {
             return AXIS2_FAILURE;
         }
 
-         axis2_msg_ctx_set_op_ctx(msg_ctx, env, op_ctx);
+        axis2_msg_ctx_set_op_ctx(msg_ctx, env, op_ctx);
 
         axis2_op_register_op_ctx(op, env, msg_ctx, op_ctx);
 
         conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
         if (conf_ctx)
         {
+            if (!use_pools)
+            {
+                axutil_allocator_switch_to_global_pool(env->allocator);
+            }
+            
             svc_grp_ctx =  axis2_conf_ctx_fill_ctxs(conf_ctx, env, msg_ctx);
-        }
 
-        axutil_allocator_switch_to_local_pool(env->allocator);
+            if (!use_pools)
+            {
+                axutil_allocator_switch_to_local_pool(env->allocator);
+            }
+        }
+        
+        if (use_pools)
+        {
+            axutil_allocator_switch_to_local_pool(env->allocator);
+        }
     }
 
     if (!svc_grp_ctx && (axis2_msg_ctx_get_server_side(msg_ctx, env)))
