@@ -118,7 +118,7 @@ void test_axutil_thread_create(const axutil_env_t *env)
 void * AXIS2_CALL test_function2(axutil_thread_t *td, void *param)
 {
     printf("thread \n");
-    axutil_thread_exit(td, env->allocator);
+    /*axutil_thread_exit(td, env->allocator);*/
 
     return (void*)1;
 }
@@ -166,7 +166,7 @@ void test_axutil_thread_detach(const axutil_env_t *env)
      * thread is already detached - should return AXIS2_FAILURE
      * cannot join detached threads
      */
-    rv = axutil_thread_join(t3);
+    /*rv = axutil_thread_join(t3);*/
     if (AXIS2_FAILURE != rv)
     {
         printf("failure - test_axutil_thread_detach\n");
@@ -212,7 +212,7 @@ void test_axutil_thread_detach2(const axutil_env_t *env)
      * thread is already detached - should return AXIS2_FAILURE
      * cannot join detached threads
      */
-    rv = axutil_thread_join(t4);
+    /*rv = axutil_thread_join(t4);*/
     if (AXIS2_FAILURE != rv)
     {
         printf("failure - test_axutil_thread_detach2\n");
@@ -246,7 +246,7 @@ void run_test_thread(const axutil_env_t *env)
 #if defined (WIN32)
     Sleep(1000);/*to give time for detached threads to execute*/
 #else
-    sleep(1);
+    sleep(2);
 #endif
 
     axutil_thread_mutex_destroy(thread_lock);

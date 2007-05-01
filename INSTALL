@@ -108,8 +108,8 @@ Table of Contents
 
         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/axis2c/lib/
         cd samples
-        ./configure --prefix=${AXIS2C_HOME} --with-axis2_util=${AXIS2C_HOME}/include 
-            --with-axiom=${AXIS2C_HOME}/include
+        ./configure --prefix=${AXIS2C_HOME} --with-axis2_util=${AXIS2C_HOME}/include/axis2-1.0
+            --with-axiom=${AXIS2C_HOME}/include/axis2-1.0
         make
         sudo make install
 
@@ -336,12 +336,12 @@ Table of Contents
 5.1.1 On the Linux Platform
 
     Provide the Apache2 include file location as a configure option
-        ./configure --with-apache2="<apache2 directory>" [other configure options]
+        ./configure --with-apache2="<apache2 httpd include files location>" [other configure options]
 
     NOTE: Some apache2 distributions install APR (Apache Portable Run-time) 
     include files in a separate location which is required to build mod_axis2.
     In that case use:
-        ./configure --with-apache2="<apache2 directory>" 
+        ./configure --with-apache2="<apache2 directornclude files location>>" 
             --with-apr="<apr include files location>" [other configure options]
 
     Then build the source tree

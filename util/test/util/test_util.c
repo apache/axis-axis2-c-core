@@ -114,7 +114,8 @@ void test_axutil_dir_handler_list_service_or_module_dirs()
     axis2_char_t *filename = NULL;
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     axutil_error_t *error = axutil_error_create(allocator);
-    const axutil_env_t *env = axutil_env_create_with_error(allocator, error);
+    axutil_log_t *log  = axutil_log_create(allocator, NULL, NULL);
+    const axutil_env_t *env = axutil_env_create_with_error_log(allocator, error, log);
 
     axis2_char_t *pathname = axutil_strdup(env, "/tmp/test/");
 
@@ -262,10 +263,10 @@ int main(void)
     test_array_list(env);
     test_uuid_gen(env);
     run_test_log();
+    run_test_string(env);
     test_axutil_dir_handler_list_service_or_module_dirs();
     axutil_allocator_t *allocator = env->allocator;
 /*    axutil_env_free(env);*/
     axutil_allocator_free(allocator);
-    run_test_string(env);
     return 0;
 }
