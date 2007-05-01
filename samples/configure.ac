@@ -81,7 +81,10 @@ AC_ARG_ENABLE(diclient, [  --enable-diclient    build diclient. default=no],
 
 AC_MSG_CHECKING(To Use Axis2 C AXIOM. This is a compulsory module to build Axis2 C)
 AC_ARG_WITH(axiom,
-[  --with-axiom[=PATH]      use axiom.],
+[  --with-axiom[=PATH]     Find the AXIOM header files in 'PATH'.
+    'PATH' should point to AXIOM include files location.
+    If you omit the '=PATH' part completely, the configure script will search
+    '$(AXIS2C_HOME)/include/axis2-1.0' for AXIOM headers.],
 [ case "$withval" in
   no)
     AC_MSG_RESULT(no)
@@ -93,7 +96,7 @@ AC_ARG_WITH(axiom,
         axiominc="-I$withval"
     dnl else find the axiom include dir in $(AXIS2C_HOME)/include
     elif test -d '$(AXIS2C_HOME)/include'; then
-        axiominc="-I$(AXIS2C_HOME)/include"
+        axiominc="-I$(AXIS2C_HOME)/include/axis2-1.0"
     else
         AC_MSG_ERROR(could not find axiom. stop)
     fi
@@ -104,7 +107,10 @@ AC_ARG_WITH(axiom,
 
 AC_MSG_CHECKING(To Use Axis2 C Util. This is a compulsory module to build Axis2 C)
 AC_ARG_WITH(axis2_util,
-[  --with-axis2_util[=PATH]      use axis2_util.],
+[  --with-axis2_util[=PATH]      Find the Axis2 util header files in 'PATH'.
+    'PATH' should point to Axis2 util include files location.
+    If you omit the '=PATH' part completely, the configure script will search
+    '$(AXIS2C_HOME)/include/axis2-1.0' for Axis2 util headers.],
 [ case "$withval" in
   no)
     AC_MSG_RESULT(no)
@@ -116,7 +122,7 @@ AC_ARG_WITH(axis2_util,
         axis2_utilinc="-I$withval"
     dnl else find the axis2_util include dir in $(AXIS2C_HOME)/include
     elif test -d '$(AXIS2C_HOME)/include'; then
-        axis2_utilinc="-I$(AXIS2C_HOME)/include"
+        axis2_utilinc="-I$(AXIS2C_HOME)/include/axis2-1.0"
     else
         AC_MSG_ERROR(could not find axis2_util. stop)
     fi

@@ -52,6 +52,12 @@ void axis2_test_svc_client_blocking()
 
     svc_client = axis2_svc_client_create(env, client_home);
 
+    if (!svc_client)
+    {
+        printf("axis2_test axis2_svc_client_create FAILURE\n");
+        exit(-1);
+    }
+
     options = axis2_options_create(env);
     axis2_options_set_to(options, env, endpoint_ref);
     axis2_svc_client_set_options(svc_client, env, options);

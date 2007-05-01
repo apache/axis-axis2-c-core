@@ -59,7 +59,7 @@ const axutil_env_t *create_env_with_error_log()
 
 void test_axutil_log_write(const axutil_env_t *env)
 {
-    char msg[10];
+    char msg[32];
     printf("\n####start of test_axutil_log_write\n\n");
     strcpy(msg, "abcd test123");
     printf("\n####end of test_axutil_log_write\n\n");
