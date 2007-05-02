@@ -393,7 +393,7 @@ axis2_http_worker_process_request(
     {
         axis2_msg_ctx_t *out_msg_ctx = NULL, *in_msg_ctx = NULL;
         axis2_msg_ctx_t **msg_ctx_map = NULL;
-        axis2_char_t *msg_id = NULL;
+        const axis2_char_t *msg_id = NULL;
         axis2_conf_ctx_t *conf_ctx = NULL;
         msg_ctx_map =  axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
 
@@ -423,8 +423,8 @@ axis2_http_worker_process_request(
             if (conf_ctx && msg_id)
             {
                 axis2_conf_ctx_register_op_ctx(conf_ctx, env, msg_id, NULL);
+                axis2_op_ctx_free(op_ctx, env);
             }
-            axis2_op_ctx_free(op_ctx, env);
         }
         
     } /* Done freeing message contexts */
