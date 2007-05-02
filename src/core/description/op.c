@@ -980,11 +980,11 @@ axis2_op_register_op_ctx(axis2_op_t *op,
     {
         return AXIS2_FAILURE;
     }
-    status =  axis2_conf_ctx_register_op_ctx(conf_ctx, env, msg_id, op_ctx);
+    /*status =  axis2_conf_ctx_register_op_ctx(conf_ctx, env, msg_id, op_ctx);
     if (AXIS2_FAILURE == status)
     {
         return AXIS2_FAILURE;
-    }
+    }*/
     status =  axis2_msg_ctx_set_op_ctx(msg_ctx, env, op_ctx);
     if (AXIS2_FAILURE == status)
     {
