@@ -1174,39 +1174,35 @@ troubleshoot:</p>
 <p>Use the Axis2/C VC project or makefile to buid the
 component.</a></p>
 
-<p><a name="ssl_client">In this document I assume that the mod_axis2_IIS.dll
-is in the directory </a><a name="ssl_client1"
-id="ssl_client1"><code>c:\axis2c\lib\mod_axis2_IIS.dll</code> and axis2c_home
-is <code>c:\axis2c</code></a></p>
+<p>In this document I assume that the mod_axis2_IIS.dll
+is in the directory <code>c:\axis2c\lib\mod_axis2_IIS.dll</code> and axis2c_home
+is <code>c:\axis2c</code></p>
 
-<p><a name="ssl_client2" id="ssl_client2">Add the following key to the
-registery.</a></p>
+<p>Add the following key to the
+registery.</p>
 
-<p><a name="ssl_client">HKEY_LOCAL_MACHINE\SOFTWARE\Apache Axis2c\IIS ISAPI
-Redirector</a></p>
+<p>HKEY_LOCAL_MACHINE\SOFTWARE\Apache Axis2c\IIS ISAPI
+Redirector</p>
 
-<p><a name="ssl_client">Add a string value with the name axis2c_home and a
-value of c:\axis2c</a></p>
+<p>Add a string value with the name axis2c_home and a
+value of c:\axis2c</p>
 
-<p><a name="ssl_client">Add a string value with the name log_file and a value
-of c:\axis2c\logs\axis2.log</a></p>
+<p>Add a string value with the name log_file and a value
+of c:\axis2c\logs\axis2.log</p>
 
-<p><a name="ssl_client">Add a string value with the name log_level. The value
-can be either trace, error, info, critical, debug, or warning.</a></p>
+<p>Add a string value with the name log_level. The value
+can be either trace, error, info, critical, debug, or warning.</p>
 
-<p><a name="ssl_client">Using the IIS management console, add a new virtual
-directory to your IIS/PWS web site. </a><a name="ssl_client3"
-id="ssl_client3">The name of the virtual directory must be axis2. Its
-physical path should be the directory </a><a name="ssl_client4"
-id="ssl_client4">in which you placed mod_axis2_IIS.dll (in our example it is
-c:\axis2c\lib). When creating this new </a><a name="ssl_client5"
-id="ssl_client5">virtual directory, assign execute access to it.</a></p>
+<p>Using the IIS management console, add a new virtual
+directory to your IIS/PWS web site. The name of the virtual directory must be axis2. Its
+physical path should be the directory in which you placed mod_axis2_IIS.dll (in our example it is
+c:\axis2c\lib). When creating this new virtual directory, assign execute access to it.</p>
 
-<p><a name="ssl_client">By using the IIS management console, add
+<p>By using the IIS management console, add
 mod_axis2_IIS.dll as a filter in your IIS/PWS web site and restart the IIS
-admin service.</a></p>
+admin service.</p>
 
-<p><a name="ssl_client"></a></p>
+<a name="ssl_client"></a>
 <h1>13. Using SSL Client</h1>
 
 <h2>Building and Configuring the Client</h2>
