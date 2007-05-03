@@ -55,7 +55,8 @@ void axis2_test_svc_client_blocking()
     if (!svc_client)
     {
         printf("axis2_test axis2_svc_client_create FAILURE\n");
-        exit(-1);
+        printf("Client repository path not properly set. Please check AXIS2C_HOME setting\n");
+        return;
     }
 
     options = axis2_options_create(env);

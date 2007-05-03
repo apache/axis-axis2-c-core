@@ -95,6 +95,14 @@ Table of Contents
    NOTE: If you don't provide the --prefix configure option, it will by default
          be installed into "/usr/local/axis2c" directory.
 
+   You could run make check to test if everything is working fine. However, note 
+   that the test/core/clientapi/test_clientapi program would fail unless 
+   AXIS2C_HOME points to the installed location. (It's looking for Axis2/C 
+   repository)  This means you really should run "make && make install", 
+   then set AXIS2C_HOME=/path/to/install, and then "make check".  
+   That's a little different than the usual "make && make check && make install" 
+   process.
+
    You may need to try Axis2/C with guththila xml parser. You can do it by giving
    "--enable-guththila=yes" as a configure option.
     
