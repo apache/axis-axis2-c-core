@@ -74,7 +74,7 @@ void * AXIS2_CALL test_function(axutil_thread_t *td, void *param)
     printf("x = %d \n", ++x);
     axutil_thread_mutex_unlock(thread_lock);
 
-    axutil_thread_exit(td, env->allocator);
+    /*axutil_thread_exit(td, env->allocator);*/
 
     return (void*)1;
 }
@@ -101,7 +101,6 @@ void test_axutil_thread_create(const axutil_env_t *env)
 
     if (t2) printf("success - test_axutil_thread_create - axutil_thread_create \n");
     else printf("failure - test_axutil_thread_create - axutil_thread_create \n");
-
 
     rv = axutil_thread_join(t1);
 
