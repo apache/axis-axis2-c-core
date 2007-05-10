@@ -60,6 +60,11 @@ static int
 is_safe_or_unreserve (
 	char c);
 
+static void
+axis2_http_sender_add_header_list (axis2_http_simple_request_t *request,
+                                   const axutil_env_t *env,
+                                   axutil_array_list_t *array_list);
+
 #ifndef AXIS2_LIBCURL_ENABLED
 static axis2_status_t
 axis2_http_sender_configure_proxy(
@@ -172,6 +177,8 @@ axis2_http_sender_send(
 	axiom_node_t *body_node = NULL;
 	axiom_soap_body_t *soap_body = NULL;
 	axis2_bool_t is_soap = AXIS2_TRUE;
+    axutil_property_t *http_property = NULL;
+    axutil_array_list_t *array_list;
 	soap_body = axiom_soap_envelope_get_body(out, env);
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -337,6 +344,13 @@ axis2_http_sender_send(
 
 	axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_USER_AGENT, "Axis2/C");
     
+    http_property = axis2_msg_ctx_get_property (msg_ctx, env, AXIS2_TRANSPORT_HEADER_PROPERTY);
+    if (http_property)
+    {
+        array_list = (axutil_array_list_t *)axutil_property_get_value (http_property, env);
+        axis2_http_sender_add_header_list (request, env, array_list);
+    }
+
 	if (AXIS2_TRUE ==  axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
     {
 		if ('\"' != *soap_action)
@@ -1177,4 +1191,20 @@ axis2_http_sender_util_add_header (const axutil_env_t *env,
 	axis2_http_header_t *http_header;
     http_header = axis2_http_header_create(env, header_name, header_value);
     axis2_http_simple_request_add_header(request, env, http_header);
+}
+
+static void
+axis2_http_sender_add_header_list (axis2_http_simple_request_t *request,
+                                   const axutil_env_t *env,
+                                   axutil_array_list_t *array_list)
+{
+    int ii = 0;
+    int kk = 0;
+    axis2_http_header_t *http_header = NULL;
+    ii = axutil_array_list_size (array_list, env);
+    for (; kk < ii; kk++)
+    {
+        http_header = (axis2_http_header_t *)axutil_array_list_get (array_list, env, kk);
+        axis2_http_simple_request_add_header (request, env, http_header);
+    }
 }
