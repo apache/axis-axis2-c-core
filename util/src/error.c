@@ -70,7 +70,7 @@ axutil_error_init()
     axutil_error_messages[AXI2_ERROR_INVALID_PHASE] =
         "Invalid phase found in phase validation*";
     axutil_error_messages[AXIS2_ERROR_CONFIG_NOT_FOUND] =
-        "axis2.xml cannot be not found";
+        "axis2.xml cannot be found";
     axutil_error_messages[AXIS2_ERROR_DATA_ELEMENT_IS_NULL] =
         "Data element of the OM Node is null";
     axutil_error_messages[AXIS2_ERROR_IN_FLOW_NOT_ALLOWED_IN_TRS_OUT] =

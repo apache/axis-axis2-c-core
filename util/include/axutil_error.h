@@ -112,7 +112,7 @@ extern "C"
 		 */ 
         /* Invalid phase found in phase validation*/
         AXI2_ERROR_INVALID_PHASE,
-        /* axis2.xml cannot be not found*/
+        /* axis2.xml cannot be found */
         AXIS2_ERROR_CONFIG_NOT_FOUND,
         /* Data element of the OM Node is null */
         AXIS2_ERROR_DATA_ELEMENT_IS_NULL,
