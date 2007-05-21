@@ -42,19 +42,19 @@ axis2_echo_echo(const axutil_env_t *env, axiom_node_t *node)
         return NULL;
     }
 
-    text_parent_node = axiom_node_get_first_element(node, env);
-    if (!text_parent_node) /* 'text' node */
+    /*text_parent_node = axiom_node_get_first_element(node, env);
+    if (!text_parent_node) 
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
-        printf("Echo client ERROR: invalid XML in request\n");
+        printf("Echo client ERROR 1: invalid XML in request\n");
         return NULL;
-    }
+    }*/
 
-    text_node = axiom_node_get_first_child(text_parent_node, env);
+    text_node = axiom_node_get_first_child(node, env);
     if (!text_node) /* actual text to echo */
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
-        printf("Echo client ERROR: invalid XML in request\n");
+        printf("Echo client ERROR 2: invalid XML in request\n");
         return NULL;
     }
 
@@ -71,7 +71,7 @@ axis2_echo_echo(const axutil_env_t *env, axiom_node_t *node)
     else
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
-        printf("Echo client ERROR: invalid XML in request\n");
+        printf("Echo client ERROR 3: invalid XML in request\n");
         return NULL;
     }
 
@@ -84,17 +84,17 @@ build_om_programatically(const axutil_env_t *env, axis2_char_t *text)
 {
     axiom_node_t *echo_om_node = NULL;
     axiom_element_t* echo_om_ele = NULL;
-    axiom_node_t* text_om_node = NULL;
-    axiom_element_t * text_om_ele = NULL;
+    /*axiom_node_t* text_om_node = NULL;
+    axiom_element_t * text_om_ele = NULL;*/
     axiom_namespace_t *ns1 = NULL;
 
     ns1 = axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samples", "ns1");
 
     echo_om_ele = axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
 
-    text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
+    /*text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);*/
 
-    axiom_element_set_text(text_om_ele, env, text, text_om_node);
+    axiom_element_set_text(echo_om_ele, env, text, echo_om_node);
 
     return echo_om_node;
 }
