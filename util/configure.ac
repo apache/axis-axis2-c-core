@@ -100,6 +100,55 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
+# System-dependent adjustments.
+cygwin=no
+darwin=no
+solaris=no
+no_undefined=no
+
+case "${host_cpu}" in
+alpha*)
+  if test x"$GCC" = xyes
+  then
+    CFLAGS="$CFLAGS -mfp-rounding-mode=d -mieee"
+    CXXFLAGS="$CXXFLAGS -mfp-rounding-mode=d -mieee"
+  else
+    CFLAGS="$CFLAGS -fprm d -ieee -underflow_to_zero"
+    CXXFLAGS="$CXXFLAGS -fprm d -ieee -underflow_to_zero"
+  fi
+  ;;
+*)
+  ;;
+esac
+
+case "${host_os}" in
+cygwin)
+  cygwin=yes
+  no_undefined=yes
+  ;;
+darwin*)
+  darwin=yes
+  if test x"$GCC" = xyes
+  then
+    CFLAGS="$CFLAGS -Wno-long-double"
+    CXXFLAGS="$CXXFLAGS -Wno-long-double"
+  fi
+  ;;
+solaris*)
+  solaris=yes
+  AC_DEFINE(AXIS2_SOLARIS,1,[I is solaris])
+  
+  ;;
+*)
+  ;;
+esac
+
+AM_CONDITIONAL(HOST_OS_CYGWIN, test x$cygwin = xyes)
+AM_CONDITIONAL(HOST_OS_DARWIN, test x$darwin = xyes)
+AM_CONDITIONAL(HOST_OS_SOLARIS, test x$solaris = xyes)
+AM_CONDITIONAL(NO_UNDEFINED, test x$no_undefined = xyes)
+
+
 AC_MSG_CHECKING(whether to build guththila xml parser library)
 AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser library wrapper. default=no],
 [ case "${enableval}" in

@@ -133,6 +133,7 @@ extern "C"
 
 
 /* dir handling */
+#include <sys/types.h>
 #include <dirent.h>
 
 #define AXIS2_STRRCHR(x, y) (strrchr(x, y))
