@@ -236,7 +236,65 @@ axutil_uuid_get_mac_addr()
 }
 
 #else
-# ifdef HAVE_STRUCT_LIFREQ  // Solaris-ish
+
+#ifdef IS_MACOSX  /* Darwin */
+
+#ifndef max
+# define        max(a,b)        ((a) > (b) ? (a) : (b))
+#endif /* !max */
+
+char * AXIS2_CALL
+axutil_uuid_get_mac_addr()
+{
+    struct ifconf ifc;
+    struct ifreq *ifr;
+    int sockfd;
+    char buffer[512], *cp, *cplim;
+
+    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sockfd < 0)
+    {
+        perror("socket failed");
+        return NULL;
+    }
+
+    ifc.ifc_len = 512;
+    ifc.ifc_buf = buffer;
+
+    if (ioctl(sockfd, SIOCGIFCONF, (char *)&ifc) < 0)
+    {
+        perror("ioctl error");
+        close(sockfd);
+        return NULL;
+    }
+
+    ifr = ifc.ifc_req;
+
+    cplim = buffer + ifc.ifc_len;
+
+    char * macaddr = NULL;
+
+    for (cp = buffer; cp < cplim && macaddr == NULL;)
+    {
+        ifr = (struct ifreq *)cp;
+        if (ifr->ifr_addr.sa_family == AF_LINK)
+        {
+            struct sockaddr_dl *sdl = (struct sockaddr_dl *) & ifr->ifr_addr;
+
+            /* just take the ethernet adapters */
+            if (sdl->sdl_type == IFT_ETHER)
+            {
+                macaddr = (char *)ether_ntoa(LLADDR(sdl));
+            }
+        }
+        cp += sizeof(ifr->ifr_name) + max(sizeof(ifr->ifr_addr), ifr->ifr_addr.sa_len);
+
+    }
+
+    close(sockfd);
+    return macaddr;
+}
+# else /* Solaris-ish */
 
 /* code modified from that posted on:
 * http://forum.sun.com/jive/thread.jspa?threadID=84804&tstart=30
@@ -244,7 +302,6 @@ axutil_uuid_get_mac_addr()
 char * AXIS2_CALL
 axutil_uuid_get_mac_addr()
 {
-    unsigned char eth_addr[6];
     int sock;
     int i;
     struct lifconf lic;
@@ -304,64 +361,6 @@ axutil_uuid_get_mac_addr()
     close(sock);
     free(lifrs);
     return NULL;
-}
-
-# else    // Darwin
-
-#ifndef max
-# define        max(a,b)        ((a) > (b) ? (a) : (b))
-#endif /* !max */
-
-char * AXIS2_CALL
-axutil_uuid_get_mac_addr()
-{
-    struct ifconf ifc;
-    struct ifreq *ifr;
-    int sockfd;
-    char buffer[512], *cp, *cplim;
-
-    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sockfd < 0)
-    {
-        perror("socket failed");
-        return NULL;
-    }
-
-    ifc.ifc_len = 512;
-    ifc.ifc_buf = buffer;
-
-    if (ioctl(sockfd, SIOCGIFCONF, (char *)&ifc) < 0)
-    {
-        perror("ioctl error");
-        close(sockfd);
-        return NULL;
-    }
-
-    ifr = ifc.ifc_req;
-
-    cplim = buffer + ifc.ifc_len;
-
-    char * macaddr = NULL;
-
-    for (cp = buffer; cp < cplim && macaddr == NULL;)
-    {
-        ifr = (struct ifreq *)cp;
-        if (ifr->ifr_addr.sa_family == AF_LINK)
-        {
-            struct sockaddr_dl *sdl = (struct sockaddr_dl *) & ifr->ifr_addr;
-
-            /* just take the ethernet adapters */
-            if (sdl->sdl_type == IFT_ETHER)
-            {
-                macaddr = (char *)ether_ntoa(LLADDR(sdl));
-            }
-        }
-        cp += sizeof(ifr->ifr_name) + max(sizeof(ifr->ifr_addr), ifr->ifr_addr.sa_len);
-
-    }
-
-    close(sockfd);
-    return macaddr;
 }
 # endif
 #endif

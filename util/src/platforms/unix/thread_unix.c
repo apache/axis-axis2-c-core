@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+#include <config.h>
 #include "axutil_thread_unix.h"
 
 
@@ -242,7 +243,11 @@ axis2_os_thread_get(axutil_thread_t *thd)
 AXIS2_EXTERN axutil_thread_once_t* AXIS2_CALL
 axutil_thread_once_init(axutil_allocator_t* allocator)
 {
+#ifdef AXIS2_SOLARIS
+    static const pthread_once_t once_init = {PTHREAD_ONCE_INIT};
+#else
     static const pthread_once_t once_init = PTHREAD_ONCE_INIT;
+#endif
     axutil_thread_once_t *control = AXIS2_MALLOC(allocator,
             sizeof(axutil_thread_once_t));
     if (!control)

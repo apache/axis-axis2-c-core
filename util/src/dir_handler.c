@@ -27,7 +27,7 @@
 
 extern int AXIS2_ALPHASORT();
 
-int dir_select(struct dirent *entry);
+int dir_select(const struct dirent *entry);
 
 
 /**
@@ -314,7 +314,7 @@ int file_select(struct dirent *entry)
         return(AXIS2_FALSE);
 }
 
-int dir_select(struct dirent *entry)
+int dir_select(const struct dirent *entry)
 
 {
     struct stat stat_p;
