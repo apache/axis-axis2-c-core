@@ -389,6 +389,11 @@ axis2_svc_free(axis2_svc_t *svc,
     {
         AXIS2_FREE(env->allocator, svc->style);
     }
+    
+    if (svc->base)
+    {
+        axis2_desc_free(svc->base, env);
+    }
 
     if (svc)
     {

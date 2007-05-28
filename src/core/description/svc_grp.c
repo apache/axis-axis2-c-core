@@ -157,6 +157,11 @@ axis2_svc_grp_free(
         axutil_array_list_free(svc_grp->module_list, env);
     }
 
+    if (svc_grp->base)
+    {
+        axis2_desc_free(svc_grp->base, env);
+    }
+
     if (svc_grp)
     {
         AXIS2_FREE(env->allocator, svc_grp);

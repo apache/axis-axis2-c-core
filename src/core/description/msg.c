@@ -115,6 +115,11 @@ axis2_msg_free(axis2_msg_t *msg,
         axutil_param_container_free(msg->param_container, env);
     }
 
+    if (msg->base)
+    {
+        axis2_desc_free(msg->base, env);
+    }
+    
     msg->parent = NULL;
 
     if (msg)
