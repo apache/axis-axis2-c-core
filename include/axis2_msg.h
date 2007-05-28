@@ -34,8 +34,8 @@
 #include <axis2_description.h>
 #include <axis2_phase_meta.h>
 
-#define AXIS2_MSG_IN            "InMessage"
-#define AXIS2_MSG_OUT           "OutMessage"
+#define AXIS2_MSG_IN            "in"
+#define AXIS2_MSG_OUT           "out"
 #define AXIS2_MSG_IN_FAULT      "InFaultMessage"
 #define AXIS2_MSG_OUT_FAULT     "OutFaultMessage"
 
@@ -229,6 +229,20 @@ extern "C"
     axis2_msg_set_name(axis2_msg_t *msg,
         const axutil_env_t *env,
         const axis2_char_t *name);
+
+    /** 
+     * Gets base description.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @return pointer to base description struct
+     */
+    AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
+    axis2_msg_get_base(const axis2_msg_t *msg,
+        const axutil_env_t *env);
+
+    AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
+    axis2_msg_get_param_container(const axis2_msg_t *msg,
+        const axutil_env_t *env);
 
 /** @} */
 #ifdef __cplusplus

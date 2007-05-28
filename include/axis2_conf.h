@@ -667,10 +667,31 @@ extern "C"
         const axutil_env_t *env,
         axis2_bool_t enable_security);
 
+    AXIS2_EXTERN void* AXIS2_CALL
+    axis2_conf_get_security_context(
+        axis2_conf_t *conf,
+        const axutil_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_conf_set_security_context(
+        axis2_conf_t *conf,
+        const axutil_env_t *env,
+        void* security_context);
+
+
     AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
     axis2_conf_get_param_container(const axis2_conf_t *conf,
         const axutil_env_t *env);
 
+    /** 
+     * Gets base description.
+     * @param conf pointer to message
+     * @param env pointer to environment struct
+     * @return pointer to base description struct
+     */
+    AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
+    axis2_conf_get_base(const axis2_conf_t *conf,
+        const axutil_env_t *env);
 #ifdef __cplusplus
 }
 #endif

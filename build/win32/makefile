@@ -53,6 +53,7 @@ AXIS2_SOURCE_DIR = ..\..
 AXIS2_INTDIR= .\int.msvc
 AXIS2_INTDIR_AXIOM = $(AXIS2_INTDIR)\axiom
 AXIS2_INTDIR_UTIL  = $(AXIS2_INTDIR)\util
+AXIS2_INTDIR_NEETHI = $(AXIS2_INTDIR)\neethi
 AXIS2_INTDIR_CORE  = $(AXIS2_INTDIR)\core
 AXIS2_INTDIR_TNS = $(AXIS2_INTDIR)\http_sender
 AXIS2_INTDIR_TNR = $(AXIS2_INTDIR)\http_receiver
@@ -73,6 +74,7 @@ AXIS2_MICRO_VERSION = 9
 AXUTIL   = axutil
 AXIS2_PARSER = axis2_parser
 AXIOM        = axiom
+NEETHI	= neethi				 
 AXIS2_TRANSPORT_SENDER = axis2_http_sender
 AXIS2_TRANSPORT_RECEIVER = axis2_http_receiver
 AXIS2_ENGINE = axis2_engine
@@ -102,6 +104,10 @@ AXIS2_INCLUDE_PATH = 	/I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\om  \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\soap \
 		/I$(AXIS2_SOURCE_DIR)\util\include\platforms \
+		/I$(AXIS2_SOURCE_DIR)\neethi\include \
+		/I$(AXIS2_SOURCE_DIR)\neethi\src \
+		/I$(AXIS2_SOURCE_DIR)\neethi\src\secpolicy\builder \
+		/I$(AXIS2_SOURCE_DIR)\neethi\src\secpolicy\model \
 		/I$(AXIS2_SOURCE_DIR)\src\core\clientapi \
 		/I$(AXIS2_SOURCE_DIR)\src\core\deployment \
 		/I$(AXIS2_SOURCE_DIR)\src\core\description \
@@ -143,6 +149,12 @@ AXIOM_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\om\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\soap\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\attachments\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\util\*.c
+
+
+NEETHI_SRC = $(AXIS2_SOURCE_DIR)\neethi\src\*.c \
+        $(AXIS2_SOURCE_DIR)\neethi\src\secpolicy\model\*.c \
+        $(AXIS2_SOURCE_DIR)\neethi\src\secpolicy\builder\*.c \
+
 
 AXIS2_ENGINE_SRC =  $(AXIS2_SOURCE_DIR)\src\core\addr\*.c \
 		$(AXIS2_SOURCE_DIR)\src\core\clientapi\*.c \
@@ -249,6 +261,7 @@ deploy:
 	if not exist $(AXIS2_INTDIR) mkdir $(AXIS2_INTDIR)
 	if not exist $(AXIS2_INTDIR_AXIOM) mkdir $(AXIS2_INTDIR_AXIOM)
 	if not exist $(AXIS2_INTDIR_UTIL) mkdir $(AXIS2_INTDIR_UTIL)
+	if not exist $(AXIS2_INTDIR_NEETHI) mkdir $(AXIS2_INTDIR_NEETHI)
 	if not exist $(AXIS2_INTDIR_CORE) mkdir $(AXIS2_INTDIR_CORE)
 	if not exist $(AXIS2_INTDIR_TNS) mkdir $(AXIS2_INTDIR_TNS)
 	if not exist $(AXIS2_INTDIR_TNR) mkdir $(AXIS2_INTDIR_TNR)
@@ -277,14 +290,13 @@ guththila:
 	/DLL /OUT:$(AXIS2_LIBS)\$(GUTHTHILA).dll /IMPLIB:$(AXIS2_LIBS)\$(GUTHTHILA).lib
 
 axis2_parser:
-		
 	$(CC) $(CFLAGS) $(AXIS2_PARSER_SRC) /Fo$(AXIS2_INTDIR_PARSER)\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_PARSER)\*.obj $(AXUTIL).lib $(LIBS) \
 	$(LIBXML2_BIN_DIR)\lib\libxml2.lib  /DLL \
 	/OUT:$(AXIS2_LIBS)\$(AXIS2_PARSER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_PARSER).lib
 	
 axis2_parser_with_guththila:
-        $(CC) $(CFLAGS) $(GUTHTHILA_INCLUDE_PATH) $(AXIS2_GUTHTHILA_PARSER_SRC) /Fo$(AXIS2_INTDIR_PARSER)\ /c
+    $(CC) $(CFLAGS) $(GUTHTHILA_INCLUDE_PATH) $(AXIS2_GUTHTHILA_PARSER_SRC) /Fo$(AXIS2_INTDIR_PARSER)\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_PARSER)\*.obj $(AXUTIL).lib $(LIBS) \
 	$(AXIS2_LIBS)\$(GUTHTHILA).lib  /DLL \
 	/OUT:$(AXIS2_LIBS)\$(AXIS2_PARSER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_PARSER).lib
@@ -294,11 +306,17 @@ axiom:
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_AXIOM)\*.obj $(AXUTIL).lib \
 	$(AXIS2_PARSER).lib $(LIBS)  /DLL /OUT:$(AXIS2_LIBS)\$(AXIOM).dll \
 	/IMPLIB:$(AXIS2_LIBS)\$(AXIOM).lib
-	
+
+neethi:
+	$(CC) $(CFLAGS) $(NEETHI_SRC) /Fo$(AXIS2_INTDIR_NEETHI)\ /c
+    $(LD) $(LDFLAGS) $(AXIS2_INTDIR_NEETHI)\*.obj $(AXUTIL).lib $(AXIOM).lib \
+    $(AXIS2_PARSER).lib $(LIBS)  \
+    /DLL /OUT:$(AXIS2_LIBS)\$(NEETHI).dll /IMPLIB:$(AXIS2_LIBS)\$(NEETHI).lib
+
 axis2_engine: 
 	$(CC) $(CFLAGS) $(AXIS2_ENGINE_SRC) /Fo$(AXIS2_INTDIR_CORE)\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CORE)\*.obj $(AXUTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib $(LIBS)  \
+	$(AXIS2_PARSER).lib $(NEETHI).lib $(LIBS) \
 	/DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_ENGINE).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_ENGINE).lib
 
 axis2_http_sender: 
@@ -336,7 +354,7 @@ axis2_server:
 	
 	copy $(AXIS2_SOURCE_DIR)\samples\server\axis2.xml $(AXIS2_BINDIR)\
 
-axis2_core: axis2_util axis2_parser axiom axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server
+axis2_core: axis2_util axis2_parser axiom neethi axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server
 
 axis2_core_guththila: axis2_util guththila axis2_parser_with_guththila axiom axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server
 	
@@ -691,6 +709,11 @@ copy_include:
 
 	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\util\include $(AXIS2_BINDIR)\include\
 
+	if exist $(AXIS2_BINDIR)\include\Makefile.am del $(AXIS2_BINDIR)\include\Makefile.am
+
+    xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\neethi\include $(AXIS2_BINDIR)\include\
+	
+
 copy_vc_projects:
       if not exist $(AXIS2_BINDIR)\ides mkdir $(AXIS2_BINDIR)\ides
       if not exist $(AXIS2_BINDIR)\ides\vc mkdir $(AXIS2_BINDIR)\ides\vc
@@ -796,6 +819,9 @@ SRC_DIR = $(AXIS2_SOURCE_DIR)\util\src\platforms\windows\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\soap\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\attachments\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\util\*.c \
+		$(AXIS2_SOURCE_DIR)\neethi\src\*.c \
+		$(AXIS2_SOURCE_DIR)\neethi\src\secpolicy\model\*.c \
+		$(AXIS2_SOURCE_DIR)\neethi\src\secpolicy\builder\*.c \
 		$(AXIS2_SOURCE_DIR)\src\core\addr\*.c \
 		$(AXIS2_SOURCE_DIR)\src\core\clientapi\*.c \
 		$(AXIS2_SOURCE_DIR)\src\core\context\*.c \

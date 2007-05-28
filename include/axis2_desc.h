@@ -37,6 +37,8 @@ extern "C"
 
     /** Type name of struct axis2_desc */
     typedef struct axis2_desc axis2_desc_t;
+    
+    struct axis2_policy_include;
 
 	/**
      * Creates a description struct instance.    
@@ -154,6 +156,37 @@ extern "C"
         const axutil_env_t *env,
         const axis2_char_t *key);
     
+    /**
+     * Sets parent description.
+     * @param desc pointer to description
+     * @param env pointer to environment struct
+     * @param parent pointer to parent description 
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_desc_set_parent(axis2_desc_t *desc,
+        const axutil_env_t *env,
+        axis2_desc_t *parent);
+
+    /**
+     * Gets parent description.
+     * @param desc pointer to description
+     * @param env pointer to environment struct
+     * @return parent pointer to parent description 
+     */
+    AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
+    axis2_desc_get_parent(const axis2_desc_t *desc,
+        const axutil_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_desc_set_policy_include(axis2_desc_t *desc,
+        const axutil_env_t *env,
+        struct axis2_policy_include *policy_include);
+
+    AXIS2_EXTERN struct axis2_policy_include *AXIS2_CALL
+    axis2_desc_get_policy_include(axis2_desc_t *desc,
+        const axutil_env_t *env);
+
 /** @} */
 #ifdef __cplusplus
 }

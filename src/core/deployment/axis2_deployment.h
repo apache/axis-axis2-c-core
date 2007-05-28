@@ -89,6 +89,10 @@ extern "C"
 #define AXIS2_ATUSE "use"
 #define AXIS2_MEP "mep"
 
+/* for messages */
+#define AXIS2_MESSAGE "message"
+#define AXIS2_LABEL "label"
+
 /* for handlers */
 #define AXIS2_REF "ref"
 #define AXIS2_CLASSNAME "class"

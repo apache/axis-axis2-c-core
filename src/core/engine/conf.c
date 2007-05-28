@@ -55,6 +55,11 @@ struct axis2_conf
     axis2_bool_t enable_security;
     /** configuration parameter container */
     axutil_param_container_t *param_container;
+    /** base description struct */
+    axis2_desc_t *base;
+
+    /* this is a hack to keep rampart_context at client side*/
+    void *security_context;
 };
 
 AXIS2_EXTERN axis2_conf_t *AXIS2_CALL
@@ -96,6 +101,8 @@ axis2_conf_create(
     conf->handlers = NULL;
     conf->enable_mtom = AXIS2_FALSE;
     conf->enable_security = AXIS2_FALSE;
+    conf->base = NULL;
+    conf->security_context = NULL;
 
     conf->param_container = (axutil_param_container_t *)
             axutil_param_container_create(env);
@@ -151,6 +158,7 @@ axis2_conf_create(
     else
     {
         axis2_disp_t *uri_dispatch = NULL;
+        axis2_disp_t *add_dispatch = NULL;
 
         phase = axis2_phase_create(env, AXIS2_PHASE_TRANSPORT_IN);
         if (! phase)
@@ -163,14 +171,22 @@ axis2_conf_create(
         uri_dispatch = axis2_req_uri_disp_create(env);
         if (uri_dispatch)
         {
-                axis2_handler_t *handler = NULL;
-                handler = axis2_disp_get_base(uri_dispatch, env);
-                axis2_disp_free(uri_dispatch, env);
-                 axis2_phase_add_handler_at(phase, env, 0, handler);
-                axutil_array_list_add(conf->handlers, env, axis2_handler_get_handler_desc(handler, env));
-                handler = NULL;
+            axis2_handler_t *handler = NULL;
+            handler = axis2_disp_get_base(uri_dispatch, env);
+            axis2_disp_free(uri_dispatch, env);
+            axis2_phase_add_handler_at(phase, env, 0, handler);
+            axutil_array_list_add(conf->handlers, env, axis2_handler_get_handler_desc(handler, env));
         }
-
+        
+        add_dispatch = axis2_addr_disp_create(env);
+        if (add_dispatch)
+        {
+            axis2_handler_t *handler = NULL;
+            handler = axis2_disp_get_base(add_dispatch, env);
+            axis2_disp_free(add_dispatch, env);
+            axis2_phase_add_handler_at(phase, env, 1, handler);
+            axutil_array_list_add(conf->handlers, env, axis2_handler_get_handler_desc(handler, env));
+        }
         status = axutil_array_list_add(conf->
                 in_phases_upto_and_including_post_dispatch, env, phase);
         if (AXIS2_FAILURE == status)
@@ -242,6 +258,13 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    conf->base = axis2_desc_create(env);
+    if (!conf->base)
+    {
+        axis2_conf_free(conf, env);
         return NULL;
     }
 
@@ -1141,7 +1164,6 @@ axis2_conf_set_default_dispatchers(
 {
     axis2_phase_t *dispatch = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_disp_t *add_dispatch = NULL;
     axis2_disp_t *soap_action_based_dispatch = NULL;
     axis2_disp_t *soap_msg_body_based_dispatch = NULL;
     axis2_handler_t *handler = NULL;
@@ -1167,18 +1189,7 @@ axis2_conf_set_default_dispatchers(
      axis2_phase_add_handler_at(dispatch, env, 0, handler);
     axutil_array_list_add(conf->handlers, env, axis2_handler_get_handler_desc(handler, env));
 
-    add_dispatch = axis2_addr_disp_create(env);
-    if (!add_dispatch)
-    {
-         axis2_phase_free(dispatch, env);
-        return AXIS2_FAILURE;
-    }
-
-    handler = axis2_disp_get_base(add_dispatch, env);
-    axis2_disp_free(add_dispatch, env);
-     axis2_phase_add_handler_at(dispatch, env, 1, handler);
-    axutil_array_list_add(conf->handlers, env, axis2_handler_get_handler_desc(handler, env));
-
+    
     soap_action_based_dispatch = axiom_soap_action_disp_create(env);
     if (!soap_action_based_dispatch)
     {
@@ -1583,6 +1594,28 @@ axis2_conf_set_enable_security(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN void* AXIS2_CALL
+axis2_conf_get_security_context(
+    axis2_conf_t *conf,
+    const axutil_env_t *env)
+{
+    return conf->security_context;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_conf_set_security_context(
+    axis2_conf_t *conf,
+    const axutil_env_t *env,
+    void* security_context)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
+
+    conf->security_context = (void *)security_context;
+    return AXIS2_SUCCESS;
+}
+
+
 AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
 axis2_conf_get_param_container(const axis2_conf_t *conf,
     const axutil_env_t *env)
@@ -1590,3 +1623,9 @@ axis2_conf_get_param_container(const axis2_conf_t *conf,
     return conf->param_container;
 }
 
+AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
+axis2_conf_get_base(const axis2_conf_t *conf,
+    const axutil_env_t *env)
+{
+    return conf->base;
+}

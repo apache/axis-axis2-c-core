@@ -355,6 +355,10 @@ axis2_op_set_parent(axis2_op_t *op,
         op->parent = NULL;
     }
     op->parent = svc;
+    if (svc)
+    {
+        axis2_desc_set_parent(op->base, env, axis2_svc_get_base(svc, env));
+    }
     return AXIS2_SUCCESS;
 }
 
@@ -1184,4 +1188,12 @@ axis2_op_get_param_container(const axis2_op_t *op,
 {
     return op->param_container;
 }
+
+AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
+axis2_op_get_base(const axis2_op_t *op,
+    const axutil_env_t *env)
+{
+    return op->base;
+}
+
 

@@ -32,6 +32,8 @@ struct axis2_msg
     axis2_char_t *direction;
     /** parameter container to hold message parameters */
     struct axutil_param_container *param_container;
+    /** base description struct */
+    axis2_desc_t *base;
 };
 
 AXIS2_EXTERN axis2_msg_t *AXIS2_CALL
@@ -55,6 +57,7 @@ axis2_msg_create(const axutil_env_t *env)
     msg->name = NULL;
     msg->element_qname = NULL;
     msg->direction = NULL;
+    msg->base = NULL;
 
     msg->param_container = 
         (axutil_param_container_t *)axutil_param_container_create(env);
@@ -70,7 +73,14 @@ axis2_msg_create(const axutil_env_t *env)
         axis2_msg_free(msg, env);
         return NULL;
     }
-
+    
+    msg->base = axis2_desc_create(env);
+    if (!msg->base)
+    {
+        axis2_msg_free(msg, env);
+        return NULL;
+    }
+    
     return msg;
 }
 
@@ -167,6 +177,10 @@ axis2_msg_set_parent(axis2_msg_t *msg,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     msg->parent = op;
+    if (op)
+    {
+        axis2_desc_set_parent(msg->base, env, axis2_op_get_base(op, env));
+    }
     return AXIS2_SUCCESS;
 }
 
@@ -328,4 +342,16 @@ axis2_msg_set_name(axis2_msg_t *msg,
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
+axis2_msg_get_base(const axis2_msg_t *msg,
+    const axutil_env_t *env)
+{
+    return msg->base;
+}
 
+AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
+axis2_msg_get_param_container(const axis2_msg_t *msg,
+    const axutil_env_t *env)
+{
+    return msg->param_container;
+}

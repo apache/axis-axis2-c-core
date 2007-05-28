@@ -18,6 +18,7 @@
 #include <axis2_desc.h>
 #include <axutil_property.h>
 #include <axis2_msg.h>
+#include <axis2_policy_include.h>
 
 struct axis2_desc
 {
@@ -26,6 +27,10 @@ struct axis2_desc
 
     /** children of this description */
     axutil_hash_t *children;
+
+    axis2_desc_t *parent;
+
+    axis2_policy_include_t *policy_include;
 };
 
 AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
@@ -46,6 +51,8 @@ axis2_desc_create(const axutil_env_t *env)
 
     desc->param_container = NULL;
     desc->children = NULL;
+    desc->parent = NULL;
+    desc->policy_include = NULL;
 
     desc->param_container = (axutil_param_container_t *)
         axutil_param_container_create(env);
@@ -195,4 +202,48 @@ axis2_desc_remove_child(const axis2_desc_t *desc,
     }
     return AXIS2_FAILURE;
 }
+
+AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
+axis2_desc_get_parent(const axis2_desc_t *desc,
+    const axutil_env_t *env)
+{
+    return desc->parent;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_desc_set_parent(axis2_desc_t *desc,
+    const axutil_env_t *env,
+    axis2_desc_t *parent)
+{
+    desc->parent = parent;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_desc_set_policy_include(axis2_desc_t *desc,
+    const axutil_env_t *env,
+    axis2_policy_include_t *policy_include)
+{
+    if (desc->policy_include)
+    {
+        axis2_policy_include_free(desc->policy_include, env);
+        desc->policy_include = NULL;
+    }
+    
+    desc->policy_include = policy_include;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_policy_include_t *AXIS2_CALL
+axis2_desc_get_policy_include(axis2_desc_t *desc,
+    const axutil_env_t *env)
+{
+    if (!desc->policy_include)
+    {
+        /*desc->policy_include = axis2_policy_include_create(env);*/
+        desc->policy_include = axis2_policy_include_create_with_desc(env, desc);
+    }
+    return desc->policy_include;
+}
+
 

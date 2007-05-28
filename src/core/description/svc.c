@@ -93,6 +93,8 @@ struct axis2_svc
     struct axutil_param_container *param_container;
     /** flow container that encapsulates the flow related data */
     struct axis2_flow_container *flow_container;
+    /** base description struct */
+    axis2_desc_t *base;
 };
 
 AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
@@ -136,6 +138,7 @@ axis2_svc_create(const axutil_env_t *env)
     svc->impl_class = NULL;
     svc->qname = NULL;
     svc->style = NULL;
+    svc->base = NULL;
 
     svc->param_container = axutil_param_container_create(env);
     if (! svc->param_container)
@@ -216,6 +219,13 @@ axis2_svc_create(const axutil_env_t *env)
     }
     svc->target_ns_prefix = axutil_strdup(env, "tns");
     svc->sc_calc_count = 0;
+    
+    svc->base = axis2_desc_create(env);
+    if (!svc->base)
+    {
+        axis2_svc_free(svc, env);
+        return NULL;
+    }
 
     return svc;
 }
@@ -473,6 +483,10 @@ axis2_svc_set_parent(axis2_svc_t *svc,
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
 
     svc->parent = svc_grp;
+    if (svc_grp)
+    {
+        axis2_desc_set_parent(svc->base, env, axis2_svc_grp_get_base(svc_grp, env));
+    }
 
     return AXIS2_SUCCESS;
 }
@@ -1084,3 +1098,12 @@ axis2_svc_set_svc_wsdl_path(axis2_svc_t *svc,
     svc->wsdl_path = (axis2_char_t *)wsdl_path;
     return AXIS2_SUCCESS;
 }
+
+
+AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
+axis2_svc_get_base(const axis2_svc_t *svc,
+    const axutil_env_t *env)
+{
+    return svc->base;
+}
+

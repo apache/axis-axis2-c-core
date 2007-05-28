@@ -21,6 +21,7 @@
 #include <axutil_utils.h>
 #include <axutil_generic_obj.h>
 #include <axis2_raw_xml_in_out_msg_recv.h>
+#include <neethi_engine.h>
 
 struct axis2_desc_builder
 {
@@ -788,7 +789,6 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
     return AXIS2_SUCCESS;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
     const axutil_env_t *env,
@@ -1000,3 +1000,54 @@ axis2_desc_builder_get_dep_engine(const axis2_desc_builder_t *desc_builder,
 {
     return desc_builder->engine;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_process_policy_elements(const axutil_env_t *env,
+    int type, 
+    axiom_children_qname_iterator_t *iterator,
+    axis2_policy_include_t *policy_include) 
+{
+    while (axiom_children_qname_iterator_has_next(iterator, env))
+    {
+        axiom_node_t *node = NULL;
+        node = axiom_children_qname_iterator_next(iterator, env);
+        if (node)
+        {
+            axiom_element_t *element = NULL;
+            neethi_policy_t *policy = NULL;
+            
+            element = axiom_node_get_data_element(node, env);
+            policy = neethi_engine_get_policy(env, node, element);
+            axis2_policy_include_add_policy_element(policy_include, env, 
+                type, policy);
+        }
+    }
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_process_policy_reference_elements(const axutil_env_t *env,
+    int type, 
+    axiom_children_qname_iterator_t *iterator,
+    axis2_policy_include_t *policy_include) 
+{
+    while (axiom_children_qname_iterator_has_next(iterator, env))
+    {
+        axiom_node_t *node = NULL;
+        node = axiom_children_qname_iterator_next(iterator, env);
+        if (node)
+        {
+            axiom_element_t *element = NULL;
+            neethi_reference_t *reference = NULL;
+            
+            element = axiom_node_get_data_element(node, env);
+            /* TODO: add neethi_engine_get_policy_reference
+            reference = neethi_engine_get_policy_reference(env, node, element);*/
+            axis2_policy_include_add_policy_reference_element(policy_include, env, 
+                type, reference);
+        }
+    }
+    return AXIS2_SUCCESS;
+}
+
+

@@ -34,4 +34,5 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/core/deployment \
             -I$(top_builddir)/src/core/util \
             -I$(top_builddir)/axiom/include \
+            -I$(top_builddir)/neethi/include \
             -I$(top_builddir)/util/include

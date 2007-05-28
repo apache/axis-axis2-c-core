@@ -1021,6 +1021,15 @@ extern "C"
         const axutil_env_t *env,
         void *impl_class);
 
+    /** 
+     * Gets base description.
+     * @param svc pointer to message
+     * @param env pointer to environment struct
+     * @return pointer to base description struct
+     */
+    AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
+    axis2_svc_get_base(const axis2_svc_t *svc,
+        const axutil_env_t *env);
 
 /** @} */
 #ifdef __cplusplus

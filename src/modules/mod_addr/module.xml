@@ -1,7 +1,7 @@
 <module name="addressing" class="axis2_mod_addr">
     <inflow>
         <handler name="AddressingInHandler" class="axis2_mod_addr">
-            <order phase="PreDispatch"/>
+            <order phase="Transport" before="addressing_based_dispatcher"/>
         </handler>
     </inflow>
 

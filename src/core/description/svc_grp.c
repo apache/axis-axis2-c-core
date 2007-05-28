@@ -32,6 +32,8 @@ struct axis2_svc_grp
     axutil_array_list_t *module_list;
     /** parameter container to hold service related parameters */
     axutil_param_container_t *param_container;
+    /** base description struct */
+    axis2_desc_t *base;
 };
 
 AXIS2_EXTERN axis2_svc_grp_t *AXIS2_CALL
@@ -55,6 +57,7 @@ axis2_svc_grp_create(
     svc_grp->parent = NULL;
     svc_grp->svc_grp_name = NULL;
     svc_grp->module_list = NULL;
+    svc_grp->base = NULL;
 
     svc_grp->param_container =  axutil_param_container_create(env);
     if (!svc_grp->param_container)
@@ -87,6 +90,13 @@ axis2_svc_grp_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+    
+    svc_grp->base = axis2_desc_create(env);
+    if (!svc_grp->base)
+    {
+        axis2_svc_grp_free(svc_grp, env);
+        return NULL;
+    }
 
     return svc_grp;
 }
@@ -104,6 +114,10 @@ axis2_svc_grp_create_with_conf(
     svc_grp = (axis2_svc_grp_t *) axis2_svc_grp_create(env);
     if (svc_grp)
         svc_grp->parent = conf;
+    if (conf)
+    {
+        axis2_desc_set_parent(svc_grp->base, env, axis2_conf_get_base(conf, env));
+    }
 
     return svc_grp;
 
@@ -410,6 +424,10 @@ axis2_svc_grp_set_parent(
     if (svc_grp->parent)
          axis2_conf_free(svc_grp->parent, env);
     svc_grp->parent = parent;
+    if (parent)
+    {
+        axis2_desc_set_parent(svc_grp->base, env, axis2_conf_get_base(parent, env));
+    }
     return AXIS2_SUCCESS;
 }
 
@@ -559,4 +577,10 @@ axis2_svc_grp_get_param_container(const axis2_svc_grp_t *svc_grp,
     return svc_grp->param_container;
 }
 
+AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
+axis2_svc_grp_get_base(const axis2_svc_grp_t *svc_grp,
+    const axutil_env_t *env)
+{
+    return svc_grp->base;
+}
 

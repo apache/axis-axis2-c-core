@@ -23,6 +23,7 @@ libaxis2_engine_la_LIBADD=$(top_builddir)/src/core/description/libaxis2_descript
 					$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
 					$(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 					$(top_builddir)/util/src/libaxutil.la \
+					$(top_builddir)/neethi/src/libneethi.la \
 					$(top_builddir)/axiom/src/om/libaxis2_axiom.la 
 
 INCLUDES = 	-I$(top_builddir)/include \
@@ -35,6 +36,7 @@ INCLUDES = 	-I$(top_builddir)/include \
             -I$(top_builddir)/src/core/util \
             -I$(top_builddir)/src/core/clientapi \
             -I$(top_builddir)/util/include \
+            -I$(top_builddir)/neethi/include \
             -I$(top_builddir)/axiom/include
 
 EXTRA_DIST=axis2_disp_checker.h

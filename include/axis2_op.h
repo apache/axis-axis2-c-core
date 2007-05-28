@@ -596,6 +596,15 @@ extern "C"
     axis2_op_free_void_arg(void *op,
         const axutil_env_t *env);
 
+    /** 
+     * Gets base description.
+     * @param op pointer to message
+     * @param env pointer to environment struct
+     * @return pointer to base description struct
+     */
+    AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
+    axis2_op_get_base(const axis2_op_t *op,
+        const axutil_env_t *env);
 /** @} */
 #ifdef __cplusplus
 }

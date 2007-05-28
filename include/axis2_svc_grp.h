@@ -45,6 +45,7 @@
  */
 
 #include <axutil_param_container.h>
+#include <axis2_desc.h>
 #include <axis2_svc.h>
 #include <axis2_svc_grp_ctx.h>
 
@@ -309,6 +310,16 @@ extern "C"
     AXIS2_EXTERN axis2_svc_grp_t *AXIS2_CALL
     axis2_svc_grp_create_with_conf(const axutil_env_t *env,
         struct axis2_conf *conf);
+
+    /** 
+     * Gets base description.
+     * @param svc_grp pointer to message
+     * @param env pointer to environment struct
+     * @return pointer to base description struct
+     */
+    AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
+    axis2_svc_grp_get_base(const axis2_svc_grp_t *svc_grp,
+        const axutil_env_t *env);
 
 #ifdef __cplusplus
 }

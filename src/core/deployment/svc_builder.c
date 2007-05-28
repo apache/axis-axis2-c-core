@@ -19,6 +19,7 @@
 #include <axutil_class_loader.h>
 #include <axutil_utils.h>
 #include <axutil_property.h>
+#include <axis2_msg.h>
 
 struct axis2_svc_builder
 {
@@ -30,6 +31,12 @@ static axutil_array_list_t *
 axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
     const axutil_env_t *env,
     axiom_children_qname_iterator_t *op_itr);
+
+static void 
+axis2_svc_builder_process_msgs(axis2_svc_builder_t *svc_builder,
+    const axutil_env_t *env,
+    axiom_children_qname_iterator_t *iterator,
+    axis2_op_t *op);
 
 AXIS2_EXTERN axis2_svc_builder_t *AXIS2_CALL
 axis2_svc_builder_create(const axutil_env_t *env)
@@ -148,6 +155,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     axutil_qname_t *qout_faultflowst = NULL;
     axutil_qname_t *qopst = NULL;
     axutil_qname_t *qattname = NULL;
+    axutil_qname_t *qpolicy = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_svc_grp_t *parent = NULL;
     axiom_element_t *desc_element = NULL;
@@ -177,6 +185,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     int i = 0;
     int size = 0;
     AXIS2_TIME_T timestamp = 0;
+    axis2_desc_t *desc = NULL;
+    axis2_policy_include_t *policy_include = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_node, AXIS2_FAILURE);
@@ -193,7 +203,11 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         svc_node);
     axutil_qname_free(qparamst, env);
     qparamst = NULL;
+    
     parent = axis2_svc_get_parent(svc_builder->svc, env);
+    
+    desc = axis2_svc_get_base(svc_builder->svc,  env);
+    policy_include = axis2_desc_get_policy_include(desc, env);
 
     status = axis2_desc_builder_process_params(svc_builder->desc_builder, env,
         itr, 
@@ -371,6 +385,37 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         axis2_svc_add_op(svc_builder->svc, env, op_desc);
     }
     axutil_array_list_free(ops, env);
+
+    /*
+      <schema targetNamespace="http://x.y.z"/>
+      setting the PolicyInclude
+      processing <wsp:Policy> .. </..> elements
+    */
+    qpolicy = axutil_qname_create(env, NEETHI_POLICY, NEETHI_NAMESPACE, NULL);
+    itr = axiom_element_get_children_with_qname(svc_element, env,
+            qpolicy, svc_node);
+    axutil_qname_free(qpolicy, env) ;
+    qpolicy = NULL;
+
+    if (itr)
+    {
+        axis2_process_policy_elements(env, AXIS2_SERVICE_POLICY, itr,
+            policy_include);
+    }
+
+    /* processing <wsp:PolicyReference> .. </..> elements */
+    qpolicy = axutil_qname_create(env, NEETHI_REFERENCE, NEETHI_NAMESPACE, NULL);
+    itr = axiom_element_get_children_with_qname(svc_element, env,
+            qpolicy, svc_node);
+    axutil_qname_free(qpolicy, env) ;
+    qpolicy = NULL;
+
+    if (itr)
+    {
+        axis2_process_policy_reference_elements(env, AXIS2_POLICY_REF, itr,
+            policy_include);
+    }
+
     return AXIS2_SUCCESS;
 }
 
@@ -406,6 +451,11 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         axiom_node_t *recv_node = NULL;
         axis2_status_t status = AXIS2_FAILURE;
         struct axis2_dep_engine *dep_engine = NULL;
+        axis2_desc_t *desc = NULL;
+        axis2_policy_include_t *policy_include = NULL;
+        axiom_children_qname_iterator_t *itr = NULL;
+        axutil_qname_t *qpolicy = NULL;
+        axutil_qname_t *qmessage = NULL;
 
         op_node = axiom_children_qname_iterator_next(op_itr, env);
         /* getting operation name */
@@ -420,6 +470,14 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
                 AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
+        
+        op_name = axiom_attribute_get_value(op_name_att, env);
+        qopname = axutil_qname_create(env, op_name, NULL, NULL);
+        op_desc = axis2_op_create(env);
+        axis2_op_set_qname(op_desc, env, qopname);
+        axutil_qname_free(qopname, env);
+        qopname = NULL;
+
         /* set the mep of the operation */
         qmep = axutil_qname_create(env, AXIS2_MEP, NULL, NULL);
         op_mep_att = axiom_element_get_attribute(op_element, env, qmep);
@@ -440,8 +498,9 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
 
         axis2_op_set_qname(op_desc, env, qopname);
 
-        axutil_qname_free(qopname, env);
-        qopname = NULL;
+        desc = axis2_op_get_base(op_desc,  env);
+        policy_include = axis2_desc_get_policy_include(desc, env);
+
         /* operation parameters */
         qparamst = axutil_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
         params_itr = axiom_element_get_children_with_qname(op_element, env,
@@ -489,6 +548,48 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         {
             return AXIS2_FAILURE;
         }
+
+        /* setting the policy_include */
+
+        /* processing <wsp:Policy> .. </..> elements */
+        
+        qpolicy = axutil_qname_create(env, NEETHI_POLICY, NEETHI_NAMESPACE, NULL);
+        itr = axiom_element_get_children_with_qname(op_element, env,
+                qpolicy, op_node);
+        axutil_qname_free(qpolicy, env) ;
+        qpolicy = NULL;
+
+        if (itr)
+        {
+            axis2_process_policy_elements(env, AXIS2_SERVICE_POLICY, itr,
+                policy_include);
+        }
+
+        /* processing <wsp:PolicyReference> .. </..> elements */
+        qpolicy = axutil_qname_create(env, NEETHI_REFERENCE, NEETHI_NAMESPACE, NULL);
+        itr = axiom_element_get_children_with_qname(op_element, env,
+                qpolicy, op_node);
+        axutil_qname_free(qpolicy, env) ;
+        qpolicy = NULL;
+
+        if (itr)
+        {
+            axis2_process_policy_reference_elements(env, AXIS2_POLICY_REF, itr,
+                policy_include);
+        }
+
+        qmessage = axutil_qname_create(env, AXIS2_MESSAGE, NULL, NULL);
+        itr = axiom_element_get_children_with_qname(op_element, env,
+                qmessage, op_node);
+        axutil_qname_free(qmessage, env) ;
+        qmessage = NULL;
+
+        if (itr)
+        {
+            axis2_svc_builder_process_msgs(svc_builder, env,
+                itr, op_desc);
+        }
+
         /* setting operation phase */
         dep_engine = 
             axis2_desc_builder_get_dep_engine(svc_builder->desc_builder, env);
@@ -506,6 +607,91 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
     return ops;
 }
 
+static void 
+axis2_svc_builder_process_msgs(axis2_svc_builder_t *svc_builder,
+    const axutil_env_t *env,
+    axiom_children_qname_iterator_t *iterator,
+    axis2_op_t *op)
+{
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(iterator, env))
+    {
+        axiom_node_t *node = NULL;
+        axiom_element_t *element = NULL;
+        axutil_qname_t *qname = NULL;
+        axis2_char_t *msg_label = NULL;
+        axis2_msg_t *msg = NULL;
+        axiom_children_qname_iterator_t *itr = NULL;
+        axutil_qname_t *qpolicy = NULL;
+        axis2_desc_t *desc = NULL;
+        axis2_policy_include_t *policy_include = NULL;
+                
+        
+        node = axiom_children_qname_iterator_next(iterator, env);
+        element = axiom_node_get_data_element(node, env);
+        qname = axutil_qname_create(env, AXIS2_LABEL, NULL, NULL);
+
+        if (element)
+        {
+            msg_label = axiom_element_get_attribute_value(element, env, qname);
+        }
+
+        if(msg_label)
+        {
+            msg = axis2_op_get_msg(op, env, msg_label);
+        }
+
+        if (msg)
+        {
+            /* operation parameters */
+            axiom_children_qname_iterator_t *params_itr = NULL;
+            axutil_qname_t *qparamst = NULL;
+            qparamst = axutil_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
+            params_itr = axiom_element_get_children_with_qname(element, env,
+                    qparamst, node);
+            axutil_qname_free(qparamst, env);
+            qparamst = NULL;
+            axis2_desc_builder_process_params(svc_builder->desc_builder,
+                env, params_itr, 
+                axis2_msg_get_param_container(msg, env), 
+                axis2_op_get_param_container(op, env));
+
+            desc = axis2_msg_get_base(msg,  env);
+            policy_include = axis2_desc_get_policy_include(desc, env);
+
+            /* setting the policy_include */
+
+            /* processing <wsp:Policy> .. </..> elements */
+            
+            qpolicy = axutil_qname_create(env, NEETHI_POLICY, NEETHI_NAMESPACE, NULL);
+            itr = axiom_element_get_children_with_qname(element, env,
+                    qpolicy, node);
+            axutil_qname_free(qpolicy, env) ;
+            qpolicy = NULL;
+
+            if (itr)
+            {
+                axis2_process_policy_elements(env, AXIS2_SERVICE_POLICY, itr,
+                    policy_include);
+               /* axis2_process_policy_elements(env, AXIS2_MESSAGE_POLICY, itr,
+                    policy_include);*/
+
+            }
+
+            /* processing <wsp:PolicyReference> .. </..> elements */
+            qpolicy = axutil_qname_create(env, NEETHI_REFERENCE, NEETHI_NAMESPACE, NULL);
+            itr = axiom_element_get_children_with_qname(element, env,
+                    qpolicy, node);
+            axutil_qname_free(qpolicy, env) ;
+            qpolicy = NULL;
+
+            if (itr)
+            {
+                axis2_process_policy_reference_elements(env, AXIS2_POLICY_REF, itr,
+                    policy_include);
+            }
+        }
+    }
+}
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,

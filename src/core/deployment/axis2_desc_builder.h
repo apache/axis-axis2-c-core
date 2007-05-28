@@ -44,6 +44,7 @@
 #include <axiom_children_with_specific_attribute_iterator.h>
 #include <axis2_phase.h>
 #include <axutil_dll_desc.h>
+#include <axis2_policy_include.h>
 
 
 #ifdef __cplusplus
@@ -231,6 +232,17 @@ extern "C"
         axis2_char_t *file_name,
         struct axis2_dep_engine *engine);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_process_policy_elements(const axutil_env_t *env,
+        int type, 
+        axiom_children_qname_iterator_t *iterator,
+        axis2_policy_include_t *policy_include);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_process_policy_reference_elements(const axutil_env_t *env,
+        int type, 
+        axiom_children_qname_iterator_t *iterator,
+        axis2_policy_include_t *policy_include);
 /** @} */
 
 #ifdef __cplusplus
