@@ -299,46 +299,81 @@ axutil_uuid_get_mac_addr()
 /* code modified from that posted on:
 * http://forum.sun.com/jive/thread.jspa?threadID=84804&tstart=30
 */
+
+
 char * AXIS2_CALL
 axutil_uuid_get_mac_addr()
 {
+	char hostname[MAXHOSTNAMELEN];
+	char *data_ptr;
+    struct hostent *he;
+    struct arpreq ar;
+    struct sockaddr_in *sa;
+    int s;
+    int i;
+
+    if (gethostname(hostname, sizeof(hostname)) < 0)
+    	return NULL;
+    if ((he = gethostbyname(hostname)) == NULL)
+    	return NULL;
+    if ((s = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
+    	return NULL;
+    memset(&ar, 0, sizeof(ar));
+    sa = (struct sockaddr_in *)((void *)&(ar.arp_pa));
+    sa->sin_family = AF_INET;
+    memcpy(&(sa->sin_addr), *(he->h_addr_list), sizeof(struct in_addr));
+    if (ioctl(s, SIOCGARP, &ar) < 0) {
+    	close(s);
+    	return NULL;
+    }
+    close(s);
+    if (!(ar.arp_flags & ATF_COM))
+    	return NULL;
+	data_ptr = malloc(6*sizeof(char));
+    for (i = 0; i < 6; i++)
+    	data_ptr[i] = (unsigned char)(ar.arp_ha.sa_data[i] & 0xff);
+
+    return data_ptr;
+}
+
+/*
     int sock;
     int i;
     struct lifconf lic;
     struct lifreq *lifrs;
     struct lifnum num;
-
+*/
     /* How many interfaces do we have? */
-    sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_IP);
+ /*   sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_IP);
     num.lifn_family = AF_INET;
     num.lifn_flags = 0;
     ioctl(sock, SIOCGLIFNUM, &num);
-
+*/
     /* get details of the interfaces */
-    lifrs = malloc((num.lifn_count + 1) * sizeof(*lifrs));
+ /*   lifrs = malloc((num.lifn_count + 1) * sizeof(*lifrs));
     if (! lifrs)
-    {
-        exit(1); /* what is the right error handling here ? */
-    }
+    {*/
+        /*exit(1); *//* what is the right error handling here ? */
+/*    }
     lic.lifc_family = AF_INET;
     lic.lifc_flags = 0;
     lic.lifc_len = sizeof(lifrs);
     lic.lifc_buf = (caddr_t)lifrs;
     ioctl(sock, SIOCGLIFCONF, &lic);
-
+*/
     /* Get the ethernet address for each of them */
-    for (i = 0;i < num.lifn_count;i++)
+ /*   for (i = 0;i < num.lifn_count;i++)
     {
         struct sockaddr_in *soapip, *soapmac;
         struct arpreq ar;
-
+*/
         /* Get IP address of interface i */
-        ioctl(sock, SIOCGLIFADDR, &(lifrs[ i ]));
+ /*       ioctl(sock, SIOCGLIFADDR, &(lifrs[ i ]));
         soapip = (struct sockaddr_in *) & (lifrs[ i ].lifr_addr);
-
+*/
 
         /* Get ethernet address */
-        soapmac = (struct sockaddr_in *) & (ar.arp_pa);
+/*        soapmac = (struct sockaddr_in *) & (ar.arp_pa);
         *soapmac = *soapip;
 
         if (ioctl(sock, SIOCGARP, &ar) == 0)
@@ -361,6 +396,6 @@ axutil_uuid_get_mac_addr()
     close(sock);
     free(lifrs);
     return NULL;
-}
+}*/
 # endif
 #endif
