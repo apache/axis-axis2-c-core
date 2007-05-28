@@ -492,6 +492,11 @@ axis2_conf_free(
     {
         AXIS2_FREE(env->allocator, conf->axis2_repo);
     }
+    
+    if (conf->base)
+    {
+        axis2_desc_free(conf->base, env);
+    }
 
     if (conf)
     {

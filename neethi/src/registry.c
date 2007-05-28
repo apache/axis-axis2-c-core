@@ -96,7 +96,7 @@ neethi_registry_free(neethi_registry_t *neethi_registry,
     }
     if(neethi_registry->parent)
     {
-        neethi_registry_free(neethi_registry->parent, env);
+        /*neethi_registry_free(neethi_registry->parent, env);*/
         neethi_registry->parent = NULL;
     }
     AXIS2_FREE(env->allocator,neethi_registry);

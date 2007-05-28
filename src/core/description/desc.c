@@ -102,6 +102,11 @@ axis2_desc_free(axis2_desc_t *desc,
         axutil_param_container_free(desc->param_container, env);
     }
 
+    if (desc->policy_include)
+    {
+        axis2_policy_include_free(desc->policy_include, env);
+    }
+
     if (desc)
     {
         AXIS2_FREE(env->allocator, desc);
