@@ -93,6 +93,12 @@ axis2_policy_include_create_with_desc(const axutil_env_t *env,
     
     parent_desc = axis2_desc_get_parent(desc, env);
     
+    if (policy_include->registry)
+    {
+        neethi_registry_free(policy_include->registry, env);
+        policy_include->registry = NULL;
+    }
+
     if (parent_desc)
     {
         axis2_policy_include_t *preant_policy_include = 

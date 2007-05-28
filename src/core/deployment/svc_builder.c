@@ -484,8 +484,6 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         axutil_qname_free(qmep, env);
         qmep = NULL;
         op_name = axiom_attribute_get_value(op_name_att, env);
-        qopname = axutil_qname_create(env, op_name, NULL, NULL);
-        op_desc = axis2_op_create(env);
 
         if (op_mep_att)
         {
@@ -495,8 +493,6 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
                 axis2_op_set_msg_exchange_pattern(op_desc, env, mep_url);
             }
         }
-
-        axis2_op_set_qname(op_desc, env, qopname);
 
         desc = axis2_op_get_base(op_desc,  env);
         policy_include = axis2_desc_get_policy_include(desc, env);
