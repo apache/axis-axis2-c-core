@@ -159,7 +159,7 @@ neethi_all_serialize(
     all_ele = axiom_element_create(env, parent, NEETHI_ALL, policy_ns, &all_node);
     if (!all_node)
     {
-        printf("Exactlyone serialization failed\n");
+        /*printf("Exactlyone serialization failed\n");*/
         return AXIS2_FAILURE;
     }
     components = neethi_all_get_policy_components(neethi_all, env);
@@ -177,7 +177,7 @@ neethi_all_serialize(
                 status = neethi_operator_serialize(operator, env, all_node);
                 if(status != AXIS2_SUCCESS)
                 {
-                    printf("Operator Serializing failed\n");
+                    /*printf("Operator Serializing failed\n");*/
                     return status;
                 }
             }

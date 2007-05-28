@@ -358,19 +358,19 @@ axis2_status_t AXIS2_CALL neethi_engine_add_policy_component(
             case OPERATOR_TYPE_POLICY:
                 neethi_policy = (neethi_policy_t *)value;
                 neethi_policy_add_operator(neethi_policy,env,component);   
-                printf("neethi_policy\n");
+                /*printf("neethi_policy\n");*/
                 break;
 
             case OPERATOR_TYPE_ALL:
                 all = (neethi_all_t *)value;
                 neethi_all_add_operator(all,env,component);
-                printf("all\n");
+                /*printf("all\n");*/
                 break;
 
             case OPERATOR_TYPE_EXACTLYONE:
                 exactlyone = (neethi_exactlyone_t *)value;
                 neethi_exactlyone_add_operator(exactlyone,env,component);
-                printf("exactlyone\n");
+                /*printf("exactlyone\n");*/
                 break;
 
             case OPERATOR_TYPE_UNKNOWN:
@@ -380,7 +380,7 @@ axis2_status_t AXIS2_CALL neethi_engine_add_policy_component(
             case OPERATOR_TYPE_ASSERTION:
                 assertion = (neethi_assertion_t *)value;
                 neethi_assertion_add_operator(assertion, env, component);
-                printf("assertion\n");
+                /*printf("assertion\n");*/
                 break;
 
             case OPERATOR_TYPE_REFERENCE:
@@ -404,7 +404,7 @@ void check_neethi_policy(neethi_policy_t *neethi_policy , const axutil_env_t *en
 
     if(axutil_array_list_size(list,env)>1)
     {
-        printf("Error with Normalized neethi_policy\n");
+        /*printf("Error with Normalized neethi_policy\n");*/
         return;
     }        
     op = (neethi_operator_t *)axutil_array_list_get(list,env,0);
@@ -414,13 +414,13 @@ void check_neethi_policy(neethi_policy_t *neethi_policy , const axutil_env_t *en
         void *value = neethi_operator_get_value(op,env);
         if(value)
         {
-            printf("Check is ok\n");
+            /*printf("Check is ok\n");*/
             return;
         }          
     }
     else 
     {
-        printf("Not properly normalized\n");
+        /*printf("Not properly normalized\n");*/
         return;
     }        
 }    
@@ -497,7 +497,7 @@ neethi_engine_merge(const axutil_env_t *env,
 
     if(!exactlyone1 || !exactlyone2)
     {
-        printf("Merged fail Input wrong \n");
+        /*printf("Merged fail Input wrong \n");*/
         return NULL;
     }
     exactlyone = get_cross_product(exactlyone1,exactlyone2,env);
@@ -664,7 +664,7 @@ normalize_operator(
             /*Assertion normalization part comes here*/
             if(deep)
             {
-                printf("We still not handling deep normalization of assertions");
+                /*printf("We still not handling deep normalization of assertions");*/
                 return NULL;
             }               
             else
@@ -714,13 +714,13 @@ normalize_operator(
             uri = neethi_reference_get_uri(policy_ref, env);
             if(!uri)
             {
-                printf("NO policy Reference\n");
+                /*printf("NO policy Reference\n");*/
                 return NULL;
             }    
             policy = neethi_registry_lookup(registry, env, uri);
             if(!policy)
             {
-                printf("Cannot get policy from uri\n");
+                /*printf("Cannot get policy from uri\n");*/
                 return NULL;
             }  
             neethi_operator_set_value(child_component, env, policy, OPERATOR_TYPE_POLICY);

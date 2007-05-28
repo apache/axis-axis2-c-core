@@ -46,7 +46,7 @@ rp_element_create(const axutil_env_t *env)
 
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 rp_element_free(rp_element_t *element,
         const axutil_env_t *env)
 {
@@ -57,7 +57,7 @@ rp_element_free(rp_element_t *element,
         AXIS2_FREE(env->allocator, element);
         element = NULL;
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

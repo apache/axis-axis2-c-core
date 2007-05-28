@@ -173,12 +173,12 @@ neethi_policy_get_exactlyone(
             op = (neethi_operator_t *)axutil_array_list_get(list,env,0);
             if(!op)
             {
-                printf("Error in normalized neethi_policy\n");
+                /*printf("Error in normalized neethi_policy\n");*/
                 return NULL;
             }               
             if(neethi_operator_get_type(op,env) != OPERATOR_TYPE_EXACTLYONE)
             {
-                printf("Error in normalized neethi_policy\n");
+                /*printf("Error in normalized neethi_policy\n");*/
                 return NULL;
             }               
             exactlyone = (neethi_exactlyone_t *)neethi_operator_get_value(op,env);
@@ -276,7 +276,7 @@ neethi_policy_serialize(
     policy_ele = axiom_element_create(env, parent, NEETHI_POLICY, policy_ns, &policy_node);
     if (!policy_ele)
     {
-        printf("Policy element serialization failed.\n");
+        /*printf("Policy element serialization failed.\n");*/
         return NULL;
     }
 
@@ -295,7 +295,7 @@ neethi_policy_serialize(
                 status = neethi_operator_serialize(operator, env, policy_node);
                 if(status != AXIS2_SUCCESS)
                 {
-                    printf("Operator Serializing failed\n");
+                    /*printf("Operator Serializing failed\n");*/
                     return NULL;
                 }
             }

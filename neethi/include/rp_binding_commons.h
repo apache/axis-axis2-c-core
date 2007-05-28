@@ -36,7 +36,7 @@ extern "C"
     AXIS2_EXTERN rp_binding_commons_t *AXIS2_CALL
     rp_binding_commons_create(const axutil_env_t *env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     rp_binding_commons_free(rp_binding_commons_t *binding_commons,
                             const axutil_env_t *env);
 

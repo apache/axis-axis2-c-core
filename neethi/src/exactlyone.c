@@ -160,7 +160,7 @@ neethi_exactlyone_serialize(
     exactlyone_ele = axiom_element_create(env, parent, NEETHI_EXACTLYONE, policy_ns, &exactlyone_node);
     if (!exactlyone_node)
     {
-        printf("Exactlyone serialization failed\n");
+        /*printf("Exactlyone serialization failed\n");*/
         return AXIS2_FAILURE;
     }
     components = neethi_exactlyone_get_policy_components(neethi_exactlyone, env);
@@ -178,7 +178,7 @@ neethi_exactlyone_serialize(
                 status = neethi_operator_serialize(operator, env, exactlyone_node);
                 if(status != AXIS2_SUCCESS)
                 {
-                    printf("Operator Serializing failed\n");
+                    /*printf("Operator Serializing failed\n");*/
                     return status;
                 }
             }

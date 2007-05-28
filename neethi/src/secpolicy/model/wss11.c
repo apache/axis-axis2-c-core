@@ -59,7 +59,7 @@ rp_wss11_create(const axutil_env_t *env)
 
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 rp_wss11_free(rp_wss11_t *wss11,
         const axutil_env_t *env)
 {
@@ -70,7 +70,7 @@ rp_wss11_free(rp_wss11_t *wss11,
         AXIS2_FREE(env->allocator, wss11);
         wss11 = NULL;
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

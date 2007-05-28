@@ -60,7 +60,7 @@ rp_rampart_config_create(const axutil_env_t *env)
     return rampart_config;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 rp_rampart_config_free(rp_rampart_config_t *rampart_config,
         const axutil_env_t *env)
 {
@@ -71,7 +71,7 @@ rp_rampart_config_free(rp_rampart_config_t *rampart_config,
         AXIS2_FREE(env->allocator,rampart_config);
         rampart_config = NULL;
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

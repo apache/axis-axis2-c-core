@@ -104,7 +104,7 @@ neethi_reference_serialize(
     ref_ele = axiom_element_create(env, parent, NEETHI_REFERENCE, policy_ns, &ref_node);
     if (!ref_node)
     {
-        printf("Reference serialization failed\n");
+        /*printf("Reference serialization failed\n");*/
         return AXIS2_FAILURE;
     }
         

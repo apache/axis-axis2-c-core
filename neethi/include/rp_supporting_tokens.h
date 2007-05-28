@@ -37,7 +37,7 @@ extern "C"
     AXIS2_EXTERN rp_supporting_tokens_t *AXIS2_CALL
     rp_supporting_tokens_create(const axutil_env_t *env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     rp_supporting_tokens_free(rp_supporting_tokens_t *supporting_tokens,
                               const axutil_env_t *env);
 

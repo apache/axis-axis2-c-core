@@ -39,7 +39,7 @@ extern "C"
     AXIS2_EXTERN rp_property_t *AXIS2_CALL
     rp_property_create(const axutil_env_t *env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     rp_property_free(
         rp_property_t *property,
         const axutil_env_t *env);

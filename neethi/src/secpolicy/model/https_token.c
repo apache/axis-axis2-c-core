@@ -48,7 +48,7 @@ rp_https_token_create(const axutil_env_t *env)
 
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 rp_https_token_free(rp_https_token_t *https_token,
         const axutil_env_t *env)
 {
@@ -59,7 +59,7 @@ rp_https_token_free(rp_https_token_t *https_token,
         AXIS2_FREE(env->allocator, https_token);
         https_token = NULL;
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

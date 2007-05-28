@@ -35,7 +35,7 @@ extern "C"
     AXIS2_EXTERN rp_signed_encrypted_items_t *AXIS2_CALL
     rp_signed_encrypted_items_create(const axutil_env_t *env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     rp_signed_encrypted_items_free(rp_signed_encrypted_items_t *signed_encrypted_items,
                                    const axutil_env_t *env);
 

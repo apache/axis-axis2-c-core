@@ -51,7 +51,7 @@ rp_username_token_create(const axutil_env_t *env)
 
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 rp_username_token_free(
     rp_username_token_t *username_token,
     const axutil_env_t *env)
@@ -63,7 +63,7 @@ rp_username_token_free(
         AXIS2_FREE(env->allocator, username_token);
         username_token = NULL;
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

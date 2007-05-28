@@ -45,7 +45,7 @@ extern "C"
     AXIS2_EXTERN rp_secpolicy_t *AXIS2_CALL
     rp_secpolicy_create(const axutil_env_t *env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     rp_secpolicy_free(
         rp_secpolicy_t *secpolicy,
         const axutil_env_t *env);

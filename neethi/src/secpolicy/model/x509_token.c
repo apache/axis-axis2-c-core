@@ -56,7 +56,7 @@ rp_x509_token_create(const axutil_env_t *env)
     return x509_token;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 rp_x509_token_free(rp_x509_token_t *x509_token,
         const axutil_env_t *env)
 {
@@ -67,7 +67,7 @@ rp_x509_token_free(rp_x509_token_t *x509_token,
         AXIS2_FREE(env->allocator, x509_token);
         x509_token = NULL;
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

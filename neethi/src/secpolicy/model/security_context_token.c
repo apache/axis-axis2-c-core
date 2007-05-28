@@ -51,7 +51,7 @@ rp_security_context_token_create(const axutil_env_t *env)
 
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 rp_security_context_token_free(
     rp_security_context_token_t *security_context_token,
     const axutil_env_t *env)
@@ -63,7 +63,7 @@ rp_security_context_token_free(
         AXIS2_FREE(env->allocator, security_context_token);
         security_context_token = NULL;
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

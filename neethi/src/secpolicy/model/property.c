@@ -52,7 +52,7 @@ rp_property_create(const axutil_env_t *env)
     return property;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 rp_property_free(
     rp_property_t *property,
     const axutil_env_t *env)
@@ -124,7 +124,7 @@ rp_property_free(
         AXIS2_FREE(env->allocator,property);           
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

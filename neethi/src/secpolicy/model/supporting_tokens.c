@@ -63,7 +63,7 @@ rp_supporting_tokens_create(const axutil_env_t *env)
     return supporting_tokens;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 rp_supporting_tokens_free(rp_supporting_tokens_t *supporting_tokens,
         const axutil_env_t *env)
 {
@@ -118,7 +118,7 @@ rp_supporting_tokens_free(rp_supporting_tokens_t *supporting_tokens,
         AXIS2_FREE(env->allocator,supporting_tokens);
         supporting_tokens = NULL;
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

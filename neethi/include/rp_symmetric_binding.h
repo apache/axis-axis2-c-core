@@ -36,7 +36,7 @@ extern "C"
     AXIS2_EXTERN rp_symmetric_binding_t *AXIS2_CALL
     rp_symmetric_binding_create(const axutil_env_t *env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     rp_symmetric_binding_free(
         rp_symmetric_binding_t *symmetric_binding,
         const axutil_env_t *env);

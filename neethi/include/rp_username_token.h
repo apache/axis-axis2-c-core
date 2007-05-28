@@ -34,7 +34,7 @@ extern "C"
     AXIS2_EXTERN rp_username_token_t *AXIS2_CALL
     rp_username_token_create(const axutil_env_t *env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     rp_username_token_free(
         rp_username_token_t *username_token,
         const axutil_env_t *env);

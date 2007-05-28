@@ -54,7 +54,7 @@ rp_secpolicy_builder_build(
     
     if(secpolicy_process_alternatives(env, all, secpolicy)==AXIS2_FAILURE)
     {
-        printf("Cannot create secpolicy\n");
+        /*printf("Cannot create secpolicy\n");*/
         return NULL;
     }        
     return secpolicy;
@@ -94,7 +94,7 @@ secpolicy_process_alternatives(
                 transport_binding = (rp_transport_binding_t *)neethi_assertion_get_value(assertion, env);
                 if(!transport_binding)
                 {
-                    printf("Transport Binding not set\n");
+                    /*printf("Transport Binding not set\n");*/
                     return AXIS2_FAILURE;
                 }                    
                 binding = rp_property_create(env);
@@ -109,7 +109,7 @@ secpolicy_process_alternatives(
                 asymmetric_binding = (rp_asymmetric_binding_t *)neethi_assertion_get_value(assertion, env);
                 if(!asymmetric_binding)
                 {
-                    printf("Asymmetric Binding not set\n");
+                    /*printf("Asymmetric Binding not set\n");*/
                     return AXIS2_FAILURE;
                 }                    
                 binding = rp_property_create(env);
@@ -143,7 +143,7 @@ secpolicy_process_alternatives(
                 wss10 = (rp_wss10_t *)neethi_assertion_get_value(assertion, env);
                 if(!wss10)
                 {
-                    printf("WSS not set\n");
+                    /*printf("WSS not set\n");*/
                     return AXIS2_FAILURE;
                 }                    
                 wss = rp_property_create(env);
@@ -174,7 +174,7 @@ secpolicy_process_alternatives(
                 rampart_config = (rp_rampart_config_t *)neethi_assertion_get_value(assertion, env);
                 if(!rampart_config)
                 {
-                    printf("Rampart_config not set\n");
+                    /*printf("Rampart_config not set\n");*/
                     return AXIS2_FAILURE;
                 }    
                 rp_secpolicy_set_rampart_config(secpolicy, env, rampart_config);

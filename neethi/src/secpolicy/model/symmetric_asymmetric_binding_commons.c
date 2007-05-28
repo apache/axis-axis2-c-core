@@ -53,7 +53,7 @@ rp_symmetric_asymmetric_binding_commons_create(const axutil_env_t *env)
     return symmetric_asymmetric_binding_commons;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 rp_symmetric_asymmetric_binding_commons_free(
     rp_symmetric_asymmetric_binding_commons_t *symmetric_asymmetric_binding_commons,
     const axutil_env_t *env)
@@ -70,7 +70,7 @@ rp_symmetric_asymmetric_binding_commons_free(
         AXIS2_FREE(env->allocator,symmetric_asymmetric_binding_commons);
         symmetric_asymmetric_binding_commons = NULL;
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

@@ -78,7 +78,7 @@ rp_algorithmsuite_create(const axutil_env_t *env)
     return algorithmsuite;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 rp_algorithmsuite_free(rp_algorithmsuite_t *algorithmsuite,
         const axutil_env_t *env)
 {
@@ -89,7 +89,7 @@ rp_algorithmsuite_free(rp_algorithmsuite_t *algorithmsuite,
         AXIS2_FREE(env->allocator, algorithmsuite);
         algorithmsuite = NULL;
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

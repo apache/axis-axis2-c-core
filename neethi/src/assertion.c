@@ -313,7 +313,7 @@ neethi_assertion_serialize(
 
     if (!node)
     {
-        printf("Assertion serialization failed\n");
+        /*printf("Assertion serialization failed\n");*/
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;

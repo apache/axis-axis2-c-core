@@ -204,7 +204,7 @@ rp_rampart_config_builder_populate(
         {
             axis2_char_t *rd_val = NULL;
             rd_val = axiom_element_get_text(element, env, node);
-            printf("rd_val = %s", rd_val);
+            /*printf("rd_val = %s", rd_val);*/
             rp_rampart_config_set_rd_val(rampart_config, env, rd_val);
             return AXIS2_SUCCESS;
         }else{
