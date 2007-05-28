@@ -446,9 +446,9 @@ axis2_http_sender_send(
 					AXIS2_FREE(env->allocator, content_type);
 					content_type = temp_content_type;
 				}
-				/*temp_content_type = axutil_stracat(env, content_type, ";");*/
+				/*temp_content_type = axutil_stracat(env, content_type, ";");
 				AXIS2_FREE(env->allocator, content_type);
-				content_type = temp_content_type;
+				content_type = temp_content_type;*/
 			}
 		}
 		else
