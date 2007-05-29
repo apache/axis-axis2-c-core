@@ -105,8 +105,9 @@ rp_signed_encrypted_parts_builder_build(
             }
         }
     }
-    assertion = neethi_assertion_create(env);
-    neethi_assertion_set_value(assertion, env, signed_encrypted_parts, ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS);
+    /*assertion = neethi_assertion_create(env);
+    neethi_assertion_set_value(assertion, env, signed_encrypted_parts, ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS);*/
+    assertion = neethi_assertion_create_with_args(env, (void *)rp_signed_encrypted_parts_free, signed_encrypted_parts, ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS);    
     return assertion;
 }            
 

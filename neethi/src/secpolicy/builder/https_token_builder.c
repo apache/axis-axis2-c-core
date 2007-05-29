@@ -50,8 +50,9 @@ rp_https_token_builder_build(
         }
         else return NULL;
     }
-    assertion = neethi_assertion_create(env);
+    /*assertion = neethi_assertion_create(env);
     neethi_assertion_set_value(assertion, env, https_token, ASSERTION_TYPE_HTTPS_TOKEN);
-    
+    */
+    assertion = neethi_assertion_create_with_args(env, (void *)rp_https_token_free, https_token, ASSERTION_TYPE_HTTPS_TOKEN);    
     return assertion;
 }

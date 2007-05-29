@@ -70,8 +70,9 @@ rp_transport_token_builder_build(
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             transport_token_process_alternatives(env, all, transport_token);
 
-            assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, transport_token, ASSERTION_TYPE_TRANSPORT_TOKEN);
+            /*assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, transport_token, ASSERTION_TYPE_TRANSPORT_TOKEN);*/
+            assertion = neethi_assertion_create_with_args(env, (void *)rp_property_free, transport_token, ASSERTION_TYPE_TRANSPORT_TOKEN);
             return assertion;
         }
         else return NULL;

@@ -69,8 +69,9 @@ rp_asymmetric_binding_builder_build(
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             asymmetric_binding_process_alternatives(env, all, asymmetric_binding);
 
-            assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, asymmetric_binding, ASSERTION_TYPE_ASSYMMETRIC_BINDING);
+            /*assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, asymmetric_binding, ASSERTION_TYPE_ASSYMMETRIC_BINDING);*/
+            assertion = neethi_assertion_create_with_args(env, (void *)rp_asymmetric_binding_free, asymmetric_binding, ASSERTION_TYPE_ASSYMMETRIC_BINDING);
             return assertion;
         }
         else return NULL;

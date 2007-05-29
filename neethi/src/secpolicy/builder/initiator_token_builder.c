@@ -70,8 +70,9 @@ rp_initiator_token_builder_build(
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             initiator_token_process_alternatives(env, all, initiator_token);
 
-            assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, initiator_token, ASSERTION_TYPE_INITIATOR_TOKEN);
+            /*assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, initiator_token, ASSERTION_TYPE_INITIATOR_TOKEN);*/
+            assertion = neethi_assertion_create_with_args(env, (void *)rp_property_free, initiator_token, ASSERTION_TYPE_INITIATOR_TOKEN);
             return assertion;
         }
         else return NULL;
