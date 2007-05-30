@@ -34,7 +34,8 @@ libaxutil_la_SOURCES = hash.c \
                         properties.c \
 						rand.c \
 						date_time_util.c \
-						version.c
+						version.c \
+						duration.c
                         
 libaxutil_la_LIBADD =	$(top_builddir)/src/platforms/unix/libaxis2_unix.la \
                     		$(top_builddir)/src/minizip/libaxis2_minizip.la
