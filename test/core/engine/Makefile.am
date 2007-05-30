@@ -21,5 +21,6 @@ INCLUDES =	-I$(top_builddir)/src/xml/guththila \
             -I$(top_builddir)/src/core/deployment \
             -I$(top_builddir)/src/core/engine \
             -I ../../../util/include \
-            -I ../../../axiom/include 
+            -I ../../../axiom/include \
+            -I ../../../neethi/include 
 

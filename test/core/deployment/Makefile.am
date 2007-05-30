@@ -22,5 +22,6 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/core/clientapi \
             -I$(top_builddir)/src/core/util \
             -I ../../../util/include \
-            -I ../../../axiom/include
+            -I ../../../axiom/include \
+            -I ../../../neethi/include
 			
