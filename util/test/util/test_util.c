@@ -258,8 +258,8 @@ void test_log_write()
 int main(void)
 {
     const axutil_env_t *env = test_init();
-    test_file_diff(env);
     test_hash_get(env);
+    test_file_diff(env);
     test_array_list(env);
     test_uuid_gen(env);
     run_test_log();
