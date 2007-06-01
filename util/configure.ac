@@ -136,7 +136,7 @@ darwin*)
   ;;
 solaris*)
   solaris=yes
-  AC_DEFINE(AXIS2_SOLARIS,1,[I is solaris])
+  AC_DEFINE(AXIS2_SOLARIS,1,[Am I on Solaris?])
   
   ;;
 *)
