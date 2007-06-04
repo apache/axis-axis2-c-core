@@ -574,7 +574,7 @@ extern "C"
           be inserted so that another new module can know about the already
           occupied spaces. 
      */
-    const axis2_char_t* axutil_error_messages[AXIS2_ERROR_LAST + 10000];
+    extern const axis2_char_t* axutil_error_messages[];
     struct axutil_error;
 	typedef enum axis2_status_codes axis2_status_codes_t;
 	typedef enum axutil_error_codes axutil_error_codes_t;

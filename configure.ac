@@ -5,8 +5,10 @@ AC_PREREQ(2.59)
 AC_INIT(axis2c-src, 1.0.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE([tar-ustar])
+dnl AM_INIT_AUTOMAKE([tar-ustar])
+AM_INIT_AUTOMAKE
 AC_PREFIX_DEFAULT(/usr/local/axis2c)
+m4_ifdef([_A][M_PROG_TAR],[_A][M_SET_OPTION([tar-ustar])])
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -98,7 +100,7 @@ dnl This is a check to see if we are running MacOS X
 dnl It may be better to do a Darwin check
 AC_CHECK_HEADERS([sys/appleapiopts.h]) 
 dnl Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
+dnl AC_C_CONST
 
 dnl Checks for library functions.
 AC_FUNC_MALLOC

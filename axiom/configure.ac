@@ -5,7 +5,7 @@ AC_PREREQ(2.59)
 AC_INIT(axis2_axiom-src, 1.0.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE([tar-ustar])
+AM_INIT_AUTOMAKE
 AC_PREFIX_DEFAULT(/usr/local/axis2_axiom)
 
 dnl Checks for programs.
@@ -128,7 +128,7 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
   TESTDIR=""
 )
 
-
+PKG_PROG_PKG_CONFIG(0.20)
 PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
 CFLAGS="$CFLAGS $LIBXML2_CFLAGS $GUTHTHILA_CFLAGS"
 

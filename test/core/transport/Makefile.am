@@ -1,2 +1,1 @@
-TESTS =
 SUBDIRS = http

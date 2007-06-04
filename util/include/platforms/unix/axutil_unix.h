@@ -19,9 +19,7 @@
 #ifndef AXIS2_UNIX_H
 #define AXIS2_UNIX_H
 
-#ifdef IS_MACOSX
-    #include <config.h>
-#endif
+#include <config.h>
 
 /**
   * @file axutil_unix.h
@@ -188,10 +186,18 @@ extern "C"
 /**
  * Platform specific path separator char
  */
-#define AXIS2_PATH_SEP_CHAR '/'
-#define AXIS2_PATH_SEP_STR "/"
-#define AXIS2_LIB_PREFIX "lib"
-#define AXIS2_LIB_SUFFIX ".so"
+#ifdef IS_MACOSX
+    #define AXIS2_PATH_SEP_CHAR '/'                                                                   
+    #define AXIS2_PATH_SEP_STR "/"                                                                    
+    #define AXIS2_LIB_PREFIX "lib"                                                                    
+    #define AXIS2_LIB_SUFFIX ".dylib"
+#else
+    #define AXIS2_PATH_SEP_CHAR '/'
+    #define AXIS2_PATH_SEP_STR "/"
+    #define AXIS2_LIB_PREFIX "lib"
+    #define AXIS2_LIB_SUFFIX ".so"
+#endif
+
 
 /**
  * Platform specific time

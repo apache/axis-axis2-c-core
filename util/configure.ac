@@ -5,7 +5,7 @@ AC_PREREQ(2.59)
 AC_INIT(axis2_util-src, 1.0.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE([tar-ustar])
+AM_INIT_AUTOMAKE
 AC_PREFIX_DEFAULT(/usr/local/axis2_util)
 
 dnl Checks for programs.

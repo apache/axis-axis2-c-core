@@ -5,8 +5,11 @@ AC_PREREQ(2.59)
 AC_INIT(guththilac-src, 0.91_pre)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE([tar-ustar])
+dnl AM_INIT_AUTOMAKE([tar-ustar])
+AM_INIT_AUTOMAKE
 AC_PREFIX_DEFAULT(/usr/local/guththila)
+
+m4_ifdef([_A][M_PROG_TAR],[_A][M_SET_OPTION([tar-ustar])])
 
 dnl Checks for programs.
 AC_PROG_CC

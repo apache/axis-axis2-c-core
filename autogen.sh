@@ -19,7 +19,15 @@ echo 'Running autogen.sh in Axis2/C'
 cd ..
 
 echo -n 'Running libtoolize...'
-if libtoolize --force > /dev/null 2>&1; then
+if [ `uname -s` = Darwin ]
+then
+    export LIBTOOLIZE=glibtoolize
+else
+    export LIBTOOLIZE=libtoolize
+fi
+
+if $LIBTOOLIZE --force > /dev/null 2>&1; then
+
 	echo 'done.'
 else
 	echo 'failed.'

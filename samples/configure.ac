@@ -5,7 +5,9 @@ AC_PREREQ(2.59)
 AC_INIT(axis2c-sample-src, 1.0.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE([tar-ustar])
+dnl AM_INIT_AUTOMAKE([tar-ustar])
+AM_INIT_AUTOMAKE
+m4_ifdef([_A][M_PROG_TAR],[_A][M_SET_OPTION([tar-ustar])])
 AC_PREFIX_DEFAULT(/usr/local/axis2c)
 
 dnl Checks for programs.

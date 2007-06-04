@@ -1,11 +1,19 @@
 #!/bin/bash
 
 echo -n 'Running libtoolize...'
-if libtoolize --force > /dev/null 2>&1; then
-	echo 'done.'
+if [ `uname -s` = Darwin ]
+then
+    export LIBTOOLIZE=glibtoolize
 else
-	echo 'failed.'
-	exit 1
+    export LIBTOOLIZE=libtoolize
+fi
+
+if $LIBTOOLIZE --force > /dev/null 2>&1; then
+
+    echo 'done.'
+else
+    echo 'failed.'
+    exit 1
 fi
 
 echo -n 'Running aclocal...'

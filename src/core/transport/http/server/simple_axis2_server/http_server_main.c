@@ -98,7 +98,6 @@ int main(
     int port = 9090;
     const axis2_char_t *repo_path = "../";
 
-    axis2_http_socket_read_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
 
     while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:f:")) != -1)
     {
