@@ -42,8 +42,6 @@ extern "C"
     /** Type name for struct axist_http_svr_thread */
     typedef struct axis2_http_svr_thread axis2_http_svr_thread_t;
 
-    extern int axis2_http_socket_read_timeout;
-
     /**
      * @param svr_thread pointer to server thread
      * @param env pointer to environment struct

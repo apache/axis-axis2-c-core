@@ -40,7 +40,7 @@ extern "C"
 {
 #endif
 
-	extern int axis2_http_socket_read_timeout;
+	
 
     AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
     axis2_http_server_create (

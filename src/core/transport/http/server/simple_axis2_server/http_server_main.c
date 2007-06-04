@@ -30,6 +30,7 @@
 
 axutil_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;
+AXIS2_IMPORT extern int axis2_http_socket_read_timeout;
 /***************************** Function headers *******************************/
 axutil_env_t *
 init_syetem_env(
