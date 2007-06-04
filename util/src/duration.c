@@ -77,7 +77,8 @@ axutil_duration_create_from_string(const axutil_env_t *env,
         axis2_char_t *duration_str)
 {
     axutil_duration_t *duration = NULL;
-    return (axutil_duration_t*)axutil_duration_deserialize_duration(duration, env, duration_str);
+    axutil_duration_deserialize_duration(duration, env, duration_str);
+    return duration;
 }
 
 
