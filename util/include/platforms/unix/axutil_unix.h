@@ -100,7 +100,7 @@ extern "C"
 ****************************************************************/
 #include <sys/time.h>
 #include <sys/timeb.h>
-#include <unistd.h>
+/*#include <unistd.h> */
 #include <errno.h>
 #include <sys/param.h>
 #include <stdio.h>
@@ -117,7 +117,7 @@ extern "C"
 
 
 /* for file access handling */
-#include <unistd.h>
+/*#include <unistd.h>*/
 
 /* network handling*/
 #include <sys/socket.h>
