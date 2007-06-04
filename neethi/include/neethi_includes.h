@@ -18,7 +18,6 @@
 #ifndef NEETHI_INCLUDES_H
 #define NEETHI_INCLUDES_H
 
-#include <stdio.h>
 #include <axis2_util.h>
 #include <axutil_allocator.h>
 #include <axutil_string.h>

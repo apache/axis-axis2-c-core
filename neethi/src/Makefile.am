@@ -9,8 +9,7 @@ libneethi_la_SOURCES= all.c   \
 				policy.c \
 				reference.c \
 				registry.c \
-				assertion_builder.c \
-				test.c
+				assertion_builder.c
 
 libneethi_la_LIBADD  = ../../axiom/src/om/libaxis2_axiom.la \
 			../../util/src/libaxutil.la \
