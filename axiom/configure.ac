@@ -72,7 +72,7 @@ AC_CHECK_HEADER([sys/appleapiopts.h],
                [])
 
 dnl Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
+dnl AC_C_CONST
 
 dnl Checks for library functions.
 AC_FUNC_MALLOC

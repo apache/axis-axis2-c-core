@@ -43,12 +43,12 @@ extern "C"
     /**
       * TEXT PARAM
       */
-    static const int AXIS2_TEXT_PARAM = 0;
+#define AXIS2_TEXT_PARAM 0
 
     /**
      * Field DOM_PARAM
      */
-    static const int AXIS2_DOM_PARAM = 1;
+#define AXIS2_DOM_PARAM 1
 
     typedef struct axutil_param axutil_param_t;
 

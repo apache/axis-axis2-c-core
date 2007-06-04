@@ -86,7 +86,7 @@ AC_CHECK_HEADER([sys/appleapiopts.h],
                [])
 
 dnl Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
+dnl AC_C_CONST
 AC_CHECK_TYPES([struct lifreq])
 AC_CHECK_TYPES([struct sockaddr_dl], [], [],
 [
