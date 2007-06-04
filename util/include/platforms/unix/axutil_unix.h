@@ -19,7 +19,7 @@
 #ifndef AXIS2_UNIX_H
 #define AXIS2_UNIX_H
 
-#include <config.h>
+#include <axutil_config.h>
 
 /**
   * @file axutil_unix.h
