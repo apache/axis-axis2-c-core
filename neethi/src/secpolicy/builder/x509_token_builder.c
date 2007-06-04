@@ -99,7 +99,6 @@ x509_token_process_alternatives(
     axutil_array_list_t *arraylist = NULL;
     neethi_assertion_t *assertion = NULL;
     neethi_assertion_type_t type;    
-    void *value = NULL;
 
     int i = 0;
 
@@ -109,37 +108,32 @@ x509_token_process_alternatives(
     {
         operator = (neethi_operator_t *)axutil_array_list_get(arraylist, env, i);
         assertion = (neethi_assertion_t *)neethi_operator_get_value(operator, env);
-        value = neethi_assertion_get_value(assertion, env);
         type = neethi_assertion_get_type(assertion, env);
 
-        if(value)
+        if(type == ASSERTION_TYPE_REQUIRE_KEY_IDENTIFIRE_REFERENCE)
         {
-            if(type == ASSERTION_TYPE_REQUIRE_KEY_IDENTIFIRE_REFERENCE)
-            {
-                rp_x509_token_set_require_key_identifier_reference(x509_token, env, AXIS2_TRUE);
-            }
-            else if(type == ASSERTION_TYPE_REQUIRE_ISSUER_SERIAL_REFERENCE)
-            {
-                rp_x509_token_set_require_issuer_serial_reference(x509_token, env, AXIS2_TRUE);
-            }
-            if(type == ASSERTION_TYPE_REQUIRE_EMBEDDED_TOKEN_REFERENCE)
-            {
-                rp_x509_token_set_require_embedded_token_reference(x509_token, env, AXIS2_TRUE);
-            }
-            else if(type == ASSERTION_TYPE_REQUIRE_THUMBPRINT_REFERENCE)
-            {
-                rp_x509_token_set_require_thumb_print_reference(x509_token, env, AXIS2_TRUE);
-            }            
-            else if(type == ASSERTION_TYPE_WSS_X509_V1_TOKEN_10)
-            {
-                rp_x509_token_set_token_version_and_type(x509_token, env, RP_WSS_X509_V1_TOKEN_10);
-            }
-            else if(type == ASSERTION_TYPE_WSS_X509_V3_TOKEN_10)
-            {
-                rp_x509_token_set_token_version_and_type(x509_token, env, RP_WSS_X509_V3_TOKEN_10);
-            }
-            else return AXIS2_FAILURE;
-        }        
+            rp_x509_token_set_require_key_identifier_reference(x509_token, env, AXIS2_TRUE);
+        }
+        else if(type == ASSERTION_TYPE_REQUIRE_ISSUER_SERIAL_REFERENCE)
+        {
+            rp_x509_token_set_require_issuer_serial_reference(x509_token, env, AXIS2_TRUE);
+        }
+        if(type == ASSERTION_TYPE_REQUIRE_EMBEDDED_TOKEN_REFERENCE)
+        {
+            rp_x509_token_set_require_embedded_token_reference(x509_token, env, AXIS2_TRUE);
+        }
+        else if(type == ASSERTION_TYPE_REQUIRE_THUMBPRINT_REFERENCE)
+        {
+            rp_x509_token_set_require_thumb_print_reference(x509_token, env, AXIS2_TRUE);
+        }            
+        else if(type == ASSERTION_TYPE_WSS_X509_V1_TOKEN_10)
+        {
+            rp_x509_token_set_token_version_and_type(x509_token, env, RP_WSS_X509_V1_TOKEN_10);
+        }
+        else if(type == ASSERTION_TYPE_WSS_X509_V3_TOKEN_10)
+        {
+            rp_x509_token_set_token_version_and_type(x509_token, env, RP_WSS_X509_V3_TOKEN_10);
+        }
         else return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;

@@ -166,7 +166,7 @@ extern "C"
 #define RP_INCLUDE_ALWAYS_TO_RECIPIENT "http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient"
 
 #define RP_REQUIRE_KEY_IDENTIFIRE_REFERENCE "RequireKeyIdentifireReference"
-#define RP_REQUIRE_ISSUER_SERIAL_REFERENCE "RequireIssuerSerializerReference"
+#define RP_REQUIRE_ISSUER_SERIAL_REFERENCE "RequireIssuerSerialReference"
 #define RP_REQUIRE_EMBEDDED_TOKEN_REFERENCE "RequireEmbeddedTokenReference"
 #define RP_REQUIRE_THUMBPRINT_REFERENCE "RequireThumbprintReference"
 #define RP_REQUIRE_DERIVED_KEYS "RequireDerivedKeys"
