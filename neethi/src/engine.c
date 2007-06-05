@@ -119,6 +119,11 @@ neethi_all_t *AXIS2_CALL get_operator_all(
     neethi_operator_set_value(neethi_operator,env,all,OPERATOR_TYPE_ALL);
     process_operation_element(env,neethi_operator,node,element);
 
+    neethi_operator_set_value_null(neethi_operator, env);
+
+    neethi_operator_free(neethi_operator, env);
+    neethi_operator = NULL;
+    
     return all;
 }   
 
@@ -143,6 +148,11 @@ neethi_exactlyone_t *AXIS2_CALL get_operator_exactlyone(
     }        
     neethi_operator_set_value(neethi_operator,env,exactlyone,OPERATOR_TYPE_EXACTLYONE);
     process_operation_element(env,neethi_operator,node,element);
+
+    neethi_operator_set_value_null(neethi_operator, env);
+
+    neethi_operator_free(neethi_operator, env);
+    neethi_operator = NULL;
 
     return exactlyone;
 }
@@ -199,7 +209,12 @@ neethi_policy_t *AXIS2_CALL get_operator_neethi_policy(
         return NULL;
     }        
     neethi_operator_set_value(neethi_operator,env,neethi_policy,OPERATOR_TYPE_POLICY);
-    process_operation_element(env,neethi_operator,node,element);    
+    process_operation_element(env,neethi_operator,node,element);  
+
+    neethi_operator_set_value_null(neethi_operator, env);
+    
+    neethi_operator_free(neethi_operator, env);
+    neethi_operator = NULL;
 
     return neethi_policy;
 }
@@ -323,7 +338,6 @@ axis2_status_t AXIS2_CALL process_operation_element(
                             operator = neethi_operator_create(env);
                             neethi_operator_set_value(operator, env, assertion, OPERATOR_TYPE_ASSERTION);
                             neethi_engine_add_policy_component(env,neethi_operator,operator);
-                            
                         }                            
                     }
                 }
@@ -466,6 +480,11 @@ neethi_engine_normalize(const axutil_env_t *env,
     neethi_operator_set_value(operator,env,neethi_policy,OPERATOR_TYPE_POLICY);
 
     exactlyone = normalize_operator(operator,registry,deep,env);
+
+    neethi_operator_set_value_null(operator, env);
+
+    neethi_operator_free(operator, env);
+    operator = NULL;
 
     if(exactlyone)
     {

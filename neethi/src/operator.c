@@ -92,8 +92,9 @@ neethi_operator_free(neethi_operator_t *neethi_operator,
                 case OPERATOR_TYPE_UNKNOWN:
                     break;
             }
-            AXIS2_FREE(env->allocator,neethi_operator->value);     
-        }            
+            /*AXIS2_FREE(env->allocator,neethi_operator->value);*/     
+        }
+        AXIS2_FREE(env->allocator, neethi_operator);
     }
     return; 
 }
@@ -190,3 +191,13 @@ neethi_operator_serialize(
     }
     else return AXIS2_FAILURE;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+neethi_operator_set_value_null(
+    neethi_operator_t *neethi_operator,
+    const axutil_env_t *env)
+{
+    neethi_operator->value = NULL;
+    return AXIS2_SUCCESS;
+}
+

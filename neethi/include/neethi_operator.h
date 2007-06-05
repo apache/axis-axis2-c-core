@@ -74,6 +74,11 @@ extern "C"
             neethi_operator_t *neethi_operator,
             const axutil_env_t *env,
             axiom_node_t *parent);
+   
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    neethi_operator_set_value_null(
+            neethi_operator_t *neethi_operator,
+            const axutil_env_t *env);
     
 
 
