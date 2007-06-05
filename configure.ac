@@ -355,7 +355,7 @@ AC_CONFIG_FILES([Makefile \
     test/core/context/Makefile \
     test/core/engine/Makefile \
     test/core/addr/Makefile \
-    test/core/transport/Makefile\
+    test/core/transport/Makefile \
     test/core/transport/http/Makefile \
     ides/Makefile \
     include/Makefile \

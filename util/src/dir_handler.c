@@ -26,8 +26,11 @@
 #include <minizip/axis2_archive_extract.h>
 
 extern int AXIS2_ALPHASORT();
-
+#ifdef IS_MACOSX
+int dir_select(struct dirent *entry);
+#else
 int dir_select(const struct dirent *entry);
+#endif
 
 
 /**
@@ -314,8 +317,11 @@ int file_select(struct dirent *entry)
         return(AXIS2_FALSE);
 }
 
+#ifdef IS_MACOSX
+int dir_select(struct dirent *entry)
+#else
 int dir_select(const struct dirent *entry)
-
+#endif
 {
     struct stat stat_p;
 
