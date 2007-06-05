@@ -48,7 +48,6 @@ neethi_operator_create(const axutil_env_t *env)
     }
     neethi_operator->value = NULL;
     neethi_operator->type = OPERATOR_TYPE_UNKNOWN;
-
     return neethi_operator;
 
 }
@@ -85,13 +84,11 @@ neethi_operator_free(neethi_operator_t *neethi_operator,
                     neethi_operator->value = NULL;
                     break;
    
-                /*case OPERATOR_TYPE_ASSERTION:
-                    neethi_assertion_free((neethi_policy_t *)neethi_operator->value,env);
+                case OPERATOR_TYPE_ASSERTION:
+                    neethi_assertion_free((neethi_assertion_t *)neethi_operator->value,env);
                     neethi_operator->value = NULL;
                     break;
-                */
-                case OPERATOR_TYPE_ASSERTION:
-                    break;
+                
                 case OPERATOR_TYPE_UNKNOWN:
                     break;
             }
