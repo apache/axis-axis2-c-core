@@ -20,8 +20,6 @@ libaxis2_engine_la_LIBADD=$(top_builddir)/src/core/description/libaxis2_descript
 					$(top_builddir)/src/core/clientapi/libaxis2_clientapi.la \
 					$(top_builddir)/src/core/phaseresolver/libaxis2_phaseresolver.la \
 					$(top_builddir)/src/core/util/libaxis2_core_utils.la \
-					$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
-					$(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 					$(top_builddir)/util/src/libaxutil.la \
 					$(top_builddir)/neethi/src/libneethi.la \
 					$(top_builddir)/axiom/src/om/libaxis2_axiom.la 
