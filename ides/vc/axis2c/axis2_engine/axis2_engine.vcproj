@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="axiom.lib axutil.lib axis2_parser.lib"
+				AdditionalDependencies="axiom.lib axutil.lib axis2_parser.lib neethi.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(SolutionDir)\deploy\lib&quot;"
 				GenerateManifest="true"
@@ -412,6 +412,10 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\core\description\phase_rule.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\core\description\policy_include.c"
 					>
 				</File>
 				<File
