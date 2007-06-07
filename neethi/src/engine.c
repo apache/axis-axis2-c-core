@@ -492,7 +492,7 @@ neethi_engine_normalize(const axutil_env_t *env,
         neethi_operator_set_value(component,env,exactlyone,OPERATOR_TYPE_EXACTLYONE);
         neethi_policy_add_operator(resultant_neethi_policy,env,component);
         
-        check_neethi_policy(resultant_neethi_policy,env);
+        /*check_neethi_policy(resultant_neethi_policy,env);*/
         return resultant_neethi_policy;
     }        
     else
@@ -714,6 +714,8 @@ normalize_operator(
             neethi_policy = (neethi_policy_t *)neethi_operator_get_value(child_component,env);
             children =  neethi_policy_get_policy_components(neethi_policy,env);
             neethi_all_add_policy_components(all,children,env);
+            axutil_array_list_free(children, env);
+            children = NULL;
             to_normalize = neethi_operator_create(env);
             neethi_operator_set_value(to_normalize,env,all,OPERATOR_TYPE_ALL);
             exactlyone = normalize_operator(to_normalize,registry,deep,env);
@@ -748,6 +750,8 @@ normalize_operator(
             policy = (neethi_policy_t *)neethi_operator_get_value(child_component,env);
             children =  neethi_policy_get_policy_components(policy,env);
             neethi_all_add_policy_components(all,children,env);
+            axutil_array_list_free(children, env);
+            children = NULL;
             to_normalize = neethi_operator_create(env);
             neethi_operator_set_value(to_normalize,env,all,OPERATOR_TYPE_ALL);
             exactlyone = normalize_operator(to_normalize,registry,deep,env);
@@ -760,6 +764,8 @@ normalize_operator(
             axutil_array_list_add(child_component_list,env,exactlyone);
         }
     }
+    axutil_array_list_free(arraylist, env);
+    arraylist = NULL;
     return compute_resultant_component(child_component_list,type,env);
 }
 

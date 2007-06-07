@@ -197,15 +197,15 @@ neethi_policy_get_alternatives(
     const axutil_env_t *env)
 {
 
-    neethi_policy_t *normalized = NULL;
+    /*neethi_policy_t *normalized = NULL;*/
     neethi_exactlyone_t *exactlyone = NULL;
 
-    normalized = neethi_engine_get_normalize(env, AXIS2_FALSE, neethi_policy);
+    /*normalized = neethi_engine_get_normalize(env, AXIS2_FALSE, neethi_policy);*/
 
-    if(!normalized)
-        return NULL;
+    /*if(!normalized)
+        return NULL;*/
 
-    exactlyone = neethi_policy_get_exactlyone(normalized, env);
+    exactlyone = neethi_policy_get_exactlyone(neethi_policy, env);
     if(!exactlyone)
         return NULL;
     
@@ -303,3 +303,13 @@ neethi_policy_serialize(
     } 
     return policy_node;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+neethi_policy_set_components_null(
+    neethi_policy_t *policy,
+    const axutil_env_t *env)
+{
+    policy->policy_components = NULL;
+    return AXIS2_SUCCESS;
+}
+

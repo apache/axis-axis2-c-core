@@ -50,6 +50,7 @@ rp_username_token_builder_build(
     axis2_char_t *inclusion_value = NULL;
     axutil_qname_t *qname = NULL;
     neethi_assertion_t *assertion = NULL;
+    neethi_policy_t *normalized_policy = NULL;
 
     username_token = rp_username_token_create(env);
     qname = axutil_qname_create(env,RP_INCLUDE_TOKEN,RP_SP_NS,RP_SP_PREFIX);
@@ -79,8 +80,11 @@ rp_username_token_builder_build(
             {
                 return NULL;
             }
-            policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy); 
-            alternatives = neethi_policy_get_alternatives(policy, env);
+            normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
+            neethi_policy_set_components_null(policy, env);
+            neethi_policy_free(policy, env);
+            policy = NULL;
+            alternatives = neethi_policy_get_alternatives(normalized_policy, env);
             component = (neethi_operator_t *)axutil_array_list_get(alternatives, env, 0);            
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             username_token_process_alternatives(env, all, username_token);

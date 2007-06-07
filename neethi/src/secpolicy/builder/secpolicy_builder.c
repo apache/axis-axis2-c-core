@@ -43,10 +43,12 @@ rp_secpolicy_builder_build(
     neethi_operator_t *component = NULL;
     neethi_all_t *all = NULL;
     rp_secpolicy_t *secpolicy = NULL;
+    /*neethi_policy_t *normalized_policy = NULL;*/
 
     secpolicy = rp_secpolicy_create(env);
 
-    policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy); 
+    /*normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy);*/
+
     alternatives = neethi_policy_get_alternatives(policy, env);
 
     component = (neethi_operator_t *)axutil_array_list_get(alternatives, env, 0);            

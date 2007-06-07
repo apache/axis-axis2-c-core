@@ -49,6 +49,7 @@ rp_recipient_token_builder_build(
     neethi_operator_t *component = NULL;
     neethi_all_t *all = NULL;
     neethi_assertion_t *assertion = NULL;
+    neethi_policy_t *normalized_policy = NULL;
 
     recipient_token = rp_property_create(env);
     
@@ -64,8 +65,11 @@ rp_recipient_token_builder_build(
             {
                 return NULL;
             }
-            policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy); 
-            alternatives =neethi_policy_get_alternatives(policy, env);
+            normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
+            neethi_policy_set_components_null(policy, env);
+            neethi_policy_free(policy, env);
+            policy = NULL;
+            alternatives =neethi_policy_get_alternatives(normalized_policy, env);
             component = (neethi_operator_t *)axutil_array_list_get(alternatives, env, 0);            
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             recipient_token_process_alternatives(env, all, recipient_token);

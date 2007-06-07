@@ -55,6 +55,7 @@ rp_supporting_tokens_builder_build(
     neethi_all_t *all = NULL;
     neethi_assertion_t *assertion = NULL;
     axis2_char_t *local_name = NULL;
+    neethi_policy_t *normalized_policy = NULL;
 
     supporting_tokens = rp_supporting_tokens_create(env);
     local_name = axiom_element_get_localname(element, env);
@@ -85,8 +86,11 @@ rp_supporting_tokens_builder_build(
             {
                 return NULL;
             }
-            policy = neethi_engine_get_normalize(env, AXIS2_FALSE,policy); 
-            alternatives = neethi_policy_get_alternatives(policy, env);
+            normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE,policy);
+            neethi_policy_set_components_null(policy, env);
+            neethi_policy_free(policy, env);
+            policy = NULL;
+            alternatives = neethi_policy_get_alternatives(normalized_policy, env);
             component = (neethi_operator_t *)axutil_array_list_get(alternatives, env, 0);            
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             supporting_tokens_process_alternatives(env, all, supporting_tokens);
