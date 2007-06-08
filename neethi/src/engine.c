@@ -791,6 +791,8 @@ compute_resultant_component(
                            neethi_exactlyone_get_policy_components(inner_exactlyone,env),env);
             
         }
+        /*axutil_array_list_free(normalized_inner_components, env);
+        normalized_inner_components = NULL;*/
     }
     else if(type == OPERATOR_TYPE_POLICY ||
                 type == OPERATOR_TYPE_ALL)
@@ -812,13 +814,29 @@ compute_resultant_component(
                         break;    
                     } 
                     else
+                    {
+                        neethi_exactlyone_t *old_exactlyone = NULL;
+                        old_exactlyone = exactlyone;
                         exactlyone = get_cross_product(exactlyone,current_exactlyone,env);
+                        neethi_exactlyone_set_components_null(old_exactlyone, env);
+                        neethi_exactlyone_free(old_exactlyone, env);
+                        old_exactlyone = NULL;
+                    }
                 }
             }
         }
         else
-            exactlyone = (neethi_exactlyone_t *)axutil_array_list_get(normalized_inner_components,env,0);    
+        {
+            neethi_exactlyone_t *temp = NULL;
+            temp = exactlyone;
+            exactlyone = (neethi_exactlyone_t *)axutil_array_list_get(normalized_inner_components,env,0);   
+            /*neethi_exactlyone_set_components_null(temp, env);*/
+            neethi_exactlyone_free(temp, env);
+            temp = NULL;
+        }
     }
+    axutil_array_list_free(normalized_inner_components, env);
+    normalized_inner_components = NULL;            
     return exactlyone;
 }
 

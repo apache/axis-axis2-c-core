@@ -85,6 +85,9 @@ rp_x509_token_builder_build(
 
             /*assertion = neethi_assertion_create(env);
             neethi_assertion_set_value(assertion, env, x509_token, ASSERTION_TYPE_X509_TOKEN);*/
+            neethi_policy_free(normalized_policy, env);
+            normalized_policy = NULL;
+
             assertion = neethi_assertion_create_with_args(env, (void *)rp_x509_token_free, x509_token, ASSERTION_TYPE_X509_TOKEN);
             return assertion;
         }

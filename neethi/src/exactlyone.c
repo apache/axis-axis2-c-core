@@ -186,3 +186,13 @@ neethi_exactlyone_serialize(
     }
     return status;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+neethi_exactlyone_set_components_null(
+    neethi_exactlyone_t *exactlyone,
+    const axutil_env_t *env)
+{
+    exactlyone->policy_components = NULL;
+    return AXIS2_SUCCESS;
+}
+

@@ -76,6 +76,10 @@ rp_recipient_token_builder_build(
 
             /*assertion = neethi_assertion_create(env);
             neethi_assertion_set_value(assertion, env, recipient_token, ASSERTION_TYPE_RECIPIENT_TOKEN);*/
+            neethi_policy_set_components_null(normalized_policy, env);
+            neethi_policy_free(normalized_policy, env);
+            normalized_policy = NULL;
+
             assertion = neethi_assertion_create_with_args(env, (void *)rp_property_free, recipient_token, ASSERTION_TYPE_RECIPIENT_TOKEN);
             return assertion;
         }

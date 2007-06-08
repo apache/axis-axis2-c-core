@@ -75,6 +75,10 @@ rp_asymmetric_binding_builder_build(
 
             /*assertion = neethi_assertion_create(env);
             neethi_assertion_set_value(assertion, env, asymmetric_binding, ASSERTION_TYPE_ASSYMMETRIC_BINDING);*/
+            neethi_policy_set_components_null(normalized_policy, env);
+            neethi_policy_free(normalized_policy, env);
+            normalized_policy = NULL;
+
             assertion = neethi_assertion_create_with_args(env, (void *)rp_asymmetric_binding_free, asymmetric_binding, ASSERTION_TYPE_ASSYMMETRIC_BINDING);
             /*neethi_policy_free(policy, env);
             policy = NULL;*/

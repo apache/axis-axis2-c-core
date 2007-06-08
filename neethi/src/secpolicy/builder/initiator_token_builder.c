@@ -50,6 +50,7 @@ rp_initiator_token_builder_build(
     neethi_all_t *all = NULL;
     neethi_assertion_t *assertion = NULL;
     neethi_policy_t *normalized_policy = NULL;
+    axutil_array_list_t *temp = NULL;
 
     initiator_token = rp_property_create(env);
     
@@ -76,6 +77,13 @@ rp_initiator_token_builder_build(
 
             /*assertion = neethi_assertion_create(env);
             neethi_assertion_set_value(assertion, env, initiator_token, ASSERTION_TYPE_INITIATOR_TOKEN);*/
+            temp = neethi_policy_get_policy_components(normalized_policy, env);
+            axutil_array_list_free(temp, env);
+            temp = NULL;
+            neethi_policy_set_components_null(normalized_policy, env);
+            neethi_policy_free(normalized_policy, env);
+            normalized_policy = NULL;
+
             assertion = neethi_assertion_create_with_args(env, (void *)rp_property_free, initiator_token, ASSERTION_TYPE_INITIATOR_TOKEN);
             return assertion;
         }
