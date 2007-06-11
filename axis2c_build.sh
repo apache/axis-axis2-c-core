@@ -18,7 +18,7 @@ make
 make install
 
 cd ../samples
-./configure --prefix=${AXIS2C_DEPLOY} --with-axis2_util=${AXIS2C_DEPLOY}/include --with-axiom=${AXIS2C_DEPLOY}/include
+./configure --prefix=${AXIS2C_DEPLOY} --with-axis2==${AXIS2C_DEPLOY}/include/axis2-1.1
 make 
 make install
 
