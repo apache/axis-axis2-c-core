@@ -26,8 +26,8 @@ main(int argc, char *argv)
 
     add_in = axis2_add_create(env);
 
-    AXIS2_ADD_SET_IN0(add_in, env, 10);
-    AXIS2_ADD_SET_IN1(add_in, env, 10);
+    axis2_add_set_arg_0_0(add_in, env, 10);
+    axis2_add_set_arg_1_0(add_in, env, 10);
 
     add_res =  axis2_stub_Calculator_add(stub, env, add_in);
 
@@ -37,7 +37,7 @@ main(int argc, char *argv)
         return -1;
     }
 
-    res_val = AXIS2_ADDRESPONSE_GET_ADDRETURN(add_res, env);
+    res_val = axis2_addResponse_get_addReturn(add_res, env);
 
     printf("ADD Result:%d ", res_val);
 
