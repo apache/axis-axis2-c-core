@@ -2,7 +2,7 @@ dnl run autogen.sh to generate the configure script.
 
 AC_PREREQ(2.59)
 
-AC_INIT(axis2c-sample-src, 1.0.0)
+AC_INIT(axis2c-sample-src, 1.1.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 dnl AM_INIT_AUTOMAKE([tar-ustar])
@@ -86,7 +86,7 @@ AC_ARG_WITH(axiom,
 [  --with-axiom[=PATH]     Find the AXIOM header files in 'PATH'.
     'PATH' should point to AXIOM include files location.
     If you omit the '=PATH' part completely, the configure script will search
-    '$(AXIS2C_HOME)/include/axis2-1.0' for AXIOM headers.],
+    '$(AXIS2C_HOME)/include/axis2-1.1' for AXIOM headers.],
 [ case "$withval" in
   no)
     AC_MSG_RESULT(no)
@@ -98,7 +98,7 @@ AC_ARG_WITH(axiom,
         axiominc="-I$withval"
     dnl else find the axiom include dir in $(AXIS2C_HOME)/include
     elif test -d '$(AXIS2C_HOME)/include'; then
-        axiominc="-I$(AXIS2C_HOME)/include/axis2-1.0"
+        axiominc="-I$(AXIS2C_HOME)/include/axis2-1.1"
     else
         AC_MSG_ERROR(could not find axiom. stop)
     fi
@@ -112,7 +112,7 @@ AC_ARG_WITH(axis2_util,
 [  --with-axis2_util[=PATH]      Find the Axis2 util header files in 'PATH'.
     'PATH' should point to Axis2 util include files location.
     If you omit the '=PATH' part completely, the configure script will search
-    '$(AXIS2C_HOME)/include/axis2-1.0' for Axis2 util headers.],
+    '$(AXIS2C_HOME)/include/axis2-1.1' for Axis2 util headers.],
 [ case "$withval" in
   no)
     AC_MSG_RESULT(no)
@@ -124,7 +124,7 @@ AC_ARG_WITH(axis2_util,
         axis2_utilinc="-I$withval"
     dnl else find the axis2_util include dir in $(AXIS2C_HOME)/include
     elif test -d '$(AXIS2C_HOME)/include'; then
-        axis2_utilinc="-I$(AXIS2C_HOME)/include/axis2-1.0"
+        axis2_utilinc="-I$(AXIS2C_HOME)/include/axis2-1.1"
     else
         AC_MSG_ERROR(could not find axis2_util. stop)
     fi

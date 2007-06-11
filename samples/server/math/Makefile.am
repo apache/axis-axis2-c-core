@@ -8,6 +8,6 @@ noinst_HEADERS = math.h
 SUBDIRS =
 libmath_la_SOURCES = math.c math_skeleton.c
 libmath_la_LIBADD  =
-INCLUDES = -I$(AXIS2C_HOME)/include/axis2-1.0 \
+INCLUDES = -I$(AXIS2C_HOME)/include/axis2-1.1 \
 			@UTILINC@ \
 			@AXIOMINC@

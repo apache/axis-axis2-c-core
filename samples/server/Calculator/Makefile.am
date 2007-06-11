@@ -8,6 +8,6 @@ noinst_HEADERS = calc.h
 SUBDIRS =
 libCalculator_la_SOURCES = calc.c calc_skeleton.c
 libCalculator_la_LIBADD  =
-INCLUDES = -I$(AXIS2C_HOME)/include/axis2-1.0 \
+INCLUDES = -I$(AXIS2C_HOME)/include/axis2-1.1 \
 			@UTILINC@ \
 			@AXIOMINC@

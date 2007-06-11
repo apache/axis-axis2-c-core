@@ -32,7 +32,7 @@ echo_blocking_dual_LDADD = $(LINK_FLAGS)
 echo_non_blocking_dual_LDADD = $(LINK_FLAGS)
 echo_blocking_soap11_LDADD = $(LINK_FLAGS)
 
-INCLUDES = -I$(AXIS2C_HOME)/include/axis2-1.0 \
+INCLUDES = -I$(AXIS2C_HOME)/include/axis2-1.1 \
 			@UTILINC@ \
 			@AXIOMINC@
 

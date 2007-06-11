@@ -1,5 +1,5 @@
 datadir=$(prefix)
-includedir=$(prefix)/include/axis2-1.0
+includedir=$(prefix)/include/axis2-1.1
 SUBDIRS = src $(TESTDIR) include
 include_HEADERS=$(top_builddir)/include/*.h
 
