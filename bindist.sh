@@ -25,8 +25,8 @@ make
 make install
 
 make dist
-tar xf axis2c-sample-src-1.0.0.tar.gz
-mv axis2c-sample-src-1.0.0 samples
+tar xf axis2c-sample-src-1.1.0.tar.gz
+mv axis2c-sample-src-1.1.0 samples
 rm -rf ${AXIS2C_HOME}/samples
 mv samples ${AXIS2C_HOME}
 

@@ -9,7 +9,7 @@ LIBXSLT_BIN_DIR = E:\libxslt-1.1.17.win32
 APACHE_VERSION_IS_2_0_59 = 0
 OPENSSL_BIN_DIR = E:\OpenSSL
 LIBCURL_BIN_DIR = E:\libcurl-7.15.1-msvc-win32-ssl-0.9.8a-zlib-1.2.3
-RELEASE_VER = 1.0.0
+RELEASE_VER = 1.1.0
 
 ## to use apache 2.2.3 , use  APACHE_VERSION_IS_2_0_59 = 0
 ## to build with debug symbols use DEBUG=1
