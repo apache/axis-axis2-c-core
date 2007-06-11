@@ -8,6 +8,4 @@ noinst_HEADERS = mtom.h
 SUBDIRS =
 libmtom_la_SOURCES = mtom.c mtom_skeleton.c
 libmtom_la_LIBADD  =
-INCLUDES = -I$(AXIS2C_HOME)/include/axis2-1.1 \
-			@UTILINC@ \
-			@AXIOMINC@
+INCLUDES = @AXIS2INC@

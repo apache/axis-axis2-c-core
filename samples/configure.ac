@@ -81,12 +81,12 @@ AC_ARG_ENABLE(diclient, [  --enable-diclient    build diclient. default=no],
   DICLIENT_DIR=""
 )
 
-AC_MSG_CHECKING(To Use Axis2 C AXIOM. This is a compulsory module to build Axis2 C)
-AC_ARG_WITH(axiom,
-[  --with-axiom[=PATH]     Find the AXIOM header files in 'PATH'.
-    'PATH' should point to AXIOM include files location.
+AC_MSG_CHECKING(To Use Axis2 C . This is a compulsory module to build Axis2 C samples)
+AC_ARG_WITH(axis2,
+[  --with-axis2[=PATH]     Find the AXIS2 header files in 'PATH'.
+    'PATH' should point to AXIS2 include files location.
     If you omit the '=PATH' part completely, the configure script will search
-    '$(AXIS2C_HOME)/include/axis2-1.1' for AXIOM headers.],
+    '$(AXIS2C_HOME)/include/axis2-1.1' for AXIS2 headers.],
 [ case "$withval" in
   no)
     AC_MSG_RESULT(no)
@@ -95,54 +95,25 @@ AC_ARG_WITH(axiom,
     AC_MSG_RESULT(yes)
     dnl Find axiom include dir in the path
     if test -d $withval; then
-        axiominc="-I$withval"
+        axis2inc="-I$withval"
     dnl else find the axiom include dir in $(AXIS2C_HOME)/include
     elif test -d '$(AXIS2C_HOME)/include'; then
         axiominc="-I$(AXIS2C_HOME)/include/axis2-1.1"
     else
-        AC_MSG_ERROR(could not find axiom. stop)
+        AC_MSG_ERROR(could not find axis2. stop)
     fi
     ;;
   esac ],
   AC_MSG_RESULT(no)
 )
-
-AC_MSG_CHECKING(To Use Axis2 C Util. This is a compulsory module to build Axis2 C)
-AC_ARG_WITH(axis2_util,
-[  --with-axis2_util[=PATH]      Find the Axis2 util header files in 'PATH'.
-    'PATH' should point to Axis2 util include files location.
-    If you omit the '=PATH' part completely, the configure script will search
-    '$(AXIS2C_HOME)/include/axis2-1.1' for Axis2 util headers.],
-[ case "$withval" in
-  no)
-    AC_MSG_RESULT(no)
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    dnl Find axis2_util include dir in the path
-    if test -d $withval; then
-        axis2_utilinc="-I$withval"
-    dnl else find the axis2_util include dir in $(AXIS2C_HOME)/include
-    elif test -d '$(AXIS2C_HOME)/include'; then
-        axis2_utilinc="-I$(AXIS2C_HOME)/include/axis2-1.1"
-    else
-        AC_MSG_ERROR(could not find axis2_util. stop)
-    fi
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-)
-
 
 APACHE2INC=$apache2inc
-AXIOMINC=$axiominc
-UTILINC=$axis2_utilinc
+AXIS2INC=$axis2inc
 APRINC=$aprinc
 
 AC_SUBST(APACHE2INC)
 AC_SUBST(APRINC)
-AC_SUBST(AXIOMINC)
-AC_SUBST(UTILINC)
+AC_SUBST(AXIS2INC)
 AC_SUBST(LIBXML2_CFLAGS)
 AC_SUBST(LIBXML2_LIBS)
 AC_SUBST(LIBXML2_DIR)

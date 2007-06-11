@@ -15,8 +15,6 @@ google_LDADD   =    $(LDFLAGS) \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
 
-INCLUDES = -I$(AXIS2C_HOME)/include/axis2-1.1 \
-			@UTILINC@ \
-			@AXIOMINC@
+INCLUDES = @AXIS2INC@
 
 EXTRA_DIST=README.txt google.mk
