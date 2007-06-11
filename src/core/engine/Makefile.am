@@ -24,6 +24,8 @@ libaxis2_engine_la_LIBADD=$(top_builddir)/src/core/description/libaxis2_descript
 					$(top_builddir)/neethi/src/libneethi.la \
 					$(top_builddir)/axiom/src/om/libaxis2_axiom.la 
 
+libaxis2_engine_la_LDFLAGS = -version-info $(VERSION_NO)
+
 INCLUDES = 	-I$(top_builddir)/include \
             -I$(top_builddir)/src/wsdl \
             -I$(top_builddir)/src/core/description \

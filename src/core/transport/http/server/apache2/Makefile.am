@@ -18,6 +18,8 @@ libmod_axis2_la_LIBADD   = $(LDFLAGS) \
 					$(PARSER_LIBS) \
 					$(LIBXML2_LIBS)
 
+libaxis2_la_LDFLAGS = -version-info $(VERSION_NO)
+
 INCLUDES = -I$(top_builddir)/include \
 	       -I$(top_builddir)/src/core/transport/http \
            -I$(top_builddir)/src/core/description \
