@@ -65,7 +65,6 @@ rp_wss10_builder_build(
                 return NULL;
             }
             normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
-            neethi_policy_set_components_null(policy, env);
             neethi_policy_free(policy, env);
             policy = NULL;
             alternatives = neethi_policy_get_alternatives(normalized_policy, env);
@@ -73,9 +72,11 @@ rp_wss10_builder_build(
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             wss10_process_alternatives(env, all, wss10);
 
-            /*assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, wss10, ASSERTION_TYPE_WSS10);*/
             assertion = neethi_assertion_create_with_args(env, (void *)rp_wss10_free, wss10, ASSERTION_TYPE_WSS10);
+
+            neethi_policy_free(normalized_policy, env);
+            normalized_policy = NULL;
+
             return assertion;
         }
         else return NULL;

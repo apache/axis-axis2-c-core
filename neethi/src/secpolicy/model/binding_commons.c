@@ -145,7 +145,8 @@ rp_binding_commons_set_algorithmsuite(rp_binding_commons_t *binding_commons,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,algorithmsuite,AXIS2_FAILURE);
-    
+
+    rp_algorithmsuite_increment_ref(algorithmsuite, env);
     binding_commons->algorithmsuite = algorithmsuite;    
     return AXIS2_SUCCESS;
 }
@@ -168,7 +169,8 @@ rp_binding_commons_set_layout(rp_binding_commons_t *binding_commons,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,layout,AXIS2_FAILURE);
-    
+
+    rp_layout_increment_ref(layout, env);
     binding_commons->layout = layout;    
     return AXIS2_SUCCESS;
 }

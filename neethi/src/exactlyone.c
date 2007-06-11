@@ -67,16 +67,16 @@ neethi_exactlyone_free(neethi_exactlyone_t *neethi_exactlyone,
             {
                 neethi_operator_t *operator = NULL;
                 operator = (neethi_operator_t *)
-                    axutil_array_list_get(neethi_exactlyone->policy_components,env, i);
+                    axutil_array_list_get(neethi_exactlyone->policy_components, env, i);
                 if (operator)
                     neethi_operator_free(operator, env);
 
                 operator = NULL;
             }
-            axutil_array_list_free(neethi_exactlyone->policy_components , env);
+            axutil_array_list_free(neethi_exactlyone->policy_components, env);
             neethi_exactlyone->policy_components = NULL;
         }
-        AXIS2_FREE(env->allocator,neethi_exactlyone);
+        AXIS2_FREE(env->allocator, neethi_exactlyone);
         neethi_exactlyone = NULL;
     }
     return;
@@ -103,7 +103,7 @@ neethi_exactlyone_add_policy_components(
         const axutil_env_t *env)
 {
 
-    int size = axutil_array_list_size(arraylist,env);
+    int size = axutil_array_list_size(arraylist, env);
     int i = 0;
 
     if (axutil_array_list_ensure_capacity(exactlyone->policy_components , env, size + 1) != AXIS2_SUCCESS)
@@ -113,7 +113,8 @@ neethi_exactlyone_add_policy_components(
     {
         void *value = NULL;
         value = axutil_array_list_get(arraylist ,env ,i);
-        axutil_array_list_add(exactlyone->policy_components,env,value);
+        neethi_operator_increment_ref((neethi_operator_t *)value, env);
+        axutil_array_list_add(exactlyone->policy_components, env, value);
     }
     return AXIS2_SUCCESS;
 }
@@ -126,7 +127,8 @@ neethi_exactlyone_add_operator(neethi_exactlyone_t *neethi_exactlyone,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    axutil_array_list_add(neethi_exactlyone->policy_components,env,operator);
+    neethi_operator_increment_ref(operator, env);
+    axutil_array_list_add(neethi_exactlyone->policy_components, env, operator);
     return AXIS2_SUCCESS;
 }
 

@@ -61,6 +61,12 @@ extern "C"
         rp_property_t *property,
         const axutil_env_t *env);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_property_increment_ref(rp_property_t *property,
+        const axutil_env_t *env);
+    
+
+
 #ifdef __cplusplus
 }
 #endif

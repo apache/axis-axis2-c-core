@@ -49,6 +49,7 @@ rp_transport_token_builder_build(
     neethi_operator_t *component = NULL;
     neethi_all_t *all = NULL;
     neethi_assertion_t *assertion = NULL;
+    neethi_policy_t *normalized_policy = NULL;
 
     transport_token = rp_property_create(env);
     
@@ -64,15 +65,18 @@ rp_transport_token_builder_build(
             {
                 return NULL;
             }
-            policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy); 
-            alternatives =neethi_policy_get_alternatives(policy, env);
+            normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy); 
+            policy = NULL;
+            alternatives =neethi_policy_get_alternatives(normalized_policy, env);
             component = (neethi_operator_t *)axutil_array_list_get(alternatives, env, 0);            
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             transport_token_process_alternatives(env, all, transport_token);
 
-            /*assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, transport_token, ASSERTION_TYPE_TRANSPORT_TOKEN);*/
             assertion = neethi_assertion_create_with_args(env, (void *)rp_property_free, transport_token, ASSERTION_TYPE_TRANSPORT_TOKEN);
+
+            neethi_policy_free(normalized_policy, env);
+            normalized_policy = NULL;
+
             return assertion;
         }
         else return NULL;

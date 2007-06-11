@@ -28,6 +28,7 @@ struct rp_supporting_tokens_t
     rp_signed_encrypted_elements_t *encrypted_elements;
     rp_signed_encrypted_parts_t *encrypted_parts;
     int type;
+    int ref;
 };
 
 AXIS2_EXTERN rp_supporting_tokens_t *AXIS2_CALL 
@@ -60,6 +61,7 @@ rp_supporting_tokens_create(const axutil_env_t *env)
     supporting_tokens->encrypted_parts = NULL;
     supporting_tokens->encrypted_elements = NULL;
     supporting_tokens->type = 0;
+    supporting_tokens->ref = 0;
     return supporting_tokens;
 }
 
@@ -72,6 +74,11 @@ rp_supporting_tokens_free(rp_supporting_tokens_t *supporting_tokens,
     if(supporting_tokens)
     {
 
+        if (--(supporting_tokens->ref) > 0)
+        {
+            return;
+        }
+        
         if(supporting_tokens->tokens)
         {
             int i = 0;
@@ -140,9 +147,10 @@ rp_supporting_tokens_add_token(rp_supporting_tokens_t *supporting_tokens,
             rp_property_t *token)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,token,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, token, AXIS2_FAILURE);
     
-    axutil_array_list_add(supporting_tokens->tokens,env,token);
+    rp_property_increment_ref(token, env);
+    axutil_array_list_add(supporting_tokens->tokens, env, token);
     return AXIS2_SUCCESS;
 }
 
@@ -166,6 +174,7 @@ rp_supporting_tokens_set_algorithmsuite(rp_supporting_tokens_t *supporting_token
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,algorithmsuite,AXIS2_FAILURE);
 
+    rp_algorithmsuite_increment_ref(algorithmsuite, env);
     supporting_tokens->algorithmsuite = algorithmsuite;
     return AXIS2_SUCCESS;
 }
@@ -278,3 +287,13 @@ rp_supporting_tokens_set_type(rp_supporting_tokens_t *supporting_tokens,
     supporting_tokens->type = type;
     return AXIS2_SUCCESS;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_supporting_tokens_increment_ref(rp_supporting_tokens_t *supporting_tokens,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    supporting_tokens->ref++;
+    return AXIS2_SUCCESS;
+}
+

@@ -18,6 +18,13 @@
 
 
 #include <neethi_assertion.h>
+#include <rp_x509_token.h>
+#include <rp_property.h>
+#include <rp_layout.h>
+#include <rp_algorithmsuite.h>
+#include <rp_wss10.h>
+#include <rp_supporting_tokens.h>
+#include <rp_username_token.h>
 
 struct neethi_assertion_t
 {
@@ -92,6 +99,40 @@ neethi_assertion_create_with_args(const axutil_env_t *env,
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+
+    if(type == ASSERTION_TYPE_X509_TOKEN)
+    {
+        rp_x509_token_increment_ref((rp_x509_token_t *)value, env);
+    }
+    if(type == ASSERTION_TYPE_INITIATOR_TOKEN)
+    {
+        rp_property_increment_ref((rp_property_t *)value, env);
+    }    
+    if(type == ASSERTION_TYPE_RECIPIENT_TOKEN)
+    {
+        rp_property_increment_ref((rp_property_t *)value, env);
+    }
+    if(type == ASSERTION_TYPE_LAYOUT)
+    {
+        rp_layout_increment_ref((rp_layout_t *)value, env);
+    }
+    if(type == ASSERTION_TYPE_ALGORITHM_SUITE)
+    {
+        rp_algorithmsuite_increment_ref((rp_algorithmsuite_t *)value, env);
+    }
+    if(type == ASSERTION_TYPE_WSS10)
+    {
+        rp_wss10_increment_ref((rp_wss10_t *)value, env);
+    }
+    if(type == ASSERTION_TYPE_SUPPORTING_TOKENS)
+    {
+        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *)value, env);
+    }
+    if(type == ASSERTION_TYPE_USERNAME_TOKEN)
+    {
+        rp_username_token_increment_ref((rp_username_token_t *)value, env);
+    }
+
     neethi_assertion->value = value;
     neethi_assertion->type = type;
     neethi_assertion->element = NULL;
@@ -122,13 +163,13 @@ neethi_assertion_free(neethi_assertion_t *neethi_assertion,
             {
                 neethi_operator_t *operator = NULL;
                 operator = (neethi_operator_t *)
-                    axutil_array_list_get(neethi_assertion->policy_components,env, i);
+                    axutil_array_list_get(neethi_assertion->policy_components, env, i);
                 if (operator)
                     neethi_operator_free(operator, env);
 
                 operator = NULL;
             }
-            axutil_array_list_free(neethi_assertion->policy_components , env);
+            axutil_array_list_free(neethi_assertion->policy_components, env);
             neethi_assertion->policy_components = NULL;
         }
         if(neethi_assertion->value)
@@ -138,7 +179,7 @@ neethi_assertion_free(neethi_assertion_t *neethi_assertion,
                 neethi_assertion->free_func(neethi_assertion->value, env);
             }
         }
-        AXIS2_FREE(env->allocator,neethi_assertion);
+        AXIS2_FREE(env->allocator, neethi_assertion);
         neethi_assertion = NULL;
     }
     return;
@@ -174,6 +215,10 @@ neethi_assertion_set_value(neethi_assertion_t *neethi_assertion,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     neethi_assertion->type = type;
+    if(type == ASSERTION_TYPE_X509_TOKEN)
+    {
+        rp_x509_token_increment_ref((rp_x509_token_t *)value, env);
+    }    
     neethi_assertion->value =(void *)value;
 
     return AXIS2_SUCCESS;
@@ -270,7 +315,8 @@ neethi_assertion_add_policy_components(
     {
         void *value = NULL;
         value = axutil_array_list_get(arraylist ,env ,i);
-        axutil_array_list_add(neethi_assertion->policy_components,env,value);
+        neethi_operator_increment_ref((neethi_operator_t *)value, env);
+        axutil_array_list_add(neethi_assertion->policy_components, env, value);
     }
     return AXIS2_SUCCESS;
 }
@@ -282,7 +328,8 @@ neethi_assertion_add_operator(neethi_assertion_t *neethi_assertion,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    axutil_array_list_add(neethi_assertion->policy_components,env,operator);
+    neethi_operator_increment_ref(operator, env);
+    axutil_array_list_add(neethi_assertion->policy_components, env, operator);
     return AXIS2_SUCCESS;
 }
 

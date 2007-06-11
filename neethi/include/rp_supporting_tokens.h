@@ -111,6 +111,11 @@ extern "C"
                                   const axutil_env_t *env,
                                   int type);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_supporting_tokens_increment_ref(rp_supporting_tokens_t *supporting_tokens,
+                                       const axutil_env_t *env);
+    
+
 
 #ifdef __cplusplus
 }

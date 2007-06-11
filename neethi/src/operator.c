@@ -28,7 +28,7 @@ struct neethi_operator_t
 {
     void *value;
     neethi_operator_type_t type;
-
+    int ref;
 };
 
 AXIS2_EXTERN neethi_operator_t *AXIS2_CALL 
@@ -48,6 +48,7 @@ neethi_operator_create(const axutil_env_t *env)
     }
     neethi_operator->value = NULL;
     neethi_operator->type = OPERATOR_TYPE_UNKNOWN;
+    neethi_operator->ref = 0;
     return neethi_operator;
 
 }
@@ -60,6 +61,11 @@ neethi_operator_free(neethi_operator_t *neethi_operator,
     
     if(neethi_operator)
     {
+        if (--(neethi_operator->ref) > 0)
+        {
+            return;
+        }
+               
         if(neethi_operator->value)
         {
             switch(neethi_operator->type)
@@ -201,3 +207,11 @@ neethi_operator_set_value_null(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+neethi_operator_increment_ref(neethi_operator_t *operator,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    operator->ref++;
+    return AXIS2_SUCCESS;
+}

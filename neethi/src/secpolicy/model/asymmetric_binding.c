@@ -125,8 +125,10 @@ rp_asymmetric_binding_set_initiator_token(rp_asymmetric_binding_t *asymmetric_bi
     rp_property_t *initiator_token)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,initiator_token,AXIS2_FAILURE);
-    asymmetric_binding->initiator_token =initiator_token; 
+    AXIS2_PARAM_CHECK(env->error, initiator_token, AXIS2_FAILURE);
+
+    rp_property_increment_ref(initiator_token, env);
+    asymmetric_binding->initiator_token = initiator_token; 
     return AXIS2_SUCCESS;
 
 }
@@ -139,7 +141,8 @@ rp_asymmetric_binding_set_recipient_token(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,recipient_token,AXIS2_FAILURE);
-    
+   
+    rp_property_increment_ref(recipient_token, env);
     asymmetric_binding->recipient_token = recipient_token; 
     return AXIS2_SUCCESS;
     

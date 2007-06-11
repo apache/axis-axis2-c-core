@@ -28,6 +28,7 @@ struct rp_property_t
 {
     int type;
     void *value;
+    int ref;
 };
 
 
@@ -48,6 +49,7 @@ rp_property_create(const axutil_env_t *env)
     }
     property->type = 0;
     property->value = NULL;
+    property->ref = 0;
 
     return property;
 }
@@ -61,6 +63,11 @@ rp_property_free(
     
     if(property)
     {
+        if (--(property->ref) > 0)
+        {
+            return;
+        }
+
         if(property->value)
         {
             switch(property->type)
@@ -149,6 +156,24 @@ rp_property_set_value(rp_property_t *property,
     AXIS2_PARAM_CHECK(env->error,value,AXIS2_FAILURE);
 
     property->type = type;
+
+    if(type == RP_TOKEN_X509)
+    {
+        rp_x509_token_increment_ref((rp_x509_token_t *)value, env);    
+    }        
+    if(type == RP_WSS_WSS10)
+    {
+        rp_wss10_increment_ref((rp_wss10_t *)value, env);
+    }
+    if(type == RP_TOKEN_USERNAME)
+    {
+        rp_username_token_increment_ref((rp_username_token_t *)value, env);
+    }    
+    if(type == RP_SUPPORTING_SIGNED_SUPPORTING)
+    {
+        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *)value, env);
+    }    
+
     property->value =(void *)value; 
 
     return AXIS2_SUCCESS;
@@ -164,3 +189,13 @@ rp_property_get_type(
         
     return property->type;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_property_increment_ref(rp_property_t *property,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    property->ref++;
+    return AXIS2_SUCCESS;
+}
+

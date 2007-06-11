@@ -25,6 +25,7 @@ struct rp_username_token_t
     axis2_bool_t derivedkeys;
     axis2_bool_t useUTprofile10;
     axis2_bool_t useUTprofile11;
+    int ref;
 };
 
 AXIS2_EXTERN rp_username_token_t *AXIS2_CALL 
@@ -46,7 +47,8 @@ rp_username_token_create(const axutil_env_t *env)
     username_token->derivedkeys = AXIS2_FALSE;
     username_token->useUTprofile10 = AXIS2_TRUE;
     username_token->useUTprofile11 = AXIS2_FALSE;
-    
+    username_token->ref = 0;
+
     return username_token;
 
 }
@@ -57,6 +59,11 @@ rp_username_token_free(
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    if (--(username_token->ref) > 0)
+    {
+        return;
+    }
     
     if(username_token)
     {
@@ -162,5 +169,14 @@ rp_username_token_set_useUTprofile11(
     AXIS2_PARAM_CHECK(env->error,useUTprofile11,AXIS2_FAILURE);    
     username_token->useUTprofile11 = useUTprofile11;
 
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_username_token_increment_ref(rp_username_token_t *username_token,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    username_token->ref++;
     return AXIS2_SUCCESS;
 }

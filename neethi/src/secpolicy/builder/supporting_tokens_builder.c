@@ -87,17 +87,18 @@ rp_supporting_tokens_builder_build(
                 return NULL;
             }
             normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE,policy);
-            neethi_policy_set_components_null(policy, env);
+            alternatives = neethi_policy_get_alternatives(normalized_policy, env);
             neethi_policy_free(policy, env);
             policy = NULL;
-            alternatives = neethi_policy_get_alternatives(normalized_policy, env);
             component = (neethi_operator_t *)axutil_array_list_get(alternatives, env, 0);            
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             supporting_tokens_process_alternatives(env, all, supporting_tokens);
 
-            /*assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, supporting_tokens, ASSERTION_TYPE_SUPPORTING_TOKENS);*/
             assertion = neethi_assertion_create_with_args(env, (void *)rp_supporting_tokens_free, supporting_tokens, ASSERTION_TYPE_SUPPORTING_TOKENS);
+            
+            neethi_policy_free(normalized_policy, env);
+            normalized_policy = NULL;
+                        
             return assertion;
         }
         else return NULL;
@@ -136,7 +137,7 @@ supporting_tokens_process_alternatives(
                 algorithmsuite = (rp_algorithmsuite_t *)neethi_assertion_get_value(assertion, env);
                 if(algorithmsuite)
                 {
-                    rp_supporting_tokens_set_algorithmsuite(supporting_tokens,env,algorithmsuite);
+                    rp_supporting_tokens_set_algorithmsuite(supporting_tokens, env, algorithmsuite);
                 }
                 else return AXIS2_FAILURE;
             }

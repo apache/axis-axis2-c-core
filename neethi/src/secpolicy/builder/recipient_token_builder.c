@@ -66,7 +66,6 @@ rp_recipient_token_builder_build(
                 return NULL;
             }
             normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
-            neethi_policy_set_components_null(policy, env);
             neethi_policy_free(policy, env);
             policy = NULL;
             alternatives =neethi_policy_get_alternatives(normalized_policy, env);
@@ -74,13 +73,11 @@ rp_recipient_token_builder_build(
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             recipient_token_process_alternatives(env, all, recipient_token);
 
-            /*assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, recipient_token, ASSERTION_TYPE_RECIPIENT_TOKEN);*/
-            neethi_policy_set_components_null(normalized_policy, env);
+            assertion = neethi_assertion_create_with_args(env, (void *)rp_property_free, recipient_token, ASSERTION_TYPE_RECIPIENT_TOKEN);
+
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
 
-            assertion = neethi_assertion_create_with_args(env, (void *)rp_property_free, recipient_token, ASSERTION_TYPE_RECIPIENT_TOKEN);
             return assertion;
         }
         else return NULL;

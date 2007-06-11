@@ -106,7 +106,7 @@ extern "C"
         neethi_policy_set_components_null(
             neethi_policy_t *policy,
             const axutil_env_t *env);
-        
+
 
     /** @} */
 #ifdef __cplusplus

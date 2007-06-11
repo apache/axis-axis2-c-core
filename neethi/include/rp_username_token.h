@@ -83,6 +83,12 @@ extern "C"
         const axutil_env_t *env,
         axis2_bool_t useUTprofile11);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_username_token_increment_ref(
+        rp_username_token_t *username_token,
+        const axutil_env_t *env);
+    
+
 #ifdef __cplusplus
 }
 #endif

@@ -74,6 +74,11 @@ extern "C"
             const axutil_env_t *env,
             axis2_bool_t must_support_ref_embedded_token);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_wss10_increment_ref(rp_wss10_t *wss10,
+            const axutil_env_t *env);
+
+
 #ifdef __cplusplus
 }
 #endif

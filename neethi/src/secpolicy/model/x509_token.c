@@ -28,6 +28,7 @@ struct rp_x509_token_t
     axis2_bool_t require_embedded_token_reference;
     axis2_bool_t require_thumb_print_reference;
     axis2_char_t *token_version_and_type;
+    int ref;
 
 };
 
@@ -41,6 +42,7 @@ rp_x509_token_create(const axutil_env_t *env)
     x509_token =  (rp_x509_token_t *) AXIS2_MALLOC (env->allocator,
     sizeof (rp_x509_token_t));
 
+
     if(x509_token == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -52,7 +54,8 @@ rp_x509_token_create(const axutil_env_t *env)
     x509_token->require_issuer_serial_reference  = AXIS2_FALSE;
     x509_token->require_embedded_token_reference = AXIS2_FALSE;
     x509_token->require_thumb_print_reference = AXIS2_FALSE;
-    x509_token->token_version_and_type = RP_WSS_X509_V3_TOKEN_10;    
+    x509_token->token_version_and_type = RP_WSS_X509_V3_TOKEN_10;   
+    x509_token->ref = 0;
     return x509_token;
 }
 
@@ -64,6 +67,10 @@ rp_x509_token_free(rp_x509_token_t *x509_token,
     
     if(x509_token)
     {
+        if (--(x509_token->ref) > 0)
+        {
+            return;
+        }
         AXIS2_FREE(env->allocator, x509_token);
         x509_token = NULL;
     }
@@ -223,3 +230,14 @@ rp_x509_token_set_token_version_and_type(rp_x509_token_t *x509_token,
     x509_token->token_version_and_type = token_version_and_type;
     return AXIS2_SUCCESS;
 }
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_x509_token_increment_ref(rp_x509_token_t *x509_token,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    x509_token->ref++;
+    return AXIS2_SUCCESS;
+}
+

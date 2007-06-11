@@ -67,7 +67,7 @@ neethi_all_free(neethi_all_t *neethi_all,
             {
                 neethi_operator_t *operator = NULL;
                 operator = (neethi_operator_t *)
-                    axutil_array_list_get(neethi_all->policy_components,env, i);
+                    axutil_array_list_get(neethi_all->policy_components, env, i);
                 if (operator)
                     neethi_operator_free(operator, env);
 
@@ -76,7 +76,7 @@ neethi_all_free(neethi_all_t *neethi_all,
             axutil_array_list_free(neethi_all->policy_components , env);
             neethi_all->policy_components = NULL;
         }
-        AXIS2_FREE(env->allocator,neethi_all);
+        AXIS2_FREE(env->allocator, neethi_all);
         neethi_all = NULL;
     }
     return;
@@ -112,7 +112,8 @@ neethi_all_add_policy_components(
     {
         void *value = NULL;
         value = axutil_array_list_get(arraylist ,env ,i);
-        axutil_array_list_add(all->policy_components,env,value);
+        neethi_operator_increment_ref((neethi_operator_t *)value, env);
+        axutil_array_list_add(all->policy_components, env, value);
     }
     return AXIS2_SUCCESS;
 }
@@ -126,7 +127,8 @@ neethi_all_add_operator(neethi_all_t *neethi_all,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    axutil_array_list_add(neethi_all->policy_components,env,operator);
+    neethi_operator_increment_ref(operator, env);
+    axutil_array_list_add(neethi_all->policy_components, env, operator);
     return AXIS2_SUCCESS;
 }
 

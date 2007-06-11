@@ -116,14 +116,13 @@ neethi_all_t *AXIS2_CALL get_operator_all(
     {
         return NULL;
     }        
-    neethi_operator_set_value(neethi_operator,env,all,OPERATOR_TYPE_ALL);
-    process_operation_element(env,neethi_operator,node,element);
+    neethi_operator_set_value(neethi_operator, env, all, OPERATOR_TYPE_ALL);
+    process_operation_element(env, neethi_operator, node, element);
 
     neethi_operator_set_value_null(neethi_operator, env);
-
     neethi_operator_free(neethi_operator, env);
     neethi_operator = NULL;
-    
+
     return all;
 }   
 
@@ -150,7 +149,6 @@ neethi_exactlyone_t *AXIS2_CALL get_operator_exactlyone(
     process_operation_element(env,neethi_operator,node,element);
 
     neethi_operator_set_value_null(neethi_operator, env);
-
     neethi_operator_free(neethi_operator, env);
     neethi_operator = NULL;
 
@@ -208,11 +206,10 @@ neethi_policy_t *AXIS2_CALL get_operator_neethi_policy(
     {
         return NULL;
     }        
-    neethi_operator_set_value(neethi_operator,env,neethi_policy,OPERATOR_TYPE_POLICY);
-    process_operation_element(env,neethi_operator,node,element);  
+    neethi_operator_set_value(neethi_operator, env, neethi_policy, OPERATOR_TYPE_POLICY);
+    process_operation_element(env, neethi_operator, node, element);
 
     neethi_operator_set_value_null(neethi_operator, env);
-    
     neethi_operator_free(neethi_operator, env);
     neethi_operator = NULL;
 
@@ -233,8 +230,8 @@ axis2_status_t AXIS2_CALL process_operation_element(
     axiom_children_iterator_t *children_iter = NULL;
     void *value = NULL;
 
-    type = neethi_operator_get_type(neethi_operator,env);
-    value = neethi_operator_get_value(neethi_operator,env);
+    type = neethi_operator_get_type(neethi_operator, env);
+    value = neethi_operator_get_value(neethi_operator, env);
     if(type == OPERATOR_TYPE_POLICY)
     {
         /*Adding attribute values to the hashmap logic
@@ -305,31 +302,31 @@ axis2_status_t AXIS2_CALL process_operation_element(
                         {                            
                             if(axutil_strcmp(local_name,NEETHI_POLICY)==0)
                             {
-                                neethi_policy_t *neethi_policy = get_operator_neethi_policy(env,child_node,child_element);
+                                neethi_policy_t *neethi_policy = get_operator_neethi_policy(env, child_node, child_element);
                                 operator = neethi_operator_create(env);
-                                neethi_operator_set_value(operator,env,neethi_policy,OPERATOR_TYPE_POLICY);
-                                neethi_engine_add_policy_component(env,neethi_operator,operator);
+                                neethi_operator_set_value(operator, env, neethi_policy, OPERATOR_TYPE_POLICY);
+                                neethi_engine_add_policy_component(env, neethi_operator, operator);
                             }
                             else if(axutil_strcmp(local_name,NEETHI_ALL)==0)
                             {
-                                neethi_all_t *all = get_operator_all(env,child_node,child_element);
+                                neethi_all_t *all = get_operator_all(env, child_node, child_element);
                                 operator = neethi_operator_create(env);
-                                neethi_operator_set_value(operator,env,all,OPERATOR_TYPE_ALL);
-                                neethi_engine_add_policy_component(env,neethi_operator,operator);
+                                neethi_operator_set_value(operator,env, all, OPERATOR_TYPE_ALL);
+                                neethi_engine_add_policy_component(env, neethi_operator, operator);
                             }
                             else if(axutil_strcmp(local_name,NEETHI_EXACTLYONE)==0)
                             {
-                                neethi_exactlyone_t *exactlyone = get_operator_exactlyone(env,child_node,child_element);
+                                neethi_exactlyone_t *exactlyone = get_operator_exactlyone(env, child_node, child_element);
                                 operator = neethi_operator_create(env);
-                                neethi_operator_set_value(operator,env,exactlyone,OPERATOR_TYPE_EXACTLYONE);
-                                neethi_engine_add_policy_component(env,neethi_operator,operator);
+                                neethi_operator_set_value(operator, env, exactlyone, OPERATOR_TYPE_EXACTLYONE);
+                                neethi_engine_add_policy_component(env, neethi_operator, operator);
                             }
                             else if(axutil_strcmp(local_name,NEETHI_REFERENCE)==0)
                             {
-                                neethi_reference_t *reference = get_operator_reference(env,child_node,child_element);
+                                neethi_reference_t *reference = get_operator_reference(env, child_node, child_element);
                                 operator = neethi_operator_create(env);
-                                neethi_operator_set_value(operator,env,reference,OPERATOR_TYPE_REFERENCE);
-                                neethi_engine_add_policy_component(env,neethi_operator,operator);
+                                neethi_operator_set_value(operator, env, reference, OPERATOR_TYPE_REFERENCE);
+                                neethi_engine_add_policy_component(env, neethi_operator, operator);
                             }
                         }                            
                         else
@@ -337,7 +334,7 @@ axis2_status_t AXIS2_CALL process_operation_element(
                             neethi_assertion_t *assertion = neethi_assertion_builder_build(env, child_node, child_element);
                             operator = neethi_operator_create(env);
                             neethi_operator_set_value(operator, env, assertion, OPERATOR_TYPE_ASSERTION);
-                            neethi_engine_add_policy_component(env,neethi_operator,operator);
+                            neethi_engine_add_policy_component(env, neethi_operator, operator);
                         }                            
                     }
                 }
@@ -362,8 +359,8 @@ axis2_status_t AXIS2_CALL neethi_engine_add_policy_component(
     neethi_all_t *all = NULL;
     neethi_assertion_t *assertion = NULL;
 
-    type = neethi_operator_get_type(container_operator,env);
-    value = neethi_operator_get_value(container_operator,env);        
+    type = neethi_operator_get_type(container_operator, env);
+    value = neethi_operator_get_value(container_operator, env);        
     
     if(value)
     {
@@ -371,19 +368,19 @@ axis2_status_t AXIS2_CALL neethi_engine_add_policy_component(
         {
             case OPERATOR_TYPE_POLICY:
                 neethi_policy = (neethi_policy_t *)value;
-                neethi_policy_add_operator(neethi_policy,env,component);   
+                neethi_policy_add_operator(neethi_policy, env, component);   
                 /*printf("neethi_policy\n");*/
                 break;
 
             case OPERATOR_TYPE_ALL:
                 all = (neethi_all_t *)value;
-                neethi_all_add_operator(all,env,component);
+                neethi_all_add_operator(all, env, component);
                 /*printf("all\n");*/
                 break;
 
             case OPERATOR_TYPE_EXACTLYONE:
                 exactlyone = (neethi_exactlyone_t *)value;
-                neethi_exactlyone_add_operator(exactlyone,env,component);
+                neethi_exactlyone_add_operator(exactlyone, env, component);
                 /*printf("exactlyone\n");*/
                 break;
 
@@ -477,20 +474,19 @@ neethi_engine_normalize(const axutil_env_t *env,
     }        
 
     operator = neethi_operator_create(env);
-    neethi_operator_set_value(operator,env,neethi_policy,OPERATOR_TYPE_POLICY);
+    neethi_operator_set_value(operator, env, neethi_policy, OPERATOR_TYPE_POLICY);
 
-    exactlyone = normalize_operator(operator,registry,deep,env);
+    exactlyone = normalize_operator(operator, registry, deep, env);
 
     neethi_operator_set_value_null(operator, env);
-
     neethi_operator_free(operator, env);
     operator = NULL;
-
+   
     if(exactlyone)
     {
         component = neethi_operator_create(env);
-        neethi_operator_set_value(component,env,exactlyone,OPERATOR_TYPE_EXACTLYONE);
-        neethi_policy_add_operator(resultant_neethi_policy,env,component);
+        neethi_operator_set_value(component, env, exactlyone, OPERATOR_TYPE_EXACTLYONE);
+        neethi_policy_add_operator(resultant_neethi_policy, env, component);
         
         /*check_neethi_policy(resultant_neethi_policy,env);*/
         return resultant_neethi_policy;
@@ -511,21 +507,21 @@ neethi_engine_merge(const axutil_env_t *env,
     neethi_policy_t *neethi_policy = NULL;
     neethi_operator_t *component = NULL;
 
-    exactlyone1 = neethi_policy_get_exactlyone(neethi_policy1,env);
-    exactlyone2 = neethi_policy_get_exactlyone(neethi_policy2,env);    
+    exactlyone1 = neethi_policy_get_exactlyone(neethi_policy1, env);
+    exactlyone2 = neethi_policy_get_exactlyone(neethi_policy2, env);    
 
     if(!exactlyone1 || !exactlyone2)
     {
         /*printf("Merged fail Input wrong \n");*/
         return NULL;
     }
-    exactlyone = get_cross_product(exactlyone1,exactlyone2,env);
+    exactlyone = get_cross_product(exactlyone1, exactlyone2, env);
     
     neethi_policy = neethi_policy_create(env);
 
     component = neethi_operator_create(env);
-    neethi_operator_set_value(component,env,exactlyone,OPERATOR_TYPE_EXACTLYONE);
-    neethi_policy_add_operator(neethi_policy,env,component);
+    neethi_operator_set_value(component, env, exactlyone, OPERATOR_TYPE_EXACTLYONE);
+    neethi_policy_add_operator(neethi_policy, env, component);
 
     return neethi_policy;
 }
@@ -651,9 +647,9 @@ normalize_operator(
     axutil_array_list_t *arraylist = NULL;
     int i = 0;
 
-    neethi_operator_type_t type = neethi_operator_get_type(operator,env);
+    neethi_operator_type_t type = neethi_operator_get_type(operator, env);
     
-    if(operator_is_empty(operator,env))
+    if(operator_is_empty(operator, env))
     {
         neethi_exactlyone_t *exactlyone = NULL;
         exactlyone = neethi_exactlyone_create(env);
@@ -663,20 +659,20 @@ normalize_operator(
             neethi_operator_t *component = NULL;
             all = neethi_all_create(env);
             component = neethi_operator_create(env);
-            neethi_operator_set_value(component,env,all,OPERATOR_TYPE_ALL);
-            neethi_exactlyone_add_operator(exactlyone,env,component);
+            neethi_operator_set_value(component, env, all, OPERATOR_TYPE_ALL);
+            neethi_exactlyone_add_operator(exactlyone, env, component);
         }                        
         return exactlyone;
     }
     
-    child_component_list = axutil_array_list_create(env,0);     
-    arraylist = operator_get_components(operator,env);
+    child_component_list = axutil_array_list_create(env, 0);     
+    arraylist = operator_get_components(operator, env);
 
-    for (i = 0; i < axutil_array_list_size(arraylist,env); i++)
+    for (i = 0; i < axutil_array_list_size(arraylist, env); i++)
     {
         neethi_operator_type_t component_type;
         child_component = (neethi_operator_t *)axutil_array_list_get(arraylist ,env ,i);
-        component_type = neethi_operator_get_type(child_component,env);
+        component_type = neethi_operator_get_type(child_component, env);
         
         if(component_type == OPERATOR_TYPE_ASSERTION)
         {
@@ -697,7 +693,7 @@ normalize_operator(
                 op = neethi_operator_create(env);
 
                 neethi_all_add_operator(all, env, child_component);
-                neethi_operator_set_value(op, env, all,OPERATOR_TYPE_ALL);
+                neethi_operator_set_value(op, env, all, OPERATOR_TYPE_ALL);
                 neethi_exactlyone_add_operator(exactlyone, env, op);
                 axutil_array_list_add(child_component_list, env, exactlyone);
             }                
@@ -711,15 +707,13 @@ normalize_operator(
             neethi_exactlyone_t *exactlyone = NULL;
 
             all = neethi_all_create(env);
-            neethi_policy = (neethi_policy_t *)neethi_operator_get_value(child_component,env);
-            children =  neethi_policy_get_policy_components(neethi_policy,env);
-            neethi_all_add_policy_components(all,children,env);
-            axutil_array_list_free(children, env);
-            children = NULL;
+            neethi_policy = (neethi_policy_t *)neethi_operator_get_value(child_component, env);
+            children =  neethi_policy_get_policy_components(neethi_policy, env);
+            neethi_all_add_policy_components(all, children, env);
             to_normalize = neethi_operator_create(env);
-            neethi_operator_set_value(to_normalize,env,all,OPERATOR_TYPE_ALL);
-            exactlyone = normalize_operator(to_normalize,registry,deep,env);
-            axutil_array_list_add(child_component_list,env,exactlyone);                    
+            neethi_operator_set_value(to_normalize, env, all, OPERATOR_TYPE_ALL);
+            exactlyone = normalize_operator(to_normalize, registry, deep, env);
+            axutil_array_list_add(child_component_list, env, exactlyone);                    
         }
         else if(component_type == OPERATOR_TYPE_REFERENCE)
         {
@@ -747,26 +741,23 @@ normalize_operator(
             neethi_operator_set_value(child_component, env, policy, OPERATOR_TYPE_POLICY);
 
             all = neethi_all_create(env);
-            policy = (neethi_policy_t *)neethi_operator_get_value(child_component,env);
-            children =  neethi_policy_get_policy_components(policy,env);
-            neethi_all_add_policy_components(all,children,env);
-            axutil_array_list_free(children, env);
-            children = NULL;
+            policy = (neethi_policy_t *)neethi_operator_get_value(child_component, env);
+            children =  neethi_policy_get_policy_components(policy, env);
+            neethi_all_add_policy_components(all, children, env);
             to_normalize = neethi_operator_create(env);
-            neethi_operator_set_value(to_normalize,env,all,OPERATOR_TYPE_ALL);
-            exactlyone = normalize_operator(to_normalize,registry,deep,env);
-            axutil_array_list_add(child_component_list,env,exactlyone);
+            neethi_operator_set_value(to_normalize, env, all, OPERATOR_TYPE_ALL);
+            exactlyone = normalize_operator(to_normalize, registry, deep, env);
+            axutil_array_list_add(child_component_list, env, exactlyone);
         }            
         else
         {
             neethi_exactlyone_t *exactlyone = NULL;
-            exactlyone = normalize_operator(child_component,registry,deep,env);
-            axutil_array_list_add(child_component_list,env,exactlyone);
+            exactlyone = normalize_operator(child_component, registry, deep, env);
+            axutil_array_list_add(child_component_list, env, exactlyone);
         }
     }
-    axutil_array_list_free(arraylist, env);
-    arraylist = NULL;
-    return compute_resultant_component(child_component_list,type,env);
+
+    return compute_resultant_component(child_component_list, type, env);
 }
 
 
@@ -777,7 +768,7 @@ compute_resultant_component(
     const axutil_env_t *env)
 {
     neethi_exactlyone_t *exactlyone = NULL;
-    exactlyone = neethi_exactlyone_create(env);
+    /*exactlyone = neethi_exactlyone_create(env);*/
 
     if(type == OPERATOR_TYPE_EXACTLYONE)
     {
@@ -786,57 +777,54 @@ compute_resultant_component(
         
         for(i=0; i<axutil_array_list_size(normalized_inner_components,env); i++ )
         {
-            inner_exactlyone = (neethi_exactlyone_t *)axutil_array_list_get(normalized_inner_components,env,i);
+            inner_exactlyone = (neethi_exactlyone_t *)axutil_array_list_get(normalized_inner_components, env, i);
             neethi_exactlyone_add_policy_components(exactlyone,
-                           neethi_exactlyone_get_policy_components(inner_exactlyone,env),env);
+                           neethi_exactlyone_get_policy_components(inner_exactlyone, env), env);
             
         }
-        /*axutil_array_list_free(normalized_inner_components, env);
-        normalized_inner_components = NULL;*/
     }
     else if(type == OPERATOR_TYPE_POLICY ||
                 type == OPERATOR_TYPE_ALL)
     {
-        if(axutil_array_list_size(normalized_inner_components,env)>1)
+        if(axutil_array_list_size(normalized_inner_components, env)>1)
         {
             int i = 0;
-            exactlyone = (neethi_exactlyone_t *)axutil_array_list_get(normalized_inner_components,env,0);
-            if(!neethi_exactlyone_is_empty(exactlyone,env))
+            exactlyone = (neethi_exactlyone_t *)axutil_array_list_get(normalized_inner_components, env, 0);
+            if(!neethi_exactlyone_is_empty(exactlyone, env))
             {
                 neethi_exactlyone_t *current_exactlyone = NULL;
                 i = 1;
-                for(i=1; i<axutil_array_list_size(normalized_inner_components,env); i++)
+                for(i=1; i<axutil_array_list_size(normalized_inner_components, env); i++)
                 {
-                    current_exactlyone = (neethi_exactlyone_t *)axutil_array_list_get(normalized_inner_components,env,i);
-                    if(neethi_exactlyone_is_empty(current_exactlyone,env)) 
+                    current_exactlyone = (neethi_exactlyone_t *)axutil_array_list_get(normalized_inner_components, env, i);
+                    if(neethi_exactlyone_is_empty(current_exactlyone, env)) 
                     {
                         exactlyone = current_exactlyone;
                         break;    
                     } 
                     else
                     {
-                        neethi_exactlyone_t *old_exactlyone = NULL;
-                        old_exactlyone = exactlyone;
-                        exactlyone = get_cross_product(exactlyone,current_exactlyone,env);
-                        neethi_exactlyone_set_components_null(old_exactlyone, env);
-                        neethi_exactlyone_free(old_exactlyone, env);
-                        old_exactlyone = NULL;
+                        neethi_exactlyone_t *temp = NULL;
+                        neethi_exactlyone_t *temp1 = NULL;
+                        temp = exactlyone;
+                        temp1 = current_exactlyone;
+                        exactlyone = get_cross_product(exactlyone, current_exactlyone, env);
+                        neethi_exactlyone_free(temp, env);
+                        neethi_exactlyone_free(temp1, env);
+                        temp = NULL;
+                        temp1 = NULL;
                     }
                 }
             }
         }
         else
         {
-            neethi_exactlyone_t *temp = NULL;
-            temp = exactlyone;
-            exactlyone = (neethi_exactlyone_t *)axutil_array_list_get(normalized_inner_components,env,0);   
-            /*neethi_exactlyone_set_components_null(temp, env);*/
-            neethi_exactlyone_free(temp, env);
-            temp = NULL;
+            exactlyone = (neethi_exactlyone_t *)axutil_array_list_get(normalized_inner_components, env, 0);   
         }
     }
     axutil_array_list_free(normalized_inner_components, env);
-    normalized_inner_components = NULL;            
+    normalized_inner_components = NULL;
+    
     return exactlyone;
 }
 
@@ -858,29 +846,29 @@ get_cross_product(
     int j = 0;
 
     cross_product = neethi_exactlyone_create(env);
-    array_list1 = neethi_exactlyone_get_policy_components(exactlyone1,env);
-    array_list2 = neethi_exactlyone_get_policy_components(exactlyone2,env);
+    array_list1 = neethi_exactlyone_get_policy_components(exactlyone1, env);
+    array_list2 = neethi_exactlyone_get_policy_components(exactlyone2, env);
 
-    for(i=0; i<axutil_array_list_size(array_list1,env); i++)
+    for(i=0; i<axutil_array_list_size(array_list1, env); i++)
     {
         current_all1 = (neethi_all_t *)neethi_operator_get_value(
-           (neethi_operator_t *)axutil_array_list_get(array_list1,env,i), env );
+           (neethi_operator_t *)axutil_array_list_get(array_list1, env, i), env );
         
         for(j=0; j<axutil_array_list_size(array_list2,env); j++ )
         {
             current_all2 = (neethi_all_t *)neethi_operator_get_value(
-                (neethi_operator_t *)axutil_array_list_get(array_list2,env,j), env );
+                (neethi_operator_t *)axutil_array_list_get(array_list2, env, j), env);
             
             cross_product_all = neethi_all_create(env);
             neethi_all_add_policy_components(cross_product_all,
-                           neethi_all_get_policy_components(current_all1,env),env);
+                           neethi_all_get_policy_components(current_all1, env), env);
             
             neethi_all_add_policy_components(cross_product_all,
-                           neethi_all_get_policy_components(current_all2,env),env);
+                           neethi_all_get_policy_components(current_all2, env), env);
             
             component = neethi_operator_create(env);
-            neethi_operator_set_value(component,env,cross_product_all,OPERATOR_TYPE_ALL);
-            neethi_exactlyone_add_operator(cross_product,env,component);
+            neethi_operator_set_value(component, env, cross_product_all, OPERATOR_TYPE_ALL);
+            neethi_exactlyone_add_operator(cross_product, env, component);
         }
 
     }

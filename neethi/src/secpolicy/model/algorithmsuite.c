@@ -38,6 +38,7 @@ struct rp_algorithmsuite_t
     axis2_char_t *soap_normalization;
     axis2_char_t *str_transformation;
     axis2_char_t *xpath;
+    int ref;
 
 };
 
@@ -74,7 +75,7 @@ rp_algorithmsuite_create(const axutil_env_t *env)
     algorithmsuite->soap_normalization = NULL;
     algorithmsuite->str_transformation = NULL;
     algorithmsuite->xpath = NULL;
-
+    algorithmsuite->ref = 0;
     return algorithmsuite;
 }
 
@@ -86,6 +87,11 @@ rp_algorithmsuite_free(rp_algorithmsuite_t *algorithmsuite,
         
     if(algorithmsuite)
     {
+        if (--(algorithmsuite->ref) > 0)
+        {
+            return;
+        }
+        
         AXIS2_FREE(env->allocator, algorithmsuite);
         algorithmsuite = NULL;
     }
@@ -592,3 +598,13 @@ rp_algorithmsuite_set_xpath(rp_algorithmsuite_t *algorithmsuite,
     algorithmsuite->xpath = xpath;
     return AXIS2_SUCCESS;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_algorithmsuite_increment_ref(rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    algorithmsuite->ref++;
+    return AXIS2_SUCCESS;
+}
+

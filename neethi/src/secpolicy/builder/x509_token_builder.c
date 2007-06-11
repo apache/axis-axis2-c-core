@@ -51,6 +51,7 @@ rp_x509_token_builder_build(
     axutil_qname_t *qname = NULL;
     neethi_assertion_t *assertion = NULL;
     neethi_policy_t *normalized_policy = NULL;
+    /*axutil_array_list_t *temp = NULL;*/
 
     x509_token = rp_x509_token_create(env);
     qname = axutil_qname_create(env,RP_INCLUDE_TOKEN,RP_SP_NS,RP_SP_PREFIX);
@@ -75,20 +76,18 @@ rp_x509_token_builder_build(
                 return NULL;
             }
             normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
-            neethi_policy_set_components_null(policy, env);
             neethi_policy_free(policy, env);
             policy = NULL;
             alternatives = neethi_policy_get_alternatives(normalized_policy, env);
             component = (neethi_operator_t *)axutil_array_list_get(alternatives, env, 0);            
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             x509_token_process_alternatives(env, all, x509_token);
+            
+            assertion = neethi_assertion_create_with_args(env, (void *)rp_x509_token_free, x509_token, ASSERTION_TYPE_X509_TOKEN);
 
-            /*assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, x509_token, ASSERTION_TYPE_X509_TOKEN);*/
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
 
-            assertion = neethi_assertion_create_with_args(env, (void *)rp_x509_token_free, x509_token, ASSERTION_TYPE_X509_TOKEN);
             return assertion;
         }
         else return NULL;
@@ -139,6 +138,10 @@ x509_token_process_alternatives(
         }
         else if(type == ASSERTION_TYPE_WSS_X509_V3_TOKEN_10)
         {
+            /*neethi_assertion_free(assertion, env);
+            assertion = NULL;*/
+            /*neethi_operator_free(operator, env);
+            operator = NULL;*/
             rp_x509_token_set_token_version_and_type(x509_token, env, RP_WSS_X509_V3_TOKEN_10);
         }
         else return AXIS2_FAILURE;

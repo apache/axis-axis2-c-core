@@ -26,6 +26,7 @@ struct rp_wss10_t
     axis2_bool_t must_support_ref_external_uri;
     axis2_bool_t must_support_ref_embedded_token;
     axis2_bool_t must_support_direct_reference;
+    int ref;
 };
 
 AXIS2_EXTERN rp_wss10_t *AXIS2_CALL
@@ -48,6 +49,7 @@ rp_wss10_create(const axutil_env_t *env)
     wss10->must_support_ref_external_uri = AXIS2_FALSE;
     wss10->must_support_ref_embedded_token = AXIS2_FALSE;
     wss10->must_support_direct_reference = AXIS2_TRUE;
+    wss10->ref = 0;
 
     return wss10;
 
@@ -61,6 +63,11 @@ rp_wss10_free(rp_wss10_t *wss10,
     
     if(wss10)
     {
+        if (--(wss10->ref) > 0)
+        {
+            return;
+        }
+            
         AXIS2_FREE(env->allocator, wss10);
         wss10 = NULL;
     }
@@ -151,6 +158,16 @@ rp_wss10_set_must_support_ref_embedded_token(rp_wss10_t *wss10,
     AXIS2_PARAM_CHECK(env->error,must_support_ref_embedded_token,AXIS2_FAILURE);    
     wss10->must_support_ref_embedded_token = must_support_ref_embedded_token;
 
+    return AXIS2_SUCCESS;
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_wss10_increment_ref(rp_wss10_t *wss10,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    wss10->ref++;
     return AXIS2_SUCCESS;
 }
 

@@ -20,6 +20,7 @@
 struct rp_layout_t
 {
     axis2_char_t *value;
+    int ref;
 };
 
 AXIS2_EXTERN rp_layout_t *AXIS2_CALL 
@@ -38,6 +39,7 @@ rp_layout_create(const axutil_env_t *env)
         return NULL;
     }
     layout->value = RP_LAYOUT_STRICT;
+    layout->ref = 0;
     return layout;
 
 }
@@ -50,6 +52,10 @@ rp_layout_free(rp_layout_t *layout,
     
     if(layout)
     {
+        if (--(layout->ref) > 0)
+        {
+            return;
+        }
         AXIS2_FREE(env->allocator, layout);
         layout = NULL;
     }
@@ -79,4 +85,14 @@ rp_layout_set_value(rp_layout_t *layout,
     layout->value = value;
     return AXIS2_SUCCESS;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_layout_increment_ref(rp_layout_t *layout,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    layout->ref++;
+    return AXIS2_SUCCESS;
+}
+
 
