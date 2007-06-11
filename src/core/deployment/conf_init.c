@@ -21,11 +21,17 @@
 #include <axis2_const.h>
 #include <axutil_error.h>
 #include <axutil_allocator.h>
+#include <axutil_class_loader.h>
 #include <axis2_dep_engine.h>
 #include <axis2_module.h>
 
 axis2_status_t AXIS2_CALL
 axis2_init_modules(const axutil_env_t *env,
+    axis2_conf_ctx_t *conf_ctx);
+
+static axis2_status_t AXIS2_CALL
+axis2_init_services(
+    const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx);
 
 axis2_status_t AXIS2_CALL
@@ -67,6 +73,7 @@ axis2_build_conf_ctx(const axutil_env_t *env,
     axis2_phase_resolver_build_chains(phase_resolver, env);
 
     axis2_init_modules(env, conf_ctx);
+    axis2_init_services(env, conf_ctx);
     axis2_init_transports(env, conf_ctx);
 
     axis2_phase_resolver_free(phase_resolver, env);
@@ -113,6 +120,7 @@ axis2_build_client_conf_ctx(const axutil_env_t *env,
     axis2_phase_resolver_build_chains(phase_resolver, env);
 
     axis2_init_modules(env, conf_ctx);
+    axis2_init_services(env, conf_ctx);
     axis2_init_transports(env, conf_ctx);
 
     axis2_phase_resolver_free(phase_resolver, env);
@@ -152,6 +160,60 @@ axis2_init_modules(const axutil_env_t *env,
                         {
                             AXIS2_MODULE_INIT(mod, env, conf_ctx, mod_desc);
                         }
+                    }
+                }
+            }
+        }
+        status = AXIS2_SUCCESS;
+    }
+
+    return status;
+}
+
+static axis2_status_t AXIS2_CALL
+axis2_init_services(
+    const axutil_env_t *env,
+    axis2_conf_ctx_t *conf_ctx)
+{
+    axis2_conf_t *conf = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
+
+    conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
+    if (conf)
+    {
+        axutil_hash_t *svc_map =  axis2_conf_get_all_init_svcs(conf, env);
+        if (svc_map)
+        {
+            axutil_hash_index_t *hi = NULL;
+            void *svc = NULL;
+            for (hi = axutil_hash_first(svc_map, env);
+                hi; hi = axutil_hash_next(env, hi))
+            {
+                axutil_hash_this(hi, NULL, NULL, &svc);
+                if (svc)
+                {
+                    axis2_svc_t *svc_desc = (axis2_svc_t*)svc;
+                    if (svc_desc)
+                    {
+                        axutil_param_t *impl_info_param = NULL;
+                        void *impl_class = NULL;
+                        impl_info_param = axis2_svc_get_param(svc_desc, env, 
+                            AXIS2_SERVICE_CLASS);
+                        if (!impl_info_param)
+                        {
+                            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,
+                                AXIS2_FAILURE);
+                            return AXIS2_FAILURE;
+                        }
+                        axutil_allocator_switch_to_global_pool(env->allocator);
+                        axutil_class_loader_init(env);
+                        impl_class = axutil_class_loader_create_dll(env, impl_info_param);
+                        axis2_svc_set_impl_class(svc_desc, env, impl_class);
+                        AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *)impl_class, env);
+                        axutil_allocator_switch_to_local_pool(env->allocator);
                     }
                 }
             }

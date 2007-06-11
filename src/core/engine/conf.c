@@ -44,6 +44,7 @@ struct axis2_conf
     axutil_array_list_t *in_phases_upto_and_including_post_dispatch;
     axis2_phases_info_t *phases_info;
     axutil_hash_t *all_svcs;
+    axutil_hash_t *all_init_svcs;
     axutil_hash_t *msg_recvs;
     axutil_hash_t *faulty_svcs;
     axutil_hash_t *faulty_modules;
@@ -91,6 +92,7 @@ axis2_conf_create(
     conf->out_fault_phases = NULL;
     conf->phases_info = NULL;
     conf->all_svcs = NULL;
+    conf->all_init_svcs = NULL;
     conf->msg_recvs = NULL;
     conf->faulty_svcs = NULL;
     conf->faulty_modules = NULL;
@@ -215,6 +217,14 @@ axis2_conf_create(
 
     conf->all_svcs = axutil_hash_make(env);
     if (! conf->all_svcs)
+    {
+        axis2_conf_free(conf, env);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    conf->all_init_svcs = axutil_hash_make(env);
+    if (! conf->all_init_svcs)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -431,6 +441,11 @@ axis2_conf_free(
     if (conf->all_svcs)
     {
         axutil_hash_free(conf->all_svcs, env);
+    }
+    
+    if (conf->all_init_svcs)
+    {
+        axutil_hash_free(conf->all_init_svcs, env);
     }
 
     if (conf->msg_recvs)
@@ -963,6 +978,51 @@ axis2_conf_get_all_svcs(
         index_i = axutil_hash_next(env, index_i);
     }
     return conf->all_svcs;
+}
+
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+axis2_conf_get_all_init_svcs(
+    const axis2_conf_t *conf,
+    const axutil_env_t *env)
+{
+    axutil_hash_t *sgs = NULL;
+    axutil_hash_index_t *index_i = NULL;
+    axutil_hash_index_t *index_j = NULL;
+    void *value = NULL;
+    void *value2 = NULL;
+    axis2_svc_grp_t *axis_svc_grp = NULL;
+    axutil_hash_t *svcs = NULL;
+    axis2_svc_t *svc = NULL;
+    axis2_char_t *svc_name = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+
+    sgs = axis2_conf_get_all_svc_grps(conf, env);
+    index_i = axutil_hash_first(sgs, env);
+    while (index_i)
+    {
+        axutil_hash_this(index_i, NULL, NULL, &value);
+        axis_svc_grp = (axis2_svc_grp_t *) value;
+        svcs =  axis2_svc_grp_get_all_svcs(axis_svc_grp, env);
+        index_j = axutil_hash_first(svcs, env);
+        while (index_j)
+        {
+            axutil_param_t *param = NULL;
+            axutil_hash_this(index_j, NULL, NULL, &value2);
+            svc = (axis2_svc_t *) value2;
+            svc_name = 
+                axutil_qname_get_localpart(axis2_svc_get_qname(svc, env), env);
+            param = axis2_svc_get_param(svc, env, "Axis2InitService");
+            if(param)
+                axutil_hash_set(conf->all_init_svcs, svc_name,
+                    AXIS2_HASH_KEY_STRING, svc);
+
+            index_j = axutil_hash_next(env, index_j);
+        }
+
+        index_i = axutil_hash_next(env, index_i);
+    }
+    return conf->all_init_svcs;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL

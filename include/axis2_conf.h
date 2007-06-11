@@ -382,6 +382,19 @@ extern "C"
     axis2_conf_get_all_svcs(const axis2_conf_t *conf,
         const axutil_env_t *env);
 
+    /**        
+     * Gets all the list of services that need to be loaded into configuration
+     * at the start up of the axis2 engine.
+     * @param conf pointer to conf struct
+     * @param env pointer to environment struct
+     * @return a pointer to the hash table of services. Returns a 
+     * reference, not a cloned copy
+     */
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+    axis2_conf_get_all_init_svcs(
+        const axis2_conf_t *conf,
+        const axutil_env_t *env);
+
     /**
      * Checks is the named module is engaged.
      * @param conf pointer to conf struct
