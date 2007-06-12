@@ -5,7 +5,7 @@ libaxis2_minizip_la_SOURCES =	ioapi.c \
 							archive_extract.c \
 							crypt.c
 
-libaxis2_minizip_LDFLAGS = -version-info $(VERSION_NO)
+libaxis2_minizip_la_LDFLAGS = -version-info $(VERSION_NO)
 
 INCLUDES = 	-I$(top_builddir)/include \
             -I$(top_builddir)/platforms
