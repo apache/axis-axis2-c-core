@@ -128,7 +128,7 @@ rp_signed_encrypted_parts_set_signedparts(rp_signed_encrypted_parts_t *signed_en
             axis2_bool_t signedparts)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,signedparts,AXIS2_FAILURE);
+    /*AXIS2_PARAM_CHECK(env->error,signedparts,AXIS2_FAILURE);*/
     signed_encrypted_parts->signedparts = signedparts;
 
     return AXIS2_SUCCESS;
