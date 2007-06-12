@@ -75,8 +75,8 @@ dnl Checks for typedefs, structures, and compiler characteristics.
 dnl AC_C_CONST
 
 dnl Checks for library functions.
-AC_FUNC_MALLOC
-AC_FUNC_REALLOC
+dnl AC_FUNC_MALLOC
+dnl AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
 AC_MSG_CHECKING(whether to build libxml2 xml parser library)
