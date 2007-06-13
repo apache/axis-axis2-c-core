@@ -30,7 +30,7 @@ axis2_init_modules(const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx);
 
 static axis2_status_t AXIS2_CALL
-axis2_init_services(
+axis2_load_services(
     const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx);
 
@@ -73,7 +73,7 @@ axis2_build_conf_ctx(const axutil_env_t *env,
     axis2_phase_resolver_build_chains(phase_resolver, env);
 
     axis2_init_modules(env, conf_ctx);
-    axis2_init_services(env, conf_ctx);
+    axis2_load_services(env, conf_ctx);
     axis2_init_transports(env, conf_ctx);
 
     axis2_phase_resolver_free(phase_resolver, env);
@@ -120,7 +120,7 @@ axis2_build_client_conf_ctx(const axutil_env_t *env,
     axis2_phase_resolver_build_chains(phase_resolver, env);
 
     axis2_init_modules(env, conf_ctx);
-    axis2_init_services(env, conf_ctx);
+    axis2_load_services(env, conf_ctx);
     axis2_init_transports(env, conf_ctx);
 
     axis2_phase_resolver_free(phase_resolver, env);
@@ -171,7 +171,7 @@ axis2_init_modules(const axutil_env_t *env,
 }
 
 static axis2_status_t AXIS2_CALL
-axis2_init_services(
+axis2_load_services(
     const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx)
 {
@@ -184,7 +184,7 @@ axis2_init_services(
     conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
     if (conf)
     {
-        axutil_hash_t *svc_map =  axis2_conf_get_all_init_svcs(conf, env);
+        axutil_hash_t *svc_map =  axis2_conf_get_all_svcs_to_load(conf, env);
         if (svc_map)
         {
             axutil_hash_index_t *hi = NULL;

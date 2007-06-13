@@ -331,6 +331,9 @@ typedef enum axis2_wsdl_msg_labels
 
 #define AXIS2_TESTING_REPOSITORY "target/test-resources/samples"
 
+/* Indicate whether the axis2 service should be loaded at start up */
+#define AXIS2_LOAD_SVC_STARTUP "loadServiceAtStartup"
+
 
 /*************************** REST_WITH_GET ************************************/
 

@@ -981,7 +981,7 @@ axis2_conf_get_all_svcs(
 }
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-axis2_conf_get_all_init_svcs(
+axis2_conf_get_all_svcs_to_load(
     const axis2_conf_t *conf,
     const axutil_env_t *env)
 {
@@ -1012,7 +1012,7 @@ axis2_conf_get_all_init_svcs(
             svc = (axis2_svc_t *) value2;
             svc_name = 
                 axutil_qname_get_localpart(axis2_svc_get_qname(svc, env), env);
-            param = axis2_svc_get_param(svc, env, "Axis2InitService");
+            param = axis2_svc_get_param(svc, env, AXIS2_LOAD_SVC_STARTUP);
             if(param)
                 axutil_hash_set(conf->all_init_svcs, svc_name,
                     AXIS2_HASH_KEY_STRING, svc);

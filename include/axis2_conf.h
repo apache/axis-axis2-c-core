@@ -391,7 +391,7 @@ extern "C"
      * reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-    axis2_conf_get_all_init_svcs(
+    axis2_conf_get_all_svcs_to_load(
         const axis2_conf_t *conf,
         const axutil_env_t *env);
 
