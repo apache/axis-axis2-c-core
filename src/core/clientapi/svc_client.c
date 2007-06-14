@@ -32,6 +32,8 @@
 #include <axis2_conf_init.h>
 #include <platforms/axutil_platform_auto_sense.h>
 #include <stdio.h>
+#include <axutil_generic_obj.h>
+#include <axis2_http_transport.h>
 
 struct axis2_svc_client
 {
@@ -1288,6 +1290,10 @@ axis2_svc_client_set_proxy(axis2_svc_client_t *svc_client,
     axutil_param_t *param;
     axis2_char_t *proxy = AXIS2_HTTP_PROXY_API;
     axutil_hash_t *attribute;
+    axutil_generic_obj_t *host_obj = NULL;
+    axutil_generic_obj_t *port_obj = NULL;
+    axiom_attribute_t *host_attr = NULL;
+    axiom_attribute_t *port_attr = NULL;
 
     AXIS2_PARAM_CHECK(env->error, proxy_host, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, proxy_port, AXIS2_FAILURE);
@@ -1309,11 +1315,22 @@ axis2_svc_client_set_proxy(axis2_svc_client_t *svc_client,
         }
 
         attribute = axutil_hash_make (env);
-        axutil_hash_set (attribute, AXIS2_HTTP_PROXY_HOST, AXIS2_HASH_KEY_STRING, proxy_host);
-        axutil_hash_set (attribute, AXIS2_HTTP_PROXY_PORT, AXIS2_HASH_KEY_STRING, proxy_port);
+        host_obj = axutil_generic_obj_create(env);
+        port_obj  = axutil_generic_obj_create(env);
+        host_attr = axiom_attribute_create(env, proxy_host, NULL, NULL);
+        port_attr = axiom_attribute_create(env, proxy_port, NULL,  NULL); 
+        axutil_generic_obj_set_value(host_obj, env, host_attr);
+        axutil_generic_obj_set_value(port_obj, env, port_attr);
+
+        axutil_hash_set (attribute, AXIS2_HTTP_PROXY_HOST, AXIS2_HASH_KEY_STRING, host_obj);
+        axutil_hash_set (attribute, AXIS2_HTTP_PROXY_PORT, AXIS2_HASH_KEY_STRING, port_obj);
         axutil_param_set_attributes (param, env, attribute);
         axutil_param_container_add_param (param_container, env, param);
 
     }
     return AXIS2_SUCCESS;
 }
+
+
+
+

@@ -903,25 +903,48 @@ axis2_http_sender_configure_proxy(
             transport_attrs = axutil_param_get_attributes(proxy_param, env);
             if (transport_attrs)
             {
-     
-                proxy_host = (axis2_char_t *)axutil_hash_get(transport_attrs, AXIS2_PROXY_HOST_NAME,
-                                      AXIS2_HASH_KEY_STRING);
-                if (!proxy_host)
+                axutil_generic_obj_t *obj = NULL;
+                axiom_attribute_t *host_attr = NULL;
+                axiom_attribute_t *port_attr = NULL;
+                
+                obj = axutil_hash_get(transport_attrs, AXIS2_PROXY_HOST_NAME,
+								 AXIS2_HASH_KEY_STRING);
+                if (! obj)
                 {
                     return AXIS2_FAILURE;
+                }
+                host_attr = (axiom_attribute_t *) axutil_generic_obj_get_value(obj,
+																		 env);
+                if (! host_attr)
+                {
+                    return AXIS2_FAILURE;
+                }
+                proxy_host = axiom_attribute_get_localname(host_attr, env);
+                if (! proxy_host)
+                {
+                return AXIS2_FAILURE;
                 }
                 /* Now we get the port */
+                obj = NULL;
                 
-                proxy_port = (axis2_char_t *)axutil_hash_get(transport_attrs, AXIS2_PROXY_HOST_PORT,
+                obj = axutil_hash_get(transport_attrs, AXIS2_PROXY_HOST_PORT,
                                       AXIS2_HASH_KEY_STRING);
-                if (!proxy_port)
+                port_attr = (axiom_attribute_t*) axutil_generic_obj_get_value(obj,
+                                                                              env);
+                if (! port_attr)
                 {
                     return AXIS2_FAILURE;
                 }
+ 
+               proxy_port = axiom_attribute_get_localname(port_attr, env);
+               if (! proxy_port)
+               {
+                   return AXIS2_FAILURE;
+               }
+                
             }
-        }
-
-    }
+        }       
+     }
     if (proxy_port && proxy_host)
     {
         axis2_http_client_set_proxy(sender->client, env, proxy_host,
