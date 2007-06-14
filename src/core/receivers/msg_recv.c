@@ -154,7 +154,10 @@ axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
     impl_class = axutil_class_loader_create_dll(env, impl_info_param);
     axis2_svc_set_impl_class(svc, env, impl_class);
 
-    AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *)impl_class, env);
+    if (impl_class)
+    {
+        AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *)impl_class, env);
+    }
 
     axutil_allocator_switch_to_local_pool(env->allocator);
 
