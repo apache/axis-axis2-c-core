@@ -184,7 +184,7 @@ extern "C"
 	/**get the first AXIOM_ELEMENT in om_node
 	 * @param om_node node
 	 * @param env environment must not be null
-	 * @returns pointer to first om element, NULL is returned on error
+	 * @returns pointer to first child om element, NULL is returned on error
 	 * with error code set in environments error.
 	 */
     AXIS2_EXTERN axiom_node_t * AXIS2_CALL
