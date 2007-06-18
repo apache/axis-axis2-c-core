@@ -64,7 +64,6 @@ AC_SUBST(VERSION_NO)
 
 AC_CONFIG_FILES([Makefile \
     src/Makefile \
-    util/Makefile \
     src/secpolicy/Makefile \
     src/secpolicy/model/Makefile \
     src/secpolicy/builder/Makefile \
