@@ -511,6 +511,34 @@ extern "C"
     axis2_svc_client_get_last_response_has_fault(const axis2_svc_client_t *svc_client,
         const axutil_env_t *env);
 
+    /**
+     * Create a policy object and set it to the description hierarchy
+     * @param svc_client pointer to service_client struct
+     * @param env pointer to environemt struct
+     * @param root_node pointer to a policy node    
+     * @return AXIS2_FAILURE if there was a fault, else AXIS2_SUCCESS
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_client_set_policy_from_om(axis2_svc_client_t *svc_client,
+        const axutil_env_t *env,
+        axiom_node_t *root_node);
+
+    /**
+     * Create a policy object and set it to the description hierarchy
+     * @param svc_client pointer to service_client struct
+     * @param env pointer to environemt struct
+     * @param file_name pointer to a string which is a policy file name
+     * @return AXIS2_FAILURE if there was a fault, else AXIS2_SUCCESS
+     */
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_client_set_policy_from_file(axis2_svc_client_t *svc_client,
+        const axutil_env_t *env,
+        axis2_char_t *file_name);
+
+
+
+
 /** @} */
 #ifdef __cplusplus
 }
