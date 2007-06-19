@@ -34,6 +34,8 @@
 #include <stdio.h>
 #include <axutil_generic_obj.h>
 #include <axis2_http_transport.h>
+#include <neethi_engine.h>
+#include <axis2_policy_include.h>
 
 struct axis2_svc_client
 {
@@ -1331,6 +1333,95 @@ axis2_svc_client_set_proxy(axis2_svc_client_t *svc_client,
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_svc_client_set_policy_from_om(axis2_svc_client_t *svc_client,
+    const axutil_env_t *env,
+    axiom_node_t *root_node)
+{
+
+    axiom_element_t *root_ele = NULL;
+    axis2_svc_t *svc = NULL;
+    axis2_desc_t *desc = NULL;
+    axis2_policy_include_t *policy_include = NULL;
+    
+
+    if(axiom_node_get_node_type(root_node, env) == AXIOM_ELEMENT)
+    {
+        root_ele = (axiom_element_t*)axiom_node_get_data_element(root_node, env);
+        if(root_ele)
+        {
+            neethi_policy_t *neethi_policy = NULL;
+            neethi_policy = neethi_engine_get_policy(env, root_node, root_ele);
+            if(!neethi_policy)
+            {
+                return AXIS2_FAILURE;
+            }
+            svc = axis2_svc_client_get_svc(svc_client, env);
+            if(!svc)
+            {
+                return AXIS2_FAILURE;
+            }
+            desc = axis2_svc_get_base(svc, env);
+            if(!desc)
+            {
+                return AXIS2_FAILURE;
+            }
+            policy_include = axis2_desc_get_policy_include(desc, env);
+            if(!policy_include)
+            {
+                return AXIS2_FAILURE;
+            }
+            axis2_policy_include_add_policy_element(policy_include, env, AXIS2_SERVICE_POLICY, neethi_policy);
+            return AXIS2_SUCCESS;    
+        }
+        else
+            return AXIS2_FAILURE;
+    }
+
+    return AXIS2_FAILURE;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_svc_client_set_policy_from_file(axis2_svc_client_t *svc_client,
+    const axutil_env_t *env,
+    axis2_char_t *file_name)
+{
+
+    axiom_xml_reader_t *reader = NULL;
+    axiom_stax_builder_t *builder = NULL;
+    axiom_document_t *document = NULL;
+    axiom_node_t *root_node = NULL;
 
 
+    reader = axiom_xml_reader_create_for_file(env, file_name, NULL);
 
+    if (!reader)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
+                AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+
+    builder = axiom_stax_builder_create(env, reader);
+    if(!builder)
+    {
+        axiom_xml_reader_free(reader, env);
+        return AXIS2_FAILURE;
+    }
+    document = axiom_stax_builder_get_document(builder, env);
+
+    if(!document)
+    {
+        axiom_stax_builder_free(builder, env);
+        return AXIS2_FAILURE;
+    }
+
+    root_node = axiom_document_build_all(document, env);
+    if(!root_node)
+    {
+        axiom_stax_builder_free(builder, env);
+        return AXIS2_FAILURE;
+    }
+    
+    return axis2_svc_client_set_policy_from_om(svc_client, env, root_node);   
+}
