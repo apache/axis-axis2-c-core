@@ -15,11 +15,38 @@ href="http://ws.apache.org/axis2/1_2/Axis2ArchitectureGuide.html">Axis2
 architecture</a> in C. Apache Axis2/C can be used to provide and consume Web
 Services.</p>
 
-<h2>Background and Motivation</h2>
+<p>Apache Axis2/C supports <a
+href="http://www.w3.org/TR/2000/NOTE-SOAP-20000508/">SOAP 1.1</a> and <a
+href="http://www.w3.org/TR/soap12-part1/">SOAP 1.2</a>, as well as <a
+href="http://www.xfront.com/REST-Web-Services.html">REST</a> style of Web
+services. A single service could be exposed both as a SOAP style interface as
+well as a REST style interface simultaneously. It also has built in <a
+href="http://www.w3.org/TR/soap12-mtom/">MTOM</a> support, that can be used
+to exhange binary data.</p>
 
-<p>This implementation provides the C language option in consuming and
-providing Web Services. Apache Axis2/C is looking at broadening its horizon
-by its ability to plug in and embed into other software systems.</p>
+<p>Apache Axis2/C is efficient, modular and is designed with extensibility.
+This allows it to support the full WS-* stack with the concept of modules.
+The following WS-* specifications are supported, either as built in modules
+or as seperate Apache projects:</p>
+<ul>
+  <li><a href="http://www.w3.org/Submission/ws-addressing/">WS-Addressing</a>
+    - Built in to Axis2/C</li>
+  <li><a href="http://www.w3.org/Submission/WS-Policy/">WS-Policy</a> - Built
+    in to Axis2/C</li>
+  <li><a
+    href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=wss">WS-Security</a>
+    - Implemented by <a
+    href="http://ws.apache.org/axis2/modules/rampart/1_2/security-module.html">Apache
+    Rampart/C</a> project</li>
+  <li><a
+    href="http://specs.xmlsoap.org/ws/2005/07/securitypolicy/ws-securitypolicy.pdf">WS-SecurityPolicy</a>
+    - Built in to Axis2/C</li>
+  <li><a
+    href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=wsrm">WS-ReliableMessaging</a>
+    - Implemented by <a
+    href="http://ws.apache.org/sandesha/sandesha2/c">Apache Sandesha2/C</a>
+    project</li>
+</ul>
 
 <h2>Latest Release</h2>
 
