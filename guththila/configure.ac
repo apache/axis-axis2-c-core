@@ -50,7 +50,7 @@ AC_CHECK_LIB(dl, dlopen)
 
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
-    CFLAGS="$CFLAGS -ansi -ggdb3 -Wall -Wno-implicit-function-declaration -Werror"
+    CFLAGS="$CFLAGS -ansi -ggdb3 -Wall -Wno-implicit-function-declaration "
 fi
 
 LDFLAGS="$LDFLAGS -lpthread"
@@ -63,8 +63,8 @@ dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 
 dnl Checks for library functions.
-dnl AC_FUNC_MALLOC
-dnl AC_FUNC_REALLOC
+AC_FUNC_MALLOC
+AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
 

@@ -1,83 +1,77 @@
 /*
- *   Copyright 2004,2005 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- *
- *   
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
-
 #ifndef GUTHTHILA_READER_H
 #define GUTHTHILA_READER_H
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "guththila_buffer.h"
-#include "guththila_defines.h"
-#include <axutil_env.h>
-#include "guththila_error.h"
-#include <axutil_utils.h>
+#include <guththila_defines.h>
+#include <guththila_buffer.h>
 
-typedef enum guththila_reader_types
-  {
-    GUTHTHILA_FILE_READER = 1,
+EXTERN_C_START()
+
+typedef int (GUTHTHILA_CALL *GUTHTHILA_READ_INPUT_CALLBACK)(char *buffer, int size, 
+    void* ctx);
+
+enum guththila_reader_type
+{
+	GUTHTHILA_FILE_READER = 1,
     GUTHTHILA_IO_READER,
     GUTHTHILA_MEMORY_READER
-  } guththila_reader_types_t;
+};
 
 typedef struct guththila_reader_s
 {
-    int guththila_reader_type;
-    
+	int type;
+	FILE *fp;
+	/*int next;*/
+	int last_start; /*if -1 we are not in a token*/
+	char *buff;
+	int buff_size;
+	/*guththila_buffer_t buffer;*/
+	GUTHTHILA_READ_INPUT_CALLBACK input_read_callback;
+	void* context;	
 } guththila_reader_t;
 
+#ifndef GUTHTHILA_READER_SET_LAST_START
+#define GUTHTHILA_READER_SET_LAST_START(_reader, _start) ((_reader)->start = _start)
+#endif
 
+#ifndef GUTHTHILA_READER_STEP_BACK
+#define GUTHTHILA_READER_STEP_BACK(_reader) ((_reader->next--))
+#endif
 
-typedef struct guththila_reader_impl_t
-{
-	guththila_reader_t reader;
-	int buffer_size;
-	FILE *fp;
-	char *buffer;
-	AXIS2_READ_INPUT_CALLBACK input_read_callback;
-	void* context;
-}guththila_reader_impl_t;
+GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
+guththila_reader_create_for_file (char* filename);
 
+GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL 
+guththila_reader_create_for_io(GUTHTHILA_READ_INPUT_CALLBACK input_read_callback, void *ctx);
 
-AXIS2_EXTERN guththila_reader_t * AXIS2_CALL
-guththila_reader_create_for_file (axutil_env_t * environment,
-                                  char* filename);
+GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
+guththila_reader_create_for_memory(void *buffer, int size); 
 
-AXIS2_EXTERN guththila_reader_t * AXIS2_CALL 
-guththila_reader_create_for_io(axutil_env_t *environment,
-							   AXIS2_READ_INPUT_CALLBACK input_read_callback, void *ctx);
-
-AXIS2_EXTERN guththila_reader_t * AXIS2_CALL
-guththila_reader_create_for_memory(axutil_env_t *environment,
-                                   void *buffer,
-                                    int size,
-				   void *ctx); 
-
-
-AXIS2_EXTERN int AXIS2_CALL
-guththila_reader_read (axutil_env_t * environment,
-                       guththila_char_t * buffer, int offset, int length,
-                       guththila_reader_t * r);
-
+GUTHTHILA_EXPORT int GUTHTHILA_CALL
+guththila_reader_read (guththila_reader_t *r, guththila_char *buffer, int offset, int length);
                        
-AXIS2_EXTERN void AXIS2_CALL
-guththila_reader_free (axutil_env_t * environment,
-                       guththila_reader_t * r);
+GUTHTHILA_EXPORT void GUTHTHILA_CALL
+guththila_reader_free (guththila_reader_t * r);
 
-#endif /* GUTHTHILA_READER_H */
+/*int GUTHTHILA_CALL guththila_reader_next_char(guththila_reader_t *r, int eof);*/
+/*int GUTHTHILA_CALL guththila_reader_next_no_char (guththila_reader_t *r, int eof, char *bytes, int no);*/
+EXTERN_C_END()
+
+#endif
+

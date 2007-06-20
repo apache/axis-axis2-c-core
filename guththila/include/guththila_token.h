@@ -1,133 +1,87 @@
 /*
- *   Copyright 2004,2005 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- *
- *   
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
-
 #ifndef GUTHTHILA_TOKEN_H
 #define GUTHTHILA_TOKEN_H
 
-/* #include "guththila_environment.h" */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <axutil_env.h>
-#include <axutil_stack.h>
 #include <guththila_defines.h>
+#include <guththila_stack.h>
 
+EXTERN_C_START()
 
 typedef struct guththila_token_s
 {
-    int type;
-    guththila_char_t *start;
-    guththila_char_t *end;
-    int last;
-    int size;
-    int ref;
+	short type;
+	char *start;
+	int _start;
+	size_t size;
+	int last;
+	int ref;	
 } guththila_token_t;
 
-
 enum guththila_token_type
-{
-    Unknown = 1,
+{  
+	_Unknown = 1,
     _name,
-    _value,
-    _attribute,
+	_attribute_name,
     _attribute_value,
     _prefix,
     _char_data
 };
 
+typedef struct guththila_tok_list_s
+{
+	guththila_stack_t fr_stack;
+	guththila_token_t **list;
+	int no_list;
+	int cur_list;	
+	int *capacity;
+} guththila_tok_list_t;
 
-AXIS2_EXTERN guththila_token_t *
-guththila_token_create_token_buffer (axutil_env_t * environment,
-                                     int size);
-                                     
-AXIS2_EXTERN void
-guththila_token_free (axutil_env_t * environment,
-					  guththila_token_t * tok);
-AXIS2_EXTERN int
-guththila_token_length (axutil_env_t * environment,
-                        guththila_token_t * tok);
-                        
-AXIS2_EXTERN void
-guththila_token_exception ();
+#ifndef GUTHTHILA_TOK_DEF_SIZE
+#define GUTHTHILA_TOK_DEF_SIZE 4
+#endif
 
-AXIS2_EXTERN guththila_token_t *
-guththila_token_append (axutil_env_t * environment,
-                        guththila_token_t * tok);
-                        
-AXIS2_EXTERN guththila_token_t *
-guththila_token_grow (axutil_env_t * environment,
-                      guththila_token_t * tok);
-                      
-AXIS2_EXTERN guththila_token_t *
-guththila_token_last (axutil_env_t * environment,
-                      guththila_token_t * tok);
-                      
-AXIS2_EXTERN int
-guththila_token_count (axutil_env_t * environment,
-                       guththila_token_t * tok);
-                       
-AXIS2_EXTERN guththila_char_t *
-guththila_token_to_string (axutil_env_t * environment,
-                           guththila_token_t * tok,
-                           int unicode);
-                           
-AXIS2_EXTERN void
-guththila_token_relocate (axutil_env_t * environment,
-                          guththila_token_t * tok,
-                          int offset);
-                          
-                          
-AXIS2_EXTERN int
-guththila_token_compare (axutil_env_t * environment,
-                         guththila_token_t * tok,
-                         const guththila_char_t * st,
-                         int n, 
-                         int unicode_state);
-                         
-                         
-AXIS2_EXTERN guththila_char_t *
-guththila_token_convert_utf16_to_utf8 (axutil_env_t * environment,
-                                       guththila_char_t * buffer,
-                                       int length);
-                                       
-AXIS2_EXTERN int
-guththila_token_length_utf16 (axutil_env_t * environment,
-                              unsigned int utf16_ch);
-                              
-                              
-AXIS2_EXTERN guththila_char_t *
-guththila_token_build_utf8 (axutil_env_t * environment,
-                            unsigned int utf16_ch,
-                            int length);
-                            
-AXIS2_EXTERN guththila_char_t *
-guththila_token_char_ref (axutil_env_t * environment,
-                          guththila_char_t * buffer);
-                          
-AXIS2_EXTERN void AXIS2_CALL
-guththila_relocate_tokens(axutil_env_t *environment,
-						  axutil_stack_t *stack,
-						  int offset);
+#ifndef GUTHTHILA_TOK_DEF_LIST_SIZE
+#define GUTHTHILA_TOK_DEF_LIST_SIZE 16
+#endif
 
-#endif /* GUTHTHILA_TOKEN_H */
+#ifndef GUTHTHILA_TOKEN_LEN
+#define GUTHTHILA_TOKEN_LEN(tok) (tok->size)
+#endif
 
+#ifndef GUTHTHILA_TOKEN_TO_STRING
+#define GUTHTHILA_TOKEN_TO_STRING(tok, string) \
+	string = (char *)malloc((GUTHTHILA_TOKEN_LEN(tok) + 1) * sizeof (char));	\
+	memcpy(string, (tok)->start, GUTHTHILA_TOKEN_LEN(tok));						\
+	string[GUTHTHILA_TOKEN_LEN(tok)] = 0;										
+#endif
 
+guththila_tok_list_t * GUTHTHILA_CALL guththila_tok_list_create();
+int GUTHTHILA_CALL guththila_tok_list_init(guththila_tok_list_t *tok_list);
+void GUTHTHILA_CALL guththila_tok_list_free(guththila_tok_list_t *tok_list);
+guththila_token_t * GUTHTHILA_CALL guththila_tok_list_get_token(guththila_tok_list_t *tok_list);
+int GUTHTHILA_CALL guththila_tok_list_release_token(guththila_tok_list_t *tok_list, guththila_token_t *token);
+void GUTHTHILA_CALL guththila_tok_list_free_data(guththila_tok_list_t *tok_list);
+int GUTHTHILA_CALL guththila_tok_list_grow(guththila_tok_list_t *tok_list);
 
+int GUTHTHILA_CALL guththila_tok_str_cmp(guththila_token_t *tok, char *str, size_t str_len);
+int GUTHTHILA_CALL guththila_tok_tok_cmp(guththila_token_t *tok1, guththila_token_t *tok2);
 
+EXTERN_C_END()
+
+#endif
 

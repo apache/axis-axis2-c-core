@@ -1,47 +1,54 @@
 /*
- *   Copyright 2004,2005 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- *
- *   
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 #ifndef GUTHTHILA_ATTRIBUTE_H
 #define GUTHTHILA_ATTRIBUTE_H
 
-#include "guththila_token.h"
+#include <guththila_defines.h>
+#include <guththila_token.h>
 
-typedef struct guththila_attribute_s
+EXTERN_C_START()
+
+#ifndef GUTHTHILA_ATTR_DEF_SIZE
+#define GUTHTHILA_ATTR_DEF_SIZE 16
+#endif
+
+typedef struct guththila_attr_s
 {
-    guththila_token_t *prefix;
+    guththila_token_t *pref;
     guththila_token_t *name;
-    guththila_token_t *value;
-	guththila_token_t *namespace_uri;
-} guththila_attribute_t;
+    guththila_token_t *val;
+} guththila_attr_t;
 
-AXIS2_EXTERN guththila_attribute_t * AXIS2_CALL
-guththila_attribute_create (
-	axutil_env_t *env, 
-	guththila_token_t *prefix, 
-	guththila_token_t *name, 
-	guththila_token_t *value,
-	guththila_token_t *ns);
+typedef struct guththila_attr_list_s
+{
+	guththila_attr_t *list;
+	guththila_stack_t fr_stack;
+	int size;
+	int capacity;		
+} guththila_attr_list_t;
 
+guththila_attr_list_t * GUTHTHILA_CALL guththila_attr_list_create();
+int GUTHTHILA_CALL guththila_attr_list_init(guththila_attr_list_t *at_list);
+guththila_attr_t * GUTHTHILA_CALL guththila_attr_list_get(guththila_attr_list_t *at_list);
+int GUTHTHILA_CALL guththila_attr_list_release(guththila_attr_list_t *at_list, guththila_attr_t *attr);
+void GUTHTHILA_CALL msuila_attr_list_free_data(guththila_attr_list_t *at_list);
+void GUTHTHILA_CALL guththila_attr_list_free(guththila_attr_list_t *at_list);
 
-AXIS2_EXTERN void AXIS2_CALL
-guththila_attribute_free (
-	axutil_env_t *env,
-	guththila_attribute_t *attribute);
+EXTERN_C_END()
 
+#endif
 
-#endif /* GUTHTHILA_ATTRIBUTE_H */
