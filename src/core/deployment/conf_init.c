@@ -120,7 +120,6 @@ axis2_build_client_conf_ctx(const axutil_env_t *env,
     axis2_phase_resolver_build_chains(phase_resolver, env);
 
     axis2_init_modules(env, conf_ctx);
-    axis2_load_services(env, conf_ctx);
     axis2_init_transports(env, conf_ctx);
 
     axis2_phase_resolver_free(phase_resolver, env);
@@ -212,7 +211,8 @@ axis2_load_services(
                         axutil_class_loader_init(env);
                         impl_class = axutil_class_loader_create_dll(env, impl_info_param);
                         axis2_svc_set_impl_class(svc_desc, env, impl_class);
-                        AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *)impl_class, env);
+                        AXIS2_SVC_SKELETON_INIT_WITH_CONF(
+                            (axis2_svc_skeleton_t *)impl_class, env, conf);
                         axutil_allocator_switch_to_local_pool(env->allocator);
                     }
                 }

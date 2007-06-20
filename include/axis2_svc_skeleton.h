@@ -70,6 +70,7 @@ extern "C"
                     axis2_svc_skeleton_t *svc_skeleton,
                     const axutil_env_t *env);
 
+
         /**
          * Invokes the service. This function should be used to call up the
          * functions implementing service operations.
@@ -113,6 +114,18 @@ extern "C"
                     axis2_svc_skeleton_t *svc_skeli,
                     const axutil_env_t *env);
 
+        /**
+         * Initializes the service implementation.
+         * @param svc_skeleton pointer to svc_skeleton struct
+         * @param env pointer to environment struct
+         * @param conf pointer to axis2c configuration struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        int (AXIS2_CALL *
+                init_with_conf)(
+                    axis2_svc_skeleton_t *svc_skeleton,
+                    const axutil_env_t *env,
+                    struct axis2_conf *conf);
     } ;
 
     /**
@@ -133,6 +146,11 @@ extern "C"
     @sa axis2_svc_skeleton_ops#init */
 #define AXIS2_SVC_SKELETON_INIT(svc_skeleton, env) \
       ((svc_skeleton)->ops->init (svc_skeleton, env))
+
+/** Initialize the svc skeleton with axis2c configuration struct.
+    @sa axis2_svc_skeleton_ops#init_with_conf */
+#define AXIS2_SVC_SKELETON_INIT_WITH_CONF(svc_skeleton, env, conf) \
+      ((svc_skeleton)->ops->init_with_conf (svc_skeleton, env, conf))
 
 /** Frees the svc skeleton.
     @sa axis2_svc_skeleton_ops#free */
