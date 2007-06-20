@@ -17,6 +17,7 @@ axis2_http_server_LDADD   =  $(LDFLAGS) \
 			     $(top_builddir)/src/core/engine/libaxis2_engine.la \
 			     $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
 			     $(top_builddir)/src/core/transport/http/receiver/libaxis2_http_receiver.la \
+			     $(top_builddir)/neethi/src/libneethi.la \
                             -lpthread
                     
 INCLUDES =  -I$(top_builddir)/include \
