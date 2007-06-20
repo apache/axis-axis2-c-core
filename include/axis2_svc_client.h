@@ -53,6 +53,7 @@
 #include <axis2_conf_ctx.h>
 #include <axis2_op_client.h>
 #include <axutil_string.h>
+#include <neethi_policy.h>
 
 /** Name of anonymous service */
 #define AXIS2_ANON_SERVICE  "__ANONYMOUS_SERVICE__"
@@ -515,24 +516,25 @@ extern "C"
      * @param root_node pointer to a policy node    
      * @return AXIS2_FAILURE if there was a fault, else AXIS2_SUCCESS
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_client_set_policy_from_om(axis2_svc_client_t *svc_client,
+
+     AXIS2_EXTERN axis2_status_t AXIS2_CALL
+     axis2_svc_client_set_policy_from_om(axis2_svc_client_t *svc_client,
         const axutil_env_t *env,
         axiom_node_t *root_node);
-
+       
     /**
-     * Create a policy object and set it to the description hierarchy
+     * Set the given policy object to the description hierarchy
      * @param svc_client pointer to service_client struct
      * @param env pointer to environemt struct
-     * @param file_name pointer to a string which is a policy file name
+     * @param policy neethi_policy_t to a policy struct
      * @return AXIS2_FAILURE if there was a fault, else AXIS2_SUCCESS
      */
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_client_set_policy_from_file(axis2_svc_client_t *svc_client,
+    axis2_svc_client_set_policy(axis2_svc_client_t *svc_client,
         const axutil_env_t *env,
-        axis2_char_t *file_name);
-
+        neethi_policy_t *policy);
+        
 
 
 
