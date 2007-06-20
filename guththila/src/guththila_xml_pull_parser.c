@@ -21,6 +21,7 @@ AXIS2_EXTERN guththila_t * AXIS2_CALL
 guththila_create(axutil_env_t * environment,
 				 guththila_reader_t * r)
 {
+    int size = 0;
     guththila_t *parser =
         (guththila_t *) AXIS2_MALLOC(
             environment->allocator, sizeof(guththila_t));
@@ -38,6 +39,7 @@ guththila_create(axutil_env_t * environment,
 														   reader_impl->buffer, 
 														   reader_impl->buffer_size);
         parser->buffer = reader_buffer;
+        size = reader_impl->buffer_size;
     }
     else
         parser->buffer = guththila_buffer_create(environment, GUTHTHILA_BUFFER_SIZE);
@@ -53,7 +55,7 @@ guththila_create(axutil_env_t * environment,
     parser->reader = r;
     parser->_next = 0;
     parser->offset = 0;
-    parser->last = -1;
+    parser->last = size;
     parser->status = S_1;
     parser->unicode_state = None;
     parser->xsw = NULL;
