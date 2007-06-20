@@ -33,3 +33,4 @@ INCLUDES = -I$(top_builddir)/include \
 		-I ../../../include \
                         $(NULL)
 
+EXTRA_DIST=tcpmon_entry_local.h tcpmon_session_local.h
