@@ -419,12 +419,14 @@ extern "C"
 /**
  * Constant for HTTP proxy host
  */
-#define AXIS2_PROXY_HOST_NAME "proxy_host"
+#define AXIS2_HTTP_PROXY_HOST "proxy_host"
 
 /**
  * Constant for HTTP proxy port
  */
-#define AXIS2_PROXY_HOST_PORT "proxy_port"
+#define AXIS2_HTTP_PROXY_PORT "proxy_port"
+
+#define AXIS2_HTTP_PROXY_API "PROXY_API"
 
 /**
  * Constant for HTTP method

@@ -16,7 +16,6 @@
  */
 
 #include <axis2_http_sender.h>
-#include <axis2_svc_client.h>
 #include <axutil_string.h>
 #include <axis2_http_transport.h>
 #include <string.h>
@@ -858,7 +857,7 @@ axis2_http_sender_configure_proxy(
             axiom_attribute_t *host_attr = NULL;
             axiom_attribute_t *port_attr = NULL;
 
-            obj = axutil_hash_get(transport_attrs, AXIS2_PROXY_HOST_NAME,
+            obj = axutil_hash_get(transport_attrs, AXIS2_HTTP_PROXY_HOST,
 								 AXIS2_HASH_KEY_STRING);
             if (! obj)
             {
@@ -878,7 +877,7 @@ axis2_http_sender_configure_proxy(
             /* Now we get the port */
             obj = NULL;
 
-            obj = axutil_hash_get(transport_attrs, AXIS2_PROXY_HOST_PORT,
+            obj = axutil_hash_get(transport_attrs, AXIS2_HTTP_PROXY_PORT,
 								 AXIS2_HASH_KEY_STRING);
             port_attr = (axiom_attribute_t*) axutil_generic_obj_get_value(obj,
 																		env);
@@ -907,7 +906,7 @@ axis2_http_sender_configure_proxy(
                 axiom_attribute_t *host_attr = NULL;
                 axiom_attribute_t *port_attr = NULL;
                 
-                obj = axutil_hash_get(transport_attrs, AXIS2_PROXY_HOST_NAME,
+                obj = axutil_hash_get(transport_attrs, AXIS2_HTTP_PROXY_HOST,
 								 AXIS2_HASH_KEY_STRING);
                 if (! obj)
                 {
@@ -927,7 +926,7 @@ axis2_http_sender_configure_proxy(
                 /* Now we get the port */
                 obj = NULL;
                 
-                obj = axutil_hash_get(transport_attrs, AXIS2_PROXY_HOST_PORT,
+                obj = axutil_hash_get(transport_attrs, AXIS2_HTTP_PROXY_PORT,
                                       AXIS2_HASH_KEY_STRING);
                 port_attr = (axiom_attribute_t*) axutil_generic_obj_get_value(obj,
                                                                               env);

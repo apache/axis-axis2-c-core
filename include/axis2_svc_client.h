@@ -66,9 +66,6 @@
 /** out-in MEP operation name */
 #define AXIS2_ANON_OUT_IN_OP "__OPERATION_OUT_IN__"
 
-#define AXIS2_HTTP_PROXY_API "PROXY_API"
-#define AXIS2_HTTP_PROXY_HOST "proxy_host"
-#define AXIS2_HTTP_PROXY_PORT "proxy_port"
 #ifdef __cplusplus
 extern "C"
 {
