@@ -2,11 +2,13 @@ dnl run autogen.sh to generate the configure script.
 
 AC_PREREQ(2.59)
 
-AC_INIT(axis2c-src, 1.0.0)
+AC_INIT(axis2c-src, 1.1.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE([tar-ustar])
+dnl AM_INIT_AUTOMAKE([tar-ustar])
+AM_INIT_AUTOMAKE
 AC_PREFIX_DEFAULT(/usr/local/axis2c)
+m4_ifdef([_A][M_PROG_TAR],[_A][M_SET_OPTION([tar-ustar])])
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -98,6 +100,7 @@ dnl This is a check to see if we are running MacOS X
 dnl It may be better to do a Darwin check
 AC_CHECK_HEADERS([sys/appleapiopts.h]) 
 dnl Checks for typedefs, structures, and compiler characteristics.
+dnl AC_C_CONST
 
 dnl Checks for library functions.
 dnl AC_FUNC_MALLOC
@@ -298,27 +301,6 @@ AC_ARG_ENABLE(libcurl, [  --enable-libcurl
   CFLAGS="$CFLAGS"
 )
 
-AC_MSG_CHECKING(whether to build xmpp)
-AC_ARG_ENABLE(xmpp, [  --enable-xmpp
-                          enable xmpp build (default=no)],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    CFLAGS="$CFLAGS"
-    xmpp_enabled=false
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    XMPP_DIR="xmpp"
-    CFLAGS="$CFLAGS -DAXIS2_XMPP_ENABLED"
-    xmpp_enabled=false
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-  CFLAGS="$CFLAGS"
-)
-
-
 APACHE2INC=$apache2inc
 APRINC=$aprinc
 VERSION_NO="1:0:1"
@@ -333,13 +315,10 @@ AC_SUBST(SAMPLES)
 AC_SUBST(APACHE2BUILD)
 AC_SUBST(PARSER_DIR)
 AC_SUBST(WRAPPER_DIR)
-AC_SUBST(XMPP_DIR)
 AC_SUBST(GUTHTHILA_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_LIBCURL_ENABLED, test x$libcurl_enabled = xtrue)
-AM_CONDITIONAL(AXIS2_XMPP_ENABLED, test x$xmpp_enabled = xtrue)
-
 #export PARSER_DIR
 export WRAPPER_DIR
 export prefix 
@@ -363,11 +342,6 @@ AC_CONFIG_FILES([Makefile \
     src/core/transport/http/server/simple_axis2_server/Makefile \
     src/core/transport/http/server/Makefile \
     src/core/transport/http/server/apache2/Makefile \
-    src/core/transport/xmpp/Makefile \
-    src/core/transport/xmpp/sender/Makefile \
-    src/core/transport/xmpp/receiver/Makefile \
-    src/core/transport/xmpp/server/Makefile \
-    src/core/transport/xmpp/server/simple_xmpp_server/Makefile \
     src/core/deployment/Makefile \
     src/core/clientapi/Makefile \
     src/core/receivers/Makefile \
@@ -383,7 +357,7 @@ AC_CONFIG_FILES([Makefile \
     test/core/context/Makefile \
     test/core/engine/Makefile \
     test/core/addr/Makefile \
-    test/core/transport/Makefile\
+    test/core/transport/Makefile \
     test/core/transport/http/Makefile \
     ides/Makefile \
     include/Makefile \

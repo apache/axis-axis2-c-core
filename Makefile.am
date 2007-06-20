@@ -1,6 +1,6 @@
 datadir=$(prefix)
 logsdir=$(prefix)/logs
-docsdir=$(prefix)/docs/axis2c
+docsdir=$(prefix)/docs
 includedir=$(prefix)/include/axis2-1.1
 
 pkgconfigdir = $(libdir)/pkgconfig
@@ -9,11 +9,11 @@ pkgconfig_DATA = axis2c.pc
 SUBDIRS = util $(GUTHTHILA_DIR) axiom neethi src $(TESTDIR) include ides
 include_HEADERS=$(top_builddir)/include/*.h
 data_DATA= samples/server/axis2.xml README \
-	INSTALL CREDITS COPYING NEWS NOTICE 
+	INSTALL CREDITS COPYING NEWS NOTICE config.guess missing install-sh depcomp config.sub ltmain.sh
 
 logs_DATA=
-docs_DATA=
-EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE build axis2c_build.sh xdocs guththila tools AUTHORS NOTICE samples
+docs_DATA=docs/*
+EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE build axis2c_build.sh xdocs guththila tools AUTHORS NOTICE
 
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
@@ -37,5 +37,4 @@ bindist: $(bin_PROGRAMS)
 	tar -cf - axis2c-bin-${PACKAGE_VERSION}-linux | gzip -c > axis2c-bin-${PACKAGE_VERSION}-linux.tar.gz
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
 
-install-data-hook: 
-	cp -rf xdocs/* $(docsdir)
+

@@ -72,6 +72,19 @@ extern "C"
 
 
         /**
+         * Initializes the service implementation.
+         * @param svc_skeleton pointer to svc_skeleton struct
+         * @param env pointer to environment struct
+         * @param conf pointer to axis2c configuration struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        int (AXIS2_CALL *
+                init_with_conf)(
+                    axis2_svc_skeleton_t *svc_skeleton,
+                    const axutil_env_t *env,
+                    struct axis2_conf *conf);
+
+        /**
          * Invokes the service. This function should be used to call up the
          * functions implementing service operations.
          * @param svc_skeli pointer to svc_skeli struct
