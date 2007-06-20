@@ -156,7 +156,7 @@ tcpmon_session_create(const axutil_env_t *env)
 
     session_impl -> on_new_entry_funct = NULL;
     session_impl -> on_trans_fault_funct = NULL;
-    session_impl -> entries = axutil_array_list_create(env, 10);
+    session_impl -> entries = axutil_array_list_create(env, AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
 
     session_impl->session.ops =
         AXIS2_MALLOC(env->allocator, sizeof(tcpmon_session_ops_t));

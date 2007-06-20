@@ -22,8 +22,7 @@
 #include <tcpmon_session.h>
 #include <tcpmon_entry.h>
 #include <tcpmon_util.h>
-#include <platforms/axutil_platform_auto_sense.h>
-#include <axutil_string.h>
+#include <stdio.h>
 
 #define SIZE 1024
 axis2_char_t *tcpmon_traffic_log = "tcpmon_traffic.log";

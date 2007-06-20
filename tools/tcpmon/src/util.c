@@ -16,12 +16,7 @@
  */
 
 #include <tcpmon_util.h>
-#include <axutil_string.h>
 #include <axiom.h>
-#include <axis2_util.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #define START_ELEMENT 1
 #define CHAR_VALUE 2
@@ -48,9 +43,8 @@ axis2_char_t* tcpmon_strcat(char *dest, char *source, int *cur_buf_s, const axut
 			     axis2_char_t c,
 			     int turns);
 */
-
-axis2_char_t* 
-tcpmon_util_format_as_xml(const axutil_env_t* env, axis2_char_t* data, int format)
+axis2_char_t*
+tcpmon_util_format_as_xml(const axutil_env_t *env, axis2_char_t *data, int format)
 {
     if(format)
     {
