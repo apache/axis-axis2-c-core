@@ -70,7 +70,6 @@ extern "C"
                     axis2_svc_skeleton_t *svc_skeleton,
                     const axutil_env_t *env);
 
-
         /**
          * Invokes the service. This function should be used to call up the
          * functions implementing service operations.
