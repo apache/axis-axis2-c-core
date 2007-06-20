@@ -74,13 +74,16 @@ test_om_build(const char *filename)
     
     printf("\nstart test_om_build\n");
         
-    f = fopen(filename, "r");
+    /*f = fopen(filename, "r");
     if (!f)
         return -1;
-
+    */
     /** create pull parser */
-    reader = axiom_xml_reader_create_for_io(environment, read_input, NULL , NULL, NULL);
+    /*reader = axiom_xml_reader_create_for_io(environment, read_input, NULL , NULL, NULL);*/
+    buffer = "<ns1:EchoRequest xmlns:ns1 = 'http://example.com/ws/2004/09/policy' xmlns:wsu = 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd' wsu:Id = 'SigID-b3a30a12-1ef4-1dc1'><text>Hello</text></ns1:EchoRequest>" ;
 
+    reader = axiom_xml_reader_create_for_memory(environment,
+                 (void*)buffer, axutil_strlen(buffer), "utf-8", AXIS2_XML_PARSER_TYPE_BUFFER);
     if (!reader)
     {
         printf("ERROR CREATING PULLPARSER");
@@ -190,7 +193,8 @@ test_om_build(const char *filename)
 /*     if (buffer) */
 /*         AXIS2_FREE(environment->allocator, buffer); */
     printf("\nend test_om_build\n");
-    fclose(f);
+    if (f)
+        fclose(f);
     return 0;
 }
 

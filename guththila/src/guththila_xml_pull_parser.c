@@ -21,7 +21,7 @@ AXIS2_EXTERN guththila_t * AXIS2_CALL
 guththila_create(axutil_env_t * environment,
 				 guththila_reader_t * r)
 {
-    int size = 0;
+    int size = -1;
     guththila_t *parser =
         (guththila_t *) AXIS2_MALLOC(
             environment->allocator, sizeof(guththila_t));

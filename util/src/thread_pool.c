@@ -84,6 +84,7 @@ axutil_thread_pool_join_thread(axutil_thread_pool_t *pool,
     return axutil_thread_join(thd);
 }
 
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_thread_pool_exit_thread(axutil_thread_pool_t *pool,
     axutil_thread_t *thd)
