@@ -265,7 +265,6 @@ axiom_xml_writer_create(const axutil_env_t *env,
 {
     guththila_xml_writer_wrapper_impl_t *writer_impl;
 
-    axutil_allocator_t *allocator;
     AXIS2_ENV_CHECK(env, NULL);
 
     writer_impl = (guththila_xml_writer_wrapper_impl_t *)AXIS2_MALLOC(env->allocator,
@@ -307,14 +306,6 @@ axiom_xml_writer_create_for_memory(const axutil_env_t *env,
     }
 
     writer_impl->writer.ops = NULL;
-    writer_impl->writer.ops = (axiom_xml_writer_ops_t*)AXIS2_MALLOC(env->allocator,
-        sizeof(axiom_xml_writer_ops_t));
-    if (!(writer_impl->writer.ops))
-    {
-        AXIS2_FREE(env->allocator, writer_impl);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
     /* ops */
     writer_impl->writer.ops = &axiom_xml_writer_ops_var;
     return &(writer_impl->writer);
