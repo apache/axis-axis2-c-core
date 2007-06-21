@@ -1,7 +1,5 @@
 prglibdir=$(prefix)/services/mtom
-samplesdir=$(prefix)/samples/server/mtom
 prglib_LTLIBRARIES = libmtom.la
-samples_DATA=mtom.c mtom_skeleton.c mtom.h services.xml Makefile.am Makefile.in
 prglib_DATA= services.xml
 EXTRA_DIST = services.xml mtom.mk
 noinst_HEADERS = mtom.h

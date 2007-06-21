@@ -2,12 +2,12 @@ datadir=$(prefix)
 logsdir=$(prefix)/logs
 docsdir=$(prefix)/docs
 includedir=$(prefix)/include/axis2-1.1
-
+samplesdir=$(prefix)/samples
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = axis2c.pc
-
+samples_DATA=
 SUBDIRS = util $(GUTHTHILA_DIR) axiom neethi src $(TESTDIR) include ides
-include_HEADERS=$(top_builddir)/include/*.h
+include_HEADERS=$(top_builddir)/include/*.h 
 data_DATA= samples/server/axis2.xml README \
 	INSTALL CREDITS COPYING NEWS NOTICE config.guess missing install-sh depcomp config.sub ltmain.sh
 
@@ -37,4 +37,6 @@ bindist: $(bin_PROGRAMS)
 	tar -cf - axis2c-bin-${PACKAGE_VERSION}-linux | gzip -c > axis2c-bin-${PACKAGE_VERSION}-linux.tar.gz
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
 
-
+install-data-hook:
+	cp -rf samples/* $(samplesdir)
+	sh copy_samples.sh $(prefix)

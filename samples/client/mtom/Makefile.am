@@ -1,8 +1,6 @@
 SUBDIRS=resources
 prgbindir=$(prefix)/bin/samples
 prgbin_PROGRAMS = mtom
-samplesdir=$(prefix)/samples/client/mtom
-samples_DATA=mtom_client.c Makefile.am Makefile.in
 
 mtom_SOURCES = mtom_client.c
 

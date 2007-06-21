@@ -1,7 +1,5 @@
 prgbindir=$(prefix)/bin/samples
-samplesdir=$(prefix)/samples/client/google
 prgbin_PROGRAMS = yahoosearch
-samples_DATA=yahoo_client.c Makefile.am Makefile.in
 yahoosearch_SOURCES = yahoo_client.c
 
 yahoosearch_LDADD   =    $(LDFLAGS) \

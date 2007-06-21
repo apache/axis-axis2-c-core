@@ -1,7 +1,5 @@
 prglibdir=$(prefix)/services/Calculator
-samplesdir=$(prefix)/samples/server/Calculator
 prglib_LTLIBRARIES = libCalculator.la
-samples_DATA=services.xml calc.h calc.c calc_skeleton.c Makefile.am Makefile.in
 prglib_DATA=services.xml
 EXTRA_DIST = services.xml Calculator.mk
 noinst_HEADERS = calc.h

@@ -1,8 +1,5 @@
 prgbindir=$(prefix)/bin/samples
 prgbin_PROGRAMS = echo_blocking echo_non_blocking echo_blocking_addr echo_rest echo_blocking_dual echo_non_blocking_dual echo_blocking_soap11
-samplesdir=$(prefix)/samples/user_guide/clients
-samples_DATA=echo_util.h echo_util.c echo_blocking.c echo_non_blocking.c echo_blocking_addr.c echo_rest.c \
-    Makefile.am Makefile.in echo_blocking_dual.c echo_non_blocking_dual.c echo_blocking_soap11.c
 
 echo_blocking_SOURCES = echo_blocking.c echo_util.c
 echo_non_blocking_SOURCES = echo_non_blocking.c echo_util.c
