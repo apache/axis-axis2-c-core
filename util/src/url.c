@@ -223,14 +223,17 @@ axutil_url_free(axutil_url_t *url,
     if (url->protocol)
     {
         AXIS2_FREE(env->allocator, url->protocol);
+		url->protocol = NULL;
     }
     if (url->server)
     {
         AXIS2_FREE(env->allocator, url->server);
+		url->server = NULL;
     }
     if (url->path)
     {
         AXIS2_FREE(env->allocator, url->path);
+		url->path = NULL;
     }
     url->port = -1;
 
