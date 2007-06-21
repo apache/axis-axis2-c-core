@@ -528,7 +528,6 @@ guththila_write_empty_element (guththila_xml_writer_t *wr, char *empty_element)
 {
 	int cur_pos = 0;
 	size_t len = 0;
-	guththila_xml_writer_element_t *element = (guththila_xml_writer_element_t *)malloc(sizeof(guththila_xml_writer_element_t));
 	len = strlen(empty_element);
 	if (wr->status == START) {		
 		guththila_write(wr, "><", 2u);
@@ -1099,7 +1098,6 @@ guththila_write_empty_element_with_namespace ( guththila_xml_writer_t *wr, char 
 #else
 			if (!guththila_tok_str_cmp(writer_namesp->uri[j], namespace_uri, strlen(namespace_uri))) {
 #endif
-				guththila_xml_writer_element_t *element = (guththila_xml_writer_element_t *)malloc(sizeof(guththila_xml_writer_element_t));
 				if (wr->status == START) {		
 					guththila_write(wr, "><", 2u);
 #ifndef GUTHTHILA_XML_WRITER_TOKEN
@@ -1156,7 +1154,6 @@ guththila_write_empty_element_with_prefix ( guththila_xml_writer_t *wr, char *pr
 #else
 			if (!guththila_tok_str_cmp(writer_namesp->name[j], prefix, pref_len)) {
 #endif
-				guththila_xml_writer_element_t *element = (guththila_xml_writer_element_t *)malloc(sizeof(guththila_xml_writer_element_t));
 				if (wr->status == START) {		
 					guththila_write(wr, "><", 2u);
 					guththila_write_xtoken(wr, prefix, pref_len);

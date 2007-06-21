@@ -23,6 +23,9 @@
 
 #define GUTHTHILA_VALIDATION_PARSER
 
+static int GUTHTHILA_CALL guththila_next_char(guththila_t *m, int eof);
+static int GUTHTHILA_CALL guththila_next_no_char(guththila_t *m, int eof, char *bytes, int no);
+
 int is_inited = 0;
 static void GUTHTHILA_CALL guththila_token_close(guththila_t *m, guththila_token_t *tok, int tok_type, int referer);
 static int GUTHTHILA_CALL guththila_process_xml_dec(guththila_t *m);
@@ -72,7 +75,6 @@ static int GUTHTHILA_CALL guththila_process_xml_dec(guththila_t *m);
 static void GUTHTHILA_CALL guththila_token_close(guththila_t *m, guththila_token_t *tok, int tok_type, int referer)
 {
 	guththila_attr_t *attr = NULL;
-	guththila_namespace_t *namesp = NULL;
 	guththila_element_t *elem = NULL;
 	guththila_elem_namesp_t *e_namesp = NULL;
 	int counter = 0, nmsp_no = 0, i = 0;
@@ -385,8 +387,7 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_next(guththila_t *m)
 	guththila_element_t *elem = NULL;
 	guththila_elem_namesp_t *nmsp = NULL;
 	guththila_token_t *tok = NULL;
-	int temp = 0, quote = 0, ref = 0;
-	guththila_char *last_c = NULL;
+	int quote = 0, ref = 0;
 	char c_arra[16] = {0};	
 	int c = -1;
 	guththila_attr_t *attr = NULL;
@@ -872,9 +873,7 @@ GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL guththila_get_namespace_prefix 
 
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL guththila_get_namespace_prefix_by_number (guththila_t * m, int i)
 {
-	guththila_token_t *token = NULL;
 	char *str = NULL;
-	guththila_namespace_t *namesp = NULL;
 #ifndef GUTHTHILA_VALIDATION_PARSER
 	if (GUTHTHILA_STACK_SIZE(m->namesp) >= i){
 		namesp = guththila_stack_get_by_index(&m->namesp, i);
@@ -898,9 +897,7 @@ GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL guththila_get_namespace_prefix_
 
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL guththila_get_namespace_uri_by_number (guththila_t * m, int i) 
 {
-	guththila_token_t *token = NULL;
 	char *str = NULL;
-	guththila_namespace_t *namesp = NULL;
 	/*TODO check the given index, this can begn from 1, here I assume begin from 0*/
 #ifndef GUTHTHILA_VALIDATION_PARSER
 	if (GUTHTHILA_STACK_SIZE(m->namesp) > i){
@@ -956,7 +953,7 @@ GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL guththila_get_encoding (guththi
 	return "UTF-8";
 }
 
-int GUTHTHILA_CALL guththila_next_char(guththila_t *m, int eof)
+static int GUTHTHILA_CALL guththila_next_char(guththila_t *m, int eof)
 {
 	int c = -1;
 	size_t temp = 0, data_move = 0, i = 0;
@@ -1023,7 +1020,7 @@ int GUTHTHILA_CALL guththila_next_char(guththila_t *m, int eof)
 	return -1;
 }
 
-int GUTHTHILA_CALL guththila_next_no_char (guththila_t *m, int eof, char *bytes, int no)
+static int GUTHTHILA_CALL guththila_next_no_char (guththila_t *m, int eof, char *bytes, int no)
 {
 	int c = -1, temp = 0, data_move = 0, i = 0;
 	char **temp1 = NULL;
@@ -1096,3 +1093,4 @@ int GUTHTHILA_CALL guththila_next_no_char (guththila_t *m, int eof, char *bytes,
 	}
 	return c >= 0 ? c : -1;
 }
+

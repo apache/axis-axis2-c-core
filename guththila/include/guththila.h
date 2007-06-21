@@ -121,8 +121,6 @@ GUTHTHILA_EXPORT void GUTHTHILA_CALL guththila_free(guththila_t *m);
 GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_un_init(guththila_t *m);
 
 
-static int GUTHTHILA_CALL guththila_next_char(guththila_t *m, int eof);
-static int GUTHTHILA_CALL guththila_next_no_char(guththila_t *m, int eof, char *bytes, int no);
 
 typedef void  (GUTHTHILA_CALL *guththila_error_func)(void *arg, 
 						 const char *msg,
