@@ -236,8 +236,9 @@ axis2_bool_t axis2_init_socket()
     /**
      *   Enable the use of sockets as filehandles
      */
-    setsockopt(INVALID_SOCKET, SOL_SOCKET, SO_OPENTYPE, (char *)&sock_opt,
-            sizeof(sock_opt));
+    /*  
+     * setsockopt(INVALID_SOCKET, SOL_SOCKET, SO_OPENTYPE, (char *)&sock_opt,
+            sizeof(sock_opt));*/
     return 1;
 }
 #endif
