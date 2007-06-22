@@ -177,7 +177,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\..\..\..\guththila\src\guththila_attribute.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\guththila\src\guththila_buffer.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\guththila\src\guththila_namespace.c"
 				>
 			</File>
 			<File
@@ -185,19 +193,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\guththila\src\guththila_stack.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\guththila\src\guththila_token.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\guththila\src\guththila_unicode.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\guththila\src\guththila_writer.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\guththila\src\guththila_xml_pull_parser.c"
+				RelativePath="..\..\..\..\guththila\src\guththila_xml_parser.c"
 				>
 			</File>
 			<File
@@ -227,10 +231,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\guththila\include\guththila_depth.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\guththila\include\guththila_error.h"
 				>
 			</File>
@@ -243,15 +243,11 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\guththila\include\guththila_stack.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\guththila\include\guththila_token.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\guththila\include\guththila_unicode.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\guththila\include\guththila_writer.h"
 				>
 			</File>
 			<File
