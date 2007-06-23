@@ -78,8 +78,8 @@ typedef struct guththila_s
 	guththila_stack_t attrib;
 	guththila_stack_t namesp;
 
-	int is_whitespace;
-	int is_char;
+	/*int is_whitespace;
+	int is_char;*/
 	int unicode_state;
 	int status;
 	int guththila_event;	

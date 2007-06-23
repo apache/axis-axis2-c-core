@@ -181,9 +181,9 @@ static void GUTHTHILA_CALL guththila_token_close(guththila_t *m, guththila_token
 	if (m->value) guththila_tok_list_release_token(&m->tokens, m->value);	\
 	m->name = NULL; \
 	m->prefix = NULL; \
-	m->value = NULL; \
-	m->is_whitespace = 0; \
-	m->is_char = 0;	
+	m->value = NULL; 
+	/*m->is_whitespace = 0; \
+	m->is_char = 0;	*/
 #endif
 
 
@@ -215,8 +215,8 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_init(guththila_t *m, void *reader)
 
     m->status = S_1;
 
-    m->is_whitespace = 0;
-    m->is_char = 0;
+   /* m->is_whitespace = 0;
+    m->is_char = 0;*/
 	m->guththila_event = -1;
 
 	m->next = 0;
@@ -254,8 +254,8 @@ return NULL;
 
     m->status = S_1;
 
-    m->is_whitespace = 0;
-    m->is_char = 0;
+/*    m->is_whitespace = 0;
+    m->is_char = 0;*/
 	m->guththila_event = -1;
 
 	m->next = 0;
@@ -391,7 +391,8 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_next(guththila_t *m)
 	char c_arra[16] = {0};	
 	int c = -1;
 	guththila_attr_t *attr = NULL;
-	int size = 0, i = 0, nmsp_counter;
+	int size = 0, i = 0, nmsp_counter = 0, loop = GUTHTHILA_FALSE, white_space = 0;
+
 
 	size = GUTHTHILA_STACK_SIZE(m->attrib);
 	for ( i = 0; i < size; i++) {
@@ -420,6 +421,7 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_next(guththila_t *m)
 		free(elem);
 	}
 #endif 
+	do {
 	c = guththila_next_char(m, 0);
 	if (m->status == S_1){
         while (isspace(c)){
@@ -433,6 +435,7 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_next(guththila_t *m)
 			return -1;
 		}
 	} 
+	loop = 0;
 	if ('<' == c && m->status == S_2) {	
 		c = guththila_next_char(m, 0);
 		if (c != '?' && c != '!' && c != '/'){
@@ -586,39 +589,25 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_next(guththila_t *m)
 				return -1;
 		} 
 	} else if (c != '<' && m->status == S_2 && c != -1){
-		m->is_whitespace = 0;
-		m->is_char = 0;
-
 		m->guththila_event = GUTHTHILA_CHARACTER;
-		GUTHTHILA_TOKEN_OPEN(m, tok);
-		
-		if (isspace(c)){
-			m->is_whitespace = 1;
-		}
+		white_space = 1;
+		GUTHTHILA_TOKEN_OPEN(m, tok);		
 		do {
 			c = guththila_next_char(m, -1);
-			if (isspace(c)) {
-				if (!m->is_char)
-					m->is_whitespace = 1;
-				else
-					m->is_whitespace = 0;
-			}
-			else if (c == '&')
-				ref = 1;
-			else if (c == -1){			
-				return -1;
-			}
-			else if (c != '<'){
-				m->is_whitespace = 0;
-				m->is_char = 1;
-			}
+			if (!GUTHTHILA_IS_SPACE(c) && c != '\n' && c != '\r' && c != '\t' && c != '\f' && c != '<') 
+				white_space = 0;
 		} while (c != '<');
 		GUTHTHILA_TOKEN_CLOSE(m, tok, _char_data, ref);
 		m->next--;
-		return GUTHTHILA_CHARACTER;
+		if (white_space) {
+			loop = 1;
+			if (m->value) guththila_tok_list_release_token(&m->tokens, m->value);
+		}
+		else return GUTHTHILA_CHARACTER;
 	} else {
         return -1;															
 	}
+	}while(loop);
 	return c;
 }
 
