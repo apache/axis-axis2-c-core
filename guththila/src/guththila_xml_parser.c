@@ -182,8 +182,6 @@ static void GUTHTHILA_CALL guththila_token_close(guththila_t *m, guththila_token
 	m->name = NULL; \
 	m->prefix = NULL; \
 	m->value = NULL; 
-	/*m->is_whitespace = 0; \
-	m->is_char = 0;	*/
 #endif
 
 
@@ -214,9 +212,6 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_init(guththila_t *m, void *reader)
     m->value = NULL;
 
     m->status = S_1;
-
-   /* m->is_whitespace = 0;
-    m->is_char = 0;*/
 	m->guththila_event = -1;
 
 	m->next = 0;
@@ -253,9 +248,6 @@ return NULL;
     m->value = NULL;
 
     m->status = S_1;
-
-/*    m->is_whitespace = 0;
-    m->is_char = 0;*/
 	m->guththila_event = -1;
 
 	m->next = 0;
@@ -590,12 +582,18 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_next(guththila_t *m)
 		} 
 	} else if (c != '<' && m->status == S_2 && c != -1){
 		m->guththila_event = GUTHTHILA_CHARACTER;
-		white_space = 1;
+		if (!GUTHTHILA_IS_SPACE(c)) {
+			white_space = 0;
+		} else {
+			white_space = 1;
+		}
 		GUTHTHILA_TOKEN_OPEN(m, tok);		
 		do {
 			c = guththila_next_char(m, -1);
-			if (!GUTHTHILA_IS_SPACE(c) && c != '\n' && c != '\r' && c != '\t' && c != '\f' && c != '<') 
+			if (c == -1) return -1;
+			if (!GUTHTHILA_IS_SPACE(c) && c != '<') 
 				white_space = 0;
+
 		} while (c != '<');
 		GUTHTHILA_TOKEN_CLOSE(m, tok, _char_data, ref);
 		m->next--;
@@ -603,7 +601,8 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_next(guththila_t *m)
 			loop = 1;
 			if (m->value) guththila_tok_list_release_token(&m->tokens, m->value);
 		}
-		else return GUTHTHILA_CHARACTER;
+		else 
+			return GUTHTHILA_CHARACTER;
 	} else {
         return -1;															
 	}
