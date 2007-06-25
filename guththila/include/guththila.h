@@ -104,10 +104,10 @@ typedef struct guththila_element_s {
 } guththila_element_t;
 
 
-GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_init(guththila_t *m, void *reader, axutil_env_t *env);
-GUTHTHILA_EXPORT guththila_t* GUTHTHILA_CALL guththila_create(void *reader, axutil_env_t *env);
-GUTHTHILA_EXPORT void GUTHTHILA_CALL guththila_free(guththila_t *m, axutil_env_t *env);
-GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_un_init(guththila_t *m, axutil_env_t *env);
+GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_init(guththila_t *m, void *reader, const axutil_env_t *env);
+GUTHTHILA_EXPORT guththila_t* GUTHTHILA_CALL guththila_create(void *reader, const axutil_env_t *env);
+GUTHTHILA_EXPORT void GUTHTHILA_CALL guththila_free(guththila_t *m, const axutil_env_t *env);
+GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_un_init(guththila_t *m, const axutil_env_t *env);
 
 
 
@@ -120,67 +120,67 @@ typedef void  (GUTHTHILA_CALL *guththila_error_func)(void *arg,
 Public functions for reading XML documents
 */
 GUTHTHILA_EXPORT  int GUTHTHILA_CALL
-guththila_next(guththila_t * p, axutil_env_t *env);
+guththila_next(guththila_t * p, const axutil_env_t *env);
                                                                                                
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
-guththila_get_attribute_count(guththila_t *p, axutil_env_t *env);
+guththila_get_attribute_count(guththila_t *p, const axutil_env_t *env);
                                                                   
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_attribute_name(guththila_t * p, guththila_attr_t * att, axutil_env_t *env);                                 
+guththila_get_attribute_name(guththila_t * p, guththila_attr_t * att, const axutil_env_t *env);                                 
                                  
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_attribute_value (guththila_t *p, guththila_attr_t * att, axutil_env_t *env);
+guththila_get_attribute_value (guththila_t *p, guththila_attr_t * att, const axutil_env_t *env);
                                  
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_attribute_prefix (guththila_t *p, guththila_attr_t * att, axutil_env_t *env);
+guththila_get_attribute_prefix (guththila_t *p, guththila_attr_t * att, const axutil_env_t *env);
                                                                   
 GUTHTHILA_EXPORT guththila_attr_t * GUTHTHILA_CALL
-guththila_get_attribute (guththila_t * p, axutil_env_t *env);
+guththila_get_attribute (guththila_t * p, const axutil_env_t *env);
                                                                                   
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_attribute_name_by_number (guththila_t * p, int i, axutil_env_t *env);
+guththila_get_attribute_name_by_number (guththila_t * p, int i, const axutil_env_t *env);
                                                                                   
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_attribute_value_by_number (guththila_t * p, int i, axutil_env_t *env);
+guththila_get_attribute_value_by_number (guththila_t * p, int i, const axutil_env_t *env);
                                                                                   
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_attribute_prefix_by_number (guththila_t * p, int i, axutil_env_t *env);
+guththila_get_attribute_prefix_by_number (guththila_t * p, int i, const axutil_env_t *env);
                                                                                   
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_name (guththila_t * p, axutil_env_t *env);
+guththila_get_name (guththila_t * p, const axutil_env_t *env);
                                                                         
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_prefix (guththila_t * p, axutil_env_t *env);
+guththila_get_prefix (guththila_t * p, const axutil_env_t *env);
                                                                             
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_value (guththila_t * p, axutil_env_t *env);
+guththila_get_value (guththila_t * p, const axutil_env_t *env);
                                                                           
 GUTHTHILA_EXPORT guththila_namespace_t * GUTHTHILA_CALL
-guththila_get_namespace (guththila_t * p, axutil_env_t *env);
+guththila_get_namespace (guththila_t * p, const axutil_env_t *env);
                                                                                   
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
-guththila_get_namespace_count (guththila_t *p, axutil_env_t *env);
+guththila_get_namespace_count (guththila_t *p, const axutil_env_t *env);
                                                                                   
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_namespace_uri (guththila_t * p, guththila_namespace_t * ns, axutil_env_t *env);
+guththila_get_namespace_uri (guththila_t * p, guththila_namespace_t * ns, const axutil_env_t *env);
                                                                                           
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_namespace_prefix (guththila_t *p, guththila_namespace_t * ns, axutil_env_t *env);
+guththila_get_namespace_prefix (guththila_t *p, guththila_namespace_t * ns, const axutil_env_t *env);
                                      
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_namespace_prefix_by_number (guththila_t * p, int i, axutil_env_t *env);
+guththila_get_namespace_prefix_by_number (guththila_t * p, int i, const axutil_env_t *env);
                                                                           
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_namespace_uri_by_number (guththila_t * p, int i, axutil_env_t *env);
+guththila_get_namespace_uri_by_number (guththila_t * p, int i, const axutil_env_t *env);
                                                                               
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_attribute_namespace_by_number (guththila_t * p, int i, axutil_env_t *env);
+guththila_get_attribute_namespace_by_number (guththila_t * p, int i, const axutil_env_t *env);
 
 GUTHTHILA_EXPORT guththila_char * GUTHTHILA_CALL
-guththila_get_encoding (guththila_t *p, axutil_env_t *env);
+guththila_get_encoding (guththila_t *p, const axutil_env_t *env);
 
 GUTHTHILA_EXPORT void GUTHTHILA_CALL 
-guththila_set_error_handler(guththila_t *m, guththila_error_func, axutil_env_t *env);
+guththila_set_error_handler(guththila_t *m, guththila_error_func, const axutil_env_t *env);
 
 EXTERN_C_END()
 

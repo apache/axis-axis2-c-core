@@ -42,12 +42,12 @@ typedef struct guththila_attr_list_s
 	int capacity;		
 } guththila_attr_list_t;
 
-guththila_attr_list_t * GUTHTHILA_CALL guththila_attr_list_create(axutil_env_t *env);
-int GUTHTHILA_CALL guththila_attr_list_init(guththila_attr_list_t *at_list, axutil_env_t *env);
-guththila_attr_t * GUTHTHILA_CALL guththila_attr_list_get(guththila_attr_list_t *at_list, axutil_env_t *env);
-int GUTHTHILA_CALL guththila_attr_list_release(guththila_attr_list_t *at_list, guththila_attr_t *attr, axutil_env_t *env);
-void GUTHTHILA_CALL msuila_attr_list_free_data(guththila_attr_list_t *at_list, axutil_env_t *env);
-void GUTHTHILA_CALL guththila_attr_list_free(guththila_attr_list_t *at_list, axutil_env_t *env);
+guththila_attr_list_t * GUTHTHILA_CALL guththila_attr_list_create(const axutil_env_t *env);
+int GUTHTHILA_CALL guththila_attr_list_init(guththila_attr_list_t *at_list, const axutil_env_t *env);
+guththila_attr_t * GUTHTHILA_CALL guththila_attr_list_get(guththila_attr_list_t *at_list, const axutil_env_t *env);
+int GUTHTHILA_CALL guththila_attr_list_release(guththila_attr_list_t *at_list, guththila_attr_t *attr, const axutil_env_t *env);
+void GUTHTHILA_CALL msuila_attr_list_free_data(guththila_attr_list_t *at_list, const axutil_env_t *env);
+void GUTHTHILA_CALL guththila_attr_list_free(guththila_attr_list_t *at_list, const axutil_env_t *env);
 
 EXTERN_C_END()
 

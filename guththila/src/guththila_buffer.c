@@ -19,7 +19,7 @@
 #include <string.h>
 #include <guththila_buffer.h>
 
-int GUTHTHILA_CALL guththila_buffer_init(guththila_buffer_t *buffer, int size, axutil_env_t *env)
+int GUTHTHILA_CALL guththila_buffer_init(guththila_buffer_t *buffer, int size, const axutil_env_t *env)
 {
 	buffer->type = GUTHTHILA_MULTIPLE_BUFFER;
 
@@ -38,7 +38,7 @@ int GUTHTHILA_CALL guththila_buffer_init(guththila_buffer_t *buffer, int size, a
 	return GUTHTHILA_SUCCESS;
 }
 
-int GUTHTHILA_CALL guththila_buffer_un_init(guththila_buffer_t *buffer, axutil_env_t *env) 
+int GUTHTHILA_CALL guththila_buffer_un_init(guththila_buffer_t *buffer, const axutil_env_t *env) 
 {
 	int i = 0;	
 	if (buffer->type == GUTHTHILA_SINGLE_BUFFER && buffer->buff && buffer->cur_buff == 0) {
@@ -57,7 +57,7 @@ int GUTHTHILA_CALL guththila_buffer_un_init(guththila_buffer_t *buffer, axutil_e
 	return GUTHTHILA_SUCCESS;
 }
 
-int GUTHTHILA_CALL guththila_buffer_init_for_buffer(guththila_buffer_t *buffer, char *buff, int size, axutil_env_t *env)
+int GUTHTHILA_CALL guththila_buffer_init_for_buffer(guththila_buffer_t *buffer, char *buff, int size, const axutil_env_t *env)
 {
 	buffer->type = GUTHTHILA_SINGLE_BUFFER;	
 
@@ -73,7 +73,7 @@ int GUTHTHILA_CALL guththila_buffer_init_for_buffer(guththila_buffer_t *buffer, 
 	return GUTHTHILA_SUCCESS;
 }
 
-void * GUTHTHILA_CALL guththila_buffer_get(guththila_buffer_t * buffer, axutil_env_t *env)
+void * GUTHTHILA_CALL guththila_buffer_get(guththila_buffer_t * buffer, const axutil_env_t *env)
 {
 	size_t size = 0, current_size = 0;
 	int i = 0;

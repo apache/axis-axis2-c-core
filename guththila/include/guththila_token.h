@@ -70,16 +70,16 @@ typedef struct guththila_tok_list_s
 	string[GUTHTHILA_TOKEN_LEN(tok)] = 0;										
 #endif
 
-guththila_tok_list_t * GUTHTHILA_CALL guththila_tok_list_create(axutil_env_t *env);
-int GUTHTHILA_CALL guththila_tok_list_init(guththila_tok_list_t *tok_list, axutil_env_t *env);
-void GUTHTHILA_CALL guththila_tok_list_free(guththila_tok_list_t *tok_list, axutil_env_t *env);
-guththila_token_t * GUTHTHILA_CALL guththila_tok_list_get_token(guththila_tok_list_t *tok_list, axutil_env_t *env);
-int GUTHTHILA_CALL guththila_tok_list_release_token(guththila_tok_list_t *tok_list, guththila_token_t *token, axutil_env_t *env);
-void GUTHTHILA_CALL guththila_tok_list_free_data(guththila_tok_list_t *tok_list, axutil_env_t *env);
-int GUTHTHILA_CALL guththila_tok_list_grow(guththila_tok_list_t *tok_list, axutil_env_t *env);
+guththila_tok_list_t * GUTHTHILA_CALL guththila_tok_list_create(const axutil_env_t *env);
+int GUTHTHILA_CALL guththila_tok_list_init(guththila_tok_list_t *tok_list, const axutil_env_t *env);
+void GUTHTHILA_CALL guththila_tok_list_free(guththila_tok_list_t *tok_list, const axutil_env_t *env);
+guththila_token_t * GUTHTHILA_CALL guththila_tok_list_get_token(guththila_tok_list_t *tok_list, const axutil_env_t *env);
+int GUTHTHILA_CALL guththila_tok_list_release_token(guththila_tok_list_t *tok_list, guththila_token_t *token, const axutil_env_t *env);
+void GUTHTHILA_CALL guththila_tok_list_free_data(guththila_tok_list_t *tok_list, const axutil_env_t *env);
+int GUTHTHILA_CALL guththila_tok_list_grow(guththila_tok_list_t *tok_list, const axutil_env_t *env);
 
-int GUTHTHILA_CALL guththila_tok_str_cmp(guththila_token_t *tok, char *str, size_t str_len, axutil_env_t *env);
-int GUTHTHILA_CALL guththila_tok_tok_cmp(guththila_token_t *tok1, guththila_token_t *tok2, axutil_env_t *env);
+int GUTHTHILA_CALL guththila_tok_str_cmp(guththila_token_t *tok, char *str, size_t str_len, const axutil_env_t *env);
+int GUTHTHILA_CALL guththila_tok_tok_cmp(guththila_token_t *tok1, guththila_token_t *tok2, const axutil_env_t *env);
 
 EXTERN_C_END()
 

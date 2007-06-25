@@ -16,7 +16,7 @@
  */
 #include <guththila_stack.h>
 
-guththila_stack_t* GUTHTHILA_CALL guththila_stack_create(axutil_env_t *env)
+guththila_stack_t* GUTHTHILA_CALL guththila_stack_create(const axutil_env_t *env)
 {
 	guththila_stack_t *stack = NULL;
 	stack = (guththila_stack_t *)AXIS2_MALLOC(env->allocator, sizeof(guththila_stack_t));	
@@ -36,7 +36,7 @@ guththila_stack_t* GUTHTHILA_CALL guththila_stack_create(axutil_env_t *env)
 	}	
 }
 
-int GUTHTHILA_CALL guththila_stack_init(guththila_stack_t *stack, axutil_env_t *env)
+int GUTHTHILA_CALL guththila_stack_init(guththila_stack_t *stack, const axutil_env_t *env)
 {
 	stack->top = 0;
 	stack->data = (void **)AXIS2_MALLOC(env->allocator, sizeof(void **) * GUTHTHILA_STACK_DEFAULT);
@@ -49,18 +49,18 @@ int GUTHTHILA_CALL guththila_stack_init(guththila_stack_t *stack, axutil_env_t *
 	}	
 }
 
-void GUTHTHILA_CALL guththila_stack_free(guththila_stack_t *stack, axutil_env_t *env)
+void GUTHTHILA_CALL guththila_stack_free(guththila_stack_t *stack, const axutil_env_t *env)
 {	
 	if (stack->data) AXIS2_FREE (env->allocator, stack->data);
 	AXIS2_FREE(env->allocator, stack);
 }
 
-void GUTHTHILA_CALL guththila_stack_un_init(guththila_stack_t *stack, axutil_env_t *env)
+void GUTHTHILA_CALL guththila_stack_un_init(guththila_stack_t *stack, const axutil_env_t *env)
 {
 	if (stack->data) AXIS2_FREE (env->allocator, stack->data);
 }
 
-void * GUTHTHILA_CALL guththila_stack_pop(guththila_stack_t *stack, axutil_env_t *env)
+void * GUTHTHILA_CALL guththila_stack_pop(guththila_stack_t *stack, const axutil_env_t *env)
 {
 	if (stack->top > 0){		 
 		return stack->data[stack->top-- - 1];;
@@ -68,7 +68,7 @@ void * GUTHTHILA_CALL guththila_stack_pop(guththila_stack_t *stack, axutil_env_t
 	return NULL;
 }
 
-int GUTHTHILA_CALL guththila_stack_push(guththila_stack_t *stack, void *data, axutil_env_t *env)
+int GUTHTHILA_CALL guththila_stack_push(guththila_stack_t *stack, void *data, const axutil_env_t *env)
 {
 	int i = 0;
 	void **temp = NULL;
@@ -86,7 +86,7 @@ int GUTHTHILA_CALL guththila_stack_push(guththila_stack_t *stack, void *data, ax
 	return stack->top++;
 }
 
-void * GUTHTHILA_CALL guththila_stack_peek(guththila_stack_t *stack, axutil_env_t *env)
+void * GUTHTHILA_CALL guththila_stack_peek(guththila_stack_t *stack, const axutil_env_t *env)
 {
 	if (stack->top > 0){		 
 		return stack->data[stack->top - 1];
@@ -95,7 +95,7 @@ void * GUTHTHILA_CALL guththila_stack_peek(guththila_stack_t *stack, axutil_env_
 	}
 }
 
-int GUTHTHILA_CALL guththila_stack_del_top(guththila_stack_t *stack, axutil_env_t *env)
+int GUTHTHILA_CALL guththila_stack_del_top(guththila_stack_t *stack, const axutil_env_t *env)
 {
 	if (stack->top > 0){
 		AXIS2_FREE(env->allocator, stack->data[stack->top]);
@@ -104,12 +104,12 @@ int GUTHTHILA_CALL guththila_stack_del_top(guththila_stack_t *stack, axutil_env_
 	return GUTHTHILA_FAILURE;
 }
 
-int GUTHTHILA_CALL guththila_stack_is_empty(guththila_stack_t *stack, axutil_env_t *env)
+int GUTHTHILA_CALL guththila_stack_is_empty(guththila_stack_t *stack, const axutil_env_t *env)
 {
 	return stack->top == 0 ? 1 : 0;
 }
 
-void * GUTHTHILA_CALL guththila_stack_get_by_index(guththila_stack_t *stack, int index, axutil_env_t *env)
+void * GUTHTHILA_CALL guththila_stack_get_by_index(guththila_stack_t *stack, int index, const axutil_env_t *env)
 {	
 	return index < stack->top ? stack->data[index] : NULL;
 }

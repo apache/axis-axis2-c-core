@@ -109,7 +109,7 @@
 #endif*/
 
 GUTHTHILA_EXPORT guththila_xml_writer_t * GUTHTHILA_CALL
-guththila_create_xml_stream_writer(char *file_name, axutil_env_t *env)
+guththila_create_xml_stream_writer(char *file_name, const axutil_env_t *env)
 {
 	guththila_xml_writer_t *wr = AXIS2_MALLOC(env->allocator, sizeof(guththila_xml_writer_t));			
 	if (!wr) return NULL;
@@ -137,7 +137,7 @@ guththila_create_xml_stream_writer(char *file_name, axutil_env_t *env)
 }
 
 GUTHTHILA_EXPORT guththila_xml_writer_t *  GUTHTHILA_CALL
-guththila_create_xml_stream_writer_for_memory(axutil_env_t *env)
+guththila_create_xml_stream_writer_for_memory(const axutil_env_t *env)
 {
 	guththila_xml_writer_t *wr = AXIS2_MALLOC(env->allocator, sizeof(guththila_xml_writer_t));			
 	if (!wr) return NULL;
@@ -173,7 +173,7 @@ guththila_create_xml_stream_writer_for_memory(axutil_env_t *env)
 }
 
 GUTHTHILA_EXPORT void GUTHTHILA_CALL
-guththila_xml_writer_free (guththila_xml_writer_t *wr, axutil_env_t *env)
+guththila_xml_writer_free (guththila_xml_writer_t *wr, const axutil_env_t *env)
 {
 	if (wr->type == GUTHTHILA_WRITER_MEMORY) {
 		guththila_buffer_un_init(&wr->buffer, env);
@@ -187,7 +187,7 @@ guththila_xml_writer_free (guththila_xml_writer_t *wr, axutil_env_t *env)
 	guththila_stack_un_init(&wr->namesp, env);
 }
 
-int GUTHTHILA_CALL guththila_write(guththila_xml_writer_t *wr, char *buff, size_t buff_len, axutil_env_t *env)
+int GUTHTHILA_CALL guththila_write(guththila_xml_writer_t *wr, char *buff, size_t buff_len, const axutil_env_t *env)
 {
 	size_t remain_len = 0;
 	size_t temp = 0;
@@ -243,7 +243,7 @@ int GUTHTHILA_CALL guththila_write(guththila_xml_writer_t *wr, char *buff, size_
 }
 
 
-int GUTHTHILA_CALL guththila_write_token(guththila_xml_writer_t *wr, guththila_token_t *tok, axutil_env_t *env)
+int GUTHTHILA_CALL guththila_write_token(guththila_xml_writer_t *wr, guththila_token_t *tok, const axutil_env_t *env)
 {
 	size_t remain_len = 0, i = 0;
 	size_t temp = 0;
@@ -297,7 +297,7 @@ int GUTHTHILA_CALL guththila_write_token(guththila_xml_writer_t *wr, guththila_t
 	return GUTHTHILA_FAILURE;
 }
 
-int GUTHTHILA_CALL guththila_write_xtoken(guththila_xml_writer_t *wr, char *buff, size_t buff_len, axutil_env_t *env)
+int GUTHTHILA_CALL guththila_write_xtoken(guththila_xml_writer_t *wr, char *buff, size_t buff_len, const axutil_env_t *env)
 {
 	size_t temp = 0, i = 0;
 	size_t remain_len = 0;
@@ -349,14 +349,14 @@ int GUTHTHILA_CALL guththila_write_xtoken(guththila_xml_writer_t *wr, char *buff
 
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
-guththila_write_start_document (guththila_xml_writer_t *wr, axutil_env_t *env)
+guththila_write_start_document (guththila_xml_writer_t *wr, const axutil_env_t *env)
 {
 	guththila_write(wr, GUTHTHILA_WRITER_SD_DECLARATION, strlen(GUTHTHILA_WRITER_SD_DECLARATION), env);									 
 	return GUTHTHILA_SUCCESS;
 }
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
-guththila_write_start_element ( guththila_xml_writer_t *wr, char *start_element, axutil_env_t *env)
+guththila_write_start_element ( guththila_xml_writer_t *wr, char *start_element, const axutil_env_t *env)
 {
 	int cur_pos = 0;
 	size_t len = 0;
@@ -393,7 +393,7 @@ guththila_write_start_element ( guththila_xml_writer_t *wr, char *start_element,
 
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
-guththila_write_end_element ( guththila_xml_writer_t *wr, axutil_env_t *env)
+guththila_write_end_element ( guththila_xml_writer_t *wr, const axutil_env_t *env)
 {
 	guththila_xml_writer_element_t *elem = NULL;
 	guththila_xml_writer_namesp_t *namesp = NULL;
@@ -462,13 +462,13 @@ guththila_write_end_element ( guththila_xml_writer_t *wr, axutil_env_t *env)
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_close ( guththila_xml_writer_t *wr, axutil_env_t *env)
+guththila_close ( guththila_xml_writer_t *wr, const axutil_env_t *env)
 {
 	return GUTHTHILA_FAILURE;
 }
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
-guththila_write_characters (guththila_xml_writer_t *wr, char  *buff, axutil_env_t *env)
+guththila_write_characters (guththila_xml_writer_t *wr, char  *buff, const axutil_env_t *env)
 {	
 	if (wr->status == START) {		
 		wr->status = BEGINING;
@@ -489,7 +489,7 @@ guththila_write_characters (guththila_xml_writer_t *wr, char  *buff, axutil_env_
 
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
-guththila_write_comment (guththila_xml_writer_t *wr, char *buff, axutil_env_t *env)
+guththila_write_comment (guththila_xml_writer_t *wr, char *buff, const axutil_env_t *env)
 {
 	if (wr->status == START) {		
 		wr->status = BEGINING;
@@ -514,7 +514,7 @@ guththila_write_comment (guththila_xml_writer_t *wr, char *buff, axutil_env_t *e
 }
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
-guththila_write_escape_character (guththila_xml_writer_t *wr, char *buff, axutil_env_t *env)
+guththila_write_escape_character (guththila_xml_writer_t *wr, char *buff, const axutil_env_t *env)
 {    
 	/*TODO element closing -- not sure*/
 	if (wr->status == START) {		
@@ -548,7 +548,7 @@ guththila_write_escape_character (guththila_xml_writer_t *wr, char *buff, axutil
 
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
-guththila_write_empty_element (guththila_xml_writer_t *wr, char *empty_element, axutil_env_t *env)
+guththila_write_empty_element (guththila_xml_writer_t *wr, char *empty_element, const axutil_env_t *env)
 {
 	int cur_pos = 0;
 	size_t len = 0;
@@ -574,7 +574,7 @@ guththila_write_empty_element (guththila_xml_writer_t *wr, char *empty_element, 
 }
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
-guththila_write_default_namespace (guththila_xml_writer_t *wr, char *namespace_uri, axutil_env_t *env)
+guththila_write_default_namespace (guththila_xml_writer_t *wr, char *namespace_uri, const axutil_env_t *env)
 {
 	if (wr->status == START || wr->status == START_EMPTY) {
 		guththila_write(wr, " xmlns = \"", 10u, env);
@@ -587,7 +587,7 @@ guththila_write_default_namespace (guththila_xml_writer_t *wr, char *namespace_u
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_write_namespace (guththila_xml_writer_t *wr, char *prefix, char *uri, axutil_env_t *env)
+guththila_write_namespace (guththila_xml_writer_t *wr, char *prefix, char *uri, const axutil_env_t *env)
 {
 	int i = 0, j = 0, temp = 0, nmsp_found = GUTHTHILA_FALSE, stack_size = 0;
 	guththila_xml_writer_namesp_t *namesp = NULL;
@@ -694,7 +694,7 @@ guththila_write_namespace (guththila_xml_writer_t *wr, char *prefix, char *uri, 
 }
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
-guththila_write_attribute (guththila_xml_writer_t *wr, char *localname, char *value, axutil_env_t *env)
+guththila_write_attribute (guththila_xml_writer_t *wr, char *localname, char *value, const axutil_env_t *env)
 {
 	if (wr->status == START || wr->status == START_EMPTY) {		
 		guththila_write(wr, " ", 1u, env);
@@ -710,7 +710,7 @@ guththila_write_attribute (guththila_xml_writer_t *wr, char *localname, char *va
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
 guththila_write_attribute_with_prefix_and_namespace (guththila_xml_writer_t *wr, char *prefix, 
-								     char *namespace_uri, char *localname, char *value, axutil_env_t *env)
+								     char *namespace_uri, char *localname, char *value, const axutil_env_t *env)
 {
 	return guththila_write_namespace(wr, prefix, namespace_uri, env) && guththila_write_attribute_with_prefix(wr, prefix, localname, value, env);	
 }
@@ -718,7 +718,7 @@ guththila_write_attribute_with_prefix_and_namespace (guththila_xml_writer_t *wr,
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
 guththila_write_attribute_with_prefix ( guththila_xml_writer_t *wr, char *prefix,
-						       char *localname, char *value, axutil_env_t *env)
+						       char *localname, char *value, const axutil_env_t *env)
 {
 	int i = 0, j = 0;
 	int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
@@ -753,7 +753,7 @@ guththila_write_attribute_with_prefix ( guththila_xml_writer_t *wr, char *prefix
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
 guththila_write_attribute_with_namespace (guththila_xml_writer_t *wr, char *namesp,
-							  char *loc_name, char *value, axutil_env_t *env)
+							  char *loc_name, char *value, const axutil_env_t *env)
 {
 	int i = 0, j = 0;
 	int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
@@ -789,7 +789,7 @@ guththila_write_attribute_with_namespace (guththila_xml_writer_t *wr, char *name
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
 guththila_write_start_element_with_prefix_and_namespace (guththila_xml_writer_t *wr, char* prefix,
-									 char *namespace_uri, char *local_name, axutil_env_t *env)
+									 char *namespace_uri, char *local_name, const axutil_env_t *env)
 {
 	int i = 0, j = 0, temp = 0, stack_size = 0, nmsp_found = GUTHTHILA_FALSE;
 	guththila_xml_writer_namesp_t *namesp = NULL;
@@ -919,7 +919,7 @@ guththila_write_start_element_with_prefix_and_namespace (guththila_xml_writer_t 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
 guththila_write_start_element_with_namespace (guththila_xml_writer_t *wr, char *namespace_uri, 
-							      char *local_name, axutil_env_t *env)
+							      char *local_name, const axutil_env_t *env)
 {
 	int i = 0, j = 0;
 	int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
@@ -993,7 +993,7 @@ guththila_write_start_element_with_namespace (guththila_xml_writer_t *wr, char *
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_write_start_element_with_prefix ( guththila_xml_writer_t *wr, char *prefix, char *local_name, axutil_env_t *env)
+guththila_write_start_element_with_prefix ( guththila_xml_writer_t *wr, char *prefix, char *local_name, const axutil_env_t *env)
 {
 	int i = 0, j = 0;
 	int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
@@ -1057,7 +1057,7 @@ guththila_write_start_element_with_prefix ( guththila_xml_writer_t *wr, char *pr
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
 guththila_write_empty_element_with_prefix_and_namespace (guththila_xml_writer_t *wr, char* prefix,
-									 char *namespace_uri, char *local_name, axutil_env_t *env)
+									 char *namespace_uri, char *local_name, const axutil_env_t *env)
 {
 
 	guththila_xml_writer_namesp_t *namesp = NULL;
@@ -1118,7 +1118,7 @@ guththila_write_empty_element_with_prefix_and_namespace (guththila_xml_writer_t 
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_write_empty_element_with_namespace ( guththila_xml_writer_t *wr, char *namespace_uri, char *local_name, axutil_env_t *env)
+guththila_write_empty_element_with_namespace ( guththila_xml_writer_t *wr, char *namespace_uri, char *local_name, const axutil_env_t *env)
 {
 	int i = 0, j = 0;
 	int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
@@ -1173,7 +1173,7 @@ guththila_write_empty_element_with_namespace ( guththila_xml_writer_t *wr, char 
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_write_empty_element_with_prefix ( guththila_xml_writer_t *wr, char *prefix, char *local_name, axutil_env_t *env)
+guththila_write_empty_element_with_prefix ( guththila_xml_writer_t *wr, char *prefix, char *local_name, const axutil_env_t *env)
 {
 	int i = 0, j = 0;
 	int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
@@ -1217,7 +1217,7 @@ guththila_write_empty_element_with_prefix ( guththila_xml_writer_t *wr, char *pr
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_write_end_document ( guththila_xml_writer_t *wr, axutil_env_t *env)
+guththila_write_end_document ( guththila_xml_writer_t *wr, const axutil_env_t *env)
 {
 	int i = 0;
 	int size = GUTHTHILA_STACK_SIZE(wr->element);
@@ -1233,7 +1233,7 @@ guththila_write_end_document ( guththila_xml_writer_t *wr, axutil_env_t *env)
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_write_line ( guththila_xml_writer_t *wr, char *element_name, char *characters, axutil_env_t *env)
+guththila_write_line ( guththila_xml_writer_t *wr, char *element_name, char *characters, const axutil_env_t *env)
 {
     guththila_write_start_element(wr, element_name, env);
     guththila_write_characters(wr, characters, env);
@@ -1243,7 +1243,7 @@ guththila_write_line ( guththila_xml_writer_t *wr, char *element_name, char *cha
 }
 
 GUTHTHILA_EXPORT char * GUTHTHILA_CALL
-guththila_get_memory_buffer (guththila_xml_writer_t *wr, axutil_env_t *env)
+guththila_get_memory_buffer (guththila_xml_writer_t *wr, const axutil_env_t *env)
 {	
 	if (wr->type == GUTHTHILA_WRITER_MEMORY) {
 		return (char *)guththila_buffer_get(&wr->buffer, env);			
@@ -1252,7 +1252,7 @@ guththila_get_memory_buffer (guththila_xml_writer_t *wr, axutil_env_t *env)
 }
 
 GUTHTHILA_EXPORT unsigned int GUTHTHILA_CALL
-guththila_get_memory_buffer_size(guththila_xml_writer_t *wr, axutil_env_t *env)
+guththila_get_memory_buffer_size(guththila_xml_writer_t *wr, const axutil_env_t *env)
 {
 	if (wr->type == GUTHTHILA_WRITER_MEMORY) {
 		return wr->buffer.pre_tot_data + wr->buffer.data_size[wr->buffer.cur_buff];
@@ -1262,7 +1262,7 @@ guththila_get_memory_buffer_size(guththila_xml_writer_t *wr, axutil_env_t *env)
 
 GUTHTHILA_EXPORT char * GUTHTHILA_CALL
 guththila_get_prefix_for_namespace (guththila_xml_writer_t *wr, 
-						    char *nmsp, axutil_env_t *env)
+						    char *nmsp, const axutil_env_t *env)
 {
 	int i = 0, j = 0;
 	int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
@@ -1283,7 +1283,7 @@ guththila_get_prefix_for_namespace (guththila_xml_writer_t *wr,
 }
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
-guththila_write_to_buffer (guththila_xml_writer_t *wr, char *buff, int size, axutil_env_t *env)
+guththila_write_to_buffer (guththila_xml_writer_t *wr, char *buff, int size, const axutil_env_t *env)
 {
 	guththila_write(wr, buff, size, env);
 	return GUTHTHILA_SUCCESS;

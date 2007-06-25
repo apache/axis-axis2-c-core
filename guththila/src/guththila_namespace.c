@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int GUTHTHILA_CALL guththila_namespace_list_grow(guththila_namespace_list_t *namesp_list, int addition, axutil_env_t *env)
+int GUTHTHILA_CALL guththila_namespace_list_grow(guththila_namespace_list_t *namesp_list, int addition, const axutil_env_t *env)
 {
 	int  i = 0;
 	if (addition > 0 || (addition < 0 && namesp_list->capacity + addition > 0 && namesp_list->capacity + addition >= namesp_list->size)) {
@@ -37,7 +37,7 @@ int GUTHTHILA_CALL guththila_namespace_list_grow(guththila_namespace_list_t *nam
 	return 0;
 }
 
-guththila_namespace_list_t * GUTHTHILA_CALL guththila_namespace_list_create(axutil_env_t *env)
+guththila_namespace_list_t * GUTHTHILA_CALL guththila_namespace_list_create(const axutil_env_t *env)
 {
 	int i = 0;
 	guththila_namespace_list_t *namesp_list = (guththila_namespace_list_t *) AXIS2_MALLOC(env->allocator, sizeof(guththila_namespace_list_t));
@@ -56,7 +56,7 @@ guththila_namespace_list_t * GUTHTHILA_CALL guththila_namespace_list_create(axut
 	return NULL;
 }
 
-int GUTHTHILA_CALL guththila_namespace_list_init(guththila_namespace_list_t *namesp_list, axutil_env_t *env)
+int GUTHTHILA_CALL guththila_namespace_list_init(guththila_namespace_list_t *namesp_list, const axutil_env_t *env)
 {
 	int i = 0;	
 	namesp_list->list = (guththila_namespace_t *)AXIS2_MALLOC(env->allocator, sizeof(guththila_namespace_t) * GUTHTHILA_NAMESPACE_DEF_SIZE);
@@ -72,25 +72,25 @@ int GUTHTHILA_CALL guththila_namespace_list_init(guththila_namespace_list_t *nam
 	return GUTHTHILA_FAILURE;
 }
 
-guththila_namespace_t * GUTHTHILA_CALL guththila_namespace_list_get(guththila_namespace_list_t *namesp_list, axutil_env_t *env)
+guththila_namespace_t * GUTHTHILA_CALL guththila_namespace_list_get(guththila_namespace_list_t *namesp_list, const axutil_env_t *env)
 {
 	if (namesp_list->fr_stack.top > 0 || guththila_namespace_list_grow(namesp_list, GUTHTHILA_NAMESPACE_DEF_SIZE, env)){
 		return guththila_stack_pop(&namesp_list->fr_stack, env);			
 	} 	
 	return NULL;
 }
-int GUTHTHILA_CALL guththila_namespace_list_release(guththila_namespace_list_t *namesp_list, guththila_namespace_t *namespace, axutil_env_t *env)
+int GUTHTHILA_CALL guththila_namespace_list_release(guththila_namespace_list_t *namesp_list, guththila_namespace_t *namespace, const axutil_env_t *env)
 {
 	return guththila_stack_push(&namesp_list->fr_stack, namespace, env); 			
 }
 
-void GUTHTHILA_CALL msuila_namespace_list_free_data(guththila_namespace_list_t *namesp_list, axutil_env_t *env)
+void GUTHTHILA_CALL msuila_namespace_list_free_data(guththila_namespace_list_t *namesp_list, const axutil_env_t *env)
 {
 	AXIS2_FREE(env->allocator, namesp_list->list);
 	guththila_stack_un_init(&namesp_list->fr_stack, env);
 }
 
-void GUTHTHILA_CALL guththila_namespace_list_free(guththila_namespace_list_t *namesp_list, axutil_env_t *env)
+void GUTHTHILA_CALL guththila_namespace_list_free(guththila_namespace_list_t *namesp_list, const axutil_env_t *env)
 {
 	AXIS2_FREE(env->allocator, namesp_list->list);
 	guththila_stack_un_init(&namesp_list->fr_stack, env);

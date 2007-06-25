@@ -41,12 +41,12 @@ typedef struct guththila_namespace_list_s
 	int capacity;		
 } guththila_namespace_list_t;
 
-guththila_namespace_list_t * GUTHTHILA_CALL guththila_namespace_list_create(axutil_env_t *env);
-int GUTHTHILA_CALL guththila_namespace_list_init(guththila_namespace_list_t *at_list, axutil_env_t *env);
-guththila_namespace_t * GUTHTHILA_CALL guththila_namespace_list_get(guththila_namespace_list_t *at_list, axutil_env_t *env);
-int GUTHTHILA_CALL guththila_namespace_list_release(guththila_namespace_list_t *at_list, guththila_namespace_t *namesp, axutil_env_t *env);
-void GUTHTHILA_CALL msuila_namespace_list_free_data(guththila_namespace_list_t *at_list, axutil_env_t *env);
-void GUTHTHILA_CALL guththila_namespace_list_free(guththila_namespace_list_t *at_list, axutil_env_t *env);
+guththila_namespace_list_t * GUTHTHILA_CALL guththila_namespace_list_create(const axutil_env_t *env);
+int GUTHTHILA_CALL guththila_namespace_list_init(guththila_namespace_list_t *at_list, const axutil_env_t *env);
+guththila_namespace_t * GUTHTHILA_CALL guththila_namespace_list_get(guththila_namespace_list_t *at_list, const axutil_env_t *env);
+int GUTHTHILA_CALL guththila_namespace_list_release(guththila_namespace_list_t *at_list, guththila_namespace_t *namesp, const axutil_env_t *env);
+void GUTHTHILA_CALL msuila_namespace_list_free_data(guththila_namespace_list_t *at_list, const axutil_env_t *env);
+void GUTHTHILA_CALL guththila_namespace_list_free(guththila_namespace_list_t *at_list, const axutil_env_t *env);
 
 EXTERN_C_END()
 
