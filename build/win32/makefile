@@ -356,7 +356,7 @@ axis2_server:
 
 axis2_core: axis2_util axis2_parser axiom neethi axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server
 
-axis2_core_guththila: axis2_util guththila axis2_parser_with_guththila axiom axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server
+axis2_core_guththila: axis2_util guththila axis2_parser_with_guththila axiom neethi axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server
 	
 #################################
 #server modules
