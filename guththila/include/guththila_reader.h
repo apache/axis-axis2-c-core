@@ -19,7 +19,7 @@
 
 #include <stdio.h>
 #include <guththila_defines.h>
-#include <guththila_buffer.h>
+#include <axutil_utils.h>
 
 EXTERN_C_START()
 
@@ -37,11 +37,9 @@ typedef struct guththila_reader_s
 {
 	int type;
 	FILE *fp;
-	/*int next;*/
 	int last_start; /*if -1 we are not in a token*/
 	char *buff;
 	int buff_size;
-	/*guththila_buffer_t buffer;*/
 	GUTHTHILA_READ_INPUT_CALLBACK input_read_callback;
 	void* context;	
 } guththila_reader_t;
@@ -55,22 +53,20 @@ typedef struct guththila_reader_s
 #endif
 
 GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
-guththila_reader_create_for_file (char* filename);
+guththila_reader_create_for_file (char* filename, axutil_env_t *env);
 
 GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL 
-guththila_reader_create_for_io(GUTHTHILA_READ_INPUT_CALLBACK input_read_callback, void *ctx);
+guththila_reader_create_for_io(GUTHTHILA_READ_INPUT_CALLBACK input_read_callback, void *ctx, axutil_env_t *env);
 
 GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
-guththila_reader_create_for_memory(void *buffer, int size); 
+guththila_reader_create_for_memory(void *buffer, int size, axutil_env_t *env); 
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
-guththila_reader_read (guththila_reader_t *r, guththila_char *buffer, int offset, int length);
+guththila_reader_read (guththila_reader_t *r, guththila_char *buffer, int offset, int length, axutil_env_t *env);
                        
 GUTHTHILA_EXPORT void GUTHTHILA_CALL
-guththila_reader_free (guththila_reader_t * r);
+guththila_reader_free (guththila_reader_t * r, axutil_env_t *env);
 
-/*int GUTHTHILA_CALL guththila_reader_next_char(guththila_reader_t *r, int eof);*/
-/*int GUTHTHILA_CALL guththila_reader_next_no_char (guththila_reader_t *r, int eof, char *bytes, int no);*/
 EXTERN_C_END()
 
 #endif

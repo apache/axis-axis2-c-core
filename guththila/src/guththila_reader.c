@@ -19,75 +19,64 @@
 #include <guththila_reader.h>
 
 GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
-guththila_reader_create_for_file (char* file_name)
+guththila_reader_create_for_file (char* file_name, axutil_env_t *env)
 {
 	guththila_reader_t *reader = NULL;
 	FILE *f = NULL;
 	if (!file_name)
 		return NULL;
-	reader = (guththila_reader_t *) malloc(sizeof(guththila_reader_t));
+	reader = (guththila_reader_t *) AXIS2_MALLOC(env->allocator, sizeof(guththila_reader_t));
 	if (!reader)
 		return NULL;
 	f = fopen(file_name, "r");
 
 	if (!f) {
-		free(reader);
+		AXIS2_FREE(env->allocator, reader);
 		return NULL;
 	}
 	reader->fp = f;
-	reader->type = GUTHTHILA_FILE_READER;
-	/*guththila_buffer_init(&reader->buffer, 0);*/
-	/*reader->next = 0;*/
-	/*reader->last_start = -1;*/
+	reader->type = GUTHTHILA_FILE_READER;	
 	return reader;
 }
 
 GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
-guththila_reader_create_for_memory(void *buffer, int size)
+guththila_reader_create_for_memory(void *buffer, int size, axutil_env_t *env)
 {
-	guththila_reader_t *reader = (guththila_reader_t *) malloc(sizeof(guththila_reader_t));	
+	guththila_reader_t *reader = (guththila_reader_t *) AXIS2_MALLOC(env->allocator, sizeof(guththila_reader_t));	
 	if (reader) {
-		reader->type = GUTHTHILA_MEMORY_READER;
-		/*guththila_buffer_init_for_buffer(&reader->buffer, buffer, size);	*/
-		reader->buff = buffer;
-		/*memcpy(reader->buff, buffer, size);*/
+		reader->type = GUTHTHILA_MEMORY_READER;		
+		reader->buff = buffer;		
 		reader->buff_size = size;
-		reader->fp = NULL;
-		/*reader->next = 0;
-		reader->last_start = -1;*/
+		reader->fp = NULL;		
 		return reader;
 	}
 	return NULL;
 }
 
 GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL 
-guththila_reader_create_for_io(GUTHTHILA_READ_INPUT_CALLBACK input_read_callback, void *ctx)
+guththila_reader_create_for_io(GUTHTHILA_READ_INPUT_CALLBACK input_read_callback, void *ctx, axutil_env_t *env)
 {
-	guththila_reader_t *reader = (guththila_reader_t *)malloc(sizeof(guththila_reader_t));
+	guththila_reader_t *reader = (guththila_reader_t *)AXIS2_MALLOC(env->allocator, sizeof(guththila_reader_t));
     if (reader){
 		reader->input_read_callback = input_read_callback;
 		reader->context = ctx;
-		reader->type = GUTHTHILA_IO_READER;
-		/*reader->next = 0;*/
-		/*guththila_buffer_init(&reader->buffer, 0);*/
-		/*reader->last_start = -1;*/
+		reader->type = GUTHTHILA_IO_READER;		
 		return reader;
     }
     return NULL;
 }
 
 GUTHTHILA_EXPORT void GUTHTHILA_CALL
-guththila_reader_free (guththila_reader_t * r)
+guththila_reader_free(guththila_reader_t * r, axutil_env_t *env)
 {
 	if (r->type == GUTHTHILA_FILE_READER && r->fp){
 		fclose(r->fp);
-	}	
-	/*guththila_buffer_un_init(&r->buffer);*/
-	free(r);
+	}		
+	AXIS2_FREE(env->allocator, r);
 }
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
-guththila_reader_read (guththila_reader_t *r, guththila_char *buffer, int offset, int length)
+guththila_reader_read (guththila_reader_t *r, guththila_char *buffer, int offset, int length, axutil_env_t *env)
 {
 	int rt = r->type;
 	switch (rt) {

@@ -21,6 +21,7 @@
 #include <guththila_defines.h>
 #include <guththila_buffer.h>
 #include <guththila.h>
+#include <axutil_utils.h>
 
 EXTERN_C_START()
 
@@ -114,126 +115,127 @@ typedef struct guththila_xml_writer_namesp_s
 
 /*Writer functions*/
 GUTHTHILA_EXPORT guththila_xml_writer_t *  GUTHTHILA_CALL
-guththila_create_xml_stream_writer(char *file_name);
+guththila_create_xml_stream_writer(char *file_name, axutil_env_t *env);
 
 GUTHTHILA_EXPORT guththila_xml_writer_t *  GUTHTHILA_CALL
-guththila_create_xml_stream_writer_for_memory();
+guththila_create_xml_stream_writer_for_memory(axutil_env_t *env);
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
-guththila_write_to_buffer (guththila_xml_writer_t *wr, char *buff, int size);
+guththila_write_to_buffer (guththila_xml_writer_t *wr, char *buff, int size, axutil_env_t *env);
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_write_namespace (guththila_xml_writer_t *wr, char *prefix, char *uri);
+guththila_write_namespace (guththila_xml_writer_t *wr, char *prefix, char *uri, axutil_env_t *env);
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
 guththila_do_write_attribute_with_prefix_and_namespace (guththila_xml_writer_t *wr,
 									char *prefix, 
 									char *namespace_uri,
 									char *local_name, 
-									char *value);
+									char *value,
+									axutil_env_t *env);
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
-guththila_write_start_document (guththila_xml_writer_t *wr);
+guththila_write_start_document (guththila_xml_writer_t *wr, axutil_env_t *env);
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
-guththila_write_start_element ( guththila_xml_writer_t *wr, char *start_element);
+guththila_write_start_element ( guththila_xml_writer_t *wr, char *start_element, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
-guththila_write_end_element ( guththila_xml_writer_t *wr);
+guththila_write_end_element ( guththila_xml_writer_t *wr, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_close ( guththila_xml_writer_t *wr);
+guththila_close ( guththila_xml_writer_t *wr, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
-guththila_write_characters (guththila_xml_writer_t *wr, char  *buff);
+guththila_write_characters (guththila_xml_writer_t *wr, char  *buff, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
-guththila_write_comment (guththila_xml_writer_t *wr, char *buff);
+guththila_write_comment (guththila_xml_writer_t *wr, char *buff, axutil_env_t *env);
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
-guththila_write_escape_character (guththila_xml_writer_t *wr, char *buff);
+guththila_write_escape_character (guththila_xml_writer_t *wr, char *buff, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
-guththila_write_empty_element (guththila_xml_writer_t *wr, char *empty_element);
+guththila_write_empty_element (guththila_xml_writer_t *wr, char *empty_element, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_write_default_namespace (guththila_xml_writer_t *wr, char *namespace_uri);
+guththila_write_default_namespace (guththila_xml_writer_t *wr, char *namespace_uri, axutil_env_t *env);
 
 
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
-guththila_write_attribute (guththila_xml_writer_t *wr, char *localname, char *value);
+guththila_write_attribute (guththila_xml_writer_t *wr, char *localname, char *value, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
 guththila_write_attribute_with_prefix_and_namespace (guththila_xml_writer_t *wr, char *prefix, 
-								     char *namespace_uri, char *localname, char *value);
+								     char *namespace_uri, char *localname, char *value, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
 guththila_write_attribute_with_prefix ( guththila_xml_writer_t *wr, char *prefix,
-						       char *localname, char *value);
+						       char *localname, char *value, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int   GUTHTHILA_CALL
 guththila_write_attribute_with_namespace (guththila_xml_writer_t *wr, char *namesp,
-	char *localname, char *value);
+	char *localname, char *value, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
 guththila_write_start_element_with_prefix_and_namespace (guththila_xml_writer_t *wr, char* prefix,
-									 char *namespace_uri, char *local_name);
+									 char *namespace_uri, char *local_name, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
 guththila_write_start_element_with_namespace (guththila_xml_writer_t *wr, char *namespace_uri, 
-							      char *local_name);
+							      char *local_name, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_write_start_element_with_prefix ( guththila_xml_writer_t *wr, char *prefix, char *local_name);
+guththila_write_start_element_with_prefix ( guththila_xml_writer_t *wr, char *prefix, char *local_name, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
 guththila_write_empty_element_with_prefix_and_namespace (guththila_xml_writer_t *wr, char* prefix,
-									 char *namespace_uri, char *local_name);
+									 char *namespace_uri, char *local_name, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_write_empty_element_with_namespace ( guththila_xml_writer_t *wr, char *namespace_uri, char *local_name);
+guththila_write_empty_element_with_namespace ( guththila_xml_writer_t *wr, char *namespace_uri, char *local_name, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_write_empty_element_with_prefix ( guththila_xml_writer_t *wr, char *prefix, char *local_name);
+guththila_write_empty_element_with_prefix ( guththila_xml_writer_t *wr, char *prefix, char *local_name, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_write_end_document ( guththila_xml_writer_t *wr);
+guththila_write_end_document ( guththila_xml_writer_t *wr, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT int  GUTHTHILA_CALL
-guththila_write_line ( guththila_xml_writer_t *wr, char *element_name, char *characters);
+guththila_write_line ( guththila_xml_writer_t *wr, char *element_name, char *characters, axutil_env_t *env);
 
 GUTHTHILA_EXPORT char * GUTHTHILA_CALL
-guththila_get_memory_buffer (guththila_xml_writer_t *wr);
+guththila_get_memory_buffer (guththila_xml_writer_t *wr, axutil_env_t *env);
 
 GUTHTHILA_EXPORT unsigned int GUTHTHILA_CALL
-guththila_get_memory_buffer_size(guththila_xml_writer_t *wr);
+guththila_get_memory_buffer_size(guththila_xml_writer_t *wr, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT void GUTHTHILA_CALL
-guththila_xml_writer_free (guththila_xml_writer_t *wr);
+guththila_xml_writer_free (guththila_xml_writer_t *wr, axutil_env_t *env);
 
 
 GUTHTHILA_EXPORT char * GUTHTHILA_CALL
 guththila_get_prefix_for_namespace (guththila_xml_writer_t *wr, 
-								 char *namespace);
+								 char *namespace, axutil_env_t *env);
 
 /**@description 
   *
@@ -241,19 +243,19 @@ guththila_get_prefix_for_namespace (guththila_xml_writer_t *wr,
 int GUTHTHILA_CALL 
 guththila_write(guththila_xml_writer_t *wr, 
 			 char *buff, 
-			 size_t buff_size);
+			 size_t buff_size, axutil_env_t *env);
 
 /**@description 
   *
   */
 int GUTHTHILA_CALL 
 guththila_write_token(guththila_xml_writer_t *wr, 
-				   guththila_token_t *tok);
+				   guththila_token_t *tok, axutil_env_t *env);
 
 /**@description 
   *
   */
-int GUTHTHILA_CALL guththila_write_xtoken(guththila_xml_writer_t *wr, char *buff, size_t buff_len);
+int GUTHTHILA_CALL guththila_write_xtoken(guththila_xml_writer_t *wr, char *buff, size_t buff_len, axutil_env_t *env);
 EXTERN_C_END()
 
 #endif

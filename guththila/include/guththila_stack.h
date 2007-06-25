@@ -21,7 +21,7 @@
 #include <stdlib.h>
 
 #include <guththila_defines.h>
-
+#include <axutil_utils.h>
 #define GUTHTHILA_STACK_DEFAULT	16
 
 EXTERN_C_START()
@@ -43,16 +43,16 @@ typedef struct guththila_stack_s
 #define GUTHTHILA_STACK_TOP_INDEX(_stack) (((_stack).top - 1))
 #endif
 
-guththila_stack_t* GUTHTHILA_CALL guththila_stack_create();
-int GUTHTHILA_CALL guththila_stack_init(guththila_stack_t *stack);
-void GUTHTHILA_CALL guththila_stack_free(guththila_stack_t *stack);
-void GUTHTHILA_CALL guththila_stack_free_data(guththila_stack_t *stack);
-void * GUTHTHILA_CALL guththila_stack_pop(guththila_stack_t *stack);
-int GUTHTHILA_CALL guththila_stack_push(guththila_stack_t *stack, void *data);
-void * GUTHTHILA_CALL guththila_stack_peek(guththila_stack_t *stack);
-void * GUTHTHILA_CALL guththila_stack_get_by_index(guththila_stack_t *stack, int index);
-int GUTHTHILA_CALL guththila_stack_del_top(guththila_stack_t *stack);
-int GUTHTHILA_CALL guththila_stack_is_empty(guththila_stack_t *stack);
+guththila_stack_t* GUTHTHILA_CALL guththila_stack_create(axutil_env_t *env);
+int GUTHTHILA_CALL guththila_stack_init(guththila_stack_t *stack, axutil_env_t *env);
+void GUTHTHILA_CALL guththila_stack_free(guththila_stack_t *stack, axutil_env_t *env);
+void GUTHTHILA_CALL guththila_stack_un_init(guththila_stack_t *stack, axutil_env_t *env);
+void * GUTHTHILA_CALL guththila_stack_pop(guththila_stack_t *stack, axutil_env_t *env);
+int GUTHTHILA_CALL guththila_stack_push(guththila_stack_t *stack, void *data, axutil_env_t *env);
+void * GUTHTHILA_CALL guththila_stack_peek(guththila_stack_t *stack, axutil_env_t *env);
+void * GUTHTHILA_CALL guththila_stack_get_by_index(guththila_stack_t *stack, int index, axutil_env_t *env);
+int GUTHTHILA_CALL guththila_stack_del_top(guththila_stack_t *stack, axutil_env_t *env);
+int GUTHTHILA_CALL guththila_stack_is_empty(guththila_stack_t *stack, axutil_env_t *env);
 
 EXTERN_C_END()
 
