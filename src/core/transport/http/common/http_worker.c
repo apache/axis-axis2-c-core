@@ -261,6 +261,7 @@ axis2_http_worker_process_request(
         if (AXIS2_FALSE == processed)
         {
             axis2_http_header_t *cont_len = NULL;
+            axis2_http_header_t *cont_type = NULL;
             axis2_char_t *body_string = NULL;
             axis2_char_t *wsdl = NULL;
             axis2_http_simple_response_set_status_line(response, env,
@@ -268,7 +269,8 @@ axis2_http_worker_process_request(
             wsdl = strstr (url_external_form, AXIS2_REQUEST_WSDL);
             if (wsdl)
             {
-                body_string = axis2_http_transport_utils_get_services_static_wsdl(env, conf_ctx, url_external_form);
+                body_string = axis2_http_transport_utils_get_services_static_wsdl(
+                        env, conf_ctx, url_external_form);
             }
             else
             {
@@ -284,7 +286,10 @@ axis2_http_worker_process_request(
                 cont_len = axis2_http_header_create(env,
                     AXIS2_HTTP_HEADER_CONTENT_LENGTH, str_len);
                 axis2_http_simple_response_set_header(response, env, cont_len);
-                }
+                cont_type = axis2_http_header_create(env,
+                    AXIS2_HTTP_HEADER_CONTENT_TYPE, AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                axis2_http_simple_response_set_header(response, env, cont_type);
+             }
                 axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
                     simple_request, response, 0);
                 axis2_simple_http_svr_conn_write_response(svr_conn, env, response);

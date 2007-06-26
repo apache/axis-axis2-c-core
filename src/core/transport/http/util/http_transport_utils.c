@@ -1161,7 +1161,9 @@ axis2_http_transport_utils_create_soap_msg(
         axis2_char_t *mime_boundary = NULL;
          axis2_msg_ctx_set_doing_mtom(msg_ctx, env, AXIS2_TRUE);
         /* get mime boundry */
-        mime_boundary = axis2_http_transport_utils_get_value_from_content_type(env, content_type, AXIS2_HTTP_HEADER_CONTENT_TYPE_MIME_BOUNDARY);
+        mime_boundary = axis2_http_transport_utils_get_value_from_content_type(
+                env, content_type, 
+                AXIS2_HTTP_HEADER_CONTENT_TYPE_MIME_BOUNDARY);
 
         if (mime_boundary)
         {

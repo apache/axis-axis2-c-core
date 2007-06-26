@@ -82,7 +82,7 @@ void system_exit(
     }
     /*axutil_allocator_free(allocator);*/
     axiom_xml_reader_cleanup();
-    _exit(status);
+    exit(status);
 }
 
 int main(
