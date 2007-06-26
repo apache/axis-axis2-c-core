@@ -191,14 +191,17 @@ void test_https_client(const axutil_env_t *env)
             NULL, 0, NULL);
     url = axutil_url_create(env, "https", "localhost", 9090,
             NULL);
-    /* Add an ssl certificate variable */
-    /*setenv("AXIS2_SSL_CA_FILE", "cert.pem", 1);*/
+    
     header = axis2_http_header_create(env, "Host", axutil_url_get_server(url, env));
     axis2_http_simple_request_add_header(request, env, header);
     client = axis2_http_client_create(env, url);
 
     /* if you weant to test the proxy uncomment following */
-    /*AXIS2_HTTP_CLIENT_SET_PROXY(client, env, "127.0.0.1", 8080);*/
+    /*axis2_http_client_set_proxy(client, env, "127.0.0.1", 8080);*/
+    
+    /* Add CA/Server certificate */
+    status = axis2_http_client_set_server_cert(client, env,
+                "/home/dummy/dummyCA/demoCA/cacert.pem");
 
     status = axis2_http_client_send(client, env, request, NULL);
     if (status < 0)
