@@ -690,6 +690,9 @@ guththila_write_namespace (guththila_xml_writer_t *wr, char *prefix, char *uri, 
 		}
 		return GUTHTHILA_SUCCESS;
 	}
+	if (nmsp_found)
+        return GUTHTHILA_SUCCESS;
+
 	return GUTHTHILA_FAILURE;
 }
 
