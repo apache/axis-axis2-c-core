@@ -81,12 +81,13 @@ void * GUTHTHILA_CALL guththila_buffer_get(guththila_buffer_t * buffer, const ax
 	for (i = 0; i <= buffer->cur_buff; i++) {
 		size += buffer->data_size[i];
 	}
-	buff = (char *) AXIS2_MALLOC(env->allocator, sizeof(char) * size);
+	buff = (char *) AXIS2_MALLOC(env->allocator, sizeof(char) * (size + 1));
 
 	for (i = 0; i <= buffer->cur_buff; i++) {
 		memcpy(buff + current_size, buffer->buff[i] , buffer->data_size[i]);
 		current_size += buffer->data_size[i];
 	}
+	buff[current_size] = '\0';
 	return buff;
 }
 

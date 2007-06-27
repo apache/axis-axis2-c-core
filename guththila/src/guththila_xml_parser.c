@@ -605,12 +605,16 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_next(guththila_t *m, const axutil_
 			c = guththila_next_char(m, -1, env);
 			if (!GUTHTHILA_IS_SPACE(c) && c != '<') 
 				white_space = 0;
+			if (c == -1) return -1; 
 		} while (c != '<');
 		guththila_token_close(m, tok, _char_data, ref, env);
 		m->next--;
 		if (white_space) {
 			loop = 1;
-			if (m->value) guththila_tok_list_release_token(&m->tokens, m->value, env);
+			if (m->value) {
+				guththila_tok_list_release_token(&m->tokens, m->value, env);
+				m->value = NULL;
+			}
 		}
 		else return GUTHTHILA_CHARACTER;
 	} else {
