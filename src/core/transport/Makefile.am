@@ -1,2 +1,2 @@
-SUBDIRS=http ${XMPP_DIR}
+SUBDIRS=http
 EXTRA_DIST=Makefile.am
