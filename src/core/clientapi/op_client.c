@@ -333,17 +333,20 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
         property = axis2_options_get_property(op_client->options, env, 
             AXIS2_TARGET_EPR);
         if(property)
-	{
+        {
             to_epr = axutil_property_get_value(property, env);
-	}
+        }
+
         if(!to_epr)
-	{
+        {
             to_epr = axis2_options_get_to(op_client->options, env);
-	}
+        }
+
         if(!to_epr)
-	{
+        {
             to_epr =  axis2_msg_ctx_get_to(msg_ctx, env);
-	}
+        }
+
         transport_out = axis2_op_client_infer_transport(op_client, env, to_epr);
     }
 
@@ -374,7 +377,7 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
         }
     }
 
-    if(!( axis2_msg_ctx_get_transport_in_desc(msg_ctx, env)))
+    if(!(axis2_msg_ctx_get_transport_in_desc(msg_ctx, env)))
     {
          axis2_msg_ctx_set_transport_in_desc(msg_ctx, env, transport_in);
     }
@@ -801,6 +804,11 @@ axis2_op_client_infer_transport(
 		{
 			transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
 		}
+		else if (!axutil_strcmp (transport, "xmpp"))
+		{
+			transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
+		}
+
 
         conf_ctx =  axis2_svc_ctx_get_conf_ctx(op_client->svc_ctx, env);
         if (conf_ctx)
@@ -1032,7 +1040,7 @@ axis2_op_client_two_way_send(
 
     status = axis2_engine_send(engine, env, msg_ctx);
     
-     axis2_engine_free(engine, env);
+    axis2_engine_free(engine, env);
     engine = NULL;
     
     if (status != AXIS2_SUCCESS)
