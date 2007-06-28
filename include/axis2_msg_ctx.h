@@ -848,15 +848,28 @@ extern "C"
      * @param msg_ctx pointer to message context
      * @param env pointer to environment struct
      * @param key key string with which the property is stored
-     * @param persistent AXIS2_TRUE if the property is to be retrieved from
-     * persistent map, AXIS2_FALSE if the property is to be retrieved from
-     * non-persistent map
      * @return pointer to property struct
      */
     AXIS2_EXTERN axutil_property_t *AXIS2_CALL
     axis2_msg_ctx_get_property(const axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env,
         const axis2_char_t *key);
+
+
+    /**
+     * Gets property value corresponding to the property given key.
+     * @param msg_ctx pointer to message context
+     * @param env pointer to environment struct
+     * @param key key string with which the property is stored
+     * @return pointer to property struct
+     */
+
+    AXIS2_EXTERN void * AXIS2_CALL
+    axis2_msg_ctx_get_property_value(
+        axis2_msg_ctx_t *msg_ctx,
+        const axutil_env_t *env,
+        const axis2_char_t *property_str);
+
 
     /**
      * Sets property with given key.
