@@ -169,8 +169,6 @@ echo_callback_on_complete(struct axis2_callback *callback,
     axiom_node_t *ret_node = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
 
-    printf("inside on_complete_callback function\n");
-
     soap_envelope = axis2_callback_get_envelope(callback, env);
 
     if (!soap_envelope)
