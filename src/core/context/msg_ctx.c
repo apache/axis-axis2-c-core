@@ -1138,6 +1138,36 @@ axis2_msg_ctx_get_parameter(
     return param;
 }
 
+AXIS2_EXTERN void * AXIS2_CALL
+axis2_msg_ctx_get_property_value(
+    axis2_msg_ctx_t *msg_ctx,
+    const axutil_env_t *env,
+    const axis2_char_t *property_str)
+{
+    axutil_property_t *property;
+    void *property_value = NULL;
+
+    property = axis2_msg_ctx_get_property(msg_ctx, env, property_str);
+    
+    if (!property)
+    {
+        AXIS2_LOG_ERROR(env->log, 
+                        AXIS2_LOG_SI, 
+                        "%s not set in message context", property_str);
+    }
+    
+    property_value = axutil_property_get_value(property, env);
+    if (!property_value)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "%s properties not set in message context", 
+                        property_str);
+    }
+
+    return property_value;
+}
+
+
 axutil_property_t *AXIS2_CALL
 axis2_msg_ctx_get_property(
     const axis2_msg_ctx_t *msg_ctx,
@@ -1219,9 +1249,9 @@ axis2_msg_ctx_set_property(
     axutil_property_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return axis2_ctx_set_property(msg_ctx->base, env, key, value);
 }
+
 
 const axutil_string_t *AXIS2_CALL
 axis2_msg_ctx_get_paused_handler_name(
@@ -1565,13 +1595,14 @@ axis2_msg_ctx_set_options(
             msg_ctx->msg_info_headers, env);
     }
     msg_ctx->msg_info_headers =
+
         axis2_options_get_msg_info_headers(options, env);
     msg_ctx->msg_info_headers_deep_copy = AXIS2_FALSE;
     
     msg_ctx->doing_mtom = axis2_options_get_enable_mtom(options, env);
 
-     axis2_ctx_set_property_map(msg_ctx->base, env,
-            axis2_options_get_properties(options, env));
+    axis2_ctx_set_property_map(msg_ctx->base, env,
+         axis2_options_get_properties(options, env));
     rest_val = (axutil_property_t *)  axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_ENABLE_REST);
     if (rest_val)
@@ -1958,3 +1989,6 @@ axis2_msg_ctx_set_transport_url(axis2_msg_ctx_t *msg_ctx,
     
     return AXIS2_SUCCESS;
 }
+
+
+
