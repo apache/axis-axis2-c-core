@@ -212,25 +212,50 @@ char * AXIS2_CALL
 axutil_uuid_get_mac_addr()
 {
     struct ifreq ifr;
+    struct ifreq *IFR;
+    struct ifconf ifc;
     struct sockaddr *sa;
     int s = 0;
     int i = 0;
     char *buffer = NULL;
+    char buf[1024];
+    int ok = AXIS2_FALSE;
 
 
     if ((s = socket(PF_INET, SOCK_DGRAM, 0)) < 0)
         return NULL;
-    sprintf(ifr.ifr_name, "eth0");
-    if (ioctl(s, SIOCGIFHWADDR, &ifr) < 0)
-    {
-        close(s);
-        return NULL;
-    }
-    buffer = (char*)malloc(6 * sizeof(char));
 
-    sa = (struct sockaddr *) & ifr.ifr_addr;
-    for (i = 0; i < 6; i++)
-        buffer[i] = (unsigned char)(sa->sa_data[i] & 0xff);
+    ifc.ifc_len = sizeof(buf);
+    ifc.ifc_buf = buf;
+    ioctl(s, SIOCGIFCONF, &ifc);
+
+    IFR = ifc.ifc_req;
+
+    for(i = ifc.ifc_len/sizeof(struct ifreq); --i >=0; IFR++)
+    {
+        strcpy(ifr.ifr_name, IFR->ifr_name);
+    
+        /*sprintf(ifr.ifr_name, "eth0");*/
+        if (ioctl(s, SIOCGIFFLAGS, &ifr) == 0)
+        {
+            if(!(ifr.ifr_flags & IFF_LOOPBACK))
+            {
+                
+                if (ioctl(s, SIOCGIFHWADDR, &ifr) == 0)
+                {
+                    ok = AXIS2_TRUE;
+                    break;
+                }
+            }
+        }
+    }
+    if(ok)
+    {
+        buffer = (char*)malloc(6 * sizeof(char));
+        sa = (struct sockaddr *) & ifr.ifr_addr;
+        for (i = 0; i < 6; i++)
+            buffer[i] = (unsigned char)(sa->sa_data[i] & 0xff);
+    }
     close(s);
     return buffer;
 }
@@ -304,8 +329,8 @@ axutil_uuid_get_mac_addr()
 char * AXIS2_CALL
 axutil_uuid_get_mac_addr()
 {
-	char hostname[MAXHOSTNAMELEN];
-	char *data_ptr;
+    char hostname[MAXHOSTNAMELEN];
+    char *data_ptr;
     struct hostent *he;
     struct arpreq ar;
     struct sockaddr_in *sa;
