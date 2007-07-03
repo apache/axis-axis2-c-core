@@ -30,7 +30,6 @@ AUTOCONF = configure.in
 !include $(AUTOCONF)
 
 # directory structure of install directory
-
 RELEASE_VER = 1.1.0
 
 AXIS2_RELEASE_DIR=axis2c-bin-$(RELEASE_VER)-win32
@@ -52,22 +51,7 @@ AXIS2_SOURCE_DIR = ..\..
 #directories for intermediate files
 
 AXIS2_INTDIR= .\int.msvc
-AXIS2_INTDIR_AXIOM = $(AXIS2_INTDIR)\axiom
-AXIS2_INTDIR_UTIL  = $(AXIS2_INTDIR)\util
-AXIS2_INTDIR_NEETHI = $(AXIS2_INTDIR)\neethi
-AXIS2_INTDIR_CORE  = $(AXIS2_INTDIR)\core
-AXIS2_INTDIR_TNS = $(AXIS2_INTDIR)\http_sender
-AXIS2_INTDIR_TNR = $(AXIS2_INTDIR)\http_receiver
-AXIS2_INTDIR_PARSER = $(AXIS2_INTDIR)\axis2_parser
-AXIS2_INTDIR_ADDRESSING = $(AXIS2_INTDIR)\src\addressing
 AXIS2_INTDIR_SAMPLES = $(AXIS2_INTDIR)\samples
-AXIS2_INTDIR_GUTHTHILA = $(AXIS2_INTDIR)\guththila
-
-#  versioning information
-
-AXIS2_MAJOR_VERSION = M
-AXIS2_MINOR_VERSION = 0
-AXIS2_MICRO_VERSION = 9
 
 #binary distribution dll names
 #core modules
@@ -84,17 +68,13 @@ AXIS2_IIS_MODULE = axis2_mod_IIS
 AXIS2_MOD_ADDR = axis2_mod_addr
 AXIS2_SERVER = axis2_http_server
 GUTHTHILA = guththila
+AXIS2_MOD_LOG = axis2_mod_log
 
 PARSER = build
 
 !if "$(ENABLE_GUTHTHILA)" == "1"
 PARSER = $(PARSER)_with_guththila
 !endif
-
-#other modules 
-
-AXIS2_RAMPART = mod_rampart
-AXIS2_MOD_LOG = axis2_mod_log
 
 # include path
 APACHE_INCLUE_PATH = /I$(APACHE_BIN_DIR)\include
@@ -119,6 +99,7 @@ AXIS2_INCLUDE_PATH = 	/I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\src\core\util \
 		/I$(AXIS2_SOURCE_DIR)\src\core\transport\http\server\apache2 \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\attachments \
+		/I$(AXIS2_SOURCE_DIR)\tools\tcpmon\include \
 		/I$(LIBXML2_BIN_DIR)\include \
 		/I$(ICONV_BIN_DIR)\include \
 		/I$(ZLIB_BIN_DIR)\include
@@ -132,71 +113,12 @@ AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(OPENSSL_BIN_DIR)\include
 AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(LIBCURL_BIN_DIR)\include
 !endif
 
-
-#source paths for core modules
-
-AXIS2_UTIL_SRC = $(AXIS2_SOURCE_DIR)\util\src\platforms\windows\*.c \
-		$(AXIS2_SOURCE_DIR)\util\src\minizip\*.c \
-		$(AXIS2_SOURCE_DIR)\util\src\*.c 
-
-AXIS2_PARSER_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\parser\*.c \
-		   $(AXIS2_SOURCE_DIR)\axiom\src\parser\libxml2\*.c
-
-AXIS2_GUTHTHILA_PARSER_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\parser\*.c \
-                             $(AXIS2_SOURCE_DIR)\axiom\src\parser\guththila\*.c
-
-
-AXIOM_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\om\*.c \
-		$(AXIS2_SOURCE_DIR)\axiom\src\soap\*.c \
-		$(AXIS2_SOURCE_DIR)\axiom\src\attachments\*.c \
-		$(AXIS2_SOURCE_DIR)\axiom\src\util\*.c
-
-
-NEETHI_SRC = $(AXIS2_SOURCE_DIR)\neethi\src\*.c \
-        $(AXIS2_SOURCE_DIR)\neethi\src\secpolicy\model\*.c \
-        $(AXIS2_SOURCE_DIR)\neethi\src\secpolicy\builder\*.c \
-
-
-AXIS2_ENGINE_SRC =  $(AXIS2_SOURCE_DIR)\src\core\addr\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\clientapi\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\context\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\deployment\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\description\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\engine\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\phaseresolver\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\receivers\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\util\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\transport\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\transport\http\common\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\transport\http\util\*.c
-		
-		
-AXIS2_HTTP_SENDER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\sender\*.c
-
-
-!if "$(ENABLE_SSL)" == "1"
-AXIS2_HTTP_SENDER_SRC = $(AXIS2_HTTP_SENDER_SRC) \
-		$(AXIS2_SOURCE_DIR)\src\core\transport\http\sender\ssl\*.c
-!endif
-!if "$(ENABLE_LIBCURL)" == "1"
-AXIS2_HTTP_SENDER_SRC = $(AXIS2_HTTP_SENDER_SRC) \
-		$(AXIS2_SOURCE_DIR)\src\core\transport\http\sender\libcurl\*.c
-!endif
-
-
-AXIS2_HTTP_RECEIVER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\receiver\*.c 
-
-AXIS2_MOD_ADDR_SRC = $(AXIS2_SOURCE_DIR)\src\modules\mod_addr\*.c
-
-GUTHTHILA_SRC = $(AXIS2_SOURCE_DIR)\guththila\src\*.c
-
-
 ##################### compiler options
 
-CC = @cl.exe 
+CC = cl.exe 
 CFLAGS = /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT"  \
-	/D "_CRT_SECURE_NO_DEPRECATE" /D "_CRT_SECURE_NO_WARNINGS" \
-	  /D "AXIS2_SVR_MULTI_THREADED" /w /nologo $(AXIS2_INCLUDE_PATH) \
+	 /D "_CRT_SECURE_NO_DEPRECATE" /D "_CRT_SECURE_NO_WARNINGS" \
+         /D "AXIS2_SVR_MULTI_THREADED" /w /nologo $(AXIS2_INCLUDE_PATH) \
 	 $(APACHE_INCLUDE_PATH)
 
 !if "$(ENABLE_SSL)" == "1"
@@ -209,10 +131,10 @@ CFLAGS = $(CFLAGS) /D "AXIS2_LIBCURL_ENABLED"
 
 ################### linker options
 
-LD = @link.exe
+LD = link.exe
 LDFLAGS = /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXSLT_BIN_DIR)\lib \
-	     /LIBPATH:$(LIBXML2_BIN_DIR)\lib  /LIBPATH:$(APACHE_BIN_DIR)\lib \
-		 /LIBPATH:$(ZLIB_BIN_DIR)\lib
+	  /LIBPATH:$(LIBXML2_BIN_DIR)\lib  /LIBPATH:$(APACHE_BIN_DIR)\lib \
+	  /LIBPATH:$(ZLIB_BIN_DIR)\lib
 		 
 LIBS =  Rpcrt4.lib Ws2_32.lib
 
@@ -231,7 +153,6 @@ APACHE_LIBS = apr.lib xml.lib libhttpd.lib aprutil.lib libapr.lib
 !else
 APACHE_LIBS = apr-1.lib xml.lib libhttpd.lib aprutil-1.lib libapr-1.lib
 !endif
-
 
 
 #################### debug symbols
@@ -257,148 +178,565 @@ deploy:
 	if not exist $(AXIS2_LOG) mkdir $(AXIS2_LOG)
 	if not exist $(AXIS2_MODULES)\addressing mkdir $(AXIS2_MODULES)\addressing
 			
-#intermediate directories
-	
 	if not exist $(AXIS2_INTDIR) mkdir $(AXIS2_INTDIR)
-	if not exist $(AXIS2_INTDIR_AXIOM) mkdir $(AXIS2_INTDIR_AXIOM)
-	if not exist $(AXIS2_INTDIR_UTIL) mkdir $(AXIS2_INTDIR_UTIL)
-	if not exist $(AXIS2_INTDIR_NEETHI) mkdir $(AXIS2_INTDIR_NEETHI)
-	if not exist $(AXIS2_INTDIR_CORE) mkdir $(AXIS2_INTDIR_CORE)
-	if not exist $(AXIS2_INTDIR_TNS) mkdir $(AXIS2_INTDIR_TNS)
-	if not exist $(AXIS2_INTDIR_TNR) mkdir $(AXIS2_INTDIR_TNR)
-	if not exist $(AXIS2_INTDIR_PARSER) mkdir $(AXIS2_INTDIR_PARSER)
-	if not exist $(AXIS2_INTDIR_ADDRESSING) mkdir $(AXIS2_INTDIR_ADDRESSING)
+	if not exist $(AXIS2_MODULES)\logging mkdir $(AXIS2_MODULES)\logging
 	if not exist $(AXIS2_INTDIR_SAMPLES) mkdir $(AXIS2_INTDIR_SAMPLES)
-    if not exist $(AXIS2_INTDIR_GUTHTHILA) mkdir $(AXIS2_INTDIR_GUTHTHILA)	
 	
 #clean 
 clean:
 	if exist $(AXIS2_BINDIR) rmdir /S /Q $(AXIS2_BINDIR)
 	if exist $(AXIS2_INTDIR) rmdir /S /Q $(AXIS2_INTDIR)
 	
-clean_make_dir:
-	del *.obj del *.exe del *.exp
+##### axutil 
 
-axis2_util: 
-	$(CC) $(CFLAGS) $(AXIS2_UTIL_SRC) /Fo$(AXIS2_INTDIR_UTIL)\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_UTIL)\*.obj $(LIBS) $(ZLIB_BIN_DIR)\lib\zdll.lib \
-	/DLL  /OUT:$(AXIS2_LIBS)\$(AXUTIL).dll  /IMPLIB:$(AXIS2_LIBS)\$(AXUTIL).lib 
+AXUTIL_SRC = $(AXIS2_SOURCE_DIR)\util\src
+AXIS2_INTDIR_AXUTIL  = $(AXIS2_INTDIR)\util
+AXIS2_INTDIR_AXUTIL1 = $(AXIS2_INTDIR_AXUTIL)\platform
+AXIS2_INTDIR_AXUTIL2 =$(AXIS2_INTDIR_AXUTIL)\minizip
 
-guththila:
-	$(CC) $(CFLAGS) $(GUTHTHILA_INCLUDE_PATH) $(GUTHTHILA_SRC) /Fo$(AXIS2_INTDIR_GUTHTHILA)\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_GUTHTHILA)\*.obj $(AXUTIL).lib \
-	$(LIBS) \
+AXUTIL_OBJS = $(AXIS2_INTDIR_AXUTIL)\*.obj \
+	      $(AXIS2_INTDIR_AXUTIL)\minizip\*.obj \
+	      $(AXIS2_INTDIR_AXUTIL)\platform\*.obj
+
+$(AXIS2_INTDIR_AXUTIL) :
+	if not exist $(AXIS2_INTDIR_AXUTIL) mkdir $(AXIS2_INTDIR_AXUTIL)
+
+$(AXIS2_INTDIR_AXUTIL1) :
+	if not exist $(AXIS2_INTDIR_AXUTIL1) mkdir $(AXIS2_INTDIR_AXUTIL1)
+
+$(AXIS2_INTDIR_AXUTIL2) :
+	if not exist $(AXIS2_INTDIR_AXUTIL2) mkdir $(AXIS2_INTDIR_AXUTIL2)
+	
+
+{$(AXUTIL_SRC)}.c{$(AXIS2_INTDIR_AXUTIL)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(AXIS2_INTDIR_AXUTIL)\ /c $<
+
+{$(AXUTIL_SRC)\platforms\windows}.c{$(AXIS2_INTDIR_AXUTIL1)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(AXIS2_INTDIR_AXUTIL1)\ /c $<
+
+{$(AXUTIL_SRC)\minizip}.c{$(AXIS2_INTDIR_AXUTIL2)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(AXIS2_INTDIR_AXUTIL2)\ /c $<
+
+$(AXUTIL_OBJS) :  $(AXIS2_INTDIR_AXUTIL) $(AXIS2_INTDIR_AXUTIL1) $(AXIS2_INTDIR_AXUTIL2)
+
+$(AXIS2_LIBS)\$(AXUTIL).dll : $(AXUTIL_OBJS)
+	$(LD) $(LDFLAGS) $(AXUTIL_OBJS) $(LIBS) $(ZLIB_BIN_DIR)\lib\zdll.lib \
+	/DLL  /OUT:$(AXIS2_LIBS)\$(AXUTIL).dll  /IMPLIB:$(AXIS2_LIBS)\$(AXUTIL).lib
+
+axis2_util : $(AXIS2_LIBS)\$(AXUTIL).dll
+
+
+##### end axutil
+
+##### guththila
+GUTHTHILA_SRC = $(AXIS2_SOURCE_DIR)\guththila\src
+AXIS2_INTDIR_GUTHTHILA = $(AXIS2_INTDIR)\guththila
+
+GUTHTHILA_OBJS = $(AXIS2_INTDIR_GUTHTHILA)\*.obj
+
+$(AXIS2_INTDIR_GUTHTHILA) :
+	if not exist $(AXIS2_INTDIR_GUTHTHILA) mkdir $(AXIS2_INTDIR_GUTHTHILA)	
+
+
+{$(GUTHTHILA_SRC)}.c{$(AXIS2_INTDIR_GUTHTHILA)}.obj ::
+	$(CC) $(CFLAGS) $(GUTHTHILA_INCLUDE_PATH) /Fo$(AXIS2_INTDIR_GUTHTHILA)\ /c $<
+
+$(GUTHTHILA_OBJS) : $(AXIS2_INTDIR_GUTHTHILA)
+
+$(AXIS2_LIBS)\$(GUTHTHILA).dll : $(GUTHTHILA_OBJS)
+	$(LD) $(LDFLAGS) $(GUTHTHILA_OBJS) $(AXUTIL).lib $(LIBS) \
 	/DLL /OUT:$(AXIS2_LIBS)\$(GUTHTHILA).dll /IMPLIB:$(AXIS2_LIBS)\$(GUTHTHILA).lib
 
-axis2_parser:
-	$(CC) $(CFLAGS) $(AXIS2_PARSER_SRC) /Fo$(AXIS2_INTDIR_PARSER)\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_PARSER)\*.obj $(AXUTIL).lib $(LIBS) \
+
+guththila: $(AXIS2_LIBS)\$(GUTHTHILA).dll
+
+##### end guththila
+
+##### axis2 parser
+
+AXIS2_PARSER_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\parser
+AXIS2_INTDIR_PARSER = $(AXIS2_INTDIR)\parser
+AXIS2_INTDIR_PARSER1 = $(AXIS2_INTDIR)\parser\libxml2
+
+AXIS2_PARSER_OBJS = $(AXIS2_INTDIR_PARSER)\*.obj \
+		    $(AXIS2_INTDIR_PARSER)\libxml2\*.obj 
+
+$(AXIS2_INTDIR_PARSER) :
+	if not exist $(AXIS2_INTDIR_PARSER) mkdir $(AXIS2_INTDIR_PARSER)
+
+$(AXIS2_INTDIR_PARSER1) :
+	if not exist $(AXIS2_INTDIR_PARSER1) mkdir $(AXIS2_INTDIR_PARSER1)
+
+
+{$(AXIS2_PARSER_SRC)}.c{$(AXIS2_INTDIR_PARSER)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(AXIS2_INTDIR_PARSER)\ /c $<
+
+{$(AXIS2_PARSER_SRC)\libxml2}.c{$(AXIS2_INTDIR_PARSER1)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(AXIS2_INTDIR_PARSER1)\ /c $<
+
+$(AXIS2_PARSER_OBJS) : $(AXIS2_INTDIR_PARSER) $(AXIS2_INTDIR_PARSER1)
+
+
+$(AXIS2_LIBS)\$(AXIS2_PARSER).dll : $(AXIS2_PARSER_OBJS)
+	$(LD) $(LDFLAGS) $(AXIS2_PARSER_OBJS) $(AXUTIL).lib $(LIBS) \
 	$(LIBXML2_BIN_DIR)\lib\libxml2.lib  /DLL \
 	/OUT:$(AXIS2_LIBS)\$(AXIS2_PARSER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_PARSER).lib
-	
-axis2_parser_with_guththila:
-    $(CC) $(CFLAGS) $(GUTHTHILA_INCLUDE_PATH) $(AXIS2_GUTHTHILA_PARSER_SRC) /Fo$(AXIS2_INTDIR_PARSER)\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_PARSER)\*.obj $(AXUTIL).lib $(LIBS) \
-	$(AXIS2_LIBS)\$(GUTHTHILA).lib  /DLL \
+
+axis2_parser : $(AXIS2_LIBS)\$(AXIS2_PARSER).dll
+
+
+##### end axis2 parser
+
+GHTHTHILA_WRAPPER_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\parser
+GUTHTHILA_WRAPPER_INTDIR = $(AXIS2_INTDIR)\parser
+GUTHTHILA_WRAPPER_INTDIR1 = $(AXIS2_INTDIR)\parser\guththila
+
+GUTHTHILA_WRAPPER_OBJS = $(GUTHTHILA_WRAPPER_INTDIR)\*.obj \
+			 $(GUTHTHILA_WRAPPER_INTDIR1)\*.obj
+
+$(GUTHTHILA_WRAPPER_INTDIR) :
+	if not exist $(GUTHTHILA_WRAPPER_INTDIR) mkdir $(GUTHTHILA_WRAPPER_INTDIR)
+
+$(GUTHTHILA_WRAPPER_INTDIR1) :
+	if not exist $(GUTHTHILA_WRAPPER_INTDIR1) mkdir $(GUTHTHILA_WRAPPER_INTDIR1)
+
+
+{$(GHTHTHILA_WRAPPER_SRC)}.c{$(GUTHTHILA_WRAPPER_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(GUTHTHILA_WRAPPER_INTDIR)\ /c $<
+
+{$(GHTHTHILA_WRAPPER_SRC)\guththila}.c{$(GUTHTHILA_WRAPPER_INTDIR1)}.obj ::
+	$(CC) $(CFLAGS) $(GUTHTHILA_INCLUDE_PATH) /Fo$(GUTHTHILA_WRAPPER_INTDIR1)\ /c $<
+
+$(GUTHTHILA_WRAPPER_OBJS) : $(GUTHTHILA_WRAPPER_INTDIR) $(GUTHTHILA_WRAPPER_INTDIR1)
+
+axis2_parser_with_guththila: $(GUTHTHILA_WRAPPER_OBJS)
+	$(LD) $(LDFLAGS) $(GUTHTHILA_WRAPPER_OBJS) $(AXUTIL).lib $(LIBS) $(AXIS2_LIBS)\$(GUTHTHILA).lib  /DLL \
 	/OUT:$(AXIS2_LIBS)\$(AXIS2_PARSER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_PARSER).lib
+
+
+##### axiom
+
+AXIOM_SRC = $(AXIS2_SOURCE_DIR)\axiom\src
+AXIOM_INTDIR = $(AXIS2_INTDIR)\axiom\om
+AXIOM_INTDIR1 = $(AXIS2_INTDIR)\axiom\soap
+AXIOM_INTDIR2 = $(AXIS2_INTDIR)\axiom\util
+AXIOM_INTDIR3 = $(AXIS2_INTDIR)\axiom\attachments
+
+AXIOM_OBJS = $(AXIOM_INTDIR)\*.obj \
+	     $(AXIOM_INTDIR1)\*.obj \
+	     $(AXIOM_INTDIR2)\*.obj \
+	     $(AXIOM_INTDIR3)\*.obj 
+
+$(AXIOM_INTDIR) :
+	if not exist $(AXIOM_INTDIR) mkdir $(AXIOM_INTDIR)
 	
-axiom: 
-	$(CC) $(CFLAGS) $(AXIOM_SRC) /Fo$(AXIS2_INTDIR_AXIOM)\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_AXIOM)\*.obj $(AXUTIL).lib \
-	$(AXIS2_PARSER).lib $(LIBS)  /DLL /OUT:$(AXIS2_LIBS)\$(AXIOM).dll \
-	/IMPLIB:$(AXIS2_LIBS)\$(AXIOM).lib
+$(AXIOM_INTDIR1) :
+	if not exist $(AXIOM_INTDIR1) mkdir $(AXIOM_INTDIR1)
 
-neethi:
-	$(CC) $(CFLAGS) $(NEETHI_SRC) /Fo$(AXIS2_INTDIR_NEETHI)\ /c
-    $(LD) $(LDFLAGS) $(AXIS2_INTDIR_NEETHI)\*.obj $(AXUTIL).lib $(AXIOM).lib \
-    $(AXIS2_PARSER).lib $(LIBS)  \
-    /DLL /OUT:$(AXIS2_LIBS)\$(NEETHI).dll /IMPLIB:$(AXIS2_LIBS)\$(NEETHI).lib
+$(AXIOM_INTDIR2) :
+	if not exist $(AXIOM_INTDIR2) mkdir $(AXIOM_INTDIR2)
 
-axis2_engine: 
-	$(CC) $(CFLAGS) $(AXIS2_ENGINE_SRC) /Fo$(AXIS2_INTDIR_CORE)\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CORE)\*.obj $(AXUTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib $(NEETHI).lib $(LIBS) \
-	/DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_ENGINE).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_ENGINE).lib
+$(AXIOM_INTDIR3) :
+	if not exist $(AXIOM_INTDIR3) mkdir $(AXIOM_INTDIR3)
 
-axis2_http_sender: 
-	$(CC) $(CFLAGS) $(AXIS2_HTTP_SENDER_SRC) /Fo$(AXIS2_INTDIR_TNS)\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_TNS)\*.obj $(AXUTIL).lib \
+
+{$(AXIOM_SRC)\om}.c{$(AXIOM_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(AXIOM_INTDIR)\ /c $<
+
+{$(AXIOM_SRC)\soap}.c{$(AXIOM_INTDIR1)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(AXIOM_INTDIR1)\ /c $<
+
+{$(AXIOM_SRC)\util}.c{$(AXIOM_INTDIR2)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(AXIOM_INTDIR2)\ /c $<
+
+{$(AXIOM_SRC)\attachments}.c{$(AXIOM_INTDIR3)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(AXIOM_INTDIR3)\ /c $<
+
+
+$(AXIOM_OBJS) : $(AXIOM_INTDIR) $(AXIOM_INTDIR1) $(AXIOM_INTDIR2) $(AXIOM_INTDIR3)
+
+
+$(AXIS2_LIBS)\$(AXIOM).dll : $(AXIOM_OBJS) 
+	$(LD) $(LDFLAGS) $(AXIOM_OBJS) $(AXUTIL).lib $(AXIS2_PARSER).lib $(LIBS) \
+	/DLL /OUT:$(AXIS2_LIBS)\$(AXIOM).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIOM).lib
+
+axiom : $(AXIS2_LIBS)\$(AXIOM).dll
+
+##### end axiom
+
+##### neethi
+NEETHI_SRC = $(AXIS2_SOURCE_DIR)\neethi\src
+NEETHI_INTDIR = $(AXIS2_INTDIR)\neethi
+NEETHI_INTDIR1 = $(AXIS2_INTDIR)\neethi\model
+NEETHI_INTDIR2 = $(AXIS2_INTDIR)\neethi\builder
+
+NEETHI_OBJS = $(NEETHI_INTDIR)\*.obj \
+	      $(NEETHI_INTDIR)\model\*.obj \
+	      $(NEETHI_INTDIR)\builder\*.obj 
+
+$(NEETHI_INTDIR) :
+	if not exist $(NEETHI_INTDIR) mkdir $(NEETHI_INTDIR)
+
+$(NEETHI_INTDIR1) :
+	if not exist $(NEETHI_INTDIR1) mkdir $(NEETHI_INTDIR1)
+
+$(NEETHI_INTDIR2) :
+	if not exist $(NEETHI_INTDIR2) mkdir $(NEETHI_INTDIR2)
+
+{$(NEETHI_SRC)}.c{$(NEETHI_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(NEETHI_INTDIR)\ /c $<
+
+{$(NEETHI_SRC)\secpolicy\model}.c{$(NEETHI_INTDIR1)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(NEETHI_INTDIR1)\ /c $<
+
+{$(NEETHI_SRC)\secpolicy\builder}.c{$(NEETHI_INTDIR2)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(NEETHI_INTDIR2)\ /c $<
+
+
+$(NEETHI_OBJS) : $(NEETHI_INTDIR) $(NEETHI_INTDIR1) $(NEETHI_INTDIR2)
+
+$(AXIS2_LIBS)\$(NEETHI).dll : $(NEETHI_OBJS)
+	$(LD) $(LDFLAGS) $(NEETHI_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
+    	/DLL /OUT:$(AXIS2_LIBS)\$(NEETHI).dll /IMPLIB:$(AXIS2_LIBS)\$(NEETHI).lib
+
+neethi : $(AXIS2_LIBS)\$(NEETHI).dll
+
+##### end neethi
+
+##### axis2 engine
+
+ENGINE_SRC =  $(AXIS2_SOURCE_DIR)\src\core
+ENGINE_INTDIR = $(AXIS2_INTDIR)\core\addr
+ENGINE_INTDIR1 = $(AXIS2_INTDIR)\core\clientapi
+ENGINE_INTDIR2 = $(AXIS2_INTDIR)\core\context
+ENGINE_INTDIR3 = $(AXIS2_INTDIR)\core\deployment
+ENGINE_INTDIR4 = $(AXIS2_INTDIR)\core\description
+ENGINE_INTDIR5 = $(AXIS2_INTDIR)\core\engine
+ENGINE_INTDIR6 = $(AXIS2_INTDIR)\core\phaseresolver
+ENGINE_INTDIR7 = $(AXIS2_INTDIR)\core\receivers
+ENGINE_INTDIR8 = $(AXIS2_INTDIR)\core\util
+ENGINE_INTDIR9 = $(AXIS2_INTDIR)\core\transport
+ENGINE_INTDIR10 = $(AXIS2_INTDIR)\core\transport\http\common
+ENGINE_INTDIR11 = $(AXIS2_INTDIR)\core\transport\http\util
+
+ENGINE_OBJS = $(ENGINE_INTDIR)\*.obj \
+	      $(ENGINE_INTDIR1)\*.obj \
+	      $(ENGINE_INTDIR2)\*.obj \
+	      $(ENGINE_INTDIR3)\*.obj \
+	      $(ENGINE_INTDIR4)\*.obj \
+	      $(ENGINE_INTDIR5)\*.obj \
+	      $(ENGINE_INTDIR6)\*.obj \
+	      $(ENGINE_INTDIR7)\*.obj \
+	      $(ENGINE_INTDIR8)\*.obj \
+	      $(ENGINE_INTDIR9)\*.obj \
+	      $(ENGINE_INTDIR10)\*.obj \
+	      $(ENGINE_INTDIR11)\*.obj 
+
+$(ENGINE_INTDIR) :
+	if not exist $(ENGINE_INTDIR) mkdir $(ENGINE_INTDIR)
+
+$(ENGINE_INTDIR1) :
+	if not exist $(ENGINE_INTDIR1) mkdir $(ENGINE_INTDIR1)
+
+$(ENGINE_INTDIR2) :
+	if not exist $(ENGINE_INTDIR2) mkdir $(ENGINE_INTDIR2)
+
+$(ENGINE_INTDIR3) :
+	if not exist $(ENGINE_INTDIR3) mkdir $(ENGINE_INTDIR3)
+
+$(ENGINE_INTDIR4) :
+	if not exist $(ENGINE_INTDIR4) mkdir $(ENGINE_INTDIR4)
+
+$(ENGINE_INTDIR5) :
+	if not exist $(ENGINE_INTDIR5) mkdir $(ENGINE_INTDIR5)
+
+$(ENGINE_INTDIR6) :
+	if not exist $(ENGINE_INTDIR6) mkdir $(ENGINE_INTDIR6)
+
+$(ENGINE_INTDIR7) :
+	if not exist $(ENGINE_INTDIR7) mkdir $(ENGINE_INTDIR7)
+
+$(ENGINE_INTDIR8) :
+	if not exist $(ENGINE_INTDIR8) mkdir $(ENGINE_INTDIR8)
+
+$(ENGINE_INTDIR9) :
+	if not exist $(ENGINE_INTDIR9) mkdir $(ENGINE_INTDIR9)
+
+$(ENGINE_INTDIR10) :
+	if not exist $(ENGINE_INTDIR10) mkdir $(ENGINE_INTDIR10)
+
+$(ENGINE_INTDIR11) :
+	if not exist $(ENGINE_INTDIR11) mkdir $(ENGINE_INTDIR11)
+
+{$(ENGINE_SRC)\addr}.c{$(ENGINE_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(ENGINE_INTDIR)\ /c $<
+
+{$(ENGINE_SRC)\clientapi}.c{$(ENGINE_INTDIR1)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(ENGINE_INTDIR1)\ /c $<
+
+{$(ENGINE_SRC)\context}.c{$(ENGINE_INTDIR2)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(ENGINE_INTDIR2)\ /c $<
+
+{$(ENGINE_SRC)\deployment}.c{$(ENGINE_INTDIR3)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(ENGINE_INTDIR3)\ /c $<
+
+{$(ENGINE_SRC)\description}.c{$(ENGINE_INTDIR4)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(ENGINE_INTDIR4)\ /c $<
+
+{$(ENGINE_SRC)\engine}.c{$(ENGINE_INTDIR5)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(ENGINE_INTDIR5)\ /c $<
+
+{$(ENGINE_SRC)\phaseresolver}.c{$(ENGINE_INTDIR6)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(ENGINE_INTDIR6)\ /c $<
+
+{$(ENGINE_SRC)\receivers}.c{$(ENGINE_INTDIR7)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(ENGINE_INTDIR7)\ /c $<
+
+{$(ENGINE_SRC)\util}.c{$(ENGINE_INTDIR8)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(ENGINE_INTDIR8)\ /c $<
+
+{$(ENGINE_SRC)\transport}.c{$(ENGINE_INTDIR9)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(ENGINE_INTDIR9)\ /c $<
+
+{$(ENGINE_SRC)\transport\http\common}.c{$(ENGINE_INTDIR10)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(ENGINE_INTDIR10)\ /c $<
+
+{$(ENGINE_SRC)\transport\http\util}.c{$(ENGINE_INTDIR11)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(ENGINE_INTDIR11)\ /c $<
+
+$(ENGINE_OBJS) : $(ENGINE_INTDIR) $(ENGINE_INTDIR1) $(ENGINE_INTDIR2) $(ENGINE_INTDIR3) \
+	$(ENGINE_INTDIR4) $(ENGINE_INTDIR5) $(ENGINE_INTDIR6) $(ENGINE_INTDIR7) \
+	$(ENGINE_INTDIR8) $(ENGINE_INTDIR9) $(ENGINE_INTDIR10) $(ENGINE_INTDIR11)
+
+$(AXIS2_LIBS)\$(AXIS2_ENGINE).dll : $(ENGINE_OBJS)
+	$(LD) $(LDFLAGS) $(ENGINE_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(NEETHI).lib $(LIBS) /DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_ENGINE).dll \
+	/IMPLIB:$(AXIS2_LIBS)\$(AXIS2_ENGINE).lib
+
+axis2_engine : $(AXIS2_LIBS)\$(AXIS2_ENGINE).dll
+
+
+##### end axis2 engine
+
+##### axis2 http sender
+
+SENDER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\sender
+SENDER_INTDIR = $(AXIS2_INTDIR)\http_sender
+SENDER_INTDIR1 = $(AXIS2_INTDIR)\http_sender\ssl
+SENDER_INTDIR2 = $(AXIS2_INTDIR)\http_sender\libcurl
+
+SENDER_OBJS = $(SENDER_INTDIR)\*.obj
+
+$(SENDER_INTDIR) :
+	if not exist $(SENDER_INTDIR) mkdir $(SENDER_INTDIR)
+
+$(SENDER_INTDIR1) :
+	if not exist $(SENDER_INTDIR1) mkdir $(SENDER_INTDIR1)
+
+$(SENDER_INTDIR2) :
+	if not exist $(SENDER_INTDIR2) mkdir $(SENDER_INTDIR2)
+
+{$(SENDER_SRC)}.c{$(SENDER_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(SENDER_INTDIR)\ /c $<
+
+{$(SENDER_SRC)\ssl}.c{$(SENDER_INTDIR1)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(SENDER_INTDIR1)\ /c $<
+
+{$(SENDER_SRC)\libcurl}.c{$(SENDER_INTDIR2)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(SENDER_INTDIR2)\ /c $<
+
+!if "$(ENABLE_SSL)" == "1"
+SENDER_OBJS = $(SENDER_OBJS) \
+	      $(SENDER_INTDIR1)\*.obj
+
+$(SENDER_OBJS) : $(SENDER_INTDIR) $(SENDER_INTDIR1)
+!elseif "$(ENABLE_LIBCURL)" == "1"
+SENDER_OBJS = $(SENDER_OBJS) \
+	      $(SENDER_INTDIR2)\*.obj 
+
+$(SENDER_OBJS) : $(SENDER_INTDIR) $(SENDER_INTDIR2)
+!else
+$(SENDER_OBJS) : $(SENDER_INTDIR)
+!endif
+
+$(AXIS2_LIBS)\$(AXIS2_TRANSPORT_SENDER).dll : $(SENDER_OBJS)
+	$(LD) $(LDFLAGS) $(SENDER_OBJS) $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
 	/DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_TRANSPORT_SENDER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_TRANSPORT_SENDER).lib
 
-axis2_http_receiver: 
-	$(CC) $(CFLAGS) $(AXIS2_HTTP_RECEIVER_SRC) /Fo$(AXIS2_INTDIR_TNR)\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_TNR)\*.obj $(AXUTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  \
-	/DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_TRANSPORT_RECEIVER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_TRANSPORT_RECEIVER).lib
+axis2_http_sender : $(AXIS2_LIBS)\$(AXIS2_TRANSPORT_SENDER).dll
 
-axis2_mod_addr:
-	
-	$(CC) $(CFLAGS) $(AXIS2_MOD_ADDR_SRC) /Fo$(AXIS2_INTDIR_ADDRESSING)\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_ADDRESSING)\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
-	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_MODULES)\addressing\$(AXIS2_MOD_ADDR).dll
+
+##### axis2 http senders
+
+##### axis2 http receiver
+
+RECEIVER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\receiver
+RECEIVER_INTDIR = $(AXIS2_INTDIR)\http_receiver
+
+RECEIVER_OBJS = $(RECEIVER_INTDIR)\*.obj
+
+$(RECEIVER_INTDIR) :
+	if not exist $(RECEIVER_INTDIR) mkdir $(RECEIVER_INTDIR)
+
+{$(RECEIVER_SRC)}.c{$(RECEIVER_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(RECEIVER_INTDIR)\ /c $<
+
+$(RECEIVER_OBJS) : $(RECEIVER_INTDIR)
+
+$(AXIS2_LIBS)\$(AXIS2_TRANSPORT_RECEIVER).dll : $(RECEIVER_OBJS)
+	$(LD) $(LDFLAGS) $(RECEIVER_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_TRANSPORT_RECEIVER).dll \
+	/IMPLIB:$(AXIS2_LIBS)\$(AXIS2_TRANSPORT_RECEIVER).lib
+
+axis2_http_receiver : $(AXIS2_LIBS)\$(AXIS2_TRANSPORT_RECEIVER).dll
+
+
+##### end axis2 http receiver
+
+##### axis2 mod addr
+ADDR_SRC = $(AXIS2_SOURCE_DIR)\src\modules\mod_addr
+ADDR_INTDIR = $(AXIS2_INTDIR)\addressing
+
+ADDR_OBJS = $(ADDR_INTDIR)\*.obj
+
+$(ADDR_INTDIR) :
+	if not exist $(ADDR_INTDIR) mkdir $(ADDR_INTDIR)
+
+{$(ADDR_SRC)}.c{$(ADDR_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(ADDR_INTDIR)\ /c $<
+
+$(ADDR_OBJS) : $(ADDR_INTDIR)
+
+$(AXIS2_MODULES)\addressing\$(AXIS2_MOD_ADDR).dll : $(ADDR_OBJS)
+	$(LD) $(LDFLAGS) $(ADDR_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
+	$(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_MODULES)\addressing\$(AXIS2_MOD_ADDR).dll
 	copy $(AXIS2_SOURCE_DIR)\src\modules\mod_addr\module.xml $(AXIS2_MODULES)\addressing
 
+axis2_mod_addr : $(AXIS2_MODULES)\addressing\$(AXIS2_MOD_ADDR).dll
 
 
-		
+##### end axis2 mod addr
+
 ##### simple_axis_server
-SIMPLE_AXIS2_SVR_SRC=$(AXIS2_SOURCE_DIR)\src\core\transport\http\server\simple_axis2_server\http_server_main.c
-axis2_server: 
-	if not exist $(AXIS2_INTDIR)\simple_http_server mkdir $(AXIS2_INTDIR)\simple_http_server
-	
-	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) \
-	$(SIMPLE_AXIS2_SVR_SRC) /Fo$(AXIS2_INTDIR)\simple_http_server\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\simple_http_server\http_server_main.obj $(AXUTIL).lib \
-	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
-	$(AXIS2_TRANSPORT_RECEIVER).lib  /OUT:$(AXIS2_BINS)\$(AXIS2_SERVER).exe 
-	
+SIMPLE_AXIS2_SVR_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\server\simple_axis2_server
+
+AXIS2_SVR_INTDIR = $(AXIS2_INTDIR)\simple_http_server
+
+AXIS2_SVR_OBJS = $(AXIS2_INTDIR)\simple_http_server\*.obj
+
+$(AXIS2_SVR_INTDIR) :
+	if not exist $(AXIS2_SVR_INTDIR) mkdir $(AXIS2_SVR_INTDIR)
+
+{$(SIMPLE_AXIS2_SVR_SRC)}.c{$(AXIS2_SVR_INTDIR)}.obj ::
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" \
+	$(AXIS2_INCLUDE_PATH) /Fo$(AXIS2_SVR_INTDIR)\ /c $<
+
+$(AXIS2_SVR_OBJS) : $(AXIS2_SVR_INTDIR)
+
+
+$(AXIS2_BINS)\$(AXIS2_SERVER).exe : $(AXIS2_SVR_OBJS)
+	$(LD) $(LDFLAGS) $(AXIS2_SVR_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib  /OUT:$(AXIS2_BINS)\$(AXIS2_SERVER).exe 
+		
 	copy $(AXIS2_SOURCE_DIR)\samples\server\axis2.xml $(AXIS2_BINDIR)\
 
-axis2_core: axis2_util axis2_parser axiom neethi axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server
+axis2_server : $(AXIS2_BINS)\$(AXIS2_SERVER).exe
 
-axis2_core_guththila: axis2_util guththila axis2_parser_with_guththila axiom neethi axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server
-	
-#################################
-#server modules
+##### end simple_axis2_server
 
+
+##########  server modules 
 #apache module 
 
-AXIS2_APACHE_MODULE_SRC=$(AXIS2_SOURCE_DIR)\src\core\transport\http\server\apache2\*.c
+MOD_AXIS2_SRC=$(AXIS2_SOURCE_DIR)\src\core\transport\http\server\apache2
+MOD_AXIS2_INTDIR = $(AXIS2_INTDIR)\apache_module
 
-axis2_apache_module:
-    if not exist $(AXIS2_INTDIR)\apache_module mkdir $(AXIS2_INTDIR)\apache_module
-    $(CC) $(CFLAGS) $(APACHE_INCLUE_PATH)  $(AXIS2_APACHE_MODULE_SRC) /Fo$(AXIS2_INTDIR)\apache_module\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\apache_module\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+MOD_AXIS2_OBJS = $(MOD_AXIS2_INTDIR)\*.obj
+
+$(MOD_AXIS2_INTDIR) :
+	if not exist $(MOD_AXIS2_INTDIR) mkdir $(MOD_AXIS2_INTDIR)
+
+{$(MOD_AXIS2_SRC)}.c{$(MOD_AXIS2_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) $(APACHE_INCLUE_PATH) /Fo$(MOD_AXIS2_INTDIR)\ /c $<
+
+$(MOD_AXIS2_OBJS) : $(MOD_AXIS2_INTDIR)
+
+$(AXIS2_LIBS)\mod_axis2.dll : $(MOD_AXIS2_OBJS)
+	$(LD) $(LDFLAGS) $(MOD_AXIS2_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(LIBS) $(AXIS2_ENGINE).lib $(APACHE_LIBS) /DLL /OUT:$(AXIS2_LIBS)\mod_axis2.dll
-	
+
+axis2_apache_module : $(AXIS2_LIBS)\mod_axis2.dll
+
 #mod IIS
 
-MOD_IIS_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\server\iis\*.c \
-	      $(AXIS2_SOURCE_DIR)\src\core\transport\http\server\IIS\iis_iaspi_plugin_51\*.c 
+MOD_IIS_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\server\IIS
+MOD_IIS_INTDIR = $(AXIS2_INTDIR)\mod_IIS
+MOD_IIS_INTDIR1 = $(AXIS2_INTDIR)\mod_IIS\isapi51
+
 DEF_FILE = $(AXIS2_SOURCE_DIR)\src\core\transport\http\server\IIS\mod_axis2.def
 
+MOD_IIS_OBJS = $(MOD_IIS_INTDIR)\*.obj \
+	       $(MOD_IIS_INTDIR1)\*.obj
+
+$(MOD_IIS_INTDIR) :
+	if not exist $(MOD_IIS_INTDIR) mkdir $(MOD_IIS_INTDIR)
 	
-axis2_IIS_module:
-	if not exist $(AXIS2_INTDIR)\mod_IIS mkdir $(AXIS2_INTDIR)\mod_IIS
-	$(CC) $(CFLAGS) $(MOD_IIS_SRC) /Fo$(AXIS2_INTDIR)\mod_IIS\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\mod_IIS\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+$(MOD_IIS_INTDIR1) :
+	if not exist $(MOD_IIS_INTDIR1) mkdir $(MOD_IIS_INTDIR1)
+
+
+{$(MOD_IIS_SRC)\iis_iaspi_plugin_51}.c{$(MOD_IIS_INTDIR1)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(MOD_IIS_INTDIR1)\ /c $<
+
+{$(MOD_IIS_SRC)}.c{$(MOD_IIS_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(MOD_IIS_INTDIR)\ /c $<
+
+$(MOD_IIS_OBJS) : $(MOD_IIS_INTDIR) $(MOD_IIS_INTDIR1)
+
+		
+$(AXIS2_LIBS)\mod_axis2_IIS.dll : $(MOD_IIS_OBJS)
+	$(LD) $(LDFLAGS) $(MOD_IIS_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(LIBS) Advapi32.lib $(AXIS2_ENGINE).lib /DEF:$(DEF_FILE) /DLL /OUT:$(AXIS2_LIBS)\mod_axis2_IIS.dll
+
+axis2_IIS_module : $(AXIS2_LIBS)\mod_axis2_IIS.dll
 
 ############# end modules  ###################
 
 
-################ samples ####################
-axis2_mod_log:
-	if not exist $(AXIS2_INTDIR_SAMPLES)\mod_log mkdir $(AXIS2_INTDIR_SAMPLES)\mod_log
-	if not exist $(AXIS2_SAMPLES)\logging mkdir $(AXIS2_SAMPLES)\logging
+axis2_core: axis2_util axis2_parser axiom neethi axis2_engine axis2_http_sender \
+	axis2_http_receiver axis2_mod_addr axis2_server
 
-	$(CC) $(CFLAGS)  $(AXIS2_SOURCE_DIR)\src\modules\mod_log\*.c /Fo$(AXIS2_INTDIR_SAMPLES)\mod_log\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_SAMPLES)\mod_log\*.obj $(AXUTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_SAMPLES)\logging\axis2_mod_log.dll 
+axis2_core_guththila: axis2_util guththila axis2_parser_with_guththila axiom neethi axis2_engine \
+	axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server
+
+
+##### logging module
 	
-	copy $(AXIS2_SOURCE_DIR)\src\modules\mod_log\module.xml $(AXIS2_SAMPLES)\logging
+MOD_LOG_SRC =  $(AXIS2_SOURCE_DIR)\src\modules\mod_log
+MOD_LOG_INTDIR = $(AXIS2_INTDIR)\mod_log
 
+MOD_LOG_OBJS = $(MOD_LOG_INTDIR)\*.obj
+
+$(MOD_LOG_INTDIR) :
+	if not exist $(MOD_LOG_INTDIR) mkdir $(MOD_LOG_INTDIR)
+
+
+{$(MOD_LOG_SRC)}.c{$(MOD_LOG_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(MOD_LOG_INTDIR)\ /c $<
+
+$(MOD_LOG_OBJS) : $(MOD_LOG_INTDIR)
+
+$(AXIS2_MODULES)\logging\axis2_mod_log.dll : $(MOD_LOG_OBJS)
+	$(LD) $(LDFLAGS) $(MOD_LOG_OBJS) $(AXUTIL).lib $(AXIOM).lib \
+	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_MODULES)\logging\axis2_mod_log.dll 
+	copy $(AXIS2_SOURCE_DIR)\src\modules\mod_log\module.xml $(AXIS2_MODULES)\logging
+
+axis2_mod_log: $(AXIS2_MODULES)\logging\axis2_mod_log.dll
+
+##### end logging module
+
+################ samples ####################
 #sample services
 
 axis2_services_echo:
@@ -545,8 +883,8 @@ axis2_client_mtom:
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\mtom\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
 	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\mtom.exe 
 
-	mkdir $(AXIS2_BINS)\samples\resources 
-	xcopy $(AXIS2_SOURCE_DIR)\samples\client\mtom\resources $(AXIS2_BINS)\samples\resources 
+	if not exist  $(AXIS2_BINS)\samples\resources mkdir $(AXIS2_BINS)\samples\resources 
+	xcopy /Y $(AXIS2_SOURCE_DIR)\samples\client\mtom\resources $(AXIS2_BINS)\samples\resources 
 
 axis2_client_userguide:
 	if not exist $(AXIS2_INTDIR)\userguide\echo_blocking mkdir $(AXIS2_INTDIR)\userguide\echo_blocking
@@ -659,7 +997,7 @@ copy_samples:
 
 
 
-	xcopy /E /I $(AXIS2_SOURCE_DIR)\samples\user_guide $(AXIS2_BINDIR)\samples\user_guide
+	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\user_guide $(AXIS2_BINDIR)\samples\user_guide
 
 	if not exist $(AXIS2_BINDIR)\samples\server mkdir $(AXIS2_BINDIR)\samples\server
 
@@ -712,13 +1050,14 @@ copy_include:
 
 	if exist $(AXIS2_BINDIR)\include\Makefile.am del $(AXIS2_BINDIR)\include\Makefile.am
 
-    xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\neethi\include $(AXIS2_BINDIR)\include\
+    	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\neethi\include $(AXIS2_BINDIR)\include\
 	
 
 copy_vc_projects:
-      if not exist $(AXIS2_BINDIR)\ides mkdir $(AXIS2_BINDIR)\ides
-      if not exist $(AXIS2_BINDIR)\ides\vc mkdir $(AXIS2_BINDIR)\ides\vc
-      if not exist $(AXIS2_BINDIR)\ides\vc\samples mkdir $(AXIS2_BINDIR)\ides\vc\samples
+	if not exist $(AXIS2_BINDIR)\ides mkdir $(AXIS2_BINDIR)\ides
+	if not exist $(AXIS2_BINDIR)\ides\vc mkdir $(AXIS2_BINDIR)\ides\vc
+	if not exist $(AXIS2_BINDIR)\ides\vc\samples mkdir $(AXIS2_BINDIR)\ides\vc\samples
+
 
 	if not exist $(AXIS2_BINDIR)\ides\vc\samples\clients mkdir $(AXIS2_BINDIR)\ides\vc\samples\clients
 	
@@ -785,7 +1124,8 @@ mv_dist:
 	cd $(AXIS2_BINDIR)
 	cd ..
 	if exist $(AXIS2_RELEASE_DIR) rmdir /S /Q $(AXIS2_RELEASE_DIR)
-	rename  deploy $(AXIS2_RELEASE_DIR)
+#	rename  deploy $(AXIS2_RELEASE_DIR)
+	xcopy /Y /E /I deploy $(AXIS2_RELEASE_DIR)
 
 
 all_services: axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_services_calculator 
@@ -797,60 +1137,40 @@ axis2_samples: axis2_mod_log all_services all_clients
 axis2_server_modules: axis2_apache_module axis2_IIS_module
 
 ################################# tools ##################################################
-
 # tcpmon
+TCPMON_SRC = $(AXIS2_SOURCE_DIR)\tools\tcpmon\src
+TCPMON_INTDIR = $(AXIS2_INTDIR)\tools\tcpmon
 
-tcpmon: 
-	if not exist $(AXIS2_INTDIR)\tools\tcpmon mkdir $(AXIS2_INTDIR)\tools\tcpmon
+TCPMON_OBJS = $(TCPMON_INTDIR)\*.obj
+
+$(TCPMON_INTDIR) : 
+	if not exist $(TCPMON_INTDIR) mkdir $(TCPMON_INTDIR)
+
+{$(TCPMON_SRC)}.c{$(TCPMON_INTDIR)}.obj ::
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_CRT_SECURE_NO_DEPRECATE" $(AXIS2_INCLUDE_PATH) /Fo$(TCPMON_INTDIR)\ /c $<
+
+$(TCPMON_OBJS) : $(TCPMON_INTDIR)
+
+$(AXIS2_TOOLS)\tcpmon.exe : $(TCPMON_OBJS)
 	if not exist $(AXIS2_TOOLS) mkdir $(AXIS2_TOOLS)
-	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_CRT_SECURE_NO_DEPRECATE" $(AXIS2_INCLUDE_PATH) \
-	/I $(AXIS2_SOURCE_DIR)\tools\tcpmon\include \
-	$(AXIS2_SOURCE_DIR)\tools\tcpmon\src\*.c /Fo$(AXIS2_INTDIR)\tools\tcpmon\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\tools\tcpmon\*.obj $(AXUTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib /OUT:$(AXIS2_TOOLS)\tcpmon.exe
+	$(LD) $(LDFLAGS) $(TCPMON_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib /OUT:$(AXIS2_TOOLS)\tcpmon.exe
+
+tcpmon: $(AXIS2_TOOLS)\tcpmon.exe
+
+
 
 ##############################################################################################
-#axis2.dll
 
-SRC_DIR = $(AXIS2_SOURCE_DIR)\util\src\platforms\windows\*.c \
-		$(AXIS2_SOURCE_DIR)\util\src\minizip\*.c \
-		$(AXIS2_SOURCE_DIR)\util\src\*.c \
-		$(AXIS2_SOURCE_DIR)\axiom\src\parser\libxml2\*.c \
-		$(AXIS2_SOURCE_DIR)\axiom\src\om\*.c \
-		$(AXIS2_SOURCE_DIR)\axiom\src\soap\*.c \
-		$(AXIS2_SOURCE_DIR)\axiom\src\attachments\*.c \
-		$(AXIS2_SOURCE_DIR)\axiom\src\util\*.c \
-		$(AXIS2_SOURCE_DIR)\neethi\src\*.c \
-		$(AXIS2_SOURCE_DIR)\neethi\src\secpolicy\model\*.c \
-		$(AXIS2_SOURCE_DIR)\neethi\src\secpolicy\builder\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\addr\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\clientapi\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\context\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\deployment\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\description\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\engine\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\phaseresolver\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\receivers\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\util\*.c \
-		$(AXIS2_SOURCE_DIR)\src\core\transport\http\*.c \
-		$(AXIS2_SOURCE_DIR)\src\wsdl\*.c \
-
-axis2:
-	$(CC) $(CFLAGS) /Fo $(AXIS2_INCLUDE_PATH) $(SRC_DIR) /D "_WINDLL" /Gm /Zi /c
-	$(LD) $(LDFLAGS) *.obj Rpcrt4.lib Ws2_32.lib zdll.lib libxml2.lib \
-	/DLL /OUT:axis2.dll /IMPLIB:axis2.lib 
+build: deploy axis2_core axis2_samples copy_include
 	
-##############################################################################################
+build_with_guththila : deploy axis2_core_guththila axis2_samples copy_include
 
-build: clean_make_dir clean deploy axis2_core axis2_samples copy_include clean_make_dir 
-
-build_with_guththila : clean_make_dir clean deploy axis2_core_guththila axis2_samples copy_include clean_make_dir
-
+	
 ##############################################################################################
 
 all: $(PARSER)
 
-install: all
-
-dist: all axis2_apache_module tcpmon copy_extra copy_samples copy_vc_projects mv_dist
+install: all 
+	
+dist: install axis2_apache_module axis2_IIS_module tcpmon copy_extra copy_samples copy_vc_projects mv_dist
 
