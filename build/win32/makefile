@@ -115,7 +115,7 @@ AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(LIBCURL_BIN_DIR)\include
 
 ##################### compiler options
 
-CC = cl.exe 
+CC = @cl.exe 
 CFLAGS = /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT"  \
 	 /D "_CRT_SECURE_NO_DEPRECATE" /D "_CRT_SECURE_NO_WARNINGS" \
          /D "AXIS2_SVR_MULTI_THREADED" /w /nologo $(AXIS2_INCLUDE_PATH) \
@@ -131,7 +131,7 @@ CFLAGS = $(CFLAGS) /D "AXIS2_LIBCURL_ENABLED"
 
 ################### linker options
 
-LD = link.exe
+LD = @link.exe
 LDFLAGS = /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXSLT_BIN_DIR)\lib \
 	  /LIBPATH:$(LIBXML2_BIN_DIR)\lib  /LIBPATH:$(APACHE_BIN_DIR)\lib \
 	  /LIBPATH:$(ZLIB_BIN_DIR)\lib
