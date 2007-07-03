@@ -321,10 +321,10 @@ axis2_phase_resolver_build_execution_chains(
                 }
                 else
                 {
-                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "This handler is\
-                        trying to added to system pre defined phases , but those\
-                        handlers are already added to global chain which run\
-                        irrespective of the service");
+                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "This handler is"
+                        " trying to added to system pre defined phases , but those"
+                        " handlers are already added to global chain which run"
+                        " irrespective of the service");
                 }
             }
         }

@@ -123,11 +123,11 @@ axiom_soap_body_disp_find_svc(
                                 if (uri)
                                 {
                                     axis2_char_t **url_tokens = NULL;
-                                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                                                    "Checking for service \
-                                                     using SOAP message body's\
-                                                     first child's namespace \
-                                                     URI : %s",uri);
+                                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+                                                    "Checking for service "
+                                                     "using SOAP message body's "
+                                                     "first child's namespace "
+                                                     "URI : %s",uri);
 
                                     url_tokens = 
                                         axutil_parse_request_url_for_svc_and_op(
