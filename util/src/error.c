@@ -338,7 +338,7 @@ axutil_error_init()
         "axiom_xml_reader returned NULL value";
     /* xml:parser */
     axutil_error_messages[AXIS2_ERROR_CREATING_XML_STREAM_READER] =
-        "error occured creating xml stream writer";
+        "error occured creating xml stream reader";
     axutil_error_messages[AXIS2_ERROR_CREATING_XML_STREAM_WRITER] =
         "error occured creating xml stream writer";
     axutil_error_messages[AXIS2_ERROR_WRITING_ATTRIBUTE] =
