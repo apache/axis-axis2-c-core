@@ -1,7 +1,7 @@
 prglibdir=$(prefix)/services/math
 prglib_LTLIBRARIES = libmath.la
 prglib_DATA=services.xml 
-EXTRA_DIST = services.xml math.mk
+EXTRA_DIST = services.xml math.mk math.h
 noinst_HEADERS = math.h
 SUBDIRS =
 libmath_la_SOURCES = math.c math_skeleton.c

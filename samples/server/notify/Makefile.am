@@ -1,7 +1,7 @@
 prglibdir=$(prefix)/services/notify
 prglib_LTLIBRARIES = libnotify.la
 prglib_DATA= services.xml
-EXTRA_DIST = services.xml notify.mk
+EXTRA_DIST = services.xml notify.mk notify.h
 noinst_HEADERS = notify.h
 SUBDIRS =
 libnotify_la_SOURCES = notify.c notify_skeleton.c
