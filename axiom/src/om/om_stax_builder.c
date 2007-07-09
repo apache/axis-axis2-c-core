@@ -823,6 +823,38 @@ axiom_stax_builder_free(axiom_stax_builder_t *om_builder,
     return;
 }
 
+AXIS2_EXTERN void AXIS2_CALL 
+axiom_stax_builder_free_self(axiom_stax_builder_t *om_builder,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if (!om_builder)
+    {
+        return;
+    }
+    if (om_builder->declared_namespaces)
+    {
+        axutil_hash_free(om_builder->declared_namespaces, env);
+        om_builder->declared_namespaces = NULL;
+    }
+
+	if (om_builder->parser)
+    {
+        axiom_xml_reader_free(om_builder->parser, env);
+        om_builder->parser = NULL;
+    }
+	if (om_builder->document)
+    {
+        axiom_document_free_self(om_builder->document, env);
+        om_builder->document = NULL;
+    }
+
+    AXIS2_FREE(env->allocator, om_builder);
+    
+    return;
+}
+
+
 AXIS2_EXTERN axiom_document_t* AXIS2_CALL
 axiom_stax_builder_get_document(axiom_stax_builder_t *om_builder,
     const axutil_env_t *env)

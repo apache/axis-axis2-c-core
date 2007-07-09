@@ -67,6 +67,15 @@ extern "C"
     AXIS2_EXTERN void AXIS2_CALL
     axiom_document_free(struct axiom_document *document,
             const axutil_env_t *env);
+	 /**
+      * Free document struct only, Does not free the associated axiom struture.
+      * @param document pointer to axiom_document_t struct to be freed
+      * @param env Environment. MUST NOT be NULL  
+      * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+      */
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_document_free_self(struct axiom_document *document,
+            const axutil_env_t *env);
 
     /** Builds the next node if the builder is not finished with input xml stream
       * @param document document whose next node is to be built. cannot be NULL

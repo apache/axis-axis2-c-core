@@ -69,7 +69,7 @@ extern "C"
             const axutil_env_t *env);
    
    /**
-     * Free op
+     * Free the build struct instance and its associated document,axiom tree.
      * @param builder pointer to builder struct
      * @param env environment, MUST NOT be NULL
      * @return status of the op AXIS2_SUCCESS on success,
@@ -77,6 +77,18 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_stax_builder_free(struct axiom_stax_builder *builder,
+        const axutil_env_t *env);
+
+	/**
+     * Free the build struct instance and its associated document.
+		does not free the associated axiom tree.
+     * @param builder pointer to builder struct
+     * @param env environment, MUST NOT be NULL
+     * @return status of the op AXIS2_SUCCESS on success,
+     *     AXIS2_FAILURE on error.
+     */
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_stax_builder_free_self(struct axiom_stax_builder *builder,
         const axutil_env_t *env);
 
    /** Gets the document associated with the builder

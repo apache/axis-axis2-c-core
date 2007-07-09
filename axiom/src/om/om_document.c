@@ -81,6 +81,14 @@ axiom_document_free(axiom_document_t *document,
     return;
 }
 
+AXIS2_EXTERN void AXIS2_CALL
+axiom_document_free_self(axiom_document_t *document,
+    const axutil_env_t *env)
+{
+    AXIS2_FREE(env->allocator, document);
+    return;
+}
+
 
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 axiom_document_build_next(axiom_document_t *document,
