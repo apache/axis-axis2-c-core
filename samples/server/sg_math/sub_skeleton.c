@@ -61,9 +61,6 @@ int AXIS2_CALL
 sub_init(axis2_svc_skeleton_t *svc_skeleton,
         const axutil_env_t *env)
 {
-    svc_skeleton->func_array = axutil_array_list_create(env, 0);
-    axutil_array_list_add(svc_skeleton->func_array, env, "sub");
-
     /* Any initialization stuff of sub goes here */
     return AXIS2_SUCCESS;
 }

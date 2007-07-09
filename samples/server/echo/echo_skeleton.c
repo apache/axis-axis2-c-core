@@ -70,11 +70,6 @@ int AXIS2_CALL
 echo_init(axis2_svc_skeleton_t *svc_skeleton,
         const axutil_env_t *env)
 {
-    svc_skeleton->func_array = axutil_array_list_create(env, 0);
-    /* Add the implemented operation names of the service to
-     * the array list of functions 
-     */
-    axutil_array_list_add(svc_skeleton->func_array, env, "echoString");
     /* Any initialization stuff of echo service should go here */
     return AXIS2_SUCCESS;
 }

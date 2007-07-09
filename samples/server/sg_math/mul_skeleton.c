@@ -62,9 +62,6 @@ int AXIS2_CALL
 mul_init(axis2_svc_skeleton_t *svc_skeleton,
         const axutil_env_t *env)
 {
-    svc_skeleton->func_array = axutil_array_list_create(env, 0);
-    axutil_array_list_add(svc_skeleton->func_array, env, "mul");
-
     /* Any initialization stuff of mul goes here */
     return AXIS2_SUCCESS;
 }
