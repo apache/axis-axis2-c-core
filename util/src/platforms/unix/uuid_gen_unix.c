@@ -221,26 +221,22 @@ axutil_uuid_get_mac_addr()
     char buf[1024];
     int ok = AXIS2_FALSE;
 
-
     if ((s = socket(PF_INET, SOCK_DGRAM, 0)) < 0)
         return NULL;
 
     ifc.ifc_len = sizeof(buf);
     ifc.ifc_buf = buf;
     ioctl(s, SIOCGIFCONF, &ifc);
-
     IFR = ifc.ifc_req;
 
     for(i = ifc.ifc_len/sizeof(struct ifreq); --i >=0; IFR++)
     {
         strcpy(ifr.ifr_name, IFR->ifr_name);
-    
         /*sprintf(ifr.ifr_name, "eth0");*/
         if (ioctl(s, SIOCGIFFLAGS, &ifr) == 0)
         {
             if(!(ifr.ifr_flags & IFF_LOOPBACK))
             {
-                
                 if (ioctl(s, SIOCGIFHWADDR, &ifr) == 0)
                 {
                     ok = AXIS2_TRUE;
@@ -249,12 +245,17 @@ axutil_uuid_get_mac_addr()
             }
         }
     }
+    buffer = (char*)malloc(6 * sizeof(char));
     if(ok)
     {
-        buffer = (char*)malloc(6 * sizeof(char));
         sa = (struct sockaddr *) & ifr.ifr_addr;
         for (i = 0; i < 6; i++)
             buffer[i] = (unsigned char)(sa->sa_data[i] & 0xff);
+    }
+    else
+    {
+        for (i = 0; i < 6; i++)
+            buffer[i] = (unsigned char)(AXIS2_LOCAL_MAC_ADDR[i]);
     }
     close(s);
     return buffer;
