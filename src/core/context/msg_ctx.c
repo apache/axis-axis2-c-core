@@ -1151,7 +1151,7 @@ axis2_msg_ctx_get_property_value(
     
     if (!property)
     {
-        AXIS2_LOG_ERROR(env->log, 
+        AXIS2_LOG_WARNING(env->log, 
                         AXIS2_LOG_SI, 
                         "%s not set in message context", property_str);
         return NULL;
@@ -1160,7 +1160,7 @@ axis2_msg_ctx_get_property_value(
     property_value = axutil_property_get_value(property, env);
     if (!property_value)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, 
                         "%s properties not set in message context", 
                         property_str);
         return NULL;
