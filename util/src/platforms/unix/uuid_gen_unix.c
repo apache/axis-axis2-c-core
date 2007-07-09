@@ -255,7 +255,7 @@ axutil_uuid_get_mac_addr()
     else
     {
         for (i = 0; i < 6; i++)
-            buffer[i] = (unsigned char)(AXIS2_LOCAL_MAC_ADDR[i]);
+            buffer[i] = (unsigned char)((AXIS2_LOCAL_MAC_ADDR[i]) - '0');
     }
     close(s);
     return buffer;
