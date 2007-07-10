@@ -101,6 +101,12 @@ extern "C"
     rp_wss11_get_require_signature_confirmation(rp_wss11_t *wss11,
             const axutil_env_t *env);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_wss11_increment_ref(
+            rp_wss11_t *wss11,
+            const axutil_env_t *env);
+    
+
 
 #ifdef __cplusplus
 }

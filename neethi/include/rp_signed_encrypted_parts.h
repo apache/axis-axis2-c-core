@@ -68,6 +68,12 @@ extern "C"
         const axutil_env_t *env,
         rp_header_t *header);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_signed_encrypted_parts_increment_ref(
+        rp_signed_encrypted_parts_t *signed_encrypted_parts,
+        const axutil_env_t *env);
+    
+
 #ifdef __cplusplus
 }
 #endif

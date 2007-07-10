@@ -68,6 +68,12 @@ extern "C"
             const axutil_env_t *env,
             axis2_char_t *xpath_version);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_signed_encrypted_elements_increment_ref(
+            rp_signed_encrypted_elements_t *signed_encrypted_elements,
+            const axutil_env_t *env);
+
+
 
 #ifdef __cplusplus
 }

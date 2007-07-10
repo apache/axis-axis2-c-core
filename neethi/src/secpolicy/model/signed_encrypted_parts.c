@@ -24,7 +24,7 @@ struct rp_signed_encrypted_parts_t
     axis2_bool_t body;
     axis2_bool_t signedparts;
     axutil_array_list_t *headers;
-
+    int ref;
 };
 
 AXIS2_EXTERN rp_signed_encrypted_parts_t *AXIS2_CALL 
@@ -64,7 +64,10 @@ rp_signed_encrypted_parts_free(rp_signed_encrypted_parts_t *signed_encrypted_par
     
     if(signed_encrypted_parts)
     {
-        
+        if (--(signed_encrypted_parts->ref) > 0)
+        {
+            return;
+        }
         if(signed_encrypted_parts->headers)
         {
             int i = 0;
@@ -81,6 +84,7 @@ rp_signed_encrypted_parts_free(rp_signed_encrypted_parts_t *signed_encrypted_par
             }
             axutil_array_list_free(signed_encrypted_parts->headers, env);
             signed_encrypted_parts->headers = NULL;
+            signed_encrypted_parts->ref = 0;
 
         }
         AXIS2_FREE(env->allocator,signed_encrypted_parts);
@@ -156,3 +160,13 @@ rp_signed_encrypted_parts_add_header(rp_signed_encrypted_parts_t *signed_encrypt
     return AXIS2_SUCCESS;
 }
 
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_signed_encrypted_parts_increment_ref(
+    rp_signed_encrypted_parts_t *signed_encrypted_parts,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    signed_encrypted_parts->ref++;
+    return AXIS2_SUCCESS;
+}

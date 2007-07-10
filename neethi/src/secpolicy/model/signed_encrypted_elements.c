@@ -24,6 +24,7 @@ struct rp_signed_encrypted_elements_t
     axis2_bool_t signedelements;
     axutil_array_list_t *xpath_expressions;
     axis2_char_t *xpath_version;
+    int ref;
 
 };
 
@@ -53,6 +54,7 @@ rp_signed_encrypted_elements_create(const axutil_env_t *env)
     }
     
     signed_encrypted_elements->xpath_version = NULL;
+    signed_encrypted_elements->ref = 0;
 
     return signed_encrypted_elements;
 
@@ -66,6 +68,10 @@ rp_signed_encrypted_elements_free(rp_signed_encrypted_elements_t *signed_encrypt
     
     if(signed_encrypted_elements)
     {
+        if (--(signed_encrypted_elements->ref) > 0)
+        {
+            return;
+        }
         
         if(signed_encrypted_elements->xpath_expressions)
         {
@@ -159,3 +165,14 @@ rp_signed_encrypted_elements_set_xpath_version(rp_signed_encrypted_elements_t *s
     signed_encrypted_elements->xpath_version = xpath_version;
     return AXIS2_SUCCESS;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_signed_encrypted_elements_increment_ref(
+    rp_signed_encrypted_elements_t *signed_encrypted_elements,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    signed_encrypted_elements->ref++;
+    return AXIS2_SUCCESS;
+}
+

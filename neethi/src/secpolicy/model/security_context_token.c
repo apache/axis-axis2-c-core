@@ -25,6 +25,7 @@ struct rp_security_context_token_t
     axis2_bool_t derivedkeys;
     axis2_bool_t require_external_uri_ref;
     axis2_bool_t sc10_security_context_token;
+    int ref;
 };
 
 AXIS2_EXTERN rp_security_context_token_t *AXIS2_CALL 
@@ -46,7 +47,8 @@ rp_security_context_token_create(const axutil_env_t *env)
     security_context_token->derivedkeys = AXIS2_FALSE;
     security_context_token->require_external_uri_ref = AXIS2_FALSE;
     security_context_token->sc10_security_context_token = AXIS2_FALSE;
-    
+    security_context_token->ref = 0;
+
     return security_context_token;
 
 }
@@ -60,6 +62,11 @@ rp_security_context_token_free(
     
     if(security_context_token)
     {
+        if (--(security_context_token->ref) > 0)
+        {
+            return;
+        }
+        
         AXIS2_FREE(env->allocator, security_context_token);
         security_context_token = NULL;
     }
@@ -164,3 +171,14 @@ rp_security_context_token_set_sc10_security_context_token(
 
     return AXIS2_SUCCESS;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_security_context_token_increment_ref(
+    rp_security_context_token_t *security_context_token,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    security_context_token->ref++;
+    return AXIS2_SUCCESS;
+}
+

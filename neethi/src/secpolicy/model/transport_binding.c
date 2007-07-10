@@ -23,6 +23,7 @@ struct rp_transport_binding_t
 {
     rp_binding_commons_t *binding_commons;
     rp_property_t *transport_token;
+    int ref;
 };
 
 AXIS2_EXTERN rp_transport_binding_t *AXIS2_CALL 
@@ -42,7 +43,8 @@ rp_transport_binding_create(const axutil_env_t *env)
     }
     transport_binding->binding_commons = NULL;
     transport_binding->transport_token = NULL;
-    
+    transport_binding->ref = 0;
+
     return transport_binding;
 
 }
@@ -56,6 +58,10 @@ rp_transport_binding_free(
     
     if(transport_binding)
     {
+        if (--(transport_binding->ref) > 0)
+        { 
+            return;
+        }
         if(transport_binding->binding_commons)
         {
             rp_binding_commons_free(transport_binding->binding_commons,env);
@@ -122,3 +128,14 @@ rp_transport_binding_set_transport_token(
     transport_binding->transport_token = transport_token; 
     return AXIS2_SUCCESS;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_transport_binding_increment_ref(
+    rp_transport_binding_t *transport_binding,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    transport_binding->ref++;
+    return AXIS2_SUCCESS;
+}
+

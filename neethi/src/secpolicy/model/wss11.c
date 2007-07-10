@@ -29,6 +29,7 @@ struct rp_wss11_t
     axis2_bool_t must_support_ref_encryptedkey;
     axis2_bool_t require_signature_confirmation;
     axis2_bool_t must_support_direct_reference;
+    int ref;
 };
 
 AXIS2_EXTERN rp_wss11_t *AXIS2_CALL
@@ -54,6 +55,7 @@ rp_wss11_create(const axutil_env_t *env)
     wss11->must_support_ref_encryptedkey = AXIS2_FALSE;
     wss11->require_signature_confirmation = AXIS2_FALSE;
     wss11->must_support_direct_reference = AXIS2_TRUE;
+    wss11->ref = 0;
 
     return wss11;
 
@@ -67,6 +69,10 @@ rp_wss11_free(rp_wss11_t *wss11,
     
     if(wss11)
     {
+        if (--(wss11->ref) > 0)
+        {
+            return;
+        }
         AXIS2_FREE(env->allocator, wss11);
         wss11 = NULL;
     }
@@ -228,3 +234,14 @@ rp_wss11_set_require_signature_confirmation(rp_wss11_t *wss11,
     return AXIS2_SUCCESS;
     
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_wss11_increment_ref(
+    rp_wss11_t *wss11,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    wss11->ref++;
+    return AXIS2_SUCCESS;
+}
+

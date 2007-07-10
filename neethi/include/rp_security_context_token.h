@@ -83,6 +83,12 @@ extern "C"
         const axutil_env_t *env,
         axis2_bool_t sc10_security_context_token);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_security_context_token_increment_ref(
+        rp_security_context_token_t *security_context_token,
+        const axutil_env_t *env);
+            
+
 #ifdef __cplusplus
 }
 #endif

@@ -23,6 +23,7 @@ struct rp_https_token_t
     axis2_char_t *inclusion;
     axis2_bool_t derivedkeys;
     axis2_bool_t require_client_certificate;
+    int ref;
 };
 
 AXIS2_EXTERN rp_https_token_t *AXIS2_CALL 
@@ -43,7 +44,8 @@ rp_https_token_create(const axutil_env_t *env)
     https_token->inclusion = RP_INCLUDE_ALWAYS;
     https_token->derivedkeys = AXIS2_FALSE;
     https_token->require_client_certificate = AXIS2_FALSE;
-  
+    https_token->ref = 0;
+
     return https_token;
 
 }
@@ -56,6 +58,10 @@ rp_https_token_free(rp_https_token_t *https_token,
     
     if(https_token)
     {
+        if (--(https_token->ref) > 0)
+        {
+            return;
+        }
         AXIS2_FREE(env->allocator, https_token);
         https_token = NULL;
     }
@@ -131,3 +137,14 @@ rp_https_token_set_require_client_certificate(rp_https_token_t *https_token,
 
     return AXIS2_SUCCESS;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_https_token_increment_ref(
+    rp_https_token_t *https_token,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    https_token->ref++;
+    return AXIS2_SUCCESS;
+}
+

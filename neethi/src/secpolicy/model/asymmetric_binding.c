@@ -23,6 +23,7 @@ struct rp_asymmetric_binding_t
     rp_symmetric_asymmetric_binding_commons_t *symmetric_asymmetric_binding_commons;
     rp_property_t *initiator_token;
     rp_property_t *recipient_token;
+    int ref;
 };
 
 AXIS2_EXTERN rp_asymmetric_binding_t *AXIS2_CALL 
@@ -43,7 +44,8 @@ rp_asymmetric_binding_create(const axutil_env_t *env)
     asymmetric_binding->symmetric_asymmetric_binding_commons = NULL;
     asymmetric_binding->initiator_token = NULL;
     asymmetric_binding->recipient_token = NULL;
-    
+    asymmetric_binding->ref = 0;
+
     return asymmetric_binding;
 
 }
@@ -57,6 +59,12 @@ rp_asymmetric_binding_free(
     
     if(asymmetric_binding)
     {
+
+        if (--(asymmetric_binding->ref) > 0)
+        {
+            return;
+        }
+
         if(asymmetric_binding->symmetric_asymmetric_binding_commons)
         {
             rp_symmetric_asymmetric_binding_commons_free(
@@ -157,3 +165,14 @@ rp_asymmetric_binding_get_recipient_token(
         
     return asymmetric_binding->recipient_token;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_asymmetric_binding_increment_ref(
+    rp_asymmetric_binding_t *asymmetric_binding,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    asymmetric_binding->ref++;
+    return AXIS2_SUCCESS;
+}
+

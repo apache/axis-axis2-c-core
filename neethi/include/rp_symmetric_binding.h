@@ -85,6 +85,12 @@ extern "C"
         rp_symmetric_binding_t *symmetric_binding,
         const axutil_env_t *env);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_symmetric_binding_increment_ref(
+        rp_symmetric_binding_t *symmetric_binding,
+        const axutil_env_t *env);
+    
+
 #ifdef __cplusplus
 }
 #endif
