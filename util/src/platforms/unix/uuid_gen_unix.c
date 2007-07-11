@@ -43,7 +43,9 @@
 #  include <net/if_dl.h>
 # endif
 #endif
-
+#ifdef IS_MACOSX
+#include <ifaddrs.h>
+#endif
 #include <platforms/unix/axutil_uuid_gen_unix.h>
 #include <platforms/axutil_platform_auto_sense.h>
 
@@ -272,60 +274,40 @@ axutil_uuid_get_mac_addr()
 char * AXIS2_CALL
 axutil_uuid_get_mac_addr()
 {
-    struct ifconf ifc;
-    struct ifreq *ifr;
-    int sockfd;
-    char buffer[512], *cp, *cplim;
+    struct ifaddrs *ifap;
+    struct ifaddrs *ifap_head;
+    const struct sockaddr_dl *sdl;
+    unsigned char *ucp;
+    int i;
+    char *data_ptr;
 
-    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sockfd < 0)
-    {
-        perror("socket failed");
+    if (getifaddrs(&ifap_head) < 0)
         return NULL;
-    }
-
-    ifc.ifc_len = 512;
-    ifc.ifc_buf = buffer;
-
-    if (ioctl(sockfd, SIOCGIFCONF, (char *)&ifc) < 0)
+    for (ifap = ifap_head; ifap != NULL; ifap = ifap->ifa_next) 
     {
-        perror("ioctl error");
-        close(sockfd);
-        return NULL;
-    }
-
-    ifr = ifc.ifc_req;
-
-    cplim = buffer + ifc.ifc_len;
-
-    char * macaddr = NULL;
-
-    for (cp = buffer; cp < cplim && macaddr == NULL;)
-    {
-        ifr = (struct ifreq *)cp;
-        if (ifr->ifr_addr.sa_family == AF_LINK)
+        if (ifap->ifa_addr != NULL && ifap->ifa_addr->sa_family == AF_LINK) 
         {
-            struct sockaddr_dl *sdl = (struct sockaddr_dl *) & ifr->ifr_addr;
-
-            /* just take the ethernet adapters */
-            if (sdl->sdl_type == IFT_ETHER)
+            sdl = (const struct sockaddr_dl *)(void *)ifap->ifa_addr;
+            ucp = (unsigned char *)(sdl->sdl_data + sdl->sdl_nlen);
+            if (sdl->sdl_alen > 0) 
             {
-                macaddr = (char *)ether_ntoa(LLADDR(sdl));
+                data_ptr = malloc(6*sizeof(char));
+                for (i = 0; i < 6 && i < sdl->sdl_alen; i++, ucp++)
+                    data_ptr[i] = (unsigned char)(*ucp & 0xff);
+                
+                freeifaddrs(ifap_head);
+                return data_ptr;
             }
-        }
-        cp += sizeof(ifr->ifr_name) + max(sizeof(ifr->ifr_addr), ifr->ifr_addr.sa_len);
-
+         }
     }
-
-    close(sockfd);
-    return macaddr;
+    freeifaddrs(ifap_head);
+    return NULL;
 }
 # else /* Solaris-ish */
 
 /* code modified from that posted on:
 * http://forum.sun.com/jive/thread.jspa?threadID=84804&tstart=30
 */
-
 
 char * AXIS2_CALL
 axutil_uuid_get_mac_addr()
@@ -361,67 +343,5 @@ axutil_uuid_get_mac_addr()
 
     return data_ptr;
 }
-
-/*
-    int sock;
-    int i;
-    struct lifconf lic;
-    struct lifreq *lifrs;
-    struct lifnum num;
-*/
-    /* How many interfaces do we have? */
- /*   sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_IP);
-    num.lifn_family = AF_INET;
-    num.lifn_flags = 0;
-    ioctl(sock, SIOCGLIFNUM, &num);
-*/
-    /* get details of the interfaces */
- /*   lifrs = malloc((num.lifn_count + 1) * sizeof(*lifrs));
-    if (! lifrs)
-    {*/
-        /*exit(1); *//* what is the right error handling here ? */
-/*    }
-    lic.lifc_family = AF_INET;
-    lic.lifc_flags = 0;
-    lic.lifc_len = sizeof(lifrs);
-    lic.lifc_buf = (caddr_t)lifrs;
-    ioctl(sock, SIOCGLIFCONF, &lic);
-*/
-    /* Get the ethernet address for each of them */
- /*   for (i = 0;i < num.lifn_count;i++)
-    {
-        struct sockaddr_in *soapip, *soapmac;
-        struct arpreq ar;
-*/
-        /* Get IP address of interface i */
- /*       ioctl(sock, SIOCGLIFADDR, &(lifrs[ i ]));
-        soapip = (struct sockaddr_in *) & (lifrs[ i ].lifr_addr);
-*/
-
-        /* Get ethernet address */
-/*        soapmac = (struct sockaddr_in *) & (ar.arp_pa);
-        *soapmac = *soapip;
-
-        if (ioctl(sock, SIOCGARP, &ar) == 0)
-        {
-            int j;
-            char *buffer = malloc(6);
-
-            if (buffer)
-            {
-                for (j = 0 ; j < 6 ; ++j)
-                {
-                    buffer[j] = ((unsigned char *) & (ar.arp_ha.sa_data))[j];
-                }
-            }
-            close(sock);
-            free(lifrs);
-            return buffer;
-        }
-    }
-    close(sock);
-    free(lifrs);
-    return NULL;
-}*/
 # endif
 #endif
