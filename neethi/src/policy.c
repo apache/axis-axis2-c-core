@@ -95,6 +95,16 @@ neethi_policy_free(neethi_policy_t *neethi_policy,
             axutil_array_list_free(neethi_policy->policy_components , env);
             neethi_policy->policy_components = NULL;
         }
+        if(neethi_policy->id)
+        {
+            AXIS2_FREE(env->allocator, neethi_policy->id);
+            neethi_policy->id = NULL;
+        }   
+        if(neethi_policy->name)
+        {
+            AXIS2_FREE(env->allocator, neethi_policy->name);
+            neethi_policy->name = NULL;
+        }    
         AXIS2_FREE(env->allocator, neethi_policy);
         neethi_policy = NULL;
     }

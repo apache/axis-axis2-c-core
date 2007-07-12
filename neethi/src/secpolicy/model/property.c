@@ -172,8 +172,19 @@ rp_property_set_value(rp_property_t *property,
     if(type == RP_SUPPORTING_SIGNED_SUPPORTING)
     {
         rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *)value, env);
+    }
+    if(type == RP_BINDING_ASYMMETRIC)
+    {
+        rp_asymmetric_binding_increment_ref((rp_asymmetric_binding_t *)value, env);
+    }
+    if(type == RP_BINDING_TRANSPORT)
+    {
+        rp_transport_binding_increment_ref((rp_transport_binding_t *)value, env);
     }    
-
+    if(type == RP_BINDING_SYMMETRIC)
+    {
+        rp_symmetric_binding_increment_ref((rp_symmetric_binding_t *)value, env);
+    }    
     property->value =(void *)value; 
 
     return AXIS2_SUCCESS;

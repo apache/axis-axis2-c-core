@@ -80,70 +80,70 @@ rp_secpolicy_free(
     {
         if(secpolicy->binding)
         {
-            rp_property_free(secpolicy->binding,env);
+            rp_property_free(secpolicy->binding, env);
             secpolicy->binding = NULL;
         }
         if(secpolicy->wss)
         {
-            rp_property_free(secpolicy->wss,env);            
+            rp_property_free(secpolicy->wss, env);            
             secpolicy->wss = NULL;
         }
         if(secpolicy->supporting_tokens)
         {
-            rp_supporting_tokens_free(secpolicy->supporting_tokens,env);
+            rp_supporting_tokens_free(secpolicy->supporting_tokens, env);
             secpolicy->supporting_tokens = NULL;
         }
         if(secpolicy->signed_supporting_tokens)
         {
-            rp_supporting_tokens_free(secpolicy->signed_supporting_tokens,env);
+            rp_supporting_tokens_free(secpolicy->signed_supporting_tokens, env);
             secpolicy->signed_supporting_tokens = NULL;
         }
         if(secpolicy->endorsing_supporting_tokens)
         {
-            rp_supporting_tokens_free(secpolicy->endorsing_supporting_tokens,env);
+            rp_supporting_tokens_free(secpolicy->endorsing_supporting_tokens, env);
             secpolicy->endorsing_supporting_tokens = NULL;
         }
         if(secpolicy->signed_endorsing_supporting_tokens)
         {
-            rp_supporting_tokens_free(secpolicy->signed_endorsing_supporting_tokens,env);
+            rp_supporting_tokens_free(secpolicy->signed_endorsing_supporting_tokens, env);
             secpolicy->signed_endorsing_supporting_tokens = NULL;
         }
         if(secpolicy->signed_parts)
         {
-            rp_signed_encrypted_parts_free(secpolicy->signed_parts,env);
+            rp_signed_encrypted_parts_free(secpolicy->signed_parts, env);
             secpolicy->signed_parts = NULL;
         }
         if(secpolicy->encrypted_parts)
         {
-            rp_signed_encrypted_parts_free(secpolicy->encrypted_parts,env);
+            rp_signed_encrypted_parts_free(secpolicy->encrypted_parts, env);
             secpolicy->encrypted_parts = NULL;
         }            
         if(secpolicy->signed_elements)
         {
-            rp_signed_encrypted_elements_free(secpolicy->signed_elements,env);
+            rp_signed_encrypted_elements_free(secpolicy->signed_elements, env);
             secpolicy->signed_elements = NULL;
         }            
         if(secpolicy->encrypted_elements)
         {
-            rp_signed_encrypted_elements_free(secpolicy->encrypted_elements,env);
+            rp_signed_encrypted_elements_free(secpolicy->encrypted_elements, env);
             secpolicy->encrypted_elements = NULL;
         }
         if(secpolicy->signed_items)
         {
-            rp_signed_encrypted_items_free(secpolicy->signed_items,env);
+            rp_signed_encrypted_items_free(secpolicy->signed_items, env);
             secpolicy->signed_items = NULL;
         }            
         if(secpolicy->encrypted_items)
         {
-            rp_signed_encrypted_items_free(secpolicy->encrypted_items,env);
+            rp_signed_encrypted_items_free(secpolicy->encrypted_items, env);
             secpolicy->encrypted_items = NULL;
         }
         if(secpolicy->rampart_config)
         {
-            rp_rampart_config_free(secpolicy->rampart_config,env);
+            rp_rampart_config_free(secpolicy->rampart_config, env);
             secpolicy->rampart_config = NULL;
         }            
-        AXIS2_FREE(env->allocator,secpolicy);           
+        AXIS2_FREE(env->allocator, secpolicy);           
     }
 
     return;
@@ -168,8 +168,8 @@ rp_secpolicy_set_binding(
     rp_property_t *binding)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,binding,AXIS2_FAILURE);
-    
+    AXIS2_PARAM_CHECK(env->error, binding, AXIS2_FAILURE);
+    rp_property_increment_ref(binding, env);
     secpolicy->binding = binding; 
     return AXIS2_SUCCESS;
 }
@@ -182,7 +182,8 @@ rp_secpolicy_set_supporting_tokens(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,supporting_tokens,AXIS2_FAILURE);
-    
+   
+    rp_supporting_tokens_increment_ref(supporting_tokens, env);
     secpolicy->supporting_tokens = supporting_tokens; 
     return AXIS2_SUCCESS;
 }
@@ -206,6 +207,7 @@ rp_secpolicy_set_signed_supporting_tokens(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,signed_supporting_tokens,AXIS2_FAILURE);
     
+    rp_supporting_tokens_increment_ref(signed_supporting_tokens, env);
     secpolicy->signed_supporting_tokens = signed_supporting_tokens; 
     return AXIS2_SUCCESS;
 }
@@ -227,8 +229,9 @@ rp_secpolicy_set_endorsing_supporting_tokens(
     rp_supporting_tokens_t *endorsing_supporting_tokens)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,endorsing_supporting_tokens,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, endorsing_supporting_tokens, AXIS2_FAILURE);   
     
+    rp_supporting_tokens_increment_ref(endorsing_supporting_tokens, env);
     secpolicy->endorsing_supporting_tokens = endorsing_supporting_tokens; 
     return AXIS2_SUCCESS;
 }
@@ -250,8 +253,9 @@ rp_secpolicy_set_signed_endorsing_supporting_tokens(
     rp_supporting_tokens_t *signed_endorsing_supporting_tokens)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,signed_endorsing_supporting_tokens,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, signed_endorsing_supporting_tokens, AXIS2_FAILURE);
 
+    rp_supporting_tokens_increment_ref(signed_endorsing_supporting_tokens, env);
     secpolicy->signed_endorsing_supporting_tokens = signed_endorsing_supporting_tokens; 
     return AXIS2_SUCCESS;
 }
@@ -273,7 +277,8 @@ rp_secpolicy_set_signed_parts(
     rp_signed_encrypted_parts_t *signed_parts)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,signed_parts,AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK(env->error, signed_parts, AXIS2_FAILURE);    
+    rp_signed_encrypted_parts_increment_ref(signed_parts, env);
     secpolicy->signed_parts = signed_parts; 
 
     return AXIS2_SUCCESS;
@@ -297,8 +302,9 @@ rp_secpolicy_set_encrypted_parts(
     rp_signed_encrypted_parts_t *encrypted_parts)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,encrypted_parts,AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK(env->error, encrypted_parts, AXIS2_FAILURE);    
 
+    rp_signed_encrypted_parts_increment_ref(encrypted_parts, env);
     secpolicy->encrypted_parts = encrypted_parts; 
     return AXIS2_SUCCESS;
     
@@ -321,8 +327,9 @@ rp_secpolicy_set_signed_elements(
     rp_signed_encrypted_elements_t *signed_elements)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,signed_elements,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, signed_elements, AXIS2_FAILURE);
 
+    rp_signed_encrypted_elements_increment_ref(signed_elements, env);
     secpolicy->signed_elements = signed_elements; 
     return AXIS2_SUCCESS;
     
@@ -345,8 +352,9 @@ rp_secpolicy_set_encrypted_elements(
     rp_signed_encrypted_elements_t *encrypted_elements)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,encrypted_elements,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, encrypted_elements, AXIS2_FAILURE);   
 
+    rp_signed_encrypted_elements_increment_ref(encrypted_elements, env);
     secpolicy->encrypted_elements = encrypted_elements; 
     return AXIS2_SUCCESS;
 }
@@ -415,8 +423,9 @@ rp_secpolicy_set_wss(
     rp_property_t *wss)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,wss,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, wss, AXIS2_FAILURE);
     
+    rp_property_increment_ref(wss, env);
     secpolicy->wss = wss; 
     return AXIS2_SUCCESS;
 }
@@ -438,8 +447,9 @@ rp_secpolicy_set_rampart_config(
     rp_rampart_config_t *rampart_config)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,rampart_config,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, rampart_config, AXIS2_FAILURE);   
     
+    rp_rampart_config_increment_ref(rampart_config, env);
     secpolicy->rampart_config = rampart_config; 
     return AXIS2_SUCCESS;
 }

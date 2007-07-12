@@ -25,6 +25,9 @@
 #include <rp_wss10.h>
 #include <rp_supporting_tokens.h>
 #include <rp_username_token.h>
+#include <rp_asymmetric_binding.h>
+#include <rp_rampart_config.h>
+#include <rp_signed_encrypted_parts.h>
 
 struct neethi_assertion_t
 {
@@ -133,6 +136,18 @@ neethi_assertion_create_with_args(const axutil_env_t *env,
         rp_username_token_increment_ref((rp_username_token_t *)value, env);
     }
 
+    if(type == ASSERTION_TYPE_ASSYMMETRIC_BINDING)
+    {
+        rp_asymmetric_binding_increment_ref((rp_asymmetric_binding_t *)value, env);
+    }    
+    if(type == ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS)
+    {
+        rp_signed_encrypted_parts_increment_ref((rp_signed_encrypted_parts_t *)value, env);
+    }
+    if(type == ASSERTION_TYPE_RAMPART_CONFIG)
+    {
+        rp_rampart_config_increment_ref((rp_rampart_config_t *)value, env);
+    }
     neethi_assertion->value = value;
     neethi_assertion->type = type;
     neethi_assertion->element = NULL;
