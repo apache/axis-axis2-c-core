@@ -64,8 +64,7 @@ typedef struct axis2_op_client_worker_func_args
     axis2_callback_t *callback;
     axis2_op_t *op;
     axis2_msg_ctx_t *msg_ctx;
-}
-axis2_op_client_worker_func_args_t;
+}axis2_op_client_worker_func_args_t;
 
 void *AXIS2_THREAD_FUNC
 axis2_op_client_worker_func(
@@ -115,7 +114,7 @@ axis2_op_client_create(const axutil_env_t *env, axis2_op_t *op,
     op_client->wsa_action = NULL;
 
     op_client->op_ctx = axis2_op_ctx_create(env, op,
-            op_client->svc_ctx);
+        op_client->svc_ctx);
     if(!(op_client->op_ctx))
     {
         axis2_op_client_free(op_client, env);
@@ -220,11 +219,11 @@ axis2_op_client_add_msg_ctx(axis2_op_client_t *op_client,
             dump_property =  axis2_msg_ctx_get_property(out_msg_ctx, env,
                 AXIS2_DUMP_INPUT_MSG_TRUE);
             if(dump_property)
-	    {
+            {
                 dump_value = (axis2_char_t *) axutil_property_get_value (
                     dump_property, env);
             }
-	}
+        }
 		
         if(axutil_strcmp(dump_value, AXIS2_VALUE_TRUE))
         {
@@ -311,21 +310,21 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
     conf_ctx =  axis2_svc_ctx_get_conf_ctx(op_client->svc_ctx, env);
 
     msg_ctx = (axis2_msg_ctx_t *)axis2_op_client_get_msg_ctx(op_client, env,
-            AXIS2_WSDL_MESSAGE_LABEL_OUT);
+        AXIS2_WSDL_MESSAGE_LABEL_OUT);
 
     if(!msg_ctx)
     {
         return AXIS2_FAILURE;
     }
 
-     axis2_msg_ctx_set_options(msg_ctx, env, op_client->options);
+    axis2_msg_ctx_set_options(msg_ctx, env, op_client->options);
 
     /**
-     if the transport to use for sending is not specified, try to find it
-     from the URL
+       if the transport to use for sending is not specified, try to find it
+       from the URL
     */
     transport_out = axis2_options_get_transport_out(op_client->options,
-            env);
+        env);
     if(!transport_out)
     {
         axis2_endpoint_ref_t *to_epr = NULL;
@@ -355,9 +354,9 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
         return AXIS2_FAILURE;
     }
 
-    if(!( axis2_msg_ctx_get_transport_out_desc(msg_ctx, env)))
+    if(!(axis2_msg_ctx_get_transport_out_desc(msg_ctx, env)))
     {
-         axis2_msg_ctx_set_transport_out_desc(msg_ctx, env, transport_out);
+        axis2_msg_ctx_set_transport_out_desc(msg_ctx, env, transport_out);
     }
 
 
@@ -379,7 +378,7 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
 
     if(!(axis2_msg_ctx_get_transport_in_desc(msg_ctx, env)))
     {
-         axis2_msg_ctx_set_transport_in_desc(msg_ctx, env, transport_in);
+        axis2_msg_ctx_set_transport_in_desc(msg_ctx, env, transport_in);
     }
 
     op =  axis2_op_ctx_get_op(op_client->op_ctx, env);
@@ -394,7 +393,7 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
         return AXIS2_FAILURE;
     }
     msg_id = (axis2_char_t*)axutil_uuid_gen(env);
-     axis2_msg_ctx_set_message_id(msg_ctx, env, msg_id);
+    axis2_msg_ctx_set_message_id(msg_ctx, env, msg_id);
     if(msg_id)
     {
         AXIS2_FREE(env->allocator, msg_id);
@@ -408,16 +407,16 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
         AXIS2_CALLBACK_RECV_ADD_CALLBACK(op_client->callback_recv, env,
             axis2_msg_ctx_get_msg_id(msg_ctx, env),
             op_client->callback);
-         axis2_msg_ctx_set_op_ctx(msg_ctx, env, axis2_op_find_op_ctx(op, env,
-                msg_ctx, op_client->svc_ctx));
-         axis2_msg_ctx_set_svc_ctx(msg_ctx, env, op_client->svc_ctx);
+        axis2_msg_ctx_set_op_ctx(msg_ctx, env, axis2_op_find_op_ctx(op, env,
+            msg_ctx, op_client->svc_ctx));
+        axis2_msg_ctx_set_svc_ctx(msg_ctx, env, op_client->svc_ctx);
 
         /* send the message */
         engine = axis2_engine_create(env, conf_ctx);
         if(!engine)
-	{
+        {
             return AXIS2_FAILURE;
-	}
+        }
         axis2_engine_send(engine, env, msg_ctx);
         axis2_engine_free(engine, env);
     }
@@ -437,23 +436,23 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
             response_mc = axis2_op_client_two_way_send(env, msg_ctx);
             if(!response_mc)
             {
-                const axis2_char_t *mep = axis2_op_get_msg_exchange_pattern(op, env);
-                if(axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
-                    axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
+                const axis2_char_t *mep = axis2_op_get_msg_exchange_pattern(op,                           env);
+                if(!(axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY)) ||
+                   !(axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY)))
                 {
                     if(env->error)
-		    {
+                    {
                         return env->error->status_code;
                     }
                     else
-		    {
+                    {
                         return AXIS2_FAILURE;
                     }
                 }
                 else
-		{
+                {
                     return AXIS2_FAILURE;
-		}
+                }
             }
             axis2_op_client_add_msg_ctx(op_client, env,
                 response_mc);
@@ -480,15 +479,17 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
                     axis2_op_client_worker_func, (void*)arg_list);
                 if(! worker_thread)
                 {
-                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
-                        "call invoke non blocking");
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "Thread creation failed call invoke non blocking");
                 }
-                axutil_thread_pool_thread_detach(env->thread_pool, worker_thread);
+                axutil_thread_pool_thread_detach(env->thread_pool, 
+                    worker_thread);
             }
             else
             {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread pool not set in environment."
-                    " Cannot invoke call non blocking");
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Thread pool not set in environment"
+                    "Cannot invoke call non blocking");
             }
 #else
             axis2_op_client_worker_func(NULL, (void*)arg_list);
@@ -600,7 +601,8 @@ axis2_op_client_worker_func(axutil_thread_t *thd,
     AXIS2_ENV_CHECK(args_list->env, AXIS2_FAILURE);
     th_env = axutil_init_thread_env(args_list->env);
 
-    op_ctx = axis2_op_ctx_create(th_env, args_list->op, args_list->op_client->svc_ctx);
+    op_ctx = axis2_op_ctx_create(th_env, args_list->op, 
+                args_list->op_client->svc_ctx);
     if(!op_ctx)
     {
         return NULL;
@@ -612,8 +614,10 @@ axis2_op_client_worker_func(axutil_thread_t *thd,
     response = axis2_op_client_two_way_send(th_env, args_list->msg_ctx);
 
     axis2_op_client_add_msg_ctx(args_list->op_client, th_env, response);
-    args_list->op_client->async_result = axis2_async_result_create(th_env, response);
-    axis2_callback_invoke_on_complete(args_list->callback, th_env, args_list->op_client->async_result);
+    args_list->op_client->async_result = axis2_async_result_create(th_env, 
+        response);
+    axis2_callback_invoke_on_complete(args_list->callback, 
+        th_env, args_list->op_client->async_result);
     axis2_callback_set_complete(args_list->callback, th_env, AXIS2_TRUE);
 
     /* clean up memory */
@@ -653,8 +657,7 @@ axis2_op_client_get_soap_action(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_client_prepare_invocation(
-    axis2_op_client_t *op_client,
+axis2_op_client_prepare_invocation(axis2_op_client_t *op_client,
     const axutil_env_t *env,
     axis2_op_t *op,
     axis2_msg_ctx_t *msg_ctx)
@@ -668,22 +671,23 @@ axis2_op_client_prepare_invocation(
     /* make sure operation's MEP is the same as given MEP */
     if (op_client->mep)
     {
-        if (axutil_strcmp(op_client->mep, axis2_op_get_msg_exchange_pattern(op, env)) != 0)
+        if (axutil_strcmp(op_client->mep, 
+                axis2_op_get_msg_exchange_pattern(op, env)))
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT,                 AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
     else
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MEP_CANNOT_BE_NULL_IN_MEP_CLIENT, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MEP_CANNOT_BE_NULL_IN_MEP_CLIENT,           AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     /* If operation has a parent service get it */
     svc = axis2_op_get_parent(op, env);
     if (svc)
     {
-         axis2_svc_ctx_set_svc(op_client->svc_ctx, env, svc);
+        axis2_svc_ctx_set_svc(op_client->svc_ctx, env, svc);
     }
     else
     {
@@ -702,20 +706,19 @@ axis2_op_client_prepare_invocation(
 
     if (op_client->wsa_action)
     {
-         axis2_msg_ctx_set_wsa_action(msg_ctx, env, op_client->wsa_action);
+        axis2_msg_ctx_set_wsa_action(msg_ctx, env, op_client->wsa_action);
     }
 
     if (op_client->soap_action)
     {
-          axis2_msg_ctx_set_soap_action(msg_ctx, env, op_client->soap_action);
+        axis2_msg_ctx_set_soap_action(msg_ctx, env, op_client->soap_action);
     }
 
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
-axis2_op_client_prepare_soap_envelope(
-    axis2_op_client_t *op_client,
+axis2_op_client_prepare_soap_envelope(axis2_op_client_t *op_client,
     const axutil_env_t *env,
     axiom_node_t *to_send)
 {
@@ -728,8 +731,8 @@ axis2_op_client_prepare_soap_envelope(
     if (op_client->svc_ctx)
     {
         msg_ctx = axis2_msg_ctx_create(env,
-                 axis2_svc_ctx_get_conf_ctx(op_client->svc_ctx, env),
-                 NULL, NULL);
+            axis2_svc_ctx_get_conf_ctx(op_client->svc_ctx, env),
+            NULL, NULL);
     }
 
     if (!msg_ctx)
@@ -739,14 +742,15 @@ axis2_op_client_prepare_soap_envelope(
 
     if (op_client->soap_version_uri)
     {
-        if (axutil_strcmp(op_client->soap_version_uri,
-                AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+        if (!(axutil_strcmp(op_client->soap_version_uri,
+                  AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI)))
             soap_version = AXIOM_SOAP11;
         else
             soap_version = AXIOM_SOAP12;
     }
 
-    envelope = axiom_soap_envelope_create_default_soap_envelope(env, soap_version);
+    envelope = axiom_soap_envelope_create_default_soap_envelope(env, 
+                   soap_version);
     if (!envelope)
     {
         return NULL;
@@ -773,8 +777,7 @@ axis2_op_client_prepare_soap_envelope(
 }
 
 AXIS2_EXTERN axis2_transport_out_desc_t *AXIS2_CALL
-axis2_op_client_infer_transport(
-    axis2_op_client_t *op_client,
+axis2_op_client_infer_transport(axis2_op_client_t *op_client,
     const axutil_env_t *env,
     axis2_endpoint_ref_t *epr)
 {
@@ -796,17 +799,17 @@ axis2_op_client_infer_transport(
         axis2_transport_out_desc_t *transport_out_desc = NULL;
 		AXIS2_TRANSPORT_ENUMS transport_enum = 0;
         
-		if (!axutil_strcmp(transport, "http"))
+        if (!axutil_strcmp(transport, "http"))
 		{
-			transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
+            transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
 		}
-		else if (!axutil_strcmp (transport, "https"))
+        else if (!axutil_strcmp (transport, "https"))
 		{
-			transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
+            transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
 		}
-		else if (!axutil_strcmp (transport, "xmpp"))
+        else if (!axutil_strcmp (transport, "xmpp"))
 		{
-			transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
+            transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
 		}
 
 
@@ -816,7 +819,8 @@ axis2_op_client_infer_transport(
             conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
-                transport_out_desc =  axis2_conf_get_transport_out(conf, env, transport_enum);
+                transport_out_desc =  axis2_conf_get_transport_out(conf, 
+                                          env, transport_enum);
             }
         }
 
@@ -831,29 +835,32 @@ axis2_op_client_infer_transport(
 }
 
 AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
-axis2_op_client_create_default_soap_envelope(
-    axis2_op_client_t *op_client,
+axis2_op_client_create_default_soap_envelope(axis2_op_client_t *op_client,
     const axutil_env_t *env)
 {
     axiom_soap_envelope_t *envelope = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (axutil_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, op_client->soap_version_uri) == 0)
+    if (!(axutil_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, 
+              op_client->soap_version_uri)))
     {
-        envelope = axiom_soap_envelope_create_with_soap_version_prefix(env, AXIOM_SOAP12, NULL);
+        envelope = axiom_soap_envelope_create_with_soap_version_prefix(env, 
+                       AXIOM_SOAP12, NULL);
     }
-
-    if (axutil_strcmp(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, op_client->soap_version_uri) == 0)
+        
+    if (!(axutil_strcmp(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, 
+             op_client->soap_version_uri)))
     {
-        envelope = axiom_soap_envelope_create_with_soap_version_prefix(env, AXIOM_SOAP11, NULL);
+        envelope = axiom_soap_envelope_create_with_soap_version_prefix(env, 
+                       AXIOM_SOAP11, NULL);
     }
     return envelope;
 }
+        
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_client_engage_module(
-    axis2_op_client_t *op_client,
+axis2_op_client_engage_module(axis2_op_client_t *op_client,
     const axutil_env_t *env,
     const axutil_qname_t *qname)
 {
@@ -883,8 +890,7 @@ axis2_op_client_engage_module(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_client_set_soap_version_uri(
-    axis2_op_client_t *op_client,
+axis2_op_client_set_soap_version_uri(axis2_op_client_t *op_client,
     const axutil_env_t *env,
     const axis2_char_t *soap_version_uri)
 {
@@ -910,8 +916,7 @@ axis2_op_client_set_soap_version_uri(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_client_set_soap_action(
-    axis2_op_client_t *op_client,
+axis2_op_client_set_soap_action(axis2_op_client_t *op_client,
     const axutil_env_t *env,
     axutil_string_t *soap_action)
 {
@@ -937,8 +942,7 @@ axis2_op_client_set_soap_action(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_client_set_wsa_action(
-    axis2_op_client_t *op_client,
+axis2_op_client_set_wsa_action(axis2_op_client_t *op_client,
     const axutil_env_t *env,
     const axis2_char_t *wsa_action)
 {
@@ -964,8 +968,7 @@ axis2_op_client_set_wsa_action(
 }
 
 static axis2_char_t *AXIS2_CALL
-axis2_get_transport_from_url(
-    const axis2_char_t *url,
+axis2_get_transport_from_url(const axis2_char_t *url,
     const axutil_env_t *env)
 {
     axis2_char_t *transport = NULL;
@@ -996,8 +999,7 @@ axis2_get_transport_from_url(
 }
 
 AXIS2_EXTERN axis2_svc_ctx_t *AXIS2_CALL
-axis2_op_client_get_svc_ctx(
-    const axis2_op_client_t *op_client,
+axis2_op_client_get_svc_ctx(const axis2_op_client_t *op_client,
     const axutil_env_t *env)
 {
     return op_client->svc_ctx;
@@ -1005,8 +1007,7 @@ axis2_op_client_get_svc_ctx(
 
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
-axis2_op_client_two_way_send(
-    const axutil_env_t *env,
+axis2_op_client_two_way_send(const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_engine_t *engine = NULL;
@@ -1051,8 +1052,8 @@ axis2_op_client_two_way_send(
     {
         /* handle one way case */
         const axis2_char_t *mep = axis2_op_get_msg_exchange_pattern(op, env);
-        if (axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
-            axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
+        if (!(axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY)) ||
+            !(axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY)))
         {
             return NULL;
         }
@@ -1060,35 +1061,40 @@ axis2_op_client_two_way_send(
 
     /* create the response */
     response = axis2_msg_ctx_create(env, conf_ctx,
-             axis2_msg_ctx_get_transport_in_desc(msg_ctx, env),
-             axis2_msg_ctx_get_transport_out_desc(msg_ctx, env));
+                   axis2_msg_ctx_get_transport_in_desc(msg_ctx, env),
+                   axis2_msg_ctx_get_transport_out_desc(msg_ctx, env));
     if (!response)
         return NULL;
 
     property =  axis2_msg_ctx_get_property(msg_ctx, env,AXIS2_TRANSPORT_IN);
     if (property)
     {
-         axis2_msg_ctx_set_property(response, env, AXIS2_TRANSPORT_IN, property);
+        axis2_msg_ctx_set_property(response, env, AXIS2_TRANSPORT_IN, property);
         property = NULL;
     }
 
     if (op)
     {
-        axis2_op_register_op_ctx(op, env, response,  axis2_msg_ctx_get_op_ctx(msg_ctx, env));
+        axis2_op_register_op_ctx(op, 
+            env, response,  axis2_msg_ctx_get_op_ctx(msg_ctx, env));
     }
-     axis2_msg_ctx_set_server_side(response, env, AXIS2_FALSE);
-     axis2_msg_ctx_set_conf_ctx(response, env,  axis2_msg_ctx_get_conf_ctx(msg_ctx, env));
-     axis2_msg_ctx_set_svc_grp_ctx(response, env,  axis2_msg_ctx_get_svc_grp_ctx(msg_ctx, env));
+    axis2_msg_ctx_set_server_side(response, env, AXIS2_FALSE);
+    axis2_msg_ctx_set_conf_ctx(response, env,  
+        axis2_msg_ctx_get_conf_ctx(msg_ctx, env));
+    axis2_msg_ctx_set_svc_grp_ctx(response, env,  
+        axis2_msg_ctx_get_svc_grp_ctx(msg_ctx, env));
 
     /* If request is REST we assume the response is REST, so set the variable*/
-     axis2_msg_ctx_set_doing_rest(response, env,  axis2_msg_ctx_get_doing_rest(msg_ctx, env));
+    axis2_msg_ctx_set_doing_rest(response, env,  
+        axis2_msg_ctx_get_doing_rest(msg_ctx, env));
 	/* set response envelope */
     if (engine)
     {
-         axis2_engine_free(engine, env);
+        axis2_engine_free(engine, env);
         engine = NULL;
     }
- 	response_envelope =  axis2_msg_ctx_get_response_soap_envelope (msg_ctx, env);
+    response_envelope =  axis2_msg_ctx_get_response_soap_envelope (msg_ctx, 
+        env);
     if(response_envelope)
     {
         axis2_msg_ctx_set_soap_envelope(response, env, response_envelope);
@@ -1125,7 +1131,7 @@ axis2_op_client_two_way_send(
             if(property)
             {
                 axis2_char_t *value = axutil_property_get_value(property, env);
-                if(0 == axutil_strcmp(AXIS2_VALUE_TRUE, value))
+                if(!axutil_strcmp(AXIS2_VALUE_TRUE, value))
                 {
                     return response;
                 }
@@ -1142,33 +1148,34 @@ axis2_op_client_two_way_send(
         {
             if (AXIS2_ERROR_GET_STATUS_CODE(env->error) != AXIS2_SUCCESS)
             {
-                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE, AXIS2_FAILURE);
+                AXIS2_ERROR_SET(env->error, 
+                    AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE, 
+                    AXIS2_FAILURE);
                 if (engine)
                 {
-                     axis2_engine_free(engine, env);
+                    axis2_engine_free(engine, env);
                     engine = NULL;
                 }
-                 axis2_msg_ctx_free(response, env);
+                axis2_msg_ctx_free(response, env);
                 return NULL;
             }
         }
     }
 
     /* property is NULL, and we set null for AXIS2_TRANSPORT_IN in msg_ctx to
-    avoid double free of this property */
-     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property);
+       avoid double free of this property */
+    axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property);
 
     if (engine)
     {
-         axis2_engine_free(engine, env);
+        axis2_engine_free(engine, env);
         engine = NULL;
     }
     return response;
 }
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
-axis2_op_client_receive(
-    const axutil_env_t *env,
+axis2_op_client_receive(const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_engine_t *engine = NULL;
@@ -1183,15 +1190,15 @@ axis2_op_client_receive(
 
     /* create the response */
     response = axis2_msg_ctx_create(env, conf_ctx,
-             axis2_msg_ctx_get_transport_in_desc(msg_ctx, env),
-             axis2_msg_ctx_get_transport_out_desc(msg_ctx, env));
+        axis2_msg_ctx_get_transport_in_desc(msg_ctx, env),
+        axis2_msg_ctx_get_transport_out_desc(msg_ctx, env));
     if (!response)
         return NULL;
 
     property =  axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_TRANSPORT_IN);
     if (property)
     {
-         axis2_msg_ctx_set_property(response, env, AXIS2_TRANSPORT_IN, property);
+        axis2_msg_ctx_set_property(response, env, AXIS2_TRANSPORT_IN, property);
         property = NULL;
     }
 
@@ -1200,12 +1207,15 @@ axis2_op_client_receive(
     {
         axis2_op_register_op_ctx(op, env, response,  axis2_msg_ctx_get_op_ctx(msg_ctx, env));
     }
-     axis2_msg_ctx_set_server_side(response, env, AXIS2_FALSE);
-     axis2_msg_ctx_set_conf_ctx(response, env,  axis2_msg_ctx_get_conf_ctx(msg_ctx, env));
-     axis2_msg_ctx_set_svc_grp_ctx(response, env,  axis2_msg_ctx_get_svc_grp_ctx(msg_ctx, env));
+    axis2_msg_ctx_set_server_side(response, env, AXIS2_FALSE);
+    axis2_msg_ctx_set_conf_ctx(response, env,  
+        axis2_msg_ctx_get_conf_ctx(msg_ctx, env));
+    axis2_msg_ctx_set_svc_grp_ctx(response, env,  
+        axis2_msg_ctx_get_svc_grp_ctx(msg_ctx, env));
 
     /* If request is REST we assume the response is REST, so set the variable*/
-     axis2_msg_ctx_set_doing_rest(response, env,  axis2_msg_ctx_get_doing_rest(msg_ctx, env));
+    axis2_msg_ctx_set_doing_rest(response, env,  
+        axis2_msg_ctx_get_doing_rest(msg_ctx, env));
 
  	response_envelope =  axis2_msg_ctx_get_response_soap_envelope (msg_ctx, env);
     if (response_envelope)
@@ -1213,7 +1223,7 @@ axis2_op_client_receive(
         axis2_msg_ctx_set_soap_envelope(response, env, response_envelope);
         if (engine)
         {
-             axis2_engine_free(engine, env);
+            axis2_engine_free(engine, env);
             engine = NULL;
         }
 
@@ -1234,18 +1244,20 @@ axis2_op_client_receive(
            else it is a one way message */
         if (AXIS2_ERROR_GET_STATUS_CODE(env->error) != AXIS2_SUCCESS)
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, 
+                AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE, 
+                AXIS2_FAILURE);
             return NULL;
         }
     }
 
     /* property is NULL, and we set null for AXIS2_TRANSPORT_IN in msg_ctx to
-    avoid double free of this property */
-     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property);
+       avoid double free of this property */
+    axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property);
 
     if (engine)
     {
-         axis2_engine_free(engine, env);
+        axis2_engine_free(engine, env);
         engine = NULL;
     }
     return response;
