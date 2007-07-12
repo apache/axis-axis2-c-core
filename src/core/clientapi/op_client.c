@@ -436,7 +436,7 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
             response_mc = axis2_op_client_two_way_send(env, msg_ctx);
             if(!response_mc)
             {
-                const axis2_char_t *mep = axis2_op_get_msg_exchange_pattern(op,                           env);
+                const axis2_char_t *mep = axis2_op_get_msg_exchange_pattern(op, env);
                 if(!(axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY)) ||
                    !(axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY)))
                 {
