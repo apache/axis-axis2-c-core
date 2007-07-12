@@ -137,6 +137,19 @@ axis2_policy_include_free(
 
     if (policy_include->wrapper_elements)
     {
+        axutil_hash_index_t *hi = NULL;
+        void *val = NULL;
+        for (hi = axutil_hash_first(policy_include->wrapper_elements, env); hi;
+                hi = axutil_hash_next(env, hi))
+        {
+            axis2_policy_wrapper_t *wrapper = NULL;
+            axutil_hash_this(hi, NULL, NULL, &val);
+            wrapper = (axis2_policy_wrapper_t *) val;
+            if (wrapper)
+                 AXIS2_FREE(env->allocator, wrapper);
+            val = NULL;
+            wrapper = NULL;
+        }
         axutil_hash_free(policy_include->wrapper_elements, env);
     }
 
