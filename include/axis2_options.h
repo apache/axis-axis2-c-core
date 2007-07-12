@@ -561,7 +561,7 @@ extern "C"
      * Gets SOAP version.
      * @param options pointer to options struct
      * @param env pointer to environment struct
-     * @return AXIOM_SOAP_11 if SOAP version 1.1 is in use, else AXIOM_SOAP_12
+     * @return AXIOM_SOAP11 if SOAP version 1.1 is in use, else AXIOM_SOAP12
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_options_get_soap_version(const axis2_options_t *options,
@@ -571,7 +571,7 @@ extern "C"
      * Sets SOAP version.
      * @param options pointer to options struct
      * @param env pointer to environment struct
-     * @param soap_version soap version, either AXIOM_SOAP_11 or AXIOM_SOAP_12
+     * @param soap_version soap version, either AXIOM_SOAP11 or AXIOM_SOAP12
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL

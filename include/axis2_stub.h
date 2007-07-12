@@ -37,9 +37,9 @@
 #include <axutil_property.h>
 
 /** Constant value representing SOAP version 1.1 */
-#define AXIOM_SOAP_11 0
+#define AXIOM_SOAP_11 1
 /** Constant value representing SOAP version 1.2 */
-#define AXIOM_SOAP_12 1
+#define AXIOM_SOAP_12 2
 
 #ifdef __cplusplus
 extern "C"
