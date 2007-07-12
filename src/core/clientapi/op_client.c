@@ -674,13 +674,15 @@ axis2_op_client_prepare_invocation(axis2_op_client_t *op_client,
         if (axutil_strcmp(op_client->mep, 
                 axis2_op_get_msg_exchange_pattern(op, env)))
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT,                 AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT,                 
+                AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
     else
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MEP_CANNOT_BE_NULL_IN_MEP_CLIENT,           AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MEP_CANNOT_BE_NULL_IN_MEP_CLIENT,           
+                AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     /* If operation has a parent service get it */
