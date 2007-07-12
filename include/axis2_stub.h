@@ -36,9 +36,11 @@
 #include <axiom_xml_reader.h>
 #include <axutil_property.h>
 
-/** Constant value representing SOAP version 1.1 */
+/** DEPRECATED: Please use AXIOM_SOAP11 instead. 
+    Constant value representing SOAP version 1.1 */
 #define AXIOM_SOAP_11 1
-/** Constant value representing SOAP version 1.2 */
+/** DEPRECATED: Please use AXIOM_SOAP12 instead. 
+    Constant value representing SOAP version 1.2 */
 #define AXIOM_SOAP_12 2
 
 #ifdef __cplusplus
