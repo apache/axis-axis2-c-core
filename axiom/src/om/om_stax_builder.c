@@ -828,7 +828,6 @@ axiom_stax_builder_free_self(axiom_stax_builder_t *om_builder,
     const axutil_env_t *env)
 {
     
-	int status = AXIS2_SUCCESS;
     axiom_node_t *temp_node = NULL;
     axiom_node_t *nodes[256];
 	axiom_node_t *om_node = NULL;
