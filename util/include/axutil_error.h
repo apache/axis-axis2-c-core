@@ -550,6 +550,46 @@ extern "C"
         /* bad search text */
         AXIS2_ERROR_REPOS_BAD_SEARCH_TEXT,
 
+        /*
+         *Group - Neethi
+         */
+        /*  No Namespace*/
+        AXIS2_ERROR_NEETHI_ELEMENT_WITH_NO_NAMESPACE,
+        /*Policy cannot be created from element*/
+        AXIS2_ERROR_NEETHI_POLICY_CREATION_FAILED_FROM_ELEMENT,
+        /*All Cannot be created from element*/
+        AXIS2_ERROR_NEETHI_ALL_CREATION_FAILED_FROM_ELEMENT,
+        /*Exactlyone Cannot be created element*/
+        AXIS2_ERROR_NEETHI_EXACTLYONE_CREATION_FAILED_FROM_ELEMENT,
+        /*Reference Cannot be created from element*/
+        AXIS2_ERROR_NEETHI_REFERENCE_CREATION_FAILED_FROM_ELEMENT,
+        /*Assertion Cannot be created from element*/
+        AXIS2_ERROR_NEETHI_ASSERTION_CREATION_FAILED_FROM_ELEMENT,
+        /*All creation failed*/
+        AXIS2_ERROR_NEETHI_ALL_CREATION_FAILED,
+        /*Exactlyone creation failed*/
+        AXIS2_ERROR_NEETHI_EXACTLYONE_CREATION_FAILED,
+        /*Policy Creation failed*/
+        AXIS2_ERROR_NEETHI_POLICY_CREATION_FAILED,
+        /*Normalization failed*/
+        AXIS2_ERROR_NEETHI_NORMALIZATION_FAILED,
+        /*Merging Failed. Wrong Input*/
+        AXIS2_ERROR_NEETHI_WRONG_INPUT_FOR_MERGE,
+        /*Merging Failed. Cross Product failed*/
+        AXIS2_ERROR_NEETHI_CROSS_PRODUCT_FAILED,
+        /*No Children Policy Components*/
+        AXIS2_ERROR_NEETHI_NO_CHILDREN_POLICY_COMPONENTS,
+        /*Uri Not specified*/
+        AXIS2_ERROR_NEETHI_URI_NOT_SPECIFIED,
+        /*Policy NULL for the given uri*/
+        AXIS2_ERROR_NEETHI_NO_ENTRY_FOR_THE_GIVEN_URI,
+        /*Exactlyone not found in Normalized policy*/
+        AXIS2_ERROR_NEETHI_EXACTLYONE_NOT_FOUND_IN_NORMALIZED_POLICY,
+        /*Exactlyone is Empty*/
+        AXIS2_ERROR_NEETHI_EXACTLYONE_IS_EMPTY,
+        /*Exactlyone not found while getting cross product*/
+        AXIS2_ERROR_NEETHI_ALL_NOT_FOUND_WHILE_GETTING_CROSS_PRODUCT,
+
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.
             AXIS2_ERROR_LAST is used to track the number of error codes present

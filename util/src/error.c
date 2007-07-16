@@ -472,6 +472,44 @@ axutil_error_init()
     axutil_error_messages[AXIS2_ERROR_REPOS_BAD_SEARCH_TEXT] =
         "BAD_SEARCH_TEXT";
 
+    /* neethi*/
+    axutil_error_messages[AXIS2_ERROR_NEETHI_ELEMENT_WITH_NO_NAMESPACE] =
+        "Element With No Namespace";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_POLICY_CREATION_FAILED_FROM_ELEMENT] =
+        "Policy Creation failed from element";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_ALL_CREATION_FAILED_FROM_ELEMENT] =
+        "All creation failed from element";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_EXACTLYONE_CREATION_FAILED_FROM_ELEMENT] =
+        "Exactlyone creation failed from element";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_REFERENCE_CREATION_FAILED_FROM_ELEMENT] =
+        "Reference creation failed from element";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_ASSERTION_CREATION_FAILED_FROM_ELEMENT] =
+        "Assertion creation failed from element";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_ALL_CREATION_FAILED] =
+        "All Creation failed";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_EXACTLYONE_CREATION_FAILED] = 
+        "Exactlyone Creation failed";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_POLICY_CREATION_FAILED] =
+        "Policy Creation failed";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_NORMALIZATION_FAILED] = 
+        "Normalization failed";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_WRONG_INPUT_FOR_MERGE] =
+        "Wrong Input for merge";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_CROSS_PRODUCT_FAILED] =
+        "Cross Product failed";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_NO_CHILDREN_POLICY_COMPONENTS] =
+        "No Children Policy components";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_URI_NOT_SPECIFIED] =
+        "Reference Uri not specified";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_NO_ENTRY_FOR_THE_GIVEN_URI] =
+        "No entry for the given Uri";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_EXACTLYONE_NOT_FOUND_IN_NORMALIZED_POLICY] =
+        "Exactlyone not found in normalized_policy";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_EXACTLYONE_IS_EMPTY] = 
+        "Exactlyone is Empty";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_ALL_NOT_FOUND_WHILE_GETTING_CROSS_PRODUCT] =
+        "All not found while getting cross product";
+
     return AXIS2_SUCCESS;
 }
 
