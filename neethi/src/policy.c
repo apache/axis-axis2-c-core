@@ -126,9 +126,9 @@ neethi_policy_get_policy_components(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_policy_add_policy_components(
-        neethi_policy_t *neethi_policy,
-        axutil_array_list_t *arraylist,
-        const axutil_env_t *env)
+    neethi_policy_t *neethi_policy,
+    axutil_array_list_t *arraylist,
+    const axutil_env_t *env)
 {
 
     int size = axutil_array_list_size(arraylist,env);
@@ -150,9 +150,10 @@ neethi_policy_add_policy_components(
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-neethi_policy_add_operator(neethi_policy_t *neethi_policy,
-            const axutil_env_t *env,
-            neethi_operator_t *operator)
+neethi_policy_add_operator(
+    neethi_policy_t *neethi_policy,
+    const axutil_env_t *env,
+    neethi_operator_t *operator)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -162,8 +163,9 @@ neethi_policy_add_operator(neethi_policy_t *neethi_policy,
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-neethi_policy_is_empty(neethi_policy_t *neethi_policy,
-            const axutil_env_t *env)
+neethi_policy_is_empty(
+    neethi_policy_t *neethi_policy,
+    const axutil_env_t *env)
             
 {
     return axutil_array_list_is_empty(neethi_policy->policy_components , env);
@@ -186,18 +188,13 @@ neethi_policy_get_exactlyone(
             op = (neethi_operator_t *)axutil_array_list_get(list,env,0);
             if(!op)
             {
-                /*printf("Error in normalized neethi_policy\n");*/
                 return NULL;
             }               
             if(neethi_operator_get_type(op,env) != OPERATOR_TYPE_EXACTLYONE)
             {
-                /*printf("Error in normalized neethi_policy\n");*/
                 return NULL;
             }               
             exactlyone = (neethi_exactlyone_t *)neethi_operator_get_value(op,env);
-            /*neethi_operator_set_value_null(op, env);
-            neethi_operator_free(op, env);
-            op = NULL;*/
             return exactlyone;
         }            
         else
