@@ -169,10 +169,15 @@ axutil_network_handler_set_sock_option(const axutil_env_t *env, axis2_socket_t s
 {
     if (option == SO_RCVTIMEO || option == SO_SNDTIMEO)
     {
-        struct timeval tv;
-        /* we deal with milliseconds */
-        tv.tv_sec = value / 1000;
-        tv.tv_usec = (value % 1000) * 1000;
+        #if defined(WIN32)
+            DWORD tv = value; //windows expects milliseconds in a DWORD
+        #else 
+            struct timeval tv;
+            /* we deal with milliseconds */
+            tv.tv_sec = value / 1000;
+            tv.tv_usec = (value % 1000) * 1000;
+        #endif    
+        
         setsockopt(socket, SOL_SOCKET, option, (char*) &tv, sizeof(tv));
         return AXIS2_SUCCESS;
     }
