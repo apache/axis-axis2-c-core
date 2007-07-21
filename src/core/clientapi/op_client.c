@@ -813,6 +813,10 @@ axis2_op_client_infer_transport(axis2_op_client_t *op_client,
 		{
             transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
 		}
+        else if (!axutil_strcmp (transport, "tcp"))
+        {
+            transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
+        }
 
 
         conf_ctx =  axis2_svc_ctx_get_conf_ctx(op_client->svc_ctx, env);

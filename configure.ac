@@ -342,6 +342,11 @@ AC_CONFIG_FILES([Makefile \
     src/core/transport/http/server/simple_axis2_server/Makefile \
     src/core/transport/http/server/Makefile \
     src/core/transport/http/server/apache2/Makefile \
+    src/core/transport/tcp/Makefile \
+    src/core/transport/tcp/sender/Makefile \
+    src/core/transport/tcp/receiver/Makefile \
+    src/core/transport/tcp/server/Makefile \
+    src/core/transport/tcp/server/simple_tcp_server/Makefile \
     src/core/deployment/Makefile \
     src/core/clientapi/Makefile \
     src/core/receivers/Makefile \
