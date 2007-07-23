@@ -63,6 +63,8 @@ struct axis2_svc_client
     axiom_soap_envelope_t *last_response_soap_envelope;
 
     axis2_bool_t last_response_has_fault;
+    
+    axis2_bool_t reuse;
 
 };
 
@@ -251,6 +253,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(const axutil_env_t *env,
     svc_client->op_client = NULL;
     svc_client->last_response_soap_envelope = NULL;
     svc_client->last_response_has_fault = AXIS2_FALSE;
+    svc_client->reuse = AXIS2_FALSE;
 
     /** initialize private data to NULL, create options */
     if (!axis2_svc_client_init_data(env, svc_client))
@@ -890,8 +893,10 @@ axis2_svc_client_create_op_client(axis2_svc_client_t *svc_client,
         return NULL;
     }
 
-    if (!(svc_client->op_client))
+    if (!(svc_client->op_client) || svc_client->reuse)
     {
+        if(svc_client->reuse)
+            axis2_op_client_free(svc_client->op_client, env);
         svc_client->op_client = axis2_op_client_create(env, op, svc_client->svc_ctx,
                 svc_client->options);
     }
@@ -908,7 +913,8 @@ axis2_svc_client_create_op_client(axis2_svc_client_t *svc_client,
         axis2_op_client_set_options(svc_client->op_client, env,
             svc_client->override_options);
     }
-
+    svc_client->reuse = AXIS2_TRUE;
+    axis2_op_client_set_reuse(svc_client->op_client, env, svc_client->reuse);
     return svc_client->op_client;
 }
 

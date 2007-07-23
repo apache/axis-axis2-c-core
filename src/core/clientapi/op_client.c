@@ -53,6 +53,7 @@ struct axis2_op_client
     axutil_string_t *soap_action;
     /** WSA action  */
     axis2_char_t *wsa_action;
+    axis2_bool_t reuse;
 
 };
 
@@ -102,6 +103,7 @@ axis2_op_client_create(const axutil_env_t *env, axis2_op_t *op,
     op_client->op_ctx = NULL;
     op_client->callback = NULL;
     op_client->completed = AXIS2_FALSE;
+    op_client->reuse = AXIS2_FALSE;
     op_client->async_result = NULL;
     op_client->callback_recv = NULL;
 
@@ -186,6 +188,26 @@ axis2_op_client_add_msg_ctx(axis2_op_client_t *op_client,
 
     out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
     in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
+
+    if(op_client->reuse)
+    {
+        /* This is the second invocation using the same service clinet,
+           so reset */
+        if(out_msg_ctx)
+        {
+            axis2_msg_ctx_free(out_msg_ctx, env);
+            out_msg_ctx = NULL;
+            msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = NULL;
+        }
+        if(in_msg_ctx)
+        {
+            axis2_msg_ctx_free(in_msg_ctx, env);
+            in_msg_ctx = NULL;
+            msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;
+        }
+        axis2_op_ctx_set_complete(op_client->op_ctx, env, AXIS2_FALSE);
+        op_client->reuse = AXIS2_FALSE;
+    }
 
     if(out_msg_ctx && in_msg_ctx)
     {
@@ -1267,5 +1289,15 @@ axis2_op_client_receive(const axutil_env_t *env,
         engine = NULL;
     }
     return response;
+}
+
+
+AXIS2_EXTERN void AXIS2_CALL
+axis2_op_client_set_reuse(
+    axis2_op_client_t *op_client,
+    const axutil_env_t *env,
+    axis2_bool_t reuse)
+{
+    op_client->reuse = reuse;
 }
 
