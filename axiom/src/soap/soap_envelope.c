@@ -227,8 +227,8 @@ axiom_soap_envelope_get_header(axiom_soap_envelope_t *soap_envelope,
     }
     else if (soap_envelope->soap_builder)
     {
-        while (!(soap_envelope->header) && !axiom_node_is_complete(
-                    soap_envelope->om_ele_node, env))
+		while (!(soap_envelope->header) && !(soap_envelope->body)
+			&& !axiom_node_is_complete(soap_envelope->om_ele_node, env))
         {
             status = axiom_soap_builder_next(soap_envelope->soap_builder, env);
             if (status == AXIS2_FAILURE)
