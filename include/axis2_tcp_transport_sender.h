@@ -1,4 +1,4 @@
-/*
+math/math_client.cmath/math_client.c/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *      tcp://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_HTTP_TRANSPORT_SENDER_H
-#define AXIS2_HTTP_TRANSPORT_SENDER_H
+#ifndef AXIS2_TCP_TRANSPORT_SENDER_H
+#define AXIS2_TCP_TRANSPORT_SENDER_H
 
 /**
  * @defgroup axis2_tcp_transport_sender tcp transport sender
@@ -26,7 +26,7 @@
 
 /**
  * @file axis2_tcp_transport_sender.h
- * @brief axis2 HTTP Transport Sender (Handler) implementation
+ * @brief axis2 TCP Transport Sender (Handler) implementation
  */
 
 #include <axis2_const.h>
@@ -55,4 +55,4 @@ extern "C"
 }
 #endif
 
-#endif                          /* AXIS2_HTTP_TRANSPORT_SENDER_H */
+#endif                          /* AXIS2_TCP_TRANSPORT_SENDER_H */

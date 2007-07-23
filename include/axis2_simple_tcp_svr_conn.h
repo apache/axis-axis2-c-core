@@ -133,8 +133,6 @@ extern "C"
         const axutil_env_t *env, 
         int sockfd);
 
-/** @} */
-
 #ifdef __cplusplus
 }
 #endif
