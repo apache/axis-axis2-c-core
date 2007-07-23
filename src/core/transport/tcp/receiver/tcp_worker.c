@@ -30,7 +30,7 @@
 #include <string.h>
 #include <axiom_soap.h>
 #include <axiom.h>
-
+#include <axis2_simple_tcp_svr_conn.h>
 struct axis2_tcp_worker
 {
     axis2_conf_ctx_t *conf_ctx;

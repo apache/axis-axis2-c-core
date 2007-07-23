@@ -36,13 +36,9 @@
 typedef struct axis2_tcp_transport_sender_impl
 {
     axis2_transport_sender_t transport_sender;
-    axis2_char_t *tcp_version;
-    axis2_bool_t chunked;
     int connection_timeout;
     int so_timeout;
-
-}
-    axis2_tcp_transport_sender_impl_t;
+}axis2_tcp_transport_sender_impl_t;
 
 #define AXIS2_WS_RM_ANONYMOUS_URL "tcp://docs.oasis-open.org/ws-rx/wsmc/200702/anonymous?id="
 
@@ -111,7 +107,6 @@ axis2_tcp_transport_sender_create(
         AXIS2_TCP_DEFAULT_CONNECTION_TIMEOUT;
     transport_sender_impl->so_timeout = AXIS2_TCP_DEFAULT_SO_TIMEOUT;
     transport_sender_impl->transport_sender.ops = &tcp_transport_sender_ops_var;
-
     return &(transport_sender_impl->transport_sender);
 }
 
@@ -274,7 +269,7 @@ axis2_tcp_transport_sender_invoke(
             AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "stream write error");
             return AXIS2_FAILURE;
         }
-        AXIS2_LOG_DEBUG (env->log, AXIS2_LOG_SI, "stream wrote soap msg: %s", 
+        AXIS2_LOG_TRACE (env->log, AXIS2_LOG_SI, "stream wrote soap msg: %s", 
                          buffer);
         write = axutil_stream_write (stream, env, "\r\n\r\n", 4);
         size = RES_BUFF;
@@ -292,9 +287,15 @@ axis2_tcp_transport_sender_invoke(
             memcpy (res_buffer + res_size, buff, 1);
             res_size ++;
         }
-        
+
+        axutil_network_handler_close_socket (stream->socket, env);
+        axutil_stream_close (stream, env);
+        axutil_stream_free (stream, env);
+
+        AXIS2_LOG_TRACE (env->log, AXIS2_LOG_SI, "%s", res_buffer);
+
         reader = axiom_xml_reader_create_for_memory(
-            env, res_buffer, res_size, 
+            env, res_buffer, (res_size - 1), 
             NULL, 
             AXIS2_XML_PARSER_TYPE_BUFFER);
         

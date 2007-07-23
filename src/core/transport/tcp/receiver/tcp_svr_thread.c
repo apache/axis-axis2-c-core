@@ -17,6 +17,7 @@
 
 #include <platforms/axutil_platform_auto_sense.h>
 #include <axis2_tcp_svr_thread.h>
+#include <axis2_simple_tcp_svr_conn.h>
 #include <axis2_tcp_server.h>
 #include <axis2_tcp_transport.h>
 #include <axutil_string.h>
