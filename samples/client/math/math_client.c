@@ -151,7 +151,7 @@ build_om_programatically(const axutil_env_t *env,
     axiom_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
 
-    ns1 = axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samplesmath", "ns1");
+    ns1 = axiom_namespace_create(env, "http://ws.apache.org/axis2/services/math", "ns1");
 
     math_om_ele = axiom_element_create(env, NULL, operation, ns1, &math_om_node);
 
