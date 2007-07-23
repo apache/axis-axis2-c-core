@@ -65,7 +65,7 @@ rp_transport_binding_free(
         if(transport_binding->binding_commons)
         {
             rp_binding_commons_free(transport_binding->binding_commons,env);
-            transport_binding->binding_commons=NULL;
+            transport_binding->binding_commons = NULL;
         }
         if(transport_binding->transport_token)
         {
@@ -98,7 +98,7 @@ rp_transport_binding_set_binding_commons(
     rp_binding_commons_t *binding_commons)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,binding_commons,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, binding_commons, AXIS2_FAILURE);
         
     transport_binding->binding_commons=binding_commons;
     return AXIS2_SUCCESS;
@@ -123,7 +123,7 @@ rp_transport_binding_set_transport_token(
     rp_property_t *transport_token)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,transport_token,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, transport_token, AXIS2_FAILURE);
     
     transport_binding->transport_token = transport_token; 
     return AXIS2_SUCCESS;

@@ -80,8 +80,9 @@ rp_algorithmsuite_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL 
-rp_algorithmsuite_free(rp_algorithmsuite_t *algorithmsuite,
-        const axutil_env_t *env)
+rp_algorithmsuite_free(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
         
@@ -102,8 +103,9 @@ rp_algorithmsuite_free(rp_algorithmsuite_t *algorithmsuite,
 /* Implementations */
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_algorithmsuite_get_algosuite_string(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_algosuite_string(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -116,15 +118,15 @@ rp_algorithmsuite_get_algosuite_string(rp_algorithmsuite_t *algorithmsuite,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env,
-            axis2_char_t *algosuite_string)
+    const axutil_env_t *env,
+    axis2_char_t *algosuite_string)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,algosuite_string,AXIS2_FAILURE);   
  
     algorithmsuite->algosuite_string = algosuite_string;
 
-    if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_BASIC256)==0)
+    if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC256)==0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_AES256;
@@ -136,7 +138,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_BASIC192)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC192)==0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_AES192;
@@ -148,7 +150,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }        
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_BASIC128)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC128)==0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_AES128;
@@ -160,7 +162,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_TRIPLE_DES)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_TRIPLE_DES)==0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_TRIPLE_DES;
@@ -172,7 +174,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_BASIC256_RSA15)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC256_RSA15)==0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_AES256;
@@ -184,7 +186,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_BASIC192_RSA15)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC192_RSA15)==0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_AES192;
@@ -196,7 +198,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_BASIC128_RSA15)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC128_RSA15)==0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_AES128;
@@ -208,7 +210,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_TRIPLE_DES_RSA15)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_TRIPLE_DES_RSA15)==0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_TRIPLE_DES;
@@ -220,7 +222,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_BASIC256_SHA256)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC256_SHA256)==0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_AES256;
@@ -232,7 +234,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_BASIC192_SHA256)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC192_SHA256)==0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_AES192;
@@ -244,7 +246,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_BASIC128_SHA256)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC128_SHA256)==0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_AES128;
@@ -256,7 +258,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_TRIPLE_DES_SHA256)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_TRIPLE_DES_SHA256)==0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_TRIPLE_DES;
@@ -268,7 +270,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_BASIC256_SHA256_RSA15)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC256_SHA256_RSA15)==0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_AES256;
@@ -280,7 +282,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_BASIC192_SHA256_RSA15)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC192_SHA256_RSA15)==0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_AES192;
@@ -292,7 +294,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_BASIC128_SHA256_RSA15)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC128_SHA256_RSA15)==0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_AES128;
@@ -304,7 +306,7 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
         return AXIS2_SUCCESS;
     }
-    else if(axutil_strcmp(algosuite_string,RP_ALGO_SUITE_TRIPLE_DES_SHA256_RSA15)==0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_TRIPLE_DES_SHA256_RSA15)==0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_TRIPLE_DES;
@@ -322,8 +324,9 @@ rp_algorithmsuite_set_algosuite(rp_algorithmsuite_t *algorithmsuite,
 
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_algorithmsuite_get_symmetric_signature(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_symmetric_signature(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -332,20 +335,22 @@ rp_algorithmsuite_get_symmetric_signature(rp_algorithmsuite_t *algorithmsuite,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_algorithmsuite_set_symmetric_signature(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env,
-            axis2_char_t *symmetric_signature)
+rp_algorithmsuite_set_symmetric_signature(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env,
+    axis2_char_t *symmetric_signature)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,symmetric_signature,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, symmetric_signature, AXIS2_FAILURE);
     
     algorithmsuite->symmetric_signature = symmetric_signature;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_algorithmsuite_get_asymmetric_signature(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_asymmetric_signature(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -354,20 +359,22 @@ rp_algorithmsuite_get_asymmetric_signature(rp_algorithmsuite_t *algorithmsuite,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_algorithmsuite_set_asymmetric_signature(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env,
-            axis2_char_t *asymmetric_signature)
+rp_algorithmsuite_set_asymmetric_signature(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env,
+    axis2_char_t *asymmetric_signature)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,asymmetric_signature,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, asymmetric_signature, AXIS2_FAILURE);
     
     algorithmsuite->asymmetric_signature = asymmetric_signature;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_algorithmsuite_get_computed_key(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_computed_key(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -375,20 +382,22 @@ rp_algorithmsuite_get_computed_key(rp_algorithmsuite_t *algorithmsuite,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_algorithmsuite_set_computed_key(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env,
-            axis2_char_t *computed_key)
+rp_algorithmsuite_set_computed_key(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env,
+    axis2_char_t *computed_key)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,computed_key,AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK(env->error, computed_key, AXIS2_FAILURE);    
     
     algorithmsuite->computed_key = computed_key;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_algorithmsuite_get_digest(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_digest(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -396,8 +405,9 @@ rp_algorithmsuite_get_digest(rp_algorithmsuite_t *algorithmsuite,
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_algorithmsuite_get_encryption(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_encryption(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -405,8 +415,9 @@ rp_algorithmsuite_get_encryption(rp_algorithmsuite_t *algorithmsuite,
 }
 
 AXIS2_EXTERN int AXIS2_CALL 
-rp_algorithmsuite_get_max_symmetric_keylength(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_max_symmetric_keylength(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -414,9 +425,10 @@ rp_algorithmsuite_get_max_symmetric_keylength(rp_algorithmsuite_t *algorithmsuit
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_algorithmsuite_set_max_symmetric_keylength(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env,
-            int max_symmetric_keylength)
+rp_algorithmsuite_set_max_symmetric_keylength(
+     rp_algorithmsuite_t *algorithmsuite,
+     const axutil_env_t *env,
+     int max_symmetric_keylength)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -427,8 +439,9 @@ rp_algorithmsuite_set_max_symmetric_keylength(rp_algorithmsuite_t *algorithmsuit
 }
 
 AXIS2_EXTERN int AXIS2_CALL 
-rp_algorithmsuite_get_min_symmetric_keylength(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_min_symmetric_keylength(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -436,8 +449,9 @@ rp_algorithmsuite_get_min_symmetric_keylength(rp_algorithmsuite_t *algorithmsuit
 }
 
 AXIS2_EXTERN int AXIS2_CALL 
-rp_algorithmsuite_get_max_asymmetric_keylength(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_max_asymmetric_keylength(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -445,9 +459,10 @@ rp_algorithmsuite_get_max_asymmetric_keylength(rp_algorithmsuite_t *algorithmsui
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_algorithmsuite_set_max_asymmetric_keylength(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env,
-            int max_asymmetric_keylength)
+rp_algorithmsuite_set_max_asymmetric_keylength(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env,
+    int max_asymmetric_keylength)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
         
@@ -456,8 +471,9 @@ rp_algorithmsuite_set_max_asymmetric_keylength(rp_algorithmsuite_t *algorithmsui
 }
 
 AXIS2_EXTERN int AXIS2_CALL 
-rp_algorithmsuite_get_min_asymmetric_keylength(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_min_asymmetric_keylength(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -465,9 +481,10 @@ rp_algorithmsuite_get_min_asymmetric_keylength(rp_algorithmsuite_t *algorithmsui
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_algorithmsuite_set_min_asymmetric_keylength(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env,
-            int min_asymmetric_keylength)
+rp_algorithmsuite_set_min_asymmetric_keylength(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env,
+    int min_asymmetric_keylength)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -478,8 +495,9 @@ rp_algorithmsuite_set_min_asymmetric_keylength(rp_algorithmsuite_t *algorithmsui
 
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_algorithmsuite_get_symmetrickeywrap(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_symmetrickeywrap(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -487,8 +505,9 @@ rp_algorithmsuite_get_symmetrickeywrap(rp_algorithmsuite_t *algorithmsuite,
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_algorithmsuite_get_asymmetrickeywrap(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_asymmetrickeywrap(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -496,8 +515,9 @@ rp_algorithmsuite_get_asymmetrickeywrap(rp_algorithmsuite_t *algorithmsuite,
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_algorithmsuite_get_signature_key_derivation(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_signature_key_derivation(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -505,8 +525,9 @@ rp_algorithmsuite_get_signature_key_derivation(rp_algorithmsuite_t *algorithmsui
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_algorithmsuite_get_encryption_key_derivation(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_encryption_key_derivation(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
         
@@ -515,8 +536,9 @@ rp_algorithmsuite_get_encryption_key_derivation(rp_algorithmsuite_t *algorithmsu
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_algorithmsuite_get_soap_normalization(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_soap_normalization(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -524,20 +546,22 @@ rp_algorithmsuite_get_soap_normalization(rp_algorithmsuite_t *algorithmsuite,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_algorithmsuite_set_soap_normalization(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env,
-            axis2_char_t *soap_normalization)
+rp_algorithmsuite_set_soap_normalization(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env,
+    axis2_char_t *soap_normalization)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,soap_normalization,AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK(env->error, soap_normalization, AXIS2_FAILURE);    
     
     algorithmsuite->soap_normalization = soap_normalization;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_algorithmsuite_get_str_transformation(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_str_transformation(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -545,12 +569,13 @@ rp_algorithmsuite_get_str_transformation(rp_algorithmsuite_t *algorithmsuite,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_algorithmsuite_set_str_transformation(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env,
-            axis2_char_t *str_transformation)
+rp_algorithmsuite_set_str_transformation(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env,
+    axis2_char_t *str_transformation)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,str_transformation,AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK(env->error, str_transformation, AXIS2_FAILURE);    
     
     algorithmsuite->str_transformation = str_transformation;
 
@@ -558,8 +583,9 @@ rp_algorithmsuite_set_str_transformation(rp_algorithmsuite_t *algorithmsuite,
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_algorithmsuite_get_c14n(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_c14n(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -567,20 +593,22 @@ rp_algorithmsuite_get_c14n(rp_algorithmsuite_t *algorithmsuite,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_algorithmsuite_set_c14n(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env,
-            axis2_char_t *c14n)
+rp_algorithmsuite_set_c14n(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env,
+    axis2_char_t *c14n)
 {
-        AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-        AXIS2_PARAM_CHECK(env->error,c14n,AXIS2_FAILURE);   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error,c14n,AXIS2_FAILURE);   
  
     algorithmsuite->c14n = c14n;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_algorithmsuite_get_xpath(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env)
+rp_algorithmsuite_get_xpath(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
         
@@ -588,9 +616,10 @@ rp_algorithmsuite_get_xpath(rp_algorithmsuite_t *algorithmsuite,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_algorithmsuite_set_xpath(rp_algorithmsuite_t *algorithmsuite,
-            const axutil_env_t *env,
-            axis2_char_t *xpath)
+rp_algorithmsuite_set_xpath(
+    rp_algorithmsuite_t *algorithmsuite,
+    const axutil_env_t *env,
+    axis2_char_t *xpath)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,xpath,AXIS2_FAILURE);
@@ -600,7 +629,8 @@ rp_algorithmsuite_set_xpath(rp_algorithmsuite_t *algorithmsuite,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_algorithmsuite_increment_ref(rp_algorithmsuite_t *algorithmsuite,
+rp_algorithmsuite_increment_ref(
+    rp_algorithmsuite_t *algorithmsuite,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

@@ -93,7 +93,7 @@ rp_security_context_token_set_inclusion(
     axis2_char_t *inclusion)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,inclusion,AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK(env->error, inclusion, AXIS2_FAILURE);    
 
     security_context_token->inclusion = inclusion;
     return AXIS2_SUCCESS;
@@ -116,7 +116,7 @@ rp_security_context_token_set_derivedkeys(
     axis2_bool_t derivedkeys)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,derivedkeys,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, derivedkeys, AXIS2_FAILURE);
 
     security_context_token->derivedkeys = derivedkeys;
     return AXIS2_SUCCESS;
@@ -139,7 +139,7 @@ rp_security_context_token_set_require_external_uri_ref(
     axis2_bool_t require_external_uri_ref)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,require_external_uri_ref,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, require_external_uri_ref, AXIS2_FAILURE);
 
     security_context_token->require_external_uri_ref = 
             require_external_uri_ref;
@@ -164,7 +164,7 @@ rp_security_context_token_set_sc10_security_context_token(
     axis2_bool_t sc10_security_context_token)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,sc10_security_context_token,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, sc10_security_context_token, AXIS2_FAILURE);
 
     security_context_token->sc10_security_context_token = 
             sc10_security_context_token;

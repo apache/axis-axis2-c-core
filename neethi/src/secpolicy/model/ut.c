@@ -93,7 +93,7 @@ rp_username_token_set_inclusion(
     axis2_char_t *inclusion)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,inclusion,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, inclusion, AXIS2_FAILURE);
     
     username_token->inclusion = inclusion;
 
@@ -118,7 +118,7 @@ rp_username_token_set_derivedkeys(
     axis2_bool_t derivedkeys)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-     AXIS2_PARAM_CHECK(env->error,derivedkeys,AXIS2_FAILURE);    
+     AXIS2_PARAM_CHECK(env->error, derivedkeys, AXIS2_FAILURE);    
     username_token->derivedkeys = derivedkeys;
 
     return AXIS2_SUCCESS;
@@ -143,7 +143,7 @@ rp_username_token_set_useUTprofile10(
     axis2_bool_t useUTprofile10)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,useUTprofile10,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, useUTprofile10, AXIS2_FAILURE);
     username_token->useUTprofile10 = useUTprofile10;
 
     return AXIS2_SUCCESS;
@@ -166,14 +166,15 @@ rp_username_token_set_useUTprofile11(
     axis2_bool_t useUTprofile11)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,useUTprofile11,AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK(env->error, useUTprofile11, AXIS2_FAILURE);    
     username_token->useUTprofile11 = useUTprofile11;
 
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_username_token_increment_ref(rp_username_token_t *username_token,
+rp_username_token_increment_ref(
+    rp_username_token_t *username_token,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

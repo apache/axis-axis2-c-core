@@ -51,8 +51,9 @@ rp_https_token_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL 
-rp_https_token_free(rp_https_token_t *https_token,
-        const axutil_env_t *env)
+rp_https_token_free(
+    rp_https_token_t *https_token,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -72,8 +73,9 @@ rp_https_token_free(rp_https_token_t *https_token,
 /* Implementations */
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_https_token_get_inclusion(rp_https_token_t *https_token,
-            const axutil_env_t *env)
+rp_https_token_get_inclusion(
+    rp_https_token_t *https_token,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -81,12 +83,13 @@ rp_https_token_get_inclusion(rp_https_token_t *https_token,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_https_token_set_inclusion(rp_https_token_t *https_token,
-            const axutil_env_t *env,
-            axis2_char_t *inclusion)
+rp_https_token_set_inclusion(
+    rp_https_token_t *https_token,
+    const axutil_env_t *env,
+    axis2_char_t *inclusion)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,inclusion,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, inclusion, AXIS2_FAILURE);
     
     https_token->inclusion = inclusion;
 
@@ -95,8 +98,9 @@ rp_https_token_set_inclusion(rp_https_token_t *https_token,
 
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
-rp_https_token_get_derivedkeys(rp_https_token_t *https_token,
-            const axutil_env_t *env)
+rp_https_token_get_derivedkeys(
+    rp_https_token_t *https_token,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     
@@ -104,12 +108,13 @@ rp_https_token_get_derivedkeys(rp_https_token_t *https_token,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_https_token_set_derivedkeys(rp_https_token_t *https_token,
-            const axutil_env_t *env,
-            axis2_bool_t derivedkeys)
+rp_https_token_set_derivedkeys(
+    rp_https_token_t *https_token,
+    const axutil_env_t *env,
+    axis2_bool_t derivedkeys)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,derivedkeys,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, derivedkeys, AXIS2_FAILURE);
     
     https_token->derivedkeys = derivedkeys;
 
@@ -118,8 +123,9 @@ rp_https_token_set_derivedkeys(rp_https_token_t *https_token,
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
-rp_https_token_get_require_client_certificate(rp_https_token_t *https_token,
-            const axutil_env_t *env)
+rp_https_token_get_require_client_certificate(
+    rp_https_token_t *https_token,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -127,12 +133,13 @@ rp_https_token_get_require_client_certificate(rp_https_token_t *https_token,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_https_token_set_require_client_certificate(rp_https_token_t *https_token,
-            const axutil_env_t *env,
-            axis2_bool_t require_client_certificate)
+rp_https_token_set_require_client_certificate(
+    rp_https_token_t *https_token,
+    const axutil_env_t *env,
+    axis2_bool_t require_client_certificate)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,require_client_certificate,AXIS2_FAILURE)    
+    AXIS2_PARAM_CHECK(env->error, require_client_certificate, AXIS2_FAILURE)    
     https_token->require_client_certificate = require_client_certificate;
 
     return AXIS2_SUCCESS;

@@ -56,10 +56,8 @@ rp_algorithmsuite_builder_build(
             if(!algosuite_string)
                 return NULL;
             rp_algorithmsuite_set_algosuite(algorithmsuite, env, algosuite_string);
-            /*assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, algorithmsuite, ASSERTION_TYPE_ALGORITHM_SUITE);
-            */
-            assertion = neethi_assertion_create_with_args(env, (void *)rp_algorithmsuite_free, algorithmsuite, ASSERTION_TYPE_ALGORITHM_SUITE);
+            assertion = neethi_assertion_create_with_args(env, (void *)rp_algorithmsuite_free, 
+                    algorithmsuite, ASSERTION_TYPE_ALGORITHM_SUITE);
             return assertion;
         }
         else return NULL;

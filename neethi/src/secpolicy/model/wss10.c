@@ -77,8 +77,9 @@ rp_wss10_free(rp_wss10_t *wss10,
 
 /* Implementations */
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
-rp_wss10_get_must_support_ref_key_identifier(rp_wss10_t *wss10,
-            const axutil_env_t *env)
+rp_wss10_get_must_support_ref_key_identifier(
+    rp_wss10_t *wss10,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
         
@@ -86,12 +87,13 @@ rp_wss10_get_must_support_ref_key_identifier(rp_wss10_t *wss10,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_wss10_set_must_support_ref_key_identifier(rp_wss10_t *wss10,
-            const axutil_env_t *env,
-            axis2_bool_t must_support_ref_key_identifier)
+rp_wss10_set_must_support_ref_key_identifier(
+    rp_wss10_t *wss10,
+    const axutil_env_t *env,
+    axis2_bool_t must_support_ref_key_identifier)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,must_support_ref_key_identifier,AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK(env->error, must_support_ref_key_identifier, AXIS2_FAILURE);    
     wss10->must_support_ref_key_identifier = must_support_ref_key_identifier;
 
     return AXIS2_SUCCESS;
@@ -99,8 +101,9 @@ rp_wss10_set_must_support_ref_key_identifier(rp_wss10_t *wss10,
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
-rp_wss10_get_must_support_ref_issuer_serial(rp_wss10_t *wss10,
-            const axutil_env_t *env)
+rp_wss10_get_must_support_ref_issuer_serial(
+    rp_wss10_t *wss10,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     
@@ -108,20 +111,22 @@ rp_wss10_get_must_support_ref_issuer_serial(rp_wss10_t *wss10,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_wss10_set_must_support_ref_issuer_serial(rp_wss10_t *wss10,
-            const axutil_env_t *env,
-            axis2_bool_t must_support_ref_issuer_serial)
+rp_wss10_set_must_support_ref_issuer_serial(
+    rp_wss10_t *wss10,
+    const axutil_env_t *env,
+    axis2_bool_t must_support_ref_issuer_serial)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,must_support_ref_issuer_serial,AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK(env->error, must_support_ref_issuer_serial, AXIS2_FAILURE);    
     wss10->must_support_ref_issuer_serial = must_support_ref_issuer_serial;
 
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
-rp_wss10_get_must_support_ref_external_uri(rp_wss10_t *wss10,
-            const axutil_env_t *env)
+rp_wss10_get_must_support_ref_external_uri(
+    rp_wss10_t *wss10,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     
@@ -130,19 +135,20 @@ rp_wss10_get_must_support_ref_external_uri(rp_wss10_t *wss10,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 rp_wss10_set_must_support_ref_external_uri(rp_wss10_t *wss10,
-            const axutil_env_t *env,
-            axis2_bool_t must_support_ref_external_uri)
+    const axutil_env_t *env,
+    axis2_bool_t must_support_ref_external_uri)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,must_support_ref_external_uri,AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK(env->error, must_support_ref_external_uri, AXIS2_FAILURE);    
     wss10->must_support_ref_external_uri = must_support_ref_external_uri;
 
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
-rp_wss10_get_must_support_ref_embedded_token(rp_wss10_t *wss10,
-            const axutil_env_t *env)
+rp_wss10_get_must_support_ref_embedded_token(
+    rp_wss10_t *wss10,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
         
@@ -151,11 +157,11 @@ rp_wss10_get_must_support_ref_embedded_token(rp_wss10_t *wss10,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 rp_wss10_set_must_support_ref_embedded_token(rp_wss10_t *wss10,
-            const axutil_env_t *env,
-            axis2_bool_t must_support_ref_embedded_token)
+    const axutil_env_t *env,
+    axis2_bool_t must_support_ref_embedded_token)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,must_support_ref_embedded_token,AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK(env->error, must_support_ref_embedded_token, AXIS2_FAILURE);    
     wss10->must_support_ref_embedded_token = must_support_ref_embedded_token;
 
     return AXIS2_SUCCESS;
@@ -163,7 +169,8 @@ rp_wss10_set_must_support_ref_embedded_token(rp_wss10_t *wss10,
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_wss10_increment_ref(rp_wss10_t *wss10,
+rp_wss10_increment_ref(
+    rp_wss10_t *wss10,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

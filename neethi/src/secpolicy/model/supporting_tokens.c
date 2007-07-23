@@ -167,12 +167,13 @@ rp_supporting_tokens_get_algorithmsuite(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_supporting_tokens_set_algorithmsuite(rp_supporting_tokens_t *supporting_tokens,
-            const axutil_env_t *env,
-            rp_algorithmsuite_t *algorithmsuite)
+rp_supporting_tokens_set_algorithmsuite(
+    rp_supporting_tokens_t *supporting_tokens,
+    const axutil_env_t *env,
+    rp_algorithmsuite_t *algorithmsuite)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,algorithmsuite,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, algorithmsuite, AXIS2_FAILURE);
 
     rp_algorithmsuite_increment_ref(algorithmsuite, env);
     supporting_tokens->algorithmsuite = algorithmsuite;
@@ -191,12 +192,13 @@ rp_supporting_tokens_get_signed_parts(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_supporting_tokens_set_signed_parts(rp_supporting_tokens_t *supporting_tokens,
-            const axutil_env_t *env,
-            rp_signed_encrypted_parts_t *signed_parts)
+rp_supporting_tokens_set_signed_parts(
+    rp_supporting_tokens_t *supporting_tokens,
+    const axutil_env_t *env,
+    rp_signed_encrypted_parts_t *signed_parts)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,signed_parts,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, signed_parts, AXIS2_FAILURE);
         
     supporting_tokens->signed_parts = signed_parts;
     return AXIS2_SUCCESS;
@@ -213,12 +215,13 @@ rp_supporting_tokens_get_signed_elements(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_supporting_tokens_set_signed_elements(rp_supporting_tokens_t *supporting_tokens,
-            const axutil_env_t *env,
-            rp_signed_encrypted_elements_t *signed_elements)
+rp_supporting_tokens_set_signed_elements(
+    rp_supporting_tokens_t *supporting_tokens,
+    const axutil_env_t *env,
+    rp_signed_encrypted_elements_t *signed_elements)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,signed_elements,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, signed_elements, AXIS2_FAILURE);
         
     supporting_tokens->signed_elements = signed_elements;
     return AXIS2_SUCCESS;
@@ -235,12 +238,13 @@ rp_supporting_tokens_get_encrypted_parts(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_supporting_tokens_set_encrypted_parts(rp_supporting_tokens_t *supporting_tokens,
-            const axutil_env_t *env,
-            rp_signed_encrypted_parts_t *encrypted_parts)
+rp_supporting_tokens_set_encrypted_parts(
+    rp_supporting_tokens_t *supporting_tokens,
+    const axutil_env_t *env,
+    rp_signed_encrypted_parts_t *encrypted_parts)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,encrypted_parts,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, encrypted_parts, AXIS2_FAILURE);
 
     supporting_tokens->encrypted_parts = encrypted_parts;
     return AXIS2_SUCCESS;
@@ -257,12 +261,13 @@ rp_supporting_tokens_get_encrypted_elements(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_supporting_tokens_set_encrypted_elements(rp_supporting_tokens_t *supporting_tokens,
-            const axutil_env_t *env,
-            rp_signed_encrypted_elements_t *encrypted_elements)
+rp_supporting_tokens_set_encrypted_elements(
+    rp_supporting_tokens_t *supporting_tokens,
+    const axutil_env_t *env,
+    rp_signed_encrypted_elements_t *encrypted_elements)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,encrypted_elements,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, encrypted_elements, AXIS2_FAILURE);
         
     supporting_tokens->encrypted_elements = encrypted_elements;
     return AXIS2_SUCCESS;
@@ -279,9 +284,10 @@ rp_supporting_tokens_get_type(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_supporting_tokens_set_type(rp_supporting_tokens_t *supporting_tokens,
-            const axutil_env_t *env,
-            int type)
+rp_supporting_tokens_set_type(
+    rp_supporting_tokens_t *supporting_tokens,
+    const axutil_env_t *env,
+    int type)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     supporting_tokens->type = type;
@@ -289,7 +295,8 @@ rp_supporting_tokens_set_type(rp_supporting_tokens_t *supporting_tokens,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_supporting_tokens_increment_ref(rp_supporting_tokens_t *supporting_tokens,
+rp_supporting_tokens_increment_ref(
+    rp_supporting_tokens_t *supporting_tokens,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

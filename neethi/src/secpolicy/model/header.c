@@ -47,8 +47,9 @@ rp_header_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL 
-rp_header_free(rp_header_t *header,
-        const axutil_env_t *env)
+rp_header_free(
+    rp_header_t *header,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -64,8 +65,9 @@ rp_header_free(rp_header_t *header,
 /* Implementations */
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_header_get_name(rp_header_t *header,
-            const axutil_env_t *env)
+rp_header_get_name(
+    rp_header_t *header,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
    
@@ -73,12 +75,13 @@ rp_header_get_name(rp_header_t *header,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_header_set_name(rp_header_t *header,
-            const axutil_env_t *env,
-            axis2_char_t *name)
+rp_header_set_name(
+    rp_header_t *header,
+    const axutil_env_t *env,
+    axis2_char_t *name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,name,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);   
     
     header->name = name;
     return AXIS2_SUCCESS;
@@ -86,8 +89,9 @@ rp_header_set_name(rp_header_t *header,
 
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_header_get_namespace(rp_header_t *header,
-            const axutil_env_t *env)
+rp_header_get_namespace(
+    rp_header_t *header,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -97,11 +101,11 @@ rp_header_get_namespace(rp_header_t *header,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 rp_header_set_namespace(rp_header_t *header,
-            const axutil_env_t *env,
-            axis2_char_t *namespace)
+    const axutil_env_t *env,
+    axis2_char_t *namespace)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,namespace,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, namespace, AXIS2_FAILURE);   
 
     header->namespace = namespace;
 

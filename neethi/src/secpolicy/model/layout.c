@@ -45,8 +45,9 @@ rp_layout_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL 
-rp_layout_free(rp_layout_t *layout,
-        const axutil_env_t *env)
+rp_layout_free(
+    rp_layout_t *layout,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -66,8 +67,9 @@ rp_layout_free(rp_layout_t *layout,
 /* Implementations */
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_layout_get_value(rp_layout_t *layout,
-            const axutil_env_t *env)
+rp_layout_get_value(
+    rp_layout_t *layout,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
         
@@ -75,19 +77,21 @@ rp_layout_get_value(rp_layout_t *layout,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_layout_set_value(rp_layout_t *layout,
-            const axutil_env_t *env,
-            axis2_char_t *value)
+rp_layout_set_value(
+    rp_layout_t *layout,
+    const axutil_env_t *env,
+    axis2_char_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,value,AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);    
     
     layout->value = value;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_layout_increment_ref(rp_layout_t *layout,
+rp_layout_increment_ref(
+    rp_layout_t *layout,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

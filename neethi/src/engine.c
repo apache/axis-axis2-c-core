@@ -132,6 +132,8 @@ neethi_all_t *AXIS2_CALL get_operator_all(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_ALL_CREATION_FAILED, 
                 AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "[neethi] All creation failed");
         neethi_all_free(all, env);
         all = NULL;
         return NULL;
@@ -173,6 +175,8 @@ neethi_exactlyone_t *AXIS2_CALL get_operator_exactlyone(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_EXACTLYONE_CREATION_FAILED,
                 AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "[neethi] Exactlyone creation failed.");
         neethi_exactlyone_free(exactlyone, env);
         exactlyone = NULL;
         return NULL;
@@ -247,6 +251,8 @@ neethi_policy_t *AXIS2_CALL get_operator_neethi_policy(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_POLICY_CREATION_FAILED,
                 AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "[neethi] Policy creation failed.");
         neethi_policy_free(neethi_policy, env);
         neethi_policy = NULL;
         return NULL;
@@ -333,7 +339,9 @@ axis2_status_t AXIS2_CALL process_operation_element(
                         if(!namespace)
                         {
                             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_ELEMENT_WITH_NO_NAMESPACE, 
-                                 AXIS2_FAILURE);                        
+                                 AXIS2_FAILURE); 
+                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                "[neethi] Element with no namespace");
                             return AXIS2_FAILURE;
                         }                            
                         uri = axiom_namespace_get_uri(namespace, env);
@@ -341,6 +349,8 @@ axis2_status_t AXIS2_CALL process_operation_element(
                         {
                             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_EMPTY_NAMESPACE_URI, 
                                 AXIS2_FAILURE); 
+                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                "[neethi] Invalid Empty namespace uri.");
                             return AXIS2_FAILURE;
                         }
                         if(axutil_strcmp(uri, NEETHI_NAMESPACE)==0)
@@ -359,6 +369,8 @@ axis2_status_t AXIS2_CALL process_operation_element(
                                 {
                                     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_POLICY_CREATION_FAILED_FROM_ELEMENT, 
                                         AXIS2_FAILURE);
+                                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                        "[neethi] Policy creation failed from element.");
                                     return AXIS2_FAILURE;
                                 }
                             }
@@ -376,6 +388,8 @@ axis2_status_t AXIS2_CALL process_operation_element(
                                 {
                                     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_ALL_CREATION_FAILED_FROM_ELEMENT, 
                                         AXIS2_FAILURE);
+                                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                        "[neethi] All creation failed from element.");
                                     return AXIS2_FAILURE;
                                 }
                             }
@@ -393,6 +407,8 @@ axis2_status_t AXIS2_CALL process_operation_element(
                                 {
                                     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_EXACTLYONE_CREATION_FAILED_FROM_ELEMENT,
                                         AXIS2_FAILURE);
+                                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                        "[neethi] Exactlyone creation failed from element.");
                                     return AXIS2_FAILURE;
                                 }    
                             }
@@ -410,6 +426,8 @@ axis2_status_t AXIS2_CALL process_operation_element(
                                 {
                                     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_REFERENCE_CREATION_FAILED_FROM_ELEMENT,
                                         AXIS2_FAILURE);
+                                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                        "[neethi] Reference cretion failed from element.");
                                     return AXIS2_FAILURE;
                                 }
                             }
@@ -428,6 +446,8 @@ axis2_status_t AXIS2_CALL process_operation_element(
                             {
                                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_ASSERTION_CREATION_FAILED_FROM_ELEMENT,
                                         AXIS2_FAILURE);
+                                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                    "[neethi] Assertion creation failed from element.");
                                 return AXIS2_FAILURE;
                             }
                         }                            
@@ -596,7 +616,10 @@ neethi_engine_normalize(const axutil_env_t *env,
     }        
     else
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_NORMALIZATION_FAILED, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_NORMALIZATION_FAILED, 
+            AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[neethi] Normalization failed.");
         return NULL;
     }
 }
@@ -619,6 +642,8 @@ neethi_engine_merge(const axutil_env_t *env,
     if(!exactlyone1 || !exactlyone2)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_WRONG_INPUT_FOR_MERGE, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "[neethi] Wrong input for merge.");
         return NULL;
     }
     exactlyone = get_cross_product(exactlyone1, exactlyone2, env);
@@ -638,6 +663,8 @@ neethi_engine_merge(const axutil_env_t *env,
     else
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_CROSS_PRODUCT_FAILED, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+              "[neethi] Cross product failed.");
         return NULL;
     }
 }
@@ -865,7 +892,10 @@ normalize_operator(
                 }
                 else
                 {
-                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_NO_CHILDREN_POLICY_COMPONENTS, AXIS2_FAILURE);
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_NO_CHILDREN_POLICY_COMPONENTS, 
+                        AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "[neethi] No children policy components");
                     return NULL;
                 }
             }
@@ -885,13 +915,19 @@ normalize_operator(
             uri = neethi_reference_get_uri(policy_ref, env);
             if(!uri)
             {
-                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_URI_NOT_SPECIFIED, AXIS2_FAILURE);
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_URI_NOT_SPECIFIED, 
+                     AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[neethi] Uri not specified");
                 return NULL;
             }    
             policy = neethi_registry_lookup(registry, env, uri);
             if(!policy)
             {
-                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_NO_ENTRY_FOR_THE_GIVEN_URI, AXIS2_FAILURE);
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_NO_ENTRY_FOR_THE_GIVEN_URI, 
+                    AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[neethi] No entry for the given uri");
                 return NULL;
             }  
             neethi_operator_set_value(child_component, env, policy, OPERATOR_TYPE_POLICY);
@@ -925,7 +961,10 @@ normalize_operator(
                 }
                 else
                 {
-                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_NO_CHILDREN_POLICY_COMPONENTS, AXIS2_FAILURE);
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_NO_CHILDREN_POLICY_COMPONENTS, 
+                        AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "[neethi] No children policy components");
                     return NULL;
                 }
             }
@@ -968,7 +1007,10 @@ compute_resultant_component(
             }
             else
             {
-                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_EXACTLYONE_NOT_FOUND_IN_NORMALIZED_POLICY, AXIS2_FAILURE);
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_EXACTLYONE_NOT_FOUND_IN_NORMALIZED_POLICY, 
+                        AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[neethi] Exactlyone not found in normalized policy");
                 return NULL;
             }
         }
@@ -984,6 +1026,8 @@ compute_resultant_component(
             {
                 AXIS2_ERROR_SET(env->error, 
                                 AXIS2_ERROR_NEETHI_EXACTLYONE_NOT_FOUND_IN_NORMALIZED_POLICY, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[neethi] Exactlyone not found in normalized policy");
                 return NULL;
             }
             if(!neethi_exactlyone_is_empty(exactlyone, env))
@@ -997,6 +1041,8 @@ compute_resultant_component(
                     {
                         AXIS2_ERROR_SET(env->error, 
                                 AXIS2_ERROR_NEETHI_EXACTLYONE_NOT_FOUND_IN_NORMALIZED_POLICY, AXIS2_FAILURE);
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "[neethi] Exactlyone not found in normalized policy");
                         return NULL;
                     }
                     if(neethi_exactlyone_is_empty(current_exactlyone, env)) 
@@ -1021,6 +1067,8 @@ compute_resultant_component(
             else
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_EXACTLYONE_IS_EMPTY, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "[neethi] Exactlyone is Empty");
                 return NULL;
             }
         }
@@ -1065,6 +1113,8 @@ get_cross_product(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_NO_CHILDREN_POLICY_COMPONENTS, 
                 AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+               "[neethi] No children policy components");
         return NULL;
     }
 
@@ -1077,6 +1127,8 @@ get_cross_product(
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_ALL_NOT_FOUND_WHILE_GETTING_CROSS_PRODUCT , 
                 AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                 "[neethi] All not found while getting cross product");
             return NULL;
         }
         
@@ -1089,6 +1141,8 @@ get_cross_product(
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_ALL_NOT_FOUND_WHILE_GETTING_CROSS_PRODUCT ,
                     AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[neethi] All not found while getting cross product");
                 return NULL;
             }
     

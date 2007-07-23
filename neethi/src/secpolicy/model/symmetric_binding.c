@@ -114,7 +114,8 @@ rp_symmetric_binding_set_symmetric_asymmetric_binding_commons(
     rp_symmetric_asymmetric_binding_commons_t *symmetric_asymmetric_binding_commons)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,symmetric_asymmetric_binding_commons,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, symmetric_asymmetric_binding_commons,
+            AXIS2_FAILURE);
         
     symmetric_binding->symmetric_asymmetric_binding_commons
             =symmetric_asymmetric_binding_commons;
@@ -149,7 +150,8 @@ rp_symmetric_binding_set_protection_token(
     {
         return AXIS2_FAILURE;
     }
-    symmetric_binding->protection_token=protection_token; 
+    symmetric_binding->protection_token = 
+        protection_token; 
 
     return AXIS2_SUCCESS;
     

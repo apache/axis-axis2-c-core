@@ -47,8 +47,9 @@ rp_element_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL 
-rp_element_free(rp_element_t *element,
-        const axutil_env_t *env)
+rp_element_free(
+    rp_element_t *element,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -64,8 +65,9 @@ rp_element_free(rp_element_t *element,
 /* Implementations */
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_element_get_name(rp_element_t *element,
-            const axutil_env_t *env)
+rp_element_get_name(
+    rp_element_t *element,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
    
@@ -73,12 +75,13 @@ rp_element_get_name(rp_element_t *element,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_element_set_name(rp_element_t *element,
-            const axutil_env_t *env,
-            axis2_char_t *name)
+rp_element_set_name(
+    rp_element_t *element,
+    const axutil_env_t *env,
+    axis2_char_t *name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,name,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);   
     
     element->name = name;
     return AXIS2_SUCCESS;
@@ -86,8 +89,9 @@ rp_element_set_name(rp_element_t *element,
 
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_element_get_namespace(rp_element_t *element,
-            const axutil_env_t *env)
+rp_element_get_namespace(
+    rp_element_t *element,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -96,12 +100,13 @@ rp_element_get_namespace(rp_element_t *element,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_element_set_namespace(rp_element_t *element,
-            const axutil_env_t *env,
-            axis2_char_t *namespace)
+rp_element_set_namespace(
+    rp_element_t *element,
+    const axutil_env_t *env,
+    axis2_char_t *namespace)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,namespace,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, namespace, AXIS2_FAILURE);   
 
     element->namespace = namespace;
 

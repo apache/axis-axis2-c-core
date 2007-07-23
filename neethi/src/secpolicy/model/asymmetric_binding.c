@@ -74,15 +74,15 @@ rp_asymmetric_binding_free(
         }
         if(asymmetric_binding->initiator_token)
         {
-            rp_property_free(asymmetric_binding->initiator_token,env);
+            rp_property_free(asymmetric_binding->initiator_token, env);
             asymmetric_binding->initiator_token = NULL;
         }
         if(asymmetric_binding->recipient_token)
         {
-            rp_property_free(asymmetric_binding->recipient_token,env);            
+            rp_property_free(asymmetric_binding->recipient_token, env);            
             asymmetric_binding->recipient_token = NULL;
         }
-        AXIS2_FREE(env->allocator,asymmetric_binding);           
+        AXIS2_FREE(env->allocator, asymmetric_binding);           
     }
 
     return;
@@ -108,7 +108,8 @@ rp_asymmetric_binding_set_symmetric_asymmetric_binding_commons(
     rp_symmetric_asymmetric_binding_commons_t *symmetric_asymmetric_binding_commons)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,symmetric_asymmetric_binding_commons,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, symmetric_asymmetric_binding_commons, 
+            AXIS2_FAILURE);
         
     asymmetric_binding->symmetric_asymmetric_binding_commons
             =symmetric_asymmetric_binding_commons;
@@ -148,7 +149,7 @@ rp_asymmetric_binding_set_recipient_token(
     rp_property_t *recipient_token)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,recipient_token,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, recipient_token, AXIS2_FAILURE);
    
     rp_property_increment_ref(recipient_token, env);
     asymmetric_binding->recipient_token = recipient_token; 

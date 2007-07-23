@@ -73,62 +73,62 @@ rp_property_free(
             switch(property->type)
             {                
                 case RP_TOKEN_USERNAME:
-                    rp_username_token_free((rp_username_token_t *)property->value,env);
+                    rp_username_token_free((rp_username_token_t *)property->value, env);
                     property->value = NULL;
                     break;
 
                 case RP_TOKEN_X509:
-                    rp_x509_token_free((rp_x509_token_t *)property->value,env);
+                    rp_x509_token_free((rp_x509_token_t *)property->value, env);
                     property->value = NULL;
                     break;
 
                 case RP_TOKEN_SECURITY_CONTEXT:
-                    rp_security_context_token_free((rp_security_context_token_t *)property->value,env);
+                    rp_security_context_token_free((rp_security_context_token_t *)property->value, env);
                     property->value = NULL;
                     break;
 
                 case RP_TOKEN_HTTPS:
-                    rp_https_token_free((rp_https_token_t *)property->value,env);
+                    rp_https_token_free((rp_https_token_t *)property->value, env);
                     property->value = NULL; 
                     break;                                        
                 
                 case RP_BINDING_SYMMETRIC:
-                    rp_symmetric_binding_free((rp_symmetric_binding_t *)property->value,env);
+                    rp_symmetric_binding_free((rp_symmetric_binding_t *)property->value, env);
                     property->value = NULL;
                     break;
             
                 case RP_BINDING_ASYMMETRIC:
-                    rp_asymmetric_binding_free((rp_asymmetric_binding_t *)property->value,env);
+                    rp_asymmetric_binding_free((rp_asymmetric_binding_t *)property->value, env);
                     property->value = NULL;    
                     break;
                     
                 case RP_BINDING_TRANSPORT:
-                    rp_transport_binding_free((rp_transport_binding_t *)property->value,env);   
+                    rp_transport_binding_free((rp_transport_binding_t *)property->value, env);   
                     property->value = NULL;
                     break;
 
                 case RP_SUPPORTING_SIGNED_SUPPORTING:
-                    rp_supporting_tokens_free((rp_supporting_tokens_t *)property->value,env);
+                    rp_supporting_tokens_free((rp_supporting_tokens_t *)property->value, env);
                     property->value = NULL;
                     break;
 
                 case RP_SUPPORTING_SIGNED_ENDORSING_SUPPORTING:
-                    rp_supporting_tokens_free((rp_supporting_tokens_t *)property->value,env);
+                    rp_supporting_tokens_free((rp_supporting_tokens_t *)property->value, env);
                     property->value = NULL;
                     break;
 
                 case RP_WSS_WSS10:
-                    rp_wss10_free((rp_wss10_t *)property->value,env);
+                    rp_wss10_free((rp_wss10_t *)property->value, env);
                     property->value = NULL;
                     break;
 
                 case RP_WSS_WSS11:
-                    rp_wss11_free((rp_wss11_t *)property->value,env);
+                    rp_wss11_free((rp_wss11_t *)property->value, env);
                     property->value = NULL;
                     break;
             }
         }            
-        AXIS2_FREE(env->allocator,property);           
+        AXIS2_FREE(env->allocator, property);           
     }
 
     return;
@@ -147,13 +147,14 @@ rp_property_get_value(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_property_set_value(rp_property_t *property,
+rp_property_set_value(
+    rp_property_t *property,
     const axutil_env_t *env,
     void *value,
     int type)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,value,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
 
     property->type = type;
 

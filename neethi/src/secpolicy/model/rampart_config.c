@@ -96,9 +96,10 @@ rp_rampart_config_get_user(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_rampart_config_set_user(rp_rampart_config_t *rampart_config,
-            const axutil_env_t *env,
-            axis2_char_t *user)
+rp_rampart_config_set_user(
+        rp_rampart_config_t *rampart_config,
+        const axutil_env_t *env,
+        axis2_char_t *user)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,user,AXIS2_FAILURE);
@@ -118,12 +119,13 @@ rp_rampart_config_get_encryption_user(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_rampart_config_set_encryption_user(rp_rampart_config_t *rampart_config,
-            const axutil_env_t *env,
-            axis2_char_t *encryption_user)
+rp_rampart_config_set_encryption_user(
+    rp_rampart_config_t *rampart_config,
+    const axutil_env_t *env,
+    axis2_char_t *encryption_user)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,encryption_user,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, encryption_user, AXIS2_FAILURE);
         
     rampart_config->encryption_user = encryption_user;
     return AXIS2_SUCCESS;
@@ -140,12 +142,13 @@ rp_rampart_config_get_password_callback_class(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_rampart_config_set_password_callback_class(rp_rampart_config_t *rampart_config,
-            const axutil_env_t *env,
-            axis2_char_t *password_callback_class)
+rp_rampart_config_set_password_callback_class(
+        rp_rampart_config_t *rampart_config,
+    const axutil_env_t *env,
+    axis2_char_t *password_callback_class)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,password_callback_class,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, password_callback_class, AXIS2_FAILURE);   
         
     rampart_config->password_callback_class = password_callback_class;
     return AXIS2_SUCCESS;
@@ -163,12 +166,13 @@ rp_rampart_config_get_authenticate_module(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_rampart_config_set_authenticate_module(rp_rampart_config_t *rampart_config,
-            const axutil_env_t *env,
-            axis2_char_t *authenticate_module)
+rp_rampart_config_set_authenticate_module(
+    rp_rampart_config_t *rampart_config,
+    const axutil_env_t *env,
+    axis2_char_t *authenticate_module)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,authenticate_module,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, authenticate_module, AXIS2_FAILURE);   
         
     rampart_config->authenticate_module = authenticate_module;
     return AXIS2_SUCCESS;
@@ -185,12 +189,13 @@ rp_rampart_config_get_password_type(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_rampart_config_set_password_type(rp_rampart_config_t *rampart_config,
-            const axutil_env_t *env,
-            axis2_char_t *password_type)
+rp_rampart_config_set_password_type(
+    rp_rampart_config_t *rampart_config,
+    const axutil_env_t *env,
+    axis2_char_t *password_type)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,password_type,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, password_type, AXIS2_FAILURE);   
         
     rampart_config->password_type = password_type;
     return AXIS2_SUCCESS;
@@ -208,12 +213,13 @@ rp_rampart_config_get_private_key_file(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_rampart_config_set_private_key_file(rp_rampart_config_t *rampart_config,
-            const axutil_env_t *env,
-            axis2_char_t *private_key_file)
+rp_rampart_config_set_private_key_file(
+    rp_rampart_config_t *rampart_config,
+    const axutil_env_t *env,
+    axis2_char_t *private_key_file)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,private_key_file,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, private_key_file, AXIS2_FAILURE);
         
     rampart_config->private_key_file = private_key_file;
     return AXIS2_SUCCESS;
@@ -230,12 +236,13 @@ rp_rampart_config_get_receiver_certificate_file(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_rampart_config_set_receiver_certificate_file(rp_rampart_config_t *rampart_config,
-            const axutil_env_t *env,
-            axis2_char_t *receiver_certificate_file)
+rp_rampart_config_set_receiver_certificate_file(
+    rp_rampart_config_t *rampart_config,
+    const axutil_env_t *env,
+    axis2_char_t *receiver_certificate_file)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,receiver_certificate_file,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, receiver_certificate_file, AXIS2_FAILURE);   
         
     rampart_config->receiver_certificate_file = receiver_certificate_file;
     return AXIS2_SUCCESS;
@@ -252,12 +259,13 @@ rp_rampart_config_get_certificate_file(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_rampart_config_set_certificate_file(rp_rampart_config_t *rampart_config,
-            const axutil_env_t *env,
-            axis2_char_t *certificate_file)
+rp_rampart_config_set_certificate_file(
+    rp_rampart_config_t *rampart_config,
+    const axutil_env_t *env,
+    axis2_char_t *certificate_file)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,certificate_file,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, certificate_file, AXIS2_FAILURE);   
         
     rampart_config->certificate_file = certificate_file;
     return AXIS2_SUCCESS;
@@ -275,12 +283,13 @@ rp_rampart_config_get_time_to_live(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_rampart_config_set_time_to_live(rp_rampart_config_t *rampart_config,
-            const axutil_env_t *env,
-            axis2_char_t *time_to_live)
+rp_rampart_config_set_time_to_live(
+    rp_rampart_config_t *rampart_config,
+    const axutil_env_t *env,
+    axis2_char_t *time_to_live)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,time_to_live,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, time_to_live, AXIS2_FAILURE);   
         
     rampart_config->time_to_live = time_to_live;
     return AXIS2_SUCCESS;
@@ -297,9 +306,10 @@ rp_rampart_config_get_rd_val(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_rampart_config_set_rd_val(rp_rampart_config_t *rampart_config,
-            const axutil_env_t *env,
-            axis2_char_t *rd_val)
+rp_rampart_config_set_rd_val(
+    rp_rampart_config_t *rampart_config,
+    const axutil_env_t *env,
+    axis2_char_t *rd_val)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, rd_val, AXIS2_FAILURE);

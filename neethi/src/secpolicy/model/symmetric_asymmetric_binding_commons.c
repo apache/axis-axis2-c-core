@@ -92,9 +92,10 @@ rp_symmetric_asymmetric_binding_commons_set_binding_commons(
     rp_binding_commons_t *binding_commons)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,binding_commons,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, binding_commons, AXIS2_FAILURE);   
         
-    symmetric_asymmetric_binding_commons->binding_commons=binding_commons;    
+    symmetric_asymmetric_binding_commons->binding_commons = 
+        binding_commons;    
     return AXIS2_SUCCESS;
 }
 
@@ -140,7 +141,7 @@ rp_symmetric_asymmetric_binding_commons_set_token_protection(
     axis2_bool_t token_protection)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,token_protection,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, token_protection, AXIS2_FAILURE);
 
     symmetric_asymmetric_binding_commons->token_protection = token_protection;
     return AXIS2_SUCCESS;
@@ -163,7 +164,7 @@ rp_symmetric_asymmetric_binding_commons_set_entire_headers_and_body_signatures(
     axis2_bool_t entire_headers_and_body_signatures)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,entire_headers_and_body_signatures,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, entire_headers_and_body_signatures, AXIS2_FAILURE);
 
     symmetric_asymmetric_binding_commons->entire_headers_and_body_signatures = 
         entire_headers_and_body_signatures;
@@ -188,9 +189,10 @@ rp_symmetric_asymmetric_binding_commons_set_protection_order(
     axis2_char_t *protection_order)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,protection_order,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, protection_order, AXIS2_FAILURE);
     
-    symmetric_asymmetric_binding_commons->protection_order = protection_order;    
+    symmetric_asymmetric_binding_commons->protection_order = 
+        protection_order;    
     return AXIS2_SUCCESS;
 }
 
