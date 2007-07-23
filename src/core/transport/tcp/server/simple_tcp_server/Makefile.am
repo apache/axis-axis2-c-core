@@ -27,4 +27,5 @@ INCLUDES =  -I$(top_builddir)/include \
             -I$(top_builddir)/src/core/phaseresolver \
             -I$(top_builddir)/src/core/engine \
             -I$(top_builddir)/util/include \
+            -I../.. \
             -I$(top_builddir)/axiom/include
