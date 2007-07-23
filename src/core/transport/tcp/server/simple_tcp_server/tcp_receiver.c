@@ -144,12 +144,12 @@ axis2_tcp_server_free(
     axis2_tcp_server_impl_t *server_impl = NULL;
     AXIS2_ENV_CHECK(env, void);
     server_impl = AXIS2_INTF_TO_IMPL(server);
-/*     if (server_impl->svr_thread) */
-/*     { */
-/*         axis2_tcp_svr_thread_destroy(server_impl->svr_thread, env); */
-/*         axis2_tcp_svr_thread_free(server_impl->svr_thread, env); */
-/*         server_impl->svr_thread = NULL; */
-/*     } */
+    if (server_impl->svr_thread)
+    {
+        axis2_tcp_svr_thread_destroy(server_impl->svr_thread, env);
+        axis2_tcp_svr_thread_free(server_impl->svr_thread, env);
+        server_impl->svr_thread = NULL;
+    }
 
     if (server_impl->conf_ctx_private)
     {
@@ -234,11 +234,11 @@ axis2_tcp_server_stop(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     AXIS2_LOG_INFO(env->log, "Terminating TCP server thread");
-/*     if (AXIS2_INTF_TO_IMPL(server)->svr_thread) */
-/*     { */
-/*         axis2_tcp_svr_thread_destroy(AXIS2_INTF_TO_IMPL(server)->svr_thread, */
-/*                 env); */
-/*     } */
+    if (AXIS2_INTF_TO_IMPL(server)->svr_thread)
+    {
+        axis2_tcp_svr_thread_destroy(AXIS2_INTF_TO_IMPL(server)->svr_thread,
+                env);
+    }
     AXIS2_LOG_INFO(env->log, "Successfully terminated  TCP server"
             " thread");
     return AXIS2_SUCCESS;
@@ -288,14 +288,14 @@ axis2_tcp_server_is_running(
     axis2_tcp_server_impl_t *server_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     server_impl = AXIS2_INTF_TO_IMPL(server);
-/*     if (! server_impl->svr_thread) */
-/*     { */
-/*         return AXIS2_FALSE; */
-/*     } */
-/*     else */
-/*     { */
-/*         return axis2_tcp_svr_thread_is_running(server_impl->svr_thread, env); */
-/*     } */
+    if (! server_impl->svr_thread)
+    {
+        return AXIS2_FALSE;
+    }
+    else
+    {
+        return axis2_tcp_svr_thread_is_running(server_impl->svr_thread, env);
+    }
     return AXIS2_FALSE;
 }
 

@@ -40,8 +40,6 @@ typedef struct axis2_tcp_transport_sender_impl
     int so_timeout;
 }axis2_tcp_transport_sender_impl_t;
 
-#define AXIS2_WS_RM_ANONYMOUS_URL "tcp://docs.oasis-open.org/ws-rx/wsmc/200702/anonymous?id="
-
 #define AXIS2_INTF_TO_IMPL(transport_sender)    \
     ((axis2_tcp_transport_sender_impl_t *)      \
      (transport_sender))
