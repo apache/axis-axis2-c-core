@@ -1241,7 +1241,7 @@ axis2_http_transport_utils_create_soap_msg(
                     binary_data_map);
         }
 
-        if (soap_envelope && content_type)
+        if (soap_envelope)
         {
             /* hack to get around MTOM problem */
             axiom_soap_body_t *soap_body =
