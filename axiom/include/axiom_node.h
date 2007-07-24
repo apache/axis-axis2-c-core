@@ -273,6 +273,10 @@ extern "C"
         const axutil_env_t *env,
         struct axiom_output *om_output);
 
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    axiom_node_sub_tree_to_string(axiom_node_t *om_node,
+                         const axutil_env_t *env);
+
     /** @} */
 
 #ifdef __cplusplus
