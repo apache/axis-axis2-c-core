@@ -30,6 +30,7 @@
 #include <axutil_uuid_gen.h>
 #include <axutil_url.h>
 #include <axutil_property.h>
+#include <axiom_soap.h>
 #include <string.h>
 
 struct axis2_http_worker
@@ -315,6 +316,7 @@ axis2_http_worker_process_request(
             axis2_char_t status_line_str[100];
             axutil_property_t *http_error_property = NULL;
             axis2_char_t *http_error_value = NULL;
+            axis2_char_t *fault_code = NULL;
             if (! engine)
             {
                 return AXIS2_FALSE;
@@ -327,7 +329,19 @@ axis2_http_worker_process_request(
                 http_error_value = (axis2_char_t *)axutil_property_get_value(
                     http_error_property, env);
 
-            fault_ctx =  axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx);
+            if ( axis2_msg_ctx_get_is_soap_11 (msg_ctx, env))
+            {
+                fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":" 
+                    AXIOM_SOAP11_FAULT_CODE_SENDER;
+            }
+            else
+            {
+                fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":" 
+                    AXIOM_SOAP12_SOAP_FAULT_VALUE_SENDER;
+            }
+
+            fault_ctx =  axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx, 
+                    fault_code, axutil_error_get_message(env->error));
             req_line = axis2_http_simple_request_get_request_line(simple_request
                 , env);
             if (req_line)

@@ -103,7 +103,7 @@ axis2_svr_callback_handle_fault(axis2_svr_callback_t *svr_callback,
         return AXIS2_FAILURE;
     }
 
-    fault_ctx = axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx);
+    fault_ctx = axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx, NULL, NULL);
     return axis2_engine_send_fault(engine, env, fault_ctx);
 }
 

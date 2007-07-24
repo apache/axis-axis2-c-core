@@ -412,7 +412,9 @@ AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
 axis2_engine_create_fault_msg_ctx(
     axis2_engine_t *engine,
     const axutil_env_t *env,
-    axis2_msg_ctx_t *processing_context)
+    axis2_msg_ctx_t *processing_context,
+    const axis2_char_t *code_value,
+    const axis2_char_t *reason_text)
 {
     axis2_msg_ctx_t *fault_ctx = NULL;
     axis2_endpoint_ref_t *fault_to = NULL;
@@ -523,13 +525,15 @@ axis2_engine_create_fault_msg_ctx(
         if ( axis2_msg_ctx_get_is_soap_11(processing_context, env))
         {
             envelope = 
-                axiom_soap_envelope_create_default_soap_envelope(env, AXIOM_SOAP11);
+                axiom_soap_envelope_create_default_soap_fault_envelope(env, 
+                        code_value, reason_text, AXIOM_SOAP11, NULL, NULL);
 
         }
         else
         {
             envelope = 
-                axiom_soap_envelope_create_default_soap_envelope(env, AXIOM_SOAP12);
+                axiom_soap_envelope_create_default_soap_fault_envelope(env, 
+                        code_value, reason_text, AXIOM_SOAP12, NULL, NULL);
         }
 
         if (!envelope)

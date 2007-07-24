@@ -327,6 +327,7 @@ axis2_http_transport_utils_process_http_post_request(
 
     if (! xml_reader)
     {
+        printf("Here 1\n");
         return AXIS2_FAILURE;
     }
 
@@ -337,6 +338,7 @@ axis2_http_transport_utils_process_http_post_request(
     {
         axiom_xml_reader_free(xml_reader, env);
         xml_reader = NULL;
+        printf("Here 2\n");
         return AXIS2_FAILURE;
     }
 
@@ -352,6 +354,7 @@ axis2_http_transport_utils_process_http_post_request(
             /*axiom_stax_builder_free(om_builder, env);*/
             om_builder = NULL;
             xml_reader = NULL;
+            printf("Here 3\n");
             return AXIS2_FAILURE;
         }
 
@@ -364,6 +367,7 @@ axis2_http_transport_utils_process_http_post_request(
             xml_reader = NULL;
             axiom_soap_builder_free(soap_builder, env);
             soap_builder = NULL;
+            printf("Here 4\n");
             return AXIS2_FAILURE;
         }
     }

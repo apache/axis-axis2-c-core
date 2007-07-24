@@ -117,13 +117,17 @@ extern "C"
      * @param env pointer to environment struct
      * @param processing_context pointer to message context representing 
      * current processing context
+     * @param code_value pointer to a string containing fault code
+     * @param reason_text pointer to a string containing reason of the fault
      * @return pointer to message context representing the fault state
      */
-    AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
-    axis2_engine_create_fault_msg_ctx(axis2_engine_t *engine,
+    AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL                                                              
+    axis2_engine_create_fault_msg_ctx(
+        axis2_engine_t *engine,
         const axutil_env_t *env,
-        axis2_msg_ctx_t *processing_context);
-     
+        axis2_msg_ctx_t *processing_context,
+        const axis2_char_t *code_value,
+        const axis2_char_t *reason_text);
 
     /**
      * Invokes the phases in the given array list of phases. The list of 
