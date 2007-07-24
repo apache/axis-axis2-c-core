@@ -168,6 +168,7 @@ axis2_disp_checker_invoke(
 	axiom_soap_envelope_t *soap_envelope;
 	axiom_soap_body_t *soap_body;
 	int soap_version = AXIOM_SOAP12;
+	axis2_char_t *fault_code = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -214,10 +215,15 @@ axis2_disp_checker_invoke(
 		if ( axis2_msg_ctx_get_is_soap_11 (msg_ctx, env))
 		{
 			soap_version = AXIOM_SOAP11;
+			fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":" AXIOM_SOAP11_FAULT_CODE_RECEIVER;
+		}else{
+			fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":" AXIOM_SOAP12_SOAP_FAULT_VALUE_RECEIVER;
+		
 		}
+
 		soap_envelope = axiom_soap_envelope_create_default_soap_envelope (env, soap_version); 
 		soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
-		soap_fault = axiom_soap_fault_create_default_fault (env, soap_body, AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":Receiver", "Service Not Found", soap_version);
+		soap_fault = axiom_soap_fault_create_default_fault (env, soap_body,  fault_code, "Service Not Found", soap_version);
 		 axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, soap_envelope);
         return AXIS2_FAILURE;
     }
@@ -229,10 +235,13 @@ axis2_disp_checker_invoke(
         if ( axis2_msg_ctx_get_is_soap_11 (msg_ctx, env))
         {
             soap_version = AXIOM_SOAP11;
-        }
+			fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":" AXIOM_SOAP11_FAULT_CODE_RECEIVER;
+		}else{
+			fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":" AXIOM_SOAP12_SOAP_FAULT_VALUE_RECEIVER;
+		}
 		soap_envelope = axiom_soap_envelope_create_default_soap_envelope (env, soap_version); 
 		soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
-		soap_fault = axiom_soap_fault_create_default_fault (env, soap_body, AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":Receiver", "Operation Not Found", soap_version);
+		soap_fault = axiom_soap_fault_create_default_fault (env, soap_body, fault_code , "Operation Not Found", soap_version);
 		 axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, soap_envelope);
         return AXIS2_FAILURE;
     }
