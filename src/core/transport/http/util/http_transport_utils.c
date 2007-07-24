@@ -327,7 +327,6 @@ axis2_http_transport_utils_process_http_post_request(
 
     if (! xml_reader)
     {
-        printf("Here 1\n");
         return AXIS2_FAILURE;
     }
 
@@ -338,7 +337,6 @@ axis2_http_transport_utils_process_http_post_request(
     {
         axiom_xml_reader_free(xml_reader, env);
         xml_reader = NULL;
-        printf("Here 2\n");
         return AXIS2_FAILURE;
     }
 
@@ -354,7 +352,7 @@ axis2_http_transport_utils_process_http_post_request(
             /*axiom_stax_builder_free(om_builder, env);*/
             om_builder = NULL;
             xml_reader = NULL;
-            printf("Here 3\n");
+            axis2_msg_ctx_set_is_soap_11(msg_ctx, env, is_soap11);
             return AXIS2_FAILURE;
         }
 
@@ -367,7 +365,7 @@ axis2_http_transport_utils_process_http_post_request(
             xml_reader = NULL;
             axiom_soap_builder_free(soap_builder, env);
             soap_builder = NULL;
-            printf("Here 4\n");
+            axis2_msg_ctx_set_is_soap_11(msg_ctx, env, is_soap11);
             return AXIS2_FAILURE;
         }
     }
@@ -385,6 +383,7 @@ axis2_http_transport_utils_process_http_post_request(
                 /*axiom_stax_builder_free(om_builder, env);*/
                 om_builder = NULL;
                 xml_reader = NULL;
+                axis2_msg_ctx_set_is_soap_11(msg_ctx, env, is_soap11);
                 return AXIS2_FAILURE;
             }
             soap_envelope = axiom_soap_builder_get_soap_envelope(
@@ -395,6 +394,7 @@ axis2_http_transport_utils_process_http_post_request(
                 om_builder = NULL;
                 xml_reader = NULL;
                 soap_builder = NULL;
+                axis2_msg_ctx_set_is_soap_11(msg_ctx, env, is_soap11);
                 return AXIS2_FAILURE;
             }
         }
