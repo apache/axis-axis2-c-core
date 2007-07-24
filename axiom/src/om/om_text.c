@@ -25,10 +25,6 @@
 #include <axiom_namespace.h>
 #include <axutil_base64.h>
 
-static const axis2_char_t *AXIS2_CALL
-axiom_text_get_text(axiom_text_t *om_text,
-    const axutil_env_t *env);
-
 static axis2_bool_t AXIS2_CALL
 axiom_text_get_is_binary(axiom_text_t *om_text,
     const axutil_env_t *env);
@@ -480,7 +476,7 @@ axiom_text_serialize_namespace(axiom_text_t *om_text,
     return AXIS2_SUCCESS;
 }
 
-static const axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axiom_text_get_text(axiom_text_t *om_text,
     const axutil_env_t *env)
 {

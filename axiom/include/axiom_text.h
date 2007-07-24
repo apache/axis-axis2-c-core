@@ -149,6 +149,17 @@ extern "C"
         axutil_string_t *value);
 
    /**
+     * Gets text value from the text node even when MTOM optimized
+     * @param om_text om_text struct
+     * @param env environment.
+     * @return text value base64 encoded text when MTOM optimized, 
+     * NULL is returned if there is no text value.
+     */
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+        axiom_text_get_text(axiom_text_t *om_text,
+                    const axutil_env_t *env);
+
+   /**
      * Gets text value 
      * @param om_text om_text struct
      * @param env environment.
