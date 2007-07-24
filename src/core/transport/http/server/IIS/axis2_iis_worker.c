@@ -27,7 +27,7 @@
 #include <axutil_uuid_gen.h>
 #include <axis2_conf_init.h>
 #include <axutil_url.h>
-
+#include <axiom_soap.h>
 #include "axis2_iis_out_transport_info.h"
 #include "axis2_iis_stream.h"
 #include "axis2_iis_worker.h"

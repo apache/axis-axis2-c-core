@@ -30,6 +30,7 @@
 #include <axutil_url.h>
 #include <http_core.h>
 #include <http_protocol.h>
+#include <axiom_soap.h>
 
 
 #define READ_SIZE  2048
