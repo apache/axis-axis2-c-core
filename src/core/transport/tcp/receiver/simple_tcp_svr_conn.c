@@ -135,12 +135,10 @@ axis2_simple_tcp_svr_conn_read_request(
     memset(str_line, 0, 2048);
     while ((read = axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf, 2048 - 1)) > 0)
     {
-        axis2_char_t *start = tmp_buf;
-        axis2_char_t *end = NULL;
         tmp_buf[read] = '\0';
         if (read >0)
         {
-            read = axutil_stream_read(svr_conn->stream, env, tmp_buf, end - start + 2);
+            read = axutil_stream_read(svr_conn->stream, env, tmp_buf, 2047);
             if (read > 0)
             {
                 tmp_buf[read] = '\0';
