@@ -36,8 +36,7 @@ enum guththila_reader_type
 typedef struct guththila_reader_s
 {
 	int type;
-	FILE *fp;
-	int last_start; /*if -1 we are not in a token*/
+	FILE *fp;	
 	char *buff;
 	int buff_size;
 	GUTHTHILA_READ_INPUT_CALLBACK input_read_callback;

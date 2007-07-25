@@ -45,7 +45,7 @@ static int GUTHTHILA_CALL guththila_process_xml_dec(guththila_t *m, const axutil
 	m->temp_tok = guththila_tok_list_get_token(&m->tokens, _env);	\
 	m->temp_tok->type = _Unknown;							\
 	m->temp_tok->_start = m->next;		\
-	m->reader->last_start = m->next;	
+	m->last_start = m->next - 1;	
 #endif
 
 #ifndef GUTHTHILA_PROCESS_EQU
@@ -94,7 +94,7 @@ static void GUTHTHILA_CALL guththila_token_close(guththila_t *m, guththila_token
 	m->temp_tok->size = m->next - m->temp_tok->_start;							
 	m->temp_tok->start = GUTHTHILA_BUF_POS(m->buffer, m->next - 1) - m->temp_tok->size;
 	m->temp_tok->ref = referer;	
-	m->reader->last_start = -1;
+	m->last_start = -1;
 	switch(tok_type){										
 	case _attribute_name:									
 		m->temp_name = m->temp_tok;							
@@ -995,7 +995,7 @@ static int GUTHTHILA_CALL guththila_next_char(guththila_t *m, int eof, const axu
 			if (m->last_start != -1) {
 				data_move = m->buffer.data_size[m->buffer.cur_buff - 1] - (m->last_start - m->buffer.pre_tot_data);
 				memcpy(m->buffer.buff[m->buffer.cur_buff], 
-					m->buffer.buff[m->buffer.cur_buff - 1] + m->buffer.data_size[m->buffer.cur_buff] - data_move, 
+					m->buffer.buff[m->buffer.cur_buff - 1] + m->buffer.data_size[m->buffer.cur_buff - 1] - data_move, 
 					data_move); 
 				m->buffer.data_size[m->buffer.cur_buff - 1] -= data_move; 
 				m->buffer.data_size[m->buffer.cur_buff] += data_move; 				
@@ -1065,7 +1065,7 @@ static int GUTHTHILA_CALL guththila_next_no_char (guththila_t *m, int eof, char 
 			if (m->last_start != -1) {
 				data_move = m->buffer.data_size[m->buffer.cur_buff - 1] - (m->last_start - m->buffer.pre_tot_data);
 				memcpy(m->buffer.buff[m->buffer.cur_buff], 
-					m->buffer.buff[m->buffer.cur_buff - 1] + m->buffer.data_size[m->buffer.cur_buff] - data_move, 
+					m->buffer.buff[m->buffer.cur_buff - 1] + m->buffer.data_size[m->buffer.cur_buff - 1] - data_move , 
 					data_move); 
 				m->buffer.data_size[m->buffer.cur_buff - 1] -= data_move; 
 				m->buffer.data_size[m->buffer.cur_buff] += data_move; 				
