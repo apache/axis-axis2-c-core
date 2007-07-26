@@ -47,14 +47,14 @@ rp_token_identifier_set_token(
         {
             rp_username_token_t *username_token = NULL;
             username_token = (rp_username_token_t *)value;
-            rp_property_set_value(token, env, username_token, RP_TOKEN_USERNAME);
+            rp_property_set_value(token, env, username_token, RP_PROPERTY_USERNAME_TOKEN);
             return AXIS2_SUCCESS;
         }            
         else if(type == ASSERTION_TYPE_X509_TOKEN)
         {
             rp_x509_token_t *x509_token = NULL;
             x509_token = (rp_x509_token_t *)value;
-            rp_property_set_value(token, env, x509_token, RP_TOKEN_X509);
+            rp_property_set_value(token, env, x509_token, RP_PROPERTY_X509_TOKEN);
             return AXIS2_SUCCESS;
         }
         else

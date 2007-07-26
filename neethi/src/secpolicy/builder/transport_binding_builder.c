@@ -150,13 +150,13 @@ transport_binding_process_alternatives(
             supporting_tokens = (rp_supporting_tokens_t *)neethi_assertion_get_value(assertion, env);
             if(supporting_tokens)
             {
-                int type = 0;
+                rp_property_type_t type;
                 type = rp_supporting_tokens_get_type(supporting_tokens, env);
-                if(type == RP_SUPPORTING_SIGNED_SUPPORTING)
+                if(type == RP_PROPERTY_SIGNED_SUPPORTING_TOKEN)
                 {
                     rp_binding_commons_set_signed_supporting_tokens(commons, env, supporting_tokens);
                 }    
-                else if(type == RP_SUPPORTING_SIGNED_ENDORSING_SUPPORTING)
+                else if(type == RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN)
                 {
                     rp_binding_commons_set_signed_endorsing_supporting_tokens(commons, env, supporting_tokens);
                 }                       

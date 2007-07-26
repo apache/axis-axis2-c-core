@@ -64,11 +64,11 @@ rp_supporting_tokens_builder_build(
     {
         if(axutil_strcmp(local_name, RP_SIGNED_SUPPORTING_TOKENS) == 0)
         {
-            rp_supporting_tokens_set_type(supporting_tokens, env, RP_SUPPORTING_SIGNED_SUPPORTING);
+            rp_supporting_tokens_set_type(supporting_tokens, env, RP_PROPERTY_SIGNED_SUPPORTING_TOKEN);
         }
         else if(axutil_strcmp(local_name, RP_SIGNED_ENDORSING_SUPPORTING_TOKENS)==0)
         {
-            rp_supporting_tokens_set_type(supporting_tokens, env, RP_SUPPORTING_SIGNED_ENDORSING_SUPPORTING);
+            rp_supporting_tokens_set_type(supporting_tokens, env, RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN);
         } 
         else return NULL;
     }        

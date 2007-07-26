@@ -100,7 +100,7 @@ secpolicy_process_alternatives(
                     return AXIS2_FAILURE;
                 }                    
                 binding = rp_property_create(env);
-                rp_property_set_value(binding, env, transport_binding, RP_BINDING_TRANSPORT);             
+                rp_property_set_value(binding, env, transport_binding, RP_PROPERTY_TRANSPORT_BINDING);             
                 rp_secpolicy_set_binding(secpolicy, env, binding);
             }
             else if(type == ASSERTION_TYPE_ASSYMMETRIC_BINDING)
@@ -115,7 +115,7 @@ secpolicy_process_alternatives(
                     return AXIS2_FAILURE;
                 }                    
                 binding = rp_property_create(env);
-                rp_property_set_value(binding, env, asymmetric_binding, RP_BINDING_ASYMMETRIC);             
+                rp_property_set_value(binding, env, asymmetric_binding, RP_PROPERTY_ASYMMETRIC_BINDING);             
                 rp_secpolicy_set_binding(secpolicy, env, binding);
             }
             else if(type == ASSERTION_TYPE_SUPPORTING_TOKENS)
@@ -124,13 +124,13 @@ secpolicy_process_alternatives(
                 supporting_tokens = (rp_supporting_tokens_t *)neethi_assertion_get_value(assertion, env);
                 if(supporting_tokens)
                 {
-                    int type = 0;
+                    rp_property_type_t type;
                     type = rp_supporting_tokens_get_type(supporting_tokens, env);
-                    if(type == RP_SUPPORTING_SIGNED_SUPPORTING)
+                    if(type == RP_PROPERTY_SIGNED_SUPPORTING_TOKEN)
                     {
                         rp_secpolicy_set_signed_supporting_tokens(secpolicy, env, supporting_tokens);
                     }    
-                    else if(type == RP_SUPPORTING_SIGNED_ENDORSING_SUPPORTING)
+                    else if(type == RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN)
                     {
                         rp_secpolicy_set_endorsing_supporting_tokens(secpolicy, env, supporting_tokens);
                     }                       
@@ -149,7 +149,7 @@ secpolicy_process_alternatives(
                     return AXIS2_FAILURE;
                 }                    
                 wss = rp_property_create(env);
-                rp_property_set_value(wss, env, wss10, RP_WSS_WSS10);
+                rp_property_set_value(wss, env, wss10, RP_PROPERTY_WSS10);
                 rp_secpolicy_set_wss(secpolicy, env, wss);
             }
             else if(type == ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS)

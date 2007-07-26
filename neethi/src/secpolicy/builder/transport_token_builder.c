@@ -116,7 +116,7 @@ transport_token_process_alternatives(
                 https_token = (rp_https_token_t *)neethi_assertion_get_value(assertion, env);
                 if(https_token)
                 {
-                    rp_property_set_value(transport_token, env, https_token, RP_TOKEN_HTTPS);
+                    rp_property_set_value(transport_token, env, https_token, RP_PROPERTY_HTTPS_TOKEN);
                 }
                 else return AXIS2_FAILURE;
             }

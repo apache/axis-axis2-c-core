@@ -117,7 +117,7 @@ initiator_token_process_alternatives(
                 x509_token = (rp_x509_token_t *)neethi_assertion_get_value(assertion, env);
                 if(x509_token)
                 {
-                    rp_property_set_value(initiator_token, env, x509_token, RP_TOKEN_X509);
+                    rp_property_set_value(initiator_token, env, x509_token, RP_PROPERTY_X509_TOKEN);
                 }
                 else return AXIS2_FAILURE;
             }

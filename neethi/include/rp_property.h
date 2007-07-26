@@ -33,8 +33,26 @@ extern "C"
 {
 #endif
 
-    typedef struct rp_property_t rp_property_t;
+    typedef enum  {
+        RP_PROPERTY_USERNAME_TOKEN = 0,
+        RP_PROPERTY_X509_TOKEN,
+        RP_PROPERTY_SECURITY_CONTEXT_TOKEN,
+        RP_PROPERTY_HTTPS_TOKEN,
+        RP_PROPERTY_SYMMETRIC_BINDING,
+        RP_PROPERTY_ASYMMETRIC_BINDING,
+        RP_PROPERTY_TRANSPORT_BINDING,
+        RP_PROPERTY_SIGNED_SUPPORTING_TOKEN,
+        RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN,
+        RP_PROPERTY_SUPPORTING_SUPPORTING_TOKEN,
+        RP_PROPERTY_ENDORSING_SUPPORTING_TOKEN,
+        RP_PROPERTY_WSS10,
+        RP_PROPERTY_WSS11,
+        RP_PROPERTY_SUPPORTING_TOKEN,
+        RP_PROPERTY_UNKNOWN        
+    }rp_property_type_t;
+    
 
+    typedef struct rp_property_t rp_property_t;
 
     AXIS2_EXTERN rp_property_t *AXIS2_CALL
     rp_property_create(const axutil_env_t *env);
@@ -49,14 +67,14 @@ extern "C"
         rp_property_t *property,
         const axutil_env_t *env,
         void *value,
-        int type);
+        rp_property_type_t type);
 
     AXIS2_EXTERN void *AXIS2_CALL
     rp_property_get_value(
         rp_property_t *property,
         const axutil_env_t *env);
 
-    AXIS2_EXTERN int AXIS2_CALL
+    AXIS2_EXTERN rp_property_type_t AXIS2_CALL
     rp_property_get_type(
         rp_property_t *property,
         const axutil_env_t *env);
