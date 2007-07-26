@@ -294,7 +294,9 @@ axis2_svr_thread_worker_func (
 
     if (thread_env)
     {
-        axutil_free_thread_env(thread_env);
+        /* There is a persistant problem: Uncomment this after fix
+         * the issue */
+       /*  axutil_free_thread_env(thread_env); */
         thread_env = NULL;
     }
 #ifdef AXIS2_SVR_MULTI_THREADED
