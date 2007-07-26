@@ -126,19 +126,20 @@ axis2_simple_tcp_svr_conn_read_request(
     axis2_simple_tcp_svr_conn_t *svr_conn,
     const axutil_env_t *env)
 {
-    axis2_char_t str_line[2048];
-    axis2_char_t tmp_buf[2048];
+    int size = 32000;
+    axis2_char_t str_line[size];
+    axis2_char_t tmp_buf[size];
     int read = -1;
         
     AXIS2_ENV_CHECK(env, NULL);
 
-    memset(str_line, 0, 2048);
-    while ((read = axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf, 2048 - 1)) > 0)
+    memset(str_line, 0, size);
+    while ((read = axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf, size - 1)) > 0)
     {
         tmp_buf[read] = '\0';
         if (read >0)
         {
-            read = axutil_stream_read(svr_conn->stream, env, tmp_buf, 2047);
+            read = axutil_stream_read(svr_conn->stream, env, tmp_buf, size - 1);
             if (read > 0)
             {
                 tmp_buf[read] = '\0';

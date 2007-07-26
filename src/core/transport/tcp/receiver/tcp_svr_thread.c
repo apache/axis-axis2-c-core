@@ -254,7 +254,7 @@ axis2_svr_thread_worker_func (
     axis2_simple_tcp_svr_conn_set_rcv_timeout(svr_conn, thread_env,
             axis2_tcp_socket_read_timeout);
     request = axis2_simple_tcp_svr_conn_read_request(svr_conn, thread_env);
-    AXIS2_LOG_TRACE (env->log, AXIS2_LOG_SI, "tcp request %s", request);
+    AXIS2_LOG_DEBUG (env->log, AXIS2_LOG_SI, "tcp request %s", request);
     tmp = arg_list->worker;
     status = axis2_tcp_worker_process_request(tmp, thread_env, svr_conn,
             request);
