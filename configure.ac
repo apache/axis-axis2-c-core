@@ -314,34 +314,6 @@ AC_ARG_ENABLE(libcurl, [  --enable-libcurl
   CFLAGS="$CFLAGS"
 )
 
-AC_MSG_CHECKING(whether to use xmpp as server transport)
-AC_ARG_WITH(xmpp,
-[  --with-xmpp[=PATH]   Whether to build xmpp   .
-    ],
-[ case "$withval" in
-  no)
-    AC_MSG_RESULT(no)
-    XMPP_DIR=""
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    dnl Find xmpp include dir
-    if test -d $withval; then
-        iksemelinc="-I$withval"
-    	XMPP_DIR="xmpp"
-    dnl else find the include dir in /usr/include
-    elif test -d '/usr/include'; then
-        iksemelinc="-I/usr/include"
-    	XMPP_DIR="xmpp"
-    else
-        AC_MSG_ERROR(could not find xmpp. stop)
-    fi
-	XMPP_DIR="xmpp"
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-)
-
 AC_MSG_CHECKING(whether to use gssapi)
 AC_ARG_ENABLE(openssl, [  --enable-gssapi      enable gssapi (default=no)],
 [ case "${enableval}" in
@@ -360,29 +332,8 @@ AC_ARG_ENABLE(openssl, [  --enable-gssapi      enable gssapi (default=no)],
   CFLAGS="$CFLAGS"
 )
 
-#AC_MSG_CHECKING(whether to build xmpp)
-#AC_ARG_ENABLE(xmpp, [  --enable-xmpp
-#                          enable xmpp build (default=no)],
-#[ case "${enableval}" in
-#  no)
-#    AC_MSG_RESULT(no)
-#    CFLAGS="$CFLAGS"
-#    xmpp_enabled=false
-#    ;;
-#  *)
-#    AC_MSG_RESULT(yes)
-#    XMPP_DIR="xmpp"
-#    CFLAGS="$CFLAGS -DAXIS2_XMPP_ENABLED"
-#    xmpp_enabled=false
-#    ;;
-#  esac ],
-#  AC_MSG_RESULT(no)
-#  CFLAGS="$CFLAGS"
-#)
-
 
 APACHE2INC=$apache2inc
-IKSEMELINC=$iksemelinc
 APRINC=$aprinc
 VERSION_NO="1:0:1"
 
@@ -404,7 +355,6 @@ AC_SUBST(GUTHTHILA_LIBS)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_LIBCURL_ENABLED, test x$libcurl_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_XMPP_GSSAPI, test x$gssapi_enabled = xtrue)
-AM_CONDITIONAL(AXIS2_XMPP_ENABLED, test x$xmpp_enabled = xtrue)
 
 #export PARSER_DIR
 export WRAPPER_DIR
@@ -434,11 +384,6 @@ AC_CONFIG_FILES([Makefile \
     src/core/transport/tcp/receiver/Makefile \
     src/core/transport/tcp/server/Makefile \
     src/core/transport/tcp/server/simple_tcp_server/Makefile \
-    src/core/transport/xmpp/Makefile \
-    src/core/transport/xmpp/sender/Makefile \
-    src/core/transport/xmpp/receiver/Makefile \
-    src/core/transport/xmpp/server/Makefile \
-    src/core/transport/xmpp/server/simple_xmpp_server/Makefile \
     src/core/deployment/Makefile \
     src/core/clientapi/Makefile \
     src/core/receivers/Makefile \
