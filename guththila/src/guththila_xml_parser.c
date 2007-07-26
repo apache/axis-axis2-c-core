@@ -417,8 +417,8 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_next(guththila_t *m, const axutil_
 		if (elem->is_namesp) {
 			nmsp = (guththila_elem_namesp_t *)guththila_stack_pop(&m->namesp, env);
 			for (nmsp_counter = 0; nmsp_counter < nmsp->no; nmsp_counter++) {
-				guththila_tok_list_release_token(&m->tokens, nmsp->namesp[i].name, env);
-				guththila_tok_list_release_token(&m->tokens, nmsp->namesp[i].uri, env);
+				if (nmsp->namesp[nmsp_counter].name) guththila_tok_list_release_token(&m->tokens, nmsp->namesp[nmsp_counter].name, env);
+				if (nmsp->namesp[nmsp_counter].uri) guththila_tok_list_release_token(&m->tokens, nmsp->namesp[nmsp_counter].uri, env);
 			}
 			AXIS2_FREE(env->allocator, nmsp);
 		}
@@ -541,8 +541,8 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_next(guththila_t *m, const axutil_
 				if (elem->is_namesp) {
 					nmsp = (guththila_elem_namesp_t *)guththila_stack_pop(&m->namesp, env);
 					for (nmsp_counter = 0; nmsp_counter < nmsp->no; nmsp_counter++) {
-						guththila_tok_list_release_token(&m->tokens, nmsp->namesp[i].name, env);
-						guththila_tok_list_release_token(&m->tokens, nmsp->namesp[i].uri, env);
+						if (nmsp->namesp[nmsp_counter].name) guththila_tok_list_release_token(&m->tokens, nmsp->namesp[nmsp_counter].name, env);
+						if (nmsp->namesp[nmsp_counter].uri) guththila_tok_list_release_token(&m->tokens, nmsp->namesp[nmsp_counter].uri, env);
 					}
 					AXIS2_FREE(env->allocator, nmsp);
 				}
