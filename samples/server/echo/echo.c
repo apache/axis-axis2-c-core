@@ -92,8 +92,6 @@ build_om_programatically(const axutil_env_t *env, axis2_char_t *text)
     echo_om_ele = axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
     text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
     axiom_element_set_text(text_om_ele, env, text, text_om_node);
-    text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
-    axiom_element_set_text(text_om_ele, env, text, text_om_node);
     return echo_om_node;
 }
 
