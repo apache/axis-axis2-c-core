@@ -187,7 +187,8 @@ static void GUTHTHILA_CALL guththila_token_close(guththila_t *m, guththila_token
 	default:												
 		m->prefix = m->temp_prefix;										
 		m->name = m->temp_tok;		
-		m->temp_tok = NULL;		
+		m->temp_tok = NULL;	
+		m->temp_prefix = NULL;
 		break;	
 	}											
 }
