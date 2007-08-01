@@ -272,9 +272,9 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                     pos = memchr(old_pos, AXIOM_MIME_BOUNDARY_BYTE,
                         (mime_binary_len - (old_pos - mime_binary)));
                     if (!pos)
-		    {
+                    {
                         break;
-		    }
+                    }
                     else
                     {
                         old_pos = pos + 1;
@@ -294,9 +294,9 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                     mime_binary_len = pos - mime_binary;
                 }
                 else
-		{
+                {
                     pos = NULL;
-		}
+                }
             }
 
             if (!pos)
@@ -360,19 +360,19 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                     axis2_char_t *temp_type = NULL;
                     type += axutil_strlen(AXIOM_MIME_PARSER_CONTENT_TYPE);
                     while (type && *type && *type != ':')
-		    {
+                    {
                         type++;
-		    }
+                    }
                     type++;
                     while (type && *type && *type == ' ')
-		    {
+                    {
                         type++;
-		    }
+                    }
                     end = type;
                     while (end && *end && !isspace(*end))
-		    {
+                    {
                         end++;
-		    }
+                    }
                     if ((end - type) > 0)
                     {
                         temp_type = AXIS2_MALLOC(env->allocator,
@@ -430,10 +430,9 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                 sprintf(temp_boundry, "%s", mime_boundary);
                 sprintf(temp_boundry, "%s", "--");
                 if (body_mime && axutil_strstr(body_mime, temp_boundry))
-		{
+                {
                     break;
-		}
-
+                }
             }
 
             if (body_mime)
