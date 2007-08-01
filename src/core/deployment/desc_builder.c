@@ -1018,6 +1018,10 @@ axis2_process_policy_elements(const axutil_env_t *env,
             
             element = axiom_node_get_data_element(node, env);
             policy = neethi_engine_get_policy(env, node, element);
+            if(!policy)
+            {
+                return AXIS2_FAILURE;
+            }    
             axis2_policy_include_add_policy_element(policy_include, env, 
                 type, policy);
         }

@@ -1370,6 +1370,8 @@ axis2_svc_client_set_policy(axis2_svc_client_t *svc_client,
     axis2_desc_t *desc = NULL;
     axis2_policy_include_t *policy_include = NULL;
 
+    AXIS2_PARAM_CHECK(env->error, policy, AXIS2_FAILURE);
+
     svc = axis2_svc_client_get_svc(svc_client, env);
 
     if(!svc)
@@ -1388,6 +1390,7 @@ axis2_svc_client_set_policy(axis2_svc_client_t *svc_client,
     {
         return AXIS2_FAILURE;
     }
+    
     axis2_policy_include_add_policy_element(policy_include, env, AXIS2_SERVICE_POLICY, policy);
     return AXIS2_SUCCESS;
 }
