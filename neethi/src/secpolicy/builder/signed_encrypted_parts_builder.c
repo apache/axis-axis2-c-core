@@ -57,18 +57,22 @@ rp_signed_encrypted_parts_builder_build(
 
     signed_encrypted_parts = rp_signed_encrypted_parts_create(env);
     if(!signed_encrypted_parts)
+    {    
         return NULL;
+    }
 
     ele_name = axiom_element_get_localname(parts_ele, env);
     if(ele_name)
     {
         if((axutil_strcmp(ele_name,RP_SIGNED_PARTS)==0))
         {
-             rp_signed_encrypted_parts_set_signedparts(signed_encrypted_parts, env, AXIS2_TRUE);
+             rp_signed_encrypted_parts_set_signedparts(
+                     signed_encrypted_parts, env, AXIS2_TRUE);
         }                    
         else if(axutil_strcmp(ele_name,RP_ENCRYPTED_PARTS)==0)
         {
-             rp_signed_encrypted_parts_set_signedparts(signed_encrypted_parts, env, AXIS2_FALSE);
+             rp_signed_encrypted_parts_set_signedparts(
+                     signed_encrypted_parts, env, AXIS2_FALSE);
         }            
         else return NULL;
     }        
@@ -90,13 +94,14 @@ rp_signed_encrypted_parts_builder_build(
                     ele = (axiom_element_t*)axiom_node_get_data_element(node, env);
                     if(ele)
                     {
-                        local_name = axiom_element_get_localname(ele,env);
+                        local_name = axiom_element_get_localname(ele, env);
                         if(local_name)
                         {
-                            status = rp_signed_encrypted_parts_builder_set_properties(node,ele,local_name,signed_encrypted_parts,env);
+                            status = rp_signed_encrypted_parts_builder_set_properties(
+                                    node, ele, local_name, signed_encrypted_parts, env);
                             if(status!=AXIS2_SUCCESS)
                             {
-                                rp_signed_encrypted_parts_free(signed_encrypted_parts,env);
+                                rp_signed_encrypted_parts_free(signed_encrypted_parts, env);
                                 signed_encrypted_parts = NULL;
                             }                           
                         }
@@ -105,9 +110,8 @@ rp_signed_encrypted_parts_builder_build(
             }
         }
     }
-    /*assertion = neethi_assertion_create(env);
-    neethi_assertion_set_value(assertion, env, signed_encrypted_parts, ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS);*/
-    assertion = neethi_assertion_create_with_args(env, (void *)rp_signed_encrypted_parts_free, signed_encrypted_parts, ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS);    
+    assertion = neethi_assertion_create_with_args(
+            env, (void *)rp_signed_encrypted_parts_free, signed_encrypted_parts, ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS);    
     return assertion;
 }            
 
@@ -120,34 +124,44 @@ rp_signed_encrypted_parts_builder_set_properties(
         rp_signed_encrypted_parts_t *signed_encrypted_parts,
         const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if(strcmp(local_name,RP_BODY)==0)
+    if(strcmp(local_name, RP_BODY)==0)
     {
-        if(rp_match_secpolicy_qname(env,RP_BODY,node,element))
+        if(rp_match_secpolicy_qname(env, RP_BODY, node, element))
         {
-            rp_signed_encrypted_parts_set_body(signed_encrypted_parts,env,AXIS2_TRUE);
+            rp_signed_encrypted_parts_set_body(
+                    signed_encrypted_parts, env, AXIS2_TRUE);
             return AXIS2_SUCCESS;
         }
         else
+        {    
             return AXIS2_FAILURE;
+        }
     }
-    else if(strcmp(local_name,RP_HEADER)==0)
+    else if(strcmp(local_name, RP_HEADER)==0)
     {
-        if(rp_match_secpolicy_qname(env,RP_HEADER,node,element))
+        if(rp_match_secpolicy_qname(env, RP_HEADER, node, element))
         {
             rp_header_t *header = NULL;
-            header = rp_signed_encrypted_parts_builder_build_header(element,env);
+            header = rp_signed_encrypted_parts_builder_build_header(element, env);
             if(!header)
+            {    
                 return AXIS2_FAILURE;
-            
-            return rp_signed_encrypted_parts_add_header(signed_encrypted_parts,env,header);    
+            }
+
+            return rp_signed_encrypted_parts_add_header(
+                    signed_encrypted_parts, env, header);    
         }
         else 
+        {    
             return AXIS2_FAILURE;
+        }    
     }
     else
+    {    
         return AXIS2_FAILURE;
+    }    
 }
 
 rp_header_t *AXIS2_CALL 
@@ -165,18 +179,21 @@ rp_signed_encrypted_parts_builder_build_header(
     if(!header)
         return NULL;
 
-    name = axiom_element_get_attribute_value_by_name(element,env,RP_NAME);
-    namespace = axiom_element_get_attribute_value_by_name(element,env,RP_NAMESPACE);
+    name = axiom_element_get_attribute_value_by_name(element, env, RP_NAME);
+    namespace = axiom_element_get_attribute_value_by_name(
+            element, env, RP_NAMESPACE);
     if(!namespace)
     {
-        rp_header_free(header,env);
+        rp_header_free(header, env);
         header = NULL;
         return NULL;    
     }     
     if(name)
-        rp_header_set_name(header,env,name); 
-    
-    rp_header_set_namespace(header,env,namespace);    
+    {    
+        rp_header_set_name(header, env, name); 
+    }
+
+    rp_header_set_namespace(header, env, namespace);    
     
     return header;
 }

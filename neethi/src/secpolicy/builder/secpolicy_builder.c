@@ -54,9 +54,8 @@ rp_secpolicy_builder_build(
     component = (neethi_operator_t *)axutil_array_list_get(alternatives, env, 0);            
     all = (neethi_all_t *)neethi_operator_get_value(component ,env);
     
-    if(secpolicy_process_alternatives(env, all, secpolicy)==AXIS2_FAILURE)
+    if(secpolicy_process_alternatives(env, all, secpolicy) == AXIS2_FAILURE)
     {
-        /*printf("Cannot create secpolicy\n");*/
         return NULL;
     }        
     return secpolicy;
@@ -93,14 +92,15 @@ secpolicy_process_alternatives(
                 rp_property_t *binding = NULL;    
                 rp_transport_binding_t *transport_binding = NULL;
 
-                transport_binding = (rp_transport_binding_t *)neethi_assertion_get_value(assertion, env);
+                transport_binding = (rp_transport_binding_t *)neethi_assertion_get_value(
+                        assertion, env);
                 if(!transport_binding)
                 {
-                    /*printf("Transport Binding not set\n");*/
                     return AXIS2_FAILURE;
                 }                    
                 binding = rp_property_create(env);
-                rp_property_set_value(binding, env, transport_binding, RP_PROPERTY_TRANSPORT_BINDING);             
+                rp_property_set_value(binding, env, transport_binding, 
+                        RP_PROPERTY_TRANSPORT_BINDING);             
                 rp_secpolicy_set_binding(secpolicy, env, binding);
             }
             else if(type == ASSERTION_TYPE_ASSYMMETRIC_BINDING)
@@ -108,7 +108,8 @@ secpolicy_process_alternatives(
                 rp_property_t *binding = NULL;    
                 rp_asymmetric_binding_t *asymmetric_binding = NULL;
 
-                asymmetric_binding = (rp_asymmetric_binding_t *)neethi_assertion_get_value(assertion, env);
+                asymmetric_binding = (rp_asymmetric_binding_t *)neethi_assertion_get_value(
+                        assertion, env);
                 if(!asymmetric_binding)
                 {
                     /*printf("Asymmetric Binding not set\n");*/
@@ -121,18 +122,21 @@ secpolicy_process_alternatives(
             else if(type == ASSERTION_TYPE_SUPPORTING_TOKENS)
             {
                 rp_supporting_tokens_t *supporting_tokens = NULL;
-                supporting_tokens = (rp_supporting_tokens_t *)neethi_assertion_get_value(assertion, env);
+                supporting_tokens = (rp_supporting_tokens_t *)neethi_assertion_get_value(
+                        assertion, env);
                 if(supporting_tokens)
                 {
                     rp_property_type_t type;
                     type = rp_supporting_tokens_get_type(supporting_tokens, env);
                     if(type == RP_PROPERTY_SIGNED_SUPPORTING_TOKEN)
                     {
-                        rp_secpolicy_set_signed_supporting_tokens(secpolicy, env, supporting_tokens);
+                        rp_secpolicy_set_signed_supporting_tokens(
+                                secpolicy, env, supporting_tokens);
                     }    
                     else if(type == RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN)
                     {
-                        rp_secpolicy_set_endorsing_supporting_tokens(secpolicy, env, supporting_tokens);
+                        rp_secpolicy_set_endorsing_supporting_tokens(
+                                secpolicy, env, supporting_tokens);
                     }                       
                     else return AXIS2_FAILURE;
                 }                    
@@ -145,7 +149,6 @@ secpolicy_process_alternatives(
                 wss10 = (rp_wss10_t *)neethi_assertion_get_value(assertion, env);
                 if(!wss10)
                 {
-                    /*printf("WSS not set\n");*/
                     return AXIS2_FAILURE;
                 }                    
                 wss = rp_property_create(env);
@@ -155,16 +158,19 @@ secpolicy_process_alternatives(
             else if(type == ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS)
             {
                 rp_signed_encrypted_parts_t *signed_encrypted_parts = NULL;
-                signed_encrypted_parts = (rp_signed_encrypted_parts_t *)neethi_assertion_get_value(assertion, env);
+                signed_encrypted_parts = (rp_signed_encrypted_parts_t *)neethi_assertion_get_value(
+                        assertion, env);
                 if(signed_encrypted_parts)
                 {
                     if(rp_signed_encrypted_parts_get_signedparts(signed_encrypted_parts, env))
                     {
-                        rp_secpolicy_set_signed_parts(secpolicy, env, signed_encrypted_parts);
+                        rp_secpolicy_set_signed_parts(
+                                secpolicy, env, signed_encrypted_parts);
                     }
                     else
                     {
-                        rp_secpolicy_set_encrypted_parts(secpolicy, env, signed_encrypted_parts);
+                        rp_secpolicy_set_encrypted_parts(
+                                secpolicy, env, signed_encrypted_parts);
                     }
                 }
                 else return AXIS2_FAILURE;
@@ -173,10 +179,10 @@ secpolicy_process_alternatives(
             else if(type == ASSERTION_TYPE_RAMPART_CONFIG)
             {
                 rp_rampart_config_t *rampart_config = NULL;
-                rampart_config = (rp_rampart_config_t *)neethi_assertion_get_value(assertion, env);
+                rampart_config = (rp_rampart_config_t *)neethi_assertion_get_value(
+                        assertion, env);
                 if(!rampart_config)
                 {
-                    /*printf("Rampart_config not set\n");*/
                     return AXIS2_FAILURE;
                 }    
                 rp_secpolicy_set_rampart_config(secpolicy, env, rampart_config);

@@ -54,16 +54,20 @@ rp_x509_token_builder_build(
     /*axutil_array_list_t *temp = NULL;*/
 
     x509_token = rp_x509_token_create(env);
-    qname = axutil_qname_create(env,RP_INCLUDE_TOKEN,RP_SP_NS,RP_SP_PREFIX);
+    qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS, RP_SP_PREFIX);
 
-    inclusion_value = axiom_element_get_attribute_value(element,env,qname);
+    inclusion_value = axiom_element_get_attribute_value(element, env, qname);
 
-    axutil_qname_free(qname,env);
+    axutil_qname_free(qname, env);
     qname = NULL;
 
-    rp_x509_token_set_inclusion(x509_token,env,inclusion_value);
+    rp_x509_token_set_inclusion(x509_token, env, inclusion_value);
     
-    child_node = axiom_node_get_first_element(node,env);
+    child_node = axiom_node_get_first_element(node, env);
+    if(!child_node)
+    {
+        return NULL;
+    }    
 
     if(axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
     {
@@ -83,7 +87,8 @@ rp_x509_token_builder_build(
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             x509_token_process_alternatives(env, all, x509_token);
             
-            assertion = neethi_assertion_create_with_args(env, (void *)rp_x509_token_free, x509_token, ASSERTION_TYPE_X509_TOKEN);
+            assertion = neethi_assertion_create_with_args(
+                    env, (void *)rp_x509_token_free, x509_token, ASSERTION_TYPE_X509_TOKEN);
 
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
@@ -118,31 +123,33 @@ x509_token_process_alternatives(
 
         if(type == ASSERTION_TYPE_REQUIRE_KEY_IDENTIFIRE_REFERENCE)
         {
-            rp_x509_token_set_require_key_identifier_reference(x509_token, env, AXIS2_TRUE);
+            rp_x509_token_set_require_key_identifier_reference(
+                    x509_token, env, AXIS2_TRUE);
         }
         else if(type == ASSERTION_TYPE_REQUIRE_ISSUER_SERIAL_REFERENCE)
         {
-            rp_x509_token_set_require_issuer_serial_reference(x509_token, env, AXIS2_TRUE);
+            rp_x509_token_set_require_issuer_serial_reference(
+                    x509_token, env, AXIS2_TRUE);
         }
         if(type == ASSERTION_TYPE_REQUIRE_EMBEDDED_TOKEN_REFERENCE)
         {
-            rp_x509_token_set_require_embedded_token_reference(x509_token, env, AXIS2_TRUE);
+            rp_x509_token_set_require_embedded_token_reference(
+                    x509_token, env, AXIS2_TRUE);
         }
         else if(type == ASSERTION_TYPE_REQUIRE_THUMBPRINT_REFERENCE)
         {
-            rp_x509_token_set_require_thumb_print_reference(x509_token, env, AXIS2_TRUE);
+            rp_x509_token_set_require_thumb_print_reference(
+                    x509_token, env, AXIS2_TRUE);
         }            
         else if(type == ASSERTION_TYPE_WSS_X509_V1_TOKEN_10)
         {
-            rp_x509_token_set_token_version_and_type(x509_token, env, RP_WSS_X509_V1_TOKEN_10);
+            rp_x509_token_set_token_version_and_type(
+                    x509_token, env, RP_WSS_X509_V1_TOKEN_10);
         }
         else if(type == ASSERTION_TYPE_WSS_X509_V3_TOKEN_10)
         {
-            /*neethi_assertion_free(assertion, env);
-            assertion = NULL;*/
-            /*neethi_operator_free(operator, env);
-            operator = NULL;*/
-            rp_x509_token_set_token_version_and_type(x509_token, env, RP_WSS_X509_V3_TOKEN_10);
+            rp_x509_token_set_token_version_and_type(
+                    x509_token, env, RP_WSS_X509_V3_TOKEN_10);
         }
         else return AXIS2_FAILURE;
     }

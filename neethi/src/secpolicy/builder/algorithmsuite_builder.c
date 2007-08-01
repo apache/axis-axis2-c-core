@@ -43,7 +43,15 @@ rp_algorithmsuite_builder_build(
     if(child_node)
     {
         algo_node = axiom_node_get_first_element(child_node, env);
-    }        
+        if(!algo_node)
+        {
+            return NULL;
+        }    
+    }
+    else
+    {
+        return NULL;
+    }    
 
     if(axiom_node_get_node_type(algo_node, env) == AXIOM_ELEMENT)
     {
@@ -54,7 +62,9 @@ rp_algorithmsuite_builder_build(
 
             algosuite_string = axiom_element_get_localname(algo_element, env);
             if(!algosuite_string)
+            {    
                 return NULL;
+            }    
             rp_algorithmsuite_set_algosuite(algorithmsuite, env, algosuite_string);
             assertion = neethi_assertion_create_with_args(env, (void *)rp_algorithmsuite_free, 
                     algorithmsuite, ASSERTION_TYPE_ALGORITHM_SUITE);

@@ -53,6 +53,10 @@ rp_asymmetric_binding_builder_build(
     asymmetric_binding = rp_asymmetric_binding_create(env);
     
     child_node = axiom_node_get_first_element(node,env);
+    if(!child_node)
+    {
+        return NULL;
+    }    
 
     if(axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
     {
@@ -72,8 +76,8 @@ rp_asymmetric_binding_builder_build(
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             asymmetric_binding_process_alternatives(env, all, asymmetric_binding);
 
-
-            assertion = neethi_assertion_create_with_args(env, (void *)rp_asymmetric_binding_free, asymmetric_binding, ASSERTION_TYPE_ASSYMMETRIC_BINDING);
+            assertion = neethi_assertion_create_with_args(env, (void *)rp_asymmetric_binding_free, 
+                    asymmetric_binding, ASSERTION_TYPE_ASSYMMETRIC_BINDING);
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
 
@@ -118,7 +122,8 @@ asymmetric_binding_process_alternatives(
             initiator_token = (rp_property_t *)neethi_assertion_get_value(assertion, env);
             if(initiator_token)
             {
-                rp_asymmetric_binding_set_initiator_token(asymmetric_binding, env, initiator_token);
+                rp_asymmetric_binding_set_initiator_token(asymmetric_binding, 
+                        env, initiator_token);
             }
             else return AXIS2_FAILURE;
         }
@@ -128,7 +133,8 @@ asymmetric_binding_process_alternatives(
             recipient_token = (rp_property_t *)neethi_assertion_get_value(assertion, env);
             if(recipient_token)
             {
-                rp_asymmetric_binding_set_recipient_token(asymmetric_binding, env, recipient_token);
+                rp_asymmetric_binding_set_recipient_token(asymmetric_binding, 
+                        env, recipient_token);
             }
             else return AXIS2_FAILURE;
         }
@@ -158,23 +164,28 @@ asymmetric_binding_process_alternatives(
         }
         else if(type == ASSERTION_TYPE_ENCRYPT_BEFORE_SIGNING)
         {
-            rp_symmetric_asymmetric_binding_commons_set_protection_order(as_commons, env, RP_ENCRYPT_BEFORE_SIGNING);
+            rp_symmetric_asymmetric_binding_commons_set_protection_order(
+                    as_commons, env, RP_ENCRYPT_BEFORE_SIGNING);
         }                
         else if(type == ASSERTION_TYPE_SIGN_BEFORE_ENCRYPTING)
         {
-            rp_symmetric_asymmetric_binding_commons_set_protection_order(as_commons, env, RP_SIGN_BEFORE_ENCRYPTING);
+            rp_symmetric_asymmetric_binding_commons_set_protection_order(
+                    as_commons, env, RP_SIGN_BEFORE_ENCRYPTING);
         }
         else if(type == ASSERTION_TYPE_ENCRYPT_SIGNATURE)
         {
-            rp_symmetric_asymmetric_binding_commons_set_signature_protection(as_commons, env, AXIS2_TRUE);
+            rp_symmetric_asymmetric_binding_commons_set_signature_protection(
+                    as_commons, env, AXIS2_TRUE);
         }
         else if(type == ASSERTION_TYPE_PROTECT_TOKENS)
         {
-            rp_symmetric_asymmetric_binding_commons_set_token_protection(as_commons, env, AXIS2_TRUE);
+            rp_symmetric_asymmetric_binding_commons_set_token_protection(
+                    as_commons, env, AXIS2_TRUE);
         }            
         else if(type == ASSERTION_TYPE_ONLY_SIGN_ENTIRE_HEADERS_AND_BODY)
         {
-            rp_symmetric_asymmetric_binding_commons_set_entire_headers_and_body_signatures(as_commons, env, AXIS2_TRUE);
+            rp_symmetric_asymmetric_binding_commons_set_entire_headers_and_body_signatures(
+                    as_commons, env, AXIS2_TRUE);
         }
         else if(type == ASSERTION_TYPE_SUPPORTING_TOKENS)
         {
@@ -186,11 +197,13 @@ asymmetric_binding_process_alternatives(
                 type = rp_supporting_tokens_get_type(supporting_tokens, env);
                 if(type == RP_PROPERTY_SIGNED_SUPPORTING_TOKEN)
                 {
-                    rp_binding_commons_set_signed_supporting_tokens(commons, env, supporting_tokens);
+                    rp_binding_commons_set_signed_supporting_tokens(
+                            commons, env, supporting_tokens);
                 }    
                 else if(type == RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN)
                 {
-                    rp_binding_commons_set_signed_endorsing_supporting_tokens(commons, env, supporting_tokens);
+                    rp_binding_commons_set_signed_endorsing_supporting_tokens(
+                            commons, env, supporting_tokens);
                 }                       
                 else return AXIS2_FAILURE;
             }                    
@@ -198,8 +211,10 @@ asymmetric_binding_process_alternatives(
         }
         else return AXIS2_FAILURE;
     }
-    rp_symmetric_asymmetric_binding_commons_set_binding_commons(as_commons, env, commons);
-    rp_asymmetric_binding_set_symmetric_asymmetric_binding_commons(asymmetric_binding, env, as_commons);
+    rp_symmetric_asymmetric_binding_commons_set_binding_commons(
+            as_commons, env, commons);
+    rp_asymmetric_binding_set_symmetric_asymmetric_binding_commons(
+            asymmetric_binding, env, as_commons);
 
     return AXIS2_SUCCESS;
 }

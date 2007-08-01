@@ -64,17 +64,23 @@ rp_supporting_tokens_builder_build(
     {
         if(axutil_strcmp(local_name, RP_SIGNED_SUPPORTING_TOKENS) == 0)
         {
-            rp_supporting_tokens_set_type(supporting_tokens, env, RP_PROPERTY_SIGNED_SUPPORTING_TOKEN);
+            rp_supporting_tokens_set_type(
+                    supporting_tokens, env, RP_PROPERTY_SIGNED_SUPPORTING_TOKEN);
         }
         else if(axutil_strcmp(local_name, RP_SIGNED_ENDORSING_SUPPORTING_TOKENS)==0)
         {
-            rp_supporting_tokens_set_type(supporting_tokens, env, RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN);
+            rp_supporting_tokens_set_type(
+                    supporting_tokens, env, RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN);
         } 
         else return NULL;
     }        
     else return NULL;
 
     child_node = axiom_node_get_first_element(node,env);
+    if(!child_node)
+    {
+        return NULL;
+    }    
 
     if(axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
     {
@@ -86,7 +92,7 @@ rp_supporting_tokens_builder_build(
             {
                 return NULL;
             }
-            normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE,policy);
+            normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
             alternatives = neethi_policy_get_alternatives(normalized_policy, env);
             neethi_policy_free(policy, env);
             policy = NULL;
@@ -94,7 +100,8 @@ rp_supporting_tokens_builder_build(
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             supporting_tokens_process_alternatives(env, all, supporting_tokens);
 
-            assertion = neethi_assertion_create_with_args(env, (void *)rp_supporting_tokens_free, supporting_tokens, ASSERTION_TYPE_SUPPORTING_TOKENS);
+            assertion = neethi_assertion_create_with_args(
+                    env, (void *)rp_supporting_tokens_free, supporting_tokens, ASSERTION_TYPE_SUPPORTING_TOKENS);
             
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
@@ -134,10 +141,12 @@ supporting_tokens_process_alternatives(
             if(type == ASSERTION_TYPE_ALGORITHM_SUITE)
             {
                 rp_algorithmsuite_t *algorithmsuite = NULL;
-                algorithmsuite = (rp_algorithmsuite_t *)neethi_assertion_get_value(assertion, env);
+                algorithmsuite = (rp_algorithmsuite_t *)neethi_assertion_get_value(
+                        assertion, env);
                 if(algorithmsuite)
                 {
-                    rp_supporting_tokens_set_algorithmsuite(supporting_tokens, env, algorithmsuite);
+                    rp_supporting_tokens_set_algorithmsuite(
+                            supporting_tokens, env, algorithmsuite);
                 }
                 else return AXIS2_FAILURE;
             }

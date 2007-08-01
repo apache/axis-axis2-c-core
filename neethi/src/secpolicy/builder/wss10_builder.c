@@ -53,7 +53,11 @@ rp_wss10_builder_build(
     wss10 = rp_wss10_create(env);
 
     child_node = axiom_node_get_first_element(node,env);
-
+    if(!child_node)
+    {
+        return NULL;
+    }    
+    
     if(axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
     {
         child_element = (axiom_element_t*)axiom_node_get_data_element(child_node, env);
@@ -72,7 +76,8 @@ rp_wss10_builder_build(
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             wss10_process_alternatives(env, all, wss10);
 
-            assertion = neethi_assertion_create_with_args(env, (void *)rp_wss10_free, wss10, ASSERTION_TYPE_WSS10);
+            assertion = neethi_assertion_create_with_args(
+                    env, (void *)rp_wss10_free, wss10, ASSERTION_TYPE_WSS10);
 
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
@@ -102,26 +107,32 @@ wss10_process_alternatives(
 
     for(i=0; i<axutil_array_list_size(arraylist, env); i++)
     {
-        operator = (neethi_operator_t *)axutil_array_list_get(arraylist, env, i);
-        assertion = (neethi_assertion_t *)neethi_operator_get_value(operator, env);
+        operator = (neethi_operator_t *)axutil_array_list_get(
+                arraylist, env, i);
+        assertion = (neethi_assertion_t *)neethi_operator_get_value(
+                operator, env);
         value = neethi_assertion_get_value(assertion, env);
         type = neethi_assertion_get_type(assertion, env);
 
         if(type == ASSERTION_TYPE_MUST_SUPPORT_REF_KEY_IDENTIFIER)
         {
-            rp_wss10_set_must_support_ref_key_identifier(wss10,env,AXIS2_TRUE);
+            rp_wss10_set_must_support_ref_key_identifier(
+                    wss10, env, AXIS2_TRUE);
         }
         else if(type == ASSERTION_TYPE_MUST_SUPPORT_REF_ISSUER_SERIAL)
         {
-            rp_wss10_set_must_support_ref_issuer_serial(wss10,env,AXIS2_TRUE);
+            rp_wss10_set_must_support_ref_issuer_serial(
+                    wss10, env, AXIS2_TRUE);
         }
         else if(type == ASSERTION_TYPE_MUST_SUPPORT_REF_EXTERNAL_URI)
         {
-            rp_wss10_set_must_support_ref_external_uri(wss10,env,AXIS2_TRUE);
+            rp_wss10_set_must_support_ref_external_uri(
+                    wss10, env, AXIS2_TRUE);
         }
         else if(type == ASSERTION_TYPE_MUST_SUPPORT_REF_EMBEDDED_TOKEN)
         {
-            rp_wss10_set_must_support_ref_embedded_token(wss10,env,AXIS2_TRUE);
+            rp_wss10_set_must_support_ref_embedded_token(
+                    wss10, env, AXIS2_TRUE);
         }                
         else return AXIS2_FAILURE;
     }

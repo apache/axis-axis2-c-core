@@ -53,7 +53,11 @@ rp_initiator_token_builder_build(
 
     initiator_token = rp_property_create(env);
     
-    child_node = axiom_node_get_first_element(node,env);
+    child_node = axiom_node_get_first_element(node, env);
+    if(!child_node)
+    {
+        return NULL;
+    }    
 
     if(axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
     {
@@ -73,7 +77,8 @@ rp_initiator_token_builder_build(
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             initiator_token_process_alternatives(env, all, initiator_token);
 
-            assertion = neethi_assertion_create_with_args(env, (void *)rp_property_free, initiator_token, ASSERTION_TYPE_INITIATOR_TOKEN);
+            assertion = neethi_assertion_create_with_args(
+                    env, (void *)rp_property_free, initiator_token, ASSERTION_TYPE_INITIATOR_TOKEN);
 
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
@@ -117,7 +122,8 @@ initiator_token_process_alternatives(
                 x509_token = (rp_x509_token_t *)neethi_assertion_get_value(assertion, env);
                 if(x509_token)
                 {
-                    rp_property_set_value(initiator_token, env, x509_token, RP_PROPERTY_X509_TOKEN);
+                    rp_property_set_value(
+                        initiator_token, env, x509_token, RP_PROPERTY_X509_TOKEN);
                 }
                 else return AXIS2_FAILURE;
             }

@@ -54,6 +54,10 @@ rp_transport_token_builder_build(
     transport_token = rp_property_create(env);
     
     child_node = axiom_node_get_first_element(node,env);
+    if(!child_node)
+    {
+        return NULL;
+    }    
 
     if(axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
     {
@@ -72,7 +76,8 @@ rp_transport_token_builder_build(
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             transport_token_process_alternatives(env, all, transport_token);
 
-            assertion = neethi_assertion_create_with_args(env, (void *)rp_property_free, transport_token, ASSERTION_TYPE_TRANSPORT_TOKEN);
+            assertion = neethi_assertion_create_with_args(
+                    env, (void *)rp_property_free, transport_token, ASSERTION_TYPE_TRANSPORT_TOKEN);
 
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
@@ -104,7 +109,8 @@ transport_token_process_alternatives(
     for(i=0; i<axutil_array_list_size(arraylist, env); i++)
     {
         operator = (neethi_operator_t *)axutil_array_list_get(arraylist, env, i);
-        assertion = (neethi_assertion_t *)neethi_operator_get_value(operator, env);
+        assertion = (neethi_assertion_t *)neethi_operator_get_value(
+                operator, env);
         value = neethi_assertion_get_value(assertion, env);
         type = neethi_assertion_get_type(assertion, env);
 
@@ -113,10 +119,12 @@ transport_token_process_alternatives(
             if(type == ASSERTION_TYPE_HTTPS_TOKEN)
             {
                 rp_https_token_t *https_token = NULL;    
-                https_token = (rp_https_token_t *)neethi_assertion_get_value(assertion, env);
+                https_token = (rp_https_token_t *)neethi_assertion_get_value(
+                        assertion, env);
                 if(https_token)
                 {
-                    rp_property_set_value(transport_token, env, https_token, RP_PROPERTY_HTTPS_TOKEN);
+                    rp_property_set_value(transport_token, env, 
+                            https_token, RP_PROPERTY_HTTPS_TOKEN);
                 }
                 else return AXIS2_FAILURE;
             }

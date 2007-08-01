@@ -55,6 +55,11 @@ rp_recipient_token_builder_build(
     
     child_node = axiom_node_get_first_element(node,env);
 
+    if(!child_node)
+    {
+        return NULL;
+    }    
+
     if(axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
     {
         child_element = (axiom_element_t*)axiom_node_get_data_element(child_node, env);
@@ -73,7 +78,8 @@ rp_recipient_token_builder_build(
             all = (neethi_all_t *)neethi_operator_get_value(component ,env);
             recipient_token_process_alternatives(env, all, recipient_token);
 
-            assertion = neethi_assertion_create_with_args(env, (void *)rp_property_free, recipient_token, ASSERTION_TYPE_RECIPIENT_TOKEN);
+            assertion = neethi_assertion_create_with_args(
+                    env, (void *)rp_property_free, recipient_token, ASSERTION_TYPE_RECIPIENT_TOKEN);
 
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
@@ -117,7 +123,8 @@ recipient_token_process_alternatives(
                 x509_token = (rp_x509_token_t *)neethi_assertion_get_value(assertion, env);
                 if(x509_token)
                 {
-                    rp_property_set_value(recipient_token, env, x509_token, RP_PROPERTY_X509_TOKEN);
+                    rp_property_set_value(recipient_token, env, x509_token, 
+                            RP_PROPERTY_X509_TOKEN);
                 }
                 else return AXIS2_FAILURE;
             }

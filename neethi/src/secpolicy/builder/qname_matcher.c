@@ -31,19 +31,19 @@ rp_match_secpolicy_qname(
 	
 	AXIS2_ENV_CHECK(env,AXIS2_FALSE);
 
-    node_qname = axiom_element_get_qname(element,env,node);
+    node_qname = axiom_element_get_qname(element, env, node);
 
     if(!node_qname)
     {
-        axutil_qname_free(qname,env);
+        axutil_qname_free(qname, env);
     }
     else
     {
-        qname = axutil_qname_create(env,local_name,RP_SP_NS,RP_SP_PREFIX);
+        qname = axutil_qname_create(env, local_name, RP_SP_NS, RP_SP_PREFIX);
         if(!qname)
             return AXIS2_FALSE;
     }
-    if(axutil_qname_equals(qname,env,node_qname))
+    if(axutil_qname_equals(qname, env, node_qname))
     {
         axutil_qname_free(qname,env);
         qname = NULL;        
@@ -51,7 +51,7 @@ rp_match_secpolicy_qname(
     }
     else
     {
-        axutil_qname_free(qname,env);
+        axutil_qname_free(qname, env);
         qname = NULL;
         return AXIS2_FALSE;
     }
@@ -70,11 +70,11 @@ rp_match_policy_qname(
 	
 	AXIS2_ENV_CHECK(env,AXIS2_FALSE);
 
-    qname = axutil_qname_create(env,local_name,RP_POLICY_NS,RP_POLICY_PREFIX);
+    qname = axutil_qname_create(env, local_name, RP_POLICY_NS, RP_POLICY_PREFIX);
     if(!qname)
         return AXIS2_FALSE;
 
-    node_qname = axiom_element_get_qname(element,env,node);
+    node_qname = axiom_element_get_qname(element, env, node);
 
     if(!node_qname)
     {
@@ -82,19 +82,19 @@ rp_match_policy_qname(
     }
     else
     {
-        qname = axutil_qname_create(env,local_name,RP_POLICY_NS,RP_POLICY_PREFIX);
+        qname = axutil_qname_create(env, local_name, RP_POLICY_NS, RP_POLICY_PREFIX);
         if(!qname)
             return AXIS2_FALSE;
     }
-    if(axutil_qname_equals(qname,env,node_qname))
+    if(axutil_qname_equals(qname, env, node_qname))
     {        
-        axutil_qname_free(qname,env);
+        axutil_qname_free(qname, env);
         qname = NULL;
         return AXIS2_TRUE;
     }
     else
     {
-        axutil_qname_free(qname,env);
+        axutil_qname_free(qname, env);
         qname = NULL;
         return AXIS2_FALSE;
     }
@@ -112,9 +112,9 @@ rp_match_rampart_config_qname(
 	axutil_qname_t *qname = NULL;
     axutil_qname_t *node_qname = NULL;
 
-	AXIS2_ENV_CHECK(env,AXIS2_FALSE);
+	AXIS2_ENV_CHECK(env, AXIS2_FALSE);
 
-    node_qname = axiom_element_get_qname(element,env,node);
+    node_qname = axiom_element_get_qname(element, env, node);
 
     if(!node_qname)
     {
@@ -122,19 +122,21 @@ rp_match_rampart_config_qname(
     }
     else
     {
-        qname = axutil_qname_create(env,local_name,RP_RAMPART_NS,RP_RAMPART_PREFIX);
+        qname = axutil_qname_create(env, local_name, RP_RAMPART_NS, RP_RAMPART_PREFIX);
         if(!qname)
+        {    
             return AXIS2_FALSE;
+        }    
     }        
-    if(axutil_qname_equals(qname,env,node_qname))
+    if(axutil_qname_equals(qname, env, node_qname))
     {        
-        axutil_qname_free(qname,env);
+        axutil_qname_free(qname, env);
         qname = NULL;
         return AXIS2_TRUE;
     }
     else
     {        
-        axutil_qname_free(qname,env);
+        axutil_qname_free(qname, env);
         qname = NULL;
         return AXIS2_FALSE;
     }
