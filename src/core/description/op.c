@@ -568,17 +568,14 @@ axis2_op_add_to_engaged_module_list(axis2_op_t *op,
     }
     size = axutil_array_list_size(op->engaged_module_list, env);
 
-    if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
-    {
-        return AXIS2_ERROR_GET_STATUS_CODE(env->error);
-    }
     module_qname = axis2_module_desc_get_qname(module_desc, env);
     for (index = 0; index < size; index++)
     {
         const axutil_qname_t *module_qname_l = NULL;
 
         module_desc_l = 
-            (axis2_module_desc_t *) axutil_array_list_get(op->engaged_module_list, env, index);
+            (axis2_module_desc_t *) axutil_array_list_get(
+                op->engaged_module_list, env, index);
         module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
         
         if (axutil_qname_equals(module_qname, env, module_qname_l))

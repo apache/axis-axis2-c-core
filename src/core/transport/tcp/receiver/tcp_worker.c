@@ -167,7 +167,7 @@ axis2_tcp_worker_process_request(
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "stream write failed");
             return AXIS2_FAILURE;
         }
-        AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "stream wrote:%s", buffer);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "stream wrote:%s", buffer);
     }
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "end:axis2_tcp_worker_process_request");
     return AXIS2_SUCCESS;

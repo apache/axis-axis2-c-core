@@ -561,6 +561,8 @@ axis2_engine_invoke_phases(
     int count = 0;
     axis2_status_t status = AXIS2_SUCCESS;
 
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+        "Start:axis2_engine_invoke_phases");
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, phases, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -582,6 +584,8 @@ axis2_engine_invoke_phases(
             return status;
         }
     }
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+        "End:axis2_engine_invoke_phases");
     return AXIS2_SUCCESS;
 }
 
@@ -596,6 +600,8 @@ axis2_engine_resume_invocation_phases(
     int count = 0;
     axis2_bool_t found_match = AXIS2_FALSE;
 
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+        "Start:axis2_engine_resume_invocation_phases");
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, phases, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -636,6 +642,8 @@ axis2_engine_resume_invocation_phases(
         }
     }
 
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+        "End:axis2_engine_resume_invocation_phases");
     return AXIS2_SUCCESS;
 }
 

@@ -806,9 +806,12 @@ axis2_op_client_infer_transport(axis2_op_client_t *op_client,
     axis2_endpoint_ref_t *epr)
 {
     axis2_char_t *transport = NULL;
+    axis2_transport_out_desc_t *transport_out_desc = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+        "Start:axis2_op_client_infer_transport");
     if (epr)
     {
         const axis2_char_t *to_url = axis2_endpoint_ref_get_address(epr, env);
@@ -820,7 +823,6 @@ axis2_op_client_infer_transport(axis2_op_client_t *op_client,
     {
         axis2_conf_ctx_t *conf_ctx = NULL;
         axis2_conf_t *conf = NULL;
-        axis2_transport_out_desc_t *transport_out_desc = NULL;
 		AXIS2_TRANSPORT_ENUMS transport_enum = 0;
         
         if (!axutil_strcmp(transport, "http"))
@@ -854,12 +856,18 @@ axis2_op_client_infer_transport(axis2_op_client_t *op_client,
 
         AXIS2_FREE(env->allocator, transport);
         transport = NULL;
-        return transport_out_desc;
 
     }
-
-    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_INFER_TRANSPORT, AXIS2_FAILURE);
-    return NULL;
+    if(!transport_out_desc)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "[axis2c] Cannot infer transport");
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_INFER_TRANSPORT, 
+            AXIS2_FAILURE);
+    }
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+        "End:axis2_op_client_infer_transport");
+    return transport_out_desc;
 }
 
 AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL

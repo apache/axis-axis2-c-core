@@ -1,19 +1,21 @@
 datadir=$(prefix)
+samplesdir=$(prefix)/samples/axis2c
 logsdir=$(prefix)/logs
-docsdir=$(prefix)/docs
+docsdir=$(prefix)/docs/axis2c
 includedir=$(prefix)/include/axis2-1.1
-samplesdir=$(prefix)/samples
+
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = axis2c.pc
-samples_DATA=
-SUBDIRS = util $(GUTHTHILA_DIR) axiom neethi src $(TESTDIR) include ides
-include_HEADERS=$(top_builddir)/include/*.h 
+
+SUBDIRS = util $(GUTHTHILA_DIR) axiom neethi src $(TESTDIR) include ides tools/tcpmon
+include_HEADERS=$(top_builddir)/include/*.h
 data_DATA= samples/server/axis2.xml README \
-	INSTALL CREDITS COPYING NEWS NOTICE config.guess missing install-sh depcomp config.sub ltmain.sh
+	INSTALL CREDITS COPYING NEWS NOTICE 
 
 logs_DATA=
-docs_DATA=docs/*
-EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE build axis2c_build.sh xdocs guththila tools AUTHORS NOTICE
+docs_DATA=
+samples_DATA=
+EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE build axis2c_build.sh guththila tools AUTHORS NOTICE xdocs
 
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
@@ -39,4 +41,4 @@ bindist: $(bin_PROGRAMS)
 
 install-data-hook:
 	cp -rf samples/* $(samplesdir)
-	sh copy_samples.sh $(prefix)
+

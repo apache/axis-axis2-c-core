@@ -84,7 +84,7 @@ axis2_phases_info_free(axis2_phases_info_t *phases_info,
     }
     if (phases_info->op_in_phases)
     {
-        axutil_hash_index_t *i = NULL;
+        /*axutil_hash_index_t *i = NULL;
         for (i = axutil_hash_first (phases_info->op_in_phases, env); i; i =
             axutil_hash_next (env, i))
         {
@@ -97,12 +97,12 @@ axis2_phases_info_free(axis2_phases_info_t *phases_info,
             {
                  axis2_phase_free(phase, env);
             }
-        }
+        }*/
         axutil_hash_free(phases_info->op_in_phases, env);
     }
     if (phases_info->op_out_phases)
     {
-        axutil_hash_index_t *i = NULL;
+        /*axutil_hash_index_t *i = NULL;
         for (i = axutil_hash_first (phases_info->op_out_phases, env); i; i =
             axutil_hash_next (env, i))
         {
@@ -115,12 +115,12 @@ axis2_phases_info_free(axis2_phases_info_t *phases_info,
             {
                  axis2_phase_free(phase, env);
             }
-        }
+        }*/
         axutil_hash_free(phases_info->op_out_phases, env);
     }
     if (phases_info->op_in_faultphases)
     {
-        axutil_hash_index_t *i = NULL;
+        /*axutil_hash_index_t *i = NULL;
         for (i = axutil_hash_first (phases_info->op_in_faultphases, env); 
             i; i = axutil_hash_next (env, i))
         {
@@ -133,12 +133,12 @@ axis2_phases_info_free(axis2_phases_info_t *phases_info,
             {
                  axis2_phase_free(phase, env);
             }
-        }
+        }*/
         axutil_hash_free(phases_info->op_in_faultphases, env);
     }
     if (phases_info->op_out_faultphases)
     {
-        axutil_hash_index_t *i = NULL;
+        /*axutil_hash_index_t *i = NULL;
         for (i = axutil_hash_first (phases_info->op_out_faultphases, env); 
             i; i = axutil_hash_next (env, i))
         {
@@ -151,7 +151,7 @@ axis2_phases_info_free(axis2_phases_info_t *phases_info,
             {
                  axis2_phase_free(phase, env);
             }
-        }
+        }*/
         axutil_hash_free(phases_info->op_out_faultphases, env);
     }
 
@@ -299,14 +299,18 @@ axis2_phases_info_get_op_in_phases(const axis2_phases_info_t *phases_info,
         }
         else
         {
-            phase = axutil_hash_get(phases_info->op_in_phases, phase_name, 
+            /* This is the cause for jira AXIS2C-. As solution I create new 
+             * phases for each operation specific flow making the operation 
+             * the owner of the flow and the phases contained within it*/
+            /*phase = axutil_hash_get(phases_info->op_in_phases, phase_name, 
                 AXIS2_HASH_KEY_STRING);
             if(!phase)
             {
                 phase = axis2_phase_create(env, phase_name);
                 axutil_hash_set(phases_info->op_in_phases, phase_name,
                     AXIS2_HASH_KEY_STRING, phase);
-            }
+            }*/
+            phase = axis2_phase_create(env, phase_name);
             status = axutil_array_list_add(op_in_phases, env, phase);
             if (AXIS2_SUCCESS != status)
             {
@@ -358,14 +362,15 @@ axis2_phases_info_get_op_out_phases(const axis2_phases_info_t *phases_info,
     {
         phase_name = (axis2_char_t *) axutil_array_list_get(phases_info->
             out_phases, env, i);
-        phase = axutil_hash_get(phases_info->op_out_phases, phase_name, 
+        /*phase = axutil_hash_get(phases_info->op_out_phases, phase_name, 
             AXIS2_HASH_KEY_STRING);
         if(!phase)
         {
             phase = axis2_phase_create(env, phase_name);
             axutil_hash_set(phases_info->op_out_phases, phase_name,
                 AXIS2_HASH_KEY_STRING, phase);
-        }
+        }*/
+        phase = axis2_phase_create(env, phase_name);
         status = axutil_array_list_add(op_out_phases, env, phase);
         if (AXIS2_SUCCESS != status)
         {
@@ -421,14 +426,15 @@ axis2_phases_info_get_op_in_faultphases(const axis2_phases_info_t *phases_info,
     {
         phase_name = (axis2_char_t *)
             axutil_array_list_get(phases_info->in_faultphases, env, i);
-        phase = axutil_hash_get(phases_info->op_in_faultphases, phase_name, 
+        /*phase = axutil_hash_get(phases_info->op_in_faultphases, phase_name, 
             AXIS2_HASH_KEY_STRING);
         if(!phase)
         {
             phase = axis2_phase_create(env, phase_name);
             axutil_hash_set(phases_info->op_in_faultphases, 
                 phase_name, AXIS2_HASH_KEY_STRING, phase);
-        }
+        }*/
+        phase = axis2_phase_create(env, phase_name);
         status = axutil_array_list_add(op_in_faultphases, env, phase);
         if (AXIS2_SUCCESS != status)
         {
@@ -486,14 +492,15 @@ axis2_phases_info_get_op_out_faultphases(const axis2_phases_info_t *phases_info,
     {
         phase_name = (axis2_char_t *) 
             axutil_array_list_get(phases_info->out_faultphases, env, i);
-        phase = axutil_hash_get(phases_info->op_out_faultphases, phase_name, 
+        /*phase = axutil_hash_get(phases_info->op_out_faultphases, phase_name, 
             AXIS2_HASH_KEY_STRING);
         if(!phase)
         {
             phase = axis2_phase_create(env, phase_name);
             axutil_hash_set(phases_info->op_out_faultphases, 
                 phase_name, AXIS2_HASH_KEY_STRING, phase);
-        }
+        }*/
+        phase = axis2_phase_create(env, phase_name);
         status = axutil_array_list_add(op_out_faultphases, env, phase);
         if (AXIS2_SUCCESS != status)
         {

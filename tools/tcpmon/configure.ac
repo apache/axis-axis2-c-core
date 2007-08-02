@@ -106,8 +106,6 @@ CFLAGS="$CFLAGS"
 
 AC_CONFIG_FILES([Makefile \
     src/Makefile \
-    test/Makefile \
-    test/unit/Makefile \
     ])
     
 AC_OUTPUT

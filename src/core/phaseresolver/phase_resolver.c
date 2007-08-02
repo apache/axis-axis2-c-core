@@ -176,6 +176,8 @@ axis2_phase_resolver_build_module_op(
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
 
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+        "Start:axis2_phase_resolver_build_module_op");
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
 
@@ -187,10 +189,12 @@ axis2_phase_resolver_build_module_op(
         status = axis2_phase_resolver_build_execution_chains(phase_resolver,
             env, i, op);
         if(!status)
-	{
-            break;
-	}
+        {
+                break;
+        }
     }
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+        "End:axis2_phase_resolver_build_module_op");
     return status;
 }
 
@@ -208,18 +212,13 @@ axis2_phase_resolver_build_execution_chains(
     int status = AXIS2_FAILURE;
     axis2_flow_t *flow = NULL;
     axis2_phase_holder_t *phase_holder = NULL;
-
-    /* engage handlers from axis2.xml from modules */
+    
+    /* engage handlers from axis2.xml and from modules */
 
     moduleqnames =  axis2_conf_get_all_engaged_modules(
         phase_resolver->axis2_config, env);
 
     size = axutil_array_list_size(moduleqnames, env);
-    status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
-    if (AXIS2_SUCCESS != status)
-    {
-        return status;
-    }
 
     for (i = 0; i < size; i++)
     {
@@ -304,9 +303,9 @@ axis2_phase_resolver_build_execution_chains(
                     {
                         all_handlers = axutil_array_list_create(env, 0);
                         if (!all_handlers)
-			{
+			            {
                             return AXIS2_FAILURE;
-			}
+			            }
                     }
                     status = axutil_array_list_add(all_handlers, env, metadata);
                     if (AXIS2_SUCCESS != status)
@@ -485,9 +484,9 @@ axis2_phase_resolver_build_execution_chains(
             status = axis2_phase_holder_add_handler(phase_holder,
                 env, metadata);
             if(!status)
-	    {
+	        {
                 break;
-	    }
+	        }
         }
     }
 
@@ -1251,8 +1250,15 @@ axis2_phase_resolver_engage_module_to_svc(
     axis2_status_t status = AXIS2_FAILURE;
     const axutil_qname_t *module_d_qname = NULL;
 
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+        "Start:axis2_phase_resolver_engage_module_to_svc");
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+        "Module %s will be engaged to %s", 
+        axutil_qname_get_localpart(axis2_module_desc_get_qname(module_desc, 
+            env), env), 
+        axis2_svc_get_name(svc, env));
     ops = axis2_svc_get_all_ops(svc, env);
     if (!ops)
     {
@@ -1296,8 +1302,11 @@ axis2_phase_resolver_engage_module_to_svc(
                 engaged = AXIS2_TRUE;
                 status = AXIS2_SUCCESS;
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                    "Module %s already engaged.", 
-                    axutil_qname_get_localpart(module_d_qname, env));
+                    "Module %s already engaged to %s of %s", 
+                    axutil_qname_get_localpart(module_d_qname, env), 
+                    axutil_qname_get_localpart(axis2_op_get_qname(op_desc, env), 
+                        env), 
+                    axis2_svc_get_name(svc, env));
                 break;
             }
         }
@@ -1316,6 +1325,8 @@ axis2_phase_resolver_engage_module_to_svc(
         }
 
     }
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+        "End:axis2_phase_resolver_engage_module_to_svc");
     return status; 
 }
 
