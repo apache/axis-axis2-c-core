@@ -1,2 +1,2 @@
-SUBDIRS = echo math google notify mtom yahoo echo_notify notify_echo
+SUBDIRS = echo math google notify mtom yahoo
 EXTRA_DIST= Makefile.am
