@@ -131,6 +131,8 @@ AC_CONFIG_FILES([Makefile \
     server/mtom/Makefile \
     client/Makefile \
     client/echo/Makefile \
+    client/echo_notify/Makefile \
+    client/notify_echo/Makefile \
     client/math/Makefile \
     client/mtom/Makefile \
     client/mtom/resources/Makefile \

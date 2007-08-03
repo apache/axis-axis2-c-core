@@ -92,6 +92,7 @@ int main(int argc, char** argv)
     axis2_svc_client_disengage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);
 
 
+
     /* Build the SOAP request message payload using OM API.*/
     payload = build_om_payload_for_echo_svc(env);
 

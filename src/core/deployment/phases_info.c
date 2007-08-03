@@ -299,7 +299,7 @@ axis2_phases_info_get_op_in_phases(const axis2_phases_info_t *phases_info,
         }
         else
         {
-            /* This is the cause for jira AXIS2C-. As solution I create new 
+            /* This is the cause for jira AXIS2C-624. As solution I create new 
              * phases for each operation specific flow making the operation 
              * the owner of the flow and the phases contained within it*/
             /*phase = axutil_hash_get(phases_info->op_in_phases, phase_name, 
