@@ -23,13 +23,8 @@ libaxis2_engine_la_LIBADD=$(top_builddir)/src/core/description/libaxis2_descript
 					$(top_builddir)/util/src/libaxutil.la \
 					$(top_builddir)/neethi/src/libneethi.la \
 					$(top_builddir)/axiom/src/om/libaxis2_axiom.la 
-if AXIS2_XMPP_ENABLED
-libaxis2_engine_la_LIBADD+=$(top_builddir)/src/core/transport/xmpp/receiver/libaxis2_xmpp_receiver.la \
-			   $(top_builddir)/src/core/transport/xmpp/sender/libaxis2_xmpp_sender.la
-else
 libaxis2_engine_la_LIBADD+=$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
 			   $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la
-endif
 
 
 INCLUDES =  -I$(top_builddir)/include \

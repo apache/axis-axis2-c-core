@@ -17,6 +17,7 @@
 
 #include <axis2_addr_mod.h>
 #include <axis2_addr.h>
+#include <axis2_handler.h>
 #include <axis2_handler_desc.h>
 #include <axutil_array_list.h>
 #include <axiom_soap_const.h>

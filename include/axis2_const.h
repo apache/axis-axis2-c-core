@@ -113,7 +113,6 @@ extern "C"
 #define AXIS2_TRANSPORT_HTTP "http"
 #define AXIS2_TRANSPORT_SMTP "smtp"
 #define AXIS2_TRANSPORT_TCP "tcp"
-#define AXIS2_TRANSPORT_XMPP "xmpp"
 #define AXIS2_TRANSPORT_HTTPS "https"
 typedef enum
 {
