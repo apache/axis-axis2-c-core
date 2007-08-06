@@ -355,7 +355,7 @@ axiom_soap_builder_create_om_element
     }
     return ret_val;
 }
-
+/*TODO:Fixme*/
 static axis2_status_t
 axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
         const axutil_env_t *env,
@@ -428,8 +428,21 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
                                         axiom_text_t *data_text = NULL;
                                         axiom_node_t *data_om_node = NULL;
                                         data_text = axiom_text_create_with_data_handler(
-                                                    env, om_element_node, data_handler, &data_om_node);
-                                        axiom_text_set_optimize(data_text, env, AXIS2_FALSE);
+                                                        env, om_element_node,
+                                                        data_handler, &data_om_node);
+                                        /*axiom_text_set_optimize(data_text, env,
+                                                                AXIS2_FALSE);*/
+                                        axiom_text_set_content_id(data_text, env, id);
+                                        
+
+                                        /*remove the <xop:Include> element*/
+                                        axiom_node_detach(om_element_node, env);
+                                        axiom_node_detach(data_om_node, env);
+                                        axiom_node_free_tree(om_element_node, env);
+                                        axiom_node_add_child(parent, env,
+                                                data_om_node);
+                                        
+
                                     }
                                 }
                             }

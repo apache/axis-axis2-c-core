@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 #include "mtom.h"
+#include <axiom.h>
 #include <stdio.h>
 
 axiom_node_t *
@@ -28,7 +29,7 @@ axis2_mtom_mtom(const axutil_env_t *env, axiom_node_t *node)
     axiom_node_t *ret_node = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-
+    
     /* Expected request format is :-
      * <ns1:mtomSample xmlns:ns1="http://ws.apache.org/axis2/c/samples">
             <ns1:fileName>test.jpg</ns1:fileName>
@@ -72,12 +73,12 @@ axis2_mtom_mtom(const axutil_env_t *env, axiom_node_t *node)
             image_node = axiom_node_get_next_sibling(file_name_node, env);
             if (image_node)
             {
-                axiom_node_t *inc_node = NULL;
+               /* axiom_node_t *inc_node = NULL;
                 inc_node = axiom_node_get_first_child(image_node, env);
                 if (inc_node)
-                {
+                {*/
                     axiom_node_t *binary_node = NULL;
-                    binary_node = axiom_node_get_first_child(inc_node, env);
+                    binary_node = axiom_node_get_first_child(image_node, env);
                     if (binary_node)
                     {
                         axiom_data_handler_t *data_handler = NULL;
@@ -90,27 +91,27 @@ axis2_mtom_mtom(const axutil_env_t *env, axiom_node_t *node)
                             axiom_data_handler_write_to(data_handler, env);
                             ret_node = build_om_programatically(env, text_str);
                         }
-                    }
-                    else /* attachment has come by value, as non-optimized binary */
-                    {
-                        axiom_text_t *bin_text = (axiom_text_t *)
-                                axiom_node_get_data_element(inc_node, env);
-                        int plain_binary_len = 0;
-                        axis2_byte_t *plain_binary = NULL;
-                        axiom_data_handler_t *data_handler = NULL;
-                        
-                        axis2_char_t *base64text = (axis2_char_t *)axiom_text_get_value(bin_text, env);
-                        printf("base64text = %s\n", base64text);
-                        plain_binary_len = axutil_base64_decode_len(base64text);
-                        plain_binary =  AXIS2_MALLOC(env->
-                                    allocator, sizeof(unsigned char) * plain_binary_len);
-                        axutil_base64_decode_binary((unsigned char*)plain_binary,
-                                    base64text);
-                        data_handler = axiom_data_handler_create(env, text_str, NULL);
-                        axiom_data_handler_set_binary_data(data_handler, env, plain_binary, plain_binary_len);
-                        axiom_data_handler_write_to(data_handler, env);
-                        ret_node = build_om_programatically(env, text_str);
-                    }
+                        else /* attachment has come by value, as non-optimized binary */
+                        {
+                            axiom_text_t *bin_text = (axiom_text_t *)
+                                    axiom_node_get_data_element(binary_node, env);
+                            int plain_binary_len = 0;
+                            axis2_byte_t *plain_binary = NULL;
+                            axiom_data_handler_t *data_handler = NULL;
+                            
+                            axis2_char_t *base64text = (axis2_char_t *)axiom_text_get_value(bin_text, env);
+                            printf("base64text = %s\n", base64text);
+                            plain_binary_len = axutil_base64_decode_len(base64text);
+                            plain_binary =  AXIS2_MALLOC(env->
+                                        allocator, sizeof(unsigned char) * plain_binary_len);
+                            axutil_base64_decode_binary((unsigned char*)plain_binary,
+                                        base64text);
+                            data_handler = axiom_data_handler_create(env, text_str, NULL);
+                            axiom_data_handler_set_binary_data(data_handler, env, plain_binary, plain_binary_len);
+                            axiom_data_handler_write_to(data_handler, env);
+                            ret_node = build_om_programatically(env, text_str);
+                        }
+               /* }*/
                 }
             }
 
