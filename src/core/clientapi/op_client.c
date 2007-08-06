@@ -833,6 +833,10 @@ axis2_op_client_infer_transport(axis2_op_client_t *op_client,
 		{
             transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
 		}
+        else if (!axutil_strcmp (transport, "xmpp"))
+        {
+            transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
+        }
         else if (!axutil_strcmp (transport, "tcp"))
         {
             transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
