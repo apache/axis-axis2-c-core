@@ -15,6 +15,7 @@ tcpmon_LDADD =  \
 INCLUDES = -I$(top_builddir)/include \
 		   -I ../../../util/include \
 		   -I ../../../axiom/include \
-		   -I ../../../include
+		   -I ../../../include \
+		   -I ../include
 
 EXTRA_DIST=tcpmon_entry_local.h tcpmon_session_local.h

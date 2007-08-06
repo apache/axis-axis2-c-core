@@ -383,6 +383,8 @@ AC_CONFIG_FILES([Makefile \
     test/core/addr/Makefile \
     test/core/transport/Makefile\
     test/core/transport/http/Makefile \
+    tools/tcpmon/Makefile \
+    tools/tcpmon/src/Makefile \
     ides/Makefile \
     include/Makefile \
     axis2c.pc
