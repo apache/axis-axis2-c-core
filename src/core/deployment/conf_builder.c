@@ -676,10 +676,6 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
                 }
-                else if (axutil_strcmp(name, AXIS2_TRANSPORT_XMPP) == 0)
-                {
-                    transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
-                }
                 else if (axutil_strcmp(name, AXIS2_TRANSPORT_SMTP) == 0)
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_SMTP;
@@ -928,10 +924,6 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 if (axutil_strcmp(name, AXIS2_TRANSPORT_HTTP) == 0)
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
-                }
-                else if (axutil_strcmp(name, AXIS2_TRANSPORT_XMPP) == 0)
-                {
-                    transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
                 }
                 else if (axutil_strcmp(name, AXIS2_TRANSPORT_SMTP) == 0)
                 {
