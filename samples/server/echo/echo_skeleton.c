@@ -19,264 +19,145 @@
 #include <axutil_array_list.h>
 #include <axis2_msg_ctx.h>
 #include <stdio.h>
-#include <dlfcn.h>
 
 int AXIS2_CALL
-
- my_init(axis2_svc_skeleton_t *svc_skeleton,
-
-                         const axutil_env_t *env)
-
- {
-
-   /*SpsErrorLog("\nSPSAS: Entered my_init()\n");*/
-
-   fflush(stdout);
-
-     svc_skeleton->func_array = axutil_array_list_create(env, 0);
-
-     axutil_array_list_add(svc_skeleton->func_array, env, (void*)"create");
-
-     axutil_array_list_add(svc_skeleton->func_array, env, (void*)"delete");
-
-     axutil_array_list_add(svc_skeleton->func_array, env, (void*)"update");
-
-
-
-     /* Any initialization stuff goes here */
-
-     return AXIS2_SUCCESS;
-
- }
-
-
-
- int AXIS2_CALL
-
- my_free(axis2_svc_skeleton_t *svc_skeleton,
-
-             const axutil_env_t *env)
-
- {
-
-/*     TraceLog("\n[AG-DEBUG] entered my_free\n");*/
-
-     fflush(stdout);
-
-     
-
-     if(svc_skeleton)
-
-     {
-
-         AXIS2_FREE((env)->allocator, svc_skeleton);
-
-         svc_skeleton = NULL;
-
-     }
-
-     return AXIS2_SUCCESS;
-
- }
-
-
-
-  axiom_node_t* AXIS2_CALL
-
- acc_invoke(axis2_svc_skeleton_t *svc_skeleton,
-
-             const axutil_env_t *env,
-
-             axiom_node_t *node,
-
-             axis2_msg_ctx_t *msg_ctx)
-
- {
-
-    fflush(stdout);
-
-     /* Depending on the function name invoke the
-
-      *  corresponding method
-
-      */
-
-     if (node)
-
-     {
-
-         if (axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
-
-         {
-
-             axiom_element_t *element = NULL;
-
-             element = (axiom_element_t *)axiom_node_get_data_element(node, env);
-
-             if (element)
-
-             {
-
-                 axis2_char_t *op_name = axiom_element_get_localname(element, env);
-
-                 if (op_name)
-
-                 {
-
-                     /*if ( axutil_strcmp(op_name, "create") == 0 )
-
-                         return axis2_my_create1(env, node);
-
-                     if ( axutil_strcmp(op_name, "delete") == 0 )
-
-                         return axis2_my_delete1(env, node);
-
-                     if ( axutil_strcmp(op_name, "modify") == 0 )
-
-                         return axis2_my_modify1(env, node);
-
-                     if ( axutil_strcmp(op_name, "readList) == 0 )
-
-                         return axis2_my_readList(env, node);*/
-
-                 }
-
-             }
-
-         }
-
-     }
-
-   else
-
-   {
-
-/*       ErrorLog("ERROR: invalid OM parameters in request\n");*/
-
-   }
-
-
-
-     /** TODO: return a SOAP fault here */
-
-     return node;
-
- }
-
-
-
-    static const axis2_svc_skeleton_ops_t my_svc_skeleton_ops_var = {
-
-                     my_init,
-
-                     acc_invoke,
-
-                     NULL,
-
-                     my_free
-
-     };
-
-
-
- axis2_svc_skeleton_t *
-
- axis2_my_create(const axutil_env_t *env)
-
- {
-
-
-
-     axis2_svc_skeleton_t *svc_skeleton = NULL;
-
-     svc_skeleton = (axis2_svc_skeleton_t*) AXIS2_MALLOC((env)->allocator,
-
-         sizeof(axis2_svc_skeleton_t));
-
-
-
-
-
-     svc_skeleton->ops = (axis2_svc_skeleton_ops_t*)AXIS2_MALLOC(
-
-         (env)->allocator, sizeof(axis2_svc_skeleton_ops_t));
-
-
-
-     svc_skeleton->func_array = NULL;
-
-     svc_skeleton->ops = &my_svc_skeleton_ops_var;
-
-
-
-     return svc_skeleton;
-
- }
-
-
-
-  AXIS2_EXPORT int axis2_get_instance(struct axis2_svc_skeleton **inst,
-
-                         const axutil_env_t *env)
-
- {
-
-/*   SpsTraceLog("\nCalling dlopen() inside axis2_get_instance\n");*/
-
-   void* ptr = dlopen("/root/lib/libMy.so",RTLD_LAZY|RTLD_GLOBAL);
-
-   if(NULL == ptr)
-
-   {
-
-/*     SpsErrorLog("\ndlopen returned NULL");
-
-     SpsErrorLog("\nFor dlopen()...........dlerror says the following\n%s\n",dlerror());*/
-
-   }
-
-/*   SpsTraceLog("\ndlopen returned ptr with addr %u",ptr);*/
-
-
-
-
-
-   *inst = axis2_my_create(env);
-
-     if(NULL == (*inst))
-
-     {
-
-         return AXIS2_FAILURE;
-
-     }
-
-
-
-     return AXIS2_SUCCESS;
-
- }
-
-
-
- AXIS2_EXPORT int axis2_remove_instance(axis2_svc_skeleton_t *inst,
-
-                             const axutil_env_t *env)
-
- {
-
-     axis2_status_t status = AXIS2_FAILURE;
-
-   if (inst)
-
-   {
-
-         status = AXIS2_SVC_SKELETON_FREE(inst, env);
-
-     }
-
-     return status;
-
- }
-
+echo_free(axis2_svc_skeleton_t *svc_skeleton,
+        const axutil_env_t *env);
+
+/*
+ * This method invokes the right service method
+ */
+axiom_node_t* AXIS2_CALL
+echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
+        const axutil_env_t *env,
+        axiom_node_t *node,
+        axis2_msg_ctx_t *msg_ctx);
+
+
+int AXIS2_CALL
+echo_init(axis2_svc_skeleton_t *svc_skeleton,
+        const axutil_env_t *env);
+
+axiom_node_t* AXIS2_CALL
+echo_on_fault(axis2_svc_skeleton_t *svc_skeli,
+        const axutil_env_t *env, axiom_node_t *node);
+
+static const axis2_svc_skeleton_ops_t echo_svc_skeleton_ops_var = {
+    echo_init,
+    echo_invoke,
+    echo_on_fault,
+    echo_free
+};
+
+/*Create function */
+axis2_svc_skeleton_t *
+axis2_echo_create(const axutil_env_t *env)
+{
+    axis2_svc_skeleton_t *svc_skeleton = NULL;
+    /* Allocate memory for the structs */
+    svc_skeleton = AXIS2_MALLOC(env->allocator,
+            sizeof(axis2_svc_skeleton_t));
+
+    svc_skeleton->ops = &echo_svc_skeleton_ops_var;
+
+    svc_skeleton->func_array = NULL;
+
+    return svc_skeleton;
+}
+
+/* Initialize the service */
+int AXIS2_CALL
+echo_init(axis2_svc_skeleton_t *svc_skeleton,
+        const axutil_env_t *env)
+{
+    /* Any initialization stuff of echo service should go here */
+    return AXIS2_SUCCESS;
+}
+
+/*
+ * This method invokes the right service method
+ */
+axiom_node_t* AXIS2_CALL
+echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
+        const axutil_env_t *env,
+        axiom_node_t *node,
+        axis2_msg_ctx_t *msg_ctx)
+{
+    /* Invoke the business logic.
+     * Depending on the function name invoke the correct impl method.
+     * We have only echo in this sample, hence invoke echo method.
+     * To see how to deal with multiple impl methods, have a look at the
+     * math sample.
+     */
+
+    return axis2_echo_echo(env, node);
+}
+
+/* On fault, handle the fault */
+axiom_node_t* AXIS2_CALL
+echo_on_fault(axis2_svc_skeleton_t *svc_skeli,
+        const axutil_env_t *env, axiom_node_t *node)
+{
+    /* Here we are just setting a simple error message inside an element
+     * called 'EchoServiceError' 
+     */
+    axiom_node_t *error_node = NULL;
+    axiom_node_t *text_node = NULL;
+    axiom_element_t *error_ele = NULL;
+    
+	error_ele = axiom_element_create(env, NULL, "EchoServiceError", NULL,  &error_node);
+    axiom_element_set_text(error_ele, env, "Echo service failed ", text_node);
+    return error_node;
+}
+
+/* Free the resources used */
+int AXIS2_CALL
+echo_free(axis2_svc_skeleton_t *svc_skeleton,
+        const axutil_env_t *env)
+{
+    /* Free the function array */
+    if (svc_skeleton->func_array)
+    {
+        axutil_array_list_free(svc_skeleton->func_array, env);
+        svc_skeleton->func_array = NULL;
+    }
+
+    /* Free the service skeleton */
+    if (svc_skeleton)
+    {
+        AXIS2_FREE(env->allocator, svc_skeleton);
+        svc_skeleton = NULL;
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+
+/**
+ * Following block distinguish the exposed part of the dll.
+ */
+AXIS2_EXPORT int
+axis2_get_instance(axis2_svc_skeleton_t **inst,
+        const axutil_env_t *env)
+{
+    *inst = axis2_echo_create(env);
+    if (!(*inst))
+    {
+        return AXIS2_FAILURE;
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXPORT int
+axis2_remove_instance(axis2_svc_skeleton_t *inst,
+        const axutil_env_t *env)
+{
+    axis2_status_t status = AXIS2_FAILURE;
+    if (inst)
+    {
+        status = AXIS2_SVC_SKELETON_FREE(inst, env);
+    }
+    return status;
+}
 
