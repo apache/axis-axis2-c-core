@@ -200,6 +200,11 @@ extern "C"
     axiom_text_get_content_id(struct axiom_text *om_text,
         const axutil_env_t *env);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_text_set_content_id(axiom_text_t *om_text,
+        const axutil_env_t *env,
+        const axis2_char_t *content_id);
+
     /** @} */
 
 #ifdef __cplusplus
