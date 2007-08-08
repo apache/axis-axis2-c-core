@@ -264,7 +264,8 @@ neethi_policy_set_id(
     axis2_char_t *id)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    neethi_policy->id = id;
+    /*neethi_policy->id = id;*/
+    neethi_policy->id = axutil_strdup(env, id);
     return AXIS2_SUCCESS;
 }
 

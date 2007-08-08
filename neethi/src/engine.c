@@ -996,8 +996,9 @@ compute_resultant_component(
     {
         int i = 0;
         neethi_exactlyone_t *inner_exactlyone = NULL;
-        
-        for(i=0; i<axutil_array_list_size(normalized_inner_components,env); i++ )
+        exactlyone = neethi_exactlyone_create(env);       
+
+        for(i=0; i<axutil_array_list_size(normalized_inner_components, env); i++ )
         {
             inner_exactlyone = (neethi_exactlyone_t *)axutil_array_list_get(normalized_inner_components, env, i);
             if(inner_exactlyone)
