@@ -506,8 +506,13 @@ axis2_policy_include_add_policy_element(axis2_policy_include_t *policy_include,
     if (!neethi_policy_get_name(policy, env) && 
         !neethi_policy_get_id(policy, env))
     {
-        neethi_policy_set_id(policy, env, 
-            axutil_uuid_gen(env));
+        axis2_char_t *uuid =  axutil_uuid_gen(env);
+        neethi_policy_set_id(policy, env, uuid);
+        if(uuid)
+        {
+            AXIS2_FREE(env->allocator, uuid);
+            uuid = NULL;
+        }
     }
 
     if (policy_include->wrapper_elements)
