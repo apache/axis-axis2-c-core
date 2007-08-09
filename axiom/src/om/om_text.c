@@ -124,6 +124,7 @@ axiom_text_create_with_data_handler(const axutil_env_t *env,
     om_text->optimize = AXIS2_TRUE;
     om_text->is_binary = AXIS2_TRUE;
     om_text->data_handler = data_handler;
+    om_text->mime_type = axiom_data_handler_get_content_type(data_handler, env);
     return om_text;
 }
 
