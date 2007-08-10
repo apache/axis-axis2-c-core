@@ -34,6 +34,9 @@ struct axis2_msg
     struct axutil_param_container *param_container;
     /** base description struct */
     axis2_desc_t *base;
+    /** reference count of this object*/
+    int ref;
+
 };
 
 AXIS2_EXTERN axis2_msg_t *AXIS2_CALL
@@ -58,6 +61,7 @@ axis2_msg_create(const axutil_env_t *env)
     msg->element_qname = NULL;
     msg->direction = NULL;
     msg->base = NULL;
+    msg->ref = 1;
 
     msg->param_container = 
         (axutil_param_container_t *)axutil_param_container_create(env);
@@ -90,6 +94,11 @@ axis2_msg_free(axis2_msg_t *msg,
 {
     AXIS2_ENV_CHECK(env, void);
 
+    if (--(msg->ref) > 0)
+    {
+        return;
+    }
+    
     if (msg->flow)
     {
         int i = 0, size = 0;
@@ -370,3 +379,14 @@ axis2_msg_get_param_container(const axis2_msg_t *msg,
 {
     return msg->param_container;
 }
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_increment_ref(axis2_msg_t *msg,
+    const axutil_env_t *env)
+{   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    msg->ref++;
+    return AXIS2_SUCCESS;
+}
+
