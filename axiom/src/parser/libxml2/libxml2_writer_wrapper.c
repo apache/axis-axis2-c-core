@@ -721,8 +721,11 @@ axis2_libxml2_writer_wrapper_write_end_element(axiom_xml_writer_t *writer,
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
 
     writer_impl->in_start_element = AXIS2_FALSE;
-
-    status = xmlTextWriterFullEndElement(writer_impl->xml_writer);
+    /* write an empty element in case the element is empty, 
+       status = xmlTextWriterFullEndElement(writer_impl->xml_writer);
+       Above call write it like <a></a>.
+       Call below will write it like <a/> */
+    status = xmlTextWriterEndElement(writer_impl->xml_writer);
     if (status < 0)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_END_ELEMENT,
