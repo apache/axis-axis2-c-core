@@ -114,11 +114,12 @@ int main(int argc, char** argv)
     /* Set http-auth information */
     if (un && pw)
     {
+		axutil_property_t *prop_pw = NULL;
         axutil_property_t *prop_un = axutil_property_create(env);
         axutil_property_set_value(prop_un, env, axutil_strdup(env, un));
         axis2_options_set_property(options, env, "HTTP_AUTH_USERNAME", prop_un);
 
-        axutil_property_t *prop_pw = axutil_property_create(env);
+        prop_pw = axutil_property_create(env);
         axutil_property_set_value(prop_pw, env, axutil_strdup(env, pw));
         axis2_options_set_property(options, env, "HTTP_AUTH_PASSWD", prop_pw);
 
