@@ -117,7 +117,9 @@ extern "C"
 
 
 /* for file access handling */
-/*#include <unistd.h>*/
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif /*HAVE_UNISTD_H*/
 
 /* network handling*/
 #include <sys/socket.h>
