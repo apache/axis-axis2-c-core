@@ -207,6 +207,17 @@ extern "C"
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axutil_strstr(const axis2_char_t *heystack,
         const axis2_char_t *needle);
+    
+    /**
+     * Finds the first occurrence of a character in a string
+     * @param s String in which the character is searched
+     * @param ch Character to be searched
+     * @return Pointer to to the first occurence of the charecter if it could
+     *         be found in the string, NULL otherwise 
+     */
+    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
+    axutil_strchr(const axis2_char_t *s,
+            axis2_char_t ch);
 
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axutil_rindex(const axis2_char_t *s,

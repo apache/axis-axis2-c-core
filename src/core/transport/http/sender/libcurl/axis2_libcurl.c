@@ -28,7 +28,7 @@ typedef struct axis2_libcurl
 	axutil_array_list_t *alist;
 	unsigned int size;
 	const axutil_env_t *env;
-}axis2_libcurl_t;
+} axis2_libcurl_t;
 
 size_t 
 axis2_libcurl_write_memory_callback(

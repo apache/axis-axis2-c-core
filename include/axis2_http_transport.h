@@ -68,6 +68,11 @@ extern "C"
 #define AXIS2_HTTP_RESPONSE_WORD "RESPONSE_WORD"
 
 /**
+ * AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL
+ */
+#define AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL 401
+
+/**
  * RESPONSE_ACK_CODE_VAL
  */
 #define AXIS2_HTTP_RESPONSE_ACK_CODE_VAL 202
@@ -177,6 +182,11 @@ extern "C"
  * HEADER_AUTHORIZATION
  */
 #define AXIS2_HTTP_HEADER_AUTHORIZATION "Authorization"
+
+/**
+ * HEADER_WWW_AUTHENTICATE
+ */
+#define AXIS2_HTTP_HEADER_WWW_AUTHENTICATE "WWW-Authenticate"
 
 /**
  * HEADER_PROXY_AUTHORIZATION
@@ -454,15 +464,35 @@ extern "C"
 #define AXIS2_SSL_PASSPHRASE "SSL_PASSPHRASE"
 
 /**
+ * HTTP authentication username property name
+ */
+#define AXIS2_HTTP_AUTH_UNAME "HTTP_AUTH_USERNAME"
+
+/**
+ * HTTP authentication password property name
+ */
+#define AXIS2_HTTP_AUTH_PASSWD "HTTP_AUTH_PASSWD"
+
+/*#define AXIS2_HTTP_AUTH_TYPE "HTTP_AUTH_TYPE"*/
+
+/**
+ * HTTP "Basic" authentication
+ */
+#define AXIS2_HTTP_AUTH_TYPE_BASIC "Basic"
+
+/**
+ * HTTP "Digest" authentication
+ */
+#define AXIS2_HTTP_AUTH_TYPE_DIGEST "Digest"
+
+/**
  *HTTP Transport Level Error
  */
 #define AXIS2_HTTP_TRANSPORT_ERROR "http_transport_error"
 
-
 /**
  *415 Unsupported media Type
  */
-
 #define AXIS2_HTTP_UNSUPPORTED_MEDIA_TYPE "415 Unsupported Media Type\r\n"
 
 /**

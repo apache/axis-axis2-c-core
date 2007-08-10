@@ -82,6 +82,20 @@ axis2_http_sender_configure_key_file(
     axis2_http_sender_t *sender,
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
+
+static axis2_status_t
+axis2_http_sender_configure_http_auth(
+    axis2_http_sender_t *sender,
+    const axutil_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    axis2_http_simple_request_t *request);
+
+static axis2_status_t
+axis2_http_sender_configure_http_basic_auth(
+    axis2_http_sender_t *sender,
+    const axutil_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    axis2_http_simple_request_t *request);
 #endif
 
 AXIS2_EXTERN axis2_http_sender_t *AXIS2_CALL
@@ -576,7 +590,7 @@ axis2_http_sender_send(
                                                   buffer_size);
     }
 
-	axis2_http_sender_configure_server_cert(sender, 
+    axis2_http_sender_configure_server_cert(sender, 
                                             env, 
                                             msg_ctx);
 	
@@ -594,12 +608,34 @@ axis2_http_sender_send(
     {
         ssl_pp = axutil_param_get_value(ssl_pp_param, env);
     }
-
+    
+    /* how should this status_code be handled? */
     status_code = axis2_http_client_send(sender->client, 
                                          env, 
                                          request, 
                                          ssl_pp);
 
+    status_code = axis2_http_client_recieve_header(sender->client, env);
+ 
+    if (AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL == status_code)
+    {
+        axis2_status_t auth_status;
+        auth_status = axis2_http_sender_configure_http_auth(sender,
+                                                            env,
+                                                            msg_ctx,
+                                                            request);
+
+        if (auth_status != AXIS2_SUCCESS)
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in setting HTTP"
+                            " Authentication header");
+                    
+        status_code = axis2_http_client_send(sender->client, 
+                                             env, 
+                                             request, 
+                                             ssl_pp);
+            
+        status_code = axis2_http_client_recieve_header(sender->client, env);
+    }
     /*AXIS2_FREE(env->allocator, buffer);
 	  buffer = NULL;*/
 
@@ -609,7 +645,6 @@ axis2_http_sender_send(
     AXIS2_FREE(env->allocator, output_stream);
     output_stream = NULL;
 
-    status_code = axis2_http_client_recieve_header(sender->client, env);
 
     if (status_code < 0)
     {
@@ -1102,7 +1137,7 @@ axis2_http_sender_configure_key_file(
 	axutil_param_t *key_file_param = NULL;
     axis2_char_t *key_file = NULL;
 	axis2_status_t status = AXIS2_FAILURE;
-
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
@@ -1131,6 +1166,129 @@ axis2_http_sender_configure_key_file(
     }
 
 	return status;
+}
+#endif
+
+#ifndef AXIS2_LIBCURL_ENABLED
+static axis2_status_t
+axis2_http_sender_configure_http_basic_auth(
+    axis2_http_sender_t *sender,
+    const axutil_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    axis2_http_simple_request_t *request)
+{
+    axutil_property_t *http_auth_un = NULL;
+    axutil_property_t *http_auth_pw = NULL;
+    axis2_char_t *uname = NULL;
+    axis2_char_t *passwd = NULL;
+
+    http_auth_un = axis2_msg_ctx_get_property(msg_ctx, env,
+                                              AXIS2_HTTP_AUTH_UNAME);
+    http_auth_pw = axis2_msg_ctx_get_property(msg_ctx, env,
+                                              AXIS2_HTTP_AUTH_PASSWD);
+    if (http_auth_un && http_auth_pw) 
+    {
+        uname = (axis2_char_t *) axutil_property_get_value(http_auth_un, env);
+        passwd = (axis2_char_t *) axutil_property_get_value(http_auth_pw, env);
+        
+        if (uname && passwd)
+        {
+            int elen;
+            int plen = axutil_strlen(uname) + axutil_strlen(passwd) + 1;
+            axis2_char_t *to_encode = (axis2_char_t *) (AXIS2_MALLOC(
+                    env->allocator, sizeof(axis2_char_t) * plen));
+            axis2_char_t *encoded = NULL;
+            axis2_char_t *auth_str = NULL;
+            sprintf(to_encode, "%s:%s", uname, passwd);
+            elen = axutil_base64_encode_len(plen);
+            encoded = (axis2_char_t *) (AXIS2_MALLOC(env->allocator,
+                                            sizeof(axis2_char_t) * elen));
+            auth_str = (axis2_char_t *) (AXIS2_MALLOC(env->allocator,
+                                            sizeof(axis2_char_t) * (elen + 6)));
+            axutil_base64_encode(encoded, to_encode, plen);
+            sprintf(auth_str, "%s %s", AXIS2_HTTP_AUTH_TYPE_BASIC, encoded);
+            axis2_http_sender_util_add_header(env, request, 
+                    AXIS2_HTTP_HEADER_AUTHORIZATION, auth_str);
+
+            AXIS2_FREE(env->allocator, to_encode);
+            to_encode = NULL;
+            AXIS2_FREE(env->allocator, encoded);
+            encoded = NULL;
+            AXIS2_FREE(env->allocator, auth_str);
+            auth_str = NULL;
+
+            return AXIS2_SUCCESS;
+        }
+    }
+    
+    return AXIS2_FAILURE;
+    
+}
+#endif
+
+#ifndef AXIS2_LIBCURL_ENABLED
+static axis2_status_t
+axis2_http_sender_configure_http_digest_auth(
+    axis2_http_sender_t *sender,
+    const axutil_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    axis2_http_simple_request_t *request)
+{
+    /*TODO: Implement Digest Auth*/
+    return AXIS2_FAILURE; 
+}
+#endif
+
+#ifndef AXIS2_LIBCURL_ENABLED
+static axis2_status_t
+axis2_http_sender_configure_http_auth(
+    axis2_http_sender_t *sender,
+    const axutil_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    axis2_http_simple_request_t *request)
+{
+    axis2_status_t status = AXIS2_FALSE;
+    axis2_char_t *auth_type = NULL;
+    axis2_http_header_t* auth_header = NULL;
+    axis2_http_simple_response_t *response = NULL;
+    axis2_char_t *auth_type_end = NULL;
+
+    response = axis2_http_client_get_response(sender->client, env);
+   
+    if (response)
+        auth_header = axis2_http_simple_response_get_first_header(response, env,
+                AXIS2_HTTP_HEADER_WWW_AUTHENTICATE);
+
+    if (auth_header)
+        auth_type = axis2_http_header_get_value(auth_header, env);
+    
+    if (auth_type)
+    {
+        auth_type_end = axutil_strchr(auth_type, ' ');
+        *auth_type_end = '\0';
+        auth_type_end++;
+        /*Read the realm and the rest stuff now from auth_type_end*/
+    }
+
+    if (auth_type)
+    {
+        if (axutil_strcmp(auth_type, AXIS2_HTTP_AUTH_TYPE_BASIC) == 0)
+            status = axis2_http_sender_configure_http_basic_auth(sender, env,
+                                                                msg_ctx, request);
+        else if (axutil_strcmp(auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) == 0)
+            status = axis2_http_sender_configure_http_digest_auth(sender, env,
+                                                                msg_ctx, request);
+        else
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Authtype %s is not"
+                            "supported", auth_type);
+    }
+    else
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR, 
+                        AXIS2_FAILURE);
+    }
+
+    return status;
 }
 #endif
 

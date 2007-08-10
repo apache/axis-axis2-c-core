@@ -76,6 +76,8 @@ axutil_stream_create_apache2(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+    
+    memset(&(stream_impl->stream), 0, sizeof(axutil_stream_t));
 
     stream_impl->request = request;
     stream_impl->stream_type = AXIS2_STREAM_MANAGED;

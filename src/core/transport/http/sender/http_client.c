@@ -46,6 +46,8 @@ struct axis2_http_client
     axis2_bool_t dump_input_msg;
 	axis2_char_t *server_cert;
     axis2_char_t *key_file;
+    axis2_char_t *req_body;
+    int req_body_size;  
 };
 
 AXIS2_EXTERN axis2_http_client_t *AXIS2_CALL
@@ -59,7 +61,7 @@ axis2_http_client_create(
     http_client = (axis2_http_client_t *)AXIS2_MALLOC
             (env->allocator, sizeof(axis2_http_client_t));
 
-    if (! http_client)
+    if (!http_client)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -78,6 +80,8 @@ axis2_http_client_create(
     http_client->dump_input_msg = AXIS2_FALSE;
     http_client->server_cert = NULL;
     http_client->key_file = NULL;
+    http_client->req_body = NULL;
+    http_client->req_body_size = 0;
 
     return http_client;
 }
@@ -102,6 +106,11 @@ axis2_http_client_free(
     {
         axutil_network_handler_close_socket(env, http_client->sockfd);
         http_client->sockfd = -1;
+    }
+    
+    if (http_client->req_body)
+    {
+        AXIS2_FREE(env->allocator, http_client->req_body);
     }
 
     AXIS2_FREE(env->allocator, http_client);
@@ -133,9 +142,9 @@ axis2_http_client_send(
     char *wire_format = NULL;
     axutil_array_list_t *headers = NULL;
     char *str_header = NULL;
-    char *str_body = NULL;
+    /*char *str_body = NULL;*/
     char *str_request_line = NULL;
-    int body_size = 0;
+    /*int body_size = 0;*/
     int written = 0;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_bool_t chunking_enabled = AXIS2_FALSE;
@@ -143,22 +152,27 @@ axis2_http_client_send(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    body_size = axis2_http_simple_request_get_body_bytes(request, env,
-            &str_body);
+    /*body_size = axis2_http_simple_request_get_body_bytes(request, env,
+            &str_body);*/
+    if (!client->req_body)
+    {
+        client->req_body_size = axis2_http_simple_request_get_body_bytes(
+                request, env, &client->req_body);
+    }
 
     if(client->dump_input_msg == AXIS2_TRUE)
     {
         return AXIS2_SUCCESS;
     }
 
-    if (! client->url)
+    if (!client->url)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_URL, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     if (AXIS2_TRUE == client->proxy_enabled)
     {
-        if (! client->proxy_host || client->proxy_port <= 0)
+        if (!client->proxy_host || client->proxy_port <= 0)
         {
             return AXIS2_FAILURE;
         }
@@ -174,10 +188,10 @@ axis2_http_client_send(
     if (client->sockfd < 0)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
-        if (str_body)
+        /*if (str_body)
         {
             AXIS2_FREE(env->allocator, str_body);
-        }
+        }*/
         return AXIS2_FAILURE;
     }
     /* ONLY FOR TESTING
@@ -221,7 +235,7 @@ axis2_http_client_send(
                 client->sockfd);
     }
 
-    if (! client->data_stream)
+    if (!client->data_stream)
     {
         axutil_network_handler_close_socket(env, client->sockfd);
         return AXIS2_FAILURE;
@@ -238,7 +252,7 @@ axis2_http_client_send(
             axis2_char_t *header_ext_form = NULL;
             axis2_http_header_t *tmp_header = (axis2_http_header_t *)
                     axutil_array_list_get(headers, env, i);
-            if (! tmp_header)
+            if (!tmp_header)
             {
                 continue;
             }
@@ -282,7 +296,7 @@ axis2_http_client_send(
         /* length = len(server) + len(:port) + len("http://") + len(path) + 1*/
         host_port_str = AXIS2_MALLOC(env->allocator, axutil_strlen(server) +
                 + axutil_strlen(path) +  20 * sizeof(axis2_char_t));
-        if (! host_port_str)
+        if (!host_port_str)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -310,15 +324,18 @@ axis2_http_client_send(
     wire_format = NULL;
     written = axutil_stream_write(client->data_stream, env, AXIS2_HTTP_CRLF,
             2);
-    if (body_size > 0 &&  str_body)
+    /*if (body_size > 0 &&  str_body)*/
+    if (client->req_body_size > 0 &&  client->req_body)
     {
         if (AXIS2_FALSE == chunking_enabled)
         {
             status = AXIS2_SUCCESS;
-            while (written < body_size)
+            while (written < client->req_body_size)
             {
+                /*written = axutil_stream_write(client->data_stream, env,
+                        str_body, body_size);*/
                 written = axutil_stream_write(client->data_stream, env,
-                        str_body, body_size);
+                        client->req_body, client->req_body_size);
                 if (-1 == written)
                 {
                     status = AXIS2_FAILURE;
@@ -332,16 +349,18 @@ axis2_http_client_send(
             chunked_stream = axis2_http_chunked_stream_create(env,
                     client->data_stream);
             status = AXIS2_SUCCESS;
-            if (! chunked_stream)
+            if (!chunked_stream)
             {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creatoin of chunked"
                         "stream failed");
                 return AXIS2_FAILURE;
             }
-            while (written < body_size)
+            while (written < client->req_body_size)
             {
+                /*written = axis2_http_chunked_stream_write(chunked_stream, env,
+                        str_body, body_size);*/
                 written = axis2_http_chunked_stream_write(chunked_stream, env,
-                        str_body, body_size);
+                        client->req_body, client->req_body_size);
                 if (-1 == written)
                 {
                     status = AXIS2_FAILURE;
@@ -357,11 +376,11 @@ axis2_http_client_send(
     }
 
     client->request_sent = AXIS2_TRUE;
-    if (str_body)
+    /*if (str_body)
     {
         AXIS2_FREE(env->allocator, str_body);
         str_body = NULL;
-    }
+    }*/
     return status;
 }
 
@@ -383,7 +402,7 @@ axis2_http_client_recieve_header(
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
-    if (-1 == client->sockfd || ! client->data_stream ||
+    if (-1 == client->sockfd || !client->data_stream ||
             AXIS2_FALSE == client->request_sent)
     {
 		AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[axis2c] client data stream  null or socket error");
@@ -424,7 +443,7 @@ axis2_http_client_recieve_header(
 			return 0;
 		}
         status_line = axis2_http_status_line_create(env, str_status_line);
-        if (! status_line)
+        if (!status_line)
         {
             AXIS2_ERROR_SET(env->error,
                     AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
@@ -586,7 +605,7 @@ axis2_http_client_set_proxy(
         client->proxy_host_port = NULL;
     }
     client->proxy_host = axutil_strdup(env, proxy_host);
-    if (! client->proxy_host)
+    if (!client->proxy_host)
     {
         return AXIS2_FAILURE;
     }
@@ -631,7 +650,7 @@ axis2_http_client_connect_ssl_host(
     }
 
     tmp_stream = axutil_stream_create_socket(env, client->sockfd);
-    if (! tmp_stream)
+    if (!tmp_stream)
     {
         return AXIS2_FAILURE;
     }
@@ -661,7 +680,7 @@ axis2_http_client_connect_ssl_host(
         return AXIS2_FAILURE;
     }
     status_line = axis2_http_status_line_create(env, str_status_line);
-    if (! status_line)
+    if (!status_line)
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,

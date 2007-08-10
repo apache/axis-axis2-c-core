@@ -408,8 +408,8 @@ axutil_stracat(const axutil_env_t *env,
 {
     axis2_char_t *ret = NULL;
     int alloc_len = -1;
-	int len1 = 0;
-	int len2 = 0;
+    int len1 = 0;
+    int len2 = 0;
 
     if (!s1 && !s2)
     {
@@ -424,8 +424,8 @@ axutil_stracat(const axutil_env_t *env,
         return (axis2_char_t*)axutil_strdup(env,s1);
     }
 
-	len1 = axutil_strlen(s1);
-	len2 = axutil_strlen(s2);
+    len1 = axutil_strlen(s1);
+    len2 = axutil_strlen(s2);
     alloc_len = len1 + len2 + 1;
     ret = (axis2_char_t*)AXIS2_MALLOC(env->allocator,
         alloc_len * sizeof(axis2_char_t));
@@ -485,28 +485,28 @@ AXIS2_EXTERN int AXIS2_CALL
 axutil_strcasecmp(const axis2_char_t *s1, 
     const axis2_char_t *s2)
 {
-	while (*s1 != '\0' && *s2 != '\0')
-	{
-		if(*s1 >= 'A' && *s1 <= 'Z' && *s2 >= 'a' && *s2 <= 'z')
-		{
-			if (*s2 - *s1 - (char)32 != 0){ return 1;} 
-		}
-		else if(*s1 >= 'a' && *s1 <= 'z' && *s2 >= 'A' && *s2 <= 'Z')
-		{
-			if (*s1 - *s2 - 32 != 0) {return 1;}	
-		}
-		else if (*s1 - *s2 != 0)
-		{
-			return 1;
-		}
-		s1++; s2++;
-	}
-	if (*s1 != *s2)
-	{
-		return 1;
-	}
+    while (*s1 != '\0' && *s2 != '\0')
+    {
+        if(*s1 >= 'A' && *s1 <= 'Z' && *s2 >= 'a' && *s2 <= 'z')
+        {
+            if (*s2 - *s1 - (char)32 != 0){ return 1;} 
+        }
+        else if(*s1 >= 'a' && *s1 <= 'z' && *s2 >= 'A' && *s2 <= 'Z')
+        {
+            if (*s1 - *s2 - 32 != 0) {return 1;}    
+        }
+        else if (*s1 - *s2 != 0)
+        {
+            return 1;
+        }
+        s1++; s2++;
+    }
+    if (*s1 != *s2)
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 
@@ -521,9 +521,9 @@ axutil_strncasecmp(const axis2_char_t *s1,
     while (--i >= 0 && toupper(*str1) == toupper(*str2++))
     {
         if (toupper(*str1++) == '\0')
-	{
+        {
             return(0);
-	}
+        }
     }
     return(i < 0 ? 0 : toupper(*str1) - toupper(*--str2));
 }
@@ -533,6 +533,14 @@ axutil_strstr(const axis2_char_t *heystack,
     const axis2_char_t *needle)
 {
     return strstr(heystack, needle);
+}
+
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL
+axutil_strchr(
+        const axis2_char_t *s,
+        axis2_char_t ch)
+{
+    return (axis2_char_t *)strchr(s, ch);
 }
 
 
@@ -548,9 +556,9 @@ axutil_rindex(const axis2_char_t *_s,
     for (i = ilen - 1;i >= 0;i--)
     {
         if (_s[i] == _ch)
-	{
+        {
             return (axis2_char_t *)(_s + i);
-	}
+        }
     }
     return NULL;
 }
@@ -750,9 +758,9 @@ axutil_strcasestr(const axis2_char_t *heystack,
             do
             {
                 if (!(current = *heystack++))
-		{
+                {
                     return NULL;
-		}
+                }
             } while (toupper(current) != toupper(start));
         } while (axutil_strncasecmp(heystack, needle, len));
         heystack--;
