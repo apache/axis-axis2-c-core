@@ -244,6 +244,20 @@ extern "C"
     axis2_msg_get_param_container(const axis2_msg_t *msg,
         const axutil_env_t *env);
 
+    
+    /**
+     * Increments the reference count to this oject 
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_increment_ref(axis2_msg_t *msg,
+        const axutil_env_t *env);
+    
+
+
 /** @} */
 #ifdef __cplusplus
 }
