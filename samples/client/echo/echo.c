@@ -69,7 +69,7 @@ int main(int argc, char** argv)
             address = argv[1];
         }
 
-        if(argv > 4)
+        if(argc > 4)
         {
             if (axutil_strcmp(argv[2], "-auth") == 0)
             {
