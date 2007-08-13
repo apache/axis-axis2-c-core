@@ -355,7 +355,7 @@ axiom_soap_builder_create_om_element
     }
     return ret_val;
 }
-/*TODO:Fixme*/
+
 static axis2_status_t
 axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
         const axutil_env_t *env,
@@ -396,6 +396,10 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
     if (axutil_strcmp(ele_localname, AXIS2_XOP_INCLUDE) == 0)
     {
         axiom_namespace_t *ns = NULL;
+        
+        while(!axiom_node_is_complete(om_element_node, env))
+            axiom_stax_builder_next_with_token(soap_builder->om_builder, env);
+
         ns = axiom_element_get_namespace(om_element, env, om_element_node);
         if (ns)
         {
@@ -427,21 +431,18 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
                                     {
                                         axiom_text_t *data_text = NULL;
                                         axiom_node_t *data_om_node = NULL;
-                                        data_text = axiom_text_create_with_data_handler(
-                                                        env, om_element_node,
-                                                        data_handler, &data_om_node);
-                                        /*axiom_text_set_optimize(data_text, env,
-                                                                AXIS2_FALSE);*/
-                                        axiom_text_set_content_id(data_text, env, id);
-                                        
 
                                         /*remove the <xop:Include> element*/
                                         axiom_node_detach(om_element_node, env);
-                                        axiom_node_detach(data_om_node, env);
-                                        axiom_node_free_tree(om_element_node, env);
-                                        axiom_node_add_child(parent, env,
-                                                data_om_node);
                                         
+                                        data_text = axiom_text_create_with_data_handler(
+                                                        env, parent,
+                                                        data_handler, &data_om_node);
+                                        
+                                        axiom_text_set_content_id(data_text, env, id);
+                                        axiom_stax_builder_set_lastnode(
+                                                soap_builder->om_builder, env, parent);
+                                        axiom_node_free_tree(om_element_node, env);
 
                                     }
                                 }
