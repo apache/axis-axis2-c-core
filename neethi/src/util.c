@@ -63,6 +63,9 @@ neethi_util_create_policy_from_file(
         return NULL;
     }   
 
+    axiom_stax_builder_free_self(builder, env);
+    builder = NULL;
+
     return neethi_util_create_policy_from_om(env, root_node);
      
 }
@@ -87,6 +90,7 @@ neethi_util_create_policy_from_om(
             {
                 return NULL;
             }
+            neethi_policy_set_root_node(neethi_policy, env, root_node);
             return neethi_policy;
         }
         else return NULL;

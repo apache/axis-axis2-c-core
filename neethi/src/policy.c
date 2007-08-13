@@ -26,6 +26,7 @@ struct neethi_policy_t
 /*  axutil_hash_t *attributes_map;*/
     axis2_char_t *name;
     axis2_char_t *id;
+    axiom_node_t *root_node;
 };
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL 
@@ -65,6 +66,7 @@ neethi_policy_create(const axutil_env_t *env)
     */
     neethi_policy->name = NULL;
     neethi_policy->id = NULL;
+    neethi_policy->root_node = NULL;
 
     return neethi_policy;
 }
@@ -104,6 +106,11 @@ neethi_policy_free(neethi_policy_t *neethi_policy,
         {
             AXIS2_FREE(env->allocator, neethi_policy->name);
             neethi_policy->name = NULL;
+        }    
+        if(neethi_policy->root_node)
+        {
+            axiom_node_free_tree(neethi_policy->root_node, env);
+            neethi_policy->root_node = NULL;
         }    
         AXIS2_FREE(env->allocator, neethi_policy);
         neethi_policy = NULL;
@@ -327,6 +334,15 @@ neethi_policy_set_components_null(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+neethi_policy_set_root_node(
+    neethi_policy_t *policy,
+    const axutil_env_t *env,
+    axiom_node_t *root_node)
+{
+    policy->root_node = root_node;
+    return AXIS2_SUCCESS;
+}
 
 
 

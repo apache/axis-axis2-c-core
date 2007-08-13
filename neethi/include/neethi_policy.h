@@ -107,6 +107,12 @@ extern "C"
             neethi_policy_t *policy,
             const axutil_env_t *env);
 
+        AXIS2_EXTERN axis2_status_t AXIS2_CALL
+        neethi_policy_set_root_node(
+            neethi_policy_t *policy,
+            const axutil_env_t *env,
+            axiom_node_t *root_node);
+
 
     /** @} */
 #ifdef __cplusplus
