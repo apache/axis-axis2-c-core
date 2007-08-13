@@ -122,10 +122,6 @@ int main(int argc, char** argv)
         prop_pw = axutil_property_create(env);
         axutil_property_set_value(prop_pw, env, axutil_strdup(env, pw));
         axis2_options_set_property(options, env, "HTTP_AUTH_PASSWD", prop_pw);
-
-/*        axutil_property_t *prop_type = axutil_property_create(env);
-        axutil_property_set_value(prop_type, env, axutil_strdup(env, "Basic"));
-        axis2_options_set_property(options, env, "HTTP_AUTH_TYPE", prop_type);*/
     }
 
     /* Set service client options */
