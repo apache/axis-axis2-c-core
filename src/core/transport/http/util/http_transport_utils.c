@@ -266,7 +266,7 @@ axis2_http_transport_utils_process_http_post_request(
                 and also gives out a content lenght of 0.
                 We need to fix the transport design to fix sutuations like this.
                 */
-            callback_ctx->content_length = 1000000;
+            callback_ctx->content_length = 100000000;
             callback_ctx->unread_len = callback_ctx->content_length;
         }
     }
