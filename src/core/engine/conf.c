@@ -1389,7 +1389,7 @@ axis2_conf_engage_module(
         }
         file_name = axutil_qname_get_localpart(module_ref, env);
         file = (axutil_file_t *) axis2_arch_reader_create_module_arch(
-                    arch_reader, env, file_name) ;
+            env, file_name) ;
         repos_path =  axis2_conf_get_repo(conf, env);
         temp_path1 = axutil_stracat(env, repos_path, AXIS2_PATH_SEP_STR);
         temp_path2 = axutil_stracat(env, temp_path1, AXIS2_MODULE_FOLDER);

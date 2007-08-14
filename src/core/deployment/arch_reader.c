@@ -65,7 +65,7 @@ axis2_arch_reader_free(axis2_arch_reader_t *arch_reader,
 }
 
 AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
-axis2_arch_reader_create_svc(axis2_arch_reader_t *arch_reader,
+axis2_arch_reader_create_svc(
     const axutil_env_t *env,
     struct axis2_arch_file_data *file)
 {
@@ -226,7 +226,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
+axis2_arch_reader_read_module_arch(
     const axutil_env_t *env,
     axis2_char_t *file_name,
     axis2_dep_engine_t *dep_engine,
@@ -272,7 +272,7 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
 }
 
 AXIS2_EXTERN axutil_file_t *AXIS2_CALL
-axis2_arch_reader_create_module_arch(axis2_arch_reader_t *arch_reader,
+axis2_arch_reader_create_module_arch(
     const axutil_env_t *env,
     axis2_char_t *module_name)
 {

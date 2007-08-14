@@ -64,12 +64,11 @@ extern "C"
      * To create a ServiceDescrption <code>AxisService</code>   using given wsdl.
      * If the service.wsdl is there in the arcive file AxisService will be creted 
      * using that, else default AxisService will be created
-     * @param arch_reader pointer to arch reader
      * @param env pointer to environment struct
      * @param file pointer to file
      */
     AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
-    axis2_arch_reader_create_svc(axis2_arch_reader_t *arch_reader,
+    axis2_arch_reader_create_svc(
         const axutil_env_t *env,
         struct axis2_arch_file_data *file);
 
@@ -105,24 +104,22 @@ extern "C"
         struct axis2_svc_grp *svc_grp);
 
     /** 
-     * @param arch_reader pointer to arch reader
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
+    axis2_arch_reader_read_module_arch(
         const axutil_env_t *env,
         axis2_char_t *file_path,
         struct axis2_dep_engine *dep_engine,
         axis2_module_desc_t *module);
 
     /** 
-     * @param arch_reader pointer to arch reader
      * @param env pointer to environment struct
      * @param module_name pointer to module name
      */
     AXIS2_EXTERN axutil_file_t *AXIS2_CALL
-    axis2_arch_reader_create_module_arch(axis2_arch_reader_t *arch_reader,
+    axis2_arch_reader_create_module_arch(
         const axutil_env_t *env,
         axis2_char_t *module_name);
 
