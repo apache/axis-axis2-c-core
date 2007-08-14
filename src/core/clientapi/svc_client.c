@@ -486,6 +486,7 @@ axis2_svc_client_remove_all_headers(axis2_svc_client_t *svc_client,
             axiom_node_free_tree(node, env);
             node = NULL;
         }
+        axutil_array_list_remove(svc_client->headers, env, i);
     }
     return AXIS2_SUCCESS;
 }
