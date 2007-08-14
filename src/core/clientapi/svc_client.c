@@ -471,7 +471,7 @@ axis2_svc_client_remove_all_headers(axis2_svc_client_t *svc_client,
 
     if (!svc_client->headers)
     {
-        return AXIS2_FAILURE;
+        return AXIS2_SUCCESS;
     }
 
     size = axutil_array_list_size(svc_client->headers, env);
