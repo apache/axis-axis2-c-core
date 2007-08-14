@@ -118,14 +118,14 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
     axiom_element_t *soap_header_ele = NULL;
     axis2_endpoint_ref_t *epr = NULL;
     axutil_property_t *property = NULL;
-	 const axis2_char_t *wsa_action = NULL;
+     const axis2_char_t *wsa_action = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_info_headers =  axis2_msg_ctx_get_msg_info_headers(msg_ctx, env);
     if (!msg_info_headers)
         return AXIS2_SUCCESS; /* no addressing in use */
-	 wsa_action = axis2_msg_info_headers_get_action (msg_info_headers, env);
+     wsa_action = axis2_msg_info_headers_get_action (msg_info_headers, env);
     if (!wsa_action || !axutil_strcmp (wsa_action, ""))
         return AXIS2_SUCCESS; /* If no action present, assume no addressing in use */
 
@@ -265,6 +265,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
             {
                 axiom_node_t *to_header_block_node = NULL;
                 axiom_soap_header_block_t *to_header_block = NULL;
+                axutil_array_list_t *ref_param_list = NULL;
 
                 to_header_block  =
                     axiom_soap_header_add_header_block(soap_header, env,
@@ -279,6 +280,55 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                     if (to_header_block_element)
                     {
                         axiom_element_set_text(to_header_block_element, env, address, to_header_block_node);
+                    }
+                }
+        
+        
+                ref_param_list = axis2_endpoint_ref_get_ref_param_list(epr, env);
+                if (ref_param_list && axutil_array_list_size(ref_param_list, env) > 0)
+                {
+                    axiom_soap_header_block_t *reference_header_block = NULL;
+                    axiom_node_t *reference_node = NULL;
+                    int i = 0;
+                    
+                    for (i = 0; i < axutil_array_list_size(ref_param_list, env); i++)
+                    {
+                        axiom_node_t *ref_node = NULL;
+                        
+                        ref_node = (axiom_node_t *)axutil_array_list_get(ref_param_list, env, i);
+                        if (ref_node)
+                        {
+                            axiom_element_t* ref_ele = NULL;
+                            
+                            ref_ele = axiom_node_get_data_element(ref_node,env);
+                            if (ref_ele)
+                            {                                        
+                                reference_header_block  =
+                                    axiom_soap_header_add_header_block(soap_header, env,
+                                    axiom_element_get_localname(ref_ele, env),
+                                    axiom_element_get_namespace(ref_ele,env,ref_node));
+                                
+                                reference_node = axiom_soap_header_block_get_base_node(reference_header_block, env);
+                                if (reference_node)
+                                {
+                                    axiom_element_t *reference_ele = NULL;
+                                    reference_ele = (axiom_element_t*)axiom_node_get_data_element(reference_node, env);
+                                    
+                                    if (reference_ele)
+                                    {
+                                        axiom_namespace_t *addr_ns_obj = NULL;
+                                        axiom_attribute_t *reference_attr = NULL;
+                                        
+                                        addr_ns_obj = axiom_namespace_create(env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+                                        reference_attr = 
+                                            axiom_attribute_create(env, "isReferenceParameter", "true", addr_ns_obj);
+                                        axiom_element_add_attribute(reference_ele, env, reference_attr, reference_node);
+                                        axiom_element_set_text( reference_ele, env, 
+                                            axiom_element_get_text( ref_ele, env, ref_node ), reference_node );
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
