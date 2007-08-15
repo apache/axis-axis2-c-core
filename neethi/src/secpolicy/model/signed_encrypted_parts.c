@@ -84,7 +84,6 @@ rp_signed_encrypted_parts_free(rp_signed_encrypted_parts_t *signed_encrypted_par
             }
             axutil_array_list_free(signed_encrypted_parts->headers, env);
             signed_encrypted_parts->headers = NULL;
-            signed_encrypted_parts->ref = 0;
 
         }
         AXIS2_FREE(env->allocator,signed_encrypted_parts);

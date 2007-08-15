@@ -55,6 +55,17 @@ rp_header_free(
     
     if(header)
     {
+        if(header->name)
+        {
+            AXIS2_FREE(env->allocator, header->name);
+            header->name = NULL;
+        }
+        if(header->namespace)
+        {
+            AXIS2_FREE(env->allocator, header->namespace);
+            header->namespace = NULL;
+        }
+
         AXIS2_FREE(env->allocator, header);
         header = NULL;
     }
@@ -83,7 +94,7 @@ rp_header_set_name(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);   
     
-    header->name = name;
+    header->name = axutil_strdup(env, name);
     return AXIS2_SUCCESS;
 }
 
@@ -107,7 +118,7 @@ rp_header_set_namespace(rp_header_t *header,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, namespace, AXIS2_FAILURE);   
 
-    header->namespace = namespace;
+    header->namespace = axutil_strdup(env, namespace);
 
     return AXIS2_SUCCESS;
 
