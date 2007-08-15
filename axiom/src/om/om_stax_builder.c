@@ -1004,6 +1004,8 @@ axiom_stax_builder_next_with_token(axiom_stax_builder_t *om_builder,
     }
 
     token = axiom_xml_reader_next(om_builder->parser, env);
+    
+    om_builder->current_event = token;
 
     if (token == -1)
     {

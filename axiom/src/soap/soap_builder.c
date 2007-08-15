@@ -382,6 +382,14 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
     /** get element level of this om element */
     element_level = axiom_stax_builder_get_element_level(
                 soap_builder->om_builder, env);
+    if (axiom_stax_builder_get_current_event(soap_builder->om_builder, env) == 
+        AXIOM_XML_READER_EMPTY_ELEMENT)
+    {
+        /* if it is an empty element, increase the element level to ensurer processing
+         * header block logic, as the following logic assumes 
+         * empty elements to be full elements. */
+        element_level++;
+    }
     /* get om element struct from node */
     om_element = (axiom_element_t *)
             axiom_node_get_data_element(om_element_node, env);
@@ -554,7 +562,9 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
             if (status == AXIS2_FAILURE)
                 return AXIS2_FAILURE;
         }
-        else
+        else if ( parent_localname && 
+                  axutil_strcasecmp(parent_localname, AXIOM_SOAP_HEADER_LOCAL_NAME) && 
+                  axutil_strcasecmp(parent_localname, AXIOM_SOAP_BODY_LOCAL_NAME))
         {
             AXIS2_ERROR_SET(env->error,
                     AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY, AXIS2_FAILURE);
