@@ -1082,7 +1082,6 @@ axis2_op_client_two_way_send(const axutil_env_t *env,
     
     if (status != AXIS2_SUCCESS)
         return NULL;
-
     op =  axis2_msg_ctx_get_op(msg_ctx, env);
     if (op)
     {
@@ -1138,8 +1137,10 @@ axis2_op_client_two_way_send(const axutil_env_t *env,
         if (engine)
         {
             status =  axis2_engine_receive(engine, env, response);
+            /*
             if (status != AXIS2_SUCCESS)
                 return NULL;
+            */
         }
     }
     else
