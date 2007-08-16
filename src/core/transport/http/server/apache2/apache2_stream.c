@@ -105,7 +105,7 @@ apache2_stream_read(
     
     while ( count - len > 0 )
     {
-        read = ap_get_client_block(stream_impl->request, buffer + len, count - len);
+        read = ap_get_client_block(stream_impl->request, (size_t)buffer + len, count - len);
         if (read > 0)
         {
             len += read;
