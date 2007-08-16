@@ -187,6 +187,8 @@ int build_soap(const axutil_env_t *env, const char *filename, const axis2_char_t
     soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
     if (soap_body)
     {
+        if (axiom_soap_body_has_fault(soap_body, env));
+            printf("axiom_soap_body_has_fault\n");
         om_node = axiom_soap_body_get_base_node(soap_body, env);
         if (om_node)
             printnode(om_node, env);
@@ -247,8 +249,6 @@ int build_soap(const axutil_env_t *env, const char *filename, const axis2_char_t
         AXIS2_FREE(env->allocator, buffer);
 
     axiom_soap_envelope_free(soap_envelope, env);
-
-    axiom_output_free(om_output, env);
 
     printf(" \n __________ END TEST SOAP BUILD ____________ \n");
 
