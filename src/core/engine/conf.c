@@ -415,9 +415,18 @@ axis2_conf_free(
 
     if (conf->out_fault_phases)
     {
-        /* No need of the following commented lines. Phases are freed in 
-         * phase_info 
-         */
+        /*This is added because in a recent change this is cloned.*/
+        
+        int i = 0;
+        for (i = 0; i < axutil_array_list_size(conf->out_fault_phases, env); i++)
+        {
+            axis2_phase_t *phase = NULL;
+            phase = (axis2_phase_t *)
+                    axutil_array_list_get(conf->out_fault_phases, env, i);
+            if (phase)
+                 axis2_phase_free(phase, env);
+        }
+
         axutil_array_list_free(conf->out_fault_phases, env);
     }
 
