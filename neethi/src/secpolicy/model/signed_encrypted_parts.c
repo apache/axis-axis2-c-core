@@ -52,6 +52,9 @@ rp_signed_encrypted_parts_create(const axutil_env_t *env)
         return NULL;
     }
 
+    signed_encrypted_parts->ref = 0;
+    signed_encrypted_parts->signedparts = AXIS2_FALSE;
+
     return signed_encrypted_parts;
 
 }
