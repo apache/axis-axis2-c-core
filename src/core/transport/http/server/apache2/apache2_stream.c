@@ -97,10 +97,26 @@ apache2_stream_read(
     size_t count)
 {
     apache2_stream_impl_t *stream_impl = NULL;
+    size_t read = 0;
+    size_t len = 0;
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    return ap_get_client_block(stream_impl->request, buffer, count);
+    
+    while ( count - len > 0 )
+    {
+        read = ap_get_client_block(stream_impl->request, buffer + len, count - len);
+        if (read > 0)
+        {
+            len += read;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    return len;
 }
 
 int AXIS2_CALL
