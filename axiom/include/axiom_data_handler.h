@@ -59,6 +59,10 @@ extern "C"
     axiom_data_handler_get_input_stream(axiom_data_handler_t *data_handler,
         const axutil_env_t *env);
 
+    AXIS2_EXTERN int AXIS2_CALL
+    axiom_data_handler_get_input_stream_len(axiom_data_handler_t *data_handler,
+        const axutil_env_t *env);
+
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_data_handler_read_from(axiom_data_handler_t *data_handler,
         const axutil_env_t *env,

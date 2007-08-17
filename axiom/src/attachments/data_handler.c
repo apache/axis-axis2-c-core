@@ -121,7 +121,14 @@ AXIS2_EXTERN axis2_byte_t * AXIS2_CALL
 axiom_data_handler_get_input_stream(axiom_data_handler_t *data_handler, 
     const axutil_env_t *env)
 {
-    return (axis2_byte_t *)"";
+    return (axis2_byte_t *)data_handler->buffer;
+}
+
+AXIS2_EXTERN int AXIS2_CALL
+axiom_data_handler_get_input_stream_len(axiom_data_handler_t *data_handler, 
+    const axutil_env_t *env)
+{
+    return data_handler->buffer_len;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
