@@ -21,7 +21,7 @@
 struct rp_header_t
 {
     axis2_char_t *name;
-    axis2_char_t *namespace;
+    axis2_char_t *nspace;
 };
 
 AXIS2_EXTERN rp_header_t *AXIS2_CALL 
@@ -40,7 +40,7 @@ rp_header_create(const axutil_env_t *env)
         return NULL;
     }
     header->name = NULL;
-    header->namespace = NULL;
+    header->nspace = NULL;
     
     return header;
 
@@ -60,10 +60,10 @@ rp_header_free(
             AXIS2_FREE(env->allocator, header->name);
             header->name = NULL;
         }
-        if(header->namespace)
+        if(header->nspace)
         {
-            AXIS2_FREE(env->allocator, header->namespace);
-            header->namespace = NULL;
+            AXIS2_FREE(env->allocator, header->nspace);
+            header->nspace = NULL;
         }
 
         AXIS2_FREE(env->allocator, header);
@@ -106,19 +106,19 @@ rp_header_get_namespace(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    return header->namespace;
+    return header->nspace;
     
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 rp_header_set_namespace(rp_header_t *header,
     const axutil_env_t *env,
-    axis2_char_t *namespace)
+    axis2_char_t *nspace)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, namespace, AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, nspace, AXIS2_FAILURE);   
 
-    header->namespace = axutil_strdup(env, namespace);
+    header->nspace = axutil_strdup(env, nspace);
 
     return AXIS2_SUCCESS;
 

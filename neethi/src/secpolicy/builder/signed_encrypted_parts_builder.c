@@ -171,7 +171,7 @@ rp_signed_encrypted_parts_builder_build_header(
 {
     rp_header_t *header = NULL;
     axis2_char_t *name = NULL;
-    axis2_char_t *namespace = NULL;    
+    axis2_char_t *nspace = NULL;    
 
     AXIS2_ENV_CHECK(env,NULL);
 
@@ -180,9 +180,9 @@ rp_signed_encrypted_parts_builder_build_header(
         return NULL;
 
     name = axiom_element_get_attribute_value_by_name(element, env, RP_NAME);
-    namespace = axiom_element_get_attribute_value_by_name(
+    nspace = axiom_element_get_attribute_value_by_name(
             element, env, RP_NAMESPACE);
-    if(!namespace)
+    if(!nspace)
     {
         rp_header_free(header, env);
         header = NULL;
@@ -193,7 +193,7 @@ rp_signed_encrypted_parts_builder_build_header(
         rp_header_set_name(header, env, name); 
     }
 
-    rp_header_set_namespace(header, env, namespace);    
+    rp_header_set_namespace(header, env, nspace);    
     
     return header;
 }

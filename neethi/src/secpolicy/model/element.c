@@ -21,7 +21,7 @@
 struct rp_element_t
 {
     axis2_char_t *name;
-    axis2_char_t *namespace;
+    axis2_char_t *nspace;
 };
 
 AXIS2_EXTERN rp_element_t *AXIS2_CALL 
@@ -40,7 +40,7 @@ rp_element_create(const axutil_env_t *env)
         return NULL;
     }
     element->name = NULL;
-    element->namespace = NULL;
+    element->nspace = NULL;
     
     return element;
 
@@ -95,7 +95,7 @@ rp_element_get_namespace(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    return element->namespace;
+    return element->nspace;
     
 }
 
@@ -103,12 +103,12 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_element_set_namespace(
     rp_element_t *element,
     const axutil_env_t *env,
-    axis2_char_t *namespace)
+    axis2_char_t *nspace)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, namespace, AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error, nspace, AXIS2_FAILURE);   
 
-    element->namespace = namespace;
+    element->nspace = nspace;
 
     return AXIS2_SUCCESS;
 

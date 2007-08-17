@@ -54,7 +54,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     rp_element_set_namespace(rp_element_t *element,
                             const axutil_env_t *env,
-                            axis2_char_t *namespace);
+                            axis2_char_t *nspace);
 
 #ifdef __cplusplus
 }
