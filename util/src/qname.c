@@ -206,6 +206,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axutil_qname_get_uri(const axutil_qname_t *qname,
     const axutil_env_t *env)
 {
+    AXIS2_PARAM_CHECK(env->error, qname, NULL);
     return qname->namespace_uri;
 }
 
@@ -213,6 +214,8 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axutil_qname_get_prefix(const axutil_qname_t *qname,
     const axutil_env_t *env)
 {
+
+    AXIS2_PARAM_CHECK(env->error, qname, NULL);
     return qname->prefix;
 }
 
@@ -221,6 +224,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axutil_qname_get_localpart(const axutil_qname_t *qname,
     const axutil_env_t *env)
 {
+    AXIS2_PARAM_CHECK(env->error, qname, NULL);
     return qname->localpart;
 }
 
