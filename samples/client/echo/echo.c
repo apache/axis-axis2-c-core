@@ -128,7 +128,7 @@ int main(int argc, char** argv)
     axis2_svc_client_set_options(svc_client, env, options);
 
     /* Engage addressing module */
-    axis2_svc_client_disengage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);
+    axis2_svc_client_engage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);
 
 
 
