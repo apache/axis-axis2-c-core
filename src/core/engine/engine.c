@@ -176,8 +176,7 @@ axis2_engine_send(
         }
     }
 
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Axis2 engine send successful");
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "axis2_engine_send end");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "axis2_engine_send end successfully");
     return AXIS2_SUCCESS;
 }
 
@@ -303,15 +302,102 @@ axis2_engine_send_fault(
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_op_ctx_t *op_ctx = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
+    axutil_array_list_t *phases = NULL;
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axis2_conf_t *conf = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
+    if (op_ctx)
+    {
+        axis2_op_t *op =  axis2_op_ctx_get_op(op_ctx, env);
+        if (op)
+        {
+            phases = axis2_op_get_fault_out_flow(op, env);
+        }
+    }
+
+    if (axis2_msg_ctx_is_paused(msg_ctx, env))
+    {
+        /* message has paused, so rerun it from the position it stopped.
+           The handler which paused the message will be the first one to resume 
+           invocation
+        */
+        status = axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
+        if (status != AXIS2_SUCCESS)
+        {
+            return status;
+        }
+
+        conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
+        if (conf_ctx)
+        {
+            conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
+            if (conf)
+            {
+                axutil_array_list_t *global_out_fault_phase =  axis2_conf_get_out_fault_flow(conf, env);
+                if (global_out_fault_phase)
+                {
+                    axis2_engine_invoke_phases(engine, env, global_out_fault_phase, msg_ctx);
+                }
+            }
+        }
+    }
+    else
+    {
+        status = axis2_engine_invoke_phases(engine, env, phases, msg_ctx);
+        if (status != AXIS2_SUCCESS)
+        {
+            return status;
+        }
+
+        conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
+        if (conf_ctx)
+        {
+            conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
+            if (conf)
+            {
+                axutil_array_list_t *global_out_fault_phase =  axis2_conf_get_out_fault_flow(conf, env);
+                if (global_out_fault_phase)
+                {
+                    axis2_engine_invoke_phases(engine, env, global_out_fault_phase, msg_ctx);
+                }
+            }
+        }
+    }
 
     if (!( axis2_msg_ctx_is_paused(msg_ctx, env)))
     {
-        /* send the SOAP Fault*/
+        /* write the message to wire */
+        axis2_transport_sender_t *transport_sender = NULL;
+        axis2_transport_out_desc_t *transport_out =  
+            axis2_msg_ctx_get_transport_out_desc(msg_ctx, env);
+
+        if (transport_out)
+        {
+            transport_sender = 
+                axis2_transport_out_desc_get_sender(transport_out, env);
+
+            if (transport_sender)
+            {
+                AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx);
+            }
+            else
+                return AXIS2_FAILURE;
+        }
+        else
+        {
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+                "Transport out is not set in message context");
+            return AXIS2_FAILURE;
+        }
+    }
+
+    /*if (!( axis2_msg_ctx_is_paused(msg_ctx, env)))
+    {
         axis2_conf_ctx_t *conf_ctx = NULL;
         axis2_transport_sender_t *transport_sender = NULL;
         axis2_transport_out_desc_t *transport_out  = NULL;
@@ -342,7 +428,7 @@ axis2_engine_send_fault(
         {
             AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx);
         }
-    }
+    }*/
     return AXIS2_SUCCESS;
 }
 
@@ -493,7 +579,10 @@ axis2_engine_create_fault_msg_ctx(
         wsa_action = axis2_msg_info_headers_get_action (msg_info_headers, env);
         if (wsa_action)
         {
-            wsa_action = "http://www.w3.org/2005/08/addressing/fault";
+             /*
+               We have to use the action set by user, 
+               cannot use the default always.
+             wsa_action = "http://www.w3.org/2005/08/addressing/fault"; */
              axis2_msg_ctx_set_wsa_action(fault_ctx, env, wsa_action);
         }
     }
