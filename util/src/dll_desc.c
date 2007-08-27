@@ -76,11 +76,13 @@ axutil_dll_desc_free(axutil_dll_desc_t *dll_desc,
     if (dll_desc->dll_name)
     {
         AXIS2_FREE(env->allocator, dll_desc->dll_name);
+        dll_desc->dll_name = NULL;
     }
 
     if (dll_desc->path_qualified_dll_name)
     {
         AXIS2_FREE(env->allocator, dll_desc->path_qualified_dll_name);
+        dll_desc->path_qualified_dll_name = NULL;
     }
 
     if (dll_desc)
@@ -113,6 +115,7 @@ axutil_dll_desc_set_name(axutil_dll_desc_t *dll_desc,
     if (dll_desc->path_qualified_dll_name)
     {
         AXIS2_FREE(env->allocator, dll_desc->path_qualified_dll_name);
+        dll_desc->path_qualified_dll_name = NULL;
     }
 
     dll_desc->path_qualified_dll_name = axutil_strdup(env, name);
