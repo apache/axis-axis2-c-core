@@ -1,27 +1,28 @@
 # THIS IS THE MAKE FILE FOR AXIS2/C
-# this file should reside in the win32 directory of the source directory
-# when executed 
-# nmake [all] build dlls , server , samples [ client, server ] 
-# nmake clean clean everything
-# nmake samples build samples
-# nmake install to install axis2 with server all modules and services
-# nmake dist    to create the distribution, builds all distributable components
+# This file should reside in the win32 directory of the source directory
+# when executed.
+# nmake [all]   - builds dlls, server and samples [ client, server ] 
+# nmake clean   - cleans everything
+# nmake samples - builds samples
+# nmake install - installs axis2 with server all modules and services
+# nmake dist    - creates the distribution, builds all distributable components
 
-#It is possible to run individual targets to build those targets only, 
-# eg nmake axis2_apache_module , will build apache module
+# It is possible to run individual targets to build those targets only.
+#  eg: nmake axis2_apache_module, will build apache module
 
 
-# install directory will be (default)deploy or a user specified  directory
-# then the directory structure is following
-#      AXIS2_BINDIR
+# The default install directory is ..\deploy with a directory structure as 
+# follows.
+#
+#   AXIS2_BINDIR
 #	|
-#	|- bin        - server and other executables
-#       |   |- samples - samples
+#	|- bin         - server and other executables
+#       |- samples - samples
 #       |- logs	
-#	|- lib	      - library modules
-#	|- services   - deployed services will be hear
-#	|- modules    - deployed modules will be hear
-#       |- include    - all include files of axis2 will go here
+#	|- lib	       - library modules
+#	|- services    - deployed services will be hear
+#	|- modules     - deployed modules will be hear
+#       |- include - all include files of axis2 will go here
 #       |- tests
 #            |- system_tests
 #            |- unit tests           
@@ -33,18 +34,18 @@ AUTOCONF = configure.in
 RELEASE_VER = 1.1.0
 
 AXIS2_RELEASE_DIR=axis2c-bin-$(RELEASE_VER)-win32
- 
-AXIS2_BINDIR   = ..\deploy
-AXIS2_SERVICES = $(AXIS2_BINDIR)\services
-AXIS2_MODULES  = $(AXIS2_BINDIR)\modules
-AXIS2_LIBS     = $(AXIS2_BINDIR)\lib
-AXIS2_BINS     = $(AXIS2_BINDIR)\bin
-AXIS2_INCLUDE  = $(AXIS2_BINDIR)\include
-AXIS2_SAMPLES  = $(AXIS2_BINS)\samples
-AXIS2_TOOLS    = $(AXIS2_BINS)\tools
-AXIS2_LOG      = $(AXIS2_BINDIR)\logs
-AXIS2_TESTS    = $(AXIS2_BINDIR)\tests
-AXIS2_TESTS_SYS = $(AXIS2_TESTS)\system_tests
+
+AXIS2_BINDIR     = ..\deploy
+AXIS2_SERVICES   = $(AXIS2_BINDIR)\services
+AXIS2_MODULES    = $(AXIS2_BINDIR)\modules
+AXIS2_LIBS       = $(AXIS2_BINDIR)\lib
+AXIS2_BINS       = $(AXIS2_BINDIR)\bin
+AXIS2_INCLUDE    = $(AXIS2_BINDIR)\include
+AXIS2_SAMPLES    = $(AXIS2_BINS)\samples
+AXIS2_TOOLS      = $(AXIS2_BINS)\tools
+AXIS2_LOG        = $(AXIS2_BINDIR)\logs
+AXIS2_TESTS      = $(AXIS2_BINDIR)\tests
+AXIS2_TESTS_SYS  = $(AXIS2_TESTS)\system_tests
 AXIS2_TESTS_UNIT = $(AXIS2_TESTS)\unit_tests
 AXIS2_SOURCE_DIR = ..\..
 
@@ -56,10 +57,10 @@ AXIS2_INTDIR_SAMPLES = $(AXIS2_INTDIR)\samples
 #binary distribution dll names
 #core modules
 
-AXUTIL   = axutil
+AXUTIL = axutil
 AXIS2_PARSER = axis2_parser
-AXIOM        = axiom
-NEETHI	= neethi				 
+AXIOM = axiom
+NEETHI = neethi				 
 AXIS2_TRANSPORT_SENDER = axis2_http_sender
 AXIS2_TRANSPORT_RECEIVER = axis2_http_receiver
 AXIS2_ENGINE = axis2_engine
@@ -78,7 +79,7 @@ PARSER = $(PARSER)_with_guththila
 
 # include path
 APACHE_INCLUE_PATH = /I$(APACHE_BIN_DIR)\include
-AXIS2_INCLUDE_PATH = 	/I$(AXIS2_SOURCE_DIR)\util\include \
+AXIS2_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\util\src\  \
 		/I$(AXIS2_SOURCE_DIR)\util\src\minizip\  \
 		/I$(AXIS2_SOURCE_DIR)\axiom\include  \
