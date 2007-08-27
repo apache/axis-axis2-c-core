@@ -622,11 +622,11 @@ axis2_addr_out_handler_add_to_soap_header(const axutil_env_t *env,
             axiom_element_set_text(address_ele, env, address, address_node);
             dec_ns = axiom_element_find_declared_namespace(address_ele, env,
                     addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
-            if (! dec_ns)
+            /*if (! dec_ns)
             {
                 axiom_namespace_free(addr_ns_obj, env);
                 addr_ns_obj = NULL;
-            }
+            }*/
         }
     }
 
