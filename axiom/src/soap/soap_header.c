@@ -221,29 +221,8 @@ axiom_soap_header_add_header_block(axiom_soap_header_t* soap_header,
 
     if (header_block_node)
     {
-        axiom_element_t *hb_ele =  NULL;
-        axis2_char_t *uri = NULL;
-        axis2_char_t *prefix = NULL;
-
         axiom_node_set_complete(header_block_node, env, AXIS2_TRUE);
 
-        hb_ele = (axiom_element_t *)
-                axiom_node_get_data_element(header_block_node, env);
-        /*if (hb_ele)
-        {
-            axiom_namespace_t *dec_ns = NULL;
-            uri = axiom_namespace_get_uri(cloned_ns, env);
-            prefix = axiom_namespace_get_prefix(cloned_ns, env);
-
-            dec_ns = axiom_element_find_declared_namespace(hb_ele, env, uri, prefix);
-            if (!dec_ns)
-            {
-                // this namespace it not in hb_ele list so free it 
-                axiom_namespace_free(cloned_ns, env);
-                cloned_ns = NULL;
-            }
-
-        }*/
         return header_block;
     }
     else
