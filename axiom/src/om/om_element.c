@@ -115,8 +115,24 @@ axiom_element_create(const axutil_env_t *env,
         uri = axiom_namespace_get_uri(ns, env);
         prefix = axiom_namespace_get_prefix(ns, env);
 
+        if (prefix && axutil_strcmp(prefix, "") == 0)
+        {
+            element->ns = NULL;
+            return element;
+        }
+        
         element->ns = axiom_element_find_namespace(element,
             env, *node, uri, prefix);
+
+        if(element->ns)
+        {
+            if (ns != element->ns)
+            {
+                axiom_namespace_free(ns, env);
+                ns = NULL;
+            }
+        }
+
         if (!(element->ns))
         {
             if (axiom_element_declare_namespace(element,
@@ -125,10 +141,12 @@ axiom_element_create(const axutil_env_t *env,
                 element->ns = ns;
             }
         }
-        if (prefix && axutil_strcmp(prefix, "") == 0)
+
+        /*if (prefix && axutil_strcmp(prefix, "") == 0)
         {
             element->ns = NULL;
         }
+        */
     }
 
     return element;

@@ -52,7 +52,7 @@ axiom_namespace_create(const axutil_env_t *env,
         return NULL;
     }
 
-    om_namespace->ref = 0;
+    om_namespace->ref = 1;
     om_namespace->prefix = NULL;
     om_namespace->uri = NULL;
     om_namespace->key = NULL;
