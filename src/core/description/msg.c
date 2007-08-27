@@ -107,7 +107,6 @@ axis2_msg_free(axis2_msg_t *msg,
         {
             axis2_phase_t *phase = NULL;
             phase = axutil_array_list_get(msg->flow, env, i);
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "dam_phase_name:%s", axis2_phase_get_name(phase, env));
             if(phase)
                 axis2_phase_free(phase, env);
         }
