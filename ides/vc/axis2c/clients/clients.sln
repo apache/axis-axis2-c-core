@@ -25,6 +25,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "echo_non_blocking_dual", "e
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "echo_rest", "echo_rest\echo_rest.vcproj", "{84518230-9F6F-4B1E-B4B4-9F78D27355AC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myclient", "myclient\myclient.vcproj", "{C77E023E-C6E9-4020-B2E8-C54DD534FDB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -79,6 +81,10 @@ Global
 		{84518230-9F6F-4B1E-B4B4-9F78D27355AC}.Debug|Win32.Build.0 = Debug|Win32
 		{84518230-9F6F-4B1E-B4B4-9F78D27355AC}.Release|Win32.ActiveCfg = Release|Win32
 		{84518230-9F6F-4B1E-B4B4-9F78D27355AC}.Release|Win32.Build.0 = Release|Win32
+		{C77E023E-C6E9-4020-B2E8-C54DD534FDB5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C77E023E-C6E9-4020-B2E8-C54DD534FDB5}.Debug|Win32.Build.0 = Debug|Win32
+		{C77E023E-C6E9-4020-B2E8-C54DD534FDB5}.Release|Win32.ActiveCfg = Release|Win32
+		{C77E023E-C6E9-4020-B2E8-C54DD534FDB5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

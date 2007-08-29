@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\..\..\..\..\woden\include;.\..\..\..\..\include;.\..\..\..\..\src\core\deployment;.\..\..\..\..\util\include;.\..\..\..\..\xml_schema\include;.\..\..\..\..\axiom\include"
+				AdditionalIncludeDirectories=".\..\..\..\..\include;.\..\..\..\..\src\core\deployment;.\..\..\..\..\util\include;.\..\..\..\..\axiom\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_ENGINE_EXPORTS;AXIS2_DECLARE_EXPORT;_CRT_SECURE_NO_DEPRECATE;AXIS2_SVR_MULTI_THREADED;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -99,7 +99,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)\lib"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="1"
@@ -110,6 +110,8 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+				CommandLine="copy .\..\..\..\..\include\*.h .\..\$(ConfigurationName)\include\"
+				Outputs="copy  include files"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -122,13 +124,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".\..\..\..\..\woden\include;.\..\..\..\..\include;.\..\..\..\..\modules\core\deployment;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;AXIS2_ENGINE_EXPORTS"
+				Optimization="3"
+				AdditionalIncludeDirectories=".\..\..\..\..\include;.\..\..\..\..\src\core\deployment;.\..\..\..\..\util\include;.\..\..\..\..\axiom\include"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;AXIS2_DECLARE_EXPORT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
+				DebugInformationFormat="0"
+				CompileAs="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -141,9 +145,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="axiom.lib axis2_util.lib axis2_parser.lib xml_schema.lib woden.lib axis2_wsdl.lib"
+				AdditionalDependencies="axiom.lib axutil.lib axis2_parser.lib neethi.lib"
 				LinkIncremental="1"
-				GenerateDebugInformation="true"
+				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -172,6 +176,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy .\..\..\..\..\samples\server\axis2.xml  .\..\$(ConfigurationName)\"
 			/>
 		</Configuration>
 	</Configurations>
@@ -895,174 +900,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\src\core\deployment\axis2_ws_info_list.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl11_mep_finder.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl4c_binding.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl4c_constraint.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl4c_element.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl4c_message.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl4c_operation.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl4c_parser.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl4c_part.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl4c_port_type.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl4c_qname.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl4c_schema_parser.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl4c_service.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl4c_soap.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_binding.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_binding_fault.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_binding_msg_ref.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_binding_op.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_component.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_desc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_endpoint.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_ext.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_ext_soap_address.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_ext_soap_binding.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_ext_soap_body.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_ext_soap_header.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_ext_soap_op.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_extensible_attribute.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_extensible_component.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_extensible_element.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_fault_ref.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_feature.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_import.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_include.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_interface.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_msg_ref.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_op.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_property.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_pump.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_soap_op.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_svc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_wsdl_types.h"
 				>
 			</File>
 		</Filter>

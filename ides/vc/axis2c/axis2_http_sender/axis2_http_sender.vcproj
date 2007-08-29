@@ -40,8 +40,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\..\..\..\..\src\core\transport\http\sender;.\..\..\..\..\woden\include;.\..\..\..\..\include;.\..\..\..\..\src\core\deployment;.\..\..\..\..\util\include;.\..\..\..\..\xml_schema\include;.\..\..\..\..\axiom\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_HTTP_SENDER_EXPORTS;_CRT_SECURE_NO_DEPRECATE;AXIS2_DECLARE_EXPORT"
+				AdditionalIncludeDirectories=".\..\..\..\..\src\core\transport\http\sender;.\..\..\..\..\include;.\..\..\..\..\src\core\deployment;.\..\..\..\..\util\include;.\..\..\..\..\axiom\include"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;AXIS2_DECLARE_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -96,7 +96,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)\lib"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="1"
@@ -119,12 +119,14 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;AXIS2_HTTP_SENDER_EXPORTS"
+				Optimization="3"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;AXIS2_DECLARE_EXPORT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
+				CompileAs="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -137,8 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="axutil.lib axis2_parser.lib axis2_engine.lib  ssleay32MT.lib  libeay32MT.lib  libcurl_imp.lib axiom.lib"
 				LinkIncremental="1"
-				GenerateDebugInformation="true"
+				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
