@@ -144,6 +144,25 @@ typedef int (AXIS2_CALL *AXIS2_CLOSE_INPUT_CALLBACK)(void *ctx);
     AXIS2_EXTERN axis2_char_t** AXIS2_CALL
     axutil_parse_request_url_for_svc_and_op(const axutil_env_t *env, const axis2_char_t *request);
     
+    /**
+     * Quotes an XML string.
+     * Replace '<', '>', and '&' with '&lt;', '&gt;', and '&amp;'.
+     * If quotes is true, then replace '"' with '&quot;'.
+     * @param env pointer to environment struct
+     * @param s string to be quoted
+     * @param quotes if AXIS2_TRUE then replace '"' with '&quot;'.
+     * quotes is typically set to true for XML strings that will occur within
+     * double quotes -- attribute values.
+     * @return Encoded string if there are characters to be encoded, else NULL. 
+     * The caller is responsible to free the memory allocated by the function
+     * for the return value
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_xml_quote_string(
+        const axutil_env_t *env,
+        const axis2_char_t *s,
+        axis2_bool_t quotes);
+  
 /** @} */
     
 #ifdef __cplusplus

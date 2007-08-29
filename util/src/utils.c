@@ -41,9 +41,9 @@ axutil_parse_request_url_for_svc_and_op(const axutil_env_t *env,
     {
         tmp = strstr(tmp, AXIS2_REQUEST_URL_PREFIX);
         if (!tmp)
-	{
+    {
             break;
-	}
+    }
         else
         {
             service_str = tmp;
@@ -93,6 +93,74 @@ axutil_parse_request_url_for_svc_and_op(const axutil_env_t *env,
     return ret;
 }
 
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axutil_xml_quote_string(
+    const axutil_env_t *env,
+    const axis2_char_t *s,
+    axis2_bool_t quotes)
+{
+    const char *scan;
+    size_t len = 0;
+    size_t extra = 0;
+    char *qstr;
+    char *qscan;
+    char c;
 
+    for (scan = s; (c = *scan) != '\0'; ++scan, ++len) 
+    {
+        if (c == '<' || c == '>')
+            extra += 3;        /* &lt; or &gt; */
+        else if (c == '&')
+            extra += 4;        /* &amp; */
+        else if (quotes && c == '"')
+            extra += 5;        /* &quot; */
+    }
 
+    /* nothing to do */
+    if (extra == 0)
+        return NULL;
+
+    qstr = AXIS2_MALLOC(env->allocator, len + extra + 1);
+    for (scan = s, qscan = qstr; (c = *scan) != '\0'; ++scan) 
+    {
+        if (c == '<') 
+        {
+            *qscan++ = '&';
+            *qscan++ = 'l';
+            *qscan++ = 't';
+            *qscan++ = ';';
+        }
+        else if (c == '>') 
+        {
+            *qscan++ = '&';
+            *qscan++ = 'g';
+            *qscan++ = 't';
+            *qscan++ = ';';
+        }
+        else if (c == '&') 
+        {
+            *qscan++ = '&';
+            *qscan++ = 'a';
+            *qscan++ = 'm';
+            *qscan++ = 'p';
+            *qscan++ = ';';
+        }
+        else if (quotes && c == '"') 
+        {
+            *qscan++ = '&';
+            *qscan++ = 'q';
+            *qscan++ = 'u';
+            *qscan++ = 'o';
+            *qscan++ = 't';
+            *qscan++ = ';';
+        }
+        else 
+        {
+            *qscan++ = c;
+        }
+    }
+
+    *qscan = '\0';
+    return qstr;
+}
 
