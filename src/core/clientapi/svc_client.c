@@ -589,7 +589,7 @@ axis2_svc_client_fire_and_forget(axis2_svc_client_t *svc_client,
     const axutil_env_t *env,
     const axiom_node_t *payload)
 {
-    return axis2_svc_client_fire_and_forget_with_op_qname(svc_client, env, NULL,
+    axis2_svc_client_fire_and_forget_with_op_qname(svc_client, env, NULL,
         payload);
 }
 
@@ -874,7 +874,7 @@ axis2_svc_client_send_receive_non_blocking(axis2_svc_client_t *svc_client,
     const axiom_node_t *payload,
     axis2_callback_t *callback)
 {
-    return axis2_svc_client_send_receive_non_blocking_with_op_qname(svc_client,env, NULL,
+    axis2_svc_client_send_receive_non_blocking_with_op_qname(svc_client,env, NULL,
         payload, callback);
 }
 
