@@ -296,7 +296,7 @@ axiom_text_get_optimize(axiom_text_t *om_text,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_set_optimize(axiom_text_t *om_text,
     const axutil_env_t *env,
-    const axis2_bool_t optimize)
+    axis2_bool_t optimize)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error , om_text, AXIS2_FAILURE);
