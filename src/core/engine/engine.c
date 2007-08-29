@@ -35,6 +35,11 @@ struct axis2_engine
     axis2_conf_ctx_t *conf_ctx;
 };
 
+axis2_status_t
+axis2_engine_check_must_understand_headers(
+    const axutil_env_t *env,
+    axis2_msg_ctx_t *msg_ctx);
+
 AXIS2_EXTERN axis2_engine_t *AXIS2_CALL
 axis2_engine_create(
     const axutil_env_t *env,
