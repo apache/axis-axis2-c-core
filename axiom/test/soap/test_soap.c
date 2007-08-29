@@ -347,7 +347,7 @@ int create_soap_fault(const axutil_env_t *env)
 
     soap_envelope =
         axiom_soap_envelope_create_default_soap_fault_envelope(env,
-                "Fault Code", "Fault Reason", AXIOM_SOAP12,
+                "Fault Code", "Fault Reason", AXIOM_SOAP11,
                 NULL, NULL);
     soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
     soap_fault = axiom_soap_body_get_fault(soap_body, env);
@@ -360,9 +360,8 @@ int create_soap_fault(const axutil_env_t *env)
     axiom_soap_envelope_serialize(soap_envelope, env, om_output, AXIS2_FALSE);
     buffer = (axis2_char_t*)axiom_xml_writer_get_xml(xml_writer, env);
     printf("%s \n",  buffer);
-    AXIS2_FREE(env->allocator, buffer);
     axiom_soap_envelope_free(soap_envelope, env);
-    axiom_output_free(om_output, env);
+    axiom_output_free(om_output, env); 
     return 0;
 }
 
@@ -401,7 +400,7 @@ int main(int argc, char *argv[])
     axutil_error_t *error = NULL;
     axutil_log_t *log = NULL;
     const axis2_char_t *uri = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
-    const char *filename = "./../../resources/xml/soap/test.xml";
+    const char *filename = "../resources/xml/soap/test.xml";
     if (argc > 1)
         filename = argv[1];
     if (argc > 2)
@@ -420,8 +419,8 @@ int main(int argc, char *argv[])
     axutil_error_init();
     /*build_soap_programatically(env);   */
     build_soap(env, filename, uri);
-    /*create_soap_fault(env);
-    test_soap_fault_value(env); */
+    create_soap_fault(env);
+    test_soap_fault_value(env);
     axutil_env_free(env);
     return 0;
 }
