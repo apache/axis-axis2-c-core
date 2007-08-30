@@ -210,7 +210,10 @@ axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part,
     {
         memcpy(byte_stream + header_str_size, 
 	    data_handler_stream, data_handler_stream_size);
+
+		AXIS2_FREE(env->allocator, data_handler_stream);
     }
+
 
     *output_stream = byte_stream;
     *output_stream_size = size;
