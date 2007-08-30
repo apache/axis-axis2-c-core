@@ -62,6 +62,8 @@ struct axiom_output
 
     axis2_char_t *mime_boundry;
 
+	axis2_char_t *content_type;
+
 };
 
 AXIS2_EXTERN axiom_output_t *AXIS2_CALL
@@ -95,6 +97,7 @@ axiom_output_create(const axutil_env_t *env,
     om_output->binary_node_list = NULL;
     om_output->mime_output = NULL;
     om_output->mime_boundry = NULL;
+	om_output->content_type = NULL;
 
     return om_output;
 }
@@ -136,6 +139,10 @@ axiom_output_free(axiom_output_t *om_output,
     {
         axiom_mime_output_free(om_output->mime_output, env);
     }
+	if(om_output->content_type)
+	{
+		AXIS2_FREE(env->allocator, om_output->content_type);
+	}
 
     AXIS2_FREE(env->allocator, om_output);
     return;
@@ -263,11 +270,17 @@ axiom_output_get_content_type(axiom_output_t *om_output,
         {
             soap_content_type = AXIOM_SOAP12_CONTENT_TYPE;
         }
+		if(om_output->content_type)
+		{
+			AXIS2_FREE(env->allocator, om_output->content_type);
+			om_output->content_type = NULL;
+		}
 
-        return axiom_mime_output_get_content_type_for_mime(om_output->mime_output,
+        om_output->content_type = axiom_mime_output_get_content_type_for_mime(om_output->mime_output,
             env, om_output->mime_boundry,
             om_output->root_content_id, om_output->char_set_encoding,
             soap_content_type);
+		return om_output->content_type;
     }
     else
     {
