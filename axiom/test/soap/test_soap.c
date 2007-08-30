@@ -344,7 +344,9 @@ int create_soap_fault(const axutil_env_t *env)
     axiom_xml_writer_t *xml_writer = NULL;
     axiom_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
-
+    axis2_char_t *exception_text = NULL;
+    axis2_status_t status = 0;
+    
     soap_envelope =
         axiom_soap_envelope_create_default_soap_fault_envelope(env,
                 "Fault Code", "Fault Reason", AXIOM_SOAP11,
@@ -359,11 +361,60 @@ int create_soap_fault(const axutil_env_t *env)
     om_output = axiom_output_create(env, xml_writer);
     axiom_soap_envelope_serialize(soap_envelope, env, om_output, AXIS2_FALSE);
     buffer = (axis2_char_t*)axiom_xml_writer_get_xml(xml_writer, env);
-    printf("%s \n",  buffer);
+    printf("\n Testing Create soap fault \n %s \n",  buffer);
+
+    status = axiom_soap_fault_set_exception(soap_fault, env, "MyNewException");
+    exception_text = axiom_soap_fault_get_exception(soap_fault, env);
+
+    printf(" Testing soap fault set exception \n");
+    printf("Actual = %s Expected = %s |", exception_text, "MyNewException");
+    if(status && (0 == strcmp(exception_text, "MyNewException")))
+        printf("SUCCESS\n");
+    else
+        printf("FAILURE\n");
+                           
     axiom_soap_envelope_free(soap_envelope, env);
     axiom_output_free(om_output, env); 
     return 0;
 }
+
+
+int create_soap_fault_with_exception(const axutil_env_t *env)
+{
+    axiom_soap_envelope_t *soap_envelope = NULL;
+    axiom_soap_body_t *soap_body = NULL;
+    axiom_soap_fault_t *soap_fault = NULL;
+    axiom_xml_writer_t *xml_writer = NULL;
+    axiom_output_t *om_output = NULL;
+    axis2_char_t *exception_text = NULL;
+    
+    soap_envelope =
+        axiom_soap_envelope_create_default_soap_fault_envelope(env,
+             "Fault Code", "Fault Reason", AXIOM_SOAP11,
+              NULL, NULL);
+    soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
+    soap_fault = axiom_soap_fault_create_with_exception(env, soap_body, "MyException");
+
+    axiom_soap_fault_detail_create_with_parent(env, soap_fault);
+    axiom_soap_fault_role_create_with_parent(env, soap_fault);
+    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE,
+        AXIS2_XML_PARSER_TYPE_BUFFER);
+    om_output = axiom_output_create(env, xml_writer);
+    axiom_soap_envelope_serialize(soap_envelope, env, om_output, AXIS2_FALSE);
+
+    exception_text = axiom_soap_fault_get_exception(soap_fault, env);    
+    printf(" Testing Create soap fault with exception \n");
+    printf("Actual = %s Expected = %s |", exception_text, "MyException");
+    if (0 == strcmp(exception_text, "MyException"))
+         printf("SUCCESS\n");
+    else
+         printf("FAILURE\n");
+            
+    axiom_soap_envelope_free(soap_envelope, env);
+    axiom_output_free(om_output, env);
+    return 0;
+}
+
 
 int test_soap_fault_value(const axutil_env_t *env)
 {
@@ -420,6 +471,7 @@ int main(int argc, char *argv[])
     /*build_soap_programatically(env);   */
     build_soap(env, filename, uri);
     create_soap_fault(env);
+    create_soap_fault_with_exception(env);
     test_soap_fault_value(env);
     axutil_env_free(env);
     return 0;
