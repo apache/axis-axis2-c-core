@@ -300,8 +300,6 @@ axutil_stream_write_basic(axutil_stream_t *stream,
     if (!buffer)
         return -1;
 
-    
-    stream = stream;
     new_len = stream->len + count;
     if (new_len > stream->max_len)
     {
