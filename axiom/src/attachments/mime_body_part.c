@@ -190,10 +190,7 @@ axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part,
     if (!byte_stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        if (data_handler_stream)
-        {
-            AXIS2_FREE(env->allocator, data_handler_stream);
-        }
+      
         if (header_str)
         {
             AXIS2_FREE(env->allocator, header_str);
@@ -210,8 +207,6 @@ axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part,
     {
         memcpy(byte_stream + header_str_size, 
 	    data_handler_stream, data_handler_stream_size);
-
-		AXIS2_FREE(env->allocator, data_handler_stream);
     }
 
 

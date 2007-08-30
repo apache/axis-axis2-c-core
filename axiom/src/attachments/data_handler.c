@@ -268,7 +268,8 @@ axiom_data_handler_read_from(axiom_data_handler_t *data_handler,
         while (!feof(f));
 
         fclose(f);
-
+		data_handler->buffer = byte_stream;
+		data_handler->buffer_len = byte_stream_size;
         *output_stream = byte_stream;
         *output_stream_size = byte_stream_size;
     }
