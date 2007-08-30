@@ -346,6 +346,8 @@ axis2_http_transport_sender_invoke(
                 axiom_node_serialize(data_out, env, om_output);
                 buffer = (axis2_char_t*)axiom_xml_writer_get_xml(xml_writer, env);
                 buffer_size = axiom_xml_writer_get_xml_size(xml_writer, env);
+				
+				axutil_stream_write(out_stream, env, buffer, buffer_size);
             }
             else
             {
@@ -364,15 +366,18 @@ axis2_http_transport_sender_invoke(
                     AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info,
                             env, content_type);
                     buffer = output_stream;
+					axutil_stream_write(out_stream, env, buffer, buffer_size);
+					AXIS2_FREE(env->allocator, buffer);
                 }
                 else
                 {
                     buffer = (axis2_char_t *)axiom_xml_writer_get_xml(xml_writer, env);
                     buffer_size = axiom_xml_writer_get_xml_size(xml_writer, env);
+					axutil_stream_write(out_stream, env, buffer, buffer_size);
                 }
             }
-            axutil_stream_write(out_stream, env, buffer, buffer_size);
-            /*AXIS2_FREE(env->allocator, buffer);*/
+           
+            
 
             op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
             axis2_op_ctx_set_response_written(op_ctx, env, AXIS2_TRUE);
