@@ -276,7 +276,7 @@ axiom_output_get_content_type(axiom_output_t *om_output,
 			om_output->content_type = NULL;
 		}
 
-        om_output->content_type = axiom_mime_output_get_content_type_for_mime(om_output->mime_output,
+        om_output->content_type = (axis2_char_t*)axiom_mime_output_get_content_type_for_mime(om_output->mime_output,
             env, om_output->mime_boundry,
             om_output->root_content_id, om_output->char_set_encoding,
             soap_content_type);
