@@ -39,6 +39,7 @@
 #include <axiom_soap_fault_value.h>
 #include <axiom_soap_fault_detail.h>
 #include <axiom_soap_fault_role.h>
+#include <axiom_soap_fault_node.h>
 
 FILE *f = NULL;
 int read_soap(char *buffer, int size, void* ctx)
@@ -415,6 +416,36 @@ int create_soap_fault_with_exception(const axutil_env_t *env)
     return 0;
 }
 
+int test_soap_fault_node(const axutil_env_t *env)
+{
+    axiom_soap_envelope_t *soap_envelope = NULL;
+    axiom_soap_body_t *soap_body = NULL;
+    axiom_soap_fault_t *soap_fault = NULL;
+    axis2_char_t *node_text = NULL;
+    axiom_soap_fault_node_t *fault_node = NULL;
+    axis2_status_t status = 0;
+    
+    
+    printf("Testing soap fault node \n");
+    soap_envelope = axiom_soap_envelope_create_default_soap_fault_envelope(
+        env, "env:Receiver", "Something went wrong!", AXIOM_SOAP12,
+        NULL, NULL);
+    soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
+    soap_fault = axiom_soap_body_get_fault(soap_body, env);
+
+    fault_node = axiom_soap_fault_node_create_with_parent(env, soap_fault);
+    status = axiom_soap_fault_node_set_value(soap_fault, env, "MyFaultNode");
+    node_text = axiom_soap_fault_node_get_value(soap_fault, env);
+    
+    printf("Actual = %s Expected = %s |", node_text, "MyFaultNode");
+    if (0 == strcmp(node_text, "MyFaultNode"))
+        printf("SUCCESS\n");
+    else
+        printf("FAILURE\n");
+    axiom_soap_envelope_free(soap_envelope, env);
+    return 0;
+}
+
 
 int test_soap_fault_value(const axutil_env_t *env)
 {
@@ -472,6 +503,7 @@ int main(int argc, char *argv[])
     build_soap(env, filename, uri);
     create_soap_fault(env);
     create_soap_fault_with_exception(env);
+    test_soap_fault_node(env);
     test_soap_fault_value(env);
     axutil_env_free(env);
     return 0;
