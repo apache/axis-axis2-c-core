@@ -451,7 +451,6 @@ axis2_http_sender_send(
 						temp_content_type = axutil_stracat(env, 
                                                            content_type, 
                                                            ";action=\"");
-						AXIS2_FREE(env->allocator, content_type);
 						content_type = temp_content_type;
 						temp_content_type = axutil_stracat(env, 
                                                            content_type, 
@@ -464,6 +463,9 @@ axis2_http_sender_send(
 					    AXIS2_FREE(env->allocator, content_type);
 					    content_type = temp_content_type;
 					}
+				}else
+				{
+					content_type_deepl_copy = AXIS2_FALSE;
 				}
 			}
 			else if (AXIS2_TRUE ==  axis2_msg_ctx_get_is_soap_11(msg_ctx, env))

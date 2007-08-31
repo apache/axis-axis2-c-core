@@ -195,7 +195,6 @@ axis2_libcurl_send (
 					{
 						axis2_char_t *temp_content_type = NULL;
 						temp_content_type = axutil_stracat(env, content_type, ";action=");
-						AXIS2_FREE(env->allocator, content_type);
 						content_type = temp_content_type;
 						temp_content_type = axutil_stracat(env, content_type, soap_action);
 						AXIS2_FREE(env->allocator, content_type);
