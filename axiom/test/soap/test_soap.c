@@ -434,8 +434,8 @@ int test_soap_fault_node(const axutil_env_t *env)
     soap_fault = axiom_soap_body_get_fault(soap_body, env);
 
     fault_node = axiom_soap_fault_node_create_with_parent(env, soap_fault);
-    status = axiom_soap_fault_node_set_value(soap_fault, env, "MyFaultNode");
-    node_text = axiom_soap_fault_node_get_value(soap_fault, env);
+    status = axiom_soap_fault_node_set_value(fault_node, env, "MyFaultNode");
+    node_text = axiom_soap_fault_node_get_value(fault_node, env);
     
     printf("Actual = %s Expected = %s |", node_text, "MyFaultNode");
     if (0 == strcmp(node_text, "MyFaultNode"))
