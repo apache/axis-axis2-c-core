@@ -231,7 +231,10 @@ axis2_apache2_worker_process_request(
             axis2_engine_t *engine = axis2_engine_create(env, conf_ctx);
             if (! engine)
             {
-                send_status =  HTTP_INTERNAL_SERVER_ERROR;
+                /* Critical error, cannot proceed, Apache will send default 
+                   document for 500
+                */
+                return AXIS2_CRITICAL_FAILURE;
             }
             if ( axis2_msg_ctx_get_is_soap_11 (msg_ctx, env))
             {
@@ -251,7 +254,12 @@ axis2_apache2_worker_process_request(
                 body_string = axutil_stream_get_buffer(out_stream, env);
                 body_string_len = axutil_stream_get_len(out_stream, env);
             }
-            send_status =  HTTP_INTERNAL_SERVER_ERROR;
+            
+            /* In case of a SOAP Fault, we have to set the status to 500,
+               but still return OK because the module has handled the error 
+            */
+            send_status =  OK;
+            request->status = HTTP_INTERNAL_SERVER_ERROR;
         }
     }
     
