@@ -1406,7 +1406,7 @@ axiom_element_extract_attributes(axiom_element_t *om_element,
     axiom_attribute_t *cloned_attr = NULL;
 
     axiom_namespace_t *om_ns = NULL;
-    axiom_namespace_t *cloned_ns = NULL;
+    /*axiom_namespace_t *cloned_ns = NULL;*/
 
     axis2_char_t *key = NULL;
     axutil_qname_t *qn = NULL;
@@ -1436,8 +1436,9 @@ axiom_element_extract_attributes(axiom_element_t *om_element,
             om_ns = axiom_attribute_get_namespace(om_attr, env);
             if (om_ns)
             {
-                cloned_ns = axiom_namespace_clone(om_ns, env);
-                axiom_attribute_set_namespace(cloned_attr, env, cloned_ns);
+                /*cloned_ns = axiom_namespace_clone(om_ns, env);*/
+                /*axiom_attribute_set_namespace(cloned_attr, env, cloned_ns);*/
+                axiom_attribute_set_namespace(cloned_attr, env, om_ns);                
             }
             qn = axiom_attribute_get_qname(cloned_attr, env);
             key = axutil_qname_to_string(qn, env);
@@ -1449,7 +1450,7 @@ axiom_element_extract_attributes(axiom_element_t *om_element,
         om_attr = NULL;
         cloned_attr = NULL;
         om_ns = NULL;
-        cloned_ns = NULL;
+        /*cloned_ns = NULL;*/
     }
     return ht_cloned;
 }

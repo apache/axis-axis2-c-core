@@ -345,6 +345,13 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
             /** default namespace case */
             /** !temp_ns_prefix is for guththila */
             axiom_element_t *om_ele = NULL;
+
+            if(temp_ns_prefix_str)
+            {
+                axutil_string_free(temp_ns_prefix_str, env);
+                temp_ns_prefix_str = NULL;
+            }    
+            
             temp_ns_prefix_str = axutil_string_create(env, "");
             om_ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
 
@@ -380,6 +387,7 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
             axutil_hash_set(om_builder->declared_namespaces,
                 prefix, AXIS2_HASH_KEY_STRING, om_ns);
         }
+        
         axutil_string_free(temp_ns_uri_str, env);
         axutil_string_free(temp_ns_prefix_str, env);
 #ifdef WIN32	
