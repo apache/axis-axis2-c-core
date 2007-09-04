@@ -558,7 +558,7 @@ axutil_error_get_message(const axutil_error_t *error)
 			else if (error->error_number == AXIS2_ERROR_NONE)
 				message = axutil_error_messages[AXIS2_ERROR_NONE];
 			else 
-				message = "Invalid Error Number";
+				message = "Undefined error returned by business logic implementation";
 		}
 	}
 
