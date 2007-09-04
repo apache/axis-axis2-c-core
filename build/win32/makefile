@@ -1171,7 +1171,7 @@ build_with_guththila : deploy axis2_core_guththila axis2_samples copy_include
 
 all: $(PARSER)
 
-install: all 
+install: all copy_extra
 	
-dist: install axis2_apache_module axis2_IIS_module tcpmon copy_extra copy_samples copy_vc_projects mv_dist
+dist: install axis2_apache_module axis2_IIS_module tcpmon copy_samples copy_vc_projects mv_dist
 
