@@ -59,12 +59,12 @@ static int
 is_safe_or_unreserve (
 	char c);
 
+#ifndef AXIS2_LIBCURL_ENABLED
 static void
 axis2_http_sender_add_header_list (axis2_http_simple_request_t *request,
                                    const axutil_env_t *env,
                                    axutil_array_list_t *array_list);
 
-#ifndef AXIS2_LIBCURL_ENABLED
 static axis2_status_t
 axis2_http_sender_configure_proxy(
     axis2_http_sender_t *sender,
@@ -938,6 +938,23 @@ axis2_http_sender_set_http_version(
 }
 
 #ifndef AXIS2_LIBCURL_ENABLED
+static void
+axis2_http_sender_add_header_list (axis2_http_simple_request_t *request,
+                                   const axutil_env_t *env,
+                                   axutil_array_list_t *array_list)
+{
+    int ii = 0;
+    int kk = 0;
+    axis2_http_header_t *http_header = NULL;
+    ii = axutil_array_list_size (array_list, env);
+    for (; kk < ii; kk++)
+    {
+        http_header = (axis2_http_header_t *)axutil_array_list_get (array_list, env, kk);
+        axis2_http_simple_request_add_header (request, env, http_header);
+    }
+}
+
+
 static axis2_status_t
 axis2_http_sender_configure_proxy(
     axis2_http_sender_t *sender,
@@ -1474,18 +1491,4 @@ axis2_http_sender_util_add_header (const axutil_env_t *env,
     axis2_http_simple_request_add_header(request, env, http_header);
 }
 
-static void
-axis2_http_sender_add_header_list (axis2_http_simple_request_t *request,
-                                   const axutil_env_t *env,
-                                   axutil_array_list_t *array_list)
-{
-    int ii = 0;
-    int kk = 0;
-    axis2_http_header_t *http_header = NULL;
-    ii = axutil_array_list_size (array_list, env);
-    for (; kk < ii; kk++)
-    {
-        http_header = (axis2_http_header_t *)axutil_array_list_get (array_list, env, kk);
-        axis2_http_simple_request_add_header (request, env, http_header);
-    }
-}
+
