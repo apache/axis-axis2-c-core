@@ -116,8 +116,7 @@ Table of Contents
 
         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/axis2c/lib/
         cd samples
-        ./configure --prefix=${AXIS2C_HOME} --with-axis2_util=${AXIS2C_HOME}/include/axis2-1.0
-            --with-axiom=${AXIS2C_HOME}/include/axis2-1.0
+        ./configure --prefix=${AXIS2C_HOME} --with-axis2=${AXIS2C_HOME}/include/axis2-1.1
         make
         sudo make install
 
