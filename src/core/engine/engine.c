@@ -354,10 +354,6 @@ axis2_engine_send_fault(
     else
     {
         status = axis2_engine_invoke_phases(engine, env, phases, msg_ctx);
-        if (status != AXIS2_SUCCESS)
-        {
-            return status;
-        }
 
         conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
         if (conf_ctx)
