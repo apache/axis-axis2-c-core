@@ -21,6 +21,8 @@
 axiom_node_t *
 build_om_programatically(const axutil_env_t *env, axis2_char_t *text);
 
+void set_custom_error(const axutil_env_t *env, axis2_char_t *error_message);
+
 axiom_node_t *
 axis2_echo_echo(const axutil_env_t *env, axiom_node_t *node)
 {
@@ -37,24 +39,21 @@ axis2_echo_echo(const axutil_env_t *env, axiom_node_t *node)
      */
     if (!node) /* 'echoString' node */
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL, AXIS2_FAILURE);
-        printf("Echo client ERROR: input parameter NULL\n");
+        set_custom_error(env, "Invalid payload; echoString node is NULL");
         return NULL;
     }
 
     text_parent_node = axiom_node_get_first_element(node, env);
     if (!text_parent_node) 
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
-        printf("Echo client ERROR 1: invalid XML in request\n");
+        set_custom_error(env, "Invalid payload; text node is NULL");
         return NULL;
     }
 
     text_node = axiom_node_get_first_child(text_parent_node, env);
     if (!text_node) /* actual text to echo */
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
-        printf("Echo client ERROR 2: invalid XML in request\n");
+        set_custom_error(env, "Invalid payload; text to be echoed is NULL");
         return NULL;
     }
 
@@ -64,14 +63,12 @@ axis2_echo_echo(const axutil_env_t *env, axiom_node_t *node)
         if (text && axiom_text_get_value(text , env))
         {
             axis2_char_t *text_str = (axis2_char_t *)axiom_text_get_value(text, env);
-            /*printf("Echoing text value  %s \n", text_str);*/
             ret_node = build_om_programatically(env, text_str);
         }
     }
     else
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
-        printf("Echo client ERROR 3: invalid XML in request\n");
+        set_custom_error(env, "Invalid payload; invalid XML in request");
         return NULL;
     }
 
@@ -95,7 +92,9 @@ build_om_programatically(const axutil_env_t *env, axis2_char_t *text)
     return echo_om_node;
 }
 
-
-
-
+void set_custom_error(const axutil_env_t *env, axis2_char_t *error_message)
+{
+    axutil_error_set_error_message(env->error, error_message);
+    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_LAST + 1, AXIS2_FAILURE);
+}
 

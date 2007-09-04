@@ -102,11 +102,10 @@ echo_on_fault(axis2_svc_skeleton_t *svc_skeli,
      * called 'EchoServiceError' 
      */
     axiom_node_t *error_node = NULL;
-    axiom_node_t *text_node = NULL;
     axiom_element_t *error_ele = NULL;
     
 	error_ele = axiom_element_create(env, NULL, "EchoServiceError", NULL,  &error_node);
-    axiom_element_set_text(error_ele, env, "Echo service failed ", text_node);
+    axiom_element_set_text(error_ele, env, "Echo service failed ", error_node);
     return error_node;
 }
 
