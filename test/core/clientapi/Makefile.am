@@ -1,6 +1,6 @@
 TESTS = test_client test_clientapi test_svc_client_handler_count
 noinst_PROGRAMS = test_client test_clientapi test_svc_client_handler_count
-check_PROGRAMS = test_client test_clientapi test_svc_client_handler_count.c
+check_PROGRAMS = test_client test_clientapi test_svc_client_handler_count
 SUBDIRS =
 AM_CFLAGS = -g -pthread 
 test_client_SOURCES = test_client.c
