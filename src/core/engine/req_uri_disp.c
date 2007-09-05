@@ -126,6 +126,12 @@ axis2_req_uri_disp_find_svc(
                         }
                     }
                     AXIS2_FREE(env->allocator, url_tokens[0]);
+
+                    if(url_tokens[1])
+                    {
+                        AXIS2_FREE(env->allocator, url_tokens[1]);    
+                    }    
+
                 }
                 AXIS2_FREE(env->allocator, url_tokens);
                 url_tokens = NULL;
