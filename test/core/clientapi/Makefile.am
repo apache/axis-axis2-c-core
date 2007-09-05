@@ -1,11 +1,11 @@
-TESTS = test_client test_clientapi test_svcclient_handler_count
-noinst_PROGRAMS = test_client test_clientapi test_svcclient_handler_count
-check_PROGRAMS = test_client test_clientapi test_svcclient_handler_count.c
+TESTS = test_client test_clientapi test_svc_client_handler_count
+noinst_PROGRAMS = test_client test_clientapi test_svc_client_handler_count
+check_PROGRAMS = test_client test_clientapi test_svc_client_handler_count.c
 SUBDIRS =
 AM_CFLAGS = -g -pthread 
 test_client_SOURCES = test_client.c
 test_clientapi_SOURCES = test_clientapi.c
-test_svcclient_handler_count_SOURCES = test_svcclient_handler_count.c
+test_svc_client_handler_count_SOURCES = test_svc_client_handler_count.c
 
 test_clientapi_LDADD   =  \
                     ../../../util/src/libaxutil.la \
@@ -29,7 +29,7 @@ test_client_LDADD   =  \
                     $(LIBXML2_LIBS) \
                     -L$(top_builddir)$(GUTHTHILA_LIBS)
 
-test_svcclient_handler_count_LDADD   =  \
+test_svc_client_handler_count_LDADD   =  \
 					../../../util/src/libaxutil.la \
 					../../../axiom/src/om/libaxis2_axiom.la \
 					../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
