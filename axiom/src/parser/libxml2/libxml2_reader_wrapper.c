@@ -152,8 +152,6 @@ typedef struct axis2_libxml2_reader_wrapper_impl_t
 
     AXIS2_CLOSE_INPUT_CALLBACK close_input_callback;
 
-    void *container;
-
 }
 axis2_libxml2_reader_wrapper_impl_t;
 
@@ -279,7 +277,6 @@ axiom_xml_reader_create_for_file(const axutil_env_t *env,
         (void *)env);
     wrapper_impl->current_event = -1;
     wrapper_impl->ctx = NULL;
-    wrapper_impl->container = NULL;
 
     axis2_libxml2_reader_wrapper_init_map(wrapper_impl);
 
@@ -339,7 +336,6 @@ axiom_xml_reader_create_for_io(const axutil_env_t *env,
         (void *)env);
 
     wrapper_impl->current_event = -1;
-    wrapper_impl->container = NULL;
 
     axis2_libxml2_reader_wrapper_init_map(wrapper_impl);
 
@@ -402,8 +398,6 @@ axiom_xml_reader_create_for_memory(const axutil_env_t *env,
     }
 
     wrapper_impl->current_event = -1;
-    wrapper_impl->container = NULL;
-    wrapper_impl->container = container;
 
     axis2_libxml2_reader_wrapper_init_map(wrapper_impl);
 
