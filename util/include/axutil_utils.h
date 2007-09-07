@@ -128,7 +128,6 @@ typedef int (AXIS2_CALL *AXIS2_CLOSE_INPUT_CALLBACK)(void *ctx);
         AXIS2_SCOPE_APPLICATION
     };
 
-#define AXIS2_REQUEST_URL_PREFIX "/services"
 #define AXIS2_TARGET_EPR "target_epr"
 #define AXIS2_DUMP_INPUT_MSG_TRUE "dump"
 

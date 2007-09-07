@@ -21,6 +21,8 @@
 #include <string.h>
 #include <platforms/axutil_platform_auto_sense.h>
 
+axis2_char_t *axis2_request_url_prefix = "services";
+
 AXIS2_EXTERN axis2_char_t** AXIS2_CALL
 axutil_parse_request_url_for_svc_and_op(const axutil_env_t *env,
     const axis2_char_t *request)
@@ -39,7 +41,7 @@ axutil_parse_request_url_for_svc_and_op(const axutil_env_t *env,
 
     while (1)
     {
-        tmp = strstr(tmp, AXIS2_REQUEST_URL_PREFIX);
+        tmp = strstr(tmp, axis2_request_url_prefix);
         if (!tmp)
     {
             break;
@@ -47,12 +49,12 @@ axutil_parse_request_url_for_svc_and_op(const axutil_env_t *env,
         else
         {
             service_str = tmp;
-            tmp += axutil_strlen(AXIS2_REQUEST_URL_PREFIX);
+            tmp += axutil_strlen(axis2_request_url_prefix);
         }
     }
     if (service_str)
     {
-        service_str += axutil_strlen(AXIS2_REQUEST_URL_PREFIX);
+        service_str += axutil_strlen(axis2_request_url_prefix);
         if ('\0' != *service_str)
         {
             service_str++; /*to remove the leading '/' */
