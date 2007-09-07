@@ -125,10 +125,10 @@ typedef enum
     AXIS2_TRANSPORT_ENUM_MAX
 } AXIS2_TRANSPORT_ENUMS;
 
-/**
- * Field LISTSERVICES
- */
-#define AXIS2_REQUEST_URL_PREFIX "/services"
+/** Service URL prefix */
+#ifndef AXIS2_REQUEST_URL_PREFIX
+#define AXIS2_REQUEST_URL_PREFIX "/services" 
+#endif
 
 #define AXIS2_LISTSERVICES "listServices"
 
