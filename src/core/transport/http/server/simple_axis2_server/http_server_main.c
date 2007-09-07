@@ -31,6 +31,7 @@
 axutil_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;
 AXIS2_IMPORT extern int axis2_http_socket_read_timeout;
+AXIS2_IMPORT extern axis2_char_t *axis2_request_url_prefix;
 /***************************** Function headers *******************************/
 axutil_env_t *
 init_syetem_env(
@@ -98,6 +99,10 @@ int main(
     const axis2_char_t *log_file = "axis2.log";
     int port = 9090;
     const axis2_char_t *repo_path = "../";
+
+    /* Set the service URL prefix to be used. This could default to services if not 
+       set with AXIS2_REQUEST_URL_PREFIX macro at compile time */
+    axis2_request_url_prefix = AXIS2_REQUEST_URL_PREFIX;
 
 
     while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:f:")) != -1)

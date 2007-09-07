@@ -64,6 +64,12 @@ axis2_set_log_level(
     void *dummy,
     const char *arg);
 
+static const char *
+axis2_set_svc_url_prefix(
+    cmd_parms *cmd,
+    void *dummy,
+    const char *arg);
+
 static int
 axis2_handler(
     request_rec *req);
@@ -99,6 +105,8 @@ static const command_rec axis2_cmds[] =
                 "Axis2/C log file name"),
         AP_INIT_TAKE1("Axis2LogLevel", axis2_set_log_level, NULL, RSRC_CONF,
                 "Axis2/C log level"),
+        AP_INIT_TAKE1("Axis2ServiceURLPrefix", axis2_set_svc_url_prefix, NULL, RSRC_CONF,
+                "Axis2/C service URL prifix"),
         {NULL}
     };
 
@@ -138,7 +146,6 @@ axis2_set_repo_path(
     {
         return err;
     }
-
     conf = (axis2_config_rec_t*)ap_get_module_config(
                 cmd->server->module_config, &axis2_module);
     conf->axis2_repo_path = apr_pstrdup(cmd->pool, arg);
@@ -213,17 +220,37 @@ axis2_set_log_level(
     return NULL;
 }
 
+static const char *
+axis2_set_svc_url_prefix(
+    cmd_parms *cmd,
+    void *dummy,
+    const char *arg)
+{
+    AXIS2_IMPORT extern axis2_char_t *axis2_request_url_prefix;
+    const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
+    
+    axis2_request_url_prefix = AXIS2_REQUEST_URL_PREFIX;
+    if (!err)
+    {
+        axis2_char_t *prefix = apr_pstrdup(cmd->pool, arg);
+        if (prefix)
+            axis2_request_url_prefix = prefix;
+    }
+
+    return NULL;
+}
+
 /* The sample content handler */
 static int
 axis2_handler(
     request_rec *req)
 {
     int rv = 0;
+    
     if (strcmp(req->handler, "axis2_module"))
     {
         return DECLINED;
     }
-
     /* Set up the read policy from the client.*/
     if ((rv = ap_setup_client_block(req, REQUEST_CHUNKED_DECHUNK)) != OK)
     {
