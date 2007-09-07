@@ -82,8 +82,8 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     const axis2_char_t *soap_ns = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     int soap_version = AXIOM_SOAP12;
     axiom_namespace_t *env_ns = NULL;
-	axiom_node_t *fault_node = NULL;
-	axiom_soap_fault_detail_t *fault_detail;
+    axiom_node_t *fault_node = NULL;
+    axiom_soap_fault_detail_t *fault_detail;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -237,7 +237,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
         else
         {
             status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
-	    fault_node = AXIS2_SVC_SKELETON_ON_FAULT(svc_obj, env, om_node);
+            fault_node = AXIS2_SVC_SKELETON_ON_FAULT(svc_obj, env, om_node);
         }
     }
 
@@ -295,9 +295,9 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
         const axis2_char_t *err_msg = NULL;
 
         if (!skel_invoked)
-	{
+        {
             fault_value_str = "env:Receiver";
-	}
+        }
 
         err_msg = AXIS2_ERROR_GET_MESSAGE(env->error);
         if (err_msg)
@@ -311,11 +311,11 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
 
         soap_fault = axiom_soap_fault_create_default_fault(env, out_body,
             fault_value_str, fault_reason_str, soap_version);
-	if (fault_node)
-	{
-	    fault_detail = axiom_soap_fault_detail_create_with_parent (env, soap_fault);
-	    axiom_soap_fault_detail_add_detail_entry (fault_detail, env, fault_node);
-	}
+        if (fault_node)
+        {
+            fault_detail = axiom_soap_fault_detail_create_with_parent (env, soap_fault);
+            axiom_soap_fault_detail_add_detail_entry (fault_detail, env, fault_node);
+        }
     }
 
     if (body_content_node)
@@ -326,7 +326,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     else if (soap_fault)
     {
          axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
-	     status = AXIS2_SUCCESS;
+         status = AXIS2_SUCCESS;
     }
     else
     {
