@@ -1,3 +1,13 @@
+Axis2/C (1.1.0)
+   * WS-Policy implementation
+   * TCP Transport
+   * Improvements to Guththila parser to improve performance
+   * Improvements to Java tool, WSDL2C, that generates C code
+   * Basic HTTP Authentication
+   * Memory leak fixes
+   * Many bug fixes
+-- Axis2/C team <axis-c-dev@ws.apache.org> Mon, 24 September 2007
+
 Axis2/C (1.0.0)
    * Many Bug Fixes
    * IIS module for server side
