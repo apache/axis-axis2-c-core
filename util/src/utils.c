@@ -21,7 +21,7 @@
 #include <string.h>
 #include <platforms/axutil_platform_auto_sense.h>
 
-axis2_char_t *axis2_request_url_prefix = "services";
+AXIS2_EXPORT axis2_char_t *axis2_request_url_prefix = "services";
 
 AXIS2_EXTERN axis2_char_t** AXIS2_CALL
 axutil_parse_request_url_for_svc_and_op(const axutil_env_t *env,
