@@ -17,6 +17,7 @@ latest.</p>
 
 <h2>Contents</h2>
 <ul>
+  <li><a href="#1.0.0">Version 1.0.0 - 06th May 2007</a></li>
   <li><a href="#0.96">Version 0.96 - 22nd December 2006</a></li>
   <li><a href="#0.95">Version 0.95 - 26th October 2006</a></li>
   <li><a href="#0.94">Version 0.94 - 3rd October 2006</a></li>
@@ -30,6 +31,76 @@ latest.</p>
   <li><a href="#M0.2">Milestone version 0.2 - 08th December 2005</a></li>
   <li><a href="#M0.1">Milestone version 0.1 - 25th November 2005</a></li>
 </ul>
+
+<a id="1.0.0"></a>
+<h3>06th May 2007 - Apache Axis2/C Version 1.0.0 Released</h3>
+    <a href='http://ws.apache.org/axis2/c/download.cgi'>Download 1.0.0</a>
+    <h4>Key Features</h4>
+    <ol>
+      <li>Support for one-way messaging (In-Only) and request response messaging
+    (In-Out)</li>
+      <li>Client APIs: Easy to use service client API and a more advanced
+    operation client API</li>
+      <li>Transports supported : HTTP
+        <ul>
+          <li>Inbuilt HTTP server called simple axis server</li>
+          <li>Apache2 HTTPD module called mod_axis2 for the server side</li>
+          <li>IIS module for the server side</li>
+          <li>Client transport with the ability to enable SSL support</li>
+          <li>libcurl based client transport</li>
+        </ul>
+      </li>
+      <li>Module architecture, with a mechanism to extend the SOAP processing
+    model</li>
+      <li>WS-Addressing support, for both the submission (2004/08) and final
+    (2005/08) versions, implemented as a module</li>
+      <li>MTOM/XOP support</li>
+      <li>AXIOM, which is an XML object model optimized for SOAP 1.1/1.2
+    messages. This has complete XML infoset support.</li>
+      <li>XML parser abstraction
+        <ul>
+          <li>Libxml2 wrapper</li>
+          <li>Guththila pull parser support</li>
+        </ul>
+      </li>
+      <li>Both directory based and archive based deployment models for deploying
+    services and modules</li>
+      <li>Description hierarchy providing access to static data of Axis2/C
+    runtime (configuration, service groups, services, operations, and
+    messages)</li>
+      <li>Context hierarchy providing access to dynamic Axis2/C runtime
+    information (corresponding contexts mapped to each level of the
+    description hierarchy)</li>
+      <li>Message receiver abstraction
+        <ul>
+          <li>Inbuilt raw XML message receiver</li>
+        </ul>
+      </li>
+      <li>Code generation tool for stub and skeleton generation for a given WSDL
+    (based on the Java tool)
+        <ul>
+          <li>Axis Data Binding (ADB) support</li>
+        </ul>
+      </li>
+      <li>Transport proxy support</li>
+      <li>REST support (more POX like) using both HTTP POST and GET</li>
+      <li>Comprehensive documentation
+        <ul>
+          <li>Axis2/C Manual</li>
+        </ul>
+      </li>
+    </ol>
+    <h4>Major Changes Since Last Release</h4>
+    <ol>
+      <li>Many Bug Fixes</li>
+      <li>IIS module for the server side</li>
+      <li>libcurl based client transport</li>
+      <li>Improvements to overall API to make it more user friendly, stable, and
+    binary compatible</li>
+      <li>Transport proxy support</li>
+      <li>Memory leak fixes</li>
+    </ol>
+
 <a id="0.96"></a>
 
 <h3>22nd December 2006 Axis2/C Version 0.96 Released</h3>
