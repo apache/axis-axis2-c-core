@@ -638,9 +638,13 @@ axis2_op_client_worker_func(axutil_thread_t *thd,
     axis2_op_client_add_msg_ctx(args_list->op_client, th_env, response);
     args_list->op_client->async_result = axis2_async_result_create(th_env, 
         response);
-    axis2_callback_invoke_on_complete(args_list->callback, 
-        th_env, args_list->op_client->async_result);
-    axis2_callback_set_complete(args_list->callback, th_env, AXIS2_TRUE);
+    
+    if (args_list->callback)
+    {
+        axis2_callback_invoke_on_complete(args_list->callback, 
+            th_env, args_list->op_client->async_result);
+        axis2_callback_set_complete(args_list->callback, th_env, AXIS2_TRUE);
+    }
 
     /* clean up memory */
     axis2_async_result_free(args_list->op_client->async_result, th_env);

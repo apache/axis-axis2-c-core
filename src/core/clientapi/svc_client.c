@@ -546,7 +546,6 @@ axis2_svc_client_fire_and_forget_with_op_qname(axis2_svc_client_t *svc_client,
     const axutil_qname_t *op_qname,
     const axiom_node_t *payload)
 {
-    axis2_op_client_t *op_client = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
     axis2_bool_t qname_free_flag = AXIS2_FALSE;
 
@@ -574,7 +573,7 @@ axis2_svc_client_fire_and_forget_with_op_qname(axis2_svc_client_t *svc_client,
     }
 
     axis2_op_client_add_out_msg_ctx(svc_client->op_client, env, msg_ctx);
-    axis2_op_client_execute(op_client, env, AXIS2_FALSE);
+    axis2_op_client_execute(svc_client->op_client, env, AXIS2_FALSE);
     
     if (qname_free_flag)
     {
