@@ -10,22 +10,31 @@
 <body xml:lang="en">
 <h1>Welcome to Apache Axis2/C</h1>
 
-<p>Apache Axis2/C is an effort to implement <a
-href="http://ws.apache.org/axis2/1_2/Axis2ArchitectureGuide.html">Axis2
-architecture</a> in C. Apache Axis2/C can be used to provide and consume Web
-Services.</p>
+<p>Apache Axis2/C is a Web services engine implemented in the C programming 
+language. It is based on the extensible and flexible 
+<a href="http://ws.apache.org/axis2/1_2/Axis2ArchitectureGuide.html">Axis2 architecture</a>.
+Apache Axis2/C can be used to provide and consume Web
+Services. It has been implemented with portability and ability to embed in mind, 
+hence could be used as a Web services enabler in other software.
+</a>
 
 <p>Apache Axis2/C supports <a
 href="http://www.w3.org/TR/2000/NOTE-SOAP-20000508/">SOAP 1.1</a> and <a
 href="http://www.w3.org/TR/soap12-part1/">SOAP 1.2</a>, as well as <a
 href="http://www.xfront.com/REST-Web-Services.html">REST</a> style of Web
-services. A single service could be exposed both as a SOAP style interface as
-well as a REST style interface simultaneously. It also has built in <a
+services. A single service could be exposed both as a SOAP style as
+well as a REST style service simultaneously. It also has built in <a
 href="http://www.w3.org/TR/soap12-mtom/">MTOM</a> support, that can be used
 to exchange binary data.</p>
 
 <p>Apache Axis2/C is efficient, modular and is designed with extensibility.
-This allows it to support the full WS-* stack with the concept of modules.
+The extensible design allows it to support the full WS-* stack with the concept of modules.
+Apache Axis2/C is the Web services engine that supports 
+the most number of WS-* specification implementations in C, with guaranteed 
+interoperability. This enables using C in Service Oriented Architecture (SOA)
+implementations, and would be very useful when integrating legacy systems 
+into SOA. <br/>
+
 The following WS-* specifications are supported, either as built in modules
 or as separate Apache projects:</p>
 <ul>
@@ -45,6 +54,11 @@ or as separate Apache projects:</p>
     href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=wsrm">WS-ReliableMessaging</a>
     - Implemented by <a
     href="http://ws.apache.org/sandesha/sandesha2/c">Apache Sandesha2/C</a>
+    project</li>
+  <li><a
+    href="http://www.w3.org/Submission/WS-Eventing/">WS-Eventing</a>
+    - Implemented by <a
+    href="http://ws.apache.org/savan/c/">Apache Savan/C</a>
     project</li>
 </ul>
 
