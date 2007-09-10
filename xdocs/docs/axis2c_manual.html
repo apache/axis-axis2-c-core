@@ -1111,7 +1111,8 @@ following directives at the end of the file.</p>
 <pre>LoadModule axis2_module MOD_AXIS2_INSTALL_DIR
 Axis2RepoPath AXIS2C_INSTALL_DIR
 Axis2LogFile  PATH_TO_LOG_FILE
-Axis2LogLevel LOG_LEVEL 
+Axis2LogLevel LOG_LEVEL
+Axis2ServiceURLPrefix PREFIX
 &lt;Location /axis2&gt;
     SetHandler axis2_module
 &lt;/Location&gt;</pre>
@@ -1143,6 +1144,15 @@ warn, info, debug, trace. These log levels have the following meanings:</p>
     used</li>
   <li>trace - log trace messages and above</li>
 </ul>
+
+<p>PREFIX has to be replaced with the prefix to be used with the 
+service endpoints. This is optional and defaults to &quot;services&quot;.
+As an example, if you have  &quot;web_services&quot; as the prefix, then all the
+services hosted would have the endpoint prefix of : <br/>
+http://localhost/axis2/web_services <br/>
+If you wish, you can also change the location as well by replacing &quot;/axis2&quot; in 
+&lt;Location /axis2&gt; setting with whatever you wish.
+</p>
 
 <p>To ensure that everything works fine, start Apache2 (restart if it is
 already running) and test whether the mod_axis2 module is loaded correctly by
