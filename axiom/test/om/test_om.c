@@ -182,7 +182,7 @@ test_om_build(const char *filename)
     buffer = (axis2_char_t*)axiom_xml_writer_get_xml(writer, environment);
 
     if (buffer)
-        printf("%s", buffer);
+        printf("Sub Tree = %s\n", buffer);
 
     axiom_output_free(om_output, environment);
 

@@ -533,6 +533,7 @@ axiom_node_serialize_sub_tree(axiom_node_t *om_node,
             if (om_node->data_element)
             {
                 axutil_hash_t *temp_namespaces = NULL;
+                axutil_hash_t *temp_attributes = NULL;
                 axiom_namespace_t *namespace = NULL;
                 status = axiom_element_serialize_start_part(
                     (axiom_element_t *)(om_node->data_element),
@@ -566,7 +567,47 @@ axiom_node_serialize_sub_tree(axiom_node_t *om_node,
                         }
                     }
                 }
-                
+               
+                temp_attributes = axiom_element_get_all_attributes(
+                    (axiom_element_t *)(om_node->data_element), env);
+                if (temp_attributes)
+                {
+                    axutil_hash_index_t *hi;
+                    void *val;
+                    for (hi = axutil_hash_first(temp_attributes, env); hi;
+                        hi = axutil_hash_next(env, hi))
+                    {
+                        axutil_hash_this(hi, NULL, NULL, &val);
+
+                        if (val)
+                        {
+                            axiom_namespace_t *ns = NULL;
+                            axis2_char_t *prefix = NULL;
+                            
+                            namespace = axiom_attribute_get_namespace((axiom_attribute_t *)val,
+                                env);
+                            
+                            if (namespace)
+                            {
+                                prefix = axiom_namespace_get_prefix(namespace, env);
+                                if (prefix)
+                                {
+                                    ns = axutil_hash_get(namespaces, prefix, AXIS2_HASH_KEY_STRING);
+                                    if (!ns)
+                                    {
+                                        axiom_namespace_serialize(namespace, env, om_output);
+                                        axutil_hash_set(namespaces, prefix, 
+                                            AXIS2_HASH_KEY_STRING, namespace);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            status = AXIS2_FAILURE;
+                        }
+                    }
+                }
             }
             if (status != AXIS2_SUCCESS)
             {
