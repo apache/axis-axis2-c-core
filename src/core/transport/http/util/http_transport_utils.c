@@ -38,7 +38,17 @@
 #include <axis2_msg.h>
 
 #define AXIOM_MIME_BOUNDARY_BYTE 45
-#define FILE_READ_SIZE 2048
+
+/** Size of the buffer to be used when reading a file */
+#ifndef AXIS2_FILE_READ_SIZE
+#define AXIS2_FILE_READ_SIZE 2048
+#endif
+
+/** Content length value to be used in case of chunked content  */
+#ifndef AXIS2_CHUNKED_CONTENT_LENGTH
+#define AXIS2_CHUNKED_CONTENT_LENGTH 100000000
+#endif
+
 const axis2_char_t * AXIS2_TRANS_UTIL_DEFAULT_CHAR_ENCODING =  AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING;
 
 /***************************** Function headers *******************************/
@@ -266,7 +276,7 @@ axis2_http_transport_utils_process_http_post_request(
                 and also gives out a content lenght of 0.
                 We need to fix the transport design to fix sutuations like this.
                 */
-            callback_ctx->content_length = 100000000;
+            callback_ctx->content_length = AXIS2_CHUNKED_CONTENT_LENGTH;
             callback_ctx->unread_len = callback_ctx->content_length;
         }
     }
@@ -911,7 +921,7 @@ axis2_http_transport_utils_get_services_static_wsdl(
         FILE *wsdl_file;
         axis2_char_t *content = NULL;
         int c;
-        int size = FILE_READ_SIZE;
+        int size = AXIS2_FILE_READ_SIZE;
         axis2_char_t *tmp;
         int i = 0;
         
