@@ -163,6 +163,7 @@ int main(
 #endif
 
     AXIS2_LOG_INFO(env->log, "Starting Axis2 HTTP server....");
+    AXIS2_LOG_INFO(env->log, "Apache Axis2/C version in use : %s", axis2_version_string());
     AXIS2_LOG_INFO(env->log, "Server port : %d", port);
     AXIS2_LOG_INFO(env->log, "Repo location : %s", repo_path);
     AXIS2_LOG_INFO(env->log, "Read Timeout : %d ms", axis2_http_socket_read_timeout);
