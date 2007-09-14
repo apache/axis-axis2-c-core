@@ -375,8 +375,10 @@ axis2_module_init(
     {
 
         axutil_logger->level = conf->log_level;
+        AXIS2_LOG_INFO(axutil_env->log, "Apache Axis2/C version in use : %s", 
+            axis2_version_string());
         AXIS2_LOG_INFO(axutil_env->log, "Starting log with log level %d",
-                conf->log_level);
+            conf->log_level);
     }
     axis2_worker = axis2_apache2_worker_create(axutil_env,
             conf->axis2_repo_path);
