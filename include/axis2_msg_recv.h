@@ -49,11 +49,6 @@ extern "C"
 #include <axis2_op_ctx.h>
 #include <axis2_svr_callback.h>
 
-/** Sets AXIS2_SUCCESS to 1 */
-#define AXIS2_SUCCESS 1
-/** Sets AXIS2_FAILURE to 0 */
-#define AXIS2_FAILURE 0
-
     struct axis2_msg_ctx;
     /** Type name for struct axis2_msg_recv*/
     typedef struct axis2_msg_recv axis2_msg_recv_t;
