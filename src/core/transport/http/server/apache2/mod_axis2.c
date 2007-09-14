@@ -27,6 +27,7 @@
 #include <axutil_log_default.h>
 #include <axutil_thread_pool.h>
 #include <axiom_xml_reader.h>
+#include <axutil_version.h>
 
 /* Configuration structure populated by apache2.conf */
 typedef struct axis2_config_rec
