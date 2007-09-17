@@ -598,6 +598,7 @@ axis2_phases_info_copy_flow(const axutil_env_t *env,
     {
         void *item = axutil_array_list_get((axutil_array_list_t *) flow_to_copy,
             env, i);
+        axis2_phase_increment_ref((axis2_phase_t *)item, env);
         axutil_array_list_add(new_flow, env, item);
     }
     return new_flow;
