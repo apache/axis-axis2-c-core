@@ -43,9 +43,9 @@ axutil_parse_request_url_for_svc_and_op(const axutil_env_t *env,
     {
         tmp = strstr(tmp, axis2_request_url_prefix);
         if (!tmp)
-    {
+        {
             break;
-    }
+        }
         else
         {
             service_str = tmp;
@@ -57,7 +57,8 @@ axutil_parse_request_url_for_svc_and_op(const axutil_env_t *env,
         service_str += axutil_strlen(axis2_request_url_prefix);
         if ('\0' != *service_str)
         {
-            service_str++; /*to remove the leading '/' */
+            if (*service_str == '/')
+                service_str++; /*to remove the leading '/' */
             tmp = strchr(service_str, '/');
             if (tmp)
             {
