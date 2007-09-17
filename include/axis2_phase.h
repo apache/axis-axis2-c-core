@@ -320,6 +320,13 @@ extern "C"
     axis2_phase_create(const axutil_env_t *env,
             const axis2_char_t *phase_name);
 
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_increment_ref(axis2_phase_t *phase,
+            const axutil_env_t *env);
+    
+
+
 #ifdef __cplusplus
 }
 #endif
