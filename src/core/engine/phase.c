@@ -53,6 +53,8 @@ struct axis2_phase
      * that is for this phase there is only one handler
      */
     axis2_bool_t is_one_handler;
+
+    int ref;
 };
 
 AXIS2_EXTERN axis2_phase_t *AXIS2_CALL
@@ -78,6 +80,7 @@ axis2_phase_create(
     phase->last_handler = NULL;
     phase->last_handler_set = AXIS2_FALSE;
     phase->is_one_handler = AXIS2_FALSE;
+    phase->ref = 1;
 
     phase->handlers = axutil_array_list_create(env, 10);
     if (!(phase->handlers))
@@ -976,6 +979,11 @@ axis2_phase_free(
 {
     AXIS2_ENV_CHECK(env, void);
 
+    if (--(phase->ref) > 0)
+    {
+        return;
+    }
+    
     if (phase->name)
     {
         AXIS2_FREE(env->allocator, phase->name);
@@ -1075,6 +1083,15 @@ axis2_phase_remove_unique(
     }
     if (AXIS2_TRUE == remove_handler)
         axutil_array_list_remove(list, env, i);
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_phase_increment_ref(axis2_phase_t *phase,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    phase->ref++;
     return AXIS2_SUCCESS;
 }
 
