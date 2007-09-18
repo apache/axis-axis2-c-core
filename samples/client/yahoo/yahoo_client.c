@@ -95,7 +95,7 @@ int main (int argc, char *argv[])
     if (ret_node)
     {
 		format_output (env, ret_node);
-        printf("\necho client invoke SUCCESSFUL!\n");
+        printf("\nYahoo REST client invoke SUCCESSFUL!\n");
     }
     else
     {
