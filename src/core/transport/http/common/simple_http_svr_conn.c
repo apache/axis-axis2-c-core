@@ -21,6 +21,7 @@
 #include <axutil_network_handler.h>
 #include <axis2_http_chunked_stream.h>
 #include <platforms/axutil_platform_auto_sense.h>
+#include <string.h>
 
 struct axis2_simple_http_svr_conn
 {
@@ -197,7 +198,7 @@ axis2_simple_http_svr_conn_read_request(
         }
     }
     
-    if (str_line)
+    if (strlen(str_line))
     {
         if (0 != axutil_strncasecmp(str_line, "GET", 3) && 0 !=
                 axutil_strncasecmp(str_line, "POST", 4))
