@@ -92,7 +92,7 @@ static const axis2_transport_receiver_ops_t tcp_transport_receiver_ops_var = {
     axis2_tcp_server_free
 };
 
-AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
+axis2_transport_receiver_t *AXIS2_CALL
 axis2_tcp_server_create(
     const axutil_env_t *env,
     const axis2_char_t *repo,

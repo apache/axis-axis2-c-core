@@ -21,6 +21,7 @@
 #include <axis2_tcp_transport.h>
 #include <axis2_conf.h>
 #include <axutil_string.h>
+#include <axutil_stream.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_op_ctx.h>
 #include <axis2_engine.h>
@@ -31,6 +32,7 @@
 #include <axiom_soap.h>
 #include <axiom.h>
 #include <axis2_simple_tcp_svr_conn.h>
+
 
 struct axis2_tcp_worker
 {
@@ -81,12 +83,10 @@ axis2_tcp_worker_process_request(
     axis2_simple_tcp_svr_conn_t *svr_conn,
     axis2_char_t *simple_request)
 {
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "start:axis2_tcp_worker_process_request");
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_transport_out_desc_t *out_desc = NULL;
     axis2_transport_in_desc_t *in_desc = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
-    axutil_stream_t *out_stream = axutil_stream_create_basic (env);
     axiom_xml_reader_t *reader = NULL;
     axiom_stax_builder_t *builder = NULL;
     axiom_soap_builder_t *soap_builder = NULL;
@@ -97,7 +97,11 @@ axis2_tcp_worker_process_request(
     axis2_char_t *buffer = NULL;
     int len = 0;
     int write = -1;
+    axutil_stream_t *out_stream = NULL;
 
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "start:axis2_tcp_worker_process_request");
+
+	out_stream = axutil_stream_create_basic (env);
     reader = axiom_xml_reader_create_for_memory(env, simple_request,
         axutil_strlen(simple_request), NULL, AXIS2_XML_PARSER_TYPE_BUFFER);
     if (!reader)
@@ -161,7 +165,7 @@ axis2_tcp_worker_process_request(
     buffer [len] = 0;
     if (svr_stream && buffer)
     {
-        write = axutil_stream_write_socket (svr_stream, env, buffer, len + 1);
+        write = axutil_stream_write(svr_stream, env, buffer, len + 1);
         if (write < 0)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "stream write failed");

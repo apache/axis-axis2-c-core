@@ -26,6 +26,8 @@
 #include <axiom_soap.h>
 #include <axutil_types.h>
 #include <axutil_url.h>
+#include <axutil_network_handler.h>
+
 
 #define RES_BUFF 50
 /**
@@ -128,7 +130,6 @@ axis2_tcp_transport_sender_invoke(
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
-    AXIS2_LOG_DEBUG (env->log, AXIS2_LOG_SI, "start:tcp transport sender invoke");
     axis2_op_t *op = NULL;
     const axis2_char_t *mep_uri = NULL;
     axis2_bool_t is_server = AXIS2_TRUE;
@@ -139,7 +140,9 @@ axis2_tcp_transport_sender_invoke(
     axutil_stream_t *out_stream = NULL;
     int buffer_size = 0;
 
-    op = axis2_msg_ctx_get_op (msg_ctx, env);
+    AXIS2_LOG_DEBUG (env->log, AXIS2_LOG_SI, "start:tcp transport sender invoke");
+
+	op = axis2_msg_ctx_get_op (msg_ctx, env);
     mep_uri = axis2_op_get_msg_exchange_pattern(op, env);
 
     is_server = axis2_msg_ctx_get_server_side (msg_ctx, env);

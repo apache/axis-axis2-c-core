@@ -127,8 +127,8 @@ axis2_simple_tcp_svr_conn_read_request(
     const axutil_env_t *env)
 {
     int size = 32000;
-    axis2_char_t str_line[size];
-    axis2_char_t tmp_buf[size];
+    axis2_char_t str_line[32000];
+    axis2_char_t tmp_buf[32000];
     int read = -1;
         
     AXIS2_ENV_CHECK(env, NULL);
