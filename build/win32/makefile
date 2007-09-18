@@ -137,9 +137,8 @@ CFLAGS = $(CFLAGS) /D "AXIS2_LIBCURL_ENABLED"
 ################### linker options
 
 LD = @link.exe
-LDFLAGS = /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXSLT_BIN_DIR)\lib \
-	  /LIBPATH:$(LIBXML2_BIN_DIR)\lib  /LIBPATH:$(APACHE_BIN_DIR)\lib \
-	  /LIBPATH:$(ZLIB_BIN_DIR)\lib
+LDFLAGS = /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXML2_BIN_DIR)\lib \
+       	/LIBPATH:$(APACHE_BIN_DIR)\lib /LIBPATH:$(ZLIB_BIN_DIR)\lib
 		 
 LIBS =  Rpcrt4.lib Ws2_32.lib
 
@@ -153,7 +152,7 @@ LDFLAGS = $(LDFLAGS) /LIBPATH:$(LIBCURL_BIN_DIR)
 LIBS = $(LIBS) libcurl_imp.lib
 !endif
 
-!if "$(APACHE_VERSION_IS_2_0_59)" == "1"
+!if "$(APACHE_VERSION_2_0_X)" == "1"
 APACHE_LIBS = apr.lib xml.lib libhttpd.lib aprutil.lib libapr.lib
 !else
 APACHE_LIBS = apr-1.lib xml.lib libhttpd.lib aprutil-1.lib libapr-1.lib
@@ -793,12 +792,12 @@ axis2_IIS_module : $(AXIS2_LIBS)\mod_axis2_IIS.dll
 
 
 axis2_core: axis2_util axis2_parser axiom neethi axis2_engine axis2_http_sender \
-	axis2_http_receiver axis2_mod_addr simple_axis2_http_server axis2_tcp_sender axis2_tcp_receiver simple_axis2_tcp_server
+	axis2_http_receiver axis2_mod_addr simple_axis2_http_server
 
 axis2_core_guththila: axis2_util guththila axis2_parser_with_guththila axiom neethi axis2_engine \
-	axis2_http_sender axis2_http_receiver axis2_mod_addr simple_axis2_http_server simple_axis2_tcp_server
+	axis2_http_sender axis2_http_receiver axis2_mod_addr simple_axis2_http_server
 
-
+axis2_tcp : axis2_tcp_sender axis2_tcp_receiver simple_axis2_tcp_server
 
 ##### logging module
 	
@@ -1254,10 +1253,13 @@ build: deploy axis2_core axis2_samples copy_include
 	
 build_with_guththila : deploy axis2_core_guththila axis2_samples copy_include
 
+!if "$(WITH_TCP)" == "1"
+all: $(PARSER) axis2_tcp
+!else
+all: $(PARSER)
+!endif
 	
 ##############################################################################################
-
-all: $(PARSER)
 
 install: all copy_extra
 	
