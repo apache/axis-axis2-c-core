@@ -61,13 +61,16 @@ AXUTIL = axutil
 AXIS2_PARSER = axis2_parser
 AXIOM = axiom
 NEETHI = neethi				 
-AXIS2_TRANSPORT_SENDER = axis2_http_sender
-AXIS2_TRANSPORT_RECEIVER = axis2_http_receiver
+AXIS2_HTTP_SENDER = axis2_http_sender
+AXIS2_HTTP_RECEIVER = axis2_http_receiver
+AXIS2_TCP_SENDER = axis2_tcp_sender
+AXIS2_TCP_RECEIVER = axis2_tcp_receiver
 AXIS2_ENGINE = axis2_engine
 AXIS2_APACHE_MODULE = mod_axis2
 AXIS2_IIS_MODULE = axis2_mod_IIS
 AXIS2_MOD_ADDR = axis2_mod_addr
-AXIS2_SERVER = axis2_http_server
+AXIS2_HTTP_SERVER = axis2_http_server
+AXIS2_TCP_SERVER = axis2_tcp_server
 GUTHTHILA = guththila
 AXIS2_MOD_LOG = axis2_mod_log
 
@@ -94,6 +97,7 @@ AXIS2_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\src\core\deployment \
 		/I$(AXIS2_SOURCE_DIR)\src\core\description \
 		/I$(AXIS2_SOURCE_DIR)\src\core\transport \
+		/I$(AXIS2_SOURCE_DIR)\src\core\transport\tcp \
 		/I$(AXIS2_SOURCE_DIR)\include \
 		/I$(AXIS2_SOURCE_DIR)\src\core\engine \
 		/I$(AXIS2_SOURCE_DIR)\src\core\context \
@@ -521,79 +525,132 @@ axis2_engine : $(AXIS2_LIBS)\$(AXIS2_ENGINE).dll
 
 ##### axis2 http sender
 
-SENDER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\sender
-SENDER_INTDIR = $(AXIS2_INTDIR)\http_sender
-SENDER_INTDIR1 = $(AXIS2_INTDIR)\http_sender\ssl
-SENDER_INTDIR2 = $(AXIS2_INTDIR)\http_sender\libcurl
+HTTP_SENDER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\sender
+HTTP_SENDER_INTDIR = $(AXIS2_INTDIR)\http_sender
+HTTP_SENDER_INTDIR1 = $(AXIS2_INTDIR)\http_sender\ssl
+HTTP_SENDER_INTDIR2 = $(AXIS2_INTDIR)\http_sender\libcurl
 
-SENDER_OBJS = $(SENDER_INTDIR)\*.obj
+HTTP_SENDER_OBJS = $(HTTP_SENDER_INTDIR)\*.obj
 
-$(SENDER_INTDIR) :
-	if not exist $(SENDER_INTDIR) mkdir $(SENDER_INTDIR)
+$(HTTP_SENDER_INTDIR) :
+	if not exist $(HTTP_SENDER_INTDIR) mkdir $(HTTP_SENDER_INTDIR)
 
-$(SENDER_INTDIR1) :
-	if not exist $(SENDER_INTDIR1) mkdir $(SENDER_INTDIR1)
+$(HTTP_SENDER_INTDIR1) :
+	if not exist $(HTTP_SENDER_INTDIR1) mkdir $(HTTP_SENDER_INTDIR1)
 
-$(SENDER_INTDIR2) :
-	if not exist $(SENDER_INTDIR2) mkdir $(SENDER_INTDIR2)
+$(HTTP_SENDER_INTDIR2) :
+	if not exist $(HTTP_SENDER_INTDIR2) mkdir $(HTTP_SENDER_INTDIR2)
 
-{$(SENDER_SRC)}.c{$(SENDER_INTDIR)}.obj ::
-	$(CC) $(CFLAGS) /Fo$(SENDER_INTDIR)\ /c $<
+{$(HTTP_SENDER_SRC)}.c{$(HTTP_SENDER_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(HTTP_SENDER_INTDIR)\ /c $<
 
-{$(SENDER_SRC)\ssl}.c{$(SENDER_INTDIR1)}.obj ::
-	$(CC) $(CFLAGS) /Fo$(SENDER_INTDIR1)\ /c $<
+{$(HTTP_SENDER_SRC)\ssl}.c{$(HTTP_SENDER_INTDIR1)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(HTTP_SENDER_INTDIR1)\ /c $<
 
-{$(SENDER_SRC)\libcurl}.c{$(SENDER_INTDIR2)}.obj ::
-	$(CC) $(CFLAGS) /Fo$(SENDER_INTDIR2)\ /c $<
+{$(HTTP_SENDER_SRC)\libcurl}.c{$(HTTP_SENDER_INTDIR2)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(HTTP_SENDER_INTDIR2)\ /c $<
 
 !if "$(ENABLE_SSL)" == "1"
-SENDER_OBJS = $(SENDER_OBJS) \
-	      $(SENDER_INTDIR1)\*.obj
+HTTP_SENDER_OBJS = $(HTTP_SENDER_OBJS) \
+	      $(HTTP_SENDER_INTDIR1)\*.obj
 
-$(SENDER_OBJS) : $(SENDER_INTDIR) $(SENDER_INTDIR1)
+$(HTTP_SENDER_OBJS) : $(HTTP_SENDER_INTDIR) $(HTTP_SENDER_INTDIR1)
 !elseif "$(ENABLE_LIBCURL)" == "1"
-SENDER_OBJS = $(SENDER_OBJS) \
-	      $(SENDER_INTDIR2)\*.obj 
+HTTP_SENDER_OBJS = $(HTTP_SENDER_OBJS) \
+	      $(HTTP_SENDER_INTDIR2)\*.obj 
 
-$(SENDER_OBJS) : $(SENDER_INTDIR) $(SENDER_INTDIR2)
+$(HTTP_SENDER_OBJS) : $(HTTP_SENDER_INTDIR) $(HTTP_SENDER_INTDIR2)
 !else
-$(SENDER_OBJS) : $(SENDER_INTDIR)
+$(HTTP_SENDER_OBJS) : $(HTTP_SENDER_INTDIR)
 !endif
 
-$(AXIS2_LIBS)\$(AXIS2_TRANSPORT_SENDER).dll : $(SENDER_OBJS)
-	$(LD) $(LDFLAGS) $(SENDER_OBJS) $(AXUTIL).lib \
+$(AXIS2_LIBS)\$(AXIS2_HTTP_SENDER).dll : $(HTTP_SENDER_OBJS)
+	$(LD) $(LDFLAGS) $(HTTP_SENDER_OBJS) $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
-	/DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_TRANSPORT_SENDER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_TRANSPORT_SENDER).lib
+	/DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_HTTP_SENDER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_HTTP_SENDER).lib
 
-axis2_http_sender : $(AXIS2_LIBS)\$(AXIS2_TRANSPORT_SENDER).dll
+axis2_http_sender : $(AXIS2_LIBS)\$(AXIS2_HTTP_SENDER).dll
 
 
-##### axis2 http senders
+##### axis2 http sender
+
+##### axis2_tcp_sender
+
+
+TCP_SENDER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\tcp\sender
+TCP_SENDER_INTDIR = $(AXIS2_INTDIR)\tcp_sender
+
+TCP_SENDER_OBJS = $(TCP_SENDER_INTDIR)\*.obj
+
+$(TCP_SENDER_INTDIR) :
+	if not exist $(TCP_SENDER_INTDIR) mkdir $(TCP_SENDER_INTDIR)
+
+{$(TCP_SENDER_SRC)}.c{$(TCP_SENDER_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(TCP_SENDER_INTDIR)\ /c $<
+
+
+$(TCP_SENDER_OBJS) : $(TCP_SENDER_INTDIR)
+
+$(AXIS2_LIBS)\$(AXIS2_TCP_SENDER).dll : $(TCP_SENDER_OBJS)
+	$(LD) $(LDFLAGS) $(TCP_SENDER_OBJS) $(AXUTIL).lib \
+	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
+	/DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_TCP_SENDER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_TCP_SENDER).lib
+
+axis2_tcp_sender : $(AXIS2_LIBS)\$(AXIS2_TCP_SENDER).dll
+
+
+##### end axis2_tcp_sender
+
 
 ##### axis2 http receiver
 
-RECEIVER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\receiver
-RECEIVER_INTDIR = $(AXIS2_INTDIR)\http_receiver
+HTTP_RECEIVER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\receiver
+HTTP_RECEIVER_INTDIR = $(AXIS2_INTDIR)\http_receiver
 
-RECEIVER_OBJS = $(RECEIVER_INTDIR)\*.obj
+HTTP_RECEIVER_OBJS = $(HTTP_RECEIVER_INTDIR)\*.obj
 
-$(RECEIVER_INTDIR) :
-	if not exist $(RECEIVER_INTDIR) mkdir $(RECEIVER_INTDIR)
+$(HTTP_RECEIVER_INTDIR) :
+	if not exist $(HTTP_RECEIVER_INTDIR) mkdir $(HTTP_RECEIVER_INTDIR)
 
-{$(RECEIVER_SRC)}.c{$(RECEIVER_INTDIR)}.obj ::
-	$(CC) $(CFLAGS) /Fo$(RECEIVER_INTDIR)\ /c $<
+{$(HTTP_RECEIVER_SRC)}.c{$(HTTP_RECEIVER_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(HTTP_RECEIVER_INTDIR)\ /c $<
 
-$(RECEIVER_OBJS) : $(RECEIVER_INTDIR)
+$(HTTP_RECEIVER_OBJS) : $(HTTP_RECEIVER_INTDIR)
 
-$(AXIS2_LIBS)\$(AXIS2_TRANSPORT_RECEIVER).dll : $(RECEIVER_OBJS)
-	$(LD) $(LDFLAGS) $(RECEIVER_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
-	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_TRANSPORT_RECEIVER).dll \
-	/IMPLIB:$(AXIS2_LIBS)\$(AXIS2_TRANSPORT_RECEIVER).lib
+$(AXIS2_LIBS)\$(AXIS2_HTTP_RECEIVER).dll : $(HTTP_RECEIVER_OBJS)
+	$(LD) $(LDFLAGS) $(HTTP_RECEIVER_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_HTTP_RECEIVER).dll \
+	/IMPLIB:$(AXIS2_LIBS)\$(AXIS2_HTTP_RECEIVER).lib
 
-axis2_http_receiver : $(AXIS2_LIBS)\$(AXIS2_TRANSPORT_RECEIVER).dll
+axis2_http_receiver : $(AXIS2_LIBS)\$(AXIS2_HTTP_RECEIVER).dll
 
 
 ##### end axis2 http receiver
+
+##### axis2_tcp_receiver
+
+TCP_RECEIVER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\tcp\receiver
+TCP_RECEIVER_INTDIR = $(AXIS2_INTDIR)\tcp_receiver
+
+TCP_RECEIVER_OBJS = $(TCP_RECEIVER_INTDIR)\*.obj
+
+$(TCP_RECEIVER_INTDIR) :
+	if not exist $(TCP_RECEIVER_INTDIR) mkdir $(TCP_RECEIVER_INTDIR)
+
+{$(TCP_RECEIVER_SRC)}.c{$(TCP_RECEIVER_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(TCP_RECEIVER_INTDIR)\ /c $<
+
+$(TCP_RECEIVER_OBJS) : $(TCP_RECEIVER_INTDIR)
+
+$(AXIS2_LIBS)\$(AXIS2_TCP_RECEIVER).dll : $(TCP_RECEIVER_OBJS)
+	$(LD) $(LDFLAGS) $(TCP_RECEIVER_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_TCP_RECEIVER).dll \
+	/IMPLIB:$(AXIS2_LIBS)\$(AXIS2_TCP_RECEIVER).lib
+
+axis2_tcp_receiver : $(AXIS2_LIBS)\$(AXIS2_TCP_RECEIVER).dll
+
+
+##### end axis2_tcp_receiver
 
 ##### axis2 mod addr
 ADDR_SRC = $(AXIS2_SOURCE_DIR)\src\modules\mod_addr
@@ -636,15 +693,45 @@ $(AXIS2_SVR_INTDIR) :
 $(AXIS2_SVR_OBJS) : $(AXIS2_SVR_INTDIR)
 
 
-$(AXIS2_BINS)\$(AXIS2_SERVER).exe : $(AXIS2_SVR_OBJS)
+$(AXIS2_BINS)\$(AXIS2_HTTP_SERVER).exe : $(AXIS2_SVR_OBJS)
 	$(LD) $(LDFLAGS) $(AXIS2_SVR_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
-	$(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib  /OUT:$(AXIS2_BINS)\$(AXIS2_SERVER).exe 
+	$(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_HTTP_RECEIVER).lib  /OUT:$(AXIS2_BINS)\$(AXIS2_HTTP_SERVER).exe 
 		
 	copy $(AXIS2_SOURCE_DIR)\samples\server\axis2.xml $(AXIS2_BINDIR)\
 
-axis2_server : $(AXIS2_BINS)\$(AXIS2_SERVER).exe
+simple_axis2_http_server : $(AXIS2_BINS)\$(AXIS2_HTTP_SERVER).exe
 
 ##### end simple_axis2_server
+
+##### simple tcp server
+
+AXIS2_TCP_SVR_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\tcp\server\simple_tcp_server
+
+AXIS2_TCP_SVR_INTDIR = $(AXIS2_INTDIR)\simple_tcp_server
+
+AXIS2_TCP_SVR_OBJS = $(AXIS2_INTDIR)\simple_tcp_server\*.obj
+
+$(AXIS2_TCP_SVR_INTDIR) :
+	if not exist $(AXIS2_TCP_SVR_INTDIR) mkdir $(AXIS2_TCP_SVR_INTDIR)
+
+{$(AXIS2_TCP_SVR_SRC)}.c{$(AXIS2_TCP_SVR_INTDIR)}.obj ::
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" \
+	$(AXIS2_INCLUDE_PATH) /Fo$(AXIS2_TCP_SVR_INTDIR)\ /c $<
+
+$(AXIS2_TCP_SVR_OBJS) : $(AXIS2_TCP_SVR_INTDIR)
+
+
+$(AXIS2_BINS)\$(AXIS2_TCP_SERVER).exe : $(AXIS2_TCP_SVR_OBJS)
+	$(LD) $(LDFLAGS) $(AXIS2_TCP_SVR_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TCP_RECEIVER).lib  /OUT:$(AXIS2_BINS)\$(AXIS2_TCP_SERVER).exe 
+		
+	copy $(AXIS2_SOURCE_DIR)\samples\server\axis2.xml $(AXIS2_BINDIR)\
+
+simple_axis2_tcp_server : $(AXIS2_BINS)\$(AXIS2_TCP_SERVER).exe
+
+
+##### end simple tcp server
+
 
 
 ##########  server modules 
@@ -706,10 +793,11 @@ axis2_IIS_module : $(AXIS2_LIBS)\mod_axis2_IIS.dll
 
 
 axis2_core: axis2_util axis2_parser axiom neethi axis2_engine axis2_http_sender \
-	axis2_http_receiver axis2_mod_addr axis2_server
+	axis2_http_receiver axis2_mod_addr simple_axis2_http_server axis2_tcp_sender axis2_tcp_receiver simple_axis2_tcp_server
 
 axis2_core_guththila: axis2_util guththila axis2_parser_with_guththila axiom neethi axis2_engine \
-	axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server
+	axis2_http_sender axis2_http_receiver axis2_mod_addr simple_axis2_http_server simple_axis2_tcp_server
+
 
 
 ##### logging module
@@ -831,8 +919,8 @@ axis2_services_sg_math:
 	$(AXIS2_SOURCE_DIR)\samples\server\sg_math\mul.c \
 	$(AXIS2_SOURCE_DIR)\samples\server\sg_math\mul_skeleton.c /Fo$(AXIS2_INTDIR_SGM)\mul\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_SGM)\mul\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
-	$(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib \
-	$(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:$(AXIS2_SERVICES)\sg_math\mul.dll  
+	$(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_HTTP_RECEIVER).lib \
+	$(AXIS2_HTTP_SENDER).lib /DLL /OUT:$(AXIS2_SERVICES)\sg_math\mul.dll  
 	
 	copy $(AXIS2_SOURCE_DIR)\samples\server\sg_math\services.xml $(AXIS2_SERVICES)\sg_math
 
