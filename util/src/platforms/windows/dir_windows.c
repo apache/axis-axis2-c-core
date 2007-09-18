@@ -67,9 +67,9 @@ int AXIS2_CALL closedir(DIR *_dirp)
     if (!_dirp)
         return iret;
     iret = _findclose(_dirp->handle);
-    if (iret == 0 && _dirp->dirname)
+    if (_dirp->dirname)
         free(_dirp->dirname);
-    if (iret == 0 && _dirp)
+    if (_dirp)
         free(_dirp);
 
     return iret;
