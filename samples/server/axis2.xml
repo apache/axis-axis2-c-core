@@ -27,6 +27,10 @@
     <transportReceiver name="http" class="axis2_http_receiver">
         <parameter name="port" locked="false">6060</parameter>
     </transportReceiver>
+    <!--transportReceiver name="tcp" class="axis2_tcp_receiver">
+        <parameter name="port" locked="false">6060</parameter>
+    </transportReceiver-->
+
 
     <!-- ================================================= -->
     <!-- Transport Outs -->
