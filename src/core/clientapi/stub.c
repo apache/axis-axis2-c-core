@@ -107,7 +107,6 @@ axis2_stub_create_with_endpoint_uri_and_client_home(const axutil_env_t *env,
 
     if (!stub)
     {
-        axis2_stub_free(stub, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
