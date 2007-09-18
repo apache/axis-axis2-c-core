@@ -75,8 +75,13 @@ int main(int argc, char** argv)
     node = build_om_programatically(env, operation, param1, param2);
     stub =
         axis2_math_stub_create_with_endpoint_uri_and_client_home(env, address,   client_home);
+        
     /* create node and invoke math */
-    ret_node = axis2_math_stub_add(stub, env, node);
+    if (stub)
+    {
+        ret_node = axis2_math_stub_add(stub, env, node);
+    }
+    
     if (ret_node)
     {
         if (axiom_node_get_node_type(ret_node, env) == AXIOM_ELEMENT)
