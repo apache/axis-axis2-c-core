@@ -150,7 +150,7 @@ axis2_arch_file_data_free(axis2_arch_file_data_t *arch_file_data,
             svc = (axis2_svc_t *) val;
             if (svc)
             {
-                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "dam_svc_name:%s", axis2_svc_get_name(svc, env));
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Service name :%s", axis2_svc_get_name(svc, env));
                 axis2_svc_free(svc, env);
             }
         }

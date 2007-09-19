@@ -669,7 +669,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             AXIS2_TRANSPORT_ENUMS transport_enum;
 
             name = axiom_attribute_get_value(trs_name, env);
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "dam_transport_name:%s", name);
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Transport name:%s", name);
             if (name)
             {
                 if (axutil_strcmp(name, AXIS2_TRANSPORT_HTTP) == 0)
