@@ -141,18 +141,15 @@ axutil_url_parse_string(const axutil_env_t *env,
     port_str = strchr(server, ':');
     if (!port_str)
     {
-        if (0 == axutil_strcasecmp(protocol, "http"))
-        {
+        if (axutil_strcasecmp(protocol, "http") == 0)
             port = 80;
-        }
-        if (0 == axutil_strcasecmp(protocol, "ftp"))
-        {
+        else if (axutil_strcasecmp(protocol, "https") == 0)
+            port = 443;
+        else if (axutil_strcasecmp(protocol, "ftp") == 0)
             port = 20;
-        }
-        if (0 == axutil_strcasecmp(protocol, "smtp"))
-        {
+        else if (axutil_strcasecmp(protocol, "smtp") == 0)
             port = 25;
-        }
+        
         path = strchr(server, '/');
         if (!path)
         {
