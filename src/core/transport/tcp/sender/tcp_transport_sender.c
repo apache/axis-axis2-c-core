@@ -247,7 +247,7 @@ axis2_tcp_transport_sender_invoke(
                              "retrieving port failed");
             return AXIS2_FAILURE;
         }
-        socket = axutil_network_handler_open_socket (env, host, port);
+        socket = axutil_network_handler_open_socket (env,(char*) host, port);
         if (!socket)
         {
             AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "socket creation failed");
@@ -289,7 +289,7 @@ axis2_tcp_transport_sender_invoke(
             res_size ++;
         }
 
-        axutil_network_handler_close_socket (stream->socket, env);
+        axutil_network_handler_close_socket (env, stream->socket);
         axutil_stream_close (stream, env);
         axutil_stream_free (stream, env);
 
