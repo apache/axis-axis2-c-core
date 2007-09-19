@@ -147,9 +147,14 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
         {
             addr_ns = AXIS2_WSA_NAMESPACE;
         }
-        else
+        else if(axutil_strcmp
+                (AXIS2_WSA_NAMESPACE_SUBMISSION, addressing_version_from_msg_ctx) == 0)
         {
             addr_ns = AXIS2_WSA_NAMESPACE_SUBMISSION;
+        }
+        else
+        {
+            addr_ns = AXIS2_WSA_NAMESPACE;
         }
     }
     else if ( axis2_msg_ctx_get_op_ctx(msg_ctx, env))
@@ -166,7 +171,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
 
         if (!in_msg_ctx)
         {
-            addr_ns = AXIS2_WSA_NAMESPACE;   /* setting Submission version as the default addressing namespace */
+            addr_ns = AXIS2_WSA_NAMESPACE;   /* setting version 1.0 as the default addressing namespace */
         }
         else
         {
