@@ -42,7 +42,7 @@ extern "C"
 
 	
 
-    AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
+    axis2_transport_receiver_t *AXIS2_CALL
     axis2_tcp_server_create (
         const axutil_env_t *env,
         const axis2_char_t *repo,

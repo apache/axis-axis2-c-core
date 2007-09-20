@@ -146,13 +146,9 @@ axis2_ssl_utils_initialize_ssl(
     
     if (SSL_get_verify_result(ssl) != X509_V_OK)
     {
-        char sslerror[120];
-        char outmsg[170];
+        char sslerror[128]; /** error buffer must be at least 120 bytes long */
         ERR_error_string(SSL_get_verify_result(ssl), sslerror);
-        snprintf(outmsg, 170, 
-                 "[ssl client] SSL certificate verification failed (%s)",
-                 sslerror);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, outmsg);
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,"[ssl client] SSL certificate verification failed (%s)" ,sslerror);
         return NULL;
     }
 
