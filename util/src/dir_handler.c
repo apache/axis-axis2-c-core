@@ -287,13 +287,11 @@ axutil_dir_handler_list_service_or_module_dirs(const axutil_env_t *env,
         AXIS2_FREE(env->allocator, buf);
     }
 
-/*#ifndef WIN32*/
     for (i = 0; i < count; i++)
     {
-        AXIS2_FREE(env->allocator, files[i]);
+        free(files[i]);
     }
-    AXIS2_FREE(env->allocator, files);
-/*#endif*/
+    free(files);
     return file_list;
 }
 
