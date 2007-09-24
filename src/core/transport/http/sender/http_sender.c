@@ -442,28 +442,27 @@ axis2_http_sender_send(
 				content_type = 
                     (axis2_char_t *) axiom_output_get_content_type(sender->om_output, 
                                                                    env);
-				if (AXIS2_TRUE !=  axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
+				if (AXIS2_TRUE !=  axis2_msg_ctx_get_is_soap_11(msg_ctx, env) && 
+                    axutil_strcmp(soap_action, ""))
 				{
 					/* handle SOAP action for SOAP 1.2 case */
-					if (axutil_strcmp(soap_action, ""))
-					{
-						axis2_char_t *temp_content_type = NULL;
-						temp_content_type = axutil_stracat(env, 
-                                                           content_type, 
-                                                           ";action=\"");
-						content_type = temp_content_type;
-						temp_content_type = axutil_stracat(env, 
-                                                           content_type, 
-                                                           soap_action);
-						AXIS2_FREE(env->allocator, content_type);
-						content_type = temp_content_type;
-                        temp_content_type = axutil_stracat(env, 
-                                                           content_type, 
-                                                           "\"");
-					    AXIS2_FREE(env->allocator, content_type);
-					    content_type = temp_content_type;
-					}
-				}else
+                    axis2_char_t *temp_content_type = NULL;
+                    temp_content_type = axutil_stracat(env, 
+                                                       content_type, 
+                                                       ";action=\"");
+                    content_type = temp_content_type;
+                    temp_content_type = axutil_stracat(env, 
+                                                       content_type, 
+                                                       soap_action);
+                    AXIS2_FREE(env->allocator, content_type);
+                    content_type = temp_content_type;
+                    temp_content_type = axutil_stracat(env, 
+                                                       content_type, 
+                                                       "\"");
+                    AXIS2_FREE(env->allocator, content_type);
+                    content_type = temp_content_type;
+				}
+                else
 				{
 					content_type_deepl_copy = AXIS2_FALSE;
 				}
