@@ -225,7 +225,7 @@ AC_ARG_WITH(apr,
 
 AC_MSG_CHECKING(whether to build tests)
 AC_ARG_ENABLE(tests, [  --enable-tests    
-                          build tests (default=yes)],
+                          build tests (default=no)],
 [ case "${enableval}" in
   yes)
     AC_MSG_RESULT(yes)
