@@ -7,7 +7,7 @@ export AXIS2C_HOME
 
 echo "AXIS2C_HOME = ${AXIS2C_HOME}"
 
-sh configure --prefix=${AXIS2C_HOME} 
+sh configure --prefix=${AXIS2C_HOME} --enable-tests=yes
 make -j 10 
 make install
 
