@@ -68,6 +68,8 @@ axis2_desc_create(const axutil_env_t *env)
         axis2_desc_free(desc, env);
         return NULL;
     }
+    
+    desc->policy_include = axis2_policy_include_create_with_desc(env, desc);
 
     return desc;
 }
