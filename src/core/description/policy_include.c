@@ -352,7 +352,7 @@ axis2_policy_include_calculate_policy(axis2_policy_include_t *policy_include,
     return AXIS2_SUCCESS;
 }
 
-static axis2_status_t
+static neethi_policy_t *
 axis2_policy_include_calculate_effective_policy(axis2_policy_include_t *policy_include,
     const axutil_env_t *env)
 {    
@@ -395,9 +395,10 @@ axis2_policy_include_calculate_effective_policy(axis2_policy_include_t *policy_i
     {
         result = axis2_policy_include_get_policy(policy_include, env);
     }
-    
-    policy_include->effective_policy = result;
-    return AXIS2_SUCCESS;
+   
+    return result;
+    /*policy_include->effective_policy = result;
+    return AXIS2_SUCCESS;*/
 }
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
@@ -412,8 +413,11 @@ AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
 axis2_policy_include_get_effective_policy(axis2_policy_include_t *policy_include,
     const axutil_env_t *env)
 {
-    axis2_policy_include_calculate_effective_policy(policy_include, env);
-    return policy_include->effective_policy;
+    /*if (policy_include->effective_policy)
+        return policy_include->effective_policy;
+    */
+    return axis2_policy_include_calculate_effective_policy(policy_include, env);
+    /*return policy_include->effective_policy;*/
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
