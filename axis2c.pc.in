@@ -5,7 +5,7 @@ includedir=@includedir@
 
 Name: Axis2/C
 Version: @VERSION@
-Description: Apache Axis2/C Version 0.94.
+Description: Apache Axis2/C Version 1.1.0.
 Requires:
 Libs: -L${libdir} -laxis2 -lxml2 @LIBS@
 Cflags: -I${includedir}
