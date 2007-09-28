@@ -218,6 +218,14 @@ axis2_load_services(
                         impl_class =
                             axutil_class_loader_create_dll(env,
                                                            impl_info_param);
+                        if(!impl_class)
+                        {
+                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                "Service %s could not be loaded",
+                                axis2_svc_get_name(svc_desc, env));
+                            axutil_allocator_switch_to_local_pool(env->allocator);
+                            return AXIS2_FAILURE;
+                        }
                         axis2_svc_set_impl_class(svc_desc, env, impl_class);
                         AXIS2_SVC_SKELETON_INIT_WITH_CONF((axis2_svc_skeleton_t
                                                            *) impl_class, env,
