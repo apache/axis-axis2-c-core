@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -19,20 +20,20 @@
 #define AXIOM_CHILD_ELEMENT_ITERATOR_H
 
 /**
-*@file axiom_child_element_iterator.h 
-*@brief this is the iterator for om elemnts 
+*@file axiom_child_element_iterator.h
+*@brief this is the iterator for om elemnts
 */
 
 #include <axiom_node.h>
 #include <axiom_text.h>
-
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-    typedef struct axiom_child_element_iterator axiom_child_element_iterator_t;
+    typedef struct axiom_child_element_iterator
+                axiom_child_element_iterator_t;
 
     /**
      * @defgroup axiom_child_element_iterator child element iterator
@@ -40,9 +41,10 @@ extern "C"
      * @{
      */
 
-    AXIS2_EXTERN  void AXIS2_CALL 
-    axiom_child_element_iterator_free(void *iterator,
-        const axutil_env_t *env);
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_child_element_iterator_free(
+        void *iterator,
+        const axutil_env_t * env);
 
     /**
     * Removes from the underlying collection the last element returned by the
@@ -51,35 +53,43 @@ extern "C"
     * the underlying collection is modified while the iteration is in
     * progress in any way other than by calling this method.
     */
-    AXIS2_EXTERN  axis2_status_t AXIS2_CALL
-    axiom_child_element_iterator_remove(axiom_child_element_iterator_t *iterator,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+    axiom_child_element_iterator_remove(
+        axiom_child_element_iterator_t * iterator,
+        const axutil_env_t * env);
 
     /**
      * returns true if the iteration has more elements 
      * in otherwords it returns true if the next() would return an element
      * rather than null with an error code set to environments error
      */
-    AXIS2_EXTERN  axis2_bool_t AXIS2_CALL
-    axiom_child_element_iterator_has_next(axiom_child_element_iterator_t *iterator,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+
+    axiom_child_element_iterator_has_next(
+        axiom_child_element_iterator_t * iterator,
+        const axutil_env_t * env);
 
     /**
      * Returns the next element in the iteration. Returns null if there 
     * is no more elements 
      */
-    AXIS2_EXTERN  axiom_node_t *AXIS2_CALL
-    axiom_child_element_iterator_next(axiom_child_element_iterator_t *iterator,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_child_element_iterator_next(
+        axiom_child_element_iterator_t * iterator,
+        const axutil_env_t * env);
+
     /**
      * @param current child
      * @param env environment
      * return axiom_child_element_iterator_t
      */
 
-    AXIS2_EXTERN  axiom_child_element_iterator_t * AXIS2_CALL
-    axiom_child_element_iterator_create(const axutil_env_t *env,
-            axiom_node_t *current_child);
+    AXIS2_EXTERN axiom_child_element_iterator_t *AXIS2_CALL
+
+    axiom_child_element_iterator_create(
+        const axutil_env_t * env,
+        axiom_node_t * current_child);
 
 #define AXIOM_CHILD_ELEMENT_ITERATOR_FREE(iterator, env) \
         axiom_child_element_iterator_free(iterator, env)
@@ -99,5 +109,4 @@ extern "C"
 }
 #endif
 
-
-#endif /* AXIOM_CHILD_ELEMENT_ITERATOR_H */
+#endif                          /* AXIOM_CHILD_ELEMENT_ITERATOR_H */

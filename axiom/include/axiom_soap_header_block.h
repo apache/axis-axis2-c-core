@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,7 +18,6 @@
 
 #ifndef AXIOM_SOAP_HEADER_BLOCK_H
 #define AXIOM_SOAP_HEADER_BLOCK_H
-
 
 /**
  * @file axiom_soap_header_block.h
@@ -47,11 +47,13 @@ extern "C"
     * @param env Environment. MUST NOT be NULL
     * this is an internal function.
     */
-    AXIS2_EXTERN axiom_soap_header_block_t * AXIS2_CALL
-    axiom_soap_header_block_create_with_parent(const axutil_env_t *env,
-            const axis2_char_t *localname,
-            axiom_namespace_t *ns,
-            struct axiom_soap_header *parent);
+    AXIS2_EXTERN axiom_soap_header_block_t *AXIS2_CALL
+
+    axiom_soap_header_block_create_with_parent(
+        const axutil_env_t * env,
+        const axis2_char_t * localname,
+        axiom_namespace_t * ns,
+        struct axiom_soap_header *parent);
 
     /**
       * Free an axiom_soap_header_block
@@ -61,64 +63,84 @@ extern "C"
       *         else AXIS2_FAILURE
       */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_soap_header_block_free(axiom_soap_header_block_t *header_block,
-            const axutil_env_t *env);
+    axiom_soap_header_block_free(
+        axiom_soap_header_block_t * header_block,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_soap_header_block_set_role(axiom_soap_header_block_t *header_block,
-            const axutil_env_t *env,
-            axis2_char_t *uri);
+    axiom_soap_header_block_set_role(
+        axiom_soap_header_block_t * header_block,
+        const axutil_env_t * env,
+        axis2_char_t * uri);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_soap_header_block_set_must_understand_with_bool(axiom_soap_header_block_t *header_block,
-            const axutil_env_t *env,
-            axis2_bool_t must_understand);
+
+    axiom_soap_header_block_set_must_understand_with_bool(
+        axiom_soap_header_block_t * header_block,
+        const axutil_env_t * env,
+        axis2_bool_t must_understand);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_soap_header_block_set_must_understand_with_string(axiom_soap_header_block_t *header_block,
-            const axutil_env_t *env,
-            axis2_char_t *must_understand);
+
+    axiom_soap_header_block_set_must_understand_with_string(
+        axiom_soap_header_block_t * header_block,
+        const axutil_env_t * env,
+        axis2_char_t * must_understand);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axiom_soap_header_block_get_must_understand(axiom_soap_header_block_t *header_block,
-            const axutil_env_t *env);
+
+    axiom_soap_header_block_get_must_understand(
+        axiom_soap_header_block_t * header_block,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axiom_soap_header_block_is_processed(axiom_soap_header_block_t *header_block,
-            const axutil_env_t *env);
+
+    axiom_soap_header_block_is_processed(
+        axiom_soap_header_block_t * header_block,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_soap_header_block_set_processed(axiom_soap_header_block_t *header_block,
-            const axutil_env_t *env);
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axiom_soap_header_block_get_role(axiom_soap_header_block_t *header_block,
-            const axutil_env_t *env);
+    axiom_soap_header_block_set_processed(
+        axiom_soap_header_block_t * header_block,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axiom_soap_header_block_get_role(
+        axiom_soap_header_block_t * header_block,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_soap_header_block_set_attribute(axiom_soap_header_block_t *header_block,
-            const axutil_env_t *env,
-            const axis2_char_t *attr_name,
-            const axis2_char_t *attr_value,
-            const axis2_char_t *soap_envelope_namespace_uri);
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axiom_soap_header_block_get_attribute(axiom_soap_header_block_t *header_block,
-            const axutil_env_t *env,
-            const axis2_char_t *attr_name,
-            const axis2_char_t *soap_envelope_namespace_uri);
+    axiom_soap_header_block_set_attribute(
+        axiom_soap_header_block_t * header_block,
+        const axutil_env_t * env,
+        const axis2_char_t * attr_name,
+        const axis2_char_t * attr_value,
+        const axis2_char_t * soap_envelope_namespace_uri);
 
-    AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-    axiom_soap_header_block_get_base_node(axiom_soap_header_block_t *header_block,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+
+    axiom_soap_header_block_get_attribute(
+        axiom_soap_header_block_t * header_block,
+        const axutil_env_t * env,
+        const axis2_char_t * attr_name,
+        const axis2_char_t * soap_envelope_namespace_uri);
+
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+
+    axiom_soap_header_block_get_base_node(
+        axiom_soap_header_block_t * header_block,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axiom_soap_header_block_get_soap_version(axiom_soap_header_block_t *header_block,
-            const axutil_env_t *env);
+    axiom_soap_header_block_get_soap_version(
+        axiom_soap_header_block_t * header_block,
+        const axutil_env_t * env);
 
     /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIOM_SOAP_HEADER_BLOCK_H */
+#endif                          /* AXIOM_SOAP_HEADER_BLOCK_H */

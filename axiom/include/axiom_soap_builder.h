@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -31,7 +32,6 @@ extern "C"
 {
 #endif
 
-
     typedef struct axiom_soap_builder axiom_soap_builder_t;
 
     /**
@@ -44,64 +44,82 @@ extern "C"
      * creates a axiom_soap_builder struct
      * @param env Environment. MUST NOT be NULL
      */
-    AXIS2_EXTERN axiom_soap_builder_t * AXIS2_CALL
-    axiom_soap_builder_create(const axutil_env_t *env,
-            axiom_stax_builder_t *builder,
-            const axis2_char_t *soap_version);
+    AXIS2_EXTERN axiom_soap_builder_t *AXIS2_CALL
+    axiom_soap_builder_create(
+        const axutil_env_t * env,
+        axiom_stax_builder_t * builder,
+        const axis2_char_t * soap_version);
 
-    AXIS2_EXTERN void AXIS2_CALL 
-    axiom_soap_builder_free(axiom_soap_builder_t *builder,
-            const axutil_env_t *env);
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_soap_builder_free(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env);
 
-    AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
-    axiom_soap_builder_get_soap_envelope(axiom_soap_builder_t *builder,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
 
-    AXIS2_EXTERN axiom_document_t* AXIS2_CALL
-    axiom_soap_builder_get_document(axiom_soap_builder_t *builder,
-            const axutil_env_t *env);
+    axiom_soap_builder_get_soap_envelope(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axiom_document_t *AXIS2_CALL
+
+    axiom_soap_builder_get_document(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_soap_builder_next(axiom_soap_builder_t *builder,
-            const axutil_env_t *env);
+    axiom_soap_builder_next(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env);
 
-    AXIS2_EXTERN axiom_node_t* AXIS2_CALL 
-    axiom_soap_builder_get_document_element(axiom_soap_builder_t *builder,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axiom_soap_builder_set_bool_processing_mandatory_fault_elements(axiom_soap_builder_t *builder,
-            const axutil_env_t *env,
-            axis2_bool_t value);
+    axiom_soap_builder_get_document_element(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axiom_soap_builder_set_processing_detail_elements(axiom_soap_builder_t *builder,
-            const axutil_env_t *env,
-            axis2_bool_t value);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
-    AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
-    axiom_soap_builder_is_processing_detail_elements(axiom_soap_builder_t *builder,
-            const axutil_env_t *env);
+    axiom_soap_builder_set_bool_processing_mandatory_fault_elements(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env,
+        axis2_bool_t value);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
-    AXIS2_EXTERN int AXIS2_CALL 
-    axiom_soap_builder_get_soap_version(axiom_soap_builder_t *builder,
-            const axutil_env_t *env);
+    axiom_soap_builder_set_processing_detail_elements(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env,
+        axis2_bool_t value);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axiom_soap_builder_process_namespace_data(axiom_soap_builder_t *builder,
-            const axutil_env_t *env,
-            axiom_node_t *om_node,
-            axis2_bool_t is_soap_element);
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axiom_soap_builder_set_mime_body_parts(axiom_soap_builder_t *builder,
-            const axutil_env_t *env,
-            axutil_hash_t *map);
+    axiom_soap_builder_is_processing_detail_elements(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env);
 
+    AXIS2_EXTERN int AXIS2_CALL
+    axiom_soap_builder_get_soap_version(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+    axiom_soap_builder_process_namespace_data(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env,
+        axiom_node_t * om_node,
+        axis2_bool_t is_soap_element);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+    axiom_soap_builder_set_mime_body_parts(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env,
+        axutil_hash_t * map);
 
     /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIOM_SOAP_BUILDER_H */
+#endif                          /* AXIOM_SOAP_BUILDER_H */

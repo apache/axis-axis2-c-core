@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -44,10 +45,11 @@ extern "C"
       * creates a soap struct 
       * @param env Environment. MUST NOT be NULL
       */
-    AXIS2_EXTERN axiom_soap_fault_detail_t * AXIS2_CALL
-    axiom_soap_fault_detail_create_with_parent
-    (const axutil_env_t *env,
-            axiom_soap_fault_t *fault);
+    AXIS2_EXTERN axiom_soap_fault_detail_t *AXIS2_CALL
+
+    axiom_soap_fault_detail_create_with_parent(
+        const axutil_env_t * env,
+        axiom_soap_fault_t * fault);
 
     /**
       * Free an axiom_soap_fault_detail
@@ -58,22 +60,28 @@ extern "C"
       */
 
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_soap_fault_detail_free(axiom_soap_fault_detail_t *fault_detail,
-            const axutil_env_t *env);
+    axiom_soap_fault_detail_free(
+        axiom_soap_fault_detail_t * fault_detail,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_soap_fault_detail_add_detail_entry(axiom_soap_fault_detail_t *fault_detail,
-            const axutil_env_t *env,
-            axiom_node_t *ele_node);
 
-    AXIS2_EXTERN axiom_children_iterator_t* AXIS2_CALL
-    axiom_soap_fault_detail_get_all_detail_entries(axiom_soap_fault_detail_t *fault_detail,
-            const axutil_env_t *env);
+    axiom_soap_fault_detail_add_detail_entry(
+        axiom_soap_fault_detail_t * fault_detail,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node);
 
-    AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-    axiom_soap_fault_detail_get_base_node(axiom_soap_fault_detail_t *fault_code,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axiom_children_iterator_t *AXIS2_CALL
 
+    axiom_soap_fault_detail_get_all_detail_entries(
+        axiom_soap_fault_detail_t * fault_detail,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+
+    axiom_soap_fault_detail_get_base_node(
+        axiom_soap_fault_detail_t * fault_code,
+        const axutil_env_t * env);
 
     /** @} */
 
@@ -81,4 +89,4 @@ extern "C"
 }
 #endif
 
-#endif /* AXIOM_SOAP_FAULT_DETAIL_H */
+#endif                          /* AXIOM_SOAP_FAULT_DETAIL_H */

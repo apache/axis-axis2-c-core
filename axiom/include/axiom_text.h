@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -36,7 +37,6 @@ extern "C"
 
     typedef struct axiom_text axiom_text_t;
 
-
     /**
       * Creates a new text struct
       * @param env Environment. 
@@ -49,12 +49,13 @@ extern "C"
       * @return pointer to newly created text struct 
       */
     AXIS2_EXTERN axiom_text_t *AXIS2_CALL
-    axiom_text_create(const axutil_env_t *env,
-        axiom_node_t *parent,
-        const axis2_char_t *value,
+    axiom_text_create(
+        const axutil_env_t * env,
+        axiom_node_t * parent,
+        const axis2_char_t * value,
         axiom_node_t ** node);
 
-	/**
+    /**
       * Creates a new text struct
       * @param env Environment. 
       * @param parent parent of the new node. Optinal, can be NULL. 
@@ -66,9 +67,10 @@ extern "C"
       * @return pointer to newly created text struct 
       */
     AXIS2_EXTERN axiom_text_t *AXIS2_CALL
-    axiom_text_create_str(const axutil_env_t *env,
-        axiom_node_t *parent,
-        axutil_string_t *value,
+    axiom_text_create_str(
+        const axutil_env_t * env,
+        axiom_node_t * parent,
+        axutil_string_t * value,
         axiom_node_t ** node);
 
     /**
@@ -83,10 +85,12 @@ extern "C"
       * @return pointer to newly created text struct 
       */
     AXIS2_EXTERN axiom_text_t *AXIS2_CALL
-    axiom_text_create_with_data_handler(const axutil_env_t *env,
+
+    axiom_text_create_with_data_handler(
+        const axutil_env_t * env,
         axiom_node_t * parent,
-        axiom_data_handler_t* data_handler,
-        axiom_node_t **node);
+        axiom_data_handler_t * data_handler,
+        axiom_node_t ** node);
 
     /**
       * Free an axiom_text struct
@@ -96,8 +100,9 @@ extern "C"
       * AXIS2_FAILURE on error.
       */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_text_free(struct axiom_text *om_text,
-        const axutil_env_t *env);
+    axiom_text_free(
+        struct axiom_text *om_text,
+        const axutil_env_t * env);
 
     /**
       * Serialize op
@@ -108,34 +113,37 @@ extern "C"
       * AXIS2_FAILURE on error
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_text_serialize(struct axiom_text *om_text,
-            const axutil_env_t *env,
-            axiom_output_t *om_output);
+    axiom_text_serialize(
+        struct axiom_text *om_text,
+        const axutil_env_t * env,
+        axiom_output_t * om_output);
 
-   /**
-     * Sets the text value
-     * @param om_text om_text struct
-     * @param env environment.
-     * @param value text
-     * @return status of the op. AXIS2_SUCCESS on success,
-     * AXIS2_FAILURE on error.
-     */
+    /**
+      * Sets the text value
+      * @param om_text om_text struct
+      * @param env environment.
+      * @param value text
+      * @return status of the op. AXIS2_SUCCESS on success,
+      * AXIS2_FAILURE on error.
+      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_text_set_value(struct axiom_text *om_text,
-        const axutil_env_t *env,
-        const axis2_char_t *value);
+    axiom_text_set_value(
+        struct axiom_text *om_text,
+        const axutil_env_t * env,
+        const axis2_char_t * value);
 
-   /**
-     * Gets text value 
-     * @param om_text om_text struct
-     * @param env environment.
-     * @return text value , NULL is returned if there is no text value.
-     */
+    /**
+      * Gets text value 
+      * @param om_text om_text struct
+      * @param env environment.
+      * @return text value , NULL is returned if there is no text value.
+      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axiom_text_get_value(struct axiom_text *om_text,
-        const axutil_env_t *env);
+    axiom_text_get_value(
+        struct axiom_text *om_text,
+        const axutil_env_t * env);
 
-	/**
+    /**
      * Sets the text value
      * @param om_text om_text struct
      * @param env environment.
@@ -144,41 +152,45 @@ extern "C"
      * AXIS2_FAILURE on error.
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_text_set_value_str(struct axiom_text *om_text,
-        const axutil_env_t *env,
-        axutil_string_t *value);
+    axiom_text_set_value_str(
+        struct axiom_text *om_text,
+        const axutil_env_t * env,
+        axutil_string_t * value);
 
-   /**
-     * Gets text value from the text node even when MTOM optimized
-     * @param om_text om_text struct
-     * @param env environment.
-     * @return text value base64 encoded text when MTOM optimized, 
-     * NULL is returned if there is no text value.
-     */
+    /**
+      * Gets text value from the text node even when MTOM optimized
+      * @param om_text om_text struct
+      * @param env environment.
+      * @return text value base64 encoded text when MTOM optimized, 
+      * NULL is returned if there is no text value.
+      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-        axiom_text_get_text(axiom_text_t *om_text,
-                    const axutil_env_t *env);
+    axiom_text_get_text(
+        axiom_text_t * om_text,
+        const axutil_env_t * env);
 
-   /**
-     * Gets text value 
-     * @param om_text om_text struct
-     * @param env environment.
-     * @return text valu stringe , NULL is returned if there is no text value.
-     */
+    /**
+      * Gets text value 
+      * @param om_text om_text struct
+      * @param env environment.
+      * @return text valu stringe , NULL is returned if there is no text value.
+      */
     AXIS2_EXTERN axutil_string_t *AXIS2_CALL
-    axiom_text_get_value_str(struct axiom_text *om_text,
-        const axutil_env_t *env);
+    axiom_text_get_value_str(
+        struct axiom_text *om_text,
+        const axutil_env_t * env);
 
-   /**
-     * Sets optimized 
-     * @param om_text pointer to om_text struct
-     * @param env environment
-     * @optimize optimize value
-     * @returns AXIS2_SUCCESS
-     */
+    /**
+      * Sets optimized 
+      * @param om_text pointer to om_text struct
+      * @param env environment
+      * @optimize optimize value
+      * @returns AXIS2_SUCCESS
+      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_text_set_optimize(struct axiom_text *om_text,
-        const axutil_env_t *env,
+    axiom_text_set_optimize(
+        struct axiom_text *om_text,
+        const axutil_env_t * env,
         axis2_bool_t optimize);
 
     /**
@@ -188,22 +200,27 @@ extern "C"
      * @returns AXIS2_SUCCESS
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_text_set_is_binary(struct axiom_text *om_text,
-        const axutil_env_t *env,
+    axiom_text_set_is_binary(
+        struct axiom_text *om_text,
+        const axutil_env_t * env,
         const axis2_bool_t is_binary);
 
     AXIS2_EXTERN axiom_data_handler_t *AXIS2_CALL
-    axiom_text_get_data_handler(struct axiom_text *om_text,
-        const axutil_env_t *env);
+
+    axiom_text_get_data_handler(
+        struct axiom_text *om_text,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axiom_text_get_content_id(struct axiom_text *om_text,
-        const axutil_env_t *env);
+    axiom_text_get_content_id(
+        struct axiom_text *om_text,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_text_set_content_id(axiom_text_t *om_text,
-        const axutil_env_t *env,
-        const axis2_char_t *content_id);
+    axiom_text_set_content_id(
+        axiom_text_t * om_text,
+        const axutil_env_t * env,
+        const axis2_char_t * content_id);
 
     /** @} */
 

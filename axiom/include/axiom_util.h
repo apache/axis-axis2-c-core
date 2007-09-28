@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -28,166 +29,190 @@ extern "C"
 {
 #endif
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
+
     axiom_util_get_first_child_element_with_uri(
-        axiom_node_t *ele_node,
-        const axutil_env_t *env,
-        axis2_char_t *uri,
-        axiom_node_t **child);
+        axiom_node_t * ele_node,
+        const axutil_env_t * env,
+        axis2_char_t * uri,
+        axiom_node_t ** child);
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
+
     axiom_util_get_next_sibling_element_with_uri(
-        axiom_node_t *ele_node,
-        const axutil_env_t *env,
-        axis2_char_t *uri,
-        axiom_node_t **next_node);
+        axiom_node_t * ele_node,
+        const axutil_env_t * env,
+        axis2_char_t * uri,
+        axiom_node_t ** next_node);
 
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 
-
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
     axiom_util_get_first_child_element(
-        axiom_element_t *ele,
-        const axutil_env_t *env,
-        axiom_node_t *ele_node,
-        axiom_node_t **child_node);
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axiom_node_t ** child_node);
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
+
     axiom_util_get_last_child_element(
-        axiom_element_t *ele,
-        const axutil_env_t *env,
-        axiom_node_t *ele_node,
-        axiom_node_t **child_node);
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axiom_node_t ** child_node);
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
+
     axiom_util_get_next_sibling_element(
-        axiom_element_t *ele,
-        const axutil_env_t *env,
-        axiom_node_t *ele_node,
-        axiom_node_t **next_node);
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axiom_node_t ** next_node);
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
+
     axiom_util_get_first_child_element_with_localname(
-        axiom_element_t *ele,
-        const axutil_env_t  *env,
-        axiom_node_t *ele_node,
-        axis2_char_t *localname,
-        axiom_node_t **child_node);
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axis2_char_t * localname,
+        axiom_node_t ** child_node);
 
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
     axiom_util_get_last_child_element_with_localname(
-        axiom_element_t *ele,
-        const axutil_env_t  *env,
-        axiom_node_t *ele_node,
-        axis2_char_t *localname,
-        axiom_node_t **child_node);
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axis2_char_t * localname,
+        axiom_node_t ** child_node);
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
+
     axiom_util_get_next_siblng_element_with_localname(
-        axiom_element_t *ele,
-        const axutil_env_t  *env,
-        axiom_node_t *ele_node,
-        axis2_char_t *localname,
-        axiom_node_t **next_node);
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axis2_char_t * localname,
+        axiom_node_t ** next_node);
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
+
     axiom_util_get_first_child_element_with_uri_localname(
-        axiom_element_t *ele,
-        const axutil_env_t  *env,
-        axiom_node_t *ele_node,
-        axis2_char_t *localname,
-        axis2_char_t *uri,
-        axiom_node_t **child_node);
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
-    axiom_util_get_last_child_element_with_uri_localname(axiom_element_t *ele,
-            const axutil_env_t  *env,
-            axiom_node_t *ele_node,
-            axis2_char_t *localname,
-            axis2_char_t *uri,
-            axiom_node_t **child_node);
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axis2_char_t * localname,
+        axis2_char_t * uri,
+        axiom_node_t ** child_node);
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
-    axiom_util_get_next_sibling_element_with_uri_localname(axiom_element_t *ele,
-            const axutil_env_t  *env,
-            axiom_node_t *ele_node,
-            axis2_char_t *localname,
-            axis2_char_t *uri,
-            axiom_node_t **next_node);
+    axiom_util_get_last_child_element_with_uri_localname(
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axis2_char_t * localname,
+        axis2_char_t * uri,
+        axiom_node_t ** child_node);
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
-    axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
-            const axutil_env_t  *env,
-            axiom_node_t *ele_node,
-            axutil_array_list_t *names,
-            axiom_node_t **child_node);
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 
+    axiom_util_get_next_sibling_element_with_uri_localname(
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axis2_char_t * localname,
+        axis2_char_t * uri,
+        axiom_node_t ** next_node);
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
-    axiom_util_get_last_child_element_with_localnames(axiom_element_t *ele,
-            const axutil_env_t  *env,
-            axiom_node_t *ele_node,
-            axutil_array_list_t *names,
-            axiom_node_t **child_node);
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
-    axiom_util_get_next_siblng_element_with_localnames(axiom_element_t *ele,
-            const axutil_env_t  *env,
-            axiom_node_t *ele_node,
-            axutil_array_list_t *names,
-            axiom_node_t **next_node);
+    axiom_util_get_first_child_element_with_localnames(
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axutil_array_list_t * names,
+        axiom_node_t ** child_node);
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
-    axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
-            const axutil_env_t  *env,
-            axiom_node_t *ele_node,
-            axis2_char_t *localname,
-            axis2_char_t *attr_name,
-            axis2_char_t *attr_value,
-            axiom_node_t **child_node);
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 
+    axiom_util_get_last_child_element_with_localnames(
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axutil_array_list_t * names,
+        axiom_node_t ** child_node);
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
-    axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
-            const axutil_env_t  *env,
-            axiom_node_t *ele_node,
-            axis2_char_t *localname,
-            axis2_char_t *attr_name,
-            axis2_char_t *attr_value,
-            axiom_node_t **child_node);
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 
-    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
-    axiom_util_get_next_siblng_element_with_localname_attr(axiom_element_t *ele,
-            const axutil_env_t  *env,
-            axiom_node_t *ele_node,
-            axis2_char_t *localname,
-            axis2_char_t *attr_name,
-            axis2_char_t *attr_value,
-            axiom_node_t **next_node);
+    axiom_util_get_next_siblng_element_with_localnames(
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axutil_array_list_t * names,
+        axiom_node_t ** next_node);
 
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axiom_util_get_child_text(axiom_node_t *node,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axiom_util_get_localname(axiom_node_t *node,
-            const axutil_env_t *env);
+    axiom_util_get_first_child_element_with_localname_attr(
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axis2_char_t * localname,
+        axis2_char_t * attr_name,
+        axis2_char_t * attr_value,
+        axiom_node_t ** child_node);
 
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axiom_util_get_node_namespace_uri(axiom_node_t *om_node,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 
+    axiom_util_get_last_child_element_with_localname_attr(
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axis2_char_t * localname,
+        axis2_char_t * attr_name,
+        axis2_char_t * attr_value,
+        axiom_node_t ** child_node);
 
-    AXIS2_EXTERN axiom_child_element_iterator_t* AXIS2_CALL
-    axiom_util_get_child_elements(axiom_element_t *om_ele,
-            const axutil_env_t *env,
-            axiom_node_t *om_node);
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 
-    AXIS2_EXTERN axiom_document_t* AXIS2_CALL
+    axiom_util_get_next_siblng_element_with_localname_attr(
+        axiom_element_t * ele,
+        const axutil_env_t * env,
+        axiom_node_t * ele_node,
+        axis2_char_t * localname,
+        axis2_char_t * attr_name,
+        axis2_char_t * attr_value,
+        axiom_node_t ** next_node);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axiom_util_get_child_text(
+        axiom_node_t * node,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axiom_util_get_localname(
+        axiom_node_t * node,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axiom_util_get_node_namespace_uri(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axiom_child_element_iterator_t *AXIS2_CALL
+
+    axiom_util_get_child_elements(
+        axiom_element_t * om_ele,
+        const axutil_env_t * env,
+        axiom_node_t * om_node);
+
+    AXIS2_EXTERN axiom_document_t *AXIS2_CALL
     axiom_util_new_document(
-        const axutil_env_t *env,
-        const axutil_uri_t *uri);
+        const axutil_env_t * env,
+        const axutil_uri_t * uri);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIOM_UTIL_H */
+#endif                          /* AXIOM_UTIL_H */

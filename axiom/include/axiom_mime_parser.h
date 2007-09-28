@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -39,48 +40,55 @@ extern "C"
 
     typedef struct axiom_mime_parser axiom_mime_parser_t;
 
-
     /** @defgroup axiom_mime_parser Flow
       * @ingroup axiom_mime_parser
       * @{
       */
 
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-    axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
-        const axutil_env_t *env,
+    axiom_mime_parser_parse(
+        axiom_mime_parser_t * mime_parser,
+        const axutil_env_t * env,
         AXIS2_READ_INPUT_CALLBACK,
         void *callback_ctx,
-        axis2_char_t *mime_boundary);
+        axis2_char_t * mime_boundary);
 
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-    axiom_mime_parser_get_mime_parts_map(axiom_mime_parser_t *mime_parser,
-        const axutil_env_t *env);
+
+    axiom_mime_parser_get_mime_parts_map(
+        axiom_mime_parser_t * mime_parser,
+        const axutil_env_t * env);
 
     /** Deallocate memory
       * @return status code
       */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_mime_parser_free(axiom_mime_parser_t *mime_parser,
-        const axutil_env_t *env);
+    axiom_mime_parser_free(
+        axiom_mime_parser_t * mime_parser,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axiom_mime_parser_get_soap_body_len(axiom_mime_parser_t *mime_parser,
-       const axutil_env_t *env);
+    axiom_mime_parser_get_soap_body_len(
+        axiom_mime_parser_t * mime_parser,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axiom_mime_parser_get_soap_body_str(axiom_mime_parser_t *mime_parser,
-        const axutil_env_t *env);
+
+    axiom_mime_parser_get_soap_body_str(
+        axiom_mime_parser_t * mime_parser,
+        const axutil_env_t * env);
 
     /**
      * Creates mime_parser struct
      * @return pointer to newly created mime_parser
      */
-    AXIS2_EXTERN axiom_mime_parser_t * AXIS2_CALL
-    axiom_mime_parser_create(const axutil_env_t *env);
+    AXIS2_EXTERN axiom_mime_parser_t *AXIS2_CALL
+    axiom_mime_parser_create(
+        const axutil_env_t * env);
 
     /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIOM_MIME_PARSER_H */
+#endif                          /* AXIOM_MIME_PARSER_H */

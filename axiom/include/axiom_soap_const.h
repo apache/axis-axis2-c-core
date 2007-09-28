@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -40,9 +41,7 @@ extern "C"
         AXIOM_SOAP11,
 
         AXIOM_SOAP12
-    }axiom_soap_version;
-
-
+    } axiom_soap_version;
 
     /** soap 11 constants */
 
@@ -65,7 +64,6 @@ extern "C"
 #define AXIOM_SOAP11_FAULT_CODE_RECEIVER "Server"
 
 #define AXIOM_SOAP11_SOAP_ACTOR_NEXT "http://schemas.xmlsoap.org/soap/actor/next"
-
 
     /** soap12 constants */
 
@@ -168,10 +166,11 @@ extern "C"
 #define AXIS2_XOP_NAMESPACE_URI "http://www.w3.org/2004/08/xop/include"
 
 #define AXIS2_XOP_INCLUDE "Include"
+
     /** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AXIOM_SOAP_CONSTANTS_H */
+#endif                          /* AXIOM_SOAP_CONSTANTS_H */

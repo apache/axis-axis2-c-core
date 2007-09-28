@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -39,13 +40,11 @@ extern "C"
      * @{
      */
 
-
     /**
       * \brief data_source struct
       * Handles the XML data_source in OM
       */
     typedef struct axiom_data_source axiom_data_source_t;
-
 
     /**
       * Creates a new data_source struct
@@ -58,10 +57,11 @@ extern "C"
       *                       Node type will be set to AXIOM_DATA_SOURCE  
       * @return pointer to newly created data_source struct 
       */
-    AXIS2_EXTERN axiom_data_source_t * AXIS2_CALL
-    axiom_data_source_create(const axutil_env_t *env,
-            axiom_node_t *parent,
-            axiom_node_t ** node);
+    AXIS2_EXTERN axiom_data_source_t *AXIS2_CALL
+    axiom_data_source_create(
+        const axutil_env_t * env,
+        axiom_node_t * parent,
+        axiom_node_t ** node);
 
     /**
       * Free an axiom_data_source struct
@@ -71,8 +71,9 @@ extern "C"
       *         AXIS2_FAILURE on error.
       */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_data_source_free(struct axiom_data_source *om_data_source,
-            const axutil_env_t *env);
+    axiom_data_source_free(
+        struct axiom_data_source *om_data_source,
+        const axutil_env_t * env);
 
     /**
       * Serialize op
@@ -83,9 +84,11 @@ extern "C"
       *            AXIS2_FAILURE on error
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_data_source_serialize(struct axiom_data_source *om_data_source,
-            const axutil_env_t *env,
-            axiom_output_t *om_output);
+    axiom_data_source_serialize(
+        struct axiom_data_source *om_data_source,
+        const axutil_env_t * env,
+        axiom_output_t * om_output);
+
     /**
      *  set the data_source value
      * @param om_data_source om_data_source struct
@@ -94,10 +97,10 @@ extern "C"
      * @return status of the op. AXIS2_SUCCESS on success,
      *           AXIS2_FAILURE on error.   
      */
-    AXIS2_EXTERN axutil_stream_t * AXIS2_CALL
-    axiom_data_source_get_stream(struct axiom_data_source *om_data_source,
-            const axutil_env_t *env);
-
+    AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
+    axiom_data_source_get_stream(
+        struct axiom_data_source *om_data_source,
+        const axutil_env_t * env);
 
     /** @} */
 

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,7 +19,6 @@
 #ifndef AXIOM_SOAP_FAULT_SUB_CODE_H
 #define AXIOM_SOAP_FAULT_SUB_CODE_H
 
-
 /**
  * @file axiom_soap_fault_sub_code.h
  * @brief axiom_soap_fault_sub_code struct
@@ -34,6 +34,7 @@ extern "C"
     typedef struct axiom_soap_fault_sub_code axiom_soap_fault_sub_code_t;
     struct axiom_soap_fault_value;
     struct axiom_soap_builder;
+
     /**
      * @defgroup axiom_soap_fault_sub_code soap fault sub code
      * @ingroup axiom_soap
@@ -44,14 +45,18 @@ extern "C"
       * creates a soap struct 
       * @param env Environment. MUST NOT be NULL
       */
-    AXIS2_EXTERN axiom_soap_fault_sub_code_t * AXIS2_CALL
-    axiom_soap_fault_sub_code_create_with_parent(const axutil_env_t *env,
-            axiom_soap_fault_code_t *fault_code);
+    AXIS2_EXTERN axiom_soap_fault_sub_code_t *AXIS2_CALL
 
-    AXIS2_EXTERN axiom_soap_fault_sub_code_t * AXIS2_CALL
-    axiom_soap_fault_sub_code_create_with_parent_value(const axutil_env_t *env,
-            axiom_soap_fault_code_t *fault_code,
-            axis2_char_t *value);
+    axiom_soap_fault_sub_code_create_with_parent(
+        const axutil_env_t * env,
+        axiom_soap_fault_code_t * fault_code);
+
+    AXIS2_EXTERN axiom_soap_fault_sub_code_t *AXIS2_CALL
+
+    axiom_soap_fault_sub_code_create_with_parent_value(
+        const axutil_env_t * env,
+        axiom_soap_fault_code_t * fault_code,
+        axis2_char_t * value);
 
     /**
       * Free an axiom_soap_fault_sub_code
@@ -61,20 +66,27 @@ extern "C"
       *         else AXIS2_FAILURE
       */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_soap_fault_sub_code_free(axiom_soap_fault_sub_code_t *fault_sub_code,
-            const axutil_env_t *env);
+    axiom_soap_fault_sub_code_free(
+        axiom_soap_fault_sub_code_t * fault_sub_code,
+        const axutil_env_t * env);
 
-    AXIS2_EXTERN axiom_soap_fault_sub_code_t* AXIS2_CALL
-    axiom_soap_fault_sub_code_get_sub_code(axiom_soap_fault_sub_code_t *fault_sub_code,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axiom_soap_fault_sub_code_t *AXIS2_CALL
 
-    AXIS2_EXTERN struct axiom_soap_fault_value* AXIS2_CALL
-    axiom_soap_fault_sub_code_get_value(axiom_soap_fault_sub_code_t *fault_sub_code,
-            const axutil_env_t *env);
+    axiom_soap_fault_sub_code_get_sub_code(
+        axiom_soap_fault_sub_code_t * fault_sub_code,
+        const axutil_env_t * env);
 
-    AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-    axiom_soap_fault_sub_code_get_base_node(axiom_soap_fault_sub_code_t *fault_sub_code,
-            const axutil_env_t *env);
+    AXIS2_EXTERN struct axiom_soap_fault_value *AXIS2_CALL
+
+                axiom_soap_fault_sub_code_get_value(
+                    axiom_soap_fault_sub_code_t * fault_sub_code,
+                    const axutil_env_t * env);
+
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+
+    axiom_soap_fault_sub_code_get_base_node(
+        axiom_soap_fault_sub_code_t * fault_sub_code,
+        const axutil_env_t * env);
 
     /** @} */
 
@@ -82,4 +94,4 @@ extern "C"
 }
 #endif
 
-#endif /* AXIOM_SOAP_FAULT_SUB_CODE_H */
+#endif                          /* AXIOM_SOAP_FAULT_SUB_CODE_H */

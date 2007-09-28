@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -43,9 +44,10 @@ extern "C"
       * @return a pointer to newly created namespace struct
       */
     AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
-    axiom_namespace_create(const axutil_env_t *env,
+    axiom_namespace_create(
+        const axutil_env_t * env,
         const axis2_char_t * uri,
-        const axis2_char_t *prefix);
+        const axis2_char_t * prefix);
 
     /**
       * Frees given AXIOM namespcae
@@ -54,8 +56,9 @@ extern "C"
       * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
       */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_namespace_free(struct axiom_namespace *om_namespace,
-        const axutil_env_t *env);
+    axiom_namespace_free(
+        struct axiom_namespace *om_namespace,
+        const axutil_env_t * env);
 
     /**
       * Compares two namepsaces
@@ -65,8 +68,9 @@ extern "C"
       * @return AXIS2_TRUE if the two namespaces are equal,AXIS2_FALSE otherwise
       */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axiom_namespace_equals(struct axiom_namespace *om_namespace,
-        const axutil_env_t *env,
+    axiom_namespace_equals(
+        struct axiom_namespace *om_namespace,
+        const axutil_env_t * env,
         struct axiom_namespace *om_namespace1);
 
     /**
@@ -77,8 +81,9 @@ extern "C"
       * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_namespace_serialize(struct axiom_namespace *om_namespace,
-        const axutil_env_t *env,
+    axiom_namespace_serialize(
+        struct axiom_namespace *om_namespace,
+        const axutil_env_t * env,
         axiom_output_t * om_output);
 
     /**
@@ -87,8 +92,9 @@ extern "C"
       * @returns namespace uri , NULL on error
       */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axiom_namespace_get_uri(struct axiom_namespace *om_namespace,
-        const axutil_env_t *env);
+    axiom_namespace_get_uri(
+        struct axiom_namespace *om_namespace,
+        const axutil_env_t * env);
 
     /**
       * @param om_namespace pointer to om namespace struct
@@ -96,8 +102,9 @@ extern "C"
       * @return prefix , NULL on error
       */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axiom_namespace_get_prefix(struct axiom_namespace *om_namespace,
-        const axutil_env_t *env);
+    axiom_namespace_get_prefix(
+        struct axiom_namespace *om_namespace,
+        const axutil_env_t * env);
 
     /**
       * Clones an om_namespace struct
@@ -106,8 +113,9 @@ extern "C"
       * @returns axiom_namespace on success , NULL on error
       */
     AXIS2_EXTERN struct axiom_namespace *AXIS2_CALL
-    axiom_namespace_clone(struct axiom_namespace *om_namespace,
-        const axutil_env_t *env);
+                axiom_namespace_clone(
+                    struct axiom_namespace *om_namespace,
+                    const axutil_env_t * env);
 
     /**
       * to string , returns the string by combining namespace_uri,
@@ -118,30 +126,36 @@ extern "C"
       * should not be freed by user
       */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axiom_namespace_to_string(struct axiom_namespace *om_namespace,
-        const axutil_env_t *env);
+    axiom_namespace_to_string(
+        struct axiom_namespace *om_namespace,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_namespace_increment_ref(struct axiom_namespace *om_namespace,
-        const axutil_env_t *env);
+    axiom_namespace_increment_ref(
+        struct axiom_namespace *om_namespace,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
-    axiom_namespace_create_str(const axutil_env_t *env,
+    axiom_namespace_create_str(
+        const axutil_env_t * env,
         axutil_string_t * uri,
         axutil_string_t * prefix);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_namespace_set_uri_str(axiom_namespace_t *om_namespace,
-        const axutil_env_t *env,
-        axutil_string_t *uri);
+    axiom_namespace_set_uri_str(
+        axiom_namespace_t * om_namespace,
+        const axutil_env_t * env,
+        axutil_string_t * uri);
 
     AXIS2_EXTERN axutil_string_t *AXIS2_CALL
-    axiom_namespace_get_uri_str(axiom_namespace_t *om_namespace,
-        const axutil_env_t *env);
+    axiom_namespace_get_uri_str(
+        axiom_namespace_t * om_namespace,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axutil_string_t *AXIS2_CALL
-    axiom_namespace_get_prefix_str(axiom_namespace_t *om_namespace,
-        const axutil_env_t *env);
+    axiom_namespace_get_prefix_str(
+        axiom_namespace_t * om_namespace,
+        const axutil_env_t * env);
 
     /** @} */
 

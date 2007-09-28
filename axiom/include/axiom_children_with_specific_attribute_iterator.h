@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -19,14 +20,13 @@
 #define AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_H
 
 /**
-*@file axiom_children_with_specific_attribute_iterator.h 
-*@brief this is the iterator for om nodes 
+*@file axiom_children_with_specific_attribute_iterator.h
+*@brief this is the iterator for om nodes
 */
 
 #include <axiom_node.h>
 #include <axiom_text.h>
 #include <axutil_qname.h>
-
 
 #ifdef __cplusplus
 extern "C"
@@ -46,8 +46,10 @@ extern "C"
     * Free function free the om_children_with_specific_attribute_iterator struct
     */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_children_with_specific_attribute_iterator_free(axiom_children_with_specific_attribute_iterator_t *iterator,
-        const axutil_env_t *env);
+
+    axiom_children_with_specific_attribute_iterator_free(
+        axiom_children_with_specific_attribute_iterator_t * iterator,
+        const axutil_env_t * env);
 
     /**
     * Removes from the underlying collection the last element returned by the
@@ -57,8 +59,10 @@ extern "C"
     * progress in any way other than by calling this method.
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_children_with_specific_attribute_iterator_remove(axiom_children_with_specific_attribute_iterator_t *iterator,
-        const axutil_env_t *env);
+
+    axiom_children_with_specific_attribute_iterator_remove(
+        axiom_children_with_specific_attribute_iterator_t * iterator,
+        const axutil_env_t * env);
 
     /**
      * Returns true< if the iteration has more elements. (In other
@@ -67,16 +71,20 @@ extern "C"
      */
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axiom_children_with_specific_attribute_iterator_has_next(axiom_children_with_specific_attribute_iterator_t *iterator,
-        const axutil_env_t *env);
+
+    axiom_children_with_specific_attribute_iterator_has_next(
+        axiom_children_with_specific_attribute_iterator_t * iterator,
+        const axutil_env_t * env);
 
     /**
      * Returns the next element in the iteration. returns null if there is no 
     * more elements in the iteration
      */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
-    axiom_children_with_specific_attribute_iterator_next(axiom_children_with_specific_attribute_iterator_t *iterator,
-        const axutil_env_t *env);
+
+    axiom_children_with_specific_attribute_iterator_next(
+        axiom_children_with_specific_attribute_iterator_t * iterator,
+        const axutil_env_t * env);
 
     /**
      * @param current child
@@ -84,12 +92,13 @@ extern "C"
      * return axiom_children_with_specific_attribute_iterator_t
      */
 
-    AXIS2_EXTERN  axiom_children_with_specific_attribute_iterator_t * AXIS2_CALL
+    AXIS2_EXTERN axiom_children_with_specific_attribute_iterator_t
+    *AXIS2_CALL
     axiom_children_with_specific_attribute_iterator_create(
-        const axutil_env_t *env,
-        axiom_node_t *current_child,
-        axutil_qname_t *attr_qname,
-        axis2_char_t *attr_value,
+        const axutil_env_t * env,
+        axiom_node_t * current_child,
+        axutil_qname_t * attr_qname,
+        axis2_char_t * attr_value,
         axis2_bool_t detach);
 
 #define AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_FREE(iterator, env) \
@@ -104,12 +113,10 @@ extern "C"
 #define AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_NEXT(iterator, env) \
         axiom_children_with_specific_attribute_iterator_next(iterator, env)
 
-
     /** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
-
-#endif /* AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_H */
+#endif                          /* AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_H */

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -38,7 +39,6 @@
 #include <axutil_env.h>
 #include <axutil_utils.h>
 
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -48,6 +48,7 @@ extern "C"
     struct axiom_output;
     struct axiom_document;
     struct axiom_stax_builder;
+
     /**
      * @defgroup axiom_node  node
      * @ingroup axiom_om
@@ -59,24 +60,34 @@ extern "C"
       */
     typedef enum axiom_types_t
     {
+
         /** Invalid node type */
         AXIOM_INVALID = 0,
+
         /** AXIOM document type */
         AXIOM_DOCUMENT,
+
         /** AXIOM element type */
         AXIOM_ELEMENT,
+
         /** AXIOM doctype type */
         AXIOM_DOCTYPE,
+
         /** AXIOM comment type */
         AXIOM_COMMENT,
+
         /** AXIOM attribute type */
         AXIOM_ATTRIBUTE,
+
         /** AXIOM namespace type */
         AXIOM_NAMESPACE,
+
         /** AXIOM processing instruction type */
         AXIOM_PROCESSING_INSTRUCTION,
+
         /** AXIOM text type */
         AXIOM_TEXT,
+
         /** AXIOM data source, represent a serialized XML fragment with a stream */
         AXIOM_DATA_SOURCE
     } axiom_types_t;
@@ -86,8 +97,9 @@ extern "C"
       * @param env Environment. MUST NOT be NULL, .
       * @return a pointer to newly created node struct. NULL on error. 
       */
-    AXIS2_EXTERN axiom_node_t * AXIS2_CALL
-    axiom_node_create(const axutil_env_t *env);
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_node_create(
+        const axutil_env_t * env);
 
     /**
     * Frees an om node and all of its children
@@ -96,8 +108,10 @@ extern "C"
     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
     */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_node_free_tree(axiom_node_t *om_node,
-            const axutil_env_t *env);
+    axiom_node_free_tree(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
+
     /**
     * Adds given node as child to parent. child should not have a parent
     * if child has a parent it will be detached from existing parent
@@ -107,9 +121,10 @@ extern "C"
     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_node_add_child(axiom_node_t* om_node,
-            const axutil_env_t *env,
-            axiom_node_t *child);
+    axiom_node_add_child(
+        axiom_node_t * om_node,
+        const axutil_env_t * env,
+        axiom_node_t * child);
 
     /**
     * Detaches given node from the parent and reset the links
@@ -118,9 +133,10 @@ extern "C"
     * @return a pointer to detached node,returns NULL on error with error
     *           code set to environment's error struct
     */
-    AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-    axiom_node_detach(axiom_node_t  *om_node,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_node_detach(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
 
     /**
     * Inserts a sibling node after the given node
@@ -130,9 +146,10 @@ extern "C"
     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_node_insert_sibling_after(axiom_node_t  *om_node,
-            const axutil_env_t *env,
-            axiom_node_t  * node_to_insert);
+    axiom_node_insert_sibling_after(
+        axiom_node_t * om_node,
+        const axutil_env_t * env,
+        axiom_node_t * node_to_insert);
 
     /**
     * Inserts a sibling node before the given current node
@@ -142,9 +159,10 @@ extern "C"
     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_node_insert_sibling_before(axiom_node_t  *om_node,
-            const axutil_env_t *env,
-            axiom_node_t  * node_to_insert);
+    axiom_node_insert_sibling_before(
+        axiom_node_t * om_node,
+        const axutil_env_t * env,
+        axiom_node_t * node_to_insert);
 
     /**
     * Serializes the given node. This op makes the node go
@@ -155,9 +173,10 @@ extern "C"
     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_node_serialize(axiom_node_t  * om_node,
-            const axutil_env_t *env,
-            struct axiom_output *om_output);
+    axiom_node_serialize(
+        axiom_node_t * om_node,
+        const axutil_env_t * env,
+        struct axiom_output *om_output);
 
     /** get parent of om_node
     *@om_node node 
@@ -166,9 +185,10 @@ extern "C"
     *        when an error occured.
     */
 
-    AXIS2_EXTERN axiom_node_t * AXIS2_CALL
-    axiom_node_get_parent(axiom_node_t  *om_node,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_node_get_parent(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
 
     /**
     * get the first child of om_node
@@ -177,19 +197,21 @@ extern "C"
     * @returns pointer to first child node , NULL is returned on error with 
     *                     error code set in environments error
     */
-    AXIS2_EXTERN axiom_node_t * AXIS2_CALL
-    axiom_node_get_first_child(axiom_node_t  *om_node,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_node_get_first_child(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
 
-	/**get the first AXIOM_ELEMENT in om_node
-	 * @param om_node node
-	 * @param env environment must not be null
-	 * @returns pointer to first child om element, NULL is returned on error
-	 * with error code set in environments error.
-	 */
-    AXIS2_EXTERN axiom_node_t * AXIS2_CALL
-    axiom_node_get_first_element(axiom_node_t  *om_node,
-            const axutil_env_t *env);
+    /**get the first AXIOM_ELEMENT in om_node
+    * @param om_node node
+    * @param env environment must not be null
+    * @returns pointer to first child om element, NULL is returned on error
+    * with error code set in environments error.
+    */
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_node_get_first_element(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
 
     /**
     * get the last child
@@ -197,9 +219,11 @@ extern "C"
     * @param env environment, MUST NOT be NULL
     * @return pointer to last child of this node , return NULL on error.
     */
-    AXIS2_EXTERN axiom_node_t * AXIS2_CALL
-    axiom_node_get_last_child(axiom_node_t  *om_node,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_node_get_last_child(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
+
     /**
     * get the previous sibling 
     * @param om_node om_node struct 
@@ -207,18 +231,22 @@ extern "C"
     * @returns a pointer to previous sibling , NULL if a previous sibling does not exits
     *                (happens when this node is the first child of a node )
     */
-    AXIS2_EXTERN axiom_node_t * AXIS2_CALL
-    axiom_node_get_previous_sibling(axiom_node_t  *om_node,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_node_get_previous_sibling(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
+
     /**
     * get next sibling
     * @param om_node om_node struct
     * @param env environment, MUST NOT be NULL.
     * @return next sibling of this node.
     */
-    AXIS2_EXTERN axiom_node_t * AXIS2_CALL
-    axiom_node_get_next_sibling(axiom_node_t  *om_node,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_node_get_next_sibling(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
+
     /**
     * get the node type of this element
     * Node type can be one of AXIOM_ELEMENT, AXIOM_COMMENT, AXIOM_TEXT
@@ -228,8 +256,10 @@ extern "C"
     * @return node type
     */
     AXIS2_EXTERN axiom_types_t AXIS2_CALL
-    axiom_node_get_node_type(axiom_node_t  *om_node,
-            const axutil_env_t *env);
+    axiom_node_get_node_type(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
+
     /**
     * get the struct contained in the node
     * IF the node is on type AXIOM_ELEMENT , this method returns
@@ -239,9 +269,11 @@ extern "C"
     * @returns pointer to struct contained in the node
     *          returns NULL if no struct is contained 
     */
-    AXIS2_EXTERN void* AXIS2_CALL
-    axiom_node_get_data_element(axiom_node_t  *om_node,
-            const axutil_env_t *env);
+    AXIS2_EXTERN void *AXIS2_CALL
+    axiom_node_get_data_element(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
+
     /**
     * Indicates whether parser has parsed this information item completely or not 
     * @param om_node om_node struct
@@ -250,8 +282,10 @@ extern "C"
     *          AXIS2_FALSE if node is not completed
     */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axiom_node_is_complete(axiom_node_t  *om_node,
-            const axutil_env_t *env);
+    axiom_node_is_complete(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
+
     /**
      * returns the associated document,
      * only valid if built using builder and for a node of type 
@@ -260,22 +294,26 @@ extern "C"
      * @param om_node 
      * @param env environment, MUST NOT be NULL.
      */
-    AXIS2_EXTERN struct axiom_document* AXIS2_CALL
-                axiom_node_get_document(axiom_node_t *om_node,
-                        const axutil_env_t *env);
+    AXIS2_EXTERN struct axiom_document *AXIS2_CALL
+                axiom_node_get_document(
+                    axiom_node_t * om_node,
+                    const axutil_env_t * env);
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axiom_node_to_string(axiom_node_t *om_node,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axiom_node_to_string(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_node_serialize_sub_tree(axiom_node_t *om_node,
-        const axutil_env_t *env,
+    axiom_node_serialize_sub_tree(
+        axiom_node_t * om_node,
+        const axutil_env_t * env,
         struct axiom_output *om_output);
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axiom_node_sub_tree_to_string(axiom_node_t *om_node,
-                         const axutil_env_t *env);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axiom_node_sub_tree_to_string(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
 
     /** @} */
 

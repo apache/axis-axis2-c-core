@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -34,7 +35,7 @@ extern "C"
 {
 #endif
 
-    typedef struct axiom_soap_envelope        axiom_soap_envelope_t;
+    typedef struct axiom_soap_envelope axiom_soap_envelope_t;
 
     struct axiom_soap_body;
     struct axiom_soap_header;
@@ -52,9 +53,11 @@ extern "C"
      * create a soap_envelope with the given namespace prefix and uri
      * as the prefix and uri, The uri of ns should be valid soap uri
      */
-    AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
-    axiom_soap_envelope_create(const axutil_env_t *env,
-        axiom_namespace_t *ns);
+    AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
+
+    axiom_soap_envelope_create(
+        const axutil_env_t * env,
+        axiom_namespace_t * ns);
 
     /**
      * @param env Environment. MUST NOT be NULL
@@ -66,22 +69,28 @@ extern "C"
      * @returns a pointer to soap envelope struct
      * 
      */
-    AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
-    axiom_soap_envelope_create_with_soap_version_prefix(const axutil_env_t *env,
-        int soap_version,
-        const axis2_char_t *prefix);
+    AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
 
-    AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
-    axiom_soap_envelope_create_default_soap_envelope(const axutil_env_t *env,
+    axiom_soap_envelope_create_with_soap_version_prefix(
+        const axutil_env_t * env,
+        int soap_version,
+        const axis2_char_t * prefix);
+
+    AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
+
+    axiom_soap_envelope_create_default_soap_envelope(
+        const axutil_env_t * env,
         int soap_version);
 
-    AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
-    axiom_soap_envelope_create_default_soap_fault_envelope(const axutil_env_t *env,
-        const axis2_char_t *code_value,
-        const axis2_char_t *reason_text,
+    AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
+
+    axiom_soap_envelope_create_default_soap_fault_envelope(
+        const axutil_env_t * env,
+        const axis2_char_t * code_value,
+        const axis2_char_t * reason_text,
         const int soap_version,
-        axutil_array_list_t *sub_codes,
-        axiom_node_t *detail_node);
+        axutil_array_list_t * sub_codes,
+        axiom_node_t * detail_node);
 
     /**
      * gets the soap header of this soap envelope
@@ -89,18 +98,24 @@ extern "C"
      * @param env environment must not be null
      * @return soap header null it no header is present
      */
-    AXIS2_EXTERN struct axiom_soap_header* AXIS2_CALL
-    axiom_soap_envelope_get_header(axiom_soap_envelope_t *envelope,
-        const axutil_env_t *env);
+    AXIS2_EXTERN struct axiom_soap_header *AXIS2_CALL
+
+                axiom_soap_envelope_get_header(
+                    axiom_soap_envelope_t * envelope,
+                    const axutil_env_t * env);
+
     /**
      * Returns the soap body associated with this soap envelope
      * @param envelope soap_envelope
      * @param env environment
      * @return soap_body
      */
-    AXIS2_EXTERN struct axiom_soap_body* AXIS2_CALL
-    axiom_soap_envelope_get_body(axiom_soap_envelope_t *envelope,
-        const axutil_env_t *env);
+    AXIS2_EXTERN struct axiom_soap_body *AXIS2_CALL
+
+                axiom_soap_envelope_get_body(
+                    axiom_soap_envelope_t * envelope,
+                    const axutil_env_t * env);
+
     /**
      * serialize function , serialize the soap envelope 
      * IF the soap version it set to soap11 the soap fault part is converted 
@@ -113,9 +128,10 @@ extern "C"
      *                 AXIS2_FAILURE otherwise
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_soap_envelope_serialize(axiom_soap_envelope_t *envelope,
-        const axutil_env_t *env,
-        axiom_output_t *om_output,
+    axiom_soap_envelope_serialize(
+        axiom_soap_envelope_t * envelope,
+        const axutil_env_t * env,
+        axiom_output_t * om_output,
         axis2_bool_t cache);
 
     /**
@@ -128,8 +144,9 @@ extern "C"
      * @return status code AXIS2_SUCCESS on success , AXIS2_FAILURE otherwise
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_soap_envelope_free(axiom_soap_envelope_t *envelope,
-        const axutil_env_t *env);
+    axiom_soap_envelope_free(
+        axiom_soap_envelope_t * envelope,
+        const axutil_env_t * env);
 
     /**
      * returns the om_node associated with this soap envelope
@@ -137,10 +154,10 @@ extern "C"
      * @param env environment
      * @return axiom_node_t pointer
      */
-    AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-    axiom_soap_envelope_get_base_node(axiom_soap_envelope_t *envelope,
-        const axutil_env_t *env);
-
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_soap_envelope_get_base_node(
+        axiom_soap_envelope_t * envelope,
+        const axutil_env_t * env);
 
     /** returns the soap version of this soap envelope
      * @param envelope soap_envelope
@@ -148,23 +165,27 @@ extern "C"
      * @return soap_version AXIOM_SOAP12 or AXIOM_SOAP11
      */
     AXIS2_EXTERN int AXIS2_CALL
-    axiom_soap_envelope_get_soap_version(axiom_soap_envelope_t *envelope,
-        const axutil_env_t *env);
+    axiom_soap_envelope_get_soap_version(
+        axiom_soap_envelope_t * envelope,
+        const axutil_env_t * env);
 
     /** return the soap envelope namespace
      * @param envelope 
      * @param env 
      * @return axiom_namespace_t 
      */
-    AXIS2_EXTERN axiom_namespace_t* AXIS2_CALL
-    axiom_soap_envelope_get_namespace(axiom_soap_envelope_t *envelope,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
+
+    axiom_soap_envelope_get_namespace(
+        axiom_soap_envelope_t * envelope,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_soap_envelope_set_soap_version(axiom_soap_envelope_t *envelope,
-        const axutil_env_t *env,
-        int soap_version);
 
+    axiom_soap_envelope_set_soap_version(
+        axiom_soap_envelope_t * envelope,
+        const axutil_env_t * env,
+        int soap_version);
 
     /** @} */
 
@@ -172,4 +193,4 @@ extern "C"
 }
 #endif
 
-#endif /* AXIOM_SOAP_ENVELOPE_H */
+#endif                          /* AXIOM_SOAP_ENVELOPE_H */

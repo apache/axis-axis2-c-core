@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -27,13 +28,13 @@
 #include <axiom_namespace.h>
 #include <axutil_qname.h>
 
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-    typedef struct axiom_children_qname_iterator axiom_children_qname_iterator_t;
+    typedef struct axiom_children_qname_iterator
+                axiom_children_qname_iterator_t;
 
     /**
      * @defgroup axiom_children_qname_iterator children qname iterator
@@ -41,17 +42,20 @@ extern "C"
      * @{
      */
 
-    AXIS2_EXTERN axiom_children_qname_iterator_t * AXIS2_CALL
-    axiom_children_qname_iterator_create(const axutil_env_t *env,
-            axiom_node_t *current_child,
-            axutil_qname_t *given_qname);
+    AXIS2_EXTERN axiom_children_qname_iterator_t *AXIS2_CALL
+
+    axiom_children_qname_iterator_create(
+        const axutil_env_t * env,
+        axiom_node_t * current_child,
+        axutil_qname_t * given_qname);
 
     /**
      * free om_children_qname_iterator struct 
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_children_qname_iterator_free(axiom_children_qname_iterator_t *iterator,
-            const axutil_env_t *env);
+    axiom_children_qname_iterator_free(
+        axiom_children_qname_iterator_t * iterator,
+        const axutil_env_t * env);
 
     /**
      * Removes from the underlying collection the last element returned by the
@@ -61,8 +65,10 @@ extern "C"
      * progress in any way other than by calling this method.
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_children_qname_iterator_remove(axiom_children_qname_iterator_t *iterator,
-            const axutil_env_t *env);
+
+    axiom_children_qname_iterator_remove(
+        axiom_children_qname_iterator_t * iterator,
+        const axutil_env_t * env);
 
     /**
      * Returns <tt>true</tt> if the iteration has more elements. (In other
@@ -71,15 +77,18 @@ extern "C"
      */
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axiom_children_qname_iterator_has_next(axiom_children_qname_iterator_t *iterator,
-            const axutil_env_t *env);
+
+    axiom_children_qname_iterator_has_next(
+        axiom_children_qname_iterator_t * iterator,
+        const axutil_env_t * env);
 
     /**
      * Returns the next element in the iteration.
      */
-    AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-    axiom_children_qname_iterator_next(axiom_children_qname_iterator_t *iterator,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_children_qname_iterator_next(
+        axiom_children_qname_iterator_t * iterator,
+        const axutil_env_t * env);
 
     /** @} */
 
@@ -87,4 +96,4 @@ extern "C"
 }
 #endif
 
-#endif /* AXIOM_CHILDREN_QNAME_ITERATOR_H */
+#endif                          /* AXIOM_CHILDREN_QNAME_ITERATOR_H */

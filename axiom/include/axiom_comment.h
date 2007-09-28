@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -31,13 +32,11 @@ extern "C"
 {
 #endif
 
-
     /**
      * @defgroup axiom_comment comment
      * @ingroup axiom_om
      * @{
      */
-
 
     typedef struct axiom_comment axiom_comment_t;
 
@@ -51,11 +50,12 @@ extern "C"
       *        Node type will be set to AXIOM_COMMENT
       * @return a pointer to the newly created comment struct
       */
-    AXIS2_EXTERN axiom_comment_t * AXIS2_CALL
-    axiom_comment_create(const axutil_env_t *env,
-            axiom_node_t *parent,
-            const axis2_char_t *value,
-            axiom_node_t **node);
+    AXIS2_EXTERN axiom_comment_t *AXIS2_CALL
+    axiom_comment_create(
+        const axutil_env_t * env,
+        axiom_node_t * parent,
+        const axis2_char_t * value,
+        axiom_node_t ** node);
 
     /**
       * Free a axis2_comment_t struct
@@ -65,17 +65,21 @@ extern "C"
       *                AXIS2_SUCCESS on success ,AXIS2_FAILURE on error.
       */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_comment_free(struct axiom_comment *om_comment,
-            const axutil_env_t *env);
+    axiom_comment_free(
+        struct axiom_comment *om_comment,
+        const axutil_env_t * env);
+
     /** get the comments data
      * @param om_comment a pointer to axiom_comment_t struct
      * @param env environment, MUST NOT be NULL 
      * @returns comment text
      */
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axiom_comment_get_value(struct axiom_comment *om_comment,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axiom_comment_get_value(
+        struct axiom_comment *om_comment,
+        const axutil_env_t * env);
+
     /**
      * set comment data
      * @param om_comment pointer to axiom_comment_t struct
@@ -84,9 +88,11 @@ extern "C"
      * @returns AXIS2_SUCCESS on success , AXIS2_FAILURE on error
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_comment_set_value(struct axiom_comment *om_comment,
-            const axutil_env_t *env,
-            const axis2_char_t* value);
+    axiom_comment_set_value(
+        struct axiom_comment *om_comment,
+        const axutil_env_t * env,
+        const axis2_char_t * value);
+
     /**
      *  serialize function 
      *  @param om_comment pointer to axiom_comment_t struct
@@ -95,9 +101,10 @@ extern "C"
      *  @return AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_comment_serialize(struct axiom_comment *om_comment,
-            const axutil_env_t *env,
-            axiom_output_t *om_output);
+    axiom_comment_serialize(
+        struct axiom_comment *om_comment,
+        const axutil_env_t * env,
+        axiom_output_t * om_output);
 
     /** @} */
 

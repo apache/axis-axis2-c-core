@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -36,4 +37,4 @@ extern "C"
 }
 #endif
 
-#endif /* AXIOM_MIME_CONST_H */
+#endif                          /* AXIOM_MIME_CONST_H */
