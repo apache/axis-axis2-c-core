@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -30,19 +31,19 @@ struct axutil_url
     axis2_char_t *path;
 };
 
-AXIS2_EXTERN axutil_url_t * AXIS2_CALL
-axutil_url_create(const axutil_env_t *env,
-    const axis2_char_t *protocol,
-    const axis2_char_t *server,
+AXIS2_EXTERN axutil_url_t *AXIS2_CALL
+axutil_url_create(
+    const axutil_env_t * env,
+    const axis2_char_t * protocol,
+    const axis2_char_t * server,
     const int port,
-    const axis2_char_t *path)
+    const axis2_char_t * path)
 {
     axutil_url_t *url = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, protocol, NULL);
 
-    url = (axutil_url_t *)AXIS2_MALLOC(env->allocator,
-        sizeof(axutil_url_t));
+    url = (axutil_url_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_url_t));
 
     if (!url)
     {
@@ -56,15 +57,16 @@ axutil_url_create(const axutil_env_t *env,
 
     if (server)
     {
-        url->server = (axis2_char_t *)axutil_strdup(env, server);
+        url->server = (axis2_char_t *) axutil_strdup(env, server);
     }
+
     /** if the path is not starting with / we have to make it so
      */
     if (path)
     {
         if (path[0] == '/')
         {
-            url->path = (axis2_char_t *)axutil_strdup(env, path);
+            url->path = (axis2_char_t *) axutil_strdup(env, path);
         }
         else
         {
@@ -76,10 +78,12 @@ axutil_url_create(const axutil_env_t *env,
     return url;
 }
 
-AXIS2_EXTERN axutil_url_t * AXIS2_CALL
-axutil_url_parse_string(const axutil_env_t *env, 
-    const axis2_char_t *str_url)
+AXIS2_EXTERN axutil_url_t *AXIS2_CALL
+axutil_url_parse_string(
+    const axutil_env_t * env,
+    const axis2_char_t * str_url)
 {
+
     /**
      * Only accepted format is : 
      * protocol://server:port/path
@@ -108,15 +112,13 @@ axutil_url_parse_string(const axutil_env_t *env,
     server = strstr(tmp_url_str, "://");
     if (!server)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS,
-            AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
         AXIS2_FREE(env->allocator, tmp_url_str);
         return NULL;
     }
     if (axutil_strlen(server) < 3 * sizeof(axis2_char_t))
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS,
-            AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
         AXIS2_FREE(env->allocator, tmp_url_str);
         return NULL;
     }
@@ -124,15 +126,14 @@ axutil_url_parse_string(const axutil_env_t *env,
     server += 3 * sizeof(axis2_char_t); /* skip "://" part */
     if (axutil_strlen(server) <= 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS,
-            AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
         AXIS2_FREE(env->allocator, tmp_url_str);
         return NULL;
     }
     /* if the url is file:// thing we need the protocol and
      * path only
      */
-    if (0 == axutil_strcasecmp(protocol, (const axis2_char_t *)"file"))
+    if (0 == axutil_strcasecmp(protocol, (const axis2_char_t *) "file"))
     {
         ret = axutil_url_create(env, protocol, NULL, 0, server);
         AXIS2_FREE(env->allocator, tmp_url_str);
@@ -149,7 +150,7 @@ axutil_url_parse_string(const axutil_env_t *env,
             port = 20;
         else if (axutil_strcasecmp(protocol, "smtp") == 0)
             port = 25;
-        
+
         path = strchr(server, '/');
         if (!path)
         {
@@ -213,24 +214,25 @@ axutil_url_parse_string(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axutil_url_free(axutil_url_t *url, 
-    const axutil_env_t *env)
+axutil_url_free(
+    axutil_url_t * url,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (url->protocol)
     {
         AXIS2_FREE(env->allocator, url->protocol);
-		url->protocol = NULL;
+        url->protocol = NULL;
     }
     if (url->server)
     {
         AXIS2_FREE(env->allocator, url->server);
-		url->server = NULL;
+        url->server = NULL;
     }
     if (url->path)
     {
         AXIS2_FREE(env->allocator, url->path);
-		url->path = NULL;
+        url->path = NULL;
     }
     url->port = -1;
 
@@ -239,9 +241,10 @@ axutil_url_free(axutil_url_t *url,
     return;
 }
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axutil_url_to_external_form(axutil_url_t *url,
-    const axutil_env_t *env)
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axutil_url_to_external_form(
+    axutil_url_t * url,
+    const axutil_env_t * env)
 {
     axis2_char_t *external_form = NULL;
     axis2_ssize_t len = 0;
@@ -250,21 +253,19 @@ axutil_url_to_external_form(axutil_url_t *url,
     AXIS2_PARAM_CHECK(env->error, url, NULL);
 
     sprintf(port_str, "%d", url->port);
-    len = axutil_strlen(url->protocol) +
-        axutil_strlen(url->server) + axutil_strlen(url->path) +
+    len =
+        axutil_strlen(url->protocol) + axutil_strlen(url->server) + axutil_strlen(url->path) +
         strlen(port_str) + 7;
-    external_form = (axis2_char_t*) AXIS2_MALLOC(env->allocator,
-        len);
-    sprintf(external_form, "%s://%s:%s%s", url->protocol, url->server,
-        port_str, url->path);
+    external_form = (axis2_char_t *) AXIS2_MALLOC(env->allocator, len);
+    sprintf(external_form, "%s://%s:%s%s", url->protocol, url->server, port_str, url->path);
     return external_form;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_url_set_protocol(axutil_url_t *url, 
-    const axutil_env_t *env,
-    axis2_char_t *protocol)
+axutil_url_set_protocol(
+    axutil_url_t * url,
+    const axutil_env_t * env,
+    axis2_char_t * protocol)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, protocol, AXIS2_FAILURE);
@@ -277,18 +278,19 @@ axutil_url_set_protocol(axutil_url_t *url,
     return AXIS2_SUCCESS;
 }
 
-
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axutil_url_get_protocol(axutil_url_t *url, 
-    const axutil_env_t *env)
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axutil_url_get_protocol(
+    axutil_url_t * url,
+    const axutil_env_t * env)
 {
     return url->protocol;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_url_set_server(axutil_url_t *url, 
-    const axutil_env_t *env,
-    axis2_char_t *server)
+axutil_url_set_server(
+    axutil_url_t * url,
+    const axutil_env_t * env,
+    axis2_char_t * server)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, server, AXIS2_FAILURE);
@@ -300,17 +302,18 @@ axutil_url_set_server(axutil_url_t *url,
     return AXIS2_SUCCESS;
 }
 
-
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axutil_url_get_server(axutil_url_t *url, 
-    const axutil_env_t *env)
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axutil_url_get_server(
+    axutil_url_t * url,
+    const axutil_env_t * env)
 {
     return url->server;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_url_set_port(axutil_url_t *url, 
-    const axutil_env_t *env,
+axutil_url_set_port(
+    axutil_url_t * url,
+    const axutil_env_t * env,
     int port)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -318,18 +321,19 @@ axutil_url_set_port(axutil_url_t *url,
     return AXIS2_SUCCESS;
 }
 
-
 AXIS2_EXTERN int AXIS2_CALL
-axutil_url_get_port(axutil_url_t *url, 
-    const axutil_env_t *env)
+axutil_url_get_port(
+    axutil_url_t * url,
+    const axutil_env_t * env)
 {
     return url->port;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_url_set_path(axutil_url_t *url, 
-    const axutil_env_t *env,
-    axis2_char_t *path)
+axutil_url_set_path(
+    axutil_url_t * url,
+    const axutil_env_t * env,
+    axis2_char_t * path)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, path, AXIS2_FAILURE);
@@ -341,29 +345,28 @@ axutil_url_set_path(axutil_url_t *url,
     return AXIS2_SUCCESS;
 }
 
-
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axutil_url_get_path(axutil_url_t *url, 
-    const axutil_env_t *env)
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axutil_url_get_path(
+    axutil_url_t * url,
+    const axutil_env_t * env)
 {
     return url->path;
 }
 
-AXIS2_EXTERN axutil_url_t* AXIS2_CALL
-axutil_url_clone(axutil_url_t *url,
-    const axutil_env_t *env)
+AXIS2_EXTERN axutil_url_t *AXIS2_CALL
+axutil_url_clone(
+    axutil_url_t * url,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
-    return axutil_url_create(env, url->protocol,
-        url->server,
-        url->port,
-        url->path);
+    return axutil_url_create(env, url->protocol, url->server, url->port, url->path);
 }
 
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
-axutil_url_to_uri(axutil_url_t *url,
-    const axutil_env_t *env)
+axutil_url_to_uri(
+    axutil_url_t * url,
+    const axutil_env_t * env)
 {
     axis2_char_t *url_str = NULL;
     axutil_uri_t *uri = NULL;
@@ -372,4 +375,3 @@ axutil_url_to_uri(axutil_url_t *url,
     uri = axutil_uri_parse_string(env, url_str);
     return uri;
 }
-

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,15 +24,16 @@ struct axutil_param_container
     axutil_array_list_t *params_list;
 };
 
-AXIS2_EXTERN axutil_param_container_t * AXIS2_CALL
-axutil_param_container_create(const axutil_env_t *env)
+AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
+axutil_param_container_create(
+    const axutil_env_t * env)
 {
     axutil_param_container_t *param_container = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    param_container = (axutil_param_container_t *) AXIS2_MALLOC(env->
-        allocator, sizeof(axutil_param_container_t));
+    param_container =
+        (axutil_param_container_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_param_container_t));
 
     if (!param_container)
     {
@@ -55,8 +57,9 @@ axutil_param_container_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axutil_param_container_free(axutil_param_container_t *param_container,
-    const axutil_env_t *env)
+axutil_param_container_free(
+    axutil_param_container_t * param_container,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -65,7 +68,7 @@ axutil_param_container_free(axutil_param_container_t *param_container,
         axutil_hash_index_t *hi = NULL;
         void *val = NULL;
         for (hi = axutil_hash_first(param_container->params, env); hi;
-            hi = axutil_hash_next(env, hi))
+             hi = axutil_hash_next(env, hi))
         {
             axutil_param_t *param = NULL;
             axutil_hash_this(hi, NULL, NULL, &val);
@@ -94,8 +97,9 @@ axutil_param_container_free(axutil_param_container_t *param_container,
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axutil_param_container_free_void_arg(void *param_container,
-    const axutil_env_t *env)
+axutil_param_container_free_void_arg(
+    void *param_container,
+    const axutil_env_t * env)
 {
     axutil_param_container_t *param_container_l = NULL;
 
@@ -106,9 +110,10 @@ axutil_param_container_free_void_arg(void *param_container,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_param_container_add_param(axutil_param_container_t *param_container,
-    const axutil_env_t *env,
-    axutil_param_t *param)
+axutil_param_container_add_param(
+    axutil_param_container_t * param_container,
+    const axutil_env_t * env,
+    axutil_param_t * param)
 {
     axis2_char_t *param_name = NULL;
 
@@ -126,28 +131,28 @@ axutil_param_container_add_param(axutil_param_container_t *param_container,
     param_name = axutil_param_get_name(param, env);
     if (!param_name)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_PARAM,
-            AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_PARAM, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    axutil_hash_set(param_container->params, param_name, 
-        AXIS2_HASH_KEY_STRING, param);
+    axutil_hash_set(param_container->params, param_name, AXIS2_HASH_KEY_STRING, param);
 
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axutil_param_t * AXIS2_CALL
-axutil_param_container_get_param(axutil_param_container_t *param_container,
-    const axutil_env_t *env,
-    const axis2_char_t *name)
+AXIS2_EXTERN axutil_param_t *AXIS2_CALL
+axutil_param_container_get_param(
+    axutil_param_container_t * param_container,
+    const axutil_env_t * env,
+    const axis2_char_t * name)
 {
-    return (axutil_param_t *)(axutil_hash_get(param_container->params, 
-        name, AXIS2_HASH_KEY_STRING));
+    return (axutil_param_t
+            *) (axutil_hash_get(param_container->params, name, AXIS2_HASH_KEY_STRING));
 }
 
-AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-axutil_param_container_get_params(axutil_param_container_t *param_container,
-    const axutil_env_t *env)
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axutil_param_container_get_params(
+    axutil_param_container_t * param_container,
+    const axutil_env_t * env)
 {
     axutil_hash_index_t *index_i = 0;
     axis2_status_t status = AXIS2_FAILURE;
@@ -158,21 +163,19 @@ axutil_param_container_get_params(axutil_param_container_t *param_container,
         param_container->params_list = axutil_array_list_create(env, 0);
         if (!param_container->params_list)
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
-                AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
     }
 
-    for (index_i = axutil_hash_first(param_container->params, env);
-        index_i; index_i = axutil_hash_next(env, index_i))
+    for (index_i = axutil_hash_first(param_container->params, env); index_i;
+         index_i = axutil_hash_next(env, index_i))
     {
         axutil_hash_this(index_i, NULL, NULL, &value);
-        status = axutil_array_list_add(param_container->params_list, env,
-            value);
+        status = axutil_array_list_add(param_container->params_list, env, value);
         if (AXIS2_SUCCESS != status)
         {
-            axutil_array_list_free(param_container->params_list , env);
+            axutil_array_list_free(param_container->params_list, env);
             return NULL;
         }
     }
@@ -181,16 +184,18 @@ axutil_param_container_get_params(axutil_param_container_t *param_container,
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axutil_param_container_is_param_locked(axutil_param_container_t *param_container,
-    const axutil_env_t *env,
-    const axis2_char_t *param_name)
+axutil_param_container_is_param_locked(
+    axutil_param_container_t * param_container,
+    const axutil_env_t * env,
+    const axis2_char_t * param_name)
 {
     axutil_param_t *param = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    param = (axutil_param_t *)(axutil_hash_get(param_container->params, 
-        param_name, AXIS2_HASH_KEY_STRING));
+    param =
+        (axutil_param_t
+         *) (axutil_hash_get(param_container->params, param_name, AXIS2_HASH_KEY_STRING));
     if (!param)
     {
         /* In this case we consider param is not locked */
@@ -198,4 +203,3 @@ axutil_param_container_is_param_locked(axutil_param_container_t *param_container
     }
     return axutil_param_is_locked(param, env);
 }
-

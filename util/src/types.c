@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,9 +19,11 @@
 #include <axutil_types.h>
 
 AXIS2_EXTERN int AXIS2_CALL
-axutil_atoi(const char *s)
+axutil_atoi(
+    const char *s)
 {
-    int i, n;
+    int i,
+     n;
 
     n = 0;
     for (i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
@@ -29,5 +32,3 @@ axutil_atoi(const char *s)
     }
     return n;
 }
-
-

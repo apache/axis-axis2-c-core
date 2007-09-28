@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,41 +27,44 @@ typedef struct schemes_t schemes_t;
 /** Structure to store various schemes and their default ports */
 struct schemes_t
 {
+
     /** The name of the scheme */
     const axis2_char_t *name;
+
     /** The default port for the scheme */
     axis2_port_t default_port;
 };
 
 /* Some WWW schemes and their default ports; this is basically /etc/services */
+
 /* This will become global when the protocol abstraction comes */
+
 /* As the schemes are searched by a linear search, */
+
 /* they are sorted by their expected frequency */
-static schemes_t schemes[] =
-    {
-        {"http",     AXIS2_URI_HTTP_DEFAULT_PORT
-        },
-        {"ftp",      AXIS2_URI_FTP_DEFAULT_PORT},
-        {"https",    AXIS2_URI_HTTPS_DEFAULT_PORT},
-        {"gopher",   AXIS2_URI_GOPHER_DEFAULT_PORT},
-        {"ldap",     AXIS2_URI_LDAP_DEFAULT_PORT},
-        {"nntp",     AXIS2_URI_NNTP_DEFAULT_PORT},
-        {"snews",    AXIS2_URI_SNEWS_DEFAULT_PORT},
-        {"imap",     AXIS2_URI_IMAP_DEFAULT_PORT},
-        {"pop",      AXIS2_URI_POP_DEFAULT_PORT},
-        {"sip",      AXIS2_URI_SIP_DEFAULT_PORT},
-        {"rtsp",     AXIS2_URI_RTSP_DEFAULT_PORT},
-        {"wais",     AXIS2_URI_WAIS_DEFAULT_PORT},
-        {"z39.50r",  AXIS2_URI_WAIS_DEFAULT_PORT},
-        {"z39.50s",  AXIS2_URI_WAIS_DEFAULT_PORT},
-        {"prospero", AXIS2_URI_PROSPERO_DEFAULT_PORT},
-        {"nfs",      AXIS2_URI_NFS_DEFAULT_PORT},
-        {"tip",      AXIS2_URI_TIP_DEFAULT_PORT},
-        {"acap",     AXIS2_URI_ACAP_DEFAULT_PORT},
-        {"telnet",   AXIS2_URI_TELNET_DEFAULT_PORT},
-        {"ssh",      AXIS2_URI_SSH_DEFAULT_PORT},
-        { NULL, 0xFFFF }     /* unknown port */
-    };
+static schemes_t schemes[] = {
+    {"http", AXIS2_URI_HTTP_DEFAULT_PORT},
+    {"ftp", AXIS2_URI_FTP_DEFAULT_PORT},
+    {"https", AXIS2_URI_HTTPS_DEFAULT_PORT},
+    {"gopher", AXIS2_URI_GOPHER_DEFAULT_PORT},
+    {"ldap", AXIS2_URI_LDAP_DEFAULT_PORT},
+    {"nntp", AXIS2_URI_NNTP_DEFAULT_PORT},
+    {"snews", AXIS2_URI_SNEWS_DEFAULT_PORT},
+    {"imap", AXIS2_URI_IMAP_DEFAULT_PORT},
+    {"pop", AXIS2_URI_POP_DEFAULT_PORT},
+    {"sip", AXIS2_URI_SIP_DEFAULT_PORT},
+    {"rtsp", AXIS2_URI_RTSP_DEFAULT_PORT},
+    {"wais", AXIS2_URI_WAIS_DEFAULT_PORT},
+    {"z39.50r", AXIS2_URI_WAIS_DEFAULT_PORT},
+    {"z39.50s", AXIS2_URI_WAIS_DEFAULT_PORT},
+    {"prospero", AXIS2_URI_PROSPERO_DEFAULT_PORT},
+    {"nfs", AXIS2_URI_NFS_DEFAULT_PORT},
+    {"tip", AXIS2_URI_TIP_DEFAULT_PORT},
+    {"acap", AXIS2_URI_ACAP_DEFAULT_PORT},
+    {"telnet", AXIS2_URI_TELNET_DEFAULT_PORT},
+    {"ssh", AXIS2_URI_SSH_DEFAULT_PORT},
+    {NULL, 0xFFFF}              /* unknown port */
+};
 
 /* Here is the hand-optimized parse_uri_components().  There are some wild
  * tricks we could pull in assembly language that we don't pull here... like we
@@ -73,56 +77,55 @@ static schemes_t schemes[] =
  * compares for NUL for free -- it's just another delimiter.
  */
 
-#define T_COLON           0x01        /* ':' */
-#define T_SLASH           0x02        /* '/' */
-#define T_QUESTION        0x04        /* '?' */
-#define T_HASH            0x08        /* '#' */
-#define T_NUL             0x80        /* '\0' */
+#define T_COLON           0x01  /* ':' */
+#define T_SLASH           0x02  /* '/' */
+#define T_QUESTION        0x04  /* '?' */
+#define T_HASH            0x08  /* '#' */
+#define T_NUL             0x80  /* '\0' */
 
 #if AXIS2_CHARSET_EBCDIC
-/* Delimiter table for the EBCDIC character set */
-static const unsigned char uri_delims[256] =
-    {
-        T_NUL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, T_SLASH, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, T_QUESTION,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, T_COLON, T_HASH, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-    };
-#else
-/* Delimiter table for the ASCII character set */
-static const unsigned char uri_delims[256] =
-    {
-        T_NUL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, T_HASH, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, T_SLASH,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, T_COLON, 0, 0, 0, 0, T_QUESTION,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-    };
-#endif
 
+/* Delimiter table for the EBCDIC character set */
+static const unsigned char uri_delims[256] = {
+    T_NUL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, T_SLASH, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, T_QUESTION,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, T_COLON, T_HASH, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+#else
+
+/* Delimiter table for the ASCII character set */
+static const unsigned char uri_delims[256] = {
+    T_NUL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, T_HASH, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, T_SLASH,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, T_COLON, 0, 0, 0, 0, T_QUESTION,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+#endif
 
 /* it works like this:
     if (uri_delims[ch] & NOTEND_foobar) {
@@ -137,28 +140,36 @@ static const unsigned char uri_delims[256] =
 #define NOTEND_HOSTINFO   (T_SLASH | T_QUESTION | T_HASH | T_NUL)
 #define NOTEND_PATH       (T_QUESTION | T_HASH | T_NUL)
 
-
 /**
  * A structure to encompass all of the fields in a uri
  */
 struct axutil_uri
 {
+
     /** scheme ("http"/"ftp"/...) */
     axis2_char_t *scheme;
+
     /** combined [user[:password]\@]host[:port] */
     axis2_char_t *hostinfo;
+
     /** user name, as in http://user:passwd\@host:port/ */
     axis2_char_t *user;
+
     /** password, as in http://user:passwd\@host:port/ */
     axis2_char_t *password;
+
     /** hostname from URI (or from Host: header) */
     axis2_char_t *hostname;
+
     /** port string (integer representation is in "port") */
     axis2_char_t *port_str;
+
     /** the request path (or "/" if only scheme://host was given) */
     axis2_char_t *path;
+
     /** Everything after a '?' in the path, if present */
     axis2_char_t *query;
+
     /** Trailing "#fragment" string, if present */
     axis2_char_t *fragment;
 
@@ -169,25 +180,23 @@ struct axutil_uri
     axis2_port_t port;
 
     /** has the structure been initialized */
-unsigned is_initialized:
-    1;
+    unsigned is_initialized:1;
 
     /** has the DNS been looked up yet */
-unsigned dns_looked_up:
-    1;
+    unsigned dns_looked_up:1;
+
     /** has the dns been resolved yet */
-unsigned dns_resolved:
-    1;
+    unsigned dns_resolved:1;
 };
 
-AXIS2_EXTERN axutil_uri_t * AXIS2_CALL
-axutil_uri_create(const axutil_env_t *env)
+AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
+axutil_uri_create(
+    const axutil_env_t * env)
 {
     axutil_uri_t *uri = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    uri = (axutil_uri_t *)AXIS2_MALLOC(env->allocator,
-        sizeof(axutil_uri_t));
+    uri = (axutil_uri_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_uri_t));
 
     if (!uri)
     {
@@ -209,8 +218,9 @@ axutil_uri_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axutil_uri_free(axutil_uri_t *uri,
-    const axutil_env_t *env)
+axutil_uri_free(
+    axutil_uri_t * uri,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -283,8 +293,9 @@ axutil_uri_free(axutil_uri_t *uri,
  */
 
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
-axutil_uri_parse_string(const axutil_env_t *env,
-    const axis2_char_t *uri_str)
+axutil_uri_parse_string(
+    const axutil_env_t * env,
+    const axis2_char_t * uri_str)
 {
     axutil_uri_t *uri = NULL;
     const axis2_char_t *s;
@@ -292,7 +303,8 @@ axutil_uri_parse_string(const axutil_env_t *env,
     const axis2_char_t *hostinfo;
     axis2_char_t *endstr;
     int port;
-    int v6_offset1 = 0, v6_offset2 = 0;
+    int v6_offset1 = 0,
+        v6_offset2 = 0;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, uri_str, NULL);
@@ -302,7 +314,7 @@ axutil_uri_parse_string(const axutil_env_t *env,
     /* Initialize the structure. parse_uri() and parse_uri_components()
      * can be called more than once per request.
      */
-    /*memset (uri, '\0', sizeof(*uri));*/
+    /*memset (uri, '\0', sizeof(*uri)); */
     uri->is_initialized = 1;
 
     /* We assume the processor has a branch predictor like most --
@@ -322,16 +334,16 @@ axutil_uri_parse_string(const axutil_env_t *env,
          */
         if (uri_str[1] == '/' && uri_str[2] != '/')
         {
-            s = uri_str + 2 ;
-            goto deal_with_authority ;
+            s = uri_str + 2;
+            goto deal_with_authority;
         }
 
-deal_with_path:
+      deal_with_path:
         /* we expect uri to point to first character of path ... remember
          * that the path could be empty -- http://foobar?query for example
          */
         s = uri_str;
-        while ((uri_delims[*(unsigned char *)s] & NOTEND_PATH) == 0)
+        while ((uri_delims[*(unsigned char *) s] & NOTEND_PATH) == 0)
         {
             ++s;
         }
@@ -366,26 +378,26 @@ deal_with_path:
 
     /* find the scheme: */
     s = uri_str;
-    while ((uri_delims[*(unsigned char *)s] & NOTEND_SCHEME) == 0)
+    while ((uri_delims[*(unsigned char *) s] & NOTEND_SCHEME) == 0)
     {
         ++s;
     }
     /* scheme must be non-empty and followed by :// */
     if (s == uri_str || s[0] != ':' || s[1] != '/' || s[2] != '/')
     {
-        goto deal_with_path;        /* backwards predicted taken! */
+        goto deal_with_path;    /* backwards predicted taken! */
     }
 
     uri->scheme = axutil_strmemdup(uri_str, s - uri_str, env);
     s += 3;
 
-deal_with_authority:
+  deal_with_authority:
     hostinfo = s;
-    while ((uri_delims[*(unsigned char *)s] & NOTEND_HOSTINFO) == 0)
+    while ((uri_delims[*(unsigned char *) s] & NOTEND_HOSTINFO) == 0)
     {
         ++s;
     }
-    uri_str = s;        /* whatever follows hostinfo is start of uri */
+    uri_str = s;                /* whatever follows hostinfo is start of uri */
     uri->hostinfo = axutil_strmemdup(hostinfo, uri_str - hostinfo, env);
 
     /* If there's a username:password@host:port, the @ we want is the last @...
@@ -401,7 +413,7 @@ deal_with_authority:
     if (s < hostinfo)
     {
         /* again we want the common case to be fall through */
-deal_with_host:
+      deal_with_host:
         /* We expect hostinfo to point to the first character of
          * the hostname.  If there's a port it is the first colon,
          * except with IPv6.
@@ -417,7 +429,7 @@ deal_with_host:
             }
             if (*++s != ':')
             {
-                s = NULL; /* no port */
+                s = NULL;       /* no port */
             }
         }
         else
@@ -427,13 +439,11 @@ deal_with_host:
         if (!s)
         {
             /* we expect the common case to have no port */
-            uri->hostname = axutil_strmemdup(hostinfo + v6_offset1,
-                 uri_str - hostinfo - v6_offset2, env);
+            uri->hostname =
+                axutil_strmemdup(hostinfo + v6_offset1, uri_str - hostinfo - v6_offset2, env);
             goto deal_with_path;
         }
-        uri->hostname = axutil_strmemdup(
-            hostinfo + v6_offset1,
-            s - hostinfo - v6_offset2, env);
+        uri->hostname = axutil_strmemdup(hostinfo + v6_offset1, s - hostinfo - v6_offset2, env);
         ++s;
         uri->port_str = axutil_strmemdup(s, uri_str - s, env);
         if (uri_str != s)
@@ -470,13 +480,15 @@ deal_with_host:
 }
 
 /* Special case for CONNECT parsing: it comes with the hostinfo part only */
+
 /* See the INTERNET-DRAFT document "Tunneling SSL Through a WWW Proxy"
  * currently at http://www.mcom.com/newsref/std/tunneling_ssl.html
  * for the format of the "CONNECT host:port HTTP/1.0" request
  */
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
-axutil_uri_parse_hostinfo(const axutil_env_t *env,
-    const axis2_char_t *hostinfo)
+axutil_uri_parse_hostinfo(
+    const axutil_env_t * env,
+    const axis2_char_t * hostinfo)
 {
     axutil_uri_t *uri = NULL;
     const axis2_char_t *s;
@@ -501,8 +513,7 @@ axutil_uri_parse_hostinfo(const axutil_env_t *env,
      */
     if (*hostinfo == '[')
     {
-        if (!(rsb = strchr(hostinfo, ']')) ||
-            *(rsb + 1) != ':')
+        if (!(rsb = strchr(hostinfo, ']')) || *(rsb + 1) != ':')
         {
             return NULL;
         }
@@ -536,16 +547,16 @@ axutil_uri_parse_hostinfo(const axutil_env_t *env,
 
 /* Resolve relative to a base.  This means host/etc, and (crucially) path */
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
-axutil_uri_resolve_relative(const axutil_env_t *env,
-    const axutil_uri_t* base,
-    axutil_uri_t* uri)
+axutil_uri_resolve_relative(
+    const axutil_env_t * env,
+    const axutil_uri_t * base,
+    axutil_uri_t * uri)
 {
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, base, NULL);
     AXIS2_PARAM_CHECK(env->error, uri, NULL);
 
-    if (!uri || !base || ! base->is_initialized
-        || ! uri->is_initialized)
+    if (!uri || !base || !base->is_initialized || !uri->is_initialized)
     {
         return NULL;
     }
@@ -555,22 +566,22 @@ axutil_uri_resolve_relative(const axutil_env_t *env,
         if (!uri->hostname)
         {
             /* is this compatible with is_initialised?  Harmless in any case */
-            uri->path = base->path ? base->path : axutil_strdup(env, "/") ;
+            uri->path = base->path ? base->path : axutil_strdup(env, "/");
         }
         else
         {
             /* deal with the idiosyncracy of APR allowing path==NULL
              * without risk of breaking back-compatibility
              */
-            uri->path = axutil_strdup(env, "/") ;
+            uri->path = axutil_strdup(env, "/");
         }
     }
     else if (uri->path[0] != '/')
     {
-        size_t baselen ;
-        const char* basepath = base->path ? base->path : "/" ;
-        const char* path = uri->path ;
-        const char* base_end = strrchr(basepath, '/') ;
+        size_t baselen;
+        const char *basepath = base->path ? base->path : "/";
+        const char *path = uri->path;
+        const char *base_end = strrchr(basepath, '/');
 
         /* if base is nonsensical, bail out */
         if (basepath[0] != '/')
@@ -584,83 +595,85 @@ axutil_uri_resolve_relative(const axutil_env_t *env,
             {
                 if (*--base_end == '/')
                 {
-                    break ;
+                    break;
                 }
             }
-            path += 3 ;
+            path += 3;
         }
         /* munch "here" components at the start */
         while (!strncmp(path, "./", 2))
         {
-            path += 2 ;
+            path += 2;
         }
-        baselen = base_end - basepath + 1 ;
-        uri->path = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * baselen + strlen(path) + 1) ;
-        memcpy(uri->path, basepath, baselen) ;
-        strcpy(uri->path + baselen, path) ;
+        baselen = base_end - basepath + 1;
+        uri->path = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * baselen + strlen(path) + 1);
+        memcpy(uri->path, basepath, baselen);
+        strcpy(uri->path + baselen, path);
     }
 
     /* The trivial bits are everything-but-path */
     if (!uri->scheme)
     {
-        uri->scheme = axutil_strdup(env, base->scheme) ;
+        uri->scheme = axutil_strdup(env, base->scheme);
     }
     if (!uri->hostinfo)
     {
-        uri->hostinfo = axutil_strdup(env, base->hostinfo) ;
+        uri->hostinfo = axutil_strdup(env, base->hostinfo);
     }
     if (!uri->user)
     {
-        uri->user = axutil_strdup(env, base->user) ;
+        uri->user = axutil_strdup(env, base->user);
     }
     if (!uri->password)
     {
-        uri->password = axutil_strdup(env, base->password) ;
+        uri->password = axutil_strdup(env, base->password);
     }
     if (!uri->hostname)
     {
-        uri->hostname = axutil_strdup(env, base->hostname) ;
+        uri->hostname = axutil_strdup(env, base->hostname);
     }
     if (!uri->port_str)
     {
-        uri->port_str = axutil_strdup(env, base->port_str) ;
+        uri->port_str = axutil_strdup(env, base->port_str);
     }
     if (!uri->hostent)
     {
-        uri->hostent = base->hostent ;
+        uri->hostent = base->hostent;
     }
-    if (! uri->port)
+    if (!uri->port)
     {
-        uri->port = base->port ;
+        uri->port = base->port;
     }
 
     return uri;
 }
 
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
-axutil_uri_parse_relative(const axutil_env_t *env,
-    const axutil_uri_t* base,
-    const char* uri)
+axutil_uri_parse_relative(
+    const axutil_env_t * env,
+    const axutil_uri_t * base,
+    const char *uri)
 {
     axutil_uri_t *uptr = NULL;
 
-    uptr = axutil_uri_parse_string(env, uri) ;
-    if (! uptr && AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    uptr = axutil_uri_parse_string(env, uri);
+    if (!uptr && AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
-        return uptr ;
+        return uptr;
     }
-    uptr = axutil_uri_resolve_relative(env, base, uptr) ;
+    uptr = axutil_uri_resolve_relative(env, base, uptr);
 
     return uptr;
 }
 AXIS2_EXTERN axis2_port_t AXIS2_CALL
-axutil_uri_port_of_scheme(const axis2_char_t *scheme_str)
+axutil_uri_port_of_scheme(
+    const axis2_char_t * scheme_str)
 {
     schemes_t *scheme;
 
     if (scheme_str)
     {
-        for (scheme = schemes; scheme->name ; ++scheme)
+        for (scheme = schemes; scheme->name; ++scheme)
         {
             if (axutil_strcasecmp(scheme_str, scheme->name) == 0)
             {
@@ -672,8 +685,9 @@ axutil_uri_port_of_scheme(const axis2_char_t *scheme_str)
 }
 
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
-axutil_uri_clone(const axutil_uri_t* uri,
-    const axutil_env_t *env)
+axutil_uri_clone(
+    const axutil_uri_t * uri,
+    const axutil_env_t * env)
 {
     axutil_uri_t *new_uri = NULL;
 
@@ -701,9 +715,10 @@ axutil_uri_clone(const axutil_uri_t* uri,
 /* Unparse a axutil_uri_t structure to an URI string.
  * Optionally suppress the password for security reasons.
  */
-AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axutil_uri_to_string(const axutil_uri_t *uri,
-    const axutil_env_t *env,
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axutil_uri_to_string(
+    const axutil_uri_t * uri,
+    const axutil_env_t * env,
     unsigned flags)
 {
     axis2_char_t *ret = "";
@@ -717,46 +732,45 @@ axutil_uri_to_string(const axutil_uri_t *uri,
          * AXIS2_URI_UNP_ flags: */
         if (uri->user || uri->password)
         {
-            ret = axutil_strcat(env,
-                (uri->user     && !(flags & AXIS2_URI_UNP_OMITUSER))
-                ? uri->user : "",
-                (uri->password && !(flags & AXIS2_URI_UNP_OMITPASSWORD))
-                ? ":" : "",
-                (uri->password && !(flags & AXIS2_URI_UNP_OMITPASSWORD))
-                ? ((flags & AXIS2_URI_UNP_REVEALPASSWORD)
-                ? uri->password : "XXXXXXXX")
-                : "",
-                ((uri->user     && !(flags & AXIS2_URI_UNP_OMITUSER)) ||
-                (uri->password && !(flags & AXIS2_URI_UNP_OMITPASSWORD)))
-                ? "@" : "",
-                NULL);
+            ret =
+                axutil_strcat(env,
+                              (uri->user &&
+                               !(flags & AXIS2_URI_UNP_OMITUSER)) ? uri->user : "", (uri->password
+                                                                                     && !(flags &
+                                                                                          AXIS2_URI_UNP_OMITPASSWORD))
+                              ? ":" : "", (uri->password &&
+                                           !(flags & AXIS2_URI_UNP_OMITPASSWORD)) ? ((flags &
+                                                                                      AXIS2_URI_UNP_REVEALPASSWORD)
+                                                                                     ? uri->
+                                                                                     password :
+                                                                                     "XXXXXXXX") :
+                              "", ((uri->user && !(flags & AXIS2_URI_UNP_OMITUSER)) ||
+                                   (uri->password &&
+                                    !(flags & AXIS2_URI_UNP_OMITPASSWORD))) ? "@" : "", NULL);
         }
 
         /* Construct scheme://site string */
         if (uri->hostname)
-{
+        {
             int is_default_port;
-            const axis2_char_t *lbrk = "", *rbrk = "";
+            const axis2_char_t *lbrk = "",
+                *rbrk = "";
 
             if (strchr(uri->hostname, ':'))
-            { /* v6 literal */
+            {                   /* v6 literal */
                 lbrk = "[";
                 rbrk = "]";
             }
 
-            is_default_port =
-                (uri->port_str == NULL ||
-                    uri->port == 0 ||
-                    uri->port == axutil_uri_port_of_scheme(uri->scheme));
+            is_default_port = (uri->port_str == NULL || uri->port == 0 ||
+                               uri->port == axutil_uri_port_of_scheme(uri->scheme));
 
             if (uri->scheme)
             {
-                ret = axutil_strcat(env,
-                    uri->scheme, "://", ret,
-                    lbrk, uri->hostname, rbrk,
-                    is_default_port ? "" : ":",
-                    is_default_port ? "" : uri->port_str,
-                    NULL);
+                ret =
+                    axutil_strcat(env, uri->scheme, "://", ret, lbrk, uri->hostname, rbrk,
+                                  is_default_port ? "" : ":", is_default_port ? "" : uri->port_str,
+                                  NULL);
             }
             else
             {
@@ -765,11 +779,10 @@ axutil_uri_to_string(const axutil_uri_t *uri,
                  * to the authority, so include the authority prefix while
                  * omitting the "scheme:" that the user neglected to pass us.
                  */
-                ret = axutil_strcat(env,
-                    "//", ret, lbrk, uri->hostname, rbrk,
-                    is_default_port ? "" : ":",
-                    is_default_port ? "" : uri->port_str,
-                    NULL);
+                ret =
+                    axutil_strcat(env, "//", ret, lbrk, uri->hostname, rbrk,
+                                  is_default_port ? "" : ":", is_default_port ? "" : uri->port_str,
+                                  NULL);
             }
         }
     }
@@ -778,48 +791,48 @@ axutil_uri_to_string(const axutil_uri_t *uri,
     if (!(flags & AXIS2_URI_UNP_OMITPATHINFO))
     {
         /* Append path, query and fragment strings: */
-        ret = axutil_strcat(env,
-            ret,
-            (uri->path)
-            ? uri->path : "",
-            (uri->query    && !(flags & AXIS2_URI_UNP_OMITQUERY))
-            ? "?" : "",
-            (uri->query    && !(flags & AXIS2_URI_UNP_OMITQUERY))
-            ? uri->query : "",
-            (uri->fragment && !(flags & AXIS2_URI_UNP_OMITQUERY))
-            ? "#" : NULL,
-            (uri->fragment && !(flags & AXIS2_URI_UNP_OMITQUERY))
-            ? uri->fragment : NULL,
-            NULL);
+        ret =
+            axutil_strcat(env, ret, (uri->path) ? uri->path : "",
+                          (uri->query && !(flags & AXIS2_URI_UNP_OMITQUERY)) ? "?" : "", (uri->query
+                                                                                          && !(flags
+                                                                                               &
+                                                                                               AXIS2_URI_UNP_OMITQUERY))
+                          ? uri->query : "", (uri->fragment &&
+                                              !(flags & AXIS2_URI_UNP_OMITQUERY)) ? "#" : NULL,
+                          (uri->fragment &&
+                           !(flags & AXIS2_URI_UNP_OMITQUERY)) ? uri->fragment : NULL, NULL);
     }
     return ret;
 }
 
 axis2_char_t *AXIS2_CALL
-axutil_uri_get_protocol(axutil_uri_t *uri,
-    const axutil_env_t *env)
+axutil_uri_get_protocol(
+    axutil_uri_t * uri,
+    const axutil_env_t * env)
 {
     return uri->scheme;
 }
 
 axis2_char_t *AXIS2_CALL
-axutil_uri_get_server(axutil_uri_t *uri,
-    const axutil_env_t *env)
+axutil_uri_get_server(
+    axutil_uri_t * uri,
+    const axutil_env_t * env)
 {
     return uri->hostinfo;
 }
 
 axis2_port_t AXIS2_CALL
-axutil_uri_get_port(axutil_uri_t *uri,
-    const axutil_env_t *env)
+axutil_uri_get_port(
+    axutil_uri_t * uri,
+    const axutil_env_t * env)
 {
     return uri->port;
 }
 
 axis2_char_t *AXIS2_CALL
-axutil_uri_get_path(axutil_uri_t *uri,
-    const axutil_env_t *env)
+axutil_uri_get_path(
+    axutil_uri_t * uri,
+    const axutil_env_t * env)
 {
     return uri->path;
 }
-

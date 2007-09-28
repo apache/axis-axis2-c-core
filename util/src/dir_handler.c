@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,29 +26,33 @@
 
 #include <minizip/axis2_archive_extract.h>
 
-extern int AXIS2_ALPHASORT();
+extern int AXIS2_ALPHASORT(
+    );
 #ifdef IS_MACOSX
-int dir_select(struct dirent *entry);
+int dir_select(
+    struct dirent *entry);
 #else
-int dir_select(const struct dirent *entry);
+int dir_select(
+    const struct dirent *entry);
 #endif
-
 
 /**
  * List the dll files in the given service or module folder path
  * @param pathname path to your service or module directory
  * @return array list of dll file names
  */
-AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-axutil_dir_handler_list_services_or_modules_in_dir(const axutil_env_t *env,
-        const axis2_char_t *pathname)
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axutil_dir_handler_list_services_or_modules_in_dir(
+    const axutil_env_t * env,
+    const axis2_char_t * pathname)
 {
     axutil_array_list_t *file_list = NULL;
     struct stat *buf = NULL;
     int count = 1;
     int i = 0;
     struct dirent **files = NULL;
-    int file_select();
+    int file_select(
+        );
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -61,14 +66,14 @@ axutil_dir_handler_list_services_or_modules_in_dir(const axutil_env_t *env,
         return NULL;
     }
 
-    for (i = 1; i < (count + 1) ; ++i)
+    for (i = 1; i < (count + 1); ++i)
     {
         axis2_char_t *fname = NULL;
         axutil_file_t *arch_file = NULL;
         axis2_char_t *path = NULL;
         axis2_char_t *temp_path = NULL;
 
-        fname = files[i-1]->d_name;
+        fname = files[i - 1]->d_name;
         arch_file = (axutil_file_t *) axutil_file_create(env);
         if (!arch_file)
         {
@@ -86,7 +91,7 @@ axutil_dir_handler_list_services_or_modules_in_dir(const axutil_env_t *env,
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
-         axutil_file_set_name(arch_file, env, fname);
+        axutil_file_set_name(arch_file, env, fname);
         temp_path = axutil_stracat(env, pathname, AXIS2_PATH_SEP_STR);
         path = axutil_stracat(env, temp_path, fname);
         AXIS2_FREE(env->allocator, temp_path);
@@ -107,7 +112,7 @@ axutil_dir_handler_list_services_or_modules_in_dir(const axutil_env_t *env,
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
-         axutil_file_set_path(arch_file, env, path);
+        axutil_file_set_path(arch_file, env, path);
         buf = AXIS2_MALLOC(env->allocator, sizeof(struct stat));
         if (!buf)
         {
@@ -128,7 +133,7 @@ axutil_dir_handler_list_services_or_modules_in_dir(const axutil_env_t *env,
             return NULL;
         }
         stat(path, buf);
-         axutil_file_set_timestamp(arch_file, env, (time_t) buf->st_ctime);
+        axutil_file_set_timestamp(arch_file, env, (time_t) buf->st_ctime);
         status = axutil_array_list_add(file_list, env, arch_file);
         if (AXIS2_SUCCESS != status)
         {
@@ -161,9 +166,10 @@ axutil_dir_handler_list_services_or_modules_in_dir(const axutil_env_t *env,
  * @param pathname path  your modules or services folder
  * @return array list of contents of services or modules folder
  */
-AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-axutil_dir_handler_list_service_or_module_dirs(const axutil_env_t *env,
-        const axis2_char_t *pathname)
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axutil_dir_handler_list_service_or_module_dirs(
+    const axutil_env_t * env,
+    const axis2_char_t * pathname)
 {
     axutil_array_list_t *file_list = NULL;
     struct stat *buf = NULL;
@@ -181,7 +187,8 @@ axutil_dir_handler_list_service_or_module_dirs(const axutil_env_t *env,
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, NULL);
     file_list = axutil_array_list_create(env, 0);
-    if (!getcwd(cwd, 500)) exit(1);
+    if (!getcwd(cwd, 500))
+        exit(1);
     chdir(pathname);
     axis2_archive_extract();
 
@@ -196,14 +203,14 @@ axutil_dir_handler_list_service_or_module_dirs(const axutil_env_t *env,
         return NULL;
     }
 
-    for (i = 1; i < (count + 1) ; ++i)
+    for (i = 1; i < (count + 1); ++i)
     {
         axis2_char_t *fname = NULL;
         axutil_file_t *arch_file = NULL;
         axis2_char_t *path = NULL;
         axis2_char_t *temp_path = NULL;
 
-        fname = files[i-1]->d_name;
+        fname = files[i - 1]->d_name;
         arch_file = (axutil_file_t *) axutil_file_create(env);
         if (!arch_file)
         {
@@ -221,7 +228,7 @@ axutil_dir_handler_list_service_or_module_dirs(const axutil_env_t *env,
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
-         axutil_file_set_name(arch_file, env, fname);
+        axutil_file_set_name(arch_file, env, fname);
         temp_path = axutil_stracat(env, pathname, AXIS2_PATH_SEP_STR);
         path = axutil_stracat(env, temp_path, fname);
         if (!path)
@@ -241,7 +248,7 @@ axutil_dir_handler_list_service_or_module_dirs(const axutil_env_t *env,
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
-         axutil_file_set_path(arch_file, env, path);
+        axutil_file_set_path(arch_file, env, path);
         AXIS2_FREE(env->allocator, temp_path);
         buf = AXIS2_MALLOC(env->allocator, sizeof(struct stat));
         if (!buf)
@@ -263,7 +270,7 @@ axutil_dir_handler_list_service_or_module_dirs(const axutil_env_t *env,
             return NULL;
         }
         stat(path, buf);
-         axutil_file_set_timestamp(arch_file, env, (time_t) buf->st_ctime);
+        axutil_file_set_timestamp(arch_file, env, (time_t) buf->st_ctime);
         status = axutil_array_list_add(file_list, env, arch_file);
         if (AXIS2_SUCCESS != status)
         {
@@ -295,36 +302,38 @@ axutil_dir_handler_list_service_or_module_dirs(const axutil_env_t *env,
     return file_list;
 }
 
-
-int file_select(struct dirent *entry)
-
+int
+file_select(
+    struct dirent *entry)
 {
     axis2_char_t *ptr;
 
-    if ((strcmp(entry->d_name, ".") == 0) ||
-            (strcmp(entry->d_name, "..") == 0))
+    if ((strcmp(entry->d_name, ".") == 0) || (strcmp(entry->d_name, "..") == 0))
         return (AXIS2_FALSE);
 
     /* Check for filename extensions */
     ptr = axutil_rindex(entry->d_name, '.');
-    if ((ptr) &&
-            ((strcmp(ptr, AXIS2_LIB_SUFFIX) == 0)))
+    if ((ptr) && ((strcmp(ptr, AXIS2_LIB_SUFFIX) == 0)))
     {
         return (AXIS2_TRUE);
     }
     else
-        return(AXIS2_FALSE);
+        return (AXIS2_FALSE);
 }
 
 #ifdef IS_MACOSX
-int dir_select(struct dirent *entry)
+int
+dir_select(
+    struct dirent *entry)
 #else
-int dir_select(const struct dirent *entry)
+int
+dir_select(
+    const struct dirent *entry)
 #endif
 {
     struct stat stat_p;
 
-    if (-1 ==  stat(entry->d_name, &stat_p))
+    if (-1 == stat(entry->d_name, &stat_p))
         return (AXIS2_FALSE);
 
     if ((entry->d_name[0] == '.') || (!S_ISDIR(stat_p.st_mode)))
@@ -334,4 +343,3 @@ int dir_select(const struct dirent *entry)
 
     return AXIS2_TRUE;
 }
-

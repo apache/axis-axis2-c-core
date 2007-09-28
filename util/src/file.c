@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,16 +27,16 @@ struct axutil_file
 };
 
 AXIS2_EXTERN axutil_file_t *AXIS2_CALL
-axutil_file_create(const axutil_env_t *env)
+axutil_file_create(
+    const axutil_env_t * env)
 {
     axutil_file_t *file = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    file = (axutil_file_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axutil_file_t));
+    file = (axutil_file_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_file_t));
 
-    if (! file)
+    if (!file)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -48,8 +49,9 @@ axutil_file_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axutil_file_free(axutil_file_t *file,
-        const axutil_env_t *env)
+axutil_file_free(
+    axutil_file_t * file,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -71,9 +73,10 @@ axutil_file_free(axutil_file_t *file,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_file_set_name(axutil_file_t *file,
-        const axutil_env_t *env,
-        axis2_char_t *name)
+axutil_file_set_name(
+    axutil_file_t * file,
+    const axutil_env_t * env,
+    axis2_char_t * name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
@@ -93,22 +96,23 @@ axutil_file_set_name(axutil_file_t *file,
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-axutil_file_get_name(axutil_file_t *file,
-        const axutil_env_t *env)
+axutil_file_get_name(
+    axutil_file_t * file,
+    const axutil_env_t * env)
 {
     if (!file->name)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET,
-                AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET, AXIS2_FAILURE);
         return NULL;
     }
     return (file->name);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_file_set_path(axutil_file_t *file,
-        const axutil_env_t *env,
-        axis2_char_t *path)
+axutil_file_set_path(
+    axutil_file_t * file,
+    const axutil_env_t * env,
+    axis2_char_t * path)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (!path)
@@ -131,13 +135,13 @@ axutil_file_set_path(axutil_file_t *file,
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-axutil_file_get_path(axutil_file_t *file,
-        const axutil_env_t *env)
+axutil_file_get_path(
+    axutil_file_t * file,
+    const axutil_env_t * env)
 {
     if (!(file->path))
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET,
-                AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -145,41 +149,42 @@ axutil_file_get_path(axutil_file_t *file,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_file_set_timestamp(axutil_file_t *file,
-        const axutil_env_t *env,
-        AXIS2_TIME_T timestamp)
+axutil_file_set_timestamp(
+    axutil_file_t * file,
+    const axutil_env_t * env,
+    AXIS2_TIME_T timestamp)
 {
     file->timestamp = timestamp;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN AXIS2_TIME_T AXIS2_CALL
-axutil_file_get_timestamp(axutil_file_t *file,
-        const axutil_env_t *env)
+axutil_file_get_timestamp(
+    axutil_file_t * file,
+    const axutil_env_t * env)
 {
     return file->timestamp;
 }
 
 AXIS2_EXTERN axutil_file_t *AXIS2_CALL
-axutil_file_clone(axutil_file_t *file,
-        const axutil_env_t *env)
+axutil_file_clone(
+    axutil_file_t * file,
+    const axutil_env_t * env)
 {
     axutil_file_t *new_file = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, NULL);
     new_file = axutil_file_create(env);
-    status =  axutil_file_set_name(new_file, env, file->name);
+    status = axutil_file_set_name(new_file, env, file->name);
     if (AXIS2_SUCCESS != status)
     {
         return NULL;
     }
-    status =  axutil_file_set_path(new_file, env, file->path);
+    status = axutil_file_set_path(new_file, env, file->path);
     if (AXIS2_SUCCESS != status)
     {
         return NULL;
     }
-     axutil_file_set_timestamp(new_file, env, file->timestamp);
+    axutil_file_set_timestamp(new_file, env, file->timestamp);
     return new_file;
 }
-
-

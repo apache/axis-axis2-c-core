@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,10 +23,10 @@
 
 #include <axutil_file_handler.h>
 
-void* AXIS2_CALL
-axutil_file_handler_open(const axis2_char_t *file_name,
-        const axis2_char_t *options)
-
+void *AXIS2_CALL
+axutil_file_handler_open(
+    const axis2_char_t * file_name,
+    const axis2_char_t * options)
 {
     FILE *file_ptr;
 
@@ -40,15 +41,18 @@ axutil_file_handler_open(const axis2_char_t *file_name,
 }
 
 axis2_status_t AXIS2_CALL
-axutil_file_handler_close(void *file_ptr)
+axutil_file_handler_close(
+    void *file_ptr)
 {
-    if (!file_ptr) return -1;
+    if (!file_ptr)
+        return -1;
     return (axis2_status_t) fclose(file_ptr);
 }
 
 axis2_status_t AXIS2_CALL
-axutil_file_handler_access(const axis2_char_t *path,
-        int mode)
+axutil_file_handler_access(
+    const axis2_char_t * path,
+    int mode)
 {
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
@@ -63,4 +67,3 @@ axutil_file_handler_access(const axis2_char_t *path,
     }
     return status;
 }
-

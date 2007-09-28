@@ -1,3 +1,4 @@
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,8 +18,9 @@
 
 #include <axutil_version.h>
 
-AXIS2_EXTERN void AXIS2_CALL 
-axis2_version(axis2_version_t *pvsn)
+AXIS2_EXTERN void AXIS2_CALL
+axis2_version(
+    axis2_version_t * pvsn)
 {
     pvsn->major = AXIS2_MAJOR_VERSION;
     pvsn->minor = AXIS2_MINOR_VERSION;
@@ -30,9 +32,9 @@ axis2_version(axis2_version_t *pvsn)
 #endif
 }
 
-AXIS2_EXTERN const char *AXIS2_CALL 
-axis2_version_string(void)
+AXIS2_EXTERN const char *AXIS2_CALL
+axis2_version_string(
+    void)
 {
     return AXIS2_VERSION_STRING;
 }
-

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -27,14 +28,14 @@ struct axutil_property
 };
 
 axutil_property_t *AXIS2_CALL
-axutil_property_create(const axutil_env_t *env)
+axutil_property_create(
+    const axutil_env_t * env)
 {
     axutil_property_t *property = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    property = (axutil_property_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axutil_property_t));
+    property = (axutil_property_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_property_t));
 
     if (!property)
     {
@@ -48,13 +49,15 @@ axutil_property_create(const axutil_env_t *env)
 
     return property;
 }
+
 /*****************************************************************************/
 axutil_property_t *AXIS2_CALL
-axutil_property_create_with_args(const axutil_env_t *env,
+axutil_property_create_with_args(
+    const axutil_env_t * env,
     axis2_scope_t scope,
     axis2_bool_t own_value,
     AXIS2_FREE_VOID_ARG free_func,
-    void *value) 
+    void *value)
 {
     axutil_property_t *property = NULL;
 
@@ -76,8 +79,9 @@ axutil_property_create_with_args(const axutil_env_t *env,
 }
 
 void AXIS2_CALL
-axutil_property_free(axutil_property_t *property,
-    const axutil_env_t *env)
+axutil_property_free(
+    axutil_property_t * property,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -89,7 +93,7 @@ axutil_property_free(axutil_property_t *property,
             {
                 property->free_func(property->value, env);
             }
-            else if(property->own_value)
+            else if (property->own_value)
             {
                 AXIS2_FREE(env->allocator, property->value);
             }
@@ -104,8 +108,9 @@ axutil_property_free(axutil_property_t *property,
 }
 
 axis2_status_t AXIS2_CALL
-axutil_property_set_scope(axutil_property_t *property,
-    const axutil_env_t *env,
+axutil_property_set_scope(
+    axutil_property_t * property,
+    const axutil_env_t * env,
     axis2_scope_t scope)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -115,8 +120,9 @@ axutil_property_set_scope(axutil_property_t *property,
 }
 
 axis2_status_t AXIS2_CALL
-axutil_property_set_free_func(axutil_property_t *property,
-    const axutil_env_t *env,
+axutil_property_set_free_func(
+    axutil_property_t * property,
+    const axutil_env_t * env,
     AXIS2_FREE_VOID_ARG free_func)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -126,8 +132,9 @@ axutil_property_set_free_func(axutil_property_t *property,
 }
 
 axis2_status_t AXIS2_CALL
-axutil_property_set_value(axutil_property_t *property,
-    const axutil_env_t *env,
+axutil_property_set_value(
+    axutil_property_t * property,
+    const axutil_env_t * env,
     void *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -140,7 +147,7 @@ axutil_property_set_value(axutil_property_t *property,
             {
                 property->free_func(property->value, env);
             }
-            else if(property->own_value)
+            else if (property->own_value)
             {
                 AXIS2_FREE(env->allocator, property->value);
             }
@@ -152,15 +159,17 @@ axutil_property_set_value(axutil_property_t *property,
 }
 
 void *AXIS2_CALL
-axutil_property_get_value(axutil_property_t *property,
-    const axutil_env_t *env)
+axutil_property_get_value(
+    axutil_property_t * property,
+    const axutil_env_t * env)
 {
     return property->value;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_property_set_own_value(axutil_property_t *property,
-    const axutil_env_t *env,
+axutil_property_set_own_value(
+    axutil_property_t * property,
+    const axutil_env_t * env,
     axis2_bool_t own_value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -169,10 +178,10 @@ axutil_property_set_own_value(axutil_property_t *property,
     return AXIS2_SUCCESS;
 }
 
-
-axutil_property_t* AXIS2_CALL
-axutil_property_clone(axutil_property_t *property,
-    const axutil_env_t *env)
+axutil_property_t *AXIS2_CALL
+axutil_property_clone(
+    axutil_property_t * property,
+    const axutil_env_t * env)
 {
     axutil_property_t *new_property = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -181,6 +190,5 @@ axutil_property_clone(axutil_property_t *property,
     axutil_property_set_scope(new_property, env, property->scope);
     axutil_property_set_own_value(new_property, env, property->own_value);
     axutil_property_set_value(new_property, env, property->value);
-    return new_property; 
+    return new_property;
 }
-

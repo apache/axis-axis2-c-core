@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,20 +18,17 @@
 
 #include <axutil_uuid_gen.h>
 
-
-
-AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axutil_uuid_gen(const axutil_env_t *env)
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axutil_uuid_gen(
+    const axutil_env_t * env)
 {
 
     axis2_char_t *str = AXIS2_MALLOC(env->allocator, 40 * sizeof(char));
     axutil_platform_uuid_gen(str);
     if (!str)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_UUID_GEN_FAILED,
-            AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_UUID_GEN_FAILED, AXIS2_FAILURE);
         return NULL;
     }
     return str;
 }
-

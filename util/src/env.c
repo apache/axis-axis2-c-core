@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,8 +23,9 @@
 #include <axutil_log_default.h>
 #include <axutil_string.h>
 
-AXIS2_EXTERN axutil_env_t * AXIS2_CALL 
-axutil_env_create_all(const axis2_char_t *log_file,
+AXIS2_EXTERN axutil_env_t *AXIS2_CALL
+axutil_env_create_all(
+    const axis2_char_t * log_file,
     const axutil_log_levels_t log_level)
 {
     axutil_env_t *env = NULL;
@@ -54,8 +56,9 @@ axutil_env_create_all(const axis2_char_t *log_file,
     return env;
 }
 
-AXIS2_EXTERN void AXIS2_CALL  
-axutil_env_free(axutil_env_t *env)
+AXIS2_EXTERN void AXIS2_CALL
+axutil_env_free(
+    axutil_env_t * env)
 {
     axutil_allocator_t *allocator = NULL;
 
@@ -91,19 +94,19 @@ axutil_env_free(axutil_env_t *env)
     return;
 }
 
-AXIS2_EXTERN axutil_env_t* AXIS2_CALL
-axutil_env_create(axutil_allocator_t *allocator)
+AXIS2_EXTERN axutil_env_t *AXIS2_CALL
+axutil_env_create(
+    axutil_allocator_t * allocator)
 {
     axutil_env_t *environment;
     axutil_log_t *log = NULL;
 
-    if (! allocator)
+    if (!allocator)
         return NULL;
 
-    environment =
-        (axutil_env_t *) AXIS2_MALLOC(allocator, sizeof(axutil_env_t));
+    environment = (axutil_env_t *) AXIS2_MALLOC(allocator, sizeof(axutil_env_t));
 
-    if (! environment)
+    if (!environment)
         return NULL;
 
     log = axutil_log_create_default(allocator);
@@ -112,7 +115,7 @@ axutil_env_create(axutil_allocator_t *allocator)
 
     /* Create default error */
     environment->error = axutil_error_create(allocator);
-    if (! environment->error)
+    if (!environment->error)
         return NULL;
     environment->log = log;
     environment->thread_pool = NULL;
@@ -120,34 +123,35 @@ axutil_env_create(axutil_allocator_t *allocator)
 
 }
 
-AXIS2_EXTERN axutil_env_t* AXIS2_CALL
-axutil_env_create_with_error(axutil_allocator_t *allocator, 
-    axutil_error_t *error)
+AXIS2_EXTERN axutil_env_t *AXIS2_CALL
+axutil_env_create_with_error(
+    axutil_allocator_t * allocator,
+    axutil_error_t * error)
 {
     return axutil_env_create_with_error_log(allocator, error, NULL);
 }
 
-AXIS2_EXTERN axutil_env_t * AXIS2_CALL
-axutil_env_create_with_error_log(axutil_allocator_t *allocator, 
-    axutil_error_t *error, 
-    axutil_log_t *log)
+AXIS2_EXTERN axutil_env_t *AXIS2_CALL
+axutil_env_create_with_error_log(
+    axutil_allocator_t * allocator,
+    axutil_error_t * error,
+    axutil_log_t * log)
 {
     axutil_env_t *environment;
-    if (! allocator)
+    if (!allocator)
         return NULL;
-    if (! error)
+    if (!error)
         return NULL;
 
     environment = (axutil_env_t *) AXIS2_MALLOC(allocator, sizeof(axutil_env_t));
 
-    if (! environment)
+    if (!environment)
         return NULL;
 
     environment->allocator = allocator;
     environment->error = error;
 
-
-    if (! log)
+    if (!log)
     {
         environment->log_enabled = AXIS2_FALSE;
     }
@@ -162,31 +166,31 @@ axutil_env_create_with_error_log(axutil_allocator_t *allocator,
     return environment;
 }
 
-AXIS2_EXTERN axutil_env_t * AXIS2_CALL
-axutil_env_create_with_error_log_thread_pool(axutil_allocator_t *allocator, 
-    axutil_error_t *error, 
-    axutil_log_t *log, 
-    axutil_thread_pool_t *pool)
+AXIS2_EXTERN axutil_env_t *AXIS2_CALL
+axutil_env_create_with_error_log_thread_pool(
+    axutil_allocator_t * allocator,
+    axutil_error_t * error,
+    axutil_log_t * log,
+    axutil_thread_pool_t * pool)
 {
     axutil_env_t *environment;
-    if (! allocator)
+    if (!allocator)
         return NULL;
-    if (! error)
+    if (!error)
         return NULL;
-    if (! pool)
+    if (!pool)
         return NULL;
 
-    environment =
-        (axutil_env_t *) AXIS2_MALLOC(allocator, sizeof(axutil_env_t));
+    environment = (axutil_env_t *) AXIS2_MALLOC(allocator, sizeof(axutil_env_t));
 
-    if (! environment)
+    if (!environment)
         return NULL;
 
     environment->allocator = allocator;
     environment->error = error;
     environment->thread_pool = pool;
 
-    if (! log)
+    if (!log)
         environment->log_enabled = AXIS2_FALSE;
     environment->log_enabled = AXIS2_TRUE;
     environment->log = log;
@@ -194,16 +198,18 @@ axutil_env_create_with_error_log_thread_pool(axutil_allocator_t *allocator,
     return environment;
 }
 
-AXIS2_EXTERN  axis2_status_t  AXIS2_CALL
-axutil_env_check_status(const axutil_env_t *env)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axutil_env_check_status(
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     return AXIS2_ERROR_GET_STATUS_CODE(env->error);
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axutil_env_enable_log(axutil_env_t *env, 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axutil_env_enable_log(
+    axutil_env_t * env,
     axis2_bool_t enable)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
@@ -213,8 +219,9 @@ axutil_env_enable_log(axutil_env_t *env,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN void AXIS2_CALL  
-axutil_env_free_masked(axutil_env_t *env, 
+AXIS2_EXTERN void AXIS2_CALL
+axutil_env_free_masked(
+    axutil_env_t * env,
     char mask)
 {
     if (mask & 0x1)
@@ -231,12 +238,6 @@ axutil_env_free_masked(axutil_env_t *env,
     }
     if (env)
         AXIS2_FREE(env->allocator, env);
-    
+
     return;
 }
-
-
-
-
-
-

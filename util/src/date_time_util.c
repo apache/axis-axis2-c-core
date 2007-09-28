@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,10 +18,9 @@
 
 #include <axutil_date_time_util.h>
 
-
-
 AXIS2_EXTERN int AXIS2_CALL
-axutil_get_milliseconds(const axutil_env_t *env)
+axutil_get_milliseconds(
+    const axutil_env_t * env)
 {
     return axis2_platform_get_milliseconds();
 }

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -20,16 +21,20 @@
 
 struct axutil_linked_list
 {
+
     /**The number of elements in this list. */
     int size;
+
     /**
      * The first element in the list.
      */
     entry_t *first;
+
     /**
     * The last element in the list.
     */
     entry_t *last;
+
     /**
     * A count of the number of structural modifications that have been made to
     * the list (that is, insertions and removals). Structural modifications
@@ -49,7 +54,8 @@ struct axutil_linked_list
 };
 
 AXIS2_EXTERN axutil_linked_list_t *AXIS2_CALL
-axutil_linked_list_create(const axutil_env_t *env)
+axutil_linked_list_create(
+    const axutil_env_t * env)
 {
     axutil_linked_list_t *linked_list = NULL;
 
@@ -71,7 +77,9 @@ axutil_linked_list_create(const axutil_env_t *env)
 }
 
 static entry_t *
-axutil_linked_list_create_entry(const axutil_env_t *env, void *data)
+axutil_linked_list_create_entry(
+    const axutil_env_t * env,
+    void *data)
 {
     entry_t *entry = (entry_t *) AXIS2_MALLOC(env->allocator, sizeof(entry_t));
     if (!entry)
@@ -87,9 +95,10 @@ axutil_linked_list_create_entry(const axutil_env_t *env, void *data)
 }
 
 static axis2_status_t
-axutil_linked_list_add_last_entry(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        entry_t *e)
+axutil_linked_list_add_last_entry(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    entry_t * e)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, e, AXIS2_FAILURE);
@@ -110,11 +119,13 @@ axutil_linked_list_add_last_entry(axutil_linked_list_t *linked_list,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN void AXIS2_CALL 
-axutil_linked_list_free(axutil_linked_list_t *linked_list,
-    const axutil_env_t *env)
+AXIS2_EXTERN void AXIS2_CALL
+axutil_linked_list_free(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env)
 {
-    entry_t *current = NULL, *next = NULL;
+    entry_t *current = NULL,
+        *next = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     current = linked_list->first;
@@ -128,10 +139,11 @@ axutil_linked_list_free(axutil_linked_list_t *linked_list,
     linked_list = NULL;
 }
 
-AXIS2_EXTERN entry_t * AXIS2_CALL
-axutil_linked_list_get_entry(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        int n)
+AXIS2_EXTERN entry_t *AXIS2_CALL
+axutil_linked_list_get_entry(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    int n)
 {
     entry_t *e = NULL;
     if (n < linked_list->size / 2)
@@ -158,9 +170,10 @@ axutil_linked_list_get_entry(axutil_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_linked_list_remove_entry(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        entry_t *e)
+axutil_linked_list_remove_entry(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    entry_t * e)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, e, AXIS2_FAILURE);
@@ -192,9 +205,10 @@ axutil_linked_list_remove_entry(axutil_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axutil_linked_list_check_bounds_inclusive(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        int index)
+axutil_linked_list_check_bounds_inclusive(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    int index)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
 
@@ -207,9 +221,10 @@ axutil_linked_list_check_bounds_inclusive(axutil_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axutil_linked_list_check_bounds_exclusive(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        int index)
+axutil_linked_list_check_bounds_exclusive(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    int index)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     if (index < 0 || index >= linked_list->size)
@@ -220,9 +235,10 @@ axutil_linked_list_check_bounds_exclusive(axutil_linked_list_t *linked_list,
     return AXIS2_TRUE;
 }
 
-AXIS2_EXTERN void * AXIS2_CALL
-axutil_linked_list_get_first(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env)
+AXIS2_EXTERN void *AXIS2_CALL
+axutil_linked_list_get_first(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env)
 {
     if (linked_list->size == 0)
     {
@@ -233,9 +249,10 @@ axutil_linked_list_get_first(axutil_linked_list_t *linked_list,
     return linked_list->first->data;
 }
 
-AXIS2_EXTERN void * AXIS2_CALL
-axutil_linked_list_get_last(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env)
+AXIS2_EXTERN void *AXIS2_CALL
+axutil_linked_list_get_last(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -248,9 +265,10 @@ axutil_linked_list_get_last(axutil_linked_list_t *linked_list,
     return linked_list->last->data;
 }
 
-AXIS2_EXTERN void * AXIS2_CALL
-axutil_linked_list_remove_first(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env)
+AXIS2_EXTERN void *AXIS2_CALL
+axutil_linked_list_remove_first(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env)
 {
     void *r;
     AXIS2_ENV_CHECK(env, NULL);
@@ -274,15 +292,15 @@ axutil_linked_list_remove_first(axutil_linked_list_t *linked_list,
         linked_list->last = NULL;
     }
 
-    linked_list->first = linked_list->
-            first->next;
+    linked_list->first = linked_list->first->next;
 
     return r;
 }
 
-AXIS2_EXTERN void * AXIS2_CALL
-axutil_linked_list_remove_last(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env)
+AXIS2_EXTERN void *AXIS2_CALL
+axutil_linked_list_remove_last(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env)
 {
     void *r = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -312,11 +330,12 @@ axutil_linked_list_remove_last(axutil_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_linked_list_add_first(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        void *o)
+axutil_linked_list_add_first(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    void *o)
 {
-    entry_t *e ;
+    entry_t *e;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, o, AXIS2_FAILURE);
 
@@ -339,9 +358,10 @@ axutil_linked_list_add_first(axutil_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_linked_list_add_last(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        void *o)
+axutil_linked_list_add_last(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    void *o)
 {
     entry_t *e;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -352,9 +372,10 @@ axutil_linked_list_add_last(axutil_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axutil_linked_list_contains(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        void *o)
+axutil_linked_list_contains(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    void *o)
 {
     entry_t *e;
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
@@ -371,16 +392,18 @@ axutil_linked_list_contains(axutil_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-axutil_linked_list_size(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env)
+axutil_linked_list_size(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env)
 {
     return linked_list->size;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axutil_linked_list_add(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        void *o)
+axutil_linked_list_add(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    void *o)
 {
     entry_t *e;
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
@@ -389,11 +412,11 @@ axutil_linked_list_add(axutil_linked_list_t *linked_list,
     return axutil_linked_list_add_last_entry(linked_list, env, e);
 }
 
-
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axutil_linked_list_remove(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        void *o)
+axutil_linked_list_remove(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    void *o)
 {
     entry_t *e;
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
@@ -411,10 +434,10 @@ axutil_linked_list_remove(axutil_linked_list_t *linked_list,
     return AXIS2_FALSE;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_linked_list_clear(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env)
+axutil_linked_list_clear(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env)
 {
     if (linked_list->size > 0)
     {
@@ -427,22 +450,23 @@ axutil_linked_list_clear(axutil_linked_list_t *linked_list,
     return AXIS2_SUCCESS;
 }
 
-
-AXIS2_EXTERN void * AXIS2_CALL
-axutil_linked_list_get(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        int index)
+AXIS2_EXTERN void *AXIS2_CALL
+axutil_linked_list_get(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    int index)
 {
     AXIS2_ENV_CHECK(env, NULL);
     axutil_linked_list_check_bounds_exclusive(linked_list, env, index);
     return axutil_linked_list_get_entry(linked_list, env, index)->data;
 }
 
-
-AXIS2_EXTERN void * AXIS2_CALL
-axutil_linked_list_set(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        int index, void *o)
+AXIS2_EXTERN void *AXIS2_CALL
+axutil_linked_list_set(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    int index,
+    void *o)
 {
     entry_t *e;
     void *old;
@@ -456,10 +480,11 @@ axutil_linked_list_set(axutil_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_linked_list_add_at_index(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        int index,
-        void *o)
+axutil_linked_list_add_at_index(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    int index,
+    void *o)
 {
     entry_t *after = NULL;
     entry_t *e;
@@ -490,10 +515,11 @@ axutil_linked_list_add_at_index(axutil_linked_list_t *linked_list,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN void * AXIS2_CALL
-axutil_linked_list_remove_at_index(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        int index)
+AXIS2_EXTERN void *AXIS2_CALL
+axutil_linked_list_remove_at_index(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    int index)
 {
     entry_t *e;
     AXIS2_ENV_CHECK(env, NULL);
@@ -503,11 +529,11 @@ axutil_linked_list_remove_at_index(axutil_linked_list_t *linked_list,
     return e->data;
 }
 
-
 AXIS2_EXTERN int AXIS2_CALL
-axutil_linked_list_index_of(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        void *o)
+axutil_linked_list_index_of(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    void *o)
 {
     int index = 0;
     entry_t *e;
@@ -525,11 +551,11 @@ axutil_linked_list_index_of(axutil_linked_list_t *linked_list,
     return -1;
 }
 
-
 AXIS2_EXTERN int AXIS2_CALL
-axutil_linked_list_last_index_of(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        void *o)
+axutil_linked_list_last_index_of(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env,
+    void *o)
 {
     int index;
     entry_t *e;
@@ -548,16 +574,16 @@ axutil_linked_list_last_index_of(axutil_linked_list_t *linked_list,
     return -1;
 }
 
-AXIS2_EXTERN void ** AXIS2_CALL
-axutil_linked_list_to_array(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env)
+AXIS2_EXTERN void **AXIS2_CALL
+axutil_linked_list_to_array(
+    axutil_linked_list_t * linked_list,
+    const axutil_env_t * env)
 {
     int i = 0;
     void **array;
     entry_t *e;
     AXIS2_ENV_CHECK(env, NULL);
-    array = (void **) AXIS2_MALLOC(env->allocator,
-                linked_list->size * sizeof(void *));
+    array = (void **) AXIS2_MALLOC(env->allocator, linked_list->size * sizeof(void *));
     e = linked_list->first;
     for (i = 0; i < linked_list->size; i++)
     {
