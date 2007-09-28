@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -22,12 +23,12 @@
  * @defgroup axis2_phase phases
  * @ingroup axis2_engine
  * phase is a logical unit of execution in the Axis2 engine's execution flows.
- * A phase encapsulates one or more handlers in a given sequence to be invoked. 
- * The sequencing of handlers within a phase are often defined by module 
- * configuration which specifies where in the phase's handler chain a given 
+ * A phase encapsulates one or more handlers in a given sequence to be invoked.
+ * The sequencing of handlers within a phase are often defined by module
+ * configuration which specifies where in the phase's handler chain a given
  * handler should be placed.
- * Calling invoke on phase triggers invoke on the handlers stored within the 
- * phase in the sequence they are ordered. 
+ * Calling invoke on phase triggers invoke on the handlers stored within the
+ * phase in the sequence they are ordered.
  * @{
  */
 
@@ -42,25 +43,25 @@
 #include <axutil_array_list.h>
 #include <axutil_qname.h>
 
-/** 
+/**
  * A given handler's location within the list of handlers is before a particular
- * handler and after another particular handler. 
+ * handler and after another particular handler.
  */
 #define AXIS2_PHASE_BOTH_BEFORE_AFTER  0
 
-/** 
- * A given handler's location within the list of handlers is before another 
+/**
+ * A given handler's location within the list of handlers is before another
  * given handler.
  */
 #define AXIS2_PHASE_BEFORE  1
 
-/** 
- * A given handler's location within the list of handlers is after another 
+/**
+ * A given handler's location within the list of handlers is after another
  * given handler.
  */
 #define AXIS2_PHASE_AFTER  2
 
-/** 
+/**
  * A given handler's location within the list of handlers could be anywhere in
  * the list.
  */
@@ -73,7 +74,7 @@ extern "C"
 
     /** Type name for axis2_phase */
     typedef struct axis2_phase axis2_phase_t;
-        
+
     struct axis2_msg_ctx;
 
     /**
@@ -86,11 +87,12 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_add_handler_at(axis2_phase_t *phase,
-        const axutil_env_t *env,
+    axis2_phase_add_handler_at(
+        axis2_phase_t * phase,
+        const axutil_env_t * env,
         const int index,
-        axis2_handler_t *handler);
-    
+        axis2_handler_t * handler);
+
     /**
      * Adds the given handler to the end of the handler list.
      * @param phase pointer to phase
@@ -100,10 +102,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_add_handler(axis2_phase_t *phase,
-        const axutil_env_t *env,
-        axis2_handler_t *handler);
-
+    axis2_phase_add_handler(
+        axis2_phase_t * phase,
+        const axutil_env_t * env,
+        axis2_handler_t * handler);
 
     /**
      * Remove the given handler from  the handler list.
@@ -114,22 +116,24 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_remove_handler(axis2_phase_t *phase,
-        const axutil_env_t *env,
-        axis2_handler_t *handler);
-                
-     /**
-      * Invokes the phase. This function will in turn call invoke method of
-      * each handler in the handler list, in sequence, starting from the 
-      * beginning of the list to the end of the list.
-      * @param phase pointer to phase
-      * @param env pointer to environment struct
-      * @param msg_ctx pointer to message context
-      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-      */
+    axis2_phase_remove_handler(
+        axis2_phase_t * phase,
+        const axutil_env_t * env,
+        axis2_handler_t * handler);
+
+    /**
+     * Invokes the phase. This function will in turn call invoke method of
+     * each handler in the handler list, in sequence, starting from the 
+     * beginning of the list to the end of the list.
+     * @param phase pointer to phase
+     * @param env pointer to environment struct
+     * @param msg_ctx pointer to message context
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_invoke(axis2_phase_t *phase,
-        const axutil_env_t *env,
+    axis2_phase_invoke(
+        axis2_phase_t * phase,
+        const axutil_env_t * env,
         struct axis2_msg_ctx *msg_ctx);
 
     /**
@@ -139,8 +143,9 @@ extern "C"
      * @return returns name of phase
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_phase_get_name(const axis2_phase_t *phase,
-        const axutil_env_t *env);
+    axis2_phase_get_name(
+        const axis2_phase_t * phase,
+        const axutil_env_t * env);
 
     /**
      * Gets handler count in the handler list.
@@ -149,8 +154,9 @@ extern "C"
      * @return the number of handlers in the handler list
      */
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_phase_get_handler_count(const axis2_phase_t *phase,
-        const axutil_env_t *env);
+    axis2_phase_get_handler_count(
+        const axis2_phase_t * phase,
+        const axutil_env_t * env);
 
     /**
      * Sets the first handler in the handler list.
@@ -161,10 +167,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_set_first_handler(axis2_phase_t *phase,
-        const axutil_env_t *env,
-        axis2_handler_t *handler);
-                
+    axis2_phase_set_first_handler(
+        axis2_phase_t * phase,
+        const axutil_env_t * env,
+        axis2_handler_t * handler);
+
     /**
      * Sets the last handler in the handler list.
      * @param phase pointer to phase
@@ -174,10 +181,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_set_last_handler(axis2_phase_t *phase,
-        const axutil_env_t *env,
-        axis2_handler_t *handler);
-                
+    axis2_phase_set_last_handler(
+        axis2_phase_t * phase,
+        const axutil_env_t * env,
+        axis2_handler_t * handler);
+
     /**
      * Adds handler within the handler description to the list of handlers 
      * in the phase.
@@ -189,10 +197,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_add_handler_desc(axis2_phase_t *phase,
-        const axutil_env_t *env,
-        axis2_handler_desc_t *handler_desc);
-
+    axis2_phase_add_handler_desc(
+        axis2_phase_t * phase,
+        const axutil_env_t * env,
+        axis2_handler_desc_t * handler_desc);
 
     /**
      * Remove handler within the handler description from the list of handlers 
@@ -205,10 +213,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_remove_handler_desc(axis2_phase_t *phase,
-        const axutil_env_t *env,
-        axis2_handler_desc_t *handler_desc);
-                
+    axis2_phase_remove_handler_desc(
+        axis2_phase_t * phase,
+        const axutil_env_t * env,
+        axis2_handler_desc_t * handler_desc);
+
     /**
      * Inserts the handler into handler list of the phase based on the phase
      * rules associated with the handler. This function takes into account 
@@ -222,9 +231,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_insert_before(axis2_phase_t *phase,
-        const axutil_env_t *env,
-        axis2_handler_t *handler);
+    axis2_phase_insert_before(
+        axis2_phase_t * phase,
+        const axutil_env_t * env,
+        axis2_handler_t * handler);
 
     /**
      * Inserts the handler into handler list of the phase based on the phase
@@ -239,9 +249,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_insert_after(axis2_phase_t *phase,
-        const axutil_env_t *env,
-        axis2_handler_t *handler);
+    axis2_phase_insert_after(
+        axis2_phase_t * phase,
+        const axutil_env_t * env,
+        axis2_handler_t * handler);
 
     /**
      * Inserts the handler into handler list of the phase based on both 
@@ -256,9 +267,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_insert_before_and_after(axis2_phase_t *phase,
-        const axutil_env_t *env,
-        axis2_handler_t *handler);
+
+    axis2_phase_insert_before_and_after(
+        axis2_phase_t * phase,
+        const axutil_env_t * env,
+        axis2_handler_t * handler);
 
     /**
      * Inserts the handler to the correct location in the handler list of 
@@ -271,9 +284,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_insert_handler_desc(axis2_phase_t *phase,
-        const axutil_env_t *env,
-        axis2_handler_desc_t *handler_desc);
+    axis2_phase_insert_handler_desc(
+        axis2_phase_t * phase,
+        const axutil_env_t * env,
+        axis2_handler_desc_t * handler_desc);
 
     /**
      * Gets all the handlers in the phase.
@@ -282,8 +296,10 @@ extern "C"
      * @return pointer to array list containing the list of handlers
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_phase_get_all_handlers(const axis2_phase_t *phase,
-        const axutil_env_t *env);
+
+    axis2_phase_get_all_handlers(
+        const axis2_phase_t * phase,
+        const axutil_env_t * env);
 
     /**
      * Invokes handlers starting from the given handler index.
@@ -295,8 +311,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_invoke_start_from_handler(axis2_phase_t *phase,
-        const axutil_env_t *env,
+
+    axis2_phase_invoke_start_from_handler(
+        axis2_phase_t * phase,
+        const axutil_env_t * env,
         const int paused_handler_index,
         struct axis2_msg_ctx *msg_ctx);
 
@@ -307,8 +325,9 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_phase_free(axis2_phase_t *phase,
-        const axutil_env_t *env);
+    axis2_phase_free(
+        axis2_phase_t * phase,
+        const axutil_env_t * env);
 
     /**
      * creates phase struct instance.
@@ -317,18 +336,17 @@ extern "C"
      * @return pointer to newly created phase
      */
     AXIS2_EXTERN axis2_phase_t *AXIS2_CALL
-    axis2_phase_create(const axutil_env_t *env,
-            const axis2_char_t *phase_name);
-
+    axis2_phase_create(
+        const axutil_env_t * env,
+        const axis2_char_t * phase_name);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_increment_ref(axis2_phase_t *phase,
-            const axutil_env_t *env);
-    
-
+    axis2_phase_increment_ref(
+        axis2_phase_t * phase,
+        const axutil_env_t * env);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif    /* AXIS2_PHASE_H */
+#endif                          /* AXIS2_PHASE_H */

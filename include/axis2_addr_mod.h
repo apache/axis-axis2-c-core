@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -30,18 +31,20 @@ extern "C"
 {
 #endif
 
-AXIS2_EXTERN axis2_handler_t* AXIS2_CALL 
-axis2_addr_in_handler_create(const axutil_env_t *env, 
-                     axutil_string_t *name);
+    AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
+    axis2_addr_in_handler_create(
+        const axutil_env_t * env,
+        axutil_string_t * name);
 
-AXIS2_EXTERN axis2_handler_t* AXIS2_CALL 
-axis2_addr_out_handler_create(const axutil_env_t *env, 
-                       axutil_string_t *name);
-    
-/** @} */
-    
+    AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
+    axis2_addr_out_handler_create(
+        const axutil_env_t * env,
+        axutil_string_t * name);
+
+    /** @} */
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif    /* AXIS2_ADDR_MOD_H */
+#endif                          /* AXIS2_ADDR_MOD_H */

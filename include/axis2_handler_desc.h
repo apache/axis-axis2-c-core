@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,9 +22,9 @@
 /**
  * @defgroup axis2_handler_desc handler description
  * @ingroup axis2_desc
- * handler description captures information on a handler. Each handler in the 
- * system has an associated handler description. Deployment engine would create 
- * handler descriptions based on configuration information. When handlers are 
+ * handler description captures information on a handler. Each handler in the
+ * system has an associated handler description. Deployment engine would create
+ * handler descriptions based on configuration information. When handlers are
  * loaded from shared libraries, the information captured in handler description
  * would be used.
  * @{
@@ -55,8 +56,10 @@ extern "C"
      * @return pointer to QName, returns a reference, not a cloned copy
      */
     AXIS2_EXTERN const axutil_string_t *AXIS2_CALL
-    axis2_handler_desc_get_name(const axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env);
+
+    axis2_handler_desc_get_name(
+        const axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env);
 
     /**
      * Sets QName.
@@ -67,9 +70,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_handler_desc_set_name(axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env,
-        axutil_string_t *name);
+    axis2_handler_desc_set_name(
+        axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env,
+        axutil_string_t * name);
 
     /**
      * Gets phase rules.
@@ -78,8 +82,9 @@ extern "C"
      * @return pointer to phase rule struct containing phase rules
      */
     AXIS2_EXTERN axis2_phase_rule_t *AXIS2_CALL
-    axis2_handler_desc_get_rules(const axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env);
+    axis2_handler_desc_get_rules(
+        const axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env);
 
     /**
      * Sets phase rules.
@@ -90,9 +95,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_handler_desc_set_rules(axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env,
-        axis2_phase_rule_t *phase_rule);
+    axis2_handler_desc_set_rules(
+        axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env,
+        axis2_phase_rule_t * phase_rule);
 
     /**
      * Gets named parameter.
@@ -103,9 +109,10 @@ extern "C"
      * not a cloned copy
      */
     AXIS2_EXTERN axutil_param_t *AXIS2_CALL
-    axis2_handler_desc_get_param(const axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env,
-        const axis2_char_t *name);
+    axis2_handler_desc_get_param(
+        const axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env,
+        const axis2_char_t * name);
 
     /**
      * Adds given parameter to the parameter list.
@@ -115,9 +122,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_handler_desc_add_param(axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env,
-        axutil_param_t *param);
+    axis2_handler_desc_add_param(
+        axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env,
+        axutil_param_t * param);
 
     /**
      * Gets all parameters stored within handler description.
@@ -127,8 +135,10 @@ extern "C"
      * reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_handler_desc_get_all_params(const axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env);
+
+    axis2_handler_desc_get_all_params(
+        const axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env);
 
     /**
      * Checks if the named parameter is locked at any level
@@ -138,9 +148,10 @@ extern "C"
      * @return AXIS2_TRUE if the parameter is locked, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_handler_desc_is_param_locked(const axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env, 
-        const axis2_char_t *param_name);
+    axis2_handler_desc_is_param_locked(
+        const axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env,
+        const axis2_char_t * param_name);
 
     /**
      * Gets the handler associated with the handler description.
@@ -149,8 +160,9 @@ extern "C"
      * @return pointer to handler, returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
-    axis2_handler_desc_get_handler(const axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env);
+    axis2_handler_desc_get_handler(
+        const axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env);
 
     /**
      * Sets the handler associated with the handler description.
@@ -161,9 +173,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_handler_desc_set_handler(axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env,
-        axis2_handler_t *handler);
+    axis2_handler_desc_set_handler(
+        axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env,
+        axis2_handler_t * handler);
 
     /**
      * Gets the class name. Class name is the name of the shared library 
@@ -173,8 +186,10 @@ extern "C"
      * @return class name string
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_handler_desc_get_class_name(const axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env);
+
+    axis2_handler_desc_get_class_name(
+        const axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env);
 
     /**
      * Sets the class name. Class name is the name of the shared library 
@@ -185,9 +200,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_handler_desc_set_class_name(axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env,
-        const axis2_char_t *class_name);
+    axis2_handler_desc_set_class_name(
+        axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env,
+        const axis2_char_t * class_name);
 
     /**
      * Gets the parent. Parent of handler description is of type parameter
@@ -198,8 +214,10 @@ extern "C"
      * not a cloned copy
      */
     AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
-    axis2_handler_desc_get_parent(const axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env);
+
+    axis2_handler_desc_get_parent(
+        const axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env);
 
     /**
      * Gets the parent. Parent of handler description is of type parameter
@@ -211,9 +229,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_handler_desc_set_parent(axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env,
-        axutil_param_container_t *parent);
+    axis2_handler_desc_set_parent(
+        axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env,
+        axutil_param_container_t * parent);
 
     /**
      * Frees handler description.
@@ -222,8 +241,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_handler_desc_free(axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env);
+    axis2_handler_desc_free(
+        axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env);
 
     /**
      * Gets the param container.
@@ -233,9 +253,10 @@ extern "C"
      * not a cloned copy
      */
     AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
-    axis2_handler_desc_get_param_container(const axis2_handler_desc_t *handler_desc,
-        const axutil_env_t *env);
 
+    axis2_handler_desc_get_param_container(
+        const axis2_handler_desc_t * handler_desc,
+        const axutil_env_t * env);
 
     /**
      * Creates handler description struct instance.
@@ -245,13 +266,14 @@ extern "C"
      * @return pointer to newly created handler description struct
      */
     AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
-    axis2_handler_desc_create(const axutil_env_t *env, 
-        axutil_string_t *name);
+    axis2_handler_desc_create(
+        const axutil_env_t * env,
+        axutil_string_t * name);
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif    /* AXIS2_HANDLER_DESC_H */
+#endif                          /* AXIS2_HANDLER_DESC_H */

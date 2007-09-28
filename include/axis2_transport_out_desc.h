@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -18,13 +19,13 @@
 #ifndef AXIS2_TRANSPORT_OUT_DESC_H
 #define AXIS2_TRANSPORT_OUT_DESC_H
 
-/** 
+/**
  * @defgroup axis2_transport_out_desc transport out description
  * @ingroup axis2_desc
- * transport out description represents a transport sender configured in 
- * Axis2 configuration. There can be multiple transport senders configured 
- * in axis2.xml file and each of them will be represented with a transport 
- * out description instance. deployment engine takes care of creating and 
+ * transport out description represents a transport sender configured in
+ * Axis2 configuration. There can be multiple transport senders configured
+ * in axis2.xml file and each of them will be represented with a transport
+ * out description instance. deployment engine takes care of creating and
  * instantiating transport out descriptions.
  * transport out description encapsulates flows related to the transport out
  * and also holds a reference to related transport sender.
@@ -64,8 +65,9 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_transport_out_desc_free(axis2_transport_out_desc_t *transport_out_desc,
-        const axutil_env_t *env);
+    axis2_transport_out_desc_free(
+        axis2_transport_out_desc_t * transport_out_desc,
+        const axutil_env_t * env);
 
     /**
      * Frees transport out description given as a void pointer.
@@ -75,8 +77,9 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_transport_out_desc_free_void_arg(void *transport_out,
-        const axutil_env_t *env);
+    axis2_transport_out_desc_free_void_arg(
+        void *transport_out,
+        const axutil_env_t * env);
 
     /**
      * Gets transport enum.
@@ -85,8 +88,10 @@ extern "C"
      * @return transport enum 
      */
     AXIS2_EXTERN AXIS2_TRANSPORT_ENUMS AXIS2_CALL
-    axis2_transport_out_desc_get_enum(const axis2_transport_out_desc_t *transport_out,
-        const axutil_env_t *env);
+
+    axis2_transport_out_desc_get_enum(
+        const axis2_transport_out_desc_t * transport_out,
+        const axutil_env_t * env);
 
     /**
      * Sets transport enum.
@@ -96,8 +101,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_transport_out_desc_set_enum(struct axis2_transport_out_desc *transport_out,
-        const axutil_env_t *env,
+    axis2_transport_out_desc_set_enum(
+        struct axis2_transport_out_desc *transport_out,
+        const axutil_env_t * env,
         const AXIS2_TRANSPORT_ENUMS trans_enum);
 
     /**
@@ -109,8 +115,10 @@ extern "C"
      * not a cloned copy
      */
     AXIS2_EXTERN struct axis2_flow *AXIS2_CALL
-    axis2_transport_out_desc_get_out_flow(const axis2_transport_out_desc_t *transport_out,
-        const axutil_env_t *env);
+
+                axis2_transport_out_desc_get_out_flow(
+                    const axis2_transport_out_desc_t * transport_out,
+                    const axutil_env_t * env);
 
     /**
      * Sets out flow. Out flow represents the list of phases invoked 
@@ -122,32 +130,38 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_transport_out_desc_set_out_flow(struct axis2_transport_out_desc *transport_out,
-        const axutil_env_t *env,
+
+    axis2_transport_out_desc_set_out_flow(
+        struct axis2_transport_out_desc *transport_out,
+        const axutil_env_t * env,
         struct axis2_flow *out_flow);
 
     /**
      * Gets fault out flow. Fault out flow represents the list of phases 
-     * invoked along the sender path if a fault happens.         
+     * invoked along the sender path if a fault happens.    
      * @param transport_out pointer to transport_out
      * @param env pointer to environment struct
      * @return pointer to flow representing fault out flow
      */
     AXIS2_EXTERN struct axis2_flow *AXIS2_CALL
-    axis2_transport_out_desc_get_fault_out_flow(const axis2_transport_out_desc_t *transport_out,
-        const axutil_env_t *env);
+
+                axis2_transport_out_desc_get_fault_out_flow(
+                    const axis2_transport_out_desc_t * transport_out,
+                    const axutil_env_t * env);
 
     /**
      * Sets fault out flow. Fault out flow represents the list of phases 
-     * invoked along the sender path if a fault happens.         
+     * invoked along the sender path if a fault happens.    
      * @param transport_out pointer to transport_out
      * @param env pointer to environment struct
      * @param fault_out_flow pointer to fault_out_flow
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_transport_out_desc_set_fault_out_flow(struct axis2_transport_out_desc *transport_out,
-        const axutil_env_t *env,
+
+    axis2_transport_out_desc_set_fault_out_flow(
+        struct axis2_transport_out_desc *transport_out,
+        const axutil_env_t * env,
         struct axis2_flow *fault_out_flow);
 
     /**
@@ -158,8 +172,10 @@ extern "C"
      * description, returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axis2_transport_sender_t *AXIS2_CALL
-    axis2_transport_out_desc_get_sender(const axis2_transport_out_desc_t *transport_out,
-        const axutil_env_t *env);
+
+    axis2_transport_out_desc_get_sender(
+        const axis2_transport_out_desc_t * transport_out,
+        const axutil_env_t * env);
 
     /**
      * Sets transport sender.
@@ -170,9 +186,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_transport_out_desc_set_sender(struct axis2_transport_out_desc *transport_out,
-        const axutil_env_t *env,
-        axis2_transport_sender_t *sender);
+
+    axis2_transport_out_desc_set_sender(
+        struct axis2_transport_out_desc *transport_out,
+        const axutil_env_t * env,
+        axis2_transport_sender_t * sender);
 
     /**
      * Gets transport out phase.
@@ -181,9 +199,11 @@ extern "C"
      * @return pointer to phase representing transport out phase, returns a 
      * reference, not a cloned copy
      */
-    AXIS2_EXTERN struct axis2_phase * AXIS2_CALL
-    axis2_transport_out_desc_get_out_phase(const axis2_transport_out_desc_t *transport_out,
-        const axutil_env_t *env);
+    AXIS2_EXTERN struct axis2_phase *AXIS2_CALL
+
+                axis2_transport_out_desc_get_out_phase(
+                    const axis2_transport_out_desc_t * transport_out,
+                    const axutil_env_t * env);
 
     /**
      * Sets transport out phase.
@@ -194,8 +214,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_transport_out_desc_set_out_phase(struct axis2_transport_out_desc *transport_out,
-        const axutil_env_t *env,
+
+    axis2_transport_out_desc_set_out_phase(
+        struct axis2_transport_out_desc *transport_out,
+        const axutil_env_t * env,
         struct axis2_phase *out_phase);
 
     /**
@@ -206,8 +228,10 @@ extern "C"
      * reference, not a cloned copy
      */
     AXIS2_EXTERN struct axis2_phase *AXIS2_CALL
-    axis2_transport_out_desc_get_fault_phase(const axis2_transport_out_desc_t *transport_out,
-        const axutil_env_t *env);
+
+                axis2_transport_out_desc_get_fault_phase(
+                    const axis2_transport_out_desc_t * transport_out,
+                    const axutil_env_t * env);
 
     /**
      * Sets fault phase.
@@ -218,8 +242,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_transport_out_desc_set_fault_phase(struct axis2_transport_out_desc *transport_out,
-        const axutil_env_t *env,
+
+    axis2_transport_out_desc_set_fault_phase(
+        struct axis2_transport_out_desc *transport_out,
+        const axutil_env_t * env,
         struct axis2_phase *fault_phase);
 
     /**
@@ -231,9 +257,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_transport_out_desc_add_param(axis2_transport_out_desc_t *transport_out_desc,
-        const axutil_env_t *env,
-        axutil_param_t *param);
+
+    axis2_transport_out_desc_add_param(
+        axis2_transport_out_desc_t * transport_out_desc,
+        const axutil_env_t * env,
+        axutil_param_t * param);
 
     /**
      * Gets named parameter. 
@@ -242,9 +270,11 @@ extern "C"
      * @param param_name parameter name string
      */
     AXIS2_EXTERN axutil_param_t *AXIS2_CALL
-    axis2_transport_out_desc_get_param(const axis2_transport_out_desc_t *transport_out_desc,
-        const axutil_env_t *env,
-        const axis2_char_t *param_name);
+
+    axis2_transport_out_desc_get_param(
+        const axis2_transport_out_desc_t * transport_out_desc,
+        const axutil_env_t * env,
+        const axis2_char_t * param_name);
 
     /**
      * Checks if the named parameter is locked.
@@ -253,13 +283,17 @@ extern "C"
      * @param param_name pointer to parameter name
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_transport_out_desc_is_param_locked(axis2_transport_out_desc_t *transport_out_desc,
-        const axutil_env_t *env,
-        const axis2_char_t *param_name);
+
+    axis2_transport_out_desc_is_param_locked(
+        axis2_transport_out_desc_t * transport_out_desc,
+        const axutil_env_t * env,
+        const axis2_char_t * param_name);
 
     AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
-    axis2_transport_out_desc_param_container(const axis2_transport_out_desc_t *transport_out_desc,
-        const axutil_env_t *env);
+
+    axis2_transport_out_desc_param_container(
+        const axis2_transport_out_desc_t * transport_out_desc,
+        const axutil_env_t * env);
 
     /**
      * Creates transport out description with given transport enum.
@@ -267,8 +301,10 @@ extern "C"
      * @param trans_enum pointer to transport enum
      * @return pointer to newly created transport out
      */
-    AXIS2_EXTERN axis2_transport_out_desc_t * AXIS2_CALL
-    axis2_transport_out_desc_create(const axutil_env_t *env,
+    AXIS2_EXTERN axis2_transport_out_desc_t *AXIS2_CALL
+
+    axis2_transport_out_desc_create(
+        const axutil_env_t * env,
         const AXIS2_TRANSPORT_ENUMS trans_enum);
 
     /**
@@ -279,13 +315,13 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_transport_out_desc_free_void_arg(void *transport_out,
-        const axutil_env_t *env);
+    axis2_transport_out_desc_free_void_arg(
+        void *transport_out,
+        const axutil_env_t * env);
 
-
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_TRANSPORT_OUT_DESC_H */
+#endif                          /* AXIS2_TRANSPORT_OUT_DESC_H */

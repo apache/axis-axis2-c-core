@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -25,11 +26,11 @@
  * @}
  */
 
-/** 
+/**
  * @defgroup axis2_phase_res phase resolver
  * @ingroup axis2_phase_resolver
- * holds phase information in relation to a given service. Encapsulates a 
- * reference to axis configuration, the service the phase resolver related to 
+ * holds phase information in relation to a given service. Encapsulates a
+ * reference to axis configuration, the service the phase resolver related to
  * and a phase holder instance that holds the list of phases.
  * @{
  */
@@ -73,15 +74,16 @@ extern "C"
     struct axis2_op;
     struct axis2_phase_holder;
 
-    /** 
+    /**
      * Frees phase resolver.
      * @param phase_resolver pointer to phase resolver
      * @param env pointer to environment struct
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_phase_resolver_free(axis2_phase_resolver_t *phase_resolver,
-        const axutil_env_t *env);
+    axis2_phase_resolver_free(
+        axis2_phase_resolver_t * phase_resolver,
+        const axutil_env_t * env);
 
     /**
      * Builds the execution chains. Execution chains are collection of 
@@ -91,8 +93,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_resolver_build_chains(axis2_phase_resolver_t *phase_resolver,
-        const axutil_env_t *env);
+    axis2_phase_resolver_build_chains(
+        axis2_phase_resolver_t * phase_resolver,
+        const axutil_env_t * env);
 
     /**
      * Builds execution chains for given operation.
@@ -102,8 +105,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_resolver_build_module_op(axis2_phase_resolver_t *phase_resolver,
-        const axutil_env_t *env,
+
+    axis2_phase_resolver_build_module_op(
+        axis2_phase_resolver_t * phase_resolver,
+        const axutil_env_t * env,
         struct axis2_op *op);
 
     /**
@@ -113,9 +118,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_resolver_build_transport_chains(axis2_phase_resolver_t *phase_resolver,
-        const axutil_env_t *env);
 
+    axis2_phase_resolver_build_transport_chains(
+        axis2_phase_resolver_t * phase_resolver,
+        const axutil_env_t * env);
 
     /**
      * Engages the given module globally. Engaging a module globally means 
@@ -127,8 +133,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolver,
-        const axutil_env_t *env,
+
+    axis2_phase_resolver_engage_module_globally(
+        axis2_phase_resolver_t * phase_resolver,
+        const axutil_env_t * env,
         struct axis2_module_desc *module);
 
     /**
@@ -142,8 +150,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *phase_resolver,
-        const axutil_env_t *env,
+
+    axis2_phase_resolver_engage_module_to_svc_from_global(
+        axis2_phase_resolver_t * phase_resolver,
+        const axutil_env_t * env,
         struct axis2_svc *svc,
         struct axis2_module_desc *module_desc);
 
@@ -158,11 +168,12 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver,
-        const axutil_env_t *env,
+
+    axis2_phase_resolver_engage_module_to_svc(
+        axis2_phase_resolver_t * phase_resolver,
+        const axutil_env_t * env,
         struct axis2_svc *svc,
         struct axis2_module_desc *module_desc);
-
 
     /**
      * Disengages the given module from the given service. This means 
@@ -175,8 +186,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_resolver_disengage_module_from_svc(axis2_phase_resolver_t *phase_resolver,
-        const axutil_env_t *env,
+
+    axis2_phase_resolver_disengage_module_from_svc(
+        axis2_phase_resolver_t * phase_resolver,
+        const axutil_env_t * env,
         struct axis2_svc *svc,
         struct axis2_module_desc *module_desc);
 
@@ -189,11 +202,12 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
-        const axutil_env_t *env,
+
+    axis2_phase_resolver_engage_module_to_op(
+        axis2_phase_resolver_t * phase_resolver,
+        const axutil_env_t * env,
         struct axis2_op *axis_op,
         struct axis2_module_desc *module_desc);
-
 
     /**
      * Disengages the given module from the given operation.
@@ -204,11 +218,12 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_resolver_disengage_module_from_op(axis2_phase_resolver_t *phase_resolver,
-        const axutil_env_t *env,
+
+    axis2_phase_resolver_disengage_module_from_op(
+        axis2_phase_resolver_t * phase_resolver,
+        const axutil_env_t * env,
         struct axis2_op *axis_op,
         struct axis2_module_desc *module_desc);
-
 
     /**
      * Creates phase resolver struct.
@@ -216,7 +231,9 @@ extern "C"
      * @return pointer to newly created phase resolver
      */
     AXIS2_EXTERN axis2_phase_resolver_t *AXIS2_CALL
-    axis2_phase_resolver_create (const axutil_env_t *env);
+
+    axis2_phase_resolver_create(
+        const axutil_env_t * env);
 
     /**
      * Creates phase resolver struct with given configuration.
@@ -226,7 +243,9 @@ extern "C"
      * @return pointer to newly created phase resolver
      */
     AXIS2_EXTERN axis2_phase_resolver_t *AXIS2_CALL
-    axis2_phase_resolver_create_with_config (const axutil_env_t *env,
+
+    axis2_phase_resolver_create_with_config(
+        const axutil_env_t * env,
         struct axis2_conf *axis2_config);
 
     /**
@@ -239,13 +258,15 @@ extern "C"
      * @return pointer to newly created phase resolver
      */
     AXIS2_EXTERN axis2_phase_resolver_t *AXIS2_CALL
-    axis2_phase_resolver_create_with_config_and_svc(const axutil_env_t *env,
+
+    axis2_phase_resolver_create_with_config_and_svc(
+        const axutil_env_t * env,
         struct axis2_conf *axis2_config,
         struct axis2_svc *svc);
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_PHASE_RESOLVER_H */
+#endif                          /* AXIS2_PHASE_RESOLVER_H */

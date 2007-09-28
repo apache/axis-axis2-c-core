@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,7 +24,6 @@
  * @{
  */
 
-
 /**
   * @file axis2_http_transport_utils.h
   * @brief axis2 HTTP Transport Utility class
@@ -47,7 +47,6 @@ extern "C"
 {
 #endif
 
-
     /*
      * struct to hold the callback information
      */
@@ -62,80 +61,90 @@ extern "C"
     typedef struct axis2_callback_info axis2_callback_info_t;
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
     axis2_http_transport_utils_process_http_post_request(
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx,
-        axutil_stream_t *in_stream,
-        axutil_stream_t *out_stream,
-        const axis2_char_t *content_type,
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx,
+        axutil_stream_t * in_stream,
+        axutil_stream_t * out_stream,
+        const axis2_char_t * content_type,
         const int content_length,
-        axutil_string_t *soap_action_header,
-        const axis2_char_t *request_uri);
+        axutil_string_t * soap_action_header,
+        const axis2_char_t * request_uri);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+
     axis2_http_transport_utils_process_http_get_request(
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx,
-        axutil_stream_t *in_stream,
-        axutil_stream_t *out_stream,
-        const axis2_char_t *content_type,
-        axutil_string_t *soap_action_header,
-        const axis2_char_t *request_uri,
-        axis2_conf_ctx_t *conf_ctx,
-        axutil_hash_t *request_params);
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx,
+        axutil_stream_t * in_stream,
+        axutil_stream_t * out_stream,
+        const axis2_char_t * content_type,
+        axutil_string_t * soap_action_header,
+        const axis2_char_t * request_uri,
+        axis2_conf_ctx_t * conf_ctx,
+        axutil_hash_t * request_params);
 
     AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
+
     axis2_http_transport_utils_select_builder_for_mime(
-        const axutil_env_t *env, 
-        axis2_char_t *request_uri,
-        axis2_msg_ctx_t *msg_ctx, 
-        axutil_stream_t *in_stream,
-        axis2_char_t *content_type);
+        const axutil_env_t * env,
+        axis2_char_t * request_uri,
+        axis2_msg_ctx_t * msg_ctx,
+        axutil_stream_t * in_stream,
+        axis2_char_t * content_type);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+
     axis2_http_transport_utils_do_write_mtom(
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx);
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+
     axis2_http_transport_utils_is_doing_rest(
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx);
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+
     axis2_http_transport_utils_is_doing_rest_through_post(
-        const axutil_env_t *env, 
-        axis2_msg_ctx_t *msg_ctx);
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx);
 
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+
     axis2_http_transport_utils_get_request_params(
-        const axutil_env_t *env,
-        axis2_char_t *request_uri);
+        const axutil_env_t * env,
+        axis2_char_t * request_uri);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+
     axis2_http_transport_utils_get_services_html(
-        const axutil_env_t *env,
-        axis2_conf_ctx_t *conf_ctx);
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+
     axis2_http_transport_utils_get_services_static_wsdl(
-        const axutil_env_t *env,
-        axis2_conf_ctx_t *conf_ctx,
-        axis2_char_t *request_url);
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx,
+        axis2_char_t * request_url);
 
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+
     axis2_http_transport_utils_get_request_params(
-        const axutil_env_t *env,
-        axis2_char_t *request_uri);
+        const axutil_env_t * env,
+        axis2_char_t * request_uri);
 
     AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
+
     axis2_http_transport_utils_create_soap_msg(
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx,
-        const axis2_char_t *soap_ns_uri);
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx,
+        const axis2_char_t * soap_ns_uri);
 
-
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif

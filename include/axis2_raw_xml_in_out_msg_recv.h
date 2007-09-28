@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -41,18 +42,18 @@ extern "C"
 {
 #endif
 
-
     /**
      * Creates raw xml in out message receiver struct
      * @return pointer to newly created raw xml in out message receiver
      */
     AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
-    axis2_raw_xml_in_out_msg_recv_create(
-        const axutil_env_t *env);
 
-/** @} */
+    axis2_raw_xml_in_out_msg_recv_create(
+        const axutil_env_t * env);
+
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_RAW_XML_IN_OUT_MSG_RECV_H */
+#endif                          /* AXIS2_RAW_XML_IN_OUT_MSG_RECV_H */

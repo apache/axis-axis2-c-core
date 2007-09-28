@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -25,13 +26,13 @@
  * @}
  */
 
-/** 
+/**
  * @defgroup axis2_config configuration
  * @ingroup axis2_engine
  * Axis2 configuration captures all configuration information. Configuration
- * information includes user preferences along with module and 
+ * information includes user preferences along with module and
  * service information that is either statically configured using axis2.xml
- * file, service.xml files and module.xml files or dynamically using the 
+ * file, service.xml files and module.xml files or dynamically using the
  * functions defined in the ops struct related to this conf struct.
  * @{
  */
@@ -72,8 +73,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_conf_free(axis2_conf_t *conf,
-        const axutil_env_t *env);
+    axis2_conf_free(
+        axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     /**
      * Adds a service group to the configuration.
@@ -84,11 +86,12 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_add_svc_grp(axis2_conf_t *conf,
-        const axutil_env_t *env,
+    axis2_conf_add_svc_grp(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
         struct axis2_svc_grp *svc_grp);
 
-    /** 
+    /**
      * Gets a named service group.
      * @param conf pointer to conf struct
      * @param env pointer to environment struct
@@ -97,11 +100,12 @@ extern "C"
      * else NULL. Returns a reference, not a cloned copy
      */
     AXIS2_EXTERN struct axis2_svc_grp *AXIS2_CALL
-    axis2_conf_get_svc_grp(const axis2_conf_t *conf,
-        const axutil_env_t *env,
-        const axis2_char_t *svc_grp_name);
+                axis2_conf_get_svc_grp(
+                    const axis2_conf_t * conf,
+                    const axutil_env_t * env,
+                    const axis2_char_t * svc_grp_name);
 
-    /** 
+    /**
      * Gets all service group added to conf.
      * @param conf pointer to conf struct
      * @param env pointer to environment struct
@@ -109,8 +113,9 @@ extern "C"
      * a reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-    axis2_conf_get_all_svc_grps(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+    axis2_conf_get_all_svc_grps(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     /**
      * Adds a service to configuration.
@@ -121,9 +126,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_add_svc(axis2_conf_t *conf,
-        const axutil_env_t *env,
-        struct axis2_svc* svc);
+    axis2_conf_add_svc(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        struct axis2_svc *svc);
 
     /**
      * Gets a service with given name.
@@ -134,9 +140,10 @@ extern "C"
      * Returns a reference, not a cloned copy
      */
     AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
-    axis2_conf_get_svc(const axis2_conf_t *conf,
-        const axutil_env_t *env,
-        const axis2_char_t* svc_name);
+                axis2_conf_get_svc(
+                    const axis2_conf_t * conf,
+                    const axutil_env_t * env,
+                    const axis2_char_t * svc_name);
 
     /**
      * Removes the named service from configuration.
@@ -146,9 +153,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_remove_svc(axis2_conf_t *conf,
-        const axutil_env_t *env,
-        const axis2_char_t *name);
+    axis2_conf_remove_svc(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        const axis2_char_t * name);
 
     /**
      * Adds a parameter to configuration.
@@ -158,9 +166,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_add_param(axis2_conf_t *conf,
-        const axutil_env_t *env,
-        axutil_param_t *param);
+    axis2_conf_add_param(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        axutil_param_t * param);
 
     /**
      * Gets a parameter with the given name.
@@ -171,9 +180,10 @@ extern "C"
      * Returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_param_t *AXIS2_CALL
-    axis2_conf_get_param(const axis2_conf_t *conf,
-        const axutil_env_t *env,
-        const axis2_char_t *name);
+    axis2_conf_get_param(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env,
+        const axis2_char_t * name);
 
     /**
      * Gets all the parameters added to the configuration.
@@ -183,8 +193,9 @@ extern "C"
      * else NULL. Returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_conf_get_all_params(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+    axis2_conf_get_all_params(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     /**
      * Checks if the named parameter is locked.
@@ -194,9 +205,10 @@ extern "C"
      * @return AXIS2_TRUE if parameter is locked, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_conf_is_param_locked(const axis2_conf_t *conf,
-        const axutil_env_t *env,
-        const axis2_char_t *param_name);
+    axis2_conf_is_param_locked(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env,
+        const axis2_char_t * param_name);
 
     /**
      * Gets in transport corresponding to the given transport QName.
@@ -207,8 +219,10 @@ extern "C"
      * else NULL. Returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axis2_transport_in_desc_t *AXIS2_CALL
-    axis2_conf_get_transport_in(const axis2_conf_t *conf,
-        const axutil_env_t *env,
+
+    axis2_conf_get_transport_in(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env,
         const AXIS2_TRANSPORT_ENUMS trans_enum);
 
     /**
@@ -220,9 +234,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_add_transport_in(axis2_conf_t *conf,
-        const axutil_env_t *env,
-        axis2_transport_in_desc_t *transport,
+    axis2_conf_add_transport_in(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        axis2_transport_in_desc_t * transport,
         const AXIS2_TRANSPORT_ENUMS trans_enum);
 
     /**
@@ -234,22 +249,25 @@ extern "C"
      * else NULL. Returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axis2_transport_out_desc_t *AXIS2_CALL
-    axis2_conf_get_transport_out(const axis2_conf_t *conf,
-        const axutil_env_t *env,
+
+    axis2_conf_get_transport_out(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env,
         const AXIS2_TRANSPORT_ENUMS trans_enum);
 
-   /**
-    * Adds a transport out description.
-    * @param conf pointer to conf struct
-    * @param env pointer to environment struct
-    * @param transport pointer to transport out description. conf assumes
-    * ownership of the struct
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+    /**
+     * Adds a transport out description.
+     * @param conf pointer to conf struct
+     * @param env pointer to environment struct
+     * @param transport pointer to transport out description. conf assumes
+     * ownership of the struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_add_transport_out(axis2_conf_t *conf,
-        const axutil_env_t *env,
-        axis2_transport_out_desc_t *transport,
+    axis2_conf_add_transport_out(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        axis2_transport_out_desc_t * transport,
         const AXIS2_TRANSPORT_ENUMS trans_enum);
 
     /**
@@ -260,8 +278,10 @@ extern "C"
      * Returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axis2_transport_in_desc_t **AXIS2_CALL
-    axis2_conf_get_all_in_transports(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+
+    axis2_conf_get_all_in_transports(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     /**
      * Gets all out transports.
@@ -271,31 +291,36 @@ extern "C"
      * Returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axis2_transport_out_desc_t **AXIS2_CALL
-    axis2_conf_get_all_out_transports(const axis2_conf_t *conf,
-        const axutil_env_t *env);
 
-   /**
-    * Gets a module with given QName.
-    * @param conf pointer to conf struct
-    * @param env pointer to environment struct
-    * @param qname pointer to qname
-    * @return module description corresponding to the given qname
-    */
+    axis2_conf_get_all_out_transports(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
+
+    /**
+     * Gets a module with given QName.
+     * @param conf pointer to conf struct
+     * @param env pointer to environment struct
+     * @param qname pointer to qname
+     * @return module description corresponding to the given qname
+     */
     AXIS2_EXTERN struct axis2_module_desc *AXIS2_CALL
-    axis2_conf_get_module(const axis2_conf_t *conf,
-        const axutil_env_t *env,
-        const axutil_qname_t *qname);
+                axis2_conf_get_module(
+                    const axis2_conf_t * conf,
+                    const axutil_env_t * env,
+                    const axutil_qname_t * qname);
 
-   /**
-    * Gets the list of engaged modules.
-    * @param conf pointer to conf struct
-    * @param env pointer to environment struct
-    * @return a pointer to the array list of engaged modules. Returns a 
-    * reference, not a cloned copy
-    */
+    /**
+     * Gets the list of engaged modules.
+     * @param conf pointer to conf struct
+     * @param env pointer to environment struct
+     * @return a pointer to the array list of engaged modules. Returns a 
+     * reference, not a cloned copy
+     */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_conf_get_all_engaged_modules(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+
+    axis2_conf_get_all_engaged_modules(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     /**
      * Gets the in phases up to and including port dispatch phase.
@@ -305,8 +330,10 @@ extern "C"
      * inclusive. Returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_conf_get_in_phases_upto_and_including_post_dispatch(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+
+    axis2_conf_get_in_phases_upto_and_including_post_dispatch(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     /**
      * Gets the out flow. Out flow is a list of phases invoked in the out 
@@ -317,33 +344,37 @@ extern "C"
      * reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_conf_get_out_flow(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+    axis2_conf_get_out_flow(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 
-
-   /**
-    * Gets the in fault flow. In fault flow is a list of phases invoked in 
-    * the in path of execution, if some fault happens.
-    * @param conf pointer to conf struct
-    * @param env pointer to environment struct
-    * @return a pointer to the array list of in fault flow phases. Returns a 
-    * reference, not a cloned copy
-    */
+    /**
+     * Gets the in fault flow. In fault flow is a list of phases invoked in 
+     * the in path of execution, if some fault happens.
+     * @param conf pointer to conf struct
+     * @param env pointer to environment struct
+     * @return a pointer to the array list of in fault flow phases. Returns a 
+     * reference, not a cloned copy
+     */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_conf_get_in_fault_flow(const axis2_conf_t *conf,
-        const axutil_env_t *env);
 
-   /**
-    * Gets the out fault flow. Out fault flow is a list of phases invoked in 
-    * the out path of execution, if some fault happens.
-    * @param conf pointer to conf struct
-    * @param env pointer to environment struct
-    * @return a pointer to the array list of out fault flow phases. Returns a 
-    * reference, not a cloned copy
-    */
+    axis2_conf_get_in_fault_flow(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
+
+    /**
+     * Gets the out fault flow. Out fault flow is a list of phases invoked in 
+     * the out path of execution, if some fault happens.
+     * @param conf pointer to conf struct
+     * @param env pointer to environment struct
+     * @return a pointer to the array list of out fault flow phases. Returns a 
+     * reference, not a cloned copy
+     */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_conf_get_out_fault_flow(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+
+    axis2_conf_get_out_fault_flow(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     /**
      * Gets faulty services. A faulty service is a service that does not 
@@ -355,8 +386,9 @@ extern "C"
      * reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-    axis2_conf_get_all_faulty_svcs(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+    axis2_conf_get_all_faulty_svcs(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     /**
      * Gets faulty modules. A faulty module is a module that does not 
@@ -368,10 +400,11 @@ extern "C"
      * reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-    axis2_conf_get_all_faulty_modules(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+    axis2_conf_get_all_faulty_modules(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 
-    /**        
+    /**
      * Gets all the list of services loaded into configuration.
      * @param conf pointer to conf struct
      * @param env pointer to environment struct
@@ -379,10 +412,11 @@ extern "C"
      * reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-    axis2_conf_get_all_svcs(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+    axis2_conf_get_all_svcs(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 
-    /**        
+    /**
      * Gets all the list of services that need to be loaded into configuration
      * at the start up of the axis2 engine.
      * @param conf pointer to conf struct
@@ -392,8 +426,8 @@ extern "C"
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_conf_get_all_svcs_to_load(
-        const axis2_conf_t *conf,
-        const axutil_env_t *env);
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     /**
      * Checks is the named module is engaged.
@@ -403,9 +437,10 @@ extern "C"
      * @return AXIS2_TRUE if named module is engaged, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_conf_is_engaged(axis2_conf_t *conf,
-        const axutil_env_t *env,
-        const axutil_qname_t *module_name);
+    axis2_conf_is_engaged(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        const axutil_qname_t * module_name);
 
     /**
      * Gets phases information struct.
@@ -415,8 +450,10 @@ extern "C"
      * Returns a reference, not a cloned copy
      */
     AXIS2_EXTERN struct axis2_phases_info *AXIS2_CALL
-    axis2_conf_get_phases_info(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+
+                axis2_conf_get_phases_info(
+                    const axis2_conf_t * conf,
+                    const axutil_env_t * env);
 
     /**
      * Sets phases information struct.
@@ -427,8 +464,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_set_phases_info(axis2_conf_t *conf,
-        const axutil_env_t *env,
+    axis2_conf_set_phases_info(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
         struct axis2_phases_info *phases_info);
 
     /**
@@ -440,9 +478,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_add_msg_recv(axis2_conf_t *conf,
-        const axutil_env_t *env,
-        const axis2_char_t *key,
+    axis2_conf_add_msg_recv(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        const axis2_char_t * key,
         struct axis2_msg_recv *msg_recv);
 
     /**
@@ -455,9 +494,10 @@ extern "C"
      * exists, else null. Returns a reference, not a cloned copy
      */
     AXIS2_EXTERN struct axis2_msg_recv *AXIS2_CALL
-    axis2_conf_get_msg_recv(const axis2_conf_t *conf,
-        const axutil_env_t *env,
-        axis2_char_t *key);
+                axis2_conf_get_msg_recv(
+                    const axis2_conf_t * conf,
+                    const axutil_env_t * env,
+                    axis2_char_t * key);
 
     /**
      * Sets the list of out phases.
@@ -468,9 +508,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_set_out_phases(axis2_conf_t *conf,
-        const axutil_env_t *env,
-        axutil_array_list_t *out_phases);
+    axis2_conf_set_out_phases(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        axutil_array_list_t * out_phases);
 
     /**
      * Gets the list of out phases.
@@ -480,8 +521,9 @@ extern "C"
      * not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_conf_get_out_phases(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+    axis2_conf_get_out_phases(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     /**
      * Sets fault phases for in path.
@@ -491,9 +533,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_set_in_fault_phases(axis2_conf_t *conf,
-        const axutil_env_t *env,
-        axutil_array_list_t *list);
+    axis2_conf_set_in_fault_phases(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        axutil_array_list_t * list);
 
     /**
      * Sets fault phases for out path.
@@ -503,9 +546,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_set_out_fault_phases(axis2_conf_t *conf,
-        const axutil_env_t *env,
-        axutil_array_list_t *list);
+    axis2_conf_set_out_fault_phases(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        axutil_array_list_t * list);
 
     /**
      * Gets all modules configured,
@@ -515,8 +559,9 @@ extern "C"
      * Returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-    axis2_conf_get_all_modules(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+    axis2_conf_get_all_modules(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     /**
      * Adds a module.
@@ -526,8 +571,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_add_module(axis2_conf_t *conf,
-        const axutil_env_t *env,
+    axis2_conf_add_module(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
         struct axis2_module_desc *module);
 
     /**
@@ -537,8 +583,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
-        const axutil_env_t *env);
+
+    axis2_conf_set_default_dispatchers(
+        axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     /**
      * Sets a custom dispatching phase.
@@ -548,9 +596,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_set_dispatch_phase(axis2_conf_t *conf,
-        const axutil_env_t *env,
-        axis2_phase_t *dispatch);
+    axis2_conf_set_dispatch_phase(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        axis2_phase_t * dispatch);
 
     /**
      * Gets the repository location.
@@ -559,8 +608,9 @@ extern "C"
      * @return returns repository location as a string
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_conf_get_repo(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+    axis2_conf_get_repo(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     /**
      * Sets the repository location.
@@ -570,9 +620,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_set_repo(axis2_conf_t *conf,
-        const axutil_env_t *env,
-        axis2_char_t *axis2_repo);
+    axis2_conf_set_repo(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        axis2_char_t * axis2_repo);
 
     /**
      * Engages the named module.
@@ -582,9 +633,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_engage_module(axis2_conf_t *conf,
-        const axutil_env_t *env,
-        const axutil_qname_t *module_ref);
+    axis2_conf_engage_module(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        const axutil_qname_t * module_ref);
 
     /**
      * Sets the deployment engine.
@@ -594,8 +646,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_set_dep_engine(axis2_conf_t *conf,
-        const axutil_env_t *env,
+    axis2_conf_set_dep_engine(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
         struct axis2_dep_engine *dep_engine);
 
     /**
@@ -606,9 +659,11 @@ extern "C"
      * @return default module version as a string
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_conf_get_default_module_version(const axis2_conf_t *conf,
-        const axutil_env_t *env,
-        const axis2_char_t *module_name);
+
+    axis2_conf_get_default_module_version(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env,
+        const axis2_char_t * module_name);
 
     /**
      * Gets the default module reference for the named module.
@@ -619,9 +674,11 @@ extern "C"
      * the given name
      */
     AXIS2_EXTERN struct axis2_module_desc *AXIS2_CALL
-    axis2_conf_get_default_module(const axis2_conf_t *conf, 
-        const axutil_env_t *env,
-        const axis2_char_t *module_name);
+
+                axis2_conf_get_default_module(
+                    const axis2_conf_t * conf,
+                    const axutil_env_t * env,
+                    const axis2_char_t * module_name);
 
     /**
      * Adds a default module version for the named module.
@@ -632,10 +689,12 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_add_default_module_version(axis2_conf_t *conf, 
-        const axutil_env_t *env,
-        const axis2_char_t *module_name,
-        const axis2_char_t *module_version);
+
+    axis2_conf_add_default_module_version(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        const axis2_char_t * module_name,
+        const axis2_char_t * module_version);
 
     /**
      * Engages the module with the given version.
@@ -646,66 +705,75 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_engage_module_with_version(axis2_conf_t *conf, 
-        const axutil_env_t *env,
-        const axis2_char_t *module_name,
-        const axis2_char_t *version_id);
 
-    /** 
+    axis2_conf_engage_module_with_version(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        const axis2_char_t * module_name,
+        const axis2_char_t * version_id);
+
+    /**
      * Creates configuration struct.
      * @param env pointer to environment struct
      * @return pointer to newly created configuration
      */
     AXIS2_EXTERN axis2_conf_t *AXIS2_CALL
-    axis2_conf_create(const axutil_env_t *env);
+    axis2_conf_create(
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_conf_get_enable_mtom(axis2_conf_t *conf,
-        const axutil_env_t *env);
+    axis2_conf_get_enable_mtom(
+        axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_set_enable_mtom(axis2_conf_t *conf,
-        const axutil_env_t *env,
+    axis2_conf_set_enable_mtom(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
         axis2_bool_t enable_mtom);
 
-/*The following two methods are used in Rampart to 
- *check whether security is engaed. */
+    /*The following two methods are used in Rampart to
+     *check whether security is engaed. */
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_conf_get_enable_security(axis2_conf_t *conf,
-        const axutil_env_t *env);
+    axis2_conf_get_enable_security(
+        axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_set_enable_security(axis2_conf_t *conf,
-        const axutil_env_t *env,
+    axis2_conf_set_enable_security(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
         axis2_bool_t enable_security);
 
-    AXIS2_EXTERN void* AXIS2_CALL
+    AXIS2_EXTERN void *AXIS2_CALL
     axis2_conf_get_security_context(
-        axis2_conf_t *conf,
-        const axutil_env_t *env);
+        axis2_conf_t * conf,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_conf_set_security_context(
-        axis2_conf_t *conf,
-        const axutil_env_t *env,
-        void* security_context);
-
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        void *security_context);
 
     AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
-    axis2_conf_get_param_container(const axis2_conf_t *conf,
-        const axutil_env_t *env);
 
-    /** 
+    axis2_conf_get_param_container(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
+
+    /**
      * Gets base description.
      * @param conf pointer to message
      * @param env pointer to environment struct
      * @return pointer to base description struct
      */
     AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
-    axis2_conf_get_base(const axis2_conf_t *conf,
-        const axutil_env_t *env);
+    axis2_conf_get_base(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_CONFIG_H */
+#endif                          /* AXIS2_CONFIG_H */

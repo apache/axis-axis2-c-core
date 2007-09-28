@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -38,9 +39,10 @@ extern "C"
      * @param repo_name repository name
      * @return pointer to an instance of configuration context properly initialized
      */
-    AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL 
-    axis2_build_conf_ctx(const axutil_env_t *env,
-        const axis2_char_t *repo_name);
+    AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
+    axis2_build_conf_ctx(
+        const axutil_env_t * env,
+        const axis2_char_t * repo_name);
 
     /**
      * Builds the Configuration for the Client
@@ -48,14 +50,14 @@ extern "C"
      * @param axis2_home axis2 home for client. 
      * @return pointer to an instance of configuration context properly initialized
      */
-    AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL 
-    axis2_build_client_conf_ctx(const axutil_env_t *env,
-        const axis2_char_t *axis2_home);
+    AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
+    axis2_build_client_conf_ctx(
+        const axutil_env_t * env,
+        const axis2_char_t * axis2_home);
 
-
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_CONF_INIT_H */
+#endif                          /* AXIS2_CONF_INIT_H */

@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -18,11 +19,11 @@
 #ifndef AXIS2_PHASE_HOLDER_H
 #define AXIS2_PHASE_HOLDER_H
 
-/** 
+/**
  * @defgroup axis2_phase_holder phase holder
  * @ingroup axis2_phase_resolver
  * phase holder is used by phase resolver to hold information related to
- * phases and handlers within a phase. This struct hold the list of phases 
+ * phases and handlers within a phase. This struct hold the list of phases
  * found in the services.xml and axis2.xml.
  * @{
  */
@@ -56,15 +57,16 @@ extern "C"
     struct axis2_handler;
     struct axis2_phase_rule;
 
-    /** 
+    /**
      * Frees phase holder.
      * @param phase_holder pointer to phase holder
      * @param env pointer to environment struct
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_phase_holder_free(axis2_phase_holder_t *phase_holder,
-        const axutil_env_t *env);
+    axis2_phase_holder_free(
+        axis2_phase_holder_t * phase_holder,
+        const axutil_env_t * env);
 
     /**
      * Checks if the named phase exist.
@@ -74,9 +76,10 @@ extern "C"
      * @return AXIS2_TRUE if the named phase exist, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder,
-        const axutil_env_t *env,
-        const axis2_char_t *phase_name);
+    axis2_phase_holder_is_phase_exist(
+        axis2_phase_holder_t * phase_holder,
+        const axutil_env_t * env,
+        const axis2_char_t * phase_name);
 
     /**
      * Adds given handler to phase holder.
@@ -86,10 +89,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
-        const axutil_env_t *env,
+    axis2_phase_holder_add_handler(
+        axis2_phase_holder_t * phase_holder,
+        const axutil_env_t * env,
         struct axis2_handler_desc *handler);
-
 
     /**
      * Removes given handler from phase holder.
@@ -99,8 +102,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_holder_remove_handler(axis2_phase_holder_t *phase_holder,
-        const axutil_env_t *env,
+    axis2_phase_holder_remove_handler(
+        axis2_phase_holder_t * phase_holder,
+        const axutil_env_t * env,
         struct axis2_handler_desc *handler);
 
     /**
@@ -112,9 +116,10 @@ extern "C"
      * reference, not a cloned copy 
      */
     AXIS2_EXTERN struct axis2_phase *AXIS2_CALL
-    axis2_phase_holder_get_phase(const axis2_phase_holder_t *phase_holder,
-        const axutil_env_t *env,
-        const axis2_char_t *phase_name);
+                axis2_phase_holder_get_phase(
+                    const axis2_phase_holder_t * phase_holder,
+                    const axutil_env_t * env,
+                    const axis2_char_t * phase_name);
 
     /**
      * Builds the transport phase. This method loads the corresponding 
@@ -128,10 +133,12 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_holder,
-        const axutil_env_t *env,
+
+    axis2_phase_holder_build_transport_handler_chain(
+        axis2_phase_holder_t * phase_holder,
+        const axutil_env_t * env,
         struct axis2_phase *phase,
-        axutil_array_list_t *handlers);
+        axutil_array_list_t * handlers);
 
     /**
      * Creates phase holder struct.
@@ -139,7 +146,8 @@ extern "C"
      * @return pointer to newly created phase holder
      */
     AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
-    axis2_phase_holder_create (const axutil_env_t *env);
+    axis2_phase_holder_create(
+        const axutil_env_t * env);
 
     /**
      * Creates phase holder struct with given list of phases.
@@ -148,12 +156,14 @@ extern "C"
      * @return pointer to newly created phase holder
      */
     AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
-    axis2_phase_holder_create_with_phases(const axutil_env_t *env,
-        axutil_array_list_t *phases);
 
-/** @} */
+    axis2_phase_holder_create_with_phases(
+        const axutil_env_t * env,
+        axutil_array_list_t * phases);
+
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_PHASE_HOLDER_H */
+#endif                          /* AXIS2_PHASE_HOLDER_H */

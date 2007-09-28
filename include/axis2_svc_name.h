@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,11 +22,11 @@
 /**
  * @defgroup axis2_svc_name service name
  * @ingroup axis2_addr
- * service name provides a full description of the service endpoint. service 
- * name contains a QName identifying the WSDL service element that contains 
- * the definition of the endpoint being conveyed. It also contains an optional 
- * non-qualified name that identifies the specific port in the service that 
- * corresponds to the endpoint. 
+ * service name provides a full description of the service endpoint. service
+ * name contains a QName identifying the WSDL service element that contains
+ * the definition of the endpoint being conveyed. It also contains an optional
+ * non-qualified name that identifies the specific port in the service that
+ * corresponds to the endpoint.
  * @{
  */
 
@@ -55,9 +56,9 @@ extern "C"
      */
     AXIS2_EXTERN axis2_svc_name_t *AXIS2_CALL
     axis2_svc_name_create(
-        const axutil_env_t *env,
-        const axutil_qname_t *qname,
-        const axis2_char_t *endpoint_name) ;
+        const axutil_env_t * env,
+        const axutil_qname_t * qname,
+        const axis2_char_t * endpoint_name);
 
     /**
      * Gets QName. QName identifies the WSDL service element that contains 
@@ -68,8 +69,9 @@ extern "C"
      * copy
      */
     AXIS2_EXTERN const axutil_qname_t *AXIS2_CALL
-    axis2_svc_name_get_qname(const axis2_svc_name_t *svc_name,
-        const axutil_env_t *env);
+    axis2_svc_name_get_qname(
+        const axis2_svc_name_t * svc_name,
+        const axutil_env_t * env);
 
     /**
      * Sets QName. QName identifies the WSDL service element that contains 
@@ -80,9 +82,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_name_set_qname(struct axis2_svc_name *svc_name,
-        const axutil_env_t *env,
-        const axutil_qname_t *qname);
+    axis2_svc_name_set_qname(
+        struct axis2_svc_name *svc_name,
+        const axutil_env_t * env,
+        const axutil_qname_t * qname);
 
     /**
      * Gets endpoint name. Endpoint name is a non-qualified name that 
@@ -93,8 +96,10 @@ extern "C"
      * @return endpoint name string
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_svc_name_get_endpoint_name(const axis2_svc_name_t *svc_name,
-        const axutil_env_t *env);
+
+    axis2_svc_name_get_endpoint_name(
+        const axis2_svc_name_t * svc_name,
+        const axutil_env_t * env);
 
     /**
      * Sets endpoint name. Endpoint name is a non-qualified name that 
@@ -106,9 +111,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_name_set_endpoint_name(struct axis2_svc_name *svc_name,
-        const axutil_env_t *env,
-        const axis2_char_t *endpoint_name);
+    axis2_svc_name_set_endpoint_name(
+        struct axis2_svc_name *svc_name,
+        const axutil_env_t * env,
+        const axis2_char_t * endpoint_name);
 
     /**
      * Frees service name struct.
@@ -117,13 +123,14 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_svc_name_free(struct axis2_svc_name *svc_name,
-        const axutil_env_t *env);
+    axis2_svc_name_free(
+        struct axis2_svc_name *svc_name,
+        const axutil_env_t * env);
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif    /* AXIS2_SVC_NAME_H */
+#endif                          /* AXIS2_SVC_NAME_H */

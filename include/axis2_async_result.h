@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -18,7 +19,7 @@
 #ifndef AXIS2_ASYNC_RESULT_H
 #define AXIS2_ASYNC_RESULT_H
 
-/** 
+/**
  * @defgroup axis2_async_result async result
  * @ingroup axis2_client_api
  * async_result is used to capture the result of an asynchronous invocation.
@@ -45,15 +46,16 @@ extern "C"
     typedef struct axis2_async_result axis2_async_result_t;
 
     /**
-     * Gets the SOAP envelope stored inside the resulting message context.        
+     * Gets the SOAP envelope stored inside the resulting message context.    
      * @param async_result pointer to async result struct
      * @param env pointer to environment struct
      * @return pointer to the result SOAP envelope in the message context.
      */
     AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
-    axis2_async_result_get_envelope(axis2_async_result_t *async_result,
-        const axutil_env_t *env);
 
+    axis2_async_result_get_envelope(
+        axis2_async_result_t * async_result,
+        const axutil_env_t * env);
 
     /**
      * Gets the result in the form of message context.
@@ -62,8 +64,9 @@ extern "C"
      * @return pointer to result message context
      */
     AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
-    axis2_async_result_get_result(axis2_async_result_t *async_result,
-        const axutil_env_t *env);
+    axis2_async_result_get_result(
+        axis2_async_result_t * async_result,
+        const axutil_env_t * env);
 
     /**
      * Frees the async result.
@@ -72,8 +75,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_async_result_free(axis2_async_result_t *async_result,
-        const axutil_env_t *env);
+    axis2_async_result_free(
+        axis2_async_result_t * async_result,
+        const axutil_env_t * env);
 
     /** Creates an async result struct to help deal with results of asynchronous
      * invocations.
@@ -83,11 +87,11 @@ extern "C"
      * @return newly created async_result struct
      */
     AXIS2_EXTERN axis2_async_result_t *AXIS2_CALL
-    axis2_async_result_create(const axutil_env_t *env,
-        axis2_msg_ctx_t *result);
+    axis2_async_result_create(
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * result);
 
-
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif

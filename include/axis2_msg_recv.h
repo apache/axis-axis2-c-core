@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -22,7 +23,7 @@
  * @defgroup axis2_receivers receivers
  * @ingroup axis2
  * @{
- * @} 
+ * @}
  */
 
 /** @defgroup axis2_msg_recv message receiver
@@ -33,7 +34,7 @@
 
 /**
  * @file axis2_msg_recv.h
- * @brief Axis Message Receiver interface. Message Receiver struct. 
+ * @brief Axis Message Receiver interface. Message Receiver struct.
  * This interface is extended by custom message receivers
  */
 
@@ -50,6 +51,7 @@ extern "C"
 #include <axis2_svr_callback.h>
 
     struct axis2_msg_ctx;
+
     /** Type name for struct axis2_msg_recv*/
     typedef struct axis2_msg_recv axis2_msg_recv_t;
 
@@ -60,8 +62,9 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_msg_recv_free(axis2_msg_recv_t *msg_recv,
-        const axutil_env_t *env);
+    axis2_msg_recv_free(
+        axis2_msg_recv_t * msg_recv,
+        const axutil_env_t * env);
 
     /**
      * This method is called from axis2_engine_receive method. This method's
@@ -77,8 +80,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_msg_recv_receive(axis2_msg_recv_t *msg_recv,
-        const axutil_env_t *env,
+    axis2_msg_recv_receive(
+        axis2_msg_recv_t * msg_recv,
+        const axutil_env_t * env,
         struct axis2_msg_ctx *in_msg_ctx,
         void *callback_recv_param);
 
@@ -91,8 +95,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
-        const axutil_env_t *env,
+
+    axis2_msg_recv_invoke_business_logic(
+        axis2_msg_recv_t * msg_recv,
+        const axutil_env_t * env,
         struct axis2_msg_ctx *in_msg_ctx,
         struct axis2_msg_ctx *out_msg_ctx);
 
@@ -104,8 +110,10 @@ extern "C"
      * @return service skeleton object
      */
     AXIS2_EXTERN axis2_svc_skeleton_t *AXIS2_CALL
-    axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
-        const axutil_env_t *env,
+
+    axis2_msg_recv_make_new_svc_obj(
+        axis2_msg_recv_t * msg_recv,
+        const axutil_env_t * env,
         struct axis2_msg_ctx *msg_ctx);
 
     /**
@@ -116,8 +124,10 @@ extern "C"
      * @return service skeleton object
      */
     AXIS2_EXTERN axis2_svc_skeleton_t *AXIS2_CALL
-    axis2_msg_recv_get_impl_obj(axis2_msg_recv_t *msg_recv,
-        const axutil_env_t *env,
+
+    axis2_msg_recv_get_impl_obj(
+        axis2_msg_recv_t * msg_recv,
+        const axutil_env_t * env,
         struct axis2_msg_ctx *msg_ctx);
 
     /**
@@ -128,10 +138,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_msg_recv_set_scope(axis2_msg_recv_t *msg_recv,
-        const axutil_env_t *env,
-        const axis2_char_t *scope);
-
+    axis2_msg_recv_set_scope(
+        axis2_msg_recv_t * msg_recv,
+        const axutil_env_t * env,
+        const axis2_char_t * scope);
 
     /**
      * Get the application scope
@@ -140,8 +150,9 @@ extern "C"
      * @return scope
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_msg_recv_get_scope(axis2_msg_recv_t *msg_recv,
-        const axutil_env_t *env);
+    axis2_msg_recv_get_scope(
+        axis2_msg_recv_t * msg_recv,
+        const axutil_env_t * env);
 
     /**
      * Delete the service skeleton object created by make_new_svc_obj
@@ -151,28 +162,34 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx);
+    axis2_msg_recv_delete_svc_obj(
+        axis2_msg_recv_t * msg_recv,
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx);
 
     AXIS2_EXPORT axis2_status_t AXIS2_CALL
-    axis2_msg_recv_set_invoke_business_logic(axis2_msg_recv_t *msg_recv,
-        const axutil_env_t *env,
+
+    axis2_msg_recv_set_invoke_business_logic(
+        axis2_msg_recv_t * msg_recv,
+        const axutil_env_t * env,
         void *func);
 
     AXIS2_EXPORT axis2_status_t AXIS2_CALL
-    axis2_msg_recv_set_derived(axis2_msg_recv_t *msg_recv,
-        const axutil_env_t *env,
+    axis2_msg_recv_set_derived(
+        axis2_msg_recv_t * msg_recv,
+        const axutil_env_t * env,
         void *derived);
 
     AXIS2_EXPORT void *AXIS2_CALL
-    axis2_msg_recv_get_derived(const axis2_msg_recv_t *msg_recv,
-        const axutil_env_t *env);
+    axis2_msg_recv_get_derived(
+        const axis2_msg_recv_t * msg_recv,
+        const axutil_env_t * env);
 
-	AXIS2_EXPORT axis2_status_t AXIS2_CALL
-	axis2_msg_recv_set_receive(axis2_msg_recv_t *msg_recv,
-		const axutil_env_t *env,
-		void *func);
+    AXIS2_EXPORT axis2_status_t AXIS2_CALL
+    axis2_msg_recv_set_receive(
+        axis2_msg_recv_t * msg_recv,
+        const axutil_env_t * env,
+        void *func);
 
     /**
      * Create new message receiver object. usually this will be called from the
@@ -182,12 +199,12 @@ extern "C"
      * @return newly created message receiver object
      **/
     AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
-    axis2_msg_recv_create (const axutil_env_t *env);
+    axis2_msg_recv_create(
+        const axutil_env_t * env);
 
-
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif  /* AXIS2_MSG_RECV_H */
+#endif                          /* AXIS2_MSG_RECV_H */

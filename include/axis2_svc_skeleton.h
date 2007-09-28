@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -22,14 +23,14 @@
  * @defgroup axis2_soc_api service API
  * @ingroup axis2
  * @{
- * @} 
+ * @}
  */
 
-/** 
+/**
  * @defgroup axis2_svc_skeleton service skeleton
  * @ingroup axis2_svc_api
  * service skeleton API should be implemented by all services
- * that are to be deployed with Axis2/C engine. 
+ * that are to be deployed with Axis2/C engine.
  * @{
  */
 
@@ -46,12 +47,12 @@ extern "C"
 {
 #endif
 
-
     /** Type name for struct axis2_svc_skeleton_ops */
     typedef struct axis2_svc_skeleton_ops axis2_svc_skeleton_ops_t;
+
     /** Type name for struct axis2_svc_skeleton */
     typedef struct axis2_svc_skeleton axis2_svc_skeleton_t;
-   
+
     /**
      * service skeleton ops struct.
      * Encapsulator struct for operations of axis2_svc_skeleton.
@@ -65,10 +66,11 @@ extern "C"
          * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        int (AXIS2_CALL *
-                init)(
-                    axis2_svc_skeleton_t *svc_skeleton,
-                    const axutil_env_t *env);
+        int(
+            AXIS2_CALL
+            * init)(
+                axis2_svc_skeleton_t * svc_skeleton,
+                const axutil_env_t * env);
 
         /**
          * Invokes the service. This function should be used to call up the
@@ -82,12 +84,13 @@ extern "C"
          * status in environment error set to AXIS2_SUCCESS. On error
          * NULL would be returned with error status set to AXIS2_FAILURE
          */
-        axiom_node_t *(AXIS2_CALL*
-                invoke)(
-                    axis2_svc_skeleton_t *svc_skeli,
-                    const axutil_env_t *env,
-                    axiom_node_t *node,
-                    axis2_msg_ctx_t *msg_ctx);
+        axiom_node_t *(
+            AXIS2_CALL
+            * invoke)(
+                axis2_svc_skeleton_t * svc_skeli,
+                const axutil_env_t * env,
+                axiom_node_t * node,
+                axis2_msg_ctx_t * msg_ctx);
 
         /**
          * This method would be called if a fault is detected.
@@ -96,11 +99,12 @@ extern "C"
          * @param node pointer to node struct
          * @return pointer to AXIOM node reflecting the fault, NULL on error
          */
-        axiom_node_t *(AXIS2_CALL*
-                on_fault)(
-                    axis2_svc_skeleton_t *svc_skeli,
-                    const axutil_env_t *env,
-                    axiom_node_t *node);
+        axiom_node_t *(
+            AXIS2_CALL
+            * on_fault)(
+                axis2_svc_skeleton_t * svc_skeli,
+                const axutil_env_t * env,
+                axiom_node_t * node);
 
         /**
          * Frees service implementation.
@@ -108,10 +112,11 @@ extern "C"
          * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        int (AXIS2_CALL *
-                free)(
-                    axis2_svc_skeleton_t *svc_skeli,
-                    const axutil_env_t *env);
+        int(
+            AXIS2_CALL
+            * free)(
+                axis2_svc_skeleton_t * svc_skeli,
+                const axutil_env_t * env);
 
         /**
          * Initializes the service implementation.
@@ -120,56 +125,58 @@ extern "C"
          * @param conf pointer to axis2c configuration struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        int (AXIS2_CALL *
-                init_with_conf)(
-                    axis2_svc_skeleton_t *svc_skeleton,
-                    const axutil_env_t *env,
-                    struct axis2_conf *conf);
-    } ;
+        int(
+            AXIS2_CALL
+            * init_with_conf)(
+                axis2_svc_skeleton_t * svc_skeleton,
+                const axutil_env_t * env,
+                struct axis2_conf * conf);
+    };
 
     /**
      * service skeleton struct.
      */
     struct axis2_svc_skeleton
     {
+
         /** operations of service skeleton */
         const axis2_svc_skeleton_ops_t *ops;
+
         /** Array list of functions, implementing the service operations */
         axutil_array_list_t *func_array;
     };
 
+    /*************************** Function macros **********************************/
 
-/*************************** Function macros **********************************/
-
-/** Initialize the svc skeleton.
-    @sa axis2_svc_skeleton_ops#init */
+    /** Initialize the svc skeleton.
+        @sa axis2_svc_skeleton_ops#init */
 #define AXIS2_SVC_SKELETON_INIT(svc_skeleton, env) \
       ((svc_skeleton)->ops->init (svc_skeleton, env))
 
-/** Initialize the svc skeleton with axis2c configuration struct.
-    @sa axis2_svc_skeleton_ops#init_with_conf */
+    /** Initialize the svc skeleton with axis2c configuration struct.
+        @sa axis2_svc_skeleton_ops#init_with_conf */
 #define AXIS2_SVC_SKELETON_INIT_WITH_CONF(svc_skeleton, env, conf) \
       ((svc_skeleton)->ops->init_with_conf (svc_skeleton, env, conf))
 
-/** Frees the svc skeleton.
-    @sa axis2_svc_skeleton_ops#free */
+    /** Frees the svc skeleton.
+        @sa axis2_svc_skeleton_ops#free */
 #define AXIS2_SVC_SKELETON_FREE(svc_skeleton, env) \
       ((svc_skeleton)->ops->free (svc_skeleton, env))
 
-/** Invokes axis2 service skeleton.
-    @sa axis2_svc_skeleton_ops#invoke */
+    /** Invokes axis2 service skeleton.
+        @sa axis2_svc_skeleton_ops#invoke */
 #define AXIS2_SVC_SKELETON_INVOKE(svc_skeleton, env, node, msg_ctx) \
       ((svc_skeleton)->ops->invoke (svc_skeleton, env, node, msg_ctx))
 
-/** Called on fault.
-    @sa axis2_svc_skeleton_ops#on_fault */
+    /** Called on fault.
+        @sa axis2_svc_skeleton_ops#on_fault */
 #define AXIS2_SVC_SKELETON_ON_FAULT(svc_skeleton, env, node) \
       ((svc_skeleton)->ops->on_fault (svc_skeleton, env, node))
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AXIS2_SVC_SKELETON_H */
+#endif                          /* AXIS2_SVC_SKELETON_H */

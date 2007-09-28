@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -18,12 +19,12 @@
 #ifndef AXIS2_SVC_CTX_H
 #define AXIS2_SVC_CTX_H
 
-/** 
+/**
  * @defgroup axis2_svc_ctx service context
  * @ingroup axis2_context
  * service context represents a running "instance" of a service.
- * service context allows instance of operations belonging to a service to be 
- * grouped. 
+ * service context allows instance of operations belonging to a service to be
+ * grouped.
  * @{
  */
 
@@ -43,7 +44,7 @@ extern "C"
     /** Type name for struct axis2_svc_ctx */
     typedef struct axis2_svc_ctx axis2_svc_ctx_t;
 
-    /** 
+    /**
      * Creates a service context struct that corresponds to the given service
      * and with the given parent service group context.
      * @param env pointer to environment struct
@@ -54,8 +55,9 @@ extern "C"
      * ownership of parent
      * @return pointer to newly created service context
      */
-    AXIS2_EXTERN axis2_svc_ctx_t *AXIS2_CALL 
-    axis2_svc_ctx_create(const axutil_env_t *env,
+    AXIS2_EXTERN axis2_svc_ctx_t *AXIS2_CALL
+    axis2_svc_ctx_create(
+        const axutil_env_t * env,
         struct axis2_svc *svc,
         struct axis2_svc_grp_ctx *svc_grp_ctx);
 
@@ -66,9 +68,9 @@ extern "C"
      * @return pointer to context, returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL
-    axis2_svc_ctx_get_base(const axis2_svc_ctx_t *svc_ctx,
-        const axutil_env_t *env);
-
+    axis2_svc_ctx_get_base(
+        const axis2_svc_ctx_t * svc_ctx,
+        const axutil_env_t * env);
 
     /**
      * Gets parent which is of type service group context.
@@ -77,9 +79,11 @@ extern "C"
      * @return pointer to parent service group context
      */
     AXIS2_EXTERN struct axis2_svc_grp_ctx *AXIS2_CALL
-    axis2_svc_ctx_get_parent(const axis2_svc_ctx_t *svc_ctx,
-        const axutil_env_t *env);
-        
+
+                axis2_svc_ctx_get_parent(
+                    const axis2_svc_ctx_t * svc_ctx,
+                    const axutil_env_t * env);
+
     /**
      * Sets parent which is of type service group context.
      * @param svc_ctx pointer to service context
@@ -89,10 +93,9 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_ctx_set_parent(
-        axis2_svc_ctx_t *svc_ctx,
-        const axutil_env_t *env,
+        axis2_svc_ctx_t * svc_ctx,
+        const axutil_env_t * env,
         struct axis2_svc_grp_ctx *parent);
-
 
     /**
      * Frees service context instance.
@@ -101,9 +104,9 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_svc_ctx_free(struct axis2_svc_ctx *svc_ctx,
-        const axutil_env_t *env);
-
+    axis2_svc_ctx_free(
+        struct axis2_svc_ctx *svc_ctx,
+        const axutil_env_t * env);
 
     /**
      * Initializes service context. This method locates the corresponding 
@@ -115,8 +118,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_ctx_init(struct axis2_svc_ctx *svc_ctx,
-        const axutil_env_t *env,
+    axis2_svc_ctx_init(
+        struct axis2_svc_ctx *svc_ctx,
+        const axutil_env_t * env,
         struct axis2_conf *conf);
 
     /**
@@ -127,9 +131,9 @@ extern "C"
      * @return service ID string.
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_svc_ctx_get_svc_id(const axis2_svc_ctx_t *svc_ctx,
-        const axutil_env_t *env);
-
+    axis2_svc_ctx_get_svc_id(
+        const axis2_svc_ctx_t * svc_ctx,
+        const axutil_env_t * env);
 
     /**
      * Gets the service that this service context represents.
@@ -138,8 +142,9 @@ extern "C"
      * @return pointer to service, returns a reference, not a cloned copy
      */
     AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
-    axis2_svc_ctx_get_svc(const axis2_svc_ctx_t *svc_ctx,
-        const axutil_env_t *env);
+                axis2_svc_ctx_get_svc(
+                    const axis2_svc_ctx_t * svc_ctx,
+                    const axutil_env_t * env);
 
     /**
      * Sets the service that this service context represents.
@@ -150,10 +155,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_ctx_set_svc(axis2_svc_ctx_t *svc_ctx,
-        const axutil_env_t *env,
+    axis2_svc_ctx_set_svc(
+        axis2_svc_ctx_t * svc_ctx,
+        const axutil_env_t * env,
         struct axis2_svc *svc);
-
 
     /**
      * Gets configuration context which is the super root (super most parent)
@@ -163,9 +168,10 @@ extern "C"
      * @return pointer to configuration context
      */
     AXIS2_EXTERN struct axis2_conf_ctx *AXIS2_CALL
-    axis2_svc_ctx_get_conf_ctx(const axis2_svc_ctx_t *svc_ctx,
-        const axutil_env_t *env);
 
+                axis2_svc_ctx_get_conf_ctx(
+                    const axis2_svc_ctx_t * svc_ctx,
+                    const axutil_env_t * env);
 
     /**
      * Creates an operation context for the named operation. The named 
@@ -177,9 +183,10 @@ extern "C"
      * @return pointer to operation context
      */
     AXIS2_EXTERN struct axis2_op_ctx *AXIS2_CALL
-    axis2_svc_ctx_create_op_ctx(struct axis2_svc_ctx *svc_ctx,
-        const axutil_env_t *env,
-        const axutil_qname_t *qname);
+                axis2_svc_ctx_create_op_ctx(
+                    struct axis2_svc_ctx *svc_ctx,
+                    const axutil_env_t * env,
+                    const axutil_qname_t * qname);
 
 #ifdef __cplusplus
 }

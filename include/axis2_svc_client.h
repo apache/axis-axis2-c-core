@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -34,7 +35,6 @@
  * are in XML, represented in AXIOM.
  * @{
  */
-
 
 /**
  * @file axis2_svc_client.h
@@ -75,7 +75,6 @@ extern "C"
     /** Type name for struct axis2_svc_client */
     typedef struct axis2_svc_client axis2_svc_client_t;
 
-
     /**
      * Returns the axis2_svc_t this is a client for. This is primarily 
      * useful when the service is created anonymously or from WSDL.
@@ -85,8 +84,9 @@ extern "C"
      * is associated. Returns a reference, not a cloned copy. 
      */
     AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
-    axis2_svc_client_get_svc(const axis2_svc_client_t *svc_client,
-        const axutil_env_t *env);
+    axis2_svc_client_get_svc(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
 
     /**
      * Sets the options to be used by service client.
@@ -96,9 +96,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_client_set_options(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        const axis2_options_t *options);
+    axis2_svc_client_set_options(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        const axis2_options_t * options);
 
     /**
      * Gets options used by service client. 
@@ -108,8 +109,10 @@ extern "C"
      * Returns a reference, not a cloned copy.
      */
     AXIS2_EXTERN const axis2_options_t *AXIS2_CALL
-    axis2_svc_client_get_options(const axis2_svc_client_t *svc_client,
-        const axutil_env_t *env);
+
+    axis2_svc_client_get_options(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
 
     /**
      * Sets the overriding options. The overriding client options related 
@@ -121,9 +124,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_client_set_override_options(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        const axis2_options_t *override_options);
+
+    axis2_svc_client_set_override_options(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        const axis2_options_t * override_options);
 
     /**
      * Gets the overriding options.
@@ -133,8 +138,10 @@ extern "C"
      * Returns a reference, not a cloned copy.
      */
     AXIS2_EXTERN const axis2_options_t *AXIS2_CALL
-    axis2_svc_client_get_override_options(const axis2_svc_client_t *svc_client,
-        const axutil_env_t *env);
+
+    axis2_svc_client_get_override_options(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
 
     /**
      * Engages the named module. The engaged modules extend the message
@@ -148,9 +155,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_client_engage_module(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        const axis2_char_t *module_name);
+    axis2_svc_client_engage_module(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        const axis2_char_t * module_name);
 
     /**
      * Dis-engages the named module. Dis-engaging a module on a service 
@@ -162,9 +170,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_client_disengage_module(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        const axis2_char_t *module_name);
+    axis2_svc_client_disengage_module(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        const axis2_char_t * module_name);
 
     /**
      * Adds an XML element as a header to be sent to the server side.
@@ -177,9 +186,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_client_add_header(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        axiom_node_t *header);
+    axis2_svc_client_add_header(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        axiom_node_t * header);
 
     /**
      * Removes all the headers added to service client.
@@ -188,8 +198,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_client_remove_all_headers(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env);
+
+    axis2_svc_client_remove_all_headers(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
 
     /**
      * This method can be used to send an XML message.
@@ -204,10 +216,12 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_client_send_robust_with_op_qname(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        const axutil_qname_t *op_qname,
-        const axiom_node_t *payload);
+
+    axis2_svc_client_send_robust_with_op_qname(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        const axutil_qname_t * op_qname,
+        const axiom_node_t * payload);
 
     /**
      * This method can be used to send an XML message.
@@ -222,9 +236,10 @@ extern "C"
      */
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_client_send_robust(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        const axiom_node_t *payload);
+    axis2_svc_client_send_robust(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        const axiom_node_t * payload);
 
     /**
      * Sends a message and forget about it. This method is used to interact with
@@ -238,10 +253,12 @@ extern "C"
      * @param payload pointer to OM node representing the XML payload to be sent
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_svc_client_fire_and_forget_with_op_qname(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        const axutil_qname_t *op_qname,
-        const axiom_node_t *payload);
+
+    axis2_svc_client_fire_and_forget_with_op_qname(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        const axutil_qname_t * op_qname,
+        const axiom_node_t * payload);
 
     /**
      * Sends a message and forget about it. This method is used to interact with
@@ -253,9 +270,10 @@ extern "C"
      * @param payload pointer to OM node representing the XML payload to be sent
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_svc_client_fire_and_forget(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        const axiom_node_t *payload);
+    axis2_svc_client_fire_and_forget(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        const axiom_node_t * payload);
 
     /**
      * Sends XML request and receives XML response.
@@ -269,10 +287,12 @@ extern "C"
      * caller owns the returned node.
      */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
-    axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        const axutil_qname_t *op_qname,
-        const axiom_node_t *payload);
+
+    axis2_svc_client_send_receive_with_op_qname(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        const axutil_qname_t * op_qname,
+        const axiom_node_t * payload);
 
     /**
      * Sends XML request and receives XML response.
@@ -284,9 +304,10 @@ extern "C"
      * caller owns the returned node.
      */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
-    axis2_svc_client_send_receive(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        const axiom_node_t *payload);
+    axis2_svc_client_send_receive(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        const axiom_node_t * payload);
 
     /**
      * Sends XML request and receives XML response, but does not block for response.
@@ -300,11 +321,13 @@ extern "C"
      * @callback pointer to callback struct used to capture response
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_svc_client_send_receive_non_blocking_with_op_qname(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        const axutil_qname_t *op_qname,
-        const axiom_node_t *payload,
-        axis2_callback_t *callback);
+
+    axis2_svc_client_send_receive_non_blocking_with_op_qname(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        const axutil_qname_t * op_qname,
+        const axiom_node_t * payload,
+        axis2_callback_t * callback);
 
     /**
      * Sends XML request and receives XML response, but does not block for response.
@@ -316,10 +339,11 @@ extern "C"
      * @callback pointer to callback struct used to capture response
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_svc_client_send_receive_non_blocking(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        const axiom_node_t *payload,
-        axis2_callback_t *callback);
+    axis2_svc_client_send_receive_non_blocking(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        const axiom_node_t * payload,
+        axis2_callback_t * callback);
 
     /**
      * Creates an op_client for a specific operation. This is the way to  
@@ -331,9 +355,11 @@ extern "C"
      * @return pointer to newly created op_client configured for the given operation
      */
     AXIS2_EXTERN axis2_op_client_t *AXIS2_CALL
-    axis2_svc_client_create_op_client(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        const axutil_qname_t *op_qname);
+
+    axis2_svc_client_create_op_client(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        const axutil_qname_t * op_qname);
 
     /**
      * Cleans up service client invocation. This will close the output 
@@ -344,8 +370,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_client_finalize_invoke(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env);
+    axis2_svc_client_finalize_invoke(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
 
     /**
      * Gets the service client's own endpoint_ref, that is the
@@ -357,9 +384,11 @@ extern "C"
      * not a cloned copy.
      */
     AXIS2_EXTERN const axis2_endpoint_ref_t *AXIS2_CALL
-    axis2_svc_client_get_own_endpoint_ref(const axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        const axis2_char_t *transport);
+
+    axis2_svc_client_get_own_endpoint_ref(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        const axis2_char_t * transport);
 
     /**
      * Gets the target endpoint ref.
@@ -369,8 +398,10 @@ extern "C"
      * not a cloned copy.
      */
     AXIS2_EXTERN const axis2_endpoint_ref_t *AXIS2_CALL
-    axis2_svc_client_get_target_endpoint_ref(const axis2_svc_client_t *svc_client,
-        const axutil_env_t *env);
+
+    axis2_svc_client_get_target_endpoint_ref(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
 
     /**
      * Sets the target endpoint ref.
@@ -381,10 +412,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_client_set_target_endpoint_ref(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        axis2_endpoint_ref_t *target_epr);
 
+    axis2_svc_client_set_target_endpoint_ref(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        axis2_endpoint_ref_t * target_epr);
 
     /**
      * Sets the proxy.
@@ -398,10 +430,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_client_set_proxy(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        axis2_char_t *proxy_host,
-        axis2_char_t *proxy_port);
+    axis2_svc_client_set_proxy(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        axis2_char_t * proxy_host,
+        axis2_char_t * proxy_port);
 
     /**
      * Gets the service context.
@@ -411,8 +444,9 @@ extern "C"
      * the returned pointer.
      */
     AXIS2_EXTERN axis2_svc_ctx_t *AXIS2_CALL
-    axis2_svc_client_get_svc_ctx(const axis2_svc_client_t *svc_client,
-        const axutil_env_t *env);
+    axis2_svc_client_get_svc_ctx(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
 
     /**
      * Frees the service client.
@@ -422,8 +456,9 @@ extern "C"
      */
 
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_svc_client_free(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env);
+    axis2_svc_client_free(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
 
     /**
      * Gets the operation client
@@ -433,8 +468,10 @@ extern "C"
      * the returned pointer
      */
     AXIS2_EXTERN axis2_op_client_t *AXIS2_CALL
-    axis2_svc_client_get_op_client(const axis2_svc_client_t *svc_client,
-        const axutil_env_t *env);
+
+    axis2_svc_client_get_op_client(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
 
     /**
      * Creates a service client struct.
@@ -443,9 +480,10 @@ extern "C"
      * @return a pointer to newly created service client struct,
      *         or NULL on error with error code set in environment's error
      */
-    AXIS2_EXTERN axis2_svc_client_t * AXIS2_CALL
-    axis2_svc_client_create(const axutil_env_t *env,
-        const axis2_char_t *client_home);
+    AXIS2_EXTERN axis2_svc_client_t *AXIS2_CALL
+    axis2_svc_client_create(
+        const axutil_env_t * env,
+        const axis2_char_t * client_home);
 
     /**
      * Creates a service client struct for a specified service and configuration
@@ -459,11 +497,13 @@ extern "C"
      * @return a pointer to newly created service client struct,
      *         or NULL on error with error code set in environment's error
      */
-    AXIS2_EXTERN axis2_svc_client_t * AXIS2_CALL
-    axis2_svc_client_create_with_conf_ctx_and_svc(const axutil_env_t *env,
-        const axis2_char_t *client_home,
-        axis2_conf_ctx_t *conf_ctx,
-        axis2_svc_t *svc);
+    AXIS2_EXTERN axis2_svc_client_t *AXIS2_CALL
+
+    axis2_svc_client_create_with_conf_ctx_and_svc(
+        const axutil_env_t * env,
+        const axis2_char_t * client_home,
+        axis2_conf_ctx_t * conf_ctx,
+        axis2_svc_t * svc);
 
     /**
      * Creates a service client struct. This constructor is used in dynamic
@@ -480,13 +520,15 @@ extern "C"
      * @return a pointer to newly created service client struct,
      *         or NULL on error with error code set in environment's error
      */
-    AXIS2_EXTERN axis2_svc_client_t* AXIS2_CALL
-    axis2_svc_client_create_for_dynamic_invocation(const axutil_env_t *env,
-        axis2_conf_ctx_t *conf_ctx,
-        const axutil_uri_t *wsdl_uri,
-        const axutil_qname_t *wsdl_svc_qname,
-        const axis2_char_t *endpoint_name,
-        const axis2_char_t *client_home);
+    AXIS2_EXTERN axis2_svc_client_t *AXIS2_CALL
+
+    axis2_svc_client_create_for_dynamic_invocation(
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx,
+        const axutil_uri_t * wsdl_uri,
+        const axutil_qname_t * wsdl_svc_qname,
+        const axis2_char_t * endpoint_name,
+        const axis2_char_t * client_home);
 
     /**
      * Gets the last respose SOAP envelope. 
@@ -496,8 +538,10 @@ extern "C"
      * when send_receieve was called last time
      */
     AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
-    axis2_svc_client_get_last_response_soap_envelope(const axis2_svc_client_t *svc_client,
-        const axutil_env_t *env);
+
+    axis2_svc_client_get_last_response_soap_envelope(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
 
     /**
      * Gets the boolean value indicating if the last respose had a SOAP fault. 
@@ -506,8 +550,10 @@ extern "C"
      * @return AXIS2_TRUE if there was a fault, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_svc_client_get_last_response_has_fault(const axis2_svc_client_t *svc_client,
-        const axutil_env_t *env);
+
+    axis2_svc_client_get_last_response_has_fault(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
 
     /**
      * Create a policy object and set it to the description hierarchy
@@ -517,11 +563,13 @@ extern "C"
      * @return AXIS2_FAILURE if there was a fault, else AXIS2_SUCCESS
      */
 
-     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-     axis2_svc_client_set_policy_from_om(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        axiom_node_t *root_node);
-       
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+    axis2_svc_client_set_policy_from_om(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        axiom_node_t * root_node);
+
     /**
      * Set the given policy object to the description hierarchy
      * @param svc_client pointer to service_client struct
@@ -531,14 +579,12 @@ extern "C"
      */
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_client_set_policy(axis2_svc_client_t *svc_client,
-        const axutil_env_t *env,
-        neethi_policy_t *policy);
-        
+    axis2_svc_client_set_policy(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        neethi_policy_t * policy);
 
-
-
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif

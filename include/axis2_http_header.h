@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -25,7 +26,6 @@
  * @{
  */
 
-
 /**
  * @file axis2_http_header.h
  * @brief axis2 HTTP Header name:value pair implementation
@@ -48,24 +48,27 @@ extern "C"
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_http_header_to_external_form(axis2_http_header_t *header,
-        const axutil_env_t *env);
+    axis2_http_header_to_external_form(
+        axis2_http_header_t * header,
+        const axutil_env_t * env);
 
     /**
      * @param header pointer to header
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_http_header_get_name(const axis2_http_header_t *header,
-        const axutil_env_t *env);
+    axis2_http_header_get_name(
+        const axis2_http_header_t * header,
+        const axutil_env_t * env);
 
     /**
      * @param header pointer to header
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_http_header_get_value(const axis2_http_header_t *header,
-        const axutil_env_t *env);
+    axis2_http_header_get_value(
+        const axis2_http_header_t * header,
+        const axutil_env_t * env);
 
     /**
      * @param header pointer to header
@@ -73,8 +76,9 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_http_header_free(axis2_http_header_t *header,
-        const axutil_env_t *env);
+    axis2_http_header_free(
+        axis2_http_header_t * header,
+        const axutil_env_t * env);
 
     /**
      * @param env pointer to environment struct
@@ -82,20 +86,22 @@ extern "C"
      * @param value pointer to value
      */
     AXIS2_EXTERN axis2_http_header_t *AXIS2_CALL
-    axis2_http_header_create (const axutil_env_t *env,
-        const axis2_char_t *name,
-        const axis2_char_t *value);
+    axis2_http_header_create(
+        const axutil_env_t * env,
+        const axis2_char_t * name,
+        const axis2_char_t * value);
 
     /**
      * @param env pointer to environment struct
      * @param str pointer to str
      */
     AXIS2_EXTERN axis2_http_header_t *AXIS2_CALL
-    axis2_http_header_create_by_str (const axutil_env_t *env,
-        const axis2_char_t *str);
 
+    axis2_http_header_create_by_str(
+        const axutil_env_t * env,
+        const axis2_char_t * str);
 
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif

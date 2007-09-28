@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,7 +19,7 @@
 #ifndef AXIS2_POLICY_INCLUDE_H
 #define AXIS2_POLICY_INCLUDE_H
 
-/** 
+/**
  * @defgroup axis2_policy_include policy include
  * @ingroup axis2_desc
  * @{
@@ -58,18 +59,21 @@ extern "C"
         AXIS2_ANON_POLICY
     } axis2_policy_types;
 
-   
     /**
      * Creates policy include struct.
      * @param env pointer to environment struct
      * @return pointer to newly created policy include
      */
     AXIS2_EXTERN axis2_policy_include_t *AXIS2_CALL
-    axis2_policy_include_create(const axutil_env_t *env);
+
+    axis2_policy_include_create(
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_policy_include_t *AXIS2_CALL
-    axis2_policy_include_create_with_desc(const axutil_env_t *env,
-        axis2_desc_t *desc);
+
+    axis2_policy_include_create_with_desc(
+        const axutil_env_t * env,
+        axis2_desc_t * desc);
 
     /**
      * Frees policy include.
@@ -78,104 +82,134 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_policy_include_free(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env);
-
+    axis2_policy_include_free(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN void AXIS2_CALL
     axis2_policy_include_free(
-        axis2_policy_include_t *policy_include,
-        const axutil_env_t *env);
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_policy_include_set_registry(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env, 
-        neethi_registry_t *registry);
+    axis2_policy_include_set_registry(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env,
+        neethi_registry_t * registry);
 
     AXIS2_EXTERN neethi_registry_t *AXIS2_CALL
-    axis2_policy_include_get_registry(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env);
+
+    axis2_policy_include_get_registry(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_policy_include_set_policy(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env, 
-        neethi_policy_t *policy);
+    axis2_policy_include_set_policy(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env,
+        neethi_policy_t * policy);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_policy_include_update_policy(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env, 
-        neethi_policy_t *policy);
+
+    axis2_policy_include_update_policy(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env,
+        neethi_policy_t * policy);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_policy_include_set_effective_policy(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env, 
-        neethi_policy_t *effective_policy);
+
+    axis2_policy_include_set_effective_policy(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env,
+        neethi_policy_t * effective_policy);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_policy_include_set_desc(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env, 
-        axis2_desc_t *desc);
+    axis2_policy_include_set_desc(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env,
+        axis2_desc_t * desc);
 
     AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
-    axis2_policy_include_get_desc(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env);
+    axis2_policy_include_get_desc(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_policy_include_t *AXIS2_CALL
-    axis2_policy_include_get_parent(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env);
+
+    axis2_policy_include_get_parent(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
-    axis2_policy_include_get_policy(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env);
+    axis2_policy_include_get_policy(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
-    axis2_policy_include_get_effective_policy(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env);
+
+    axis2_policy_include_get_effective_policy(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_policy_include_get_policy_elements(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env);
+
+    axis2_policy_include_get_policy_elements(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_policy_include_get_policy_elements_with_type(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env,
+
+    axis2_policy_include_get_policy_elements_with_type(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env,
         int type);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_policy_include_register_policy(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env,
-        axis2_char_t *key,
-        neethi_policy_t *effective_policy);
+
+    axis2_policy_include_register_policy(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env,
+        axis2_char_t * key,
+        neethi_policy_t * effective_policy);
 
     AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
-    axis2_policy_include_get_policy_with_key(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env,
-        axis2_char_t *key);
+
+    axis2_policy_include_get_policy_with_key(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env,
+        axis2_char_t * key);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_policy_include_add_policy_element(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env,
+
+    axis2_policy_include_add_policy_element(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env,
         int type,
-        neethi_policy_t *policy);
+        neethi_policy_t * policy);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_policy_include_add_policy_reference_element(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env,
+
+    axis2_policy_include_add_policy_reference_element(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env,
         int type,
-        neethi_reference_t *reference);
+        neethi_reference_t * reference);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_policy_include_remove_policy_element(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env,
-        axis2_char_t *policy_uri);
+
+    axis2_policy_include_remove_policy_element(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env,
+        axis2_char_t * policy_uri);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_policy_include_remove_all_policy_element(axis2_policy_include_t *policy_include,
-        const axutil_env_t *env);
 
+    axis2_policy_include_remove_all_policy_element(
+        axis2_policy_include_t * policy_include,
+        const axutil_env_t * env);
 
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_POLICY_INCLUDE_H */
+#endif                          /* AXIS2_POLICY_INCLUDE_H */

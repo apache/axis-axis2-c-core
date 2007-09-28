@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -48,8 +49,9 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_phases_info_free(axis2_phases_info_t *phases_info,
-        const axutil_env_t *env);
+    axis2_phases_info_free(
+        axis2_phases_info_t * phases_info,
+        const axutil_env_t * env);
 
     /**
      * @param phases_info pointer to phases info
@@ -58,9 +60,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phases_info_set_in_phases(axis2_phases_info_t *phases_info,
-        const axutil_env_t *env,
-        axutil_array_list_t *in_phases);
+    axis2_phases_info_set_in_phases(
+        axis2_phases_info_t * phases_info,
+        const axutil_env_t * env,
+        axutil_array_list_t * in_phases);
 
     /**
      * @param phases_info pointer to phases info
@@ -69,9 +72,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phases_info_set_out_phases(axis2_phases_info_t *phases_info,
-        const axutil_env_t *env,
-        axutil_array_list_t *out_phases);
+    axis2_phases_info_set_out_phases(
+        axis2_phases_info_t * phases_info,
+        const axutil_env_t * env,
+        axutil_array_list_t * out_phases);
 
     /**
      * @param phases_info pointer to phases info
@@ -80,9 +84,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phases_info_set_in_faultphases(axis2_phases_info_t *phases_info,
-        const axutil_env_t *env,
-        axutil_array_list_t *in_faultphases);
+
+    axis2_phases_info_set_in_faultphases(
+        axis2_phases_info_t * phases_info,
+        const axutil_env_t * env,
+        axutil_array_list_t * in_faultphases);
 
     /**
      * @param phases_info pointer to phases info
@@ -91,73 +97,91 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phases_info_set_out_faultphases(axis2_phases_info_t *phases_info,
-        const axutil_env_t *env,
-        axutil_array_list_t *out_faultphases);
+
+    axis2_phases_info_set_out_faultphases(
+        axis2_phases_info_t * phases_info,
+        const axutil_env_t * env,
+        axutil_array_list_t * out_faultphases);
 
     /**
      * @param phases_info pointer to phases info
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_phases_info_get_in_phases(const axis2_phases_info_t *phases_info,
-        const axutil_env_t *env);
+
+    axis2_phases_info_get_in_phases(
+        const axis2_phases_info_t * phases_info,
+        const axutil_env_t * env);
 
     /**
      * @param phases_info pointer to phases info
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_phases_info_get_out_phases(const axis2_phases_info_t *phases_info,
-        const axutil_env_t *env);
+
+    axis2_phases_info_get_out_phases(
+        const axis2_phases_info_t * phases_info,
+        const axutil_env_t * env);
 
     /**
      * @param phases_info pointer to phases info
      * @parma env pointer to environment struct
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_phases_info_get_in_faultphases(const axis2_phases_info_t *phases_info,
-        const axutil_env_t *env);
+
+    axis2_phases_info_get_in_faultphases(
+        const axis2_phases_info_t * phases_info,
+        const axutil_env_t * env);
 
     /**
      * @param phases_info pointer to phases info
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_phases_info_get_out_faultphases(const axis2_phases_info_t *phases_info,
-        const axutil_env_t *env);
+
+    axis2_phases_info_get_out_faultphases(
+        const axis2_phases_info_t * phases_info,
+        const axutil_env_t * env);
 
     /**
      * @param phases_info pointer to phases info
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_phases_info_get_op_in_phases(const axis2_phases_info_t *phases_info,
-        const axutil_env_t *env);
+
+    axis2_phases_info_get_op_in_phases(
+        const axis2_phases_info_t * phases_info,
+        const axutil_env_t * env);
 
     /**
      * @param phases_info pointer to phases info
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_phases_info_get_op_out_phases(const axis2_phases_info_t *phases_info,
-        const axutil_env_t *env);
+
+    axis2_phases_info_get_op_out_phases(
+        const axis2_phases_info_t * phases_info,
+        const axutil_env_t * env);
 
     /**
      * @param phases_info pointer to phases info 
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_phases_info_get_op_in_faultphases(const axis2_phases_info_t *phases_info,
-        const axutil_env_t *env);
+
+    axis2_phases_info_get_op_in_faultphases(
+        const axis2_phases_info_t * phases_info,
+        const axutil_env_t * env);
 
     /**
      * @param phases_info pointer to phases info
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_phases_info_get_op_out_faultphases(const axis2_phases_info_t *phases_info,
-        const axutil_env_t *env);
+
+    axis2_phases_info_get_op_out_faultphases(
+        const axis2_phases_info_t * phases_info,
+        const axutil_env_t * env);
 
     /**
      * @param phases_info pointer to phases info
@@ -166,8 +190,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phases_info_set_op_phases(axis2_phases_info_t *phases_info,
-        const axutil_env_t *env,
+    axis2_phases_info_set_op_phases(
+        axis2_phases_info_t * phases_info,
+        const axutil_env_t * env,
         struct axis2_op *axis2_opt);
 
     /** create Phases Info struct
@@ -175,15 +200,17 @@ extern "C"
      * @return pointer to newly created phases info
      */
     AXIS2_EXTERN axis2_phases_info_t *AXIS2_CALL
-    axis2_phases_info_create(const axutil_env_t *env);
+    axis2_phases_info_create(
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_phases_info_copy_flow(const axutil_env_t *env,
-        const axutil_array_list_t *flow_to_copy);
+    axis2_phases_info_copy_flow(
+        const axutil_env_t * env,
+        const axutil_array_list_t * flow_to_copy);
 
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif /*AXIS2_PHASES_INFO_H*/
+#endif                          /*AXIS2_PHASES_INFO_H */

@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -36,10 +37,11 @@
 #include <axiom_xml_reader.h>
 #include <axutil_property.h>
 
-/** DEPRECATED: Please use AXIOM_SOAP11 instead. 
+/** DEPRECATED: Please use AXIOM_SOAP11 instead.
     Constant value representing SOAP version 1.1 */
 #define AXIOM_SOAP_11 1
-/** DEPRECATED: Please use AXIOM_SOAP12 instead. 
+
+/** DEPRECATED: Please use AXIOM_SOAP12 instead.
     Constant value representing SOAP version 1.2 */
 #define AXIOM_SOAP_12 2
 
@@ -58,8 +60,9 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_stub_free(axis2_stub_t *stub,
-        const axutil_env_t *env);
+    axis2_stub_free(
+        axis2_stub_t * stub,
+        const axutil_env_t * env);
 
     /**
      * Sets the endpoint reference.
@@ -70,9 +73,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_stub_set_endpoint_ref(axis2_stub_t *stub,
-        const axutil_env_t *env,
-        axis2_endpoint_ref_t *endpoint_ref);
+    axis2_stub_set_endpoint_ref(
+        axis2_stub_t * stub,
+        const axutil_env_t * env,
+        axis2_endpoint_ref_t * endpoint_ref);
 
     /**
      * Sets the endpoint reference, represented by a string.
@@ -82,10 +86,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_stub_set_endpoint_uri(axis2_stub_t *stub,
-        const axutil_env_t *env,
-        const axis2_char_t *endpoint_uri);
-
+    axis2_stub_set_endpoint_uri(
+        axis2_stub_t * stub,
+        const axutil_env_t * env,
+        const axis2_char_t * endpoint_uri);
 
     /**
      * Sets the bool value specifying whether to use a separate listener
@@ -96,8 +100,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_stub_set_use_separate_listener(axis2_stub_t *stub,
-        const axutil_env_t *env,
+
+    axis2_stub_set_use_separate_listener(
+        axis2_stub_t * stub,
+        const axutil_env_t * env,
         const axis2_bool_t use_separate_listener);
 
     /**
@@ -108,10 +114,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_stub_set_soap_version(axis2_stub_t *stub,
-        const axutil_env_t *env,
+    axis2_stub_set_soap_version(
+        axis2_stub_t * stub,
+        const axutil_env_t * env,
         const int soap_version);
-
 
     /**
      * Gets the service context ID.
@@ -120,8 +126,9 @@ extern "C"
      * @return service context ID if set, else NULL
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_stub_get_svc_ctx_id(const axis2_stub_t *stub,
-        const axutil_env_t *env);
+    axis2_stub_get_svc_ctx_id(
+        const axis2_stub_t * stub,
+        const axutil_env_t * env);
 
     /**
      * Engages the named module.
@@ -131,9 +138,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_stub_engage_module(axis2_stub_t *stub,
-        const axutil_env_t *env,
-        const axis2_char_t *module_name);
+    axis2_stub_engage_module(
+        axis2_stub_t * stub,
+        const axutil_env_t * env,
+        const axis2_char_t * module_name);
 
     /**
      * Gets the service client instance used by this stub.
@@ -142,8 +150,9 @@ extern "C"
      * @return pointer to service client struct used by the stub
      */
     AXIS2_EXTERN axis2_svc_client_t *AXIS2_CALL
-    axis2_stub_get_svc_client(const axis2_stub_t *stub,
-        const axutil_env_t *env);
+    axis2_stub_get_svc_client(
+        const axis2_stub_t * stub,
+        const axutil_env_t * env);
 
     /**
      * Gets the options used on top of the service client used by this stub.
@@ -152,8 +161,9 @@ extern "C"
      * @return pointer to options used by the service client of this stub
      */
     AXIS2_EXTERN axis2_options_t *AXIS2_CALL
-    axis2_stub_get_options(const axis2_stub_t *stub,
-        const axutil_env_t *env);
+    axis2_stub_get_options(
+        const axis2_stub_t * stub,
+        const axutil_env_t * env);
 
     /**
      * Creates a stub instance.
@@ -163,10 +173,12 @@ extern "C"
      * @param client_home name of the directory that contains the Axis2/C repository
      * @return pointer to newly created axis2_stub struct
      */
-    AXIS2_EXTERN axis2_stub_t * AXIS2_CALL
-    axis2_stub_create_with_endpoint_ref_and_client_home(const axutil_env_t *env,
-        axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_char_t *client_home);
+    AXIS2_EXTERN axis2_stub_t *AXIS2_CALL
+
+    axis2_stub_create_with_endpoint_ref_and_client_home(
+        const axutil_env_t * env,
+        axis2_endpoint_ref_t * endpoint_ref,
+        const axis2_char_t * client_home);
 
     /**
      * Creates a stub instance.
@@ -175,11 +187,12 @@ extern "C"
      * @param client_home name of the directory that contains the Axis2/C repository
      * @return pointer to newly created axis2_stub struct
      */
-    AXIS2_EXTERN axis2_stub_t * AXIS2_CALL
-    axis2_stub_create_with_endpoint_uri_and_client_home(const axutil_env_t *env,
-        const axis2_char_t *endpoint_uri,
-        const axis2_char_t *client_home);
+    AXIS2_EXTERN axis2_stub_t *AXIS2_CALL
 
+    axis2_stub_create_with_endpoint_uri_and_client_home(
+        const axutil_env_t * env,
+        const axis2_char_t * endpoint_uri,
+        const axis2_char_t * client_home);
 
     /** @} */
 
@@ -187,4 +200,4 @@ extern "C"
 }
 #endif
 
-#endif /* AXIS2_STUB_H */
+#endif                          /* AXIS2_STUB_H */

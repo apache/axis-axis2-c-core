@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -36,106 +37,104 @@ extern "C"
 {
 #endif
 
-/**
- * @defgroup axis2_desc description
- * @ingroup axis2
- * @{
- * @}
- */
+    /**
+     * @defgroup axis2_desc description
+     * @ingroup axis2
+     * @{
+     * @}
+     */
 
-/*********************************** Constansts********************************/
+    /*********************************** Constansts********************************/
 
-/**
- * Field EXECUTION_CHAIN_KEY
- */
+    /**
+     * Field EXECUTION_CHAIN_KEY
+     */
 #define AXIS2_EXECUTION_CHAIN_KEY  "EXECUTION_CHAIN_KEY"
 
-/**
- * Field EXECUTION_OUT_CHAIN_KEY
- */
+    /**
+     * Field EXECUTION_OUT_CHAIN_KEY
+     */
 #define AXIS2_EXECUTION_OUT_CHAIN_KEY "EXECUTION_OUT_CHAIN_KEY"
 
-/**
- * Field EXECUTION_FAULT_CHAIN_KEY
- */
+    /**
+     * Field EXECUTION_FAULT_CHAIN_KEY
+     */
 #define AXIS2_EXECUTION_FAULT_CHAIN_KEY "EXECUTION_FAULT_CHAIN_KEY"
 
-/**
- * Field MODULEREF_KEY
- */
+    /**
+     * Field MODULEREF_KEY
+     */
 #define AXIS2_MODULEREF_KEY  "MODULEREF_KEY"
 
-/**
- * Field OP_KEY
- */
+    /**
+     * Field OP_KEY
+     */
 #define AXIS2_OP_KEY  "OP_KEY"
 
-/**
- * Field CLASSLOADER_KEY
- */
+    /**
+     * Field CLASSLOADER_KEY
+     */
 #define AXIS2_CLASSLOADER_KEY  "CLASSLOADER_KEY"
 
-/**
- * Field CONTEXTPATH_KEY
- */
+    /**
+     * Field CONTEXTPATH_KEY
+     */
 #define AXIS2_CONTEXTPATH_KEY  "CONTEXTPATH_KEY"
 
-/**
- * Field PROVIDER_KEY
- */
+    /**
+     * Field PROVIDER_KEY
+     */
 #define AXIS2_MESSAGE_RECEIVER_KEY  "PROVIDER_KEY"
 
-/**
- * Field STYLE_KEY
- */
+    /**
+     * Field STYLE_KEY
+     */
 #define AXIS2_STYLE_KEY  "STYLE_KEY"
 
-/**
- * Field PARAMETER_KEY
- */
+    /**
+     * Field PARAMETER_KEY
+     */
 #define AXIS2_PARAMETER_KEY  "PARAMETER_KEY"
 
-/**
- * Field IN_FLOW_KEY
- */
+    /**
+     * Field IN_FLOW_KEY
+     */
 #define AXIS2_IN_FLOW_KEY  "IN_FLOW_KEY"
 
-/**
- * Field OUT_FLOW_KEY
- */
+    /**
+     * Field OUT_FLOW_KEY
+     */
 #define AXIS2_OUT_FLOW_KEY  "OUT_FLOW_KEY"
 
-/**
- * Field IN_FAULTFLOW_KEY
- */
+    /**
+     * Field IN_FAULTFLOW_KEY
+     */
 #define AXIS2_IN_FAULTFLOW_KEY  "IN_FAULTFLOW_KEY"
 
-/**
- * Field OUT_FAULTFLOW_KEY
- */
+    /**
+     * Field OUT_FAULTFLOW_KEY
+     */
 #define AXIS2_OUT_FAULTFLOW_KEY  "OUT_FAULTFLOW_KEY"
 
-/**
- * Field PHASES_KEY
- */
+    /**
+     * Field PHASES_KEY
+     */
 #define AXIS2_PHASES_KEY  "PHASES_KEY"
 
-/**
- * Field SERVICE_CLASS
- */
+    /**
+     * Field SERVICE_CLASS
+     */
 #define AXIS2_SERVICE_CLASS  "ServiceClass"
 
-/**
- * Field SERVICE_CLASS_NAME
- */
+    /**
+     * Field SERVICE_CLASS_NAME
+     */
 #define AXIS2_SERVICE_CLASS_NAME "SERVICE_CLASS_NAME"
 
-
-/*********************************** Constants*********************************/
-
+    /*********************************** Constants*********************************/
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AXIS2_DESCRIPTION_H */
+#endif                          /* AXIS2_DESCRIPTION_H */

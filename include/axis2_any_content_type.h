@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,9 +22,9 @@
 /**
  * @defgroup axis2_any_content_type any content type
  * @ingroup axis2_addr
- * any content type acts as a container for any type reference parameters that 
- * could be associated with an endpoint reference. The values in the map are 
- * stored in string format, with QNames as key values. 
+ * any content type acts as a container for any type reference parameters that
+ * could be associated with an endpoint reference. The values in the map are
+ * stored in string format, with QNames as key values.
  * @{
  */
 
@@ -47,7 +48,9 @@ extern "C"
      * @return pointer to the newly created any content type instance
      */
     AXIS2_EXTERN axis2_any_content_type_t *AXIS2_CALL
-    axis2_any_content_type_create(const axutil_env_t *env);
+
+    axis2_any_content_type_create(
+        const axutil_env_t * env);
 
     /**
      * Adds given value to content value map with given QName.
@@ -58,10 +61,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_any_content_type_add_value(axis2_any_content_type_t *any_content_type,
-        const axutil_env_t *env,
-        const axutil_qname_t *qname,
-        const axis2_char_t *value);
+    axis2_any_content_type_add_value(
+        axis2_any_content_type_t * any_content_type,
+        const axutil_env_t * env,
+        const axutil_qname_t * qname,
+        const axis2_char_t * value);
 
     /**
      * Gets the value corresponding to the given QName from the content 
@@ -73,9 +77,12 @@ extern "C"
      * @return value string if present, else returns NULL
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_any_content_type_get_value(const axis2_any_content_type_t *any_content_type,
-        const axutil_env_t *env,
-        const axutil_qname_t *qname);
+
+    axis2_any_content_type_get_value(
+        const axis2_any_content_type_t * any_content_type,
+        const axutil_env_t * env,
+        const axutil_qname_t * qname);
+
     /**
      * Gets the map of all values.
      * @param any_content_type pointer to any content type struct
@@ -84,8 +91,10 @@ extern "C"
      * reference, not a cloned copy 
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-    axis2_any_content_type_get_value_map(const axis2_any_content_type_t *any_content_type,
-        const axutil_env_t *env);
+
+    axis2_any_content_type_get_value_map(
+        const axis2_any_content_type_t * any_content_type,
+        const axutil_env_t * env);
 
     /**
      * Frees any content type struct.
@@ -94,14 +103,14 @@ extern "C"
      * @return AXIS2_SUCCESS on success else AXIS2_FAILURE
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_any_content_type_free(axis2_any_content_type_t *any_content_type,
-        const axutil_env_t *env);
+    axis2_any_content_type_free(
+        axis2_any_content_type_t * any_content_type,
+        const axutil_env_t * env);
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif    /* AXIS2_ANY_CONTENT_TYPE_H */
-
+#endif                          /* AXIS2_ANY_CONTENT_TYPE_H */

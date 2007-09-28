@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -25,13 +26,13 @@
  * @}
  */
 
-/** 
+/**
  * @defgroup axis2_ctx context
  * @ingroup axis2_context
- * context is the base struct of all the context related structs. This struct 
- * encapsulates the common operations and data for all context types. All the 
+ * context is the base struct of all the context related structs. This struct
+ * encapsulates the common operations and data for all context types. All the
  * context types, configuration, service group, service and operation has the
- * base of type context. 
+ * base of type context.
  * @{
  */
 
@@ -53,8 +54,9 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to newly created context
      */
-    AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL 
-    axis2_ctx_create(const axutil_env_t *env);
+    AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL
+    axis2_ctx_create(
+        const axutil_env_t * env);
 
     /**
      * Sets a property with the given key.
@@ -68,11 +70,12 @@ extern "C"
      * in the non-persistent store
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    AXIS2_EXTERN axis2_status_t  AXIS2_CALL
-    axis2_ctx_set_property(struct axis2_ctx *ctx,
-        const axutil_env_t *env,
-        const axis2_char_t *key,
-        axutil_property_t *value);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_ctx_set_property(
+        struct axis2_ctx *ctx,
+        const axutil_env_t * env,
+        const axis2_char_t * key,
+        axutil_property_t * value);
 
     /**
      * Gets the property with the given key.
@@ -85,9 +88,10 @@ extern "C"
      * @return pointer to property struct corresponding to the given key
      */
     AXIS2_EXTERN axutil_property_t *AXIS2_CALL
-    axis2_ctx_get_property(const axis2_ctx_t *ctx,
-        const axutil_env_t *env,
-        const axis2_char_t *key);
+    axis2_ctx_get_property(
+        const axis2_ctx_t * ctx,
+        const axutil_env_t * env,
+        const axis2_char_t * key);
 
     /**
      * Gets the non-persistent map of properties.
@@ -97,8 +101,9 @@ extern "C"
      * properties
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-    axis2_ctx_get_property_map(const axis2_ctx_t *ctx,
-        const axutil_env_t *env);
+    axis2_ctx_get_property_map(
+        const axis2_ctx_t * ctx,
+        const axutil_env_t * env);
 
     /**
      * Gets all properties stored within context. 
@@ -107,9 +112,9 @@ extern "C"
      * @return pointer to hash table containing all properties
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-    axis2_ctx_get_all_properties(const axis2_ctx_t *ctx,
-        const axutil_env_t *env);
-
+    axis2_ctx_get_all_properties(
+        const axis2_ctx_t * ctx,
+        const axutil_env_t * env);
 
     /**
      * Frees context struct.
@@ -118,8 +123,9 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_ctx_free(axis2_ctx_t *ctx,
-        const axutil_env_t *env);
+    axis2_ctx_free(
+        axis2_ctx_t * ctx,
+        const axutil_env_t * env);
 
     /**
      * Sets non-persistent map of properties.
@@ -127,11 +133,12 @@ extern "C"
      * @param env pointer to environment struct
      * @param map pointer to hash map, context assumes ownership of the map
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-     */ 
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_ctx_set_property_map(struct axis2_ctx *ctx,
-        const axutil_env_t *env,
-        axutil_hash_t *map);
+    axis2_ctx_set_property_map(
+        struct axis2_ctx *ctx,
+        const axutil_env_t * env,
+        axutil_hash_t * map);
 
 #ifdef __cplusplus
 }

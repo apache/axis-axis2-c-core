@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,15 +19,14 @@
 #ifndef AXIS2_RELATES_TO_H
 #define AXIS2_RELATES_TO_H
 
-
 /**
  * @defgroup axis2_relates_to relates to
  * @ingroup axis2_addr
- * relates to encapsulates data that indicate how a message relates to 
- * another message. 
- * The related message is identified by a URI that corresponds to the 
+ * relates to encapsulates data that indicate how a message relates to
+ * another message.
+ * The related message is identified by a URI that corresponds to the
  * related message's message ID. The type of the relationship is also captured
- * by relates to. Basically relates to handles the following WS-Addressing 
+ * by relates to. Basically relates to handles the following WS-Addressing
  * header <wsa:RelatesTo RelationshipType="..."?>xs:anyURI</wsa:RelatesTo>
  * @{
  */
@@ -54,9 +54,10 @@ extern "C"
      * @param relationship_type relationship type string 
      */
     AXIS2_EXTERN axis2_relates_to_t *AXIS2_CALL
-    axis2_relates_to_create(const axutil_env_t *env,
-        const axis2_char_t *value,
-        const axis2_char_t *relationship_type);
+    axis2_relates_to_create(
+        const axutil_env_t * env,
+        const axis2_char_t * value,
+        const axis2_char_t * relationship_type);
 
     /**
      * Gets value. The value field represents the URI that corresponds to the 
@@ -67,8 +68,8 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_relates_to_get_value(
-        const axis2_relates_to_t *relates_to,
-        const axutil_env_t *env);
+        const axis2_relates_to_t * relates_to,
+        const axutil_env_t * env);
 
     /**
      * Sets value. The value field represents the URI that corresponds to the 
@@ -79,9 +80,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_relates_to_set_value(struct axis2_relates_to *relates_to,
-        const axutil_env_t *env,
-        const axis2_char_t *value);
+    axis2_relates_to_set_value(
+        struct axis2_relates_to *relates_to,
+        const axutil_env_t * env,
+        const axis2_char_t * value);
 
     /**
      * Gets relationship type. 
@@ -90,8 +92,10 @@ extern "C"
      * @return relationship type string 
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_relates_to_get_relationship_type(const axis2_relates_to_t *relates_to,
-        const axutil_env_t *env);
+
+    axis2_relates_to_get_relationship_type(
+        const axis2_relates_to_t * relates_to,
+        const axutil_env_t * env);
 
     /**
      * Sets relationship type. 
@@ -101,24 +105,27 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to,
-        const axutil_env_t *env,
-        const axis2_char_t *relationship_type);
+
+    axis2_relates_to_set_relationship_type(
+        struct axis2_relates_to *relates_to,
+        const axutil_env_t * env,
+        const axis2_char_t * relationship_type);
 
     /**
-     * Frees relates to struct.                     
+     * Frees relates to struct.    
      * @param relates_to pointer to relates to struct
      * @param env pointer to environment struct
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_relates_to_free(struct axis2_relates_to *relates_to,
-        const axutil_env_t *env);
+    axis2_relates_to_free(
+        struct axis2_relates_to *relates_to,
+        const axutil_env_t * env);
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif    /* AXIS2_RELATES_TO_H */
+#endif                          /* AXIS2_RELATES_TO_H */

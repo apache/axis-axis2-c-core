@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,20 +19,20 @@
 #ifndef AXIS2_OP_H
 #define AXIS2_OP_H
 
-/** 
+/**
  * @defgroup axis2_op operation
  * @ingroup axis2_desc
- * operation represents the static structure of an operation in a service. 
- * In Axis2 description hierarchy, an operation lives inside the service to 
- * which it belongs. 
- * operations are configured in services.xml files located in the respective 
- * service group folders of the services folder in the repository. 
- * In services.xml file, operations are declared in association with a given 
- * service. The deployment engine would create operation instances to represent 
- * those configured operations and would associate them with the respective 
+ * operation represents the static structure of an operation in a service.
+ * In Axis2 description hierarchy, an operation lives inside the service to
+ * which it belongs.
+ * operations are configured in services.xml files located in the respective
+ * service group folders of the services folder in the repository.
+ * In services.xml file, operations are declared in association with a given
+ * service. The deployment engine would create operation instances to represent
+ * those configured operations and would associate them with the respective
  * service in the configuration.
- * operation encapsulates data on message exchange pattern (MEP), the 
- * execution flows, engaged module information, and the message receiver 
+ * operation encapsulates data on message exchange pattern (MEP), the
+ * execution flows, engaged module information, and the message receiver
  * associated with the operation.
  * @{
  */
@@ -68,18 +69,17 @@ extern "C"
     struct axis2_msg;
     struct axis2_conf;
 
-/** SOAP action string constant */
+    /** SOAP action string constant */
 #define AXIS2_SOAP_ACTION "soapAction"
 
-    
     /**
      * Creates operation struct.
      * @param env pointer to environment struct
      * @return pointer to newly created operation
      */
     AXIS2_EXTERN axis2_op_t *AXIS2_CALL
-    axis2_op_create(const axutil_env_t *env);
-
+    axis2_op_create(
+        const axutil_env_t * env);
 
     /**
      * Frees operation.
@@ -88,8 +88,9 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_op_free(axis2_op_t *op,
-        const axutil_env_t *env);
+    axis2_op_free(
+        axis2_op_t * op,
+        const axutil_env_t * env);
 
     /**
      * Frees operation given as a void pointer.
@@ -98,9 +99,9 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_op_free_void_arg(void *op,
-        const axutil_env_t *env);
-
+    axis2_op_free_void_arg(
+        void *op,
+        const axutil_env_t * env);
 
     /**
      * Adds a parameter to method.
@@ -111,9 +112,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_add_param(axis2_op_t *op,
-        const axutil_env_t *env,
-        axutil_param_t *param);
+    axis2_op_add_param(
+        axis2_op_t * op,
+        const axutil_env_t * env,
+        axutil_param_t * param);
 
     /**
      * Gets named parameter.
@@ -124,9 +126,10 @@ extern "C"
      * reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_param_t *AXIS2_CALL
-    axis2_op_get_param(const axis2_op_t *op,
-        const axutil_env_t *env,
-        const axis2_char_t *name);
+    axis2_op_get_param(
+        const axis2_op_t * op,
+        const axutil_env_t * env,
+        const axis2_char_t * name);
 
     /**
      * Gets all parameters.
@@ -136,8 +139,9 @@ extern "C"
      * a reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_op_get_all_params(const axis2_op_t *op,
-        const axutil_env_t *env);
+    axis2_op_get_all_params(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
 
     /**
      * Checks if the named parameter is locked.
@@ -147,9 +151,10 @@ extern "C"
      * @return AXIS2_TRUE if named parameter is locked, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_op_is_param_locked(axis2_op_t *op,
-        const axutil_env_t *env,
-        const axis2_char_t *param_name);
+    axis2_op_is_param_locked(
+        axis2_op_t * op,
+        const axutil_env_t * env,
+        const axis2_char_t * param_name);
 
     /**
      * Sets parent. Parent of an operation is of type service.
@@ -160,8 +165,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_set_parent(axis2_op_t *op,
-        const axutil_env_t *env,
+    axis2_op_set_parent(
+        axis2_op_t * op,
+        const axutil_env_t * env,
         struct axis2_svc *svc);
 
     /**
@@ -172,8 +178,9 @@ extern "C"
      * copy
      */
     AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
-    axis2_op_get_parent(const axis2_op_t *op,
-        const axutil_env_t *env);
+                axis2_op_get_parent(
+                    const axis2_op_t * op,
+                    const axutil_env_t * env);
 
     /**
      * Sets operation QName.
@@ -185,9 +192,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_set_qname(axis2_op_t *op,
-        const axutil_env_t *env,
-        const axutil_qname_t *qname);
+    axis2_op_set_qname(
+        axis2_op_t * op,
+        const axutil_env_t * env,
+        const axutil_qname_t * qname);
 
     /**
      * Gets operation QName.
@@ -196,8 +204,9 @@ extern "C"
      * @return pointer to QName, returns a reference, not a cloned copy
      */
     AXIS2_EXTERN const axutil_qname_t *AXIS2_CALL
-    axis2_op_get_qname(void *op,
-        const axutil_env_t *env);
+    axis2_op_get_qname(
+        void *op,
+        const axutil_env_t * env);
 
     /**
      * Sets operation message exchange pattern (MEP).
@@ -207,9 +216,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_set_msg_exchange_pattern(axis2_op_t *op,
-        const axutil_env_t *env,
-        const axis2_char_t *pattern);
+    axis2_op_set_msg_exchange_pattern(
+        axis2_op_t * op,
+        const axutil_env_t * env,
+        const axis2_char_t * pattern);
 
     /**
      * Gets operation message exchange pattern (MEP).
@@ -218,8 +228,10 @@ extern "C"
      * @return MEP string
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_op_get_msg_exchange_pattern(const axis2_op_t *op,
-        const axutil_env_t *env);
+
+    axis2_op_get_msg_exchange_pattern(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
 
     /**
      * Sets message receiver. message receiver is responsible for invoking
@@ -231,8 +243,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_set_msg_recv(axis2_op_t *op,
-        const axutil_env_t *env,
+    axis2_op_set_msg_recv(
+        axis2_op_t * op,
+        const axutil_env_t * env,
         struct axis2_msg_recv *msg_recv);
 
     /**
@@ -244,8 +257,9 @@ extern "C"
      * cloned copy
      */
     AXIS2_EXTERN struct axis2_msg_recv *AXIS2_CALL
-    axis2_op_get_msg_recv(const axis2_op_t *op,
-        const axutil_env_t *env);
+                axis2_op_get_msg_recv(
+                    const axis2_op_t * op,
+                    const axutil_env_t * env);
 
     /**
      * Gets style of operation. Style is that mentioned in WSDL, either 
@@ -255,8 +269,9 @@ extern "C"
      * @return string representing style
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_op_get_style(const axis2_op_t *op,
-        const axutil_env_t *env);
+    axis2_op_get_style(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
 
     /**
      * Sets style of operation. Style is that mentioned in WSDL, either 
@@ -267,9 +282,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_set_style(axis2_op_t *op,
-        const axutil_env_t *env,
-        const axis2_char_t *style);
+    axis2_op_set_style(
+        axis2_op_t * op,
+        const axutil_env_t * env,
+        const axis2_char_t * style);
 
     /**
      * Engages given module to operation.
@@ -282,8 +298,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_engage_module(axis2_op_t *op,
-        const axutil_env_t *env,
+    axis2_op_engage_module(
+        axis2_op_t * op,
+        const axutil_env_t * env,
         struct axis2_module_desc *module_desc,
         struct axis2_conf *conf);
 
@@ -296,8 +313,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_add_to_engaged_module_list(axis2_op_t *op,
-        const axutil_env_t *env,
+
+    axis2_op_add_to_engaged_module_list(
+        axis2_op_t * op,
+        const axutil_env_t * env,
         struct axis2_module_desc *module_dec);
 
     /**
@@ -307,8 +326,9 @@ extern "C"
      * @return pointer to array list containing module descriptions
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_op_get_all_modules(const axis2_op_t *op,
-        const axutil_env_t *env);
+    axis2_op_get_all_modules(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
 
     /**
      * Gets Axis specific MEP constant. This method simply maps the string 
@@ -318,8 +338,9 @@ extern "C"
      * @return integer representing MEP
      */
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_op_get_axis_specific_mep_const(axis2_op_t *op,
-        const axutil_env_t *env);
+    axis2_op_get_axis_specific_mep_const(
+        axis2_op_t * op,
+        const axutil_env_t * env);
 
     /**
      * Gets fault in flow. Fault in flow is the list of phases invoked
@@ -330,33 +351,35 @@ extern "C"
      * not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_op_get_fault_in_flow(const axis2_op_t *op,
-        const axutil_env_t *env);
-
+    axis2_op_get_fault_in_flow(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
 
     /**
      * Gets fault out flow. Fault out flow is the list of phases invoked
-     * when a fault happens along out path.         
+     * when a fault happens along out path.    
      * @param op pointer to operation
      * @param env pointer to environment struct
      * @return pointer to array list containing phases, returns a reference,
      * not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_op_get_fault_out_flow(const axis2_op_t *op,
-        const axutil_env_t *env);
+    axis2_op_get_fault_out_flow(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
 
     /**
      * Gets out flow. Out flow is the list of phases invoked
-     * along out path.         
+     * along out path.    
      * @param op pointer to operation
      * @param env pointer to environment struct
      * @return pointer to array list containing phases, returns a reference,
-     * not a cloned copy         
+     * not a cloned copy    
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_op_get_out_flow(const axis2_op_t *op,
-        const axutil_env_t *env);
+    axis2_op_get_out_flow(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
 
     /**
      * Gets in flow. In flow is the list of phases 
@@ -367,26 +390,28 @@ extern "C"
      * not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_op_get_in_flow(const axis2_op_t *op,
-        const axutil_env_t *env);
+    axis2_op_get_in_flow(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
 
     /**
      * Sets fault in flow. Fault in flow is the list of phases invoked
-     * when a fault happens along in path.         
+     * when a fault happens along in path.    
      * @param op pointer to operation
      * @param env pointer to environment struct
      * @param list pointer to array list containing phases, operation takes
-     * over the ownership of list         
+     * over the ownership of list    
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_set_fault_in_flow(axis2_op_t *op,
-        const axutil_env_t *env,
-        axutil_array_list_t *list);
+    axis2_op_set_fault_in_flow(
+        axis2_op_t * op,
+        const axutil_env_t * env,
+        axutil_array_list_t * list);
 
     /**
      * Sets fault out flow. Fault out flow is the list of phases invoked
-     * when a fault happens along out path.         
+     * when a fault happens along out path.    
      * @param op pointer to operation
      * @param env pointer to environment struct
      * @param list pointer to array list containing phases, operation takes
@@ -394,13 +419,14 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_set_fault_out_flow(axis2_op_t *op,
-        const axutil_env_t *env,
-        axutil_array_list_t *list);
+    axis2_op_set_fault_out_flow(
+        axis2_op_t * op,
+        const axutil_env_t * env,
+        axutil_array_list_t * list);
 
     /**
      * Sets out flow. Out flow is the list of phases invoked
-     * along out path.         
+     * along out path.    
      * @param op pointer to operation
      * @param env pointer to environment struct
      * @param list pointer to array list containing phases, operation takes
@@ -408,9 +434,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_set_out_flow(axis2_op_t *op,
-        const axutil_env_t *env,
-        axutil_array_list_t *list);
+    axis2_op_set_out_flow(
+        axis2_op_t * op,
+        const axutil_env_t * env,
+        axutil_array_list_t * list);
 
     /**
      * Sets in flow. In flow is the list of phases 
@@ -422,9 +449,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_set_in_flow(axis2_op_t *op,
-        const axutil_env_t *env,
-        axutil_array_list_t *list);
+    axis2_op_set_in_flow(
+        axis2_op_t * op,
+        const axutil_env_t * env,
+        axutil_array_list_t * list);
 
     /**
      * Adds given QName to module QName list.
@@ -435,9 +463,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_add_module_qname(axis2_op_t *op,
-        const axutil_env_t *env,
-        const axutil_qname_t *module_qname);
+    axis2_op_add_module_qname(
+        axis2_op_t * op,
+        const axutil_env_t * env,
+        const axutil_qname_t * module_qname);
 
     /**
      * Gets all module QNames as a list.
@@ -447,8 +476,10 @@ extern "C"
      * returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_op_get_all_module_qnames(const axis2_op_t *op,
-        const axutil_env_t *env);
+
+    axis2_op_get_all_module_qnames(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
 
     /**
      * Finds operation context related to this operation using given message
@@ -462,10 +493,11 @@ extern "C"
      * a reference, not a cloned copy
      */
     AXIS2_EXTERN struct axis2_op_ctx *AXIS2_CALL
-    axis2_op_find_op_ctx(axis2_op_t *op,
-        const axutil_env_t *env,
-        struct axis2_msg_ctx *msg_ctx,
-        struct axis2_svc_ctx *svc_ctx);
+                axis2_op_find_op_ctx(
+                    axis2_op_t * op,
+                    const axutil_env_t * env,
+                    struct axis2_msg_ctx *msg_ctx,
+                    struct axis2_svc_ctx *svc_ctx);
 
     /**
      * Finds operation context related to this operation using given message
@@ -479,9 +511,11 @@ extern "C"
      
      */
     AXIS2_EXTERN struct axis2_op_ctx *AXIS2_CALL
-    axis2_op_find_existing_op_ctx(axis2_op_t *op,
-        const axutil_env_t *env,
-        const struct axis2_msg_ctx *msg_ctx);
+
+                axis2_op_find_existing_op_ctx(
+                    axis2_op_t * op,
+                    const axutil_env_t * env,
+                    const struct axis2_msg_ctx *msg_ctx);
 
     /**
      * Registers given operation context against this operation. Registration
@@ -495,8 +529,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_register_op_ctx(axis2_op_t *op,
-        const axutil_env_t *env,
+    axis2_op_register_op_ctx(
+        axis2_op_t * op,
+        const axutil_env_t * env,
         struct axis2_msg_ctx *msg_ctx,
         struct axis2_op_ctx *op_ctx);
 
@@ -508,9 +543,10 @@ extern "C"
      * a reference, not a cloned copy
      */
     AXIS2_EXTERN struct axis2_msg *AXIS2_CALL
-    axis2_op_get_msg(const axis2_op_t *op,
-        const axutil_env_t *env,
-        const axis2_char_t *label);
+                axis2_op_get_msg(
+                    const axis2_op_t * op,
+                    const axutil_env_t * env,
+                    const axis2_char_t * label);
 
     /**
      * Adds given message with the given label.
@@ -521,9 +557,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_add_msg(axis2_op_t *op,
-        const axutil_env_t *env,
-        const axis2_char_t *label,
+    axis2_op_add_msg(
+        axis2_op_t * op,
+        const axutil_env_t * env,
+        const axis2_char_t * label,
         const struct axis2_msg *msg);
 
     /**
@@ -533,8 +570,9 @@ extern "C"
      * AXIS2_TRUE if the operation is from a module, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_op_is_from_module(const axis2_op_t *op,
-        const axutil_env_t *env);
+    axis2_op_is_from_module(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
 
     /**
      * Set the wsamapping list.
@@ -544,9 +582,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_set_wsamapping_list(axis2_op_t *op,
-        const axutil_env_t *env,
-        axutil_array_list_t *mapping_list);
+    axis2_op_set_wsamapping_list(
+        axis2_op_t * op,
+        const axutil_env_t * env,
+        axutil_array_list_t * mapping_list);
 
     /**
      * Get the wsamapping list.
@@ -555,16 +594,22 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axis2_op_get_wsamapping_list(axis2_op_t *op,
-        const axutil_env_t *env);
+
+    axis2_op_get_wsamapping_list(
+        axis2_op_t * op,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
-    axis2_op_get_param_container(const axis2_op_t *op,
-        const axutil_env_t *env);
+
+    axis2_op_get_param_container(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_op_remove_from_engaged_module_list(axis2_op_t *op,
-        const axutil_env_t *env,
+
+    axis2_op_remove_from_engaged_module_list(
+        axis2_op_t * op,
+        const axutil_env_t * env,
         struct axis2_module_desc *module_desc);
 
     /**
@@ -573,7 +618,8 @@ extern "C"
      * @return pointer to newly created operation
      */
     AXIS2_EXTERN axis2_op_t *AXIS2_CALL
-    axis2_op_create_from_module(const axutil_env_t *env);
+    axis2_op_create_from_module(
+        const axutil_env_t * env);
 
     /**
      * Creates operation struct with given QName.
@@ -582,8 +628,9 @@ extern "C"
      * @return pointer to newly created operation
      */
     AXIS2_EXTERN axis2_op_t *AXIS2_CALL
-    axis2_op_create_with_qname(const axutil_env_t *env,
-        const axutil_qname_t *name);
+    axis2_op_create_with_qname(
+        const axutil_env_t * env,
+        const axutil_qname_t * name);
 
     /**
      * Frees the operation given as a void pointer. This method would cast the 
@@ -593,20 +640,23 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_op_free_void_arg(void *op,
-        const axutil_env_t *env);
+    axis2_op_free_void_arg(
+        void *op,
+        const axutil_env_t * env);
 
-    /** 
+    /**
      * Gets base description.
      * @param op pointer to message
      * @param env pointer to environment struct
      * @return pointer to base description struct
      */
     AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
-    axis2_op_get_base(const axis2_op_t *op,
-        const axutil_env_t *env);
-/** @} */
+    axis2_op_get_base(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
+
+    /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_OP_H */
+#endif                          /* AXIS2_OP_H */

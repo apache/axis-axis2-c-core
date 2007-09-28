@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -37,7 +38,6 @@
 #include <axis2_http_simple_request.h>
 #include <axis2_conf_ctx.h>
 
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -53,10 +53,11 @@ extern "C"
      * @param simple_request pointer to simple request
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
-        const axutil_env_t *env,
-        axis2_simple_http_svr_conn_t *svr_conn,
-        axis2_http_simple_request_t *simple_request);
+    axis2_http_worker_process_request(
+        axis2_http_worker_t * http_worker,
+        const axutil_env_t * env,
+        axis2_simple_http_svr_conn_t * svr_conn,
+        axis2_http_simple_request_t * simple_request);
 
     /**
      * @param http_worker pointer to http worker
@@ -65,8 +66,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_http_worker_set_svr_port(axis2_http_worker_t *http_worker,
-        const axutil_env_t *env,
+    axis2_http_worker_set_svr_port(
+        axis2_http_worker_t * http_worker,
+        const axutil_env_t * env,
         int port);
 
     /**
@@ -75,29 +77,31 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_http_worker_free(axis2_http_worker_t *http_worker,
-        const axutil_env_t *env);
+    axis2_http_worker_free(
+        axis2_http_worker_t * http_worker,
+        const axutil_env_t * env);
 
     /**
      * @param env pointer to environment struct
      * @param conf_ctx pointer to configuration context
      */
-    AXIS2_EXTERN axis2_http_worker_t * AXIS2_CALL
-    axis2_http_worker_create (const axutil_env_t *env,
-        axis2_conf_ctx_t *conf_ctx);
+    AXIS2_EXTERN axis2_http_worker_t *AXIS2_CALL
+    axis2_http_worker_create(
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx);
 
-/*#define AXIS2_HTTP_WORKER_PROCESS_REQUEST(http_worker, env, svr_conn,\
-            simple_request) axis2_http_worker_process_request(\
-            http_worker, env, svr_conn, simple_request)
+    /*#define AXIS2_HTTP_WORKER_PROCESS_REQUEST(http_worker, env, svr_conn,\
+                simple_request) axis2_http_worker_process_request(\
+                http_worker, env, svr_conn, simple_request)
 
-#define AXIS2_HTTP_WORKER_SET_SVR_PORT(http_worker, env, port) \
-                axis2_http_worker_set_svr_port(http_worker, env, port)
+    #define AXIS2_HTTP_WORKER_SET_SVR_PORT(http_worker, env, port) \
+                    axis2_http_worker_set_svr_port(http_worker, env, port)
 
-#define AXIS2_HTTP_WORKER_FREE(http_worker, env) \
-                axis2_http_worker_free(http_worker, env)
-*/
+    #define AXIS2_HTTP_WORKER_FREE(http_worker, env) \
+                    axis2_http_worker_free(http_worker, env)
+    */
 
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif

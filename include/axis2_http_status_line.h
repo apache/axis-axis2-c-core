@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -33,7 +34,6 @@
 #include <axis2_defines.h>
 #include <axutil_env.h>
 
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -47,40 +47,48 @@ extern "C"
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_http_status_line_get_status_code(const axis2_http_status_line_t *status_line,
-        const axutil_env_t *env);
+    axis2_http_status_line_get_status_code(
+        const axis2_http_status_line_t * status_line,
+        const axutil_env_t * env);
 
     /**
      * @param status_line pointer to status line
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_http_status_line_get_http_version(const axis2_http_status_line_t *status_line,
-        const axutil_env_t *env);
+
+    axis2_http_status_line_get_http_version(
+        const axis2_http_status_line_t * status_line,
+        const axutil_env_t * env);
 
     /**
      * @param status_line pointer to status line
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_http_status_line_get_reason_phrase(const axis2_http_status_line_t *status_line,
-        const axutil_env_t *env);
+
+    axis2_http_status_line_get_reason_phrase(
+        const axis2_http_status_line_t * status_line,
+        const axutil_env_t * env);
 
     /**
      * @param status_line pointer to status line
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_http_status_line_starts_with_http(axis2_http_status_line_t *status_line,
-        const axutil_env_t *env);
+
+    axis2_http_status_line_starts_with_http(
+        axis2_http_status_line_t * status_line,
+        const axutil_env_t * env);
 
     /**
      * @param status_line pointer to status line
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_http_status_line_to_string(axis2_http_status_line_t *status_line,
-        const axutil_env_t *env);
+    axis2_http_status_line_to_string(
+        axis2_http_status_line_t * status_line,
+        const axutil_env_t * env);
 
     /**
      * @param status_line pointer to status line
@@ -88,19 +96,22 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_http_status_line_free(axis2_http_status_line_t *status_line,
-        const axutil_env_t *env);
+    axis2_http_status_line_free(
+        axis2_http_status_line_t * status_line,
+        const axutil_env_t * env);
 
     /**
      * @param env pointer to environment struct
      * @param str pointer to str
      */
     AXIS2_EXTERN axis2_http_status_line_t *AXIS2_CALL
-    axis2_http_status_line_create(const axutil_env_t *env,
-        const axis2_char_t *str);
 
-/** @} */
+    axis2_http_status_line_create(
+        const axutil_env_t * env,
+        const axis2_char_t * str);
+
+    /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_HTTP_STATUS_LINE_H */
+#endif                          /* AXIS2_HTTP_STATUS_LINE_H */

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -19,13 +20,13 @@
 #define AXIS2_ENGINE_H
 
 /**
- * @defgroup axis2_engine engine 
+ * @defgroup axis2_engine engine
  * @ingroup axis2_engine
- * engine has the send and receive functions that is the heart when providing 
- * and consuming services. In Axis2 SOAP engine architecture, all the others 
- * parts are build around the concept of the engine. There is only one engine 
+ * engine has the send and receive functions that is the heart when providing
+ * and consuming services. In Axis2 SOAP engine architecture, all the others
+ * parts are build around the concept of the engine. There is only one engine
  * for both the server side and the client side, and the engine is not aware of
- * if it is invoked as an client or a service. engine supports both synchronous 
+ * if it is invoked as an client or a service. engine supports both synchronous
  * and asynchronous messaging modes based on send and receive functions.
  * @{
  */
@@ -49,7 +50,6 @@ extern "C"
 
     struct axiom_soap_fault;
 
-
     /**
      * This methods represents the out flow of the Axis engine both at the 
      * server side as well as the client side. In this function, the 
@@ -63,10 +63,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_engine_send(axis2_engine_t *engine,
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx);
-    
+    axis2_engine_send(
+        axis2_engine_t * engine,
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx);
+
     /**
      * This methods represents the in flow of the Axis engine,  both at the 
      * server side as well as the client side. In this function, the 
@@ -80,10 +81,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_engine_receive(axis2_engine_t *engine,
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx);
-    
+    axis2_engine_receive(
+        axis2_engine_t * engine,
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx);
+
     /**
      * Sends a SOAP fault.
      * @param engine pointer to engine
@@ -93,10 +95,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_engine_send_fault(axis2_engine_t *engine,
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx);
-                
+    axis2_engine_send_fault(
+        axis2_engine_t * engine,
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx);
+
     /**
      * This is invoked when a SOAP fault is received.
      * @param engine pointer to engine
@@ -106,10 +109,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_engine_receive_fault(axis2_engine_t *engine,
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx);
-                
+    axis2_engine_receive_fault(
+        axis2_engine_t * engine,
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx);
+
     /**
      * Creates a message context that represents the fault state based on 
      * current processing state.
@@ -121,13 +125,14 @@ extern "C"
      * @param reason_text pointer to a string containing reason of the fault
      * @return pointer to message context representing the fault state
      */
-    AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL                                                              
+    AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
+
     axis2_engine_create_fault_msg_ctx(
-        axis2_engine_t *engine,
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *processing_context,
-        const axis2_char_t *code_value,
-        const axis2_char_t *reason_text);
+        axis2_engine_t * engine,
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * processing_context,
+        const axis2_char_t * code_value,
+        const axis2_char_t * reason_text);
 
     /**
      * Invokes the phases in the given array list of phases. The list of 
@@ -143,10 +148,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_engine_invoke_phases(axis2_engine_t *engine,
-        const axutil_env_t *env,
-        axutil_array_list_t *phases,
-        axis2_msg_ctx_t *msg_ctx);
+    axis2_engine_invoke_phases(
+        axis2_engine_t * engine,
+        const axutil_env_t * env,
+        axutil_array_list_t * phases,
+        axis2_msg_ctx_t * msg_ctx);
 
     /**
      * Resumes phase invocation. While invoking the phases, one of the 
@@ -165,10 +171,12 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_engine_resume_invocation_phases(axis2_engine_t *engine,
-        const axutil_env_t *env,
-        axutil_array_list_t *phases,
-        axis2_msg_ctx_t *msg_ctx);
+
+    axis2_engine_resume_invocation_phases(
+        axis2_engine_t * engine,
+        const axutil_env_t * env,
+        axutil_array_list_t * phases,
+        axis2_msg_ctx_t * msg_ctx);
 
     /**
      * Gets sender's SOAP fault code.
@@ -178,10 +186,11 @@ extern "C"
      * @return pointer to SOAP fault code string
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_engine_get_sender_fault_code(const axis2_engine_t *engine,
-        const axutil_env_t *env,
-        const axis2_char_t *soap_namespace);
 
+    axis2_engine_get_sender_fault_code(
+        const axis2_engine_t * engine,
+        const axutil_env_t * env,
+        const axis2_char_t * soap_namespace);
 
     /**
      * Gets receiver's SOAP fault code.
@@ -190,9 +199,11 @@ extern "C"
      * @param soap_namespace pointer to soap namespace
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_engine_get_receiver_fault_code(const axis2_engine_t *engine,
-        const axutil_env_t *env,
-        const axis2_char_t *soap_namespace);
+
+    axis2_engine_get_receiver_fault_code(
+        const axis2_engine_t * engine,
+        const axutil_env_t * env,
+        const axis2_char_t * soap_namespace);
 
     /**
      * Frees engine struct.
@@ -201,8 +212,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_engine_free(axis2_engine_t *engine,
-        const axutil_env_t *env);
+    axis2_engine_free(
+        axis2_engine_t * engine,
+        const axutil_env_t * env);
 
     /**
      * Resumes receive operation. It could be the case that receive was 
@@ -214,9 +226,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_engine_resume_receive(axis2_engine_t *engine,
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx);
+    axis2_engine_resume_receive(
+        axis2_engine_t * engine,
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx);
 
     /**
      * Resumes send operation. It could be the case that send was 
@@ -228,9 +241,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_engine_resume_send(axis2_engine_t *engine,
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx);
+    axis2_engine_resume_send(
+        axis2_engine_t * engine,
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx);
 
     /**
      * Creates en engine struct instance.
@@ -239,8 +253,9 @@ extern "C"
      * @return pointer to newly created engine struct
      */
     AXIS2_EXTERN axis2_engine_t *AXIS2_CALL
-    axis2_engine_create(const axutil_env_t *env,
-        axis2_conf_ctx_t *conf_ctx);
+    axis2_engine_create(
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx);
 
 #ifdef __cplusplus
 }

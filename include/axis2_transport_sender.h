@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -47,8 +48,10 @@ extern "C"
     struct axis2_ctx;
     struct axis2_msg_ctx;
     struct axis2_handler;
+
     /** Type name for struct axis2_transport_sender */
     typedef struct axis2_transport_sender axis2_transport_sender_t;
+
     /** Type name for struct axis2_transport_sender_ops */
     typedef struct axis2_transport_sender_ops axis2_transport_sender_ops_t;
 
@@ -58,56 +61,61 @@ extern "C"
      */
     struct axis2_transport_sender_ops
     {
-       /**
-        * Initialize
-        * @param transport_sender pointer to transport sender
-        * @param env pointer to environment
-        * @param conf_ctx pointer to configuration context
-        * @param transport_out pointer to transport_out
-        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-        */
-        axis2_status_t (AXIS2_CALL *
-                init)(
-                    axis2_transport_sender_t *transport_sender,
-                    const axutil_env_t *env,
-                    struct axis2_conf_ctx *conf_ctx,
-                    struct axis2_transport_out_desc *transport_out);
-       /**
-        * Invoke
-        * @param transport_sender pointer to transport sender
-        * @param env pointer to environment struct
-        * @param msg_ctx pointer to message context
-        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-        */
-        axis2_status_t (AXIS2_CALL *
-                invoke)(
-                    axis2_transport_sender_t *transport_sender,
-                    const axutil_env_t *env,
-                    struct axis2_msg_ctx *msg_ctx);
 
-       /**
-        * Clean up
-        * @param transport_sender pointer to transport sender
-        * @param env pointer to environmnet struct
-        * @param msg_ctx pointer to message context
-        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-        */
-        axis2_status_t (AXIS2_CALL *
-                cleanup)(
-                    axis2_transport_sender_t *transport_sender,
-                    const axutil_env_t *env,
-                    struct axis2_msg_ctx *msg_ctx);
+        /**
+         * Initialize
+         * @param transport_sender pointer to transport sender
+         * @param env pointer to environment
+         * @param conf_ctx pointer to configuration context
+         * @param transport_out pointer to transport_out
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t(
+            AXIS2_CALL
+            * init)(
+                axis2_transport_sender_t * transport_sender,
+                const axutil_env_t * env,
+                struct axis2_conf_ctx * conf_ctx,
+                struct axis2_transport_out_desc * transport_out);
 
+        /**
+         * Invoke
+         * @param transport_sender pointer to transport sender
+         * @param env pointer to environment struct
+         * @param msg_ctx pointer to message context
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t(
+            AXIS2_CALL
+            * invoke)(
+                axis2_transport_sender_t * transport_sender,
+                const axutil_env_t * env,
+                struct axis2_msg_ctx * msg_ctx);
 
-       /** De-allocate memory
-        * @param transport_sender pointer to transport sender
-        * @param env pointer to environment struct
-        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-        */
-        void (AXIS2_CALL *
-                free)(
-                    axis2_transport_sender_t *transport_sender,
-                    const axutil_env_t *env);
+        /**
+         * Clean up
+         * @param transport_sender pointer to transport sender
+         * @param env pointer to environmnet struct
+         * @param msg_ctx pointer to message context
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t(
+            AXIS2_CALL
+            * cleanup)(
+                axis2_transport_sender_t * transport_sender,
+                const axutil_env_t * env,
+                struct axis2_msg_ctx * msg_ctx);
+
+        /** De-allocate memory
+         * @param transport_sender pointer to transport sender
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        void(
+            AXIS2_CALL
+            * free)(
+                axis2_transport_sender_t * transport_sender,
+                const axutil_env_t * env);
 
     };
 
@@ -116,8 +124,9 @@ extern "C"
      * This send the SOAP Message to other SOAP nodes and this alone write the SOAP 
      * Message to the wire. Out flow must be end with one of this kind
      */
-     struct axis2_transport_sender
+    struct axis2_transport_sender
     {
+
         /** operations of axis transport sender */
         const axis2_transport_sender_ops_t *ops;
     };
@@ -127,37 +136,38 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to newly created transport sender
      */
-    AXIS2_EXTERN axis2_transport_sender_t * AXIS2_CALL
-    axis2_transport_sender_create (
-        const axutil_env_t *env);
+    AXIS2_EXTERN axis2_transport_sender_t *AXIS2_CALL
 
-/*************************** Function macros **********************************/
+    axis2_transport_sender_create(
+        const axutil_env_t * env);
 
-/** Frees the axis2 transport sender.
-    @sa axis2_transport_sender_ops#free */
+    /*************************** Function macros **********************************/
+
+    /** Frees the axis2 transport sender.
+        @sa axis2_transport_sender_ops#free */
 #define AXIS2_TRANSPORT_SENDER_FREE(transport_sender, env) \
       ((transport_sender->ops)->free (transport_sender, env))
 
-/** Initialize the axis2 transport sender.
-    @sa axis2_transport_sender_ops#init */
+    /** Initialize the axis2 transport sender.
+        @sa axis2_transport_sender_ops#init */
 #define AXIS2_TRANSPORT_SENDER_INIT(transport_sender, env, conf_context, transport_out) \
       ((transport_sender->ops)->init (transport_sender, env, conf_context, transport_out))
 
-/** Invoke.
-    @sa axis2_transport_sender_ops#invoke */
+    /** Invoke.
+        @sa axis2_transport_sender_ops#invoke */
 #define AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx) \
       ((transport_sender->ops)->invoke (transport_sender, env, msg_ctx))
 
-/** Cleanup.
-    @sa axis2_transport_sender_ops#cleanup */
+    /** Cleanup.
+        @sa axis2_transport_sender_ops#cleanup */
 #define AXIS2_TRANSPORT_SENDER_CLEANUP(transport_sender, env, msg_ctx) \
       ((transport_sender->ops)->cleanup (transport_sender, env, msg_ctx))
 
-/*************************** End of function macros ***************************/
+    /*************************** End of function macros ***************************/
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_TRANSPORT_SENDER_H */
+#endif                          /* AXIS2_TRANSPORT_SENDER_H */

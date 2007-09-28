@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -18,15 +19,15 @@
 #ifndef AXIS2_TRANSPORT_IN_DESC_H
 #define AXIS2_TRANSPORT_IN_DESC_H
 
-/** 
+/**
  * @defgroup axis2_transport_in_desc transport in description
  * @ingroup axis2_desc
- * transport in description represents a transport receiver configured in 
- * Axis2 configuration. There can be multiple transport receivers configured 
- * in axis2.xml file and each of them will be represented with a transport 
- * in description instance. deployment engine takes care of creating and 
+ * transport in description represents a transport receiver configured in
+ * Axis2 configuration. There can be multiple transport receivers configured
+ * in axis2.xml file and each of them will be represented with a transport
+ * in description instance. deployment engine takes care of creating and
  * instantiating transport in descriptions.
- * transport in description encapsulates flows related to the transport in 
+ * transport in description encapsulates flows related to the transport in
  * and also holds a reference to related transport receiver.
  * @{
  */
@@ -41,7 +42,8 @@
 #include <axis2_defines.h>
 #include <axutil_env.h>
 #include <axutil_allocator.h>
-#include <axutil_array_list.h> 
+#include <axutil_array_list.h>
+
 /*#include <axis2_transport_receiver.h>*/
 #include <axis2_phase_meta.h>
 #include <axis2_phase.h>
@@ -58,15 +60,16 @@ extern "C"
     struct axis2_phase;
     struct axis2_transport_receiver;
 
-    /** 
+    /**
      * Frees transport in description. 
      * @param transport_in_desc pointer to transport in description struct
      * @param env pointer to environment struct
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_transport_in_desc_free(axis2_transport_in_desc_t *transport_in_desc,
-        const axutil_env_t *env);
+    axis2_transport_in_desc_free(
+        axis2_transport_in_desc_t * transport_in_desc,
+        const axutil_env_t * env);
 
     /**
      * Frees transport in description given as a void parameter.
@@ -76,8 +79,9 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_transport_in_desc_free_void_arg(void *transport_in,
-        const axutil_env_t *env);
+    axis2_transport_in_desc_free_void_arg(
+        void *transport_in,
+        const axutil_env_t * env);
 
     /**
      * Gets transport enum.
@@ -86,8 +90,10 @@ extern "C"
      * @return transport enum 
      */
     AXIS2_EXTERN AXIS2_TRANSPORT_ENUMS AXIS2_CALL
-    axis2_transport_in_desc_get_enum(const axis2_transport_in_desc_t *transport_in,
-        const axutil_env_t *env);
+
+    axis2_transport_in_desc_get_enum(
+        const axis2_transport_in_desc_t * transport_in,
+        const axutil_env_t * env);
 
     /**
      * Sets transport enum.
@@ -97,8 +103,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    saxis2_transport_in_desc_et_enum(struct axis2_transport_in_desc *transport_in,
-        const axutil_env_t *env,
+    saxis2_transport_in_desc_et_enum(
+        struct axis2_transport_in_desc *transport_in,
+        const axutil_env_t * env,
         const AXIS2_TRANSPORT_ENUMS trans_enum);
 
     /**
@@ -110,8 +117,10 @@ extern "C"
      * not a cloned copy
      */
     AXIS2_EXTERN struct axis2_flow *AXIS2_CALL
-    axis2_transport_in_desc_get_in_flow(const axis2_transport_in_desc_t *transport_in,
-        const axutil_env_t *env);
+
+                axis2_transport_in_desc_get_in_flow(
+                    const axis2_transport_in_desc_t * transport_in,
+                    const axutil_env_t * env);
 
     /**
      * Sets in flow. In flow represents the list of phases invoked 
@@ -123,8 +132,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_transport_in_desc_set_in_flow(struct axis2_transport_in_desc *transport_in,
-        const axutil_env_t *env,
+
+    axis2_transport_in_desc_set_in_flow(
+        struct axis2_transport_in_desc *transport_in,
+        const axutil_env_t * env,
         struct axis2_flow *in_flow);
 
     /**
@@ -136,8 +147,10 @@ extern "C"
      * reference, not a cloned copy 
      */
     AXIS2_EXTERN struct axis2_flow *AXIS2_CALL
-    axis2_transport_in_desc_get_fault_in_flow(const axis2_transport_in_desc_t *transport_in,
-        const axutil_env_t *env);
+
+                axis2_transport_in_desc_get_fault_in_flow(
+                    const axis2_transport_in_desc_t * transport_in,
+                    const axutil_env_t * env);
 
     /**
      * Sets fault in flow. Fault in flow represents the list of phases 
@@ -149,8 +162,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_transport_in_desc_set_fault_in_flow(struct axis2_transport_in_desc *transport_in,
-        const axutil_env_t *env,
+
+    axis2_transport_in_desc_set_fault_in_flow(
+        struct axis2_transport_in_desc *transport_in,
+        const axutil_env_t * env,
         struct axis2_flow *fault_in_flow);
 
     /**
@@ -161,8 +176,10 @@ extern "C"
      * a cloned copy
      */
     AXIS2_EXTERN struct axis2_transport_receiver *AXIS2_CALL
-    axis2_transport_in_desc_get_recv(const axis2_transport_in_desc_t *transport_in,
-        const axutil_env_t *env);
+
+                axis2_transport_in_desc_get_recv(
+                    const axis2_transport_in_desc_t * transport_in,
+                    const axutil_env_t * env);
 
     /**
      * Sets transport receiver associated with the transport in description.
@@ -173,8 +190,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_transport_in_desc_set_recv(struct axis2_transport_in_desc *transport_in,
-        const axutil_env_t *env,
+    axis2_transport_in_desc_set_recv(
+        struct axis2_transport_in_desc *transport_in,
+        const axutil_env_t * env,
         struct axis2_transport_receiver *recv);
 
     /**
@@ -184,8 +202,10 @@ extern "C"
      * @return transport in phase, returns a reference, not a cloned copy
      */
     AXIS2_EXTERN struct axis2_phase *AXIS2_CALL
-    axis2_transport_in_desc_get_in_phase(const axis2_transport_in_desc_t *transport_in,
-        const axutil_env_t *env);
+
+                axis2_transport_in_desc_get_in_phase(
+                    const axis2_transport_in_desc_t * transport_in,
+                    const axutil_env_t * env);
 
     /**
      * Sets the transport in phase associated with transport in description.
@@ -196,8 +216,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_transport_in_desc_set_in_phase(struct axis2_transport_in_desc *transport_in,
-        const axutil_env_t *env,
+
+    axis2_transport_in_desc_set_in_phase(
+        struct axis2_transport_in_desc *transport_in,
+        const axutil_env_t * env,
         struct axis2_phase *in_phase);
 
     /**
@@ -207,8 +229,10 @@ extern "C"
      * @return pointer to phase representing fault phase
      */
     AXIS2_EXTERN struct axis2_phase *AXIS2_CALL
-    axis2_transport_in_desc_get_fault_phase(const axis2_transport_in_desc_t *transport_in,
-        const axutil_env_t *env);
+
+                axis2_transport_in_desc_get_fault_phase(
+                    const axis2_transport_in_desc_t * transport_in,
+                    const axutil_env_t * env);
 
     /**
      * Sets the transport fault phase associated with transport in description.
@@ -218,8 +242,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_transport_in_desc_set_fault_phase(struct axis2_transport_in_desc *transport_in,
-        const axutil_env_t *env,
+
+    axis2_transport_in_desc_set_fault_phase(
+        struct axis2_transport_in_desc *transport_in,
+        const axutil_env_t * env,
         struct axis2_phase *fault_phase);
 
     /**
@@ -231,9 +257,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_transport_in_desc_add_param(axis2_transport_in_desc_t *transport_in_desc,
-        const axutil_env_t *env,
-        axutil_param_t *param);
+    axis2_transport_in_desc_add_param(
+        axis2_transport_in_desc_t * transport_in_desc,
+        const axutil_env_t * env,
+        axutil_param_t * param);
 
     /**
      * Gets named parameter.
@@ -244,9 +271,11 @@ extern "C"
      * a reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_param_t *AXIS2_CALL
-    axis2_transport_in_desc_get_param(const axis2_transport_in_desc_t *transport_in_desc,
-        const axutil_env_t *env,
-        const axis2_char_t *param_name);
+
+    axis2_transport_in_desc_get_param(
+        const axis2_transport_in_desc_t * transport_in_desc,
+        const axutil_env_t * env,
+        const axis2_char_t * param_name);
 
     /**
      * Checks if the named parameter is locked.
@@ -256,13 +285,17 @@ extern "C"
      * @return AXIS2_TRUE if named parameter is locked, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_transport_in_desc_is_param_locked(axis2_transport_in_desc_t *transport_in_desc,
-        const axutil_env_t *env,
-        const axis2_char_t *param_name);
+
+    axis2_transport_in_desc_is_param_locked(
+        axis2_transport_in_desc_t * transport_in_desc,
+        const axutil_env_t * env,
+        const axis2_char_t * param_name);
 
     AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
-    axis2_transport_in_desc_param_container(const axis2_transport_in_desc_t *transport_in_desc,
-        const axutil_env_t *env);
+
+    axis2_transport_in_desc_param_container(
+        const axis2_transport_in_desc_t * transport_in_desc,
+        const axutil_env_t * env);
 
     /**
      * Creates transport in description with given transport enum.
@@ -271,8 +304,10 @@ extern "C"
      * @return pointer to newly created phase holder
      */
     AXIS2_EXTERN axis2_transport_in_desc_t *AXIS2_CALL
-    axis2_transport_in_desc_create(const axutil_env_t *env,
-            const AXIS2_TRANSPORT_ENUMS trans_enum);
+
+    axis2_transport_in_desc_create(
+        const axutil_env_t * env,
+        const AXIS2_TRANSPORT_ENUMS trans_enum);
 
     /**
      * Frees transport in description given as a void parameter.
@@ -281,13 +316,14 @@ extern "C"
      * @param env pointer to environment struct
      * @return void
      */
-     AXIS2_EXTERN void AXIS2_CALL
-     axis2_transport_in_desc_free_void_arg(void *transport_in,
-            const axutil_env_t *env);
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_transport_in_desc_free_void_arg(
+        void *transport_in,
+        const axutil_env_t * env);
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_TRANSPORT_IN_DESC_H */
+#endif                          /* AXIS2_TRANSPORT_IN_DESC_H */

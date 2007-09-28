@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,10 +19,9 @@
 #ifndef AXIS2_CLIENT_H
 #define AXIS2_CLIENT_H
 
-
 /**
   * @file axis2_clinet.h
-  * @brief 
+  * @brief
   */
 
 #include <axis2_async_result.h>
@@ -36,7 +36,7 @@ extern "C"
 {
 #endif
 
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif

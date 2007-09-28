@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -45,7 +46,6 @@ extern "C"
     /** Type name for struct axis2_http_client */
     typedef struct axis2_http_client axis2_http_client_t;
 
-
     /**
      * @param client pointer to client
      * @param env pointer to environment struct
@@ -53,26 +53,30 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_http_client_send(axis2_http_client_t *client,
-        const axutil_env_t *env,
-        axis2_http_simple_request_t *request,
-        axis2_char_t *ssl_pp);
+    axis2_http_client_send(
+        axis2_http_client_t * client,
+        const axutil_env_t * env,
+        axis2_http_simple_request_t * request,
+        axis2_char_t * ssl_pp);
 
     /**
      * @param client pointer to client
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_http_client_recieve_header(axis2_http_client_t *client,
-        const axutil_env_t *env);
+    axis2_http_client_recieve_header(
+        axis2_http_client_t * client,
+        const axutil_env_t * env);
 
     /**
      * @param client pointer to client
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_http_simple_response_t *AXIS2_CALL
-    axis2_http_client_get_response(const axis2_http_client_t *client,
-        const axutil_env_t *env);
+
+    axis2_http_client_get_response(
+        const axis2_http_client_t * client,
+        const axutil_env_t * env);
 
     /**
      * @param client pointer to client
@@ -81,17 +85,19 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_http_client_set_url(axis2_http_client_t *client,
-        const axutil_env_t *env,
-        axutil_url_t *url);
+    axis2_http_client_set_url(
+        axis2_http_client_t * client,
+        const axutil_env_t * env,
+        axutil_url_t * url);
 
     /**
      * @param client pointer to client
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axutil_url_t *AXIS2_CALL
-    axis2_http_client_get_url(const axis2_http_client_t *client,
-        const axutil_env_t *env);
+    axis2_http_client_get_url(
+        const axis2_http_client_t * client,
+        const axutil_env_t * env);
 
     /**
      * @param client pointer to client
@@ -100,8 +106,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_http_client_set_timeout(axis2_http_client_t *client,
-        const axutil_env_t *env,
+    axis2_http_client_set_timeout(
+        axis2_http_client_t * client,
+        const axutil_env_t * env,
         int timeout_ms);
 
     /**
@@ -109,8 +116,9 @@ extern "C"
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_http_client_get_timeout(const axis2_http_client_t *client,
-        const axutil_env_t *env);
+    axis2_http_client_get_timeout(
+        const axis2_http_client_t * client,
+        const axutil_env_t * env);
 
     /**
      * @param client pointer to client
@@ -120,9 +128,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_http_client_set_proxy(axis2_http_client_t *client,
-        const axutil_env_t *env,
-        axis2_char_t *proxy_host,
+    axis2_http_client_set_proxy(
+        axis2_http_client_t * client,
+        const axutil_env_t * env,
+        axis2_char_t * proxy_host,
         int proxy_port);
 
     /**
@@ -130,18 +139,23 @@ extern "C"
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_http_client_get_proxy(const axis2_http_client_t *client,
-        const axutil_env_t *env);
+    axis2_http_client_get_proxy(
+        const axis2_http_client_t * client,
+        const axutil_env_t * env);
 
-	AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_http_client_connect_ssl_host(axis2_http_client_t *client,
-        const axutil_env_t *env,
-        axis2_char_t *host,
-        int port);
-    
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_http_client_set_dump_input_msg(axis2_http_client_t *client,
-        const axutil_env_t *env,
+
+    axis2_http_client_connect_ssl_host(
+        axis2_http_client_t * client,
+        const axutil_env_t * env,
+        axis2_char_t * host,
+        int port);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+    axis2_http_client_set_dump_input_msg(
+        axis2_http_client_t * client,
+        const axutil_env_t * env,
         axis2_bool_t dump_input_msg);
 
     /**
@@ -151,17 +165,19 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_http_client_set_server_cert(axis2_http_client_t *client,
-        const axutil_env_t *env,
-        axis2_char_t *server_cert);
+    axis2_http_client_set_server_cert(
+        axis2_http_client_t * client,
+        const axutil_env_t * env,
+        axis2_char_t * server_cert);
 
     /**
      * @param client pointer to client
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_http_client_get_server_cert(const axis2_http_client_t *client,
-        const axutil_env_t *env);
+    axis2_http_client_get_server_cert(
+        const axis2_http_client_t * client,
+        const axutil_env_t * env);
 
     /**
      * @param client pointer to client
@@ -170,18 +186,19 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_http_client_set_key_file(axis2_http_client_t *client,
-        const axutil_env_t *env,
-        axis2_char_t *key_file);
+    axis2_http_client_set_key_file(
+        axis2_http_client_t * client,
+        const axutil_env_t * env,
+        axis2_char_t * key_file);
 
     /**
      * @param client pointer to client
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_http_client_get_key_file(const axis2_http_client_t *client,
-        const axutil_env_t *env);
-
+    axis2_http_client_get_key_file(
+        const axis2_http_client_t * client,
+        const axutil_env_t * env);
 
     /**
      * @param client pointer to client
@@ -189,16 +206,18 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_http_client_free(axis2_http_client_t *client,
-        const axutil_env_t *env);
+    axis2_http_client_free(
+        axis2_http_client_t * client,
+        const axutil_env_t * env);
 
     /**
      * @param env pointer to environment struct
      * @param url pointer to url
      */
     AXIS2_EXTERN axis2_http_client_t *AXIS2_CALL
-    axis2_http_client_create (const axutil_env_t *env,
-        axutil_url_t *url);
+    axis2_http_client_create(
+        const axutil_env_t * env,
+        axutil_url_t * url);
 
     /**
      * Free http_client passed as void pointer. This will be
@@ -208,10 +227,11 @@ extern "C"
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_http_client_free_void_arg (void *client,
-        const axutil_env_t *env);
+    axis2_http_client_free_void_arg(
+        void *client,
+        const axutil_env_t * env);
 
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif

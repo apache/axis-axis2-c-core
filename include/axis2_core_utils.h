@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -30,48 +31,59 @@ extern "C"
 {
 #endif
 
-struct axis2_conf;
-/**
- * @defgroup axis2_core_utils Core Utils
- * @ingroup axis2_core_utils
- * @{
- */
-    AXIS2_EXTERN axis2_msg_ctx_t * AXIS2_CALL
-    axis2_core_utils_create_out_msg_ctx(const axutil_env_t *env,
-       axis2_msg_ctx_t *in_msg_ctx);
+    struct axis2_conf;
+
+    /**
+     * @defgroup axis2_core_utils Core Utils
+     * @ingroup axis2_core_utils
+     * @{
+     */
+    AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
+
+    axis2_core_utils_create_out_msg_ctx(
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * in_msg_ctx);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_core_utils_reset_out_msg_ctx(const axutil_env_t *env,
-        axis2_msg_ctx_t *out_msg_ctx);
-                                    
-    AXIS2_EXTERN axutil_qname_t* AXIS2_CALL
-    axis2_core_utils_get_module_qname(const axutil_env_t *env, 
-        const axis2_char_t *name, 
-        const axis2_char_t *version);
-                                    
+    axis2_core_utils_reset_out_msg_ctx(
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * out_msg_ctx);
+
+    AXIS2_EXTERN axutil_qname_t *AXIS2_CALL
+
+    axis2_core_utils_get_module_qname(
+        const axutil_env_t * env,
+        const axis2_char_t * name,
+        const axis2_char_t * version);
+
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_core_utils_calculate_default_module_version(const axutil_env_t *env, 
-        axutil_hash_t *modules_map, 
+
+    axis2_core_utils_calculate_default_module_version(
+        const axutil_env_t * env,
+        axutil_hash_t * modules_map,
         struct axis2_conf *axis_conf);
-    
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axis2_core_utils_get_module_name(const axutil_env_t *env, 
-        axis2_char_t *module_name);
-                                    
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axis2_core_utils_get_module_version(const axutil_env_t *env, 
-        axis2_char_t *module_name);
-                                        
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_core_utils_get_module_name(
+        const axutil_env_t * env,
+        axis2_char_t * module_name);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+
+    axis2_core_utils_get_module_version(
+        const axutil_env_t * env,
+        axis2_char_t * module_name);
+
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_core_utils_is_latest_mod_ver(const axutil_env_t *env, 
-        axis2_char_t *module_ver, 
-        axis2_char_t *current_def_ver);
-                                                                                
-                                    
-/** @} */
-    
+    axis2_core_utils_is_latest_mod_ver(
+        const axutil_env_t * env,
+        axis2_char_t * module_ver,
+        axis2_char_t * current_def_ver);
+
+    /** @} */
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AXIS2_CORE_UTILS_H */
+#endif                          /* AXIS2_CORE_UTILS_H */

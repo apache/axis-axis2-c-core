@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -47,8 +48,9 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_svr_callback_free(axis2_svr_callback_t *svr_callback,
-        const axutil_env_t *env);
+    axis2_svr_callback_free(
+        axis2_svr_callback_t * svr_callback,
+        const axutil_env_t * env);
 
     /**
      * Handle result
@@ -58,9 +60,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svr_callback_handle_result(axis2_svr_callback_t *svr_callback,
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx);
+    axis2_svr_callback_handle_result(
+        axis2_svr_callback_t * svr_callback,
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx);
 
     /**
      * Handle fault
@@ -70,9 +73,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svr_callback_handle_fault(axis2_svr_callback_t *svr_callback,
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx);
+    axis2_svr_callback_handle_fault(
+        axis2_svr_callback_t * svr_callback,
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx);
 
     /**
      * Create Server Callback struct
@@ -80,10 +84,10 @@ extern "C"
      * @return newly created server callback object
      */
     AXIS2_EXTERN axis2_svr_callback_t *AXIS2_CALL
-    axis2_svr_callback_create(const axutil_env_t *env);
+    axis2_svr_callback_create(
+        const axutil_env_t * env);
 
-
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif

@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -18,14 +19,14 @@
 #ifndef AXIS2_CONF_CTX_H
 #define AXIS2_CONF_CTX_H
 
-/** 
+/**
  * @defgroup axis2_conf_ctx configuration context
  * @ingroup axis2_context
- * configuration context is the holder for all the state information 
+ * configuration context is the holder for all the state information
  * related to configuration. It holds all the service group context, service
- * context and operation context that exists within an engine instance. 
+ * context and operation context that exists within an engine instance.
  * An engine instance has only one configuration context associated with it
- * (Singleton pattern). 
+ * (Singleton pattern).
  * @{
  */
 
@@ -44,7 +45,6 @@ extern "C"
 {
 #endif
 
-
     /** Type name for struct axis2_conf_ctx */
     typedef struct axis2_conf_ctx axis2_conf_ctx_t;
     struct axis2_conf;
@@ -57,7 +57,8 @@ extern "C"
      * @return pointer to newly created configuration context 
      */
     AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
-    axis2_conf_ctx_create(const axutil_env_t *env, 
+    axis2_conf_ctx_create(
+        const axutil_env_t * env,
         struct axis2_conf *conf);
 
     /**
@@ -67,10 +68,12 @@ extern "C"
      * @param conf pointer to configuration 
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
-    AXIS2_EXTERN axis2_status_t  AXIS2_CALL 
-    axis2_conf_ctx_set_conf(axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env,
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_conf_ctx_set_conf(
+        axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env,
         struct axis2_conf *conf);
+
     /**
      * Gets the base struct, which is of type context
      * @param conf_ctx pointer to configuration context
@@ -78,9 +81,10 @@ extern "C"
      * @return pointer to context struct, returns a reference not a cloned
      * copy
      */
-    AXIS2_EXTERN axis2_ctx_t * AXIS2_CALL
-    axis2_conf_ctx_get_base(const axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL
+    axis2_conf_ctx_get_base(
+        const axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env);
 
     /**
      * Gets the configuration of the engine.
@@ -89,9 +93,10 @@ extern "C"
      * @return pointer to configuration struct, returns a reference not a 
      * cloned copy
      */
-    AXIS2_EXTERN axis2_conf_t * AXIS2_CALL
-    axis2_conf_ctx_get_conf(const axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axis2_conf_t *AXIS2_CALL
+    axis2_conf_ctx_get_conf(
+        const axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env);
 
     /**
      * Gets the hash map of operation context instances.
@@ -99,9 +104,10 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash map containing all operation contexts
      */
-    AXIS2_EXTERN axutil_hash_t * AXIS2_CALL
-    axis2_conf_ctx_get_op_ctx_map(const axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+    axis2_conf_ctx_get_op_ctx_map(
+        const axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env);
 
     /**
      * Gets the hash map of service context instances.
@@ -109,9 +115,10 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash map containing all service contexts
      */
-    AXIS2_EXTERN axutil_hash_t * AXIS2_CALL
-    axis2_conf_ctx_get_svc_ctx_map(const axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+    axis2_conf_ctx_get_svc_ctx_map(
+        const axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env);
 
     /**
      * Gets the hash map of service group context instances.
@@ -119,9 +126,11 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash map containing all service group contexts
      */
-    AXIS2_EXTERN axutil_hash_t * AXIS2_CALL
-    axis2_conf_ctx_get_svc_grp_ctx_map(const axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+
+    axis2_conf_ctx_get_svc_grp_ctx_map(
+        const axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env);
 
     /**
      * Registers an operation context with the given message ID.
@@ -132,11 +141,12 @@ extern "C"
      * ownership of the operation context 
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
-    AXIS2_EXTERN axis2_status_t  AXIS2_CALL
-    axis2_conf_ctx_register_op_ctx(axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env,
-        const axis2_char_t *message_id,
-        axis2_op_ctx_t *op_ctx);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_conf_ctx_register_op_ctx(
+        axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env,
+        const axis2_char_t * message_id,
+        axis2_op_ctx_t * op_ctx);
 
     /**
      * Gets operation context corresponding to the given message ID.
@@ -145,10 +155,11 @@ extern "C"
      * @param message_id message ID related to the operation to be retrieved
      * @return pointer to operation context related to the given message ID
      */
-    AXIS2_EXTERN axis2_op_ctx_t * AXIS2_CALL
-    axis2_conf_ctx_get_op_ctx(const axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env,
-        const axis2_char_t *message_id);
+    AXIS2_EXTERN axis2_op_ctx_t *AXIS2_CALL
+    axis2_conf_ctx_get_op_ctx(
+        const axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env,
+        const axis2_char_t * message_id);
 
     /**
      * Registers a service context with the given service ID.
@@ -158,11 +169,12 @@ extern "C"
      * @param svc_ctx pointer to service context
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
-    AXIS2_EXTERN axis2_status_t  AXIS2_CALL
-    axis2_conf_ctx_register_svc_ctx(axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env,
-        const axis2_char_t *svc_id,
-        axis2_svc_ctx_t *svc_ctx);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_conf_ctx_register_svc_ctx(
+        axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env,
+        const axis2_char_t * svc_id,
+        axis2_svc_ctx_t * svc_ctx);
 
     /**
      * Gets service context with the given service ID
@@ -171,10 +183,11 @@ extern "C"
      * @param svc_id service ID
      * @return pointer to service context with the given service ID 
      */
-    AXIS2_EXTERN struct axis2_svc_ctx * AXIS2_CALL
-    axis2_conf_ctx_get_svc_ctx(const axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env,
-        const axis2_char_t *svc_id);
+    AXIS2_EXTERN struct axis2_svc_ctx *AXIS2_CALL
+                axis2_conf_ctx_get_svc_ctx(
+                    const axis2_conf_ctx_t * conf_ctx,
+                    const axutil_env_t * env,
+                    const axis2_char_t * svc_id);
 
     /**
      * Registers a service group context with the given service group ID.
@@ -184,11 +197,13 @@ extern "C"
      * @param svc_grp_ctx pointer to service group context
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
-    AXIS2_EXTERN axis2_status_t  AXIS2_CALL
-    axis2_conf_ctx_register_svc_grp_ctx(axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env,
-        const axis2_char_t *svc_grp_id,
-        axis2_svc_grp_ctx_t *svc_grp_ctx);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+    axis2_conf_ctx_register_svc_grp_ctx(
+        axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env,
+        const axis2_char_t * svc_grp_id,
+        axis2_svc_grp_ctx_t * svc_grp_ctx);
 
     /**
      * Gets service group with the given service group ID.
@@ -197,10 +212,12 @@ extern "C"
      * @param svc_grp_id service group id
      * @return pointer to service group context with the given ID
      */
-    AXIS2_EXTERN axis2_svc_grp_ctx_t * AXIS2_CALL
-    axis2_conf_ctx_get_svc_grp_ctx(const axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env,
-        const axis2_char_t *svc_grp_id);
+    AXIS2_EXTERN axis2_svc_grp_ctx_t *AXIS2_CALL
+
+    axis2_conf_ctx_get_svc_grp_ctx(
+        const axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env,
+        const axis2_char_t * svc_grp_id);
 
     /**
      * Gets the root working directory. It is in this directory that the 
@@ -210,9 +227,10 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to string containing the root folder name 
      */
-    AXIS2_EXTERN const axis2_char_t * AXIS2_CALL
-    axis2_conf_ctx_get_root_dir(const axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env);
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    axis2_conf_ctx_get_root_dir(
+        const axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env);
 
     /**
      * Sets the root working directory. It is in this directory that the 
@@ -223,10 +241,11 @@ extern "C"
      * @param path string containing the path of root directory
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
-    AXIS2_EXTERN axis2_status_t  AXIS2_CALL
-    axis2_conf_ctx_set_root_dir(axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env,
-        const axis2_char_t *path);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_conf_ctx_set_root_dir(
+        axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env,
+        const axis2_char_t * path);
 
     /**
      * Initializes the configuration context. Within this function, it would 
@@ -237,10 +256,11 @@ extern "C"
      * @param conf pointer to configuration struct 
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
-    AXIS2_EXTERN axis2_status_t  AXIS2_CALL
-    axis2_conf_ctx_init(axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env,
-        axis2_conf_t *conf);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_conf_ctx_init(
+        axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env,
+        axis2_conf_t * conf);
 
     /**
      * Frees configuration context struct.
@@ -248,15 +268,16 @@ extern "C"
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
-    AXIS2_EXTERN void  AXIS2_CALL
-    axis2_conf_ctx_free(axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env);
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_conf_ctx_free(
+        axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env);
 
     /**
      * This method fills the context hierarchy (service group, service and 
      * operation contexts that is) for the service and operation found in 
      * the given message context. If the context hierarchy is not already 
-     * built it will create the contexts and build the context hierarchy.         
+     * built it will create the contexts and build the context hierarchy.    
      * @param conf_ctx pointer to configuration context
      * @param env pointer to environment struct
      * @param msg_ctx pointer to message context with service and operation
@@ -264,10 +285,11 @@ extern "C"
      * @return pointer to the service group context, which is the root of 
      * the context hierarchy for given service and operation
      */
-    AXIS2_EXTERN axis2_svc_grp_ctx_t * AXIS2_CALL
-    axis2_conf_ctx_fill_ctxs(axis2_conf_ctx_t *conf_ctx,
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx);
+    AXIS2_EXTERN axis2_svc_grp_ctx_t *AXIS2_CALL
+    axis2_conf_ctx_fill_ctxs(
+        axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx);
 
 #ifdef __cplusplus
 }

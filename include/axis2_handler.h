@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,15 +22,15 @@
 /**
  * @defgroup axis2_handler handler
  * @ingroup axis2_handler
- * handler is the smallest unit of execution in the Axis2 engine's execution flow. 
- * The engine could have two flows, the in-flow and out-flow. A flow is a 
+ * handler is the smallest unit of execution in the Axis2 engine's execution flow.
+ * The engine could have two flows, the in-flow and out-flow. A flow is a
  * collection of phases and a phase in turn is a collection of handlers.
- * handlers are configured in relation to modules. A module is a point of 
- * extension in the Axis2 engine and a module would have one or more handlers 
- * defined in its configuration. The module configuration defines the phases 
+ * handlers are configured in relation to modules. A module is a point of
+ * extension in the Axis2 engine and a module would have one or more handlers
+ * defined in its configuration. The module configuration defines the phases
  * each handler is attached to. A handler is invoked when the phase within which
  * it lives is invoked. handler is stateless and it is using the message context
- * that the state information is captures across invocations. 
+ * that the state information is captures across invocations.
  * @{
  */
 
@@ -52,7 +53,6 @@ extern "C"
     struct axis2_handler_desc;
     struct axis2_msg_ctx;
 
-
     /**
      * Free handler struct.
      * @param handler pointer to handler
@@ -60,9 +60,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_handler_free(axis2_handler_t *handler,
-        const axutil_env_t *env);
-
+    axis2_handler_free(
+        axis2_handler_t * handler,
+        const axutil_env_t * env);
 
     /**
      * Initializes the handler with the information form handler description.
@@ -72,8 +72,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_handler_init(axis2_handler_t *handler,
-        const axutil_env_t *env,
+    axis2_handler_init(
+        axis2_handler_t * handler,
+        const axutil_env_t * env,
         struct axis2_handler_desc *handler_desc);
 
     /**
@@ -88,8 +89,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_handler_invoke(axis2_handler_t *handler,
-        const axutil_env_t *env,
+    axis2_handler_invoke(
+        axis2_handler_t * handler,
+        const axutil_env_t * env,
         struct axis2_msg_ctx *msg_ctx);
 
     /**
@@ -99,8 +101,9 @@ extern "C"
      * @return pointer to QName of the handler
      */
     AXIS2_EXTERN const axutil_string_t *AXIS2_CALL
-    axis2_handler_get_name(const axis2_handler_t *handler,
-        const axutil_env_t *env);
+    axis2_handler_get_name(
+        const axis2_handler_t * handler,
+        const axutil_env_t * env);
 
     /**
      * Gets the named parameter.
@@ -109,25 +112,28 @@ extern "C"
      * @param name name of the parameter to be accessed
      */
     AXIS2_EXTERN axutil_param_t *AXIS2_CALL
-    axis2_handler_get_param(const axis2_handler_t *handler,
-        const axutil_env_t *env,
-        const axis2_char_t *name);
+    axis2_handler_get_param(
+        const axis2_handler_t * handler,
+        const axutil_env_t * env,
+        const axis2_char_t * name);
 
     /**
       * Gets the handler description related to the handler.
       * @param handler pointer to handler
       * @param env pointer to environment struct
-      * @return pointer to handler description struct related to handler         
+      * @return pointer to handler description struct related to handler    
       */
     AXIS2_EXTERN struct axis2_handler_desc *AXIS2_CALL
-    axis2_handler_get_handler_desc(const axis2_handler_t *handler,
-        const axutil_env_t *env);
-        
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_handler_set_invoke(axis2_handler_t *handler,
-        const axutil_env_t *env, 
-        void *func);
 
+                axis2_handler_get_handler_desc(
+                    const axis2_handler_t * handler,
+                    const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_handler_set_invoke(
+        axis2_handler_t * handler,
+        const axutil_env_t * env,
+        void *func);
 
     /**
      * Function pointer defining the creates syntax for a handler struct instance.
@@ -135,9 +141,11 @@ extern "C"
      * @param pointer to qname
      * @return pointer to newly created handler struct
      */
-    typedef axis2_handler_t *(AXIS2_CALL *
-    AXIS2_HANDLER_CREATE_FUNC)(const axutil_env_t *env,
-        const axutil_string_t *name);
+    typedef axis2_handler_t *(
+        AXIS2_CALL
+        * AXIS2_HANDLER_CREATE_FUNC)(
+            const axutil_env_t * env,
+            const axutil_string_t * name);
 
     /**
      * Creates handler struct instance.
@@ -145,7 +153,8 @@ extern "C"
      * @return pointer to newly created handler struct
      */
     AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
-    axis2_handler_create(const axutil_env_t *env);
+    axis2_handler_create(
+        const axutil_env_t * env);
 
     /**
      * Creates a handler with invoke method implemented to fill in the service 
@@ -155,13 +164,14 @@ extern "C"
      * @return pointer to newly created handler struct
      */
     AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
-    axis2_ctx_handler_create(const axutil_env_t *env, 
-        const axutil_string_t *qname);
+    axis2_ctx_handler_create(
+        const axutil_env_t * env,
+        const axutil_string_t * qname);
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif    /* AXIS2_HANDLER_H */
+#endif                          /* AXIS2_HANDLER_H */
