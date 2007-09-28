@@ -73,8 +73,7 @@ extern "C"
       */
 #if defined(__GNUC__)
 #if defined(__i386)
-#define AXIS2_CALL
-    __attribute__((cdecl))
+#define AXIS2_CALL __attribute__((cdecl))
 #else
 #define AXIS2_CALL
 
@@ -84,8 +83,7 @@ extern "C"
 #define AXIS2_CALL
 
 #else                           /* WIN32 */
-#define AXIS2_CALL
-    __stdcall
+#define AXIS2_CALL __stdcall
 #endif
 #endif
 #define AXIS2_THREAD_FUNC AXIS2_CALL

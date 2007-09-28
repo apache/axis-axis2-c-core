@@ -222,7 +222,7 @@ extern "C"
 #define AXIS2_W_OK W_OK         /* test for write permission */
 #define AXIS2_X_OK X_OK         /* test for execute or search permission */
 #define AXIS2_F_OK F_OK         /* test whether the directories leading to the file can be
-    searched and the file exists * /
+    searched and the file exists */
 
     /**
      * Platform specific environment variable access method
