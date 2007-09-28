@@ -36,10 +36,10 @@ extern "C"
      */
 
     /*enum platform_error_codes
-    {
+       {
        PLATFORM_ERROR_UUID_NO_ADDRESS = 0,
        PLATFORM_ERROR_OUT_OF_MEMORY = 1
-    };*/
+       }; */
 
 #define _WINSOCKAPI_            /* Prevent inclusion of winsock.h in windows.h */
 #include <windows.h>
@@ -47,11 +47,11 @@ extern "C"
     /*for minizip uncompression library */
 # include <direct.h>
 
-    /*for file access check*/
+    /*for file access check */
 #include <io.h>
 #include <sys/stat.h>
 
-    /*for network handling*/
+    /*for network handling */
 #include <winsock2.h>
 #include <fcntl.h>
 #include <Mswsock.h>
@@ -190,8 +190,8 @@ extern "C"
     searched and the file exists * /
 
     /**
-      * windows specific directory handling functions
-      */
+    * windows specific directory handling functions
+    */
 #define AXIS2_SCANDIR      scandir
 #define AXIS2_ALPHASORT      alphasort
 #define AXIS2_OPENDIR      opendir

@@ -100,15 +100,19 @@ extern "C"
     {
 
         int major;
+
         /**< major number */
 
         int minor;
+
         /**< minor number */
 
         int patch;
+
         /**< patch number */
 
         int is_dev;
+
         /**< is development (1 or 0) */
     }
     axis2_version_t;

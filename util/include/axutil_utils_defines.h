@@ -77,10 +77,12 @@ extern "C"
 #else
 #define AXIS2_CALL
 
+
 #endif
 #else
 #if defined(__unix)
 #define AXIS2_CALL
+
 
 #else                           /* WIN32 */
 #define AXIS2_CALL __stdcall
@@ -120,11 +122,13 @@ extern "C"
 
     /**
      * Axis2 Core functions are declared with AXIS2_EXTERN  AXIS2_CALL
+
        , so they may
      * use the most appropriate calling convention.  Other
      * Core functions with variable arguments must use AXIS2_DECLARE_NONSTD().
      * @code
      * AXIS2_EXTERN rettype) axis2_func(args AXIS2_CALL
+
 
      * @endcode
      */

@@ -124,7 +124,7 @@ extern "C"
 #include <unistd.h>
 #endif                          /*HAVE_UNISTD_H */
 
-    /* network handling*/
+    /* network handling */
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -161,7 +161,7 @@ extern "C"
      * @return the error message. NOTE: The caller is responsible for deleting the returned string
      */
 
-    /*#define AXIS2_PLATFORM_GET_ERROR_MESSAGE(errorNumber) new string(strerror(errorNumber));*/
+    /*#define AXIS2_PLATFORM_GET_ERROR_MESSAGE(errorNumber) new string(strerror(errorNumber)); */
 
     /**
      * Platform specific method to obtain current thread ID

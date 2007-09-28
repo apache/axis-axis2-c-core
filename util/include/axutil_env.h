@@ -189,10 +189,10 @@ extern "C"
         const axutil_env_t * env);
 
     /*#define AXIS2_ENV_CHECK(env, error_return) \
-        if(!env) \
-        { \
-            return error_return; \
-        }*/
+       if(!env) \
+       { \
+       return error_return; \
+       } */
 
 #define AXIS2_ENV_CHECK(env, error_return)
 
