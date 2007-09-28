@@ -1,3 +1,4 @@
+
 /*
   * Copyright 2004,2005 The Apache Software Foundation.
   *
@@ -15,7 +16,6 @@
 */
 
 /* crypt.h -- base code for crypt/uncrypt ZIPfile
-
 
    Version 1.01e, February 12th, 2005
 
@@ -48,18 +48,26 @@
 /***********************************************************************
  * Return the next byte in the pseudo-random sequence
  */
-int decrypt_byte(unsigned long* pkeys, const unsigned long* pcrc_32_tab);
+int decrypt_byte(
+    unsigned long *pkeys,
+    const unsigned long *pcrc_32_tab);
 
 /***********************************************************************
  * Update the encryption keys with the next byte of plain text
  */
-int update_keys(unsigned long* pkeys,const unsigned long* pcrc_32_tab,int c);
+int update_keys(
+    unsigned long *pkeys,
+    const unsigned long *pcrc_32_tab,
+    int c);
 
 /***********************************************************************
  * Initialize the encryption keys and the random header according to
  * the given password.
  */
-void init_keys(const char* passwd,unsigned long* pkeys,const unsigned long* pcrc_32_tab);
+void init_keys(
+    const char *passwd,
+    unsigned long *pkeys,
+    const unsigned long *pcrc_32_tab);
 
 #define zdecode(pkeys,pcrc_32_tab,c) \
     (update_keys(pkeys,pcrc_32_tab,c ^= decrypt_byte(pkeys,pcrc_32_tab)))
@@ -70,12 +78,17 @@ void init_keys(const char* passwd,unsigned long* pkeys,const unsigned long* pcrc
 #ifdef INCLUDECRYPTINGCODE_IFCRYPTALLOWED
 
 #define RAND_HEAD_LEN  12
-   /* "last resort" source for second part of crypt seed pattern */
+/* "last resort" source for second part of crypt seed pattern */
 #  ifndef ZCR_SEED2
-#    define ZCR_SEED2 3141592654UL     /* use PI as default pattern */
+#    define ZCR_SEED2 3141592654UL  /* use PI as default pattern */
 #  endif
 
-int crypthead(passwd, buf, bufSize, pkeys, pcrc_32_tab, crcForCrypting);
-
+int crypthead(
+    passwd,
+    buf,
+    bufSize,
+    pkeys,
+    pcrc_32_tab,
+    crcForCrypting);
 
 #endif

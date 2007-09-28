@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -20,17 +21,27 @@
 
 #include <axutil_env.h>
 
-void run_test_log();
-const axutil_env_t *create_env_with_error_log();
-void test_axutil_log_write(const axutil_env_t *env);
-void test_axutil_log_debug(const axutil_env_t *env);
-void test_axutil_log_debug_off(const axutil_env_t *env);
-void test_axutil_log_info(const axutil_env_t *env);
-void test_axutil_log_info_off(const axutil_env_t *env);
-void test_axutil_log_warning(const axutil_env_t *env);
-void test_axutil_log_warning_off(const axutil_env_t *env);
-void test_axutil_log_error(const axutil_env_t *env);
-void test_axutil_log_critical(const axutil_env_t *env);
+void run_test_log(
+);
+const axutil_env_t *create_env_with_error_log(
+);
+void test_axutil_log_write(
+    const axutil_env_t * env);
+void test_axutil_log_debug(
+    const axutil_env_t * env);
+void test_axutil_log_debug_off(
+    const axutil_env_t * env);
+void test_axutil_log_info(
+    const axutil_env_t * env);
+void test_axutil_log_info_off(
+    const axutil_env_t * env);
+void test_axutil_log_warning(
+    const axutil_env_t * env);
+void test_axutil_log_warning_off(
+    const axutil_env_t * env);
+void test_axutil_log_error(
+    const axutil_env_t * env);
+void test_axutil_log_critical(
+    const axutil_env_t * env);
 
-#endif /* _TEST_LOG_H_ */
-
+#endif                          /* _TEST_LOG_H_ */

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,7 +16,6 @@
  * limitations under the License.
  */
 
-
 #include <stdio.h>
 #include <string.h>
 #include <axutil_error_default.h>
@@ -25,7 +25,6 @@
 #include <axutil_utils.h>
 #include "test_thread.h"
 #include <unistd.h>
-
 
 const axutil_env_t *env = NULL;
 static axutil_thread_mutex_t *thread_lock = NULL;
@@ -40,12 +39,16 @@ static axutil_thread_t *t2 = NULL;
 static axutil_thread_t *t3 = NULL;
 static axutil_thread_t *t4 = NULL;
 
-void init_func(void)
+void
+init_func(
+    void)
 {
     value++;
 }
 
-void thread_init(const axutil_env_t *env)
+void
+thread_init(
+    const axutil_env_t * env)
 {
     axutil_allocator_t *allocator = NULL;
 
@@ -53,19 +56,27 @@ void thread_init(const axutil_env_t *env)
 
     control = axutil_thread_once_init(allocator);
 
-    if (control) printf("success - thread_init - axutil_thread_once_init \n");
-    else printf("failure - thread_init - axutil_thread_once_init \n");
+    if (control)
+        printf("success - thread_init - axutil_thread_once_init \n");
+    else
+        printf("failure - thread_init - axutil_thread_once_init \n");
 
-    thread_lock = axutil_thread_mutex_create(allocator, AXIS2_THREAD_MUTEX_DEFAULT);
+    thread_lock =
+        axutil_thread_mutex_create(allocator, AXIS2_THREAD_MUTEX_DEFAULT);
 
-    if (thread_lock) printf("success - thread_init - axutil_thread_mutex_create \n");
-    else printf("failure - thread_init - axutil_thread_mutex_create \n");
+    if (thread_lock)
+        printf("success - thread_init - axutil_thread_mutex_create \n");
+    else
+        printf("failure - thread_init - axutil_thread_mutex_create \n");
 }
 
-void * AXIS2_CALL test_function(axutil_thread_t *td, void *param)
+void *AXIS2_CALL
+test_function(
+    axutil_thread_t * td,
+    void *param)
 {
     int i;
-    i = *((int*)param);
+    i = *((int *) param);
     printf("thread data = %d \n", i);
 
     axutil_thread_once(control, init_func);
@@ -74,55 +85,72 @@ void * AXIS2_CALL test_function(axutil_thread_t *td, void *param)
     printf("x = %d \n", ++x);
     axutil_thread_mutex_unlock(thread_lock);
 
-    /*axutil_thread_exit(td, env->allocator);*/
+    /*axutil_thread_exit(td, env->allocator); */
 
-    return (void*)1;
+    return (void *) 1;
 }
 
-
-void test_axutil_thread_create(const axutil_env_t *env)
+void
+test_axutil_thread_create(
+    const axutil_env_t * env)
 {
     axis2_status_t rv = AXIS2_FAILURE;
     axutil_allocator_t *allocator = NULL;
-    int *i = NULL, *j = NULL;
+    int *i = NULL,
+        *j = NULL;
 
     allocator = env->allocator;
     i = AXIS2_MALLOC(allocator, sizeof(int));
     *i = 5;
-    t1 = axutil_thread_create(allocator, NULL, test_function, (void*)i);
+    t1 = axutil_thread_create(allocator, NULL, test_function, (void *) i);
 
-    if (t1) printf("success - test_axutil_thread_create - axutil_thread_create \n");
-    else printf("failure - test_axutil_thread_create - axutil_thread_create \n");
+    if (t1)
+        printf("success - test_axutil_thread_create - axutil_thread_create \n");
+    else
+        printf("failure - test_axutil_thread_create - axutil_thread_create \n");
 
     j = AXIS2_MALLOC(allocator, sizeof(int));
     *j = 25;
 
-    t2 = axutil_thread_create(allocator, NULL, test_function, (void*)j);
+    t2 = axutil_thread_create(allocator, NULL, test_function, (void *) j);
 
-    if (t2) printf("success - test_axutil_thread_create - axutil_thread_create \n");
-    else printf("failure - test_axutil_thread_create - axutil_thread_create \n");
+    if (t2)
+        printf("success - test_axutil_thread_create - axutil_thread_create \n");
+    else
+        printf("failure - test_axutil_thread_create - axutil_thread_create \n");
 
     rv = axutil_thread_join(t1);
 
-    if (AXIS2_SUCCESS == rv) printf("success - test_axutil_thread_create - axutil_thread_join \n");
-    else printf("failure - thread_init - test_axutil_thread_create - axutil_thread_join \n");
+    if (AXIS2_SUCCESS == rv)
+        printf("success - test_axutil_thread_create - axutil_thread_join \n");
+    else
+        printf
+            ("failure - thread_init - test_axutil_thread_create - axutil_thread_join \n");
 
     rv = axutil_thread_join(t2);
 
-    if (AXIS2_SUCCESS == rv) printf("success - test_axutil_thread_create - axutil_thread_join \n");
-    else printf("failure - thread_init - test_axutil_thread_create - axutil_thread_join \n");
+    if (AXIS2_SUCCESS == rv)
+        printf("success - test_axutil_thread_create - axutil_thread_join \n");
+    else
+        printf
+            ("failure - thread_init - test_axutil_thread_create - axutil_thread_join \n");
 
 }
 
-void * AXIS2_CALL test_function2(axutil_thread_t *td, void *param)
+void *AXIS2_CALL
+test_function2(
+    axutil_thread_t * td,
+    void *param)
 {
     printf("thread \n");
-    /*axutil_thread_exit(td, env->allocator);*/
+    /*axutil_thread_exit(td, env->allocator); */
 
-    return (void*)1;
+    return (void *) 1;
 }
 
-void test_axutil_thread_detach(const axutil_env_t *env)
+void
+test_axutil_thread_detach(
+    const axutil_env_t * env)
 {
     axutil_threadattr_t *attr = NULL;
     axutil_allocator_t *allocator = NULL;
@@ -165,7 +193,7 @@ void test_axutil_thread_detach(const axutil_env_t *env)
      * thread is already detached - should return AXIS2_FAILURE
      * cannot join detached threads
      */
-    /*rv = axutil_thread_join(t3);*/
+    /*rv = axutil_thread_join(t3); */
     if (AXIS2_FAILURE != rv)
     {
         printf("failure - test_axutil_thread_detach\n");
@@ -174,7 +202,9 @@ void test_axutil_thread_detach(const axutil_env_t *env)
     printf("success - test_axutil_thread_detach\n");
 }
 
-void test_axutil_thread_detach2(const axutil_env_t *env)
+void
+test_axutil_thread_detach2(
+    const axutil_env_t * env)
 {
     axutil_threadattr_t *attr = NULL;
     axutil_allocator_t *allocator = NULL;
@@ -211,7 +241,7 @@ void test_axutil_thread_detach2(const axutil_env_t *env)
      * thread is already detached - should return AXIS2_FAILURE
      * cannot join detached threads
      */
-    /*rv = axutil_thread_join(t4);*/
+    /*rv = axutil_thread_join(t4); */
     if (AXIS2_FAILURE != rv)
     {
         printf("failure - test_axutil_thread_detach2\n");
@@ -220,20 +250,30 @@ void test_axutil_thread_detach2(const axutil_env_t *env)
     printf("success - test_axutil_thread_detach2\n");
 }
 
-void check_locks()
+void
+check_locks(
+    )
 {
-    if (2 == x) printf("success - check_locks \n");
-    else printf("failure - check_locks \n");
+    if (2 == x)
+        printf("success - check_locks \n");
+    else
+        printf("failure - check_locks \n");
 
 }
 
-void check_thread_once()
+void
+check_thread_once(
+    )
 {
-    if (1 == value) printf("success - check_thread_once \n");
-    else printf("failure - check_thread_once \n");
+    if (1 == value)
+        printf("success - check_thread_once \n");
+    else
+        printf("failure - check_thread_once \n");
 }
 
-void run_test_thread(const axutil_env_t *env)
+void
+run_test_thread(
+    const axutil_env_t * env)
 {
     thread_init(env);
     test_axutil_thread_create(env);
@@ -243,7 +283,7 @@ void run_test_thread(const axutil_env_t *env)
     test_axutil_thread_detach2(env);
 
 #if defined (WIN32)
-    Sleep(1000);/*to give time for detached threads to execute*/
+    Sleep(1000);                /*to give time for detached threads to execute */
 #else
     sleep(2);
 #endif
@@ -251,7 +291,9 @@ void run_test_thread(const axutil_env_t *env)
     axutil_thread_mutex_destroy(thread_lock);
 }
 
-const axutil_env_t *create_env_with_error_log()
+const axutil_env_t *
+create_env_with_error_log(
+    )
 {
     axutil_error_t *error = NULL;
     axutil_log_t *log22 = NULL;
@@ -269,7 +311,7 @@ const axutil_env_t *create_env_with_error_log()
         return NULL;
     }
 
-    log22  = axutil_log_create(allocator, NULL, "test123.log");
+    log22 = axutil_log_create(allocator, NULL, "test123.log");
     if (!log22)
     {
         printf("cannot create log\n");
@@ -277,9 +319,9 @@ const axutil_env_t *create_env_with_error_log()
     }
     /*
      * allow all types of logs
-      */
+     */
     log22->level = AXIS2_LOG_LEVEL_DEBUG;
-    /*   log22->enabled = 0;*/
+    /*   log22->enabled = 0; */
     env = axutil_env_create_with_error_log(allocator, error, log22);
     if (!env)
     {
@@ -289,8 +331,9 @@ const axutil_env_t *create_env_with_error_log()
     return env;
 }
 
-
-int main(void)
+int
+main(
+    void)
 {
     env = create_env_with_error_log();
 
@@ -300,4 +343,3 @@ int main(void)
 
     return 0;
 }
-

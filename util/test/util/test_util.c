@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -36,7 +37,9 @@ typedef struct a
 }
 a;
 
-const axutil_env_t *test_init()
+const axutil_env_t *
+test_init(
+    )
 {
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     axutil_error_t *error = axutil_error_create(allocator);
@@ -44,10 +47,15 @@ const axutil_env_t *test_init()
     return env;
 }
 
-int test_hash_get(const axutil_env_t *env)
+int
+test_hash_get(
+    const axutil_env_t * env)
 {
     axutil_hash_t *ht;
-    a *a1, *a2, *a3, *a4;
+    a *a1,
+    *a2,
+    *a3,
+    *a4;
 
     axutil_hash_index_t *i = 0;
     void *v = NULL;
@@ -61,7 +69,6 @@ int test_hash_get(const axutil_env_t *env)
     a2 = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     a3 = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     a4 = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
-
 
     a1->value = axutil_strdup(env, "value1");
     a2->value = axutil_strdup(env, "value2");
@@ -84,16 +91,16 @@ int test_hash_get(const axutil_env_t *env)
     }
 
     printf("\n demo get %s ",
-            ((a *) axutil_hash_get(ht, key1, AXIS2_HASH_KEY_STRING))->value);
+           ((a *) axutil_hash_get(ht, key1, AXIS2_HASH_KEY_STRING))->value);
 
     printf("\n demo get %s ",
-            ((a *) axutil_hash_get(ht, key2, AXIS2_HASH_KEY_STRING))->value);
+           ((a *) axutil_hash_get(ht, key2, AXIS2_HASH_KEY_STRING))->value);
 
     printf("\n demo get %s ",
-            ((a *) axutil_hash_get(ht, key3, AXIS2_HASH_KEY_STRING))->value);
+           ((a *) axutil_hash_get(ht, key3, AXIS2_HASH_KEY_STRING))->value);
 
     printf("\n demo get %s \n",
-            ((a *) axutil_hash_get(ht, key4, AXIS2_HASH_KEY_STRING))->value);
+           ((a *) axutil_hash_get(ht, key4, AXIS2_HASH_KEY_STRING))->value);
 
     axutil_hash_free(ht, env);
     AXIS2_FREE(env->allocator, a1->value);
@@ -107,52 +114,60 @@ int test_hash_get(const axutil_env_t *env)
     return 0;
 }
 
-void test_axutil_dir_handler_list_service_or_module_dirs()
+void
+test_axutil_dir_handler_list_service_or_module_dirs(
+    )
 {
-    int i, isize;
+    int i,
+     isize;
     axutil_file_t *file = NULL;
     axis2_char_t *filename = NULL;
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     axutil_error_t *error = axutil_error_create(allocator);
-    axutil_log_t *log  = axutil_log_create(allocator, NULL, NULL);
-    const axutil_env_t *env = axutil_env_create_with_error_log(allocator, error, log);
+    axutil_log_t *log = axutil_log_create(allocator, NULL, NULL);
+    const axutil_env_t *env =
+        axutil_env_create_with_error_log(allocator, error, log);
 
     axis2_char_t *pathname = axutil_strdup(env, "/tmp/test/");
 
-    axutil_array_list_t *arr_folders = axutil_dir_handler_list_service_or_module_dirs(env, pathname);
+    axutil_array_list_t *arr_folders =
+        axutil_dir_handler_list_service_or_module_dirs(env, pathname);
     if (arr_folders == NULL)
     {
         printf("List of folders is NULL\n");
-        return ;
+        return;
     }
-
 
     isize = axutil_array_list_size(arr_folders, env);
     printf("Folder array size = %d \n", isize);
 
-    for (i = 0;i < isize;++i)
+    for (i = 0; i < isize; ++i)
     {
-        file = (axutil_file_t*)axutil_array_list_get(arr_folders, env, i);
-        filename =  axutil_file_get_name(file, env);
+        file = (axutil_file_t *) axutil_array_list_get(arr_folders, env, i);
+        filename = axutil_file_get_name(file, env);
         printf("filename = %s \n", filename);
     }
-    printf("----end of test_axutil_dir_handler_list_service_or_module_dirs----\n");
+    printf
+        ("----end of test_axutil_dir_handler_list_service_or_module_dirs----\n");
 
 }
-
 
 /**
   * This test is intended to test whether given two files are equal or not.
   * Spaces and new lines are ignored in comparing
   */
-int test_file_diff(const axutil_env_t *env)
+int
+test_file_diff(
+    const axutil_env_t * env)
 {
-  /*  axis2_char_t *expected_file_name = axutil_strdup("expected", env);
-    axis2_char_t *actual_file_name = axutil_strdup("actual", env);*/
+    /*  axis2_char_t *expected_file_name = axutil_strdup("expected", env);
+       axis2_char_t *actual_file_name = axutil_strdup("actual", env); */
     return 0;
 }
 
-void test_array_list(const axutil_env_t *env)
+void
+test_array_list(
+    const axutil_env_t * env)
 {
     axutil_array_list_t *al;
     a *entry = NULL;
@@ -163,31 +178,31 @@ void test_array_list(const axutil_env_t *env)
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = axutil_strdup(env, "value1");
-    axutil_array_list_add(al, env, (void*)entry);
+    axutil_array_list_add(al, env, (void *) entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = axutil_strdup(env, "value2");
-    axutil_array_list_add(al, env, (void*)entry);
+    axutil_array_list_add(al, env, (void *) entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = axutil_strdup(env, "value3");
-    axutil_array_list_add(al, env, (void*)entry);
+    axutil_array_list_add(al, env, (void *) entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = axutil_strdup(env, "value4");
-    axutil_array_list_add(al, env, (void*)entry);
+    axutil_array_list_add(al, env, (void *) entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = axutil_strdup(env, "value5");
-    axutil_array_list_add(al, env, (void*)entry);
+    axutil_array_list_add(al, env, (void *) entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = axutil_strdup(env, "value6");
-    axutil_array_list_add(al, env, (void*)entry);
+    axutil_array_list_add(al, env, (void *) entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = axutil_strdup(env, "value7");
-    axutil_array_list_set(al, env, 3, (void*)entry);
+    axutil_array_list_set(al, env, 3, (void *) entry);
     axutil_array_list_remove(al, env, 2);
 
     entry = (a *) axutil_array_list_get(al, env, 0);
@@ -200,8 +215,9 @@ void test_array_list(const axutil_env_t *env)
 
 }
 
-
-void test_uuid_gen(const axutil_env_t *env)
+void
+test_uuid_gen(
+    const axutil_env_t * env)
 {
     char *uuid = NULL;
     printf("starting uuid_gen test...\n");
@@ -214,7 +230,9 @@ void test_uuid_gen(const axutil_env_t *env)
     printf("finished uuid_gen test...\n");
 }
 
-void test_log_write()
+void
+test_log_write(
+    )
 {
     char msg[10];
     printf("start of test_log_write\n\n");
@@ -230,7 +248,7 @@ void test_log_write()
         printf("cannot create error\n");
         return;
     }
-    axutil_log_t *log22  = axutil_log_create(allocator, NULL, NULL);
+    axutil_log_t *log22 = axutil_log_create(allocator, NULL, NULL);
     if (!log22)
     {
         printf("cannot create log\n");
@@ -238,7 +256,8 @@ void test_log_write()
     }
     log22->level = AXIS2_LOG_LEVEL_DEBUG;
 
-    const axutil_env_t *env = axutil_env_create_with_error_log(allocator, error, log22);
+    const axutil_env_t *env =
+        axutil_env_create_with_error_log(allocator, error, log22);
     if (!env)
     {
         printf("cannot create env with error and log\n");
@@ -255,7 +274,9 @@ void test_log_write()
 
 }
 
-int main(void)
+int
+main(
+    void)
 {
     const axutil_env_t *env = test_init();
     test_hash_get(env);
@@ -266,6 +287,7 @@ int main(void)
     run_test_string(env);
     test_axutil_dir_handler_list_service_or_module_dirs();
     axutil_allocator_t *allocator = env->allocator;
+
 /*    axutil_env_free(env);*/
     axutil_allocator_free(allocator);
     return 0;
