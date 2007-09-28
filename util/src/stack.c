@@ -44,7 +44,8 @@ axutil_stack_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    stack = (axutil_stack_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_stack_t));
+    stack =
+        (axutil_stack_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_stack_t));
 
     if (!stack)
     {
@@ -57,7 +58,9 @@ axutil_stack_create(
     stack->capacity = AXIS2_STACK_DEFAULT_CAPACITY;
     stack->is_empty_stack = AXIS2_TRUE;
 
-    stack->data = AXIS2_MALLOC(env->allocator, sizeof(void *) * AXIS2_STACK_DEFAULT_CAPACITY);
+    stack->data =
+        AXIS2_MALLOC(env->allocator,
+                     sizeof(void *) * AXIS2_STACK_DEFAULT_CAPACITY);
     if (!stack->data)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

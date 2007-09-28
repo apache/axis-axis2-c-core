@@ -254,10 +254,11 @@ axutil_url_to_external_form(
 
     sprintf(port_str, "%d", url->port);
     len =
-        axutil_strlen(url->protocol) + axutil_strlen(url->server) + axutil_strlen(url->path) +
-        strlen(port_str) + 7;
+        axutil_strlen(url->protocol) + axutil_strlen(url->server) +
+        axutil_strlen(url->path) + strlen(port_str) + 7;
     external_form = (axis2_char_t *) AXIS2_MALLOC(env->allocator, len);
-    sprintf(external_form, "%s://%s:%s%s", url->protocol, url->server, port_str, url->path);
+    sprintf(external_form, "%s://%s:%s%s", url->protocol, url->server, port_str,
+            url->path);
     return external_form;
 }
 
@@ -360,7 +361,8 @@ axutil_url_clone(
 {
     AXIS2_ENV_CHECK(env, NULL);
 
-    return axutil_url_create(env, url->protocol, url->server, url->port, url->path);
+    return axutil_url_create(env, url->protocol, url->server, url->port,
+                             url->path);
 }
 
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL

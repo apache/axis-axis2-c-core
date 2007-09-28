@@ -59,7 +59,9 @@ axutil_duration_create_from_values(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    duration = (axutil_duration_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_duration_t));
+    duration =
+        (axutil_duration_t *) AXIS2_MALLOC(env->allocator,
+                                           sizeof(axutil_duration_t));
     if (NULL == duration)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -119,7 +121,8 @@ axutil_duration_deserialize_duration(
 
     if (duration_str == NULL)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
+                        AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
@@ -209,7 +212,8 @@ axutil_duration_deserialize_duration(
             {
                 if ((num_type = 0) && (seq < (sizeof(desig) - 1)))
                 {
-                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE, AXIS2_FAILURE);
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE,
+                                    AXIS2_FAILURE);
                     return AXIS2_FAILURE;
                 }
 
@@ -260,14 +264,18 @@ axutil_duration_serialize_duration(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    duration_str = (axis2_char_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 64);
+    duration_str =
+        (axis2_char_t *) AXIS2_MALLOC(env->allocator,
+                                      sizeof(axis2_char_t) * 64);
 
     if (duration->is_negative == 0)
-        sprintf(duration_str, "P%dY%dM%dDT%dH%dM%fS", duration->years, duration->months,
-                duration->days, duration->hours, duration->mins, duration->secs);
+        sprintf(duration_str, "P%dY%dM%dDT%dH%dM%fS", duration->years,
+                duration->months, duration->days, duration->hours,
+                duration->mins, duration->secs);
     else
-        sprintf(duration_str, "-P%dY%dM%dDT%dH%dM%fS", duration->years, duration->months,
-                duration->days, duration->hours, duration->mins, duration->secs);
+        sprintf(duration_str, "-P%dY%dM%dDT%dH%dM%fS", duration->years,
+                duration->months, duration->days, duration->hours,
+                duration->mins, duration->secs);
 
     return duration_str;
 }
@@ -438,7 +446,8 @@ axutil_duration_compare(
 
     if (!duration_one || !duration_two)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
+                        AXIS2_FAILURE);
         return -1;
     }
 

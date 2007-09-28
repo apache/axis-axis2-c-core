@@ -54,11 +54,13 @@ axutil_qname_create(
     /* localpart can't be null */
     if (!localpart)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
+                        AXIS2_FAILURE);
         return NULL;
     }
 
-    qname = (axutil_qname_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_qname_t));
+    qname =
+        (axutil_qname_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_qname_t));
     if (!qname)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -95,7 +97,8 @@ axutil_qname_create(
 
     if (namespace_uri)
     {
-        qname->namespace_uri = (axis2_char_t *) axutil_strdup(env, namespace_uri);
+        qname->namespace_uri =
+            (axis2_char_t *) axutil_strdup(env, namespace_uri);
     }
 
     if (namespace_uri && !(qname->namespace_uri))
@@ -158,7 +161,8 @@ axutil_qname_equals(
 
     if (!qname2)
     {
-        AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_INVALID_NULL_PARAM);
+        AXIS2_ERROR_SET_ERROR_NUMBER(env->error,
+                                     AXIS2_ERROR_INVALID_NULL_PARAM);
         AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
         return AXIS2_FALSE;
     }
@@ -174,7 +178,8 @@ axutil_qname_equals(
 
     if (qname->namespace_uri && qname2->namespace_uri)
     {
-        uris_differ = axutil_strcmp(qname->namespace_uri, qname2->namespace_uri);
+        uris_differ =
+            axutil_strcmp(qname->namespace_uri, qname2->namespace_uri);
     }
     else
     {
@@ -249,7 +254,8 @@ axutil_qname_to_string(
 
         axis2_char_t *temp_string1 = NULL;
         temp_string1 = axutil_stracat(env, qname->localpart, "|");
-        qname->qname_string = axutil_stracat(env, temp_string1, qname->namespace_uri);
+        qname->qname_string =
+            axutil_stracat(env, temp_string1, qname->namespace_uri);
         if (temp_string1)
         {
             AXIS2_FREE(env->allocator, temp_string1);

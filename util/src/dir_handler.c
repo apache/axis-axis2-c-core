@@ -62,7 +62,8 @@ axutil_dir_handler_list_services_or_modules_in_dir(
     if (count <= 0)
     {
         axutil_array_list_free(file_list, env);
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No files in the path %s.", pathname);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No files in the path %s.",
+                        pathname);
         return NULL;
     }
 
@@ -199,7 +200,8 @@ axutil_dir_handler_list_service_or_module_dirs(
     if (count <= 0)
     {
         axutil_array_list_free(file_list, env);
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No files in the path %s.", pathname);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No files in the path %s.",
+                        pathname);
         return NULL;
     }
 

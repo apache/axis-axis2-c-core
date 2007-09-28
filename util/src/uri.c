@@ -440,10 +440,13 @@ axutil_uri_parse_string(
         {
             /* we expect the common case to have no port */
             uri->hostname =
-                axutil_strmemdup(hostinfo + v6_offset1, uri_str - hostinfo - v6_offset2, env);
+                axutil_strmemdup(hostinfo + v6_offset1,
+                                 uri_str - hostinfo - v6_offset2, env);
             goto deal_with_path;
         }
-        uri->hostname = axutil_strmemdup(hostinfo + v6_offset1, s - hostinfo - v6_offset2, env);
+        uri->hostname =
+            axutil_strmemdup(hostinfo + v6_offset1, s - hostinfo - v6_offset2,
+                             env);
         ++s;
         uri->port_str = axutil_strmemdup(s, uri_str - s, env);
         if (uri_str != s)
@@ -606,7 +609,9 @@ axutil_uri_resolve_relative(
             path += 2;
         }
         baselen = base_end - basepath + 1;
-        uri->path = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * baselen + strlen(path) + 1);
+        uri->path =
+            AXIS2_MALLOC(env->allocator,
+                         sizeof(axis2_char_t) * baselen + strlen(path) + 1);
         memcpy(uri->path, basepath, baselen);
         strcpy(uri->path + baselen, path);
     }
@@ -735,18 +740,20 @@ axutil_uri_to_string(
             ret =
                 axutil_strcat(env,
                               (uri->user &&
-                               !(flags & AXIS2_URI_UNP_OMITUSER)) ? uri->user : "", (uri->password
-                                                                                     && !(flags &
-                                                                                          AXIS2_URI_UNP_OMITPASSWORD))
+                               !(flags & AXIS2_URI_UNP_OMITUSER)) ? uri->
+                              user : "", (uri->password &&
+                                          !(flags & AXIS2_URI_UNP_OMITPASSWORD))
                               ? ":" : "", (uri->password &&
-                                           !(flags & AXIS2_URI_UNP_OMITPASSWORD)) ? ((flags &
-                                                                                      AXIS2_URI_UNP_REVEALPASSWORD)
-                                                                                     ? uri->
-                                                                                     password :
-                                                                                     "XXXXXXXX") :
-                              "", ((uri->user && !(flags & AXIS2_URI_UNP_OMITUSER)) ||
-                                   (uri->password &&
-                                    !(flags & AXIS2_URI_UNP_OMITPASSWORD))) ? "@" : "", NULL);
+                                           !(flags &
+                                             AXIS2_URI_UNP_OMITPASSWORD))
+                              ? ((flags & AXIS2_URI_UNP_REVEALPASSWORD) ? uri->
+                                 password : "XXXXXXXX") : "", ((uri->user &&
+                                                                !(flags &
+                                                                  AXIS2_URI_UNP_OMITUSER))
+                                                               || (uri->password
+                                                                   && !(flags &
+                                                                        AXIS2_URI_UNP_OMITPASSWORD)))
+                              ? "@" : "", NULL);
         }
 
         /* Construct scheme://site string */
@@ -763,14 +770,16 @@ axutil_uri_to_string(
             }
 
             is_default_port = (uri->port_str == NULL || uri->port == 0 ||
-                               uri->port == axutil_uri_port_of_scheme(uri->scheme));
+                               uri->port ==
+                               axutil_uri_port_of_scheme(uri->scheme));
 
             if (uri->scheme)
             {
                 ret =
-                    axutil_strcat(env, uri->scheme, "://", ret, lbrk, uri->hostname, rbrk,
-                                  is_default_port ? "" : ":", is_default_port ? "" : uri->port_str,
-                                  NULL);
+                    axutil_strcat(env, uri->scheme, "://", ret, lbrk,
+                                  uri->hostname, rbrk,
+                                  is_default_port ? "" : ":",
+                                  is_default_port ? "" : uri->port_str, NULL);
             }
             else
             {
@@ -781,8 +790,8 @@ axutil_uri_to_string(
                  */
                 ret =
                     axutil_strcat(env, "//", ret, lbrk, uri->hostname, rbrk,
-                                  is_default_port ? "" : ":", is_default_port ? "" : uri->port_str,
-                                  NULL);
+                                  is_default_port ? "" : ":",
+                                  is_default_port ? "" : uri->port_str, NULL);
             }
         }
     }
@@ -793,14 +802,15 @@ axutil_uri_to_string(
         /* Append path, query and fragment strings: */
         ret =
             axutil_strcat(env, ret, (uri->path) ? uri->path : "",
-                          (uri->query && !(flags & AXIS2_URI_UNP_OMITQUERY)) ? "?" : "", (uri->query
-                                                                                          && !(flags
-                                                                                               &
-                                                                                               AXIS2_URI_UNP_OMITQUERY))
-                          ? uri->query : "", (uri->fragment &&
-                                              !(flags & AXIS2_URI_UNP_OMITQUERY)) ? "#" : NULL,
-                          (uri->fragment &&
-                           !(flags & AXIS2_URI_UNP_OMITQUERY)) ? uri->fragment : NULL, NULL);
+                          (uri->query &&
+                           !(flags & AXIS2_URI_UNP_OMITQUERY)) ? "?" : "",
+                          (uri->query &&
+                           !(flags & AXIS2_URI_UNP_OMITQUERY)) ? uri->
+                          query : "", (uri->fragment &&
+                                       !(flags & AXIS2_URI_UNP_OMITQUERY)) ? "#"
+                          : NULL, (uri->fragment &&
+                                   !(flags & AXIS2_URI_UNP_OMITQUERY)) ? uri->
+                          fragment : NULL, NULL);
     }
     return ret;
 }

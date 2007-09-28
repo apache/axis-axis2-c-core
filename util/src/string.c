@@ -42,11 +42,14 @@ axutil_string_create(
     /* str can't be null */
     if (!str)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
+                        AXIS2_FAILURE);
         return NULL;
     }
 
-    string = (axutil_string_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_string_t));
+    string =
+        (axutil_string_t *) AXIS2_MALLOC(env->allocator,
+                                         sizeof(axutil_string_t));
     if (!string)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -61,13 +64,16 @@ axutil_string_create(
 
     if (string->length < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
+                        AXIS2_FAILURE);
         axutil_string_free(string, env);
         return NULL;
     }
 
     string->buffer =
-        (axis2_char_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (string->length + 1));
+        (axis2_char_t *) AXIS2_MALLOC(env->allocator,
+                                      sizeof(axis2_char_t) * (string->length +
+                                                              1));
     if (!(string->buffer))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -90,11 +96,14 @@ axutil_string_create_assume_ownership(
     /* str can't be null */
     if (!str || !(*str))
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
+                        AXIS2_FAILURE);
         return NULL;
     }
 
-    string = (axutil_string_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_string_t));
+    string =
+        (axutil_string_t *) AXIS2_MALLOC(env->allocator,
+                                         sizeof(axutil_string_t));
     if (!string)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -108,7 +117,8 @@ axutil_string_create_assume_ownership(
 
     if (string->length < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
+                        AXIS2_FAILURE);
         axutil_string_free(string, env);
         return NULL;
     }
@@ -127,11 +137,14 @@ axutil_string_create_const(
     /* str can't be null */
     if (!str)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
+                        AXIS2_FAILURE);
         return NULL;
     }
 
-    string = (axutil_string_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_string_t));
+    string =
+        (axutil_string_t *) AXIS2_MALLOC(env->allocator,
+                                         sizeof(axutil_string_t));
     if (!string)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -145,7 +158,8 @@ axutil_string_create_const(
 
     if (string->length < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
+                        AXIS2_FAILURE);
         axutil_string_free(string, env);
         return NULL;
     }
@@ -255,7 +269,8 @@ axutil_strdup(
     {
         int len = axutil_strlen(ptr);
         axis2_char_t *str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-                                                          sizeof(axis2_char_t) * (len + 1));
+                                                          sizeof(axis2_char_t) *
+                                                          (len + 1));
         if (!str)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -281,7 +296,9 @@ axutil_strmemdup(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ptr, NULL);
 
-    str = (axis2_char_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (n + 1));
+    str =
+        (axis2_char_t *) AXIS2_MALLOC(env->allocator,
+                                      sizeof(axis2_char_t) * (n + 1));
     if (!str)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -325,7 +342,9 @@ axutil_strndup(
     end = axutil_memchr(ptr, '\0', n);
     if (end)
         n = end - (axis2_char_t *) ptr;
-    str = (axis2_char_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (n + 1));
+    str =
+        (axis2_char_t *) AXIS2_MALLOC(env->allocator,
+                                      sizeof(axis2_char_t) * (n + 1));
     if (!str)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -433,9 +452,12 @@ axutil_stracat(
     len1 = axutil_strlen(s1);
     len2 = axutil_strlen(s2);
     alloc_len = len1 + len2 + 1;
-    ret = (axis2_char_t *) AXIS2_MALLOC(env->allocator, alloc_len * sizeof(axis2_char_t));
+    ret =
+        (axis2_char_t *) AXIS2_MALLOC(env->allocator,
+                                      alloc_len * sizeof(axis2_char_t));
     memcpy(ret, s1, len1 * sizeof(axis2_char_t));
-    memcpy((ret + len1 * sizeof(axis2_char_t)), s2, len2 * sizeof(axis2_char_t));
+    memcpy((ret + len1 * sizeof(axis2_char_t)), s2,
+           len2 * sizeof(axis2_char_t));
     ret[alloc_len * sizeof(axis2_char_t) - sizeof(axis2_char_t)] = '\0';
     return ret;
 }

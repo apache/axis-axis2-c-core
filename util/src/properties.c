@@ -48,7 +48,9 @@ axutil_properties_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    properties = (axutil_properties_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_properties_t));
+    properties =
+        (axutil_properties_t *) AXIS2_MALLOC(env->allocator,
+                                             sizeof(axutil_properties_t));
 
     if (!properties)
     {
@@ -73,7 +75,8 @@ axutil_properties_free(
 
     if (properties->prop_hash)
     {
-        for (hi = axutil_hash_first(properties->prop_hash, env); hi; hi = axutil_hash_next(env, hi))
+        for (hi = axutil_hash_first(properties->prop_hash, env); hi;
+             hi = axutil_hash_next(env, hi))
         {
             axutil_hash_this(hi, (void *) &key, NULL, (void *) &value);
             if (key)
@@ -143,7 +146,8 @@ axutil_properties_store(
 
     if (properties->prop_hash)
     {
-        for (hi = axutil_hash_first(properties->prop_hash, env); hi; hi = axutil_hash_next(env, hi))
+        for (hi = axutil_hash_first(properties->prop_hash, env); hi;
+             hi = axutil_hash_next(env, hi))
         {
             axutil_hash_this(hi, (void *) &key, NULL, (void *) &value);
             if (key)
@@ -199,7 +203,8 @@ axutil_properties_load(
         return AXIS2_FAILURE;
     }
 
-    for (cur = axutil_properties_read_next(buffer); *cur; cur = axutil_properties_read_next(++cur))
+    for (cur = axutil_properties_read_next(buffer); *cur;
+         cur = axutil_properties_read_next(++cur))
     {
         if (*cur == '\r')
         {
@@ -307,7 +312,9 @@ axutil_properties_read(
     size_t curr_alloc = MAX_SIZE * 2;
     size_t total_alloc = curr_alloc;
 
-    out_stream = (axis2_char_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * curr_alloc);
+    out_stream =
+        (axis2_char_t *) AXIS2_MALLOC(env->allocator,
+                                      sizeof(axis2_char_t) * curr_alloc);
     if (!out_stream)
     {
         return NULL;
@@ -315,7 +322,8 @@ axutil_properties_read(
 
     do
     {
-        nread = fread(out_stream + ncount, sizeof(axis2_char_t), MAX_SIZE, input);
+        nread =
+            fread(out_stream + ncount, sizeof(axis2_char_t), MAX_SIZE, input);
         ncount += nread;
 
         if (ncount + MAX_SIZE > total_alloc)
@@ -327,7 +335,9 @@ axutil_properties_read(
             }
 
             total_alloc += curr_alloc;
-            new_stream = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * total_alloc);
+            new_stream =
+                AXIS2_MALLOC(env->allocator,
+                             sizeof(axis2_char_t) * total_alloc);
             if (!new_stream)
             {
                 return NULL;

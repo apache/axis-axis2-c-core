@@ -101,12 +101,15 @@ axutil_log_create(
     if (!allocator)
         return NULL;
 
-    log_impl = (axutil_log_impl_t *) AXIS2_MALLOC(allocator, sizeof(axutil_log_impl_t));
+    log_impl =
+        (axutil_log_impl_t *) AXIS2_MALLOC(allocator,
+                                           sizeof(axutil_log_impl_t));
 
     if (!log_impl)
         return NULL;
 
-    log_impl->mutex = axutil_thread_mutex_create(allocator, AXIS2_THREAD_MUTEX_DEFAULT);
+    log_impl->mutex =
+        axutil_thread_mutex_create(allocator, AXIS2_THREAD_MUTEX_DEFAULT);
 
     if (!log_impl->mutex)
     {
@@ -127,22 +130,26 @@ axutil_log_create(
     {
         if ((path_home = AXIS2_GETENV("AXIS2C_HOME")))
         {
-            AXIS2_SNPRINTF(log_dir, 500, "%s%c%s", path_home, AXIS2_PATH_SEP_CHAR, "logs");
-            if (AXIS2_SUCCESS == axutil_file_handler_access(log_dir, AXIS2_F_OK))
+            AXIS2_SNPRINTF(log_dir, 500, "%s%c%s", path_home,
+                           AXIS2_PATH_SEP_CHAR, "logs");
+            if (AXIS2_SUCCESS ==
+                axutil_file_handler_access(log_dir, AXIS2_F_OK))
             {
-                AXIS2_SNPRINTF(log_file_name, 500, "%s%c%s", log_dir, AXIS2_PATH_SEP_CHAR,
-                               tmp_filename);
+                AXIS2_SNPRINTF(log_file_name, 500, "%s%c%s", log_dir,
+                               AXIS2_PATH_SEP_CHAR, tmp_filename);
             }
             else
             {
-                fprintf(stderr, "log folder %s does not exist - log file %s is written to . dir\n",
+                fprintf(stderr,
+                        "log folder %s does not exist - log file %s is written to . dir\n",
                         log_dir, tmp_filename);
                 AXIS2_SNPRINTF(log_file_name, 500, "%s", tmp_filename);
             }
         }
         else
         {
-            fprintf(stderr, "AXIS2C_HOME is not set - log is written to . dir\n");
+            fprintf(stderr,
+                    "AXIS2C_HOME is not set - log is written to . dir\n");
             AXIS2_SNPRINTF(log_file_name, 500, "%s", tmp_filename);
         }
     }
@@ -256,10 +263,11 @@ axutil_log_impl_write_to_file(
     }
     axutil_thread_mutex_lock(mutex);
     if (file)
-        fprintf(fd, "[%s] %s%s(%d) %s\n", axutil_log_impl_get_time_str(), level_str, file, line,
-                value);
+        fprintf(fd, "[%s] %s%s(%d) %s\n", axutil_log_impl_get_time_str(),
+                level_str, file, line, value);
     else
-        fprintf(fd, "[%s] %s %s\n", axutil_log_impl_get_time_str(), level_str, value);
+        fprintf(fd, "[%s] %s %s\n", axutil_log_impl_get_time_str(), level_str,
+                value);
     fflush(fd);
     axutil_thread_mutex_unlock(mutex);
 }
@@ -296,8 +304,8 @@ axutil_log_impl_log_debug(
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_DEBUG, filename, linenumber,
-                                          value);
+            axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_DEBUG,
+                                          filename, linenumber, value);
         }
     }
     else
@@ -334,7 +342,8 @@ axutil_log_impl_log_info(
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_INFO, NULL, -1, value);
+            axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_INFO, NULL,
+                                          -1, value);
         }
     }
     else
@@ -374,8 +383,8 @@ axutil_log_impl_log_warning(
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_WARNING, filename, linenumber,
-                                          value);
+            axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_WARNING,
+                                          filename, linenumber, value);
         }
     }
     else
@@ -413,8 +422,8 @@ axutil_log_impl_log_error(
         va_start(ap, format);
         AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
         va_end(ap);
-        axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_ERROR, filename, linenumber,
-                                      value);
+        axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_ERROR,
+                                      filename, linenumber, value);
     }
     else
         fprintf(stderr, "please check your log and buffer");
@@ -453,8 +462,8 @@ axutil_log_impl_log_critical(
         va_start(ap, format);
         AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
         va_end(ap);
-        axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_CRITICAL, filename, linenumber,
-                                      value);
+        axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_CRITICAL,
+                                      filename, linenumber, value);
     }
     else
         fprintf(stderr, "please check your log and buffer");
@@ -489,12 +498,15 @@ axutil_log_create_default(
     if (!allocator)
         return NULL;
 
-    log_impl = (axutil_log_impl_t *) AXIS2_MALLOC(allocator, sizeof(axutil_log_impl_t));
+    log_impl =
+        (axutil_log_impl_t *) AXIS2_MALLOC(allocator,
+                                           sizeof(axutil_log_impl_t));
 
     if (!log_impl)
         return NULL;
 
-    log_impl->mutex = axutil_thread_mutex_create(allocator, AXIS2_THREAD_MUTEX_DEFAULT);
+    log_impl->mutex =
+        axutil_thread_mutex_create(allocator, AXIS2_THREAD_MUTEX_DEFAULT);
 
     if (!log_impl->mutex)
     {
@@ -547,8 +559,8 @@ axutil_log_impl_log_trace(
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_TRACE, filename, linenumber,
-                                          value);
+            axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_TRACE,
+                                          filename, linenumber, value);
         }
     }
     else

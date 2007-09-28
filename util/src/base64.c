@@ -77,8 +77,10 @@ static unsigned char os_toascii[256] = {
     45, 47, 194, 196, 192, 193, 195, 197, 199, 209, 166, 44, 37, 95, 62, 63,
     248, 201, 202, 203, 200, 205, 206, 207, 204, 96, 58, 35, 64, 39, 61, 34,
     216, 97, 98, 99, 100, 101, 102, 103, 104, 105, 171, 187, 240, 253, 254, 177,
-    176, 106, 107, 108, 109, 110, 111, 112, 113, 114, 170, 186, 230, 184, 198, 164,
-    181, 126, 115, 116, 117, 118, 119, 120, 121, 122, 161, 191, 208, 221, 222, 174,
+    176, 106, 107, 108, 109, 110, 111, 112, 113, 114, 170, 186, 230, 184, 198,
+        164,
+    181, 126, 115, 116, 117, 118, 119, 120, 121, 122, 161, 191, 208, 221, 222,
+        174,
     94, 163, 165, 183, 169, 167, 182, 188, 189, 190, 91, 93, 175, 168, 180, 215,
     123, 65, 66, 67, 68, 69, 70, 71, 72, 73, 173, 244, 246, 242, 243, 245,
     125, 74, 75, 76, 77, 78, 79, 80, 81, 82, 185, 251, 252, 249, 250, 255,
@@ -140,9 +142,12 @@ axutil_base64_decode_binary(
 
     while (nprbytes > 4)
     {
-        *(bufout++) = (unsigned char) (pr2six[*bufin] << 2 | pr2six[bufin[1]] >> 4);
-        *(bufout++) = (unsigned char) (pr2six[bufin[1]] << 4 | pr2six[bufin[2]] >> 2);
-        *(bufout++) = (unsigned char) (pr2six[bufin[2]] << 6 | pr2six[bufin[3]]);
+        *(bufout++) =
+            (unsigned char) (pr2six[*bufin] << 2 | pr2six[bufin[1]] >> 4);
+        *(bufout++) =
+            (unsigned char) (pr2six[bufin[1]] << 4 | pr2six[bufin[2]] >> 2);
+        *(bufout++) =
+            (unsigned char) (pr2six[bufin[2]] << 6 | pr2six[bufin[3]]);
         bufin += 4;
         nprbytes -= 4;
     }
@@ -150,22 +155,26 @@ axutil_base64_decode_binary(
     /* Note: (nprbytes == 1) would be an error, so just ingore that case */
     if (nprbytes > 1)
     {
-        *(bufout++) = (unsigned char) (pr2six[*bufin] << 2 | pr2six[bufin[1]] >> 4);
+        *(bufout++) =
+            (unsigned char) (pr2six[*bufin] << 2 | pr2six[bufin[1]] >> 4);
     }
     if (nprbytes > 2)
     {
-        *(bufout++) = (unsigned char) (pr2six[bufin[1]] << 4 | pr2six[bufin[2]] >> 2);
+        *(bufout++) =
+            (unsigned char) (pr2six[bufin[1]] << 4 | pr2six[bufin[2]] >> 2);
     }
     if (nprbytes > 3)
     {
-        *(bufout++) = (unsigned char) (pr2six[bufin[2]] << 6 | pr2six[bufin[3]]);
+        *(bufout++) =
+            (unsigned char) (pr2six[bufin[2]] << 6 | pr2six[bufin[3]]);
     }
 
     nbytesdecoded -= (4 - nprbytes) & 3;
     return nbytesdecoded;
 }
 
-static const char basis_64[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static const char basis_64[] =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_base64_encode_len(
@@ -181,7 +190,8 @@ axutil_base64_encode(
     int len)
 {
 #ifndef __OS400__
-    return axutil_base64_encode_binary(encoded, (const unsigned char *) string, len);
+    return axutil_base64_encode_binary(encoded, (const unsigned char *) string,
+                                       len);
 #else                           /* __OS400__ */
     int i;
     char *p;
@@ -237,8 +247,12 @@ axutil_base64_encode_binary(
     for (i = 0; i < len - 2; i += 3)
     {
         *p++ = basis_64[(string[i] >> 2) & 0x3F];
-        *p++ = basis_64[((string[i] & 0x3) << 4) | ((int) (string[i + 1] & 0xF0) >> 4)];
-        *p++ = basis_64[((string[i + 1] & 0xF) << 2) | ((int) (string[i + 2] & 0xC0) >> 6)];
+        *p++ =
+            basis_64[((string[i] & 0x3) << 4) |
+                     ((int) (string[i + 1] & 0xF0) >> 4)];
+        *p++ =
+            basis_64[((string[i + 1] & 0xF) << 2) |
+                     ((int) (string[i + 2] & 0xC0) >> 6)];
         *p++ = basis_64[string[i + 2] & 0x3F];
     }
     if (i < len)
@@ -251,7 +265,9 @@ axutil_base64_encode_binary(
         }
         else
         {
-            *p++ = basis_64[((string[i] & 0x3) << 4) | ((int) (string[i + 1] & 0xF0) >> 4)];
+            *p++ =
+                basis_64[((string[i] & 0x3) << 4) |
+                         ((int) (string[i + 1] & 0xF0) >> 4)];
             *p++ = basis_64[((string[i + 1] & 0xF) << 2)];
         }
         *p++ = '=';

@@ -31,7 +31,9 @@ axutil_thread_pool_init(
 {
     axutil_thread_pool_t *pool = NULL;
 
-    pool = (axutil_thread_pool_t *) AXIS2_MALLOC(allocator, sizeof(axutil_thread_pool_t));
+    pool =
+        (axutil_thread_pool_t *) AXIS2_MALLOC(allocator,
+                                              sizeof(axutil_thread_pool_t));
 
     if (!pool)
     {
@@ -116,8 +118,10 @@ axutil_init_thread_env(
     const axutil_env_t * system_env)
 {
     axutil_error_t *error = axutil_error_create(system_env->allocator);
-    return axutil_env_create_with_error_log_thread_pool(system_env->allocator, error,
-                                                        system_env->log, system_env->thread_pool);
+    return axutil_env_create_with_error_log_thread_pool(system_env->allocator,
+                                                        error, system_env->log,
+                                                        system_env->
+                                                        thread_pool);
 }
 
 AXIS2_EXTERN void AXIS2_CALL

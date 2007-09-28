@@ -82,7 +82,9 @@ axutil_stream_create_internal(
     axutil_stream_t *stream = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    stream = (axutil_stream_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_stream_t));
+    stream =
+        (axutil_stream_t *) AXIS2_MALLOC(env->allocator,
+                                         sizeof(axutil_stream_t));
 
     if (!stream)
     {
@@ -249,7 +251,8 @@ axutil_stream_create_basic(
     stream->skip = axutil_stream_skip_basic;
     stream->buffer =
         (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-                                      AXIS2_STREAM_DEFAULT_BUF_SIZE * sizeof(axis2_char_t));
+                                      AXIS2_STREAM_DEFAULT_BUF_SIZE *
+                                      sizeof(axis2_char_t));
     stream->buffer_head = stream->buffer;
     stream->len = 0;
     stream->max_len = AXIS2_STREAM_DEFAULT_BUF_SIZE;
@@ -319,8 +322,9 @@ axutil_stream_write_basic(
     if (new_len > stream->max_len)
     {
         axis2_char_t *tmp = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-                                                          sizeof(axis2_char_t) * (new_len +
-                                                                                  AXIS2_STREAM_DEFAULT_BUF_SIZE));
+                                                          sizeof(axis2_char_t) *
+                                                          (new_len +
+                                                           AXIS2_STREAM_DEFAULT_BUF_SIZE));
         if (!tmp)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -336,7 +340,8 @@ axutil_stream_write_basic(
         stream->buffer = tmp;
         stream->buffer_head = tmp;
     }
-    memcpy(stream->buffer + (stream->len * sizeof(axis2_char_t)), buffer, count);
+    memcpy(stream->buffer + (stream->len * sizeof(axis2_char_t)), buffer,
+           count);
     stream->len += count;
     return count;
 }
@@ -550,7 +555,9 @@ axutil_stream_read_socket(
 #ifdef AXIS2_TCPMON
     if (len > 1)
     {
-        temp = (axis2_char_t *) AXIS2_MALLOC(env->allocator, (len + 1) * sizeof(axis2_char_t));
+        temp =
+            (axis2_char_t *) AXIS2_MALLOC(env->allocator,
+                                          (len + 1) * sizeof(axis2_char_t));
         if (temp)
         {
             memcpy(temp, buffer, len * sizeof(axis2_char_t));
@@ -588,7 +595,9 @@ axutil_stream_write_socket(
 #ifdef AXIS2_TCPMON
     if (len > 0)
     {
-        temp = (axis2_char_t *) AXIS2_MALLOC(env->allocator, (len + 1) * sizeof(axis2_char_t));
+        temp =
+            (axis2_char_t *) AXIS2_MALLOC(env->allocator,
+                                          (len + 1) * sizeof(axis2_char_t));
         if (temp)
         {
             memcpy(temp, buffer, len * sizeof(axis2_char_t));

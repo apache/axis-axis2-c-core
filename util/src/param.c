@@ -180,7 +180,8 @@ axutil_param_set_attributes(
         axutil_hash_index_t *i = NULL;
         void *v = NULL;
 
-        for (i = axutil_hash_first(param->attrs, env); i; i = axutil_hash_next(env, i))
+        for (i = axutil_hash_first(param->attrs, env); i;
+             i = axutil_hash_next(env, i))
         {
             axutil_hash_this(i, NULL, NULL, &v);
             axutil_generic_obj_free(v, env);
@@ -219,7 +220,9 @@ axutil_param_set_value_list(
         {
             axutil_param_t *param = NULL;
 
-            param = (axutil_param_t *) axutil_array_list_get(param->value_list, env, i);
+            param =
+                (axutil_param_t *) axutil_array_list_get(param->value_list, env,
+                                                         i);
             axutil_param_free(param, env);
         }
         axutil_array_list_free(param->value_list, env);
@@ -265,7 +268,8 @@ axutil_param_free(
         axutil_hash_index_t *i = NULL;
         void *v = NULL;
 
-        for (i = axutil_hash_first(param->attrs, env); i; i = axutil_hash_next(env, i))
+        for (i = axutil_hash_first(param->attrs, env); i;
+             i = axutil_hash_next(env, i))
         {
             axutil_hash_this(i, NULL, NULL, &v);
             axutil_generic_obj_free(v, env);
@@ -283,7 +287,9 @@ axutil_param_free(
         {
             axutil_param_t *param_l = NULL;
 
-            param_l = (axutil_param_t *) axutil_array_list_get(param->value_list, env, i);
+            param_l =
+                (axutil_param_t *) axutil_array_list_get(param->value_list, env,
+                                                         i);
             if (param_l)
             {
                 axutil_param_free(param_l, env);

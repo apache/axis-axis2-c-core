@@ -46,7 +46,9 @@ axutil_env_create_all(
         log = axutil_log_create_default(allocator);
 
     thread_pool = axutil_thread_pool_init(allocator);
-    env = axutil_env_create_with_error_log_thread_pool(allocator, error, log, thread_pool);
+    env =
+        axutil_env_create_with_error_log_thread_pool(allocator, error, log,
+                                                     thread_pool);
     if (env->log)
     {
         env->log->level = log_level;
@@ -104,7 +106,8 @@ axutil_env_create(
     if (!allocator)
         return NULL;
 
-    environment = (axutil_env_t *) AXIS2_MALLOC(allocator, sizeof(axutil_env_t));
+    environment =
+        (axutil_env_t *) AXIS2_MALLOC(allocator, sizeof(axutil_env_t));
 
     if (!environment)
         return NULL;
@@ -143,7 +146,8 @@ axutil_env_create_with_error_log(
     if (!error)
         return NULL;
 
-    environment = (axutil_env_t *) AXIS2_MALLOC(allocator, sizeof(axutil_env_t));
+    environment =
+        (axutil_env_t *) AXIS2_MALLOC(allocator, sizeof(axutil_env_t));
 
     if (!environment)
         return NULL;
@@ -181,7 +185,8 @@ axutil_env_create_with_error_log_thread_pool(
     if (!pool)
         return NULL;
 
-    environment = (axutil_env_t *) AXIS2_MALLOC(allocator, sizeof(axutil_env_t));
+    environment =
+        (axutil_env_t *) AXIS2_MALLOC(allocator, sizeof(axutil_env_t));
 
     if (!environment)
         return NULL;

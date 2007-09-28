@@ -214,7 +214,8 @@ axutil_linked_list_check_bounds_inclusive(
 
     if (index < 0 || index > linked_list->size)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INDEX_OUT_OF_BOUNDS, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
+                        AXIS2_FAILURE);
         return AXIS2_FALSE;
     }
     return AXIS2_TRUE;
@@ -229,7 +230,8 @@ axutil_linked_list_check_bounds_exclusive(
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     if (index < 0 || index >= linked_list->size)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INDEX_OUT_OF_BOUNDS, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
+                        AXIS2_FAILURE);
         return AXIS2_FALSE;
     }
     return AXIS2_TRUE;
@@ -583,7 +585,9 @@ axutil_linked_list_to_array(
     void **array;
     entry_t *e;
     AXIS2_ENV_CHECK(env, NULL);
-    array = (void **) AXIS2_MALLOC(env->allocator, linked_list->size * sizeof(void *));
+    array =
+        (void **) AXIS2_MALLOC(env->allocator,
+                               linked_list->size * sizeof(void *));
     e = linked_list->first;
     for (i = 0; i < linked_list->size; i++)
     {

@@ -84,8 +84,9 @@ axutil_hash_alloc_array(
     axutil_hash_t * ht,
     unsigned int max)
 {
-    return memset(AXIS2_MALLOC(ht->env->allocator, sizeof(*ht->array) * (max + 1)), 0,
-                  sizeof(*ht->array) * (max + 1));
+    return
+        memset(AXIS2_MALLOC(ht->env->allocator, sizeof(*ht->array) * (max + 1)),
+               0, sizeof(*ht->array) * (max + 1));
 }
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
@@ -291,9 +292,11 @@ axutil_hash_find_entry(
     hash = ht->hash_func(key, &klen);
 
     /* scan linked list */
-    for (hep = &ht->array[hash & ht->max], he = *hep; he; hep = &he->next, he = *hep)
+    for (hep = &ht->array[hash & ht->max], he = *hep; he;
+         hep = &he->next, he = *hep)
     {
-        if (he->hash == hash && he->klen == klen && memcmp(he->key, key, klen) == 0)
+        if (he->hash == hash && he->klen == klen &&
+            memcmp(he->key, key, klen) == 0)
             break;
     }
 
@@ -328,7 +331,8 @@ axutil_hash_copy(
     AXIS2_ENV_CHECK(env, NULL);
 
     ht = AXIS2_MALLOC(env->allocator,
-                      sizeof(axutil_hash_t) + sizeof(*ht->array) * (orig->max + 1) +
+                      sizeof(axutil_hash_t) + sizeof(*ht->array) * (orig->max +
+                                                                    1) +
                       sizeof(axutil_hash_entry_t) * orig->count);
     ht->env = env;
     ht->free = NULL;
@@ -454,12 +458,14 @@ axutil_hash_merge(
      */
     if (!axutil_env_is_ancestor(overlay->env, p))
     {
-        fprintf(stderr, "axutil_hash_merge: overlay's env is not an ancestor of p\n");
+        fprintf(stderr,
+                "axutil_hash_merge: overlay's env is not an ancestor of p\n");
         abort();
     }
     if (!axutil_env_is_ancestor(base->env, p))
     {
-        fprintf(stderr, "axutil_hash_merge: base's env is not an ancestor of p\n");
+        fprintf(stderr,
+                "axutil_hash_merge: base's env is not an ancestor of p\n");
         abort();
     }
 #endif
@@ -479,7 +485,8 @@ axutil_hash_merge(
     {
         new_vals =
             AXIS2_MALLOC(env->allocator,
-                         sizeof(axutil_hash_entry_t) * (base->count + overlay->count));
+                         sizeof(axutil_hash_entry_t) * (base->count +
+                                                        overlay->count));
     }
     j = 0;
     for (k = 0; k <= base->max; k++)
@@ -504,12 +511,14 @@ axutil_hash_merge(
             i = iter->hash & res->max;
             for (ent = res->array[i]; ent; ent = ent->next)
             {
-                if ((ent->klen == iter->klen) && (memcmp(ent->key, iter->key, iter->klen) == 0))
+                if ((ent->klen == iter->klen) &&
+                    (memcmp(ent->key, iter->key, iter->klen) == 0))
                 {
                     if (merger)
                     {
                         ent->val =
-                            (*merger) (env, iter->key, iter->klen, iter->val, ent->val, data);
+                            (*merger) (env, iter->key, iter->klen, iter->val,
+                                       ent->val, data);
                     }
                     else
                     {

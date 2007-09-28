@@ -41,7 +41,8 @@ axutil_class_loader_delete_dll(
 {
     if (!dll_desc)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED,
+                        AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     axutil_class_loader_unload_lib(env, dll_desc);
@@ -64,7 +65,8 @@ axutil_class_loader_create_dll(
     dll_desc = axutil_param_get_value(impl_info_param, env);
     if (!dll_desc)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED,
+                        AXIS2_FAILURE);
         return NULL;
     }
     dl_handler = axutil_dll_desc_get_dl_handler(dll_desc, env);
@@ -73,7 +75,8 @@ axutil_class_loader_create_dll(
         status = axutil_class_loader_load_lib(env, dll_desc);
         if (AXIS2_SUCCESS != status)
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED,
+                            AXIS2_FAILURE);
             return NULL;
         }
         dl_handler = axutil_dll_desc_get_dl_handler(dll_desc, env);
@@ -82,7 +85,9 @@ axutil_class_loader_create_dll(
             return NULL;
         }
 
-        create_funct = (CREATE_FUNCT) AXIS2_PLATFORM_GETPROCADDR(dl_handler, AXIS2_CREATE_FUNCTION);
+        create_funct =
+            (CREATE_FUNCT) AXIS2_PLATFORM_GETPROCADDR(dl_handler,
+                                                      AXIS2_CREATE_FUNCTION);
         if (!create_funct)
         {
             return NULL;
@@ -91,11 +96,14 @@ axutil_class_loader_create_dll(
         if (AXIS2_FAILURE == status)
         {
             axutil_class_loader_unload_lib(env, dll_desc);
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED,
+                            AXIS2_FAILURE);
             return NULL;
         }
 
-        delete_funct = (DELETE_FUNCT) AXIS2_PLATFORM_GETPROCADDR(dl_handler, AXIS2_DELETE_FUNCTION);
+        delete_funct =
+            (DELETE_FUNCT) AXIS2_PLATFORM_GETPROCADDR(dl_handler,
+                                                      AXIS2_DELETE_FUNCTION);
         if (!delete_funct)
         {
             return NULL;
@@ -104,14 +112,16 @@ axutil_class_loader_create_dll(
         if (AXIS2_FAILURE == status)
         {
             axutil_class_loader_unload_lib(env, dll_desc);
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED,
+                            AXIS2_FAILURE);
             return NULL;
         }
     }
     create_funct = axutil_dll_desc_get_create_funct(dll_desc, env);
     if (!create_funct)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_DLL_DESC, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_DLL_DESC,
+                        AXIS2_FAILURE);
         return NULL;
     }
     error_code = axutil_dll_desc_get_error_code(dll_desc, env);
@@ -120,7 +130,8 @@ axutil_class_loader_create_dll(
     if (!obj)
     {
         axutil_class_loader_unload_lib(env, dll_desc);
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Object create function returned NULL");
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                        "Object create function returned NULL");
         AXIS2_ERROR_SET(env->error, error_code, AXIS2_FAILURE);
         return NULL;
     }
@@ -144,7 +155,8 @@ axutil_class_loader_load_lib(
     dl_handler = AXIS2_PLATFORM_LOADLIB(dll_name);
     if (!dl_handler)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_LOADING_FAILED, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_LOADING_FAILED,
+                        AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     status = axutil_dll_desc_set_dl_handler(dll_desc, env, dl_handler);
@@ -153,7 +165,8 @@ axutil_class_loader_load_lib(
     {
         AXIS2_PLATFORM_UNLOADLIB(dl_handler);
         dl_handler = NULL;
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_LOADING_FAILED, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_LOADING_FAILED,
+                        AXIS2_FAILURE);
         return status;
     }
 

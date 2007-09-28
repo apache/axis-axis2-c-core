@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -32,13 +33,18 @@
 #define WRITEBUFFERSIZE (8192)
 #define MAXFILENAME (256)
 
-axis2_status_t aar_select();
-int aar_extract(axis2_char_t *d_name);
+axis2_status_t aar_select(
+    );
+int aar_extract(
+    axis2_char_t * d_name);
 
-extern int AXIS2_ALPHASORT();
+extern int AXIS2_ALPHASORT(
+    );
 
-int axis2_mkdir(dir_name)
-const axis2_char_t* dir_name;
+int
+axis2_mkdir(
+    dir_name)
+    const axis2_char_t *dir_name;
 {
     int value = 0;
 #ifdef WIN32
@@ -49,22 +55,24 @@ const axis2_char_t* dir_name;
     return value;
 }
 
-int axis2_create_dir(new_dir)
-axis2_char_t *new_dir;
+int
+axis2_create_dir(
+    new_dir)
+    axis2_char_t *new_dir;
 {
-    axis2_char_t *buffer ;
+    axis2_char_t *buffer;
     axis2_char_t *p;
-    int  len = (int)strlen(new_dir);
+    int len = (int) strlen(new_dir);
 
     if (len <= 0)
         return 0;
 
-    buffer = (axis2_char_t*)malloc(len + 1);
+    buffer = (axis2_char_t *) malloc(len + 1);
     strcpy(buffer, new_dir);
 
-    if (buffer[len-1] == '/')
+    if (buffer[len - 1] == '/')
     {
-        buffer[len-1] = '\0';
+        buffer[len - 1] = '\0';
     }
 
     if (axis2_mkdir(buffer) == 0)
@@ -95,22 +103,29 @@ axis2_char_t *new_dir;
     return 1;
 }
 
-int axis2_extract_currentfile(uf, popt_extract_without_path, popt_overwrite, password)
-unzFile uf;
-const int* popt_extract_without_path;
-int* popt_overwrite;
-const axis2_char_t* password;
+int
+axis2_extract_currentfile(
+    uf,
+    popt_extract_without_path,
+    popt_overwrite,
+    password)
+    unzFile uf;
+    const int *popt_extract_without_path;
+    int *popt_overwrite;
+    const axis2_char_t *password;
 {
     axis2_char_t filename_inzip[256];
-    axis2_char_t* filename_withoutpath;
-    axis2_char_t* p;
+    axis2_char_t *filename_withoutpath;
+    axis2_char_t *p;
     int err = UNZ_OK;
     FILE *fout = NULL;
-    void* buf;
+    void *buf;
     uInt size_buf;
 
     unz_file_info file_info;
-    err = unzGetCurrentFileInfo(uf, &file_info, filename_inzip, sizeof(filename_inzip), NULL, 0, NULL, 0);
+    err =
+        unzGetCurrentFileInfo(uf, &file_info, filename_inzip,
+                              sizeof(filename_inzip), NULL, 0, NULL, 0);
 
     if (err != UNZ_OK)
     {
@@ -118,7 +133,7 @@ const axis2_char_t* password;
     }
 
     size_buf = WRITEBUFFERSIZE;
-    buf = (void*)malloc(size_buf);
+    buf = (void *) malloc(size_buf);
     if (buf == NULL)
         return UNZ_INTERNALERROR;
 
@@ -139,7 +154,7 @@ const axis2_char_t* password;
     }
     else
     {
-        const axis2_char_t* write_filename;
+        const axis2_char_t *write_filename;
         int skip = 0;
 
         if ((*popt_extract_without_path) == 0)
@@ -154,7 +169,7 @@ const axis2_char_t* password;
             fout = fopen(write_filename, "wb");
 
             if ((fout == NULL) && ((*popt_extract_without_path) == 0) &&
-                    (filename_withoutpath != (axis2_char_t*)filename_inzip))
+                (filename_withoutpath != (axis2_char_t *) filename_inzip))
             {
                 axis2_char_t c = *(filename_withoutpath - 1);
                 *(filename_withoutpath - 1) = '\0';
@@ -198,11 +213,16 @@ const axis2_char_t* password;
     return err;
 }
 
-int axis2_extract(uf, opt_extract_without_path, opt_overwrite, password)
-unzFile uf;
-int opt_extract_without_path;
-int opt_overwrite;
-const axis2_char_t* password;
+int
+axis2_extract(
+    uf,
+    opt_extract_without_path,
+    opt_overwrite,
+    password)
+    unzFile uf;
+    int opt_extract_without_path;
+    int opt_overwrite;
+    const axis2_char_t *password;
 {
     uLong i;
     unz_global_info gi;
@@ -212,11 +232,10 @@ const axis2_char_t* password;
     if (err != UNZ_OK)
         return -1;
 
-    for (i = 0;i < gi.number_entry;i++)
+    for (i = 0; i < gi.number_entry; i++)
     {
         if (axis2_extract_currentfile(uf, &opt_extract_without_path,
-                &opt_overwrite,
-                password) != UNZ_OK)
+                                      &opt_overwrite, password) != UNZ_OK)
             break;
 
         if ((i + 1) < gi.number_entry)
@@ -233,13 +252,14 @@ const axis2_char_t* password;
     return 0;
 }
 
-
-int aar_extract(axis2_char_t *d_name)
+int
+aar_extract(
+    axis2_char_t * d_name)
 {
     const axis2_char_t *zipfilename = NULL;
     const axis2_char_t *filename_to_extract = NULL;
     const axis2_char_t *password = NULL;
-    axis2_char_t filename_try[MAXFILENAME+16] = "";
+    axis2_char_t filename_try[MAXFILENAME + 16] = "";
     int opt_do_extract_withoutpath = 0;
     int opt_overwrite = 0;
     int opt_extractdir = 0;
@@ -255,7 +275,7 @@ int aar_extract(axis2_char_t *d_name)
     {
         zlib_filefunc_def ffunc;
         strncpy(filename_try, zipfilename, MAXFILENAME - 1);
-        filename_try[ MAXFILENAME ] = '\0';
+        filename_try[MAXFILENAME] = '\0';
 
         axis2_fill_win32_filefunc(&ffunc);
 
@@ -274,36 +294,42 @@ int aar_extract(axis2_char_t *d_name)
     if (opt_extractdir && chdir(dir_name))
         exit(-1);
 
-    return axis2_extract(uf, opt_do_extract_withoutpath, opt_overwrite, password);
+    return axis2_extract(uf, opt_do_extract_withoutpath, opt_overwrite,
+                         password);
     unzCloseCurrentFile(uf);
     return 0;
 }
 
-
-
-int axis2_extract_onefile(uf, filename, opt_extract_without_path, opt_overwrite, password)
-unzFile uf;
-const axis2_char_t* filename;
-int opt_extract_without_path;
-int opt_overwrite;
-const axis2_char_t* password;
+int
+axis2_extract_onefile(
+    uf,
+    filename,
+    opt_extract_without_path,
+    opt_overwrite,
+    password)
+    unzFile uf;
+    const axis2_char_t *filename;
+    int opt_extract_without_path;
+    int opt_overwrite;
+    const axis2_char_t *password;
 {
     if (unzLocateFile(uf, filename, CASESENSITIVITY) != UNZ_OK)
         return -1;
 
     if (axis2_extract_currentfile(uf, &opt_extract_without_path,
-            &opt_overwrite,
-            password) == UNZ_OK)
+                                  &opt_overwrite, password) == UNZ_OK)
         return 0;
     else
         return -1;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_archive_extract()
+axis2_archive_extract(
+    )
 {
     struct dirent **namelist;
-    int n, i;
+    int n,
+     i;
     axis2_char_t *ptr;
 
     n = scandir(".", &namelist, 0, alphasort);
@@ -314,22 +340,25 @@ axis2_archive_extract()
         while (n--)
         {
             if ((strcmp(namelist[n]->d_name, ".") == 0) ||
-                    (strcmp(namelist[n]->d_name, "..") == 0))
+                (strcmp(namelist[n]->d_name, "..") == 0))
             {
-                for (i = n; i >= 0; i--) /* clean remaining memory before return */
+                for (i = n; i >= 0; i--)    /* clean remaining memory before return */
                     free(namelist[i]);
                 free(namelist);
                 return (AXIS2_FALSE);
             }
-            
+
             ptr = axutil_rindex(namelist[n]->d_name, '.');
             if ((ptr) &&
-                    (((strcmp(ptr, AXIS2_AAR_SUFFIX) == 0)) || (strcmp(ptr, AXIS2_MAR_SUFFIX) == 0)))
-                for (i = 0;i < n;i++)
-                    if (strncmp(namelist[n]->d_name, namelist[i]->d_name, strlen(namelist[i]->d_name)) == 0)
+                (((strcmp(ptr, AXIS2_AAR_SUFFIX) == 0)) ||
+                 (strcmp(ptr, AXIS2_MAR_SUFFIX) == 0)))
+                for (i = 0; i < n; i++)
+                    if (strncmp
+                        (namelist[n]->d_name, namelist[i]->d_name,
+                         strlen(namelist[i]->d_name)) == 0)
                     {
                         int j;
-                        for (j = n; j >= 0; j--) /* clean remaining memory before return */
+                        for (j = n; j >= 0; j--)    /* clean remaining memory before return */
                             free(namelist[j]);
                         free(namelist);
                         return (AXIS2_FALSE);
@@ -342,4 +371,3 @@ axis2_archive_extract()
     }
     return (AXIS2_TRUE);
 }
-

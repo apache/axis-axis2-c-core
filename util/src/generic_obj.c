@@ -33,7 +33,8 @@ axutil_generic_obj_create(
     AXIS2_ENV_CHECK(env, NULL);
 
     generic_obj =
-        (axutil_generic_obj_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_generic_obj_t));
+        (axutil_generic_obj_t *) AXIS2_MALLOC(env->allocator,
+                                              sizeof(axutil_generic_obj_t));
 
     if (!generic_obj)
     {

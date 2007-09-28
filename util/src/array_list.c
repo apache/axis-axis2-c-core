@@ -79,7 +79,8 @@ axutil_array_list_ensure_capacity(
     if (min_capacity > array_list->capacity)
     {
         int new_capacity =
-            (array_list->capacity * 2 > min_capacity) ? (array_list->capacity * 2) : min_capacity;
+            (array_list->capacity * 2 >
+             min_capacity) ? (array_list->capacity * 2) : min_capacity;
         void **data = (void **) AXIS2_MALLOC(env->allocator,
                                              sizeof(void *) * new_capacity);
         if (!data)
@@ -180,8 +181,8 @@ axutil_array_list_add(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (array_list->size == array_list->capacity)
-        if (axutil_array_list_ensure_capacity(array_list, env, array_list->size + 1) !=
-            AXIS2_SUCCESS)
+        if (axutil_array_list_ensure_capacity
+            (array_list, env, array_list->size + 1) != AXIS2_SUCCESS)
             return AXIS2_FAILURE;
     array_list->data[array_list->size++] = (void *) e;
     return AXIS2_SUCCESS;
@@ -200,8 +201,8 @@ axutil_array_list_add_at(
         return AXIS2_FAILURE;
     if (array_list->size == array_list->capacity)
     {
-        if (axutil_array_list_ensure_capacity(array_list, env, array_list->size + 1) !=
-            AXIS2_SUCCESS)
+        if (axutil_array_list_ensure_capacity
+            (array_list, env, array_list->size + 1) != AXIS2_SUCCESS)
             return AXIS2_FAILURE;
     }
     if (index != array_list->size)
@@ -245,7 +246,8 @@ axutil_array_list_check_bound_inclusive(
 
     if (index < 0 || index > array_list->size)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INDEX_OUT_OF_BOUNDS, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
+                        AXIS2_FAILURE);
         return AXIS2_FALSE;
     }
     return AXIS2_TRUE;
@@ -261,7 +263,8 @@ axutil_array_list_check_bound_exclusive(
 
     if (index < 0 || index >= array_list->size)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INDEX_OUT_OF_BOUNDS, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
+                        AXIS2_FAILURE);
         return AXIS2_FALSE;
     }
     return AXIS2_TRUE;

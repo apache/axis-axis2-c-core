@@ -75,7 +75,8 @@ axutil_parse_request_url_for_svc_and_op(
                     if (tmp)
                     {
                         i = tmp - service_str;
-                        ret[1] = AXIS2_MALLOC(env->allocator, i * sizeof(char) + 1);
+                        ret[1] =
+                            AXIS2_MALLOC(env->allocator, i * sizeof(char) + 1);
                         strncpy(ret[1], service_str, i);
                         ret[1][i] = '\0';
                     }

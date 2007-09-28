@@ -33,7 +33,9 @@ axutil_param_container_create(
     AXIS2_ENV_CHECK(env, NULL);
 
     param_container =
-        (axutil_param_container_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_param_container_t));
+        (axutil_param_container_t *) AXIS2_MALLOC(env->allocator,
+                                                  sizeof
+                                                  (axutil_param_container_t));
 
     if (!param_container)
     {
@@ -131,10 +133,12 @@ axutil_param_container_add_param(
     param_name = axutil_param_get_name(param, env);
     if (!param_name)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_PARAM, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_PARAM,
+                        AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    axutil_hash_set(param_container->params, param_name, AXIS2_HASH_KEY_STRING, param);
+    axutil_hash_set(param_container->params, param_name, AXIS2_HASH_KEY_STRING,
+                    param);
 
     return AXIS2_SUCCESS;
 }
@@ -146,7 +150,8 @@ axutil_param_container_get_param(
     const axis2_char_t * name)
 {
     return (axutil_param_t
-            *) (axutil_hash_get(param_container->params, name, AXIS2_HASH_KEY_STRING));
+            *) (axutil_hash_get(param_container->params, name,
+                                AXIS2_HASH_KEY_STRING));
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
@@ -172,7 +177,8 @@ axutil_param_container_get_params(
          index_i = axutil_hash_next(env, index_i))
     {
         axutil_hash_this(index_i, NULL, NULL, &value);
-        status = axutil_array_list_add(param_container->params_list, env, value);
+        status =
+            axutil_array_list_add(param_container->params_list, env, value);
         if (AXIS2_SUCCESS != status)
         {
             axutil_array_list_free(param_container->params_list, env);
@@ -195,7 +201,8 @@ axutil_param_container_is_param_locked(
 
     param =
         (axutil_param_t
-         *) (axutil_hash_get(param_container->params, param_name, AXIS2_HASH_KEY_STRING));
+         *) (axutil_hash_get(param_container->params, param_name,
+                             AXIS2_HASH_KEY_STRING));
     if (!param)
     {
         /* In this case we consider param is not locked */

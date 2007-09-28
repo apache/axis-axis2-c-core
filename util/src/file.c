@@ -34,7 +34,8 @@ axutil_file_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    file = (axutil_file_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_file_t));
+    file =
+        (axutil_file_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_file_t));
 
     if (!file)
     {
@@ -102,7 +103,8 @@ axutil_file_get_name(
 {
     if (!file->name)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET,
+                        AXIS2_FAILURE);
         return NULL;
     }
     return (file->name);
@@ -141,7 +143,8 @@ axutil_file_get_path(
 {
     if (!(file->path))
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET,
+                        AXIS2_FAILURE);
         return NULL;
     }
 

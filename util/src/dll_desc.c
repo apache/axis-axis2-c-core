@@ -41,7 +41,9 @@ axutil_dll_desc_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    dll_desc = (axutil_dll_desc_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_dll_desc_t));
+    dll_desc =
+        (axutil_dll_desc_t *) AXIS2_MALLOC(env->allocator,
+                                           sizeof(axutil_dll_desc_t));
 
     if (!dll_desc)
     {

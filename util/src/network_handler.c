@@ -72,11 +72,13 @@ axutil_network_handler_open_socket(
 
         if (lphost)
         {
-            sock_addr.sin_addr.s_addr = ((struct in_addr *) lphost->h_addr)->s_addr;
+            sock_addr.sin_addr.s_addr =
+                ((struct in_addr *) lphost->h_addr)->s_addr;
         }
         else
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS,
+                            AXIS2_FAILURE);
             return AXIS2_INVALID_SOCKET;
         }
     }
@@ -90,10 +92,12 @@ axutil_network_handler_open_socket(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
         return AXIS2_INVALID_SOCKET;
     }
-    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *) &nodelay, sizeof(nodelay));
+    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char *) &nodelay,
+               sizeof(nodelay));
     ll.l_onoff = 1;
     ll.l_linger = 5;
-    setsockopt(sock, SOL_SOCKET, SO_LINGER, (const char *) &ll, sizeof(struct linger));
+    setsockopt(sock, SOL_SOCKET, SO_LINGER, (const char *) &ll,
+               sizeof(struct linger));
     return sock;
 }
 
@@ -135,12 +139,14 @@ axutil_network_handler_create_server_socket(
     /* Bind the socket to our port number */
     if (bind(sock, (struct sockaddr *) &sock_addr, sizeof(sock_addr)) < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_BIND_FAILED, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_BIND_FAILED,
+                        AXIS2_FAILURE);
         return AXIS2_INVALID_SOCKET;
     }
     if (listen(sock, 50) < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_LISTEN_FAILED, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_LISTEN_FAILED,
+                        AXIS2_FAILURE);
         return AXIS2_INVALID_SOCKET;
     }
     return sock;
@@ -206,7 +212,8 @@ axutil_network_handler_svr_socket_accept(
     cli_len = sizeof(cli_addr);
     cli_socket = accept(svr_socket, (struct sockaddr *) &cli_addr, &cli_len);
     if (cli_socket < 0)
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[Axis2][network_handler] Socket accept \
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "[Axis2][network_handler] Socket accept \
                 failed");
 
     setsockopt(svr_socket, IPPROTO_TCP, TCP_NODELAY, &nodelay, sizeof(nodelay));

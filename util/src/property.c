@@ -35,7 +35,9 @@ axutil_property_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    property = (axutil_property_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_property_t));
+    property =
+        (axutil_property_t *) AXIS2_MALLOC(env->allocator,
+                                           sizeof(axutil_property_t));
 
     if (!property)
     {
