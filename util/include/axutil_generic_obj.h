@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,7 +24,6 @@
 #include <axutil_env.h>
 #include <axutil_utils.h>
 
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -41,41 +41,45 @@ extern "C"
      * create new generic_obj
      * @return generic_obj newly created generic_obj
      */
-    AXIS2_EXTERN axutil_generic_obj_t * AXIS2_CALL
-    axutil_generic_obj_create(const axutil_env_t *env);
+    AXIS2_EXTERN axutil_generic_obj_t *AXIS2_CALL
+    axutil_generic_obj_create(
+        const axutil_env_t * env);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_generic_obj_free(axutil_generic_obj_t *generic_obj,
-        const axutil_env_t *env);
+    axutil_generic_obj_free(
+        axutil_generic_obj_t * generic_obj,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_generic_obj_set_free_func(axutil_generic_obj_t *generic_obj,
-        const axutil_env_t *env,
+    axutil_generic_obj_set_free_func(
+        axutil_generic_obj_t * generic_obj,
+        const axutil_env_t * env,
         AXIS2_FREE_VOID_ARG free_func);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_generic_obj_set_value(axutil_generic_obj_t *generic_obj,
-        const axutil_env_t *env,
+    axutil_generic_obj_set_value(
+        axutil_generic_obj_t * generic_obj,
+        const axutil_env_t * env,
         void *value);
 
-    AXIS2_EXTERN void * AXIS2_CALL
-    axutil_generic_obj_get_value(axutil_generic_obj_t *generic_obj,
-        const axutil_env_t *env);
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_generic_obj_get_value(
+        axutil_generic_obj_t * generic_obj,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_generic_obj_set_type(axutil_generic_obj_t *generic_obj,
-        const axutil_env_t *env,
+    axutil_generic_obj_set_type(
+        axutil_generic_obj_t * generic_obj,
+        const axutil_env_t * env,
         int type);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axutil_generic_obj_get_type(axutil_generic_obj_t *generic_obj,
-        const axutil_env_t *env);
-
+    axutil_generic_obj_get_type(
+        axutil_generic_obj_t * generic_obj,
+        const axutil_env_t * env);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  /* AXIS2_GENERIC_OBJ_H */
-
-
+#endif                          /* AXIS2_GENERIC_OBJ_H */

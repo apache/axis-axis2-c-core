@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -44,6 +45,7 @@ extern "C"
      */
     typedef struct entry_s
     {
+
         /** The element in the list. */
         void *data;
 
@@ -54,17 +56,19 @@ extern "C"
         struct entry_s *previous;
 
     }
-    entry_t; /* struct entry */
+    entry_t;                /* struct entry */
 
     /**
     * Create an empty linked list.
     */
-    AXIS2_EXTERN axutil_linked_list_t* AXIS2_CALL 
-    axutil_linked_list_create(const axutil_env_t *env);
+    AXIS2_EXTERN axutil_linked_list_t *AXIS2_CALL
+    axutil_linked_list_create(
+        const axutil_env_t * env);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_linked_list_free(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env);
+    axutil_linked_list_free(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env);
 
     /**
     * Obtain the Entry at a given position in a list. This method of course
@@ -78,9 +82,10 @@ extern "C"
     * @param n the number of the entry to get
     * @return the entry at position n
     */
-    AXIS2_EXTERN entry_t * AXIS2_CALL
-    axutil_linked_list_get_entry(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
+    AXIS2_EXTERN entry_t *AXIS2_CALL
+    axutil_linked_list_get_entry(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
         int n);
 
     /**
@@ -90,10 +95,10 @@ extern "C"
      * @param e the entry to remove
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_linked_list_remove_entry(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        entry_t *e);
-
+    axutil_linked_list_remove_entry(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
+        entry_t * e);
 
     /**
      * Checks that the index is in the range of possible elements (inclusive).
@@ -101,8 +106,10 @@ extern "C"
      * @param index the index to check
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axutil_linked_list_check_bounds_inclusive(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
+
+    axutil_linked_list_check_bounds_inclusive(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
         int index);
 
     /**
@@ -111,8 +118,10 @@ extern "C"
     * @param index the index to check
     */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axutil_linked_list_check_bounds_exclusive(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
+
+    axutil_linked_list_check_bounds_exclusive(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
         int index);
 
     /**
@@ -120,36 +129,40 @@ extern "C"
     *
     * @return the first list element
     */
-    AXIS2_EXTERN void * AXIS2_CALL
-    axutil_linked_list_get_first(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env);
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_linked_list_get_first(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env);
 
     /**
     * Returns the last element in the list.
     *
     * @return the last list element
     */
-    AXIS2_EXTERN void * AXIS2_CALL
-    axutil_linked_list_get_last(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env);
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_linked_list_get_last(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env);
 
     /**
     * Remove and return the first element in the list.
     *
     * @return the former first element in the list
     */
-    AXIS2_EXTERN void * AXIS2_CALL
-    axutil_linked_list_remove_first(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env);
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_linked_list_remove_first(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env);
 
     /**
     * Remove and return the last element in the list.
     *
     * @return the former last element in the list
     */
-    AXIS2_EXTERN void * AXIS2_CALL
-    axutil_linked_list_remove_last(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env);
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_linked_list_remove_last(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env);
 
     /**
     * Insert an element at the first of the list.
@@ -157,8 +170,9 @@ extern "C"
     * @param o the element to insert
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_linked_list_add_first(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
+    axutil_linked_list_add_first(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
         void *o);
 
     /**
@@ -167,8 +181,9 @@ extern "C"
     * @param o the element to insert
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_linked_list_add_last(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
+    axutil_linked_list_add_last(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
         void *o);
 
     /**
@@ -179,8 +194,9 @@ extern "C"
     * @return true if it is found
     */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axutil_linked_list_contains(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
+    axutil_linked_list_contains(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
         void *o);
 
     /**
@@ -189,8 +205,9 @@ extern "C"
     * @return the list size
     */
     AXIS2_EXTERN int AXIS2_CALL
-    axutil_linked_list_size(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env);
+    axutil_linked_list_size(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env);
 
     /**
     * Adds an element to the end of the list.
@@ -199,8 +216,9 @@ extern "C"
     * @return true, as it always succeeds
     */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axutil_linked_list_add(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
+    axutil_linked_list_add(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
         void *o);
 
     /**
@@ -211,16 +229,18 @@ extern "C"
     * @return true if an instance of the object was removed
     */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axutil_linked_list_remove(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
+    axutil_linked_list_remove(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
         void *o);
 
     /**
     * Remove all elements from this list.
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_linked_list_clear(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env);
+    axutil_linked_list_clear(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env);
 
     /**
     * Return the element at index.
@@ -228,9 +248,10 @@ extern "C"
     * @param index the place to look
     * @return the element at index
     */
-    AXIS2_EXTERN void * AXIS2_CALL
-    axutil_linked_list_get(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_linked_list_get(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
         int index);
 
     /**
@@ -240,10 +261,11 @@ extern "C"
     * @param o the new element
     * @return the prior element
     */
-    AXIS2_EXTERN void * AXIS2_CALL
-    axutil_linked_list_set(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
-        int index, 
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_linked_list_set(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
+        int index,
         void *o);
 
     /**
@@ -253,8 +275,9 @@ extern "C"
     * @param o the element to insert
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_linked_list_add_at_index(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
+    axutil_linked_list_add_at_index(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
         int index,
         void *o);
 
@@ -264,9 +287,10 @@ extern "C"
     * @param index the location of the element to remove
     * @return the removed element
     */
-    AXIS2_EXTERN void * AXIS2_CALL
-    axutil_linked_list_remove_at_index(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_linked_list_remove_at_index(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
         int index);
 
     /**
@@ -276,8 +300,9 @@ extern "C"
     * @return its position, or -1 if not found
     */
     AXIS2_EXTERN int AXIS2_CALL
-    axutil_linked_list_index_of(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
+    axutil_linked_list_index_of(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
         void *o);
 
     /**
@@ -287,8 +312,9 @@ extern "C"
     * @return its position, or -1 if not found
     */
     AXIS2_EXTERN int AXIS2_CALL
-    axutil_linked_list_last_index_of(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env,
+    axutil_linked_list_last_index_of(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env,
         void *o);
 
     /**
@@ -296,12 +322,13 @@ extern "C"
     *
     * @return an array containing the list elements
     */
-    AXIS2_EXTERN void ** AXIS2_CALL
-    axutil_linked_list_to_array(axutil_linked_list_t *linked_list,
-        const axutil_env_t *env);
+    AXIS2_EXTERN void **AXIS2_CALL
+    axutil_linked_list_to_array(
+        axutil_linked_list_t * linked_list,
+        const axutil_env_t * env);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif    /* AXIS2_LINKED_LIST_H */
+#endif                          /* AXIS2_LINKED_LIST_H */

@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -28,16 +29,17 @@ extern "C"
 {
 #endif
 
+    /**
+     * @defgroup axis2_milliseconds
+     * @ingroup axis2_milliseconds
+     * @{
+     */
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_platform_get_milliseconds(
+    );
 
-/**
- * @defgroup axis2_milliseconds
- * @ingroup axis2_milliseconds 
- * @{
- */
-AXIS2_EXTERN int AXIS2_CALL axis2_platform_get_milliseconds();
-   
 #ifdef __cplusplus
 }
 #endif
 
-#endif    
+#endif

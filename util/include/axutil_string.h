@@ -1,3 +1,4 @@
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -27,7 +28,7 @@
 extern "C"
 {
 #endif
-    
+
     /**
      * @defgroup axutil_string string
      * @ingroup axis2_util
@@ -43,10 +44,11 @@ extern "C"
      * @param env pointer to environment struct
      * @return a pointer to newly created string struct
      */
-    AXIS2_EXTERN axutil_string_t * AXIS2_CALL
-    axutil_string_create(const axutil_env_t *env,
-        const axis2_char_t *str);
-    
+    AXIS2_EXTERN axutil_string_t *AXIS2_CALL
+    axutil_string_create(
+        const axutil_env_t * env,
+        const axis2_char_t * str);
+
     /**
      * Creates a string struct.
      * @param str pointer to string. string struct would not create a duplicate 
@@ -54,20 +56,23 @@ extern "C"
      * @param env pointer to environment struct
      * @return a pointer to newly created string struct
      */
-    AXIS2_EXTERN axutil_string_t * AXIS2_CALL
-    axutil_string_create_assume_ownership(const axutil_env_t *env,
-        axis2_char_t **str);
+    AXIS2_EXTERN axutil_string_t *AXIS2_CALL
+
+    axutil_string_create_assume_ownership(
+        const axutil_env_t * env,
+        axis2_char_t ** str);
 
     /**
      * Creates a string struct.
      * @param str pointer to string. string struct would not create a duplicate 
      * of this and assumes the str would have longer life than that of itself
      * @param env pointer to environment struct
-     * @return a pointer to newly created string struct     
+     * @return a pointer to newly created string struct    
      */
-    AXIS2_EXTERN axutil_string_t* AXIS2_CALL
-    axutil_string_create_const(const axutil_env_t *env,
-        axis2_char_t **str);
+    AXIS2_EXTERN axutil_string_t *AXIS2_CALL
+    axutil_string_create_const(
+        const axutil_env_t * env,
+        axis2_char_t ** str);
 
     /**
      * Frees string struct.
@@ -76,8 +81,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_string_free(struct axutil_string *string,
-        const axutil_env_t *env);
+    axutil_string_free(
+        struct axutil_string *string,
+        const axutil_env_t * env);
 
     /**
      * Compares two strings. Checks if the two strings point to the same buffer.
@@ -88,8 +94,9 @@ extern "C"
      * @return AXIS2_TRUE if string equals string1, AXIS2_FALSE otherwise 
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axutil_string_equals(const struct axutil_string *string,
-        const axutil_env_t *env,
+    axutil_string_equals(
+        const struct axutil_string *string,
+        const axutil_env_t * env,
         const struct axutil_string *string1);
 
     /**
@@ -101,8 +108,9 @@ extern "C"
      * @returns pointer to cloned string struct instance
      */
     AXIS2_EXTERN struct axutil_string *AXIS2_CALL
-    axutil_string_clone(struct axutil_string *string,
-        const axutil_env_t *env);
+                axutil_string_clone(
+                    struct axutil_string *string,
+                    const axutil_env_t * env);
 
     /**
      * Gets string buffer.
@@ -110,16 +118,18 @@ extern "C"
      * @param env pointer to environment struct
      * @returns pointer to string buffer
      */
-    AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
-    axutil_string_get_buffer(const struct axutil_string *string,
-        const axutil_env_t *env);
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    axutil_string_get_buffer(
+        const struct axutil_string *string,
+        const axutil_env_t * env);
 
     /**
      * Gets string length.  * @param string pointer to string struct * @param env pointer to environment struct * @returns buffer length */
     AXIS2_EXTERN unsigned int AXIS2_CALL
-    axutil_string_get_length(const struct axutil_string *string,
-        const axutil_env_t *env);
-    
+    axutil_string_get_length(
+        const struct axutil_string *string,
+        const axutil_env_t * env);
+
     /** @} */
 
     /**
@@ -128,9 +138,10 @@ extern "C"
      * @{
      */
 
-    AXIS2_EXTERN void* AXIS2_CALL
-    axutil_strdup(const axutil_env_t *env,
-	    const void *ptr);
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_strdup(
+        const axutil_env_t * env,
+        const void *ptr);
 
     /**
      * duplicate the first n characters of a string into memory allocated 
@@ -139,9 +150,10 @@ extern "C"
      * @param n The number of characters to duplicate
      * @return The new string
      */
-    AXIS2_EXTERN void* AXIS2_CALL
-    axutil_strndup(const axutil_env_t *env,
-	    const void *ptr,
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_strndup(
+        const axutil_env_t * env,
+        const void *ptr,
         int n);
 
     /**
@@ -155,35 +167,42 @@ extern "C"
      *         has 'n' or more characters.  If the string might contain
      *         fewer characters, use axis2_strndup.
      */
-    AXIS2_EXTERN void * AXIS2_CALL
-    axutil_strmemdup(const void *ptr,
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_strmemdup(
+        const void *ptr,
         size_t n,
-        const axutil_env_t *env);
+        const axutil_env_t * env);
 
-    AXIS2_EXTERN void * AXIS2_CALL
-    axutil_memchr(const void *ptr,
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_memchr(
+        const void *ptr,
         int c,
         size_t n);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axutil_strcmp(const axis2_char_t * s1,
+    axutil_strcmp(
+        const axis2_char_t * s1,
         const axis2_char_t * s2);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axutil_strncmp(const axis2_char_t * s1,
+    axutil_strncmp(
+        const axis2_char_t * s1,
         const axis2_char_t * s2,
         int n);
 
     AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
-    axutil_strlen(const axis2_char_t * s);
+    axutil_strlen(
+        const axis2_char_t * s);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axutil_strcasecmp(const axis2_char_t *s1,
-        const axis2_char_t *s2);
+    axutil_strcasecmp(
+        const axis2_char_t * s1,
+        const axis2_char_t * s2);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axutil_strncasecmp(const axis2_char_t *s1,
-        const axis2_char_t *s2, 
+    axutil_strncasecmp(
+        const axis2_char_t * s1,
+        const axis2_char_t * s2,
         const int n);
 
     /* much similar to the strcat behaviour. But the difference is
@@ -191,23 +210,27 @@ extern "C"
      * modifying the first argument. The user should free the allocated
      * memory for the return value
      */
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_stracat(const axutil_env_t *env,
-	    const axis2_char_t *s1,
-        const axis2_char_t *s2);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_stracat(
+        const axutil_env_t * env,
+        const axis2_char_t * s1,
+        const axis2_char_t * s2);
 
     /**
      * Concatenate multiple strings, allocating memory
      * @param ... The strings to concatenate.  The final string must be NULL
      * @return The new string
      */
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axutil_strcat(const axutil_env_t *env, ...);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_strcat(
+        const axutil_env_t * env,
+        ...);
 
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axutil_strstr(const axis2_char_t *heystack,
-        const axis2_char_t *needle);
-    
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_strstr(
+        const axis2_char_t * heystack,
+        const axis2_char_t * needle);
+
     /**
      * Finds the first occurrence of a character in a string
      * @param s String in which the character is searched
@@ -215,35 +238,41 @@ extern "C"
      * @return Pointer to to the first occurence of the charecter if it could
      *         be found in the string, NULL otherwise 
      */
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axutil_strchr(const axis2_char_t *s,
-            axis2_char_t ch);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_strchr(
+        const axis2_char_t * s,
+        axis2_char_t ch);
 
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axutil_rindex(const axis2_char_t *s,
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_rindex(
+        const axis2_char_t * s,
         axis2_char_t c);
 
     /* replaces s1 with s2 */
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_replace(const axutil_env_t *env,
-        axis2_char_t *str,
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_replace(
+        const axutil_env_t * env,
+        axis2_char_t * str,
         int s1,
         int s2);
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_strltrim(const axutil_env_t *env,
-        const axis2_char_t *_s,
-        const axis2_char_t *_trim);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_strltrim(
+        const axutil_env_t * env,
+        const axis2_char_t * _s,
+        const axis2_char_t * _trim);
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_strrtrim(const axutil_env_t *env,
-        const axis2_char_t *_s,
-        const axis2_char_t *_trim);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_strrtrim(
+        const axutil_env_t * env,
+        const axis2_char_t * _s,
+        const axis2_char_t * _trim);
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_strtrim(const axutil_env_t *env,
-        const axis2_char_t *_s,
-        const axis2_char_t *_trim);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_strtrim(
+        const axutil_env_t * env,
+        const axis2_char_t * _s,
+        const axis2_char_t * _trim);
 
     /**
      * replace given axis2_character with a new one.
@@ -252,8 +281,9 @@ extern "C"
      * @param new_char  new axis2_char_tacter
      * @return      replaced string
      */
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_string_replace(axis2_char_t *str,
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_string_replace(
+        axis2_char_t * str,
         axis2_char_t old_char,
         axis2_char_t new_char);
 
@@ -263,8 +293,10 @@ extern "C"
      * @param c     starting index
      * @return      substring
      */
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_string_substring_starting_at(axis2_char_t *str,
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+
+    axutil_string_substring_starting_at(
+        axis2_char_t * str,
         int s);
 
     /**
@@ -273,8 +305,9 @@ extern "C"
      * @param c     ending index
      * @return      substring
      */
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_string_substring_ending_at(axis2_char_t *str,
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_string_substring_ending_at(
+        axis2_char_t * str,
         int e);
 
     /**
@@ -282,16 +315,18 @@ extern "C"
      * @param str   string
      * @return string with lowercase
      */
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_string_tolower(axis2_char_t *str);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_string_tolower(
+        axis2_char_t * str);
 
     /**
      * set a string to uppercase.
      * @param str   string
      * @return string with uppercase
      */
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_string_toupper(axis2_char_t *str);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_string_toupper(
+        axis2_char_t * str);
 
     /**
      * Finds the first occurrence of the substring needle in the string 
@@ -301,9 +336,10 @@ extern "C"
      * @return pointer to the beginning of the substring, 
      * or NULL  if  the  substring  is  not found
      */
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axutil_strcasestr(const axis2_char_t *heystack,
-        const axis2_char_t *needle);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_strcasestr(
+        const axis2_char_t * heystack,
+        const axis2_char_t * needle);
 
     /** @} */
 

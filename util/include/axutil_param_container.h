@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -51,9 +52,11 @@ extern "C"
      * type of function implemented. When the param value is set this function
      * should also be assigned to param free function
      */
-    typedef void (AXIS2_CALL *
-    AXIS2_PARAM_VALUE_FREE)(void *param, 
-        const axutil_env_t *env);
+    typedef void(
+        AXIS2_CALL
+        * AXIS2_PARAM_VALUE_FREE)(
+            void *param,
+            const axutil_env_t * env);
 
     typedef struct axutil_param_container axutil_param_container_t;
 
@@ -61,8 +64,10 @@ extern "C"
      * Creates param container struct
      * @return pointer to newly created param container
      */
-    AXIS2_EXTERN axutil_param_container_t * AXIS2_CALL
-    axutil_param_container_create(const axutil_env_t *env);
+    AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
+
+    axutil_param_container_create(
+        const axutil_env_t * env);
 
     /**
      * Free param_container passed as void pointer. This will be
@@ -70,55 +75,61 @@ extern "C"
      * into the param_container structure's free method
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_param_container_free_void_arg(void *param_container,
-        const axutil_env_t *env);
+    axutil_param_container_free_void_arg(
+        void *param_container,
+        const axutil_env_t * env);
 
     /** De-allocate memory
        * @return status code
        */
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_param_container_free(axutil_param_container_t *param_container,
-        const axutil_env_t *env);
+    axutil_param_container_free(
+        axutil_param_container_t * param_container,
+        const axutil_env_t * env);
 
     /** Add a param
       * @param param param to be added
       * @return status code
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_param_container_add_param(axutil_param_container_t *param_container,
-        const axutil_env_t *env,
-        axutil_param_t *param);
+    axutil_param_container_add_param(
+        axutil_param_container_t * param_container,
+        const axutil_env_t * env,
+        axutil_param_t * param);
 
     /** To get a param in a given description
       * @param name param name
       * @return param
       */
-    AXIS2_EXTERN axutil_param_t * AXIS2_CALL
-    axutil_param_container_get_param(axutil_param_container_t *param_container,
-        const axutil_env_t *env,
-        const axis2_char_t *name);
-
+    AXIS2_EXTERN axutil_param_t *AXIS2_CALL
+    axutil_param_container_get_param(
+        axutil_param_container_t * param_container,
+        const axutil_env_t * env,
+        const axis2_char_t * name);
 
     /** To get all the params in a given description
      * @return all the params contained
      */
-    AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-    axutil_param_container_get_params(axutil_param_container_t *param_container,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+
+    axutil_param_container_get_params(
+        axutil_param_container_t * param_container,
+        const axutil_env_t * env);
 
     /** To check whether the paramter is locked at any level
      * @param param_name name of the param
      * @return whether param is locked
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axutil_param_container_is_param_locked(axutil_param_container_t *param_container,
-        const axutil_env_t *env,
-        const axis2_char_t *param_name) ;
 
+    axutil_param_container_is_param_locked(
+        axutil_param_container_t * param_container,
+        const axutil_env_t * env,
+        const axis2_char_t * param_name);
 
     /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_PARAM_CONTAINER_H */
+#endif                          /* AXIS2_PARAM_CONTAINER_H */

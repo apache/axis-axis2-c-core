@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,7 +26,6 @@
 #include <axutil_array_list.h>
 #include <axutil_utils.h>
 
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -36,14 +36,17 @@ extern "C"
      * @ingroup axis2_util
      * @{
      */
+
     /**
      * List the dll files in the given service or module folder path
      * @param pathname path to your service or module directory
      * @return array list of dll file names
      */
-    AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-    axutil_dir_handler_list_services_or_modules_in_dir(const axutil_env_t *env,
-            const axis2_char_t *pathname);
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+
+    axutil_dir_handler_list_services_or_modules_in_dir(
+        const axutil_env_t * env,
+        const axis2_char_t * pathname);
 
     /**
      * List services or modules directories in the services or modules folder
@@ -51,9 +54,11 @@ extern "C"
      * @param pathname path  your modules or services folder
      * @return array list of contents of services or modules folder
      */
-    AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-    axutil_dir_handler_list_service_or_module_dirs(const axutil_env_t *env,
-            const axis2_char_t *pathname);
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+
+    axutil_dir_handler_list_service_or_module_dirs(
+        const axutil_env_t * env,
+        const axis2_char_t * pathname);
 
     /*
      *extentions for module and service archives

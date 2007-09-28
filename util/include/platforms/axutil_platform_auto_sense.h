@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,7 +16,6 @@
  * limitations under the License.
  */
 
-
 #ifndef AXIS2_PLATFORM_AUTOSENSE_H
 #define AXIS2_PLATFORM_AUTOSENSE_H
 
@@ -29,31 +29,31 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_platform_auto_sense 
- * @ingroup axis2_platforms
- * @{
- */
+    /** @defgroup axis2_platform_auto_sense
+     * @ingroup axis2_platforms
+     * @{
+     */
 
 #if defined( WIN32 )
-   #include "windows/axutil_windows.h"
-   #include "windows/axutil_dir_windows.h"
-   #include "windows/axutil_uuid_gen_windows.h"
-   #include "windows/axutil_getopt_windows.h"
-   #include "windows/axutil_date_time_util_windows.h"  
-   #include "windows/axutil_thread_windows.h"
+#include "windows/axutil_windows.h"
+#include "windows/axutil_dir_windows.h"
+#include "windows/axutil_uuid_gen_windows.h"
+#include "windows/axutil_getopt_windows.h"
+#include "windows/axutil_date_time_util_windows.h"
+#include "windows/axutil_thread_windows.h"
 #elif defined ( __OS400__  )
-  #include <os400/axis2_os400.h>
+#include <os400/axis2_os400.h>
 #elif defined ( AIX )
-  #include <aix/aix.h>
+#include <aix/aix.h>
 #elif defined ( HPUX )
-  #include <hp-ux/axis2_ht-ux.h>
+#include <hp-ux/axis2_ht-ux.h>
 #else
-  #include <platforms/unix/axutil_unix.h>
+#include <platforms/unix/axutil_unix.h>
 #endif
 
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AXIS2_PLATFORM_AUTOSENSE_H */
+#endif                          /* AXIS2_PLATFORM_AUTOSENSE_H */

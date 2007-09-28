@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -22,28 +23,27 @@
 #include <axutil_env.h>
 #include <platforms/axutil_platform_auto_sense.h>
 
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
+    /**
+     * @defgroup axutil_uuid_gen UUID generator
+     * @ingroup axis2_util
+     * @{
+     */
 
-/**
- * @defgroup axutil_uuid_gen UUID generator
- * @ingroup axis2_util 
- * @{
- */
-   
-/**
- * generate a uuid
- * @return generated uuid as a string
- */ 
-AXIS2_EXTERN int AXIS2_CALL
-axutil_get_milliseconds(const axutil_env_t *env);
+    /**
+     * generate a uuid
+     * @return generated uuid as a string
+     */
+    AXIS2_EXTERN int AXIS2_CALL
+    axutil_get_milliseconds(
+        const axutil_env_t * env);
 
-/** @} */
-    
+    /** @} */
+
 #ifdef __cplusplus
 }
 #endif

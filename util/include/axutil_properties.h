@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -41,8 +42,9 @@ extern "C"
      * create new properties
      * @return properties newly created properties
      */
-    AXIS2_EXTERN axutil_properties_t * AXIS2_CALL
-    axutil_properties_create(const axutil_env_t *env);
+    AXIS2_EXTERN axutil_properties_t *AXIS2_CALL
+    axutil_properties_create(
+        const axutil_env_t * env);
 
     /**
      * free w2c_properties.
@@ -52,8 +54,9 @@ extern "C"
      *     else AXIS2_FAILURE
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_properties_free(axutil_properties_t *properties,
-        const axutil_env_t *env);
+    axutil_properties_free(
+        axutil_properties_t * properties,
+        const axutil_env_t * env);
 
     /**
      * get string value for property with specified key.
@@ -62,10 +65,12 @@ extern "C"
      * @param  key MUST NOT be NULL
      * @return value of the property
      */
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_properties_get_property(axutil_properties_t *properties,
-        const axutil_env_t *env,
-        axis2_char_t *key);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_properties_get_property(
+        axutil_properties_t * properties,
+        const axutil_env_t * env,
+        axis2_char_t * key);
+
     /**
      * set a property ( key, value) pair.
      * @param  properties pointer to properties struct
@@ -76,19 +81,22 @@ extern "C"
      *     else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_properties_set_property(axutil_properties_t *properties,
-        const axutil_env_t *env,
-        axis2_char_t *key,
-        axis2_char_t *value);
+    axutil_properties_set_property(
+        axutil_properties_t * properties,
+        const axutil_env_t * env,
+        axis2_char_t * key,
+        axis2_char_t * value);
+
     /**
      * retrieve the hash with all the properties
      * @param  properties pointer to properties struct
      * @param  env Environment. MUST NOT be NULL
      * @return hash (key,value)
      */
-    AXIS2_EXTERN axutil_hash_t* AXIS2_CALL
-    axutil_properties_get_all(axutil_properties_t *properties,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+    axutil_properties_get_all(
+        axutil_properties_t * properties,
+        const axutil_env_t * env);
 
     /**
      * load properties
@@ -99,9 +107,10 @@ extern "C"
      *     else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_properties_load(axutil_properties_t *properties,
-        const axutil_env_t *env,
-        axis2_char_t *input_filename);
+    axutil_properties_load(
+        axutil_properties_t * properties,
+        const axutil_env_t * env,
+        axis2_char_t * input_filename);
 
     /**
      * store properties
@@ -112,13 +121,12 @@ extern "C"
      *     else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_properties_store(axutil_properties_t *properites,
-        const axutil_env_t *env,
-        FILE *output);
-    
+    axutil_properties_store(
+        axutil_properties_t * properites,
+        const axutil_env_t * env,
+        FILE * output);
+
     /*************************** End of function macros ***************************/
-
-
 
     /** @} */
 
@@ -126,4 +134,4 @@ extern "C"
 }
 #endif
 
-#endif  /* AXIS2_PROPERTIES_H */
+#endif                          /* AXIS2_PROPERTIES_H */

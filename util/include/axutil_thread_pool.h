@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -48,17 +49,20 @@ extern "C"
      * @return pointer to a thread in ready state.
      */
     AXIS2_EXTERN axutil_thread_t *AXIS2_CALL
-    axutil_thread_pool_get_thread(axutil_thread_pool_t *pool,
-            axutil_thread_start_t func,
-            void *data);
+    axutil_thread_pool_get_thread(
+        axutil_thread_pool_t * pool,
+        axutil_thread_start_t func,
+        void *data);
+
     /**
      * Blocks until the desired thread stops executing.
      * @param thd The thread to joined
      * @return status of the operation
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_thread_pool_join_thread(axutil_thread_pool_t *pool,
-            axutil_thread_t *thd);
+    axutil_thread_pool_join_thread(
+        axutil_thread_pool_t * pool,
+        axutil_thread_t * thd);
 
     /**
      * Stop the execution of current thread
@@ -66,46 +70,52 @@ extern "C"
      * @return status of the operation
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_thread_pool_exit_thread(axutil_thread_pool_t *pool,
-            axutil_thread_t *thd);
-    
+    axutil_thread_pool_exit_thread(
+        axutil_thread_pool_t * pool,
+        axutil_thread_t * thd);
+
     /**
      * Detaches a thread
      * @param thd thread to be detached
      * @return status of the operation
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_thread_pool_thread_detach(axutil_thread_pool_t *pool,
-            axutil_thread_t *thd);
+    axutil_thread_pool_thread_detach(
+        axutil_thread_pool_t * pool,
+        axutil_thread_t * thd);
 
     /**
      * Frees resources used by thread_pool
      * @param pool thread_pool to be freed
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_thread_pool_free(axutil_thread_pool_t *pool);
+    axutil_thread_pool_free(
+        axutil_thread_pool_t * pool);
 
     /**
     * Initializes (creates) an thread_pool.
     * @param allocator user defined allocator for the memory allocation.
     * @return initialized thread_pool. NULL on error.
     */
-    AXIS2_EXTERN axutil_thread_pool_t * AXIS2_CALL 
-    axutil_thread_pool_init(axutil_allocator_t *allocator);
+    AXIS2_EXTERN axutil_thread_pool_t *AXIS2_CALL
+    axutil_thread_pool_init(
+        axutil_allocator_t * allocator);
 
     /**
      * This function can be used to initialize the environment in case of
      * spawning a new thread via a thread function
      */
-    AXIS2_EXTERN struct axutil_env * AXIS2_CALL
-    axutil_init_thread_env(const struct axutil_env *system_env);
+    AXIS2_EXTERN struct axutil_env *AXIS2_CALL
+                axutil_init_thread_env(
+                    const struct axutil_env *system_env);
 
     /**
      * This function can be used to free the environment that was used
      * in a thread function
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_free_thread_env(struct axutil_env *thread_env);
+    axutil_free_thread_env(
+        struct axutil_env *thread_env);
 
     /** @} */
 
@@ -113,4 +123,4 @@ extern "C"
 }
 #endif
 
-#endif    /* AXIS2_THREAD_POOL_H */
+#endif                          /* AXIS2_THREAD_POOL_H */

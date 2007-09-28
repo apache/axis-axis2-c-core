@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -28,7 +29,6 @@ extern "C"
     typedef struct axutil_log_ops axutil_log_ops_t;
     typedef struct axutil_log axutil_log_t;
 
-
 #define AXIS2_LOG_SI __FILE__,__LINE__
 
     /**
@@ -49,21 +49,28 @@ extern "C"
       *CRITICAL and ERROR logs are always written to file and other logs are written 
       *depending on the log level set (log->level)
       */
+
     /**
       * \brief Axis2 log levels
       */
     typedef enum axutil_log_levels
     {
+
         /** Critical level, logs only critical errors */
         AXIS2_LOG_LEVEL_CRITICAL = 0,
+
         /** Error level, logs only errors */
         AXIS2_LOG_LEVEL_ERROR,
+
         /** Warning level, logs only warnings */
         AXIS2_LOG_LEVEL_WARNING,
+
         /** Info level, logs information */
         AXIS2_LOG_LEVEL_INFO,
+
         /** Debug level, logs everything */
         AXIS2_LOG_LEVEL_DEBUG,
+
         /** Trace level, Enable with compiler time option AXIS2_TRACE */
         AXIS2_LOG_LEVEL_TRACE
     } axutil_log_levels_t;
@@ -81,9 +88,11 @@ extern "C"
          * @return axis2_status_t AXIS2_SUCCESS on success else AXIS2_FAILURE
          */
 
-        void(AXIS2_CALL *
-        free)(axutil_allocator_t *allocator,
-            struct axutil_log *log);
+        void(
+            AXIS2_CALL
+            * free)(
+                axutil_allocator_t * allocator,
+                struct axutil_log * log);
 
         /**
           * writes to the log
@@ -91,12 +100,14 @@ extern "C"
           * @param size size of the buffer to be written to log
           * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
           */
-        void(AXIS2_CALL *
-        write)(axutil_log_t *log,
-            const axis2_char_t *buffer,
-            axutil_log_levels_t level,
-            const axis2_char_t *file,
-            const int line);
+        void(
+            AXIS2_CALL
+            * write)(
+                axutil_log_t * log,
+                const axis2_char_t * buffer,
+                axutil_log_levels_t level,
+                const axis2_char_t * file,
+                const int line);
     };
 
     /**
@@ -106,58 +117,75 @@ extern "C"
       */
     struct axutil_log
     {
+
         /** Log related ops */
         const axutil_log_ops_t *ops;
+
         /** Log level */
         axutil_log_levels_t level;
+
         /** Is logging enabled? */
         axis2_bool_t enabled;
 
     };
 
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_log_impl_log_critical(axutil_log_t *log,
-            const axis2_char_t *filename,
-            const int linenumber,
-            const axis2_char_t *format, ...);
+    axutil_log_impl_log_critical(
+        axutil_log_t * log,
+        const axis2_char_t * filename,
+        const int linenumber,
+        const axis2_char_t * format,
+        ...);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_log_impl_log_error(axutil_log_t *log,
-            const axis2_char_t *filename,
-            const int linenumber,
-            const axis2_char_t *format, ...);
+    axutil_log_impl_log_error(
+        axutil_log_t * log,
+        const axis2_char_t * filename,
+        const int linenumber,
+        const axis2_char_t * format,
+        ...);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_log_impl_log_warning(axutil_log_t *log,
-            const axis2_char_t *filename,
-            const int linenumber,
-            const axis2_char_t *format, ...);
+    axutil_log_impl_log_warning(
+        axutil_log_t * log,
+        const axis2_char_t * filename,
+        const int linenumber,
+        const axis2_char_t * format,
+        ...);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_log_impl_log_info(axutil_log_t *log,
-            const axis2_char_t *format, ...);
+    axutil_log_impl_log_info(
+        axutil_log_t * log,
+        const axis2_char_t * format,
+        ...);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_log_impl_log_debug(axutil_log_t *log,
-            const axis2_char_t *filename,
-            const int linenumber,
-            const axis2_char_t *format, ...);
+    axutil_log_impl_log_debug(
+        axutil_log_t * log,
+        const axis2_char_t * filename,
+        const int linenumber,
+        const axis2_char_t * format,
+        ...);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_log_impl_log_trace(axutil_log_t *log,
-            const axis2_char_t *filename,
-            const int linenumber,
-            const axis2_char_t *format, ...);
+    axutil_log_impl_log_trace(
+        axutil_log_t * log,
+        const axis2_char_t * filename,
+        const int linenumber,
+        const axis2_char_t * format,
+        ...);
 
-    AXIS2_EXTERN void AXIS2_CALL 
-    axutil_log_free(axutil_allocator_t *allocator,
+    AXIS2_EXTERN void AXIS2_CALL
+    axutil_log_free(
+        axutil_allocator_t * allocator,
         struct axutil_log *log);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_log_write(axutil_log_t *log,
-        const axis2_char_t *buffer,
+    axutil_log_write(
+        axutil_log_t * log,
+        const axis2_char_t * buffer,
         axutil_log_levels_t level,
-        const axis2_char_t *file,
+        const axis2_char_t * file,
         const int line);
 
 #define AXIS2_LOG_FREE(allocator, log) \
@@ -195,7 +223,3 @@ extern "C"
 #endif
 
 #endif                          /* AXIS2_LOG_H */
-
-
-
-

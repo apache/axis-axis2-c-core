@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,24 +26,25 @@ extern "C"
 {
 #endif
 
-    AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-    axutil_tokenize(const axutil_env_t *env,
-        axis2_char_t *in,
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axutil_tokenize(
+        const axutil_env_t * env,
+        axis2_char_t * in,
         int delim);
 
-    AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-    axutil_first_token(const axutil_env_t *env,
-        axis2_char_t *in,
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axutil_first_token(
+        const axutil_env_t * env,
+        axis2_char_t * in,
         int delim);
 
-    AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-    axutil_last_token(const axutil_env_t *env,
-        axis2_char_t *in,
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axutil_last_token(
+        const axutil_env_t * env,
+        axis2_char_t * in,
         int delim);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_STRING_UTIL_H */
-
-
+#endif                          /* AXIS2_STRING_UTIL_H */

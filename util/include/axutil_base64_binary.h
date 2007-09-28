@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -46,9 +47,10 @@ extern "C"
      * @param env double pointer to environment struct. MUST NOT be NULL
      * @return pointer to newly created axutil_base64_binary struct
      */
-    AXIS2_EXTERN axutil_base64_binary_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_base64_binary_t *AXIS2_CALL
+
     axutil_base64_binary_create(
-        const axutil_env_t *env);
+        const axutil_env_t * env);
 
     /**
      * Creates axutil_base64_binary struct
@@ -56,9 +58,10 @@ extern "C"
      * @param plain_binary binary buffer to initialize
      * @return pointer to newly created axutil_base64_binary struct
      */
-    AXIS2_EXTERN axutil_base64_binary_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_base64_binary_t *AXIS2_CALL
+
     axutil_base64_binary_create_with_plain_binary(
-        const axutil_env_t *env,
+        const axutil_env_t * env,
         const unsigned char *plain_binary,
         int plain_binary_len);
 
@@ -68,9 +71,10 @@ extern "C"
      * @param encoded_binary binary buffer to initialize 
      * @return pointer to newly created axutil_base64_binary struct
      */
-    AXIS2_EXTERN axutil_base64_binary_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_base64_binary_t *AXIS2_CALL
+
     axutil_base64_binary_create_with_encoded_binary(
-        const axutil_env_t *env,
+        const axutil_env_t * env,
         const char *encoded_binary);
 
     /**
@@ -79,9 +83,10 @@ extern "C"
      * @param env pointer to environment struct. MUST NOT be NULL
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    AXIS2_EXTERN void AXIS2_CALL 
-    axutil_base64_binary_free(axutil_base64_binary_t *base64_binary,
-        const axutil_env_t *env);
+    AXIS2_EXTERN void AXIS2_CALL
+    axutil_base64_binary_free(
+        axutil_base64_binary_t * base64_binary,
+        const axutil_env_t * env);
 
     /**
      * store the value from plain binary.
@@ -91,10 +96,12 @@ extern "C"
      * @param plain_binary_len length of the plain_binary binary buffer
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axutil_base64_binary_set_plain_binary(axutil_base64_binary_t *base64_binary,
-        const axutil_env_t *env,
-        const unsigned char* plain_binary,
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+    axutil_base64_binary_set_plain_binary(
+        axutil_base64_binary_t * base64_binary,
+        const axutil_env_t * env,
+        const unsigned char *plain_binary,
         int plain_binary_len);
 
     /**
@@ -105,10 +112,12 @@ extern "C"
      * @return the plain binary
      */
 
-    AXIS2_EXTERN unsigned char* AXIS2_CALL 
-    axutil_base64_binary_get_plain_binary(axutil_base64_binary_t *base64_binary,
-        const axutil_env_t *env,
-        int* plain_binary_len);
+    AXIS2_EXTERN unsigned char *AXIS2_CALL
+
+    axutil_base64_binary_get_plain_binary(
+        axutil_base64_binary_t * base64_binary,
+        const axutil_env_t * env,
+        int *plain_binary_len);
 
     /**
      * store the value from encoded binary.
@@ -117,10 +126,12 @@ extern "C"
      * @param encoded_binary encoded binary buffer to store
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axutil_base64_binary_set_encoded_binary(axutil_base64_binary_t *base64_binary,
-        const axutil_env_t *env,
-        const char* encoded_binary);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+    axutil_base64_binary_set_encoded_binary(
+        axutil_base64_binary_t * base64_binary,
+        const axutil_env_t * env,
+        const char *encoded_binary);
 
     /**
      * retrieve the value from encoded binary.
@@ -128,9 +139,10 @@ extern "C"
      * @param env pointer to environment struct. MUST NOT be NULL
      * @return the encoded binary
      */
-    AXIS2_EXTERN char* AXIS2_CALL 
-    axutil_base64_binary_get_encoded_binary(axutil_base64_binary_t *base64_binary,
-        const axutil_env_t *env);
+    AXIS2_EXTERN char *AXIS2_CALL
+    axutil_base64_binary_get_encoded_binary(
+        axutil_base64_binary_t * base64_binary,
+        const axutil_env_t * env);
 
     /**
      * retrieve the value from encoded binary length.
@@ -138,9 +150,10 @@ extern "C"
      * @param env pointer to environment struct. MUST NOT be NULL
      * @return the encoded binary length
      */
-    AXIS2_EXTERN int AXIS2_CALL 
-    axutil_base64_binary_get_encoded_binary_len(axutil_base64_binary_t *base64_binary,
-        const axutil_env_t *env);
+    AXIS2_EXTERN int AXIS2_CALL
+    axutil_base64_binary_get_encoded_binary_len(
+        axutil_base64_binary_t * base64_binary,
+        const axutil_env_t * env);
 
     /**
      * retrieve the value from decoded binary length.
@@ -148,12 +161,13 @@ extern "C"
      * @param env pointer to environment struct. MUST NOT be NULL
      * @return the decoded binary length
      */
-    AXIS2_EXTERN int AXIS2_CALL 
-    axutil_base64_binary_get_decoded_binary_len(axutil_base64_binary_t *base64_binary,
-        const axutil_env_t *env);
+    AXIS2_EXTERN int AXIS2_CALL
+    axutil_base64_binary_get_decoded_binary_len(
+        axutil_base64_binary_t * base64_binary,
+        const axutil_env_t * env);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AXIS2_BASE64_BINARY_H */
+#endif                          /* AXIS2_BASE64_BINARY_H */

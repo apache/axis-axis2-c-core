@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,7 +18,6 @@
 
 #ifndef AXUTIL_STACK_H
 #define AXUTIL_STACK_H
-
 
 /**
 * @file axutil_stack.h
@@ -40,8 +40,9 @@ extern "C"
 
     typedef struct axutil_stack axutil_stack_t;
 
-    AXIS2_EXTERN axutil_stack_t * AXIS2_CALL
-    axutil_stack_create(const axutil_env_t *env);
+    AXIS2_EXTERN axutil_stack_t *AXIS2_CALL
+    axutil_stack_create(
+        const axutil_env_t * env);
 
     /**
      * Free function of the stack
@@ -49,32 +50,39 @@ extern "C"
      * @param env environemnt
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_stack_free(axutil_stack_t *stack,
-        const axutil_env_t *env);
+    axutil_stack_free(
+        axutil_stack_t * stack,
+        const axutil_env_t * env);
 
-    AXIS2_EXTERN void* AXIS2_CALL
-    axutil_stack_pop(axutil_stack_t *stack,
-        const axutil_env_t *env);
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_stack_pop(
+        axutil_stack_t * stack,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_stack_push(axutil_stack_t *stack,
-        const axutil_env_t *env,
-        void* value);
+    axutil_stack_push(
+        axutil_stack_t * stack,
+        const axutil_env_t * env,
+        void *value);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axutil_stack_size(axutil_stack_t *stack,
-        const axutil_env_t *env);
+    axutil_stack_size(
+        axutil_stack_t * stack,
+        const axutil_env_t * env);
+
     /**
      * returns the last put value from the stack
      * without removing it from stack
      */
-    AXIS2_EXTERN void* AXIS2_CALL
-    axutil_stack_get(axutil_stack_t *stack,
-        const axutil_env_t *env);
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_stack_get(
+        axutil_stack_t * stack,
+        const axutil_env_t * env);
 
-    AXIS2_EXTERN void* AXIS2_CALL
-    axutil_stack_get_at(axutil_stack_t *stack,
-        const axutil_env_t *env,
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_stack_get_at(
+        axutil_stack_t * stack,
+        const axutil_env_t * env,
         int i);
 
     /** @} */
@@ -82,5 +90,4 @@ extern "C"
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_STACK_H */
-
+#endif                          /* AXIS2_STACK_H */

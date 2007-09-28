@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,30 +24,35 @@
 
 #define SHELL_PATH "/bin/sh"
 
-typedef pthread_t axis2_os_thread_t; /* Native thread */
+typedef pthread_t axis2_os_thread_t;    /* Native thread */
 
-struct axutil_thread_t {
+struct axutil_thread_t
+{
     pthread_t *td;
     void *data;
     axutil_thread_start_t func;
 };
 
-struct axutil_threadattr_t {
+struct axutil_threadattr_t
+{
     pthread_attr_t attr;
 };
 
-struct axutil_threadkey_t {
+struct axutil_threadkey_t
+{
     pthread_key_t key;
 };
 
-struct axutil_thread_once_t {
+struct axutil_thread_once_t
+{
     pthread_once_t once;
 };
 
 /*************************Thread locking functions*****************************/
-struct axutil_thread_mutex_t {
+struct axutil_thread_mutex_t
+{
     axutil_allocator_t *allocator;
     pthread_mutex_t mutex;
 };
 
-#endif  /* AXIS2_THREAD_UNIX_H */
+#endif                          /* AXIS2_THREAD_UNIX_H */

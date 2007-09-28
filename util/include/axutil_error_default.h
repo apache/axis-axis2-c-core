@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -27,26 +28,25 @@ extern "C"
 {
 #endif
 
-/**
- * @defgroup axutil_error Error
- * @ingroup axis2_util 
- * @{
- */
+    /**
+     * @defgroup axutil_error Error
+     * @ingroup axis2_util
+     * @{
+     */
 
+    /**
+      * Creates an error struct
+      * @param allocator allocator to be used. Mandatory, cannot be NULL  
+      * @return pointer to the newly created error struct 
+      */
+    AXIS2_EXTERN axutil_error_t *AXIS2_CALL
+    axutil_error_create(
+        axutil_allocator_t * allocator);
 
-  /**
-    * Creates an error struct
-    * @param allocator allocator to be used. Mandatory, cannot be NULL    
-    * @return pointer to the newly created error struct 
-    */
-    AXIS2_EXTERN axutil_error_t *AXIS2_CALL axutil_error_create (axutil_allocator_t * allocator);
+    /** @} */
 
-
-/** @} */
-    
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif                          /* AXIS2_ERROR_DEFAULT_H */

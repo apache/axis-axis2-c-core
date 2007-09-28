@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -40,7 +41,6 @@ extern "C"
       * @}
       */
 
-
     struct axutil_env;
     struct axutil_env_ops;
 
@@ -58,14 +58,19 @@ extern "C"
       */
     typedef struct axutil_env
     {
+
         /** Memory allocation routines */
         axutil_allocator_t *allocator;
+
         /** Error handling */
         axutil_error_t *error;
+
         /** Logging routines */
         axutil_log_t *log;
+
         /** This flag indicate whether logging is enabled or not */
         axis2_bool_t log_enabled;
+
         /** Thread pooling routines */
         axutil_thread_pool_t *thread_pool;
     }
@@ -78,8 +83,9 @@ extern "C"
     * @param log_level log level to be used
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_EXTERN axutil_env_t * AXIS2_CALL 
-    axutil_env_create_all(const axis2_char_t *log_file,
+    AXIS2_EXTERN axutil_env_t *AXIS2_CALL
+    axutil_env_create_all(
+        const axis2_char_t * log_file,
         const axutil_log_levels_t log_level);
 
     /**
@@ -88,8 +94,9 @@ extern "C"
      * @param allocator pointer to an instance of allocator struct. Must be non-NULL   
      * @return pointer to the newly created environment struct 
      */
-    AXIS2_EXTERN axutil_env_t * AXIS2_CALL 
-    axutil_env_create(axutil_allocator_t *allocator);
+    AXIS2_EXTERN axutil_env_t *AXIS2_CALL
+    axutil_env_create(
+        axutil_allocator_t * allocator);
 
     /**
       * Creates an environment struct
@@ -98,9 +105,10 @@ extern "C"
       * it would be taken as a flag for no logging.  
       * @return pointer to the newly created environment struct 
       */
-    AXIS2_EXTERN axutil_env_t * AXIS2_CALL 
-    axutil_env_create_with_error(axutil_allocator_t *allocator, 
-        axutil_error_t *error);
+    AXIS2_EXTERN axutil_env_t *AXIS2_CALL
+    axutil_env_create_with_error(
+        axutil_allocator_t * allocator,
+        axutil_error_t * error);
 
     /**
      * Creates an environment struct
@@ -110,10 +118,11 @@ extern "C"
      * it would be taken as a flag for no logging.   
      * @return pointer to the newly created environment struct 
      */
-    AXIS2_EXTERN axutil_env_t * AXIS2_CALL 
-    axutil_env_create_with_error_log(axutil_allocator_t *allocator, 
-        axutil_error_t *error, 
-        axutil_log_t *log);
+    AXIS2_EXTERN axutil_env_t *AXIS2_CALL
+    axutil_env_create_with_error_log(
+        axutil_allocator_t * allocator,
+        axutil_error_t * error,
+        axutil_log_t * log);
 
     /**
     * Creates an environment struct
@@ -124,11 +133,13 @@ extern "C"
     * @param pool pointer to an instance of thread_pool. May be NULL. If NULL
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_EXTERN axutil_env_t * AXIS2_CALL 
-    axutil_env_create_with_error_log_thread_pool(axutil_allocator_t *allocator, 
-        axutil_error_t *error, 
-        axutil_log_t *log, 
-        axutil_thread_pool_t *pool);
+    AXIS2_EXTERN axutil_env_t *AXIS2_CALL
+
+    axutil_env_create_with_error_log_thread_pool(
+        axutil_allocator_t * allocator,
+        axutil_error_t * error,
+        axutil_log_t * log,
+        axutil_thread_pool_t * pool);
 
     /**
       * Creates an environment struct
@@ -141,8 +152,9 @@ extern "C"
       * Optional, can be NULL. If NULL default string handler would be used.
       * @return pointer to the newly created environment struct 
       */
-    AXIS2_EXTERN void AXIS2_CALL 
-    axutil_env_free(axutil_env_t *env);
+    AXIS2_EXTERN void AXIS2_CALL
+    axutil_env_free(
+        axutil_env_t * env);
 
     /**
     * Frees the environment
@@ -156,29 +168,33 @@ extern "C"
     *       Eg : 0x3 frees both log and error
     * @return status of the operation
     */
-    AXIS2_EXTERN void AXIS2_CALL 
-    axutil_env_free_masked(axutil_env_t *env, 
+    AXIS2_EXTERN void AXIS2_CALL
+    axutil_env_free_masked(
+        axutil_env_t * env,
         char mask);
+
     /**
      * Enables logging
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axutil_env_enable_log(axutil_env_t *env, 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_env_enable_log(
+        axutil_env_t * env,
         axis2_bool_t enable);
 
     /**
       * Checks the status code of environment
       */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axutil_env_check_status(const axutil_env_t *env);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_env_check_status(
+        const axutil_env_t * env);
 
-/*#define AXIS2_ENV_CHECK(env, error_return) \
-    if(!env) \
-    { \
-        return error_return; \
-    }*/
+    /*#define AXIS2_ENV_CHECK(env, error_return) \
+        if(!env) \
+        { \
+            return error_return; \
+        }*/
 
-#define AXIS2_ENV_CHECK(env, error_return) 
+#define AXIS2_ENV_CHECK(env, error_return)
 
     /** @} */
 
@@ -187,5 +203,3 @@ extern "C"
 #endif
 
 #endif                          /* AXIS2_ENV_H */
-
-

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -24,7 +25,6 @@
 #include <axutil_utils.h>
 #include <platforms/axutil_platform_auto_sense.h>
 
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -42,51 +42,58 @@ extern "C"
      * create new file
      * @return file newly created file
      */
-    AXIS2_EXTERN axutil_file_t * AXIS2_CALL
-    axutil_file_create(const axutil_env_t *env);
+    AXIS2_EXTERN axutil_file_t *AXIS2_CALL
+    axutil_file_create(
+        const axutil_env_t * env);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_file_free(axutil_file_t *file,
-        const axutil_env_t *env);
+    axutil_file_free(
+        axutil_file_t * file,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_file_set_name(axutil_file_t *file,
-        const axutil_env_t *env,
-        axis2_char_t *name);
+    axutil_file_set_name(
+        axutil_file_t * file,
+        const axutil_env_t * env,
+        axis2_char_t * name);
 
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axutil_file_get_name(axutil_file_t *file,
-        const axutil_env_t *env);
-
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_file_set_path(axutil_file_t *file,
-        const axutil_env_t *env,
-        axis2_char_t *path);
-
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axutil_file_get_path(axutil_file_t *file,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_file_get_name(
+        axutil_file_t * file,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_file_set_timestamp(axutil_file_t *file,
-        const axutil_env_t *env,
+    axutil_file_set_path(
+        axutil_file_t * file,
+        const axutil_env_t * env,
+        axis2_char_t * path);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_file_get_path(
+        axutil_file_t * file,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_file_set_timestamp(
+        axutil_file_t * file,
+        const axutil_env_t * env,
         AXIS2_TIME_T timestamp);
 
     AXIS2_EXTERN AXIS2_TIME_T AXIS2_CALL
-    axutil_file_get_timestamp(axutil_file_t *file,
-        const axutil_env_t *env);
+    axutil_file_get_timestamp(
+        axutil_file_t * file,
+        const axutil_env_t * env);
 
     /**
      * create a newly allocated clone of the argument file
      */
-    AXIS2_EXTERN axutil_file_t * AXIS2_CALL
-    axutil_file_clone(axutil_file_t *file,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axutil_file_t *AXIS2_CALL
+    axutil_file_clone(
+        axutil_file_t * file,
+        const axutil_env_t * env);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  /* AXIS2_FILE_H */
-
-
+#endif                          /* AXIS2_FILE_H */

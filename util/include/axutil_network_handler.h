@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -23,13 +24,10 @@
 #include <sys/types.h>
 #include <platforms/axutil_platform_auto_sense.h>
 
-
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
 
     /**
      * @defgroup axutil_network_handler network handler
@@ -44,9 +42,11 @@ extern "C"
      * @return opened socket
      */
     AXIS2_EXTERN axis2_socket_t AXIS2_CALL
-    axutil_network_handler_open_socket(const axutil_env_t *env,
-            char *server,
-            int port);
+
+    axutil_network_handler_open_socket(
+        const axutil_env_t * env,
+        char *server,
+        int port);
 
     /**
      * creates a server socket for a given port
@@ -54,8 +54,10 @@ extern "C"
      * @return creates server socket
      */
     AXIS2_EXTERN axis2_socket_t AXIS2_CALL
-    axutil_network_handler_create_server_socket(const axutil_env_t *env,
-            int port);
+
+    axutil_network_handler_create_server_socket(
+        const axutil_env_t * env,
+        int port);
 
     /**
      * closes a socket
@@ -63,8 +65,10 @@ extern "C"
      * @return status code
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_network_handler_close_socket(const axutil_env_t *env,
-            axis2_socket_t socket);
+
+    axutil_network_handler_close_socket(
+        const axutil_env_t * env,
+        axis2_socket_t socket);
 
     /**
      * used to set up socket options such as timeouts, non-blocking ..etc
@@ -74,31 +78,38 @@ extern "C"
      * @return status of the operations as axis2_status_t
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_network_handler_set_sock_option(const axutil_env_t *env,
-            axis2_socket_t socket,
-            int option,
-            int value);
+
+    axutil_network_handler_set_sock_option(
+        const axutil_env_t * env,
+        axis2_socket_t socket,
+        int option,
+        int value);
+
     /**
      * Accepts remote connections for a server socket
      * @param socket valid server socket (obtained by socket() or similar call)
      * @return created socket to handle the incoming client connection
      */
     AXIS2_EXTERN axis2_socket_t AXIS2_CALL
-    axutil_network_handler_svr_socket_accept(const axutil_env_t *env,
-            axis2_socket_t socket);
+
+    axutil_network_handler_svr_socket_accept(
+        const axutil_env_t * env,
+        axis2_socket_t socket);
 
     /**
      * Returns the ip address of the server associated with the socket
      * @param socket valid socket (obtained by accept() or similar call)
      * @return ip address asoociated with the socket or NULL
      */
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axutil_network_handler_get_svr_ip(const axutil_env_t *env,
-            axis2_socket_t socket);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_network_handler_get_svr_ip(
+        const axutil_env_t * env,
+        axis2_socket_t socket);
 
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axutil_network_handler_get_peer_ip(const axutil_env_t *env,
-            axis2_socket_t socket);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_network_handler_get_peer_ip(
+        const axutil_env_t * env,
+        axis2_socket_t socket);
 
     /** @} */
 

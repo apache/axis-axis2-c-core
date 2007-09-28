@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -22,19 +23,24 @@
 #ifdef __cplusplus
 extern "C"
 {
-#endif
+#endif  /*  */
 
-/* Function prototypes */
 
-/**
-  * Generate universally unique id
-  * @return a char pointer to uuid
-  */
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL axutil_platform_uuid_gen(char *s);
+    /* Function prototypes */
 
-/** @} */
+
+    /**
+      * Generate universally unique id
+      * @return a char pointer to uuid
+      */
+    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
+    axutil_platform_uuid_gen(
+        char *s);
+    
+
+    /** @} */
 #ifdef __cplusplus
 }
-#endif
+#endif  /*  */
 
-#endif /* AXIS2_UDDI_GEN_WINDOWS_H */
+#endif                          /* AXIS2_UDDI_GEN_WINDOWS_H */

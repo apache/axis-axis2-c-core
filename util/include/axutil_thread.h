@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,7 +19,6 @@
 #ifndef AXUTIL_THREAD_H
 #define AXUTIL_THREAD_H
 
-
 /**
   * @file axutil_thread.h
   * @brief axis2 thread api
@@ -27,8 +27,6 @@
 #include <axutil_allocator.h>
 #include <axutil_utils_defines.h>
 #include <axutil_error.h>
-
-
 
 #ifdef __cplusplus
 extern "C"
@@ -45,24 +43,27 @@ extern "C"
      * Thread callbacks from axis2 functions must be declared with AXIS2_THREAD_FUNC
      * so that they follow the platform's calling convention.
      */
-    /*#define AXIS2_THREAD_FUNC*/
+    /*#define AXIS2_THREAD_FUNC */
 
     /** Thread structure. */
-    typedef struct axutil_thread_t           axutil_thread_t;
+    typedef struct axutil_thread_t axutil_thread_t;
 
     /** Thread attributes structure. */
-    typedef struct axutil_threadattr_t       axutil_threadattr_t;
+    typedef struct axutil_threadattr_t axutil_threadattr_t;
 
     /** Control variable for one-time atomic variables.  */
-    typedef struct axutil_thread_once_t      axutil_thread_once_t;
+    typedef struct axutil_thread_once_t axutil_thread_once_t;
 
     /**
      * The prototype for any AXIS2 thread worker functions.
      */
-    typedef void *(AXIS2_THREAD_FUNC *axutil_thread_start_t)(axutil_thread_t*, void*);
+    typedef void *(
+        AXIS2_THREAD_FUNC * axutil_thread_start_t)(
+            axutil_thread_t *,
+            void *);
 
     /** Thread private address space. */
-    typedef struct axutil_threadkey_t        axutil_threadkey_t;
+    typedef struct axutil_threadkey_t axutil_threadkey_t;
 
     /* Thread Function definitions */
 
@@ -71,8 +72,9 @@ extern "C"
      * @param cont The pool to use
      * @return Newly created thread attribute
      */
-    AXIS2_EXTERN axutil_threadattr_t* AXIS2_CALL
-    axutil_threadattr_create(axutil_allocator_t *allocator);
+    AXIS2_EXTERN axutil_threadattr_t *AXIS2_CALL
+    axutil_threadattr_create(
+        axutil_allocator_t * allocator);
 
     /**
      * Set if newly created threads should be created in detached state.
@@ -81,7 +83,8 @@ extern "C"
      * @return The status of the operation
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_threadattr_detach_set(axutil_threadattr_t *attr, 
+    axutil_threadattr_detach_set(
+        axutil_threadattr_t * attr,
         axis2_bool_t detached);
 
     /**
@@ -91,9 +94,9 @@ extern "C"
      * if threads are to be joinable.
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axutil_threadattr_is_detach(axutil_threadattr_t *attr, 
-        axutil_allocator_t *allocator);
-
+    axutil_threadattr_is_detach(
+        axutil_threadattr_t * attr,
+        axutil_allocator_t * allocator);
 
     /**
      * Create a new thread of execution
@@ -103,10 +106,12 @@ extern "C"
      * @param cont The pool to use
      * @return The newly created thread handle.
      */
-    AXIS2_EXTERN axutil_thread_t* AXIS2_CALL
-    axutil_thread_create(axutil_allocator_t *allocator, 
-        axutil_threadattr_t *attr,
-        axutil_thread_start_t func, void *data);
+    AXIS2_EXTERN axutil_thread_t *AXIS2_CALL
+    axutil_thread_create(
+        axutil_allocator_t * allocator,
+        axutil_threadattr_t * attr,
+        axutil_thread_start_t func,
+        void *data);
 
     /**
      * Stop the current thread
@@ -114,8 +119,9 @@ extern "C"
      * @return The status of the operation
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_thread_exit(axutil_thread_t *thd, 
-        axutil_allocator_t *allocator);
+    axutil_thread_exit(
+        axutil_thread_t * thd,
+        axutil_allocator_t * allocator);
 
     /**
      * Block until the desired thread stops executing.
@@ -123,21 +129,24 @@ extern "C"
      * @return The status of the operation
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_thread_join(axutil_thread_t *thd);
+    axutil_thread_join(
+        axutil_thread_t * thd);
 
     /**
      * force the current thread to yield the processor
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_thread_yield();
+    axutil_thread_yield(
+    );
 
     /**
      * Initialize the control variable for axutil_thread_once.
      * @param control The control variable to initialize
      * @return The status of the operation
      */
-    AXIS2_EXTERN axutil_thread_once_t* AXIS2_CALL
-    axutil_thread_once_init(axutil_allocator_t *allocator);
+    AXIS2_EXTERN axutil_thread_once_t *AXIS2_CALL
+    axutil_thread_once_init(
+        axutil_allocator_t * allocator);
 
     /**
      * Run the specified function one time, regardless of how many threads
@@ -150,7 +159,8 @@ extern "C"
      * @return The status of the operation
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_thread_once(axutil_thread_once_t *control, 
+    axutil_thread_once(
+        axutil_thread_once_t * control,
         void(*func)(void));
 
     /**
@@ -159,7 +169,8 @@ extern "C"
      * @return The status of the operation
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_thread_detach(axutil_thread_t *thd);
+    axutil_thread_detach(
+        axutil_thread_t * thd);
 
     /*************************Thread locking functions*****************************/
 
@@ -167,7 +178,9 @@ extern "C"
     typedef struct axutil_thread_mutex_t axutil_thread_mutex_t;
 
 #define AXIS2_THREAD_MUTEX_DEFAULT  0x0   /**< platform-optimal lock behavior */
+
 #define AXIS2_THREAD_MUTEX_NESTED   0x1   /**< enable nested (recursive) locks */
+
 #define AXIS2_THREAD_MUTEX_UNNESTED 0x2   /**< disable nested locks */
 
     /**
@@ -177,16 +190,20 @@ extern "C"
      * most optimial mutex based on a given platform's performance charateristics,
      * it will behave as either a nested or an unnested lock.
      */
-    AXIS2_EXTERN axutil_thread_mutex_t * AXIS2_CALL
-    axutil_thread_mutex_create(axutil_allocator_t *allocator, 
+    AXIS2_EXTERN axutil_thread_mutex_t *AXIS2_CALL
+
+    axutil_thread_mutex_create(
+        axutil_allocator_t * allocator,
         unsigned int flags);
+
     /**
      * Acquire the lock for the given mutex. If the mutex is already locked,
      * the current thread will be put to sleep until the lock becomes available.
      * @param mutex the mutex on which to acquire the lock.
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_thread_mutex_lock(axutil_thread_mutex_t *mutex);
+    axutil_thread_mutex_lock(
+        axutil_thread_mutex_t * mutex);
 
     /**
      * Attempt to acquire the lock for the given mutex. If the mutex has already
@@ -194,21 +211,24 @@ extern "C"
      * @param mutex the mutex on which to attempt the lock acquiring.
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_thread_mutex_trylock(axutil_thread_mutex_t *mutex);
+    axutil_thread_mutex_trylock(
+        axutil_thread_mutex_t * mutex);
 
     /**
      * Release the lock for the given mutex.
      * @param mutex the mutex from which to release the lock.
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_thread_mutex_unlock(axutil_thread_mutex_t *mutex);
+    axutil_thread_mutex_unlock(
+        axutil_thread_mutex_t * mutex);
 
     /**
      * Destroy the mutex and free the memory associated with the lock.
      * @param mutex the mutex to destroy.
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_thread_mutex_destroy(axutil_thread_mutex_t *mutex);
+    axutil_thread_mutex_destroy(
+        axutil_thread_mutex_t * mutex);
 
     /** @} */
 #ifdef __cplusplus

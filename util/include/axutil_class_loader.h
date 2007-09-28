@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #ifndef AXUTIL_CLASS_LOADER_H
 #define AXUTIL_CLASS_LOADER_H
 
@@ -35,26 +36,28 @@ extern "C"
 {
 #endif
 
-/** @defgroup axutil_class_loader class loader 
- * @ingroup axis2_util
- * @{
- */
-    
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_class_loader_init(const axutil_env_t *env);
+    /** @defgroup axutil_class_loader class loader
+     * @ingroup axis2_util
+     * @{
+     */
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_class_loader_delete_dll (const axutil_env_t *env,
-                                    axutil_dll_desc_t *dll_desc);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_class_loader_init(
+        const axutil_env_t * env);
 
-AXIS2_EXTERN void * AXIS2_CALL
-axutil_class_loader_create_dll (const axutil_env_t *env,
-                                axutil_param_t *impl_info_param);
-    
- 
-/** @} */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_class_loader_delete_dll(
+        const axutil_env_t * env,
+        axutil_dll_desc_t * dll_desc);
+
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_class_loader_create_dll(
+        const axutil_env_t * env,
+        axutil_param_t * impl_info_param);
+
+    /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif  /* AXIS2_CLASS_LOADER_H */
+#endif                          /* AXIS2_CLASS_LOADER_H */

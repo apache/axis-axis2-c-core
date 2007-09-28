@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -29,27 +30,26 @@ extern "C"
 {
 #endif
 
-/**
- * @defgroup axutil_utils utils
- * @ingroup axis2_util
- * @{
- */
+    /**
+     * @defgroup axutil_utils utils
+     * @ingroup axis2_util
+     * @{
+     */
 
-/**
- * @file axutil_utils.h
- */
+    /**
+     * @file axutil_utils.h
+     */
 
-
-/** This macro is called to check whether structure on which function is called
- *  is NULL and to check whether the environment structure passed is valid.
- * @param object structure on which function is called
- * @param env environment to be checked for validity
- * @param error_return If function return a status it should pass here 
- *        AXIS2_FAILURE. If function return a type pointer it should
- *        pass NULL
- * @return If function return a status code return AXIS2_SUCCESS. Else if
- *         function return a type pointer return NULL
- */
+    /** This macro is called to check whether structure on which function is called
+     *  is NULL and to check whether the environment structure passed is valid.
+     * @param object structure on which function is called
+     * @param env environment to be checked for validity
+     * @param error_return If function return a status it should pass here
+     *        AXIS2_FAILURE. If function return a type pointer it should
+     *        pass NULL
+     * @return If function return a status code return AXIS2_SUCCESS. Else if
+     *         function return a type pointer return NULL
+     */
 #define AXIS2_FUNC_PARAM_CHECK(object, env, error_return) \
     AXIS2_ENV_CHECK(env, error_return);\
     if (!object) \
@@ -62,16 +62,16 @@ extern "C"
     { \
         AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_SUCCESS); \
     }
- 
-/**This macro is called to check whether an object is NULL.
- * if object is NULL error number and status code is set
- * @param object object to be check for NULL
- * @param error_return If function return a status it should pass here 
- *        AXIS2_FAILURE. If function return a type pointer it should
- *        pass NULL
- * @return If function return a status code return AXIS2_SUCCESS. Else if
- *         function return a type pointer return NULL
- */
+
+    /**This macro is called to check whether an object is NULL.
+     * if object is NULL error number and status code is set
+     * @param object object to be check for NULL
+     * @param error_return If function return a status it should pass here
+     *        AXIS2_FAILURE. If function return a type pointer it should
+     *        pass NULL
+     * @return If function return a status code return AXIS2_SUCCESS. Else if
+     *         function return a type pointer return NULL
+     */
 #define AXIS2_PARAM_CHECK(error, object, error_return) \
     if (!object) \
     { \
@@ -82,48 +82,61 @@ extern "C"
     else \
     { \
         AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_SUCCESS); \
-    } 
+    }
 
-/**This macro is used to handle error situation. 
- * @param error_number Error number for the error occured
- * @param error_return If function return a status it should pass here 
- *        AXIS2_FAILURE. If function return a type pointer it should
- *        pass NULL
- * @return If function return a status code return AXIS2_SUCCESS. Else if
- *         function return a type pointer return NULL
- */    
+    /**This macro is used to handle error situation.
+     * @param error_number Error number for the error occured
+     * @param error_return If function return a status it should pass here
+     *        AXIS2_FAILURE. If function return a type pointer it should
+     *        pass NULL
+     * @return If function return a status code return AXIS2_SUCCESS. Else if
+     *         function return a type pointer return NULL
+     */
 #define AXIS2_ERROR_SET(error, error_number, status_code) \
     { \
         AXIS2_ERROR_SET_ERROR_NUMBER(error, error_number); \
         AXIS2_ERROR_SET_STATUS_CODE(error, status_code); \
-    }      
+    }
 
-
-/** Method names in the loadable libraries */
+    /** Method names in the loadable libraries */
 
 #define AXIS2_CREATE_FUNCTION "axis2_get_instance"
 #define AXIS2_DELETE_FUNCTION "axis2_remove_instance"
 
-typedef void (AXIS2_CALL *AXIS2_FREE_VOID_ARG) (void *obj_to_be_freed, 
-    const axutil_env_t *env);
-    
-/* Function pointer typedef for read callback */
-typedef int (AXIS2_CALL *AXIS2_READ_INPUT_CALLBACK)(char *buffer, int size, 
-    void* ctx);
-/* Function pointer typedef for close callback */    
-typedef int (AXIS2_CALL *AXIS2_CLOSE_INPUT_CALLBACK)(void *ctx);
-    
-/** 
-    * \brief Axis2 scopes
-    *
-    * Possible scope value for Axis2
-    */
+    typedef void(
+        AXIS2_CALL
+        * AXIS2_FREE_VOID_ARG)(
+            void *obj_to_be_freed,
+            const axutil_env_t * env);
+
+    /* Function pointer typedef for read callback */
+    typedef int(
+        AXIS2_CALL
+        * AXIS2_READ_INPUT_CALLBACK)(
+            char *buffer,
+            int size,
+            void *ctx);
+
+    /* Function pointer typedef for close callback */
+    typedef int(
+        AXIS2_CALL
+        * AXIS2_CLOSE_INPUT_CALLBACK)(
+            void *ctx);
+
+    /**
+        * \brief Axis2 scopes
+        *
+        * Possible scope value for Axis2
+        */
     enum axis2_scopes
     {
+
         /** Request scope */
         AXIS2_SCOPE_REQUEST = 0,
+
         /** Session scope */
         AXIS2_SCOPE_SESSION,
+
         /** Application scope */
         AXIS2_SCOPE_APPLICATION
     };
@@ -140,9 +153,12 @@ typedef int (AXIS2_CALL *AXIS2_CLOSE_INPUT_CALLBACK)(void *ctx);
      * @param request url
      * @return axis2_char_t ** <code>axis2_char_t **<code>
      */
-    AXIS2_EXTERN axis2_char_t** AXIS2_CALL
-    axutil_parse_request_url_for_svc_and_op(const axutil_env_t *env, const axis2_char_t *request);
-    
+    AXIS2_EXTERN axis2_char_t **AXIS2_CALL
+
+    axutil_parse_request_url_for_svc_and_op(
+        const axutil_env_t * env,
+        const axis2_char_t * request);
+
     /**
      * Quotes an XML string.
      * Replace '<', '>', and '&' with '&lt;', '&gt;', and '&amp;'.
@@ -158,15 +174,14 @@ typedef int (AXIS2_CALL *AXIS2_CLOSE_INPUT_CALLBACK)(void *ctx);
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axutil_xml_quote_string(
-        const axutil_env_t *env,
-        const axis2_char_t *s,
+        const axutil_env_t * env,
+        const axis2_char_t * s,
         axis2_bool_t quotes);
-  
-/** @} */
-    
+
+    /** @} */
+
 #ifdef __cplusplus
 }
 #endif
 
 #endif                          /* AXIS2_UTILS_H */
-

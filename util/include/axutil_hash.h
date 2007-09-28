@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -65,21 +66,26 @@ extern "C"
      * @param klen The length of the key, or AXIS2_HASH_KEY_STRING to use the string
      *             length. If AXIS2_HASH_KEY_STRING then returns the actual key length.
      */
-    typedef unsigned int(*axutil_hashfunc_t)(const char *key, axis2_ssize_t *klen);
+    typedef unsigned int(
+        *axutil_hashfunc_t)(
+            const char *key,
+            axis2_ssize_t * klen);
 
     /**
      * The default hash function.
      */
-    unsigned int axutil_hashfunc_default(const char *key, 
-        axis2_ssize_t *klen);
+    unsigned int axutil_hashfunc_default(
+        const char *key,
+        axis2_ssize_t * klen);
 
     /**
      * Create a hash table.
      * @param env The environment to allocate the hash table out of
      * @return The hash table just created
       */
-    AXIS2_EXTERN axutil_hash_t* AXIS2_CALL 
-    axutil_hash_make(const axutil_env_t *env);
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+    axutil_hash_make(
+        const axutil_env_t * env);
 
     /**
      * Create a hash table with a custom hash function
@@ -87,8 +93,9 @@ extern "C"
      * @param hash_func A custom hash function.
      * @return The hash table just created
       */
-    AXIS2_EXTERN axutil_hash_t* AXIS2_CALL 
-    axutil_hash_make_custom(const axutil_env_t *env,
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+    axutil_hash_make_custom(
+        const axutil_env_t * env,
         axutil_hashfunc_t hash_func);
 
     /**
@@ -98,9 +105,10 @@ extern "C"
      * @return The hash table just created
      * @remark Makes a shallow copy
      */
-    AXIS2_EXTERN axutil_hash_t* AXIS2_CALL 
-    axutil_hash_copy(const axutil_hash_t *ht,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+    axutil_hash_copy(
+        const axutil_hash_t * ht,
+        const axutil_env_t * env);
 
     /**
      * Associate a value with a key in a hash table.
@@ -110,10 +118,11 @@ extern "C"
      * @param val Value to associate with the key
      * @remark If the value is NULL the hash entry is deleted.
      */
-    AXIS2_EXTERN void AXIS2_CALL 
-    axutil_hash_set(axutil_hash_t *ht, 
+    AXIS2_EXTERN void AXIS2_CALL
+    axutil_hash_set(
+        axutil_hash_t * ht,
         const void *key,
-        axis2_ssize_t klen, 
+        axis2_ssize_t klen,
         const void *val);
 
     /**
@@ -123,8 +132,9 @@ extern "C"
      * @param klen Length of the key. Can be AXIS2_HASH_KEY_STRING to use the string length.
      * @return Returns NULL if the key is not present.
      */
-    AXIS2_EXTERN void* AXIS2_CALL 
-    axutil_hash_get(axutil_hash_t *ht, 
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_hash_get(
+        axutil_hash_t * ht,
         const void *key,
         axis2_ssize_t klen);
 
@@ -140,6 +150,7 @@ extern "C"
 
      * @example
      */
+
     /**
      * <PRE>
      *
@@ -156,9 +167,10 @@ extern "C"
      * }
      * </PRE>
      */
-    AXIS2_EXTERN axutil_hash_index_t* AXIS2_CALL 
-    axutil_hash_first(axutil_hash_t *ht,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axutil_hash_index_t *AXIS2_CALL
+    axutil_hash_first(
+        axutil_hash_t * ht,
+        const axutil_env_t * env);
 
     /**
      * Continue iterating over the entries in a hash table.
@@ -166,9 +178,10 @@ extern "C"
      * @return a pointer to the updated iteration state.  NULL if there are no more
      *         entries.
      */
-    AXIS2_EXTERN axutil_hash_index_t* AXIS2_CALL 
-    axutil_hash_next(const axutil_env_t *env,
-        axutil_hash_index_t *hi);
+    AXIS2_EXTERN axutil_hash_index_t *AXIS2_CALL
+    axutil_hash_next(
+        const axutil_env_t * env,
+        axutil_hash_index_t * hi);
 
     /**
      * Get the current entry's details from the iteration state.
@@ -179,10 +192,11 @@ extern "C"
      * @remark The return pointers should point to a variable that will be set to the
      *         corresponding data, or they may be NULL if the data isn't interesting.
      */
-    AXIS2_EXTERN void AXIS2_CALL 
-    axutil_hash_this(axutil_hash_index_t *hi, 
+    AXIS2_EXTERN void AXIS2_CALL
+    axutil_hash_this(
+        axutil_hash_index_t * hi,
         const void **key,
-        axis2_ssize_t *klen, 
+        axis2_ssize_t * klen,
         void **val);
 
     /**
@@ -190,8 +204,9 @@ extern "C"
      * @param ht The hash table
      * @return The number of key/value pairs in the hash table.
      */
-    AXIS2_EXTERN  unsigned int AXIS2_CALL 
-    axutil_hash_count(axutil_hash_t *ht);
+    AXIS2_EXTERN unsigned int AXIS2_CALL
+    axutil_hash_count(
+        axutil_hash_t * ht);
 
     /**
      * Merge two hash tables into one new hash table. The values of the overlay
@@ -202,10 +217,11 @@ extern "C"
      * @param base The table that represents the initial values of the new table
      * @return A new hash table containing all of the data from the two passed in
      */
-    AXIS2_EXTERN axutil_hash_t* AXIS2_CALL 
-    axutil_hash_overlay(const axutil_hash_t *overlay,
-        const axutil_env_t *env, 
-        const axutil_hash_t *base);
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+    axutil_hash_overlay(
+        const axutil_hash_t * overlay,
+        const axutil_env_t * env,
+        const axutil_hash_t * base);
 
     /**
      * Merge two hash tables into one new hash table. If the same key
@@ -221,16 +237,17 @@ extern "C"
      * @param data Client data to pass to the merger function
      * @return A new hash table containing all of the data from the two passed in
      */
-    AXIS2_EXTERN axutil_hash_t* AXIS2_CALL 
-    axutil_hash_merge(const axutil_hash_t *h1,
-        const axutil_env_t *env, 
-        const axutil_hash_t *h2,
-        void *(*merger)(const axutil_env_t *env, 
-            const void *key,
-            axis2_ssize_t klen, 
-            const void *h1_val, 
-            const void *h2_val,
-            const void *data), 
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+    axutil_hash_merge(
+        const axutil_hash_t * h1,
+        const axutil_env_t * env,
+        const axutil_hash_t * h2,
+        void *(*merger)(const axutil_env_t * env,
+                const void *key,
+                axis2_ssize_t klen,
+                const void *h1_val,
+                const void *h2_val,
+                const void *data),
         const void *data);
 
     /**
@@ -241,9 +258,10 @@ extern "C"
      * @return return whether hash table contains key
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axutil_hash_contains_key(axutil_hash_t *ht,
-        const axutil_env_t *env,
-        const axis2_char_t *key);
+    axutil_hash_contains_key(
+        axutil_hash_t * ht,
+        const axutil_env_t * env,
+        const axis2_char_t * key);
 
     /**
      * @param ht hash table to be freed
@@ -252,9 +270,10 @@ extern "C"
      *
      */
 
-    AXIS2_EXTERN void AXIS2_CALL 
-    axutil_hash_free(axutil_hash_t *ht,
-        const axutil_env_t *env);
+    AXIS2_EXTERN void AXIS2_CALL
+    axutil_hash_free(
+        axutil_hash_t * ht,
+        const axutil_env_t * env);
 
     /**
      * Free a hash table with hash table given as void
@@ -264,8 +283,9 @@ extern "C"
      */
 
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_hash_free_void_arg(void *ht_void, 
-        const axutil_env_t* env);
+    axutil_hash_free_void_arg(
+        void *ht_void,
+        const axutil_env_t * env);
 
     /** @} */
 
@@ -274,5 +294,3 @@ extern "C"
 #endif
 
 #endif                          /* !AXIS2_HASH_H */
-
-

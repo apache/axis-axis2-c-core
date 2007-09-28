@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -22,12 +23,10 @@
 #include <axutil_env.h>
 #include <platforms/axutil_platform_auto_sense.h>
 
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
 
     /**
      * @defgroup axutil_uuid_gen UUID generator
@@ -40,7 +39,8 @@ extern "C"
      * @return generated uuid as a string
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axutil_uuid_gen(const axutil_env_t *env);
+    axutil_uuid_gen(
+        const axutil_env_t * env);
 
     /** @} */
 

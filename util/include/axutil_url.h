@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,7 +18,6 @@
 
 #ifndef AXUTIL_URL_H
 #define AXUTIL_URL_H
-
 
 /**
   * @file axutil_url.h
@@ -41,71 +41,82 @@ extern "C"
 
     typedef struct axutil_url axutil_url_t;
 
-    AXIS2_EXTERN axutil_url_t * AXIS2_CALL
+    AXIS2_EXTERN axutil_url_t *AXIS2_CALL
     axutil_url_create(
-        const axutil_env_t *env,
-        const axis2_char_t *protocol,
-        const axis2_char_t *server,
+        const axutil_env_t * env,
+        const axis2_char_t * protocol,
+        const axis2_char_t * server,
         const int port,
-        const axis2_char_t *path);
+        const axis2_char_t * path);
 
-    AXIS2_EXTERN axutil_url_t * AXIS2_CALL
+    AXIS2_EXTERN axutil_url_t *AXIS2_CALL
     axutil_url_parse_string(
-        const axutil_env_t *env,
-        const axis2_char_t *str_url);
+        const axutil_env_t * env,
+        const axis2_char_t * str_url);
 
     AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
     axutil_url_to_uri(
-        axutil_url_t *url,
-        const axutil_env_t *env);
+        axutil_url_t * url,
+        const axutil_env_t * env);
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_url_to_external_form(axutil_url_t *url,
-        const axutil_env_t *env);
-
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_url_set_protocol(axutil_url_t *url,
-        const axutil_env_t *env,
-        axis2_char_t *protocol);
-
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_url_get_protocol(axutil_url_t *url,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_url_to_external_form(
+        axutil_url_t * url,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_url_set_server(axutil_url_t *url,
-        const axutil_env_t *env,
-        axis2_char_t *server);
+    axutil_url_set_protocol(
+        axutil_url_t * url,
+        const axutil_env_t * env,
+        axis2_char_t * protocol);
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_url_get_server(axutil_url_t *url,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_url_get_protocol(
+        axutil_url_t * url,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_url_set_port(axutil_url_t *url,
-        const axutil_env_t *env,
+    axutil_url_set_server(
+        axutil_url_t * url,
+        const axutil_env_t * env,
+        axis2_char_t * server);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_url_get_server(
+        axutil_url_t * url,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_url_set_port(
+        axutil_url_t * url,
+        const axutil_env_t * env,
         int port);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axutil_url_get_port(axutil_url_t *url,
-        const axutil_env_t *env);
+    axutil_url_get_port(
+        axutil_url_t * url,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_url_set_path(axutil_url_t *url,
-        const axutil_env_t *env,
-        axis2_char_t *path);
+    axutil_url_set_path(
+        axutil_url_t * url,
+        const axutil_env_t * env,
+        axis2_char_t * path);
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axutil_url_get_path(axutil_url_t *url,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_url_get_path(
+        axutil_url_t * url,
+        const axutil_env_t * env);
 
-    AXIS2_EXTERN axutil_url_t* AXIS2_CALL
-    axutil_url_clone(axutil_url_t *url,
-        const axutil_env_t *env);
+    AXIS2_EXTERN axutil_url_t *AXIS2_CALL
+    axutil_url_clone(
+        axutil_url_t * url,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_url_free(axutil_url_t *url,
-        const axutil_env_t *env);
+    axutil_url_free(
+        axutil_url_t * url,
+        const axutil_env_t * env);
 
     /** @} */
 #ifdef __cplusplus
@@ -113,4 +124,3 @@ extern "C"
 #endif
 
 #endif                          /* AXIS2_URL_H */
-

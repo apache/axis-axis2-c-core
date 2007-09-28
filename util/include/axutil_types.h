@@ -1,3 +1,4 @@
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -34,7 +35,8 @@ extern "C"
      */
 
     AXIS2_EXTERN int AXIS2_CALL
-    axutil_atoi(const char *s);
+    axutil_atoi(
+        const char *s);
 
 #define AXIS2_ATOI(s) axutil_atoi(s)
 
@@ -45,4 +47,3 @@ extern "C"
 #endif
 
 #endif                          /* AXIS2_TYPES_H */
-
