@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,7 +24,6 @@
  * @{
  */
 
-
 /**
  * @file axis2_simple_tcp_svr_conn.h
  * @brief Axis2 simple tcp server connection
@@ -47,33 +47,39 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_simple_tcp_svr_conn_close(axis2_simple_tcp_svr_conn_t *svr_conn,
-        const axutil_env_t *env);
+    axis2_simple_tcp_svr_conn_close(
+        axis2_simple_tcp_svr_conn_t * svr_conn,
+        const axutil_env_t * env);
 
     /**
      * @param svr_conn pointer to server connection struct
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_simple_tcp_svr_conn_is_open(axis2_simple_tcp_svr_conn_t *svr_conn,
-        const axutil_env_t *env);
+    axis2_simple_tcp_svr_conn_is_open(
+        axis2_simple_tcp_svr_conn_t * svr_conn,
+        const axutil_env_t * env);
 
     /**
      * @param svr_conn pointer to server connection struct
      * @param env pointer to environment struct
      */
-    
-    AXIS2_EXTERN axutil_stream_t* AXIS2_CALL
-    axis2_simple_tcp_svr_conn_get_stream(const axis2_simple_tcp_svr_conn_t *svr_conn,
-        const axutil_env_t *env);
+
+    AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
+
+    axis2_simple_tcp_svr_conn_get_stream(
+        const axis2_simple_tcp_svr_conn_t * svr_conn,
+        const axutil_env_t * env);
 
     /**
      * @param svr_conn pointer to server connection struct
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_simple_tcp_svr_conn_read_request(axis2_simple_tcp_svr_conn_t *svr_conn,
-        const axutil_env_t *env);
+
+    axis2_simple_tcp_svr_conn_read_request(
+        axis2_simple_tcp_svr_conn_t * svr_conn,
+        const axutil_env_t * env);
 
     /**
      * @param svr_conn pointer to server connection struct
@@ -82,8 +88,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_simple_tcp_svr_conn_set_rcv_timeout(axis2_simple_tcp_svr_conn_t *svr_conn,
-        const axutil_env_t *env,
+
+    axis2_simple_tcp_svr_conn_set_rcv_timeout(
+        axis2_simple_tcp_svr_conn_t * svr_conn,
+        const axutil_env_t * env,
         int timeout);
 
     /**
@@ -93,8 +101,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_simple_tcp_svr_conn_set_snd_timeout(axis2_simple_tcp_svr_conn_t *svr_conn,
-        const axutil_env_t *env,
+
+    axis2_simple_tcp_svr_conn_set_snd_timeout(
+        axis2_simple_tcp_svr_conn_t * svr_conn,
+        const axutil_env_t * env,
         int timeout);
 
     /**
@@ -102,16 +112,20 @@ extern "C"
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_simple_tcp_svr_conn_get_svr_ip(const axis2_simple_tcp_svr_conn_t *svr_conn,
-        const axutil_env_t *env);
+
+    axis2_simple_tcp_svr_conn_get_svr_ip(
+        const axis2_simple_tcp_svr_conn_t * svr_conn,
+        const axutil_env_t * env);
 
     /**
      * @param svr_conn pointer to server connection struct
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_simple_tcp_svr_conn_get_peer_ip(const axis2_simple_tcp_svr_conn_t *svr_conn,
-        const axutil_env_t *env);
+
+    axis2_simple_tcp_svr_conn_get_peer_ip(
+        const axis2_simple_tcp_svr_conn_t * svr_conn,
+        const axutil_env_t * env);
 
     /**
      * @param svr_conn pointer to server connection struct
@@ -119,9 +133,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_simple_tcp_svr_conn_free(axis2_simple_tcp_svr_conn_t *svr_conn,
-        const axutil_env_t *env);
-
+    axis2_simple_tcp_svr_conn_free(
+        axis2_simple_tcp_svr_conn_t * svr_conn,
+        const axutil_env_t * env);
 
     /**
      * creates axis2_simple_tcp_svr_conn struct
@@ -129,12 +143,13 @@ extern "C"
      * @param sockfd sockfd
      */
     AXIS2_EXTERN axis2_simple_tcp_svr_conn_t *AXIS2_CALL
+
     axis2_simple_tcp_svr_conn_create(
-        const axutil_env_t *env, 
+        const axutil_env_t * env,
         int sockfd);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif    /* AXIS2_SIMPLE_HTTP_SVR_CONN_H */
+#endif                          /* AXIS2_SIMPLE_HTTP_SVR_CONN_H */

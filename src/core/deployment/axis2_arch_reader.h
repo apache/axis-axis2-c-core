@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -50,15 +51,16 @@ extern "C"
     /** Type name for struct axis2_arch_reader */
     typedef struct axis2_arch_reader axis2_arch_reader_t;
 
-    /** 
+    /**
      * De-allocate memory
      * @param arch_reader pointer to arch reader
      * @param env pointer to environment struct
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_arch_reader_free(axis2_arch_reader_t *arch_reader,
-        const axutil_env_t *env);
+    axis2_arch_reader_free(
+        axis2_arch_reader_t * arch_reader,
+        const axutil_env_t * env);
 
     /**
      * To create a ServiceDescrption <code>AxisService</code>   using given wsdl.
@@ -68,9 +70,9 @@ extern "C"
      * @param file pointer to file
      */
     AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
-    axis2_arch_reader_create_svc(
-        const axutil_env_t *env,
-        struct axis2_arch_file_data *file);
+                axis2_arch_reader_create_svc(
+                    const axutil_env_t * env,
+                    struct axis2_arch_file_data *file);
 
     /**
      * it take two arguments filename and refereance to DeployEngine
@@ -82,13 +84,14 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
-        const axutil_env_t *env,
-        axis2_char_t *file_name,
+    axis2_arch_reader_process_svc_grp(
+        axis2_arch_reader_t * arch_reader,
+        const axutil_env_t * env,
+        axis2_char_t * file_name,
         struct axis2_dep_engine *dep_engine,
-        axis2_svc_grp_t *svc_grp);
+        axis2_svc_grp_t * svc_grp);
 
-    /** 
+    /**
      * @param arch_reader pointer to arch reader
      * @param env pointer to environment struct
      * @param file_path pointer to file path
@@ -97,31 +100,34 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
-        const axutil_env_t *env,
-        axis2_char_t *file_path,
+    axis2_arch_reader_build_svc_grp(
+        axis2_arch_reader_t * arch_reader,
+        const axutil_env_t * env,
+        axis2_char_t * file_path,
         struct axis2_dep_engine *dep_engine,
         struct axis2_svc_grp *svc_grp);
 
-    /** 
+    /**
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_arch_reader_read_module_arch(
-        const axutil_env_t *env,
-        axis2_char_t *file_path,
-        struct axis2_dep_engine *dep_engine,
-        axis2_module_desc_t *module);
 
-    /** 
+    axis2_arch_reader_read_module_arch(
+        const axutil_env_t * env,
+        axis2_char_t * file_path,
+        struct axis2_dep_engine *dep_engine,
+        axis2_module_desc_t * module);
+
+    /**
      * @param env pointer to environment struct
      * @param module_name pointer to module name
      */
     AXIS2_EXTERN axutil_file_t *AXIS2_CALL
+
     axis2_arch_reader_create_module_arch(
-        const axutil_env_t *env,
-        axis2_char_t *module_name);
+        const axutil_env_t * env,
+        axis2_char_t * module_name);
 
     /**
      * Creates arch reader struct
@@ -129,11 +135,12 @@ extern "C"
      * @return pointer to newly created arch reader
      */
     AXIS2_EXTERN axis2_arch_reader_t *AXIS2_CALL
-    axis2_arch_reader_create(const axutil_env_t *env);
+    axis2_arch_reader_create(
+        const axutil_env_t * env);
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_ARCH_READER_H */
+#endif                          /* AXIS2_ARCH_READER_H */

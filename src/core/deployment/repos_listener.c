@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,6 +22,7 @@
 
 struct axis2_repos_listener
 {
+
     /**
      * Referance to a WSInfoList
      */
@@ -33,23 +35,25 @@ struct axis2_repos_listener
     axis2_char_t *folder_name;
 };
 
-static axis2_status_t
-axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
-    const axutil_env_t *env,
-    axis2_char_t *folder_name,
+static axis2_status_t axis2_repos_listener_search(
+    axis2_repos_listener_t * repos_listener,
+    const axutil_env_t * env,
+    axis2_char_t * folder_name,
     int type);
 
 AXIS2_EXTERN axis2_repos_listener_t *AXIS2_CALL
-axis2_repos_listener_create(const axutil_env_t *env)
+axis2_repos_listener_create(
+    const axutil_env_t * env)
 {
     axis2_repos_listener_t *repos_listener = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     repos_listener = (axis2_repos_listener_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_repos_listener_t));
+                                                             sizeof
+                                                             (axis2_repos_listener_t));
 
-    if (! repos_listener)
+    if (!repos_listener)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -59,7 +63,6 @@ axis2_repos_listener_create(const axutil_env_t *env)
 
     return repos_listener;
 }
-
 
 /**
  * This constructor take two argumnets folder name and referance to Deployment Engine
@@ -71,18 +74,20 @@ axis2_repos_listener_create(const axutil_env_t *env)
  */
 
 AXIS2_EXTERN axis2_repos_listener_t *AXIS2_CALL
-axis2_repos_listener_create_with_folder_name_and_dep_engine(const axutil_env_t *env,
-    axis2_char_t *folder_name,
-    axis2_dep_engine_t *dep_engine)
+axis2_repos_listener_create_with_folder_name_and_dep_engine(
+    const axutil_env_t * env,
+    axis2_char_t * folder_name,
+    axis2_dep_engine_t * dep_engine)
 {
     axis2_repos_listener_t *repos_listener = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    repos_listener = (axis2_repos_listener_t *) axis2_repos_listener_create(env);
+    repos_listener =
+        (axis2_repos_listener_t *) axis2_repos_listener_create(env);
 
-    if (! repos_listener)
+    if (!repos_listener)
     {
         return NULL;
     }
@@ -92,7 +97,7 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(const axutil_env_t *
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    repos_listener->info_list = 
+    repos_listener->info_list =
         axis2_ws_info_list_create_with_dep_engine(env, dep_engine);
     if (!repos_listener->info_list)
     {
@@ -102,7 +107,7 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(const axutil_env_t *
     if (AXIS2_SUCCESS != status)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_REPOS_LISTENER_INIT_FAILED,
-            AXIS2_FAILURE);
+                        AXIS2_FAILURE);
         return NULL;
     }
 
@@ -110,8 +115,9 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(const axutil_env_t *
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_repos_listener_free(axis2_repos_listener_t *repos_listener,
-    const axutil_env_t *env)
+axis2_repos_listener_free(
+    axis2_repos_listener_t * repos_listener,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -131,8 +137,9 @@ axis2_repos_listener_free(axis2_repos_listener_t *repos_listener,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_repos_listener_check_modules(axis2_repos_listener_t *repos_listener,
-    const axutil_env_t *env)
+axis2_repos_listener_check_modules(
+    axis2_repos_listener_t * repos_listener,
+    const axutil_env_t * env)
 {
     axis2_char_t *module_path = NULL;
     axis2_char_t *temp_path = NULL;
@@ -140,17 +147,21 @@ axis2_repos_listener_check_modules(axis2_repos_listener_t *repos_listener,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    temp_path = axutil_stracat(env, repos_listener->folder_name, AXIS2_PATH_SEP_STR);
+    temp_path =
+        axutil_stracat(env, repos_listener->folder_name, AXIS2_PATH_SEP_STR);
     module_path = axutil_stracat(env, temp_path, AXIS2_MODULE_PATH);
     AXIS2_FREE(env->allocator, temp_path);
-    status = axis2_repos_listener_search(repos_listener, env, module_path, AXIS2_MODULE);
+    status =
+        axis2_repos_listener_search(repos_listener, env, module_path,
+                                    AXIS2_MODULE);
     AXIS2_FREE(env->allocator, module_path);
     return status;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_repos_listener_check_svcs(axis2_repos_listener_t *repos_listener,
-    const axutil_env_t *env)
+axis2_repos_listener_check_svcs(
+    axis2_repos_listener_t * repos_listener,
+    const axutil_env_t * env)
 {
     axis2_char_t *svc_path = NULL;
     axis2_char_t *temp_path = NULL;
@@ -158,24 +169,28 @@ axis2_repos_listener_check_svcs(axis2_repos_listener_t *repos_listener,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    temp_path = axutil_stracat(env, repos_listener->folder_name, AXIS2_PATH_SEP_STR);
+    temp_path =
+        axutil_stracat(env, repos_listener->folder_name, AXIS2_PATH_SEP_STR);
     svc_path = axutil_stracat(env, temp_path, AXIS2_SVC_PATH);
     AXIS2_FREE(env->allocator, temp_path);
-    status = axis2_repos_listener_search(repos_listener, env, svc_path, AXIS2_SVC);
+    status =
+        axis2_repos_listener_search(repos_listener, env, svc_path, AXIS2_SVC);
     AXIS2_FREE(env->allocator, svc_path);
     return status;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_repos_listener_update(axis2_repos_listener_t *repos_listener,
-    const axutil_env_t *env)
+axis2_repos_listener_update(
+    axis2_repos_listener_t * repos_listener,
+    const axutil_env_t * env)
 {
     return axis2_ws_info_list_update(repos_listener->info_list, env);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_repos_listener_init(axis2_repos_listener_t *repos_listener,
-    const axutil_env_t *env)
+axis2_repos_listener_init(
+    axis2_repos_listener_t * repos_listener,
+    const axutil_env_t * env)
 {
     axis2_status_t status = AXIS2_FAILURE;
 
@@ -199,8 +214,9 @@ axis2_repos_listener_init(axis2_repos_listener_t *repos_listener,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_repos_listener_start_listen(axis2_repos_listener_t *repos_listener,
-    const axutil_env_t *env)
+axis2_repos_listener_start_listen(
+    axis2_repos_listener_t * repos_listener,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -212,9 +228,10 @@ axis2_repos_listener_start_listen(axis2_repos_listener_t *repos_listener,
 }
 
 static axis2_status_t
-axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
-    const axutil_env_t *env,
-    axis2_char_t *folder_name,
+axis2_repos_listener_search(
+    axis2_repos_listener_t * repos_listener,
+    const axutil_env_t * env,
+    axis2_char_t * folder_name,
     int type)
 {
     int size = 0;
@@ -226,7 +243,7 @@ axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
     AXIS2_PARAM_CHECK(env->error, folder_name, AXIS2_FAILURE);
 
     current_info_list = axutil_dir_handler_list_service_or_module_dirs(env,
-        folder_name);
+                                                                       folder_name);
     if (!current_info_list)
     {
         axis2_status_t status_code = AXIS2_FAILURE;
@@ -236,16 +253,18 @@ axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
         {
             return status;
         }
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No %s in the folder.", folder_name);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No %s in the folder.",
+                        folder_name);
         return AXIS2_SUCCESS;
     }
     size = axutil_array_list_size(current_info_list, env);
-    for (i = 0; i < size; i++) /* loop until empty */
+    for (i = 0; i < size; i++)  /* loop until empty */
     {
         axutil_file_t *file = NULL;
         file = axutil_array_list_get(current_info_list, env, i);
-        status = axis2_ws_info_list_add_ws_info_item(repos_listener->info_list, env,
-            file, type);
+        status =
+            axis2_ws_info_list_add_ws_info_item(repos_listener->info_list, env,
+                                                file, type);
         if (AXIS2_SUCCESS != status)
         {
             int size_j = 0;
@@ -276,4 +295,3 @@ axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
     current_info_list = NULL;
     return AXIS2_SUCCESS;
 }
-

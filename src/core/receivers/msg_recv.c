@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -29,7 +30,8 @@ struct axis2_msg_recv
 {
     axis2_char_t *scope;
 
-    void* derived;
+    void *derived;
+
     /**
      * This contain in out synchronous business invoke logic
      * @param msg_recv pointer to message receiver
@@ -38,11 +40,12 @@ struct axis2_msg_recv
      * @param out_msg_ctx pointer to out message context
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t (AXIS2_CALL *
-    invoke_business_logic)(axis2_msg_recv_t *msg_recv,
-        const axutil_env_t *env,
-        struct axis2_msg_ctx *in_msg_ctx,
-        struct axis2_msg_ctx *out_msg_ctx);
+     axis2_status_t(
+    AXIS2_CALL * invoke_business_logic) (
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env,
+    struct axis2_msg_ctx * in_msg_ctx,
+    struct axis2_msg_ctx * out_msg_ctx);
 
     /**
      * This method is called from axis2_engine_receive method. This method's
@@ -57,28 +60,30 @@ struct axis2_msg_recv
      * @param in_msg_ctx pointer to in message context
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t (AXIS2_CALL *
-    receive)(axis2_msg_recv_t *msg_recv,
-        const axutil_env_t *env,
-        struct axis2_msg_ctx *in_msg_ctx,
-        void *callback_recv_param);
+     axis2_status_t(
+    AXIS2_CALL * receive) (
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env,
+    struct axis2_msg_ctx * in_msg_ctx,
+    void *callback_recv_param);
 };
 
-static axis2_status_t AXIS2_CALL
-axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
-    const axutil_env_t *env,
-    axis2_msg_ctx_t *msg_ctx,
+static axis2_status_t AXIS2_CALL axis2_msg_recv_receive_impl(
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx,
     void *callback_recv_param);
 
 AXIS2_EXPORT axis2_msg_recv_t *AXIS2_CALL
-axis2_msg_recv_create(const axutil_env_t *env)
+axis2_msg_recv_create(
+    const axutil_env_t * env)
 {
     axis2_msg_recv_t *msg_recv = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     msg_recv = (axis2_msg_recv_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_msg_recv_t));
+                                                 sizeof(axis2_msg_recv_t));
 
     if (!msg_recv)
     {
@@ -86,15 +91,16 @@ axis2_msg_recv_create(const axutil_env_t *env)
         return NULL;
     }
 
-    msg_recv->scope = axutil_strdup (env, "app*");
+    msg_recv->scope = axutil_strdup(env, "app*");
     msg_recv->derived = NULL;
     msg_recv->receive = axis2_msg_recv_receive_impl;
     return msg_recv;
 }
 
 AXIS2_EXPORT void AXIS2_CALL
-axis2_msg_recv_free(axis2_msg_recv_t *msg_recv,
-    const axutil_env_t *env)
+axis2_msg_recv_free(
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -112,9 +118,10 @@ axis2_msg_recv_free(axis2_msg_recv_t *msg_recv,
 }
 
 AXIS2_EXPORT axis2_svc_skeleton_t *AXIS2_CALL
-axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
-    const axutil_env_t *env,
-    struct axis2_msg_ctx *msg_ctx)
+axis2_msg_recv_make_new_svc_obj(
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env,
+    struct axis2_msg_ctx * msg_ctx)
 {
     struct axis2_svc *svc = NULL;
     struct axis2_op_ctx *op_ctx = NULL;
@@ -143,12 +150,12 @@ axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
     if (!impl_info_param)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,
-            AXIS2_FAILURE);
+                        AXIS2_FAILURE);
         return NULL;
     }
 
     axutil_allocator_switch_to_global_pool(env->allocator);
-    
+
     axutil_class_loader_init(env);
 
     impl_class = axutil_class_loader_create_dll(env, impl_info_param);
@@ -156,7 +163,7 @@ axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
 
     if (impl_class)
     {
-        AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *)impl_class, env);
+        AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *) impl_class, env);
     }
 
     axutil_allocator_switch_to_local_pool(env->allocator);
@@ -164,11 +171,11 @@ axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
     return impl_class;
 }
 
-
 AXIS2_EXPORT axis2_svc_skeleton_t *AXIS2_CALL
-axis2_msg_recv_get_impl_obj(axis2_msg_recv_t *msg_recv,
-    const axutil_env_t *env,
-    struct axis2_msg_ctx *msg_ctx)
+axis2_msg_recv_get_impl_obj(
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env,
+    struct axis2_msg_ctx * msg_ctx)
 {
     struct axis2_svc *svc = NULL;
     struct axis2_op_ctx *op_ctx = NULL;
@@ -183,14 +190,15 @@ axis2_msg_recv_get_impl_obj(axis2_msg_recv_t *msg_recv,
     {
         return NULL;
     }
-    
+
     return axis2_msg_recv_make_new_svc_obj(msg_recv, env, msg_ctx);
 }
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
-axis2_msg_recv_set_scope(axis2_msg_recv_t *msg_recv,
-    const axutil_env_t *env,
-    const axis2_char_t *scope)
+axis2_msg_recv_set_scope(
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env,
+    const axis2_char_t * scope)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, scope, AXIS2_FAILURE);
@@ -209,16 +217,18 @@ axis2_msg_recv_set_scope(axis2_msg_recv_t *msg_recv,
 }
 
 AXIS2_EXPORT axis2_char_t *AXIS2_CALL
-axis2_msg_recv_get_scope(axis2_msg_recv_t *msg_recv,
-    const axutil_env_t *env)
+axis2_msg_recv_get_scope(
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env)
 {
     return msg_recv->scope;
 }
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
-axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
-    const axutil_env_t *env,
-    axis2_msg_ctx_t *msg_ctx)
+axis2_msg_recv_delete_svc_obj(
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx)
 {
     axis2_svc_t *svc = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
@@ -245,7 +255,7 @@ axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
         param_value = axutil_param_get_value(scope_param, env);
     }
     if (param_value && (0 == axutil_strcmp(AXIS2_APPLICATION_SCOPE,
-        param_value)))
+                                           param_value)))
     {
         return AXIS2_SUCCESS;
     }
@@ -254,7 +264,7 @@ axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
     if (!impl_info_param)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,
-            AXIS2_FAILURE);
+                        AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     dll_desc = axutil_param_get_value(impl_info_param, env);
@@ -262,9 +272,10 @@ axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
 }
 
 static axis2_status_t AXIS2_CALL
-axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
-    const axutil_env_t *env,
-    axis2_msg_ctx_t *msg_ctx,
+axis2_msg_recv_receive_impl(
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx,
     void *callback_recv_param)
 {
     axis2_msg_ctx_t *out_msg_ctx = NULL;
@@ -276,7 +287,7 @@ axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-        
+
     out_msg_ctx = axis2_core_utils_create_out_msg_ctx(env, msg_ctx);
     if (!out_msg_ctx)
     {
@@ -289,23 +300,23 @@ axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
         axis2_msg_ctx_free(out_msg_ctx, env);
         return AXIS2_FAILURE;
     }
-    
-    status =  axis2_op_ctx_add_msg_ctx(op_ctx, env, out_msg_ctx);
+
+    status = axis2_op_ctx_add_msg_ctx(op_ctx, env, out_msg_ctx);
     if (!status)
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
         axis2_msg_ctx_free(out_msg_ctx, env);
         return status;
     }
-    status =  axis2_op_ctx_add_msg_ctx(op_ctx, env, msg_ctx);
+    status = axis2_op_ctx_add_msg_ctx(op_ctx, env, msg_ctx);
 
-    if(!status)
+    if (!status)
     {
         return status;
     }
 
     status = axis2_msg_recv_invoke_business_logic(msg_recv, env,
-        msg_ctx, out_msg_ctx);
+                                                  msg_ctx, out_msg_ctx);
     if (AXIS2_SUCCESS != status)
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
@@ -320,14 +331,15 @@ axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
         axis2_msg_ctx_free(out_msg_ctx, env);
         return AXIS2_FAILURE;
     }
-    if ( axis2_msg_ctx_get_soap_envelope(out_msg_ctx, env))
+    if (axis2_msg_ctx_get_soap_envelope(out_msg_ctx, env))
     {
-        axiom_soap_envelope_t *soap_envelope =  axis2_msg_ctx_get_soap_envelope(
-            out_msg_ctx, env);
+        axiom_soap_envelope_t *soap_envelope =
+            axis2_msg_ctx_get_soap_envelope(out_msg_ctx, env);
         if (soap_envelope)
         {
-            axiom_soap_body_t *body = axiom_soap_envelope_get_body(soap_envelope,
-                env);
+            axiom_soap_body_t *body =
+                axiom_soap_envelope_get_body(soap_envelope,
+                                             env);
             if (body)
             {
                 /* in case of a SOAP fault, we got to return failure so that
@@ -336,7 +348,7 @@ axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
                 {
                     status = AXIS2_FAILURE;
                     axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env,
-                        soap_envelope);
+                                                          soap_envelope);
                     axis2_msg_ctx_set_soap_envelope(out_msg_ctx, env, NULL);
                 }
                 else
@@ -348,8 +360,8 @@ axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
             }
         }
     }
-     axis2_engine_free(engine, env);
-    if (!axis2_msg_ctx_is_paused(out_msg_ctx, env) && 
+    axis2_engine_free(engine, env);
+    if (!axis2_msg_ctx_is_paused(out_msg_ctx, env) &&
         !axis2_msg_ctx_is_keep_alive(out_msg_ctx, env))
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
@@ -358,27 +370,30 @@ axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
 }
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
-axis2_msg_recv_set_invoke_business_logic(axis2_msg_recv_t *msg_recv,
-    const axutil_env_t *env,
+axis2_msg_recv_set_invoke_business_logic(
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env,
     void *func)
 {
     msg_recv->invoke_business_logic = func;
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXPORT axis2_status_t AXIS2_CALL 
-axis2_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
-    const axutil_env_t *env,
-    struct axis2_msg_ctx *in_msg_ctx,
-    struct axis2_msg_ctx *out_msg_ctx)
+AXIS2_EXPORT axis2_status_t AXIS2_CALL
+axis2_msg_recv_invoke_business_logic(
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env,
+    struct axis2_msg_ctx * in_msg_ctx,
+    struct axis2_msg_ctx * out_msg_ctx)
 {
-    return msg_recv->invoke_business_logic (msg_recv, env, in_msg_ctx, 
-        out_msg_ctx);
-}        
+    return msg_recv->invoke_business_logic(msg_recv, env, in_msg_ctx,
+                                           out_msg_ctx);
+}
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
-axis2_msg_recv_set_derived(axis2_msg_recv_t *msg_recv,
-    const axutil_env_t *env,
+axis2_msg_recv_set_derived(
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env,
     void *derived)
 {
     msg_recv->derived = derived;
@@ -386,15 +401,17 @@ axis2_msg_recv_set_derived(axis2_msg_recv_t *msg_recv,
 }
 
 AXIS2_EXPORT void *AXIS2_CALL
-axis2_msg_recv_get_derived(const axis2_msg_recv_t *msg_recv,
-    const axutil_env_t *env)
+axis2_msg_recv_get_derived(
+    const axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env)
 {
-    return msg_recv->derived; 
+    return msg_recv->derived;
 }
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
-axis2_msg_recv_set_receive(axis2_msg_recv_t *msg_recv,
-    const axutil_env_t *env,
+axis2_msg_recv_set_receive(
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env,
     void *func)
 {
     msg_recv->receive = func;
@@ -402,12 +419,11 @@ axis2_msg_recv_set_receive(axis2_msg_recv_t *msg_recv,
 }
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
-axis2_msg_recv_receive(axis2_msg_recv_t *msg_recv,
-    const axutil_env_t *env,
-    axis2_msg_ctx_t *msg_ctx,
+axis2_msg_recv_receive(
+    axis2_msg_recv_t * msg_recv,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx,
     void *callback_recv_param)
 {
-    return msg_recv->receive(msg_recv, env, msg_ctx,
-        callback_recv_param);
+    return msg_recv->receive(msg_recv, env, msg_ctx, callback_recv_param);
 }
-

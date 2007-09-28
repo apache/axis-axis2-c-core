@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,58 +26,54 @@ typedef struct apache2_stream_impl
     axutil_stream_t stream;
     axutil_stream_type_t stream_type;
     request_rec *request;
-}apache2_stream_impl_t;
+} apache2_stream_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(stream) ((apache2_stream_impl_t *)(stream))
 
-axutil_stream_type_t AXIS2_CALL
-apache2_stream_get_type(
-    axutil_stream_t *stream,
-    const axutil_env_t *env);
+axutil_stream_type_t AXIS2_CALL apache2_stream_get_type(
+    axutil_stream_t * stream,
+    const axutil_env_t * env);
 
-int AXIS2_CALL
-apache2_stream_write(
-    axutil_stream_t *stream,
-    const axutil_env_t *env,
+int AXIS2_CALL apache2_stream_write(
+    axutil_stream_t * stream,
+    const axutil_env_t * env,
     const void *buffer,
     size_t count);
 
-int AXIS2_CALL
-apache2_stream_read(
-    axutil_stream_t *stream,
-    const axutil_env_t *env,
+int AXIS2_CALL apache2_stream_read(
+    axutil_stream_t * stream,
+    const axutil_env_t * env,
     void *buffer,
     size_t count);
 
-int AXIS2_CALL
-apache2_stream_skip(
-    axutil_stream_t *stream,
-    const axutil_env_t *env,
+int AXIS2_CALL apache2_stream_skip(
+    axutil_stream_t * stream,
+    const axutil_env_t * env,
     int count);
 
-int AXIS2_CALL
-apache2_stream_get_char(
-    axutil_stream_t *stream,
-    const axutil_env_t *env);
+int AXIS2_CALL apache2_stream_get_char(
+    axutil_stream_t * stream,
+    const axutil_env_t * env);
 
-AXIS2_EXTERN axutil_stream_t * AXIS2_CALL
+AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
 axutil_stream_create_apache2(
-    const axutil_env_t *env,
-    request_rec *request)
+    const axutil_env_t * env,
+    request_rec * request)
 {
     apache2_stream_impl_t *stream_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, request, NULL);
 
-    stream_impl = (apache2_stream_impl_t *)AXIS2_MALLOC(
-                env->allocator, sizeof(apache2_stream_impl_t));
+    stream_impl =
+        (apache2_stream_impl_t *) AXIS2_MALLOC(env->allocator,
+                                               sizeof(apache2_stream_impl_t));
 
-    if (! stream_impl)
+    if (!stream_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    
+
     memset(&(stream_impl->stream), 0, sizeof(axutil_stream_t));
 
     stream_impl->request = request;
@@ -91,8 +88,8 @@ axutil_stream_create_apache2(
 
 int AXIS2_CALL
 apache2_stream_read(
-    axutil_stream_t *stream,
-    const axutil_env_t *env,
+    axutil_stream_t * stream,
+    const axutil_env_t * env,
     void *buffer,
     size_t count)
 {
@@ -102,10 +99,10 @@ apache2_stream_read(
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    
-    while ( count - len > 0 )
+
+    while (count - len > 0)
     {
-        read = ap_get_client_block(stream_impl->request, (char *)buffer + len,
+        read = ap_get_client_block(stream_impl->request, (char *) buffer + len,
                                    count - len);
         if (read > 0)
         {
@@ -122,8 +119,8 @@ apache2_stream_read(
 
 int AXIS2_CALL
 apache2_stream_write(
-    axutil_stream_t *stream,
-    const axutil_env_t *env,
+    axutil_stream_t * stream,
+    const axutil_env_t * env,
     const void *buf,
     size_t count)
 {
@@ -132,7 +129,7 @@ apache2_stream_write(
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, buf, AXIS2_FAILURE);
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    buffer = (axis2_char_t*)buf;
+    buffer = (axis2_char_t *) buf;
     if (count <= 0)
     {
         return count;
@@ -141,11 +138,10 @@ apache2_stream_write(
     return ap_rwrite(buffer, count, stream_impl->request);
 }
 
-
 int AXIS2_CALL
 apache2_stream_skip(
-    axutil_stream_t *stream,
-    const axutil_env_t *env,
+    axutil_stream_t * stream,
+    const axutil_env_t * env,
     int count)
 {
     apache2_stream_impl_t *stream_impl = NULL;
@@ -157,8 +153,7 @@ apache2_stream_skip(
     tmp_buffer = AXIS2_MALLOC(env->allocator, count * sizeof(axis2_char_t));
     if (tmp_buffer == NULL)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
-                AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return -1;
     }
     len = ap_get_client_block(stream_impl->request, tmp_buffer, count);
@@ -169,8 +164,8 @@ apache2_stream_skip(
 
 int AXIS2_CALL
 apache2_stream_get_char(
-    axutil_stream_t *stream,
-    const axutil_env_t *env)
+    axutil_stream_t * stream,
+    const axutil_env_t * env)
 {
     int ret = -1;
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
@@ -180,10 +175,9 @@ apache2_stream_get_char(
 
 axutil_stream_type_t AXIS2_CALL
 apache2_stream_get_type(
-    axutil_stream_t *stream,
-    const axutil_env_t *env)
+    axutil_stream_t * stream,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     return AXIS2_INTF_TO_IMPL(stream)->stream_type;
 }
-

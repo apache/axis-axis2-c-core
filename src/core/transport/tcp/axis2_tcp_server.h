@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -40,21 +41,18 @@ extern "C"
 {
 #endif
 
-	
-
     axis2_transport_receiver_t *AXIS2_CALL
-    axis2_tcp_server_create (
-        const axutil_env_t *env,
-        const axis2_char_t *repo,
+    axis2_tcp_server_create(
+        const axutil_env_t * env,
+        const axis2_char_t * repo,
         const int port);
 
     axis2_status_t AXIS2_CALL
     axis2_tcp_server_stop(
-        axis2_transport_receiver_t *server,
-        const axutil_env_t *env);
+        axis2_transport_receiver_t * server,
+        const axutil_env_t * env);
 
-
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif

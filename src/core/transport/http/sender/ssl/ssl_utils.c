@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,41 +18,41 @@
 #include "ssl_utils.h"
 BIO *bio_err = 0;
 
-static int password_cb(
+static int
+password_cb(
     char *buf,
-    int size, 
-    int rwflag, 
+    int size,
+    int rwflag,
     void *passwd)
 {
-    strncpy(buf, (char *)passwd, size);
-    buf[size-1] = '\0';
-    return(strlen(buf));
+    strncpy(buf, (char *) passwd, size);
+    buf[size - 1] = '\0';
+    return (strlen(buf));
 }
 
-AXIS2_EXTERN SSL_CTX* AXIS2_CALL
+AXIS2_EXTERN SSL_CTX *AXIS2_CALL
 axis2_ssl_utils_initialize_ctx(
-    const axutil_env_t *env,
-    axis2_char_t *server_cert,
-    axis2_char_t *key_file,
-    axis2_char_t *ssl_pp)
+    const axutil_env_t * env,
+    axis2_char_t * server_cert,
+    axis2_char_t * key_file,
+    axis2_char_t * ssl_pp)
 {
     SSL_METHOD *meth = NULL;
     SSL_CTX *ctx = NULL;
-    axis2_char_t *ca_file = server_cert; 
+    axis2_char_t *ca_file = server_cert;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     if (!ca_file)
     {
         AXIS2_LOG_INFO(env->log, "[ssl client] CA certificate not specified");
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SSL_NO_CA_FILE,
-                AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SSL_NO_CA_FILE, AXIS2_FAILURE);
         return NULL;
     }
 
     if (!bio_err)
     {
-        /* Global system initialization*/
+        /* Global system initialization */
         SSL_library_init();
         SSL_load_error_strings();
 
@@ -59,47 +60,48 @@ axis2_ssl_utils_initialize_ctx(
         bio_err = BIO_new_fp(stderr, BIO_NOCLOSE);
     }
 
-    /* Create our context*/
+    /* Create our context */
     meth = SSLv23_method();
     ctx = SSL_CTX_new(meth);
 
     /* Load our keys and certificates
      * If we need client certificates it has to be done here
      */
-    if (key_file) /*can we check if the server needs client auth?*/
+    if (key_file)               /*can we check if the server needs client auth? */
     {
-		if (!ssl_pp)
+        if (!ssl_pp)
             AXIS2_LOG_INFO(env->log, "[ssl client] No passphrase for the "
-                                     "specified");
+                           "specified");
 
-        SSL_CTX_set_default_passwd_cb_userdata(ctx, (void *)ssl_pp);
+        SSL_CTX_set_default_passwd_cb_userdata(ctx, (void *) ssl_pp);
         SSL_CTX_set_default_passwd_cb(ctx, password_cb);
 
-        if(!(SSL_CTX_use_certificate_chain_file(ctx, key_file)))
+        if (!(SSL_CTX_use_certificate_chain_file(ctx, key_file)))
         {
-			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                             "[ssl client] Loading client certificate failed ");
             SSL_CTX_free(ctx);
             return NULL;
         }
 
-        if(!(SSL_CTX_use_PrivateKey_file(ctx, key_file, SSL_FILETYPE_PEM)))
+        if (!(SSL_CTX_use_PrivateKey_file(ctx, key_file, SSL_FILETYPE_PEM)))
         {
-			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[ssl client] Loading client key failed");
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "[ssl client] Loading client key failed");
             SSL_CTX_free(ctx);
             return NULL;
         }
     }
     else
     {
-		AXIS2_LOG_INFO(env->log, "[ssl client] Client certificate chain file "
-                                 "not specified");
+        AXIS2_LOG_INFO(env->log, "[ssl client] Client certificate chain file "
+                       "not specified");
     }
 
-    /* Load the CAs we trust*/
+    /* Load the CAs we trust */
     if (!(SSL_CTX_load_verify_locations(ctx, ca_file, 0)))
     {
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                         "[ssl client] Loading CA certificate failed");
         SSL_CTX_free(ctx);
         return NULL;
@@ -108,16 +110,16 @@ axis2_ssl_utils_initialize_ctx(
     /* verify depth should be read from axis2.xml, let's use the default for
      * the moment*/
 #if (OPENSSL_VERSION_NUMBER < 0x00905100L)
-    /*SSL_CTX_set_verify_depth(ctx, 1);*/
+    /*SSL_CTX_set_verify_depth(ctx, 1); */
 #endif
 
     return ctx;
 }
 
-AXIS2_EXTERN SSL* AXIS2_CALL
+AXIS2_EXTERN SSL *AXIS2_CALL
 axis2_ssl_utils_initialize_ssl(
-    const axutil_env_t *env, 
-    SSL_CTX *ctx,
+    const axutil_env_t * env,
+    SSL_CTX * ctx,
     axis2_socket_t socket)
 {
     SSL *ssl = NULL;
@@ -139,16 +141,18 @@ axis2_ssl_utils_initialize_ssl(
     SSL_set_bio(ssl, sbio, sbio);
     if (SSL_connect(ssl) <= 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SSL_ENGINE,
-                AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SSL_ENGINE, AXIS2_FAILURE);
         return NULL;
     }
-    
+
     if (SSL_get_verify_result(ssl) != X509_V_OK)
     {
+
         char sslerror[128]; /** error buffer must be at least 120 bytes long */
         ERR_error_string(SSL_get_verify_result(ssl), sslerror);
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,"[ssl client] SSL certificate verification failed (%s)" ,sslerror);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "[ssl client] SSL certificate verification failed (%s)",
+                        sslerror);
         return NULL;
     }
 
@@ -157,9 +161,9 @@ axis2_ssl_utils_initialize_ssl(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_ssl_utils_cleanup_ssl(
-    const axutil_env_t *env,
-    SSL_CTX *ctx,
-    SSL *ssl)
+    const axutil_env_t * env,
+    SSL_CTX * ctx,
+    SSL * ssl)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 

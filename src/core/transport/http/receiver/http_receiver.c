@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -35,8 +36,8 @@ typedef struct axis2_http_server_impl
     axis2_transport_receiver_t http_server;
     axis2_http_svr_thread_t *svr_thread;
     int port;
-    axis2_conf_ctx_t* conf_ctx;
-    axis2_conf_ctx_t* conf_ctx_private;
+    axis2_conf_ctx_t *conf_ctx;
+    axis2_conf_ctx_t *conf_ctx_private;
 }
 axis2_http_server_impl_t;
 
@@ -45,43 +46,36 @@ axis2_http_server_impl_t;
 
 /***************************** Function headers *******************************/
 
-axis2_status_t AXIS2_CALL
-axis2_http_server_init(
-    axis2_transport_receiver_t *server,
-    const axutil_env_t *env,
-    axis2_conf_ctx_t *conf_ctx,
-    axis2_transport_in_desc_t *in_desc);
+axis2_status_t AXIS2_CALL axis2_http_server_init(
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx,
+    axis2_transport_in_desc_t * in_desc);
 
-axis2_status_t AXIS2_CALL
-axis2_http_server_start(
-    axis2_transport_receiver_t *server,
-    const axutil_env_t *env);
+axis2_status_t AXIS2_CALL axis2_http_server_start(
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env);
 
-axis2_status_t AXIS2_CALL
-axis2_http_server_stop(
-    axis2_transport_receiver_t *server,
-    const axutil_env_t *env);
+axis2_status_t AXIS2_CALL axis2_http_server_stop(
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env);
 
-axis2_conf_ctx_t *AXIS2_CALL
-axis2_http_server_get_conf_ctx(
-    axis2_transport_receiver_t *server,
-    const axutil_env_t *env);
+axis2_conf_ctx_t *AXIS2_CALL axis2_http_server_get_conf_ctx(
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env);
 
-axis2_endpoint_ref_t *AXIS2_CALL
-axis2_http_server_get_reply_to_epr(
-    axis2_transport_receiver_t *server,
-    const axutil_env_t *env,
-    const axis2_char_t *svc_name);
+axis2_endpoint_ref_t *AXIS2_CALL axis2_http_server_get_reply_to_epr(
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env,
+    const axis2_char_t * svc_name);
 
-axis2_bool_t AXIS2_CALL
-axis2_http_server_is_running(
-    axis2_transport_receiver_t *server,
-    const axutil_env_t *env);
+axis2_bool_t AXIS2_CALL axis2_http_server_is_running(
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env);
 
-void AXIS2_CALL
-axis2_http_server_free(
-    axis2_transport_receiver_t *server,
-    const axutil_env_t *env);
+void AXIS2_CALL axis2_http_server_free(
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env);
 
 static const axis2_transport_receiver_ops_t http_transport_receiver_ops_var = {
     axis2_http_server_init,
@@ -95,17 +89,17 @@ static const axis2_transport_receiver_ops_t http_transport_receiver_ops_var = {
 
 AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
 axis2_http_server_create(
-    const axutil_env_t *env,
-    const axis2_char_t *repo,
+    const axutil_env_t * env,
+    const axis2_char_t * repo,
     const int port)
 {
     axis2_http_server_impl_t *server_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    server_impl = (axis2_http_server_impl_t *)AXIS2_MALLOC
-            (env->allocator, sizeof(axis2_http_server_impl_t));
+    server_impl = (axis2_http_server_impl_t *) AXIS2_MALLOC
+        (env->allocator, sizeof(axis2_http_server_impl_t));
 
-    if (! server_impl)
+    if (!server_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -117,9 +111,10 @@ axis2_http_server_create(
     server_impl->port = port;
 
     server_impl->http_server.ops = &http_transport_receiver_ops_var;
-    
+
     if (repo)
     {
+
         /**
          * We first create a private conf ctx which is owned by this server
          * we only free this private conf context. We should never free the
@@ -127,9 +122,10 @@ axis2_http_server_create(
          * may lead to double free
          */
         server_impl->conf_ctx_private = axis2_build_conf_ctx(env, repo);
-        if (! server_impl->conf_ctx_private)
+        if (!server_impl->conf_ctx_private)
         {
-            axis2_http_server_free((axis2_transport_receiver_t *) server_impl, env);
+            axis2_http_server_free((axis2_transport_receiver_t *) server_impl,
+                                   env);
             return NULL;
         }
         server_impl->conf_ctx = server_impl->conf_ctx_private;
@@ -140,8 +136,8 @@ axis2_http_server_create(
 
 void AXIS2_CALL
 axis2_http_server_free(
-    axis2_transport_receiver_t *server,
-    const axutil_env_t *env)
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env)
 {
     axis2_http_server_impl_t *server_impl = NULL;
     AXIS2_ENV_CHECK(env, void);
@@ -155,9 +151,10 @@ axis2_http_server_free(
 
     if (server_impl->conf_ctx_private)
     {
-         axis2_conf_ctx_free(server_impl->conf_ctx_private, env);
+        axis2_conf_ctx_free(server_impl->conf_ctx_private, env);
         server_impl->conf_ctx_private = NULL;
     }
+
     /**
      * Do not free this. It may own to some other object
      */
@@ -167,13 +164,12 @@ axis2_http_server_free(
     return;
 }
 
-
 axis2_status_t AXIS2_CALL
 axis2_http_server_init(
-    axis2_transport_receiver_t *server,
-    const axutil_env_t *env,
-    axis2_conf_ctx_t *conf_ctx,
-    axis2_transport_in_desc_t *in_desc)
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx,
+    axis2_transport_in_desc_t * in_desc)
 {
     axis2_http_server_impl_t *server_impl = NULL;
     axis2_char_t *port_str = NULL;
@@ -183,9 +179,10 @@ axis2_http_server_init(
     server_impl = AXIS2_INTF_TO_IMPL(server);
 
     server_impl->conf_ctx = conf_ctx;
-    param = (axutil_param_t *)axutil_param_container_get_param(
-                axis2_transport_in_desc_param_container(in_desc, env), 
-                env, "port");
+    param =
+        (axutil_param_t *)
+        axutil_param_container_get_param(axis2_transport_in_desc_param_container
+                                         (in_desc, env), env, "port");
     if (param)
     {
         port_str = axutil_param_get_value(param, env);
@@ -197,11 +194,10 @@ axis2_http_server_init(
     return AXIS2_SUCCESS;
 }
 
-
 axis2_status_t AXIS2_CALL
 axis2_http_server_start(
-    axis2_transport_receiver_t *server,
-    const axutil_env_t *env)
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env)
 {
 
     axis2_http_server_impl_t *server_impl = NULL;
@@ -210,14 +206,14 @@ axis2_http_server_start(
 
     server_impl = AXIS2_INTF_TO_IMPL(server);
     server_impl->svr_thread = axis2_http_svr_thread_create(env,
-            server_impl->port);
-    if (! server_impl->svr_thread)
+                                                           server_impl->port);
+    if (!server_impl->svr_thread)
     {
         return AXIS2_FAILURE;
     }
     worker = axis2_http_worker_create(env, server_impl->conf_ctx);
     axis2_http_worker_set_svr_port(worker, env, server_impl->port);
-    if (! worker)
+    if (!worker)
     {
         axis2_http_svr_thread_free(server_impl->svr_thread, env);
         return AXIS2_FAILURE;
@@ -228,11 +224,10 @@ axis2_http_server_start(
     return AXIS2_SUCCESS;
 }
 
-
 axis2_status_t AXIS2_CALL
 axis2_http_server_stop(
-    axis2_transport_receiver_t *server,
-    const axutil_env_t *env)
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -240,17 +235,16 @@ axis2_http_server_stop(
     if (AXIS2_INTF_TO_IMPL(server)->svr_thread)
     {
         axis2_http_svr_thread_destroy(AXIS2_INTF_TO_IMPL(server)->svr_thread,
-                env);
+                                      env);
     }
-    AXIS2_LOG_INFO(env->log, "Successfully terminated  HTTP server"
-            " thread");
+    AXIS2_LOG_INFO(env->log, "Successfully terminated  HTTP server" " thread");
     return AXIS2_SUCCESS;
 }
 
 axis2_conf_ctx_t *AXIS2_CALL
 axis2_http_server_get_conf_ctx(
-    axis2_transport_receiver_t *server,
-    const axutil_env_t *env)
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(server)->conf_ctx;
@@ -258,9 +252,9 @@ axis2_http_server_get_conf_ctx(
 
 axis2_endpoint_ref_t *AXIS2_CALL
 axis2_http_server_get_reply_to_epr(
-    axis2_transport_receiver_t *server,
-    const axutil_env_t *env,
-    const axis2_char_t *svc_name)
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env,
+    const axis2_char_t * svc_name)
 {
     axis2_endpoint_ref_t *epr = NULL;
     const axis2_char_t *host_address = NULL;
@@ -272,9 +266,9 @@ axis2_http_server_get_reply_to_epr(
     host_address = "127.0.0.1"; /* TODO : get from axis2.xml */
     svc_path = axutil_stracat(env, "/axis2/services/", svc_name);
     url = axutil_url_create(env, "http", host_address,
-            AXIS2_INTF_TO_IMPL(server)->port, svc_path);
+                            AXIS2_INTF_TO_IMPL(server)->port, svc_path);
     AXIS2_FREE(env->allocator, svc_path);
-    if (! url)
+    if (!url)
     {
         return NULL;
     }
@@ -285,13 +279,13 @@ axis2_http_server_get_reply_to_epr(
 
 axis2_bool_t AXIS2_CALL
 axis2_http_server_is_running(
-    axis2_transport_receiver_t *server,
-    const axutil_env_t *env)
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env)
 {
     axis2_http_server_impl_t *server_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     server_impl = AXIS2_INTF_TO_IMPL(server);
-    if (! server_impl->svr_thread)
+    if (!server_impl->svr_thread)
     {
         return AXIS2_FALSE;
     }
@@ -305,9 +299,10 @@ axis2_http_server_is_running(
 /**
  * Following block distinguish the exposed part of the dll.
  */
-AXIS2_EXPORT int axis2_get_instance(
+AXIS2_EXPORT int
+axis2_get_instance(
     struct axis2_transport_receiver **inst,
-    const axutil_env_t *env)
+    const axutil_env_t * env)
 {
     *inst = axis2_http_server_create(env, NULL, -1);
     if (!(*inst))
@@ -318,9 +313,10 @@ AXIS2_EXPORT int axis2_get_instance(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXPORT int axis2_remove_instance(
-    axis2_transport_receiver_t *inst,
-    const axutil_env_t *env)
+AXIS2_EXPORT int
+axis2_remove_instance(
+    axis2_transport_receiver_t * inst,
+    const axutil_env_t * env)
 {
     if (inst)
     {

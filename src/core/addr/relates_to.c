@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -20,16 +21,19 @@
 
 struct axis2_relates_to
 {
+
     /** value string  */
     axis2_char_t *value;
+
     /** relationship type string */
     axis2_char_t *relationship_type;
 };
 
 axis2_relates_to_t *AXIS2_CALL
-axis2_relates_to_create(const axutil_env_t *env,
-    const axis2_char_t *value,
-    const axis2_char_t *relationship_type)
+axis2_relates_to_create(
+    const axutil_env_t * env,
+    const axis2_char_t * value,
+    const axis2_char_t * relationship_type)
 {
     axis2_relates_to_t *relates_to = NULL;
 
@@ -71,16 +75,18 @@ axis2_relates_to_create(const axutil_env_t *env,
 }
 
 const axis2_char_t *AXIS2_CALL
-axis2_relates_to_get_value(const axis2_relates_to_t *relates_to,
-    const axutil_env_t *env)
+axis2_relates_to_get_value(
+    const axis2_relates_to_t * relates_to,
+    const axutil_env_t * env)
 {
     return relates_to->value;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_relates_to_set_value(struct axis2_relates_to *relates_to,
-    const axutil_env_t *env,
-    const axis2_char_t *value)
+axis2_relates_to_set_value(
+    struct axis2_relates_to * relates_to,
+    const axutil_env_t * env,
+    const axis2_char_t * value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -91,7 +97,7 @@ axis2_relates_to_set_value(struct axis2_relates_to *relates_to,
 
     if (value)
     {
-        relates_to->value = (axis2_char_t *)axutil_strdup(env, value);
+        relates_to->value = (axis2_char_t *) axutil_strdup(env, value);
         if (!(relates_to->value))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -103,16 +109,18 @@ axis2_relates_to_set_value(struct axis2_relates_to *relates_to,
 }
 
 const axis2_char_t *AXIS2_CALL
-axis2_relates_to_get_relationship_type(const axis2_relates_to_t *relates_to,
-    const axutil_env_t *env)
+axis2_relates_to_get_relationship_type(
+    const axis2_relates_to_t * relates_to,
+    const axutil_env_t * env)
 {
     return relates_to->relationship_type;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to,
-    const axutil_env_t *env,
-    const axis2_char_t *relationship_type)
+axis2_relates_to_set_relationship_type(
+    struct axis2_relates_to * relates_to,
+    const axutil_env_t * env,
+    const axis2_char_t * relationship_type)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -124,7 +132,7 @@ axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to,
     if (relationship_type)
     {
         relates_to->relationship_type =
-            (axis2_char_t *)axutil_strdup(env, relationship_type);
+            (axis2_char_t *) axutil_strdup(env, relationship_type);
         if (!(relates_to->relationship_type))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -136,8 +144,9 @@ axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to,
 }
 
 void AXIS2_CALL
-axis2_relates_to_free(struct axis2_relates_to *relates_to,
-    const axutil_env_t *env)
+axis2_relates_to_free(
+    struct axis2_relates_to *relates_to,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 

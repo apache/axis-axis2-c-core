@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,13 +24,13 @@ struct axis2_flow
 };
 
 AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
-axis2_flow_create(const axutil_env_t *env)
+axis2_flow_create(
+    const axutil_env_t * env)
 {
     axis2_flow_t *flow = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    flow = (axis2_flow_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_flow_t));
+    flow = (axis2_flow_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_flow_t));
 
     if (!flow)
     {
@@ -51,8 +52,9 @@ axis2_flow_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_flow_free(axis2_flow_t *flow,
-    const axutil_env_t *env)
+axis2_flow_free(
+    axis2_flow_t * flow,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -66,8 +68,9 @@ axis2_flow_free(axis2_flow_t *flow,
         {
             axis2_handler_desc_t *handler_desc = NULL;
 
-            handler_desc = 
-			    (axis2_handler_desc_t *) axutil_array_list_get(flow->list, env, i);
+            handler_desc =
+                (axis2_handler_desc_t *) axutil_array_list_get(flow->list, env,
+                                                               i);
             axis2_handler_desc_free(handler_desc, env);
         }
         axutil_array_list_free(flow->list, env);
@@ -82,8 +85,9 @@ axis2_flow_free(axis2_flow_t *flow,
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_flow_free_void_arg(void *flow,
-    const axutil_env_t *env)
+axis2_flow_free_void_arg(
+    void *flow,
+    const axutil_env_t * env)
 {
     axis2_flow_t *flow_l = NULL;
 
@@ -94,9 +98,10 @@ axis2_flow_free_void_arg(void *flow,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_flow_add_handler(axis2_flow_t *flow,
-    const axutil_env_t *env,
-    axis2_handler_desc_t *handler)
+axis2_flow_add_handler(
+    axis2_flow_t * flow,
+    const axutil_env_t * env,
+    axis2_handler_desc_t * handler)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, handler, AXIS2_FAILURE);
@@ -115,17 +120,18 @@ axis2_flow_add_handler(axis2_flow_t *flow,
 }
 
 AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
-axis2_flow_get_handler(const axis2_flow_t *flow,
-    const axutil_env_t *env,
+axis2_flow_get_handler(
+    const axis2_flow_t * flow,
+    const axutil_env_t * env,
     const int index)
 {
     return axutil_array_list_get(flow->list, env, index);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_flow_get_handler_count(const axis2_flow_t *flow,
-    const axutil_env_t *env)
+axis2_flow_get_handler_count(
+    const axis2_flow_t * flow,
+    const axutil_env_t * env)
 {
     return axutil_array_list_size(flow->list, env);
 }
-

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -37,19 +38,20 @@
 extern "C"
 {
 #endif
-    
+
     /** Type name for struct axis2_module_builder */
     typedef struct axis2_module_builder axis2_module_builder_t;
 
-    /** 
+    /**
      * De-allocate memory
      * @param module_builder pointer to module builder
      * @param env pointer to environment struct
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_module_builder_free(axis2_module_builder_t *module_builder,
-        const axutil_env_t *env);
+    axis2_module_builder_free(
+        axis2_module_builder_t * module_builder,
+        const axutil_env_t * env);
 
     /**
      * @param module_builder pointer to module builder
@@ -57,8 +59,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
-        const axutil_env_t *env);
+
+    axis2_module_builder_populate_module(
+        axis2_module_builder_t * module_builder,
+        const axutil_env_t * env);
 
     /**
      * Creates module builder struct
@@ -66,7 +70,9 @@ extern "C"
      * @return pointer to newly created module builder
      */
     AXIS2_EXTERN axis2_module_builder_t *AXIS2_CALL
-    axis2_module_builder_create(const axutil_env_t *env);
+
+    axis2_module_builder_create(
+        const axutil_env_t * env);
 
     /**
      * Creates module builder struct
@@ -76,18 +82,20 @@ extern "C"
      * @return pointer to newly created module builder
      */
     AXIS2_EXTERN axis2_module_builder_t *AXIS2_CALL
-    axis2_module_builder_create_with_file_and_dep_engine_and_module(const axutil_env_t *env,
-        axis2_char_t *file_name,
+
+    axis2_module_builder_create_with_file_and_dep_engine_and_module(
+        const axutil_env_t * env,
+        axis2_char_t * file_name,
         struct axis2_dep_engine *dep_engine,
-        axis2_module_desc_t *module);
+        axis2_module_desc_t * module);
 
-/** Populates the module. 
-#define AXIS2_MODULE_BUILDER_POPULATE_MODULE(module_builder, env) \
-      axis2_module_builder_populate_module (module_builder, env)*/
+    /** Populates the module.
+    #define AXIS2_MODULE_BUILDER_POPULATE_MODULE(module_builder, env) \
+          axis2_module_builder_populate_module (module_builder, env)*/
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_MODULE_BUILDER_H */
+#endif                          /* AXIS2_MODULE_BUILDER_H */

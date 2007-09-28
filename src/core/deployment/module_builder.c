@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -24,23 +25,24 @@ struct axis2_module_builder
     struct axis2_desc_builder *desc_builder;
 };
 
-static axutil_array_list_t *AXIS2_CALL
-axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
-    const axutil_env_t *env,
-    axiom_children_qname_iterator_t *op_itr);
+static axutil_array_list_t *AXIS2_CALL axis2_module_builder_process_ops(
+    axis2_module_builder_t * module_builder,
+    const axutil_env_t * env,
+    axiom_children_qname_iterator_t * op_itr);
 
 AXIS2_EXTERN axis2_module_builder_t *AXIS2_CALL
-axis2_module_builder_create(const axutil_env_t *env)
+axis2_module_builder_create(
+    const axutil_env_t * env)
 {
     axis2_module_builder_t *module_builder = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     module_builder = (axis2_module_builder_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_module_builder_t));
+                                                             sizeof
+                                                             (axis2_module_builder_t));
 
-
-    if (! module_builder)
+    if (!module_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -50,24 +52,26 @@ axis2_module_builder_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN axis2_module_builder_t *AXIS2_CALL
-axis2_module_builder_create_with_file_and_dep_engine_and_module(const axutil_env_t *env,
-    axis2_char_t *file_name,
-    axis2_dep_engine_t *dep_engine,
-    axis2_module_desc_t *module_desc)
+axis2_module_builder_create_with_file_and_dep_engine_and_module(
+    const axutil_env_t * env,
+    axis2_char_t * file_name,
+    axis2_dep_engine_t * dep_engine,
+    axis2_module_desc_t * module_desc)
 {
     axis2_module_builder_t *module_builder = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    module_builder = (axis2_module_builder_t *) axis2_module_builder_create(env);
-    if (! module_builder)
+    module_builder =
+        (axis2_module_builder_t *) axis2_module_builder_create(env);
+    if (!module_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     module_builder->desc_builder =
         axis2_desc_builder_create_with_file_and_dep_engine(env, file_name,
-            dep_engine);
+                                                           dep_engine);
     if (!module_builder->desc_builder)
     {
         axis2_module_builder_free(module_builder, env);
@@ -78,8 +82,9 @@ axis2_module_builder_create_with_file_and_dep_engine_and_module(const axutil_env
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_module_builder_free(axis2_module_builder_t *module_builder,
-    const axutil_env_t *env)
+axis2_module_builder_free(
+    axis2_module_builder_t * module_builder,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -97,8 +102,9 @@ axis2_module_builder_free(axis2_module_builder_t *module_builder,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
-    const axutil_env_t *env)
+axis2_module_builder_populate_module(
+    axis2_module_builder_t * module_builder,
+    const axutil_env_t * env)
 {
     axiom_element_t *module_element = NULL;
     axiom_node_t *module_node = NULL;
@@ -127,11 +133,13 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "axis2_module_builder_populate_module start");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
+                    "axis2_module_builder_populate_module start");
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    module_node = axis2_desc_builder_build_om(module_builder->desc_builder, env);
+    module_node =
+        axis2_desc_builder_build_om(module_builder->desc_builder, env);
     module_element = axiom_node_get_data_element(module_node, env);
     if (!module_element)
     {
@@ -142,13 +150,15 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         axis2_char_t *module_name = NULL;
         axutil_qname_t *module_qname = NULL;
 
-        file_data = axis2_dep_engine_get_current_file_item(
-            axis2_desc_builder_get_dep_engine(module_builder->desc_builder, env), 
-            env);
+        file_data =
+            axis2_dep_engine_get_current_file_item
+            (axis2_desc_builder_get_dep_engine
+             (module_builder->desc_builder, env), env);
         module_name = axis2_arch_file_data_get_module_name(file_data, env);
 
         module_qname = axutil_qname_create(env, module_name, NULL, NULL);
-        axis2_module_desc_set_qname(module_builder->module_desc, env, module_qname);
+        axis2_module_desc_set_qname(module_builder->module_desc, env,
+                                    module_qname);
 
         if (module_qname)
         {
@@ -169,20 +179,20 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     {
         axis2_char_t *class_name = NULL;
 
-
         class_name = axiom_attribute_get_value(module_dll_att, env);
         if (class_name && (0 != axutil_strcmp("", class_name)))
         {
-            axis2_dep_engine_t *dep_engine = 
-                axis2_desc_builder_get_dep_engine(module_builder->desc_builder, env);
+            axis2_dep_engine_t *dep_engine =
+                axis2_desc_builder_get_dep_engine(module_builder->desc_builder,
+                                                  env);
             if (dep_engine)
             {
                 axis2_arch_file_data_t *file_data = NULL;
 
-                file_data = axis2_dep_engine_get_current_file_item(
-                    dep_engine, env);
+                file_data =
+                    axis2_dep_engine_get_current_file_item(dep_engine, env);
                 axis2_arch_file_data_set_module_dll_name(file_data, env,
-                    class_name);
+                                                         class_name);
             }
         }
     }
@@ -192,7 +202,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
 
     qparamst = axutil_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
     itr = axiom_element_get_children_with_qname(module_element, env,
-        qparamst, module_node);
+                                                qparamst, module_node);
     if (qparamst)
     {
         axutil_qname_free(qparamst, env);
@@ -204,13 +214,17 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         parent_container = axis2_conf_get_param_container(parent, env);
     }
     axis2_desc_builder_process_params(module_builder->desc_builder, env,
-        itr, axis2_module_desc_get_param_container(module_builder->module_desc, env), 
-        parent_container);
+                                      itr,
+                                      axis2_module_desc_get_param_container
+                                      (module_builder->module_desc, env),
+                                      parent_container);
 
     /* Process IN_FLOW */
     qinflowst = axutil_qname_create(env, AXIS2_IN_FLOW_START, NULL, NULL);
     in_flow_element = axiom_element_get_first_child_with_qname(module_element,
-        env, qinflowst, module_node, &in_flow_node);
+                                                               env, qinflowst,
+                                                               module_node,
+                                                               &in_flow_node);
     if (qinflowst)
     {
         axutil_qname_free(qinflowst, env);
@@ -221,10 +235,13 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         axis2_flow_t *flow = NULL;
 
         flow = axis2_desc_builder_process_flow(module_builder->desc_builder,
-            env, in_flow_element, 
-            axis2_module_desc_get_param_container(module_builder->module_desc, env),
-            in_flow_node);
-        status = axis2_module_desc_set_in_flow(module_builder->module_desc, env, flow);
+                                               env, in_flow_element,
+                                               axis2_module_desc_get_param_container
+                                               (module_builder->module_desc,
+                                                env), in_flow_node);
+        status =
+            axis2_module_desc_set_in_flow(module_builder->module_desc, env,
+                                          flow);
 
         if (AXIS2_SUCCESS != status)
         {
@@ -238,7 +255,9 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
 
     qoutflowst = axutil_qname_create(env, AXIS2_OUT_FLOW_START, NULL, NULL);
     out_flow_element = axiom_element_get_first_child_with_qname(module_element,
-        env, qoutflowst, module_node, &out_flow_node);
+                                                                env, qoutflowst,
+                                                                module_node,
+                                                                &out_flow_node);
     if (qoutflowst)
     {
         axutil_qname_free(qoutflowst, env);
@@ -249,10 +268,13 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         axis2_flow_t *flow = NULL;
 
         flow = axis2_desc_builder_process_flow(module_builder->desc_builder,
-            env, out_flow_element, 
-            axis2_module_desc_get_param_container(module_builder->module_desc, env),
-            out_flow_node);
-        status = axis2_module_desc_set_out_flow(module_builder->module_desc, env, flow);
+                                               env, out_flow_element,
+                                               axis2_module_desc_get_param_container
+                                               (module_builder->module_desc,
+                                                env), out_flow_node);
+        status =
+            axis2_module_desc_set_out_flow(module_builder->module_desc, env,
+                                           flow);
 
         if (AXIS2_SUCCESS != status)
         {
@@ -262,8 +284,10 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     }
 
     qinfaultflow = axutil_qname_create(env, AXIS2_IN_FAILTFLOW, NULL, NULL);
-    in_fault_flow_element = axiom_element_get_first_child_with_qname(module_element,
-        env, qinfaultflow, module_node, &in_fault_flow_node);
+    in_fault_flow_element =
+        axiom_element_get_first_child_with_qname(module_element, env,
+                                                 qinfaultflow, module_node,
+                                                 &in_fault_flow_node);
     if (qinfaultflow)
     {
         axutil_qname_free(qinfaultflow, env);
@@ -274,11 +298,13 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         axis2_flow_t *flow = NULL;
 
         flow = axis2_desc_builder_process_flow(module_builder->desc_builder,
-            env, in_fault_flow_element, 
-            axis2_module_desc_get_param_container(module_builder->module_desc, env),
-            in_fault_flow_node);
-        status = axis2_module_desc_set_fault_in_flow(module_builder->module_desc,
-            env, flow);
+                                               env, in_fault_flow_element,
+                                               axis2_module_desc_get_param_container
+                                               (module_builder->module_desc,
+                                                env), in_fault_flow_node);
+        status =
+            axis2_module_desc_set_fault_in_flow(module_builder->module_desc,
+                                                env, flow);
 
         if (AXIS2_SUCCESS != status)
         {
@@ -288,8 +314,10 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     }
 
     qoutfaultflow = axutil_qname_create(env, AXIS2_OUT_FAILTFLOW, NULL, NULL);
-    out_fault_flow_element = axiom_element_get_first_child_with_qname(module_element,
-        env, qoutfaultflow, module_node, &out_fault_flow_node);
+    out_fault_flow_element =
+        axiom_element_get_first_child_with_qname(module_element, env,
+                                                 qoutfaultflow, module_node,
+                                                 &out_fault_flow_node);
     if (qoutfaultflow)
     {
         axutil_qname_free(qoutfaultflow, env);
@@ -300,11 +328,13 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         axis2_flow_t *flow = NULL;
 
         flow = axis2_desc_builder_process_flow(module_builder->desc_builder,
-            env, out_fault_flow_element, 
-            axis2_module_desc_get_param_container(module_builder->module_desc, env),
-            out_fault_flow_node);
-        status = axis2_module_desc_set_fault_out_flow(module_builder->module_desc,
-            env, flow);
+                                               env, out_fault_flow_element,
+                                               axis2_module_desc_get_param_container
+                                               (module_builder->module_desc,
+                                                env), out_fault_flow_node);
+        status =
+            axis2_module_desc_set_fault_out_flow(module_builder->module_desc,
+                                                 env, flow);
         if (AXIS2_SUCCESS != status)
         {
             axis2_flow_free(flow, env);
@@ -315,7 +345,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     /* Processing Operations */
     qopst = axutil_qname_create(env, AXIS2_OPERATIONST, NULL, NULL);
     op_itr = axiom_element_get_children_with_qname(module_element, env,
-        qopst, module_node);
+                                                   qopst, module_node);
     if (qopst)
     {
         axutil_qname_free(qopst, env);
@@ -331,15 +361,15 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     }
     axutil_array_list_free(ops, env);
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
-        "axis2_module_builder_populate_module end");
+                    "axis2_module_builder_populate_module end");
     return AXIS2_SUCCESS;
 }
 
-
 static axutil_array_list_t *AXIS2_CALL
-axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
-    const axutil_env_t *env,
-    axiom_children_qname_iterator_t *op_itr)
+axis2_module_builder_process_ops(
+    axis2_module_builder_t * module_builder,
+    const axutil_env_t * env,
+    axiom_children_qname_iterator_t * op_itr)
 {
     axutil_array_list_t *ops = NULL;
 
@@ -379,10 +409,10 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
             axutil_qname_free(qattname, env);
         }
 
-        if (! op_name_att)
+        if (!op_name_att)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_OP_NAME_MISSING,
-                AXIS2_FAILURE);
+                            AXIS2_FAILURE);
             return NULL;
         }
         qmep = axutil_qname_create(env, AXIS2_MEP, NULL, NULL);
@@ -396,7 +426,7 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         {
             mep_url = axiom_attribute_get_value(op_mep_att, env);
         }
-        if (! mep_url)
+        if (!mep_url)
         {
             /* Assuming in-out mep */
             op_desc = axis2_op_create_from_module(env);
@@ -417,26 +447,30 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         /* Operation parameters */
         qparamst = axutil_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
         params = axiom_element_get_children_with_qname(op_element, env,
-            qparamst, op_node);
+                                                       qparamst, op_node);
         if (qparamst)
         {
             axutil_qname_free(qparamst, env);
         }
 
         axis2_desc_builder_process_params(module_builder->desc_builder, env,
-            params, 
-            axis2_op_get_param_container(op_desc, env), 
-            axis2_module_desc_get_param_container(module_builder->module_desc, env));
+                                          params,
+                                          axis2_op_get_param_container(op_desc,
+                                                                       env),
+                                          axis2_module_desc_get_param_container
+                                          (module_builder->module_desc, env));
         /* To process wsamapping */
-        axis2_desc_builder_process_action_mappings(module_builder->desc_builder, 
-            env, op_node, op_desc);
+        axis2_desc_builder_process_action_mappings(module_builder->desc_builder,
+                                                   env, op_node, op_desc);
 
         /* setting the mep of the operation */
 
         /* loading the message receivers */
         qmsgrecv = axutil_qname_create(env, AXIS2_MESSAGERECEIVER, NULL, NULL);
         recv_element = axiom_element_get_first_child_with_qname(op_element,
-            env, qmsgrecv, op_node, &recv_node);
+                                                                env, qmsgrecv,
+                                                                op_node,
+                                                                &recv_node);
         if (qmsgrecv)
         {
             axutil_qname_free(qmsgrecv, env);
@@ -446,7 +480,8 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
             axis2_msg_recv_t *msg_recv = NULL;
 
             msg_recv = axis2_desc_builder_load_msg_recv(module_builder->
-                desc_builder, env, recv_element);
+                                                        desc_builder, env,
+                                                        recv_element);
             axis2_op_set_msg_recv(op_desc, env, msg_recv);
         }
         else
@@ -459,17 +494,18 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         /* Process Module Refs */
         qmodulest = axutil_qname_create(env, AXIS2_MODULEST, NULL, NULL);
         modules = axiom_element_get_children_with_qname(op_element, env,
-            qmodulest, op_node);
+                                                        qmodulest, op_node);
         if (qmodulest)
         {
             axutil_qname_free(qmodulest, env);
         }
         axis2_desc_builder_process_op_module_refs(module_builder->desc_builder,
-            env, modules, op_desc);
+                                                  env, modules, op_desc);
         /* setting Operation phase */
-        info = axis2_dep_engine_get_phases_info(
-            axis2_desc_builder_get_dep_engine(module_builder->desc_builder, env),
-            env);
+        info =
+            axis2_dep_engine_get_phases_info(axis2_desc_builder_get_dep_engine
+                                             (module_builder->desc_builder,
+                                              env), env);
         axis2_phases_info_set_op_phases(info, env, op_desc);
 
         /* adding operation */
@@ -477,5 +513,3 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
     }
     return ops;
 }
-
-

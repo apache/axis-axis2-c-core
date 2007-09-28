@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -29,21 +30,19 @@ extern "C"
 {
 #endif
 
+    /** \brief Constructor for creating ssl stream
+      * @return axutil_stream (ssl)
+      */
+    AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
+    axutil_stream_create_ssl(
+        const axutil_env_t * env,
+        axis2_socket_t socket,
+        axis2_char_t * server_cert,
+        axis2_char_t * key_file,
+        axis2_char_t * ssl_pp);
 
-/** \brief Constructor for creating ssl stream
-  * @return axutil_stream (ssl)
-  */
-AXIS2_EXTERN axutil_stream_t * AXIS2_CALL 
-axutil_stream_create_ssl(
-    const axutil_env_t *env,
-    axis2_socket_t socket,
-    axis2_char_t *server_cert,
-    axis2_char_t *key_file,
-    axis2_char_t *ssl_pp
-    );
+    /** @} */
 
-/** @} */
-    
 #ifdef __cplusplus
 }
 #endif

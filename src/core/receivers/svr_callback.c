@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -24,7 +25,8 @@ struct axis2_svr_callback
 };
 
 AXIS2_EXPORT axis2_svr_callback_t *AXIS2_CALL
-axis2_svr_callback_create(const axutil_env_t *env)
+axis2_svr_callback_create(
+    const axutil_env_t * env)
 {
     axis2_svr_callback_t *svr_callback = NULL;
 
@@ -43,8 +45,9 @@ axis2_svr_callback_create(const axutil_env_t *env)
 }
 
 AXIS2_EXPORT void AXIS2_CALL
-axis2_svr_callback_free(axis2_svr_callback_t *svr_callback,
-    const axutil_env_t *env)
+axis2_svr_callback_free(
+    axis2_svr_callback_t * svr_callback,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -57,9 +60,10 @@ axis2_svr_callback_free(axis2_svr_callback_t *svr_callback,
 }
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
-axis2_svr_callback_handle_result(axis2_svr_callback_t *svr_callback,
-    const axutil_env_t *env,
-    axis2_msg_ctx_t *msg_ctx)
+axis2_svr_callback_handle_result(
+    axis2_svr_callback_t * svr_callback,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx)
 {
     axis2_engine_t *engine = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -81,9 +85,10 @@ axis2_svr_callback_handle_result(axis2_svr_callback_t *svr_callback,
 }
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
-axis2_svr_callback_handle_fault(axis2_svr_callback_t *svr_callback,
-    const axutil_env_t *env,
-    axis2_msg_ctx_t *msg_ctx)
+axis2_svr_callback_handle_fault(
+    axis2_svr_callback_t * svr_callback,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx)
 {
     axis2_engine_t *engine = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -103,8 +108,7 @@ axis2_svr_callback_handle_fault(axis2_svr_callback_t *svr_callback,
         return AXIS2_FAILURE;
     }
 
-    fault_ctx = axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx, NULL, NULL);
+    fault_ctx =
+        axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx, NULL, NULL);
     return axis2_engine_send_fault(engine, env, fault_ctx);
 }
-
-

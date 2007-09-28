@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,7 +19,7 @@
 #ifndef AXIS2_WS_INFO_H
 #define AXIS2_WS_INFO_H
 
-/** 
+/**
  * @defgroup axis2_ws_info Ws Info
  * @ingroup axis2_deployment
  * @{
@@ -42,59 +43,65 @@ extern "C"
     /** Type name for struct axis2_ws_info */
     typedef struct axis2_ws_info axis2_ws_info_t;
 
-
-    /** 
+    /**
      * De-allocate memory
      * @param ws_info pointer to ws info
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_ws_info_free(axis2_ws_info_t *ws_info,
-        const axutil_env_t *env);
+    axis2_ws_info_free(
+        axis2_ws_info_t * ws_info,
+        const axutil_env_t * env);
 
-    /** 
+    /**
      * @param ws_info pointer to ws info
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_ws_info_get_file_name(const axis2_ws_info_t *ws_info,
-        const axutil_env_t *env);
+    axis2_ws_info_get_file_name(
+        const axis2_ws_info_t * ws_info,
+        const axutil_env_t * env);
 
-    /** 
+    /**
      * @param ws_info pointer to ws info
      * @param env pointer to environment struct
      * @param file_name pointer to file name
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_ws_info_set_file_name(axis2_ws_info_t *ws_info,
-        const axutil_env_t *env,
-        axis2_char_t *file_name);
+    axis2_ws_info_set_file_name(
+        axis2_ws_info_t * ws_info,
+        const axutil_env_t * env,
+        axis2_char_t * file_name);
 
-    /** 
+    /**
      * @param ws_info pointer to ws info
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN long AXIS2_CALL
-    axis2_ws_info_get_last_modified_date(const axis2_ws_info_t *ws_info,
-        const axutil_env_t *env);
+    axis2_ws_info_get_last_modified_date(
+        const axis2_ws_info_t * ws_info,
+        const axutil_env_t * env);
 
-    /** 
+    /**
      * @param ws_info pointer to ws info
      * @param env pointer to environment struct
      * @param modified_data pointer to modified date
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_ws_info_set_last_modified_date(axis2_ws_info_t *ws_info,
-        const axutil_env_t *env,
+
+    axis2_ws_info_set_last_modified_date(
+        axis2_ws_info_t * ws_info,
+        const axutil_env_t * env,
         long last_modified_date);
 
-    /** 
+    /**
      * @param ws_info pointer to ws info
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_ws_info_get_type(const axis2_ws_info_t *ws_info,
-        const axutil_env_t *env);
+    axis2_ws_info_get_type(
+        const axis2_ws_info_t * ws_info,
+        const axutil_env_t * env);
 
     /**
      * Creates description builder struct
@@ -104,8 +111,10 @@ extern "C"
      * @return pointer to newly created ws info
      */
     AXIS2_EXTERN axis2_ws_info_t *AXIS2_CALL
-    axis2_ws_info_create_with_file_name_and_last_modified_date(const axutil_env_t *env,
-        axis2_char_t *file_name,
+
+    axis2_ws_info_create_with_file_name_and_last_modified_date(
+        const axutil_env_t * env,
+        axis2_char_t * file_name,
         long last_modified_date);
 
     /**
@@ -115,14 +124,16 @@ extern "C"
      * @param type type
      */
     AXIS2_EXTERN axis2_ws_info_t *AXIS2_CALL
-    axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(const axutil_env_t *env,
-        axis2_char_t *file_name,
+
+    axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
+        const axutil_env_t * env,
+        axis2_char_t * file_name,
         long last_modified_date,
         int type);
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_WS_INFO_H */
+#endif                          /* AXIS2_WS_INFO_H */

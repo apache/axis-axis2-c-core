@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -29,14 +30,14 @@ extern "C"
 {
 #endif
 
+    /** brief Constructor for creating IIS stream
+      * @return axutil_stream (IIS)
+      */
+    axutil_stream_t *AXIS2_CALL
+    axutil_stream_create_iis(
+        const axutil_env_t * env,
+        LPEXTENSION_CONTROL_BLOCK lpECB);
 
-/** brief Constructor for creating IIS stream
-  * @return axutil_stream (IIS)
-  */
-axutil_stream_t * AXIS2_CALL axutil_stream_create_iis
-                        (const axutil_env_t *env, 
-						LPEXTENSION_CONTROL_BLOCK lpECB);
-    
 #ifdef __cplusplus
 }
 #endif

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -30,10 +31,10 @@ struct axis2_http_request_line
 
 AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL
 axis2_http_request_line_create(
-    const axutil_env_t *env,
-    const axis2_char_t *method,
-    const axis2_char_t *uri,
-    const axis2_char_t *http_version)
+    const axutil_env_t * env,
+    const axis2_char_t * method,
+    const axis2_char_t * uri,
+    const axis2_char_t * http_version)
 {
     axis2_http_request_line_t *request_line = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -41,26 +42,26 @@ axis2_http_request_line_create(
     AXIS2_PARAM_CHECK(env->error, uri, NULL);
     AXIS2_PARAM_CHECK(env->error, http_version, NULL);
 
-    request_line = (axis2_http_request_line_t *)AXIS2_MALLOC
-            (env->allocator, sizeof(axis2_http_request_line_t));
+    request_line = (axis2_http_request_line_t *) AXIS2_MALLOC
+        (env->allocator, sizeof(axis2_http_request_line_t));
 
-    if (! request_line)
+    if (!request_line)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    request_line->method = (axis2_char_t *)axutil_strdup(env, method);
-    request_line->uri = (axis2_char_t *)axutil_strdup(env, uri);
-    request_line->http_version = (axis2_char_t *)axutil_strdup(env, http_version);
-                
+    request_line->method = (axis2_char_t *) axutil_strdup(env, method);
+    request_line->uri = (axis2_char_t *) axutil_strdup(env, uri);
+    request_line->http_version =
+        (axis2_char_t *) axutil_strdup(env, http_version);
 
     return request_line;
 }
 
 void AXIS2_CALL
 axis2_http_request_line_free(
-    axis2_http_request_line_t *request_line,
-    const axutil_env_t *env)
+    axis2_http_request_line_t * request_line,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -83,8 +84,8 @@ axis2_http_request_line_free(
 
 AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL
 axis2_http_request_line_parse_line(
-    const axutil_env_t *env,
-    const axis2_char_t *str)
+    const axutil_env_t * env,
+    const axis2_char_t * str)
 {
     axis2_char_t *req_line = NULL;
     axis2_char_t *method = NULL;
@@ -98,17 +99,16 @@ axis2_http_request_line_parse_line(
 
     tmp = axutil_strstr(str, AXIS2_HTTP_CRLF);
 
-
-    if (! tmp)
+    if (!tmp)
     {
         AXIS2_ERROR_SET(env->error,
-                AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
-                AXIS2_FAILURE);
+                        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
+                        AXIS2_FAILURE);
         return NULL;
     }
     i = tmp - str;
     req_line = AXIS2_MALLOC(env->allocator, i * sizeof(axis2_char_t) + 1);
-    if (! req_line)
+    if (!req_line)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -119,23 +119,23 @@ axis2_http_request_line_parse_line(
 
     method = tmp;
     tmp = strchr(tmp, ' ');
-    if (! tmp)
+    if (!tmp)
     {
         AXIS2_FREE(env->allocator, req_line);
         AXIS2_ERROR_SET(env->error,
-                AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
-                AXIS2_FAILURE);
+                        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
+                        AXIS2_FAILURE);
         return NULL;
     }
     *tmp++ = '\0';
     uri = tmp;
     tmp = strrchr(tmp, ' ');
-    if (! tmp)
+    if (!tmp)
     {
         AXIS2_FREE(env->allocator, req_line);
         AXIS2_ERROR_SET(env->error,
-                AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
-                AXIS2_FAILURE);
+                        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
+                        AXIS2_FAILURE);
         return NULL;
     }
     *tmp++ = '\0';
@@ -146,38 +146,34 @@ axis2_http_request_line_parse_line(
     return ret;
 }
 
-
 axis2_char_t *AXIS2_CALL
 axis2_http_request_line_get_method(
-    const axis2_http_request_line_t *request_line,
-    const axutil_env_t *env)
+    const axis2_http_request_line_t * request_line,
+    const axutil_env_t * env)
 {
     return request_line->method;
 }
 
-
 axis2_char_t *AXIS2_CALL
 axis2_http_request_line_get_http_version(
-    const axis2_http_request_line_t *request_line,
-    const axutil_env_t *env)
+    const axis2_http_request_line_t * request_line,
+    const axutil_env_t * env)
 {
     return request_line->http_version;
 }
 
-
 axis2_char_t *AXIS2_CALL
 axis2_http_request_line_get_uri(
-    const axis2_http_request_line_t *request_line,
-    const axutil_env_t *env)
+    const axis2_http_request_line_t * request_line,
+    const axutil_env_t * env)
 {
     return request_line->uri;
 }
 
-
 axis2_char_t *AXIS2_CALL
 axis2_http_request_line_to_string(
-    axis2_http_request_line_t *request_line,
-    const axutil_env_t *env)
+    axis2_http_request_line_t * request_line,
+    const axutil_env_t * env)
 {
     int alloc_len = 0;
     axis2_char_t *ret = NULL;
@@ -185,13 +181,12 @@ axis2_http_request_line_to_string(
     AXIS2_ENV_CHECK(env, NULL);
 
     alloc_len = axutil_strlen(request_line->method) +
-            axutil_strlen(request_line->uri) +
-            axutil_strlen(request_line->http_version) + 6;
+        axutil_strlen(request_line->uri) +
+        axutil_strlen(request_line->http_version) + 6;
     /* 5 = 2 * spaces + '/' +CR + LF + '\0' */
 
-    ret = AXIS2_MALLOC(env->allocator,
-            alloc_len * sizeof(axis2_char_t));
-    if (! ret)
+    ret = AXIS2_MALLOC(env->allocator, alloc_len * sizeof(axis2_char_t));
+    if (!ret)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

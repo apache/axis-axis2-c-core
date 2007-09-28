@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -19,7 +20,7 @@
 #define AXIS2_TCP_SVR_THREAD_H
 
 /**
- * @defgroup axis2_tcp_svr_thread tcp server thread 
+ * @defgroup axis2_tcp_svr_thread tcp server thread
  * @ingroup axis2_core_trans_tcp
  * @{
  */
@@ -47,32 +48,36 @@ extern "C"
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_tcp_svr_thread_run(axis2_tcp_svr_thread_t *svr_thread,
-        const axutil_env_t *env);
+    axis2_tcp_svr_thread_run(
+        axis2_tcp_svr_thread_t * svr_thread,
+        const axutil_env_t * env);
 
     /**
      * @param svr_thread pointer to server thread
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_tcp_svr_thread_destroy(axis2_tcp_svr_thread_t *svr_thread,
-        const axutil_env_t *env);
+    axis2_tcp_svr_thread_destroy(
+        axis2_tcp_svr_thread_t * svr_thread,
+        const axutil_env_t * env);
 
     /**
      * @param svr_thread pointer to server thread
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_tcp_svr_thread_get_local_port(const axis2_tcp_svr_thread_t *svr_thread,
-        const axutil_env_t *env);
+    axis2_tcp_svr_thread_get_local_port(
+        const axis2_tcp_svr_thread_t * svr_thread,
+        const axutil_env_t * env);
 
     /**
      * @param svr_thread pointer to server thread
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_tcp_svr_thread_is_running(axis2_tcp_svr_thread_t *svr_thread,
-        const axutil_env_t *env);
+    axis2_tcp_svr_thread_is_running(
+        axis2_tcp_svr_thread_t * svr_thread,
+        const axutil_env_t * env);
 
     /**
      * @param svr_thread pointer to server thread
@@ -80,28 +85,31 @@ extern "C"
      * @param worker pointer to worker
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_tcp_svr_thread_set_worker(axis2_tcp_svr_thread_t *svr_thread,
-        const axutil_env_t *env,
-        axis2_tcp_worker_t *worker);
+    axis2_tcp_svr_thread_set_worker(
+        axis2_tcp_svr_thread_t * svr_thread,
+        const axutil_env_t * env,
+        axis2_tcp_worker_t * worker);
 
     /**
      * @param svr_thread pointer to server thread
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_tcp_svr_thread_free(axis2_tcp_svr_thread_t *svr_thread,
-        const axutil_env_t *env);
+    axis2_tcp_svr_thread_free(
+        axis2_tcp_svr_thread_t * svr_thread,
+        const axutil_env_t * env);
 
     /**
      * @param env pointer to environment struct
      * @param port
      */
     AXIS2_EXTERN axis2_tcp_svr_thread_t *AXIS2_CALL
-    axis2_tcp_svr_thread_create (
-        const axutil_env_t *env,
+
+    axis2_tcp_svr_thread_create(
+        const axutil_env_t * env,
         int port);
 
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif

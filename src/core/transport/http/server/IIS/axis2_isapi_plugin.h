@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,30 +23,38 @@
 #ifdef __cplusplus
 extern "C"
 {
-#endif
-/*
-Initialize axis. This function is called in the begining of the module loading.
-It initializes the axis by reading values from the configuration and creating the 
-required structures for the axis2c
-*/
-axis2_status_t init_axis2();
 
-/*
-Cleanup the axis2.
-*/
-axis2_status_t axis2_terminate();
+#endif  /*  */
 
-/*
-Search a given uri to find weather it matches a uri for the axis2
-The uri format for axis2 is of the form
-scheme://server:port/axis2/other_parts
-This function search  a give uri for the /axis2/. If a match 
-is found it will replace the /axis2 part of the url with /axis2/mod_iis.dll?
-*/
-axis2_status_t get_extension_url(char url[], char ret_url[]);
+    /*
+    Initialize axis. This function is called in the begining of the module loading.
+    It initializes the axis by reading values from the configuration and creating the
+    required structures for the axis2c
+    */
+    axis2_status_t init_axis2(
+    );
+    
 
+    /*
+    Cleanup the axis2.
+    */
+    axis2_status_t axis2_terminate(
+    );
+    
+
+    /*
+    Search a given uri to find weather it matches a uri for the axis2
+    The uri format for axis2 is of the form
+    scheme://server:port/axis2/other_parts
+    This function search  a give uri for the /axis2/. If a match
+    is found it will replace the /axis2 part of the url with /axis2/mod_iis.dll?
+    */
+    axis2_status_t get_extension_url(
+        char url[],
+        char ret_url[]);
+    
 #ifdef __cplusplus
 }
-#endif
+#endif  /*  */
 
 #endif

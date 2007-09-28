@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,6 +23,7 @@
 
 struct axis2_desc
 {
+
     /** parameter container */
     axutil_param_container_t *param_container;
 
@@ -34,14 +36,14 @@ struct axis2_desc
 };
 
 AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
-axis2_desc_create(const axutil_env_t *env)
+axis2_desc_create(
+    const axutil_env_t * env)
 {
     axis2_desc_t *desc = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    desc = (axis2_desc_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_desc_t));
+    desc = (axis2_desc_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_desc_t));
 
     if (!desc)
     {
@@ -63,20 +65,21 @@ axis2_desc_create(const axutil_env_t *env)
     }
 
     desc->children = axutil_hash_make(env);
-	if (!(desc->children))
+    if (!(desc->children))
     {
         axis2_desc_free(desc, env);
         return NULL;
     }
-    
+
     desc->policy_include = axis2_policy_include_create_with_desc(env, desc);
 
     return desc;
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_desc_free(axis2_desc_t *desc,
-    const axutil_env_t *env)
+axis2_desc_free(
+    axis2_desc_t * desc,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -86,13 +89,13 @@ axis2_desc_free(axis2_desc_t *desc,
         void *val = NULL;
 
         for (hi = axutil_hash_first(desc->children, env); hi;
-            hi = axutil_hash_next(env, hi))
+             hi = axutil_hash_next(env, hi))
         {
             axutil_hash_this(hi, NULL, NULL, &val);
 
             if (val)
             {
-                axis2_msg_free((axis2_msg_t *)val, env);
+                axis2_msg_free((axis2_msg_t *) val, env);
             }
         }
 
@@ -118,9 +121,10 @@ axis2_desc_free(axis2_desc_t *desc,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_desc_add_param(axis2_desc_t *desc,
-    const axutil_env_t *env,
-    axutil_param_t *param)
+axis2_desc_add_param(
+    axis2_desc_t * desc,
+    const axutil_env_t * env,
+    axutil_param_t * param)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FALSE);
@@ -129,18 +133,20 @@ axis2_desc_add_param(axis2_desc_t *desc,
 }
 
 AXIS2_EXTERN axutil_param_t *AXIS2_CALL
-axis2_desc_get_param(const axis2_desc_t *desc,
-    const axutil_env_t *env,
-    const axis2_char_t *param_name)
+axis2_desc_get_param(
+    const axis2_desc_t * desc,
+    const axutil_env_t * env,
+    const axis2_char_t * param_name)
 {
     AXIS2_PARAM_CHECK(env->error, param_name, NULL);
     return axutil_param_container_get_param(desc->param_container, env,
-	    param_name);
+                                            param_name);
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-axis2_desc_get_all_params(const axis2_desc_t *desc,
-    const axutil_env_t *env)
+axis2_desc_get_all_params(
+    const axis2_desc_t * desc,
+    const axutil_env_t * env)
 {
     AXIS2_PARAM_CHECK(env->error, desc->param_container, AXIS2_FALSE);
 
@@ -148,9 +154,10 @@ axis2_desc_get_all_params(const axis2_desc_t *desc,
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_desc_is_param_locked(const axis2_desc_t *desc,
-    const axutil_env_t *env,
-    const axis2_char_t *param_name)
+axis2_desc_is_param_locked(
+    const axis2_desc_t * desc,
+    const axutil_env_t * env,
+    const axis2_char_t * param_name)
 {
     axutil_param_t *param_l = NULL;
 
@@ -159,98 +166,102 @@ axis2_desc_is_param_locked(const axis2_desc_t *desc,
 
     param_l = axis2_desc_get_param(desc, env, param_name);
 
-    return (param_l  && axutil_param_is_locked(param_l, env));
+    return (param_l && axutil_param_is_locked(param_l, env));
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_desc_add_child(const axis2_desc_t *desc,
-    const axutil_env_t *env,
-    const axis2_char_t *key,
+axis2_desc_add_child(
+    const axis2_desc_t * desc,
+    const axutil_env_t * env,
+    const axis2_char_t * key,
     const void *child)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
 
     if (desc->children)
     {
-        axutil_hash_set(desc->children, key,
-            AXIS2_HASH_KEY_STRING, child);
+        axutil_hash_set(desc->children, key, AXIS2_HASH_KEY_STRING, child);
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
 }
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-axis2_desc_get_all_children(const axis2_desc_t *desc,
-    const axutil_env_t *env)
+axis2_desc_get_all_children(
+    const axis2_desc_t * desc,
+    const axutil_env_t * env)
 {
     return desc->children;
 }
 
 AXIS2_EXTERN void *AXIS2_CALL
-axis2_desc_get_child(const axis2_desc_t *desc,
-    const axutil_env_t *env,
-    const axis2_char_t *key)
+axis2_desc_get_child(
+    const axis2_desc_t * desc,
+    const axutil_env_t * env,
+    const axis2_char_t * key)
 {
     return axutil_hash_get(desc->children, key, AXIS2_HASH_KEY_STRING);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_desc_remove_child(const axis2_desc_t *desc,
-    const axutil_env_t *env,
-    const axis2_char_t *key)
+axis2_desc_remove_child(
+    const axis2_desc_t * desc,
+    const axutil_env_t * env,
+    const axis2_char_t * key)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
 
     if (desc->children)
     {
-        axutil_hash_set(desc->children, key,
-            AXIS2_HASH_KEY_STRING, NULL);
+        axutil_hash_set(desc->children, key, AXIS2_HASH_KEY_STRING, NULL);
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
 }
 
 AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
-axis2_desc_get_parent(const axis2_desc_t *desc,
-    const axutil_env_t *env)
+axis2_desc_get_parent(
+    const axis2_desc_t * desc,
+    const axutil_env_t * env)
 {
     return desc->parent;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_desc_set_parent(axis2_desc_t *desc,
-    const axutil_env_t *env,
-    axis2_desc_t *parent)
+axis2_desc_set_parent(
+    axis2_desc_t * desc,
+    const axutil_env_t * env,
+    axis2_desc_t * parent)
 {
     desc->parent = parent;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_desc_set_policy_include(axis2_desc_t *desc,
-    const axutil_env_t *env,
-    axis2_policy_include_t *policy_include)
+axis2_desc_set_policy_include(
+    axis2_desc_t * desc,
+    const axutil_env_t * env,
+    axis2_policy_include_t * policy_include)
 {
     if (desc->policy_include)
     {
         axis2_policy_include_free(desc->policy_include, env);
         desc->policy_include = NULL;
     }
-    
+
     desc->policy_include = policy_include;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_policy_include_t *AXIS2_CALL
-axis2_desc_get_policy_include(axis2_desc_t *desc,
-    const axutil_env_t *env)
+axis2_desc_get_policy_include(
+    axis2_desc_t * desc,
+    const axutil_env_t * env)
 {
     if (!desc->policy_include)
     {
-        /*desc->policy_include = axis2_policy_include_create(env);*/
+        /*desc->policy_include = axis2_policy_include_create(env); */
         desc->policy_include = axis2_policy_include_create_with_desc(env, desc);
     }
     return desc->policy_include;
 }
-
-

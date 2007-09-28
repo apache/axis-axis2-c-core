@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -44,31 +45,27 @@ typedef struct axis2_http_svr_thd_args
     axis2_socket_t socket;
     axis2_http_worker_t *worker;
     axutil_thread_t *thread;
-}axis2_http_svr_thd_args_t;
+} axis2_http_svr_thd_args_t;
 
+AXIS2_EXTERN const axutil_env_t *AXIS2_CALL init_thread_env(
+    const axutil_env_t ** system_env);
 
-AXIS2_EXTERN const axutil_env_t *AXIS2_CALL
-init_thread_env(
-    const axutil_env_t **system_env);
-
-void *AXIS2_THREAD_FUNC
-axis2_svr_thread_worker_func(
-    axutil_thread_t *thd,
+void *AXIS2_THREAD_FUNC axis2_svr_thread_worker_func(
+    axutil_thread_t * thd,
     void *data);
 
 axis2_http_svr_thread_t *AXIS2_CALL
 axis2_http_svr_thread_create(
-    const axutil_env_t *env,
+    const axutil_env_t * env,
     int port)
 {
     axis2_http_svr_thread_t *svr_thread = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    svr_thread = (axis2_http_svr_thread_t *)AXIS2_MALLOC
-            (env->allocator, sizeof(
-                        axis2_http_svr_thread_t));
+    svr_thread = (axis2_http_svr_thread_t *) AXIS2_MALLOC
+        (env->allocator, sizeof(axis2_http_svr_thread_t));
 
-    if (! svr_thread)
+    if (!svr_thread)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -78,22 +75,20 @@ axis2_http_svr_thread_create(
     svr_thread->stopped = AXIS2_FALSE;
     svr_thread->port = port;
     svr_thread->listen_socket = axutil_network_handler_create_server_socket
-            (env, svr_thread->port);
+        (env, svr_thread->port);
     if (-1 == svr_thread->listen_socket)
     {
-        axis2_http_svr_thread_free((axis2_http_svr_thread_t *) svr_thread,
-                env);
+        axis2_http_svr_thread_free((axis2_http_svr_thread_t *) svr_thread, env);
         return NULL;
     }
 
     return svr_thread;
 }
 
-
 void AXIS2_CALL
 axis2_http_svr_thread_free(
-    axis2_http_svr_thread_t *svr_thread,
-    const axutil_env_t *env)
+    axis2_http_svr_thread_t * svr_thread,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -108,16 +103,15 @@ axis2_http_svr_thread_free(
         svr_thread->listen_socket = -1;
     }
     svr_thread->stopped = AXIS2_TRUE;
-    
+
     AXIS2_FREE(env->allocator, svr_thread);
     return;
 }
 
-
 axis2_status_t AXIS2_CALL
 axis2_http_svr_thread_run(
-    axis2_http_svr_thread_t *svr_thread,
-    const axutil_env_t *env)
+    axis2_http_svr_thread_t * svr_thread,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -128,37 +122,39 @@ axis2_http_svr_thread_run(
         axutil_thread_t *worker_thread = NULL;
 
         socket = axutil_network_handler_svr_socket_accept(env,
-                svr_thread->listen_socket);
-        if (! svr_thread->worker)
+                                                          svr_thread->
+                                                          listen_socket);
+        if (!svr_thread->worker)
         {
             AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, "Worker not ready yet."
-                    " Cannot serve the request");
+                              " Cannot serve the request");
             axutil_network_handler_close_socket(env, socket);
             continue;
         }
         arg_list = AXIS2_MALLOC(env->allocator,
-                sizeof(axis2_http_svr_thd_args_t));
-        if (! arg_list)
+                                sizeof(axis2_http_svr_thd_args_t));
+        if (!arg_list)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Memory allocation error in the svr thread loop");
+                            "Memory allocation error in the svr thread loop");
             continue;
         }
-        arg_list->env = (axutil_env_t *)env;
+        arg_list->env = (axutil_env_t *) env;
         arg_list->socket = socket;
         arg_list->worker = svr_thread->worker;
 #ifdef AXIS2_SVR_MULTI_THREADED
         worker_thread = axutil_thread_pool_get_thread(env->thread_pool,
-                axis2_svr_thread_worker_func, (void *)arg_list);
-        if (! worker_thread)
+                                                      axis2_svr_thread_worker_func,
+                                                      (void *) arg_list);
+        if (!worker_thread)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
-                    "server thread loop");
+                            "server thread loop");
             continue;
         }
         axutil_thread_pool_thread_detach(env->thread_pool, worker_thread);
 #else
-        axis2_svr_thread_worker_func(NULL, (void *)arg_list);
+        axis2_svr_thread_worker_func(NULL, (void *) arg_list);
 #endif
     }
     return AXIS2_SUCCESS;
@@ -166,8 +162,8 @@ axis2_http_svr_thread_run(
 
 axis2_status_t AXIS2_CALL
 axis2_http_svr_thread_destroy(
-    axis2_http_svr_thread_t *svr_thread,
-    const axutil_env_t *env)
+    axis2_http_svr_thread_t * svr_thread,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
@@ -177,7 +173,7 @@ axis2_http_svr_thread_destroy(
     }
     svr_thread->stopped = AXIS2_TRUE;
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Terminating HTTP server "
-            "thread.");
+                    "thread.");
     if (svr_thread->listen_socket)
     {
         axutil_network_handler_close_socket(env, svr_thread->listen_socket);
@@ -188,25 +184,25 @@ axis2_http_svr_thread_destroy(
 
 int AXIS2_CALL
 axis2_http_svr_thread_get_local_port(
-    const axis2_http_svr_thread_t *svr_thread,
-    const axutil_env_t *env)
+    const axis2_http_svr_thread_t * svr_thread,
+    const axutil_env_t * env)
 {
     return svr_thread->port;
 }
 
 axis2_bool_t AXIS2_CALL
 axis2_http_svr_thread_is_running(
-    axis2_http_svr_thread_t *svr_thread,
-    const axutil_env_t *env)
+    axis2_http_svr_thread_t * svr_thread,
+    const axutil_env_t * env)
 {
     return svr_thread->port;
 }
 
 axis2_status_t AXIS2_CALL
 axis2_http_svr_thread_set_worker(
-    axis2_http_svr_thread_t *svr_thread,
-    const axutil_env_t *env,
-    axis2_http_worker_t *worker)
+    axis2_http_svr_thread_t * svr_thread,
+    const axutil_env_t * env,
+    axis2_http_worker_t * worker)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, worker, AXIS2_FAILURE);
@@ -214,16 +210,16 @@ axis2_http_svr_thread_set_worker(
     return AXIS2_SUCCESS;
 }
 
-
 /**
  * Thread worker function.
  */
 void *AXIS2_THREAD_FUNC
-axis2_svr_thread_worker_func (
-    axutil_thread_t *thd,
+axis2_svr_thread_worker_func(
+    axutil_thread_t * thd,
     void *data)
 {
-    struct AXIS2_PLATFORM_TIMEB t1, t2;
+    struct AXIS2_PLATFORM_TIMEB t1,
+     t2;
     axis2_simple_http_svr_conn_t *svr_conn = NULL;
     axis2_http_simple_request_t *request = NULL;
     int millisecs = 0;
@@ -241,8 +237,8 @@ axis2_svr_thread_worker_func (
 #endif
 #endif
 
-    arg_list = (axis2_http_svr_thd_args_t *)data;
-    if (! arg_list)
+    arg_list = (axis2_http_svr_thd_args_t *) data;
+    if (!arg_list)
     {
         return NULL;
     }
@@ -252,11 +248,11 @@ axis2_svr_thread_worker_func (
     socket = arg_list->socket;
     svr_conn = axis2_simple_http_svr_conn_create(thread_env, socket);
     axis2_simple_http_svr_conn_set_rcv_timeout(svr_conn, thread_env,
-            axis2_http_socket_read_timeout);
+                                               axis2_http_socket_read_timeout);
     request = axis2_simple_http_svr_conn_read_request(svr_conn, thread_env);
     tmp = arg_list->worker;
     status = axis2_http_worker_process_request(tmp, thread_env, svr_conn,
-            request);
+                                               request);
     axis2_simple_http_svr_conn_free(svr_conn, thread_env);
     if (request)
         axis2_http_simple_request_free(request, thread_env);
@@ -282,11 +278,11 @@ axis2_svr_thread_worker_func (
     {
 #if defined(WIN32)
         AXIS2_LOG_WARNING(thread_env->log, AXIS2_LOG_SI,
-                "Error occured in processing request ");
+                          "Error occured in processing request ");
 #else
         AXIS2_LOG_WARNING(thread_env->log, AXIS2_LOG_SI,
-                "Error occured in processing request (%.3f seconds)",
-                secs);
+                          "Error occured in processing request (%.3f seconds)",
+                          secs);
 #endif
     }
 
@@ -294,13 +290,12 @@ axis2_svr_thread_worker_func (
 
     if (thread_env)
     {
-        /*axutil_free_thread_env(thread_env);*/
+        /*axutil_free_thread_env(thread_env); */
         thread_env = NULL;
     }
 #ifdef AXIS2_SVR_MULTI_THREADED
-    /*axutil_thread_pool_exit_thread(env->thread_pool, thd);*/
+    /*axutil_thread_pool_exit_thread(env->thread_pool, thd); */
 #endif
 
     return NULL;
 }
-

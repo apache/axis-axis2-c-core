@@ -1,3 +1,4 @@
+
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -48,9 +49,9 @@ extern "C"
      * @return pointer to base handler, returns a reference not a cloned copy
      */
     AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
-    axis2_disp_checker_get_base(const axis2_disp_checker_t *disp_checker,
-        const axutil_env_t *env);
-
+    axis2_disp_checker_get_base(
+        const axis2_disp_checker_t * disp_checker,
+        const axutil_env_t * env);
 
     /**
      * Gets QName.
@@ -60,8 +61,9 @@ extern "C"
      * cloned copy
      */
     AXIS2_EXTERN axutil_string_t *AXIS2_CALL
-    axis2_disp_checker_get_name(const axis2_disp_checker_t *disp_checker,
-        const axutil_env_t *env);
+    axis2_disp_checker_get_name(
+        const axis2_disp_checker_t * disp_checker,
+        const axutil_env_t * env);
 
     /**
      * Sets QName.
@@ -71,9 +73,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_disp_checker_set_name(axis2_disp_checker_t *disp_checker,
-        const axutil_env_t *env,
-        const axutil_string_t *name);
+    axis2_disp_checker_set_name(
+        axis2_disp_checker_t * disp_checker,
+        const axutil_env_t * env,
+        const axutil_string_t * name);
 
     /**
      * Frees dispatcher checker.
@@ -82,8 +85,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_disp_checker_free(axis2_disp_checker_t *disp_checker,
-        const axutil_env_t *env);
+    axis2_disp_checker_free(
+        axis2_disp_checker_t * disp_checker,
+        const axutil_env_t * env);
 
     /**
      * Creates a dispatcher checker struct instance.
@@ -91,10 +95,11 @@ extern "C"
      * @return pointer to newly created dispatcher checker struct
      */
     AXIS2_EXTERN axis2_disp_checker_t *AXIS2_CALL
-    axis2_disp_checker_create(const axutil_env_t *env);
-    
+    axis2_disp_checker_create(
+        const axutil_env_t * env);
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif    /* AXIS2_DISP_CHECKER_H */
+#endif                          /* AXIS2_DISP_CHECKER_H */

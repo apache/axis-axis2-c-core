@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -46,7 +47,6 @@
 #include <axutil_dll_desc.h>
 #include <axis2_policy_include.h>
 
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -59,14 +59,15 @@ extern "C"
     /** Type name for struct axis2_desc_builder */
     typedef struct axis2_desc_builder axis2_desc_builder_t;
 
-    /** 
+    /**
      * De-allocate memory
      * @param desc_builder pointer to desc builder
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_desc_builder_free(axis2_desc_builder_t *desc_builder,
-        const axutil_env_t *env);
+    axis2_desc_builder_free(
+        axis2_desc_builder_t * desc_builder,
+        const axutil_env_t * env);
 
     /**
      * This will creat OMElemnt for a given descrition document (axis2.xml , 
@@ -76,8 +77,9 @@ extern "C"
      * @return OMElement <code>OMElement</code>
      */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
-    axis2_desc_builder_build_om(axis2_desc_builder_t *desc_builder,
-        const axutil_env_t *env);
+    axis2_desc_builder_build_om(
+        axis2_desc_builder_t * desc_builder,
+        const axutil_env_t * env);
 
     /**
      * To process Flow elements in services.xml
@@ -89,11 +91,12 @@ extern "C"
      * @return flow
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
-    axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
-        const axutil_env_t *env,
-        axiom_element_t *flow_element,
-        axutil_param_container_t *parent,
-        axiom_node_t *node);
+    axis2_desc_builder_process_flow(
+        axis2_desc_builder_t * desc_builder,
+        const axutil_env_t * env,
+        axiom_element_t * flow_element,
+        axutil_param_container_t * parent,
+        axiom_node_t * node);
 
     /**
      * To process Handler element
@@ -104,10 +107,12 @@ extern "C"
      * @param parent pointer to parent
      */
     AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
-    axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
-        const axutil_env_t *env,
-        axiom_node_t *handler_element,
-        axutil_param_container_t *parent);
+
+    axis2_desc_builder_process_handler(
+        axis2_desc_builder_t * desc_builder,
+        const axutil_env_t * env,
+        axiom_node_t * handler_element,
+        axutil_param_container_t * parent);
 
     /**
      * To get the Param out from the OM
@@ -118,11 +123,12 @@ extern "C"
      * @param parent <code>axutil_param_container_t</code>
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
-        const axutil_env_t *env,
-        axiom_children_qname_iterator_t *params,
-        axutil_param_container_t *param_container,
-        axutil_param_container_t *parent );
+    axis2_desc_builder_process_params(
+        axis2_desc_builder_t * desc_builder,
+        const axutil_env_t * env,
+        axiom_children_qname_iterator_t * params,
+        axutil_param_container_t * param_container,
+        axutil_param_container_t * parent);
 
     /**
      * @param desc_builder pointer to desc builder
@@ -131,10 +137,12 @@ extern "C"
      * @param op pointer to op
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
-        const axutil_env_t *env,
-        axiom_children_qname_iterator_t *module_refs,
-        axis2_op_t *op);
+
+    axis2_desc_builder_process_op_module_refs(
+        axis2_desc_builder_t * desc_builder,
+        const axutil_env_t * env,
+        axiom_children_qname_iterator_t * module_refs,
+        axis2_op_t * op);
 
     /**
      * @param desc_builder pointer to desc builder
@@ -142,9 +150,11 @@ extern "C"
      * @param recv_element pointer to recv element
      */
     AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
-    axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
-        const axutil_env_t *env,
-        axiom_element_t *recv_element);
+
+    axis2_desc_builder_load_msg_recv(
+        axis2_desc_builder_t * desc_builder,
+        const axutil_env_t * env,
+        axiom_element_t * recv_element);
 
     /**
      * This method is used to retrive service name form the arechive file name
@@ -154,9 +164,11 @@ extern "C"
      * @param file_name pointer to file name
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_desc_builder_get_short_file_name(const axis2_desc_builder_t *desc_builder,
-        const axutil_env_t *env,
-        axis2_char_t *file_name);
+
+    axis2_desc_builder_get_short_file_name(
+        const axis2_desc_builder_t * desc_builder,
+        const axutil_env_t * env,
+        axis2_char_t * file_name);
 
     /**
      * @param desc_builder pointer to desc builder
@@ -164,9 +176,11 @@ extern "C"
      * @param short_file_name pointer to short file name
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_desc_builder_get_file_name_without_prefix(const axis2_desc_builder_t *desc_builder,
-        const axutil_env_t *env,
-        axis2_char_t *short_file_name);
+
+    axis2_desc_builder_get_file_name_without_prefix(
+        const axis2_desc_builder_t * desc_builder,
+        const axutil_env_t * env,
+        axis2_char_t * short_file_name);
 
     /**
      * this method is to get the value of attribue
@@ -176,9 +190,10 @@ extern "C"
      * @param in pointer to in
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_desc_builder_get_value(const axis2_desc_builder_t *desc_builder,
-        const axutil_env_t *env,
-        axis2_char_t *in);
+    axis2_desc_builder_get_value(
+        const axis2_desc_builder_t * desc_builder,
+        const axutil_env_t * env,
+        axis2_char_t * in);
 
     /**
      * Populate the Axis2 Operation with details from the actionMapping,
@@ -188,20 +203,26 @@ extern "C"
      * @param op_desc
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_desc_builder_process_action_mappings(axis2_desc_builder_t *desc_builder,
-        const axutil_env_t *env,
-        axiom_node_t *op_node,
-        axis2_op_t *op_desc);
+
+    axis2_desc_builder_process_action_mappings(
+        axis2_desc_builder_t * desc_builder,
+        const axutil_env_t * env,
+        axiom_node_t * op_node,
+        axis2_op_t * op_desc);
 
     /**
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN struct axis2_msg_recv *AXIS2_CALL
-    axis2_desc_builder_load_default_msg_recv(const axutil_env_t *env);
+
+                axis2_desc_builder_load_default_msg_recv(
+                    const axutil_env_t * env);
 
     AXIS2_EXTERN struct axis2_dep_engine *AXIS2_CALL
-    axis2_desc_builder_get_dep_engine(const axis2_desc_builder_t *desc_builder,
-        const axutil_env_t *env);
+
+                axis2_desc_builder_get_dep_engine(
+                    const axis2_desc_builder_t * desc_builder,
+                    const axutil_env_t * env);
 
     /**
      * Creates description builder struct
@@ -209,7 +230,8 @@ extern "C"
      * @return pointer to newly created description builder
      */
     AXIS2_EXTERN axis2_desc_builder_t *AXIS2_CALL
-    axis2_desc_builder_create(const axutil_env_t *env);
+    axis2_desc_builder_create(
+        const axutil_env_t * env);
 
     /**
      * Creates description builder struct
@@ -218,8 +240,11 @@ extern "C"
      * @return pointer to newly created description builder
      */
     AXIS2_EXTERN axis2_desc_builder_t *AXIS2_CALL
-    axis2_desc_builder_create_with_dep_engine(const axutil_env_t *env,
+
+    axis2_desc_builder_create_with_dep_engine(
+        const axutil_env_t * env,
         struct axis2_dep_engine *engine);
+
     /**
      * Creates description builder struct
      * @param env pointer to environment struct
@@ -228,24 +253,30 @@ extern "C"
      * @return pointer to newly created description builder
      */
     AXIS2_EXTERN axis2_desc_builder_t *AXIS2_CALL
-    axis2_desc_builder_create_with_file_and_dep_engine(const axutil_env_t *env,
-        axis2_char_t *file_name,
+
+    axis2_desc_builder_create_with_file_and_dep_engine(
+        const axutil_env_t * env,
+        axis2_char_t * file_name,
         struct axis2_dep_engine *engine);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_process_policy_elements(const axutil_env_t *env,
-        int type, 
-        axiom_children_qname_iterator_t *iterator,
-        axis2_policy_include_t *policy_include);
+    axis2_process_policy_elements(
+        const axutil_env_t * env,
+        int type,
+        axiom_children_qname_iterator_t * iterator,
+        axis2_policy_include_t * policy_include);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_process_policy_reference_elements(const axutil_env_t *env,
-        int type, 
-        axiom_children_qname_iterator_t *iterator,
-        axis2_policy_include_t *policy_include);
-/** @} */
+
+    axis2_process_policy_reference_elements(
+        const axutil_env_t * env,
+        int type,
+        axiom_children_qname_iterator_t * iterator,
+        axis2_policy_include_t * policy_include);
+
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_DESC_BUILDER_H */
+#endif                          /* AXIS2_DESC_BUILDER_H */

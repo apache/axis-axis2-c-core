@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,27 +24,36 @@
 
 struct axis2_op_ctx
 {
+
     /** base context struct */
     axis2_ctx_t *base;
+
     /** parent of operation context is a service context instance */
     struct axis2_svc_ctx *parent;
+
     /** message context map */
     axis2_msg_ctx_t *msg_ctx_array[AXIS2_WSDL_MESSAGE_LABEL_MAX];
+
     /**
      * the operation of which this is a running instance. The MEP of this
      * operation must be one of the 8 predefined ones in WSDL 2.0.
      */
     axis2_op_t *op;
+
     /** operation Message Exchange Pattern (MEP) */
     int op_mep;
+
     /** is complete? */
     axis2_bool_t is_complete;
+
     /** the global message_id -> op_ctx map which is stored in
      * the axis2_conf_ctx. We are caching it here for faster access.
      */
     axutil_hash_t *op_ctx_map;
+
     /** op qname */
     axutil_qname_t *op_qname;
+
     /** service qname */
     axutil_qname_t *svc_qname;
     /* mutex to synchronize the read/write operations */
@@ -53,8 +63,9 @@ struct axis2_op_ctx
 };
 
 AXIS2_EXTERN axis2_op_ctx_t *AXIS2_CALL
-axis2_op_ctx_create(const axutil_env_t *env,
-    axis2_op_t *op,
+axis2_op_ctx_create(
+    const axutil_env_t * env,
+    axis2_op_t * op,
     struct axis2_svc_ctx *svc_ctx)
 {
     axis2_op_ctx_t *op_ctx = NULL;
@@ -80,7 +91,7 @@ axis2_op_ctx_create(const axutil_env_t *env,
     op_ctx->svc_qname = NULL;
     op_ctx->response_written = AXIS2_FALSE;
     op_ctx->mutex = axutil_thread_mutex_create(env->allocator,
-            AXIS2_THREAD_MUTEX_DEFAULT);
+                                               AXIS2_THREAD_MUTEX_DEFAULT);
 
     if (!op_ctx->mutex)
     {
@@ -107,7 +118,8 @@ axis2_op_ctx_create(const axutil_env_t *env,
 
     if (op_ctx->op)
     {
-        op_ctx->op_qname = (axutil_qname_t *)axis2_op_get_qname(op_ctx->op, env);
+        op_ctx->op_qname =
+            (axutil_qname_t *) axis2_op_get_qname(op_ctx->op, env);
         op_ctx->op_mep = axis2_op_get_axis_specific_mep_const(op_ctx->op, env);
     }
 
@@ -118,31 +130,30 @@ axis2_op_ctx_create(const axutil_env_t *env,
 
 AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL
 axis2_op_ctx_get_base(
-    const axis2_op_ctx_t *op_ctx,
-    const axutil_env_t *env)
+    const axis2_op_ctx_t * op_ctx,
+    const axutil_env_t * env)
 {
     return op_ctx->base;
 }
 
-
 AXIS2_EXTERN void AXIS2_CALL
 axis2_op_ctx_free(
     struct axis2_op_ctx *op_ctx,
-    const axutil_env_t *env)
+    const axutil_env_t * env)
 {
     int i = 0;
     AXIS2_ENV_CHECK(env, void);
 
     if (op_ctx->base)
     {
-         axis2_ctx_free(op_ctx->base, env);
+        axis2_ctx_free(op_ctx->base, env);
     }
 
-    for (i = 0; i < AXIS2_WSDL_MESSAGE_LABEL_MAX; i ++)
+    for (i = 0; i < AXIS2_WSDL_MESSAGE_LABEL_MAX; i++)
     {
-        if(op_ctx->msg_ctx_array[i])
+        if (op_ctx->msg_ctx_array[i])
         {
-             axis2_msg_ctx_free(op_ctx->msg_ctx_array[i], env);
+            axis2_msg_ctx_free(op_ctx->msg_ctx_array[i], env);
             op_ctx->msg_ctx_array[i] = NULL;
         }
     }
@@ -160,7 +171,7 @@ axis2_op_ctx_free(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_op_ctx_destroy_mutex(
     struct axis2_op_ctx *op_ctx,
-    const axutil_env_t *env)
+    const axutil_env_t * env)
 {
 
     if (op_ctx->mutex)
@@ -173,7 +184,7 @@ axis2_op_ctx_destroy_mutex(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_ctx_init(
     struct axis2_op_ctx *op_ctx,
-    const axutil_env_t *env,
+    const axutil_env_t * env,
     struct axis2_conf *conf)
 {
     int i = 0;
@@ -199,11 +210,11 @@ axis2_op_ctx_init(
         }
     }
 
-    for (i = 0; i < AXIS2_WSDL_MESSAGE_LABEL_MAX; i ++)
+    for (i = 0; i < AXIS2_WSDL_MESSAGE_LABEL_MAX; i++)
     {
-        if(op_ctx->msg_ctx_array[i])
+        if (op_ctx->msg_ctx_array[i])
         {
-             axis2_msg_ctx_init(op_ctx->msg_ctx_array[i], env, conf);
+            axis2_msg_ctx_init(op_ctx->msg_ctx_array[i], env, conf);
         }
     }
 
@@ -212,25 +223,25 @@ axis2_op_ctx_init(
 
 AXIS2_EXTERN axis2_op_t *AXIS2_CALL
 axis2_op_ctx_get_op(
-    const axis2_op_ctx_t *op_ctx,
-    const axutil_env_t *env)
+    const axis2_op_ctx_t * op_ctx,
+    const axutil_env_t * env)
 {
     return op_ctx->op;
 }
 
 AXIS2_EXTERN struct axis2_svc_ctx *AXIS2_CALL
-            axis2_op_ctx_get_parent(
-                const axis2_op_ctx_t *op_ctx,
-                const axutil_env_t *env)
+axis2_op_ctx_get_parent(
+    const axis2_op_ctx_t * op_ctx,
+    const axutil_env_t * env)
 {
     return op_ctx->parent;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_ctx_add_msg_ctx(
-    struct axis2_op_ctx *op_ctx,
-    const axutil_env_t *env,
-    axis2_msg_ctx_t *msg_ctx)
+    struct axis2_op_ctx * op_ctx,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx)
 {
     axis2_msg_ctx_t *out_msg_ctx = NULL;
     axis2_msg_ctx_t *in_msg_ctx = NULL;
@@ -249,7 +260,7 @@ axis2_op_ctx_add_msg_ctx(
 
     if (!out_msg_ctx)
     {
-        op_ctx->msg_ctx_array[AXIS2_WSDL_MESSAGE_LABEL_OUT] =  msg_ctx;
+        op_ctx->msg_ctx_array[AXIS2_WSDL_MESSAGE_LABEL_OUT] = msg_ctx;
     }
     else
     {
@@ -262,8 +273,8 @@ axis2_op_ctx_add_msg_ctx(
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
 axis2_op_ctx_get_msg_ctx(
-    const axis2_op_ctx_t *op_ctx,
-    const axutil_env_t *env,
+    const axis2_op_ctx_t * op_ctx,
+    const axutil_env_t * env,
     const axis2_wsdl_msg_labels_t message_id)
 {
     axutil_thread_mutex_lock(op_ctx->mutex);
@@ -280,16 +291,16 @@ axis2_op_ctx_get_msg_ctx(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_op_ctx_get_is_complete(
-    const axis2_op_ctx_t *op_ctx,
-    const axutil_env_t *env)
+    const axis2_op_ctx_t * op_ctx,
+    const axutil_env_t * env)
 {
     return op_ctx->is_complete;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_ctx_set_complete(
-    struct axis2_op_ctx *op_ctx,
-    const axutil_env_t *env,
+    struct axis2_op_ctx * op_ctx,
+    const axutil_env_t * env,
     axis2_bool_t is_complete)
 {
     op_ctx->is_complete = is_complete;
@@ -298,16 +309,16 @@ axis2_op_ctx_set_complete(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_op_ctx_is_in_use(
-    const axis2_op_ctx_t *op_ctx,
-    const axutil_env_t *env)
+    const axis2_op_ctx_t * op_ctx,
+    const axutil_env_t * env)
 {
     return op_ctx->is_in_use;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_ctx_set_in_use(
-    struct axis2_op_ctx *op_ctx,
-    const axutil_env_t *env,
+    struct axis2_op_ctx * op_ctx,
+    const axutil_env_t * env,
     axis2_bool_t is_in_use)
 {
     op_ctx->is_in_use = is_in_use;
@@ -316,18 +327,18 @@ axis2_op_ctx_set_in_use(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_ctx_cleanup(
-    struct axis2_op_ctx *op_ctx,
-    const axutil_env_t *env)
+    struct axis2_op_ctx * op_ctx,
+    const axutil_env_t * env)
 {
     int i = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    for (i = 0; i < AXIS2_WSDL_MESSAGE_LABEL_MAX; i ++)
+    for (i = 0; i < AXIS2_WSDL_MESSAGE_LABEL_MAX; i++)
     {
-        if(op_ctx->msg_ctx_array[i])
+        if (op_ctx->msg_ctx_array[i])
         {
-             axis2_msg_ctx_free(op_ctx->msg_ctx_array[i], env);
+            axis2_msg_ctx_free(op_ctx->msg_ctx_array[i], env);
             op_ctx->msg_ctx_array[i] = NULL;
         }
     }
@@ -337,9 +348,9 @@ axis2_op_ctx_cleanup(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_ctx_set_parent(
-    struct axis2_op_ctx *op_ctx,
-    const axutil_env_t *env,
-    struct axis2_svc_ctx *svc_ctx)
+    struct axis2_op_ctx * op_ctx,
+    const axutil_env_t * env,
+    struct axis2_svc_ctx * svc_ctx)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -348,17 +359,18 @@ axis2_op_ctx_set_parent(
         op_ctx->parent = svc_ctx;
     }
 
-    if (op_ctx->parent) /* that is if there is a service context associated */
+    if (op_ctx->parent)         /* that is if there is a service context associated */
     {
         axis2_conf_ctx_t *conf_ctx = NULL;
-        conf_ctx =  axis2_svc_ctx_get_conf_ctx(op_ctx->parent, env);
+        conf_ctx = axis2_svc_ctx_get_conf_ctx(op_ctx->parent, env);
         if (conf_ctx)
         {
-            op_ctx->op_ctx_map =
-                 axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
+            op_ctx->op_ctx_map = axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
         }
         op_ctx->svc_qname =
-            (axutil_qname_t *)axis2_svc_get_qname( axis2_svc_ctx_get_svc(op_ctx->parent, env), env);
+            (axutil_qname_t *)
+            axis2_svc_get_qname(axis2_svc_ctx_get_svc(op_ctx->parent, env),
+                                env);
     }
 
     return AXIS2_SUCCESS;
@@ -366,15 +378,16 @@ axis2_op_ctx_set_parent(
 
 AXIS2_EXTERN axis2_msg_ctx_t **AXIS2_CALL
 axis2_op_ctx_get_msg_ctx_map(
-    const axis2_op_ctx_t *op_ctx,
-    const axutil_env_t *env)
+    const axis2_op_ctx_t * op_ctx,
+    const axutil_env_t * env)
 {
-    return (axis2_msg_ctx_t **)(op_ctx->msg_ctx_array);
+    return (axis2_msg_ctx_t **) (op_ctx->msg_ctx_array);
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_op_ctx_get_response_written(const axis2_op_ctx_t *op_ctx,
-    const axutil_env_t *env)
+axis2_op_ctx_get_response_written(
+    const axis2_op_ctx_t * op_ctx,
+    const axutil_env_t * env)
 {
     if (op_ctx)
         return op_ctx->response_written;
@@ -384,8 +397,9 @@ axis2_op_ctx_get_response_written(const axis2_op_ctx_t *op_ctx,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_ctx_set_response_written(axis2_op_ctx_t *op_ctx,
-    const axutil_env_t *env,
+axis2_op_ctx_set_response_written(
+    axis2_op_ctx_t * op_ctx,
+    const axutil_env_t * env,
     const axis2_bool_t written)
 {
     if (op_ctx)
@@ -396,7 +410,6 @@ axis2_op_ctx_set_response_written(axis2_op_ctx_t *op_ctx,
     {
         return AXIS2_FAILURE;
     }
- 
+
     return AXIS2_SUCCESS;
 }
-

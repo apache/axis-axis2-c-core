@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -28,15 +29,16 @@ extern "C"
 {
 #endif
 
+    /** \brief Constructor for creating apche2 stream
+      * @return axutil_stream (apache2)
+      */
+    AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
+    axutil_stream_create_apache2(
+        const axutil_env_t * env,
+        request_rec * req);
 
-/** \brief Constructor for creating apche2 stream
-  * @return axutil_stream (apache2)
-  */
-AXIS2_EXTERN axutil_stream_t * AXIS2_CALL axutil_stream_create_apache2
-                        (const axutil_env_t *env, request_rec *req);
+    /** @} */
 
-/** @} */
-    
 #ifdef __cplusplus
 }
 #endif

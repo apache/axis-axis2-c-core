@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,33 +27,34 @@
 #ifdef __cplusplus
 extern "C"
 {
-#endif
 
-typedef struct axis2_iis_worker axis2_iis_worker_t;
-	
-int AXIS2_CALL
-axis2_iis_worker_process_request(axis2_iis_worker_t *iis_worker,
-    const axutil_env_t *env, 
-    void *r);
-
-void AXIS2_CALL
-axis2_iis_worker_free(axis2_iis_worker_t *iis_worker,
-    const axutil_env_t *env);
-
-axis2_iis_worker_t * AXIS2_CALL
-axis2_iis_worker_create(
-const axutil_env_t *env, 
-axis2_char_t *repo_path);
-
-
+#endif  /*  */
+    typedef struct axis2_iis_worker axis2_iis_worker_t;
+    int AXIS2_CALL
+     axis2_iis_worker_process_request(
+        axis2_iis_worker_t * iis_worker,
+        const axutil_env_t * env,
+        void *r);
+    void AXIS2_CALL
+     axis2_iis_worker_free(
+        axis2_iis_worker_t * iis_worker,
+        const axutil_env_t * env);
+    axis2_iis_worker_t * AXIS2_CALL
+     axis2_iis_worker_create(
+        const axutil_env_t * env,
+        axis2_char_t * repo_path);
+    
 #define AXIS2_IIS_WORKER_PROCESS_REQUEST(iis_worker, env, request)	\
-                        axis2_iis_worker_process_request(		\
-                        iis_worker, env, request)
+         axis2_iis_worker_process_request(
+    \iis_worker,
+    env,
+    request)
 #define AXIS2_IIS_WORKER_FREE(iis_worker, env)					\
-                axis2_iis_worker_free(iis_worker, env)
-
+         axis2_iis_worker_free(
+    iis_worker,
+    env) 
 #ifdef __cplusplus
 }
-#endif
+#endif  /*  */
 
-#endif                          /* AXIS2_IIS_WORKER_H */
+#endif  /* AXIS2_IIS_WORKER_H */

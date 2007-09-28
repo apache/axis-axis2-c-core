@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,22 +23,27 @@
 
 struct axis2_svc_ctx
 {
+
     /** base context struct */
     axis2_ctx_t *base;
+
     /** parent of op context is a service context instance */
     struct axis2_svc_grp_ctx *parent;
+
     /** service associated with this service context */
     axis2_svc_t *svc;
+
     /** id of the service associated with this context */
     axis2_char_t *svc_id;
+
     /** service qname */
     axutil_qname_t *svc_qname;
 };
 
 AXIS2_EXTERN axis2_svc_ctx_t *AXIS2_CALL
 axis2_svc_ctx_create(
-    const axutil_env_t *env,
-    axis2_svc_t *svc,
+    const axutil_env_t * env,
+    axis2_svc_t * svc,
     struct axis2_svc_grp_ctx *svc_grp_ctx)
 {
     axis2_svc_ctx_t *svc_ctx = NULL;
@@ -67,10 +73,11 @@ axis2_svc_ctx_create(
     if (svc)
     {
         svc_ctx->svc = svc;
-        svc_ctx->svc_qname = (axutil_qname_t *)axis2_svc_get_qname(svc, env);
+        svc_ctx->svc_qname = (axutil_qname_t *) axis2_svc_get_qname(svc, env);
         if (svc_ctx->svc_qname)
         {
-            svc_ctx->svc_id = axutil_qname_get_localpart(svc_ctx->svc_qname, env);
+            svc_ctx->svc_id =
+                axutil_qname_get_localpart(svc_ctx->svc_qname, env);
         }
     }
 
@@ -84,26 +91,25 @@ axis2_svc_ctx_create(
 
 axis2_ctx_t *AXIS2_CALL
 axis2_svc_ctx_get_base(
-    const axis2_svc_ctx_t *svc_ctx,
-    const axutil_env_t *env)
+    const axis2_svc_ctx_t * svc_ctx,
+    const axutil_env_t * env)
 {
     return svc_ctx->base;
 }
 
-
 struct axis2_svc_grp_ctx *AXIS2_CALL
-            axis2_svc_ctx_get_parent(
-                const axis2_svc_ctx_t *svc_ctx,
-                const axutil_env_t *env)
+axis2_svc_ctx_get_parent(
+    const axis2_svc_ctx_t * svc_ctx,
+    const axutil_env_t * env)
 {
     return svc_ctx->parent;
 }
 
 axis2_status_t AXIS2_CALL
-            axis2_svc_ctx_set_parent(
-                axis2_svc_ctx_t *svc_ctx,
-                const axutil_env_t *env,
-                axis2_svc_grp_ctx_t *parent)
+axis2_svc_ctx_set_parent(
+    axis2_svc_ctx_t * svc_ctx,
+    const axutil_env_t * env,
+    axis2_svc_grp_ctx_t * parent)
 {
     svc_ctx->parent = parent;
     return AXIS2_SUCCESS;
@@ -112,13 +118,13 @@ axis2_status_t AXIS2_CALL
 void AXIS2_CALL
 axis2_svc_ctx_free(
     struct axis2_svc_ctx *svc_ctx,
-    const axutil_env_t *env)
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 
     if (svc_ctx->base)
     {
-         axis2_ctx_free(svc_ctx->base, env);
+        axis2_ctx_free(svc_ctx->base, env);
     }
 
     AXIS2_FREE(env->allocator, svc_ctx);
@@ -127,15 +133,16 @@ axis2_svc_ctx_free(
 
 axis2_status_t AXIS2_CALL
 axis2_svc_ctx_init(
-    struct axis2_svc_ctx *svc_ctx,
-    const axutil_env_t *env,
-    axis2_conf_t *conf)
+    struct axis2_svc_ctx * svc_ctx,
+    const axutil_env_t * env,
+    axis2_conf_t * conf)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (svc_ctx->svc_qname)
     {
-        axis2_char_t *svc_name = axutil_qname_get_localpart(svc_ctx->svc_qname, env);
+        axis2_char_t *svc_name =
+            axutil_qname_get_localpart(svc_ctx->svc_qname, env);
         svc_ctx->svc = axis2_conf_get_svc(conf, env, svc_name);
     }
 
@@ -144,54 +151,52 @@ axis2_svc_ctx_init(
 
 const axis2_char_t *AXIS2_CALL
 axis2_svc_ctx_get_svc_id(
-    const axis2_svc_ctx_t *svc_ctx,
-    const axutil_env_t *env)
+    const axis2_svc_ctx_t * svc_ctx,
+    const axutil_env_t * env)
 {
     return svc_ctx->svc_id;
 }
 
-
 axis2_svc_t *AXIS2_CALL
 axis2_svc_ctx_get_svc(
-    const axis2_svc_ctx_t *svc_ctx,
-    const axutil_env_t *env)
+    const axis2_svc_ctx_t * svc_ctx,
+    const axutil_env_t * env)
 {
     return svc_ctx->svc;
 }
 
 axis2_status_t AXIS2_CALL
 axis2_svc_ctx_set_svc(
-    axis2_svc_ctx_t *svc_ctx,
-    const axutil_env_t *env,
-    axis2_svc_t *svc)
+    axis2_svc_ctx_t * svc_ctx,
+    const axutil_env_t * env,
+    axis2_svc_t * svc)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
 
     svc_ctx->svc = svc;
-    svc_ctx->svc_qname = (axutil_qname_t *)axis2_svc_get_qname(svc, env);
+    svc_ctx->svc_qname = (axutil_qname_t *) axis2_svc_get_qname(svc, env);
     if (svc_ctx->svc_qname)
     {
-        svc_ctx->svc_id = axutil_qname_get_localpart(svc_ctx->
-                svc_qname, env);
+        svc_ctx->svc_id = axutil_qname_get_localpart(svc_ctx->svc_qname, env);
     }
     return AXIS2_SUCCESS;
 }
 
 struct axis2_conf_ctx *AXIS2_CALL
-            axis2_svc_ctx_get_conf_ctx(
-                const axis2_svc_ctx_t *svc_ctx,
-                const axutil_env_t *env)
+axis2_svc_ctx_get_conf_ctx(
+    const axis2_svc_ctx_t * svc_ctx,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return  axis2_svc_grp_ctx_get_parent(svc_ctx->parent, env);
+    return axis2_svc_grp_ctx_get_parent(svc_ctx->parent, env);
 }
 
 axis2_op_ctx_t *AXIS2_CALL
 axis2_svc_ctx_create_op_ctx(
-    struct axis2_svc_ctx *svc_ctx,
-    const axutil_env_t *env,
-    const axutil_qname_t *qname)
+    struct axis2_svc_ctx * svc_ctx,
+    const axutil_env_t * env,
+    const axutil_qname_t * qname)
 {
     axis2_op_t *op = NULL;
 

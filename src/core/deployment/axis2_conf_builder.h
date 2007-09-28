@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,7 +19,7 @@
 #ifndef AXIS2_CONF_BUILDER_H
 #define AXIS2_CONF_BUILDER_H
 
-/** 
+/**
  * @defgroup axis2_conf_builder Conf Builder
  * @ingroup axis2_deployment
  * @{
@@ -42,27 +43,30 @@ extern "C"
 
     struct axis2_desc_builder;
     struct axis2_dep_engine;
+
     /** Type name for struct axis2_conf_builder */
     typedef struct axis2_conf_builder axis2_conf_builder_t;
 
-    /** 
+    /**
      * De-allocate memory
      * @param conf_builder pointer to configuration builder
      * @param env pointer to environment struct
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_conf_builder_free(axis2_conf_builder_t *conf_builder,
-        const axutil_env_t *env);
+    axis2_conf_builder_free(
+        axis2_conf_builder_t * conf_builder,
+        const axutil_env_t * env);
 
-    /** 
+    /**
      * @param conf_builder pointer to configuration builder
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
-        const axutil_env_t *env);
+    axis2_conf_builder_populate_conf(
+        axis2_conf_builder_t * conf_builder,
+        const axutil_env_t * env);
 
     /**
      * To get the list og modules that is requird to be engage globally
@@ -72,9 +76,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
-        const axutil_env_t *env,
-        axiom_children_qname_iterator_t *module_refs);
+
+    axis2_conf_builder_process_module_refs(
+        axis2_conf_builder_t * conf_builder,
+        const axutil_env_t * env,
+        axiom_children_qname_iterator_t * module_refs);
 
     /**
      * Creates conf builder struct
@@ -82,7 +88,8 @@ extern "C"
      * @return pointer to newly created conf builder
      */
     AXIS2_EXTERN axis2_conf_builder_t *AXIS2_CALL
-    axis2_conf_builder_create (const axutil_env_t *env);
+    axis2_conf_builder_create(
+        const axutil_env_t * env);
 
     /**
      * Creates conf builder struct
@@ -94,14 +101,16 @@ extern "C"
      */
 
     AXIS2_EXTERN axis2_conf_builder_t *AXIS2_CALL
-    axis2_conf_builder_create_with_file_and_dep_engine_and_conf(const axutil_env_t *env,
-        axis2_char_t *file,
-        struct axis2_dep_engine *dep_engine,
-        axis2_conf_t *conf);
 
-/** @} */
+    axis2_conf_builder_create_with_file_and_dep_engine_and_conf(
+        const axutil_env_t * env,
+        axis2_char_t * file,
+        struct axis2_dep_engine *dep_engine,
+        axis2_conf_t * conf);
+
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_CONF_BUILDER_H */
+#endif                          /* AXIS2_CONF_BUILDER_H */

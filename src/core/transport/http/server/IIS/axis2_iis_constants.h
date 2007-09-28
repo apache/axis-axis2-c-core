@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -19,19 +20,15 @@
 #define AXIS2_IIS_CONSTANTS_H
 
 #define INTERNET_MAX_PATH_LENGTH        2048
-#define INTERNET_MAX_SCHEME_LENGTH      32          // longest protocol name length
-#define INTERNET_MAX_URL_LENGTH         (INTERNET_MAX_SCHEME_LENGTH \
-                                        + sizeof("://") \
-                                        + INTERNET_MAX_PATH_LENGTH)
-
+#define INTERNET_MAX_SCHEME_LENGTH      32  // longest protocol name length
+#define INTERNET_MAX_URL_LENGTH         (INTERNET_MAX_SCHEME_LENGTH \ +sizeof("://") \ +INTERNET_MAX_PATH_LENGTH) 
 #define URI_MATCHED						1
 #define URI_UN_MATCHED					2
 
 #define EXTENSION_URL					"/axis2/mod_axis2_IIS.dll\? "
 #define EXTENSION_URL_AXIS2				"/axis2/"
 #define EXTENSION_URL_MODIIS			"mod_axis2_IIS.dll\? "
-
-
+
 #define MAX_SERVERNAME					128
 #define MAX_PORT_LEN					8
 
@@ -45,7 +42,6 @@
 #define OK								200
 #define HTTP_INTERNAL_SERVER_ERROR		500
 #define HTTP_ACCEPTED					202
-
-
-#endif			/*AXIS2_IIS_CONSTANTS_H*/
+
+#endif  /*AXIS2_IIS_CONSTANTS_H*/
 

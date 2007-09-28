@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -28,49 +29,46 @@ struct axis2_http_response_writer
 
 AXIS2_EXTERN axis2_http_response_writer_t *AXIS2_CALL
 axis2_http_response_writer_create(
-    const axutil_env_t *env,
-    axutil_stream_t *stream)
+    const axutil_env_t * env,
+    axutil_stream_t * stream)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return axis2_http_response_writer_create_with_encoding(env, stream,
-            AXIS2_HTTP_DEFAULT_CONTENT_CHARSET);
+                                                           AXIS2_HTTP_DEFAULT_CONTENT_CHARSET);
 
 }
 
 AXIS2_EXTERN axis2_http_response_writer_t *AXIS2_CALL
 axis2_http_response_writer_create_with_encoding(
-    const axutil_env_t *env,
-    axutil_stream_t *stream,
-    const axis2_char_t *encoding)
+    const axutil_env_t * env,
+    axutil_stream_t * stream,
+    const axis2_char_t * encoding)
 {
     axis2_http_response_writer_t *response_writer = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, encoding, NULL);
 
-    response_writer = (axis2_http_response_writer_t *)AXIS2_MALLOC
-            (env->allocator, sizeof(
-                        axis2_http_response_writer_t));
+    response_writer = (axis2_http_response_writer_t *) AXIS2_MALLOC
+        (env->allocator, sizeof(axis2_http_response_writer_t));
 
-    if (! response_writer)
+    if (!response_writer)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     response_writer->stream = stream;
-    response_writer->encoding = (axis2_char_t *)axutil_strdup(env, encoding);
+    response_writer->encoding = (axis2_char_t *) axutil_strdup(env, encoding);
 
     return response_writer;
 }
 
-
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_response_writer_free(
-    axis2_http_response_writer_t *response_writer,
-    const axutil_env_t *env)
+    axis2_http_response_writer_t * response_writer,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_FREE(env->allocator,
-        response_writer->encoding);
+    AXIS2_FREE(env->allocator, response_writer->encoding);
 
     AXIS2_FREE(env->allocator, response_writer);
 
@@ -79,44 +77,41 @@ axis2_http_response_writer_free(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_response_writer_get_encoding(
-    const axis2_http_response_writer_t *response_writer,
-    const axutil_env_t *env)
+    const axis2_http_response_writer_t * response_writer,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return response_writer->encoding;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_close(
-    axis2_http_response_writer_t *response_writer,
-    const axutil_env_t *env)
+    axis2_http_response_writer_t * response_writer,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_SUCCESS;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_flush(
-    axis2_http_response_writer_t *response_writer,
-    const axutil_env_t *env)
+    axis2_http_response_writer_t * response_writer,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_FALSE;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_write_char(
-    axis2_http_response_writer_t *response_writer,
-    const axutil_env_t *env,
+    axis2_http_response_writer_t * response_writer,
+    const axutil_env_t * env,
     char c)
 {
     int write = -1;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (! response_writer->stream)
+    if (!response_writer->stream)
     {
         return AXIS2_FAILURE;
     }
@@ -128,11 +123,10 @@ axis2_http_response_writer_write_char(
     return AXIS2_SUCCESS;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_write_buf(
-    axis2_http_response_writer_t *response_writer,
-    const axutil_env_t *env,
+    axis2_http_response_writer_t * response_writer,
+    const axutil_env_t * env,
     char *buf,
     int offset,
     axis2_ssize_t len)
@@ -141,7 +135,7 @@ axis2_http_response_writer_write_buf(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, buf, AXIS2_FAILURE);
 
-    if (! response_writer->stream)
+    if (!response_writer->stream)
     {
         return AXIS2_FAILURE;
     }
@@ -153,11 +147,10 @@ axis2_http_response_writer_write_buf(
     return AXIS2_SUCCESS;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_print_str(
-    axis2_http_response_writer_t *response_writer,
-    const axutil_env_t *env,
+    axis2_http_response_writer_t * response_writer,
+    const axutil_env_t * env,
     const char *str)
 {
     int write = -1;
@@ -167,7 +160,7 @@ axis2_http_response_writer_print_str(
     AXIS2_PARAM_CHECK(env->error, str, AXIS2_FAILURE);
 
     len = axutil_strlen(str);
-    if (! response_writer->stream)
+    if (!response_writer->stream)
     {
         return AXIS2_FAILURE;
     }
@@ -179,11 +172,10 @@ axis2_http_response_writer_print_str(
     return AXIS2_SUCCESS;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_print_int(
-    axis2_http_response_writer_t *response_writer,
-    const axutil_env_t *env,
+    axis2_http_response_writer_t * response_writer,
+    const axutil_env_t * env,
     int i)
 {
     axis2_char_t int_str[10];
@@ -192,32 +184,30 @@ axis2_http_response_writer_print_int(
     return axis2_http_response_writer_print_str(response_writer, env, int_str);
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_println_str(
-    axis2_http_response_writer_t *response_writer,
-    const axutil_env_t *env,
+    axis2_http_response_writer_t * response_writer,
+    const axutil_env_t * env,
     const char *str)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, str, AXIS2_FAILURE);
 
     if (AXIS2_SUCCESS == axis2_http_response_writer_print_str(response_writer,
-            env, str))
+                                                              env, str))
     {
         return axis2_http_response_writer_print_str(response_writer, env,
-                AXIS2_HTTP_CRLF);
+                                                    AXIS2_HTTP_CRLF);
     }
     return AXIS2_FAILURE;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_println(
-    axis2_http_response_writer_t *response_writer,
-    const axutil_env_t *env)
+    axis2_http_response_writer_t * response_writer,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return axis2_http_response_writer_print_str(response_writer, env,
-            AXIS2_HTTP_CRLF);
+                                                AXIS2_HTTP_CRLF);
 }

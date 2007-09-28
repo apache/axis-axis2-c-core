@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -20,8 +21,10 @@
 
 struct axis2_handler
 {
+
     /** handler description. This is a reference, hence a shallow copy. */
     axis2_handler_desc_t *handler_desc;
+
     /**
      * Invoke is called to do the actual work assigned to the handler.
      * The phase that owns the handler is responsible for calling invoke
@@ -33,15 +36,16 @@ struct axis2_handler
      * @param msg_ctx pointer to message context
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t (AXIS2_CALL *
-    invoke)(axis2_handler_t *handler,
-        const axutil_env_t *env,
-        struct axis2_msg_ctx *msg_ctx);
+     axis2_status_t(
+    AXIS2_CALL * invoke) (
+    axis2_handler_t * handler,
+    const axutil_env_t * env,
+    struct axis2_msg_ctx * msg_ctx);
 };
 
 AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
 axis2_handler_create(
-    const axutil_env_t *env)
+    const axutil_env_t * env)
 {
     axis2_handler_t *handler = NULL;
 
@@ -62,8 +66,8 @@ axis2_handler_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_handler_free(
-    axis2_handler_t *handler,
-    const axutil_env_t *env)
+    axis2_handler_t * handler,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_FREE(env->allocator, handler);
@@ -72,8 +76,8 @@ axis2_handler_free(
 
 AXIS2_EXTERN const axutil_string_t *AXIS2_CALL
 axis2_handler_get_name(
-    const axis2_handler_t *handler,
-    const axutil_env_t *env)
+    const axis2_handler_t * handler,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -84,18 +88,19 @@ axis2_handler_get_name(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_handler_invoke(axis2_handler_t *handler,
-    const axutil_env_t *env,
-    struct axis2_msg_ctx *msg_ctx)
+axis2_handler_invoke(
+    axis2_handler_t * handler,
+    const axutil_env_t * env,
+    struct axis2_msg_ctx * msg_ctx)
 {
     return handler->invoke(handler, env, msg_ctx);
 }
 
 AXIS2_EXTERN axutil_param_t *AXIS2_CALL
 axis2_handler_get_param(
-    const axis2_handler_t *handler,
-    const axutil_env_t *env,
-    const axis2_char_t *name)
+    const axis2_handler_t * handler,
+    const axutil_env_t * env,
+    const axis2_char_t * name)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -107,9 +112,9 @@ axis2_handler_get_param(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_handler_init(
-    axis2_handler_t *handler,
-    const axutil_env_t *env,
-    axis2_handler_desc_t *handler_desc)
+    axis2_handler_t * handler,
+    const axutil_env_t * env,
+    axis2_handler_desc_t * handler_desc)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     handler->handler_desc = handler_desc;
@@ -120,16 +125,16 @@ axis2_handler_init(
 
 AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
 axis2_handler_get_handler_desc(
-    const axis2_handler_t *handler,
-    const axutil_env_t *env)
+    const axis2_handler_t * handler,
+    const axutil_env_t * env)
 {
     return handler->handler_desc;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_handler_set_invoke(
-    axis2_handler_t *handler,
-    const axutil_env_t *env, 
+    axis2_handler_t * handler,
+    const axutil_env_t * env,
     void *func)
 {
     handler->invoke = func;

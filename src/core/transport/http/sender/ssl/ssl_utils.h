@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,34 +24,29 @@
 #include <axis2_const.h>
 #include <axis2_defines.h>
 
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
+    AXIS2_EXTERN SSL_CTX *AXIS2_CALL
+    axis2_ssl_utils_initialize_ctx(
+        const axutil_env_t * env,
+        axis2_char_t * server_cert,
+        axis2_char_t * key_file,
+        axis2_char_t * ssl_pp);
 
-AXIS2_EXTERN SSL_CTX* AXIS2_CALL
-axis2_ssl_utils_initialize_ctx(
-    const axutil_env_t *env,
-    axis2_char_t *server_cert,
-    axis2_char_t *key_file,
-    axis2_char_t *ssl_pp
-    );
+    AXIS2_EXTERN SSL *AXIS2_CALL
+    axis2_ssl_utils_initialize_ssl(
+        const axutil_env_t * env,
+        SSL_CTX * ctx,
+        axis2_socket_t socket);
 
-AXIS2_EXTERN SSL* AXIS2_CALL
-axis2_ssl_utils_initialize_ssl(
-    const axutil_env_t *env,
-    SSL_CTX *ctx,
-    axis2_socket_t socket
-    );
-                        
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_ssl_utils_cleanup_ssl(
-    const axutil_env_t *env,
-    SSL_CTX *ctx,
-    SSL *ssl
-    );
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_ssl_utils_cleanup_ssl(
+        const axutil_env_t * env,
+        SSL_CTX * ctx,
+        SSL * ssl);
 
 #ifdef __cplusplus
 }

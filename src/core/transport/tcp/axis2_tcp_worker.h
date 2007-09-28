@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -35,11 +36,11 @@
 #include <axis2_simple_tcp_svr_conn.h>
 #include <axis2_conf_ctx.h>
 
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
     /** Type name for struct axis2_tcp_worker */
     typedef struct axis2_tcp_worker axis2_tcp_worker_t;
 
@@ -50,10 +51,11 @@ extern "C"
      * @param simple_request pointer to simple request
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_tcp_worker_process_request(axis2_tcp_worker_t *tcp_worker,
-        const axutil_env_t *env,
-        axis2_simple_tcp_svr_conn_t *svr_conn,
-        axis2_char_t *simple_request);
+    axis2_tcp_worker_process_request(
+        axis2_tcp_worker_t * tcp_worker,
+        const axutil_env_t * env,
+        axis2_simple_tcp_svr_conn_t * svr_conn,
+        axis2_char_t * simple_request);
 
     /**
      * @param tcp_worker pointer to tcp worker
@@ -62,8 +64,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_tcp_worker_set_svr_port(axis2_tcp_worker_t *tcp_worker,
-        const axutil_env_t *env,
+    axis2_tcp_worker_set_svr_port(
+        axis2_tcp_worker_t * tcp_worker,
+        const axutil_env_t * env,
         int port);
 
     /**
@@ -72,16 +75,18 @@ extern "C"
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_tcp_worker_free(axis2_tcp_worker_t *tcp_worker,
-        const axutil_env_t *env);
+    axis2_tcp_worker_free(
+        axis2_tcp_worker_t * tcp_worker,
+        const axutil_env_t * env);
 
     /**
      * @param env pointer to environment struct
      * @param conf_ctx pointer to configuration context
      */
-    AXIS2_EXTERN axis2_tcp_worker_t * AXIS2_CALL
-    axis2_tcp_worker_create (const axutil_env_t *env,
-        axis2_conf_ctx_t *conf_ctx);
+    AXIS2_EXTERN axis2_tcp_worker_t *AXIS2_CALL
+    axis2_tcp_worker_create(
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx);
 
 #ifdef __cplusplus
 }

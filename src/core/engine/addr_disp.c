@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -27,26 +28,23 @@
 
 const axis2_char_t *AXIS2_ADDR_DISP_NAME = "addressing_based_dispatcher";
 
-static axis2_status_t AXIS2_CALL
-axis2_addr_disp_invoke(
-    axis2_handler_t *handler,
-    const axutil_env_t *env,
+static axis2_status_t AXIS2_CALL axis2_addr_disp_invoke(
+    axis2_handler_t * handler,
+    const axutil_env_t * env,
     struct axis2_msg_ctx *msg_ctx);
 
-static axis2_svc_t *AXIS2_CALL
-axis2_addr_disp_find_svc(
-    axis2_msg_ctx_t *msg_ctx,
-    const axutil_env_t *env);
+static axis2_svc_t *AXIS2_CALL axis2_addr_disp_find_svc(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env);
 
-static axis2_op_t *AXIS2_CALL
-axis2_addr_disp_find_op(
-    axis2_msg_ctx_t *msg_ctx,
-    const axutil_env_t *env,
-    axis2_svc_t *svc);
+static axis2_op_t *AXIS2_CALL axis2_addr_disp_find_op(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env,
+    axis2_svc_t * svc);
 
 axis2_disp_t *AXIS2_CALL
 axis2_addr_disp_create(
-    const axutil_env_t *env)
+    const axutil_env_t * env)
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
@@ -54,7 +52,9 @@ axis2_addr_disp_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    name = axutil_string_create_const(env, (axis2_char_t**)&AXIS2_ADDR_DISP_NAME);
+    name =
+        axutil_string_create_const(env,
+                                   (axis2_char_t **) & AXIS2_ADDR_DISP_NAME);
     if (!name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -72,7 +72,8 @@ axis2_addr_disp_create(
     handler = axis2_disp_get_base(disp, env);
     if (!handler)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
+                        AXIS2_FAILURE);
         axutil_string_free(name, env);
         return NULL;
     }
@@ -86,15 +87,15 @@ axis2_addr_disp_create(
 
 static axis2_svc_t *AXIS2_CALL
 axis2_addr_disp_find_svc(
-    axis2_msg_ctx_t *msg_ctx,
-    const axutil_env_t *env)
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
 {
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     axis2_svc_t *svc = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    endpoint_ref =  axis2_msg_ctx_get_to(msg_ctx, env);
+    endpoint_ref = axis2_msg_ctx_get_to(msg_ctx, env);
 
     if (endpoint_ref)
     {
@@ -105,13 +106,15 @@ axis2_addr_disp_find_svc(
         {
             axis2_char_t **url_tokens = NULL;
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                    "Checking for service using WSA enpoint address : %s", address);
+                            "Checking for service using WSA enpoint address : %s",
+                            address);
 
             if ((axutil_strcmp(AXIS2_WSA_ANONYMOUS_URL, address) == 0) ||
-                    (axutil_strcmp(AXIS2_WSA_NAMESPACE_SUBMISSION, address) == 0))
+                (axutil_strcmp(AXIS2_WSA_NAMESPACE_SUBMISSION, address) == 0))
             {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                    "Endpoint address cannot be the same as WSA namespace : %s", address);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                "Endpoint address cannot be the same as WSA namespace : %s",
+                                address);
                 return NULL;
             }
 
@@ -123,11 +126,11 @@ axis2_addr_disp_find_svc(
                 {
                     axis2_conf_ctx_t *conf_ctx = NULL;
 
-                    conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
+                    conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
                     if (conf_ctx)
                     {
                         axis2_conf_t *conf = NULL;
-                        conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
+                        conf = axis2_conf_ctx_get_conf(conf_ctx, env);
                         if (conf)
                         {
                             svc = axis2_conf_get_svc(conf, env, url_tokens[0]);
@@ -135,7 +138,7 @@ axis2_addr_disp_find_svc(
                             if (svc)
                             {
                                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                                        "Service found using WSA enpoint address");
+                                                "Service found using WSA enpoint address");
                             }
                         }
                     }
@@ -156,9 +159,9 @@ axis2_addr_disp_find_svc(
 
 static axis2_op_t *AXIS2_CALL
 axis2_addr_disp_find_op(
-    axis2_msg_ctx_t *msg_ctx,
-    const axutil_env_t *env,
-    axis2_svc_t *svc)
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env,
+    axis2_svc_t * svc)
 {
     const axis2_char_t *action = NULL;
     axutil_qname_t *name = NULL;
@@ -167,36 +170,35 @@ axis2_addr_disp_find_op(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
 
-    action =  axis2_msg_ctx_get_wsa_action(msg_ctx, env);
+    action = axis2_msg_ctx_get_wsa_action(msg_ctx, env);
 
     if (action)
     {
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                "Checking for operation using WSA Action : %s", action);
+                        "Checking for operation using WSA Action : %s", action);
 
         name = axutil_qname_create(env, action, NULL, NULL);
         op = axis2_svc_get_op_with_qname(svc, env, name);
         if (op)
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                    "Operation found using WSA Action");
+                            "Operation found using WSA Action");
         axutil_qname_free(name, env);
     }
 
     return op;
 }
 
-
 static axis2_status_t AXIS2_CALL
 axis2_addr_disp_invoke(
-    axis2_handler_t *handler,
-    const axutil_env_t *env,
+    axis2_handler_t * handler,
+    const axutil_env_t * env,
     struct axis2_msg_ctx *msg_ctx)
 {
     axis2_relates_to_t *relates_to = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    relates_to =  axis2_msg_ctx_get_relates_to(msg_ctx, env);
+    relates_to = axis2_msg_ctx_get_relates_to(msg_ctx, env);
 
     /** first check if we can dispatch using the relates_to */
     if (relates_to)
@@ -207,40 +209,45 @@ axis2_addr_disp_invoke(
         {
             axis2_conf_ctx_t *conf_ctx = NULL;
 
-            conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
+            conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
             if (conf_ctx)
             {
                 axis2_op_ctx_t *op_ctx = NULL;
-                const axis2_char_t *msg_id =  axis2_msg_ctx_get_msg_id(msg_ctx, env);
-                op_ctx =  axis2_conf_ctx_get_op_ctx(conf_ctx, env, msg_id);
+                const axis2_char_t *msg_id =
+                    axis2_msg_ctx_get_msg_id(msg_ctx, env);
+                op_ctx = axis2_conf_ctx_get_op_ctx(conf_ctx, env, msg_id);
                 if (op_ctx)
                 {
                     axis2_op_t *op = NULL;
-                    op =  axis2_op_ctx_get_op(op_ctx, env);
+                    op = axis2_op_ctx_get_op(op_ctx, env);
                     if (op)
                     {
                         axis2_svc_ctx_t *svc_ctx = NULL;
-                         axis2_msg_ctx_set_op_ctx(msg_ctx, env, op_ctx);
-                         axis2_msg_ctx_set_op(msg_ctx, env, op);
+                        axis2_msg_ctx_set_op_ctx(msg_ctx, env, op_ctx);
+                        axis2_msg_ctx_set_op(msg_ctx, env, op);
                         axis2_op_register_op_ctx(op, env, msg_ctx, op_ctx);
 
-                        svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
+                        svc_ctx = axis2_op_ctx_get_parent(op_ctx, env);
                         if (svc_ctx)
                         {
                             axis2_svc_t *svc = NULL;
                             axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
-                             axis2_msg_ctx_set_svc_ctx(msg_ctx, env, svc_ctx);
-                            svc =  axis2_svc_ctx_get_svc(svc_ctx, env);
+                            axis2_msg_ctx_set_svc_ctx(msg_ctx, env, svc_ctx);
+                            svc = axis2_svc_ctx_get_svc(svc_ctx, env);
                             if (svc)
                             {
-                                 axis2_msg_ctx_set_svc(msg_ctx, env, svc);
+                                axis2_msg_ctx_set_svc(msg_ctx, env, svc);
                             }
-                            svc_grp_ctx = axis2_svc_ctx_get_parent(svc_ctx, env);
+                            svc_grp_ctx =
+                                axis2_svc_ctx_get_parent(svc_ctx, env);
                             if (svc_grp_ctx)
                             {
-                                axutil_string_t *svc_grp_ctx_id_str = 
-                                    axutil_string_create(env,  axis2_svc_grp_ctx_get_id(svc_grp_ctx, env));
-                                 axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
+                                axutil_string_t *svc_grp_ctx_id_str =
+                                    axutil_string_create(env,
+                                                         axis2_svc_grp_ctx_get_id
+                                                         (svc_grp_ctx, env));
+                                axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env,
+                                                                 svc_grp_ctx_id_str);
                                 axutil_string_free(svc_grp_ctx_id_str, env);
                             }
                             return AXIS2_SUCCESS;
@@ -249,7 +256,7 @@ axis2_addr_disp_invoke(
                 }
             }
         }
-        
+
     }
 
     axis2_msg_ctx_set_find_svc(msg_ctx, env, axis2_addr_disp_find_svc);
@@ -257,4 +264,3 @@ axis2_addr_disp_invoke(
 
     return axis2_disp_find_svc_and_op(handler, env, msg_ctx);
 }
-

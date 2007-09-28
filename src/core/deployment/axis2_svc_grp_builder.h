@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -44,25 +45,28 @@ extern "C"
     /** Type name for struct axis2_svc_grp_builder */
     typedef struct axis2_svc_grp_builder axis2_svc_grp_builder_t;
 
-    /** 
+    /**
      * De-allocate memory
      * @param svc_grp_builder pointer to service group builder
      * @param env pointer to environment struct
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_svc_grp_builder_free(axis2_svc_grp_builder_t *svc_grp_builder,
-        const axutil_env_t *env);
-    
-    /** 
+    axis2_svc_grp_builder_free(
+        axis2_svc_grp_builder_t * svc_grp_builder,
+        const axutil_env_t * env);
+
+    /**
      * @param grp_builder pointer to group builder
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
-        const axutil_env_t *env,
-        axis2_svc_grp_t *svc_grp);
+
+    axis2_svc_grp_builder_populate_svc_grp(
+        axis2_svc_grp_builder_t * grp_builder,
+        const axutil_env_t * env,
+        axis2_svc_grp_t * svc_grp);
 
     /**
      * To get the list og modules that is requird to be engage globally
@@ -73,14 +77,18 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_svc_grp_builder_process_module_refs(axis2_svc_grp_builder_t *grp_builder,
-        const axutil_env_t *env,
-        axiom_children_qname_iterator_t *module_refs ,
-                axis2_svc_grp_t *svc_grp);
+
+    axis2_svc_grp_builder_process_module_refs(
+        axis2_svc_grp_builder_t * grp_builder,
+        const axutil_env_t * env,
+        axiom_children_qname_iterator_t * module_refs,
+        axis2_svc_grp_t * svc_grp);
 
     AXIS2_EXTERN axis2_desc_builder_t *AXIS2_CALL
-    axis2_svc_grp_builder_get_desc_builder(const axis2_svc_grp_builder_t *svc_grp_builder,
-        const axutil_env_t *env);
+
+    axis2_svc_grp_builder_get_desc_builder(
+        const axis2_svc_grp_builder_t * svc_grp_builder,
+        const axutil_env_t * env);
 
     /**
      * Creates svc_grp builder struct
@@ -88,7 +96,9 @@ extern "C"
      * @return pointer to newly created service group builder
      */
     AXIS2_EXTERN axis2_svc_grp_builder_t *AXIS2_CALL
-    axis2_svc_grp_builder_create (const axutil_env_t *env);
+
+    axis2_svc_grp_builder_create(
+        const axutil_env_t * env);
 
     /**
      * Creates svc_grp builder struct
@@ -98,13 +108,15 @@ extern "C"
      * @return pointer to newly created service group builder
      */
     AXIS2_EXTERN axis2_svc_grp_builder_t *AXIS2_CALL
-    axis2_svc_grp_builder_create_with_svc_and_dep_engine(const axutil_env_t *env,
-        axiom_node_t *svc,
-        axis2_dep_engine_t *dep_engine);
 
-/** @} */
+    axis2_svc_grp_builder_create_with_svc_and_dep_engine(
+        const axutil_env_t * env,
+        axiom_node_t * svc,
+        axis2_dep_engine_t * dep_engine);
+
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_SVC_GRP_BUILDER_H */
+#endif                          /* AXIS2_SVC_GRP_BUILDER_H */

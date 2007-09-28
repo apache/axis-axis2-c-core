@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,17 +26,20 @@ struct axis2_svc
 {
     axis2_svc_grp_t *parent;
     axis2_char_t *axis_svc_name;
+
     /** to keep last update time of the service */
     long last_update;
     axis2_char_t *filename;
+
     /** to store module descriptions at deploy time parsing */
     axutil_array_list_t *module_list;
 
     /* service description  */
-	 axis2_char_t *svc_desc;
+    axis2_char_t *svc_desc;
 
-    /*wsdl file path*/
+    /*wsdl file path */
     axis2_char_t *wsdl_path;
+
     /**
      * WSDL related stuff
      */
@@ -46,6 +50,7 @@ struct axis2_svc
      * C2WSDL(in the future)
      */
     axutil_array_list_t *schema_list;
+
     /**
      * A table that keeps a mapping of unique XSD names (Strings)
      * against the schema objects. This is populated in the first
@@ -53,23 +58,28 @@ struct axis2_svc
      * the subsequent requests
      */
     axutil_hash_t *schema_mapping_table;
+
     /**
      * This is where operations are kept
      */
     axutil_hash_t *op_alias_map;
+
     /**
      * This is where action mappings are kept
      */
     axutil_hash_t *op_action_map;
+
     /**
      * Keeps track whether the schema locations are adjusted
      */
     axis2_bool_t schema_loc_adjusted;
+
     /**
      * A custom schema name prefix. if set this will be used to
      * modify the schema names
      */
     axis2_char_t *custom_schema_name_prefix;
+
     /**
      * A custom schema name suffix. will be attached to the
      * schema file name when the files are uniquely named.
@@ -89,24 +99,27 @@ struct axis2_svc
     axutil_qname_t *qname;
     axis2_char_t *style;
     axutil_array_list_t *engaged_modules;
+
     /** parameter container to hold service related parameters */
     struct axutil_param_container *param_container;
+
     /** flow container that encapsulates the flow related data */
     struct axis2_flow_container *flow_container;
+
     /** base description struct */
     axis2_desc_t *base;
 };
 
 AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
-axis2_svc_create(const axutil_env_t *env)
+axis2_svc_create(
+    const axutil_env_t * env)
 {
     axis2_svc_t *svc = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    svc = (axis2_svc_t *)
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_t));
-    if (! svc)
+    svc = (axis2_svc_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_t));
+    if (!svc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -141,7 +154,7 @@ axis2_svc_create(const axutil_env_t *env)
     svc->base = NULL;
 
     svc->param_container = axutil_param_container_create(env);
-    if (! svc->param_container)
+    if (!svc->param_container)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -149,7 +162,7 @@ axis2_svc_create(const axutil_env_t *env)
     }
 
     svc->flow_container = axis2_flow_container_create(env);
-    if (! svc->flow_container)
+    if (!svc->flow_container)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -157,7 +170,7 @@ axis2_svc_create(const axutil_env_t *env)
     }
 
     svc->op_alias_map = axutil_hash_make(env);
-    if (! svc->op_alias_map)
+    if (!svc->op_alias_map)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -166,7 +179,7 @@ axis2_svc_create(const axutil_env_t *env)
 
     /** create module list of default size */
     svc->op_action_map = axutil_hash_make(env);
-    if (! svc->op_action_map)
+    if (!svc->op_action_map)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -174,7 +187,7 @@ axis2_svc_create(const axutil_env_t *env)
     }
 
     svc->module_list = axutil_array_list_create(env, 0);
-    if (! svc->module_list)
+    if (!svc->module_list)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -182,21 +195,21 @@ axis2_svc_create(const axutil_env_t *env)
     }
 
     svc->schema_list = axutil_array_list_create(env,
-        AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
-    if (! svc->schema_list)
+                                                AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
+    if (!svc->schema_list)
     {
         axis2_svc_free(svc, env);
         return NULL;
     }
 
     svc->engaged_modules = axutil_array_list_create(env,
-        AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
-    if (! svc->engaged_modules)
+                                                    AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
+    if (!svc->engaged_modules)
     {
         axis2_svc_free(svc, env);
         return NULL;
     }
-    
+
     svc->schema_loc_adjusted = AXIS2_FALSE;
     if (svc->schema_target_ns_prefix)
     {
@@ -219,7 +232,7 @@ axis2_svc_create(const axutil_env_t *env)
     }
     svc->target_ns_prefix = axutil_strdup(env, "tns");
     svc->sc_calc_count = 0;
-    
+
     svc->base = axis2_desc_create(env);
     if (!svc->base)
     {
@@ -231,16 +244,17 @@ axis2_svc_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
-axis2_svc_create_with_qname(const axutil_env_t *env,
-    const axutil_qname_t *qname)
+axis2_svc_create_with_qname(
+    const axutil_env_t * env,
+    const axutil_qname_t * qname)
 {
     axis2_svc_t *svc = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
-    
+
     svc = axis2_svc_create(env);
-    if (! svc)
+    if (!svc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -257,8 +271,9 @@ axis2_svc_create_with_qname(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_svc_free(axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_free(
+    axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -280,7 +295,7 @@ axis2_svc_free(axis2_svc_t *svc,
 
     if (svc->svc_desc)
     {
-        AXIS2_FREE (env->allocator, svc->svc_desc);
+        AXIS2_FREE(env->allocator, svc->svc_desc);
         svc->svc_desc = NULL;
     }
 
@@ -326,16 +341,17 @@ axis2_svc_free(axis2_svc_t *svc,
         void *val = NULL;
 
         for (hi = axutil_hash_first(svc->op_alias_map, env); hi;
-            hi = axutil_hash_next(env, hi))
+             hi = axutil_hash_next(env, hi))
         {
             axutil_hash_this(hi, NULL, NULL, &val);
 
             if (val)
             {
-                if (axis2_op_is_from_module((axis2_op_t *)val, env) == AXIS2_FALSE )
-		{
-                    axis2_op_free((axis2_op_t *)val, env);
-		}
+                if (axis2_op_is_from_module((axis2_op_t *) val, env) ==
+                    AXIS2_FALSE)
+                {
+                    axis2_op_free((axis2_op_t *) val, env);
+                }
                 val = NULL;
             }
         }
@@ -349,13 +365,13 @@ axis2_svc_free(axis2_svc_t *svc,
         const void *key = NULL;
 
         for (hi = axutil_hash_first(svc->op_action_map, env); hi;
-            hi = axutil_hash_next(env, hi))
+             hi = axutil_hash_next(env, hi))
         {
             axutil_hash_this(hi, &key, NULL, NULL);
 
             if (key)
             {
-                AXIS2_FREE(env->allocator, (axis2_char_t *)key);
+                AXIS2_FREE(env->allocator, (axis2_char_t *) key);
                 key = NULL;
             }
         }
@@ -376,7 +392,7 @@ axis2_svc_free(axis2_svc_t *svc,
 
     if (svc->target_ns_prefix)
     {
-        AXIS2_FREE(env->allocator,  svc->target_ns_prefix);
+        AXIS2_FREE(env->allocator, svc->target_ns_prefix);
         svc->target_ns_prefix = NULL;
     }
 
@@ -385,11 +401,11 @@ axis2_svc_free(axis2_svc_t *svc,
         axutil_qname_free(svc->qname, env);
     }
 
-    if(svc->style)
+    if (svc->style)
     {
         AXIS2_FREE(env->allocator, svc->style);
     }
-    
+
     if (svc->base)
     {
         axis2_desc_free(svc->base, env);
@@ -404,11 +420,11 @@ axis2_svc_free(axis2_svc_t *svc,
     return;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_add_op(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    axis2_op_t *op)
+axis2_svc_add_op(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    axis2_op_t * op)
 {
     axis2_status_t status = AXIS2_FAILURE;
     axis2_msg_recv_t *msg_recv = NULL;
@@ -438,9 +454,10 @@ axis2_svc_add_op(axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN axis2_op_t *AXIS2_CALL
-axis2_svc_get_op_with_qname(const axis2_svc_t *svc,
-    const axutil_env_t *env,
-    const axutil_qname_t *op_qname)
+axis2_svc_get_op_with_qname(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axutil_qname_t * op_qname)
 {
     axis2_op_t *op = NULL;
     axis2_char_t *key = NULL;
@@ -450,7 +467,7 @@ axis2_svc_get_op_with_qname(const axis2_svc_t *svc,
 
     key = axutil_qname_get_localpart(op_qname, env);
     op = axutil_hash_get(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING);
-    if (! op)
+    if (!op)
     {
         op = axutil_hash_get(svc->op_action_map, key, AXIS2_HASH_KEY_STRING);
     }
@@ -459,20 +476,22 @@ axis2_svc_get_op_with_qname(const axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN axis2_op_t *AXIS2_CALL
-axis2_svc_get_op_with_name(const axis2_svc_t *svc,
-    const axutil_env_t *env,
-    const axis2_char_t *nc_name)
+axis2_svc_get_op_with_name(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axis2_char_t * nc_name)
 {
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, nc_name, NULL);
 
     return (axis2_op_t *) axutil_hash_get(svc->op_alias_map, nc_name,
-        AXIS2_HASH_KEY_STRING);
+                                          AXIS2_HASH_KEY_STRING);
 }
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-axis2_svc_get_all_ops(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_all_ops(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -480,9 +499,10 @@ axis2_svc_get_all_ops(const axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_set_parent(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    axis2_svc_grp_t *svc_grp)
+axis2_svc_set_parent(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    axis2_svc_grp_t * svc_grp)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
@@ -490,15 +510,17 @@ axis2_svc_set_parent(axis2_svc_t *svc,
     svc->parent = svc_grp;
     if (svc_grp)
     {
-        axis2_desc_set_parent(svc->base, env, axis2_svc_grp_get_base(svc_grp, env));
+        axis2_desc_set_parent(svc->base, env,
+                              axis2_svc_grp_get_base(svc_grp, env));
     }
 
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_svc_grp_t *AXIS2_CALL
-axis2_svc_get_parent(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_parent(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -506,9 +528,10 @@ axis2_svc_get_parent(const axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_set_qname(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    const axutil_qname_t *qname)
+axis2_svc_set_qname(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axutil_qname_t * qname)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
@@ -519,46 +542,51 @@ axis2_svc_set_qname(axis2_svc_t *svc,
 
     if (qname)
     {
-        svc->qname = axutil_qname_clone((axutil_qname_t *)qname, env);
+        svc->qname = axutil_qname_clone((axutil_qname_t *) qname, env);
     }
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN const axutil_qname_t *AXIS2_CALL
-axis2_svc_get_qname(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_qname(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return svc->qname;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_add_param(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    axutil_param_t *param)
+axis2_svc_add_param(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    axutil_param_t * param)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
 
-
     if (AXIS2_TRUE == axis2_svc_is_param_locked(svc, env,
-        axutil_param_get_name(param, env)))
+                                                axutil_param_get_name(param,
+                                                                      env)))
     {
         AXIS2_ERROR_SET(env->error,
-            AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
+                        AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
+                        AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     else
     {
-        return axutil_param_container_add_param(svc->param_container, env, param);
+        return axutil_param_container_add_param(svc->param_container, env,
+                                                param);
     }
     return AXIS2_FAILURE;
 }
 
 AXIS2_EXTERN axutil_param_t *AXIS2_CALL
-axis2_svc_get_param(const axis2_svc_t *svc,
-    const axutil_env_t *env,
-    const axis2_char_t *name)
+axis2_svc_get_param(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axis2_char_t * name)
 {
     axutil_param_t *param = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -567,14 +595,15 @@ axis2_svc_get_param(const axis2_svc_t *svc,
     param = axutil_param_container_get_param(svc->param_container, env, name);
     if (param == NULL && svc->parent)
     {
-        param =  axis2_svc_grp_get_param(svc->parent, env, name);
+        param = axis2_svc_grp_get_param(svc->parent, env, name);
     }
     return param;
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-axis2_svc_get_all_params(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_all_params(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -582,9 +611,10 @@ axis2_svc_get_all_params(const axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_svc_is_param_locked(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    const axis2_char_t *param_name)
+axis2_svc_is_param_locked(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axis2_char_t * param_name)
 {
     axis2_bool_t locked = AXIS2_FALSE;
     axutil_param_t *param = NULL;
@@ -598,7 +628,7 @@ axis2_svc_is_param_locked(axis2_svc_t *svc,
 
     parent = axis2_svc_get_parent(svc, env);
     if (parent)
-        locked =  axis2_svc_grp_is_param_locked(parent, env, param_name);
+        locked = axis2_svc_grp_is_param_locked(parent, env, param_name);
     if (parent && AXIS2_TRUE == locked)
     {
         return AXIS2_TRUE;
@@ -613,10 +643,10 @@ axis2_svc_is_param_locked(axis2_svc_t *svc,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_engage_module(
-    axis2_svc_t *svc,
-    const axutil_env_t *env,
-    axis2_module_desc_t *module_desc,
-    axis2_conf_t *conf)
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    axis2_module_desc_t * module_desc,
+    axis2_conf_t * conf)
 {
     axis2_phase_resolver_t *phase_resolver = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -624,14 +654,14 @@ axis2_svc_engage_module(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
-    
+
     phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
     if (!phase_resolver)
     {
         return AXIS2_FAILURE;
     }
     status = axis2_phase_resolver_engage_module_to_svc(phase_resolver, env, svc,
-        module_desc);
+                                                       module_desc);
     if (status)
     {
         const axutil_qname_t *qname = NULL;
@@ -648,19 +678,22 @@ axis2_svc_engage_module(
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_svc_is_module_engaged(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    axutil_qname_t *module_qname)
+axis2_svc_is_module_engaged(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    axutil_qname_t * module_qname)
 {
-    int i = 0, size = 0;
+    int i = 0,
+        size = 0;
     size = axutil_array_list_size(svc->engaged_modules, env);
     for (i = 0; i < size; i++)
     {
         const axutil_qname_t *module_qname_l = NULL;
         axis2_module_desc_t *module_desc_l = NULL;
 
-        module_desc_l = (axis2_module_desc_t *) axutil_array_list_get(
-            svc->engaged_modules, env, i);
+        module_desc_l =
+            (axis2_module_desc_t *) axutil_array_list_get(svc->engaged_modules,
+                                                          env, i);
         module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
 
         if (axutil_qname_equals(module_qname, env, module_qname_l))
@@ -672,10 +705,11 @@ axis2_svc_is_module_engaged(axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_disengage_module(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    axis2_module_desc_t *module_desc,
-    axis2_conf_t *conf)
+axis2_svc_disengage_module(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    axis2_module_desc_t * module_desc,
+    axis2_conf_t * conf)
 {
     axis2_phase_resolver_t *phase_resolver = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -683,14 +717,15 @@ axis2_svc_disengage_module(axis2_svc_t *svc,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
-    
+
     phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
     if (!phase_resolver)
     {
         return AXIS2_FAILURE;
     }
-    status = axis2_phase_resolver_disengage_module_from_svc(phase_resolver, env, svc,
-        module_desc);
+    status =
+        axis2_phase_resolver_disengage_module_from_svc(phase_resolver, env, svc,
+                                                       module_desc);
 
     axis2_phase_resolver_free(phase_resolver, env);
 
@@ -699,10 +734,10 @@ axis2_svc_disengage_module(axis2_svc_t *svc,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_add_module_ops(
-    axis2_svc_t *svc,
-    const axutil_env_t *env,
-    axis2_module_desc_t *module_desc,
-    axis2_conf_t *conf)
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    axis2_module_desc_t * module_desc,
+    axis2_conf_t * conf)
 {
     axutil_hash_t *map = NULL;
     axutil_hash_index_t *index = NULL;
@@ -710,21 +745,20 @@ axis2_svc_add_module_ops(
     axis2_op_t *op_desc = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
-        "Start:axis2_svc_add_module_ops");
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Start:axis2_svc_add_module_ops");
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
 
     map = axis2_module_desc_get_all_ops(module_desc, env);
-    phase_resolver = axis2_phase_resolver_create_with_config_and_svc(env, conf, 
-        svc);
+    phase_resolver = axis2_phase_resolver_create_with_config_and_svc(env, conf,
+                                                                     svc);
     if (!phase_resolver)
     {
         return AXIS2_FAILURE;
     }
     for (index = axutil_hash_first(map, env); index; index =
-        axutil_hash_next(env, index))
+         axutil_hash_next(env, index))
     {
         axutil_array_list_t *mappings_list = NULL;
         int size = 0;
@@ -748,7 +782,8 @@ axis2_svc_add_module_ops(
         {
             axis2_char_t *mapping = NULL;
 
-            mapping = (axis2_char_t *) axutil_array_list_get(mappings_list, env, j);
+            mapping =
+                (axis2_char_t *) axutil_array_list_get(mappings_list, env, j);
             status = axis2_svc_add_mapping(svc, env, mapping, op_desc);
             if (AXIS2_SUCCESS != status)
             {
@@ -760,7 +795,8 @@ axis2_svc_add_module_ops(
             }
         }
 
-        status = axis2_phase_resolver_build_module_op(phase_resolver, env, op_desc);
+        status =
+            axis2_phase_resolver_build_module_op(phase_resolver, env, op_desc);
 
         if (AXIS2_SUCCESS != status)
         {
@@ -787,14 +823,14 @@ axis2_svc_add_module_ops(
     {
         axis2_phase_resolver_free(phase_resolver, env);
     }
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
-        "End:axis2_svc_add_module_ops");
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "End:axis2_svc_add_module_ops");
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-axis2_svc_get_name(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_name(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -807,9 +843,10 @@ axis2_svc_get_name(const axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_set_name(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    const axis2_char_t *axis_svc_name)
+axis2_svc_set_name(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axis2_char_t * axis_svc_name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, axis_svc_name, AXIS2_FAILURE);
@@ -828,32 +865,35 @@ axis2_svc_set_name(axis2_svc_t *svc,
     return AXIS2_SUCCESS;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_set_last_update(axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_set_last_update(
+    axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN long AXIS2_CALL
-axis2_svc_get_last_update(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_last_update(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     return svc->last_update;
 }
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-axis2_svc_get_file_name(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_file_name(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     return svc->filename;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_set_file_name(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    const axis2_char_t *filename)
+axis2_svc_set_file_name(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axis2_char_t * filename)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, filename, AXIS2_FAILURE);
@@ -873,16 +913,18 @@ axis2_svc_set_file_name(axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-axis2_svc_get_svc_desc(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_svc_desc(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     return svc->svc_desc;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_set_svc_desc(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    const axis2_char_t *svc_desc)
+axis2_svc_set_svc_desc(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axis2_char_t * svc_desc)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_desc, AXIS2_FAILURE);
@@ -902,38 +944,40 @@ axis2_svc_set_svc_desc(axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_add_mapping(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    const axis2_char_t *mapping_key ,
-    axis2_op_t *op_desc)
+axis2_svc_add_mapping(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axis2_char_t * mapping_key,
+    axis2_op_t * op_desc)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, mapping_key, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
 
     axutil_hash_set(svc->op_action_map, axutil_strdup(env, mapping_key),
-            AXIS2_HASH_KEY_STRING, op_desc);
+                    AXIS2_HASH_KEY_STRING, op_desc);
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_add_module_qname(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    const axutil_qname_t *module_qname)
+axis2_svc_add_module_qname(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axutil_qname_t * module_qname)
 {
     axutil_qname_t *qmodule_qname_l = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
 
-    qmodule_qname_l = axutil_qname_clone((axutil_qname_t *)module_qname, env);
-    return axutil_array_list_add(svc->module_list, env,
-            qmodule_qname_l);
+    qmodule_qname_l = axutil_qname_clone((axutil_qname_t *) module_qname, env);
+    return axutil_array_list_add(svc->module_list, env, qmodule_qname_l);
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-axis2_svc_get_all_module_qnames(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_all_module_qnames(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -941,17 +985,19 @@ axis2_svc_get_all_module_qnames(const axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-axis2_svc_get_target_ns(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_target_ns(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return svc->target_ns;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_set_target_ns(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    const axis2_char_t *ns)
+axis2_svc_set_target_ns(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axis2_char_t * ns)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ns, AXIS2_FAILURE);
@@ -966,17 +1012,19 @@ axis2_svc_set_target_ns(axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-axis2_svc_get_target_ns_prefix(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_target_ns_prefix(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return svc->target_ns_prefix;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_set_target_ns_prefix(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    const axis2_char_t *prefix)
+axis2_svc_set_target_ns_prefix(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axis2_char_t * prefix)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, prefix, AXIS2_FAILURE);
@@ -991,33 +1039,33 @@ axis2_svc_set_target_ns_prefix(axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-axis2_svc_get_ns_map(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_ns_map(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return svc->ns_map;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_set_ns_map(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    axutil_hash_t *ns_map)
+axis2_svc_set_ns_map(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    axutil_hash_t * ns_map)
 {
     axutil_hash_index_t *hi = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ns_map, AXIS2_FAILURE);
 
-
     if (svc->ns_map)
     {
-        for (hi = axutil_hash_first(svc->ns_map, env);  hi;
-            hi = axutil_hash_next(env, hi))
+        for (hi = axutil_hash_first(svc->ns_map, env); hi;
+             hi = axutil_hash_next(env, hi))
         {
-            void * value = NULL;
+            void *value = NULL;
             void *key = NULL;
-            axutil_hash_this(hi, (const void **)&key, NULL,
-                (void **)&value);
+            axutil_hash_this(hi, (const void **) &key, NULL, (void **) &value);
             if (key)
             {
                 AXIS2_FREE(env->allocator, key);
@@ -1036,9 +1084,10 @@ axis2_svc_set_ns_map(axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-axis2_svc_swap_mapping_table(axis2_svc_t *svc,
-    const axutil_env_t *env,
-    axutil_hash_t *orig_table)
+axis2_svc_swap_mapping_table(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    axutil_hash_t * orig_table)
 {
     axutil_hash_t *new_table = NULL;
     axutil_hash_index_t *hi = NULL;
@@ -1048,29 +1097,30 @@ axis2_svc_swap_mapping_table(axis2_svc_t *svc,
 
     new_table = axutil_hash_make(env);
 
-    for (hi = axutil_hash_first(orig_table, env);  env;
-        hi = axutil_hash_next(env, hi))
+    for (hi = axutil_hash_first(orig_table, env); env;
+         hi = axutil_hash_next(env, hi))
     {
-        void * value = NULL;
+        void *value = NULL;
         void *key = NULL;
 
-        axutil_hash_this(hi, (const void **)&key, NULL,
-            (void **)&value);
+        axutil_hash_this(hi, (const void **) &key, NULL, (void **) &value);
         axutil_hash_set(new_table, value, AXIS2_HASH_KEY_STRING, key);
     }
     return new_table;
 }
 
 AXIS2_EXTERN void *AXIS2_CALL
-axis2_svc_get_impl_class(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_impl_class(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     return svc->impl_class;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_set_impl_class(axis2_svc_t *svc,
-    const axutil_env_t *env,
+axis2_svc_set_impl_class(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
     void *impl_class)
 {
     svc->impl_class = impl_class;
@@ -1078,42 +1128,44 @@ axis2_svc_set_impl_class(axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
-axis2_svc_get_param_container(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_param_container(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     return svc->param_container;
 }
 
 AXIS2_EXTERN axis2_flow_container_t *AXIS2_CALL
-axis2_svc_get_flow_container(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_flow_container(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     return svc->flow_container;
 }
 
-
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-axis2_svc_get_svc_wsdl_path(const axis2_svc_t *svc,
-      const axutil_env_t *env)
+axis2_svc_get_svc_wsdl_path(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     return svc->wsdl_path;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_set_svc_wsdl_path(axis2_svc_t *svc,
-      const axutil_env_t *env,
-      const axis2_char_t *wsdl_path)
+axis2_svc_set_svc_wsdl_path(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axis2_char_t * wsdl_path)
 {
     AXIS2_PARAM_CHECK(env->error, wsdl_path, AXIS2_FAILURE);
-    svc->wsdl_path = (axis2_char_t *)wsdl_path;
+    svc->wsdl_path = (axis2_char_t *) wsdl_path;
     return AXIS2_SUCCESS;
 }
 
-
 AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
-axis2_svc_get_base(const axis2_svc_t *svc,
-    const axutil_env_t *env)
+axis2_svc_get_base(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
 {
     return svc->base;
 }
-

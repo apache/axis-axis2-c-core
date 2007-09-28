@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 #include <axis2_http_worker.h>
 #include <axutil_string.h>
@@ -39,53 +39,50 @@ struct axis2_http_worker
     int svr_port;
 };
 
-static axis2_status_t 
-axis2_http_worker_set_response_headers(
-    axis2_http_worker_t *http_worker,
-    const axutil_env_t *env,
-    axis2_simple_http_svr_conn_t *svr_conn,
-    axis2_http_simple_request_t *simple_request,
-    axis2_http_simple_response_t *simple_response,
+static axis2_status_t axis2_http_worker_set_response_headers(
+    axis2_http_worker_t * http_worker,
+    const axutil_env_t * env,
+    axis2_simple_http_svr_conn_t * svr_conn,
+    axis2_http_simple_request_t * simple_request,
+    axis2_http_simple_response_t * simple_response,
     axis2_ssize_t content_length);
 
-static axis2_status_t 
-axis2_http_worker_set_transport_out_config(
-    axis2_http_worker_t *http_worker,
-    const axutil_env_t *env,
-    axis2_conf_ctx_t *conf_ctx,
-    axis2_http_simple_response_t *simple_response);
+static axis2_status_t axis2_http_worker_set_transport_out_config(
+    axis2_http_worker_t * http_worker,
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx,
+    axis2_http_simple_response_t * simple_response);
 
-static axutil_hash_t *
-axis2_http_worker_get_headers(
-    axis2_http_worker_t *http_worker,
-    const axutil_env_t *env,
-    axis2_http_simple_request_t *request);
+static axutil_hash_t *axis2_http_worker_get_headers(
+    axis2_http_worker_t * http_worker,
+    const axutil_env_t * env,
+    axis2_http_simple_request_t * request);
 
 AXIS2_EXTERN axis2_http_worker_t *AXIS2_CALL
 axis2_http_worker_create(
-    const axutil_env_t *env,
-    axis2_conf_ctx_t *conf_ctx)
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx)
 {
     axis2_http_worker_t *http_worker = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     http_worker = (axis2_http_worker_t *)
-            AXIS2_MALLOC(env->allocator, sizeof(axis2_http_worker_t));
+        AXIS2_MALLOC(env->allocator, sizeof(axis2_http_worker_t));
 
-    if (! http_worker)
+    if (!http_worker)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     http_worker->conf_ctx = conf_ctx;
-    http_worker->svr_port = 9090; /* default - must set later*/
+    http_worker->svr_port = 9090;   /* default - must set later */
 
     return http_worker;
 }
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_worker_free(
-    axis2_http_worker_t *http_worker,
-    const axutil_env_t *env)
+    axis2_http_worker_t * http_worker,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -98,10 +95,10 @@ axis2_http_worker_free(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_http_worker_process_request(
-    axis2_http_worker_t *http_worker,
-    const axutil_env_t *env,
-    axis2_simple_http_svr_conn_t *svr_conn,
-    axis2_http_simple_request_t *simple_request)
+    axis2_http_worker_t * http_worker,
+    const axutil_env_t * env,
+    axis2_simple_http_svr_conn_t * svr_conn,
+    axis2_http_simple_request_t * simple_request)
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
@@ -135,47 +132,51 @@ axis2_http_worker_process_request(
 
     conf_ctx = http_worker->conf_ctx;
 
-    if (! conf_ctx)
+    if (!conf_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
-                AXIS2_FAILURE);
+                        AXIS2_FAILURE);
         return AXIS2_FALSE;
     }
 
-    content_length = axis2_http_simple_request_get_content_length(simple_request
-            , env);
-    http_version = axis2_http_request_line_get_http_version
-            (axis2_http_simple_request_get_request_line
-                    (simple_request, env), env);
-    if (! http_version)
+    content_length =
+        axis2_http_simple_request_get_content_length(simple_request, env);
+    http_version =
+        axis2_http_request_line_get_http_version
+        (axis2_http_simple_request_get_request_line(simple_request, env), env);
+    if (!http_version)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_HTTP_VERSION,
-                AXIS2_FAILURE);
+                        AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Client HTTP version %s",
-            http_version);
+                    http_version);
 
     response = axis2_http_simple_response_create_default(env);
     encoding_header = axis2_http_simple_request_get_first_header(simple_request,
-            env, AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
+                                                                 env,
+                                                                 AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
     if (encoding_header)
     {
         encoding_header_value = axis2_http_header_get_value(encoding_header,
-                env);
+                                                            env);
     }
     if (content_length < 0 && (encoding_header_value && 0 != axutil_strcmp
-            (encoding_header_value,
-                    AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED)))
+                               (encoding_header_value,
+                                AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED)))
     {
-        if (0 == axutil_strcasecmp(axis2_http_request_line_get_method(
-                    axis2_http_simple_request_get_request_line(
-                        simple_request, env), env), AXIS2_HTTP_POST))
+        if (0 ==
+            axutil_strcasecmp(axis2_http_request_line_get_method
+                              (axis2_http_simple_request_get_request_line
+                               (simple_request, env), env), AXIS2_HTTP_POST))
         {
             axis2_http_simple_response_set_status_line(response, env,
-                    http_version, 411, "Length Required");
-            status = axis2_simple_http_svr_conn_write_response(svr_conn, env,
-                    response);
+                                                       http_version, 411,
+                                                       "Length Required");
+            status =
+                axis2_simple_http_svr_conn_write_response(svr_conn, env,
+                                                          response);
             axis2_http_simple_response_free(response, env);
             response = NULL;
             return status;
@@ -184,20 +185,19 @@ axis2_http_worker_process_request(
     }
     request_body = axis2_http_simple_request_get_body(simple_request, env);
 
-    out_desc =  axis2_conf_get_transport_out( axis2_conf_ctx_get_conf
-            (http_worker->conf_ctx, env), env,
-            AXIS2_TRANSPORT_ENUM_HTTP);
-    in_desc =  axis2_conf_get_transport_in( axis2_conf_ctx_get_conf
-            (http_worker->conf_ctx, env), env,
-            AXIS2_TRANSPORT_ENUM_HTTP);
+    out_desc = axis2_conf_get_transport_out(axis2_conf_ctx_get_conf
+                                            (http_worker->conf_ctx, env), env,
+                                            AXIS2_TRANSPORT_ENUM_HTTP);
+    in_desc = axis2_conf_get_transport_in(axis2_conf_ctx_get_conf
+                                          (http_worker->conf_ctx, env), env,
+                                          AXIS2_TRANSPORT_ENUM_HTTP);
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
     axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
-
 
     if (0 == axutil_strcasecmp(http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
     {
         axis2_http_worker_set_transport_out_config(http_worker, env, conf_ctx,
-                response);
+                                                   response);
     }
 
     svr_ip = axis2_simple_http_svr_conn_get_svr_ip(svr_conn, env);
@@ -205,21 +205,22 @@ axis2_http_worker_process_request(
 
     if (peer_ip)
     {
-        peer_property = axutil_property_create (env);
-        axutil_property_set_value (peer_property, env, axutil_strdup (env, peer_ip));
-        axis2_msg_ctx_set_property (msg_ctx, env, AXIS2_SVR_PEER_IP_ADDR, peer_property); 
+        peer_property = axutil_property_create(env);
+        axutil_property_set_value(peer_property, env,
+                                  axutil_strdup(env, peer_ip));
+        axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_SVR_PEER_IP_ADDR,
+                                   peer_property);
     }
 
-    path =   axis2_http_request_line_get_uri(
-	axis2_http_simple_request_get_request_line(
-	    simple_request, env), env);
+    path =
+        axis2_http_request_line_get_uri
+        (axis2_http_simple_request_get_request_line(simple_request, env), env);
 
     request_url = axutil_url_create(env, "http", svr_ip,
-				   http_worker->svr_port,
-				   path);
+                                    http_worker->svr_port, path);
 
-	url_external_form = axutil_url_to_external_form(request_url, env);
-    
+    url_external_form = axutil_url_to_external_form(request_url, env);
+
     axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
     headers = axis2_http_worker_get_headers(http_worker, env, simple_request);
@@ -228,37 +229,41 @@ axis2_http_worker_process_request(
     svc_grp_uuid = axutil_uuid_gen(env);
     if (svc_grp_uuid)
     {
-        axutil_string_t *svc_grp_uuid_str = axutil_string_create_assume_ownership(env, &svc_grp_uuid);
-         axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_uuid_str);
+        axutil_string_t *svc_grp_uuid_str =
+            axutil_string_create_assume_ownership(env, &svc_grp_uuid);
+        axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_uuid_str);
         axutil_string_free(svc_grp_uuid_str, env);
     }
 
-    http_out_transport_info = axis2_http_out_transport_info_create(env, response);
-    axis2_msg_ctx_set_http_out_transport_info(msg_ctx, env, http_out_transport_info);
+    http_out_transport_info =
+        axis2_http_out_transport_info_create(env, response);
+    axis2_msg_ctx_set_http_out_transport_info(msg_ctx, env,
+                                              http_out_transport_info);
 
     if (axis2_http_simple_request_get_first_header(simple_request, env,
-            AXIS2_HTTP_HEADER_SOAP_ACTION))
+                                                   AXIS2_HTTP_HEADER_SOAP_ACTION))
     {
-        soap_action = axis2_http_header_get_value(
-                    axis2_http_simple_request_get_first_header(
-                        simple_request, env, AXIS2_HTTP_HEADER_SOAP_ACTION),
-                    env);
+        soap_action =
+            axis2_http_header_get_value
+            (axis2_http_simple_request_get_first_header
+             (simple_request, env, AXIS2_HTTP_HEADER_SOAP_ACTION), env);
         soap_action_str = axutil_string_create(env, soap_action);
     }
-    if (0 == axutil_strcasecmp(axis2_http_request_line_get_method(
-                axis2_http_simple_request_get_request_line(
-                    simple_request, env), env), AXIS2_HTTP_GET))
+    if (0 ==
+        axutil_strcasecmp(axis2_http_request_line_get_method
+                          (axis2_http_simple_request_get_request_line
+                           (simple_request, env), env), AXIS2_HTTP_GET))
     {
         processed = axis2_http_transport_utils_process_http_get_request
-                (env, msg_ctx, request_body, out_stream,
-                        axis2_http_simple_request_get_content_type(
-                            simple_request, env) , soap_action_str,
-                        axutil_url_to_external_form(request_url, env),
-                        conf_ctx,
-                        axis2_http_transport_utils_get_request_params(env,
-                                axis2_http_request_line_get_uri(
-                                    axis2_http_simple_request_get_request_line(
-                                        simple_request, env), env)));
+            (env, msg_ctx, request_body, out_stream,
+             axis2_http_simple_request_get_content_type(simple_request, env),
+             soap_action_str, axutil_url_to_external_form(request_url, env),
+             conf_ctx, axis2_http_transport_utils_get_request_params(env,
+                                                                     axis2_http_request_line_get_uri
+                                                                     (axis2_http_simple_request_get_request_line
+                                                                      (simple_request,
+                                                                       env),
+                                                                      env)));
         if (AXIS2_FALSE == processed)
         {
             axis2_http_header_t *cont_len = NULL;
@@ -266,47 +271,53 @@ axis2_http_worker_process_request(
             axis2_char_t *body_string = NULL;
             axis2_char_t *wsdl = NULL;
             axis2_http_simple_response_set_status_line(response, env,
-                    http_version, AXIS2_HTTP_RESPONSE_OK_CODE_VAL, "OK");
-            wsdl = strstr (url_external_form, AXIS2_REQUEST_WSDL);
+                                                       http_version,
+                                                       AXIS2_HTTP_RESPONSE_OK_CODE_VAL,
+                                                       "OK");
+            wsdl = strstr(url_external_form, AXIS2_REQUEST_WSDL);
             if (wsdl)
             {
-                body_string = axis2_http_transport_utils_get_services_static_wsdl(
-                        env, conf_ctx, url_external_form);
+                body_string =
+                    axis2_http_transport_utils_get_services_static_wsdl(env,
+                                                                        conf_ctx,
+                                                                        url_external_form);
             }
             else
             {
                 body_string = axis2_http_transport_utils_get_services_html(env,
-                    conf_ctx);
+                                                                           conf_ctx);
             }
             if (body_string)
             {
                 axis2_char_t str_len[10];
                 axis2_http_simple_response_set_body_string(response, env,
-                    body_string);
+                                                           body_string);
                 sprintf(str_len, "%d", axutil_strlen(body_string));
                 cont_len = axis2_http_header_create(env,
-                    AXIS2_HTTP_HEADER_CONTENT_LENGTH, str_len);
+                                                    AXIS2_HTTP_HEADER_CONTENT_LENGTH,
+                                                    str_len);
                 axis2_http_simple_response_set_header(response, env, cont_len);
                 cont_type = axis2_http_header_create(env,
-                    AXIS2_HTTP_HEADER_CONTENT_TYPE, AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
-             }
-                axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
-                    simple_request, response, 0);
-                axis2_simple_http_svr_conn_write_response(svr_conn, env, response);
-                axis2_http_simple_response_free(response, env);
-                return AXIS2_TRUE;
+            }
+            axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
+                                                   simple_request, response, 0);
+            axis2_simple_http_svr_conn_write_response(svr_conn, env, response);
+            axis2_http_simple_response_free(response, env);
+            return AXIS2_TRUE;
         }
     }
-    else if (0 == axutil_strcasecmp(axis2_http_request_line_get_method(
-                axis2_http_simple_request_get_request_line(
-                    simple_request, env), env), AXIS2_HTTP_POST))
+    else if (0 ==
+             axutil_strcasecmp(axis2_http_request_line_get_method
+                               (axis2_http_simple_request_get_request_line
+                                (simple_request, env), env), AXIS2_HTTP_POST))
     {
         status = axis2_http_transport_utils_process_http_post_request
-                (env, msg_ctx, request_body, out_stream,
-                        axis2_http_simple_request_get_content_type(
-                            simple_request, env) , content_length, soap_action_str,
-                        url_external_form);
+            (env, msg_ctx, request_body, out_stream,
+             axis2_http_simple_request_get_content_type(simple_request, env),
+             content_length, soap_action_str, url_external_form);
         if (status == AXIS2_FAILURE)
         {
             axis2_msg_ctx_t *fault_ctx = NULL;
@@ -317,46 +328,50 @@ axis2_http_worker_process_request(
             axutil_property_t *http_error_property = NULL;
             axis2_char_t *http_error_value = NULL;
             axis2_char_t *fault_code = NULL;
-            if (! engine)
+            if (!engine)
             {
                 return AXIS2_FALSE;
             }
 
-            http_error_property =  axis2_msg_ctx_get_property(msg_ctx, env,
-                AXIS2_HTTP_TRANSPORT_ERROR);
+            http_error_property = axis2_msg_ctx_get_property(msg_ctx, env,
+                                                             AXIS2_HTTP_TRANSPORT_ERROR);
 
             if (http_error_property)
-                http_error_value = (axis2_char_t *)axutil_property_get_value(
-                    http_error_property, env);
+                http_error_value =
+                    (axis2_char_t *)
+                    axutil_property_get_value(http_error_property, env);
 
-            if ( axis2_msg_ctx_get_is_soap_11 (msg_ctx, env))
+            if (axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
             {
-                fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":" 
+                fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
                     AXIOM_SOAP11_FAULT_CODE_SENDER;
             }
             else
             {
-                fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":" 
+                fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
                     AXIOM_SOAP12_SOAP_FAULT_VALUE_SENDER;
             }
 
-            fault_ctx =  axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx, 
-                    fault_code, axutil_error_get_message(env->error));
-            req_line = axis2_http_simple_request_get_request_line(simple_request
-                , env);
+            fault_ctx = axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx,
+                                                          fault_code,
+                                                          axutil_error_get_message
+                                                          (env->error));
+            req_line =
+                axis2_http_simple_request_get_request_line(simple_request, env);
             if (req_line)
             {
                 if (!http_error_value)
                 {
                     sprintf(status_line_str, "%s 500 Internal Server Error\r\n",
                             axis2_http_request_line_get_http_version(req_line,
-                                env));
+                                                                     env));
                 }
                 else
                 {
                     sprintf(status_line_str, "%s %s",
-                        axis2_http_request_line_get_http_version(req_line,env),
-                        http_error_value);
+                            axis2_http_request_line_get_http_version(req_line,
+                                                                     env),
+                            http_error_value);
                 }
             }
             else
@@ -365,56 +380,63 @@ axis2_http_worker_process_request(
                         \r\n");
             }
 
-            tmp_stat_line = axis2_http_status_line_create(env,
-                    status_line_str);
+            tmp_stat_line = axis2_http_status_line_create(env, status_line_str);
 
             if (!http_error_value)
                 axis2_engine_send_fault(engine, env, fault_ctx);
 
             axis2_http_simple_response_set_status_line(response, env,
-                    axis2_http_status_line_get_http_version(tmp_stat_line, env),
-                    axis2_http_status_line_get_status_code(tmp_stat_line, env) ,
-                    axis2_http_status_line_get_reason_phrase(tmp_stat_line, env));
+                                                       axis2_http_status_line_get_http_version
+                                                       (tmp_stat_line, env),
+                                                       axis2_http_status_line_get_status_code
+                                                       (tmp_stat_line, env),
+                                                       axis2_http_status_line_get_reason_phrase
+                                                       (tmp_stat_line, env));
             axis2_http_simple_response_set_body_stream(response, env,
-                    out_stream);
+                                                       out_stream);
             axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
-                    simple_request, response, axutil_stream_get_len(
-                        out_stream, env));
+                                                   simple_request, response,
+                                                   axutil_stream_get_len
+                                                   (out_stream, env));
 
             status = axis2_simple_http_svr_conn_write_response(svr_conn, env,
-                    response);
+                                                               response);
             return status;
 
         }
     }
 
-    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
+    op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (axis2_op_ctx_get_response_written(op_ctx, env))
     {
         axis2_http_simple_response_set_status_line(response, env, http_version,
-                AXIS2_HTTP_RESPONSE_OK_CODE_VAL, "OK");
+                                                   AXIS2_HTTP_RESPONSE_OK_CODE_VAL,
+                                                   "OK");
         axis2_http_simple_response_set_body_stream(response, env, out_stream);
     }
     else
     {
         axis2_http_simple_response_set_status_line(response, env, http_version,
-                AXIS2_HTTP_RESPONSE_ACK_CODE_VAL, "Accepted");
+                                                   AXIS2_HTTP_RESPONSE_ACK_CODE_VAL,
+                                                   "Accepted");
     }
     axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
-            simple_request, response, axutil_stream_get_len(
-                out_stream, env));
+                                           simple_request, response,
+                                           axutil_stream_get_len(out_stream,
+                                                                 env));
 
     status = axis2_simple_http_svr_conn_write_response(svr_conn, env, response);
     AXIS2_FREE(env->allocator, url_external_form);
     url_external_form = NULL;
-    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-    if (op_ctx) 
+    op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
+    if (op_ctx)
     {
-        axis2_msg_ctx_t *out_msg_ctx = NULL, *in_msg_ctx = NULL;
+        axis2_msg_ctx_t *out_msg_ctx = NULL,
+            *in_msg_ctx = NULL;
         axis2_msg_ctx_t **msg_ctx_map = NULL;
         axis2_char_t *msg_id = NULL;
         axis2_conf_ctx_t *conf_ctx = NULL;
-        msg_ctx_map =  axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+        msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
 
         out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
         in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
@@ -428,15 +450,16 @@ axis2_http_worker_process_request(
 
         if (in_msg_ctx)
         {
-            msg_id = axutil_strdup(env, axis2_msg_ctx_get_msg_id(in_msg_ctx, env));
+            msg_id =
+                axutil_strdup(env, axis2_msg_ctx_get_msg_id(in_msg_ctx, env));
             conf_ctx = axis2_msg_ctx_get_conf_ctx(in_msg_ctx, env);
-        
+
             axis2_msg_ctx_free(in_msg_ctx, env);
             in_msg_ctx = NULL;
             msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;
         }
 
-        if(!axis2_op_ctx_is_in_use(op_ctx, env))
+        if (!axis2_op_ctx_is_in_use(op_ctx, env))
         {
             axis2_op_ctx_destroy_mutex(op_ctx, env);
             if (conf_ctx && msg_id)
@@ -446,9 +469,9 @@ axis2_http_worker_process_request(
             }
             axis2_op_ctx_free(op_ctx, env);
         }
-        
-    } /* Done freeing message contexts */
-    
+
+    }                           /* Done freeing message contexts */
+
     msg_ctx = NULL;
     axutil_url_free(request_url, env);
     axutil_string_free(soap_action_str, env);
@@ -456,13 +479,13 @@ axis2_http_worker_process_request(
     return status;
 }
 
-static axis2_status_t 
+static axis2_status_t
 axis2_http_worker_set_response_headers(
-    axis2_http_worker_t *http_worker,
-    const axutil_env_t *env,
-    axis2_simple_http_svr_conn_t *svr_conn,
-    axis2_http_simple_request_t *simple_request,
-    axis2_http_simple_response_t *simple_response,
+    axis2_http_worker_t * http_worker,
+    const axutil_env_t * env,
+    axis2_simple_http_svr_conn_t * svr_conn,
+    axis2_http_simple_request_t * simple_request,
+    axis2_http_simple_response_t * simple_response,
     axis2_ssize_t content_length)
 {
     axis2_http_header_t *conn_header = NULL;
@@ -472,54 +495,58 @@ axis2_http_worker_set_response_headers(
     AXIS2_PARAM_CHECK(env->error, simple_request, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, simple_response, AXIS2_FAILURE);
     if (AXIS2_FALSE == axis2_http_simple_response_contains_header
-            (simple_response, env, AXIS2_HTTP_HEADER_CONNECTION))
+        (simple_response, env, AXIS2_HTTP_HEADER_CONNECTION))
     {
         conn_header = axis2_http_simple_request_get_first_header(simple_request,
-                env, AXIS2_HTTP_HEADER_CONNECTION);
+                                                                 env,
+                                                                 AXIS2_HTTP_HEADER_CONNECTION);
         if (conn_header)
         {
             if (0 == axutil_strcasecmp(axis2_http_header_get_value(conn_header,
-                    env), AXIS2_HTTP_HEADER_CONNECTION_KEEPALIVE))
+                                                                   env),
+                                       AXIS2_HTTP_HEADER_CONNECTION_KEEPALIVE))
             {
                 axis2_http_header_t *header = axis2_http_header_create(env,
-                        AXIS2_HTTP_HEADER_CONNECTION,
-                        AXIS2_HTTP_HEADER_CONNECTION_KEEPALIVE);
+                                                                       AXIS2_HTTP_HEADER_CONNECTION,
+                                                                       AXIS2_HTTP_HEADER_CONNECTION_KEEPALIVE);
                 axis2_http_simple_response_set_header(simple_response, env,
-                        header);
+                                                      header);
                 axis2_simple_http_svr_conn_set_keep_alive(svr_conn, env,
-                        AXIS2_TRUE);
+                                                          AXIS2_TRUE);
             }
             if (0 == axutil_strcasecmp(axis2_http_header_get_value(conn_header,
-                    env), AXIS2_HTTP_HEADER_CONNECTION_CLOSE))
+                                                                   env),
+                                       AXIS2_HTTP_HEADER_CONNECTION_CLOSE))
             {
                 axis2_http_header_t *header = axis2_http_header_create(env,
-                        AXIS2_HTTP_HEADER_CONNECTION,
-                        AXIS2_HTTP_HEADER_CONNECTION_CLOSE);
+                                                                       AXIS2_HTTP_HEADER_CONNECTION,
+                                                                       AXIS2_HTTP_HEADER_CONNECTION_CLOSE);
                 axis2_http_simple_response_set_header(simple_response, env,
-                        header);
+                                                      header);
                 axis2_simple_http_svr_conn_set_keep_alive(svr_conn, env,
-                        AXIS2_FALSE);
+                                                          AXIS2_FALSE);
             }
         }
         else
         {
-            if (axis2_http_simple_response_get_http_version(simple_response, env)
-                    && axutil_strcasecmp(
-                        axis2_http_simple_response_get_http_version(
-                            simple_response, env), AXIS2_HTTP_HEADER_PROTOCOL_11))
+            if (axis2_http_simple_response_get_http_version
+                (simple_response, env) &&
+                axutil_strcasecmp(axis2_http_simple_response_get_http_version
+                                  (simple_response, env),
+                                  AXIS2_HTTP_HEADER_PROTOCOL_11))
             {
                 axis2_simple_http_svr_conn_set_keep_alive(svr_conn, env,
-                        AXIS2_TRUE);
+                                                          AXIS2_TRUE);
             }
             else
             {
                 axis2_simple_http_svr_conn_set_keep_alive(svr_conn, env,
-                        AXIS2_FALSE);
+                                                          AXIS2_FALSE);
             }
         }
-        if (AXIS2_FALSE == axis2_http_simple_request_contains_header(
-                    simple_request, env,
-                    AXIS2_HTTP_HEADER_TRANSFER_ENCODING))
+        if (AXIS2_FALSE ==
+            axis2_http_simple_request_contains_header(simple_request, env,
+                                                      AXIS2_HTTP_HEADER_TRANSFER_ENCODING))
         {
             if (0 != content_length)
             {
@@ -527,19 +554,22 @@ axis2_http_worker_set_response_headers(
                 axis2_http_header_t *content_len_hdr = NULL;
 
                 sprintf(content_len_str, "%d", content_length);
-                content_len_hdr = axis2_http_header_create(
-                            env, AXIS2_HTTP_HEADER_CONTENT_LENGTH, content_len_str);
+                content_len_hdr =
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_LENGTH,
+                                             content_len_str);
                 axis2_http_simple_response_set_header(simple_response, env,
-                        content_len_hdr);
+                                                      content_len_hdr);
             }
         }
         else
         {
-            axis2_http_header_t *transfer_enc_header = axis2_http_header_create(
-                        env, AXIS2_HTTP_HEADER_TRANSFER_ENCODING,
-                        AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
+            axis2_http_header_t *transfer_enc_header =
+                axis2_http_header_create(env,
+                                         AXIS2_HTTP_HEADER_TRANSFER_ENCODING,
+                                         AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
             axis2_http_simple_response_set_header(simple_response, env,
-                    transfer_enc_header);
+                                                  transfer_enc_header);
         }
     }
     return AXIS2_SUCCESS;
@@ -549,12 +579,12 @@ axis2_http_worker_set_response_headers(
  * This is only called for HTTP/1.1 to enable 1.1 specific parameters.
  *
  */
-static axis2_status_t 
+static axis2_status_t
 axis2_http_worker_set_transport_out_config(
-    axis2_http_worker_t *http_worker,
-    const axutil_env_t *env,
-    axis2_conf_ctx_t *conf_ctx,
-    axis2_http_simple_response_t *simple_response)
+    axis2_http_worker_t * http_worker,
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx,
+    axis2_http_simple_response_t * simple_response)
 {
     axis2_conf_t *config = NULL;
 
@@ -562,16 +592,16 @@ axis2_http_worker_set_transport_out_config(
     AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, simple_response, AXIS2_FAILURE);
 
-    config =  axis2_conf_ctx_get_conf(conf_ctx, env);
+    config = axis2_conf_ctx_get_conf(conf_ctx, env);
 
     return AXIS2_SUCCESS;
 }
 
 static axutil_hash_t *
 axis2_http_worker_get_headers(
-    axis2_http_worker_t *http_worker,
-    const axutil_env_t *env,
-    axis2_http_simple_request_t *request)
+    axis2_http_worker_t * http_worker,
+    const axutil_env_t * env,
+    axis2_http_simple_request_t * request)
 {
     axutil_array_list_t *header_list = NULL;
     int hdr_count = 0;
@@ -608,15 +638,15 @@ axis2_http_worker_get_headers(
             }
         }
         axutil_hash_set(header_map, axis2_http_header_get_name(tmp_hdr, env),
-                AXIS2_HASH_KEY_STRING, tmp_hdr);
+                        AXIS2_HASH_KEY_STRING, tmp_hdr);
     }
     return header_map;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_worker_set_svr_port(
-    axis2_http_worker_t *worker,
-    const axutil_env_t *env,
+    axis2_http_worker_t * worker,
+    const axutil_env_t * env,
     int port)
 {
     worker->svr_port = port;

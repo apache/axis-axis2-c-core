@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,7 +16,6 @@
  * limitations under the License.
  */
 
-
 #include <axis2_disp.h>
 #include <axis2_handler_desc.h>
 #include <axutil_string.h>
@@ -26,28 +26,26 @@
 #include <axis2_addr.h>
 #include <axutil_utils.h>
 
-const axis2_char_t *AXIS2_SOAP_ACTION_DISP_NAME = "soap_action_based_dispatcher";
+const axis2_char_t *AXIS2_SOAP_ACTION_DISP_NAME =
+    "soap_action_based_dispatcher";
 
-axis2_status_t AXIS2_CALL
-axiom_soap_action_disp_invoke(
-    axis2_handler_t *handler,
-    const axutil_env_t *env,
+axis2_status_t AXIS2_CALL axiom_soap_action_disp_invoke(
+    axis2_handler_t * handler,
+    const axutil_env_t * env,
     struct axis2_msg_ctx *msg_ctx);
 
-axis2_svc_t *AXIS2_CALL
-axiom_soap_action_disp_find_svc(
-    axis2_msg_ctx_t *msg_ctx,
-    const axutil_env_t *env);
+axis2_svc_t *AXIS2_CALL axiom_soap_action_disp_find_svc(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env);
 
-axis2_op_t *AXIS2_CALL
-axiom_soap_action_disp_find_op(
-    axis2_msg_ctx_t *msg_ctx,
-    const axutil_env_t *env,
-    axis2_svc_t *svc);
+axis2_op_t *AXIS2_CALL axiom_soap_action_disp_find_op(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env,
+    axis2_svc_t * svc);
 
 axis2_disp_t *AXIS2_CALL
 axiom_soap_action_disp_create(
-    const axutil_env_t *env)
+    const axutil_env_t * env)
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
@@ -55,8 +53,9 @@ axiom_soap_action_disp_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    name = axutil_string_create_const(env, 
-                (axis2_char_t**)&AXIS2_SOAP_ACTION_DISP_NAME);
+    name = axutil_string_create_const(env,
+                                      (axis2_char_t **) &
+                                      AXIS2_SOAP_ACTION_DISP_NAME);
 
     disp = axis2_disp_create(env, name);
     if (!disp)
@@ -68,8 +67,8 @@ axiom_soap_action_disp_create(
     handler = axis2_disp_get_base(disp, env);
     if (!handler)
     {
-        AXIS2_ERROR_SET(env->error, 
-             AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error,
+                        AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -81,19 +80,21 @@ axiom_soap_action_disp_create(
 }
 
 axis2_svc_t *AXIS2_CALL
-axiom_soap_action_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
-        const axutil_env_t *env)
+axiom_soap_action_disp_find_svc(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
 {
-    AXIS2_LOG_DEBUG(env->log, 
-         AXIS2_LOG_SI, "Checking for service using SOAPAction is not implemented");
+    AXIS2_LOG_DEBUG(env->log,
+                    AXIS2_LOG_SI,
+                    "Checking for service using SOAPAction is not implemented");
     return NULL;
 }
 
 axis2_op_t *AXIS2_CALL
 axiom_soap_action_disp_find_op(
-    axis2_msg_ctx_t *msg_ctx,
-    const axutil_env_t *env,
-    axis2_svc_t *svc)
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env,
+    axis2_svc_t * svc)
 {
     const axis2_char_t *action = NULL;
     axis2_op_t *op = NULL;
@@ -101,17 +102,18 @@ axiom_soap_action_disp_find_op(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
 
-    action = axutil_string_get_buffer(
-                 axis2_msg_ctx_get_soap_action(msg_ctx, env), env);
+    action =
+        axutil_string_get_buffer(axis2_msg_ctx_get_soap_action(msg_ctx, env),
+                                 env);
 
     if (action)
     {
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                "Checking for operation using SOAPAction : %s", action);
+                        "Checking for operation using SOAPAction : %s", action);
 
         if (!op)
         {
-            const axis2_char_t * op_name = NULL;
+            const axis2_char_t *op_name = NULL;
             op_name = axutil_rindex(action, '/');
 
             if (op_name)
@@ -130,7 +132,8 @@ axiom_soap_action_disp_find_op(
         }
 
         if (op)
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Operation found using SOAPAction");
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                            "Operation found using SOAPAction");
     }
     return op;
 }
@@ -138,8 +141,8 @@ axiom_soap_action_disp_find_op(
 axis2_status_t AXIS2_CALL
 axiom_soap_action_disp_invoke(
     axis2_handler_t * handler,
-    const axutil_env_t *env,
-    struct axis2_msg_ctx *msg_ctx)
+    const axutil_env_t * env,
+    struct axis2_msg_ctx * msg_ctx)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -148,4 +151,3 @@ axiom_soap_action_disp_invoke(
 
     return axis2_disp_find_svc_and_op(handler, env, msg_ctx);
 }
-

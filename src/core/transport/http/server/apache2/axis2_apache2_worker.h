@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -39,28 +40,29 @@
 #include <axis2_conf_ctx.h>
 #include "apache2_stream.h"
 
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-
     typedef struct axis2_apache2_worker axis2_apache2_worker_t;
 
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
-        const axutil_env_t *env, 
-        request_rec *r);
+    axis2_apache2_worker_process_request(
+        axis2_apache2_worker_t * apache2_worker,
+        const axutil_env_t * env,
+        request_rec * r);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_apache2_worker_free(axis2_apache2_worker_t *apache2_worker,
-        const axutil_env_t *env);
+    axis2_apache2_worker_free(
+        axis2_apache2_worker_t * apache2_worker,
+        const axutil_env_t * env);
 
-    AXIS2_EXTERN axis2_apache2_worker_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_apache2_worker_t *AXIS2_CALL
+
     axis2_apache2_worker_create(
-        const axutil_env_t *env, 
-        axis2_char_t *repo_path);
+        const axutil_env_t * env,
+        axis2_char_t * repo_path);
 
 #define AXIS2_APACHE2_WORKER_PROCESS_REQUEST(apache2_worker, env, request) \
                         axis2_apache2_worker_process_request(\
@@ -68,7 +70,7 @@ extern "C"
 #define AXIS2_APACHE2_WORKER_FREE(apache2_worker, env) \
                 axis2_apache2_worker_free(apache2_worker, env)
 
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif

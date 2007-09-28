@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -53,15 +54,16 @@ extern "C"
     /** Type name for struct axis2_ws_info_list */
     typedef struct axis2_ws_info_list axis2_ws_info_list_t;
 
-    /** 
+    /**
      * De-allocate memory
      * @param ws_info_list pointer to ws info list
      * @param env pointer to environment struct
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_ws_info_list_free(axis2_ws_info_list_t *ws_info_list,
-        const axutil_env_t *env);
+    axis2_ws_info_list_free(
+        axis2_ws_info_list_t * ws_info_list,
+        const axutil_env_t * env);
 
     /**
      * This method is used to initialize the vector
@@ -70,8 +72,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_ws_info_list_init(axis2_ws_info_list_t *info_list,
-        const axutil_env_t *env);
+    axis2_ws_info_list_init(
+        axis2_ws_info_list_t * info_list,
+        const axutil_env_t * env);
 
     /**
      * First it check whether the file is already available in the
@@ -91,9 +94,11 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
-        const axutil_env_t *env,
-        axutil_file_t *file,
+
+    axis2_ws_info_list_add_ws_info_item(
+        axis2_ws_info_list_t * info_list,
+        const axutil_env_t * env,
+        axutil_file_t * file,
         int type);
 
     /**
@@ -104,9 +109,11 @@ extern "C"
      * @param file_name pointer to file name
      */
     AXIS2_EXTERN axis2_ws_info_t *AXIS2_CALL
-    axis2_ws_info_list_get_file_item(axis2_ws_info_list_t *info_list,
-        const axutil_env_t *env,
-        axis2_char_t *file_name);
+
+    axis2_ws_info_list_get_file_item(
+        axis2_ws_info_list_t * info_list,
+        const axutil_env_t * env,
+        axis2_char_t * file_name);
 
     /**
      * compare the last update dates of both files and if those differ
@@ -117,9 +124,10 @@ extern "C"
      * @param ws_info pointer to ws info
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_ws_info_list_is_modified(axis2_ws_info_list_t *info_list,
-        const axutil_env_t *env,
-        axutil_file_t *file,
+    axis2_ws_info_list_is_modified(
+        axis2_ws_info_list_t * info_list,
+        const axutil_env_t * env,
+        axutil_file_t * file,
         struct axis2_ws_info *ws_info);
 
     /**
@@ -129,9 +137,10 @@ extern "C"
      * @param file_name pointer to file name
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_ws_info_list_is_file_exist(axis2_ws_info_list_t *info_list,
-        const axutil_env_t *env,
-        axis2_char_t *file_name);
+    axis2_ws_info_list_is_file_exist(
+        axis2_ws_info_list_t * info_list,
+        const axutil_env_t * env,
+        axis2_char_t * file_name);
 
     /**
      * this is to check , undeploye WS
@@ -144,8 +153,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_ws_info_list_check_for_undeploy(axis2_ws_info_list_t *info_list,
-        const axutil_env_t *env);
+
+    axis2_ws_info_list_check_for_undeploy(
+        axis2_ws_info_list_t * info_list,
+        const axutil_env_t * env);
 
     /**
      * @param env pointer to environment struct
@@ -153,8 +164,9 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_ws_info_list_update(axis2_ws_info_list_t *info_list,
-        const axutil_env_t *env);
+    axis2_ws_info_list_update(
+        axis2_ws_info_list_t * info_list,
+        const axutil_env_t * env);
 
     /**
      * Creates ws info list struct
@@ -163,15 +175,16 @@ extern "C"
      * @return pointer to newly created ws info list
      */
     AXIS2_EXTERN axis2_ws_info_list_t *AXIS2_CALL
-    axis2_ws_info_list_create_with_dep_engine(const axutil_env_t *env,
+
+    axis2_ws_info_list_create_with_dep_engine(
+        const axutil_env_t * env,
         struct axis2_dep_engine *dep_engine);
 
+    /*************************** End of function macros ***************************/
 
-/*************************** End of function macros ***************************/
-
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_WS_INFO_LIST_H */
+#endif                          /* AXIS2_WS_INFO_LIST_H */

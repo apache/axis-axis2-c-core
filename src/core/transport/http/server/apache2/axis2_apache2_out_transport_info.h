@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #ifndef AXIS2_APACHE2_OUT_TRANSPORT_INFO_H
 #define AXIS2_APACHE2_OUT_TRANSPORT_INFO_H
 
-/** 
+/**
  * @ingroup axis2_core_transport_http
  * @{
  */
@@ -32,27 +33,29 @@
 #include <httpd.h>
 
 #ifdef __cplusplus
-extern "C" 
+extern "C"
 {
 #endif
 
-AXIS2_EXTERN axis2_http_out_transport_info_t *AXIS2_CALL 
-axis2_apache2_out_transport_info_create(
-    const axutil_env_t *env,
-    request_rec *r);
+    AXIS2_EXTERN axis2_http_out_transport_info_t *AXIS2_CALL
 
-/**
- * Free http_out_transport_info passed as void pointer. This will be
- * cast into appropriate type and then pass the cast object
- * into the http_out_transport_info structure's free method
- */
-AXIS2_EXTERN void AXIS2_CALL 
-axis2_apache2_out_transport_info_free_void_arg(
-    void *transport_info,
-    const axutil_env_t *env);
+    axis2_apache2_out_transport_info_create(
+        const axutil_env_t * env,
+        request_rec * r);
 
-/** @} */
+    /**
+     * Free http_out_transport_info passed as void pointer. This will be
+     * cast into appropriate type and then pass the cast object
+     * into the http_out_transport_info structure's free method
+     */
+    AXIS2_EXTERN void AXIS2_CALL
+
+    axis2_apache2_out_transport_info_free_void_arg(
+        void *transport_info,
+        const axutil_env_t * env);
+
+    /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_APACHE2_OUT_TRANSPORT_INFO_H */
+#endif                          /* AXIS2_APACHE2_OUT_TRANSPORT_INFO_H */

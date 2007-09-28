@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -44,8 +45,8 @@ struct axis2_dep_engine
      */
     axis2_conf_t *conf;
     axis2_char_t *axis2_repos;
-    axis2_bool_t hot_dep;   /* to do hot deployment or not */
-    axis2_bool_t hot_update;  /* to do hot update or not */
+    axis2_bool_t hot_dep;       /* to do hot deployment or not */
+    axis2_bool_t hot_update;    /* to do hot update or not */
 
     /**
      * This will store all the web Services to deploy
@@ -56,7 +57,7 @@ struct axis2_dep_engine
      * this will store all the web Services to undeploy
      */
     axutil_array_list_t *ws_to_undeploy;
-    axis2_phases_info_t *phases_info; /* to store phases list in axis2.xml */
+    axis2_phases_info_t *phases_info;   /* to store phases list in axis2.xml */
 
     /**
      * this constructor for the testing
@@ -74,7 +75,7 @@ struct axis2_dep_engine
      */
     axutil_array_list_t *module_list;
     axis2_repos_listener_t *repos_listener; /*Added this here to help with freeing
-    memory allocated for this - Samisa*/
+                                               memory allocated for this - Samisa */
     axis2_conf_builder_t *conf_builder;
     axis2_svc_builder_t *svc_builder;
     axutil_array_list_t *desc_builders;
@@ -83,60 +84,62 @@ struct axis2_dep_engine
     axutil_array_list_t *svc_grp_builders;
 };
 
-static axis2_status_t
-axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env);
+static axis2_status_t axis2_dep_engine_set_dep_features(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env);
 
-static axis2_status_t
-axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    const axis2_char_t *client_home);
+static axis2_status_t axis2_dep_engine_check_client_home(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    const axis2_char_t * client_home);
 
-static axis2_status_t
-axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env);
+static axis2_status_t axis2_dep_engine_engage_modules(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env);
 
-static axis2_status_t
-axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env);
+static axis2_status_t axis2_dep_engine_validate_system_predefined_phases(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env);
 
-static axis2_status_t
-axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_svc_grp_t *svc_metadata);
+static axis2_status_t axis2_dep_engine_add_new_svc(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_svc_grp_t * svc_metadata);
 
-static axis2_status_t
-axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_module_desc_t *module_desc);
+static axis2_status_t axis2_dep_engine_load_module_dll(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_module_desc_t * module_desc);
 
-static axis2_status_t
-axis2_dep_engine_add_module_flow_handlers(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_flow_t *flow,
-    axutil_hash_t *handler_create_func_map);
+static axis2_status_t axis2_dep_engine_add_module_flow_handlers(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_flow_t * flow,
+    axutil_hash_t * handler_create_func_map);
 
-static axis2_status_t
-axis2_dep_engine_add_new_module(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_module_desc_t *module_metadata);
+static axis2_status_t axis2_dep_engine_add_new_module(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_module_desc_t * module_metadata);
 
-static axis2_char_t *
-axis2_dep_engine_get_axis_svc_name(const axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_char_t *file_name);
+static axis2_char_t *axis2_dep_engine_get_axis_svc_name(
+    const axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_char_t * file_name);
 
 AXIS2_EXTERN axis2_dep_engine_t *AXIS2_CALL
-axis2_dep_engine_create(const axutil_env_t *env)
+axis2_dep_engine_create(
+    const axutil_env_t * env)
 {
     axis2_dep_engine_t *dep_engine = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     dep_engine = (axis2_dep_engine_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_dep_engine_t));
+                                                     sizeof
+                                                     (axis2_dep_engine_t));
 
-    if (! dep_engine)
+    if (!dep_engine)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -165,7 +168,7 @@ axis2_dep_engine_create(const axutil_env_t *env)
         axis2_dep_engine_free(dep_engine, env);
         return NULL;
     }
-    
+
     dep_engine->desc_builders = axutil_array_list_create(env, 0);
     dep_engine->module_builders = axutil_array_list_create(env, 0);
     dep_engine->svc_builders = axutil_array_list_create(env, 0);
@@ -182,8 +185,9 @@ axis2_dep_engine_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN axis2_dep_engine_t *AXIS2_CALL
-axis2_dep_engine_create_with_repos_name(const axutil_env_t *env,
-    const axis2_char_t *repos_path)
+axis2_dep_engine_create_with_repos_name(
+    const axutil_env_t * env,
+    const axis2_char_t * repos_path)
 {
     axis2_dep_engine_t *dep_engine = NULL;
 
@@ -191,7 +195,8 @@ axis2_dep_engine_create_with_repos_name(const axutil_env_t *env,
 
     dep_engine = (axis2_dep_engine_t *)
         axis2_dep_engine_create_with_repos_name_and_svr_xml_file(env,
-            repos_path, AXIS2_SERVER_XML_FILE);
+                                                                 repos_path,
+                                                                 AXIS2_SERVER_XML_FILE);
     if (!dep_engine)
     {
         return NULL;
@@ -201,9 +206,10 @@ axis2_dep_engine_create_with_repos_name(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN axis2_dep_engine_t *AXIS2_CALL
-axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axutil_env_t *env,
-    const axis2_char_t *repos_path,
-    const axis2_char_t *svr_xml_file)
+axis2_dep_engine_create_with_repos_name_and_svr_xml_file(
+    const axutil_env_t * env,
+    const axis2_char_t * repos_path,
+    const axis2_char_t * svr_xml_file)
 {
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_char_t *conf_file_l = NULL;
@@ -215,7 +221,7 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axutil_env_t *env
     if (0 == axutil_strcmp("", repos_path))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_REPO_CAN_NOT_BE_NULL,
-            AXIS2_FAILURE);
+                        AXIS2_FAILURE);
         return NULL;
     }
 
@@ -232,12 +238,12 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axutil_env_t *env
     {
         axis2_dep_engine_free(dep_engine, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_REPOSITORY_NOT_EXIST,
-            AXIS2_FAILURE);
+                        AXIS2_FAILURE);
         return NULL;
     }
 
     dep_engine->folder_name = axutil_strdup(env, repos_path);
-    if (! dep_engine->folder_name)
+    if (!dep_engine->folder_name)
     {
         axis2_dep_engine_free(dep_engine, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -258,7 +264,8 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axutil_env_t *env
     if (!dep_engine->conf_name)
     {
         axis2_dep_engine_free(dep_engine, env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_REPO_CAN_NOT_BE_NULL, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_REPO_CAN_NOT_BE_NULL,
+                        AXIS2_FAILURE);
         return NULL;
     }
     status = axutil_file_handler_access(dep_engine->conf_name, AXIS2_F_OK);
@@ -266,7 +273,7 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axutil_env_t *env
     {
         axis2_dep_engine_free(dep_engine, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CONFIG_NOT_FOUND,
-            AXIS2_FAILURE);
+                        AXIS2_FAILURE);
         return NULL;
     }
 
@@ -274,8 +281,9 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axutil_env_t *env
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env)
+axis2_dep_engine_free(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -315,7 +323,7 @@ axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
             axis2_arch_file_data_t *file_data = NULL;
 
             file_data = (axis2_arch_file_data_t *)
-            axutil_array_list_get(dep_engine->ws_to_deploy, env, i);
+                axutil_array_list_get(dep_engine->ws_to_deploy, env, i);
             axis2_arch_file_data_free(file_data, env);
         }
         axutil_array_list_free(dep_engine->ws_to_deploy, env);
@@ -333,7 +341,7 @@ axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
             axis2_desc_builder_t *desc_builder = NULL;
 
             desc_builder = (axis2_desc_builder_t *)
-            axutil_array_list_get(dep_engine->desc_builders, env, i);
+                axutil_array_list_get(dep_engine->desc_builders, env, i);
             axis2_desc_builder_free(desc_builder, env);
         }
         axutil_array_list_free(dep_engine->desc_builders, env);
@@ -350,7 +358,7 @@ axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
             axis2_module_builder_t *module_builder = NULL;
 
             module_builder = (axis2_module_builder_t *)
-            axutil_array_list_get(dep_engine->module_builders, env, i);
+                axutil_array_list_get(dep_engine->module_builders, env, i);
             axis2_module_builder_free(module_builder, env);
         }
         axutil_array_list_free(dep_engine->module_builders, env);
@@ -367,7 +375,7 @@ axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
             axis2_svc_builder_t *svc_builder = NULL;
 
             svc_builder = (axis2_svc_builder_t *)
-            axutil_array_list_get(dep_engine->svc_builders, env, i);
+                axutil_array_list_get(dep_engine->svc_builders, env, i);
             axis2_svc_builder_free(svc_builder, env);
         }
         axutil_array_list_free(dep_engine->svc_builders, env);
@@ -384,7 +392,7 @@ axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
             axis2_svc_grp_builder_t *svc_grp_builder = NULL;
 
             svc_grp_builder = (axis2_svc_grp_builder_t *)
-            axutil_array_list_get(dep_engine->svc_grp_builders, env, i);
+                axutil_array_list_get(dep_engine->svc_grp_builders, env, i);
             axis2_svc_grp_builder_free(svc_grp_builder, env);
         }
         axutil_array_list_free(dep_engine->svc_grp_builders, env);
@@ -452,11 +460,11 @@ axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
     return;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axutil_qname_t *module_qname)
+axis2_dep_engine_add_module(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axutil_qname_t * module_qname)
 {
     axutil_qname_t *qname = NULL;
 
@@ -477,26 +485,29 @@ axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
 }
 
 struct axis2_module_desc *AXIS2_CALL
-axis2_dep_engine_get_module(const axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axutil_qname_t *module_name)
+axis2_dep_engine_get_module(
+    const axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axutil_qname_t * module_name)
 {
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
-    return  axis2_conf_get_module(dep_engine->conf, env, module_name);
+    return axis2_conf_get_module(dep_engine->conf, env, module_name);
 }
 
 AXIS2_EXTERN struct axis2_arch_file_data *AXIS2_CALL
-axis2_dep_engine_get_current_file_item(const axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env)
+axis2_dep_engine_get_current_file_item(
+    const axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env)
 {
     return dep_engine->curr_file;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_dep_engine_add_ws_to_deploy(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_arch_file_data_t *file)
+axis2_dep_engine_add_ws_to_deploy(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_arch_file_data_t * file)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, file, AXIS2_FAILURE);
@@ -505,9 +516,10 @@ axis2_dep_engine_add_ws_to_deploy(axis2_dep_engine_t *dep_engine,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_dep_engine_add_ws_to_undeploy(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_ws_info_t *file)
+axis2_dep_engine_add_ws_to_undeploy(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_ws_info_t * file)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, file, AXIS2_FAILURE);
@@ -519,15 +531,17 @@ axis2_dep_engine_add_ws_to_undeploy(axis2_dep_engine_t *dep_engine,
 }
 
 AXIS2_EXTERN axis2_phases_info_t *AXIS2_CALL
-axis2_dep_engine_get_phases_info(const axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env)
+axis2_dep_engine_get_phases_info(
+    const axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env)
 {
     return dep_engine->phases_info;
 }
 
 AXIS2_EXTERN axis2_conf_t *AXIS2_CALL
-axis2_dep_engine_get_axis_conf(const axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env)
+axis2_dep_engine_get_axis_conf(
+    const axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env)
 {
     return dep_engine->conf;
 }
@@ -536,8 +550,9 @@ axis2_dep_engine_get_axis_conf(const axis2_dep_engine_t *dep_engine,
  * To set hotDeployment and hot update
  */
 static axis2_status_t
-axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env)
+axis2_dep_engine_set_dep_features(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env)
 {
     axis2_char_t *value = NULL;
     axutil_param_t *para_hot_dep = NULL;
@@ -545,10 +560,10 @@ axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    para_hot_dep =  axis2_conf_get_param(dep_engine->conf, env,
-        AXIS2_HOTDEPLOYMENT);
-    para_hot_update =  axis2_conf_get_param(dep_engine->conf, env,
-        AXIS2_HOTUPDATE);
+    para_hot_dep = axis2_conf_get_param(dep_engine->conf, env,
+                                        AXIS2_HOTDEPLOYMENT);
+    para_hot_update = axis2_conf_get_param(dep_engine->conf, env,
+                                           AXIS2_HOTUPDATE);
 
     if (para_hot_dep)
     {
@@ -570,18 +585,19 @@ axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
 }
 
 AXIS2_EXTERN axis2_conf_t *AXIS2_CALL
-axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env)
+axis2_dep_engine_load(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env)
 {
     axis2_status_t status = AXIS2_FAILURE;
     axutil_array_list_t *out_fault_phases = NULL;
     axutil_array_list_t *new_out_fault_phases = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (! dep_engine->conf_name)
+    if (!dep_engine->conf_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_PATH_TO_CONFIG_CAN_NOT_BE_NULL,
-            AXIS2_FAILURE);
+                        AXIS2_FAILURE);
         return NULL;
     }
 
@@ -592,9 +608,13 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
         return NULL;
     }
 
-    dep_engine->conf_builder = 
+    dep_engine->conf_builder =
         axis2_conf_builder_create_with_file_and_dep_engine_and_conf(env,
-            dep_engine->conf_name, dep_engine, dep_engine->conf);
+                                                                    dep_engine->
+                                                                    conf_name,
+                                                                    dep_engine,
+                                                                    dep_engine->
+                                                                    conf);
     if (!(dep_engine->conf_builder))
     {
         axis2_conf_free(dep_engine->conf, env);
@@ -619,7 +639,9 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     }
     dep_engine->repos_listener =
         axis2_repos_listener_create_with_folder_name_and_dep_engine(env,
-            dep_engine->folder_name, dep_engine);
+                                                                    dep_engine->
+                                                                    folder_name,
+                                                                    dep_engine);
     if (!dep_engine->repos_listener)
     {
         axis2_conf_free(dep_engine->conf, env);
@@ -627,20 +649,22 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     }
     axis2_conf_set_repo(dep_engine->conf, env, dep_engine->axis2_repos);
     axis2_core_utils_calculate_default_module_version(env,
-        axis2_conf_get_all_modules(dep_engine->conf, env),
-        dep_engine->conf);
-    status = axis2_dep_engine_validate_system_predefined_phases(dep_engine, env);
+                                                      axis2_conf_get_all_modules
+                                                      (dep_engine->conf, env),
+                                                      dep_engine->conf);
+    status =
+        axis2_dep_engine_validate_system_predefined_phases(dep_engine, env);
     if (AXIS2_SUCCESS != status)
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED,
-            AXIS2_FAILURE);
+                        AXIS2_FAILURE);
         return NULL;
     }
 
-    status =  axis2_conf_set_phases_info(dep_engine->conf, env,
-        dep_engine->phases_info);
+    status = axis2_conf_set_phases_info(dep_engine->conf, env,
+                                        dep_engine->phases_info);
     out_fault_phases =
         axis2_phases_info_get_op_out_faultphases(dep_engine->phases_info, env);
     new_out_fault_phases = axis2_phases_info_copy_flow(env, out_fault_phases);
@@ -648,7 +672,8 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     {
         axutil_array_list_free(out_fault_phases, env);
     }
-    axis2_conf_set_out_fault_phases(dep_engine->conf, env, new_out_fault_phases);
+    axis2_conf_set_out_fault_phases(dep_engine->conf, env,
+                                    new_out_fault_phases);
     if (AXIS2_SUCCESS != status)
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
@@ -662,19 +687,19 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
         axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED,
-            AXIS2_FAILURE);
+                        AXIS2_FAILURE);
         return NULL;
     }
-    /*}*/
+    /*} */
 
     return dep_engine->conf;
 }
 
-
 AXIS2_EXTERN axis2_conf_t *AXIS2_CALL
-axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    const axis2_char_t *client_home)
+axis2_dep_engine_load_client(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    const axis2_char_t * client_home)
 {
     axis2_bool_t is_repos_exist = AXIS2_FALSE;
     axis2_status_t status = AXIS2_FAILURE;
@@ -690,7 +715,8 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
     }
     if (client_home && 0 != axutil_strcmp("", client_home))
     {
-        status = axis2_dep_engine_check_client_home(dep_engine, env, client_home);
+        status =
+            axis2_dep_engine_check_client_home(dep_engine, env, client_home);
         if (AXIS2_SUCCESS == status)
         {
             is_repos_exist = AXIS2_TRUE;
@@ -698,7 +724,8 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
     }
     else
     {
-        dep_engine->conf_name = axutil_strdup(env, AXIS2_CONFIGURATION_RESOURCE);
+        dep_engine->conf_name =
+            axutil_strdup(env, AXIS2_CONFIGURATION_RESOURCE);
         if (!dep_engine->conf_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -712,7 +739,11 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
     }
     dep_engine->conf_builder =
         axis2_conf_builder_create_with_file_and_dep_engine_and_conf(env,
-            dep_engine->conf_name, dep_engine, dep_engine->conf);
+                                                                    dep_engine->
+                                                                    conf_name,
+                                                                    dep_engine,
+                                                                    dep_engine->
+                                                                    conf);
     if (!(dep_engine->conf_builder))
     {
         axis2_conf_free(dep_engine->conf, env);
@@ -736,33 +767,35 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
         }
         dep_engine->repos_listener =
             axis2_repos_listener_create_with_folder_name_and_dep_engine(env,
-                dep_engine->folder_name, dep_engine);
+                                                                        dep_engine->
+                                                                        folder_name,
+                                                                        dep_engine);
     }
 
     axis2_conf_set_repo(dep_engine->conf, env, dep_engine->axis2_repos);
     axis2_core_utils_calculate_default_module_version(env,
-        axis2_conf_get_all_modules(dep_engine->conf, env),
-        dep_engine->conf);
-    axis2_conf_set_phases_info(dep_engine->conf, env,
-         dep_engine->phases_info);
+                                                      axis2_conf_get_all_modules
+                                                      (dep_engine->conf, env),
+                                                      dep_engine->conf);
+    axis2_conf_set_phases_info(dep_engine->conf, env, dep_engine->phases_info);
     status = axis2_dep_engine_engage_modules(dep_engine, env);
     if (AXIS2_FAILURE == status)
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED,
-            AXIS2_FAILURE);
+                        AXIS2_FAILURE);
         return NULL;
     }
 
     return dep_engine->conf;
 }
 
-
 static axis2_status_t
-axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    const axis2_char_t *client_home)
+axis2_dep_engine_check_client_home(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    const axis2_char_t * client_home)
 {
     axis2_char_t *path_l = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -778,19 +811,19 @@ axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
     AXIS2_FREE(env->allocator, path_l);
     if (!dep_engine->conf_name)
     {
-        dep_engine->conf_name = axutil_strdup(env, AXIS2_CONFIGURATION_RESOURCE);
+        dep_engine->conf_name =
+            axutil_strdup(env, AXIS2_CONFIGURATION_RESOURCE);
         if (!dep_engine->conf_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CONFIG_NOT_FOUND,
-                AXIS2_FAILURE)
-            return AXIS2_FAILURE;
+                            AXIS2_FAILURE) return AXIS2_FAILURE;
         }
     }
     status = axutil_file_handler_access(dep_engine->conf_name, AXIS2_F_OK);
     if (AXIS2_SUCCESS != status)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CONFIG_NOT_FOUND,
-            AXIS2_FAILURE);
+                        AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
@@ -798,8 +831,9 @@ axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
 }
 
 static axis2_status_t
-axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env)
+axis2_dep_engine_engage_modules(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env)
 {
     int size = 0;
     int i = 0;
@@ -821,7 +855,7 @@ axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
             axutil_array_list_get(dep_engine->module_list, env, i);
         if (qname && dep_engine->conf)
         {
-            status =  axis2_conf_engage_module(dep_engine->conf, env, qname);
+            status = axis2_conf_engage_module(dep_engine->conf, env, qname);
             if (AXIS2_SUCCESS != status)
             {
                 return status;
@@ -832,8 +866,9 @@ axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
 }
 
 static axis2_status_t
-axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env)
+axis2_dep_engine_validate_system_predefined_phases(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env)
 {
     axutil_array_list_t *in_phases = NULL;
     axis2_char_t *phase0 = NULL;
@@ -864,9 +899,10 @@ axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engin
 }
 
 static axis2_status_t
-axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_svc_grp_t *svc_metadata)
+axis2_dep_engine_add_new_svc(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_svc_grp_t * svc_metadata)
 {
     axutil_array_list_t *svcs = NULL;
     int sizei = 0;
@@ -875,8 +911,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_metadata, AXIS2_FAILURE);
 
-    svcs = axis2_arch_file_data_get_deployable_svcs(dep_engine->curr_file,
-        env);
+    svcs = axis2_arch_file_data_get_deployable_svcs(dep_engine->curr_file, env);
     if (svcs)
     {
         sizei = axutil_array_list_size(svcs, env);
@@ -896,13 +931,13 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
 
         svc = (axis2_svc_t *) axutil_array_list_get(svcs, env, i);
 
-        /*axis2_dep_engine_load_svc_props(dep_engine, env, svc);*/
+        /*axis2_dep_engine_load_svc_props(dep_engine, env, svc); */
         file = axis2_arch_file_data_get_file(dep_engine->curr_file, env);
-        file_name =  axutil_file_get_name(file, env);
+        file_name = axutil_file_get_name(file, env);
         axis2_svc_set_file_name(svc, env, file_name);
 
         /* modules from svc group */
-        grp_modules =  axis2_svc_grp_get_all_module_qnames(svc_metadata, env);
+        grp_modules = axis2_svc_grp_get_all_module_qnames(svc_metadata, env);
         if (grp_modules)
         {
             sizej = axutil_array_list_size(grp_modules, env);
@@ -913,19 +948,20 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             axutil_qname_t *qmodulename = NULL;
 
             qmodulename = (axutil_qname_t *) axutil_array_list_get(grp_modules,
-                env, j);
-            module_desc =  axis2_conf_get_module(dep_engine->conf, env,
-                qmodulename);
+                                                                   env, j);
+            module_desc = axis2_conf_get_module(dep_engine->conf, env,
+                                                qmodulename);
             if (module_desc)
             {
-                axis2_svc_engage_module(svc, env, module_desc, dep_engine->conf);
+                axis2_svc_engage_module(svc, env, module_desc,
+                                        dep_engine->conf);
             }
             else
             {
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                    "Invalid module reference taken from conf");
+                                "Invalid module reference taken from conf");
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODUELE_REF,
-                    AXIS2_FAILURE);
+                                AXIS2_FAILURE);
                 return AXIS2_FAILURE;
             }
         }
@@ -939,14 +975,16 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             axutil_qname_t *qmodulename = NULL;
 
             qmodulename = (axutil_qname_t *) axutil_array_list_get(list,
-                env, j);
-            module_desc =  axis2_conf_get_module(dep_engine->conf, env,
-                qmodulename);
+                                                                   env, j);
+            module_desc = axis2_conf_get_module(dep_engine->conf, env,
+                                                qmodulename);
             if (module_desc)
             {
                 axis2_status_t status = AXIS2_FAILURE;
-                status = axis2_svc_engage_module(svc, env, module_desc, dep_engine->conf);
-                if(!status)
+                status =
+                    axis2_svc_engage_module(svc, env, module_desc,
+                                            dep_engine->conf);
+                if (!status)
                 {
                     return status;
                 }
@@ -954,16 +992,16 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             else
             {
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                    "Invalid module reference taken from conf");
+                                "Invalid module reference taken from conf");
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODUELE_REF,
-                    AXIS2_FAILURE);
+                                AXIS2_FAILURE);
                 return AXIS2_FAILURE;
             }
         }
 
         ops = axis2_svc_get_all_ops(svc, env);
         for (index_i = axutil_hash_first(ops, env);
-            index_i; index_i = axutil_hash_next(env, index_i))
+             index_i; index_i = axutil_hash_next(env, index_i))
         {
             void *v = NULL;
             axis2_op_t *op_desc = NULL;
@@ -972,7 +1010,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             int k = 0;
 
             axutil_hash_this(index_i, NULL, NULL, &v);
-            op_desc = (axis2_op_t *)v;
+            op_desc = (axis2_op_t *) v;
 
             modules = axis2_op_get_all_module_qnames(op_desc, env);
             if (modules)
@@ -985,32 +1023,34 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
                 axis2_module_desc_t *module = NULL;
 
                 module_qname = (axutil_qname_t *) axutil_array_list_get(modules,
-                    env, k);
-                module =  axis2_conf_get_module(dep_engine->conf, env,
-                    module_qname);
+                                                                        env, k);
+                module = axis2_conf_get_module(dep_engine->conf, env,
+                                               module_qname);
 
                 if (module)
                 {
                     axis2_op_engage_module(op_desc, env, module,
-                        dep_engine->conf);
+                                           dep_engine->conf);
                 }
                 else
                 {
                     AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_INVALID_MODUELE_REF_BY_OP, AXIS2_FAILURE);
+                                    AXIS2_ERROR_INVALID_MODUELE_REF_BY_OP,
+                                    AXIS2_FAILURE);
                     return AXIS2_FAILURE;
                 }
             }
         }
-         axis2_svc_grp_add_svc(svc_metadata, env, svc);
+        axis2_svc_grp_add_svc(svc_metadata, env, svc);
     }
-    return  axis2_conf_add_svc_grp(dep_engine->conf, env, svc_metadata);
+    return axis2_conf_add_svc_grp(dep_engine->conf, env, svc_metadata);
 }
 
 static axis2_status_t
-axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_module_desc_t *module_desc)
+axis2_dep_engine_load_module_dll(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_module_desc_t * module_desc)
 {
     axis2_char_t *read_in_dll = NULL;
     axis2_module_t *module = NULL;
@@ -1030,18 +1070,19 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     read_in_dll =
         axis2_arch_file_data_get_module_dll_name(dep_engine->curr_file, env);
     dll_desc = axutil_dll_desc_create(env);
-    dll_name =  axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
-        read_in_dll);
+    dll_name = axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
+                                                                 read_in_dll);
 
     module_folder = axis2_arch_file_data_get_file(dep_engine->curr_file, env);
-    timestamp =  axutil_file_get_timestamp(module_folder, env);
+    timestamp = axutil_file_get_timestamp(module_folder, env);
     axutil_dll_desc_set_timestamp(dll_desc, env, timestamp);
-    module_folder_path =  axutil_file_get_path(module_folder, env);
+    module_folder_path = axutil_file_get_path(module_folder, env);
     temp_path = axutil_stracat(env, module_folder_path, AXIS2_PATH_SEP_STR);
     dll_path = axutil_stracat(env, temp_path, dll_name);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-        "axis2_dep_engine_load_module_dll: DLL path is : %s", dll_path);
-    status =  axutil_dll_desc_set_name(dll_desc, env, dll_path);
+                    "axis2_dep_engine_load_module_dll: DLL path is : %s",
+                    dll_path);
+    status = axutil_dll_desc_set_name(dll_desc, env, dll_path);
     if (AXIS2_SUCCESS != status)
     {
         axutil_dll_desc_free(dll_desc, env);
@@ -1056,10 +1097,11 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     axutil_dll_desc_set_type(dll_desc, env, AXIS2_MODULE_DLL);
     impl_info_param = axutil_param_create(env, read_in_dll, NULL);
     axutil_param_set_value(impl_info_param, env, dll_desc);
-    axutil_param_set_value_free(impl_info_param, env, axutil_dll_desc_free_void_arg);
+    axutil_param_set_value_free(impl_info_param, env,
+                                axutil_dll_desc_free_void_arg);
     axutil_class_loader_init(env);
     module = (axis2_module_t *) axutil_class_loader_create_dll(env,
-        impl_info_param);
+                                                               impl_info_param);
     /* We cannot free the created impl_info_param here because by freeing
      * so, it will free dll_desc which in turn unload the module. So we
      * add this as a param to module_desc
@@ -1068,12 +1110,12 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     return axis2_module_desc_set_module(module_desc, env, module);
 }
 
-
 static axis2_status_t
-axis2_dep_engine_add_module_flow_handlers(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_flow_t *flow,
-    axutil_hash_t *handler_create_func_map)
+axis2_dep_engine_add_module_flow_handlers(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_flow_t * flow,
+    axutil_hash_t * handler_create_func_map)
 {
     int count = 0;
     int j = 0;
@@ -1093,7 +1135,9 @@ axis2_dep_engine_add_module_flow_handlers(axis2_dep_engine_t *dep_engine,
         handlermd = axis2_flow_get_handler(flow, env, j);
         handler_name = axis2_handler_desc_get_name(handlermd, env);
         handler_create_func = axutil_hash_get(handler_create_func_map,
-            axutil_string_get_buffer(handler_name, env), AXIS2_HASH_KEY_STRING);
+                                              axutil_string_get_buffer
+                                              (handler_name, env),
+                                              AXIS2_HASH_KEY_STRING);
         handler = handler_create_func(env, handler_name);
         axis2_handler_init(handler, env, handlermd);
         axis2_handler_desc_set_handler(handlermd, env, handler);
@@ -1102,9 +1146,10 @@ axis2_dep_engine_add_module_flow_handlers(axis2_dep_engine_t *dep_engine,
 }
 
 AXIS2_EXTERN void *AXIS2_CALL
-axis2_dep_engine_get_handler_dll(const axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_char_t *class_name)
+axis2_dep_engine_get_handler_dll(
+    const axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_char_t * class_name)
 {
     axutil_dll_desc_t *dll_desc = NULL;
     axutil_param_t *impl_info_param = NULL;
@@ -1116,24 +1161,24 @@ axis2_dep_engine_get_handler_dll(const axis2_dep_engine_t *dep_engine,
 
     dll_desc = axutil_dll_desc_create(env);
     dll_name =
-         axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
-             class_name);
+        axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
+                                                          class_name);
     axutil_dll_desc_set_name(dll_desc, env, dll_name);
     axutil_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
     axutil_class_loader_init(env);
     impl_info_param = axutil_param_create(env, NULL, NULL);
     axutil_param_set_value(impl_info_param, env, dll_desc);
     handler = (axis2_handler_t *) axutil_class_loader_create_dll(env,
-        impl_info_param);
+                                                                 impl_info_param);
 
     return handler;
 }
 
-
 static axis2_status_t
-axis2_dep_engine_add_new_module(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_module_desc_t *module_metadata)
+axis2_dep_engine_add_new_module(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_module_desc_t * module_metadata)
 {
     axis2_flow_t *in_flow = NULL;
     axis2_flow_t *out_flow = NULL;
@@ -1162,39 +1207,45 @@ axis2_dep_engine_add_new_module(axis2_dep_engine_t *dep_engine,
     if (in_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, in_flow,
-            module->handler_create_func_map);
+                                                  module->
+                                                  handler_create_func_map);
     }
 
     out_flow = axis2_module_desc_get_out_flow(module_metadata, env);
     if (out_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, out_flow,
-            module->handler_create_func_map);
+                                                  module->
+                                                  handler_create_func_map);
     }
 
     in_fault_flow = axis2_module_desc_get_fault_in_flow(module_metadata, env);
     if (in_fault_flow)
     {
-        axis2_dep_engine_add_module_flow_handlers(dep_engine, env, in_fault_flow,
-            module->handler_create_func_map);
+        axis2_dep_engine_add_module_flow_handlers(dep_engine, env,
+                                                  in_fault_flow,
+                                                  module->
+                                                  handler_create_func_map);
     }
 
     out_fault_flow = axis2_module_desc_get_fault_out_flow(module_metadata, env);
     if (out_fault_flow)
     {
-        axis2_dep_engine_add_module_flow_handlers(dep_engine, env, out_fault_flow,
-            module->handler_create_func_map);
+        axis2_dep_engine_add_module_flow_handlers(dep_engine, env,
+                                                  out_fault_flow,
+                                                  module->
+                                                  handler_create_func_map);
     }
 
-     axis2_conf_add_module(dep_engine->conf, env,
-         module_metadata);
+    axis2_conf_add_module(dep_engine->conf, env, module_metadata);
 
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env)
+axis2_dep_engine_do_deploy(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env)
 {
     int size = 0;
     axis2_status_t status = AXIS2_FAILURE;
@@ -1220,64 +1271,64 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
             type = axis2_arch_file_data_get_type(dep_engine->curr_file, env);
             switch (type)
             {
-                case AXIS2_SVC:
-                    arch_reader = axis2_arch_reader_create(env);
+            case AXIS2_SVC:
+                arch_reader = axis2_arch_reader_create(env);
 
-                    svc_grp = axis2_svc_grp_create_with_conf(env,
-                        dep_engine->conf);
-                    file_name = axis2_arch_file_data_get_name(dep_engine->
-                        curr_file, env);
-                    status = axis2_arch_reader_process_svc_grp(arch_reader, env,
-                        file_name, dep_engine, svc_grp);
-                    if (AXIS2_SUCCESS != status)
-                    {
-                        axis2_arch_reader_free(arch_reader, env);
-                        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SVC,
-                            AXIS2_FAILURE);
-                        return status;
-                    }
-                    status = axis2_dep_engine_add_new_svc(dep_engine, env,
-                        svc_grp);
-                    if (AXIS2_SUCCESS != status)
-                    {
-                        axis2_arch_reader_free(arch_reader, env);
-                        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SVC,
-                            AXIS2_FAILURE);
-                        return status;
-                    }
-                    dep_engine->curr_file = NULL;
-                    break;
-                case AXIS2_MODULE:
-                    arch_reader = axis2_arch_reader_create(env);
-                    if (dep_engine->arch_reader)
-                    {
-                        axis2_arch_reader_free(dep_engine->arch_reader, env);
-                    }
-                    dep_engine->arch_reader = axis2_arch_reader_create(env);
-                    meta_data = axis2_module_desc_create(env);
-                    file_name = axis2_arch_file_data_get_name(dep_engine->
-                        curr_file, env);
-                    status = axis2_arch_reader_read_module_arch(
-                        env, file_name, dep_engine, meta_data);
-                    if (AXIS2_SUCCESS != status)
-                    {
-                        axis2_arch_reader_free(arch_reader, env);
-                        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODULE,
-                            AXIS2_FAILURE);
-                        return AXIS2_FAILURE;
-                    }
-                    status = axis2_dep_engine_add_new_module(dep_engine, env,
-                        meta_data);
-                    if (AXIS2_SUCCESS != status)
-                    {
-                        axis2_arch_reader_free(arch_reader, env);
-                        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODULE,
-                            AXIS2_FAILURE);
-                        return AXIS2_FAILURE;
-                    }
+                svc_grp = axis2_svc_grp_create_with_conf(env, dep_engine->conf);
+                file_name = axis2_arch_file_data_get_name(dep_engine->
+                                                          curr_file, env);
+                status = axis2_arch_reader_process_svc_grp(arch_reader, env,
+                                                           file_name,
+                                                           dep_engine, svc_grp);
+                if (AXIS2_SUCCESS != status)
+                {
+                    axis2_arch_reader_free(arch_reader, env);
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SVC,
+                                    AXIS2_FAILURE);
+                    return status;
+                }
+                status = axis2_dep_engine_add_new_svc(dep_engine, env, svc_grp);
+                if (AXIS2_SUCCESS != status)
+                {
+                    axis2_arch_reader_free(arch_reader, env);
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SVC,
+                                    AXIS2_FAILURE);
+                    return status;
+                }
+                dep_engine->curr_file = NULL;
+                break;
+            case AXIS2_MODULE:
+                arch_reader = axis2_arch_reader_create(env);
+                if (dep_engine->arch_reader)
+                {
+                    axis2_arch_reader_free(dep_engine->arch_reader, env);
+                }
+                dep_engine->arch_reader = axis2_arch_reader_create(env);
+                meta_data = axis2_module_desc_create(env);
+                file_name = axis2_arch_file_data_get_name(dep_engine->
+                                                          curr_file, env);
+                status =
+                    axis2_arch_reader_read_module_arch(env, file_name,
+                                                       dep_engine, meta_data);
+                if (AXIS2_SUCCESS != status)
+                {
+                    axis2_arch_reader_free(arch_reader, env);
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODULE,
+                                    AXIS2_FAILURE);
+                    return AXIS2_FAILURE;
+                }
+                status = axis2_dep_engine_add_new_module(dep_engine, env,
+                                                         meta_data);
+                if (AXIS2_SUCCESS != status)
+                {
+                    axis2_arch_reader_free(arch_reader, env);
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODULE,
+                                    AXIS2_FAILURE);
+                    return AXIS2_FAILURE;
+                }
 
-                    dep_engine->curr_file = NULL;
-                    break;
+                dep_engine->curr_file = NULL;
+                break;
             }
             axis2_arch_reader_free(arch_reader, env);
         }
@@ -1286,8 +1337,9 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env)
+axis2_dep_engine_undeploy(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env)
 {
     int size = 0;
     axis2_char_t *svc_name = NULL;
@@ -1313,11 +1365,11 @@ axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
 
                 file_name = axis2_ws_info_get_file_name(ws_info, env);
                 svc_name = axis2_dep_engine_get_axis_svc_name(dep_engine, env,
-                    file_name);
+                                                              file_name);
 
-                 axis2_conf_remove_svc(dep_engine->conf, env, svc_name);
+                axis2_conf_remove_svc(dep_engine->conf, env, svc_name);
             }
-            faulty_svcs =  axis2_conf_get_all_faulty_svcs(dep_engine->conf, env);
+            faulty_svcs = axis2_conf_get_all_faulty_svcs(dep_engine->conf, env);
             axutil_hash_set(faulty_svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
         }
 
@@ -1328,16 +1380,18 @@ axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_dep_engine_is_hot_update(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env)
+axis2_dep_engine_is_hot_update(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env)
 {
     return dep_engine->hot_update;
 }
 
 static axis2_char_t *
-axis2_dep_engine_get_axis_svc_name(const axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_char_t *file_name)
+axis2_dep_engine_get_axis_svc_name(
+    const axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_char_t * file_name)
 {
     axis2_char_t name_sep = '.';
     axis2_char_t *temp_name = NULL;
@@ -1360,9 +1414,10 @@ axis2_dep_engine_get_axis_svc_name(const axis2_dep_engine_t *dep_engine,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_dep_engine_set_phases_info(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_phases_info_t *phases_info)
+axis2_dep_engine_set_phases_info(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_phases_info_t * phases_info)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, phases_info, AXIS2_FAILURE);
@@ -1379,10 +1434,11 @@ axis2_dep_engine_set_phases_info(axis2_dep_engine_t *dep_engine,
  * and axisservice into EngineConfiguration
  */
 AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
-axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_svc_t *svc,
-    axis2_char_t *file_name)
+axis2_dep_engine_build_svc(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_svc_t * svc,
+    axis2_char_t * file_name)
 {
     axiom_node_t *node = NULL;
 
@@ -1390,17 +1446,20 @@ axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
 
     dep_engine->curr_file = axis2_arch_file_data_create_with_type_and_name(env,
-        AXIS2_SVC, "");
+                                                                           AXIS2_SVC,
+                                                                           "");
 
     dep_engine->svc_builder =
         axis2_svc_builder_create_with_file_and_dep_engine_and_svc(env,
-            file_name, dep_engine, svc);
+                                                                  file_name,
+                                                                  dep_engine,
+                                                                  svc);
 
-    node = axis2_desc_builder_build_om(
-        axis2_svc_builder_get_desc_builder(dep_engine->svc_builder, env),
-        env);
+    node =
+        axis2_desc_builder_build_om(axis2_svc_builder_get_desc_builder
+                                    (dep_engine->svc_builder, env), env);
     axis2_svc_builder_populate_svc(dep_engine->svc_builder, env, node);
-    /*axis2_dep_engine_load_svc_props(dep_engine, env, svc);*/
+    /*axis2_dep_engine_load_svc_props(dep_engine, env, svc); */
 
     return svc;
 }
@@ -1409,10 +1468,11 @@ axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
  * This method can be used to build ModuleDescription for a given module archiev file
  */
 AXIS2_EXTERN axis2_module_desc_t *AXIS2_CALL
-axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axutil_file_t *module_archive,
-    axis2_conf_t *conf)
+axis2_dep_engine_build_module(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axutil_file_t * module_archive,
+    axis2_conf_t * conf)
 {
     axis2_module_desc_t *module_desc = NULL;
     axis2_module_t *module = NULL;
@@ -1429,15 +1489,16 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
     AXIS2_PARAM_CHECK(env->error, module_archive, NULL);
     AXIS2_PARAM_CHECK(env->error, conf, NULL);
 
-    phases_info =  axis2_conf_get_phases_info(conf, env);
+    phases_info = axis2_conf_get_phases_info(conf, env);
     axis2_dep_engine_set_phases_info(dep_engine, env, phases_info);
     dep_engine->curr_file = axis2_arch_file_data_create_with_type_and_file(env,
-        AXIS2_MODULE, module_archive);
+                                                                           AXIS2_MODULE,
+                                                                           module_archive);
     module_desc = axis2_module_desc_create(env);
     arch_reader = axis2_arch_reader_create(env);
-    file_name =  axutil_file_get_name(module_archive, env);
+    file_name = axutil_file_get_name(module_archive, env);
     status = axis2_arch_reader_read_module_arch(env, file_name,
-        dep_engine, module_desc);
+                                                dep_engine, module_desc);
     axis2_arch_reader_free(arch_reader, env);
     if (AXIS2_SUCCESS != status)
     {
@@ -1458,28 +1519,34 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
     if (in_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, in_flow,
-            module->handler_create_func_map);
+                                                  module->
+                                                  handler_create_func_map);
     }
 
     out_flow = axis2_module_desc_get_out_flow(module_desc, env);
     if (out_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, out_flow,
-            module->handler_create_func_map);
+                                                  module->
+                                                  handler_create_func_map);
     }
 
     in_fault_flow = axis2_module_desc_get_fault_in_flow(module_desc, env);
     if (in_fault_flow)
     {
-        axis2_dep_engine_add_module_flow_handlers(dep_engine, env, in_fault_flow,
-            module->handler_create_func_map);
+        axis2_dep_engine_add_module_flow_handlers(dep_engine, env,
+                                                  in_fault_flow,
+                                                  module->
+                                                  handler_create_func_map);
     }
 
     out_fault_flow = axis2_module_desc_get_fault_out_flow(module_desc, env);
     if (out_fault_flow)
     {
-        axis2_dep_engine_add_module_flow_handlers(dep_engine, env, out_fault_flow,
-            module->handler_create_func_map);
+        axis2_dep_engine_add_module_flow_handlers(dep_engine, env,
+                                                  out_fault_flow,
+                                                  module->
+                                                  handler_create_func_map);
     }
 
     dep_engine->curr_file = NULL;
@@ -1488,16 +1555,18 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-axis2_dep_engine_get_repos_path(const axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env)
+axis2_dep_engine_get_repos_path(
+    const axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env)
 {
     return dep_engine->folder_name;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_dep_engine_set_current_file_item(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_arch_file_data_t *file_data)
+axis2_dep_engine_set_current_file_item(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_arch_file_data_t * file_data)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -1510,11 +1579,11 @@ axis2_dep_engine_set_current_file_item(axis2_dep_engine_t *dep_engine,
     return AXIS2_SUCCESS;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_dep_engine_set_arch_reader(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_arch_reader_t *arch_reader)
+axis2_dep_engine_set_arch_reader(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_arch_reader_t * arch_reader)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -1529,21 +1598,22 @@ axis2_dep_engine_set_arch_reader(axis2_dep_engine_t *dep_engine,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_add_module_builder(
-    axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_module_builder_t *module_builder)
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_module_builder_t * module_builder)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_builder, AXIS2_FAILURE);
 
-    return axutil_array_list_add(dep_engine->module_builders, env, module_builder);
+    return axutil_array_list_add(dep_engine->module_builders, env,
+                                 module_builder);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_add_svc_builder(
-    axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_svc_builder_t *svc_builder)
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_svc_builder_t * svc_builder)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_builder, AXIS2_FAILURE);
@@ -1553,20 +1623,22 @@ axis2_dep_engine_add_svc_builder(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_add_svc_grp_builder(
-    axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    axis2_svc_grp_builder_t *svc_grp_builder)
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    axis2_svc_grp_builder_t * svc_grp_builder)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_grp_builder, AXIS2_FAILURE);
 
-    return axutil_array_list_add(dep_engine->svc_grp_builders, env, svc_grp_builder);
+    return axutil_array_list_add(dep_engine->svc_grp_builders, env,
+                                 svc_grp_builder);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_dep_engine_add_desc_builder(axis2_dep_engine_t *dep_engine,
-    const axutil_env_t *env,
-    struct axis2_desc_builder *desc_builder)
+axis2_dep_engine_add_desc_builder(
+    axis2_dep_engine_t * dep_engine,
+    const axutil_env_t * env,
+    struct axis2_desc_builder * desc_builder)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, desc_builder, AXIS2_FAILURE);

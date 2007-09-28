@@ -11,15 +11,17 @@ extern "C"
 {
 #endif
 
+    /** brief Constructor for creating apche2 stream
+      * @return axutil_stream (libcurl)
+      */
+    AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
+    axutil_stream_create_libcurl(
+        const axutil_env_t * env,
+        axis2_char_t * buffer,
+        unsigned int size);
 
-/** brief Constructor for creating apche2 stream
-  * @return axutil_stream (libcurl)
-  */
-	AXIS2_EXTERN axutil_stream_t * AXIS2_CALL axutil_stream_create_libcurl
-	(const axutil_env_t *env, axis2_char_t *buffer, unsigned int size);
+    /** @} */
 
-/** @} */
-    
 #ifdef __cplusplus
 }
 #endif

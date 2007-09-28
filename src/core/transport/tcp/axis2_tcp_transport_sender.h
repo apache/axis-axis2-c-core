@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -46,9 +47,9 @@ extern "C"
      * @param env pointer to environment struct 
      */
     AXIS2_EXTERN axis2_transport_sender_t *AXIS2_CALL
-    axis2_tcp_transport_sender_create(
-        const axutil_env_t *env);
 
+    axis2_tcp_transport_sender_create(
+        const axutil_env_t * env);
 
     /** @} */
 #ifdef __cplusplus

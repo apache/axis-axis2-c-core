@@ -1,3 +1,4 @@
+
 /*
 * Copyright 2004,2005 The Apache Software Foundation.
 *
@@ -24,59 +25,62 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_core_trans_tcp tcp transport
- * @ingroup axis2_transport
- * Description.
- * @{
- */
+    /** @defgroup axis2_core_trans_tcp tcp transport
+     * @ingroup axis2_transport
+     * Description.
+     * @{
+     */
 
-/**
- * @defgroup axis2_core_transport_tcp core tcp transport
- * @ingroup axis2_core_trans_tcp
- * @{
- */
+    /**
+     * @defgroup axis2_core_transport_tcp core tcp transport
+     * @ingroup axis2_core_trans_tcp
+     * @{
+     */
 
-/**
- * @brief TCP protocol and message context constants.
- *
- */
+    /**
+     * @brief TCP protocol and message context constants.
+     *
+     */
 #define AXIS2_TCP_OUT_TRANSPORT_INFO "TCPOutTransportInfo"
-/**
- * PROTOCOL_VERSION
- */
+
+    /**
+     * PROTOCOL_VERSION
+     */
 #define AXIS2_TCP_PROTOCOL_VERSION "PROTOCOL"
-/**
- * SOCKET
- */
+
+    /**
+     * SOCKET
+     */
 #define AXIS2_SOCKET "SOCKET"
 
-/**
- * HEADER_HOST
- */
+    /**
+     * HEADER_HOST
+     */
 #define AXIS2_TCP_HOST "Host"
-/**
- * SO_TIMEOUT
- */
+
+    /**
+     * SO_TIMEOUT
+     */
 #define AXIS2_TCP_SO_TIMEOUT "SO_TIMEOUT"
 
-/**
- * CONNECTION_TIMEOUT
- */
+    /**
+     * CONNECTION_TIMEOUT
+     */
 #define AXIS2_TCP_CONNECTION_TIMEOUT "CONNECTION_TIMEOUT"
 
-/**
- * DEFAULT_SO_TIMEOUT
- */
+    /**
+     * DEFAULT_SO_TIMEOUT
+     */
 #define AXIS2_TCP_DEFAULT_SO_TIMEOUT 60000
 
-/**
- * DEFAULT_CONNECTION_TIMEOUT
- */
+    /**
+     * DEFAULT_CONNECTION_TIMEOUT
+     */
 #define AXIS2_TCP_DEFAULT_CONNECTION_TIMEOUT 60000
 
-/**
- * Field TRANSPORT_TCP
- */
+    /**
+     * Field TRANSPORT_TCP
+     */
 #define AXIS2_TRANSPORT_TCP "tcp"
 
 #ifdef __cplusplus

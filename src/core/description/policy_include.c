@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -38,16 +39,17 @@ typedef struct axis2_policy_wrapper
     void *value;
 } axis2_policy_wrapper_t;
 
-
 AXIS2_EXTERN axis2_policy_include_t *AXIS2_CALL
-axis2_policy_include_create(const axutil_env_t *env)
+axis2_policy_include_create(
+    const axutil_env_t * env)
 {
     axis2_policy_include_t *policy_include = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     policy_include = (axis2_policy_include_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_policy_include_t));
+                                                             sizeof
+                                                             (axis2_policy_include_t));
 
     if (!policy_include)
     {
@@ -81,18 +83,20 @@ axis2_policy_include_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN axis2_policy_include_t *AXIS2_CALL
-axis2_policy_include_create_with_desc(const axutil_env_t *env,
-    axis2_desc_t *desc)
+axis2_policy_include_create_with_desc(
+    const axutil_env_t * env,
+    axis2_desc_t * desc)
 {
     axis2_policy_include_t *policy_include = NULL;
     axis2_desc_t *parent_desc = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    policy_include = (axis2_policy_include_t *) axis2_policy_include_create(env);
-    
+    policy_include =
+        (axis2_policy_include_t *) axis2_policy_include_create(env);
+
     parent_desc = axis2_desc_get_parent(desc, env);
-    
+
     if (policy_include->registry)
     {
         neethi_registry_free(policy_include->registry, env);
@@ -101,12 +105,14 @@ axis2_policy_include_create_with_desc(const axutil_env_t *env,
 
     if (parent_desc)
     {
-        axis2_policy_include_t *preant_policy_include = 
+        axis2_policy_include_t *preant_policy_include =
             axis2_desc_get_policy_include(parent_desc, env);
         if (preant_policy_include)
         {
-            policy_include->registry = neethi_registry_create_with_parent(env, 
-                axis2_policy_include_get_registry(preant_policy_include, env));
+            policy_include->registry = neethi_registry_create_with_parent(env,
+                                                                          axis2_policy_include_get_registry
+                                                                          (preant_policy_include,
+                                                                           env));
         }
         else
         {
@@ -117,16 +123,16 @@ axis2_policy_include_create_with_desc(const axutil_env_t *env,
     {
         policy_include->registry = neethi_registry_create(env);
     }
-    
+
     policy_include->desc = desc;
-    
+
     return policy_include;
 }
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_policy_include_free(
-    axis2_policy_include_t *policy_include,
-    const axutil_env_t *env)
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -140,13 +146,13 @@ axis2_policy_include_free(
         axutil_hash_index_t *hi = NULL;
         void *val = NULL;
         for (hi = axutil_hash_first(policy_include->wrapper_elements, env); hi;
-                hi = axutil_hash_next(env, hi))
+             hi = axutil_hash_next(env, hi))
         {
             axis2_policy_wrapper_t *wrapper = NULL;
             axutil_hash_this(hi, NULL, NULL, &val);
             wrapper = (axis2_policy_wrapper_t *) val;
             if (wrapper)
-                 AXIS2_FREE(env->allocator, wrapper);
+                AXIS2_FREE(env->allocator, wrapper);
             val = NULL;
             wrapper = NULL;
         }
@@ -162,9 +168,10 @@ axis2_policy_include_free(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_policy_include_set_registry(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env, 
-    neethi_registry_t *registry)
+axis2_policy_include_set_registry(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env,
+    neethi_registry_t * registry)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -172,39 +179,40 @@ axis2_policy_include_set_registry(axis2_policy_include_t *policy_include,
     {
         neethi_registry_free(policy_include->registry, env);
     }
-    
+
     policy_include->registry = registry;
-    
+
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN neethi_registry_t *AXIS2_CALL
-axis2_policy_include_get_registry(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env)
+axis2_policy_include_get_registry(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env)
 {
     return policy_include->registry;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_policy_include_set_policy(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env, 
-    neethi_policy_t *policy)
+axis2_policy_include_set_policy(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env,
+    neethi_policy_t * policy)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
+
     if (policy_include->wrapper_elements)
     {
         axutil_hash_free(policy_include->wrapper_elements, env);
         policy_include->wrapper_elements = NULL;
     }
-    
+
     policy_include->wrapper_elements = axutil_hash_make(env);
 
-    if (!neethi_policy_get_name(policy, env) && 
+    if (!neethi_policy_get_name(policy, env) &&
         !neethi_policy_get_id(policy, env))
     {
-        neethi_policy_set_id(policy, env, 
-            axutil_uuid_gen(env));
+        neethi_policy_set_id(policy, env, axutil_uuid_gen(env));
     }
 
     if (policy_include->wrapper_elements)
@@ -212,25 +220,26 @@ axis2_policy_include_set_policy(axis2_policy_include_t *policy_include,
         axis2_policy_wrapper_t *wrapper = NULL;
 
         wrapper = (axis2_policy_wrapper_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_policy_wrapper_t));
+                                                          sizeof
+                                                          (axis2_policy_wrapper_t));
         if (wrapper)
         {
             axis2_char_t *policy_name = NULL;
             wrapper->type = AXIS2_ANON_POLICY;
             wrapper->value = policy;
-            
+
             policy_name = neethi_policy_get_name(policy, env);
-            
+
             if (policy_name)
             {
                 axutil_hash_set(policy_include->wrapper_elements, policy_name,
-                    AXIS2_HASH_KEY_STRING, wrapper);
+                                AXIS2_HASH_KEY_STRING, wrapper);
             }
             else
             {
-                axutil_hash_set(policy_include->wrapper_elements, 
-                    neethi_policy_get_id(policy, env),
-                    AXIS2_HASH_KEY_STRING, wrapper);
+                axutil_hash_set(policy_include->wrapper_elements,
+                                neethi_policy_get_id(policy, env),
+                                AXIS2_HASH_KEY_STRING, wrapper);
             }
         }
     }
@@ -238,9 +247,10 @@ axis2_policy_include_set_policy(axis2_policy_include_t *policy_include,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_policy_include_update_policy(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env, 
-    neethi_policy_t *policy)
+axis2_policy_include_update_policy(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env,
+    neethi_policy_t * policy)
 {
     axis2_char_t *key;
     axis2_policy_wrapper_t *wrapper = NULL;
@@ -255,44 +265,48 @@ axis2_policy_include_update_policy(axis2_policy_include_t *policy_include,
     }
 
     wrapper = axutil_hash_get(policy_include->wrapper_elements, key,
-        AXIS2_HASH_KEY_STRING);
-    if(wrapper)
+                              AXIS2_HASH_KEY_STRING);
+    if (wrapper)
     {
         wrapper->value = policy;
         return AXIS2_SUCCESS;
     }
-    
+
     return AXIS2_FAILURE;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_policy_include_set_effective_policy(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env, 
-    neethi_policy_t *effective_policy)
+axis2_policy_include_set_effective_policy(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env,
+    neethi_policy_t * effective_policy)
 {
     policy_include->effective_policy = effective_policy;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_policy_include_set_desc(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env, 
-    axis2_desc_t *desc)
+axis2_policy_include_set_desc(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env,
+    axis2_desc_t * desc)
 {
     policy_include->desc = desc;
     return AXIS2_SUCCESS;
-}        
+}
 
 AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
-axis2_policy_include_get_desc(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env)
+axis2_policy_include_get_desc(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env)
 {
     return policy_include->desc;
 }
 
 AXIS2_EXTERN axis2_policy_include_t *AXIS2_CALL
-axis2_policy_include_get_parent(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env)
+axis2_policy_include_get_parent(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env)
 {
     if (policy_include->desc)
     {
@@ -308,43 +322,44 @@ axis2_policy_include_get_parent(axis2_policy_include_t *policy_include,
 }
 
 static axis2_status_t
-axis2_policy_include_calculate_policy(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env)
+axis2_policy_include_calculate_policy(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env)
 {
     neethi_policy_t *result = NULL;
     axutil_hash_index_t *hi = NULL;
     void *val = NULL;
 
     for (hi = axutil_hash_first(policy_include->wrapper_elements, env); hi;
-        hi = axutil_hash_next(env, hi))
+         hi = axutil_hash_next(env, hi))
     {
         axis2_policy_wrapper_t *wrapper = NULL;
 
         axutil_hash_this(hi, NULL, NULL, &val);
-        wrapper = (axis2_policy_wrapper_t *)val;
+        wrapper = (axis2_policy_wrapper_t *) val;
 
         if (wrapper)
         {
             neethi_policy_t *policy = NULL;
-            if (wrapper->type == AXIS2_POLICY_REF) 
+            if (wrapper->type == AXIS2_POLICY_REF)
             {
-                neethi_reference_t *reference = 
-                    (neethi_reference_t *)wrapper->value;
+                neethi_reference_t *reference =
+                    (neethi_reference_t *) wrapper->value;
                 if (reference)
                 {
                     /* TOOD add neethi_reference_normalize
-                    policy = (neethi_policy_t*) neethi_reference_normalize(
-                        reference, env, policy_include->registry, AXIS2_FALSE);
-                    */
+                       policy = (neethi_policy_t*) neethi_reference_normalize(
+                       reference, env, policy_include->registry, AXIS2_FALSE);
+                     */
                 }
-            } 
-            else 
+            }
+            else
             {
-                policy = (neethi_policy_t *)wrapper->value;
-            } 
+                policy = (neethi_policy_t *) wrapper->value;
+            }
 
-            result = (result == NULL) ? (neethi_policy_t*) policy : 
-                (neethi_policy_t*) neethi_engine_merge(env, result, policy);
+            result = (result == NULL) ? (neethi_policy_t *) policy :
+                (neethi_policy_t *) neethi_engine_merge(env, result, policy);
         }
     }
 
@@ -353,76 +368,89 @@ axis2_policy_include_calculate_policy(axis2_policy_include_t *policy_include,
 }
 
 static neethi_policy_t *
-axis2_policy_include_calculate_effective_policy(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env)
-{    
+axis2_policy_include_calculate_effective_policy(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env)
+{
     neethi_policy_t *result;
     axis2_policy_include_t *parent = NULL;
 
     parent = axis2_policy_include_get_parent(policy_include, env);
 
-    if (parent) 
+    if (parent)
     {
         neethi_policy_t *parent_policy =
-            axis2_policy_include_get_effective_policy(parent, 
-                env);
+            axis2_policy_include_get_effective_policy(parent,
+                                                      env);
 
-        if (!parent_policy) 
+        if (!parent_policy)
         {
             result = axis2_policy_include_get_policy(policy_include, env);
 
-        } 
-        else 
+        }
+        else
         {
-            if (axis2_policy_include_get_policy(policy_include, env)) 
+            if (axis2_policy_include_get_policy(policy_include, env))
             {
                 neethi_policy_t *temp_policy = NULL;
-                parent_policy = (neethi_policy_t *)neethi_engine_get_normalize(env, AXIS2_FALSE, parent_policy);
-                temp_policy = axis2_policy_include_get_policy(policy_include, env);
-                temp_policy =  (neethi_policy_t *)neethi_engine_get_normalize(env, AXIS2_FALSE, temp_policy);
-              /* result = (neethi_policy_t*) neethi_engine_merge(env, parent_policy,
-                    axis2_policy_include_get_policy(policy_include, env));*/
-                result = (neethi_policy_t*) neethi_engine_merge(env,parent_policy, temp_policy);
+                parent_policy =
+                    (neethi_policy_t *) neethi_engine_get_normalize(env,
+                                                                    AXIS2_FALSE,
+                                                                    parent_policy);
+                temp_policy =
+                    axis2_policy_include_get_policy(policy_include, env);
+                temp_policy =
+                    (neethi_policy_t *) neethi_engine_get_normalize(env,
+                                                                    AXIS2_FALSE,
+                                                                    temp_policy);
+                /* result = (neethi_policy_t*) neethi_engine_merge(env, parent_policy,
+                   axis2_policy_include_get_policy(policy_include, env)); */
+                result =
+                    (neethi_policy_t *) neethi_engine_merge(env, parent_policy,
+                                                            temp_policy);
 
-            } 
-            else 
+            }
+            else
             {
                 result = parent_policy;
             }
         }
-    } 
-    else 
+    }
+    else
     {
         result = axis2_policy_include_get_policy(policy_include, env);
     }
-   
+
     return result;
     /*policy_include->effective_policy = result;
-    return AXIS2_SUCCESS;*/
+       return AXIS2_SUCCESS; */
 }
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
-axis2_policy_include_get_policy(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env)
+axis2_policy_include_get_policy(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env)
 {
     axis2_policy_include_calculate_policy(policy_include, env);
     return policy_include->policy;
 }
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
-axis2_policy_include_get_effective_policy(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env)
+axis2_policy_include_get_effective_policy(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env)
 {
     /*if (policy_include->effective_policy)
-        return policy_include->effective_policy;
-    */
+       return policy_include->effective_policy;
+     */
     return axis2_policy_include_calculate_effective_policy(policy_include, env);
-    /*return policy_include->effective_policy;*/
+    /*return policy_include->effective_policy; */
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-axis2_policy_include_get_policy_elements(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env)
+axis2_policy_include_get_policy_elements(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env)
 {
     axutil_array_list_t *policy_elements_list = NULL;
     axutil_hash_index_t *hi = NULL;
@@ -431,12 +459,12 @@ axis2_policy_include_get_policy_elements(axis2_policy_include_t *policy_include,
     policy_elements_list = axutil_array_list_create(env, 10);
 
     for (hi = axutil_hash_first(policy_include->wrapper_elements, env); hi;
-        hi = axutil_hash_next(env, hi))
+         hi = axutil_hash_next(env, hi))
     {
         axis2_policy_wrapper_t *wrapper = NULL;
 
         axutil_hash_this(hi, NULL, NULL, &val);
-        wrapper = (axis2_policy_wrapper_t *)val;
+        wrapper = (axis2_policy_wrapper_t *) val;
 
         if (wrapper)
         {
@@ -447,8 +475,9 @@ axis2_policy_include_get_policy_elements(axis2_policy_include_t *policy_include,
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-axis2_policy_include_get_policy_elements_with_type(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env,
+axis2_policy_include_get_policy_elements_with_type(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env,
     int type)
 {
     axutil_array_list_t *policy_elements_list = NULL;
@@ -458,12 +487,12 @@ axis2_policy_include_get_policy_elements_with_type(axis2_policy_include_t *polic
     policy_elements_list = axutil_array_list_create(env, 10);
 
     for (hi = axutil_hash_first(policy_include->wrapper_elements, env); hi;
-        hi = axutil_hash_next(env, hi))
+         hi = axutil_hash_next(env, hi))
     {
         axis2_policy_wrapper_t *wrapper = NULL;
 
         axutil_hash_this(hi, NULL, NULL, &val);
-        wrapper = (axis2_policy_wrapper_t *)val;
+        wrapper = (axis2_policy_wrapper_t *) val;
 
         if (wrapper && wrapper->type == type)
         {
@@ -474,23 +503,25 @@ axis2_policy_include_get_policy_elements_with_type(axis2_policy_include_t *polic
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_policy_include_register_policy(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env,
-    axis2_char_t *key,
-    neethi_policy_t *policy)
+axis2_policy_include_register_policy(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env,
+    axis2_char_t * key,
+    neethi_policy_t * policy)
 {
     if (policy_include->registry)
     {
-        return neethi_registry_register(policy_include->registry, env, key, 
-            policy);
+        return neethi_registry_register(policy_include->registry, env, key,
+                                        policy);
     }
     return AXIS2_FAILURE;
 }
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
-axis2_policy_include_get_policy_with_key(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env,
-    axis2_char_t *key)
+axis2_policy_include_get_policy_with_key(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env,
+    axis2_char_t * key)
 {
     if (policy_include->registry)
     {
@@ -500,19 +531,20 @@ axis2_policy_include_get_policy_with_key(axis2_policy_include_t *policy_include,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_policy_include_add_policy_element(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env,
+axis2_policy_include_add_policy_element(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env,
     int type,
-    neethi_policy_t *policy)
+    neethi_policy_t * policy)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
-    if (!neethi_policy_get_name(policy, env) && 
+
+    if (!neethi_policy_get_name(policy, env) &&
         !neethi_policy_get_id(policy, env))
     {
-        axis2_char_t *uuid =  axutil_uuid_gen(env);
+        axis2_char_t *uuid = axutil_uuid_gen(env);
         neethi_policy_set_id(policy, env, uuid);
-        if(uuid)
+        if (uuid)
         {
             AXIS2_FREE(env->allocator, uuid);
             uuid = NULL;
@@ -524,25 +556,26 @@ axis2_policy_include_add_policy_element(axis2_policy_include_t *policy_include,
         axis2_policy_wrapper_t *wrapper = NULL;
 
         wrapper = (axis2_policy_wrapper_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_policy_wrapper_t));
+                                                          sizeof
+                                                          (axis2_policy_wrapper_t));
         if (wrapper)
         {
             axis2_char_t *policy_name = NULL;
             wrapper->type = type;
             wrapper->value = policy;
-            
+
             policy_name = neethi_policy_get_name(policy, env);
             if (!policy_name)
                 policy_name = neethi_policy_get_id(policy, env);
-            
+
             if (policy_name)
             {
                 axutil_hash_set(policy_include->wrapper_elements, policy_name,
-                    AXIS2_HASH_KEY_STRING, wrapper);
+                                AXIS2_HASH_KEY_STRING, wrapper);
                 if (policy_include->registry)
                 {
-                    neethi_registry_register(policy_include->registry, 
-                        env, policy_name, policy);
+                    neethi_registry_register(policy_include->registry,
+                                             env, policy_name, policy);
                 }
                 return AXIS2_SUCCESS;
             }
@@ -552,53 +585,55 @@ axis2_policy_include_add_policy_element(axis2_policy_include_t *policy_include,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_policy_include_add_policy_reference_element(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env,
+axis2_policy_include_add_policy_reference_element(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env,
     int type,
-    neethi_reference_t *reference)
+    neethi_reference_t * reference)
 {
     axis2_policy_wrapper_t *wrapper = NULL;
 
     wrapper = (axis2_policy_wrapper_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_policy_wrapper_t));
+                                                      sizeof
+                                                      (axis2_policy_wrapper_t));
     if (wrapper)
     {
         wrapper->type = type;
         wrapper->value = reference;
-        axutil_hash_set(policy_include->wrapper_elements, 
-            neethi_reference_get_uri(reference, env),
-            AXIS2_HASH_KEY_STRING, wrapper);
+        axutil_hash_set(policy_include->wrapper_elements,
+                        neethi_reference_get_uri(reference, env),
+                        AXIS2_HASH_KEY_STRING, wrapper);
     }
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_policy_include_remove_policy_element(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env,
-    axis2_char_t *policy_uri)
-{  
+axis2_policy_include_remove_policy_element(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env,
+    axis2_char_t * policy_uri)
+{
     if (policy_include->wrapper_elements)
     {
         axutil_hash_set(policy_include->wrapper_elements,
-            policy_uri,
-            AXIS2_HASH_KEY_STRING, NULL);
+                        policy_uri, AXIS2_HASH_KEY_STRING, NULL);
     }
     if (policy_include->registry)
     {
-         neethi_registry_register(policy_include->registry,
-            env, policy_uri, NULL);
+        neethi_registry_register(policy_include->registry,
+                                 env, policy_uri, NULL);
     }
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_policy_include_remove_all_policy_element(axis2_policy_include_t *policy_include,
-    const axutil_env_t *env)
-{    
+axis2_policy_include_remove_all_policy_element(
+    axis2_policy_include_t * policy_include,
+    const axutil_env_t * env)
+{
     if (policy_include->wrapper_elements)
     {
         axutil_hash_free(policy_include->wrapper_elements, env);
     }
     return AXIS2_SUCCESS;
 }
-
