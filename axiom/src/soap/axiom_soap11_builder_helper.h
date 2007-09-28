@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,7 +19,6 @@
 #ifndef AXIOM_SOAP11_BUILDER_HELPER_H
 #define AXIOM_SOAP11_BUILDER_HELPER_H
 
-
 /**
  * @file axiom_soap_11_builder_helper.h
  * @brief axiom_soap11_builder_helper
@@ -30,8 +30,8 @@ extern "C"
 {
 #endif
 
-
-    typedef struct axiom_soap11_builder_helper axiom_soap11_builder_helper_t;
+    typedef struct axiom_soap11_builder_helper
+                axiom_soap11_builder_helper_t;
 
     /**
      * @defgroup axiom_soap11_builder_helper
@@ -43,25 +43,29 @@ extern "C"
       * creates a soap11_builder_helper_create
       * @param env Environment. MUST NOT be NULL
       */
-    AXIS2_EXTERN axiom_soap11_builder_helper_t* AXIS2_CALL
-    axiom_soap11_builder_helper_create(const axutil_env_t *env,
-        axiom_soap_builder_t *soap_builder,
-        axiom_stax_builder_t *om_builder);
+    AXIS2_EXTERN axiom_soap11_builder_helper_t *AXIS2_CALL
+
+    axiom_soap11_builder_helper_create(
+        const axutil_env_t * env,
+        axiom_soap_builder_t * soap_builder,
+        axiom_stax_builder_t * om_builder);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_soap11_builder_helper_free(axiom_soap11_builder_helper_t *builder_helper,
-        const axutil_env_t *env);
+    axiom_soap11_builder_helper_free(
+        axiom_soap11_builder_helper_t * builder_helper,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_helper,
-        const axutil_env_t *env,
-        axiom_node_t *om_element_node,
-        int element_level);
 
+    axiom_soap11_builder_helper_handle_event(
+        axiom_soap11_builder_helper_t * builder_helper,
+        const axutil_env_t * env,
+        axiom_node_t * om_element_node,
+        int element_level);
 
     /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* AXIOM_SOAP11_BUILDER_HELPER_H */
+#endif                          /* AXIOM_SOAP11_BUILDER_HELPER_H */

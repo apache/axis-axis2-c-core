@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,24 +22,25 @@
 
 struct axiom_data_handler
 {
-    axis2_char_t* mime_type;
-    axis2_char_t* file_name;
-    axis2_byte_t* buffer;
+    axis2_char_t *mime_type;
+    axis2_char_t *file_name;
+    axis2_byte_t *buffer;
     int buffer_len;
     int data_handler_type;
 };
 
-AXIS2_EXTERN axiom_data_handler_t * AXIS2_CALL
-axiom_data_handler_create(const axutil_env_t *env,
-    const axis2_char_t *file_name,
-    const axis2_char_t *mime_type)
+AXIS2_EXTERN axiom_data_handler_t *AXIS2_CALL
+axiom_data_handler_create(
+    const axutil_env_t * env,
+    const axis2_char_t * file_name,
+    const axis2_char_t * mime_type)
 {
     axiom_data_handler_t *data_handler = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    data_handler = 
-	(axiom_data_handler_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axiom_data_handler_t));
+    data_handler =
+        (axiom_data_handler_t *) AXIS2_MALLOC(env->allocator,
+                                              sizeof(axiom_data_handler_t));
 
     if (!data_handler)
     {
@@ -76,14 +78,14 @@ axiom_data_handler_create(const axutil_env_t *env,
     {
         data_handler->data_handler_type = AXIOM_DATA_HANDLER_TYPE_BUFFER;
     }
-    
+
     return data_handler;
 }
 
-
 AXIS2_EXTERN void AXIS2_CALL
-axiom_data_handler_free(axiom_data_handler_t *data_handler, 
-    const axutil_env_t *env)
+axiom_data_handler_free(
+    axiom_data_handler_t * data_handler,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -110,41 +112,45 @@ axiom_data_handler_free(axiom_data_handler_t *data_handler,
     return;
 }
 
-AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axiom_data_handler_get_content_type(axiom_data_handler_t *data_handler, 
-    const axutil_env_t *env)
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axiom_data_handler_get_content_type(
+    axiom_data_handler_t * data_handler,
+    const axutil_env_t * env)
 {
     return data_handler->mime_type;
 }
 
-AXIS2_EXTERN axis2_byte_t * AXIS2_CALL
-axiom_data_handler_get_input_stream(axiom_data_handler_t *data_handler, 
-    const axutil_env_t *env)
+AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
+axiom_data_handler_get_input_stream(
+    axiom_data_handler_t * data_handler,
+    const axutil_env_t * env)
 {
-    return (axis2_byte_t *)data_handler->buffer;
+    return (axis2_byte_t *) data_handler->buffer;
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-axiom_data_handler_get_input_stream_len(axiom_data_handler_t *data_handler, 
-    const axutil_env_t *env)
+axiom_data_handler_get_input_stream_len(
+    axiom_data_handler_t * data_handler,
+    const axutil_env_t * env)
 {
     return data_handler->buffer_len;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_data_handler_read_from(axiom_data_handler_t *data_handler, 
-    const axutil_env_t *env,
-    axis2_byte_t** output_stream, 
+axiom_data_handler_read_from(
+    axiom_data_handler_t * data_handler,
+    const axutil_env_t * env,
+    axis2_byte_t ** output_stream,
     int *output_stream_size)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if(data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_BUFFER)
+    if (data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_BUFFER)
     {
         *output_stream = data_handler->buffer;
-        *output_stream_size = data_handler->buffer_len;  
+        *output_stream_size = data_handler->buffer_len;
     }
     else if (data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_FILE
-        &&  data_handler->file_name)
+             && data_handler->file_name)
     {
         FILE *f = NULL;
         axis2_byte_t *byte_stream = NULL;
@@ -159,33 +165,33 @@ axiom_data_handler_read_from(axiom_data_handler_t *data_handler,
         if (!f)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                " error opening file %s for reading ", 
-		data_handler->file_name);
+                            " error opening file %s for reading ",
+                            data_handler->file_name);
             return AXIS2_FAILURE;
         }
 
         do
         {
             struct stat stat_p;
-            if (-1 ==  stat(data_handler->file_name, &stat_p))
+            if (-1 == stat(data_handler->file_name, &stat_p))
             {
                 return AXIS2_FAILURE;
-	    }
-	    else if(stat_p.st_size == 0)
-	    {			  				
-	        *output_stream = NULL;
-		*output_stream_size = 0;
-		return AXIS2_SUCCESS;
-	    }
-
+            }
+            else if (stat_p.st_size == 0)
+            {
+                *output_stream = NULL;
+                *output_stream_size = 0;
+                return AXIS2_SUCCESS;
+            }
 
             read_stream_size = stat_p.st_size;
-            read_stream = AXIS2_MALLOC(env->allocator, 
-	        (read_stream_size) * sizeof(axis2_byte_t));
+            read_stream = AXIS2_MALLOC(env->allocator,
+                                       (read_stream_size) *
+                                       sizeof(axis2_byte_t));
             if (!read_stream)
             {
-                AXIS2_ERROR_SET(env->error, 
-	            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                AXIS2_ERROR_SET(env->error,
+                                AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
                 if (byte_stream)
                 {
                     AXIS2_FREE(env->allocator, byte_stream);
@@ -195,8 +201,8 @@ axiom_data_handler_read_from(axiom_data_handler_t *data_handler,
             count = fread(read_stream, 1, read_stream_size, f);
             if (ferror(f) != 0)
             {
-                AXIS2_ERROR_SET(env->error, 
-                    AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                AXIS2_ERROR_SET(env->error,
+                                AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
                 if (byte_stream)
                 {
                     AXIS2_FREE(env->allocator, byte_stream);
@@ -216,12 +222,13 @@ axiom_data_handler_read_from(axiom_data_handler_t *data_handler,
                     temp_byte_stream = byte_stream;
                     temp_byte_stream_size = byte_stream_size;
                     byte_stream_size = temp_byte_stream_size + count;
-                    byte_stream = AXIS2_MALLOC(env->allocator, 
-	                (byte_stream_size) * sizeof(axis2_byte_t));
+                    byte_stream = AXIS2_MALLOC(env->allocator,
+                                               (byte_stream_size) *
+                                               sizeof(axis2_byte_t));
                     if (!byte_stream)
                     {
-                        AXIS2_ERROR_SET(env->error, 
-			    AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                        AXIS2_ERROR_SET(env->error,
+                                        AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
                         if (read_stream)
                         {
                             AXIS2_FREE(env->allocator, read_stream);
@@ -233,10 +240,10 @@ axiom_data_handler_read_from(axiom_data_handler_t *data_handler,
                         return AXIS2_FAILURE;
                     }
 
-                    memcpy(byte_stream, 
-		        temp_byte_stream, temp_byte_stream_size);
-                    memcpy(byte_stream + temp_byte_stream_size, 
-		        read_stream, count);
+                    memcpy(byte_stream,
+                           temp_byte_stream, temp_byte_stream_size);
+                    memcpy(byte_stream + temp_byte_stream_size,
+                           read_stream, count);
 
                     if (read_stream)
                     {
@@ -268,8 +275,8 @@ axiom_data_handler_read_from(axiom_data_handler_t *data_handler,
         while (!feof(f));
 
         fclose(f);
-		data_handler->buffer = byte_stream;
-		data_handler->buffer_len = byte_stream_size;
+        data_handler->buffer = byte_stream;
+        data_handler->buffer_len = byte_stream_size;
         *output_stream = byte_stream;
         *output_stream_size = byte_stream_size;
     }
@@ -278,9 +285,11 @@ axiom_data_handler_read_from(axiom_data_handler_t *data_handler,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_data_handler_set_binary_data(axiom_data_handler_t *data_handler, 
-    const axutil_env_t *env,
-    axis2_byte_t* input_stream, int input_stream_len)
+axiom_data_handler_set_binary_data(
+    axiom_data_handler_t * data_handler,
+    const axutil_env_t * env,
+    axis2_byte_t * input_stream,
+    int input_stream_len)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     data_handler = data_handler;
@@ -291,8 +300,9 @@ axiom_data_handler_set_binary_data(axiom_data_handler_t *data_handler,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_data_handler_write_to(axiom_data_handler_t *data_handler, 
-    const axutil_env_t *env)
+axiom_data_handler_write_to(
+    axiom_data_handler_t * data_handler,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -305,13 +315,12 @@ axiom_data_handler_write_to(axiom_data_handler_t *data_handler,
         if (!f)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                " error opening file %s for writing ", 
-		data_handler->file_name);
+                            " error opening file %s for writing ",
+                            data_handler->file_name);
             return AXIS2_FAILURE;
         }
 
-        count = fwrite(data_handler->buffer, 
-	    1, data_handler->buffer_len, f);
+        count = fwrite(data_handler->buffer, 1, data_handler->buffer_len, f);
 
         if (ferror(f) != 0)
         {
@@ -325,9 +334,10 @@ axiom_data_handler_write_to(axiom_data_handler_t *data_handler,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_data_handler_set_file_name(axiom_data_handler_t *data_handler, 
-    const axutil_env_t *env,
-    axis2_char_t* file_name)
+axiom_data_handler_set_file_name(
+    axiom_data_handler_t * data_handler,
+    const axutil_env_t * env,
+    axis2_char_t * file_name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -349,4 +359,3 @@ axiom_data_handler_set_file_name(axiom_data_handler_t *data_handler,
 
     return AXIS2_SUCCESS;
 }
-

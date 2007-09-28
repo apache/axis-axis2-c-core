@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,13 +16,13 @@
  * limitations under the License.
  */
 
-
 #include "axiom_mime_body_part.h"
 #include <axiom_data_handler.h>
 #include <axutil_hash.h>
 
 struct axiom_mime_body_part
 {
+
     /** hash map to hold header name, value pairs */
     axutil_hash_t *header_map;
     axiom_data_handler_t *data_handler;
@@ -29,15 +30,16 @@ struct axiom_mime_body_part
 
 extern axis2_char_t AXIS2_CRLF[];
 
-
-AXIS2_EXTERN axiom_mime_body_part_t * AXIS2_CALL
-axiom_mime_body_part_create(const axutil_env_t *env)
+AXIS2_EXTERN axiom_mime_body_part_t *AXIS2_CALL
+axiom_mime_body_part_create(
+    const axutil_env_t * env)
 {
     axiom_mime_body_part_t *mime_body_part = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     mime_body_part = (axiom_mime_body_part_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axiom_mime_body_part_t));
+                                                             sizeof
+                                                             (axiom_mime_body_part_t));
 
     if (!mime_body_part)
     {
@@ -60,8 +62,9 @@ axiom_mime_body_part_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axiom_mime_body_part_free(axiom_mime_body_part_t *mime_body_part, 
-    const axutil_env_t *env)
+axiom_mime_body_part_free(
+    axiom_mime_body_part_t * mime_body_part,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -71,7 +74,7 @@ axiom_mime_body_part_free(axiom_mime_body_part_t *mime_body_part,
         const void *key = NULL;
         void *value = NULL;
         for (hash_index = axutil_hash_first(mime_body_part->header_map, env);
-            hash_index; hash_index = axutil_hash_next(env, hash_index))
+             hash_index; hash_index = axutil_hash_next(env, hash_index))
         {
             axutil_hash_this(hash_index, &key, NULL, &value);
             if (value)
@@ -80,7 +83,6 @@ axiom_mime_body_part_free(axiom_mime_body_part_t *mime_body_part,
             }
         }
 
-    
         axutil_hash_free(mime_body_part->header_map, env);
         mime_body_part->header_map = NULL;
     }
@@ -93,24 +95,26 @@ axiom_mime_body_part_free(axiom_mime_body_part_t *mime_body_part,
     return;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_mime_body_part_add_header(axiom_mime_body_part_t *mime_body_part,
-    const axutil_env_t *env,
-    const axis2_char_t *name,
-    const axis2_char_t *value)
+axiom_mime_body_part_add_header(
+    axiom_mime_body_part_t * mime_body_part,
+    const axutil_env_t * env,
+    const axis2_char_t * name,
+    const axis2_char_t * value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
 
     axutil_hash_set(mime_body_part->header_map, name,
-        AXIS2_HASH_KEY_STRING, value);
+                    AXIS2_HASH_KEY_STRING, value);
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_mime_body_part_set_data_handler(axiom_mime_body_part_t *mime_body_part,
-    const axutil_env_t *env, axiom_data_handler_t *data_handler)
+axiom_mime_body_part_set_data_handler(
+    axiom_mime_body_part_t * mime_body_part,
+    const axutil_env_t * env,
+    axiom_data_handler_t * data_handler)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     mime_body_part->data_handler = data_handler;
@@ -118,9 +122,11 @@ axiom_mime_body_part_set_data_handler(axiom_mime_body_part_t *mime_body_part,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part, 
-    const axutil_env_t *env,
-    axis2_byte_t **output_stream, int *output_stream_size)
+axiom_mime_body_part_write_to(
+    axiom_mime_body_part_t * mime_body_part,
+    const axutil_env_t * env,
+    axis2_byte_t ** output_stream,
+    int *output_stream_size)
 {
     axutil_hash_index_t *hash_index = NULL;
     const void *key = NULL;
@@ -137,12 +143,13 @@ axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     for (hash_index = axutil_hash_first(mime_body_part->header_map, env);
-        hash_index; hash_index = axutil_hash_next(env, hash_index))
+         hash_index; hash_index = axutil_hash_next(env, hash_index))
     {
         axutil_hash_this(hash_index, &key, NULL, &value);
         if (key && value)
         {
-            temp_header_str = axutil_stracat(env, header_str, (axis2_char_t*)key);
+            temp_header_str =
+                axutil_stracat(env, header_str, (axis2_char_t *) key);
             if (header_str)
             {
                 AXIS2_FREE(env->allocator, header_str);
@@ -151,7 +158,8 @@ axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part,
             temp_header_str = axutil_stracat(env, header_str, ": ");
             AXIS2_FREE(env->allocator, header_str);
             header_str = temp_header_str;
-            temp_header_str = axutil_stracat(env, header_str, (axis2_char_t*)value);
+            temp_header_str =
+                axutil_stracat(env, header_str, (axis2_char_t *) value);
             AXIS2_FREE(env->allocator, header_str);
             header_str = temp_header_str;
             temp_header_str = axutil_stracat(env, header_str, "\r\n");
@@ -178,11 +186,12 @@ axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part,
     if (mime_body_part->data_handler)
     {
         status = axiom_data_handler_read_from(mime_body_part->data_handler, env,
-            &data_handler_stream, &data_handler_stream_size);
+                                              &data_handler_stream,
+                                              &data_handler_stream_size);
         if (status == AXIS2_FAILURE)
-	{
+        {
             return AXIS2_FAILURE;
-	}
+        }
     }
 
     size = header_str_size + data_handler_stream_size;
@@ -190,7 +199,7 @@ axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part,
     if (!byte_stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-      
+
         if (header_str)
         {
             AXIS2_FREE(env->allocator, header_str);
@@ -205,10 +214,9 @@ axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part,
 
     if (data_handler_stream)
     {
-        memcpy(byte_stream + header_str_size, 
-	    data_handler_stream, data_handler_stream_size);
+        memcpy(byte_stream + header_str_size,
+               data_handler_stream, data_handler_stream_size);
     }
-
 
     *output_stream = byte_stream;
     *output_stream_size = size;

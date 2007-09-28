@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,17 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
- #ifndef _AXIOM_SOAP_ENVELOPE_H
- #define _AXIOM_SOAP_ENVELOPE_H
- 
- 
- /** @defgroup axiom_soap AXIOM (Axis Object Model)
-  * @ingroup axis2
-  * @{
-  */
-  
-                                   
+
+#ifndef _AXIOM_SOAP_ENVELOPE_H
+#define _AXIOM_SOAP_ENVELOPE_H
+
+/** @defgroup axiom_soap AXIOM (Axis Object Model)
+ * @ingroup axis2
+ * @{
+ */
+
 /** @} */
 
 #include <axiom_soap_envelope.h>
@@ -33,43 +32,51 @@
 extern "C"
 {
 #endif
-  
-/**
- * @defgroup axiom_soap_envelope Soap Envelope
- * @ingroup axiom_soap 
- * @{
- */
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_soap_envelope_set_base_node(axiom_soap_envelope_t *envelope,
-    const axutil_env_t *env,
-    axiom_node_t *om_node);  
-  
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axiom_soap_envelope_set_body(axiom_soap_envelope_t *envelope,
-    const axutil_env_t *env, 
-    struct axiom_soap_body *body);
+    /**
+     * @defgroup axiom_soap_envelope Soap Envelope
+     * @ingroup axiom_soap
+     * @{
+     */
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axiom_soap_envelope_set_header(axiom_soap_envelope_t *envelope,
-    const axutil_env_t *env, 
-    struct axiom_soap_header *header);
-    
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_soap_envelope_set_builder(axiom_soap_envelope_t *envelope,
-    const axutil_env_t *env,
-    struct axiom_soap_builder *soap_builder); 
-                                
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axiom_soap_envelope_set_soap_version_internal(axiom_soap_envelope_t *envelope,
-    const axutil_env_t *env,
-    int soap_version);                                
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_envelope_set_base_node(
+        axiom_soap_envelope_t * envelope,
+        const axutil_env_t * env,
+        axiom_node_t * om_node);
 
-AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
-axiom_soap_envelope_create_null(const axutil_env_t *env);
-    
-/** @} */
-    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_envelope_set_body(
+        axiom_soap_envelope_t * envelope,
+        const axutil_env_t * env,
+        struct axiom_soap_body *body);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_envelope_set_header(
+        axiom_soap_envelope_t * envelope,
+        const axutil_env_t * env,
+        struct axiom_soap_header *header);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_envelope_set_builder(
+        axiom_soap_envelope_t * envelope,
+        const axutil_env_t * env,
+        struct axiom_soap_builder *soap_builder);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+    axiom_soap_envelope_set_soap_version_internal(
+        axiom_soap_envelope_t * envelope,
+        const axutil_env_t * env,
+        int soap_version);
+
+    AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
+
+    axiom_soap_envelope_create_null(
+        const axutil_env_t * env);
+
+    /** @} */
+
 #ifdef __cplusplus
 }
 #endif

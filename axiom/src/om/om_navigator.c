@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,9 +18,9 @@
 
 #include <axiom_navigator.h>
 
-static void
-axiom_navigator_update_next_node(axiom_navigator_t *om_navigator,
-    const axutil_env_t *env);
+static void axiom_navigator_update_next_node(
+    axiom_navigator_t * om_navigator,
+    const axutil_env_t * env);
 
 struct axiom_navigator
 {
@@ -40,15 +41,17 @@ struct axiom_navigator
 };
 
 AXIS2_EXTERN axiom_navigator_t *AXIS2_CALL
-axiom_navigator_create(const axutil_env_t *env,
-    axiom_node_t *om_node)
+axiom_navigator_create(
+    const axutil_env_t * env,
+    axiom_node_t * om_node)
 {
     axiom_navigator_t *om_navigator = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, om_node, NULL);
 
     om_navigator =
-        (axiom_navigator_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_navigator_t));
+        (axiom_navigator_t *) AXIS2_MALLOC(env->allocator,
+                                           sizeof(axiom_navigator_t));
     if (!om_navigator)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -69,19 +72,20 @@ axiom_navigator_create(const axutil_env_t *env,
     return om_navigator;
 }
 
-
 AXIS2_EXTERN void AXIS2_CALL
-axiom_navigator_free(axiom_navigator_t *om_navigator,
-    const axutil_env_t *env)
+axiom_navigator_free(
+    axiom_navigator_t * om_navigator,
+    const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env , AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_FREE(env->allocator, om_navigator);
     return;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axiom_navigator_is_navigable(axiom_navigator_t *om_navigator,
-    const axutil_env_t *env)
+axiom_navigator_is_navigable(
+    axiom_navigator_t * om_navigator,
+    const axutil_env_t * env)
 {
     if (AXIS2_TRUE == om_navigator->end)
     {
@@ -98,27 +102,29 @@ axiom_navigator_is_navigable(axiom_navigator_t *om_navigator,
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axiom_navigator_is_completed(axiom_navigator_t *om_navigator,
-    const axutil_env_t *env)
+axiom_navigator_is_completed(
+    axiom_navigator_t * om_navigator,
+    const axutil_env_t * env)
 {
     return om_navigator->end;
 }
 
-
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axiom_navigator_visited(axiom_navigator_t *om_navigator,
-    const axutil_env_t *env)
+axiom_navigator_visited(
+    axiom_navigator_t * om_navigator,
+    const axutil_env_t * env)
 {
     return om_navigator->visited;
 }
 
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
-axiom_navigator_next(axiom_navigator_t *om_navigator,
-    const axutil_env_t *env)
+axiom_navigator_next(
+    axiom_navigator_t * om_navigator,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (! om_navigator->next)
+    if (!om_navigator->next)
     {
         return NULL;
     }
@@ -146,8 +152,9 @@ axiom_navigator_next(axiom_navigator_t *om_navigator,
 
 /** this method encapsulate searching logic */
 static void
-axiom_navigator_update_next_node(axiom_navigator_t *om_navigator,
-    const axutil_env_t *env)
+axiom_navigator_update_next_node(
+    axiom_navigator_t * om_navigator,
+    const axutil_env_t * env)
 {
     if (!om_navigator)
     {
@@ -164,7 +171,8 @@ axiom_navigator_update_next_node(axiom_navigator_t *om_navigator,
     {
         if (axiom_node_get_first_child(om_navigator->next, env))
         {
-            om_navigator->next = axiom_node_get_first_child(om_navigator->next, env);
+            om_navigator->next =
+                axiom_node_get_first_child(om_navigator->next, env);
         }
         else if (AXIS2_TRUE == axiom_node_is_complete(om_navigator->next, env))
         {
@@ -177,7 +185,7 @@ axiom_navigator_update_next_node(axiom_navigator_t *om_navigator,
     }
     else
     {
-        axiom_node_t  *parent = NULL;
+        axiom_node_t *parent = NULL;
         axiom_node_t *next_sibling = NULL;
 
         next_sibling = axiom_node_get_next_sibling(om_navigator->next, env);
@@ -199,4 +207,3 @@ axiom_navigator_update_next_node(axiom_navigator_t *om_navigator,
         }
     }
 }
-

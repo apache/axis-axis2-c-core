@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,16 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
- #ifndef AXIOM_STAX_BUILDER_INTERNAL_H
- #define AXIOM_STAX_BUILDER_INTERNAL_H
- 
- 
- /** @defgroup axiom AXIOM (Axis Object Model)
-  * @ingroup axis2
-  * @{
-  */
-  
+
+#ifndef AXIOM_STAX_BUILDER_INTERNAL_H
+#define AXIOM_STAX_BUILDER_INTERNAL_H
+
+/** @defgroup axiom AXIOM (Axis Object Model)
+ * @ingroup axis2
+ * @{
+ */
+
 /** @} */
 
 #include <axiom_stax_builder.h>
@@ -32,36 +32,42 @@
 extern "C"
 {
 #endif
-  
-/**
- * @defgroup axiom_stax builder
- * @ingroup axiom 
- * @{
- */
-    
-AXIS2_EXTERN int AXIS2_CALL
-axiom_stax_builder_get_current_event(axiom_stax_builder_t *builder,
-                                        const axutil_env_t *env);
-                                        
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_stax_builder_set_lastnode(axiom_stax_builder_t *builder,
-                                    const axutil_env_t *env,
-                                    axiom_node_t *om_node);
-                                    
-AXIS2_EXTERN int AXIS2_CALL
-axiom_stax_builder_get_element_level(axiom_stax_builder_t* builder,
-                                        const axutil_env_t *env); 
-                                            
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_stax_builder_set_element_level(axiom_stax_builder_t* builder,
-                                        const axutil_env_t *env,
-                                        int element_level);  
-AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-axiom_stax_builder_get_lastnode(axiom_stax_builder_t *builder,
-                                   const axutil_env_t *env);
-  
-/** @} */
-    
+
+    /**
+     * @defgroup axiom_stax builder
+     * @ingroup axiom
+     * @{
+     */
+
+    AXIS2_EXTERN int AXIS2_CALL
+    axiom_stax_builder_get_current_event(
+        axiom_stax_builder_t * builder,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_stax_builder_set_lastnode(
+        axiom_stax_builder_t * builder,
+        const axutil_env_t * env,
+        axiom_node_t * om_node);
+
+    AXIS2_EXTERN int AXIS2_CALL
+    axiom_stax_builder_get_element_level(
+        axiom_stax_builder_t * builder,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+    axiom_stax_builder_set_element_level(
+        axiom_stax_builder_t * builder,
+        const axutil_env_t * env,
+        int element_level);
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_stax_builder_get_lastnode(
+        axiom_stax_builder_t * builder,
+        const axutil_env_t * env);
+
+    /** @} */
+
 #ifdef __cplusplus
 }
 #endif

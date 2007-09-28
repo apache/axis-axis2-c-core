@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,15 +22,17 @@
 
 struct axiom_doctype
 {
+
     /** Doctype value */
     axis2_char_t *value;
 };
 
 AXIS2_EXTERN axiom_doctype_t *AXIS2_CALL
-axiom_doctype_create(const axutil_env_t *env,
-    axiom_node_t *parent,
-    const axis2_char_t *value,
-    axiom_node_t **node)
+axiom_doctype_create(
+    const axutil_env_t * env,
+    axiom_node_t * parent,
+    const axis2_char_t * value,
+    axiom_node_t ** node)
 {
     axiom_doctype_t *doctype = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -43,12 +46,12 @@ axiom_doctype_create(const axutil_env_t *env,
     }
 
     doctype = (axiom_doctype_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axiom_doctype_t));
+                                               sizeof(axiom_doctype_t));
 
     if (!doctype)
     {
         AXIS2_FREE(env->allocator, (*node));
-        AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -56,7 +59,7 @@ axiom_doctype_create(const axutil_env_t *env,
 
     if (value)
     {
-        doctype->value = (axis2_char_t*)axutil_strdup(env, value);
+        doctype->value = (axis2_char_t *) axutil_strdup(env, value);
         if (!doctype->value)
         {
             AXIS2_FREE(env->allocator, doctype);
@@ -78,8 +81,9 @@ axiom_doctype_create(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axiom_doctype_free(axiom_doctype_t *om_doctype,
-    const axutil_env_t *env)
+axiom_doctype_free(
+    axiom_doctype_t * om_doctype,
+    const axutil_env_t * env)
 {
     if (om_doctype)
     {
@@ -93,37 +97,38 @@ axiom_doctype_free(axiom_doctype_t *om_doctype,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_doctype_set_value(axiom_doctype_t *om_doctype,
-    const axutil_env_t *env,
-    const axis2_char_t *value)
+axiom_doctype_set_value(
+    axiom_doctype_t * om_doctype,
+    const axutil_env_t * env,
+    const axis2_char_t * value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
-    om_doctype->value = (axis2_char_t*)axutil_strdup(env, value);
+    om_doctype->value = (axis2_char_t *) axutil_strdup(env, value);
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axiom_doctype_get_value(axiom_doctype_t *om_doctype,
-    const axutil_env_t *env)
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axiom_doctype_get_value(
+    axiom_doctype_t * om_doctype,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return om_doctype->value;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_doctype_serialize(axiom_doctype_t *om_doctype,
-    const axutil_env_t *env,
-    axiom_output_t *om_output)
+axiom_doctype_serialize(
+    axiom_doctype_t * om_doctype,
+    const axutil_env_t * env,
+    axiom_output_t * om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
     if (om_doctype->value)
-        return  axiom_output_write(om_output, env,
-            AXIOM_DOCTYPE, 1, om_doctype->value);
+        return axiom_output_write(om_output, env,
+                                  AXIOM_DOCTYPE, 1, om_doctype->value);
 
     return AXIS2_FAILURE;
 }
-
-

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,16 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
- #ifndef _AXIOM_SOAP_BODY_H
- #define _AXIOM_SOAP_BODY_H
- 
- 
- /** @defgroup axiom_soap AXIOM (Axis Object Model)
-  * @ingroup axis2
-  * @{
-  */
-  
+
+#ifndef _AXIOM_SOAP_BODY_H
+#define _AXIOM_SOAP_BODY_H
+
+/** @defgroup axiom_soap AXIOM (Axis Object Model)
+ * @ingroup axis2
+ * @{
+ */
+
 /** @} */
 
 #include <axiom_soap_body.h>
@@ -32,31 +32,36 @@
 extern "C"
 {
 #endif
-  
-/**
- * @defgroup axiom_soap_body Soap Body
- * @ingroup axiom_soap 
- * @{
- */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_soap_body_set_base_node(axiom_soap_body_t *body,
-    const axutil_env_t *env,
-    axiom_node_t *om_node);  
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axiom_soap_body_set_builder(axiom_soap_body_t *body,
-    const axutil_env_t *env,
-    struct axiom_soap_builder *builder);
+    /**
+     * @defgroup axiom_soap_body Soap Body
+     * @ingroup axiom_soap
+     * @{
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_body_set_base_node(
+        axiom_soap_body_t * body,
+        const axutil_env_t * env,
+        axiom_node_t * om_node);
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axiom_soap_body_set_fault(axiom_soap_body_t *body,
-    const axutil_env_t *env,
-    struct axiom_soap_fault *soap_fault);
-                          
-AXIS2_EXTERN axiom_soap_body_t * AXIS2_CALL
-axiom_soap_body_create(const axutil_env_t *env);     
-/** @} */
-    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_body_set_builder(
+        axiom_soap_body_t * body,
+        const axutil_env_t * env,
+        struct axiom_soap_builder *builder);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_body_set_fault(
+        axiom_soap_body_t * body,
+        const axutil_env_t * env,
+        struct axiom_soap_fault *soap_fault);
+
+    AXIS2_EXTERN axiom_soap_body_t *AXIS2_CALL
+    axiom_soap_body_create(
+        const axutil_env_t * env);
+
+    /** @} */
+
 #ifdef __cplusplus
 }
 #endif

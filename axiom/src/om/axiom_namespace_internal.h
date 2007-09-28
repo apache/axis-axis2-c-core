@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,16 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
- #ifndef AXIOM_NAMESPACE_INTERNAL_H
- #define AXIOM_NAMESPACE_INTERNAL_H
- 
- 
- /** @defgroup axiom AXIOM (Axis Object Model)
-  * @ingroup axis2
-  * @{
-  */
-  
+
+#ifndef AXIOM_NAMESPACE_INTERNAL_H
+#define AXIOM_NAMESPACE_INTERNAL_H
+
+/** @defgroup axiom AXIOM (Axis Object Model)
+ * @ingroup axis2
+ * @{
+ */
+
 /** @} */
 
 #include <axiom_namespace.h>
@@ -33,10 +33,11 @@ extern "C"
 {
 #endif
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_namespace_set_uri(axiom_namespace_t *ns,
-    const axutil_env_t *env,
-    const axis2_char_t *ns_uri);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_namespace_set_uri(
+        axiom_namespace_t * ns,
+        const axutil_env_t * env,
+        const axis2_char_t * ns_uri);
 
 #ifdef __cplusplus
 }

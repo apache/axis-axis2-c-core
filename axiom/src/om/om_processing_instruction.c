@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,14 +22,17 @@
 
 struct axiom_processing_instruction
 {
+
     /** processing instruction  target */
     axis2_char_t *target;
+
     /** processing instruction  value */
     axis2_char_t *value;
 };
 
 AXIS2_EXTERN axiom_processing_instruction_t *AXIS2_CALL
-axiom_processing_instruction_create(const axutil_env_t *env,
+axiom_processing_instruction_create(
+    const axutil_env_t * env,
     axiom_node_t * parent,
     const axis2_char_t * target,
     const axis2_char_t * value,
@@ -40,7 +44,7 @@ axiom_processing_instruction_create(const axutil_env_t *env,
     if (!node || !target || !value)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
-            AXIS2_FAILURE);
+                        AXIS2_FAILURE);
         return NULL;
     }
 
@@ -52,9 +56,10 @@ axiom_processing_instruction_create(const axutil_env_t *env,
         return NULL;
     }
 
-    processing_instruction = 
+    processing_instruction =
         (axiom_processing_instruction_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axiom_processing_instruction_t));
+                                                        sizeof
+                                                        (axiom_processing_instruction_t));
 
     if (!processing_instruction)
     {
@@ -66,11 +71,12 @@ axiom_processing_instruction_create(const axutil_env_t *env,
 
     if (value)
     {
-        processing_instruction->value = (axis2_char_t*)axutil_strdup(env, value);
+        processing_instruction->value =
+            (axis2_char_t *) axutil_strdup(env, value);
         if (!processing_instruction->value)
         {
             AXIS2_FREE(env->allocator, processing_instruction);
-            AXIS2_FREE(env->allocator , *node);
+            AXIS2_FREE(env->allocator, *node);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
@@ -80,7 +86,8 @@ axiom_processing_instruction_create(const axutil_env_t *env,
 
     if (target)
     {
-        processing_instruction->target = (axis2_char_t*) axutil_strdup(env, target);
+        processing_instruction->target =
+            (axis2_char_t *) axutil_strdup(env, target);
         if (!processing_instruction->target)
         {
             AXIS2_FREE(env->allocator, processing_instruction->value);
@@ -101,8 +108,9 @@ axiom_processing_instruction_create(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axiom_processing_instruction_free(axiom_processing_instruction_t *om_pi,
-    const axutil_env_t *env)
+axiom_processing_instruction_free(
+    axiom_processing_instruction_t * om_pi,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -123,46 +131,49 @@ axiom_processing_instruction_free(axiom_processing_instruction_t *om_pi,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_processing_instruction_set_value(axiom_processing_instruction_t *om_pi,
-    const axutil_env_t *env,
-    const axis2_char_t *value)
+axiom_processing_instruction_set_value(
+    axiom_processing_instruction_t * om_pi,
+    const axutil_env_t * env,
+    const axis2_char_t * value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
-    om_pi->value = (axis2_char_t*)axutil_strdup(env, value);
+    om_pi->value = (axis2_char_t *) axutil_strdup(env, value);
     return AXIS2_SUCCESS;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_processing_instruction_set_target(axiom_processing_instruction_t *om_pi,
-    const axutil_env_t *env,
-    const axis2_char_t *target)
+axiom_processing_instruction_set_target(
+    axiom_processing_instruction_t * om_pi,
+    const axutil_env_t * env,
+    const axis2_char_t * target)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, target, AXIS2_FAILURE);
-    om_pi->target = (axis2_char_t*)axutil_strdup(env, target);
+    om_pi->target = (axis2_char_t *) axutil_strdup(env, target);
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-axiom_processing_instruction_get_value(axiom_processing_instruction_t *om_pi,
-    const axutil_env_t *env)
+axiom_processing_instruction_get_value(
+    axiom_processing_instruction_t * om_pi,
+    const axutil_env_t * env)
 {
     return om_pi->value;
 }
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-axiom_processing_instruction_get_target(axiom_processing_instruction_t *om_pi,
-    const axutil_env_t *env)
+axiom_processing_instruction_get_target(
+    axiom_processing_instruction_t * om_pi,
+    const axutil_env_t * env)
 {
     return om_pi->target;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_processing_instruction_serialize(axiom_processing_instruction_t *om_pi,
-    const axutil_env_t *env,
-    axiom_output_t *om_output)
+axiom_processing_instruction_serialize(
+    axiom_processing_instruction_t * om_pi,
+    const axutil_env_t * env,
+    axiom_output_t * om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
@@ -170,15 +181,14 @@ axiom_processing_instruction_serialize(axiom_processing_instruction_t *om_pi,
     if (om_pi->target && om_pi->value)
     {
         return axiom_output_write(om_output, env,
-            AXIOM_PROCESSING_INSTRUCTION,
-            2, om_pi->target, om_pi->value);
+                                  AXIOM_PROCESSING_INSTRUCTION,
+                                  2, om_pi->target, om_pi->value);
     }
     else if (om_pi->target)
     {
         return axiom_output_write(om_output, env,
-            AXIOM_PROCESSING_INSTRUCTION,
-            2, om_pi->target, om_pi->value);
+                                  AXIOM_PROCESSING_INSTRUCTION,
+                                  2, om_pi->target, om_pi->value);
     }
     return AXIS2_FAILURE;
 }
-

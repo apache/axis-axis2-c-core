@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,16 +26,17 @@ struct axiom_child_element_iterator
     axis2_bool_t remove_called;
 };
 
-AXIS2_EXTERN  axiom_child_element_iterator_t * AXIS2_CALL
-axiom_child_element_iterator_create(const axutil_env_t *env,
-        axiom_node_t *current_child)
+AXIS2_EXTERN axiom_child_element_iterator_t *AXIS2_CALL
+axiom_child_element_iterator_create(
+    const axutil_env_t * env,
+    axiom_node_t * current_child)
 {
     axiom_child_element_iterator_t *iterator = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    iterator = (axiom_child_element_iterator_t *)AXIS2_MALLOC(
-                env->allocator,
-                sizeof(axiom_child_element_iterator_t));
+    iterator = (axiom_child_element_iterator_t *) AXIS2_MALLOC(env->allocator,
+                                                               sizeof
+                                                               (axiom_child_element_iterator_t));
 
     if (!iterator)
     {
@@ -43,7 +45,7 @@ axiom_child_element_iterator_create(const axutil_env_t *env,
     }
 
     iterator->current_child = current_child;
-    iterator->last_child    = NULL;
+    iterator->last_child = NULL;
 
     iterator->next_called = AXIS2_FALSE;
     iterator->remove_called = AXIS2_FALSE;
@@ -51,21 +53,18 @@ axiom_child_element_iterator_create(const axutil_env_t *env,
     return iterator;
 }
 
-
-AXIS2_EXTERN  void AXIS2_CALL
-axiom_child_element_iterator_free
-(void *iterator,
-        const axutil_env_t *env)
+AXIS2_EXTERN void AXIS2_CALL axiom_child_element_iterator_free(
+    void *iterator,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_FREE(env->allocator, iterator);
     return;
 }
 
-AXIS2_EXTERN  axis2_status_t AXIS2_CALL
-axiom_child_element_iterator_remove
-(axiom_child_element_iterator_t *iterator,
-        const axutil_env_t *env)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_child_element_iterator_remove(
+    axiom_child_element_iterator_t * iterator,
+    const axutil_env_t * env)
 {
     axiom_node_t *last_child = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -84,20 +83,18 @@ axiom_child_element_iterator_remove
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN  axis2_bool_t AXIS2_CALL
-axiom_child_element_iterator_has_next
-(axiom_child_element_iterator_t *iterator,
-        const axutil_env_t *env)
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL axiom_child_element_iterator_has_next(
+    axiom_child_element_iterator_t * iterator,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     return (iterator->current_child) ? AXIS2_TRUE : AXIS2_FALSE;
 }
 
-AXIS2_EXTERN  axiom_node_t* AXIS2_CALL
-axiom_child_element_iterator_next
-(axiom_child_element_iterator_t *iterator,
-        const axutil_env_t *env)
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL axiom_child_element_iterator_next(
+    axiom_child_element_iterator_t * iterator,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -108,14 +105,13 @@ axiom_child_element_iterator_next
         iterator->last_child = iterator->current_child;
         do
         {
-            iterator->current_child = axiom_node_get_next_sibling(
-                        iterator->current_child, env);
+            iterator->current_child =
+                axiom_node_get_next_sibling(iterator->current_child, env);
 
         }
         while (iterator->current_child &&
-                (axiom_node_get_node_type(iterator->current_child, env)
-                        != AXIOM_ELEMENT));
-
+               (axiom_node_get_node_type(iterator->current_child, env)
+                != AXIOM_ELEMENT));
 
         return iterator->last_child;
     }

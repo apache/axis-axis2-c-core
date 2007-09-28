@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,16 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
- #ifndef _AXIOM_SOAP_FAULT_TEXT_H
- #define _AXIOM_SOAP_FAULT_TEXT_H
- 
- 
- /** @defgroup axiom_soap AXIOM (Axis Object Model)
-  * @ingroup axis2
-  * @{
-  */
-  
+
+#ifndef _AXIOM_SOAP_FAULT_TEXT_H
+#define _AXIOM_SOAP_FAULT_TEXT_H
+
+/** @defgroup axiom_soap AXIOM (Axis Object Model)
+ * @ingroup axis2
+ * @{
+ */
+
 /** @} */
 
 #include <axiom_soap_fault_text.h>
@@ -32,23 +32,27 @@
 extern "C"
 {
 #endif
-  
-/**
- * @defgroup axiom_soap_fault_text soap fault text
- * @ingroup axiom_soap 
- * @{
- */
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axiom_soap_fault_text_set_base_node(axiom_soap_fault_text_t *fault_text,
-    const axutil_env_t *env,
-    axiom_node_t *node);
+    /**
+     * @defgroup axiom_soap_fault_text soap fault text
+     * @ingroup axiom_soap
+     * @{
+     */
 
-AXIS2_EXTERN axiom_soap_fault_text_t * AXIS2_CALL
-axiom_soap_fault_text_create(const axutil_env_t *env);
-    
-/** @} */
-    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+    axiom_soap_fault_text_set_base_node(
+        axiom_soap_fault_text_t * fault_text,
+        const axutil_env_t * env,
+        axiom_node_t * node);
+
+    AXIS2_EXTERN axiom_soap_fault_text_t *AXIS2_CALL
+
+    axiom_soap_fault_text_create(
+        const axutil_env_t * env);
+
+    /** @} */
+
 #ifdef __cplusplus
 }
 #endif

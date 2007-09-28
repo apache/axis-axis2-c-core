@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,17 +24,18 @@
 #include <axiom_util.h>
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_first_child_element_with_uri(axiom_node_t *ele_node,
-    const axutil_env_t *env,
-    axis2_char_t *uri,
-    axiom_node_t **child)
+axiom_util_get_first_child_element_with_uri(
+    axiom_node_t * ele_node,
+    const axutil_env_t * env,
+    axis2_char_t * uri,
+    axiom_node_t ** child)
 {
     axiom_node_t *child_node = NULL;
 
     if (!ele_node || !uri)
     {
         AXIS2_ERROR_SET(env->error,
-            AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+                        AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -45,7 +47,7 @@ axiom_util_get_first_child_element_with_uri(axiom_node_t *ele_node,
             axiom_element_t *child_ele = NULL;
             axiom_namespace_t *ns = NULL;
 
-            child_ele = (axiom_element_t*)
+            child_ele = (axiom_element_t *)
                 axiom_node_get_data_element(child_node, env);
             ns = axiom_element_get_namespace(child_ele, env, child_node);
             if (ns)
@@ -65,16 +67,17 @@ axiom_util_get_first_child_element_with_uri(axiom_node_t *ele_node,
 }
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_next_sibling_element_with_uri(axiom_node_t *ele_node,
-    const axutil_env_t *env,
-    axis2_char_t *uri,
-    axiom_node_t **next_node)
+axiom_util_get_next_sibling_element_with_uri(
+    axiom_node_t * ele_node,
+    const axutil_env_t * env,
+    axis2_char_t * uri,
+    axiom_node_t ** next_node)
 {
     axiom_node_t *next_sib_node = NULL;
     if (!ele_node || !uri)
     {
         AXIS2_ERROR_SET(env->error,
-            AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+                        AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -86,7 +89,7 @@ axiom_util_get_next_sibling_element_with_uri(axiom_node_t *ele_node,
             axiom_element_t *sib_ele = NULL;
             axiom_namespace_t *ns = NULL;
 
-            sib_ele = (axiom_element_t*)
+            sib_ele = (axiom_element_t *)
                 axiom_node_get_data_element(next_sib_node, env);
             ns = axiom_element_get_namespace(sib_ele, env, next_sib_node);
             if (ns)
@@ -106,10 +109,11 @@ axiom_util_get_next_sibling_element_with_uri(axiom_node_t *ele_node,
 }
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_first_child_element(axiom_element_t *ele,
-        const axutil_env_t *env,
-        axiom_node_t *ele_node,
-        axiom_node_t **child_node)
+axiom_util_get_first_child_element(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axiom_node_t ** child_node)
 {
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, child_node, NULL);
@@ -118,10 +122,11 @@ axiom_util_get_first_child_element(axiom_element_t *ele,
 }
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_last_child_element(axiom_element_t *ele,
-        const axutil_env_t *env,
-        axiom_node_t *ele_node,
-        axiom_node_t **child_node)
+axiom_util_get_last_child_element(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axiom_node_t ** child_node)
 {
     axiom_node_t *last_node = NULL;
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
@@ -133,7 +138,7 @@ axiom_util_get_last_child_element(axiom_element_t *ele,
         if (axiom_node_get_node_type(last_node, env) == AXIOM_ELEMENT)
         {
             *child_node = last_node;
-            return (axiom_element_t*)
+            return (axiom_element_t *)
                 axiom_node_get_data_element(last_node, env);
 
         }
@@ -143,10 +148,11 @@ axiom_util_get_last_child_element(axiom_element_t *ele,
 }
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_next_sibling_element(axiom_element_t *ele,
-        const axutil_env_t *env,
-        axiom_node_t *ele_node,
-        axiom_node_t **next_node)
+axiom_util_get_next_sibling_element(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axiom_node_t ** next_node)
 {
     axiom_node_t *next_sibling = NULL;
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
@@ -166,16 +172,17 @@ axiom_util_get_next_sibling_element(axiom_element_t *ele,
 }
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_first_child_element_with_localname(axiom_element_t *ele,
-        const axutil_env_t *env,
-        axiom_node_t *ele_node,
-        axis2_char_t *localname,
-        axiom_node_t **child_node)
+axiom_util_get_first_child_element_with_localname(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axis2_char_t * localname,
+    axiom_node_t ** child_node)
 {
     axiom_node_t *child = NULL;
     axiom_node_t *next_sibling = NULL;
     axis2_char_t *child_localname = NULL;
-    axiom_element_t *om_ele  = NULL;
+    axiom_element_t *om_ele = NULL;
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, child_node, NULL);
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
@@ -190,7 +197,8 @@ axiom_util_get_first_child_element_with_localname(axiom_element_t *ele,
             if (om_ele)
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
-                if (child_localname && axutil_strcmp(child_localname, localname) == 0)
+                if (child_localname &&
+                    axutil_strcmp(child_localname, localname) == 0)
                 {
                     *child_node = child;
                     return om_ele;
@@ -206,12 +214,13 @@ axiom_util_get_first_child_element_with_localname(axiom_element_t *ele,
     {
         if (axiom_node_get_node_type(next_sibling, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t*)
+            om_ele = (axiom_element_t *)
                 axiom_node_get_data_element(next_sibling, env);
             if (om_ele)
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
-                if (child_localname && axutil_strcmp(child_localname, localname) == 0)
+                if (child_localname &&
+                    axutil_strcmp(child_localname, localname) == 0)
                 {
                     *child_node = next_sibling;
                     return om_ele;
@@ -226,13 +235,13 @@ axiom_util_get_first_child_element_with_localname(axiom_element_t *ele,
     return NULL;
 }
 
-
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_last_child_element_with_localname(axiom_element_t *ele,
-        const axutil_env_t *env,
-        axiom_node_t *ele_node,
-        axis2_char_t *localname,
-        axiom_node_t **child_node)
+axiom_util_get_last_child_element_with_localname(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axis2_char_t * localname,
+    axiom_node_t ** child_node)
 {
     axiom_node_t *child = NULL;
     axiom_element_t *om_ele = NULL;
@@ -247,7 +256,7 @@ axiom_util_get_last_child_element_with_localname(axiom_element_t *ele,
     {
         if (axiom_node_get_node_type(child, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t*)
+            om_ele = (axiom_element_t *)
                 axiom_node_get_data_element(ele_node, env);
             if (om_ele)
             {
@@ -269,15 +278,16 @@ axiom_util_get_last_child_element_with_localname(axiom_element_t *ele,
 }
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_next_siblng_element_with_localname(axiom_element_t *ele,
-        const axutil_env_t  *env,
-        axiom_node_t *ele_node,
-        axis2_char_t *localname,
-        axiom_node_t **next_node)
+axiom_util_get_next_siblng_element_with_localname(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axis2_char_t * localname,
+    axiom_node_t ** next_node)
 {
     axiom_node_t *next_sibling = NULL;
-    axiom_element_t *om_ele    = NULL;
-    axis2_char_t *ele_localname   = NULL;
+    axiom_element_t *om_ele = NULL;
+    axis2_char_t *ele_localname = NULL;
 
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
 
@@ -291,7 +301,8 @@ axiom_util_get_next_siblng_element_with_localname(axiom_element_t *ele,
             if (om_ele)
             {
                 ele_localname = axiom_element_get_localname(om_ele, env);
-                if (ele_localname && axutil_strcmp(localname, ele_localname) == 0)
+                if (ele_localname &&
+                    axutil_strcmp(localname, ele_localname) == 0)
                 {
                     *next_node = next_sibling;
                     return om_ele;
@@ -306,19 +317,20 @@ axiom_util_get_next_siblng_element_with_localname(axiom_element_t *ele,
 }
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_first_child_element_with_uri_localname(axiom_element_t *ele,
-        const axutil_env_t  *env,
-        axiom_node_t *ele_node,
-        axis2_char_t *localname,
-        axis2_char_t *uri,
-        axiom_node_t **child_node)
+axiom_util_get_first_child_element_with_uri_localname(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axis2_char_t * localname,
+    axis2_char_t * uri,
+    axiom_node_t ** child_node)
 {
     axiom_node_t *child = NULL;
     axiom_node_t *next_sibling = NULL;
     axis2_char_t *child_localname = NULL;
-    axiom_element_t *om_ele  = NULL;
-    axiom_namespace_t *ns    = NULL;
-    axis2_char_t *ns_uri        = NULL;
+    axiom_element_t *om_ele = NULL;
+    axiom_namespace_t *ns = NULL;
+    axis2_char_t *ns_uri = NULL;
 
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, child_node, NULL);
@@ -333,7 +345,7 @@ axiom_util_get_first_child_element_with_uri_localname(axiom_element_t *ele,
     }
     if (axiom_node_get_node_type(ele_node, env) == AXIOM_ELEMENT)
     {
-        om_ele = (axiom_element_t *)axiom_node_get_data_element(child , env);
+        om_ele = (axiom_element_t *) axiom_node_get_data_element(child, env);
         if (om_ele)
         {
             child_localname = axiom_element_get_localname(om_ele, env);
@@ -362,7 +374,9 @@ axiom_util_get_first_child_element_with_uri_localname(axiom_element_t *ele,
     {
         if (axiom_node_get_node_type(next_sibling, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t*)axiom_node_get_data_element(next_sibling, env);
+            om_ele =
+                (axiom_element_t *) axiom_node_get_data_element(next_sibling,
+                                                                env);
             if (om_ele)
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
@@ -373,8 +387,8 @@ axiom_util_get_first_child_element_with_uri_localname(axiom_element_t *ele,
                 }
 
                 if ((child_localname) &&
-                    (axutil_strcmp(child_localname, localname) == 0) && (ns_uri) &&
-                    (axutil_strcmp(ns_uri, uri) == 0))
+                    (axutil_strcmp(child_localname, localname) == 0) && (ns_uri)
+                    && (axutil_strcmp(ns_uri, uri) == 0))
                 {
                     *child_node = next_sibling;
                     return om_ele;
@@ -391,18 +405,19 @@ axiom_util_get_first_child_element_with_uri_localname(axiom_element_t *ele,
     return NULL;
 }
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_last_child_element_with_uri_localname(axiom_element_t *ele,
-        const axutil_env_t  *env,
-        axiom_node_t *ele_node,
-        axis2_char_t *localname,
-        axis2_char_t *uri,
-        axiom_node_t **child_node)
+axiom_util_get_last_child_element_with_uri_localname(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axis2_char_t * localname,
+    axis2_char_t * uri,
+    axiom_node_t ** child_node)
 {
-    axiom_node_t *child          = NULL;
-    axiom_element_t *om_ele      = NULL;
-    axis2_char_t *child_localname   = NULL;
-    axiom_namespace_t *ns        = NULL;
-    axis2_char_t *ns_uri            = NULL;
+    axiom_node_t *child = NULL;
+    axiom_element_t *om_ele = NULL;
+    axis2_char_t *child_localname = NULL;
+    axiom_namespace_t *ns = NULL;
+    axis2_char_t *ns_uri = NULL;
 
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
@@ -414,7 +429,8 @@ axiom_util_get_last_child_element_with_uri_localname(axiom_element_t *ele,
     {
         if (axiom_node_get_node_type(child, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t*)axiom_node_get_data_element(ele_node, env);
+            om_ele =
+                (axiom_element_t *) axiom_node_get_data_element(ele_node, env);
             if (om_ele)
             {
                 ns = axiom_element_get_namespace(om_ele, env, ele_node);
@@ -442,18 +458,19 @@ axiom_util_get_last_child_element_with_uri_localname(axiom_element_t *ele,
 }
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_next_sibling_element_with_uri_localname(axiom_element_t *ele,
-        const axutil_env_t  *env,
-        axiom_node_t *ele_node,
-        axis2_char_t *localname,
-        axis2_char_t *uri,
-        axiom_node_t **next_node)
+axiom_util_get_next_sibling_element_with_uri_localname(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axis2_char_t * localname,
+    axis2_char_t * uri,
+    axiom_node_t ** next_node)
 {
     axiom_node_t *next_sibling = NULL;
-    axiom_element_t *om_ele    = NULL;
-    axis2_char_t *ele_localname   = NULL;
-    axiom_namespace_t *ns      = NULL;
-    axis2_char_t *ns_uri          = NULL;
+    axiom_element_t *om_ele = NULL;
+    axis2_char_t *ele_localname = NULL;
+    axiom_namespace_t *ns = NULL;
+    axis2_char_t *ns_uri = NULL;
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
 
     next_sibling = axiom_node_get_next_sibling(ele_node, env);
@@ -490,19 +507,20 @@ axiom_util_get_next_sibling_element_with_uri_localname(axiom_element_t *ele,
 }
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
-        const axutil_env_t  *env,
-        axiom_node_t *ele_node,
-        axutil_array_list_t *names,
-        axiom_node_t **child_node)
+axiom_util_get_first_child_element_with_localnames(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axutil_array_list_t * names,
+    axiom_node_t ** child_node)
 {
     axiom_node_t *child = NULL;
     axiom_node_t *next_sibling = NULL;
     axis2_char_t *child_localname = NULL;
     axis2_char_t *given_localname = NULL;
-    axiom_element_t *om_ele  = NULL;
+    axiom_element_t *om_ele = NULL;
     int size = 0;
-    int i    = 0;
+    int i = 0;
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, child_node, NULL);
     AXIS2_PARAM_CHECK(env->error, names, NULL);
@@ -512,7 +530,8 @@ axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
     {
         if (axiom_node_get_node_type(child, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t *)axiom_node_get_data_element(child, env);
+            om_ele =
+                (axiom_element_t *) axiom_node_get_data_element(child, env);
             if (om_ele)
             {
                 size = axutil_array_list_size(names, env);
@@ -520,7 +539,8 @@ axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
 
                 for (i = 0; i < size; i++)
                 {
-                    given_localname = (axis2_char_t *)axutil_array_list_get(names, env, i);
+                    given_localname =
+                        (axis2_char_t *) axutil_array_list_get(names, env, i);
 
                     if ((child_localname) && (NULL != given_localname) &&
                         axutil_strcmp(child_localname, given_localname) == 0)
@@ -543,14 +563,17 @@ axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
     {
         if (axiom_node_get_node_type(next_sibling, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t*)axiom_node_get_data_element(next_sibling, env);
+            om_ele =
+                (axiom_element_t *) axiom_node_get_data_element(next_sibling,
+                                                                env);
             if (om_ele)
             {
                 size = axutil_array_list_size(names, env);
                 child_localname = axiom_element_get_localname(om_ele, env);
                 for (i = 0; i < size; i++)
                 {
-                    given_localname = (axis2_char_t *)axutil_array_list_get(names, env, i);
+                    given_localname =
+                        (axis2_char_t *) axutil_array_list_get(names, env, i);
                     if ((child_localname) && (NULL != given_localname) &&
                         (axutil_strcmp(child_localname, given_localname) == 0))
                     {
@@ -570,13 +593,13 @@ axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
 
 }
 
-
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_last_child_element_with_localnames(axiom_element_t *ele,
-        const axutil_env_t  *env,
-        axiom_node_t *ele_node,
-        axutil_array_list_t *names,
-        axiom_node_t **child_node)
+axiom_util_get_last_child_element_with_localnames(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axutil_array_list_t * names,
+    axiom_node_t ** child_node)
 {
     axiom_node_t *child = NULL;
     axiom_element_t *om_ele = NULL;
@@ -594,14 +617,15 @@ axiom_util_get_last_child_element_with_localnames(axiom_element_t *ele,
     {
         if (axiom_node_get_node_type(child, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t*)
+            om_ele = (axiom_element_t *)
                 axiom_node_get_data_element(ele_node, env);
             if (om_ele)
             {
                 size = axutil_array_list_size(names, env);
                 for (i = 0; i < size; i++)
                 {
-                    given_localname = (axis2_char_t *)axutil_array_list_get(names, env, i);
+                    given_localname =
+                        (axis2_char_t *) axutil_array_list_get(names, env, i);
                     child_localname = axiom_element_get_localname(om_ele, env);
                     if (child_localname && (NULL != given_localname) &&
                         (axutil_strcmp(child_localname, given_localname) == 0))
@@ -621,22 +645,22 @@ axiom_util_get_last_child_element_with_localnames(axiom_element_t *ele,
 }
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_next_siblng_element_with_localnames(axiom_element_t *ele,
-        const axutil_env_t  *env,
-        axiom_node_t *ele_node,
-        axutil_array_list_t *names,
-        axiom_node_t **next_node)
+axiom_util_get_next_siblng_element_with_localnames(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axutil_array_list_t * names,
+    axiom_node_t ** next_node)
 {
     axiom_node_t *next_sibling = NULL;
-    axiom_element_t *om_ele    = NULL;
-    axis2_char_t *ele_localname   = NULL;
+    axiom_element_t *om_ele = NULL;
+    axis2_char_t *ele_localname = NULL;
     axis2_char_t *given_localname = NULL;
     int size = 0;
-    int i    = 0;
+    int i = 0;
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, names, NULL);
     AXIS2_PARAM_CHECK(env->error, next_node, NULL);
-
 
     next_sibling = axiom_node_get_next_sibling(ele_node, env);
     while (next_sibling)
@@ -650,7 +674,8 @@ axiom_util_get_next_siblng_element_with_localnames(axiom_element_t *ele,
                 size = axutil_array_list_size(names, env);
                 for (i = 0; i < size; i++)
                 {
-                    given_localname = (axis2_char_t *)axutil_array_list_get(names, env, i);
+                    given_localname =
+                        (axis2_char_t *) axutil_array_list_get(names, env, i);
                     ele_localname = axiom_element_get_localname(om_ele, env);
                     if ((ele_localname) && (NULL != given_localname) &&
                         (axutil_strcmp(given_localname, ele_localname) == 0))
@@ -670,23 +695,24 @@ axiom_util_get_next_siblng_element_with_localnames(axiom_element_t *ele,
 }
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
-        const axutil_env_t  *env,
-        axiom_node_t *ele_node,
-        axis2_char_t *localname,
-        axis2_char_t *attr_name,
-        axis2_char_t *attr_value,
-        axiom_node_t **child_node)
+axiom_util_get_first_child_element_with_localname_attr(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axis2_char_t * localname,
+    axis2_char_t * attr_name,
+    axis2_char_t * attr_value,
+    axiom_node_t ** child_node)
 {
-    axiom_node_t *child          = NULL;
-    axiom_node_t *next_sibling   = NULL;
-    axis2_char_t *child_localname   = NULL;
-    axiom_element_t *om_ele      = NULL;
-    axiom_attribute_t *om_attr   = NULL;
-    axutil_hash_t *attr_ht           = NULL;
-    axutil_hash_index_t *hi          = NULL;
-    axis2_char_t *om_attr_value     = NULL;
-    axis2_char_t *om_attr_name      = NULL;
+    axiom_node_t *child = NULL;
+    axiom_node_t *next_sibling = NULL;
+    axis2_char_t *child_localname = NULL;
+    axiom_element_t *om_ele = NULL;
+    axiom_attribute_t *om_attr = NULL;
+    axutil_hash_t *attr_ht = NULL;
+    axutil_hash_index_t *hi = NULL;
+    axis2_char_t *om_attr_value = NULL;
+    axis2_char_t *om_attr_name = NULL;
 
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, child_node, NULL);
@@ -700,32 +726,35 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
     {
         if (axiom_node_get_node_type(child, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t *)axiom_node_get_data_element(child, env);
+            om_ele =
+                (axiom_element_t *) axiom_node_get_data_element(child, env);
             if (om_ele)
             {
 
                 child_localname = axiom_element_get_localname(om_ele, env);
-                if (child_localname && axutil_strcmp(child_localname, localname) == 0)
+                if (child_localname &&
+                    axutil_strcmp(child_localname, localname) == 0)
                 {
                     attr_ht = axiom_element_get_all_attributes(om_ele, env);
                     if (attr_ht)
                     {
-                        for (hi = axutil_hash_first(attr_ht, env);  hi;
-                            hi = axutil_hash_next(env, hi))
+                        for (hi = axutil_hash_first(attr_ht, env); hi;
+                             hi = axutil_hash_next(env, hi))
                         {
                             void *val = NULL;
                             axutil_hash_this(hi, NULL, NULL, &val);
                             if (val)
                             {
-                                om_attr = (axiom_attribute_t *)val;
+                                om_attr = (axiom_attribute_t *) val;
                                 om_attr_name =
                                     axiom_attribute_get_localname(om_attr, env);
 
                                 om_attr_value =
                                     axiom_attribute_get_value(om_attr, env);
                                 if (om_attr_name && NULL != om_attr_value &&
-                                    axutil_strcmp(om_attr_name, attr_name) == 0 &&
-                                    axutil_strcmp(om_attr_value, attr_value) == 0)
+                                    axutil_strcmp(om_attr_name, attr_name) == 0
+                                    && axutil_strcmp(om_attr_value,
+                                                     attr_value) == 0)
                                 {
                                     AXIS2_FREE(env->allocator, hi);
                                     *child_node = child;
@@ -750,24 +779,27 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
     {
         if (axiom_node_get_node_type(next_sibling, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t*)axiom_node_get_data_element(next_sibling, env);
+            om_ele =
+                (axiom_element_t *) axiom_node_get_data_element(next_sibling,
+                                                                env);
             if (om_ele)
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
-                if (child_localname && axutil_strcmp(child_localname, localname) == 0)
+                if (child_localname &&
+                    axutil_strcmp(child_localname, localname) == 0)
                 {
                     attr_ht = axiom_element_get_all_attributes(om_ele, env);
                     if (attr_ht)
                     {
 
-                        for (hi = axutil_hash_first(attr_ht, env);  hi;
-                            hi = axutil_hash_next(env, hi))
+                        for (hi = axutil_hash_first(attr_ht, env); hi;
+                             hi = axutil_hash_next(env, hi))
                         {
                             void *val = NULL;
                             axutil_hash_this(hi, NULL, NULL, &val);
                             if (val)
                             {
-                                om_attr = (axiom_attribute_t *)val;
+                                om_attr = (axiom_attribute_t *) val;
                                 om_attr_name =
                                     axiom_attribute_get_localname(om_attr, env);
 
@@ -775,8 +807,9 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
                                     axiom_attribute_get_value(om_attr, env);
 
                                 if (om_attr_name && NULL != om_attr_value &&
-                                    axutil_strcmp(om_attr_name, attr_name) == 0 &&
-                                    axutil_strcmp(om_attr_value, attr_value) == 0)
+                                    axutil_strcmp(om_attr_name, attr_name) == 0
+                                    && axutil_strcmp(om_attr_value,
+                                                     attr_value) == 0)
                                 {
                                     *child_node = child;
                                     return om_ele;
@@ -798,15 +831,15 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
     return NULL;
 }
 
-
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
-        const axutil_env_t  *env,
-        axiom_node_t *ele_node,
-        axis2_char_t *localname,
-        axis2_char_t *attr_name,
-        axis2_char_t *attr_value,
-        axiom_node_t **child_node)
+axiom_util_get_last_child_element_with_localname_attr(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axis2_char_t * localname,
+    axis2_char_t * attr_name,
+    axis2_char_t * attr_value,
+    axiom_node_t ** child_node)
 {
     axiom_node_t *child = NULL;
     axiom_element_t *om_ele = NULL;
@@ -814,8 +847,8 @@ axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
     axiom_attribute_t *om_attr = NULL;
     axis2_char_t *om_attr_name = NULL;
     axis2_char_t *om_attr_value = NULL;
-    axutil_hash_index_t *hi      = NULL;
-    axutil_hash_t *attr_ht       = NULL;
+    axutil_hash_index_t *hi = NULL;
+    axutil_hash_t *attr_ht = NULL;
 
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
@@ -826,7 +859,8 @@ axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
     {
         if (axiom_node_get_node_type(child, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t*)axiom_node_get_data_element(ele_node, env);
+            om_ele =
+                (axiom_element_t *) axiom_node_get_data_element(ele_node, env);
             if (om_ele)
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
@@ -836,14 +870,14 @@ axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
                     attr_ht = axiom_element_get_all_attributes(om_ele, env);
                     if (attr_ht)
                     {
-                        for (hi = axutil_hash_first(attr_ht, env);  hi;
-                            hi = axutil_hash_next(env, hi))
+                        for (hi = axutil_hash_first(attr_ht, env); hi;
+                             hi = axutil_hash_next(env, hi))
                         {
                             void *val = NULL;
                             axutil_hash_this(hi, NULL, NULL, &val);
                             if (val)
                             {
-                                om_attr = (axiom_attribute_t *)val;
+                                om_attr = (axiom_attribute_t *) val;
                                 om_attr_name =
                                     axiom_attribute_get_localname(om_attr, env);
 
@@ -851,8 +885,9 @@ axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
                                     axiom_attribute_get_value(om_attr, env);
 
                                 if (om_attr_name && NULL != om_attr_value &&
-                                    axutil_strcmp(om_attr_name, attr_name) == 0 &&
-                                    axutil_strcmp(om_attr_value, attr_value) == 0)
+                                    axutil_strcmp(om_attr_name, attr_name) == 0
+                                    && axutil_strcmp(om_attr_value,
+                                                     attr_value) == 0)
                                 {
                                     AXIS2_FREE(env->allocator, hi);
                                     *child_node = child;
@@ -876,25 +911,25 @@ axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
 }
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-axiom_util_get_next_siblng_element_with_localname_attr(axiom_element_t *ele,
-        const axutil_env_t  *env,
-        axiom_node_t *ele_node,
-        axis2_char_t *localname,
-        axis2_char_t *attr_name,
-        axis2_char_t *attr_value,
-        axiom_node_t **child_node)
+axiom_util_get_next_siblng_element_with_localname_attr(
+    axiom_element_t * ele,
+    const axutil_env_t * env,
+    axiom_node_t * ele_node,
+    axis2_char_t * localname,
+    axis2_char_t * attr_name,
+    axis2_char_t * attr_value,
+    axiom_node_t ** child_node)
 {
     axiom_node_t *next_sibling = NULL;
-    axiom_element_t *om_ele    = NULL;
-    axis2_char_t *ele_localname   = NULL;
+    axiom_element_t *om_ele = NULL;
+    axis2_char_t *ele_localname = NULL;
     axiom_attribute_t *om_attr = NULL;
-    axis2_char_t *om_attr_value   = NULL;
-    axis2_char_t *om_attr_name    = NULL;
-    axutil_hash_t *attr_ht         = NULL;
-    axutil_hash_index_t *hi        = NULL;
+    axis2_char_t *om_attr_value = NULL;
+    axis2_char_t *om_attr_name = NULL;
+    axutil_hash_t *attr_ht = NULL;
+    axutil_hash_index_t *hi = NULL;
 
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
-
 
     next_sibling = axiom_node_get_next_sibling(ele_node, env);
     while (next_sibling)
@@ -906,19 +941,20 @@ axiom_util_get_next_siblng_element_with_localname_attr(axiom_element_t *ele,
             if (om_ele)
             {
                 ele_localname = axiom_element_get_localname(om_ele, env);
-                if (ele_localname && axutil_strcmp(localname, ele_localname) == 0)
+                if (ele_localname &&
+                    axutil_strcmp(localname, ele_localname) == 0)
                 {
                     attr_ht = axiom_element_get_all_attributes(om_ele, env);
                     if (attr_ht)
                     {
-                        for (hi = axutil_hash_first(attr_ht, env);  hi;
-                            hi = axutil_hash_next(env, hi))
+                        for (hi = axutil_hash_first(attr_ht, env); hi;
+                             hi = axutil_hash_next(env, hi))
                         {
                             void *val = NULL;
                             axutil_hash_this(hi, NULL, NULL, &val);
                             if (val)
                             {
-                                om_attr = (axiom_attribute_t *)val;
+                                om_attr = (axiom_attribute_t *) val;
                                 om_attr_name =
                                     axiom_attribute_get_localname(om_attr, env);
 
@@ -926,8 +962,9 @@ axiom_util_get_next_siblng_element_with_localname_attr(axiom_element_t *ele,
                                     axiom_attribute_get_value(om_attr, env);
 
                                 if (om_attr_name && NULL != om_attr_value &&
-                                        axutil_strcmp(om_attr_name, attr_name) == 0 &&
-                                        axutil_strcmp(om_attr_value, attr_value) == 0)
+                                    axutil_strcmp(om_attr_name, attr_name) == 0
+                                    && axutil_strcmp(om_attr_value,
+                                                     attr_value) == 0)
                                 {
                                     AXIS2_FREE(env->allocator, hi);
                                     *child_node = next_sibling;
@@ -950,8 +987,9 @@ axiom_util_get_next_siblng_element_with_localname_attr(axiom_element_t *ele,
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-axiom_util_get_child_node_text(axiom_node_t *om_node,
-        const axutil_env_t *env)
+axiom_util_get_child_node_text(
+    axiom_node_t * om_node,
+    const axutil_env_t * env)
 {
     axiom_element_t *om_ele = NULL;
     if (!om_node)
@@ -963,7 +1001,7 @@ axiom_util_get_child_node_text(axiom_node_t *om_node,
         return NULL;
     }
 
-    om_ele = (axiom_element_t *)axiom_node_get_data_element(om_node, env);
+    om_ele = (axiom_element_t *) axiom_node_get_data_element(om_node, env);
 
     if (om_ele)
     {
@@ -973,8 +1011,9 @@ axiom_util_get_child_node_text(axiom_node_t *om_node,
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-axiom_util_get_localname(axiom_node_t *node,
-        const axutil_env_t *env)
+axiom_util_get_localname(
+    axiom_node_t * node,
+    const axutil_env_t * env)
 {
     axiom_element_t *om_ele = NULL;
 
@@ -987,7 +1026,7 @@ axiom_util_get_localname(axiom_node_t *node,
     {
         return NULL;
     }
-    om_ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
+    om_ele = (axiom_element_t *) axiom_node_get_data_element(node, env);
     if (om_ele)
     {
         return axiom_element_get_localname(om_ele, env);
@@ -996,11 +1035,12 @@ axiom_util_get_localname(axiom_node_t *node,
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-axiom_util_get_node_namespace_uri(axiom_node_t *om_node,
-        const axutil_env_t *env)
+axiom_util_get_node_namespace_uri(
+    axiom_node_t * om_node,
+    const axutil_env_t * env)
 {
     axiom_element_t *om_ele = NULL;
-    axiom_namespace_t *om_ns   = NULL;
+    axiom_namespace_t *om_ns = NULL;
     if (!om_node)
     {
         return NULL;
@@ -1008,7 +1048,7 @@ axiom_util_get_node_namespace_uri(axiom_node_t *om_node,
     if (axiom_node_get_node_type(om_node, env) == AXIOM_ELEMENT)
     {
         om_ele = axiom_node_get_data_element(om_node, env);
-        if (! om_ele)
+        if (!om_ele)
         {
             return NULL;
         }
@@ -1022,12 +1062,13 @@ axiom_util_get_node_namespace_uri(axiom_node_t *om_node,
 }
 
 AXIS2_EXTERN axiom_child_element_iterator_t *AXIS2_CALL
-axiom_util_get_child_elements(axiom_element_t *om_ele,
-    const axutil_env_t *env,
-    axiom_node_t *om_node)
+axiom_util_get_child_elements(
+    axiom_element_t * om_ele,
+    const axutil_env_t * env,
+    axiom_node_t * om_node)
 {
     axiom_element_t *first_ele = NULL;
-    axiom_node_t *first_node   = NULL;
+    axiom_node_t *first_node = NULL;
     AXIS2_PARAM_CHECK(env->error, om_node, NULL);
     AXIS2_PARAM_CHECK(env->error, om_ele, NULL);
     first_ele =
@@ -1040,13 +1081,14 @@ axiom_util_get_child_elements(axiom_element_t *om_ele,
 }
 
 AXIS2_EXTERN axiom_document_t *AXIS2_CALL
-axiom_util_new_document(const axutil_env_t *env,
-    const axutil_uri_t *uri)
+axiom_util_new_document(
+    const axutil_env_t * env,
+    const axutil_uri_t * uri)
 {
     axis2_char_t *path = NULL;
     axiom_xml_reader_t *reader = NULL;
     axiom_stax_builder_t *om_builder = NULL;
-    axiom_document_t *doc   = NULL;
+    axiom_document_t *doc = NULL;
 
     AXIS2_PARAM_CHECK(env->error, uri, NULL);
     /* This is temporary code. Later complete the code to read from uri and build
@@ -1068,7 +1110,7 @@ axiom_util_new_document(const axutil_env_t *env,
     {
         return NULL;
     }
-    if(reader)
+    if (reader)
     {
         om_builder = axiom_stax_builder_create(env, reader);
     }
@@ -1095,6 +1137,3 @@ axiom_util_new_document(const axutil_env_t *env,
 
     return doc;
 }
-
-
-

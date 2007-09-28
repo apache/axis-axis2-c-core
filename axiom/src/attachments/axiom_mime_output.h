@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -31,60 +32,63 @@
 #include <axutil_string.h>
 #include <axutil_array_list.h>
 
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-/* This should be moved to header file later axutil_utils_defines.h*/    
+    /* This should be moved to header file later axutil_utils_defines.h*/
 #define axis2_byte_t char
-   
-typedef struct axiom_mime_output axiom_mime_output_t;   
-   
 
-/** @defgroup axiom_mime_output Flow
-  * @ingroup axiom_mime_output
-  * @{
-  */
+    typedef struct axiom_mime_output axiom_mime_output_t;
 
-    AXIS2_EXTERN axis2_byte_t* AXIS2_CALL
-    axiom_mime_output_complete(axiom_mime_output_t *mime_output,
-        const axutil_env_t *env, 
-        axis2_byte_t **output_stream,
+    /** @defgroup axiom_mime_output Flow
+      * @ingroup axiom_mime_output
+      * @{
+      */
+
+    AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
+    axiom_mime_output_complete(
+        axiom_mime_output_t * mime_output,
+        const axutil_env_t * env,
+        axis2_byte_t ** output_stream,
         int *output_stream_size,
-        axis2_char_t *soap_body_buffer,
-        axutil_array_list_t *binary_node_list,
-        axis2_char_t *boundary, 
-        axis2_char_t *content_id,
-        axis2_char_t *char_set_encoding,
-        const axis2_char_t *soap_content_type);
+        axis2_char_t * soap_body_buffer,
+        axutil_array_list_t * binary_node_list,
+        axis2_char_t * boundary,
+        axis2_char_t * content_id,
+        axis2_char_t * char_set_encoding,
+        const axis2_char_t * soap_content_type);
 
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axiom_mime_output_get_content_type_for_mime(axiom_mime_output_t *mime_output, 
-        const axutil_env_t *env, 
-        axis2_char_t *boundary, 
-        axis2_char_t *content_id, 
-        axis2_char_t *char_set_encoding, 
-        const axis2_char_t *soap_content_type);
-    
-   /** Deallocate memory
-     * @return status code
-     */
+
+    axiom_mime_output_get_content_type_for_mime(
+        axiom_mime_output_t * mime_output,
+        const axutil_env_t * env,
+        axis2_char_t * boundary,
+        axis2_char_t * content_id,
+        axis2_char_t * char_set_encoding,
+        const axis2_char_t * soap_content_type);
+
+    /** Deallocate memory
+      * @return status code
+      */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_mime_output_free(axiom_mime_output_t *mime_output,
-        const axutil_env_t *env);
+    axiom_mime_output_free(
+        axiom_mime_output_t * mime_output,
+        const axutil_env_t * env);
 
     /**
      * Creates mime_output struct
      * @return pointer to newly created mime_output
      */
-    AXIS2_EXTERN axiom_mime_output_t * AXIS2_CALL 
-    axiom_mime_output_create (const axutil_env_t *env);
+    AXIS2_EXTERN axiom_mime_output_t *AXIS2_CALL
+    axiom_mime_output_create(
+        const axutil_env_t * env);
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIOM_MIME_OUTPUT_H */
+#endif                          /* AXIOM_MIME_OUTPUT_H */

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,15 +22,17 @@
 
 struct axiom_comment
 {
+
     /** comment text */
     axis2_char_t *value;
 };
 
 AXIS2_EXTERN axiom_comment_t *AXIS2_CALL
-axiom_comment_create(const axutil_env_t *env,
-    axiom_node_t *parent,
-    const axis2_char_t *value,
-    axiom_node_t **node)
+axiom_comment_create(
+    const axutil_env_t * env,
+    axiom_node_t * parent,
+    const axis2_char_t * value,
+    axiom_node_t ** node)
 {
     axiom_comment_t *comment = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -44,7 +47,7 @@ axiom_comment_create(const axutil_env_t *env,
     }
 
     comment = (axiom_comment_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axiom_comment_t));
+                                               sizeof(axiom_comment_t));
     if (!comment)
     {
         AXIS2_FREE(env->allocator, (*node));
@@ -56,7 +59,7 @@ axiom_comment_create(const axutil_env_t *env,
 
     if (value)
     {
-        comment->value = (axis2_char_t*)axutil_strdup(env, value);
+        comment->value = (axis2_char_t *) axutil_strdup(env, value);
         if (!comment->value)
         {
             AXIS2_FREE(env->allocator, comment);
@@ -78,8 +81,9 @@ axiom_comment_create(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axiom_comment_free(axiom_comment_t *comment,
-    const axutil_env_t *env)
+axiom_comment_free(
+    axiom_comment_t * comment,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -92,17 +96,19 @@ axiom_comment_free(axiom_comment_t *comment,
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-axiom_comment_get_value(axiom_comment_t *comment,
-    const axutil_env_t *env)
+axiom_comment_get_value(
+    axiom_comment_t * comment,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return comment->value;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_comment_set_value(axiom_comment_t *comment,
-    const axutil_env_t *env,
-    const axis2_char_t *value)
+axiom_comment_set_value(
+    axiom_comment_t * comment,
+    const axutil_env_t * env,
+    const axis2_char_t * value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
@@ -111,7 +117,7 @@ axiom_comment_set_value(axiom_comment_t *comment,
         AXIS2_FREE(env->allocator, comment->value);
     }
 
-    comment->value = (axis2_char_t*)axutil_strdup(env, value);
+    comment->value = (axis2_char_t *) axutil_strdup(env, value);
 
     if (!comment->value)
     {
@@ -122,19 +128,18 @@ axiom_comment_set_value(axiom_comment_t *comment,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_comment_serialize(axiom_comment_t *comment,
-    const axutil_env_t *env,
-    axiom_output_t *om_output)
+axiom_comment_serialize(
+    axiom_comment_t * comment,
+    const axutil_env_t * env,
+    axiom_output_t * om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
     if (comment->value)
     {
-        return  axiom_output_write(om_output, env,
-            AXIOM_COMMENT , 1 , comment->value);
+        return axiom_output_write(om_output, env,
+                                  AXIOM_COMMENT, 1, comment->value);
     }
     return AXIS2_FAILURE;
 }
-
-
