@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,37 +19,61 @@
 #define GUTHTHILA_NAMESPACE_H
 
 #include <guththila_defines.h>
-#include <guththila_token.h> 
+#include <guththila_token.h>
 #include <axutil_utils.h>
-
-EXTERN_C_START()
-
+EXTERN_C_START() 
 #ifndef GUTHTHILA_NAMESPACE_DEF_SIZE
 #define GUTHTHILA_NAMESPACE_DEF_SIZE 4
-#endif
-
-typedef struct guththila_namespace_s
+#endif  /*  */
+typedef struct guththila_namespace_s
 {
-    guththila_token_t *name;
-    guththila_token_t *uri;	 
-} guththila_namespace_t;
 
-typedef struct guththila_namespace_list_s
+    guththila_token_t *
+    name;
+
+    guththila_token_t *
+    uri;
+    
+}
+guththila_namespace_t;
+typedef struct guththila_namespace_list_s
 {
-	guththila_namespace_t *list;
-	guththila_stack_t fr_stack;
-	int size;
-	int capacity;		
-} guththila_namespace_list_t;
 
-guththila_namespace_list_t * GUTHTHILA_CALL guththila_namespace_list_create(const axutil_env_t *env);
-int GUTHTHILA_CALL guththila_namespace_list_init(guththila_namespace_list_t *at_list, const axutil_env_t *env);
-guththila_namespace_t * GUTHTHILA_CALL guththila_namespace_list_get(guththila_namespace_list_t *at_list, const axutil_env_t *env);
-int GUTHTHILA_CALL guththila_namespace_list_release(guththila_namespace_list_t *at_list, guththila_namespace_t *namesp, const axutil_env_t *env);
-void GUTHTHILA_CALL msuila_namespace_list_free_data(guththila_namespace_list_t *at_list, const axutil_env_t *env);
-void GUTHTHILA_CALL guththila_namespace_list_free(guththila_namespace_list_t *at_list, const axutil_env_t *env);
+    guththila_namespace_t *
+    list;
 
-EXTERN_C_END()
-
-#endif
+    guththila_stack_t
+    fr_stack;
+    int
+    size;
+    int
+    capacity;
+    
+}
+guththila_namespace_list_t;
+guththila_namespace_list_t *
+GUTHTHILA_CALL guththila_namespace_list_create(const axutil_env_t * env);
+int GUTHTHILA_CALL
+guththila_namespace_list_init(
+    guththila_namespace_list_t * at_list,
+    const axutil_env_t * env);
+guththila_namespace_t *
+GUTHTHILA_CALL guththila_namespace_list_get(guththila_namespace_list_t *
+        at_list,
+        const axutil_env_t * env);
+int GUTHTHILA_CALL
+guththila_namespace_list_release(
+    guththila_namespace_list_t * at_list,
+    guththila_namespace_t * namesp,
+    const axutil_env_t * env);
+void GUTHTHILA_CALL
+msuila_namespace_list_free_data(
+    guththila_namespace_list_t * at_list,
+    const axutil_env_t * env);
+void GUTHTHILA_CALL
+guththila_namespace_list_free(
+    guththila_namespace_list_t * at_list,
+    const axutil_env_t * env);
+EXTERN_C_END() 
+#endif  /*  */
 

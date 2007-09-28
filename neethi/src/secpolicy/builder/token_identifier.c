@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,15 +26,13 @@
 
 /*private functions*/
 
-
 /***********************************/
 
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_token_identifier_set_token(
-        rp_property_t *token,
-        neethi_assertion_t *assertion,
-        const axutil_env_t *env)
+    rp_property_t * token,
+    neethi_assertion_t * assertion,
+    const axutil_env_t * env)
 {
     void *value = NULL;
     neethi_assertion_type_t type;
@@ -41,26 +40,27 @@ rp_token_identifier_set_token(
     value = neethi_assertion_get_value(assertion, env);
     type = neethi_assertion_get_type(assertion, env);
 
-    if(value)
+    if (value)
     {
-        if(type == ASSERTION_TYPE_USERNAME_TOKEN)
+        if (type == ASSERTION_TYPE_USERNAME_TOKEN)
         {
             rp_username_token_t *username_token = NULL;
-            username_token = (rp_username_token_t *)value;
-            rp_property_set_value(token, env, username_token, 
-                    RP_PROPERTY_USERNAME_TOKEN);
+            username_token = (rp_username_token_t *) value;
+            rp_property_set_value(token, env, username_token,
+                                  RP_PROPERTY_USERNAME_TOKEN);
             return AXIS2_SUCCESS;
-        }            
-        else if(type == ASSERTION_TYPE_X509_TOKEN)
+        }
+        else if (type == ASSERTION_TYPE_X509_TOKEN)
         {
             rp_x509_token_t *x509_token = NULL;
-            x509_token = (rp_x509_token_t *)value;
-            rp_property_set_value(token, env, x509_token, 
-                    RP_PROPERTY_X509_TOKEN);
+            x509_token = (rp_x509_token_t *) value;
+            rp_property_set_value(token, env, x509_token,
+                                  RP_PROPERTY_X509_TOKEN);
             return AXIS2_SUCCESS;
         }
         else
             return AXIS2_FAILURE;
-    }        
-    else return AXIS2_FAILURE;
+    }
+    else
+        return AXIS2_FAILURE;
 }

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,23 +26,20 @@
 
 #include "axis2_WSDLInteropTestDocLitService.h"
 
-
-
-
 /**
  * Auto generated function definition
 
   * @param param0
 
  */
-axis2_echoVoidResponse_t*axis2_WSDLInteropTestDocLitService_echoVoid(const axutil_env_t* env  , axis2_echoVoid_t* param0)
-
+axis2_echoVoidResponse_t *
+axis2_WSDLInteropTestDocLitService_echoVoid(
+    const axutil_env_t * env,
+    axis2_echoVoid_t * param0)
 {
     /* Todo fill this with the necessary business logic */
     return NULL;
 }
-
-
 
 /**
  * Auto generated function definition
@@ -49,33 +47,33 @@ axis2_echoVoidResponse_t*axis2_WSDLInteropTestDocLitService_echoVoid(const axuti
   * @param param2
 
  */
-axis2_echoStringArrayResponse_t*axis2_WSDLInteropTestDocLitService_echoStringArray(const axutil_env_t* env  , axis2_echoStringArray_t* param2)
-
+axis2_echoStringArrayResponse_t *
+axis2_WSDLInteropTestDocLitService_echoStringArray(
+    const axutil_env_t * env,
+    axis2_echoStringArray_t * param2)
 {
     /* Todo fill this with the necessary business logic */
-    axis2_echoStringArray_t* echo_in = param2;
-    axis2_echoStringArrayResponse_t* echo_out = NULL;
-    axis2_ArrayOfstring_literal_t* array_in = NULL;
-    axis2_ArrayOfstring_literal_t* array_out = NULL;
-    char ** string_array = NULL;
+    axis2_echoStringArray_t *echo_in = param2;
+    axis2_echoStringArrayResponse_t *echo_out = NULL;
+    axis2_ArrayOfstring_literal_t *array_in = NULL;
+    axis2_ArrayOfstring_literal_t *array_out = NULL;
+    char **string_array = NULL;
     int string_array_length = 0;
 
     array_in = AXIS2_ECHOSTRINGARRAY_GET_PARAM0(echo_in, env);
     string_array = AXIS2_ARRAYOFSTRING_LITERAL_GET_STRING(array_in, env,
-            &string_array_length);
+                                                          &string_array_length);
 
     array_out = axis2_ArrayOfstring_literal_create(env);
     AXIS2_ARRAYOFSTRING_LITERAL_SET_STRING(array_out, env,
-            string_array, string_array_length);
+                                           string_array, string_array_length);
     echo_out = axis2_echoStringArrayResponse_create(env);
 
-    AXIS2_ECHOSTRINGARRAYRESPONSE_SET_RETURN(echo_out, env , array_out);
+    AXIS2_ECHOSTRINGARRAYRESPONSE_SET_RETURN(echo_out, env, array_out);
 
     return echo_out;
 
 }
-
-
 
 /**
  * Auto generated function definition
@@ -83,18 +81,20 @@ axis2_echoStringArrayResponse_t*axis2_WSDLInteropTestDocLitService_echoStringArr
   * @param param4
 
  */
-axis2_echoStructResponse_t*axis2_WSDLInteropTestDocLitService_echoStruct(const axutil_env_t* env  , axis2_echoStruct_t* param4)
-
+axis2_echoStructResponse_t *
+axis2_WSDLInteropTestDocLitService_echoStruct(
+    const axutil_env_t * env,
+    axis2_echoStruct_t * param4)
 {
     /* Todo fill this with the necessary business logic */
-    axis2_echoStruct_t* echo_in = param4;
-    axis2_echoStructResponse_t* echo_out = NULL;
-    axis2_SOAPStruct_t* struct_in = NULL;
-    axis2_SOAPStruct_t* struct_out = NULL;
+    axis2_echoStruct_t *echo_in = param4;
+    axis2_echoStructResponse_t *echo_out = NULL;
+    axis2_SOAPStruct_t *struct_in = NULL;
+    axis2_SOAPStruct_t *struct_out = NULL;
 
     float float_val = 0;
     int int_val = 0;
-    char* string_val = NULL;
+    char *string_val = NULL;
 
     struct_in = AXIS2_ECHOSTRUCT_GET_PARAM0(echo_in, env);
 
@@ -113,22 +113,22 @@ axis2_echoStructResponse_t*axis2_WSDLInteropTestDocLitService_echoStruct(const a
     return echo_out;
 }
 
-
-
 /**
  * Auto generated function definition
 
   * @param param6
 
  */
-axis2_echoStringResponse_t*axis2_WSDLInteropTestDocLitService_echoString(const axutil_env_t* env  , axis2_echoString_t* param6)
-
+axis2_echoStringResponse_t *
+axis2_WSDLInteropTestDocLitService_echoString(
+    const axutil_env_t * env,
+    axis2_echoString_t * param6)
 {
     /* Todo fill this with the necessary business logic */
-    axis2_echoString_t* echo_in = param6;
-    axis2_echoStringResponse_t* echo_out = NULL;
+    axis2_echoString_t *echo_in = param6;
+    axis2_echoStringResponse_t *echo_out = NULL;
 
-    char* echo_string = NULL;
+    char *echo_string = NULL;
 
     echo_string = AXIS2_ECHOSTRING_GET_PARAM0(echo_in, env);
 
@@ -137,4 +137,3 @@ axis2_echoStringResponse_t*axis2_WSDLInteropTestDocLitService_echoString(const a
 
     return echo_out;
 }
-

@@ -3,7 +3,7 @@
 
 #include <CuTest.h>
 
-CuSuite* tcpmon_GetSuite();
+CuSuite *tcpmon_GetSuite(
+);
 
-#endif /* TCPMON_TEST_H */
-
+#endif                          /* TCPMON_TEST_H */

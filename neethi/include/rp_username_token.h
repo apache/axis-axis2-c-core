@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -32,62 +33,66 @@ extern "C"
     typedef struct rp_username_token_t rp_username_token_t;
 
     AXIS2_EXTERN rp_username_token_t *AXIS2_CALL
-    rp_username_token_create(const axutil_env_t *env);
+    rp_username_token_create(
+        const axutil_env_t * env);
 
     AXIS2_EXTERN void AXIS2_CALL
     rp_username_token_free(
-        rp_username_token_t *username_token,
-        const axutil_env_t *env);
+        rp_username_token_t * username_token,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     rp_username_token_get_inclusion(
-        rp_username_token_t *username_token,
-        const axutil_env_t *env);
+        rp_username_token_t * username_token,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     rp_username_token_set_inclusion(
-        rp_username_token_t *username_token,
-        const axutil_env_t *env,
-        axis2_char_t *inclusion);
+        rp_username_token_t * username_token,
+        const axutil_env_t * env,
+        axis2_char_t * inclusion);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     rp_username_token_get_derivedkeys(
-        rp_username_token_t *username_token,
-        const axutil_env_t *env);
+        rp_username_token_t * username_token,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     rp_username_token_set_derivedkeys(
-        rp_username_token_t *username_token,
-        const axutil_env_t *env,
+        rp_username_token_t * username_token,
+        const axutil_env_t * env,
         axis2_bool_t derivedkeys);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+
     rp_username_token_get_useUTprofile10(
-        rp_username_token_t *username_token,
-        const axutil_env_t *env);
+        rp_username_token_t * username_token,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
     rp_username_token_set_useUTprofile10(
-        rp_username_token_t *username_token,
-        const axutil_env_t *env,
+        rp_username_token_t * username_token,
+        const axutil_env_t * env,
         axis2_bool_t useUTprofile10);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+
     rp_username_token_get_useUTprofile11(
-        rp_username_token_t *username_token,
-        const axutil_env_t *env);
+        rp_username_token_t * username_token,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
     rp_username_token_set_useUTprofile11(
-        rp_username_token_t *username_token,
-        const axutil_env_t *env,
+        rp_username_token_t * username_token,
+        const axutil_env_t * env,
         axis2_bool_t useUTprofile11);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     rp_username_token_increment_ref(
-        rp_username_token_t *username_token,
-        const axutil_env_t *env);
-    
+        rp_username_token_t * username_token,
+        const axutil_env_t * env);
 
 #ifdef __cplusplus
 }

@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -34,9 +35,9 @@ extern "C"
 
     AXIS2_EXTERN rp_secpolicy_t *AXIS2_CALL
     rp_secpolicy_builder_build(
-        const axutil_env_t *env,
-        neethi_policy_t *policy);
- 
+        const axutil_env_t * env,
+        neethi_policy_t * policy);
+
 #ifdef __cplusplus
 }
 #endif

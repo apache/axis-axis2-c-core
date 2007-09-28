@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -53,8 +54,8 @@
 #define EXTERN_C_START() extern "C" {
 #define EXTERN_C_END() }
 #else
-#define EXTERN_C_START() 
-#define EXTERN_C_END() 
+#define EXTERN_C_START()
+#define EXTERN_C_END()
 #endif
 
 #ifndef GUTHTHILA_EOF
@@ -70,4 +71,3 @@
 #endif
 
 #endif
-

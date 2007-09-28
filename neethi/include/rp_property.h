@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -27,13 +28,13 @@
 #include <rp_security_context_token.h>
 #include <rp_https_token.h>
 
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-    typedef enum  {
+    typedef enum
+    {
         RP_PROPERTY_USERNAME_TOKEN = 0,
         RP_PROPERTY_X509_TOKEN,
         RP_PROPERTY_SECURITY_CONTEXT_TOKEN,
@@ -48,42 +49,41 @@ extern "C"
         RP_PROPERTY_WSS10,
         RP_PROPERTY_WSS11,
         RP_PROPERTY_SUPPORTING_TOKEN,
-        RP_PROPERTY_UNKNOWN        
-    }rp_property_type_t;
-    
+        RP_PROPERTY_UNKNOWN
+    } rp_property_type_t;
 
     typedef struct rp_property_t rp_property_t;
 
     AXIS2_EXTERN rp_property_t *AXIS2_CALL
-    rp_property_create(const axutil_env_t *env);
+    rp_property_create(
+        const axutil_env_t * env);
 
     AXIS2_EXTERN void AXIS2_CALL
     rp_property_free(
-        rp_property_t *property,
-        const axutil_env_t *env);
+        rp_property_t * property,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     rp_property_set_value(
-        rp_property_t *property,
-        const axutil_env_t *env,
+        rp_property_t * property,
+        const axutil_env_t * env,
         void *value,
         rp_property_type_t type);
 
     AXIS2_EXTERN void *AXIS2_CALL
     rp_property_get_value(
-        rp_property_t *property,
-        const axutil_env_t *env);
+        rp_property_t * property,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN rp_property_type_t AXIS2_CALL
     rp_property_get_type(
-        rp_property_t *property,
-        const axutil_env_t *env);
+        rp_property_t * property,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_property_increment_ref(rp_property_t *property,
-        const axutil_env_t *env);
-    
-
+    rp_property_increment_ref(
+        rp_property_t * property,
+        const axutil_env_t * env);
 
 #ifdef __cplusplus
 }

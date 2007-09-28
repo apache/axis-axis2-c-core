@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,10 +19,9 @@
 #ifndef NEETHI_REFERENCE_H
 #define NEETHI_REFERENCE_H
 
-
 /**
   * @file neethi_reference.h
-  * @struct for operator reference 
+  * @struct for operator reference
   */
 
 #include <axis2_defines.h>
@@ -33,33 +33,33 @@ extern "C"
 {
 #endif
 
-        typedef struct neethi_reference_t neethi_reference_t; 
+    typedef struct neethi_reference_t neethi_reference_t;
 
-        AXIS2_EXTERN neethi_reference_t *AXIS2_CALL
-        neethi_reference_create(const axutil_env_t *env);
+    AXIS2_EXTERN neethi_reference_t *AXIS2_CALL
+    neethi_reference_create(
+        const axutil_env_t * env);
 
-        AXIS2_EXTERN void AXIS2_CALL
-        neethi_reference_free(neethi_reference_t *neethi_reference,
-                const axutil_env_t *env);
+    AXIS2_EXTERN void AXIS2_CALL
+    neethi_reference_free(
+        neethi_reference_t * neethi_reference,
+        const axutil_env_t * env);
 
-        AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-        neethi_reference_get_uri(
-            neethi_reference_t *neethi_reference,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    neethi_reference_get_uri(
+        neethi_reference_t * neethi_reference,
+        const axutil_env_t * env);
 
-        AXIS2_EXTERN axis2_status_t AXIS2_CALL
-        neethi_reference_set_uri(
-            neethi_reference_t *neethi_reference,
-            const axutil_env_t *env,
-            axis2_char_t *uri);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    neethi_reference_set_uri(
+        neethi_reference_t * neethi_reference,
+        const axutil_env_t * env,
+        axis2_char_t * uri);
 
-        AXIS2_EXTERN axis2_status_t AXIS2_CALL
-        neethi_reference_serialize(
-            neethi_reference_t *neethi_reference,
-            axiom_node_t *parent,
-            const axutil_env_t *env);
-
-
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    neethi_reference_serialize(
+        neethi_reference_t * neethi_reference,
+        axiom_node_t * parent,
+        const axutil_env_t * env);
 
     /** @} */
 #ifdef __cplusplus

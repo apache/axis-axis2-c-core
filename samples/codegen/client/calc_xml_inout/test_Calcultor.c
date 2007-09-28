@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,66 +18,77 @@
 
 #include "axis2_Calculator_stub.h"
 
-axiom_node_t* generate_request_xml(const  axutil_env_t* env);
-void handle_respone_xml(const  axutil_env_t* env, axiom_node_t* res);
+axiom_node_t *generate_request_xml(
+    const axutil_env_t * env);
+void handle_respone_xml(
+    const axutil_env_t * env,
+    axiom_node_t * res);
 
-int main(int argc, char** argv)
+int
+main(
+    int argc,
+    char **argv)
 {
-    axutil_env_t* env = NULL;
-    axis2_char_t* operation = NULL;
-    axis2_char_t* client_home = NULL;
+    axutil_env_t *env = NULL;
+    axis2_char_t *operation = NULL;
+    axis2_char_t *client_home = NULL;
 
-    axis2_char_t* endpoint_uri = NULL;
+    axis2_char_t *endpoint_uri = NULL;
 
-    axis2_stub_t* stub = NULL;
+    axis2_stub_t *stub = NULL;
 
-    axiom_node_t* req = NULL;
-    axiom_node_t* res = NULL;
+    axiom_node_t *req = NULL;
+    axiom_node_t *res = NULL;
 
     endpoint_uri = "http://localhost:9090/axis2/services/Calculator";
 
-    env = axutil_env_create_all("codegen_utest_blocking.log", AXIS2_LOG_LEVEL_TRACE);
+    env =
+        axutil_env_create_all("codegen_utest_blocking.log",
+                              AXIS2_LOG_LEVEL_TRACE);
 
-    /* Set up deploy folder.*/
+    /* Set up deploy folder. */
     client_home = AXIS2_GETENV("AXIS2C_HOME");
     if (!client_home)
         client_home = "../../../deploy";
 
-    stub = axis2_Calculator_stub_create(env, client_home , endpoint_uri);
+    stub = axis2_Calculator_stub_create(env, client_home, endpoint_uri);
 
-    req =  generate_request_xml(env);
+    req = generate_request_xml(env);
 
-    /* invoke the web service method*/
+    /* invoke the web service method */
     res = axis2_add(stub, env, req);
 
-    handle_respone_xml(env , res);
+    handle_respone_xml(env, res);
 
     return 0;
 }
 
-axiom_node_t* generate_request_xml(const  axutil_env_t* env)
+axiom_node_t *
+generate_request_xml(
+    const axutil_env_t * env)
 {
     axiom_node_t *op_node = NULL;
-    axiom_element_t* op_ele = NULL;
-    axiom_node_t* value_node = NULL;
-    axiom_element_t * value_ele = NULL;
+    axiom_element_t *op_ele = NULL;
+    axiom_node_t *value_node = NULL;
+    axiom_element_t *value_ele = NULL;
     axiom_namespace_t *ns1 = NULL;
     axis2_char_t *om_str = NULL;
 
-    int value1 =  13;
-    int value2 =  7;
+    int value1 = 13;
+    int value2 = 7;
     char value_str[64];
 
-    ns1 = axiom_namespace_create(env, "http://localhost/axis/Calculator", "ns1");
+    ns1 =
+        axiom_namespace_create(env, "http://localhost/axis/Calculator", "ns1");
     op_ele = axiom_element_create(env, NULL, "add", ns1, &op_node);
 
     value_ele = axiom_element_create(env, op_node, "in1", NULL, &value_node);
     sprintf(value_str, "%d", value1);
-    axiom_element_set_text(value_ele, env, value_str , value_node);
+    axiom_element_set_text(value_ele, env, value_str, value_node);
 
     value_ele = axiom_element_create(env, op_node, "in2", NULL, &value_node);
     sprintf(value_str, "%d", value1);
-    axiom_element_set_text(value_ele, env, value_str , value_node);
+    axiom_element_set_text(value_ele, env, value_str, value_node);
 
     printf("requesting %d  + %d \n", value1, value2);
     om_str = AXIOM_NODE_TO_STRING(op_node, env);
@@ -87,13 +99,16 @@ axiom_node_t* generate_request_xml(const  axutil_env_t* env)
 
 }
 
-void handle_respone_xml(const  axutil_env_t* env, axiom_node_t* res)
+void
+handle_respone_xml(
+    const axutil_env_t * env,
+    axiom_node_t * res)
 {
-    axiom_node_t* node = NULL;
-    axiom_element_t* ele = NULL;
-    axis2_char_t* text =  NULL;
+    axiom_node_t *node = NULL;
+    axiom_element_t *ele = NULL;
+    axis2_char_t *text = NULL;
 
-    if (! res)
+    if (!res)
     {
         printf("response null\n");
         return;

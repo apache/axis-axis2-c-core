@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,7 +22,7 @@
 #include <stdio.h>
 #include <axiom.h>
 
-axiom_node_t *
-build_om_payload_for_echo_svc(const axutil_env_t *env);
+axiom_node_t *build_om_payload_for_echo_svc(
+    const axutil_env_t * env);
 
 #endif

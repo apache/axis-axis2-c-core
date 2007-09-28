@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,10 +19,9 @@
 #ifndef NEETHI_REGISTRY_H
 #define NEETHI_REGISTRY_H
 
-
 /**
   * @file neethi_registry.h
-  * @struct for operator registry 
+  * @struct for operator registry
   */
 
 #include <axis2_defines.h>
@@ -34,38 +34,39 @@ extern "C"
 {
 #endif
 
-        typedef struct neethi_registry_t neethi_registry_t; 
+    typedef struct neethi_registry_t neethi_registry_t;
 
-        AXIS2_EXTERN neethi_registry_t *AXIS2_CALL
-        neethi_registry_create(const axutil_env_t *env);
+    AXIS2_EXTERN neethi_registry_t *AXIS2_CALL
+    neethi_registry_create(
+        const axutil_env_t * env);
 
-        AXIS2_EXTERN neethi_registry_t *AXIS2_CALL
-        neethi_registry_create_with_parent(
-            const axutil_env_t *env,
-            neethi_registry_t *parent);
-        
-        AXIS2_EXTERN void AXIS2_CALL
-        neethi_registry_free(neethi_registry_t *neethi_registry,
-                const axutil_env_t *env);
-                
-        AXIS2_EXTERN axis2_status_t AXIS2_CALL
-        neethi_registry_register(
-            neethi_registry_t *neethi_registry,
-            const axutil_env_t *env,
-            axis2_char_t *key,
-            neethi_policy_t *value);
+    AXIS2_EXTERN neethi_registry_t *AXIS2_CALL
 
-        AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
-        neethi_registry_lookup(
-            neethi_registry_t *neethi_registry,
-            const axutil_env_t *env,
-            axis2_char_t *key);
+    neethi_registry_create_with_parent(
+        const axutil_env_t * env,
+        neethi_registry_t * parent);
 
+    AXIS2_EXTERN void AXIS2_CALL
+    neethi_registry_free(
+        neethi_registry_t * neethi_registry,
+        const axutil_env_t * env);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    neethi_registry_register(
+        neethi_registry_t * neethi_registry,
+        const axutil_env_t * env,
+        axis2_char_t * key,
+        neethi_policy_t * value);
+
+    AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
+    neethi_registry_lookup(
+        neethi_registry_t * neethi_registry,
+        const axutil_env_t * env,
+        axis2_char_t * key);
 
     /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* NEETHI_REGISTRY_H*/
+#endif                          /* NEETHI_REGISTRY_H */

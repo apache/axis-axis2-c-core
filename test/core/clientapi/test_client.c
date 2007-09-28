@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -30,17 +31,26 @@
 #include <stdlib.h>
 
 /* Function prototypes */
-int write_to_socket(const char *address, const char* port, const char* filename,
-        const char* endpoint);
+int write_to_socket(
+    const char *address,
+    const char *port,
+    const char *filename,
+    const char *endpoint);
+
 /* End of function prototypes */
 
-void error(const char *msg)
+void
+error(
+    const char *msg)
 {
     perror(msg);
     exit(0);
 }
 
-int main(int argc, char *argv[])
+int
+main(
+    int argc,
+    char *argv[])
 {
     const axis2_char_t *hostname = "localhost";
     const axis2_char_t *port = "9090";
@@ -53,18 +63,18 @@ int main(int argc, char *argv[])
     {
         switch (c)
         {
-            case 'h':
-                hostname = optarg;
-                break;
-            case 'p':
-                port = optarg;
-                break;
-            case 'f':
-                filename = optarg;
-                break;
-            case 'e':
-                endpoint = optarg;
-                break;
+        case 'h':
+            hostname = optarg;
+            break;
+        case 'p':
+            port = optarg;
+            break;
+        case 'f':
+            filename = optarg;
+            break;
+        case 'e':
+            endpoint = optarg;
+            break;
         }
     }
 
@@ -72,11 +82,18 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int write_to_socket(const char *address, const char* port, const char* filename,
-        const char* endpoint)
+int
+write_to_socket(
+    const char *address,
+    const char *port,
+    const char *filename,
+    const char *endpoint)
 {
     axis2_char_t buffer_l[4999];
-    int sockfd, portno, n, i;
+    int sockfd,
+     portno,
+     n,
+     i;
     struct sockaddr_in serv_addr;
     struct hostent *server;
     struct stat buf;
@@ -96,11 +113,10 @@ int write_to_socket(const char *address, const char* port, const char* filename,
     }
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    bcopy((char *)server->h_addr,
-            (char *)&serv_addr.sin_addr.s_addr,
-            server->h_length);
+    bcopy((char *) server->h_addr,
+          (char *) &serv_addr.sin_addr.s_addr, server->h_length);
     serv_addr.sin_port = htons(portno);
-    if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
         error("ERROR connecting");
 
     /* Read from file */
@@ -122,19 +138,20 @@ int write_to_socket(const char *address, const char* port, const char* filename,
         buffer[i] = '\0';
         printf("%s...\n", buffer);
     }
-    sprintf(buffer_l, "POST %s HTTP/1.1\r\nUser-Agent: Axis/2.0/C\r\nConnection: Keep-Alive\r\nHost: ", endpoint);
+    sprintf(buffer_l,
+            "POST %s HTTP/1.1\r\nUser-Agent: Axis/2.0/C\r\nConnection: Keep-Alive\r\nHost: ",
+            endpoint);
     strcat(buffer_l, address);
     strcat(buffer_l, ":");
     strcat(buffer_l, port);
     strcat(buffer_l, "\r\n");
     strcat(buffer_l, "Content-Length: ");
-    sprintf(tmpstr, "%d", (int)strlen(buffer));
+    sprintf(tmpstr, "%d", (int) strlen(buffer));
     strcat(buffer_l, tmpstr);
     strcat(buffer_l, "\r\n");
-    /*strcat(buffer_l, "SOAPAction: http://localhost:9090/axis2/services/echo/echo\r\n");*/
+    /*strcat(buffer_l, "SOAPAction: http://localhost:9090/axis2/services/echo/echo\r\n"); */
     strcat(buffer_l, "Content-Type: application/soap+xml;\r\n");
     strcat(buffer_l, "\r\n");
-
 
     printf("Writing buffer_1...\n%s", buffer_l);
     n = write(sockfd, buffer_l, strlen(buffer_l));
@@ -163,4 +180,3 @@ int write_to_socket(const char *address, const char* port, const char* filename,
     free(buffer);
     return 0;
 }
-

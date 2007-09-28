@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -35,9 +36,10 @@
 #include <neethi_constants.h>
 #include <axutil_hash.h>
 #include <rp_defines.h>
+
 /**
 * @file neethi_includes.h
-* @brief includes most useful headers for policy 
+* @brief includes most useful headers for policy
 */
 #ifdef __cplusplus
 extern "C"
@@ -50,4 +52,4 @@ extern "C"
 }
 #endif
 
-#endif /*NEETHI_INCLUDES_H*/
+#endif                          /*NEETHI_INCLUDES_H */

@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -33,49 +34,60 @@ extern "C"
     typedef struct rp_signed_encrypted_parts_t rp_signed_encrypted_parts_t;
 
     AXIS2_EXTERN rp_signed_encrypted_parts_t *AXIS2_CALL
-    rp_signed_encrypted_parts_create(const axutil_env_t *env);
+
+    rp_signed_encrypted_parts_create(
+        const axutil_env_t * env);
 
     AXIS2_EXTERN void AXIS2_CALL
-    rp_signed_encrypted_parts_free(rp_signed_encrypted_parts_t *signed_encrypted_parts,
-                                   const axutil_env_t *env);
+    rp_signed_encrypted_parts_free(
+        rp_signed_encrypted_parts_t * signed_encrypted_parts,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    rp_signed_encrypted_parts_get_body(rp_signed_encrypted_parts_t *signed_encrypted_parts,
-                                       const axutil_env_t *env);
+    rp_signed_encrypted_parts_get_body(
+        rp_signed_encrypted_parts_t * signed_encrypted_parts,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_signed_encrypted_parts_set_body(rp_signed_encrypted_parts_t *signed_encrypted_parts,
-                                       const axutil_env_t *env,
-                                       axis2_bool_t body);
+
+    rp_signed_encrypted_parts_set_body(
+        rp_signed_encrypted_parts_t * signed_encrypted_parts,
+        const axutil_env_t * env,
+        axis2_bool_t body);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    rp_signed_encrypted_parts_get_signedparts(rp_signed_encrypted_parts_t *signed_encrypted_parts,
-            const axutil_env_t *env);
+
+    rp_signed_encrypted_parts_get_signedparts(
+        rp_signed_encrypted_parts_t * signed_encrypted_parts,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_signed_encrypted_parts_set_signedparts(rp_signed_encrypted_parts_t *signed_encrypted_parts,
-            const axutil_env_t *env,
-            axis2_bool_t signedparts);
+
+    rp_signed_encrypted_parts_set_signedparts(
+        rp_signed_encrypted_parts_t * signed_encrypted_parts,
+        const axutil_env_t * env,
+        axis2_bool_t signedparts);
 
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+
     rp_signed_encrypted_parts_get_headers(
-        rp_signed_encrypted_parts_t *signed_encrypted_parts,
-        const axutil_env_t *env);
+        rp_signed_encrypted_parts_t * signed_encrypted_parts,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
     rp_signed_encrypted_parts_add_header(
-        rp_signed_encrypted_parts_t *signed_encrypted_parts,
-        const axutil_env_t *env,
-        rp_header_t *header);
+        rp_signed_encrypted_parts_t * signed_encrypted_parts,
+        const axutil_env_t * env,
+        rp_header_t * header);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
     rp_signed_encrypted_parts_increment_ref(
-        rp_signed_encrypted_parts_t *signed_encrypted_parts,
-        const axutil_env_t *env);
-    
+        rp_signed_encrypted_parts_t * signed_encrypted_parts,
+        const axutil_env_t * env);
 
 #ifdef __cplusplus
 }
 #endif
 #endif
-

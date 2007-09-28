@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,21 +26,18 @@
 
 /*private functions*/
 
-axis2_status_t AXIS2_CALL
-transport_token_process_alternatives(
-        const axutil_env_t *env,
-        neethi_all_t *all,
-        rp_property_t *transport_token);
+axis2_status_t AXIS2_CALL transport_token_process_alternatives(
+    const axutil_env_t * env,
+    neethi_all_t * all,
+    rp_property_t * transport_token);
 
 /***********************************/
 
-
-AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL 
+AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_transport_token_builder_build(
-        const axutil_env_t *env,
-        axiom_node_t *node,
-        axiom_element_t *element)
-
+    const axutil_env_t * env,
+    axiom_node_t * node,
+    axiom_element_t * element)
 {
     rp_property_t *transport_token = NULL;
     neethi_policy_t *policy = NULL;
@@ -52,85 +50,100 @@ rp_transport_token_builder_build(
     neethi_policy_t *normalized_policy = NULL;
 
     transport_token = rp_property_create(env);
-    
-    child_node = axiom_node_get_first_element(node,env);
-    if(!child_node)
+
+    child_node = axiom_node_get_first_element(node, env);
+    if (!child_node)
     {
         return NULL;
-    }    
+    }
 
-    if(axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
     {
-        child_element = (axiom_element_t*)axiom_node_get_data_element(child_node, env);
-        if(child_element)
+        child_element =
+            (axiom_element_t *) axiom_node_get_data_element(child_node, env);
+        if (child_element)
         {
             policy = neethi_engine_get_policy(env, child_node, child_element);
-            if(!policy)
+            if (!policy)
             {
                 return NULL;
             }
-            normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy); 
+            normalized_policy =
+                neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
             policy = NULL;
-            alternatives =neethi_policy_get_alternatives(normalized_policy, env);
-            component = (neethi_operator_t *)axutil_array_list_get(alternatives, env, 0);            
-            all = (neethi_all_t *)neethi_operator_get_value(component ,env);
+            alternatives =
+                neethi_policy_get_alternatives(normalized_policy, env);
+            component =
+                (neethi_operator_t *) axutil_array_list_get(alternatives, env,
+                                                            0);
+            all = (neethi_all_t *) neethi_operator_get_value(component, env);
             transport_token_process_alternatives(env, all, transport_token);
 
-            assertion = neethi_assertion_create_with_args(
-                    env, (void *)rp_property_free, transport_token, ASSERTION_TYPE_TRANSPORT_TOKEN);
+            assertion =
+                neethi_assertion_create_with_args(env,
+                                                  (void *) rp_property_free,
+                                                  transport_token,
+                                                  ASSERTION_TYPE_TRANSPORT_TOKEN);
 
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
 
             return assertion;
         }
-        else return NULL;
+        else
+            return NULL;
     }
-    else return NULL;
+    else
+        return NULL;
 }
 
 axis2_status_t AXIS2_CALL
 transport_token_process_alternatives(
-        const axutil_env_t *env,
-        neethi_all_t *all,
-        rp_property_t *transport_token)
+    const axutil_env_t * env,
+    neethi_all_t * all,
+    rp_property_t * transport_token)
 {
 
     neethi_operator_t *operator = NULL;
     axutil_array_list_t *arraylist = NULL;
     neethi_assertion_t *assertion = NULL;
-    neethi_assertion_type_t type;    
+    neethi_assertion_type_t type;
     void *value = NULL;
 
     int i = 0;
 
     arraylist = neethi_all_get_policy_components(all, env);
 
-    for(i=0; i<axutil_array_list_size(arraylist, env); i++)
+    for (i = 0; i < axutil_array_list_size(arraylist, env); i++)
     {
-        operator = (neethi_operator_t *)axutil_array_list_get(arraylist, env, i);
-        assertion = (neethi_assertion_t *)neethi_operator_get_value(
-                operator, env);
+        operator =(neethi_operator_t *) axutil_array_list_get(arraylist, env,
+                                                              i);
+        assertion =
+            (neethi_assertion_t *) neethi_operator_get_value(operator, env);
         value = neethi_assertion_get_value(assertion, env);
         type = neethi_assertion_get_type(assertion, env);
 
-        if(value)
+        if (value)
         {
-            if(type == ASSERTION_TYPE_HTTPS_TOKEN)
+            if (type == ASSERTION_TYPE_HTTPS_TOKEN)
             {
-                rp_https_token_t *https_token = NULL;    
-                https_token = (rp_https_token_t *)neethi_assertion_get_value(
-                        assertion, env);
-                if(https_token)
+                rp_https_token_t *https_token = NULL;
+                https_token =
+                    (rp_https_token_t *) neethi_assertion_get_value(assertion,
+                                                                    env);
+                if (https_token)
                 {
-                    rp_property_set_value(transport_token, env, 
-                            https_token, RP_PROPERTY_HTTPS_TOKEN);
+                    rp_property_set_value(transport_token, env,
+                                          https_token, RP_PROPERTY_HTTPS_TOKEN);
                 }
-                else return AXIS2_FAILURE;
+                else
+                    return AXIS2_FAILURE;
             }
-            else return AXIS2_FAILURE;
+            else
+                return AXIS2_FAILURE;
         }
-        else return AXIS2_FAILURE;
-    }        
+        else
+            return AXIS2_FAILURE;
+    }
     return AXIS2_SUCCESS;
 }

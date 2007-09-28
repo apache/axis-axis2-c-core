@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,21 +18,24 @@
 
 #include "axis2_Calculator_stub.h"
 
-int main(int argc, char** argv)
+int
+main(
+    int argc,
+    char **argv)
 {
-    axutil_env_t* env = NULL;
-    axis2_char_t* operation = NULL;
-    axis2_char_t* client_home = NULL;
+    axutil_env_t *env = NULL;
+    axis2_char_t *operation = NULL;
+    axis2_char_t *client_home = NULL;
 
-    axis2_char_t* endpoint_uri = NULL;
+    axis2_char_t *endpoint_uri = NULL;
 
-    axis2_stub_t* stub = NULL;
+    axis2_stub_t *stub = NULL;
 
     /* variables use databinding */
-    axis2_addResponse_t* add_out = NULL;
-    axis2_add_t* add_in = NULL;
-    axis2_addRequest_t* add_req = NULL;
-    axis2_addResponse20_t* add_res = NULL;
+    axis2_addResponse_t *add_out = NULL;
+    axis2_add_t *add_in = NULL;
+    axis2_addRequest_t *add_req = NULL;
+    axis2_addResponse20_t *add_res = NULL;
 
     int ret_val = 0;
 
@@ -40,15 +44,16 @@ int main(int argc, char** argv)
 
     endpoint_uri = "http://localhost:9090/axis2/services/calculator";
 
-    env = axutil_env_create_all("codegen_utest_blocking.log", AXIS2_LOG_LEVEL_TRACE);
+    env =
+        axutil_env_create_all("codegen_utest_blocking.log",
+                              AXIS2_LOG_LEVEL_TRACE);
 
-    /* Set up deploy folder.*/
+    /* Set up deploy folder. */
     client_home = AXIS2_GETENV("AXIS2C_HOME");
     if (!client_home)
         client_home = "../../../deploy";
 
-    stub = axis2_Calculator_stub_create(env, client_home , endpoint_uri);
-
+    stub = axis2_Calculator_stub_create(env, client_home, endpoint_uri);
 
     /* create the struct */
     add_req = axis2_addRequest_create(env);
@@ -59,7 +64,7 @@ int main(int argc, char** argv)
     add_in = axis2_add_create(env);
     AXIS2_ADD_SET_ADD(add_in, env, add_req);
 
-    /* invoke the web service method*/
+    /* invoke the web service method */
     add_res = axis2_add(stub, env, add_in);
 
     if (!add_res)

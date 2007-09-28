@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -32,29 +33,35 @@ extern "C"
     typedef struct rp_element_t rp_element_t;
 
     AXIS2_EXTERN rp_element_t *AXIS2_CALL
-    rp_element_create(const axutil_env_t *env);
+    rp_element_create(
+        const axutil_env_t * env);
 
     AXIS2_EXTERN void AXIS2_CALL
-    rp_element_free(rp_element_t *element,
-                   const axutil_env_t *env);
+    rp_element_free(
+        rp_element_t * element,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    rp_element_get_name(rp_element_t *element,
-                       const axutil_env_t *env);
+    rp_element_get_name(
+        rp_element_t * element,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_element_set_name(rp_element_t *element,
-                       const axutil_env_t *env,
-                       axis2_char_t *name);
+    rp_element_set_name(
+        rp_element_t * element,
+        const axutil_env_t * env,
+        axis2_char_t * name);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    rp_element_get_namespace(rp_element_t *element,
-                            const axutil_env_t *env);
+    rp_element_get_namespace(
+        rp_element_t * element,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_element_set_namespace(rp_element_t *element,
-                            const axutil_env_t *env,
-                            axis2_char_t *nspace);
+    rp_element_set_namespace(
+        rp_element_t * element,
+        const axutil_env_t * env,
+        axis2_char_t * nspace);
 
 #ifdef __cplusplus
 }

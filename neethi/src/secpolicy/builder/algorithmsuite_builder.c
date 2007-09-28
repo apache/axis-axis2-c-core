@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,13 +23,11 @@
 #include <neethi_all.h>
 #include <neethi_engine.h>
 
-
-
-AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL 
+AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_algorithmsuite_builder_build(
-        const axutil_env_t *env,
-        axiom_node_t *node,
-        axiom_element_t *element)
+    const axutil_env_t * env,
+    axiom_node_t * node,
+    axiom_element_t * element)
 {
     rp_algorithmsuite_t *algorithmsuite = NULL;
     axiom_node_t *child_node = NULL;
@@ -37,40 +36,48 @@ rp_algorithmsuite_builder_build(
     neethi_assertion_t *assertion = NULL;
 
     algorithmsuite = rp_algorithmsuite_create(env);
-    
-    child_node = axiom_node_get_first_element(node,env);
 
-    if(child_node)
+    child_node = axiom_node_get_first_element(node, env);
+
+    if (child_node)
     {
         algo_node = axiom_node_get_first_element(child_node, env);
-        if(!algo_node)
+        if (!algo_node)
         {
             return NULL;
-        }    
+        }
     }
     else
     {
         return NULL;
-    }    
+    }
 
-    if(axiom_node_get_node_type(algo_node, env) == AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(algo_node, env) == AXIOM_ELEMENT)
     {
-        algo_element = (axiom_element_t*)axiom_node_get_data_element(algo_node, env);
-        if(algo_element)
+        algo_element =
+            (axiom_element_t *) axiom_node_get_data_element(algo_node, env);
+        if (algo_element)
         {
             axis2_char_t *algosuite_string = NULL;
 
             algosuite_string = axiom_element_get_localname(algo_element, env);
-            if(!algosuite_string)
-            {    
+            if (!algosuite_string)
+            {
                 return NULL;
-            }    
-            rp_algorithmsuite_set_algosuite(algorithmsuite, env, algosuite_string);
-            assertion = neethi_assertion_create_with_args(env, (void *)rp_algorithmsuite_free, 
-                    algorithmsuite, ASSERTION_TYPE_ALGORITHM_SUITE);
+            }
+            rp_algorithmsuite_set_algosuite(algorithmsuite, env,
+                                            algosuite_string);
+            assertion =
+                neethi_assertion_create_with_args(env,
+                                                  (void *)
+                                                  rp_algorithmsuite_free,
+                                                  algorithmsuite,
+                                                  ASSERTION_TYPE_ALGORITHM_SUITE);
             return assertion;
         }
-        else return NULL;
+        else
+            return NULL;
     }
-    else return NULL;
+    else
+        return NULL;
 }

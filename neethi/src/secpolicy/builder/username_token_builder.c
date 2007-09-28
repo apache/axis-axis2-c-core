@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -24,21 +25,18 @@
 
 /*private functions*/
 
-axis2_status_t AXIS2_CALL
-username_token_process_alternatives(
-        const axutil_env_t *env,
-        neethi_all_t *all,
-        rp_username_token_t *username_token);
+axis2_status_t AXIS2_CALL username_token_process_alternatives(
+    const axutil_env_t * env,
+    neethi_all_t * all,
+    rp_username_token_t * username_token);
 
 /***********************************/
 
-
-AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL 
+AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_username_token_builder_build(
-        const axutil_env_t *env,
-        axiom_node_t *node,
-        axiom_element_t *element)
-
+    const axutil_env_t * env,
+    axiom_node_t * node,
+    axiom_element_t * element)
 {
     rp_username_token_t *username_token = NULL;
     neethi_policy_t *policy = NULL;
@@ -61,88 +59,101 @@ rp_username_token_builder_build(
     qname = NULL;
 
     rp_username_token_set_inclusion(username_token, env, inclusion_value);
-    
+
     child_node = axiom_node_get_first_element(node, env);
-    if(!child_node)
+    if (!child_node)
     {
         assertion = neethi_assertion_create(env);
         neethi_assertion_set_value(assertion, env,
-                username_token, ASSERTION_TYPE_USERNAME_TOKEN);
+                                   username_token,
+                                   ASSERTION_TYPE_USERNAME_TOKEN);
         return assertion;
-    }        
+    }
 
-    if(axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
     {
-        child_element = (axiom_element_t*)axiom_node_get_data_element(
-                child_node, env);
-        if(child_element)
+        child_element =
+            (axiom_element_t *) axiom_node_get_data_element(child_node, env);
+        if (child_element)
         {
             policy = neethi_engine_get_policy(env, child_node, child_element);
-            if(!policy)
+            if (!policy)
             {
                 return NULL;
             }
-            normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
+            normalized_policy =
+                neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
             neethi_policy_free(policy, env);
             policy = NULL;
-            alternatives = neethi_policy_get_alternatives(normalized_policy, env);
-            component = (neethi_operator_t *)axutil_array_list_get(alternatives, env, 0);            
-            all = (neethi_all_t *)neethi_operator_get_value(component ,env);
+            alternatives =
+                neethi_policy_get_alternatives(normalized_policy, env);
+            component =
+                (neethi_operator_t *) axutil_array_list_get(alternatives, env,
+                                                            0);
+            all = (neethi_all_t *) neethi_operator_get_value(component, env);
             username_token_process_alternatives(env, all, username_token);
 
-            assertion = neethi_assertion_create_with_args(
-                    env, (void *)rp_username_token_free, username_token, ASSERTION_TYPE_USERNAME_TOKEN);
-            
+            assertion =
+                neethi_assertion_create_with_args(env,
+                                                  (void *)
+                                                  rp_username_token_free,
+                                                  username_token,
+                                                  ASSERTION_TYPE_USERNAME_TOKEN);
+
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
 
             return assertion;
         }
-        else return NULL;
+        else
+            return NULL;
     }
-    else return NULL;
+    else
+        return NULL;
 }
 
 axis2_status_t AXIS2_CALL
 username_token_process_alternatives(
-        const axutil_env_t *env,
-        neethi_all_t *all,
-        rp_username_token_t *username_token)
+    const axutil_env_t * env,
+    neethi_all_t * all,
+    rp_username_token_t * username_token)
 {
     neethi_operator_t *operator = NULL;
     axutil_array_list_t *arraylist = NULL;
     neethi_assertion_t *assertion = NULL;
-    neethi_assertion_type_t type;    
+    neethi_assertion_type_t type;
     void *value = NULL;
 
     int i = 0;
 
     arraylist = neethi_all_get_policy_components(all, env);
 
-    for(i=0; i<axutil_array_list_size(arraylist, env); i++)
+    for (i = 0; i < axutil_array_list_size(arraylist, env); i++)
     {
-        operator = (neethi_operator_t *)axutil_array_list_get(
-                arraylist, env, i);
-        assertion = (neethi_assertion_t *)neethi_operator_get_value(
-                operator, env);
+        operator =(neethi_operator_t *) axutil_array_list_get(arraylist, env,
+                                                              i);
+        assertion =
+            (neethi_assertion_t *) neethi_operator_get_value(operator, env);
         value = neethi_assertion_get_value(assertion, env);
         type = neethi_assertion_get_type(assertion, env);
 
-        if(value)
+        if (value)
         {
-            if(type == ASSERTION_TYPE_WSS_USERNAME_TOKEN_10)
+            if (type == ASSERTION_TYPE_WSS_USERNAME_TOKEN_10)
             {
-                rp_username_token_set_useUTprofile10(
-                        username_token, env, AXIS2_TRUE);
+                rp_username_token_set_useUTprofile10(username_token, env,
+                                                     AXIS2_TRUE);
             }
-            else if(type == ASSERTION_TYPE_WSS_USERNAME_TOKEN_11)
+            else if (type == ASSERTION_TYPE_WSS_USERNAME_TOKEN_11)
             {
-                rp_username_token_set_useUTprofile11(
-                        username_token, env, AXIS2_TRUE);
+                rp_username_token_set_useUTprofile11(username_token, env,
+                                                     AXIS2_TRUE);
             }
-            else return AXIS2_FAILURE;
-        }        
-        else return AXIS2_FAILURE;
+            else
+                return AXIS2_FAILURE;
+        }
+        else
+            return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
 }

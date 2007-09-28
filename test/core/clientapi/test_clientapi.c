@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,26 +24,28 @@
 #include <axis2_options.h>
 #include <platforms/axutil_platform_auto_sense.h>
 
-axiom_node_t *
-build_om_payload_for_echo_svc(const axutil_env_t *env,
-        const axis2_char_t* echo_str);
+axiom_node_t *build_om_payload_for_echo_svc(
+    const axutil_env_t * env,
+    const axis2_char_t * echo_str);
 
-void axis2_test_svc_client_blocking()
+void
+axis2_test_svc_client_blocking(
+    )
 {
-    axutil_env_t* env = NULL;
+    axutil_env_t *env = NULL;
     axis2_options_t *options = NULL;
     const axis2_char_t *client_home = NULL;
-    axis2_svc_client_t* svc_client = NULL;
+    axis2_svc_client_t *svc_client = NULL;
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
     const axis2_char_t *address = NULL;
-    axis2_endpoint_ref_t* endpoint_ref = NULL;
+    axis2_endpoint_ref_t *endpoint_ref = NULL;
 
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     env = axutil_env_create(allocator);
     axiom_element_t *result_ele = NULL;
-    const axis2_char_t* echo_text = "echo_text";
-    axis2_char_t* result = NULL;
+    const axis2_char_t *echo_text = "echo_text";
+    axis2_char_t *result = NULL;
 
     address = "http://localhost:9090/axis2/services/echo/echo";
     endpoint_ref = axis2_endpoint_ref_create(env, address);
@@ -55,7 +58,8 @@ void axis2_test_svc_client_blocking()
     if (!svc_client)
     {
         printf("axis2_test axis2_svc_client_create FAILURE\n");
-        printf("Client repository path not properly set. Please check AXIS2C_HOME setting\n");
+        printf
+            ("Client repository path not properly set. Please check AXIS2C_HOME setting\n");
         return;
     }
 
@@ -70,7 +74,8 @@ void axis2_test_svc_client_blocking()
         if (axiom_node_get_node_type(ret_node, env) == AXIOM_ELEMENT)
         {
             ret_node = axiom_node_get_first_child(ret_node, env);
-            result_ele = (axiom_element_t*)axiom_node_get_data_element(ret_node, env);
+            result_ele =
+                (axiom_element_t *) axiom_node_get_data_element(ret_node, env);
             result = axiom_element_get_text(result_ele, env, ret_node);
             if (!strcmp(result, echo_text))
                 printf("axis2_test SVC_CLIENT_SEND_RECEIVE SUCCESS\n");
@@ -83,24 +88,31 @@ void axis2_test_svc_client_blocking()
 
 /* build SOAP request message content using OM */
 axiom_node_t *
-build_om_payload_for_echo_svc(const axutil_env_t *env,
-        const axis2_char_t* echo_text)
+build_om_payload_for_echo_svc(
+    const axutil_env_t * env,
+    const axis2_char_t * echo_text)
 {
     axiom_node_t *echo_om_node = NULL;
-    axiom_element_t* echo_om_ele = NULL;
-    axiom_node_t* text_om_node = NULL;
-    axiom_element_t * text_om_ele = NULL;
+    axiom_element_t *echo_om_ele = NULL;
+    axiom_node_t *text_om_node = NULL;
+    axiom_element_t *text_om_ele = NULL;
     axiom_namespace_t *ns1 = NULL;
 
-    ns1 = axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samples", "ns1");
-    echo_om_ele = axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
-    text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
+    ns1 =
+        axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samples",
+                               "ns1");
+    echo_om_ele =
+        axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
+    text_om_ele =
+        axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
     axiom_element_set_text(text_om_ele, env, echo_text, text_om_node);
 
     return echo_om_node;
 }
 
-int main()
+int
+main(
+    )
 {
     axis2_test_svc_client_blocking();
     return 0;

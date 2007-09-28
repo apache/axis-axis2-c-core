@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,10 +19,9 @@
 #ifndef NEETHI_ALL_H
 #define NEETHI_ALL_H
 
-
 /**
   * @file neethi_all.h
-  * @struct for operator all 
+  * @struct for operator all
   */
 
 #include <axis2_defines.h>
@@ -34,42 +34,45 @@ extern "C"
 {
 #endif
 
-        typedef struct neethi_all_t neethi_all_t; 
+    typedef struct neethi_all_t neethi_all_t;
 
-        AXIS2_EXTERN neethi_all_t *AXIS2_CALL
-        neethi_all_create(const axutil_env_t *env);
+    AXIS2_EXTERN neethi_all_t *AXIS2_CALL
+    neethi_all_create(
+        const axutil_env_t * env);
 
-        AXIS2_EXTERN void AXIS2_CALL
-        neethi_all_free(neethi_all_t *neethi_all,
-                const axutil_env_t *env);
-                
-        AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-        neethi_all_get_policy_components(
-            neethi_all_t *neethi_all,
-            const axutil_env_t *env);
-        
-        AXIS2_EXTERN axis2_status_t AXIS2_CALL
-        neethi_all_add_policy_components(
-            neethi_all_t *all,
-            axutil_array_list_t *arraylist,
-            const axutil_env_t *env);
-            
-        AXIS2_EXTERN axis2_status_t AXIS2_CALL
-        neethi_all_add_operator(neethi_all_t *neethi_all,
-            const axutil_env_t *env,
-            neethi_operator_t *op);
+    AXIS2_EXTERN void AXIS2_CALL
+    neethi_all_free(
+        neethi_all_t * neethi_all,
+        const axutil_env_t * env);
 
-        AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-        neethi_all_is_empty(neethi_all_t *all,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 
-        AXIS2_EXTERN axis2_status_t AXIS2_CALL
-        neethi_all_serialize(
-            neethi_all_t *neethi_all,
-            axiom_node_t *parent,
-            const axutil_env_t *env);
- 
+    neethi_all_get_policy_components(
+        neethi_all_t * neethi_all,
+        const axutil_env_t * env);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    neethi_all_add_policy_components(
+        neethi_all_t * all,
+        axutil_array_list_t * arraylist,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    neethi_all_add_operator(
+        neethi_all_t * neethi_all,
+        const axutil_env_t * env,
+        neethi_operator_t * op);
+
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    neethi_all_is_empty(
+        neethi_all_t * all,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    neethi_all_serialize(
+        neethi_all_t * neethi_all,
+        axiom_node_t * parent,
+        const axutil_env_t * env);
 
     /** @} */
 #ifdef __cplusplus

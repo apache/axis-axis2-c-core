@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -19,12 +20,14 @@
 #include <stdio.h>
 #include "tcpmon_test.h"
 
-void RunAllTests(void)
+void
+RunAllTests(
+    void)
 {
     CuString *output = CuStringNew();
-    CuSuite* suite = CuSuiteNew();
+    CuSuite *suite = CuSuiteNew();
 
-    CuSuiteAddSuite(suite, (CuSuite*)tcpmon_GetSuite());
+    CuSuiteAddSuite(suite, (CuSuite *) tcpmon_GetSuite());
 
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);
@@ -32,7 +35,9 @@ void RunAllTests(void)
     printf("%s\n", output->buffer);
 }
 
-int main(void)
+int
+main(
+    void)
 {
     RunAllTests();
     return 0;

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,10 +19,9 @@
 #ifndef NEETHI_EXACTLYONE_H
 #define NEETHI_EXACTLYONE_H
 
-
 /**
   * @file neethi_exactlyone.h
-  * @struct for operator exactlyone 
+  * @struct for operator exactlyone
   */
 
 #include <axis2_defines.h>
@@ -34,47 +34,52 @@ extern "C"
 {
 #endif
 
-        typedef struct neethi_exactlyone_t neethi_exactlyone_t; 
+    typedef struct neethi_exactlyone_t neethi_exactlyone_t;
 
-        AXIS2_EXTERN neethi_exactlyone_t *AXIS2_CALL
-        neethi_exactlyone_create(const axutil_env_t *env);
+    AXIS2_EXTERN neethi_exactlyone_t *AXIS2_CALL
+    neethi_exactlyone_create(
+        const axutil_env_t * env);
 
-        AXIS2_EXTERN void AXIS2_CALL
-        neethi_exactlyone_free(neethi_exactlyone_t *neethi_exactlyone,
-                const axutil_env_t *env);
-                
-        AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-        neethi_exactlyone_get_policy_components(
-            neethi_exactlyone_t *neethi_exactlyone,
-            const axutil_env_t *env);
+    AXIS2_EXTERN void AXIS2_CALL
+    neethi_exactlyone_free(
+        neethi_exactlyone_t * neethi_exactlyone,
+        const axutil_env_t * env);
 
-        AXIS2_EXTERN axis2_status_t AXIS2_CALL
-        neethi_exactlyone_add_policy_components(
-                neethi_exactlyone_t *exactlyone,
-                axutil_array_list_t *arraylist,
-                const axutil_env_t *env);
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 
-        AXIS2_EXTERN axis2_status_t AXIS2_CALL
-        neethi_exactlyone_add_operator(neethi_exactlyone_t *neethi_exactlyone,
-            const axutil_env_t *env,
-            neethi_operator_t *op);
+    neethi_exactlyone_get_policy_components(
+        neethi_exactlyone_t * neethi_exactlyone,
+        const axutil_env_t * env);
 
-        AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-        neethi_exactlyone_is_empty(neethi_exactlyone_t *exactlyone,
-            const axutil_env_t *env);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
-        AXIS2_EXTERN axis2_status_t AXIS2_CALL
-        neethi_exactlyone_serialize(
-            neethi_exactlyone_t *neethi_exactlyone,
-            axiom_node_t *parent,
-            const axutil_env_t *env);
-        
-        AXIS2_EXTERN axis2_status_t AXIS2_CALL
-        neethi_exactlyone_set_components_null(
-            neethi_exactlyone_t *exactlyone,
-            const axutil_env_t *env);
-        
+    neethi_exactlyone_add_policy_components(
+        neethi_exactlyone_t * exactlyone,
+        axutil_array_list_t * arraylist,
+        const axutil_env_t * env);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    neethi_exactlyone_add_operator(
+        neethi_exactlyone_t * neethi_exactlyone,
+        const axutil_env_t * env,
+        neethi_operator_t * op);
+
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    neethi_exactlyone_is_empty(
+        neethi_exactlyone_t * exactlyone,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    neethi_exactlyone_serialize(
+        neethi_exactlyone_t * neethi_exactlyone,
+        axiom_node_t * parent,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+    neethi_exactlyone_set_components_null(
+        neethi_exactlyone_t * exactlyone,
+        const axutil_env_t * env);
 
     /** @} */
 #ifdef __cplusplus

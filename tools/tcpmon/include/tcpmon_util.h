@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-  
+
 #ifndef TCPMON_UTIL_H
 #define TCPMON_UTIL_H
 
@@ -30,25 +31,27 @@
 extern "C"
 {
 #endif
-   
-/** 
- * @defgroup hold util functions of tcpmon
- * @ingroup tcpmon
- * @{
- */
 
-/**
- * format the data as xml
- * @param env pointer to environment struct. MUST NOT be NULL.
- * @param data to be formatted
- */
-axis2_char_t* 
-tcpmon_util_format_as_xml (const axutil_env_t *env, axis2_char_t *data, int format);
+    /**
+     * @defgroup hold util functions of tcpmon
+     * @ingroup tcpmon
+     * @{
+     */
 
-/** @} */
+    /**
+     * format the data as xml
+     * @param env pointer to environment struct. MUST NOT be NULL.
+     * @param data to be formatted
+     */
+    axis2_char_t *tcpmon_util_format_as_xml(
+        const axutil_env_t * env,
+        axis2_char_t * data,
+        int format);
+
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* TCPMON_UTIL_H */
+#endif                          /* TCPMON_UTIL_H */

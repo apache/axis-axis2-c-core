@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,10 +19,9 @@
 #ifndef NEETHI_ENGINE_H
 #define NEETHI_ENGINE_H
 
-
 /**
   * @file neethi_engine.h
-  * @contains neethi_policy creation logic. 
+  * @contains neethi_policy creation logic.
   */
 
 #include <axis2_defines.h>
@@ -41,32 +41,34 @@ extern "C"
 #endif
 
     AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
-    neethi_engine_get_policy(const axutil_env_t *env,
-            axiom_node_t *node,
-            axiom_element_t *element);
+    neethi_engine_get_policy(
+        const axutil_env_t * env,
+        axiom_node_t * node,
+        axiom_element_t * element);
 
     AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
-    neethi_engine_get_normalize(const axutil_env_t *env,
-            axis2_bool_t deep,
-            neethi_policy_t *neethi_policy);
-            
-    
+    neethi_engine_get_normalize(
+        const axutil_env_t * env,
+        axis2_bool_t deep,
+        neethi_policy_t * neethi_policy);
+
     AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
-    neethi_engine_normalize(const axutil_env_t *env,
-            neethi_policy_t *neethi_policy,
-            neethi_registry_t *registry,
-            axis2_bool_t deep);
-    
+    neethi_engine_normalize(
+        const axutil_env_t * env,
+        neethi_policy_t * neethi_policy,
+        neethi_registry_t * registry,
+        axis2_bool_t deep);
+
     AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
-    neethi_engine_merge(const axutil_env_t *env,
-            neethi_policy_t *neethi_policy1,
-            neethi_policy_t *neethi_policy2);
+    neethi_engine_merge(
+        const axutil_env_t * env,
+        neethi_policy_t * neethi_policy1,
+        neethi_policy_t * neethi_policy2);
 
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
-    neethi_engine_serialize(neethi_policy_t *policy,
-                   const axutil_env_t *env);
-    
-
+    neethi_engine_serialize(
+        neethi_policy_t * policy,
+        const axutil_env_t * env);
 
     /** @} */
 #ifdef __cplusplus

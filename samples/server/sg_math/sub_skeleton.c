@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -19,21 +20,22 @@
 #include <axutil_array_list.h>
 #include <stdio.h>
 
-int AXIS2_CALL
-sub_free(axis2_svc_skeleton_t *svc_skeleton,
-        const axutil_env_t *env);
+int AXIS2_CALL sub_free(
+    axis2_svc_skeleton_t * svc_skeleton,
+    const axutil_env_t * env);
 
 /*
  * This method invokes the right service method
  */
-axiom_node_t* AXIS2_CALL
-sub_invoke(axis2_svc_skeleton_t *svc_skeleton,
-        const axutil_env_t *env,
-        axiom_node_t *node,
-        axis2_msg_ctx_t *msg_ctx);
+axiom_node_t *AXIS2_CALL sub_invoke(
+    axis2_svc_skeleton_t * svc_skeleton,
+    const axutil_env_t * env,
+    axiom_node_t * node,
+    axis2_msg_ctx_t * msg_ctx);
 
-int AXIS2_CALL sub_init(axis2_svc_skeleton_t *svc_skeleton,
-        const axutil_env_t *env);
+int AXIS2_CALL sub_init(
+    axis2_svc_skeleton_t * svc_skeleton,
+    const axutil_env_t * env);
 
 static const axis2_svc_skeleton_ops_t sub_svc_skeleton_ops_var = {
     sub_init,
@@ -42,13 +44,12 @@ static const axis2_svc_skeleton_ops_t sub_svc_skeleton_ops_var = {
     sub_free
 };
 
-AXIS2_EXTERN axis2_svc_skeleton_t * AXIS2_CALL
-axis2_sub_create(const axutil_env_t *env)
+AXIS2_EXTERN axis2_svc_skeleton_t *AXIS2_CALL
+axis2_sub_create(
+    const axutil_env_t * env)
 {
     axis2_svc_skeleton_t *svc_skeleton = NULL;
-    svc_skeleton = AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_svc_skeleton_t));
-
+    svc_skeleton = AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_skeleton_t));
 
     svc_skeleton->ops = &sub_svc_skeleton_ops_var;
 
@@ -58,16 +59,18 @@ axis2_sub_create(const axutil_env_t *env)
 }
 
 int AXIS2_CALL
-sub_init(axis2_svc_skeleton_t *svc_skeleton,
-        const axutil_env_t *env)
+sub_init(
+    axis2_svc_skeleton_t * svc_skeleton,
+    const axutil_env_t * env)
 {
     /* Any initialization stuff of sub goes here */
     return AXIS2_SUCCESS;
 }
 
 int AXIS2_CALL
-sub_free(axis2_svc_skeleton_t *svc_skeleton,
-        const axutil_env_t *env)
+sub_free(
+    axis2_svc_skeleton_t * svc_skeleton,
+    const axutil_env_t * env)
 {
     if (svc_skeleton)
     {
@@ -80,11 +83,12 @@ sub_free(axis2_svc_skeleton_t *svc_skeleton,
 /*
  * This method invokes the right service method
  */
-axiom_node_t* AXIS2_CALL
-sub_invoke(axis2_svc_skeleton_t *svc_skeleton,
-        const axutil_env_t *env,
-        axiom_node_t *node,
-        axis2_msg_ctx_t *msg_ctx)
+axiom_node_t *AXIS2_CALL
+sub_invoke(
+    axis2_svc_skeleton_t * svc_skeleton,
+    const axutil_env_t * env,
+    axiom_node_t * node,
+    axis2_msg_ctx_t * msg_ctx)
 {
     /* Depending on the function name invoke the
      *  corresponding sub method
@@ -94,10 +98,12 @@ sub_invoke(axis2_svc_skeleton_t *svc_skeleton,
         if (axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
         {
             axiom_element_t *element = NULL;
-            element = (axiom_element_t *)axiom_node_get_data_element(node, env);
+            element =
+                (axiom_element_t *) axiom_node_get_data_element(node, env);
             if (element)
             {
-                axis2_char_t *op_name = axiom_element_get_localname(element, env);
+                axis2_char_t *op_name =
+                    axiom_element_get_localname(element, env);
                 if (op_name)
                 {
                     if (axutil_strcmp(op_name, "sub") == 0)
@@ -117,8 +123,10 @@ sub_invoke(axis2_svc_skeleton_t *svc_skeleton,
  * Following block distinguish the exposed part of the dll.
  */
 
-AXIS2_EXPORT int axis2_get_instance(struct axis2_svc_skeleton **inst,
-        const axutil_env_t *env)
+AXIS2_EXPORT int
+axis2_get_instance(
+    struct axis2_svc_skeleton **inst,
+    const axutil_env_t * env)
 {
     *inst = axis2_sub_create(env);
     if (!(*inst))
@@ -129,8 +137,10 @@ AXIS2_EXPORT int axis2_get_instance(struct axis2_svc_skeleton **inst,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXPORT int axis2_remove_instance(axis2_svc_skeleton_t *inst,
-        const axutil_env_t *env)
+AXIS2_EXPORT int
+axis2_remove_instance(
+    axis2_svc_skeleton_t * inst,
+    const axutil_env_t * env)
 {
     axis2_status_t status = AXIS2_FAILURE;
     if (inst)
@@ -139,4 +149,3 @@ AXIS2_EXPORT int axis2_remove_instance(axis2_svc_skeleton_t *inst,
     }
     return status;
 }
-

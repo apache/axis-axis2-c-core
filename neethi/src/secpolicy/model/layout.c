@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,17 +24,17 @@ struct rp_layout_t
     int ref;
 };
 
-AXIS2_EXTERN rp_layout_t *AXIS2_CALL 
-rp_layout_create(const axutil_env_t *env)
+AXIS2_EXTERN rp_layout_t *AXIS2_CALL
+rp_layout_create(
+    const axutil_env_t * env)
 {
     rp_layout_t *layout = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    layout =  (rp_layout_t *) AXIS2_MALLOC (env->allocator,
-    sizeof (rp_layout_t));
+    layout = (rp_layout_t *) AXIS2_MALLOC(env->allocator, sizeof(rp_layout_t));
 
-    if(layout == NULL)
+    if (layout == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -44,14 +45,14 @@ rp_layout_create(const axutil_env_t *env)
 
 }
 
-AXIS2_EXTERN void AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL
 rp_layout_free(
-    rp_layout_t *layout,
-    const axutil_env_t *env)
+    rp_layout_t * layout,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
-    if(layout)
+
+    if (layout)
     {
         if (--(layout->ref) > 0)
         {
@@ -63,40 +64,37 @@ rp_layout_free(
     return;
 }
 
-
 /* Implementations */
 
-AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 rp_layout_get_value(
-    rp_layout_t *layout,
-    const axutil_env_t *env)
+    rp_layout_t * layout,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-        
+
     return layout->value;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_layout_set_value(
-    rp_layout_t *layout,
-    const axutil_env_t *env,
-    axis2_char_t *value)
+    rp_layout_t * layout,
+    const axutil_env_t * env,
+    axis2_char_t * value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);    
-    
+    AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
+
     layout->value = value;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_layout_increment_ref(
-    rp_layout_t *layout,
-    const axutil_env_t *env)
+    rp_layout_t * layout,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     layout->ref++;
     return AXIS2_SUCCESS;
 }
-
-

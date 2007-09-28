@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,13 +23,11 @@
 #include <neethi_all.h>
 #include <neethi_engine.h>
 
-
-
-AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL 
+AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_https_token_builder_build(
-        const axutil_env_t *env,
-        axiom_node_t *node,
-        axiom_element_t *element)
+    const axutil_env_t * env,
+    axiom_node_t * node,
+    axiom_element_t * element)
 {
     rp_https_token_t *https_token = NULL;
     neethi_assertion_t *assertion = NULL;
@@ -36,25 +35,29 @@ rp_https_token_builder_build(
 
     https_token = rp_https_token_create(env);
 
-    value = axiom_element_get_attribute_value_by_name(
-            element, env, RP_REQUIRE_CLIENT_CERTIFICATE);
+    value =
+        axiom_element_get_attribute_value_by_name(element, env,
+                                                  RP_REQUIRE_CLIENT_CERTIFICATE);
 
-    if(value)
+    if (value)
     {
-        if(axutil_strcmp(value,"true")==0)
+        if (axutil_strcmp(value, "true") == 0)
         {
-            rp_https_token_set_require_client_certificate(
-                    https_token, env, AXIS2_TRUE);
+            rp_https_token_set_require_client_certificate(https_token, env,
+                                                          AXIS2_TRUE);
         }
-        else if(axutil_strcmp(value,"false")==0)
+        else if (axutil_strcmp(value, "false") == 0)
         {
-            rp_https_token_set_require_client_certificate(
-                    https_token, env, AXIS2_FALSE);
+            rp_https_token_set_require_client_certificate(https_token, env,
+                                                          AXIS2_FALSE);
         }
-        else return NULL;
+        else
+            return NULL;
     }
 
-    assertion = neethi_assertion_create_with_args(
-            env, (void *)rp_https_token_free, https_token, ASSERTION_TYPE_HTTPS_TOKEN);    
+    assertion =
+        neethi_assertion_create_with_args(env, (void *) rp_https_token_free,
+                                          https_token,
+                                          ASSERTION_TYPE_HTTPS_TOKEN);
     return assertion;
 }

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,8 +16,6 @@
  * limitations under the License.
  */
 
-
-
 #include <rp_transport_binding.h>
 
 struct rp_transport_binding_t
@@ -26,17 +25,19 @@ struct rp_transport_binding_t
     int ref;
 };
 
-AXIS2_EXTERN rp_transport_binding_t *AXIS2_CALL 
-rp_transport_binding_create(const axutil_env_t *env)
+AXIS2_EXTERN rp_transport_binding_t *AXIS2_CALL
+rp_transport_binding_create(
+    const axutil_env_t * env)
 {
     rp_transport_binding_t *transport_binding = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    transport_binding =  (rp_transport_binding_t *) AXIS2_MALLOC (env->allocator,
-    sizeof (rp_transport_binding_t));
+    transport_binding = (rp_transport_binding_t *) AXIS2_MALLOC(env->allocator,
+                                                                sizeof
+                                                                (rp_transport_binding_t));
 
-    if(transport_binding == NULL)
+    if (transport_binding == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -49,42 +50,41 @@ rp_transport_binding_create(const axutil_env_t *env)
 
 }
 
-AXIS2_EXTERN void AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL
 rp_transport_binding_free(
-    rp_transport_binding_t *transport_binding,
-    const axutil_env_t *env)
+    rp_transport_binding_t * transport_binding,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
-    if(transport_binding)
+
+    if (transport_binding)
     {
         if (--(transport_binding->ref) > 0)
-        { 
+        {
             return;
         }
-        if(transport_binding->binding_commons)
+        if (transport_binding->binding_commons)
         {
-            rp_binding_commons_free(transport_binding->binding_commons,env);
+            rp_binding_commons_free(transport_binding->binding_commons, env);
             transport_binding->binding_commons = NULL;
         }
-        if(transport_binding->transport_token)
+        if (transport_binding->transport_token)
         {
-            rp_property_free(transport_binding->transport_token,env);
+            rp_property_free(transport_binding->transport_token, env);
             transport_binding->transport_token = NULL;
         }
-        AXIS2_FREE(env->allocator,transport_binding);           
+        AXIS2_FREE(env->allocator, transport_binding);
     }
 
     return;
 }
 
-
 /* Implementations */
 
 AXIS2_EXTERN rp_binding_commons_t *AXIS2_CALL
 rp_transport_binding_get_binding_commons(
-    rp_transport_binding_t *transport_binding,
-    const axutil_env_t *env)
+    rp_transport_binding_t * transport_binding,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -93,49 +93,46 @@ rp_transport_binding_get_binding_commons(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_transport_binding_set_binding_commons(
-    rp_transport_binding_t *transport_binding,
-    const axutil_env_t *env,
-    rp_binding_commons_t *binding_commons)
+    rp_transport_binding_t * transport_binding,
+    const axutil_env_t * env,
+    rp_binding_commons_t * binding_commons)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, binding_commons, AXIS2_FAILURE);
-        
-    transport_binding->binding_commons=binding_commons;
+
+    transport_binding->binding_commons = binding_commons;
     return AXIS2_SUCCESS;
 }
 
-
 AXIS2_EXTERN rp_property_t *AXIS2_CALL
 rp_transport_binding_get_transport_token(
-    rp_transport_binding_t *transport_binding,
-    const axutil_env_t *env)
+    rp_transport_binding_t * transport_binding,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    
+
     return transport_binding->transport_token;
 }
 
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_transport_binding_set_transport_token(
-    rp_transport_binding_t *transport_binding,
-    const axutil_env_t *env,
-    rp_property_t *transport_token)
+    rp_transport_binding_t * transport_binding,
+    const axutil_env_t * env,
+    rp_property_t * transport_token)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, transport_token, AXIS2_FAILURE);
-    
-    transport_binding->transport_token = transport_token; 
+
+    transport_binding->transport_token = transport_token;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_transport_binding_increment_ref(
-    rp_transport_binding_t *transport_binding,
-    const axutil_env_t *env)
+    rp_transport_binding_t * transport_binding,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     transport_binding->ref++;
     return AXIS2_SUCCESS;
 }
-

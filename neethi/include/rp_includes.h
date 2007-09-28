@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -33,10 +34,9 @@
 #include <axutil_qname.h>
 #include <rp_defines.h>
 
-
 /**
 * @file rp_includes.h
-* @brief includes most useful headers for RP 
+* @brief includes most useful headers for RP
 */
 #ifdef __cplusplus
 extern "C"
@@ -49,4 +49,4 @@ extern "C"
 }
 #endif
 
-#endif /*RP_INCLUDES_H */
+#endif                          /*RP_INCLUDES_H */

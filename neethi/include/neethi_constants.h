@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,7 +19,6 @@
 #ifndef NEETHI_CONSTANTS_H
 #define NEETHI_CONSTANTS_H
 
-
 #define NEETHI_EXACTLYONE "ExactlyOne"
 #define NEETHI_ALL "All"
 #define NEETHI_POLICY "Policy"
@@ -33,7 +33,7 @@
 
 /**
 * @file neethi_constants.h
-* @brief includes all the string constants 
+* @brief includes all the string constants
 */
 #ifdef __cplusplus
 extern "C"
@@ -46,4 +46,4 @@ extern "C"
 }
 #endif
 
-#endif /*NEETHI_INCLUDES_H*/
+#endif                          /*NEETHI_INCLUDES_H */

@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with 
@@ -21,7 +22,9 @@
 #include <axis2_endpoint_ref.h>
 #include <stdio.h>
 
-int axis2_test_msg_info_headers()
+int
+axis2_test_msg_info_headers(
+    )
 {
     axis2_endpoint_ref_t *to = NULL;
     axis2_endpoint_ref_t *from = NULL;
@@ -58,7 +61,8 @@ int axis2_test_msg_info_headers()
         return -1;
     }
 
-    axis2_endpoint_ref = axis2_msg_info_headers_get_to(axis2_msg_info_headers, env);
+    axis2_endpoint_ref =
+        axis2_msg_info_headers_get_to(axis2_msg_info_headers, env);
 
     if (axis2_endpoint_ref)
         printf("SUCCESS axis2_msg_info_headers_get_to\n");
@@ -80,7 +84,8 @@ int axis2_test_msg_info_headers()
     }
 
     axis2_endpoint_ref = NULL;
-    axis2_endpoint_ref = axis2_msg_info_headers_get_from(axis2_msg_info_headers, env);
+    axis2_endpoint_ref =
+        axis2_msg_info_headers_get_from(axis2_msg_info_headers, env);
 
     if (axis2_endpoint_ref)
         printf("SUCCESS axis2_msg_info_headers_get_from\n");
@@ -90,10 +95,9 @@ int axis2_test_msg_info_headers()
         return -1;
     }
 
-
-
     axis2_endpoint_ref = NULL;
-    axis2_endpoint_ref = axis2_msg_info_headers_get_reply_to(axis2_msg_info_headers, env);
+    axis2_endpoint_ref =
+        axis2_msg_info_headers_get_reply_to(axis2_msg_info_headers, env);
 
     if (status)
         printf("SUCCESS axis2_msg_info_headers_get_reply_to\n");
@@ -104,7 +108,9 @@ int axis2_test_msg_info_headers()
     }
 
     status = AXIS2_FAILURE;
-    status = axis2_msg_info_headers_set_reply_to(axis2_msg_info_headers, env, reply_to);
+    status =
+        axis2_msg_info_headers_set_reply_to(axis2_msg_info_headers, env,
+                                            reply_to);
 
     if (status)
         printf("SUCCESS axis2_msg_info_headers_set_reply_to\n");
@@ -115,7 +121,9 @@ int axis2_test_msg_info_headers()
     }
 
     status = AXIS2_FAILURE;
-    status = axis2_msg_info_headers_set_fault_to(axis2_msg_info_headers, env, fault_to);
+    status =
+        axis2_msg_info_headers_set_fault_to(axis2_msg_info_headers, env,
+                                            fault_to);
     if (status)
         printf("SUCCESS axis2_msg_info_headers_set_fault_to\n");
     else
@@ -125,7 +133,8 @@ int axis2_test_msg_info_headers()
     }
 
     axis2_endpoint_ref = NULL;
-    axis2_endpoint_ref = axis2_msg_info_headers_get_fault_to(axis2_msg_info_headers, env);
+    axis2_endpoint_ref =
+        axis2_msg_info_headers_get_fault_to(axis2_msg_info_headers, env);
     if (axis2_endpoint_ref)
         printf("SUCCESS axis2_msg_info_headers_get_fault_to\n");
     else
@@ -133,7 +142,6 @@ int axis2_test_msg_info_headers()
         printf("ERROR axis2_msg_info_headers_get_fault_to\n");
         return -1;
     }
-
 
     get_action = axis2_msg_info_headers_get_action(axis2_msg_info_headers, env);
     if (get_action)
@@ -145,7 +153,8 @@ int axis2_test_msg_info_headers()
     }
 
     status = AXIS2_FAILURE;
-    status = axis2_msg_info_headers_set_action(axis2_msg_info_headers, env, action);
+    status =
+        axis2_msg_info_headers_set_action(axis2_msg_info_headers, env, action);
     if (status)
         printf("SUCCESS axis2_msg_info_headers_set_action\n");
     else
@@ -153,9 +162,8 @@ int axis2_test_msg_info_headers()
         printf("ERROR axis2_msg_info_headers_set_action\n");
     }
 
-
     status = AXIS2_FAILURE;
-   /* status = axis2_msg_info_headers_free(axis2_msg_info_headers, env);*/
+    /* status = axis2_msg_info_headers_free(axis2_msg_info_headers, env); */
     if (status)
         printf("SUCCESS axis2_msg_info_headers_free\n");
     else
@@ -165,7 +173,9 @@ int axis2_test_msg_info_headers()
     return 0;
 }
 
-int main()
+int
+main(
+    )
 {
     axis2_test_msg_info_headers();
     return 0;

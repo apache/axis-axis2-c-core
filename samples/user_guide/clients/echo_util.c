@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -19,18 +20,23 @@
 
 /* build SOAP request message content using OM */
 axiom_node_t *
-build_om_payload_for_echo_svc(const axutil_env_t *env)
+build_om_payload_for_echo_svc(
+    const axutil_env_t * env)
 {
     axiom_node_t *echo_om_node = NULL;
-    axiom_element_t* echo_om_ele = NULL;
-    axiom_node_t* text_om_node = NULL;
-    axiom_element_t * text_om_ele = NULL;
+    axiom_element_t *echo_om_ele = NULL;
+    axiom_node_t *text_om_node = NULL;
+    axiom_element_t *text_om_ele = NULL;
     axiom_namespace_t *ns1 = NULL;
     axis2_char_t *om_str = NULL;
 
-    ns1 = axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samples", "ns1");
-    echo_om_ele = axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
-    text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
+    ns1 =
+        axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samples",
+                               "ns1");
+    echo_om_ele =
+        axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
+    text_om_ele =
+        axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
     axiom_element_set_text(text_om_ele, env, "Hello World!", text_om_node);
 
     om_str = axiom_node_to_string(echo_om_node, env);

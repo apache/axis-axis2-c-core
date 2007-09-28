@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -34,40 +35,46 @@ extern "C"
     typedef struct rp_transport_binding_t rp_transport_binding_t;
 
     AXIS2_EXTERN rp_transport_binding_t *AXIS2_CALL
-    rp_transport_binding_create(const axutil_env_t *env);
+
+    rp_transport_binding_create(
+        const axutil_env_t * env);
 
     AXIS2_EXTERN void AXIS2_CALL
     rp_transport_binding_free(
-        rp_transport_binding_t *transport_binding,
-        const axutil_env_t *env);
+        rp_transport_binding_t * transport_binding,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN rp_binding_commons_t *AXIS2_CALL
+
     rp_transport_binding_get_binding_commons(
-        rp_transport_binding_t *transport_binding,
-        const axutil_env_t *env);
+        rp_transport_binding_t * transport_binding,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
     rp_transport_binding_set_binding_commons(
-        rp_transport_binding_t *transport_binding,
-        const axutil_env_t *env,
-        rp_binding_commons_t *binding_commons);
+        rp_transport_binding_t * transport_binding,
+        const axutil_env_t * env,
+        rp_binding_commons_t * binding_commons);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
     rp_transport_binding_set_transport_token(
-        rp_transport_binding_t *transport_binding,
-        const axutil_env_t *env,
-        rp_property_t *transport_token);
+        rp_transport_binding_t * transport_binding,
+        const axutil_env_t * env,
+        rp_property_t * transport_token);
 
     AXIS2_EXTERN rp_property_t *AXIS2_CALL
+
     rp_transport_binding_get_transport_token(
-        rp_transport_binding_t *transport_binding,
-        const axutil_env_t *env);
+        rp_transport_binding_t * transport_binding,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
     rp_transport_binding_increment_ref(
-        rp_transport_binding_t *tansport_binding,
-        const axutil_env_t *env);
-    
+        rp_transport_binding_t * tansport_binding,
+        const axutil_env_t * env);
 
 #ifdef __cplusplus
 }

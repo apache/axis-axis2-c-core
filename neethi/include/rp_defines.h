@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -44,13 +45,13 @@ extern "C"
 #define RP_ENCRYPTED_PARTS "EncryptedParts"
 #define RP_ENCRYPTED_ELEMENTS "EncryptedElements"
 #define RP_SIGNED_ITEMS "SignedItems"
-#define RP_ENCRYPTED_ITEMS "EncryptedItems"    
+#define RP_ENCRYPTED_ITEMS "EncryptedItems"
 
 #define RP_BODY "Body"
 #define RP_HEADER "Header"
 #define RP_NAME "Name"
 #define RP_NAMESPACE "Namespace"
-#define RP_ELEMENT "Element"    
+#define RP_ELEMENT "Element"
 
 #define RP_XPATH "XPath"
 #define RP_XPATH_VERSION "XPathVersion"
@@ -180,7 +181,7 @@ extern "C"
 #define RP_CERTIFICATE "Certificate"
 #define RP_PRIVATE_KEY "PrivateKey"
 #define RP_TIME_TO_LIVE "TimeToLive"
-#define RP_RD "ReplayDetection"    
+#define RP_RD "ReplayDetection"
 
 #define RP_SP_NS "http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"
 #define RP_SECURITY_NS "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"

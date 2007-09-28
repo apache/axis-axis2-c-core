@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,8 +16,6 @@
  * limitations under the License.
  */
 
-
-
 #include <rp_signed_encrypted_items.h>
 
 struct rp_signed_encrypted_items_t
@@ -26,17 +25,20 @@ struct rp_signed_encrypted_items_t
 
 };
 
-AXIS2_EXTERN rp_signed_encrypted_items_t *AXIS2_CALL 
-rp_signed_encrypted_items_create(const axutil_env_t *env)
+AXIS2_EXTERN rp_signed_encrypted_items_t *AXIS2_CALL
+rp_signed_encrypted_items_create(
+    const axutil_env_t * env)
 {
     rp_signed_encrypted_items_t *signed_encrypted_items = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    signed_encrypted_items =  (rp_signed_encrypted_items_t *) AXIS2_MALLOC (env->allocator,
-    sizeof (rp_signed_encrypted_items_t));
+    signed_encrypted_items =
+        (rp_signed_encrypted_items_t *) AXIS2_MALLOC(env->allocator,
+                                                     sizeof
+                                                     (rp_signed_encrypted_items_t));
 
-    if(signed_encrypted_items == NULL)
+    if (signed_encrypted_items == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -44,7 +46,7 @@ rp_signed_encrypted_items_create(const axutil_env_t *env)
     signed_encrypted_items->elements = NULL;
 
     signed_encrypted_items->elements = axutil_array_list_create(env, 0);
-    if (!(signed_encrypted_items->elements) )
+    if (!(signed_encrypted_items->elements))
     {
         rp_signed_encrypted_items_free(signed_encrypted_items, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -55,24 +57,27 @@ rp_signed_encrypted_items_create(const axutil_env_t *env)
 
 }
 
-AXIS2_EXTERN void AXIS2_CALL 
-rp_signed_encrypted_items_free(rp_signed_encrypted_items_t *signed_encrypted_items,
-        const axutil_env_t *env)
+AXIS2_EXTERN void AXIS2_CALL
+rp_signed_encrypted_items_free(
+    rp_signed_encrypted_items_t * signed_encrypted_items,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
-    if(signed_encrypted_items)
+
+    if (signed_encrypted_items)
     {
-        
-        if(signed_encrypted_items->elements)
+
+        if (signed_encrypted_items->elements)
         {
             int i = 0;
-            for (i = 0; i < axutil_array_list_size(signed_encrypted_items->elements,
-                env); i++)
+            for (i = 0;
+                 i < axutil_array_list_size(signed_encrypted_items->elements,
+                                            env); i++)
             {
                 rp_element_t *element = NULL;
                 element = (rp_element_t *)
-                    axutil_array_list_get(signed_encrypted_items->elements,env, i);
+                    axutil_array_list_get(signed_encrypted_items->elements, env,
+                                          i);
                 if (element)
                     rp_element_free(element, env);
 
@@ -82,31 +87,32 @@ rp_signed_encrypted_items_free(rp_signed_encrypted_items_t *signed_encrypted_ite
             signed_encrypted_items->elements = NULL;
 
         }
-        AXIS2_FREE(env->allocator,signed_encrypted_items);
+        AXIS2_FREE(env->allocator, signed_encrypted_items);
         signed_encrypted_items = NULL;
     }
     return;
 }
 
-
 /* Implementations */
 
-AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
-rp_signed_encrypted_items_get_signeditems(rp_signed_encrypted_items_t *signed_encrypted_items,
-            const axutil_env_t *env)
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+rp_signed_encrypted_items_get_signeditems(
+    rp_signed_encrypted_items_t * signed_encrypted_items,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-        
+
     return signed_encrypted_items->signeditems;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_signed_encrypted_items_set_signeditems(rp_signed_encrypted_items_t *signed_encrypted_items,
-            const axutil_env_t *env,
-            axis2_bool_t signeditems)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_signed_encrypted_items_set_signeditems(
+    rp_signed_encrypted_items_t * signed_encrypted_items,
+    const axutil_env_t * env,
+    axis2_bool_t signeditems)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,signeditems,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, signeditems, AXIS2_FAILURE);
     signed_encrypted_items->signeditems = signeditems;
 
     return AXIS2_SUCCESS;
@@ -114,23 +120,23 @@ rp_signed_encrypted_items_set_signeditems(rp_signed_encrypted_items_t *signed_en
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 rp_signed_encrypted_items_get_elements(
-    rp_signed_encrypted_items_t *signed_encrypted_items,
-    const axutil_env_t *env)
+    rp_signed_encrypted_items_t * signed_encrypted_items,
+    const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
+
     return signed_encrypted_items->elements;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-rp_signed_encrypted_items_add_element(rp_signed_encrypted_items_t *signed_encrypted_items,
-            const axutil_env_t *env,
-            rp_element_t *element)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_signed_encrypted_items_add_element(
+    rp_signed_encrypted_items_t * signed_encrypted_items,
+    const axutil_env_t * env,
+    rp_element_t * element)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,element,AXIS2_FAILURE);
-        
-    axutil_array_list_add(signed_encrypted_items->elements,env,element);    
+    AXIS2_PARAM_CHECK(env->error, element, AXIS2_FAILURE);
+
+    axutil_array_list_add(signed_encrypted_items->elements, env, element);
     return AXIS2_SUCCESS;
 }
-

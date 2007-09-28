@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,27 +19,27 @@
 #include "notify.h"
 #include <axutil_array_list.h>
 
-int AXIS2_CALL
-notify_free(axis2_svc_skeleton_t *svc_skeleton,
-        const axutil_env_t *env);
+int AXIS2_CALL notify_free(
+    axis2_svc_skeleton_t * svc_skeleton,
+    const axutil_env_t * env);
 
 /*
  * This method invokes the right service method
  */
-axiom_node_t* AXIS2_CALL
-notify_invoke(axis2_svc_skeleton_t *svc_skeleton,
-        const axutil_env_t *env,
-        axiom_node_t *node,
-        axis2_msg_ctx_t *msg_ctx);
+axiom_node_t *AXIS2_CALL notify_invoke(
+    axis2_svc_skeleton_t * svc_skeleton,
+    const axutil_env_t * env,
+    axiom_node_t * node,
+    axis2_msg_ctx_t * msg_ctx);
 
+int AXIS2_CALL notify_init(
+    axis2_svc_skeleton_t * svc_skeleton,
+    const axutil_env_t * env);
 
-int AXIS2_CALL
-notify_init(axis2_svc_skeleton_t *svc_skeleton,
-        const axutil_env_t *env);
-
-axiom_node_t* AXIS2_CALL
-notify_on_fault(axis2_svc_skeleton_t *svc_skeli,
-        const axutil_env_t *env, axiom_node_t *node);
+axiom_node_t *AXIS2_CALL notify_on_fault(
+    axis2_svc_skeleton_t * svc_skeli,
+    const axutil_env_t * env,
+    axiom_node_t * node);
 
 static const axis2_svc_skeleton_ops_t notify_svc_skeleton_ops_var = {
     notify_init,
@@ -47,15 +48,14 @@ static const axis2_svc_skeleton_ops_t notify_svc_skeleton_ops_var = {
     notify_free
 };
 
-
 /*Create function */
 axis2_svc_skeleton_t *
-axis2_notify_create(const axutil_env_t *env)
+axis2_notify_create(
+    const axutil_env_t * env)
 {
     axis2_svc_skeleton_t *svc_skeleton = NULL;
     /* Allocate memory for the structs */
-    svc_skeleton = AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_svc_skeleton_t));
+    svc_skeleton = AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_skeleton_t));
 
     svc_skeleton->ops = &notify_svc_skeleton_ops_var;
 
@@ -66,8 +66,9 @@ axis2_notify_create(const axutil_env_t *env)
 
 /* Initialize the service */
 int AXIS2_CALL
-notify_init(axis2_svc_skeleton_t *svc_skeleton,
-        const axutil_env_t *env)
+notify_init(
+    axis2_svc_skeleton_t * svc_skeleton,
+    const axutil_env_t * env)
 {
     /* Any initialization stuff of notify service should go here */
     return AXIS2_SUCCESS;
@@ -76,11 +77,12 @@ notify_init(axis2_svc_skeleton_t *svc_skeleton,
 /*
  * This method invokes the right service method
  */
-axiom_node_t* AXIS2_CALL
-notify_invoke(axis2_svc_skeleton_t *svc_skeleton,
-        const axutil_env_t *env,
-        axiom_node_t *node,
-        axis2_msg_ctx_t *msg_ctx)
+axiom_node_t *AXIS2_CALL
+notify_invoke(
+    axis2_svc_skeleton_t * svc_skeleton,
+    const axutil_env_t * env,
+    axiom_node_t * node,
+    axis2_msg_ctx_t * msg_ctx)
 {
     /* Invoke the business logic.
      * Depending on the function name invoke the correct impl method.
@@ -93,27 +95,29 @@ notify_invoke(axis2_svc_skeleton_t *svc_skeleton,
 }
 
 /* On fault, handle the fault */
-axiom_node_t* AXIS2_CALL
-notify_on_fault(axis2_svc_skeleton_t *svc_skeli,
-        const axutil_env_t *env, axiom_node_t *node)
+axiom_node_t *AXIS2_CALL
+notify_on_fault(
+    axis2_svc_skeleton_t * svc_skeli,
+    const axutil_env_t * env,
+    axiom_node_t * node)
 {
     /* Here we are just setting a simple error message inside an element
      * called 'EchoServiceError' 
      */
     axiom_node_t *error_node = NULL;
-    axiom_node_t* text_node = NULL;
+    axiom_node_t *text_node = NULL;
     axiom_element_t *error_ele = NULL;
     error_ele = axiom_element_create(env, node, "EchoServiceError", NULL,
-            &error_node);
-    axiom_element_set_text(error_ele, env, "Echo service failed ",
-            text_node);
+                                     &error_node);
+    axiom_element_set_text(error_ele, env, "Echo service failed ", text_node);
     return error_node;
 }
 
 /* Free the resources used */
 int AXIS2_CALL
-notify_free(axis2_svc_skeleton_t *svc_skeleton,
-        const axutil_env_t *env)
+notify_free(
+    axis2_svc_skeleton_t * svc_skeleton,
+    const axutil_env_t * env)
 {
     /* Free the function array */
     if (svc_skeleton->func_array)
@@ -132,13 +136,13 @@ notify_free(axis2_svc_skeleton_t *svc_skeleton,
     return AXIS2_SUCCESS;
 }
 
-
 /**
  * Following block distinguish the exposed part of the dll.
  */
 AXIS2_EXPORT int
-axis2_get_instance(axis2_svc_skeleton_t **inst,
-        const axutil_env_t *env)
+axis2_get_instance(
+    axis2_svc_skeleton_t ** inst,
+    const axutil_env_t * env)
 {
     *inst = axis2_notify_create(env);
     if (!(*inst))
@@ -150,8 +154,9 @@ axis2_get_instance(axis2_svc_skeleton_t **inst,
 }
 
 AXIS2_EXPORT int
-axis2_remove_instance(axis2_svc_skeleton_t *inst,
-        const axutil_env_t *env)
+axis2_remove_instance(
+    axis2_svc_skeleton_t * inst,
+    const axutil_env_t * env)
 {
     axis2_status_t status = AXIS2_FAILURE;
     if (inst)
@@ -160,4 +165,3 @@ axis2_remove_instance(axis2_svc_skeleton_t *inst,
     }
     return status;
 }
-

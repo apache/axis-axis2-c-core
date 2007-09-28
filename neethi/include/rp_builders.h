@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -35,9 +36,10 @@
 #include <rp_asymmetric_binding_builder.h>
 #include <rp_signed_encrypted_parts_builder.h>
 #include <rp_rampart_config_builder.h>
+
 /**
 * @file rp_builders.h
-* @all the secpolicy builders 
+* @all the secpolicy builders
 */
 #ifdef __cplusplus
 extern "C"
@@ -50,4 +52,4 @@ extern "C"
 }
 #endif
 
-#endif /*RP_BUILDERS_H*/
+#endif                          /*RP_BUILDERS_H */

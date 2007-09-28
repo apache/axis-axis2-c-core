@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,7 +18,6 @@
 #ifndef ADD_H
 #define ADD_H
 
-
 #include <axis2_svc_skeleton.h>
 #include <axutil_log_default.h>
 #include <axutil_error_default.h>
@@ -25,8 +25,9 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 
-axiom_node_t *axis2_add_add(const axutil_env_t *env, 
-    axiom_node_t *node, 
-    axis2_msg_ctx_t *msg_ctx);
+axiom_node_t *axis2_add_add(
+    const axutil_env_t * env,
+    axiom_node_t * node,
+    axis2_msg_ctx_t * msg_ctx);
 
-#endif /* ADD_H*/
+#endif                          /* ADD_H */

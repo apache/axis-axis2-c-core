@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,14 +23,11 @@
 #include <neethi_all.h>
 #include <neethi_engine.h>
 
-
-
-AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL 
+AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_layout_builder_build(
-        const axutil_env_t *env,
-        axiom_node_t *node,
-        axiom_element_t *element)
-
+    const axutil_env_t * env,
+    axiom_node_t * node,
+    axiom_element_t * element)
 {
     rp_layout_t *layout = NULL;
     axiom_node_t *child_node = NULL;
@@ -38,39 +36,43 @@ rp_layout_builder_build(
     neethi_assertion_t *assertion = NULL;
 
     layout = rp_layout_create(env);
-    
+
     child_node = axiom_node_get_first_element(node, env);
 
-    if(child_node)
+    if (child_node)
     {
         layout_node = axiom_node_get_first_element(child_node, env);
-        if(!layout_node)
+        if (!layout_node)
         {
             return NULL;
-        }    
-    }     
+        }
+    }
     else
     {
         return NULL;
-    }    
+    }
 
-    if(axiom_node_get_node_type(layout_node, env) == AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(layout_node, env) == AXIOM_ELEMENT)
     {
-        layout_element = (axiom_element_t*)axiom_node_get_data_element(layout_node, env);
-        if(layout_element)
+        layout_element =
+            (axiom_element_t *) axiom_node_get_data_element(layout_node, env);
+        if (layout_element)
         {
             axis2_char_t *local_name = NULL;
 
             local_name = axiom_element_get_localname(layout_element, env);
-            if(!local_name)
+            if (!local_name)
                 return NULL;
             rp_layout_set_value(layout, env, local_name);
-            assertion = neethi_assertion_create_with_args(
-                    env, (void *)rp_layout_free, layout, ASSERTION_TYPE_LAYOUT);
+            assertion =
+                neethi_assertion_create_with_args(env, (void *) rp_layout_free,
+                                                  layout,
+                                                  ASSERTION_TYPE_LAYOUT);
             return assertion;
         }
-        else return NULL;
+        else
+            return NULL;
     }
-    else return NULL;
+    else
+        return NULL;
 }
-

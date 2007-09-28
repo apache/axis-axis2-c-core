@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -37,14 +38,13 @@ extern "C"
 
     AXIS2_EXTERN rp_secpolicy_t *AXIS2_CALL
     rp_policy_create_from_file(
-        const axutil_env_t *env,
-        axis2_char_t *filename);
+        const axutil_env_t * env,
+        axis2_char_t * filename);
 
     AXIS2_EXTERN rp_secpolicy_t *AXIS2_CALL
     rp_policy_create_from_om_node(
-        const axutil_env_t *env,
-        axiom_node_t *root);
-
+        const axutil_env_t * env,
+        axiom_node_t * root);
 
 #ifdef __cplusplus
 }

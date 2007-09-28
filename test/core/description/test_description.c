@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,9 +24,12 @@
 #include <axutil_env.h>
 #include <axutil_allocator.h>
 
-struct axis2_module_desc *create_module_desc(const axutil_env_t *env);
+struct axis2_module_desc *create_module_desc(
+    const axutil_env_t * env);
 
-int axis2_test_op_engage_module()
+int
+axis2_test_op_engage_module(
+    )
 {
     struct axis2_module_desc *moduleref = NULL;
     axis2_conf_t *conf = NULL;
@@ -56,7 +60,9 @@ int axis2_test_op_engage_module()
     return 0;
 }
 
-int axis2_test_svc_add_module_ops()
+int
+axis2_test_svc_add_module_ops(
+    )
 {
     struct axis2_svc *svc = NULL;
     struct axutil_qname *qname = NULL;
@@ -64,7 +70,6 @@ int axis2_test_svc_add_module_ops()
     struct axis2_conf *axis2_config = NULL;
 
     axis2_status_t status = AXIS2_FAILURE;
-
 
     printf("******************************************\n");
     printf("testing axis2_svc_add_module_ops\n");
@@ -87,19 +92,20 @@ int axis2_test_svc_add_module_ops()
     axis2_svc_free(svc, env);
     axutil_qname_free(qname, env);
     axis2_module_desc_free(module_desc, env);
-     axis2_conf_free(axis2_config, env);
+    axis2_conf_free(axis2_config, env);
 
     return 0;
 }
 
-int axis2_test_svc_engage_module()
+int
+axis2_test_svc_engage_module(
+    )
 {
     axis2_svc_t *svc = NULL;
     axutil_qname_t *qname = NULL;
     axis2_module_desc_t *moduleref = NULL;
     axis2_conf_t *axis2_config = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-
 
     printf("******************************************\n");
     printf("testing axis2_svc_engage_module\n");
@@ -123,19 +129,20 @@ int axis2_test_svc_engage_module()
 
     axis2_svc_free(svc, env);
     axutil_qname_free(qname, env);
-     axis2_conf_free(axis2_config, env);
+    axis2_conf_free(axis2_config, env);
 
     return 0;
 }
 
-int axis2_test_svc_get_op()
+int
+axis2_test_svc_get_op(
+    )
 {
     struct axis2_svc *svc = NULL;
     struct axutil_qname *qname = NULL;
     struct axutil_hash_t *ops = NULL;
     struct axis2_op *op = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
-
 
     printf("******************************************\n");
     printf("testing axis2_svc_get_op\n");
@@ -173,7 +180,8 @@ int axis2_test_svc_get_op()
         axis2_char_t *oname = NULL;
         int count = 0;
 
-        for (hi2 = axutil_hash_first(ops, env); hi2; hi2 = axutil_hash_next(env, hi2))
+        for (hi2 = axutil_hash_first(ops, env); hi2;
+             hi2 = axutil_hash_next(env, hi2))
         {
             printf("count = %d \n", count++);
             axis2_svc_get_all_ops(svc, env);
@@ -183,7 +191,7 @@ int axis2_test_svc_get_op()
             if (op2)
             {
                 const axutil_qname_t *qname = NULL;
-                qname = axis2_op_get_qname((axis2_op_t *)op2, env);
+                qname = axis2_op_get_qname((axis2_op_t *) op2, env);
                 oname = axutil_qname_get_localpart(qname, env);
                 printf("op name = %s\n", oname);
             }
@@ -192,11 +200,12 @@ int axis2_test_svc_get_op()
     else
         printf("ops count = zero\n");
 
-
     return 0;
 }
 
-int main()
+int
+main(
+    )
 {
     axis2_test_op_engage_module();
     axis2_test_svc_add_module_ops();

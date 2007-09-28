@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -34,11 +35,11 @@ extern "C"
 #endif
 
     AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
+
     rp_signed_encrypted_parts_builder_build(
-        const axutil_env_t *env,
-        axiom_node_t *node,
-        axiom_element_t *element);
- 
+        const axutil_env_t * env,
+        axiom_node_t * node,
+        axiom_element_t * element);
 
 #ifdef __cplusplus
 }

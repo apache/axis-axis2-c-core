@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-  
+
 #ifndef TCPMON_ENTRY_H
 #define TCPMON_ENTRY_H
 
 #include <axutil_env.h>
 #include <axutil_string.h>
- 
+
 /**
  * @file tcpmon_entry.h
  * @brief represent entry of tcpmon
@@ -30,124 +31,148 @@
 extern "C"
 {
 #endif
-   
-/** 
- * @defgroup represent entry of tcpmon
- * @ingroup tcpmon
- * @{
- */    
- 
-typedef struct tcpmon_entry_ops tcpmon_entry_ops_t;   
-typedef struct tcpmon_entry tcpmon_entry_t;
-
- struct tcpmon_entry_ops
-{
-   /**
-    * free the tcpmon_entry.
-    * @param entry represet the type object.
-    * @param env pointer to environment struct. MUST NOT be NULL.
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE.
-    */
-    axis2_status_t (AXIS2_CALL * 
-    free)(tcpmon_entry_t *entry,
-            const axutil_env_t *env);
-   
-   /**
-    * retrieve the arrived_time
-    * @param entry represet the type object.
-    * @param env pointer to environment struct. MUST NOT be NULL.
-    */
-    axis2_char_t* (AXIS2_CALL *
-    arrived_time) (tcpmon_entry_t *entry,
-                        const axutil_env_t *env);
-
-   /**
-    * retrieve the sent_time
-    * @param entry represet the type object.
-    * @param env pointer to environment struct. MUST NOT be NULL.
-    */
-    axis2_char_t* (AXIS2_CALL *
-    sent_time) (tcpmon_entry_t *entry,
-                        const axutil_env_t *env);
-
-   /**
-    * retrieve the arrived_time - sent_time ( in seconds)
-    * @param entry represet the type object.
-    * @param env pointer to environment struct. MUST NOT be NULL.
-    */
-    axis2_char_t* (AXIS2_CALL *
-    time_diff) (tcpmon_entry_t *entry,
-                        const axutil_env_t *env);
-
-   /**
-    * retrieve the sent data
-    * @param entry represet the type object.
-    * @param env pointer to environment struct. MUST NOT be NULL.
-    */
-    axis2_char_t* (AXIS2_CALL *
-    sent_data) (tcpmon_entry_t *entry,
-                        const axutil_env_t *env);
- 
-   /**
-    * retrieve the arrived data
-    * @param entry represet the type object.
-    * @param env pointer to environment struct. MUST NOT be NULL.
-    */
-    axis2_char_t* (AXIS2_CALL *
-    arrived_data) (tcpmon_entry_t *entry,
-                        const axutil_env_t *env);
 
     /**
-    * retrieve the sent headers 
-    * @param entry represet the type object.
-    * @param env pointer to environment struct. MUST NOT be NULL.
-    */
-    axis2_char_t* (AXIS2_CALL *
-    sent_headers) (tcpmon_entry_t *entry,
-                        const axutil_env_t *env);
- 
-   /**
-    * retrieve the arrived headers
-    * @param entry represet the type object.
-    * @param env pointer to environment struct. MUST NOT be NULL.
-    */
-    axis2_char_t* (AXIS2_CALL *
-    arrived_headers) (tcpmon_entry_t *entry,
-                        const axutil_env_t *env);
+     * @defgroup represent entry of tcpmon
+     * @ingroup tcpmon
+     * @{
+     */
 
-   /**
-    * retrieve whether the transportation success
-    * @param entry represet the type object.
-    * @param env pointer to environment struct. MUST NOT be NULL.
-    */
-    axis2_bool_t (AXIS2_CALL *
-    is_success) (tcpmon_entry_t *entry,
-                        const axutil_env_t *env);
+    typedef struct tcpmon_entry_ops tcpmon_entry_ops_t;
+    typedef struct tcpmon_entry tcpmon_entry_t;
 
-    int (AXIS2_CALL *
-    get_format_bit) (tcpmon_entry_t *entry,
-	                    const axutil_env_t *env);
+    struct tcpmon_entry_ops
+    {
 
-    axis2_status_t (AXIS2_CALL *
-    set_format_bit) (tcpmon_entry_t *entry,
-                        const axutil_env_t *env,
-                        int format_bit);
-};
+        /**
+         * free the tcpmon_entry.
+         * @param entry represet the type object.
+         * @param env pointer to environment struct. MUST NOT be NULL.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE.
+         */
+        axis2_status_t(
+            AXIS2_CALL
+            * free)(
+                tcpmon_entry_t * entry,
+                const axutil_env_t * env);
 
- struct tcpmon_entry 
-{
-    tcpmon_entry_ops_t *ops;
-};
+        /**
+         * retrieve the arrived_time
+         * @param entry represet the type object.
+         * @param env pointer to environment struct. MUST NOT be NULL.
+         */
+        axis2_char_t *(
+            AXIS2_CALL
+            * arrived_time)(
+                tcpmon_entry_t * entry,
+                const axutil_env_t * env);
 
-/**
- * Creates tcpmon_entry struct
- * @param env double pointer to environment struct. MUST NOT be NULL
- * @return pointer to newly created tcpmon_entry struct
- */
-tcpmon_entry_t * AXIS2_CALL
-tcpmon_entry_create(const axutil_env_t *env );
+        /**
+         * retrieve the sent_time
+         * @param entry represet the type object.
+         * @param env pointer to environment struct. MUST NOT be NULL.
+         */
+        axis2_char_t *(
+            AXIS2_CALL
+            * sent_time)(
+                tcpmon_entry_t * entry,
+                const axutil_env_t * env);
 
-/*************************** Function macros **********************************/
+        /**
+         * retrieve the arrived_time - sent_time ( in seconds)
+         * @param entry represet the type object.
+         * @param env pointer to environment struct. MUST NOT be NULL.
+         */
+        axis2_char_t *(
+            AXIS2_CALL
+            * time_diff)(
+                tcpmon_entry_t * entry,
+                const axutil_env_t * env);
+
+        /**
+         * retrieve the sent data
+         * @param entry represet the type object.
+         * @param env pointer to environment struct. MUST NOT be NULL.
+         */
+        axis2_char_t *(
+            AXIS2_CALL
+            * sent_data)(
+                tcpmon_entry_t * entry,
+                const axutil_env_t * env);
+
+        /**
+         * retrieve the arrived data
+         * @param entry represet the type object.
+         * @param env pointer to environment struct. MUST NOT be NULL.
+         */
+        axis2_char_t *(
+            AXIS2_CALL
+            * arrived_data)(
+                tcpmon_entry_t * entry,
+                const axutil_env_t * env);
+
+        /**
+        * retrieve the sent headers 
+        * @param entry represet the type object.
+        * @param env pointer to environment struct. MUST NOT be NULL.
+        */
+        axis2_char_t *(
+            AXIS2_CALL
+            * sent_headers)(
+                tcpmon_entry_t * entry,
+                const axutil_env_t * env);
+
+        /**
+         * retrieve the arrived headers
+         * @param entry represet the type object.
+         * @param env pointer to environment struct. MUST NOT be NULL.
+         */
+        axis2_char_t *(
+            AXIS2_CALL
+            * arrived_headers)(
+                tcpmon_entry_t * entry,
+                const axutil_env_t * env);
+
+        /**
+         * retrieve whether the transportation success
+         * @param entry represet the type object.
+         * @param env pointer to environment struct. MUST NOT be NULL.
+         */
+        axis2_bool_t(
+            AXIS2_CALL
+            * is_success)(
+                tcpmon_entry_t * entry,
+                const axutil_env_t * env);
+
+        int(
+            AXIS2_CALL
+            * get_format_bit)(
+                tcpmon_entry_t * entry,
+                const axutil_env_t * env);
+
+        axis2_status_t(
+            AXIS2_CALL
+            * set_format_bit)(
+                tcpmon_entry_t * entry,
+                const axutil_env_t * env,
+                int format_bit);
+    };
+
+    struct tcpmon_entry
+    {
+        tcpmon_entry_ops_t *ops;
+    };
+
+    /**
+     * Creates tcpmon_entry struct
+     * @param env double pointer to environment struct. MUST NOT be NULL
+     * @return pointer to newly created tcpmon_entry struct
+     */
+    tcpmon_entry_t *AXIS2_CALL
+    tcpmon_entry_create(
+        const axutil_env_t * env);
+
+    /*************************** Function macros **********************************/
 
 #define TCPMON_ENTRY_FREE(entry, env) \
         ((entry)->ops->free (entry, env))
@@ -182,10 +207,10 @@ tcpmon_entry_create(const axutil_env_t *env );
 #define TCPMON_ENTRY_GET_FORMAT_BIT(entry, env) \
         ((entry)->ops->get_format_bit(entry, env))
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* TCPMON_ENTRY_H */
+#endif                          /* TCPMON_ENTRY_H */

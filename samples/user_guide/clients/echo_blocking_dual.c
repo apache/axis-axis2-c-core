@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -20,20 +21,24 @@
 #include <axiom_soap.h>
 #include <axis2_client.h>
 
-int main(int argc, char** argv)
+int
+main(
+    int argc,
+    char **argv)
 {
     const axutil_env_t *env = NULL;
     const axis2_char_t *address = NULL;
-    axis2_endpoint_ref_t* endpoint_ref = NULL;
-    axis2_endpoint_ref_t* reply_to = NULL;
+    axis2_endpoint_ref_t *endpoint_ref = NULL;
+    axis2_endpoint_ref_t *reply_to = NULL;
     axis2_options_t *options = NULL;
     const axis2_char_t *client_home = NULL;
-    axis2_svc_client_t* svc_client = NULL;
+    axis2_svc_client_t *svc_client = NULL;
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
 
     /* Set up the environment */
-    env = axutil_env_create_all("echo_blocking_dual.log", AXIS2_LOG_LEVEL_TRACE);
+    env =
+        axutil_env_create_all("echo_blocking_dual.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */
     address = "http://localhost:9090/axis2/services/echo";
@@ -57,8 +62,10 @@ int main(int argc, char** argv)
 
     /* Seperate listner needs addressing, hence addressing stuff in options */
     axis2_options_set_action(options, env,
-            "http://ws.apache.org/axis2/c/samples/echoString");
-    reply_to = axis2_endpoint_ref_create(env, "http://localhost:6060/axis2/services/__ANONYMOUS_SERVICE__/__OPERATION_OUT_IN__");
+                             "http://ws.apache.org/axis2/c/samples/echoString");
+    reply_to =
+        axis2_endpoint_ref_create(env,
+                                  "http://localhost:6060/axis2/services/__ANONYMOUS_SERVICE__/__OPERATION_OUT_IN__");
     axis2_options_set_reply_to(options, env, reply_to);
 
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up
@@ -69,18 +76,20 @@ int main(int argc, char** argv)
      * modules that the client uses
      */
     client_home = AXIS2_GETENV("AXIS2C_HOME");
-    if (!client_home || !strcmp (client_home, ""))
+    if (!client_home || !strcmp(client_home, ""))
         client_home = "../..";
 
     /* Create service client */
     svc_client = axis2_svc_client_create(env, client_home);
     if (!svc_client)
     {
-        printf("Error creating service client, Please check AXIS2C_HOME again\n");
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-                " %d :: %s", env->error->error_number,
-                AXIS2_ERROR_GET_MESSAGE(env->error));
-		  return -1;
+        printf
+            ("Error creating service client, Please check AXIS2C_HOME again\n");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Stub invoke FAILED: Error code:" " %d :: %s",
+                        env->error->error_number,
+                        AXIS2_ERROR_GET_MESSAGE(env->error));
+        return -1;
     }
 
     /* Set service client options */
@@ -88,7 +97,7 @@ int main(int argc, char** argv)
 
     axis2_svc_client_engage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);
 
-    /* Build the SOAP request message payload using OM API.*/
+    /* Build the SOAP request message payload using OM API. */
     payload = build_om_payload_for_echo_svc(env);
 
     /* Send request */
@@ -107,9 +116,10 @@ int main(int argc, char** argv)
     }
     else
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-                " %d :: %s", env->error->error_number,
-                AXIS2_ERROR_GET_MESSAGE(env->error));
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Stub invoke FAILED: Error code:" " %d :: %s",
+                        env->error->error_number,
+                        AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("echo client invoke FAILED!\n");
     }
 
@@ -125,6 +135,6 @@ int main(int argc, char** argv)
         axutil_env_free((axutil_env_t *) env);
         env = NULL;
     }
- 
+
     return 0;
 }

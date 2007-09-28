@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,41 +18,46 @@
 
 #include "axis2_WSDLInteropTestDocLitService_stub.h"
 
-int main(int argc, char** argv)
+int
+main(
+    int argc,
+    char **argv)
 {
-    axutil_env_t* env = NULL;
-    axis2_char_t* client_home = NULL;
+    axutil_env_t *env = NULL;
+    axis2_char_t *client_home = NULL;
 
-    axis2_char_t* endpoint_uri = NULL;
+    axis2_char_t *endpoint_uri = NULL;
 
-    axis2_stub_t* stub = NULL;
+    axis2_stub_t *stub = NULL;
 
     /* variables use databinding */
-    axis2_echoStruct_t* echo_in = NULL;
-    axis2_echoStructResponse_t* echo_out = NULL;
-    axis2_SOAPStruct_t* struct_in = NULL;
-    axis2_SOAPStruct_t* struct_out = NULL;
-
+    axis2_echoStruct_t *echo_in = NULL;
+    axis2_echoStructResponse_t *echo_out = NULL;
+    axis2_SOAPStruct_t *struct_in = NULL;
+    axis2_SOAPStruct_t *struct_out = NULL;
 
     float float_val = 11;
     int int_val = 10;
-    char* string_val = "hello struct";
+    char *string_val = "hello struct";
 
     int ret_int_val = 0;
     float ret_float_val = 0;
-    char* ret_string_val = "";
+    char *ret_string_val = "";
 
     endpoint_uri = "http://localhost:9090/axis2/services/interop_doc2";
 
-    env = axutil_env_create_all("codegen_utest_blocking.log", AXIS2_LOG_LEVEL_TRACE);
+    env =
+        axutil_env_create_all("codegen_utest_blocking.log",
+                              AXIS2_LOG_LEVEL_TRACE);
 
-    /* Set up deploy folder.*/
+    /* Set up deploy folder. */
     client_home = AXIS2_GETENV("AXIS2C_HOME");
     if (!client_home)
         client_home = "../../../deploy";
 
     stub = axis2_WSDLInteropTestDocLitService_stub_create(env,
-            client_home , endpoint_uri);
+                                                          client_home,
+                                                          endpoint_uri);
 
     /* create the struct */
     struct_in = axis2_SOAPStruct_create(env);
@@ -63,7 +69,7 @@ int main(int argc, char** argv)
     echo_in = axis2_echoStruct_create(env);
     AXIS2_ECHOSTRUCT_SET_PARAM0(echo_in, env, struct_in);
 
-    /* invoke the web service method*/
+    /* invoke the web service method */
     echo_out = axis2_echoStruct(stub, env, echo_in);
 
     /* return the output params using databinding */

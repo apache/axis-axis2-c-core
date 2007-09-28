@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,7 +23,9 @@
 #include <axutil_env.h>
 #include <stdio.h>
 
-void axis2_test_conf_ctx_init()
+void
+axis2_test_conf_ctx_init(
+    )
 {
     struct axis2_conf *conf = NULL;
     struct axis2_svc_grp_ctx *svc_grp_ctx1 = NULL;
@@ -72,7 +75,7 @@ void axis2_test_conf_ctx_init()
     op_ctx1 = axis2_op_ctx_create(env, op, svc_ctx1);
     op_ctx2 = axis2_op_ctx_create(env, op, svc_ctx2);
 
-    op_ctx_map =  axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
+    op_ctx_map = axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
 
     if (op_ctx_map)
     {
@@ -80,23 +83,27 @@ void axis2_test_conf_ctx_init()
         axutil_hash_set(op_ctx_map, "op_ctx2", AXIS2_HASH_KEY_STRING, op_ctx2);
     }
 
-    svc_ctx_map =  axis2_conf_ctx_get_svc_ctx_map(conf_ctx, env);
+    svc_ctx_map = axis2_conf_ctx_get_svc_ctx_map(conf_ctx, env);
 
     if (svc_ctx_map)
     {
-        axutil_hash_set(svc_ctx_map, "svc_ctx1", AXIS2_HASH_KEY_STRING, svc_ctx1);
-        axutil_hash_set(svc_ctx_map, "svc_ctx2", AXIS2_HASH_KEY_STRING, svc_ctx2);
+        axutil_hash_set(svc_ctx_map, "svc_ctx1", AXIS2_HASH_KEY_STRING,
+                        svc_ctx1);
+        axutil_hash_set(svc_ctx_map, "svc_ctx2", AXIS2_HASH_KEY_STRING,
+                        svc_ctx2);
     }
 
-    svc_grp_ctx_map =  axis2_conf_ctx_get_svc_grp_ctx_map(conf_ctx, env);
+    svc_grp_ctx_map = axis2_conf_ctx_get_svc_grp_ctx_map(conf_ctx, env);
 
     if (svc_grp_ctx_map)
     {
-        axutil_hash_set(svc_ctx_map, "svc_grp_ctx1", AXIS2_HASH_KEY_STRING, svc_grp_ctx1);
-        axutil_hash_set(svc_ctx_map, "svc_grp_ctx2", AXIS2_HASH_KEY_STRING, svc_grp_ctx2);
+        axutil_hash_set(svc_ctx_map, "svc_grp_ctx1", AXIS2_HASH_KEY_STRING,
+                        svc_grp_ctx1);
+        axutil_hash_set(svc_ctx_map, "svc_grp_ctx2", AXIS2_HASH_KEY_STRING,
+                        svc_grp_ctx2);
     }
 
-    status =  axis2_conf_ctx_init(conf_ctx, env, conf);
+    status = axis2_conf_ctx_init(conf_ctx, env, conf);
 
     if (status != AXIS2_SUCCESS)
     {
@@ -105,10 +112,12 @@ void axis2_test_conf_ctx_init()
     else
         printf("SUCCESS\n");
 
-     axis2_conf_ctx_free(conf_ctx, env);
+    axis2_conf_ctx_free(conf_ctx, env);
 }
 
-int main()
+int
+main(
+    )
 {
     axis2_test_conf_ctx_init();
     return 0;

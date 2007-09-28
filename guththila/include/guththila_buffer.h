@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,24 +22,25 @@
 #include <axutil_utils.h>
 
 EXTERN_C_START()
-
-typedef enum guththila_buffer_type {	
-	GUTHTHILA_SINGLE_BUFFER = 0,	
-	GUTHTHILA_MULTIPLE_BUFFER
+typedef enum guththila_buffer_type
+{
+    GUTHTHILA_SINGLE_BUFFER = 0,
+    GUTHTHILA_MULTIPLE_BUFFER
 } guththila_buffer_type_t;
 
 typedef struct guththila_buffer_s
 {
-    /* Required to manupulate multiple buffers*/
+    /* Required to manupulate multiple buffers */
     size_t *data_size;
-	size_t *buffs_size;
-	char **buff;
-	int cur_buff;
-	int cur_buff_pos;
-	size_t pre_tot_data;
-	unsigned int no_buffers;
-	short type;
-} guththila_buffer_t;
+    size_t *buffs_size;
+    char **buff;
+    int cur_buff;
+    int cur_buff_pos;
+    size_t pre_tot_data;
+    unsigned int no_buffers;
+    short type;
+}
+guththila_buffer_t;
 
 #define GUTHTHILA_BUFFER_DEF_SIZE 4096
 #define GUTHTHILA_BUFFER_NUMBER_OF_BUFFERS 4
@@ -66,19 +68,41 @@ typedef struct guththila_buffer_s
 /*We never consider tokens not in the current buffer*/
 #ifndef GUTHTHILA_BUF_POS
 #define GUTHTHILA_BUF_POS(_buffer, _pos) ((_buffer).buff[(_buffer).cur_buff] + _pos - (_buffer).pre_tot_data)
-#endif 
+#endif
 
-int GUTHTHILA_CALL guththila_buffer_init(guththila_buffer_t *buffer, int size, const axutil_env_t *env);
-int GUTHTHILA_CALL guththila_buffer_un_init(guththila_buffer_t *buffer, const axutil_env_t *env); 
-int GUTHTHILA_CALL guththila_buffer_init_for_buffer (guththila_buffer_t *mu_buff, char *buffer, int size, const axutil_env_t *env);
+int GUTHTHILA_CALL guththila_buffer_init(
+    guththila_buffer_t * buffer,
+    int size,
+    const axutil_env_t * env);
+int GUTHTHILA_CALL guththila_buffer_un_init(
+    guththila_buffer_t * buffer,
+    const axutil_env_t * env);
+int GUTHTHILA_CALL guththila_buffer_init_for_buffer(
+    guththila_buffer_t * mu_buff,
+    char *buffer,
+    int size,
+    const axutil_env_t * env);
 
-void * GUTHTHILA_CALL guththila_get_position(guththila_buffer_t *buffer, int pos, const axutil_env_t *env);
+void *GUTHTHILA_CALL guththila_get_position(
+    guththila_buffer_t * buffer,
+    int pos,
+    const axutil_env_t * env);
 
-int GUTHTHILA_CALL guththila_buffer_next(guththila_buffer_t * buffer, const axutil_env_t *env);
-void * GUTHTHILA_CALL guththila_buffer_get(guththila_buffer_t * buffer, const axutil_env_t *env);
-int GUTHTHILA_CALL guththila_buffer_shift(guththila_buffer_t * buffer, int no, const axutil_env_t *env);
-int GUTHTHILA_CALL guththila_buffer_insert_data (guththila_buffer_t * buffer, void *buff, size_t buff_len, const axutil_env_t *env);
+int GUTHTHILA_CALL guththila_buffer_next(
+    guththila_buffer_t * buffer,
+    const axutil_env_t * env);
+void *GUTHTHILA_CALL guththila_buffer_get(
+    guththila_buffer_t * buffer,
+    const axutil_env_t * env);
+int GUTHTHILA_CALL guththila_buffer_shift(
+    guththila_buffer_t * buffer,
+    int no,
+    const axutil_env_t * env);
+int GUTHTHILA_CALL guththila_buffer_insert_data(
+    guththila_buffer_t * buffer,
+    void *buff,
+    size_t buff_len,
+    const axutil_env_t * env);
 
 EXTERN_C_END()
-#endif 
-
+#endif

@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -32,44 +33,53 @@ extern "C"
     typedef struct rp_https_token_t rp_https_token_t;
 
     AXIS2_EXTERN rp_https_token_t *AXIS2_CALL
-    rp_https_token_create(const axutil_env_t *env);
+    rp_https_token_create(
+        const axutil_env_t * env);
 
     AXIS2_EXTERN void AXIS2_CALL
-    rp_https_token_free(rp_https_token_t *https_token,
-                        const axutil_env_t *env);
+    rp_https_token_free(
+        rp_https_token_t * https_token,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    rp_https_token_get_inclusion(rp_https_token_t *https_token,
-                                 const axutil_env_t *env);
+    rp_https_token_get_inclusion(
+        rp_https_token_t * https_token,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_https_token_set_inclusion(rp_https_token_t *https_token,
-                                 const axutil_env_t *env,
-                                 axis2_char_t *inclusion);
+    rp_https_token_set_inclusion(
+        rp_https_token_t * https_token,
+        const axutil_env_t * env,
+        axis2_char_t * inclusion);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    rp_https_token_get_derivedkeys(rp_https_token_t *https_token,
-                                   const axutil_env_t *env);
+    rp_https_token_get_derivedkeys(
+        rp_https_token_t * https_token,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_https_token_set_derivedkeys(rp_https_token_t *https_token,
-                                   const axutil_env_t *env,
-                                   axis2_bool_t derivedkeys);
+    rp_https_token_set_derivedkeys(
+        rp_https_token_t * https_token,
+        const axutil_env_t * env,
+        axis2_bool_t derivedkeys);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    rp_https_token_get_require_client_certificate(rp_https_token_t *https_token,
-            const axutil_env_t *env);
+
+    rp_https_token_get_require_client_certificate(
+        rp_https_token_t * https_token,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_https_token_set_require_client_certificate(rp_https_token_t *https_token,
-            const axutil_env_t *env,
-            axis2_bool_t require_client_certificate);
+
+    rp_https_token_set_require_client_certificate(
+        rp_https_token_t * https_token,
+        const axutil_env_t * env,
+        axis2_bool_t require_client_certificate);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     rp_https_token_increment_ref(
-            rp_https_token_t *https_token,
-            const axutil_env_t *env);
-    
+        rp_https_token_t * https_token,
+        const axutil_env_t * env);
 
 #ifdef __cplusplus
 }

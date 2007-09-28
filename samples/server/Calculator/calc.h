@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,7 +18,6 @@
 #ifndef CALC_H
 #define CALC_H
 
-
 #include <axis2_svc_skeleton.h>
 #include <axutil_log_default.h>
 #include <axutil_error_default.h>
@@ -25,9 +25,17 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 
-axiom_node_t *axis2_calc_add(const axutil_env_t *env, axiom_node_t *node);
-axiom_node_t *axis2_calc_sub(const axutil_env_t *env, axiom_node_t *node);
-axiom_node_t *axis2_calc_mul(const axutil_env_t *env, axiom_node_t *node);
-axiom_node_t *axis2_calc_div(const axutil_env_t *env, axiom_node_t *node);
+axiom_node_t *axis2_calc_add(
+    const axutil_env_t * env,
+    axiom_node_t * node);
+axiom_node_t *axis2_calc_sub(
+    const axutil_env_t * env,
+    axiom_node_t * node);
+axiom_node_t *axis2_calc_mul(
+    const axutil_env_t * env,
+    axiom_node_t * node);
+axiom_node_t *axis2_calc_div(
+    const axutil_env_t * env,
+    axiom_node_t * node);
 
-#endif /* CALC_H*/
+#endif                          /* CALC_H */

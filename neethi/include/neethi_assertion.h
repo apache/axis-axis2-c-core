@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,10 +19,9 @@
 #ifndef NEETHI_ASSERTION_H
 #define NEETHI_ASSERTION_H
 
-
 /**
   * @file neethi_assertion.h
-  * @common struct for policy assertions. 
+  * @common struct for policy assertions.
   */
 
 #include <axis2_defines.h>
@@ -34,8 +34,8 @@ extern "C"
 {
 #endif
 
-
-    typedef enum  {
+    typedef enum
+    {
         ASSERTION_TYPE_TRANSPORT_BINDING = 0,
         ASSERTION_TYPE_TRANSPORT_TOKEN,
         ASSERTION_TYPE_ALGORITHM_SUITE,
@@ -69,95 +69,106 @@ extern "C"
         ASSERTION_TYPE_WSS_X509_V3_TOKEN_10,
         ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS,
         ASSERTION_TYPE_UNKNOWN
-    }neethi_assertion_type_t;
+    } neethi_assertion_type_t;
 
     typedef struct neethi_assertion_t neethi_assertion_t;
 
     AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
-    neethi_assertion_create(const axutil_env_t *env);
+    neethi_assertion_create(
+        const axutil_env_t * env);
 
     neethi_assertion_t *AXIS2_CALL
-    neethi_assertion_create_with_args(const axutil_env_t *env,
+    neethi_assertion_create_with_args(
+        const axutil_env_t * env,
         AXIS2_FREE_VOID_ARG free_func,
         void *value,
         neethi_assertion_type_t type);
 
     AXIS2_EXTERN void AXIS2_CALL
-    neethi_assertion_free(neethi_assertion_t *neethi_assertion,
-        const axutil_env_t *env);
+    neethi_assertion_free(
+        neethi_assertion_t * neethi_assertion,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN neethi_assertion_type_t AXIS2_CALL
-    neethi_assertion_get_type(neethi_assertion_t *neethi_assertion,
-            const axutil_env_t *env);
+
+    neethi_assertion_get_type(
+        neethi_assertion_t * neethi_assertion,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN void *AXIS2_CALL
     neethi_assertion_get_value(
-        neethi_assertion_t *neethi_assertion,
-        const axutil_env_t *env);
+        neethi_assertion_t * neethi_assertion,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    neethi_assertion_set_value(neethi_assertion_t *neethi_assertion,
-        const axutil_env_t *env,
+    neethi_assertion_set_value(
+        neethi_assertion_t * neethi_assertion,
+        const axutil_env_t * env,
         void *value,
         neethi_assertion_type_t type);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
     neethi_assertion_get_element(
-        neethi_assertion_t *neethi_assertion,
-        const axutil_env_t *env);
+        neethi_assertion_t * neethi_assertion,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    neethi_assertion_set_element(neethi_assertion_t *neethi_assertion,
-        const axutil_env_t *env,
-        axiom_element_t *element);
+    neethi_assertion_set_element(
+        neethi_assertion_t * neethi_assertion,
+        const axutil_env_t * env,
+        axiom_element_t * element);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     neethi_assertion_get_is_optional(
-        neethi_assertion_t *neethi_assertion,
-        const axutil_env_t *env);
+        neethi_assertion_t * neethi_assertion,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    neethi_assertion_set_is_optional(neethi_assertion_t *neethi_assertion,
-        const axutil_env_t *env,
+    neethi_assertion_set_is_optional(
+        neethi_assertion_t * neethi_assertion,
+        const axutil_env_t * env,
         axis2_bool_t is_optional);
-        
+
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+
     neethi_assertion_get_policy_components(
-        neethi_assertion_t *neethi_assertion,
-        const axutil_env_t *env);
+        neethi_assertion_t * neethi_assertion,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
     neethi_assertion_add_policy_components(
-        neethi_assertion_t *neethi_assertion,
-        axutil_array_list_t *arraylist,
-        const axutil_env_t *env);
+        neethi_assertion_t * neethi_assertion,
+        axutil_array_list_t * arraylist,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    neethi_assertion_add_operator(neethi_assertion_t *neethi_assertion,
-        const axutil_env_t *env,
-        neethi_operator_t *op);
+    neethi_assertion_add_operator(
+        neethi_assertion_t * neethi_assertion,
+        const axutil_env_t * env,
+        neethi_operator_t * op);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    neethi_assertion_is_empty(neethi_assertion_t *neethi_assertion,
-            const axutil_env_t *env);
+    neethi_assertion_is_empty(
+        neethi_assertion_t * neethi_assertion,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
     neethi_assertion_get_node(
-            neethi_assertion_t *neethi_assertion,
-            const axutil_env_t *env);
+        neethi_assertion_t * neethi_assertion,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    neethi_assertion_set_node(neethi_assertion_t *neethi_assertion,
-            const axutil_env_t *env,
-            axiom_node_t *node);
+    neethi_assertion_set_node(
+        neethi_assertion_t * neethi_assertion,
+        const axutil_env_t * env,
+        axiom_node_t * node);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     neethi_assertion_serialize(
-            neethi_assertion_t *assertion,
-            axiom_node_t *parent,
-            const axutil_env_t *env);
-    
-
+        neethi_assertion_t * assertion,
+        axiom_node_t * parent,
+        const axutil_env_t * env);
 
     /** @} */
 #ifdef __cplusplus

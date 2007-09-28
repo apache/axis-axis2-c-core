@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,10 +19,9 @@
 #ifndef NEETHI_UTIL_H
 #define NEETHI_UTIL_H
 
-
 /**
   * @file neethi_util.h
-  * @policy creation utilities 
+  * @policy creation utilities
   */
 
 #include <axis2_defines.h>
@@ -36,16 +36,16 @@ extern "C"
 #endif
 
     AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
+
     neethi_util_create_policy_from_file(
-            const axutil_env_t *env,
-            axis2_char_t *file_name);
-    
+        const axutil_env_t * env,
+        axis2_char_t * file_name);
+
     AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
+
     neethi_util_create_policy_from_om(
-        const axutil_env_t *env,
-        axiom_node_t *root_node);
-
-
+        const axutil_env_t * env,
+        axiom_node_t * root_node);
 
     /** @} */
 #ifdef __cplusplus

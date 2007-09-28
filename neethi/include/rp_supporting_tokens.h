@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -35,87 +36,108 @@ extern "C"
     typedef struct rp_supporting_tokens_t rp_supporting_tokens_t;
 
     AXIS2_EXTERN rp_supporting_tokens_t *AXIS2_CALL
-    rp_supporting_tokens_create(const axutil_env_t *env);
+
+    rp_supporting_tokens_create(
+        const axutil_env_t * env);
 
     AXIS2_EXTERN void AXIS2_CALL
-    rp_supporting_tokens_free(rp_supporting_tokens_t *supporting_tokens,
-                              const axutil_env_t *env);
+    rp_supporting_tokens_free(
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+
     rp_supporting_tokens_get_tokens(
-        rp_supporting_tokens_t *supporting_tokens,
-        const axutil_env_t *env);
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_supporting_tokens_add_token(rp_supporting_tokens_t *supporting_tokens,
-                                   const axutil_env_t *env,
-                                   rp_property_t *token);
+    rp_supporting_tokens_add_token(
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env,
+        rp_property_t * token);
 
     AXIS2_EXTERN rp_algorithmsuite_t *AXIS2_CALL
+
     rp_supporting_tokens_get_algorithmsuite(
-        rp_supporting_tokens_t *supporting_tokens,
-        const axutil_env_t *env);
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_supporting_tokens_set_algorithmsuite(rp_supporting_tokens_t *supporting_tokens,
-                                            const axutil_env_t *env,
-                                            rp_algorithmsuite_t *algorithmsuite);
+
+    rp_supporting_tokens_set_algorithmsuite(
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env,
+        rp_algorithmsuite_t * algorithmsuite);
 
     AXIS2_EXTERN rp_signed_encrypted_parts_t *AXIS2_CALL
+
     rp_supporting_tokens_get_signed_parts(
-        rp_supporting_tokens_t *supporting_tokens,
-        const axutil_env_t *env);
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_supporting_tokens_set_signed_parts(rp_supporting_tokens_t *supporting_tokens,
-                                          const axutil_env_t *env,
-                                          rp_signed_encrypted_parts_t *signed_parts);
+
+    rp_supporting_tokens_set_signed_parts(
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env,
+        rp_signed_encrypted_parts_t * signed_parts);
 
     AXIS2_EXTERN rp_signed_encrypted_elements_t *AXIS2_CALL
+
     rp_supporting_tokens_get_signed_elements(
-        rp_supporting_tokens_t *supporting_tokens,
-        const axutil_env_t *env);
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_supporting_tokens_set_signed_elements(rp_supporting_tokens_t *supporting_tokens,
-            const axutil_env_t *env,
-            rp_signed_encrypted_elements_t *signed_elements);
+
+    rp_supporting_tokens_set_signed_elements(
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env,
+        rp_signed_encrypted_elements_t * signed_elements);
 
     AXIS2_EXTERN rp_signed_encrypted_parts_t *AXIS2_CALL
+
     rp_supporting_tokens_get_encrypted_parts(
-        rp_supporting_tokens_t *supporting_tokens,
-        const axutil_env_t *env);
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_supporting_tokens_set_encrypted_parts(rp_supporting_tokens_t *supporting_tokens,
-            const axutil_env_t *env,
-            rp_signed_encrypted_parts_t *encrypted_parts);
+
+    rp_supporting_tokens_set_encrypted_parts(
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env,
+        rp_signed_encrypted_parts_t * encrypted_parts);
 
     AXIS2_EXTERN rp_signed_encrypted_elements_t *AXIS2_CALL
+
     rp_supporting_tokens_get_encrypted_elements(
-        rp_supporting_tokens_t *supporting_tokens,
-        const axutil_env_t *env);
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_supporting_tokens_set_encrypted_elements(rp_supporting_tokens_t *supporting_tokens,
-            const axutil_env_t *env,
-            rp_signed_encrypted_elements_t *encrypted_elements);
+
+    rp_supporting_tokens_set_encrypted_elements(
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env,
+        rp_signed_encrypted_elements_t * encrypted_elements);
 
     AXIS2_EXTERN int AXIS2_CALL
     rp_supporting_tokens_get_type(
-        rp_supporting_tokens_t *supporting_tokens,
-        const axutil_env_t *env);
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_supporting_tokens_set_type(rp_supporting_tokens_t *supporting_tokens,
-                                  const axutil_env_t *env,
-                                  int type);
+    rp_supporting_tokens_set_type(
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env,
+        int type);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_supporting_tokens_increment_ref(rp_supporting_tokens_t *supporting_tokens,
-                                       const axutil_env_t *env);
-    
 
+    rp_supporting_tokens_increment_ref(
+        rp_supporting_tokens_t * supporting_tokens,
+        const axutil_env_t * env);
 
 #ifdef __cplusplus
 }
