@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,15 +18,17 @@
 
 #include <platforms/windows/axutil_date_time_util_windows.h>
 
-AXIS2_EXTERN int AXIS2_CALL axis2_platform_get_milliseconds() 
+AXIS2_EXTERN int AXIS2_CALL
+axis2_platform_get_milliseconds(
+    )
 {
-   struct _timeb timebuffer;
-   char *timeline;
-   int milliseconds = 0; 
+    struct _timeb timebuffer;
+    char *timeline;
+    int milliseconds = 0;
 
-   _ftime( &timebuffer );
-   timeline = ctime( & ( timebuffer.time ) );
-   milliseconds = timebuffer.millitm;
-    
-   return milliseconds; 
+    _ftime(&timebuffer);
+    timeline = ctime(&(timebuffer.time));
+    milliseconds = timebuffer.millitm;
+
+    return milliseconds;
 }

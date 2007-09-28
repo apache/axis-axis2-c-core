@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,11 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
-
+ 
 #include <windows/axutil_windows.h>
 #include <stdio.h>
+    
 
 /*
 
@@ -41,18 +41,18 @@ std::string* getPlatformErrorMessage(long errorNumber)
 
     return returningString;
 }
-*/
-AXIS2_EXTERN HMODULE AXIS2_CALL
-callLoadLib(char* lib)
+*/ 
+    AXIS2_EXTERN HMODULE AXIS2_CALL  callLoadLib(char *lib) 
 {
-
-    SetErrorMode(SEM_FAILCRITICALERRORS); //Disable display of the critical-error-handler message box
+    SetErrorMode(SEM_FAILCRITICALERRORS); //Disable display of the critical-error-handler message box
     return LoadLibrary(lib);
-}
-
-AXIS2_EXTERN struct tm *AXIS2_CALL
-            axis2_win_gmtime(const time_t *timep, struct tm *result)
+}
+AXIS2_EXTERN struct tm *AXIS2_CALL 
+axis2_win_gmtime(
+    const time_t * timep,
+    struct tm *result) 
 {
-    return gmtime(timep);
-}
+    return gmtime(timep);
+}
 
+

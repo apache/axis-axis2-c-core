@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,52 +22,58 @@
 
 #include <platforms/windows/axutil_getopt_windows.h>
 
-int      optind = 1;
-int      opterr = 1;
-int      optopt;
-char*   optarg;
+int optind = 1;
+int opterr = 1;
+int optopt;
+char *optarg;
 
 #define AXIS2_OPT_ERR_NO_ARG         1
 #define AXIS2_OPT_ERR_INVALID_OPTION   2
 #define AXIS2_OPT_ERR_BAD_ARG         3
 
-
-
-int _axis2_opt_error(int __optopt, int __err, int __showerr)
+int
+_axis2_opt_error(
+    int __optopt,
+    int __err,
+    int __showerr)
 {
     switch (__err)
     {
-        case AXIS2_OPT_ERR_NO_ARG:
-            if (__showerr)
-                fprintf(stderr, " option requires an argument -- %c\n", __optopt);
-            break;
-        case AXIS2_OPT_ERR_INVALID_OPTION:
-            if (__showerr)
-                fprintf(stderr, " illegal option -- %c\n", __optopt);
-            break;
-        case AXIS2_OPT_ERR_BAD_ARG:
-            return (int)':';
-        default:
-            if (__showerr)
-                fprintf(stderr, "unknown\n");
+    case AXIS2_OPT_ERR_NO_ARG:
+        if (__showerr)
+            fprintf(stderr, " option requires an argument -- %c\n", __optopt);
+        break;
+    case AXIS2_OPT_ERR_INVALID_OPTION:
+        if (__showerr)
+            fprintf(stderr, " illegal option -- %c\n", __optopt);
+        break;
+    case AXIS2_OPT_ERR_BAD_ARG:
+        return (int) ':';
+    default:
+        if (__showerr)
+            fprintf(stderr, "unknown\n");
     }
-    return (int)'?';
+    return (int) '?';
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_getopt(int __argc, char * const *__argv, const char *__shortopts)
+axis2_getopt(
+    int __argc,
+    char *const *__argv,
+    const char *__shortopts)
 {
     static char *pos = "";
     char *olstindex;
 
     if (!*pos)
     {
-        /* no option or invalid option*/
+        /* no option or invalid option */
         if (optind >= __argc || *(pos = __argv[optind]) != '-')
         {
             pos = "";
             return -1;
         }
+
         /*-- option*/
         if (pos[1] && *++pos == '-')
         {
@@ -76,11 +83,11 @@ axis2_getopt(int __argc, char * const *__argv, const char *__shortopts)
         }
     }
 
-    if ((optopt = (int) * pos++) == (int)':' ||
-            !(olstindex = strchr(__shortopts, optopt)))
+    if ((optopt = (int) *pos++) == (int) ':' ||
+        !(olstindex = strchr(__shortopts, optopt)))
     {
 
-        if (optopt == (int)'-')
+        if (optopt == (int) '-')
             return -1;
         if (!*pos)
             ++optind;
@@ -113,4 +120,3 @@ axis2_getopt(int __argc, char * const *__argv, const char *__shortopts)
     }
     return optopt;
 }
-

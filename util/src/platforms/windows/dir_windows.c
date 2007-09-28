@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,7 +16,6 @@
  * limitations under the License.
  */
 
-
 #include <malloc.h>
 #include <string.h>
 #include <errno.h>
@@ -24,18 +24,21 @@
 
 /*dirent.h style mehtods for win32*/
 
-DIR * AXIS2_CALL opendir(const char *_dirname)
+DIR *AXIS2_CALL
+opendir(
+    const char *_dirname)
 {
-    DIR      *dirp;
-    char   *filespec;
-    long   handle;
-    int      index;
+    DIR *dirp;
+    char *filespec;
+    long handle;
+    int index;
 
     filespec = malloc(strlen(_dirname) + 2 + 1);
     strcpy(filespec, _dirname);
-    index = (int)strlen(filespec) - 1;
-    if (index >= 0 && (filespec[index] == '/' ||
-            (filespec[index] == '\\' && !IsDBCSLeadByte(filespec[index-1]))))
+    index = (int) strlen(filespec) - 1;
+    if (index >= 0 &&
+        (filespec[index] == '/' ||
+         (filespec[index] == '\\' && !IsDBCSLeadByte(filespec[index - 1]))))
         filespec[index] = '\0';
     strcat(filespec, "/*");
 
@@ -61,7 +64,9 @@ DIR * AXIS2_CALL opendir(const char *_dirname)
     return dirp;
 }
 
-int AXIS2_CALL closedir(DIR *_dirp)
+int AXIS2_CALL
+closedir(
+    DIR * _dirp)
 {
     int iret = -1;
     if (!_dirp)
@@ -75,7 +80,9 @@ int AXIS2_CALL closedir(DIR *_dirp)
     return iret;
 }
 
-struct dirent * AXIS2_CALL readdir(DIR *_dirp)
+struct dirent *AXIS2_CALL
+readdir(
+    DIR * _dirp)
 {
     if (!_dirp || _dirp->finished)
         return NULL;
@@ -90,15 +97,19 @@ struct dirent * AXIS2_CALL readdir(DIR *_dirp)
     }
     _dirp->offset++;
 
-    strcpy(_dirp->dent.d_name, _dirp->fileinfo.name);/*, _MAX_FNAME+1);*/
+    strcpy(_dirp->dent.d_name, _dirp->fileinfo.name);   /*, _MAX_FNAME+1); */
     _dirp->dent.d_ino = 1;
-    _dirp->dent.d_reclen = (unsigned short)strlen(_dirp->dent.d_name);
+    _dirp->dent.d_reclen = (unsigned short) strlen(_dirp->dent.d_name);
     _dirp->dent.d_off = _dirp->offset;
 
     return &(_dirp->dent);
 }
 
-int AXIS2_CALL readdir_r(DIR *_dirp, struct dirent *_entry, struct dirent **__result)
+int AXIS2_CALL
+readdir_r(
+    DIR * _dirp,
+    struct dirent *_entry,
+    struct dirent **__result)
 {
     if (!_dirp || _dirp->finished)
     {
@@ -117,9 +128,9 @@ int AXIS2_CALL readdir_r(DIR *_dirp, struct dirent *_entry, struct dirent **__re
     }
     _dirp->offset++;
 
-    strcpy(_dirp->dent.d_name, _dirp->fileinfo.name);/*, _MAX_FNAME+1);*/
+    strcpy(_dirp->dent.d_name, _dirp->fileinfo.name);   /*, _MAX_FNAME+1); */
     _dirp->dent.d_ino = 1;
-    _dirp->dent.d_reclen = (unsigned short)strlen(_dirp->dent.d_name);
+    _dirp->dent.d_reclen = (unsigned short) strlen(_dirp->dent.d_name);
     _dirp->dent.d_off = _dirp->offset;
 
     memcpy(_entry, &_dirp->dent, sizeof(*_entry));
@@ -129,12 +140,13 @@ int AXIS2_CALL readdir_r(DIR *_dirp, struct dirent *_entry, struct dirent **__re
     return 0;
 }
 
-
-int AXIS2_CALL rewinddir(DIR *dirp)
+int AXIS2_CALL
+rewinddir(
+    DIR * dirp)
 {
-    char   *filespec;
-    long   handle;
-    int      index;
+    char *filespec;
+    long handle;
+    int index;
 
     _findclose(dirp->handle);
 
@@ -143,7 +155,7 @@ int AXIS2_CALL rewinddir(DIR *dirp)
 
     filespec = malloc(strlen(dirp->dirname) + 2 + 1);
     strcpy(filespec, dirp->dirname);
-    index = (int)(strlen(filespec) - 1);
+    index = (int) (strlen(filespec) - 1);
     if (index >= 0 && (filespec[index] == '/' || filespec[index] == '\\'))
         filespec[index] = '\0';
     strcat(filespec, "/*");
@@ -159,19 +171,27 @@ int AXIS2_CALL rewinddir(DIR *dirp)
     return 0;
 }
 
-int alphasort(const struct dirent **__d1, const struct dirent **__d2)
+int
+alphasort(
+    const struct dirent **__d1,
+    const struct dirent **__d2)
 {
     return strcoll((*__d1)->d_name, (*__d2)->d_name);
 }
 
-
-int AXIS2_CALL scandir(const char *_dirname, struct dirent **__namelist[], int(*selector)(const struct dirent *entry), int(*compare)(const struct dirent **__d1, const struct dirent **__d2))
+int AXIS2_CALL
+scandir(
+    const char *_dirname,
+    struct dirent **__namelist[],
+    int (*selector) (const struct dirent * entry),
+    int (*compare) (const struct dirent ** __d1,
+                    const struct dirent ** __d2))
 {
-    DIR            *dirp = NULL;
-    struct dirent   **vector = NULL;
-    struct dirent   *dp = NULL;
-    int            vector_size = 0;
-    int            nfiles = 0;
+    DIR *dirp = NULL;
+    struct dirent **vector = NULL;
+    struct dirent *dp = NULL;
+    int vector_size = 0;
+    int nfiles = 0;
 
     if (__namelist == NULL)
     {
@@ -188,7 +208,7 @@ int AXIS2_CALL scandir(const char *_dirname, struct dirent **__namelist[], int(*
         int dsize = 0;
         struct dirent *newdp = NULL;
 
-        if (selector && (*selector)(dp) == 0)
+        if (selector && (*selector) (dp) == 0)
         {
             continue;
         }
@@ -205,7 +225,10 @@ int AXIS2_CALL scandir(const char *_dirname, struct dirent **__namelist[], int(*
                 vector_size *= 2;
             }
 
-            newv = (struct dirent **) realloc(vector, vector_size * sizeof(struct dirent *));
+            newv =
+                (struct dirent **) realloc(vector,
+                                           vector_size *
+                                           sizeof(struct dirent *));
             if (!newv)
             {
                 return -1;
@@ -213,7 +236,9 @@ int AXIS2_CALL scandir(const char *_dirname, struct dirent **__namelist[], int(*
             vector = newv;
         }
 
-        dsize = (int)sizeof(struct dirent) + (int)((strlen(dp->d_name) + 1) * sizeof(char));
+        dsize =
+            (int) sizeof(struct dirent) +
+            (int) ((strlen(dp->d_name) + 1) * sizeof(char));
         newdp = (struct dirent *) malloc(dsize);
 
         if (newdp == NULL)
