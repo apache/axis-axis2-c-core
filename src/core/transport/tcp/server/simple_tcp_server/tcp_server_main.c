@@ -29,6 +29,14 @@
 #include <ctype.h>
 #include <axiom_xml_reader.h>
 
+#ifndef AXIS2_TCP_SERVER_LOG_FILE_NAME
+#define AXIS2_TCP_SERVER_LOG_FILE_NAME "axis2_tcp_server.log"
+#endif
+
+#ifndef AXIS2_TCP_SERVER_PORT
+#define AXIS2_TCP_SERVER_PORT 9091
+#endif
+
 axutil_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;
 int axis2_tcp_socket_read_timeout = 60000;
@@ -95,8 +103,8 @@ main(
     extern int optopt;
     int c;
     axutil_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
-    const axis2_char_t *log_file = "axis2.log";
-    int port = 9090;
+    const axis2_char_t *log_file = AXIS2_TCP_SERVER_LOG_FILE_NAME;
+    int port = AXIS2_TCP_SERVER_PORT;
     const axis2_char_t *repo_path = "../";
 
     while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:f:")) != -1)
@@ -192,7 +200,7 @@ usage(
     fprintf(stdout, " [-l LOG_LEVEL]");
     fprintf(stdout, " [-f LOG_FILE]\n");
     fprintf(stdout, " Options :\n");
-    fprintf(stdout, "\t-p PORT \t port number to use, default port is 9090\n");
+    fprintf(stdout, "\t-p PORT \t port number to use, default port is %d\n", AXIS2_TCP_SERVER_PORT);
     fprintf(stdout, "\t-r REPO_PATH \t repository path, default is ../\n");
     fprintf(stdout,
             "\t-t TIMEOUT\t socket read timeout, default is 30 seconds\n");
