@@ -15,17 +15,17 @@
  * limitations under the License.
  */
 
-#ifndef RP_TRANSPORT_TOKEN_BUILDER_H
-#define RP_TRANSPORT_TOKEN_BUILDER_H
+#ifndef RP_SIGNATURE_TOKEN_BUILDER_H
+#define RP_SIGNATURE_TOKEN_BUILDER_H
 
-/** @defgroup rp_transport_token_builder
- * @ingroup rp_transport_token_builder
+/** @defgroup rp_signature_token_builder
+ * @ingroup rp_signature_token_builder
  * @{
  */
 
 #include <rp_includes.h>
 #include <rp_property.h>
-#include <rp_https_token.h>
+#include <rp_x509_token.h>
 #include <neethi_assertion.h>
 
 #ifdef __cplusplus
@@ -34,7 +34,7 @@ extern "C"
 #endif
 
     AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
-    rp_transport_token_builder_build(
+    rp_signature_token_builder_build(
         const axutil_env_t * env,
         axiom_node_t * node,
         axiom_element_t * element);

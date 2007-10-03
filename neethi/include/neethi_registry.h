@@ -41,7 +41,6 @@ extern "C"
         const axutil_env_t * env);
 
     AXIS2_EXTERN neethi_registry_t *AXIS2_CALL
-
     neethi_registry_create_with_parent(
         const axutil_env_t * env,
         neethi_registry_t * parent);

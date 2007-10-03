@@ -64,65 +64,55 @@ extern "C"
         axis2_bool_t derivedkeys);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_x509_token_get_require_key_identifier_reference(
         rp_x509_token_t * x509_token,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_x509_token_set_require_key_identifier_reference(
         rp_x509_token_t * x509_token,
         const axutil_env_t * env,
         axis2_bool_t require_key_identifier_reference);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_x509_token_get_require_issuer_serial_reference(
         rp_x509_token_t * x509_token,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_x509_token_set_require_issuer_serial_reference(
         rp_x509_token_t * x509_token,
         const axutil_env_t * env,
         axis2_bool_t require_issuer_serial_reference);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_x509_token_get_require_embedded_token_reference(
         rp_x509_token_t * x509_token,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_x509_token_set_require_embedded_token_reference(
         rp_x509_token_t * x509_token,
         const axutil_env_t * env,
         axis2_bool_t require_embedded_token_reference);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_x509_token_get_require_thumb_print_reference(
         rp_x509_token_t * x509_token,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_x509_token_set_require_thumb_print_reference(
         rp_x509_token_t * x509_token,
         const axutil_env_t * env,
         axis2_bool_t require_thumb_print_reference);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     rp_x509_token_get_token_version_and_type(
         rp_x509_token_t * x509_token,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_x509_token_set_token_version_and_type(
         rp_x509_token_t * x509_token,
         const axutil_env_t * env,

@@ -36,13 +36,11 @@ extern "C"
 #endif
 
     AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
-
     neethi_util_create_policy_from_file(
         const axutil_env_t * env,
         axis2_char_t * file_name);
 
     AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
-
     neethi_util_create_policy_from_om(
         const axutil_env_t * env,
         axiom_node_t * root_node);

@@ -36,6 +36,10 @@
 #include <rp_asymmetric_binding_builder.h>
 #include <rp_signed_encrypted_parts_builder.h>
 #include <rp_rampart_config_builder.h>
+#include <rp_symmetric_binding_builder.h>
+#include <rp_protection_token_builder.h>
+#include <rp_encryption_token_builder.h>
+#include <rp_signature_token_builder.h>
 
 /**
 * @file rp_builders.h

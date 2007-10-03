@@ -44,26 +44,22 @@ extern "C"
         const axutil_env_t * env);
 
     AXIS2_EXTERN rp_algorithmsuite_t *AXIS2_CALL
-
     rp_binding_commons_get_algorithmsuite(
         rp_binding_commons_t * binding_commons,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_binding_commons_set_algorithmsuite(
         rp_binding_commons_t * binding_commons,
         const axutil_env_t * env,
         rp_algorithmsuite_t * algorithmsuite);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_binding_commons_get_include_timestamp(
         rp_binding_commons_t * binding_commons,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_binding_commons_set_include_timestamp(
         rp_binding_commons_t * binding_commons,
         const axutil_env_t * env,
@@ -81,52 +77,44 @@ extern "C"
         rp_layout_t * layout);
 
     AXIS2_EXTERN rp_supporting_tokens_t *AXIS2_CALL
-
     rp_binding_commons_get_signed_supporting_tokens(
         rp_binding_commons_t * binding_commons,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_binding_commons_set_signed_supporting_tokens(
         rp_binding_commons_t * binding_commons,
         const axutil_env_t * env,
         rp_supporting_tokens_t * signed_supporting_tokens);
 
     AXIS2_EXTERN rp_supporting_tokens_t *AXIS2_CALL
-
     rp_binding_commons_get_signed_endorsing_supporting_tokens(
         rp_binding_commons_t * binding_commons,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_binding_commons_set_signed_endorsing_supporting_tokens(
         rp_binding_commons_t * binding_commons,
         const axutil_env_t * env,
         rp_supporting_tokens_t * signed_endorsing_supporting_tokens);
 
     AXIS2_EXTERN rp_supporting_tokens_t *AXIS2_CALL
-
     rp_binding_commons_get_endorsing_supporting_tokens(
         rp_binding_commons_t * binding_commons,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_binding_commons_set_endorsing_supporting_tokens(
         rp_binding_commons_t * binding_commons,
         const axutil_env_t * env,
         rp_supporting_tokens_t * endorsing_supporting_tokens);
 
     AXIS2_EXTERN rp_supporting_tokens_t *AXIS2_CALL
-
     rp_binding_commons_get_supporting_tokens(
         rp_binding_commons_t * binding_commons,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_binding_commons_set_supporting_tokens(
         rp_binding_commons_t * binding_commons,
         const axutil_env_t * env,

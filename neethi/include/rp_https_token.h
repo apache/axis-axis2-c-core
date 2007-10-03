@@ -64,13 +64,11 @@ extern "C"
         axis2_bool_t derivedkeys);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_https_token_get_require_client_certificate(
         rp_https_token_t * https_token,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_https_token_set_require_client_certificate(
         rp_https_token_t * https_token,
         const axutil_env_t * env,

@@ -64,26 +64,22 @@ extern "C"
         axis2_bool_t derivedkeys);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_username_token_get_useUTprofile10(
         rp_username_token_t * username_token,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_username_token_set_useUTprofile10(
         rp_username_token_t * username_token,
         const axutil_env_t * env,
         axis2_bool_t useUTprofile10);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_username_token_get_useUTprofile11(
         rp_username_token_t * username_token,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_username_token_set_useUTprofile11(
         rp_username_token_t * username_token,
         const axutil_env_t * env,

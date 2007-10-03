@@ -54,8 +54,12 @@ extern "C"
         ASSERTION_TYPE_WSS10,
         ASSERTION_TYPE_RAMPART_CONFIG,
         ASSERTION_TYPE_ASSYMMETRIC_BINDING,
+        ASSERTION_TYPE_SYMMETRIC_BINDING,
         ASSERTION_TYPE_INITIATOR_TOKEN,
         ASSERTION_TYPE_RECIPIENT_TOKEN,
+        ASSERTION_TYPE_PROTECTION_TOKEN,
+        ASSERTION_TYPE_ENCRYPTION_TOKEN,
+        ASSERTION_TYPE_SIGNATURE_TOKEN,
         ASSERTION_TYPE_ENCRYPT_BEFORE_SIGNING,
         ASSERTION_TYPE_SIGN_BEFORE_ENCRYPTING,
         ASSERTION_TYPE_ENCRYPT_SIGNATURE,
@@ -90,7 +94,6 @@ extern "C"
         const axutil_env_t * env);
 
     AXIS2_EXTERN neethi_assertion_type_t AXIS2_CALL
-
     neethi_assertion_get_type(
         neethi_assertion_t * neethi_assertion,
         const axutil_env_t * env);
@@ -130,13 +133,11 @@ extern "C"
         axis2_bool_t is_optional);
 
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-
     neethi_assertion_get_policy_components(
         neethi_assertion_t * neethi_assertion,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     neethi_assertion_add_policy_components(
         neethi_assertion_t * neethi_assertion,
         axutil_array_list_t * arraylist,

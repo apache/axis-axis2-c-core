@@ -46,7 +46,6 @@ extern "C"
         const axutil_env_t * env);
 
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-
     neethi_all_get_policy_components(
         neethi_all_t * neethi_all,
         const axutil_env_t * env);

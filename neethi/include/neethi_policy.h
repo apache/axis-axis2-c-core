@@ -47,13 +47,11 @@ extern "C"
         const axutil_env_t * env);
 
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-
     neethi_policy_get_policy_components(
         neethi_policy_t * neethi_policy,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     neethi_policy_add_policy_components(
         neethi_policy_t * neethi_policy,
         axutil_array_list_t * arraylist,
@@ -71,13 +69,11 @@ extern "C"
         const axutil_env_t * env);
 
     AXIS2_EXTERN neethi_exactlyone_t *AXIS2_CALL
-
     neethi_policy_get_exactlyone(
         neethi_policy_t * normalized_neethi_policy,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-
     neethi_policy_get_alternatives(
         neethi_policy_t * neethi_policy,
         const axutil_env_t * env);

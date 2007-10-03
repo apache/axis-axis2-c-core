@@ -64,53 +64,45 @@ extern "C"
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_secpolicy_set_supporting_tokens(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env,
         rp_supporting_tokens_t * supporting_tokens);
 
     AXIS2_EXTERN rp_supporting_tokens_t *AXIS2_CALL
-
     rp_secpolicy_get_supporting_tokens(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_secpolicy_set_signed_supporting_tokens(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env,
         rp_supporting_tokens_t * signed_supporting_tokens);
 
     AXIS2_EXTERN rp_supporting_tokens_t *AXIS2_CALL
-
     rp_secpolicy_get_signed_supporting_tokens(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_secpolicy_set_endorsing_supporting_tokens(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env,
         rp_supporting_tokens_t * endorsing_supporting_tokens);
 
     AXIS2_EXTERN rp_supporting_tokens_t *AXIS2_CALL
-
     rp_secpolicy_get_endorsing_supporting_tokens(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_secpolicy_set_signed_endorsing_supporting_tokens(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env,
         rp_supporting_tokens_t * signed_endorsing_supporting_tokens);
 
     AXIS2_EXTERN rp_supporting_tokens_t *AXIS2_CALL
-
     rp_secpolicy_get_signed_endorsing_supporting_tokens(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env);
@@ -122,7 +114,6 @@ extern "C"
         rp_signed_encrypted_parts_t * signed_parts);
 
     AXIS2_EXTERN rp_signed_encrypted_parts_t *AXIS2_CALL
-
     rp_secpolicy_get_signed_parts(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env);
@@ -134,7 +125,6 @@ extern "C"
         rp_signed_encrypted_parts_t * encrypted_parts);
 
     AXIS2_EXTERN rp_signed_encrypted_parts_t *AXIS2_CALL
-
     rp_secpolicy_get_encrypted_parts(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env);
@@ -146,20 +136,17 @@ extern "C"
         rp_signed_encrypted_elements_t * signed_elements);
 
     AXIS2_EXTERN rp_signed_encrypted_elements_t *AXIS2_CALL
-
     rp_secpolicy_get_signed_elements(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_secpolicy_set_encrypted_elements(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env,
         rp_signed_encrypted_elements_t * encrypted_elements);
 
     AXIS2_EXTERN rp_signed_encrypted_elements_t *AXIS2_CALL
-
     rp_secpolicy_get_encrypted_elements(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env);
@@ -171,7 +158,6 @@ extern "C"
         rp_signed_encrypted_items_t * signed_items);
 
     AXIS2_EXTERN rp_signed_encrypted_items_t *AXIS2_CALL
-
     rp_secpolicy_get_signed_items(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env);
@@ -183,7 +169,6 @@ extern "C"
         rp_signed_encrypted_items_t * encrypted_items);
 
     AXIS2_EXTERN rp_signed_encrypted_items_t *AXIS2_CALL
-
     rp_secpolicy_get_encrypted_items(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env);
@@ -206,7 +191,6 @@ extern "C"
         rp_rampart_config_t * rampart_config);
 
     AXIS2_EXTERN rp_rampart_config_t *AXIS2_CALL
-
     rp_secpolicy_get_rampart_config(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env);

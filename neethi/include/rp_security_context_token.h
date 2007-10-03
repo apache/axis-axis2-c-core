@@ -33,7 +33,6 @@ extern "C"
     typedef struct rp_security_context_token_t rp_security_context_token_t;
 
     AXIS2_EXTERN rp_security_context_token_t *AXIS2_CALL
-
     rp_security_context_token_create(
         const axutil_env_t * env);
 
@@ -43,59 +42,50 @@ extern "C"
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     rp_security_context_token_get_inclusion(
         rp_security_context_token_t * security_context_token,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_security_context_token_set_inclusion(
         rp_security_context_token_t * security_context_token,
         const axutil_env_t * env,
         axis2_char_t * inclusion);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_security_context_token_get_derivedkeys(
         rp_security_context_token_t * security_context_token,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_security_context_token_set_derivedkeys(
         rp_security_context_token_t * security_context_token,
         const axutil_env_t * env,
         axis2_bool_t derivedkeys);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_security_context_token_get_require_external_uri_ref(
         rp_security_context_token_t * security_context_token,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_security_context_token_set_require_external_uri_ref(
         rp_security_context_token_t * security_context_token,
         const axutil_env_t * env,
         axis2_bool_t require_external_uri_ref);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_security_context_token_get_sc10_security_context_token(
         rp_security_context_token_t * security_context_token,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_security_context_token_set_sc10_security_context_token(
         rp_security_context_token_t * security_context_token,
         const axutil_env_t * env,
         axis2_bool_t sc10_security_context_token);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_security_context_token_increment_ref(
         rp_security_context_token_t * security_context_token,
         const axutil_env_t * env);

@@ -35,26 +35,22 @@ extern "C"
                 rp_symmetric_asymmetric_binding_commons_t;
 
     AXIS2_EXTERN rp_symmetric_asymmetric_binding_commons_t *AXIS2_CALL
-
     rp_symmetric_asymmetric_binding_commons_create(
         const axutil_env_t * env);
 
     AXIS2_EXTERN void AXIS2_CALL
-
     rp_symmetric_asymmetric_binding_commons_free(
         rp_symmetric_asymmetric_binding_commons_t *
         symmetric_asymmetric_binding_commons,
         const axutil_env_t * env);
 
     AXIS2_EXTERN rp_binding_commons_t *AXIS2_CALL
-
     rp_symmetric_asymmetric_binding_commons_get_binding_commons(
         rp_symmetric_asymmetric_binding_commons_t *
         symmetric_asymmetric_binding_commons,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_symmetric_asymmetric_binding_commons_set_binding_commons(
         rp_symmetric_asymmetric_binding_commons_t *
         symmetric_asymmetric_binding_commons,
@@ -62,14 +58,12 @@ extern "C"
         rp_binding_commons_t * binding_commons);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_symmetric_asymmetric_binding_commons_get_signature_protection(
         rp_symmetric_asymmetric_binding_commons_t *
         symmetric_asymmetric_binding_commons,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_symmetric_asymmetric_binding_commons_set_signature_protection(
         rp_symmetric_asymmetric_binding_commons_t *
         symmetric_asymmetric_binding_commons,
@@ -77,14 +71,12 @@ extern "C"
         axis2_bool_t signature_protection);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_symmetric_asymmetric_binding_commons_get_token_protection(
         rp_symmetric_asymmetric_binding_commons_t *
         symmetric_asymmetric_binding_commons,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_symmetric_asymmetric_binding_commons_set_token_protection(
         rp_symmetric_asymmetric_binding_commons_t *
         symmetric_asymmetric_binding_commons,
@@ -92,7 +84,6 @@ extern "C"
         axis2_bool_t token_protection);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_symmetric_asymmetric_binding_commons_get_entire_headers_and_body_signatures
     (
         rp_symmetric_asymmetric_binding_commons_t *
@@ -100,7 +91,6 @@ extern "C"
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_symmetric_asymmetric_binding_commons_set_entire_headers_and_body_signatures
     (
         rp_symmetric_asymmetric_binding_commons_t *
@@ -109,14 +99,12 @@ extern "C"
         axis2_bool_t entire_headers_and_body_signatures);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     rp_symmetric_asymmetric_binding_commons_get_protection_order(
         rp_symmetric_asymmetric_binding_commons_t *
         symmetric_asymmetric_binding_commons,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_symmetric_asymmetric_binding_commons_set_protection_order(
         rp_symmetric_asymmetric_binding_commons_t *
         symmetric_asymmetric_binding_commons,

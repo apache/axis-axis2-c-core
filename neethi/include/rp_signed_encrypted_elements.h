@@ -34,7 +34,6 @@ extern "C"
                 rp_signed_encrypted_elements_t;
 
     AXIS2_EXTERN rp_signed_encrypted_elements_t *AXIS2_CALL
-
     rp_signed_encrypted_elements_create(
         const axutil_env_t * env);
 
@@ -44,46 +43,39 @@ extern "C"
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     rp_signed_encrypted_elements_get_signedelements(
         rp_signed_encrypted_elements_t * signed_encrypted_elements,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_signed_encrypted_elements_set_signedelements(
         rp_signed_encrypted_elements_t * signed_encrypted_elements,
         const axutil_env_t * env,
         axis2_bool_t signedelements);
 
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-
     rp_signed_encrypted_elements_get_xpath_expressions(
         rp_signed_encrypted_elements_t * signed_encrypted_elements,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_signed_encrypted_elements_add_expression(
         rp_signed_encrypted_elements_t * signed_encrypted_elements,
         const axutil_env_t * env,
         axis2_char_t * expression);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     rp_signed_encrypted_elements_get_xpath_version(
         rp_signed_encrypted_elements_t * signed_encrypted_elements,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_signed_encrypted_elements_set_xpath_version(
         rp_signed_encrypted_elements_t * signed_encrypted_elements,
         const axutil_env_t * env,
         axis2_char_t * xpath_version);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_signed_encrypted_elements_increment_ref(
         rp_signed_encrypted_elements_t * signed_encrypted_elements,
         const axutil_env_t * env);

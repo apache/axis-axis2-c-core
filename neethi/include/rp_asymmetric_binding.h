@@ -35,7 +35,6 @@ extern "C"
     typedef struct rp_asymmetric_binding_t rp_asymmetric_binding_t;
 
     AXIS2_EXTERN rp_asymmetric_binding_t *AXIS2_CALL
-
     rp_asymmetric_binding_create(
         const axutil_env_t * env);
 
@@ -45,13 +44,11 @@ extern "C"
         const axutil_env_t * env);
 
     AXIS2_EXTERN rp_symmetric_asymmetric_binding_commons_t *AXIS2_CALL
-
     rp_asymmetric_binding_get_symmetric_asymmetric_binding_commons(
         rp_asymmetric_binding_t * asymmetric_binding,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_asymmetric_binding_set_symmetric_asymmetric_binding_commons(
         rp_asymmetric_binding_t * asymmetric_binding,
         const axutil_env_t * env,
@@ -59,33 +56,28 @@ extern "C"
         symmetric_asymmetric_binding_commons);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_asymmetric_binding_set_initiator_token(
         rp_asymmetric_binding_t * asymmetric_binding,
         const axutil_env_t * env,
         rp_property_t * initiator_token);
 
     AXIS2_EXTERN rp_property_t *AXIS2_CALL
-
     rp_asymmetric_binding_get_initiator_token(
         rp_asymmetric_binding_t * asymmetric_binding,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_asymmetric_binding_set_recipient_token(
         rp_asymmetric_binding_t * asymmetric_binding,
         const axutil_env_t * env,
         rp_property_t * recipient_token);
 
     AXIS2_EXTERN rp_property_t *AXIS2_CALL
-
     rp_asymmetric_binding_get_recipient_token(
         rp_asymmetric_binding_t * asymmetric_binding,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_asymmetric_binding_increment_ref(
         rp_asymmetric_binding_t * asymmetric_binding,
         const axutil_env_t * env);

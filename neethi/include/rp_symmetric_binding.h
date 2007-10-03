@@ -35,7 +35,6 @@ extern "C"
     typedef struct rp_symmetric_binding_t rp_symmetric_binding_t;
 
     AXIS2_EXTERN rp_symmetric_binding_t *AXIS2_CALL
-
     rp_symmetric_binding_create(
         const axutil_env_t * env);
 
@@ -45,13 +44,11 @@ extern "C"
         const axutil_env_t * env);
 
     AXIS2_EXTERN rp_symmetric_asymmetric_binding_commons_t *AXIS2_CALL
-
     rp_symmetric_binding_get_symmetric_asymmetric_binding_commons(
         rp_symmetric_binding_t * symmetric_binding,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_symmetric_binding_set_symmetric_asymmetric_binding_commons(
         rp_symmetric_binding_t * symmetric_binding,
         const axutil_env_t * env,
@@ -59,46 +56,39 @@ extern "C"
         symmetric_asymmetric_binding_commons);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_symmetric_binding_set_protection_token(
         rp_symmetric_binding_t * symmetric_binding,
         const axutil_env_t * env,
         rp_property_t * protection_token);
 
     AXIS2_EXTERN rp_property_t *AXIS2_CALL
-
     rp_symmetric_binding_get_protection_token(
         rp_symmetric_binding_t * symmetric_binding,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_symmetric_binding_set_encryption_token(
         rp_symmetric_binding_t * symmetric_binding,
         const axutil_env_t * env,
         rp_property_t * encryption_token);
 
     AXIS2_EXTERN rp_property_t *AXIS2_CALL
-
     rp_symmetric_binding_get_encryption_token(
         rp_symmetric_binding_t * symmetric_binding,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_symmetric_binding_set_signature_token(
         rp_symmetric_binding_t * symmetric_binding,
         const axutil_env_t * env,
         rp_property_t * signature_token);
 
     AXIS2_EXTERN rp_property_t *AXIS2_CALL
-
     rp_symmetric_binding_get_signature_token(
         rp_symmetric_binding_t * symmetric_binding,
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     rp_symmetric_binding_increment_ref(
         rp_symmetric_binding_t * symmetric_binding,
         const axutil_env_t * env);
