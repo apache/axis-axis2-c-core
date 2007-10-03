@@ -9,8 +9,9 @@ librp_builder_la_SOURCES = algorithmsuite_builder.c \
 						   wss10_builder.c transport_token_builder.c \
 						   token_identifier.c https_token_builder.c rampart_config_builder.c \
 						   asymmetric_binding_builder.c x509_token_builder.c initiator_token_builder.c \
-						   recipient_token_builder.c signed_encrypted_parts_builder.c secpolicy_builder.c 
-
+						   recipient_token_builder.c signed_encrypted_parts_builder.c secpolicy_builder.c \
+						   symmetric_binding_builder.c protection_token_builder.c signature_token_builder.c \
+						   encryption_token_builder.c
 
 librp_builder_la_LIBADD  = ../../../../axiom/src/om/libaxis2_axiom.la \
 				../../../../util/src/libaxutil.la

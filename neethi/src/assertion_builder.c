@@ -43,11 +43,21 @@ neethi_assertion_builder_build(
             return NULL;
     }
 
-    if (axutil_strcmp(localname, RP_ASYMMETRIC_BINDING) == 0)
+    else if (axutil_strcmp(localname, RP_ASYMMETRIC_BINDING) == 0)
     {
         if (rp_match_secpolicy_qname(env, RP_ASYMMETRIC_BINDING, node, element))
         {
             return rp_asymmetric_binding_builder_build(env, node, element);
+        }
+        else
+            return NULL;
+    }
+
+    else if (axutil_strcmp(localname, RP_SYMMETRIC_BINDING) == 0)
+    {
+        if (rp_match_secpolicy_qname(env, RP_SYMMETRIC_BINDING, node, element))
+        {
+            return rp_symmetric_binding_builder_build(env, node, element);
         }
         else
             return NULL;
@@ -72,6 +82,7 @@ neethi_assertion_builder_build(
         else
             return NULL;
     }
+    
     else if (axutil_strcmp(localname, RP_INITIATOR_TOKEN) == 0)
     {
         if (rp_match_secpolicy_qname(env, RP_INITIATOR_TOKEN, node, element))
@@ -81,6 +92,37 @@ neethi_assertion_builder_build(
         else
             return NULL;
     }
+
+    else if (axutil_strcmp(localname, RP_PROTECTION_TOKEN) == 0)
+    {
+        if (rp_match_secpolicy_qname(env, RP_PROTECTION_TOKEN, node, element))
+        {
+            return rp_protection_token_builder_build(env, node, element);
+        }
+        else
+            return NULL;
+    }
+
+    else if (axutil_strcmp(localname, RP_ENCRYPTION_TOKEN) == 0)
+    {
+        if (rp_match_secpolicy_qname(env, RP_ENCRYPTION_TOKEN, node, element))
+        {
+            return rp_encryption_token_builder_build(env, node, element);
+        }
+        else
+            return NULL;
+    }
+
+    else if (axutil_strcmp(localname, RP_SIGNATURE_TOKEN) == 0)
+    {
+        if (rp_match_secpolicy_qname(env, RP_SIGNATURE_TOKEN, node, element))
+        {
+            return rp_signature_token_builder_build(env, node, element);
+        }
+        else
+            return NULL;
+    }
+
     else if (axutil_strcmp(localname, RP_X509_TOKEN) == 0)
     {
         if (rp_match_secpolicy_qname(env, RP_X509_TOKEN, node, element))
