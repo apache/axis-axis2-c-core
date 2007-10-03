@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,7 +21,7 @@
 /**
  * @file axutil_env.h
  * @brief Axis2 environment that acts as a container for error, log and memory
- *  allocator routines
+ * allocator routines
  */
 
 #include <axutil_allocator.h>
@@ -54,8 +53,8 @@ extern "C"
     /**
       * \brief Axis2 Environment struct
       *
-      * Environment acts as a container for error, log, memory allocator and threading 
-      * routines
+      * Environment acts as a container for error, log, memory allocator and 
+      * threading routines
       */
     typedef struct axutil_env
     {
@@ -72,16 +71,28 @@ extern "C"
         /** This flag indicate whether logging is enabled or not */
         axis2_bool_t log_enabled;
 
-        /** Thread pooling routines */
+        /** Thread pool routines */
         axutil_thread_pool_t *thread_pool;
     }
     axutil_env_t;
 
     /**
+     * Creates an environment struct. Would include a default log and error 
+     * structs within the created environment. By default, logging would be enabled 
+     * and the default log level would be debug.
+     * @param allocator pointer to an instance of allocator struct. Must not be NULL   
+     * @return pointer to the newly created environment struct 
+     */
+    AXIS2_EXTERN axutil_env_t *AXIS2_CALL
+    axutil_env_create(
+        axutil_allocator_t * allocator);
+
+    /**
      * Creates an environment struct with all of its default parts,
      * that is an allocator, error, log and a thread pool.
-     * @param log_file name of the log file
-     * @param log_level log level to be used, default is debug
+     * @param log_file name of the log file. If NULL, a default log would be created.
+     * @param log_level log level to be used. If not valid, debug would be 
+     * used as the default log level
      * @return pointer to the newly created environment struct 
      */
     AXIS2_EXTERN axutil_env_t *AXIS2_CALL
@@ -89,15 +100,6 @@ extern "C"
         const axis2_char_t * log_file,
         const axutil_log_levels_t log_level);
 
-    /**
-     * Creates an environment struct. Users of axis2 should not use this function
-     * to create an environment. He or she should use the other two create functions.
-     * @param allocator pointer to an instance of allocator struct. Must not be NULL   
-     * @return pointer to the newly created environment struct 
-     */
-    AXIS2_EXTERN axutil_env_t *AXIS2_CALL
-    axutil_env_create(
-        axutil_allocator_t * allocator);
 
     /**
       * Creates an environment struct with given error struct.
@@ -141,6 +143,28 @@ extern "C"
         axutil_thread_pool_t * pool);
 
     /**
+     * Enable or disable logging.
+     * @param env pointer to environment struct
+     * @param enable AXIS2_TRUE to enable logging and AXIS2_FALSE to 
+     * disable logging
+     * @return AXIS2_SUCCESS on success else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_env_enable_log(
+        axutil_env_t * env,
+        axis2_bool_t enable);
+
+    /**
+     * Checks the status code of environment stored within error struct.
+     * @param env pointer to environment struct
+     * @return error status code or AXIS2_CRITICAL_FAILURE in case of
+     * a failure
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_env_check_status(
+        const axutil_env_t * env);
+
+    /**
      * Frees an environment struct instance.
      * @param env pointer to environment struct instance to be freed.
      * @return void
@@ -158,35 +182,13 @@ extern "C"
      *       0x2 - Frees the error
      *       0x4 - Frees the thread pool
      *       You can use combinations to free multiple components as well
-     *       Eg : 0x3 frees both log and error, but not the thread pool
+     *       E.g : 0x3 frees both log and error, but not the thread pool
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL
     axutil_env_free_masked(
         axutil_env_t * env,
         char mask);
-
-    /**
-     * Enable or diable logging.
-     * @param env pointer to environment struct
-     * @param enable AXIS2_TRUE to enable logging and AXIS2_FALSE to 
-     * disable logging
-     * @return AXIS2_SUCCESS on success elase AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_env_enable_log(
-        axutil_env_t * env,
-        axis2_bool_t enable);
-
-    /**
-     * Checks the status code of environment stroed within error struct.
-     * @param env pointer to environment struct
-     * @return error status code or AXIS2_CRITICAL_FAILURE in case of
-     * a failure
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_env_check_status(
-        const axutil_env_t * env);
 
 /* AXIS2_ENV_CHECK is a macro to check environment pointer.
    Currently this is set to an empty value.
@@ -206,4 +208,3 @@ extern "C"
 #endif
 
 #endif                          /* AXIS2_ENV_H */
-
