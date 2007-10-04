@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -19,6 +18,7 @@
 #include <axutil_allocator.h>
 #include <axutil_utils.h>
 #include <stdlib.h>
+#include <string.h>
 
 void *AXIS2_CALL axutil_allocator_malloc_impl(
     axutil_allocator_t * allocator,
@@ -43,6 +43,7 @@ axutil_allocator_init(
     else
     {
         allocator = (axutil_allocator_t *) malloc(sizeof(axutil_allocator_t));
+        memset(allocator, 0, sizeof(axutil_allocator_t)); 
         if (allocator)
         {
             allocator->malloc_fn = axutil_allocator_malloc_impl;
@@ -109,3 +110,4 @@ axutil_allocator_switch_to_local_pool(
     allocator->current_pool = allocator->local_pool;
     return;
 }
+
