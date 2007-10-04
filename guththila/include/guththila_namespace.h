@@ -21,7 +21,7 @@
 #include <guththila_defines.h>
 #include <guththila_token.h>
 #include <axutil_utils.h>
-EXTERN_C_START() 
+EXTERN_C_START() 
 #ifndef GUTHTHILA_NAMESPACE_DEF_SIZE
 #define GUTHTHILA_NAMESPACE_DEF_SIZE 4
 #endif  /*  */
@@ -33,7 +33,7 @@
 
     guththila_token_t *
     uri;
-    
+    
 }
 guththila_namespace_t;
 typedef struct guththila_namespace_list_s
@@ -48,7 +48,7 @@ guththila_namespace_t;
     size;
     int
     capacity;
-    
+    
 }
 guththila_namespace_list_t;
 guththila_namespace_list_t *

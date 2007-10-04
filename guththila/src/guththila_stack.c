@@ -158,4 +158,4 @@ guththila_stack_get_by_index(
     return index < stack->top ? stack->data[index] : NULL;
 }
 
-
+

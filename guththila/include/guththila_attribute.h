@@ -21,7 +21,7 @@
 #include <guththila_defines.h>
 #include <guththila_token.h>
 #include <axutil_utils.h>
-EXTERN_C_START() 
+EXTERN_C_START() 
 #ifndef GUTHTHILA_ATTR_DEF_SIZE
 #define GUTHTHILA_ATTR_DEF_SIZE 16
 #endif  /*  */
@@ -36,7 +36,7 @@
 
     guththila_token_t *
     val;
-    
+    
 }
 guththila_attr_t;
 typedef struct guththila_attr_list_s
@@ -51,7 +51,7 @@ guththila_attr_t;
     size;
     int
     capacity;
-    
+    
 }
 guththila_attr_list_t;
 guththila_attr_list_t *

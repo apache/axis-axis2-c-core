@@ -47,10 +47,10 @@
     input_read_callback;
     void *
     context;
-    
+    
 }
 guththila_reader_t;
-
+
 #ifndef GUTHTHILA_READER_SET_LAST_START
 #define GUTHTHILA_READER_SET_LAST_START(_reader, _start) ((_reader)->start = _start)
 #endif  /*  */

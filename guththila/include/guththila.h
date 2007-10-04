@@ -62,7 +62,7 @@ It is the responsblity of the user to check weather the arguments contain NULL v
 
     guththila_buffer_t
     buffer;
-    
+    
     guththila_reader_t *
     reader;
 
@@ -74,7 +74,7 @@ It is the responsblity of the user to check weather the arguments contain NULL v
 
     guththila_token_t *
     value;
-    
+    
     guththila_stack_t
     elem;
 
@@ -106,7 +106,7 @@ It is the responsblity of the user to check weather the arguments contain NULL v
 
     guththila_token_t *
     temp_tok;
-    
+    
 }
 guththila_t;
 typedef struct guththila_elem_namesp_s

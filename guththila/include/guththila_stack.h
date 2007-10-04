@@ -36,10 +36,10 @@
     max;
     void **
     data;
-    
+    
 }
 guththila_stack_t;
-
+
 #ifndef GUTHTHILA_STACK_SIZE
 #define GUTHTHILA_STACK_SIZE(_stack) ((_stack).top)
 #endif  /*  */

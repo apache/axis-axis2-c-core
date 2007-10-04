@@ -144,4 +144,4 @@ guththila_namespace_list_free(
     AXIS2_FREE(env->allocator, namesp_list->list);
     guththila_stack_un_init(&namesp_list->fr_stack, env);
     AXIS2_FREE(env->allocator, namesp_list);
-} 
+} 
