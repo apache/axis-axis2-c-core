@@ -68,18 +68,18 @@ axutil_error_init()
     axutil_error_messages[AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE] =
         "Blocking invocation expects response";
     axutil_error_messages[AXIS2_ERROR_CANNOT_INFER_TRANSPORT] =
-        "cannot infer transport from URL";
+        "Cannot infer transport from URL";
     axutil_error_messages[AXIS2_ERROR_CLIENT_SIDE_SUPPORT_ONLY_ONE_CONF_CTX] =
         "Client side support only one configuration context";
     axutil_error_messages[AXIS2_ERROR_MEP_CANNOT_BE_NULL_IN_MEP_CLIENT] =
         "MEP cannot be NULL in MEP client";
     axutil_error_messages[AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT] =
-        "MEP Mismatch";
+        "MEP mismatch";
     axutil_error_messages[AXIS2_ERROR_TWO_WAY_CHANNEL_NEEDS_ADDRESSING] =
         "Two way channel needs addressing module to be engaged";
-    axutil_error_messages[AXIS2_ERROR_UNKNOWN_TRANSPORT] = "Unknown Transport";
+    axutil_error_messages[AXIS2_ERROR_UNKNOWN_TRANSPORT] = "Unknown transport";
     axutil_error_messages[AXIS2_ERROR_UNSUPPORTED_TYPE] =
-        "type is not supported";
+        "Type is not supported";
     axutil_error_messages[AXIS2_ERROR_OPTIONS_OBJECT_IS_NOT_SET] =
         "Options object is not set";
     /* core:clientapi:diclient */
@@ -99,51 +99,51 @@ axutil_error_init()
     axutil_error_messages[AXI2_ERROR_INVALID_PHASE] =
         "Invalid phase found in phase validation*";
     axutil_error_messages[AXIS2_ERROR_CONFIG_NOT_FOUND] =
-        "axis2.xml cannot be found";
+        "Configuration file cannot be found";
     axutil_error_messages[AXIS2_ERROR_DATA_ELEMENT_IS_NULL] =
-        "Data element of the OM Node is null";
+        "Data element of the OM Node is NULL";
     axutil_error_messages[AXIS2_ERROR_IN_FLOW_NOT_ALLOWED_IN_TRS_OUT] =
         "In transport sender, Inflow is not allowed";
     axutil_error_messages[AXIS2_ERROR_INVALID_HANDLER_STATE] =
         "Invalid handler state";
     axutil_error_messages[AXIS2_ERROR_INVALID_MODUELE_REF] =
-        "Invalid Module Ref encountered";
+        "Invalid module reference encountered";
     axutil_error_messages[AXIS2_ERROR_INVALID_MODUELE_REF_BY_OP] =
-        "Invalid Module Reference by Operation";
+        "Invalid module referenced by operation";
     axutil_error_messages[AXIS2_ERROR_INVALID_MODULE_CONF] =
-        "Invalid Module Configuration";
+        "Invalid module configuration";
     axutil_error_messages[AXIS2_ERROR_INVALID_STATE_DESC_BUILDER] =
-        "Description Builder is found to be in invalid state";
-    axutil_error_messages[AXIS2_ERROR_MODULE_NOT_FOUND] = "Module Not Found";
+        "Description builder is found to be in invalid state";
+    axutil_error_messages[AXIS2_ERROR_MODULE_NOT_FOUND] = "Module not found";
     axutil_error_messages[AXIS2_ERROR_MODULE_VALIDATION_FAILED] =
-        "Module Validation Failed";
+        "Module validation failed";
     axutil_error_messages[AXIS2_ERROR_MODULE_XML_NOT_FOUND_FOR_THE_MODULE] =
-        "Module xml file is not found in the given path";
+        "Module XML file is not found in the given path";
     axutil_error_messages[AXIS2_ERROR_NO_DISPATCHER_FOUND] =
         "No dispatcher found";
     axutil_error_messages[AXIS2_ERROR_OP_NAME_MISSING] =
         "Operation name is missing";
     axutil_error_messages[AXIS2_ERROR_OUT_FLOW_NOT_ALLOWED_IN_TRS_IN] =
-        "In transport Receiver, Outflow is not allowed";
+        "In transport receiver, outflow is not allowed";
     axutil_error_messages[AXIS2_ERROR_REPO_CAN_NOT_BE_NULL] =
         "Repository name cannot be NULL";
     axutil_error_messages[AXIS2_ERROR_REPOSITORY_NOT_EXIST] =
         "Repository in path does not exist";
     axutil_error_messages[AXIS2_ERROR_REPOS_LISTENER_INIT_FAILED] =
-        "Repository Listener initialization failed";
+        "Repository listener initialization failed";
     axutil_error_messages[AXIS2_ERROR_SERVICE_XML_NOT_FOUND] =
-        "Service xml file is not found in the given path";
-    axutil_error_messages[AXIS2_ERROR_SVC_NAME_ERROR] = "Service Name Error";
+        "Service XML file is not found in the given path";
+    axutil_error_messages[AXIS2_ERROR_SVC_NAME_ERROR] = "Service name error";
     axutil_error_messages[AXIS2_ERROR_TRANSPORT_SENDER_ERROR] =
-        "Transport Sender Error";
+        "Transport sender error";
     axutil_error_messages[AXIS2_PATH_TO_CONFIG_CAN_NOT_BE_NULL] =
-        "Path to Config can not be NULL";
-    axutil_error_messages[AXIS2_ERROR_INVALID_SVC] = "Invalid Service";
+        "Path to configuration file can not be NULL";
+    axutil_error_messages[AXIS2_ERROR_INVALID_SVC] = "Invalid service";
     /* core:description */
     axutil_error_messages[AXIS2_ERROR_CANNOT_CORRELATE_MSG] =
         "Cannot correlate message";
     axutil_error_messages[AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT] =
-        "Could not Map the MEP URI to a axis MEP constant value";
+        "Could not map the MEP URI to an Axis2/C MEP constant value";
     axutil_error_messages[AXIS2_ERROR_INVALID_MESSAGE_ADDITION] =
         "Invalid message addition operation context completed";
     axutil_error_messages[AXIS2_ERROR_INVALID_STATE_MODULE_DESC] =
@@ -151,27 +151,27 @@ axutil_error_init()
     axutil_error_messages[AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER] =
         "Parameter container not set";
     axutil_error_messages[AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP] =
-        "module has already engaged to the op op terminated !!!";
+        "Module has already been engaged to the operation";
     axutil_error_messages[AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC] =
-        "module has already been engaged on the service.Operation terminated !!!";
+        "Module has already been engaged on the service.";
     axutil_error_messages[AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC_GRP] =
-        "module has already been engaged on the service. Group Operation terminated !!!";
+        "Module has already been engaged on the service.";
     axutil_error_messages[AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE] =
-        "Parameter locked, Cannot override";
+        "Parameter locked, cannot override";
     axutil_error_messages[AXIS2_ERROR_EMPTY_SCHEMA_LIST] =
-        "schema list is empty or NULL in svc ";
+        "Schema list is empty or NULL in service";
     /* core:engine */
     axutil_error_messages[AXIS2_ERROR_BEFORE_AFTER_HANDLERS_SAME] =
         "Both before and after handlers cannot be the same";
     axutil_error_messages[AXIS2_ERROR_INVALID_HANDLER_RULES] =
         "Invalid handler rules";
-    axutil_error_messages[AXIS2_ERROR_INVALID_MODULE] = "Invalid Module";
+    axutil_error_messages[AXIS2_ERROR_INVALID_MODULE] = "Invalid module";
     axutil_error_messages[AXIS2_ERROR_INVALID_PHASE_FIRST_HANDLER] =
         "Invalid first handler for phase";
     axutil_error_messages[AXIS2_ERROR_INVALID_PHASE_LAST_HANDLER] =
         "Invalid last handler for phase";
     axutil_error_messages[AXIS2_ERROR_INVALID_STATE_CONF] =
-        "Invalid engine config state";
+        "Invalid engine configuration state";
     axutil_error_messages[AXIS2_ERROR_INVALID_STATE_PROCESSING_FAULT_ALREADY] =
         "Message context processing a fault already";
     axutil_error_messages[AXIS2_ERROR_NOWHERE_TO_SEND_FAULT] =
@@ -186,7 +186,7 @@ axutil_error_init()
         "Two service can not have same name, a service with same name already";
     /* core:phaseresolver */
     axutil_error_messages[AXIS2_ERROR_INVALID_MODULE_REF] =
-        "Invalid Module Ref";
+        "Invalid module reference";
     axutil_error_messages[AXIS2_ERROR_INVALID_PHASE] = "Invalid Phase";
     axutil_error_messages[AXIS2_ERROR_NO_TRANSPORT_IN_CONFIGURED] =
         "There are no in transport chains configured";
@@ -200,13 +200,13 @@ axutil_error_init()
     axutil_error_messages[AXIS2_ERROR_WSDL_SCHEMA_IS_NULL] = "Schema is NULL";
     /* core:receivers */
     axutil_error_messages[AXIS2_ERROR_OM_ELEMENT_INVALID_STATE] =
-        "Om Element has invalid state";
+        "AXIOM element has invalid state";
     axutil_error_messages[AXIS2_ERROR_OM_ELEMENT_MISMATCH] =
-        "Om Elements do not match";
+        "AXIOM elements do not match";
     axutil_error_messages[AXIS2_ERROR_RPC_NEED_MATCHING_CHILD] =
-        "RPC style soap body don't have a child element";
+        "RPC style SOAP body don't have a child element";
     axutil_error_messages[AXIS2_ERROR_UNKNOWN_STYLE] =
-        "Operation Description has unknown operation style";
+        "Operation description has unknown operation style";
     axutil_error_messages[AXIS2_ERROR_STRING_DOES_NOT_REPRESENT_A_VALID_NC_NAME]
         = "String does not represent a valid NCName";
     /* core:transport */
@@ -217,7 +217,7 @@ axutil_error_init()
     axutil_error_messages[AXIS2_ERROR_HTTP_REQUEST_NOT_SENT] =
         "A read attempt(HTTP) for the reply without sending the request";
     axutil_error_messages[AXIS2_ERROR_INVALID_HEADER] =
-        "Invalid string passed as a http header";
+        "Invalid string passed as a HTTP header";
     axutil_error_messages[AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE] =
         "Invalid status line or invalid request line";
     axutil_error_messages[AXIS2_ERROR_INVALID_TRANSPORT_PROTOCOL] =
@@ -225,21 +225,21 @@ axutil_error_init()
     axutil_error_messages[AXIS2_ERROR_NULL_BODY] =
         "No body present in the request or the response";
     axutil_error_messages[AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT] =
-        "A valid conf_ctx is reqd for the http worker";
+        "A valid configuration context is required for the HTTP worker";
     axutil_error_messages[AXIS2_ERROR_NULL_HTTP_VERSION] =
-        "HTTP version cannot be null in the status/request line";
+        "HTTP version cannot be NULL in the status/request line";
     axutil_error_messages[AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX] =
-        "Input stream is NULL in msg_ctx";
+        "Input stream is NULL in message context";
     axutil_error_messages[AXIS2_ERROR_NULL_OM_OUTPUT] = "OM output is NULL";
     axutil_error_messages[AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX] =
-        "Null soap envelope in msg_ctx";
+        "NULL SOAP envelope in message context";
     axutil_error_messages[AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM] =
-        "NULL stream in the http chucked stream";
+        "NULL stream in the HTTP chucked stream";
     axutil_error_messages[AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY] =
-        "We got a NULL stream in the response body";
-    axutil_error_messages[AXIS2_ERROR_NULL_URL] = "URL NULL in http client";
+        "NULL stream in the response body";
+    axutil_error_messages[AXIS2_ERROR_NULL_URL] = "URL NULL in HTTP client";
     axutil_error_messages[AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL] =
-        "We need transport_info in msg_ctx";
+        "Transport information must be set in message context";
     axutil_error_messages[AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING] =
         "Content-Type header missing in HTTP response";
     axutil_error_messages[AXIS2_ERROR_RESPONSE_TIMED_OUT] =
@@ -249,7 +249,7 @@ axutil_error_init()
     axutil_error_messages[AXIS2_ERROR_SSL_ENGINE] =
         "Error occurred in SSL engine";
     axutil_error_messages[AXIS2_ERROR_SSL_NO_CA_FILE] =
-        "Either axis2c cannot find certificates or the env variable is not set";
+        "Cannot find certificates";
     axutil_error_messages[AXIS2_ERROR_WRITING_RESPONSE] =
         "Error in writing the response in response writer";
     axutil_error_messages[AXIS2_ERROR_REQD_PARAM_MISSING] =
@@ -266,11 +266,11 @@ axutil_error_init()
     axutil_error_messages[AXIS2_ERROR_COULD_NOT_OPEN_FILE] =
         "Could not open the file";
     axutil_error_messages[AXIS2_ERROR_DLL_CREATE_FAILED] =
-        "Failed in creating DALL";
+        "Failed in creating DLL";
     axutil_error_messages[AXIS2_ERROR_DLL_LOADING_FAILED] =
         "DLL loading failed";
     axutil_error_messages[AXIS2_ERROR_ENVIRONMENT_IS_NULL] =
-        "Environment passed is null";
+        "Environment passed is NULL";
     axutil_error_messages[AXIS2_ERROR_FILE_NAME_NOT_SET] =
         "Axis2 File does not have a file name";
     axutil_error_messages[AXIS2_ERROR_INVALID_STATE_DLL_DESC] =
@@ -306,9 +306,9 @@ axutil_error_init()
     axutil_error_messages[AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED] =
         "Failed in creating Transport Sender";
     axutil_error_messages[AXIS2_ERROR_UUID_GEN_FAILED] =
-        "Generation of platform dependent uuid failed";
+        "Generation of platform dependent UUID failed";
     axutil_error_messages[AXIS2_ERROR_POSSIBLE_DEADLOCK] = "Possible deadlock";
-    /* wsdl */
+    /* WSDL */
     axutil_error_messages
         [AXIS2_ERROR_INTERFACE_OR_PORT_TYPE_NOT_FOUND_FOR_THE_BINDING] =
         "Interface or Port Type not found for the binding";
@@ -316,171 +316,171 @@ axutil_error_init()
         [AXIS2_ERROR_INTERFACES_OR_PORTS_NOT_FOUND_FOR_PARTIALLY_BUILT_WOM] =
         "Interfaces or Ports not found for the partially built WOM";
     axutil_error_messages[AXIS2_ERROR_INVALID_STATE_WSDL_OP] =
-        "Wsdl op accessed has invalid state";
+        "WSDL operation accessed has invalid state";
     axutil_error_messages[AXIS2_ERROR_INVALID_STATE_WSDL_SVC] =
-        "Wsdl Service accessed has invalid state";
+        "WSDL Service accessed has invalid state";
     axutil_error_messages[AXIS2_ERROR_MEP_CANNOT_DETERMINE_MEP] =
         "Cannot determine MEP";
     axutil_error_messages[AXIS2_ERROR_WSDL_BINDING_NAME_IS_REQUIRED] =
-        "Wsdl binding name is cannot be NULL(Is required)";
+        "WSDL binding name is cannot be NULL";
     axutil_error_messages[AXIS2_ERROR_WSDL_INTERFACE_NAME_IS_REQUIRED] =
-        " PortType/Interface name cannot be null(Required)";
+        "PortType/Interface name cannot be NULL";
     axutil_error_messages[AXIS2_ERROR_WSDL_PARSER_INVALID_STATE] =
-        "Wsdl parsing has resulted in an invalid state";
+        "WSDL parsing has resulted in an invalid state";
     axutil_error_messages[AXIS2_ERROR_WSDL_SVC_NAME_IS_REQUIRED] =
-        " Wsdl svc name cannot be null(Required)";
-    /* xml */
+        "WSDL service name cannot be NULL";
+    /* XML */
 
-    /* xml:attachments */
+    /* XML:attachments */
 
-    /* xml:om */
+    /* XML:om */
     axutil_error_messages[AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL] =
-        "Builder done with pulling. Cannot pull any more";
+        "XML builder done with pulling. Pull parser cannot pull any more";
     axutil_error_messages[AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD] =
         "Discard failed because the builder state is invalid";
     axutil_error_messages[AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL] =
-        "Builder's last node is NULL when it is not supposed to be NULL";
+        "Invalid builder state; Builder's last node is NULL";
     axutil_error_messages[AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL] =
-        "Document root is NULL] =  when it is not supposed to be NULL";
+        "Invalid document state; Document root is NULL";
     axutil_error_messages
         [AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE] =
         "Undefined namespace used";
     axutil_error_messages[AXIS2_ERROR_INVALID_EMPTY_NAMESPACE_URI] =
-        "Error a namespace should have a valid uri";
+        "Namespace should have a valid URI";
     axutil_error_messages
         [AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED] =
-        "next method has not been called so cannot remove"
+        "Next method has not been called so cannot remove"
         "an element before calling next valid for any om iterator";
     axutil_error_messages[AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED]
         = "Document root is NULL, when it is not supposed to be NULL";
     axutil_error_messages[AXIS2_ERROR_XML_READER_ELEMENT_NULL] =
-        "axiom_xml_reader returned NULL element";
+        "AXIOM XML reader returned NULL element";
     axutil_error_messages[AXIS2_ERROR_XML_READER_VALUE_NULL] =
-        "axiom_xml_reader returned NULL value";
-    /* xml:parser */
+        "AXIOM XML reader returned NULL value";
+    /* XML:parser */
     axutil_error_messages[AXIS2_ERROR_CREATING_XML_STREAM_READER] =
-        "error occurred creating xml stream reader";
+        "Error occurred creating XML stream reader";
     axutil_error_messages[AXIS2_ERROR_CREATING_XML_STREAM_WRITER] =
-        "error occurred creating xml stream writer";
+        "Error occurred creating XML stream writer";
     axutil_error_messages[AXIS2_ERROR_WRITING_ATTRIBUTE] =
-        "error in writing attribute";
+        "Error in writing attribute";
     axutil_error_messages[AXIS2_ERROR_WRITING_ATTRIBUTE_WITH_NAMESPACE] =
-        "error in writing attribute with namespace";
+        "Error in writing attribute with namespace";
     axutil_error_messages[AXIS2_ERROR_WRITING_ATTRIBUTE_WITH_NAMESPACE_PREFIX] =
-        "error in writing attribute with namespace prefix";
+        "Error in writing attribute with namespace prefix";
     axutil_error_messages[AXIS2_ERROR_WRITING_COMMENT] =
-        "error in writing comment";
+        "Error in writing comment";
     axutil_error_messages[AXIS2_ERROR_WRITING_DATA_SOURCE] =
-        "error in writing data source";
+        "Error in writing data source";
     axutil_error_messages[AXIS2_ERROR_WRITING_DEFAULT_NAMESPACE] =
-        "error in writing default namespace";
-    axutil_error_messages[AXIS2_ERROR_WRITING_DTD] = "error in writing DDT";
+        "Error in writing default namespace";
+    axutil_error_messages[AXIS2_ERROR_WRITING_DTD] = "Error in writing DDT";
     axutil_error_messages[AXIS2_ERROR_WRITING_EMPTY_ELEMENT] =
-        "error occurred in writing empty element";
+        "Error occurred in writing empty element";
     axutil_error_messages[AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE] =
-        "error occurred in writing empty element with namespace";
+        "Error occurred in writing empty element with namespace";
     axutil_error_messages
         [AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE_PREFIX] =
-        "error in writing empty element with namespace prefix";
+        "Error in writing empty element with namespace prefix";
     axutil_error_messages[AXIS2_ERROR_WRITING_END_DOCUMENT] =
-        "error occurred in writing end document in xml writer";
+        "Error occurred in writing end document in XML writer";
     axutil_error_messages[AXIS2_ERROR_WRITING_END_ELEMENT] =
-        "error occurred in writing end element in xml writer";
+        "Error occurred in writing end element in XML writer";
     axutil_error_messages[AXIS2_ERROR_WRITING_PROCESSING_INSTRUCTION] =
-        "error in writing processing instruction";
+        "Error in writing processing instruction";
     axutil_error_messages[AXIS2_ERROR_WRITING_START_DOCUMENT] =
-        "error occurred in writing start element in start document in xml writer";
+        "Error occurred in writing start element in start document in XML writer";
     axutil_error_messages[AXIS2_ERROR_WRITING_START_ELEMENT] =
-        "error occurred in writing start element in xml writer";
+        "Error occurred in writing start element in XML writer";
     axutil_error_messages[AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE] =
-        "error occurred in writing start element with namespace in xml writer";
+        "Error occurred in writing start element with namespace in XML writer";
     axutil_error_messages
         [AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE_PREFIX] =
-        "error occurred in writing start element with namespace prefix";
+        "Error occurred in writing start element with namespace prefix";
     axutil_error_messages[AXIS2_ERROR_WRITING_CDATA] =
-        "error in writing cdata section";
+        "Error in writing CDATA section";
     axutil_error_messages[AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE] =
         "AXIS2_XML_PARSER_TYPE_BUFFER or AXIS2_XML_PARSER_TYPE_DOC is expected";
 
     /* invalid type passed */
     axutil_error_messages[AXIS2_ERROR_INVALID_BASE_TYPE] =
-        "invalid type passed";
+        "Invalid base type passed";
     axutil_error_messages[AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI] =
-        "invalid soap namespace uri found";
+        "Invalid SOAP namespace URI found";
     axutil_error_messages[AXIS2_ERROR_INVALID_SOAP_VERSION] =
         "Invalid SOAP version";
     axutil_error_messages[AXIS2_ERROR_INVALID_VALUE_FOUND_IN_MUST_UNDERSTAND] =
-        "invalid value found in must understand";
+        "Invalid value found in must understand";
     axutil_error_messages[AXIS2_ERROR_MULTIPLE_CODE_ELEMENTS_ENCOUNTERED] =
-        "multiple  fault code elements encountered in soap fault";
+        "Multiple  fault code elements encountered in SOAP fault";
     axutil_error_messages[AXIS2_ERROR_MULTIPLE_DETAIL_ELEMENTS_ENCOUNTERED] =
-        "multiple fault detail elements encountered in soap fault";
+        "Multiple fault detail elements encountered in SOAP fault";
     axutil_error_messages[AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED] =
-        "multiple fault node elements encountered in soap fault";
+        "Multiple fault node elements encountered in SOAP fault";
     axutil_error_messages[AXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED] =
-        "multiple fault reason elements encountered in soap fault";
+        "Multiple fault reason elements encountered in SOAP fault";
     axutil_error_messages[AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED] =
-        "multiple fault role elements encountered in soap fault ";
+        "Multiple fault role elements encountered in SOAP fault ";
     axutil_error_messages[AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED] =
-        "multiple fault sub-code value elements encountered";
+        "Multiple fault sub-code value elements encountered";
     axutil_error_messages
         [AXIS2_ERROR_MULTIPLE_VALUE_ENCOUNTERED_IN_CODE_ELEMENT] =
-        "multiple fault value elements encountered";
+        "Multiple fault value elements encountered";
     axutil_error_messages[AXIS2_ERROR_MUST_UNDERSTAND_SHOULD_BE_1_0_TRUE_FALSE]
-        = "must understand attribute should have values of true or false";
+        = "Must understand attribute should have a value of either true or false";
     axutil_error_messages[AXIS2_ERROR_OM_ELEMENT_EXPECTED] =
-        "om element is expected";
+        "AXIOM element is expected";
     axutil_error_messages[AXIS2_ERROR_ONLY_CHARACTERS_ARE_ALLOWED_HERE] =
-        "processing soap11 fault value element should have only"
+        "Processing SOAP 1.1 fault value element should have only"
         "text as its children";
     axutil_error_messages[AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY] =
-        "only one SOAP fault allowed in SOAP body";
+        "Only one SOAP fault is allowed in SOAP body";
     axutil_error_messages
         [AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS] =
-        "AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS";
+        "SOAP 1.1 fault actor should not have any child elements";
     axutil_error_messages
         [AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY] =
-        "soap builder found a child element other than header or body in envelope"
+        "SOAP builder found a child element other than header or body in envelope"
         "element";
     axutil_error_messages[AXIS2_ERROR_SOAP_BUILDER_HEADER_BODY_WRONG_ORDER] =
-        "soap builder encountered body element first and header next";
+        "SOAP builder encountered body element first and header next";
     axutil_error_messages
         [AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_BODY_ELEMENTS_ENCOUNTERED] =
-        "soap builder multiple body elements encountered";
+        "SOAP builder multiple body elements encountered";
     axutil_error_messages[AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED]
-        = "soap builder encountered multiple headers";
+        = "SOAP builder encountered multiple headers";
     axutil_error_messages[AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE] =
-        "AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE";
+        "SOAP fault code does not have a value";
     axutil_error_messages
         [AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT] =
-        "AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT";
+        "SOAP fault reason element should have a text value";
     axutil_error_messages
         [AXIS2_ERROR_SOAP_FAULT_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT] =
-        "soap fault role element should have a text value";
+        "SOAP fault role element should have a text value";
     axutil_error_messages
         [AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE] =
-        "soap fault value should be present before sub-code element in soap fault code";
+        "SOAP fault value should be present before sub-code element in SOAP fault code";
     axutil_error_messages[AXIS2_ERROR_SOAP_MESSAGE_DOES_NOT_CONTAIN_AN_ENVELOPE]
-        = "soap message does not contain a soap envelope element";
+        = "SOAP message does not contain a SOAP envelope element";
     axutil_error_messages
         [AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME] =
-        "soap message first element should have a localname";
+        "SOAP message's first element should have a localname";
     axutil_error_messages
         [AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_REASON_ELEMENT]
-        = "localname not supported inside a reason element";
+        = "Localname not supported inside a reason element";
     axutil_error_messages
         [AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT]
-        = "localname not supported inside the sub-code element";
+        = "Localname not supported inside the sub-code element";
     axutil_error_messages
         [AXIS2_ERROR_THIS_LOCALNAME_NOT_SUPPORTED_INSIDE_THE_CODE_ELEMENT] =
-        "localname not supported inside the code element";
+        "Localname not supported inside the code element";
     axutil_error_messages
         [AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP] =
-        "transport identified soap version does not match with soap message version ";
+        "Transport identified SOAP version does not match with SOAP message version";
     axutil_error_messages[AXIS2_ERROR_UNSUPPORTED_ELEMENT_IN_SOAP_FAULT_ELEMENT]
-        = "unsupported element found in soap fault element";
+        = "Unsupported element found in SOAP fault element";
     axutil_error_messages[AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED] =
-        "wrong element order encountered ";
+        "Wrong element order encountered ";
     /* services */
     axutil_error_messages[AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST] =
         "Invalid XML format in request";
@@ -494,22 +494,22 @@ axutil_error_init()
 
     /* repos */
     axutil_error_messages[AXIS2_ERROR_REPOS_NOT_AUTHENTICATED] =
-        "NOT_AUTHENTICATED";
+        "Not authenticated";
     axutil_error_messages[AXIS2_ERROR_REPOS_UNSUPPORTED_MODE] =
-        "UNSUPPORTED_MODE";
-    axutil_error_messages[AXIS2_ERROR_REPOS_EXPIRED] = "EXPIRED";
+        "Unsupported mode";
+    axutil_error_messages[AXIS2_ERROR_REPOS_EXPIRED] = "Expired";
     axutil_error_messages[AXIS2_ERROR_REPOS_NOT_IMPLEMENTED] =
-        "NOT_IMPLEMENTED";
-    axutil_error_messages[AXIS2_ERROR_REPOS_NOT_FOUND] = "NOT_FOUND";
+        "Not implemented";
+    axutil_error_messages[AXIS2_ERROR_REPOS_NOT_FOUND] = "Not found";
     axutil_error_messages[AXIS2_ERROR_REPOS_BAD_SEARCH_TEXT] =
-        "BAD_SEARCH_TEXT";
+        "Bad search text";
 
     /* neethi */
     axutil_error_messages[AXIS2_ERROR_NEETHI_ELEMENT_WITH_NO_NAMESPACE] =
-        "Element With No Namespace";
+        "Element with no namespace";
     axutil_error_messages
         [AXIS2_ERROR_NEETHI_POLICY_CREATION_FAILED_FROM_ELEMENT] =
-        "Policy Creation failed from element";
+        "Policy creation failed from element";
     axutil_error_messages[AXIS2_ERROR_NEETHI_ALL_CREATION_FAILED_FROM_ELEMENT] =
         "All creation failed from element";
     axutil_error_messages
@@ -522,28 +522,28 @@ axutil_error_init()
         [AXIS2_ERROR_NEETHI_ASSERTION_CREATION_FAILED_FROM_ELEMENT] =
         "Assertion creation failed from element";
     axutil_error_messages[AXIS2_ERROR_NEETHI_ALL_CREATION_FAILED] =
-        "All Creation failed";
+        "All creation failed";
     axutil_error_messages[AXIS2_ERROR_NEETHI_EXACTLYONE_CREATION_FAILED] =
-        "Exactly one Creation failed";
+        "Exactly one creation failed";
     axutil_error_messages[AXIS2_ERROR_NEETHI_POLICY_CREATION_FAILED] =
-        "Policy Creation failed";
+        "Policy creation failed";
     axutil_error_messages[AXIS2_ERROR_NEETHI_NORMALIZATION_FAILED] =
         "Normalization failed";
     axutil_error_messages[AXIS2_ERROR_NEETHI_WRONG_INPUT_FOR_MERGE] =
-        "Wrong Input for merge";
+        "Wrong input for merge";
     axutil_error_messages[AXIS2_ERROR_NEETHI_CROSS_PRODUCT_FAILED] =
-        "Cross Product failed";
+        "Cross product failed";
     axutil_error_messages[AXIS2_ERROR_NEETHI_NO_CHILDREN_POLICY_COMPONENTS] =
-        "No Children Policy components";
+        "No children policy components";
     axutil_error_messages[AXIS2_ERROR_NEETHI_URI_NOT_SPECIFIED] =
-        "Reference Uri not specified";
+        "Reference URI not specified";
     axutil_error_messages[AXIS2_ERROR_NEETHI_NO_ENTRY_FOR_THE_GIVEN_URI] =
-        "No entry for the given Uri";
+        "No entry for the given URI";
     axutil_error_messages
         [AXIS2_ERROR_NEETHI_EXACTLYONE_NOT_FOUND_IN_NORMALIZED_POLICY] =
-        "Exactly one not found in normalized_policy";
+        "Exactly one not found in normalized policy";
     axutil_error_messages[AXIS2_ERROR_NEETHI_EXACTLYONE_IS_EMPTY] =
-        "Exactly one is Empty";
+        "Exactly one is empty";
     axutil_error_messages
         [AXIS2_ERROR_NEETHI_ALL_NOT_FOUND_WHILE_GETTING_CROSS_PRODUCT] =
         "All not found while getting cross product";
