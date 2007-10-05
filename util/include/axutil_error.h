@@ -28,13 +28,12 @@ extern "C"
 #endif
 
     /**
-    * \brief Axis2 status codes
-    *
-    * Possible status values for Axis2
-    */
+     * \brief Axis2 status codes
+     *
+     * Possible status values for Axis2
+     */
     enum axis2_status_codes
     {
-
         /** Critical Failure state */
         AXIS2_CRITICAL_FAILURE = -1,
 
@@ -46,31 +45,33 @@ extern "C"
     };
 
     /**
-    * \brief Axis2 error codes
-    *
-    * Set of error codes for Axis2
-    */
+     * \brief Axis2 error codes
+     *
+     * Set of error codes for Axis2
+     */
     enum axutil_error_codes
     {
 
-        /** No error.
-            This must be the first error all the time and the assigned value of 0 
-            must not be changed as it is assumed in the error message array that 
-            the error list starts with a value of 0.
-            Further, none of the error codes in this enum should not be initialized 
-            to an arbitrary value as it is assumed in the implementation when mapping 
-            error codes to error messages that the error codes are contiguous and 
-            the last error value is always AXIS2_ERROR_LAST.
-        */
-        /*
-         * Group - Common Errors
+        /** 
+         * No error.
+         * This must be the first error all the time and the assigned value of 0 
+         * must not be changed as it is assumed in the error message array that 
+         * the error list starts with a value of 0.
+         * Further, none of the error codes in this enum should not be initialized 
+         * to an arbitrary value as it is assumed in the implementation when mapping 
+         * error codes to error messages that the error codes are contiguous and 
+         * the last error value is always AXIS2_ERROR_LAST.
          */
         AXIS2_ERROR_NONE = 0,
 
+        /*
+         * Group - Common Errors
+         */
+        
         /** Out of memory */
         AXIS2_ERROR_NO_MEMORY,
 
-        /** NULL paramater was passed when a non NULL parameter was expected */
+        /** NULL parameter was passed when a non NULL parameter was expected */
         AXIS2_ERROR_INVALID_NULL_PARAM,
 
         /*
@@ -186,7 +187,7 @@ extern "C"
 
         /** Could not Map the MEP URI to a axis MEP constant value */
         AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT,
-        /* Invalid messge addition , operation context completed */
+        /* Invalid message addition , operation context completed */
         AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
 
         /** Module description accessed has invalid state */
@@ -195,13 +196,13 @@ extern "C"
         /** Parameter container not set */
         AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER,
 
-        /** module has alredy engaged to the op op terminated !!! */
+        /** module has already engaged to the op op terminated !!! */
         AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP,
 
-        /** module has alredy been engaged on the service.Operation terminated !!! */
+        /** module has already been engaged on the service.Operation terminated !!! */
         AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC,
 
-        /** module has alredy been engaged on the service. Group Operation terminated !!! */
+        /** module has already been engaged on the service. Group Operation terminated !!! */
         AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC_GRP,
 
         /** Parameter locked, Cannot override */
@@ -244,17 +245,17 @@ extern "C"
         /** Last handler of phase already set */
         AXIS2_ERROR_PHASE_LAST_HANDLER_ALREADY_SET,
 
-        /**Two service can not have same name, a service with same name alredy
+        /**Two service can not have same name, a service with same name already
            exist in the system */
         AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME,
         /*
-         * Group - core:phaseresolver
+         * Group - core:phase resolver
          */
         /* Invalid Module Ref */
         AXIS2_ERROR_INVALID_MODULE_REF,
         /* Invalid Phase */
         AXIS2_ERROR_INVALID_PHASE,
-        /* No Tranport Receiver is configured */
+        /* No Transport Receiver is configured */
         AXIS2_ERROR_NO_TRANSPORT_IN_CONFIGURED,
         /* No Transport Sender is configured */
         AXIS2_ERROR_NO_TRANSPORT_OUT_CONFIGURED,
@@ -276,7 +277,7 @@ extern "C"
         AXIS2_ERROR_OM_ELEMENT_INVALID_STATE,
         /* Om Elements do not match */
         AXIS2_ERROR_OM_ELEMENT_MISMATCH,
-        /* RPC style soap body don't have a child element */
+        /* RPC style SOAP body don't have a child element */
         AXIS2_ERROR_RPC_NEED_MATCHING_CHILD,
         /* Operation Description has unknown operation style  */
         AXIS2_ERROR_UNKNOWN_STYLE,
@@ -289,7 +290,7 @@ extern "C"
         /*
          * Group - core:transport:http
          */
-        /* Error occured in transport */
+        /* Error occurred in transport */
         AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
 
         /** A read attempt(HTTP) for the reply without sending the request */
@@ -297,7 +298,7 @@ extern "C"
 
         /** Invalid string passed as a http header */
         AXIS2_ERROR_INVALID_HEADER,
-        /* Invalid header start linei (request line or response line) */
+        /* Invalid header start line (request line or response line) */
         AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
         /* Transport protocol is unsupported by axis2 */
         AXIS2_ERROR_INVALID_TRANSPORT_PROTOCOL,
@@ -312,11 +313,11 @@ extern "C"
         AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX,
         /* OM output is NULL */
         AXIS2_ERROR_NULL_OM_OUTPUT,
-        /* Null soap envelope in msg_ctx */
+        /* Null SOAP envelope in msg_ctx */
         AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX,
-        /* NULL stream in the http chunked stream */
+        /* NULL stream in the http chucked stream */
         AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM,
-        /* We got a NULL strem in the response body */
+        /* We got a NULL stream in the response body */
         AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY,
 
         /** URL NULL in http client */
@@ -334,15 +335,15 @@ extern "C"
 
         /** SOAP envelope or SOAP body NULL */
         AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
-        /* Error occured in SSL engine */
+        /* Error occurred in SSL engine */
         AXIS2_ERROR_SSL_ENGINE,
         /* Either axis2c cannot find certificates or the env variable is not set */
         AXIS2_ERROR_SSL_NO_CA_FILE,
         /* Error in writing the response in response writer */
         AXIS2_ERROR_WRITING_RESPONSE,
-        /* Required parameter is missing in url encoded request */
+        /* Required parameter is missing in URL encoded request */
         AXIS2_ERROR_REQD_PARAM_MISSING,
-        /* Unsuppoted schema type in REST */
+        /* Unsupported schema type in REST */
         AXIS2_ERROR_UNSUPPORTED_SCHEMA_TYPE,
         /* Service or operation not found */
         AXIS2_ERROR_SVC_OR_OP_NOT_FOUND,
@@ -377,7 +378,7 @@ extern "C"
         /** Array list index out of bounds */
         AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
 
-        /** Invalid IP or hostname */
+        /** Invalid IP or host name */
         AXIS2_ERROR_INVALID_ADDRESS,
 
         /** Trying to do operation on invalid file descriptor */
@@ -414,7 +415,7 @@ extern "C"
         /* Possible deadlock */
         AXIS2_ERROR_POSSIBLE_DEADLOCK,
         /*
-         * Group - wsdl
+         * Group - WSDL
          */
         /* Interface or Port Type not found for the binding */
         AXIS2_ERROR_INTERFACE_OR_PORT_TYPE_NOT_FOUND_FOR_THE_BINDING,
@@ -451,10 +452,10 @@ extern "C"
         /** Builder done with pulling. Cannot pull any more */
         AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL,
 
-        /** Discard faile because the builder state is invalid */
+        /** Discard failed because the builder state is invalid */
         AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD,
 
-        /** Bulder's last node is NULL when it is not supposed to be NULL */
+        /** Builder's last node is NULL when it is not supposed to be NULL */
         AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL,
 
         /** Document root is NULL, when it is not supposed to be NULL */
@@ -470,7 +471,7 @@ extern "C"
         an element before calling next valid for any om iterator */
         AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED,
 
-        /** remove method has alread been called once so cann't remove till
+        /** remove method has already been called once so cannot remove till
         next method is called valid for any om children iterator*/
         AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED,
 
@@ -483,10 +484,10 @@ extern "C"
          * Group - xml:parser
          */
 
-        /** error occured creating xml stream reader */
+        /** error occurred creating xml stream reader */
         AXIS2_ERROR_CREATING_XML_STREAM_READER,
 
-        /** error occured creating xml stream writer */
+        /** error occurred creating xml stream writer */
         AXIS2_ERROR_CREATING_XML_STREAM_WRITER,
 
         /** error in writing attribute */
@@ -507,37 +508,37 @@ extern "C"
         /** error in writing default namespace */
         AXIS2_ERROR_WRITING_DEFAULT_NAMESPACE,
 
-        /** error in writing dtd */
+        /** error in writing DDT */
         AXIS2_ERROR_WRITING_DTD,
 
-        /** error occured in writing empty element */
+        /** error occurred in writing empty element */
         AXIS2_ERROR_WRITING_EMPTY_ELEMENT,
 
-        /** error occured in writing empty element with namespace */
+        /** error occurred in writing empty element with namespace */
         AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE,
 
         /** error in writing empty element with namespace prefix */
         AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE_PREFIX,
 
-        /** error occured in writing end document in xml writer */
+        /** error occurred in writing end document in xml writer */
         AXIS2_ERROR_WRITING_END_DOCUMENT,
 
-        /** error occured in writing end element in xml writer */
+        /** error occurred in writing end element in xml writer */
         AXIS2_ERROR_WRITING_END_ELEMENT,
 
         /** error in writing processing instruction */
         AXIS2_ERROR_WRITING_PROCESSING_INSTRUCTION,
 
-        /** error occured in writing start element in start document in xml writer */
+        /** error occurred in writing start element in start document in xml writer */
         AXIS2_ERROR_WRITING_START_DOCUMENT,
 
-        /** error occured in writing start element in xml writer */
+        /** error occurred in writing start element in xml writer */
         AXIS2_ERROR_WRITING_START_ELEMENT,
 
-        /** error occured in writing start element with namespace in xml writer*/
+        /** error occurred in writing start element with namespace in xml writer*/
         AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE,
 
-        /** error occured in writing start element with namespace prefix */
+        /** error occurred in writing start element with namespace prefix */
         AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE_PREFIX,
 
         /** error in writing cdata section */
@@ -547,71 +548,71 @@ extern "C"
         AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE,
 
         /*
-         * Group - xml:soap
+         * Group - xml:SOAP
          */
 
         /** invalid type passed */
         AXIS2_ERROR_INVALID_BASE_TYPE,
 
-        /** invalid soap namespace uri found */
+        /** invalid SOAP namespace uri found */
         AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI,
 
         /** Invalid SOAP version */
         AXIS2_ERROR_INVALID_SOAP_VERSION,
         /* invalid value found in must understand attribute */
         AXIS2_ERROR_INVALID_VALUE_FOUND_IN_MUST_UNDERSTAND,
-        /*multiple code elements encountered in soap fault element */
+        /*multiple code elements encountered in SOAP fault element */
         AXIS2_ERROR_MULTIPLE_CODE_ELEMENTS_ENCOUNTERED,
-        /*multiple detail elements encountered in soap fault element */
+        /*multiple detail elements encountered in SOAP fault element */
         AXIS2_ERROR_MULTIPLE_DETAIL_ELEMENTS_ENCOUNTERED,
-        /*multiple node elements encountered in soap fault element */
+        /*multiple node elements encountered in SOAP fault element */
         AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED,
-        /*multiple reason elements encountered in soap fault element */
+        /*multiple reason elements encountered in SOAP fault element */
         AXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED,
-        /*multiple role elements encounterd in soap fault element */
+        /*multiple role elements encountered in SOAP fault element */
         AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED,
-        /*multiple sub code values encountered in soap fault element */
+        /*multiple sub code values encountered in SOAP fault element */
         AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED,
-        /* multiple value elements encounered */
+        /* multiple value elements encountered */
         AXIS2_ERROR_MULTIPLE_VALUE_ENCOUNTERED_IN_CODE_ELEMENT,
-        /* must understatnd attribute should have values of true or false */
+        /* must understand attribute should have values of true or false */
         AXIS2_ERROR_MUST_UNDERSTAND_SHOULD_BE_1_0_TRUE_FALSE,
 
         /** om element is expected */
         AXIS2_ERROR_OM_ELEMENT_EXPECTED,
-        /* processing soap11 fault value element should have only
+        /* processing SOAP 1.1 fault value element should have only
            text as its children */
         AXIS2_ERROR_ONLY_CHARACTERS_ARE_ALLOWED_HERE,
 
         /** only one SOAP fault allowed in SOAP body */
         AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY,
-        /*soap11 fault actor element should not have child elements */
+        /*SOAP 1.1 fault actor element should not have child elements */
         AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS,
 
-        /** soap builder found a child element other than header or body in envelope
+        /** SOAP builder found a child element other than header or body in envelope
         element */
         AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY,
 
-        /** soap builder encounterd body element first and header next */
+        /** SOAP builder encountered body element first and header next */
         AXIS2_ERROR_SOAP_BUILDER_HEADER_BODY_WRONG_ORDER,
 
-        /** soap builder multiple body elements encounterd */
+        /** SOAP builder multiple body elements encountered */
         AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_BODY_ELEMENTS_ENCOUNTERED,
 
-        /** soap builder encountered multiple headers */
+        /** SOAP builder encountered multiple headers */
         AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED,
-        /*soap fault code element should a mandatory fault value element */
+        /*SOAP fault code element should a mandatory fault value element */
         AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE,
-        /*soap fault reason element should have a text */
+        /*SOAP fault reason element should have a text */
         AXIS2_ERROR_SOAP_FAULT_REASON_ELEMENT_SHOULD_HAVE_A_TEXT,
-        /*soap fault role element should have a text value */
+        /*SOAP fault role element should have a text value */
         AXIS2_ERROR_SOAP_FAULT_ROLE_ELEMENT_SHOULD_HAVE_A_TEXT,
-        /* soap fault value should be present before sub code element in soap fault code */
+        /* SOAP fault value should be present before sub code element in SOAP fault code */
         AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE,
 
-        /** soap message does not have an envelope element */
+        /** SOAP message does not have an envelope element */
         AXIS2_ERROR_SOAP_MESSAGE_DOES_NOT_CONTAIN_AN_ENVELOPE,
-        /*soap message first element must contain a localname */
+        /*SOAP message first element must contain a localname */
         AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME,
         /* this localname is not supported inside a reason element */
         AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_REASON_ELEMENT,
@@ -619,11 +620,11 @@ extern "C"
         AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT,
         /*this localname is not supported inside the code element */
         AXIS2_ERROR_THIS_LOCALNAME_NOT_SUPPORTED_INSIDE_THE_CODE_ELEMENT,
-        /*transport level identified soap version does not match with the soap version */
+        /*transport level identified SOAP version does not match with the SOAP version */
         AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP,
-        /*unsupported element in soap fault element */
+        /*unsupported element in SOAP fault element */
         AXIS2_ERROR_UNSUPPORTED_ELEMENT_IN_SOAP_FAULT_ELEMENT,
-        /*wrong element order encounterd */
+        /*wrong element order encountered */
         AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED,
         /*
          * Group - services
@@ -663,7 +664,7 @@ extern "C"
         AXIS2_ERROR_NEETHI_POLICY_CREATION_FAILED_FROM_ELEMENT,
         /*All Cannot be created from element */
         AXIS2_ERROR_NEETHI_ALL_CREATION_FAILED_FROM_ELEMENT,
-        /*Exactlyone Cannot be created element */
+        /*Exactly one Cannot be created element */
         AXIS2_ERROR_NEETHI_EXACTLYONE_CREATION_FAILED_FROM_ELEMENT,
         /*Reference Cannot be created from element */
         AXIS2_ERROR_NEETHI_REFERENCE_CREATION_FAILED_FROM_ELEMENT,
@@ -671,7 +672,7 @@ extern "C"
         AXIS2_ERROR_NEETHI_ASSERTION_CREATION_FAILED_FROM_ELEMENT,
         /*All creation failed */
         AXIS2_ERROR_NEETHI_ALL_CREATION_FAILED,
-        /*Exactlyone creation failed */
+        /*Exactly one creation failed */
         AXIS2_ERROR_NEETHI_EXACTLYONE_CREATION_FAILED,
         /*Policy Creation failed */
         AXIS2_ERROR_NEETHI_POLICY_CREATION_FAILED,
@@ -687,37 +688,22 @@ extern "C"
         AXIS2_ERROR_NEETHI_URI_NOT_SPECIFIED,
         /*Policy NULL for the given uri */
         AXIS2_ERROR_NEETHI_NO_ENTRY_FOR_THE_GIVEN_URI,
-        /*Exactlyone not found in Normalized policy */
+        /*Exactly one not found in Normalized policy */
         AXIS2_ERROR_NEETHI_EXACTLYONE_NOT_FOUND_IN_NORMALIZED_POLICY,
-        /*Exactlyone is Empty */
+        /*Exactly one is Empty */
         AXIS2_ERROR_NEETHI_EXACTLYONE_IS_EMPTY,
-        /*Exactlyone not found while getting cross product */
+        /*Exactly one not found while getting cross product */
         AXIS2_ERROR_NEETHI_ALL_NOT_FOUND_WHILE_GETTING_CROSS_PRODUCT,
 
-        /** The following has to be the last error value all the time.
-            All other error codes should appear above this.
-            AXIS2_ERROR_LAST is used to track the number of error codes present
-            for the purpose of sizing the error message array.
-        */
+        /** 
+         * The following has to be the last error value all the time.
+         * All other error codes should appear above this.
+         * AXIS2_ERROR_LAST is used to track the number of error codes present
+         * for the purpose of sizing the error messages array.
+         */
         AXIS2_ERROR_LAST
     };
 
-    /**
-     * \brief Array to hold error messages
-     * Array to hold error messages. Note that array has capacity for 
-     * additional error messages. These are reserved for modules.
-     * In writing a module following steps must be followed in extending axis2c
-     * errors
-     * 1. Declare the start of error messages for the new module.
-          For example in sandesha2 module we have
-          #define SANDESHA2_ERROR_CODES_START (AXIS2_ERROR_LAST + 1000)
-          Above line indicates that the new modules error messages start from 
-          1000 messages after the axis2 last error message.
-       2. New module can use up to 1000 messages for its errors.
-       3. In axis2c documentation an entry about new modules error range must
-          be inserted so that another new module can know about the already
-          occupied spaces. 
-     */
     struct axutil_error;
     typedef enum axis2_status_codes axis2_status_codes_t;
     typedef enum axutil_error_codes axutil_error_codes_t;
@@ -729,74 +715,118 @@ extern "C"
      */
 
     /**
-    * deallocate memory of a error struct
-    * @return axis2_status_t status code
-    */
-    AXIS2_EXTERN void AXIS2_CALL
-    axutil_error_free(
-        struct axutil_error *error);
+     * Axutil error struct.
+     * Error holds the last error number, the status code as well as the 
+     * last error message.
+     */
+    typedef struct axutil_error
+    {
+        /** 
+         * Memory allocator associated with the error struct. 
+         * It is this allocator that would be used to allocate memory 
+         * for the error struct instance in create method.
+         */
+        axutil_allocator_t *allocator;
+
+        /** Last error number. */
+        int error_number;
+        /** Last status code. */
+        int status_code;
+        /** 
+         * Error message. This could be set to a custom message to be 
+         * returned, instead of standard errors set in the error messages 
+         * array by the axutil_error_init function call.
+         */
+        axis2_char_t *message;
+    }
+    axutil_error_t;
 
     /**
-    * get error message for the last error
-    * @return error message for the last error. NULL on error.
-    */
+     * Gets the error message corresponding to the last error occurred.
+     * @param error pointer to error struct 
+     * @return string representing the error message for the last error occurred
+     */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axutil_error_get_message(
         const struct axutil_error *error);
 
     /**
-    * This fucntion is supposed to be overridden in an extended error structure.
-    * For example in Sandesha error structure this fucntion is overridden so that
-    * errors of axis2 range call the get_message function of error struct but
-    * errors of sandesha2 range get the messages from an array of that struct.
-    * @return error message for the extended struct.
-    */
-    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-
+     * This function is supposed to be overridden in an extended error structure.
+     * For example in Sandesha error structure this function is overridden so that
+     * errors of axis2 range call the get_message function of error struct but
+     * errors of sandesha2 range get the messages from an array of that struct.
+     * @return error message for the extended struct.
+     * @deprecated this function is not in use, so should be removed.
+     */
+    /*AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axutil_error_get_extended_message(
-        const struct axutil_error *error);
+        const struct axutil_error *error);*/
 
+    /**
+     * Sets the error number.
+     * @param error pointer to error struct 
+     * @param error_number error number to be set
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_error_set_error_number(
         struct axutil_error *error,
         axutil_error_codes_t error_number);
 
+    /**
+     * Sets the status code.
+     * @param error pointer to error struct 
+     * @param status_code status code to be set
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_error_set_status_code(
         struct axutil_error *error,
         axis2_status_codes_t status_code);
 
+    /**
+     * Gets the status code.
+     * @param error pointer to error struct 
+     * @return last status code set on error struct
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_error_get_status_code(
         struct axutil_error *error);
 
+    /**
+     * Sets error message to the given value.
+     * @param error pointer to error struct 
+     * @param message error message to be set
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_error_set_error_message(
         struct axutil_error *error,
-        axis2_char_t * message);
+        axis2_char_t *message);
 
     /**
-    * \brief Axis2 Error struct
-    *
-    * Error holds the last errorno
-    */
-    typedef struct axutil_error
-    {
-
-        /** error related ops */
-        axutil_allocator_t *allocator;
-
-        /** last error number */
-        int error_number;
-        int status_code;
-        axis2_char_t *message;
-    }
-    axutil_error_t;
-
+     * Initializes the axutil_error_messages array. This array holds the 
+     * error messages that corresponds to the error codes. This function
+     * must be call before using the error struct instance.
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_error_init(
-    );
+    axutil_error_init();
 
+    /**
+     * De-allocates an error struct instance.
+     * @param error pointer to error struct instance to be freed.
+     * @return void
+     */
+    AXIS2_EXTERN void AXIS2_CALL
+    axutil_error_free(
+        struct axutil_error *error);
+
+/** 
+ * @deprecated The following macros are no longer useful as we can use the 
+ * function calls directly. Hence these macros should be removed 
+ */
+  
 #define AXIS2_ERROR_FREE(error) axutil_error_free(error)
 
 #define AXIS2_ERROR_GET_MESSAGE(error) \

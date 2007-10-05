@@ -17,17 +17,42 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 #include "axutil_error_default.h"
 
-AXIS2_EXPORT const axis2_char_t *axutil_error_messages[AXIS2_ERROR_LAST +
-                                                       10000];
+#define AXIS2_ERROR_ADDITIONAL_BUFFER_SIZE 10000
+
+#define AXIS2_ERROR_MESSAGE_ARRAY_SIZE \
+    (AXIS2_ERROR_LAST + AXIS2_ERROR_ADDITIONAL_BUFFER_SIZE)
+
+/**
+ * Array to hold error messages corresponding to the pre-defined error codes.
+ * Note that array has capacity for additional error messages. These are 
+ * reserved for modules.
+ *
+ * TODO: We have to review and change the following definition and also 
+ * need to come up with a reserve strategy for module error code blocks.
+ *
+ * In writing a module following steps must be followed in extending Axis2/C
+ * errors
+ * 1. Declare the start of error messages for the new module.
+      For example in sandesha2 module we have
+      #define SANDESHA2_ERROR_CODES_START (AXIS2_ERROR_LAST + 1000)
+      Above line indicates that the new modules error messages start from 
+      1000 messages after the axis2 last error message.
+   2. New module can use up to 1000 messages for its errors.
+   3. In axis2c documentation an entry about new modules error range must
+      be inserted so that another new module can know about the already
+      occupied spaces. 
+ */
+AXIS2_EXPORT const axis2_char_t *axutil_error_messages[
+        AXIS2_ERROR_MESSAGE_ARRAY_SIZE];
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_error_init(
-    )
+axutil_error_init()
 {
     int i = 0;
-    for (i = 0; i < AXIS2_ERROR_LAST; i++)
+    for (i = 0; i < AXIS2_ERROR_MESSAGE_ARRAY_SIZE ; i++)
     {
         axutil_error_messages[i] = "Unknown Error :(";
     }
@@ -36,7 +61,7 @@ axutil_error_init(
     axutil_error_messages[AXIS2_ERROR_NONE] = "No Error";
     axutil_error_messages[AXIS2_ERROR_NO_MEMORY] = "Out of memory";
     axutil_error_messages[AXIS2_ERROR_INVALID_NULL_PARAM] =
-        "NULL paramater was passed when a non NULL parameter was expected";
+        "NULL parameter was passed when a non NULL parameter was expected";
     /* core:addr */
 
     /* core:clientapi */
@@ -120,17 +145,17 @@ axutil_error_init(
     axutil_error_messages[AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT] =
         "Could not Map the MEP URI to a axis MEP constant value";
     axutil_error_messages[AXIS2_ERROR_INVALID_MESSAGE_ADDITION] =
-        "Invalid messge addition operation context completed";
+        "Invalid message addition operation context completed";
     axutil_error_messages[AXIS2_ERROR_INVALID_STATE_MODULE_DESC] =
         "Module description accessed has invalid state";
     axutil_error_messages[AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER] =
         "Parameter container not set";
     axutil_error_messages[AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP] =
-        "module has alredy engaged to the op op terminated !!!";
+        "module has already engaged to the op op terminated !!!";
     axutil_error_messages[AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC] =
-        "module has alredy been engaged on the service.Operation terminated !!!";
+        "module has already been engaged on the service.Operation terminated !!!";
     axutil_error_messages[AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC_GRP] =
-        "module has alredy been engaged on the service. Group Operation terminated !!!";
+        "module has already been engaged on the service. Group Operation terminated !!!";
     axutil_error_messages[AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE] =
         "Parameter locked, Cannot override";
     axutil_error_messages[AXIS2_ERROR_EMPTY_SCHEMA_LIST] =
@@ -158,7 +183,7 @@ axutil_error_init(
     axutil_error_messages[AXIS2_ERROR_PHASE_LAST_HANDLER_ALREADY_SET] =
         "Last handler of phase already set";
     axutil_error_messages[AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME] =
-        "Two service can not have same name, a service with same name alredy";
+        "Two service can not have same name, a service with same name already";
     /* core:phaseresolver */
     axutil_error_messages[AXIS2_ERROR_INVALID_MODULE_REF] =
         "Invalid Module Ref";
@@ -188,7 +213,7 @@ axutil_error_init(
 
     /* core:transport:http */
     axutil_error_messages[AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR] =
-        "Error occured in transport";
+        "Error occurred in transport";
     axutil_error_messages[AXIS2_ERROR_HTTP_REQUEST_NOT_SENT] =
         "A read attempt(HTTP) for the reply without sending the request";
     axutil_error_messages[AXIS2_ERROR_INVALID_HEADER] =
@@ -209,7 +234,7 @@ axutil_error_init(
     axutil_error_messages[AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX] =
         "Null soap envelope in msg_ctx";
     axutil_error_messages[AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM] =
-        "NULL stream in the http chunked stream";
+        "NULL stream in the http chucked stream";
     axutil_error_messages[AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY] =
         "We got a NULL stream in the response body";
     axutil_error_messages[AXIS2_ERROR_NULL_URL] = "URL NULL in http client";
@@ -222,15 +247,15 @@ axutil_error_init(
     axutil_error_messages[AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL] =
         "SOAP envelope or SOAP body NULL";
     axutil_error_messages[AXIS2_ERROR_SSL_ENGINE] =
-        "Error occured in SSL engine";
+        "Error occurred in SSL engine";
     axutil_error_messages[AXIS2_ERROR_SSL_NO_CA_FILE] =
         "Either axis2c cannot find certificates or the env variable is not set";
     axutil_error_messages[AXIS2_ERROR_WRITING_RESPONSE] =
         "Error in writing the response in response writer";
     axutil_error_messages[AXIS2_ERROR_REQD_PARAM_MISSING] =
-        "Required parameter is missing in url encoded request";
+        "Required parameter is missing in URL encoded request";
     axutil_error_messages[AXIS2_ERROR_UNSUPPORTED_SCHEMA_TYPE] =
-        " Unsuppoted schema type in REST";
+        " Unsupported schema type in REST";
     axutil_error_messages[AXIS2_ERROR_SVC_OR_OP_NOT_FOUND] =
         "Service or operation not found";
     /* mod_addr */
@@ -241,7 +266,7 @@ axutil_error_init(
     axutil_error_messages[AXIS2_ERROR_COULD_NOT_OPEN_FILE] =
         "Could not open the file";
     axutil_error_messages[AXIS2_ERROR_DLL_CREATE_FAILED] =
-        "Failed in creating DLL";
+        "Failed in creating DALL";
     axutil_error_messages[AXIS2_ERROR_DLL_LOADING_FAILED] =
         "DLL loading failed";
     axutil_error_messages[AXIS2_ERROR_ENVIRONMENT_IS_NULL] =
@@ -249,7 +274,7 @@ axutil_error_init(
     axutil_error_messages[AXIS2_ERROR_FILE_NAME_NOT_SET] =
         "Axis2 File does not have a file name";
     axutil_error_messages[AXIS2_ERROR_INVALID_STATE_DLL_DESC] =
-        "dll description has invalid state of not having valid dll create function, \
+        "DLL description has invalid state of not having valid DLL create function, \
         of valid delete function or valid dll_handler";
     axutil_error_messages[AXIS2_ERROR_HANDLER_CREATION_FAILED] =
         "Failed in creating Handler";
@@ -312,9 +337,9 @@ axutil_error_init(
     axutil_error_messages[AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL] =
         "Builder done with pulling. Cannot pull any more";
     axutil_error_messages[AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD] =
-        "Discard faile because the builder state is invalid";
+        "Discard failed because the builder state is invalid";
     axutil_error_messages[AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL] =
-        "Bulder's last node is NULL when it is not supposed to be NULL";
+        "Builder's last node is NULL when it is not supposed to be NULL";
     axutil_error_messages[AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL] =
         "Document root is NULL] =  when it is not supposed to be NULL";
     axutil_error_messages
@@ -334,9 +359,9 @@ axutil_error_init(
         "axiom_xml_reader returned NULL value";
     /* xml:parser */
     axutil_error_messages[AXIS2_ERROR_CREATING_XML_STREAM_READER] =
-        "error occured creating xml stream reader";
+        "error occurred creating xml stream reader";
     axutil_error_messages[AXIS2_ERROR_CREATING_XML_STREAM_WRITER] =
-        "error occured creating xml stream writer";
+        "error occurred creating xml stream writer";
     axutil_error_messages[AXIS2_ERROR_WRITING_ATTRIBUTE] =
         "error in writing attribute";
     axutil_error_messages[AXIS2_ERROR_WRITING_ATTRIBUTE_WITH_NAMESPACE] =
@@ -349,29 +374,29 @@ axutil_error_init(
         "error in writing data source";
     axutil_error_messages[AXIS2_ERROR_WRITING_DEFAULT_NAMESPACE] =
         "error in writing default namespace";
-    axutil_error_messages[AXIS2_ERROR_WRITING_DTD] = "error in writing dtd";
+    axutil_error_messages[AXIS2_ERROR_WRITING_DTD] = "error in writing DDT";
     axutil_error_messages[AXIS2_ERROR_WRITING_EMPTY_ELEMENT] =
-        "error occured in writing empty element";
+        "error occurred in writing empty element";
     axutil_error_messages[AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE] =
-        "error occured in writing empty element with namespace";
+        "error occurred in writing empty element with namespace";
     axutil_error_messages
         [AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE_PREFIX] =
         "error in writing empty element with namespace prefix";
     axutil_error_messages[AXIS2_ERROR_WRITING_END_DOCUMENT] =
-        "error occured in writing end document in xml writer";
+        "error occurred in writing end document in xml writer";
     axutil_error_messages[AXIS2_ERROR_WRITING_END_ELEMENT] =
-        "error occured in writing end element in xml writer";
+        "error occurred in writing end element in xml writer";
     axutil_error_messages[AXIS2_ERROR_WRITING_PROCESSING_INSTRUCTION] =
         "error in writing processing instruction";
     axutil_error_messages[AXIS2_ERROR_WRITING_START_DOCUMENT] =
-        "error occured in writing start element in start document in xml writer";
+        "error occurred in writing start element in start document in xml writer";
     axutil_error_messages[AXIS2_ERROR_WRITING_START_ELEMENT] =
-        "error occured in writing start element in xml writer";
+        "error occurred in writing start element in xml writer";
     axutil_error_messages[AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE] =
-        "error occured in writing start element with namespace in xml writer";
+        "error occurred in writing start element with namespace in xml writer";
     axutil_error_messages
         [AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE_PREFIX] =
-        "error occured in writing start element with namespace prefix";
+        "error occurred in writing start element with namespace prefix";
     axutil_error_messages[AXIS2_ERROR_WRITING_CDATA] =
         "error in writing cdata section";
     axutil_error_messages[AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE] =
@@ -397,12 +422,12 @@ axutil_error_init(
     axutil_error_messages[AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED] =
         "multiple fault role elements encountered in soap fault ";
     axutil_error_messages[AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED] =
-        "multiple fault subcode value elements encountered";
+        "multiple fault sub-code value elements encountered";
     axutil_error_messages
         [AXIS2_ERROR_MULTIPLE_VALUE_ENCOUNTERED_IN_CODE_ELEMENT] =
-        "multiple fault value elements encounterd";
+        "multiple fault value elements encountered";
     axutil_error_messages[AXIS2_ERROR_MUST_UNDERSTAND_SHOULD_BE_1_0_TRUE_FALSE]
-        = "must understatnd attribute should have values of true or false";
+        = "must understand attribute should have values of true or false";
     axutil_error_messages[AXIS2_ERROR_OM_ELEMENT_EXPECTED] =
         "om element is expected";
     axutil_error_messages[AXIS2_ERROR_ONLY_CHARACTERS_ARE_ALLOWED_HERE] =
@@ -418,10 +443,10 @@ axutil_error_init(
         "soap builder found a child element other than header or body in envelope"
         "element";
     axutil_error_messages[AXIS2_ERROR_SOAP_BUILDER_HEADER_BODY_WRONG_ORDER] =
-        "soap builder encounterd body element first and header next";
+        "soap builder encountered body element first and header next";
     axutil_error_messages
         [AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_BODY_ELEMENTS_ENCOUNTERED] =
-        "soap builder multiple body elements encounterd";
+        "soap builder multiple body elements encountered";
     axutil_error_messages[AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED]
         = "soap builder encountered multiple headers";
     axutil_error_messages[AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE] =
@@ -434,18 +459,18 @@ axutil_error_init(
         "soap fault role element should have a text value";
     axutil_error_messages
         [AXIS2_ERROR_SOAP_FAULT_VALUE_SHOULD_BE_PRESENT_BEFORE_SUB_CODE] =
-        "soap fault value should be present before subcode element in soap fault code";
+        "soap fault value should be present before sub-code element in soap fault code";
     axutil_error_messages[AXIS2_ERROR_SOAP_MESSAGE_DOES_NOT_CONTAIN_AN_ENVELOPE]
         = "soap message does not contain a soap envelope element";
     axutil_error_messages
         [AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME] =
-        "soap messgae first element should have a localname";
+        "soap message first element should have a localname";
     axutil_error_messages
         [AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_REASON_ELEMENT]
         = "localname not supported inside a reason element";
     axutil_error_messages
         [AXIS2_ERROR_THIS_LOCALNAME_IS_NOT_SUPPORTED_INSIDE_THE_SUB_CODE_ELEMENT]
-        = "localname not supported inside the subcode element";
+        = "localname not supported inside the sub-code element";
     axutil_error_messages
         [AXIS2_ERROR_THIS_LOCALNAME_NOT_SUPPORTED_INSIDE_THE_CODE_ELEMENT] =
         "localname not supported inside the code element";
@@ -489,7 +514,7 @@ axutil_error_init(
         "All creation failed from element";
     axutil_error_messages
         [AXIS2_ERROR_NEETHI_EXACTLYONE_CREATION_FAILED_FROM_ELEMENT] =
-        "Exactlyone creation failed from element";
+        "Exactly one creation failed from element";
     axutil_error_messages
         [AXIS2_ERROR_NEETHI_REFERENCE_CREATION_FAILED_FROM_ELEMENT] =
         "Reference creation failed from element";
@@ -499,7 +524,7 @@ axutil_error_init(
     axutil_error_messages[AXIS2_ERROR_NEETHI_ALL_CREATION_FAILED] =
         "All Creation failed";
     axutil_error_messages[AXIS2_ERROR_NEETHI_EXACTLYONE_CREATION_FAILED] =
-        "Exactlyone Creation failed";
+        "Exactly one Creation failed";
     axutil_error_messages[AXIS2_ERROR_NEETHI_POLICY_CREATION_FAILED] =
         "Policy Creation failed";
     axutil_error_messages[AXIS2_ERROR_NEETHI_NORMALIZATION_FAILED] =
@@ -516,25 +541,14 @@ axutil_error_init(
         "No entry for the given Uri";
     axutil_error_messages
         [AXIS2_ERROR_NEETHI_EXACTLYONE_NOT_FOUND_IN_NORMALIZED_POLICY] =
-        "Exactlyone not found in normalized_policy";
+        "Exactly one not found in normalized_policy";
     axutil_error_messages[AXIS2_ERROR_NEETHI_EXACTLYONE_IS_EMPTY] =
-        "Exactlyone is Empty";
+        "Exactly one is Empty";
     axutil_error_messages
         [AXIS2_ERROR_NEETHI_ALL_NOT_FOUND_WHILE_GETTING_CROSS_PRODUCT] =
         "All not found while getting cross product";
 
     return AXIS2_SUCCESS;
-}
-
-AXIS2_EXTERN void AXIS2_CALL
-axutil_error_free(
-    axutil_error_t * error)
-{
-    if (error)
-    {
-        AXIS2_FREE(error->allocator, error);
-    }
-    return;
 }
 
 AXIS2_EXTERN axutil_error_t *AXIS2_CALL
@@ -546,13 +560,12 @@ axutil_error_create(
         return NULL;
 
     error = (axutil_error_t *) AXIS2_MALLOC(allocator, sizeof(axutil_error_t));
+    memset(error, 0,  sizeof(axutil_error_t));
 
     if (!error)
         return NULL;
 
     error->allocator = allocator;
-
-    error->message = NULL;
 
     return error;
 }
@@ -565,7 +578,8 @@ axutil_error_get_message(
     if (error)
     {
         if (error->error_number > AXIS2_ERROR_NONE &&
-            error->error_number < AXIS2_ERROR_LAST)
+            error->error_number < AXIS2_ERROR_LAST) /* TODO; This needs to be 
+            fixed to include module defined and user defined errors */
             message = axutil_error_messages[error->error_number];
         else
         {
@@ -587,6 +601,8 @@ axutil_error_set_error_number(
     axutil_error_t * error,
     axutil_error_codes_t error_number)
 {
+    if (!error)
+        return AXIS2_FAILURE;
     error->error_number = error_number;
     return AXIS2_SUCCESS;
 }
@@ -596,6 +612,8 @@ axutil_error_set_status_code(
     axutil_error_t * error,
     axis2_status_codes_t status_code)
 {
+    if (!error)
+        return AXIS2_FAILURE;
     error->status_code = status_code;
     return AXIS2_SUCCESS;
 }
@@ -604,7 +622,10 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_error_get_status_code(
     axutil_error_t * error)
 {
-    return error->status_code;
+    if (error)
+        return error->status_code;
+    else
+        return AXIS2_CRITICAL_FAILURE;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -612,7 +633,24 @@ axutil_error_set_error_message(
     axutil_error_t * error,
     axis2_char_t * message)
 {
-    if (message)
+    if (message && error)
+    {
         error->message = message;
-    return AXIS2_SUCCESS;
+        return AXIS2_SUCCESS;
+    }
+    
+    return AXIS2_FAILURE;
 }
+
+AXIS2_EXTERN void AXIS2_CALL
+axutil_error_free(
+    axutil_error_t * error)
+{
+    if (error)
+    {
+        AXIS2_FREE(error->allocator, error);
+    }
+    return;
+}
+
+
