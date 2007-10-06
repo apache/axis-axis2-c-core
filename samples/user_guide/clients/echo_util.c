@@ -31,7 +31,7 @@ build_om_payload_for_echo_svc(
     axis2_char_t *om_str = NULL;
 
     ns1 =
-        axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samples",
+        axiom_namespace_create(env, "http://ws.apache.org/axis2/services/echo",
                                "ns1");
     echo_om_ele =
         axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
