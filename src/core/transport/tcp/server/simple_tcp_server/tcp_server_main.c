@@ -37,6 +37,10 @@
 #define AXIS2_TCP_SERVER_PORT 9091
 #endif
 
+#ifndef AXIS2_TCP_SERVER_REPO_PATH
+#define AXIS2_TCP_SERVER_REPO_PATH "../"
+#endif
+
 axutil_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;
 int axis2_tcp_socket_read_timeout = 60000;
@@ -105,7 +109,7 @@ main(
     axutil_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
     const axis2_char_t *log_file = AXIS2_TCP_SERVER_LOG_FILE_NAME;
     int port = AXIS2_TCP_SERVER_PORT;
-    const axis2_char_t *repo_path = "../";
+    const axis2_char_t *repo_path = AXIS2_TCP_SERVER_REPO_PATH;
 
     while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:f:")) != -1)
     {

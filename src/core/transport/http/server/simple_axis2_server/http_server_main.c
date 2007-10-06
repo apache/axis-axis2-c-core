@@ -38,6 +38,10 @@
 #define AXIS2_HTTP_SERVER_PORT 9090
 #endif
 
+#ifndef AXIS2_HTTP_SERVER_REPO_PATH
+#define AXIS2_HTTP_SERVER_REPO_PATH "../"
+#endif
+
 axutil_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;
 AXIS2_IMPORT extern int axis2_http_socket_read_timeout;
@@ -111,7 +115,7 @@ main(
     axutil_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
     const axis2_char_t *log_file = AXIS2_HTTP_SERVER_LOG_FILE_NAME;
     int port = AXIS2_HTTP_SERVER_PORT;
-    const axis2_char_t *repo_path = "../";
+    const axis2_char_t *repo_path = AXIS2_HTTP_SERVER_REPO_PATH;
 
     /* Set the service URL prefix to be used. This could default to services if not 
        set with AXIS2_REQUEST_URL_PREFIX macro at compile time */
