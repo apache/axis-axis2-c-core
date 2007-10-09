@@ -694,7 +694,8 @@ extern "C"
         AXIS2_ERROR_NEETHI_EXACTLYONE_IS_EMPTY,
         /*Exactly one not found while getting cross product */
         AXIS2_ERROR_NEETHI_ALL_NOT_FOUND_WHILE_GETTING_CROSS_PRODUCT,
-
+        /*Unknown Assertion*/
+        AXIS2_ERROR_NEETHI_UNKNOWN_ASSERTION,
         /** 
          * The following has to be the last error value all the time.
          * All other error codes should appear above this.

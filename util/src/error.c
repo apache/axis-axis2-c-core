@@ -547,6 +547,8 @@ axutil_error_init()
     axutil_error_messages
         [AXIS2_ERROR_NEETHI_ALL_NOT_FOUND_WHILE_GETTING_CROSS_PRODUCT] =
         "All not found while getting cross product";
+    axutil_error_messages[AXIS2_ERROR_NEETHI_UNKNOWN_ASSERTION] = 
+        "Unknown Assertion";
 
     return AXIS2_SUCCESS;
 }
