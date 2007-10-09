@@ -478,12 +478,22 @@ neethi_assertion_builder_build(
     }
     else
     {
-        neethi_assertion_t *assertion = NULL;
-        assertion = neethi_assertion_create(env);
+        AXIS2_ERROR_SET(env->error,
+                        AXIS2_ERROR_NEETHI_UNKNOWN_ASSERTION,
+                        AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "[neethi] Unknown Assertion %s",
+                        localname);
+        printf("Unknown Assertion %s", localname);
+
+        return NULL;
+        
+        /*assertion = neethi_assertion_create(env);
         neethi_assertion_set_value(assertion, env, NULL,
                                    ASSERTION_TYPE_UNKNOWN);
         neethi_assertion_set_element(assertion, env, element);
         neethi_assertion_set_node(assertion, env, node);
         return assertion;
+        */
     }
 }
