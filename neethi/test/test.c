@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <axiom_xml_reader.h>
 #include <neethi_engine.h>
+#include <axutil_array_list.h>
 
 axis2_status_t AXIS2_CALL om_node_serialize(
     axiom_node_t * node,
@@ -74,7 +75,8 @@ main(
                     printf("Policy Creation fails\n");
                     return 0;
                 }
-                else
+
+                /*else
                 {
                     axiom_node_t *s_node = NULL;
                     s_node = neethi_engine_serialize(neethi_policy, env);
@@ -85,7 +87,7 @@ main(
                     }
                     if (om_node_serialize(s_node, env) != AXIS2_SUCCESS)
                         return 0;
-                }
+                }*/
             }
         }
     }
@@ -125,6 +127,8 @@ om_node_serialize(
 
     printf("\nend test_om_serialize\n");
 
+    return AXIS2_SUCCESS;
+
 }
 
 axutil_array_list_t *AXIS2_CALL
@@ -140,7 +144,7 @@ load_policy_array(
     axiom_node_t *root = NULL;
     axiom_element_t *root_ele = NULL;
     int i = 0;
-    axutil_array_list *arraylist = NULL;
+    axutil_array_list_t *arraylist = NULL;
 
     arraylist = axutil_array_list_create(env, 0);
 

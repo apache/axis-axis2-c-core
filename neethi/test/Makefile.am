@@ -1,16 +1,17 @@
-TESTS = test_round2
-noinst_PROGRAMS = test_round2
+TESTS = 
+noinst_PROGRAMS = test
 
-#AM_CFLAGS = -g -O2 -pthread
+AM_CFLAGS = -g -O2 -pthread
 
-test_round2_SOURCES =  test.c
+test_SOURCES = test.c
 
 INCLUDES = -I$(top_builddir)/include \
-		    -I ../../include \
-		    @AXIS2INC@
+			-I ../../util/include \
+			-I ../../axiom/include \
+		    -I ../../include
 
-test_round2_LDADD   = $(top_builddir)/src/util/libneethi.la \
-		    ${AXIS2C_HOME}/lib/libaxutil.la \
-		    ${AXIS2C_HOME}/lib/libaxis2_axiom.la \
-		    ${AXIS2C_HOME}/lib/libaxis2_parser.la \
-           -lxml2
+test_LDADD = $(top_builddir)/src/libneethi.la \
+			../../axiom/src/om/libaxis2_axiom.la \
+			../../util/src/libaxutil.la \
+			../src/libneethi.la \
+			-lxml2
