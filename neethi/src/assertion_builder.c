@@ -484,8 +484,6 @@ neethi_assertion_builder_build(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                         "[neethi] Unknown Assertion %s",
                         localname);
-        printf("Unknown Assertion %s", localname);
-
         return NULL;
         
         /*assertion = neethi_assertion_create(env);
