@@ -22,6 +22,7 @@ struct rp_secpolicy_t
 {
     rp_property_t *binding;
     rp_property_t *wss;
+    rp_trust10_t *trust10;
     rp_supporting_tokens_t *supporting_tokens;
     rp_supporting_tokens_t *signed_supporting_tokens;
     rp_supporting_tokens_t *endorsing_supporting_tokens;
@@ -54,6 +55,7 @@ rp_secpolicy_create(
     }
     secpolicy->binding = NULL;
     secpolicy->wss = NULL;
+    secpolicy->trust10 = NULL;
     secpolicy->supporting_tokens = NULL;
     secpolicy->signed_supporting_tokens = NULL;
     secpolicy->endorsing_supporting_tokens = NULL;
@@ -88,6 +90,11 @@ rp_secpolicy_free(
             rp_property_free(secpolicy->wss, env);
             secpolicy->wss = NULL;
         }
+        if(secpolicy->trust10)
+        {
+            rp_trust10_free(secpolicy->trust10, env);
+            secpolicy->trust10 = NULL;
+        }    
         if (secpolicy->supporting_tokens)
         {
             rp_supporting_tokens_free(secpolicy->supporting_tokens, env);
@@ -442,6 +449,30 @@ rp_secpolicy_get_wss(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     return secpolicy->wss;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_secpolicy_set_trust10(
+    rp_secpolicy_t * secpolicy,
+    const axutil_env_t * env,
+    rp_trust10_t * trust10)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, trust10, AXIS2_FAILURE);
+
+    rp_trust10_increment_ref(trust10, env);
+    secpolicy->trust10 = trust10;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN rp_trust10_t *AXIS2_CALL
+rp_secpolicy_get_trust10(
+    rp_secpolicy_t * secpolicy,
+    const axutil_env_t * env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    return secpolicy->trust10;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

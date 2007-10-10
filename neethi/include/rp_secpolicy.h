@@ -35,6 +35,7 @@
 #include <rp_rampart_config.h>
 #include <rp_wss10.h>
 #include <rp_wss11.h>
+#include <rp_trust10.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -192,6 +193,17 @@ extern "C"
 
     AXIS2_EXTERN rp_rampart_config_t *AXIS2_CALL
     rp_secpolicy_get_rampart_config(
+        rp_secpolicy_t * secpolicy,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_secpolicy_set_trust10(
+        rp_secpolicy_t * secpolicy,
+        const axutil_env_t * env,
+        rp_trust10_t * trust10);
+
+    AXIS2_EXTERN rp_trust10_t *AXIS2_CALL
+    rp_secpolicy_get_trust10(
         rp_secpolicy_t * secpolicy,
         const axutil_env_t * env);
 

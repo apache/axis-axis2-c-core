@@ -167,6 +167,31 @@ secpolicy_process_alternatives(
                 rp_property_set_value(wss, env, wss10, RP_PROPERTY_WSS10);
                 rp_secpolicy_set_wss(secpolicy, env, wss);
             }
+            else if (type == ASSERTION_TYPE_WSS11)
+            {
+                rp_wss11_t *wss11 = NULL;
+                rp_property_t *wss = NULL;
+                wss11 =
+                    (rp_wss11_t *) neethi_assertion_get_value(assertion, env);
+                if (!wss11)
+                {
+                    return AXIS2_FAILURE;
+                }
+                wss = rp_property_create(env);
+                rp_property_set_value(wss, env, wss11, RP_PROPERTY_WSS11);
+                rp_secpolicy_set_wss(secpolicy, env, wss);
+            }
+            else if (type == ASSERTION_TYPE_TRUST10)
+            {
+                rp_trust10_t *trust10 = NULL;
+                trust10 =
+                    (rp_trust10_t *) neethi_assertion_get_value(assertion, env);
+                if (!trust10)
+                {
+                    return AXIS2_FAILURE;
+                }
+                rp_secpolicy_set_trust10(secpolicy, env, trust10);
+            }            
             else if (type == ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS)
             {
                 rp_signed_encrypted_parts_t *signed_encrypted_parts = NULL;
