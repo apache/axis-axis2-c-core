@@ -342,6 +342,25 @@ neethi_assertion_builder_build(
         else
             return NULL;
     }
+    else if (axutil_strcmp(localname, RP_WSS11) == 0)
+    {
+        if (rp_match_secpolicy_qname(env, RP_WSS11, node, element))
+        {
+            return rp_wss11_builder_build(env, node, element);
+        }
+        else
+            return NULL;
+    }
+    else if (axutil_strcmp(localname, RP_TRUST10) == 0)
+    {
+        if (rp_match_secpolicy_qname(env, RP_TRUST10, node, element))
+        {
+            return rp_trust10_builder_build(env, node, element);
+        }
+        else
+            return NULL;
+    }
+    
     else if (axutil_strcmp(localname, RP_INCLUDE_TIMESTAMP) == 0)
     {
         if (rp_match_secpolicy_qname(env, RP_INCLUDE_TIMESTAMP, node, element))
@@ -476,6 +495,139 @@ neethi_assertion_builder_build(
         else
             return NULL;
     }
+    else if (axutil_strcmp(localname, RP_MUST_SUPPORT_REF_THUMBPRINT) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_MUST_SUPPORT_REF_THUMBPRINT, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                       ASSERTION_TYPE_MUST_SUPPORT_REF_THUMBPRINT);
+            return assertion;
+        }
+        else
+            return NULL;
+    }    
+    else if (axutil_strcmp(localname, RP_MUST_SUPPORT_REF_ENCRYPTED_KEY) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_MUST_SUPPORT_REF_ENCRYPTED_KEY, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                       ASSERTION_TYPE_MUST_SUPPORT_REF_ENCRYPTED_KEY);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+    else if (axutil_strcmp(localname, RP_REQUIRE_SIGNATURE_CONFIRMATION) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_REQUIRE_SIGNATURE_CONFIRMATION, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                      ASSERTION_TYPE_REQUIRE_SIGNATURE_CONFIRMATION);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+
+    else if (axutil_strcmp(localname, RP_MUST_SUPPORT_CLIENT_CHALLENGE) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_MUST_SUPPORT_CLIENT_CHALLENGE, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                      ASSERTION_TYPE_MUST_SUPPORT_CLIENT_CHALLENGE);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+
+    else if (axutil_strcmp(localname, RP_MUST_SUPPORT_SERVER_CHALLENGE) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_MUST_SUPPORT_SERVER_CHALLENGE, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                      ASSERTION_TYPE_MUST_SUPPORT_SERVER_CHALLENGE);
+            return assertion;
+        }
+        else
+            return NULL;
+    }        
+
+    else if (axutil_strcmp(localname, RP_REQUIRE_CLIENT_ENTROPY) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_REQUIRE_CLIENT_ENTROPY, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                      ASSERTION_TYPE_REQUIRE_CLIENT_ENTROPY);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+
+    else if (axutil_strcmp(localname, RP_REQUIRE_SERVER_ENTROPHY) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_REQUIRE_SERVER_ENTROPHY, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                      ASSERTION_TYPE_REQUIRE_SERVER_ENTROPHY);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+
+    else if (axutil_strcmp(localname, RP_MUST_SUPPORT_ISSUED_TOKENS) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_MUST_SUPPORT_ISSUED_TOKENS, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                      ASSERTION_TYPE_MUST_SUPPORT_ISSUED_TOKENS);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+
+    else if (axutil_strcmp(localname, RP_REQUIRE_DERIVED_KEYS) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_REQUIRE_DERIVED_KEYS, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                       ASSERTION_TYPE_REQUIRE_DERIVED_KEYS);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+
     else
     {
         AXIS2_ERROR_SET(env->error,

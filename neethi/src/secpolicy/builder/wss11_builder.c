@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-#include <rp_x509_token_builder.h>
+#include <rp_wss11_builder.h>
 #include <neethi_operator.h>
 #include <neethi_policy.h>
 #include <neethi_exactlyone.h>
@@ -25,41 +25,30 @@
 
 /*private functions*/
 
-axis2_status_t AXIS2_CALL x509_token_process_alternatives(
+axis2_status_t AXIS2_CALL wss11_process_alternatives(
     const axutil_env_t * env,
     neethi_all_t * all,
-    rp_x509_token_t * x509_token);
+    rp_wss11_t * wss11);
 
 /***********************************/
 
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
-rp_x509_token_builder_build(
+rp_wss11_builder_build(
     const axutil_env_t * env,
     axiom_node_t * node,
     axiom_element_t * element)
 {
-    rp_x509_token_t *x509_token = NULL;
+    rp_wss11_t *wss11 = NULL;
     neethi_policy_t *policy = NULL;
     axiom_node_t *child_node = NULL;
     axiom_element_t *child_element = NULL;
     axutil_array_list_t *alternatives = NULL;
     neethi_operator_t *component = NULL;
     neethi_all_t *all = NULL;
-    axis2_char_t *inclusion_value = NULL;
-    axutil_qname_t *qname = NULL;
     neethi_assertion_t *assertion = NULL;
     neethi_policy_t *normalized_policy = NULL;
-    /*axutil_array_list_t *temp = NULL; */
 
-    x509_token = rp_x509_token_create(env);
-    qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS, RP_SP_PREFIX);
-
-    inclusion_value = axiom_element_get_attribute_value(element, env, qname);
-
-    axutil_qname_free(qname, env);
-    qname = NULL;
-
-    rp_x509_token_set_inclusion(x509_token, env, inclusion_value);
+    wss11 = rp_wss11_create(env);
 
     child_node = axiom_node_get_first_element(node, env);
     if (!child_node)
@@ -88,13 +77,11 @@ rp_x509_token_builder_build(
                 (neethi_operator_t *) axutil_array_list_get(alternatives, env,
                                                             0);
             all = (neethi_all_t *) neethi_operator_get_value(component, env);
-            x509_token_process_alternatives(env, all, x509_token);
+            wss11_process_alternatives(env, all, wss11);
 
             assertion =
-                neethi_assertion_create_with_args(env,
-                                                  (void *) rp_x509_token_free,
-                                                  x509_token,
-                                                  ASSERTION_TYPE_X509_TOKEN);
+                neethi_assertion_create_with_args(env, (void *) rp_wss11_free,
+                                                  wss11, ASSERTION_TYPE_WSS11);
 
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
@@ -109,15 +96,16 @@ rp_x509_token_builder_build(
 }
 
 axis2_status_t AXIS2_CALL
-x509_token_process_alternatives(
+wss11_process_alternatives(
     const axutil_env_t * env,
     neethi_all_t * all,
-    rp_x509_token_t * x509_token)
+    rp_wss11_t * wss11)
 {
     neethi_operator_t *operator = NULL;
     axutil_array_list_t *arraylist = NULL;
     neethi_assertion_t *assertion = NULL;
     neethi_assertion_type_t type;
+    void *value = NULL;
 
     int i = 0;
 
@@ -129,43 +117,39 @@ x509_token_process_alternatives(
                                                               i);
         assertion =
             (neethi_assertion_t *) neethi_operator_get_value(operator, env);
+        value = neethi_assertion_get_value(assertion, env);
         type = neethi_assertion_get_type(assertion, env);
 
-        if(type == ASSERTION_TYPE_REQUIRE_DERIVED_KEYS)
+        if (type == ASSERTION_TYPE_MUST_SUPPORT_REF_KEY_IDENTIFIER)
         {
-            rp_x509_token_set_derivedkeys(x509_token, env, 
-                                         AXIS2_TRUE);
-        }    
-
-        if (type == ASSERTION_TYPE_REQUIRE_KEY_IDENTIFIRE_REFERENCE)
-        {
-            rp_x509_token_set_require_key_identifier_reference(x509_token, env,
-                                                               AXIS2_TRUE);
+            rp_wss11_set_must_support_ref_key_identifier(wss11, env,
+                                                         AXIS2_TRUE);
         }
-        else if (type == ASSERTION_TYPE_REQUIRE_ISSUER_SERIAL_REFERENCE)
+        else if (type == ASSERTION_TYPE_MUST_SUPPORT_REF_ISSUER_SERIAL)
         {
-            rp_x509_token_set_require_issuer_serial_reference(x509_token, env,
-                                                              AXIS2_TRUE);
+            rp_wss11_set_must_support_ref_issuer_serial(wss11, env, AXIS2_TRUE);
         }
-        if (type == ASSERTION_TYPE_REQUIRE_EMBEDDED_TOKEN_REFERENCE)
+        else if (type == ASSERTION_TYPE_MUST_SUPPORT_REF_EXTERNAL_URI)
         {
-            rp_x509_token_set_require_embedded_token_reference(x509_token, env,
-                                                               AXIS2_TRUE);
+            rp_wss11_set_must_support_ref_external_uri(wss11, env, AXIS2_TRUE);
         }
-        else if (type == ASSERTION_TYPE_REQUIRE_THUMBPRINT_REFERENCE)
+        else if (type == ASSERTION_TYPE_MUST_SUPPORT_REF_EMBEDDED_TOKEN)
         {
-            rp_x509_token_set_require_thumb_print_reference(x509_token, env,
-                                                            AXIS2_TRUE);
+            rp_wss11_set_must_support_ref_embedded_token(wss11, env,
+                                                         AXIS2_TRUE);
         }
-        else if (type == ASSERTION_TYPE_WSS_X509_V1_TOKEN_10)
+        else if (type == ASSERTION_TYPE_MUST_SUPPORT_REF_THUMBPRINT)
         {
-            rp_x509_token_set_token_version_and_type(x509_token, env,
-                                                     RP_WSS_X509_V1_TOKEN_10);
+            rp_wss11_set_must_support_must_support_ref_thumbprint(wss11, env, AXIS2_TRUE);
         }
-        else if (type == ASSERTION_TYPE_WSS_X509_V3_TOKEN_10)
+        else if (type == ASSERTION_TYPE_MUST_SUPPORT_REF_ENCRYPTED_KEY)
         {
-            rp_x509_token_set_token_version_and_type(x509_token, env,
-                                                     RP_WSS_X509_V3_TOKEN_10);
+            rp_wss11_set_must_support_ref_encryptedkey(wss11, env, AXIS2_TRUE);
+        }
+        else if (type == ASSERTION_TYPE_REQUIRE_SIGNATURE_CONFIRMATION)
+        {
+            rp_wss11_set_require_signature_confirmation(wss11, env,
+                                                         AXIS2_TRUE);
         }
         else
             return AXIS2_FAILURE;

@@ -22,6 +22,8 @@
 #include <rp_layout.h>
 #include <rp_algorithmsuite.h>
 #include <rp_wss10.h>
+#include <rp_wss11.h>
+#include <rp_trust10.h>
 #include <rp_supporting_tokens.h>
 #include <rp_username_token.h>
 #include <rp_asymmetric_binding.h>
@@ -143,6 +145,14 @@ neethi_assertion_create_with_args(
     if (type == ASSERTION_TYPE_WSS10)
     {
         rp_wss10_increment_ref((rp_wss10_t *) value, env);
+    }
+    if (type == ASSERTION_TYPE_WSS11)
+    {
+        rp_wss11_increment_ref((rp_wss11_t *) value, env); 
+    }
+    if (type == ASSERTION_TYPE_TRUST10)
+    {
+        rp_trust10_increment_ref((rp_trust10_t *) value, env); 
     }
     if (type == ASSERTION_TYPE_SUPPORTING_TOKENS)
     {

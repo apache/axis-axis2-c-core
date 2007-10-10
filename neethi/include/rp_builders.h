@@ -28,6 +28,8 @@
 #include <rp_transport_token_builder.h>
 #include <rp_username_token_builder.h>
 #include <rp_wss10_builder.h>
+#include <rp_wss11_builder.h>
+#include <rp_trust10_builder.h>
 #include <rp_qname_matcher.h>
 #include <rp_https_token_builder.h>
 #include <rp_x509_token_builder.h>

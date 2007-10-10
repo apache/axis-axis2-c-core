@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-#include <rp_x509_token_builder.h>
+#include <rp_trust10_builder.h>
 #include <neethi_operator.h>
 #include <neethi_policy.h>
 #include <neethi_exactlyone.h>
@@ -25,41 +25,30 @@
 
 /*private functions*/
 
-axis2_status_t AXIS2_CALL x509_token_process_alternatives(
+axis2_status_t AXIS2_CALL trust10_process_alternatives(
     const axutil_env_t * env,
     neethi_all_t * all,
-    rp_x509_token_t * x509_token);
+    rp_trust10_t * trust10);
 
 /***********************************/
 
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
-rp_x509_token_builder_build(
+rp_trust10_builder_build(
     const axutil_env_t * env,
     axiom_node_t * node,
     axiom_element_t * element)
 {
-    rp_x509_token_t *x509_token = NULL;
+    rp_trust10_t *trust10 = NULL;
     neethi_policy_t *policy = NULL;
     axiom_node_t *child_node = NULL;
     axiom_element_t *child_element = NULL;
     axutil_array_list_t *alternatives = NULL;
     neethi_operator_t *component = NULL;
     neethi_all_t *all = NULL;
-    axis2_char_t *inclusion_value = NULL;
-    axutil_qname_t *qname = NULL;
     neethi_assertion_t *assertion = NULL;
     neethi_policy_t *normalized_policy = NULL;
-    /*axutil_array_list_t *temp = NULL; */
 
-    x509_token = rp_x509_token_create(env);
-    qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS, RP_SP_PREFIX);
-
-    inclusion_value = axiom_element_get_attribute_value(element, env, qname);
-
-    axutil_qname_free(qname, env);
-    qname = NULL;
-
-    rp_x509_token_set_inclusion(x509_token, env, inclusion_value);
+    trust10 = rp_trust10_create(env);
 
     child_node = axiom_node_get_first_element(node, env);
     if (!child_node)
@@ -88,13 +77,11 @@ rp_x509_token_builder_build(
                 (neethi_operator_t *) axutil_array_list_get(alternatives, env,
                                                             0);
             all = (neethi_all_t *) neethi_operator_get_value(component, env);
-            x509_token_process_alternatives(env, all, x509_token);
+            trust10_process_alternatives(env, all, trust10);
 
             assertion =
-                neethi_assertion_create_with_args(env,
-                                                  (void *) rp_x509_token_free,
-                                                  x509_token,
-                                                  ASSERTION_TYPE_X509_TOKEN);
+                neethi_assertion_create_with_args(env, (void *) rp_trust10_free,
+                                                  trust10, ASSERTION_TYPE_TRUST10);
 
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
@@ -109,15 +96,16 @@ rp_x509_token_builder_build(
 }
 
 axis2_status_t AXIS2_CALL
-x509_token_process_alternatives(
+trust10_process_alternatives(
     const axutil_env_t * env,
     neethi_all_t * all,
-    rp_x509_token_t * x509_token)
+    rp_trust10_t * trust10)
 {
     neethi_operator_t *operator = NULL;
     axutil_array_list_t *arraylist = NULL;
     neethi_assertion_t *assertion = NULL;
     neethi_assertion_type_t type;
+    void *value = NULL;
 
     int i = 0;
 
@@ -129,44 +117,30 @@ x509_token_process_alternatives(
                                                               i);
         assertion =
             (neethi_assertion_t *) neethi_operator_get_value(operator, env);
+        value = neethi_assertion_get_value(assertion, env);
         type = neethi_assertion_get_type(assertion, env);
 
-        if(type == ASSERTION_TYPE_REQUIRE_DERIVED_KEYS)
+        if (type == ASSERTION_TYPE_MUST_SUPPORT_CLIENT_CHALLENGE)
         {
-            rp_x509_token_set_derivedkeys(x509_token, env, 
-                                         AXIS2_TRUE);
+            rp_trust10_set_must_support_client_challenge(trust10, env, AXIS2_TRUE);
+        }
+        else if (type == ASSERTION_TYPE_MUST_SUPPORT_SERVER_CHALLENGE)
+        {
+            rp_trust10_set_must_support_server_challenge(trust10, env, AXIS2_TRUE);
+        }
+        else if (type == ASSERTION_TYPE_REQUIRE_CLIENT_ENTROPY)
+        {
+            rp_trust10_set_require_client_entropy(trust10, env, AXIS2_TRUE);
+        }
+        else if (type == ASSERTION_TYPE_REQUIRE_SERVER_ENTROPHY)
+        {
+            rp_trust10_set_require_server_entropy(trust10, env,
+                                                         AXIS2_TRUE);
+        }
+        else if (type == ASSERTION_TYPE_MUST_SUPPORT_ISSUED_TOKENS)
+        {
+            rp_trust10_set_must_support_issued_token(trust10, env, AXIS2_TRUE);
         }    
-
-        if (type == ASSERTION_TYPE_REQUIRE_KEY_IDENTIFIRE_REFERENCE)
-        {
-            rp_x509_token_set_require_key_identifier_reference(x509_token, env,
-                                                               AXIS2_TRUE);
-        }
-        else if (type == ASSERTION_TYPE_REQUIRE_ISSUER_SERIAL_REFERENCE)
-        {
-            rp_x509_token_set_require_issuer_serial_reference(x509_token, env,
-                                                              AXIS2_TRUE);
-        }
-        if (type == ASSERTION_TYPE_REQUIRE_EMBEDDED_TOKEN_REFERENCE)
-        {
-            rp_x509_token_set_require_embedded_token_reference(x509_token, env,
-                                                               AXIS2_TRUE);
-        }
-        else if (type == ASSERTION_TYPE_REQUIRE_THUMBPRINT_REFERENCE)
-        {
-            rp_x509_token_set_require_thumb_print_reference(x509_token, env,
-                                                            AXIS2_TRUE);
-        }
-        else if (type == ASSERTION_TYPE_WSS_X509_V1_TOKEN_10)
-        {
-            rp_x509_token_set_token_version_and_type(x509_token, env,
-                                                     RP_WSS_X509_V1_TOKEN_10);
-        }
-        else if (type == ASSERTION_TYPE_WSS_X509_V3_TOKEN_10)
-        {
-            rp_x509_token_set_token_version_and_type(x509_token, env,
-                                                     RP_WSS_X509_V3_TOKEN_10);
-        }
         else
             return AXIS2_FAILURE;
     }
