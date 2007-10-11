@@ -123,6 +123,23 @@ secpolicy_process_alternatives(
                                       RP_PROPERTY_ASYMMETRIC_BINDING);
                 rp_secpolicy_set_binding(secpolicy, env, binding);
             }
+            else if (type == ASSERTION_TYPE_SYMMETRIC_BINDING)
+            {
+                rp_property_t *binding = NULL;
+                rp_symmetric_binding_t *symmetric_binding = NULL;
+
+                symmetric_binding =
+                    (rp_symmetric_binding_t *)
+                    neethi_assertion_get_value(assertion, env);
+                if (!symmetric_binding)
+                {
+                    return AXIS2_FAILURE;
+                }
+                binding = rp_property_create(env);
+                rp_property_set_value(binding, env, symmetric_binding,
+                                      RP_PROPERTY_SYMMETRIC_BINDING);
+                rp_secpolicy_set_binding(secpolicy, env, binding);
+            }
             else if (type == ASSERTION_TYPE_SUPPORTING_TOKENS)
             {
                 rp_supporting_tokens_t *supporting_tokens = NULL;
