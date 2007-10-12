@@ -148,6 +148,7 @@ rp_symmetric_binding_set_protection_token(
     {
         return AXIS2_FAILURE;
     }
+    rp_property_increment_ref(protection_token, env);
     symmetric_binding->protection_token = protection_token;
 
     return AXIS2_SUCCESS;
@@ -166,6 +167,7 @@ rp_symmetric_binding_set_encryption_token(
     {
         return AXIS2_FAILURE;
     }
+    rp_property_increment_ref(encryption_token, env);
     symmetric_binding->encryption_token = encryption_token;
 
     return AXIS2_SUCCESS;
@@ -194,6 +196,7 @@ rp_symmetric_binding_set_signature_token(
     {
         return AXIS2_FAILURE;
     }
+    rp_property_increment_ref(signature_token, env);
     symmetric_binding->signature_token = signature_token;
 
     return AXIS2_SUCCESS;
