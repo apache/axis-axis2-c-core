@@ -236,6 +236,10 @@ axis2_load_services(
                             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
                                 "Service %s initialization Failed", 
                                 axis2_svc_get_name(svc_desc, env));
+                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service "\
+                                "%s initialization Failed. So exiting "\
+                                "conf_init()", axis2_svc_get_name(svc_desc,
+                                    env));
                             return AXIS2_FAILURE;
                         }
                     }
