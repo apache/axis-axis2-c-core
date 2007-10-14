@@ -237,7 +237,11 @@ sig_handler(
         {
             AXIS2_LOG_INFO(system_env->log, "Received signal SIGINT. Server "
                            "shutting down");
-            axis2_http_server_stop(server, system_env);
+            if (server)
+            {
+                axis2_http_server_stop(server, system_env);
+            }
+
             AXIS2_LOG_INFO(system_env->log, "Shutdown complete ...");
             system_exit(system_env, 0);
         }
