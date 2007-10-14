@@ -234,7 +234,7 @@ sig_handler(
 
     if (!system_env)
     {
-        AXIS2_LOG_ERROR(system_env->log, 
+        AXIS2_LOG_ERROR(system_env->log, AXIS2_LOG_SI,
                         "Received signal %d, unable to proceed system_env is NULL ,\
                          system exit with -1", signal);
         _exit (-1);
