@@ -231,6 +231,15 @@ void
 sig_handler(
     int signal)
 {
+
+    if (!system_env)
+    {
+        AXIS2_LOG_ERROR(system_env->log, 
+                        "Received signal %d, unable to proceed system_env is NULL ,\
+                         system exit with -1", signal);
+        _exit (-1);
+    }
+
     switch (signal)
     {
     case SIGINT:
