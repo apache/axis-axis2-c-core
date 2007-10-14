@@ -227,10 +227,17 @@ axis2_load_services(
                             return AXIS2_FAILURE;
                         }
                         axis2_svc_set_impl_class(svc_desc, env, impl_class);
-                        AXIS2_SVC_SKELETON_INIT_WITH_CONF((axis2_svc_skeleton_t
-                                                           *) impl_class, env,
-                                                          conf);
+                        status = AXIS2_SVC_SKELETON_INIT_WITH_CONF(
+                            (axis2_svc_skeleton_t*) impl_class, env, conf);
                         axutil_allocator_switch_to_local_pool(env->allocator);
+                        if(!status)
+                        {
+                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service "\
+                                "%s initialization Failed. So exiting "\
+                                "conf_init()", axis2_svc_get_name(svc_desc, 
+                                    env));
+                            return AXIS2_FAILURE;
+                        }
                     }
                 }
             }
