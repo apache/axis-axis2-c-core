@@ -136,8 +136,7 @@ x509_token_process_alternatives(
             rp_x509_token_set_derivedkeys(x509_token, env, 
                                          AXIS2_TRUE);
         }    
-
-        if (type == ASSERTION_TYPE_REQUIRE_KEY_IDENTIFIRE_REFERENCE)
+        else if (type == ASSERTION_TYPE_REQUIRE_KEY_IDENTIFIRE_REFERENCE)
         {
             rp_x509_token_set_require_key_identifier_reference(x509_token, env,
                                                                AXIS2_TRUE);
@@ -147,7 +146,7 @@ x509_token_process_alternatives(
             rp_x509_token_set_require_issuer_serial_reference(x509_token, env,
                                                               AXIS2_TRUE);
         }
-        if (type == ASSERTION_TYPE_REQUIRE_EMBEDDED_TOKEN_REFERENCE)
+        else if (type == ASSERTION_TYPE_REQUIRE_EMBEDDED_TOKEN_REFERENCE)
         {
             rp_x509_token_set_require_embedded_token_reference(x509_token, env,
                                                                AXIS2_TRUE);
