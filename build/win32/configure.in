@@ -20,6 +20,8 @@ APACHE_VERSION_2_0_X = 0
 OPENSSL_BIN_DIR = E:\OpenSSL
 #libcurl binary location, only required if libcurl transport is enabled
 LIBCURL_BIN_DIR = E:\libcurl-7.15.1-msvc-win32-ssl-0.9.8a-zlib-1.2.3
+#C runtime LIBRARY OPTION ( Use /MD or /MT )
+CRUNTIME=/MD
 
 # To use apache 2.2 family , use  APACHE_VERSION_IS_2_0_X = 0
 # To build with debug symbols use DEBUG=1
