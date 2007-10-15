@@ -189,7 +189,7 @@ rp_wss11_get_must_support_ref_thumbprint(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_wss11_set_must_support_must_support_ref_thumbprint(
+rp_wss11_set_must_support_ref_thumbprint(
     rp_wss11_t * wss11,
     const axutil_env_t * env,
     axis2_bool_t must_support_ref_thumbprint)

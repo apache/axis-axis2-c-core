@@ -140,7 +140,7 @@ wss11_process_alternatives(
         }
         else if (type == ASSERTION_TYPE_MUST_SUPPORT_REF_THUMBPRINT)
         {
-            rp_wss11_set_must_support_must_support_ref_thumbprint(wss11, env, AXIS2_TRUE);
+            rp_wss11_set_must_support_ref_thumbprint(wss11, env, AXIS2_TRUE);
         }
         else if (type == ASSERTION_TYPE_MUST_SUPPORT_REF_ENCRYPTED_KEY)
         {
