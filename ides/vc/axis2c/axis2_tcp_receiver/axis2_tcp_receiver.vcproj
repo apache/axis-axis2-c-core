@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\..\..\..\..\src\core\transport\tcp;"
+				AdditionalIncludeDirectories=".\..\..\..\..\src\core\transport\tcp;.\..\..\..\..\axiom\include;.\..\..\..\..\util\include;.\..\..\..\..\neethi\include;.\..\..\..\..\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_TCP_RECEIVER_EXPORTS;AXIS2_DECLARE_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

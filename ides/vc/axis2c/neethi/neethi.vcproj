@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\..\..\..\..\util\include;.\..\..\..\..\include;.\..\..\..\..\axiom\include;"
+				AdditionalIncludeDirectories=".\..\..\..\..\util\include;.\..\..\..\..\include;.\..\..\..\..\axiom\include;.\..\..\..\..\neethi\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;NEETHI_EXPORTS;AXIS2_DECLARE_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,6 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="axiom.lib axutil.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\deploy\lib&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -106,7 +107,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="copy .\..\..\..\..\neethi\include\*.h .\..\$(ConfigurationName)\include"
+				CommandLine="copy .\..\..\..\..\neethi\include\*.h .\..\$(ConfigurationName)\include&#x0D;&#x0A;"
 				Outputs="copy include files"
 			/>
 			<Tool
@@ -238,6 +239,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\encryption_token_builder.c"
+						>
+					</File>
+					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\https_token_builder.c"
 						>
 					</File>
@@ -247,6 +252,10 @@
 					</File>
 					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\layout_builder.c"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\protection_token_builder.c"
 						>
 					</File>
 					<File
@@ -266,11 +275,19 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\signature_token_builder.c"
+						>
+					</File>
+					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\signed_encrypted_parts_builder.c"
 						>
 					</File>
 					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\supporting_tokens_builder.c"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\symmetric_binding_builder.c"
 						>
 					</File>
 					<File
@@ -286,11 +303,19 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\trust10_builder.c"
+						>
+					</File>
+					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\username_token_builder.c"
 						>
 					</File>
 					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\wss10_builder.c"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\wss11_builder.c"
 						>
 					</File>
 					<File
@@ -374,6 +399,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\..\..\neethi\src\secpolicy\model\trust10.c"
+						>
+					</File>
+					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\model\ut.c"
 						>
 					</File>
@@ -397,6 +426,254 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\..\..\..\neethi\include\neethi_all.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\neethi_assertion.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\neethi_assertion_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\neethi_constants.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\neethi_engine.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\neethi_exactlyone.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\neethi_includes.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\neethi_operator.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\neethi_policy.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\neethi_reference.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\neethi_registry.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\neethi_util.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_algorithmsuite.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_algorithmsuite_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_asymmetric_binding.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_asymmetric_binding_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_binding_commons.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_builders.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_defines.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_element.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_encryption_token_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_header.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_https_token.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_https_token_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_includes.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_initiator_token_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_layout.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_layout_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_policy_creator.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_property.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_protection_token_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_qname_matcher.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_rampart_config.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_rampart_config_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_recipient_token_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_secpolicy.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_secpolicy_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_security_context_token.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_signature_token_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_signed_encrypted_items.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_signed_encrypted_parts_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_supporting_tokens.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_supporting_tokens_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_symmetric_asymmetric_binding_commons.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_symmetric_binding.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_symmetric_binding_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_token_identifier.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_transport_binding.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_transport_binding_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_transport_token_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_trust10.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_trust10_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_username_token.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_username_token_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_wss10.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_wss10_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_wss11.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_wss11_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_x509_token.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_x509_token_builder.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

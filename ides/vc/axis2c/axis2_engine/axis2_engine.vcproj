@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\..\..\..\..\include;.\..\..\..\..\src\core\deployment;.\..\..\..\..\util\include;.\..\..\..\..\axiom\include"
+				AdditionalIncludeDirectories=".\..\..\..\..\include;.\..\..\..\..\src\core\deployment;.\..\..\..\..\util\include;.\..\..\..\..\axiom\include;.\..\..\..\..\neethi\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_ENGINE_EXPORTS;AXIS2_DECLARE_EXPORT;_CRT_SECURE_NO_DEPRECATE;AXIS2_SVR_MULTI_THREADED;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -110,7 +110,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="copy .\..\..\..\..\include\*.h .\..\$(ConfigurationName)\include\"
+				CommandLine="copy .\..\..\..\..\include\*.h .\..\$(ConfigurationName)\include\&#x0D;&#x0A;"
 				Outputs="copy  include files"
 			/>
 			<Tool
@@ -800,6 +800,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\axis2_phases_info.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\include\axis2_policy_include.h"
 				>
 			</File>
 			<File
