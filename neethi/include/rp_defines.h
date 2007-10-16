@@ -188,6 +188,7 @@ extern "C"
 #define RP_PRIVATE_KEY "PrivateKey"
 #define RP_TIME_TO_LIVE "TimeToLive"
 #define RP_RD "ReplayDetection"
+#define RP_RD_MODULE "ReplayDetectionModule"
 
 #define RP_SP_NS "http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"
 #define RP_SECURITY_NS "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"

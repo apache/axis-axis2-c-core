@@ -154,6 +154,20 @@ rp_rampart_config_builder_populate(
         else
             return AXIS2_FAILURE;
     }
+    else if (axutil_strcmp(local_name, RP_RD_MODULE) == 0)
+    {
+        if (rp_match_rampart_config_qname
+            (env, RP_RD_MODULE, node, element))
+        {
+            axis2_char_t *replay_detector = NULL;
+            replay_detector = axiom_element_get_text(element, env, node);
+            return rp_rampart_config_set_replay_detector(rampart_config,
+														 env,
+														 replay_detector);
+        }
+        else
+            return AXIS2_FAILURE;
+    }
     else if (axutil_strcmp(local_name, RP_PASSWORD_TYPE) == 0)
     {
         if (rp_match_rampart_config_qname(env, RP_PASSWORD_TYPE, node, element))

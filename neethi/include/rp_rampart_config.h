@@ -86,6 +86,17 @@ extern "C"
         axis2_char_t * authenticate_module);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rp_rampart_config_get_replay_detector(
+        rp_rampart_config_t * rampart_config,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_rampart_config_set_replay_detector(
+        rp_rampart_config_t * rampart_config,
+        const axutil_env_t * env,
+        axis2_char_t * replay_detector);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     rp_rampart_config_get_password_type(
         rp_rampart_config_t * rampart_config,
         const axutil_env_t * env);
