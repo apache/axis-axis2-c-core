@@ -60,6 +60,8 @@ struct axis2_op_ctx
     axutil_thread_mutex_t *mutex;
     axis2_bool_t response_written;
     axis2_bool_t is_in_use;
+
+    int ref;
 };
 
 AXIS2_EXTERN axis2_op_ctx_t *AXIS2_CALL
@@ -92,7 +94,7 @@ axis2_op_ctx_create(
     op_ctx->response_written = AXIS2_FALSE;
     op_ctx->mutex = axutil_thread_mutex_create(env->allocator,
                                                AXIS2_THREAD_MUTEX_DEFAULT);
-
+    
     if (!op_ctx->mutex)
     {
         axis2_op_ctx_free(op_ctx, env);
@@ -124,6 +126,7 @@ axis2_op_ctx_create(
     }
 
     axis2_op_ctx_set_parent(op_ctx, env, svc_ctx);
+    op_ctx->ref = 1;
 
     return op_ctx;
 }
@@ -143,6 +146,11 @@ axis2_op_ctx_free(
 {
     int i = 0;
     AXIS2_ENV_CHECK(env, void);
+
+    if (--(op_ctx->ref) > 0)
+    {
+        return;
+    }
 
     if (op_ctx->base)
     {
@@ -413,3 +421,15 @@ axis2_op_ctx_set_response_written(
 
     return AXIS2_SUCCESS;
 }
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_op_ctx_increment_ref(
+    axis2_op_ctx_t * op_ctx,
+    const axutil_env_t * env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    op_ctx->ref++;
+    return AXIS2_SUCCESS;
+}
+
