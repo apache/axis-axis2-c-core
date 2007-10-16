@@ -276,6 +276,19 @@ extern "C"
         const axutil_env_t * env,
         axis2_bool_t is_in_use);
 
+    /**
+     * Incrementing the op_ctx ref count. This is necessary when 
+     * prevent freeing op_ctx through op_client when it is in use 
+     * as in sandesha where the msg_cts is stored.     
+     * @param env pointer to environment struct
+     */
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_op_ctx_increment_ref(
+        axis2_op_ctx_t * op_ctx,
+        const axutil_env_t * env);
+
+
 #ifdef __cplusplus
 }
 #endif
