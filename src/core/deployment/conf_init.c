@@ -236,7 +236,6 @@ axis2_load_services(
                                 "%s initialization Failed. So exiting "\
                                 "conf_init()", axis2_svc_get_name(svc_desc, 
                                     env));
-                            return AXIS2_FAILURE;
                         }
                     }
                 }
