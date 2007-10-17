@@ -233,9 +233,6 @@ axis2_load_services(
                         axutil_allocator_switch_to_local_pool(env->allocator);
                         if(!status)
                         {
-                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                                "Service %s initialization Failed", 
-                                axis2_svc_get_name(svc_desc, env));
                             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service "\
                                 "%s initialization Failed. So exiting "\
                                 "conf_init()", axis2_svc_get_name(svc_desc,
