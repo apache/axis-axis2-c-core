@@ -21,31 +21,31 @@
 #include <stdio.h>
 #include <guththila_defines.h>
 #include <axutil_utils.h>
-EXTERN_C_START()  typedef int(
+EXTERN_C_START()  typedef int(
     GUTHTHILA_CALL * GUTHTHILA_READ_INPUT_CALLBACK)(
         char *buffer,
         int size,
-        void *ctx);
-enum guththila_reader_type
+        void *ctx);
+enum guththila_reader_type
 {
     GUTHTHILA_FILE_READER =
-        1, GUTHTHILA_IO_READER, GUTHTHILA_MEMORY_READER
+        1, GUTHTHILA_IO_READER, GUTHTHILA_MEMORY_READER
 };
-typedef struct guththila_reader_s
+typedef struct guththila_reader_s
 {
-    int
+    int
     type;
 
     FILE *
     fp;
-    char *
+    char *
     buff;
-    int
+    int
     buff_size;
 
     GUTHTHILA_READ_INPUT_CALLBACK
     input_read_callback;
-    void *
+    void *
     context;
     
 }
@@ -53,31 +53,31 @@ guththila_reader_t;
 
 #ifndef GUTHTHILA_READER_SET_LAST_START
 #define GUTHTHILA_READER_SET_LAST_START(_reader, _start) ((_reader)->start = _start)
-#endif  /*  */
+#endif  /*  */
 
 #ifndef GUTHTHILA_READER_STEP_BACK
 #define GUTHTHILA_READER_STEP_BACK(_reader) ((_reader->next--))
-#endif  /*  */
-GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
+#endif  /*  */
+GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
 guththila_reader_create_for_file(char *filename,
         const axutil_env_t * env);
-GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
+GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
 guththila_reader_create_for_io(GUTHTHILA_READ_INPUT_CALLBACK
         input_read_callback, void *ctx,
         const axutil_env_t * env);
-GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
+GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
 guththila_reader_create_for_memory(void *buffer,
         int size,
         const axutil_env_t * env);
-GUTHTHILA_EXPORT int GUTHTHILA_CALL  guththila_reader_read(
+GUTHTHILA_EXPORT int GUTHTHILA_CALL  guththila_reader_read(
     guththila_reader_t * r,
     guththila_char * buffer,
     int offset,
     int length,
     const axutil_env_t * env);
-GUTHTHILA_EXPORT void GUTHTHILA_CALL  guththila_reader_free(
+GUTHTHILA_EXPORT void GUTHTHILA_CALL  guththila_reader_free(
     guththila_reader_t * r,
     const axutil_env_t * env);
-EXTERN_C_END() 
-#endif  /*  */
+EXTERN_C_END() 
+#endif  /*  */
 
