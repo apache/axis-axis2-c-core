@@ -24,7 +24,7 @@
 EXTERN_C_START() 
 #ifndef GUTHTHILA_ATTR_DEF_SIZE
 #define GUTHTHILA_ATTR_DEF_SIZE 16
-#endif  /*  */
+#endif  /* */
 typedef struct guththila_attr_s
 {
 

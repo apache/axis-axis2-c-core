@@ -48,10 +48,8 @@
             {
                 tok_list->no_list = GUTHTHILA_TOK_DEF_LIST_SIZE;
                 tok_list->list[0] =
-                    (guththila_token_t *) AXIS2_MALLOC(env->allocator,
-                                                       sizeof(guththila_token_t)
-                                                       *
-                                                       GUTHTHILA_TOK_DEF_SIZE);
+		  (guththila_token_t *) AXIS2_MALLOC(env->allocator,
+                              sizeof(guththila_token_t)*GUTHTHILA_TOK_DEF_SIZE);
                 for (i = 0; i < GUTHTHILA_TOK_DEF_SIZE; i++)
                 {
                     guththila_stack_push(&tok_list->fr_stack,
@@ -173,8 +171,8 @@ guththila_tok_list_free_data(
     }
     AXIS2_FREE(env->allocator, tok_list->list);
 }
-guththila_token_t *
-    GUTHTHILA_CALL guththila_tok_list_get_token(guththila_tok_list_t * tok_list,
+guththila_token_t *GUTHTHILA_CALL
+guththila_tok_list_get_token(guththila_tok_list_t * tok_list,
                                                 const axutil_env_t * env) 
 {
     if (tok_list->fr_stack.top > 0 || guththila_tok_list_grow(tok_list, env))
@@ -194,7 +192,7 @@ guththila_tok_list_release_token(
 int GUTHTHILA_CALL
 guththila_tok_str_cmp(
     guththila_token_t * tok,
-    char *str,
+    guththila_char_t *str,
     size_t str_len,
     const axutil_env_t * env) 
 {

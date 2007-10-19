@@ -38,8 +38,8 @@
 #endif
 #endif
 
-#ifndef guththila_char
-#define guththila_char char
+#ifndef guththila_char_t
+#define guththila_char_t char
 #endif
 
 #ifndef GUTHTHILA_SUCCESS

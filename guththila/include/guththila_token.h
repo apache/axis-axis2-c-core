@@ -24,7 +24,7 @@ EXTERN_C_START()  typedef struct guththila_token_s
 {
     short
     type;
-    char *
+    guththila_char_t *
     start;
     int
     _start;
@@ -76,7 +76,7 @@ guththila_tok_list_t;
 
 #ifndef GUTHTHILA_TOKEN_TO_STRING
 #define GUTHTHILA_TOKEN_TO_STRING(tok, string, _env) \
-    string = (char *) AXIS2_MALLOC(_env->allocator, (GUTHTHILA_TOKEN_LEN(tok) + 1) * sizeof(char)); \
+    string = (guththila_char_t *) AXIS2_MALLOC(_env->allocator, (GUTHTHILA_TOKEN_LEN(tok) + 1) * sizeof(guththila_char_t)); \
     memcpy(string, (tok)->start, GUTHTHILA_TOKEN_LEN(tok)); \
     string[GUTHTHILA_TOKEN_LEN(tok)] = 0;
 #endif  /*  */
@@ -110,7 +110,7 @@ guththila_tok_list_grow(
 int GUTHTHILA_CALL
 guththila_tok_str_cmp(
     guththila_token_t * tok,
-    char *str,
+    guththila_char_t *str,
     size_t str_len,
     const axutil_env_t * env);
 int GUTHTHILA_CALL

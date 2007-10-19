@@ -24,7 +24,7 @@
 #include <guththila_defines.h>
 #include <axutil_utils.h>
 #define GUTHTHILA_STACK_DEFAULT	16
-EXTERN_C_START()  typedef struct guththila_stack_s
+EXTERN_C_START() typedef struct guththila_stack_s
 {
 
     /* Number of Items in the stack */

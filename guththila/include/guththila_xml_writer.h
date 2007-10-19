@@ -91,8 +91,8 @@ typedef struct guththila_xml_writer_element_s
     guththila_token_t *prefix;
     guththila_token_t *name;
 #else
-    guththila_char *prefix;
-    guththila_char *name;
+    guththila_char_t *prefix;
+    guththila_char_t *name;
 #endif
     /* contains the number of the stack which holds the namespaces
        for this element. When we close this element all the namespaces 
@@ -109,8 +109,8 @@ typedef struct guththila_xml_writer_namesp_s
     guththila_token_t **name;
     guththila_token_t **uri;
 #else
-    guththila_char **name;
-    guththila_char **uri;
+    guththila_char_t **name;
+    guththila_char_t **uri;
 #endif
     int no;             /*number of namespaces */
     int size;

@@ -18,16 +18,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <guththila_reader.h>
-    GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL 
-guththila_reader_create_for_file(char *file_name, const axutil_env_t * env) 
+GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL 
+guththila_reader_create_for_file(guththila_char_t *file_name, const axutil_env_t * env) 
 {
     guththila_reader_t * reader = NULL;
+
     FILE * f = NULL;
     if (!file_name)
         return NULL;
-    reader =
-        (guththila_reader_t *) AXIS2_MALLOC(env->allocator,
-                                            sizeof(guththila_reader_t));
+    reader =(guththila_reader_t *) AXIS2_MALLOC(env->allocator,sizeof(guththila_reader_t));
     if (!reader)
         return NULL;
     f = fopen(file_name, "r");
@@ -90,7 +89,7 @@ guththila_reader_free(
 GUTHTHILA_EXPORT int GUTHTHILA_CALL 
 guththila_reader_read(
     guththila_reader_t * r,
-    guththila_char * buffer,
+    guththila_char_t * buffer,
     int offset,
     int length,
     const axutil_env_t * env) 

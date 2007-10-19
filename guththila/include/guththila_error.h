@@ -19,7 +19,7 @@
 
 #ifndef GUTHTHILA_ERROR_H
 #define GUTHTHILA_ERROR_H
-EXTERN_C_START()  typedef enum guththila_error_l
+EXTERN_C_START() typedef enum guththila_error_l
 {
     GUTHTHILA_VALIDITY_ERROR,
     GUTHTHILA_VALIDITY_WARNING,

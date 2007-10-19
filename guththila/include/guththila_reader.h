@@ -23,7 +23,7 @@
 #include <axutil_utils.h>
 EXTERN_C_START()  typedef int(
     GUTHTHILA_CALL * GUTHTHILA_READ_INPUT_CALLBACK)(
-        char *buffer,
+        guththila_char_t *buffer,
         int size,
         void *ctx);
 enum guththila_reader_type
@@ -38,7 +38,7 @@ typedef struct guththila_reader_s
 
     FILE *
     fp;
-    char *
+    guththila_char_t *
     buff;
     int
     buff_size;
@@ -59,7 +59,7 @@ guththila_reader_t;
 #define GUTHTHILA_READER_STEP_BACK(_reader) ((_reader->next--))
 #endif  /*  */
 GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
-guththila_reader_create_for_file(char *filename,
+guththila_reader_create_for_file(guththila_char_t *filename,
         const axutil_env_t * env);
 GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
 guththila_reader_create_for_io(GUTHTHILA_READ_INPUT_CALLBACK
@@ -71,7 +71,7 @@ guththila_reader_create_for_memory(void *buffer,
         const axutil_env_t * env);
 GUTHTHILA_EXPORT int GUTHTHILA_CALL  guththila_reader_read(
     guththila_reader_t * r,
-    guththila_char * buffer,
+    guththila_char_t * buffer,
     int offset,
     int length,
     const axutil_env_t * env);

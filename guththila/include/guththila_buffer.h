@@ -21,6 +21,7 @@
 #include <guththila_defines.h>
 #include <axutil_utils.h>
 
+
 EXTERN_C_START()
 typedef enum guththila_buffer_type
 {
@@ -33,7 +34,7 @@ typedef struct guththila_buffer_s
     /* Required to manupulate multiple buffers */
     size_t *data_size;
     size_t *buffs_size;
-    char **buff;
+    guththila_char_t **buff;
     int cur_buff;
     int cur_buff_pos;
     size_t pre_tot_data;
@@ -79,7 +80,7 @@ int GUTHTHILA_CALL guththila_buffer_un_init(
     const axutil_env_t * env);
 int GUTHTHILA_CALL guththila_buffer_init_for_buffer(
     guththila_buffer_t * mu_buff,
-    char *buffer,
+    guththila_char_t *buffer,
     int size,
     const axutil_env_t * env);
 
