@@ -765,7 +765,7 @@ guththila_write_default_namespace(
 {
     if (wr->status == START || wr->status == START_EMPTY)
     {
-        guththila_write(wr, " xmlns = \"", 10u, env);
+        guththila_write(wr, " xmlns=\"", 8u, env);
         guththila_write(wr, namespace_uri, strlen(namespace_uri), env);
         guththila_write(wr, "\"", 1u, env);
         return GUTHTHILA_SUCCESS;
@@ -822,7 +822,7 @@ guththila_write_namespace(
         guththila_write(wr, " xmlns:", 7u, env);
         pref_start = wr->next;
         guththila_write_xtoken(wr, prefix, pref_len, env);
-        guththila_write(wr, " = \"", 4u, env);
+        guththila_write(wr, "=\"", 2u, env);
         uri_start = wr->next;
         guththila_write_xtoken(wr, uri, uri_len, env);
         guththila_write(wr, "\"", 1u, env);
@@ -977,7 +977,7 @@ guththila_write_attribute(
     {
         guththila_write(wr, " ", 1u, env);
         guththila_write(wr, localname, strlen(localname), env);
-        guththila_write(wr, " = \"", 4u, env);
+        guththila_write(wr, "=\"", 2u, env);
         guththila_write(wr, value, strlen(value), env);
         guththila_write(wr, "\"", 1u, env);
         return GUTHTHILA_SUCCESS;
@@ -1036,7 +1036,7 @@ guththila_write_attribute_with_prefix(
                     guththila_write(wr, prefix, pref_len, env);
                     guththila_write(wr, ":", 1u, env);
                     guththila_write(wr, localname, strlen(localname), env);
-                    guththila_write(wr, " = \"", 4u, env);
+                    guththila_write(wr, "=\"", 2u, env);
                     guththila_write(wr, value, strlen(value), env);
                     guththila_write(wr, "\"", 1u, env);
                     return GUTHTHILA_SUCCESS;
@@ -1087,7 +1087,7 @@ guththila_write_attribute_with_namespace(
 #endif  /*  */
                         guththila_write(wr, ":", 1u, env);
                     guththila_write(wr, loc_name, strlen(loc_name), env);
-                    guththila_write(wr, " = \"", 4u, env);
+                    guththila_write(wr, "=\"", 2u, env);
                     guththila_write(wr, value, strlen(value), env);
                     guththila_write(wr, "\"", 1u, env);
                     return GUTHTHILA_SUCCESS;
@@ -1173,7 +1173,7 @@ guththila_write_start_element_with_prefix_and_namespace(
                 guththila_write(wr, "xmlns:", 6u, env);
                 pref_start = wr->next;
                 guththila_write_xtoken(wr, prefix, pref_len, env);
-                guththila_write(wr, " = \"", 4u, env);
+                guththila_write(wr, "=\"", 2u, env);
                 uri_start = wr->next;
                 guththila_write_xtoken(wr, namespace_uri, uri_len, env);
                 guththila_write(wr, "\"", 1u, env);
@@ -1193,7 +1193,7 @@ guththila_write_start_element_with_prefix_and_namespace(
                 guththila_write(wr, "xmlns:", 6u, env);
                 pref_start = wr->next;
                 guththila_write_xtoken(wr, prefix, pref_len, env);
-                guththila_write(wr, " = \"", 4u, env);
+                guththila_write(wr, "=\"", 2u, env);
                 uri_start = wr->next;
                 guththila_write_xtoken(wr, namespace_uri, uri_len, env);
                 guththila_write(wr, "\"", 1u, env);
@@ -1214,7 +1214,7 @@ guththila_write_start_element_with_prefix_and_namespace(
                 guththila_write(wr, "xmlns:", 6u, env);
                 pref_start = wr->next;
                 guththila_write_xtoken(wr, prefix, pref_len, env);
-                guththila_write(wr, " = \"", 4u, env);
+                guththila_write(wr, "=\"", 2u, env);
                 uri_start = wr->next;
                 guththila_write_xtoken(wr, namespace_uri, uri_len, env);
                 guththila_write(wr, "\"", 1u, env);
@@ -1532,7 +1532,7 @@ guththila_write_empty_element_with_prefix_and_namespace(
             guththila_write(wr, " ", 1u, env);
             guththila_write(wr, "xmlns:", 6u, env);
             guththila_write_xtoken(wr, prefix, strlen(prefix), env);
-            guththila_write(wr, " = \"", 4u, env);
+            guththila_write(wr, "=\"", 2u, env);
             guththila_write_xtoken(wr, prefix, strlen(namespace_uri), env);
             guththila_write(wr, "\"", 1u, env);
             wr->status = START_EMPTY;
@@ -1547,7 +1547,7 @@ guththila_write_empty_element_with_prefix_and_namespace(
             guththila_write(wr, " ", 1u, env);
             guththila_write(wr, "xmlns:", 6u, env);
             guththila_write_xtoken(wr, prefix, strlen(prefix), env);
-            guththila_write(wr, " = \"", 4u, env);
+            guththila_write(wr, "=\"", 2u, env);
             guththila_write_xtoken(wr, prefix, strlen(namespace_uri), env);
             guththila_write(wr, "\"", 1u, env);
             return GUTHTHILA_SUCCESS;
@@ -1561,7 +1561,7 @@ guththila_write_empty_element_with_prefix_and_namespace(
             guththila_write(wr, " ", 1u, env);
             guththila_write(wr, "xmlns:", 6u, env);
             guththila_write_xtoken(wr, prefix, strlen(prefix), env);
-            guththila_write(wr, " = \"", 4u, env);
+            guththila_write(wr, "=\"", 2u, env);
             guththila_write_xtoken(wr, prefix, strlen(namespace_uri), env);
             guththila_write(wr, "\"", 1u, env);
             wr->status = START_EMPTY;
@@ -1836,5 +1836,6 @@ guththila_write_to_buffer(
     guththila_write(wr, buff, size, env);
     return GUTHTHILA_SUCCESS;
 }
+
 
 
