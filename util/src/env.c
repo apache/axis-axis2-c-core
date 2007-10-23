@@ -56,7 +56,9 @@ axutil_env_create(
     /* Call error init to fill in the axutil_error_messages array.
        This array holds the error messages with respect to error codes */
     axutil_error_init();
-    
+
+    env->ref = 1;
+
     return env;
 }
 
@@ -92,6 +94,7 @@ axutil_env_create_with_error_log(
         env->log = log; /* set the given log */
     }
 
+    env->ref = 1;
 
     return env;
 }
@@ -135,6 +138,8 @@ axutil_env_create_with_error_log_thread_pool(
         env->log_enabled = AXIS2_TRUE;
     else
         env->log_enabled = AXIS2_FALSE;
+
+    env->ref = 1;
 
     return env;
 }
@@ -181,6 +186,8 @@ axutil_env_create_all(
         }
     }
 
+    env->ref = 1;
+
     return env;
 }
 
@@ -217,6 +224,11 @@ axutil_env_free(
     if (!env)
         return;
 
+    if (--(env->ref) > 0)
+    {
+        return;
+    }
+    
     allocator = env->allocator;
 
     if (env->log)
@@ -255,6 +267,11 @@ axutil_env_free_masked(
     if (!env)
         return;
 
+    if (--(env->ref) > 0)
+    {
+        return;
+    }
+
     if (mask & 0x1)
     {
         AXIS2_LOG_FREE(env->allocator, env->log);
@@ -274,5 +291,15 @@ axutil_env_free_masked(
         AXIS2_FREE(env->allocator, env);
 
     return;
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axutil_env_increment_ref(
+    axutil_env_t * env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    env->ref++;
+    return AXIS2_SUCCESS;
 }
 

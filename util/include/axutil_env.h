@@ -73,6 +73,8 @@ extern "C"
 
         /** Thread pool routines */
         axutil_thread_pool_t *thread_pool;
+
+        int ref;
     }
     axutil_env_t;
 
@@ -189,6 +191,19 @@ extern "C"
     axutil_env_free_masked(
         axutil_env_t * env,
         char mask);
+
+    /**
+     * Incrent the reference count.This is used when objects are created 
+     * using this env and keeping this for future use.
+     * @param env pointer to environment struct instance to be freed.
+     * @return void
+     */
+    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_env_increment_ref(
+        axutil_env_t * env);
+    
+
 
 /* AXIS2_ENV_CHECK is a macro to check environment pointer.
    Currently this is set to an empty value.

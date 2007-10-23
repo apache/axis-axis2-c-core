@@ -97,6 +97,7 @@ axutil_hash_make(
     AXIS2_ENV_CHECK(env, NULL);
 
     ht = AXIS2_MALLOC(env->allocator, sizeof(axutil_hash_t));
+    axutil_env_increment_ref((axutil_env_t*)env);
     ht->env = env;
     ht->free = NULL;
     ht->count = 0;
@@ -616,6 +617,18 @@ axutil_hash_free(
                 current = next;
             }
         }
+        
+        if (ht->env)
+        {
+            /*since we now keep a ref count in env and incrementing it
+             *inside hash_make we need to free the env.Depending on the
+              situation the env struct is freed or ref count will be 
+              decremented.*/
+
+            axutil_free_thread_env((axutil_env_t*)(ht->env));
+            ht->env = NULL;
+        }    
+        
         AXIS2_FREE(env->allocator, (ht->array));
         AXIS2_FREE(env->allocator, ht);
     }

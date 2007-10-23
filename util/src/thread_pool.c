@@ -132,6 +132,12 @@ axutil_free_thread_env(
     {
         return;
     }
+
+    if (--(thread_env->ref) > 0)
+    {
+        return;
+    }
+
     /* log, thread_pool and allocator are shared, so do not free them */
     thread_env->log = NULL;
     thread_env->thread_pool = NULL;
