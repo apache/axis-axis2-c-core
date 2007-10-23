@@ -75,7 +75,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
-				EmbedManifest="false"
+				EmbedManifest="true"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -109,7 +109,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="xcopy /E /Y /S .\..\..\..\..\util\include  .\..\$(ConfigurationName)\include\"
+				CommandLine="xcopy /E /Y /S .\..\..\..\..\util\include  .\..\$(ConfigurationName)\include\&#x0D;&#x0A;"
 				Outputs="Copy include files"
 			/>
 			<Tool

@@ -75,7 +75,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
-				EmbedManifest="false"
+				EmbedManifest="true"
 				UseFAT32Workaround="true"
 			/>
 			<Tool

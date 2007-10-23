@@ -76,7 +76,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
-				EmbedManifest="false"
+				EmbedManifest="true"
 				AdditionalOptions="/nologo /outputresource:&quot;..\deploy\lib\axiom.dll;#2&quot;"
 			/>
 			<Tool
@@ -111,7 +111,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="copy  .\..\..\..\..\axiom\include\*.h  .\..\$(ConfigurationName)\include"
+				CommandLine="copy  .\..\..\..\..\axiom\include\*.h  .\..\$(ConfigurationName)\include&#x0D;&#x0A;"
 				Outputs="copy include files"
 			/>
 			<Tool
