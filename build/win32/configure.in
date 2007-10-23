@@ -22,6 +22,9 @@ OPENSSL_BIN_DIR = E:\OpenSSL
 LIBCURL_BIN_DIR = E:\libcurl-7.15.1-msvc-win32-ssl-0.9.8a-zlib-1.2.3
 #C runtime LIBRARY OPTION ( Use /MD or /MT )
 CRUNTIME=/MD
-
+# Visual Studio version
+VC_VERSION_2005_OR_ABOVE=1
+#debug symbols
+DEBUG=1
 # To use apache 2.2 family , use  APACHE_VERSION_IS_2_0_X = 0
 # To build with debug symbols use DEBUG=1

@@ -138,7 +138,7 @@ CFLAGS = $(CFLAGS) /D "AXIS2_LIBCURL_ENABLED"
 
 LD = @link.exe
 LDFLAGS = /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXML2_BIN_DIR)\lib \
-       	/LIBPATH:$(APACHE_BIN_DIR)\lib /LIBPATH:$(ZLIB_BIN_DIR)\lib /MANIFEST
+       	/LIBPATH:$(APACHE_BIN_DIR)\lib /LIBPATH:$(ZLIB_BIN_DIR)\lib
 		 
 LIBS =  Rpcrt4.lib Ws2_32.lib
 
@@ -158,6 +158,17 @@ APACHE_LIBS = apr.lib xml.lib libhttpd.lib aprutil.lib libapr.lib
 APACHE_LIBS = apr-1.lib xml.lib libhttpd.lib aprutil-1.lib libapr-1.lib
 !endif
 
+####################
+MT=mt.exe
+MT="$(MT)"
+
+!if "$(VC_VERSION_2005_OR_ABOVE)" == "0"
+_VC_MANIFEST_EMBED_EXE=
+_VC_MANIFEST_EMBED_DLL=
+!else
+_VC_MANIFEST_EMBED_EXE= if exist $@.manifest $(MT) -nologo -manifest $@.manifest -outputresource:$@;1
+_VC_MANIFEST_EMBED_DLL= if exist $@.manifest $(MT) -nologo -manifest $@.manifest -outputresource:$@;2
+!endif
 
 #################### debug symbols
 !if "$(DEBUG)" == "1"
@@ -226,10 +237,9 @@ $(AXUTIL_OBJS) :  $(AXIS2_INTDIR_AXUTIL) $(AXIS2_INTDIR_AXUTIL1) $(AXIS2_INTDIR_
 $(AXIS2_LIBS)\$(AXUTIL).dll : $(AXUTIL_OBJS)
 	$(LD) $(LDFLAGS) $(AXUTIL_OBJS) $(LIBS) $(ZLIB_BIN_DIR)\lib\zdll.lib \
 	/DLL  /OUT:$(AXIS2_LIBS)\$(AXUTIL).dll  /IMPLIB:$(AXIS2_LIBS)\$(AXUTIL).lib
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 axis2_util : $(AXIS2_LIBS)\$(AXUTIL).dll
-
-
 ##### end axutil
 
 ##### guththila
@@ -250,7 +260,7 @@ $(GUTHTHILA_OBJS) : $(AXIS2_INTDIR_GUTHTHILA)
 $(AXIS2_LIBS)\$(GUTHTHILA).dll : $(GUTHTHILA_OBJS)
 	$(LD) $(LDFLAGS) $(GUTHTHILA_OBJS) $(AXUTIL).lib $(LIBS) \
 	/DLL /OUT:$(AXIS2_LIBS)\$(GUTHTHILA).dll /IMPLIB:$(AXIS2_LIBS)\$(GUTHTHILA).lib
-
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 guththila: $(AXIS2_LIBS)\$(GUTHTHILA).dll
 
@@ -285,10 +295,9 @@ $(AXIS2_LIBS)\$(AXIS2_PARSER).dll : $(AXIS2_PARSER_OBJS)
 	$(LD) $(LDFLAGS) $(AXIS2_PARSER_OBJS) $(AXUTIL).lib $(LIBS) \
 	$(LIBXML2_BIN_DIR)\lib\libxml2.lib  /DLL \
 	/OUT:$(AXIS2_LIBS)\$(AXIS2_PARSER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_PARSER).lib
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 axis2_parser : $(AXIS2_LIBS)\$(AXIS2_PARSER).dll
-
-
 ##### end axis2 parser
 
 GHTHTHILA_WRAPPER_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\parser
@@ -316,7 +325,7 @@ $(GUTHTHILA_WRAPPER_OBJS) : $(GUTHTHILA_WRAPPER_INTDIR) $(GUTHTHILA_WRAPPER_INTD
 axis2_parser_with_guththila: $(GUTHTHILA_WRAPPER_OBJS)
 	$(LD) $(LDFLAGS) $(GUTHTHILA_WRAPPER_OBJS) $(AXUTIL).lib $(LIBS) $(AXIS2_LIBS)\$(GUTHTHILA).lib  /DLL \
 	/OUT:$(AXIS2_LIBS)\$(AXIS2_PARSER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_PARSER).lib
-
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 ##### axiom
 
@@ -363,6 +372,7 @@ $(AXIOM_OBJS) : $(AXIOM_INTDIR) $(AXIOM_INTDIR1) $(AXIOM_INTDIR2) $(AXIOM_INTDIR
 $(AXIS2_LIBS)\$(AXIOM).dll : $(AXIOM_OBJS) 
 	$(LD) $(LDFLAGS) $(AXIOM_OBJS) $(AXUTIL).lib $(AXIS2_PARSER).lib $(LIBS) \
 	/DLL /OUT:$(AXIS2_LIBS)\$(AXIOM).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIOM).lib
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 axiom : $(AXIS2_LIBS)\$(AXIOM).dll
 
@@ -402,6 +412,7 @@ $(NEETHI_OBJS) : $(NEETHI_INTDIR) $(NEETHI_INTDIR1) $(NEETHI_INTDIR2)
 $(AXIS2_LIBS)\$(NEETHI).dll : $(NEETHI_OBJS)
 	$(LD) $(LDFLAGS) $(NEETHI_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
     	/DLL /OUT:$(AXIS2_LIBS)\$(NEETHI).dll /IMPLIB:$(AXIS2_LIBS)\$(NEETHI).lib
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 neethi : $(AXIS2_LIBS)\$(NEETHI).dll
 
@@ -516,6 +527,7 @@ $(AXIS2_LIBS)\$(AXIS2_ENGINE).dll : $(ENGINE_OBJS)
 	$(LD) $(LDFLAGS) $(ENGINE_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(NEETHI).lib $(LIBS) /DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_ENGINE).dll \
 	/IMPLIB:$(AXIS2_LIBS)\$(AXIS2_ENGINE).lib
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 axis2_engine : $(AXIS2_LIBS)\$(AXIS2_ENGINE).dll
 
@@ -567,6 +579,7 @@ $(AXIS2_LIBS)\$(AXIS2_HTTP_SENDER).dll : $(HTTP_SENDER_OBJS)
 	$(LD) $(LDFLAGS) $(HTTP_SENDER_OBJS) $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
 	/DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_HTTP_SENDER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_HTTP_SENDER).lib
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 axis2_http_sender : $(AXIS2_LIBS)\$(AXIS2_HTTP_SENDER).dll
 
@@ -594,6 +607,7 @@ $(AXIS2_LIBS)\$(AXIS2_TCP_SENDER).dll : $(TCP_SENDER_OBJS)
 	$(LD) $(LDFLAGS) $(TCP_SENDER_OBJS) $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
 	/DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_TCP_SENDER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_TCP_SENDER).lib
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 axis2_tcp_sender : $(AXIS2_LIBS)\$(AXIS2_TCP_SENDER).dll
 
@@ -620,9 +634,9 @@ $(AXIS2_LIBS)\$(AXIS2_HTTP_RECEIVER).dll : $(HTTP_RECEIVER_OBJS)
 	$(LD) $(LDFLAGS) $(HTTP_RECEIVER_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_HTTP_RECEIVER).dll \
 	/IMPLIB:$(AXIS2_LIBS)\$(AXIS2_HTTP_RECEIVER).lib
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 axis2_http_receiver : $(AXIS2_LIBS)\$(AXIS2_HTTP_RECEIVER).dll
-
 
 ##### end axis2 http receiver
 
@@ -645,6 +659,7 @@ $(AXIS2_LIBS)\$(AXIS2_TCP_RECEIVER).dll : $(TCP_RECEIVER_OBJS)
 	$(LD) $(LDFLAGS) $(TCP_RECEIVER_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_TCP_RECEIVER).dll \
 	/IMPLIB:$(AXIS2_LIBS)\$(AXIS2_TCP_RECEIVER).lib
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 axis2_tcp_receiver : $(AXIS2_LIBS)\$(AXIS2_TCP_RECEIVER).dll
 
@@ -669,6 +684,7 @@ $(AXIS2_MODULES)\addressing\$(AXIS2_MOD_ADDR).dll : $(ADDR_OBJS)
 	$(LD) $(LDFLAGS) $(ADDR_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
 	$(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_MODULES)\addressing\$(AXIS2_MOD_ADDR).dll
 	@copy $(AXIS2_SOURCE_DIR)\src\modules\mod_addr\module.xml $(AXIS2_MODULES)\addressing
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 axis2_mod_addr : $(AXIS2_MODULES)\addressing\$(AXIS2_MOD_ADDR).dll
 
@@ -694,7 +710,7 @@ $(AXIS2_SVR_OBJS) : $(AXIS2_SVR_INTDIR)
 $(AXIS2_BINS)\$(AXIS2_HTTP_SERVER).exe : $(AXIS2_SVR_OBJS)
 	$(LD) $(LDFLAGS) $(AXIS2_SVR_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_HTTP_RECEIVER).lib  /OUT:$(AXIS2_BINS)\$(AXIS2_HTTP_SERVER).exe 
-		
+        -@$(_VC_MANIFEST_EMBED_EXE)
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\axis2.xml $(AXIS2_BINDIR)\
 
 simple_axis2_http_server : $(AXIS2_BINS)\$(AXIS2_HTTP_SERVER).exe
@@ -721,7 +737,7 @@ $(AXIS2_TCP_SVR_OBJS) : $(AXIS2_TCP_SVR_INTDIR)
 $(AXIS2_BINS)\$(AXIS2_TCP_SERVER).exe : $(AXIS2_TCP_SVR_OBJS)
 	$(LD) $(LDFLAGS) $(AXIS2_TCP_SVR_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TCP_RECEIVER).lib  /OUT:$(AXIS2_BINS)\$(AXIS2_TCP_SERVER).exe 
-		
+	-@$(_VC_MANIFEST_EMBED_EXE)
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\axis2.xml $(AXIS2_BINDIR)\
 
 simple_axis2_tcp_server : $(AXIS2_BINS)\$(AXIS2_TCP_SERVER).exe
@@ -750,6 +766,7 @@ $(MOD_AXIS2_OBJS) : $(MOD_AXIS2_INTDIR)
 $(AXIS2_LIBS)\mod_axis2.dll : $(MOD_AXIS2_OBJS)
 	$(LD) $(LDFLAGS) $(MOD_AXIS2_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(LIBS) $(AXIS2_ENGINE).lib $(APACHE_LIBS) /DLL /OUT:$(AXIS2_LIBS)\mod_axis2.dll
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 axis2_apache_module : $(AXIS2_LIBS)\mod_axis2.dll
 
@@ -783,6 +800,7 @@ $(MOD_IIS_OBJS) : $(MOD_IIS_INTDIR) $(MOD_IIS_INTDIR1)
 $(AXIS2_LIBS)\mod_axis2_IIS.dll : $(MOD_IIS_OBJS)
 	$(LD) $(LDFLAGS) $(MOD_IIS_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(LIBS) Advapi32.lib $(AXIS2_ENGINE).lib /DEF:$(DEF_FILE) /DLL /OUT:$(AXIS2_LIBS)\mod_axis2_IIS.dll
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 axis2_IIS_module : $(AXIS2_LIBS)\mod_axis2_IIS.dll
 
@@ -817,6 +835,7 @@ $(AXIS2_MODULES)\logging\axis2_mod_log.dll : $(MOD_LOG_OBJS)
 	$(LD) $(LDFLAGS) $(MOD_LOG_OBJS) $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_MODULES)\logging\axis2_mod_log.dll 
 	@copy $(AXIS2_SOURCE_DIR)\src\modules\mod_log\module.xml $(AXIS2_MODULES)\logging
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 axis2_mod_log: $(AXIS2_MODULES)\logging\axis2_mod_log.dll
 
@@ -834,7 +853,7 @@ axis2_services_echo:
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_SAMPLES)\services\echo\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
 	/DLL /OUT:$(AXIS2_SERVICES)\echo\echo.dll
-
+	-@$(_VC_MANIFEST_EMBED_DLL)
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\echo\services.xml $(AXIS2_SERVICES)\echo
 
 axis2_services_notify:
@@ -846,7 +865,7 @@ axis2_services_notify:
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_SAMPLES)\services\notify\*.obj $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
 	 /DLL /OUT:$(AXIS2_SERVICES)\notify\notify.dll  
-	
+	-@$(_VC_MANIFEST_EMBED_DLL)
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\notify\services.xml $(AXIS2_SERVICES)\notify
 
 axis2_services_math:
@@ -857,7 +876,7 @@ axis2_services_math:
 	$(AXIS2_SOURCE_DIR)\samples\server\math\*.c /Fo$(AXIS2_INTDIR_SAMPLES)\services\math\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_SAMPLES)\services\math\*.obj $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_SERVICES)\math\math.dll  
-	
+	-@$(_VC_MANIFEST_EMBED_DLL)
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\math\services.xml $(AXIS2_SERVICES)\math
 
 axis2_services_mtom:
@@ -867,7 +886,7 @@ axis2_services_mtom:
 	$(AXIS2_SOURCE_DIR)\samples\server\mtom\*.c /Fo$(AXIS2_INTDIR_SAMPLES)\services\mtom\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_SAMPLES)\services\mtom\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_SERVICES)\mtom\mtom.dll  
-
+	-@$(_VC_MANIFEST_EMBED_DLL)
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\services.xml $(AXIS2_SERVICES)\mtom
 
 
@@ -880,7 +899,7 @@ axis2_services_calculator:
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_SAMPLES)\services\Calculator\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
 	/DLL /OUT:$(AXIS2_SERVICES)\Calculator\Calculator.dll  
-
+	-@$(_VC_MANIFEST_EMBED_DLL)
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\Calculator\services.xml $(AXIS2_SERVICES)\Calculator
 
 AXIS2_INTDIR_SGM=$(AXIS2_INTDIR_SAMPLES)\services\sgmath
@@ -898,26 +917,29 @@ axis2_services_sg_math:
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_SGM)\add\*.obj $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
 	/DLL /OUT:$(AXIS2_SERVICES)\sg_math\add.dll  
+	-@$(_VC_MANIFEST_EMBED_DLL)
 
 	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\sg_math \
 	$(AXIS2_SOURCE_DIR)\samples\server\sg_math\div.c \
 	$(AXIS2_SOURCE_DIR)\samples\server\sg_math\div_skeleton.c /Fo$(AXIS2_INTDIR_SGM)\div\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_SGM)\div\*.obj $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_SERVICES)\sg_math\div.dll  
-	
+	-@$(_VC_MANIFEST_EMBED_DLL)
+
 	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\sg_math  \
 	$(AXIS2_SOURCE_DIR)\samples\server\sg_math\sub.c \
 	$(AXIS2_SOURCE_DIR)\samples\server\sg_math\sub_skeleton.c /Fo$(AXIS2_INTDIR_SGM)\sub\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_SGM)\sub\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
-	$(LIBS) $(AXIS2_ENGINE).lib  /DLL /OUT:$(AXIS2_SERVICES)\sg_math\sub.dll  
-	
+	$(LIBS) $(AXIS2_ENGINE).lib  /DLL /OUT:$(AXIS2_SERVICES)\sg_math\sub.dll
+	-@$(_VC_MANIFEST_EMBED_DLL)
+
 	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\sg_math  \
 	$(AXIS2_SOURCE_DIR)\samples\server\sg_math\mul.c \
 	$(AXIS2_SOURCE_DIR)\samples\server\sg_math\mul_skeleton.c /Fo$(AXIS2_INTDIR_SGM)\mul\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_SGM)\mul\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_HTTP_RECEIVER).lib \
 	$(AXIS2_HTTP_SENDER).lib /DLL /OUT:$(AXIS2_SERVICES)\sg_math\mul.dll  
-	
+	-@$(_VC_MANIFEST_EMBED_DLL)
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\sg_math\services.xml $(AXIS2_SERVICES)\sg_math
 
 ###################### clients #################################
@@ -935,32 +957,38 @@ axis2_clients_intdir:
 axis2_client_math:
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\math\*.c /Fo$(AXIS2_INTDIR_CLI)\math\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\math\*.obj $(AXUTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\math.exe 
+	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\math.exe
+	-@$(_VC_MANIFEST_EMBED_EXE)
 
 axis2_client_echo:
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\echo\echo.c /Fo$(AXIS2_INTDIR_CLI)\echo\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\echo\*.obj $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\echo.exe 
+	-@$(_VC_MANIFEST_EMBED_EXE)
 
 axis2_client_google_spell:
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\google\*.c /Fo$(AXIS2_INTDIR_CLI)\gslc\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\gslc\*.obj $(AXUTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\google.exe 
+	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\google.exe
+	-@$(_VC_MANIFEST_EMBED_EXE)
 
 axis2_client_yahoo:
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\yahoo\*.c /Fo$(AXIS2_INTDIR_CLI)\yahoo\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\yahoo\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
-	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\yahoo.exe 
-
+	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\yahoo.exe
+	-@$(_VC_MANIFEST_EMBED_EXE)
+	
 axis2_client_notify:
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\notify\*.c /Fo$(AXIS2_INTDIR_CLI)\notify\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\notify\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
-	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\notify.exe 
+	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\notify.exe
+	-@$(_VC_MANIFEST_EMBED_EXE)
 
 axis2_client_mtom:
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\mtom\*.c /Fo$(AXIS2_INTDIR_CLI)\mtom\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\mtom\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
-	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\mtom.exe 
+	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\mtom.exe
+	-@$(_VC_MANIFEST_EMBED_EXE)
 
 	@if not exist  $(AXIS2_BINS)\samples\resources mkdir $(AXIS2_BINS)\samples\resources 
 	@xcopy /Y $(AXIS2_SOURCE_DIR)\samples\client\mtom\resources $(AXIS2_BINS)\samples\resources 
@@ -979,45 +1007,48 @@ axis2_client_userguide:
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\echo_blocking.exe
-
+	-@$(_VC_MANIFEST_EMBED_EXE)
 	
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_non_blocking.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_non_blocking\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_non_blocking\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
 	/OUT:$(AXIS2_BINS)\samples\echo_non_blocking.exe
+	-@$(_VC_MANIFEST_EMBED_EXE)
 
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_addr.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking_addr\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking_addr\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
-	/OUT:$(AXIS2_BINS)\samples\echo_blocking_addr.exe 
-
+	/OUT:$(AXIS2_BINS)\samples\echo_blocking_addr.exe
+        -@$(_VC_MANIFEST_EMBED_EXE)
 
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_rest.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_rest\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_rest\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
-	/OUT:$(AXIS2_BINS)\samples\echo_rest.exe 
+	/OUT:$(AXIS2_BINS)\samples\echo_rest.exe
+        -@$(_VC_MANIFEST_EMBED_EXE)
 
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_dual.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking_dual\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking_dual\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\echo_blocking_dual.exe
+	-@$(_VC_MANIFEST_EMBED_EXE)
 
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_non_blocking_dual.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_non_blocking_dual\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_non_blocking_dual\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
-	/OUT:$(AXIS2_BINS)\samples\echo_non_blocking_dual.exe 
-	
+	/OUT:$(AXIS2_BINS)\samples\echo_non_blocking_dual.exe
+        -@$(_VC_MANIFEST_EMBED_EXE)
+
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_soap11.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking_soap11\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking_soap11\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
-	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\echo_blocking_soap11.exe 
-
-	
+	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\echo_blocking_soap11.exe
+        -@$(_VC_MANIFEST_EMBED_EXE)
 	
 copy_extra:
 	@copy $(AXIS2_SOURCE_DIR)\INSTALL $(AXIS2_BINDIR)
@@ -1090,7 +1121,7 @@ copy_samples:
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\notify\*.c $(AXIS2_BINDIR)\samples\server\notify
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\notify\*.h $(AXIS2_BINDIR)\samples\server\notify
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\notify\*.xml $(AXIS2_BINDIR)\samples\server\notify
-      @copy $(AXIS2_SOURCE_DIR)\samples\server\notify\notify.mk $(AXIS2_BINDIR)\samples\server\notify
+        @copy $(AXIS2_SOURCE_DIR)\samples\server\notify\notify.mk $(AXIS2_BINDIR)\samples\server\notify
 
 	@if not exist $(AXIS2_BINDIR)\samples\server\sg_math mkdir $(AXIS2_BINDIR)\samples\server\sg_math
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\sg_math\*.c $(AXIS2_BINDIR)\samples\server\sg_math
@@ -1102,7 +1133,7 @@ copy_samples:
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\*.c $(AXIS2_BINDIR)\samples\server\mtom
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\*.h $(AXIS2_BINDIR)\samples\server\mtom
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\*.xml $(AXIS2_BINDIR)\samples\server\mtom
-      @copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\mtom.mk $(AXIS2_BINDIR)\samples\server\mtom
+        @copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\mtom.mk $(AXIS2_BINDIR)\samples\server\mtom
 
 copy_include: 
 	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\include $(AXIS2_BINDIR)\include\
@@ -1180,7 +1211,6 @@ copy_vc_projects:
 
 	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\services\notify mkdir $(AXIS2_BINDIR)\ides\vc\samples\services\notify
 	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\services\notify\notify.vcproj $(AXIS2_BINDIR)\ides\vc\samples\services\notify
-
 	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\services\Calculator mkdir $(AXIS2_BINDIR)\ides\vc\samples\services\Calculator
 	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\services\Calculator\Calculator.vcproj $(AXIS2_BINDIR)\ides\vc\samples\services\Calculator
 
@@ -1221,6 +1251,7 @@ $(TCPMON_OBJS) : $(TCPMON_INTDIR)
 $(AXIS2_TOOLS)\tcpmon.exe : $(TCPMON_OBJS)
 	@if not exist $(AXIS2_TOOLS) mkdir $(AXIS2_TOOLS)
 	$(LD) $(LDFLAGS) $(TCPMON_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib /OUT:$(AXIS2_TOOLS)\tcpmon.exe
+	-@$(_VC_MANIFEST_EMBED_EXE)
 
 tcpmon: $(AXIS2_TOOLS)\tcpmon.exe
 
