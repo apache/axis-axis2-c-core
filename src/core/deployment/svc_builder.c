@@ -798,6 +798,9 @@ axis2_svc_builder_process_module_refs(
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to find "\
+                    "Module %s, in Service %s", ref_name, 
+                    axis2_svc_get_name(svc_builder->svc, env));
                 return AXIS2_FAILURE;
             }
             else
