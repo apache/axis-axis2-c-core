@@ -25,6 +25,11 @@
 #include <axutil_thread.h>
 
 typedef struct axutil_log_impl axutil_log_impl_t;
+#define AXUTIL_LOG_FILE_SIZE 2000
+
+static axis2_status_t
+axutil_log_impl_rotate(
+    axutil_log_t * log);
 
 static void AXIS2_CALL axutil_log_impl_write(
     axutil_log_t * log,
@@ -34,6 +39,7 @@ static void AXIS2_CALL axutil_log_impl_write(
     const int line);
 
 AXIS2_EXTERN void AXIS2_CALL axutil_log_impl_write_to_file(
+    axutil_log_t * log,
     FILE * fd,
     axutil_thread_mutex_t * mutex,
     axutil_log_levels_t level,
@@ -49,6 +55,7 @@ struct axutil_log_impl
 {
     axutil_log_t log;
     void *stream;
+    axis2_char_t *file_name;
     axutil_thread_mutex_t *mutex;
 };
 
@@ -74,12 +81,13 @@ axutil_log_impl_free(
         {
             axutil_thread_mutex_destroy(log_impl->mutex);
         }
-        if (AXIS2_INTF_TO_IMPL(log)->stream)
+        if (log_impl->stream)
         {
-            if (log_impl->stream)
-            {
-                axutil_file_handler_close(log_impl->stream);
-            }
+            axutil_file_handler_close(log_impl->stream);
+        }
+        if (log_impl->file_name)
+        {
+            AXIS2_FREE(allocator, log_impl->file_name);
         }
         AXIS2_FREE(allocator, log_impl);
     }
@@ -157,10 +165,16 @@ axutil_log_create(
     {
         AXIS2_SNPRINTF(log_file_name, 500, "%s", tmp_filename);
     }
+    log_impl->file_name = AXIS2_MALLOC(allocator, 500);
+    sprintf(log_impl->file_name, "%s", log_file_name);
 
     axutil_thread_mutex_lock(log_impl->mutex);
 
     log_impl->stream = axutil_file_handler_open(log_file_name, "a+");
+    if(!axutil_log_impl_rotate((axutil_log_t *) log_impl))
+    {
+        return NULL;
+    }
 
     axutil_thread_mutex_unlock(log_impl->mutex);
 
@@ -227,6 +241,7 @@ axutil_log_impl_write(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_write_to_file(
+    axutil_log_t * log,
     FILE * fd,
     axutil_thread_mutex_t * mutex,
     axutil_log_levels_t level,
@@ -262,6 +277,9 @@ axutil_log_impl_write_to_file(
         break;
     }
     axutil_thread_mutex_lock(mutex);
+
+    axutil_log_impl_rotate(log);
+    
     if (file)
         fprintf(fd, "[%s] %s%s(%d) %s\n", axutil_log_impl_get_time_str(),
                 level_str, file, line, value);
@@ -270,6 +288,40 @@ axutil_log_impl_write_to_file(
                 value);
     fflush(fd);
     axutil_thread_mutex_unlock(mutex);
+}
+
+static axis2_status_t
+axutil_log_impl_rotate(
+    axutil_log_t * log)
+{
+    FILE *old_log_fd = NULL;
+    axis2_char_t old_log_file_name[500];
+    axutil_log_impl_t *log_impl = AXIS2_INTF_TO_IMPL(log);
+    long size = axutil_file_handler_size(log_impl->file_name);
+  
+    printf("size:%ld\n", size); 
+    if(size >= AXUTIL_LOG_FILE_SIZE)
+    {
+        AXIS2_SNPRINTF(old_log_file_name, 500, "%s%s", log_impl->file_name, 
+            ".old");
+        printf("file_name:%s\n", log_impl->file_name ); 
+        printf("old_file_name:%s\n", old_log_file_name); 
+        old_log_fd = axutil_file_handler_open(old_log_file_name, "w");
+        if (!old_log_fd)
+            return;
+        f(!axutil_file_handler_copy(AXIS2_INTF_TO_IMPL(log)->stream, 
+            old_log_fd))
+        {
+            axutil_file_handler_close(old_log_fd);
+            return AXIS2_FAILURE;
+        }
+        axutil_file_handler_close(AXIS2_INTF_TO_IMPL(log)->stream);
+        axutil_file_handler_close(old_log_fd);
+        remove(log_impl->file_name);
+        AXIS2_INTF_TO_IMPL(log)->stream = axutil_file_handler_open(
+            log_impl->file_name, "a+");
+    }
+    return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN void AXIS2_CALL
@@ -304,7 +356,7 @@ axutil_log_impl_log_debug(
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_DEBUG,
+            axutil_log_impl_write_to_file(log, fd, mutex, AXIS2_LOG_LEVEL_DEBUG,
                                           filename, linenumber, value);
         }
     }
@@ -342,8 +394,8 @@ axutil_log_impl_log_info(
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_INFO, NULL,
-                                          -1, value);
+            axutil_log_impl_write_to_file(log, fd, mutex, AXIS2_LOG_LEVEL_INFO, 
+                    NULL, -1, value);
         }
     }
     else
@@ -383,8 +435,8 @@ axutil_log_impl_log_warning(
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_WARNING,
-                                          filename, linenumber, value);
+            axutil_log_impl_write_to_file(log, fd, mutex, 
+                AXIS2_LOG_LEVEL_WARNING, filename, linenumber, value);
         }
     }
     else
@@ -422,7 +474,7 @@ axutil_log_impl_log_error(
         va_start(ap, format);
         AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
         va_end(ap);
-        axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_ERROR,
+        axutil_log_impl_write_to_file(log, fd, mutex, AXIS2_LOG_LEVEL_ERROR,
                                       filename, linenumber, value);
     }
     else
@@ -462,7 +514,7 @@ axutil_log_impl_log_critical(
         va_start(ap, format);
         AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
         va_end(ap);
-        axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_CRITICAL,
+        axutil_log_impl_write_to_file(log, fd, mutex, AXIS2_LOG_LEVEL_CRITICAL,
                                       filename, linenumber, value);
     }
     else
@@ -559,7 +611,7 @@ axutil_log_impl_log_trace(
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            axutil_log_impl_write_to_file(fd, mutex, AXIS2_LOG_LEVEL_TRACE,
+            axutil_log_impl_write_to_file(log, fd, mutex, AXIS2_LOG_LEVEL_TRACE,
                                           filename, linenumber, value);
         }
     }

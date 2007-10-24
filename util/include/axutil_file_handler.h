@@ -19,6 +19,7 @@
 #define AXUTIL_FILE_HANDLER_H
 
 #include <axutil_string.h>
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -71,6 +72,15 @@ extern "C"
     axutil_file_handler_access(
         const axis2_char_t * path,
         int mode);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_file_handler_copy(
+        FILE *from, 
+        FILE *to);
+
+    long 
+    axutil_file_handler_size(
+        const axis2_char_t *const name);
 
     /** @} */
 

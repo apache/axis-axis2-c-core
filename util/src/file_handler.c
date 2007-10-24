@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <platforms/axutil_platform_auto_sense.h>
+#include <sys/stat.h>
 
 #include <axutil_file_handler.h>
 
@@ -67,3 +68,43 @@ axutil_file_handler_access(
     }
     return status;
 }
+
+axis2_status_t
+axutil_file_handler_copy(
+    FILE *from, 
+    FILE *to)
+{
+    axis2_char_t ch;
+    
+    /* It is assumed that source and destination files are accessible and open*/
+    while(!feof(from)) 
+    {
+        ch = fgetc(from);
+        if(ferror(from)) 
+        {
+            /* Error reading source file */
+            return AXIS2_FAILURE;
+        }
+        if(!feof(from)) fputc(ch, to);
+        if(ferror(to)) 
+        {
+            /* Error writing destination file */
+            return AXIS2_FAILURE;
+        }
+    }
+    return AXIS2_SUCCESS;
+}
+
+long 
+axutil_file_handler_size(
+    const axis2_char_t *const name)
+{
+    struct stat stbuf;
+    if(stat(name, &stbuf) == -1)
+    {
+        /* The file could not be accessed */
+        return AXIS2_FAILURE;
+    }
+    return stbuf.st_size;
+}
+

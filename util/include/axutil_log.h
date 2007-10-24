@@ -188,6 +188,7 @@ extern "C"
         const axis2_char_t * file,
         const int line);
 
+
 #define AXIS2_LOG_FREE(allocator, log) \
       axutil_log_free(allocator, log)
 
