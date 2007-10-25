@@ -45,6 +45,7 @@ extern "C"
       *"log this test 123" into the log file
       *
       *similar macros are defined for different log levels: CRITICAL,ERROR,WARNING and INFO
+      * and SERVICE
       *
       *CRITICAL and ERROR logs are always written to file and other logs are written 
       *depending on the log level set (log->level)
@@ -72,7 +73,10 @@ extern "C"
         AXIS2_LOG_LEVEL_DEBUG,
 
         /** Trace level, Enable with compiler time option AXIS2_TRACE */
-        AXIS2_LOG_LEVEL_TRACE
+        AXIS2_LOG_LEVEL_TRACE,
+        
+        /** Service level, logs only service level debug messages */
+        AXIS2_LOG_LEVEL_SERVICE
     } axutil_log_levels_t;
 
     /**
@@ -160,6 +164,14 @@ extern "C"
         ...);
 
     AXIS2_EXTERN void AXIS2_CALL
+    axutil_log_impl_log_service(
+        axutil_log_t * log,
+        const axis2_char_t * filename,
+        const int linenumber,
+        const axis2_char_t * format,
+        ...);
+
+    AXIS2_EXTERN void AXIS2_CALL
     axutil_log_impl_log_debug(
         axutil_log_t * log,
         const axis2_char_t * filename,
@@ -195,6 +207,7 @@ extern "C"
 #define AXIS2_LOG_WRITE(log, buffer, level, file) \
       axutil_log_write(log, buffer, level, file, AXIS2_LOG_SI)
 
+#define AXIS2_LOG_SERVICE axutil_log_impl_log_service
 #define AXIS2_LOG_DEBUG axutil_log_impl_log_debug
 #define AXIS2_LOG_INFO axutil_log_impl_log_info
 #define AXIS2_LOG_WARNING axutil_log_impl_log_warning

@@ -127,7 +127,7 @@ main(
             log_level = AXIS2_ATOI(optarg);
             if (log_level < AXIS2_LOG_LEVEL_CRITICAL)
                 log_level = AXIS2_LOG_LEVEL_CRITICAL;
-            if (log_level > AXIS2_LOG_LEVEL_TRACE)
+            if (log_level > AXIS2_LOG_LEVEL_SERVICE)
                 log_level = AXIS2_LOG_LEVEL_TRACE;
             break;
         case 'f':
@@ -214,7 +214,7 @@ usage(
     fprintf(stdout,
             "\t-l LOG_LEVEL\t log level, available log levels:"
             "\n\t\t\t 0 - critical    1 - errors 2 - warnings"
-            "\n\t\t\t 3 - information 4 - debug  5- trace"
+            "\n\t\t\t 3 - information 4 - debug  5- trace 6- service"
             "\n\t\t\t Default log level is 4(debug).\n");
     fprintf(stdout,
             "\t-f LOG_FILE\t log file, default is $AXIS2C_HOME/logs/axis2.log"
