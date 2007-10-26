@@ -127,6 +127,9 @@ extern "C"
 
         /** Log level */
         axutil_log_levels_t level;
+        
+        /** Maximum log file size */
+        int size;
 
         /** Is logging enabled? */
         axis2_bool_t enabled;

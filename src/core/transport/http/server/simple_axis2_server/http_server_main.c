@@ -100,6 +100,7 @@ main(
     extern char *optarg;
     extern int optopt;
     int c;
+    int log_file_size;
     axutil_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
     const axis2_char_t *log_file = "axis2.log";
     int port = 9090;
@@ -109,7 +110,7 @@ main(
        set with AXIS2_REQUEST_URL_PREFIX macro at compile time */
     axis2_request_url_prefix = AXIS2_REQUEST_URL_PREFIX;
 
-    while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:f:")) != -1)
+    while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:s:f:")) != -1)
     {
 
         switch (c)
@@ -129,6 +130,9 @@ main(
                 log_level = AXIS2_LOG_LEVEL_CRITICAL;
             if (log_level > AXIS2_LOG_LEVEL_SERVICE)
                 log_level = AXIS2_LOG_LEVEL_TRACE;
+            break;
+        case 's':
+            log_file_size = AXIS2_ATOI(optarg);
             break;
         case 'f':
             log_file = optarg;
@@ -157,6 +161,7 @@ main(
 
     env = init_syetem_env(allocator, log_file);
     env->log->level = log_level;
+    env->log->size = 1024 * 1024 * log_file_size;
 
     axutil_error_init();
     system_env = env;
@@ -206,6 +211,7 @@ usage(
     fprintf(stdout, " [-r REPO_PATH]");
     fprintf(stdout, " [-l LOG_LEVEL]");
     fprintf(stdout, " [-f LOG_FILE]\n");
+    fprintf(stdout, " [-s LOG_FILE_SIZE]\n");
     fprintf(stdout, " Options :\n");
     fprintf(stdout, "\t-p PORT \t port number to use, default port is 9090\n");
     fprintf(stdout, "\t-r REPO_PATH \t repository path, default is ../\n");
@@ -219,6 +225,8 @@ usage(
     fprintf(stdout,
             "\t-f LOG_FILE\t log file, default is $AXIS2C_HOME/logs/axis2.log"
             "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
+    fprintf(stdout,
+            "\t-s LOG_FILE_SIZE\t Maximum log file size in mega bytes, default maximum size is 8MB.\n");
     fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
 }
 

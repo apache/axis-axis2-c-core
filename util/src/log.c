@@ -169,6 +169,7 @@ axutil_log_create(
             tmp_filename);
     }
     log_impl->file_name = AXIS2_MALLOC(allocator, AXUTIL_LOG_FILE_NAME_SIZE);
+    log_impl->log.size = AXUTIL_LOG_FILE_SIZE;
     sprintf(log_impl->file_name, "%s", log_file_name);
 
     axutil_thread_mutex_lock(log_impl->mutex);
@@ -307,7 +308,7 @@ axutil_log_impl_rotate(
     if(log_impl->file_name)
         size = axutil_file_handler_size(log_impl->file_name);
   
-    if(size >= AXUTIL_LOG_FILE_SIZE)
+    if(size >= log->size)
     {
         AXIS2_SNPRINTF(old_log_file_name, AXUTIL_LOG_FILE_NAME_SIZE, "%s%s", 
             log_impl->file_name, ".old");
