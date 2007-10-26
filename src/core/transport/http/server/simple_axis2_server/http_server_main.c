@@ -100,7 +100,7 @@ main(
     extern char *optarg;
     extern int optopt;
     int c;
-    int log_file_size;
+    int log_file_size = 0;
     axutil_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
     const axis2_char_t *log_file = "axis2.log";
     int port = 9090;
@@ -161,7 +161,8 @@ main(
 
     env = init_syetem_env(allocator, log_file);
     env->log->level = log_level;
-    env->log->size = 1024 * 1024 * log_file_size;
+    if(log_file_size > 0)
+        env->log->size = 1024 * 1024 * log_file_size;
 
     axutil_error_init();
     system_env = env;
