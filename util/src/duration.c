@@ -85,6 +85,16 @@ axutil_duration_create_from_string(
     axis2_char_t * duration_str)
 {
     axutil_duration_t *duration = NULL;
+
+    duration =
+        (axutil_duration_t *) AXIS2_MALLOC(env->allocator,
+                                           sizeof(axutil_duration_t));
+    if (NULL == duration)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
     axutil_duration_deserialize_duration(duration, env, duration_str);
     return duration;
 }
