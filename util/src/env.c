@@ -118,7 +118,7 @@ axutil_env_create_with_error_log_thread_pool(
     if (!allocator || !error || !pool)
         return NULL;
 
-    env = (axutil_env_t *)AXIS2_MALLOC(allocator ,sizeof(axis2_env_t));
+    env = (axutil_env_t *)AXIS2_MALLOC(allocator ,sizeof(axutil_env_t));
 	
 
     if (!env)
