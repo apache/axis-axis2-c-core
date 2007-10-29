@@ -118,18 +118,16 @@ axutil_env_create_with_error_log_thread_pool(
     if (!allocator || !error || !pool)
         return NULL;
 
-    env = axutil_env_create(allocator);
+    env = (axutil_env_t *)AXIS2_MALLOC(allocator ,sizeof(axis2_env_t));
+	
 
     if (!env)
         return NULL;
-    
+
+    memset(env, 0, sizeof(axutil_env_t));
+
     env->allocator = allocator;
     env->error = error;
-    
-    if (env->log) /* free the default log before setting the given log */
-    {
-        AXIS2_LOG_FREE(env->allocator, env->log);
-    }
     env->log = log;
     
     env->thread_pool = pool;
@@ -138,6 +136,8 @@ axutil_env_create_with_error_log_thread_pool(
         env->log_enabled = AXIS2_TRUE;
     else
         env->log_enabled = AXIS2_FALSE;
+
+    axutil_error_init();
 
     env->ref = 1;
 
