@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -53,12 +52,16 @@ axis2_build_conf_ctx(
     dep_engine = axis2_dep_engine_create_with_repos_name(env, repo_name);
     if (!dep_engine)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "dep engine create with repos name failed, dep_engine value is NULL");
         return NULL;
     }
 
     conf = axis2_dep_engine_load(dep_engine, env);
     if (!conf)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "dep engine load failed. conf value is NULL");
         return NULL;
     }
     axis2_conf_set_dep_engine(conf, env, dep_engine);
@@ -66,10 +69,18 @@ axis2_build_conf_ctx(
     phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
     if (!phase_resolver)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "phase resolver create with config failed. phase resolver value is NULL");
         return NULL;
     }
 
     conf_ctx = axis2_conf_ctx_create(env, conf);
+    if (!conf_ctx)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "conf ctx creation failed. conf_ctx value is NULL");
+        return NULL;
+    }
 
     axis2_phase_resolver_build_chains(phase_resolver, env);
 
@@ -97,12 +108,16 @@ axis2_build_client_conf_ctx(
     dep_engine = axis2_dep_engine_create(env);
     if (!dep_engine)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "dep engine create with repos name failed, dep_engine value is NULL");
         return NULL;
     }
 
     conf = axis2_dep_engine_load_client(dep_engine, env, axis2_home);
     if (!conf)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "dep engine load failed. conf value is NULL");
         return NULL;
     }
     axis2_conf_set_dep_engine(conf, env, dep_engine);
@@ -110,12 +125,16 @@ axis2_build_client_conf_ctx(
     phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
     if (!phase_resolver)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "phase resolver create with config failed. phase resolver value is NULL");
         return NULL;
     }
 
     conf_ctx = axis2_conf_ctx_create(env, conf);
     if (!conf_ctx)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "conf ctx creation failed. conf_ctx value is NULL");
         return NULL;
     }
 
@@ -169,6 +188,11 @@ axis2_init_modules(
             }
         }
         status = AXIS2_SUCCESS;
+    }
+    else
+    {
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, 
+                          "conf ctx value is NULL, axis2 module init failed");
     }
 
     return status;
@@ -226,6 +250,7 @@ axis2_load_services(
                             axutil_allocator_switch_to_local_pool(env->allocator);
                             return AXIS2_FAILURE;
                         }
+
                         axis2_svc_set_impl_class(svc_desc, env, impl_class);
                         status = AXIS2_SVC_SKELETON_INIT_WITH_CONF((axis2_svc_skeleton_t
                                                            *) impl_class, env,
@@ -243,6 +268,11 @@ axis2_load_services(
             }
         }
         status = AXIS2_SUCCESS;
+    }
+    else
+    {
+        AXIS2_LOG_WARNING (env->log, AXIS2_LOG_SI, 
+                           "conf ctx value is NULL, axis2 load services failed");
     }
 
     return status;
@@ -301,6 +331,12 @@ axis2_init_transports(
         }
         status = AXIS2_SUCCESS;
     }
+    else
+    {
+        AXIS2_LOG_WARNING (env->log, AXIS2_LOG_SI, 
+                           "conf ctx value is NULL, axis2 init transports failed");
+    }
+
 
     return status;
 }
