@@ -452,13 +452,21 @@ axiom_soap_builder_construct_node(
                             {
                                 axiom_data_handler_t *data_handler = NULL;
                                 id += 4;
+
                                 if (soap_builder->mime_body_parts)
                                 {
+
+                                    axis2_char_t *id_decoded = NULL;
+                                  
+                                    id_decoded = axutil_strdup(env, id);
+                                    
+                                    axutil_url_decode(env, id_decoded, id_decoded);
+                                    
                                     data_handler =
                                         (axiom_data_handler_t *)
                                         axutil_hash_get(soap_builder->
                                                         mime_body_parts,
-                                                        (void *) id,
+                                                        (void *) id_decoded,
                                                         AXIS2_HASH_KEY_STRING);
                                     if (data_handler)
                                     {
@@ -474,7 +482,7 @@ axiom_soap_builder_construct_node(
                                              &data_om_node);
 
                                         axiom_text_set_content_id(data_text,
-                                                                  env, id);
+                                                                  env, id_decoded);
                                         axiom_stax_builder_set_lastnode
                                             (soap_builder->om_builder, env,
                                              parent);
@@ -482,6 +490,8 @@ axiom_soap_builder_construct_node(
                                                              env);
 
                                     }
+                                    if(id_decoded)
+                                        AXIS2_FREE(env->allocator, id_decoded);
                                 }
                             }
                         }
