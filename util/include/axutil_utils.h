@@ -178,6 +178,15 @@ extern "C"
         const axis2_char_t * s,
         axis2_bool_t quotes);
 
+    AXIS2_EXTERN int AXIS2_CALL
+    axutil_hexit(axis2_char_t c);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_url_decode(
+        const axutil_env_t * env,
+        axis2_char_t * dest,
+        axis2_char_t * src);
+
     /** @} */
 
 #ifdef __cplusplus

@@ -165,3 +165,48 @@ axutil_xml_quote_string(
     *qscan = '\0';
     return qstr;
 }
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axutil_url_decode(
+    const axutil_env_t * env,
+    axis2_char_t * dest,
+    axis2_char_t * src)
+{
+    AXIS2_PARAM_CHECK(env->error, dest, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, src, AXIS2_FAILURE);
+
+    for (; *src != '\0'; ++dest, ++src)
+    {
+        if (src[0] == '%' && isxdigit(src[1]) && isxdigit(src[2]))
+        {
+            *dest = axutil_hexit(src[1]) * 16 + axutil_hexit(src[2]);
+            src += 2;
+        }
+        else
+        {
+            *dest = *src;
+        }
+    }
+    *dest = '\0';
+
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN int AXIS2_CALL
+axutil_hexit(axis2_char_t c)
+{
+    if (c >= '0' && c <= '9')
+    {
+        return c - '0';
+    }
+    if (c >= 'a' && c <= 'f')
+    {
+        return c - 'a' + 10;
+    }
+    if (c >= 'A' && c <= 'F')
+    {
+        return c - 'A' + 10;
+    }
+    return 0;    
+}
