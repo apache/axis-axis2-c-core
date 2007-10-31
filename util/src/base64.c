@@ -94,7 +94,7 @@ AXIS2_EXTERN int AXIS2_CALL
 axutil_base64_decode_len(
     const char *bufcoded)
 {
-    int nbytesdecoded;
+   int nbytesdecoded;
     register const unsigned char *bufin;
     register int nprbytes;
 
@@ -102,9 +102,12 @@ axutil_base64_decode_len(
     while (pr2six[*(bufin++)] <= 63);
 
     nprbytes = (bufin - (const unsigned char *) bufcoded) - 1;
-    nbytesdecoded = ((nprbytes + 3) / 4) * 3;
 
-    return nbytesdecoded + 1;
+    nbytesdecoded = ((nprbytes >> 2) * 3);
+
+    if (nprbytes & 0x03) nbytesdecoded += (nprbytes & 0x03) - 1;
+
+    return nbytesdecoded; 
 }
 
 AXIS2_EXTERN int AXIS2_CALL
