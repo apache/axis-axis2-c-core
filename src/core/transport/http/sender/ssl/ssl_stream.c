@@ -145,6 +145,8 @@ axis2_ssl_stream_read(
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
+    
+    SSL_set_mode(stream_impl->ssl, SSL_MODE_AUTO_RETRY); 
 
     read = SSL_read(stream_impl->ssl, buffer, count);
     switch (SSL_get_error(stream_impl->ssl, read))
