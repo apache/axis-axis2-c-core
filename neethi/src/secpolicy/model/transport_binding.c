@@ -123,6 +123,7 @@ rp_transport_binding_set_transport_token(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, transport_token, AXIS2_FAILURE);
 
+    rp_property_increment_ref(transport_token, env);
     transport_binding->transport_token = transport_token;
     return AXIS2_SUCCESS;
 }

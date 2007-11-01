@@ -197,6 +197,12 @@ rp_property_set_value(
     {
         rp_username_token_increment_ref((rp_username_token_t *) value, env);
     }
+
+    if (type == RP_PROPERTY_HTTPS_TOKEN)
+    {
+       rp_https_token_increment_ref((rp_https_token_t *) value, env);
+    }    
+
     if (type == RP_PROPERTY_SIGNED_SUPPORTING_TOKEN)
     {
         rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *) value,

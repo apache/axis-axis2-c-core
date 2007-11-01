@@ -30,6 +30,7 @@
 #include <rp_rampart_config.h>
 #include <rp_signed_encrypted_parts.h>
 #include <rp_symmetric_binding.h>
+#include <rp_transport_binding.h>
 
 struct neethi_assertion_t
 {
@@ -130,6 +131,10 @@ neethi_assertion_create_with_args(
     {
         rp_property_increment_ref((rp_property_t *) value, env);
     }
+    if (type == ASSERTION_TYPE_TRANSPORT_TOKEN)
+    {
+        rp_property_increment_ref((rp_property_t *) value, env);
+    }    
     if (type == ASSERTION_TYPE_SIGNATURE_TOKEN)
     {
         rp_property_increment_ref((rp_property_t *) value, env);
@@ -176,6 +181,12 @@ neethi_assertion_create_with_args(
                                             env);
     }
 
+    if (type == ASSERTION_TYPE_TRANSPORT_BINDING)
+    {
+        rp_transport_binding_increment_ref((rp_transport_binding_t *) value,
+                                            env);
+    }
+    
     if (type == ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS)
     {
         rp_signed_encrypted_parts_increment_ref((rp_signed_encrypted_parts_t *)
