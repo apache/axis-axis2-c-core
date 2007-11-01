@@ -38,8 +38,22 @@ extern "C"
      */
 
     /**
-     * Axis2 log levels.
-     */
+      *Examples
+      *To write debug information to log
+      *AXIS2_LOG_DEBUG(log,AXIS2_LOG_SI,"log this %s %d","test",123);
+      *This would log
+      *"log this test 123" into the log file
+      *
+      *similar macros are defined for different log levels: CRITICAL,ERROR,WARNING and INFO
+      * and SERVICE
+      *
+      *CRITICAL and ERROR logs are always written to file and other logs are written 
+      *depending on the log level set (log->level)
+      */
+
+    /**
+      * \brief Axis2 log levels
+      */
     typedef enum axutil_log_levels
     {
 
@@ -59,23 +73,25 @@ extern "C"
         AXIS2_LOG_LEVEL_DEBUG,
 
         /** Trace level, Enable with compiler time option AXIS2_TRACE */
-        AXIS2_LOG_LEVEL_TRACE
+        AXIS2_LOG_LEVEL_TRACE,
+        
+        /** Service level, logs only service level debug messages */
+        AXIS2_LOG_LEVEL_SERVICE
     } axutil_log_levels_t;
 
     /**
-     * Axis2 log ops struct.
-     *
-     * Encapsulator struct for ops of axutil_log.
-     */
+      * \brief Axis2 log ops struct
+      *
+      * Encapsulator struct for ops of axutil_log
+      */
     struct axutil_log_ops
     {
 
         /**
-         * Frees the log.
-         * @param allocator pointer allocator to be used to free the struct
-         * @param log pointer to log struct instance to be freed
-         * @return void 
+         * deletes the log
+         * @return axis2_status_t AXIS2_SUCCESS on success else AXIS2_FAILURE
          */
+
         void(
             AXIS2_CALL
             * free)(
@@ -83,14 +99,11 @@ extern "C"
                 struct axutil_log * log);
 
         /**
-         * Writes to the log.
-         * @param log pointer to log struct instance
-         * @param buffer buffer to be written to log
-         * @param level log level, one of axutil_log_levels enum values 
-         * @param file name of the source file from which the log is written
-         * @param line line number of the source file from which the log is written
-         * @return void
-         */
+          * writes to the log
+          * @param buffer buffer to be written to log
+          * @param size size of the buffer to be written to log
+          * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
+          */
         void(
             AXIS2_CALL
             * write)(
@@ -102,17 +115,21 @@ extern "C"
     };
 
     /**
-     * Axis2 Log struct.
-     * Log is the encapsulating struct for all log related data and operations.
-     */
+      * \brief Axis2 Log struct
+      *
+      * Log is the encapsulating struct for all log related data and ops
+      */
     struct axutil_log
     {
 
-        /** Log related operations */
+        /** Log related ops */
         const axutil_log_ops_t *ops;
 
         /** Log level */
         axutil_log_levels_t level;
+        
+        /** Maximum log file size */
+        int size;
 
         /** Is logging enabled? */
         axis2_bool_t enabled;
@@ -150,6 +167,14 @@ extern "C"
         ...);
 
     AXIS2_EXTERN void AXIS2_CALL
+    axutil_log_impl_log_service(
+        axutil_log_t * log,
+        const axis2_char_t * filename,
+        const int linenumber,
+        const axis2_char_t * format,
+        ...);
+
+    AXIS2_EXTERN void AXIS2_CALL
     axutil_log_impl_log_debug(
         axutil_log_t * log,
         const axis2_char_t * filename,
@@ -178,12 +203,14 @@ extern "C"
         const axis2_char_t * file,
         const int line);
 
+
 #define AXIS2_LOG_FREE(allocator, log) \
       axutil_log_free(allocator, log)
 
 #define AXIS2_LOG_WRITE(log, buffer, level, file) \
       axutil_log_write(log, buffer, level, file, AXIS2_LOG_SI)
 
+#define AXIS2_LOG_SERVICE axutil_log_impl_log_service
 #define AXIS2_LOG_DEBUG axutil_log_impl_log_debug
 #define AXIS2_LOG_INFO axutil_log_impl_log_info
 #define AXIS2_LOG_WARNING axutil_log_impl_log_warning

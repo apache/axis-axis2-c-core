@@ -30,18 +30,6 @@
 #include <axiom_xml_reader.h>
 #include <axutil_version.h>
 
-#ifndef AXIS2_HTTP_SERVER_LOG_FILE_NAME
-#define AXIS2_HTTP_SERVER_LOG_FILE_NAME "axis2_http_server.log"
-#endif
-
-#ifndef AXIS2_HTTP_SERVER_PORT
-#define AXIS2_HTTP_SERVER_PORT 9090
-#endif
-
-#ifndef AXIS2_HTTP_SERVER_REPO_PATH
-#define AXIS2_HTTP_SERVER_REPO_PATH "../"
-#endif
-
 axutil_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;
 AXIS2_IMPORT extern int axis2_http_socket_read_timeout;
@@ -112,16 +100,17 @@ main(
     extern char *optarg;
     extern int optopt;
     int c;
+    int log_file_size = AXUTIL_LOG_FILE_SIZE;
     axutil_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
-    const axis2_char_t *log_file = AXIS2_HTTP_SERVER_LOG_FILE_NAME;
-    int port = AXIS2_HTTP_SERVER_PORT;
-    const axis2_char_t *repo_path = AXIS2_HTTP_SERVER_REPO_PATH;
+    const axis2_char_t *log_file = "axis2.log";
+    int port = 9090;
+    const axis2_char_t *repo_path = "../";
 
     /* Set the service URL prefix to be used. This could default to services if not 
        set with AXIS2_REQUEST_URL_PREFIX macro at compile time */
     axis2_request_url_prefix = AXIS2_REQUEST_URL_PREFIX;
 
-    while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:f:")) != -1)
+    while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:s:f:")) != -1)
     {
 
         switch (c)
@@ -139,8 +128,11 @@ main(
             log_level = AXIS2_ATOI(optarg);
             if (log_level < AXIS2_LOG_LEVEL_CRITICAL)
                 log_level = AXIS2_LOG_LEVEL_CRITICAL;
-            if (log_level > AXIS2_LOG_LEVEL_TRACE)
+            if (log_level > AXIS2_LOG_LEVEL_SERVICE)
                 log_level = AXIS2_LOG_LEVEL_TRACE;
+            break;
+        case 's':
+            log_file_size = 1024 * 1024 * AXIS2_ATOI(optarg);
             break;
         case 'f':
             log_file = optarg;
@@ -169,6 +161,7 @@ main(
 
     env = init_syetem_env(allocator, log_file);
     env->log->level = log_level;
+    env->log->size = log_file_size;
 
     axutil_error_init();
     system_env = env;
@@ -218,19 +211,22 @@ usage(
     fprintf(stdout, " [-r REPO_PATH]");
     fprintf(stdout, " [-l LOG_LEVEL]");
     fprintf(stdout, " [-f LOG_FILE]\n");
+    fprintf(stdout, " [-s LOG_FILE_SIZE]\n");
     fprintf(stdout, " Options :\n");
-    fprintf(stdout, "\t-p PORT \t port number to use, default port is %d\n", AXIS2_HTTP_SERVER_PORT);
+    fprintf(stdout, "\t-p PORT \t port number to use, default port is 9090\n");
     fprintf(stdout, "\t-r REPO_PATH \t repository path, default is ../\n");
     fprintf(stdout,
             "\t-t TIMEOUT\t socket read timeout, default is 30 seconds\n");
     fprintf(stdout,
             "\t-l LOG_LEVEL\t log level, available log levels:"
             "\n\t\t\t 0 - critical    1 - errors 2 - warnings"
-            "\n\t\t\t 3 - information 4 - debug  5- trace"
+            "\n\t\t\t 3 - information 4 - debug  5- trace 6- service"
             "\n\t\t\t Default log level is 4(debug).\n");
     fprintf(stdout,
             "\t-f LOG_FILE\t log file, default is $AXIS2C_HOME/logs/axis2.log"
             "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
+    fprintf(stdout,
+            "\t-s LOG_FILE_SIZE\t Maximum log file size in mega bytes, default maximum size is 8MB.\n");
     fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
 }
 
@@ -243,13 +239,26 @@ void
 sig_handler(
     int signal)
 {
+
+    if (!system_env)
+    {
+        AXIS2_LOG_ERROR(system_env->log, AXIS2_LOG_SI,
+                        "Received signal %d, unable to proceed system_env is NULL ,\
+                         system exit with -1", signal);
+        _exit (-1);
+    }
+
     switch (signal)
     {
     case SIGINT:
         {
             AXIS2_LOG_INFO(system_env->log, "Received signal SIGINT. Server "
                            "shutting down");
-            axis2_http_server_stop(server, system_env);
+            if (server)
+            {
+                axis2_http_server_stop(server, system_env);
+            }
+
             AXIS2_LOG_INFO(system_env->log, "Shutdown complete ...");
             system_exit(system_env, 0);
         }
