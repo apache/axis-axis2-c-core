@@ -71,12 +71,13 @@ extern "C"
 
         /** Debug level, logs everything */
         AXIS2_LOG_LEVEL_DEBUG,
-
-        /** Trace level, Enable with compiler time option AXIS2_TRACE */
-        AXIS2_LOG_LEVEL_TRACE,
         
         /** Service level, logs only service level debug messages */
-        AXIS2_LOG_LEVEL_SERVICE
+        AXIS2_LOG_LEVEL_SERVICE,
+
+        /** Trace level, Enable with compiler time option AXIS2_TRACE */
+        AXIS2_LOG_LEVEL_TRACE
+        
     } axutil_log_levels_t;
 
     /**
