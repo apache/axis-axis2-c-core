@@ -24,7 +24,7 @@
 
 #include <axutil_file_handler.h>
 
-void *AXIS2_CALL
+AXIS2_EXTERN void *AXIS2_CALL
 axutil_file_handler_open(
     const axis2_char_t * file_name,
     const axis2_char_t * options)
@@ -41,7 +41,7 @@ axutil_file_handler_open(
     return file_ptr;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_file_handler_close(
     void *file_ptr)
 {
@@ -50,7 +50,7 @@ axutil_file_handler_close(
     return (axis2_status_t) fclose(file_ptr);
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_file_handler_access(
     const axis2_char_t * path,
     int mode)
@@ -69,7 +69,7 @@ axutil_file_handler_access(
     return status;
 }
 
-axis2_status_t
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_file_handler_copy(
     FILE *from, 
     FILE *to)
@@ -95,7 +95,7 @@ axutil_file_handler_copy(
     return AXIS2_SUCCESS;
 }
 
-long 
+AXIS2_EXTERN long AXIS2_CALL
 axutil_file_handler_size(
     const axis2_char_t *const name)
 {

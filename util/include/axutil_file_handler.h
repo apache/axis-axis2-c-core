@@ -78,7 +78,7 @@ extern "C"
         FILE *from, 
         FILE *to);
 
-    long 
+    AXIS2_EXTERN long AXIS2_CALL 
     axutil_file_handler_size(
         const axis2_char_t *const name);
 
