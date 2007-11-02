@@ -40,7 +40,7 @@ extern "C"
      * @file axutil_utils.h
      */
 
-#define AXUTIL_LOG_FILE_SIZE 1024 * 1024 * 8
+#define AXUTIL_LOG_FILE_SIZE 1024 * 1024 * 1
 #define AXUTIL_LOG_FILE_NAME_SIZE 512
 
     /** This macro is called to check whether structure on which function is called
