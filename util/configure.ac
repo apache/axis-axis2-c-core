@@ -166,6 +166,23 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser lib
   GUTHTHILA_DIR=""
 )
 
+AC_MSG_CHECKING(whether to enable trace)
+AC_ARG_ENABLE(trace, [  --enable-trace    
+                          enable logging trace messages useful when debugging (default=no)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    CFLAGS="$CFLAGS"
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -DAXIS2_TRACE"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  CFLAGS="$CFLAGS"
+)
+
 AC_MSG_CHECKING(whether to build tests)
 AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=yes],
 [ case "${enableval}" in

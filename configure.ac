@@ -244,7 +244,7 @@ AC_ARG_ENABLE(tests, [  --enable-tests
 
 AC_MSG_CHECKING(whether to enable trace)
 AC_ARG_ENABLE(trace, [  --enable-trace    
-                          enable logging trace messages, useful when debugging (default=no)],
+                          enable logging trace messages useful when debugging (default=no)],
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
