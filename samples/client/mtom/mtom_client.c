@@ -28,6 +28,13 @@ axiom_node_t *build_om_programatically(
     const axis2_char_t * to_save_name,
     axis2_bool_t optimized);
 
+int 
+process_response_node(
+    const axutil_env_t * env,
+    axiom_node_t *node,
+    const axis2_char_t * to_save_name);
+
+
 int
 main(
     int argc,
@@ -128,6 +135,9 @@ main(
             AXIS2_FREE(env->allocator, om_str);
         }
         printf("\nmtom client invoke SUCCESSFUL!\n");
+
+        process_response_node(env, ret_node, to_save_name);
+    
     }
     else
     {
@@ -201,3 +211,32 @@ build_om_programatically(
     }
     return mtom_om_node;
 }
+
+
+int 
+process_response_node(
+    const axutil_env_t * env,
+    axiom_node_t *node,
+    const axis2_char_t * to_save_name)
+{
+    axiom_node_t *res_om_node = NULL;
+    axiom_element_t *res_om_ele = NULL;
+    res_om_node = axiom_node_get_first_child(node, env);
+
+    if(axiom_node_get_node_type(res_om_node, env) == AXIOM_TEXT)
+    {/** received mtom atttachment */
+        axiom_data_handler_t *data_handler = NULL;
+        axiom_text_t *axiom_text = (axiom_text_t*)axiom_node_get_data_element(res_om_node, env);
+        data_handler = axiom_text_get_data_handler(axiom_text, env);
+
+        axiom_data_handler_set_file_name(data_handler, env, to_save_name);
+        axiom_data_handler_write_to(data_handler, env);
+    }else if(axiom_node_get_node_type(res_om_node, env) == AXIOM_ELEMENT){
+        res_om_ele = axiom_node_get_data_element(res_om_node, env);
+        printf("Base64 String received \n\n\n %s \n\n", axiom_element_get_text(res_om_ele, env, res_om_node));
+    }
+
+    return 0;
+}
+
+

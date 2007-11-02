@@ -90,7 +90,7 @@ mtom_invoke(
      * To see how to deal with multiple impl methods, have a look at the
      * math sample.
      */
-    return axis2_mtom_mtom(env, node);
+    return axis2_mtom_mtom(env, node, msg_ctx);
 }
 
 /* On fault, handle the fault */

@@ -27,6 +27,7 @@
 
 axiom_node_t *axis2_mtom_mtom(
     const axutil_env_t * env,
-    axiom_node_t * node);
+    axiom_node_t * node,
+    axis2_msg_ctx_t *msg_ctx);
 
 #endif                          /* CALC_H */

@@ -19,14 +19,19 @@
 #include <axiom.h>
 #include <stdio.h>
 
-axiom_node_t *build_om_programatically(
+axiom_node_t *build_response1(
     const axutil_env_t * env,
     axis2_char_t * text);
 
-axiom_node_t *
+axiom_node_t *build_response2(
+    const axutil_env_t *env,
+    axiom_data_handler_t *data_handler);
+
+axiom_node_t*
 axis2_mtom_mtom(
     const axutil_env_t * env,
-    axiom_node_t * node)
+    axiom_node_t * node,
+    axis2_msg_ctx_t *msg_ctx)
 {
     axiom_node_t *file_name_node = NULL;
     axiom_node_t *file_text_node = NULL;
@@ -98,10 +103,28 @@ axis2_mtom_mtom(
                     data_handler = axiom_text_get_data_handler(bin_text, env);
                     if (data_handler)
                     {
+                        axiom_data_handler_t *data_handler_res = NULL;
+                        axis2_byte_t *input_buff = NULL;
+                        axis2_byte_t *buff = NULL;
+                        int buff_len = 0;
+
+
                         axiom_data_handler_set_file_name(data_handler, env,
                                                          text_str);
                         axiom_data_handler_write_to(data_handler, env);
-                        ret_node = build_om_programatically(env, text_str);
+                        
+                        input_buff = axiom_data_handler_get_input_stream(data_handler, env);
+                        buff_len = axiom_data_handler_get_input_stream_len(data_handler, env);
+                        
+                        data_handler_res = axiom_data_handler_create(env, NULL, NULL);
+                        
+                        buff = AXIS2_MALLOC(env->allocator, sizeof(axis2_byte_t)*buff_len);
+                        memcpy(buff, input_buff, buff_len);
+
+                        axiom_data_handler_set_binary_data(data_handler_res, env, buff, buff_len);
+
+                        axis2_msg_ctx_set_doing_mtom (msg_ctx, env, AXIS2_TRUE);
+                        ret_node = build_response2(env, data_handler_res);
                     }
                     else        /* attachment has come by value, as non-optimized binary */
                     {
@@ -131,7 +154,7 @@ axis2_mtom_mtom(
                                                            plain_binary,
                                                            ret_len);
                         axiom_data_handler_write_to(data_handler, env);
-                        ret_node = build_om_programatically(env, text_str);
+                        ret_node = build_response1(env, base64text);
                     }
                     /* } */
                 }
@@ -153,12 +176,16 @@ axis2_mtom_mtom(
 
 /* Builds the response content */
 axiom_node_t *
-build_om_programatically(
+build_response1(
     const axutil_env_t * env,
     axis2_char_t * text)
 {
     axiom_node_t *mtom_om_node = NULL;
     axiom_element_t *mtom_om_ele = NULL;
+    axiom_node_t *om_node = NULL;
+    axiom_element_t *om_ele = NULL;
+
+   
     axiom_namespace_t *ns1 = NULL;
 
     ns1 =
@@ -168,7 +195,35 @@ build_om_programatically(
     mtom_om_ele =
         axiom_element_create(env, NULL, "response", ns1, &mtom_om_node);
 
-    axiom_element_set_text(mtom_om_ele, env, "Image Saved", mtom_om_node);
+    om_ele  = axiom_element_create(env, mtom_om_node, "string", NULL, &om_node);
+    
+    axiom_element_set_text(mtom_om_ele, env, text, om_node);
+   
 
     return mtom_om_node;
 }
+
+
+axiom_node_t *build_response2(
+    const axutil_env_t *env,
+    axiom_data_handler_t *data_handler)
+{
+    axiom_node_t *mtom_om_node = NULL;
+    axiom_element_t *mtom_om_ele = NULL;
+    axiom_node_t *text_node = NULL;
+    axiom_namespace_t *ns1 = NULL;
+
+    ns1 =
+        axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samples",
+                               "ns1");
+    mtom_om_ele =
+        axiom_element_create(env, NULL, "response", ns1, &mtom_om_node);
+
+    axiom_text_create_with_data_handler(env, mtom_om_node, data_handler,
+        &text_node);
+
+    return mtom_om_node;
+}
+
+
+
