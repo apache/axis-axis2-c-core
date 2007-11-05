@@ -226,7 +226,7 @@ usage(
             "\t-f LOG_FILE\t log file, default is $AXIS2C_HOME/logs/axis2.log"
             "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
     fprintf(stdout,
-            "\t-s LOG_FILE_SIZE\t Maximum log file size in mega bytes, default maximum size is 8MB.\n");
+            "\t-s LOG_FILE_SIZE\t Maximum log file size in mega bytes, default maximum size is 1MB.\n");
     fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
 }
 
