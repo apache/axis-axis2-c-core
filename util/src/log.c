@@ -23,6 +23,7 @@
 #include <axutil_log_default.h>
 #include <axutil_file_handler.h>
 #include <axutil_thread.h>
+#include <signal.h>
 
 typedef struct axutil_log_impl axutil_log_impl_t;
 
@@ -122,6 +123,10 @@ axutil_log_create(
         fprintf(stderr, "cannot create log mutex \n");
         return NULL;
     }
+
+#ifndef WIN32
+    signal(SIGXFSZ, SIG_IGN);
+#endif
 
     /* default log file is axis2.log */
     if (stream_name)
