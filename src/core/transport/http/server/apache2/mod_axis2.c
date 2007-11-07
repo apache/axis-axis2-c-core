@@ -35,6 +35,7 @@ typedef struct axis2_config_rec
     char *axutil_log_file;
     char *axis2_repo_path;
     axutil_log_levels_t log_level;
+    int max_log_file_size;
 }
 axis2_config_rec_t;
 
@@ -52,6 +53,12 @@ static const char *axis2_set_repo_path(
     const char *arg);
 
 static const char *axis2_set_log_file(
+    cmd_parms * cmd,
+    void *dummy,
+    const char *arg);
+
+static const char *
+axis2_set_max_log_file_size(
     cmd_parms * cmd,
     void *dummy,
     const char *arg);
@@ -98,6 +105,8 @@ static const command_rec axis2_cmds[] = {
                   "Axis2/C log file name"),
     AP_INIT_TAKE1("Axis2LogLevel", axis2_set_log_level, NULL, RSRC_CONF,
                   "Axis2/C log level"),
+    AP_INIT_TAKE1("Axis2MaxLogFileSize", axis2_set_max_log_file_size, NULL, RSRC_CONF,
+                  "Axis2/C maximum log file size"),
     AP_INIT_TAKE1("Axis2ServiceURLPrefix", axis2_set_svc_url_prefix, NULL,
                   RSRC_CONF,
                   "Axis2/C service URL prifix"),
@@ -163,6 +172,26 @@ axis2_set_log_file(
         (axis2_config_rec_t *) ap_get_module_config(cmd->server->module_config,
                                                     &axis2_module);
     conf->axutil_log_file = apr_pstrdup(cmd->pool, arg);
+    return NULL;
+}
+
+static const char *
+axis2_set_max_log_file_size(
+    cmd_parms * cmd,
+    void *dummy,
+    const char *arg)
+{
+    axis2_config_rec_t *conf = NULL;
+    const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
+    if (err != NULL)
+    {
+        return err;
+    }
+
+    conf =
+        (axis2_config_rec_t *) ap_get_module_config(cmd->server->module_config,
+                                                    &axis2_module);
+    conf->max_log_file_size = 1024 * 1024 * atoi(arg);
     return NULL;
 }
 
@@ -381,10 +410,12 @@ axis2_module_init(
     {
 
         axutil_logger->level = conf->log_level;
+        axutil_logger->size = conf->max_log_file_size;
         AXIS2_LOG_INFO(axutil_env->log, "Apache Axis2/C version in use : %s",
                        axis2_version_string());
-        AXIS2_LOG_INFO(axutil_env->log, "Starting log with log level %d",
-                       conf->log_level);
+        AXIS2_LOG_INFO(axutil_env->log, 
+            "Starting log with log level %d and max log file size %d",
+                       conf->log_level, conf->max_log_file_size);
     }
     axis2_worker = axis2_apache2_worker_create(axutil_env,
                                                conf->axis2_repo_path);
