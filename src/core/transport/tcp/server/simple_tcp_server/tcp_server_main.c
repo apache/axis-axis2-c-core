@@ -106,12 +106,13 @@ main(
     extern char *optarg;
     extern int optopt;
     int c;
+    int log_file_size = AXUTIL_LOG_FILE_SIZE;
     axutil_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
     const axis2_char_t *log_file = AXIS2_TCP_SERVER_LOG_FILE_NAME;
     int port = AXIS2_TCP_SERVER_PORT;
     const axis2_char_t *repo_path = AXIS2_TCP_SERVER_REPO_PATH;
 
-    while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:f:")) != -1)
+    while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:s:f:")) != -1)
     {
 
         switch (c)
@@ -131,6 +132,9 @@ main(
                 log_level = AXIS2_LOG_LEVEL_CRITICAL;
             if (log_level > AXIS2_LOG_LEVEL_TRACE)
                 log_level = AXIS2_LOG_LEVEL_TRACE;
+            break;
+        case 's':
+            log_file_size = 1024 * 1024 * AXIS2_ATOI(optarg);
             break;
         case 'f':
             log_file = optarg;
@@ -157,6 +161,7 @@ main(
     }
     env = init_syetem_env(allocator, log_file);
     env->log->level = log_level;
+    env->log->size = log_file_size;
     axutil_error_init();
     system_env = env;
 
@@ -203,6 +208,7 @@ usage(
     fprintf(stdout, " [-r REPO_PATH]");
     fprintf(stdout, " [-l LOG_LEVEL]");
     fprintf(stdout, " [-f LOG_FILE]\n");
+    fprintf(stdout, " [-s LOG_FILE_SIZE]\n");
     fprintf(stdout, " Options :\n");
     fprintf(stdout, "\t-p PORT \t port number to use, default port is %d\n", AXIS2_TCP_SERVER_PORT);
     fprintf(stdout, "\t-r REPO_PATH \t repository path, default is ../\n");
@@ -211,11 +217,13 @@ usage(
     fprintf(stdout,
             "\t-l LOG_LEVEL\t log level, available log levels:"
             "\n\t\t\t 0 - critical    1 - errors 2 - warnings"
-            "\n\t\t\t 3 - information 4 - debug  5- trace"
+            "\n\t\t\t 3 - information 4 - debug  5- user 6 - trace"
             "\n\t\t\t Default log level is 4(debug).\n");
     fprintf(stdout,
             "\t-f LOG_FILE\t log file, default is $AXIS2C_HOME/logs/axis2.log"
             "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
+    fprintf(stdout,
+            "\t-s LOG_FILE_SIZE\t Maximum log file size in mega bytes, default maximum size is 1MB.\n");
     fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
 }
 
