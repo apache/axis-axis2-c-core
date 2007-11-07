@@ -207,6 +207,10 @@ axis2_set_log_level(
         {
             level = AXIS2_LOG_LEVEL_DEBUG;
         }
+        else if (!strcasecmp(str, "user"))
+        {
+            level = AXIS2_LOG_LEVEL_USER;
+        }
         else if (!strcasecmp(str, "trace"))
         {
             level = AXIS2_LOG_LEVEL_TRACE;

@@ -234,7 +234,7 @@ axutil_log_impl_write(
             case AXIS2_LOG_LEVEL_TRACE:
                 level_str = "[...TRACE...] ";
                 break;
-            case AXIS2_LOG_LEVEL_SERVICE:
+            case AXIS2_LOG_LEVEL_USER:
                 break;
             }
             fprintf(stderr, "%s %s(%d) %s\n", level_str, file, line, buffer);
@@ -281,7 +281,7 @@ axutil_log_impl_write_to_file(
     case AXIS2_LOG_LEVEL_TRACE:
         level_str = "[...TRACE...] ";
         break;
-    case AXIS2_LOG_LEVEL_SERVICE:
+    case AXIS2_LOG_LEVEL_USER:
         break;
     }
     axutil_thread_mutex_lock(mutex);
@@ -339,7 +339,7 @@ axutil_log_impl_rotate(
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axutil_log_impl_log_service(
+axutil_log_impl_log_user(
     axutil_log_t * log,
     const axis2_char_t * filename,
     const int linenumber,
@@ -403,7 +403,7 @@ axutil_log_impl_log_debug(
         }
 
         if (AXIS2_LOG_LEVEL_DEBUG <= log->level && 
-            log->level != AXIS2_LOG_LEVEL_SERVICE)
+            log->level != AXIS2_LOG_LEVEL_USER)
         {
             char value[AXIS2_LEN_VALUE + 1];
             va_list ap;
@@ -442,7 +442,7 @@ axutil_log_impl_log_info(
         }
 
         if (AXIS2_LOG_LEVEL_INFO <= log->level &&
-            log->level != AXIS2_LOG_LEVEL_SERVICE)
+            log->level != AXIS2_LOG_LEVEL_USER)
         {
             char value[AXIS2_LEN_VALUE + 1];
             va_list ap;
@@ -484,7 +484,7 @@ axutil_log_impl_log_warning(
         }
 
         if (AXIS2_LOG_LEVEL_WARNING <= log->level &&
-            log->level != AXIS2_LOG_LEVEL_SERVICE)
+            log->level != AXIS2_LOG_LEVEL_USER)
         {
             char value[AXIS2_LEN_VALUE + 1];
             va_list ap;
@@ -663,7 +663,7 @@ axutil_log_impl_log_trace(
         }
 
         if (AXIS2_LOG_LEVEL_TRACE <= log->level &&
-            log->level != AXIS2_LOG_LEVEL_SERVICE)
+            log->level != AXIS2_LOG_LEVEL_USER)
         {
             char value[AXIS2_LEN_VALUE + 1];
             va_list ap;

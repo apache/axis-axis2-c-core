@@ -220,7 +220,7 @@ usage(
     fprintf(stdout,
             "\t-l LOG_LEVEL\t log level, available log levels:"
             "\n\t\t\t 0 - critical    1 - errors 2 - warnings"
-            "\n\t\t\t 3 - information 4 - debug  5- service 6- trace"
+            "\n\t\t\t 3 - information 4 - debug  5- user 6- trace"
             "\n\t\t\t Default log level is 4(debug).\n");
     fprintf(stdout,
             "\t-f LOG_FILE\t log file, default is $AXIS2C_HOME/logs/axis2.log"

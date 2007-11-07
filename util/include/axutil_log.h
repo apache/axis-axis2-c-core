@@ -72,8 +72,8 @@ extern "C"
         /** Debug level, logs everything */
         AXIS2_LOG_LEVEL_DEBUG,
         
-        /** Service level, logs only service level debug messages */
-        AXIS2_LOG_LEVEL_SERVICE,
+        /** User level, logs only user level debug messages */
+        AXIS2_LOG_LEVEL_USER,
 
         /** Trace level, Enable with compiler time option AXIS2_TRACE */
         AXIS2_LOG_LEVEL_TRACE
@@ -168,7 +168,7 @@ extern "C"
         ...);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_log_impl_log_service(
+    axutil_log_impl_log_user(
         axutil_log_t * log,
         const axis2_char_t * filename,
         const int linenumber,
@@ -211,7 +211,7 @@ extern "C"
 #define AXIS2_LOG_WRITE(log, buffer, level, file) \
       axutil_log_write(log, buffer, level, file, AXIS2_LOG_SI)
 
-#define AXIS2_LOG_SERVICE axutil_log_impl_log_service
+#define AXIS2_LOG_USER axutil_log_impl_log_user
 #define AXIS2_LOG_DEBUG axutil_log_impl_log_debug
 #define AXIS2_LOG_INFO axutil_log_impl_log_info
 #define AXIS2_LOG_WARNING axutil_log_impl_log_warning
