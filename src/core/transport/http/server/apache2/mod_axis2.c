@@ -275,6 +275,8 @@ axis2_handler(
     request_rec * req)
 {
     int rv = 0;
+    axutil_env_t *thread_env = NULL;
+    axutil_allocator_t *allocator = NULL;
 
     if (strcmp(req->handler, "axis2_module"))
     {
@@ -287,9 +289,28 @@ axis2_handler(
     }
     ap_should_client_block(req);
 
-    axutil_env->allocator->current_pool = (void *) req->pool;
-    rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, axutil_env, req);
+    thread_env = axutil_init_thread_env(axutil_env);
 
+    /*axutil_env->allocator->current_pool = (void *) req->pool;
+    rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, axutil_env, req);*/
+
+    /* create new allocator for this request */
+    allocator = (axutil_allocator_t *) apr_palloc( req->pool,
+                                                  sizeof(axutil_allocator_t));
+    if (!allocator)
+    {
+        return HTTP_INTERNAL_SERVER_ERROR;
+    }
+    allocator->malloc_fn = axis2_module_malloc;
+    allocator->realloc = axis2_module_realloc;
+    allocator->free_fn = axis2_module_free;
+    allocator->local_pool = (void *) req->pool;
+    allocator->current_pool = (void *) req->pool;
+    allocator->global_pool = axutil_env->allocator->global_pool;
+
+    thread_env->allocator = allocator;
+
+    rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, thread_env, req);
     if (AXIS2_CRITICAL_FAILURE == rv)
     {
         return HTTP_INTERNAL_SERVER_ERROR;
