@@ -20,17 +20,7 @@
 #include <string.h>
 #include "axutil_error_default.h"
 
-#define AXUTIL_ERROR_MESSAGE_BLOCK_SIZE 512
-#define AXUTIL_ERROR_LAST AXUTIL_ERROR_MESSAGE_BLOCK_SIZE
-#define NEETHI_ERROR_CODES_START AXIS2_ERROR_LAST
-#define RAMPART_ERROR_CODES_START (NEETHI_ERROR_CODES_START + AXUTIL_ERROR_MESSAGE_BLOCK_SIZE)
-#define SANDESHA2_ERROR_CODES_START (RAMPART_ERROR_CODES_START + AXUTIL_ERROR_MESSAGE_BLOCK_SIZE)
-#define SAVAN_ERROR_CODES_START (SANDESHA2_ERROR_CODES_START + AXUTIL_ERROR_MESSAGE_BLOCK_SIZE)
-#define USER_ERROR_CODES_START (SAVAN_ERROR_CODES_START + AXUTIL_ERROR_MESSAGE_BLOCK_SIZE)
-
-/* AXUTIL_ERROR_MAX_LAST define the maximum size of the error array */
-#define AXUTIL_ERROR_MAX_LAST (USER_ERROR_CODES_START+AXUTIL_ERROR_MESSAGE_BLOCK_SIZE)
-#define AXIS2_ERROR_MESSAGE_ARRAY_SIZE AXUTIL_ERROR_MAX_LAST
+#define AXIS2_ERROR_MESSAGE_ARRAY_SIZE AXUTIL_ERROR_MAX
 
 
 /**
@@ -43,15 +33,12 @@
  *
  * In writing a module following steps must be followed in extending Axis2/C
  * errors
- * 1. Declare the start of error messages for the new module.
-      For example in sandesha2 module we have
-      #define SANDESHA2_ERROR_CODES_START (AXIS2_ERROR_LAST + 1000)
-      Above line indicates that the new modules error messages start from 
-      1000 messages after the axis2 last error message.
-   2. New module can use up to 1000 messages for its errors.
-   3. In axis2c documentation an entry about new modules error range must
-      be inserted so that another new module can know about the already
-      occupied spaces. 
+ * 1. Declare and register the start of error messages for the new
+ *    module. 
+ * 2. New module can use up to 1000 messages for its errors.
+ * 3. In axis2c documentation an entry about new modules error range must
+ *    be inserted so that another new module can know about the already
+ *    occupied spaces. 
  */
 
 AXIS2_EXPORT const axis2_char_t 
@@ -589,7 +576,7 @@ axutil_error_get_message(
     if (error)
     {
         if (error->error_number > AXIS2_ERROR_NONE &&
-            error->error_number < AXIS2_ERROR_LAST) /* TODO; This needs to be 
+            error->error_number < AXIS2_ERROR_MAX) /* TODO; This needs to be 
             fixed to include module defined and user defined errors */
             message = axutil_error_messages[error->error_number];
         else
