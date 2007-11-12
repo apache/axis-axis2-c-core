@@ -41,8 +41,8 @@
  *    occupied spaces. 
  */
 
-AXIS2_EXPORT const axis2_char_t 
-    *axutil_error_messages[AXIS2_ERROR_MESSAGE_ARRAY_SIZE];
+AXIS2_EXPORT const axis2_char_t*
+axutil_error_messages[AXIS2_ERROR_MESSAGE_ARRAY_SIZE];
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_error_init()
@@ -576,7 +576,7 @@ axutil_error_get_message(
     if (error)
     {
         if (error->error_number > AXIS2_ERROR_NONE &&
-            error->error_number < AXIS2_ERROR_MAX) /* TODO; This needs to be 
+            error->error_number < AXUTIL_ERROR_MAX) /* TODO; This needs to be 
             fixed to include module defined and user defined errors */
             message = axutil_error_messages[error->error_number];
         else
