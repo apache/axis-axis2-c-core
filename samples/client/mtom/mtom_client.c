@@ -229,7 +229,7 @@ process_response_node(
         axiom_text_t *axiom_text = (axiom_text_t*)axiom_node_get_data_element(res_om_node, env);
         data_handler = axiom_text_get_data_handler(axiom_text, env);
 
-        axiom_data_handler_set_file_name(data_handler, env, to_save_name);
+        axiom_data_handler_set_file_name(data_handler, env, (axis2_char_t *)to_save_name);
         axiom_data_handler_write_to(data_handler, env);
     }else if(axiom_node_get_node_type(res_om_node, env) == AXIOM_ELEMENT){
         res_om_ele = axiom_node_get_data_element(res_om_node, env);
