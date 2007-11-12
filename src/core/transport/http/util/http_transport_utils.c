@@ -231,7 +231,12 @@ axis2_http_transport_utils_process_http_post_request(
         {
             soap_action[soap_action_len - 2] = '\0';
         }
+    }else{
+    /** soap action is null, check whether soap action is in content_type header */
+        soap_action = axis2_http_transport_utils_get_value_from_content_type(env,
+                content_type, "action");
     }
+
 
     headers = axis2_msg_ctx_get_transport_headers(msg_ctx, env);
     if (headers)
@@ -323,7 +328,13 @@ axis2_http_transport_utils_process_http_post_request(
         AXIS2_FREE(env->allocator, mime_boundary);
     }
 
+    if(soap_action_header){
     axis2_msg_ctx_set_soap_action(msg_ctx, env, soap_action_header);
+    }else{
+        axutil_string_t *soap_action_str = NULL;
+        soap_action_str = axutil_string_create(env,soap_action);
+        axis2_msg_ctx_set_soap_action(msg_ctx, env, soap_action_str);
+    }
     axis2_msg_ctx_set_to(msg_ctx, env, axis2_endpoint_ref_create(env,
                                                                  request_uri));
 
