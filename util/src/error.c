@@ -20,10 +20,18 @@
 #include <string.h>
 #include "axutil_error_default.h"
 
-#define AXIS2_ERROR_ADDITIONAL_BUFFER_SIZE 10000
+#define AXUTIL_ERROR_MESSAGE_BLOCK_SIZE 512
+#define AXUTIL_ERROR_LAST AXUTIL_ERROR_MESSAGE_BLOCK_SIZE
+#define NEETHI_ERROR_CODES_START AXIS2_ERROR_LAST
+#define RAMPART_ERROR_CODES_START (NEETHI_ERROR_CODES_START + AXUTIL_ERROR_MESSAGE_BLOCK_SIZE)
+#define SANDESHA2_ERROR_CODES_START (RAMPART_ERROR_CODES_START + AXUTIL_ERROR_MESSAGE_BLOCK_SIZE)
+#define SAVAN_ERROR_CODES_START (SANDESHA2_ERROR_CODES_START + AXUTIL_ERROR_MESSAGE_BLOCK_SIZE)
+#define USER_ERROR_CODES_START (SAVAN_ERROR_CODES_START + AXUTIL_ERROR_MESSAGE_BLOCK_SIZE)
 
-#define AXIS2_ERROR_MESSAGE_ARRAY_SIZE \
-    (AXIS2_ERROR_LAST + AXIS2_ERROR_ADDITIONAL_BUFFER_SIZE)
+/* AXUTIL_ERROR_MAX_LAST define the maximum size of the error array */
+#define AXUTIL_ERROR_MAX_LAST (USER_ERROR_CODES_START+AXUTIL_ERROR_MESSAGE_BLOCK_SIZE)
+#define AXIS2_ERROR_MESSAGE_ARRAY_SIZE AXUTIL_ERROR_MAX_LAST
+
 
 /**
  * Array to hold error messages corresponding to the pre-defined error codes.
@@ -45,8 +53,9 @@
       be inserted so that another new module can know about the already
       occupied spaces. 
  */
-AXIS2_EXPORT const axis2_char_t *axutil_error_messages[
-        AXIS2_ERROR_MESSAGE_ARRAY_SIZE];
+
+AXIS2_EXPORT const axis2_char_t 
+    *axutil_error_messages[AXIS2_ERROR_MESSAGE_ARRAY_SIZE];
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_error_init()
