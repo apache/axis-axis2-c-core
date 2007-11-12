@@ -1266,7 +1266,7 @@ axis2_conf_set_default_dispatchers(
         return AXIS2_FAILURE;
     }
 
-    soap_msg_body_based_dispatch = axiom_soap_body_disp_create(env);
+    soap_msg_body_based_dispatch = axis2_soap_body_disp_create(env);
     if (!soap_msg_body_based_dispatch)
     {
         return AXIS2_FAILURE;
@@ -1278,7 +1278,7 @@ axis2_conf_set_default_dispatchers(
     axutil_array_list_add(conf->handlers, env,
                           axis2_handler_get_handler_desc(handler, env));
 
-    soap_action_based_dispatch = axiom_soap_action_disp_create(env);
+    soap_action_based_dispatch = axis2_soap_action_disp_create(env);
     if (!soap_action_based_dispatch)
     {
         return AXIS2_FAILURE;
@@ -1286,7 +1286,7 @@ axis2_conf_set_default_dispatchers(
 
     handler = axis2_disp_get_base(soap_action_based_dispatch, env);
     axis2_disp_free(soap_action_based_dispatch, env);
-    axis2_phase_add_handler_at(dispatch, env, 2, handler);
+    axis2_phase_add_handler_at(dispatch, env, 1, handler);
     axutil_array_list_add(conf->handlers, env,
                           axis2_handler_get_handler_desc(handler, env));
 

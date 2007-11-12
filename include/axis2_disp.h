@@ -144,7 +144,7 @@ extern "C"
      * methods implemented based on SOAP body processing.
      */
     AXIS2_EXTERN axis2_disp_t *AXIS2_CALL
-    axiom_soap_body_disp_create(
+    axis2_soap_body_disp_create(
         const axutil_env_t * env);
 
     /**
@@ -154,7 +154,7 @@ extern "C"
      * methods implemented based on SOAP action processing
      */
     AXIS2_EXTERN axis2_disp_t *AXIS2_CALL
-    axiom_soap_action_disp_create(
+    axis2_soap_action_disp_create(
         const axutil_env_t * env);
 
 #ifdef __cplusplus
