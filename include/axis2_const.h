@@ -350,6 +350,7 @@ extern "C"
 
 #define AXIS2_RESPONSE_SOAP_ENVELOPE "Axis2ResponseEnvelope"
 #define AXIS2_HANDLER_ALREADY_VISITED "handler_already_visited"
+#define AXIS2_IS_SVR_SIDE "axis2_is_svr_side"
 
 #ifdef __cplusplus
 }

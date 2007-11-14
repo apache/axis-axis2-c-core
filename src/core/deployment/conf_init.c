@@ -46,6 +46,8 @@ axis2_build_conf_ctx(
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_conf_t *conf = NULL;
     axis2_phase_resolver_t *phase_resolver = NULL;
+    axutil_property_t *property = NULL;
+    axis2_ctx_t *conf_ctx_base = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -53,7 +55,7 @@ axis2_build_conf_ctx(
     if (!dep_engine)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                        "dep engine create with repos name failed, dep_engine value is NULL");
+            "dep engine create with repos name failed, dep_engine value is NULL");
         return NULL;
     }
 
@@ -61,7 +63,7 @@ axis2_build_conf_ctx(
     if (!conf)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                        "dep engine load failed. conf value is NULL");
+            "dep engine load failed. conf value is NULL");
         return NULL;
     }
     axis2_conf_set_dep_engine(conf, env, dep_engine);
@@ -70,7 +72,8 @@ axis2_build_conf_ctx(
     if (!phase_resolver)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                        "phase resolver create with config failed. phase resolver value is NULL");
+            "phase resolver create with config failed. phase resolver value "\
+            "is NULL");
         return NULL;
     }
 
@@ -78,10 +81,13 @@ axis2_build_conf_ctx(
     if (!conf_ctx)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                        "conf ctx creation failed. conf_ctx value is NULL");
+            "conf ctx creation failed. conf_ctx value is NULL");
         return NULL;
     }
 
+    conf_ctx_base = axis2_conf_ctx_get_base(conf_ctx, env);
+    property = axutil_property_create_with_args(env, 2, 0, 0, AXIS2_VALUE_TRUE);
+    axis2_ctx_set_property(conf_ctx_base, env, AXIS2_IS_SVR_SIDE, property);
     axis2_phase_resolver_build_chains(phase_resolver, env);
 
     axis2_init_modules(env, conf_ctx);
@@ -102,6 +108,8 @@ axis2_build_client_conf_ctx(
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_conf_t *conf = NULL;
     axis2_phase_resolver_t *phase_resolver = NULL;
+    axutil_property_t *property = NULL;
+    axis2_ctx_t *conf_ctx_base = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -137,7 +145,9 @@ axis2_build_client_conf_ctx(
                         "conf ctx creation failed. conf_ctx value is NULL");
         return NULL;
     }
-
+    conf_ctx_base = axis2_conf_ctx_get_base(conf_ctx, env);
+    property = axutil_property_create_with_args(env, 2, 0, 0, AXIS2_VALUE_FALSE);
+    axis2_ctx_set_property(conf_ctx_base, env, AXIS2_IS_SVR_SIDE, property);
     axis2_phase_resolver_build_chains(phase_resolver, env);
 
     axis2_init_modules(env, conf_ctx);
