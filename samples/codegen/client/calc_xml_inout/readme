@@ -5,5 +5,5 @@ sample source        test_Calcultor.c
 wsdl                 $AXIS2C_HOME/test/resources/wsdl/Calculator.wsdl
 
 Command to execute the code generation: 
-WSDL2Code 
+WSDL2C 
 -uri <wsdl> -l  c -d none

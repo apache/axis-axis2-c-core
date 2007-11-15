@@ -5,6 +5,6 @@ sample sources       test_echo_string_array.c  test_echo_string.c  test_echo_str
 wsdl                 $AXIS2C_HOME/test/resources/wsdl/interoptestdoclitparameters.wsdl
 
 Command to execute the code generation: 
-WSDL2Code 
+WSDL2C 
 -Dorg.apache.adb.properties=/org/apache/axis2/schema/c-schema-compile.properties
 -uri <wsdl> -l  c -d adb -u
