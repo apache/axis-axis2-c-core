@@ -170,20 +170,22 @@ axiom_data_handler_read_from(
             return AXIS2_FAILURE;
         }
 
+        struct stat stat_p;
+        if (-1 == stat(data_handler->file_name, &stat_p))
+        {
+	    fclose(f);
+            return AXIS2_FAILURE;
+        }
+        else if (stat_p.st_size == 0)
+        {
+            fclose(f);
+            *output_stream = NULL;
+            *output_stream_size = 0;
+            return AXIS2_SUCCESS;
+        }
+
         do
         {
-            struct stat stat_p;
-            if (-1 == stat(data_handler->file_name, &stat_p))
-            {
-                return AXIS2_FAILURE;
-            }
-            else if (stat_p.st_size == 0)
-            {
-                *output_stream = NULL;
-                *output_stream_size = 0;
-                return AXIS2_SUCCESS;
-            }
-
             read_stream_size = stat_p.st_size;
             read_stream = AXIS2_MALLOC(env->allocator,
                                        (read_stream_size) *
@@ -196,6 +198,7 @@ axiom_data_handler_read_from(
                 {
                     AXIS2_FREE(env->allocator, byte_stream);
                 }
+                fclose(f);
                 return AXIS2_FAILURE;
             }
             count = fread(read_stream, 1, read_stream_size, f);
@@ -211,6 +214,7 @@ axiom_data_handler_read_from(
                 {
                     AXIS2_FREE(env->allocator, read_stream);
                 }
+                fclose(f);
                 return AXIS2_FAILURE;
             }
 
@@ -237,6 +241,7 @@ axiom_data_handler_read_from(
                         {
                             AXIS2_FREE(env->allocator, temp_byte_stream);
                         }
+                        fclose(f);
                         return AXIS2_FAILURE;
                     }
 
