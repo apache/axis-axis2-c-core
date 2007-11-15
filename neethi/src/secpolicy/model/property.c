@@ -193,6 +193,10 @@ rp_property_set_value(
     {
         rp_wss10_increment_ref((rp_wss10_t *) value, env);
     }
+    if (type == RP_PROPERTY_WSS11)
+    {
+        rp_wss11_increment_ref((rp_wss11_t *) value, env);
+    }
     if (type == RP_PROPERTY_USERNAME_TOKEN)
     {
         rp_username_token_increment_ref((rp_username_token_t *) value, env);
