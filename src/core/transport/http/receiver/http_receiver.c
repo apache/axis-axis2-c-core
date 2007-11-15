@@ -285,11 +285,7 @@ axis2_http_server_is_running(
     axis2_http_server_impl_t *server_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     server_impl = AXIS2_INTF_TO_IMPL(server);
-    if (!server_impl->svr_thread)
-    {
-        return AXIS2_FALSE;
-    }
-    else
+    if (server_impl->svr_thread)
     {
         return axis2_http_svr_thread_is_running(server_impl->svr_thread, env);
     }
