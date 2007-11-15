@@ -184,8 +184,6 @@ Table of Contents
       |         +...
       |
       |
-      +- conf        - codegen config files
-      |
       +- docs        - documentation 
       |
       +- include     - all include files of axis2 
