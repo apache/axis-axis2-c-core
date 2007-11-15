@@ -72,8 +72,13 @@ axis2_any_content_type_add_value(
         name = axutil_qname_to_string((axutil_qname_t *) qname, env);
         axutil_hash_set(any_content_type->value_map, name,
                         AXIS2_HASH_KEY_STRING, value);
+        axis2_char_t *temp = NULL;
+        temp = axutil_hash_get(any_content_type->value_map, name,
+                               AXIS2_HASH_KEY_STRING);
+        if (temp)
+	    return AXIS2_SUCCESS;
     }
-    return AXIS2_SUCCESS;
+    return AXIS2_FAILURE;
 }
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
