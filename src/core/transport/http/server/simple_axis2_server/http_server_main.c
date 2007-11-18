@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -34,6 +33,8 @@ axutil_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;
 AXIS2_IMPORT extern int axis2_http_socket_read_timeout;
 AXIS2_IMPORT extern axis2_char_t *axis2_request_url_prefix;
+
+#define DEFAULT_REPO_PATH "../"
 
 /***************************** Function headers *******************************/
 axutil_env_t *init_syetem_env(
@@ -100,11 +101,15 @@ main(
     extern char *optarg;
     extern int optopt;
     int c;
+	unsigned int len;
     int log_file_size = AXUTIL_LOG_FILE_SIZE;
+	unsigned int file_flag = 0;
     axutil_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
     const axis2_char_t *log_file = "axis2.log";
+    const axis2_char_t *repo_path = DEFAULT_REPO_PATH;
     int port = 9090;
-    const axis2_char_t *repo_path = "../";
+	axis2_status_t status;
+	
 
     /* Set the service URL prefix to be used. This could default to services if not 
        set with AXIS2_REQUEST_URL_PREFIX macro at compile time */
@@ -178,8 +183,30 @@ main(
     AXIS2_LOG_INFO(env->log, "Repo location : %s", repo_path);
     AXIS2_LOG_INFO(env->log, "Read Timeout : %d ms",
                    axis2_http_socket_read_timeout);
+	
+	status = axutil_file_handler_access (repo_path, AXIS2_R_OK);
+	if (status == AXIS2_SUCCESS)
+	{
+		len = strlen (repo_path);
+		if (!strcmp ((repo_path + (len - 9)), "axis2.xml"))
+		{
+			file_flag = 1;
+		}
+	}
+	else
+	{
+		AXIS2_LOG_WARNING (env->log, AXIS2_LOG_SI, "provided repo path %s is " 
+						   "not exsist or no permissions to read, set "
+						   "repo_path to DEFAULT_REPO_PATH", repo_path);
+		repo_path = DEFAULT_REPO_PATH;
+	}
+	
 
-    server = axis2_http_server_create(env, repo_path, port);
+	if (!file_flag)
+    	server = axis2_http_server_create(env, repo_path, port);
+	else
+		server = axis2_http_server_create_with_file (env, repo_path, port);
+	
     if (!server)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,

@@ -53,8 +53,9 @@ axis2_raw_xml_in_out_msg_recv_create(
         return NULL;
     }
 
-    axis2_msg_recv_set_invoke_business_logic(msg_recv, env,
-                                             axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync);
+    axis2_msg_recv_set_invoke_business_logic(
+        msg_recv, env,
+        axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync);
     return msg_recv;
 }
 

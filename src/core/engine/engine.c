@@ -181,7 +181,7 @@ axis2_engine_send(
         }
         else
         {
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                             "Transport out is not set in message context");
             return AXIS2_FAILURE;
         }
@@ -401,7 +401,7 @@ axis2_engine_send_fault(
         }
         else
         {
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                             "Transport out is not set in message context");
             return AXIS2_FAILURE;
         }

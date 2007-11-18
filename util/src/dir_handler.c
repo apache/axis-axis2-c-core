@@ -190,6 +190,8 @@ axutil_dir_handler_list_service_or_module_dirs(
     file_list = axutil_array_list_create(env, 0);
     if (!getcwd(cwd, 500))
         exit(1);
+
+    /* pathname is path of services directory or modules directory. */ 
     chdir(pathname);
     axis2_archive_extract();
 
@@ -200,7 +202,7 @@ axutil_dir_handler_list_service_or_module_dirs(
     if (count <= 0)
     {
         axutil_array_list_free(file_list, env);
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No files in the path %s.",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No files in the path %s.",
                         pathname);
         return NULL;
     }

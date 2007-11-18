@@ -387,6 +387,7 @@ axiom_namespace_set_uri_str(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
+	
     return AXIS2_SUCCESS;
 
 }

@@ -43,6 +43,17 @@ extern "C"
     axis2_build_conf_ctx(
         const axutil_env_t * env,
         const axis2_char_t * repo_name);
+	
+	/**
+	 * Builds the configuration for the Server using axis2.xml file.
+	 * @param env Pointer to environment struct. MUST NOT be NULL
+	 * @param file path of the axis2.xml file
+	 * @return pointer to an instance of configuration context properly initialized
+	 */
+	AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
+	axis2_build_conf_ctx_with_file(
+    	const axutil_env_t * env,
+    	const axis2_char_t * file);
 
     /**
      * Builds the Configuration for the Client
@@ -60,4 +71,4 @@ extern "C"
 #ifdef __cplusplus
 }
 #endif
-#endif                          /* AXIS2_CONF_INIT_H */
+#endif      /* AXIS2_CONF_INIT_H */

@@ -121,7 +121,6 @@ extern "C"
      * @return pointer to newly created deployment engine
      */
     AXIS2_EXTERN axis2_repos_listener_t *AXIS2_CALL
-
     axis2_repos_listener_create(
         const axutil_env_t * env);
 
@@ -132,11 +131,24 @@ extern "C"
      * @return pointer to newly created deployment engine
      */
     AXIS2_EXTERN axis2_repos_listener_t *AXIS2_CALL
-
     axis2_repos_listener_create_with_folder_name_and_dep_engine(
         const axutil_env_t * env,
         axis2_char_t * folder_name,
         struct axis2_dep_engine *dep_engine);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_repos_listener_set_conf(
+        axis2_repos_listener_t *repo_listener,        
+        const axutil_env_t * env,
+        axis2_conf_t *conf);
+
+    AXIS2_EXTERN axis2_conf_t *AXIS2_CALL
+    axis2_repos_listener_get_conf(
+        axis2_repos_listener_t *repo_listener,        
+        const axutil_env_t * env);
+
+
+
 
     /** @} */
 

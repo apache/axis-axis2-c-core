@@ -51,6 +51,7 @@ struct axis2_conf
     axutil_hash_t *faulty_svcs;
     axutil_hash_t *faulty_modules;
     axis2_char_t *axis2_repo;
+	axis2_char_t *axis2_xml;
     axis2_dep_engine_t *dep_engine;
     axutil_array_list_t *handlers;
     axis2_bool_t enable_mtom;
@@ -62,6 +63,9 @@ struct axis2_conf
 
     /** base description struct */
     axis2_desc_t *base;
+	
+	/** mark whether conf is build using axis2 xml*/
+	axis2_bool_t axis2_flag;
 
     /* this is a hack to keep rampart_context at client side */
     void *security_context;
@@ -85,29 +89,11 @@ axis2_conf_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+	memset ((void *)conf, 0, sizeof (axis2_conf_t));
 
-    conf->param_container = NULL;
-    conf->svc_grps = NULL;
-    conf->engaged_modules = NULL;
-    conf->in_phases_upto_and_including_post_dispatch = NULL;
-    conf->out_phases = NULL;
-    conf->in_fault_phases = NULL;
-    conf->out_fault_phases = NULL;
-    conf->phases_info = NULL;
-    conf->all_svcs = NULL;
-    conf->all_init_svcs = NULL;
-    conf->msg_recvs = NULL;
-    conf->faulty_svcs = NULL;
-    conf->faulty_modules = NULL;
-    conf->axis2_repo = NULL;
-    conf->dep_engine = NULL;
-    conf->all_modules = NULL;
-    conf->name_to_version_map = NULL;
-    conf->handlers = NULL;
     conf->enable_mtom = AXIS2_FALSE;
     conf->enable_security = AXIS2_FALSE;
-    conf->base = NULL;
-    conf->security_context = NULL;
+	conf->axis2_flag = AXIS2_FALSE;
 
     conf->param_container = (axutil_param_container_t *)
         axutil_param_container_create(env);
@@ -1398,6 +1384,7 @@ axis2_conf_engage_module(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_ref, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK (env->error, conf, AXIS2_FAILURE);
 
     module_desc = axis2_conf_get_module(conf, env, module_ref);
     if (!module_desc)
@@ -1411,6 +1398,10 @@ axis2_conf_engage_module(
         axis2_char_t *temp_path2 = NULL;
         axis2_char_t *temp_path3 = NULL;
         axis2_char_t *path = NULL;
+		axutil_param_t *module_dir_param;
+		axis2_char_t *module_dir;
+		axis2_bool_t flag;
+		axis2_char_t *axis2_xml;
 
         arch_reader = axis2_arch_reader_create(env);
         if (!arch_reader)
@@ -1421,25 +1412,65 @@ axis2_conf_engage_module(
         file =
             (axutil_file_t *) axis2_arch_reader_create_module_arch(env,
                                                                    file_name);
-        repos_path = axis2_conf_get_repo(conf, env);
-        temp_path1 = axutil_stracat(env, repos_path, AXIS2_PATH_SEP_STR);
-        temp_path2 = axutil_stracat(env, temp_path1, AXIS2_MODULE_FOLDER);
-        temp_path3 = axutil_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
-        path = axutil_stracat(env, temp_path3, file_name);
-        AXIS2_FREE(env->allocator, temp_path1);
-        AXIS2_FREE(env->allocator, temp_path2);
-        AXIS2_FREE(env->allocator, temp_path3);
+        /* this flag is to check whether conf is build using axis2
+         * xml instead of a repo. */
+		flag = axis2_conf_get_axis2_flag (conf, env);
+
+		if (flag == AXIS2_FALSE)
+		{
+        	repos_path = axis2_conf_get_repo(conf, env);
+        	temp_path1 = axutil_stracat(env, repos_path, AXIS2_PATH_SEP_STR);
+        	temp_path2 = axutil_stracat(env, temp_path1, AXIS2_MODULE_FOLDER);
+        	temp_path3 = axutil_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
+        	path = axutil_stracat(env, temp_path3, file_name);
+        	AXIS2_FREE(env->allocator, temp_path1);
+        	AXIS2_FREE(env->allocator, temp_path2);
+        	AXIS2_FREE(env->allocator, temp_path3);
+		}
+		else
+		{
+			/**
+			 * this case is to obtain module path from the axis2.xml
+			 */
+			axis2_xml = (axis2_char_t *)axis2_conf_get_axis2_xml (conf, env);
+			module_dir_param = axis2_conf_get_param (conf, env, "moduleDir");
+			module_dir = (axis2_char_t *) 
+					axutil_param_get_value (module_dir_param, env);
+			temp_path1 = axutil_strcat (env, 
+                                        module_dir, 
+                                        AXIS2_PATH_SEP_STR, NULL);
+			path = axutil_strcat (env, temp_path1, file_name, NULL);
+		}
+		
         axutil_file_set_path(file, env, path);
         file_data = axis2_arch_file_data_create_with_type_and_file(env,
                                                                    AXIS2_MODULE,
                                                                    file);
 
-        dep_engine = axis2_dep_engine_create_with_repos_name(env, repos_path);
+		if (!flag)
+        {
+        	dep_engine = 
+                axis2_dep_engine_create_with_repos_name(env, repos_path);
+        }
+		else
+        {
+			dep_engine = 
+                axis2_dep_engine_create_with_axis2_xml (env, axis2_xml);
+        }
+		
         axis2_dep_engine_set_current_file_item(dep_engine, env, file_data);
+
+        /* this module_dir set the path of the module directory
+         * petaining to this module. This value will use inside the
+         * axis2_dep_engine_build_module function
+         */
+
+		axis2_dep_engine_set_module_dir (dep_engine, env, path);
         module_desc =
             axis2_dep_engine_build_module(dep_engine, env, file, conf);
         is_new_module = AXIS2_TRUE;
     }
+	
     if (module_desc)
     {
         int size = 0;
@@ -1523,6 +1554,28 @@ axis2_conf_set_repo(
     conf->axis2_repo = axutil_strdup(env, repos_path);
     return AXIS2_SUCCESS;
 }
+
+
+AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+axis2_conf_get_axis2_xml(
+    const axis2_conf_t * conf,
+    const axutil_env_t * env)
+{
+    return axutil_strdup (env, conf->axis2_xml);
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_conf_set_axis2_xml(
+    axis2_conf_t * conf,
+    const axutil_env_t * env,
+    axis2_char_t * axis2_xml)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, axis2_xml, AXIS2_FAILURE);
+    conf->axis2_xml = axutil_strdup(env, axis2_xml);
+    return AXIS2_SUCCESS;
+}
+
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_set_dep_engine(
@@ -1668,6 +1721,25 @@ axis2_conf_set_enable_mtom(
     axis2_bool_t enable_mtom)
 {
     conf->enable_mtom = enable_mtom;
+    return AXIS2_SUCCESS;
+}
+
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_conf_get_axis2_flag(
+    axis2_conf_t * conf,
+    const axutil_env_t * env)
+{
+    return conf->axis2_flag;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_conf_set_axis2_flag(
+    axis2_conf_t * conf,
+    const axutil_env_t * env,
+    axis2_bool_t axis2_flag)
+{
+    conf->axis2_flag = axis2_flag;
     return AXIS2_SUCCESS;
 }
 

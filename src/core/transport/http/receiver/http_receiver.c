@@ -134,6 +134,56 @@ axis2_http_server_create(
     return &(server_impl->http_server);
 }
 
+
+AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
+axis2_http_server_create_with_file(
+    const axutil_env_t * env,
+    const axis2_char_t * file,
+    const int port)
+{
+    axis2_http_server_impl_t *server_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    server_impl = (axis2_http_server_impl_t *) AXIS2_MALLOC
+        (env->allocator, sizeof(axis2_http_server_impl_t));
+
+    if (!server_impl)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    server_impl->svr_thread = NULL;
+    server_impl->conf_ctx = NULL;
+    server_impl->conf_ctx_private = NULL;
+    server_impl->port = port;
+
+    server_impl->http_server.ops = &http_transport_receiver_ops_var;
+
+    if (file)
+    {
+
+        /**
+         * We first create a private conf ctx which is owned by this server
+         * we only free this private conf context. We should never free the
+         * server_impl->conf_ctx because it may own to any other object which
+         * may lead to double free
+         */
+        server_impl->conf_ctx_private = 
+			axis2_build_conf_ctx_with_file (env, file);
+		
+        if (!server_impl->conf_ctx_private)
+        {
+            axis2_http_server_free((axis2_transport_receiver_t *) server_impl,
+                                   env);
+            return NULL;
+        }
+        server_impl->conf_ctx = server_impl->conf_ctx_private;
+    }
+
+    return &(server_impl->http_server);
+}
+
+
 void AXIS2_CALL
 axis2_http_server_free(
     axis2_transport_receiver_t * server,
@@ -163,6 +213,7 @@ axis2_http_server_free(
     AXIS2_FREE(env->allocator, server_impl);
     return;
 }
+
 
 axis2_status_t AXIS2_CALL
 axis2_http_server_init(

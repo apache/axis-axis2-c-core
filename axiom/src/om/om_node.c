@@ -83,7 +83,6 @@ axiom_node_create(
     node->data_element = NULL;
     node->om_doc = NULL;
     node->builder = NULL;
-
     return node;
 }
 

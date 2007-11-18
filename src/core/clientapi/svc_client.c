@@ -247,7 +247,8 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-
+    
+    
     svc_client->svc = NULL;
     svc_client->conf = NULL;
     svc_client->conf_ctx = NULL;
@@ -285,8 +286,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     }
     else
     {
-        if (!
-            (svc_client->svc =
+        if (!(svc_client->svc =
              axis2_svc_client_create_annonymous_svc(svc_client, env)))
         {
             axis2_svc_client_free(svc_client, env);

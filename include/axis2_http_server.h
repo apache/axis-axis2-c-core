@@ -42,11 +42,16 @@ extern "C"
 #endif
 
     AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
-
     axis2_http_server_create(
         const axutil_env_t * env,
         const axis2_char_t * repo,
         const int port);
+	
+	AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
+	axis2_http_server_create_with_file(
+    	const axutil_env_t * env,
+    	const axis2_char_t * file,
+    	const int port);
 
     axis2_status_t AXIS2_CALL
     axis2_http_server_stop(
@@ -58,4 +63,4 @@ extern "C"
 }
 #endif
 
-#endif                          /* AXIS2_HTTP_SERVER_H */
+#endif  /* AXIS2_HTTP_SERVER_H */

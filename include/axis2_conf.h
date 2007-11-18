@@ -624,6 +624,31 @@ extern "C"
         axis2_conf_t * conf,
         const axutil_env_t * env,
         axis2_char_t * axis2_repo);
+	
+	
+	/**
+     * Gets the axis2.xml location.
+     * @param conf pointer to conf struct
+     * @param env pointer to environment struct
+     * @return returns repository location as a string
+     */
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    axis2_conf_get_axis2_xml(
+        const axis2_conf_t * conf,
+        const axutil_env_t * env);
+
+    /**
+     * Sets the axis2.xml location.
+     * @param conf pointer to conf struct
+     * @param env pointer to environment struct
+     * @param axis2_xml repository location as a string
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_conf_set_axis2_xml(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        axis2_char_t * axis2_xml);
 
     /**
      * Engages the named module.
@@ -731,6 +756,20 @@ extern "C"
         axis2_conf_t * conf,
         const axutil_env_t * env,
         axis2_bool_t enable_mtom);
+	
+	/**
+	 * set a flag to mark conf created by axis2.xml
+	 */
+	AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_conf_get_enable_axis2_flag(
+        axis2_conf_t * conf,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_conf_set_enable_axis2_flag(
+        axis2_conf_t * conf,
+        const axutil_env_t * env,
+        axis2_bool_t axis2_flag);
 
     /*The following two methods are used in Rampart to
      *check whether security is engaed. */

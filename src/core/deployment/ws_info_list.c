@@ -59,9 +59,7 @@ axis2_ws_info_list_create_with_dep_engine(
         return NULL;
     }
 
-    ws_info_list->deployer = NULL;
-    ws_info_list->ws_info_list = NULL;
-    ws_info_list->current_info_lists = NULL;
+    memset ((void *)ws_info_list, 0, sizeof (axis2_ws_info_list_t));
 
     ws_info_list->deployer = dep_engine;
 

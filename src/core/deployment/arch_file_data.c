@@ -56,15 +56,7 @@ axis2_arch_file_data_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-
-    arch_file_data->file = NULL;
-    arch_file_data->type = 0;
-    arch_file_data->msg_recv = NULL;
-    arch_file_data->module_name = NULL;
-    arch_file_data->module_dll_name = NULL;
-    arch_file_data->name = NULL;
-    arch_file_data->svc_map = NULL;
-    arch_file_data->deployable_svcs = NULL;
+	memset ((void *)arch_file_data, 0, sizeof (axis2_arch_file_data_t));
 
     arch_file_data->deployable_svcs = axutil_array_list_create(env, 0);
     if (!arch_file_data->deployable_svcs)

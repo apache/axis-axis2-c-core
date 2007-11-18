@@ -339,6 +339,7 @@ axis2_conf_builder_process_module_refs(
         {
             axutil_qname_free(qref, env);
         }
+
         if (module_ref_att)
         {
             axutil_qname_t *qrefname = NULL;
@@ -666,6 +667,7 @@ axis2_conf_builder_process_transport_senders(
             trs_name = axiom_element_get_attribute(transport_element, env,
                                                    qattname);
         }
+
         axutil_qname_free(qattname, env);
         if (trs_name)
         {
@@ -697,9 +699,16 @@ axis2_conf_builder_process_transport_senders(
             axis2_char_t *temp_path2 = NULL;
             axis2_char_t *temp_path3 = NULL;
             AXIS2_TRANSPORT_ENUMS transport_enum;
+            axis2_bool_t axis2_flag = AXIS2_FALSE;
+            axutil_param_t *libparam;
+            axis2_char_t *libdir;
+            axis2_conf_t *conf; 
+
+            conf = conf_builder->conf;
+            axis2_flag = axis2_conf_get_axis2_flag (conf, env);
 
             name = axiom_attribute_get_value(trs_name, env);
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Transport name:%s", name);
+
             if (name)
             {
                 if (axutil_strcmp(name, AXIS2_TRANSPORT_HTTP) == 0)
@@ -758,18 +767,41 @@ axis2_conf_builder_process_transport_senders(
             dll_name =
                 axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
                                                                   class_name);
+            if (axis2_flag == AXIS2_FALSE)
+            {
+                repos_name =
+                    axis2_dep_engine_get_repos_path
+                    (axis2_desc_builder_get_dep_engine
+                     (conf_builder->desc_builder, env), env);
+                temp_path = axutil_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
+                temp_path2 = axutil_stracat(env, temp_path, AXIS2_LIB_FOLDER);
+                temp_path3 = axutil_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
+                path_qualified_dll_name = axutil_stracat(env, temp_path3, dll_name);
+                AXIS2_FREE(env->allocator, temp_path);
+                AXIS2_FREE(env->allocator, temp_path2);
+                AXIS2_FREE(env->allocator, temp_path3);
+            }
+            else
+            {
+                libparam = axis2_conf_get_param (conf, env, "libDir");
+                if (libparam)
+                {
+                    libdir = axutil_param_get_value (libparam, env);
+                }
 
-            repos_name =
-                axis2_dep_engine_get_repos_path
-                (axis2_desc_builder_get_dep_engine
-                 (conf_builder->desc_builder, env), env);
-            temp_path = axutil_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
-            temp_path2 = axutil_stracat(env, temp_path, AXIS2_LIB_FOLDER);
-            temp_path3 = axutil_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
-            path_qualified_dll_name = axutil_stracat(env, temp_path3, dll_name);
-            AXIS2_FREE(env->allocator, temp_path);
-            AXIS2_FREE(env->allocator, temp_path2);
-            AXIS2_FREE(env->allocator, temp_path3);
+                if (!libdir)
+                {
+                    AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "specifying \
+services and modules directories using axis2.xml, path of the library directory\
+is not presant");
+                    return AXIS2_FAILURE;
+                }
+                path_qualified_dll_name = axutil_strcat (env, libdir, 
+                                                         AXIS2_PATH_SEP_STR,
+                                                         dll_name,
+                                                         NULL);
+            }
+            /* AXIS2_LOG_DEBUG (env->log, AXIS2_LOG_SI, "%s", path_qualified_dll_name); */
             axutil_dll_desc_set_name(dll_desc, env, path_qualified_dll_name);
             AXIS2_FREE(env->allocator, path_qualified_dll_name);
             axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
@@ -922,9 +954,15 @@ axis2_conf_builder_process_transport_recvs(
     axiom_children_qname_iterator_t * trs_recvs)
 {
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_conf_t *conf;
+    axis2_bool_t axis2_flag = AXIS2_FALSE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, trs_recvs, AXIS2_FAILURE);
+
+    conf = conf_builder->conf;
+    axis2_flag = axis2_conf_get_axis2_flag (conf, env);
+
 
     while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(trs_recvs, env))
     {
@@ -1028,6 +1066,9 @@ axis2_conf_builder_process_transport_recvs(
                 axis2_char_t *temp_path = NULL;
                 axis2_char_t *temp_path2 = NULL;
                 axis2_char_t *temp_path3 = NULL;
+                
+                axutil_param_t *tnsparam;
+                axis2_char_t *libpath;
 
                 class_name = axiom_attribute_get_value(trs_class_name, env);
                 impl_info_param = axutil_param_create(env, class_name, NULL);
@@ -1036,20 +1077,37 @@ axis2_conf_builder_process_transport_recvs(
                     axutil_dll_desc_create_platform_specific_dll_name(dll_desc,
                                                                       env,
                                                                       class_name);
+                if (axis2_flag == AXIS2_FALSE)
+                {
+                    repos_name =
+                        axis2_dep_engine_get_repos_path
+                        (axis2_desc_builder_get_dep_engine
+                         (conf_builder->desc_builder, env), env);
+                    temp_path = axutil_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
+                    temp_path2 = axutil_stracat(env, temp_path, AXIS2_LIB_FOLDER);
+                    temp_path3 =
+                        axutil_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
+                    path_qualified_dll_name =
+                        axutil_stracat(env, temp_path3, dll_name);
+                    AXIS2_FREE(env->allocator, temp_path);
+                    AXIS2_FREE(env->allocator, temp_path2);
+                    AXIS2_FREE(env->allocator, temp_path3);
+                }
+                else
+                {
+                    tnsparam = axis2_conf_get_param (conf, env, "libDir");
+                    if (tnsparam)
+                    {
+                        libpath = (axis2_char_t *)axutil_param_get_value (tnsparam, env);
 
-                repos_name =
-                    axis2_dep_engine_get_repos_path
-                    (axis2_desc_builder_get_dep_engine
-                     (conf_builder->desc_builder, env), env);
-                temp_path = axutil_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
-                temp_path2 = axutil_stracat(env, temp_path, AXIS2_LIB_FOLDER);
-                temp_path3 =
-                    axutil_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
-                path_qualified_dll_name =
-                    axutil_stracat(env, temp_path3, dll_name);
-                AXIS2_FREE(env->allocator, temp_path);
-                AXIS2_FREE(env->allocator, temp_path2);
-                AXIS2_FREE(env->allocator, temp_path3);
+                        if (libpath)
+                        {
+                            path_qualified_dll_name = axutil_strcat (env, libpath,
+                                                                     AXIS2_PATH_SEP_STR,
+                                                                     dll_name, NULL);
+                        }
+                    }
+                }
 
                 axutil_dll_desc_set_name(dll_desc, env,
                                          path_qualified_dll_name);

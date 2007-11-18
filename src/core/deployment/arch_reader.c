@@ -90,17 +90,31 @@ axis2_arch_reader_process_svc_grp(
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *svcs_xml = NULL;
     axis2_char_t *repos_path = NULL;
+    axis2_bool_t file_flag = AXIS2_FALSE;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, file_name, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
 
-    repos_path = axis2_dep_engine_get_repos_path(dep_engine, env);
+    file_flag = axis2_dep_engine_get_file_flag (dep_engine, env);
 
-    svcs_xml = axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR,
-                             AXIS2_SERVICE_FOLDER, AXIS2_PATH_SEP_STR,
-                             file_name, AXIS2_PATH_SEP_STR, AXIS2_SVC_XML,
-                             NULL);
+    if (file_flag == AXIS2_FALSE)
+    { 
+
+        repos_path = axis2_dep_engine_get_repos_path(dep_engine, env);
+        
+        svcs_xml = axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR,
+                                 AXIS2_SERVICE_FOLDER, AXIS2_PATH_SEP_STR,
+                                 file_name, AXIS2_PATH_SEP_STR, AXIS2_SVC_XML,
+                                 NULL);
+    }
+    else
+    {
+        repos_path = axis2_dep_engine_get_svc_dir (dep_engine, env);
+        svcs_xml = axutil_strcat (env, repos_path, AXIS2_PATH_SEP_STR,
+                                  file_name, AXIS2_PATH_SEP_STR, AXIS2_SVC_XML,
+                                  NULL);
+    }
 
     if (!svcs_xml)
     {
@@ -250,17 +264,31 @@ axis2_arch_reader_read_module_arch(
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *module_xml = NULL;
     axis2_char_t *repos_path = NULL;
+    axis2_bool_t file_flag;
+
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, file_name, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
 
-    repos_path = axis2_dep_engine_get_repos_path(dep_engine, env);
-    module_xml = axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR,
-                               AXIS2_MODULE_FOLDER, AXIS2_PATH_SEP_STR,
-                               file_name, AXIS2_PATH_SEP_STR, AXIS2_MODULE_XML,
-                               NULL);
+    file_flag = axis2_dep_engine_get_file_flag (dep_engine, env);
+	if (file_flag == AXIS2_FALSE)
+	{
+    	repos_path = axis2_dep_engine_get_repos_path(dep_engine, env);
+    	module_xml = axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR,
+        	                       AXIS2_MODULE_FOLDER, AXIS2_PATH_SEP_STR,
+            	                   file_name, AXIS2_PATH_SEP_STR, AXIS2_MODULE_XML,
+                	               NULL);
+	}
+	else
+	{
+        repos_path = axis2_dep_engine_get_module_dir (dep_engine, env);
+        module_xml = axutil_strcat (env, repos_path, AXIS2_PATH_SEP_STR,
+                                    file_name, AXIS2_PATH_SEP_STR, AXIS2_MODULE_XML,
+                                    NULL);
+	}
+	
     if (!module_xml)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

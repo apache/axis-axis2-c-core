@@ -25,6 +25,8 @@
 #include <axis2_dep_engine.h>
 #include <axis2_module.h>
 
+#define DEFAULT_REPO_PATH "."
+
 axis2_status_t AXIS2_CALL axis2_init_modules(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx);
@@ -99,6 +101,68 @@ axis2_build_conf_ctx(
     return conf_ctx;
 }
 
+
+AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
+axis2_build_conf_ctx_with_file(
+    const axutil_env_t * env,
+    const axis2_char_t * file)
+{
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axis2_dep_engine_t *dep_engine = NULL;
+    axis2_conf_t *conf = NULL;
+    axis2_phase_resolver_t *phase_resolver = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+
+    dep_engine = axis2_dep_engine_create_with_axis2_xml (env, file);
+    if (!dep_engine)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "dep engine create with axis2 xml failed,"
+						" dep_engine value is NULL");
+        return NULL;
+    }
+
+    conf = axis2_dep_engine_load(dep_engine, env);
+
+    if (!conf)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "dep engine load failed. conf value is NULL");
+        return NULL;
+    }
+	
+    axis2_conf_set_dep_engine(conf, env, dep_engine);
+    phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
+    if (!phase_resolver)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "phase resolver create with config failed."
+						" phase resolver value is NULL");
+        return NULL;
+    }
+
+	
+	
+    conf_ctx = axis2_conf_ctx_create(env, conf);
+    if (!conf_ctx)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "conf ctx creation failed. conf_ctx value is NULL");
+        return NULL;
+    }
+
+    axis2_phase_resolver_build_chains(phase_resolver, env);
+
+    axis2_init_modules(env, conf_ctx);
+    axis2_load_services(env, conf_ctx);
+    axis2_init_transports(env, conf_ctx);
+
+    axis2_phase_resolver_free(phase_resolver, env);
+
+    return conf_ctx;
+}
+
 axis2_conf_ctx_t *AXIS2_CALL
 axis2_build_client_conf_ctx(
     const axutil_env_t * env,
@@ -111,15 +175,49 @@ axis2_build_client_conf_ctx(
     axutil_property_t *property = NULL;
     axis2_ctx_t *conf_ctx_base = NULL;
 
+    axis2_status_t status;
+    unsigned int len = 0;
+
     AXIS2_ENV_CHECK(env, NULL);
 
-    dep_engine = axis2_dep_engine_create(env);
+    /* building conf using axis2.xml, in that case we check whether
+     * last 9 characters of the axis2_home equals to the "axis2.xml"
+     * else treat it as a directory 
+     */
+
+    status = axutil_file_handler_access (axis2_home, AXIS2_R_OK);
+	if (status == AXIS2_SUCCESS)
+	{
+		len = strlen (axis2_home);
+		if (!strcmp ((axis2_home + (len - 9)), "axis2.xml"))
+		{
+            dep_engine = axis2_dep_engine_create_with_axis2_xml (env, 
+                                                                 axis2_home);
+		}
+        else
+        {
+            dep_engine = axis2_dep_engine_create(env);
+        }
+	}
+	else
+	{
+		AXIS2_LOG_WARNING (env->log, AXIS2_LOG_SI, "provided repo path %s is " 
+						   "not exsist or no permissions to read, set "
+						   "axis2_home to DEFAULT_REPO_PATH", axis2_home);
+		axis2_home = DEFAULT_REPO_PATH;
+        dep_engine = axis2_dep_engine_create(env);
+	}
+
+
     if (!dep_engine)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                        "dep engine create with repos name failed, dep_engine value is NULL");
+                        "dep engine create with repos name failed, dep_engine \
+value is NULL");
         return NULL;
     }
+
+
 
     conf = axis2_dep_engine_load_client(dep_engine, env, axis2_home);
     if (!conf)
@@ -134,7 +232,8 @@ axis2_build_client_conf_ctx(
     if (!phase_resolver)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                        "phase resolver create with config failed. phase resolver value is NULL");
+                        "phase resolver create with config failed. \
+phase resolver value is NULL");
         return NULL;
     }
 
@@ -238,8 +337,10 @@ axis2_load_services(
                     {
                         axutil_param_t *impl_info_param = NULL;
                         void *impl_class = NULL;
-                        impl_info_param = axis2_svc_get_param(svc_desc, env,
-                                                              AXIS2_SERVICE_CLASS);
+                        impl_info_param = axis2_svc_get_param(
+                            svc_desc, env,
+                            AXIS2_SERVICE_CLASS);
+
                         if (!impl_info_param)
                         {
                             AXIS2_ERROR_SET(env->error,
@@ -262,17 +363,15 @@ axis2_load_services(
                         }
 
                         axis2_svc_set_impl_class(svc_desc, env, impl_class);
-                        status = AXIS2_SVC_SKELETON_INIT_WITH_CONF((axis2_svc_skeleton_t
-                                                           *) impl_class, env,
-                                                          conf);
+                        status = AXIS2_SVC_SKELETON_INIT_WITH_CONF(
+                            (axis2_svc_skeleton_t *) impl_class, env, conf);
                         axutil_allocator_switch_to_local_pool(env->allocator);
                         if(!status)
                         {
                             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                                "Initialization failed for the service %s. "\
-                                "Check the service's init_with_conf() "\
-                                "function for errors and retry",
-                                axis2_svc_get_name(svc_desc, env));
+                                            "Initialization failed for the \
+service %s. Check the service's init_with_conf() function for errors and \
+retry", axis2_svc_get_name(svc_desc, env));
                         }
                     }
                 }
@@ -283,7 +382,8 @@ axis2_load_services(
     else
     {
         AXIS2_LOG_WARNING (env->log, AXIS2_LOG_SI, 
-                           "conf ctx value is NULL, axis2 load services failed");
+                           "conf ctx value is NULL, axis2 load services \
+failed");
     }
 
     return status;
