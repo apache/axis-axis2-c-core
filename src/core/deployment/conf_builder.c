@@ -701,7 +701,7 @@ axis2_conf_builder_process_transport_senders(
             AXIS2_TRANSPORT_ENUMS transport_enum;
             axis2_bool_t axis2_flag = AXIS2_FALSE;
             axutil_param_t *libparam;
-            axis2_char_t *libdir;
+            axis2_char_t *libdir=NULL;
             axis2_conf_t *conf; 
 
             conf = conf_builder->conf;
