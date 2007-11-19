@@ -195,7 +195,7 @@ axis2_http_svr_thread_is_running(
     axis2_http_svr_thread_t * svr_thread,
     const axutil_env_t * env)
 {
-    return svr_thread->port;
+    return !(svr_thread->stopped);
 }
 
 axis2_status_t AXIS2_CALL

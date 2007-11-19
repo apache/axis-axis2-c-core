@@ -167,6 +167,7 @@ axis2_http_client_send(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_URL, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
+
     if (AXIS2_TRUE == client->proxy_enabled)
     {
         if (!client->proxy_host || client->proxy_port <= 0)
