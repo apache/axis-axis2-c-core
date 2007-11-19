@@ -28,6 +28,7 @@
 #include <ctype.h>
 #include <axiom_xml_reader.h>
 #include <axutil_version.h>
+#include <axutil_file_handler.h>
 
 axutil_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;

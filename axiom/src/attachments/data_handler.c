@@ -160,6 +160,7 @@ axiom_data_handler_read_from(
         int temp_byte_stream_size = 0;
         int read_stream_size = 0;
         int count = 0;
+		struct stat stat_p;
 
         f = fopen(data_handler->file_name, "rb");
         if (!f)
@@ -170,7 +171,6 @@ axiom_data_handler_read_from(
             return AXIS2_FAILURE;
         }
 
-        struct stat stat_p;
         if (-1 == stat(data_handler->file_name, &stat_p))
         {
 	    fclose(f);
