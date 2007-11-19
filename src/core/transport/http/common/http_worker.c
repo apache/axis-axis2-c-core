@@ -287,6 +287,7 @@ axis2_http_worker_process_request(
                 body_string = axis2_http_transport_utils_get_services_html(env,
                                                                            conf_ctx);
             }
+
             if (body_string)
             {
                 axis2_char_t str_len[10];
@@ -299,7 +300,7 @@ axis2_http_worker_process_request(
                 axis2_http_simple_response_set_header(response, env, cont_len);
                 cont_type = axis2_http_header_create(env,
                                                      AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                                                     AXIS2_HTTP_HEADER_APPLICATION_XML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
@@ -506,14 +507,17 @@ axis2_http_worker_set_response_headers(
                                                                    env),
                                        AXIS2_HTTP_HEADER_CONNECTION_KEEPALIVE))
             {
-                axis2_http_header_t *header = axis2_http_header_create(env,
-                                                                       AXIS2_HTTP_HEADER_CONNECTION,
-                                                                       AXIS2_HTTP_HEADER_CONNECTION_KEEPALIVE);
+                axis2_http_header_t *header = axis2_http_header_create(
+                    env,
+                    AXIS2_HTTP_HEADER_CONNECTION,
+                    AXIS2_HTTP_HEADER_CONNECTION_KEEPALIVE);
+
                 axis2_http_simple_response_set_header(simple_response, env,
                                                       header);
                 axis2_simple_http_svr_conn_set_keep_alive(svr_conn, env,
                                                           AXIS2_TRUE);
             }
+
             if (0 == axutil_strcasecmp(axis2_http_header_get_value(conn_header,
                                                                    env),
                                        AXIS2_HTTP_HEADER_CONNECTION_CLOSE))

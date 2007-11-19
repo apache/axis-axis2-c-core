@@ -904,9 +904,12 @@ axis2_http_transport_utils_get_services_static_wsdl(
     AXIS2_PARAM_CHECK(env->error, request_url, NULL);
 
     url_tok = axutil_parse_request_url_for_svc_and_op(env, request_url);
-    len = strlen(url_tok[0]);
-    url_tok[0][len - 5] = 0;
-    svc_name = url_tok[0];
+    if (url_tok[0])
+    {
+        len = strlen(url_tok[0]);
+        url_tok[0][len - 5] = 0;
+        svc_name = url_tok[0];
+    }
 
     conf = axis2_conf_ctx_get_conf(conf_ctx, env);
     services_map = axis2_conf_get_all_svcs(conf, env);
