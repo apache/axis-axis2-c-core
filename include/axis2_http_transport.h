@@ -296,6 +296,11 @@ extern "C"
 #define AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML "text/html"
 
     /**
+     * HEADER APPLICATION_XML
+     */
+#define AXIS2_HTTP_HEADER_APPLICATION_XML "application/xml"
+
+    /**
      * HEADER_ACCEPT_TEXT_XML
      */
 #define AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML "text/xml"

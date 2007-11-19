@@ -281,11 +281,21 @@ axis2_http_worker_process_request(
                     axis2_http_transport_utils_get_services_static_wsdl(env,
                                                                         conf_ctx,
                                                                         url_external_form);
+                cont_type = axis2_http_header_create(env,
+                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                                     AXIS2_HTTP_HEADER_APPLICATION_XML);
+                axis2_http_simple_response_set_header(response, env, cont_type);
+
             }
             else
             {
                 body_string = axis2_http_transport_utils_get_services_html(env,
                                                                            conf_ctx);
+                cont_type = axis2_http_header_create(env,
+                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                axis2_http_simple_response_set_header(response, env, cont_type);
+
             }
 
             if (body_string)
@@ -298,10 +308,6 @@ axis2_http_worker_process_request(
                                                     AXIS2_HTTP_HEADER_CONTENT_LENGTH,
                                                     str_len);
                 axis2_http_simple_response_set_header(response, env, cont_len);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_APPLICATION_XML);
-                axis2_http_simple_response_set_header(response, env, cont_type);
             }
             axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
                                                    simple_request, response, 0);
