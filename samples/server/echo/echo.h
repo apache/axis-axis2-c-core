@@ -25,13 +25,6 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 
-
-/* USER_ERROR_NO_# defined wrt USER_ERROR_CODES_START*/
-#define USER_ERROR_NO_1 (USER_ERROR_CODES_START + 1) 
-#define USER_ERROR_NO_2 (USER_ERROR_CODES_START + 2)
-#define USER_ERROR_NO_3 (USER_ERROR_CODES_START + 3)
-#define USER_ERROR_NO_4 (USER_ERROR_CODES_START + 4)
-
 axiom_node_t *axis2_echo_echo(
     const axutil_env_t * env,
     axiom_node_t * node);

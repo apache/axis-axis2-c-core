@@ -21,14 +21,9 @@
 #include <axis2_msg_ctx.h>
 #include <stdio.h>
 
-
 int AXIS2_CALL echo_free(
     axis2_svc_skeleton_t * svc_skeleton,
     const axutil_env_t * env);
-
-extern axis2_char_t *axutil_error_messages[AXUTIL_ERROR_MAX];
-
-void static user_defined_errors_init ();
 
 /*
  * This method invokes the right service method
@@ -78,7 +73,6 @@ echo_init(
     const axutil_env_t * env)
 {
     /* Any initialization stuff of echo service should go here */
-	
     return AXIS2_SUCCESS;
 }
 
@@ -98,7 +92,7 @@ echo_invoke(
      * To see how to deal with multiple impl methods, have a look at the
      * math sample.
      */
-	user_defined_errors_init ();
+
     return axis2_echo_echo(env, node);
 }
 
@@ -172,17 +166,4 @@ axis2_remove_instance(
         status = AXIS2_SVC_SKELETON_FREE(inst, env);
     }
     return status;
-}
-
-void 
-user_defined_errors_init ()
-{
-	/*
-	 * USER_ERROR_NO_1, USER_ERROR_2, USER_ERROR_NO_3 in echo.h
-	 */
-	 
-	axutil_error_messages[USER_ERROR_NO_1] = "Invalid payload; echoString node is NULL";
-	axutil_error_messages[USER_ERROR_NO_2] = "Invalid payload; text node is NULL";
-	axutil_error_messages[USER_ERROR_NO_3] = "Invalid payload; text to be echoed is NULL";
-	axutil_error_messages[USER_ERROR_NO_4] = "Invalid payload; invalid XML in request";
 }

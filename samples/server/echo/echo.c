@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,6 +23,10 @@ axiom_node_t *build_om_programatically(
     const axutil_env_t * env,
     axis2_char_t * text);
 
+void set_custom_error(
+    const axutil_env_t * env,
+    axis2_char_t * error_message);
+
 axiom_node_t *
 axis2_echo_echo(
     const axutil_env_t * env,
@@ -40,24 +45,21 @@ axis2_echo_echo(
      */
     if (!node)                  /* 'echoString' node */
     {
-		AXIS2_ERROR_SET (env->error, USER_ERROR_NO_1, AXIS2_FAILURE);
-		AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "%s", AXIS2_ERROR_GET_MESSAGE (env->error));
+        set_custom_error(env, "Invalid payload; echoString node is NULL");
         return NULL;
     }
 
     text_parent_node = axiom_node_get_first_element(node, env);
     if (!text_parent_node)
     {
-		AXIS2_ERROR_SET (env->error, USER_ERROR_NO_2, AXIS2_FAILURE);
-		AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "%s", AXIS2_ERROR_GET_MESSAGE (env->error));
+        set_custom_error(env, "Invalid payload; text node is NULL");
         return NULL;
     }
 
     text_node = axiom_node_get_first_child(text_parent_node, env);
     if (!text_node)             /* actual text to echo */
     {
-      	AXIS2_ERROR_SET (env->error, USER_ERROR_NO_3, AXIS2_FAILURE);
-		AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "%s", AXIS2_ERROR_GET_MESSAGE (env->error));
+        set_custom_error(env, "Invalid payload; text to be echoed is NULL");
         return NULL;
     }
 
@@ -74,12 +76,10 @@ axis2_echo_echo(
     }
     else
     {
-        AXIS2_ERROR_SET (env->error, USER_ERROR_NO_4, AXIS2_FAILURE);
-		AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "%s", AXIS2_ERROR_GET_MESSAGE (env->error));
+        set_custom_error(env, "Invalid payload; invalid XML in request");
         return NULL;
     }
-	
-	
+
     return ret_node;
 }
 
@@ -106,3 +106,11 @@ build_om_programatically(
     return echo_om_node;
 }
 
+void
+set_custom_error(
+    const axutil_env_t * env,
+    axis2_char_t * error_message)
+{
+    axutil_error_set_error_message(env->error, error_message);
+    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_LAST + 1, AXIS2_FAILURE);
+}
