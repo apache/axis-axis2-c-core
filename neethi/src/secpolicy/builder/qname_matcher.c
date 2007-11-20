@@ -39,7 +39,7 @@ rp_match_secpolicy_qname(
     }
     else
     {
-        qname = axutil_qname_create(env, local_name, RP_SP_NS, RP_SP_PREFIX);
+        qname = axutil_qname_create(env, local_name, RP_SP_NS, NULL/*RP_SP_PREFIX*/);
         if (!qname)
             return AXIS2_FALSE;
     }
@@ -70,11 +70,6 @@ rp_match_policy_qname(
 
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
 
-    qname =
-        axutil_qname_create(env, local_name, RP_POLICY_NS, RP_POLICY_PREFIX);
-    if (!qname)
-        return AXIS2_FALSE;
-
     node_qname = axiom_element_get_qname(element, env, node);
 
     if (!node_qname)
@@ -85,7 +80,7 @@ rp_match_policy_qname(
     {
         qname =
             axutil_qname_create(env, local_name, RP_POLICY_NS,
-                                RP_POLICY_PREFIX);
+                                NULL/*RP_POLICY_PREFIX*/);
         if (!qname)
             return AXIS2_FALSE;
     }

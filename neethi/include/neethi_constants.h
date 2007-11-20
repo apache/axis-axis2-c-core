@@ -25,6 +25,7 @@
 #define NEETHI_REFERENCE "PolicyReference"
 #define NEETHI_URI "URI"
 #define NEETHI_NAMESPACE "http://schemas.xmlsoap.org/ws/2004/09/policy"
+#define NEETHI_POLICY_15_NAMESPACE "http://www.w3.org/ns/ws-policy"
 #define NEETHI_PREFIX "wsp"
 #define NEETHI_WSU_NS "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
 #define NEETHI_ID "Id"

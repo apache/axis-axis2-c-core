@@ -283,7 +283,7 @@ process_operation_element(
 
         qname =
             axutil_qname_create(env, NEETHI_ID, NEETHI_WSU_NS,
-                                NEETHI_WSU_NS_PREFIX);
+                                NULL/*NEETHI_WSU_NS_PREFIX*/);
         if (!qname)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
