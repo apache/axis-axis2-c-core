@@ -17,8 +17,8 @@
 #   AXIS2_BINDIR
 #	|
 #	|- bin         - server and other executables
-#       |- samples - samples
-#       |- logs	
+#       |- samples     - samples
+#       |- logs	       - log file location
 #	|- lib	       - library modules
 #	|- services    - deployed services will be hear
 #	|- modules     - deployed modules will be hear
@@ -31,7 +31,7 @@ AUTOCONF = configure.in
 !include $(AUTOCONF)
 
 # directory structure of install directory
-RELEASE_VER = 1.1.0
+RELEASE_VER = 1.2.0
 
 AXIS2_RELEASE_DIR=axis2c-bin-$(RELEASE_VER)-win32
 
@@ -194,7 +194,6 @@ deploy:
 	@if not exist $(AXIS2_MODULES)\addressing mkdir $(AXIS2_MODULES)\addressing
 			
 	@if not exist $(AXIS2_INTDIR) mkdir $(AXIS2_INTDIR)
-	@if not exist $(AXIS2_MODULES)\logging mkdir $(AXIS2_MODULES)\logging
 	@if not exist $(AXIS2_INTDIR_SAMPLES) mkdir $(AXIS2_INTDIR_SAMPLES)
 	
 #clean 
@@ -810,6 +809,9 @@ axis2_IIS_module : $(AXIS2_LIBS)\mod_axis2_IIS.dll
 axis2_core: axis2_util axis2_parser axiom neethi axis2_engine axis2_http_sender \
 	axis2_http_receiver axis2_mod_addr simple_axis2_http_server
 
+axis2_core_without_server:  axis2_util axis2_parser axiom neethi axis2_engine axis2_http_sender \
+	axis2_http_receiver axis2_mod_addr
+
 axis2_core_guththila: axis2_util guththila axis2_parser_with_guththila axiom neethi axis2_engine \
 	axis2_http_sender axis2_http_receiver axis2_mod_addr simple_axis2_http_server
 
@@ -822,7 +824,10 @@ MOD_LOG_INTDIR = $(AXIS2_INTDIR)\mod_log
 
 MOD_LOG_OBJS = $(MOD_LOG_INTDIR)\*.obj
 
+
+
 $(MOD_LOG_INTDIR) :
+	@if not exist $(AXIS2_MDOULES)\logging mkdir $(AXIS2_MODULES)\logging
 	@if not exist $(MOD_LOG_INTDIR) mkdir $(MOD_LOG_INTDIR)
 
 
@@ -1374,4 +1379,6 @@ all: $(PARSER)
 install: all copy_extra
 	
 dist: install axis2_apache_module axis2_IIS_module tcpmon copy_samples copy_vc_projects clean_manifest mv_dist
+
+dist_as_lib : deploy axis2_core_without_server copy_include clean_manifest mv_dist
 
