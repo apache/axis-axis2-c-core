@@ -1,4 +1,3 @@
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
 * contributor license agreements.  See the NOTICE file distributed with
@@ -1509,6 +1508,31 @@ extern "C"
         axis2_msg_ctx_t * msg_ctx,
         const axutil_env_t * env,
         axutil_string_t * str);
+
+    /**
+     * Gets the integer value indicating http status_code.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return status value
+     */
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_msg_ctx_get_status_code(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
+    /**
+     * Sets the int value indicating http status code
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @param status code, of the http response
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_status_code(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env,
+        const int status_code);
+
 
     AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
 
