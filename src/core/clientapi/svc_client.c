@@ -637,6 +637,11 @@ axis2_svc_client_send_receive_with_op_qname(
     axis2_char_t *action_str = NULL;
     axis2_bool_t qname_free_flag = AXIS2_FALSE;
 
+    axis2_msg_ctx_t *res_msg_ctx = NULL;
+    axis2_msg_ctx_t *msg_ctx = NULL;
+
+
+
     AXIS2_ENV_CHECK(env, NULL);
 
     svc_client->last_response_soap_envelope = NULL;
@@ -768,9 +773,6 @@ axis2_svc_client_send_receive_with_op_qname(
     }
     else
     {
-        axis2_msg_ctx_t *res_msg_ctx = NULL;
-        axis2_msg_ctx_t *msg_ctx = NULL;
-
         msg_ctx = axis2_msg_ctx_create(env,
                                        axis2_svc_ctx_get_conf_ctx(svc_client->
                                                                   svc_ctx, env),
@@ -799,7 +801,8 @@ axis2_svc_client_send_receive_with_op_qname(
         }
         else
         {
-            axis2_op_client_add_msg_ctx(svc_client->op_client, env, res_msg_ctx);   /* set in msg_ctx to be NULL to reset */
+            axis2_op_client_add_msg_ctx(svc_client->op_client, env, res_msg_ctx);   
+            /* set in msg_ctx to be NULL to reset */
         }
     }
 
@@ -836,8 +839,23 @@ axis2_svc_client_send_receive_with_op_qname(
         return NULL;
     }
 
-    svc_client->last_response_has_fault =
-        axiom_soap_body_has_fault(soap_body, env);
+    if (axis2_msg_ctx_get_doing_rest (res_msg_ctx, env))
+    {
+        if (axis2_msg_ctx_get_status_code (res_msg_ctx, env) ==
+            AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_VAL)
+        {
+            svc_client->last_response_has_fault = AXIS2_TRUE;
+        }
+        else
+        {
+            svc_client->last_response_has_fault = AXIS2_FALSE;
+        }
+    }
+    else
+    {
+        svc_client->last_response_has_fault =
+            axiom_soap_body_has_fault(soap_body, env);
+    }
 
     if (AXIOM_SOAP11 ==
         axiom_soap_envelope_get_soap_version(soap_envelope, env))

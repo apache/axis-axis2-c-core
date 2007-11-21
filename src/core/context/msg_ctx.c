@@ -116,6 +116,10 @@ struct axis2_msg_ctx
     /** Rest through HTTP POST? */
     axis2_bool_t do_rest_through_post;
 
+    /* http status code */
+
+    unsigned int status_code;
+
     /** use SOAP 1.1? */
     axis2_bool_t is_soap_11;
 
@@ -2034,5 +2038,25 @@ axis2_msg_ctx_set_transport_url(
         return AXIS2_FAILURE;
     }
 
+    return AXIS2_SUCCESS;
+}
+
+
+AXIS2_EXTERN int AXIS2_CALL
+axis2_msg_ctx_get_status_code(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    return msg_ctx->status_code;
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_status_code(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env,
+    const int status_code)
+{
+    msg_ctx->status_code = status_code;
     return AXIS2_SUCCESS;
 }
