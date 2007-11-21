@@ -282,8 +282,6 @@ axis2_op_add_param(
     param_name = axutil_param_get_name(param, env);
     if (AXIS2_TRUE == axis2_op_is_param_locked(op, env, param_name))
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE);
         AXIS2_ERROR_SET(env->error,
             AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -714,8 +712,6 @@ axis2_op_get_axis_specific_mep_const(
 
     if (temp == AXIS2_MEP_CONSTANT_INVALID)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT);
         AXIS2_ERROR_SET(env->error,
             AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT, AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -935,8 +931,6 @@ axis2_op_find_op_ctx(
         op_ctx = axis2_conf_ctx_get_op_ctx(conf_ctx, env, value);
         if (!op_ctx)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                AXIS2_ERROR_CANNOT_CORRELATE_MSG);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG,
                 AXIS2_FAILURE);
             return NULL;
@@ -981,14 +975,13 @@ axis2_op_find_existing_op_ctx(
     else
     {
         axis2_conf_ctx_t *conf_ctx = NULL;
-        axis2_char_t *value = NULL;
+        const axis2_char_t *value = NULL;
         conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
+        value = axis2_relates_to_get_value(relates_to, env);
         op_ctx = axis2_conf_ctx_get_op_ctx(conf_ctx, env, value);
 
         if (!op_ctx)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                AXIS2_ERROR_CANNOT_CORRELATE_MSG);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG,
                 AXIS2_FAILURE);
             return NULL;
@@ -1051,7 +1044,6 @@ axis2_op_add_msg_ctx_in_only(
     axis2_msg_ctx_t * msg_ctx,
     axis2_op_ctx_t * op_ctx)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_ctx, AXIS2_FAILURE);
 
@@ -1064,8 +1056,6 @@ axis2_op_add_msg_ctx_in_only(
     }
     else
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            AXIS2_ERROR_INVALID_MESSAGE_ADDITION);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -1081,7 +1071,6 @@ axis2_op_add_msg_ctx_out_only(
     axis2_msg_ctx_t * msg_ctx,
     axis2_op_ctx_t * op_ctx)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_ctx, AXIS2_FAILURE);
 
@@ -1094,8 +1083,6 @@ axis2_op_add_msg_ctx_out_only(
     }
     else
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            AXIS2_ERROR_INVALID_MESSAGE_ADDITION);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -1115,7 +1102,6 @@ axis2_op_add_msg_ctx_in_out(
     axis2_msg_ctx_t *in_msg_ctx = NULL;
     axis2_msg_ctx_t *out_msg_ctx = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_ctx, AXIS2_FAILURE);
 
@@ -1125,8 +1111,6 @@ axis2_op_add_msg_ctx_in_out(
 
     if (in_msg_ctx && NULL != out_msg_ctx)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            AXIS2_ERROR_INVALID_MESSAGE_ADDITION);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -1154,7 +1138,6 @@ axis2_op_add_msg_ctx_out_in(
     axis2_msg_ctx_t *in_msg_ctx = NULL;
     axis2_msg_ctx_t *out_msg_ctx = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_ctx, AXIS2_FAILURE);
 
@@ -1163,8 +1146,6 @@ axis2_op_add_msg_ctx_out_in(
     out_msg_ctx = mep[AXIS2_WSDL_MESSAGE_LABEL_OUT];
     if (in_msg_ctx && NULL != out_msg_ctx)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            AXIS2_ERROR_INVALID_MESSAGE_ADDITION);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
