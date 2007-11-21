@@ -154,9 +154,11 @@ axis2_http_worker_process_request(
                     http_version);
 
     response = axis2_http_simple_response_create_default(env);
-    encoding_header = axis2_http_simple_request_get_first_header(simple_request,
-                                                                 env,
-                                                                 AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
+    encoding_header = axis2_http_simple_request_get_first_header(
+        simple_request,
+        env,
+        AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
+
     if (encoding_header)
     {
         encoding_header_value = axis2_http_header_get_value(encoding_header,

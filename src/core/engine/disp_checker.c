@@ -173,6 +173,9 @@ axis2_disp_checker_invoke(
     int soap_version = AXIOM_SOAP12;
     axis2_char_t *fault_code = NULL;
 
+    axis2_char_t exception[1024];
+    axis2_char_t *wsa_action;
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -209,7 +212,9 @@ axis2_disp_checker_invoke(
     endpoint_ref = axis2_msg_ctx_get_to(msg_ctx, env);
 
     if (endpoint_ref)
+    {
         address = axis2_endpoint_ref_get_address(endpoint_ref, env);
+    }
 
     svc = axis2_msg_ctx_get_svc(msg_ctx, env);
     if (!svc)
@@ -239,6 +244,13 @@ axis2_disp_checker_invoke(
             axiom_soap_fault_create_default_fault(env, soap_body, fault_code,
                                                   "Service Not Found",
                                                   soap_version);
+
+        wsa_action = (axis2_char_t *)axis2_msg_ctx_get_wsa_action (msg_ctx, 
+                                                                   env);
+        sprintf (exception, "Service Not Found, Endpoint referance address is %s and wsa\
+ actions is %s", address, wsa_action);
+
+        axiom_soap_fault_set_exception (soap_fault, env, exception);
         axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, soap_envelope);
         return AXIS2_FAILURE;
     }
@@ -262,6 +274,8 @@ axis2_disp_checker_invoke(
                 AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
                 AXIOM_SOAP12_SOAP_FAULT_VALUE_RECEIVER;
         }
+
+
         soap_envelope =
             axiom_soap_envelope_create_default_soap_envelope(env, soap_version);
         soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
@@ -269,6 +283,13 @@ axis2_disp_checker_invoke(
             axiom_soap_fault_create_default_fault(env, soap_body, fault_code,
                                                   "Operation Not Found",
                                                   soap_version);
+
+        wsa_action = (axis2_char_t *)axis2_msg_ctx_get_wsa_action (msg_ctx, 
+                                                                   env);
+        sprintf (exception, "Operation Not Found, Endpoint referance address is %s and wsa\
+ actions is %s", address, wsa_action);
+
+        axiom_soap_fault_set_exception (soap_fault, env, exception);
         axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, soap_envelope);
         return AXIS2_FAILURE;
     }

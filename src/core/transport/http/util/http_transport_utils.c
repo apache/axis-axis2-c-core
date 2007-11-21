@@ -242,9 +242,11 @@ axis2_http_transport_utils_process_http_post_request(
     if (headers)
     {
         axis2_http_header_t *encoding_header = NULL;
-        encoding_header = (axis2_http_header_t *) axutil_hash_get(headers,
-                                                                  AXIS2_HTTP_HEADER_TRANSFER_ENCODING,
-                                                                  AXIS2_HASH_KEY_STRING);
+        encoding_header = (axis2_http_header_t *) axutil_hash_get(
+            headers,
+            AXIS2_HTTP_HEADER_TRANSFER_ENCODING,
+            AXIS2_HASH_KEY_STRING);
+
         if (encoding_header)
         {
             axis2_char_t *encoding_value = NULL;

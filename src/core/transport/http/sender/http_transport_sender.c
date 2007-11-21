@@ -28,6 +28,7 @@
 #include <axis2_http_sender.h>
 #include <axiom_soap_body.h>
 #include <axutil_types.h>
+#include <axiom_soap_fault_detail.h>
 
 /**
  * HTTP Transport Sender struct impl
@@ -315,8 +316,11 @@ axis2_http_transport_sender_invoke(
             if (AXIS2_TRUE == axis2_msg_ctx_get_doing_rest(msg_ctx, env))
             {
                 axiom_node_t *body_node = NULL;
+                axis2_bool_t fault = AXIS2_FALSE;
+                axiom_soap_fault_t *soap_fault;
                 axiom_soap_body_t *soap_body =
                     axiom_soap_envelope_get_body(soap_data_out, env);
+                axiom_soap_fault_detail_t *soap_fault_detial;
 
                 if (!soap_body)
                 {
@@ -330,29 +334,75 @@ axis2_http_transport_sender_invoke(
                     xml_writer = NULL;
                     return AXIS2_FAILURE;
                 }
-                body_node = axiom_soap_body_get_base_node(soap_body, env);
-                if (!body_node)
+                
+                fault = axiom_soap_body_has_fault (soap_body, env);
+                
+                if (fault == AXIS2_TRUE)
                 {
-                    axiom_output_free(om_output, env);
-                    om_output = NULL;
-                    xml_writer = NULL;
-                    return AXIS2_FAILURE;
+                    soap_fault = axiom_soap_body_get_fault (soap_body, env);
+
+                    if (!soap_fault)
+                    {
+                        
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
+                                        "Rest fault has occure, error not available");
+                        axiom_output_free(om_output, env);
+                        om_output = NULL;
+                        xml_writer = NULL;
+                        return AXIS2_FAILURE;
+                    }
+
+                    soap_fault_detial = axiom_soap_fault_get_detail (soap_fault, env);
+
+                    if (!soap_fault_detial)
+                    {
+                        axiom_output_free(om_output, env);
+                        om_output = NULL;
+                        xml_writer = NULL;
+                        return AXIS2_FAILURE;
+                    }
+
+                    body_node = axiom_soap_fault_detail_get_base_node(soap_fault_detial, env);
+
+                    if (!body_node)
+                    {
+                        axiom_output_free(om_output, env);
+                        om_output = NULL;
+                        xml_writer = NULL;
+                        return AXIS2_FAILURE;
+                    }
+
                 }
+                else
+                {
+
+                    body_node = axiom_soap_body_get_base_node(soap_body, env);
+                    if (!body_node)
+                    {
+                        axiom_output_free(om_output, env);
+                        om_output = NULL;
+                        xml_writer = NULL;
+                        return AXIS2_FAILURE;
+                    }
+                }
+             
                 data_out = axiom_node_get_first_element(body_node, env);
-                if (!data_out || axiom_node_get_node_type(data_out, env)
-                    != AXIOM_ELEMENT)
+
+                if (!data_out || 
+                    axiom_node_get_node_type(data_out, env)!= AXIOM_ELEMENT) 
                 {
                     axiom_output_free(om_output, env);
                     om_output = NULL;
                     xml_writer = NULL;
                     return AXIS2_FAILURE;
                 }
+
                 axiom_node_serialize(data_out, env, om_output);
                 buffer =
                     (axis2_char_t *) axiom_xml_writer_get_xml(xml_writer, env);
                 buffer_size = axiom_xml_writer_get_xml_size(xml_writer, env);
-
                 axutil_stream_write(out_stream, env, buffer, buffer_size);
+                
             }
             else
             {

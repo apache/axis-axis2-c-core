@@ -407,39 +407,6 @@ axis2_engine_send_fault(
         }
     }
 
-    /*if (!( axis2_msg_ctx_is_paused(msg_ctx, env)))
-       {
-       axis2_conf_ctx_t *conf_ctx = NULL;
-       axis2_transport_sender_t *transport_sender = NULL;
-       axis2_transport_out_desc_t *transport_out  = NULL;
-       conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
-       if (conf_ctx)
-       {
-       axis2_conf_t *conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
-       if (conf)
-       {
-       axutil_array_list_t *phases =  
-       axis2_conf_get_out_fault_flow(conf, env);
-       if (phases)
-       {
-       axis2_engine_invoke_phases(engine, env, phases, msg_ctx);
-       }
-       }
-       }
-
-       transport_out =  axis2_msg_ctx_get_transport_out_desc(msg_ctx, env);
-
-       if (transport_out)
-       {
-       transport_sender = 
-       axis2_transport_out_desc_get_sender(transport_out, env);
-       }
-
-       if (transport_sender)
-       {
-       AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx);
-       }
-       } */
     return AXIS2_SUCCESS;
 }
 
@@ -525,6 +492,7 @@ axis2_engine_create_fault_msg_ctx(
     axis2_relates_to_t *relates_to = NULL;
     axis2_char_t *msg_uuid = NULL;
     axis2_msg_info_headers_t *msg_info_headers = NULL;
+    axis2_bool_t doing_rest = AXIS2_FALSE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, processing_context, AXIS2_FAILURE);
@@ -655,6 +623,9 @@ axis2_engine_create_fault_msg_ctx(
             return NULL;
         }
     }
+
+    doing_rest = axis2_msg_ctx_get_doing_rest (processing_context, env);
+    axis2_msg_ctx_set_doing_rest (fault_ctx, env, doing_rest);
 
     axis2_msg_ctx_set_soap_envelope(fault_ctx, env, envelope);
     axis2_msg_ctx_set_http_out_transport_info(fault_ctx, env,
