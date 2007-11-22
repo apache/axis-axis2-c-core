@@ -148,6 +148,7 @@ axis2_stub_set_endpoint_ref(
     return AXIS2_SUCCESS;
 }
 
+
 axis2_status_t AXIS2_CALL
 axis2_stub_set_endpoint_uri(
     axis2_stub_t * stub,
@@ -211,6 +212,8 @@ axis2_stub_get_svc_ctx_id(
     const axis2_svc_ctx_t *svc_ctx = NULL;
     const axis2_char_t *svc_ctx_id = NULL;
 
+    AXIS2_PARAM_CHECK (env->error, stub, AXIS2_FAILURE);
+
     svc_ctx = axis2_svc_client_get_svc_ctx(stub->svc_client, env);
     svc_ctx_id = axis2_svc_ctx_get_svc_id(svc_ctx, env);
     return svc_ctx_id;
@@ -221,6 +224,7 @@ axis2_stub_get_svc_client(
     const axis2_stub_t * stub,
     const axutil_env_t * env)
 {
+    AXIS2_PARAM_CHECK (env->error, stub, AXIS2_FAILURE);
     return stub->svc_client;
 }
 

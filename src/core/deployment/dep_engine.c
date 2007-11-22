@@ -829,6 +829,7 @@ axis2_dep_engine_load_client(
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
+
         if (client_home && 0 != axutil_strcmp("", client_home))
         {
             status =
@@ -837,6 +838,13 @@ axis2_dep_engine_load_client(
             {
                 is_repos_exist = AXIS2_TRUE;
             }
+            else
+            {
+                AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
+                                 "axis2.xml  is not available in client repo %s ", client_home);
+                AXIS2_ERROR_SET (env->error, AXIS2_ERROR_CONFIG_NOT_FOUND, AXIS2_FAILURE);
+                return NULL;
+            }
         }
         else
         {
@@ -844,7 +852,7 @@ axis2_dep_engine_load_client(
                 axutil_strdup(env, AXIS2_CONFIGURATION_RESOURCE);
             if (!dep_engine->conf_name)
             {
-                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_REPO_CAN_NOT_BE_NULL, AXIS2_FAILURE);
                 return NULL;
             }
         }
@@ -949,6 +957,7 @@ axis2_dep_engine_check_client_home(
     path_l = axutil_stracat(env, client_home, AXIS2_PATH_SEP_STR);
     dep_engine->conf_name = axutil_stracat(env, path_l, AXIS2_SERVER_XML_FILE);
     AXIS2_FREE(env->allocator, path_l);
+
     if (!dep_engine->conf_name)
     {
         dep_engine->conf_name =
@@ -959,6 +968,7 @@ axis2_dep_engine_check_client_home(
                             AXIS2_FAILURE) return AXIS2_FAILURE;
         }
     }
+
     status = axutil_file_handler_access(dep_engine->conf_name, AXIS2_F_OK);
     if (AXIS2_SUCCESS != status)
     {
