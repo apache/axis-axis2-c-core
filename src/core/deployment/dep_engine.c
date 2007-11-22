@@ -672,7 +672,6 @@ axis2_dep_engine_load(
 {
     axis2_status_t status = AXIS2_FAILURE;
     axutil_array_list_t *out_fault_phases = NULL;
-    axutil_array_list_t *new_out_fault_phases = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -777,13 +776,10 @@ axis2_dep_engine_load(
 	
     out_fault_phases =
         axis2_phases_info_get_op_out_faultphases(dep_engine->phases_info, env);
-    new_out_fault_phases = axis2_phases_info_copy_flow(env, out_fault_phases);
     if (out_fault_phases)
     {
-        axutil_array_list_free(out_fault_phases, env);
+        axis2_conf_set_out_fault_phases(dep_engine->conf, env, out_fault_phases);
     }
-    axis2_conf_set_out_fault_phases(dep_engine->conf, env,
-                                    new_out_fault_phases);
     if (AXIS2_SUCCESS != status)
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
@@ -794,7 +790,8 @@ axis2_dep_engine_load(
     status = axis2_dep_engine_engage_modules(dep_engine, env);
     if (AXIS2_SUCCESS != status)
     {
-		AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "dep engine failed to engaged_modules");
+		AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+            "[axis2] dep engine failed to engaged_modules");
         axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED,

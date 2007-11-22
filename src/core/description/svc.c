@@ -21,6 +21,7 @@
 #include <axutil_property.h>
 #include <axis2_module.h>
 #include "../deployment/axis2_desc_builder.h"
+#include <axis2_svc_skeleton.h>
 
 struct axis2_svc
 {
@@ -275,8 +276,10 @@ axis2_svc_free(
     axis2_svc_t * svc,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
+    if (svc->impl_class)
+    {
+        AXIS2_SVC_SKELETON_FREE((axis2_svc_skeleton_t *) svc->impl_class, env);
+    }
     if (svc->param_container)
     {
         axutil_param_container_free(svc->param_container, env);
