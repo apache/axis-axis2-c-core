@@ -1,7 +1,9 @@
 datadir=$(prefix)
+scriptsdir=$(prefix)/bin
 logsdir=$(prefix)/logs
 docsdir=$(prefix)/docs/axis2c
 includedir=$(prefix)/include/axis2-1.1
+
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = axis2c.pc
@@ -10,7 +12,7 @@ SUBDIRS = util $(GUTHTHILA_DIR) axiom neethi src $(TESTDIR) include ides tools/t
 include_HEADERS=$(top_builddir)/include/*.h
 data_DATA= samples/server/axis2.xml README \
 	INSTALL CREDITS COPYING NEWS NOTICE 
-
+scripts_DATA=tools/codegen/javatool/WSDL2C.sh
 logs_DATA=
 docs_DATA=
 EXTRA_DIST = CREDITS LICENSE build axis2c_build.sh guththila tools AUTHORS NOTICE 
