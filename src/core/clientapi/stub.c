@@ -57,6 +57,7 @@ axis2_stub_create_with_endpoint_ref_and_client_home(
     AXIS2_PARAM_CHECK(env->error, endpoint_ref, NULL);
 
     stub = (axis2_stub_t *) axis2_stub_create(env);
+
     if (!stub)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

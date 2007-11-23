@@ -838,7 +838,7 @@ axis2_dep_engine_load_client(
             else
             {
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
-                                 "axis2.xml  is not available in client repo %s ", client_home);
+                                 "axis2.xml is not available in client repo %s ", client_home);
                 AXIS2_ERROR_SET (env->error, AXIS2_ERROR_CONFIG_NOT_FOUND, AXIS2_FAILURE);
                 return NULL;
             }

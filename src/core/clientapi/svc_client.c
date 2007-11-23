@@ -338,6 +338,7 @@ axis2_svc_client_get_svc(
     const axis2_svc_client_t * svc_client,
     const axutil_env_t * env)
 {
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     return svc_client->svc;
 }
 
@@ -347,8 +348,7 @@ axis2_svc_client_set_options(
     const axutil_env_t * env,
     const axis2_options_t * options)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     if (svc_client->options)
     {
         axis2_options_free(svc_client->options, env);
@@ -362,6 +362,7 @@ axis2_svc_client_get_options(
     const axis2_svc_client_t * svc_client,
     const axutil_env_t * env)
 {
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     return svc_client->options;
 }
 
@@ -371,7 +372,7 @@ axis2_svc_client_set_override_options(
     const axutil_env_t * env,
     const axis2_options_t * override_options)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
 
     if (svc_client->override_options)
     {
@@ -388,6 +389,7 @@ axis2_svc_client_get_override_options(
     const axis2_svc_client_t * svc_client,
     const axutil_env_t * env)
 {
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     return svc_client->override_options;
 }
 
@@ -400,7 +402,7 @@ axis2_svc_client_engage_module(
     axis2_module_desc_t *module = NULL;
     axutil_qname_t *mod_qname = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FAILURE);
 
     mod_qname = axutil_qname_create(env, module_name, NULL, NULL);
@@ -434,7 +436,7 @@ axis2_svc_client_disengage_module(
     axis2_module_desc_t *module = NULL;
     axutil_qname_t *mod_qname = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FAILURE);
 
     mod_qname = axutil_qname_create(env, module_name, NULL, NULL);
@@ -463,8 +465,8 @@ axis2_svc_client_add_header(
     const axutil_env_t * env,
     axiom_node_t * header)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     if (!svc_client->headers)
     {
         svc_client->headers = axutil_array_list_create(env, 0);
@@ -486,7 +488,7 @@ axis2_svc_client_remove_all_headers(
 {
     int i = 0,
         size = 0;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
 
     if (!svc_client->headers)
     {
@@ -521,7 +523,7 @@ axis2_svc_client_send_robust_with_op_qname(
     axis2_status_t status = AXIS2_FAILURE;
     axis2_bool_t qname_free_flag = AXIS2_FALSE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
 
     if (!op_qname)
     {
@@ -561,6 +563,8 @@ axis2_svc_client_send_robust(
     const axutil_env_t * env,
     const axiom_node_t * payload)
 {
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, payload, AXIS2_FAILURE);
     return axis2_svc_client_send_robust_with_op_qname(svc_client, env, NULL,
                                                       payload);
 }
@@ -574,6 +578,11 @@ axis2_svc_client_fire_and_forget_with_op_qname(
 {
     axis2_msg_ctx_t *msg_ctx = NULL;
     axis2_bool_t qname_free_flag = AXIS2_FALSE;
+
+    if (!svc_client)
+    {
+        return;
+    }
 
     if (!env)
     {
@@ -617,6 +626,10 @@ axis2_svc_client_fire_and_forget(
     const axutil_env_t * env,
     const axiom_node_t * payload)
 {
+    if (!svc_client)
+    {
+        return;
+    }
     axis2_svc_client_fire_and_forget_with_op_qname(svc_client, env, NULL,
                                                    payload);
 }
@@ -642,7 +655,7 @@ axis2_svc_client_send_receive_with_op_qname(
 
 
 
-    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
 
     svc_client->last_response_soap_envelope = NULL;
     svc_client->last_response_has_fault = AXIS2_FALSE;
@@ -877,6 +890,7 @@ axis2_svc_client_send_receive(
     const axutil_env_t * env,
     const axiom_node_t * payload)
 {
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     return axis2_svc_client_send_receive_with_op_qname(svc_client, env, NULL,
                                                        payload);
 }
@@ -892,6 +906,11 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
     axis2_msg_ctx_t *msg_ctx = NULL;
     AXIS2_TRANSPORT_ENUMS transport_in_protocol;
     axis2_bool_t qname_free_flag = AXIS2_FALSE;
+    
+    if (!svc_client)
+    {
+        return;
+    }
 
     if (!op_qname)
     {
@@ -955,6 +974,11 @@ axis2_svc_client_send_receive_non_blocking(
     const axiom_node_t * payload,
     axis2_callback_t * callback)
 {
+    if (!svc_client)
+    {
+        return;
+    }
+
     axis2_svc_client_send_receive_non_blocking_with_op_qname(svc_client, env,
                                                              NULL, payload,
                                                              callback);
@@ -968,7 +992,7 @@ axis2_svc_client_create_op_client(
 {
     axis2_op_t *op = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
 
     op = axis2_svc_get_op_with_qname(svc_client->svc, env, op_qname);
 
@@ -1011,7 +1035,7 @@ axis2_svc_client_finalize_invoke(
 {
     AXIS2_TRANSPORT_ENUMS transport_in_protocol;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
 
     transport_in_protocol =
         axis2_options_get_transport_in_protocol(svc_client->options, env);
@@ -1031,8 +1055,6 @@ axis2_svc_client_get_own_endpoint_ref(
     const axutil_env_t * env,
     const axis2_char_t * transport)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return NULL;
 }
 
@@ -1041,8 +1063,6 @@ axis2_svc_client_get_target_endpoint_ref(
     const axis2_svc_client_t * svc_client,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return NULL;
 }
 
@@ -1052,8 +1072,6 @@ axis2_svc_client_set_target_endpoint_ref(
     const axutil_env_t * env,
     axis2_endpoint_ref_t * target_endpoint_ref)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return AXIS2_FAILURE;
 }
 
@@ -1062,8 +1080,7 @@ axis2_svc_client_get_svc_ctx(
     const axis2_svc_client_t * svc_client,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     return svc_client->svc_ctx;
 }
 
@@ -1075,8 +1092,7 @@ axis2_svc_client_init_transports_from_conf_ctx(
     const axis2_char_t * client_home)
 {
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     svc_client->conf_ctx = conf_ctx;
     if (!(svc_client->conf_ctx))
     {
@@ -1105,6 +1121,9 @@ axis2_svc_client_init_data(
     const axutil_env_t * env,
     axis2_svc_client_t * svc_client)
 {
+
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
+
     svc_client->svc = NULL;
 
     svc_client->conf_ctx = NULL;
@@ -1156,7 +1175,7 @@ axis2_svc_client_create_annonymous_svc(
     *op_out_only,
     *op_robust_out_only;
     axis2_phases_info_t *info = NULL;
-
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     tmp_qname = axutil_qname_create(env, AXIS2_ANON_SERVICE, NULL, NULL);
 
     if (!tmp_qname)
@@ -1246,6 +1265,11 @@ axis2_svc_client_free(
     const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
+    
+    if (!svc_client)
+    {
+        return;
+    }
 
     if (svc_client->svc)
     {
@@ -1292,6 +1316,7 @@ axis2_svc_client_fill_soap_envelope(
     const axis2_char_t *soap_version_uri;
     int soap_version;
     axiom_soap_envelope_t *envelope = NULL;
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
 
     soap_version_uri =
         axis2_options_get_soap_version_uri(svc_client->options, env);
@@ -1371,6 +1396,7 @@ axis2_svc_client_get_op_client(
     const axis2_svc_client_t * svc_client,
     const axutil_env_t * env)
 {
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     return svc_client->op_client;
 }
 
@@ -1379,6 +1405,7 @@ axis2_svc_client_get_last_response_soap_envelope(
     const axis2_svc_client_t * svc_client,
     const axutil_env_t * env)
 {
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     return svc_client->last_response_soap_envelope;
 }
 
@@ -1387,6 +1414,7 @@ axis2_svc_client_get_last_response_has_fault(
     const axis2_svc_client_t * svc_client,
     const axutil_env_t * env)
 {
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     return svc_client->last_response_has_fault;
 }
 
@@ -1408,6 +1436,7 @@ axis2_svc_client_set_proxy(
     axiom_attribute_t *host_attr = NULL;
     axiom_attribute_t *port_attr = NULL;
 
+    AXIS2_PARAM_CHECK(env->error, svc_client, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, proxy_host, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, proxy_port, AXIS2_FAILURE);
 
@@ -1455,6 +1484,7 @@ axis2_svc_client_set_policy_from_om(
     axiom_node_t * root_node)
 {
 
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     neethi_policy_t *neethi_policy = NULL;
 
     neethi_policy = neethi_util_create_policy_from_om(env, root_node);
@@ -1480,6 +1510,7 @@ axis2_svc_client_set_policy(
     axis2_desc_t *desc = NULL;
     axis2_policy_include_t *policy_include = NULL;
 
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, policy, AXIS2_FAILURE);
 
     svc = axis2_svc_client_get_svc(svc_client, env);

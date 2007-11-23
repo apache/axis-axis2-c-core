@@ -188,12 +188,22 @@ axis2_op_client_add_msg_ctx(
         *in_msg_ctx = NULL;
     axis2_msg_ctx_t **msg_ctx_map = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, op_client, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, mc, AXIS2_FAILURE);
 
     msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_client->op_ctx, env);
 
-    out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
-    in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
+    if (msg_ctx_map)
+    {
+        out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+        in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
+    }
+    else
+    {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
+                         "msg_ctx_map is NULL, unable to continue");
+        return AXIS2_FAILURE;
+    }
 
     if (op_client->reuse)
     {
@@ -205,12 +215,14 @@ axis2_op_client_add_msg_ctx(
             out_msg_ctx = NULL;
             msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = NULL;
         }
+
         if (in_msg_ctx)
         {
             axis2_msg_ctx_free(in_msg_ctx, env);
             in_msg_ctx = NULL;
             msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;
         }
+
         axis2_op_ctx_set_complete(op_client->op_ctx, env, AXIS2_FALSE);
         op_client->reuse = AXIS2_FALSE;
     }

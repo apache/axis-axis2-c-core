@@ -1434,8 +1434,18 @@ axis2_conf_engage_module(
 			 */
 			axis2_xml = (axis2_char_t *)axis2_conf_get_axis2_xml (conf, env);
 			module_dir_param = axis2_conf_get_param (conf, env, "moduleDir");
-			module_dir = (axis2_char_t *) 
+
+            if (module_dir_param)
+            {
+                module_dir = (axis2_char_t *) 
 					axutil_param_get_value (module_dir_param, env);
+            }
+            else
+            {
+                AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                                 "moduleDir parameter not available in axis2.xml.");
+                return AXIS2_FAILURE;
+            }
 			temp_path1 = axutil_strcat (env, 
                                         module_dir, 
                                         AXIS2_PATH_SEP_STR, NULL);

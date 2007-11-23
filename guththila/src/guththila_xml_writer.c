@@ -274,7 +274,8 @@ guththila_write(
                 temp = temp * 2;
             }
             wr->buffer.buff[wr->buffer.cur_buff] =
-                (guththila_char_t *) AXIS2_MALLOC(env->allocator, sizeof(guththila_char_t) * temp);
+                (guththila_char_t *) AXIS2_MALLOC(env->allocator, 
+                                                  sizeof(guththila_char_t) * temp); 
             wr->buffer.buffs_size[wr->buffer.cur_buff] = temp;
             memcpy(wr->buffer.buff[wr->buffer.cur_buff], buff + remain_len,
                     buff_len - remain_len);
