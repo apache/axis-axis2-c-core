@@ -59,7 +59,7 @@
 #else   /*  */
 #ifndef GUTHTHILA_WRITER_CLEAR_NAMESP 
 #define GUTHTHILA_WRITER_CLEAR_NAMESP(wr, stack_namesp, _no, counter, _namesp, j, _env)		\
-    for (counter = GUTHTHILA_STACK_TOP_INDEX(*stack_namesp); counter >= _no; counter--) { \
+    for (counter = GUTHTHILA_STACK_TOP_INDEX(*stack_namesp); counter >= _no + 1; counter--) { \
     _namesp = (guththila_xml_writer_namesp_t *) guththila_stack_pop(stack_namesp, _env); \
     if (_namesp) { \
         for (j = 0; j < _namesp->no - 1; j++) { \
