@@ -215,7 +215,6 @@ echo_callback_on_complete(
         }
     }
     isComplete = 1;
-    exit(0);
     return status;
 }
 
