@@ -274,8 +274,7 @@ guththila_write(
                 temp = temp * 2;
             }
             wr->buffer.buff[wr->buffer.cur_buff] =
-                (guththila_char_t *) AXIS2_MALLOC(env->allocator, 
-                                                  sizeof(guththila_char_t) * temp); 
+                (guththila_char_t *) AXIS2_MALLOC(env->allocator, sizeof(guththila_char_t) * temp);
             wr->buffer.buffs_size[wr->buffer.cur_buff] = temp;
             memcpy(wr->buffer.buff[wr->buffer.cur_buff], buff + remain_len,
                     buff_len - remain_len);
@@ -1834,7 +1833,18 @@ guththila_write_to_buffer(
     int size,
     const axutil_env_t * env) 
 {
+  if(wr->status == START)
+    {
+      guththila_write(wr,">",1u,env);
+    }
+  if(wr->status == START_EMPTY)
+    {
+      guththila_write(wr,"/>",2u,env);
+      
+   }
+ 
     guththila_write(wr, buff, size, env);
+    wr->status = BEGINING;
     return GUTHTHILA_SUCCESS;
 }
 
