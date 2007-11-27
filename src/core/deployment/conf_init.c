@@ -66,6 +66,7 @@ axis2_build_conf_ctx(
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
             "dep engine load failed. conf value is NULL");
+        axis2_dep_engine_free(dep_engine, env); 
         return NULL;
     }
     axis2_conf_set_dep_engine(conf, env, dep_engine);

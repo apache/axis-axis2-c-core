@@ -192,6 +192,8 @@ extern "C"
         AXIS2_PATH_TO_CONFIG_CAN_NOT_BE_NULL,
         /* Invalid Service */
         AXIS2_ERROR_INVALID_SVC,
+
+
         /*
          * Group - core:description
          */

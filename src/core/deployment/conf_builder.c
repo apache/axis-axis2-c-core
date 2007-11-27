@@ -224,8 +224,12 @@ order and continue with that order");
         status = axis2_conf_set_default_dispatchers(conf_builder->conf, env);
         if (AXIS2_SUCCESS != status)
         {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "conf set default dispatchers failed,\
+unable to continue.");
             return AXIS2_FAILURE;
         }
+
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "no custom dispatching order \
 found continue with default dispatching order");
     }
@@ -239,6 +243,9 @@ found continue with default dispatching order");
         axis2_conf_builder_process_module_refs(conf_builder, env, module_itr);
     if (AXIS2_SUCCESS != status)
     {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "conf builder process module ref failed,\
+unable to continue.");
         return AXIS2_FAILURE;
     }
     /* Proccessing Transport Sennders */
@@ -248,8 +255,15 @@ found continue with default dispatching order");
         axiom_element_get_children_with_qname(conf_element, env,
                                               qtransportsender, conf_node);
     axutil_qname_free(qtransportsender, env);
-    axis2_conf_builder_process_transport_senders(conf_builder, env,
-                                                 trs_senders);
+    status = axis2_conf_builder_process_transport_senders(conf_builder, env,
+                                                          trs_senders);
+    if (status != AXIS2_SUCCESS)
+    {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "conf builder process transport senders failed,\
+ unable to continue");
+        return AXIS2_FAILURE;
+    }
 
     /* Proccessing Transport Recivers */
     qtransportrecv =
@@ -258,7 +272,16 @@ found continue with default dispatching order");
         axiom_element_get_children_with_qname(conf_element, env, qtransportrecv,
                                               conf_node);
     axutil_qname_free(qtransportrecv, env);
-    axis2_conf_builder_process_transport_recvs(conf_builder, env, trs_recvs);
+    status = axis2_conf_builder_process_transport_recvs(conf_builder, env, trs_recvs);
+
+    if (status != AXIS2_SUCCESS)
+    {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "conf builder process transport receivers failed,\
+ unable to continue");
+        return AXIS2_FAILURE;
+    }
+
 
     /* processing Phase orders */
     qphaseorder = axutil_qname_create(env, AXIS2_PHASE_ORDER, NULL, NULL);
@@ -266,7 +289,16 @@ found continue with default dispatching order");
                                                          qphaseorder,
                                                          conf_node);
     axutil_qname_free(qphaseorder, env);
-    axis2_conf_builder_process_phase_orders(conf_builder, env, phase_orders);
+    status = axis2_conf_builder_process_phase_orders(conf_builder, env, phase_orders);
+
+    if (status != AXIS2_SUCCESS)
+    {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "conf builder process phase orders failed,\
+ unable to continue");
+        return AXIS2_FAILURE;
+    }
+
 
     /* Processing default module versions */
     qdefmodver = axutil_qname_create(env, AXIS2_DEFAULT_MODULE_VERSION, NULL,
@@ -283,6 +315,9 @@ found continue with default dispatching order");
                                                                def_mod_versions);
         if (AXIS2_FAILURE == status)
         {
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                             "conf builder process default module versions\
+ failed, unable to continue");
             return AXIS2_FAILURE;
         }
     }
@@ -733,6 +768,8 @@ axis2_conf_builder_process_transport_senders(
                 }
                 else
                 {
+                    AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
+                                     "transport name doesn't match with transport enum");
                     return AXIS2_FAILURE;
                 }
 
@@ -742,6 +779,9 @@ axis2_conf_builder_process_transport_senders(
 
             if (!transport_out)
             {
+                AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
+                                 "transport_out value is null, \
+transport name is %s", name);
                 return AXIS2_FAILURE;
             }
 
@@ -801,9 +841,10 @@ is not presant");
                                                          dll_name,
                                                          NULL);
             }
-            /* AXIS2_LOG_DEBUG (env->log, AXIS2_LOG_SI, "%s", path_qualified_dll_name); */
+
             axutil_dll_desc_set_name(dll_desc, env, path_qualified_dll_name);
             AXIS2_FREE(env->allocator, path_qualified_dll_name);
+
             axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
             axutil_param_set_value(impl_info_param, env, dll_desc);
             axutil_param_set_value_free(impl_info_param, env,
