@@ -190,7 +190,8 @@ axis2_build_client_conf_ctx(
 	if (status == AXIS2_SUCCESS)
 	{
 		len = strlen (axis2_home);
-		if (!strcmp ((axis2_home + (len - 9)), "axis2.xml"))
+		if ((len >= 9) && 
+            !strcmp ((axis2_home + (len - 9)), "axis2.xml"))
 		{
             dep_engine = axis2_dep_engine_create_with_axis2_xml (env, 
                                                                  axis2_home);

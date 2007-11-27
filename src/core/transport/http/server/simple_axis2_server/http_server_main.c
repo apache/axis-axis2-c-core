@@ -189,7 +189,8 @@ main(
 	if (status == AXIS2_SUCCESS)
 	{
 		len = strlen (repo_path);
-		if (!strcmp ((repo_path + (len - 9)), "axis2.xml"))
+		if ((len >= 9) &&
+            !strcmp ((repo_path + (len - 9)), "axis2.xml"))
 		{
 			file_flag = 1;
 		}

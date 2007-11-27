@@ -373,7 +373,6 @@ axis2_svc_client_set_override_options(
     const axis2_options_t * override_options)
 {
     AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
-
     if (svc_client->override_options)
     {
         axis2_options_free(svc_client->override_options, env);
@@ -486,8 +485,9 @@ axis2_svc_client_remove_all_headers(
     axis2_svc_client_t * svc_client,
     const axutil_env_t * env)
 {
-    int i = 0,
-        size = 0;
+    int i = 0;
+    int size = 0;
+
     AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
 
     if (!svc_client->headers)
@@ -652,8 +652,6 @@ axis2_svc_client_send_receive_with_op_qname(
 
     axis2_msg_ctx_t *res_msg_ctx = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
-
-
 
     AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
 
@@ -1483,10 +1481,9 @@ axis2_svc_client_set_policy_from_om(
     const axutil_env_t * env,
     axiom_node_t * root_node)
 {
-
-    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     neethi_policy_t *neethi_policy = NULL;
 
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     neethi_policy = neethi_util_create_policy_from_om(env, root_node);
 
     if (neethi_policy)
