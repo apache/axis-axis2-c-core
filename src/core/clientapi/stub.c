@@ -60,7 +60,6 @@ axis2_stub_create_with_endpoint_ref_and_client_home(
 
     if (!stub)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     /* create service_client */
@@ -69,7 +68,6 @@ axis2_stub_create_with_endpoint_ref_and_client_home(
     if (!stub->svc_client)
     {
         axis2_stub_free(stub, env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     /* create options */
@@ -77,7 +75,6 @@ axis2_stub_create_with_endpoint_ref_and_client_home(
     if (!stub->options)
     {
         axis2_stub_free(stub, env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     /* Set service client options */
@@ -111,7 +108,6 @@ axis2_stub_create_with_endpoint_uri_and_client_home(
 
     if (!stub)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
