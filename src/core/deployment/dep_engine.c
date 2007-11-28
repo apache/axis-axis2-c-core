@@ -746,6 +746,7 @@ axis2_dep_engine_load(
     if (!dep_engine->repos_listener)
     {
         axis2_conf_free(dep_engine->conf, env);
+        dep_engine->conf = NULL;
         return NULL;
     }
     axis2_conf_set_repo(dep_engine->conf, env, dep_engine->axis2_repos);
@@ -760,6 +761,7 @@ axis2_dep_engine_load(
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
+        dep_engine->conf = NULL;
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED,
                         AXIS2_FAILURE);
         return NULL;
@@ -771,6 +773,7 @@ axis2_dep_engine_load(
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
+        dep_engine->conf = NULL;
         return NULL;
     }
 	
@@ -784,6 +787,7 @@ axis2_dep_engine_load(
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
+        dep_engine->conf = NULL;
         return NULL;
     }
 	
@@ -794,6 +798,7 @@ axis2_dep_engine_load(
             "[axis2] dep engine failed to engaged_modules");
         axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
+        dep_engine->conf = NULL;
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED,
                         AXIS2_FAILURE);
         return NULL;
@@ -928,6 +933,7 @@ axis2_dep_engine_load_client(
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
+        dep_engine->conf = NULL;
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED,
                         AXIS2_FAILURE);
         return NULL;
@@ -1427,6 +1433,7 @@ axis2_dep_engine_do_deploy(
             switch (type)
             {
                 case AXIS2_SVC:
+                {
                     arch_reader = axis2_arch_reader_create(env);
 
                     svc_grp = axis2_svc_grp_create_with_conf(env, dep_engine->conf);
@@ -1438,21 +1445,26 @@ axis2_dep_engine_do_deploy(
                     if (AXIS2_SUCCESS != status)
                     {
                         axis2_arch_reader_free(arch_reader, env);
+                        arch_reader = NULL;
                         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SVC,
                                         AXIS2_FAILURE);
                         return status;
                     }
+
                     status = axis2_dep_engine_add_new_svc(dep_engine, env, svc_grp);
                     if (AXIS2_SUCCESS != status)
                     {
                         axis2_arch_reader_free(arch_reader, env);
+                        arch_reader = NULL;
                         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SVC,
                                         AXIS2_FAILURE);
                         return status;
                     }
                     dep_engine->curr_file = NULL;
                     break;
+                }
                 case AXIS2_MODULE:
+                {
                     arch_reader = axis2_arch_reader_create(env);
                     if (dep_engine->arch_reader)
                     {
@@ -1468,6 +1480,7 @@ axis2_dep_engine_do_deploy(
                     if (AXIS2_SUCCESS != status)
                     {
                         axis2_arch_reader_free(arch_reader, env);
+                        arch_reader = NULL;
                         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODULE,
                                         AXIS2_FAILURE);
                         return AXIS2_FAILURE;
@@ -1477,6 +1490,7 @@ axis2_dep_engine_do_deploy(
                     if (AXIS2_SUCCESS != status)
                     {
                         axis2_arch_reader_free(arch_reader, env);
+                        arch_reader = NULL;
                         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODULE,
                                         AXIS2_FAILURE);
                         return AXIS2_FAILURE;
@@ -1484,8 +1498,11 @@ axis2_dep_engine_do_deploy(
 
                     dep_engine->curr_file = NULL;
                     break;
-            }
+                }
+            };
             axis2_arch_reader_free(arch_reader, env);
+            dep_engine->arch_reader = NULL;
+            dep_engine->curr_file = NULL;
         }
     }
     return AXIS2_SUCCESS;

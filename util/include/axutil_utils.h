@@ -54,16 +54,11 @@ extern "C"
      *         function return a type pointer return NULL
      */
 #define AXIS2_FUNC_PARAM_CHECK(object, env, error_return) \
-    AXIS2_ENV_CHECK(env, error_return);\
     if (!object) \
     { \
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_INVALID_NULL_PARAM); \
         AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE); \
         return error_return; \
-    } \
-    else \
-    { \
-        AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_SUCCESS); \
     }
 
     /**This macro is called to check whether an object is NULL.
@@ -81,11 +76,17 @@ extern "C"
         AXIS2_ERROR_SET_ERROR_NUMBER(error, AXIS2_ERROR_INVALID_NULL_PARAM); \
         AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_FAILURE); \
         return error_return; \
-    } \
-    else \
-    { \
-        AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_SUCCESS); \
     }
+
+
+#define AXIS2_PARAM_CHECK_VOID(error, object) \
+    if (!object) \
+    { \
+        AXIS2_ERROR_SET_ERROR_NUMBER(error, AXIS2_ERROR_INVALID_NULL_PARAM); \
+        AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_FAILURE); \
+        return; \
+    }
+
 
     /**This macro is used to handle error situation.
      * @param error_number Error number for the error occured

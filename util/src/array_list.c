@@ -40,8 +40,6 @@ axutil_array_list_create(
 {
     axutil_array_list_t *array_list = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     array_list = AXIS2_MALLOC(env->allocator, sizeof(axutil_array_list_t));
     if (!array_list)
     {
@@ -74,8 +72,7 @@ axutil_array_list_ensure_capacity(
     const axutil_env_t * env,
     int min_capacity)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
+    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
     if (min_capacity > array_list->capacity)
     {
         int new_capacity =
@@ -103,7 +100,7 @@ axutil_array_list_size(
     struct axutil_array_list *array_list,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
     return array_list->size;
 }
 
@@ -112,7 +109,7 @@ axutil_array_list_is_empty(
     struct axutil_array_list * array_list,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
     return array_list->size == 0;
 }
 
@@ -122,7 +119,7 @@ axutil_array_list_contains(
     const axutil_env_t * env,
     void *e)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
     return axutil_array_list_index_of(array_list, env, e) != -1;
 }
 
@@ -134,8 +131,7 @@ axutil_array_list_index_of(
 {
     int i = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
+    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
     for (i = 0; i < array_list->size; i++)
         if (e == array_list->data[i])
             return i;
@@ -148,6 +144,7 @@ axutil_array_list_get(
     const axutil_env_t * env,
     int index)
 {
+    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
     if (axutil_array_list_check_bound_exclusive(array_list, env, index))
         return array_list->data[index];
     else
@@ -163,8 +160,7 @@ axutil_array_list_set(
 {
     void *result = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
+    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
     if (axutil_array_list_check_bound_exclusive(array_list, env, index))
     {
         result = array_list->data[index];
@@ -179,7 +175,7 @@ axutil_array_list_add(
     const axutil_env_t * env,
     const void *e)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
     if (array_list->size == array_list->capacity)
         if (axutil_array_list_ensure_capacity
             (array_list, env, array_list->size + 1) != AXIS2_SUCCESS)
@@ -196,7 +192,8 @@ axutil_array_list_add_at(
     const void *e)
 {
     int i = 0;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
+
     if (!axutil_array_list_check_bound_inclusive(array_list, env, index))
         return AXIS2_FAILURE;
     if (array_list->size == array_list->capacity)
@@ -223,7 +220,7 @@ axutil_array_list_remove(
 {
     void *result = NULL;
     int i = 0;
-    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
 
     if (axutil_array_list_check_bound_exclusive(array_list, env, index))
     {
@@ -242,7 +239,7 @@ axutil_array_list_check_bound_inclusive(
     const axutil_env_t * env,
     int index)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
 
     if (index < 0 || index > array_list->size)
     {
@@ -259,7 +256,7 @@ axutil_array_list_check_bound_exclusive(
     const axutil_env_t * env,
     int index)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
 
     if (index < 0 || index >= array_list->size)
     {
@@ -275,7 +272,7 @@ axutil_array_list_free(
     struct axutil_array_list *array_list,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK_VOID (env->error, array_list);
 
     if (array_list->data)
     {
@@ -292,9 +289,16 @@ axutil_array_list_free_void_arg(
 {
     axutil_array_list_t *array_list_l = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK_VOID (env->error, array_list);
 
     array_list_l = (axutil_array_list_t *) array_list;
     axutil_array_list_free(array_list_l, env);
     return;
 }
+
+
+
+
+
+
+
