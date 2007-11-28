@@ -124,20 +124,25 @@ main(
 
     /* Send request */
     ret_node = axis2_svc_client_send_receive(svc_client, env, payload);
-
     if (ret_node)
     {
         axis2_char_t *om_str = NULL;
         om_str = axiom_node_to_string(ret_node, env);
         if (om_str)
         {
-            printf("\nReceived OM : %s\n", om_str);
-            AXIS2_FREE(env->allocator, om_str);
+            if (axis2_svc_client_get_last_response_has_fault(svc_client, env) == AXIS2_TRUE)
+            {
+                printf("\nRecieved Fault : %s\n", om_str);
+                AXIS2_FREE(env->allocator, om_str);
+            }
+            else
+            {
+                printf("\nReceived OM : %s\n", om_str);
+                AXIS2_FREE(env->allocator, om_str);
+                printf("\nmtom client invoke SUCCESSFUL!\n");
+                process_response_node(env, ret_node, to_save_name);
+            }
         }
-        printf("\nmtom client invoke SUCCESSFUL!\n");
-
-        process_response_node(env, ret_node, to_save_name);
-    
     }
     else
     {

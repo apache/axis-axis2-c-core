@@ -126,7 +126,7 @@ axis2_mtom_mtom(
                         axis2_msg_ctx_set_doing_mtom (msg_ctx, env, AXIS2_TRUE);
                         ret_node = build_response2(env, data_handler_res);
                     }
-                    else        /* attachment has come by value, as non-optimized binary */
+                    else if (axiom_node_get_node_type(binary_node, env) == AXIOM_TEXT) /* attachment has come by value, as non-optimized binary */
                     {
                         int plain_binary_len = 0;
                         int ret_len = 0;
@@ -155,6 +155,14 @@ axis2_mtom_mtom(
                                                            ret_len);
                         axiom_data_handler_write_to(data_handler, env);
                         ret_node = build_response1(env, base64text);
+                    }
+                    else /* nothing came */
+                    {
+                        AXIS2_ERROR_SET(env->error,
+                            AXIS2_ERROR_ATTACHMENT_MISSING,
+                            AXIS2_FAILURE);
+                        printf("Echo client ERROR: attachment is missing.\n");
+                        return NULL;
                     }
                     /* } */
                 }
