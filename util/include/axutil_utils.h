@@ -53,13 +53,18 @@ extern "C"
      * @return If function return a status code return AXIS2_SUCCESS. Else if
      *         function return a type pointer return NULL
      */
-#define AXIS2_FUNC_PARAM_CHECK(object, env, error_return) \
-    if (!object) \
-    { \
+#define AXIS2_FUNC_PARAM_CHECK(object, env, error_return)               \
+    if (!object)                                                        \
+    {                                                                   \
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_INVALID_NULL_PARAM); \
-        AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE); \
-        return error_return; \
+        AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);         \
+        return error_return;                                            \
+    }                                                                   \
+    else                                                                \
+    {                                                                   \
+        AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_SUCCESS);              \
     }
+
 
     /**This macro is called to check whether an object is NULL.
      * if object is NULL error number and status code is set
@@ -70,22 +75,28 @@ extern "C"
      * @return If function return a status code return AXIS2_SUCCESS. Else if
      *         function return a type pointer return NULL
      */
-#define AXIS2_PARAM_CHECK(error, object, error_return) \
-    if (!object) \
-    { \
+#define AXIS2_PARAM_CHECK(error, object, error_return)                  \
+    if (!object)                                                        \
+    {                                                                   \
         AXIS2_ERROR_SET_ERROR_NUMBER(error, AXIS2_ERROR_INVALID_NULL_PARAM); \
-        AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_FAILURE); \
-        return error_return; \
+        AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_FAILURE);              \
+        return error_return;                                            \
+    }                                                                   \
+    else                                                                \
+    {                                                                   \
+        AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_SUCCESS);              \
     }
 
 
-#define AXIS2_PARAM_CHECK_VOID(error, object) \
-    if (!object) \
-    { \
+
+#define AXIS2_PARAM_CHECK_VOID(error, object)                           \
+    if (!object)                                                        \
+    {                                                                   \
         AXIS2_ERROR_SET_ERROR_NUMBER(error, AXIS2_ERROR_INVALID_NULL_PARAM); \
-        AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_FAILURE); \
-        return; \
+        AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_FAILURE);              \
+        return;                                                         \
     }
+
 
 
     /**This macro is used to handle error situation.
@@ -96,10 +107,10 @@ extern "C"
      * @return If function return a status code return AXIS2_SUCCESS. Else if
      *         function return a type pointer return NULL
      */
-#define AXIS2_ERROR_SET(error, error_number, status_code) \
-    { \
-        AXIS2_ERROR_SET_ERROR_NUMBER(error, error_number); \
-        AXIS2_ERROR_SET_STATUS_CODE(error, status_code); \
+#define AXIS2_ERROR_SET(error, error_number, status_code)   \
+    {                                                       \
+        AXIS2_ERROR_SET_ERROR_NUMBER(error, error_number);  \
+        AXIS2_ERROR_SET_STATUS_CODE(error, status_code);    \
     }
 
     /** Method names in the loadable libraries */
@@ -128,10 +139,10 @@ extern "C"
             void *ctx);
 
     /**
-        * \brief Axis2 scopes
-        *
-        * Possible scope value for Axis2
-        */
+     * \brief Axis2 scopes
+     *
+     * Possible scope value for Axis2
+     */
     enum axis2_scopes
     {
 
