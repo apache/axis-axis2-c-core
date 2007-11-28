@@ -459,6 +459,8 @@ extern "C"
         /*
          * Group - xml:attachments
          */
+        /** Attachment is missing */
+        AXIS2_ERROR_ATTACHMENT_MISSING,
 
         /*
          * Group - xml:om

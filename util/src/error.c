@@ -328,7 +328,8 @@ axutil_error_init()
     /* XML */
 
     /* XML:attachments */
-
+    axutil_error_messages[AXIS2_ERROR_ATTACHMENT_MISSING] =
+        "Attachment is missing";
     /* XML:om */
     axutil_error_messages[AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL] =
         "XML builder done with pulling. Pull parser cannot pull any more";
