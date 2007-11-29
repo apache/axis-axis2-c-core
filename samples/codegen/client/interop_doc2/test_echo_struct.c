@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-#include "axis2_WSDLInteropTestDocLitService_stub.h"
+#include "axis2_stub_WSDLInteropTestDocLitService.h"
 
 int
 main(
@@ -31,10 +31,10 @@ main(
     axis2_stub_t *stub = NULL;
 
     /* variables use databinding */
-    axis2_echoStruct_t *echo_in = NULL;
-    axis2_echoStructResponse_t *echo_out = NULL;
-    axis2_SOAPStruct_t *struct_in = NULL;
-    axis2_SOAPStruct_t *struct_out = NULL;
+    adb_echoStruct_t *echo_in = NULL;
+    adb_echoStructResponse_t *echo_out = NULL;
+    adb_SOAPStruct_t *struct_in = NULL;
+    adb_SOAPStruct_t *struct_out = NULL;
 
     float float_val = 11;
     int int_val = 10;
@@ -55,30 +55,30 @@ main(
     if (!client_home)
         client_home = "../../../deploy";
 
-    stub = axis2_WSDLInteropTestDocLitService_stub_create(env,
+    stub = axis2_stub_create_WSDLInteropTestDocLitService(env,
                                                           client_home,
                                                           endpoint_uri);
 
     /* create the struct */
-    struct_in = axis2_SOAPStruct_create(env);
-    AXIS2_SOAPSTRUCT_SET_VARFLOAT(struct_in, env, float_val);
-    AXIS2_SOAPSTRUCT_SET_VARINT(struct_in, env, int_val);
-    AXIS2_SOAPSTRUCT_SET_VARSTRING(struct_in, env, string_val);
+    struct_in = adb_SOAPStruct_create(env);
+    adb_SOAPStruct_set_varFloat(struct_in, env, float_val);
+    adb_SOAPStruct_set_varInt(struct_in, env, int_val);
+    adb_SOAPStruct_set_varString(struct_in, env, string_val);
 
     /* create the input params using databinding */
-    echo_in = axis2_echoStruct_create(env);
-    AXIS2_ECHOSTRUCT_SET_PARAM0(echo_in, env, struct_in);
+    echo_in = adb_echoStruct_create(env);
+    adb_echoStruct_set_param0(echo_in, env, struct_in);
 
     /* invoke the web service method */
-    echo_out = axis2_echoStruct(stub, env, echo_in);
+    echo_out = axis2_stub_op_WSDLInteropTestDocLitService_echoStruct(stub, env, echo_in);
 
     /* return the output params using databinding */
-    struct_out = AXIS2_ECHOSTRUCTRESPONSE_GET_RETURN(echo_out, env);
-    /*struct_out = AXIS2_ECHOSTRUCT_GET_PARAM0( ret_val, env ); */
+    struct_out = adb_echoStructResponse_get_return(echo_out, env);
+    /*struct_out = adb_echostruct_get_param0( ret_val, env ); */
 
-    ret_float_val = AXIS2_SOAPSTRUCT_GET_VARFLOAT(struct_out, env);
-    ret_int_val = AXIS2_SOAPSTRUCT_GET_VARINT(struct_out, env);
-    ret_string_val = AXIS2_SOAPSTRUCT_GET_VARSTRING(struct_out, env);
+    ret_float_val = adb_SOAPStruct_get_varFloat(struct_out, env);
+    ret_int_val = adb_SOAPStruct_get_varInt(struct_out, env);
+    ret_string_val = adb_SOAPStruct_get_varString(struct_out, env);
 
     printf("returned values \n");
     printf(" float %f\n", ret_float_val);

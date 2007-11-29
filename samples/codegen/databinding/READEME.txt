@@ -6,7 +6,8 @@ Introduction
 
 These samples demonstrate the use of code generation using Axis2/Java WSDL2Java 
 (http://svn.apache.org/repos/asf/webservices/axis2/trunk/java)tool with Axis Data Binding.
-
+You can download the latest update of the tool from 
+http://people.apache.org/dist/axis2/nightly
 
 Files
 -----
@@ -25,8 +26,8 @@ Files
 Code Generation
 ---------------
 
-Use the shell script or batch file available in the ../../../tools/bin directory to generate
-code using following options.(Reade the READEME.txt at ../../../tools/bin directory to learn how to use scripts)
+Use the shell script or batch file available in the ../../../tools/codegen/javatool directory to generate
+code using following options.(Reade the READEME.txt at ../../../tools/codegen/javatool directory to learn how to use scripts)
 
 Client side stub generation with Axis Data Binding:
 	Linux: WSDL2C.sh -uri <wsdl path> -g -d adb -u -f -o <output directory> 

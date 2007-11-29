@@ -34,42 +34,42 @@
          
  * @param getStockQuote
  */ 
-    axis2_getStockQuoteResponse_t *
+    adb_getStockQuoteResponse_t *
 axis2_skel_StockQuoteService_getStockQuote(const axutil_env_t * env,
-                                           axis2_getStockQuote_t *
+                                           adb_getStockQuote_t *
                                            getStockQuote) 
 {
     
         /* TODO fill this with the necessary business logic */ 
         axis2_char_t * symbol_in = NULL;
-    axis2_getStockQuoteResponse_t * response = NULL;
-    axis2_quote_t * res_quote = NULL;
-    axis2_changeType_t * res_change = NULL;
-    axis2_lastTradeType_t * res_last_trade = NULL;
-    symbol_in = AXIS2_GETSTOCKQUOTE_GET_SYMBOL(getStockQuote, env);
-    if (!symbol_in)
+    adb_getStockQuoteResponse_t * response = NULL;
+    adb_quote_t * res_quote = NULL;
+    adb_changeType_t * res_change = NULL;
+    adb_lastTradeType_t * res_last_trade = NULL;
+    symbol_in = adb_getStockQuote_get_symbol(getStockQuote, env);
+    if (!symbol_in)
         
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL,
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL,
                          AXIS2_FAILURE);
-        printf
+        printf
             ("StockQuoteService client request ERROR: input parameter NULL\n");
-        return NULL;
-    }
-    res_quote = axis2_quote_create(env);
-    AXIS2_QUOTE_SET_SYMBOL(res_quote, env, symbol_in);
-    AXIS2_QUOTE_SET_VOLUME(res_quote, env, 1000);
-    res_change = axis2_changeType_create(env);
-    AXIS2_CHANGETYPE_SET_PERCENT(res_change, env, 10);
-    AXIS2_CHANGETYPE_SET_DOLLAR(res_change, env, 98);
-    AXIS2_QUOTE_SET_CHANGE(res_quote, env, res_change);
-    res_last_trade = axis2_lastTradeType_create(env);
-    AXIS2_LASTTRADETYPE_SET_PRICE(res_last_trade, env, 23);
-    AXIS2_LASTTRADETYPE_SET_DATE(res_last_trade, env, 1165997291);
-    AXIS2_QUOTE_SET_LASTTRADE(res_quote, env, res_last_trade);
-    response = axis2_getStockQuoteResponse_create(env);
-    AXIS2_GETSTOCKQUOTERESPONSE_SET_RETURNQUOTE(response, env, res_quote);
-    return response;
-}
+        return NULL;
+    }
+    res_quote = adb_quote_create(env);
+    adb_quote_set_symbol(res_quote, env, symbol_in);
+    adb_quote_set_volume(res_quote, env, 1000);
+    res_change = adb_changeType_create(env);
+    adb_changeType_set_percent(res_change, env, 10);
+    adb_changeType_set_dollar(res_change, env, 98);
+    adb_quote_set_change(res_quote, env, res_change);
+    res_last_trade = adb_lastTradeType_create(env);
+    adb_lastTradeType_set_price(res_last_trade, env, 23);
+    adb_lastTradeType_set_date(res_last_trade, env, 1165997291);
+    adb_quote_set_lasttrade(res_quote, env, res_last_trade);
+    response = adb_getStockQuoteResponse_create(env);
+    adb_getStockQuoteResponse_set_returnQuote(response, env, res_quote);
+    return response;
+}
 
-
+

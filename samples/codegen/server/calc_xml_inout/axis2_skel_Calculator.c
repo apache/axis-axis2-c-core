@@ -17,14 +17,14 @@
  */
 
 /**
- * axis2_Calculator.c
+ * axis2_skel_Calculator.c
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis2/Java version: #axisVersion# #today#
- * axis2_Calculator Axis2/C skeleton for the axisService
+ * axis2_skel_Calculator Axis2/C skeleton for the axisService
  */
 
-#include "axis2_Calculator.h"
+#include "axis2_skel_Calculator.h"
 
 /**
  * Auto generated function definition
@@ -33,7 +33,7 @@
 
 */
 axiom_node_t *
-axis2_Calculator_add(
+axis2_skel_Calculator_add(
     const axutil_env_t * env,
     axiom_node_t * param0)
 {
@@ -63,13 +63,13 @@ axis2_Calculator_add(
     }
     else
     {
-        node = AXIOM_NODE_GET_FIRST_CHILD(req, env);
-        ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+        node = axiom_node_get_first_child(req, env);
+        ele = axiom_node_get_data_element(node, env);
         text = axiom_element_get_text(ele, env, node);
         value1 = atoi(text);
 
-        node = AXIOM_NODE_GET_NEXT_SIBLING(node, env);
-        ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+        node = axiom_node_get_next_sibling(node, env);
+        ele = axiom_node_get_data_element(node, env);
         text = axiom_element_get_text(ele, env, node);
         value2 = atoi(text);
 
@@ -96,7 +96,7 @@ axis2_Calculator_add(
 
 */
 axiom_node_t *
-axis2_Calculator_div(
+axis2_skel_Calculator_div(
     const axutil_env_t * env,
     axiom_node_t * param2)
 {
@@ -111,7 +111,7 @@ axis2_Calculator_div(
 
 */
 axiom_node_t *
-axis2_Calculator_sub(
+axis2_skel_Calculator_sub(
     const axutil_env_t * env,
     axiom_node_t * param4)
 {
@@ -126,7 +126,7 @@ axis2_Calculator_sub(
 
 */
 axiom_node_t *
-axis2_Calculator_mul(
+axis2_skel_Calculator_mul(
     const axutil_env_t * env,
     axiom_node_t * param6)
 {

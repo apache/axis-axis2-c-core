@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-#include "axis2_InteropTestPortTypeDocService_stub.h"
+#include "axis2_stub_InteropTestPortTypeDocService.h"
 
 int
 main(
@@ -31,8 +31,8 @@ main(
     axis2_stub_t *stub = NULL;
 
     /* variables use databinding */
-    axis2_echoDate_t *echo_in = NULL;
-    axis2_echoDateResponse_t *echo_out = NULL;
+    adb_echoDate_t *echo_in = NULL;
+    adb_echoDateResponse_t *echo_out = NULL;
 
     axutil_date_time_t *echo_date = NULL;
     axutil_date_time_t *return_echo_date = NULL;
@@ -50,27 +50,27 @@ main(
     if (!client_home)
         client_home = "../../../deploy";
 
-    stub = axis2_InteropTestPortTypeDocService_stub_create(env,
+    stub = axis2_stub_create_InteropTestPortTypeDocService(env,
                                                            client_home,
                                                            endpoint_uri);
 
     /* create the struct */
     echo_date = axutil_date_time_create(env);   /* default to current date */
-    send_date_str = axutil_date_time_seriasize_date_time(echo_date, env);
+    send_date_str = axutil_date_time_serialize_date_time(echo_date, env);
     printf("sending date %s\n", send_date_str);
 
     /* create the input params using databinding */
-    echo_in = axis2_echoDate_create(env);
-    AXIS2_ECHODATE_SET_ARG_0_10(echo_in, env, echo_date);
+    echo_in = adb_echoDate_create(env);
+    adb_echoDate_set_arg_0_10(echo_in, env, echo_date);
 
     /* invoke the web service method */
-    echo_out = axis2_echoDate(stub, env, echo_in);
+    echo_out = axis2_stub_op_InteropTestPortTypeDocService_echoDate(stub, env, echo_in);
 
     /* return the output params using databinding */
-    return_echo_date = AXIS2_ECHODATERESPONSE_GET_ECHODATERETURN(echo_out, env);
+    return_echo_date = adb_echoDateResponse_get_echoDateReturn(echo_out, env);
 
     return_date_str =
-        axutil_date_time_seriasize_date_time(return_echo_date, env);
+        axutil_date_time_serialize_date_time(return_echo_date, env);
     printf("returned date %s\n", return_date_str);
 
     return 0;

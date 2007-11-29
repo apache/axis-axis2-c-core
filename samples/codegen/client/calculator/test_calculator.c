@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-#include "axis2_Calculator_stub.h"
+#include "axis2_stub_Calculator.h"
 
 int
 main(
@@ -32,10 +32,8 @@ main(
     axis2_stub_t *stub = NULL;
 
     /* variables use databinding */
-    axis2_addResponse_t *add_out = NULL;
-    axis2_add_t *add_in = NULL;
-    axis2_addRequest_t *add_req = NULL;
-    axis2_addResponse20_t *add_res = NULL;
+    adb_addResponse_t *add_res = NULL;
+    adb_add_t *add_req = NULL;
 
     int ret_val = 0;
 
@@ -53,19 +51,16 @@ main(
     if (!client_home)
         client_home = "../../../deploy";
 
-    stub = axis2_Calculator_stub_create(env, client_home, endpoint_uri);
+    stub = axis2_stub_create_Calculator(env, client_home, endpoint_uri);
 
     /* create the struct */
-    add_req = axis2_addRequest_create(env);
-    AXIS2_ADDREQUEST_SET_IN0(add_req, env, val1);
-    AXIS2_ADDREQUEST_SET_IN1(add_req, env, val2);
+    add_req = adb_add_create(env);
+    adb_add_set_in0(add_req, env, val1);
+    adb_add_set_in1(add_req, env, val2);
 
-    /* create the input params using databinding */
-    add_in = axis2_add_create(env);
-    AXIS2_ADD_SET_ADD(add_in, env, add_req);
 
     /* invoke the web service method */
-    add_res = axis2_add(stub, env, add_in);
+    add_res = axis2_stub_op_Calculator_add(stub, env, add_req);
 
     if (!add_res)
     {
@@ -74,8 +69,7 @@ main(
     }
 
     /* return the output params using databinding */
-    add_out = AXIS2_ADDRESPONSE20_GET_ADDRESPONSE(add_res, env);
-    ret_val = AXIS2_ADDRESPONSE_GET_ADDRETURN(add_out, env);
+    ret_val = adb_addResponse_get_addReturn(add_res, env);
 
     printf("finally: add (%d %d ) = %d\n", val1, val2, ret_val);
 

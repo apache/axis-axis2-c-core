@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-#include "axis2_WSDLInteropTestDocLitService_stub.h"
+#include "axis2_stub_WSDLInteropTestDocLitService.h"
 
 int
 main(
@@ -31,15 +31,15 @@ main(
     axis2_stub_t *stub = NULL;
 
     /* variables use databinding */
-    axis2_echoStringArray_t *echo_in = NULL;
-    axis2_echoStringArrayResponse_t *echo_out = NULL;
-    axis2_ArrayOfstring_literal_t *array_in = NULL;
-    axis2_ArrayOfstring_literal_t *array_out = NULL;
+    adb_echoStringArray_t *echo_in = NULL;
+    adb_echoStringArrayResponse_t *echo_out = NULL;
+    adb_ArrayOfstring_literal_t *array_in = NULL;
+    adb_ArrayOfstring_literal_t *array_out = NULL;
 
-    char *string_array[] = { "test", "this", "array" };
+    static char *string_array[] = { "test", "this", "array" };
     int array_length = 3;
 
-    char **string_return_string_array = NULL;
+    char *string_return = NULL;
     int return_array_length = 0;
     int i = 0;                  /* for loops */
 
@@ -55,31 +55,35 @@ main(
         client_home = "../../../deploy";
 
     stub =
-        axis2_WSDLInteropTestDocLitService_stub_create(env, client_home,
+        axis2_stub_create_WSDLInteropTestDocLitService(env, client_home,
                                                        endpoint_uri);
 
     /* create the array */
-    array_in = axis2_ArrayOfstring_literal_create(env);
+    array_in = adb_ArrayOfstring_literal_create(env);
 
-    AXIS2_ARRAYOFSTRING_LITERAL_SET_STRING(array_in, env,
-                                           string_array, array_length);
+    for(i = 0; i < array_length; i ++)
+    {
+        adb_ArrayOfstring_literal_add_string(array_in, env,
+                                           string_array[i]);
+    }
 
     /* create the input params using databinding */
-    echo_in = axis2_echoStringArray_create(env);
-    AXIS2_ECHOSTRINGARRAY_SET_PARAM0(echo_in, env, array_in);
+    echo_in = adb_echoStringArray_create(env);
+    adb_echoStringArray_set_param0(echo_in, env, array_in);
 
     /* invoke the web service method */
-    echo_out = axis2_echoStringArray(stub, env, echo_in);
+    echo_out = axis2_stub_op_WSDLInteropTestDocLitService_echoStringArray(stub, env, echo_in);
 
     /* return the output params using databinding */
-    array_out = AXIS2_ECHOSTRINGARRAYRESPONSE_GET_RETURN(echo_out, env);
+    array_out = adb_echoStringArrayResponse_get_return(echo_out, env);
 
-    string_return_string_array = AXIS2_ARRAYOFSTRING_LITERAL_GET_STRING
-        (array_out, env, &return_array_length);
+
+    return_array_length = adb_ArrayOfstring_literal_sizeof_string(array_out, env);
 
     for (i = 0; i < return_array_length; i++)
     {
-        printf("value%d: %s \n", i, string_return_string_array[i]);
+        string_return = adb_ArrayOfstring_literal_get_string_at(array_out, env, i);
+        printf("value%d: %s \n", i, string_return);
     }
 
     return 0;

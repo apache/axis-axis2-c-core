@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-#include "axis2_WSDLInteropTestDocLitService_stub.h"
+#include "axis2_stub_WSDLInteropTestDocLitService.h"
 
 int
 main(
@@ -31,8 +31,8 @@ main(
     axis2_stub_t *stub = NULL;
 
     /* variables use databinding */
-    axis2_echoString_t *echo_in = NULL;
-    axis2_echoStringResponse_t *echo_out = NULL;
+    adb_echoString_t *echo_in = NULL;
+    adb_echoStringResponse_t *echo_out = NULL;
 
     char *echo_str = "hello";
     char *return_echo_str = NULL;
@@ -49,20 +49,20 @@ main(
         client_home = "../../../deploy";
 
     stub =
-        axis2_WSDLInteropTestDocLitService_stub_create(env, client_home,
+        axis2_stub_create_WSDLInteropTestDocLitService(env, client_home,
                                                        endpoint_uri);
 
     /* create the struct */
 
     /* create the input params using databinding */
-    echo_in = axis2_echoString_create(env);
-    AXIS2_ECHOSTRING_SET_PARAM0(echo_in, env, echo_str);
+    echo_in = adb_echoString_create(env);
+    adb_echoString_set_param0(echo_in, env, echo_str);
 
     /* invoke the web service method */
-    echo_out = axis2_echoString(stub, env, echo_in);
+    echo_out = axis2_stub_op_WSDLInteropTestDocLitService_echoString(stub, env, echo_in);
 
     /* return the output params using databinding */
-    return_echo_str = AXIS2_ECHOSTRUCTRESPONSE_GET_RETURN(echo_out, env);
+    return_echo_str = adb_echoStructResponse_get_return(echo_out, env);
 
     printf("returned string %s\n", return_echo_str);
 

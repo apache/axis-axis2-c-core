@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-#include "axis2_Calculator_stub.h"
+#include "axis2_stub_Calculator.h"
 
 axiom_node_t *generate_request_xml(
     const axutil_env_t * env);
@@ -51,12 +51,12 @@ main(
     if (!client_home)
         client_home = "../../../deploy";
 
-    stub = axis2_Calculator_stub_create(env, client_home, endpoint_uri);
+    stub = axis2_stub_create_Calculator(env, client_home, endpoint_uri);
 
     req = generate_request_xml(env);
 
     /* invoke the web service method */
-    res = axis2_add(stub, env, req);
+    res = axis2_stub_op_Calculator_add(stub, env, req);
 
     handle_respone_xml(env, res);
 
@@ -91,7 +91,7 @@ generate_request_xml(
     axiom_element_set_text(value_ele, env, value_str, value_node);
 
     printf("requesting %d  + %d \n", value1, value2);
-    om_str = AXIOM_NODE_TO_STRING(op_node, env);
+    om_str = axiom_node_to_string(op_node, env);
     if (om_str)
         printf("\nSending OM : %s\n", om_str);
 
@@ -113,10 +113,10 @@ handle_respone_xml(
         printf("response null\n");
         return;
     }
-    node = AXIOM_NODE_GET_FIRST_CHILD(res, env);
+    node = axiom_node_get_first_child(res, env);
     if (node)
     {
-        ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+        ele = axiom_node_get_data_element(node, env);
         text = axiom_element_get_text(ele, env, node);
 
         printf("answer = %s\n", text);
