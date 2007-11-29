@@ -796,7 +796,6 @@ axis2_dep_engine_load(
     {
 		AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
             "[axis2] dep engine failed to engaged_modules");
-        axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED,
