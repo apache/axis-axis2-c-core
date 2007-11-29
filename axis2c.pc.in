@@ -1,11 +1,11 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
-includedir=@includedir@/axis2-1.1
+includedir=@includedir@/axis2-1.2
 
 Name: Axis2/C
 Version: @VERSION@
-Description: Apache Axis2/C Version 1.1.0.
+Description: Apache Axis2/C Version 1.2.0.
 Requires:
 Libs: -L${libdir} -laxis2 -lxml2 @LIBS@
 Cflags: -I${includedir}
