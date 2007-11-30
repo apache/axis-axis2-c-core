@@ -1154,21 +1154,19 @@ axiom_stax_builder_next_with_token(
 
     case AXIOM_XML_READER_COMMENT:
         val = axiom_stax_builder_create_om_comment(om_builder, env);
-        if (!val)
+        if (val)
         {
-            return -1;
+            axiom_stax_builder_end_element(om_builder, env);
         }
-        axiom_stax_builder_end_element(om_builder, env);
         break;
 
     case AXIOM_XML_READER_PROCESSING_INSTRUCTION:
         val = axiom_stax_builder_create_om_processing_instruction(om_builder,
                                                                   env);
-        if (!val)
+        if (val)
         {
-            return -1;
+            axiom_stax_builder_end_element(om_builder, env);
         }
-        axiom_stax_builder_end_element(om_builder, env);
         break;
 
     case AXIOM_XML_READER_CDATA:

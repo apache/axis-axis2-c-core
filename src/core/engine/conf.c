@@ -1489,8 +1489,6 @@ axis2_conf_engage_module(
         module_desc =
             axis2_dep_engine_build_module(dep_engine, env, file, conf);
         is_new_module = AXIS2_TRUE;
-        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "free dep engine");
-        axis2_dep_engine_free (dep_engine, env);
     }
 	
     if (module_desc)
