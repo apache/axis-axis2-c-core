@@ -204,6 +204,7 @@ guththila_xml_writer_free(
 #endif  /*  */
         guththila_stack_un_init(&wr->element, env);
     guththila_stack_un_init(&wr->namesp, env);
+    AXIS2_FREE(env->allocator,wr);
 }
 int GUTHTHILA_CALL
 guththila_write(

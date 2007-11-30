@@ -122,7 +122,8 @@ msuila_namespace_list_free_data(guththila_namespace_list_t * namesp_list,const a
 void GUTHTHILA_CALL
 guththila_namespace_list_free(guththila_namespace_list_t * namesp_list,const axutil_env_t * env) 
 {
-    AXIS2_FREE(env->allocator, namesp_list->list);
+
     guththila_stack_un_init(&namesp_list->fr_stack, env);
+    AXIS2_FREE(env->allocator, namesp_list->list);
     AXIS2_FREE(env->allocator, namesp_list);
 } 

@@ -25,10 +25,10 @@
     
 #define GUTHTHILA_VALIDATION_PARSER
 
-static int GUTHTHILA_CALL 
+ int GUTHTHILA_CALL 
 guththila_next_char(guththila_t * m,int eof,const axutil_env_t * env);
 
-static int GUTHTHILA_CALL 
+int GUTHTHILA_CALL 
 guththila_next_no_char( 
     guththila_t * m,
     int eof,
@@ -36,14 +36,13 @@ guththila_next_no_char(
     int no,
     const axutil_env_t * env);
 
-static void GUTHTHILA_CALL guththila_token_close(
+void GUTHTHILA_CALL guththila_token_close(
     guththila_t * m,
     guththila_token_t * tok,
     int tok_type,
     int referer,
     const axutil_env_t * env);
-
-static int GUTHTHILA_CALL guththila_process_xml_dec(
+int GUTHTHILA_CALL guththila_process_xml_dec(
     guththila_t * m,
     const axutil_env_t * env);
 
@@ -102,7 +101,7 @@ static int GUTHTHILA_CALL guththila_process_xml_dec(
 #define GUTHTHILA_IS_VALID_STARTING_CHAR(c) (isalpha(c) || '_' == c || ':' == c)
 #endif  /*  */
 
-static void GUTHTHILA_CALL
+void GUTHTHILA_CALL
 guththila_token_close(
     guththila_t * m,
     guththila_token_t * tok,
@@ -408,6 +407,24 @@ guththila_free(guththila_t * m,const axutil_env_t * env)
         }
     }
     guththila_stack_un_init(&m->attrib, env);
+    size = GUTHTHILA_STACK_SIZE(m->elem);
+    for (i = 0; i < size; i++)
+    {
+        elem =
+            (guththila_element_t *) guththila_stack_pop(&m->elem, env);
+        if (elem)
+        {
+            if (elem->name)
+                guththila_tok_list_release_token(&m->tokens, elem->name, env);
+            if (elem->prefix)
+                guththila_tok_list_release_token(&m->tokens, elem->prefix, env);
+            AXIS2_FREE(env->allocator, elem);
+        }
+    }
+
+#ifndef GUTHTHILA_VALIDATION_PARSER
+    guththila_namespace_t * namesp = NULL;
+
     size = GUTHTHILA_STACK_SIZE(m->namesp);
     for (i = 0; i < size; i++)
     {
@@ -422,6 +439,32 @@ guththila_free(guththila_t * m,const axutil_env_t * env)
                 AXIS2_FREE(env->allocator, namesp);
         }
     }
+#else  /*   */
+    guththila_elem_namesp_t * e_namesp = NULL;
+
+    size = GUTHTHILA_STACK_SIZE(m->namesp);
+    for (i = 0; i < size; i++)
+    {
+        e_namesp =
+            (guththila_elem_namesp_t *) guththila_stack_pop(&m->namesp, env);
+                    for (i = 0; i < e_namesp->no; i++)
+                    {
+                        if(e_namesp->namesp[i].name)
+                        {
+                            guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].name,env);
+                        }
+
+                        if(e_namesp->namesp[i].uri)
+                        {
+                            guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].uri, env);
+                        }
+                        AXIS2_FREE(env->allocator, &(e_namesp->namesp[i]));
+                    }
+
+                    AXIS2_FREE(env->allocator,e_namesp);
+    }
+#endif  /*   */
+
 
         size = GUTHTHILA_STACK_SIZE(m->elem);
     for (i = 0; i < size; i++)
@@ -490,6 +533,10 @@ guththila_un_init(guththila_t * m,const axutil_env_t * env)
         }
     }
     guththila_stack_un_init(&m->attrib, env);
+
+#ifndef GUTHTHILA_VALIDATION_PARSER
+    guththila_namespace_t * namesp = NULL;
+
     size = GUTHTHILA_STACK_SIZE(m->namesp);
     for (i = 0; i < size; i++)
     {
@@ -501,9 +548,35 @@ guththila_un_init(guththila_t * m,const axutil_env_t * env)
                 guththila_tok_list_release_token(&m->tokens, namesp->name, env);
             if (namesp->uri)
                 guththila_tok_list_release_token(&m->tokens, namesp->uri, env);
-            AXIS2_FREE(env->allocator, namesp);
+                AXIS2_FREE(env->allocator, namesp);
         }
     }
+#else  /*   */
+    guththila_elem_namesp_t * e_namesp = NULL;
+
+    size = GUTHTHILA_STACK_SIZE(m->namesp);
+    for (i = 0; i < size; i++)
+    {
+        e_namesp =
+            (guththila_elem_namesp_t *) guththila_stack_pop(&m->namesp, env);
+                    for (i = 0; i < e_namesp->no; i++)
+                    {
+                        if(e_namesp->namesp[i].name)
+                        {
+                            guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].name,env);
+                        }
+
+                        if(e_namesp->namesp[i].uri)
+                        {
+                            guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].uri, env);
+                        }
+                        AXIS2_FREE(env->allocator, &(e_namesp->namesp[i]));
+                    }
+
+                    AXIS2_FREE(env->allocator,e_namesp);
+    }
+#endif  /*   */
+
     size = GUTHTHILA_STACK_SIZE(m->elem);
     for (i = 0; i < size; i++)
     {
@@ -576,6 +649,7 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                     guththila_tok_list_release_token(&m->tokens,
                                                      nmsp->namesp[nmsp_counter].
                                                      uri, env);
+                AXIS2_FREE(env->allocator,&(nmsp->namesp[nmsp_counter]));
             }
             AXIS2_FREE(env->allocator, nmsp);
         }
@@ -771,6 +845,7 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                                                                  namesp
                                                                  [nmsp_counter].
                                                                  uri, env);
+                            AXIS2_FREE(env->allocator,&(nmsp->namesp[nmsp_counter]));
                         }
                         AXIS2_FREE(env->allocator, nmsp);
                     }
@@ -883,7 +958,7 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
     while (loop);
     return c;
 }
-static int GUTHTHILA_CALL
+int GUTHTHILA_CALL
 guththila_process_xml_dec(
     guththila_t * m,
     const axutil_env_t * env) 
@@ -1325,7 +1400,7 @@ guththila_get_encoding(
 {
     return "UTF-8";
 }
-static int GUTHTHILA_CALL
+int GUTHTHILA_CALL
 guththila_next_char(
     guththila_t * m,
     int eof,
@@ -1442,7 +1517,7 @@ guththila_next_char(
     }
     return -1;
 }
-static int GUTHTHILA_CALL
+ int GUTHTHILA_CALL
 guththila_next_no_char(
     guththila_t * m,
     int eof,
