@@ -904,7 +904,7 @@ axis2_op_client_infer_transport(
     if (!transport_out_desc)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "[axis2c] Cannot infer transport");
+                        "Cannot infer transport");
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_INFER_TRANSPORT,
                         AXIS2_FAILURE);
     }
@@ -1063,7 +1063,7 @@ axis2_get_transport_from_url(
     AXIS2_PARAM_CHECK(env->error, url, AXIS2_FAILURE);
     start = url;
     end = url;
-    while (end && (*end) != ':')
+    while ((*end) && (*end) != ':')
         end++;
 
     if ((*end) == ':')
@@ -1081,7 +1081,10 @@ axis2_get_transport_from_url(
             transport[c - start] = *c;
         transport[c - start] = '\0';
     }
-
+    else
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "URL is malformed or does not contain a transport protocol");
+    }
     return transport;
 }
 
