@@ -84,7 +84,10 @@ guththila_stack_pop(
 {
     if (stack->top > 0)
     {
-        return stack->data[stack->top-- - 1];;
+        
+        
+        return stack->data[stack->top-- - 1];
+        
     }
     return NULL;
 }
@@ -157,5 +160,16 @@ guththila_stack_get_by_index(
 {
     return index < stack->top ? stack->data[index] : NULL;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 

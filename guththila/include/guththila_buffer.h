@@ -40,6 +40,7 @@ typedef struct guththila_buffer_s
     size_t pre_tot_data;
     unsigned int no_buffers;
     short type;
+    guththila_char_t *xml;
 }
 guththila_buffer_t;
 
@@ -107,3 +108,7 @@ int GUTHTHILA_CALL guththila_buffer_insert_data(
 
 EXTERN_C_END()
 #endif
+
+
+
+

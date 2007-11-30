@@ -31,7 +31,7 @@ guththila_buffer_init(guththila_buffer_t * buffer,int size,const axutil_env_t * 
     buffer->cur_buff = -1;
     buffer->pre_tot_data = 0;
     buffer->no_buffers = GUTHTHILA_BUFFER_NUMBER_OF_BUFFERS;
-    
+    buffer->xml = NULL;
 if (size > 0)
     {
         buffer->buff[0] =(guththila_char_t *) AXIS2_MALLOC(env->allocator,sizeof(guththila_char_t) * size);
@@ -56,7 +56,9 @@ guththila_buffer_un_init(guththila_buffer_t * buffer,const axutil_env_t * env)
             AXIS2_FREE(env->allocator, buffer->buffs_size);
         if (buffer->data_size)
             AXIS2_FREE(env->allocator, buffer->data_size);
-    
+        if(buffer->xml)
+            AXIS2_FREE(env->allocator,buffer->xml);
+
 	AXIS2_FREE(env->allocator, buffer->buff);
     
     }
@@ -66,6 +68,8 @@ guththila_buffer_un_init(guththila_buffer_t * buffer,const axutil_env_t * env)
         {
             AXIS2_FREE(env->allocator, buffer->buff[i]);
         }
+        if(buffer->xml)
+            AXIS2_FREE(env->allocator,buffer->xml);
         AXIS2_FREE(env->allocator, buffer->buff);
         if (buffer->data_size)
             AXIS2_FREE(env->allocator, buffer->data_size);
@@ -88,6 +92,7 @@ guththila_buffer_init_for_buffer(guththila_buffer_t * buffer,char *buff,int size
     buffer->data_size =(size_t *) AXIS2_MALLOC(env->allocator,sizeof(size_t) * GUTHTHILA_BUFFER_DEF_SIZE);
     buffer->data_size[0] = size;
     buffer->no_buffers = 1;
+    buffer->xml = NULL;
     return GUTHTHILA_SUCCESS;
 }
 
@@ -96,18 +101,19 @@ guththila_buffer_get(guththila_buffer_t * buffer,const axutil_env_t * env)
 {
     size_t size = 0, current_size = 0;
     int i = 0;
-    char *buff = NULL;
+
     for (i = 0; i <= buffer->cur_buff; i++)
     {
         size += buffer->data_size[i];
     }
-    buff = (char *) AXIS2_MALLOC(env->allocator, sizeof(char) * (size + 1));
+    buffer->xml = (char *) AXIS2_MALLOC(env->allocator, sizeof(char) * (size + 1));
     for (i = 0; i <= buffer->cur_buff; i++)
     {
-        memcpy(buff + current_size, buffer->buff[i], buffer->data_size[i]);
+        memcpy(buffer->xml + current_size, buffer->buff[i], buffer->data_size[i]);
         current_size += buffer->data_size[i];
     }
-    buff[current_size] = '\0';
-    return buff;
+    
+    buffer->xml[current_size] = '\0';
+    return buffer->xml;
 }
 
