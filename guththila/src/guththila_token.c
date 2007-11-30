@@ -156,6 +156,7 @@ guththila_tok_list_free(
         AXIS2_FREE(env->allocator, tok_list->list[i]);
     }
     AXIS2_FREE(env->allocator, tok_list->list);
+    AXIS2_FREE(env->allocator,tok_list->capacity);
     AXIS2_FREE(env->allocator, tok_list);
 }
 void GUTHTHILA_CALL
@@ -169,6 +170,7 @@ guththila_tok_list_free_data(
     {
         AXIS2_FREE(env->allocator, tok_list->list[i]);
     }
+    AXIS2_FREE(env->allocator,tok_list->capacity);
     AXIS2_FREE(env->allocator, tok_list->list);
 }
 guththila_token_t *GUTHTHILA_CALL
@@ -226,6 +228,11 @@ guththila_tok_tok_cmp(
     }
     return 0;
 }
+
+
+
+
+
 
 
 
