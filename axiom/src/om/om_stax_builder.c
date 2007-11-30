@@ -162,7 +162,8 @@ axiom_stax_builder_process_attributes(
 
 #ifdef WIN32
         attr_name_str = axutil_string_create(env, attr_name);
-        axiom_xml_reader_xml_free(om_builder->parser, env, attr_name);
+       /* axiom_xml_reader_xml_free(om_builder->parser, env, attr_name);*/
+        AXIS2_FREE(env->allocator,attr_name);
 #else
         attr_name_str = axutil_string_create_assume_ownership(env, &attr_name);
 #endif
@@ -173,7 +174,8 @@ axiom_stax_builder_process_attributes(
 
 #ifdef WIN32
         attr_value_str = axutil_string_create(env, attr_value);
-        axiom_xml_reader_xml_free(om_builder->parser, env, attr_value);
+/*        axiom_xml_reader_xml_free(om_builder->parser, env,*attr_value);*/
+        AXIS2_FREE(env->allocator,attr_value);
 #else
         attr_value_str =
             axutil_string_create_assume_ownership(env, &attr_value);
@@ -201,11 +203,13 @@ axiom_stax_builder_process_attributes(
         }
         if (uri)
         {
-            axiom_xml_reader_xml_free(om_builder->parser, env, uri);
+/*            axiom_xml_reader_xml_free(om_builder->parser, env, uri);*/
+            AXIS2_FREE(env->allocator,uri);
         }
         if (prefix)
         {
-            axiom_xml_reader_xml_free(om_builder->parser, env, prefix);
+/*            axiom_xml_reader_xml_free(om_builder->parser, env, prefix);*/
+            AXIS2_FREE(env->allocator,prefix);
         }
         if (attr_name_str)
         {
@@ -248,7 +252,9 @@ axiom_stax_builder_create_om_text(
 
 #ifdef WIN32
     temp_value_str = axutil_string_create(env, temp_value);
-    axiom_xml_reader_xml_free(om_builder->parser, env, temp_value);
+/*      axiom_xml_reader_xml_free(om_builder->parser, env,temp_value);*/
+    AXIS2_FREE(env->allocator,temp_value);
+    
 #else
     temp_value_str = axutil_string_create_assume_ownership(env, &temp_value);
 #endif
@@ -426,8 +432,12 @@ axiom_stax_builder_process_namespaces(
         axutil_string_free(temp_ns_uri_str, env);
         axutil_string_free(temp_ns_prefix_str, env);
 #ifdef WIN32
-        axiom_xml_reader_xml_free(om_builder->parser, env, temp_ns_uri);
-        axiom_xml_reader_xml_free(om_builder->parser, env, temp_ns_prefix);
+/*        axiom_xml_reader_xml_free(om_builder->parser, env, temp_ns_uri);
+          axiom_xml_reader_xml_free(om_builder->parser, env,
+        temp_ns_prefix);*/
+        AXIS2_FREE(env->allocator,temp_ns_uri);
+        AXIS2_FREE(env->allocator,tempm_ns_prefix);
+        
 #endif
         if (!om_ns)
         {
@@ -462,7 +472,8 @@ axiom_stax_builder_process_namespaces(
     }
     if (temp_prefix)
     {
-        axiom_xml_reader_xml_free(om_builder->parser, env, temp_prefix);
+/*        axiom_xml_reader_xml_free(om_builder->parser, env, temp_prefix);*/
+        AXIS2_FREE(env->allocator,temp_prefix);
     }
     return status;
 }
@@ -491,7 +502,9 @@ axiom_stax_builder_create_om_element(
 
 #ifdef WIN32
     temp_localname_str = axutil_string_create(env, temp_localname);
-    axiom_xml_reader_xml_free(om_builder->parser, env, temp_localname);
+/*    axiom_xml_reader_xml_free(om_builder->parser, env,
+ *    temp_localname);*/
+    AXIS2_FREE(env->allocator,temp_localname);
 #else
     temp_localname_str =
         axutil_string_create_assume_ownership(env, &temp_localname);
@@ -587,7 +600,10 @@ axiom_stax_builder_create_om_comment(
     if (!(om_builder->lastnode))
     {
         /* do nothing */
-        axiom_xml_reader_xml_free(om_builder->parser, env, comment_value);
+/*        axiom_xml_reader_xml_free(om_builder->parser, env,
+ *        comment_value);*/
+                AXIS2_FREE(env->allocator,om_builder->lastnode);
+
         return NULL;
     }
     else if (axiom_node_is_complete(om_builder->lastnode, env))
@@ -614,8 +630,8 @@ axiom_stax_builder_create_om_comment(
     }
 
     om_builder->element_level++;
-    axiom_xml_reader_xml_free(om_builder->parser, env, comment_value);
-
+/*    axiom_xml_reader_xml_free(om_builder->parser, env, comment_value);*/
+    AXIS2_FREE(env->allocator,comment_value);
     om_builder->lastnode = comment_node;
 
     return comment_node;
@@ -646,7 +662,8 @@ axiom_stax_builder_create_om_doctype(
         }
     }
     om_builder->lastnode = doctype_node;
-    axiom_xml_reader_xml_free(om_builder->parser, env, doc_value);
+/*    axiom_xml_reader_xml_free(om_builder->parser, env, doc_value);*/
+    AXIS2_FREE(env->allocator,doc_value);
     return doctype_node;
 }
 
@@ -670,9 +687,11 @@ axiom_stax_builder_create_om_processing_instruction(
     }
     if (!(om_builder->lastnode))
     {
-        /* do nothing */
+        /* do nothing 
         axiom_xml_reader_xml_free(om_builder->parser, env, target);
-        axiom_xml_reader_xml_free(om_builder->parser, env, value);
+        axiom_xml_reader_xml_free(om_builder->parser, env, value);*/
+        AXIS2_FREE(env->allocator,target);
+        AXIS2_FREE(env->allocator,value);
         return NULL;
     }
     else if (axiom_node_is_complete(om_builder->lastnode, env) ||
@@ -700,11 +719,15 @@ axiom_stax_builder_create_om_processing_instruction(
 
     if (target)
     {
-        axiom_xml_reader_xml_free(om_builder->parser, env, target);
+/*        axiom_xml_reader_xml_free(om_builder->parser, env, target);*/
+            AXIS2_FREE(env->allocator,target);
+
     }
     if (value)
     {
-        axiom_xml_reader_xml_free(om_builder->parser, env, value);
+/*        axiom_xml_reader_xml_free(om_builder->parser, env, value);*/
+                AXIS2_FREE(env->allocator,value);
+
     }
 
     om_builder->lastnode = pi_node;
@@ -871,6 +894,7 @@ axiom_stax_builder_free(
     if (om_builder->parser)
     {
         axiom_xml_reader_free(om_builder->parser, env);
+
         om_builder->parser = NULL;
     }
 
@@ -1158,3 +1182,15 @@ axiom_stax_builder_next_with_token(
     }
     return token;
 }
+
+
+
+
+
+
+
+
+
+
+
+
