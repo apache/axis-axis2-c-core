@@ -666,9 +666,6 @@ axis2_conf_builder_process_transport_senders(
 {
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, trs_senders, AXIS2_FAILURE);
-
     while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(trs_senders,
                                                                 env))
     {
@@ -854,6 +851,15 @@ is not presant");
                 axutil_class_loader_create_dll(env, impl_info_param);
             axis2_transport_out_desc_add_param(transport_out, env,
                                                impl_info_param);
+
+            if (!transport_sender)
+            {
+                AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
+                                 "transport sender value is NULL, unable to continue");
+                axis2_transport_out_desc_free(transport_out, env);
+                return status;
+            }
+
             status =
                 axis2_transport_out_desc_set_sender(transport_out, env,
                                                     transport_sender);
@@ -1164,8 +1170,26 @@ axis2_conf_builder_process_transport_recvs(
                     axutil_class_loader_create_dll(env, impl_info_param);
                 axis2_transport_in_desc_add_param(transport_in, env,
                                                   impl_info_param);
+
+                if (!recv)
+                {
+                    AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
+                                     "transport receiver value is NULL, unable to continue");
+                    axis2_transport_in_desc_free(transport_in, env);
+                    return status;
+                }
+
                 stat = axis2_transport_in_desc_set_recv(transport_in, env,
                                                         recv);
+
+                if (stat != AXIS2_SUCCESS)
+                {
+                    AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
+                                     "transport receiver value is NULL, unable to continue");
+                    axis2_transport_in_desc_free(transport_in, env);
+                    return stat;
+                }
+
             }
 
             /* process Parameters */
