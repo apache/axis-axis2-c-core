@@ -516,6 +516,11 @@ axis2_conf_free(
         axis2_desc_free(conf->base, env);
     }
 
+    if (conf->axis2_xml)
+    {
+        AXIS2_FREE (env->allocator, conf->axis2_xml);
+    }
+
     if (conf)
     {
         AXIS2_FREE(env->allocator, conf);
@@ -1391,7 +1396,6 @@ axis2_conf_engage_module(
     {
         axutil_file_t *file = NULL;
         axis2_char_t *file_name = NULL;
-        axis2_arch_reader_t *arch_reader = NULL;
         const axis2_char_t *repos_path = NULL;
         axis2_arch_file_data_t *file_data = NULL;
         axis2_char_t *temp_path1 = NULL;
@@ -1403,11 +1407,6 @@ axis2_conf_engage_module(
 		axis2_bool_t flag;
 		axis2_char_t *axis2_xml;
 
-        arch_reader = axis2_arch_reader_create(env);
-        if (!arch_reader)
-        {
-            return AXIS2_FAILURE;
-        }
         file_name = axutil_qname_get_localpart(module_ref, env);
         file =
             (axutil_file_t *) axis2_arch_reader_create_module_arch(env,
@@ -1456,7 +1455,7 @@ axis2_conf_engage_module(
         file_data = axis2_arch_file_data_create_with_type_and_file(env,
                                                                    AXIS2_MODULE,
                                                                    file);
-
+        axutil_file_free (file, env);
 		if (!flag)
         {
         	dep_engine = 
@@ -1476,9 +1475,22 @@ axis2_conf_engage_module(
          */
 
 		axis2_dep_engine_set_module_dir (dep_engine, env, path);
+
+        if (path)
+        {
+            AXIS2_FREE (env->allocator, path);
+        }
+
+        if (file_data)
+        {
+            axis2_arch_file_data_free(file_data, env);
+        }
+
         module_desc =
             axis2_dep_engine_build_module(dep_engine, env, file, conf);
         is_new_module = AXIS2_TRUE;
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "free dep engine");
+        axis2_dep_engine_free (dep_engine, env);
     }
 	
     if (module_desc)
@@ -1507,6 +1519,7 @@ axis2_conf_engage_module(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODULE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
+
     if (to_be_engaged)
     {
         axis2_phase_resolver_t *phase_resolver = NULL;
