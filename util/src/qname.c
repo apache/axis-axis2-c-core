@@ -251,7 +251,6 @@ axutil_qname_to_string(
     }
     else if (!(qname->prefix) || axutil_strcmp(qname->prefix, "") == 0)
     {
-
         axis2_char_t *temp_string1 = NULL;
         temp_string1 = axutil_stracat(env, qname->localpart, "|");
         qname->qname_string =
