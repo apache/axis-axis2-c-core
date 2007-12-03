@@ -436,7 +436,7 @@ axiom_stax_builder_process_namespaces(
           axiom_xml_reader_xml_free(om_builder->parser, env,
         temp_ns_prefix);*/
         AXIS2_FREE(env->allocator,temp_ns_uri);
-        AXIS2_FREE(env->allocator,tempm_ns_prefix);
+        AXIS2_FREE(env->allocator,temp_ns_prefix);
         
 #endif
         if (!om_ns)
