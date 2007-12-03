@@ -228,7 +228,7 @@ axiom_xml_reader_create_for_file(
 
     guththila_impl->guththila_parser = guththila;
     guththila_impl->parser.ops = NULL;
-    guththila_impl->parser.ops =
+/*    guththila_impl->parser.ops =
         (axiom_xml_reader_ops_t *) AXIS2_MALLOC(env->allocator,
                                                 sizeof(axiom_xml_reader_ops_t));
     if (!(guththila_impl->parser.ops))
@@ -238,7 +238,7 @@ axiom_xml_reader_create_for_file(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-
+*/
     guththila_xml_reader_wrapper_init_map(guththila_impl);
 
     /************** ops *****/
@@ -296,7 +296,7 @@ axiom_xml_reader_create_for_io(
 
     guththila_impl->guththila_parser = guththila;
     guththila_impl->parser.ops = NULL;
-    guththila_impl->parser.ops = (axiom_xml_reader_ops_t *)
+    /*  guththila_impl->parser.ops = (axiom_xml_reader_ops_t *)
         AXIS2_MALLOC(env->allocator, sizeof(axiom_xml_reader_ops_t));
     if (!(guththila_impl->parser.ops))
     {
@@ -304,7 +304,7 @@ axiom_xml_reader_create_for_io(
         AXIS2_FREE(env->allocator, guththila_impl);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-    }
+        }*/
 
     guththila_xml_reader_wrapper_init_map(guththila_impl);
 
@@ -378,7 +378,7 @@ axiom_xml_reader_create_for_memory(
 
     guththila_impl->guththila_parser = guththila;
     guththila_impl->parser.ops = NULL;
-    guththila_impl->parser.ops = (axiom_xml_reader_ops_t *)
+/*    guththila_impl->parser.ops = (axiom_xml_reader_ops_t *)
         AXIS2_MALLOC(env->allocator, sizeof(axiom_xml_reader_ops_t));
     if (!(guththila_impl->parser.ops))
     {
@@ -387,7 +387,7 @@ axiom_xml_reader_create_for_memory(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-
+*/
     guththila_xml_reader_wrapper_init_map(guththila_impl);
 
     /************** ops *****/
@@ -424,6 +424,7 @@ guththila_xml_reader_wrapper_free(
         guththila_un_init(parser_impl->guththila_parser, env);
     }
 
+    
     AXIS2_FREE(env->allocator, parser_impl);
 }
 
