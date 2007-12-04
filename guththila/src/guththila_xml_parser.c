@@ -367,6 +367,8 @@ guththila_free(guththila_t * m,const axutil_env_t * env)
     guththila_namespace_t * namesp = NULL;
     guththila_attr_t * attr = NULL;
     guththila_element_t* elem = NULL;
+    guththila_elem_namesp_t * e_namesp = NULL;
+
     if (m->prefix)
     {
         guththila_tok_list_release_token(&m->tokens, m->prefix, env);
@@ -440,8 +442,7 @@ guththila_free(guththila_t * m,const axutil_env_t * env)
         }
     }
 #else  /*   */
-    guththila_elem_namesp_t * e_namesp = NULL;
-
+    
     size = GUTHTHILA_STACK_SIZE(m->namesp);
     for (i = 0; i < size; i++)
     {
@@ -495,6 +496,8 @@ guththila_un_init(guththila_t * m,const axutil_env_t * env)
     guththila_namespace_t * namesp = NULL;
     guththila_attr_t * attr = NULL;
     guththila_element_t* elem = NULL;
+	guththila_elem_namesp_t * e_namesp = NULL;
+
     if (m->prefix)
     {
         guththila_tok_list_release_token(&m->tokens, m->prefix, env);
@@ -552,7 +555,7 @@ guththila_un_init(guththila_t * m,const axutil_env_t * env)
         }
     }
 #else  /*   */
-    guththila_elem_namesp_t * e_namesp = NULL;
+    
 
     size = GUTHTHILA_STACK_SIZE(m->namesp);
     for (i = 0; i < size; i++)
