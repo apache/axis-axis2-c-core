@@ -1168,3 +1168,42 @@ axiom_node_sub_tree_to_string(
     axiom_output_free(om_output, env);
     return xml;
 }
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axiom_node_to_string_non_optimized(
+    axiom_node_t * om_node,
+    const axutil_env_t * env)
+{
+    int status = AXIS2_SUCCESS;
+    axiom_output_t *om_output = NULL;
+    axiom_xml_writer_t *xml_writer = NULL;
+    axis2_char_t *xml = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, om_node, NULL);
+
+    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+                                                    AXIS2_XML_PARSER_TYPE_BUFFER);
+    if (!xml_writer)
+    {
+        return NULL;
+    }
+
+    om_output = axiom_output_create(env, xml_writer);
+    if (!om_output)
+    {
+        axiom_xml_writer_free(xml_writer, env);
+        return NULL;
+    }
+    /*This is where we set the output to be non-optimized*/
+    axiom_output_set_do_optimize(om_output, env, AXIS2_FALSE);
+    status = axiom_node_serialize(om_node, env, om_output);
+    if (status == AXIS2_SUCCESS)
+    {
+        xml =
+            axutil_strdup(env,
+                          (axis2_char_t *) axiom_xml_writer_get_xml(xml_writer,
+                                                                    env));
+    }
+    axiom_output_free(om_output, env);
+    return xml;
+}

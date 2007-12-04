@@ -196,7 +196,7 @@ axiom_text_serialize(
     else
     {
         om_output_xml_writer = axiom_output_get_xml_writer(om_output, env);
-        if (om_text->optimize)
+        if (axiom_output_is_optimized(om_output, env) && om_text->optimize)
         {
             if (!(axiom_text_get_content_id(om_text, env)))
             {

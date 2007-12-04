@@ -87,7 +87,7 @@ axiom_output_create(
 
     om_output->xml_writer = NULL;
     om_output->xml_writer = xml_writer;
-    om_output->do_optimize = AXIS2_FALSE;
+    om_output->do_optimize = AXIS2_TRUE;
     om_output->mime_boundary = NULL;
     om_output->root_content_id = NULL;
     om_output->next_content_id = NULL;
