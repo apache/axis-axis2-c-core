@@ -578,7 +578,8 @@ used for different XML input sources.</p>
     from an XML string that is in a character buffer</li>
 </ul>
 
-<p>Similarly <code>axiom_xml_writer</code> provides two create functions.</p>
+
+ls of the latest version can be found on the Apache Axis2/C
 <ul>
   <li><code>axiom_xml_writer_create_for_file</code> can be used to write to a
     file</li>
@@ -710,51 +711,53 @@ build_and_serialize_om(axutil_env_t *env)
     om_builder = axiom_stax_builder_create(env, xml_reader);
     <b>if</b>(!om_builder)
     {
-        AXIOM_XML_READER_FREE(xml_reader, env);
+        axiom_xml_reader_free(xml_reader, env);
         <b>return</b> AXIS2_FAILURE;
     }
-    document = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
+    document = axiom_stax_builder_get_document(om_builder, env);
     <b>if</b>(!document)
     {
-        AXIOM_STAX_BUILDER_FREE(om_builder, env);
+         axiom_stax_builder_free(om_builder, env);
         <b>return</b> AXIS2_FAILURE;
     }
     
-    root_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(document, env);
+    root_node = axiom_document_get_root_element(document, env);
     <b>if</b>(!root_node)
     {
-        AXIOM_STAX_BUILDER_FREE(om_builder, env);
+        axiom_stax_builder_free(om_builder, env);
         <b>return</b> AXIS2_FAILURE;
     }        
     <b>if</b>(root_node)
     {
-        <b>if</b>(AXIOM_NODE_GET_NODE_TYPE(root_node, env) == AXIOM_ELEMENT)
+        <b>if</b>(axiom_node_get_node_type(root_node, env) == AXIOM_ELEMENT)
         {
-            root_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT (root_node, env);
+            root_ele = (axiom_element_t*)axiom_node_get_data_element(root_node, env);
             <b>if</b>(root_ele)
             {
-                printf(" %s" , AXIOM_ELEMENT_GET_LOCALNAME(root_ele, env));
-            }
-        }
-    }
-    AXIOM_DOCUMENT_BUILD_ALL(document, env);
-    
-    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0, AXIS2_XML_PARSER_TYPE_BUFFER);
-    
-    om_output = axiom_output_create(env, xml_writer);
-    
-    AXIOM_NODE_SERIALIZE(root_node, env, om_output);
-    buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+   printf(" %s" ,axiom_element_get_localname(root_ele, env));
+            }
+        }
+    }
 
-    printf("The output XML is -&gt;&gt;&gt;&gt;\n %s ", buffer);
+    axiom_document_build_all(document, env);
+    axiom_document_build_all(document, env);
 
-    
+    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0, AXIS2_XML_PARSER_TYPE_BUFFER);
+
+    om_output = axiom_output_create(env, xml_writer);
+
+    axiom_node_serialize(root_node, env, om_output);
+
+    buffer = (axis2_char_t*)axiom_xml_writer_get_xml(xml_writer, env);
+
+    printf("The output XML is ->>>>\n %s ", buffer);
+  
     <i>/** when om_output is freed xml_writer is also freed */</i>
     
-    AXIOM_OUTPUT_FREE(om_output, env);
+    axiom_output_free(om_output, env);
     
     <i>/** when om_builder is freed , the builder, om_document and the entire AXIOM structure is freed */</i>
-    AXIOM_STAX_BUILDER_FREE(om_builder, env);
+    axiom_stax_builder_free(om_builder, env);
     
     AXIS2_FREE(env-&gt;allocator, buffer);
     
