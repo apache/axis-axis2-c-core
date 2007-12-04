@@ -158,7 +158,7 @@ functionalities that differ from system to system into a structure
 <code>axutil_env_t</code>, which we refer to as the Axis2 environment. The
 environment holds <code>axutil_allocator_t</code>, which is used for memory
 allocation and deallocation, <code>axutil_error_t</code>, which is used for
-error reporting, <code>axuitl_log_t</code>, which is used for logging
+error reporting, <code>axutil_log_t</code>, which is used for logging
 mechanisms, and <code>axutil_thread_t</code> which is used for threading
 mechanisms.</p>
 
@@ -181,13 +181,13 @@ are defined to use allocator functions (please have a look at
 
 <p>In a similar fashion, you can create the error and log structures.</p>
 
-<p><code>axuitl_log_t *log = NULL;</code></p>
+<p><code>axutil_log_t *log = NULL;</code></p>
 
 <p><code>axutil_error_t *error = NULL;</code></p>
 
-<p><code>log = axuitl_log_create(allocator, NULL, NULL);</code></p>
+<p><code>log = axutil_log_create(allocator, NULL, NULL);</code></p>
 
-<p><code>log = axuitl_log_create(allocator, NULL, "mylog.log");</code></p>
+<p><code>log = axutil_log_create(allocator, NULL, "mylog.log");</code></p>
 
 <p></p>
 
@@ -659,7 +659,7 @@ console.</p>
 <pre>#include &lt;axiom.h&gt;
 #include &lt;axis2_util.h&gt;
 #include &lt;axutil_env.h&gt;
-#include &lt;axuitl_log_default.h&gt;
+#include &lt;axutil_log_default.h&gt;
 #include &lt;axutil_error_default.h&gt;
 #include &lt;stdio.h&gt;
 
@@ -676,11 +676,11 @@ axutil_env_t * create_environment()
 {
     axutil_allocator_t *allocator = NULL;
     axutil_env_t *env = NULL;
-    axuitl_log_t *log = NULL;
+    axutil_log_t *log = NULL;
 
     axutil_error_t *error = NULL;
     allocator = axutil_allocator_init(NULL);
-    log = axuitl_log_create(allocator, NULL, NULL);
+    log = axutil_log_create(allocator, NULL, NULL);
 
     error = axutil_error_create(allocator);
     env = axutil_env_create_with_error_log(allocator, error, log);
