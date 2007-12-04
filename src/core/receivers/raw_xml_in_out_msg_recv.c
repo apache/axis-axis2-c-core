@@ -92,6 +92,8 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, new_msg_ctx, AXIS2_FAILURE);
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "[axis2]Entry:axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync");
 
     /* get the implementation class for the Web Service */
     svc_obj = axis2_msg_recv_get_impl_obj(msg_recv, env, msg_ctx);
@@ -349,7 +351,8 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         axiom_soap_envelope_free(default_envelope, env);
         default_envelope = NULL;
     }
-
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "[axis2]Exit:axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync");
     return status;
 }
 

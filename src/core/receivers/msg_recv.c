@@ -287,7 +287,8 @@ axis2_msg_recv_receive_impl(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "[axis2]Entry:axis2_msg_recv_receive_impl");
     out_msg_ctx = axis2_core_utils_create_out_msg_ctx(env, msg_ctx);
     if (!out_msg_ctx)
     {
@@ -366,6 +367,8 @@ axis2_msg_recv_receive_impl(
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
     }
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "[axis2]Exit:axis2_msg_recv_receive_impl");
     return status;
 }
 
