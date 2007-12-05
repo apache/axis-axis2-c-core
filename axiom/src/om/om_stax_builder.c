@@ -627,7 +627,7 @@ axiom_stax_builder_create_om_comment(
 #ifdef WIN32
     axiom_xml_reader_xml_free(om_builder->parser, env, comment_value);
 #else
-	AXIS2_FREE(env->allocator,comment_value);
+/*	AXIS2_FREE(env->allocator,comment_value);*/
 #endif 
 
 	om_builder->lastnode = comment_node;
