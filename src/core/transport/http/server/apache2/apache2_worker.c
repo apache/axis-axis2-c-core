@@ -31,6 +31,7 @@
 #include <http_core.h>
 #include <http_protocol.h>
 #include <axiom_soap.h>
+#include <axutil_class_loader.h>
 
 #define READ_SIZE  2048
 
@@ -45,7 +46,12 @@ axis2_apache2_worker_create(
     axis2_char_t * repo_path)
 {
     axis2_apache2_worker_t *apache2_worker = NULL;
+	axutil_hash_t* svc_map = NULL;
+	axis2_conf_t* conf = NULL;
+	axutil_hash_index_t *hi = NULL;
+	void* svc = NULL;
     AXIS2_ENV_CHECK(env, NULL);
+	AXIS2_LOG_INFO(env->log,"[Axis2] Axis2 aaa worker created");
     apache2_worker = (axis2_apache2_worker_t *)
         AXIS2_MALLOC(env->allocator, sizeof(axis2_apache2_worker_t));
 
@@ -63,6 +69,55 @@ axis2_apache2_worker_create(
         return NULL;
     }
 
+	/*
+	 * we have to load all the services. This is because, before the fork (in linux)
+	 * we should have a full code segment. Otherwise, we can't share function pointers of services
+	 * between processed. In fork, the code segment will be duplicated across processes
+	 */
+	conf = axis2_conf_ctx_get_conf(apache2_worker->conf_ctx, env);
+	if (!conf)
+	{
+		axis2_apache2_worker_free((axis2_apache2_worker_t *) apache2_worker, 
+								env);
+		return NULL;
+	}
+
+	svc_map = axis2_conf_get_all_svcs(conf, env);
+	if (!svc_map)
+	{
+		axis2_apache2_worker_free((axis2_apache2_worker_t *) apache2_worker,
+								env);
+		return NULL;
+	}
+
+		
+	for (hi = axutil_hash_first(svc_map, env);
+			hi; hi = axutil_hash_next(env, hi))
+	{
+		void *impl_class = NULL;
+		axutil_param_t *impl_info_param = NULL;
+
+		axutil_hash_this(hi, NULL, NULL, &svc);
+		if (!svc)
+			continue;
+		impl_class = axis2_svc_get_impl_class(svc, env);
+		if (impl_class)
+			continue;
+		impl_info_param = axis2_svc_get_param(svc, env, AXIS2_SERVICE_CLASS);
+		if (!impl_info_param)
+			continue;
+
+		axutil_class_loader_init(env);
+		impl_class = axutil_class_loader_create_dll(env, impl_info_param);
+		axis2_svc_set_impl_class(svc, env, impl_class);
+		if (impl_class)
+		{
+			AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *) impl_class, env);
+		}
+	}
+
+	AXIS2_LOG_INFO(env->log,"[Axis2] Axis2 worker created");
+
     return apache2_worker;
 }
 
@@ -79,7 +134,7 @@ axis2_apache2_worker_free(
         apache2_worker->conf_ctx = NULL;
     }
 
-    AXIS2_FREE(env->allocator, apache2_worker->conf_ctx);
+    AXIS2_FREE(env->allocator, apache2_worker);
 
     return;
 }

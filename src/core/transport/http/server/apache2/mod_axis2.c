@@ -28,6 +28,9 @@
 #include <axutil_thread_pool.h>
 #include <axiom_xml_reader.h>
 #include <axutil_version.h>
+#include <apr_rmm.h>
+#include <apr_shm.h>
+
 
 /* Configuration structure populated by apache2.conf */
 typedef struct axis2_config_rec
@@ -36,11 +39,14 @@ typedef struct axis2_config_rec
     char *axis2_repo_path;
     axutil_log_levels_t log_level;
     int max_log_file_size;
+	int axis2_global_pool_size;
 }
 axis2_config_rec_t;
 
 axis2_apache2_worker_t *axis2_worker = NULL;
 const axutil_env_t *axutil_env = NULL;
+apr_rmm_t* rmm = NULL;
+apr_global_mutex_t *global_mutex = NULL;
 
 /******************************Function Headers********************************/
 static void *axis2_create_svr(
@@ -62,6 +68,12 @@ axis2_set_max_log_file_size(
     cmd_parms * cmd,
     void *dummy,
     const char *arg);
+
+static const char *
+axis2_set_global_pool_size(
+	cmd_parms * cmd, 
+	void * dummy,
+	const char *arg);
 
 static const char *axis2_set_log_level(
     cmd_parms * cmd,
@@ -107,6 +119,8 @@ static const command_rec axis2_cmds[] = {
                   "Axis2/C log level"),
     AP_INIT_TAKE1("Axis2MaxLogFileSize", axis2_set_max_log_file_size, NULL, RSRC_CONF,
                   "Axis2/C maximum log file size"),
+    AP_INIT_TAKE1("Axis2GlobalPoolSize", axis2_set_global_pool_size, NULL, RSRC_CONF,
+                  "Axis2/C global pool size"),
     AP_INIT_TAKE1("Axis2ServiceURLPrefix", axis2_set_svc_url_prefix, NULL,
                   RSRC_CONF,
                   "Axis2/C service URL prifix"),
@@ -192,6 +206,26 @@ axis2_set_max_log_file_size(
         (axis2_config_rec_t *) ap_get_module_config(cmd->server->module_config,
                                                     &axis2_module);
     conf->max_log_file_size = 1024 * 1024 * atoi(arg);
+    return NULL;
+}
+
+static const char *
+axis2_set_global_pool_size(
+    cmd_parms * cmd,
+    void *dummy,
+    const char *arg)
+{
+    axis2_config_rec_t *conf = NULL;
+    const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
+    if (err != NULL)
+    {
+        return err;
+    }
+
+    conf =
+        (axis2_config_rec_t *) ap_get_module_config(cmd->server->module_config,
+                                                    &axis2_module);
+    conf->axis2_global_pool_size = 1024 * 1024 * atoi(arg);
     return NULL;
 }
 
@@ -324,7 +358,21 @@ axis2_module_malloc(
     axutil_allocator_t * allocator,
     size_t size)
 {
-    return apr_palloc((apr_pool_t *) (allocator->current_pool), size);
+#if APR_HAS_SHARED_MEMORY
+	if (rmm == allocator->current_pool)
+	{
+		
+		void* ptr = NULL;
+		apr_rmm_off_t offset;
+		apr_global_mutex_lock(global_mutex);
+		offset = apr_rmm_malloc(rmm, size);
+		if (offset)
+			ptr = apr_rmm_addr_get(rmm, offset);
+		apr_global_mutex_unlock(global_mutex);
+		return ptr;
+	}
+#endif
+	return apr_palloc((apr_pool_t *) (allocator->current_pool), size);
 }
 
 void *AXIS2_CALL
@@ -333,8 +381,21 @@ axis2_module_realloc(
     void *ptr,
     size_t size)
 {
-    /* can't be easily implemented */
-    return NULL;
+#if APR_HAS_SHARED_MEMORY
+	if (rmm == allocator->current_pool)
+	{
+		void* ptr = NULL;
+		apr_rmm_off_t offset;
+		apr_global_mutex_lock(global_mutex);
+		offset = apr_rmm_realloc(rmm, ptr, size);
+		if (offset)
+			ptr = apr_rmm_addr_get(rmm, offset);
+		apr_global_mutex_unlock(global_mutex);
+		return ptr;
+	}
+#endif
+	/* can't be easily implemented */
+	return NULL;
 }
 
 void AXIS2_CALL
@@ -342,59 +403,133 @@ axis2_module_free(
     axutil_allocator_t * allocator,
     void *ptr)
 {
+#if APR_HAS_SHARED_MEMORY
+	if (rmm == allocator->current_pool)
+	{
+		apr_rmm_off_t offset;
+		apr_global_mutex_lock(global_mutex);
+		offset = apr_rmm_offset_get(rmm, ptr);
+		apr_rmm_free(rmm, offset);
+		apr_global_mutex_unlock(global_mutex);
+	}
+#endif
 }
 
-static void
-axis2_module_init(
-    apr_pool_t * p,
-    server_rec * svr_rec)
+static int axis2_post_config(apr_pool_t *pconf, apr_pool_t *plog,
+								 apr_pool_t *ptemp, server_rec *svr_rec)
 {
-    apr_pool_t *pool;
-    apr_status_t status;
+	apr_status_t status = APR_SUCCESS;
     axutil_allocator_t *allocator = NULL;
     axutil_error_t *error = NULL;
     axutil_log_t *axutil_logger = NULL;
     axutil_thread_pool_t *thread_pool = NULL;
-    axis2_config_rec_t *conf =
-        (axis2_config_rec_t *) ap_get_module_config(svr_rec->module_config,
-                                                    &axis2_module);
+	void *data = NULL;
+	const char *userdata_key = "axis2_init";
+	axis2_config_rec_t *conf =
+		(axis2_config_rec_t *) ap_get_module_config(svr_rec->module_config,
+													&axis2_module);
+
+	/* axis2_post_config() will be called twice. Don't bother
+	 * going through all of the initialization on the first call
+	 * because it will just be thrown away.*/
+	apr_pool_userdata_get(&data, userdata_key, svr_rec->process->pool);
+	if (!data) 
+	{
+		apr_pool_userdata_set((const void *)1, userdata_key,
+								apr_pool_cleanup_null, svr_rec->process->pool);
+		return OK;
+	}
+
+#if APR_HAS_SHARED_MEMORY
+	if (conf->axis2_global_pool_size > 0)
+	{
+		apr_shm_t *shm;
+		apr_rmm_off_t offset;
+
+		status = apr_shm_create(&shm, conf->axis2_global_pool_size, NULL, pconf);
+		if (status != APR_SUCCESS)
+		{
+			ap_log_error(APLOG_MARK, APLOG_EMERG, status, svr_rec,
+										 "[Axis2] Error creating shared memory pool");
+			exit(APEXIT_INIT);
+		}
+		
+		status = apr_rmm_init(&rmm, NULL, apr_shm_baseaddr_get(shm), conf->axis2_global_pool_size,
+				                      pconf);
+		if (status != APR_SUCCESS)
+		{
+			ap_log_error(APLOG_MARK, APLOG_EMERG, status, svr_rec,
+										"[Axis2] Error creating relocatable memory pool");
+			exit(APEXIT_INIT);
+		}
+
+		status = apr_global_mutex_create(&global_mutex, NULL,
+										  APR_LOCK_DEFAULT, pconf);
+		if (status != APR_SUCCESS)
+		{
+			ap_log_error(APLOG_MARK, APLOG_EMERG, status, svr_rec,
+									"[Axis2] Error creating global mutex");
+			exit(APEXIT_INIT);
+		} 
+
+		/*status = unixd_set_global_mutex_perms(global_mutex);
+		if (status != APR_SUCCESS)
+		{
+			 ap_log_error(APLOG_MARK, APLOG_EMERG, status, svr_rec, 
+					 				"[Axis2] Permision cannot be set to global mutex");
+			 exit(APEXIT_INIT);
+		}
+		*/
+
+		offset = apr_rmm_malloc(rmm, sizeof(axutil_allocator_t));
+		if (!offset)
+		{
+			ap_log_error(APLOG_MARK, APLOG_EMERG, status, svr_rec,
+									"[Axis2] Error in creating allocator in global pool");
+			exit(APEXIT_INIT);
+		}
+		allocator = apr_rmm_addr_get(rmm, offset);
+		allocator->malloc_fn = axis2_module_malloc;
+		allocator->realloc = axis2_module_realloc;
+		allocator->free_fn = axis2_module_free;
+		allocator->local_pool = (void *) rmm;
+		allocator->current_pool = (void *) rmm;
+		allocator->global_pool = (void *) rmm;
+	}
+	else
+#endif
+    /* create an allocator that uses APR memory pools and lasts the
+     * lifetime of the httpd server child process
+     */
+	{
+		apr_pool_t *pool = NULL;
+		status = apr_pool_create(&pool, pconf);
+		if (status)
+		{
+			ap_log_error(APLOG_MARK, APLOG_EMERG, status, svr_rec,
+						 "[Axis2] Error allocating mod_axis2 memory pool");
+			exit(APEXIT_INIT);
+		}
+		allocator = (axutil_allocator_t *) apr_palloc(pool,
+													  sizeof(axutil_allocator_t));
+		if (!allocator)
+		{
+			ap_log_error(APLOG_MARK, APLOG_EMERG, APR_ENOMEM, svr_rec,
+						 "[Axis2] Error allocating mod_axis2 allocator");
+			exit(APEXIT_INIT);
+		}
+		allocator->malloc_fn = axis2_module_malloc;
+		allocator->realloc = axis2_module_realloc;
+		allocator->free_fn = axis2_module_free;
+		allocator->local_pool = (void *) pool;
+		allocator->current_pool = (void *) pool;
+		allocator->global_pool = (void *) pool;
+	}
+
 
     /* We need to init xml readers before we go into threaded env
      */
     axiom_xml_reader_init();
-
-    /* create an allocator that uses APR memory pools and lasts the
-     * lifetime of the httpd server child process
-     */
-    status = apr_pool_create(&pool, p);
-    if (status)
-    {
-        ap_log_error(APLOG_MARK, APLOG_EMERG, status, svr_rec,
-                     "[Axis2] Error allocating mod_axis2 memory pool");
-        exit(APEXIT_CHILDFATAL);
-    }
-    allocator = (axutil_allocator_t *) apr_palloc(pool,
-                                                  sizeof(axutil_allocator_t));
-    if (!allocator)
-    {
-        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_ENOMEM, svr_rec,
-                     "[Axis2] Error allocating mod_axis2 allocator");
-        exit(APEXIT_CHILDFATAL);
-    }
-    allocator->malloc_fn = axis2_module_malloc;
-    allocator->realloc = axis2_module_realloc;
-    allocator->free_fn = axis2_module_free;
-    allocator->local_pool = (void *) pool;
-    allocator->current_pool = (void *) pool;
-    allocator->global_pool = (void *) pool;
-
-    if (!allocator)
-    {
-        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
-                     "[Axis2] Error initializing mod_axis2 allocator");
-        exit(APEXIT_CHILDFATAL);
-    }
-
     axutil_error_init();
 
     error = axutil_error_create(allocator);
@@ -404,6 +539,7 @@ axis2_module_init(
                      "[Axis2] Error creating mod_axis2 error structure");
         exit(APEXIT_CHILDFATAL);
     }
+	
     axutil_logger = axutil_log_create(allocator, NULL, conf->axutil_log_file);
     if (!axutil_logger)
     {
@@ -429,7 +565,6 @@ axis2_module_init(
     }
     if (axutil_logger)
     {
-
         axutil_logger->level = conf->log_level;
         axutil_logger->size = conf->max_log_file_size;
         AXIS2_LOG_INFO(axutil_env->log, "Apache Axis2/C version in use : %s",
@@ -438,20 +573,30 @@ axis2_module_init(
             "Starting log with log level %d and max log file size %d",
                        conf->log_level, conf->max_log_file_size);
     }
-    axis2_worker = axis2_apache2_worker_create(axutil_env,
-                                               conf->axis2_repo_path);
+
+	axis2_worker = axis2_apache2_worker_create(axutil_env,
+												conf->axis2_repo_path);
     if (!axis2_worker)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
                      "[Axis2] Error creating mod_axis2 apache2 worker");
         exit(APEXIT_CHILDFATAL);
     }
+	return OK;
+}
+
+static void
+axis2_module_init(
+    apr_pool_t * p,
+    server_rec * svr_rec)
+{
 }
 
 static void
 axis2_register_hooks(
     apr_pool_t * p)
 {
+	ap_hook_post_config(axis2_post_config, NULL, NULL, APR_HOOK_MIDDLE);
     ap_hook_handler(axis2_handler, NULL, NULL, APR_HOOK_MIDDLE);
     ap_hook_child_init(axis2_module_init, NULL, NULL, APR_HOOK_MIDDLE);
 }
