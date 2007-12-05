@@ -1,4 +1,4 @@
-The release comes in two forms, source and binary. 
+vThe release comes in two forms, source and binary. 
 
 To get both the binary and source distributions working, you need Libxml2 from
 http://xmlsoft.org/downloads.html
@@ -378,7 +378,7 @@ Table of Contents
     cp $AXIS2C_HOME/lib/libmod_axis2.so.0.0.0 /usr/lib/apache2/modules/mod_axis2.so
         in Linux or
 
-    copy C:\axis2c\build\deploy\lib\mod_axis2.dll C:\Apache2\modules\mod_axis2.dll
+    copy C:\axis2c\build\deploy\lib\mod_axis2.dll C:\Apache2\modules\mod_axis2.so
         in Windows
 
     Edit the Apache2's configuration file (generally httpd.conf) and add the
@@ -387,6 +387,7 @@ Table of Contents
     LoadModule axis2_module <apache2 modules directory>/mod_axis2.so
     Axis2RepoPath <axis2 repository path>
     Axis2LogFile <axis2 log file path>
+    Axis2MaxLogFileSize <maximum size of log file>
     Axis2LogLevel LOG_LEVEL
     <Location /axis2>
         SetHandler axis2_module
@@ -394,6 +395,12 @@ Table of Contents
 
     NOTE: Axis2 log file path should have write access to all users because by
           default Apache Web Server runs as nobody.
+    NOTE: If you want to use a Shared Global Pool with Apache you have to give another
+          entry called Axis2GlobalPoolSize.You have to give the size of the shared global
+          pool in MB.If you doesn't set the value or if you set a negative value Apache 
+          module doesn't create shared global pool.
+        
+          Axis2GlobalPoolSize <global pool size in MB>        
 
     LOG_LEVEL can be one of following
         crit - Log critical errors only
