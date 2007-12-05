@@ -153,9 +153,9 @@ LIBS = $(LIBS) libcurl_imp.lib
 !endif
 
 !if "$(APACHE_VERSION_2_0_X)" == "1"
-APACHE_LIBS = apr.lib xml.lib libhttpd.lib aprutil.lib libapr.lib
+APACHE_LIBS = apr.lib xml.lib libhttpd.lib libaprutil.lib libapr.lib
 !else
-APACHE_LIBS = apr-1.lib xml.lib libhttpd.lib aprutil-1.lib libapr-1.lib libaprutil-1.lib
+APACHE_LIBS = apr-1.lib xml.lib libhttpd.lib libapr-1.lib libaprutil-1.lib
 !endif
 
 ####################
