@@ -38,7 +38,7 @@ libaxutil_la_SOURCES = hash.c \
 						duration.c
                         
 libaxutil_la_LIBADD =	$(top_builddir)/src/platforms/unix/libaxis2_unix.la \
-                    		$(top_builddir)/src/minizip/libaxis2_minizip.la
+			@ZLIBLIBS@
 
 libaxutil_la_LDFLAGS = -version-info $(VERSION_NO)
 
