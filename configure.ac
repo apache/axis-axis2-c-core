@@ -104,6 +104,34 @@ dnl AC_FUNC_MALLOC
 dnl AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
+AC_MSG_CHECKING(whether to use archive)
+AC_ARG_WITH(archive,
+[  --with-archive[=PATH]      Find the zlib header files in 'PATH'.
+    If you omit the '=PATH' part completely, the configure script will search
+    '/usr/include/' for zlib headers.],
+[ case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    ZLIBBUILD=""
+    zliblibs=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    zliblibs="$(top_builddir)/src/minizip/libaxis2_minizip.la"
+    CFLAGS="$CFLAGS -DAXIS2_ARCHIVE_ENABLED"
+    if test -d $withval; then
+        zlibinc="-I$withval"
+    elif test -d '/usr/include'; then
+        zlibinc="-I/usr/include"
+    else
+        AC_MSG_ERROR(could not find zlib stop)
+    fi
+    ZLIBBUILD="minizip"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
 AC_MSG_CHECKING(whether to build libxml2 xml parser library)
 AC_ARG_ENABLE(libxml2, [  --enable-libxml2    
                           build Libxml2 XML parser library wrapper (default=yes)],
