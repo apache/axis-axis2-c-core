@@ -196,7 +196,10 @@ axutil_dir_handler_list_service_or_module_dirs(
 
     /* pathname is path of services directory or modules directory. */ 
     chdir(pathname);
+#ifdef AXIS2_ARCHIVE_ENABLED
     axis2_archive_extract();
+#endif
+
 
     count = AXIS2_SCANDIR(pathname, &files, dir_select, AXIS2_ALPHASORT);
     chdir(cwd);
