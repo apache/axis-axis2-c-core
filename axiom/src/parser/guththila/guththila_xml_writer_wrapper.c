@@ -471,6 +471,9 @@ guththila_xml_writer_wrapper_write_attribute(
     axis2_char_t * localname,
     axis2_char_t * value)
 {
+    if(!value)
+        value = "";
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, localname, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
@@ -487,6 +490,8 @@ guththila_xml_writer_wrapper_write_attribute_with_namespace(
     axis2_char_t * value,
     axis2_char_t * namespace_uri)
 {
+    if(!value)
+        value = "";
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, localname, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
