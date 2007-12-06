@@ -24,7 +24,10 @@
 #   define S_ISDIR(m) ((m & S_IFMT) == S_IFDIR)
 #endif
 
+#ifdef AXIS2_ARCHIVE_ENABLED
 #include <minizip/axis2_archive_extract.h>
+#endif
+
 
 extern int AXIS2_ALPHASORT(
     );
