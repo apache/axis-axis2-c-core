@@ -78,6 +78,7 @@ PARSER = build
 
 !if "$(ENABLE_GUTHTHILA)" == "1"
 PARSER = $(PARSER)_with_guththila
+CFLAGS = $(CFLAGS) /D "AXIS2_GUTHTHILA_ENABLED"
 !endif
 
 # include path
