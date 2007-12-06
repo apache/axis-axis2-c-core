@@ -104,6 +104,7 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser lib
     ;;
   *)
     AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -DAXIS2_GUTHTHILA_ENABLED"
     WRAPPER_DIR="guththila"
 
     ;;

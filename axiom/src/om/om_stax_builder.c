@@ -427,7 +427,7 @@ axiom_stax_builder_process_namespaces(
         axutil_string_free(temp_ns_uri_str, env);
         axutil_string_free(temp_ns_prefix_str, env);
 #ifdef WIN32
-        axiom_xml_reader_xml_free(om_builder->parser, env, temp_ns_uri);
+         axiom_xml_reader_xml_free(om_builder->parser, env, temp_ns_uri);
         axiom_xml_reader_xml_free(om_builder->parser, env, temp_ns_prefix);
 #endif
         if (!om_ns)
@@ -461,19 +461,11 @@ axiom_stax_builder_process_namespaces(
             return AXIS2_FAILURE;
         }
     }
-#ifdef WIN32
-    if (temp_prefix)
-    {
-        axiom_xml_reader_xml_free(om_builder->parser, env, temp_prefix);
-    }
-#else 
-	if(temp_prefix)
-	{
-		AXIS2_FREE(env->allocator,temp_prefix);
-	}
-#endif 
-
-			
+#ifdef AXIS2_GUTHTHILA_ENABLED
+    AXIS2_FREE(env->allocator,temp_prefix);
+#else
+    axiom_xml_reader_xml_free(om_builder->parser, env, temp_prefix);
+#endif
     return status;
 }
 
@@ -624,11 +616,16 @@ axiom_stax_builder_create_om_comment(
     }
 
     om_builder->element_level++;
-#ifdef WIN32
-    axiom_xml_reader_xml_free(om_builder->parser, env, comment_value);
+
+#ifdef AXIS2_GUTHTHILA_ENABLED
+
+    AXIS2_FREE(env->allocator,comment_value);
+
 #else
-/*	AXIS2_FREE(env->allocator,comment_value);*/
-#endif 
+
+    axiom_xml_reader_xml_free(om_builder->parser,env,comment_value);
+
+#endif
 
 	om_builder->lastnode = comment_node;
 
