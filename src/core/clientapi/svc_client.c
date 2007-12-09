@@ -1417,11 +1417,13 @@ axis2_svc_client_get_last_response_has_fault(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_client_set_proxy(
+axis2_svc_client_set_proxy_with_auth(
     axis2_svc_client_t * svc_client,
     const axutil_env_t * env,
     axis2_char_t * proxy_host,
-    axis2_char_t * proxy_port)
+    axis2_char_t * proxy_port,
+    axis2_char_t * username,
+    axis2_char_t * password)
 {
     axis2_transport_out_desc_t *trans_desc = NULL;
     axis2_conf_t *conf = NULL;
@@ -1431,8 +1433,12 @@ axis2_svc_client_set_proxy(
     axutil_hash_t *attribute;
     axutil_generic_obj_t *host_obj = NULL;
     axutil_generic_obj_t *port_obj = NULL;
+    axutil_generic_obj_t *username_obj = NULL;
+    axutil_generic_obj_t *password_obj = NULL;
     axiom_attribute_t *host_attr = NULL;
     axiom_attribute_t *port_attr = NULL;
+    axiom_attribute_t *username_attr = NULL;
+    axiom_attribute_t *password_attr = NULL;
 
     AXIS2_PARAM_CHECK(env->error, svc_client, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, proxy_host, AXIS2_FAILURE);
@@ -1455,7 +1461,7 @@ axis2_svc_client_set_proxy(
         {
             return AXIS2_FAILURE;
         }
-
+        
         attribute = axutil_hash_make(env);
         host_obj = axutil_generic_obj_create(env);
         port_obj = axutil_generic_obj_create(env);
@@ -1468,11 +1474,33 @@ axis2_svc_client_set_proxy(
                         host_obj);
         axutil_hash_set(attribute, AXIS2_HTTP_PROXY_PORT, AXIS2_HASH_KEY_STRING,
                         port_obj);
+        if (username && password)
+        {
+                username_obj = axutil_generic_obj_create(env);
+                password_obj = axutil_generic_obj_create(env);
+                username_attr = axiom_attribute_create(env, username, NULL, NULL);
+                password_attr = axiom_attribute_create(env, password, NULL, NULL);
+                axutil_generic_obj_set_value(username_obj, env, username_attr);
+                axutil_generic_obj_set_value(password_obj, env, password_attr);
+                axutil_hash_set(attribute, AXIS2_HTTP_PROXY_USERNAME, AXIS2_HASH_KEY_STRING,
+                                username_obj);
+                axutil_hash_set(attribute, AXIS2_HTTP_PROXY_PASSWORD, AXIS2_HASH_KEY_STRING,
+                                password_obj);
+        }
         axutil_param_set_attributes(param, env, attribute);
         axutil_param_container_add_param(param_container, env, param);
-
     }
     return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_svc_client_set_proxy(
+    axis2_svc_client_t * svc_client,
+    const axutil_env_t * env,
+    axis2_char_t * proxy_host,
+    axis2_char_t * proxy_port)
+{
+    return axis2_svc_client_set_proxy_with_auth(svc_client, env, proxy_host, proxy_port, NULL, NULL);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

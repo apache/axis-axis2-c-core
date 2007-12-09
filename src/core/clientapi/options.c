@@ -934,3 +934,108 @@ axis2_options_set_http_method(
                                method_property);
     return AXIS2_SUCCESS;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_options_set_proxy_auth_info(
+    axis2_options_t * options,
+    const axutil_env_t * env,
+    const axis2_char_t * username,
+    const axis2_char_t * password,
+    const axis2_char_t * auth_type)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    axutil_property_t *prop_un = axutil_property_create(env);
+    axutil_property_set_value(prop_un, env, axutil_strdup(env, username));
+    axis2_options_set_property(options, env, AXIS2_PROXY_AUTH_UNAME, prop_un);
+
+    axutil_property_t *prop_pw = axutil_property_create(env);
+    axutil_property_set_value(prop_pw, env, axutil_strdup(env, password));
+    axis2_options_set_property(options, env, AXIS2_PROXY_AUTH_PASSWD, prop_pw);
+
+    axis2_bool_t force_proxy_auth = AXIS2_FALSE;
+
+    if(auth_type)
+    {
+        if ((axutil_strcmp (auth_type, AXIS2_PROXY_AUTH_TYPE_BASIC) == 0) ||
+           (axutil_strcmp (auth_type, AXIS2_PROXY_AUTH_TYPE_DIGEST) == 0))
+        {
+            force_proxy_auth = AXIS2_TRUE;
+        }
+    }
+    if (force_proxy_auth)
+    {
+        axutil_property_t *proxy_auth_property = axutil_property_create(env);
+        axutil_property_set_value(proxy_auth_property, env,
+                                  axutil_strdup(env, AXIS2_VALUE_TRUE));
+        axis2_options_set_property(options, env, AXIS2_FORCE_PROXY_AUTH,
+                                   proxy_auth_property);
+
+        axutil_property_t *proxy_auth_type_property = axutil_property_create(env);
+        axutil_property_set_value(proxy_auth_type_property, env,
+                                  axutil_strdup(env, auth_type));
+        axis2_options_set_property(options, env, AXIS2_PROXY_AUTH_TYPE,
+                                   proxy_auth_type_property);
+    }
+    else
+    {
+        axutil_property_t *proxy_auth_property = axutil_property_create(env);
+        axutil_property_set_value(proxy_auth_property, env,
+                                  axutil_strdup(env, AXIS2_VALUE_FALSE));
+        axis2_options_set_property(options, env, AXIS2_FORCE_PROXY_AUTH,
+                                   proxy_auth_property);
+    }
+    return AXIS2_SUCCESS; 
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_options_set_http_auth_info(
+    axis2_options_t * options,
+    const axutil_env_t * env,
+    const axis2_char_t * username,
+    const axis2_char_t * password,
+    const axis2_char_t * auth_type)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    axutil_property_t *prop_un = axutil_property_create(env);
+    axutil_property_set_value(prop_un, env, axutil_strdup(env, username));
+    axis2_options_set_property(options, env, AXIS2_HTTP_AUTH_UNAME, prop_un);
+
+    axutil_property_t *prop_pw = axutil_property_create(env);
+    axutil_property_set_value(prop_pw, env, axutil_strdup(env, password));
+    axis2_options_set_property(options, env, AXIS2_HTTP_AUTH_PASSWD, prop_pw);
+    
+    axis2_bool_t force_http_auth = AXIS2_FALSE;
+
+    if (auth_type)
+    {
+        if ((axutil_strcmp (auth_type, AXIS2_HTTP_AUTH_TYPE_BASIC) == 0) || 
+           (axutil_strcmp (auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) == 0))
+        {
+            force_http_auth = AXIS2_TRUE;
+        }
+    }    
+    if (force_http_auth)
+    {
+        axutil_property_t *http_auth_property = axutil_property_create(env);
+        axutil_property_set_value(http_auth_property, env,
+                                  axutil_strdup(env, AXIS2_VALUE_TRUE));
+        axis2_options_set_property(options, env, AXIS2_FORCE_HTTP_AUTH,
+                                   http_auth_property);
+
+        axutil_property_t *http_auth_type_property = axutil_property_create(env);
+        axutil_property_set_value(http_auth_type_property, env,
+                                  axutil_strdup(env, auth_type));
+        axis2_options_set_property(options, env, AXIS2_HTTP_AUTH_TYPE,
+                                   http_auth_type_property);
+    }
+    else
+    {
+        axutil_property_t *http_auth_property = axutil_property_create(env);
+        axutil_property_set_value(http_auth_property, env,
+                                  axutil_strdup(env, AXIS2_VALUE_FALSE));
+        axis2_options_set_property(options, env, AXIS2_FORCE_HTTP_AUTH,
+                                   http_auth_property);
+    }
+    return AXIS2_SUCCESS;    
+}
+

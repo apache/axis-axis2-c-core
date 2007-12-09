@@ -737,8 +737,8 @@ extern "C"
         axis2_options_t * options,
         const axutil_env_t * env,
         const axis2_bool_t enable_rest);
-
-    /**
+    
+/**
      * Sets the HTTP method to be used
      * @param options pointer to options struct
      * @param env pointer to environment struct
@@ -775,6 +775,44 @@ extern "C"
     axis2_options_create_with_parent(
         const axutil_env_t * env,
         axis2_options_t * parent);
+
+    /**
+     * Sets HTTP authentication information.
+     * @param env pointer to environment stnuct
+     * @param parent pointer to parent struct
+     * @param username string representing username
+     * @param password string representing password
+     * @param auth_type use "Basic" to force basic authentication
+     * and "Digest" to force digest authentication or NULL for not
+     * forcing authentication
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_options_set_http_auth_info(
+        axis2_options_t * options,
+        const axutil_env_t * env,
+        const axis2_char_t * username,
+        const axis2_char_t * password,
+        const axis2_char_t * auth_type);
+
+    /**
+      * Sets proxy authentication information.
+      * @param env pointer to environment stnuct
+      * @param parent pointer to parent struct
+      * @param username string representing username
+      * @param password string representing password
+      * @param auth_type use "Basic" to force basic authentication
+      * and "Digest" to force digest authentication or NULL for not
+      * forcing authentication
+      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+      */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_options_set_proxy_auth_info(
+        axis2_options_t * options,
+        const axutil_env_t * env,
+        const axis2_char_t * username,
+        const axis2_char_t * password,
+        const axis2_char_t * auth_type);
 
     /** @} */
 #ifdef __cplusplus

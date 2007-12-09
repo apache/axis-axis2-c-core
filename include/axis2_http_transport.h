@@ -74,6 +74,11 @@ extern "C"
 #define AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL 401
 
     /**
+      * AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL
+      */
+#define AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL 407
+
+    /**
      * RESPONSE_ACK_CODE_VAL
      */
 #define AXIS2_HTTP_RESPONSE_ACK_CODE_VAL 202
@@ -188,6 +193,11 @@ extern "C"
      * HEADER_WWW_AUTHENTICATE
      */
 #define AXIS2_HTTP_HEADER_WWW_AUTHENTICATE "WWW-Authenticate"
+
+    /**
+      * HEADER_PROXY_AUTHENTICATE
+      */
+#define AXIS2_HTTP_HEADER_PROXY_AUTHENTICATE "Proxy-Authenticate"
 
     /**
      * HEADER_PROXY_AUTHORIZATION
@@ -371,6 +381,11 @@ extern "C"
 #define AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED "401 Unauthorized"
 
     /**
+      * RESPONSE_PROXY_AUTHENTICATION_REQUIRED
+      */
+#define AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED "401 Proxy Authentication Required"
+
+    /**
      * RESPONSE_BAD_REQUEST
      */
 #define AXIS2_HTTP_RESPONSE_BAD_REQUEST "400 Bad Request"
@@ -433,6 +448,21 @@ extern "C"
 #define MTOM_RECIVED_CONTENT_TYPE "MTOM_RECEIVED"
 
     /**
+      * Constant for HTTP authentication
+      */
+#define AXIS2_HTTP_AUTHENTICATION "HTTP-Authentication"
+
+    /**
+      * Constant for HTTP authentication username
+      */
+#define AXIS2_HTTP_AUTHENTICATION_USERNAME "http_authentication_username"
+
+    /**
+      * Constant for HTTP authentication password
+      */
+#define AXIS2_HTTP_AUTHENTICATION_PASSWORD "http_authentication_password"
+
+    /**
      * Constant for HTTP proxy
      */
 #define AXIS2_HTTP_PROXY "PROXY"
@@ -446,6 +476,17 @@ extern "C"
      * Constant for HTTP proxy port
      */
 #define AXIS2_HTTP_PROXY_PORT "proxy_port"
+
+    /**
+      * Constant for HTTP proxy username
+      */
+#define AXIS2_HTTP_PROXY_USERNAME "proxy_username"
+
+    /**
+      * Constant for HTTP proxy password
+      */
+#define AXIS2_HTTP_PROXY_PASSWORD "proxy_password"
+
 
 #define AXIS2_HTTP_PROXY_API "PROXY_API"
 
@@ -479,6 +520,17 @@ extern "C"
      */
 #define AXIS2_HTTP_AUTH_PASSWD "HTTP_AUTH_PASSWD"
 
+    /**
+      * Proxy authentication username property name
+      */
+#define AXIS2_PROXY_AUTH_UNAME "PROXY_AUTH_USERNAME"
+
+    /**
+      * Proxy authentication password property name
+      */
+#define AXIS2_PROXY_AUTH_PASSWD "PROXY_AUTH_PASSWD"
+
+
     /*#define AXIS2_HTTP_AUTH_TYPE "HTTP_AUTH_TYPE"*/
 
     /**
@@ -490,6 +542,17 @@ extern "C"
      * HTTP "Digest" authentication
      */
 #define AXIS2_HTTP_AUTH_TYPE_DIGEST "Digest"
+
+    /**
+      * Proxy "Basic" authentication
+      */
+#define AXIS2_PROXY_AUTH_TYPE_BASIC "Basic"
+
+    /**
+      * Proxy "Digest" authentication
+      */
+#define AXIS2_PROXY_AUTH_TYPE_DIGEST "Digest"
+
 
     /**
      *HTTP Transport Level Error

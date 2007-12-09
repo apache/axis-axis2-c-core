@@ -407,16 +407,34 @@ extern "C"
         axis2_endpoint_ref_t * target_epr);
 
     /**
-     * Sets the proxy.
+     * Sets the proxy with authentication support.
      * @param svc_client pointer to service client struct
      * @param env pointer to environment struct
      * @param proxy_host pointer to the proxy_host settings to be set
-     * as 
      * @param proxy_port pointer to the proxy_port settings to be set
-     * as  
-     * target. service client takes over the ownership of the struct.
+     * @param username pointer to the username associated with proxy
+     * which is required for authentication
+     * @param password pointer to the password associated with proxy
+     * which is required for authentication
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_client_set_proxy_with_auth(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env,
+        axis2_char_t * proxy_host,
+        axis2_char_t * proxy_port,
+        axis2_char_t * username,
+        axis2_char_t * password);
+
+     /**
+       * Sets the proxy.
+       * @param svc_client pointer to service client struct
+       * @param env pointer to environment struct
+       * @param proxy_host pointer to the proxy_host settings to be set
+       * @param proxy_port pointer to the proxy_port settings to be set
+       * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_client_set_proxy(
         axis2_svc_client_t * svc_client,

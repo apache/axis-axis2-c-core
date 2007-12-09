@@ -313,6 +313,12 @@ extern "C"
 #define AXIS2_ENABLE_REST "enableREST"
 #define AXIS2_ENABLE_REST_THROUGH_GET "restThroughGet"
 
+#define AXIS2_FORCE_PROXY_AUTH "forceProxyAuth"
+#define AXIS2_FORCE_HTTP_AUTH "forceHTTPAuth"
+
+#define AXIS2_PROXY_AUTH_TYPE "proxyAuthType"
+#define AXIS2_HTTP_AUTH_TYPE "HTTPAuthType"
+
     /* globally enable MTOM */
 #define AXIS2_ENABLE_MTOM "enableMTOM"
 #define AXIS2_ATTACHMENT_TEMP_DIR "attachmentDIR"
