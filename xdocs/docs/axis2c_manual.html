@@ -215,7 +215,7 @@ one operation, with the name "greet".<br>
 <p>You can compile the service sample as shown below.</p>
 
 <p>On Linux:</p>
-<pre>gcc -shared -olibhello.so -I$AXIS2C_HOME/include/axis2-1.0/ -L$AXIS2C_HOME/lib -laxis2 hello_svc.c </pre>
+<pre>gcc -shared -olibhello.so -I$AXIS2C_HOME/include/axis2-1.0/ -L$AXIS2C_HOME/lib -laxutil -laxis2_axiom -laxis2_parser -laxis2_engine -lpthread -laxis2_http_sender -laxis2_http_receiver hello_svc.c</pre>
 
 <p>On MS Windows:</p>
 
@@ -324,7 +324,7 @@ href="hello/client/hello.c.html">hello.c</a></p>
 <p>You can compile the client sample as shown below.</p>
 
 <p>On Linux:</p>
-<pre>gcc -o hello -I$AXIS2C_HOME/include -L$AXIS2C_HOME/lib -laxis2 hello.c</pre>
+<pre>gcc -o hello -I$AXIS2C_HOME/include -L$AXIS2C_HOME/lib -laxutil -laxis2_axiom -laxis2_parser -laxis2_engine -lpthread -laxis2_http_sender -laxis2_http_receiver hello.c</pre>
 
 <p>On MS Windows:</p>
 
