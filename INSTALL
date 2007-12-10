@@ -163,9 +163,9 @@ Table of Contents
           website and install it to run these binaries
 
     * You also need the following dlls
-        - libxml2.dll [http://www.xmlsoft.org - version >= libxml2-2.6.20.win32]
-        - iconv.dll [http://www.xmlsoft.org - version >= iconv-1.9.1.win32]
-        - zlib1.dll [http://www.xmlsoft.org - version >= zlib-1.2.3.win32]
+        - libxml2.dll [http://www.zlatkovic.com/pub/libxml - version >= libxml2-2.6.20.win32]
+        - iconv.dll [http://www.zlatkovic.com/pub/libxml - version >= iconv-1.9.1.win32]
+        - zlib1.dll [http://www.zlatkovic.com/pub/libxml - version >= zlib-1.2.3.win32]
 
 3.2 Binaries in the release
 ---------------------------
@@ -243,9 +243,9 @@ Table of Contents
           and Lib folders to the makefile.
 
     * You also need 
-        - libxml2 [http://www.xmlsoft.org - download the version >=  libxml2-2.6.20.win32]
-        - iconv [http://www.xmlsoft.org - download the version >= iconv-1.9.1.win32]
-        - zlib [http://www.xmlsoft.org - download the version >= zlib-1.2.3.win32]
+        - libxml2 [http://www.zlatkovic.com/pub/libxml - download the version >=  libxml2-2.6.20.win32]
+        - iconv [http://www.zlatkovic.com/pub/libxml - download the version >= iconv-1.9.1.win32]
+        - zlib [http://www.zlatkovic.com/pub/libxml - download the version >= zlib-1.2.3.win32]
 
 4.2 Editing configure.in file
 -----------------------------
