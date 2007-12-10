@@ -147,6 +147,7 @@ axis2_create_svr(
     conf->axutil_log_file = NULL;
     conf->axis2_repo_path = NULL;
     conf->log_level = AXIS2_LOG_LEVEL_DEBUG;
+    conf->axis2_global_pool_size = 0;
     return conf;
 }
 
