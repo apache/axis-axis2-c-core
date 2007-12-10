@@ -4,6 +4,9 @@ Axis2/C (1.2.0)
 			(1) Create a shared memory global pool
 			(2) create context hierarchy in the global pool 
 	 enabling it to have true application level scope.
+   * Improved Policy
+   * Improvements to thread environment
+   * Improvements to error handling
    * Memory leak fixes
    * Many bug fixes
 

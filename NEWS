@@ -44,14 +44,16 @@ Key Features
 
 Major Changes Since Last Release
 
-   1. WS-Policy implementation
-   2. TCP Transport
-   3. Improvements to Guththila parser to improve performance
-   4. Improvements to Java tool, WSDL2C, that generates C code
-   5. Basic HTTP Authentication
-   6. Memory leak fixes
-   7. Many bug fixes
-
+   1 Improvements to Java tool, WSDL2C, that generates C code
+   2 Improvment to Apache2 module so that it
+			(1) Create a shared memory global pool
+			(11) create context hierarchy in the global pool 
+	 enabling it to have true application level scope.
+   3 Improved Policy
+   4 Improvements to thread environment
+   5 Improvements to error handling
+   6 Memory leak fixes
+   7 Many bug fixes
 
 We welcome your early feedback on this implementation.
 Thanks for your interest in Axis2/C
