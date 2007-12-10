@@ -1,9 +1,9 @@
 Axis2/C (1.2.0)
    * Improvements to Java tool, WSDL2C, that generates C code
-   * Improvment to Apache2 module so that in serving client requests the
-   		spawned axis2 instances uses shared memory access which enables axis2
-		to share the same configuration context, enabling it to have true
-		application level scope.
+   * Improvment to Apache2 module so that it
+			(1) Create a shared memory global pool
+			(2) create context hierarchy in the global pool 
+	 enabling it to have true application level scope.
    * Memory leak fixes
    * Many bug fixes
 
