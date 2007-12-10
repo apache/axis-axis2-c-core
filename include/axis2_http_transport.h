@@ -455,12 +455,12 @@ extern "C"
     /**
       * Constant for HTTP authentication username
       */
-#define AXIS2_HTTP_AUTHENTICATION_USERNAME "http_authentication_username"
+#define AXIS2_HTTP_AUTHENTICATION_USERNAME "username"
 
     /**
       * Constant for HTTP authentication password
       */
-#define AXIS2_HTTP_AUTHENTICATION_PASSWORD "http_authentication_password"
+#define AXIS2_HTTP_AUTHENTICATION_PASSWORD "password"
 
     /**
      * Constant for HTTP proxy
