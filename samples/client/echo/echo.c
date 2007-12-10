@@ -53,32 +53,14 @@ main(
     {
         if (axutil_strcmp(argv[1], "-h") == 0)
         {
-            printf("Usage : %s [endpoint_url] (-auth [username] [password])\n",
+            printf("Usage : %s [endpoint_url]\n",
                    argv[0]);
-            printf("use -auth option for HTTP Authentication\n");
             printf("use -h for help\n");
             return 0;
-        }
-        else if (axutil_strcmp(argv[1], "-auth") == 0)
-        {
-            if (argc > 3)
-            {
-                un = argv[2];
-                pw = argv[3];
-            }
         }
         else
         {
             address = argv[1];
-        }
-
-        if (argc > 4)
-        {
-            if (axutil_strcmp(argv[2], "-auth") == 0)
-            {
-                un = argv[3];
-                pw = argv[4];
-            }
         }
     }
     printf("Using endpoint : %s\n", address);
@@ -114,19 +96,6 @@ main(
                         env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
         return -1;
-    }
-
-    /* Set http-auth information */
-    if (un && pw)
-    {
-        axutil_property_t *prop_pw = NULL;
-        axutil_property_t *prop_un = axutil_property_create(env);
-        axutil_property_set_value(prop_un, env, axutil_strdup(env, un));
-        axis2_options_set_property(options, env, "HTTP_AUTH_USERNAME", prop_un);
-
-        prop_pw = axutil_property_create(env);
-        axutil_property_set_value(prop_pw, env, axutil_strdup(env, pw));
-        axis2_options_set_property(options, env, "HTTP_AUTH_PASSWD", prop_pw);
     }
 
     /* Set service client options */
