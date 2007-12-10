@@ -1533,11 +1533,11 @@ axis2_http_sender_configure_http_auth (axis2_http_sender_t * sender,
     }
     if (auth_type)
     {
-        if (axutil_strcmp (auth_type, AXIS2_HTTP_AUTH_TYPE_BASIC) == 0)
+        if (axutil_strcasecmp (auth_type, AXIS2_HTTP_AUTH_TYPE_BASIC) == 0)
             status = axis2_http_sender_configure_http_basic_auth (sender, env,
                                                                   msg_ctx,
                                                                   request);
-        else if (axutil_strcmp (auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) == 0)
+        else if (axutil_strcasecmp (auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) == 0)
             status = axis2_http_sender_configure_http_digest_auth (sender, env,
                                                                    msg_ctx,
                                                                    request);
@@ -1617,11 +1617,11 @@ axis2_http_sender_configure_proxy_auth (axis2_http_sender_t * sender,
     }
     if (auth_type)
     {
-        if (axutil_strcmp (auth_type, AXIS2_PROXY_AUTH_TYPE_BASIC) == 0)
+        if (axutil_strcasecmp (auth_type, AXIS2_PROXY_AUTH_TYPE_BASIC) == 0)
             status = axis2_http_sender_configure_proxy_basic_auth (sender, env,
                                                                   msg_ctx,
                                                                   request);
-        else if (axutil_strcmp (auth_type, AXIS2_PROXY_AUTH_TYPE_DIGEST) == 0)
+        else if (axutil_strcasecmp (auth_type, AXIS2_PROXY_AUTH_TYPE_DIGEST) == 0)
             status = axis2_http_sender_configure_proxy_digest_auth (sender, env,
                                                                    msg_ctx,
                                                                    request);

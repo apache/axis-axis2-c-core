@@ -960,8 +960,8 @@ axis2_options_set_proxy_auth_info(
 
     if(auth_type)
     {
-        if ((axutil_strcmp (auth_type, AXIS2_PROXY_AUTH_TYPE_BASIC) == 0) ||
-           (axutil_strcmp (auth_type, AXIS2_PROXY_AUTH_TYPE_DIGEST) == 0))
+        if ((axutil_strcasecmp (auth_type, AXIS2_PROXY_AUTH_TYPE_BASIC) == 0) ||
+           (axutil_strcasecmp (auth_type, AXIS2_PROXY_AUTH_TYPE_DIGEST) == 0))
         {
             force_proxy_auth = AXIS2_TRUE;
         }
@@ -1017,8 +1017,8 @@ axis2_options_set_http_auth_info(
 
     if (auth_type)
     {
-        if ((axutil_strcmp (auth_type, AXIS2_HTTP_AUTH_TYPE_BASIC) == 0) || 
-           (axutil_strcmp (auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) == 0))
+        if ((axutil_strcasecmp (auth_type, AXIS2_HTTP_AUTH_TYPE_BASIC) == 0) || 
+           (axutil_strcasecmp (auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) == 0))
         {
             force_http_auth = AXIS2_TRUE;
         }
