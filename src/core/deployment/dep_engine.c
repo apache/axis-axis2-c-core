@@ -747,6 +747,9 @@ axis2_dep_engine_load(
     {
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "dep_engine repos listener creation failed, folder name is %s",
+                         dep_engine->folder_name);
         return NULL;
     }
     axis2_conf_set_repo(dep_engine->conf, env, dep_engine->axis2_repos);
@@ -795,7 +798,7 @@ axis2_dep_engine_load(
     if (AXIS2_SUCCESS != status)
     {
 		AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
-            "[axis2] dep engine failed to engaged_modules");
+            "dep engine failed to engaged_modules");
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED,

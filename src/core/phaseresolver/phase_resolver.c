@@ -1466,22 +1466,22 @@ axis2_phase_resolver_engage_module_to_op(
 
         switch (type)
         {
-        case AXIS2_IN_FLOW:
+            case AXIS2_IN_FLOW:
             {
                 phases = axis2_op_get_in_flow(axis_op, env);
                 break;
             }
-        case AXIS2_OUT_FLOW:
+            case AXIS2_OUT_FLOW:
             {
                 phases = axis2_op_get_out_flow(axis_op, env);
                 break;
             }
-        case AXIS2_FAULT_IN_FLOW:
+            case AXIS2_FAULT_IN_FLOW:
             {
                 phases = axis2_op_get_fault_in_flow(axis_op, env);
                 break;
             }
-        case AXIS2_FAULT_OUT_FLOW:
+            case AXIS2_FAULT_OUT_FLOW:
             {
                 phases = axis2_op_get_fault_out_flow(axis_op, env);
                 break;
@@ -1543,9 +1543,9 @@ axis2_phase_resolver_engage_module_to_op(
                                                             env, metadata);
                     if (AXIS2_SUCCESS != status)
                     {
-                        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                                        "Handler inclusion failed for %s phase",
-                                        phase_name);
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                        "Handler inclusion failed for %s phase,\
+ %s might not available in axis2.xml",phase_name, phase_name);
                         axis2_phase_holder_free(phase_holder, env);
                         return status;
                     }
