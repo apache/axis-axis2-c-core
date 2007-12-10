@@ -146,5 +146,11 @@ main(
         axis2_svc_client_free(svc_client, env);
         svc_client = NULL;
     }
+
+    if (env)
+    {
+        axutil_env_free((axutil_env_t *) env);
+        env = NULL;
+    }
     return 0;
 }

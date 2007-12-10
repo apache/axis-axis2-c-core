@@ -1332,7 +1332,7 @@ axis2_http_transport_utils_create_soap_msg(
         om_doc = axiom_stax_builder_get_document(om_builder, env);
         root_node = axiom_document_build_all(om_doc, env);
         axiom_soap_body_add_child(def_body, env, root_node);
-
+        axiom_stax_builder_free_self(om_builder, env);
         return soap_envelope;
     }
     return NULL;
