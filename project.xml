@@ -56,13 +56,26 @@
       <subscribe>axis-c-dev-subscribe@ws.apache.org?subject=subscribe</subscribe>
       <unsubscribe>axis-c-dev-unsubscribe@ws.apache.org?subject=unsubscribe</unsubscribe>
       <archive>http://marc.theaimsgroup.com/?l=axis-c-dev&amp;r=1&amp;w=2</archive>
+	  <otherArchives>
+        <otherArchive>http://markmail.org/search/list:org.apache.ws.axis-c-dev</otherArchive>
+      </otherArchives>
     </mailingList>
     <mailingList>
       <name>Axis C User List</name>
       <subscribe>axis-c-user-subscribe@ws.apache.org?subject=subscribe</subscribe>
       <unsubscribe>axis-c-user-unsubscribe@ws.apache.org?subject=unsubscribe</unsubscribe>
       <archive>http://marc.theaimsgroup.com/?l=axis-c-user&amp;r=1&amp;w=2</archive>
+	  <otherArchives>
+        <otherArchive>http://markmail.org/search/list:org.apache.ws.axis-c-user</otherArchive>
+      </otherArchives>
     </mailingList>
+	 <mailingList>
+            <name>CVS Commit Message List</name>
+            <subscribe>axis-cvs-subscribe@ws.apache.org</subscribe>
+            <unsubscribe>axis-cvs-unsubscribe@ws.apache.org</unsubscribe>
+            <post>axis-cvs@ws.apache.org</post>
+            <archive>http://markmail.org/search/list:org.apache.ws.axis-cvs</archive>
+        </mailingList>
   </mailingLists>
   
   <!-- ========== -->
