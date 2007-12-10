@@ -107,9 +107,12 @@ AXIS2_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\attachments \
 		/I$(AXIS2_SOURCE_DIR)\tools\tcpmon\include \
 		/I$(LIBXML2_BIN_DIR)\include \
-		/I$(ICONV_BIN_DIR)\include \
-		/I$(ZLIB_BIN_DIR)\include
+		/I$(ICONV_BIN_DIR)\include
 		
+!if "$(WITH_ARCHIVE)" == "1"
+AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(ZLIB_BIN_DIR)\include
+!endif
+
 GUTHTHILA_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\guththila\include
  
 !if "$(ENABLE_SSL)" == "1"
@@ -163,7 +166,7 @@ APACHE_LIBS = apr-1.lib xml.lib libhttpd.lib libapr-1.lib libaprutil-1.lib
 MT=mt.exe
 MT="$(MT)"
 
-!if "$(VC_VERSION_2005_OR_ABOVE)" == "0"
+!if "$(EMBED_MANIFEST)" == "0"
 _VC_MANIFEST_EMBED_EXE=
 _VC_MANIFEST_EMBED_DLL=
 !else
@@ -210,8 +213,12 @@ AXIS2_INTDIR_AXUTIL1 = $(AXIS2_INTDIR_AXUTIL)\platform
 AXIS2_INTDIR_AXUTIL2 =$(AXIS2_INTDIR_AXUTIL)\minizip
 
 AXUTIL_OBJS = $(AXIS2_INTDIR_AXUTIL)\*.obj \
-	      $(AXIS2_INTDIR_AXUTIL)\minizip\*.obj \
 	      $(AXIS2_INTDIR_AXUTIL)\platform\*.obj
+
+
+!if "$(WITH_ARCHIVE)" == "1"
+AXUTIL_OBJS = $(AXUTIL_OBJS)  $(AXIS2_INTDIR_AXUTIL)\minizip\*.obj
+!endif
 
 $(AXIS2_INTDIR_AXUTIL) :
 	@if not exist $(AXIS2_INTDIR_AXUTIL) mkdir $(AXIS2_INTDIR_AXUTIL)
@@ -229,6 +236,8 @@ $(AXIS2_INTDIR_AXUTIL2) :
 {$(AXUTIL_SRC)\platforms\windows}.c{$(AXIS2_INTDIR_AXUTIL1)}.obj ::
 	$(CC) $(CFLAGS) /Fo$(AXIS2_INTDIR_AXUTIL1)\ /c $<
 
+
+!if "$(WITH_ARCHIVE)" == "1"
 {$(AXUTIL_SRC)\minizip}.c{$(AXIS2_INTDIR_AXUTIL2)}.obj ::
 	$(CC) $(CFLAGS) /Fo$(AXIS2_INTDIR_AXUTIL2)\ /c $<
 
@@ -238,6 +247,17 @@ $(AXIS2_LIBS)\$(AXUTIL).dll : $(AXUTIL_OBJS)
 	$(LD) $(LDFLAGS) $(AXUTIL_OBJS) $(LIBS) $(ZLIB_BIN_DIR)\lib\zdll.lib \
 	/DLL  /OUT:$(AXIS2_LIBS)\$(AXUTIL).dll  /IMPLIB:$(AXIS2_LIBS)\$(AXUTIL).lib
 	-@$(_VC_MANIFEST_EMBED_DLL)
+
+!else
+
+$(AXUTIL_OBJS) :  $(AXIS2_INTDIR_AXUTIL) $(AXIS2_INTDIR_AXUTIL1)
+
+$(AXIS2_LIBS)\$(AXUTIL).dll : $(AXUTIL_OBJS)
+	$(LD) $(LDFLAGS) $(AXUTIL_OBJS) $(LIBS) /DLL  /OUT:$(AXIS2_LIBS)\$(AXUTIL).dll  \
+	/IMPLIB:$(AXIS2_LIBS)\$(AXUTIL).lib
+	-@$(_VC_MANIFEST_EMBED_DLL)
+
+!endif
 
 axis2_util : $(AXIS2_LIBS)\$(AXUTIL).dll
 ##### end axutil

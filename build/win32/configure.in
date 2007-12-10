@@ -6,6 +6,8 @@ ENABLE_LIBCURL= 0
 ENABLE_GUTHTHILA = 0
 # build tcp server in addition to http server
 WITH_TCP= 0
+# build with archive based deployment
+WITH_ARCHIVE = 1
 # libxml2 binary location ( axis2c is built with libxml2 )
 LIBXML2_BIN_DIR = E:\libxml2-2.6.27.win32
 # iconv binary location
@@ -22,8 +24,8 @@ OPENSSL_BIN_DIR = E:\OpenSSL
 LIBCURL_BIN_DIR = E:\libcurl-7.15.1-msvc-win32-ssl-0.9.8a-zlib-1.2.3
 #C runtime LIBRARY OPTION ( Use /MD or /MT )
 CRUNTIME=/MD
-# Visual Studio version
-VC_VERSION_2005_OR_ABOVE=1
+# Embed Manifest Files
+EMBED_MANIFEST = 1
 #debug symbols
 DEBUG=1
 # To use apache 2.2 family , use  APACHE_VERSION_IS_2_0_X = 0
