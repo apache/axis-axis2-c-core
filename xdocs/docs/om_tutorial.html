@@ -759,8 +759,6 @@ build_and_serialize_om(axutil_env_t *env)
     <i>/** when om_builder is freed , the builder, om_document and the entire AXIOM structure is freed */</i>
     axiom_stax_builder_free(om_builder, env);
     
-    AXIS2_FREE(env-&gt;allocator, buffer);
-    
     <b>return</b> AXIS2_SUCCESS;
     
 }
