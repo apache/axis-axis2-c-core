@@ -464,7 +464,7 @@ axis2_http_transport_sender_invoke(
         }
     }
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
-        "Entry:axis2_http_transport_sender_invoke");
+        "Exit:axis2_http_transport_sender_invoke");
     return AXIS2_SUCCESS;
 }
 
