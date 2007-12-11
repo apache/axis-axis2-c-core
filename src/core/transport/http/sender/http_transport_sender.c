@@ -209,11 +209,16 @@ axis2_http_transport_sender_invoke(
     transport_url = axis2_msg_ctx_get_transport_url(msg_ctx, env);
     if (transport_url)
     {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "transport_url:%s", 
+            transport_url);
         epr = axis2_endpoint_ref_create(env, transport_url);
     }
     else
     {
         axis2_endpoint_ref_t *ctx_epr = axis2_msg_ctx_get_to(msg_ctx, env);
+        if(ctx_epr)
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "ctx_epr:%s", 
+                axis2_endpoint_ref_get_address(ctx_epr, env)); 
         if (ctx_epr && 0 != axutil_strcmp(AXIS2_WSA_ANONYMOUS_URL_SUBMISSION,
                                           axis2_endpoint_ref_get_address
                                           (ctx_epr, env)) &&
