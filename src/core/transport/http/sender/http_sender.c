@@ -203,9 +203,9 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     axutil_property_t *http_property = NULL;
     axutil_array_list_t *array_list;
 	axis2_bool_t http_auth_header_added = AXIS2_FALSE;
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_http_sender_send");
     soap_body = axiom_soap_envelope_get_body (out, env);
 
-    AXIS2_ENV_CHECK (env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK (env->error, out, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK (env->error, str_url, AXIS2_FAILURE);
@@ -287,6 +287,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                                        axis2_http_client_free_void_arg);
         axutil_property_set_value (property, env, sender->client);
         axis2_msg_ctx_set_property (msg_ctx, env, AXIS2_HTTP_CLIENT, property);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "msg_ctx_id:%s", 
+            axis2_msg_ctx_get_msg_id(msg_ctx,env));
 
         doing_mtom = axis2_msg_ctx_get_doing_mtom (msg_ctx, env);
 
@@ -294,6 +296,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         {
             AXIS2_ERROR_SET (env->error, AXIS2_ERROR_NULL_OM_OUTPUT,
                              AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
+                AXIS2_ERROR_GET_MESSAGE(env->error));
             return AXIS2_FAILURE;
         }
         xml_writer = axiom_output_get_xml_writer (sender->om_output, env);
@@ -778,6 +782,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     }
     AXIS2_ERROR_SET (env->error,
                      AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR, AXIS2_FAILURE);
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_http_sender_send");
     return AXIS2_FAILURE;
 #endif
 }
@@ -923,7 +928,8 @@ axis2_http_sender_process_response (axis2_http_sender_t * sender,
     axutil_stream_t *in_stream = NULL;
     axutil_property_t *property = NULL;
 
-    AXIS2_ENV_CHECK (env, AXIS2_FAILURE);
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Entry:axis2_http_sender_process_response");
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK (env->error, response, AXIS2_FAILURE);
 
@@ -944,6 +950,8 @@ axis2_http_sender_process_response (axis2_http_sender_t * sender,
     axutil_property_set_value (property, env, in_stream);
     /*axis2_ctx_set_property(axis_ctx, env, AXIS2_TRANSPORT_IN, property); */
     axis2_msg_ctx_set_property (msg_ctx, env, AXIS2_TRANSPORT_IN, property);
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Exit:axis2_http_sender_process_response");
     return AXIS2_SUCCESS;
 }
 
