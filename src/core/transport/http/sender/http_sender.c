@@ -202,6 +202,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     axis2_bool_t is_soap = AXIS2_TRUE;
     axutil_property_t *http_property = NULL;
     axutil_array_list_t *array_list;
+	axis2_bool_t http_auth_header_added = AXIS2_FALSE;
     soap_body = axiom_soap_envelope_get_body (out, env);
 
     AXIS2_ENV_CHECK (env, AXIS2_FAILURE);
@@ -623,7 +624,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         force_http_auth = AXIS2_TRUE;
     }
 
-    axis2_bool_t http_auth_header_added = AXIS2_FALSE;
+    
 
     if (force_proxy_auth)
     {
