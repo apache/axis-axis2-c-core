@@ -154,7 +154,8 @@ axis2_http_transport_sender_invoke(
     axis2_byte_t *output_stream = NULL;
     int buffer_size = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Entry:axis2_http_transport_sender_invoke");
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     /*property =  axis2_msg_ctx_get_property(msg_ctx, env,
@@ -292,6 +293,8 @@ axis2_http_transport_sender_invoke(
                 AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
+                    AXIS2_ERROR_GET_MESSAGE(env->error));
                 axiom_output_free(om_output, env);
                 om_output = NULL;
                 xml_writer = NULL;
@@ -328,7 +331,7 @@ axis2_http_transport_sender_invoke(
                                     AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
                                     AXIS2_FAILURE);
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
-                                    AXIS2_ERROR_GET_MESSAGE(env->error));
+                        AXIS2_ERROR_GET_MESSAGE(env->error));
                     axiom_output_free(om_output, env);
                     om_output = NULL;
                     xml_writer = NULL;
@@ -345,7 +348,7 @@ axis2_http_transport_sender_invoke(
                     {
                         
                         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
-                                        "Rest fault has occure, error not available");
+                            "Rest fault has occure, error not available");
                         axiom_output_free(om_output, env);
                         om_output = NULL;
                         xml_writer = NULL;
@@ -359,6 +362,8 @@ axis2_http_transport_sender_invoke(
                         axiom_output_free(om_output, env);
                         om_output = NULL;
                         xml_writer = NULL;
+                        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+                            "Returning failure from transport_sender_invoke");
                         return AXIS2_FAILURE;
                     }
 
@@ -369,6 +374,8 @@ axis2_http_transport_sender_invoke(
                         axiom_output_free(om_output, env);
                         om_output = NULL;
                         xml_writer = NULL;
+                        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+                            "Returning failure from transport_sender_invoke");
                         return AXIS2_FAILURE;
                     }
 
@@ -382,6 +389,8 @@ axis2_http_transport_sender_invoke(
                         axiom_output_free(om_output, env);
                         om_output = NULL;
                         xml_writer = NULL;
+                        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+                            "Returning failure from transport_sender_invoke");
                         return AXIS2_FAILURE;
                     }
                 }
@@ -394,6 +403,8 @@ axis2_http_transport_sender_invoke(
                     axiom_output_free(om_output, env);
                     om_output = NULL;
                     xml_writer = NULL;
+                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+                        "Returning failure from transport_sender_invoke");
                     return AXIS2_FAILURE;
                 }
 
@@ -452,6 +463,8 @@ axis2_http_transport_sender_invoke(
             epr = NULL;
         }
     }
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Entry:axis2_http_transport_sender_invoke");
     return AXIS2_SUCCESS;
 }
 
