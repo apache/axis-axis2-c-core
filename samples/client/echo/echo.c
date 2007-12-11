@@ -40,9 +40,6 @@ main(
     axiom_node_t *ret_node = NULL;
     axiom_node_t *payload2 = NULL;
     axiom_node_t *ret_node2 = NULL;
-    const axis2_char_t *un = NULL;
-    const axis2_char_t *pw = NULL;
-    /*axutil_allocator_t *allocator = NULL; */
 
     /* Set up the environment */
     env = axutil_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
