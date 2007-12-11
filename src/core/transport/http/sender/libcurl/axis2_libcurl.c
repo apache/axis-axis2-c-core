@@ -28,6 +28,7 @@ typedef struct axis2_libcurl
     axutil_array_list_t *alist;
     unsigned int size;
     const axutil_env_t *env;
+    char errorbuffer[CURL_ERROR_SIZE];
 } axis2_libcurl_t;
 
 size_t axis2_libcurl_write_memory_callback(
@@ -83,6 +84,10 @@ axis2_libcurl_send(
     int output_stream_size = 0;
 
     data = axis2_libcurl_create(env);
+    if (!data) 
+    {
+        return AXIS2_FAILURE;
+    }
     if (!ref)
     {
         handler = curl_easy_init();
@@ -92,6 +97,7 @@ axis2_libcurl_send(
     {
         curl_easy_reset(handler);
     }
+    curl_easy_setopt(handler, CURLOPT_ERRORBUFFER, &data->errorbuffer);
     headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_USER_AGENT_AXIS2C);
     headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_ACCEPT_);
     headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_EXPECT_);
@@ -111,11 +117,13 @@ axis2_libcurl_send(
                             AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
                             AXIS2_ERROR_GET_MESSAGE(env->error));
+            axis2_libcurl_free(data, env);
             return AXIS2_FAILURE;
         }
         body_node = axiom_soap_body_get_base_node(soap_body, env);
         if (!body_node)
         {
+            axis2_libcurl_free(data, env);
             return AXIS2_FAILURE;
         }
         data_out = axiom_node_get_first_element(body_node, env);
@@ -321,7 +329,14 @@ axis2_libcurl_send(
 /* 	curl_easy_setopt (handler, CURLOPT_HEADERFUNCTION, axis2_libcurl_header_callback); */
 
 /* 	curl_easy_setopt (handler, CURLOPT_WRITEHEADER, header); */
-    curl_easy_perform(handler);
+    if (curl_easy_perform(handler)) 
+    {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "%s", &data->errorbuffer);
+        AXIS2_ERROR_SET (env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
+                         AXIS2_FAILURE);
+        axis2_libcurl_free(data, env);
+        return AXIS2_FAILURE;
+    }
 
 /* 	curl_slist_free_all (headers); */
 
@@ -335,6 +350,8 @@ axis2_libcurl_send(
     axutil_property_set_value(trans_in_property, env, in_stream);
     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN,
                                trans_in_property);
+
+    axis2_libcurl_free(data, env);
     return AXIS2_SUCCESS;
 }
 
@@ -393,9 +410,12 @@ axis2_libcurl_create(
     curl =
         (axis2_libcurl_t *) AXIS2_MALLOC(env->allocator,
                                          sizeof(axis2_libcurl_t));
-    curl->size = 0;
-    curl->alist = axutil_array_list_create(env, 7);
-    curl->env = env;
+    if (curl) 
+    {
+        curl->size = 0;
+        curl->alist = axutil_array_list_create(env, 7);
+        curl->env = env;
+    }
     return curl;
 }
 

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -38,8 +37,6 @@ main(
     axis2_svc_client_t *svc_client = NULL;
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
-    axiom_node_t *payload2 = NULL;
-    axiom_node_t *ret_node2 = NULL;
     const axis2_char_t *un = NULL;
     const axis2_char_t *pw = NULL;
     const axis2_char_t *unp = NULL;
