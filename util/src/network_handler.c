@@ -127,7 +127,11 @@ axutil_network_handler_create_server_socket(
 
     /** Address re-use */
     i = 1;
+#if defined(WIN32)
+    setsockopt(sock, SOL_SOCKET, SO_EXCLUSIVEADDRUSE, (char *) &i, sizeof(axis2_socket_t));    /*nnn casted 4th param to char* */
+#else
     setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (char *) &i, sizeof(axis2_socket_t));    /*nnn casted 4th param to char* */
+#endif
 
     /** Exec behaviour */
     AXIS2_CLOSE_SOCKET_ON_EXIT(sock) memset(&sock_addr, 0, sizeof(sock_addr));
