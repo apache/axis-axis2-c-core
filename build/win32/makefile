@@ -1112,6 +1112,7 @@ axis2_client_userguide_int:
 	@if not exist $(AXIS2_INTDIR)\userguide\echo_blocking_dual mkdir $(AXIS2_INTDIR)\userguide\echo_blocking_dual
 	@if not exist $(AXIS2_INTDIR)\userguide\echo_non_blocking_dual mkdir $(AXIS2_INTDIR)\userguide\echo_non_blocking_dual
 	@if not exist $(AXIS2_INTDIR)\userguide\echo_blocking_soap11 mkdir $(AXIS2_INTDIR)\userguide\echo_blocking_soap11
+	@if not exist $(AXIS2_INTDIR)\userguide\echo_blocking_auth mkdir $(AXIS2_INTDIR)\userguide\echo_blocking_auth
 
 $(AXIS2_BINS)\samples\echo_blocking.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking.c \
@@ -1167,10 +1168,21 @@ $(AXIS2_BINS)\samples\echo_blocking_soap11.exe :
 	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\echo_blocking_soap11.exe
         -@$(_VC_MANIFEST_EMBED_EXE)
 
+
+$(AXIS2_BINS)\samples\echo_blocking_auth.exe :
+	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_auth.c \
+	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking_auth\ /c
+	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking_auth\*.obj $(AXUTIL).lib \
+	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
+	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\echo_blocking_auth.exe
+        -@$(_VC_MANIFEST_EMBED_EXE)
+
+
 axis2_client_userguide : axis2_client_userguide_int $(AXIS2_BINS)\samples\echo_blocking_soap11.exe \
 	$(AXIS2_BINS)\samples\echo_non_blocking_dual.exe $(AXIS2_BINS)\samples\echo_blocking.exe \
 	$(AXIS2_BINS)\samples\echo_blocking_dual.exe $(AXIS2_BINS)\samples\echo_rest.exe  \
-	$(AXIS2_BINS)\samples\echo_blocking_addr.exe $(AXIS2_BINS)\samples\echo_non_blocking.exe 
+	$(AXIS2_BINS)\samples\echo_blocking_addr.exe $(AXIS2_BINS)\samples\echo_non_blocking.exe \
+	$(AXIS2_BINS)\samples\echo_blocking_auth.exe
 
 clean_manifest: 
 	@del /s $(AXIS2_BINDIR)\*.manifest
