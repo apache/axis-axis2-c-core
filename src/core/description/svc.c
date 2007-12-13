@@ -117,8 +117,6 @@ axis2_svc_create(
 {
     axis2_svc_t *svc = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     svc = (axis2_svc_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_t));
     if (!svc)
     {
@@ -434,7 +432,6 @@ axis2_svc_add_op(
     const axutil_qname_t *qname = NULL;
     axis2_char_t *key = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
 
     status = axis2_op_set_parent(op, env, svc);
@@ -465,7 +462,6 @@ axis2_svc_get_op_with_qname(
     axis2_op_t *op = NULL;
     axis2_char_t *key = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, op_qname, NULL);
 
     key = axutil_qname_get_localpart(op_qname, env);
@@ -484,7 +480,6 @@ axis2_svc_get_op_with_name(
     const axutil_env_t * env,
     const axis2_char_t * nc_name)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, nc_name, NULL);
 
     return (axis2_op_t *) axutil_hash_get(svc->op_alias_map, nc_name,
@@ -496,8 +491,6 @@ axis2_svc_get_all_ops(
     const axis2_svc_t * svc,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return svc->op_alias_map;
 }
 
@@ -507,7 +500,6 @@ axis2_svc_set_parent(
     const axutil_env_t * env,
     axis2_svc_grp_t * svc_grp)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
 
     svc->parent = svc_grp;
@@ -525,8 +517,6 @@ axis2_svc_get_parent(
     const axis2_svc_t * svc,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return svc->parent;
 }
 
@@ -536,7 +526,6 @@ axis2_svc_set_qname(
     const axutil_env_t * env,
     const axutil_qname_t * qname)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
     if (svc->qname)
     {
@@ -555,7 +544,6 @@ axis2_svc_get_qname(
     const axis2_svc_t * svc,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return svc->qname;
 }
 
@@ -565,7 +553,6 @@ axis2_svc_add_param(
     const axutil_env_t * env,
     axutil_param_t * param)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
 
     if (AXIS2_TRUE == axis2_svc_is_param_locked(svc, env,
@@ -592,7 +579,6 @@ axis2_svc_get_param(
     const axis2_char_t * name)
 {
     axutil_param_t *param = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, NULL);
 
     param = axutil_param_container_get_param(svc->param_container, env, name);
@@ -608,8 +594,6 @@ axis2_svc_get_all_params(
     const axis2_svc_t * svc,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return axutil_param_container_get_params(svc->param_container, env);
 }
 
@@ -624,7 +608,6 @@ axis2_svc_is_param_locked(
     axis2_svc_grp_t *parent = NULL;
     axis2_bool_t ret = AXIS2_FALSE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FALSE);
 
     /* checking the locked value of parent */
@@ -654,7 +637,7 @@ axis2_svc_engage_module(
     axis2_phase_resolver_t *phase_resolver = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_svc_engage_module");
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
 
@@ -677,6 +660,7 @@ axis2_svc_engage_module(
         axis2_phase_resolver_free(phase_resolver, env);
     }
 
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_svc_engage_module");
     return status;
 }
 
@@ -688,6 +672,7 @@ axis2_svc_is_module_engaged(
 {
     int i = 0,
         size = 0;
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_svc_is_module_engaged");
     size = axutil_array_list_size(svc->engaged_modules, env);
     for (i = 0; i < size; i++)
     {
@@ -704,6 +689,7 @@ axis2_svc_is_module_engaged(
             return AXIS2_TRUE;
         }
     }
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_svc_is_module_engaged");
     return AXIS2_FALSE;
 }
 
@@ -717,7 +703,6 @@ axis2_svc_disengage_module(
     axis2_phase_resolver_t *phase_resolver = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
 
@@ -748,8 +733,7 @@ axis2_svc_add_module_ops(
     axis2_op_t *op_desc = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Start:axis2_svc_add_module_ops");
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_svc_add_module_ops");
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
 
@@ -826,7 +810,7 @@ axis2_svc_add_module_ops(
     {
         axis2_phase_resolver_free(phase_resolver, env);
     }
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "End:axis2_svc_add_module_ops");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_svc_add_module_ops");
     return AXIS2_SUCCESS;
 }
 
@@ -835,8 +819,6 @@ axis2_svc_get_name(
     const axis2_svc_t * svc,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (svc->qname)
     {
         return axutil_qname_get_localpart(svc->qname, env);
@@ -851,7 +833,6 @@ axis2_svc_set_name(
     const axutil_env_t * env,
     const axis2_char_t * axis_svc_name)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, axis_svc_name, AXIS2_FAILURE);
 
     if (svc->axis_svc_name)
@@ -898,7 +879,6 @@ axis2_svc_set_file_name(
     const axutil_env_t * env,
     const axis2_char_t * filename)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, filename, AXIS2_FAILURE);
 
     if (svc->filename)
@@ -929,7 +909,6 @@ axis2_svc_set_svc_desc(
     const axutil_env_t * env,
     const axis2_char_t * svc_desc)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_desc, AXIS2_FAILURE);
 
     if (svc->svc_desc)
@@ -953,7 +932,6 @@ axis2_svc_add_mapping(
     const axis2_char_t * mapping_key,
     axis2_op_t * op_desc)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, mapping_key, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
 
@@ -970,7 +948,6 @@ axis2_svc_add_module_qname(
 {
     axutil_qname_t *qmodule_qname_l = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
 
     qmodule_qname_l = axutil_qname_clone((axutil_qname_t *) module_qname, env);
@@ -982,8 +959,6 @@ axis2_svc_get_all_module_qnames(
     const axis2_svc_t * svc,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return svc->module_list;
 }
 
@@ -992,7 +967,6 @@ axis2_svc_get_target_ns(
     const axis2_svc_t * svc,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return svc->target_ns;
 }
 
@@ -1002,7 +976,6 @@ axis2_svc_set_target_ns(
     const axutil_env_t * env,
     const axis2_char_t * ns)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ns, AXIS2_FAILURE);
 
     if (svc->target_ns)
@@ -1019,7 +992,6 @@ axis2_svc_get_target_ns_prefix(
     const axis2_svc_t * svc,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return svc->target_ns_prefix;
 }
 
@@ -1029,7 +1001,6 @@ axis2_svc_set_target_ns_prefix(
     const axutil_env_t * env,
     const axis2_char_t * prefix)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, prefix, AXIS2_FAILURE);
 
     if (svc->target_ns_prefix)
@@ -1046,7 +1017,6 @@ axis2_svc_get_ns_map(
     const axis2_svc_t * svc,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return svc->ns_map;
 }
 
@@ -1058,7 +1028,6 @@ axis2_svc_set_ns_map(
 {
     axutil_hash_index_t *hi = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ns_map, AXIS2_FAILURE);
 
     if (svc->ns_map)
@@ -1095,7 +1064,6 @@ axis2_svc_swap_mapping_table(
     axutil_hash_t *new_table = NULL;
     axutil_hash_index_t *hi = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, orig_table, AXIS2_FAILURE);
 
     new_table = axutil_hash_make(env);

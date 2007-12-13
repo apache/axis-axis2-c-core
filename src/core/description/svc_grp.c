@@ -49,7 +49,6 @@ axis2_svc_grp_create(
     const axutil_env_t * env)
 {
     axis2_svc_grp_t *svc_grp = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     svc_grp = (axis2_svc_grp_t *)
         AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_grp_t));
 
@@ -116,7 +115,6 @@ axis2_svc_grp_create_with_conf(
 {
     axis2_svc_grp_t *svc_grp = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, conf, NULL);
 
     svc_grp = (axis2_svc_grp_t *) axis2_svc_grp_create(env);
@@ -137,8 +135,6 @@ axis2_svc_grp_free(
     axis2_svc_grp_t * svc_grp,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (svc_grp->param_container)
     {
         axutil_param_container_free(svc_grp->param_container, env);
@@ -183,8 +179,6 @@ axis2_svc_grp_set_name(
     const axutil_env_t * env,
     const axis2_char_t * name)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (svc_grp->svc_grp_name)
         AXIS2_FREE(env->allocator, svc_grp->svc_grp_name);
     svc_grp->svc_grp_name = axutil_strdup(env, name);
@@ -216,7 +210,6 @@ axis2_svc_grp_add_svc(
     const axutil_qname_t *svc_qname = NULL;
     axis2_char_t *svc_name = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
 
     if (!svc_grp->svcs)
@@ -281,7 +274,6 @@ axis2_svc_grp_get_svc(
 {
     axis2_char_t *name = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
     name = axutil_qname_to_string((axutil_qname_t *) qname, env);
@@ -306,7 +298,6 @@ axis2_svc_grp_remove_svc(
     axis2_svc_t *svc = NULL;
     axis2_char_t *svc_name = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_name, AXIS2_FAILURE);
 
     svc = axis2_svc_grp_get_svc(svc_grp, env, svc_qname);
@@ -323,7 +314,6 @@ axis2_svc_grp_add_param(
     const axutil_env_t * env,
     axutil_param_t * param)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
 
     if (AXIS2_TRUE == axis2_svc_grp_is_param_locked(svc_grp, env,
@@ -351,7 +341,6 @@ axis2_svc_grp_get_param(
     const axis2_char_t * name)
 {
     axutil_param_t *param = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, name, NULL);
 
     param =
@@ -368,8 +357,6 @@ axis2_svc_grp_get_all_params(
     const axis2_svc_grp_t * svc_grp,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return axutil_param_container_get_params(svc_grp->param_container, env);
 }
 
@@ -384,7 +371,6 @@ axis2_svc_grp_is_param_locked(
     axutil_param_t *param = NULL;
     axis2_bool_t ret = AXIS2_FALSE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FALSE);
 
     parent = axis2_svc_grp_get_parent(svc_grp, env);
@@ -415,8 +401,6 @@ axis2_svc_grp_add_module_qname(
     const axutil_env_t * env,
     const axutil_qname_t * module_qname)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return axutil_array_list_add(svc_grp->module_qnames, env, module_qname);
 }
 
@@ -434,7 +418,6 @@ axis2_svc_grp_set_parent(
     const axutil_env_t * env,
     axis2_conf_t * parent)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, parent, AXIS2_FAILURE);
 
     if (svc_grp->parent)
@@ -465,7 +448,6 @@ axis2_svc_grp_engage_module(
 
     int size = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FAILURE);
 
     size = axutil_array_list_size(svc_grp->module_qnames, env);
@@ -550,7 +532,6 @@ axis2_svc_grp_add_module_ref(
     const axutil_env_t * env,
     const axutil_qname_t * moduleref)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, moduleref, AXIS2_FAILURE);
 
     if (!svc_grp->module_list)
@@ -578,7 +559,6 @@ axis2_svc_grp_get_svc_grp_ctx(
 {
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, parent, NULL);
 
     svc_grp_ctx =
