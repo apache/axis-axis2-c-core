@@ -42,6 +42,7 @@ href="http://ws.apache.org/axis2/c/mail-lists.html">Axis2 site</a>.</p>
   <li><a href="#ssl_client">Using SSL Client</a></li>
   <li><a href="#proxy">Using Proxy Support</a></li>
   <li><a href="#wsdl2c">WSDL2C Tool</a></li>
+  <li><a href="#tcptrans">TCP Transport</a></li>
   <li><a href="#appA">Appendix A - axis2.xml</a></li>
   <li><a href="#appB">Appendix B - services.xml</a></li>
   <li><a href="#appC">Appendix C - module.xml</a></li>
@@ -1412,10 +1413,62 @@ model, just use the following parameters.</p>
 logic as required in the client stubs as well. To do this, go through the
 header files generated and understand the API in line with the WSDL file that
 you used to generate the code.</p>
+
+<a name="tcptrans"></a>
+<h1>TCP Transport</h1>
+
+<h2>Building AXIS2C enabling TCP</h2>
+<p>This will Guide you to install Axis2C by enabling tcp and how to
+  check it by running samples</p> 
+
+<ol>
+<li>If you are going to install using configure you have use the
+  configure command by tcp enabling by giving following argument</li> 
+<pre>
+	./configure --enable-tcp=yes
+	make
+	make install
+</pre>
+
+<li>Then to confirm that you have successfully built with tcp enable
+  you can check in your lib folder for following files</li> 
+<pre>
+	ls $AXIS2C_HOME/lib/
+	libaxis2_tcp_sender.so
+	libaxis2_tcp_reciever.so
+</pre>
+
+<h2>Server Side</h2>
+<li>Then you have to edit the axis2.xml by uncommenting following entry.</li>
+<pre>
+        &lt;transportSender name="tcp" class="axis2_tcp_sender"&gt;
+        &lt;parameter name="PROTOCOL" locked="false"&gt;TCP&lt;/parameter&gt;
+        &lt;/transportSender&gt; 
+</pre>
+
+<li>Then for tcp you have to start the tcp server which runs in 9091
+  as default port.</li>
+<pre>
+	cd $AXIS2C_HOME/bin/
+	./axis2_tcp_server 
+</pre>
+
+<h2>Client Side</h2>
+<li>If your clients are in different location then you have to do the
+  same modification to axis2.xml as you did in the server side.</li> 
+
+<li>In your service client you have to give the end point address
+  adding  URI Schema name as tcp in the client code.</li> 
+<pre>       
+         tcp://[service_hostname]:[service_port]/axis2/services/your_service_name
+</pre>
+
+<li>You can use TCPMon to figure out how message goes without having
+  it's http headers when you build Axis2C by enabling tcp.</li> 
+</ol>
+
 <a name="appA"></a>
-
 <h1>Appendix A</h1>
-
 <h2 style="margin-bottom: 0in">axis2.xml</h2>
 
 <p>The axis2.xml file is the configuration file for Axis2/C. It has 6 top
