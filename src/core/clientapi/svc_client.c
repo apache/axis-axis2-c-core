@@ -1465,8 +1465,8 @@ axis2_svc_client_set_proxy_with_auth(
         attribute = axutil_hash_make(env);
         host_obj = axutil_generic_obj_create(env);
         port_obj = axutil_generic_obj_create(env);
-        host_attr = axiom_attribute_create(env, proxy_host, NULL, NULL);
-        port_attr = axiom_attribute_create(env, proxy_port, NULL, NULL);
+        host_attr = axiom_attribute_create(env, AXIS2_HTTP_PROXY_HOST, proxy_host, NULL);
+        port_attr = axiom_attribute_create(env, AXIS2_HTTP_PROXY_PORT, proxy_port, NULL);
         axutil_generic_obj_set_value(host_obj, env, host_attr);
         axutil_generic_obj_set_value(port_obj, env, port_attr);
 
@@ -1478,8 +1478,8 @@ axis2_svc_client_set_proxy_with_auth(
         {
                 username_obj = axutil_generic_obj_create(env);
                 password_obj = axutil_generic_obj_create(env);
-                username_attr = axiom_attribute_create(env, username, NULL, NULL);
-                password_attr = axiom_attribute_create(env, password, NULL, NULL);
+                username_attr = axiom_attribute_create(env, AXIS2_HTTP_PROXY_USERNAME, username, NULL);
+                password_attr = axiom_attribute_create(env, AXIS2_HTTP_PROXY_PASSWORD, password, NULL);
                 axutil_generic_obj_set_value(username_obj, env, username_attr);
                 axutil_generic_obj_set_value(password_obj, env, password_attr);
                 axutil_hash_set(attribute, AXIS2_HTTP_PROXY_USERNAME, AXIS2_HASH_KEY_STRING,
