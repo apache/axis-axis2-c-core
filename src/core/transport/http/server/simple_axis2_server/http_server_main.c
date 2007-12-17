@@ -197,8 +197,8 @@ main(
 	}
 	else
 	{
-		AXIS2_LOG_WARNING (env->log, AXIS2_LOG_SI, "provided repo path %s is " 
-						   "not exsist or no permissions to read, set "
+		AXIS2_LOG_WARNING (env->log, AXIS2_LOG_SI, "provided repo path %s does " 
+						   "not exist or no permissions to read, set "
 						   "repo_path to DEFAULT_REPO_PATH", repo_path);
 		repo_path = DEFAULT_REPO_PATH;
 	}
