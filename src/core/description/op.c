@@ -389,6 +389,10 @@ axis2_op_set_msg_recv(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_recv, AXIS2_FAILURE);
 
+    if (op->msg_recv == msg_recv)
+    {
+        return AXIS2_SUCCESS;
+    }
     if (op->msg_recv)
     {
         axis2_msg_recv_free(op->msg_recv, env);
