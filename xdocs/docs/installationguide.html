@@ -47,8 +47,9 @@ href="http://ws.apache.org/axis2/c/mail-lists.html">Axis2 site</a>.) Please
 remember to prefix the subject with [Axis2].</p>
 
 
-
-<h2>Contents</h2>
+<p style="margin-bottom: 0in"><br>
+</p>
+<h1>Contents</h1>
 
 <ul>
 
@@ -78,11 +79,13 @@ remember to prefix the subject with [Axis2].</p>
 
 </ul>
 
+<p style="margin-bottom: 0in"><br>
+</p>
 <a id="linux"></a>
 
 
 
-<h2>1. Installing and Running on Linux</h2>
+<h1>1. Installing and Running on Linux</h1>
 
 
 
@@ -108,7 +111,7 @@ Windows, you need to download and install Libxml2.</p>
 
 
 
-<h3>1.1. Installing the Binary Distribution</h3>
+<h2>1.1. Installing the Binary Distribution</h2>
 
 
 
@@ -126,9 +129,9 @@ binary distribution on Linux : </p>
 
     <ul>
 
-      <li>AXIS2C_HOME='/your_path_to_axis2c'</li>
+      <li><code>AXIS2C_HOME='/your_path_to_axis2c'</code></li>
 
-      <li>export AXIS2C_HOME</li>
+      <li><code>export AXIS2C_HOME</code></li>
 
       <p><strong>Note:</strong> You will need to set the AXIS2C_HOME only if
 
@@ -152,15 +155,15 @@ binary distribution on Linux : </p>
 
         <ul>
 
-          <li>cd /your_path_to_axis2c/bin</li>
+          <li><code>cd /your_path_to_axis2c/bin</code></li>
 
-          <li>./axis2_http_server</li>
+          <li><code>./axis2_http_server</code></li>
 
         </ul>
 
       </li>
 
-      <li>To see the possible command line options run ./axis2_http_server -h
+      <li>To see the possible command line options run <code>./axis2_http_server -h</code>
 
         <p><strong>Note:</strong> If you run into shared library problems,
 
@@ -170,9 +173,9 @@ binary distribution on Linux : </p>
 
         <ul>
 
-          <li>LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib</li>
+          <li><code>LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib</code></li>
 
-          <li>export LD_LIBRARY_PATH</li>
+          <li><code>export LD_LIBRARY_PATH</code></li>
 
         </ul>
 
@@ -186,13 +189,13 @@ binary distribution on Linux : </p>
 
     <ul>
 
-      <li>cd /your_path_to_axis2c/bin/samples</li>
+      <li><code>cd /your_path_to_axis2c/bin/samples</code></li>
 
       <li>To run the client for echo service
 
         <ul>
 
-          <li>./echo</li>
+          <li><code>./echo</code></li>
 
         </ul>
 
@@ -202,7 +205,7 @@ binary distribution on Linux : </p>
 
         <ul>
 
-          <li>./math</li>
+          <li><code>./math</code></li>
 
         </ul>
 
@@ -218,9 +221,9 @@ binary distribution on Linux : </p>
 
       <ul>
 
-        <li>LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib</li>
+        <li><code>LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib</code></li>
 
-        <li>export LD_LIBRARY_PATH</li>
+        <li><code>export LD_LIBRARY_PATH</code></li>
 
       </ul>
 
@@ -234,7 +237,7 @@ binary distribution on Linux : </p>
 
 
 
-<h3>1.2. Installing the Source Distribution</h3>
+<h2>1.2. Installing the Source Distribution</h2>
 
 
 
@@ -252,9 +255,9 @@ the source distribution on Linux :</p>
 
     <ul>
 
-      <li>AXIS2C_HOME='/your_desired_path_to_axis2c_installation'</li>
+      <li><code>AXIS2C_HOME='/your_desired_path_to_axis2c_installation'</code></li>
 
-      <li>export AXIS2C_HOME</li>
+      <li><code>export AXIS2C_HOME</code></li>
 
       <p><strong>Note:</strong> You will have to set AXIS2C_HOME only if you
 
@@ -272,7 +275,7 @@ the source distribution on Linux :</p>
 
     <ul>
 
-      <li>cd /your_path_to_axis2c_source</li>
+      <li><code>cd /your_path_to_axis2c_source</code></li>
 
     </ul>
 
@@ -288,19 +291,19 @@ the source distribution on Linux :</p>
 
         <ul>
 
-          <li>./configure</li>
+          <li><code>./configure</code></li>
 
-          <li>make</li>
+          <li><code>make</code></li>
 
-          <li>make install</li>
+          <li><code>make install</code></li>
 
         </ul>
 
       </li>
 
-      <li>Use './configure --help' for possible command line options.</li>
+      <li>Use <code>./configure --help</code> for possible command line options.</li>
 
-      <li><strong>Note:</strong> If you do not provide a --prefix configure
+      <li><strong>Note:</strong> If you do not provide a <code>--prefix</code> configure
 
         option, the default installation would be in the /usr/local/axis2c
 
@@ -308,17 +311,17 @@ the source distribution on Linux :</p>
 
       <li>You may have to try Axis2/C with Guththila XML parser. You can do
 
-        that by providing the --enable-guththila=yes option when configuring.
+        that by providing the <code>--enable-guththila=yes</code> option when configuring.
 
         <ul>
 
-          <li>./configure --enable-guththila=yes [other configuration
+          <li><code>./configure --enable-guththila=yes</code> [other configuration
 
           options]</li>
 
-          <li>make</li>
+          <li><code>make</code></li>
 
-          <li>make install</li>
+          <li><code>make install</code></li>
 
         </ul>
 
@@ -332,27 +335,27 @@ the source distribution on Linux :</p>
 
         <ul>
 
-          <li>LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path_you_installed_axis2c/lib/</li>
+          <li><code>LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path_you_installed_axis2c/lib/</code></li>
 
-          <li>export LD_LIBRARY_PATH</li>
+          <li><code>export LD_LIBRARY_PATH</code></li>
 
-          <li>cd samples</li>
-	  <li>./configure --prefix=${AXIS2C_HOME} 
-	  	--with-axis2=$AXIS2C_HOME}/include/axis2-1.2 </li>
+          <li><code>cd samples</code></li>
+	  <li><code>./configure --prefix=${AXIS2C_HOME} 
+	  	--with-axis2=$AXIS2C_HOME}/include/axis2-1.2</code></li>
 
-          <li>make</li>
+          <li><code>make</code></li>
 
-          <li>make install</li>
+          <li><code>make install</code></li>
 
         </ul>
 
       </li>
 
-      <li>Please run "./configure --help" in the samples folder for more
+      <li>Please run <code>./configure --help</code> in the samples folder for more
 
         information on the configure options.</li>
 
-      <li><strong>Note:</strong> If you do not provide a --prefix configure
+      <li><strong>Note:</strong> If you do not provide a <code>--prefix</code> configure
 
         option, by default, the samples will be installed into the
 
@@ -374,17 +377,17 @@ the source distribution on Linux :</p>
 
         <ul>
 
-          <li>cd /path_you_installed_axis2c/bin</li>
+          <li><code>cd /path_you_installed_axis2c/bin</code></li>
 
-          <li>./axis2_http_server</li>
+          <li><code>./axis2_http_server</code></li>
 
         </ul>
 
       </li>
 
-      <li>To see the possible command line options, run ./axis2_http_server
+      <li>To see the possible command line options, run <code>./axis2_http_server
 
-      -h</li>
+      -h</code></li>
 
       <li><strong>Note:</strong> You may have to be logged in as a superuser
 
@@ -400,13 +403,13 @@ the source distribution on Linux :</p>
 
     <ul>
 
-      <li>cd /path_you_installed_axis2c/bin/samples</li>
+      <li><code>cd /path_you_installed_axis2c/bin/samples</code></li>
 
       <li>To run the client for the echo service
 
         <ul>
 
-          <li>./echo</li>
+          <li><code>./echo</code></li>
 
         </ul>
 
@@ -416,7 +419,7 @@ the source distribution on Linux :</p>
 
         <ul>
 
-          <li>./math</li>
+          <li><code>./math</code></li>
 
         </ul>
 
@@ -432,11 +435,13 @@ the source distribution on Linux :</p>
 
 </ol>
 
+<p style="margin-bottom: 0in"><br>
+</p>
 <a id="win"></a>
 
 
 
-<h2>2. Installing and Running on Microsoft Windows</h2>
+<h1>2. Installing and Running on Microsoft Windows</h1>
 
 
 
@@ -456,11 +461,11 @@ href="http://www.zlatkovic.com/pub/libxml/">Libxml2</a>, if you are not using Gu
 
 
 
-<h3>2. 1. Installing the Binary Distribution </h3>
+<h2>2.1. Installing the Binary Distribution </h2>
 
 
 
-<h4>2.1.1. Requirements</h4>
+<h3>2.1.1. Requirements</h3>
 
 <ul>
 
@@ -504,7 +509,7 @@ href="http://www.zlatkovic.com/pub/libxml/">Libxml2</a>, if you are not using Gu
 
 
 
-<h4>2.1.2. Binaries in the Release</h4>
+<h3>2.1.2. Binaries in the Release</h3>
 
 <ul>
 
@@ -552,7 +557,7 @@ href="http://www.zlatkovic.com/pub/libxml/">Libxml2</a>, if you are not using Gu
 
 
 
-<h4>2.1.3. Running the Binaries</h4>
+<h3>2.1.3. Running the Binaries</h3>
 
 <ul>
 
@@ -588,7 +593,7 @@ href="http://www.zlatkovic.com/pub/libxml/">Libxml2</a>, if you are not using Gu
 
   <li>(<strong>Note</strong>: You can provide command line options to change
 
-    the default behavior. Use the command "axis2_http_server.exe -h" to learn
+    the default behavior. Use the command <code>axis2_http_server.exe -h</code> to learn
 
     about the usage)</li>
 
@@ -608,11 +613,11 @@ href="http://www.zlatkovic.com/pub/libxml/">Libxml2</a>, if you are not using Gu
 
 
 
-<h3>2. 2. Installing Source Distribution</h3>
+<h2>2.2. Installing the Source Distribution</h2>
 
 
 
-<h4>2.2.1. Requirements</h4>
+<h3>2.2.1. Requirements</h3>
 
 <ul>
 
@@ -658,7 +663,7 @@ href="http://www.zlatkovic.com/pub/libxml/">Libxml2</a>, if you are not using Gu
 
 
 
-<h4>2.2.3. Editing the configure.in File</h4>
+<h3>2.2.2. Editing the configure.in File</h3>
 
 
 
@@ -706,7 +711,7 @@ structure for C:\libxml2 should look like the following:</p>
 
     file.<br />
 
-    Example: ENABLE_GUTHTHILA = 1<br />
+    Example: <code>ENABLE_GUTHTHILA = 1</code><br />
 
     <br />
 
@@ -724,7 +729,7 @@ If you want to enable <a href="http://curl.haxx.se/">libcurl</a> based client tr
 
 
 
-<h4>2.2.4. Compiling the Source</h4>
+<h3>2.2.3. Compiling the Source</h3>
 
 
 
@@ -740,7 +745,7 @@ If you want to enable <a href="http://curl.haxx.se/">libcurl</a> based client tr
 
   <li>Open a DOS shell</li>
 
-  <li>cd C:\axis2c\build\win32</li>
+  <li><code>cd C:\axis2c\build\win32</code></li>
 
   <li>to access .Net tools, run
 
@@ -804,7 +809,7 @@ If you want to enable <a href="http://curl.haxx.se/">libcurl</a> based client tr
 
 </ul>
 
-<p>Please note that &quot;nmake install&quot; does not build the apache or the IIS module. Refer to <a href="axis2c_manual.html">Axis2/C manual</a> to see how to install these modules.</p>
+<p>Please note that <code>nmake install</code> does not build the apache or the IIS module. Refer to <a href="axis2c_manual.html">Axis2/C manual</a> to see how to install these modules.</p>
 
 <p>
 
@@ -814,7 +819,7 @@ If you want to enable <a href="http://curl.haxx.se/">libcurl</a> based client tr
 
 
 
-<h4>2.2.5. Running the Binaries</h4>
+<h3>2.2.4. Running the Binaries</h3>
 
 <ul>
 
