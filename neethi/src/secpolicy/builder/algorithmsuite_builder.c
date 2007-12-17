@@ -58,6 +58,7 @@ rp_algorithmsuite_builder_build(
             (axiom_element_t *) axiom_node_get_data_element(algo_node, env);
         if (algo_element)
         {
+            axis2_status_t status = AXIS2_FAILURE;
             axis2_char_t *algosuite_string = NULL;
 
             algosuite_string = axiom_element_get_localname(algo_element, env);
@@ -65,8 +66,11 @@ rp_algorithmsuite_builder_build(
             {
                 return NULL;
             }
-            rp_algorithmsuite_set_algosuite(algorithmsuite, env,
+            status = rp_algorithmsuite_set_algosuite(algorithmsuite, env,
                                             algosuite_string);
+            if(AXIS2_FAILURE == status){
+                return NULL;
+            }
             assertion =
                 neethi_assertion_create_with_args(env,
                                                   (void *)
