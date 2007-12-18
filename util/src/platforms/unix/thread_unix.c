@@ -164,8 +164,6 @@ axutil_thread_exit(
             sleep(1);
         }    
         
-        thd->try_exit = AXIS2_TRUE;
-
         if (thd->td)
         {
             AXIS2_FREE(allocator, thd->td);
