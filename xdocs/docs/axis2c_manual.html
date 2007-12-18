@@ -1131,25 +1131,26 @@ for more details on how to package and deploy the module.</p>
 </p>
 <a name="simple_axis_server"></a>
 
-<h1>10. Simple Axis Server</h1>
+<h1>10. Simple Axis2 HTTP  Server</h1>
 
-<p>Simple axis server is the inbuilt HTTP server of Axis2/C.<br>
+<p>Simple Axis2 HTTP Server is the inbuilt HTTP server of Axis2/C.<br>
 </p>
 
 <p>Synopsis :</p>
-<pre>   axis2_http_server [-p PORT] [-t TIMEOUT] [-r REPO_PATH][-l LOG_LEVEL] [-f LOG_FILE]</pre>
+<pre>   axis2_http_server [-p PORT] [-t TIMEOUT] [-r REPO_PATH] [-l LOG_LEVEL] [-f LOG_FILE] [-s LOG_FILE_SIZE]</pre>
 
-<p>You can use the following options with simple axis server.</p>
+<p>You can use the following options with simple axis HTTP server.</p>
 <pre>        -p PORT          port number to use, default port is 9090
         -r REPO_PATH     repository path, default is ../
         -t TIMEOUT       socket read timeout, default is 30 seconds
         -l LOG_LEVEL     log level, available log levels:
                          0 - critical    1 - errors 2 - warnings
-                         3 - information 4 - debug  5- trace
+                         3 - information 4 - debug  5- user 6 - trace
                          Default log level is 4(debug).
         -f LOG_FILE      log file, default is $AXIS2C_HOME/logs/axis2.log
                          or axis2.log in current folder if AXIS2C_HOME not set
-        -h               display this help screen.</pre>
+        -s LOG_FILE_SIZE         Maximum log file size in mega bytes, default maximum size is 1MB.
+        -h               display the help screen.</pre>
 
 <p>Example :</p>
 <pre>   axis2_http_server -l 3 -p 8080 -r $AXIS2C_HOME  -f /dev/stderr</pre>
@@ -1305,7 +1306,7 @@ troubleshoot:</p>
 component.</a></p>
 
 <p>In this document I assume that the mod_axis2_IIS.dll
-is in the directory <code>c:\axis2c\lib\mod_axis2_IIS.dll</code> and axis2c_home
+is in the directory <code>c:\axis2c\lib\mod_axis2_IIS.dll</code> and AXIS2C_HOME
 is <code>c:\axis2c</code></p>
 
 <p>Add the following key to the
@@ -1314,7 +1315,7 @@ registery.</p>
 <p>HKEY_LOCAL_MACHINE\SOFTWARE\Apache Axis2c\IIS ISAPI
 Redirector</p>
 
-<p>Add a string value with the name axis2c_home and a
+<p>Add a string value with the name AXIS2C_HOME and a
 value of c:\axis2c</p>
 
 <p>Add a string value with the name log_file and a value
@@ -1639,20 +1640,45 @@ the option to enable tcp by providing the following argument:</li>
 you can check in your $AXIS2C_HOME/lib folder for following files:</li> 
 <pre>	libaxis2_tcp_sender.so
 	libaxis2_tcp_reciever.so</pre>
-</ol>
-<h2>18.2 Server Side</h2>
-<ul>
-<li>To setup the server side, you have to edit the axis2.xml by uncommenting 
+
+<li>To setup the tcp transport sender, you have to edit the axis2.xml by uncommenting 
 following entry:</li>
 <pre>	&lt;transportSender name="tcp" class="axis2_tcp_sender"&gt;
         &lt;parameter name="PROTOCOL" locked="false"&gt;TCP&lt;/parameter&gt;
         &lt;/transportSender&gt;</pre>
+</ol>
+<h2>18.2 Server Side</h2>
+<ul>
 
 <li>To run the tcp server, you have to start the tcp server which runs in 9091
   as its default port.</li>
 <pre>	cd $AXIS2C_HOME/bin/
 	./axis2_tcp_server</pre>
 </ul>
+<h3>18.2.1 Simple Axis2 TCP Server</h3>
+
+<p>Simple Axis2 TCP Server is the inbuilt TCP server of Axis2/C.<br>
+</p>
+
+<p>Synopsis :</p>
+<pre>   axis2_tcp_server [-p PORT] [-t TIMEOUT] [-r REPO_PATH] [-l LOG_LEVEL] [-f LOG_FILE] [-s LOG_FILE_SIZE]</pre>
+
+<p>You can use the following options with simple axis TCP server.</p>
+<pre>        -p PORT          port number to use, default port is 9091
+        -r REPO_PATH     repository path, default is ../
+        -t TIMEOUT       socket read timeout, default is 30 seconds
+        -l LOG_LEVEL     log level, available log levels:
+                         0 - critical    1 - errors 2 - warnings
+                         3 - information 4 - debug  5- user 6 - trace
+                         Default log level is 4(debug).
+        -f LOG_FILE      log file, default is $AXIS2C_HOME/logs/axis2.log
+                         or axis2.log in current folder if AXIS2C_HOME not set
+        -s LOG_FILE_SIZE         Maximum log file size in mega bytes, default maximum size is 1MB.
+        -h               display the help screen.</pre>
+
+<p>Example :</p>
+<pre>   axis2_tcp_server -l 3 -p 8080 -r $AXIS2C_HOME  -f /dev/stderr</pre>
+
 <h2>18.3 Client Side</h2>
 <ul>
 <li>In your service client you have to give the end point address
