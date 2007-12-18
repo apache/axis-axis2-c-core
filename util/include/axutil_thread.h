@@ -172,6 +172,7 @@ extern "C"
     axutil_thread_detach(
         axutil_thread_t * thd);
 
+
     /*************************Thread locking functions*****************************/
 
     /** Opaque thread-local mutex structure */

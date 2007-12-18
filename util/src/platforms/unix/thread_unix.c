@@ -118,6 +118,7 @@ axutil_thread_create(
 
     new->data = data;
     new->func = func;
+    new->try_exit = AXIS2_FALSE;
 
     if (attr)
     {
@@ -155,8 +156,16 @@ axutil_thread_exit(
     axutil_thread_t * thd,
     axutil_allocator_t * allocator)
 {
+
     if (thd)
     {
+        while (!thd->try_exit)
+        {    
+            sleep(1);
+        }    
+        
+        thd->try_exit = AXIS2_TRUE;
+
         if (thd->td)
         {
             AXIS2_FREE(allocator, thd->td);
@@ -185,6 +194,7 @@ axutil_thread_detach(
 {
     if (0 == pthread_detach(*(thd->td)))
     {
+        thd->try_exit = AXIS2_TRUE;
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
@@ -196,6 +206,7 @@ axutil_thread_yield(
 {
     return;
 }
+
 
 /**
  * function is used to allocate a new key. This key now becomes valid for all threads in our process. 

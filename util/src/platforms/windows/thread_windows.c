@@ -109,6 +109,7 @@ axutil_thread_create(
     new->data = data;
     new->func = func;
     new->td = NULL;
+    new->try_exit = AXIS2_FALSE;
 
     /* Use 0 for Thread Stack Size, because that will default the stack to the
      * same size as the calling thread. 

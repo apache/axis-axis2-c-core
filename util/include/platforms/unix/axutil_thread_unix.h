@@ -31,6 +31,7 @@ struct axutil_thread_t
     pthread_t *td;
     void *data;
     axutil_thread_start_t func;
+    axis2_bool_t try_exit;
 };
 
 struct axutil_threadattr_t
