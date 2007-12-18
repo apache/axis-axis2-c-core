@@ -1219,6 +1219,7 @@ Axis2RepoPath AXIS2C_INSTALL_DIR
 Axis2LogFile  PATH_TO_LOG_FILE
 Axis2LogLevel LOG_LEVEL
 Axis2ServiceURLPrefix PREFIX
+Axis2MaxLogFileSize <Maximum log file size in MB>
 &lt;Location /axis2&gt;
     SetHandler axis2_module
 &lt;/Location&gt;</pre>
@@ -1250,7 +1251,17 @@ warn, info, debug, trace. These log levels have the following meanings:</p>
     used</li>
   <li>trace - log trace messages and above</li>
 </ul>
-
+<p>
+<br>
+NOTE: If you want to use a Shared Global Pool with Apache you have to give another
+entry called Axis2GlobalPoolSize.You have to give the size of the shared global
+pool in MB.If you doesn't set the value or if you set a negative value Apache
+module doesn't create shared global pool.
+<br></p>
+<p>
+Axis2GlobalPoolSize <global pool size in MB>
+<br>
+</p>
 <p>PREFIX has to be replaced with the prefix to be used with the 
 service endpoints. This is optional and defaults to &quot;services&quot;.
 As an example, if you have  &quot;web_services&quot; as the prefix, then all the
