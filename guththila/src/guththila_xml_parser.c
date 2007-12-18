@@ -25,7 +25,7 @@
     
 #define GUTHTHILA_VALIDATION_PARSER
 
- int GUTHTHILA_CALL 
+int GUTHTHILA_CALL 
 guththila_next_char(guththila_t * m,int eof,const axutil_env_t * env);
 
 int GUTHTHILA_CALL 
@@ -42,6 +42,7 @@ void GUTHTHILA_CALL guththila_token_close(
     int tok_type,
     int referer,
     const axutil_env_t * env);
+
 int GUTHTHILA_CALL guththila_process_xml_dec(
     guththila_t * m,
     const axutil_env_t * env);
@@ -49,15 +50,15 @@ int GUTHTHILA_CALL guththila_process_xml_dec(
 #ifndef GUTHTHILA_SKIP_SPACES
 #define GUTHTHILA_SKIP_SPACES(m, c, _env)while(0x20 == c || 0x9 == c || 0xD == c || 0xA == c){c = guththila_next_char(m, 0, _env);}
 
-#endif  /*  */
+#endif  
     
 #ifndef GUTHTHILA_SKIP_SPACES_WITH_NEW_LINE
 #define GUTHTHILA_SKIP_SPACES_WITH_NEW_LINE(m, c, _env) while (0x20 == c || 0x9 == c || 0xD == c || 0xA == c || '\n' == c){c = guththila_next_char(m, 0, _env);}
-#endif  /*  */
+#endif  
     
 #ifndef GUTHTHILA_LAST_CHAR
 #define GUTHTHILA_LAST_CHAR(m) (m->buffer.buff + m->buffer.next - 1)
-#endif  /*  */
+#endif  
     
 #ifndef GUTHTHILA_TOKEN_OPEN
 #define GUTHTHILA_TOKEN_OPEN(m, tok, _env)					\
@@ -65,7 +66,7 @@ int GUTHTHILA_CALL guththila_process_xml_dec(
     m->temp_tok->type = _Unknown; \
     m->temp_tok->_start = m->next; \
     m->last_start = m->next - 1;
-#endif  /*  */
+#endif  
     
 #ifndef GUTHTHILA_PROCESS_EQU
 #define GUTHTHILA_PROCESS_EQU(m, c, ic, _env)							\
@@ -74,48 +75,43 @@ int GUTHTHILA_CALL guththila_process_xml_dec(
     ic = guththila_next_char(m, 0, _env); \
     GUTHTHILA_SKIP_SPACES(m, ic, _env); \
     }
-#endif  /*  */
+#endif  
     
 #ifndef GUTHTHILA_ATTRIBUTE_INITIALIZE
 #define GUTHTHILA_ATTRIBUTE_INITIALIZE(_attr, _pref, _name, _val)	\
     (_attr->pref = (_pref)); \
     (_attr->name = (_name)); \
     (_attr->val = (_val));
-#endif  /*  */
+#endif  
     
 #ifndef GUTHTHILA_NAMESPACE_INITIALIZE
 #define GUTHTHILA_NAMESPACE_INITIALIZE(_namesp, _name, _uri)	\
     (_namesp->name = _name); \
     (_namesp->uri = _uri);
-#endif  /*  */
+#endif  
     
 #ifndef GUTHTHILA_IS_SPACE
 #define GUTHTHILA_IS_SPACE(c) (0x20 == c || 0xD == c || 0xA == c || 0x9 == c)     
-#endif  /*  */
+#endif  
     
 #ifndef GUTHTHILA_IS_VALID_STRING_CHAR
 #define GUTHTHILA_IS_VALID_STRING_CHAR(c) (isalpha(c) || '_' == c || ':' == c)
-#endif  /*  */
+#endif 
     
 #ifndef GUTHTHILA_IS_VALID_STARTING_CHAR
 #define GUTHTHILA_IS_VALID_STARTING_CHAR(c) (isalpha(c) || '_' == c || ':' == c)
-#endif  /*  */
+#endif 
 
 void GUTHTHILA_CALL
-guththila_token_close(
-    guththila_t * m,
-    guththila_token_t * tok,
-    int tok_type,
-    int referer,
-    const axutil_env_t * env) 
+guththila_token_close(guththila_t * m, guththila_token_t * tok, 
+					  int tok_type, int referer, 
+					  const axutil_env_t * env) 
 {
     guththila_attr_t * attr = NULL;
     guththila_element_t * elem = NULL;
     guththila_elem_namesp_t * e_namesp = NULL;
     guththila_namespace_t * namesp;
-    int counter = 0,
-        nmsp_no = 0,
-        i = 0;
+    int counter = 0, nmsp_no = 0, i = 0;
     m->temp_tok->type = tok_type;
     m->temp_tok->size = m->next - m->temp_tok->_start;
     m->temp_tok->start = GUTHTHILA_BUF_POS(m->buffer, m->next - 1) - m->temp_tok->size;
@@ -145,77 +141,71 @@ guththila_token_close(
                 (guththila_namespace_t *)
                 AXIS2_MALLOC(sizeof(guththila_namespace_t));
                 GUTHTHILA_NAMESPACE_INITIALIZE(namesp, m->temp_name, m->temp_tok);
-                guththila_stack_push(&m->namesp, namesp);
-            
-#else   /*  */
-                elem =
-		    (guththila_element_t *) guththila_stack_peek(&m->elem, env);
+                guththila_stack_push(&m->namesp, namesp);            
+#else   
+            elem = (guththila_element_t *)guththila_stack_peek(&m->elem, env);
             if (elem && !elem->is_namesp)
             {
-                e_namesp =
-                    (guththila_elem_namesp_t *) AXIS2_MALLOC(env->allocator,
-                                                             sizeof
-                                                             (guththila_elem_namesp_t));
+                e_namesp = (guththila_elem_namesp_t *) AXIS2_MALLOC(env->allocator,
+                                                   sizeof(guththila_elem_namesp_t));
                 if (e_namesp)
                 {
                     e_namesp->namesp =
                         (guththila_namespace_t *) AXIS2_MALLOC(env->allocator,
-                                                               sizeof
-                                                               (guththila_namespace_t)
-                                                               *
-                                                               GUTHTHILA_NAMESPACE_DEF_SIZE);
+                        sizeof(guththila_namespace_t) * GUTHTHILA_NAMESPACE_DEF_SIZE);
                     if (e_namesp->namesp)
                     {
                         e_namesp->no = 1;
                         e_namesp->size = GUTHTHILA_NAMESPACE_DEF_SIZE;
-                        e_namesp->namesp[0].name = m->temp_name;
-                        e_namesp->namesp[0].uri = m->temp_tok;
+						e_namesp->namesp[0].name = m->temp_name;
+						e_namesp->namesp[0].uri = m->temp_tok;
                         guththila_stack_push(&m->namesp, e_namesp, env);
                         elem->is_namesp = 1;
                     }
+					else 
+                    {
+                        AXIS2_FREE(env->allocator, e_namesp);
+                        e_namesp = NULL;
+                    }
                 }
-            }
-            else
+            }            
+            else if (elem && elem->is_namesp)
             {
-                e_namesp =
-                    (guththila_elem_namesp_t *) guththila_stack_peek(&m->namesp,env);
-
-                if (e_namesp->no < e_namesp->size)
-                {
-                    e_namesp->namesp[e_namesp->no].name = m->temp_name;
-                    e_namesp->namesp[e_namesp->no].uri = m->temp_tok;
-                    e_namesp->no++;
-                }
-                else
+                e_namesp = (guththila_elem_namesp_t *)guththila_stack_peek(&m->namesp, env);
+				if (e_namesp->no < e_namesp->size)
+				{
+					e_namesp->namesp[e_namesp->no].name = m->temp_name;
+					e_namesp->namesp[e_namesp->no].uri = m->temp_tok;
+					e_namesp->no++;
+				}
+				else 
                 {              
                     namesp =
                       (guththila_namespace_t *) AXIS2_MALLOC(env->allocator,
-                                                         sizeof(guththila_namespace_t)*e_namesp->size *2);
-                    for (i = 0; i < e_namesp->no; i++)
+                       sizeof(guththila_namespace_t)*e_namesp->size *2);
+                    if (namesp)
                     {
-                        namesp[i].name = e_namesp->namesp[i].name;
-                        namesp[i].uri = e_namesp->namesp[i].uri;
-                    }
-                    AXIS2_FREE(env->allocator, e_namesp->namesp);
-                    e_namesp->namesp = namesp;
-                    if (e_namesp->namesp)
-                    {
+                        for (i = 0; i < e_namesp->no; i++)
+                        {
+                            namesp[i].name = e_namesp->namesp[i].name;
+                            namesp[i].uri = e_namesp->namesp[i].uri;
+                        }
+                        AXIS2_FREE(env->allocator, e_namesp->namesp);
+                        e_namesp->namesp = namesp;
                         e_namesp->size *= 2;
-                        e_namesp->namesp[e_namesp->no].name = m->temp_name;
-                        e_namesp->namesp[e_namesp->no].uri = m->temp_tok;
-                        e_namesp->no++;
+
+						e_namesp->namesp[e_namesp->no].name = m->temp_name;
+						e_namesp->namesp[e_namesp->no].uri = m->temp_tok;
+						e_namesp->no++;
                     }
                 }
-            }
-            
-#endif  /*  */
+            }            
+#endif  
         }
         else
         {
-            attr =
-                (guththila_attr_t *) AXIS2_MALLOC(env->allocator,
-                                                  sizeof(guththila_attr_t));
-            
+            attr = (guththila_attr_t *) AXIS2_MALLOC(env->allocator,
+                                                  sizeof(guththila_attr_t));           
 #ifdef GUTHTHILA_VALIDATION_PARSER
 	    if (m->temp_prefix)
             {
@@ -248,12 +238,12 @@ guththila_token_close(
                 guththila_stack_push(&m->attrib, attr, env);
             }
             
-#else   /*  */
+#else   
             GUTHTHILA_ATTRIBUTE_INITIALIZE(attr, m->temp_prefix,
                                                 m->temp_name, m->temp_tok);
             guththila_stack_push(&m->attrib, attr, env);
             
-#endif  /*  */
+#endif  
         }
         m->temp_prefix = NULL;
         m->temp_name = NULL;
@@ -282,13 +272,10 @@ guththila_token_close(
     m->name = NULL; \
     m->prefix = NULL; \
     m->value = NULL;
-#endif  /*  */
+#endif 
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
-guththila_init(
-    guththila_t * m,
-    void *reader,
-    const axutil_env_t * env) 
+guththila_init(guththila_t * m, void *reader, const axutil_env_t * env) 
 {
     if (!((guththila_reader_t *) reader))
         return GUTHTHILA_FAILURE;
@@ -359,8 +346,9 @@ guththila_create(void *reader,const axutil_env_t *env)
     m->temp_tok = NULL;
     return m;
 }
+
 GUTHTHILA_EXPORT void GUTHTHILA_CALL
-guththila_free(guththila_t * m,const axutil_env_t * env) 
+guththila_free(guththila_t * m, const axutil_env_t * env) 
 {
     int size = 0,
         i = 0;
@@ -438,7 +426,7 @@ guththila_free(guththila_t * m,const axutil_env_t * env)
                 guththila_tok_list_release_token(&m->tokens, namesp->name, env);
             if (namesp->uri)
                 guththila_tok_list_release_token(&m->tokens, namesp->uri, env);
-                AXIS2_FREE(env->allocator, namesp);
+            AXIS2_FREE(env->allocator, namesp);
         }
     }
 #else  /*   */
@@ -448,26 +436,24 @@ guththila_free(guththila_t * m,const axutil_env_t * env)
     {
         e_namesp =
             (guththila_elem_namesp_t *) guththila_stack_pop(&m->namesp, env);
-                    for (i = 0; i < e_namesp->no; i++)
-                    {
-                        if(e_namesp->namesp[i].name)
-                        {
-                            guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].name,env);
-                        }
-
-                        if(e_namesp->namesp[i].uri)
-                        {
-                            guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].uri, env);
-                        }
-                        AXIS2_FREE(env->allocator, &(e_namesp->namesp[i]));
-                    }
-
-                    AXIS2_FREE(env->allocator,e_namesp);
+        for (i = 0; i < e_namesp->no; i++)
+        {
+            if(e_namesp->namesp[i].name)
+            {
+                guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].name,env);
+            }
+			if(e_namesp->namesp[i].uri)
+            {
+                guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].uri, env);
+            }
+        }
+        AXIS2_FREE(env->allocator, e_namesp->namesp);
+        AXIS2_FREE(env->allocator, e_namesp);
     }
-#endif  /*   */
+#endif  
 
 
-        size = GUTHTHILA_STACK_SIZE(m->elem);
+    size = GUTHTHILA_STACK_SIZE(m->elem);
     for (i = 0; i < size; i++)
     {
         elem =
@@ -488,6 +474,7 @@ guththila_free(guththila_t * m,const axutil_env_t * env)
     AXIS2_FREE(env->allocator, m);
     return;
 }
+
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
 guththila_un_init(guththila_t * m,const axutil_env_t * env) 
 {
@@ -554,7 +541,7 @@ guththila_un_init(guththila_t * m,const axutil_env_t * env)
                 AXIS2_FREE(env->allocator, namesp);
         }
     }
-#else  /*   */
+#else 
     
 
     size = GUTHTHILA_STACK_SIZE(m->namesp);
@@ -562,23 +549,21 @@ guththila_un_init(guththila_t * m,const axutil_env_t * env)
     {
         e_namesp =
             (guththila_elem_namesp_t *) guththila_stack_pop(&m->namesp, env);
-                    for (i = 0; i < e_namesp->no; i++)
-                    {
-                        if(e_namesp->namesp[i].name)
-                        {
-                            guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].name,env);
-                        }
-
-                        if(e_namesp->namesp[i].uri)
-                        {
-                            guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].uri, env);
-                        }
-                        AXIS2_FREE(env->allocator, &(e_namesp->namesp[i]));
-                    }
-
-                    AXIS2_FREE(env->allocator,e_namesp);
+        for (i = 0; i < e_namesp->no; i++)
+        {
+            if(e_namesp->namesp[i].name)
+            {
+                guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].name,env);
+            }
+            if(e_namesp->namesp[i].uri)
+            {
+                guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].uri, env);
+            }
+        }
+        AXIS2_FREE(env->allocator, e_namesp->namesp);
+        AXIS2_FREE(env->allocator,e_namesp);
     }
-#endif  /*   */
+#endif  
 
     size = GUTHTHILA_STACK_SIZE(m->elem);
     for (i = 0; i < size; i++)
@@ -594,8 +579,7 @@ guththila_un_init(guththila_t * m,const axutil_env_t * env)
             AXIS2_FREE(env->allocator, elem);
         }
     }
-    guththila_stack_un_init(&m->elem,env);
-    
+    guththila_stack_un_init(&m->elem,env);   
     guththila_stack_un_init(&m->namesp, env);
     guththila_tok_list_free_data(&m->tokens, env);
     guththila_buffer_un_init(&m->buffer, env);
@@ -652,8 +636,8 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                     guththila_tok_list_release_token(&m->tokens,
                                                      nmsp->namesp[nmsp_counter].
                                                      uri, env);
-                AXIS2_FREE(env->allocator,&(nmsp->namesp[nmsp_counter]));
             }
+            AXIS2_FREE(env->allocator, nmsp->namesp);
             AXIS2_FREE(env->allocator, nmsp);
         }
         if (elem->name)
@@ -663,7 +647,7 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
             AXIS2_FREE(env->allocator, elem);
     }
     
-#endif  /*  */
+#endif  
     do
     {
         loop = 0;
@@ -718,7 +702,7 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                     elem->is_namesp = 0;
                     guththila_stack_push(&m->elem, elem, env);
                     
-#endif  /*  */
+#endif  
                 }
                 GUTHTHILA_SKIP_SPACES(m, c, env);
                 for (;;)
@@ -848,8 +832,8 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                                                                  namesp
                                                                  [nmsp_counter].
                                                                  uri, env);
-                            AXIS2_FREE(env->allocator,&(nmsp->namesp[nmsp_counter]));
                         }
+                        AXIS2_FREE(env->allocator, nmsp->namesp);
                         AXIS2_FREE(env->allocator, nmsp);
                     }
                     if (elem->name)
@@ -858,7 +842,7 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                         guththila_tok_list_release_token(&m->tokens,elem->prefix, env);
                         AXIS2_FREE(env->allocator, elem);
                     
-#endif  /*  */
+#endif  
                         GUTHTHILA_SKIP_SPACES(m, c, env);
                     if (c != '>')
                         return -1;
@@ -1215,13 +1199,12 @@ guththila_get_namespace(
 {
     
 #ifndef GUTHTHILA_VALIDATION_PARSER
-        return (guththila_namespace_t *) guththila_stack_pop(&m->namesp, env);
-    
-#else   /*  */
-        return NULL;
-    
-#endif  /*  */
+        return (guththila_namespace_t *) guththila_stack_pop(&m->namesp, env);    
+#else  
+        return NULL;   
+#endif  
 }
+
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
 guththila_get_namespace_count(
     guththila_t * m,
@@ -1229,19 +1212,17 @@ guththila_get_namespace_count(
 {
     
 #ifndef GUTHTHILA_VALIDATION_PARSER
-        return GUTHTHILA_STACK_SIZE(m->namesp);
-    
-#else   /*  */
-        guththila_elem_namesp_t * nmsp = NULL;
+        return GUTHTHILA_STACK_SIZE(m->namesp);    
+#else   
+    guththila_elem_namesp_t * nmsp = NULL;
     if (((guththila_element_t *) guththila_stack_peek(&m->elem, env))->is_namesp)
     {
-        nmsp =
-            (guththila_elem_namesp_t *) guththila_stack_peek(&m->namesp, env);
+        nmsp = (guththila_elem_namesp_t *) guththila_stack_peek(&m->namesp, env);
         return nmsp->no;
     }
     return 0;
     
-#endif  /*  */
+#endif  
 }
 
 GUTHTHILA_EXPORT guththila_char_t *GUTHTHILA_CALL
@@ -1294,21 +1275,18 @@ guththila_get_namespace_prefix_by_number(
     }
     
 #else   /*  */
-        guththila_elem_namesp_t * nmsp = NULL;
-    if (((guththila_element_t *) guththila_stack_peek(&m->elem, env))->
-         is_namesp)
+    guththila_elem_namesp_t * nmsp = NULL;
+    if (((guththila_element_t *) guththila_stack_peek(&m->elem, env))->is_namesp)
     {
-        nmsp =
-            (guththila_elem_namesp_t *) guththila_stack_peek(&m->namesp, env);
+        nmsp = (guththila_elem_namesp_t *) guththila_stack_peek(&m->namesp, env);
         if (nmsp && nmsp->no >= i)
         {
             GUTHTHILA_TOKEN_TO_STRING(nmsp->namesp[i - 1].name, str, env);
             return str;
         }
-    }
-    
+    }    
 #endif  /*  */
-        return NULL;
+    return NULL;
 }
 
 GUTHTHILA_EXPORT guththila_char_t *GUTHTHILA_CALL
@@ -1316,11 +1294,10 @@ guththila_get_namespace_uri_by_number(
     guththila_t * m, int i,
     const axutil_env_t *env) 
 {
-    guththila_char_t *str = NULL;
-    
-        /*TODO check the given index, this can begn from 1, here I assume begin from 0 */ 
+    guththila_char_t *str = NULL;    
+    /*TODO check the given index, this can begn from 1, here I assume begin from 0 */ 
 #ifndef GUTHTHILA_VALIDATION_PARSER
-        if (GUTHTHILA_STACK_SIZE(m->namesp) > i)
+    if (GUTHTHILA_STACK_SIZE(m->namesp) > i)
     {
         namesp = guththila_stack_get_by_index(&m->namesp, i, env);
         if (namesp && namesp->uri)
@@ -1328,42 +1305,34 @@ guththila_get_namespace_uri_by_number(
             GUTHTHILA_TOKEN_TO_STRING(namesp->uri, str, env);
             return str;
         }
-    }
-    
-#else   /*  */
-        guththila_elem_namesp_t * nmsp = NULL;
-    if (((guththila_element_t *) guththila_stack_peek(&m->elem, env))->
-         is_namesp)
+    }    
+#else  
+    guththila_elem_namesp_t * nmsp = NULL;
+    if (((guththila_element_t *) guththila_stack_peek(&m->elem, env))->is_namesp)
     {
-        nmsp =
-            (guththila_elem_namesp_t *) guththila_stack_peek(&m->namesp, env);
+        nmsp = (guththila_elem_namesp_t *) guththila_stack_peek(&m->namesp, env);
         if (nmsp && nmsp->no >= i)
         {
             GUTHTHILA_TOKEN_TO_STRING(nmsp->namesp[i - 1].uri, str, env);
             return str;
         }
-    }
-    
-#endif  /*  */
-        return NULL;
+    }    
+#endif  
+    return NULL;
 }
 
 GUTHTHILA_EXPORT guththila_char_t *GUTHTHILA_CALL
-guththila_get_attribute_namespace_by_number(
-      guththila_t * m,
-      int i,
-      const axutil_env_t *env) 
+guththila_get_attribute_namespace_by_number(guththila_t * m, int i, 
+											const axutil_env_t *env) 
 {
     
 #ifndef GUTHTHILA_VALIDATION_PARSER
         return NULL;
     
-#else   /*  */
-        guththila_attr_t * attr = NULL;
-        guththila_char_t*     str = NULL;
-        int j = 0,
-        k = 0,
-        count = 0;
+#else  
+    guththila_attr_t * attr = NULL;
+    guththila_char_t*     str = NULL;
+    int j = 0, k = 0, count = 0;
     guththila_elem_namesp_t * nmsp = NULL;
     if (i <= GUTHTHILA_STACK_SIZE(m->attrib))
     {
@@ -1393,7 +1362,7 @@ guththila_get_attribute_namespace_by_number(
     }
     return NULL;
     
-#endif  /*  */
+#endif 
 }
 
 GUTHTHILA_EXPORT guththila_char_t *GUTHTHILA_CALL
@@ -1403,11 +1372,9 @@ guththila_get_encoding(
 {
     return "UTF-8";
 }
+
 int GUTHTHILA_CALL
-guththila_next_char(
-    guththila_t * m,
-    int eof,
-    const axutil_env_t * env) 
+guththila_next_char(guththila_t * m, int eof, const axutil_env_t * env) 
 {
     int c = -1;
     size_t temp = 0, data_move = 0, i = 0;
@@ -1520,13 +1487,11 @@ guththila_next_char(
     }
     return -1;
 }
- int GUTHTHILA_CALL
-guththila_next_no_char(
-    guththila_t * m,
-    int eof,
-    guththila_char_t *bytes,
-    int no,
-    const axutil_env_t * env) 
+
+int GUTHTHILA_CALL
+guththila_next_no_char(guththila_t * m, int eof, 
+					   guththila_char_t *bytes, 
+					   int no, const axutil_env_t * env) 
 {
     int c = -1,
         temp = 0,
@@ -1662,5 +1627,6 @@ guththila_next_no_char(
     }
     return c >= 0 ? c : -1;
 }
+
 
 

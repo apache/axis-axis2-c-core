@@ -26,7 +26,7 @@ guththila_reader_create_for_file(guththila_char_t *file_name, const axutil_env_t
     FILE * f = NULL;
     if (!file_name)
         return NULL;
-    reader =(guththila_reader_t *) AXIS2_MALLOC(env->allocator,sizeof(guththila_reader_t));
+    reader =(guththila_reader_t *) AXIS2_MALLOC(env->allocator, sizeof(guththila_reader_t));
     if (!reader)
         return NULL;
     f = fopen(file_name, "r");
@@ -98,12 +98,12 @@ guththila_reader_read(
     int rt = r->type;
     switch (rt)
     {
-    case GUTHTHILA_FILE_READER:
-        return (int) fread(buffer + offset, 1, length, r->fp);
-    case GUTHTHILA_IO_READER:
-        return r->input_read_callback((buffer + offset), length, r->context);
-    default:
-        return 0;
+		case GUTHTHILA_FILE_READER:
+			return (int) fread(buffer + offset, 1, length, r->fp);
+		case GUTHTHILA_IO_READER:
+			return r->input_read_callback((buffer + offset), length, r->context);
+		default:
+			return 0;
     }
     return 0;
 }

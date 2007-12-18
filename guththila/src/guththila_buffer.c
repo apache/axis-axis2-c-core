@@ -32,7 +32,7 @@ guththila_buffer_init(guththila_buffer_t * buffer,int size,const axutil_env_t * 
     buffer->pre_tot_data = 0;
     buffer->no_buffers = GUTHTHILA_BUFFER_NUMBER_OF_BUFFERS;
     buffer->xml = NULL;
-if (size > 0)
+	if (size > 0)
     {
         buffer->buff[0] =(guththila_char_t *) AXIS2_MALLOC(env->allocator,sizeof(guththila_char_t) * size);
         buffer->data_size[0] = 0;
