@@ -288,14 +288,17 @@ axutil_log_impl_write_to_file(
 
     axutil_log_impl_rotate(log);
     fd = log_impl->stream;
-    
-    if (file)
-        fprintf(fd, "[%s] %s%s(%d) %s\n", axutil_log_impl_get_time_str(),
-                level_str, file, line, value);
-    else
-        fprintf(fd, "[%s] %s %s\n", axutil_log_impl_get_time_str(), level_str,
-                value);
-    fflush(fd);
+   
+    if (fd)
+    {
+        if (file)
+            fprintf(fd, "[%s] %s%s(%d) %s\n", axutil_log_impl_get_time_str(),
+                    level_str, file, line, value);
+        else
+            fprintf(fd, "[%s] %s %s\n", axutil_log_impl_get_time_str(), level_str,
+                    value);
+        fflush(fd);
+    }
     axutil_thread_mutex_unlock(mutex);
 }
 
