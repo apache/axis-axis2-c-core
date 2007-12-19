@@ -153,6 +153,7 @@ axis2_http_transport_sender_invoke(
     axiom_node_t *data_out = NULL;
     axis2_byte_t *output_stream = NULL;
     int buffer_size = 0;
+    axis2_status_t status = AXIS2_SUCCESS;
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
         "Entry:axis2_http_transport_sender_invoke");
@@ -274,9 +275,9 @@ axis2_http_transport_sender_invoke(
         }
         else
         {
-            axis2_http_transport_sender_write_message(transport_sender, env,
-                                                      msg_ctx, epr,
-                                                      soap_data_out, om_output);
+            status = axis2_http_transport_sender_write_message(transport_sender, env,
+                                                               msg_ctx, epr,
+                                                               soap_data_out, om_output);
         }
     }
 
@@ -470,7 +471,7 @@ axis2_http_transport_sender_invoke(
     }
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
         "Exit:axis2_http_transport_sender_invoke");
-    return AXIS2_SUCCESS;
+    return status;
 }
 
 axis2_status_t AXIS2_CALL
