@@ -251,9 +251,15 @@ usage(
             "\n\t\t\t 0 - critical    1 - errors 2 - warnings"
             "\n\t\t\t 3 - information 4 - debug  5- user 6- trace"
             "\n\t\t\t Default log level is 4(debug).\n");
+#ifndef WIN32
     fprintf(stdout,
             "\t-f LOG_FILE\t log file, default is $AXIS2C_HOME/logs/axis2.log"
             "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
+#else
+    fprintf(stdout,
+            "\t-f LOG_FILE\t log file, default is %%AXIS2C_HOME%%\\logs\\axis2.log"
+            "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
+#endif
     fprintf(stdout,
             "\t-s LOG_FILE_SIZE\t Maximum log file size in mega bytes, default maximum size is 1MB.\n");
     fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
