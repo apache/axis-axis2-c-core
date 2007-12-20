@@ -1455,7 +1455,6 @@ axis2_conf_engage_module(
         file_data = axis2_arch_file_data_create_with_type_and_file(env,
                                                                    AXIS2_MODULE,
                                                                    file);
-        axutil_file_free (file, env);
 		if (!flag)
         {
         	dep_engine = 
@@ -1488,6 +1487,7 @@ axis2_conf_engage_module(
 
         module_desc =
             axis2_dep_engine_build_module(dep_engine, env, file, conf);
+        axutil_file_free (file, env);
         is_new_module = AXIS2_TRUE;
     }
 	
