@@ -54,6 +54,14 @@ do
    rm $i
 done
 
-cd lib
-strip -g *
-cd ..
+strip -s ./lib/*
+strip -s modules/addressing/*
+strip -s modules/logging/*
+
+strip -s ./bin/axis2_http_server
+strip -s ./bin/samples/*
+strip -s ./bin/tools/tcpmon
+
+rm -rf ./lib/pkgconfig
+
+
