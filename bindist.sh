@@ -5,7 +5,7 @@ sh clean.sh
 AXIS2C_HOME=`pwd`/deploy
 export AXIS2C_HOME 
 
-./configure --prefix=${AXIS2C_HOME} --enable-tests=no --enable-trace=yes  --enable-diclient=no --enable-static=no --enable-openssl=no --with-apache2=/usr/local/apache2/include
+./configure --prefix=${AXIS2C_HOME} --enable-tests=no --enable-trace=yes  --enable-diclient=no --enable-static=no --enable-openssl=no --with-apache2=/usr/local/apache2/include --with-archive=/usr/include
 
 make
 make install
