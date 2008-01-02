@@ -190,6 +190,12 @@
       <email>nabeel.yoosuf AT gmail.com</email>
       <organization>Purdue University</organization>
     </developer>    
+    <developer>
+      <name>Selvaratnam Uthaiyashankar</name>
+      <id>shankar</id>
+      <email>shankar AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>    
   </developers>
   <contributors>
     <contributor>
