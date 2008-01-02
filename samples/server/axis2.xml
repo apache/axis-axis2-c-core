@@ -42,10 +42,6 @@
         <!--parameter name="HTTP-Authentication" username="" password="" locked="true"/-->
         <!--parameter name="PROXY" proxy_host="127.0.0.1" proxy_port="8080" proxy_username="" proxy_password="" locked="true"/-->
     </transportSender>
-    <!-- Uncomment this one with the appropriate papameters to enable the XMPP transport Sender-->
-    <!--transportSender name="xmpp" class="axis2_xmpp_sender">
-        <parameter name="PROTOCOL" locked="false">XMPP</parameter>
-    </transportSender-->
     <!-- Uncomment this one with the appropriate papameters to enable the TCP transport Sender-->
     <!--transportSender name="tcp" class="axis2_tcp_sender">
         <parameter name="PROTOCOL" locked="false">TCP</parameter>
@@ -86,13 +82,9 @@
         <!-- After PostDispatch phase, module or service author can add any phase as required  -->
         <!-- User defined phases could be added here -->
         <!--phase name="userphase1"/-->
-        <!--phase name="RMPhase"/-->
-        <!--phase name="SavanPhase"/-->
     </phaseOrder>
     <phaseOrder type="outflow">
         <!-- User defined phases could be added here -->
-        <!--phase name="RMPhase"/-->
-        <!--phase name="SavanPhase"/-->
         <!--phase name="userphase1"/-->
         <!--system predefined phase-->
         <phase name="MessageOut"/>
@@ -101,13 +93,9 @@
     <phaseOrder type="INfaultflow">
         <!-- User defined phases could be added here -->
         <!--phase name="userphase1"/-->
-        <!--phase name="RMPhase"/-->
-        <!--phase name="SavanPhase"/-->
     </phaseOrder>
     <phaseOrder type="Outfaultflow">
         <!-- User defined phases could be added here -->
-        <!--phase name="RMPhase"/-->
-        <!--phase name="SavanPhase"/-->
         <!--phase name="userphase1"/-->
         <phase name="MessageOut"/>
     </phaseOrder>
