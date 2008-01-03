@@ -313,6 +313,7 @@ axis2_handler(
     int rv = 0;
     axutil_env_t *thread_env = NULL;
     axutil_allocator_t *allocator = NULL;
+    axutil_error_t *error = NULL;
 
     if (strcmp(req->handler, "axis2_module"))
     {
@@ -325,7 +326,8 @@ axis2_handler(
     }
     ap_should_client_block(req);
 
-    thread_env = axutil_init_thread_env(axutil_env);
+
+    /*thread_env = axutil_init_thread_env(axutil_env);*/
 
     /*axutil_env->allocator->current_pool = (void *) req->pool;
     rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, axutil_env, req);*/
@@ -344,6 +346,11 @@ axis2_handler(
     allocator->current_pool = (void *) req->pool;
     allocator->global_pool = axutil_env->allocator->global_pool;
 
+    error = axutil_error_create(allocator);
+    thread_env = axutil_env_create_with_error_log_thread_pool(allocator,
+                                                        error, axutil_env->log,
+                                                        axutil_env->
+                                                        thread_pool);
     thread_env->allocator = allocator;
 
     rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, thread_env, req);
