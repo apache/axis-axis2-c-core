@@ -1402,10 +1402,10 @@ axis2_conf_engage_module(
         axis2_char_t *temp_path2 = NULL;
         axis2_char_t *temp_path3 = NULL;
         axis2_char_t *path = NULL;
-		axutil_param_t *module_dir_param;
-		axis2_char_t *module_dir;
-		axis2_bool_t flag;
-		axis2_char_t *axis2_xml;
+        axutil_param_t *module_dir_param = NULL;
+        axis2_char_t *module_dir = NULL;
+        axis2_bool_t flag;
+        axis2_char_t *axis2_xml = NULL;
 
         file_name = axutil_qname_get_localpart(module_ref, env);
         file =
