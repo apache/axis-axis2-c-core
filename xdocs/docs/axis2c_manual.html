@@ -223,7 +223,7 @@ one operation, with the name "greet".<br />
 <p>You can compile the service sample as shown below.</p>
 
 <p>On Linux:</p>
-<pre>gcc -shared -olibhello.so -I$AXIS2C_HOME/include/axis2-1.0/ -L$AXIS2C_HOME/lib -laxutil -laxis2_axiom -laxis2_parser -laxis2_engine -lpthread -laxis2_http_sender -laxis2_http_receiver hello_svc.c</pre>
+<pre>gcc -shared -olibhello.so -I$AXIS2C_HOME/include/axis2-1.2/ -L$AXIS2C_HOME/lib -laxutil -laxis2_axiom -laxis2_parser -laxis2_engine -lpthread -laxis2_http_sender -laxis2_http_receiver hello_svc.c</pre>
 
 <p>On MS Windows:</p>
 
@@ -332,7 +332,7 @@ href="hello/client/hello.c.html">hello.c</a></p>
 <p>You can compile the client sample as shown below.</p>
 
 <p>On Linux:</p>
-<pre>gcc -o hello -I$AXIS2C_HOME/include -L$AXIS2C_HOME/lib -laxutil -laxis2_axiom -laxis2_parser -laxis2_engine -lpthread -laxis2_http_sender -laxis2_http_receiver hello.c</pre>
+<pre>gcc -o hello -I$AXIS2C_HOME/include/axis2-1.2/ -L$AXIS2C_HOME/lib -laxutil -laxis2_axiom -laxis2_parser -laxis2_engine -lpthread -laxis2_http_sender -laxis2_http_receiver hello.c -ldl -Wl,--rpath -Wl,$AXIS2C_HOME/lib</pre>
 
 <p>On MS Windows:</p>
 
@@ -1230,11 +1230,9 @@ color="#4169E1">(libmod_axis2.so.0.0.0 on Linux and mod_axis2.dll on MS
 Windows)</font> to the Apache2 modules directory as mod_axis2.so</p>
 
 <p>On Linux</p>
-<pre>    cp $AXIS2C_HOME/lib/libmod_axis2.so.0.0.0
-      /usr/lib/apache2/modules/mod_axis2.so</pre>
-On MS Windows
-<pre>   copy C:\axis2c\build\deploy\lib\mod_axis2.dll
-   C:\Apache2\modules\mod_axis2.so</pre>
+<pre>	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.0.0 /usr/lib/apache2/modules/mod_axis2.so</pre>
+<p>On MS Windows</p>
+<pre>	copy /Y "%AXIS2C_HOME%\lib\mod_axis2.dll" C:\Apache2\modules\</pre>
 
 <p>Edit the Apache2's configuration file (generally httpd.conf) and add the
 following directives at the end of the file.</p>
