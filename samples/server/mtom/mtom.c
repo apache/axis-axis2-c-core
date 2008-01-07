@@ -1,4 +1,4 @@
-
+L
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -119,6 +119,13 @@ axis2_mtom_mtom(
                         data_handler_res = axiom_data_handler_create(env, NULL, NULL);
                         
                         buff = AXIS2_MALLOC(env->allocator, sizeof(axis2_byte_t)*buff_len);
+			if (!buff)
+			  {
+			    AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
+					     "malloc failed, not enough memory");
+			    return AXIS2_FAILURE;
+			  }
+
                         memcpy(buff, input_buff, buff_len);
 
                         axiom_data_handler_set_binary_data(data_handler_res, env, buff, buff_len);
