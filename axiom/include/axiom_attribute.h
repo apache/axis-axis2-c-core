@@ -46,7 +46,7 @@ extern "C"
       * @param env Environment. MUST NOT be NULL
       * @param localname localname of the attribute, should not be a null value.
       * @param value normalized attribute value. cannot be NULL
-      * @param ns namespace, if any, of the attribute. Optional, can be NULL
+      * @param ns namespace, if any, of the attribute. Optional, can be NULL om_attribute wont free the ns
       * @return a pointer to newly created attribute struct, returns NULL on error with 
       *           error code set in environment's error. 
       */

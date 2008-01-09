@@ -139,7 +139,7 @@ extern "C"
         axutil_qname_t * qname);
 
     /**
-      * Adds an attribute to current element
+      * Adds an attribute to current element The current element takes responsibility of the assigned attribute
       * @param om_element element to which the attribute is to be added.cannot be NULL.
       * @param env Environment. MUST NOT be NULL.
       * @param attribute attribute to be added.
