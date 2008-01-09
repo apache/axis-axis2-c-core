@@ -397,8 +397,14 @@ extern "C"
 
     /**
      * Sets the text of the given element.
-     *caution - This method will wipe out all the text elements (and hence any
+     * caution - This method will wipe out all the text elements (and hence any
      * mixed content) before setting the text
+     * @param om_element
+     * @param env
+     * @param text text to set.
+     * @param element_node node of element.
+     * @return AXIS2_SUCCESS if attribute was found and removed, else 
+     *           AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_set_text(

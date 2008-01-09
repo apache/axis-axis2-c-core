@@ -102,7 +102,8 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-    * Frees an om node and all of its children
+    * Frees an om node and all of its children. Please note that the attached
+    * data_element will also be freed along with the node.
     * @param om_node node to be freed.
     * @param env Environment. MUST NOT be NULL, .
     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE

@@ -497,7 +497,7 @@ axis2_svc_client_remove_all_headers(
 
     size = axutil_array_list_size(svc_client->headers, env);
 
-    for (i = 0; i < size; i++)
+    for (i = size-1; i >-1; i--)
     {
         /*axiom_node_t *node = NULL;
            node = axutil_array_list_get(svc_client->headers, env, i);

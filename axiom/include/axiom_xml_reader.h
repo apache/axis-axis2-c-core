@@ -363,7 +363,6 @@ extern "C"
      * NULL on error with error code set in the environment's error
      */
     AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
-
     axiom_xml_reader_create_for_file(
         const axutil_env_t * env,
         char *filename,
@@ -379,13 +378,14 @@ extern "C"
      * buffer on the fly while parsing.
      * @param env environment MUST NOT be NULL.
      * @param read_input_callback() callback function that fills
-     * a char buffer with size @size
-     * @param buffer a character buffer
-     * @param size size of the buffer to be filled
+     * a char buffer.
+     * @param close_input_callback() callback function that closes
+     * the input stream.
+     * @param ctx, context can be any data that needs to be passed
+     * to the callback method.
      * @param encoding encoding scheme of the xml stream
      */
     AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
-
     axiom_xml_reader_create_for_io(
         const axutil_env_t * env,
         AXIS2_READ_INPUT_CALLBACK,
@@ -396,13 +396,14 @@ extern "C"
     /**
      * Create an axiom_xml_reader_t using a buffer, which is the xml input
      * @param env environment, MUST not be NULL
-     * @param buffer xml input string in a char buffer
-     * @param size size of the @buffer
+     * @param container any data that needs to passed to the corresponding
+     * parser's create_for_memory method. The reader does not take ownership
+     * of this data.
+     * @param size size of the buffer
      * @param encoding encoding of the xml
      * @return pointer to axiom_xml_reader_t struct on success , NULL otherwise
      */
     AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
-
     axiom_xml_reader_create_for_memory(
         const axutil_env_t * env,
         void *container,
