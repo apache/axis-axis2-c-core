@@ -242,6 +242,15 @@ axiom_document_get_builder(
     return document->builder;
 }
 
+AXIS2_EXTERN void AXIS2_CALL
+axiom_document_set_builder(
+    axiom_document_t * document,
+    const axutil_env_t * env,
+    axiom_stax_builder_t * builder)
+{
+    document->builder = builder;
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_document_serialize(
     axiom_document_t * document,

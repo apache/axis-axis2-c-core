@@ -122,8 +122,8 @@ extern "C"
     /**
      * This method builds the rest of the xml input stream from current position till
      * the root element is completed .
-     *@param document pointer to axiom_document_t struct to be built.
-     *@param env environment MUST NOT be NULL.
+     * @param document pointer to axiom_document_t struct to be built.
+     * @param env environment MUST NOT be NULL.
      */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
     axiom_document_build_all(
@@ -132,14 +132,27 @@ extern "C"
 
     /**
      * get builder
-     * @return builder , returns NULL if a builder is not associated with 
-     *                   document
+     * @param document pointer to axiom_document_t struct to be built.
+     * @param env environment MUST NOT be NULL.
+     * @return builder, returns NULL if a builder is not associated with 
+     * document
      */
     AXIS2_EXTERN struct axiom_stax_builder *AXIS2_CALL
+    axiom_document_get_builder(
+        struct axiom_document *document,
+        const axutil_env_t * env);
 
-                axiom_document_get_builder(
-                    struct axiom_document *document,
-                    const axutil_env_t * env);
+    /**
+     * sets builder for document.
+     * @param document pointer to axiom_document_t struct to be built.
+     * @param env environment MUST NOT be NULL.
+     * @param builder pointer to builder to associate with document
+     */ 
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_document_set_builder(
+        axiom_document_t * document,
+        const axutil_env_t * env,
+        struct axiom_stax_builder * builder);
 
     /**
      * @param om_document
