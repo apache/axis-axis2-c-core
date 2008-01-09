@@ -39,7 +39,9 @@ extern "C"
 
     /**
       * Creates an stax builder
-      * @param environment Environment. MUST NOT be NULL, .
+      * @param environment Environment. MUST NOT be NULL.
+      * @param parser parser to be used with builder. The builder
+      * will take ownership of the parser.
       * @return a pointer to the newly created builder struct. 
       */
     AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
