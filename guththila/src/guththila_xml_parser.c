@@ -128,14 +128,22 @@ guththila_token_close(guththila_t * m, guththila_token_t * tok,
         m->temp_tok = NULL;
         break;
     case _attribute_value:
-        if (m->temp_prefix && GUTHTHILA_TOKEN_LEN(m->temp_prefix) == 5 &&
+        if ((m->temp_prefix && GUTHTHILA_TOKEN_LEN(m->temp_prefix) == 5 &&
              (m->temp_prefix->start)[0] == 'x' &&
              (m->temp_prefix->start)[1] == 'm' &&
              (m->temp_prefix->start)[2] == 'l' &&
              (m->temp_prefix->start)[3] == 'n' &&
-             (m->temp_prefix->start)[4] == 's')
+             (m->temp_prefix->start)[4] == 's') || ((m->temp_name->start)[0] == 'x' &&
+                                                        (m->temp_name->start)[1] == 'm' && 
+                                                        (m->temp_name->start)[2] == 'l' &&
+                                                        (m->temp_name->start)[3] == 'n' &&
+                                                        (m->temp_name->start)[4] == 's') )
+            /*checks inside the m->temp_name to parse the default namespace*/
+            /*checks inside the m->temp_prefix to parse namespace with prefix*/
         {
-            
+
+
+
 #ifndef GUTHTHILA_VALIDATION_PARSER
                 namesp =
                 (guththila_namespace_t *)
@@ -153,7 +161,7 @@ guththila_token_close(guththila_t * m, guththila_token_t * tok,
                     e_namesp->namesp =
                         (guththila_namespace_t *) AXIS2_MALLOC(env->allocator,
                         sizeof(guththila_namespace_t) * GUTHTHILA_NAMESPACE_DEF_SIZE);
-                    if (e_namesp->namesp)
+                   if (e_namesp->namesp)
                     {
                         e_namesp->no = 1;
                         e_namesp->size = GUTHTHILA_NAMESPACE_DEF_SIZE;
@@ -202,6 +210,7 @@ guththila_token_close(guththila_t * m, guththila_token_t * tok,
             }            
 #endif  
         }
+        
         else
         {
             attr = (guththila_attr_t *) AXIS2_MALLOC(env->allocator,
@@ -352,7 +361,6 @@ guththila_free(guththila_t * m, const axutil_env_t * env)
 {
     int size = 0,
         i = 0;
-    guththila_namespace_t * namesp = NULL;
     guththila_attr_t * attr = NULL;
     guththila_element_t* elem = NULL;
     guththila_elem_namesp_t * e_namesp = NULL;
@@ -480,7 +488,6 @@ guththila_un_init(guththila_t * m,const axutil_env_t * env)
 {
     int size = 0,
         i = 0;
-    guththila_namespace_t * namesp = NULL;
     guththila_attr_t * attr = NULL;
     guththila_element_t* elem = NULL;
 	guththila_elem_namesp_t * e_namesp = NULL;
@@ -684,6 +691,7 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                         {
                             c = guththila_next_char(m, 0, env);
                         }
+                       
                         else
                         {
                             guththila_token_close(m, tok, _prefix, 0, env);
@@ -691,6 +699,7 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                             GUTHTHILA_TOKEN_OPEN(m, tok, env);
                         }
                     }
+                    
                     guththila_token_close(m, tok, _name, 0, env);
                     
 #ifdef GUTHTHILA_VALIDATION_PARSER		
@@ -729,6 +738,7 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                         if (GUTHTHILA_IS_VALID_STARTING_CHAR(c))
                         {
                             GUTHTHILA_TOKEN_OPEN(m, tok, env);
+
                             c = guththila_next_char(m, 0, env);
                             while (!GUTHTHILA_IS_SPACE(c) && c != '=')
                             {
