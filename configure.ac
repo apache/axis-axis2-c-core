@@ -414,6 +414,8 @@ AC_CONFIG_FILES([Makefile \
     test/core/transport/http/Makefile \
     tools/tcpmon/Makefile \
     tools/tcpmon/src/Makefile \
+    tools/md5/Makefile \
+    tools/md5/src/Makefile \
     ides/Makefile \
     include/Makefile \
     axis2c.pc

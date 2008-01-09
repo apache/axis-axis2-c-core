@@ -283,6 +283,7 @@ main(
     test_file_diff(env);
     test_array_list(env);
     test_uuid_gen(env);
+    test_md5(env);
     run_test_log();
     run_test_string(env);
     test_axutil_dir_handler_list_service_or_module_dirs();
