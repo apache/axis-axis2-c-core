@@ -46,7 +46,8 @@ extern "C"
     /**
      * Creates AXIOM output struct 
      * @param env Environment. MUST NOT be NULL, .
-     * @param xml_writer XML writer. 
+     * @param xml_writer XML writer. OM output takes
+     * ownership of the xml_writer. 
      * @return a pointer to newly created output struct.
      */
     AXIS2_EXTERN axiom_output_t *AXIS2_CALL

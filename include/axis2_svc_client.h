@@ -208,7 +208,8 @@ extern "C"
      * @param env pointer to environment struct
      * @param op_qname operation qname. NULL is equivalent to an
      * operation name of "__OPERATION_ROBUST_OUT_ONLY__"
-     * @param payload pointer to OM node representing the XML payload to be sent
+     * @param payload pointer to OM node representing the XML payload to be sent.
+     * The caller has control over the payload until the service client frees it.
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -226,7 +227,8 @@ extern "C"
      * @param svc_client pointer to service client struct
      * @param env pointer to environment struct
      * operation name of "__OPERATION_ROBUST_OUT_ONLY__"
-     * @param payload pointer to OM node representing the XML payload to be sent
+     * @param payload pointer to OM node representing the XML payload to be sent.
+     * The caller has control over the payload until the service client frees it.
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
 
@@ -245,7 +247,8 @@ extern "C"
      * @param env pointer to environment struct
      * @param op_qname operation qname. NULL is equivalent to an
      * operation name of "__OPERATION_OUT_ONLY__"
-     * @param payload pointer to OM node representing the XML payload to be sent
+     * @param payload pointer to OM node representing the XML payload to be sent.
+     * The caller has control over the payload until the service client frees it.
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_svc_client_fire_and_forget_with_op_qname(
@@ -261,7 +264,8 @@ extern "C"
      * get client-side errors, such as host unknown etc.
      * @param svc_client pointer to service client struct
      * @param env pointer to environment struct
-     * @param payload pointer to OM node representing the XML payload to be sent
+     * @param payload pointer to OM node representing the XML payload to be sent.
+     * The caller has control over the payload until the service client frees it.
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_svc_client_fire_and_forget(
@@ -276,7 +280,8 @@ extern "C"
      * @param env pointer to environment struct
      * @param op_qname operation qname. NULL is equivalent to an
      * operation name of "__OPERATION_OUT_IN__"
-     * @param payload pointer to OM node representing the XML payload to be sent
+     * @param payload pointer to OM node representing the XML payload to be sent.
+     * The caller has control over the payload until the service client frees it.
      * @return pointer to OM node representing the XML response. The 
      * caller owns the returned node.
      */
@@ -292,7 +297,8 @@ extern "C"
      * This method is used to interact with a service operation whose MEP is In-Out.
      * @param svc_client pointer to service client struct
      * @param env pointer to environment struct
-     * @param payload pointer to OM node representing the XML payload to be sent
+     * @param payload pointer to OM node representing the XML payload to be sent.
+     * The caller has control over the payload until the service client frees it.
      * @return pointer to OM node representing the XML response. The 
      * caller owns the returned node.
      */
@@ -310,7 +316,8 @@ extern "C"
      * @param env pointer to environment struct
      * @param op_qname operation qname. NULL is equivalent to an
      * operation name of "__OPERATION_OUT_IN__"
-     * @param payload pointer to OM node representing the XML payload to be sent
+     * @param payload pointer to OM node representing the XML payload to be sent.
+     * The caller has control over the payload until the service client frees it.
      * @callback pointer to callback struct used to capture response
      */
     AXIS2_EXTERN void AXIS2_CALL
@@ -327,7 +334,8 @@ extern "C"
      * operation whose MEP is In-Out.
      * @param svc_client pointer to service client struct
      * @param env pointer to environment struct
-     * @param payload pointer to OM node representing the XML payload to be sent
+     * @param payload pointer to OM node representing the XML payload to be sent.
+     * The caller has control over the payload until the service client frees it.
      * @callback pointer to callback struct used to capture response
      */
     AXIS2_EXTERN void AXIS2_CALL
