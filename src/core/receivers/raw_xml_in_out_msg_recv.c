@@ -302,7 +302,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     if (status != AXIS2_SUCCESS)
     {
         /* something went wrong. set a SOAP Fault */
-        const axis2_char_t *fault_value_str = "env:Sender";
+        const axis2_char_t *fault_value_str = "soapenv:Sender";
         const axis2_char_t *fault_reason_str = NULL;
         const axis2_char_t *err_msg = NULL;
 
