@@ -133,11 +133,13 @@ axis2_ssl_utils_initialize_ssl(
     {
         return NULL;
     }
+
     sbio = BIO_new_socket(socket, BIO_NOCLOSE);
     if (!sbio)
     {
         return NULL;
     }
+
     SSL_set_bio(ssl, sbio, sbio);
     if (SSL_connect(ssl) <= 0)
     {
@@ -147,8 +149,45 @@ axis2_ssl_utils_initialize_ssl(
 
     if (SSL_get_verify_result(ssl) != X509_V_OK)
     {
-
         char sslerror[128]; /** error buffer must be at least 120 bytes long */
+        X509 *peer_cert = NULL;
+        X509_STORE *cert_store = NULL;
+        X509_NAME *peer_name = NULL;
+        X509_OBJECT *client_object = NULL;
+        X509 *client_cert = NULL;
+
+        peer_cert = SSL_get_peer_certificate(ssl);
+        if (peer_cert && peer_cert->cert_info)
+        {
+            peer_name = (peer_cert->cert_info)->subject;
+        }
+        cert_store = SSL_CTX_get_cert_store(ctx);
+        if (peer_name && cert_store)
+        {
+            client_object = X509_OBJECT_retrieve_by_subject(cert_store->objs,
+                                                            X509_LU_X509,
+                                                            peer_name);
+        }
+        if (client_object)
+        {
+            client_cert = (client_object->data).x509;
+            if (client_cert && 
+		(M_ASN1_BIT_STRING_cmp(client_cert->signature, 
+                                       peer_cert->signature) == 0))
+            {
+                if (peer_cert)
+                {
+                    X509_free(peer_cert);
+                }
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                        "[ssl client] SSL certificate verified against peer");
+                return ssl;
+            }
+        }
+        if (peer_cert)
+        {
+            X509_free(peer_cert);
+        }
         ERR_error_string(SSL_get_verify_result(ssl), sslerror);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                         "[ssl client] SSL certificate verification failed (%s)",
