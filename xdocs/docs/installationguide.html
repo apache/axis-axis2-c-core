@@ -1,57 +1,18 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Apache Axis2/C - Installation Guide</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+			    @import url("../style/maven-classic.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta></head><body class="composite"><div id="banner"><a href="http://www.apache.org/" id="organizationLogo"><img alt="Apache Software Foundation" src="http://www.apache.org/images/asf-logo.gif"></img></a><a href="http://ws.apache.org/axis2/c" id="projectLogo"><img alt="Apache Axis2/C" src="http://ws.apache.org/axis2/images/axis.jpg"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">
+                	Last published: 09 January 2008
+                  | Doc for 1.2.0</div><div class="xright"></div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuApache_Axis2_C"><h5>Apache Axis2/C</h5><ul><li class="none"><a href="../index.html">Apache Axis2/C Home</a></li><li class="expanded"><a href="../download.cgi">Download Axis2/C</a><ul><li class="none"><a href="../download.cgi">Releases</a></li></ul></li><li class="expanded"><a href="../docs/index.html">Documentation</a><ul><li class="none"><a href="../docs/installationguide.html">Installation Guide</a></li><li class="none"><a href="../docs/axis2c_manual.html">Axis2/C manual</a></li></ul></li><li class="expanded"><a href="../lists_issues.html">Get Involved</a><ul><li class="none"><a href="../lists_issues.html">Mailing Lists &amp; Issue Tracking</a></li><li class="none"><a href="../svn.html">Checkout Source Code</a></li></ul></li><li class="expanded"><a href="../coding_conventions.html">Developer Guidelines</a><ul><li class="none"><a href="../coding_conventions.html">Coding Convention</a></li><li class="none"><a href="../versioning.html">Versionning</a></li></ul></li><li class="expanded"><a href="../team-list.html">Project Information</a><ul><li class="none"><a href="../team-list.html">Project Team</a></li><li class="none"><a href="http://svn.apache.org/viewcvs.cgi/webservices/axis2/trunk/c/" class="externalLink" title="External Link">Source Code</a></li></ul></li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Apache_Axis2_C_Installation_Guide"></a><h2>Apache Axis2/C Installation Guide</h2><p>This document guides you on how to install Axis2/C, and run the server and
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+client samples on Linux and Microsoft Windows operating systems.</p><p>This release comes in two forms, source and binary. This document covers
 
-       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+both forms.</p><p>Please send your feedback to the developer mailing list: <a href="mailto:axis-c-dev@ws.apache.org">axis-c-dev@ws.apache.org</a>
 
-<html>
+(Subscription details are available on the <a href="http://ws.apache.org/axis2/c/mail-lists.html" class="externalLink" title="External Link">Axis2 site</a>.) Please
 
-<head>
-
-  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-
-  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-
-  <title>Installation Guide</title>
-
-</head>
-
-
-
-<body>
-
-<h1>Apache Axis2/C Installation Guide</h1>
-
-
-
-<p>This document guides you on how to install Axis2/C, and run the server and
-
-client samples on Linux and Microsoft Windows operating systems.</p>
-
-
-
-<p>This release comes in two forms, source and binary. This document covers
-
-both forms.</p>
-
-
-
-<p>Please send your feedback to the developer mailing list: <a
-
-href="mailto:axis-c-dev@ws.apache.org">axis-c-dev@ws.apache.org</a>
-
-(Subscription details are available on the <a
-
-href="http://ws.apache.org/axis2/c/mail-lists.html">Axis2 site</a>.) Please
-
-remember to prefix the subject with [Axis2].</p>
-
-
-<p style="margin-bottom: 0in"><br>
-</p>
-<h1>Contents</h1>
-
-<ul>
+remember to prefix the subject with [Axis2].</p><p style="margin-bottom: 0in"><br></br>
+</p></div><div class="section"><a name="Contents"></a><h2>Contents</h2><ul>
 
   <li><a href="#linux">Installing and Running on Linux</a>
 
@@ -77,49 +38,14 @@ remember to prefix the subject with [Axis2].</p>
 
   </li>
 
-</ul>
+</ul><p style="margin-bottom: 0in"><br></br>
+</p><p><a id="linux"></a></p></div><div class="section"><a name="1__Installing_and_Running_on_Linux"></a><h2>1. Installing and Running on Linux</h2><p>This can be done using binary or source distributions. (<a href="http://ws.apache.org/axis2/c/download.cgi" class="externalLink" title="External Link">Download</a> the two
 
-<p style="margin-bottom: 0in"><br>
-</p>
-<a id="linux"></a>
+distributions)</p><p>To get both the binary and source distributions working, you need <a href="http://xmlsoft.org/downloads.html" class="externalLink" title="External Link">Libxml2</a>.</p><p><b>Note:</b> Most Linux systems have Libxml2 installed by default. On MS
 
+Windows, you need to download and install Libxml2.</p><p><a id="linux_binary"></a></p><div class="subsection"><a name="1_1__Installing_the_Binary_Distribution"></a><h3>1.1. Installing the Binary Distribution</h3><p>The following steps have to be followed to install and run the Axis2/C
 
-
-<h1>1. Installing and Running on Linux</h1>
-
-
-
-<p>This can be done using binary or source distributions. (<a
-
-href="http://ws.apache.org/axis2/c/download.cgi">Download</a> the two
-
-distributions)</p>
-
-
-
-<p>To get both the binary and source distributions working, you need <a
-
-href="http://xmlsoft.org/downloads.html">Libxml2</a>.</p>
-
-
-
-<p><b>Note:</b> Most Linux systems have Libxml2 installed by default. On MS
-
-Windows, you need to download and install Libxml2.</p>
-
-<a id="linux_binary"></a>
-
-
-
-<h2>1.1. Installing the Binary Distribution</h2>
-
-
-
-<p>The following steps have to be followed to install and run the Axis2/C
-
-binary distribution on Linux : </p>
-
-<ol>
+binary distribution on Linux : </p><ol>
 
   <li>Extract the binary tar package to a folder.</li>
 
@@ -231,21 +157,9 @@ binary distribution on Linux : </p>
 
   </li>
 
-</ol>
+</ol><p><a id="linux_source"></a></p></div><div class="subsection"><a name="1_2__Installing_the_Source_Distribution"></a><h3>1.2. Installing the Source Distribution</h3><p>The following steps have to be followed to install and run Axis2/C using
 
-<a id="linux_source"></a>
-
-
-
-<h2>1.2. Installing the Source Distribution</h2>
-
-
-
-<p>The following steps have to be followed to install and run Axis2/C using
-
-the source distribution on Linux :</p>
-
-<ol>
+the source distribution on Linux :</p><ol>
 
   <li>Extract the source tar package to a folder.</li>
 
@@ -329,7 +243,7 @@ the source distribution on Linux :</p>
 
       <li>If you want to get the samples working, you have to build the
 
-        samples. <br />
+        samples. <br></br>
 
         To build the samples:
 
@@ -433,41 +347,10 @@ the source distribution on Linux :</p>
 
   </li>
 
-</ol>
+</ol><p style="margin-bottom: 0in"><br></br>
+</p><p><a id="win"></a></p></div></div><div class="section"><a name="2__Installing_and_Running_on_Microsoft_Windows"></a><h2>2. Installing and Running on Microsoft Windows</h2><p>This too can be done using binary or source distributions. (<a href="http://ws.apache.org/axis2/c/download.cgi" class="externalLink" title="External Link">Download</a> the two
 
-<p style="margin-bottom: 0in"><br>
-</p>
-<a id="win"></a>
-
-
-
-<h1>2. Installing and Running on Microsoft Windows</h1>
-
-
-
-<p>This too can be done using binary or source distributions. (<a
-
-href="http://ws.apache.org/axis2/c/download.cgi">Download</a> the two
-
-distributions.) </p>
-
-
-
-<p>For both binary and source distributions, you have to download <a
-
-href="http://www.zlatkovic.com/pub/libxml/">Libxml2</a>, if you are not using Guththila parser which comes with the distribution.</p>
-
-<a id="win_binary"></a>
-
-
-
-<h2>2.1. Installing the Binary Distribution </h2>
-
-
-
-<h3>2.1.1. Requirements</h3>
-
-<ul>
+distributions.) </p><p>For both binary and source distributions, you have to download <a href="http://www.zlatkovic.com/pub/libxml/" class="externalLink" title="External Link">Libxml2</a>, if you are not using Guththila parser which comes with the distribution.</p><p><a id="win_binary"></a></p><div class="subsection"><a name="2_1__Installing_the_Binary_Distribution"></a><h3>2.1. Installing the Binary Distribution</h3></div><div class="subsection"><a name="2_1_1__Requirements"></a><h3>2.1.1. Requirements</h3><ul>
 
   <li>The binaries shipped with this version are compiled with the Microsoft
 
@@ -475,9 +358,7 @@ href="http://www.zlatkovic.com/pub/libxml/">Libxml2</a>, if you are not using Gu
 
 
 
-  <p>(<strong>Note</strong>: you can <a
-
-  href="http://msdn.microsoft.com/vstudio/express/downloads/">download the
+  <p>(<strong>Note</strong>: you can <a href="http://msdn.microsoft.com/vstudio/express/downloads/" class="externalLink" title="External Link">download the
 
   Microsoft VSExpress2005 edition</a> from the Microsoft Web site and install
 
@@ -503,15 +384,7 @@ href="http://www.zlatkovic.com/pub/libxml/">Libxml2</a>, if you are not using Gu
 
   </li>
 
-</ul>
-
-<a id="bin_binaries"></a>
-
-
-
-<h3>2.1.2. Binaries in the Release</h3>
-
-<ul>
+</ul><p><a id="bin_binaries"></a></p></div><div class="subsection"><a name="2_1_2__Binaries_in_the_Release"></a><h3>2.1.2. Binaries in the Release</h3><ul>
 
   <li>Extract the binary distribution to a folder of your choice. (example:
 
@@ -521,9 +394,7 @@ href="http://www.zlatkovic.com/pub/libxml/">Libxml2</a>, if you are not using Gu
 
 
 
-  <p><img alt="Figure: c:\axis2c Folder Structure"
-
-  src="images/binary_folder_structure.jpg" /></p>
+  <p><img alt="Figure: c:\axis2c Folder Structure" src="images/binary_folder_structure.jpg"></img></p>
 
 
 
@@ -551,15 +422,7 @@ href="http://www.zlatkovic.com/pub/libxml/">Libxml2</a>, if you are not using Gu
 
   C:\axis2c\lib</li>
 
-</ul>
-
-<a id="bin_run"></a>
-
-
-
-<h3>2.1.3. Running the Binaries</h3>
-
-<ul>
+</ul><p><a id="bin_run"></a></p></div><div class="subsection"><a name="2_1_3__Running_the_Binaries"></a><h3>2.1.3. Running the Binaries</h3><ul>
 
   <li>First, you need to set a couple of environment variables before you can
 
@@ -607,19 +470,7 @@ href="http://www.zlatkovic.com/pub/libxml/">Libxml2</a>, if you are not using Gu
 
   </li>
 
-</ul>
-
-<a id="win_source"></a>
-
-
-
-<h2>2.2. Installing the Source Distribution</h2>
-
-
-
-<h3>2.2.1. Requirements</h3>
-
-<ul>
+</ul><p><a id="win_source"></a></p></div><div class="subsection"><a name="2_2__Installing_the_Source_Distribution"></a><h3>2.2. Installing the Source Distribution</h3></div><div class="subsection"><a name="2_2_1__Requirements"></a><h3>2.2.1. Requirements</h3><ul>
 
   <li>The makefile shipped with this version needs Microsoft Visual Studio
 
@@ -627,9 +478,7 @@ href="http://www.zlatkovic.com/pub/libxml/">Libxml2</a>, if you are not using Gu
 
 
 
-  <p>(Note: You can <a
-
-  href="http://msdn.microsoft.com/vstudio/express/downloads/">download the
+  <p>(Note: You can <a href="http://msdn.microsoft.com/vstudio/express/downloads/" class="externalLink" title="External Link">download the
 
   Microsoft VSExpress2005 edition and Platform SDK</a> from the Microsoft Web
 
@@ -657,85 +506,57 @@ href="http://www.zlatkovic.com/pub/libxml/">Libxml2</a>, if you are not using Gu
 
   </li>
 
-</ul>
+</ul><p><a id="edit"></a></p></div><div class="subsection"><a name="2_2_2__Editing_the_configure_in_File"></a><h3>2.2.2. Editing the configure.in File</h3><p>Please edit the &lt;source_distribution&gt;\build\win32\configure.in file
 
-<a id="edit"></a>
-
-
-
-<h3>2.2.2. Editing the configure.in File</h3>
-
-
-
-<p>Please edit the &lt;source_distribution&gt;\build\win32\configure.in file
-
-to include the following information.</p>
-
-<p>The paths for the following required external libraries are specified in configure.in. Please note that you need to specify the path to the extracted folder.<br />
+to include the following information.</p><p>The paths for the following required external libraries are specified in configure.in. Please note that you need to specify the path to the extracted folder.<br></br>
 
 <ul>
 
-<li>libxml2 (required if you are not using Guththila) [LIBXML2_BIN_DIR]<br /></li>
+<li>libxml2 (required if you are not using Guththila) [LIBXML2_BIN_DIR]<br></br></li>
 
-<li>iconv [ICONV_BIN_DIR]<br /></li>
+<li>iconv [ICONV_BIN_DIR]<br></br></li>
 
-<li>zlib [ZLIB_BIN_DIR]<br /></li>
+<li>zlib [ZLIB_BIN_DIR]<br></br></li>
 
 </ul>
 
-<p>The default paths for these external libraries are already specified in configure.in file.<br />
+</p><p>The default paths for these external libraries are already specified in configure.in file.<br></br>
 
   Example: If libxml2 is installed into C:\libxml2, edit the
 
-configure.in file accordingly.<br />
+configure.in file accordingly.<br></br>
 
-<br />
+<br></br>
 
 You can either extract libxml2 to this folder, in which case the folder
 
-structure for C:\libxml2 should look like the following:</p>
-
-<p><img alt="Figure: C:\libxml2 Folder Structure"
-
-  src="images/folder_structure_libxml2.jpg" /><br />
+structure for C:\libxml2 should look like the following:</p><p><img alt="Figure: C:\libxml2 Folder Structure" src="images/folder_structure_libxml2.jpg"></img><br></br>
 
   Else, extract it to a location of your choice and edit the configure.in
 
-  file accordingly.<br />
+  file accordingly.<br></br>
 
-  <br />
+  <br></br>
 
   If you need the parser to use Guththila XML parser, set the
 
     ENABLE_GUTHTHILA option to 1 in configure.in
 
-    file.<br />
+    file.<br></br>
 
-    Example: <code>ENABLE_GUTHTHILA = 1</code><br />
+    Example: <code>ENABLE_GUTHTHILA = 1</code><br></br>
 
-    <br />
+    <br></br>
 
-<b>Other options available:</b><br />
+<b>Other options available:</b><br></br>
 
-If you want to enable SSL client support, set ENABLE_SSL to 1 and set the path where OpenSSL is installed to OPENSSL_BIN_DIR.<br />
+If you want to enable SSL client support, set ENABLE_SSL to 1 and set the path where OpenSSL is installed to OPENSSL_BIN_DIR.<br></br>
 
-<br />
+<br></br>
 
-If you want to enable <a href="http://curl.haxx.se/">libcurl</a> based client transport, set ENABLE_LIBCURL to 1 and set the path where libcurl is installed to LIBCURL_BIN_DIR.<br />
+If you want to enable <a href="http://curl.haxx.se/" class="externalLink" title="External Link">libcurl</a> based client transport, set ENABLE_LIBCURL to 1 and set the path where libcurl is installed to LIBCURL_BIN_DIR.<br></br>
 
-</p>
-
-<a id="src_compile"></a>
-
-
-
-<h3>2.2.3. Compiling the Source</h3>
-
-
-
-<p>The following steps will take you through the source compilation.</p>
-
-<ul>
+</p><p><a id="src_compile"></a></p></div><div class="subsection"><a name="2_2_3__Compiling_the_Source"></a><h3>2.2.3. Compiling the Source</h3><p>The following steps will take you through the source compilation.</p><ul>
 
   <li>Extract the source distribution to a folder of your choice. (Example:
 
@@ -781,9 +602,7 @@ If you want to enable <a href="http://curl.haxx.se/">libcurl</a> based client tr
 
 
 
-  <p><img alt="Figure: deploy Folder Structure"
-
-  src="images/folder_structure.jpg" /></p>
+  <p><img alt="Figure: deploy Folder Structure" src="images/folder_structure.jpg"></img></p>
 
 
 
@@ -807,11 +626,7 @@ If you want to enable <a href="http://curl.haxx.se/">libcurl</a> based client tr
 
   </ul>
 
-</ul>
-
-<p>Please note that <code>nmake install</code> does not build the apache or the IIS module. Refer to <a href="axis2c_manual.html">Axis2/C manual</a> to see how to install these modules.</p>
-
-<p>
+</ul><p>Please note that <code>nmake install</code> does not build the apache or the IIS module. Refer to <a href="axis2c_manual.html">Axis2/C manual</a> to see how to install these modules.</p><p>
 
 
 
@@ -819,9 +634,7 @@ If you want to enable <a href="http://curl.haxx.se/">libcurl</a> based client tr
 
 
 
-<h3>2.2.4. Running the Binaries</h3>
-
-<ul>
+</p></div><div class="subsection"><a name="2_2_4__Running_the_Binaries"></a><h3>2.2.4. Running the Binaries</h3><ul>
 
   <li>You need to set a couple of environment variables before you can run
 
@@ -875,10 +688,4 @@ If you want to enable <a href="http://curl.haxx.se/">libcurl</a> based client tr
 
   </li>
 
-</ul>
-
-</body>
-
-</html>
-
-
+</ul></div></div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2005-2008, Apache Software Foundation</div><div class="clear"><hr></hr></div></div></body></html>
