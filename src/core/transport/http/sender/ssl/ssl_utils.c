@@ -70,8 +70,7 @@ axis2_ssl_utils_initialize_ctx(
     if (key_file)               /*can we check if the server needs client auth? */
     {
         if (!ssl_pp)
-            AXIS2_LOG_INFO(env->log, "[ssl client] No passphrase for the "
-                           "specified");
+            AXIS2_LOG_INFO(env->log, "[ssl client] No passphrase specified");
 
         SSL_CTX_set_default_passwd_cb_userdata(ctx, (void *) ssl_pp);
         SSL_CTX_set_default_passwd_cb(ctx, password_cb);
@@ -95,7 +94,7 @@ axis2_ssl_utils_initialize_ctx(
     else
     {
         AXIS2_LOG_INFO(env->log, "[ssl client] Client certificate chain file "
-                       "not specified");
+                                 "not specified");
     }
 
     /* Load the CAs we trust */
