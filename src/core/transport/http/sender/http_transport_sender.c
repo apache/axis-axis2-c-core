@@ -23,6 +23,7 @@
 #include <axiom_xml_writer.h>
 #include <axiom_output.h>
 #include <axis2_http_transport_utils.h>
+#include <axutil_generic_obj.h>
 #include <axis2_http_out_transport_info.h>
 #include <axis2_http_transport.h>
 #include <axis2_http_sender.h>
@@ -154,6 +155,12 @@ axis2_http_transport_sender_invoke(
     axis2_byte_t *output_stream = NULL;
     int buffer_size = 0;
     axis2_status_t status = AXIS2_SUCCESS;
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axis2_conf_t *conf = NULL;
+    axis2_transport_out_desc_t *trans_desc = NULL;
+    axutil_param_t *write_xml_declaration_param = NULL;
+    axutil_hash_t *transport_attrs = NULL;
+    axis2_bool_t write_xml_declaration = AXIS2_FALSE;
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
         "Entry:axis2_http_transport_sender_invoke");
@@ -321,6 +328,55 @@ axis2_http_transport_sender_invoke(
                 AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info, env,
                                                                AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP);
             }
+            conf_ctx = axis2_msg_ctx_get_conf_ctx (msg_ctx, env);
+            if (conf_ctx)
+            {
+                conf = axis2_conf_ctx_get_conf (conf_ctx, env);
+            }
+            if (conf)
+            {
+                trans_desc = axis2_conf_get_transport_out (conf,
+                                                           env, AXIS2_TRANSPORT_ENUM_HTTP);
+            }
+            if (trans_desc)
+            {
+                write_xml_declaration_param =
+                    axutil_param_container_get_param
+                    (axis2_transport_out_desc_param_container (trans_desc, env), env,
+                     AXIS2_XML_DECLARATION);
+            }
+            if (write_xml_declaration_param)
+            {
+                transport_attrs = axutil_param_get_attributes (write_xml_declaration_param, env);
+                if (transport_attrs)
+                {
+                    axutil_generic_obj_t *obj = NULL;
+                    axiom_attribute_t *write_xml_declaration_attr = NULL;
+                    axis2_char_t *write_xml_declaration_attr_value = NULL;
+
+                    obj = axutil_hash_get (transport_attrs, AXIS2_ADD_XML_DECLARATION,
+                                   AXIS2_HASH_KEY_STRING);
+                    if (obj)
+                    {
+                        write_xml_declaration_attr = (axiom_attribute_t *) axutil_generic_obj_get_value (obj,
+                                                                                                 env);
+                    }
+                    if (write_xml_declaration_attr)
+                    {
+                        write_xml_declaration_attr_value = axiom_attribute_get_value (write_xml_declaration_attr, env);
+                    }
+                    if (write_xml_declaration_attr_value && 0 == axutil_strcasecmp (write_xml_declaration_attr_value, AXIS2_VALUE_TRUE))
+                    {
+                        write_xml_declaration = AXIS2_TRUE;
+                    }
+                }
+            }
+
+            if (write_xml_declaration)
+            {
+                axiom_output_write_xml_version_encoding (om_output, env);
+            }
+
 
             if (AXIS2_TRUE == axis2_msg_ctx_get_doing_rest(msg_ctx, env))
             {

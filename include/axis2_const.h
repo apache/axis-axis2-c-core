@@ -319,6 +319,10 @@ extern "C"
 #define AXIS2_PROXY_AUTH_TYPE "proxyAuthType"
 #define AXIS2_HTTP_AUTH_TYPE "HTTPAuthType"
 
+    /* add xml declaration */
+#define AXIS2_XML_DECLARATION "xml-declaration"
+#define AXIS2_ADD_XML_DECLARATION "insert"
+
     /* globally enable MTOM */
 #define AXIS2_ENABLE_MTOM "enableMTOM"
 #define AXIS2_ATTACHMENT_TEMP_DIR "attachmentDIR"

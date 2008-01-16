@@ -25,6 +25,7 @@
 #include <axis2_tcp_transport.h>
 #include <axiom_soap_body.h>
 #include <axiom_soap.h>
+#include <axutil_generic_obj.h>
 #include <axutil_types.h>
 #include <axutil_url.h>
 #include <axutil_network_handler.h>
@@ -132,6 +133,12 @@ axis2_tcp_transport_sender_invoke(
     axis2_char_t *buffer = NULL;
     axutil_stream_t *out_stream = NULL;
     int buffer_size = 0;
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axis2_conf_t *conf = NULL;
+    axis2_transport_out_desc_t *trans_desc = NULL;
+    axutil_param_t *write_xml_declaration_param = NULL;
+    axutil_hash_t *transport_attrs = NULL;
+    axis2_bool_t write_xml_declaration = AXIS2_FALSE;
 
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                     "start:tcp transport sender invoke");
@@ -161,6 +168,55 @@ axis2_tcp_transport_sender_invoke(
         axiom_xml_writer_free(xml_writer, env);
         xml_writer = NULL;
         return AXIS2_FAILURE;
+    }
+
+    conf_ctx = axis2_msg_ctx_get_conf_ctx (msg_ctx, env);
+    if (conf_ctx)
+    {
+        conf = axis2_conf_ctx_get_conf (conf_ctx, env);
+    }
+    if (conf)
+    {
+        trans_desc = axis2_conf_get_transport_out (conf,
+                                                   env, AXIS2_TRANSPORT_ENUM_TCP);
+    }
+    if (trans_desc)
+    {
+        write_xml_declaration_param =
+            axutil_param_container_get_param
+            (axis2_transport_out_desc_param_container (trans_desc, env), env,
+             AXIS2_XML_DECLARATION);
+    }
+    if (write_xml_declaration_param)
+    {
+        transport_attrs = axutil_param_get_attributes (write_xml_declaration_param, env);
+        if (transport_attrs)
+        {
+            axutil_generic_obj_t *obj = NULL;
+            axiom_attribute_t *write_xml_declaration_attr = NULL;
+            axis2_char_t *write_xml_declaration_attr_value = NULL;
+
+            obj = axutil_hash_get (transport_attrs, AXIS2_ADD_XML_DECLARATION,
+                           AXIS2_HASH_KEY_STRING);
+            if (obj)
+            {
+                write_xml_declaration_attr = (axiom_attribute_t *) axutil_generic_obj_get_value (obj,
+                                                                                         env);
+            }
+            if (write_xml_declaration_attr)
+            {
+                write_xml_declaration_attr_value = axiom_attribute_get_value (write_xml_declaration_attr, env);
+            }
+            if (write_xml_declaration_attr_value && 0 == axutil_strcasecmp (write_xml_declaration_attr_value, AXIS2_VALUE_TRUE))
+            {
+                write_xml_declaration = AXIS2_TRUE;
+            }
+        }
+    }
+
+    if (write_xml_declaration)
+    {
+        axiom_output_write_xml_version_encoding (om_output, env);
     }
 
     axiom_soap_envelope_serialize(soap_envelope, env, om_output, AXIS2_FALSE);
