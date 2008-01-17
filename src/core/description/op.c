@@ -227,6 +227,16 @@ axis2_op_free(
     }
     if (op->wsamapping_list)
     {
+        int i = 0;
+        int size = 0;
+        size = axutil_array_list_size(op->wsamapping_list, env);
+        for(i = 0; i < size; i++)
+        {
+            axis2_char_t *temp_str = axutil_array_list_get(op->wsamapping_list, 
+                env, i);
+            if(temp_str)
+                AXIS2_FREE(env->allocator, temp_str);
+        }
         axutil_array_list_free(op->wsamapping_list, env);
     }
 
@@ -1235,6 +1245,16 @@ axis2_op_set_wsamapping_list(
 
     if (op->wsamapping_list)
     {
+        int i = 0;
+        int size = 0;
+        size = axutil_array_list_size(op->wsamapping_list, env);
+        for(i = 0; i < size; i++)
+        {
+            axis2_char_t *temp_str = axutil_array_list_get(op->wsamapping_list, 
+                env, i);
+            if(temp_str)
+                AXIS2_FREE(env->allocator, temp_str);
+        }
         axutil_array_list_free(op->wsamapping_list, env);
         op->wsamapping_list = NULL;
     }
