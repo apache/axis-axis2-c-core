@@ -5,7 +5,6 @@
 
 axutil_hash_t* all_properties = NULL;
 axis2_char_t* cur = NULL;
-//axis2_char_t* cur1 = NULL;
 axis2_char_t* input_filename = "test.doc";
 axutil_env_t *env = NULL;
 axutil_properties_t * properties = NULL;
@@ -42,8 +41,6 @@ test_properties()
     }
     axutil_properties_read_next(cur);
     axutil_properties_set_property(properties,env, key, value);
-  //  cur1 = (axis2_char_t*)axutil_properties_read(input,env);
-  //  printf((char*)cur1);
     store_properties = axutil_properties_store(properties,env,output);
     if(!store_properties)
     {
@@ -72,7 +69,6 @@ test_properties()
     printf((char*)cur);
     printf("The test is success\n");
     }
-  //  axutil_properties_free(properties,env); 
     return AXIS2_SUCCESS;
 }
 
@@ -91,6 +87,7 @@ int main()
     axutil_env_free(env);
     return 0;
 }
+
 
 
 
