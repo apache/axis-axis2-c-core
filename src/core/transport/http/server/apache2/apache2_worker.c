@@ -164,6 +164,8 @@ axis2_apache2_worker_process_request(
     axis2_http_out_transport_info_t *apache2_out_transport_info = NULL;
     axis2_char_t *ctx_uuid = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
+    axis2_char_t *peer_ip = NULL;
+    axutil_property_t *peer_property = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, request, AXIS2_CRITICAL_FAILURE);
@@ -210,6 +212,17 @@ axis2_apache2_worker_process_request(
 
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
     axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
+
+    peer_ip = request->connection->remote_ip;
+    
+    if (peer_ip)
+    {
+        peer_property = axutil_property_create(env);
+        axutil_property_set_value(peer_property, env,
+                                  axutil_strdup(env, peer_ip));
+        axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_SVR_PEER_IP_ADDR,
+                                   peer_property);
+    }
 
     axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
