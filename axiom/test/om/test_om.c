@@ -79,7 +79,9 @@ test_om_build(
     axiom_namespace_t *ns = NULL;
     axiom_xml_reader_t *reader = NULL;
     axiom_xml_writer_t *writer = NULL;
+
     char *buffer = NULL;
+    axutil_hash_t* hash = NULL;
 
     printf("\nstart test_om_build\n");
 
@@ -98,7 +100,7 @@ test_om_build(
         return -1;
     }
 
-    /** create axiom_stax_builder by parsing pull_parser struct */
+     /** create axiom_stax_builder by parsing pull_parser struct */
 
     builder = axiom_stax_builder_create(environment, reader);
 
@@ -135,9 +137,26 @@ test_om_build(
 
         ele1 = axiom_node_get_data_element(node1, environment);
         if (ele1)
-
+        {
             printf("root localname %s\n",
                    axiom_element_get_localname(ele1, environment));
+        
+       hash = axiom_element_get_all_attributes(ele1,environment);
+                if(hash)
+                {
+                axutil_hash_index_t *hi;
+                axis2_char_t *key= NULL;
+                axiom_attribute_t *val = NULL;
+                for (hi = axutil_hash_first(hash,environment); hi; hi = axutil_hash_next(environment, hi)) {
+                    axutil_hash_this(hi, (const void**)&key, NULL,(void**) &val);
+                         if(val)
+                             printf(" Attribute name: %s",
+                                    axiom_attribute_get_localname(val,environment));
+                             printf("   value: %s\n",
+                                    axiom_attribute_get_value(val,environment));
+              }
+            }
+        }
 
         ns = axiom_element_get_namespace(ele1, environment, node1);
 
@@ -147,8 +166,12 @@ test_om_build(
                    axiom_namespace_get_prefix(ns, environment));
             printf("root ns uri %s\n",
                    axiom_namespace_get_uri(ns, environment));
+                        printf("=============================================");
 
         }
+        else
+            printf("=============================================");
+
     }
 
     /** build the document continuously untill all the xml file is built in to a om model */
@@ -166,11 +189,30 @@ test_om_build(
             ele2 =
                 (axiom_element_t *) axiom_node_get_data_element(node2,
                                                                 environment);
+                    printf("=============================================");
             if (ele2 && axiom_element_get_localname(ele2, environment))
             {
                 printf("\n localname %s\n",
-                       axiom_element_get_localname(ele2, environment));
+                           axiom_element_get_localname(ele2, environment));
+                hash = axiom_element_get_all_attributes(ele2,environment);
+                if(hash)
+                {
+                axutil_hash_index_t *hi;
+                axis2_char_t *key= NULL;
+                axiom_attribute_t *val = NULL;
+                for (hi = axutil_hash_first(hash,environment); hi; hi = axutil_hash_next(environment, hi)) {
+                    axutil_hash_this(hi, (const void**)&key, NULL,(void**) &val);
+                         if(val)
+                             printf(" Attribute name: %s",
+                                    axiom_attribute_get_localname(val,environment));
+                             printf("   value: %s\n",
+                                    axiom_attribute_get_value(val,environment));
+              }
+                }
             }
+
+
+            
             if (!node3)
                 node3 = node2;
 

@@ -44,7 +44,7 @@ typedef struct guththila_buffer_s
 }
 guththila_buffer_t;
 
-#define GUTHTHILA_BUFFER_DEF_SIZE 4096
+#define GUTHTHILA_BUFFER_DEF_SIZE 16984
 #define GUTHTHILA_BUFFER_NUMBER_OF_BUFFERS 4
 
 #ifndef GUTHTHILA_BUFFER_SIZE

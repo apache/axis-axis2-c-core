@@ -556,6 +556,8 @@ guththila_un_init(guththila_t * m,const axutil_env_t * env)
     {
         e_namesp =
             (guththila_elem_namesp_t *) guththila_stack_pop(&m->namesp, env);
+        if(e_namesp)
+        {
         for (i = 0; i < e_namesp->no; i++)
         {
             if(e_namesp->namesp[i].name)
@@ -569,6 +571,7 @@ guththila_un_init(guththila_t * m,const axutil_env_t * env)
         }
         AXIS2_FREE(env->allocator, e_namesp->namesp);
         AXIS2_FREE(env->allocator,e_namesp);
+        }
     }
 #endif  
 
