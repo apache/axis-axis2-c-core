@@ -1065,7 +1065,7 @@ guththila_get_attribute_name(
     const axutil_env_t * env) 
 {
     guththila_char_t *str = NULL;
-    if (att)
+    if (att->name)
     {
         GUTHTHILA_TOKEN_TO_STRING(att->name, str, env);
         return str;
@@ -1080,7 +1080,7 @@ guththila_get_attribute_value(
     const axutil_env_t * env) 
 {
     guththila_char_t *str = NULL;
-    if (att)
+    if (att->val)
     {
         GUTHTHILA_TOKEN_TO_STRING(att->val, str, env);
         return str;
@@ -1095,7 +1095,7 @@ guththila_get_attribute_prefix(
     const axutil_env_t * env) 
 {
     guththila_char_t *str = NULL;
-    if (att)
+    if (att->pref)
     {
         GUTHTHILA_TOKEN_TO_STRING(att->pref, str, env);
         return str;
@@ -1121,7 +1121,7 @@ guththila_get_attribute_name_by_number(
     guththila_attr_t * attr =
         (guththila_attr_t *) guththila_stack_get_by_index(&m->attrib, i - 1,
                                                           env);
-    if (attr)
+    if (attr->name)
     {
         GUTHTHILA_TOKEN_TO_STRING(attr->name, str, env);
         return str;
@@ -1138,7 +1138,7 @@ guththila_get_attribute_value_by_number(
     guththila_char_t *str = NULL;
     guththila_attr_t * attr =
         (guththila_attr_t *) guththila_stack_get_by_index(&m->attrib, i - 1,env);
-    if (attr)
+    if (attr->val)
     {
         GUTHTHILA_TOKEN_TO_STRING(attr->val, str, env);
         return str;
