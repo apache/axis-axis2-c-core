@@ -437,3 +437,73 @@ LICENSE ISSUES
  * copied and put under another distribution licence
  * [including the GNU Public Licence.]
  */
+
+
+For util/include/axutil_md5.h componet:
+-----------------------------------------------------------------------
+/*
+ * This is work is derived from material Copyright RSA Data Security, Inc.
+ *
+ * The RSA copyright statement and Licence for that original material is
+ * included below. This is followed by the Apache copyright statement and
+ * licence for the modifications made to that material.
+ */
+
+/* Copyright (C) 1991-2, RSA Data Security, Inc. Created 1991. All
+   rights reserved.
+
+   License to copy and use this software is granted provided that it
+   is identified as the "RSA Data Security, Inc. MD5 Message-Digest
+   Algorithm" in all material mentioning or referencing this software
+   or this function.
+
+   License is also granted to make and use derivative works provided
+   that such works are identified as "derived from the RSA Data
+   Security, Inc. MD5 Message-Digest Algorithm" in all material
+   mentioning or referencing the derived work.
+
+   RSA Data Security, Inc. makes no representations concerning either
+   the merchantability of this software or the suitability of this
+   software for any particular purpose. It is provided "as is"
+   without express or implied warranty of any kind.
+
+   These notices must be retained in any copies of any part of this
+   documentation and/or software.
+ */
+
+
+For the util/src/md5.c component:
+------------------------------------------------------------------
+
+/*
+ * This is work is derived from material Copyright RSA Data Security, Inc.
+ *
+ * The RSA copyright statement and Licence for that original material is
+ * included below. This is followed by the Apache copyright statement and
+ * licence for the modifications made to that material.
+ */
+
+/* MD5C.C - RSA Data Security, Inc., MD5 message-digest algorithm
+ */
+
+/* Copyright (C) 1991-2, RSA Data Security, Inc. Created 1991. All
+   rights reserved.
+
+   License to copy and use this software is granted provided that it
+   is identified as the "RSA Data Security, Inc. MD5 Message-Digest
+   Algorithm" in all material mentioning or referencing this software
+   or this function.
+
+   License is also granted to make and use derivative works provided
+   that such works are identified as "derived from the RSA Data
+   Security, Inc. MD5 Message-Digest Algorithm" in all material
+   mentioning or referencing the derived work.
+
+   RSA Data Security, Inc. makes no representations concerning either
+   the merchantability of this software or the suitability of this
+   software for any particular purpose. It is provided "as is"
+   without express or implied warranty of any kind.
+
+   These notices must be retained in any copies of any part of this
+   documentation and/or software.
+ */
