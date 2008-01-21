@@ -206,6 +206,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     axutil_property_t *dump_property = NULL;
     axutil_param_t *ssl_pp_param = NULL;	/* ssl passphrase */
     axis2_char_t *ssl_pp = NULL;
+    axutil_property_t *ssl_pp_property = NULL;
     axutil_property_t *proxy_auth_property = NULL;
     axis2_char_t *proxy_auth_property_value = NULL;
     axis2_bool_t force_proxy_auth = AXIS2_FALSE;
@@ -669,20 +670,31 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         axis2_http_simple_request_set_body_string (request,
                                                    env, buffer, buffer_size);
     }
-
+    
     axis2_http_sender_configure_server_cert (sender, env, msg_ctx);
 
     axis2_http_sender_configure_key_file (sender, env, msg_ctx);
-
+    
     axis2_http_sender_get_timeout_values (sender, env, msg_ctx);
     axis2_http_client_set_timeout (sender->client, env, sender->so_timeout);
 
-    ssl_pp_param = axis2_msg_ctx_get_parameter (msg_ctx,
-                                                env, AXIS2_SSL_PASSPHRASE);
-
-    if (ssl_pp_param)
+    ssl_pp_property = axis2_msg_ctx_get_property(msg_ctx, env,
+                                                 AXIS2_SSL_PASSPHRASE);
+    
+    if (ssl_pp_property)
     {
-        ssl_pp = axutil_param_get_value (ssl_pp_param, env);
+            ssl_pp = (axis2_char_t *)
+                     axutil_property_get_value(ssl_pp_property, env);
+    }
+    else
+    {
+        ssl_pp_param = axis2_msg_ctx_get_parameter(msg_ctx,
+                                                   env, AXIS2_SSL_PASSPHRASE);
+
+        if (ssl_pp_param)
+        {
+            ssl_pp = axutil_param_get_value(ssl_pp_param, env);
+        }
     }
 
     proxy_auth_property = (axutil_property_t *) axis2_msg_ctx_get_property (msg_ctx, env,
