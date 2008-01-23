@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 #include "ssl_utils.h"
+#include <openssl/err.h>
 BIO *bio_err = 0;
 
 static int

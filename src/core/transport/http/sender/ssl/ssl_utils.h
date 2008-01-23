@@ -19,10 +19,11 @@
 #ifndef AXIS2_SSL_UTILS_H
 #define AXIS2_SSL_UTILS_H
 
-#include <openssl/ssl.h>
+
 #include <platforms/axutil_platform_auto_sense.h>
 #include <axis2_const.h>
 #include <axis2_defines.h>
+#include <openssl/ssl.h>
 
 #ifdef __cplusplus
 extern "C"
