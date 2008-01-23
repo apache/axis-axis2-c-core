@@ -77,8 +77,7 @@ typedef struct guththila_xml_writer_s
     guththila_buffer_t buffer;
     guththila_writer_status_t status;
     int next;
-}
-guththila_xml_writer_t;
+} guththila_xml_writer_t;
 
 /*TODO: we need to came up with common implementation of followng two structures in writer and reader*/
 
@@ -293,30 +292,22 @@ GUTHTHILA_EXPORT char *GUTHTHILA_CALL guththila_get_prefix_for_namespace(
     char *namespace,
     const axutil_env_t * env);
 
-/**@description
-  *
-  */
 int GUTHTHILA_CALL guththila_write(
     guththila_xml_writer_t * wr,
     char *buff,
     size_t buff_size,
     const axutil_env_t * env);
 
-/**@description
-  *
-  */
 int GUTHTHILA_CALL guththila_write_token(
     guththila_xml_writer_t * wr,
     guththila_token_t * tok,
     const axutil_env_t * env);
 
-/**@description
-  *
-  */
 int GUTHTHILA_CALL guththila_write_xtoken(
     guththila_xml_writer_t * wr,
     char *buff,
     size_t buff_len,
     const axutil_env_t * env);
+
 EXTERN_C_END()
 #endif
