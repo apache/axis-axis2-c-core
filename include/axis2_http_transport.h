@@ -142,7 +142,7 @@ extern "C"
      * HEADER_CONTENT_TYPE
      */
 #define AXIS2_HTTP_HEADER_CONTENT_TYPE "Content-Type"
-#define AXIS2_HTTP_HEADER_CONTENT_TYPE_ "Content-Type:"
+#define AXIS2_HTTP_HEADER_CONTENT_TYPE_ "Content-Type: "
 
     /**
      *USER DEFINED HEADER CONTENT TYPE
@@ -166,7 +166,7 @@ extern "C"
      */
 #define AXIS2_HTTP_HEADER_CONTENT_LENGTH "Content-Length"
 
-#define AXIS2_HTTP_HEADER_CONTENT_LENGTH_ "Content-Length:"
+#define AXIS2_HTTP_HEADER_CONTENT_LENGTH_ "Content-Length: "
 
     /**
      * HEADER_CONTENT_LOCATION
@@ -182,7 +182,7 @@ extern "C"
      * HEADER_SOAP_ACTION
      */
 #define AXIS2_HTTP_HEADER_SOAP_ACTION "SOAPAction"
-#define AXIS2_HTTP_HEADER_SOAP_ACTION_ "SOAPAction:"
+#define AXIS2_HTTP_HEADER_SOAP_ACTION_ "SOAPAction: "
 
     /**
      * HEADER_AUTHORIZATION
@@ -317,11 +317,11 @@ extern "C"
     /**
      * HEADER_USER_AGENT_AXIS2C
      */
-#define AXIS2_HTTP_HEADER_USER_AGENT_AXIS2C "User-Agent:Axis2/C"
+#define AXIS2_HTTP_HEADER_USER_AGENT_AXIS2C "User-Agent: Axis2/C"
 
-#define AXIS2_HTTP_HEADER_ACCEPT_ "Accept:"
+#define AXIS2_HTTP_HEADER_ACCEPT_ "Accept: "
 
-#define AXIS2_HTTP_HEADER_EXPECT_ "Expect:"
+#define AXIS2_HTTP_HEADER_EXPECT_ "Expect: "
 
     /**
      * HEADER_CACHE_CONTROL
