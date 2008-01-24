@@ -196,7 +196,8 @@ axis2_simple_http_svr_conn_read_request(
     if (strlen(str_line))
     {
         if (0 != axutil_strncasecmp(str_line, "GET", 3) && 0 !=
-            axutil_strncasecmp(str_line, "POST", 4))
+            axutil_strncasecmp(str_line, "POST", 4) && 0 !=
+            axutil_strncasecmp(str_line, "HEAD", 4))
         {
             char write_buf[512];
             sprintf(write_buf, "%s %s\r\n%s: close\r\n\r\n",

@@ -264,7 +264,7 @@ if (!request_body)
 	return HSE_STATUS_ERROR;
 }
     
-if (stricmp(lpECB->lpszMethod, "GET") == 0)
+if (stricmp(lpECB->lpszMethod, "GET") == 0 || stricmp(lpECB->lpszMethod, "HEAD") == 0)
 {
 	processed = axis2_http_transport_utils_process_http_get_request 
             (env, msg_ctx, request_body, out_stream, lpECB->lpszContentType,
@@ -446,7 +446,8 @@ AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
         
 }
         
-
+if (stricmp(lpECB->lpszMethod, "HEAD") != 0)
+{
 if (!write_response(lpECB, body_string, body_str_len))
             
         {
@@ -454,6 +455,7 @@ if (!write_response(lpECB, body_string, body_str_len))
 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in" 
                              " writing response.");
         
+}
 }
         
 AXIS2_FREE(env->allocator, body_string);
@@ -813,6 +815,7 @@ axutil_stream_free(tmp_stream, env);
 return buffer;
 
 }
+
 
 
 

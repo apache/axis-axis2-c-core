@@ -125,6 +125,8 @@ axis2_http_worker_process_request(
     axis2_char_t *svc_grp_uuid = NULL;
     axis2_char_t *path = NULL;
     axutil_property_t *peer_property = NULL;
+    axis2_bool_t is_get = AXIS2_FALSE;
+    axis2_bool_t is_head = AXIS2_FALSE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svr_conn, AXIS2_FAILURE);
@@ -251,10 +253,21 @@ axis2_http_worker_process_request(
              (simple_request, env, AXIS2_HTTP_HEADER_SOAP_ACTION), env);
         soap_action_str = axutil_string_create(env, soap_action);
     }
-    if (0 ==
+    if ((0 ==
         axutil_strcasecmp(axis2_http_request_line_get_method
                           (axis2_http_simple_request_get_request_line
-                           (simple_request, env), env), AXIS2_HTTP_GET))
+                           (simple_request, env), env), AXIS2_HTTP_GET)))
+    {
+        is_get = AXIS2_TRUE;
+    }
+    else if ((0 ==
+             axutil_strcasecmp(axis2_http_request_line_get_method
+                               (axis2_http_simple_request_get_request_line
+                                (simple_request, env), env), AXIS2_HTTP_HEAD)))
+    {
+        is_head = AXIS2_TRUE;
+    }
+    if (is_get || is_head)
     {
         processed = axis2_http_transport_utils_process_http_get_request
             (env, msg_ctx, request_body, out_stream,
@@ -421,7 +434,10 @@ axis2_http_worker_process_request(
         axis2_http_simple_response_set_status_line(response, env, http_version,
                                                    AXIS2_HTTP_RESPONSE_OK_CODE_VAL,
                                                    "OK");
-        axis2_http_simple_response_set_body_stream(response, env, out_stream);
+        if (!is_head)
+        {
+            axis2_http_simple_response_set_body_stream(response, env, out_stream);
+        }
     }
     else
     {

@@ -88,6 +88,7 @@ axis2_libcurl_send(
     axiom_soap_body_t *soap_body;
     axis2_bool_t is_soap = AXIS2_TRUE;
     axis2_bool_t send_via_get = AXIS2_FALSE;
+    axis2_bool_t send_via_head = AXIS2_FALSE;
     axis2_bool_t doing_mtom = AXIS2_FALSE;
     axiom_node_t *body_node = NULL;
     axiom_node_t *data_out = NULL;
@@ -176,6 +177,10 @@ axis2_libcurl_send(
         if (method_value && 0 == axutil_strcmp(method_value, AXIS2_HTTP_GET))
         {
             send_via_get = AXIS2_TRUE;
+        }
+        if (method_value && 0 == axutil_strcmp(method_value, AXIS2_HTTP_HEAD))
+        {
+            send_via_head = AXIS2_TRUE;
         }
     }
 
@@ -407,7 +412,14 @@ axis2_libcurl_send(
             (axis2_char_t *) axis2_http_sender_get_param_string(NULL, env,
                                                                 msg_ctx);
         url_encode = axutil_strcat(env, str_url, "?", request_param, NULL);
-        curl_easy_setopt(handler, CURLOPT_HTTPGET, 1);
+        if (send_via_get)
+        {
+            curl_easy_setopt(handler, CURLOPT_HTTPGET, 1);
+        }
+        if (send_via_head)
+        {
+            curl_easy_setopt(handler, CURLOPT_NOBODY, 1);
+        }
         curl_easy_setopt(handler, CURLOPT_URL, url_encode);
     }
 

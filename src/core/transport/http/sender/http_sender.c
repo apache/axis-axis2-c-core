@@ -219,6 +219,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     axutil_property_t *method = NULL;
     axis2_char_t *method_value = NULL;
     axis2_bool_t send_via_get = AXIS2_FALSE;
+    axis2_bool_t send_via_head = AXIS2_FALSE;
     axiom_node_t *data_out = NULL;
     axiom_node_t *body_node = NULL;
     axiom_soap_body_t *soap_body = NULL;
@@ -278,6 +279,10 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         {
             send_via_get = AXIS2_TRUE;
         }
+        if (method_value && 0 == axutil_strcmp (method_value, AXIS2_HTTP_HEAD))
+        {
+            send_via_head = AXIS2_TRUE;
+        }
     }
 
     if (!url)
@@ -303,8 +308,11 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
      */
 
     axis2_http_sender_configure_proxy (sender, env, msg_ctx);
-
-    conf_ctx = axis2_msg_ctx_get_conf_ctx (msg_ctx, env);
+    
+    if (send_via_head)
+    {
+        conf_ctx = axis2_msg_ctx_get_conf_ctx (msg_ctx, env);
+    }
     if (conf_ctx)
     {
         conf = axis2_conf_ctx_get_conf (conf_ctx, env);
@@ -352,8 +360,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     {
         axiom_output_write_xml_version_encoding (sender->om_output, env);
     }
-
-    if (!send_via_get)
+    if (!send_via_get && !send_via_head)
     {
         axutil_property_t *property = NULL;
 
@@ -447,9 +454,12 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         path = axutil_strcat (env,
                               axutil_url_get_path (url, env),
                               "?", request_params, NULL);
-
-        request_line = axis2_http_request_line_create (env, "GET", path,
-                                                       sender->http_version);
+        if (send_via_get)
+            request_line = axis2_http_request_line_create (env, "GET", path,
+                                                           sender->http_version);
+        if (send_via_head)
+            request_line = axis2_http_request_line_create (env, "HEAD", path,
+                                                           sender->http_version);
     }
 
     request = axis2_http_simple_request_create (env, request_line, NULL, 0,
@@ -495,7 +505,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         }
     }
 
-    if (!send_via_get)
+    if (!send_via_get && !send_via_head)
     {
         buffer_size = axiom_xml_writer_get_xml_size (xml_writer, env);
 
