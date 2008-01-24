@@ -129,6 +129,11 @@ extern "C"
 #define AXIS2_HTTP_GET "GET"
 
     /**
+     * HEADER_HEAD
+     */
+#define AXIS2_HTTP_HEAD "HEAD"
+
+    /**
      * HEADER_HOST
      */
 #define AXIS2_HTTP_HEADER_HOST "Host"
