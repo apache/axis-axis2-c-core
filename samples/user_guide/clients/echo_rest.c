@@ -36,6 +36,7 @@ main(
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
     axis2_bool_t method_get = AXIS2_FALSE;
+    axis2_bool_t method_head = AXIS2_FALSE;
 
     /* Set up the environment */
     env = axutil_env_create_all("echo_rest.log", AXIS2_LOG_LEVEL_TRACE);
@@ -44,14 +45,19 @@ main(
     address = "http://localhost:9090/axis2/services/echo/echoString";
     if (argc > 1)
     {
-        if (0 == strncmp(argv[1], "-mGET", 2))
+        if (0 == strncmp(argv[1], "-mGET", 4))
         {
             method_get = AXIS2_TRUE;
+        }
+        else if (0 == strncmp(argv[1], "-mHEAD", 4))
+        {
+            method_head = AXIS2_TRUE;
         }
         else if (0 == axutil_strcmp(argv[1], "-h"))
         {
             printf("Usage : %s [endpoint_url]", argv[0]);
-            printf(" or %s -mGET for HTTP GET\n", argv[0]);
+            printf(" or either %s -mGET for HTTP GET", argv[0]);
+            printf(" or %s -mHEAD for HTTP HEAD\n", argv[0]);
             printf("use -h for help\n");
             return 0;
         }
@@ -66,6 +72,10 @@ main(
         if (0 == strncmp(argv[2], "-mGET", 2))
         {
             method_get = AXIS2_TRUE;
+        }
+        else if (0 == strncmp(argv[2], "-mHEAD", 2))
+        {
+            method_head = AXIS2_TRUE;
         }
         else
         {
@@ -87,6 +97,10 @@ main(
     if (AXIS2_TRUE == method_get)
     {
         axis2_options_set_http_method(options, env, AXIS2_HTTP_GET);
+    }
+    else if (AXIS2_TRUE == method_head)
+    {
+        axis2_options_set_http_method(options, env, AXIS2_HTTP_HEAD);
     }
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up
      * using the axis2.xml file.
