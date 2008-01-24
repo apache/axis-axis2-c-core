@@ -23,6 +23,13 @@
 #include <fcntl.h>
 
 #if defined(WIN32)
+/* fix for an older version of winsock2.h - */
+#if !defined(SO_EXCLUSIVEADDRUSE)
+#define SO_EXCLUSIVEADDRUSE ((int)(~SO_REUSEADDR))
+#endif
+#endif
+
+#if defined(WIN32)
 static int is_init_socket = 0;
 axis2_bool_t axis2_init_socket(
     );
@@ -64,7 +71,7 @@ axutil_network_handler_open_socket(
     if (sock_addr.sin_addr.s_addr == AXIS2_INADDR_NONE) /*nnn netinet/in.h */
     {
 
-        /**
+        /*
          * server may be a host name
          */
         struct hostent *lphost = NULL;
@@ -85,7 +92,7 @@ axutil_network_handler_open_socket(
 
     sock_addr.sin_port = htons((axis2_unsigned_short_t) port);
 
-    /** Connect to server */
+    /* Connect to server */
     if (connect(sock, (struct sockaddr *) &sock_addr, sizeof(sock_addr)) < 0)
     {
         AXIS2_CLOSE_SOCKET(sock);
@@ -125,7 +132,7 @@ axutil_network_handler_create_server_socket(
         return AXIS2_INVALID_SOCKET;
     }
 
-    /** Address re-use */
+    /* Address re-use */
     i = 1;
 #if defined(WIN32)
     setsockopt(sock, SOL_SOCKET, SO_EXCLUSIVEADDRUSE, (char *) &i, sizeof(axis2_socket_t));    /*nnn casted 4th param to char* */
@@ -133,7 +140,7 @@ axutil_network_handler_create_server_socket(
     setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (char *) &i, sizeof(axis2_socket_t));    /*nnn casted 4th param to char* */
 #endif
 
-    /** Exec behaviour */
+    /* Exec behaviour */
     AXIS2_CLOSE_SOCKET_ON_EXIT(sock) memset(&sock_addr, 0, sizeof(sock_addr));
 
     sock_addr.sin_family = AF_INET;
@@ -186,7 +193,7 @@ axutil_network_handler_set_sock_option(
     if (option == SO_RCVTIMEO || option == SO_SNDTIMEO)
     {
 #if defined(WIN32)
-        DWORD tv = value;       //windows expects milliseconds in a DWORD
+        DWORD tv = value;       /* windows expects milliseconds in a DWORD */
 #else
         struct timeval tv;
         /* we deal with milliseconds */
@@ -242,7 +249,7 @@ axis2_init_socket(
     err = WSAStartup(wVersionRequested, &wsaData);
 
     if (err != 0)
-        return 0;               //WinSock 2.2 not found
+        return 0;               /* WinSock 2.2 not found */
 
     /*   Confirm that the WinSock DLL supports 2.2. */
     /*   Note that if the DLL supports versions greater */
@@ -253,10 +260,10 @@ axis2_init_socket(
     if (LOBYTE(wsaData.wVersion) != 2 || HIBYTE(wsaData.wVersion) != 2)
     {
         WSACleanup();
-        return 0;               //WinSock 2.2 not supported
+        return 0;               /* WinSock 2.2 not supported */
     }
 
-    /**
+    /*
      *   Enable the use of sockets as filehandles
      */
     /*  
