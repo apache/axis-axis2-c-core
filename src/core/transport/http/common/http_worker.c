@@ -253,17 +253,17 @@ axis2_http_worker_process_request(
              (simple_request, env, AXIS2_HTTP_HEADER_SOAP_ACTION), env);
         soap_action_str = axutil_string_create(env, soap_action);
     }
-    if ((0 ==
+    if (0 ==
         axutil_strcasecmp(axis2_http_request_line_get_method
                           (axis2_http_simple_request_get_request_line
-                           (simple_request, env), env), AXIS2_HTTP_GET)))
+                           (simple_request, env), env), AXIS2_HTTP_GET))
     {
         is_get = AXIS2_TRUE;
     }
-    else if ((0 ==
+    else if (0 ==
              axutil_strcasecmp(axis2_http_request_line_get_method
                                (axis2_http_simple_request_get_request_line
-                                (simple_request, env), env), AXIS2_HTTP_HEAD)))
+                                (simple_request, env), env), AXIS2_HTTP_HEAD))
     {
         is_head = AXIS2_TRUE;
     }

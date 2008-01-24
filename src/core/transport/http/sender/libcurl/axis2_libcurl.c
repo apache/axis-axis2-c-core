@@ -233,7 +233,7 @@ axis2_libcurl_send(
         axiom_output_write_xml_version_encoding (om_output, env);
     }
 
-    if (!send_via_get)
+    if (!send_via_get && !send_via_head)
     {
         xml_writer = axiom_output_get_xml_writer(om_output, env);
 
