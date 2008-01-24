@@ -23,19 +23,25 @@
 #include <tcpmon_session.h>
 #include <tcpmon_entry.h>
 #include <tcpmon_util.h>
+#include <signal.h>
 #include <stdio.h>
 
 #define SIZE 1024
 axis2_char_t *tcpmon_traffic_log = "tcpmon_traffic.log";
+axutil_env_t *system_env = NULL;
+tcpmon_session_t *session = NULL;
+char *target_host = NULL;
 
 int on_new_entry(
     const axutil_env_t * env,
     tcpmon_entry_t * entry,
     int status);
+
 int on_new_entry_to_file(
     const axutil_env_t * env,
     tcpmon_entry_t * entry,
     int status);
+
 int on_error_func(
     const axutil_env_t * env,
     char *error_message);
@@ -45,34 +51,21 @@ char *str_replace(
     const char *search,
     const char *replace);
 
+void sig_handler(
+    int signal);
+
 int
 main(
     int argc,
     char **argv)
 {
     axutil_env_t *env = NULL;
-    axutil_allocator_t *allocator = NULL;
-    axutil_error_t *error = NULL;
-    axutil_log_t *log = NULL;
-    axutil_thread_pool_t *thread_pool = NULL;
-    tcpmon_session_t *session = NULL;
     int c;
     int listen_port = 9090,
         target_port = 8080;
-    char *target_host = NULL;
     int test_bit = 0;
     int format_bit = 0;
     int ii = 1;
-
-    allocator = axutil_allocator_init(NULL);
-
-    error = axutil_error_create(allocator);
-    log = axutil_log_create(allocator, NULL, "axis2_tcpmon.log");
-    thread_pool = axutil_thread_pool_init(allocator);
-
-    env = axutil_env_create_with_error_log_thread_pool(allocator, error, log,
-                                                       thread_pool);
-    target_host = axutil_strdup(env, "localhost");
 
     if (!axutil_strcmp(argv[1], "-h"))
     {
@@ -93,6 +86,16 @@ main(
         return 0;
     }
 
+    env = axutil_env_create_all("axis2_tcpmon.log", AXIS2_LOG_LEVEL_DEBUG);
+
+#ifndef WIN32
+    signal(SIGINT, sig_handler);
+    signal(SIGPIPE, sig_handler);
+    system_env = env;
+#endif
+
+    target_host = axutil_strdup(env, "localhost");
+
     while (ii < argc)
     {
         if (!strcmp("-lp", argv[ii]))
@@ -103,6 +106,12 @@ main(
             {
                 printf("INVALID value for listen port\n");
                 printf("Use -h for help\n");
+                AXIS2_FREE(env->allocator, target_host);
+                if (env)
+                {
+                    axutil_env_free((axutil_env_t *) env);
+                    env = NULL;
+                }
                 return 0;
             }
 
@@ -115,12 +124,19 @@ main(
             {
                 printf("INVALID value for target port\n");
                 printf("Use -h for help\n");
+                AXIS2_FREE(env->allocator, target_host);
+                if (env)
+                {
+                    axutil_env_free((axutil_env_t *) env);
+                    env = NULL;
+                }
                 return 0;
             }
         }
         else if (!strcmp("-th", argv[ii]))
         {
             ii++;
+            AXIS2_FREE(env->allocator, target_host);
             target_host = (char *) axutil_strdup(env, argv[ii++]);
         }
         else if (!strcmp("--test", argv[ii]))
@@ -142,6 +158,12 @@ main(
         {
             printf("INVALID value for tcpmon \n");
             printf("Use -h for help\n");
+            AXIS2_FREE(env->allocator, target_host);
+            if (env)
+            {
+                axutil_env_free((axutil_env_t *) env);
+                env = NULL;
+            }
             return 0;
         }
     }
@@ -151,6 +173,12 @@ main(
         printf("ERROR: essential argument missing \n");
         printf
             ("Please recheck values of listen_port (-lp), target_port(-tp) and target_host (-th)\n");
+        AXIS2_FREE(env->allocator, target_host);
+        if (env)
+        {
+            axutil_env_free((axutil_env_t *) env);
+            env = NULL;
+        }
         return 0;
     }
 
@@ -178,8 +206,11 @@ main(
     TCPMON_SESSION_STOP(session, env);
     TCPMON_SESSION_FREE(session, env);
     AXIS2_FREE(env->allocator, target_host);
-    axutil_allocator_free(allocator);
-    axutil_env_free(env);
+    if (env)
+    {
+        axutil_env_free((axutil_env_t *) env);
+        env = NULL;
+    }
     return 0;
 }
 
@@ -234,14 +265,22 @@ on_new_entry_to_file(
                 TCPMON_ENTRY_SENT_TIME(entry, env));
         fprintf(file, "---------------------\n");
 
-        convert = TCPMON_ENTRY_SENT_HEADERS(entry, env);
+        convert = axutil_strdup(env, TCPMON_ENTRY_SENT_HEADERS(entry, env));
         convert = str_replace(convert, "; ", ";\n\t");
         fprintf(file, "%s", convert);
+        if (convert)
+        {
+            free(convert);
+        }
 
-        convert = formated_buffer;
+        convert = axutil_strdup(env, formated_buffer);
         convert = str_replace(convert, "; ", ";\n\t");
         convert = str_replace(convert, "><", ">\n<");
         fprintf(file, "%s", convert);
+        if (convert)
+        {
+            free(convert);
+        }
 
     }
     if (status == 1)
@@ -275,14 +314,21 @@ on_new_entry_to_file(
                 TCPMON_ENTRY_TIME_DIFF(entry, env));
         fprintf(file, "---------------------\n");
 
-        convert = TCPMON_ENTRY_ARRIVED_HEADERS(entry, env);
+        convert = axutil_strdup(env, TCPMON_ENTRY_ARRIVED_HEADERS(entry, env));
         convert = str_replace(convert, "; ", ";\n\t");
         fprintf(file, "%s", convert);
-
-        convert = formated_buffer;
+        if (convert)
+        {
+            free(convert);
+        }
+        convert = axutil_strdup(env, formated_buffer);
         convert = str_replace(convert, "; ", ";\n\t");
         convert = str_replace(convert, "><", ">\n<");
         fprintf(file, "%s", convert);
+        if (convert)
+        {
+            free(convert);
+        }
     }
 
     fclose(file);
@@ -401,5 +447,53 @@ str_replace(
     }
 
     free(str_tmp);
+    free(str);
     return (str_return);
 }
+
+/**
+ * Signal handler
+ */
+#ifndef WIN32
+void
+sig_handler(
+    int signal)
+{
+
+    if (!system_env)
+    {
+        AXIS2_LOG_ERROR(system_env->log, AXIS2_LOG_SI,
+                        "Received signal %d, unable to proceed system_env is NULL,\
+                         system exit with -1", signal);
+        _exit (-1);
+    }
+
+    switch (signal)
+    {
+    case SIGINT:
+        {
+            AXIS2_LOG_INFO(system_env->log, "Received signal SIGINT. Utility "
+                           "shutting down");
+            TCPMON_SESSION_STOP(session, system_env);
+            TCPMON_SESSION_FREE(session, system_env);
+            AXIS2_FREE(system_env->allocator, target_host);
+            if (system_env)
+            {
+                axutil_env_free(system_env);
+            }
+            exit(0);
+        }
+    case SIGPIPE:
+        {
+            AXIS2_LOG_INFO(system_env->log, "Received signal SIGPIPE. Operation "
+                           "aborted");
+            return;
+        }
+    case SIGSEGV:
+        {
+            fprintf(stderr, "Received deadly signal SIGSEGV. Terminating\n");
+            _exit(-1);
+        }
+    }
+}
+#endif

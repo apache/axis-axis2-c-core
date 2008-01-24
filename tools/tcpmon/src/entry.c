@@ -431,6 +431,14 @@ tcpmon_entry_new_entry_funct(
         {
             (on_trans_fault_funct) (env, "Missing target port and host");
         }
+        if (thd)
+        {
+            AXIS2_FREE(env->allocator, thd);
+        }
+        if (data)
+        {
+            AXIS2_FREE(env->allocator, (tcpmon_entry_request_data_t *)data);
+        }
         return NULL;
     }
     client_stream = axutil_stream_create_socket(env, client_socket);
@@ -444,6 +452,14 @@ tcpmon_entry_new_entry_funct(
         if (on_trans_fault_funct)
         {
             (on_trans_fault_funct) (env, "error in creating the client stream");
+        }
+        if (thd)
+        {
+            AXIS2_FREE(env->allocator, thd);
+        }
+        if (data)
+        {
+            AXIS2_FREE(env->allocator, (tcpmon_entry_request_data_t *)data);
         }
         return NULL;
     }
@@ -495,6 +511,14 @@ tcpmon_entry_new_entry_funct(
         {
             (on_trans_fault_funct) (env, "error in creating the host socket");
         }
+        if (thd)
+        {
+            AXIS2_FREE(env->allocator, thd);
+        }
+        if (data)
+        {
+            AXIS2_FREE(env->allocator, (tcpmon_entry_request_data_t *)data);
+        }
         return NULL;
     }
 
@@ -512,6 +536,14 @@ tcpmon_entry_new_entry_funct(
         if (on_trans_fault_funct)
         {
             (on_trans_fault_funct) (env, "error in creating the host stream");
+        }
+        if (thd)
+        {
+            AXIS2_FREE(env->allocator, thd);
+        }
+        if (data)
+        {
+            AXIS2_FREE(env->allocator, (tcpmon_entry_request_data_t *)data);
         }
         return NULL;
     }
@@ -569,6 +601,18 @@ tcpmon_entry_new_entry_funct(
     axutil_network_handler_close_socket(env, client_socket);
     axutil_network_handler_close_socket(env, host_socket);
 
+    if (entry_impl)
+    {
+        tcpmon_entry_free(&(entry_impl->entry), env);
+    }
+    if (thd)
+    {
+        AXIS2_FREE(env->allocator, thd);
+    }
+    if (data)
+    {
+        AXIS2_FREE(env->allocator, (tcpmon_entry_request_data_t *)data);
+    }
     return NULL;
 }
 
@@ -589,6 +633,7 @@ read_current_stream(
     int read = 0;
     int header_width = 0;
     int current_line_offset = 0;
+    int mtom_optimized = 0;
     axis2_char_t *current_line = NULL;
     int line_just_ended = 1;
     axis2_char_t *length_char = 0;
@@ -600,6 +645,7 @@ read_current_stream(
     {
         buffer = AXIS2_REALLOC(env->allocator, buffer,
                                sizeof(axis2_char_t) * (read_size + 1));
+        *(buffer + read_size) = '\0';
         read = axutil_stream_read(stream, env, buffer + read_size, 1);
 
         if (header_just_finished)
@@ -613,6 +659,8 @@ read_current_stream(
         {
             *(buffer + read_size) = '\0';
             current_line = buffer + current_line_offset;
+            if (!mtom_optimized && strstr(current_line, "multipart/related"))
+                mtom_optimized = 1;
             if (strstr(current_line, "Content-Length"))
             {
                 if ((length_char = strstr(current_line, ":")))
@@ -659,6 +707,10 @@ read_current_stream(
         {
             header_found = 1;
             *(buffer + read_size - 3) = '\0';
+            if (header_ptr)
+            {
+                AXIS2_FREE(env->allocator, header_ptr);
+            }
             header_ptr = (axis2_char_t *) axutil_strdup(env, buffer);
             header_just_finished = 1;
             *(buffer + read_size - 3) = '\r';
@@ -673,24 +725,50 @@ read_current_stream(
             chunked_encoded = 1;
             header_found = 1;
             *(buffer + read_size - 3) = '\0';
+            if (header_ptr)
+            {
+                AXIS2_FREE(env->allocator, header_ptr); 
+            }
             header_ptr = (axis2_char_t *) axutil_strdup(env, buffer);
             header_just_finished = 1;
             *(buffer + read_size - 3) = '\r';
         }
+        if (!(*(buffer + read_size - 1)))
+        {
+            if (!mtom_optimized)
+            {
+                read_size--;
+                length = 0;
+            }
+            else
+            {
+                *(buffer + read_size - 1) = ' ';
+            }
+        }
     }
     while (length != 0);
 
+    buffer = AXIS2_REALLOC(env->allocator, buffer,
+                           sizeof(axis2_char_t) * (read_size + 1));
+    *(buffer + read_size) = '\0';
+    
     if (header_width != 0)
     {
         body_ptr = buffer + header_width;
-        *data = (axis2_char_t *) axutil_strdup(env, body_ptr);
+        if (body_ptr && *body_ptr)
+        {
+            *data = (axis2_char_t *) axutil_strdup(env, body_ptr);
+        }
+        body_ptr = NULL;    
     }
     else
     {
-        *(buffer + read_size) = '\0';
+        if (header_ptr)
+        {
+            AXIS2_FREE(env->allocator, header_ptr);
+        }
         header_ptr = (axis2_char_t *) axutil_strdup(env, buffer);
-
-                          /** soap body part is unavailable */
+        /** soap body part is unavailable */
         *data = NULL;
     }
 

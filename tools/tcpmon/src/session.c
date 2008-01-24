@@ -56,6 +56,9 @@ tcpmon_session_server_thread_data_t;
 
 #define AXIS2_INTF_TO_IMPL(session) \
     ((tcpmon_session_impl_t *) session)
+axutil_thread_t *server_thread = NULL;
+tcpmon_session_server_thread_data_t *thread_data = NULL;
+
 
 /************************* Function prototypes ********************************/
 
@@ -393,8 +396,6 @@ tcpmon_session_start(
     const axutil_env_t * env)
 {
     tcpmon_session_impl_t *session_impl = NULL;
-    axutil_thread_t *server_thread = NULL;
-    tcpmon_session_server_thread_data_t *thread_data = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -437,6 +438,17 @@ tcpmon_session_stop(
 
     session_impl = AXIS2_INTF_TO_IMPL(session);
     session_impl->is_running = AXIS2_FALSE;
+
+    if (server_thread)
+    {
+        AXIS2_FREE(env->allocator, server_thread);
+        server_thread = NULL;
+    }
+    if (thread_data)
+    {
+        AXIS2_FREE(env->allocator, (tcpmon_session_server_thread_data_t *)thread_data);
+        thread_data = NULL;
+    }
 
     return AXIS2_SUCCESS;
 }
@@ -504,6 +516,16 @@ server_funct(
                                                   "error in creating the server socket, "
                                                   "port may be already occupied");
         }
+        if (thd)
+        {
+            AXIS2_FREE(env->allocator, server_thread);
+            server_thread = NULL;
+        }
+        if (data)
+        {
+            AXIS2_FREE(env->allocator, (tcpmon_session_server_thread_data_t *)data);
+            thread_data = NULL;
+        }
         return NULL;
     }
     while (session_impl->is_running)
@@ -548,7 +570,16 @@ server_funct(
         axutil_thread_pool_thread_detach(env->thread_pool, request_thread);
     }
     axutil_network_handler_close_socket(env, listen_socket);
-
+    if (thd)
+    {
+        AXIS2_FREE(env->allocator, server_thread);
+        server_thread = NULL;
+    }
+    if (data)
+    {
+        AXIS2_FREE(env->allocator, (tcpmon_session_server_thread_data_t *)data);
+        thread_data = NULL;
+    }
     return NULL;
 }
 
