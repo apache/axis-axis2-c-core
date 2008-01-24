@@ -69,11 +69,11 @@ main(
 
     if (argc > 2)
     {
-        if (0 == strncmp(argv[2], "-mGET", 2))
+        if (0 == strncmp(argv[2], "-mGET", 4))
         {
             method_get = AXIS2_TRUE;
         }
-        else if (0 == strncmp(argv[2], "-mHEAD", 2))
+        else if (0 == strncmp(argv[2], "-mHEAD", 5))
         {
             method_head = AXIS2_TRUE;
         }
@@ -144,6 +144,13 @@ main(
             printf("\nReceived OM : %s\n", om_str);
             AXIS2_FREE(env->allocator, om_str);
         }
+        printf("\necho client invoke SUCCESSFUL!\n");
+    }
+    else if (method_head)
+    {
+        /* HEAD request should probably be removed from this file,
+         * and be relocated to transport unit tests.
+         */
         printf("\necho client invoke SUCCESSFUL!\n");
     }
     else
