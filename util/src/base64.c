@@ -107,7 +107,7 @@ axutil_base64_decode_len(
 
     if (nprbytes & 0x03) nbytesdecoded += (nprbytes & 0x03) - 1;
 
-    return nbytesdecoded + 1;
+    return nbytesdecoded;
 
 }
 

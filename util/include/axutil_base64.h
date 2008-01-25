@@ -94,7 +94,7 @@ extern "C"
 
     /*
      * Decode a string to plain text
-     * @param plain_dst The destination string for the plain text
+     * @param plain_dst The destination string for the plain text. size of this should be axutil_base64_decode_len + 1
      * @param coded_src The encoded string
      * @return the length of the plain text string
      */
@@ -105,7 +105,7 @@ extern "C"
 
     /*
      * Decode an EBCDIC string to plain text
-     * @param plain_dst The destination string for the plain text
+     * @param plain_dst The destination string for the plain text. size of this should be axutil_base64_decode_len
      * @param coded_src The encoded string
      * @return the length of the plain text string
      */
