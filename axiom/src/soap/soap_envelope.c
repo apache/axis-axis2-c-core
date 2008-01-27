@@ -43,6 +43,7 @@ struct axiom_soap_envelope
     axiom_soap_body_t *body;
     /* pointer to soap builder */
     axiom_soap_builder_t *soap_builder;
+    int ref;
 };
 static axis2_status_t check_and_set_soap_version(
     axiom_soap_envelope_t * soap_envelope,
@@ -67,6 +68,7 @@ axiom_soap_envelope_create_null(
     soap_envelope->soap_version = AXIOM_SOAP12;
     soap_envelope->header = NULL;
     soap_envelope->body = NULL;
+    soap_envelope->ref = 1;
     soap_envelope->soap_builder = NULL;
 
     return soap_envelope;
@@ -151,7 +153,10 @@ axiom_soap_envelope_free(
     const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
-
+    if (--(soap_envelope->ref) > 0)
+    {
+        return;
+    }
     if (soap_envelope->header)
     {
         axiom_soap_header_free(soap_envelope->header, env);
@@ -614,3 +619,13 @@ axiom_soap_envelope_set_soap_version(
     }
     return AXIS2_FAILURE;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_soap_envelope_increment_ref(
+    axiom_soap_envelope_t * envelope,
+    const axutil_env_t * env)
+{
+    envelope->ref++;
+    return AXIS2_SUCCESS;
+}
+
