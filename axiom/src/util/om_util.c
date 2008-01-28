@@ -23,6 +23,20 @@
 #include <axutil_uri.h>
 #include <axiom_util.h>
 
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axiom_util_get_child_text(axiom_node_t *node, 
+    const axutil_env_t * env)
+{
+    axiom_element_t *ele = NULL;
+    axis2_char_t *txt = NULL;
+
+    ele = (axiom_element_t*)axiom_node_get_data_element(node, env);
+    txt = axiom_element_get_text(ele, env, node);
+    
+    return txt;
+}
+
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 axiom_util_get_first_child_element_with_uri(
     axiom_node_t * ele_node,
