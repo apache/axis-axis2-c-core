@@ -187,6 +187,11 @@ extern "C"
         const axutil_env_t * env,
         int soap_version);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_envelope_increment_ref(
+        axiom_soap_envelope_t * envelope,
+        const axutil_env_t * env);
+
     /** @} */
 
 #ifdef __cplusplus
