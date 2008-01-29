@@ -38,7 +38,7 @@ extern "C"
         const axutil_env_t * env,
         axiom_node_t * node,
         axiom_element_t * element, 
-        axis2_bool_t *is_secure_conversation_token);
+        axis2_bool_t is_secure_conversation_token);
 
 #ifdef __cplusplus
 }

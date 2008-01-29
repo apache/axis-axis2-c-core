@@ -32,11 +32,6 @@ rp_bootstrap_policy_builder_build(
     neethi_policy_t *policy = NULL;
     axiom_node_t *child_node = NULL;
     axiom_element_t *child_element = NULL;
-    axutil_array_list_t *alternatives = NULL;
-    neethi_operator_t *component = NULL;
-    neethi_all_t *all = NULL;
-    axis2_char_t *inclusion_value = NULL;
-    axutil_qname_t *qname = NULL;
     neethi_assertion_t *assertion = NULL;
     neethi_policy_t *normalized_policy = NULL;
 
