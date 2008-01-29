@@ -214,9 +214,9 @@ axis2_addr_out_handler_invoke(
     }
 
     /* by this time, we definitely have some addressing information to be sent. This is because,
-       // we have tested at the start of this whether msg_info_headers are null or not.
-       // So rather than declaring addressing namespace in each and every addressing header, lets
-       // define that in the Header itself. */
+     * we have tested at the start of this whether msg_info_headers are null or not.
+     * So rather than declaring addressing namespace in each and every addressing header, lets
+     * define that in the Header itself. */
     if (soap_header)
     {
         const axis2_char_t *action = NULL;
