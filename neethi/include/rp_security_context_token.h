@@ -24,6 +24,7 @@
  */
 
 #include <rp_includes.h>
+#include <neethi_policy.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -84,6 +85,39 @@ extern "C"
         rp_security_context_token_t * security_context_token,
         const axutil_env_t * env,
         axis2_bool_t sc10_security_context_token);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rp_security_context_token_get_issuer(
+         rp_security_context_token_t *security_context_token, 
+         const axutil_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_security_context_token_set_issuer(
+        rp_security_context_token_t * security_context_token,
+        const axutil_env_t * env,
+        axis2_char_t *issuer);
+
+    AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
+    rp_security_context_token_get_bootstrap_policy(
+         rp_security_context_token_t *security_context_token, 
+         const axutil_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_security_context_token_set_bootstrap_policy(
+        rp_security_context_token_t * security_context_token,
+        const axutil_env_t * env,
+        neethi_policy_t *bootstrap_policy);
+
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    rp_security_context_token_get_is_secure_conversation_token(
+         rp_security_context_token_t *security_context_token, 
+         const axutil_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_security_context_token_set_is_secure_conversation_token(
+        rp_security_context_token_t * security_context_token,
+        const axutil_env_t * env,
+        axis2_bool_t is_secure_conversation_token);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     rp_security_context_token_increment_ref(

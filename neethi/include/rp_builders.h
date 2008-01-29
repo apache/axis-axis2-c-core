@@ -33,6 +33,8 @@
 #include <rp_qname_matcher.h>
 #include <rp_https_token_builder.h>
 #include <rp_x509_token_builder.h>
+#include <rp_security_context_token_builder.h>
+#include <rp_bootstrap_policy_builder.h>
 #include <rp_recipient_token_builder.h>
 #include <rp_initiator_token_builder.h>
 #include <rp_asymmetric_binding_builder.h>

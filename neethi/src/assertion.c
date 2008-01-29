@@ -115,84 +115,88 @@ neethi_assertion_create_with_args(
     {
         rp_x509_token_increment_ref((rp_x509_token_t *) value, env);
     }
-    if (type == ASSERTION_TYPE_INITIATOR_TOKEN)
+    else if (type == ASSERTION_TYPE_SECURITY_CONTEXT_TOKEN)
+    {
+        rp_security_context_token_increment_ref((rp_security_context_token_t *) value, env);
+    }
+    else if (type == ASSERTION_TYPE_INITIATOR_TOKEN)
     {
         rp_property_increment_ref((rp_property_t *) value, env);
     }
-    if (type == ASSERTION_TYPE_RECIPIENT_TOKEN)
+    else if (type == ASSERTION_TYPE_RECIPIENT_TOKEN)
     {
         rp_property_increment_ref((rp_property_t *) value, env);
     }
-    if (type == ASSERTION_TYPE_PROTECTION_TOKEN)
+    else if (type == ASSERTION_TYPE_PROTECTION_TOKEN)
     {
         rp_property_increment_ref((rp_property_t *) value, env);
     }
-    if (type == ASSERTION_TYPE_ENCRYPTION_TOKEN)
+    else if (type == ASSERTION_TYPE_ENCRYPTION_TOKEN)
     {
         rp_property_increment_ref((rp_property_t *) value, env);
     }
-    if (type == ASSERTION_TYPE_TRANSPORT_TOKEN)
+    else if (type == ASSERTION_TYPE_TRANSPORT_TOKEN)
     {
         rp_property_increment_ref((rp_property_t *) value, env);
     }    
-    if (type == ASSERTION_TYPE_SIGNATURE_TOKEN)
+    else if (type == ASSERTION_TYPE_SIGNATURE_TOKEN)
     {
         rp_property_increment_ref((rp_property_t *) value, env);
     }
-    if (type == ASSERTION_TYPE_LAYOUT)
+    else if (type == ASSERTION_TYPE_LAYOUT)
     {
         rp_layout_increment_ref((rp_layout_t *) value, env);
     }
-    if (type == ASSERTION_TYPE_ALGORITHM_SUITE)
+    else if (type == ASSERTION_TYPE_ALGORITHM_SUITE)
     {
         rp_algorithmsuite_increment_ref((rp_algorithmsuite_t *) value, env);
     }
-    if (type == ASSERTION_TYPE_WSS10)
+    else if (type == ASSERTION_TYPE_WSS10)
     {
         rp_wss10_increment_ref((rp_wss10_t *) value, env);
     }
-    if (type == ASSERTION_TYPE_WSS11)
+    else if (type == ASSERTION_TYPE_WSS11)
     {
         rp_wss11_increment_ref((rp_wss11_t *) value, env); 
     }
-    if (type == ASSERTION_TYPE_TRUST10)
+    else if (type == ASSERTION_TYPE_TRUST10)
     {
         rp_trust10_increment_ref((rp_trust10_t *) value, env); 
     }
-    if (type == ASSERTION_TYPE_SUPPORTING_TOKENS)
+    else if (type == ASSERTION_TYPE_SUPPORTING_TOKENS)
     {
         rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *) value,
                                            env);
     }
-    if (type == ASSERTION_TYPE_USERNAME_TOKEN)
+    else if (type == ASSERTION_TYPE_USERNAME_TOKEN)
     {
         rp_username_token_increment_ref((rp_username_token_t *) value, env);
     }
 
-    if (type == ASSERTION_TYPE_ASSYMMETRIC_BINDING)
+    else if (type == ASSERTION_TYPE_ASSYMMETRIC_BINDING)
     {
         rp_asymmetric_binding_increment_ref((rp_asymmetric_binding_t *) value,
                                             env);
     }
     
-    if (type == ASSERTION_TYPE_SYMMETRIC_BINDING)
+    else if (type == ASSERTION_TYPE_SYMMETRIC_BINDING)
     {
         rp_symmetric_binding_increment_ref((rp_symmetric_binding_t *) value,
                                             env);
     }
 
-    if (type == ASSERTION_TYPE_TRANSPORT_BINDING)
+    else if (type == ASSERTION_TYPE_TRANSPORT_BINDING)
     {
         rp_transport_binding_increment_ref((rp_transport_binding_t *) value,
                                             env);
     }
     
-    if (type == ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS)
+    else if (type == ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS)
     {
         rp_signed_encrypted_parts_increment_ref((rp_signed_encrypted_parts_t *)
                                                 value, env);
     }
-    if (type == ASSERTION_TYPE_RAMPART_CONFIG)
+    else if (type == ASSERTION_TYPE_RAMPART_CONFIG)
     {
         rp_rampart_config_increment_ref((rp_rampart_config_t *) value, env);
     }
@@ -283,6 +287,10 @@ neethi_assertion_set_value(
     if (type == ASSERTION_TYPE_X509_TOKEN)
     {
         rp_x509_token_increment_ref((rp_x509_token_t *) value, env);
+    }
+    else if (type == ASSERTION_TYPE_SECURITY_CONTEXT_TOKEN)
+    {
+        rp_security_context_token_increment_ref((rp_security_context_token_t *)value, env);
     }
     neethi_assertion->value = (void *) value;
 

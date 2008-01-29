@@ -239,6 +239,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\bootstrap_policy_builder.c"
+						>
+					</File>
+					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\encryption_token_builder.c"
 						>
 					</File>
@@ -272,6 +276,10 @@
 					</File>
 					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\secpolicy_builder.c"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\security_context_token_builder.c"
 						>
 					</File>
 					<File
@@ -495,6 +503,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\neethi\include\rp_bootstrap_policy_builder.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\neethi\include\rp_builders.h"
 				>
 			</File>
@@ -576,6 +588,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\neethi\include\rp_security_context_token.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_security_context_token_builder.h"
 				>
 			</File>
 			<File

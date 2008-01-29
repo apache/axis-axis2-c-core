@@ -189,40 +189,44 @@ rp_property_set_value(
     {
         rp_x509_token_increment_ref((rp_x509_token_t *) value, env);
     }
-    if (type == RP_PROPERTY_WSS10)
+    else if (type == RP_PROPERTY_SECURITY_CONTEXT_TOKEN)
+    {
+        rp_security_context_token_increment_ref((rp_security_context_token_t *)value, env);
+    }
+    else if (type == RP_PROPERTY_WSS10)
     {
         rp_wss10_increment_ref((rp_wss10_t *) value, env);
     }
-    if (type == RP_PROPERTY_WSS11)
+    else if (type == RP_PROPERTY_WSS11)
     {
         rp_wss11_increment_ref((rp_wss11_t *) value, env);
     }
-    if (type == RP_PROPERTY_USERNAME_TOKEN)
+    else if (type == RP_PROPERTY_USERNAME_TOKEN)
     {
         rp_username_token_increment_ref((rp_username_token_t *) value, env);
     }
 
-    if (type == RP_PROPERTY_HTTPS_TOKEN)
+    else if (type == RP_PROPERTY_HTTPS_TOKEN)
     {
        rp_https_token_increment_ref((rp_https_token_t *) value, env);
     }    
 
-    if (type == RP_PROPERTY_SIGNED_SUPPORTING_TOKEN)
+    else if (type == RP_PROPERTY_SIGNED_SUPPORTING_TOKEN)
     {
         rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *) value,
                                            env);
     }
-    if (type == RP_PROPERTY_ASYMMETRIC_BINDING)
+    else if (type == RP_PROPERTY_ASYMMETRIC_BINDING)
     {
         rp_asymmetric_binding_increment_ref((rp_asymmetric_binding_t *) value,
                                             env);
     }
-    if (type == RP_PROPERTY_TRANSPORT_BINDING)
+    else if (type == RP_PROPERTY_TRANSPORT_BINDING)
     {
         rp_transport_binding_increment_ref((rp_transport_binding_t *) value,
                                            env);
     }
-    if (type == RP_PROPERTY_SYMMETRIC_BINDING)
+    else if (type == RP_PROPERTY_SYMMETRIC_BINDING)
     {
         rp_symmetric_binding_increment_ref((rp_symmetric_binding_t *) value,
                                            env);

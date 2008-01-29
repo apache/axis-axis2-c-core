@@ -26,6 +26,7 @@
 #include <rp_includes.h>
 #include <rp_property.h>
 #include <rp_x509_token.h>
+#include <rp_security_context_token.h>
 #include <neethi_assertion.h>
 
 #ifdef __cplusplus

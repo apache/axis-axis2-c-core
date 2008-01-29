@@ -140,6 +140,19 @@ signature_token_process_alternatives(
                 else
                     return AXIS2_FAILURE;
             }
+            else if (type == ASSERTION_TYPE_SECURITY_CONTEXT_TOKEN)
+            {
+                rp_security_context_token_t *security_context_token = NULL;
+                security_context_token = 
+                    (rp_security_context_token_t *) neethi_assertion_get_value(assertion, env);
+
+                if (security_context_token)
+                {
+                    rp_property_set_value(signature_token, env, security_context_token, RP_PROPERTY_SECURITY_CONTEXT_TOKEN);
+                }
+                else
+                    return AXIS2_FAILURE;
+            }
             else
                 return AXIS2_FAILURE;
         }

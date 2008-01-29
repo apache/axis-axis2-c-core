@@ -145,6 +145,7 @@ extern "C"
 #define RP_USERNAME_TOKEN "UsernameToken"
 #define RP_X509_TOKEN "X509Token"
 #define RP_SECURITY_CONTEXT_TOKEN "SecurityContextToken"
+#define RP_SECURE_CONVERSATION_TOKEN "SecureConversationToken"
 #define RP_HTTPS_TOKEN "HttpsToken"
 
 #define RP_INCLUDE_TOKEN "IncludeToken"
@@ -172,6 +173,8 @@ extern "C"
 
 #define RP_REQUIRE_EXTERNAL_URI_REFERENCE "RequireExternalUriReference"
 #define RP_SC10_SECURITY_CONTEXT_TOKEN "SC10SecurityContextToken"
+#define RP_BOOTSTRAP_POLICY "BootstrapPolicy"
+#define RP_ISSUER "Issuer"
 
 #define RP_REQUIRE_CLIENT_CERTIFICATE "RequireClientCertificate"
 

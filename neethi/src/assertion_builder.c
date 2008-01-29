@@ -132,6 +132,24 @@ neethi_assertion_builder_build(
         else
             return NULL;
     }
+    else if (axutil_strcmp(localname, RP_SECURITY_CONTEXT_TOKEN) == 0)
+    {
+        if (rp_match_secpolicy_qname(env, RP_SECURITY_CONTEXT_TOKEN, node, element))
+        {
+            return rp_security_context_token_builder_build(env, node, element, AXIS2_FALSE);
+        }
+        else
+            return NULL;
+    }
+    else if (axutil_strcmp(localname, RP_SECURE_CONVERSATION_TOKEN) == 0)
+    {
+        if (rp_match_secpolicy_qname(env, RP_SECURE_CONVERSATION_TOKEN, node, element))
+        {
+            return rp_security_context_token_builder_build(env, node, element, AXIS2_TRUE);
+        }
+        else
+            return NULL;
+    }
     else if (axutil_strcmp(localname, RP_ENCRYPT_BEFORE_SIGNING) == 0)
     {
         if (rp_match_secpolicy_qname
@@ -495,6 +513,15 @@ neethi_assertion_builder_build(
         else
             return NULL;
     }
+    else if(axutil_strcmp(localname, RP_BOOTSTRAP_POLICY) == 0)
+    {
+        if (rp_match_secpolicy_qname(env, RP_BOOTSTRAP_POLICY, node, element))
+        {
+            return rp_bootstrap_policy_builder_build(env, node, element);
+        }
+        else
+            return NULL;
+    }
     else if (axutil_strcmp(localname, RP_MUST_SUPPORT_REF_THUMBPRINT) == 0)
     {
         if (rp_match_secpolicy_qname
@@ -627,7 +654,49 @@ neethi_assertion_builder_build(
         else
             return NULL;
     }
+    else if (axutil_strcmp(localname, RP_REQUIRE_EXTERNAL_URI_REFERENCE) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_REQUIRE_EXTERNAL_URI_REFERENCE, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                       ASSERTION_TYPE_REQUIRE_EXTERNAL_URI);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+    else if (axutil_strcmp(localname, RP_SC10_SECURITY_CONTEXT_TOKEN) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_SC10_SECURITY_CONTEXT_TOKEN, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                       ASSERTION_TYPE_SC10_SECURITY_CONTEXT_TOKEN);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+    else if (axutil_strcmp(localname, RP_ISSUER) == 0)
+    {
+        if (rp_match_secpolicy_qname(env, RP_ISSUER, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            axis2_char_t *issuer = NULL;
 
+            issuer = axiom_element_get_text(element, env, node);
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, issuer, ASSERTION_TYPE_ISSUER);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
     else
     {
         AXIS2_ERROR_SET(env->error,

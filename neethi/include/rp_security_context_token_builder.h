@@ -15,17 +15,16 @@
  * limitations under the License.
  */
 
-#ifndef RP_ENCRYPTION_TOKEN_BUILDER_H
-#define RP_ENCRYPTION_TOKEN_BUILDER_H
+#ifndef RP_SECURITY_CONTEXT_TOKEN_BUILDER_H
+#define RP_SECURITY_CONTEXT_TOKEN_BUILDER_H
 
-/** @defgroup rp_encryption_token_builder
- * @ingroup rp_encryption_token_builder
+/** @defgroup rp_security_context_token_builder
+ * @ingroup rp_security_context_token_builder
  * @{
  */
 
 #include <rp_includes.h>
 #include <rp_property.h>
-#include <rp_x509_token.h>
 #include <rp_security_context_token.h>
 #include <neethi_assertion.h>
 
@@ -35,10 +34,11 @@ extern "C"
 #endif
 
     AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
-    rp_encryption_token_builder_build(
+    rp_security_context_token_builder_build(
         const axutil_env_t * env,
         axiom_node_t * node,
-        axiom_element_t * element);
+        axiom_element_t * element, 
+        axis2_bool_t *is_secure_conversation_token);
 
 #ifdef __cplusplus
 }

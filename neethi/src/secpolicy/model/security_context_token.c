@@ -24,6 +24,9 @@ struct rp_security_context_token_t
     axis2_bool_t derivedkeys;
     axis2_bool_t require_external_uri_ref;
     axis2_bool_t sc10_security_context_token;
+    axis2_char_t *issuer;
+    neethi_policy_t *bootstrap_policy;
+    axis2_bool_t is_secure_conversation_token;
     int ref;
 };
 
@@ -49,6 +52,9 @@ rp_security_context_token_create(
     security_context_token->derivedkeys = AXIS2_FALSE;
     security_context_token->require_external_uri_ref = AXIS2_FALSE;
     security_context_token->sc10_security_context_token = AXIS2_FALSE;
+    security_context_token->bootstrap_policy = NULL;
+    security_context_token->issuer = NULL;
+    security_context_token->is_secure_conversation_token = AXIS2_FALSE;
     security_context_token->ref = 0;
 
     return security_context_token;
@@ -67,6 +73,11 @@ rp_security_context_token_free(
         if (--(security_context_token->ref) > 0)
         {
             return;
+        }
+
+        if(security_context_token->bootstrap_policy)
+        {
+            neethi_policy_free(security_context_token->bootstrap_policy, env);
         }
 
         AXIS2_FREE(env->allocator, security_context_token);
@@ -169,6 +180,71 @@ rp_security_context_token_set_sc10_security_context_token(
     security_context_token->sc10_security_context_token =
         sc10_security_context_token;
 
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+rp_security_context_token_get_issuer(
+         rp_security_context_token_t *security_context_token, 
+         const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return security_context_token->issuer;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_security_context_token_set_issuer(
+    rp_security_context_token_t * security_context_token,
+    const axutil_env_t * env,
+    axis2_char_t *issuer)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, issuer, AXIS2_FAILURE);
+
+    security_context_token->issuer = issuer;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
+rp_security_context_token_get_bootstrap_policy(
+         rp_security_context_token_t *security_context_token, 
+         const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return security_context_token->bootstrap_policy;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_security_context_token_set_bootstrap_policy(
+    rp_security_context_token_t * security_context_token,
+    const axutil_env_t * env,
+    neethi_policy_t *bootstrap_policy)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, bootstrap_policy, AXIS2_FAILURE);
+
+    security_context_token->bootstrap_policy = bootstrap_policy;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+rp_security_context_token_get_is_secure_conversation_token(
+         rp_security_context_token_t *security_context_token, 
+         const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return security_context_token->is_secure_conversation_token;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_security_context_token_set_is_secure_conversation_token(
+    rp_security_context_token_t * security_context_token,
+    const axutil_env_t * env,
+    axis2_bool_t is_secure_conversation_token)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+  
+    security_context_token->is_secure_conversation_token = is_secure_conversation_token;
     return AXIS2_SUCCESS;
 }
 
