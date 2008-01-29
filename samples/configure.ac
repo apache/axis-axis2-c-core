@@ -47,7 +47,7 @@ fi
 dnl Checks for libraries.
 AC_CHECK_LIB(dl, dlopen)
 
-CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE "
+CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
 LDFLAGS="$LDFLAGS -lpthread"
 
 dnl Checks for header files.
