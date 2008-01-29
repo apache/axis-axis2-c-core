@@ -45,11 +45,11 @@
   <siteAddress>ws.apache.org/axis2/c</siteAddress>
   <siteDirectory>/www/ws.apache.org/axis2/c</siteDirectory>
   <distributionDirectory>/www/ws.apache.org/builds/c</distributionDirectory>
-  <!-- repository>
-       <connection>scm|svn|http://svn.apache.org/repos/asf/webservices/axis/trunk</connection>
-       <developerConnection>scm|svn|https://svn.apache.org/repos/asf/webservices/axis/trunk</developerConnection>
-       <url>http://svn.apache.org/viewcvs.cgi/webservices/axis/trunk/?root=Apache-SVN</url>
-       </repository -->
+  <repository>
+       <connection>scm|svn|http://svn.apache.org/repos/asf/webservices/axis2/trunk/c</connection>
+       <developerConnection>scm|svn|https://svn.apache.org/repos/asf/webservices/axis2/trunk/c</developerConnection>
+       <url>https://svn.apache.org/repos/asf/webservices/axis2/trunk/c/</url>
+       </repository>
   <mailingLists>
     <mailingList>
       <name>Axis C Developer List</name>
@@ -85,129 +85,141 @@
     <developer>
       <name>Samisa Abeysinghe</name>
       <id>samisa</id>
-      <email>samisa AT wso2.com</email>
+      <email>samisa AT wso2 DOT com</email>
       <organization>WSO2</organization>
     </developer>
     <developer>
       <name>Dushshantha Chandradasa</name>
       <id>dushshantha</id>
-      <email>dushshantha AT wso2.com</email>
+      <email>dushshantha AT wso2 DOT com</email>
       <organization>WSO2</organization>
     </developer>
     <developer>
       <name>Chris Darroch</name>
       <id>chrisd</id>
-      <email>chrisd AT pearsoncmg.com</email>
+      <email>chrisd AT pearsoncmg DOT com</email>
       <organization>Pearson Education Core Technology Group</organization>
     </developer>
     <developer>
       <name>Paul Fremantle</name>
       <id>pzf</id>
-      <email>paul AT wso2.com</email>
+      <email>paul AT wso2 DOT com</email>
       <organization>WSO2</organization>
     </developer>
     <developer>
       <name>Dimuthu Gamage</name>
       <id>dimuthu</id>
-      <email>dimuthuc AT gmail.com</email>
+      <email>dimuthuc AT gmail DOT com</email>
       <organization>Univerisity of Moratuwa</organization>
     </developer>
     <developer>
       <name>Sahan Gamage</name>
       <id>sahan</id>
-      <email>sahans AT gmail.com</email>
+      <email>sahans AT gmail DOT com</email>
       <organization>Purdue University</organization>
     </developer>
     <developer>
       <name>Nandika Jayawardana</name>
       <id>nandika</id>
-      <email>nandika AT wso2.com</email>
+      <email>nandika AT wso2 DOT com</email>
       <organization>WSO2</organization>
     </developer>
     <developer>
       <name>Supun Kamburugamuva</name>
       <id>supun</id>
-      <email>supun06 AT gmail.com</email>
+      <email>supun06 AT gmail DOT com</email>
       <organization>Univerisity of Moratuwa</organization>
     </developer>
     <developer>
       <name>Kaushalye Kapuruge</name>
       <id>kaushalye</id>
-      <email>kaushalye AT wso2.com</email>
+      <email>kaushalye AT wso2 DOT com</email>
       <organization>WSO2</organization>
     </developer>
     <developer>
       <name>Damitha Kumarage</name>
       <id>damitha</id>
-      <email>damitha AT wso2.com</email>
+      <email>damitha AT wso2 DOT com</email>
       <organization>WSO2</organization>
     </developer>
     <developer>
       <name>Dumindu Pallewela</name>
       <id>dumindu</id>
-      <email>dumindu AT wso2.com</email>
+      <email>dumindu AT wso2 DOT com</email>
       <organization>WSO2</organization>
     </developer>
     <developer>
       <name>Milinda Pathirage</name>
       <id>milinda</id>
-      <email>milinda.pathirage AT gmail.com</email>
+      <email>milinda DOT pathirage AT gmail DOT com</email>
       <organization>Univerisity of Moratuwa</organization>
     </developer>
     <developer>
       <name>Manjula Peiris</name>
       <id>manjula</id>
-      <email>manjula AT wso2.com</email>
+      <email>manjula AT wso2 DOT com</email>
       <organization>WSO2</organization>
     </developer>
     <developer>
       <name>Dinesh Premalal</name>
       <id>dinesh</id>
-      <email>dinesh AT wso2.com</email>
+      <email>dinesh AT wso2 DOT com</email>
       <organization>WSO2</organization>
     </developer>
     <developer>
       <name>Sanjaya Rathnaweera</name>
       <id>pini</id>
-      <email>sanjaya AT wso2.com</email>
+      <email>sanjaya AT wso2 DOT com</email>
       <organization>WSO2</organization>
     </developer>
     <developer>
       <name>Davanum Srinivas</name>
       <id>dims</id>
-      <email>davanum AT gmail.com</email>
+      <email>davanum AT gmail DOT com</email>
       <organization> </organization>
     </developer>
     <developer>
       <name>Sanjiva Weerawarana</name>
       <id>sanjiva</id>
-      <email>sanjiva AT wso2.com</email>
+      <email>sanjiva AT wso2 DOT com</email>
       <organization>WSO2</organization>
     </developer>
     <developer>
       <name>Nabeel Yoosuf</name>
       <id>nabeel</id>
-      <email>nabeel.yoosuf AT gmail.com</email>
+      <email>nabeel DOT yoosuf AT gmail DOT com</email>
       <organization>Purdue University</organization>
     </developer>    
     <developer>
       <name>Selvaratnam Uthaiyashankar</name>
       <id>shankar</id>
-      <email>shankar AT wso2.com</email>
+      <email>shankar AT wso2 DOT com</email>
+      <organization>WSO2</organization>
+    </developer>    
+    <developer>
+      <name>Bill Mitchell</name>
+      <id>bmitchell</id>
+      <email>wtmitchell3 AT acm DOT org </email>
+      <organization></organization>
+    </developer>    
+    <developer>
+      <name>Senaka Fernando</name>
+      <id>senaka</id>
+      <email>senaka AT wso2 DOT com</email>
       <organization>WSO2</organization>
     </developer>    
   </developers>
   <contributors>
     <contributor>
       <name>James Clark</name>
-      <email>jjc AT public.jclark.com</email>
+      <email>jjc AT public DOT jclark DOT com</email>
       <roles>
 	<role>Technical Adviser on Building a Portable/Re-usable C library</role>
       </roles>
     </contributor>
     <contributor>
       <name>Buddhika Semashinghe</name>
-      <email>buddhika@wso2.com</email>
+      <email>buddhika AT wso2 DOT com</email>
       <roles>
 	<role>Helps to improve overall quality of the code base</role>
       </roles>
@@ -245,19 +257,6 @@
   </build>
 
   <reports>
-    <!--report>maven-changes-plugin</report>
-	<report>maven-jdepend-plugin</report>
-	<report>maven-checkstyle-plugin</report>
-	<report>maven-pmd-plugin</report>
-	<report>maven-junit-report-plugin</report>
-	<report>maven-clover-plugin</report>
-	<report>maven-changelog-plugin</report>
-	<report>maven-file-activity-plugin</report>
-	<report>maven-developer-activity-plugin</report>
-	<report>maven-file-activity-plugin</report>
-	<report>maven-license-plugin</report>
-	<report>maven-linkcheck-plugin</report>
-	<report>maven-jxr-plugin</report-->
     <report>maven-changes-plugin</report>
   </reports>
 

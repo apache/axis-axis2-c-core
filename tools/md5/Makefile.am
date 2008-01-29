@@ -1,4 +1,4 @@
 SUBDIRS = src 
-includedir=$(prefix)/include/axis2-1.2
+includedir=$(prefix)/include/axis2-1.2.1
 data_DATA= INSTALL README AUTHORS NEWS LICENSE COPYING
 EXTRA_DIST=LICENSE
