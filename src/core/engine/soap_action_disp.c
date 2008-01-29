@@ -97,6 +97,7 @@ axis2_soap_action_disp_find_op(
     axis2_svc_t * svc)
 {
     const axis2_char_t *action = NULL;
+    axutil_qname_t *name = NULL;
     axis2_op_t *op = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -129,6 +130,13 @@ axis2_soap_action_disp_find_op(
             {
                 op = axis2_svc_get_op_with_name(svc, env, op_name);
             }
+        }
+        
+        if (!op)
+        {
+            name = axutil_qname_create(env, action, NULL, NULL);
+            op = axis2_svc_get_op_with_qname(svc, env, name);
+            axutil_qname_free(name, env);
         }
 
         if (op)

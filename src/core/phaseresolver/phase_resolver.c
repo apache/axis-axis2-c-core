@@ -18,6 +18,7 @@
 
 #include <axis2_phase_resolver.h>
 #include <axutil_property.h>
+#include <axis2_addr.h>
 
 struct axis2_phase_resolver
 {
@@ -858,9 +859,13 @@ axis2_phase_resolver_engage_module_globally(
     const axutil_env_t * env,
     axis2_module_desc_t * module_desc)
 {
-    axutil_hash_t *svc_grps = NULL;
-    axutil_hash_index_t *index_i = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axutil_qname_t *qname_addressing = NULL;
+    axutil_hash_t *svcs = NULL;
+    
+    const axutil_qname_t *mod_name = NULL;
+    axutil_hash_t *all_ops = NULL;
+    axutil_hash_index_t *index_j = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
@@ -871,59 +876,123 @@ axis2_phase_resolver_engage_module_globally(
     {
         return status;
     }
-    svc_grps = axis2_conf_get_all_svc_grps(phase_resolver->axis2_config, env);
-    if (!svc_grps)
+    svcs = axis2_conf_get_all_svcs(phase_resolver->axis2_config, env);
+    if (!svcs)
     {
         return AXIS2_FAILURE;
     }
-    for (index_i = axutil_hash_first(svc_grps, env); index_i; index_i =
-         axutil_hash_next(env, index_i))
+ 
+    qname_addressing = axutil_qname_create(env, AXIS2_MODULE_ADDRESSING, NULL, NULL);
+    mod_name = axis2_module_desc_get_qname(module_desc, env);
+    for (index_j = axutil_hash_first(svcs, env); index_j; index_j =
+         axutil_hash_next(env, index_j))
     {
-        axutil_hash_t *svcs = NULL;
-        axis2_svc_grp_t *svc_grp = NULL;
-        void *v = NULL;
-        axutil_hash_index_t *index_j = NULL;
-        const axutil_qname_t *mod_name = NULL;
+        axis2_svc_t *svc = NULL;
+        void *w = NULL;
+        axis2_svc_grp_t *parent = NULL;
+        
+        axutil_hash_this(index_j, NULL, NULL, &w);
+        svc = (axis2_svc_t *) w;
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "svc name is:%s",
+                        axis2_svc_get_name(svc, env));
 
-        axutil_hash_this(index_i, NULL, NULL, &v);
-        svc_grp = (axis2_svc_grp_t *) v;
-        svcs = axis2_svc_grp_get_all_svcs(svc_grp, env);
-
-        for (index_j = axutil_hash_first(svcs, env); index_j; index_j =
-             axutil_hash_next(env, index_j))
+        status = axis2_svc_add_module_ops(svc, env, module_desc,
+                                          phase_resolver->axis2_config);
+        if (AXIS2_SUCCESS != status)
         {
-            axis2_svc_t *svc = NULL;
-            void *w = NULL;
-
-            axutil_hash_this(index_j, NULL, NULL, &w);
-            svc = (axis2_svc_t *) w;
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "svc name is:%s",
-                            axis2_svc_get_name(svc, env));
-
-            status = axis2_svc_add_module_ops(svc, env, module_desc,
-                                              phase_resolver->axis2_config);
-            if (AXIS2_SUCCESS != status)
-            {
-                return status;
-            }
-            status =
-                axis2_phase_resolver_engage_module_to_svc_from_global
-                (phase_resolver, env, svc, module_desc);
-
-            if (AXIS2_SUCCESS != status)
-            {
-                return status;
-            }
-
+            axutil_qname_free(qname_addressing, env);
+            return status;
         }
-        mod_name = axis2_module_desc_get_qname(module_desc, env);
-        status = axis2_svc_grp_add_module_qname(svc_grp, env, mod_name);
+        status =
+            axis2_phase_resolver_engage_module_to_svc_from_global
+            (phase_resolver, env, svc, module_desc);
 
         if (AXIS2_SUCCESS != status)
         {
+            axutil_qname_free(qname_addressing, env);
+            return status;
+        }
+        if (axutil_qname_equals(mod_name, env, qname_addressing))
+        {
+            all_ops = axis2_svc_get_all_ops(svc, env);
+            if (all_ops)
+            {
+                axutil_hash_index_t *hi = NULL;
+                void *val = NULL;
+
+                for (hi = axutil_hash_first(all_ops, env); hi;
+                     hi = axutil_hash_next(env, hi))
+                {
+                    axutil_hash_this(hi, NULL, NULL, &val);
+
+                    if (val)
+                    {
+                        if (axis2_op_is_from_module((axis2_op_t *) val, env) ==
+                            AXIS2_FALSE)
+                        {
+                            axis2_op_t *op_desc = NULL;
+                            axutil_array_list_t *params = NULL;
+                            int j = 0;
+                            int sizej = 0;
+
+                            op_desc = (axis2_op_t *)val;
+                            params = axis2_op_get_all_params(op_desc, env);
+                            /* Adding wsa-mapping into service */
+                            sizej = axutil_array_list_size(params, env);
+                            for (j = 0; j < sizej; j++)
+                            {
+                                axutil_param_t *param = NULL;
+                                axis2_char_t *param_name = NULL;
+
+                                param = axutil_array_list_get(params, env, j);
+                                param_name = axutil_param_get_name(param, env);
+                                if (0 == axutil_strcmp(param_name, AXIS2_WSA_MAPPING))
+                                {
+                                    axis2_char_t *key = NULL;
+                                    key = (axis2_char_t *) axutil_param_get_value(param, env);
+                                    axis2_svc_add_mapping(svc, env, key, op_desc);
+                                }
+                            }
+                        }
+                        val = NULL;
+                    }
+                }
+            }
+        }
+        parent = axis2_svc_get_parent(svc, env);
+        if (parent)
+        {
+            axutil_array_list_t *modules = NULL;
+            int j = 0;
+            int sizej = 0;
+            axis2_bool_t add_to_group = AXIS2_TRUE;
+
+            modules = axis2_svc_grp_get_all_module_qnames(parent, env);
+            sizej = axutil_array_list_size(modules, env);
+            for (j = 0; j < sizej; j++)
+            {
+                axutil_qname_t *module = NULL;
+
+                module = (axutil_qname_t *) axutil_array_list_get(modules, env, j);
+                if (axutil_qname_equals(mod_name, env, module))
+                {
+                    add_to_group = AXIS2_FALSE;
+                    break;
+                }
+            }
+            if (add_to_group)
+            {
+                status = axis2_svc_grp_add_module_qname(parent, env, mod_name);
+            }
+        }
+
+        if (AXIS2_SUCCESS != status)
+        {
+            axutil_qname_free(qname_addressing, env);
             return status;
         }
     }
+    axutil_qname_free(qname_addressing, env);
     return status;
 }
 

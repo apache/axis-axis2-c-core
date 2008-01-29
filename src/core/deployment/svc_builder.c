@@ -193,6 +193,10 @@ axis2_svc_builder_populate_svc(
     AXIS2_TIME_T timestamp = 0;
     axis2_desc_t *desc = NULL;
     axis2_policy_include_t *policy_include = NULL;
+    axutil_qname_t *qname_addressing = NULL;
+    axis2_bool_t addressing_engaged = AXIS2_FALSE;
+    axutil_array_list_t *svc_module_qnames = NULL;
+    int svc_module_qname_size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_node, AXIS2_FAILURE);
@@ -329,6 +333,26 @@ axis2_svc_builder_populate_svc(
     {
         return status;
     }
+    
+    if(!addressing_engaged)
+    {
+        svc_module_qnames = axis2_svc_get_all_module_qnames(svc_builder->svc, env);
+        if (svc_module_qnames)
+        {
+            svc_module_qname_size = axutil_array_list_size(svc_module_qnames, env);  
+            qname_addressing = axutil_qname_create(env, AXIS2_MODULE_ADDRESSING, NULL, NULL);
+            for (i = 0; i < svc_module_qname_size; i++)
+            {
+                if (axutil_qname_equals(axutil_array_list_get(svc_module_qnames, env, i), env, qname_addressing))
+                {
+                    addressing_engaged = AXIS2_TRUE;
+                    break;
+                }
+            }
+            axutil_qname_free(qname_addressing, env);
+        }
+        svc_module_qnames = NULL;
+    }
 
     /* process IN_FLOW */
     qinflowst = axutil_qname_create(env, AXIS2_IN_FLOW_START, NULL, NULL);
@@ -383,22 +407,25 @@ axis2_svc_builder_populate_svc(
         int sizej = 0;
 
         op_desc = (axis2_op_t *) axutil_array_list_get(ops, env, i);
-        params = axis2_op_get_all_params(op_desc, env);
-        /* Adding wsa-mapping into service */
-        sizej = axutil_array_list_size(params, env);
-        for (j = 0; j < sizej; j++)
+        if (addressing_engaged)
         {
-            axutil_param_t *param = NULL;
-            axis2_char_t *param_name = NULL;
-
-            param = axutil_array_list_get(params, env, j);
-            param_name = axutil_param_get_name(param, env);
-            if (0 == axutil_strcmp(param_name, AXIS2_WSA_MAPPING))
+            params = axis2_op_get_all_params(op_desc, env);
+            /* Adding wsa-mapping into service */
+            sizej = axutil_array_list_size(params, env);
+            for (j = 0; j < sizej; j++)
             {
-                axis2_char_t *key = NULL;
+                axutil_param_t *param = NULL;
+                axis2_char_t *param_name = NULL;
 
-                key = (axis2_char_t *) axutil_param_get_value(param, env);
-                axis2_svc_add_mapping(svc_builder->svc, env, key, op_desc);
+                param = axutil_array_list_get(params, env, j);
+                param_name = axutil_param_get_name(param, env);
+                if (0 == axutil_strcmp(param_name, AXIS2_WSA_MAPPING))
+                {
+                    axis2_char_t *key = NULL;
+
+                    key = (axis2_char_t *) axutil_param_get_value(param, env);
+                    axis2_svc_add_mapping(svc_builder->svc, env, key, op_desc);
+                }
             }
         }
         axis2_svc_add_op(svc_builder->svc, env, op_desc);

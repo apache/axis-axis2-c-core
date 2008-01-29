@@ -431,8 +431,33 @@ axis2_svc_add_op(
     axis2_msg_recv_t *msg_recv = NULL;
     const axutil_qname_t *qname = NULL;
     axis2_char_t *key = NULL;
+    axutil_array_list_t *mappings_list = NULL;
+    int size = 0;
+    int j = 0;
 
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
+
+    mappings_list = axis2_op_get_wsamapping_list(op, env);
+    /* adding action mappings into service */
+    if (mappings_list)
+        size = axutil_array_list_size(mappings_list, env);
+
+    if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    {
+        return status;
+    }
+    for (j = 0; j < size; j++)
+    {
+        axis2_char_t *mapping = NULL;
+
+        mapping =
+            (axis2_char_t *) axutil_array_list_get(mappings_list, env, j);
+        status = axis2_svc_add_mapping(svc, env, mapping, op);
+        if (AXIS2_SUCCESS != status)
+        {
+            return status;
+        }
+    }
 
     status = axis2_op_set_parent(op, env, svc);
     if (AXIS2_SUCCESS != status)
@@ -747,15 +772,9 @@ axis2_svc_add_module_ops(
     for (index = axutil_hash_first(map, env); index; index =
          axutil_hash_next(env, index))
     {
-        axutil_array_list_t *mappings_list = NULL;
-        int size = 0;
-        int j = 0;
         void *v = NULL;
         axutil_hash_this(index, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
-        mappings_list = axis2_op_get_wsamapping_list(op_desc, env);
-        /* adding WSA mapping into service */
-        size = axutil_array_list_size(mappings_list, env);
 
         if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {
@@ -764,22 +783,6 @@ axis2_svc_add_module_ops(
                 axis2_phase_resolver_free(phase_resolver, env);
             }
             return AXIS2_FAILURE;
-        }
-        for (j = 0; j < size; j++)
-        {
-            axis2_char_t *mapping = NULL;
-
-            mapping =
-                (axis2_char_t *) axutil_array_list_get(mappings_list, env, j);
-            status = axis2_svc_add_mapping(svc, env, mapping, op_desc);
-            if (AXIS2_SUCCESS != status)
-            {
-                if (phase_resolver)
-                {
-                    axis2_phase_resolver_free(phase_resolver, env);
-                }
-                return status;
-            }
         }
 
         status =
