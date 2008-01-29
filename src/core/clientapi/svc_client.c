@@ -1269,6 +1269,13 @@ axis2_svc_client_free(
         return;
     }
 
+    if (svc_client->headers)
+    {
+        axis2_svc_client_remove_all_headers(svc_client, env);
+        axutil_array_list_free(svc_client->headers, env);
+        svc_client->headers = NULL;        
+    }
+
     if (svc_client->svc)
     {
         axis2_svc_free(svc_client->svc, env);
