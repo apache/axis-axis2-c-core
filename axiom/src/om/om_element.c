@@ -1360,7 +1360,7 @@ axiom_element_declare_default_namespace(
     {
         return NULL;
     }
-    if (om_element->namespaces)
+    if (!om_element->namespaces)
     {
         om_element->namespaces = axutil_hash_make(env);
         if (!(om_element->namespaces))
