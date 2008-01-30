@@ -184,6 +184,10 @@ axis2_apache2_worker_process_request(
 
     content_type = (axis2_char_t *) apr_table_get(request->headers_in,
                                                   AXIS2_HTTP_HEADER_CONTENT_TYPE);
+    if (!content_type)
+    {
+        content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_PLAIN;
+    }
     request->content_type = content_type;
     if (request->read_chunked == AXIS2_TRUE && 0 == content_length)
     {
