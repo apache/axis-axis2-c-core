@@ -25,6 +25,7 @@ struct rp_rampart_config_t
     axis2_char_t *password_callback_class;
     axis2_char_t *authenticate_module;
     axis2_char_t *replay_detector;
+    axis2_char_t *sct_provider;
     axis2_char_t *password_type;
     axis2_char_t *time_to_live;
     axis2_char_t *receiver_certificate_file;
@@ -59,6 +60,7 @@ rp_rampart_config_create(
     rampart_config->certificate_file = NULL;
     rampart_config->authenticate_module = NULL;
     rampart_config->replay_detector = NULL;
+    rampart_config->sct_provider = NULL;
     rampart_config->password_type = NULL;
     rampart_config->time_to_live = NULL;
     rampart_config->rd_val = NULL;
@@ -203,6 +205,30 @@ rp_rampart_config_set_replay_detector(
     rampart_config->replay_detector = replay_detector;
     return AXIS2_SUCCESS;
 }
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+rp_rampart_config_get_sct_provider(
+    rp_rampart_config_t * rampart_config,
+    const axutil_env_t * env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    return rampart_config->sct_provider;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_rampart_config_set_sct_provider(
+    rp_rampart_config_t * rampart_config,
+    const axutil_env_t * env,
+    axis2_char_t * sct_module)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, sct_module, AXIS2_FAILURE);
+
+    rampart_config->sct_provider = sct_module;
+    return AXIS2_SUCCESS;
+}
+
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 rp_rampart_config_get_password_type(
     rp_rampart_config_t * rampart_config,

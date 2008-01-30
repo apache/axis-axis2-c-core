@@ -168,6 +168,20 @@ rp_rampart_config_builder_populate(
         else
             return AXIS2_FAILURE;
     }
+    else if (axutil_strcmp(local_name, RP_SCT_MODULE) == 0)
+    {
+        if (rp_match_rampart_config_qname
+            (env, RP_SCT_MODULE, node, element))
+        {
+            axis2_char_t *sct_module = NULL;
+            sct_module = axiom_element_get_text(element, env, node);
+            return rp_rampart_config_set_sct_provider(rampart_config,
+														 env,
+														 sct_module);
+        }
+        else
+            return AXIS2_FAILURE;
+    }
     else if (axutil_strcmp(local_name, RP_PASSWORD_TYPE) == 0)
     {
         if (rp_match_rampart_config_qname(env, RP_PASSWORD_TYPE, node, element))
