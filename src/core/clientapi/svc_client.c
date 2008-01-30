@@ -1363,10 +1363,16 @@ axis2_svc_client_fill_soap_envelope(
                 int size = 0;
                 int i = 0;
                 size = axutil_array_list_size(svc_client->headers, env);
-                for (i = 0; i < size; i++)
+                while (i < size)
                 {
                     axiom_node_t *node = NULL;
-                    node = axutil_array_list_get(svc_client->headers, env, i);
+                    node = axutil_array_list_remove(svc_client->headers,
+                                                    env, 0);
+                    /* This removes and retrieves data. The order of the 
+                     * removal is chosen such that the headers are appended
+                     * in the order they were added.
+                     */
+                    size--;
                     if (node)
                     {
                         axiom_node_add_child(header_node, env, node);
