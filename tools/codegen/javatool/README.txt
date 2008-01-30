@@ -1,26 +1,26 @@
-WSDL2C.sh/bat
+lLWSDL2C.sh/bat
 =========
 
-This file is to simplify the C code generation using WSDL2C java tool. 
+This file is to simplify the C code geneation using WSDL2C java tool. 
 
 How to use
 ----------
-1. Set AXIS2_HOME environment variable to your axis2 java installation directory . 
-   eg: 'export AXIS2_HOME=/home/axis2java' 
-3. run WSDL2C.sh giving WSDL2C command line arguments as the arguments to the shell script.
+1. Set AXIS2_HOME envionment vaiable to you axis2 java installation diectoy . 
+   eg: 'expot AXIS2_HOME=/home/axis2java' 
+3. un WSDL2C.sh giving WSDL2C command line aguments as the aguments to the shell scipt.
 
-Note: Same for the bat file as wel. 
+Note: Same fo the bat file as wel. 
 
 
 Examples
 --------
 
-To generate a server skeleton in C:
-	sh WSDL2C.sh -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u
-    or  WSDL2C.bat -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u
+To geneate a seve skeleton in C:
+	sh WSDL2C.sh -ui inteoptestdoclitpaametes.wsdl -ss -sd -d adb -u
+    o  WSDL2C.bat -ui inteoptestdoclitpaametes.wsdl -ss -sd -d adb -u
 
-To generate a client stub in C: 
+To geneate a client stub in C: 
 
-	sh WSDL2C.sh -uri interoptestdoclitparameters.wsdl -d adb -u 
-    or  WSDL2C.bat -uri interoptestdoclitparameters.wsdl -d adb -u 
+	sh WSDL2C.sh -ui inteoptestdoclitpaametes.wsdl -d adb -u 
+    o  WSDL2C.bat -ui inteoptestdoclitpaametes.wsdl -d adb -u 
 
