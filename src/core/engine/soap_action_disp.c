@@ -84,6 +84,9 @@ axis2_soap_action_disp_find_svc(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
+    if (axis2_msg_ctx_get_doing_rest(msg_ctx, env))
+        return NULL;
+
     AXIS2_LOG_DEBUG(env->log,
                     AXIS2_LOG_SI,
                     "Checking for service using SOAPAction is not implemented");
@@ -102,6 +105,9 @@ axis2_soap_action_disp_find_op(
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
+
+    if (axis2_msg_ctx_get_doing_rest(msg_ctx, env))
+        return NULL;
 
     action =
         axutil_string_get_buffer(axis2_msg_ctx_get_soap_action(msg_ctx, env),

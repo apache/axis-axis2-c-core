@@ -299,6 +299,21 @@ extern "C"
 #define AXIS2_WSDL_MESSAGE_DIRECTION_OUT "out"
 
     /**
+     * Field AXIS2_REST_HTTP_LOCATION
+     */
+#define AXIS2_REST_HTTP_LOCATION "RESTLocation"
+
+    /**
+     * Field AXIS2_REST_HTTP_METHOD
+     */
+#define AXIS2_REST_HTTP_METHOD "RESTMethod"
+
+    /**
+     * Field AXIS2_REST_HTTP_LOCATION_SEPARATOR
+     */
+#define AXIS2_REST_HTTP_LOCATION_SEPARATOR '{'
+
+    /**
      * Field METHOD_NAME_ESCAPE_CHARACTOR
      */
 

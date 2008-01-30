@@ -24,6 +24,368 @@
 
 AXIS2_EXPORT axis2_char_t *axis2_request_url_prefix = "services";
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axutil_parse_rest_url_for_params(
+    const axutil_env_t * env,
+    const axis2_char_t * tmpl,
+    const axis2_char_t * url,
+    int * match_count,
+    axis2_char_t **** matches)
+{
+    axis2_char_t ***ret = NULL;
+    axis2_char_t *tmp1 = NULL;
+    axis2_char_t **tmp2 = NULL;
+    axis2_char_t ***tmp3 = NULL;
+    axis2_char_t *tmp4 = NULL;
+    axis2_char_t *resource = NULL;
+    axis2_char_t *query = NULL;
+    axis2_char_t *url_tmp = NULL;
+    axis2_char_t *url_resource = NULL;
+    axis2_char_t *url_query = NULL;
+    axis2_bool_t finished = AXIS2_FALSE;
+    axis2_status_t status = AXIS2_FAILURE;
+    int ret_count = 0;
+    int i = 0;
+    int j = 0;
+    axis2_bool_t in_tok = AXIS2_FALSE;
+    AXIS2_ENV_CHECK(env, NULL);
+
+    tmp2 = AXIS2_MALLOC(env->allocator, 2 * (sizeof(axis2_char_t *)));
+    memset(tmp2, 0, 2 * sizeof(axis2_char_t *));
+
+    if (tmpl[0] == '/')
+    {
+        tmp1 = (axis2_char_t *) tmpl;
+        tmp1++;
+        resource = axutil_strdup(env, tmp1);
+    }
+    else
+    {
+        resource = axutil_strdup(env, tmpl);
+    }
+    i = strlen(resource);
+    if (resource[i] == '/')
+    {
+        resource[i] = '\0';
+    }
+    tmp1 = strchr(resource, '?');
+    if (tmp1)
+    {
+        axis2_char_t *tmp4 = NULL;
+        
+        tmp4 = tmp1;
+        tmp1++;
+        resource[tmp4 - resource] = '\0';
+        if (*tmp1 && ((tmp1 - resource) < strlen(resource) - 1))
+        {
+            query = tmp1;
+            /* 
+             * Query String based matching is not implemented. This is
+             * reserved for future implementations.
+             */
+        }
+    }
+
+    /* Validation of Template */
+    i = strlen(resource);
+    if (!strchr(resource, '{') && !strchr(resource, '}'))
+    {
+        i = 0;
+    }
+    for (j = 0; j < i; j++)
+    {
+        if (!in_tok)
+        {
+            if (resource[j] == '}')
+            {
+                AXIS2_FREE(env->allocator, resource);
+                return AXIS2_FAILURE;
+            }
+            else if (resource[j] == '{')
+            {
+                if (j + 1 == i || resource[j + 1] == '}')
+                {
+                    AXIS2_FREE(env->allocator, resource);
+                    return AXIS2_FAILURE;
+                }
+                else if (resource[j + 1] == '{')
+                {
+                    j++;
+                }
+                else
+                {
+                    in_tok = AXIS2_TRUE;
+                }
+            }
+        }
+        else
+        {
+            if (resource[j] == '{')
+            {
+                AXIS2_FREE(env->allocator, resource);
+                return AXIS2_FAILURE;
+            }
+            else if (resource[j] == '}')
+            {
+                if (j + 1 < i && resource[j + 1] == '}')
+                {
+                    j++;
+                }
+                else
+                {
+                    in_tok = AXIS2_FALSE;
+                }
+            }
+        }
+    }
+    if (in_tok)
+    {
+        AXIS2_FREE(env->allocator, resource);
+        return AXIS2_FAILURE;
+    }
+
+    /* Validity of template guaranteed if not returned */
+
+    if (url[0] == '/')
+    {
+        tmp1 = (axis2_char_t *) url;
+        tmp1++;
+        url_resource = axutil_strdup(env, tmp1);
+    }
+    else
+    {
+        url_resource = axutil_strdup(env, url);
+    }
+    i = strlen(url_resource);
+    if (url_resource[i] == '/')
+    {
+        url_resource[i] = '\0';
+    }
+    i = 0;
+    url_tmp = url_resource;
+    tmp1 = strchr(url_resource, '?');
+    if (tmp1)
+    {
+        axis2_char_t *tmp4 = NULL;
+        
+        tmp4 = tmp1;
+        tmp1++;
+        url_resource[tmp4 - url_resource] = '\0';
+        if (*tmp1 && ((tmp1 - url_resource) < strlen(url_resource) - 1))
+        {
+            url_query = tmp1;
+        }
+    }
+    tmp1 = resource;
+
+    /* Simplest case match */
+    if (!strchr(resource, '{'))
+    {
+        if (strcmp(resource, url_resource) == 0)
+        {
+            finished = AXIS2_TRUE;
+        }
+    }
+
+    while (!finished)
+    {
+        tmp4 = strchr(tmp1, '{');
+        if (tmp4 && tmp4[1])
+        {
+            if (tmp4[1] != '{')
+            {
+                axis2_char_t *tmp5 = NULL;
+                axis2_char_t *tmp6 = NULL;
+                axis2_char_t *tmp7 = NULL;
+                axis2_char_t *tmp8 = NULL;
+                axis2_char_t *tmp9 = NULL;
+
+                /* Logic for finding out constant portion to match */
+                i = tmp4 - tmp1;
+                tmp2[0] = AXIS2_MALLOC(env->allocator, (i + 1) * sizeof(char));
+                strncpy(tmp2[0], tmp1, i);
+                tmp2[0][i] = '\0';
+                if (url_tmp && *url_tmp)
+                {
+                    tmp6 = url_tmp;
+                    tmp5 = strstr(tmp6, tmp2[0]);
+                    if (tmp5)
+                    {
+                        tmp5 += strlen(tmp2[0]);
+                        tmp7 = tmp4;
+                        tmp8 = tmp4;
+                        tmp7++;
+                        if (*tmp7)
+                        {
+                            axis2_bool_t finished_tmp = AXIS2_FALSE;
+                            while (!finished_tmp)
+                            {
+                                tmp6 = strchr(tmp8, '}');
+                                if (tmp6 && *tmp6)
+                                {
+                                    if (tmp6[1] != '}')
+                                    {
+                                        tmp8 = tmp6 + 1;
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    finished_tmp = AXIS2_TRUE;
+                                }
+                            }
+                            if (!finished_tmp && !strchr(tmp8, '{'))
+                            {
+                                tmp7 = tmp8 + strlen(tmp8);
+                            }
+                            else
+                            {
+                                while (!finished_tmp)
+                                {
+                                    tmp6 = strchr(tmp8, '{');
+                                    if (tmp6 && tmp6[1])
+                                    {
+                                        if (tmp6[1] != '{')
+                                        {
+                                            tmp7 = tmp6;
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        finished_tmp = AXIS2_TRUE;
+                                    }
+                                }
+                            }
+                            if (!finished_tmp)
+                            {
+                                i = tmp7 - tmp8;
+                                tmp9 = AXIS2_MALLOC(env->allocator, (i + 1) * sizeof(char));
+                                strncpy(tmp9, tmp8, i);
+                                tmp9[i] = '\0';
+                            }
+                        }
+                        if (tmp9)
+                        {
+                            tmp6 = strstr(tmp5, tmp9);
+                            AXIS2_FREE (env->allocator, tmp9);
+                            tmp9 = NULL;
+                        }
+                        else
+                        {
+                            tmp6 = strchr(tmp5, '/');
+                        }
+                        /* Logic for saving the match */
+                        if (tmp6)
+                        {
+                            i = tmp6 - tmp5;
+                            url_tmp = tmp6;
+                            tmp2[1] = AXIS2_MALLOC(env->allocator, (i + 1) * sizeof(char));
+                            strncpy(tmp2[1], tmp5, i);
+                            tmp2[1][i] = '\0';
+                        }
+                        else
+                        {
+                            i = strlen(tmp5);
+                            tmp2[1] = AXIS2_MALLOC(env->allocator, (i + 1) * sizeof(char));
+                            strncpy(tmp2[1], tmp5, i);
+                            tmp2[1][i] = '\0';
+                            url_tmp = NULL;
+                        }
+                    }
+                }
+                else
+                {
+                    break;
+                }
+                while (!finished)
+                {
+                    tmp1 = tmp4 + 1;
+                    tmp4 = strchr(tmp1, '}');
+                    if (tmp4 && *tmp4)
+                    {
+                        if (tmp4[1] != '}')
+                        {
+                            /* Logic for saving the key for the match */
+                            i = tmp4 - tmp1;
+                            if (tmp2[0])
+                            {
+                                AXIS2_FREE(env->allocator, tmp2[0]);
+                            }
+                            tmp2[0] = AXIS2_MALLOC(env->allocator, (i + 1) * sizeof(char));
+                            strncpy(tmp2[0], tmp1, i);
+                            tmp2[0][i] = '\0';
+                            tmp3 = ret;
+                            ret_count++;
+                            ret = AXIS2_MALLOC(env->allocator, ret_count * 2 * (sizeof(axis2_char_t *)));
+                            memset(ret, 0, ret_count * 2 * sizeof(axis2_char_t *));
+                            for(i = 0; i < ret_count - 1; i++)
+                            {
+                                ret[i] = tmp3[i];
+                            }
+                            ret[i] = tmp2;
+                            tmp2 = AXIS2_MALLOC(env->allocator, 2 * (sizeof(axis2_char_t *)));
+                            memset(tmp2, 0, 2 * sizeof(axis2_char_t *));
+                            tmp3 = NULL;
+                            break;
+                        }
+                        else
+                        {
+                            tmp4++;
+                        }
+                    }
+                    else
+                    {
+                        finished = AXIS2_TRUE;
+                    }
+                }
+            }
+            else
+            {
+                tmp4++;
+            }
+        }
+        else
+        {
+            /* Result of mismatch at the simplest case */
+            if (!strchr(resource, '{'))
+            {
+                finished = AXIS2_FALSE;
+                break;
+            }
+            finished = AXIS2_TRUE;
+        }
+        tmp1 = tmp4 + 1;
+    }
+    if (resource)
+    {
+        AXIS2_FREE(env->allocator, resource);
+    }
+    if (url_resource)
+    {
+        AXIS2_FREE(env->allocator, url_resource);
+    }
+    if (tmp2)
+    {
+        if (tmp2[0])
+        {
+            AXIS2_FREE(env->allocator, tmp2[0]);
+        }
+        if (tmp2[1])
+        {
+            AXIS2_FREE(env->allocator, tmp2[1]);
+        }
+        AXIS2_FREE(env->allocator, tmp2);
+    }
+    if (finished)
+    {
+        status = AXIS2_SUCCESS;
+    }
+    *match_count = ret_count;
+    *matches = ret;
+    return status;
+}
+
 AXIS2_EXTERN axis2_char_t **AXIS2_CALL
 axutil_parse_request_url_for_svc_and_op(
     const axutil_env_t * env,

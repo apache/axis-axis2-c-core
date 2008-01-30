@@ -159,6 +159,7 @@ axis2_conf_create(
         }
         /*Incase of using security we need to find the service/operation parameters before the dispatch phase.
          *This is required to give parameters to the security inflow.*/
+
         uri_dispatch = axis2_req_uri_disp_create(env);
         if (uri_dispatch)
         {
@@ -1243,6 +1244,7 @@ axis2_conf_set_default_dispatchers(
 {
     axis2_phase_t *dispatch = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_disp_t *rest_dispatch = NULL;
     axis2_disp_t *soap_action_based_dispatch = NULL;
     axis2_disp_t *soap_msg_body_based_dispatch = NULL;
     axis2_handler_t *handler = NULL;
@@ -1257,6 +1259,18 @@ axis2_conf_set_default_dispatchers(
         return AXIS2_FAILURE;
     }
 
+    rest_dispatch = axis2_rest_disp_create(env);
+    if (!rest_dispatch)
+    {
+        return AXIS2_FAILURE;
+    }
+
+    handler = axis2_disp_get_base(rest_dispatch, env);
+    axis2_disp_free(rest_dispatch, env);
+    axis2_phase_add_handler_at(dispatch, env, 0, handler);
+    axutil_array_list_add(conf->handlers, env,
+                          axis2_handler_get_handler_desc(handler, env));
+
     soap_msg_body_based_dispatch = axis2_soap_body_disp_create(env);
     if (!soap_msg_body_based_dispatch)
     {
@@ -1265,7 +1279,7 @@ axis2_conf_set_default_dispatchers(
 
     handler = axis2_disp_get_base(soap_msg_body_based_dispatch, env);
     axis2_disp_free(soap_msg_body_based_dispatch, env);
-    axis2_phase_add_handler_at(dispatch, env, 0, handler);
+    axis2_phase_add_handler_at(dispatch, env, 1, handler);
     axutil_array_list_add(conf->handlers, env,
                           axis2_handler_get_handler_desc(handler, env));
 
@@ -1277,7 +1291,7 @@ axis2_conf_set_default_dispatchers(
 
     handler = axis2_disp_get_base(soap_action_based_dispatch, env);
     axis2_disp_free(soap_action_based_dispatch, env);
-    axis2_phase_add_handler_at(dispatch, env, 1, handler);
+    axis2_phase_add_handler_at(dispatch, env, 2, handler);
     axutil_array_list_add(conf->handlers, env,
                           axis2_handler_get_handler_desc(handler, env));
 

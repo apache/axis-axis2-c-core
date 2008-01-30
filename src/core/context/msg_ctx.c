@@ -107,6 +107,9 @@ struct axis2_msg_ctx
     /** SOAP action */
     axutil_string_t *soap_action;
 
+    /** REST HTTP Method */
+    axis2_char_t *rest_http_method;
+
     /** are we doing MTOM now? */
     axis2_bool_t doing_mtom;
 
@@ -235,6 +238,7 @@ axis2_msg_ctx_create(
     msg_ctx->paused_phase_name = NULL;
     msg_ctx->paused_handler_name = NULL;
     msg_ctx->soap_action = NULL;
+    msg_ctx->rest_http_method = NULL;
     msg_ctx->doing_mtom = AXIS2_FALSE;
     msg_ctx->doing_rest = AXIS2_FALSE;
     msg_ctx->do_rest_through_post = AXIS2_FALSE;
@@ -355,6 +359,11 @@ axis2_msg_ctx_free(
     if (msg_ctx->soap_action)
     {
         axutil_string_free(msg_ctx->soap_action, env);
+    }
+
+    if (msg_ctx->rest_http_method)
+    {
+        AXIS2_FREE(env->allocator, msg_ctx->rest_http_method);
     }
 
     if (msg_ctx->svc_grp_ctx_id)
@@ -1030,6 +1039,40 @@ axis2_msg_ctx_set_output_written(
 {
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->output_written = output_written;
+    return AXIS2_SUCCESS;
+}
+
+const axis2_char_t *AXIS2_CALL
+axis2_msg_ctx_get_rest_http_method(
+    const axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    return msg_ctx->rest_http_method;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_rest_http_method(
+    struct axis2_msg_ctx * msg_ctx,
+    const axutil_env_t * env,
+    const axis2_char_t * rest_http_method)
+{
+    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    if (msg_ctx->rest_http_method)
+    {
+        AXIS2_FREE(env->allocator, msg_ctx->rest_http_method);
+        msg_ctx->rest_http_method = NULL;
+    }
+
+    if (rest_http_method)
+    {
+        msg_ctx->rest_http_method = axutil_strdup(env, rest_http_method);
+        if (!(msg_ctx->rest_http_method))
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+    }
     return AXIS2_SUCCESS;
 }
 

@@ -8,6 +8,8 @@
     <operation name="echoString">
             <!--messageReceiver class="axis2_receivers" /-->
             <parameter name="wsamapping" >http://ws.apache.org/axis2/c/samples/echoString</parameter>
+            <parameter name="RESTMethod" >POST</parameter>
+            <parameter name="RESTLocation" >ech{a}tring</parameter>
     </operation>
 
 </service>

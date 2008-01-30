@@ -210,9 +210,6 @@ axis2_http_transport_sender_invoke(
     do_mtom = axis2_http_transport_utils_do_write_mtom(env, msg_ctx);
     axis2_msg_ctx_set_doing_mtom(msg_ctx, env, do_mtom);
     /*do_mtom =  axis2_msg_ctx_get_doing_mtom(msg_ctx, env); */
-    /* axis2_msg_ctx_set_doing_rest(msg_ctx,
-       env, axis2_http_transport_utils_is_doing_rest(env, 
-       msg_ctx)); */
 
     transport_url = axis2_msg_ctx_get_transport_url(msg_ctx, env);
     if (transport_url)

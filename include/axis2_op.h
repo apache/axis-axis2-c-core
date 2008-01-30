@@ -178,9 +178,61 @@ extern "C"
      * copy
      */
     AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
-                axis2_op_get_parent(
-                    const axis2_op_t * op,
-                    const axutil_env_t * env);
+    axis2_op_get_parent(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
+
+    /**
+     * Sets HTTP Method for RESTful Services.
+     * @param op pointer to operation
+     * @param env pointer to environment struct
+     * @param rest_http_method HTTP Method string, operation does not assume
+     * ownership of rest_http_method.
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_op_set_rest_http_method(
+        axis2_op_t * op,
+        const axutil_env_t * env,
+        const axis2_char_t * rest_http_method);
+
+    /**
+     * Gets HTTP Method for RESTful Services.
+     * @param op pointer to operation
+     * @param env pointer to environment struct
+     * @return HTTP Method string, returns a reference,
+     * not a cloned copy
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_op_get_rest_http_method(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
+
+    /**
+     * Sets HTTP Location for RESTful Services.
+     * @param op pointer to operation
+     * @param env pointer to environment struct
+     * @param rest_http_location HTTP Location string, operation does not assume
+     * ownership of rest_http_location.
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_op_set_rest_http_location(
+        axis2_op_t * op,
+        const axutil_env_t * env,
+        const axis2_char_t * rest_http_location);
+
+    /**
+     * Gets HTTP Location for RESTful Services.
+     * @param op pointer to operation
+     * @param env pointer to environment struct
+     * @return HTTP Location string, returns a reference,
+     * not a cloned copy
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_op_get_rest_http_location(
+        const axis2_op_t * op,
+        const axutil_env_t * env);
 
     /**
      * Sets operation QName.

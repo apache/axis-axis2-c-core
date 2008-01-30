@@ -134,6 +134,16 @@ extern "C"
 #define AXIS2_HTTP_HEAD "HEAD"
 
     /**
+     * HEADER_PUT
+     */
+#define AXIS2_HTTP_PUT "PUT"
+
+    /**
+     * HEADER_DELETE
+     */
+#define AXIS2_HTTP_DELETE "DELETE"
+
+    /**
      * HEADER_HOST
      */
 #define AXIS2_HTTP_HEADER_HOST "Host"

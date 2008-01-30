@@ -159,17 +159,36 @@ extern "C"
 #define AXIS2_TARGET_EPR "target_epr"
 #define AXIS2_DUMP_INPUT_MSG_TRUE "dump"
 
+    /** 
+     * This function allows the user match a REST URL template with the
+     * Request URL. It returns a 3-dimensional array with pairs of elements
+     * of axis2_char_t arrays (strings). The caller is responsible to free
+     * the memory allocated by the function for the return value.
+     * @param env pointer to environment struct
+     * @param tmpl Template to Match
+     * @param url Request URL
+     * @param match_count variable to store match count
+     * @param matches axis2_char_t *** <code>axis2_char_t ***<code>
+     * @return AXIS2_SUCCESS if all matches were found or AXIS2_FAILURE.
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_parse_rest_url_for_params(
+        const axutil_env_t * env,
+        const axis2_char_t * tmpl,
+        const axis2_char_t * url,
+        int * match_count,
+        axis2_char_t **** matches);
+
     /**
-     * This function allows users to reolve the service and op from the 
+     * This function allows users to resolve the service and op from the 
      * url. It returns an array of 2 elements of axis2_char_t arrays (strings).
      * The caller is responsible to free the memory allocated by the function
      * for the return value.
-     *
+     * @param env pointer to environment struct
      * @param request url
      * @return axis2_char_t ** <code>axis2_char_t **<code>
      */
     AXIS2_EXTERN axis2_char_t **AXIS2_CALL
-
     axutil_parse_request_url_for_svc_and_op(
         const axutil_env_t * env,
         const axis2_char_t * request);

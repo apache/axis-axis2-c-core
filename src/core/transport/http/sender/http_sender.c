@@ -220,6 +220,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     axis2_char_t *method_value = NULL;
     axis2_bool_t send_via_get = AXIS2_FALSE;
     axis2_bool_t send_via_head = AXIS2_FALSE;
+    axis2_bool_t send_via_delete = AXIS2_FALSE;
+    axis2_bool_t send_via_put = AXIS2_FALSE;
     axiom_node_t *data_out = NULL;
     axiom_node_t *body_node = NULL;
     axiom_soap_body_t *soap_body = NULL;
@@ -279,9 +281,17 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         {
             send_via_get = AXIS2_TRUE;
         }
-        if (method_value && 0 == axutil_strcmp (method_value, AXIS2_HTTP_HEAD))
+        else if (method_value && 0 == axutil_strcmp (method_value, AXIS2_HTTP_HEAD))
         {
             send_via_head = AXIS2_TRUE;
+        }
+        else if (method_value && 0 == axutil_strcmp (method_value, AXIS2_HTTP_PUT))
+        {
+            send_via_put = AXIS2_TRUE;
+        }
+        else if (method_value && 0 == axutil_strcmp (method_value, AXIS2_HTTP_DELETE))
+        {
+            send_via_delete = AXIS2_TRUE;
         }
     }
 
@@ -309,10 +319,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
     axis2_http_sender_configure_proxy (sender, env, msg_ctx);
     
-    if (send_via_head)
-    {
-        conf_ctx = axis2_msg_ctx_get_conf_ctx (msg_ctx, env);
-    }
+    conf_ctx = axis2_msg_ctx_get_conf_ctx (msg_ctx, env);
     if (conf_ctx)
     {
         conf = axis2_conf_ctx_get_conf (conf_ctx, env);
@@ -360,7 +367,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     {
         axiom_output_write_xml_version_encoding (sender->om_output, env);
     }
-    if (!send_via_get && !send_via_head)
+    if (!send_via_get && !send_via_head && !send_via_delete)
     {
         axutil_property_t *property = NULL;
 
@@ -398,7 +405,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             char_set_enc = axutil_string_get_buffer (char_set_enc_str, env);
         }
 
-        if (is_soap)
+        if (!send_via_put && is_soap)
         {
             dump_property = axis2_msg_ctx_get_property (msg_ctx, env,
                                                         AXIS2_DUMP_INPUT_MSG_TRUE);
@@ -416,6 +423,12 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             axiom_output_set_do_optimize (sender->om_output, env, doing_mtom);
             axiom_soap_envelope_serialize (out, env, sender->om_output,
                                            AXIS2_FALSE);
+        }
+        else if (is_soap)
+        {
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Attempt to send SOAP"
+                             "message using HTTP PUT failed");
+            return AXIS2_FAILURE;
         }
         else
         {
@@ -439,10 +452,20 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             return AXIS2_FAILURE;
         }
 
-        request_line =
-            axis2_http_request_line_create (env, "POST",
-                                            axutil_url_get_path (url, env),
-                                            sender->http_version);
+        if (!send_via_put)
+        {
+            request_line =
+                axis2_http_request_line_create (env, "POST",
+                                                axutil_url_get_path (url, env),
+                                                sender->http_version);
+        }
+        else
+        {
+            request_line =
+                axis2_http_request_line_create (env, "PUT",
+                                                axutil_url_get_path (url, env),
+                                                sender->http_version);
+        }
     }
     else
     {
@@ -457,8 +480,11 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         if (send_via_get)
             request_line = axis2_http_request_line_create (env, "GET", path,
                                                            sender->http_version);
-        if (send_via_head)
+        else if (send_via_head)
             request_line = axis2_http_request_line_create (env, "HEAD", path,
+                                                           sender->http_version);
+        else if (send_via_delete)
+            request_line = axis2_http_request_line_create (env, "DELETE", path,
                                                            sender->http_version);
     }
 
@@ -479,7 +505,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         axis2_http_sender_add_header_list (request, env, array_list);
     }
 
-    if (AXIS2_TRUE == axis2_msg_ctx_get_is_soap_11 (msg_ctx, env))
+    if (!send_via_get && !send_via_head && !send_via_put && !send_via_delete &&
+        AXIS2_TRUE == axis2_msg_ctx_get_is_soap_11 (msg_ctx, env))
     {
         if ('\"' != *soap_action)
         {
@@ -504,8 +531,14 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                                                soap_action);
         }
     }
+    else if (AXIS2_TRUE == axis2_msg_ctx_get_is_soap_11 (msg_ctx, env))
+    {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Adding of SOAP Action Failed for"
+                             "REST request");
+        return AXIS2_FAILURE;
+    }
 
-    if (!send_via_get && !send_via_head)
+    if (!send_via_get && !send_via_head && !send_via_delete)
     {
         buffer_size = axiom_xml_writer_get_xml_size (xml_writer, env);
 
@@ -534,7 +567,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                                                AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
         }
 
-        if (is_soap)
+        if (!send_via_put && is_soap)
         {
             if (doing_mtom)
             {
@@ -608,6 +641,12 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                   AXIS2_FREE(env->allocator, content_type);
                   content_type = temp_content_type; */
             }
+        }
+        else if (is_soap)
+        {
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Attempt to send SOAP"
+                             "message using HTTP PUT failed");
+            return AXIS2_FAILURE;
         }
         else
         {

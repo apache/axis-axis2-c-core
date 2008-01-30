@@ -138,6 +138,16 @@ extern "C"
         const axutil_env_t * env);
 
     /**
+     * Creates a REST based dispatcher.
+     * @param env pointer to environment struct
+     * @return pointer to the newly created dispatcher with find_svc and find_op
+     * methods implemented based on REST processing.
+     */
+    AXIS2_EXTERN axis2_disp_t *AXIS2_CALL
+    axis2_rest_disp_create(
+        const axutil_env_t * env);
+
+    /**
      * Creates a SOAP body based dispatcher.
      * @param env pointer to environment struct
      * @return pointer to the newly created dispatcher with find_svc and find_op

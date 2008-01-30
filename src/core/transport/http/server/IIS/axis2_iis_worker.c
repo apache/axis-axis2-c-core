@@ -264,14 +264,35 @@ if (!request_body)
 	return HSE_STATUS_ERROR;
 }
     
-if (stricmp(lpECB->lpszMethod, "GET") == 0 || stricmp(lpECB->lpszMethod, "HEAD") == 0)
+if (stricmp(lpECB->lpszMethod, "GET") == 0 
+        || stricmp(lpECB->lpszMethod, "HEAD") == 0
+        || stricmp(lpECB->lpszMethod, "DELETE") == 0)
 {
-	processed = axis2_http_transport_utils_process_http_get_request 
+    if (stricmp(lpECB->lpszMethod, "GET") == 0)
+    {
+    	processed = axis2_http_transport_utils_process_http_get_request 
             (env, msg_ctx, request_body, out_stream, lpECB->lpszContentType,
              soap_str_action, req_url, conf_ctx,
 			axis2_http_transport_utils_get_request_params(env,
 			(axis2_char_t *) req_url));
-        
+    }
+    else if (stricmp(lpECB->lpszMethod, "HEAD") == 0)
+    {
+        processed = axis2_http_transport_utils_process_http_head_request 
+            (env, msg_ctx, request_body, out_stream, lpECB->lpszContentType,
+             soap_str_action, req_url, conf_ctx,
+                        axis2_http_transport_utils_get_request_params(env,
+                        (axis2_char_t *) req_url));
+    }
+    else if (stricmp(lpECB->lpszMethod, "DELETE") == 0)
+    {
+        processed = axis2_http_transport_utils_process_http_delete_request
+            (env, msg_ctx, request_body, out_stream, lpECB->lpszContentType,
+             soap_str_action, req_url, conf_ctx,
+                        axis2_http_transport_utils_get_request_params(env,
+                        (axis2_char_t *) req_url));
+    }
+ 
 
             // If this is not a valid GET request display the list of displayed services.
             if (processed == AXIS2_FAILURE)
@@ -301,18 +322,29 @@ send_status = OK;
     
 }
     
-    else if (stricmp(lpECB->lpszMethod, "POST") == 0)
+    else if (stricmp(lpECB->lpszMethod, "POST") == 0 || stricmp(lpECB->lpszMethod, "PUT") == 0)
         
     {
-        
 axis2_status_t status = AXIS2_FAILURE;
-        
-status = axis2_http_transport_utils_process_http_post_request 
+       if (stricmp(lpECB->lpszMethod, "POST") == 0)
+       { 
+           status = axis2_http_transport_utils_process_http_post_request 
             (env, msg_ctx, request_body, out_stream, 
 lpECB->lpszContentType,
              lpECB->cbTotalBytes, 
 soap_str_action, 
 req_url);
+       }
+       if (stricmp(lpECB->lpszMethod, "PUT") == 0)
+       {
+           status = axis2_http_transport_utils_process_http_put_request
+            (env, msg_ctx, request_body, out_stream,
+lpECB->lpszContentType,
+             lpECB->cbTotalBytes,
+soap_str_action,
+req_url);
+       }
+
         
 
             // generate a soap fault and send it

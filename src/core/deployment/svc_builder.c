@@ -428,6 +428,14 @@ axis2_svc_builder_populate_svc(
                 }
             }
         }
+        if (axis2_op_get_rest_http_method(op_desc, env) && 
+            axis2_op_get_rest_http_location(op_desc, env) )
+        {
+            axis2_svc_add_rest_mapping(svc_builder->svc, env,
+                                       axis2_op_get_rest_http_method(op_desc, env),
+                                       axis2_op_get_rest_http_location(op_desc, env),
+                                       op_desc);
+        }
         axis2_svc_add_op(svc_builder->svc, env, op_desc);
     }
     axutil_array_list_free(ops, env);
@@ -561,6 +569,10 @@ axis2_svc_builder_process_ops(
         /* To process wsamapping */
         axis2_desc_builder_process_action_mappings(svc_builder->desc_builder,
                                                    env, op_node, op_desc);
+
+        /* To process REST params */
+        axis2_desc_builder_process_rest_params(svc_builder->desc_builder,
+                                               env, op_node, op_desc);
 
         /* loading the message receivers */
         qmsgrecv = axutil_qname_create(env, AXIS2_MESSAGERECEIVER, NULL, NULL);

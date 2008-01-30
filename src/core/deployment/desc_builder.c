@@ -598,6 +598,66 @@ set_attrs_and_value(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_desc_builder_process_rest_params(
+    axis2_desc_builder_t * desc_builder,
+    const axutil_env_t * env,
+    axiom_node_t * op_node,
+    axis2_op_t * op_desc)
+{
+    axiom_element_t *op_element = NULL;
+    axutil_qname_t *qname = NULL;
+    axutil_qname_t *param_qname = NULL;
+    axiom_node_t *rest_node = NULL;
+    axiom_element_t *rest_element = NULL;
+    axiom_children_qname_iterator_t *rest_mappings = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
+
+    op_element = axiom_node_get_data_element(op_node, env);
+
+    param_qname = axutil_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
+    qname = axutil_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
+
+    if (op_element)
+    {
+        rest_mappings = axiom_element_get_children_with_qname(op_element, env,
+                                                              param_qname, op_node);
+    }
+
+    while (rest_mappings && axiom_children_qname_iterator_has_next(rest_mappings, env))
+    {
+        axis2_char_t *param_value = NULL;
+        rest_node = (axiom_node_t *)
+            axiom_children_qname_iterator_next(rest_mappings, env);
+        rest_element = axiom_node_get_data_element(rest_node, env);
+        param_value = axiom_element_get_attribute_value(rest_element, env, qname);
+        if (0 == strcmp(param_value, AXIS2_REST_HTTP_METHOD))
+        {
+            axis2_op_set_rest_http_method(op_desc, env,
+                                          axiom_element_get_text(rest_element,
+                                                                 env, rest_node));
+        }
+        param_value = axiom_element_get_attribute_value(rest_element, env, qname);
+        if (0 == strcmp(param_value, AXIS2_REST_HTTP_LOCATION))
+        {
+            axis2_op_set_rest_http_location(op_desc, env,
+                                            axiom_element_get_text(rest_element,
+                                                                   env, rest_node));
+        }
+        if (axis2_op_get_rest_http_method(op_desc, env) &&
+            axis2_op_get_rest_http_location(op_desc, env))
+        {
+            break;
+        }
+    }
+
+    axutil_qname_free(qname, env);
+    axutil_qname_free(param_qname, env);
+    return AXIS2_SUCCESS;
+}
+
 /**
  * Populate the Axis2 Operation with details from the actionMapping,
  * outputActionMapping and faultActionMapping elements from the operation
@@ -618,7 +678,6 @@ axis2_desc_builder_process_action_mappings(
     axiom_children_qname_iterator_t *action_mappings = NULL;
     axutil_array_list_t *mapping_list = axutil_array_list_create(env, 0);
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
 
     op_element = axiom_node_get_data_element(op_node, env);

@@ -463,6 +463,10 @@ axis2_module_builder_process_ops(
         axis2_desc_builder_process_action_mappings(module_builder->desc_builder,
                                                    env, op_node, op_desc);
 
+        /* To process REST params */
+        axis2_desc_builder_process_rest_params(module_builder->desc_builder,
+                                                   env, op_node, op_desc);
+
         /* setting the mep of the operation */
 
         /* loading the message receivers */

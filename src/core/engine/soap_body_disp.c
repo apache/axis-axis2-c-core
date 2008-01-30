@@ -88,6 +88,10 @@ axis2_soap_body_disp_find_svc(
     axis2_svc_t *svc = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
+
+    if (axis2_msg_ctx_get_doing_rest(msg_ctx, env))
+        return NULL;
+
     soap_envelope = axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (soap_envelope)
     {
@@ -194,6 +198,9 @@ axis2_soap_body_disp_find_op(
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
+
+    if (axis2_msg_ctx_get_doing_rest(msg_ctx, env))
+        return NULL;
 
     soap_envelope = axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (soap_envelope)

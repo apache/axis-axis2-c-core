@@ -203,8 +203,20 @@ extern "C"
      * @param op_desc
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_desc_builder_process_action_mappings(
+        axis2_desc_builder_t * desc_builder,
+        const axutil_env_t * env,
+        axiom_node_t * op_node,
+        axis2_op_t * op_desc);
+
+    /**
+     * Populate the Axis2 Operation with details from the RESTLocation,
+     * RESTMethod elements from the operation element.
+     * @param operation
+     * @param op_desc
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_desc_builder_process_rest_params(
         axis2_desc_builder_t * desc_builder,
         const axutil_env_t * env,
         axiom_node_t * op_node,
@@ -214,15 +226,13 @@ extern "C"
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN struct axis2_msg_recv *AXIS2_CALL
-
-                axis2_desc_builder_load_default_msg_recv(
-                    const axutil_env_t * env);
+    axis2_desc_builder_load_default_msg_recv(
+        const axutil_env_t * env);
 
     AXIS2_EXTERN struct axis2_dep_engine *AXIS2_CALL
-
-                axis2_desc_builder_get_dep_engine(
-                    const axis2_desc_builder_t * desc_builder,
-                    const axutil_env_t * env);
+    axis2_desc_builder_get_dep_engine(
+        const axis2_desc_builder_t * desc_builder,
+        const axutil_env_t * env);
 
     /**
      * Creates description builder struct

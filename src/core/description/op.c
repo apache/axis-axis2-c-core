@@ -39,6 +39,10 @@ struct axis2_op
     axis2_char_t *msg_exchange_pattern;
     axis2_char_t *style;
 
+    /* for REST support */
+    axis2_char_t *rest_http_method;
+    axis2_char_t *rest_http_location;
+
     /** parameter container to hold operation related parameters  */
     struct axutil_param_container *param_container;
 };
@@ -72,6 +76,8 @@ axis2_op_create(
     op->qname = NULL;
     op->msg_exchange_pattern = NULL;
     op->style = NULL;
+    op->rest_http_method = NULL;
+    op->rest_http_location = NULL;
     op->style = axutil_strdup(env, AXIS2_STYLE_DOC);
 
     op->param_container = (axutil_param_container_t *)
@@ -255,6 +261,16 @@ axis2_op_free(
         AXIS2_FREE(env->allocator, op->style);
     }
 
+    if (op->rest_http_method)
+    {
+        AXIS2_FREE(env->allocator, op->rest_http_method);
+    }
+
+    if (op->rest_http_location)
+    {
+        AXIS2_FREE(env->allocator, op->rest_http_location);
+    }
+
     if (op)
     {
         AXIS2_FREE(env->allocator, op);
@@ -359,6 +375,74 @@ axis2_op_is_param_locked(
     }
     param = axis2_op_get_param(op, env, param_name);
     return (param && AXIS2_TRUE == axutil_param_is_locked(param, env));
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_op_set_rest_http_method(
+    axis2_op_t * op,
+    const axutil_env_t * env,
+    const axis2_char_t * rest_http_method)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, rest_http_method, AXIS2_FAILURE);
+
+    if (op->rest_http_method)
+    {
+        AXIS2_FREE(env->allocator, op->rest_http_method);
+    }
+    op->rest_http_method = NULL;
+    if (rest_http_method)
+    {
+        op->rest_http_method = axutil_strdup(env, rest_http_method);
+        return AXIS2_SUCCESS;
+    }
+    return AXIS2_FAILURE;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_op_get_rest_http_method(
+    const axis2_op_t * op,
+    const axutil_env_t * env)
+{
+    if (!op)
+    {
+        return NULL;
+    }
+    return op->rest_http_method;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_op_set_rest_http_location(
+    axis2_op_t * op,
+    const axutil_env_t * env,
+    const axis2_char_t * rest_http_location)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, rest_http_location, AXIS2_FAILURE);
+
+    if (op->rest_http_location)
+    {
+        AXIS2_FREE(env->allocator, op->rest_http_location);
+    }
+    op->rest_http_location = NULL;
+    if (rest_http_location)
+    {
+        op->rest_http_location = axutil_strdup(env, rest_http_location);
+        return AXIS2_SUCCESS;
+    }
+    return AXIS2_FAILURE;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_op_get_rest_http_location(
+    const axis2_op_t * op,
+    const axutil_env_t * env)
+{
+    if (!op)
+    {
+        return NULL;
+    } 
+    return op->rest_http_location;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

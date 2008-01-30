@@ -89,6 +89,8 @@ axis2_libcurl_send(
     axis2_bool_t is_soap = AXIS2_TRUE;
     axis2_bool_t send_via_get = AXIS2_FALSE;
     axis2_bool_t send_via_head = AXIS2_FALSE;
+    axis2_bool_t send_via_put = AXIS2_FALSE;
+    axis2_bool_t send_via_delete = AXIS2_FALSE;
     axis2_bool_t doing_mtom = AXIS2_FALSE;
     axiom_node_t *body_node = NULL;
     axiom_node_t *data_out = NULL;
@@ -178,9 +180,17 @@ axis2_libcurl_send(
         {
             send_via_get = AXIS2_TRUE;
         }
-        if (method_value && 0 == axutil_strcmp(method_value, AXIS2_HTTP_HEAD))
+        else if (method_value && 0 == axutil_strcmp(method_value, AXIS2_HTTP_HEAD))
         {
             send_via_head = AXIS2_TRUE;
+        }
+        else if (method_value && 0 == axutil_strcmp(method_value, AXIS2_HTTP_PUT))
+        {
+            send_via_put = AXIS2_TRUE;
+        }
+        else if (method_value && 0 == axutil_strcmp(method_value, AXIS2_HTTP_DELETE))
+        {
+            send_via_delete = AXIS2_TRUE;
         }
     }
 
@@ -233,7 +243,7 @@ axis2_libcurl_send(
         axiom_output_write_xml_version_encoding (om_output, env);
     }
 
-    if (!send_via_get && !send_via_head)
+    if (!send_via_get && !send_via_head && !send_via_delete)
     {
         xml_writer = axiom_output_get_xml_writer(om_output, env);
 
@@ -248,7 +258,7 @@ axis2_libcurl_send(
             char_set_enc = axutil_string_get_buffer(char_set_enc_str, env);
         }
 
-        if (is_soap)
+        if (!send_via_put && is_soap)
         {
             doing_mtom = axis2_msg_ctx_get_doing_mtom(msg_ctx, env);
 
@@ -345,6 +355,12 @@ axis2_libcurl_send(
                 content_type = temp_content_type;
             }
         }
+        else if (is_soap)
+        {
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Attempt to send SOAP"
+                             "message using HTTP PUT failed");
+            return AXIS2_FAILURE;
+        }
         else
         {
             axutil_property_t *content_type_property = NULL;
@@ -402,6 +418,11 @@ axis2_libcurl_send(
                              output_stream_size);
             curl_easy_setopt(handler, CURLOPT_POSTFIELDS, output_stream);
         }
+        if (send_via_put)
+        {
+            /*curl_easy_setopt(handler, CURLOPT_PUT, 1);*/
+            curl_easy_setopt(handler, CURLOPT_CUSTOMREQUEST, "PUT");
+        }
         curl_easy_setopt(handler, CURLOPT_URL, str_url);
     }
     else
@@ -416,9 +437,13 @@ axis2_libcurl_send(
         {
             curl_easy_setopt(handler, CURLOPT_HTTPGET, 1);
         }
-        if (send_via_head)
+        else if (send_via_head)
         {
             curl_easy_setopt(handler, CURLOPT_NOBODY, 1);
+        }
+        else if (send_via_delete)
+        {
+            curl_easy_setopt(handler, CURLOPT_CUSTOMREQUEST, "DELETE");
         }
         curl_easy_setopt(handler, CURLOPT_URL, url_encode);
     }

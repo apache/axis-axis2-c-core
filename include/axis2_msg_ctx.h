@@ -778,6 +778,34 @@ extern "C"
         const axis2_bool_t output_written);
 
     /**
+     * Gets the HTTP Method that relates to the service that is 
+     * related to the message context.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return HTTP Method string, returns a reference,
+     * not a cloned copy
+     */
+    const axis2_char_t *AXIS2_CALL
+    axis2_msg_ctx_get_rest_http_method(
+        const axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
+    /**
+     * Sets the HTTP Method that relates to the service that is 
+     * related to the message context.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @param rest_http_method HTTP Method string, msg_ctx does not assume
+     * ownership of rest_http_method.
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_rest_http_method(
+        struct axis2_msg_ctx * msg_ctx,
+        const axutil_env_t * env,
+        const axis2_char_t * rest_http_method);
+
+    /**
      * Gets the ID of service context that relates to the service that is 
      * related to the message context.
      * @param msg_ctx message context

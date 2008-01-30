@@ -251,16 +251,42 @@ axis2_apache2_worker_process_request(
                         " creating input stream.");
         return AXIS2_CRITICAL_FAILURE;
     }
-    if (M_GET == request->method_number)
+    if (M_GET == request->method_number || M_DELETE == request->method_number)
     {
-        processed = axis2_http_transport_utils_process_http_get_request
-            (env, msg_ctx, request_body, out_stream,
-             content_type, soap_action,
-             req_url,
-             conf_ctx,
-             axis2_http_transport_utils_get_request_params(env,
-                                                           (axis2_char_t *)
-                                                           req_url));
+        if (M_DELETE == request->method_number)
+        {
+            processed = axis2_http_transport_utils_process_http_delete_request
+                (env, msg_ctx, request_body, out_stream,
+                 content_type, soap_action,
+                 req_url,
+                 conf_ctx,
+                 axis2_http_transport_utils_get_request_params(env,
+                                                               (axis2_char_t *)
+                                                               req_url));
+        }
+        else if (request->header_only)
+        {
+            processed = axis2_http_transport_utils_process_http_head_request
+                (env, msg_ctx, request_body, out_stream,
+                 content_type, soap_action,
+                 req_url,
+                 conf_ctx,
+                 axis2_http_transport_utils_get_request_params(env,
+                                                               (axis2_char_t *)
+                                                               req_url));
+        }
+        else
+        {
+            processed = axis2_http_transport_utils_process_http_get_request
+                (env, msg_ctx, request_body, out_stream,
+                 content_type, soap_action,
+                 req_url,
+                 conf_ctx,
+                 axis2_http_transport_utils_get_request_params(env,
+                                                               (axis2_char_t *)
+                                                               req_url));
+        }
+
         if (AXIS2_FALSE == processed)
         {
             axis2_char_t *wsdl = NULL;
@@ -292,13 +318,23 @@ axis2_apache2_worker_process_request(
         }
 
     }
-    else if (M_POST == request->method_number)
+    else if (M_POST == request->method_number || M_PUT == request->method_number)
     {
         axis2_status_t status = AXIS2_FAILURE;
-        status = axis2_http_transport_utils_process_http_post_request
-            (env, msg_ctx, request_body, out_stream,
-             content_type, content_length,
-             soap_action, (axis2_char_t *) req_url);
+        if (M_POST == request->method_number)
+        {
+            status = axis2_http_transport_utils_process_http_post_request
+                (env, msg_ctx, request_body, out_stream,
+                 content_type, content_length,
+                 soap_action, (axis2_char_t *) req_url);
+        }
+        else
+        {
+            status = axis2_http_transport_utils_process_http_put_request
+                (env, msg_ctx, request_body, out_stream,
+                 content_type, content_length,
+                 soap_action, (axis2_char_t *) req_url);
+        }
         if (status == AXIS2_FAILURE)
         {
             axis2_msg_ctx_t *fault_ctx = NULL;

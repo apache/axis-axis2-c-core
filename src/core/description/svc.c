@@ -71,6 +71,11 @@ struct axis2_svc
     axutil_hash_t *op_action_map;
 
     /**
+     * This is where REST mappings are kept
+     */
+    axutil_hash_t *op_rest_map;
+
+    /**
      * Keeps track whether the schema locations are adjusted
      */
     axis2_bool_t schema_loc_adjusted;
@@ -134,6 +139,7 @@ axis2_svc_create(
     svc->flow_container = NULL;
     svc->op_alias_map = NULL;
     svc->op_action_map = NULL;
+    svc->op_rest_map = NULL;
     svc->module_list = NULL;
     svc->ns_map = NULL;
     svc->ns_count = 0;
@@ -176,7 +182,6 @@ axis2_svc_create(
         return NULL;
     }
 
-    /** create module list of default size */
     svc->op_action_map = axutil_hash_make(env);
     if (!svc->op_action_map)
     {
@@ -185,6 +190,15 @@ axis2_svc_create(
         return NULL;
     }
 
+    svc->op_rest_map = axutil_hash_make(env);
+    if (!svc->op_rest_map)
+    {
+        axis2_svc_free(svc, env);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    /** create module list of default size */
     svc->module_list = axutil_array_list_create(env, 0);
     if (!svc->module_list)
     {
@@ -379,6 +393,31 @@ axis2_svc_free(
         axutil_hash_free(svc->op_action_map, env);
     }
 
+    if (svc->op_rest_map)
+    {
+        axutil_hash_index_t *hi = NULL;
+        const void *key = NULL;
+        void *val = NULL;
+
+        for (hi = axutil_hash_first(svc->op_rest_map, env); hi;
+             hi = axutil_hash_next(env, hi))
+        {
+            axutil_hash_this(hi, &key, NULL, &val);
+
+            if (val)
+            {
+                axutil_array_list_free_void_arg(val, env);
+            }
+
+            if (key)
+            {
+                AXIS2_FREE(env->allocator, (axis2_char_t *) key);
+                key = NULL;
+            }
+        }
+        axutil_hash_free(svc->op_rest_map, env);
+    }
+
     if (svc->schema_target_ns_prefix)
     {
         AXIS2_FREE(env->allocator, svc->schema_target_ns_prefix);
@@ -497,6 +536,74 @@ axis2_svc_get_op_with_qname(
     }
 
     return op;
+}
+
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axis2_svc_get_rest_op_list_with_method_and_location(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axis2_char_t * method,
+    const axis2_char_t * location)
+{
+    axutil_array_list_t *op_list = NULL;
+    axis2_char_t *key = NULL;
+    axis2_char_t *loc_str = NULL;
+    axis2_char_t *loc_str_tmp = NULL;
+    axis2_char_t *rindex = NULL;
+    int plen;
+
+    AXIS2_PARAM_CHECK(env->error, method, NULL);
+    AXIS2_PARAM_CHECK(env->error, location, NULL);
+
+    loc_str_tmp = (axis2_char_t *) location; /* casted to facilitate loop */
+    if (loc_str_tmp[1] == '/')
+    {
+        loc_str_tmp++;
+    } /* ignore any '/' at the beginning */
+    if (strchr(loc_str_tmp, '?'))
+    {
+        axis2_char_t *temp = NULL;
+
+        temp = strchr(loc_str_tmp, '?');
+        temp[0] = '\0';
+    } /* ignore block after '?' */
+    do
+    {
+        axis2_char_t *temp = NULL;
+        temp = strchr(loc_str_tmp, AXIS2_REST_HTTP_LOCATION_SEPARATOR);
+        if (temp)
+        {
+            loc_str_tmp = temp;
+        }
+        else
+        {
+            loc_str_tmp += strlen(loc_str_tmp);
+            break;
+        }
+    } while (loc_str_tmp[1] &&
+             loc_str_tmp[1] == AXIS2_REST_HTTP_LOCATION_SEPARATOR);
+
+    loc_str = (axis2_char_t *) axutil_strmemdup(location, (loc_str_tmp - location), env);
+
+    rindex = axutil_rindex(loc_str, '/');
+    if (rindex && *rindex)
+    {
+        loc_str_tmp = axutil_string_substring_ending_at(loc_str, (loc_str - rindex));
+    }
+    else
+    {
+        loc_str_tmp = loc_str;
+    }
+
+    plen = axutil_strlen (method) + axutil_strlen (loc_str_tmp) + 2;
+    key = (axis2_char_t *) (AXIS2_MALLOC (env->allocator,
+                                          sizeof (axis2_char_t) * plen));
+    sprintf (key, "%s:%s", method, loc_str_tmp);
+    AXIS2_FREE (env->allocator, loc_str);
+    op_list = (axutil_array_list_t *) axutil_hash_get(svc->op_rest_map,
+                                                      key, AXIS2_HASH_KEY_STRING);
+    AXIS2_FREE (env->allocator, key);
+    return op_list;
 }
 
 AXIS2_EXTERN axis2_op_t *AXIS2_CALL
@@ -941,6 +1048,83 @@ axis2_svc_add_mapping(
     axutil_hash_set(svc->op_action_map, axutil_strdup(env, mapping_key),
                     AXIS2_HASH_KEY_STRING, op_desc);
     return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_svc_add_rest_mapping(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axis2_char_t * method,
+    const axis2_char_t * location,
+    axis2_op_t * op_desc)
+{
+    axutil_array_list_t *op_list = NULL;
+    axis2_char_t *key = NULL;
+    axis2_char_t *loc_str = NULL;
+    axis2_char_t *loc_str_tmp = NULL;
+    axis2_char_t *rindex = NULL;
+    int plen;
+    AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
+
+    op_list = axis2_svc_get_rest_op_list_with_method_and_location(svc, env,
+                                                                  method, location);
+    if (!op_list)
+    {
+        op_list = axutil_array_list_create(env, 0);
+        if (!op_list)
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+        loc_str_tmp = (axis2_char_t *) location; /* casted to facilitate loop */
+        if (loc_str_tmp[1] == '/')
+        {
+            loc_str_tmp++;
+        } /* ignore any '/' at the beginning */
+        if (strchr(loc_str_tmp, '?'))
+        {
+            axis2_char_t *temp = NULL;
+
+            temp = strchr(loc_str_tmp, '?');
+            temp[0] = '\0';
+        } /* ignore block after '?' */
+        do
+        {
+            axis2_char_t *temp = NULL;
+            temp = strchr(loc_str_tmp, AXIS2_REST_HTTP_LOCATION_SEPARATOR);
+            if (temp)
+            {
+                loc_str_tmp = temp;
+            }
+            else
+            {
+                loc_str_tmp += strlen(loc_str_tmp);
+                break;
+            }
+        } while (loc_str_tmp[1] &&
+                 loc_str_tmp[1] == AXIS2_REST_HTTP_LOCATION_SEPARATOR);
+
+        loc_str = (axis2_char_t *) axutil_strmemdup(location, (loc_str_tmp - location), env);
+
+        rindex = axutil_rindex(loc_str, '/');
+        if (rindex && *rindex)
+        {
+            loc_str_tmp = axutil_string_substring_ending_at(loc_str, (loc_str - rindex));
+        }
+        else
+        {
+            loc_str_tmp = loc_str;
+        }
+
+        plen = axutil_strlen (method) + axutil_strlen (loc_str_tmp) + 2;
+        key = (axis2_char_t *) (AXIS2_MALLOC (env->allocator,
+                                              sizeof (axis2_char_t) * plen));
+        sprintf (key, "%s:%s", method, loc_str_tmp);
+        AXIS2_FREE (env->allocator, loc_str);
+        axutil_hash_set(svc->op_rest_map, key, AXIS2_HASH_KEY_STRING, op_list);
+    }
+
+    return axutil_array_list_add(op_list, env, op_desc);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

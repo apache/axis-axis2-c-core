@@ -105,10 +105,27 @@ extern "C"
      * @return pointer to operation corresponding to given QName
      */
     AXIS2_EXTERN struct axis2_op *AXIS2_CALL
-                axis2_svc_get_op_with_qname(
-                    const axis2_svc_t * svc,
-                    const axutil_env_t * env,
-                    const axutil_qname_t * op_qname);
+    axis2_svc_get_op_with_qname(
+        const axis2_svc_t * svc,
+        const axutil_env_t * env,
+        const axutil_qname_t * op_qname);
+
+    /**
+     * Gets the RESTful operation list corresponding to the given method
+     * and first constant part of location.
+     * @param svc pointer to service struct
+     * @param env pointer to environment struct
+     * @param http_method HTTPMethod
+     * @param http_location HTTPLocation
+     * @return pointer to operation corresponding to given method and
+     * location
+     */
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axis2_svc_get_rest_op_list_with_method_and_location(
+        const axis2_svc_t * svc,
+        const axutil_env_t * env,
+        const axis2_char_t * http_method,
+        const axis2_char_t * http_location);
 
     /**
      * Gets operation corresponding to the name.
@@ -675,6 +692,27 @@ extern "C"
         axis2_svc_t * svc,
         const axutil_env_t * env,
         const axis2_char_t * wsa_action,
+        struct axis2_op *axis2_op);
+
+    /**
+     * Adds a REST mapping for a given RESTful operation. The services.xml
+     * configuration file could specify a HTTP Method and Location that would
+     * map to one of the service operations. This method could be used to register 
+     * that mapping against operations. The REST based dispatcher makes use
+     * of this mapping to identify the operation to be invoked, given the URL.
+     * @param svc pointer to service struct
+     * @param env pointer to environment struct
+     * @param method REST HTTP Method
+     * @param location REST HTTP Location
+     * @param op pointer to operation that maps to the given WSA action
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_add_rest_mapping(
+        axis2_svc_t * svc,
+        const axutil_env_t * env,
+        const axis2_char_t * method,
+        const axis2_char_t * location,
         struct axis2_op *axis2_op);
 
     /**
