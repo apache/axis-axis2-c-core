@@ -25,8 +25,8 @@
 #include <axiom_soap_fault_reason.h>
 #include <axiom_soap_fault_detail.h>
 #include <axiom_soap_fault_role.h>
-#include <axiom_soap_fault_value.h>
-#include <axiom_soap_fault_text.h>
+#include "_axiom_soap_fault_value.h"
+#include "_axiom_soap_fault_text.h"
 
 struct axiom_soap_body
 {
@@ -403,10 +403,11 @@ axiom_soap_body_convert_fault_to_soap11(
                                                 (fault_code_om_ele, env, text,
                                                  fault_code_om_node);
                                         }
-                                        axiom_node_free_tree
-                                            (fault_value_om_node, env);
                                     }
-
+                                    axiom_node_free_tree
+                                        (fault_value_om_node, env);
+                                    axiom_soap_fault_value_set_base_node
+                                        (fault_value, env, NULL);
                                 }
                             }
                         }
@@ -470,6 +471,8 @@ axiom_soap_body_convert_fault_to_soap11(
                                     }
                                     axiom_node_free_tree(fault_text_om_node,
                                                          env);
+                                    axiom_soap_fault_text_set_base_node
+                                        (fault_text, env, NULL);
                                 }
                             }
                         }
