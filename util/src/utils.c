@@ -49,6 +49,7 @@ axutil_parse_request_url_for_svc_and_op(
         {
             service_str = tmp;
             tmp += axutil_strlen(axis2_request_url_prefix);
+            break;  /* stop on first prefix as user may have prefix in service name */
         }
     }
     if (service_str)
