@@ -75,9 +75,11 @@ guththila_tok_list_t;
 
 #ifndef GUTHTHILA_TOKEN_TO_STRING
 #define GUTHTHILA_TOKEN_TO_STRING(tok, string, _env) \
-string  = (guththila_char_t *) AXIS2_MALLOC(_env->allocator, (GUTHTHILA_TOKEN_LEN(tok) + 1) * sizeof(guththila_char_t)); \
-    memcpy(string, (tok)->start, GUTHTHILA_TOKEN_LEN(tok)); \
-    string[GUTHTHILA_TOKEN_LEN(tok)] = 0; 
+    { \
+        string  = (guththila_char_t *) AXIS2_MALLOC(_env->allocator, (GUTHTHILA_TOKEN_LEN(tok) + 1) * sizeof(guththila_char_t)); \
+        memcpy(string, (tok)->start, GUTHTHILA_TOKEN_LEN(tok));         \
+        string[GUTHTHILA_TOKEN_LEN(tok)] = 0; \
+    }
 #endif  /*  */
 
 guththila_tok_list_t *
@@ -117,6 +119,15 @@ guththila_tok_tok_cmp(
     guththila_token_t * tok1,
     guththila_token_t * tok2,
     const axutil_env_t * env);
+guththila_token_t* GUTHTHILA_CALL
+guththila_token_create(
+    guththila_char_t* start,
+    short type,
+    int size,
+    int _start,
+    int last,
+    int ref,
+    const axutil_env_t* env);
 EXTERN_C_END() 
 #endif  /*  */
 

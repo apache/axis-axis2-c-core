@@ -55,7 +55,15 @@ int GUTHTHILA_CALL guththila_process_xml_dec(
 #ifndef GUTHTHILA_SKIP_SPACES_WITH_NEW_LINE
 #define GUTHTHILA_SKIP_SPACES_WITH_NEW_LINE(m, c, _env) while (0x20 == c || 0x9 == c || 0xD == c || 0xA == c || '\n' == c){c = guththila_next_char(m, 0, _env);}
 #endif  
-    
+
+#ifndef GUTHTHILA_XML_NAME
+#define GUTHTHILA_XML_NAME "xml"
+#endif
+
+#ifndef GUTHTHILA_XML_URI
+#define GUTHTHILA_XML_URI "http://www.w3.org/XML/1998/namespace"
+#endif    
+
 #ifndef GUTHTHILA_LAST_CHAR
 #define GUTHTHILA_LAST_CHAR(m) (m->buffer.buff + m->buffer.next - 1)
 #endif  
@@ -286,6 +294,10 @@ guththila_token_close(guththila_t * m, guththila_token_t * tok,
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
 guththila_init(guththila_t * m, void *reader, const axutil_env_t * env) 
 {
+    guththila_token_t* temp_name = NULL;
+    guththila_token_t* temp_tok = NULL;
+    guththila_elem_namesp_t* e_namesp = NULL;
+
     if (!((guththila_reader_t *) reader))
         return GUTHTHILA_FAILURE;
     m->reader = (guththila_reader_t *) reader;
@@ -305,6 +317,83 @@ guththila_init(guththila_t * m, void *reader, const axutil_env_t * env)
     guththila_stack_init(&m->elem, env);
     guththila_stack_init(&m->attrib, env);
     guththila_stack_init(&m->namesp, env);
+    temp_name = guththila_token_create(GUTHTHILA_XML_NAME,0,strlen(GUTHTHILA_XML_NAME),
+                                       1,0,0,env);
+    temp_tok = guththila_token_create(GUTHTHILA_XML_URI,0,strlen(GUTHTHILA_XML_URI),
+                                      1,0,0,env);
+    e_namesp = (guththila_elem_namesp_t *) AXIS2_MALLOC(env->allocator,
+                                                        sizeof(guththila_elem_namesp_t));
+    if (e_namesp && temp_tok && temp_name)
+    {
+        e_namesp->namesp =
+            (guththila_namespace_t *) AXIS2_MALLOC(env->allocator,
+                                                   sizeof(guththila_namespace_t) * GUTHTHILA_NAMESPACE_DEF_SIZE);
+    }
+    if (e_namesp->namesp)
+    {
+        e_namesp->no = 1;
+        e_namesp->size = GUTHTHILA_NAMESPACE_DEF_SIZE;
+        e_namesp->namesp[0].name = temp_name;
+        e_namesp->namesp[0].uri = temp_tok;
+        guththila_stack_push(&m->namesp, e_namesp, env);
+    }
+    else
+    {
+        if (temp_name)
+        {
+            AXIS2_FREE(env->allocator, temp_name);
+            temp_name = NULL;
+        }
+        if (temp_tok)
+        {
+            AXIS2_FREE(env->allocator, temp_tok);
+            temp_tok = NULL;
+        }
+        if (e_namesp)
+        {
+            AXIS2_FREE(env->allocator, e_namesp);
+            e_namesp = NULL;
+        }
+        return GUTHTHILA_FAILURE;
+    }temp_name = guththila_token_create(GUTHTHILA_XML_NAME,0,strlen(GUTHTHILA_XML_NAME),
+                                        1,0,0,env);
+    temp_tok = guththila_token_create(GUTHTHILA_XML_URI,0,strlen(GUTHTHILA_XML_URI),
+                                      1,0,0,env);
+    e_namesp = (guththila_elem_namesp_t *) AXIS2_MALLOC(env->allocator,
+                                                        sizeof(guththila_elem_namesp_t));
+    if (e_namesp && temp_tok && temp_name)
+    {
+        e_namesp->namesp =
+            (guththila_namespace_t *) AXIS2_MALLOC(env->allocator,
+                                                   sizeof(guththila_namespace_t) * GUTHTHILA_NAMESPACE_DEF_SIZE);
+    }
+    if (e_namesp->namesp)
+    {
+        e_namesp->no = 1;
+        e_namesp->size = GUTHTHILA_NAMESPACE_DEF_SIZE;
+        e_namesp->namesp[0].name = temp_name;
+        e_namesp->namesp[0].uri = temp_tok;
+        guththila_stack_push(&m->namesp, e_namesp, env);
+    }
+    else
+    {
+        if (temp_name)
+        {
+            AXIS2_FREE(env->allocator, temp_name);
+            temp_name = NULL;
+        }
+        if (temp_tok)
+        {
+            AXIS2_FREE(env->allocator, temp_tok);
+            temp_tok = NULL;
+        }
+        if (e_namesp)
+        {
+            AXIS2_FREE(env->allocator, e_namesp);
+            e_namesp = NULL;
+        }
+        return GUTHTHILA_FAILURE;
+    }
     m->name = NULL;
     m->prefix = NULL;
     m->value = NULL;
