@@ -2,7 +2,7 @@
 #include <axutil_error_default.h>
 #include <axiom_node.h>
 #include <stdio.h>
-#include "/home/manoj/axis2c/c/util/test/util/create_env.h"
+#include "../util/create_env.h"
 
 FILE *f = NULL;
 char *plain_binary ;
@@ -74,6 +74,7 @@ int main()
     axutil_env_free(env);
     return 0;
 }
+
 
 
 

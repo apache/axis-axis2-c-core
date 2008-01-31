@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <axutil_env.h>
-#include "/home/manoj/axis2c/c/util/test/util/create_env.h"
+#include "../util/create_env.h"
 #include <axutil_properties.h>
 
 axutil_hash_t* all_properties = NULL;
@@ -87,6 +87,7 @@ int main()
     axutil_env_free(env);
     return 0;
 }
+
 
 
 

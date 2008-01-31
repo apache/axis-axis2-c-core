@@ -1,8 +1,3 @@
-#include <axutil_log_default.h>
-#include <axutil_error_default.h>
-#include <stdio.h>
-#include <axutil_utils_defines.h>
-#include <axutil_env.h>
 #include <axutil_uri.h>
 #include "../util/create_env.h"
 
@@ -68,6 +63,7 @@ int main()
     axutil_env_free(env);
     return 0;
 }
+
 
 
 

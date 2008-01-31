@@ -1,11 +1,5 @@
-#include <axutil_log_default.h>
-#include <axutil_error_default.h>
-#include <axiom_node.h>
-#include <stdio.h>
-#include <axutil_utils_defines.h>
-#include <axutil_env.h>
 #include <axutil_duration.h>
-#include "/home/manoj/axis2c/c/util/test/util/create_env.h"
+#include "../util/create_env.h"
 
 axis2_bool_t compere;
 axutil_duration_t * duration;
@@ -80,6 +74,7 @@ int main()
     axutil_env_free(env);
     return 0;
 }
+
 
 
 
