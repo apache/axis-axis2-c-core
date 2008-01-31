@@ -2,14 +2,27 @@
     <parameter name="ServiceClass" locked="xsd:false">echo</parameter>
 
    <description>
-        This is a testing service , to test the system is working or not
+        This is a testing service, to test whether the system is working or not
    </description>
 
     <operation name="echoString">
             <!--messageReceiver class="axis2_receivers" /-->
             <parameter name="wsamapping" >http://ws.apache.org/axis2/c/samples/echoString</parameter>
-            <parameter name="RESTMethod" >POST</parameter>
-            <parameter name="RESTLocation" >ech{a}tring</parameter>
+            <!-- Uncomment for POST method with REST-->
+            <!--parameter name="RESTMethod" >POST</parameter>
+            <parameter name="RESTLocation" >echoString</parameter-->
+            <!-- Uncomment for GET method -->
+            <!--parameter name="RESTMethod" >GET</parameter>
+            <parameter name="RESTLocation" >get_echo/{param}</parameter-->
+            <!-- Uncomment for PUT method -->
+            <!--parameter name="RESTMethod" >PUT</parameter>
+            <parameter name="RESTLocation" >put_echo/{param}</parameter-->
+            <!-- Uncomment for DELETE method -->
+            <!--parameter name="RESTMethod" >DELETE</parameter>
+            <parameter name="RESTLocation" >delete_echo/{param}</parameter-->
+            <!-- Uncomment for HEAD method -->
+            <!--parameter name="RESTMethod" >HEAD</parameter>
+            <parameter name="RESTLocation" >get_echo/{param}</parameter-->
     </operation>
 
 </service>
