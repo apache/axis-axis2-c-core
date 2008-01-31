@@ -1,8 +1,7 @@
 dnl run autogen.sh to generate the configure script.
-
 AC_PREREQ(2.59)
 
-AC_INIT(axis2c-src, 1.2.1)
+AC_INIT(axis2c-src, 1.3.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE([tar-ustar])

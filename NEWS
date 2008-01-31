@@ -1,4 +1,4 @@
-Apache Axis2/C Team is pleased to announce the release of Apache Axis2/C version 1.2.0
+Apache Axis2/C Team is pleased to announce the release of Apache Axis2/C version 1.3.0
 You can download this release from
 
 http://ws.apache.org/axis2/c/download.cgi
@@ -73,12 +73,13 @@ Major Changes Since Last Release.
    4. Digest Authentication Support
    5. Proxy Authentication Support
    6. Enhanced REST support
-   7. MTOM support with libcurl
-   8. Improvements to TCPMon Tool
-   9. Improvements to Test Coverage
-  10. Improvements to API docs
-  11. Improvements to CA certificate validation mechanisms on SSL Transport
-  12. Improvements to Neethi
+   7.Ability to insert xml declaration on outgoing payloads
+   8. MTOM support with libcurl
+   9. Improvements to TCPMon Tool
+  10. Improvements to Test Coverage
+  11. Improvements to API docs
+  12. Improvements to CA certificate validation mechanisms on SSL Transport
+  13. Improvements to Neethi
 
 We welcome your early feedback on this implementation.
 Thanks for your interest in Axis2/C

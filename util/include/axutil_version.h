@@ -34,13 +34,13 @@
  * Minor API changes that do not cause binary compatibility problems.
  * Reset to 0 when upgrading AXIS2_MAJOR_VERSION
  */
-#define AXIS2_MINOR_VERSION       2
+#define AXIS2_MINOR_VERSION       3
 
 /** patch level
  * The Patch Level never includes API changes, simply bug fixes.
  * Reset to 0 when upgrading AXIS2_MINOR_VERSION
  */
-#define AXIS2_PATCH_VERSION       1
+#define AXIS2_PATCH_VERSION       0
 
 /**
  * The symbol AXIS2_IS_DEV_VERSION is only defined for internal,

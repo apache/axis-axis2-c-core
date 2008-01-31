@@ -1,6 +1,6 @@
 datadir=$(prefix)
-tmpincludedir=$(prefix)/include/axis2-1.2.1/
-includedir=$(prefix)/include/axis2-1.2.1/
+tmpincludedir=$(prefix)/include/axis2-1.3.0/
+includedir=$(prefix)/include/axis2-1.3.0/
 SUBDIRS = src $(TESTDIR) include
 include_HEADERS=$(top_builddir)/include/*.h
 tmpinclude_DATA=config.h

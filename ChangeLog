@@ -1,10 +1,11 @@
-Axis2/C (1.2.1)
+Axis2/C (1.3.0)
    * Fixed a bug on version numbering
    * List Axis2/C dependencies licensing in LICENSE file
    * Add relevant copyright notices to NOTICE file
    * Digest Authentication Support
    * Proxy Authentication Support
    * Enhanced REST support
+   * Ability to insert xml declaration on outgoing payloads
    * MTOM support with libcurl
    * Improvements to TCPMon Tool
    * Improvements to Test Coverage
@@ -12,13 +13,13 @@ Axis2/C (1.2.1)
    * Improvements to CA certificate validation mechanisms on SSL Transport
    * Improvements to Neethi
 
--- Axis2/C team <axis-c-dev@ws.apache.org> Mon, 31 January 2008
+-- Axis2/C team <axis-c-dev@ws.apache.org> Mon, 06 February 2008
 Axis2/C (1.2.0)
    * Improvements to Java tool, WSDL2C, that generates C code
    * Improvment to Apache2 module so that it
-			(1) Create a shared memory global pool
-			(2) create context hierarchy in the global pool 
-	 enabling it to have true application level scope.
+	* Create a shared memory global pool
+	* create context hierarchy in the global pool 
+	enabling it to have true application level scope.
    * Improved Policy
    * Improvements to thread environment
    * Improvements to error handling
@@ -34,6 +35,7 @@ Axis2/C (1.1.0)
    * Basic HTTP Authentication
    * Memory leak fixes
    * Many bug fixes
+	
 -- Axis2/C team <axis-c-dev@ws.apache.org> Mon, 24 September 2007
 
 Axis2/C (1.0.0)
