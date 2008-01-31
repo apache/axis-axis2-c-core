@@ -49,7 +49,7 @@ AC_CHECK_LIB(z, inflate)
 #CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
-    CFLAGS="$CFLAGS -ansi -Wall -Werror -Wno-implicit-function-declaration "
+    CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration "
 fi
 LDFLAGS="$LDFLAGS -lpthread"
 
@@ -253,6 +253,17 @@ AC_CONFIG_FILES([Makefile \
     include/Makefile \
     test/Makefile \
     test/util/Makefile \
+    test/allocator/Makefile \
+    test/date_time/Makefile \
+    test/duration/Makefile \
+    test/link_list/Makefile \
+    test/properties/Makefile \
+    test/rand/Makefile \
+    test/stack/Makefile \
+    test/string_util/Makefile \
+    test/uri/Makefile \
+    test/url/Makefile \
+    test/utils/Makefile \
     ])
     
 AC_OUTPUT
