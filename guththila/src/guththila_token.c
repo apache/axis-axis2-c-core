@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -19,6 +18,7 @@
     
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
     
 #define TOK_LIST_FREE(tok_list) \
     (if (tok_list) { AXIS2_FREE(tok_list)} )
