@@ -218,12 +218,16 @@ guththila_tok_tok_cmp(
 {
     unsigned int i = 0;
 
-
     if (tok1 && tok2)
     {
-        if (tok1->start[i] != tok2->start[i])
-        {
+        if (tok1->size != tok2->size)
             return -1;
+        for (; i < tok1->size; i++)
+        {
+            if (tok1->start[i] != tok2->start[i])
+            {
+               return -1;
+            }
         }
     }
     return 0;
@@ -255,16 +259,4 @@ guththila_token_create(guththila_char_t* start,
     tok->ref = ref;
     return tok;
 }
- 
-
-
-
-
-
-
-
-
-
-
-
 
