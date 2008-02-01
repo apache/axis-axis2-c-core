@@ -3,7 +3,7 @@ manual for <a href="http://ws.apache.org/axis2/c" class="externalLink" title="Ex
 manual details how Axis2/C can be used to provide and consume Web
 services.</p><p style="margin-bottom: 0in">Please send your feedback to the Apache Axis2/C
 developer mailing list (<a href="mailto:axis-c-dev@apache.org">axis-c-dev@apache.org</a>). Subscription
-details are available on the <a href="http://ws.apache.org/axis2/c/mail-lists.html" class="externalLink" title="External Link">Axis2 site</a>.</p><p>This document uses the following conventions:</p><ul>
+details are available on the <a href="http://ws.apache.org/axis2/c/mail-lists.html" class="externalLink" title="External Link">Apache Axis2/C website</a>.</p><p>This document uses the following conventions:</p><ul>
   <li>The directory each package is installed in is given with an
     "_INSTALL_DIR" suffix to the package name. For example, the path in which
     Libxml2 is installed is referred to as LIBXML2_INSTALL_DIR</li>
@@ -475,9 +475,15 @@ options.</p><p>Please have a look at the <code>echo_blocking_dual</code> sample 
 how to set the separate channel option.</p><p>Please see <a href="#appD">Appendix D</a> for further details on setting
 options.</p><p style="margin-bottom: 0in"><br></br>
 </p><p><a name="rest"></a></p></div></div><div class="section"><a name="5__REST"></a><h2>5. REST</h2><p>Axis2/C comes with plain old XML (POX) like REST support. A given service
-can be exposed both as a SOAP service as well as a REST service. If you want
-to consume Web services using REST style calls, you can use either the HTTP
-POST method or the HTTP GET method.</p><p>The following example code fragment shows how to enable a REST style
+can be exposed both as a SOAP service as well as a REST service. By default,
+your service will support SOAP as well as REST, however, your service operations
+will only be available for SOAP. In order to enable REST for your operations you
+need to add one or more parameters under your operation, in the <a href="#appB">services.xml</a>.
+If you want to consume Web services using REST style calls, you can use the HTTP
+POST method, the HTTP GET method, the HTTP HEAD method, the HTTP PUT method or
+the HTTP DELETE method.<br></br>
+</p></div><div class="subsection"><a name="5_1_REST_client"></a><h3>5.1 REST on Client Side</h3><p>
+The following example code fragment shows how to set up a client enabling a REST style
 invocation.</p>
     <div class="source"><pre>axis2_options_set_enable_rest(options, env, AXIS2_TRUE);
 
@@ -487,9 +493,26 @@ invocation by just enabling REST using the option setting shown above.</p><p>The
 it to the HTTP GET method, the following needs to be done.</p>
     <div class="source"><pre>axis2_options_set_http_method(options, env, AXIS2_HTTP_GET);
 
-</pre></div>
+</pre></div><p>Similarly you can use AXIX2_HTTP_HEAD to change it to the HTTP HEAD method,
+or AXIX2_HTTP_PUT to change it to the HTTP PUT method, or AXIX2_HTTP_DELETE to change it
+to the HTTP DELETE method.
   <p>Please have a look at the <code>echo_rest</code> sample for a complete
-source code on how to use REST.</p><p style="margin-bottom: 0in"><br></br>
+source code on how to use REST.<br></br>
+</p></div><div class="subsection"><a name="5_2_REST_server"></a><h3>5.2 REST on Server Side</h3><p>
+You basically need to add the REST Location, and the REST Method parameters to the <a href="#appB">services.xml</a>
+to enable REST in a service operation. The REST location is the template that needs to be matched
+to find your operation, and the REST Method is the HTTP Method associated with the service.
+Please have a look at the <code>echo</code> sample service for a complete
+source code on how to set up REST. Shown below is an example, on how to configure the locate
+operation to work with HTTP GET on REST.<br></br>
+<div class="source"><pre>&lt;operation name="locate"&gt;
+    &lt;parameter name="RESTMethod"&gt;GET&lt;/parameter&gt;
+    &lt;parameter name="RESTLocation"&gt;location/{lat}/{long}&lt;/parameter&gt;
+&lt;/operation&gt;
+
+</pre></div>
+<p>The corresponding request would look like, <code>http://www.sample.org/service/location/34N/118W</code>, which would return Los Angeles, California. In here, the portion <code>location</code> is fixed and <code>lat</code> and <code>long</code> are optional parameters which will be captured to the payload.
+</p><p style="margin-bottom: 0in"><br></br>
 </p><p><a name="mtom"></a></p></div><div class="section"><a name="6__MTOM"></a><h2>6. MTOM</h2><p>Axis2/C allows you to send and receive binary data with SOAP messages
 using MTOM/XOP conventions. When sending and receiving attachments, you have
 to use the service client (<code>axis2_svc_client</code>) API to perform the
@@ -1399,9 +1422,14 @@ human readable format.</p><p></p></div><div class="subsection"><p>This is option
     <tr class="b"><td>name</td><td>name of the operation</td><td>Example: echoString</td></tr>
   </tbody></table><p>Sub elements of <em>operation</em>: <em>parameter</em> elements can be
 present as sub elements. Zero or more parameters may be present.</p><table class="bodyTable"><caption></caption><tbody>
-    <tr class="a"><th>Attribute</th><th>Description</th><th>Possible Value</th><th>Parameter Value</th></tr>
-    <tr class="b"><td>name</td><td>WS-Addressing action mapping to the operation.</td><td>wsamapping</td><td>A URL representing the WS-Addressing action corresponding to the
-        operation</td></tr>
+    <tr class="a"><th>Attribute</th><th>Detail</th></tr>
+    <tr class="b"><td>name</td>
+    <td><table class="bodyTable"><caption></caption><tbody>
+            <tr class="b"><th>Description</th><th>Possible Value</th><th>Parameter Value</th></tr>
+            <tr class="a"><td>WS-Addressing action mapping to the operation</td><td>wsamapping</td><td>A URL representing the WS-Addressing action corresponding to the operation</td></tr>
+            <tr class="a"><td>REST template mapping to the operation</td><td>RESTLocation</td><td>A template of the expected URL for the operation, with compulsary parts and optional parts, well defined</td></tr>
+            <tr class="a"><td>HTTP Method used in a REST invocation</td><td>RESTMethod</td><td>One of GET, POST, HEAD, PUT or DELETE</td></tr>
+          </tbody></table></td></tr>
   </tbody></table><p></p></div><div class="subsection"><p>An operation specific message receiver is specified from this. This is
 optional.</p><table class="bodyTable"><caption></caption><tbody>
     <tr class="a"><th>Attributes</th><th>Description</th><th>Possible Values</th></tr>
