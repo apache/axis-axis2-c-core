@@ -502,9 +502,12 @@ source code on how to use REST.<br></br>
 You basically need to add the REST Location, and the REST Method parameters to the <a href="#appB">services.xml</a>
 to enable REST in a service operation. The REST location is the template that needs to be matched
 to find your operation, and the REST Method is the HTTP Method associated with the service.
-Please have a look at the <code>echo</code> sample service for a complete
-source code on how to set up REST. Shown below is an example, on how to configure the locate
-operation to work with HTTP GET on REST.<br></br>
+Note that the REST Method is optional for each operation. If no REST Method is specified, POST,
+will be assumed. Optionally you may specify the default REST Method for all operations at the service
+level. Then, if you haven't specified a REST Method for your operation, the default REST Method
+specified will be assumed instead of POST. Please have a look at the <code>echo</code> sample
+service for a complete source code on how to set up REST. Shown below is an example, on how to
+configure the <code>locate</code> operation to work with HTTP GET on REST.<br></br>
 <div class="source"><pre>&lt;operation name="locate"&gt;
     &lt;parameter name="RESTMethod"&gt;GET&lt;/parameter&gt;
     &lt;parameter name="RESTLocation"&gt;location/{lat}/{long}&lt;/parameter&gt;
@@ -512,7 +515,8 @@ operation to work with HTTP GET on REST.<br></br>
 
 </pre></div>
 <p>The corresponding request would look like, <code>http://www.sample.org/service/location/34N/118W</code>, which would return Los Angeles, California. In here, the portion <code>location</code> is fixed and <code>lat</code> and <code>long</code> are optional parameters which will be captured to the payload.
-</p><p style="margin-bottom: 0in"><br></br>
+<br></br></p></div><div class="subsection"><a name="5_3_REST_and_SOAP_for_same_operation"></a>
+<h3>5.3 REST and SOAP for Same Operation</h3><p>It is also possible to enable a single service operation for SOAP as well as REST. This can be done by specifying a REST Location that does not contain the operation name. The <code>locate</code> operation is an example to such a case. Thus, for a SOAP invocation, you need to use <code>http://www.sample.org/service/locate</code>, as the end point or WS-Addressing Action.</p><p style="margin-bottom: 0in"><br></br>
 </p><p><a name="mtom"></a></p></div><div class="section"><a name="6__MTOM"></a><h2>6. MTOM</h2><p>Axis2/C allows you to send and receive binary data with SOAP messages
 using MTOM/XOP conventions. When sending and receiving attachments, you have
 to use the service client (<code>axis2_svc_client</code>) API to perform the
@@ -1430,6 +1434,9 @@ present as sub elements. Zero or more parameters may be present.</p><table class
             <tr class="a"><td>REST template mapping to the operation</td><td>RESTLocation</td><td>A template of the expected URL for the operation, with compulsary parts and optional parts, well defined</td></tr>
             <tr class="a"><td>HTTP Method used in a REST invocation</td><td>RESTMethod</td><td>One of GET, POST, HEAD, PUT or DELETE</td></tr>
           </tbody></table></td></tr>
+  </tbody></table><p>Also, an <em>operation</em> element can have one or more <em>actionMapping</em> element as sub elements.</p><table class="bodyTable"><caption></caption><tbody>
+    <tr class="a"><th>Description</th><th>Possible Values</th></tr>
+    <tr class="b"><td>Action mapping or an alias to an operation</td><td>Example: echoString</td></tr>
   </tbody></table><p></p></div><div class="subsection"><p>An operation specific message receiver is specified from this. This is
 optional.</p><table class="bodyTable"><caption></caption><tbody>
     <tr class="a"><th>Attributes</th><th>Description</th><th>Possible Values</th></tr>
@@ -1652,7 +1659,7 @@ username, password, auth_type)</strong></p><p>Sets HTTP Authentication informati
     <tr class="a"><th>Parameter</th><th>Description</th></tr>
     <tr class="b"><td>axis2_options_t *options</td><td>Pointer to the options struct.</td></tr>
     <tr class="a"><td>const axutil_env_t *env</td><td>Pointer to the environment struct.</td></tr>
-    <tr class="b"><td>const axis2_char_t *username</td><td>String representing useranme</td></tr>
+    <tr class="b"><td>const axis2_char_t *username</td><td>String representing username</td></tr>
     <tr class="a"><td>const axis2_char_t *password</td><td>String representing password.</td></tr>
     <tr class="b"><td>const axis2_char_t *auth_type</td><td>use "Basic" to force basic authentication and "Digest" to
       force digest authentication or NULL for not forcing authentication</td></tr>
@@ -1661,7 +1668,7 @@ username, password, auth_type)</strong></p><p>Sets Proxy Authentication informat
     <tr class="a"><th>Parameter</th><th>Description</th></tr>
     <tr class="b"><td>axis2_options_t *options</td><td>Pointer to the options struct.</td></tr>
     <tr class="a"><td>const axutil_env_t *env</td><td>Pointer to the environment struct.</td></tr>
-    <tr class="b"><td>const axis2_char_t *username</td><td>String representing useranme</td></tr>
+    <tr class="b"><td>const axis2_char_t *username</td><td>String representing username</td></tr>
     <tr class="a"><td>const axis2_char_t *password</td><td>String representing password.</td></tr>
     <tr class="b"><td>const axis2_char_t *auth_type</td><td>use "Basic" to force basic authentication and "Digest" to 
       force digest authentication or NULL for not forcing authentication</td></tr>
