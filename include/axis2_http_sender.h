@@ -76,8 +76,11 @@ extern "C"
         const axis2_char_t * header_value);
 
 #ifdef AXIS2_LIBCURL_ENABLED
+    typedef struct axis2_libcurl axis2_libcurl_t;
+
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_libcurl_http_send(
+        axis2_libcurl_t * curl,
         axis2_http_sender_t * sender,
         const axutil_env_t * env,
         axis2_msg_ctx_t * msg_ctx,

@@ -119,6 +119,9 @@ struct axis2_msg_ctx
     /** Rest through HTTP POST? */
     axis2_bool_t do_rest_through_post;
 
+    /** Session management enabled? */
+    axis2_bool_t manage_session;
+
     /* http status code */
 
     unsigned int status_code;
@@ -242,6 +245,7 @@ axis2_msg_ctx_create(
     msg_ctx->doing_mtom = AXIS2_FALSE;
     msg_ctx->doing_rest = AXIS2_FALSE;
     msg_ctx->do_rest_through_post = AXIS2_FALSE;
+    msg_ctx->manage_session = AXIS2_FALSE;
     msg_ctx->is_soap_11 = AXIS2_FALSE;
     msg_ctx->svc_grp_ctx_id = NULL;
     msg_ctx->transport_in_desc_enum = AXIS2_TRANSPORT_ENUM_MAX;
@@ -1482,6 +1486,26 @@ axis2_msg_ctx_get_do_rest_through_post(
 }
 
 axis2_bool_t AXIS2_CALL
+axis2_msg_ctx_get_manage_session(
+    const axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    return msg_ctx->manage_session;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_manage_session(
+    struct axis2_msg_ctx * msg_ctx,
+    const axutil_env_t * env,
+    const axis2_bool_t manage_session)
+{
+    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    msg_ctx->manage_session = manage_session;
+    return AXIS2_SUCCESS;
+}
+
+axis2_bool_t AXIS2_CALL
 axis2_msg_ctx_get_is_soap_11(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
@@ -1710,6 +1734,8 @@ axis2_msg_ctx_set_options(
     msg_ctx->msg_info_headers_deep_copy = AXIS2_FALSE;
 
     msg_ctx->doing_mtom = axis2_options_get_enable_mtom(options, env);
+
+    msg_ctx->manage_session = axis2_options_get_manage_session(options, env);
 
     axis2_ctx_set_property_map(msg_ctx->base, env,
                                axis2_options_get_properties(options, env));

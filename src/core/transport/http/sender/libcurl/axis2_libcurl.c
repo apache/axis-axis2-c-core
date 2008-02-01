@@ -21,62 +21,55 @@
 
 static int ref = 0;
 
-typedef struct axis2_libcurl_header
-{
-    axutil_array_list_t *alist;
-    const axutil_env_t *env;
-} axis2_libcurl_header_t;
-
-static CURL *handler;
-
 typedef struct axis2_libcurl
 {
     axis2_char_t *memory;
     axutil_array_list_t *alist;
     unsigned int size;
-    axis2_libcurl_header_t *header;
     const axutil_env_t *env;
     char errorbuffer[CURL_ERROR_SIZE];
-} axis2_libcurl_t;
+    CURL *handler;
+    axis2_bool_t cookies;
+};
 
-size_t axis2_libcurl_write_memory_callback(
+static size_t 
+axis2_libcurl_write_memory_callback(
     void *ptr,
     size_t size,
     size_t nmemb,
     void *data);
 
-size_t axis2_libcurl_header_callback(
+static size_t 
+axis2_libcurl_header_callback(
     void *ptr,
     size_t size,
     size_t nmemb,
     void *data);
 
-axis2_libcurl_t *axis2_libcurl_create(
-    const axutil_env_t * env);
-
-void axis2_libcurl_free(
+static axis2_char_t *
+axis2_libcurl_get_content_type(
     axis2_libcurl_t *curl,
     const axutil_env_t * env);
 
-axis2_char_t *
-axis2_libcurl_get_content_type(
-    axis2_libcurl_header_t * header,
-    const axutil_env_t * env);
-
-axis2_ssize_t
+static int
 axis2_libcurl_get_content_length(
-    axis2_libcurl_header_t * header,
+    axis2_libcurl_t *curl,
     const axutil_env_t * env);
 
-axis2_http_header_t *AXIS2_CALL
+static axis2_http_header_t *
 axis2_libcurl_get_first_header(
-    axis2_libcurl_header_t * header,
+    axis2_libcurl_t *curl,
     const axutil_env_t * env,
     const axis2_char_t * str);
 
+static void
+axis2_libcurl_free_headers(    
+    axis2_libcurl_t *curl,
+    const axutil_env_t * env);
 
 axis2_status_t AXIS2_CALL
 axis2_libcurl_send(
+    axis2_libcurl_t *data,
     axiom_output_t * om_output,
     const axutil_env_t * env,
     axis2_msg_ctx_t * msg_ctx,
@@ -99,17 +92,18 @@ axis2_libcurl_send(
     axiom_xml_writer_t *xml_writer = NULL;
     axis2_char_t *buffer = NULL;
     unsigned int buffer_size = 0;
+    int content_length = -1;
     axis2_char_t *content_type;
     axis2_char_t *content_len = AXIS2_HTTP_HEADER_CONTENT_LENGTH_;
     const axis2_char_t *char_set_enc = NULL;
     axis2_char_t *content = AXIS2_HTTP_HEADER_CONTENT_TYPE_;
     axis2_char_t *soap_action_header = AXIS2_HTTP_HEADER_SOAP_ACTION_;
-    axis2_libcurl_t *data;
     axutil_stream_t *in_stream;
     axutil_property_t *trans_in_property;
     axutil_string_t *char_set_enc_str;
     axis2_byte_t *output_stream = NULL;
     int output_stream_size = 0;
+    CURL *handler;
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_conf_t *conf = NULL;
     axis2_transport_out_desc_t *trans_desc = NULL;
@@ -122,20 +116,12 @@ axis2_libcurl_send(
     axis2_char_t *status_line_str = NULL;
     int status_code = 0;
 
-    data = axis2_libcurl_create(env);
-    if (!data) 
-    {
-        return AXIS2_FAILURE;
-    }
-    if (!ref)
-    {
-        handler = curl_easy_init();
-        ref++;
-    }
-    else
-    {
-        curl_easy_reset(handler);
-    }
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, data, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, data->handler, AXIS2_FAILURE);
+
+    handler = data->handler;
+    curl_easy_reset(handler);
     curl_easy_setopt(handler, CURLOPT_ERRORBUFFER, &data->errorbuffer);
     headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_USER_AGENT_AXIS2C);
     headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_ACCEPT_);
@@ -156,13 +142,11 @@ axis2_libcurl_send(
                             AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
                             AXIS2_ERROR_GET_MESSAGE(env->error));
-            axis2_libcurl_free(data, env);
             return AXIS2_FAILURE;
         }
         body_node = axiom_soap_body_get_base_node(soap_body, env);
         if (!body_node)
         {
-            axis2_libcurl_free(data, env);
             return AXIS2_FAILURE;
         }
         data_out = axiom_node_get_first_element(body_node, env);
@@ -448,6 +432,29 @@ axis2_libcurl_send(
         curl_easy_setopt(handler, CURLOPT_URL, url_encode);
     }
 
+    {
+        axis2_bool_t manage_session;
+        manage_session = axis2_msg_ctx_get_manage_session(msg_ctx, env);
+        if (manage_session == AXIS2_TRUE) 
+        {
+            if (data->cookies == AXIS2_FALSE)
+            {
+                /* Ensure cookies enabled to manage session */
+                /* Pass empty cookie string to enable cookies */
+                curl_easy_setopt(handler, CURLOPT_COOKIEFILE, " ");	
+                data->cookies = AXIS2_TRUE;
+            }
+        }
+        else if (data->cookies == AXIS2_TRUE)
+        {
+            /* Pass special string ALL to reset cookies if any have been enabled. */
+            /* If cookies have ever been enabled, we reset every time as long as 
+               manage_session is false, as there is no clear curl option to 
+               turn off the cookie engine once enabled. */
+            curl_easy_setopt(handler, CURLOPT_COOKIELIST, "ALL");	
+        }
+    }
+
 /* 	curl_easy_setopt (handler, CURLOPT_VERBOSE, 1); */
     curl_easy_setopt(handler, CURLOPT_HTTPHEADER, headers);
     curl_easy_setopt(handler, CURLOPT_WRITEFUNCTION,
@@ -456,19 +463,16 @@ axis2_libcurl_send(
 
     curl_easy_setopt (handler, CURLOPT_HEADERFUNCTION, axis2_libcurl_header_callback);
 
-    curl_easy_setopt (handler, CURLOPT_WRITEHEADER, data->header);
+    curl_easy_setopt (handler, CURLOPT_WRITEHEADER, data);
+
+    data->size = 0;
     if (curl_easy_perform(handler)) 
     {
         AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "%s", &data->errorbuffer);
         AXIS2_ERROR_SET (env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
                          AXIS2_FAILURE);
-        axis2_libcurl_free(data, env);
         return AXIS2_FAILURE;
     }
-
-/* 	curl_slist_free_all (headers); */
-
-/* 	curl_easy_cleanup (handler); */
 
     in_stream = axutil_stream_create_libcurl(env, data->memory, data->size);
     trans_in_property = axutil_property_create(env);
@@ -479,9 +483,9 @@ axis2_libcurl_send(
     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN,
                                trans_in_property);
 
-    if (axutil_array_list_size((data->header)->alist, env) > 0)
+    if (axutil_array_list_size(data->alist, env) > 0)
     {
-        status_line_str = axutil_array_list_get((data->header)->alist, env, 0);
+        status_line_str = axutil_array_list_get(data->alist, env, 0);
         if (status_line_str)
         {
             status_line = axis2_http_status_line_create(env, status_line_str);
@@ -492,7 +496,7 @@ axis2_libcurl_send(
         status_code = axis2_http_status_line_get_status_code(status_line, env);
     }
     axis2_msg_ctx_set_status_code (msg_ctx, env, status_code);
-    content_type = axis2_libcurl_get_content_type(data->header, env); 
+    content_type = axis2_libcurl_get_content_type(data, env); 
     if (content_type)
     {    
         if (strstr (content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED)
@@ -510,27 +514,29 @@ axis2_libcurl_send(
         }
     } 
 
-    buffer_size = (unsigned int) axis2_libcurl_get_content_length(data->header, env);
-    response_length = AXIS2_MALLOC (env->allocator, sizeof (int));
-    memcpy (response_length, &buffer_size, sizeof (int));
-    property = axutil_property_create (env);
-    axutil_property_set_scope (property, env, AXIS2_SCOPE_REQUEST);
-    axutil_property_set_value (property, env, response_length);
-    axis2_msg_ctx_set_property (msg_ctx, env,
-                                AXIS2_HTTP_HEADER_CONTENT_LENGTH, property);
-
-    curl_slist_free_all (headers);
-    ref--;
-    if (ref == 0)
+    content_length = axis2_libcurl_get_content_length(data, env);
+    if (content_length >= 0)
     {
-        curl_easy_cleanup (handler);
+        response_length = AXIS2_MALLOC (env->allocator, sizeof (int));
+        memcpy (response_length, &content_length, sizeof (int));
+        property = axutil_property_create (env);
+        axutil_property_set_scope (property, env, AXIS2_SCOPE_REQUEST);
+        axutil_property_set_value (property, env, response_length);
+        axis2_msg_ctx_set_property (msg_ctx, env,
+                                    AXIS2_HTTP_HEADER_CONTENT_LENGTH, property);
     }
 
-    axis2_libcurl_free(data, env);
+    curl_slist_free_all (headers);
+    /* release the read http headers. */
+    /* (commenting out the call below is a clever way to force a premature EOF 
+       condition in subsequent messages, as they will be read using the content-length
+       of the first message.) */
+    axis2_libcurl_free_headers(data, env);
+
     return AXIS2_SUCCESS;
 }
 
-size_t
+static size_t
 axis2_libcurl_write_memory_callback(
     void *ptr,
     size_t size,
@@ -538,24 +544,27 @@ axis2_libcurl_write_memory_callback(
     void *data)
 {
     size_t realsize = size * nmemb;
-    axis2_libcurl_t *mem = (axis2_libcurl_t *) data;
+    axis2_libcurl_t *curl = (axis2_libcurl_t *) data;
     axis2_char_t *buffer =
-        (axis2_char_t *) AXIS2_MALLOC(mem->env->allocator,
-                                      mem->size + realsize + 1);
+        (axis2_char_t *) AXIS2_MALLOC(curl->env->allocator,
+                                      curl->size + realsize + 1);
     if (buffer)
     {
-        if (mem->size)
-            memcpy(&(buffer[0]), mem->memory, mem->size);
+        if (curl->size)
+        {
+            memcpy(&(buffer[0]), curl->memory, curl->size);
+            AXIS2_FREE(curl->env->allocator, curl->memory);
+        }
 
-        memcpy(&(buffer[mem->size]), ptr, realsize);
-        mem->size += realsize;
-        buffer[mem->size] = 0;
-        mem->memory = buffer;
+        memcpy(&(buffer[curl->size]), ptr, realsize);
+        curl->size += realsize;
+        buffer[curl->size] = 0;
+        curl->memory = buffer;
     }
     return realsize;
 }
 
-size_t
+static size_t
 axis2_libcurl_header_callback(
     void *ptr,
     size_t size,
@@ -564,70 +573,109 @@ axis2_libcurl_header_callback(
 {
     axis2_char_t *memory;
     size_t realsize = size * nmemb;
-    axis2_libcurl_header_t *mem = (axis2_libcurl_header_t *) data;
-    memory = (axis2_char_t *)AXIS2_MALLOC(mem->env->allocator, realsize + 1);
+    axis2_libcurl_t *curl = (axis2_libcurl_t *) data;
+    memory = (axis2_char_t *)AXIS2_MALLOC(curl->env->allocator, realsize + 1);
     if (memory)
     {
         memcpy(&(memory[0]), ptr, realsize);
         memory[realsize] = 0;
-        axutil_array_list_add(mem->alist, mem->env,
-                              axutil_strdup(mem->env, memory));
-        AXIS2_FREE(mem->env->allocator, memory);
+        axutil_array_list_add(curl->alist, curl->env,
+                              axutil_strdup(curl->env, memory));
+        AXIS2_FREE(curl->env->allocator, memory);
     }
     return realsize;
 }
 
-axis2_libcurl_t *
+axis2_libcurl_t * AXIS2_CALL
 axis2_libcurl_create(
     const axutil_env_t * env)
 {
     axis2_libcurl_t *curl = NULL;
+    CURLcode code;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    if (!ref)
+    {
+        /* curl_global_init is not thread-safe so it would be better to do this, as well as the test 
+           and increment of ref, under mutex if one is available, or as part of an axis2_initialize()
+           if a global initialize is created.  Otherwise the client application should perform the
+           the curl_global_init itself in a thread-safe fashion.
+        */
+        if (code = curl_global_init(CURL_GLOBAL_ALL))	
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "libCurl curl_global_init failed, error: %d", code);
+            return NULL;
+        }
+        ref++;
+    }
+
     curl =
         (axis2_libcurl_t *) AXIS2_MALLOC(env->allocator,
                                          sizeof(axis2_libcurl_t));
     if (curl) 
     {
+        curl->memory = 0;
         curl->size = 0;
-        curl->alist = axutil_array_list_create(env, 7);
-        curl->header = (axis2_libcurl_header_t *) AXIS2_MALLOC(env->allocator,
-                                         sizeof(axis2_libcurl_header_t));
-        if (curl->header)
-        {
-            (curl->header)->alist = axutil_array_list_create(env, 15);
-            (curl->header)->env = env;
-        }
+        curl->alist = axutil_array_list_create(env, 15);
         curl->env = env;
+        curl->handler = curl_easy_init();
+        curl->cookies = AXIS2_FALSE;
+        if ((!curl->alist) || (!curl->handler))
+        {
+            axis2_libcurl_free(curl, env->allocator);
+            curl = 0;
+        }
     }
     return curl;
 }
 
-void 
+void AXIS2_CALL
 axis2_libcurl_free(
     axis2_libcurl_t *curl,
     const axutil_env_t * env)
 {
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, curl, AXIS2_FAILURE);
+
+    if (curl->handler)
+    {
+        curl_easy_cleanup (curl->handler); 
+    }
     if (curl->alist)
     {
+        axis2_libcurl_free_headers(curl, env);
         axutil_array_list_free(curl->alist, env);
         curl->alist = NULL;
     }
-
-    if (curl->header)
+    if (curl->memory) 
     {
-       if((curl->header)->alist)
-       {
-           axutil_array_list_free((curl->header)->alist, env);
-           (curl->header)->alist = NULL;
-       }
-       AXIS2_FREE(env->allocator, curl->header);
+        AXIS2_FREE(env->allocator, curl->memory);
     }
     
     AXIS2_FREE(env->allocator, curl);
 }
+
+static void
+axis2_libcurl_free_headers(    
+    axis2_libcurl_t *curl,
+    const axutil_env_t * env)
+{
+    int count = 0;
+    axutil_array_list_t *header_group = curl->alist;
+    if (header_group)
+    {
+        while ((count = axutil_array_list_size(header_group, env)) > 0)
+        {
+            axis2_char_t *header = axutil_array_list_remove(header_group, env, count-1);
+            AXIS2_FREE(env->allocator, header);
+        }
+    }
+}
  
-axis2_http_header_t *
+static axis2_http_header_t *
 axis2_libcurl_get_first_header(
-    axis2_libcurl_header_t * payload,
+    axis2_libcurl_t *curl,
     const axutil_env_t * env,
     const axis2_char_t * str)
 {
@@ -639,9 +687,10 @@ axis2_libcurl_get_first_header(
     axutil_array_list_t *header_group = NULL;
  
     AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, curl, NULL);
     AXIS2_PARAM_CHECK(env->error, str, NULL);
 
-    header_group = payload->alist;
+    header_group = curl->alist;
     if (!header_group)
     {
         return NULL;
@@ -673,18 +722,17 @@ axis2_libcurl_get_first_header(
         }
     }
     return NULL;
-
 }
 
-axis2_ssize_t
+static int
 axis2_libcurl_get_content_length(
-    axis2_libcurl_header_t * payload,
+    axis2_libcurl_t *curl,
     const axutil_env_t * env)
 {
-    axis2_http_header_t *tmp_header = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    axis2_http_header_t *tmp_header;
+
     tmp_header = axis2_libcurl_get_first_header
-        (payload, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH);
+        (curl, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH);
     if (tmp_header)
     {
         return AXIS2_ATOI(axis2_http_header_get_value(tmp_header, env));
@@ -692,15 +740,15 @@ axis2_libcurl_get_content_length(
     return -1;
 }
 
-axis2_char_t *
+static axis2_char_t *
 axis2_libcurl_get_content_type(
-    axis2_libcurl_header_t * payload,
+    axis2_libcurl_t *curl,
     const axutil_env_t * env)
 {
-    axis2_http_header_t *tmp_header = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
+    axis2_http_header_t *tmp_header;
+
     tmp_header = axis2_libcurl_get_first_header
-        (payload, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
+        (curl, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
     if (tmp_header)
         return axis2_http_header_get_value(tmp_header, env);
 

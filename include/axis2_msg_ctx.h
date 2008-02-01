@@ -1134,6 +1134,29 @@ extern "C"
         const axutil_env_t * env);
 
     /**
+     * Gets manage session bool value.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return AXIS2_TRUE if session is managed, else AXIS2_FALSE
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_msg_ctx_get_manage_session(
+        const axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
+    /**
+     * Sets manage session bool value.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @param manage_session manage session bool value
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_manage_session(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env,
+        const axis2_bool_t manage_session);
+    /**
      * Gets the bool value indicating the SOAP version being used either
      * SOAP 1.1 or SOAP 1.2
      * @param msg_ctx message context

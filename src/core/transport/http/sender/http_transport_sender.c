@@ -31,6 +31,10 @@
 #include <axutil_types.h>
 #include <axiom_soap_fault_detail.h>
 
+#ifdef AXIS2_LIBCURL_ENABLED
+#include "libcurl/axis2_libcurl.h"
+#endif
+
 /**
  * HTTP Transport Sender struct impl
  * Axis2 HTTP Transport Sender impl
@@ -43,7 +47,9 @@ typedef struct axis2_http_transport_sender_impl
     axis2_bool_t chunked;
     int connection_timeout;
     int so_timeout;
-
+#ifdef AXIS2_LIBCURL_ENABLED
+    axis2_libcurl_t *libcurl;
+#endif
 }
 axis2_http_transport_sender_impl_t;
 
@@ -113,6 +119,16 @@ axis2_http_transport_sender_create(
     transport_sender_impl->transport_sender.ops =
         &http_transport_sender_ops_var;
 
+#ifdef AXIS2_LIBCURL_ENABLED
+    transport_sender_impl->libcurl = axis2_libcurl_create(env);
+    if (!transport_sender_impl->libcurl)
+    {
+        AXIS2_FREE(env->allocator, transport_sender_impl);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+#endif
+
     return &(transport_sender_impl->transport_sender);
 }
 
@@ -130,6 +146,13 @@ axis2_http_transport_sender_free(
         AXIS2_FREE(env->allocator, transport_sender_impl->http_version);
         transport_sender_impl->http_version = NULL;
     }
+
+#ifdef AXIS2_LIBCURL_ENABLED
+    if (transport_sender_impl->libcurl)
+    {
+        axis2_libcurl_free(transport_sender_impl->libcurl, env);
+    }
+#endif
 
     AXIS2_FREE(env->allocator, transport_sender_impl);
     return;
@@ -694,8 +717,14 @@ axis2_http_transport_sender_write_message(
     AXIOM_SENDER_SET_HTTP_VERSION(sender, env,
                                   AXIS2_INTF_TO_IMPL(transport_sender)->
                                   http_version);
+#ifdef AXIS2_LIBCURL_ENABLED
+    status =
+        axis2_libcurl_http_send(AXIS2_INTF_TO_IMPL(transport_sender)->libcurl,
+                                sender, env, msg_ctx, out, url, soap_action);
+#else
     status =
         AXIS2_HTTP_SENDER_SEND(sender, env, msg_ctx, out, url, soap_action);
+#endif
 
     AXIS2_HTTP_SENDER_FREE(sender, env);
     sender = NULL;

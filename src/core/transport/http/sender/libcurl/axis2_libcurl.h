@@ -11,8 +11,20 @@
 #include <axis2_util.h>
 #include <axiom.h>
 
-axis2_status_t AXIS2_CALL
+typedef struct axis2_libcurl axis2_libcurl_t;
+
+AXIS2_EXTERN axis2_libcurl_t *AXIS2_CALL 
+axis2_libcurl_create(
+    const axutil_env_t * env);
+
+AXIS2_EXTERN void AXIS2_CALL 
+axis2_libcurl_free(
+    axis2_libcurl_t *data,
+    const axutil_env_t * env);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_libcurl_send(
+    axis2_libcurl_t *data,
     axiom_output_t * om_output,
     const axutil_env_t * env,
     axis2_msg_ctx_t * msg_ctx,

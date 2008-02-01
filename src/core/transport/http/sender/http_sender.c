@@ -175,6 +175,7 @@ axis2_http_sender_free (axis2_http_sender_t * sender,
     return;
 }
 
+#ifndef AXIS2_LIBCURL_ENABLED
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_send (axis2_http_sender_t * sender,
                         const axutil_env_t * env,
@@ -183,11 +184,6 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                         const axis2_char_t * str_url,
                         const axis2_char_t * soap_action)
 {
-#ifdef AXIS2_LIBCURL_ENABLED
-    return axis2_libcurl_http_send (sender, env, msg_ctx, out, str_url,
-                                    soap_action);
-#else
-
     axis2_http_simple_request_t *request = NULL;
     axis2_http_request_line_t *request_line = NULL;
     axutil_url_t *url = NULL;
@@ -959,8 +955,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                      AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR, AXIS2_FAILURE);
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_http_sender_send");
     return AXIS2_FAILURE;
-#endif
 }
+#endif
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_set_chunked (axis2_http_sender_t * sender,
@@ -2395,14 +2391,15 @@ axis2_http_sender_configure_proxy_auth (axis2_http_sender_t * sender,
 
 #ifdef AXIS2_LIBCURL_ENABLED
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_libcurl_http_send (axis2_http_sender_t * sender,
+axis2_libcurl_http_send (axis2_libcurl_t * curl,
+                         axis2_http_sender_t * sender,
                          const axutil_env_t * env,
                          axis2_msg_ctx_t * msg_ctx,
                          axiom_soap_envelope_t * out,
                          const axis2_char_t * str_url,
                          const axis2_char_t * soap_action)
 {
-    return axis2_libcurl_send (sender->om_output,
+    return axis2_libcurl_send (curl, sender->om_output,
                                env, msg_ctx, out, str_url, soap_action);
 }
 #endif
