@@ -369,7 +369,7 @@ guththila_xml_writer_wrapper_write_start_element_with_namespace(
     AXIS2_PARAM_CHECK(env->error, localname, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, namespace_uri, AXIS2_FAILURE);
     guththila_write_start_element_with_namespace(AXIS2_INTF_TO_IMPL(writer)->wr,
-                                                 localname, namespace_uri, env);
+                                                 namespace_uri, localname, env);
     return status;
 }
 
@@ -533,9 +533,13 @@ guththila_xml_writer_wrapper_write_namespace(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, namespace_uri, AXIS2_FAILURE);
-    /* when defult namespace comes prefix is null */
-    guththila_write_namespace(AXIS2_INTF_TO_IMPL(writer)->wr,
-                              prefix, namespace_uri, env);
+    /* when default namespace comes is passed, prefix is null */
+    if (prefix)
+        guththila_write_namespace(AXIS2_INTF_TO_IMPL(writer)->wr,
+                                  prefix, namespace_uri, env);
+    else
+        guththila_write_default_namespace(AXIS2_INTF_TO_IMPL(writer)->wr,
+                                  namespace_uri, env);
     return AXIS2_SUCCESS;
 }
 
