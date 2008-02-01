@@ -1567,19 +1567,23 @@ axis2_http_transport_utils_on_data_request(
     }
     if (cb_ctx->chunked_stream)
     {
+        --size;                         // reserve space to insert trailing null
         len = axis2_http_chunked_stream_read(cb_ctx->chunked_stream, env,
                                              buffer, size);
-        buffer[len] = '\0';
+        if (len >= 0)
+        {
+            buffer[len] = '\0';
+        }
         return len;
     }
     else
     {
         axutil_stream_t *in_stream = NULL;
-        int read_len = size;
         in_stream =
             (axutil_stream_t *) ((axis2_callback_info_t *) ctx)->in_stream;
-        len = axutil_stream_read(in_stream, env, buffer, read_len);
-        if (len > 0)
+        --size;                         // reserve space to insert trailing null
+        len = axutil_stream_read(in_stream, env, buffer, size);
+        if (len >= 0)
         {
             buffer[len] = '\0';
             ((axis2_callback_info_t *) ctx)->unread_len -= len;
