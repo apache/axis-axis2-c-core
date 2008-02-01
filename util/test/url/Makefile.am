@@ -1,5 +1,6 @@
-prgbindir=$(prefix)/bin/samples
-prgbin_PROGRAMS = url_test 
+TESTS = url_test
+noinst_PROGRAMS = url_test 
+check_PROGRAMS = url_test 
 url_test_SOURCES = url_test.c ../util/create_env.c
 
 url_test_LDADD   =   \

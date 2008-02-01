@@ -1,5 +1,6 @@
-prgbindir=$(prefix)/bin/samples
-prgbin_PROGRAMS = duration_test
+TESTS = duration_test
+check_PROGRAMS = duration_test
+noinst_PROGRAMS = duration_test
 duration_test_SOURCES = duration_test.c ../util/create_env.c
 
 duration_test_LDADD   =   \

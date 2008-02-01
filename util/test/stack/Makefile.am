@@ -1,5 +1,6 @@
-prgbindir=$(prefix)/bin/samples
-prgbin_PROGRAMS = stack_test 
+TESTS = stack_test
+check_PROGRAMS = stack_test 
+noinst_PROGRAMS = stack_test 
 stack_test_SOURCES = stack_test.c ../util/create_env.c
 
 stack_test_LDADD   =   \

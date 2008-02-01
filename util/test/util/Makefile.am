@@ -1,4 +1,4 @@
-TESTS = test_thread
+TESTS = test_thread test_util
 noinst_PROGRAMS = test_util test_thread
 noinst_HEADERS = test_log.h \
                     test_thread.h \

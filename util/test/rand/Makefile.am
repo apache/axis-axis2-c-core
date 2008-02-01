@@ -1,5 +1,6 @@
-prgbindir=$(prefix)/bin/samples
-prgbin_PROGRAMS = rand_test
+TESTS = rand_test
+check_PROGRAMS = rand_test
+noinst_PROGRAMS = rand_test
 rand_test_SOURCES = rand_test.c ../util/create_env.c
 
 rand_test_LDADD   =   \

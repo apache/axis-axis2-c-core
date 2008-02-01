@@ -1,5 +1,6 @@
-prgbindir=$(prefix)/bin/samples
-prgbin_PROGRAMS = utils_test 
+TESTS = utils_test
+check_PROGRAMS = utils_test 
+noinst_PROGRAMS = utils_test 
 utils_test_SOURCES = utils_test.c ../util/create_env.c
 
 utils_test_LDADD   =   \

@@ -1,5 +1,6 @@
-prgbindir=$(prefix)/bin/samples
-prgbin_PROGRAMS = property_test 
+TESTS = property_test
+check_PROGRAMS = property_test 
+noinst_PROGRAMS = property_test 
 property_test_SOURCES = property_test.c ../util/create_env.c
 
 property_test_LDADD   =   \
