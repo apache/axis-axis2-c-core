@@ -42,30 +42,25 @@
     axis2_char_t * target = NULL;
     axis2_char_t * value = NULL;
     axiom_node_t *temp_node = NULL;
-
+    axiom_xml_reader_t *xml_reader = NULL;
 int read_input_callback(char *buffer, int size, void* ctx)
 {
-     fread(buffer, sizeof(char), size, f);
+     return fread(buffer, sizeof(char), size, f);
 }
 int close_input_callback(void *ctx)
 {
-     fclose(f);
+     return fclose(f);
 }
-build_and_serialize_om(axutil_env_t *env)
+axis2_status_t build_and_serialize_om(axutil_env_t *env)
 {
     axiom_node_t *root_node = NULL;
 
-    axiom_element_t *root_ele = NULL;
-    axiom_document_t *document = NULL;
-    axiom_stax_builder_t *om_builder = NULL;
+	    axiom_element_t *root_ele = NULL;
+	    axiom_document_t *document = NULL;
+	    axiom_stax_builder_t *om_builder = NULL;
 
-    axiom_xml_reader_t *xml_reader = NULL;
-    axiom_xml_writer_t *xml_writer = NULL;
-    axiom_output_t *om_output = NULL;
-
-    axis2_char_t *buffer = NULL;
-    f = fopen("test.xml","r");
-    xml_reader = axiom_xml_reader_create_for_io(env, read_input_callback, close_input_callback, NULL, NULL);
+	    f = fopen("test.xml","r");
+	    xml_reader = axiom_xml_reader_create_for_io(env, read_input_callback, close_input_callback, NULL, NULL);
     if(!xml_reader)
      return -1;
     
@@ -108,7 +103,7 @@ build_and_serialize_om(axutil_env_t *env)
     node = axiom_node_get_next_sibling(child, env);
     temp_node = axiom_node_get_next_sibling  (node, env);
     child = axiom_node_get_first_child(node, env);
-    printf (" %s", axiom_node_to_string (temp_node, env),"\n");
+    printf (" %s\n", axiom_node_to_string (temp_node, env));
     node_type = axiom_node_get_node_type(child,env);   
     data_element =(axiom_element_t*)axiom_node_get_data_element(child,env); 
     last_child = axiom_node_get_last_child(temp_node,env);
@@ -154,11 +149,7 @@ build_and_serialize_om(axutil_env_t *env)
 int main()
 {
     int status = AXIS2_SUCCESS;
-    
     axutil_env_t *env = NULL;
-    axutil_allocator_t *allocator = NULL;
-    env = create_environment();
-
     status = build_and_serialize_om(env);
 
     if(status == AXIS2_FAILURE)
@@ -167,6 +158,7 @@ int main()
     }
 
     axutil_env_free(env);
+    return 0;
 }
 
 
