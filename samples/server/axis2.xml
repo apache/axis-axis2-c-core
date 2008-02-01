@@ -2,8 +2,10 @@
     <!-- ================================================= -->
     <!-- Parameters -->
     <!-- ================================================= -->
-    <!-- Uncomment following to enable MTOM support -->
+    <!-- Uncomment following to enable MTOM support globally -->
     <!--parameter name="enableMTOM" locked="false">true</parameter-->
+    
+    <!-- Enable REST -->
     <parameter name="enableREST" locked="false">true</parameter>
 
     <!-- Uncomment following to persist op_ctx, useful with RM -->
