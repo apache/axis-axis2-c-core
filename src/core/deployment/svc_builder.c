@@ -428,6 +428,7 @@ axis2_svc_builder_populate_svc(
                 }
             }
         }
+        axis2_svc_add_op(svc_builder->svc, env, op_desc);
         if (axis2_op_get_rest_http_method(op_desc, env) && 
             axis2_op_get_rest_http_location(op_desc, env) )
         {
@@ -436,7 +437,6 @@ axis2_svc_builder_populate_svc(
                                        axis2_op_get_rest_http_location(op_desc, env),
                                        op_desc);
         }
-        axis2_svc_add_op(svc_builder->svc, env, op_desc);
     }
     axutil_array_list_free(ops, env);
 

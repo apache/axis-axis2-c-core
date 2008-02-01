@@ -1417,10 +1417,19 @@ human readable format.</p><p></p></div><div class="subsection"><p>This is option
     <tr class="b"><th>Attributes</th><th>Description</th><th>Possible Values</th></tr>
     <tr class="a"><td>ref</td><td>Name of the module which is to be engaged for the service</td><td>Name of the module which is to be engaged at service level.</td></tr>
   </tbody></table><p></p><p></p></div><div class="subsection"><p>The service element can have any number of parameters as sub elements.</p><table class="bodyTable"><caption></caption><tbody>
-    <tr class="b"><th>Attributes</th><th>Description</th><th>Possible Values</th><th>Value of the Text in the Parameter Element</th></tr>
-    <tr class="a"><td>name</td><td>Specifies the name of the shared library that holds the service
+    <tr class="a"><th>Attribute</th><th>Detail</th></tr>
+    <tr class="b"><td>name</td>
+    <td><table class="bodyTable"><caption></caption><tbody>
+            <tr class="b"><th>Description</th><th>Possible Value</th><th>Parameter Value</th></tr>
+            <tr class="a"><td>Specifies the name of the shared library that holds the service
         implementation</td><td>serviceClass</td><td>the service name. Example: echo</td></tr>
-    <tr class="b"><td>locked</td><td>Indicates whether the parameter can be changed from the code</td><td>true / false</td><td></td></tr>
+            <tr class="a"><td>Default HTTP Method used in a REST invocation</td><td>defaultRESTMethod</td><td>One of GET, POST, HEAD, PUT or DELETE</td></tr>
+          </tbody></table></td></tr>
+    <tr class="b"><td>locked</td>
+    <td><table class="bodyTable"><caption></caption><tbody>
+            <tr class="b"><th>Description</th><th>Possible Value</th></tr>
+            <tr class="a"><td>Indicates whether the parameter can be changed from the code</td><td>true/false</td></tr>
+          </tbody></table></td></tr>
   </tbody></table><p></p></div><div class="subsection"><p>The operations of the service are specified using operation elements.</p><table class="bodyTable"><caption></caption><tbody>
     <tr class="a"><th>Attributes</th><th>Description</th><th>Possible Values</th></tr>
     <tr class="b"><td>name</td><td>name of the operation</td><td>Example: echoString</td></tr>

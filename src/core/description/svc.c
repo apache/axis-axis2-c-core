@@ -570,7 +570,7 @@ axis2_svc_get_rest_op_list_with_method_and_location(
     do
     {
         axis2_char_t *temp = NULL;
-        temp = strchr(loc_str_tmp, AXIS2_REST_HTTP_LOCATION_SEPARATOR);
+        temp = strchr(loc_str_tmp, '{');
         if (temp)
         {
             loc_str_tmp = temp;
@@ -581,7 +581,7 @@ axis2_svc_get_rest_op_list_with_method_and_location(
             break;
         }
     } while (loc_str_tmp[1] &&
-             loc_str_tmp[1] == AXIS2_REST_HTTP_LOCATION_SEPARATOR);
+             loc_str_tmp[1] == '{');
 
     loc_str = (axis2_char_t *) axutil_strmemdup(location, (loc_str_tmp - location), env);
 
@@ -1091,7 +1091,7 @@ axis2_svc_add_rest_mapping(
         do
         {
             axis2_char_t *temp = NULL;
-            temp = strchr(loc_str_tmp, AXIS2_REST_HTTP_LOCATION_SEPARATOR);
+            temp = strchr(loc_str_tmp, '{');
             if (temp)
             {
                 loc_str_tmp = temp;
@@ -1102,7 +1102,7 @@ axis2_svc_add_rest_mapping(
                 break;
             }
         } while (loc_str_tmp[1] &&
-                 loc_str_tmp[1] == AXIS2_REST_HTTP_LOCATION_SEPARATOR);
+                 loc_str_tmp[1] == '{');
 
         loc_str = (axis2_char_t *) axutil_strmemdup(location, (loc_str_tmp - location), env);
 

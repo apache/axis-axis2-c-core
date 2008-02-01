@@ -408,7 +408,24 @@ axis2_op_get_rest_http_method(
     {
         return NULL;
     }
-    return op->rest_http_method;
+    if (op->rest_http_method)
+    {
+        return op->rest_http_method;
+    }
+    else
+    {
+        axutil_param_t *param = NULL;
+
+        param = axis2_op_get_param(op, env, AXIS2_DEFAULT_REST_HTTP_METHOD);
+
+        if (!param)
+        {
+            return "POST"; /* Added hard-coded string to avoid inclusion of HTTP
+                            * Transport header
+                            */
+        }
+        return (axis2_char_t *)axutil_param_get_value(param, env);
+    }
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
