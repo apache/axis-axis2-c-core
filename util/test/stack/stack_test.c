@@ -1,7 +1,7 @@
 #include "../util/create_env.h"
 #include <axutil_stack.h>
 
-test_stack(axutil_env_t * env, char * value)
+axis2_status_t test_stack(axutil_env_t * env, char * value)
 {
     axutil_stack_t * stack = NULL;
     stack = axutil_stack_create(env);

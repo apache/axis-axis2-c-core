@@ -17,7 +17,7 @@ int year , month , date , hour , min , sec , msec;
  *   deserialize and serialize the time 
  */
 
-test_date_time()
+axis2_status_t test_date_time()
 {
     env = create_environment();
     axutil_date_time_create_with_offset(env,100);
@@ -60,7 +60,6 @@ test_date_time()
 int main()
 {
     int status = AXIS2_SUCCESS;
-    axutil_allocator_t *allocator = NULL;
     env = create_environment();
     status = test_date_time();
     if(status == AXIS2_FAILURE)

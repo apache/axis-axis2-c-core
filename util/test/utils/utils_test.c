@@ -9,7 +9,7 @@ axis2_char_t c = 'c';
  *  test quote string  
  */
 
-test_utils()
+axis2_status_t test_utils()
 {   
     env = create_environment();
     axis2_char_t **op = (axis2_char_t **)axutil_parse_request_url_for_svc_and_op(env,request);

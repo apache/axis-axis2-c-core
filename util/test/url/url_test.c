@@ -17,7 +17,7 @@ axis2_char_t *get_path;
  * create URL and get the values of it's components  
  */
 
-test_uri()
+axis2_status_t test_uri()
 {   
     env = create_environment();
     url = (axutil_url_t *)axutil_url_create(env,"http","www.google.com",8090,"/foo/");

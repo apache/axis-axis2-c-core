@@ -5,9 +5,9 @@
 #include "../util/create_env.h"
 
 FILE *f = NULL;
-char *plain_binary ;
+unsigned char *plain_binary ;
 const char *encoded_binary;
-char buffer[1024];
+unsigned char buffer[1024];
 int plain_binary_len;
 
 axutil_base64_binary_t *base64_binary;
@@ -17,7 +17,7 @@ axutil_base64_binary_t *base64_binary;
 /** @brief read binary
  *  read the binary file 
  */
-read_binary()
+int read_binary()
 {
       FILE *in = fopen("test","rb");
       FILE *out = fopen("test.doc","w");
@@ -36,7 +36,7 @@ read_binary()
 /** @brief test base64
  *  create duration from values and retrieve values
  */
-test_base64()
+axis2_status_t test_base64()
 {  
     env = create_environment();
     read_binary(); 
@@ -62,7 +62,6 @@ int main()
     int status = AXIS2_SUCCESS;
 
     axutil_env_t *env = NULL;
-    axutil_allocator_t *allocator = NULL;
     env = create_environment();
 
     status = test_base64();

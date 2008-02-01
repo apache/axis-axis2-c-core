@@ -16,7 +16,7 @@ axis2_char_t * value = "value";
 /** @brief test properties
   * read file and give the output
   */
-test_properties()
+axis2_status_t test_properties()
 { 
     FILE *input = fopen("input.doc","rb");
     FILE *output = fopen("output.doc","rb");

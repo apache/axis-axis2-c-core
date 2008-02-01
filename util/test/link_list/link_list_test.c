@@ -5,7 +5,7 @@ axutil_env_t *env = NULL;
 axutil_linked_list_t * linked_list = NULL;
 entry_t *entry = NULL;
 
-test_link_list(axutil_env_t *env,char * first_item,char * second_item,char * third_item,char *last_item,char *array)
+axis2_status_t test_link_list(axutil_env_t *env,char * first_item,char * second_item,char * third_item,char *last_item,char *array)
 { 
     linked_list = axutil_linked_list_create(env);
     if(linked_list)
@@ -51,11 +51,6 @@ test_link_list(axutil_env_t *env,char * first_item,char * second_item,char * thi
 int main()
 {
     int status = AXIS2_SUCCESS;
-    char * first_item;
-    char * second_item;
-    char * third_item;
-    char * last_item;
-    char * array;
     env = create_environment();
     status = test_link_list(env,"first entry","secnd entry","third entry","last entry" ,"test");
     if(status == AXIS2_FAILURE)

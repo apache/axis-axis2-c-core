@@ -8,7 +8,7 @@ unsigned int *seedp = &seed;
  *   create random variable and get it's value 
  */
 
-test_rand(axutil_env_t *env)
+axis2_status_t test_rand(axutil_env_t *env)
 {
     rand_number = axutil_rand(seedp);
     rand_range = axutil_rand_with_range(seedp,start,end);

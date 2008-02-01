@@ -12,7 +12,7 @@ double second;
 /** @brief test duration
  *  create duration from values and retrieve values
  */
-test_duration()
+axis2_status_t test_duration()
 { 
     env = create_environment();
     axutil_duration_create(env);
@@ -37,7 +37,7 @@ test_duration()
 /** @brief set values
  *  set values for the duration and get the values 
  */
-set_values()
+axis2_status_t set_values()
 {
     axutil_duration_set_years(duration,env,2005);
     get_year = axutil_duration_get_years(duration,env);
@@ -51,7 +51,7 @@ set_values()
     get_minute = axutil_duration_get_mins(duration,env);
     axutil_duration_set_seconds(duration,env,49);
     get_second = axutil_duration_get_seconds(duration,env);
-    printf("The time is now %d:%d:%d-%d-%d-%f\n ",get_year,get_month,get_day,get_hour,get_minute,get_second);
+    printf("The time is now %d:%d:%d-%d-%d-%d\n ",get_year,get_month,get_day,get_hour,get_minute,get_second);
     compere = axutil_duration_compare(duration_one,duration,env);
     printf("The test is success\n");
     return AXIS2_SUCCESS;
@@ -61,7 +61,6 @@ int main()
     int status = AXIS2_SUCCESS;
 
     axutil_env_t *env = NULL;
-    axutil_allocator_t *allocator = NULL;
     env = create_environment();
 
     status = test_duration();

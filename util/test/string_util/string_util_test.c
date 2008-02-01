@@ -10,7 +10,7 @@ int delim = ' ';
  *  tokenize a string  
  */
 
-test_string()
+axis2_status_t test_string()
 {   
     env = create_environment();
     axutil_array_list_t * tokenize = (axutil_array_list_t *)axutil_tokenize(env, in, delim);

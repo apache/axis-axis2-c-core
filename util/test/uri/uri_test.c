@@ -18,7 +18,7 @@ axis2_char_t *path;
  * create URI and get the values of it's components  
  */
 
-test_uri()
+axis2_status_t test_uri()
 {   
     env = create_environment();
     uri = (axutil_uri_t *)axutil_uri_create(env);
