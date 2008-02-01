@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -149,7 +148,7 @@ axutil_base64_binary_set_plain_binary(
         return AXIS2_FAILURE;
     }
     memcpy(base64_binary->plain_binary, plain_binary,
-           base64_binary->plain_binary_len);
+           plain_binary_len);
     base64_binary->plain_binary_len = plain_binary_len;
 
     return AXIS2_SUCCESS;
