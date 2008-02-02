@@ -1567,7 +1567,8 @@ axis2_http_transport_utils_on_data_request(
     }
     if (cb_ctx->chunked_stream)
     {
-        --size;                         // reserve space to insert trailing null
+        --size;                         
+        /* reserve space to insert trailing null */
         len = axis2_http_chunked_stream_read(cb_ctx->chunked_stream, env,
                                              buffer, size);
         if (len >= 0)
@@ -1581,7 +1582,7 @@ axis2_http_transport_utils_on_data_request(
         axutil_stream_t *in_stream = NULL;
         in_stream =
             (axutil_stream_t *) ((axis2_callback_info_t *) ctx)->in_stream;
-        --size;                         // reserve space to insert trailing null
+        --size;                         /* reserve space to insert trailing null */
         len = axutil_stream_read(in_stream, env, buffer, size);
         if (len >= 0)
         {

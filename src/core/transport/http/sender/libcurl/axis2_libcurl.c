@@ -602,7 +602,7 @@ axis2_libcurl_create(
            if a global initialize is created.  Otherwise the client application should perform the
            the curl_global_init itself in a thread-safe fashion.
         */
-        if (code = curl_global_init(CURL_GLOBAL_ALL))	
+        if ((code = curl_global_init(CURL_GLOBAL_ALL)))	
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "libCurl curl_global_init failed, error: %d", code);
             return NULL;
@@ -623,7 +623,7 @@ axis2_libcurl_create(
         curl->cookies = AXIS2_FALSE;
         if ((!curl->alist) || (!curl->handler))
         {
-            axis2_libcurl_free(curl, env->allocator);
+            axis2_libcurl_free(curl, env);
             curl = 0;
         }
     }
@@ -636,7 +636,10 @@ axis2_libcurl_free(
     const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, curl, AXIS2_FAILURE);
+    if (!curl)
+    {
+        return;
+    }
 
     if (curl->handler)
     {
