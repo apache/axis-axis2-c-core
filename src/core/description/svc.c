@@ -524,18 +524,166 @@ axis2_svc_get_op_with_qname(
     const axutil_qname_t * op_qname)
 {
     axis2_op_t *op = NULL;
-    axis2_char_t *key = NULL;
+    axis2_char_t *nc_name = NULL;
+
+    axis2_char_t *nc_tmp = NULL;
+    /* This is just for the sake of comparison,
+     * and must not be used to change the passed value
+     */
+    axis2_bool_t is_matched = AXIS2_FALSE;
 
     AXIS2_PARAM_CHECK(env->error, op_qname, NULL);
 
-    key = axutil_qname_get_localpart(op_qname, env);
-    op = axutil_hash_get(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING);
-    if (!op)
+    nc_name = axutil_qname_get_localpart(op_qname, env);
+    nc_tmp = nc_name;
+
+    op = axutil_hash_get(svc->op_alias_map, nc_tmp, AXIS2_HASH_KEY_STRING);
+    if (op)
     {
-        op = axutil_hash_get(svc->op_action_map, key, AXIS2_HASH_KEY_STRING);
+        return op;
+    }
+    op = axutil_hash_get(svc->op_action_map, nc_tmp, AXIS2_HASH_KEY_STRING);
+    if (op)
+    {
+        return op;
+    }
+    
+    if (*nc_tmp && svc->op_action_map)
+    {
+        axutil_hash_index_t *hi = NULL;
+        const void *key = NULL;
+
+        for (hi = axutil_hash_first(svc->op_action_map, env); hi;
+             hi = axutil_hash_next(env, hi))
+        {
+            axutil_hash_this(hi, &key, NULL, NULL);
+
+            nc_tmp = nc_name;
+
+            if (key)
+            {
+                axis2_char_t *search = NULL;
+                axis2_bool_t match_start = AXIS2_TRUE;
+                axis2_char_t *search_tmp = NULL;
+
+                search = (axis2_char_t *)key;
+
+                if (!axutil_strchr(search, '*'))
+                {
+                    if (axutil_strstr(nc_tmp, search))
+                    {
+                        axis2_char_t *comp_tmp = NULL;
+
+                        comp_tmp = axutil_strstr(nc_tmp, search);
+                        if (strlen(comp_tmp) == strlen (search))
+                        {
+                            nc_tmp = (axis2_char_t *)key;
+                            is_matched = AXIS2_TRUE;
+                            break;
+                        }
+                    }
+                    continue;
+                }
+
+                if (search[0] == '*')
+                {
+                    search++;
+                    if (!*search)
+                    {
+                        nc_tmp = (axis2_char_t *)key;
+                        is_matched = AXIS2_TRUE;
+                        break;
+                    }
+                    else if (axutil_strchr(search, '*'))
+                    {
+                        continue;
+                    }
+                    match_start = AXIS2_FALSE;
+                }
+                while (search && *search)
+                {
+                    int length = 0;
+                    axis2_char_t *loc_tmp = NULL;
+
+                    if (search_tmp)
+                    {
+                        AXIS2_FREE(env->allocator, search_tmp);
+                        search_tmp = NULL;
+                    }
+                    loc_tmp = axutil_strchr(search, '*');
+                    if (loc_tmp && *loc_tmp)
+                    {
+                        if (!loc_tmp[1])
+                        {
+                            is_matched = AXIS2_TRUE;
+                            break;
+                        }
+                        length = loc_tmp - search;
+                        search_tmp = (axis2_char_t *) (AXIS2_MALLOC (env->allocator,
+                                          sizeof (axis2_char_t) * (length + 1)));
+                        strncpy(search_tmp, search, length);
+                        search_tmp[length] = '\0';
+                    }
+                    else if (axutil_strstr(nc_tmp, search))
+                    {
+                        axis2_char_t *comp_tmp = NULL;
+
+                        comp_tmp = axutil_strstr(nc_tmp, search);
+                        if (strlen(comp_tmp) == strlen (search))
+                        {
+                            nc_tmp = (axis2_char_t *)key;
+                            is_matched = AXIS2_TRUE;
+                            break;
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    if (search_tmp && axutil_strstr(nc_tmp, search_tmp))
+                    {
+                        if (match_start && !(axutil_strncmp(nc_tmp, search, length) == 0))
+                        {
+                            break;
+                        }
+                        else if (!match_start)
+                        {
+                            match_start = AXIS2_TRUE;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    search += axutil_strlen(search_tmp) + 1;
+                    nc_tmp = axutil_strstr(nc_tmp, search_tmp) + axutil_strlen(search_tmp);
+                }
+                if (search_tmp)
+                {
+                    AXIS2_FREE(env->allocator, search_tmp);
+                    search_tmp = NULL;
+                }
+                if (is_matched || !*search)
+                {
+                    nc_tmp = (axis2_char_t *)key;
+                    is_matched = AXIS2_TRUE;
+                    break;
+                }
+            }
+        }
+    }
+    if (!is_matched)
+    {
+        nc_tmp = nc_name;
     }
 
-    return op;
+    op = axutil_hash_get(svc->op_alias_map, nc_tmp, AXIS2_HASH_KEY_STRING);
+    if (op)
+    {
+        return op;
+    }
+    return (axis2_op_t *)axutil_hash_get(svc->op_action_map, nc_tmp, AXIS2_HASH_KEY_STRING);
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
