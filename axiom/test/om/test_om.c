@@ -141,20 +141,23 @@ test_om_build(
             printf("root localname %s\n",
                    axiom_element_get_localname(ele1, environment));
         
-       hash = axiom_element_get_all_attributes(ele1,environment);
-                if(hash)
-                {
+            hash = axiom_element_get_all_attributes(ele1,environment);
+            if(hash)
+            {
                 axutil_hash_index_t *hi;
-                axis2_char_t *key= NULL;
-                axiom_attribute_t *val = NULL;
-                for (hi = axutil_hash_first(hash,environment); hi; hi = axutil_hash_next(environment, hi)) {
-                    axutil_hash_this(hi, (const void**)&key, NULL,(void**) &val);
-                         if(val)
-                             printf(" Attribute name: %s",
-                                    axiom_attribute_get_localname(val,environment));
-                             printf("   value: %s\n",
-                                    axiom_attribute_get_value(val,environment));
-              }
+                const void *key= NULL;
+                void *val = NULL;
+                for (hi = axutil_hash_first(hash,environment); hi; hi = axutil_hash_next(environment, hi))
+                {
+                    axutil_hash_this(hi, &key, NULL,&val);
+                    if(val)
+                    {
+                        printf(" Attribute name: %s",
+                            axiom_attribute_get_localname((axiom_attribute_t *)val,environment));
+                        printf("   value: %s\n",
+                            axiom_attribute_get_value((axiom_attribute_t *)val,environment));
+                    }
+                }
             }
         }
 
@@ -197,18 +200,22 @@ test_om_build(
                 hash = axiom_element_get_all_attributes(ele2,environment);
                 if(hash)
                 {
-                axutil_hash_index_t *hi;
-                axis2_char_t *key= NULL;
-                axiom_attribute_t *val = NULL;
-                for (hi = axutil_hash_first(hash,environment); hi; hi = axutil_hash_next(environment, hi)) {
-                    axutil_hash_this(hi, (const void**)&key, NULL,(void**) &val);
-                         if(val)
-                             printf(" Attribute name: %s",
-                                    axiom_attribute_get_localname(val,environment));
-                             printf("   value: %s\n",
-                                    axiom_attribute_get_value(val,environment));
-              }
+                    axutil_hash_index_t *hi;
+                    const void *key= NULL;
+                    void *val = NULL;
+                    for (hi = axutil_hash_first(hash,environment); hi; hi = axutil_hash_next(environment, hi))
+                    {
+                        axutil_hash_this(hi, &key, NULL,&val);
+                        if(val)
+                        {
+                            printf(" Attribute name: %s",
+                                axiom_attribute_get_localname((axiom_attribute_t *)val,environment));
+                            printf("   value: %s\n",
+                                axiom_attribute_get_value((axiom_attribute_t *)val,environment));
+                        }
+                    }
                 }
+
             }
 
 
