@@ -140,6 +140,28 @@ protection_token_process_alternatives(
                 else
                     return AXIS2_FAILURE;
             }
+            else if(type == ASSERTION_TYPE_ISSUED_TOKEN)
+            {
+                rp_issued_token_t *issued_token = NULL;
+                issued_token = (rp_issued_token_t *)neethi_assertion_get_value(assertion, env);
+                if(issued_token)
+                {
+                    rp_property_set_value(protection_token, env, issued_token, RP_PROPERTY_ISSUED_TOKEN);
+                }
+                else
+                    return AXIS2_FAILURE;
+            }
+            else if(type == ASSERTION_TYPE_SAML_TOKEN)
+            {
+                rp_saml_token_t *saml_token = NULL;
+                saml_token = (rp_saml_token_t *)neethi_assertion_get_value(assertion, env);
+                if(saml_token)
+                {
+                    rp_property_set_value(protection_token, env, saml_token, RP_PROPERTY_SAML_TOKEN);
+                }
+                else
+                    return AXIS2_FAILURE;
+            }
             else if (type == ASSERTION_TYPE_SECURITY_CONTEXT_TOKEN)
             {
                 rp_security_context_token_t *security_context_token = NULL;

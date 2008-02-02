@@ -31,6 +31,8 @@
 #include <rp_signed_encrypted_parts.h>
 #include <rp_symmetric_binding.h>
 #include <rp_transport_binding.h>
+#include <rp_saml_token.h>
+#include <rp_issued_token.h>
 
 struct neethi_assertion_t
 {
@@ -200,6 +202,15 @@ neethi_assertion_create_with_args(
     {
         rp_rampart_config_increment_ref((rp_rampart_config_t *) value, env);
     }
+    if (type == ASSERTION_TYPE_ISSUED_TOKEN)
+    {
+        rp_issued_token_increment_ref((rp_issued_token_t *) value, env);
+    }
+    if (type == ASSERTION_TYPE_SAML_TOKEN)
+    {
+        rp_saml_token_increment_ref((rp_saml_token_t *) value, env);
+    }
+    
     neethi_assertion->value = value;
     neethi_assertion->type = type;
     neethi_assertion->element = NULL;

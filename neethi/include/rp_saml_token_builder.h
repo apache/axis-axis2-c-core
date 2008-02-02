@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -15,20 +14,17 @@
  * limitations under the License.
  */
 
-#ifndef RP_SIGNATURE_TOKEN_BUILDER_H
-#define RP_SIGNATURE_TOKEN_BUILDER_H
+#ifndef RP_SAML_TOKEN_BUILDER_H
+#define RP_SAML_TOKEN_BUILDER_H
 
-/** @defgroup rp_signature_token_builder
- * @ingroup rp_signature_token_builder
+/** @defgroup rp_saml_token_builder
+ * @ingroup rp_saml_token_builder
  * @{
  */
 
 #include <rp_includes.h>
 #include <rp_property.h>
-#include <rp_x509_token.h>
-#include <rp_issued_token.h>
 #include <rp_saml_token.h>
-#include <rp_security_context_token.h>
 #include <neethi_assertion.h>
 
 #ifdef __cplusplus
@@ -37,7 +33,7 @@ extern "C"
 #endif
 
     AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
-    rp_signature_token_builder_build(
+    rp_saml_token_builder_build(
         const axutil_env_t * env,
         axiom_node_t * node,
         axiom_element_t * element);

@@ -697,6 +697,122 @@ neethi_assertion_builder_build(
         else
             return NULL;
     }
+    else if (axutil_strcmp(localname, RP_REQUIRE_EXTERNAL_REFERENCE) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_REQUIRE_EXTERNAL_REFERENCE, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                       ASSERTION_TYPE_REQUIRE_EXTERNAL_REFERENCE);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+    else if (axutil_strcmp(localname, RP_REQUIRE_INTERNAL_REFERENCE) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_REQUIRE_INTERNAL_REFERENCE, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                       ASSERTION_TYPE_REQUIRE_INTERNAL_REFERENCE);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+    else if (axutil_strcmp(localname, RP_ISSUED_TOKEN) == 0)
+    {
+        if (rp_match_secpolicy_qname(env, RP_ISSUED_TOKEN, node, element))
+        {
+            return rp_issued_token_builder_build(env, node, element);
+        }
+        else
+            return NULL;
+    }
+    else if (axutil_strcmp(localname, RP_SAML_TOKEN) == 0)
+    {
+        if (rp_match_secpolicy_qname(env, RP_SAML_TOKEN, node, element))
+        {
+            return rp_saml_token_builder_build(env, node, element);
+        }
+        else
+            return NULL;
+    }
+    else if (axutil_strcmp(localname, RP_WSS_SAML_V10_TOKEN_V10) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_WSS_SAML_V10_TOKEN_V10, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                       ASSERTION_TYPE_WSS_SAML_V10_TOKEN_V10);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+    else if (axutil_strcmp(localname, RP_WSS_SAML_V10_TOKEN_V11) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_WSS_SAML_V10_TOKEN_V11, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                       ASSERTION_TYPE_WSS_SAML_V10_TOKEN_V11);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+    else if (axutil_strcmp(localname, RP_WSS_SAML_V11_TOKEN_V10) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_WSS_SAML_V11_TOKEN_V10, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                       ASSERTION_TYPE_WSS_SAML_V11_TOKEN_V10);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+    else if (axutil_strcmp(localname, RP_WSS_SAML_V11_TOKEN_V11) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_WSS_SAML_V11_TOKEN_V11, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                       ASSERTION_TYPE_WSS_SAML_V11_TOKEN_V11);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
+    else if (axutil_strcmp(localname, RP_WSS_SAML_V20_TOKEN_V11) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_WSS_SAML_V20_TOKEN_V11, node, element))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                                       ASSERTION_TYPE_WSS_SAML_V20_TOKEN_V11);
+            return assertion;
+        }
+        else
+            return NULL;
+    }
     else
     {
         AXIS2_ERROR_SET(env->error,

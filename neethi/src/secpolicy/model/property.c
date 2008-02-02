@@ -82,6 +82,16 @@ rp_property_free(
                 rp_x509_token_free((rp_x509_token_t *) property->value, env);
                 property->value = NULL;
                 break;
+                
+            case RP_PROPERTY_ISSUED_TOKEN:
+                rp_issued_token_free((rp_issued_token_t *)property->value, env);
+                property->value = NULL;
+                break;
+
+            case RP_PROPERTY_SAML_TOKEN:
+                rp_saml_token_free((rp_saml_token_t *)property->value, env);
+                property->value = NULL;
+            break;
 
             case RP_PROPERTY_SECURITY_CONTEXT_TOKEN:
                 rp_security_context_token_free((rp_security_context_token_t *)

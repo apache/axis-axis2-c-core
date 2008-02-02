@@ -28,6 +28,8 @@
 #include <rp_x509_token.h>
 #include <rp_security_context_token.h>
 #include <neethi_assertion.h>
+#include <rp_issued_token.h>
+#include <rp_saml_token.h>
 
 #ifdef __cplusplus
 extern "C"

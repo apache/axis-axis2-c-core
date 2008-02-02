@@ -25,6 +25,8 @@
 #include <rp_includes.h>
 #include <rp_username_token.h>
 #include <rp_x509_token.h>
+#include <rp_issued_token.h>
+#include <rp_saml_token.h>
 #include <rp_security_context_token.h>
 #include <rp_https_token.h>
 
@@ -37,6 +39,8 @@ extern "C"
     {
         RP_PROPERTY_USERNAME_TOKEN = 0,
         RP_PROPERTY_X509_TOKEN,
+        RP_PROPERTY_ISSUED_TOKEN,
+        RP_PROPERTY_SAML_TOKEN,
         RP_PROPERTY_SECURITY_CONTEXT_TOKEN,
         RP_PROPERTY_HTTPS_TOKEN,
         RP_PROPERTY_SYMMETRIC_BINDING,
