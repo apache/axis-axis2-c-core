@@ -21,7 +21,7 @@
 
 static int ref = 0;
 
-typedef struct axis2_libcurl
+struct axis2_libcurl
 {
     axis2_char_t *memory;
     axutil_array_list_t *alist;

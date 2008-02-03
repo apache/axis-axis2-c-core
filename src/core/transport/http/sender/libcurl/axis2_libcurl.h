@@ -11,7 +11,7 @@
 #include <axis2_util.h>
 #include <axiom.h>
 
-typedef struct axis2_libcurl axis2_libcurl_t;
+/* typedef struct axis2_libcurl axis2_libcurl_t; */
 
 AXIS2_EXTERN axis2_libcurl_t *AXIS2_CALL 
 axis2_libcurl_create(
