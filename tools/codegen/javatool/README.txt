@@ -1,26 +1,29 @@
-lLWSDL2C.sh/bat
-=========
+WSDL2C.sh and WSDL2C.bat
+========================
 
-This file is to simplify the C code geneation using WSDL2C java tool. 
+These scripts are provided to simplify the C code geneation using WSDL2C Java tool that comes with Apache Axis2/Java. 
 
 How to use
 ----------
-1. Set AXIS2_HOME envionment vaiable to you axis2 java installation diectoy . 
+1. Set AXIS2_HOME envionment vaiable to you Axis2 Java installation diectoy. 
    eg: 'expot AXIS2_HOME=/home/axis2java' 
-3. un WSDL2C.sh giving WSDL2C command line aguments as the aguments to the shell scipt.
+3. Run WSDL2C.sh giving WSDL2C command line aguments as the aguments to the shell scipt.
 
-Note: Same fo the bat file as wel. 
+Note: Do the same for the bat file on Windows. 
 
 
 Examples
 --------
 
 To geneate a seve skeleton in C:
+Linux:
 	sh WSDL2C.sh -ui inteoptestdoclitpaametes.wsdl -ss -sd -d adb -u
-    o  WSDL2C.bat -ui inteoptestdoclitpaametes.wsdl -ss -sd -d adb -u
+Windows:
+      WSDL2C.bat -ui inteoptestdoclitpaametes.wsdl -ss -sd -d adb -u
 
 To geneate a client stub in C: 
-
+Linux: 
 	sh WSDL2C.sh -ui inteoptestdoclitpaametes.wsdl -d adb -u 
-    o  WSDL2C.bat -ui inteoptestdoclitpaametes.wsdl -d adb -u 
+Windows
+      WSDL2C.bat -ui inteoptestdoclitpaametes.wsdl -d adb -u 
 
