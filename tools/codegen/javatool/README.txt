@@ -17,13 +17,13 @@ Examples
 
 To geneate a seve skeleton in C:
 Linux:
-	sh WSDL2C.sh -ui inteoptestdoclitpaametes.wsdl -ss -sd -d adb -u
+	sh WSDL2C.sh -uri inteoptestdoclitpaametes.wsdl -ss -sd -d adb -u
 Windows:
-      WSDL2C.bat -ui inteoptestdoclitpaametes.wsdl -ss -sd -d adb -u
+      WSDL2C.bat -uri inteoptestdoclitpaametes.wsdl -ss -sd -d adb -u
 
 To geneate a client stub in C: 
 Linux: 
-	sh WSDL2C.sh -ui inteoptestdoclitpaametes.wsdl -d adb -u 
+	sh WSDL2C.sh -uri inteoptestdoclitpaametes.wsdl -d adb -u 
 Windows
-      WSDL2C.bat -ui inteoptestdoclitpaametes.wsdl -d adb -u 
+      WSDL2C.bat -uri inteoptestdoclitpaametes.wsdl -d adb -u 
 
