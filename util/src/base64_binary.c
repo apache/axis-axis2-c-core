@@ -25,6 +25,7 @@ struct axutil_base64_binary
     int plain_binary_len;
 };
 
+
 AXIS2_EXTERN axutil_base64_binary_t *AXIS2_CALL
 axutil_base64_binary_create(
     const axutil_env_t * env)
@@ -55,6 +56,7 @@ axutil_base64_binary_create_with_plain_binary(
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, plain_binary, NULL);
+
     base64_binary = (axutil_base64_binary_t *) axutil_base64_binary_create(env);
     if (!base64_binary)
     {
@@ -118,6 +120,11 @@ axutil_base64_binary_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
+    if (!base64_binary)
+    {
+        return;
+    }
+
     if (base64_binary->plain_binary)
     {
         AXIS2_FREE(env->allocator, base64_binary->plain_binary);
@@ -138,7 +145,9 @@ axutil_base64_binary_set_plain_binary(
     const unsigned char *plain_binary,
     int plain_binary_len)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    AXIS2_PARAM_CHECK(env->error, plain_binary, AXIS2_FAILURE);
+
     base64_binary->plain_binary =
         AXIS2_MALLOC(env->allocator, sizeof(unsigned char) * plain_binary_len);
     if (!base64_binary->plain_binary)
@@ -160,6 +169,7 @@ axutil_base64_binary_get_plain_binary(
     const axutil_env_t * env,
     int *plain_binary_len)
 {
+    AXIS2_PARAM_CHECK(env->error, base64_binary, NULL);
     *plain_binary_len = base64_binary->plain_binary_len;
     return base64_binary->plain_binary;
 }
@@ -172,7 +182,8 @@ axutil_base64_binary_set_encoded_binary(
 {
     int plain_binary_len = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, base64_binary, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, encoded_binary, AXIS2_FAILURE);
 
     plain_binary_len = axutil_base64_decode_len(encoded_binary);
     base64_binary->plain_binary =
@@ -197,6 +208,7 @@ axutil_base64_binary_get_encoded_binary(
 {
     char *encoded_binary = NULL;
     int encoded_binary_len = 0;
+    AXIS2_PARAM_CHECK(env->error, base64_binary, NULL);
 
     encoded_binary_len =
         axutil_base64_encode_len(base64_binary->plain_binary_len);
@@ -220,6 +232,11 @@ axutil_base64_binary_get_encoded_binary_len(
     const axutil_env_t * env)
 {
     int encoded_binary_len = 0;
+    if (!base64_binary)
+    {
+        return 0;
+    }
+
     encoded_binary_len =
         axutil_base64_encode_len(base64_binary->plain_binary_len);
     return encoded_binary_len;
@@ -230,5 +247,9 @@ axutil_base64_binary_get_decoded_binary_len(
     axutil_base64_binary_t * base64_binary,
     const axutil_env_t * env)
 {
+    if (!base64_binary)
+    {
+        return 0;
+    }
     return base64_binary->plain_binary_len;
 }

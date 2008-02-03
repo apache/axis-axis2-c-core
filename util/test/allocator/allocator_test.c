@@ -22,6 +22,12 @@ int read_binary()
       FILE *in = fopen("test","rb");
       FILE *out = fopen("test.doc","w");
 
+      if (!(in && out))
+      {
+          fprintf (stderr, "unable to open streams\n");
+          return -1;
+      }
+
       while((plain_binary_len = fread(buffer,1,sizeof(buffer),in)) > 0)
       {
          fwrite(buffer,1,plain_binary_len,out);
@@ -42,7 +48,9 @@ axis2_status_t test_base64()
     read_binary(); 
     axutil_base64_binary_create(env);
     printf(" base64 binary created\n");
-    base64_binary = axutil_base64_binary_create_with_plain_binary(env,plain_binary,plain_binary_len);
+    base64_binary = axutil_base64_binary_create_with_plain_binary(env,
+                                                                  plain_binary,
+                                                                  plain_binary_len); 
     printf(" base64 binary created with plain binary\n"); 
     encoded_binary = axutil_base64_binary_get_encoded_binary(base64_binary,env);
     printf(" get encorded binary \n");

@@ -98,6 +98,11 @@ axutil_base64_decode_len(
     register const unsigned char *bufin;
     register int nprbytes;
 
+    if (!bufcoded)
+    {
+        return -1;
+    }
+
     bufin = (const unsigned char *) bufcoded;
     while (pr2six[*(bufin++)] <= 63);
 
@@ -135,6 +140,11 @@ axutil_base64_decode_binary(
     register const unsigned char *bufin;
     register unsigned char *bufout;
     register int nprbytes;
+
+    if (!bufcoded)
+    {
+        return -1;
+    }
 
     bufin = (const unsigned char *) bufcoded;
     while (pr2six[*(bufin++)] <= 63);
