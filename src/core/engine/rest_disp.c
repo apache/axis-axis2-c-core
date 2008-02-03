@@ -315,8 +315,13 @@ axis2_rest_disp_get_rest_op_with_method_and_location(
     axis2_char_t *rindex = NULL;
     axis2_bool_t pass_one = AXIS2_TRUE;
     AXIS2_PARAM_CHECK(env->error, location, NULL);
+    AXIS2_PARAM_CHECK(env->error, method, NULL);
 
     loc_str = axutil_strtrim(env, location, NULL);
+    if (!loc_str)
+    {
+        return NULL;
+    }
     loc_str_tmp = loc_str;
     if (loc_str_tmp[0] == '/')
     {
