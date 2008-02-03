@@ -419,6 +419,10 @@ axis2_op_client_execute(
             }
         }
     }
+    if (!transport_in)
+    {
+        return AXIS2_FAILURE;
+    }
 
     if (!(axis2_msg_ctx_get_transport_in_desc(msg_ctx, env)))
     {
@@ -1110,6 +1114,7 @@ axis2_op_client_two_way_send(
     axutil_property_t *property = NULL;
     long index = -1;
     axis2_bool_t wait_indefinitely = AXIS2_FALSE;
+    axis2_char_t *mep = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -1141,13 +1146,21 @@ axis2_op_client_two_way_send(
     op = axis2_msg_ctx_get_op(msg_ctx, env);
     if (op)
     {
-        /* handle one way case */
-        const axis2_char_t *mep = axis2_op_get_msg_exchange_pattern(op, env);
-        if (!(axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY)) ||
-            !(axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY)))
-        {
-            return NULL;
-        }
+        mep = (axis2_char_t *)axis2_op_get_msg_exchange_pattern(op, env);
+    }
+
+    if (!mep)
+    {
+        AXIS2_ERROR_SET(env->error,
+                        AXIS2_ERROR_MEP_CANNOT_DETERMINE_MEP,
+                        AXIS2_FAILURE);
+        return NULL;
+    }
+
+    /* handle one way case */
+    if (!(axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY)))
+    {
+        return NULL;
     }
 
     /* create the response */
@@ -1267,6 +1280,28 @@ axis2_op_client_two_way_send(
     {
         axis2_engine_free(engine, env);
         engine = NULL;
+    }
+    if (!(axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY)) && response)
+    {
+        switch(axis2_msg_ctx_get_status_code (response, env))
+        {
+            case 500:
+                AXIS2_ERROR_SET(env->error,
+                                AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
+                                AXIS2_FAILURE);
+                break;
+            case 0:
+                AXIS2_ERROR_SET(env->error,
+                                AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE,
+                                AXIS2_FAILURE);
+                break;
+            case -1:
+                AXIS2_ERROR_SET(env->error,
+                                AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE,
+                                AXIS2_FAILURE);
+                break;
+        }
+        return NULL;
     }
     return response;
 }

@@ -40,7 +40,7 @@ axis2_notify_notify(
     }
 
     text_node = axiom_node_get_first_child(node, env);
-    if (!node)                  /* actual text to notify */
+    if (!text_node)                  /* actual text to notify */
     {
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST,

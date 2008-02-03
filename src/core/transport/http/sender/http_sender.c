@@ -899,6 +899,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         return AXIS2_FAILURE;
     }
 
+    axis2_msg_ctx_set_status_code (msg_ctx, env, status_code);
+
     response = axis2_http_client_get_response (sender->client, env);
     if (AXIS2_HTTP_RESPONSE_OK_CODE_VAL == status_code ||
         AXIS2_HTTP_RESPONSE_ACK_CODE_VAL == status_code)
@@ -922,12 +924,10 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                              AXIS2_FAILURE);
             /* handle one way case */
 
-            if (axutil_strcmp (mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
-                axutil_strcmp (mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
+            if (axutil_strcmp (mep, AXIS2_MEP_URI_OUT_ONLY) == 0)
             {
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
-                                 "mep is AXIS2_MEP_URI_OUT_ONLY or"
-                                 "AXIS2_MEP_URI_ROBUST_OUT_ONLY");
+                                 "mep is AXIS2_MEP_URI_OUT_ONLY");
                 return AXIS2_FAILURE;
             }
         }
@@ -1086,7 +1086,6 @@ axis2_http_sender_get_header_info (axis2_http_sender_t * sender,
     }
 
     status_code = axis2_http_simple_response_get_status_code (response, env);
-    axis2_msg_ctx_set_status_code (msg_ctx, env, status_code);
     return AXIS2_SUCCESS;
 }
 
