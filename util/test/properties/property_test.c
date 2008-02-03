@@ -20,6 +20,11 @@ axis2_status_t test_properties()
 { 
     FILE *input = fopen("input.doc","rb");
     FILE *output = fopen("output.doc","rb");
+    if (!(input && output))
+    {
+        return AXIS2_FAILURE;
+    }
+
     env = create_environment();
     if(!env)
     {
