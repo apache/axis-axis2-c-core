@@ -1,8 +1,9 @@
 TESTS = test_thread test_util
 noinst_PROGRAMS = test_util test_thread
 noinst_HEADERS = test_log.h \
-                    test_thread.h \
-                    test_md5.h
+                 test_thread.h \
+		 create_env.h\
+                 test_md5.h
 check_PROGRAMS = test_util test_thread
 SUBDIRS =
 test_util_SOURCES = test_util.c test_log.c test_string.c test_md5.c
