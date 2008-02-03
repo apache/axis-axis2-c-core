@@ -1,4 +1,5 @@
-REM set AXIS2_HOME = C:\axis2-1.1\axis2-1.2-SNAPSHOT
+echo off
+REM set AXIS2_HOME=C:\axis2-SNAPSHOT
 setlocal EnableDelayedExpansion
 set AXIS2_CLASSPATH=%AXIS2_HOME%
 FOR %%c in ("%AXIS2_HOME%\lib\*.jar") DO set AXIS2_CLASSPATH=!AXIS2_CLASSPATH!;%%c;
