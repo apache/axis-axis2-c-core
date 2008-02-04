@@ -97,7 +97,7 @@ main(
         axutil_env_create_with_error_log(allocator, error, axis_log);
     policy_array = axutil_array_list_create(environment, 10);
     
-        //get all the policy values of "Binding_2B"
+        /*get all the policy values of "Binding_2B"*/
         get_all_policy("Binding-2B", environment, policy_array, file_name);
     node =
         (axiom_node_t *) axutil_array_list_get(policy_array, environment, 2);
@@ -114,7 +114,7 @@ main(
         
     {
         
-            //printf(outfilename);
+            /*printf(outfilename);*/
             o = fopen("C:\\OMWsdl\\wsdltest\\debug\\out.xml", "w");
         if (!o)
             return -1;
