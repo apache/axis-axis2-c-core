@@ -52,10 +52,10 @@ axis2c.
          SF_NOTIFY_SECURE_PORT | SF_NOTIFY_NONSECURE_PORT |
          SF_NOTIFY_AUTH_COMPLETE );
     
-        // Give a short discription about the module.
+        /* Give a short discription about the module.*/
         strcpy(pVer->lpszFilterDesc, "axis2c filter");
     
-        // initialize axis2
+        /* initialize axis2*/
         rc = init_axis2();
     return rc;
 }
