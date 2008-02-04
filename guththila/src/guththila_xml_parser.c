@@ -149,15 +149,12 @@ guththila_token_close(guththila_t * m, guththila_token_t * tok,
             /*checks inside the m->temp_name to parse the default namespace*/
             /*checks inside the m->temp_prefix to parse namespace with prefix*/
         {
-
-
-
 #ifndef GUTHTHILA_VALIDATION_PARSER
-                namesp =
+            namesp =
                 (guththila_namespace_t *)
                 AXIS2_MALLOC(sizeof(guththila_namespace_t));
-                GUTHTHILA_NAMESPACE_INITIALIZE(namesp, m->temp_name, m->temp_tok);
-                guththila_stack_push(&m->namesp, namesp);            
+            GUTHTHILA_NAMESPACE_INITIALIZE(namesp, m->temp_name, m->temp_tok);
+            guththila_stack_push(&m->namesp, namesp);            
 #else   
             elem = (guththila_element_t *)guththila_stack_peek(&m->elem, env);
             if (elem && !elem->is_namesp)
@@ -224,7 +221,7 @@ guththila_token_close(guththila_t * m, guththila_token_t * tok,
             attr = (guththila_attr_t *) AXIS2_MALLOC(env->allocator,
                                                   sizeof(guththila_attr_t));           
 #ifdef GUTHTHILA_VALIDATION_PARSER
-	    if (m->temp_prefix)
+            if (m->temp_prefix)
             {
                 nmsp_no = GUTHTHILA_STACK_SIZE(m->namesp);
                 for (counter = 0; counter < nmsp_no; counter++)
@@ -355,7 +352,7 @@ guththila_init(guththila_t * m, void *reader, const axutil_env_t * env)
             e_namesp = NULL;
         }
         return GUTHTHILA_FAILURE;
-    }     
+    }
     m->name = NULL;
     m->prefix = NULL;
     m->value = NULL;
@@ -741,11 +738,12 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                     c = guththila_next_char(m, 0, env);
                     while (!GUTHTHILA_IS_SPACE(c) && c != '>' && c != '/')
                     {
+                        if (c == -1)
+                            return -1;
                         if (c != ':')
                         {
                             c = guththila_next_char(m, 0, env);
-                        }
-                       
+                        }                       
                         else
                         {
                             guththila_token_close(m, tok, _prefix, 0, env);
@@ -796,6 +794,8 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                             c = guththila_next_char(m, 0, env);
                             while (!GUTHTHILA_IS_SPACE(c) && c != '=')
                             {
+                                if (c == -1)
+                                    return -1;
                                 if (c != ':')
                                 {
                                     c = guththila_next_char(m, 0, env);
@@ -821,6 +821,8 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                             GUTHTHILA_TOKEN_OPEN(m, tok, env);
                             while (c != quote)
                             {
+                                if (c == -1)
+                                    return -1;
                                 c = guththila_next_char(m, 0, env);
                             }
                             guththila_token_close(m, tok, _attribute_value, 0,
@@ -849,6 +851,8 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                     c = guththila_next_char(m, 0, env);
                     while (!GUTHTHILA_IS_SPACE(c) && c != '>')
                     {
+                        if (c == -1)
+                            return -1;
                         if (c != ':')
                         {
                             c = guththila_next_char(m, 0, env);
@@ -934,8 +938,8 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                                     m->guththila_event = GUTHTHILA_COMMENT;
                                     while (c != '<')
                                     {
+                                        if (c == -1) return -1;
                                         c = guththila_next_char(m, 0, env);
-                                        if (c == -1)return -1;
                                     }
                                     guththila_token_close(m, tok, _char_data,0, env);
                                     m->next--;
@@ -954,7 +958,10 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                 {
                     c = guththila_next_char(m, 0, env);
                     while ('<' != c)
+                    {
+                        if (c == -1) return -1;
                         c = guththila_next_char(m, -1, env);
+                    }
                 }
             }
             else if (c == '?')
@@ -1037,7 +1044,10 @@ guththila_process_xml_dec(
                 nc = guththila_next_char(m, 0, env);
                 GUTHTHILA_TOKEN_OPEN(m, tok, env);
                 while (nc != quote)
+                {
+                    if (nc == -1) return -1;
                     nc = guththila_next_char(m, 0, env);
+                }
                 guththila_token_close(m, tok, _attribute_value, 0, env);
                 c = guththila_next_char(m, 0, env);
                 GUTHTHILA_SKIP_SPACES(m, c, env);
@@ -1061,7 +1071,10 @@ guththila_process_xml_dec(
                 nc = guththila_next_char(m, 0, env);
                 GUTHTHILA_TOKEN_OPEN(m, tok, env);
                 while (nc != quote)
+                {
+                    if (nc == -1) return -1;
                     nc = guththila_next_char(m, 0, env);
+                }
                 guththila_token_close(m, tok, _attribute_value, 0, env);
                 c = guththila_next_char(m, 0, env);
                 GUTHTHILA_SKIP_SPACES(m, c, env);
@@ -1081,7 +1094,10 @@ guththila_process_xml_dec(
                 nc = guththila_next_char(m, 0, env);
                 GUTHTHILA_TOKEN_OPEN(m, tok, env);
                 while (nc != quote)
+                {
+                    if (nc == -1) return -1;
                     nc = guththila_next_char(m, 0, env);
+                }
                 guththila_token_close(m, tok, _attribute_value, 0, env);
                 c = guththila_next_char(m, 0, env);
                 GUTHTHILA_SKIP_SPACES(m, c, env);
@@ -1440,10 +1456,10 @@ guththila_get_encoding(
 int GUTHTHILA_CALL
 guththila_next_char(guththila_t * m, int eof, const axutil_env_t * env) 
 {
-    int c = -1;
-    size_t temp = 0, data_move = 0, i = 0;
-    guththila_char_t **temp1 = NULL;
-    size_t * temp2 = NULL, *temp3 = NULL;
+    int c;
+    size_t temp, data_move, i;
+    guththila_char_t **temp1;
+    size_t * temp2, *temp3;
     if (m->reader->type == GUTHTHILA_MEMORY_READER &&
          m->next < GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer))
     {
@@ -1480,6 +1496,8 @@ guththila_next_char(guththila_t * m, int eof, const axutil_env_t * env)
                 temp3 =
                     (size_t *) AXIS2_MALLOC(env->allocator,
                                             sizeof(size_t) * temp);
+                if (!temp1 || !temp2 || !temp3)
+                    return (-1);
                 for (i = 0; i < m->buffer.no_buffers; i++)
                 {
                     temp1[i] = m->buffer.buff[i];
@@ -1494,12 +1512,13 @@ guththila_next_char(guththila_t * m, int eof, const axutil_env_t * env)
                 m->buffer.data_size = temp3;
                 m->buffer.no_buffers *= 2;
             }
-            m->buffer.cur_buff++;
-            m->buffer.buff[m->buffer.cur_buff] =
+            m->buffer.buff[m->buffer.cur_buff + 1] =
                 (guththila_char_t *) AXIS2_MALLOC(env->allocator,
                                       sizeof(guththila_char_t) *
-                                      m->buffer.buffs_size[m->buffer.cur_buff -
-                                                           1] * 2);
+                                      m->buffer.buffs_size[m->buffer.cur_buff] * 2);
+            if (!m->buffer.buff[m->buffer.cur_buff + 1])
+                return -1;
+            m->buffer.cur_buff++;
             m->buffer.buffs_size[m->buffer.cur_buff] =
                 m->buffer.buffs_size[m->buffer.cur_buff - 1] * 2;
             m->buffer.data_size[m->buffer.cur_buff] = 0;
@@ -1557,12 +1576,12 @@ guththila_next_no_char(guththila_t * m, int eof,
 					   guththila_char_t *bytes, 
 					   int no, const axutil_env_t * env) 
 {
-    int c = -1,
-        temp = 0,
-        data_move = 0,
-        i = 0;
-    guththila_char_t **temp1 = NULL;
-    size_t * temp2 = NULL, *temp3 = NULL;
+    int c,
+        temp,
+        data_move,
+        i;
+    guththila_char_t **temp1;
+    size_t * temp2, *temp3;
     if (m->reader->type == GUTHTHILA_MEMORY_READER &&
          m->next + no - 1 < GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer) &&
          m->buffer.cur_buff != -1)
@@ -1607,6 +1626,8 @@ guththila_next_no_char(guththila_t * m, int eof,
                 temp3 =
                     (size_t *) AXIS2_MALLOC(env->allocator,
                                             sizeof(size_t) * temp);
+                if (!temp1 || !temp2 || !temp3)
+                    return (-1);
                 for (i = 0; i < m->buffer.no_buffers; i++)
                 {
                     temp1[i] = m->buffer.buff[i];
@@ -1626,15 +1647,20 @@ guththila_next_no_char(guththila_t * m, int eof,
                                       sizeof(guththila_char_t) *
                                       m->buffer.data_size[m->buffer.cur_buff] *
                                       2);
+            if (!m->buffer.buff[m->buffer.cur_buff + 1])
+                return -1;
             m->buffer.cur_buff++;
             m->buffer.buffs_size[m->buffer.cur_buff] =
                 m->buffer.buffs_size[m->buffer.cur_buff - 1] * 2;
             m->buffer.data_size[m->buffer.cur_buff] = 0;
-            if (m->last_start != -1)
+            data_move = m->next;
+            if ((m->last_start != -1) && (m->last_start < data_move))
+                data_move = m->last_start;
+            data_move = 
+                m->buffer.data_size[m->buffer.cur_buff - 1] -
+                (data_move - m->buffer.pre_tot_data);
+            if (data_move)
             {
-                data_move =
-                    m->buffer.data_size[m->buffer.cur_buff - 1] -
-                    (m->last_start - m->buffer.pre_tot_data);
                 memcpy(m->buffer.buff[m->buffer.cur_buff],
                         m->buffer.buff[m->buffer.cur_buff - 1] +
                         m->buffer.data_size[m->buffer.cur_buff - 1] - data_move,
@@ -1689,7 +1715,7 @@ guththila_next_no_char(guththila_t * m, int eof,
             return no;
         }
     }
-    return c >= 0 ? c : -1;
+    return -1;
 }
 
 
