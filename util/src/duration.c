@@ -176,7 +176,7 @@ axutil_duration_deserialize_duration(
 
         if (*cur == 'T')
         {
-            if (seq < 3)
+            if (!(seq > 3))
             {
                 seq = 3;
                 cur++;
@@ -190,15 +190,6 @@ axutil_duration_deserialize_duration(
                 return AXIS2_FAILURE;
             }
         }
-        else if (seq > 3)
-        {
-            duration->is_negative = AXIS2_FALSE;
-            duration->years = duration->months = duration->days = duration->hours = duration->mins = duration->secs = 0;
-
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE, AXIS2_FAILURE);
-            return AXIS2_FAILURE;
-        }
-
         num = 0;
 
         if ((*cur < '0') || (*cur > '9'))
@@ -282,7 +273,7 @@ axutil_duration_deserialize_duration(
                 break;
             }
             if ((++seq == 3) || (seq == 6))
-                return 1;
+                return AXIS2_SUCCESS;
         }
         cur++;
     }
