@@ -338,7 +338,9 @@ extern "C"
 
     /**
      *   returns a list of children iterator
-     *   iterators free function must be called by user
+     *   returned iterator is freed when om_element struct
+     *   is freed
+     *   iterators reset function must be called by user
      */
     AXIS2_EXTERN axiom_children_iterator_t *AXIS2_CALL
 
