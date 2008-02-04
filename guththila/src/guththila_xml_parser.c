@@ -1658,10 +1658,9 @@ guththila_next_no_char(guththila_t * m, int eof,
 					   guththila_char_t *bytes, 
 					   int no, const axutil_env_t * env) 
 {
-    int c,
-        temp,
-        data_move,
-        i;
+    int temp,
+     data_move,
+     i;
     guththila_char_t **temp1;
     size_t * temp2, *temp3;
     if (m->reader->type == GUTHTHILA_MEMORY_READER &&
