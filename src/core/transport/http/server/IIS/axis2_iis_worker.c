@@ -33,7 +33,7 @@
 #include "axis2_iis_stream.h"
 #include "axis2_iis_worker.h"
     
-// Files from iis
+/* Files from iis */
 #include <httpfilt.h>
 #include <httpext.h>
     
@@ -145,8 +145,8 @@ axis2_bool_t processed = AXIS2_FALSE;
 
 axis2_char_t * ctx_written = NULL;
     
-//int content_length = -1;
-//axis2_char_t *req_url = NULL;
+/*int content_length = -1;*/
+/*axis2_char_t *req_url = NULL;*/
 axis2_char_t * body_string = NULL;
     
 int send_status = -1;
@@ -184,7 +184,7 @@ CHAR redirect_url[INTERNET_MAX_PATH_LENGTH];
     
 soap_action[0] = '\0';
     
-// Check the parameters
+/*Check the parameters*/
     
 if (!lpECB)
 {
@@ -211,7 +211,7 @@ ret_val = lpECB->GetServerVariable(lpECB->ConnID, "HTTP_URL", redirect_url, &cbS
     
 axis2_worker_get_original_url(redirect_url, original_url);
     
-// create the url using the above variables                     
+/* create the url using the above variables */                     
 sprintf(req_url, "%s%s%s%s", "http", server_name, port, original_url);
     
 out_stream = axutil_stream_create_basic(env);
@@ -294,7 +294,7 @@ if (stricmp(lpECB->lpszMethod, "GET") == 0
     }
  
 
-            // If this is not a valid GET request display the list of displayed services.
+            /* If this is not a valid GET request display the list of displayed services.*/
             if (processed == AXIS2_FAILURE)
             
         {
@@ -347,7 +347,7 @@ req_url);
 
         
 
-            // generate a soap fault and send it
+            /* generate a soap fault and send it*/
             if (status == AXIS2_FAILURE)
             
         {
@@ -413,7 +413,7 @@ axis2_msg_ctx_free(fault_ctx, env);
     
 }
     
-        // Nothing wrong has happen. So proceed with the request
+        /* Nothing wrong has happen. So proceed with the request*/
         if (-1 == send_status)
         
     {
@@ -544,7 +544,7 @@ unsigned int written = 0;
             
 char *buf = (char *) b;
             
-                // If couldn't write the data at onece try again until all the data is written.
+                /* If couldn't write the data at onece try again until all the data is written.*/
                 while (written < l)
             {
                 
