@@ -92,11 +92,11 @@ given request to this extentiom.
     BOOL WINAPI GetExtensionVersion(HSE_VERSION_INFO * pVer) 
 {
     
-        // Create the extension version string, and copy string to HSE_VERSION_INFO structure. 
+        /* Create the extension version string, and copy string to HSE_VERSION_INFO structure.*/ 
         pVer->dwExtensionVersion =
         MAKELONG(HSE_VERSION_MINOR, HSE_VERSION_MAJOR);
     
-        // Copy description string into HSE_VERSION_INFO structure. 
+        /* Copy description string into HSE_VERSION_INFO structure.*/ 
         strcpy(pVer->lpszExtensionDesc, "Apache Axis2c ISAPI Redirector");
     return TRUE;
 }
@@ -137,7 +137,7 @@ their initial values in this method.
     axutil_thread_pool_t * thread_pool = NULL;
     axis2_status_t status = FALSE;
     
-        // We need to init xml readers before we go into threaded env     
+        /* We need to init xml readers before we go into threaded env */     
         if (!is_inited)
     {
         axiom_xml_reader_init();
@@ -166,11 +166,11 @@ their initial values in this method.
 axis2_status_t axis2_terminate() 
 {
     
-//  axiom_xml_reader_cleanup();
+/*  axiom_xml_reader_cleanup();*/
         
-//  AXIS2_IIS_WORKER_FREE(axis2_worker, axutil_env);
+/*  AXIS2_IIS_WORKER_FREE(axis2_worker, axutil_env);*/
         
-//  axutil_env_free(axutil_env);
+/*  axutil_env_free(axutil_env);*/
         return TRUE;
 }
 
@@ -178,10 +178,10 @@ their initial values in this method.
 {
     unsigned int i = 0;
     
-        // Should contain "/axis2/"
+        /* Should contain "/axis2/"*/
         ret_url[0] = '\0';
     
-        // The url should begin with "/axis2/"
+        /* The url should begin with "/axis2/"*/
         if (url[0] == '/' && (url[1] == 'a' || url[1] == 'A') 
             &&(url[2] == 'x' || url[2] == 'X') 
             &&(url[3] == 'i' || url[3] == 'I') 
@@ -190,7 +190,7 @@ their initial values in this method.
         
     {
         
-            // Append the string to redirect the request
+            /* Append the string to redirect the request*/
             strcpy(ret_url, redirect_word);
         strcat(ret_url, &url[7]);
         return TRUE;
