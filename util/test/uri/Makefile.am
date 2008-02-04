@@ -1,5 +1,5 @@
 TESTS = uri_test
-noinst_PROGRAMS = uri_test 
+check_PROGRAMS = uri_test 
 noinst_PROGRAMS = uri_test 
 uri_test_SOURCES = uri_test.c ../util/create_env.c
 

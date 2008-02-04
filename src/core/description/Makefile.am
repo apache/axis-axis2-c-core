@@ -14,7 +14,7 @@ libaxis2_description_la_SOURCES =desc.c \
                                 transport_out_desc.c \
                                 msg.c 
 
-libaxis2_engine_la_LDFLAGS = -version-info $(VERSION_NO)
+libaxis2_description_la_LDFLAGS = -version-info $(VERSION_NO)
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/core/engine \

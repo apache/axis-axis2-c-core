@@ -32,3 +32,21 @@ axutil_atoi(
     }
     return n;
 }
+
+AXIS2_EXTERN uint64_t AXIS2_CALL
+axutil_strtoul(
+    const char *s,
+    char **endptr,
+    int base)
+{
+    int i;
+    uint64_t n;
+
+    n = 0;
+    for (i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
+    {
+        n = 10 * n + (s[i] - '0');
+    }
+    *endptr = (char *)(s + i);
+    return n;
+}

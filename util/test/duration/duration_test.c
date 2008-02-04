@@ -71,7 +71,7 @@ axis2_status_t set_values()
     get_minute = axutil_duration_get_mins(duration,env);
     axutil_duration_set_seconds(duration,env,49);
     get_second = axutil_duration_get_seconds(duration,env);
-    printf("The time is %d:%d:%d-%d-%d-%d\n ",get_year,get_month,get_day,get_hour,get_minute,get_second);
+    printf("The time is %d:%d:%d-%d-%d-%f\n ",get_year,get_month,get_day,get_hour,get_minute,get_second);
     compare = axutil_duration_compare(duration_one,duration,env);
     printf("The test 5 is completed\n");
     return AXIS2_SUCCESS;
