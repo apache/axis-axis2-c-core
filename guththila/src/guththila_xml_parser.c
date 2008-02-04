@@ -110,6 +110,90 @@ int GUTHTHILA_CALL guththila_process_xml_dec(
 #define GUTHTHILA_IS_VALID_STARTING_CHAR(c) (isalpha(c) || '_' == c || ':' == c)
 #endif 
 
+static void
+guththila_token_evaluate_references(guththila_token_t * tok)
+{
+    size_t size = tok->size;
+    guththila_char_t *start = tok->start;
+    size_t i, j;
+
+    for (i = 0; (i < size) && (start[i] != '&'); i++)
+        ;
+    if (i < size)
+    {
+        j = i;
+        while (i < size)
+        {
+            if (((i + 3) < size) && 
+                (start[i + 1] == 'g') &&
+                (start[i + 2] == 't') &&
+                (start[i + 3] == ';'))
+            {
+                /* replace first char of sequence with > */
+                start[j++] = '>';
+                /* skip remainder of sequence */
+                i += 4;
+            }
+            else if (((i + 3) < size) &&
+                (start[i + 1] == 'l') &&
+                (start[i + 2] == 't') &&
+                (start[i + 3] == ';'))
+            {
+                /* replace first char of sequence with < */
+                start[j++] = '<';
+                /* skip remainder of sequence */
+                i += 4;
+            }
+            else if (((i + 4) < size) &&
+                (start[i + 1] == 'a') &&
+                (start[i + 2] == 'm') &&
+                (start[i + 3] == 'p') &&
+                (start[i + 4] == ';'))
+            {
+                /* replace first char of sequence with & */
+                start[j++] = '&';
+                /* skip remainder of sequence */
+                i += 5;
+            }
+            else if (((i + 5) < size) &&
+                (start[i + 1] == 'a') &&
+                (start[i + 2] == 'p') &&
+                (start[i + 3] == 'o') &&
+                (start[i + 4] == 's') &&
+                (start[i + 5] == ';'))
+            {
+                /* replace first char of sequence with ' */
+                start[j++] = '\'';
+                /* skip remainder of sequence */
+                i += 6;
+            }
+            else if (((i + 5) < size) &&
+                (start[i + 1] == 'q') &&
+                (start[i + 2] == 'u') &&
+                (start[i + 3] == 'o') &&
+                (start[i + 4] == 't') &&
+                (start[i + 5] == ';'))
+            {
+                /* replace first char of sequence with " */
+                start[j++] = '\"';
+                /* skip remainder of sequence */
+                i += 6;
+            }
+            else
+            {
+                /* ampersand does not start a sequence;
+                   skip it and continue scanning */
+                /* could insert character reference decoding here */
+                start[j++] = start[i++];
+            }
+            /* copy characters downward until the next ampersand */
+            for ( ; (i < size) && ('&' != (start[j] = start[i])); i++, j++)
+                ;
+        }
+        tok->size = j;
+    }
+}
+
 void GUTHTHILA_CALL
 guththila_token_close(guththila_t * m, guththila_token_t * tok, 
 					  int tok_type, int referer, 
@@ -135,17 +219,15 @@ guththila_token_close(guththila_t * m, guththila_token_t * tok,
         m->value = m->temp_tok;
         m->temp_tok = NULL;
         break;
+    case _text_data:
+        guththila_token_evaluate_references(m->temp_tok);
+        m->value = m->temp_tok;
+        m->temp_tok = NULL;
+        break;
     case _attribute_value:
-        if ((m->temp_prefix && GUTHTHILA_TOKEN_LEN(m->temp_prefix) == 5 &&
-             (m->temp_prefix->start)[0] == 'x' &&
-             (m->temp_prefix->start)[1] == 'm' &&
-             (m->temp_prefix->start)[2] == 'l' &&
-             (m->temp_prefix->start)[3] == 'n' &&
-             (m->temp_prefix->start)[4] == 's') || ((m->temp_name->start)[0] == 'x' &&
-                                                        (m->temp_name->start)[1] == 'm' && 
-                                                        (m->temp_name->start)[2] == 'l' &&
-                                                        (m->temp_name->start)[3] == 'n' &&
-                                                        (m->temp_name->start)[4] == 's') )
+        guththila_token_evaluate_references(m->temp_tok);
+        if ((m->temp_prefix && (guththila_tok_str_cmp(m->temp_prefix, "xmlns", 5u, env) == 0)) ||
+            (guththila_tok_str_cmp(m->temp_name, "xmlns", 5u, env) == 0))
             /*checks inside the m->temp_name to parse the default namespace*/
             /*checks inside the m->temp_prefix to parse namespace with prefix*/
         {
@@ -352,7 +434,7 @@ guththila_init(guththila_t * m, void *reader, const axutil_env_t * env)
             e_namesp = NULL;
         }
         return GUTHTHILA_FAILURE;
-    }
+    }     
     m->name = NULL;
     m->prefix = NULL;
     m->value = NULL;
@@ -938,7 +1020,7 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                                     m->guththila_event = GUTHTHILA_COMMENT;
                                     while (c != '<')
                                     {
-                                        if (c == -1) return -1;
+                                        if (c == -1)return -1;
                                         c = guththila_next_char(m, 0, env);
                                     }
                                     guththila_token_close(m, tok, _char_data,0, env);
@@ -992,7 +1074,7 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                     return -1;
             }
             while (c != '<');
-            guththila_token_close(m, tok, _char_data, ref, env);
+            guththila_token_close(m, tok, _text_data, ref, env);
             m->next--;
             if (white_space)
             {

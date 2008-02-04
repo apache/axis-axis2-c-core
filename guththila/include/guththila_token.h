@@ -41,7 +41,7 @@ enum guththila_token_type
 {
     _Unknown =
         1, _name, _attribute_name, _attribute_value, _prefix,
-    _char_data
+    _char_data, _text_data
 };
 typedef struct guththila_tok_list_s
 {

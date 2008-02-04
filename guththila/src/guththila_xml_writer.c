@@ -600,26 +600,66 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL
 guththila_write_characters(guththila_xml_writer_t * wr, guththila_char_t *buff,
                            const axutil_env_t * env) 
 {
+    size_t i;
+    size_t len = strlen(buff);
+    guththila_char_t ch;
     if (wr->status == START)
     {
         wr->status = BEGINING;
         guththila_write(wr, ">", 1u, env);
-        guththila_write(wr, buff, strlen(buff), env);
-        return GUTHTHILA_SUCCESS;
     }
     else if (wr->status == START_EMPTY)
     {
         wr->status = BEGINING;
         guththila_write(wr, "/>", 2u, env);
-        guththila_write(wr, buff, strlen(buff), env);
-        return GUTHTHILA_SUCCESS;
     }
-    else if (wr->status == BEGINING)
+    else if (wr->status != BEGINING)
     {
-        guththila_write(wr, buff, strlen(buff), env);
-        return GUTHTHILA_SUCCESS;
+        return GUTHTHILA_FAILURE;
     }
-    return GUTHTHILA_FAILURE;
+    while (len > 0)
+    {
+        /* scan buffer until the next special character */
+        for (i = 0; 
+            (i < len) && ((ch = buff[i]) != '&') && (ch != '<') && (ch != '>') && (ch != '\"') && (ch != '\'');
+            i++)
+            ;
+        /* write everything until the special character */
+        if (i > 0)
+        {
+            guththila_write(wr, buff, i, env);
+            buff += i;
+            len -= i;
+        }
+        /* replace the character with the appropriate sequence */
+        if (len > 0)
+        {
+            switch (ch)
+            {
+            case '&':
+                guththila_write(wr, "&amp;", 5u, env);
+                break;
+            case '<':
+                guththila_write(wr, "&lt;", 4u, env);
+                break;			
+            case '>':
+                guththila_write(wr, "&gt;", 4u, env);
+                break;			
+            case '\"':
+                guththila_write(wr, "&quot;", 6u, env);
+                break;			
+            case '\'':
+                guththila_write(wr, "&apos;", 6u, env);
+                break;
+            default:
+                return GUTHTHILA_FAILURE;
+            }
+            /* skip the character */
+            buff++;
+            len--;
+        }
+    }
+    return GUTHTHILA_SUCCESS;
 }
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL 
