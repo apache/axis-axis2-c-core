@@ -9,6 +9,7 @@
       <item name="Documentation" href="docs/index.html">
 	<item name="Installation Guide" href="docs/installationguide.html"/>
 	<item name="Axis2/C manual" href="docs/axis2c_manual.html"/>
+        <item name="Axis2/C FAQ" href="docs/faq.html"/>
       </item>
     <item name="Get Involved" href="lists_issues.html">
 	    <item name="Mailing Lists &amp; Issue Tracking" href="lists_issues.html"/>
