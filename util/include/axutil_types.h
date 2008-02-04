@@ -49,6 +49,12 @@ extern "C"
 
 #define AXIS2_STRTOUL(s, e, b) axutil_strtoul(s, e, b)
 
+    AXIS2_EXTERN int64_t AXIS2_CALL
+    axutil_atol(
+        const char *s);
+
+#define AXIS2_ATOL(s) axutil_atol(s)
+
     /** @} */
 
 #ifdef __cplusplus
