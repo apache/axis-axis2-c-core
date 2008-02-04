@@ -639,8 +639,11 @@ read_current_stream(
     axis2_char_t *length_char = 0;
     int length = -1;
     int chunked_encoded = 0;
+    int is_get = 0;
 
     buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t));
+    *data = NULL;
+    *header = NULL;
     do
     {
         buffer = AXIS2_REALLOC(env->allocator, buffer,
@@ -668,6 +671,12 @@ read_current_stream(
                     length_char++;
                     length = atoi(length_char);
                 }
+            }
+            if (strstr(current_line, "GET") || strstr(current_line, "HEAD")
+                || strstr(current_line, "DELETE"))
+            {
+                is_get = 1;
+                    /** Captures GET style requests */
             }
             *(buffer + read_size) = '\r';
         }
@@ -714,6 +723,10 @@ read_current_stream(
             header_ptr = (axis2_char_t *) axutil_strdup(env, buffer);
             header_just_finished = 1;
             *(buffer + read_size - 3) = '\r';
+            if (is_get && length == -1)
+            {
+                break;
+            }
         }
         read_size++;
         if (!chunked_encoded && length < -1)
@@ -748,6 +761,11 @@ read_current_stream(
     }
     while (length != 0);
 
+    if (is_get)
+    {
+        read_size++;
+    }
+
     buffer = AXIS2_REALLOC(env->allocator, buffer,
                            sizeof(axis2_char_t) * (read_size + 1));
     *(buffer + read_size) = '\0';
@@ -769,7 +787,11 @@ read_current_stream(
         }
         header_ptr = (axis2_char_t *) axutil_strdup(env, buffer);
         /** soap body part is unavailable */
-        *data = NULL;
+        if (is_get)
+        {
+            *data = (axis2_char_t *) axutil_strdup(env, "\n");
+            *(buffer + read_size - 1) = '\n';
+        }
     }
 
     *header = header_ptr;
