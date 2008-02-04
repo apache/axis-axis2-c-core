@@ -195,6 +195,14 @@ is_token_assertion(
     {
         return AXIS2_TRUE;
     }
+    else if (type == ASSERTION_TYPE_ISSUED_TOKEN)
+    {
+        return AXIS2_TRUE;
+    }
+    else if (type == ASSERTION_TYPE_SAML_TOKEN)
+    {
+        return AXIS2_TRUE;
+    }
     else
         return AXIS2_FALSE;
 }
