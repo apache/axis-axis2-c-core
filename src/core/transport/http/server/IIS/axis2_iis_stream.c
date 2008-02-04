@@ -112,10 +112,10 @@ iis_stream_read(
     if (stream_impl->cur_pos == 0)
         stream_impl->cur_position = stream_impl->lpECB->lpbData;
 
-    // If this is the case all the bytes are in the lpECB->lpbData buffer
+    /* If this is the case all the bytes are in the lpECB->lpbData buffer*/
     if (stream_impl->lpECB->cbAvailable == stream_impl->lpECB->cbTotalBytes)
     {
-        // Cannot read more than in the buffer.
+        /* Cannot read more than in the buffer.*/
         if (count + stream_impl->cur_pos <= stream_impl->lpECB->cbAvailable)
             data_to_read = (unsigned) count;
         else
