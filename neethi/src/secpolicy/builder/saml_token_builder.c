@@ -53,7 +53,11 @@ AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
     child_node = axiom_node_get_first_element(node, env);
     if (!child_node)
     {
-        return NULL;
+        assertion = neethi_assertion_create(env);
+        neethi_assertion_set_value(assertion, env,
+                                   saml_token,
+                                   ASSERTION_TYPE_SAML_TOKEN);
+        return assertion;
     }
 
     if (axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
