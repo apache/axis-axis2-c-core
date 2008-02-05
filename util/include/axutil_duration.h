@@ -158,6 +158,17 @@ extern "C"
         double seconds);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axutil_duration_get_is_negative(
+        axutil_duration_t * duration,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_duration_set_is_negative(
+        axutil_duration_t * duration,
+        const axutil_env_t * env,
+        axis2_bool_t is_negative);
+
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axutil_duration_compare(
         axutil_duration_t * duration_one,
         axutil_duration_t * duration_two,

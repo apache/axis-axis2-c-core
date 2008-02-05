@@ -69,12 +69,30 @@ axutil_duration_create_from_values(
     }
 
     duration->is_negative = negative;
-    duration->years = years;
-    duration->months = months;
-    duration->days = days;
-    duration->hours = hours;
-    duration->mins = minutes;
-    duration->secs = seconds;
+    if (years > -1)
+    {
+        duration->years = years;
+    }
+    if (months > -1)
+    {
+        duration->months = months;
+    }
+    if (days > -1)
+    {
+        duration->days = days;
+    }
+    if (hours > -1)
+    {
+        duration->hours = hours;
+    }
+    if (minutes > -1)
+    {
+        duration->mins = minutes;
+    }
+    if (seconds >= 0)
+    {
+        duration->secs = seconds;
+    }
 
     return duration;
 }
@@ -330,7 +348,7 @@ axutil_duration_set_duration(
         duration->hours = hours;
     if (mins > -1)
         duration->mins = mins;
-    if (seconds > -1)
+    if (seconds >= 0)
         duration->secs = seconds;
 
     return AXIS2_SUCCESS;
@@ -352,7 +370,10 @@ axutil_duration_set_years(
     int years)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    duration->years = years;
+    if (years > -1)
+    {
+        duration->years = years;
+    }
 
     return AXIS2_SUCCESS;
 }
@@ -373,7 +394,10 @@ axutil_duration_set_months(
     int months)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    duration->months = months;
+    if (months > -1)
+    {
+        duration->months = months;
+    }
 
     return AXIS2_SUCCESS;
 }
@@ -394,7 +418,10 @@ axutil_duration_set_days(
     int days)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    duration->days = days;
+    if (days > -1)
+    {
+        duration->days = days;
+    }
 
     return AXIS2_SUCCESS;
 }
@@ -415,7 +442,10 @@ axutil_duration_set_hours(
     int hours)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    duration->hours = hours;
+    if (hours > -1)
+    {
+        duration->hours = hours;
+    }
 
     return AXIS2_SUCCESS;
 }
@@ -436,7 +466,10 @@ axutil_duration_set_mins(
     int mins)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    duration->mins = mins;
+    if (mins > -1)
+    {
+        duration->mins = mins;
+    }
 
     return AXIS2_SUCCESS;
 }
@@ -457,7 +490,32 @@ axutil_duration_set_seconds(
     double seconds)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    duration->secs = seconds;
+    if (seconds >= 0)
+    {
+        duration->secs = seconds;
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axutil_duration_get_is_negative(
+    axutil_duration_t * duration,
+    const axutil_env_t * env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return duration->is_negative;
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axutil_duration_set_is_negative(
+    axutil_duration_t * duration,
+    const axutil_env_t * env,
+    axis2_bool_t is_negative)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    duration->is_negative = is_negative;
 
     return AXIS2_SUCCESS;
 }
@@ -474,8 +532,22 @@ axutil_duration_compare(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
-        return -1;
+        return AXIS2_FALSE;
     }
 
-     /*TODO*/ return AXIS2_SUCCESS;
+    if (duration_one->is_negative != duration_two->is_negative)
+        return AXIS2_FALSE;
+    if (duration_one->years != duration_two->years)
+        return AXIS2_FALSE;
+    if (duration_one->months != duration_two->months)
+        return AXIS2_FALSE;
+    if (duration_one->days != duration_two->days)
+        return AXIS2_FALSE;
+    if (duration_one->hours != duration_two->hours)
+        return AXIS2_FALSE;
+    if (duration_one->mins != duration_two->mins)
+        return AXIS2_FALSE;
+    if (duration_one->secs != duration_two->secs)
+        return AXIS2_FALSE;
+    return AXIS2_SUCCESS;
 }
