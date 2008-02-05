@@ -286,7 +286,8 @@ int GUTHTHILA_CALL
 guththila_write_token(guththila_xml_writer_t * wr, guththila_token_t * tok,
                         const axutil_env_t * env) 
 {
-    size_t remain_len = 0, i = 0;
+    int i;
+    size_t remain_len = 0;
     size_t temp = 0;
     size_t * temp1 = NULL, *temp2 = NULL;
     guththila_char_t **temp3 = NULL;
@@ -368,7 +369,8 @@ int GUTHTHILA_CALL
 guththila_write_xtoken(guththila_xml_writer_t * wr, guththila_char_t *buff,
                         size_t buff_len, const axutil_env_t * env) 
 {
-    size_t temp = 0, i = 0;
+    int i;
+    size_t temp = 0;
     size_t remain_len = 0;
     size_t * temp1 = NULL, *temp2 = NULL;
     guththila_char_t **temp3 = NULL;
@@ -794,7 +796,7 @@ guththila_write_namespace(
     guththila_char_t *uri,
     const axutil_env_t * env) 
 {
-    int i = 0, j = 0, temp = 0, nmsp_found = GUTHTHILA_FALSE, stack_size = 0;
+    int i, j, temp, nmsp_found = GUTHTHILA_FALSE, stack_size;
     guththila_xml_writer_namesp_t * namesp = NULL;
     guththila_xml_writer_element_t * elem = NULL;
     int pref_start = 0, uri_start = 0;
@@ -1008,15 +1010,14 @@ guththila_write_attribute_with_prefix(
     guththila_char_t *value,
     const axutil_env_t * env) 
 {
-    int i = 0,
-        j = 0;
+    int i, j;
     int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
-    int temp = 0;
+    int temp;
     size_t pref_len = strlen(prefix);
     guththila_xml_writer_namesp_t * writer_namesp = NULL;
     if (wr->status == START || wr->status == START_EMPTY)
     {
-        for (i = 0; i < stack_size; i++)
+        for (i = stack_size - 1; i >= 0; i--)
         {
             writer_namesp =
                 (guththila_xml_writer_namesp_t *)
@@ -1058,13 +1059,13 @@ guththila_write_attribute_with_namespace(
     guththila_char_t *value,
     const axutil_env_t * env) 
 {
-    int i = 0, j = 0;
+    int i, j;
     int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
-    int temp = 0;
+    int temp;
     guththila_xml_writer_namesp_t * writer_namesp = NULL;
     if (wr->status == START || wr->status == START_EMPTY)
     {
-        for (i = 0; i < stack_size; i++)
+        for (i = stack_size - 1; i >= 0; i--)
         {
             writer_namesp = (guththila_xml_writer_namesp_t *)
                 guththila_stack_get_by_index(&wr->namesp, i, env);
@@ -1105,7 +1106,7 @@ guththila_write_start_element_with_prefix_and_namespace(
                                     guththila_char_t *local_name,
                                     const axutil_env_t * env) 
 {
-    int i = 0, j = 0, temp = 0, stack_size = 0, nmsp_found = GUTHTHILA_FALSE;
+    int i, j, temp, stack_size, nmsp_found = GUTHTHILA_FALSE;
     guththila_xml_writer_namesp_t * namesp = NULL;
     guththila_xml_writer_element_t * elem = NULL;
     int uri_start = 0, pref_start = 0, elem_start = 0, elem_pref_start = 0;
@@ -1284,9 +1285,9 @@ guththila_write_start_element_with_namespace(
                         guththila_char_t *local_name,
                         const axutil_env_t * env) 
 {
-    int i = 0, j = 0;
+    int i, j;
     int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
-    int temp = 0;
+    int temp;
     int elem_start = 0;
     size_t elem_len = 0;
     guththila_xml_writer_namesp_t * writer_namesp = NULL;
@@ -1299,7 +1300,7 @@ guththila_write_start_element_with_namespace(
     if (!element)
         return GUTHTHILA_FAILURE;
 
-    for (i = 0; i < stack_size; i++)
+    for (i = stack_size - 1; i >= 0; i--)
     {
         writer_namesp =
             (guththila_xml_writer_namesp_t *) guththila_stack_get_by_index(&wr->namesp,
@@ -1316,7 +1317,7 @@ guththila_write_start_element_with_namespace(
                      strlen(namespace_uri), env))
 #endif
             {
-                i += stack_size;        /* force exit from outer loop as well */
+                i = 0;                  /* force exit from outer loop as well */
                 break;
             }
         }
@@ -1395,15 +1396,15 @@ guththila_write_start_element_with_prefix(
     guththila_char_t *local_name,
     const axutil_env_t * env) 
 {
-    int i = 0, j = 0;
+    int i, j;
     int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
-    int temp = 0;
+    int temp;
     int elem_start = 0;
     size_t elem_len = 0, pref_len = 0;
     guththila_xml_writer_namesp_t * writer_namesp = NULL;
     elem_len = strlen(local_name);
     pref_len = strlen(prefix);
-    for (i = 0; i < stack_size; i++)
+    for (i = stack_size - 1; i >= 0; i--)
     {
         writer_namesp =
             (guththila_xml_writer_namesp_t *) guththila_stack_get_by_index(&wr->
@@ -1565,12 +1566,12 @@ guththila_write_empty_element_with_namespace(
     guththila_char_t *local_name,
     const axutil_env_t * env) 
 {
-    int i = 0, j = 0;
+    int i, j;
     int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
-    int temp = 0;
+    int temp;
     guththila_xml_writer_namesp_t * writer_namesp = NULL;
 
-    for (i = 0; i < stack_size; i++)
+    for (i = stack_size - 1; i >= 0; i--)
     {
         writer_namesp =
             (guththila_xml_writer_namesp_t *) guththila_stack_get_by_index(&wr->namesp,
@@ -1587,7 +1588,7 @@ guththila_write_empty_element_with_namespace(
                     strlen(namespace_uri), env))
 #endif
             {
-                i += stack_size;		/* force exit of outer loop */
+                i = 0;	                /* force exit of outer loop */
                 break;
             }
         }
@@ -1635,12 +1636,12 @@ guththila_write_empty_element_with_prefix(
     guththila_char_t *local_name,
     const axutil_env_t * env) 
 {
-    int i = 0, j = 0;
+    int i, j;
     int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
-    int temp = 0;
+    int temp;
     size_t pref_len = strlen(prefix);
     guththila_xml_writer_namesp_t * writer_namesp = NULL;
-    for (i = 0; i < stack_size; i++)
+    for (i = stack_size - 1; i >= 0; i--)
     {
         writer_namesp =
             (guththila_xml_writer_namesp_t *) guththila_stack_get_by_index(&wr->namesp,
@@ -1757,13 +1758,12 @@ guththila_get_prefix_for_namespace(
     guththila_char_t *nmsp,
     const axutil_env_t * env) 
 {
-    int i = 0,
-        j = 0;
+    int i, j;
     int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
-    int temp = 0;
+    int temp;
     guththila_char_t *str = NULL;
     guththila_xml_writer_namesp_t * writer_namesp = NULL;
-    for (i = 0; i < stack_size; i++)
+    for (i = stack_size - 1; i >= 0; i--)
     {
         writer_namesp =
             (guththila_xml_writer_namesp_t *) guththila_stack_get_by_index(&wr->

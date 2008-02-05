@@ -98,7 +98,7 @@ typedef struct guththila_s
 
     int guththila_event;
 
-    int next;
+    size_t next;
 
     int last_start;
 
