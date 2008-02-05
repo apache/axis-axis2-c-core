@@ -45,12 +45,14 @@ axis2_status_t test_stack(axutil_env_t * env, char * value)
         axutil_stack_free(stack,env);
         return AXIS2_FAILURE;
     }
-    if(stack && get_value)
+    if(stack)
     {
+        axutil_stack_free(stack,env);
         printf("The test is SUCCESSFUL\n");
+        return AXIS2_SUCCESS;
     }
-    axutil_stack_free(stack,env);
-    return AXIS2_SUCCESS;
+    
+    return AXIS2_FAILURE;
 }
 int main()
 {
