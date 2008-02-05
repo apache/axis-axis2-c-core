@@ -12,6 +12,7 @@
 #include <axiom.h>
 
 /* typedef struct axis2_libcurl axis2_libcurl_t; */
+/* actually defined in axis2_http_sender.h as it is part of axis2/include */
 
 AXIS2_EXTERN axis2_libcurl_t *AXIS2_CALL 
 axis2_libcurl_create(
