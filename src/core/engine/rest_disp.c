@@ -337,9 +337,10 @@ axis2_rest_disp_get_rest_op_with_method_and_location(
     while(AXIS2_TRUE)
     {
         rindex = axutil_rindex(loc_str_tmp, '/');
+
         if (rindex && *rindex)
         {
-            loc_str_tmp = axutil_string_substring_ending_at(loc_str_tmp, (loc_str_tmp - rindex));
+            loc_str_tmp = axutil_string_substring_ending_at(loc_str_tmp, (rindex - loc_str_tmp));
         }
         else if (pass_one)
         {
@@ -355,6 +356,7 @@ axis2_rest_disp_get_rest_op_with_method_and_location(
             }
             loc_str_tmp[i - 1] = '\0';
         }
+
         if (!loc_str_tmp || !*loc_str_tmp)
         {
             break;
