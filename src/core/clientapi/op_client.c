@@ -189,7 +189,8 @@ axis2_op_client_add_msg_ctx(
     axis2_msg_ctx_t **msg_ctx_map = NULL;
 
     AXIS2_PARAM_CHECK (env->error, op_client, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK (env->error, mc, AXIS2_FAILURE);
+    /* mc message context pointer may be NULL, e.g., when no response message 
+       is received */
 
     msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_client->op_ctx, env);
 

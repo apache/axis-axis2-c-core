@@ -136,7 +136,6 @@ axis2_engine_send(
     }
     else
     {
-        axis2_status_t status = AXIS2_FAILURE;
         status = axis2_engine_invoke_phases(engine, env, phases, msg_ctx);
         if (status != AXIS2_SUCCESS)
         {
@@ -171,13 +170,14 @@ axis2_engine_send(
         {
             transport_sender =
                 axis2_transport_out_desc_get_sender(transport_out, env);
-
-            if (transport_sender)
-            {
-                AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx);
-            }
-            else
+            if (!transport_sender)
                 return AXIS2_FAILURE;
+
+            status = AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx);
+            if (status != AXIS2_SUCCESS)
+            {
+                return status;
+            }
         }
         else
         {

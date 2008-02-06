@@ -729,6 +729,10 @@ axis2_http_transport_sender_write_message(
     AXIS2_HTTP_SENDER_FREE(sender, env);
     sender = NULL;
 
+    /* if the send was not successful, do not process any response */
+    if (status != AXIS2_SUCCESS)
+        return status;
+
     op = axis2_msg_ctx_get_op(msg_ctx, env);
     if (op)
     {
