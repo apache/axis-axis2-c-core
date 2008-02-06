@@ -393,7 +393,7 @@ fault_code,
                                                                            error));
             
 
-axis2_engine_send_fault(engine, env, fault_ctx);
+/*axis2_engine_send_fault(engine, env, fault_ctx);*/
             
 if (out_stream)
                 

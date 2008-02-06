@@ -45,6 +45,7 @@
 #define AXIS2_IIS_LOG_TRACE_VERB	("trace")
 #define AXIS2_IIS_LOG_ERROR_VERB	("error")
 #define AXIS2_IIS_LOG_INFO_VERB		("info")
+#define AXIS2_IIS_LOG_USER_VERB         ("user")
 #define AXIS2_IIS_LOG_CRITICAL_VERB	("critical")
 #define AXIS2_IIS_LOG_WARN_VERB		("warning")
 #define AXIS2_IIS_LOG_DEBUG_VERB	("debug")
@@ -263,6 +264,10 @@ their initial values in this method.
     {
         return AXIS2_LOG_LEVEL_INFO;
     }
+    if (0 == stricmp(level, AXIS2_IIS_LOG_USER_VERB))
+    {
+        return AXIS2_LOG_LEVEL_USER;
+    }
     if (0 == stricmp(level, AXIS2_IIS_LOG_WARN_VERB))
     {
         return AXIS2_LOG_LEVEL_WARNING;

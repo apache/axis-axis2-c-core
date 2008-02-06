@@ -900,6 +900,7 @@ warn, info, debug, trace. These log levels have the following meanings:</p><ul>
   <li>info - log information and above</li>
   <li>debug - log debug information and above, this is the default log level
     used</li>
+  <li>user - log user level messages and above</li>
   <li>trace - log trace messages and above</li>
 </ul><p>SIZE_IN_MB must be replaced by the size of the particular resource in MB, rounded to
 the nearest whole value.<br></br>
@@ -931,7 +932,7 @@ troubleshoot:</p><ul>
     mod_axis2. Check if the locations given in httpd.conf are correct, and
     also check the folder permissions.</li>
   <li>Have a look at the axis2.log file for clues as to what is going wrong.
-    You can set the log level to debug or trace to gather more
+    You can set the log level to debug, user or trace to gather more
   information</li>
   <li>In case the axis2.log file is not written at all, there is a good
     chance that mod_axis2 is crashing. You can have a look at the error.log
@@ -939,17 +940,19 @@ troubleshoot:</p><ul>
     usually placed in the AXIS2C_INSTALL_DIR/logs folder.</li>
 </ul><p style="margin-bottom: 0in"><br></br>
 </p><p><a name="IIS"></a></p></div></div><div class="section"><a name="12__Deploying_with_Microsoft_IIS_Server"></a><h2>12. Deploying with Microsoft IIS Server</h2><p>Use the Axis2/C VC project or makefile to buid the
-component.</p><p>In this document I assume that the mod_axis2_IIS.dll
-is in the directory <code>c:\axis2c\lib\mod_axis2_IIS.dll</code> and AXIS2C_HOME
+component. If you are using the makefile to build the source, you have to run the command</p>
+<div class="source"><pre>nmake axis2_iis_module</pre></div>
+<p>In this document I assume that the mod_axis2_IIS.dll
+is in the directory <code>c:\axis2c\lib</code> and AXIS2C_HOME
 is <code>c:\axis2c</code></p><p>Add the following key to the
-registery.</p><p>HKEY_LOCAL_MACHINE\SOFTWARE\Apache Axis2c\IIS ISAPI
-Redirector</p><p>Add a string value with the name AXIS2C_HOME and a
-value of c:\axis2c</p><p>Add a string value with the name log_file and a value
-of c:\axis2c\logs\axis2.log</p><p>Add a string value with the name log_level. The value
-can be either trace, error, info, critical, debug, or warning.</p><p>Using the IIS management console, add a new virtual
-directory to your IIS/PWS web site. The name of the virtual directory must be axis2. Its
+registery.</p><p><code>HKEY_LOCAL_MACHINE\SOFTWARE\Apache Axis2c\IIS ISAPI
+Redirector</code></p><p>Add a string value with the name <code>AXIS2C_HOME</code> and a
+value of <code>c:\axis2c</code></p><p>Add a string value with the name <code>log_file</code> and a value
+of <code>c:\axis2c\logs\axis2.log</code></p><p>Add a string value with the name <code>log_level</code>. The value
+can be either <code>trace</code>, <code>error</code>, <code>info</code>, <code>critical</code>, <code>user</code>, <code>debug</code>, or <code>warning</code>.</p><p>Using the IIS management console, add a new virtual
+directory to your IIS/PWS web site. The name of the virtual directory must be <code>axis2</code>. Its
 physical path should be the directory in which you placed mod_axis2_IIS.dll (in our example it is
-c:\axis2c\lib). When creating this new virtual directory, assign execute access to it.</p><p>By using the IIS management console, add
+c:\axis2c\lib). When creating this new virtual directory, <b>assign execute access to it</b>.</p><p>By using the IIS management console, add
 mod_axis2_IIS.dll as a filter in your IIS/PWS web site and restart the IIS
 admin service.</p><p style="margin-bottom: 0in"><br></br>
 </p><p><a name="ssl_client"></a></p></div><div class="section"><a name="13__Using_SSL_Client"></a><h2>13. Using SSL Client</h2><div class="subsection"><a name="13_1_Building_and_Configuring_the_Client"></a><h3>13.1 Building and Configuring the Client</h3><p>In order to allow an Axis2/C client to communicate with an SSL enabled
