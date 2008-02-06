@@ -99,7 +99,11 @@ axutil_array_list_size(
     struct axutil_array_list *array_list,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
+    /* Don't use AXIS2_PARAM_CHECK to verify array_list, as it clobbers 
+       env->error->status_code on no error destroying the information 
+       therein that an error has already occurred. */
+    if (!array_list)
+        return 0;
     return array_list->size;
 }
 
@@ -143,7 +147,9 @@ axutil_array_list_get(
     const axutil_env_t * env,
     int index)
 {
-    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
+    /* Don't use AXIS2_PARAM_CHECK to verify array_list, as it clobbers 
+       env->error->status_code on no error destroying the information 
+       therein that an error has already occurred. */
     if (axutil_array_list_check_bound_exclusive(array_list, env, index))
         return array_list->data[index];
     else
@@ -238,9 +244,10 @@ axutil_array_list_check_bound_inclusive(
     const axutil_env_t * env,
     int index)
 {
-    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
-
-    if (index < 0 || index > array_list->size)
+    /* Don't use AXIS2_PARAM_CHECK to verify array_list, as it clobbers 
+       env->error->status_code on no error destroying the information 
+       therein that an error has already occurred. */
+    if (!array_list || index < 0 || index > array_list->size)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
                         AXIS2_FAILURE);
@@ -255,9 +262,10 @@ axutil_array_list_check_bound_exclusive(
     const axutil_env_t * env,
     int index)
 {
-    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
-
-    if (index < 0 || index >= array_list->size)
+    /* Don't use AXIS2_PARAM_CHECK to verify array_list, as it clobbers 
+       env->error->status_code on no error destroying the information 
+       therein that an error has already occurred. */
+    if (!array_list || index < 0 || index >= array_list->size)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
                         AXIS2_FAILURE);

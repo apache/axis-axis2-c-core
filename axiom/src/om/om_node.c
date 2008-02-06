@@ -200,8 +200,12 @@ axiom_node_detach(
     AXIS2_ENV_CHECK(env, NULL);
 
     parent = om_node->parent;
-
-    AXIS2_PARAM_CHECK(env->error, parent, NULL);
+    if (!parent)
+    {
+        /* Node is already detached */
+        om_node->builder = NULL;
+        return om_node;
+    }
 
     if (!(om_node->prev_sibling))
     {

@@ -1279,7 +1279,14 @@ axis2_msg_ctx_get_property(
     void *obj = NULL;
     axis2_ctx_t *ctx = NULL;
 
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    /* Don't use AXIS2_PARAM_CHECK to verify msg_ctx, as it clobbers 
+       env->error->status_code destroying the information therein that 
+       an error has already occurred. */
+    if (!msg_ctx)
+    {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "msg_ctx is NULL, unable to get_property");
+        return obj;
+    }
 
     /* search in message context */
     obj = axis2_ctx_get_property(msg_ctx->base, env, key);
@@ -1450,7 +1457,14 @@ axis2_msg_ctx_get_doing_rest(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    /* Don't use AXIS2_PARAM_CHECK to verify msg_ctx, as it clobbers 
+       env->error->status_code destroying the information therein that 
+       an error has already occurred. */
+    if (!msg_ctx)
+    {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "msg_ctx is NULL, unable to get_doing_rest");
+        return AXIS2_FALSE;
+    }
     return msg_ctx->doing_rest;
 }
 
