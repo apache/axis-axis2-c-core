@@ -50,6 +50,7 @@ axiom_util_get_first_child_element_with_uri(
     {
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Element node or uri is NULL");
         return NULL;
     }
 
@@ -92,6 +93,7 @@ axiom_util_get_next_sibling_element_with_uri(
     {
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Element node or uri is NULL");
         return NULL;
     }
 

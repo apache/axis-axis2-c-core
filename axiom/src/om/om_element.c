@@ -69,6 +69,7 @@ axiom_element_create(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "localname or node is NULL");
         return NULL;
     }
 
@@ -76,6 +77,7 @@ axiom_element_create(
     if (!(*node))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No Memory");
         return NULL;
     }
     element = (axiom_element_t *) AXIS2_MALLOC(env->allocator,
@@ -85,6 +87,7 @@ axiom_element_create(
     {
         AXIS2_FREE(env->allocator, (*node));
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No Memory");
         return NULL;
     }
     element->ns = NULL;
@@ -175,6 +178,7 @@ axiom_element_create_with_qname(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "qname or node is NULL");
         return NULL;
     }
     localpart = axutil_qname_get_localpart(qname, env);
@@ -182,6 +186,7 @@ axiom_element_create_with_qname(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "localpart is NULL");
         return NULL;
     }
     element = axiom_element_create(env, parent, localpart, NULL, node);
@@ -257,6 +262,8 @@ axiom_element_find_namespace(
     {
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "element_node or om_element is NULL");
         return NULL;
     }
     if (!axiom_node_get_data_element(element_node, env) ||
@@ -265,6 +272,8 @@ axiom_element_find_namespace(
         /* wrong element type or null node */
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Wrong element type or null node");
         return NULL;
     }
 
@@ -379,6 +388,8 @@ axiom_element_declare_namespace_assume_param_ownership(
     {
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "namespace or om_element is NULL");
         return AXIS2_FAILURE;
     }
 
@@ -429,6 +440,8 @@ axiom_element_declare_namespace(
     {
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "node or namespace or om_element is NULL");
         return AXIS2_FAILURE;
     }
 
@@ -548,6 +561,8 @@ axiom_element_find_namespace_with_qname(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "element or node or qname is NULL");
         return NULL;
     }
 
@@ -1601,6 +1616,7 @@ axiom_element_create_str(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "localname or node is NULL");
         return NULL;
     }
 

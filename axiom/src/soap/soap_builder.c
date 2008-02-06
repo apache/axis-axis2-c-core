@@ -522,6 +522,8 @@ axiom_soap_builder_construct_node(
             AXIS2_ERROR_SET(env->error,
                             AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME,
                             AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "SOAP message first element must contain a localname");
             return AXIS2_FAILURE;
         }
 
@@ -555,6 +557,8 @@ axiom_soap_builder_construct_node(
                 AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "SOAP builder encountered multiple headers");
                 return AXIS2_FAILURE;
             }
             if (soap_builder->body_present)
@@ -562,6 +566,8 @@ axiom_soap_builder_construct_node(
                 AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_SOAP_BUILDER_HEADER_BODY_WRONG_ORDER,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "SOAP builder encountered body element first and header next");
                 return AXIS2_FAILURE;
             }
 
@@ -598,6 +604,8 @@ axiom_soap_builder_construct_node(
                 AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_BODY_ELEMENTS_ENCOUNTERED,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "SOAP builder multiple body elements encountered");
                 return AXIS2_FAILURE;
 
             }
@@ -631,6 +639,9 @@ axiom_soap_builder_construct_node(
             AXIS2_ERROR_SET(env->error,
                             AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY,
                             AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "SOAP builder found a child element other than header or "\
+                "body in envelope element");
             return AXIS2_FAILURE;
         }
     }
@@ -881,6 +892,7 @@ axiom_soap_builder_parse_headers(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Soap Builder is NULL");
         return AXIS2_FAILURE;
     }
     if (!soap_builder->soap_envelope)
@@ -1018,6 +1030,8 @@ static axis2_status_t axiom_soap_builder_construct_node_for_empty_element(
                 AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "SOAP builder encountered multiple headers");
                 return AXIS2_FAILURE;
             }
             if (soap_builder->body_present)
@@ -1025,6 +1039,8 @@ static axis2_status_t axiom_soap_builder_construct_node_for_empty_element(
                 AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_SOAP_BUILDER_HEADER_BODY_WRONG_ORDER,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "SOAP builder encountered body element first and header next");
                 return AXIS2_FAILURE;
             }
 
@@ -1061,6 +1077,8 @@ static axis2_status_t axiom_soap_builder_construct_node_for_empty_element(
                 AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_BODY_ELEMENTS_ENCOUNTERED,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "SOAP builder multiple body elements encountered");
                 return AXIS2_FAILURE;
 
             }
@@ -1090,6 +1108,9 @@ static axis2_status_t axiom_soap_builder_construct_node_for_empty_element(
             AXIS2_ERROR_SET(env->error,
                             AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY,
                             AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "SOAP builder found a child element other than header or "\
+                "body in envelope element");
             return AXIS2_FAILURE;
         }
     }
