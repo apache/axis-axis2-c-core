@@ -192,7 +192,16 @@ axis2_op_client_add_msg_ctx(
     /* mc message context pointer may be NULL, e.g., when no response message 
        is received */
 
-    msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_client->op_ctx, env);
+    if (op_client->op_ctx)
+    {
+        msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_client->op_ctx, env);
+    }
+    else
+    {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
+                         "op_ctx is NULL, unable to continue");
+        return AXIS2_FAILURE;
+    }
 
     if (msg_ctx_map)
     {
@@ -1143,7 +1152,16 @@ axis2_op_client_two_way_send(
     engine = NULL;
 
     if (status != AXIS2_SUCCESS)
+    {
+        if (AXIS2_ERROR_GET_STATUS_CODE(env->error) == AXIS2_SUCCESS)
+        {
+            AXIS2_ERROR_SET(env->error,
+                            AXIS2_ERROR_HTTP_REQUEST_NOT_SENT,
+                            AXIS2_FAILURE);
+        }
         return NULL;
+    }
+
     op = axis2_msg_ctx_get_op(msg_ctx, env);
     if (op)
     {
