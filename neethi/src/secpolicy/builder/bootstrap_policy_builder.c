@@ -58,7 +58,7 @@ rp_bootstrap_policy_builder_build(
             policy = NULL;
 
             assertion = neethi_assertion_create_with_args(env,
-                                                  (void *) neethi_policy_free,
+                                                  NULL, /*this policy should not be deleted*/
                                                   normalized_policy,
                                                   ASSERTION_TYPE_BOOTSTRAP_POLICY);
             return assertion;

@@ -22,6 +22,7 @@
 #include <neethi_exactlyone.h>
 #include <neethi_all.h>
 #include <neethi_engine.h>
+#include <rp_qname_matcher.h>
 
 /*private functions*/
 
@@ -43,6 +44,7 @@ rp_security_context_token_builder_build(
     neethi_policy_t *policy = NULL;
     axiom_node_t *child_node = NULL;
     axiom_element_t *child_element = NULL;
+    axiom_children_iterator_t *children_iter = NULL;
     axutil_array_list_t *alternatives = NULL;
     neethi_operator_t *component = NULL;
     neethi_all_t *all = NULL;
@@ -69,45 +71,68 @@ rp_security_context_token_builder_build(
         return NULL;
     }
 
-    if (axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
+    children_iter = axiom_element_get_children(element, env, node);
+    if (children_iter)
     {
-        child_element =
-            (axiom_element_t *) axiom_node_get_data_element(child_node, env);
-        if (child_element)
+        while (axiom_children_iterator_has_next(children_iter, env))
         {
-            policy = neethi_engine_get_policy(env, child_node, child_element);
-            if (!policy)
+            child_node = axiom_children_iterator_next(children_iter, env);
+            if (child_node)
             {
-                return NULL;
+                if (axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
+                {
+                    child_element =
+                        (axiom_element_t *) axiom_node_get_data_element(child_node, env);
+                    if (child_element)
+                    {
+                        axis2_char_t *localname = NULL;
+                        localname = axiom_element_get_localname(child_element, env);
+                        if (axutil_strcmp(localname, RP_ISSUER) == 0)
+                        {
+                            if (rp_match_secpolicy_qname(env, RP_ISSUER, child_node, child_element))
+                            {
+                                axis2_char_t *issuer = NULL;
+
+                                issuer = axiom_element_get_text(child_element, env, child_node);
+                                rp_security_context_token_set_issuer(security_context_token, env, issuer);
+                            }
+                            else
+                                return NULL;
+                        }
+                        else
+                        {
+                            policy = neethi_engine_get_policy(env, child_node, child_element);
+                            if (!policy)
+                            {
+                                return NULL;
+                            }
+                            normalized_policy =
+                                neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
+                            neethi_policy_free(policy, env);
+                            policy = NULL;
+                            alternatives =
+                                neethi_policy_get_alternatives(normalized_policy, env);
+                            component =
+                                (neethi_operator_t *) axutil_array_list_get(alternatives, env,
+                                                                            0);
+                            all = (neethi_all_t *) neethi_operator_get_value(component, env);
+                            security_context_token_process_alternatives(env, all, security_context_token);
+
+                            assertion =
+                                neethi_assertion_create_with_args(env,
+                                                                  (void *) rp_security_context_token_free,
+                                                                  security_context_token,
+                                                                  ASSERTION_TYPE_SECURITY_CONTEXT_TOKEN);
+
+                            neethi_policy_free(normalized_policy, env);
+                            normalized_policy = NULL;
+                        }
+                    }
+                }
             }
-            normalized_policy =
-                neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
-            neethi_policy_free(policy, env);
-            policy = NULL;
-            alternatives =
-                neethi_policy_get_alternatives(normalized_policy, env);
-            component =
-                (neethi_operator_t *) axutil_array_list_get(alternatives, env,
-                                                            0);
-            all = (neethi_all_t *) neethi_operator_get_value(component, env);
-            security_context_token_process_alternatives(env, all, security_context_token);
-
-            assertion =
-                neethi_assertion_create_with_args(env,
-                                                  (void *) rp_security_context_token_free,
-                                                  security_context_token,
-                                                  ASSERTION_TYPE_SECURITY_CONTEXT_TOKEN);
-
-            neethi_policy_free(normalized_policy, env);
-            normalized_policy = NULL;
-
-            return assertion;
         }
-        else
-            return NULL;
     }
-    else
-        return NULL;
+    return assertion;
 }
 
 axis2_status_t AXIS2_CALL
