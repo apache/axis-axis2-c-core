@@ -393,7 +393,7 @@ fault_code,
                                                                            error));
             
 
-/*axis2_engine_send_fault(engine, env, fault_ctx);*/
+axis2_engine_send_fault(engine, env, fault_ctx);
             
 if (out_stream)
                 
@@ -407,7 +407,7 @@ body_str_len = axutil_stream_get_len(out_stream, env);
             
 send_status = HTTP_INTERNAL_SERVER_ERROR;
             
-axis2_msg_ctx_free(fault_ctx, env);
+/*axis2_msg_ctx_free(fault_ctx, env);*/
         
 }
     
