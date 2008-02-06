@@ -736,7 +736,7 @@ axis2_svc_get_rest_op_list_with_method_and_location(
     rindex = axutil_rindex(loc_str, '/');
     if (rindex && *rindex)
     {
-        loc_str_tmp = axutil_string_substring_ending_at(loc_str, (loc_str - rindex));
+        loc_str_tmp = axutil_string_substring_ending_at(loc_str, (rindex - loc_str));
     }
     else
     {
@@ -1257,7 +1257,7 @@ axis2_svc_add_rest_mapping(
         rindex = axutil_rindex(loc_str, '/');
         if (rindex && *rindex)
         {
-            loc_str_tmp = axutil_string_substring_ending_at(loc_str, (loc_str - rindex));
+            loc_str_tmp = axutil_string_substring_ending_at(loc_str, (rindex - loc_str));
         }
         else
         {
