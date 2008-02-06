@@ -275,7 +275,7 @@ axis2_http_server_start(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_server_stop(
     axis2_transport_receiver_t * server,
     const axutil_env_t * env)

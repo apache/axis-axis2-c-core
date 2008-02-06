@@ -172,8 +172,8 @@ main(
     axutil_error_init();
     system_env = env;
 
-#ifndef WIN32
     signal(SIGINT, sig_handler);
+#ifndef WIN32
     signal(SIGPIPE, sig_handler);
 #endif
 
@@ -268,8 +268,6 @@ usage(
 /**
  * Signal handler
  */
-#ifndef WIN32
-
 void
 sig_handler(
     int signal)
@@ -287,6 +285,9 @@ sig_handler(
     {
     case SIGINT:
         {
+            /* Use of SIGINT in Windows is valid, since we have a console application
+             * Thus, eventhough this may a single threaded application, it does work.
+             */
             AXIS2_LOG_INFO(system_env->log, "Received signal SIGINT. Server "
                            "shutting down");
             if (server)
@@ -297,12 +298,14 @@ sig_handler(
             AXIS2_LOG_INFO(system_env->log, "Shutdown complete ...");
             system_exit(system_env, 0);
         }
+#ifndef WIN32
     case SIGPIPE:
         {
             AXIS2_LOG_INFO(system_env->log, "Received signal SIGPIPE.  Client "
                            "request serve aborted");
             return;
         }
+#endif
     case SIGSEGV:
         {
             fprintf(stderr, "Received deadly signal SIGSEGV. Terminating\n");
@@ -310,4 +313,3 @@ sig_handler(
         }
     }
 }
-#endif
