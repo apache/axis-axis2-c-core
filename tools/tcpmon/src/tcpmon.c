@@ -88,10 +88,10 @@ main(
 
     env = axutil_env_create_all("axis2_tcpmon.log", AXIS2_LOG_LEVEL_DEBUG);
 
-#ifndef WIN32
     signal(SIGINT, sig_handler);
-    signal(SIGPIPE, sig_handler);
     system_env = env;
+#ifndef WIN32
+    signal(SIGPIPE, sig_handler);
 #endif
 
     target_host = axutil_strdup(env, "localhost");
@@ -454,7 +454,6 @@ str_replace(
 /**
  * Signal handler
  */
-#ifndef WIN32
 void
 sig_handler(
     int signal)
@@ -483,12 +482,14 @@ sig_handler(
             }
             exit(0);
         }
+#ifndef WIN32
     case SIGPIPE:
         {
             AXIS2_LOG_INFO(system_env->log, "Received signal SIGPIPE. Operation "
                            "aborted");
             return;
         }
+#endif
     case SIGSEGV:
         {
             fprintf(stderr, "Received deadly signal SIGSEGV. Terminating\n");
@@ -496,4 +497,4 @@ sig_handler(
         }
     }
 }
-#endif
+
