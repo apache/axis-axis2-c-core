@@ -308,7 +308,8 @@ if (body_string)
                 
             {
                 
-body_str_len = strlen(body_string);
+body_str_len = (int)strlen(body_string);
+/* We are sure that the difference lies within the int range */
             
 }
             
@@ -458,7 +459,7 @@ const char *headers_names[] = {
 "Content-Length" 
         };
         
-const char *headers_vhtml[2];
+char *headers_vhtml[2];
         
 
 headers_vhtml[1] = (char *) malloc(16);

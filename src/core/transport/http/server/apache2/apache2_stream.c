@@ -114,7 +114,8 @@ apache2_stream_read(
         }
     }
 
-    return len;
+    return (int)len;
+    /* We are sure that the difference lies within the int range */
 }
 
 int AXIS2_CALL
@@ -132,10 +133,12 @@ apache2_stream_write(
     buffer = (axis2_char_t *) buf;
     if (count <= 0)
     {
-        return count;
+        return (int)count;
+        /* We are sure that the difference lies within the int range */
     }
     /* assume that buffer is not null terminated */
-    return ap_rwrite(buffer, count, stream_impl->request);
+    return ap_rwrite(buffer, (int)count, stream_impl->request);
+    /* We are sure that the difference lies within the int range */
 }
 
 int AXIS2_CALL

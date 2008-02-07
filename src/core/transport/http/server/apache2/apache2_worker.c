@@ -178,7 +178,8 @@ axis2_apache2_worker_process_request(
                         AXIS2_FAILURE);
         return AXIS2_CRITICAL_FAILURE;
     }
-    content_length = request->remaining;
+    content_length = (int)request->remaining;
+    /* We are sure that the difference lies within the int range */
     http_version = request->protocol;
     req_url = request->unparsed_uri;
 

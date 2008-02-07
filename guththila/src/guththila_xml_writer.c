@@ -225,7 +225,8 @@ guththila_write(guththila_xml_writer_t * wr, guththila_char_t *buff,
             memcpy(wr->buffer.buff[wr->buffer.cur_buff] +
                     wr->buffer.data_size[wr->buffer.cur_buff], buff, buff_len);
             wr->buffer.data_size[wr->buffer.cur_buff] += buff_len;
-            wr->next += buff_len;
+            wr->next += (int)buff_len;
+            /* We are sure that the difference lies within the int range */
             return (int) buff_len;
         }
         else
@@ -271,7 +272,8 @@ guththila_write(guththila_xml_writer_t * wr, guththila_char_t *buff,
                    buff_len - remain_len);
             wr->buffer.data_size[wr->buffer.cur_buff] = buff_len - remain_len;
             wr->buffer.pre_tot_data += wr->buffer.data_size[wr->buffer.cur_buff - 1];
-            wr->next += buff_len;
+            wr->next += (int)buff_len;
+            /* We are sure that the difference lies within the int range */
             return (int) buff_len;
         } 
     }
@@ -303,7 +305,8 @@ guththila_write_token(guththila_xml_writer_t * wr, guththila_token_t * tok,
                     tok->size);
 
             wr->buffer.data_size[wr->buffer.cur_buff] += tok->size;
-            wr->next += tok->size;
+            wr->next += (int)tok->size;
+            /* We are sure that the difference lies within the int range */
             return (int) tok->size;
         }
         else
@@ -354,7 +357,8 @@ guththila_write_token(guththila_xml_writer_t * wr, guththila_token_t * tok,
                     tok->start + remain_len, tok->size - remain_len);
             wr->buffer.data_size[wr->buffer.cur_buff] = tok->size - remain_len;
             wr->buffer.pre_tot_data += wr->buffer.data_size[wr->buffer.cur_buff - 1];
-            wr->next += tok->size;
+            wr->next += (int)tok->size;
+            /* We are sure that the difference lies within the int range */
             return (int) tok->size;
         } 
     }
@@ -383,7 +387,8 @@ guththila_write_xtoken(guththila_xml_writer_t * wr, guththila_char_t *buff,
             memcpy(wr->buffer.buff[wr->buffer.cur_buff] +
                     wr->buffer.data_size[wr->buffer.cur_buff], buff, buff_len);
             wr->buffer.data_size[wr->buffer.cur_buff] += buff_len;
-            wr->next += buff_len;
+            wr->next += (int)buff_len;
+            /* We are sure that the difference lies within the int range */
             return (int) buff_len;
         }
         else
@@ -428,7 +433,8 @@ guththila_write_xtoken(guththila_xml_writer_t * wr, guththila_char_t *buff,
             wr->buffer.data_size[wr->buffer.cur_buff] = buff_len;
             wr->buffer.pre_tot_data +=
                 wr->buffer.data_size[wr->buffer.cur_buff - 1];
-            wr->next += buff_len;
+            wr->next += (int)buff_len;
+            /* We are sure that the difference lies within the int range */
             return (int) buff_len;
         } 
     }
@@ -1746,10 +1752,10 @@ guththila_get_memory_buffer_size(
 {
     if (wr->type == GUTHTHILA_WRITER_MEMORY)
     {
-        return wr->buffer.pre_tot_data +
-            wr->buffer.data_size[wr->buffer.cur_buff];
+        return (unsigned int)(wr->buffer.pre_tot_data +
+            wr->buffer.data_size[wr->buffer.cur_buff]);
     }
-    return -1;
+    return 0;
 }
 
 GUTHTHILA_EXPORT guththila_char_t *GUTHTHILA_CALL 

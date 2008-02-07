@@ -68,18 +68,20 @@ tcpmon_util_format_as_xml(
 
         axiom_xml_reader_t *xml_reader = NULL;
 
-        buffer_size = 2 * strlen(data);
+        buffer_size = 2 * ((int)strlen(data));
+        /* We are sure that the difference lies within the int range */
         out = AXIS2_MALLOC(env->allocator, buffer_size * sizeof(axis2_char_t));
 
         if (data)
         {
             int size = 0;
-            size = strlen(data);
+            size = (int)strlen(data);
+            /* We are sure that the difference lies within the int range */
             xml_reader =
                 axiom_xml_reader_create_for_memory(env, data, size, "utf-8",
                                                    AXIS2_XML_PARSER_TYPE_BUFFER);
             if (!xml_reader)
-                return AXIS2_FAILURE;
+                return NULL;
         }
 
         axiom_xml_reader_init();
@@ -464,8 +466,10 @@ tcpmon_strcat(
     int source_len = 0;
 
     axis2_char_t *tmp;
-    cur_len = strlen(dest);
-    source_len = strlen(source);
+    cur_len = (int)strlen(dest);
+    /* We are sure that the difference lies within the int range */
+    source_len = (int)strlen(source);
+    /* We are sure that the difference lies within the int range */
 
     if ((*buff_size - cur_len) < source_len)
     {

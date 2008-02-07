@@ -407,9 +407,11 @@ str_replace(
     const char *search,
     const char *replace)
 {
-    int size = strlen(str) * 2;
+    int size = ((int)strlen(str)) * 2;
+    /* We are sure that the difference lies within the int range */
     int addmem = size;
-    int diff = strlen(replace) - strlen(search);
+    int diff = (int)(strlen(replace) - strlen(search));
+    /* We are sure that the difference lies within the int range */
 
     char *str_return = (char *) malloc(size * sizeof(char));
     char *str_tmp = (char *) malloc(size * sizeof(char));
@@ -426,7 +428,8 @@ str_replace(
 
     while ((str_relic = strstr(str_return, search)) != NULL)
     {
-        if (strlen(str_return) + diff >= addmem)
+        if ((int)strlen(str_return) + diff >= addmem)
+            /* We are sure that the difference lies within the int range */
         {
             str_return = (char *) realloc(str_return, addmem += size);
             str_tmp = (char *) realloc(str_tmp, addmem);

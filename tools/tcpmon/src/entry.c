@@ -497,7 +497,7 @@ tcpmon_entry_new_entry_funct(
     }
 
     host_socket =
-        axutil_network_handler_open_socket(env, target_host, target_port);
+        (int)axutil_network_handler_open_socket(env, target_host, target_port);
     if (-1 == host_socket)
     {
         axutil_stream_write(client_stream, env, NULL, 0);
@@ -809,7 +809,8 @@ write_to_file(
     {
 
         FILE *fp = fopen(filename, "a+");
-        size = fwrite(buffer, 1, strlen(buffer), fp);
+        size = (int)fwrite(buffer, 1, strlen(buffer), fp);
+        /* We are sure that the difference lies within the int range */
         fclose(fp);
     }
     return size;

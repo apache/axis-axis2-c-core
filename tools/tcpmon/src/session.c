@@ -503,7 +503,7 @@ server_funct(
     session_impl = thread_data->session_impl;
     env = thread_data->env;
 
-    listen_socket = axutil_network_handler_create_server_socket
+    listen_socket = (int)axutil_network_handler_create_server_socket
         (env, session_impl->listen_port);
     if (-1 == listen_socket)
     {
@@ -530,7 +530,7 @@ server_funct(
     }
     while (session_impl->is_running)
     {
-        socket = axutil_network_handler_svr_socket_accept(env, listen_socket);
+        socket = (int)axutil_network_handler_svr_socket_accept(env, listen_socket);
         if (socket == -1)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,

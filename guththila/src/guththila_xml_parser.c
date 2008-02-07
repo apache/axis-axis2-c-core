@@ -74,8 +74,9 @@ guththila_process_xml_dec(
 #define GUTHTHILA_TOKEN_OPEN(m, tok, _env)					\
     m->temp_tok = guththila_tok_list_get_token(&m->tokens, _env); \
     m->temp_tok->type = _Unknown; \
-    m->temp_tok->_start = m->next; \
-    m->last_start = m->next - 1;
+    m->temp_tok->_start = (int)m->next; \
+    m->last_start = (int)m->next - 1;
+/* We are sure that the difference lies within the int range */
 #endif  
     
 #ifndef GUTHTHILA_PROCESS_EQU
@@ -149,10 +150,12 @@ guththila_init(guththila_t * m, void *reader, const axutil_env_t * env)
     guththila_stack_init(&m->elem, env);
     guththila_stack_init(&m->attrib, env);
     guththila_stack_init(&m->namesp, env);
-    temp_name = guththila_token_create(GUTHTHILA_XML_NAME,0,strlen(GUTHTHILA_XML_NAME),
+    temp_name = guththila_token_create(GUTHTHILA_XML_NAME,0,(int)strlen(GUTHTHILA_XML_NAME),
                                        1,0,0,env);
-    temp_tok = guththila_token_create(GUTHTHILA_XML_URI,0,strlen(GUTHTHILA_XML_URI),
+    /* We are sure that the difference lies within the int range */
+    temp_tok = guththila_token_create(GUTHTHILA_XML_URI,0,(int)strlen(GUTHTHILA_XML_URI),
                                       1,0,0,env);
+    /* We are sure that the difference lies within the int range */
     e_namesp = (guththila_elem_namesp_t *) AXIS2_MALLOC(env->allocator,
                                                         sizeof(guththila_elem_namesp_t));
     if (e_namesp && temp_tok && temp_name)
@@ -1624,7 +1627,7 @@ guththila_next_char(guththila_t * m, int eof, const axutil_env_t * env)
             temp =
                 guththila_reader_read(m->reader,
                                       GUTHTHILA_BUFFER_CURRENT_BUFF(m->buffer),0,
-                                      GUTHTHILA_BUFFER_CURRENT_BUFF_SIZE(m->buffer),env);
+                                      (int)GUTHTHILA_BUFFER_CURRENT_BUFF_SIZE(m->buffer),env);
             if (temp > 0)
             {
                 m->buffer.data_size[m->buffer.cur_buff] += temp;
@@ -1673,7 +1676,8 @@ guththila_next_no_char(guththila_t * m, int eof,
         {
             bytes[i] = m->buffer.buff[0][m->next++];
         }
-        return no;
+        return (int)no;
+        /* We are sure that the difference lies within the int range */
     }
     else if (m->reader->type == GUTHTHILA_IO_READER ||
              m->reader->type == GUTHTHILA_FILE_READER)
@@ -1690,7 +1694,8 @@ guththila_next_no_char(guththila_t * m, int eof,
                                                        GUTHTHILA_BUFFER_PRE_DATA_SIZE
                                                        (m->buffer)];
             }
-            return no;
+            return (int)no;
+            /* We are sure that the difference lies within the int range */
         }
         else if (m->next >=
                  GUTHTHILA_BUFFER_PRE_DATA_SIZE(m->buffer) +
@@ -1736,12 +1741,14 @@ guththila_next_no_char(guththila_t * m, int eof,
             m->buffer.buffs_size[m->buffer.cur_buff] =
                 m->buffer.buffs_size[m->buffer.cur_buff - 1] * 2;
             m->buffer.data_size[m->buffer.cur_buff] = 0;
-            data_move = m->next;
+            data_move = (int)m->next;
+            /* We are sure that the difference lies within the int range */
             if ((m->last_start != -1) && (m->last_start < data_move))
                 data_move = m->last_start;
             data_move = 
-                m->buffer.data_size[m->buffer.cur_buff - 1] -
-                (data_move - m->buffer.pre_tot_data);
+                (int)m->buffer.data_size[m->buffer.cur_buff - 1] -
+                (data_move - (int)m->buffer.pre_tot_data);
+            /* We are sure that the difference lies within the int range */
             if (data_move)
             {
                 memcpy(m->buffer.buff[m->buffer.cur_buff],
@@ -1757,9 +1764,10 @@ guththila_next_no_char(guththila_t * m, int eof,
                 guththila_reader_read(m->reader,
                                       GUTHTHILA_BUFFER_CURRENT_BUFF(m->buffer),
                                       0,
-                                      GUTHTHILA_BUFFER_CURRENT_BUFF_SIZE(m->
+                                      (int)GUTHTHILA_BUFFER_CURRENT_BUFF_SIZE(m->
                                                                          buffer),
                                       env);
+                /* We are sure that the difference lies within the int range */
             if (temp > 0)
             {
                 m->buffer.data_size[m->buffer.cur_buff] += temp;
@@ -1775,7 +1783,8 @@ guththila_next_no_char(guththila_t * m, int eof,
                                                        GUTHTHILA_BUFFER_PRE_DATA_SIZE
                                                        (m->buffer)];
             }
-            return no;
+            return (int)no;
+            /* We are sure that the difference lies within the int range */
         }
         else if (m->buffer.cur_buff == -1)
         {
@@ -1795,7 +1804,8 @@ guththila_next_no_char(guththila_t * m, int eof,
                                                        GUTHTHILA_BUFFER_PRE_DATA_SIZE
                                                        (m->buffer)];
             }
-            return no;
+            return (int)no;
+            /* We are sure that the difference lies within the int range */
         }
     }
     return -1;
