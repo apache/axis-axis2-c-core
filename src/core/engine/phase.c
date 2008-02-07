@@ -115,7 +115,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_add_handler_at(
     axis2_phase_t * phase,
     const axutil_env_t * env,
-    int index,
+    const int index,
     axis2_handler_t * handler)
 {
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
@@ -1081,7 +1081,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_invoke_start_from_handler(
     axis2_phase_t * phase,
     const axutil_env_t * env,
-    int paused_handler_index,
+    const int paused_handler_index,
     axis2_msg_ctx_t * msg_ctx)
 {
     int i = 0,

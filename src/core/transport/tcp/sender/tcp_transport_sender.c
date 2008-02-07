@@ -294,7 +294,7 @@ axis2_tcp_transport_sender_invoke(
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "retrieving port failed");
             return AXIS2_FAILURE;
         }
-        socket = axutil_network_handler_open_socket(env, (char *) host, port);
+        socket = (int)axutil_network_handler_open_socket(env, (char *) host, port);
         if (!socket)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "socket creation failed");

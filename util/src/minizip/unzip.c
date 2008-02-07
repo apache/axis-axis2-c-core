@@ -645,7 +645,7 @@ unzlocal_GetCurrentFileInfoInternal(
     unz_file_info file_info;
     unz_file_info_internal file_info_internal;
     int err = UNZ_OK;
-    uLong uMagic;
+    uLong uMagic = 0x00000000;
     long lSeek = 0;
 
     if (file == NULL)

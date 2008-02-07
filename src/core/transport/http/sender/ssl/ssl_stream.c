@@ -148,7 +148,8 @@ axis2_ssl_stream_read(
     
     SSL_set_mode(stream_impl->ssl, SSL_MODE_AUTO_RETRY); 
 
-    read = SSL_read(stream_impl->ssl, buffer, count);
+    read = SSL_read(stream_impl->ssl, buffer, (int)count);
+    /* We are sure that the difference lies within the int range */
     switch (SSL_get_error(stream_impl->ssl, read))
     {
     case SSL_ERROR_NONE:
@@ -181,7 +182,8 @@ axis2_ssl_stream_write(
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, buf, AXIS2_FAILURE);
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    write = SSL_write(stream_impl->ssl, buf, count);
+    write = SSL_write(stream_impl->ssl, buf, (int)count);
+    /* We are sure that the difference lies within the int range */
 
     switch (SSL_get_error(stream_impl->ssl, write))
     {

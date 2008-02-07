@@ -495,7 +495,7 @@ axis2_engine_create_fault_msg_ctx(
     axis2_bool_t doing_rest = AXIS2_FALSE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, processing_context, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, processing_context, NULL);
 
     if (axis2_msg_ctx_get_process_fault(processing_context, env))
     {

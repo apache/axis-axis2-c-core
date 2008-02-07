@@ -624,7 +624,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_timeout_in_milli_seconds(
     axis2_options_t * options,
     const axutil_env_t * env,
-    long timeout_in_milli_seconds)
+    const long timeout_in_milli_seconds)
 {
     options->timeout_in_milli_seconds = timeout_in_milli_seconds;
     return AXIS2_SUCCESS;
@@ -665,7 +665,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_use_separate_listener(
     axis2_options_t * options,
     const axutil_env_t * env,
-    axis2_bool_t use_separate_listener)
+    const axis2_bool_t use_separate_listener)
 {
     options->use_separate_listener = use_separate_listener;
     return AXIS2_SUCCESS;
@@ -686,7 +686,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_manage_session(
     axis2_options_t * options,
     const axutil_env_t * env,
-    axis2_bool_t manage_session)
+    const axis2_bool_t manage_session)
 {
     options->manage_session = manage_session;
     return AXIS2_SUCCESS;
@@ -793,7 +793,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_soap_version(
     axis2_options_t * options,
     const axutil_env_t * env,
-    int soap_version)
+    const int soap_version)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 

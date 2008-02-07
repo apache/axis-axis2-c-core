@@ -533,7 +533,8 @@ axutil_uri_parse_hostinfo(
     {
         return NULL;
     }
-    uri->hostname = axutil_strndup(env, hostinfo, s - hostinfo - v6_offset1);
+    uri->hostname = axutil_strndup(env, hostinfo, (int)(s - hostinfo - v6_offset1));
+    /* We are sure that the difference lies within the int range */
     ++s;
     uri->port_str = axutil_strdup(env, s);
     if (*s != '\0')

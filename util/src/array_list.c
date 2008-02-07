@@ -165,7 +165,7 @@ axutil_array_list_set(
 {
     void *result = NULL;
 
-    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, array_list, NULL);
     if (axutil_array_list_check_bound_exclusive(array_list, env, index))
     {
         result = array_list->data[index];
@@ -225,7 +225,7 @@ axutil_array_list_remove(
 {
     void *result = NULL;
     int i = 0;
-    AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, array_list, NULL);
 
     if (axutil_array_list_check_bound_exclusive(array_list, env, index))
     {

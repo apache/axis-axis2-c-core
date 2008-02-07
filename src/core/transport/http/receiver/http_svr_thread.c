@@ -74,7 +74,7 @@ axis2_http_svr_thread_create(
     svr_thread->worker = NULL;
     svr_thread->stopped = AXIS2_FALSE;
     svr_thread->port = port;
-    svr_thread->listen_socket = axutil_network_handler_create_server_socket
+    svr_thread->listen_socket = (int)axutil_network_handler_create_server_socket
         (env, svr_thread->port);
     if (-1 == svr_thread->listen_socket)
     {
@@ -121,7 +121,7 @@ axis2_http_svr_thread_run(
         axis2_http_svr_thd_args_t *arg_list = NULL;
         axutil_thread_t *worker_thread = NULL;
 
-        socket = axutil_network_handler_svr_socket_accept(env,
+        socket = (int)axutil_network_handler_svr_socket_accept(env,
                                                           svr_thread->
                                                           listen_socket);
         if (!svr_thread->worker)
@@ -246,7 +246,7 @@ axis2_svr_thread_worker_func(
     env = arg_list->env;
     thread_env = axutil_init_thread_env(env);
     socket = arg_list->socket;
-    svr_conn = axis2_simple_http_svr_conn_create(thread_env, socket);
+    svr_conn = axis2_simple_http_svr_conn_create(thread_env, (int)socket);
     axis2_simple_http_svr_conn_set_rcv_timeout(svr_conn, thread_env,
                                                axis2_http_socket_read_timeout);
     request = axis2_simple_http_svr_conn_read_request(svr_conn, thread_env);

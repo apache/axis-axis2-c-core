@@ -175,14 +175,14 @@ axis2_http_client_send(
         {
             return AXIS2_FAILURE;
         }
-        client->sockfd = axutil_network_handler_open_socket(env,
+        client->sockfd = (int)axutil_network_handler_open_socket(env,
                                                             client->proxy_host,
                                                             client->proxy_port);
     }
     else
     {
         client->sockfd = 
-            axutil_network_handler_open_socket(env,
+            (int)axutil_network_handler_open_socket(env,
                                                axutil_url_get_server
                                                (client->url, env),
                                                axutil_url_get_port

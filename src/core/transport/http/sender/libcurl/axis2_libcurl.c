@@ -557,7 +557,8 @@ axis2_libcurl_write_memory_callback(
         }
 
         memcpy(&(buffer[curl->size]), ptr, realsize);
-        curl->size += realsize;
+        curl->size += (int)realsize;
+        /* We are sure that the difference lies within the int range */
         buffer[curl->size] = 0;
         curl->memory = buffer;
     }

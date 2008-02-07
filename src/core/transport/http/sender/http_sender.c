@@ -2462,7 +2462,8 @@ axis2_http_sender_get_param_string (axis2_http_sender_t * sender,
                                                    strlen (value));
                 memset (encoded_value, 0, strlen (value));
                 encoded_value =
-                    axutil_url_encode (env, encoded_value, value, strlen (value));
+                    axutil_url_encode (env, encoded_value, value, (int)strlen (value));
+                    /* We are sure that the difference lies within the int range */
 
                 axutil_array_list_add (param_list, env,
                                        axutil_strcat (env, name, "=",
@@ -2511,7 +2512,7 @@ axutil_url_encode (const axutil_env_t * env,
             sprintf (string, "%%%x", buff[i]);
         }
 
-        if ((strlen (dest) + 4) > len)
+        if (((int)strlen (dest) + 4) > len)
         {
             expand_buffer =
                 (axis2_char_t *) AXIS2_MALLOC (env->allocator, len * 2);

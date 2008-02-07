@@ -227,10 +227,12 @@ axutil_network_handler_svr_socket_accept(
                         "[Axis2][network_handler] Socket accept \
                 failed");
 
-    setsockopt(svr_socket, IPPROTO_TCP, TCP_NODELAY, &nodelay, sizeof(nodelay));
+    setsockopt(svr_socket, IPPROTO_TCP, TCP_NODELAY, (const char *)&nodelay, (int)sizeof(nodelay));
+    /* We are sure that the difference lies within the int range */
     ll.l_onoff = 1;
     ll.l_linger = 5;
-    setsockopt(cli_socket, SOL_SOCKET, SO_LINGER, &ll, sizeof(struct linger));
+    setsockopt(cli_socket, SOL_SOCKET, SO_LINGER, (const char *)&ll, (int)sizeof(struct linger));
+    /* We are sure that the difference lies within the int range */
     return cli_socket;
 }
 

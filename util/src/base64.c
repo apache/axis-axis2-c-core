@@ -106,7 +106,8 @@ axutil_base64_decode_len(
     bufin = (const unsigned char *) bufcoded;
     while (pr2six[*(bufin++)] <= 63);
 
-    nprbytes = (bufin - (const unsigned char *) bufcoded) - 1;
+    nprbytes = (int)(bufin - (const unsigned char *) bufcoded) - 1;
+    /* We are sure that the difference lies within the int range */
 
     nbytesdecoded = ((nprbytes >> 2) * 3);
 
@@ -148,7 +149,8 @@ axutil_base64_decode_binary(
 
     bufin = (const unsigned char *) bufcoded;
     while (pr2six[*(bufin++)] <= 63);
-    nprbytes = (bufin - (const unsigned char *) bufcoded) - 1;
+    nprbytes = (int)(bufin - (const unsigned char *) bufcoded) - 1;
+    /* We are sure that the difference lies within the int range */
     nbytesdecoded = ((nprbytes + 3) / 4) * 3;
 
     bufout = (unsigned char *) bufplain;
@@ -288,5 +290,6 @@ axutil_base64_encode_binary(
     }
 
     *p++ = '\0';
-    return p - encoded;
+    return (int)(p - encoded);
+    /* We are sure that the difference lies within the int range */
 }

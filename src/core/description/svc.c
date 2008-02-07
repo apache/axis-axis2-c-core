@@ -264,7 +264,7 @@ axis2_svc_create_with_qname(
     axis2_svc_t *svc = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
     svc = axis2_svc_create(env);
     if (!svc)
@@ -1399,7 +1399,7 @@ axis2_svc_swap_mapping_table(
     axutil_hash_t *new_table = NULL;
     axutil_hash_index_t *hi = NULL;
 
-    AXIS2_PARAM_CHECK(env->error, orig_table, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, orig_table, NULL);
 
     new_table = axutil_hash_make(env);
 

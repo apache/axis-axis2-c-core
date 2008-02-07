@@ -46,7 +46,8 @@ opendir(
     dirp->offset = 0;
     dirp->finished = 0;
 
-    if ((handle = _findfirst(filespec, &(dirp->fileinfo))) < 0)
+    if ((handle = (long)_findfirst(filespec, &(dirp->fileinfo))) < 0)
+        /* We are sure that the difference lies within the long range */
     {
         if (errno == ENOENT || errno == EINVAL)
             dirp->finished = 1;
@@ -160,7 +161,8 @@ rewinddir(
         filespec[index] = '\0';
     strcat(filespec, "/*");
 
-    if ((handle = _findfirst(filespec, &(dirp->fileinfo))) < 0)
+    if ((handle = (long)_findfirst(filespec, &(dirp->fileinfo))) < 0)
+        /* We are sure that the difference lies within the int range */
     {
         if (errno == ENOENT || errno == EINVAL)
             dirp->finished = 1;

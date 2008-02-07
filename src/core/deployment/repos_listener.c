@@ -134,7 +134,7 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(
     if (status != AXIS2_SUCCESS)
     {
         AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "setting conf to repos listener failed.");
-        return AXIS2_FAILURE;
+        return NULL;
     }
 
 
@@ -431,6 +431,6 @@ axis2_repos_listener_get_conf (
     axis2_repos_listener_t *repo_listener,        
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, repo_listener, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, repo_listener, NULL);
     return repo_listener->conf;
 }

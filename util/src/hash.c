@@ -257,7 +257,8 @@ axutil_hashfunc_default(
         {
             hash = hash * 33 + *p;
         }
-        *klen = p - key;
+        *klen = (axis2_ssize_t)(p - key);
+        /* We are sure that the difference lies within the axis2_ssize_t range */
     }
     else
     {
@@ -589,7 +590,7 @@ axutil_hash_free(
     axutil_hash_t * ht,
     const axutil_env_t * env)
 {
-    int i = 0;
+    unsigned int i = 0;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (ht)
     {
@@ -640,7 +641,7 @@ axutil_hash_free_void_arg(
     void *ht_void,
     const axutil_env_t * env)
 {
-    int i = 0;
+    unsigned int i = 0;
     axutil_hash_t *ht = (axutil_hash_t *) ht_void;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (ht)

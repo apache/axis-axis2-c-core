@@ -122,7 +122,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_callback_report_error(
     axis2_callback_t * callback,
     const axutil_env_t * env,
-    int exception)
+    const int exception)
 {
     axis2_callback_set_error(callback, env, exception);
     return callback->on_error(callback, env, exception);
@@ -140,7 +140,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_callback_set_complete(
     axis2_callback_t * callback,
     const axutil_env_t * env,
-    axis2_bool_t complete)
+    const axis2_bool_t complete)
 {
     callback->complete = complete;
     return AXIS2_SUCCESS;
@@ -177,7 +177,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_callback_set_error(
     axis2_callback_t * callback,
     const axutil_env_t * env,
-    int error)
+    const int error)
 {
     callback->error = error;
     return AXIS2_SUCCESS;

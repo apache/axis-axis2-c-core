@@ -1152,7 +1152,7 @@ axis2_http_transport_utils_get_request_params(
     axis2_char_t *tmp_value = NULL;
     axutil_hash_t *ret = NULL;
 
-    AXIS2_PARAM_CHECK(env->error, request_uri, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, request_uri, NULL);
 
     if (!tmp || '\0' == *(tmp + 1))
     {

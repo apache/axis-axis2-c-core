@@ -698,7 +698,7 @@ axis2_http_worker_get_headers(
     int i = 0;
     axutil_hash_t *header_map = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, request, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, request, NULL);
 
     header_list = axis2_http_simple_request_get_headers(request, env);
     if (!header_list)

@@ -338,7 +338,7 @@ axis2_arch_file_data_get_svc(
     axis2_svc_t *svc = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, svc_name, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
 
     if (arch_file_data->svc_map)
     {

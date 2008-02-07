@@ -286,13 +286,15 @@ axutil_stream_read_basic(
     {
         return -1;
     }
-    if ((count - 1) > stream->len)
+    if ((int)(count - 1) > stream->len)
+    /* We are sure that the difference lies within the int range */
     {
         len = stream->len;
     }
     else
     {
-        len = count - 1;
+        len = (int)(count - 1);
+        /* We are sure that the difference lies within the int range */
     }
     memcpy(buffer, buf, len);
     /*
@@ -318,7 +320,8 @@ axutil_stream_write_basic(
     if (!buffer)
         return -1;
 
-    new_len = stream->len + count;
+    new_len = (int)(stream->len + count);
+    /* We are sure that the difference lies within the int range */
     if (new_len > stream->max_len)
     {
         axis2_char_t *tmp = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
@@ -342,8 +345,9 @@ axutil_stream_write_basic(
     }
     memcpy(stream->buffer + (stream->len * sizeof(axis2_char_t)), buffer,
            count);
-    stream->len += count;
-    return count;
+    stream->len += (int)count;
+    /* We are sure that the difference lies within the int range */
+    return (int)count;
 }
 
 int AXIS2_CALL
@@ -448,7 +452,8 @@ axutil_stream_read_file(
     {
         return -1;
     }
-    return fread(buffer, sizeof(axis2_char_t), count, fp);
+    return (int)fread(buffer, sizeof(axis2_char_t), count, fp);
+    /* We are sure that the difference lies within the int range */
 }
 
 int AXIS2_CALL
@@ -470,7 +475,8 @@ axutil_stream_write_file(
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     if (!buffer)
         return -1;
-    len = fwrite(buffer, sizeof(axis2_char_t), count, fp);
+    len = (int)fwrite(buffer, sizeof(axis2_char_t), count, fp);
+    /* We are sure that the difference lies within the int range */
     return len;
 }
 
@@ -551,7 +557,8 @@ axutil_stream_read_socket(
         return -1;
     }
 
-    len = recv(stream->socket, buffer, count, 0);
+    len = (int)recv(stream->socket, buffer, (int)count, 0);
+    /* We are sure that the difference lies within the int range */
 #ifdef AXIS2_TCPMON
     if (len > 1)
     {
@@ -591,7 +598,8 @@ axutil_stream_write_socket(
     }
     if (!buffer)
         return -1;
-    len = send(stream->socket, buffer, count, 0);
+    len = (int)send(stream->socket, buffer, (int)count, 0);
+    /* We are sure that the difference lies within the int range */
 #ifdef AXIS2_TCPMON
     if (len > 0)
     {
@@ -654,7 +662,8 @@ axutil_stream_peek_socket(
         return -1;
     }
 
-    len = recv(stream->socket, buffer, count, MSG_PEEK);
+    len = (int)recv(stream->socket, buffer, (int)count, MSG_PEEK);
+    /* We are sure that the difference lies within the int range */
 
     return len;
 }

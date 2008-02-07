@@ -525,7 +525,7 @@ axis2_svc_builder_process_ops(
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_OP_NAME_MISSING,
                             AXIS2_FAILURE);
-            return AXIS2_FAILURE;
+            return NULL;
         }
 
         op_name = axiom_attribute_get_value(op_name_att, env);
@@ -609,7 +609,7 @@ axis2_svc_builder_process_ops(
                                                            module_itr, op_desc);
         if (AXIS2_SUCCESS != status)
         {
-            return AXIS2_FAILURE;
+            return NULL;
         }
 
         /* setting the policy_include */

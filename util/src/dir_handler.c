@@ -39,6 +39,10 @@ int dir_select(
     const struct dirent *entry);
 #endif
 
+int
+file_select(
+    const struct dirent *entry);
+
 /**
  * List the dll files in the given service or module folder path
  * @param pathname path to your service or module directory
@@ -54,8 +58,13 @@ axutil_dir_handler_list_services_or_modules_in_dir(
     int count = 1;
     int i = 0;
     struct dirent **files = NULL;
-    int file_select(
-        );
+    /*int file_select(
+        );*/
+    /* Removed un-wanted redefinition leading to warnings on
+     * Windows. If this is the desired behaviour, please look
+     * into the file_select function definition below and comment
+     * out the code if neccessary.
+     */
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -314,8 +323,15 @@ axutil_dir_handler_list_service_or_module_dirs(
 
 int
 file_select(
-    struct dirent *entry)
+    const struct dirent *entry)
 {
+    /** FIXME:
+      * This block of code has been sitting here doing nothing.
+      * I have made the existing logic use this code portion.
+      * Have no idea about the side-effects of this modification.
+      * If this code block is not required, we might as well remove
+      * it.
+      */
     axis2_char_t *ptr;
 
     if ((strcmp(entry->d_name, ".") == 0) || (strcmp(entry->d_name, "..") == 0))

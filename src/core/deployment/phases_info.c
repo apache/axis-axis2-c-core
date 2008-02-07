@@ -245,7 +245,7 @@ axis2_phases_info_get_in_phases(
     const axis2_phases_info_t * phases_info,
     const axutil_env_t * env)
 {
-	AXIS2_PARAM_CHECK(env->error, phases_info, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, phases_info, NULL);
     return phases_info->in_phases;
 }
 
@@ -254,7 +254,7 @@ axis2_phases_info_get_out_phases(
     const axis2_phases_info_t * phases_info,
     const axutil_env_t * env)
 {
-	AXIS2_PARAM_CHECK(env->error, phases_info, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, phases_info, NULL);
     return phases_info->out_phases;
 }
 
@@ -263,7 +263,7 @@ axis2_phases_info_get_in_faultphases(
     const axis2_phases_info_t * phases_info,
     const axutil_env_t * env)
 {
-	AXIS2_PARAM_CHECK(env->error, phases_info, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, phases_info, NULL);
     return phases_info->in_faultphases;
 }
 
@@ -272,7 +272,7 @@ axis2_phases_info_get_out_faultphases(
     const axis2_phases_info_t * phases_info,
     const axutil_env_t * env)
 {
-	AXIS2_PARAM_CHECK(env->error, phases_info, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, phases_info, NULL);
     return phases_info->out_faultphases;
 }
 
@@ -289,7 +289,7 @@ axis2_phases_info_get_op_in_phases(
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, NULL);
-	AXIS2_PARAM_CHECK(env->error, phases_info, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, phases_info, NULL);
 
     op_in_phases = axutil_array_list_create(env, 0);
     if (!op_in_phases)
@@ -365,7 +365,7 @@ axis2_phases_info_get_op_out_phases(
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, NULL);
-	AXIS2_PARAM_CHECK(env->error, phases_info, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, phases_info, NULL);
 
     if (phases_info->out_phases)
     {
@@ -426,7 +426,7 @@ axis2_phases_info_get_op_in_faultphases(
     struct axis2_phase *phase = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-	AXIS2_PARAM_CHECK(env->error, phases_info, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, phases_info, NULL);
 
     if (!phases_info->in_faultphases)
     {
@@ -493,7 +493,7 @@ axis2_phases_info_get_op_out_faultphases(
     struct axis2_phase *phase = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-	AXIS2_PARAM_CHECK(env->error, phases_info, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, phases_info, NULL);
 
     if (!phases_info->out_faultphases)
     {
@@ -618,7 +618,7 @@ axis2_phases_info_copy_flow(
         if (!new_flow)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            return AXIS2_FAILURE;
+            return NULL;
         }
     }
     for (i = 0; i < size; i++)

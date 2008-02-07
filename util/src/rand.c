@@ -45,7 +45,7 @@ axutil_rand_with_range(
     if (end <= start)
         return -1;
 
-    range = end - start;
+    range = (float)(end - start);
     rand = axutil_rand(seedp);
     rand = 1 + (int) (range * rand / (AXIS2_RAND_MAX + 1.0));
     return rand;

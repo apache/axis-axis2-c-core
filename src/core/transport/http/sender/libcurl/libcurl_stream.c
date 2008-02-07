@@ -107,16 +107,19 @@ libcurl_stream_read(
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    if (stream_impl->size >= count)
+    if (stream_impl->size >= (int)count)
+    /* We are sure that the difference lies within the int range */
     {
         if (buffer && (stream_impl->size > stream_impl->read_len))
         {
             unread = (stream_impl->size - stream_impl->read_len);
-            if (unread > count)
+            if (unread > (int)count)
+            /* We are sure that the difference lies within the int range */
             {
                 memcpy(buffer, &stream_impl->buffer[stream_impl->read_len],
                        count);
-                read = count;
+                read = (int)count;
+                /* We are sure that the difference lies within the int range */
                 stream_impl->read_len += read;
             }
             else
@@ -152,7 +155,8 @@ libcurl_stream_write(
     const void *buffer,
     size_t count)
 {
-    return count;
+    return (int)count;
+    /* We are sure that the difference lies within the int range */
 }
 
 int AXIS2_CALL

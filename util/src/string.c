@@ -341,7 +341,8 @@ axutil_strndup(
 
     end = axutil_memchr(ptr, '\0', n);
     if (end)
-        n = end - (axis2_char_t *) ptr;
+        n = (int)(end - (axis2_char_t *) ptr);
+        /* We are sure that the difference lies within the int range */
     str =
         (axis2_char_t *) AXIS2_MALLOC(env->allocator,
                                       sizeof(axis2_char_t) * (n + 1));
@@ -388,7 +389,8 @@ axutil_strcat(
     va_end(adummy);
 
     /* Allocate the required string */
-    str_len = sizeof(axis2_char_t) * (len + 1);
+    str_len = (int)(sizeof(axis2_char_t) * (len + 1));
+    /* We are sure that the difference lies within the int range */
     str = (axis2_char_t *) AXIS2_MALLOC(env->allocator, str_len);
     if (!str)
     {
@@ -499,7 +501,8 @@ axutil_strlen(
 {
     if (s)
     {
-        return strlen(s);
+        return (int)strlen(s);
+        /* We are sure that the difference lies within the axis2_ssize_t range */
     }
     else
     {
@@ -728,7 +731,8 @@ axutil_string_substring_starting_at(
     int len;
     int pos_to_shift;
 
-    len = strlen(str);
+    len = (int)strlen(str);
+    /* We are sure that the difference lies within the int range */
     pos_to_shift = len - s + 1;
 
     if (len <= s)
@@ -747,7 +751,8 @@ axutil_string_substring_ending_at(
     axis2_char_t *ptr = NULL;
     int length = 0;
 
-    length = strlen(str);
+    length = (int)strlen(str);
+    /* We are sure that the difference lies within the int range */
     ptr = str;
     if (length <= e)
     {
@@ -810,7 +815,8 @@ axutil_strcasestr(
             }
             while (toupper(current) != toupper(start));
         }
-        while (axutil_strncasecmp(heystack, needle, len));
+        while (axutil_strncasecmp(heystack, needle, (int)len));
+        /* We are sure that the difference lies within the int range */
         heystack--;
     }
     return (axis2_char_t *) heystack;

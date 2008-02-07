@@ -188,7 +188,8 @@ main(
 	status = axutil_file_handler_access (repo_path, AXIS2_R_OK);
 	if (status == AXIS2_SUCCESS)
 	{
-		len = strlen (repo_path);
+		len = (unsigned int)strlen (repo_path);
+        /* We are sure that the difference lies within the unsigned int range */
 		if ((len >= 9) &&
             !strcmp ((repo_path + (len - 9)), "axis2.xml"))
 		{

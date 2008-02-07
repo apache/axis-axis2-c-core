@@ -601,7 +601,7 @@ axis2_conf_builder_get_phase_list(
     axiom_element_t *phase_orders_element;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, phase_orders_node, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, phase_orders_node, NULL);
 
     phase_orders_element = axiom_node_get_data_element(phase_orders_node, env);
     if (!phase_orders_element)

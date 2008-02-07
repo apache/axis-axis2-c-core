@@ -136,7 +136,7 @@ axiom_mime_parser_parse(
                 {
                     if (root_mime_len > (pos - root_mime + 4))
                     {
-                        soap_body_len = root_mime_len - (pos - root_mime + 4);
+                        soap_body_len = root_mime_len - (int)(pos - root_mime + 4);
                         soap_body_str = AXIS2_MALLOC(env->allocator,
                                                      sizeof(char) *
                                                      (soap_body_len + 1));
@@ -163,14 +163,14 @@ axiom_mime_parser_parse(
         if (pos)
         {
             pos -= 2;
-            body_mime_len = soap_body_len - (pos - soap_body_str);
+            body_mime_len = soap_body_len - (int)(pos - soap_body_str);
             body_mime = AXIS2_MALLOC(env->allocator,
                                      sizeof(char) * (body_mime_len + 1));
             memcpy(body_mime, pos, body_mime_len);
             body_mime[body_mime_len] = '\0';
 
             *(pos) = '\0';
-            soap_body_len = (pos - soap_body_str);
+            soap_body_len = (int)(pos - soap_body_str);
         }
         else
         {
@@ -228,7 +228,7 @@ axiom_mime_parser_parse(
             {
                 if (body_mime_len > (pos - body_mime + 4))
                 {
-                    mime_binary_len = body_mime_len - (pos - body_mime + 4);
+                    mime_binary_len = body_mime_len - (int)(pos - body_mime + 4);
                     mime_binary = AXIS2_MALLOC(env->allocator,
                                                sizeof(char) * (mime_binary_len +
                                                                1));
@@ -301,7 +301,7 @@ axiom_mime_parser_parse(
                     temp_pos == pos + 2)
                 {
                     old_mime_binary_len = mime_binary_len;
-                    mime_binary_len = pos - mime_binary;
+                    mime_binary_len = (int)(pos - mime_binary);
                 }
                 else
                 {
@@ -418,7 +418,7 @@ axiom_mime_parser_parse(
                         {
                             axis2_char_t *mime_id = NULL;
                             int mime_id_len = 0;
-                            mime_id_len = pos - id;
+                            mime_id_len = (int)(pos - id);
                             mime_id = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * mime_id_len + 1); /* this would be freed by SOAP builder */
                             if (mime_id)
                             {

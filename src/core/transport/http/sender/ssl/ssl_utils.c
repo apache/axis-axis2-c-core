@@ -28,7 +28,8 @@ password_cb(
 {
     strncpy(buf, (char *) passwd, size);
     buf[size - 1] = '\0';
-    return (strlen(buf));
+    return (int)(strlen(buf));
+    /* We are sure that the difference lies within the int range */
 }
 
 AXIS2_EXTERN SSL_CTX *AXIS2_CALL
@@ -134,7 +135,7 @@ axis2_ssl_utils_initialize_ssl(
         return NULL;
     }
 
-    sbio = BIO_new_socket(socket, BIO_NOCLOSE);
+    sbio = BIO_new_socket((int)socket, BIO_NOCLOSE);
     if (!sbio)
     {
         return NULL;

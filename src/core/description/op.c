@@ -170,7 +170,7 @@ axis2_op_create_with_qname(
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
     op = (axis2_op_t *) axis2_op_create(env);
 

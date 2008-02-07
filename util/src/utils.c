@@ -63,7 +63,8 @@ axutil_parse_rest_url_for_params(
     {
         resource = axutil_strdup(env, tmpl);
     }
-    i = strlen(resource);
+    i = (int)strlen(resource);
+    /* We are sure that the difference lies within the int range */
     if (resource[i] == '/')
     {
         resource[i] = '\0';
@@ -76,7 +77,8 @@ axutil_parse_rest_url_for_params(
         tmp4 = tmp1;
         tmp1++;
         resource[tmp4 - resource] = '\0';
-        if (*tmp1 && ((tmp1 - resource) < strlen(resource) - 1))
+        if (*tmp1 && ((tmp1 - resource) < (int)strlen(resource) - 1))
+            /* We are sure that the difference lies within the int range */
         {
             query = tmp1;
             /* 
@@ -87,7 +89,8 @@ axutil_parse_rest_url_for_params(
     }
 
     /* Validation of Template */
-    i = strlen(resource);
+    i = (int)strlen(resource);
+    /* We are sure that the difference lies within the int range */
     if (!strchr(resource, '{') && !strchr(resource, '}'))
     {
         i = 0;
@@ -156,7 +159,8 @@ axutil_parse_rest_url_for_params(
     {
         url_resource = axutil_strdup(env, url);
     }
-    i = strlen(url_resource);
+    i = (int)strlen(url_resource);
+    /* We are sure that the difference lies within the int range */
     if (url_resource[i] == '/')
     {
         url_resource[i] = '\0';
@@ -171,7 +175,8 @@ axutil_parse_rest_url_for_params(
         tmp4 = tmp1;
         tmp1++;
         url_resource[tmp4 - url_resource] = '\0';
-        if (*tmp1 && ((tmp1 - url_resource) < strlen(url_resource) - 1))
+        if (*tmp1 && ((tmp1 - url_resource) < (int)strlen(url_resource) - 1))
+            /* We are sure that the difference lies within the int range */
         {
             url_query = tmp1;
         }
@@ -201,7 +206,7 @@ axutil_parse_rest_url_for_params(
                 axis2_char_t *tmp9 = NULL;
 
                 /* Logic for finding out constant portion to match */
-                i = tmp4 - tmp1;
+                i = (int)(tmp4 - tmp1);
                 tmp2[0] = AXIS2_MALLOC(env->allocator, (i + 1) * sizeof(char));
                 strncpy(tmp2[0], tmp1, i);
                 tmp2[0][i] = '\0';
@@ -259,7 +264,7 @@ axutil_parse_rest_url_for_params(
                             }
                             if (!finished_tmp)
                             {
-                                i = tmp7 - tmp8;
+                                i = (int)(tmp7 - tmp8);
                                 tmp9 = AXIS2_MALLOC(env->allocator, (i + 1) * sizeof(char));
                                 strncpy(tmp9, tmp8, i);
                                 tmp9[i] = '\0';
@@ -278,7 +283,7 @@ axutil_parse_rest_url_for_params(
                         /* Logic for saving the match */
                         if (tmp6)
                         {
-                            i = tmp6 - tmp5;
+                            i = (int)(tmp6 - tmp5);
                             url_tmp = tmp6;
                             tmp2[1] = AXIS2_MALLOC(env->allocator, (i + 1) * sizeof(char));
                             strncpy(tmp2[1], tmp5, i);
@@ -286,7 +291,8 @@ axutil_parse_rest_url_for_params(
                         }
                         else
                         {
-                            i = strlen(tmp5);
+                            i = (int)strlen(tmp5);
+                            /* We are sure that the difference lies within the int range */
                             tmp2[1] = AXIS2_MALLOC(env->allocator, (i + 1) * sizeof(char));
                             strncpy(tmp2[1], tmp5, i);
                             tmp2[1][i] = '\0';
@@ -307,7 +313,7 @@ axutil_parse_rest_url_for_params(
                         if (tmp4[1] != '}')
                         {
                             /* Logic for saving the key for the match */
-                            i = tmp4 - tmp1;
+                            i = (int)(tmp4 - tmp1);
                             if (tmp2[0])
                             {
                                 AXIS2_FREE(env->allocator, tmp2[0]);
@@ -424,7 +430,7 @@ axutil_parse_request_url_for_svc_and_op(
             tmp = strchr(service_str, '/');
             if (tmp)
             {
-                i = tmp - service_str;
+                i = (int)(tmp - service_str);
                 ret[0] = AXIS2_MALLOC(env->allocator, i * sizeof(char) + 1);
                 strncpy(ret[0], service_str, i);
                 ret[0][i] = '\0';
@@ -437,7 +443,7 @@ axutil_parse_request_url_for_svc_and_op(
                     tmp = strchr(service_str, '?');
                     if (tmp)
                     {
-                        i = tmp - service_str;
+                        i = (int)(tmp - service_str);
                         ret[1] =
                             AXIS2_MALLOC(env->allocator, i * sizeof(char) + 1);
                         strncpy(ret[1], service_str, i);

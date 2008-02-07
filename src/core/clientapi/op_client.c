@@ -1081,7 +1081,7 @@ axis2_get_transport_from_url(
     axis2_char_t *transport = NULL;
     const axis2_char_t *start = NULL;
     const axis2_char_t *end = NULL;
-    AXIS2_PARAM_CHECK(env->error, url, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, url, NULL);
     start = url;
     end = url;
     while ((*end) && (*end) != ':')

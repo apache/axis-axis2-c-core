@@ -201,7 +201,8 @@ axiom_data_handler_read_from(
                 fclose(f);
                 return AXIS2_FAILURE;
             }
-            count = fread(read_stream, 1, read_stream_size, f);
+            count = (int)fread(read_stream, 1, read_stream_size, f);
+            /* We are sure that the difference lies within the int range */
             if (ferror(f) != 0)
             {
                 AXIS2_ERROR_SET(env->error,
@@ -325,7 +326,8 @@ axiom_data_handler_write_to(
             return AXIS2_FAILURE;
         }
 
-        count = fwrite(data_handler->buffer, 1, data_handler->buffer_len, f);
+        count = (int)fwrite(data_handler->buffer, 1, data_handler->buffer_len, f);
+        /* We are sure that the difference lies within the int range */
 
         if (ferror(f) != 0)
         {
