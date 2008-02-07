@@ -981,7 +981,7 @@ axis2_http_transport_utils_process_http_get_request(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, in_stream, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, out_stream, AXIS2_FALSE);
-    /*AXIS2_PARAM_CHECK(env->error, content_type, AXIS2_FALSE); */
+    AXIS2_PARAM_CHECK(env->error, content_type, AXIS2_FALSE); 
     AXIS2_PARAM_CHECK(env->error, request_uri, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, request_params, AXIS2_FALSE);
 
