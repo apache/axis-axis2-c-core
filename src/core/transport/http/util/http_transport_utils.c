@@ -981,21 +981,21 @@ axis2_http_transport_utils_process_http_get_request(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, in_stream, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, out_stream, AXIS2_FALSE);
-    AXIS2_PARAM_CHECK(env->error, content_type, AXIS2_FALSE); 
+    /* AXIS2_PARAM_CHECK(env->error, content_type, AXIS2_FALSE); */
     AXIS2_PARAM_CHECK(env->error, request_uri, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, request_params, AXIS2_FALSE);
 
     axis2_msg_ctx_set_to(msg_ctx, env, axis2_endpoint_ref_create(env,
                                                                  request_uri));
     axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
-    if (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML))
+    if (content_type && strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML))
     {
         if (soap_action_header)
         {
             do_rest = AXIS2_FALSE;
         }
     }
-    else if (strstr
+    else if (content_type && strstr
         (content_type, AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP))
     {
         do_rest = AXIS2_FALSE;
