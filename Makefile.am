@@ -29,6 +29,7 @@ dist-hook:
 	rm -rf `find $(distdir)/ -type f -name axis2c-sample-src-${PACKAGE_VERSION}.tar.gz`
 	rm -rf `find $(distdir)/ -type d -name autom4te.cache`
 	rm -rf $(distdir)/tools/tcpmon/src/tcpmon
+	rm -rf $(distdir)/tools/md5/src/md5
 	sh dist.sh
 
 bindist: $(bin_PROGRAMS)
@@ -39,5 +40,3 @@ bindist: $(bin_PROGRAMS)
 	cp AUTHORS axis2c-bin-${PACKAGE_VERSION}-linux
 	tar -cf - axis2c-bin-${PACKAGE_VERSION}-linux | gzip -c > axis2c-bin-${PACKAGE_VERSION}-linux.tar.gz
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
-
-
