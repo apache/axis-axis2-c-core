@@ -30,7 +30,7 @@ extern "C"
 {
 #endif
 
-#if defined(WIN32 && !defined(AXIS2_SKIP_INT_TYPEDEFS)
+#if defined(WIN32) && !defined(AXIS2_SKIP_INT_TYPEDEFS)
     /**
      * ANSI Type definitions for Windows
      */
