@@ -31,7 +31,7 @@ AUTOCONF = configure.in
 !include $(AUTOCONF)
 
 # directory structure of install directory
-RELEASE_VER = 1.2.0
+RELEASE_VER = 1.3.0
 
 AXIS2_RELEASE_DIR=axis2c-bin-$(RELEASE_VER)-win32
 
@@ -1398,7 +1398,7 @@ tcpmon: $(AXIS2_TOOLS)\tcpmon.exe
 ##############################################################################################
 
 build: deploy axis2_core axis2_samples copy_include
-	
+
 build_with_guththila : deploy axis2_core_guththila axis2_samples copy_include
 
 !if "$(WITH_TCP)" == "1"
@@ -1406,11 +1406,11 @@ all: $(PARSER) axis2_tcp
 !else
 all: $(PARSER)
 !endif
-	
+
 ##############################################################################################
 
 install: all copy_extra
-	
+
 dist: install axis2_apache_module axis2_IIS_module tcpmon copy_samples copy_vc_projects clean_manifest mv_dist
 
 dist_as_lib : deploy axis2_core_without_server copy_include clean_manifest mv_dist
