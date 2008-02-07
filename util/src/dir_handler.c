@@ -39,9 +39,9 @@ int dir_select(
     const struct dirent *entry);
 #endif
 
-int
+/*int
 file_select(
-    const struct dirent *entry);
+    const struct dirent *entry);*/
 
 /**
  * List the dll files in the given service or module folder path
@@ -58,8 +58,8 @@ axutil_dir_handler_list_services_or_modules_in_dir(
     int count = 1;
     int i = 0;
     struct dirent **files = NULL;
-    /*int file_select(
-        );*/
+    int file_select(
+        );
     /* Removed un-wanted redefinition leading to warnings on
      * Windows. If this is the desired behaviour, please look
      * into the file_select function definition below and comment
