@@ -1162,9 +1162,7 @@ axis2_op_client_two_way_send(
     {
         if (AXIS2_ERROR_GET_STATUS_CODE(env->error) == AXIS2_SUCCESS)
         {
-            AXIS2_ERROR_SET(env->error,
-                            AXIS2_ERROR_HTTP_REQUEST_NOT_SENT,
-                            AXIS2_FAILURE);
+            AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
         }
         return NULL;
     }
