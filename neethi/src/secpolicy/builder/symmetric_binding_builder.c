@@ -154,6 +154,19 @@ symmetric_binding_process_alternatives(
             else
                 return AXIS2_FAILURE;
         }
+        else if (type == ASSERTION_TYPE_SIGNATURE_TOKEN)
+        {
+            rp_property_t *signature_token = NULL;
+            signature_token =
+                (rp_property_t *) neethi_assertion_get_value(assertion, env);
+            if (signature_token)
+            {
+                rp_symmetric_binding_set_signature_token(symmetric_binding,
+                                                         env, signature_token);
+            }
+            else
+                return AXIS2_FAILURE;
+        }
         else if (type == ASSERTION_TYPE_ALGORITHM_SUITE)
         {
             rp_algorithmsuite_t *algorithmsuite = NULL;
