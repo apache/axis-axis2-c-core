@@ -340,24 +340,20 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_header_block_set_attribute(
     {
         return axiom_attribute_set_value(om_attr, env, attr_value);
     }
-    else
+    if (soap_envelope_namespace_uri)
+        om_ns = axiom_namespace_create(env,
+                                       soap_envelope_namespace_uri,
+                                       AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX);
+
+    om_attr = axiom_attribute_create(env, attr_name, attr_value, om_ns);
+    if (!om_attr && om_ns)
     {
-        if (soap_envelope_namespace_uri)
-            om_ns = axiom_namespace_create(env,
-                                           soap_envelope_namespace_uri,
-                                           AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX);
-
-        om_attr = axiom_attribute_create(env, attr_name, attr_value, om_ns);
-        if (!om_attr && om_ns)
-        {
-            axiom_namespace_free(om_ns, env);
-            return AXIS2_FAILURE;
-        }
-
-        return axiom_element_add_attribute(om_ele, env, om_attr,
-                                           header_block->om_ele_node);
+        axiom_namespace_free(om_ns, env);
+        return AXIS2_FAILURE;
     }
-    return AXIS2_SUCCESS;
+
+    return axiom_element_add_attribute(om_ele, env, om_attr,
+                                       header_block->om_ele_node);
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL axiom_soap_header_block_get_attribute(

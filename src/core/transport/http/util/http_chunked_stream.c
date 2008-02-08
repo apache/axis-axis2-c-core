@@ -102,7 +102,8 @@ axis2_http_chunked_stream_read(
     {
         axis2_http_chunked_stream_start_chunk(chunked_stream, env);
     }
-    yet_to_read = count;
+    yet_to_read = (int)count;
+    /* We are sure that the difference lies within the int range */
     while (AXIS2_FALSE == chunked_stream->end_of_chunks && yet_to_read > 0)
     {
         if (chunked_stream->unread_len < yet_to_read)
@@ -126,7 +127,8 @@ axis2_http_chunked_stream_read(
             chunked_stream->unread_len -= len;
         }
     }
-    return count - yet_to_read;
+    return ((int)count - yet_to_read);
+    /* We are sure that the difference lies within the int range */
 }
 
 AXIS2_EXTERN int AXIS2_CALL

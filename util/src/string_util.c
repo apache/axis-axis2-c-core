@@ -138,8 +138,8 @@ axutil_last_token(
     }
 
     str = axutil_strdup(env, in);
-    index = axutil_rindex(str, delim);
-
+    index = axutil_rindex(str, (axis2_char_t)delim);
+    /* We are sure that the conversion is safe */
     if (!index)
     {
         axutil_array_list_add(list, env, axutil_strdup(env, ""));

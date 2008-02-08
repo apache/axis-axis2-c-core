@@ -194,7 +194,8 @@ axis2_ws_info_list_add_ws_info_item(
             long last_modified_date = 0;
             axis2_arch_file_data_t *file_data = NULL;
 
-            last_modified_date = axutil_file_get_timestamp(file, env);
+            last_modified_date = (long)axutil_file_get_timestamp(file, env);
+            /* We are sure that the difference lies within the long range */
             ws_info =
                 axis2_ws_info_create_with_file_name_and_last_modified_date_and_type
                 (env, info_list_name, last_modified_date, AXIS2_SVC);
@@ -230,7 +231,8 @@ axis2_ws_info_list_add_ws_info_item(
             long last_modified_date = 0;
             axis2_arch_file_data_t *file_data = NULL;
 
-            last_modified_date = axutil_file_get_timestamp(file, env);
+            last_modified_date = (long)axutil_file_get_timestamp(file, env);
+            /* We are sure that the difference lies within the long range */
             ws_info =
                 axis2_ws_info_create_with_file_name_and_last_modified_date_and_type
                 (env, info_list_name, last_modified_date, AXIS2_MODULE);

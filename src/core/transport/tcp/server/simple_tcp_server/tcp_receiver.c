@@ -286,11 +286,7 @@ axis2_tcp_server_is_running(
     {
         return AXIS2_FALSE;
     }
-    else
-    {
-        return axis2_tcp_svr_thread_is_running(server_impl->svr_thread, env);
-    }
-    return AXIS2_FALSE;
+    return axis2_tcp_svr_thread_is_running(server_impl->svr_thread, env);
 }
 
 /**

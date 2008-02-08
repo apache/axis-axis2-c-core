@@ -549,7 +549,8 @@ axutil_url_decode(
     {
         if (src[0] == '%' && isxdigit(src[1]) && isxdigit(src[2]))
         {
-            *dest = axutil_hexit(src[1]) * 16 + axutil_hexit(src[2]);
+            *dest = (axis2_char_t)(axutil_hexit(src[1]) * 16 + axutil_hexit(src[2]));
+            /* We are sure that the conversion is safe */
             src += 2;
         }
         else

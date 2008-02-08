@@ -63,7 +63,7 @@ axis2_getopt(
     const char *__shortopts)
 {
     static char *pos = "";
-    char *olstindex;
+    char *olstindex = NULL;
 
     if (!*pos)
     {
@@ -83,10 +83,8 @@ axis2_getopt(
         }
     }
 
-    if ((optopt = (int) *pos++) == (int) ':' ||
-        !(olstindex = strchr(__shortopts, optopt)))
+    if ((optopt = (int) *pos++) == (int) ':')
     {
-
         if (optopt == (int) '-')
             return -1;
         if (!*pos)
@@ -95,8 +93,22 @@ axis2_getopt(
             return _axis2_opt_error(optopt, AXIS2_OPT_ERR_BAD_ARG, opterr);
         _axis2_opt_error(optopt, AXIS2_OPT_ERR_INVALID_OPTION, opterr);
     }
+    else
+    {
+        olstindex = strchr(__shortopts, optopt);
+        if (!olstindex)
+        {
+            if (optopt == (int) '-')
+                return -1;
+            if (!*pos)
+                ++optind;
+            if (*__shortopts != ':')
+                return _axis2_opt_error(optopt, AXIS2_OPT_ERR_BAD_ARG, opterr);
+            _axis2_opt_error(optopt, AXIS2_OPT_ERR_INVALID_OPTION, opterr);
+        }
+    }
 
-    if (*++olstindex != ':')
+    if (!olstindex || *++olstindex != ':')
     {
         optarg = NULL;
         if (!*pos)

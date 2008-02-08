@@ -148,22 +148,15 @@ axiom_document_get_root_element(
     {
         return document->root_element;
     }
-    else
-    {
-        node = axiom_document_build_next(document, env);
+    node = axiom_document_build_next(document, env);
 
-        if (document->root_element)
-        {
-            return document->root_element;
-        }
-        else
-        {
-            AXIS2_ERROR_SET(env->error,
-                            AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL,
-                            AXIS2_FAILURE);
-            return NULL;
-        }
+    if (document->root_element)
+    {
+        return document->root_element;
     }
+    AXIS2_ERROR_SET(env->error,
+                    AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL,
+                    AXIS2_FAILURE);
     return NULL;
 }
 

@@ -139,7 +139,8 @@ axutil_log_create(
      */
     if (stream_name && !(axutil_rindex(stream_name, AXIS2_PATH_SEP_CHAR)))
     {
-        if ((path_home = AXIS2_GETENV("AXIS2C_HOME")))
+        path_home = AXIS2_GETENV("AXIS2C_HOME");
+        if (path_home)
         {
             AXIS2_SNPRINTF(log_dir, AXUTIL_LOG_FILE_NAME_SIZE, "%s%c%s", 
                 path_home, AXIS2_PATH_SEP_CHAR, "logs");
@@ -354,13 +355,13 @@ axutil_log_impl_log_user(
 
     if (log && format)
     {
-
-        if (!(fd = AXIS2_INTF_TO_IMPL(log)->stream))
+        fd = AXIS2_INTF_TO_IMPL(log)->stream;
+        if (!fd)
         {
             fprintf(stderr, "Stream is not found\n");
         }
-
-        if (!(mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+        mutex = AXIS2_INTF_TO_IMPL(log)->mutex;
+        if (!mutex)
         {
             fprintf(stderr, "Log mutex is not found\n");
 
@@ -393,13 +394,13 @@ axutil_log_impl_log_debug(
 
     if (log && format && log->enabled)
     {
-
-        if (!(fd = AXIS2_INTF_TO_IMPL(log)->stream))
+        fd = AXIS2_INTF_TO_IMPL(log)->stream;
+        if (!fd)
         {
             fprintf(stderr, "Stream is not found\n");
         }
-
-        if (!(mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+        mutex = AXIS2_INTF_TO_IMPL(log)->mutex;
+        if (!mutex)
         {
             fprintf(stderr, "Log mutex is not found\n");
 
@@ -432,13 +433,14 @@ axutil_log_impl_log_info(
 
     if (log && format && log->enabled)
     {
-        if (!(fd = AXIS2_INTF_TO_IMPL(log)->stream))
+        fd = AXIS2_INTF_TO_IMPL(log)->stream;
+        if (!fd)
         {
             fprintf(stderr, "Stream is not found\n");
 
         }
-
-        if (!(mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+        mutex = AXIS2_INTF_TO_IMPL(log)->mutex;
+        if (!mutex)
         {
             fprintf(stderr, "Log mutex is not found\n");
 
@@ -473,14 +475,14 @@ axutil_log_impl_log_warning(
 
     if (log && format && log->enabled)
     {
-
-        if (!(fd = AXIS2_INTF_TO_IMPL(log)->stream))
+        fd = AXIS2_INTF_TO_IMPL(log)->stream;
+        if (!fd)
         {
             fprintf(stderr, "Stream is not found\n");
 
         }
-
-        if (!(mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+        mutex = AXIS2_INTF_TO_IMPL(log)->mutex;
+        if (!mutex)
         {
             fprintf(stderr, "Log mutex is not found\n");
 
@@ -518,13 +520,14 @@ axutil_log_impl_log_error(
 
     if (log && format && log->enabled)
     {
-        if (!(fd = AXIS2_INTF_TO_IMPL(log)->stream))
+        fd = AXIS2_INTF_TO_IMPL(log)->stream;
+        if (!fd)
         {
             fprintf(stderr, "Stream is not found\n");
 
         }
-
-        if (!(mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+        mutex = AXIS2_INTF_TO_IMPL(log)->mutex;
+        if (!mutex)
         {
             fprintf(stderr, "Log mutex is not found\n");
 
@@ -557,14 +560,14 @@ axutil_log_impl_log_critical(
 
     if (log && format && log->enabled)
     {
-
-        if (!(fd = AXIS2_INTF_TO_IMPL(log)->stream))
+        fd = AXIS2_INTF_TO_IMPL(log)->stream;
+        if (!fd)
         {
             fprintf(stderr, "Stream is not found\n");
 
         }
-
-        if (!(mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+        mutex = AXIS2_INTF_TO_IMPL(log)->mutex;
+        if (!mutex)
         {
             fprintf(stderr, "Log mutex is not found\n");
 

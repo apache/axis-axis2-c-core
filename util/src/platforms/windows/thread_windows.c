@@ -44,7 +44,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 threadattr_cleanup(
     void *data)
 {
-    axutil_threadattr_t *attr = data;
+    /*axutil_threadattr_t *attr = data;*/
     /*nothing to clean up */
     return AXIS2_SUCCESS;
 }
@@ -144,7 +144,7 @@ axutil_thread_exit(
     }
     ExitThread(0);
 
-    return AXIS2_SUCCESS;
+    return AXIS2_SUCCESS; /* unwanted return statement ?? */
 }
 
 AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL

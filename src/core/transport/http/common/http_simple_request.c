@@ -75,7 +75,8 @@ axis2_http_simple_request_create(
         simple_request->header_group = axutil_array_list_create(env,
                                                                 http_hdr_count);
 
-        for (i = 0; i < http_hdr_count; i++)
+        for (i = 0; i < (int)http_hdr_count; i++)
+            /* We are sure that the difference lies within the int range */
         {
             axutil_array_list_add(simple_request->header_group, env,
                                   (void *) http_headers[i]);

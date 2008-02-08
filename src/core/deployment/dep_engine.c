@@ -1606,7 +1606,8 @@ axis2_dep_engine_get_axis_svc_name(
     temp_name = ptr + 1;
     ptr = AXIS2_STRRCHR(temp_name, name_sep);
     ptr[0] = '\0';
-    len = strlen(temp_name);
+    len = (int)strlen(temp_name);
+    /* We are sure that the difference lies within the int range */
     svc_name = AXIS2_MALLOC(env->allocator, len + 1);
     sscanf(temp_name, "%s", svc_name);
     AXIS2_FREE(env->allocator, file_name_l);

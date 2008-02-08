@@ -264,6 +264,7 @@ aar_extract(
     int opt_overwrite = 0;
     int opt_extractdir = 0;
     const axis2_char_t *dir_name = NULL;
+    int ret = 0;
     unzFile uf = NULL;
 
     if (zipfilename == NULL)
@@ -294,10 +295,10 @@ aar_extract(
     if (opt_extractdir && chdir(dir_name))
         exit(-1);
 
-    return axis2_extract(uf, opt_do_extract_withoutpath, opt_overwrite,
+    ret = axis2_extract(uf, opt_do_extract_withoutpath, opt_overwrite,
                          password);
-    unzCloseCurrentFile(uf);
-    return 0;
+    /*unzCloseCurrentFile(uf);*/
+    return ret;
 }
 
 int

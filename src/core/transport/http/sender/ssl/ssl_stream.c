@@ -188,7 +188,8 @@ axis2_ssl_stream_write(
     switch (SSL_get_error(stream_impl->ssl, write))
     {
     case SSL_ERROR_NONE:
-        if (count != write)
+        if ((int)count != write)
+            /* We are sure that the difference lies within the int range */
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Incomplete SSL write!");
         break;
     default:

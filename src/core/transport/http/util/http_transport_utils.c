@@ -951,14 +951,10 @@ axis2_http_transport_utils_process_http_head_request(
     {
         return AXIS2_FALSE;
     }
-    else
-    {
-        axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
-        engine = axis2_engine_create(env, conf_ctx);
-        axis2_engine_receive(engine, env, msg_ctx);
-        return AXIS2_TRUE;
-    }
-    return AXIS2_FALSE;
+    axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
+    engine = axis2_engine_create(env, conf_ctx);
+    axis2_engine_receive(engine, env, msg_ctx);
+    return AXIS2_TRUE;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -1025,14 +1021,10 @@ axis2_http_transport_utils_process_http_get_request(
     {
         return AXIS2_FALSE;
     }
-    else
-    {
-        axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
-        engine = axis2_engine_create(env, conf_ctx);
-        axis2_engine_receive(engine, env, msg_ctx);
-        return AXIS2_TRUE;
-    }
-    return AXIS2_FALSE;
+    axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
+    engine = axis2_engine_create(env, conf_ctx);
+    axis2_engine_receive(engine, env, msg_ctx);
+    return AXIS2_TRUE;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -1099,14 +1091,10 @@ axis2_http_transport_utils_process_http_delete_request(
     {
         return AXIS2_FALSE;
     }
-    else
-    {
-        axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
-        engine = axis2_engine_create(env, conf_ctx);
-        axis2_engine_receive(engine, env, msg_ctx);
-        return AXIS2_TRUE;
-    }
-    return AXIS2_FALSE;
+    axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
+    engine = axis2_engine_create(env, conf_ctx);
+    axis2_engine_receive(engine, env, msg_ctx);
+    return AXIS2_TRUE;
 }
 
 AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
@@ -1215,8 +1203,9 @@ axis2_http_transport_utils_strdecode(
     {
         if (src[0] == '%' && isxdigit(src[1]) && isxdigit(src[2]))
         {
-            *dest = axis2_http_transport_utils_hexit(src[1]) * 16 +
-                axis2_http_transport_utils_hexit(src[2]);
+            *dest = (axis2_char_t)(axis2_http_transport_utils_hexit(src[1]) * 16 +
+                axis2_http_transport_utils_hexit(src[2]));
+            /* We are sure that the conversion is valid */
             src += 2;
         }
         else
@@ -1400,7 +1389,8 @@ axis2_http_transport_utils_get_services_static_wsdl(
     url_tok = axutil_parse_request_url_for_svc_and_op(env, request_url);
     if (url_tok[0])
     {
-        len = strlen(url_tok[0]);
+        len = (int)strlen(url_tok[0]);
+        /* We are sure that the difference lies within the int range */
         url_tok[0][len - 5] = 0;
         svc_name = url_tok[0];
     }
@@ -1575,7 +1565,6 @@ axis2_http_transport_utils_on_data_request(
         {
             buffer[len] = '\0';
         }
-        return len;
     }
     else
     {
@@ -1589,9 +1578,8 @@ axis2_http_transport_utils_on_data_request(
             buffer[len] = '\0';
             ((axis2_callback_info_t *) ctx)->unread_len -= len;
         }
-        return len;
     }
-    return 0;
+    return len;
 }
 
 AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
@@ -1609,6 +1597,7 @@ axis2_http_transport_utils_create_soap_msg(
     int *content_length = NULL;
     axutil_property_t *property = NULL;
     axutil_hash_t *binary_data_map = NULL;
+    axiom_soap_envelope_t *soap_envelope = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
@@ -1745,8 +1734,7 @@ axis2_http_transport_utils_create_soap_msg(
         axiom_xml_reader_t *xml_reader = NULL;
         axiom_stax_builder_t *om_builder = NULL;
         axiom_soap_builder_t *soap_builder = NULL;
-        axiom_soap_envelope_t *soap_envelope = NULL;
-
+        
         xml_reader = axiom_xml_reader_create_for_io(env,
                                                     axis2_http_transport_utils_on_data_request,
                                                     NULL, (void *) callback_ctx,
@@ -1792,14 +1780,11 @@ axis2_http_transport_utils_create_soap_msg(
                 axiom_soap_body_has_fault(soap_body, env);
             }
         }
-
-        return soap_envelope;
     }
     else
     {
         axiom_xml_reader_t *xml_reader = NULL;
         axiom_stax_builder_t *om_builder = NULL;
-        axiom_soap_envelope_t *soap_envelope = NULL;
         axiom_soap_body_t *def_body = NULL;
         axiom_document_t *om_doc = NULL;
         axiom_node_t *root_node = NULL;
@@ -1826,9 +1811,8 @@ axis2_http_transport_utils_create_soap_msg(
         root_node = axiom_document_build_all(om_doc, env);
         axiom_soap_body_add_child(def_body, env, root_node);
         axiom_stax_builder_free_self(om_builder, env);
-        return soap_envelope;
     }
-    return NULL;
+    return soap_envelope;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL

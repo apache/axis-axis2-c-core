@@ -79,7 +79,8 @@ axutil_file_handler_copy(
     /* It is assumed that source and destination files are accessible and open*/
     while(!feof(from)) 
     {
-        ch = fgetc(from);
+        ch = (axis2_char_t)fgetc(from);
+        /* We are sure that the conversion is safe */
         if(ferror(from)) 
         {
             /* Error reading source file */

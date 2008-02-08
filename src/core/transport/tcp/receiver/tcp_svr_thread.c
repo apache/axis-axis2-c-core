@@ -119,7 +119,9 @@ axis2_tcp_svr_thread_run(
     {
         int socket = -1;
         axis2_tcp_svr_thd_args_t *arg_list = NULL;
+#ifdef AXIS2_SVR_MULTI_THREADED
         axutil_thread_t *worker_thread = NULL;
+#endif
 
         socket = (int)axutil_network_handler_svr_socket_accept(env,
                                                           svr_thread->

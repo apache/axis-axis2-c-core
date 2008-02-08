@@ -737,9 +737,7 @@ axis2_engine_get_receiver_fault_code(
 {
     if (axutil_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, soap_namespace))
         return AXIOM_SOAP12_FAULT_CODE_RECEIVER;
-    else
-        return AXIOM_SOAP11_FAULT_CODE_RECEIVER;
-    return NULL;
+    return AXIOM_SOAP11_FAULT_CODE_RECEIVER;
 }
 
 axis2_status_t

@@ -106,7 +106,8 @@ axis2_http_request_line_parse_line(
                         AXIS2_FAILURE);
         return NULL;
     }
-    i = tmp - str;
+    i = (int)(tmp - str);
+    /* We are sure that the difference lies within the int range */
     req_line = AXIS2_MALLOC(env->allocator, i * sizeof(axis2_char_t) + 1);
     if (!req_line)
     {

@@ -730,7 +730,10 @@ axis2_conf_builder_process_transport_senders(
             axis2_char_t *temp_path = NULL;
             axis2_char_t *temp_path2 = NULL;
             axis2_char_t *temp_path3 = NULL;
-            AXIS2_TRANSPORT_ENUMS transport_enum;
+            AXIS2_TRANSPORT_ENUMS transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
+            /* AXIS2_TRANSPORT_ENUMS transport_enum = AXIS2_TRANSPORT_ENUM_HTTP
+             * set to avoid C4701 on Windows
+             */
             axis2_bool_t axis2_flag = AXIS2_FALSE;
             axutil_param_t *libparam;
             axis2_char_t *libdir=NULL;
@@ -1060,7 +1063,10 @@ axis2_conf_builder_process_transport_recvs(
             axiom_node_t *in_fault_flow_node = NULL;
             axiom_element_t *out_fault_flow_element = NULL;
             axiom_node_t *out_fault_flow_node = NULL;
-            AXIS2_TRANSPORT_ENUMS transport_enum;
+            AXIS2_TRANSPORT_ENUMS transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
+            /* AXIS2_TRANSPORT_ENUMS transport_enum = AXIS2_TRANSPORT_ENUM_HTTP
+             * set to avoid C4701 on Windows
+             */
 
             name = axiom_attribute_get_value(trs_name, env);
             if (name)

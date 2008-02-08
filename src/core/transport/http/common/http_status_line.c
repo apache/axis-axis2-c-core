@@ -69,7 +69,8 @@ axis2_http_status_line_create(
                         AXIS2_FAILURE);
         return NULL;
     }
-    i = tmp - str;
+    i = (int)(tmp - str);
+    /* We are sure that the difference lies within the int range */
     tmp_status_line = AXIS2_MALLOC(env->allocator,
                                    i * sizeof(axis2_char_t) + 1);
     if (!tmp_status_line)

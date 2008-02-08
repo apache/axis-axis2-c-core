@@ -302,18 +302,11 @@ axiom_output_get_content_type(
                                                         soap_content_type);
         return om_output->content_type;
     }
-    else
+    else if (AXIS2_TRUE == om_output->is_soap11)
     {
-        if (AXIS2_TRUE == om_output->is_soap11)
-        {
-            return AXIOM_SOAP11_CONTENT_TYPE;
-        }
-        else
-        {
-            return AXIOM_SOAP12_CONTENT_TYPE;
-        }
+        return AXIOM_SOAP11_CONTENT_TYPE;
     }
-    return NULL;
+    return AXIOM_SOAP12_CONTENT_TYPE;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

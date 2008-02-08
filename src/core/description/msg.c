@@ -179,13 +179,8 @@ axis2_msg_add_param(
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    else
-    {
-        return axutil_param_container_add_param(msg->param_container, env,
-                                                param);
-    }
-
-    return AXIS2_SUCCESS;
+    return axutil_param_container_add_param(msg->param_container, env,
+                                            param);
 }
 
 AXIS2_EXTERN axutil_param_t *AXIS2_CALL

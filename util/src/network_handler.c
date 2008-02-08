@@ -55,7 +55,7 @@ axutil_network_handler_open_socket(
 #endif
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, server, AXIS2_CRITICAL_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, server, AXIS2_INVALID_SOCKET);
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         /*nnn AF_INET is not defined in sys/socket.h but PF_INET */
@@ -244,7 +244,7 @@ axis2_init_socket(
     WORD wVersionRequested;
     WSADATA wsaData;
     int err;
-    int sock_opt = SO_SYNCHRONOUS_NONALERT;
+    /*int sock_opt = SO_SYNCHRONOUS_NONALERT; */
 
     wVersionRequested = MAKEWORD(2, 2);
 

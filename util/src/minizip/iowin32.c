@@ -90,7 +90,7 @@ win32_open_file_func(
     const char *filename;
     int mode;
 {
-    const char *mode_fopen = NULL;
+    /*const char *mode_fopen = NULL;*/
     DWORD dwDesiredAccess,
      dwCreationDisposition,
      dwShareMode,
@@ -98,7 +98,8 @@ win32_open_file_func(
     HANDLE hFile = 0;
     voidpf ret = NULL;
 
-    dwDesiredAccess = dwShareMode = dwFlagsAndAttributes = 0;
+    dwDesiredAccess = dwShareMode = dwFlagsAndAttributes = dwCreationDisposition = 0;
+    /* dwCreationDisposition = 0, to avoid C4701 */
 
     if ((mode & ZLIB_FILEFUNC_MODE_READWRITEFILTER) == ZLIB_FILEFUNC_MODE_READ)
     {

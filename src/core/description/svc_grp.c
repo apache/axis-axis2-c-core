@@ -325,13 +325,8 @@ axis2_svc_grp_add_param(
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    else
-    {
-        return axutil_param_container_add_param(svc_grp->param_container, env,
-                                                param);
-    }
-
-    return AXIS2_FAILURE;
+    return axutil_param_container_add_param(svc_grp->param_container, env,
+                                            param);
 }
 
 AXIS2_EXTERN axutil_param_t *AXIS2_CALL

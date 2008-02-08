@@ -340,7 +340,8 @@ axis2_rest_disp_get_rest_op_with_method_and_location(
 
         if (rindex && *rindex)
         {
-            loc_str_tmp = axutil_string_substring_ending_at(loc_str_tmp, (rindex - loc_str_tmp));
+            loc_str_tmp = axutil_string_substring_ending_at(loc_str_tmp, (int)(rindex - loc_str_tmp));
+            /* We are sure that the difference lies within the int range */
         }
         else if (pass_one)
         {
@@ -349,7 +350,8 @@ axis2_rest_disp_get_rest_op_with_method_and_location(
         else
         {
             int i = 0;
-            i = strlen(loc_str_tmp);
+            i = (int)strlen(loc_str_tmp);
+            /* We are sure that the difference lies within the int range */
             if (i == 0)
             {
                 break;

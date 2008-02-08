@@ -618,7 +618,8 @@ axis2_svc_get_op_with_qname(
                             is_matched = AXIS2_TRUE;
                             break;
                         }
-                        length = loc_tmp - search;
+                        length = (int)(loc_tmp - search);
+                        /* We are sure that the difference lies within the int range */
                         search_tmp = (axis2_char_t *) (AXIS2_MALLOC (env->allocator,
                                           sizeof (axis2_char_t) * (length + 1)));
                         strncpy(search_tmp, search, length);
@@ -736,7 +737,8 @@ axis2_svc_get_rest_op_list_with_method_and_location(
     rindex = axutil_rindex(loc_str, '/');
     if (rindex && *rindex)
     {
-        loc_str_tmp = axutil_string_substring_ending_at(loc_str, (rindex - loc_str));
+        loc_str_tmp = axutil_string_substring_ending_at(loc_str, (int)(rindex - loc_str));
+        /* We are sure that the difference lies within the int range */
     }
     else
     {
@@ -844,12 +846,8 @@ axis2_svc_add_param(
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    else
-    {
-        return axutil_param_container_add_param(svc->param_container, env,
-                                                param);
-    }
-    return AXIS2_FAILURE;
+    return axutil_param_container_add_param(svc->param_container, env,
+                                            param);
 }
 
 AXIS2_EXTERN axutil_param_t *AXIS2_CALL
@@ -1257,7 +1255,8 @@ axis2_svc_add_rest_mapping(
         rindex = axutil_rindex(loc_str, '/');
         if (rindex && *rindex)
         {
-            loc_str_tmp = axutil_string_substring_ending_at(loc_str, (rindex - loc_str));
+            loc_str_tmp = axutil_string_substring_ending_at(loc_str, (int)(rindex - loc_str));
+            /* We are sure that the difference lies within the int range */
         }
         else
         {

@@ -199,19 +199,20 @@ scandir(
     {
         return -1;
     }
-
-    if (!(dirp = opendir(_dirname)))
+    dirp = opendir(_dirname);
+    if (!dirp)
     {
         return -1;
     }
-
-    while ((dp = readdir(dirp)))
+    dp = readdir(dirp);
+    while (dp)
     {
         int dsize = 0;
         struct dirent *newdp = NULL;
 
         if (selector && (*selector) (dp) == 0)
         {
+            dp = readdir(dirp);
             continue;
         }
 
@@ -254,6 +255,7 @@ scandir(
         }
 
         vector[nfiles++] = (struct dirent *) memcpy(newdp, dp, dsize);
+        dp = readdir(dirp);
     }
 
     closedir(dirp);

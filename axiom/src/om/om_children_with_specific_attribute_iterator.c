@@ -143,7 +143,7 @@ axiom_children_with_specific_attribute_iterator_has_next(
             om_attr =
                 axiom_element_get_attribute(om_ele, env, iterator->attr_qname);
             break;
-            if (om_attr &&
+            /*if (om_attr &&
                 (axutil_strcmp(axiom_attribute_get_value(om_attr, env),
                                iterator->attr_value) == 0))
             {
@@ -156,7 +156,7 @@ axiom_children_with_specific_attribute_iterator_has_next(
                     axiom_node_get_next_sibling(iterator->current_child, env);
                 need_to_move_forward = (iterator->current_child != NULL);
 
-            }
+            }*/
         }
         else
         {

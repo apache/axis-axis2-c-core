@@ -286,8 +286,8 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     }
     else
     {
-        if (!(svc_client->svc =
-             axis2_svc_client_create_annonymous_svc(svc_client, env)))
+        svc_client->svc = axis2_svc_client_create_annonymous_svc(svc_client, env);
+        if (!svc_client->svc)
         {
             axis2_svc_client_free(svc_client, env);
             return NULL;

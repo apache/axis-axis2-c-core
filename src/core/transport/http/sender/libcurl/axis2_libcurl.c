@@ -603,7 +603,8 @@ axis2_libcurl_create(
            if a global initialize is created.  Otherwise the client application should perform the
            the curl_global_init itself in a thread-safe fashion.
         */
-        if ((code = curl_global_init(CURL_GLOBAL_ALL)))	
+        code = curl_global_init(CURL_GLOBAL_ALL);
+        if (code)	
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "libCurl curl_global_init failed, error: %d", code);
             return NULL;

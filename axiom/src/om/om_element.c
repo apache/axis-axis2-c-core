@@ -1009,19 +1009,15 @@ axiom_element_get_children(
     axiom_node_t * element_node)
 {
     AXIS2_PARAM_CHECK(env->error, element_node, NULL);
-    if (om_element->children_iter)
-    {
-        return om_element->children_iter;
-    }
-    else
+
+    if (!om_element->children_iter)
     {
         om_element->children_iter = axiom_children_iterator_create(env,
                                                                    axiom_node_get_first_child
                                                                    (element_node,
                                                                     env));
-        return om_element->children_iter;
     }
-    return NULL;
+    return om_element->children_iter;
 }
 
 AXIS2_EXTERN axiom_children_qname_iterator_t *AXIS2_CALL
@@ -1084,11 +1080,7 @@ axiom_element_get_first_child_with_qname(
         }
         return (axiom_element_t *) axiom_node_get_data_element(om_node, env);
     }
-    else
-    {
-        axiom_children_qname_iterator_free(children_iterator, env);
-        return NULL;
-    }
+    axiom_children_qname_iterator_free(children_iterator, env);
     return NULL;
 }
 

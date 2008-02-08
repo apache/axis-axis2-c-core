@@ -248,7 +248,7 @@ axutil_string_get_length(
 {
     if (!string)
     {
-        return -1;
+        return (-1);
     }
 
     return string->length;
@@ -376,7 +376,8 @@ axutil_strcat(
 
     va_start(adummy, env);
 
-    while ((cp = va_arg(adummy, axis2_char_t *)))
+    cp = va_arg(adummy, axis2_char_t *);
+    while (cp)
     {
         size_t cplen = strlen(cp);
         if (nargs < MAX_SAVED_LENGTHS)
@@ -384,6 +385,7 @@ axutil_strcat(
             saved_lengths[nargs++] = cplen;
         }
         len += cplen;
+        cp = va_arg(adummy, axis2_char_t *);
     }
 
     va_end(adummy);
@@ -404,7 +406,8 @@ axutil_strcat(
     va_start(adummy, env);
 
     nargs = 0;
-    while ((argp = va_arg(adummy, axis2_char_t *)))
+    argp = va_arg(adummy, axis2_char_t *);
+    while (argp)
     {
         if (nargs < MAX_SAVED_LENGTHS)
         {
@@ -417,6 +420,7 @@ axutil_strcat(
 
         memcpy(cp, argp, len);
         cp += len;
+        argp = va_arg(adummy, axis2_char_t *);
     }
 
     va_end(adummy);
@@ -501,12 +505,12 @@ axutil_strlen(
 {
     if (s)
     {
-        return (int)strlen(s);
+        return (axis2_ssize_t)strlen(s);
         /* We are sure that the difference lies within the axis2_ssize_t range */
     }
     else
     {
-        return -1;
+        return (-1);
     }
 }
 
@@ -621,7 +625,8 @@ axutil_replace(
     index = strchr(newstr, s1);
     while (index)
     {
-        newstr[index - newstr] = s2;
+        newstr[index - newstr] = (axis2_char_t)s2;
+        /* We are sure that the conversion is safe */
         index = strchr(newstr, s1);
     }
     return newstr;
@@ -770,7 +775,8 @@ axutil_string_tolower(
     axis2_char_t *temp_str = NULL;
     for (temp_str = str; *temp_str != '\0'; temp_str++)
     {
-        *temp_str = tolower(*temp_str);
+        *temp_str = (axis2_char_t)tolower(*temp_str);
+        /* We are sure that the conversion is safe */
     }
     return str;
 }
@@ -782,7 +788,8 @@ axutil_string_toupper(
     axis2_char_t *temp_str = NULL;
     for (temp_str = str; *temp_str != '\0'; temp_str++)
     {
-        *temp_str = toupper(*temp_str);
+        *temp_str = (axis2_char_t)toupper(*temp_str);
+        /* We are sure that the conversion is safe */
     }
     return str;
 }

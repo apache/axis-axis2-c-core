@@ -99,10 +99,6 @@ axis2_simple_tcp_svr_conn_is_open(
     {
         return AXIS2_TRUE;
     }
-    else
-    {
-        return AXIS2_FALSE;
-    }
     return AXIS2_FALSE;
 }
 

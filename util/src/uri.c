@@ -452,7 +452,8 @@ axutil_uri_parse_string(
         if (uri_str != s)
         {
             port = strtol(uri->port_str, &endstr, 10);
-            uri->port = port;
+            uri->port = (axis2_port_t)port;
+            /* We are sure that the conversion is safe */
             if (*endstr == '\0')
             {
                 goto deal_with_path;
@@ -479,7 +480,7 @@ axutil_uri_parse_string(
     hostinfo = s + 1;
     goto deal_with_host;
 
-    return uri;
+    return uri; /* unwanted return statement ?? */
 }
 
 /* Special case for CONNECT parsing: it comes with the hostinfo part only */
@@ -516,7 +517,8 @@ axutil_uri_parse_hostinfo(
      */
     if (*hostinfo == '[')
     {
-        if (!(rsb = strchr(hostinfo, ']')) || *(rsb + 1) != ':')
+        rsb = strchr(hostinfo, ']');
+        if (!rsb || *(rsb + 1) != ':')
         {
             return NULL;
         }

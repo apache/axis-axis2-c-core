@@ -485,12 +485,12 @@ axiom_soap_fault_get_exception(
                                                          detail_node,
                                                          &exception_node);
             axutil_qname_free(qn, env);
-            if (exception_ele &&
-                (excep =
-                 axiom_element_get_text(exception_ele, env, exception_node)))
+            if (exception_ele)
             {
-                return excep;
+                excep =
+                    axiom_element_get_text(exception_ele, env, exception_node);
             }
+            return excep;
         }
     }
     return NULL;

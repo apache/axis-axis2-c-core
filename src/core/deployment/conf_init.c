@@ -190,7 +190,8 @@ axis2_build_client_conf_ctx(
     status = axutil_file_handler_access (axis2_home, AXIS2_R_OK);
 	if (status == AXIS2_SUCCESS)
 	{
-		len = strlen (axis2_home);
+		len = (int)strlen (axis2_home);
+        /* We are sure that the difference lies within the int range */
 		if ((len >= 9) && 
             !strcmp ((axis2_home + (len - 9)), "axis2.xml"))
 		{

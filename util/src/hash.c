@@ -306,7 +306,8 @@ axutil_hash_find_entry(
         return hep;
 
     /* add a new entry for non-NULL values */
-    if ((he = ht->free))
+    he = ht->free;
+    if (he)
         ht->free = he->next;
     else
         he = AXIS2_MALLOC(ht->env->allocator, sizeof(*he));

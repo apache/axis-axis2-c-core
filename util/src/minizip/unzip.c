@@ -1416,8 +1416,9 @@ unzReadCurrentFile(
                 uInt i;
                 for (i = 0; i < uReadThis; i++)
                     pfile_in_zip_read_info->read_buffer[i] =
-                        zdecode(s->keys, s->pcrc_32_tab,
+                        (char)zdecode(s->keys, s->pcrc_32_tab,
                                 pfile_in_zip_read_info->read_buffer[i]);
+                /* We are sure that the conversion is safe */
             }
 #            endif
 
@@ -1701,7 +1702,7 @@ unzGetOffset(
     unz_s *s;
 
     if (file == NULL)
-        return UNZ_PARAMERROR;
+        return 0;
     s = (unz_s *) file;
     if (!s->current_file_ok)
         return 0;
