@@ -1465,7 +1465,7 @@ axis2_http_sender_configure_http_basic_auth (axis2_http_sender_t * sender,
         int plen = axutil_strlen (uname) + axutil_strlen (passwd) + 1;
         axis2_char_t *to_encode =
             (axis2_char_t
-             *) (AXIS2_MALLOC (env->allocator, sizeof (axis2_char_t) * plen));
+             *) (AXIS2_MALLOC (env->allocator, sizeof (axis2_char_t) * plen + 1));
         axis2_char_t *encoded = NULL;
         axis2_char_t *auth_str = NULL;
         sprintf (to_encode, "%s:%s", uname, passwd);
@@ -1593,7 +1593,7 @@ axis2_http_sender_configure_proxy_basic_auth (axis2_http_sender_t * sender,
         int plen = axutil_strlen (uname) + axutil_strlen (passwd) + 1;
         axis2_char_t *to_encode =
             (axis2_char_t
-             *) (AXIS2_MALLOC (env->allocator, sizeof (axis2_char_t) * plen));
+             *) (AXIS2_MALLOC (env->allocator, sizeof (axis2_char_t) * plen + 1));
         axis2_char_t *encoded = NULL;
         axis2_char_t *auth_str = NULL;
         sprintf (to_encode, "%s:%s", uname, passwd);
