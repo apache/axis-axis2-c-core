@@ -103,7 +103,7 @@ axutil_log_create(
     axis2_char_t *path_home;
     axis2_char_t log_file_name[AXUTIL_LOG_FILE_NAME_SIZE];
     axis2_char_t log_dir[AXUTIL_LOG_FILE_NAME_SIZE];
-    axis2_char_t tmp_filename[100];
+    axis2_char_t tmp_filename[AXUTIL_LOG_FILE_NAME_SIZE];
 
     if (!allocator)
         return NULL;
@@ -130,9 +130,9 @@ axutil_log_create(
 
     /* default log file is axis2.log */
     if (stream_name)
-        AXIS2_SNPRINTF(tmp_filename, 100, "%s", stream_name);
+        AXIS2_SNPRINTF(tmp_filename, AXUTIL_LOG_FILE_NAME_SIZE, "%s", stream_name);
     else
-        AXIS2_SNPRINTF(tmp_filename, 100, "%s", "axis2.log");
+        AXIS2_SNPRINTF(tmp_filename, AXUTIL_LOG_FILE_NAME_SIZE, "%s", "axis2.log");
 
     /* we write all logs to AXIS2C_HOME/logs if it is set otherwise
      * to the working dir
