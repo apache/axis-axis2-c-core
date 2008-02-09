@@ -1489,6 +1489,10 @@ axis2_http_transport_utils_get_charset_enc(
         if (tmp)
         {
             tmp2 = strchr(tmp, ';');
+            if (!tmp2)
+            {
+               tmp2 = tmp + strlen(tmp); 
+            }
         }
 
         if (tmp2)
