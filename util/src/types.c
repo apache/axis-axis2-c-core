@@ -65,3 +65,21 @@ axutil_strtoul(
     *endptr = (char *)(s + i);
     return n;
 }
+
+AXIS2_EXTERN int64_t AXIS2_CALL
+axutil_strtol(
+    const char *s,
+    char **endptr,
+    int base)
+{
+    int i;
+    int64_t n;
+
+    n = 0;
+    for (i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
+    {
+        n = 10 * n + (s[i] - '0');
+    }
+    *endptr = (char *)(s + i);
+    return n;
+}
