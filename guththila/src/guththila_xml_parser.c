@@ -1017,19 +1017,15 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                         c = guththila_next_char(m, 0, env);
                         if ('-' == c)
                         {
-                            c = guththila_next_char(m, 0, env);
-                            if ('-' == c)
+                            if (2 == guththila_next_no_char(m, 0, c_arra, 2, env) &&
+                                 '-' == c_arra[0])
                             {
-                                if ('>' == guththila_next_char(m, 0, env))
+                                if ('>' == c_arra[1])
                                 {
                                     m->guththila_event = GUTHTHILA_COMMENT;
-                                    while (c != '<')
-                                    {
-                                        if (c == -1)return -1;
-                                        c = guththila_next_char(m, 0, env);
-                                    }
+                                    m->next = m->next - 3;
                                     guththila_token_close(m, tok, _char_data,0, env);
-                                    m->next--;
+                                    m->next = m->next + 3;
                                     return GUTHTHILA_COMMENT;
                                 }
                                 
