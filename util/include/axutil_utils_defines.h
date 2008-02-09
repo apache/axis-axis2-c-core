@@ -44,6 +44,28 @@ extern "C"
     typedef __int64 int64_t;
 #endif
 
+/**
+ * Definition of format specifiers
+ * for printf family of functions
+ */
+
+#if defined(WIN32)
+#define AXIS2_PRINTF_FORMAT_INT64 "%I64d"
+#define AXIS2_PRINTF_FORMAT_UINT64 "%I64u"
+#define AXIS2_PRINTF_FORMAT_INT32 "%I32d"
+#define AXIS2_PRINTF_FORMAT_UINT32 "%I32u"
+#else
+#if __WORDSIZE == 64
+#define AXIS2_PRINTF_FORMAT_INT64 "%ld"
+#define AXIS2_PRINTF_FORMAT_UINT64 "%lu"
+#else
+#define AXIS2_PRINTF_FORMAT_INT64 "%lld"
+#define AXIS2_PRINTF_FORMAT_UINT64 "%llu"
+#endif
+#define AXIS2_PRINTF_FORMAT_INT32 "%d"
+#define AXIS2_PRINTF_FORMAT_UINT32 "%u"
+#endif
+
     /**
       * Type definitions
       */
