@@ -59,7 +59,6 @@ AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
                                    ASSERTION_TYPE_SAML_TOKEN);
         return assertion;
     }
-
     if (axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
     {
         child_element =
@@ -157,3 +156,4 @@ axis2_status_t AXIS2_CALL saml_token_process_alternatives(
     }
     return AXIS2_SUCCESS;
 }
+
