@@ -239,9 +239,10 @@ scandir(
             vector = newv;
         }
 
-        dsize =
+        /*dsize =
             (int) sizeof(struct dirent) +
-            (int) ((strlen(dp->d_name) + 1) * sizeof(char));
+            (int) ((strlen(dp->d_name) + 1) * sizeof(char));*/
+        dsize = (int) sizeof(struct dirent);
         newdp = (struct dirent *) malloc(dsize);
 
         if (newdp == NULL)
