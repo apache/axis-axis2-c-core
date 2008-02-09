@@ -270,7 +270,7 @@ axutil_parse_rest_url_for_params(
                                 tmp9[i] = '\0';
                             }
                         }
-                        if (tmp9)
+                        if (tmp9 && *tmp9)
                         {
                             tmp6 = strstr(tmp5, tmp9);
                             AXIS2_FREE (env->allocator, tmp9);
@@ -281,7 +281,7 @@ axutil_parse_rest_url_for_params(
                             tmp6 = strchr(tmp5, '/');
                         }
                         /* Logic for saving the match */
-                        if (tmp6)
+                        if (tmp6 && tmp6 != tmp5)
                         {
                             i = (int)(tmp6 - tmp5);
                             url_tmp = tmp6;
