@@ -62,7 +62,10 @@ axutil_strtoul(
     {
         n = 10 * n + (s[i] - '0');
     }
-    *endptr = (char *)(s + i);
+    if(endptr != NULL)
+    {
+        *endptr = (char *)(s + i);
+    }
     return n;
 }
 
@@ -80,6 +83,9 @@ axutil_strtol(
     {
         n = 10 * n + (s[i] - '0');
     }
-    *endptr = (char *)(s + i);
+    if(endptr != NULL)
+    {
+        *endptr = (char *)(s + i);
+    }
     return n;
 }
