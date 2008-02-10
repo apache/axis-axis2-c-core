@@ -198,6 +198,7 @@ struct axis2_msg_ctx
     axis2_char_t *transport_url;
     axis2_bool_t is_auth_failure;
     axis2_bool_t required_auth_is_http;
+    axis2_char_t *auth_type;
 };
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
@@ -270,6 +271,7 @@ axis2_msg_ctx_create(
     msg_ctx->response_soap_envelope = NULL;
     msg_ctx->is_auth_failure = AXIS2_FALSE;
     msg_ctx->required_auth_is_http = AXIS2_FALSE;
+    msg_ctx->auth_type = NULL;
 
     msg_ctx->base = axis2_ctx_create(env);
     if (!(msg_ctx->base))
@@ -413,6 +415,11 @@ axis2_msg_ctx_free(
     if (msg_ctx->transfer_encoding)
     {
         AXIS2_FREE(env->allocator, msg_ctx->transfer_encoding);
+    }
+
+    if (msg_ctx->auth_type)
+    {
+        AXIS2_FREE(env->allocator, msg_ctx->auth_type);
     }
 
     AXIS2_FREE(env->allocator, msg_ctx);
@@ -2229,7 +2236,6 @@ axis2_msg_ctx_get_required_auth_is_http(
     return msg_ctx->required_auth_is_http;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_required_auth_is_http(
     axis2_msg_ctx_t * msg_ctx,
@@ -2239,4 +2245,30 @@ axis2_msg_ctx_set_required_auth_is_http(
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->required_auth_is_http = status;
     return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_auth_type(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env,
+    const axis2_char_t * auth_type)
+{
+    if (msg_ctx->auth_type)
+    {
+        AXIS2_FREE(env->allocator, msg_ctx->auth_type);
+    }
+    msg_ctx->auth_type = NULL;
+    if (auth_type)
+    {
+        msg_ctx->auth_type = axutil_strdup(env, auth_type);
+    }
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_msg_ctx_get_auth_type(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    return msg_ctx->auth_type;
 }

@@ -71,6 +71,8 @@ struct axis2_svc_client
 
     axis2_bool_t required_auth_is_http;
 
+    axis2_char_t *auth_type;
+
 };
 
 static axis2_svc_t *axis2_svc_client_create_annonymous_svc(
@@ -268,6 +270,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     svc_client->reuse = AXIS2_FALSE;
     svc_client->auth_failed = AXIS2_FALSE;
     svc_client->required_auth_is_http = AXIS2_FALSE;
+    svc_client->auth_type = NULL;
 
     /** initialize private data to NULL, create options */
     if (!axis2_svc_client_init_data(env, svc_client))
@@ -540,6 +543,11 @@ axis2_svc_client_send_robust_with_op_qname(
 
     svc_client->auth_failed = AXIS2_FALSE;
     svc_client->required_auth_is_http = AXIS2_FALSE;
+    if (svc_client->auth_type)
+    {
+        AXIS2_FREE(env->allocator, svc_client->auth_type);
+    }
+    svc_client->auth_type = NULL;
 
     msg_ctx = axis2_msg_ctx_create(env,
                                    axis2_svc_ctx_get_conf_ctx(svc_client->
@@ -560,6 +568,11 @@ axis2_svc_client_send_robust_with_op_qname(
     svc_client->auth_failed = axis2_msg_ctx_get_auth_failed(msg_ctx, env);
     svc_client->required_auth_is_http =
         axis2_msg_ctx_get_required_auth_is_http(msg_ctx, env);
+    if (axis2_msg_ctx_get_auth_type(msg_ctx, env))
+    {
+        svc_client->auth_type =
+            axutil_strdup(env, axis2_msg_ctx_get_auth_type(msg_ctx, env));
+    }
 
     if (qname_free_flag)
     {
@@ -608,6 +621,11 @@ axis2_svc_client_fire_and_forget_with_op_qname(
 
     svc_client->auth_failed = AXIS2_FALSE;
     svc_client->required_auth_is_http = AXIS2_FALSE;
+    if (svc_client->auth_type)
+    {
+        AXIS2_FREE(env->allocator, svc_client->auth_type);
+    }
+    svc_client->auth_type = NULL;
 
     msg_ctx = axis2_msg_ctx_create(env,
                                    axis2_svc_ctx_get_conf_ctx(svc_client->
@@ -628,6 +646,11 @@ axis2_svc_client_fire_and_forget_with_op_qname(
     svc_client->auth_failed = axis2_msg_ctx_get_auth_failed(msg_ctx, env);
     svc_client->required_auth_is_http =
         axis2_msg_ctx_get_required_auth_is_http(msg_ctx, env);
+    if (axis2_msg_ctx_get_auth_type(msg_ctx, env))
+    {
+        svc_client->auth_type =
+            axutil_strdup(env, axis2_msg_ctx_get_auth_type(msg_ctx, env));
+    }
 
     if (qname_free_flag)
     {
@@ -676,6 +699,11 @@ axis2_svc_client_send_receive_with_op_qname(
     svc_client->last_response_has_fault = AXIS2_FALSE;
     svc_client->auth_failed = AXIS2_FALSE;
     svc_client->required_auth_is_http = AXIS2_FALSE;
+    if (svc_client->auth_type)
+    {
+        AXIS2_FREE(env->allocator, svc_client->auth_type);
+    }
+    svc_client->auth_type = NULL;
 
     op = axis2_svc_get_op_with_qname(svc_client->svc, env, op_qname);
     if (op)
@@ -823,6 +851,11 @@ axis2_svc_client_send_receive_with_op_qname(
         svc_client->auth_failed = axis2_msg_ctx_get_auth_failed(msg_ctx, env);
         svc_client->required_auth_is_http =
             axis2_msg_ctx_get_required_auth_is_http(msg_ctx, env);
+        if (axis2_msg_ctx_get_auth_type(msg_ctx, env))
+        {
+            svc_client->auth_type =
+                axutil_strdup(env, axis2_msg_ctx_get_auth_type(msg_ctx, env));
+        }
         res_msg_ctx =
             (axis2_msg_ctx_t *) axis2_op_client_get_msg_ctx(svc_client->
                                                             op_client, env,
@@ -940,6 +973,11 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
 
     svc_client->auth_failed = AXIS2_FALSE;
     svc_client->required_auth_is_http = AXIS2_FALSE;
+    if (svc_client->auth_type)
+    {
+        AXIS2_FREE(env->allocator, svc_client->auth_type);
+    }
+    svc_client->auth_type = NULL;
 
     msg_ctx = axis2_msg_ctx_create(env,
                                    axis2_svc_ctx_get_conf_ctx(svc_client->
@@ -983,6 +1021,11 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
     svc_client->auth_failed = axis2_msg_ctx_get_auth_failed(msg_ctx, env);
     svc_client->required_auth_is_http =
         axis2_msg_ctx_get_required_auth_is_http(msg_ctx, env);
+    if (axis2_msg_ctx_get_auth_type(msg_ctx, env))
+    {
+        svc_client->auth_type =
+            axutil_strdup(env, axis2_msg_ctx_get_auth_type(msg_ctx, env));
+    }
 
     if (qname_free_flag)
     {
@@ -1334,6 +1377,11 @@ axis2_svc_client_free(
         axis2_conf_ctx_free(svc_client->conf_ctx, env);
     }
 
+    if (svc_client->auth_type)
+    {
+        AXIS2_FREE(env->allocator, svc_client->auth_type);
+    }
+
     AXIS2_FREE(env->allocator, svc_client);
 
     return;
@@ -1483,6 +1531,14 @@ axis2_svc_client_get_proxy_auth_required(
         return AXIS2_TRUE;
     }
     return AXIS2_FALSE;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_svc_client_get_auth_type(
+    const axis2_svc_client_t * svc_client,
+    const axutil_env_t * env)
+{
+    return svc_client->auth_type;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

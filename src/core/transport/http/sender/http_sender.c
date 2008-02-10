@@ -98,6 +98,18 @@ axis2_http_sender_configure_proxy_auth (axis2_http_sender_t * sender,
                                         axis2_char_t * url);
 
 static axis2_status_t
+axis2_http_sender_set_http_auth_type (axis2_http_sender_t * sender,
+                                      const axutil_env_t * env,
+                                      axis2_msg_ctx_t * msg_ctx,
+                                      axis2_http_simple_request_t * request);
+
+static axis2_status_t
+axis2_http_sender_set_proxy_auth_type (axis2_http_sender_t * sender,
+                                       const axutil_env_t * env,
+                                       axis2_msg_ctx_t * msg_ctx,
+                                       axis2_http_simple_request_t * request);
+
+static axis2_status_t
 axis2_http_sender_configure_http_basic_auth (axis2_http_sender_t * sender,
                                              const axutil_env_t * env,
                                              axis2_msg_ctx_t * msg_ctx,
@@ -831,7 +843,9 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     if (http_auth_property_value && 0 == axutil_strcmp (http_auth_property_value, AXIS2_HTTP_AUTH_TYPE_DIGEST))
     {
         force_http_auth = AXIS2_FALSE;
-    }    
+    }
+
+    axis2_msg_ctx_set_auth_type(msg_ctx, env, NULL);
 
     if (force_proxy_auth)
     {
@@ -892,6 +906,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     {
         axis2_msg_ctx_set_auth_failed(msg_ctx, env, AXIS2_TRUE);
         axis2_msg_ctx_set_required_auth_is_http(msg_ctx, env, AXIS2_FALSE);
+        axis2_http_sender_set_proxy_auth_type (sender, env, msg_ctx, request);
     }
  
     if (AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL == status_code && !test_http_auth)
@@ -936,6 +951,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     {
         axis2_msg_ctx_set_auth_failed(msg_ctx, env, AXIS2_TRUE);
         axis2_msg_ctx_set_required_auth_is_http(msg_ctx, env, AXIS2_TRUE);
+        axis2_http_sender_set_http_auth_type (sender, env, msg_ctx, request);
     }
     /*AXIS2_FREE(env->allocator, buffer);
       buffer = NULL; */
@@ -2437,6 +2453,98 @@ axis2_http_sender_configure_proxy_auth (axis2_http_sender_t * sender,
                          AXIS2_FAILURE);
     }
 
+    return status;
+}
+#endif
+
+#ifndef AXIS2_LIBCURL_ENABLED
+static axis2_status_t
+axis2_http_sender_set_http_auth_type (axis2_http_sender_t * sender,
+                                      const axutil_env_t * env,
+                                      axis2_msg_ctx_t * msg_ctx,
+                                      axis2_http_simple_request_t * request)
+{
+    axis2_char_t *auth_type = NULL;
+    axis2_status_t status = AXIS2_FALSE;
+    axis2_char_t *auth_type_end = NULL;
+    axis2_http_header_t *auth_header = NULL;
+    axis2_http_simple_response_t *response = NULL;
+
+    response = axis2_http_client_get_response (sender->client, env);
+ 
+    if (response)
+        auth_header = axis2_http_simple_response_get_first_header (response, env,
+                                                                   AXIS2_HTTP_HEADER_WWW_AUTHENTICATE);
+    if (auth_header)
+        auth_type = axis2_http_header_get_value (auth_header, env);
+
+    if (auth_type)
+    {
+        auth_type_end = axutil_strchr (auth_type, ' ');
+        *auth_type_end = '\0';
+        auth_type_end++;
+            /*Read the realm and the rest stuff now from auth_type_end */
+    }
+    if (auth_type)
+    {
+        if (axutil_strcasecmp (auth_type, AXIS2_HTTP_AUTH_TYPE_BASIC) == 0)
+            status = axis2_msg_ctx_set_auth_type (msg_ctx, env, AXIS2_HTTP_AUTH_TYPE_BASIC);
+        else if (axutil_strcasecmp (auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) == 0)
+            status = axis2_msg_ctx_set_auth_type (msg_ctx, env, AXIS2_HTTP_AUTH_TYPE_DIGEST);
+        else
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Authtype %s is not"
+                             "supported", auth_type);
+    }
+    else
+    {
+        AXIS2_ERROR_SET (env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
+                         AXIS2_FAILURE);
+    }
+    return status;
+}
+
+static axis2_status_t
+axis2_http_sender_set_proxy_auth_type (axis2_http_sender_t * sender,
+                                       const axutil_env_t * env,
+                                       axis2_msg_ctx_t * msg_ctx,
+                                       axis2_http_simple_request_t * request)
+{
+    axis2_char_t *auth_type = NULL;
+    axis2_status_t status = AXIS2_FALSE;
+    axis2_char_t *auth_type_end = NULL;
+    axis2_http_header_t *auth_header = NULL;
+    axis2_http_simple_response_t *response = NULL;
+
+    response = axis2_http_client_get_response (sender->client, env);
+ 
+    if (response)
+        auth_header = axis2_http_simple_response_get_first_header (response, env,
+                                                                   AXIS2_HTTP_HEADER_PROXY_AUTHENTICATE);
+    if (auth_header)
+        auth_type = axis2_http_header_get_value (auth_header, env);
+
+    if (auth_type)
+    {
+        auth_type_end = axutil_strchr (auth_type, ' ');
+        *auth_type_end = '\0';
+        auth_type_end++;
+            /*Read the realm and the rest stuff now from auth_type_end */
+    }
+    if (auth_type)
+    {
+        if (axutil_strcasecmp (auth_type, AXIS2_PROXY_AUTH_TYPE_BASIC) == 0)
+            status = axis2_msg_ctx_set_auth_type (msg_ctx, env, AXIS2_PROXY_AUTH_TYPE_BASIC);
+        else if (axutil_strcasecmp (auth_type, AXIS2_PROXY_AUTH_TYPE_DIGEST) == 0)
+            status = axis2_msg_ctx_set_auth_type (msg_ctx, env, AXIS2_PROXY_AUTH_TYPE_DIGEST);
+        else
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Authtype %s is not"
+                             "supported", auth_type);
+    }
+    else
+    {
+        AXIS2_ERROR_SET (env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
+                         AXIS2_FAILURE);
+    }
     return status;
 }
 #endif

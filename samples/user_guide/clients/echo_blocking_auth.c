@@ -44,7 +44,6 @@ main(
     const axis2_char_t *pwp = NULL;
     axis2_bool_t http_auth_required = AXIS2_FALSE;
     axis2_bool_t proxy_auth_required = AXIS2_FALSE;
-    const axis2_char_t *auth_type = NULL;
 
     /* Set up the environment */
     env = axutil_env_create_all("echo_blocking_auth.log", AXIS2_LOG_LEVEL_TRACE);
@@ -181,7 +180,7 @@ main(
     axis2_options_set_http_method(options, env, AXIS2_HTTP_HEAD);
 
     /* Sending dummy authentication info */
-    axis2_options_set_http_auth_info(options, env, "", "", auth_type);
+    axis2_options_set_http_auth_info(options, env, "", "", NULL);
 
     /* Force authentication tests */
     axis2_options_set_test_http_auth(options, env, AXIS2_TRUE);
@@ -189,6 +188,9 @@ main(
 
     /* Set service client options */
     axis2_svc_client_set_options(svc_client, env, options);
+
+    /* un-comment line below to setup proxy from code*/
+    /*axis2_svc_client_set_proxy_with_auth(svc_client, env, "127.0.0.1", "3128", NULL, NULL);*/
 
     /* Sending robust authentication test message */
     axis2_svc_client_send_robust(svc_client, env, NULL);
@@ -198,30 +200,32 @@ main(
     {
         proxy_auth_required = AXIS2_TRUE;
 
+        /* Set proxy-auth information */
+        if (unp && pwp)
+        {
+            axis2_options_set_proxy_auth_info(options, env, unp, pwp,
+                                              axis2_svc_client_get_auth_type(svc_client, env));
+            /* un-comment line below to setup proxy from code*/
+            /*axis2_svc_client_set_proxy_with_auth(svc_client, env, "127.0.0.1", "3128", unp, pwp);*/
+        }
+
         /* Sending robust authentication test message */
         axis2_svc_client_send_robust(svc_client, env, NULL);
     }
     if (axis2_svc_client_get_http_auth_required(svc_client, env))
     {
         http_auth_required = AXIS2_TRUE;
+        /* Set http-auth information */
+        if (un && pw)
+        {
+            axis2_options_set_http_auth_info(options, env, un, pw,
+                                             axis2_svc_client_get_auth_type(svc_client, env));
+        }
     }
 
     /* Cancel authentication tests */
     axis2_options_set_test_http_auth(options, env, AXIS2_FALSE);
     axis2_options_set_test_proxy_auth(options, env, AXIS2_FALSE);
-
-    /* Set http-auth information */
-    if (http_auth_required && un && pw)
-    {
-        axis2_options_set_http_auth_info(options, env, un, pw, auth_type);
-    }
-    /* Set proxy-auth information */
-    if (proxy_auth_required && unp && pwp)
-    {
-        axis2_options_set_proxy_auth_info(options, env, unp, pwp, auth_type);
-        /* un-comment line below to setup proxy from code*/
-        /*axis2_svc_client_set_proxy_with_auth(svc_client, env, "127.0.0.1", "3128", unp, pwp);*/
-    }
 
     /* Print whether authentication was required */
     if (http_auth_required)

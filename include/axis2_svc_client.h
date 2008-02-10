@@ -565,6 +565,17 @@ extern "C"
         const axutil_env_t * env);
 
     /**
+     * Gets the authentication type required.
+     * @param svc_client pointer to service_client struct
+     * @param env env pointer to environemt struct
+     * @return AXIS2_TRUE if the operation succeded, else AXIS2_FALSE
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_svc_client_get_auth_type(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
+
+    /**
      * Gets the boolean value indicating whether HTTP Authentication
      * is required.
      * @param svc_client pointer to service_client struct
@@ -595,7 +606,6 @@ extern "C"
      * @param root_node pointer to a policy node    
      * @return AXIS2_FAILURE if there was a fault, else AXIS2_SUCCESS
      */
-
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_client_set_policy_from_om(
         axis2_svc_client_t * svc_client,
@@ -609,7 +619,6 @@ extern "C"
      * @param policy neethi_policy_t to a policy struct
      * @return AXIS2_FAILURE if there was a fault, else AXIS2_SUCCESS
      */
-
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_client_set_policy(
         axis2_svc_client_t * svc_client,
