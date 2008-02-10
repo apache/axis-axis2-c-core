@@ -131,7 +131,6 @@ extern "C"
 #include <netdb.h>
 #include <sys/ioctl.h>
 
-#include <zlib.h>
 #include <fcntl.h>
 
     /* dir handling */
