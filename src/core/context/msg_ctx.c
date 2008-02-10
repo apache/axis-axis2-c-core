@@ -196,6 +196,8 @@ struct axis2_msg_ctx
     axutil_hash_t *transport_headers;
     axis2_char_t *transfer_encoding;
     axis2_char_t *transport_url;
+    axis2_bool_t is_auth_failure;
+    axis2_bool_t required_auth_is_http;
 };
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
@@ -266,6 +268,8 @@ axis2_msg_ctx_create(
     msg_ctx->transfer_encoding = NULL;
     msg_ctx->transport_url = NULL;
     msg_ctx->response_soap_envelope = NULL;
+    msg_ctx->is_auth_failure = AXIS2_FALSE;
+    msg_ctx->required_auth_is_http = AXIS2_FALSE;
 
     msg_ctx->base = axis2_ctx_create(env);
     if (!(msg_ctx->base))
@@ -2192,5 +2196,47 @@ axis2_msg_ctx_set_status_code(
 {
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->status_code = status_code;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_msg_ctx_get_auth_failed(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    return msg_ctx->is_auth_failure;
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_auth_failed(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env,
+    const axis2_bool_t status)
+{
+    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    msg_ctx->is_auth_failure = status;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_msg_ctx_get_required_auth_is_http(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    return msg_ctx->required_auth_is_http;
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_required_auth_is_http(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env,
+    const axis2_bool_t status)
+{
+    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    msg_ctx->required_auth_is_http = status;
     return AXIS2_SUCCESS;
 }

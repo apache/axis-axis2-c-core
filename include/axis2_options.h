@@ -737,8 +737,38 @@ extern "C"
         axis2_options_t * options,
         const axutil_env_t * env,
         const axis2_bool_t enable_rest);
+
+    /**
+     * Sets the bool value indicating whether to test whether HTTP
+     * Authentication is required or not.
+     * @param options pointer to options struct
+     * @param env pointer to environment struct
+     * @param test_http_auth bool value indicating whether to test
+     * or not, AXIS2_TRUE to enable, AXIS2_FALSE to disable
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_options_set_test_http_auth(
+        axis2_options_t * options,
+        const axutil_env_t * env,
+        const axis2_bool_t test_http_auth);
+
+    /**
+     * Sets the bool value indicating whether to test whether Proxy
+     * Authentication is required or not.
+     * @param options pointer to options struct
+     * @param env pointer to environment struct
+     * @param test_proxy_auth bool value indicating whether to test
+     * or not, AXIS2_TRUE to enable, AXIS2_FALSE to disable
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_options_set_test_proxy_auth(
+        axis2_options_t * options,
+        const axutil_env_t * env,
+        const axis2_bool_t test_proxy_auth);
     
-/**
+    /**
      * Sets the HTTP method to be used
      * @param options pointer to options struct
      * @param env pointer to environment struct

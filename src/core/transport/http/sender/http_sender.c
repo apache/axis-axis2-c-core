@@ -203,6 +203,10 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     axutil_param_t *ssl_pp_param = NULL;	/* ssl passphrase */
     axis2_char_t *ssl_pp = NULL;
     axutil_property_t *ssl_pp_property = NULL;
+    axutil_property_t *test_auth_property = NULL;
+    axis2_char_t *test_auth_property_value = NULL;
+    axis2_bool_t test_proxy_auth = AXIS2_FALSE;
+    axis2_bool_t test_http_auth = AXIS2_FALSE;
     axutil_property_t *proxy_auth_property = NULL;
     axis2_char_t *proxy_auth_property_value = NULL;
     axis2_bool_t force_proxy_auth = AXIS2_FALSE;
@@ -742,8 +746,36 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         }
     }
 
-    proxy_auth_property = (axutil_property_t *) axis2_msg_ctx_get_property (msg_ctx, env,
-                                                                            AXIS2_FORCE_PROXY_AUTH);
+    test_auth_property = (axutil_property_t *) axis2_msg_ctx_get_property (msg_ctx, env,
+                                                                            AXIS2_TEST_PROXY_AUTH);
+    if (test_auth_property)
+        test_auth_property_value = (axis2_char_t *) axutil_property_get_value (test_auth_property,
+                                                                                env);
+
+    if (test_auth_property_value && 0 == axutil_strcmp (test_auth_property_value, AXIS2_VALUE_TRUE))
+    {
+        test_proxy_auth = AXIS2_TRUE;
+    }
+    
+    test_auth_property = NULL;
+    test_auth_property_value = NULL;
+
+    test_auth_property = (axutil_property_t *) axis2_msg_ctx_get_property (msg_ctx, env,
+                                                                            AXIS2_TEST_HTTP_AUTH);
+    if (test_auth_property)
+        test_auth_property_value = (axis2_char_t *) axutil_property_get_value (test_auth_property,
+                                                                                env);
+
+    if (test_auth_property_value && 0 == axutil_strcmp (test_auth_property_value, AXIS2_VALUE_TRUE))
+    {
+        test_http_auth = AXIS2_TRUE;
+    }
+
+    if (!test_proxy_auth)
+    {
+        proxy_auth_property = (axutil_property_t *) axis2_msg_ctx_get_property (msg_ctx, env,
+                                                                                AXIS2_FORCE_PROXY_AUTH);
+    }
     if (proxy_auth_property)
         proxy_auth_property_value = (axis2_char_t *) axutil_property_get_value (proxy_auth_property,
                                                                                 env);
@@ -770,8 +802,11 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         force_proxy_auth = AXIS2_FALSE;
     }
 
-    http_auth_property = (axutil_property_t *) axis2_msg_ctx_get_property (msg_ctx, env,
-                                                                           AXIS2_FORCE_HTTP_AUTH);
+    if (!test_http_auth)
+    {
+        http_auth_property = (axutil_property_t *) axis2_msg_ctx_get_property (msg_ctx, env,
+                                                                               AXIS2_FORCE_HTTP_AUTH);
+    }
     if (http_auth_property)
         http_auth_property_value = (axis2_char_t *) axutil_property_get_value (http_auth_property,
                                                                                env);
@@ -823,7 +858,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         status_code = axis2_http_client_recieve_header (sender->client, env);
     }
 
-    if (AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL == status_code)
+    if (AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL == status_code && !test_proxy_auth)
     {
         axis2_status_t auth_status;
         auth_status = axis2_http_sender_configure_proxy_auth (sender,
@@ -848,11 +883,18 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             if (AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL == status_code)
             {
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Proxy Authentication failed");
+                axis2_msg_ctx_set_auth_failed(msg_ctx, env, AXIS2_TRUE);
+                axis2_msg_ctx_set_required_auth_is_http(msg_ctx, env, AXIS2_FALSE);
             }
         }
     }
+    else if (AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL == status_code)
+    {
+        axis2_msg_ctx_set_auth_failed(msg_ctx, env, AXIS2_TRUE);
+        axis2_msg_ctx_set_required_auth_is_http(msg_ctx, env, AXIS2_FALSE);
+    }
  
-    if (AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL == status_code)
+    if (AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL == status_code && !test_http_auth)
     {
         if (!http_auth_header_added)
         {
@@ -873,16 +915,27 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             if (AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL == status_code)
             {
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "HTTP Authentication failed");
+                axis2_msg_ctx_set_auth_failed(msg_ctx, env, AXIS2_TRUE);
+                axis2_msg_ctx_set_required_auth_is_http(msg_ctx, env, AXIS2_TRUE);
             }
             if (AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL == status_code)
             {
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Proxy Authentication failed");
+                axis2_msg_ctx_set_auth_failed(msg_ctx, env, AXIS2_TRUE);
+                axis2_msg_ctx_set_required_auth_is_http(msg_ctx, env, AXIS2_FALSE);
             }
         }
         else
         {
             AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "HTTP Authentication failed");
+            axis2_msg_ctx_set_auth_failed(msg_ctx, env, AXIS2_TRUE);
+            axis2_msg_ctx_set_required_auth_is_http(msg_ctx, env, AXIS2_TRUE);
         }
+    }
+    else if (AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL == status_code)
+    {
+        axis2_msg_ctx_set_auth_failed(msg_ctx, env, AXIS2_TRUE);
+        axis2_msg_ctx_set_required_auth_is_http(msg_ctx, env, AXIS2_TRUE);
     }
     /*AXIS2_FREE(env->allocator, buffer);
       buffer = NULL; */

@@ -334,6 +334,16 @@ extern "C"
 #define AXIS2_PROXY_AUTH_TYPE "proxyAuthType"
 #define AXIS2_HTTP_AUTH_TYPE "HTTPAuthType"
 
+    /**
+     * Constant for Testing Proxy Authentication
+     */
+#define AXIS2_TEST_PROXY_AUTH "testProxyAuth"
+
+    /**
+     * Constant for Testing HTTP Authentication
+     */
+#define AXIS2_TEST_HTTP_AUTH "testHTTPAuth"
+
     /* add xml declaration */
 #define AXIS2_XML_DECLARATION "xml-declaration"
 #define AXIS2_ADD_XML_DECLARATION "insert"

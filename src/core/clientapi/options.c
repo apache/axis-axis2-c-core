@@ -919,6 +919,63 @@ axis2_options_set_enable_rest(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_options_set_test_http_auth(
+    axis2_options_t * options,
+    const axutil_env_t * env,
+    const axis2_bool_t test_http_auth)
+{
+    axutil_property_t *test_auth_property = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    if (test_http_auth)
+    {
+        test_auth_property = axutil_property_create(env);
+        axutil_property_set_value(test_auth_property, env,
+                                  axutil_strdup(env, AXIS2_VALUE_TRUE));
+        axis2_options_set_property(options, env, AXIS2_TEST_HTTP_AUTH,
+                                   test_auth_property);
+    }
+    else
+    {
+        test_auth_property = axutil_property_create(env);
+        axutil_property_set_value(test_auth_property, env,
+                                  axutil_strdup(env, AXIS2_VALUE_FALSE));
+        axis2_options_set_property(options, env, AXIS2_TEST_HTTP_AUTH,
+                                   test_auth_property);
+    }
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_options_set_test_proxy_auth(
+    axis2_options_t * options,
+    const axutil_env_t * env,
+    const axis2_bool_t test_proxy_auth)
+{
+    axutil_property_t *test_auth_property = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    if (test_proxy_auth)
+    {
+        test_auth_property = axutil_property_create(env);
+        axutil_property_set_value(test_auth_property, env,
+                                  axutil_strdup(env, AXIS2_VALUE_TRUE));
+        axis2_options_set_property(options, env, AXIS2_TEST_PROXY_AUTH,
+                                   test_auth_property);
+    }
+    else
+    {
+        test_auth_property = axutil_property_create(env);
+        axutil_property_set_value(test_auth_property, env,
+                                  axutil_strdup(env, AXIS2_VALUE_FALSE));
+        axis2_options_set_property(options, env, AXIS2_TEST_PROXY_AUTH,
+                                   test_auth_property);
+    }
+    return AXIS2_SUCCESS;
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_http_method(
     axis2_options_t * options,
     const axutil_env_t * env,

@@ -20,8 +20,12 @@
 #include <axis2_util.h>
 #include <axiom_soap.h>
 #include <axis2_client.h>
+#include <axis2_http_transport.h>
 
 axiom_node_t *build_om_payload_for_echo_svc(
+    const axutil_env_t * env);
+
+axiom_node_t *build_om_payload_for_auth(
     const axutil_env_t * env);
 
 int
@@ -41,6 +45,9 @@ main(
     const axis2_char_t *pw = NULL;
     const axis2_char_t *unp = NULL;
     const axis2_char_t *pwp = NULL;
+    axis2_bool_t http_auth_required = AXIS2_FALSE;
+    axis2_bool_t proxy_auth_required = AXIS2_FALSE;
+    const axis2_char_t *auth_type = NULL;
 
     /* Set up the environment */
     env = axutil_env_create_all("echo_blocking_auth.log", AXIS2_LOG_LEVEL_TRACE);
@@ -170,21 +177,73 @@ main(
         return -1;
     }
 
-    /* Set http-auth information */
-    if (un && pw)
+    /* Enabling REST for HTTP HEAD Request */
+    axis2_options_set_enable_rest(options, env, AXIS2_TRUE);
+
+    /* Setting Request as HTTP HEAD Request */
+    axis2_options_set_http_method(options, env, AXIS2_HTTP_HEAD);
+
+    /* Sending dummy authentication info */
+    axis2_options_set_http_auth_info(options, env, "", "", auth_type);
+
+    /* Force authentication tests */
+    axis2_options_set_test_http_auth(options, env, AXIS2_TRUE);
+    axis2_options_set_test_proxy_auth(options, env, AXIS2_TRUE);
+
+    /* Set service client options */
+    axis2_svc_client_set_options(svc_client, env, options);
+
+    /* Build the authentication test message payload using OM API. */
+    payload = build_om_payload_for_auth(env);
+
+    /* Sending robust authentication test message */
+    axis2_svc_client_send_robust(svc_client, env, payload);
+
+    /* Checking whether authentication is required */
+    if (axis2_svc_client_get_proxy_auth_required(svc_client, env))
     {
-        axis2_options_set_http_auth_info(options, env, un, pw, NULL);
+        proxy_auth_required = AXIS2_TRUE;
+
+        /* Build the authentication test message payload using OM API. */
+        payload = build_om_payload_for_auth(env);
+
+        /* Sending robust authentication test message */
+        axis2_svc_client_send_robust(svc_client, env, payload);
+    }
+    if (axis2_svc_client_get_http_auth_required(svc_client, env))
+    {
+        http_auth_required = AXIS2_TRUE;
+    }
+
+    /* Cancel authentication tests */
+    axis2_options_set_test_http_auth(options, env, AXIS2_FALSE);
+    axis2_options_set_test_proxy_auth(options, env, AXIS2_FALSE);
+
+    /* Set http-auth information */
+    if (http_auth_required && un && pw)
+    {
+        axis2_options_set_http_auth_info(options, env, un, pw, auth_type);
     }
     /* Set proxy-auth information */
-    if (unp && pwp)
+    if (proxy_auth_required && unp && pwp)
     {
-        axis2_options_set_proxy_auth_info(options, env, unp, pwp, NULL);
+        axis2_options_set_proxy_auth_info(options, env, unp, pwp, auth_type);
         /* un-comment line below to setup proxy from code*/
         /*axis2_svc_client_set_proxy_with_auth(svc_client, env, "127.0.0.1", "3128", unp, pwp);*/
     }
 
-    /* Set service client options */
-    axis2_svc_client_set_options(svc_client, env, options);
+    /* Print whether authentication was required */
+    if (http_auth_required)
+    {
+        printf("\nHTTP Authentication info required.\n");
+    }
+    if (proxy_auth_required)
+    {
+        printf("\nProxy Authentication info required.\n");
+    }
+
+    /* Disabling REST for SOAP Request */
+    axis2_options_set_enable_rest(options, env, AXIS2_FALSE);
 
     /* Engage addressing module */
     axis2_svc_client_engage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);
@@ -228,4 +287,18 @@ main(
     }
 
     return 0;
+}
+
+/* build authentication test message content using OM */
+axiom_node_t *
+build_om_payload_for_auth(
+    const axutil_env_t * env)
+{
+    axiom_node_t *echo_om_node = NULL;
+    axiom_element_t *echo_om_ele = NULL;
+
+    echo_om_ele =
+        axiom_element_create(env, NULL, "ping", NULL, &echo_om_node);
+
+    return echo_om_node;
 }

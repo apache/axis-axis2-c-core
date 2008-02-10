@@ -565,6 +565,30 @@ extern "C"
         const axutil_env_t * env);
 
     /**
+     * Gets the boolean value indicating whether HTTP Authentication
+     * is required.
+     * @param svc_client pointer to service_client struct
+     * @param env env pointer to environemt struct
+     * @return AXIS2_TRUE if Authentication is required, else AXIS2_FALSE
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_svc_client_get_http_auth_required(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
+
+    /**
+     * Gets the boolean value indicating whether Proxy Authentication
+     * is required.
+     * @param svc_client pointer to service_client struct
+     * @param env env pointer to environemt struct
+     * @return AXIS2_TRUE if Authentication is required, else AXIS2_FALSE
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_svc_client_get_proxy_auth_required(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
+
+    /**
      * Create a policy object and set it to the description hierarchy
      * @param svc_client pointer to service_client struct
      * @param env pointer to environemt struct

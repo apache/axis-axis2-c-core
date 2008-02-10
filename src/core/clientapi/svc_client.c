@@ -67,6 +67,10 @@ struct axis2_svc_client
 
     axis2_bool_t reuse;
 
+    axis2_bool_t auth_failed;
+
+    axis2_bool_t required_auth_is_http;
+
 };
 
 static axis2_svc_t *axis2_svc_client_create_annonymous_svc(
@@ -262,6 +266,8 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     svc_client->last_response_soap_envelope = NULL;
     svc_client->last_response_has_fault = AXIS2_FALSE;
     svc_client->reuse = AXIS2_FALSE;
+    svc_client->auth_failed = AXIS2_FALSE;
+    svc_client->required_auth_is_http = AXIS2_FALSE;
 
     /** initialize private data to NULL, create options */
     if (!axis2_svc_client_init_data(env, svc_client))
@@ -532,6 +538,9 @@ axis2_svc_client_send_robust_with_op_qname(
         qname_free_flag = AXIS2_TRUE;
     }
 
+    svc_client->auth_failed = AXIS2_FALSE;
+    svc_client->required_auth_is_http = AXIS2_FALSE;
+
     msg_ctx = axis2_msg_ctx_create(env,
                                    axis2_svc_ctx_get_conf_ctx(svc_client->
                                                               svc_ctx, env),
@@ -548,6 +557,9 @@ axis2_svc_client_send_robust_with_op_qname(
 
     axis2_op_client_add_out_msg_ctx(svc_client->op_client, env, msg_ctx);
     status = axis2_op_client_execute(svc_client->op_client, env, AXIS2_TRUE);
+    svc_client->auth_failed = axis2_msg_ctx_get_auth_failed(msg_ctx, env);
+    svc_client->required_auth_is_http =
+        axis2_msg_ctx_get_required_auth_is_http(msg_ctx, env);
 
     if (qname_free_flag)
     {
@@ -595,6 +607,9 @@ axis2_svc_client_fire_and_forget_with_op_qname(
         qname_free_flag = AXIS2_TRUE;
     }
 
+    svc_client->auth_failed = AXIS2_FALSE;
+    svc_client->required_auth_is_http = AXIS2_FALSE;
+
     msg_ctx = axis2_msg_ctx_create(env,
                                    axis2_svc_ctx_get_conf_ctx(svc_client->
                                                               svc_ctx, env),
@@ -611,6 +626,9 @@ axis2_svc_client_fire_and_forget_with_op_qname(
 
     axis2_op_client_add_out_msg_ctx(svc_client->op_client, env, msg_ctx);
     axis2_op_client_execute(svc_client->op_client, env, AXIS2_FALSE);
+    svc_client->auth_failed = axis2_msg_ctx_get_auth_failed(msg_ctx, env);
+    svc_client->required_auth_is_http =
+        axis2_msg_ctx_get_required_auth_is_http(msg_ctx, env);
 
     if (qname_free_flag)
     {
@@ -657,6 +675,8 @@ axis2_svc_client_send_receive_with_op_qname(
 
     svc_client->last_response_soap_envelope = NULL;
     svc_client->last_response_has_fault = AXIS2_FALSE;
+    svc_client->auth_failed = AXIS2_FALSE;
+    svc_client->required_auth_is_http = AXIS2_FALSE;
 
     op = axis2_svc_get_op_with_qname(svc_client->svc, env, op_qname);
     if (op)
@@ -801,6 +821,9 @@ axis2_svc_client_send_receive_with_op_qname(
 
         axis2_op_client_add_msg_ctx(svc_client->op_client, env, msg_ctx);
         axis2_op_client_execute(svc_client->op_client, env, AXIS2_TRUE);
+        svc_client->auth_failed = axis2_msg_ctx_get_auth_failed(msg_ctx, env);
+        svc_client->required_auth_is_http =
+            axis2_msg_ctx_get_required_auth_is_http(msg_ctx, env);
         res_msg_ctx =
             (axis2_msg_ctx_t *) axis2_op_client_get_msg_ctx(svc_client->
                                                             op_client, env,
@@ -916,6 +939,9 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
         qname_free_flag = AXIS2_TRUE;
     }
 
+    svc_client->auth_failed = AXIS2_FALSE;
+    svc_client->required_auth_is_http = AXIS2_FALSE;
+
     msg_ctx = axis2_msg_ctx_create(env,
                                    axis2_svc_ctx_get_conf_ctx(svc_client->
                                                               svc_ctx, env),
@@ -955,6 +981,9 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
     }
 
     axis2_op_client_execute(svc_client->op_client, env, AXIS2_FALSE);
+    svc_client->auth_failed = axis2_msg_ctx_get_auth_failed(msg_ctx, env);
+    svc_client->required_auth_is_http =
+        axis2_msg_ctx_get_required_auth_is_http(msg_ctx, env);
 
     if (qname_free_flag)
     {
@@ -1425,8 +1454,36 @@ axis2_svc_client_get_last_response_has_fault(
     const axis2_svc_client_t * svc_client,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FALSE);
     return svc_client->last_response_has_fault;
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_svc_client_get_http_auth_required(
+    const axis2_svc_client_t * svc_client,
+    const axutil_env_t * env)
+{
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FALSE);
+    if (svc_client->auth_failed &&
+        svc_client->required_auth_is_http)
+    {
+        return AXIS2_TRUE;
+    }
+    return AXIS2_FALSE;
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_svc_client_get_proxy_auth_required(
+    const axis2_svc_client_t * svc_client,
+    const axutil_env_t * env)
+{
+    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FALSE);
+    if (svc_client->auth_failed &&
+        !svc_client->required_auth_is_http)
+    {
+        return AXIS2_TRUE;
+    }
+    return AXIS2_FALSE;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
