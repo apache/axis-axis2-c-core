@@ -576,7 +576,6 @@ axis2_svc_client_send_robust(
     const axiom_node_t * payload)
 {
     AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK (env->error, payload, AXIS2_FAILURE);
     return axis2_svc_client_send_robust_with_op_qname(svc_client, env, NULL,
                                                       payload);
 }

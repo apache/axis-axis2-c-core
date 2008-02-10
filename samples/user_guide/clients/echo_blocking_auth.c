@@ -25,9 +25,6 @@
 axiom_node_t *build_om_payload_for_echo_svc(
     const axutil_env_t * env);
 
-axiom_node_t *build_om_payload_for_auth(
-    const axutil_env_t * env);
-
 int
 main(
     int argc,
@@ -193,22 +190,16 @@ main(
     /* Set service client options */
     axis2_svc_client_set_options(svc_client, env, options);
 
-    /* Build the authentication test message payload using OM API. */
-    payload = build_om_payload_for_auth(env);
-
     /* Sending robust authentication test message */
-    axis2_svc_client_send_robust(svc_client, env, payload);
+    axis2_svc_client_send_robust(svc_client, env, NULL);
 
     /* Checking whether authentication is required */
     if (axis2_svc_client_get_proxy_auth_required(svc_client, env))
     {
         proxy_auth_required = AXIS2_TRUE;
 
-        /* Build the authentication test message payload using OM API. */
-        payload = build_om_payload_for_auth(env);
-
         /* Sending robust authentication test message */
-        axis2_svc_client_send_robust(svc_client, env, payload);
+        axis2_svc_client_send_robust(svc_client, env, NULL);
     }
     if (axis2_svc_client_get_http_auth_required(svc_client, env))
     {
@@ -287,18 +278,4 @@ main(
     }
 
     return 0;
-}
-
-/* build authentication test message content using OM */
-axiom_node_t *
-build_om_payload_for_auth(
-    const axutil_env_t * env)
-{
-    axiom_node_t *echo_om_node = NULL;
-    axiom_element_t *echo_om_ele = NULL;
-
-    echo_om_ele =
-        axiom_element_create(env, NULL, "ping", NULL, &echo_om_node);
-
-    return echo_om_node;
 }
