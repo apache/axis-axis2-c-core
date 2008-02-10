@@ -85,6 +85,8 @@ axis2_desc_builder_create_with_file_and_dep_engine(
         return NULL;
     }
 
+    desc_builder->builder = NULL;
+
     desc_builder->file_name = axutil_strdup(env, file_name);
     if (!desc_builder->file_name)
     {

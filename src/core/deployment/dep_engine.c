@@ -1470,6 +1470,7 @@ axis2_dep_engine_do_deploy(
                     if (AXIS2_SUCCESS != status)
                     {
                         axis2_arch_reader_free(dep_engine->arch_reader, env);
+                        dep_engine->arch_reader = NULL;
                         dep_engine->curr_file = NULL;
                         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SVC,
                                         AXIS2_FAILURE);
@@ -1480,6 +1481,7 @@ axis2_dep_engine_do_deploy(
                     if (AXIS2_SUCCESS != status)
                     {
                         axis2_arch_reader_free(dep_engine->arch_reader, env);
+                        dep_engine->arch_reader = NULL;
                         dep_engine->curr_file = NULL;
                         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SVC,
                                         AXIS2_FAILURE);
