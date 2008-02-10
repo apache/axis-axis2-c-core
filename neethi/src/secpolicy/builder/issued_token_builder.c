@@ -115,8 +115,16 @@ rp_issued_token_builder_build(const axutil_env_t *env,
 
 		return assertion;
 	} 
-	
-	return NULL;
+
+	assertion = neethi_assertion_create(env);
+   	neethi_assertion_set_value(
+				   	assertion,
+				   	env, 
+					issued_token, 
+					ASSERTION_TYPE_ISSUED_TOKEN);
+
+
+	return assertion;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL rp_issued_token_builder_process_alternatives(
