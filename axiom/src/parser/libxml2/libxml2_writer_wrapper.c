@@ -1140,8 +1140,8 @@ axis2_status_t AXIS2_CALL
 axis2_libxml2_writer_wrapper_write_start_document_with_version_encoding(
     axiom_xml_writer_t * writer,
     const axutil_env_t * env,
-    axis2_char_t * version,
-    axis2_char_t * encoding)
+    axis2_char_t * encoding,
+    axis2_char_t * version)
 {
     axis2_libxml2_writer_wrapper_impl_t *wrapper_impl = NULL;
     int status = 0;

@@ -574,6 +574,14 @@ axiom_output_write_xml_version_encoding(
     const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if (!om_output->xml_version)
+    {
+        axiom_output_set_xml_version(om_output, env, "1.0");
+    }
+    if (!om_output->char_set_encoding)
+    {
+        axiom_output_set_char_set_encoding(om_output, env, "UTF-8");
+    }
     return
         axiom_xml_writer_write_start_document_with_version_encoding(om_output->
                                                                     xml_writer,

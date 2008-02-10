@@ -264,8 +264,8 @@ axiom_xml_writer_write_start_document_with_version_encoding(
 {
     return (writer)->ops->write_start_document_with_version_encoding(writer,
                                                                      env,
-                                                                     version,
-                                                                     encoding);
+                                                                     encoding,
+                                                                     version);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
