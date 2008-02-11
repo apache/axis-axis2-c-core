@@ -1023,9 +1023,10 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                                 if ('>' == c_arra[1])
                                 {
                                     m->guththila_event = GUTHTHILA_COMMENT;
-                                    m->next = m->next - 3;
+                                    /* position after first hyphen, as if we just scanned it */
+                                    m->next = m->next - 2;
                                     guththila_token_close(m, tok, _char_data,0, env);
-                                    m->next = m->next + 3;
+                                    m->next = m->next + 2;
                                     return GUTHTHILA_COMMENT;
                                 }
                                 
