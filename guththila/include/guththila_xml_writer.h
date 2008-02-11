@@ -151,7 +151,9 @@ guththila_do_write_attribute_with_prefix_and_namespace(
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_write_start_document(
     guththila_xml_writer_t * wr,
-    const axutil_env_t * env);
+    const axutil_env_t * env,
+    char *encoding,
+    char *version);
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_write_start_element(
     guththila_xml_writer_t * wr,

@@ -447,10 +447,41 @@ guththila_write_xtoken(guththila_xml_writer_t * wr, guththila_char_t *buff,
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL 
 guththila_write_start_document(guththila_xml_writer_t * wr,
-                               const axutil_env_t * env) 
+                               const axutil_env_t * env,
+                               char *encoding,
+                               char *version) 
 {
-    guththila_write(wr, GUTHTHILA_WRITER_SD_DECLARATION,
-                     strlen(GUTHTHILA_WRITER_SD_DECLARATION), env);
+    char *tmp1 = NULL;
+    char *tmp2 = GUTHTHILA_WRITER_SD_DECLARATION;
+
+    tmp1 = strchr(tmp2, '\"');
+    tmp1++;
+    guththila_write(wr, tmp2, (int)(tmp1 - tmp2), env);
+    tmp2 = strchr(tmp1, '\"');
+    if (version)
+    {
+        guththila_write(wr, version, (int)strlen(version), env);
+    }
+    else
+    {
+        guththila_write(wr, tmp1, (int)(tmp2 - tmp1), env);
+    }
+    tmp2++;
+    tmp1 = strchr(tmp2, '\"');
+    tmp2--;
+    tmp1++;
+    guththila_write(wr, tmp2, (int)(tmp1 - tmp2), env);
+    tmp2 = strchr(tmp1, '\"');
+    if (encoding)
+    {
+        guththila_write(wr, encoding, (int)strlen(encoding), env);
+    }
+    else
+    {
+        guththila_write(wr, tmp1, (int)(tmp2 - tmp1), env);
+    }
+    guththila_write(wr, tmp2, (int)strlen(tmp2), env);
+
     return GUTHTHILA_SUCCESS;
 }
 

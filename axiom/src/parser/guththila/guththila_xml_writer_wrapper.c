@@ -640,7 +640,8 @@ guththila_xml_writer_wrapper_write_start_document(
     const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    guththila_write_start_document(AXIS2_INTF_TO_IMPL(writer)->wr, env);
+    guththila_write_start_document(AXIS2_INTF_TO_IMPL(writer)->wr, env,
+                                   NULL, NULL);
     return AXIS2_SUCCESS;
 }
 
@@ -652,7 +653,8 @@ guththila_xml_writer_wrapper_write_start_document_with_version(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, version, AXIS2_FAILURE);
-    guththila_write_start_document(AXIS2_INTF_TO_IMPL(writer)->wr, env);
+    guththila_write_start_document(AXIS2_INTF_TO_IMPL(writer)->wr, env,
+                                   NULL, version);
     return AXIS2_SUCCESS;
 }
 
@@ -666,7 +668,8 @@ guththila_xml_writer_wrapper_write_start_document_with_version_encoding(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, encoding, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, version, AXIS2_FAILURE);
-    guththila_write_start_document(AXIS2_INTF_TO_IMPL(writer)->wr, env);
+    guththila_write_start_document(AXIS2_INTF_TO_IMPL(writer)->wr, env,
+                                   encoding, version);
     return AXIS2_SUCCESS;
 }
 
