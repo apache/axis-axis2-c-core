@@ -1080,6 +1080,10 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
             m->next--;
             if (white_space)
             {
+#ifndef GUTHTHILA_IGNORE_SPACES
+                m->guththila_event = GUTHTHILA_SPACE;
+                return GUTHTHILA_SPACE;
+#else
                 loop = 1;
                 if (m->value)
                 {
@@ -1087,6 +1091,7 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                                                       env);
                     m->value = NULL;
                 }
+#endif
             }
             
             else
