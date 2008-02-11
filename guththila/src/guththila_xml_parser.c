@@ -857,10 +857,11 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                 {
                     if (c == '/')
                     {
-                        if ('>' == guththila_next_char(m, 0, env))
+                        c = guththila_next_char(m, 0, env);
+                        if (c == '>')
                         {
-                            return m->guththila_event =
-                                GUTHTHILA_EMPTY_ELEMENT;
+                            m->guththila_event = GUTHTHILA_EMPTY_ELEMENT;
+                            return GUTHTHILA_EMPTY_ELEMENT;
                         }
                         else
                         {

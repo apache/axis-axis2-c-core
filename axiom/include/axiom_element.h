@@ -575,6 +575,17 @@ extern "C"
         const axutil_env_t * env,
         axutil_string_t * localname);
 
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axiom_element_get_is_empty(
+        axiom_element_t * om_element,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_element_set_is_empty(
+        axiom_element_t * om_element,
+        const axutil_env_t * env,
+        axis2_bool_t is_empty);
+
     /** @} */
 
 #ifdef __cplusplus

@@ -52,6 +52,8 @@ struct axiom_element
 
     int next_ns_prefix_number;
 
+    axis2_bool_t is_empty;
+
 };
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
@@ -100,6 +102,7 @@ axiom_element_create(
     element->children_qname_iter = NULL;
     element->text_value = NULL;
     element->next_ns_prefix_number = 0;
+    element->is_empty = AXIS2_FALSE;
 
     element->localname = axutil_string_create(env, localname);
     if (!element->localname)
@@ -749,38 +752,90 @@ axiom_element_serialize_start_part(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
-    if (om_element->ns)
+    if (om_element->is_empty)
     {
-        axis2_char_t *uri = NULL;
-        axis2_char_t *prefix = NULL;
-
-        uri = axiom_namespace_get_uri(om_element->ns, env);
-        prefix = axiom_namespace_get_prefix(om_element->ns, env);
-
-        if ((uri) && (prefix) && (axutil_strcmp(prefix, "") != 0))
+        if (om_element->ns)
         {
+            axis2_char_t *uri = NULL;
+            axis2_char_t *prefix = NULL;
+
+            uri = axiom_namespace_get_uri(om_element->ns, env);
+            prefix = axiom_namespace_get_prefix(om_element->ns, env);
+
+            if  (axutil_strcmp(prefix, "") != 0)
+            {
+                prefix = NULL;
+            }
+
             status = axiom_output_write(om_output, env,
-                                        AXIOM_ELEMENT, 3,
+                                        AXIOM_ELEMENT, 4,
                                         axutil_string_get_buffer(om_element->
                                                                  localname,
                                                                  env), uri,
-                                        prefix);
+                                        prefix, NULL);
+
+
+            if ((uri) && (prefix) && (axutil_strcmp(prefix, "") != 0))
+            {
+                status = axiom_output_write(om_output, env,
+                                            AXIOM_ELEMENT, 3,
+                                            axutil_string_get_buffer(om_element->
+                                                                     localname,
+                                                                     env), uri,
+                                            prefix);
+            }
+            else if (uri)
+            {
+                status = axiom_output_write(om_output, env,
+                                            AXIOM_ELEMENT, 2,
+                                            axutil_string_get_buffer(om_element->
+                                                                     localname,
+                                                                     env), uri);
+            }
         }
-        else if (uri)
+        else
         {
             status = axiom_output_write(om_output, env,
-                                        AXIOM_ELEMENT, 2,
+                                        AXIOM_ELEMENT, 1,
                                         axutil_string_get_buffer(om_element->
-                                                                 localname,
-                                                                 env), uri);
+                                                                 localname, env));
         }
     }
     else
     {
-        status = axiom_output_write(om_output, env,
-                                    AXIOM_ELEMENT, 1,
-                                    axutil_string_get_buffer(om_element->
-                                                             localname, env));
+        if (om_element->ns)
+        {
+            axis2_char_t *uri = NULL;
+            axis2_char_t *prefix = NULL;
+
+            uri = axiom_namespace_get_uri(om_element->ns, env);
+            prefix = axiom_namespace_get_prefix(om_element->ns, env);
+
+            if ((uri) && (prefix) && (axutil_strcmp(prefix, "") != 0))
+            {
+                status = axiom_output_write(om_output, env,
+                                            AXIOM_ELEMENT, 3,
+                                            axutil_string_get_buffer(om_element->
+                                                                     localname,
+                                                                     env), uri,
+                                            prefix);
+            }
+            else if (uri)
+            {
+                status = axiom_output_write(om_output, env,
+                                            AXIOM_ELEMENT, 2,
+                                            axutil_string_get_buffer(om_element->
+                                                                     localname,
+                                                                     env), uri);
+            }
+        }
+        else
+        {
+            status = axiom_output_write(om_output, env,
+                                        AXIOM_ELEMENT, 1,
+                                        axutil_string_get_buffer(om_element->
+                                                                 localname, env));
+        }
     }
     if (om_element->attributes)
     {
@@ -1712,4 +1767,21 @@ axiom_element_set_localname_str(
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axiom_element_get_is_empty(
+    axiom_element_t * om_element,
+    const axutil_env_t * env)
+{
+    return om_element->is_empty;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axiom_element_set_is_empty(
+    axiom_element_t * om_element,
+    const axutil_env_t * env,
+    axis2_bool_t is_empty)
+{
+    om_element->is_empty = is_empty;
 }

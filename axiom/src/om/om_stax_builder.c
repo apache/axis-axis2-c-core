@@ -472,7 +472,8 @@ axiom_stax_builder_process_namespaces(
 axiom_node_t *
 axiom_stax_builder_create_om_element(
     axiom_stax_builder_t * om_builder,
-    const axutil_env_t * env)
+    const axutil_env_t * env,
+    axis2_bool_t is_empty)
 {
     axiom_node_t *element_node = NULL;
     axiom_element_t *om_ele = NULL;
@@ -565,6 +566,10 @@ axiom_stax_builder_create_om_element(
     axiom_stax_builder_process_attributes(om_builder, env, element_node);
 
     om_builder->lastnode = element_node;
+    if (om_ele)
+    {
+        axiom_element_set_is_empty(om_ele, env, is_empty);
+    }
 
     return element_node;
 }
@@ -800,11 +805,13 @@ axiom_stax_builder_next(
             break;
 
         case AXIOM_XML_READER_START_ELEMENT:
-            node = axiom_stax_builder_create_om_element(om_builder, env);
+            node = axiom_stax_builder_create_om_element(om_builder, env,
+                                                        AXIS2_FALSE);
             break;
 
         case AXIOM_XML_READER_EMPTY_ELEMENT:
-            node = axiom_stax_builder_create_om_element(om_builder, env);
+            node = axiom_stax_builder_create_om_element(om_builder, env,
+                                                        AXIS2_TRUE);
 
         case AXIOM_XML_READER_END_ELEMENT:
             axiom_stax_builder_end_element(om_builder, env);
@@ -1105,7 +1112,8 @@ axiom_stax_builder_next_with_token(
         break;
 
     case AXIOM_XML_READER_START_ELEMENT:
-        val = axiom_stax_builder_create_om_element(om_builder, env);
+        val = axiom_stax_builder_create_om_element(om_builder, env,
+                                                   AXIS2_FALSE);
         if (!val)
         {
             return -1;
@@ -1113,7 +1121,8 @@ axiom_stax_builder_next_with_token(
         break;
 
     case AXIOM_XML_READER_EMPTY_ELEMENT:
-        val = axiom_stax_builder_create_om_element(om_builder, env);
+        val = axiom_stax_builder_create_om_element(om_builder, env,
+                                                   AXIS2_TRUE);
         if (!val)
         {
             return -1;

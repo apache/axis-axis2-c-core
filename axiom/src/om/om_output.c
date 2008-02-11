@@ -486,6 +486,37 @@ axiom_output_write(
                 (om_output->xml_writer, env, args_list[0], args_list[1],
                  args_list[2]);
         }
+        else if (no_of_args == 4)
+        {
+            if (!args_list[0])
+            {
+                status = AXIS2_FAILURE;
+            }
+            else if (!args_list[1])
+            {
+                status =
+                    axiom_xml_writer_write_empty_element(om_output->xml_writer,
+                                                         env, args_list[0]);
+            }
+            else if (!args_list[2])
+            {
+                status =
+                    axiom_xml_writer_write_empty_element_with_namespace(om_output->
+                                                                        xml_writer,
+                                                                        env,
+                                                                        args_list
+                                                                        [0],
+                                                                        args_list
+                                                                        [1]);
+            }
+            else
+            {
+                status =
+                    axiom_xml_writer_write_empty_element_with_namespace_prefix
+                    (om_output->xml_writer, env, args_list[0], args_list[1],
+                     args_list[2]);
+            }
+        }
     }
     else if (type == AXIOM_DATA_SOURCE)
     {
