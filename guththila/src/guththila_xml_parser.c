@@ -305,7 +305,7 @@ guththila_free(guththila_t * m, const axutil_env_t * env)
             AXIS2_FREE(env->allocator, elem);
         }
     }
-
+    guththila_stack_un_init(&m->elem,env);
 #ifndef GUTHTHILA_VALIDATION_PARSER
     guththila_namespace_t * namesp = NULL;
 
@@ -345,23 +345,6 @@ guththila_free(guththila_t * m, const axutil_env_t * env)
         AXIS2_FREE(env->allocator, e_namesp);
     }
 #endif  
-
-
-    size = GUTHTHILA_STACK_SIZE(m->elem);
-    for (i = 0; i < size; i++)
-    {
-        elem =
-            (guththila_element_t *) guththila_stack_pop(&m->elem, env);
-        if (elem)
-        {
-            if (elem->name)
-                guththila_tok_list_release_token(&m->tokens, elem->name, env);
-            if (elem->prefix)
-                guththila_tok_list_release_token(&m->tokens, elem->prefix, env);
-            AXIS2_FREE(env->allocator, elem);
-        }
-    }
-    guththila_stack_un_init(&m->elem,env);
     guththila_stack_un_init(&m->namesp, env);
     guththila_tok_list_free_data(&m->tokens, env);
     guththila_buffer_un_init(&m->buffer, env);
