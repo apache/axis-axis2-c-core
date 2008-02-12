@@ -1132,9 +1132,15 @@ axiom_stax_builder_next_with_token(
         break;
 
     case AXIOM_XML_READER_SPACE:
-        val = axiom_stax_builder_create_om_text(om_builder, env);
-        /* as guththila now preserves white space before the root element, 
-           ignore the error return (val == 0) as a normal situation */
+        /* ignore white space before the root element */
+        if (om_builder->lastnode)
+        {
+            val = axiom_stax_builder_create_om_text(om_builder, env);
+            if (!val)
+            {
+                return -1;
+            }
+        }
         break;
 
     case AXIOM_XML_READER_CHARACTER:
