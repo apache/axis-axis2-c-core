@@ -20,7 +20,6 @@
 #include <axutil_array_list.h>
 #include <axis2_deployment.h>
 #include <axutil_file_handler.h>
-#include <axutil_dll_desc.h>
 #include <axis2_flow.h>
 #include <axis2_arch_reader.h>
 #include <axis2_module_builder.h>

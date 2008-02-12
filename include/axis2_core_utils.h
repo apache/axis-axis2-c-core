@@ -25,6 +25,7 @@
 #include <axutil_env.h>
 #include <axis2_msg_ctx.h>
 #include <axutil_qname.h>
+#include <axis2_core_dll_desc.h>
 
 #ifdef __cplusplus
 extern "C"

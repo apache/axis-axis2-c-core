@@ -53,28 +53,7 @@ extern "C"
             void *inst,
             const axutil_env_t * env);
 
-    typedef enum axis2_dll_type
-    {
-
-        /** service dll */
-        AXIS2_SVC_DLL = 0,
-
-        /** handler dll */
-        AXIS2_HANDLER_DLL,
-
-        /** message receiver dll */
-        AXIS2_MSG_RECV_DLL,
-
-        /** module dll */
-        AXIS2_MODULE_DLL,
-
-        /** transport receiver dll */
-        AXIS2_TRANSPORT_RECV_DLL,
-
-        /** transport sender dll */
-        AXIS2_TRANSPORT_SENDER_DLL
-    }
-    axis2_dll_type_t;
+    typedef int axis2_dll_type_t;
 
     /**
      * creates dll_desc struct
