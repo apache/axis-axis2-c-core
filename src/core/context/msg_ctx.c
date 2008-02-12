@@ -2094,6 +2094,24 @@ axis2_msg_ctx_get_transport_headers(
     }
 }
 
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+axis2_msg_ctx_extract_transport_headers(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    axutil_hash_t *temp = NULL;
+    if (msg_ctx)
+    {
+        temp = msg_ctx->transport_headers;
+        msg_ctx->transport_headers = NULL;
+        return temp;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_transport_headers(
     axis2_msg_ctx_t * msg_ctx,

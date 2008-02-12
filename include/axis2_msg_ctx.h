@@ -1629,6 +1629,12 @@ extern "C"
         axis2_msg_ctx_t * msg_ctx,
         const axutil_env_t * env);
 
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+
+    axis2_msg_ctx_extract_transport_headers(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
     axis2_msg_ctx_set_transport_headers(
