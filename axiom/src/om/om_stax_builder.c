@@ -253,21 +253,27 @@ axiom_stax_builder_create_om_text(
 #else
     temp_value_str = axutil_string_create_assume_ownership(env, &temp_value);
 #endif
+    if (!temp_value_str)
+    {
+        /* axutil_string_create will have set an error number */
+        return NULL;
+    }
 
     if (axiom_node_is_complete(om_builder->lastnode, env))
     {
         axiom_text_create_str(env,
                               axiom_node_get_parent(om_builder->lastnode, env),
                               temp_value_str, &node);
-
     }
     else
     {
         axiom_text_create_str(env, om_builder->lastnode, temp_value_str, &node);
     }
-
-    axiom_node_set_complete(node, env, AXIS2_TRUE);
-    om_builder->lastnode = node;
+    if (node)
+    {
+        axiom_node_set_complete(node, env, AXIS2_TRUE);
+        om_builder->lastnode = node;
+    }
 
     axutil_string_free(temp_value_str, env);
     return node;
