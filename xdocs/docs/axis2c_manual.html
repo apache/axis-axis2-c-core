@@ -1250,7 +1250,7 @@ server as,</li>
 <li>Archive Based Deployment</li>
 </ol>
 Our discussion in this section focuses on how to setup and use archive based deployment in Axis2/C. By default, Axis2/C may be built without enabling archive based deployment. Therefore, first and foremost you will have to most probably rebuild from source.</p><p>
-Also, it is requirement that you have zlib. Most Linux systems do have zlib by default, and for MS Windows systems, you can download it from <a href="http://www.zlatkovic.com/pub/libxml">here</a>.</p><p>
+Also, it is requirement that you have zlib. Most Linux systems do have zlib by default, but would sometimes require zlib development packages. For MS Windows systems, you can download it from <a href="http://www.zlatkovic.com/pub/libxml">here</a>.</p><p>
 Next, you will have to build Axis2/C enabling Archive Based Deployment. 
 On Linux, you need to set the <code>--with-archive=[path_to_zlib_headers]</code></p><p>Example: <code><br></br>
 %./configure --with-archive=/usr/include/ --prefix=${AXIS2C_HOME}/deploy<br></br>
@@ -1258,11 +1258,15 @@ On Linux, you need to set the <code>--with-archive=[path_to_zlib_headers]</code>
 %make install<br></br>
 </code></p><p>On MS Windows, set <code>WITH_ARCHIVE = 1</code> in the
 <code>configure.in</code> file and run the <code>nmake all</code> command. Please note that you have to specify the directory where you can find the zlib binary, for a MS Windows system. This can be done by setting the <code>ZLIB_BIN_DIR</code> in the
-<code>configure.in</code> file.
+<code>configure.in</code> file.</p>
 </div><div class="subsection"><a name="19_1_Deploying_Services"></a><h3>19.1 Deploying Services</h3><p>
-Once you have successfully completed the installation, you will have to deploy services as archives in order to make use of this deployment model. Please note that directory based deployment can coexist with the archive based deployment model. Therefore, you can alternatively use either of the two.<p></p>
-You will merely have to add your existing service libraries and the services.xml file into an archive. For example, in order to deploy the sample echo service as an archive, you can zip the echo folder found in the <code>AXIS2C_BIN_DIR/services</code> directory.<p></p>
-Please note that all such services deployed as archives should also be placed inside the <code>AXIS2C_BIN_DIR/services</code> directory. Now, when ever you start your Simple Axis2 Server, or any Axis2/C module attached to any other server, your services deployed as archives, will also get loaded.<p></p>
+Once you have successfully completed the installation, you will have to deploy services as archives in order to make use of this deployment model. Please note that directory based deployment can coexist with the archive based deployment model. Therefore, you can alternatively use either of the two.<p/><p>
+You will merely have to add your existing service libraries and the services.xml file into an archive. For example, in order to deploy the sample echo service as an archive, you can zip the echo folder found in the <code>AXIS2C_BIN_DIR/services</code> directory. You can optionally rename your zip file, to have the <code>.aar</code> extension.</p><p>
+Please note that all such services deployed as archives should also be placed inside the <code>AXIS2C_BIN_DIR/services</code> directory. Now, when ever you start your Simple Axis2 Server, or any Axis2/C module attached to any other server, your services deployed as archives, will also get loaded.
+</div><div class="subsection"><a name="19_2_Deploying_Modules"></a><h3>19.2 Deploying Modules</h3><p>
+Similar to services, you also can deploy modules as archives. You also can optionally rename your zip files to have the extension, <code>.mar</code> as in service archives.</p><p>
+Your module archives must be placed in the <code>AXIS2C_BIN_DIR/modules</code> directory.</p>
+</div><div class="subsection"><a name="19_3_Known_Issues"></a><h3>19.3 Known Issues</h3><p>
 Please note that there are a few known issues when running archive based deployment, mainly on Linux based systems.<br></br>
 <ul><li>If you want to run both client and server from same respository, assign super-user privilideges for your server in order to prevent un-zipped files getting overwritten, which will in return cause a segmentation fault on your server.<p></p></li>
 <li>Please make sure that the application you choose to create archives preserves executable rights, and symbolic links of libraries that are found inside the archive, once unzipped.</li>
