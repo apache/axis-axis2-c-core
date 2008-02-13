@@ -1250,7 +1250,7 @@ server as,</li>
 <li>Archive Based Deployment</li>
 </ol>
 Our discussion in this section focuses on how to setup and use archive based deployment in Axis2/C. By default, Axis2/C may be built without enabling archive based deployment. Therefore, first and foremost you will have to most probably rebuild from source.</p><p>
-Also, it is requirement that you have zlib. Most Linux systems do have zlib by default, but would sometimes require zlib development packages. For MS Windows systems, you can download it from <a href="http://www.zlatkovic.com/pub/libxml">here</a>.</p><p>
+Also, it is requirement that you have zlib. Most Linux systems do have zlib by default, but would require zlib development packages. More information can be found <a href="http://www.zlib.net/">here</a>. For MS Windows systems, you can download it from <a href="http://www.zlatkovic.com/pub/libxml">here</a>.</p><p>
 Next, you will have to build Axis2/C enabling Archive Based Deployment. 
 On Linux, you need to set the <code>--with-archive=[path_to_zlib_headers]</code></p><p>Example: <code><br></br>
 %./configure --with-archive=/usr/include/ --prefix=${AXIS2C_HOME}/deploy<br></br>
