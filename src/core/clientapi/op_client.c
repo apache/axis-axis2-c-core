@@ -188,12 +188,16 @@ axis2_op_client_add_msg_ctx(
         *in_msg_ctx = NULL;
     axis2_msg_ctx_t **msg_ctx_map = NULL;
 
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     /* Don't use AXIS2_PARAM_CHECK to verify op_client, as it clobbers 
        env->error->status_code on no error destroying the information 
        therein that an error has already occurred. */
     if (!op_client)
     {
-        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "op_client is NULL, unable to continue");
+        if (axutil_error_get_status_code(env->error) == AXIS2_SUCCESS)
+        {
+            AXIS2_ERROR_SET (env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        }
         return AXIS2_FAILURE;
     }
     /* mc message context pointer may be NULL, e.g., when no response message 

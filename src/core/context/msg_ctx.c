@@ -1295,7 +1295,10 @@ axis2_msg_ctx_get_property(
        an error has already occurred. */
     if (!msg_ctx)
     {
-        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "msg_ctx is NULL, unable to get_property");
+        if (axutil_error_get_status_code(env->error) == AXIS2_SUCCESS)
+        {
+            AXIS2_ERROR_SET (env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        }
         return obj;
     }
 
@@ -1473,7 +1476,10 @@ axis2_msg_ctx_get_doing_rest(
        an error has already occurred. */
     if (!msg_ctx)
     {
-        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "msg_ctx is NULL, unable to get_doing_rest");
+        if (axutil_error_get_status_code(env->error) == AXIS2_SUCCESS)
+        {
+            AXIS2_ERROR_SET (env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        }
         return AXIS2_FALSE;
     }
     return msg_ctx->doing_rest;
