@@ -486,7 +486,7 @@ axutil_uri_parse_string(
 /* Special case for CONNECT parsing: it comes with the hostinfo part only */
 
 /* See the INTERNET-DRAFT document "Tunneling SSL Through a WWW Proxy"
- * currently at http://www.mcom.com/newsref/std/tunneling_ssl.html
+ * currently at http://muffin.doit.org/docs/rfc/tunneling_ssl.html
  * for the format of the "CONNECT host:port HTTP/1.0" request
  */
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
