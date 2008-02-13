@@ -357,6 +357,8 @@ extern "C"
     /* op_ctx persistance */
 #define AXIS2_PERSIST_OP_CTX "persistOperationContext"
 
+#define AXIS2_EXPOSE_HEADERS "exposeHeaders"
+
     /******************************************************************************/
 
 #define AXIS2_VALUE_TRUE "true"

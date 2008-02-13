@@ -52,6 +52,8 @@ axis2_core_utils_create_out_msg_ctx(
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     axis2_char_t *msg_uuid = NULL;
     axutil_stream_t *out_stream = NULL;
+    axutil_param_t *expose_headers_param = NULL;
+    axis2_bool_t expose_headers = AXIS2_FALSE;
 
     AXIS2_PARAM_CHECK(env->error, in_msg_ctx, NULL);
 
@@ -65,8 +67,28 @@ axis2_core_utils_create_out_msg_ctx(
     {
         return NULL;
     }
-    axis2_msg_ctx_set_transport_headers(new_msg_ctx, env,
-            axis2_msg_ctx_extract_transport_headers(in_msg_ctx, env));
+
+    if (transport_in)
+    {
+        expose_headers_param =
+            axutil_param_container_get_param(
+                 axis2_transport_in_desc_param_container(transport_in, env), env,
+                 AXIS2_EXPOSE_HEADERS);
+    }
+    if (expose_headers_param)
+    {
+        axis2_char_t *expose_headers_value = NULL;
+        expose_headers_value = axutil_param_get_value(expose_headers_param, env);
+        if (expose_headers_value && 0 == axutil_strcasecmp (expose_headers_value, AXIS2_VALUE_TRUE))
+        {
+            expose_headers = AXIS2_TRUE;
+        }
+    }
+    if (expose_headers)
+    {
+        axis2_msg_ctx_set_transport_headers(new_msg_ctx, env,
+                axis2_msg_ctx_extract_transport_headers(in_msg_ctx, env));
+    }
     old_msg_info_headers = axis2_msg_ctx_get_msg_info_headers(in_msg_ctx, env);
     if (!old_msg_info_headers)
     {
