@@ -33,7 +33,6 @@ rp_bootstrap_policy_builder_build(
     axiom_node_t *child_node = NULL;
     axiom_element_t *child_element = NULL;
     neethi_assertion_t *assertion = NULL;
-    neethi_policy_t *normalized_policy = NULL;
 
     child_node = axiom_node_get_first_element(node, env);
     if (!child_node)
@@ -52,14 +51,9 @@ rp_bootstrap_policy_builder_build(
             {
                 return NULL;
             }
-            normalized_policy =
-                neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
-            neethi_policy_free(policy, env);
-            policy = NULL;
-
             assertion = neethi_assertion_create_with_args(env,
                                                   NULL, /*this policy should not be deleted*/
-                                                  normalized_policy,
+                                                  policy,
                                                   ASSERTION_TYPE_BOOTSTRAP_POLICY);
             return assertion;
         }
