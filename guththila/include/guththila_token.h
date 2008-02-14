@@ -119,8 +119,9 @@ guththila_tok_tok_cmp(
     guththila_token_t * tok1,
     guththila_token_t * tok2,
     const axutil_env_t * env);
-guththila_token_t* GUTHTHILA_CALL
-guththila_token_create(
+void GUTHTHILA_CALL
+guththila_set_token(
+    guththila_token_t* tok,
     guththila_char_t* start,
     short type,
     int size,

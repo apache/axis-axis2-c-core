@@ -150,13 +150,28 @@ guththila_init(guththila_t * m, void *reader, const axutil_env_t * env)
     guththila_stack_init(&m->elem, env);
     guththila_stack_init(&m->attrib, env);
     guththila_stack_init(&m->namesp, env);
+    temp_name = guththila_tok_list_get_token(&m->tokens,env);
+    temp_tok = guththila_tok_list_get_token(&m->tokens,env);
+/*
     temp_name = guththila_token_create(GUTHTHILA_XML_NAME,0,(int)strlen(GUTHTHILA_XML_NAME),
                                        1,0,0,env);
-    /* We are sure that the difference lies within the int range */
+  
     temp_tok = guththila_token_create(GUTHTHILA_XML_URI,0,(int)strlen(GUTHTHILA_XML_URI),
                                       1,0,0,env);
-    /* We are sure that the difference lies within the int range */
-    e_namesp = (guththila_elem_namesp_t *) AXIS2_MALLOC(env->allocator,
+  
+*/
+    if(temp_tok && temp_name)
+    {
+        guththila_set_token(temp_name,GUTHTHILA_XML_NAME,0,(int)strlen(GUTHTHILA_XML_NAME),
+                                       1,0,0,env);
+
+        guththila_set_token(temp_tok,GUTHTHILA_XML_URI,0,(int)strlen(GUTHTHILA_XML_URI),
+                                      1,0,0,env);
+
+    }
+
+  
+  e_namesp = (guththila_elem_namesp_t *) AXIS2_MALLOC(env->allocator,
                                                         sizeof(guththila_elem_namesp_t));
     if (e_namesp && temp_tok && temp_name)
     {

@@ -232,8 +232,9 @@ guththila_tok_tok_cmp(
     }
     return 0;
 }
-guththila_token_t* GUTHTHILA_CALL
-guththila_token_create(guththila_char_t* start,
+void GUTHTHILA_CALL
+guththila_set_token(guththila_token_t* tok,
+                       guththila_char_t* start,
                        short type,
                        int size,
                        int _start,
@@ -241,22 +242,13 @@ guththila_token_create(guththila_char_t* start,
                        int ref,
                        const axutil_env_t* env)
 {
-    guththila_token_t* tok;
-    tok = (guththila_token_t *) AXIS2_MALLOC(env->allocator,sizeof(guththila_token_t));
-    if (!tok)
-        return NULL;
-    tok->start  =  (guththila_char_t*) AXIS2_MALLOC(env->allocator,size);
-    if (!tok->start)
+    if(start)
     {
-        AXIS2_FREE(env->allocator, tok);
-        return NULL;
+        tok->start = start;
+        tok->type = type;
+        tok->_start = _start;
+        tok->size = size;
+        tok->last = last;
+        tok->ref = ref;
     }
-    memcpy(tok->start,start,size);
-    tok->type = type;
-    tok->_start = _start;
-    tok->size = size;
-    tok->last = last;
-    tok->ref = ref;
-    return tok;
 }
-

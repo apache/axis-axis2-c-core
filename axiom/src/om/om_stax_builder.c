@@ -600,7 +600,12 @@ axiom_stax_builder_create_om_comment(
     if (!(om_builder->lastnode))
     {
         /* do nothing */
+#ifdef AXIS2_GUTHTHILA_ENABLED
+
+        AXIS2_FREE(env->allocator,comment_value);
+#else
         axiom_xml_reader_xml_free(om_builder->parser, env, comment_value);
+#endif
         return NULL;
     }
     else if (axiom_node_is_complete(om_builder->lastnode, env))
