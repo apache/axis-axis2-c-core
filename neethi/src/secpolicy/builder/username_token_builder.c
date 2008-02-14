@@ -95,7 +95,6 @@ rp_username_token_builder_build(
 
             assertion =
                 neethi_assertion_create_with_args(env,
-                                                  (void *)
                                                   rp_username_token_free,
                                                   username_token,
                                                   ASSERTION_TYPE_USERNAME_TOKEN);

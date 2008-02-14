@@ -96,7 +96,7 @@ axutil_thread_create(
     void *data)
 {
     HANDLE handle;
-    unsigned temp;
+    unsigned long temp;
     axutil_thread_t *new = NULL;
 
     new = (axutil_thread_t *) AXIS2_MALLOC(allocator, sizeof(axutil_thread_t));
@@ -117,7 +117,7 @@ axutil_thread_create(
     if ((handle =
          CreateThread(NULL, attr &&
                       attr->stacksize > 0 ? attr->stacksize : 0,
-                      (unsigned int (AXIS2_THREAD_FUNC *) (void *))
+                      (unsigned long (AXIS2_THREAD_FUNC *) (void *))
                       dummy_worker, new, 0, &temp)) == 0)
     {
         return NULL;

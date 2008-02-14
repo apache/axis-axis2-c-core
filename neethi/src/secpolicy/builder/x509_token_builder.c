@@ -92,7 +92,7 @@ rp_x509_token_builder_build(
 
             assertion =
                 neethi_assertion_create_with_args(env,
-                                                  (void *) rp_x509_token_free,
+                                                  rp_x509_token_free,
                                                   x509_token,
                                                   ASSERTION_TYPE_X509_TOKEN);
 

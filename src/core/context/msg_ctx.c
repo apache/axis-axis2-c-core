@@ -1709,7 +1709,7 @@ axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_find_svc(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env,
-    void *func)
+    AXIS2_MSG_CTX_FIND_SVC func)
 {
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->find_svc = func;
@@ -1720,7 +1720,7 @@ axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_find_op(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env,
-    void *func)
+    AXIS2_MSG_CTX_FIND_OP func)
 {
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->find_op = func;

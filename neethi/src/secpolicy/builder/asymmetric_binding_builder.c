@@ -82,7 +82,6 @@ rp_asymmetric_binding_builder_build(
 
             assertion =
                 neethi_assertion_create_with_args(env,
-                                                  (void *)
                                                   rp_asymmetric_binding_free,
                                                   asymmetric_binding,
                                                   ASSERTION_TYPE_ASSYMMETRIC_BINDING);

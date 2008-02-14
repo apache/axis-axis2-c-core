@@ -135,7 +135,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_handler_set_invoke(
     axis2_handler_t * handler,
     const axutil_env_t * env,
-    void *func)
+    AXIS2_HANDLER_INVOKE func)
 {
     handler->invoke = func;
     return AXIS2_SUCCESS;

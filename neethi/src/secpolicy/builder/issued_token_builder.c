@@ -107,7 +107,7 @@ rp_issued_token_builder_build(const axutil_env_t *env,
 		if(AXIS2_FAILURE == rp_issued_token_builder_process_alternatives(env, all, issued_token))
 			return NULL;
 		assertion = neethi_assertion_create_with_args(env,
-				(void *) rp_issued_token_free, issued_token,
+				rp_issued_token_free, issued_token,
 				ASSERTION_TYPE_ISSUED_TOKEN);
 
 		neethi_policy_free(normalized_policy, env);

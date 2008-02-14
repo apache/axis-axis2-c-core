@@ -385,6 +385,7 @@ axis2_http_simple_response_get_content_length(
     const axutil_env_t * env)
 {
     axis2_http_header_t *tmp_header = NULL;
+    int error_return = -1;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     tmp_header = axis2_http_simple_response_get_first_header
         (simple_response, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH);
@@ -392,7 +393,7 @@ axis2_http_simple_response_get_content_length(
     {
         return AXIS2_ATOI(axis2_http_header_get_value(tmp_header, env));
     }
-    return -1;
+    return error_return;
 }
 
 const axis2_char_t *AXIS2_CALL
@@ -464,6 +465,7 @@ axis2_http_simple_response_get_body_bytes(
     axis2_char_t ** buffer)
 {
     axutil_stream_t *tmp_stream = NULL;
+    axis2_bool_t loop_state = AXIS2_TRUE;
     int return_size = -1;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -471,10 +473,10 @@ axis2_http_simple_response_get_body_bytes(
     if (!simple_response->stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_BODY, AXIS2_FAILURE);
-        return -1;
+        return return_size;
     }
     tmp_stream = axutil_stream_create_basic(env);
-    while (1)
+    while (loop_state)
     {
         int read = 0;
         int write = 0;

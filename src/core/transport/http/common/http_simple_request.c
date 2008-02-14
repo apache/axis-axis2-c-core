@@ -337,6 +337,7 @@ axis2_http_simple_request_get_content_length(
     const axutil_env_t * env)
 {
     axis2_http_header_t *tmp_header = NULL;
+    int error_return = -1;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     tmp_header = axis2_http_simple_request_get_first_header
         (simple_request, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH);
@@ -344,7 +345,7 @@ axis2_http_simple_request_get_content_length(
     {
         return AXIS2_ATOI(axis2_http_header_get_value(tmp_header, env));
     }
-    return -1;
+    return error_return;
 }
 
 AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
@@ -401,7 +402,9 @@ axis2_http_simple_request_get_body_bytes(
         *buf = tmp_buf;
         return axutil_strlen(tmp_buf);
     }
-    return -1;
+    *buf = (char *) AXIS2_MALLOC(env->allocator, 1);
+    *buf[0] = '\0';
+    return 0;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

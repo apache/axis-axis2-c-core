@@ -37,7 +37,7 @@ struct axutil_param
     int type;                   /*default is AXIS2_TEXT_PARAM */
     axutil_hash_t *attrs;
     axutil_array_list_t *value_list;
-     axis2_status_t(
+     void(
     AXIS2_CALL * value_free) (
     void *param_value,
     const axutil_env_t * env);
@@ -307,7 +307,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_param_set_value_free(
     axutil_param_t * param,
     const axutil_env_t * env,
-    void *free_fn)
+    AXIS2_PARAM_VALUE_FREE free_fn)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 

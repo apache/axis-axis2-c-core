@@ -55,6 +55,22 @@ extern "C"
     /** Type name for struct axis2_msg_recv*/
     typedef struct axis2_msg_recv axis2_msg_recv_t;
 
+    typedef axis2_status_t(
+        AXIS2_CALL
+        * AXIS2_MSG_RECV_INVOKE_BUSINESS_LOGIC) (
+            axis2_msg_recv_t * msg_recv,
+            const axutil_env_t * env,
+            struct axis2_msg_ctx * in_msg_ctx,
+            struct axis2_msg_ctx * out_msg_ctx);
+
+    typedef axis2_status_t(
+        AXIS2_CALL
+        * AXIS2_MSG_RECV_RECEIVE) (
+            axis2_msg_recv_t * msg_recv,
+            const axutil_env_t * env,
+            struct axis2_msg_ctx * in_msg_ctx,
+            void *callback_recv_param);
+
     /**
      * Deallocate memory
      * @param msg_recv pinter to message receiver
@@ -172,7 +188,7 @@ extern "C"
     axis2_msg_recv_set_invoke_business_logic(
         axis2_msg_recv_t * msg_recv,
         const axutil_env_t * env,
-        void *func);
+        AXIS2_MSG_RECV_INVOKE_BUSINESS_LOGIC func);
 
     AXIS2_EXPORT axis2_status_t AXIS2_CALL
     axis2_msg_recv_set_derived(
@@ -189,7 +205,7 @@ extern "C"
     axis2_msg_recv_set_receive(
         axis2_msg_recv_t * msg_recv,
         const axutil_env_t * env,
-        void *func);
+        AXIS2_MSG_RECV_RECEIVE func);
 
     /**
      * Create new message receiver object. usually this will be called from the

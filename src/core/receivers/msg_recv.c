@@ -376,7 +376,7 @@ AXIS2_EXPORT axis2_status_t AXIS2_CALL
 axis2_msg_recv_set_invoke_business_logic(
     axis2_msg_recv_t * msg_recv,
     const axutil_env_t * env,
-    void *func)
+    AXIS2_MSG_RECV_INVOKE_BUSINESS_LOGIC func)
 {
     msg_recv->invoke_business_logic = func;
     return AXIS2_SUCCESS;
@@ -415,7 +415,7 @@ AXIS2_EXPORT axis2_status_t AXIS2_CALL
 axis2_msg_recv_set_receive(
     axis2_msg_recv_t * msg_recv,
     const axutil_env_t * env,
-    void *func)
+    AXIS2_MSG_RECV_RECEIVE func)
 {
     msg_recv->receive = func;
     return AXIS2_SUCCESS;

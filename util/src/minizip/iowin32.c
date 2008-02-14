@@ -83,12 +83,9 @@ WIN32FILE_IOWIN;
 
 voidpf ZCALLBACK
 win32_open_file_func(
-    opaque,
-    filename,
-    mode)
-    voidpf opaque;
-    const char *filename;
-    int mode;
+    voidpf opaque,
+    const char *filename,
+    int mode)
 {
     /*const char *mode_fopen = NULL;*/
     DWORD dwDesiredAccess,
@@ -142,14 +139,10 @@ win32_open_file_func(
 
 uLong ZCALLBACK
 win32_read_file_func(
-    opaque,
-    stream,
-    buf,
-    size)
-    voidpf opaque;
-    voidpf stream;
-    void *buf;
-    uLong size;
+    voidpf opaque,
+    voidpf stream,
+    void *buf,
+    uLong size)
 {
     uLong ret = 0;
     HANDLE hFile = NULL;
@@ -169,14 +162,10 @@ win32_read_file_func(
 
 uLong ZCALLBACK
 win32_write_file_func(
-    opaque,
-    stream,
-    buf,
-    size)
-    voidpf opaque;
-    voidpf stream;
-    const void *buf;
-    uLong size;
+    voidpf opaque,
+    voidpf stream,
+    const void *buf,
+    uLong size)
 {
     uLong ret = 0;
     HANDLE hFile = NULL;
@@ -197,10 +186,8 @@ win32_write_file_func(
 
 long ZCALLBACK
 win32_tell_file_func(
-    opaque,
-    stream)
-    voidpf opaque;
-    voidpf stream;
+    voidpf opaque,
+    voidpf stream)
 {
     long ret = -1;
     HANDLE hFile = NULL;
@@ -223,14 +210,10 @@ win32_tell_file_func(
 
 long ZCALLBACK
 win32_seek_file_func(
-    opaque,
-    stream,
-    offset,
-    origin)
-    voidpf opaque;
-    voidpf stream;
-    uLong offset;
-    int origin;
+    voidpf opaque,
+    voidpf stream,
+    uLong offset,
+    int origin)
 {
     DWORD dwMoveMethod = 0xFFFFFFFF;
     HANDLE hFile = NULL;
@@ -270,10 +253,8 @@ win32_seek_file_func(
 
 int ZCALLBACK
 win32_close_file_func(
-    opaque,
-    stream)
-    voidpf opaque;
-    voidpf stream;
+    voidpf opaque,
+    voidpf stream)
 {
     int ret = -1;
 
@@ -293,10 +274,8 @@ win32_close_file_func(
 
 int ZCALLBACK
 win32_error_file_func(
-    opaque,
-    stream)
-    voidpf opaque;
-    voidpf stream;
+    voidpf opaque,
+    voidpf stream)
 {
     int ret = -1;
     if (stream)
@@ -308,8 +287,7 @@ win32_error_file_func(
 
 void
 fill_win32_filefunc(
-    pzlib_filefunc_def)
-    zlib_filefunc_def *pzlib_filefunc_def;
+    zlib_filefunc_def *pzlib_filefunc_def)
 {
     pzlib_filefunc_def->zopen_file = win32_open_file_func;
     pzlib_filefunc_def->zread_file = win32_read_file_func;

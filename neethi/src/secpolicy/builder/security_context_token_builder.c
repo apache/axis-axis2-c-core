@@ -120,7 +120,7 @@ rp_security_context_token_builder_build(
 
                             assertion =
                                 neethi_assertion_create_with_args(env,
-                                                                  (void *) rp_security_context_token_free,
+                                                                  rp_security_context_token_free,
                                                                   security_context_token,
                                                                   ASSERTION_TYPE_SECURITY_CONTEXT_TOKEN);
 

@@ -39,9 +39,9 @@ int dir_select(
     const struct dirent *entry);
 #endif
 
-/*int
+int
 file_select(
-    const struct dirent *entry);*/
+    const struct dirent *entry);
 
 /**
  * List the dll files in the given service or module folder path
@@ -58,8 +58,8 @@ axutil_dir_handler_list_services_or_modules_in_dir(
     int count = 1;
     int i = 0;
     struct dirent **files = NULL;
-    int file_select(
-        );
+    /*int file_select(
+        );*/
     /* Removed un-wanted redefinition leading to warnings on
      * Windows. If this is the desired behaviour, please look
      * into the file_select function definition below and comment
@@ -332,19 +332,20 @@ file_select(
       * If this code block is not required, we might as well remove
       * it.
       */
-    axis2_char_t *ptr;
+    /*axis2_char_t *ptr;
 
     if ((strcmp(entry->d_name, ".") == 0) || (strcmp(entry->d_name, "..") == 0))
-        return (AXIS2_FALSE);
+        return (AXIS2_FALSE);*/
 
     /* Check for filename extensions */
-    ptr = axutil_rindex(entry->d_name, '.');
+    /*ptr = axutil_rindex(entry->d_name, '.');
     if ((ptr) && ((strcmp(ptr, AXIS2_LIB_SUFFIX) == 0)))
     {
         return (AXIS2_TRUE);
     }
     else
-        return (AXIS2_FALSE);
+        return (AXIS2_FALSE);*/
+    return 0;
 }
 
 #ifdef IS_MACOSX

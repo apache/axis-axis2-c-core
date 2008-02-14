@@ -42,9 +42,8 @@ extern int AXIS2_ALPHASORT(
     );
 
 int
-axis2_mkdir(
-    dir_name)
-    const axis2_char_t *dir_name;
+axis2_mkdir(const axis2_char_t *
+    dir_name) 
 {
     int value = 0;
 #ifdef WIN32
@@ -57,11 +56,11 @@ axis2_mkdir(
 
 int
 axis2_create_dir(
-    new_dir)
-    axis2_char_t *new_dir;
+    axis2_char_t *new_dir)
 {
     axis2_char_t *buffer;
     axis2_char_t *p;
+    axis2_bool_t loop_state = AXIS2_TRUE;
     int len = (int) strlen(new_dir);
 
     if (len <= 0)
@@ -82,7 +81,7 @@ axis2_create_dir(
     }
 
     p = buffer + 1;
-    while (1)
+    while (loop_state)
     {
         axis2_char_t hold;
 
@@ -105,14 +104,10 @@ axis2_create_dir(
 
 int
 axis2_extract_currentfile(
-    uf,
-    popt_extract_without_path,
-    popt_overwrite,
-    password)
-    unzFile uf;
-    const int *popt_extract_without_path;
-    int *popt_overwrite;
-    const axis2_char_t *password;
+    unzFile uf,
+    const int *popt_extract_without_path,
+    int *popt_overwrite,
+    const axis2_char_t *password)
 {
     axis2_char_t filename_inzip[256];
     axis2_char_t *filename_withoutpath;
@@ -154,7 +149,7 @@ axis2_extract_currentfile(
     }
     else
     {
-        const axis2_char_t *write_filename;
+        axis2_char_t *write_filename;
         int skip = 0;
 
         if ((*popt_extract_without_path) == 0)
@@ -215,14 +210,10 @@ axis2_extract_currentfile(
 
 int
 axis2_extract(
-    uf,
-    opt_extract_without_path,
-    opt_overwrite,
-    password)
-    unzFile uf;
-    int opt_extract_without_path;
-    int opt_overwrite;
-    const axis2_char_t *password;
+    unzFile uf,
+    int opt_extract_without_path,
+    int opt_overwrite,
+    const axis2_char_t *password)
 {
     uLong i;
     unz_global_info gi;
@@ -303,16 +294,11 @@ aar_extract(
 
 int
 axis2_extract_onefile(
-    uf,
-    filename,
-    opt_extract_without_path,
-    opt_overwrite,
-    password)
-    unzFile uf;
-    const axis2_char_t *filename;
-    int opt_extract_without_path;
-    int opt_overwrite;
-    const axis2_char_t *password;
+    unzFile uf,
+    const axis2_char_t *filename,
+    int opt_extract_without_path,
+    int opt_overwrite,
+    const axis2_char_t *password)
 {
     if (unzLocateFile(uf, filename, CASESENSITIVITY) != UNZ_OK)
         return -1;

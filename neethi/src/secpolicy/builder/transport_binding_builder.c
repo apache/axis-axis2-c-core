@@ -82,7 +82,6 @@ rp_transport_binding_builder_build(
 
             assertion =
                 neethi_assertion_create_with_args(env,
-                                                  (void *)
                                                   rp_transport_binding_free,
                                                   transport_binding,
                                                   ASSERTION_TYPE_TRANSPORT_BINDING);

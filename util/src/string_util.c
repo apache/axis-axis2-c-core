@@ -29,6 +29,7 @@ axutil_tokenize(
     axutil_array_list_t *list = NULL;
     axis2_char_t *rest = NULL;
     axis2_char_t *str = NULL;
+    axis2_bool_t loop_state = AXIS2_TRUE;
 
     axis2_char_t *index = NULL;
 
@@ -70,7 +71,7 @@ axutil_tokenize(
         index = NULL;
 
     }
-    while (1);
+    while (loop_state);
     return list;
 }
 

@@ -400,13 +400,14 @@ axutil_parse_request_url_for_svc_and_op(
     axis2_char_t **ret = NULL;
     axis2_char_t *service_str = NULL;
     axis2_char_t *tmp = NULL;
+    axis2_bool_t loop_state = AXIS2_TRUE;
     int i = 0;
     AXIS2_ENV_CHECK(env, NULL);
     ret = AXIS2_MALLOC(env->allocator, 2 * (sizeof(axis2_char_t *)));
     memset(ret, 0, 2 * sizeof(axis2_char_t *));
     tmp = (axis2_char_t *) request;
 
-    while (1)
+    while (loop_state)
     {
         tmp = strstr(tmp, axis2_request_url_prefix);
         if (!tmp)

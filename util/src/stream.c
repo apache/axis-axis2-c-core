@@ -674,7 +674,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_stream_set_read(
     axutil_stream_t * stream,
     const axutil_env_t * env,
-    void *func)
+    AXUTIL_STREAM_READ func)
 {
     stream->read = func;
     return AXIS2_SUCCESS;
@@ -684,7 +684,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_stream_set_write(
     axutil_stream_t * stream,
     const axutil_env_t * env,
-    void *func)
+    AXUTIL_STREAM_WRITE func)
 {
     stream->write = func;
     return AXIS2_SUCCESS;
@@ -694,7 +694,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_stream_set_skip(
     axutil_stream_t * stream,
     const axutil_env_t * env,
-    void *func)
+    AXUTIL_STREAM_SKIP func)
 {
     stream->skip = func;
     return AXIS2_SUCCESS;

@@ -53,6 +53,29 @@ extern "C"
     typedef enum axutil_stream_type axutil_stream_type_t;
     typedef struct axutil_stream axutil_stream_t;
 
+    typedef int(
+        AXIS2_CALL
+        * AXUTIL_STREAM_READ)(
+            axutil_stream_t * stream,
+            const axutil_env_t * env,
+            void *buffer,
+            size_t count);
+
+    typedef int(
+        AXIS2_CALL
+        * AXUTIL_STREAM_WRITE)(
+            axutil_stream_t * stream,
+            const axutil_env_t * env,
+            const void *buffer,
+            size_t count);
+
+    typedef int(
+        AXIS2_CALL
+        * AXUTIL_STREAM_SKIP)(
+            axutil_stream_t * stream,
+            const axutil_env_t * env,
+            int count);
+
     struct axutil_stream
     {
         axutil_stream_type_t stream_type;
@@ -248,19 +271,19 @@ extern "C"
     axutil_stream_set_read(
         axutil_stream_t * stream,
         const axutil_env_t * env,
-        void *func);
+        AXUTIL_STREAM_READ func);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_stream_set_write(
         axutil_stream_t * stream,
         const axutil_env_t * env,
-        void *func);
+        AXUTIL_STREAM_WRITE func);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_stream_set_skip(
         axutil_stream_t * stream,
         const axutil_env_t * env,
-        void *func);
+        AXUTIL_STREAM_SKIP func);
 
     /** @} */
 

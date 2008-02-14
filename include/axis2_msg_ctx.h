@@ -122,6 +122,19 @@ extern "C"
     struct axis2_transport_out_desc;
     struct axis2_http_out_transport_info;
 
+    typedef struct axis2_svc *(
+        AXIS2_CALL
+        * AXIS2_MSG_CTX_FIND_SVC) (
+            axis2_msg_ctx_t * msg_ctx,
+            const axutil_env_t * env);
+
+    typedef struct axis2_op *(
+        AXIS2_CALL
+        * AXIS2_MSG_CTX_FIND_OP) (
+            axis2_msg_ctx_t * msg_ctx,
+            const axutil_env_t * env,
+            struct axis2_svc * svc);
+
     /**
      * Creates a message context struct instance.
      * @param env pointer to environment struct
@@ -1325,7 +1338,7 @@ extern "C"
     axis2_msg_ctx_set_find_svc(
         axis2_msg_ctx_t * msg_ctx,
         const axutil_env_t * env,
-        void *func);
+        AXIS2_MSG_CTX_FIND_SVC func);
 
     /**
      * Finds the operation to be invoked in the given service. This function 
@@ -1339,7 +1352,7 @@ extern "C"
     axis2_msg_ctx_set_find_op(
         axis2_msg_ctx_t * msg_ctx,
         const axutil_env_t * env,
-        void *func);
+        AXIS2_MSG_CTX_FIND_OP func);
 
     /**
      * Finds the service to be invoked. This function is used by dispatchers 

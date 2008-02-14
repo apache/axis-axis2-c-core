@@ -84,7 +84,7 @@ AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 
             assertion =
                 neethi_assertion_create_with_args(env,
-                                                  (void *) rp_saml_token_free,
+                                                  rp_saml_token_free,
                                                   saml_token,
                                                   ASSERTION_TYPE_SAML_TOKEN);
 

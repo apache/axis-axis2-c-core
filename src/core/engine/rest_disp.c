@@ -314,9 +314,10 @@ axis2_rest_disp_get_rest_op_with_method_and_location(
     axis2_char_t *loc_str_tmp = NULL;
     axis2_char_t *rindex = NULL;
     axis2_bool_t pass_one = AXIS2_TRUE;
+    axis2_bool_t loop_state = AXIS2_TRUE;
     AXIS2_PARAM_CHECK(env->error, location, NULL);
     AXIS2_PARAM_CHECK(env->error, method, NULL);
-
+    
     loc_str = axutil_strtrim(env, location, NULL);
     if (!loc_str)
     {
@@ -334,7 +335,7 @@ axis2_rest_disp_get_rest_op_with_method_and_location(
         temp = strchr(loc_str_tmp, '?');
         temp[0] = '\0';
     }
-    while(AXIS2_TRUE)
+    while(loop_state)
     {
         rindex = axutil_rindex(loc_str_tmp, '/');
 

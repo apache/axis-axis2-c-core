@@ -47,17 +47,6 @@ extern "C"
 {
 #endif
 
-    /**
-     * each type which is passed as a param value to a parameter, must have this
-     * type of function implemented. When the param value is set this function
-     * should also be assigned to param free function
-     */
-    typedef void(
-        AXIS2_CALL
-        * AXIS2_PARAM_VALUE_FREE)(
-            void *param,
-            const axutil_env_t * env);
-
     typedef struct axutil_param_container axutil_param_container_t;
 
     /**

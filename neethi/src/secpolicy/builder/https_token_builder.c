@@ -56,7 +56,7 @@ rp_https_token_builder_build(
     }
 
     assertion =
-        neethi_assertion_create_with_args(env, (void *) rp_https_token_free,
+        neethi_assertion_create_with_args(env, rp_https_token_free,
                                           https_token,
                                           ASSERTION_TYPE_HTTPS_TOKEN);
     return assertion;

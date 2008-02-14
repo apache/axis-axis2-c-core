@@ -84,7 +84,7 @@ rp_rampart_config_builder_build(
         }
     }
     assertion =
-        neethi_assertion_create_with_args(env, (void *) rp_rampart_config_free,
+        neethi_assertion_create_with_args(env, rp_rampart_config_free,
                                           rampart_config,
                                           ASSERTION_TYPE_RAMPART_CONFIG);
     return assertion;

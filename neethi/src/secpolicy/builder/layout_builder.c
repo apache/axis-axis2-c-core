@@ -65,7 +65,7 @@ rp_layout_builder_build(
                 return NULL;
             rp_layout_set_value(layout, env, local_name);
             assertion =
-                neethi_assertion_create_with_args(env, (void *) rp_layout_free,
+                neethi_assertion_create_with_args(env, rp_layout_free,
                                                   layout,
                                                   ASSERTION_TYPE_LAYOUT);
             return assertion;

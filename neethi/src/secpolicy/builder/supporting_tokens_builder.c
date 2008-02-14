@@ -106,7 +106,6 @@ rp_supporting_tokens_builder_build(
 
             assertion =
                 neethi_assertion_create_with_args(env,
-                                                  (void *)
                                                   rp_supporting_tokens_free,
                                                   supporting_tokens,
                                                   ASSERTION_TYPE_SUPPORTING_TOKENS);

@@ -73,7 +73,6 @@ rp_algorithmsuite_builder_build(
             }
             assertion =
                 neethi_assertion_create_with_args(env,
-                                                  (void *)
                                                   rp_algorithmsuite_free,
                                                   algorithmsuite,
                                                   ASSERTION_TYPE_ALGORITHM_SUITE);

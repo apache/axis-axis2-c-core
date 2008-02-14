@@ -246,9 +246,10 @@ axutil_string_get_length(
     const struct axutil_string *string,
     const axutil_env_t * env)
 {
+    int error_return = -1;
     if (!string)
     {
-        return (-1);
+        return error_return;
     }
 
     return string->length;
@@ -503,15 +504,13 @@ AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
 axutil_strlen(
     const axis2_char_t * s)
 {
+    int error_return = -1;
     if (s)
     {
         return (axis2_ssize_t)strlen(s);
         /* We are sure that the difference lies within the axis2_ssize_t range */
     }
-    else
-    {
-        return (-1);
-    }
+    return error_return;
 }
 
 AXIS2_EXTERN int AXIS2_CALL

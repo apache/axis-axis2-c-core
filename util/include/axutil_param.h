@@ -53,6 +53,17 @@ extern "C"
     typedef struct axutil_param axutil_param_t;
 
     /**
+     * each type which is passed as a param value to a parameter, must have this
+     * type of function implemented. When the param value is set this function
+     * should also be assigned to param free function
+     */
+    typedef void(
+        AXIS2_CALL
+        * AXIS2_PARAM_VALUE_FREE) (
+            void *param_value,
+            const axutil_env_t * env);
+
+    /**
      * creates param struct
      */
     AXIS2_EXTERN axutil_param_t *AXIS2_CALL
@@ -173,7 +184,7 @@ extern "C"
     axutil_param_set_value_free(
         struct axutil_param *param,
         const axutil_env_t * env,
-        void *free_fn);
+        AXIS2_PARAM_VALUE_FREE free_fn);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_param_dummy_free_fn(

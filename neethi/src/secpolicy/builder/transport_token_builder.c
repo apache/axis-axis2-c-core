@@ -81,7 +81,7 @@ rp_transport_token_builder_build(
 
             assertion =
                 neethi_assertion_create_with_args(env,
-                                                  (void *) rp_property_free,
+                                                  rp_property_free,
                                                   transport_token,
                                                   ASSERTION_TYPE_TRANSPORT_TOKEN);
 

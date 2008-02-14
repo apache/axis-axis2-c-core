@@ -53,6 +53,13 @@ extern "C"
     struct axis2_handler_desc;
     struct axis2_msg_ctx;
 
+    typedef axis2_status_t(
+        AXIS2_CALL
+        * AXIS2_HANDLER_INVOKE) (
+            axis2_handler_t * handler,
+            const axutil_env_t * env,
+            struct axis2_msg_ctx * msg_ctx);
+
     /**
      * Free handler struct.
      * @param handler pointer to handler
@@ -133,7 +140,7 @@ extern "C"
     axis2_handler_set_invoke(
         axis2_handler_t * handler,
         const axutil_env_t * env,
-        void *func);
+        AXIS2_HANDLER_INVOKE func);
 
     /**
      * Function pointer defining the creates syntax for a handler struct instance.
