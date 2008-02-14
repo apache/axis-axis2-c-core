@@ -80,7 +80,7 @@ rp_wss10_builder_build(
             wss10_process_alternatives(env, all, wss10);
 
             assertion =
-                neethi_assertion_create_with_args(env, rp_wss10_free,
+                neethi_assertion_create_with_args(env, (AXIS2_FREE_VOID_ARG)rp_wss10_free,
                                                   wss10, ASSERTION_TYPE_WSS10);
 
             neethi_policy_free(normalized_policy, env);

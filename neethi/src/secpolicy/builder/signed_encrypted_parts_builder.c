@@ -114,7 +114,7 @@ rp_signed_encrypted_parts_builder_build(
     }
     assertion =
         neethi_assertion_create_with_args(env,
-                                          rp_signed_encrypted_parts_free,
+                                          (AXIS2_FREE_VOID_ARG)rp_signed_encrypted_parts_free,
                                           signed_encrypted_parts,
                                           ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS);
     return assertion;

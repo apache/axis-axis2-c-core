@@ -80,7 +80,7 @@ rp_wss11_builder_build(
             wss11_process_alternatives(env, all, wss11);
 
             assertion =
-                neethi_assertion_create_with_args(env, rp_wss11_free,
+                neethi_assertion_create_with_args(env, (AXIS2_FREE_VOID_ARG)rp_wss11_free,
                                                   wss11, ASSERTION_TYPE_WSS11);
 
             neethi_policy_free(normalized_policy, env);

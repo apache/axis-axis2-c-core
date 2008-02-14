@@ -82,7 +82,7 @@ rp_protection_token_builder_build(
 
             assertion =
                 neethi_assertion_create_with_args(env,
-                                                  rp_property_free,
+                                                  (AXIS2_FREE_VOID_ARG)rp_property_free,
                                                   protection_token,
                                                   ASSERTION_TYPE_PROTECTION_TOKEN);
 

@@ -82,7 +82,7 @@ rp_symmetric_binding_builder_build(
 
             assertion =
                 neethi_assertion_create_with_args(env,
-                                                  rp_symmetric_binding_free,
+                                                  (AXIS2_FREE_VOID_ARG)rp_symmetric_binding_free,
                                                   symmetric_binding,
                                                   ASSERTION_TYPE_SYMMETRIC_BINDING);
             neethi_policy_free(normalized_policy, env);
