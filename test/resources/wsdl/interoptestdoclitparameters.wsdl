@@ -121,7 +121,7 @@
         type="tns:WSDLInteropTestDocLitPortType">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
         <operation name="echoString">
-            <soap:operation soapAction="http://soapinterop.org/" style="document"/>
+            <soap:operation soapAction="http://soapinterop.org/echoString" style="document"/>
             <input name="echoString">
                 <soap:body namespace="http://soapinterop.org/WSDLInteropTestDocLit"
                     use="literal"/>
@@ -132,7 +132,7 @@
             </output>
         </operation>
         <operation name="echoStringArray">
-            <soap:operation soapAction="http://soapinterop.org/" style="document"/>
+            <soap:operation soapAction="http://soapinterop.org/echoStringArray" style="document"/>
             <input name="echoStringArray">
                 <soap:body namespace="http://soapinterop.org/WSDLInteropTestDocLit"
                     use="literal"/>
@@ -143,7 +143,7 @@
             </output>
         </operation>
         <operation name="echoStruct">
-            <soap:operation soapAction="http://soapinterop.org/" style="document"/>
+            <soap:operation soapAction="http://soapinterop.org/echoStruct" style="document"/>
             <input name="echoStruct">
                 <soap:body namespace="http://soapinterop.org/WSDLInteropTestDocLit"
                     use="literal"/>
@@ -154,7 +154,7 @@
             </output>
         </operation>
         <operation name="echoVoid">
-            <soap:operation soapAction="http://soapinterop.org/" style="document"/>
+            <soap:operation soapAction="http://soapinterop.org/echoVoid" style="document"/>
             <input name="echoVoid">
                 <soap:body namespace="http://soapinterop.org/WSDLInteropTestDocLit"
                     use="literal"/>
