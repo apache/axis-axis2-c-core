@@ -821,8 +821,13 @@ axiom_stax_builder_next(
             break;
 
         case AXIOM_XML_READER_EMPTY_ELEMENT:
+#ifdef AXIS2_GUTHTHILA_ENABLED
             node = axiom_stax_builder_create_om_element(om_builder, env,
                                                         AXIS2_TRUE);
+#else
+            node = axiom_stax_builder_create_om_element(om_builder, env,
+                                                        AXIS2_FALSE);
+#endif
 
         case AXIOM_XML_READER_END_ELEMENT:
             axiom_stax_builder_end_element(om_builder, env);
@@ -1132,8 +1137,13 @@ axiom_stax_builder_next_with_token(
         break;
 
     case AXIOM_XML_READER_EMPTY_ELEMENT:
+#ifdef AXIS2_GUTHTHILA_ENABLED
         val = axiom_stax_builder_create_om_element(om_builder, env,
                                                    AXIS2_TRUE);
+#else
+        val = axiom_stax_builder_create_om_element(om_builder, env,
+                                                   AXIS2_FALSE);
+#endif
         if (!val)
         {
             return -1;
