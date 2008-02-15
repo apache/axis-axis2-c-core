@@ -102,8 +102,8 @@ axis2_ctx_handler_invoke(
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_ctx_handler_invoke"); 
 
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     svc_ctx = axis2_msg_ctx_get_svc_ctx(msg_ctx, env);
@@ -165,6 +165,8 @@ axis2_ctx_handler_invoke(
         op_ctx = axis2_op_ctx_create(env, op, NULL);
         if (!op_ctx)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Operation context not found");
             return AXIS2_FAILURE;
         }
 
@@ -195,6 +197,11 @@ axis2_ctx_handler_invoke(
     }
 
     if (!svc_grp_ctx && (axis2_msg_ctx_get_server_side(msg_ctx, env)))
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service group context not found"); 
         return AXIS2_FAILURE;
+    }
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_ctx_handler_invoke"); 
     return AXIS2_SUCCESS;
 }
