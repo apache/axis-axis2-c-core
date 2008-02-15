@@ -177,7 +177,7 @@ main(
     axis2_options_set_enable_rest(options, env, AXIS2_TRUE);
 
     /* Setting Request as HTTP HEAD Request */
-    axis2_options_set_http_method(options, env, AXIS2_HTTP_POST); 
+    axis2_options_set_http_method(options, env, AXIS2_HTTP_HEAD); 
 
     /* Sending dummy authentication info */
     if (un && pw)
