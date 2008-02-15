@@ -178,6 +178,17 @@ extern "C"
         rp_rampart_config_t * rampart_config,
         const axutil_env_t * env);
 
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+	rp_rampart_config_set_pkcs12_file(
+		rp_rampart_config_t * rampart_config,
+		const axutil_env_t *env,
+		axis2_char_t * pkcs12_file);
+
+	AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+	rp_rampart_config_get_pkcs12_file(
+		rp_rampart_config_t * rampart_config,
+		const axutil_env_t * env);
+
 #ifdef __cplusplus
 }
 #endif
