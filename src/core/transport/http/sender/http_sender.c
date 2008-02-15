@@ -87,15 +87,13 @@ static axis2_status_t
 axis2_http_sender_configure_http_auth (axis2_http_sender_t * sender,
                                        const axutil_env_t * env,
                                        axis2_msg_ctx_t * msg_ctx,
-                                       axis2_http_simple_request_t * request,
-                                       axis2_char_t * url);
+                                       axis2_http_simple_request_t * request);
 
 static axis2_status_t
 axis2_http_sender_configure_proxy_auth (axis2_http_sender_t * sender,
                                         const axutil_env_t * env,
                                         axis2_msg_ctx_t * msg_ctx,
-                                        axis2_http_simple_request_t * request,
-                                        axis2_char_t * url);
+                                        axis2_http_simple_request_t * request);
 
 static axis2_status_t
 axis2_http_sender_set_http_auth_type (axis2_http_sender_t * sender,
@@ -128,16 +126,14 @@ axis2_http_sender_configure_http_digest_auth (axis2_http_sender_t * sender,
                                               const axutil_env_t * env,
                                               axis2_msg_ctx_t * msg_ctx,
                                               axis2_http_simple_request_t * request,
-                                              axis2_char_t * header_data,
-                                              axis2_char_t * url);
+                                              axis2_char_t * header_data);
 
 static axis2_status_t
 axis2_http_sender_configure_proxy_digest_auth (axis2_http_sender_t * sender,
                                                const axutil_env_t * env,
                                                axis2_msg_ctx_t * msg_ctx,
                                                axis2_http_simple_request_t * request,
-                                               axis2_char_t * header_data,
-                                               axis2_char_t * url);
+                                               axis2_char_t * header_data);
 #endif
 
 AXIS2_EXTERN axis2_http_sender_t *AXIS2_CALL
@@ -858,8 +854,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             axis2_status_t auth_status;
             auth_status = axis2_http_sender_configure_http_auth (sender,
                                                                  env,
-                                                                 msg_ctx, request,
-                                                                 axutil_url_get_path (url, env));
+                                                                 msg_ctx, request);
 
             if (auth_status != AXIS2_SUCCESS)
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Error in setting HTTP"
@@ -877,8 +872,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         axis2_status_t auth_status;
         auth_status = axis2_http_sender_configure_proxy_auth (sender,
                                                               env,
-                                                              msg_ctx, request,
-                                                              axutil_url_get_path (url, env));
+                                                              msg_ctx, request);
 
         if (auth_status != AXIS2_SUCCESS)
             AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Error in setting Proxy"
@@ -916,8 +910,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             axis2_status_t auth_status;
             auth_status = axis2_http_sender_configure_http_auth (sender,
                                                                  env,
-                                                                 msg_ctx, request,
-                                                                 axutil_url_get_path (url, env));
+                                                                 msg_ctx, request);
 
             if (auth_status != AXIS2_SUCCESS)
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Error in setting HTTP"
@@ -1699,8 +1692,7 @@ axis2_http_sender_configure_http_digest_auth (axis2_http_sender_t * sender,
                                               const axutil_env_t * env,
                                               axis2_msg_ctx_t * msg_ctx,
                                               axis2_http_simple_request_t * request,
-                                              axis2_char_t * header_data,
-                                              axis2_char_t * url)
+                                              axis2_char_t * header_data)
 {
     axutil_property_t *http_auth_un = NULL;
     axutil_property_t *http_auth_pw = NULL;
@@ -1801,6 +1793,10 @@ axis2_http_sender_configure_http_digest_auth (axis2_http_sender_t * sender,
         axis2_char_t *auth_str = NULL;
         axutil_property_t *method = NULL;
         axis2_char_t *method_value = NULL;
+        axis2_char_t *url = NULL;
+
+        url = axis2_http_request_line_get_uri(
+                       axis2_http_simple_request_get_request_line(request, env), env);
 
         if (!url)
             return AXIS2_FAILURE;
@@ -2028,8 +2024,7 @@ axis2_http_sender_configure_proxy_digest_auth (axis2_http_sender_t * sender,
                                                const axutil_env_t * env,
                                                axis2_msg_ctx_t * msg_ctx,
                                                axis2_http_simple_request_t * request,
-                                               axis2_char_t * header_data,
-                                               axis2_char_t * url)
+                                               axis2_char_t * header_data)
 {
     axutil_property_t *proxy_auth_un = NULL;
     axutil_property_t *proxy_auth_pw = NULL;
@@ -2138,6 +2133,10 @@ axis2_http_sender_configure_proxy_digest_auth (axis2_http_sender_t * sender,
         axis2_char_t *auth_str = NULL;
         axutil_property_t *method = NULL;
         axis2_char_t *method_value = NULL;
+        axis2_char_t *url = NULL;
+
+        url = axis2_http_request_line_get_uri(
+                       axis2_http_simple_request_get_request_line(request, env), env);
 
         if (!url)
             return AXIS2_FAILURE;
@@ -2363,8 +2362,7 @@ static axis2_status_t
 axis2_http_sender_configure_http_auth (axis2_http_sender_t * sender,
                                        const axutil_env_t * env,
                                        axis2_msg_ctx_t * msg_ctx,
-                                       axis2_http_simple_request_t * request,
-                                       axis2_char_t * url)
+                                       axis2_http_simple_request_t * request)
 {
     axis2_char_t *auth_type = NULL;
     axis2_status_t status = AXIS2_FALSE;
@@ -2431,8 +2429,7 @@ axis2_http_sender_configure_http_auth (axis2_http_sender_t * sender,
             status = axis2_http_sender_configure_http_digest_auth (sender, env,
                                                                    msg_ctx,
                                                                    request,
-                                                                   auth_type_end,
-                                                                   url);
+                                                                   auth_type_end);
         else
             AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Authtype %s is not"
                              "supported", auth_type);
@@ -2450,8 +2447,7 @@ static axis2_status_t
 axis2_http_sender_configure_proxy_auth (axis2_http_sender_t * sender,
                                         const axutil_env_t * env,
                                         axis2_msg_ctx_t * msg_ctx,
-                                        axis2_http_simple_request_t * request,
-                                        axis2_char_t * url)
+                                        axis2_http_simple_request_t * request)
 {
     axis2_char_t *auth_type = NULL;
     axis2_status_t status = AXIS2_FALSE;
@@ -2518,8 +2514,7 @@ axis2_http_sender_configure_proxy_auth (axis2_http_sender_t * sender,
             status = axis2_http_sender_configure_proxy_digest_auth (sender, env,
                                                                     msg_ctx,
                                                                     request,
-                                                                    auth_type_end,
-                                                                    url);
+                                                                    auth_type_end);
         else
             AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Authtype %s is not"
                              "supported", auth_type);
