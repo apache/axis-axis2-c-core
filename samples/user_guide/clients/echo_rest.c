@@ -89,11 +89,11 @@ main(
         {
             method_head = AXIS2_TRUE;
         }
-        else if (0 == strncmp(argv[1], "-mPUT", 5))
+        else if (0 == strncmp(argv[2], "-mPUT", 5))
         {
             method_put = AXIS2_TRUE;
         }
-        else if (0 == strncmp(argv[1], "-mDELETE",8 ))
+        else if (0 == strncmp(argv[2], "-mDELETE",8 ))
         {
             method_delete = AXIS2_TRUE;
         }
