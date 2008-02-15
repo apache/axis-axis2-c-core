@@ -1955,16 +1955,54 @@ axis2_http_sender_configure_http_digest_auth (axis2_http_sender_t * sender,
             (axis2_char_t
              *) (AXIS2_MALLOC (env->allocator,
                                sizeof (axis2_char_t) * (elen + 1)));
-        sprintf (auth_str, "%s %s=\"%s\", %s=\"%s\", %s=\"%s\", %s=\"%s\", %s=%s, %s=%s, %s=\"%s\", %s=\"%s\"",
+        temp = auth_str;
+        sprintf (temp, "%s %s=\"%s\", ",
                  AXIS2_HTTP_AUTH_TYPE_DIGEST,
-                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_USERNAME, uname,
-                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_REALM, realm,
-                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_NONCE, nonce,
-                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_URI, url,
-                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_QOP, qop,
-                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_NONCE_COUNT, nc,
-                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_CLIENT_NONCE, cnonce,
+                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_USERNAME, uname);
+        temp += ((int)strlen(AXIS2_HTTP_AUTH_TYPE_DIGEST) +
+                 (int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_USERNAME) +
+                 (int)strlen(uname) + 6);
+        if (realm)
+        {
+            sprintf (temp, "%s=\"%s\", ",
+                     AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_REALM, realm);
+            temp += ((int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_REALM) +
+                     (int)strlen(realm) + 5);
+        }
+        if (nonce)
+        {
+            sprintf (temp, "%s=\"%s\", ",
+                     AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_NONCE, nonce);
+            temp += ((int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_NONCE) +
+                     (int)strlen(nonce) + 5);
+        }
+        sprintf (temp, "%s=\"%s\", ",  
+                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_URI, url);
+        temp += ((int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_URI) +
+                 (int)strlen(url) + 5);
+        if (qop)
+        {
+            sprintf (temp, "%s=%s, %s=%s, %s=\"%s\", ",
+                     AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_QOP, qop,
+                     AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_NONCE_COUNT, nc,
+                     AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_CLIENT_NONCE, cnonce);
+            temp += ((int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_QOP) +
+                     (int)strlen(qop) +
+                     (int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_NONCE_COUNT) +
+                     (int)strlen(nc) +
+                     (int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_CLIENT_NONCE) +
+                     (int)strlen(cnonce) + 11);
+        }
+        if (opaque)
+        {
+            sprintf (temp, "%s=\"%s\", ",
+                     AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_OPAQUE, opaque);
+            temp += ((int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_OPAQUE) +
+                     (int)strlen(opaque) + 5);
+        }
+        sprintf (temp, "%s=\"%s\"",
                  AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_RESPONSE, response);
+
         axis2_http_sender_util_add_header (env, request,
                                            AXIS2_HTTP_HEADER_AUTHORIZATION,
                                            auth_str);
@@ -1972,6 +2010,8 @@ axis2_http_sender_configure_http_digest_auth (axis2_http_sender_t * sender,
             AXIS2_FREE (env->allocator, realm);
         if (nonce)
             AXIS2_FREE (env->allocator, nonce);
+        if (cnonce)
+            AXIS2_FREE (env->allocator, cnonce);
         if (opaque)
             AXIS2_FREE (env->allocator, opaque);
         if (auth_str)
@@ -2252,15 +2292,52 @@ axis2_http_sender_configure_proxy_digest_auth (axis2_http_sender_t * sender,
             (axis2_char_t
              *) (AXIS2_MALLOC (env->allocator,
                                sizeof (axis2_char_t) * (elen + 1)));
-        sprintf (auth_str, "%s %s=\"%s\", %s=\"%s\", %s=\"%s\", %s=\"%s\", \
-                 %s=%s, %s=%s, %s=\"%s\", %s=\"%s\"", AXIS2_PROXY_AUTH_TYPE_DIGEST,
-                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_USERNAME, uname,
-                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_REALM, realm,
-                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_NONCE, nonce,
-                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_URI, url,
-                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_QOP, qop,
-                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_NONCE_COUNT, nc,
-                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_CLIENT_NONCE, cnonce,
+        temp = auth_str;
+        sprintf (temp, "%s %s=\"%s\", ",
+                 AXIS2_PROXY_AUTH_TYPE_DIGEST,
+                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_USERNAME, uname);
+        temp += ((int)strlen(AXIS2_HTTP_AUTH_TYPE_DIGEST) +
+                 (int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_USERNAME) +
+                 (int)strlen(uname) + 6);
+        if (realm)
+        {
+            sprintf (temp, "%s=\"%s\", ",
+                     AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_REALM, realm);
+            temp += ((int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_REALM) +
+                     (int)strlen(realm) + 5);
+        }
+        if (nonce)
+        {
+            sprintf (temp, "%s=\"%s\", ",
+                     AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_NONCE, nonce);
+            temp += ((int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_NONCE) +
+                     (int)strlen(nonce) + 5);
+        }
+        sprintf (temp, "%s=\"%s\", ",
+                 AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_URI, url);
+        temp += ((int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_URI) +
+                 (int)strlen(url) + 5);
+        if (qop)
+        {
+            sprintf (temp, "%s=%s, %s=%s, %s=\"%s\", ",
+                     AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_QOP, qop,
+                     AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_NONCE_COUNT, nc,
+                     AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_CLIENT_NONCE, cnonce);
+            temp += ((int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_QOP) +
+                     (int)strlen(qop) +
+                     (int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_NONCE_COUNT) +
+                     (int)strlen(nc) +
+                     (int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_CLIENT_NONCE) +
+                     (int)strlen(cnonce) + 11);
+        }
+        if (opaque)
+        {
+            sprintf (temp, "%s=\"%s\", ",
+                     AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_OPAQUE, opaque);
+            temp += ((int)strlen(AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_OPAQUE) +
+                     (int)strlen(opaque) + 5);
+        }
+        sprintf (temp, "%s=\"%s\"",
                  AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_RESPONSE, response);
         axis2_http_sender_util_add_header (env, request,
                                            AXIS2_HTTP_HEADER_PROXY_AUTHORIZATION,
@@ -2322,7 +2399,7 @@ axis2_http_sender_configure_http_auth (axis2_http_sender_t * sender,
             auth_type = http_auth_type_property_value;
         }
     }
-    else
+    if (!force_http_auth || axutil_strcasecmp (auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) == 0)
     {
         axis2_http_header_t *auth_header = NULL;
         axis2_http_simple_response_t *response = NULL;

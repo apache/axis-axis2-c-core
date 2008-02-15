@@ -177,10 +177,17 @@ main(
     axis2_options_set_enable_rest(options, env, AXIS2_TRUE);
 
     /* Setting Request as HTTP HEAD Request */
-    axis2_options_set_http_method(options, env, AXIS2_HTTP_HEAD);
+    axis2_options_set_http_method(options, env, AXIS2_HTTP_POST); 
 
     /* Sending dummy authentication info */
-    axis2_options_set_http_auth_info(options, env, "", "", NULL);
+    if (un && pw)
+    {
+        axis2_options_set_http_auth_info(options, env, "", "", NULL); 
+    }
+    if (unp && pwp)
+    {
+        axis2_options_set_proxy_auth_info(options, env, "", "", NULL); 
+    }
 
     /* Force authentication tests */
     axis2_options_set_test_http_auth(options, env, AXIS2_TRUE);
@@ -193,7 +200,7 @@ main(
     /*axis2_svc_client_set_proxy_with_auth(svc_client, env, "127.0.0.1", "3128", NULL, NULL);*/
 
     /* Sending robust authentication test message */
-    axis2_svc_client_send_robust(svc_client, env, NULL);
+    axis2_svc_client_send_robust(svc_client, env, NULL); 
 
     /* Checking whether authentication is required */
     if (axis2_svc_client_get_proxy_auth_required(svc_client, env))
@@ -239,6 +246,9 @@ main(
 
     /* Disabling REST for SOAP Request */
     axis2_options_set_enable_rest(options, env, AXIS2_FALSE);
+
+    /* Setting Request as HTTP POST Request */
+    axis2_options_set_http_method(options, env, AXIS2_HTTP_POST);
 
     /* Engage addressing module */
     axis2_svc_client_engage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);
