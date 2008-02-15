@@ -186,7 +186,7 @@ extern "C"
         const axutil_env_t * env,
         AXIS2_PARAM_VALUE_FREE free_fn);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axutil_param_dummy_free_fn(
         void *param,
         const axutil_env_t * env);

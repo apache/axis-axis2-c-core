@@ -319,10 +319,10 @@ axutil_param_set_value_free(
 /* Use this function for the copied parameters
  * to avoid double free
  */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axutil_param_dummy_free_fn(
     void *param,
     const axutil_env_t * env)
 {
-    return AXIS2_SUCCESS;
+    return;
 }
