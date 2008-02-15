@@ -31,6 +31,7 @@ struct rp_rampart_config_t
     axis2_char_t *receiver_certificate_file;
     axis2_char_t *certificate_file;
     axis2_char_t *private_key_file;
+	axis2_char_t *pkcs12_file;
     axis2_char_t *rd_val;
     int ref;
 };
@@ -342,6 +343,34 @@ rp_rampart_config_set_time_to_live(
 
     rampart_config->time_to_live = time_to_live;
     return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+rp_rampart_config_get_pkcs12_file(
+	rp_rampart_config_t * rampart_config,
+	const axutil_env_t * env)
+{
+	return rampart_config->pkcs12_file;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_rampart_config_set_pkcs12_file(
+	rp_rampart_config_t * rampart_config,
+	const axutil_env_t *env,
+	axis2_char_t * pkcs12_file)
+{
+	if(rampart_config)
+	{
+		if(pkcs12_file)
+		{
+			rampart_config->pkcs12_file = pkcs12_file;
+			return AXIS2_SUCCESS;
+		}
+
+		return AXIS2_FAILURE;
+	}
+
+	return AXIS2_FAILURE;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL

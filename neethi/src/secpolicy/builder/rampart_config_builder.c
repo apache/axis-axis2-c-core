@@ -237,6 +237,18 @@ rp_rampart_config_builder_populate(
         else
             return AXIS2_FAILURE;
     }
+    else if (axutil_strcmp(local_name, RP_PKCS12_KEY_STORE) == 0)
+    {
+        if (rp_match_rampart_config_qname(env, RP_PKCS12_KEY_STORE, node, element))
+        {
+            axis2_char_t *pkcs12_key_store = NULL;
+            pkcs12_key_store = axiom_element_get_text(element, env, node);
+            return rp_rampart_config_set_pkcs12_file(rampart_config, env, 
+            										pkcs12_key_store);
+        }
+        else
+            return AXIS2_FAILURE;
+    }
     else if (axutil_strcmp(local_name, RP_TIME_TO_LIVE) == 0)
     {
         if (rp_match_rampart_config_qname(env, RP_TIME_TO_LIVE, node, element))

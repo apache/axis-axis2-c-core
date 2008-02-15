@@ -63,12 +63,14 @@ rp_token_identifier_set_token(
             rp_saml_token_t *saml_token = NULL;
             saml_token = (rp_saml_token_t *) value;
             rp_property_set_value(token, env, saml_token, RP_PROPERTY_SAML_TOKEN);
+            return AXIS2_SUCCESS;
         }
         else if (type == ASSERTION_TYPE_ISSUED_TOKEN)
         {
             rp_issued_token_t *issued_token = NULL;
             issued_token = (rp_issued_token_t *) value;
             rp_property_set_value(token, env, issued_token, RP_PROPERTY_ISSUED_TOKEN);
+            return AXIS2_SUCCESS;
         }
         else
             return AXIS2_FAILURE;
