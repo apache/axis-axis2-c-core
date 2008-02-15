@@ -218,9 +218,11 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     axutil_property_t *proxy_auth_property = NULL;
     axis2_char_t *proxy_auth_property_value = NULL;
     axis2_bool_t force_proxy_auth = AXIS2_FALSE;
+    axis2_bool_t force_proxy_auth_with_head = AXIS2_FALSE;
     axutil_property_t *http_auth_property = NULL;
     axis2_char_t *http_auth_property_value = NULL;
     axis2_bool_t force_http_auth = AXIS2_FALSE;
+    axis2_bool_t force_http_auth_with_head = AXIS2_FALSE; 
     axutil_property_t *content_type_property = NULL;
     axutil_hash_t *content_type_hash = NULL;
     axis2_char_t *content_type_value = NULL;
@@ -808,6 +810,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     if (proxy_auth_property_value && 0 == axutil_strcmp (proxy_auth_property_value, AXIS2_PROXY_AUTH_TYPE_DIGEST))
     {
         force_proxy_auth = AXIS2_FALSE;
+        force_proxy_auth_with_head = AXIS2_TRUE;
     }
 
     if (!test_http_auth)
@@ -839,11 +842,12 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     if (http_auth_property_value && 0 == axutil_strcmp (http_auth_property_value, AXIS2_HTTP_AUTH_TYPE_DIGEST))
     {
         force_http_auth = AXIS2_FALSE;
+        force_http_auth_with_head = AXIS2_TRUE;
     }
 
     axis2_msg_ctx_set_auth_type(msg_ctx, env, NULL);
 
-    if (force_proxy_auth)
+    if (force_proxy_auth || force_proxy_auth_with_head)
     {
         status_code = AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL;
     }
@@ -859,40 +863,144 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             if (auth_status != AXIS2_SUCCESS)
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Error in setting HTTP"
                                  " Authentication header");
-            http_auth_header_added = AXIS2_TRUE; 
+            http_auth_header_added = AXIS2_TRUE;
+            /* how should this status_code be handled? */
+            status_code = axis2_http_client_send (sender->client, env, request, ssl_pp);
+
+            status_code = axis2_http_client_recieve_header (sender->client, env); 
         }
-        /* how should this status_code be handled? */
-        status_code = axis2_http_client_send (sender->client, env, request, ssl_pp);
-
-        status_code = axis2_http_client_recieve_header (sender->client, env);
-    }
-
-    if (AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL == status_code && !test_proxy_auth)
-    {
-        axis2_status_t auth_status;
-        auth_status = axis2_http_sender_configure_proxy_auth (sender,
-                                                              env,
-                                                              msg_ctx, request);
-
-        if (auth_status != AXIS2_SUCCESS)
-            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Error in setting Proxy"
-                             " Authentication header");
-
-        if (force_http_auth && !http_auth_header_added)
+        if (force_http_auth_with_head)
         {
-            status_code = AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL;
+            axis2_http_request_line_t *head_request_line = NULL;
+            axis2_http_request_line_t *temp = NULL;
+
+            temp = axis2_http_simple_request_get_request_line(request, env);
+            head_request_line = axis2_http_request_line_create(env, "HEAD",
+                                 axis2_http_request_line_get_uri(temp, env),
+                                 axis2_http_request_line_get_http_version(temp, env));
+            axis2_http_simple_request_set_request_line(request, env, head_request_line);
+            /* how should this status_code be handled? */
+            status_code = axis2_http_client_send (sender->client, env, request, ssl_pp);
+
+            status_code = axis2_http_client_recieve_header (sender->client, env);
+            axis2_http_simple_request_set_request_line(request, env, temp);
+            axis2_http_request_line_free(head_request_line, env);
+            if (status_code == AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL)
+            {
+                axis2_status_t auth_status;
+                auth_status = axis2_http_sender_configure_http_auth (sender,
+                                                                     env,
+                                                                     msg_ctx, request);
+
+                if (auth_status != AXIS2_SUCCESS)
+                    AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Error in setting HTTP"
+                                     " Authentication header");
+                http_auth_header_added = AXIS2_TRUE;
+            }
+            if (status_code != AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL)
+            {
+                /* how should this status_code be handled? */
+                status_code = axis2_http_client_send (sender->client, env, request, ssl_pp);
+
+                status_code = axis2_http_client_recieve_header (sender->client, env);
+                if (status_code == AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL)
+                {
+                    http_auth_header_added = AXIS2_FALSE;
+                    force_http_auth_with_head = AXIS2_FALSE;
+                }
+            }
         }
-        else
+        else 
         {
             /* how should this status_code be handled? */
             status_code = axis2_http_client_send (sender->client, env, request, ssl_pp);
 
             status_code = axis2_http_client_recieve_header (sender->client, env);
+        }
+    }
+
+    if (AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL == status_code && !test_proxy_auth)
+    {
+        if (force_proxy_auth_with_head)
+        {
+            axis2_http_request_line_t *head_request_line = NULL;
+            axis2_http_request_line_t *temp = NULL;
+
+            temp = axis2_http_simple_request_get_request_line(request, env);
+            head_request_line = axis2_http_request_line_create(env, "HEAD",
+                                 axis2_http_request_line_get_uri(temp, env),
+                                 axis2_http_request_line_get_http_version(temp, env));
+            axis2_http_simple_request_set_request_line(request, env, head_request_line);
+            /* how should this status_code be handled? */
+            status_code = axis2_http_client_send (sender->client, env, request, ssl_pp);
+
+            status_code = axis2_http_client_recieve_header (sender->client, env);
+            axis2_http_simple_request_set_request_line(request, env, temp);
+            axis2_http_request_line_free(head_request_line, env);
+            if (status_code == AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL)
+            {
+                axis2_status_t auth_status;
+                auth_status = axis2_http_sender_configure_proxy_auth (sender,
+                                                                      env,
+                                                                      msg_ctx, request);
+
+                if (auth_status != AXIS2_SUCCESS)
+                    AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Error in setting Proxy"
+                                     " Authentication header");
+                if ((force_http_auth_with_head || force_http_auth) && !http_auth_header_added)
+                {
+                     status_code = AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL;
+                }
+                else
+                {
+                    /* how should this status_code be handled? */
+                    status_code = axis2_http_client_send (sender->client, env, request, ssl_pp);
+
+                    status_code = axis2_http_client_recieve_header (sender->client, env);
+                }
+            }
+            else if (status_code != AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL)
+            {
+                /* how should this status_code be handled? */
+                status_code = axis2_http_client_send (sender->client, env, request, ssl_pp);
+
+                status_code = axis2_http_client_recieve_header (sender->client, env);
+            }
+            /* Proxies have no idea about HTTP Methods therefore, if it fails no need to re-check */
             if (AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL == status_code)
             {
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Proxy Authentication failed");
                 axis2_msg_ctx_set_auth_failed(msg_ctx, env, AXIS2_TRUE);
                 axis2_msg_ctx_set_required_auth_is_http(msg_ctx, env, AXIS2_FALSE);
+            }
+        }
+        else
+        {
+            axis2_status_t auth_status;
+            auth_status = axis2_http_sender_configure_proxy_auth (sender,
+                                                                  env,
+                                                                  msg_ctx, request);
+
+            if (auth_status != AXIS2_SUCCESS)
+                AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Error in setting Proxy"
+                                 " Authentication header");
+
+            if ((force_http_auth_with_head || force_http_auth) && !http_auth_header_added)
+            {
+                status_code = AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL;
+            }
+            else
+            {
+                /* how should this status_code be handled? */
+                status_code = axis2_http_client_send (sender->client, env, request, ssl_pp);
+    
+                status_code = axis2_http_client_recieve_header (sender->client, env);
+                if (AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL == status_code)
+                {
+                    AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Proxy Authentication failed");
+                    axis2_msg_ctx_set_auth_failed(msg_ctx, env, AXIS2_TRUE);
+                    axis2_msg_ctx_set_required_auth_is_http(msg_ctx, env, AXIS2_FALSE);
+                }
             }
         }
     }
@@ -907,19 +1015,72 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     {
         if (!http_auth_header_added)
         {
-            axis2_status_t auth_status;
-            auth_status = axis2_http_sender_configure_http_auth (sender,
-                                                                 env,
-                                                                 msg_ctx, request);
+            if (force_proxy_auth_with_head)
+            {
+                axis2_http_request_line_t *head_request_line = NULL;
+                axis2_http_request_line_t *temp = NULL;
 
-            if (auth_status != AXIS2_SUCCESS)
-                AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Error in setting HTTP"
-                                 " Authentication header");
+                temp = axis2_http_simple_request_get_request_line(request, env);
+                head_request_line = axis2_http_request_line_create(env, "HEAD",
+                                     axis2_http_request_line_get_uri(temp, env),
+                                     axis2_http_request_line_get_http_version(temp, env));
+                axis2_http_simple_request_set_request_line(request, env, head_request_line);
+                /* how should this status_code be handled? */
+                status_code = axis2_http_client_send (sender->client, env, request, ssl_pp);
+ 
+                status_code = axis2_http_client_recieve_header (sender->client, env);
+                axis2_http_simple_request_set_request_line(request, env, temp);
+                axis2_http_request_line_free(head_request_line, env);
+                if (status_code == AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL)
+                {
+                    axis2_status_t auth_status;
+                    auth_status = axis2_http_sender_configure_http_auth (sender,
+                                                                         env,
+                                                                         msg_ctx, request);
 
-            status_code = axis2_http_client_send (sender->client,
-                                                  env, request, ssl_pp);
+                    if (auth_status != AXIS2_SUCCESS)
+                        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Error in setting HTTP"
+                                         " Authentication header");
 
-            status_code = axis2_http_client_recieve_header (sender->client, env);
+                    status_code = axis2_http_client_send (sender->client,
+                                                          env, request, ssl_pp);
+
+                    status_code = axis2_http_client_recieve_header (sender->client, env);
+                    if (status_code == AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL)
+                    {
+                        axis2_status_t auth_status;
+                        auth_status = axis2_http_sender_configure_http_auth (sender,
+                                                                             env,
+                                                                             msg_ctx, request);
+
+                        if (auth_status != AXIS2_SUCCESS)
+                            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Error in setting HTTP"
+                                             " Authentication header");
+
+                        status_code = axis2_http_client_send (sender->client,
+                                                              env, request, ssl_pp);
+
+                        status_code = axis2_http_client_recieve_header (sender->client, env);
+                    }
+ 
+                }
+            }
+            else
+            {
+                axis2_status_t auth_status;
+                auth_status = axis2_http_sender_configure_http_auth (sender,
+                                                                     env,
+                                                                     msg_ctx, request);
+
+                if (auth_status != AXIS2_SUCCESS)
+                    AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Error in setting HTTP"
+                                     " Authentication header");
+
+                status_code = axis2_http_client_send (sender->client,
+                                                      env, request, ssl_pp);
+
+                status_code = axis2_http_client_recieve_header (sender->client, env);
+            }
             if (AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL == status_code)
             {
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "HTTP Authentication failed");
@@ -2417,6 +2578,10 @@ axis2_http_sender_configure_http_auth (axis2_http_sender_t * sender,
             *auth_type_end = '\0';
             auth_type_end++;
             /*Read the realm and the rest stuff now from auth_type_end */
+        }
+        if (force_http_auth && axutil_strcasecmp (auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) != 0)
+        {
+            auth_type = NULL;
         }
     }
     if (auth_type)
