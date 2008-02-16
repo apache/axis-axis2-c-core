@@ -102,13 +102,14 @@ iis_stream_read(
 {
     void *temp_buff = NULL;
     unsigned int data_to_read = 0;
-    int i = 0;
     DWORD ret_val = TRUE;
     DWORD read_bytes = (DWORD) count;
     iis_stream_impl_t *stream_impl = NULL;
+    char *temp = NULL;
+
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     stream_impl = (iis_stream_impl_t *) stream;
-
+    
     if (stream_impl->cur_pos == 0)
         stream_impl->cur_position = stream_impl->lpECB->lpbData;
 
@@ -123,7 +124,10 @@ iis_stream_read(
                 stream_impl->lpECB->cbAvailable - stream_impl->cur_pos;
 
         memcpy(buffer, stream_impl->cur_position, data_to_read);
-        (char *) stream_impl->cur_position += data_to_read;
+        temp = (char *)(stream_impl->cur_position);
+        temp += data_to_read;
+        stream_impl->cur_position = temp;
+        temp = NULL;
         stream_impl->cur_pos += data_to_read;
         read_bytes = data_to_read;
     }
@@ -164,7 +168,10 @@ iis_stream_read(
         else
         {
             memcpy(buffer, stream_impl->cur_position, count);
-            (char *) stream_impl->cur_position += count;
+            temp = (char *)(stream_impl->cur_position);
+            temp += count;
+            stream_impl->cur_position = temp;
+            temp = NULL;
             stream_impl->cur_pos += (unsigned) count;
             read_bytes = (int) count;
         }
@@ -183,14 +190,16 @@ iis_stream_write(
     size_t count)
 {
     DWORD ret_val = NO_ERROR;
-    unsigned bytes_sent = 0;
+    unsigned long bytes_sent = 0;
     iis_stream_impl_t *stream_impl = NULL;
     axis2_char_t *buffer = NULL;
+
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, buf, AXIS2_FAILURE);
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
     buffer = (axis2_char_t *) buf;
     bytes_sent = (unsigned) strlen(buffer);
+    
     if (count <= 0)
     {
         return (int) count;
@@ -200,7 +209,7 @@ iis_stream_write(
         stream_impl->lpECB->WriteClient(stream_impl->lpECB->ConnID, buffer,
                                         &bytes_sent, HSE_IO_SYNC);
     if (ret_val == TRUE)
-        return bytes_sent;
+        return (int)bytes_sent;
     else
         return -1;
 }
@@ -215,8 +224,9 @@ iis_stream_skip(
     iis_stream_impl_t *stream_impl = NULL;
     void *temp_buff = NULL;
     int data_to_read = 0;
-    int i = 0;
     DWORD read_bytes = (DWORD) count;
+    char *temp = NULL;
+
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     stream_impl = (iis_stream_impl_t *) stream;
 
@@ -231,7 +241,10 @@ iis_stream_skip(
             data_to_read =
                 stream_impl->lpECB->cbAvailable - stream_impl->cur_pos;
 
-        (char *) stream_impl->cur_position += data_to_read;
+        temp = (char *)(stream_impl->cur_position);
+        temp += data_to_read;
+        stream_impl->cur_position = temp;
+        temp = NULL;
         stream_impl->cur_pos += data_to_read;
         read_bytes = data_to_read;
     }
@@ -273,7 +286,10 @@ iis_stream_skip(
         }
         else
         {
-            (char *) stream_impl->cur_position += count;
+            temp = (char *)(stream_impl->cur_position);
+            temp += count;
+            stream_impl->cur_position = temp;
+            temp = NULL;
             stream_impl->cur_pos += count;
             read_bytes = count;
         }

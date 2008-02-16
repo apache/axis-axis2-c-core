@@ -666,7 +666,8 @@ read_current_stream(
                 mtom_optimized = 1;
             if (strstr(current_line, "Content-Length"))
             {
-                if ((length_char = strstr(current_line, ":")))
+                length_char = strstr(current_line, ":");
+                if (length_char)
                 {
                     length_char++;
                     length = atoi(length_char);

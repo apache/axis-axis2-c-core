@@ -432,12 +432,13 @@ axis2_apache2_worker_get_bytes(
     axutil_stream_t *tmp_stream = NULL;
     int return_size = -1;
     axis2_char_t *buffer = NULL;
+    axis2_bool_t loop_status = AXIS2_TRUE;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, stream, NULL);
 
     tmp_stream = axutil_stream_create_basic(env);
-    while (1)
+    while (loop_status)
     {
         int read = 0;
         int write = 0;

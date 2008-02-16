@@ -143,7 +143,7 @@ guththila_init(guththila_t * m, void *reader, const axutil_env_t * env)
         guththila_buffer_init_for_buffer(&m->buffer, m->reader->buff,
                                           m->reader->buff_size, env);
     }
-    else if (m->reader->type == GUTHTHILA_FILE_READER || GUTHTHILA_IO_READER)
+    else if (m->reader->type == GUTHTHILA_FILE_READER || m->reader->type == GUTHTHILA_IO_READER)
     {
         guththila_buffer_init(&m->buffer, 0, env);
     }
@@ -237,7 +237,7 @@ guththila_create(void *reader,const axutil_env_t *env)
         guththila_buffer_init_for_buffer(&m->buffer, m->reader->buff,
                                           m->reader->buff_size, env);
     }
-    else if (m->reader->type == GUTHTHILA_FILE_READER || GUTHTHILA_IO_READER)
+    else if (m->reader->type == GUTHTHILA_FILE_READER || m->reader->type == GUTHTHILA_IO_READER)
     {
         guththila_buffer_init(&m->buffer, 0, env);
     }
@@ -575,7 +575,8 @@ guththila_token_close(guththila_t * m, guththila_token_t * tok,
     guththila_elem_namesp_t * e_namesp = NULL;
     guththila_namespace_t * namesp;
     int counter = 0, nmsp_no = 0, i = 0;
-    m->temp_tok->type = tok_type;
+    /* We are sure that the difference lies within the short range */
+    m->temp_tok->type = (short)tok_type;
     m->temp_tok->size = m->next - m->temp_tok->_start;
     m->temp_tok->start = GUTHTHILA_BUF_POS(m->buffer, m->next - 1) - m->temp_tok->size;
     m->temp_tok->ref = referer;
@@ -1009,9 +1010,10 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                 if (2 == guththila_next_no_char(m, 0, c_arra, 2, env) &&
                      '-' == c_arra[0] && '-' == c_arra[1])
                 {
+                    int loop_state = 1;                    
                     c = guththila_next_char(m, 0, env);
                     GUTHTHILA_TOKEN_OPEN(m, tok, env);
-                    while (1)
+                    while (loop_state)
                     {
                         c = guththila_next_char(m, 0, env);
                         if ('-' == c)
@@ -1573,7 +1575,8 @@ guththila_next_char(guththila_t * m, int eof, const axutil_env_t * env)
                  GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer) &&
                  m->buffer.cur_buff != -1)
         {
-            if (m->buffer.cur_buff == m->buffer.no_buffers - 1)
+            /* We are sure that the difference lies within the int range */
+            if (m->buffer.cur_buff == (int)m->buffer.no_buffers - 1)
             {
                 temp = m->buffer.no_buffers * 2;
                 temp1 =
@@ -1703,7 +1706,8 @@ guththila_next_no_char(guththila_t * m, int eof,
                  GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer) + no &&
                  m->buffer.cur_buff != -1)
         {
-            if (m->buffer.cur_buff == m->buffer.no_buffers - 1)
+            /* We are sure that the difference lies within the int range */
+            if (m->buffer.cur_buff == (int)m->buffer.no_buffers - 1)
             {
                 temp = m->buffer.no_buffers * 2;
                 temp1 =

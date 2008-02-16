@@ -250,7 +250,8 @@ axis2_set_log_level(
         (axis2_config_rec_t *) ap_get_module_config(cmd->server->module_config,
                                                     &axis2_module);
 
-    if ((str = ap_getword_conf(cmd->pool, &arg)))
+    str = ap_getword_conf(cmd->pool, &arg);
+    if (str)
     {
         if (!strcasecmp(str, "crit"))
         {

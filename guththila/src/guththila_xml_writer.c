@@ -237,7 +237,8 @@ guththila_write(guththila_xml_writer_t * wr, guththila_char_t *buff,
                         wr->buffer.data_size[wr->buffer.cur_buff], buff, remain_len);
                 wr->buffer.data_size[wr->buffer.cur_buff] += remain_len;
             }
-            if (wr->buffer.no_buffers - 1 == wr->buffer.cur_buff)
+            /* We are sure that the difference lies within the int range */
+            if (((int)wr->buffer.no_buffers - 1) == wr->buffer.cur_buff)
             {
                 wr->buffer.no_buffers = wr->buffer.no_buffers * 2;
                 temp3 = (guththila_char_t **) AXIS2_MALLOC(env->allocator,
@@ -320,7 +321,8 @@ guththila_write_token(guththila_xml_writer_t * wr, guththila_token_t * tok,
 
                 wr->buffer.data_size[wr->buffer.cur_buff] += remain_len;
             }
-            if (wr->buffer.no_buffers - 1 == wr->buffer.cur_buff)
+            /* We are sure that the difference lies within the int range */
+            if (((int)wr->buffer.no_buffers - 1) == wr->buffer.cur_buff)
             {
                 wr->buffer.no_buffers = wr->buffer.no_buffers * 2;
                 temp3 = (guththila_char_t **) AXIS2_MALLOC(env->allocator,
@@ -393,7 +395,8 @@ guththila_write_xtoken(guththila_xml_writer_t * wr, guththila_char_t *buff,
         }
         else
         {
-            if (wr->buffer.no_buffers - 1 == wr->buffer.cur_buff)
+            /* We are sure that the difference lies within the int range */
+            if (((int)wr->buffer.no_buffers - 1) == wr->buffer.cur_buff)
             {
                 wr->buffer.no_buffers = wr->buffer.no_buffers * 2;
                 temp3 = (guththila_char_t **) AXIS2_MALLOC(env->allocator,
@@ -508,7 +511,7 @@ guththila_write_start_element(guththila_xml_writer_t * wr,
         cur_pos = wr->next;
         guththila_write_xtoken(wr, start_element, len, env);
     }
-    else if (BEGINING)
+    else if (wr->status == BEGINING)
     {
         guththila_write(wr, "<", 1u, env);
         cur_pos = wr->next;
@@ -639,9 +642,9 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL
 guththila_write_characters(guththila_xml_writer_t * wr, guththila_char_t *buff,
                            const axutil_env_t * env) 
 {
-    size_t i;
+    size_t i = 0;
     size_t len = strlen(buff);
-    guththila_char_t ch;
+    guththila_char_t ch = 0;
     if (wr->status == START)
     {
         wr->status = BEGINING;
@@ -796,7 +799,7 @@ guththila_write_empty_element(
         cur_pos = wr->next;
         guththila_write(wr, empty_element, len, env);
     }
-    else if (BEGINING)
+    else if (wr->status == BEGINING)
     {
         guththila_write(wr, "<", 1u, env);
         cur_pos = wr->next;
@@ -1231,7 +1234,7 @@ guththila_write_start_element_with_prefix_and_namespace(
             }
             wr->status = START;
         }
-        else if (BEGINING)
+        else if (wr->status == BEGINING)
         {
             guththila_write(wr, "<", 1u, env);
             elem_pref_start = wr->next;
@@ -1322,9 +1325,9 @@ guththila_write_start_element_with_namespace(
                         guththila_char_t *local_name,
                         const axutil_env_t * env) 
 {
-    int i, j;
+    int i = 0, j = 0;
     int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
-    int temp;
+    int temp = 0;
     int elem_start = 0;
     size_t elem_len = 0;
     guththila_xml_writer_namesp_t * writer_namesp = NULL;
@@ -1369,7 +1372,7 @@ guththila_write_start_element_with_namespace(
     {
         guththila_write(wr, "/><", 2u, env);       
     }
-    else if (BEGINING)
+    else if (wr->status == BEGINING)
     {
         guththila_write(wr, "<", 1u, env);        
     }
@@ -1483,7 +1486,7 @@ guththila_write_start_element_with_prefix(
                     guththila_write_xtoken(wr, local_name, strlen(local_name),
                                             env);
                 }
-                else if (BEGINING)
+                else if (wr->status == BEGINING)
                 {
                     guththila_write(wr, "<", 1u, env);
                     guththila_write_xtoken(wr, prefix, pref_len, env);
@@ -1569,7 +1572,7 @@ guththila_write_empty_element_with_prefix_and_namespace(
             guththila_write(wr, "\"", 1u, env);
             return GUTHTHILA_SUCCESS;
         }
-        else if (BEGINING)
+        else if (wr->status == BEGINING)
         {
             guththila_write(wr, "<", 1u, env);
             guththila_write_xtoken(wr, prefix, strlen(prefix), env);
@@ -1589,10 +1592,6 @@ guththila_write_empty_element_with_prefix_and_namespace(
             return GUTHTHILA_FAILURE;
         }
     }
-    else
-    {
-        return GUTHTHILA_FAILURE;
-    }
     return GUTHTHILA_FAILURE;
 }
 
@@ -1603,9 +1602,9 @@ guththila_write_empty_element_with_namespace(
     guththila_char_t *local_name,
     const axutil_env_t * env) 
 {
-    int i, j;
+    int i = 0, j = 0;
     int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
-    int temp;
+    int temp = 0;
     guththila_xml_writer_namesp_t * writer_namesp = NULL;
 
     for (i = stack_size - 1; i >= 0; i--)
@@ -1640,7 +1639,7 @@ guththila_write_empty_element_with_namespace(
     {
         guththila_write(wr, "/><", 2u, env);
     }
-    else if (BEGINING)
+    else if (wr->status == BEGINING)
     {
         guththila_write(wr, "<", 1u, env);
     }
@@ -1711,7 +1710,7 @@ guththila_write_empty_element_with_prefix(
                     guththila_write_xtoken(wr, local_name, strlen(local_name),
                                             env);
                 }
-                else if (BEGINING)
+                else if (wr->status == BEGINING)
                 {
                     guththila_write(wr, "<", 1u, env);
                     guththila_write_xtoken(wr, prefix, pref_len, env);

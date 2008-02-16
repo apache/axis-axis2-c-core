@@ -77,7 +77,6 @@ axis2_iis_out_transport_info_set_content_type(
     const axutil_env_t * env,
     const axis2_char_t * content_type)
 {
-    int temp = 0;
     axis2_iis_out_transport_info_t *info_impl = NULL;
 
     info_impl = AXIS2_INTF_TO_IMPL(info);

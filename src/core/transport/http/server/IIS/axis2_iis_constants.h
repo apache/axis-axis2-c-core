@@ -45,6 +45,7 @@
 #define HTTP_INTERNAL_SERVER_ERROR		500
 #define HTTP_ACCEPTED					202
 
+#define AXIS2_STRICMP                   _stricmp
 
 #endif  /*AXIS2_IIS_CONSTANTS_H*/
 
