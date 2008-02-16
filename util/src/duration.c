@@ -150,7 +150,8 @@ axutil_duration_deserialize_duration(
     if (duration_str == NULL)
     {
         duration->is_negative = AXIS2_FALSE;
-        duration->years = duration->months = duration->days = duration->hours = duration->mins = duration->secs = 0;
+        duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
+        duration->secs = 0;
 
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
@@ -166,7 +167,8 @@ axutil_duration_deserialize_duration(
     if (*cur++ != 'P')
     {
         duration->is_negative = AXIS2_FALSE;
-        duration->years = duration->months = duration->days = duration->hours = duration->mins = duration->secs = 0;
+        duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
+        duration->secs = 0;
         
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -175,7 +177,8 @@ axutil_duration_deserialize_duration(
     if (*cur == 0)
     {
         duration->is_negative = AXIS2_FALSE;
-        duration->years = duration->months = duration->days = duration->hours = duration->mins = duration->secs = 0;
+        duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
+        duration->secs = 0;
 
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -186,7 +189,8 @@ axutil_duration_deserialize_duration(
         if (seq >= sizeof(desig))
         {
             duration->is_negative = AXIS2_FALSE;
-            duration->years = duration->months = duration->days = duration->hours = duration->mins = duration->secs = 0;
+            duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
+            duration->secs = 0;
 
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -202,7 +206,8 @@ axutil_duration_deserialize_duration(
             else
             {
                 duration->is_negative = AXIS2_FALSE;
-                duration->years = duration->months = duration->days = duration->hours = duration->mins = duration->secs = 0;
+                duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
+                duration->secs = 0;
 
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
@@ -241,7 +246,8 @@ axutil_duration_deserialize_duration(
         if ((num_type == -1) || (*cur == 0))
         {
             duration->is_negative = AXIS2_FALSE;
-            duration->years = duration->months = duration->days = duration->hours = duration->mins = duration->secs = 0;
+            duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
+            duration->secs = 0;
 
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -251,10 +257,12 @@ axutil_duration_deserialize_duration(
         {
             if (*cur == desig[seq])
             {
-                if ((num_type = 0) && (seq < (sizeof(desig) - 1)))
+                num_type = 0;
+                if (seq < (sizeof(desig) - 1))
                 {
                     duration->is_negative = AXIS2_FALSE;
-                    duration->years = duration->months = duration->days = duration->hours = duration->mins = duration->secs = 0;
+                    duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
+                    duration->secs = 0;
 
                     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE,
                                     AXIS2_FAILURE);
