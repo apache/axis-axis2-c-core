@@ -1,2 +1,3 @@
-@call vcvars32.bat
-@nmake /nologo install
+@call vcvars32.bat > vc.tmp
+@del vc.tmp
+@nmake /NOLOGO install
