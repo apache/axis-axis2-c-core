@@ -200,6 +200,8 @@ extern "C"
 #define AXIS2_READDIR_R      readdir_r
 #define AXIS2_REWINDDIR      rewinddir
 #define AXIS2_MKDIR(path,x)  _mkdir(path)
+#define AXIS2_GETCWD      _getcwd
+#define AXIS2_CHDIR      _chdir
 
     /**
       * network specific functions and defs

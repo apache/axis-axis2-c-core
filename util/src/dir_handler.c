@@ -200,18 +200,18 @@ axutil_dir_handler_list_service_or_module_dirs(
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, NULL);
     file_list = axutil_array_list_create(env, 0);
-    if (!getcwd(cwd, 500))
+    if (!AXIS2_GETCWD(cwd, 500))
         exit(1);
 
-    /* pathname is path of services directory or modules directory. */ 
-    chdir(pathname);
+    /* pathname is path of services directory or modules directory. */
+    AXIS2_CHDIR(pathname);
 #ifdef AXIS2_ARCHIVE_ENABLED
     axis2_archive_extract();
 #endif
 
 
     count = AXIS2_SCANDIR(pathname, &files, dir_select, AXIS2_ALPHASORT);
-    chdir(cwd);
+    AXIS2_CHDIR(cwd);
 
     /* If no files found, make a non-selectable menu item */
     if (count <= 0)

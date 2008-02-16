@@ -20,6 +20,7 @@
 #include <axutil_string.h>
 #include <axiom_data_handler.h>
 #include <stdio.h>
+#include <ctype.h>
 
 struct axiom_mime_parser
 {

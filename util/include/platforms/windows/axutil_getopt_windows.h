@@ -35,10 +35,15 @@ extern "C"
      * @ingroup axis2_windows
      * @{
      */
-
+#ifndef AXIS2_GET_OPT_DEFINE_MODE_NO_IMPORT
     AXIS2_IMPORT extern int opterr;
     AXIS2_IMPORT extern int optopt;
     AXIS2_IMPORT extern char *optarg;
+#else
+    AXIS2_EXPORT int opterr;
+    AXIS2_EXPORT int optopt;
+    AXIS2_EXPORT char *optarg;
+#endif
 
     /**
       * return and log error

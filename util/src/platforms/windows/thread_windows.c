@@ -138,13 +138,17 @@ axutil_thread_exit(
     axutil_thread_t * thd,
     axutil_allocator_t * allocator)
 {
+    axis2_status_t status = AXIS2_SUCCESS;
     if (thd)
     {
         AXIS2_FREE(allocator, thd);
     }
-    ExitThread(0);
+    if (status)
+    {
+        ExitThread(0);
+    }
 
-    return AXIS2_SUCCESS; /* unwanted return statement ?? */
+    return status;
 }
 
 AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL

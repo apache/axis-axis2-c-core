@@ -25,6 +25,7 @@
 #include <axutil_param_container.h>
 #include <axutil_url.h>
 #include <axis2_conf_init.h>
+#include <stdlib.h>
 
 /**
  * @brief HTTP Client struct impl

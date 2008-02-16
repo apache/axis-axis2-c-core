@@ -20,6 +20,10 @@
 #include <string.h>
 #include <stdio.h>
 
+#ifndef AXIS2_GET_OPT_DEFINE_MODE_NO_IMPORT
+/* Required by "axutil_getopt_windows.h" */
+#define AXIS2_GET_OPT_DEFINE_MODE_NO_IMPORT
+#endif
 #include <platforms/windows/axutil_getopt_windows.h>
 
 int optind = 1;

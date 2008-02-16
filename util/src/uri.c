@@ -353,7 +353,7 @@ axutil_uri_parse_string(
         }
         if (*s == 0)
         {
-            return uri;
+            goto end;
         }
         if (*s == '?')
         {
@@ -368,12 +368,12 @@ axutil_uri_parse_string(
             {
                 uri->query = axutil_strdup(env, s);
             }
-            return uri;
+            goto end;
         }
         /* otherwise it's a fragment */
         uri->fragment = axutil_strdup(env, s + 1);
 
-        return uri;
+        goto end;
     }
 
     /* find the scheme: */
@@ -425,7 +425,8 @@ axutil_uri_parse_string(
             s = axutil_memchr(hostinfo, ']', uri_str - hostinfo);
             if (!s)
             {
-                return NULL;
+                uri = NULL;
+                goto end;
             }
             if (*++s != ':')
             {
@@ -459,7 +460,8 @@ axutil_uri_parse_string(
                 goto deal_with_path;
             }
             /* Invalid characters after ':' found */
-            return NULL;
+            uri = NULL;
+            goto end;
         }
         uri->port = axutil_uri_port_of_scheme(uri->scheme);
         goto deal_with_path;
@@ -480,7 +482,9 @@ axutil_uri_parse_string(
     hostinfo = s + 1;
     goto deal_with_host;
 
-    return uri; /* unwanted return statement ?? */
+  /* End of function call */
+  end:
+    return uri;
 }
 
 /* Special case for CONNECT parsing: it comes with the hostinfo part only */

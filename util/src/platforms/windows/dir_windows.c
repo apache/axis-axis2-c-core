@@ -58,7 +58,8 @@ opendir(
             return NULL;
         }
     }
-    dirp->dirname = strdup(_dirname);
+    /* We are using the ISO C++ conformant name: _strdup, as demanded by VS 2005 */
+    dirp->dirname = _strdup(_dirname);
     dirp->handle = handle;
     free(filespec);
 

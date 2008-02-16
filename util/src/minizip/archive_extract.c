@@ -46,11 +46,7 @@ axis2_mkdir(const axis2_char_t *
     dir_name) 
 {
     int value = 0;
-#ifdef WIN32
-    value = mkdir(dir_name);
-#else
-    value = mkdir(dir_name, 0775);
-#endif
+    value = AXIS2_MKDIR(dir_name, 0775);
     return value;
 }
 
@@ -283,7 +279,7 @@ aar_extract(
     if (uf == NULL)
         return -1;
 
-    if (opt_extractdir && chdir(dir_name))
+    if (opt_extractdir && AXIS2_CHDIR(dir_name))
         exit(-1);
 
     ret = axis2_extract(uf, opt_do_extract_withoutpath, opt_overwrite,
