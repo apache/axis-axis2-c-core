@@ -46,9 +46,11 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
-				WarningLevel="3"
+				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
+				CompileAs="1"
+				DisableSpecificWarnings="4100"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -255,6 +257,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\issued_token_builder.c"
+						>
+					</File>
+					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\layout_builder.c"
 						>
 					</File>
@@ -272,6 +278,10 @@
 					</File>
 					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\recipient_token_builder.c"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\saml_token_builder.c"
 						>
 					</File>
 					<File
@@ -359,6 +369,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\..\..\neethi\src\secpolicy\model\issued_token.c"
+						>
+					</File>
+					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\model\layout.c"
 						>
 					</File>
@@ -368,6 +382,10 @@
 					</File>
 					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\model\rampart_config.c"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\neethi\src\secpolicy\model\saml_token.c"
 						>
 					</File>
 					<File
@@ -543,6 +561,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\neethi\include\rp_issued_token.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_issued_token_builder.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\neethi\include\rp_layout.h"
 				>
 			</File>
@@ -576,6 +602,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\neethi\include\rp_recipient_token_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_saml_token.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_saml_token_builder.h"
 				>
 			</File>
 			<File
