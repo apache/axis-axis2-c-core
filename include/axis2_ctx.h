@@ -20,7 +20,7 @@
 #define AXIS2_CTX_H
 
 /**
- * @defgroup axis2_context context hierarchy
+ * @defgroup axis2_context Context Hierarchy
  * @ingroup axis2
  * @{
  * @}

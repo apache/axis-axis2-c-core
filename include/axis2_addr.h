@@ -37,51 +37,116 @@ extern "C"
       * @{
       */
 
+    /** @file axis2_addr.h */
+
     /* ====================== Common Message Addressing Properties =========== */
+ 
+    /** WS-Addressing Message ID */
 #define AXIS2_WSA_MESSAGE_ID "MessageID"
+
+    /** WS-Addressing Relates To */
 #define AXIS2_WSA_RELATES_TO "RelatesTo"
+
+    /** WS-Addressing Relates To Relationship Type */
 #define AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE "RelationshipType"
+
+    /** WS-Addressing To */
 #define AXIS2_WSA_TO "To"
+
+    /** WS-Addressing From */
 #define AXIS2_WSA_FROM "From"
+
+    /** WS-Addressing Reply To */
 #define AXIS2_WSA_REPLY_TO "ReplyTo"
+
+    /** WS-Addressing Fault To */
 #define AXIS2_WSA_FAULT_TO "FaultTo"
+
+    /** WS-Addressing Action */
 #define AXIS2_WSA_ACTION "Action"
+
+    /** WS-Addressing Mapping */
 #define AXIS2_WSA_MAPPING "wsamapping"
 
     /* ====================== Common EPR Elements ============================ */
+
+    /** End Pointer Reference Address */
 #define EPR_ADDRESS "Address"
+
+    /** End Pointer Reference Reference Parameters */
 #define EPR_REFERENCE_PARAMETERS "ReferenceParameters"
+
+    /** End Pointer Reference Service Name */
 #define EPR_SERVICE_NAME "ServiceName"
 
-    /* ====================== Addressing Submission Version Constants ======== */
-#define AXIS2_WSA_NAMESPACE_SUBMISSION "http://schemas.xmlsoap.org/ws/2004/08/addressing"
-#define AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE_SUBMISSION "wsa:Reply"
-#define AXIS2_WSA_ANONYMOUS_URL_SUBMISSION "http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous"
-#define AXIS2_WSA_NONE_URL_SUBMISSION "http://schemas.xmlsoap.org/ws/2004/08/addressing/role/none"
-
+    /** End Pointer Reference Reference Properties */
 #define EPR_REFERENCE_PROPERTIES "ReferenceProperties"
+
+    /** End Pointer Reference Port Type */
 #define EPR_PORT_TYPE "PortType"
+
+    /** End Pointer Reference Port Name */
 #define EPR_SERVICE_NAME_PORT_NAME "PortName"
 
+    /* ====================== Addressing Submission Version Constants ======== */
+
+    /** WS-Addressing Namespace for Submission Version */
+#define AXIS2_WSA_NAMESPACE_SUBMISSION "http://schemas.xmlsoap.org/ws/2004/08/addressing"
+
+    /** WS-Addressing Relates To Relationship Type Default Value for Submission Version */
+#define AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE_SUBMISSION "wsa:Reply"
+
+    /** WS-Addressing Anonymous URL for Submission Version */
+#define AXIS2_WSA_ANONYMOUS_URL_SUBMISSION "http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous"
+
+    /** WS-Addressing None URL for Submission Version */
+#define AXIS2_WSA_NONE_URL_SUBMISSION "http://schemas.xmlsoap.org/ws/2004/08/addressing/role/none"
+
     /* =====================Addressing 1.0 Final Version Constants =========== */
+
+    /** WS-Addressing Namespace for 1.0 Final Version */
 #define AXIS2_WSA_NAMESPACE "http://www.w3.org/2005/08/addressing"
+
+    /** WS-Addressing Relates To Relationship Type Default Value for 1.0 Final Version */
 #define AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE "http://www.w3.org/2005/08/addressing/reply"
+
+    /** WS-Addressing Anonymous URL for 1.0 Final Version */
 #define AXIS2_WSA_ANONYMOUS_URL "http://www.w3.org/2005/08/addressing/anonymous"
+
+    /** WS-Addressing None URL for 1.0 Final Version */
 #define AXIS2_WSA_NONE_URL "http://www.w3.org/2005/08/addressing/none"
 
+    /* ======================================================================= */
+
+    /** WS-Addressing Is Reference Parameter Attribute */
 #define AXIS2_WSA_IS_REFERENCE_PARAMETER_ATTRIBUTE "IsReferenceParameter"
+
+    /** WS-Addressing Type Attribute Value */
 #define AXIS2_WSA_TYPE_ATTRIBUTE_VALUE "true"
 
+    /** WS-Addressing Interface Name */
 #define AXIS2_WSA_INTERFACE_NAME "InterfaceName"
+
+    /** WS-Addressing Service/Endpoint Name */
 #define AXIS2_WSA_SERVICE_NAME_ENDPOINT_NAME "EndpointName"
+
+    /** WS-Addressing Policies */
 #define AXIS2_WSA_POLICIES "Policies"
+
+    /** WS-Addressing Metadata */
 #define AXIS2_WSA_METADATA "Metadata"
 
     /* ======================================================================= */
 
+    /** WS-Addressing Version */
 #define AXIS2_WSA_VERSION "WSAddressingVersion"
+
+    /** WS-Addressing Default Prefix */
 #define AXIS2_WSA_DEFAULT_PREFIX "wsa"
 
+    /* ======================================================================= */
+
+    /** WS-Addressing Param Service Group Context ID */
 #define PARAM_SERVICE_GROUP_CONTEXT_ID "ServiceGroupContextIdFromAddressing"
 
     /** @} */
