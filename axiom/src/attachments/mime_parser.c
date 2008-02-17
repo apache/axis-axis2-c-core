@@ -20,6 +20,7 @@
 #include <axutil_string.h>
 #include <axiom_data_handler.h>
 #include <stdio.h>
+#include <axutil_http_chunked_stream.h>
 #include <ctype.h>
 
 struct axiom_mime_parser
@@ -94,111 +95,141 @@ axiom_mime_parser_parse(
     axis2_char_t * mime_boundary)
 {
     axis2_char_t *buffer = NULL;
-    int size = AXIOM_MIME_PARSER_BUFFER_SIZE;
+    int size = 10 * AXIOM_MIME_PARSER_BUFFER_SIZE;
     int len = 0;
     axis2_char_t *root_mime = NULL;
-    int root_mime_len = 0;
     axis2_char_t *soap_body_str = NULL;
     int soap_body_len = 0;
     axis2_char_t *body_mime = NULL;
-    int body_mime_len = 0;
     axis2_char_t *mime_binary = NULL;
     int mime_binary_len = 0;
     axis2_char_t *pos = NULL;
     axis2_bool_t end_of_mime = AXIS2_FALSE;
     int count = 0;
+    int read = 0;
+    int buf_num = 0;    
+    int buf_len = 0;
+    axis2_callback_info_t *cb_ctx = NULL;
+    axis2_char_t *buf_array[100];
+    int len_array[100];
+
+    
+    cb_ctx = (axis2_callback_info_t *) callback_ctx;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
-
-    do
+    if(cb_ctx->chunked_stream)
     {
-        len = callback(buffer, size, (void *) callback_ctx);
-        if (len > 0)
+        
+        while(!axis2_http_chunked_stream_get_end_of_chunks(
+                cb_ctx->chunked_stream, env))
         {
-            axis2_char_t *temp_root_mime = root_mime;
-            root_mime = AXIS2_MALLOC(env->allocator,
-                                     sizeof(char) * (root_mime_len + len + 1));
-            if (root_mime)
+            read = 0;
+            buf_array[buf_num] = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
+            do
             {
-                if (temp_root_mime)
+                len = callback(buf_array[buf_num] + read, size - read, (void *) callback_ctx);
+                if (len > 0)
                 {
-                    memcpy(root_mime, temp_root_mime, root_mime_len);
-                    AXIS2_FREE(env->allocator, temp_root_mime);
+                    read += len;
                 }
-
-                memcpy(root_mime + root_mime_len, buffer, len);
-                root_mime_len += len;
-                root_mime[root_mime_len] = '\0';
-
-                pos = axutil_strstr(root_mime, "\r\n\r\n");
-                if (pos)
+                else
                 {
-                    if (root_mime_len > (pos - root_mime + 4))
-                    {
-                        soap_body_len = root_mime_len - (int)(pos - root_mime + 4);
-                        soap_body_str = AXIS2_MALLOC(env->allocator,
-                                                     sizeof(char) *
-                                                     (soap_body_len + 1));
-                        memcpy(soap_body_str, pos + 4, soap_body_len);
-                        soap_body_str[soap_body_len] = '\0';
-                        *pos = '\0';
-                    }
+                    break;
                 }
             }
+            while(read < (size-1));
+
+            *(buf_array[buf_num] + read) = '\0';
+            len_array[buf_num] = read;
+            buf_num++;
         }
-    }
-    while (!pos && len > 0);
-
-    pos = NULL;
-    len = 0;
-
-    do
-    {
-        if (soap_body_str)
+        
+        if(buf_num == 1)
         {
-            pos = axutil_strstr(soap_body_str, mime_boundary);
-        }
-
-        if (pos)
-        {
-            pos -= 2;
-            body_mime_len = soap_body_len - (int)(pos - soap_body_str);
-            body_mime = AXIS2_MALLOC(env->allocator,
-                                     sizeof(char) * (body_mime_len + 1));
-            memcpy(body_mime, pos, body_mime_len);
-            body_mime[body_mime_len] = '\0';
-
-            *(pos) = '\0';
-            soap_body_len = (int)(pos - soap_body_str);
+            buffer = buf_array[buf_num - 1];
         }
         else
         {
-            len = callback(buffer, size, (void *) callback_ctx);
-            if (len > 0)
-            {
-                axis2_char_t *temp_soap_body = soap_body_str;
-                soap_body_str = AXIS2_MALLOC(env->allocator,
-                                             sizeof(char) * (soap_body_len +
-                                                             len + 1));
-                if (soap_body_str)
-                {
-                    if (temp_soap_body)
-                    {
-                        memcpy(soap_body_str, temp_soap_body, soap_body_len);
-                        AXIS2_FREE(env->allocator, temp_soap_body);
-                    }
+            int i = 0;
+            buf_len = 0;
+            buffer = NULL;
+            int temp = 0;
 
-                    memcpy(soap_body_str + soap_body_len, buffer, len);
-                    soap_body_len += len;
-                    soap_body_str[soap_body_len] = '\0';
+            for(i=0; i < buf_num; i++)
+            {
+                if(buf_array[i])
+                {
+                    buf_len += len_array[i];    
                 }
             }
+            buffer =   AXIS2_MALLOC(env->allocator,
+                                sizeof(char) * (buf_len+1));
+
+            for(i=0; i < buf_num; i++)
+            {
+                if(buf_array[i])
+                {
+                    memcpy(buffer + temp, buf_array[i], len_array[i]);
+                    temp += len_array[i];
+                    AXIS2_FREE(env->allocator, buf_array[i]);
+                    buf_array[i] = NULL;
+                }
+            }
+            *(buffer + temp) = '\0';
         }
     }
-    while (!pos && len > 0);
 
+    else
+    {
+        size = cb_ctx->content_length + 100;
+        buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
+        do
+        {
+            len = callback(buffer + read, size - read, (void *) callback_ctx);
+            if (len > 0)
+            {
+                read += len;
+            }
+            else
+            {
+                break;
+            }
+        }
+        while(read < size);
+
+        buffer[read+1] = '\0';
+        buf_len = read;
+    }
+
+    if (buffer)
+    {
+        pos = axutil_strstr(buffer, "\r\n\r\n");
+        if (pos)
+        {
+            pos = pos + 4;
+            root_mime = pos;
+        }
+    }
+
+    pos = NULL;
+
+    if (root_mime)
+    {
+        pos = axutil_strstr(root_mime, mime_boundary);
+    }
+
+    if (pos)
+    {
+        pos -= 2;
+        soap_body_len = pos - root_mime;
+        soap_body_str = AXIS2_MALLOC(env->allocator,
+                                    sizeof(char) * (soap_body_len + 1));
+        memcpy(soap_body_str, root_mime, soap_body_len);
+        soap_body_str[soap_body_len] = '\0';    
+        body_mime = pos;    
+    }
+    
     if (soap_body_str)
     {
         mime_parser->soap_body_len = soap_body_len;
@@ -208,9 +239,10 @@ axiom_mime_parser_parse(
     while (!end_of_mime && count < AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT)
     {
         axis2_char_t *temp_body_mime = NULL;
-        int temp_body_mime_len = 0;
+        axis2_char_t *old_pos = NULL;
+        axis2_char_t *temp_mime_binary = NULL;
         pos = NULL;
-        len = 0;
+        axis2_char_t *temp_pos = NULL;
 
         /* keep trac of counter to ensure that we do not go in an infinite loop
            It is possible that we could fall into an infinite loop if there 
@@ -218,147 +250,52 @@ axiom_mime_parser_parse(
          */
         count++;
 
-        do
+        if (body_mime)
         {
-            if (body_mime)
-            {
-                pos = axutil_strstr(body_mime, "\r\n\r\n");
-            }
-
-            if (pos)
-            {
-                if (body_mime_len > (pos - body_mime + 4))
-                {
-                    mime_binary_len = body_mime_len - (int)(pos - body_mime + 4);
-                    mime_binary = AXIS2_MALLOC(env->allocator,
-                                               sizeof(char) * (mime_binary_len +
-                                                               1));
-                    memcpy(mime_binary, pos + 4, mime_binary_len);
-                    mime_binary[mime_binary_len] = '\0';
-                    *pos = '\0';
-                }
-            }
-            else
-            {
-                len = callback(buffer, size, (void *) callback_ctx);
-                if (len > 0)
-                {
-                    count = 0;
-                    temp_body_mime = body_mime;
-                    body_mime = AXIS2_MALLOC(env->allocator,
-                                             sizeof(char) * (body_mime_len +
-                                                             len + 1));
-                    if (body_mime)
-                    {
-                        if (temp_body_mime)
-                        {
-                            memcpy(body_mime, temp_body_mime, body_mime_len);
-                            AXIS2_FREE(env->allocator, temp_body_mime);
-                        }
-
-                        memcpy(body_mime + body_mime_len, buffer, len);
-                        body_mime_len += len;
-                        body_mime[body_mime_len] = '\0';
-                    }
-                }
-            }
+            pos = axutil_strstr(body_mime, "\r\n\r\n");
         }
-        while (!pos && len > 0);
 
-        pos = NULL;
-        len = 0;
+        if (pos)
+        {
+            pos = pos + 4;
+            temp_mime_binary = pos;
+            old_pos = temp_mime_binary;    
+        }
+                
         do
         {
-            axis2_char_t *old_pos = NULL;
-            int old_mime_binary_len = 0;
-            if (mime_binary)
-            {
-                axis2_char_t *temp_pos = NULL;
-                old_pos = mime_binary;
-
-                do
-                {
-                    pos = memchr(old_pos, AXIOM_MIME_BOUNDARY_BYTE,
-                                 (mime_binary_len - (old_pos - mime_binary)));
-                    if (!pos)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        old_pos = pos + 1;
-                        if (old_pos - mime_binary > mime_binary_len)
-                        {
-                            pos = NULL;
-                            break;
-                        }
-                        temp_pos = axutil_strstr(pos + 1, mime_boundary);
-                    }
-                }
-                while (*(pos + 1) != AXIOM_MIME_BOUNDARY_BYTE ||
-                       temp_pos != pos + 2);
-
-                if (pos && *(pos + 1) == AXIOM_MIME_BOUNDARY_BYTE &&
-                    temp_pos == pos + 2)
-                {
-                    old_mime_binary_len = mime_binary_len;
-                    mime_binary_len = (int)(pos - mime_binary);
-                }
-                else
-                {
-                    pos = NULL;
-                }
-            }
-
+            pos = NULL;
+            pos = memchr(old_pos, AXIOM_MIME_BOUNDARY_BYTE,
+                    buffer + buf_len - old_pos); 
             if (!pos)
             {
-                len = callback(buffer, size, (void *) callback_ctx);
-                if (len > 0)
-                {
-                    axis2_char_t *temp_mime_binary = NULL;
-                    count = 0;
-                    temp_mime_binary = mime_binary;
-                    mime_binary = AXIS2_MALLOC(env->allocator,
-                                               sizeof(char) * (mime_binary_len +
-                                                               len + 1));
-                    if (mime_binary)
-                    {
-                        if (temp_mime_binary)
-                        {
-                            memcpy(mime_binary, temp_mime_binary,
-                                   mime_binary_len);
-                            AXIS2_FREE(env->allocator, temp_mime_binary);
-                        }
-
-                        memcpy(mime_binary + mime_binary_len, buffer, len);
-                        mime_binary_len += len;
-                        mime_binary[mime_binary_len] = '\0';
-                    }
-                }
+                break;
             }
             else
             {
-                axis2_char_t *temp_pos = NULL;
-                temp_pos = pos + 2 + axutil_strlen(mime_boundary);
-
-                end_of_mime = (AXIOM_MIME_BOUNDARY_BYTE == *(temp_pos)) &&
-                    (AXIOM_MIME_BOUNDARY_BYTE == *(temp_pos + 1));
-
-                /* capture the next mime part */
-                temp_body_mime = AXIS2_MALLOC(env->allocator,
-                                              sizeof(char) *
-                                              (old_mime_binary_len -
-                                               mime_binary_len + 1));
-                if (temp_body_mime)
-                {
-                    memcpy(temp_body_mime, pos,
-                           old_mime_binary_len - mime_binary_len);
-                    temp_body_mime_len = old_mime_binary_len - mime_binary_len;
-                    temp_body_mime[temp_body_mime_len] = '\0';
-                }
+                old_pos = pos + 1;
+                temp_pos = axutil_strstr(pos + 1, mime_boundary);
             }
+                
         }
-        while (!pos && len > 0);
+        while (*(pos + 1) != AXIOM_MIME_BOUNDARY_BYTE ||
+            temp_pos != pos + 2);
+                
+        if (pos && *(pos + 1) == AXIOM_MIME_BOUNDARY_BYTE &&
+                    temp_pos == pos + 2)
+        {
+            mime_binary_len = (int)(pos - temp_mime_binary);
+            temp_pos = pos + 2 + axutil_strlen(mime_boundary);
+
+            end_of_mime = (AXIOM_MIME_BOUNDARY_BYTE == *(temp_pos)) &&
+                (AXIOM_MIME_BOUNDARY_BYTE == *(temp_pos + 1));
+
+            temp_body_mime = pos;
+            mime_binary = AXIS2_MALLOC(env->allocator,
+                                            sizeof(char) * (mime_binary_len + 1));
+            memcpy(mime_binary, temp_mime_binary, mime_binary_len);
+            mime_binary[mime_binary_len + 1] = '\0';
+        }
 
         if (mime_parser->mime_parts_map)
         {
@@ -456,27 +393,9 @@ axiom_mime_parser_parse(
                     break;
                 }
             }
-
-            if (body_mime)
-            {
-                AXIS2_FREE(env->allocator, body_mime);
-            }
-
             body_mime = temp_body_mime;
-            body_mime_len = temp_body_mime_len;
-
-        }                       /*if (mime_parser->mime_parts_map) */
+        }
     }                           /* end while (!end_of_mime) */
-
-    if (body_mime)
-    {
-        AXIS2_FREE(env->allocator, body_mime);
-    }
-
-    if (root_mime)
-    {
-        AXIS2_FREE(env->allocator, root_mime);
-    }
 
     AXIS2_FREE(env->allocator, buffer);
 
