@@ -83,10 +83,9 @@ extern "C"
      * @return pointer to configuration context, parent of service group 
      */
     AXIS2_EXTERN struct axis2_conf_ctx *AXIS2_CALL
-
-                axis2_svc_grp_ctx_get_parent(
-                    const axis2_svc_grp_ctx_t * svc_grp_ctx,
-                    const axutil_env_t * env);
+    axis2_svc_grp_ctx_get_parent(
+        const axis2_svc_grp_ctx_t * svc_grp_ctx,
+        const axutil_env_t * env);
 
     /**
      * Frees service group context.
@@ -129,7 +128,7 @@ extern "C"
      * Sets service group context ID.
      * @param svc_grp_ctx pointer to service group context
      * @param env pointer to environment struct
-     * @return id service group context ID
+     * @param id service group context ID
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -146,11 +145,10 @@ extern "C"
      * @return pointer to named service context
      */
     AXIS2_EXTERN struct axis2_svc_ctx *AXIS2_CALL
-
-                axis2_svc_grp_ctx_get_svc_ctx(
-                    const axis2_svc_grp_ctx_t * svc_grp_ctx,
-                    const axutil_env_t * env,
-                    const axis2_char_t * svc_name);
+    axis2_svc_grp_ctx_get_svc_ctx(
+        const axis2_svc_grp_ctx_t * svc_grp_ctx,
+        const axutil_env_t * env,
+        const axis2_char_t * svc_name);
 
     /**
      * Fills service context map. This will create one service context per 
@@ -160,7 +158,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_svc_grp_ctx_fill_svc_ctx_map(
         struct axis2_svc_grp_ctx *svc_grp_ctx,
         const axutil_env_t * env);
@@ -173,10 +170,9 @@ extern "C"
      * represents
      */
     AXIS2_EXTERN struct axis2_svc_grp *AXIS2_CALL
-
-                axis2_svc_grp_ctx_get_svc_grp(
-                    const axis2_svc_grp_ctx_t * svc_grp_ctx,
-                    const axutil_env_t * env);
+    axis2_svc_grp_ctx_get_svc_grp(
+        const axis2_svc_grp_ctx_t * svc_grp_ctx,
+        const axutil_env_t * env);
 
     /**
      * Gets service context map containing all service contexts.
@@ -188,6 +184,8 @@ extern "C"
     axis2_svc_grp_ctx_get_svc_ctx_map(
         const axis2_svc_grp_ctx_t * svc_grp_ctx,
         const axutil_env_t * env);
+
+    /** @} */
 
 #ifdef __cplusplus
 }

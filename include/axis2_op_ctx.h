@@ -110,9 +110,9 @@ extern "C"
      * @return pointer to operation
      */
     AXIS2_EXTERN struct axis2_op *AXIS2_CALL
-                axis2_op_ctx_get_op(
-                    const axis2_op_ctx_t * op_ctx,
-                    const axutil_env_t * env);
+    axis2_op_ctx_get_op(
+        const axis2_op_ctx_t * op_ctx,
+        const axutil_env_t * env);
 
     /**
      * Gets parent which is of service context type. 
@@ -122,15 +122,15 @@ extern "C"
      * context lives
      */
     AXIS2_EXTERN struct axis2_svc_ctx *AXIS2_CALL
-                axis2_op_ctx_get_parent(
-                    const axis2_op_ctx_t * op_ctx,
-                    const axutil_env_t * env);
+    axis2_op_ctx_get_parent(
+        const axis2_op_ctx_t * op_ctx,
+        const axutil_env_t * env);
 
     /**
      * Adds a message context. 
      * @param op_ctx pointer to operation context
      * @param env pointer to environment struct
-     * @param msg_ctx pointer to message context struct, message context 
+     * @param msg_ctx pointer to message context
      * does not assume the ownership of the struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
@@ -221,7 +221,7 @@ extern "C"
 
     /**
      * Sets the bool value indicating the status of response.
-     * @param msg_ctx message context
+     * @param op_ctx pointer to operation context
      * @param env pointer to environment struct
      * @param response_written AXIS2_TRUE if response is written, else 
      * AXIS2_FALSE
@@ -235,7 +235,7 @@ extern "C"
 
     /**
      * Checks the response status, whether it is written or not.
-     * @param msg_ctx message context
+     * @param op_ctx pointer to operation context
      * @param env pointer to environment struct
      * @return AXIS2_TRUE if response is already written, else AXIS2_FALSE    
      */
@@ -244,6 +244,12 @@ extern "C"
         const axis2_op_ctx_t * op_ctx,
         const axutil_env_t * env);
 
+    /**
+     * Destroys mutex used to synchronize the read/write operations
+     * @param op_ctx pointer to operation context
+     * @param env pointer to environment struct
+     * @return returns void
+     */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_op_ctx_destroy_mutex(
         struct axis2_op_ctx *op_ctx,
@@ -253,7 +259,7 @@ extern "C"
      * Checks whether op_ctx is in use. This is necessary when destroying the
      * thread mutex at the http_worker to check whether the operation context
      * is still in use
-     * @param msg_ctx message context
+     * @param op_ctx pointer to operation context
      * @param env pointer to environment struct
      * @return AXIS2_TRUE if still in use, else AXIS2_FALSE    
      */
@@ -266,8 +272,9 @@ extern "C"
      * Set operation context's is_in_use attribute. This is necessary when 
      * destroying the thread mutex at the http_worker to check whether the 
      * operation context is still in use
-     * @param msg_ctx message context
+     * @param op_ctx pointer to operation context
      * @param env pointer to environment struct
+     * @param is_in_use AXIS2_TRUE if still in use, else AXIS2_FALSE
      * @return AXIS2_TRUE if still in use, else AXIS2_FALSE    
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -279,15 +286,17 @@ extern "C"
     /**
      * Incrementing the op_ctx ref count. This is necessary when 
      * prevent freeing op_ctx through op_client when it is in use 
-     * as in sandesha where the msg_cts is stored.     
+     * as in sandesha where the msg_cts is stored.
+     * @param op_ctx pointer to operation context  
      * @param env pointer to environment struct
+     * @return AXIS2_TRUE if still in use, else AXIS2_FALSE 
      */
-
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_ctx_increment_ref(
         axis2_op_ctx_t * op_ctx,
         const axutil_env_t * env);
 
+    /** @} */
 
 #ifdef __cplusplus
 }

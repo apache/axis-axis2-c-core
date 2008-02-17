@@ -79,16 +79,16 @@ extern "C"
      * @return pointer to parent service group context
      */
     AXIS2_EXTERN struct axis2_svc_grp_ctx *AXIS2_CALL
-
-                axis2_svc_ctx_get_parent(
-                    const axis2_svc_ctx_t * svc_ctx,
-                    const axutil_env_t * env);
+    axis2_svc_ctx_get_parent(
+        const axis2_svc_ctx_t * svc_ctx,
+        const axutil_env_t * env);
 
     /**
      * Sets parent which is of type service group context.
      * @param svc_ctx pointer to service context
      * @param env pointer to environment struct
-     * @param svc_grp_ctx
+     * @param parent parent of service context which is of type
+     * service group context
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -142,9 +142,9 @@ extern "C"
      * @return pointer to service, returns a reference, not a cloned copy
      */
     AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
-                axis2_svc_ctx_get_svc(
-                    const axis2_svc_ctx_t * svc_ctx,
-                    const axutil_env_t * env);
+    axis2_svc_ctx_get_svc(
+        const axis2_svc_ctx_t * svc_ctx,
+        const axutil_env_t * env);
 
     /**
      * Sets the service that this service context represents.
@@ -168,10 +168,9 @@ extern "C"
      * @return pointer to configuration context
      */
     AXIS2_EXTERN struct axis2_conf_ctx *AXIS2_CALL
-
-                axis2_svc_ctx_get_conf_ctx(
-                    const axis2_svc_ctx_t * svc_ctx,
-                    const axutil_env_t * env);
+    axis2_svc_ctx_get_conf_ctx(
+        const axis2_svc_ctx_t * svc_ctx,
+        const axutil_env_t * env);
 
     /**
      * Creates an operation context for the named operation. The named 
@@ -183,10 +182,12 @@ extern "C"
      * @return pointer to operation context
      */
     AXIS2_EXTERN struct axis2_op_ctx *AXIS2_CALL
-                axis2_svc_ctx_create_op_ctx(
-                    struct axis2_svc_ctx *svc_ctx,
-                    const axutil_env_t * env,
-                    const axutil_qname_t * qname);
+    axis2_svc_ctx_create_op_ctx(
+        struct axis2_svc_ctx *svc_ctx,
+        const axutil_env_t * env,
+        const axutil_qname_t * qname);
+
+    /** @} */
 
 #ifdef __cplusplus
 }

@@ -47,6 +47,7 @@ extern "C"
 
     /** Type name for struct axis2_conf_ctx */
     typedef struct axis2_conf_ctx axis2_conf_ctx_t;
+
     struct axis2_conf;
 
     /**
@@ -127,7 +128,6 @@ extern "C"
      * @return pointer to hash map containing all service group contexts
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-
     axis2_conf_ctx_get_svc_grp_ctx_map(
         const axis2_conf_ctx_t * conf_ctx,
         const axutil_env_t * env);
@@ -184,10 +184,10 @@ extern "C"
      * @return pointer to service context with the given service ID 
      */
     AXIS2_EXTERN struct axis2_svc_ctx *AXIS2_CALL
-                axis2_conf_ctx_get_svc_ctx(
-                    const axis2_conf_ctx_t * conf_ctx,
-                    const axutil_env_t * env,
-                    const axis2_char_t * svc_id);
+    axis2_conf_ctx_get_svc_ctx(
+        const axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env,
+        const axis2_char_t * svc_id);
 
     /**
      * Registers a service group context with the given service group ID.
@@ -198,7 +198,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_conf_ctx_register_svc_grp_ctx(
         axis2_conf_ctx_t * conf_ctx,
         const axutil_env_t * env,
@@ -213,7 +212,6 @@ extern "C"
      * @return pointer to service group context with the given ID
      */
     AXIS2_EXTERN axis2_svc_grp_ctx_t *AXIS2_CALL
-
     axis2_conf_ctx_get_svc_grp_ctx(
         const axis2_conf_ctx_t * conf_ctx,
         const axutil_env_t * env,
@@ -290,6 +288,8 @@ extern "C"
         axis2_conf_ctx_t * conf_ctx,
         const axutil_env_t * env,
         axis2_msg_ctx_t * msg_ctx);
+
+    /** @} */
 
 #ifdef __cplusplus
 }

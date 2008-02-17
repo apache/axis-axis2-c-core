@@ -65,9 +65,6 @@ extern "C"
      * @param key key string to store the property with
      * @param value pointer to property to be stored, context assumes the 
      * ownership of the property
-     * @param persistent persist ency status, AXIS2_TRUE if the value is to 
-     * be stored in the resistant store, AXIS2_FALSE if it is to be stored 
-     * in the non-persistent store
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -82,9 +79,6 @@ extern "C"
      * @param ctx pointer to context struct
      * @param env pointer to environment struct
      * @param key key string
-     * @param persistent persistence status, AXIS2_TRUE if the value is to 
-     * be retrieved from the persistent store, AXIS2_FALSE if it is to be 
-     * retrieved from the non-persistent store
      * @return pointer to property struct corresponding to the given key
      */
     AXIS2_EXTERN axutil_property_t *AXIS2_CALL
@@ -139,6 +133,8 @@ extern "C"
         struct axis2_ctx *ctx,
         const axutil_env_t * env,
         axutil_hash_t * map);
+
+    /** @} */
 
 #ifdef __cplusplus
 }
