@@ -1077,7 +1077,25 @@ service client options:</p>
         const axis2_char_t * auth_type);
 </pre></div>
   <p>In <code>auth_type</code>, use <b>Basic</b> to force Basic Authentication or <b>Digest</b> to force Digest
-Authentication. Leave this field NULL if you are not forcing authentication.</p><p style="margin-bottom: 0in"><br></br>
+Authentication. Leave this field NULL if you are not forcing authentication.</p>
+<div class="subsection"><a name="15_4_Predetermining_Proxy_Authentication_Details"></a><h3>15.4 Predetermining Proxy Authentication Details</h3>
+<p>You can also predetermine whether proxy authentication is required. This can be done by calling the function below:</p>
+    <div class="source"><pre>axis2_options_set_test_proxy_auth(
+        axis2_options_t * options,
+        const axutil_env_t * env,
+        const axis2_bool_t test_proxy_auth);
+</pre></div>
+  <p>Set <code>test_proxy_auth</code> to <b><code>AXIS2_TRUE</code></b> to enable testing.When testing is enabled, the request will be sent without without adding authentication information. If it fails, and requests Authentication Information, the request type of authentication will be saved. This information can be obtained in the following manner:</p>
+    <div class="source"><pre>axis2_svc_client_get_auth_type(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
+</pre></div>
+  <p> This will return either <b>Basic</b>, <b>Digest</b> or <b>NULL</b> according to the type of authentiation requested. In addition to that, after each request made through the service client, you can check whether authentication was required.</p>
+    <div class="source"><pre>axis2_svc_client_get_proxy_auth_required(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
+</pre></div>
+  <p>Please take a look at the <code>echo_blocking_auth</code> sample for more information on how to use these methods to identify proxy Authentication requirements.</p><p style="margin-bottom: 0in"><br></br>
 </p><p><a name="http_auth"></a></p></div></div><div class="section"><a name="16__Using_HTTP_Authentication_Support"></a><h2>16. Using HTTP Authentication Support</h2><p>When using HTTP authentication, there are two methods for specifying proxy
 authentication settings:</p><ol>
   <li>Specify HTTP authentication settings in axis2.xml</li>
@@ -1099,7 +1117,25 @@ service client options:</p>
         const axis2_char_t * auth_type);
 </pre></div>
   <p>In <code>auth_type</code>, use <b>Basic</b> to force HTTP Basic Authentication or <b>Digest</b> to force HTTP Digest
-Authentication. Leave this field NULL if you are not forcing authentication.</p><p style="margin-bottom: 0in"><br></br>
+Authentication. Leave this field NULL if you are not forcing authentication.</p>
+<div class="subsection"><a name="16_3_Predetermining_HTTP_Authentication_Details"></a><h3>16.3 Predetermining HTTP Authentication Details</h3>
+<p>You can also predetermine whether HTTP authentication is required. This can be done by calling the function below:</p>
+    <div class="source"><pre>axis2_options_set_test_http_auth(
+        axis2_options_t * options,
+        const axutil_env_t * env,
+        const axis2_bool_t test_http_auth);
+</pre></div>
+  <p>Set <code>test_http_auth</code> to <b><code>AXIS2_TRUE</code></b> to enable testing.When testing is enabled, the request will be sent without without adding authentication information. If it fails, and requests Authentication Information, the request type of authentication will be saved. This information can be obtained in the following manner:</p>
+    <div class="source"><pre>axis2_svc_client_get_auth_type(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
+</pre></div>
+  <p> This will return either <b>Basic</b>, <b>Digest</b> or <b>NULL</b> according to the type of authentiation requested. In addition to that, after each request made through the service client, you can check whether authentication was required.</p>
+    <div class="source"><pre>axis2_svc_client_get_http_auth_required(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
+</pre></div>
+  <p>Please take a look at the <code>echo_blocking_auth</code> sample for more information on how to use these methods to identify HTTP Authentication requirements.</p><p style="margin-bottom: 0in"><br></br>
 </p><p><a name="wsdl2c"></a></p></div></div><div class="section"><a name="17__WSDL2C_Tool"></a><h2>17. WSDL2C Tool</h2><p>WSDL2C tool that comes with Axis2/Java supports the generation of Axis2/C
 stubs and skeletons for WSDL files. This is a Java tool that can be used to
 generate C code that works with Axis2/C API. You should use <a href="http://svn.apache.org/viewvc/webservices/axis2/trunk/java" class="externalLink" title="External Link">Axis2/Java
@@ -1713,4 +1749,19 @@ username, password, auth_type)</strong></p><p>Sets Proxy Authentication informat
     <tr class="a"><td>const axis2_char_t *password</td><td>String representing password.</td></tr>
     <tr class="b"><td>const axis2_char_t *auth_type</td><td>use "Basic" to force basic authentication and "Digest" to 
       force digest authentication or NULL for not forcing authentication</td></tr>
+  </tbody></table><p><strong>axis2_options_set_test_http_auth(options, env,
+test_http_auth)</strong></p><p>Enables testing of HTTP Authentication information.</p><table class="bodyTable"><caption></caption><tbody>
+    <tr class="a"><th>Parameter</th><th>Description</th></tr>
+    <tr class="b"><td>axis2_options_t *options</td><td>Pointer to the options struct.</td></tr>
+    <tr class="a"><td>const axutil_env_t *env</td><td>Pointer to the environment struct.</td></tr>
+    <tr class="b"><td>const axis2_bool_t test_http_auth</td><td>bool value indicating whether to test
+    or not, AXIS2_TRUE to enable, AXIS2_FALSE to disable</td></tr>
+  </tbody></table>
+<p><strong>axis2_options_set_test_proxy_auth(options, env,
+test_proxy_auth)</strong></p><p>Enables testing of proxy Authentication information.</p><table class="bodyTable"><caption></caption><tbody>
+    <tr class="a"><th>Parameter</th><th>Description</th></tr>
+    <tr class="b"><td>axis2_options_t *options</td><td>Pointer to the options struct.</td></tr>
+    <tr class="a"><td>const axutil_env_t *env</td><td>Pointer to the environment struct.</td></tr>
+    <tr class="b"><td>const axis2_bool_t test_proxy_auth</td><td>bool value indicating whether to test
+    or not, AXIS2_TRUE to enable, AXIS2_FALSE to disable</td></tr>
   </tbody></table></div></div></div><div class="clear"><hr></hr></div></body></html>
