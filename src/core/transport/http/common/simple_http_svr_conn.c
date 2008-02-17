@@ -20,7 +20,7 @@
 #include <axis2_http_transport.h>
 #include <axutil_string.h>
 #include <axutil_network_handler.h>
-#include <axis2_http_chunked_stream.h>
+#include <axutil_http_chunked_stream.h>
 #include <platforms/axutil_platform_auto_sense.h>
 #include <string.h>
 
