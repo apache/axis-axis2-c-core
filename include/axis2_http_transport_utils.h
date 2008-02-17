@@ -39,7 +39,7 @@
 #include <axiom_element.h>
 #include <axutil_stream.h>
 #include <axiom_soap_envelope.h>
-#include <axis2_http_chunked_stream.h>
+#include <axutil_http_chunked_stream.h>
 #include <axutil_url.h>
 
 #ifdef __cplusplus
@@ -50,7 +50,7 @@ extern "C"
     /*
      * struct to hold the callback information
      */
-    struct axis2_callback_info
+    /*struct axis2_callback_info
     {
         const axutil_env_t *env;
         void *in_stream;
@@ -59,6 +59,7 @@ extern "C"
         axis2_http_chunked_stream_t *chunked_stream;
     };
     typedef struct axis2_callback_info axis2_callback_info_t;
+    */
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
