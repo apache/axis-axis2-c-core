@@ -19,6 +19,10 @@
 #ifndef AXIS2_ANY_CONTENT_TYPE_H
 #define AXIS2_ANY_CONTENT_TYPE_H
 
+/** 
+ * @file axis2_any_content_type.h
+ */
+
 /**
  * @defgroup axis2_any_content_type any content type
  * @ingroup axis2_addr
@@ -48,7 +52,6 @@ extern "C"
      * @return pointer to the newly created any content type instance
      */
     AXIS2_EXTERN axis2_any_content_type_t *AXIS2_CALL
-
     axis2_any_content_type_create(
         const axutil_env_t * env);
 
@@ -77,7 +80,6 @@ extern "C"
      * @return value string if present, else returns NULL
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-
     axis2_any_content_type_get_value(
         const axis2_any_content_type_t * any_content_type,
         const axutil_env_t * env,
@@ -91,7 +93,6 @@ extern "C"
      * reference, not a cloned copy 
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-
     axis2_any_content_type_get_value_map(
         const axis2_any_content_type_t * any_content_type,
         const axutil_env_t * env);

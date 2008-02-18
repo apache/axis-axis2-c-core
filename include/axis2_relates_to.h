@@ -92,7 +92,6 @@ extern "C"
      * @return relationship type string 
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-
     axis2_relates_to_get_relationship_type(
         const axis2_relates_to_t * relates_to,
         const axutil_env_t * env);
@@ -105,7 +104,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_relates_to_set_relationship_type(
         struct axis2_relates_to *relates_to,
         const axutil_env_t * env,

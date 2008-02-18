@@ -20,6 +20,11 @@
 #define AXIS2_MSG_INFO_HEADERS_H
 
 /**
+ * @file axis2_msg_info_headers.h
+ */
+
+
+/**
  * @defgroup axis2_msg_info_headers message information headers
  * @ingroup axis2_addr
  * message information headers encapsulates properties that enable the
@@ -62,7 +67,6 @@ extern "C"
      * @return pointer to newly created message information headers struct
      */
     AXIS2_EXTERN axis2_msg_info_headers_t *AXIS2_CALL
-
     axis2_msg_info_headers_create(
         const axutil_env_t * env,
         axis2_endpoint_ref_t * to,
@@ -77,7 +81,6 @@ extern "C"
      * returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
-
     axis2_msg_info_headers_get_to(
         const axis2_msg_info_headers_t * msg_info_headers,
         const axutil_env_t * env);
@@ -106,7 +109,6 @@ extern "C"
      * returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
-
     axis2_msg_info_headers_get_from(
         const axis2_msg_info_headers_t * msg_info_headers,
         const axutil_env_t * env);
@@ -135,7 +137,6 @@ extern "C"
      * returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
-
     axis2_msg_info_headers_get_reply_to(
         const axis2_msg_info_headers_t * msg_info_headers,
         const axutil_env_t * env);
@@ -150,7 +151,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_msg_info_headers_set_reply_to(
         struct axis2_msg_info_headers *msg_info_headers,
         const axutil_env_t * env,
@@ -168,7 +168,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_msg_info_headers_set_reply_to_none(
         struct axis2_msg_info_headers *msg_info_headers,
         const axutil_env_t * env,
@@ -186,7 +185,6 @@ extern "C"
      * is to be used as reply to URI, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     axis2_msg_info_headers_get_reply_to_none(
         const axis2_msg_info_headers_t * msg_info_headers,
         const axutil_env_t * env);
@@ -206,7 +204,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_msg_info_headers_set_reply_to_anonymous(
         struct axis2_msg_info_headers *msg_info_headers,
         const axutil_env_t * env,
@@ -225,7 +222,6 @@ extern "C"
      * is to be used as reply to URI, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     axis2_msg_info_headers_get_reply_to_anonymous(
         const axis2_msg_info_headers_t * msg_info_headers,
         const axutil_env_t * env);
@@ -239,7 +235,6 @@ extern "C"
      * returns a reference, not a cloned copy    
      */
     AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
-
     axis2_msg_info_headers_get_fault_to(
         const axis2_msg_info_headers_t * msg_info_headers,
         const axutil_env_t * env);
@@ -249,12 +244,11 @@ extern "C"
      * receiver for faults related to a message.
      * @param msg_info_headers pointer to message information headers struct
      * @param env pointer to environment struct
-     * @param fault pointer to endpoint reference representing fault to 
+     * @param fault_to pointer to endpoint reference representing fault to 
      * address, message information headers assumes ownership of the endpoint
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_msg_info_headers_set_fault_to(
         struct axis2_msg_info_headers *msg_info_headers,
         const axutil_env_t * env,
@@ -273,7 +267,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_msg_info_headers_set_fault_to_none(
         struct axis2_msg_info_headers *msg_info_headers,
         const axutil_env_t * env,
@@ -291,7 +284,6 @@ extern "C"
      * is to be used as fault to URI, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     axis2_msg_info_headers_get_fault_to_none(
         const axis2_msg_info_headers_t * msg_info_headers,
         const axutil_env_t * env);
@@ -311,7 +303,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_msg_info_headers_set_fault_to_anonymous(
         struct axis2_msg_info_headers *msg_info_headers,
         const axutil_env_t * env,
@@ -330,7 +321,6 @@ extern "C"
      * is to be used as fault to URI, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     axis2_msg_info_headers_get_fault_to_anonymous(
         const axis2_msg_info_headers_t * msg_info_headers,
         const axutil_env_t * env);
@@ -344,7 +334,6 @@ extern "C"
      * @return WS-Addressing action string
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-
     axis2_msg_info_headers_get_action(
         const axis2_msg_info_headers_t * msg_info_headers,
         const axutil_env_t * env);
@@ -372,7 +361,6 @@ extern "C"
      * @return message ID string. 
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-
     axis2_msg_info_headers_get_message_id(
         const axis2_msg_info_headers_t * msg_info_headers,
         const axutil_env_t * env);
@@ -386,7 +374,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_msg_info_headers_set_message_id(
         struct axis2_msg_info_headers *msg_info_headers,
         const axutil_env_t * env,
@@ -401,7 +388,6 @@ extern "C"
      * @sa axis2_relates_to
      */
     AXIS2_EXTERN axis2_relates_to_t *AXIS2_CALL
-
     axis2_msg_info_headers_get_relates_to(
         const axis2_msg_info_headers_t * msg_info_headers,
         const axutil_env_t * env);
@@ -415,7 +401,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_msg_info_headers_set_relates_to(
         struct axis2_msg_info_headers *msg_info_headers,
         const axutil_env_t * env,
@@ -429,7 +414,6 @@ extern "C"
      * @return pointer to array list containing all reference parameters
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-
     axis2_msg_info_headers_get_all_ref_params(
         const axis2_msg_info_headers_t * msg_info_headers,
         const axutil_env_t * env);
@@ -444,7 +428,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_msg_info_headers_add_ref_param(
         struct axis2_msg_info_headers *msg_info_headers,
         const axutil_env_t * env,
