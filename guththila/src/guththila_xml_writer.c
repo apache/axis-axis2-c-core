@@ -585,8 +585,24 @@ guththila_write_end_element(guththila_xml_writer_t * wr, const axutil_env_t * en
     else if (wr->status == START_EMPTY)
     {
         guththila_write(wr, "/>", 2u, env);
-        wr->status = BEGINING;
-        return GUTHTHILA_SUCCESS;
+        elem =
+            (guththila_xml_writer_element_t *) guththila_stack_pop(&wr->element, env);
+        if (elem)
+        {
+            wr->status = BEGINING;
+            if (elem->name_sp_stack_no != -1)
+            {
+                GUTHTHILA_WRITER_CLEAR_NAMESP(wr, &wr->namesp,
+                                               elem->name_sp_stack_no, i,
+                                               namesp, j, env);
+            }
+            GUTHTHILA_WRITER_ELEM_FREE(wr, elem, env);
+            return GUTHTHILA_SUCCESS;
+        }
+        else
+        {
+            return GUTHTHILA_FAILURE;
+        }
     }
     else if (wr->status == BEGINING)
     {
@@ -779,39 +795,54 @@ guththila_write_escape_character(
 }
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL 
-guththila_write_empty_element(
-    guththila_xml_writer_t * wr,
-    guththila_char_t *empty_element,
-    const axutil_env_t * env) 
+guththila_write_empty_element(guththila_xml_writer_t * wr, 
+                              guththila_char_t *start_element,
+                              const axutil_env_t * env) 
 {
     int cur_pos = 0;
     size_t len = 0;
-    len = strlen(empty_element);
+    guththila_xml_writer_element_t * element =
+        (guththila_xml_writer_element_t *) AXIS2_MALLOC(env->allocator,
+                                   sizeof(guththila_xml_writer_element_t));
+    len = strlen(start_element);
     if (wr->status == START)
     {
         guththila_write(wr, "><", 2u, env);
         cur_pos = wr->next;
-        guththila_write(wr, empty_element, len, env);
+        guththila_write_xtoken(wr, start_element, len, env);
     }
     else if (wr->status == START_EMPTY)
     {
         guththila_write(wr, "/><", 3u, env);
         cur_pos = wr->next;
-        guththila_write(wr, empty_element, len, env);
+        guththila_write_xtoken(wr, start_element, len, env);
     }
     else if (wr->status == BEGINING)
     {
         guththila_write(wr, "<", 1u, env);
         cur_pos = wr->next;
-        guththila_write(wr, empty_element, len, env);
+        guththila_write_xtoken(wr, start_element, len, env);
     }
     else
     {
         return GUTHTHILA_FAILURE;
     }
     wr->status = START_EMPTY;
-    return GUTHTHILA_SUCCESS;
+    
+#ifndef GUTHTHILA_XML_WRITER_TOKEN
+    element->name = strdup(start_element);
+    element->prefix = NULL;    
+#else  
+    element->name = guththila_tok_list_get_token(&wr->tok_list, env);
+    element->name->start = GUTHTHILA_BUF_POS(wr->buffer, cur_pos);
+    element->name->size = len;
+    element->prefix = NULL;
+    
+#endif 
+    element->name_sp_stack_no = -1;
+    return guththila_stack_push(&wr->element, element, env);
 }
+
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL 
 guththila_write_default_namespace(
@@ -1525,87 +1556,201 @@ guththila_write_start_element_with_prefix(
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL 
 guththila_write_empty_element_with_prefix_and_namespace(
-    guththila_xml_writer_t * wr,
-    guththila_char_t *prefix,
-    guththila_char_t *namespace_uri,
-    guththila_char_t *local_name,
-    const axutil_env_t * env) 
+                                    guththila_xml_writer_t * wr,
+                                    guththila_char_t *prefix,
+                                    guththila_char_t *namespace_uri,
+                                    guththila_char_t *local_name,
+                                    const axutil_env_t * env) 
 {
+    int i, j, temp, stack_size, nmsp_found = GUTHTHILA_FALSE;
     guththila_xml_writer_namesp_t * namesp = NULL;
     guththila_xml_writer_element_t * elem = NULL;
+    int uri_start = 0, pref_start = 0, elem_start = 0, elem_pref_start = 0;
+    size_t uri_len = 0;
+    size_t pref_len = 0;
+    size_t elem_len = 0;
+    guththila_xml_writer_namesp_t * writer_namesp = NULL;
+
     namesp =
         (guththila_xml_writer_namesp_t *) AXIS2_MALLOC(env->allocator,
-                                                       sizeof
-                                                       (guththila_xml_writer_namesp_t));
+                                                   sizeof
+                                                   (guththila_xml_writer_namesp_t));
     elem =
         (guththila_xml_writer_element_t *) AXIS2_MALLOC(env->allocator,
-                                                        sizeof
-                                                        (guththila_xml_writer_element_t));
+                                                    sizeof
+                                                    (guththila_xml_writer_element_t));
+    uri_len = strlen(namespace_uri);
+    pref_len = strlen(prefix);
+    elem_len = strlen(local_name);
+    stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
+    for (i = stack_size - 1; i >= 0; i--)
+    {
+        writer_namesp =
+            (guththila_xml_writer_namesp_t *) guththila_stack_get_by_index(&wr->namesp,
+                                                                           i,
+                                                                           env);
+        temp = writer_namesp->no;
+        for (j = 0; j < temp; j++)
+        {           
+#ifndef GUTHTHILA_XML_WRITER_TOKEN
+            if (!strcmp(uri, writer_namesp->uri[j]))
+            {
+                
+#else   
+            if (!guththila_tok_str_cmp
+                    (writer_namesp->name[j], prefix, pref_len, env))
+            {
+                
+#endif  
+                nmsp_found = GUTHTHILA_TRUE;
+            }
+        }
+    }
     if (namesp && elem)
     {
+        elem->name_sp_stack_no = -1;
         if (wr->status == START)
         {
             guththila_write(wr, "><", 2u, env);
-            guththila_write_xtoken(wr, prefix, strlen(prefix), env);
+            elem_pref_start = wr->next;
+            guththila_write_xtoken(wr, prefix, pref_len, env);
             guththila_write(wr, ":", 1u, env);
-            guththila_write_xtoken(wr, local_name, strlen(local_name), env);
-            guththila_write(wr, " ", 1u, env);
-            guththila_write(wr, "xmlns:", 6u, env);
-            guththila_write_xtoken(wr, prefix, strlen(prefix), env);
-            guththila_write(wr, "=\"", 2u, env);
-            guththila_write_xtoken(wr, prefix, strlen(namespace_uri), env);
-            guththila_write(wr, "\"", 1u, env);
+            elem_start = wr->next;
+            guththila_write_xtoken(wr, local_name, elem_len, env);
+            if (!nmsp_found)
+            {
+                guththila_write(wr, " ", 1u, env);
+                guththila_write(wr, "xmlns:", 6u, env);
+                pref_start = wr->next;
+                guththila_write_xtoken(wr, prefix, pref_len, env);
+                guththila_write(wr, "=\"", 2u, env);
+                uri_start = wr->next;
+                guththila_write_xtoken(wr, namespace_uri, uri_len, env);
+                guththila_write(wr, "\"", 1u, env);
+            }
             wr->status = START_EMPTY;
-            return GUTHTHILA_SUCCESS;
         }
         else if (wr->status == START_EMPTY)
         {
             guththila_write(wr, "/><", 2u, env);
-            guththila_write_xtoken(wr, prefix, strlen(prefix), env);
+            elem_pref_start = wr->next;
+            guththila_write_xtoken(wr, prefix, pref_len, env);
             guththila_write(wr, ":", 1u, env);
-            guththila_write_xtoken(wr, local_name, strlen(local_name), env);
-            guththila_write(wr, " ", 1u, env);
-            guththila_write(wr, "xmlns:", 6u, env);
-            guththila_write_xtoken(wr, prefix, strlen(prefix), env);
-            guththila_write(wr, "=\"", 2u, env);
-            guththila_write_xtoken(wr, prefix, strlen(namespace_uri), env);
-            guththila_write(wr, "\"", 1u, env);
-            return GUTHTHILA_SUCCESS;
+            elem_start = wr->next;
+            guththila_write_xtoken(wr, local_name, elem_len, env);
+            if (!nmsp_found)
+            {
+                guththila_write(wr, " ", 1u, env);
+                guththila_write(wr, "xmlns:", 6u, env);
+                pref_start = wr->next;
+                guththila_write_xtoken(wr, prefix, pref_len, env);
+                guththila_write(wr, "=\"", 2u, env);
+                uri_start = wr->next;
+                guththila_write_xtoken(wr, namespace_uri, uri_len, env);
+                guththila_write(wr, "\"", 1u, env);
+            }
         }
         else if (wr->status == BEGINING)
         {
             guththila_write(wr, "<", 1u, env);
-            guththila_write_xtoken(wr, prefix, strlen(prefix), env);
+            elem_pref_start = wr->next;
+            guththila_write_xtoken(wr, prefix, pref_len, env);
             guththila_write(wr, ":", 1u, env);
-            guththila_write_xtoken(wr, local_name, strlen(local_name), env);
-            guththila_write(wr, " ", 1u, env);
-            guththila_write(wr, "xmlns:", 6u, env);
-            guththila_write_xtoken(wr, prefix, strlen(prefix), env);
-            guththila_write(wr, "=\"", 2u, env);
-            guththila_write_xtoken(wr, prefix, strlen(namespace_uri), env);
-            guththila_write(wr, "\"", 1u, env);
+            elem_start = wr->next;
+            guththila_write_xtoken(wr, local_name, elem_len, env);
+            if (!nmsp_found)
+            {
+                guththila_write(wr, " ", 1u, env);
+                guththila_write(wr, "xmlns:", 6u, env);
+                pref_start = wr->next;
+                guththila_write_xtoken(wr, prefix, pref_len, env);
+                guththila_write(wr, "=\"", 2u, env);
+                uri_start = wr->next;
+                guththila_write_xtoken(wr, namespace_uri, uri_len, env);
+                guththila_write(wr, "\"", 1u, env);
+            }
             wr->status = START_EMPTY;
-            return GUTHTHILA_SUCCESS;
         }
         else
         {
             return GUTHTHILA_FAILURE;
         }
+        if (!nmsp_found)
+        {
+            
+#ifndef GUTHTHILA_XML_WRITER_TOKEN
+            namesp->name =
+                (guththila_char_t **) AXIS2_MALLOC(env->allocator,
+                                       sizeof(guththila_char_t *) *
+                                       GUTHTHILA_XML_WRITER_NAMESP_DEF_SIZE);
+            namesp->uri =
+                (guththila_char_t **) AXIS2_MALLOC(env->allocator,
+                                       sizeof(guththila_char_t *) *
+                                       GUTHTHILA_XML_WRITER_NAMESP_DEF_SIZE);
+            namesp->name[0] = strdup(prefix);
+            namesp->uri[0] = strdup(namespace_uri);
+            
+#else   
+            namesp->name =
+                (guththila_token_t **) AXIS2_MALLOC(env->allocator,
+                                                    sizeof(guththila_token_t *)
+                                                    *
+                                                    GUTHTHILA_XML_WRITER_NAMESP_DEF_SIZE);
+            namesp->uri =
+                (guththila_token_t **) AXIS2_MALLOC(env->allocator,
+                                                    sizeof(guththila_token_t *)
+                                                    *
+                                                    GUTHTHILA_XML_WRITER_NAMESP_DEF_SIZE);
+            namesp->name[0] = guththila_tok_list_get_token(&wr->tok_list, env);
+            namesp->name[0]->start = GUTHTHILA_BUF_POS(wr->buffer, pref_start);
+            namesp->name[0]->size = pref_len;
+            namesp->uri[0] = guththila_tok_list_get_token(&wr->tok_list, env);
+            namesp->uri[0]->start = GUTHTHILA_BUF_POS(wr->buffer, uri_start);
+            namesp->uri[0]->size = uri_len;            
+#endif  
+            namesp->no = 1;
+            namesp->size = GUTHTHILA_XML_WRITER_NAMESP_DEF_SIZE;
+            guththila_stack_push(&wr->namesp, namesp, env);
+            elem->name_sp_stack_no = GUTHTHILA_STACK_TOP_INDEX(wr->namesp);
+        }
+        
+#ifndef GUTHTHILA_XML_WRITER_TOKEN
+        elem->name = strdup(local_name);
+        elem->prefix = strdup(prefix);        
+#else   
+        elem->name = guththila_tok_list_get_token(&wr->tok_list, env);
+        elem->prefix = guththila_tok_list_get_token(&wr->tok_list, env);
+        elem->name->start = GUTHTHILA_BUF_POS(wr->buffer, elem_start);
+        elem->name->size = elem_len;
+        elem->prefix->start = GUTHTHILA_BUF_POS(wr->buffer, elem_pref_start);
+        elem->prefix->size = pref_len;        
+#endif           
+        guththila_stack_push(&wr->element, elem, env);
     }
-    return GUTHTHILA_FAILURE;
+    return GUTHTHILA_SUCCESS;
 }
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL 
 guththila_write_empty_element_with_namespace(
-    guththila_xml_writer_t * wr,
-    guththila_char_t *namespace_uri,
-    guththila_char_t *local_name,
-    const axutil_env_t * env) 
+                        guththila_xml_writer_t * wr,
+                        guththila_char_t *namespace_uri,
+                        guththila_char_t *local_name,
+                        const axutil_env_t * env) 
 {
     int i = 0, j = 0;
     int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
     int temp = 0;
+    int elem_start = 0;
+    size_t elem_len = 0;
     guththila_xml_writer_namesp_t * writer_namesp = NULL;
+    guththila_xml_writer_element_t * element;
+
+    elem_len = strlen(local_name);
+    element =
+        (guththila_xml_writer_element_t *) AXIS2_MALLOC(env->allocator,
+                                                        sizeof (guththila_xml_writer_element_t));
+    if (!element)
+        return GUTHTHILA_FAILURE;
 
     for (i = stack_size - 1; i >= 0; i--)
     {
@@ -1615,54 +1760,85 @@ guththila_write_empty_element_with_namespace(
                                                                            env);
         temp = writer_namesp->no;
         for (j = 0; j < temp; j++)
-        {            
+        {           
 #ifndef GUTHTHILA_XML_WRITER_TOKEN
             if (!strcmp(namespace_uri, writer_namesp->uri[j]))
 #else
             if (!guththila_tok_str_cmp
                     (writer_namesp->uri[j], namespace_uri,
-                    strlen(namespace_uri), env))
+                     strlen(namespace_uri), env))
 #endif
             {
-                i = 0;	                /* force exit of outer loop */
+                i = 0;                  /* force exit from outer loop as well */
                 break;
             }
         }
     }
-	/* If namespace not found, this indicates the namespace_uri corresponds to the default namespace */
 
+    /* Close off any preceding element and start a new element */
     if (wr->status == START)
     {
-        guththila_write(wr, "><", 2u, env);
+        guththila_write(wr, "><", 2u, env);       
     }
     else if (wr->status == START_EMPTY)
     {
-        guththila_write(wr, "/><", 2u, env);
+        guththila_write(wr, "/><", 2u, env);       
     }
     else if (wr->status == BEGINING)
     {
-        guththila_write(wr, "<", 1u, env);
+        guththila_write(wr, "<", 1u, env);        
     }
     else
     {
         return GUTHTHILA_FAILURE;
     }
-
+    /* If there is a prefix, include it. */
     if (writer_namesp && (j < writer_namesp->no))
-    {             
+    {
 #ifndef GUTHTHILA_XML_WRITER_TOKEN
-        guththila_write(wr, writer_namesp->name[j], strlen(writer_namesp->name[j]), env);
-        
+        guththila_write(wr, writer_namesp->name[j], strlen(writer_namesp->name[j]), env);       
 #else
-        guththila_write_token(wr, writer_namesp->name[j], env);
-        
+        guththila_write_token(wr, writer_namesp->name[j], env);    
 #endif
         guththila_write(wr, ":", 1u, env);
     }
-    guththila_write_xtoken(wr, local_name, strlen(local_name), env);
+    elem_start = wr->next;
+    guththila_write_xtoken(wr, local_name, elem_len, env);
 
+    /* Remember this element's name and prefix, so the closing tag can be written later. */
+#ifndef GUTHTHILA_XML_WRITER_TOKEN
+    element->name = strdup(local_name);
+    if (writer_namesp && (j < writer_namesp->no))
+    {
+        element->prefix = strdup(writer_namesp->name[j]);
+    }
+    else
+    {
+        element->prefix = NULL;
+    }
+    
+#else
+    element->name =
+        guththila_tok_list_get_token(&wr->tok_list, env);
+    element->name->size = elem_len;
+    element->name->start =
+        GUTHTHILA_BUF_POS(wr->buffer, elem_start);
+    if (writer_namesp && (j < writer_namesp->no))
+    {
+        element->prefix =
+            guththila_tok_list_get_token(&wr->tok_list, env);
+        element->prefix->size = writer_namesp->name[j]->size;
+        element->prefix->start = writer_namesp->name[j]->start;
+    }
+    else
+    {
+        element->prefix = NULL;
+    }
+#endif
+
+    element->name_sp_stack_no = -1;
     wr->status = START_EMPTY;
-    return GUTHTHILA_SUCCESS;
+    return guththila_stack_push(&wr->element, element, env);
 }
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL 
@@ -1675,38 +1851,50 @@ guththila_write_empty_element_with_prefix(
     int i, j;
     int stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
     int temp;
-    size_t pref_len = strlen(prefix);
+    int elem_start = 0;
+    size_t elem_len = 0, pref_len = 0;
     guththila_xml_writer_namesp_t * writer_namesp = NULL;
+    elem_len = strlen(local_name);
+    pref_len = strlen(prefix);
     for (i = stack_size - 1; i >= 0; i--)
     {
         writer_namesp =
-            (guththila_xml_writer_namesp_t *) guththila_stack_get_by_index(&wr->namesp,
+            (guththila_xml_writer_namesp_t *) guththila_stack_get_by_index(&wr->
+                                                                           namesp,
                                                                            i,
                                                                            env);
         temp = writer_namesp->no;
         for (j = 0; j < temp; j++)
-        {            
+        {
+            
 #ifndef GUTHTHILA_XML_WRITER_TOKEN
             if (!strcmp(prefix, writer_namesp->name[j]))
             {                
 #else   
-            if (!guththila_tok_str_cmp
-                    (writer_namesp->name[j], prefix, pref_len, env))
+            if (!guththila_tok_str_cmp(writer_namesp->name[j], 
+                                       prefix, pref_len, env))
             {                
 #endif  
+                guththila_xml_writer_element_t * element =
+                    (guththila_xml_writer_element_t *) AXIS2_MALLOC(env->
+                                                                    allocator,
+                                                                    sizeof
+                                                                    (guththila_xml_writer_element_t));
                 if (wr->status == START)
                 {
                     guththila_write(wr, "><", 2u, env);
                     guththila_write_xtoken(wr, prefix, pref_len, env);
                     guththila_write(wr, ":", 1u, env);
+                    elem_start = wr->next;
                     guththila_write_xtoken(wr, local_name, strlen(local_name),
                                             env);
                 }
                 else if (wr->status == START_EMPTY)
                 {
-                    guththila_write(wr, "/><", 2u, env);
-                    guththila_write_xtoken(wr, prefix, strlen(prefix), env);
+                    guththila_write(wr, "/><", 3u, env);
+                    guththila_write_xtoken(wr, prefix, pref_len, env);
                     guththila_write(wr, ":", 1u, env);
+                    elem_start = wr->next;
                     guththila_write_xtoken(wr, local_name, strlen(local_name),
                                             env);
                 }
@@ -1715,6 +1903,7 @@ guththila_write_empty_element_with_prefix(
                     guththila_write(wr, "<", 1u, env);
                     guththila_write_xtoken(wr, prefix, pref_len, env);
                     guththila_write(wr, ":", 1u, env);
+                    elem_start = wr->next;
                     guththila_write_xtoken(wr, local_name, strlen(local_name),
                                             env);
                 }
@@ -1722,8 +1911,24 @@ guththila_write_empty_element_with_prefix(
                 {
                     return GUTHTHILA_FAILURE;
                 }
+                
+#ifndef GUTHTHILA_XML_WRITER_TOKEN
+                element->name = strdup(local_name);
+                element->prefix = strdup(prefix);                
+#else   
+                element->name =
+                    guththila_tok_list_get_token(&wr->tok_list, env);
+                element->name->size = elem_len;
+                element->name->start =
+                    GUTHTHILA_BUF_POS(wr->buffer, elem_start);
+                element->prefix =
+                    guththila_tok_list_get_token(&wr->tok_list, env);
+                element->prefix->size = writer_namesp->name[j]->size;
+                element->prefix->start = writer_namesp->name[j]->start;                
+#endif  
                 wr->status = START_EMPTY;
-                return GUTHTHILA_SUCCESS;
+                element->name_sp_stack_no = -1;
+                return guththila_stack_push(&wr->element, element, env);
             }
         }
     }
