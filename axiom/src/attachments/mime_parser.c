@@ -121,7 +121,7 @@ axiom_mime_parser_parse(
     if(cb_ctx->chunked_stream)
     {
         
-        while(!axis2_http_chunked_stream_get_end_of_chunks(
+        while(!axutil_http_chunked_stream_get_end_of_chunks(
                 cb_ctx->chunked_stream, env))
         {
             read = 0;
