@@ -15,7 +15,7 @@ Note: Do the same for the bat file on Windows.
 Examples
 --------
 
-To geneate a seve skeleton in C:
+To geneate a sevice skeleton in C:
 Linux:
 	sh WSDL2C.sh -uri inteoptestdoclitpaametes.wsdl -ss -sd -d adb -u
 Windows:
