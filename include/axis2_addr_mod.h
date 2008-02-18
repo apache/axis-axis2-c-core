@@ -24,7 +24,7 @@
      */
 
     /**
-     * @defgroup axis2_addr_mod Axis2 addressing module interface
+     * @defgroup axis2_addr_mod addressing module interface
      * @ingroup axis2_addr
      * @{
      */
