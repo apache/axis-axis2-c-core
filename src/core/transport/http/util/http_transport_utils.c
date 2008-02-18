@@ -282,7 +282,7 @@ axis2_http_transport_utils_process_http_post_request(
                                                          AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
             {
                 callback_ctx->chunked_stream =
-                    axis2_http_chunked_stream_create(env, in_stream);
+                    axutil_http_chunked_stream_create(env, in_stream);
                 if (!callback_ctx->chunked_stream)
                 {
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
@@ -644,7 +644,7 @@ axis2_http_transport_utils_process_http_put_request(
                                                          AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
             {
                 callback_ctx->chunked_stream =
-                    axis2_http_chunked_stream_create(env, in_stream);
+                    axutil_http_chunked_stream_create(env, in_stream);
                 if (!callback_ctx->chunked_stream)
                 {
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
@@ -1563,7 +1563,7 @@ axis2_http_transport_utils_on_data_request(
     {
         --size;                         
         /* reserve space to insert trailing null */
-        len = axis2_http_chunked_stream_read(cb_ctx->chunked_stream, env,
+        len = axutil_http_chunked_stream_read(cb_ctx->chunked_stream, env,
                                              buffer, size);
         if (len >= 0)
         {
@@ -1652,7 +1652,7 @@ axis2_http_transport_utils_create_soap_msg(
     if (trans_enc && 0 == axutil_strcmp(trans_enc,
                                         AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
     {
-        callback_ctx->chunked_stream = axis2_http_chunked_stream_create(env,
+        callback_ctx->chunked_stream = axutil_http_chunked_stream_create(env,
                                                                         in_stream);
         if (!callback_ctx->chunked_stream)
         {

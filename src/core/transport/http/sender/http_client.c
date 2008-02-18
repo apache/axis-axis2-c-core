@@ -356,8 +356,8 @@ axis2_http_client_send(
         }
         else
         {
-            axis2_http_chunked_stream_t *chunked_stream = NULL;
-            chunked_stream = axis2_http_chunked_stream_create(env,
+            axutil_http_chunked_stream_t *chunked_stream = NULL;
+            chunked_stream = axutil_http_chunked_stream_create(env,
                                                               client->
                                                               data_stream);
             status = AXIS2_SUCCESS;
@@ -369,9 +369,9 @@ axis2_http_client_send(
             }
             while (written < client->req_body_size)
             {
-                /*written = axis2_http_chunked_stream_write(chunked_stream, env,
+                /*written = axutil_http_chunked_stream_write(chunked_stream, env,
                    str_body, body_size); */
-                written = axis2_http_chunked_stream_write(chunked_stream, env,
+                written = axutil_http_chunked_stream_write(chunked_stream, env,
                                                           client->req_body,
                                                           client->
                                                           req_body_size);
@@ -383,9 +383,9 @@ axis2_http_client_send(
             }
             if (AXIS2_SUCCESS == status)
             {
-                axis2_http_chunked_stream_write_last_chunk(chunked_stream, env);
+                axutil_http_chunked_stream_write_last_chunk(chunked_stream, env);
             }
-            axis2_http_chunked_stream_free(chunked_stream, env);
+            axutil_http_chunked_stream_free(chunked_stream, env);
         }
     }
 
