@@ -95,7 +95,7 @@ axiom_mime_parser_parse(
     axis2_char_t * mime_boundary)
 {
     axis2_char_t *buffer = NULL;
-    int size = 10 * AXIOM_MIME_PARSER_BUFFER_SIZE;
+    int size = AXIOM_MIME_PARSER_BUFFER_SIZE;
     int len = 0;
     axis2_char_t *root_mime = NULL;
     axis2_char_t *soap_body_str = NULL;
@@ -295,7 +295,7 @@ axiom_mime_parser_parse(
             mime_binary = AXIS2_MALLOC(env->allocator,
                                             sizeof(char) * (mime_binary_len + 1));
             memcpy(mime_binary, temp_mime_binary, mime_binary_len);
-            mime_binary[mime_binary_len + 1] = '\0';
+            mime_binary[mime_binary_len] = '\0';
         }
 
         if (mime_parser->mime_parts_map)
