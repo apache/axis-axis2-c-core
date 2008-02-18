@@ -308,7 +308,18 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
 
         if (!skel_invoked)
         {
-            fault_value_str = "env:Receiver";
+			if (axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
+            {
+                fault_value_str =
+                    AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
+                    AXIOM_SOAP11_FAULT_CODE_RECEIVER;
+            }
+            else
+            {
+                fault_value_str =
+                    AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
+                    AXIOM_SOAP12_SOAP_FAULT_VALUE_RECEIVER;
+            }
         }
 
         err_msg = AXIS2_ERROR_GET_MESSAGE(env->error);

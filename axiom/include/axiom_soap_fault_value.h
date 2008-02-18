@@ -70,7 +70,7 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-      * Get the text value of the env:Value element directly under env:Code element
+      * Get the text value of the soapenv:Value element directly under soapenv:Code element
       * @param fault_value pointer to axiom_soap_fault_t
       * @param env Environment. MUST NOT BE NULL
       * @return text value 
@@ -81,7 +81,7 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-      * Set the text value of the env:Value element directly under env:Code element
+      * Set the text value of the soapenv:Value element directly under soapenv:Code element
       * @param fault_value pointer to axiom_soap_fault_t
       * @param env Environment. MUST NOT BE NULL
       * @param text value to be set

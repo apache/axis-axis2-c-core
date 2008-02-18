@@ -241,8 +241,9 @@ axiom_mime_parser_parse(
         axis2_char_t *temp_body_mime = NULL;
         axis2_char_t *old_pos = NULL;
         axis2_char_t *temp_mime_binary = NULL;
-        pos = NULL;
         axis2_char_t *temp_pos = NULL;
+
+        pos = NULL;
 
         /* keep trac of counter to ensure that we do not go in an infinite loop
            It is possible that we could fall into an infinite loop if there 

@@ -151,9 +151,9 @@ extern "C"
 
 #define AXIOM_SOAP_FAULT_DETAIL_EXCEPTION_ENTRY "Exception"
 
-#define AXIOM_SOAP_FAULT_CODE_VERSION_MISMATCH "env:VersionMismatch"
+#define AXIOM_SOAP_FAULT_CODE_VERSION_MISMATCH "soapenv:VersionMismatch"
 
-#define AXIOM_SOAP_FAULT_CODE_MUST_UNDERSTAND "env:MustUnderstand"
+#define AXIOM_SOAP_FAULT_CODE_MUST_UNDERSTAND "soapenv:MustUnderstand"
 
 #define AXIOM_SOAP_FAULT_CODE_DATA_ENCODING_UNKNOWN "env:DataEncodingUnknown"
 
