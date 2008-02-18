@@ -121,9 +121,9 @@ axiom_soap_header_create_with_parent(
         axiom_soap_header_free(soap_header, env);
         return NULL;
     }
-    if (axiom_node_get_first_child(parent_node, env))
+    if (axiom_node_get_first_element(parent_node, env))
     {
-        body_node = axiom_node_get_first_child(parent_node, env);
+        body_node = axiom_node_get_first_element(parent_node, env);
         axiom_node_detach(body_node, env);
     }
 
