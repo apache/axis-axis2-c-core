@@ -822,9 +822,8 @@ axiom_stax_builder_next(
 
         case AXIOM_XML_READER_EMPTY_ELEMENT:
 #ifdef AXIS2_GUTHTHILA_ENABLED
-            /* there is a problem with logic here using old behaviour */
             node = axiom_stax_builder_create_om_element(om_builder, env,
-                                                        AXIS2_FALSE);
+                                                        AXIS2_TRUE);
 #else
             node = axiom_stax_builder_create_om_element(om_builder, env,
                                                         AXIS2_FALSE);
@@ -1139,9 +1138,8 @@ axiom_stax_builder_next_with_token(
 
     case AXIOM_XML_READER_EMPTY_ELEMENT:
 #ifdef AXIS2_GUTHTHILA_ENABLED
-        /* there is a problem with logic here using old behaviour */
         val = axiom_stax_builder_create_om_element(om_builder, env,
-                                                   AXIS2_FALSE);
+                                                   AXIS2_TRUE);
 #else
         val = axiom_stax_builder_create_om_element(om_builder, env,
                                                    AXIS2_FALSE);

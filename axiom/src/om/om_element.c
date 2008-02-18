@@ -762,43 +762,33 @@ axiom_element_serialize_start_part(
             uri = axiom_namespace_get_uri(om_element->ns, env);
             prefix = axiom_namespace_get_prefix(om_element->ns, env);
 
-            if  (axutil_strcmp(prefix, "") != 0)
-            {
-                prefix = NULL;
-            }
-
-            status = axiom_output_write(om_output, env,
-                                        AXIOM_ELEMENT, 4,
-                                        axutil_string_get_buffer(om_element->
-                                                                 localname,
-                                                                 env), uri,
-                                        prefix, NULL);
-
 
             if ((uri) && (prefix) && (axutil_strcmp(prefix, "") != 0))
             {
                 status = axiom_output_write(om_output, env,
-                                            AXIOM_ELEMENT, 3,
+                                            AXIOM_ELEMENT, 4,
                                             axutil_string_get_buffer(om_element->
                                                                      localname,
                                                                      env), uri,
-                                            prefix);
+                                            prefix, NULL);
             }
             else if (uri)
             {
                 status = axiom_output_write(om_output, env,
-                                            AXIOM_ELEMENT, 2,
+                                            AXIOM_ELEMENT, 4,
                                             axutil_string_get_buffer(om_element->
                                                                      localname,
-                                                                     env), uri);
+                                                                     env), uri,
+                                            NULL, NULL);
             }
         }
         else
         {
             status = axiom_output_write(om_output, env,
-                                        AXIOM_ELEMENT, 1,
+                                        AXIOM_ELEMENT, 4,
                                         axutil_string_get_buffer(om_element->
-                                                                 localname, env));
+                                                                 localname, env), NULL,
+                                        NULL, NULL);
         }
     }
     else
