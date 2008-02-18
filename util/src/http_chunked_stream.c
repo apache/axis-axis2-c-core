@@ -23,7 +23,7 @@
 
 #define AXIS2_HTTP_CRLF "\r\n"
 
-struct axis2_http_chunked_stream
+struct axutil_http_chunked_stream
 {
     axutil_stream_t *stream;
     int current_chunk_size;
@@ -32,21 +32,21 @@ struct axis2_http_chunked_stream
     axis2_bool_t chunk_started;
 };
 
-static axis2_status_t axis2_http_chunked_stream_start_chunk(
-    axis2_http_chunked_stream_t * chunked_stream,
+static axis2_status_t axutil_http_chunked_stream_start_chunk(
+    axutil_http_chunked_stream_t * chunked_stream,
     const axutil_env_t * env);
 
-AXIS2_EXTERN axis2_http_chunked_stream_t *AXIS2_CALL
-axis2_http_chunked_stream_create(
+AXIS2_EXTERN axutil_http_chunked_stream_t *AXIS2_CALL
+axutil_http_chunked_stream_create(
     const axutil_env_t * env,
     axutil_stream_t * stream)
 {
-    axis2_http_chunked_stream_t *chunked_stream = NULL;
+    axutil_http_chunked_stream_t *chunked_stream = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, stream, NULL);
 
-    chunked_stream = (axis2_http_chunked_stream_t *) AXIS2_MALLOC
-        (env->allocator, sizeof(axis2_http_chunked_stream_t));
+    chunked_stream = (axutil_http_chunked_stream_t *) AXIS2_MALLOC
+        (env->allocator, sizeof(axutil_http_chunked_stream_t));
 
     if (!chunked_stream)
     {
@@ -63,8 +63,8 @@ axis2_http_chunked_stream_create(
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_http_chunked_stream_free(
-    axis2_http_chunked_stream_t * chunked_stream,
+axutil_http_chunked_stream_free(
+    axutil_http_chunked_stream_t * chunked_stream,
     const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, void);
@@ -74,8 +74,8 @@ axis2_http_chunked_stream_free(
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_http_chunked_stream_read(
-    axis2_http_chunked_stream_t * chunked_stream,
+axutil_http_chunked_stream_read(
+    axutil_http_chunked_stream_t * chunked_stream,
     const axutil_env_t * env,
     void *buffer,
     size_t count)
@@ -101,7 +101,7 @@ axis2_http_chunked_stream_read(
     }
     if (AXIS2_FALSE == chunked_stream->chunk_started)
     {
-        axis2_http_chunked_stream_start_chunk(chunked_stream, env);
+        axutil_http_chunked_stream_start_chunk(chunked_stream, env);
     }
     yet_to_read = (int)count;
     /* We are sure that the difference lies within the int range */
@@ -116,7 +116,7 @@ axis2_http_chunked_stream_read(
             chunked_stream->unread_len -= len;
             if (chunked_stream->unread_len <= 0)
             {
-                axis2_http_chunked_stream_start_chunk(chunked_stream, env);
+                axutil_http_chunked_stream_start_chunk(chunked_stream, env);
             }
         }
         else
@@ -133,8 +133,8 @@ axis2_http_chunked_stream_read(
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_http_chunked_stream_write(
-    axis2_http_chunked_stream_t * chunked_stream,
+axutil_http_chunked_stream_write(
+    axutil_http_chunked_stream_t * chunked_stream,
     const axutil_env_t * env,
     const void *buffer,
     size_t count)
@@ -162,16 +162,16 @@ axis2_http_chunked_stream_write(
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_http_chunked_stream_get_current_chunk_size(
-    const axis2_http_chunked_stream_t * chunked_stream,
+axutil_http_chunked_stream_get_current_chunk_size(
+    const axutil_http_chunked_stream_t * chunked_stream,
     const axutil_env_t * env)
 {
     return chunked_stream->current_chunk_size;
 }
 
 static axis2_status_t
-axis2_http_chunked_stream_start_chunk(
-    axis2_http_chunked_stream_t * chunked_stream,
+axutil_http_chunked_stream_start_chunk(
+    axutil_http_chunked_stream_t * chunked_stream,
     const axutil_env_t * env)
 {
     axis2_char_t tmp_buf[3] = "";
@@ -220,8 +220,8 @@ axis2_http_chunked_stream_start_chunk(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_http_chunked_stream_write_last_chunk(
-    axis2_http_chunked_stream_t * chunked_stream,
+axutil_http_chunked_stream_write_last_chunk(
+    axutil_http_chunked_stream_t * chunked_stream,
     const axutil_env_t * env)
 {
     axutil_stream_t *stream = NULL;
@@ -236,8 +236,8 @@ axis2_http_chunked_stream_write_last_chunk(
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_http_chunked_stream_get_end_of_chunks(
-    axis2_http_chunked_stream_t * chunked_stream,
+axutil_http_chunked_stream_get_end_of_chunks(
+    axutil_http_chunked_stream_t * chunked_stream,
     const axutil_env_t * env)
 {
     return chunked_stream->end_of_chunks; 

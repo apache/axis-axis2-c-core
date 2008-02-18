@@ -16,8 +16,8 @@
 * limitations under the License.
 */
 
-#ifndef AXIS2_HTTP_CHUNKED_STREAM_H
-#define AXIS2_HTTP_CHUNKED_STREAM_H
+#ifndef AXUTIL_HTTP_CHUNKED_STREAM_H
+#define AXUTIL_HTTP_CHUNKED_STREAM_H
 
 /**
  * @defgroup axutil_http_chunked_stream http chunked stream
@@ -27,7 +27,7 @@
  */
 
 /**
- * @file axis2_http_chunked_stream.h
+ * @file axutil_http_chunked_stream.h
  * @brief axis2 HTTP Chunked Stream
  */
 
@@ -39,8 +39,8 @@ extern "C"
 {
 #endif
 
-    /** Type name for struct axis2_http_chunked_stream */
-    typedef struct axis2_http_chunked_stream axis2_http_chunked_stream_t;
+    /** Type name for struct axutil_http_chunked_stream */
+    typedef struct axutil_http_chunked_stream axutil_http_chunked_stream_t;
 
     struct axis2_callback_info
     {
@@ -48,7 +48,7 @@ extern "C"
         void *in_stream;
         int content_length;
         int unread_len;
-        axis2_http_chunked_stream_t *chunked_stream;
+        axutil_http_chunked_stream_t *chunked_stream;
     };
     typedef struct axis2_callback_info axis2_callback_info_t;
 
@@ -60,8 +60,8 @@ extern "C"
     * @param count
     */
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_http_chunked_stream_read(
-        axis2_http_chunked_stream_t * chunked_stream,
+    axutil_http_chunked_stream_read(
+        axutil_http_chunked_stream_t * chunked_stream,
         const axutil_env_t * env,
         void *buffer,
         size_t count);
@@ -72,8 +72,8 @@ extern "C"
     * @param count
     */
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_http_chunked_stream_write(
-        axis2_http_chunked_stream_t * chunked_stream,
+    axutil_http_chunked_stream_write(
+        axutil_http_chunked_stream_t * chunked_stream,
         const axutil_env_t * env,
         const void *buffer,
         size_t count);
@@ -84,8 +84,8 @@ extern "C"
     */
     AXIS2_EXTERN int AXIS2_CALL
 
-    axis2_http_chunked_stream_get_current_chunk_size(
-        const axis2_http_chunked_stream_t * chunked_stream,
+    axutil_http_chunked_stream_get_current_chunk_size(
+        const axutil_http_chunked_stream_t * chunked_stream,
         const axutil_env_t * env);
 
     /**
@@ -95,8 +95,8 @@ extern "C"
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
-    axis2_http_chunked_stream_write_last_chunk(
-        axis2_http_chunked_stream_t * chunked_stream,
+    axutil_http_chunked_stream_write_last_chunk(
+        axutil_http_chunked_stream_t * chunked_stream,
         const axutil_env_t * env);
 
     /**
@@ -105,23 +105,23 @@ extern "C"
     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
     */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_http_chunked_stream_free(
-        axis2_http_chunked_stream_t * chunked_stream,
+    axutil_http_chunked_stream_free(
+        axutil_http_chunked_stream_t * chunked_stream,
         const axutil_env_t * env);
 
     /**
      * @param env pointer to environment struct
      * @param stream pointer to stream
      */
-    AXIS2_EXTERN axis2_http_chunked_stream_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_http_chunked_stream_t *AXIS2_CALL
 
-    axis2_http_chunked_stream_create(
+    axutil_http_chunked_stream_create(
         const axutil_env_t * env,
         axutil_stream_t * stream);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_http_chunked_stream_get_end_of_chunks(
-        axis2_http_chunked_stream_t * chunked_stream,
+    axutil_http_chunked_stream_get_end_of_chunks(
+        axutil_http_chunked_stream_t * chunked_stream,
         const axutil_env_t * env);
     
 
@@ -129,4 +129,4 @@ extern "C"
 #ifdef __cplusplus
 }
 #endif
-#endif                          /* AXIS2_HTTP_CHUNKED_STREAM_H */
+#endif                          /* AXUTIL_HTTP_CHUNKED_STREAM_H */
