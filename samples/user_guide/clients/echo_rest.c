@@ -70,7 +70,9 @@ main(
             printf(" or %s -mHEAD for HTTP HEAD\n", argv[0]);
             printf(" or %s -mDELETE for HTTP DELETE\n", argv[0]);
             printf(" or %s -mPUT for HTTP PUT\n", argv[0]);
-            printf("use -h for help\n");
+            printf(" use -h for help\n");
+            printf("\nNOTE: please make sure to change the echo service's services.xml,\n ");
+            printf("if you have not, and restart the server before trying out this sample.\n");
             return 0;
         }
         else
