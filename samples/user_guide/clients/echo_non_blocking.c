@@ -125,19 +125,17 @@ main(
             /* We are done with the callback */
             break;
         }
-        AXIS2_USLEEP(100);
+        AXIS2_SLEEP(1);
         count++;
     }
 
     if (!(count < 30))
     {
-        isComplete = 1;
         printf("\necho client invoke FAILED. Counter timed out.\n");
     }
 
     if (svc_client)
     {
-        AXIS2_SLEEP(1);
         axis2_svc_client_free(svc_client, env);
         svc_client = NULL;
     }
@@ -188,7 +186,7 @@ echo_callback_on_complete(
             printf("echo stub invoke FAILED!\n");
             status = AXIS2_FAILURE;
         }
-        else if (isComplete != 1)
+        else
         {
             axis2_char_t *om_str = NULL;
             om_str = axiom_node_to_string(ret_node, env);
