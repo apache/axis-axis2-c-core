@@ -56,7 +56,7 @@ extern "C"
         void *in_stream;
         int content_length;
         int unread_len;
-        axis2_http_chunked_stream_t *chunked_stream;
+        axutil_http_chunked_stream_t *chunked_stream;
     };
     typedef struct axis2_callback_info axis2_callback_info_t;
     */
