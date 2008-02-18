@@ -20,15 +20,14 @@
 #define AXIS2_ADDR_MOD_H
 
     /**
-     * @file axis2_addr_mod.h
-     */
-
-    /**
      * @defgroup axis2_addr_mod addressing module interface
      * @ingroup axis2_addr
      * @{
      */
 
+    /**
+     * @file axis2_addr_mod.h
+     */
 
 #include <axis2_handler.h>
 

@@ -20,11 +20,6 @@
 #define AXIS2_MSG_INFO_HEADERS_H
 
 /**
- * @file axis2_msg_info_headers.h
- */
-
-
-/**
  * @defgroup axis2_msg_info_headers message information headers
  * @ingroup axis2_addr
  * message information headers encapsulates properties that enable the
@@ -39,6 +34,10 @@
  * message information headers capture addressing information related to these
  * interaction patterns such as from, to, reply to and fault to addresses.
  * @{
+ */
+
+/**
+ * @file axis2_msg_info_headers.h
  */
 
 #include <axis2_defines.h>

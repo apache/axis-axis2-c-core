@@ -19,10 +19,6 @@
 #ifndef AXIS2_ANY_CONTENT_TYPE_H
 #define AXIS2_ANY_CONTENT_TYPE_H
 
-/** 
- * @file axis2_any_content_type.h
- */
-
 /**
  * @defgroup axis2_any_content_type any content type
  * @ingroup axis2_addr
@@ -30,6 +26,10 @@
  * could be associated with an endpoint reference. The values in the map are
  * stored in string format, with QNames as key values.
  * @{
+ */
+
+/** 
+ * @file axis2_any_content_type.h
  */
 
 #include <axis2_defines.h>
