@@ -155,7 +155,7 @@ extern "C"
 
 #define AXIOM_SOAP_FAULT_CODE_MUST_UNDERSTAND "soapenv:MustUnderstand"
 
-#define AXIOM_SOAP_FAULT_CODE_DATA_ENCODING_UNKNOWN "env:DataEncodingUnknown"
+#define AXIOM_SOAP_FAULT_CODE_DATA_ENCODING_UNKNOWN "soapenv:DataEncodingUnknown"
 
 #define AXIOM_SOAP_FAULT_CODE_SENDER ""
 
