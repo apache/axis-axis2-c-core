@@ -152,9 +152,9 @@ axiom_mime_parser_parse(
         else
         {
             int i = 0;
+            int temp = 0;
             buf_len = 0;
             buffer = NULL;
-            int temp = 0;
 
             for(i=0; i < buf_num; i++)
             {
