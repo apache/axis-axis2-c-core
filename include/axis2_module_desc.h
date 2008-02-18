@@ -15,6 +15,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+
 #ifndef AXIS2_MODULE_DESC_H
 #define AXIS2_MODULE_DESC_H
 
@@ -27,6 +28,10 @@
  * entry. Alternatively, a module could be made available to selected services
  * by including a module reference entry in services.xml.
  * @{
+ */
+
+/**
+ * @file axis2_module_desc.h
  */
 
 #include <axis2_const.h>
@@ -124,7 +129,6 @@ extern "C"
      * not a cloned copy    
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
-
     axis2_module_desc_get_fault_in_flow(
         const axis2_module_desc_t * module_desc,
         const axutil_env_t * env);
@@ -138,7 +142,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_module_desc_set_fault_in_flow(
         axis2_module_desc_t * module_desc,
         const axutil_env_t * env,
@@ -152,7 +155,6 @@ extern "C"
      * reference not a cloned copy    
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
-
     axis2_module_desc_get_fault_out_flow(
         const axis2_module_desc_t * module_desc,
         const axutil_env_t * env);
@@ -166,7 +168,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_module_desc_set_fault_out_flow(
         axis2_module_desc_t * module_desc,
         const axutil_env_t * env,
@@ -179,7 +180,6 @@ extern "C"
      * @return pointer to QName
      */
     AXIS2_EXTERN const axutil_qname_t *AXIS2_CALL
-
     axis2_module_desc_get_qname(
         const axis2_module_desc_t * module_desc,
         const axutil_env_t * env);
@@ -229,9 +229,9 @@ extern "C"
      * cloned copy
      */
     AXIS2_EXTERN struct axis2_conf *AXIS2_CALL
-                axis2_module_desc_get_parent(
-                    const axis2_module_desc_t * module_desc,
-                    const axutil_env_t * env);
+    axis2_module_desc_get_parent(
+        const axis2_module_desc_t * module_desc,
+        const axutil_env_t * env);
 
     /**
      * Sets parent which is of type configuration.
@@ -248,7 +248,7 @@ extern "C"
         struct axis2_conf *parent);
 
     /**
-     * Add parameter
+     * Adds parameter to module description.
      * @param module_desc pointer to module description
      * @param env pointer to environment struct
      * @param param pointer to parameter struct
@@ -277,10 +277,9 @@ extern "C"
      * Gets all parameters associated with module.
      * @param module_desc pointer to module description
      * @param env pointer to environment struct
-     * @param pointer to array list containing all parameters
+     * @return pointer to array list containing all parameters
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-
     axis2_module_desc_get_all_params(
         const axis2_module_desc_t * module_desc,
         const axutil_env_t * env);
@@ -305,10 +304,9 @@ extern "C"
      * @return pointer to module
      */
     AXIS2_EXTERN struct axis2_module *AXIS2_CALL
-
-                axis2_module_desc_get_module(
-                    const axis2_module_desc_t * module_desc,
-                    const axutil_env_t * env);
+    axis2_module_desc_get_module(
+        const axis2_module_desc_t * module_desc,
+        const axutil_env_t * env);
 
     /**
      * @param module_desc pointer to module description
@@ -323,14 +321,26 @@ extern "C"
         const axutil_env_t * env,
         struct axis2_module *module);
 
+    /**
+     * Gets the container having all params.
+     * @param module_desc pointer to module description
+     * @param env pointer to environment struct
+     * @return pointer to param container
+     * @sa axutil_param_container
+     */
     AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
-
     axis2_module_desc_get_param_container(
         const axis2_module_desc_t * module_desc,
         const axutil_env_t * env);
 
+    /**
+     * Gets the container having all flows.
+     * @param module_desc pointer to module description
+     * @param env pointer to environment struct
+     * @return pointer to param container
+     * @sa axis2_flow_container
+     */
     AXIS2_EXTERN axis2_flow_container_t *AXIS2_CALL
-
     axis2_module_desc_get_flow_container(
         const axis2_module_desc_t * module_desc,
         const axutil_env_t * env);
@@ -351,7 +361,6 @@ extern "C"
      * @return pointer to newly created module description
      */
     AXIS2_EXTERN axis2_module_desc_t *AXIS2_CALL
-
     axis2_module_desc_create_with_qname(
         const axutil_env_t * env,
         const axutil_qname_t * qname);

@@ -116,7 +116,6 @@ extern "C"
      * @return fault in flow, returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
-
     axis2_flow_container_get_fault_in_flow(
         const axis2_flow_container_t * flow_container,
         const axutil_env_t * env);
@@ -130,7 +129,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_flow_container_set_fault_in_flow(
         axis2_flow_container_t * flow_container,
         const axutil_env_t * env,
@@ -143,7 +141,6 @@ extern "C"
      * @return fault out flow, returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
-
     axis2_flow_container_get_fault_out_flow(
         const axis2_flow_container_t * flow_container,
         const axutil_env_t * env);
@@ -157,7 +154,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_flow_container_set_fault_out_flow(
         axis2_flow_container_t * flow_container,
         const axutil_env_t * env,
@@ -169,7 +165,6 @@ extern "C"
      * @return pointer to newly created flow container
      */
     AXIS2_EXTERN axis2_flow_container_t *AXIS2_CALL
-
     axis2_flow_container_create(
         const axutil_env_t * env);
 

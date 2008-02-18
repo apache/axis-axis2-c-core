@@ -920,9 +920,12 @@ extern "C"
      * recursively search the related description hierarchy for the parameter 
      * with given key until it is found or the parent of the description 
      * hierarchy is reached. The order of search is as follows:
+     * \n
      * 1. search in operation description, if its there return
+     * \n
      * 2. if the parameter is not found in operation or operation is NULL, 
      * search in service
+     * \n
      * 3. if the parameter is not found in service or service is NULL search 
      * in configuration
      * @param msg_ctx message context
@@ -939,15 +942,23 @@ extern "C"
     /**
      * Gets parameters related to a named module and a given handler 
      * description. The order of searching for parameter is as follows:
+     * \n
      * 1. search in module configuration stored inside corresponding operation 
      * description if its there
+     * \n
      * 2. search in corresponding operation if its there
+     * \n
      * 3. search in module configurations stored inside corresponding 
      * service description if its there
+     * \n
      * 4. search in corresponding service description if its there
+     * \n
      * 5. search in module configurations stored inside configuration
+     * \n
      * 6. search in configuration for parameters
+     * \n
      * 7. get the corresponding module and search for the parameters
+     * \n
      * 8. search in handler description for the parameter
      * @param msg_ctx pointer to message context
      * @param env pointer to environment struct

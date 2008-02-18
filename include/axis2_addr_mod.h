@@ -20,8 +20,15 @@
 #define AXIS2_ADDR_MOD_H
 
     /**
+     * @defgroup axis2_mod_addr WS-Addressing Module
+     * @ingroup axis2
+     * @{
+     * @}
+     */
+
+    /**
      * @defgroup axis2_addr_mod addressing module interface
-     * @ingroup axis2_addr
+     * @ingroup axis2_mod_addr
      * @{
      */
 

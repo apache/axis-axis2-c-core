@@ -56,7 +56,6 @@ extern "C"
      * @return pointer to QName, returns a reference, not a cloned copy
      */
     AXIS2_EXTERN const axutil_string_t *AXIS2_CALL
-
     axis2_handler_desc_get_name(
         const axis2_handler_desc_t * handler_desc,
         const axutil_env_t * env);
@@ -135,7 +134,6 @@ extern "C"
      * reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-
     axis2_handler_desc_get_all_params(
         const axis2_handler_desc_t * handler_desc,
         const axutil_env_t * env);
@@ -186,7 +184,6 @@ extern "C"
      * @return class name string
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-
     axis2_handler_desc_get_class_name(
         const axis2_handler_desc_t * handler_desc,
         const axutil_env_t * env);
@@ -214,7 +211,6 @@ extern "C"
      * not a cloned copy
      */
     AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
-
     axis2_handler_desc_get_parent(
         const axis2_handler_desc_t * handler_desc,
         const axutil_env_t * env);
@@ -253,7 +249,6 @@ extern "C"
      * not a cloned copy
      */
     AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
-
     axis2_handler_desc_get_param_container(
         const axis2_handler_desc_t * handler_desc,
         const axutil_env_t * env);
