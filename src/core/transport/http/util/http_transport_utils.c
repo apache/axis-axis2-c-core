@@ -37,6 +37,7 @@
 #include <axiom_mime_parser.h>
 #include <axis2_disp.h>
 #include <axis2_msg.h>
+#include <stdlib.h>
 
 #define AXIOM_MIME_BOUNDARY_BYTE 45
 
