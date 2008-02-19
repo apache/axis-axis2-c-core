@@ -5,8 +5,7 @@
  *   */
 axis2_status_t test_uri(axutil_env_t *env)
 {   
-    unsigned flags;
-    axis2_char_t *uri_str = "http://user:pass@example.com:80/foo?bar#item5";
+    axis2_char_t * uri_str = "http://user:pass@example.com:80/foo?bar#item5";
     axis2_char_t * host = "home.netscape.com:443";
     axis2_char_t * uri_str_base = "http://user:pass@example.com:80/foo?bar";
     axis2_char_t * scheme_str = "http";
@@ -15,11 +14,10 @@ axis2_status_t test_uri(axutil_env_t *env)
     axutil_uri_t * uri = NULL;
     axutil_uri_t * clone = NULL;
     axutil_uri_t * rel = NULL;
-    axis2_char_t *protocol = NULL;
-    axis2_char_t *server = NULL;
-    axis2_char_t *path = NULL;
+    axis2_char_t * protocol = NULL;
+    axis2_char_t * server = NULL;
+    axis2_char_t * path = NULL;
     axis2_port_t scheme_port;
-    axis2_status_t status = AXIS2_FAILURE;
     axis2_port_t port;
 
     hostinfo = axutil_uri_parse_hostinfo(env,host);
@@ -35,7 +33,7 @@ axis2_status_t test_uri(axutil_env_t *env)
     scheme_port = axutil_uri_port_of_scheme(scheme_str); 
     if(scheme_port)
     {
-        printf("port of scheme is %d\n", (int)scheme_port);
+        printf("port of scheme is %u\n", scheme_port);
     }
     else
     {
@@ -77,7 +75,7 @@ axis2_status_t test_uri(axutil_env_t *env)
     rel = axutil_uri_resolve_relative(env,base,clone);
     if(rel)
     {
-        printf("The resolve relative uri is %s\n",axutil_uri_to_string(rel,env,flags));
+        printf("The resolved relative uri is %s\n",axutil_uri_to_string(rel,env,0));
     }
     else
     {
@@ -114,7 +112,7 @@ axis2_status_t test_uri(axutil_env_t *env)
    
     printf("The protocol is %s\n",protocol);
     printf("The server is %s \n",server);
-    printf("The port is %d \n",(unsigned short)port);
+    printf("The port is %u \n",port);
     printf("The path is %s\n",path); 
     axutil_uri_free(uri,env);
     return AXIS2_SUCCESS;
@@ -130,7 +128,7 @@ int main()
     
     if(status == AXIS2_FAILURE)
     {
-        printf(" Test is failed");
+        printf("The Test failed");
     }
     axutil_env_free(env);
     
