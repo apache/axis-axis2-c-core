@@ -7,7 +7,7 @@
 
     <!-- Set the suitable size for optimum memory usage when sending large attachments -->
     <!--parameter name="MTOMChunkBufferSize" locked="false">10</parameter-->
-    <!--parameter name="MTOMMAXChunkBuffers" locked="false">1000</parameter-->
+    <!--parameter name="MTOMMaxChunkBuffers" locked="false">1000</parameter-->
     
     <!-- Enable REST -->
     <parameter name="enableREST" locked="false">true</parameter>
