@@ -115,8 +115,9 @@ axiom_mime_parser_parse(
     int buf_num = 0;    
     int buf_len = 0;
     axis2_callback_info_t *cb_ctx = NULL;
-    axis2_char_t *buf_array[mime_parser->max_chunk_buffers];
-    int len_array[mime_parser->max_chunk_buffers];
+    axis2_char_t **buf_array = NULL;
+    int *len_array = NULL;
+
 
     cb_ctx = (axis2_callback_info_t *) callback_ctx;
 
@@ -124,6 +125,12 @@ axiom_mime_parser_parse(
 
     if(cb_ctx->chunked_stream)
     {
+        buf_array = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t *) * (
+                       mime_parser->max_chunk_buffers));
+
+        len_array = AXIS2_MALLOC(env->allocator, sizeof(int) * (
+                       mime_parser->max_chunk_buffers));
+
         size = (mime_parser->chunk_buffer_size) * AXIOM_MIME_PARSER_BUFFER_SIZE;
 
 
@@ -403,6 +410,18 @@ axiom_mime_parser_parse(
             body_mime = temp_body_mime;
         }
     }                           /* end while (!end_of_mime) */
+
+    if(buf_array)
+    {
+        AXIS2_FREE(env->allocator, buf_array);
+        buf_array = NULL;
+    }
+
+    if(len_array)
+    {
+        AXIS2_FREE(env->allocator, len_array);
+        len_array = NULL;
+    }
 
     AXIS2_FREE(env->allocator, buffer);
 
