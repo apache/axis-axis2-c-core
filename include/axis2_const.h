@@ -354,7 +354,7 @@ extern "C"
 #define AXIS2_CACHE_ATTACHMENTS "cacheAttachments"
 #define AXIS2_FILE_SIZE_THRESHOLD "sizeThreshold"
 #define AXIS2_MTOM_CHUNK_BUFFER_SIZE "MTOMChunkBufferSize"
-#define AXIS2_MTOM_MAX_CHUNK_BUFFERS "MTOMMAXChunkBuffers"
+#define AXIS2_MTOM_MAX_CHUNK_BUFFERS "MTOMMaxChunkBuffers"
 
     /* op_ctx persistance */
 #define AXIS2_PERSIST_OP_CTX "persistOperationContext"
