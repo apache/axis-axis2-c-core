@@ -28,9 +28,12 @@ struct axiom_mime_parser
     axutil_hash_t *mime_parts_map;
     int soap_body_len;
     axis2_char_t *soap_body_str;
+    int chunk_buffer_size;
+    int max_chunk_buffers;
 };
 
 #define AXIOM_MIME_PARSER_BUFFER_SIZE (1024 * 1024)
+#define AXIOM_MIME_PARSER_MAX_CHUNK_BUFFERS 1000
 
 #define AXIOM_MIME_PARSER_CONTENT_ID "content-id"
 #define AXIOM_MIME_PARSER_CONTENT_TYPE "content-type"
@@ -57,6 +60,8 @@ axiom_mime_parser_create(
     mime_parser->mime_parts_map = NULL;
     mime_parser->soap_body_len = 0;
     mime_parser->soap_body_str = NULL;  /* shallow copy */
+    mime_parser->chunk_buffer_size = 1;
+    mime_parser->max_chunk_buffers = AXIOM_MIME_PARSER_MAX_CHUNK_BUFFERS;
 
     mime_parser->mime_parts_map = axutil_hash_make(env);
     if (!(mime_parser->mime_parts_map))
@@ -110,17 +115,18 @@ axiom_mime_parser_parse(
     int buf_num = 0;    
     int buf_len = 0;
     axis2_callback_info_t *cb_ctx = NULL;
-    axis2_char_t *buf_array[100];
-    int len_array[100];
+    axis2_char_t *buf_array[mime_parser->max_chunk_buffers];
+    int len_array[mime_parser->max_chunk_buffers];
 
-    
     cb_ctx = (axis2_callback_info_t *) callback_ctx;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     if(cb_ctx->chunked_stream)
     {
-        
+        size = (mime_parser->chunk_buffer_size) * AXIOM_MIME_PARSER_BUFFER_SIZE;
+
+
         while(!axutil_http_chunked_stream_get_end_of_chunks(
                 cb_ctx->chunked_stream, env))
         {
@@ -425,4 +431,22 @@ axiom_mime_parser_get_soap_body_str(
     const axutil_env_t * env)
 {
     return mime_parser->soap_body_str;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axiom_mime_parser_set_chunk_buffer_size(
+    axiom_mime_parser_t * mime_parser,
+    const axutil_env_t * env,
+    int size)
+{
+    mime_parser->chunk_buffer_size = size ;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axiom_mime_parser_set_max_chunk_buffers(
+    axiom_mime_parser_t * mime_parser,
+    const axutil_env_t * env,
+    int num)
+{
+    mime_parser->max_chunk_buffers = num;
 }
