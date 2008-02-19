@@ -67,9 +67,9 @@ main(
         {
             printf("Usage : %s [endpoint_url] \n", argv[0]);
             printf("\nNOTE: You can test for other HTTP methods by changing the");
-            printf("services.xml of the echo service\n and providing the correct REST HTTP method ");
-            printf("and the location to be used for operation.\n ");
-            printf("Also note that you have to restart the server after changing the services.xml.\n");
+            printf(" services.xml of the echo service\n and providing the correct REST HTTP method");
+            printf(" and the location to be used for operation.\n");
+            printf(" Also note that you have to restart the server after changing the services.xml.\n");
             printf(" use %s -mGET for HTTP GET\n", argv[0]);
             printf(" use %s -mHEAD for HTTP HEAD\n", argv[0]);
             printf(" use %s -mDELETE for HTTP DELETE\n", argv[0]);
