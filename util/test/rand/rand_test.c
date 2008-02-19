@@ -21,7 +21,7 @@ axis2_status_t test_rand(axutil_env_t *env)
     }
     
     rand_range = axutil_rand_with_range(&seed,start,end);
-    if(!rand_range)
+    if(rand_range == -1)
     {
         printf("Test axutil_rand_with_range failed\n");
     }
