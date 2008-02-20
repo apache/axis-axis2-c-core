@@ -7,7 +7,7 @@ details are available on the <a href="http://ws.apache.org/axis2/c/mail-lists.ht
   <li>The directory each package is installed in is given with an
     "_INSTALL_DIR" suffix to the package name. For example, the path in which
     Libxml2 is installed is referred to as LIBXML2_INSTALL_DIR</li>
-</ul><p style="margin-bottom: 0in"><br></br>
+</ul><p style="margin-bottom: 0in"><br />
 </p></div><div class="section"><a name="Axis2_C_Manual_-_Contents"></a><h2>Axis2/C Manual - Contents</h2><ol>
   <li><a href="#quick_start">Quick Start Guide</a></li>
   <li><a href="#repo_folder">Repository Folder</a></li>
@@ -32,7 +32,7 @@ details are available on the <a href="http://ws.apache.org/axis2/c/mail-lists.ht
   <li><a href="#appB">Appendix B - services.xml</a></li>
   <li><a href="#appC">Appendix C - module.xml</a></li>
   <li><a href="#appD">Appendix D - service client options</a></li>
-</ol><p style="margin-bottom: 0in"><br></br>
+</ol><p style="margin-bottom: 0in"><br />
 </p><p><a name="quick_start"></a></p></div><div class="section"><a name="1__Quick_Start_Guide"></a><h2>1. Quick Start Guide</h2><p>This section is aimed to help you get a Web service running in a short
 time using Axis2/C, and consume that service using an Axis2/C client.</p><p>First, <a href="http://ws.apache.org/axis2/c/download.cgi" class="externalLink" title="External Link">download</a>
 the latest binary release from Apache Axis2/C. Once you download the correct
@@ -64,41 +64,41 @@ of XML payloads exchanged between the client and the service:</p><p>Request:</p>
         Hello Client!
    &lt;greetResponse&gt;
 </pre></div>
-  <br></br><p>The steps to be followed when implementing a service with Axis2/C
+  <br /><p>The steps to be followed when implementing a service with Axis2/C
 include:</p><ol>
   <li><b>Implement the functions corresponding to the operations of the
-    service.</b> <br></br>
+    service.</b> <br />
     In our sample, we will have one function that implements the "greet"
-    operation. <br></br>
+    operation. <br />
     We will name that function <code>axis2_hello_greet</code>.</li>
   <li><b>Implement the functions defined by the
-    <code>axis2_svc_skeleton</code> interface</b><br></br>
+    <code>axis2_svc_skeleton</code> interface</b><br />
     <code>axis2_svc_skeleton</code> interface expects the functions
     <code>init</code>, <code>invoke</code>, <code>on_fault</code> and
-    <code>free</code> to be implemented by our service.<br></br>
+    <code>free</code> to be implemented by our service.<br />
     In our sample, we would implement those and name them as
     <code>hello_init</code>, <code>hello_invoke</code>,
-    <code>hello_on_fault</code> and <code>hello_free</code> respectively.<br></br>
+    <code>hello_on_fault</code> and <code>hello_free</code> respectively.<br />
   </li>
   <li><b>Implement the create function, that would create an instance of the
-    service skeleton</b><br></br>
+    service skeleton</b><br />
     The create function would create an axis2_svc_skeleton and assign the
     respective function pointers to map the axis2_svc_skeleton interface to
-    our interface implementation methods explained in the above step.<br></br>
+    our interface implementation methods explained in the above step.<br />
   </li>
   <li><b>Implement axis2_get_instance and axis2_remove_instance
-    functions</b><br></br>
+    functions</b><br />
     These functions are used to create and destroy service instances by the
-    engine, and each service must define these functions.<br></br>
+    engine, and each service must define these functions.<br />
   </li>
-  <li><b>Write the services.xml file for the service</b><br></br>
+  <li><b>Write the services.xml file for the service</b><br />
     The services.xml file acts as the deployment descriptor file for the
     service. As the bare minimum, we need to configure the service name,
     operations, and the shared library file name containing the service
-    implementation in this file.<br></br>
+    implementation in this file.<br />
     As previously decided, we will name the service "hello", the operation
     "greet" and the shared library libhello.so on Linux and hello.dll on MS
-    Windows.<br></br>
+    Windows.<br />
   </li>
 </ol></div><div class="subsection"><a name="1_1_1_Operation_Implementation"></a><h3>1.1.1 Operation Implementation</h3><p>Look for the <code>axis2_hello_greet</code> function in the <a href="hello/service/hello_svc.c.html">hello_svc.c</a> source file.</p><p>This function implements the business logic for the greet operation. We
 will be calling this function from our implementation of the invoke function.
@@ -114,7 +114,7 @@ invoking the operations. Hence in our implementation of the invoke function,
 we have to define how the operations are to be called.</p><p>Look for the <code>hello_invoke</code> function in the <a href="hello/service/hello_svc.c.html">hello_svc.c</a> source file.</p><p>In our implementation of the <code>hello_invoke</code>, we call the
 function implementing the greet operation. As we have only one operation, the
 task is simple here. If we had multiple operations, we will have to look into
-the information in the message context to map it to the exact operation. <br></br>
+the information in the message context to map it to the exact operation. <br />
 The Axis2/C engine will call the invoke method with an
 <code>axiom_node</code>, containing the request payload, and
 <code>axis2_msg_ctx</code> instance, containing the message context
@@ -135,13 +135,13 @@ shows the contents for the services.xml file for the hello service.</p>
 
 </pre></div>
   <p>The service configuration shown above specifies that the name of the
-service is hello. <br></br>
+service is hello. <br />
 The value of the "ServiceClass", "hello" in this case, will be mapped to the
 service implementation by the deployment engine as libhello.so on Linux or
 hello.dll on MS Windows. The description element contains a brief description
-of the service. <br></br>
+of the service. <br />
 There can be one or more operation elements. For this sample, we only have
-one operation, with the name "greet".<br></br>
+one operation, with the name "greet".<br />
 </p></div><div class="subsection"><a name="1_1_6_Compiling_the_Service"></a><h3>1.1.6 Compiling the Service</h3><p>You can compile the service sample as shown below.</p><p>On Linux:</p>
     <div class="source"><pre>gcc -shared -olibhello.so -I$AXIS2C_HOME/include/axis2-1.2/ -L$AXIS2C_HOME/lib -laxutil -laxis2_axiom -laxis2_parser -laxis2_engine -lpthread -laxis2_http_sender -laxis2_http_receiver hello_svc.c
 
@@ -169,38 +169,38 @@ write a client to consume that service. The request payload that the client
 will be sending to the service was described in the previous section. The
 client has to prepare the payload, send it to the service, and then receive
 and process the response.</p><p>The steps to be followed when implementing a client with Axis2/C:</p><ol>
-  <li><b>Create the environment to be used by the client.</b> <br></br>
+  <li><b>Create the environment to be used by the client.</b> <br />
     Each function in Axis2/C takes a pointer to the environment instance that
     encapsulates the memory allocator, error handler, and logging and
     threading mechanisms. The <code>axutil_env_create_all</code> method can
-    be used to create a default, ready to use environment instance.<br></br>
+    be used to create a default, ready to use environment instance.<br />
   </li>
-  <li><b>Create an options instance, and set options</b>.<br></br>
+  <li><b>Create an options instance, and set options</b>.<br />
     The<code> axis2_options</code> struct can be used to set the client side
     options. For example, we can use options to set the endpoint address of
     the service to be consumed by the client.</li>
   <li><b>Create a service client instance, giving the client repository
-    folder as a parameter.</b><br></br>
+    folder as a parameter.</b><br />
     The<code> axis2_svc_client</code> struct is meant to be used by the users
     to consume Web services. It provides an easy to use API. Service client
     create method takes the location of the repository as a parameter. For
     the purpose of our sample, you can use the AXIS2C_HOME as the repository.
     The concept of <a href="#repo_folder">repository</a> is explained in
-    detail in a later section.<br></br>
+    detail in a later section.<br />
   </li>
-  <li><b>Set options to service client instance</b><br></br>
+  <li><b>Set options to service client instance</b><br />
     The options created in an earlier step have to be set on the service
     client, indicating the options that are meant to be used by the service
-    client.<br></br>
+    client.<br />
   </li>
-  <li><b>Send the request and receive the response</b><br></br>
+  <li><b>Send the request and receive the response</b><br />
     The service client's <code>axis2_svc_client_send_receive</code> method
     can be used to invoke the send receive operation on the service client
-    instance.<br></br>
+    instance.<br />
     The send receive operation takes the request payload as an
     <code>axiom_node</code> and returns the response payload as an
     <code>axiom_node</code>.</li>
-  <li><b>Process the response</b><br></br>
+  <li><b>Process the response</b><br />
     Process the response in line with the client business logic.</li>
 </ol></div><div class="subsection"><a name="1_2_1_Creating_and_Setting_Options"></a><h3>1.2.1 Creating and Setting Options</h3>
     <div class="source"><pre>    options = axis2_options_create(env);
@@ -239,7 +239,7 @@ stored in the <code>ret_node</code>, which is a pointer to an
 
 </pre></div>
   </div><div class="subsection"><a name="1_2_5_Running_the_Client"></a><h3>1.2.5 Running the Client</h3><p>To run the client, make sure you start the simple axis server and then run
-the hello executable.</p><p style="margin-bottom: 0in"><br></br>
+the hello executable.</p><p style="margin-bottom: 0in"><br />
 </p><p><a name="repo_folder"></a></p></div></div><div class="section"><a name="2__Repository_Folder"></a><h2>2. Repository Folder</h2><p>Repository is a folder where all Axis2/C related configurations as well as
 services and modules are located. The following shows the folder structure of
 the repository:</p><img src="images/axis2c_repo.gif" alt=""></img><p>Here the name of the repository folder is axis2c_repo. In your system, you
@@ -253,7 +253,7 @@ purpose of the repository contents.</p><table class="bodyTable"><caption>Axis2/C
         Axis2/C engine. While you can afford to have the shared libs of
         Axis2/C in a location of your choice, the dynamically loaded shared
         libs, parser, transport receiver and transport sender has to be in
-        the repository lib folder. <br></br>
+        the repository lib folder. <br />
         It is mandatory that the lib folder is there in the repository.</p>
       </td></tr>
     <tr class="b"><td><p>modules [optional]</p>
@@ -261,23 +261,23 @@ purpose of the repository contents.</p><table class="bodyTable"><caption>Axis2/C
         Each module deployed will have its own sub folder inside the modules
         folder. For example, if the addressing module is deployed, then there
         will be a sub folder named addressing inside the modules folder of
-        the repository.<br></br>
+        the repository.<br />
         At deployment, the Axis2/C deployment engine would traverse the
-        modules folders to find out what modules are available.<br></br>
+        modules folders to find out what modules are available.<br />
         The modules folder is optional. If it is empty or non-existent, that
         means that there are no deployed modules.</p>
       </td></tr>
     <tr class="a"><td><p>services [optional]</p>
       </td><td><p>The services folder contains the services deployed with Axis2/C.
         Each service deployed will have its own sub folder inside the
-        services folder, or live inside one of the sub folders.<br></br>
+        services folder, or live inside one of the sub folders.<br />
         At deployment, the Axis2/C deployment engine will traverse the
-        services folders to find out what services are available.<br></br>
+        services folders to find out what services are available.<br />
         The services folder is optional. If it is empty or non-existent, that
         means that there are no deployed services.</p>
       </td></tr>
     <tr class="b"><td><p>axis2.xml</p>
-      </td><td><p>The axis2.xml file is the configuration file of Axis2/C.<br></br>
+      </td><td><p>The axis2.xml file is the configuration file of Axis2/C.<br />
         The configuration file is mandatory and must have the name axis2.xml.
         It is safe to consider your Axis2/C repository to be the folder in
         which you have the axis2.xml file.</p>
@@ -293,10 +293,10 @@ installation destination will be ready for use as your repository folder.</p><p>
 samples, and the HTTPD module (Axis2 Apache2 module) require the repository
 folder to be specified in order to run correctly.</p><p></p><div class="subsection"><a name="2_1_Module_Folders"></a><h3>2.1 Module Folders</h3><p>As described earlier, all the modules are placed inside the modules folder
 of the repository, and each module will have its own sub folder within the
-modules folder.<br></br>
+modules folder.<br />
 The folder in which a module is placed must have the same name as the module
 name. For example, the addressing module will be placed in a sub folder named
-addressing.<br></br>
+addressing.<br />
 </p><p>Inside the folder corresponding to a module, the shared library
 implementing the module and the module configuration file, module.xml, is
 placed. It is a must that these two files are present inside each folder
@@ -323,7 +323,7 @@ group, there will be multiple shared libs, yet there is only one services.xml
 file configuring all those services. The services.xml file is processed by
 the deployment engine to find out the service group and the service specific
 information such as the service group name, service name, the set of
-operations for each service, etc.</p><p style="margin-bottom: 0in"><br></br>
+operations for each service, etc.</p><p style="margin-bottom: 0in"><br />
 </p><p><a name="svc_api"></a></p></div></div><div class="section"><a name="3__Service_API"></a><h2>3. Service API</h2><p>We have already seen how to write a service in the Quick Start Guide
 section of this manual. This section covers the service API of Axis2/C in
 more detail.</p><p><code>axis2_svc_skeleton</code> is an interface. Axis2/C does not provide
@@ -360,7 +360,7 @@ of the <code>axis2_svc_skeleton</code> struct implemented by a service.</p><tabl
     free )( axis2_svc_skeleton_t *svc_skeli,
         const axutil_env_t *env);</pre>
       </td><td>Frees the service implementation instance.</td></tr>
-  </tbody></table><br></br><p>There are two more methods that a service should implement. Once a service
+  </tbody></table><br /><p>There are two more methods that a service should implement. Once a service
 is deployed, the message receiver of the Axis2/C engine has to create a
 service instance at run time for the purpose of invoking it. For this, it
 looks for a method named <code>axis2_create_instance</code> and calls it on
@@ -380,14 +380,14 @@ axis2_remove_instance(
     const axutil_env_t * env);</pre>
       </td><td>Removes the instance of the service. Do any cleaning-up and
         deallocations here.</td></tr>
-  </tbody></table><br></br><p>Note that service object instantiation happens once per service. When the
+  </tbody></table><br /><p>Note that service object instantiation happens once per service. When the
 first request is received by the service, a service skeleton instance is
 created and initialized. The same object instance will be re-used by the
 subsequent requests.</p><p>You can find an example on how to implement the service skeleton interface
 in the <a href="hello/service/hello_svc.c.html">hello_svc.c</a> source file,
 which is the example used in the <a href="#quick_start">Quick Start
 Guide</a>. More advanced samples can be found in the samples folder of the
-Axis2/C distribution.</p><p style="margin-bottom: 0in"><br></br>
+Axis2/C distribution.</p><p style="margin-bottom: 0in"><br />
 </p><p><a name="client_api"></a></p></div><div class="section"><a name="4__Client_API"></a><h2>4. Client API</h2><p>The primary client API to be used with Axis2/C is
 <code>axis2_svc_client</code>, the service client API. This is meant to be an
 easy to use API for consuming services. If you want to do more complex tasks,
@@ -431,7 +431,7 @@ The service client provides two methods of using the Out-Only MEP.</p><p></p><ta
       </td><td>This method too is used to interact with a service operation whose MEP
         is In-Only. However, unlike <code>axis2_svc_client_fire_and_forget</code>,
         this function reports an error back to the caller if a fault triggers on
-        the server side.<br></br>When using Out-In MEP, the client expects a reply
+        the server side.<br />When using Out-In MEP, the client expects a reply
         from the server. <code>axis2_svc_client_send_receive</code> and <code>
         axis2_svc_client_send_receive_non_blocking</code>functions support this
         MEP</td></tr>
@@ -441,7 +441,7 @@ The service client provides two methods of using the Out-Only MEP.</p><p></p><ta
         const axutil_env_t * env,
         const axiom_node_t * payload);</pre>
       </td><td>This method is used to interact with a service operation whose MEP is
-        In-Out. It sends an XML request and receives an XML response.<br></br>Returns
+        In-Out. It sends an XML request and receives an XML response.<br />Returns
         a pointer to the AXIOM node representing the XML response. This method
         blocks the client until the response arrives.</td></tr>
     <tr class="a"><td><pre>AXIS2_EXTERN void AXIS2_CALL
@@ -452,29 +452,29 @@ The service client provides two methods of using the Out-Only MEP.</p><p></p><ta
         axis2_callback_t * callback);</pre>
       </td><td>This method too, is used to interact with a service operation whose MEP
         is In-Out. It sends an XML request and receives an XML response, but the
-        client does not block for the response.<br></br>In this method, the client
+        client does not block for the response.<br />In this method, the client
         does not block for the response, but instead it expects the user to set a
         call back to capture the response.</td></tr>
-  </tbody></table><br></br><p>Please have a look at the <code>axis2_svc_client.h</code> header file for
+  </tbody></table><br /><p>Please have a look at the <code>axis2_svc_client.h</code> header file for
 more information on the above mentioned functions, as well as their synonyms
 that accept an operation's qualified name.</p><div class="subsection"><a name="4_1_Synchronous_vs__Asynchronous_Behavior__Blocking_Non-Blocking_"></a><h3>4.1 Synchronous vs. Asynchronous Behavior (Blocking/Non-Blocking)</h3><p>This will determine whether the client would block for the response
 (synchronous) or return immediately expecting the response to be handled by a
 callback (asynchronous, in other words non-blocking) in an Out-In MEP
-scenario.<br></br>
+scenario.<br />
 <code>axis2_svc_client_send_receive</code> operates in synchronous mode,
 whereas <code>axis2_svc_client_send_receive_non_blocking</code> operates in
-asynchronous mode.<br></br>
+asynchronous mode.<br />
 </p></div><div class="subsection"><a name="4_2_Two-Way_or_One-Way_Transport"></a><h3>4.2 Two-Way or One-Way Transport</h3><p>If the transport is two-way, then only one channel is used, which means
 the request is sent and the response is received on the same channel. If the
 transport is one-way, then the request is sent on one channel and the
-response is received on a separate channel.<br></br>
+response is received on a separate channel.<br />
 If we want to use a separate channel for the response, a separate listener
 has to be started to receive the response, This can be done by setting the
 separate listener option to True using the
 <code>axis2_options_set_use_separate_listener</code> function above the
 options.</p><p>Please have a look at the <code>echo_blocking_dual</code> sample to see
 how to set the separate channel option.</p><p>Please see <a href="#appD">Appendix D</a> for further details on setting
-options.</p><p style="margin-bottom: 0in"><br></br>
+options.</p><p style="margin-bottom: 0in"><br />
 </p><p><a name="rest"></a></p></div></div><div class="section"><a name="5__REST"></a><h2>5. REST</h2><p>Axis2/C comes with plain old XML (POX) like REST support. A given service
 can be exposed both as a SOAP service as well as a REST service. By default,
 your service will support SOAP as well as REST, however, your service operations
@@ -482,7 +482,7 @@ will only be available for SOAP. In order to enable REST for your operations you
 need to add one or more parameters under your operation, in the <a href="#appB">services.xml</a>.
 If you want to consume Web services using REST style calls, you can use the HTTP
 POST method, the HTTP GET method, the HTTP HEAD method, the HTTP PUT method or
-the HTTP DELETE method.<br></br>
+the HTTP DELETE method.<br />
 </p></div><div class="subsection"><a name="5_1_REST_client"></a><h3>5.1 REST on Client Side</h3><p>
 The following example code fragment shows how to set up a client enabling a REST style
 invocation.</p>
@@ -498,7 +498,7 @@ it to the HTTP GET method, the following needs to be done.</p>
 or AXIX2_HTTP_PUT to change it to the HTTP PUT method, or AXIX2_HTTP_DELETE to change it
 to the HTTP DELETE method.
   <p>Please have a look at the <code>echo_rest</code> sample for a complete
-source code on how to use REST.<br></br>
+source code on how to use REST.<br />
 </p></div><div class="subsection"><a name="5_2_REST_server"></a><h3>5.2 REST on Server Side</h3><p>
 You basically need to add the REST Location, and the REST Method parameters to the <a href="#appB">services.xml</a>
 to enable REST in a service operation. The REST location is the template that needs to be matched
@@ -508,7 +508,7 @@ will be assumed. Optionally you may specify the default REST Method for all oper
 level. Then, if you haven't specified a REST Method for your operation, the default REST Method
 specified will be assumed instead of POST. Please have a look at the <code>echo</code> sample
 service for a complete source code on how to set up REST. Shown below is an example, on how to
-configure the <code>locate</code> operation to work with HTTP GET on REST.<br></br>
+configure the <code>locate</code> operation to work with HTTP GET on REST.<br />
 <div class="source"><pre>&lt;operation name="locate"&gt;
     &lt;parameter name="RESTMethod"&gt;GET&lt;/parameter&gt;
     &lt;parameter name="RESTLocation"&gt;location/{lat}/{long}&lt;/parameter&gt;
@@ -516,8 +516,8 @@ configure the <code>locate</code> operation to work with HTTP GET on REST.<br></
 
 </pre></div>
 <p>The corresponding request would look like, <code>http://www.sample.org/service/location/34N/118W</code>, which would return Los Angeles, California. In here, the portion <code>location</code> is fixed and <code>lat</code> and <code>long</code> are optional parameters which will be captured to the payload.
-<br></br></p></div><div class="subsection"><a name="5_3_REST_and_SOAP_for_same_operation"></a>
-<h3>5.3 REST and SOAP for Same Operation</h3><p>It is also possible to enable a single service operation for SOAP as well as REST. This can be done by specifying a REST Location that does not contain the operation name. The <code>locate</code> operation is an example to such a case. Thus, for a SOAP invocation, you need to use <code>http://www.sample.org/service/locate</code>, as the end point or WS-Addressing Action.</p><p style="margin-bottom: 0in"><br></br>
+<br /></p></div><div class="subsection"><a name="5_3_REST_and_SOAP_for_same_operation"></a>
+<h3>5.3 REST and SOAP for Same Operation</h3><p>It is also possible to enable a single service operation for SOAP as well as REST. This can be done by specifying a REST Location that does not contain the operation name. The <code>locate</code> operation is an example to such a case. Thus, for a SOAP invocation, you need to use <code>http://www.sample.org/service/locate</code>, as the end point or WS-Addressing Action.</p><p style="margin-bottom: 0in"><br />
 </p><p><a name="mtom"></a></p></div><div class="section"><a name="6__MTOM"></a><h2>6. MTOM</h2><p>Axis2/C allows you to send and receive binary data with SOAP messages
 using MTOM/XOP conventions. When sending and receiving attachments, you have
 to use the service client (<code>axis2_svc_client</code>) API to perform the
@@ -552,7 +552,7 @@ Sending the attachment as it is, in pure binary format, is called binary
 optimized format. In the case of binary non-optimized format, where
 enableMTOM is False, the attachment content is sent in the payload itself, as
 a base64 encoded string.</p><p>Please have a look at the <code>mtom</code> sample for a complete example
-on how to use MTOM.</p><p style="margin-bottom: 0in"><br></br>
+on how to use MTOM.</p><p style="margin-bottom: 0in"><br />
 </p><p><a name="engaging_module"></a></p></div><div class="section"><a name="7__Engaging_a_Module"></a><h2>7. Engaging a Module</h2><p>A module is a set of handlers that helps to extend the message processing
 behavior of the Axis2/C engine. Modules have the concepts of being Available
 and Engaged associated with them. Available means modules are deployed in the
@@ -664,7 +664,7 @@ engage. For example to engage the logging module you can use:</p>
     <div class="source"><pre>axis2_svc_client_engage_module(svc_client, env, "logging");
 
 </pre></div>
-  <p style="margin-bottom: 0in"><br></br>
+  <p style="margin-bottom: 0in"><br />
 </p><p><a name="ws_addressing"></a></p></div></div><div class="section"><a name="8__WS-Addressing"></a><h2>8. WS-Addressing</h2><p><a href="http://www.w3.org/2002/ws/addr/" class="externalLink" title="External Link">WS-Addressing</a> provides
 mechanisms to address Web services and messages. With Axis2/C, you can use
 both WS-Addressing <a href="http://www.w3.org/TR/ws-addr-core/" class="externalLink" title="External Link">version
@@ -672,7 +672,7 @@ both WS-Addressing <a href="http://www.w3.org/TR/ws-addr-core/" class="externalL
 the previous section, the addressing module can be engaged both on the client
 side as well as on the server side.</p><p>The WS-Addressing module can be globally engaged by adding the
 <code>&lt;module ref="addressing"/&gt;</code> line to the axis2.xml file.</p><p>The WS-Addressing module can also be programmatically engaged using the
-following line of code with the service client API <br></br>
+following line of code with the service client API <br />
 </p>
     <div class="source"><pre>axis2_svc_client_engage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);
 
@@ -713,11 +713,11 @@ above function sets the From header.</p>
 </pre></div>
   <p>Sets the <code>wsa:RelatesTo</code> header. This header contains a unique
 ID which is the message ID of a previously exchanged message. It helps to
-identify a previous message that relates to the current message.</p><p style="margin-bottom: 0in"><br></br>
+identify a previous message that relates to the current message.</p><p style="margin-bottom: 0in"><br />
 </p><p><a name="writing_module"></a></p></div><div class="section"><a name="9__Writing_a_Module"></a><h2>9. Writing a Module</h2><p>A module is an extension point in the Axis2/C engine. Modules are
 primarily used to WS-* specifications. In other words, quality of service
 aspects such as security and reliable messaging can be implemented as modules
-and deployed with the Axis2/C engine. <br></br>
+and deployed with the Axis2/C engine. <br />
 A SOAP message can contain any number of header blocks. These header blocks
 provide various processing information. In Axis2/C, these various header
 blocks are processed by modules. Some times modules may add header blocks to
@@ -772,8 +772,8 @@ when deployed.</p></div><div class="subsection"><a name="9_2_Writing_the_module_
 module.xml file contains all the configuration details for a particular
 module. Please see the sample <a href="mod_log/module.xml">module.xml</a>
 file for the logging module.</p><p>Please see the <a href="#engaging_module">Engaging a Module</a> section
-for more details on how to package and deploy the module.</p><p style="margin-bottom: 0in"><br></br>
-</p><p><a name="simple_axis_server"></a></p></div></div><div class="section"><a name="10__Simple_Axis2_HTTP__Server"></a><h2>10. Simple Axis2 HTTP  Server</h2><p>Simple Axis2 HTTP Server is the inbuilt HTTP server of Axis2/C.<br></br>
+for more details on how to package and deploy the module.</p><p style="margin-bottom: 0in"><br />
+</p><p><a name="simple_axis_server"></a></p></div></div><div class="section"><a name="10__Simple_Axis2_HTTP__Server"></a><h2>10. Simple Axis2 HTTP  Server</h2><p>Simple Axis2 HTTP Server is the inbuilt HTTP server of Axis2/C.<br />
 </p><div class="subsection"><a name="10_1_Linux_Based_Systems"></a><h3>10.1 Linux Based Systems</h3><p>Synopsis :</p>
     <div class="source"><pre>   axis2_http_server [-p PORT] [-t TIMEOUT] [-r REPO_PATH] [-l LOG_LEVEL] [-f LOG_FILE] [-s LOG_FILE_SIZE]
 
@@ -818,7 +818,7 @@ for more details on how to package and deploy the module.</p><p style="margin-bo
     <div class="source"><pre>   axis2_http_server.exe -l 3 -p 8080 -r %AXIS2C_HOME% -f C:\logs\error.log
 
 </pre></div>
-  <p style="margin-bottom: 0in"><br></br>
+  <p style="margin-bottom: 0in"><br />
 </p><p><a name="mod_axis2"></a></p></div></div><div class="section"><a name="11__Deploying_with_Apache_HTTP_Server_Version_2_x"></a><h2>11. Deploying with Apache HTTP Server Version 2.x</h2><div class="subsection"><a name="11_1_Linux_Platform"></a><h3>11.1 Linux Platform</h3><p>To build Axis2/C with the Apache HTTP server module, also called
 mod_axis2, you need to provide the following configuration options on the
 Linux platform:</p>
@@ -861,12 +861,12 @@ Windows)</font> to the Apache2 modules directory as mod_axis2.so</p><p>On Linux<
     <div class="source"><pre>	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.0.0 /usr/lib/apache2/modules/mod_axis2.so
 </pre></div>
   <p>On MS Windows</p>
-    <div class="source"><pre>	copy /Y "%AXIS2C_HOME%\lib\mod_axis2.dll" C:\Apache2\modules\
+    <div class="source"><pre>	copy /Y "%AXIS2C_HOME%\lib\mod_axis2.dll" C:\Apache2\modules\mod_axis2.so
 
 </pre></div>
   <p>Edit the Apache2's configuration file (generally httpd.conf) and add the
 following directives at the end of the file.</p>
-    <div class="source"><pre>LoadModule axis2_module MOD_AXIS2_INSTALL_DIR
+    <div class="source"><pre>LoadModule axis2_module MOD_AXIS2_SO_PATH
 Axis2RepoPath AXIS2C_INSTALL_DIR
 Axis2LogFile  PATH_TO_LOG_FILE
 Axis2LogLevel LOG_LEVEL
@@ -878,21 +878,22 @@ Axis2MaxLogFileSize SIZE_IN_MB
 
 </pre></div>
   <p>Please note that you have to fine tune the above settings to mach your
-system.<br></br>
-<br></br>
-MOD_AXIS2_INSTALL_DIR has to be replaced with the full path to mod_axis2.so,
-for example, /usr/lib/apache2/modules/mod_axis2.so <br></br>
-<br></br>
+system.<br />
+<br />
+MOD_AXIS2_SO_PATH has to be replaced with the full path to mod_axis2.so,
+for example, <code>/usr/lib/apache2/modules/mod_axis2.so</code> on Linux, or <code>C:\Apache2\modules\mod_axis2.so</code> on MS Windows<br />
+<br />
 AXIS2C_INSTALL_DIR has to be replaced with the full path to Axis2/C
-repository, for example, /usr/local/axis2. Note that repository path should
+repository, for example, <code>/usr/local/axis2</code> on Linux, or <code>c:\axis2c</code> on MS Windows. Note that repository path should
 have read access to the daemon user account under which the Apache2 HTTPD
-process is run.<br></br>
-<br></br>
+process is run.<br />
+<br />
 PATH_TO_LOG_FILE has to be replaced with the full path to where you wish to
-have the Axis2/C log file, for example, /tmp/axis2.log. Note that the log
+have the Axis2/C log file, for example, <code>/tmp/axis2.log</code> on Linux, 
+or <code>C:\Apache2\logs\axis2.log</code> on MS Windows. Note that the log
 file path should have write access to the daemon user account under which the
-Apache2 HTTPD process is run.<br></br>
-<br></br>
+Apache2 HTTPD process is run.<br />
+<br />
 LOG_LEVEL has to be replaced with one of the following values: crit, error,
 warn, info, debug, trace. These log levels have the following meanings:</p><ul>
   <li>crit - log critical errors</li>
@@ -904,12 +905,12 @@ warn, info, debug, trace. These log levels have the following meanings:</p><ul>
   <li>user - log user level messages and above</li>
   <li>trace - log trace messages and above</li>
 </ul><p>SIZE_IN_MB must be replaced by the size of the particular resource in MB, rounded to
-the nearest whole value.<br></br>
-<br></br>PREFIX has to be replaced with the prefix to be used with the 
+the nearest whole value.<br />
+<br />PREFIX has to be replaced with the prefix to be used with the 
 service endpoints. This is optional and defaults to "services".
 As an example, if you have  "web_services" as the prefix, then all the
-services hosted would have the endpoint prefix of : <br></br>
-http://localhost/axis2/web_services <br></br>
+services hosted would have the endpoint prefix of : <br />
+http://localhost/axis2/web_services <br />
 If you wish, you can also change the location as well by replacing "/axis2" in 
 &lt;Location /axis2&gt; setting with whatever you wish.
 </p><p><font color="#666666">NOTE: If you want to use a Shared Global Pool with Apache
@@ -921,7 +922,7 @@ negative value Apache module doesn't create shared global pool.</font></p>
 </pre></div>
   <p>To ensure that everything works fine, start Apache2 (restart if it is
 already running) and test whether the mod_axis2 module is loaded correctly by
-accessing the URL: <a href="http://localhost/axis2/services" class="externalLink" title="External Link">http://localhost/axis2/services</a>.<br></br>
+accessing the URL: <a href="http://localhost/axis2/services" class="externalLink" title="External Link">http://localhost/axis2/services</a>.<br />
 </p><p>This should show the list of services deployed with Axis2/C. Then you
 should be able to run clients against this endpoint. Example:</p>
     <div class="source"><pre>echo http://localhost/axis2/services/echo
@@ -938,8 +939,8 @@ troubleshoot:</p><ul>
   <li>In case the axis2.log file is not written at all, there is a good
     chance that mod_axis2 is crashing. You can have a look at the error.log
     file of Apache2 to get an idea on what is going wrong. This file is
-    usually placed in the AXIS2C_INSTALL_DIR/logs folder.</li>
-</ul><p style="margin-bottom: 0in"><br></br>
+    usually placed in the APACHE_INSTALL_DIR/logs folder.</li>
+</ul><p style="margin-bottom: 0in"><br />
 </p><p><a name="IIS"></a></p></div></div><div class="section"><a name="12__Deploying_with_Microsoft_IIS_Server"></a><h2>12. Deploying with Microsoft IIS Server</h2><p>Use the Axis2/C VC project or makefile to buid the
 component. If you are using the makefile to build the source, you have to run the command</p>
 <div class="source"><pre>nmake axis2_iis_module</pre></div>
@@ -955,15 +956,15 @@ directory to your IIS/PWS web site. The name of the virtual directory must be <c
 physical path should be the directory in which you placed mod_axis2_IIS.dll (in our example it is
 c:\axis2c\lib). When creating this new virtual directory, <b>assign execute access to it</b>.</p><p>By using the IIS management console, add
 mod_axis2_IIS.dll as a filter in your IIS/PWS web site and restart the IIS
-admin service.</p><p style="margin-bottom: 0in"><br></br>
+admin service.</p><p style="margin-bottom: 0in"><br />
 </p><p><a name="ssl_client"></a></p></div><div class="section"><a name="13__Using_SSL_Client"></a><h2>13. Using SSL Client</h2><div class="subsection"><a name="13_1_Building_and_Configuring_the_Client"></a><h3>13.1 Building and Configuring the Client</h3><p>In order to allow an Axis2/C client to communicate with an SSL enabled
 server, we need to compile Axis2/C with SSL support enabled.</p><p>To build with SSL client support, first of all, make sure you have
 installed <a href="http://www.openssl.org/" class="externalLink" title="External Link">OpenSSL</a> on your machine. Then
 you can start building with SSL client support. This can be achieved on Linux
-by configuring Axis2/C with the <code>--enable-openssl=yes</code> option.</p><p>Example <code><br></br>
-%./configure --enable-openssl=yes --prefix=${AXIS2C_HOME}/deploy<br></br>
-%make<br></br>
-%make install<br></br>
+by configuring Axis2/C with the <code>--enable-openssl=yes</code> option.</p><p>Example <code><br />
+%./configure --enable-openssl=yes --prefix=${AXIS2C_HOME}/deploy<br />
+%make<br />
+%make install<br />
 </code></p><p>On MS Windows, set <code>ENABLE_SSL=1</code> in the
 <code>configure.in</code> file and run the <code>nmake all</code> command.</p><p><a name="client_chain"></a></p></div><div class="subsection"><a name="13_1_1_Creating_the_Client_Certificate_Chain_File"></a><h3>13.1.1 Creating the Client Certificate Chain File</h3><p>If you need SSL client authentication, Axis2/C requires you to provide the
 client certificate and the private key file in a single file. Such a file
@@ -989,12 +990,12 @@ need client authentication, you can also set the parameters in the axis2.xml
 file to specify the client certificate, private key, and the passphrase for
 the client private key. Parameter names for these are:</p><p><code>KEY_FILE</code> - certificate chain file containing the client's
 certificate and the private key (Please refer to the <a href="#client_chain">creating the client certificate chain file</a>
-section)<br></br>
+section)<br />
 <code>SSL_PASSPHRASE</code> - passphrase used to encrypt the private key
 file.</p><p>Example:</p><p><code>&lt;parameter
-name="SERVER_CERT"&gt;/path/to/ca/certificate&lt;/parameter&gt;</code><br></br>
+name="SERVER_CERT"&gt;/path/to/ca/certificate&lt;/parameter&gt;</code><br />
 <code>&lt;parameter
-name="KEY_FILE"&gt;/path/to/client/certificate/chain/file&lt;/parameter&gt;</code><br></br>
+name="KEY_FILE"&gt;/path/to/client/certificate/chain/file&lt;/parameter&gt;</code><br />
 <code>&lt;</code><code><code>parameter
 name="SSL_</code>PASSPHRASE"&gt;passphrase&lt;/parameter&gt;</code></p><p>For testing purposes, you can use the server's certificate instead of the
 CA certificate. You can obtain this by running the command <code>openssl
@@ -1017,14 +1018,14 @@ code.</font></p></div><div class="subsection"><a name="13_2_Configuring_the_Serv
 Refer to the '<a href="#mod_axis2">Deploying with Apache HTTP Server Version2.x</a>' section for information on deploying Axis2/C as an Apache
 module.</p><p>For more detailed information on SSL configuration, please refer to <a href="http://httpd.apache.org/docs/2.0/ssl/#documentation" class="externalLink" title="External Link">Apache2 SSL/TLS
 documentation</a>.</p><p>In the <code>httpd.conf</code> file, add the following configuration
-statements (in addition to other necessary configuration):</p><p><code>SSLEngine on<br></br>
-SSLCertificateFile /path/to/server/certificate/file<br></br>
-SSLCertificateKeyFile /path/to/private/key/file<br></br>
-SSLCACertificateFile /path/to/CA/certificate/file<br></br>
-SSLVerifyClient require<br></br>
+statements (in addition to other necessary configuration):</p><p><code>SSLEngine on<br />
+SSLCertificateFile /path/to/server/certificate/file<br />
+SSLCertificateKeyFile /path/to/private/key/file<br />
+SSLCACertificateFile /path/to/CA/certificate/file<br />
+SSLVerifyClient require<br />
 SSLVerifyDepth 1</code></p><p><font color="#666666">NOTE: The last two lines, <code>SSLVerifyClient</code> and
 <code>SSLVerifyDepth</code> are only needed when you need client
-authentication.</font></p><p style="margin-bottom: 0in"><br></br>
+authentication.</font></p><p style="margin-bottom: 0in"><br />
 </p><p><a name="proxy"></a></p></div></div><div class="section"><a name="14__Using_Proxy_Support"></a><h2>14. Using Proxy Support</h2><p>When using a proxy, there are two methods for specifying proxy
 settings:</p><ol>
   <li>Specify proxy settings in axis2.xml</li>
@@ -1044,7 +1045,7 @@ service client:</p>
         axis2_char_t *proxy_port);
 
 </pre></div>
-  <p style="margin-bottom: 0in"><br></br>
+  <p style="margin-bottom: 0in"><br />
 </p><p><a name="proxy_auth"></a></p></div></div><div class="section"><a name="15__Using_Proxy_Authentication_Support"></a><h2>15. Using Proxy Authentication Support</h2><p>When using proxy authentication, there are three methods for specifying proxy
 authentication settings:</p><ol>
   <li>Specify proxy settings with authentication in axis2.xml</li>
@@ -1095,7 +1096,7 @@ Authentication. Leave this field NULL if you are not forcing authentication.</p>
         const axis2_svc_client_t * svc_client,
         const axutil_env_t * env);
 </pre></div>
-  <p>Please take a look at the <code>echo_blocking_auth</code> sample for more information on how to use these methods to identify proxy Authentication requirements.</p><p style="margin-bottom: 0in"><br></br>
+  <p>Please take a look at the <code>echo_blocking_auth</code> sample for more information on how to use these methods to identify proxy Authentication requirements.</p><p style="margin-bottom: 0in"><br />
 </p><p><a name="http_auth"></a></p></div></div><div class="section"><a name="16__Using_HTTP_Authentication_Support"></a><h2>16. Using HTTP Authentication Support</h2><p>When using HTTP authentication, there are two methods for specifying proxy
 authentication settings:</p><ol>
   <li>Specify HTTP authentication settings in axis2.xml</li>
@@ -1135,7 +1136,7 @@ Authentication. Leave this field NULL if you are not forcing authentication.</p>
         const axis2_svc_client_t * svc_client,
         const axutil_env_t * env);
 </pre></div>
-  <p>Please take a look at the <code>echo_blocking_auth</code> sample for more information on how to use these methods to identify HTTP Authentication requirements.</p><p style="margin-bottom: 0in"><br></br>
+  <p>Please take a look at the <code>echo_blocking_auth</code> sample for more information on how to use these methods to identify HTTP Authentication requirements.</p><p style="margin-bottom: 0in"><br />
 </p><p><a name="wsdl2c"></a></p></div></div><div class="section"><a name="17__WSDL2C_Tool"></a><h2>17. WSDL2C Tool</h2><p>WSDL2C tool that comes with Axis2/Java supports the generation of Axis2/C
 stubs and skeletons for WSDL files. This is a Java tool that can be used to
 generate C code that works with Axis2/C API. You should use <a href="http://svn.apache.org/viewvc/webservices/axis2/trunk/java" class="externalLink" title="External Link">Axis2/Java
@@ -1183,7 +1184,7 @@ model, just use the following parameters.</p>
   <p>Like in the case of service skeletons, you have to fill in the business
 logic as required in the client stubs as well. To do this, go through the
 header files generated and understand the API in line with the WSDL file that
-you used to generate the code.</p><p style="margin-bottom: 0in"><br></br>
+you used to generate the code.</p><p style="margin-bottom: 0in"><br />
 </p><p><a name="tcptrans"></a></p></div></div><div class="section"><a name="18__TCP_Transport"></a><h2>18. TCP Transport</h2><div class="subsection"><a name="18_1_Building_AXIS2C_enabling_TCP"></a><h3>18.1 Building AXIS2C enabling TCP</h3><p>This section will guide you through installing Axis2C with tcp enabled, and this 
 also includes how to test it by running samples. Please note that both the Server and 
 the Client must be built with TCP enabled.</p></div><div class="subsection"><a name="18_1_1_Linux_Based_Systems"></a><h3>18.1.1 Linux Based Systems</h3><ol>
@@ -1227,7 +1228,7 @@ server which runs in 9091 as its default port.</li>
 server as,</li>
 <pre>   cd %AXIS2C_HOME%\bin
         axis2_tcp_server.exe</pre>
-</ul></div><div class="subsection"><a name="18_2_1_Simple_Axis2_TCP_Server"></a><h3>18.2.1 Simple Axis2 TCP Server</h3><p>Simple Axis2 TCP Server is the inbuilt TCP server of Axis2/C.<br></br>
+</ul></div><div class="subsection"><a name="18_2_1_Simple_Axis2_TCP_Server"></a><h3>18.2.1 Simple Axis2 TCP Server</h3><p>Simple Axis2 TCP Server is the inbuilt TCP server of Axis2/C.<br />
 </p></div><div class="subsection"><a name="18_2_1_1_Linux_Based_Systems"></a><h3>18.2.1.1 Linux Based Systems</h3><p>Synopsis :</p>
     <div class="source"><pre>   axis2_tcp_server [-p PORT] [-t TIMEOUT] [-r REPO_PATH] [-l LOG_LEVEL] [-f LOG_FILE] [-s LOG_FILE_SIZE]
 
@@ -1279,19 +1280,19 @@ server as,</li>
 
 <li>You can use TCPMon to figure out how the message is transferred (without having
   it's http headers) after you've built Axis2C enabling tcp.</li> 
-</ul><p style="margin-bottom: 0in"><br></br>
+</ul><p style="margin-bottom: 0in"><br />
 </p><p><a name="archive"></a></p></div></div><div class="section"><a name="19__Archive_Based_Deployment"></a><h2>19. Archive Based Deployment</h2>
-<p>Axis2/C supports two main deployment models,<br></br>
+<p>Axis2/C supports two main deployment models,<br />
 <ol><li>Directory Based Deployment</li>
 <li>Archive Based Deployment</li>
 </ol>
 Our discussion in this section focuses on how to setup and use archive based deployment in Axis2/C. By default, Axis2/C may be built without enabling archive based deployment. Therefore, first and foremost you will have to most probably rebuild from source.</p><p>
 Also, it is requirement that you have zlib. Most Linux systems do have zlib by default, but would require zlib development packages. More information can be found <a href="http://www.zlib.net/">here</a>. For MS Windows systems, you can download it from <a href="http://www.zlatkovic.com/pub/libxml">here</a>.</p><p>
 Next, you will have to build Axis2/C enabling Archive Based Deployment. 
-On Linux, you need to set the <code>--with-archive=[path_to_zlib_headers]</code></p><p>Example: <code><br></br>
-%./configure --with-archive=/usr/include/ --prefix=${AXIS2C_HOME}/deploy<br></br>
-%make<br></br>
-%make install<br></br>
+On Linux, you need to set the <code>--with-archive=[path_to_zlib_headers]</code></p><p>Example: <code><br />
+%./configure --with-archive=/usr/include/ --prefix=${AXIS2C_HOME}/deploy<br />
+%make<br />
+%make install<br />
 </code></p><p>On MS Windows, set <code>WITH_ARCHIVE = 1</code> in the
 <code>configure.in</code> file and run the <code>nmake all</code> command. Please note that you have to specify the directory where you can find the zlib binary, for a MS Windows system. This can be done by setting the <code>ZLIB_BIN_DIR</code> in the
 <code>configure.in</code> file.</p>
@@ -1303,10 +1304,10 @@ Please note that all such services deployed as archives should also be placed in
 Similar to services, you also can deploy modules as archives. You also can optionally rename your zip files to have the extension, <code>.mar</code> as in service archives.</p><p>
 Your module archives must be placed in the <code>AXIS2C_BIN_DIR/modules</code> directory.</p>
 </div><div class="subsection"><a name="19_3_Known_Issues"></a><h3>19.3 Known Issues</h3><p>
-Please note that there are a few known issues when running archive based deployment, mainly on Linux based systems.<br></br>
+Please note that there are a few known issues when running archive based deployment, mainly on Linux based systems.<br />
 <ul><li>If you want to run both client and server from same respository, assign super-user privilideges for your server in order to prevent un-zipped files getting overwritten, which will in return cause a segmentation fault on your server.<p></p></li>
 <li>Please make sure that the application you choose to create archives preserves executable rights, and symbolic links of libraries that are found inside the archive, once unzipped.</li>
-</ul><p style="margin-bottom: 0in"><br></br>
+</ul><p style="margin-bottom: 0in"><br />
 </p><p><a name="appA"></a></p></div></div><div class="section"><a name="Appendix_A_-_axis2_xml"></a><h2>Appendix A - axis2.xml</h2><p>The axis2.xml file is the configuration file for Axis2/C. It has 6 top
 level elements. They are <em>parameter, transportReceiver, transportSender,
 module, phaseOrder</em> and <em>messageReceiver</em>. The following sections
@@ -1352,7 +1353,7 @@ wish.</p><p>Attributes :- name, class</p><table class="bodyTable"><caption></cap
 
         <p>On MS Windows, <em>foo.dll</em>.</p>
       </td></tr>
-  </tbody></table><p></p><p>Sub elements :- can have zero or more parameter elements.</p><p><br></br>
+  </tbody></table><p></p><p>Sub elements :- can have zero or more parameter elements.</p><p><br />
 The following table shows possible parameter values.</p><table class="bodyTable"><caption></caption><tbody>
     <tr class="b"><th>Attribute</th><th>Description</th></tr>
     <tr class="a"><td>name</td><td>Name of the parameter.
@@ -1383,7 +1384,7 @@ The following table shows possible parameter values.</p><table class="bodyTable"
 
         <p>On MS Windows, <em>foo.dll</em>.</p>
       </td></tr>
-  </tbody></table><p></p><p>Sub elements : can have zero or more parameter elements.</p><p><br></br>
+  </tbody></table><p></p><p>Sub elements : can have zero or more parameter elements.</p><p><br />
 The following table shows possible parameter values.</p><table class="bodyTable"><caption></caption><tbody>
     <tr class="a"><th>Attribute</th><th>Description</th></tr>
     <tr class="b"><td>name</td><td>The name of the parameter.
@@ -1468,7 +1469,7 @@ execution chain</p><p>The system predefined phases cannot be changed.</p><p>The 
 
         <p>On MS Windows, <em>foo.dll</em>.</p>
       </td></tr>
-  </tbody></table><p style="margin-bottom: 0in"><br></br>
+  </tbody></table><p style="margin-bottom: 0in"><br />
 </p><p><a name="appB"></a></p></div></div><div class="section"><a name="Appendix_B_-_services_xml"></a><h2>Appendix B - services.xml</h2><p>Configuration of a service is specified using a services.xml. Each service
 or service archive file needs to have a services.xml in order to be a valid
 service. The following sections describe the elements of the services.xml
@@ -1478,7 +1479,7 @@ is <em>serviceGroup</em>. The<em> service</em> element will be a child
 element of serviceGroup if there are multiple services specified in
 services.xml.</p><div class="subsection"><table class="bodyTable"><caption></caption><tbody>
     <tr class="b"><th>Attributes</th><th>Description</th><th>Possible Values</th></tr>
-    <tr class="a"><td>name</td><td>Name of the service or service group.</td><td>Depends on the service or the service group.<br></br>
+    <tr class="a"><td>name</td><td>Name of the service or service group.</td><td>Depends on the service or the service group.<br />
         Examples: echo, sg_math</td></tr>
   </tbody></table><p></p></div><div class="subsection"><p>This is optional. This element can be used to describe the service in a
 human readable format.</p><p></p></div><div class="subsection"><p>This is optional. Can be used to engage modules at service level.</p><table class="bodyTable"><caption></caption><tbody>
@@ -1524,7 +1525,7 @@ optional.</p><table class="bodyTable"><caption></caption><tbody>
 
         <p>On MS Windows, <em>foo.dll</em>.</p>
       </td></tr>
-  </tbody></table><p style="margin-bottom: 0in"><br></br>
+  </tbody></table><p style="margin-bottom: 0in"><br />
 </p><p><a name="appC"></a></p></div></div><div class="section"><a name="Appendix_C_-_module_xml"></a><h2>Appendix C - module.xml</h2><p>The module.xml file provides the configuration details for a particular
 module in Axis2/C. The top level element is <em>module</em>.</p><div class="subsection"><a name="module"></a><h3>module</h3><table class="bodyTable"><caption></caption><tbody>
     <tr class="a"><th>Attributes</th><th>Description</th><th>Possible Values</th></tr>
@@ -1590,7 +1591,7 @@ engages the module.</p><table class="bodyTable"><caption></caption><tbody>
   </tbody></table><p>Sub elements of <em>operation</em> : Any number of parameters can be
 included as sub elements in the operation element.</p><p>The <em>messageReceiver</em> parameter specifies the message receiver the
 message is intended for. If it is not set, the default message receiver is
-used.</p><p style="margin-bottom: 0in"><br></br>
+used.</p><p style="margin-bottom: 0in"><br />
 </p><p><a name="appD"></a></p></div></div><div class="section"><a name="Appendix_D_-_axis2_options"></a><h2>Appendix D - axis2_options</h2><p>This section describes various types of options that can be set with
 <code>axis2_options</code>. These options are used by the service client
 before sending messages.</p><p><strong>axis2_options_set_action(options, env, action)</strong></p><p>Sets the WS-Addressing action that is to be set in the addressing SOAP
