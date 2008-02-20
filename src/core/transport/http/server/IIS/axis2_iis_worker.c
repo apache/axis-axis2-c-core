@@ -38,7 +38,7 @@
 
 #include "axis2_iis_constants.h"
 
-#define READ_SIZE  32
+#define READ_SIZE  2048
 
 axis2_status_t AXIS2_CALL 
 axis2_worker_get_original_url(char url[],
@@ -516,11 +516,12 @@ axis2_iis_worker_get_bytes(
     axutil_stream_t * tmp_stream = NULL;
     int return_size = -1;
     axis2_char_t * buffer = NULL;
+    axis2_bool_t loop_state = AXIS2_TRUE;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, stream, NULL);
 
     tmp_stream = axutil_stream_create_basic(env);
-    while (1)
+    while (loop_state)
     {
         int read = 0;
         int write = 0;
