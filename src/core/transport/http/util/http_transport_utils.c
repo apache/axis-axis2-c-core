@@ -368,6 +368,10 @@ axis2_http_transport_utils_process_http_post_request(
                                                           axis2_http_transport_utils_on_data_request,
                                                           (void *) callback_ctx,
                                                           mime_boundary);
+                if(!binary_data_map)
+                {
+                    return AXIS2_FAILURE;
+                }
                 soap_body_len =
                     axiom_mime_parser_get_soap_body_len(mime_parser, env);
                 soap_body_str =
@@ -764,7 +768,10 @@ axis2_http_transport_utils_process_http_put_request(
                                                           axis2_http_transport_utils_on_data_request,
                                                           (void *) callback_ctx,
                                                           mime_boundary);
-
+                if(!binary_data_map)
+                {
+                    return AXIS2_FAILURE;
+                }
                 soap_body_len =
                     axiom_mime_parser_get_soap_body_len(mime_parser, env);
                 soap_body_str =
@@ -1816,6 +1823,11 @@ axis2_http_transport_utils_create_soap_msg(
                                                           axis2_http_transport_utils_on_data_request,
                                                           (void *) callback_ctx,
                                                           mime_boundary);
+                if(!binary_data_map)
+                {
+                    return NULL;
+                }
+    
                 soap_body_len =
                     axiom_mime_parser_get_soap_body_len(mime_parser, env);
                 soap_body_str =
