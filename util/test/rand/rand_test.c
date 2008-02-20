@@ -6,7 +6,7 @@
 
 axis2_status_t test_rand(axutil_env_t *env)
 {    
-    int rand_number,rand_value,sleep_time,start = 2,end = 8,rand_range;
+    int rand_number,rand_value,start = 2,end = 8,rand_range;
     unsigned seed = 10;
     
     rand_number = axutil_rand(&seed);
