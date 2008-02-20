@@ -146,8 +146,10 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
     CHAR server_name[MAX_SERVERNAME];
     axis2_char_t port[MAX_TCP_PORT_LEN];
     CHAR redirect_url[INTERNET_MAX_PATH_LENGTH];
-    soap_action[0] = '\0';
+    axis2_op_ctx_t *op_ctx = NULL;
 
+    soap_action[0] = '\0';
+    
     /*Check the parameters*/
     if (!lpECB)
     {
@@ -309,9 +311,9 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
         }
     }
     /* Nothing wrong has happen. So proceed with the request*/
+    op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (-1 == send_status)
     {
-        axis2_op_ctx_t * op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         if (axis2_op_ctx_get_response_written(op_ctx, env))
         {
             if (out_stream)
@@ -363,6 +365,49 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
                 " writing response.");
         }
     }
+    if (op_ctx)
+    {
+        axis2_msg_ctx_t *out_msg_ctx = NULL,
+            *in_msg_ctx = NULL;
+        axis2_msg_ctx_t **msg_ctx_map = NULL;
+        axis2_char_t *msg_id = NULL;
+        axis2_conf_ctx_t *conf_ctx = NULL;
+        msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+
+        out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+        in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
+
+        if (out_msg_ctx)
+        {
+            axis2_msg_ctx_free(out_msg_ctx, env);
+            out_msg_ctx = NULL;
+            msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = NULL;
+        }
+
+        if (in_msg_ctx)
+        {
+            msg_id =
+                axutil_strdup(env, axis2_msg_ctx_get_msg_id(in_msg_ctx, env));
+            conf_ctx = axis2_msg_ctx_get_conf_ctx(in_msg_ctx, env);
+            axis2_msg_ctx_reset_http_out_transport_info(in_msg_ctx, env);
+            axis2_msg_ctx_reset_transport_out_stream(in_msg_ctx, env);
+            axis2_msg_ctx_free(in_msg_ctx, env);
+            in_msg_ctx = NULL;
+            msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;
+        }
+
+        if (!axis2_op_ctx_is_in_use(op_ctx, env))
+        {
+            axis2_op_ctx_destroy_mutex(op_ctx, env);
+            if (conf_ctx && msg_id)
+            {
+                axis2_conf_ctx_register_op_ctx(conf_ctx, env, msg_id, NULL);
+                AXIS2_FREE(env->allocator, msg_id);
+            }
+            axis2_op_ctx_free(op_ctx, env);
+        }
+
+    }                           /* Done freeing message contexts */
     if (request_body)
     {
         axutil_stream_free(request_body, env);

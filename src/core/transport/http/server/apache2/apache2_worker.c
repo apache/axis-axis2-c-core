@@ -425,7 +425,7 @@ axis2_apache2_worker_process_request(
             msg_id =
                 axutil_strdup(env, axis2_msg_ctx_get_msg_id(in_msg_ctx, env));
             conf_ctx = axis2_msg_ctx_get_conf_ctx(in_msg_ctx, env);
-
+            axis2_msg_ctx_reset_http_out_transport_info(in_msg_ctx, env);
             axis2_msg_ctx_free(in_msg_ctx, env);
             in_msg_ctx = NULL;
             msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;
