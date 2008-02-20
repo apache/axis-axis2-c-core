@@ -43,6 +43,7 @@ axutil_base64_binary_create(
         return NULL;
     }
     base64_binary->plain_binary = NULL;
+    base64_binary->plain_binary_len = 0;
     return base64_binary;
 }
 
