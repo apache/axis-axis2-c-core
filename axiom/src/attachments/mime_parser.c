@@ -138,6 +138,14 @@ axiom_mime_parser_parse(
                 cb_ctx->chunked_stream, env))
         {
             read = 0;
+            
+            if(buf_num > (mime_parser->max_chunk_buffers - 1))
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "Attachment size exceeds the system MTOM configuration parameters");
+                return NULL;
+            }
+
             buf_array[buf_num] = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
             do
             {
