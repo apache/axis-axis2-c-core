@@ -692,26 +692,8 @@ guththila_write_characters(guththila_xml_writer_t * wr, guththila_char_t *buff,
         /* replace the character with the appropriate sequence */
         if (len > 0)
         {
-            switch (ch)
-            {
-            case '&':
-                guththila_write(wr, "&amp;", 5u, env);
-                break;
-            case '<':
-                guththila_write(wr, "&lt;", 4u, env);
-                break;			
-            case '>':
-                guththila_write(wr, "&gt;", 4u, env);
-                break;			
-            case '\"':
-                guththila_write(wr, "&quot;", 6u, env);
-                break;			
-            case '\'':
-                guththila_write(wr, "&apos;", 6u, env);
-                break;
-            default:
+            if (AXIS2_SUCCESS != guththila_write_escape_character(wr, buff, env))
                 return GUTHTHILA_FAILURE;
-            }
             /* skip the character */
             buff++;
             len--;
@@ -758,18 +740,6 @@ guththila_write_escape_character(
     guththila_char_t *buff,
     const axutil_env_t * env) 
 {
-    
-    /*TODO element closing -- not sure */ 
-    if (wr->status == START)
-    {
-        wr->status = BEGINING;
-        guththila_write(wr, ">", 1u, env);
-    }
-    else if (wr->status == START_EMPTY)
-    {
-        wr->status = BEGINING;
-        guththila_write(wr, "/>", 2u, env);
-    }
     if (buff)
     {
         switch (buff[0])
@@ -789,6 +759,8 @@ guththila_write_escape_character(
         case '&':
             guththila_write(wr, "&amp;", 5u, env);
             break;
+        default:
+            return GUTHTHILA_FAILURE;
         };
     }
     return GUTHTHILA_SUCCESS;
