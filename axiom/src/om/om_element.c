@@ -232,7 +232,8 @@ axiom_element_create_with_qname(
 
             /** could not find a namespace so declare namespace */
             ns = axiom_namespace_create(env, temp_nsuri, temp_prefix);
-            if (axiom_element_declare_namespace(om_element, env, *node, ns) ==
+            if (ns &&
+                axiom_element_declare_namespace(om_element, env, *node, ns) ==
                 AXIS2_SUCCESS)
             {
                 (element->ns) = ns;
@@ -240,7 +241,10 @@ axiom_element_create_with_qname(
             }
             else
             {
-                axiom_namespace_free(ns, env);
+                if (ns)
+                {
+                    axiom_namespace_free(ns, env);
+                }
                 axiom_element_free(om_element, env);
                 AXIS2_FREE(env->allocator, *node);
                 return NULL;
@@ -284,7 +288,7 @@ axiom_element_find_namespace(
     {
         void *ns = NULL;
 
-        if (!prefix || axutil_strcmp(prefix, "") == 0)
+        if (uri && (!prefix || axutil_strcmp(prefix, "") == 0))
         {
 
             /** check for a default namepsace */
@@ -293,12 +297,12 @@ axiom_element_find_namespace(
 
             default_ns = axiom_element_get_default_namespace(om_element,
                                                              env, element_node);
-            if (default_ns && NULL != uri)
+            if (default_ns)
             {
                 axis2_char_t *default_uri = NULL;
                 default_uri = axiom_namespace_get_uri(default_ns, env);
 
-                if (default_uri && axutil_strcmp(uri, default_uri) == 0)
+                if (axutil_strcmp(uri, default_uri) == 0)
                 {
                     return default_ns;
                 }
@@ -320,10 +324,9 @@ axiom_element_find_namespace(
                     temp_ns = (axiom_namespace_t *) ns;
                     temp_nsuri = axiom_namespace_get_uri(temp_ns, env);
 
-                    if (temp_nsuri && (axutil_strcmp(temp_nsuri, uri) == 0))
+                    if (axutil_strcmp(temp_nsuri, uri) == 0)
                     {
-
-                        /** namespace uri matches , so free hashindex and return ns*/
+                        /** namespace uri matches, so free hashindex and return ns*/
                         AXIS2_FREE(env->allocator, hashindex);
                         return (axiom_namespace_t *) (ns);
                     }
@@ -345,9 +348,12 @@ axiom_element_find_namespace(
                 axiom_namespace_t *found_ns = NULL;
                 axis2_char_t *found_uri = NULL;
                 found_ns = (axiom_namespace_t *) ns;
-
                 found_uri = axiom_namespace_get_uri(found_ns, env);
-
+                if (uri)
+                {
+                    /* if uri provided, return found ns only if uri matches */
+                    return (axutil_strcmp(found_uri, uri) == 0) ? found_ns : NULL;
+                }
                 return found_ns;
             }
         }
@@ -500,15 +506,13 @@ axiom_element_find_declared_namespace(
     axutil_hash_index_t *hash_index = NULL;
     void *ns = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK(env->error, uri, NULL);
 
     if (!(om_element->namespaces))
     {
         return NULL;
     }
-    if (!prefix || axutil_strcmp(prefix, "") == 0)
+    if (uri && (!prefix || axutil_strcmp(prefix, "") == 0))
     {
-
         /** prefix null iterate the namespace hash for matching uri */
         for (hash_index = axutil_hash_first(om_element->namespaces, env);
              hash_index; hash_index = axutil_hash_next(env, hash_index))
@@ -520,8 +524,7 @@ axiom_element_find_declared_namespace(
                 axis2_char_t *temp_nsuri = NULL;
                 temp_ns = (axiom_namespace_t *) (ns);
                 temp_nsuri = axiom_namespace_get_uri(temp_ns, env);
-
-                if (temp_nsuri && axutil_strcmp(temp_nsuri, uri) == 0)
+                if (axutil_strcmp(temp_nsuri, uri) == 0)
                 {
                     AXIS2_FREE(env->allocator, hash_index);
                     return temp_ns;
@@ -543,7 +546,8 @@ axiom_element_find_declared_namespace(
             axis2_char_t *found_uri = NULL;
             found_ns = (axiom_namespace_t *) ns;
             found_uri = axiom_namespace_get_uri(found_ns, env);
-            if (found_uri && axutil_strcmp(found_uri, uri) == 0)
+            /* If uri provided, ensure this namespace found by prefix matches the uri */
+            if (uri && axutil_strcmp(found_uri, uri) == 0)
             {
                 return found_ns;
             }
@@ -597,8 +601,8 @@ axiom_element_add_attribute(
     AXIS2_PARAM_CHECK(env->error, attribute, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, element_node, AXIS2_FAILURE);
 
+    /* ensure the attribute's namespace structure is declared */
     om_namespace = axiom_attribute_get_namespace(attribute, env);
-
     if (om_namespace)
     {
         temp_ns = axiom_element_find_namespace(om_element, env,
@@ -607,15 +611,16 @@ axiom_element_add_attribute(
                                                (om_namespace, env),
                                                axiom_namespace_get_prefix
                                                (om_namespace, env));
-        if (!temp_ns)
+        if (temp_ns != om_namespace)
         {
-            axis2_status_t status = AXIS2_SUCCESS;
-            status = axiom_element_declare_namespace(om_element, env,
-                                                     element_node,
-                                                     om_namespace);
-            if (status == AXIS2_FAILURE)
+            axis2_status_t status;
+            /* as the attribute's namespace structure is not declared in scope,
+               declare it here */
+            status = axiom_element_declare_namespace_assume_param_ownership(om_element, env,
+                                                                            om_namespace);
+            if (status != AXIS2_SUCCESS)
             {
-                return AXIS2_FAILURE;
+                return status;
             }
         }
     }
@@ -635,8 +640,8 @@ axiom_element_add_attribute(
         axis2_char_t *name = axutil_qname_to_string(qname, env);
         axutil_hash_set(om_element->attributes,
                         name, AXIS2_HASH_KEY_STRING, attribute);
+        axiom_attribute_increment_ref(attribute, env);
     }
-    axiom_attribute_increment_ref(attribute, env);
     return ((qname) ? AXIS2_SUCCESS : AXIS2_FAILURE);
 }
 
@@ -1259,24 +1264,22 @@ axiom_element_set_text(
     const axis2_char_t * text,
     axiom_node_t * element_node)
 {
-    axiom_node_t *temp_node = NULL;
+    axiom_node_t *temp_node, *next_node;
     axiom_text_t *om_text = NULL;
-    axiom_node_t *node_to_free = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, text, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, element_node, AXIS2_FAILURE);
 
-    temp_node = axiom_node_get_first_child(element_node, env);
-    while (temp_node)
+    next_node = axiom_node_get_first_child(element_node, env);
+    while (next_node)
     {
+        temp_node = next_node;
+        next_node = axiom_node_get_next_sibling(temp_node, env);
         if (axiom_node_get_node_type(temp_node, env) == AXIOM_TEXT)
         {
-            node_to_free = axiom_node_detach(temp_node, env);
-            axiom_node_free_tree(node_to_free, env);
+            axiom_node_free_tree(temp_node, env);
         }
-        temp_node = axiom_node_get_next_sibling(temp_node, env);
     }
-    temp_node = NULL;
 
     om_text = axiom_text_create(env, NULL, text, &temp_node);
     axiom_node_add_child(element_node, env, temp_node);
@@ -1417,6 +1420,7 @@ axiom_element_declare_default_namespace(
         om_element->namespaces = axutil_hash_make(env);
         if (!(om_element->namespaces))
         {
+            axiom_namespace_free(default_ns, env);
             return NULL;
         }
     }

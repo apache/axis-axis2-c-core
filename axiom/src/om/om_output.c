@@ -551,9 +551,16 @@ axiom_output_write(
     }
     else if (type == AXIOM_NAMESPACE)
     {
-        status = axiom_xml_writer_write_namespace(om_output->xml_writer,
-                                                  env,
-                                                  args_list[0], args_list[1]);
+        /* If the namespace prefix is xml, it must be the pre-defined xml
+           namespace.  Although the XML spec allows it to be declared
+           explicitly, this is superfluous and not accepted by all xml
+           parsers. */
+        if (strcmp(args_list[0], "xml") != 0)
+        {
+            status = axiom_xml_writer_write_namespace(om_output->xml_writer,
+                                                      env,
+                                                      args_list[0], args_list[1]);
+        }
     }
     else if (type == AXIOM_TEXT)
     {
