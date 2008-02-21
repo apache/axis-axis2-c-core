@@ -103,7 +103,8 @@ extern "C"
 
     /**
     * Frees an om node and all of its children. Please note that the attached
-    * data_element will also be freed along with the node.
+    * data_element will also be freed along with the node.  If the node is
+    * still attached to a parent, it will be detached first, then freed.
     * @param om_node node to be freed.
     * @param env Environment. MUST NOT be NULL, .
     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE

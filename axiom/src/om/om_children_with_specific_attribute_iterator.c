@@ -86,8 +86,8 @@ axiom_children_with_specific_attribute_iterator_remove(
     axiom_children_with_specific_attribute_iterator_t * iterator,
     const axutil_env_t * env)
 {
-    axiom_node_t *last_child = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, iterator, AXIS2_FAILURE);
 
     if (!(iterator->next_called))
     {
@@ -107,12 +107,8 @@ axiom_children_with_specific_attribute_iterator_remove(
 
     if (!(iterator->last_child))
         return AXIS2_FAILURE;
-    last_child = axiom_node_detach(iterator->last_child, env);
-    if (last_child)
-    {
-        axiom_node_free_tree(last_child, env);
-        last_child = NULL;
-    }
+    axiom_node_free_tree(iterator->last_child, env);
+    iterator->last_child = NULL;
     return AXIS2_SUCCESS;
 }
 
@@ -175,8 +171,8 @@ axiom_children_with_specific_attribute_iterator_next(
     axiom_children_with_specific_attribute_iterator_t * iterator,
     const axutil_env_t * env)
 {
-    axiom_node_t *last_child = NULL;
     AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, iterator, NULL);
 
     iterator->next_called = AXIS2_TRUE;
     iterator->remove_called = AXIS2_FALSE;
@@ -186,9 +182,7 @@ axiom_children_with_specific_attribute_iterator_next(
     if (iterator->last_child && iterator->detach &&
         (axiom_node_get_parent(iterator->last_child, env)))
     {
-        last_child = axiom_node_detach(iterator->last_child, env);
-        if (last_child)
-            axiom_node_free_tree(last_child, env);
+        axiom_node_free_tree(iterator->last_child, env);
     }
     return iterator->last_child;
 }

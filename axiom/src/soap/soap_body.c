@@ -384,9 +384,6 @@ axiom_soap_body_convert_fault_to_soap11(
                                     (fault_value, env);
                                 if (fault_value_om_node)
                                 {
-                                    fault_value_om_node =
-                                        axiom_node_detach(fault_value_om_node,
-                                                          env);
                                     fault_value_om_ele =
                                         (axiom_element_t *)
                                         axiom_node_get_data_element
@@ -449,9 +446,6 @@ axiom_soap_body_convert_fault_to_soap11(
                                     (fault_text, env);
                                 if (fault_text_om_node)
                                 {
-                                    fault_text_om_node =
-                                        axiom_node_detach(fault_text_om_node,
-                                                          env);
                                     fault_text_om_ele =
                                         (axiom_element_t *)
                                         axiom_node_get_data_element

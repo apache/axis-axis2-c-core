@@ -232,7 +232,8 @@ axiom_element_create_with_qname(
 
             /** could not find a namespace so declare namespace */
             ns = axiom_namespace_create(env, temp_nsuri, temp_prefix);
-            if (axiom_element_declare_namespace(om_element, env, *node, ns) ==
+            if (ns &&
+                axiom_element_declare_namespace(om_element, env, *node, ns) ==
                 AXIS2_SUCCESS)
             {
                 (element->ns) = ns;
@@ -240,7 +241,10 @@ axiom_element_create_with_qname(
             }
             else
             {
-                axiom_namespace_free(ns, env);
+                if (ns)
+                {
+                    axiom_namespace_free(ns, env);
+                }
                 axiom_element_free(om_element, env);
                 AXIS2_FREE(env->allocator, *node);
                 return NULL;
@@ -284,7 +288,7 @@ axiom_element_find_namespace(
     {
         void *ns = NULL;
 
-        if (!prefix || axutil_strcmp(prefix, "") == 0)
+        if (uri && (!prefix || axutil_strcmp(prefix, "") == 0))
         {
 
             /** check for a default namepsace */
@@ -293,12 +297,12 @@ axiom_element_find_namespace(
 
             default_ns = axiom_element_get_default_namespace(om_element,
                                                              env, element_node);
-            if (default_ns && NULL != uri)
+            if (default_ns)
             {
                 axis2_char_t *default_uri = NULL;
                 default_uri = axiom_namespace_get_uri(default_ns, env);
 
-                if (default_uri && axutil_strcmp(uri, default_uri) == 0)
+                if (axutil_strcmp(uri, default_uri) == 0)
                 {
                     return default_ns;
                 }
@@ -320,10 +324,9 @@ axiom_element_find_namespace(
                     temp_ns = (axiom_namespace_t *) ns;
                     temp_nsuri = axiom_namespace_get_uri(temp_ns, env);
 
-                    if (temp_nsuri && (axutil_strcmp(temp_nsuri, uri) == 0))
+                    if (axutil_strcmp(temp_nsuri, uri) == 0)
                     {
-
-                        /** namespace uri matches , so free hashindex and return ns*/
+                        /** namespace uri matches, so free hashindex and return ns*/
                         AXIS2_FREE(env->allocator, hashindex);
                         return (axiom_namespace_t *) (ns);
                     }
@@ -345,9 +348,12 @@ axiom_element_find_namespace(
                 axiom_namespace_t *found_ns = NULL;
                 axis2_char_t *found_uri = NULL;
                 found_ns = (axiom_namespace_t *) ns;
-
                 found_uri = axiom_namespace_get_uri(found_ns, env);
-
+                if (uri)
+                {
+                    /* if uri provided, return found ns only if uri matches */
+                    return (axutil_strcmp(found_uri, uri) == 0) ? found_ns : NULL;
+                }
                 return found_ns;
             }
         }
@@ -500,15 +506,13 @@ axiom_element_find_declared_namespace(
     axutil_hash_index_t *hash_index = NULL;
     void *ns = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK(env->error, uri, NULL);
 
     if (!(om_element->namespaces))
     {
         return NULL;
     }
-    if (!prefix || axutil_strcmp(prefix, "") == 0)
+    if (uri && (!prefix || axutil_strcmp(prefix, "") == 0))
     {
-
         /** prefix null iterate the namespace hash for matching uri */
         for (hash_index = axutil_hash_first(om_element->namespaces, env);
              hash_index; hash_index = axutil_hash_next(env, hash_index))
@@ -520,8 +524,7 @@ axiom_element_find_declared_namespace(
                 axis2_char_t *temp_nsuri = NULL;
                 temp_ns = (axiom_namespace_t *) (ns);
                 temp_nsuri = axiom_namespace_get_uri(temp_ns, env);
-
-                if (temp_nsuri && axutil_strcmp(temp_nsuri, uri) == 0)
+                if (axutil_strcmp(temp_nsuri, uri) == 0)
                 {
                     AXIS2_FREE(env->allocator, hash_index);
                     return temp_ns;
@@ -543,7 +546,8 @@ axiom_element_find_declared_namespace(
             axis2_char_t *found_uri = NULL;
             found_ns = (axiom_namespace_t *) ns;
             found_uri = axiom_namespace_get_uri(found_ns, env);
-            if (found_uri && axutil_strcmp(found_uri, uri) == 0)
+            /* If uri provided, ensure this namespace found by prefix matches the uri */
+            if (uri && axutil_strcmp(found_uri, uri) == 0)
             {
                 return found_ns;
             }
@@ -597,8 +601,8 @@ axiom_element_add_attribute(
     AXIS2_PARAM_CHECK(env->error, attribute, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, element_node, AXIS2_FAILURE);
 
+    /* ensure the attribute's namespace structure is declared */
     om_namespace = axiom_attribute_get_namespace(attribute, env);
-
     if (om_namespace)
     {
         temp_ns = axiom_element_find_namespace(om_element, env,
@@ -607,15 +611,16 @@ axiom_element_add_attribute(
                                                (om_namespace, env),
                                                axiom_namespace_get_prefix
                                                (om_namespace, env));
-        if (!temp_ns)
+        if (temp_ns != om_namespace)
         {
-            axis2_status_t status = AXIS2_SUCCESS;
-            status = axiom_element_declare_namespace(om_element, env,
-                                                     element_node,
-                                                     om_namespace);
-            if (status == AXIS2_FAILURE)
+            axis2_status_t status;
+            /* as the attribute's namespace structure is not declared in scope,
+               declare it here */
+            status = axiom_element_declare_namespace_assume_param_ownership(om_element, env,
+                                                                            om_namespace);
+            if (status != AXIS2_SUCCESS)
             {
-                return AXIS2_FAILURE;
+                return status;
             }
         }
     }
@@ -635,8 +640,8 @@ axiom_element_add_attribute(
         axis2_char_t *name = axutil_qname_to_string(qname, env);
         axutil_hash_set(om_element->attributes,
                         name, AXIS2_HASH_KEY_STRING, attribute);
+        axiom_attribute_increment_ref(attribute, env);
     }
-    axiom_attribute_increment_ref(attribute, env);
     return ((qname) ? AXIS2_SUCCESS : AXIS2_FAILURE);
 }
 
@@ -1259,24 +1264,22 @@ axiom_element_set_text(
     const axis2_char_t * text,
     axiom_node_t * element_node)
 {
-    axiom_node_t *temp_node = NULL;
+    axiom_node_t *temp_node, *next_node;
     axiom_text_t *om_text = NULL;
-    axiom_node_t *node_to_free = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, text, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, element_node, AXIS2_FAILURE);
 
-    temp_node = axiom_node_get_first_child(element_node, env);
-    while (temp_node)
+    next_node = axiom_node_get_first_child(element_node, env);
+    while (next_node)
     {
+        temp_node = next_node;
+        next_node = axiom_node_get_next_sibling(temp_node, env);
         if (axiom_node_get_node_type(temp_node, env) == AXIOM_TEXT)
         {
-            node_to_free = axiom_node_detach(temp_node, env);
-            axiom_node_free_tree(node_to_free, env);
+            axiom_node_free_tree(temp_node, env);
         }
-        temp_node = axiom_node_get_next_sibling(temp_node, env);
     }
-    temp_node = NULL;
 
     om_text = axiom_text_create(env, NULL, text, &temp_node);
     axiom_node_add_child(element_node, env, temp_node);
@@ -1417,6 +1420,7 @@ axiom_element_declare_default_namespace(
         om_element->namespaces = axutil_hash_make(env);
         if (!(om_element->namespaces))
         {
+            axiom_namespace_free(default_ns, env);
             return NULL;
         }
     }
@@ -1774,4 +1778,148 @@ axiom_element_set_is_empty(
     axis2_bool_t is_empty)
 {
     om_element->is_empty = is_empty;
+}
+
+/**
+ * Scan the parents of the element, to determine which namespaces are inscope for the
+ * the element and its children.
+ */
+AXIS2_EXTERN axutil_hash_t * AXIS2_CALL
+axiom_element_gather_parent_namespaces(
+    axiom_element_t * om_element,
+    const axutil_env_t * env,
+    axiom_node_t * om_node)
+{
+    axutil_hash_t *inscope_namespaces = NULL;
+    axiom_node_t *parent_node = om_node;
+
+    while ((parent_node = axiom_node_get_parent(parent_node, env)) &&
+           (axiom_node_get_node_type(parent_node, env) == AXIOM_ELEMENT))
+    {
+        axiom_element_t *parent_element = (axiom_element_t *)axiom_node_get_data_element(parent_node, env);
+        axutil_hash_t *parent_namespaces = axiom_element_get_namespaces(parent_element, env);
+        if (parent_namespaces)
+        {
+            axutil_hash_index_t *hi;
+            void *val;
+            for (hi = axutil_hash_first(parent_namespaces, env); hi;
+                 hi = axutil_hash_next(env, hi))
+            {
+                axutil_hash_this(hi, NULL, NULL, &val);
+                if (val)
+                {
+                    /* Check if prefix is already associated with some namespace in node being detached */
+                    if (!axiom_element_find_declared_namespace(om_element, env, NULL,
+                                                               axiom_namespace_get_prefix((axiom_namespace_t *)val, env)))
+                    {
+                        axis2_char_t *key = axiom_namespace_get_prefix((axiom_namespace_t *)val, env);
+                        if (!key)
+                            key = "";
+                        /* Check if prefix already associated with some namespace in a parent node */
+                        if (!(inscope_namespaces && axutil_hash_get(inscope_namespaces, key, AXIS2_HASH_KEY_STRING)))
+                        {
+                            /* Remember this namespace as needing to be declared, if used */
+                            if (!inscope_namespaces)
+                                inscope_namespaces = axutil_hash_make(env);
+                            if (inscope_namespaces)
+                                axutil_hash_set(inscope_namespaces, key, AXIS2_HASH_KEY_STRING, val);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return inscope_namespaces;
+}
+
+/**
+ * Test if the provided namespace pointer is declared in a parent namespace
+ * If so, redeclare it in the provided root element
+ */
+AXIS2_EXTERN void AXIS2_CALL
+axiom_element_use_parent_namespace(
+    axiom_element_t * om_element,
+    const axutil_env_t * env,
+    axiom_node_t * om_node,
+    axiom_namespace_t *ns,
+    axiom_element_t * root_element,
+    axutil_hash_t *inscope_namespaces)
+{
+    if (ns && inscope_namespaces)
+    {
+        axiom_namespace_t *parent_ns;
+        axis2_char_t *key = axiom_namespace_get_prefix(ns, env);
+        if (!key)
+            key = "";
+
+        parent_ns = axutil_hash_get(inscope_namespaces, key, AXIS2_HASH_KEY_STRING);
+        /* Check if namespace is a namespace declared in a parent and not also
+           declared at an intermediate level */
+        if (parent_ns && (parent_ns == ns) &&
+            (ns != axiom_element_find_namespace(om_element, env, om_node,
+                                                axiom_namespace_get_uri(ns, env),
+                                                axiom_namespace_get_prefix(ns, env))))
+        {
+            /* Redeclare this parent namespace at the level of the element being detached */
+            axiom_element_declare_namespace_assume_param_ownership(root_element, env, parent_ns);
+            /* Remove the namespace from the inscope parent namespaces now that it has
+               been redeclared. */
+            axutil_hash_set(inscope_namespaces, key, AXIS2_HASH_KEY_STRING, NULL);
+        }
+    }
+}
+
+/**
+ * For each child node, determine if it uses a namespace from a parent of the node being detached
+ * If so, re-declare that namespace in the node being detached
+ */
+AXIS2_EXTERN void AXIS2_CALL
+axiom_element_redeclare_parent_namespaces(
+    axiom_element_t * om_element,
+    const axutil_env_t * env,
+    axiom_node_t * om_node,
+    axiom_element_t * root_element,
+    axutil_hash_t *inscope_namespaces)
+{
+    axiom_node_t *child_node;
+    axutil_hash_t * attributes;
+
+    if (!om_element || !om_node || !inscope_namespaces)
+        return;
+
+    /* ensure the element's namespace is declared */
+    axiom_element_use_parent_namespace(om_element, env, om_node,
+                                              om_element->ns, root_element, inscope_namespaces);
+
+    /* for each attribute, ensure the attribute's namespace is declared */
+    attributes = om_element->attributes;
+    if (attributes)
+    {
+        axutil_hash_index_t *hi;
+        void *val;
+        for (hi = axutil_hash_first(attributes, env); hi;
+             hi = axutil_hash_next(env, hi))
+        {
+            axutil_hash_this(hi, NULL, NULL, &val);
+            if (val)
+            {
+                axiom_element_use_parent_namespace(om_element, env, om_node,
+                                                   axiom_attribute_get_namespace((axiom_attribute_t *)val, env),
+                                                   root_element, inscope_namespaces);
+            }
+        }
+    }
+
+    /* ensure the namespaces in all the children are declared */
+    child_node = axiom_node_get_first_child(om_node, env);
+    while (child_node && (axutil_hash_count(inscope_namespaces) > 0))
+    {
+        if (axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
+        {
+            axiom_element_redeclare_parent_namespaces(axiom_node_get_data_element(child_node, env),
+                                                                     env, child_node, root_element, inscope_namespaces);
+        }
+        child_node = axiom_node_get_next_sibling(child_node, env);
+    }
 }

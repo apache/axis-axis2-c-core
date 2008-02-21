@@ -77,6 +77,7 @@ axiom_children_iterator_remove(
 {
     axiom_node_t *om_node = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, iterator, AXIS2_FAILURE);
 
     if (!(iterator->next_called))
     {
@@ -98,11 +99,8 @@ axiom_children_iterator_remove(
     {
         return AXIS2_FAILURE;
     }
-    om_node = axiom_node_detach(iterator->last_child, env);
-    if (om_node)
-    {
-        axiom_node_free_tree(om_node, env);
-    }
+    axiom_node_free_tree(iterator->last_child, env);
+    iterator->last_child = NULL;
     return AXIS2_SUCCESS;
 }
 
