@@ -86,6 +86,20 @@ extern "C"
     axiom_mime_parser_create(
         const axutil_env_t * env);
 
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_mime_parser_set_chunk_buffer_size(
+        axiom_mime_parser_t * mime_parser,
+        const axutil_env_t * env,
+        int size);
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_mime_parser_set_max_chunk_buffers(
+        axiom_mime_parser_t * mime_parser,
+        const axutil_env_t * env,
+        int num);
+
+
+
     /** @} */
 
 #ifdef __cplusplus

@@ -11,6 +11,7 @@
     <operation name="echoString">
             <!--messageReceiver class="axis2_receivers" /-->
             <parameter name="wsamapping">http://ws.apache.org/axis2/c/samples/echoString</parameter>
+            <!--Please note that you can only have one RESTMethod and one RESTLocation-->
             <!--Uncomment for POST method with REST-->
             <parameter name="RESTMethod">POST</parameter>
             <parameter name="RESTLocation">echoString</parameter>

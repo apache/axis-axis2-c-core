@@ -19,11 +19,6 @@
 #ifndef AXIS2_DESCRIPTION_H
 #define AXIS2_DESCRIPTION_H
 
-/**
- * @file axis2_axis2_description.h
- * @brief axis2 DESCRIPTION
- */
-
 #include <axis2_const.h>
 #include <axutil_error.h>
 #include <axis2_defines.h>
@@ -44,7 +39,18 @@ extern "C"
      * @}
      */
 
-    /*********************************** Constansts********************************/
+    /**
+     * @defgroup axis2_desc_constants description related constants
+     * @ingroup axis2_desc
+     * @{
+     */
+
+    /**
+     * @file axis2_description.h
+     */
+
+
+    /*********************************** Constansts *******************************/
 
     /**
      * Field EXECUTION_CHAIN_KEY
@@ -131,7 +137,9 @@ extern "C"
      */
 #define AXIS2_SERVICE_CLASS_NAME "SERVICE_CLASS_NAME"
 
-    /*********************************** Constants*********************************/
+    /******************************************************************************/
+
+    /** @} */
 
 #ifdef __cplusplus
 }

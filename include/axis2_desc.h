@@ -27,6 +27,10 @@
  * @{
  */
 
+/**
+ * @file axis2_desc.h
+ */
+
 #include <axutil_param_container.h>
 #include <axutil_hash.h>
 #include <axis2_description.h>
@@ -155,7 +159,7 @@ extern "C"
         const axis2_char_t * key);
 
     /**
-     * Removes the name child.
+     * Removes the named child.
      * @param desc pointer to description
      * @param env pointer to environment struct
      * @param key key that represents the child to be removed
@@ -191,17 +195,30 @@ extern "C"
         const axis2_desc_t * desc,
         const axutil_env_t * env);
 
+    /**
+     * Sets policy include
+     * @param desc pointer to description
+     * @param env pointer to environment struct 
+     * @param policy_include policy include to be added to description
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_desc_set_policy_include(
         axis2_desc_t * desc,
         const axutil_env_t * env,
         struct axis2_policy_include *policy_include);
 
+    /**
+     * Gets policy include
+     * @param desc pointer to description
+     * @param env pointer to environment struct 
+     * @return returns policy include that was added to description
+     * @sa axis2_policy_include
+     */
     AXIS2_EXTERN struct axis2_policy_include *AXIS2_CALL
-
-                axis2_desc_get_policy_include(
-                    axis2_desc_t * desc,
-                    const axutil_env_t * env);
+    axis2_desc_get_policy_include(
+        axis2_desc_t * desc,
+        const axutil_env_t * env);
 
     /** @} */
 #ifdef __cplusplus

@@ -29,15 +29,26 @@
  * @{
  */
 
+/**
+ * @file axis2_msg.h
+ */
+
 #include <axutil_param_container.h>
 #include <axis2_op.h>
 #include <axutil_array_list.h>
 #include <axis2_description.h>
 #include <axis2_phase_meta.h>
 
+    /** Message of IN flow */
 #define AXIS2_MSG_IN            "in"
+
+    /** Message of OUT flow */
 #define AXIS2_MSG_OUT           "out"
+
+    /** Message of IN FAULT flow */
 #define AXIS2_MSG_IN_FAULT      "InFaultMessage"
+
+    /** Message of OUT FAULT flow */
 #define AXIS2_MSG_OUT_FAULT     "OutFaultMessage"
 
 #ifdef __cplusplus
@@ -204,7 +215,6 @@ extern "C"
      * @return pointer to QName, returns a reference, not a cloned copy
      */
     AXIS2_EXTERN const axutil_qname_t *AXIS2_CALL
-
     axis2_msg_get_element_qname(
         const axis2_msg_t * msg,
         const axutil_env_t * env);
@@ -238,7 +248,7 @@ extern "C"
      * Sets message name.
      * @param msg pointer to message
      * @param env pointer to environment struct
-     * @param message name string
+     * @param name message name string
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -258,8 +268,14 @@ extern "C"
         const axis2_msg_t * msg,
         const axutil_env_t * env);
 
+    /**
+     * Gets container of parameters belonging to message.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @return returns container of parameters
+     * @sa axutil_param_container
+     */
     AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
-
     axis2_msg_get_param_container(
         const axis2_msg_t * msg,
         const axutil_env_t * env);
@@ -270,7 +286,6 @@ extern "C"
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_increment_ref(
         axis2_msg_t * msg,

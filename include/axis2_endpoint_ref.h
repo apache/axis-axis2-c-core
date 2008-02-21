@@ -20,7 +20,7 @@
 #define AXIS2_ENDPOINT_REF_H
 
 /**
- * @defgroup axis2_endpoint_ref  endpoint reference
+ * @defgroup axis2_endpoint_ref endpoint reference
  * @ingroup axis2_addr
  * endpoint reference represent an endpoint address in WS-Addressing.
  * In addition to the endpoint address, it also encapsulates meta data,
@@ -65,7 +65,7 @@ extern "C"
     /**
      * Frees the endpoint_ref given as a void pointer. This method would cast the 
      * void parameter to an endpoint_ref pointer and then call free method.
-     * @param pointer to endpoint_ref as a void pointer
+     * @param endpoint_ref pointer to endpoint_ref as a void pointer
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
@@ -82,7 +82,6 @@ extern "C"
      * @return endpoint address string
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-
     axis2_endpoint_ref_get_address(
         const axis2_endpoint_ref_t * endpoint_ref,
         const axutil_env_t * env);
@@ -110,7 +109,6 @@ extern "C"
      * copy
      */
     AXIS2_EXTERN const axutil_qname_t *AXIS2_CALL
-
     axis2_endpoint_ref_get_interface_qname(
         const axis2_endpoint_ref_t * endpoint_ref,
         const axutil_env_t * env);
@@ -120,12 +118,11 @@ extern "C"
      * the endpoint being conveyed.
      * @param endpoint_ref pointer to endpoint reference struct
      * @param env pointer to environment struct
-     * @param interface_name pointer to interface QName, this method creates
+     * @param interface_qname pointer to interface QName, this method creates
      * a clone of the QName
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_endpoint_ref_set_interface_qname(
         axis2_endpoint_ref_t * endpoint_ref,
         const axutil_env_t * env,
@@ -143,7 +140,6 @@ extern "C"
      * returns a reference, not a cloned copy 
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-
     axis2_endpoint_ref_get_ref_param_list(
         const axis2_endpoint_ref_t * endpoint_ref,
         const axutil_env_t * env);
@@ -157,7 +153,6 @@ extern "C"
      * reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-
     axis2_endpoint_ref_get_metadata_list(
         const axis2_endpoint_ref_t * endpoint_ref,
         const axutil_env_t * env);
@@ -170,7 +165,6 @@ extern "C"
      * returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-
     axis2_endpoint_ref_get_ref_attribute_list(
         const axis2_endpoint_ref_t * endpoint_ref,
         const axutil_env_t * env);
@@ -183,7 +177,6 @@ extern "C"
      * returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-
     axis2_endpoint_ref_get_metadata_attribute_list(
         const axis2_endpoint_ref_t * endpoint_ref,
         const axutil_env_t * env);
@@ -197,7 +190,6 @@ extern "C"
      * returns a reference, not a cloned copy
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-
     axis2_endpoint_ref_get_extension_list(
         const axis2_endpoint_ref_t * endpoint_ref,
         const axutil_env_t * env);
@@ -242,7 +234,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_endpoint_ref_add_ref_attribute(
         axis2_endpoint_ref_t * endpoint_ref,
         const axutil_env_t * env,
@@ -257,7 +248,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_endpoint_ref_add_metadata_attribute(
         axis2_endpoint_ref_t * endpoint_ref,
         const axutil_env_t * env,
@@ -288,7 +278,6 @@ extern "C"
      * a cloned copy
      */
     AXIS2_EXTERN axis2_svc_name_t *AXIS2_CALL
-
     axis2_endpoint_ref_get_svc_name(
         const axis2_endpoint_ref_t * endpoint_ref,
         const axutil_env_t * env);

@@ -37,6 +37,7 @@
 #include <axiom_mime_parser.h>
 #include <axis2_disp.h>
 #include <axis2_msg.h>
+#include <stdlib.h>
 
 #define AXIOM_MIME_BOUNDARY_BYTE 45
 
@@ -324,15 +325,53 @@ axis2_http_transport_utils_process_http_post_request(
         {
             axiom_mime_parser_t *mime_parser = NULL;
             int soap_body_len = 0;
+            axutil_param_t *chunk_buffer_size_param = NULL;
+            axutil_param_t *max_chunk_buffers_param = 0;
+            axis2_char_t *value_size = NULL;
+            axis2_char_t *value_num = NULL;
+            int size = 0;
+            int num = 0;
 
             mime_parser = axiom_mime_parser_create(env);
+
+            chunk_buffer_size_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                               env,
+                                                               AXIS2_MTOM_CHUNK_BUFFER_SIZE);
+            if (chunk_buffer_size_param)
+            {
+                value_size =
+                    (axis2_char_t *) axutil_param_get_value (chunk_buffer_size_param, env);
+                if(value_size)
+                {
+                    size = atoi(value_size);
+                    axiom_mime_parser_set_chunk_buffer_size(mime_parser, env, size);
+                }
+            }
+
+            max_chunk_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                               env,
+                                                               AXIS2_MTOM_MAX_CHUNK_BUFFERS);
+            if(max_chunk_buffers_param)
+            {
+                value_num =
+                    (axis2_char_t *) axutil_param_get_value (max_chunk_buffers_param, env);
+                if(value_num)
+                {
+                    num = atoi(value_num);
+                    axiom_mime_parser_set_max_chunk_buffers(mime_parser, env, num);
+                }
+            }
+
             if (mime_parser)
             {
                 binary_data_map = axiom_mime_parser_parse(mime_parser, env,
                                                           axis2_http_transport_utils_on_data_request,
                                                           (void *) callback_ctx,
                                                           mime_boundary);
-
+                if(!binary_data_map)
+                {
+                    return AXIS2_FAILURE;
+                }
                 soap_body_len =
                     axiom_mime_parser_get_soap_body_len(mime_parser, env);
                 soap_body_str =
@@ -686,15 +725,53 @@ axis2_http_transport_utils_process_http_put_request(
         {
             axiom_mime_parser_t *mime_parser = NULL;
             int soap_body_len = 0;
+            axutil_param_t *chunk_buffer_size_param = NULL;
+            axutil_param_t *max_chunk_buffers_param = 0;
+            axis2_char_t *value_size = NULL;
+            axis2_char_t *value_num = NULL;
+            int size = 0;
+            int num = 0;
 
             mime_parser = axiom_mime_parser_create(env);
+
+            chunk_buffer_size_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                               env,
+                                                               AXIS2_MTOM_CHUNK_BUFFER_SIZE);
+            if (chunk_buffer_size_param)
+            {
+                value_size =
+                    (axis2_char_t *) axutil_param_get_value (chunk_buffer_size_param, env);
+                if(value_size)
+                {
+                    size = atoi(value_size);
+                    axiom_mime_parser_set_chunk_buffer_size(mime_parser, env, size);
+                }
+            }
+
+            max_chunk_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                               env,
+                                                               AXIS2_MTOM_MAX_CHUNK_BUFFERS);
+            if(max_chunk_buffers_param)
+            {
+                value_num =
+                    (axis2_char_t *) axutil_param_get_value (max_chunk_buffers_param, env);
+                if(value_num)
+                {
+                    num = atoi(value_num);
+                    axiom_mime_parser_set_max_chunk_buffers(mime_parser, env, num);
+                }
+            }
+
             if (mime_parser)
             {
                 binary_data_map = axiom_mime_parser_parse(mime_parser, env,
                                                           axis2_http_transport_utils_on_data_request,
                                                           (void *) callback_ctx,
                                                           mime_boundary);
-
+                if(!binary_data_map)
+                {
+                    return AXIS2_FAILURE;
+                }
                 soap_body_len =
                     axiom_mime_parser_get_soap_body_len(mime_parser, env);
                 soap_body_str =
@@ -1703,15 +1780,54 @@ axis2_http_transport_utils_create_soap_msg(
             axutil_stream_t *stream = NULL;
             int soap_body_len = 0;
             axis2_char_t *soap_body_str = NULL;
-
+            axutil_param_t *chunk_buffer_size_param = NULL;
+            axutil_param_t *max_chunk_buffers_param = 0;
+            axis2_char_t *value_size = NULL;
+            axis2_char_t *value_num = NULL;
+            int size = 0;
+            int num = 0;
+ 
             mime_parser = axiom_mime_parser_create(env);
+
+            chunk_buffer_size_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                               env,
+                                                               AXIS2_MTOM_CHUNK_BUFFER_SIZE);
+            if (chunk_buffer_size_param)
+            {
+                value_size =
+                    (axis2_char_t *) axutil_param_get_value (chunk_buffer_size_param, env);
+                if(value_size)
+                {
+                    size = atoi(value_size);
+                    axiom_mime_parser_set_chunk_buffer_size(mime_parser, env, size);
+                }
+            }
+
+            max_chunk_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                               env,
+                                                               AXIS2_MTOM_MAX_CHUNK_BUFFERS);
+            if(max_chunk_buffers_param)
+            {
+                value_num =
+                    (axis2_char_t *) axutil_param_get_value (max_chunk_buffers_param, env);
+                if(value_num)
+                {
+                    num = atoi(value_num);
+                    axiom_mime_parser_set_max_chunk_buffers(mime_parser, env, num);
+                }
+            }
+            
             if (mime_parser)
             {
                 binary_data_map = axiom_mime_parser_parse(mime_parser, env,
                                                           axis2_http_transport_utils_on_data_request,
                                                           (void *) callback_ctx,
                                                           mime_boundary);
-
+                if(!binary_data_map)
+                {
+                    return NULL;
+                }
+    
                 soap_body_len =
                     axiom_mime_parser_get_soap_body_len(mime_parser, env);
                 soap_body_str =

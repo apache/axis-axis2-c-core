@@ -272,16 +272,17 @@ on_new_entry_to_file(
         {
             free(convert);
         }
-
-        convert = axutil_strdup(env, formated_buffer);
-        convert = str_replace(convert, "; ", ";\n\t");
-        convert = str_replace(convert, "><", ">\n<");
-        fprintf(file, "%s", convert);
-        if (convert)
+        if (strcmp(formated_buffer, "") != 0)
         {
-            free(convert);
+            convert = axutil_strdup(env, formated_buffer);
+            convert = str_replace(convert, "; ", ";\n\t");
+            convert = str_replace(convert, "><", ">\n<");
+            fprintf(file, "%s", convert);
+            if (convert)
+            {
+                free(convert);
+            }
         }
-
     }
     if (status == 1)
     {
@@ -321,13 +322,16 @@ on_new_entry_to_file(
         {
             free(convert);
         }
-        convert = axutil_strdup(env, formated_buffer);
-        convert = str_replace(convert, "; ", ";\n\t");
-        convert = str_replace(convert, "><", ">\n<");
-        fprintf(file, "%s", convert);
-        if (convert)
+        if (strcmp(formated_buffer, "") != 0)
         {
-            free(convert);
+            convert = axutil_strdup(env, formated_buffer);
+            convert = str_replace(convert, "; ", ";\n\t");
+            convert = str_replace(convert, "><", ">\n<");
+            fprintf(file, "%s", convert);
+            if (convert)
+            {
+                free(convert);
+            }
         }
     }
 

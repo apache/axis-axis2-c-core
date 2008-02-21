@@ -241,6 +241,10 @@ axutil_log_impl_write(
             fprintf(stderr, "%s %s(%d) %s\n", level_str, file, line, buffer);
         }
     }
+    else if (buffer)
+#ifndef AXIS2_NO_LOG_FILE
+        fprintf(stderr, "please check your log and buffer");
+#endif
     else
         fprintf(stderr, "please check your log and buffer");
 }
@@ -378,7 +382,9 @@ axutil_log_impl_log_user(
         }
     }
     else
+#ifndef AXIS2_NO_LOG_FILE
         fprintf(stderr, "please check your log and buffer");
+#endif
 }
 
 AXIS2_EXTERN void AXIS2_CALL
@@ -419,7 +425,9 @@ axutil_log_impl_log_debug(
         }
     }
     else
+#ifndef AXIS2_NO_LOG_FILE
         fprintf(stderr, "please check your log and buffer");
+#endif
 }
 
 AXIS2_EXTERN void AXIS2_CALL
@@ -459,7 +467,9 @@ axutil_log_impl_log_info(
         }
     }
     else
+#ifndef AXIS2_NO_LOG_FILE
         fprintf(stderr, "please check your log and buffer");
+#endif
 }
 
 AXIS2_EXTERN void AXIS2_CALL
@@ -501,7 +511,9 @@ axutil_log_impl_log_warning(
         }
     }
     else
+#ifndef AXIS2_NO_LOG_FILE
         fprintf(stderr, "please check your log and buffer");
+#endif
 }
 
 AXIS2_EXTERN void AXIS2_CALL
@@ -540,7 +552,9 @@ axutil_log_impl_log_error(
                                       filename, linenumber, value);
     }
     else
+#ifndef AXIS2_NO_LOG_FILE
         fprintf(stderr, "please check your log and buffer");
+#endif
 
 }
 
@@ -580,7 +594,9 @@ axutil_log_impl_log_critical(
                                       filename, linenumber, value);
     }
     else
+#ifndef AXIS2_NO_LOG_FILE
         fprintf(stderr, "please check your log and buffer");
+#endif
 
 }
 
@@ -681,7 +697,9 @@ axutil_log_impl_log_trace(
         }
     }
     else
+#ifndef AXIS2_NO_LOG_FILE
         fprintf(stderr, "please check your log and buffer");
+#endif
 }
 #else
 AXIS2_EXTERN void AXIS2_CALL

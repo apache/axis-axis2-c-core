@@ -65,14 +65,16 @@ main(
         }
         else if (0 == axutil_strcmp(argv[1], "-h"))
         {
-            printf("Usage : %s [endpoint_url]", argv[0]);
-            printf(" or either %s -mGET for HTTP GET\n", argv[0]);
-            printf(" or %s -mHEAD for HTTP HEAD\n", argv[0]);
-            printf(" or %s -mDELETE for HTTP DELETE\n", argv[0]);
-            printf(" or %s -mPUT for HTTP PUT\n", argv[0]);
+            printf("Usage : %s [endpoint_url] \n", argv[0]);
+            printf("\nNOTE: You can test for other HTTP methods by changing the");
+            printf(" services.xml of the echo service\n and providing the correct REST HTTP method");
+            printf(" and the location to be used for operation.\n");
+            printf(" Also note that you have to restart the server after changing the services.xml.\n");
+            printf(" use %s -mGET for HTTP GET\n", argv[0]);
+            printf(" use %s -mHEAD for HTTP HEAD\n", argv[0]);
+            printf(" use %s -mDELETE for HTTP DELETE\n", argv[0]);
+            printf(" use %s -mPUT for HTTP PUT\n", argv[0]);
             printf(" use -h for help\n");
-            printf("\nNOTE: please make sure to change the echo service's services.xml,\n ");
-            printf("if you have not, and restart the server before trying out this sample.\n");
             return 0;
         }
         else

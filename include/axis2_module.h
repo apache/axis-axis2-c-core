@@ -60,6 +60,17 @@ extern "C"
 
     struct axis2_conf;
 
+    /** 
+     * Struct containing operations available on a module.
+     * \n
+     * 1. init
+     * \n
+     * 2. shutdown
+     * \n
+     * 3. fill_handler_create_func_map
+     * \n
+     * are the three operations presently available.
+     */
     struct axis2_module_ops
     {
 
@@ -106,7 +117,7 @@ extern "C"
     };
 
     /**
-     * module struct.
+     * Struct representing a module.
      */
     struct axis2_module
     {
