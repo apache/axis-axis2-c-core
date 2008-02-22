@@ -60,6 +60,11 @@ struct axiom_node
 
 };
 
+static axiom_node_t *
+axiom_node_detach_without_namespaces(
+    axiom_node_t * om_node,
+    const axutil_env_t * env);
+
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 axiom_node_create(
     const axutil_env_t * env)
@@ -86,31 +91,20 @@ axiom_node_create(
     return node;
 }
 
-/**
- *  This free fucntion will free an om_element and all the children contained in it
- *  before calling this function
-*/
-AXIS2_EXTERN void AXIS2_CALL
-axiom_node_free_tree(
+static void
+axiom_node_free_detached_subtree(
     axiom_node_t * om_node,
     const axutil_env_t * env)
 {
-    axiom_node_t *child_node = NULL;
-    AXIS2_ENV_CHECK(env, void);
-    if (!om_node)
-    {
-        return;
-    }
-
+    /* Free any child nodes first */
     if (om_node->first_child)
     {
-        while ((om_node->first_child))
+        axiom_node_t *child_node = om_node->first_child, *next_sibling;
+        while (child_node)
         {
-            child_node = axiom_node_detach(om_node->first_child, env);
-            if (child_node)
-            {
-                axiom_node_free_tree(child_node, env);
-            }
+            next_sibling = child_node->next_sibling;
+            axiom_node_free_detached_subtree(child_node, env);
+            child_node = next_sibling;
         }
     }
 
@@ -155,6 +149,30 @@ axiom_node_free_tree(
     return;
 }
 
+/**
+ *  This free function will free an om_element and all the children contained in it
+ *  If the node is still attached to the tree, it will be detached first
+*/
+AXIS2_EXTERN void AXIS2_CALL
+axiom_node_free_tree(
+    axiom_node_t * om_node,
+    const axutil_env_t * env)
+{
+    AXIS2_ENV_CHECK(env, void);
+    if (!om_node)
+    {
+        return;
+    }
+
+    /* Detach this node before freeing it and its subtree. */
+    axiom_node_detach_without_namespaces(om_node, env);
+
+    /* Free this node and its subtree */
+    axiom_node_free_detached_subtree(om_node, env);
+
+    return;
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_node_add_child(
     axiom_node_t * om_node,
@@ -190,8 +208,12 @@ axiom_node_add_child(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axiom_node_t *AXIS2_CALL
-axiom_node_detach(
+/**
+ * Detach the node without regard to any namespace references in the node or
+ * its children.
+ */
+static axiom_node_t *
+axiom_node_detach_without_namespaces(
     axiom_node_t * om_node,
     const axutil_env_t * env)
 {
@@ -241,7 +263,46 @@ axiom_node_detach(
     om_node->next_sibling = NULL;
     om_node->builder = NULL;
     return om_node;
+}
 
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+axiom_node_detach(
+    axiom_node_t * om_node,
+    const axutil_env_t * env)
+{
+    axutil_hash_t *inscope_namespaces = NULL;
+    axiom_element_t *om_element = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    if (!om_node)
+    {
+        return NULL;
+    }
+
+    /* If this is an element node, determine which namespaces are available to it
+       from its parent nodes. */
+    if ((om_node->node_type == AXIOM_ELEMENT) &&
+        (om_element = om_node->data_element))
+    {
+        inscope_namespaces = axiom_element_gather_parent_namespaces(om_element, env, om_node);
+    }
+
+    /* Detach this node from its parent. */
+    om_node = axiom_node_detach_without_namespaces(om_node, env);
+
+    /* If this is an element node, ensure that any namespaces available to it or its
+       children remain available after the detach. */
+    if (om_node && inscope_namespaces)
+    {
+        axiom_element_redeclare_parent_namespaces(om_element, env, om_node, om_element, inscope_namespaces);
+    }
+
+    if (inscope_namespaces)
+    {
+        axutil_hash_free(inscope_namespaces, env);
+    }
+
+    return om_node;
 }
 
 /**
@@ -271,7 +332,7 @@ axiom_node_set_parent(
      */
     if (om_node->parent)
     {
-        om_node = axiom_node_detach(om_node, env);
+        om_node = axiom_node_detach_without_namespaces(om_node, env);
     }
 
     om_node->parent = parent;

@@ -48,6 +48,12 @@ extern "C"
       * @param parent parent of the element node to be created. can be NULL.
       * @param localname local name of the elment. cannot be NULL.
       * @param ns namespace of the element.  can be NULL.
+      *                       If the value of the namespace has not already been declared
+      *                       then the namespace structure ns will be declared and will be
+      *                       freed when the tree is freed.
+      *                       If the value of the namespace has already been declared using
+      *                       another namespace structure then the namespace structure ns
+      *                       will be freed.
       * @param node This is an out parameter. cannot be NULL.
       *                       Returns the node corresponding to the comment created.
       *                       Node type will be set to AXIOM_ELEMENT
@@ -292,8 +298,17 @@ extern "C"
         axiom_namespace_t * ns,
         axiom_node_t * node);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
+    /**
+     * unconditionally set the namespace of the element
+     * @param om_element Om_element struct
+     * @param env environment must not be null
+     * @param ns pointer to namespace
+     *                       The namespace ns is assumed to have been declared already.
+     * @returns status code of the op, with error code
+     *                  set to environment's error
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_set_namespace_assume_param_ownership(
         axiom_element_t * om_element,
         const axutil_env_t * env,
@@ -585,6 +600,29 @@ extern "C"
         axiom_element_t * om_element,
         const axutil_env_t * env,
         axis2_bool_t is_empty);
+
+    AXIS2_EXTERN axutil_hash_t * AXIS2_CALL
+    axiom_element_gather_parent_namespaces(
+        axiom_element_t * om_element,
+        const axutil_env_t * env,
+        axiom_node_t * om_node);
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_element_use_parent_namespace(
+        axiom_element_t * om_element,
+        const axutil_env_t * env,
+        axiom_node_t * om_node,
+        axiom_namespace_t *ns,
+        axiom_element_t * root_element,
+        axutil_hash_t *inscope_namespaces);
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_element_redeclare_parent_namespaces(
+        axiom_element_t * om_element,
+        const axutil_env_t * env,
+        axiom_node_t * om_node,
+        axiom_element_t * root_element,
+        axutil_hash_t *inscope_namespaces);
 
     /** @} */
 

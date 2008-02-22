@@ -474,7 +474,8 @@ axiom_soap_builder_construct_node(
                                         axiom_node_t *data_om_node = NULL;
 
                                         /*remove the <xop:Include> element */
-                                        axiom_node_detach(om_element_node, env);
+                                        axiom_node_free_tree(om_element_node,
+                                                             env);
 
                                         data_text =
                                             axiom_text_create_with_data_handler
@@ -486,9 +487,6 @@ axiom_soap_builder_construct_node(
                                         axiom_stax_builder_set_lastnode
                                             (soap_builder->om_builder, env,
                                              parent);
-                                        axiom_node_free_tree(om_element_node,
-                                                             env);
-
                                     }
                                     if(id_decoded)
                                         AXIS2_FREE(env->allocator, id_decoded);
