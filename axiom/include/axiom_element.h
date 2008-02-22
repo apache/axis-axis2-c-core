@@ -228,16 +228,16 @@ extern "C"
         axiom_output_t * om_output);
 
     /**
-     *  finds a namespace in current elements scope
+     * finds a namespace in current element's scope, 
+     *     by uri or prefix or both
      * @param om_element
      * @param env environemt must not be null
-     * @param uri namespace uri
+     * @param uri namespace uri, may be null
      * @param prefix prefix 
      * @return axiom_namespace_t if found, else return NULL
      */
 
     AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
-
     axiom_element_find_declared_namespace(
         axiom_element_t * om_element,
         const axutil_env_t * env,
@@ -288,7 +288,10 @@ extern "C"
      * @param om_element Om_element struct
      * @param env environment must not be null
      * @param ns pointer to namespace
-     * @returns status code of the op , NULL on error with error code 
+     *                       If the value of the namespace has not already been declared
+     *                       then the namespace structure ns will be declared and will be 
+     *                       freed when the tree is freed.
+     * @returns status code of the op, with error code 
      *                  set to environment's error
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -531,9 +534,7 @@ extern "C"
      * @param om_element_node pointer to this element node
      * @returns pointer to relevent namespace 
      */
-
     AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
-
     axiom_element_find_namespace_uri(
         axiom_element_t * om_element,
         const axutil_env_t * env,
@@ -548,7 +549,6 @@ extern "C"
      * @returns 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_element_set_namespace_with_no_find_in_current_scope(
         axiom_element_t * om_element,
         const axutil_env_t * env,
@@ -601,12 +601,35 @@ extern "C"
         const axutil_env_t * env,
         axis2_bool_t is_empty);
 
+    /**
+     * Collect all the namespaces with distinct prefixes in 
+     * the parents of the given element.  Effectively this 
+     * is the set of namespaces declared above this element  
+     * that are inscope at this element and might be used   
+     * by it or its children. 
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param om_node pointer to this element node
+     * @returns pointer to hash of relevent namespaces
+     */
     AXIS2_EXTERN axutil_hash_t * AXIS2_CALL
     axiom_element_gather_parent_namespaces(
         axiom_element_t * om_element,
         const axutil_env_t * env,
         axiom_node_t * om_node);
 
+    /**
+     * If the provided namespace used by the provided element 
+     * is one of the namespaces from the parent of the root  
+     * root element, redeclares that namespace at the root element
+     * and removes it from the hash of parent namespaces
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param om_node pointer to this element node
+     * @param ns pointer to namespace to redeclare
+     * @param root_element pointer to the subtree root element node
+     * @param inscope_namespaces pointer to hash of parent namespaces
+     */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_element_use_parent_namespace(
         axiom_element_t * om_element,
@@ -616,6 +639,19 @@ extern "C"
         axiom_element_t * root_element,
         axutil_hash_t *inscope_namespaces);
 
+    /**
+     * Examines the subtree beginning at the provided element 
+     * For each element or attribute, if it refers to a namespace   
+     * declared in a parent of the subtree root element, redeclares
+     * that namespace at the level of the subtree root and removes
+     * it from the set of parent namespaces in scope and not yet 
+     * declared
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param om_node pointer to this element node
+     * @param root_element pointer to the subtree root element node
+     * @param inscope_namespaces pointer to hash of parent namespaces
+     */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_element_redeclare_parent_namespaces(
         axiom_element_t * om_element,

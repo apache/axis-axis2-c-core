@@ -1106,16 +1106,18 @@ axiom_element_get_first_child_with_qname(
     AXIS2_PARAM_CHECK(env->error, element_qname, NULL);
     AXIS2_PARAM_CHECK(env->error, element_node, NULL);
 
-    children_iterator = axiom_children_qname_iterator_create(env,
-                                                             axiom_node_get_first_child
-                                                             (element_node,
-                                                              env),
+    om_node = axiom_node_get_first_child(element_node, env);
+    if (!om_node)
+    {
+        return NULL;
+    }
+    children_iterator = axiom_children_qname_iterator_create(env, om_node, 
                                                              element_qname);
     if (!children_iterator)
     {
         return NULL;
     }
-
+    om_node = NULL;
     if (axiom_children_qname_iterator_has_next(children_iterator, env))
     {
         om_node = axiom_children_qname_iterator_next(children_iterator, env);
