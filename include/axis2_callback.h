@@ -95,11 +95,11 @@ extern "C"
      * <code>
      *      <pre>
      *          while(!AXIS2_CALL
-    BACK_GET_COMPLETE(callback, env)
+     * BACK_GET_COMPLETE(callback, env)
      *          {
      *             sleep(10);
      *          }
-     *          // do whatever you need here 
+     * do whatever you need here 
      *      </pre>
      * </code>
      * @param callback pointer to callback struct

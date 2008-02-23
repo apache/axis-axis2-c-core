@@ -20,7 +20,7 @@
 #define AXIS2_IIS_CONSTANTS_H
 
 #define INTERNET_MAX_PATH_LENGTH        2048
-#define INTERNET_MAX_SCHEME_LENGTH      32  // longest protocol name length
+#define INTERNET_MAX_SCHEME_LENGTH      32  /* longest protocol name length */
 #define INTERNET_MAX_URL_LENGTH         (INTERNET_MAX_SCHEME_LENGTH +sizeof("://") +INTERNET_MAX_PATH_LENGTH) 
 
 #define URI_MATCHED						1

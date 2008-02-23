@@ -1360,8 +1360,9 @@ axis2_http_sender_get_timeout_values (axis2_http_sender_t * sender,
 
     AXIS2_ENV_CHECK (env, AXIS2_FAILURE);
 
-    // ckeck if timeout has been set by user using options 
-    // with axis2_options_set_timeout_in_milli_seconds
+    /* check if timeout has been set by user using options 
+     * with axis2_options_set_timeout_in_milli_seconds
+     */
     property =
         axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_CONNECTION_TIMEOUT);
     if (property)

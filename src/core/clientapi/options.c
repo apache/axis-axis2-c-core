@@ -627,10 +627,12 @@ axis2_options_set_timeout_in_milli_seconds(
     const long timeout_in_milli_seconds)
 {	
     options->timeout_in_milli_seconds = timeout_in_milli_seconds;
-    // set the property AXIS2_HTTP_CONNECTION_TIMEOUT, to be picked up by http_sender
+    /* set the property AXIS2_HTTP_CONNECTION_TIMEOUT,
+     * to be picked up by http_sender
+     */
     if (options->timeout_in_milli_seconds > 0)
     {        
-		axis2_char_t time_str[19]; // supports 18 digit timeout 
+        axis2_char_t time_str[19]; /* supports 18 digit timeout */
         axutil_property_t *property = axutil_property_create(env);
         sprintf(time_str, "%ld", options->timeout_in_milli_seconds); 
         if (property)

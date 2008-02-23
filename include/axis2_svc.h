@@ -790,7 +790,8 @@ extern "C"
      * @param table pointer to hash map with XML schema mappings, service 
      * assumes ownership of the map
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-             *//*
+     */
+    /*
        AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
            axis2_svc_set_schema_mapping_table(
@@ -803,7 +804,8 @@ extern "C"
      * @param svc pointer to service struct
      * @param env pointer to environment struct
      * @return custom schema prefix string
-             *//*
+     */
+    /*
        AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 
            axis2_svc_get_custom_schema_prefix(
@@ -816,7 +818,8 @@ extern "C"
      * @param env pointer to environment struct
      * @param prefix custom schema prefix string
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-             *//*
+     */
+    /*
        AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
            axis2_svc_set_custom_schema_prefix(
@@ -858,7 +861,8 @@ extern "C"
      * @param env pointer to environment struct
      * @param out_stream stream to print to
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-             *//*
+     */
+    /*
        AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
            axis2_svc_print_schema(
@@ -934,7 +938,8 @@ extern "C"
      * @param env pointer to environment struct
      * @param schemas pointer to array list containing XML schemas
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-             *//*
+     */
+    /*
        AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
            axis2_svc_add_all_schemas(
@@ -947,7 +952,8 @@ extern "C"
      * @param svc pointer to service struct
      * @param env pointer to environment struct
      * @return XML schema target namespace string 
-             *//*
+     */
+    /*
        AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 
            axis2_svc_get_schema_target_ns(
@@ -960,7 +966,8 @@ extern "C"
      * @param env pointer to environment struct
      * @param ns namespace string 
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-             *//*
+     */
+    /*
        AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
            axis2_svc_set_schema_target_ns(
@@ -973,7 +980,8 @@ extern "C"
      * @param svc pointer to service struct
      * @param env pointer to environment struct
      * @return XML schema target namespace prefix string 
-             *//*
+     */
+    /*
        AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 
            axis2_svc_get_schema_target_ns_prefix(
@@ -986,7 +994,8 @@ extern "C"
      * @param env pointer to environment struct
      * @param prefix namespace prefix string 
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-             *//*
+     */
+    /*
        AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
            axis2_svc_set_schema_target_ns_prefix(

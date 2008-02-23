@@ -85,11 +85,13 @@ extern "C"
      */
 #define AXIS2_CONFIGURATION_RESOURCE "" /* should be set */
 
-// =============================================================
-// Library loading and procedure resolution
-// =============================================================
+/* 
+ * =============================================================
+ * Library loading and procedure resolution
+ * =============================================================
+ */
 #define DLHandler HINSTANCE
-#define RTLD_LAZY 0             // not sure this is needed?
+#define RTLD_LAZY 0             /* not sure this is needed? */
 
 #define AXIS2_PLATFORM_LOADLIBINIT()
 #define AXIS2_PLATFORM_LOADLIB(_lib)     /*LoadLibrary(_lib) */ callLoadLib(_lib)
@@ -100,19 +102,25 @@ extern "C"
 
 #define AXIS2_DLHANDLER void*
 
-// =============================================================
-// National Language Support
-// =============================================================
+/* 
+ * =============================================================
+ * National Language Support
+ * =============================================================
+ */
 
-// STRTOASC is to translate single byte 'native' character representation to ASCII
-// ASCTOSTR is to translate single byte ascii representation to 'native' character
-// CANNOT be used with constants
+/*
+ * STRTOASC is to translate single byte 'native' character representation to ASCII
+ * ASCTOSTR is to translate single byte ascii representation to 'native' character
+ * CANNOT be used with constants
+ */
 #define AXIS2_PLATFORM_STRTOASC( x ) ( x )
 #define AXIS2_PLATFORM_ASCTOSTR( x ) ( x )
 
-// =============================================================
-// Miscellaneous
-// =============================================================
+/*
+ * =============================================================
+ * Miscellaneous
+ * =============================================================
+ */
 
 #define AXIS2_STRRCHR(x, y) (strrchr(x, y))
 
