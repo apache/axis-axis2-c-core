@@ -1356,8 +1356,23 @@ axis2_http_sender_get_timeout_values (axis2_http_sender_t * sender,
     axis2_char_t *so_str = NULL;
     axis2_char_t *connection_str = NULL;
     axutil_param_t *tmp_param = NULL;
+    axutil_property_t *property = NULL;
 
     AXIS2_ENV_CHECK (env, AXIS2_FAILURE);
+
+    // ckeck if timeout has been set by user using options 
+    // with axis2_options_set_timeout_in_milli_seconds
+    property =
+        axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_CONNECTION_TIMEOUT);
+    if (property)
+    {
+        axis2_char_t *value = axutil_property_get_value(property, env);
+        if (value) 
+        {
+            sender->so_timeout = AXIS2_ATOI(value);
+            return AXIS2_SUCCESS;
+        }
+    }
 
     tmp_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                              env, AXIS2_HTTP_SO_TIMEOUT);
@@ -1367,9 +1382,11 @@ axis2_http_sender_get_timeout_values (axis2_http_sender_t * sender,
         so_str = (axis2_char_t *) axutil_param_get_value (tmp_param, env);
         if (so_str)
         {
-            sender->so_timeout = AXIS2_ATOI (so_str);
+            sender->so_timeout = AXIS2_ATOI (so_str);            
+            return AXIS2_SUCCESS;
         }
     }
+
     tmp_param = axis2_msg_ctx_get_parameter (msg_ctx, env,
                                              AXIS2_HTTP_CONNECTION_TIMEOUT);
     if (tmp_param)
@@ -1378,10 +1395,11 @@ axis2_http_sender_get_timeout_values (axis2_http_sender_t * sender,
             (axis2_char_t *) axutil_param_get_value (tmp_param, env);
         if (connection_str)
         {
-            sender->connection_timeout = AXIS2_ATOI (connection_str);
+            sender->so_timeout = AXIS2_ATOI (connection_str);
+            return AXIS2_SUCCESS;
         }
     }
-    return AXIS2_SUCCESS;
+    return AXIS2_FAILURE;
 }
 
 	AXIS2_EXTERN axis2_status_t AXIS2_CALL
