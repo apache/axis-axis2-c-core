@@ -287,8 +287,13 @@ axiom_mime_parser_parse(
         do
         {
             pos = NULL;
-            pos = memchr(old_pos, AXIOM_MIME_BOUNDARY_BYTE,
+            
+            if (old_pos) 
+            {
+                pos = memchr(old_pos, AXIOM_MIME_BOUNDARY_BYTE,
                     buffer + buf_len - old_pos); 
+            }
+
             if (!pos)
             {
                 break;
