@@ -672,8 +672,10 @@ axutil_strrtrim(
     axis2_char_t *_s = NULL;
     axis2_char_t *ret = NULL;
 
-    _s = axutil_strdup(env, _in);
-
+    if (_in)
+    {
+        _s = axutil_strdup(env, _in);
+    }
     if (!_s)
     {
         return NULL;
@@ -691,6 +693,10 @@ axutil_strrtrim(
             break;
         }
         *__tail = 0;
+    }
+    if (!ret && _s)
+    {
+        AXIS2_FREE(env->allocator, _s);
     }
     return ret;
 }
