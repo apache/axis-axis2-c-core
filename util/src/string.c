@@ -665,17 +665,20 @@ axutil_strltrim(
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_strrtrim(
     const axutil_env_t * env,
-    const axis2_char_t * _s,
+    const axis2_char_t * _in,
     const axis2_char_t * _trim)
 {
     axis2_char_t *__tail;
+    axis2_char_t *_s = NULL;
     axis2_char_t *ret = NULL;
+
+    _s = axutil_strdup(env, _in);
 
     if (!_s)
     {
         return NULL;
     }
-    __tail = ((axis2_char_t *) _s) + axutil_strlen(_s);
+    __tail = _s + axutil_strlen(_s);
     if (!_trim)
     {
         _trim = " \t\n\r";
@@ -684,7 +687,7 @@ axutil_strrtrim(
     {
         if (!strchr(_trim, *__tail))
         {
-            ret = (axis2_char_t *) axutil_strdup(env, _s);
+            ret = _s;
             break;
         }
         *__tail = 0;
