@@ -80,6 +80,24 @@ Major Changes Since Last Release.
   11. Improvements to API docs
   12. Improvements to CA certificate validation mechanisms on SSL Transport
   13. Improvements to Neethi
+  14. Fixed issue in HTTP GET on mod_axis2
+  15. Major Improvements to Guththila Parser
+  16. Improvements to libcurl based sender
+  17. Creation of a FAQ list
+  18. Improvements to Axis2/C documentation
+  19. Added Documentation on Archive Based Deployment
+  20. Fixes for IIS module
+  21. Removed dependency in util for the Axis2/C core
+  22. Ability to access transport headers at the service level (for RESTful services)
+  23. uint64_t and int64_t support at util layer and codegen level
+  24. Removed zlib dependencies when Archive Based Deployment model is disabled
+  25. Signal Handling in Windows
+  26. Removed over 99% of the warnings found on Windows
+  27. Increased build speed on Windows with nmake.
+  28. Improvements to Windows build system
+  29. Extensions to client API to support HTTP/Proxy Authentication
+  30. Memory leak fixes
+  31. Many bug fixes
 
 We welcome your early feedback on this implementation.
 Thanks for your interest in Axis2/C

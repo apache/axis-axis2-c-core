@@ -101,6 +101,12 @@
       <organization>Pearson Education Core Technology Group</organization>
     </developer>
     <developer>
+      <name>Senaka Fernando</name>
+      <id>senaka</id>
+      <email>senaka AT wso2 DOT com</email>
+      <organization>WSO2</organization>
+    </developer>    
+    <developer>
       <name>Paul Fremantle</name>
       <id>pzf</id>
       <email>paul AT wso2 DOT com</email>
@@ -117,6 +123,12 @@
       <id>sahan</id>
       <email>sahans AT gmail DOT com</email>
       <organization>Purdue University</organization>
+    </developer>
+    <developer>
+      <name>Lahiru Gunathilake</name>
+      <id>lahiru</id>
+      <email>glahiru@gmail.com</email>
+      <organization>University of Moratuwa</organization>
     </developer>
     <developer>
       <name>Nandika Jayawardana</name>
@@ -142,6 +154,12 @@
       <email>damitha AT wso2 DOT com</email>
       <organization>WSO2</organization>
     </developer>
+    <developer>
+      <name>Bill Mitchell</name>
+      <id>bmitchell</id>
+      <email>wtmitchell3 AT acm DOT org </email>
+      <organization></organization>
+    </developer>    
     <developer>
       <name>Dumindu Pallewela</name>
       <id>dumindu</id>
@@ -196,18 +214,6 @@
       <email>shankar AT wso2 DOT com</email>
       <organization>WSO2</organization>
     </developer>    
-    <developer>
-      <name>Bill Mitchell</name>
-      <id>bmitchell</id>
-      <email>wtmitchell3 AT acm DOT org </email>
-      <organization></organization>
-    </developer>    
-    <developer>
-      <name>Senaka Fernando</name>
-      <id>senaka</id>
-      <email>senaka AT wso2 DOT com</email>
-      <organization>WSO2</organization>
-    </developer>    
   </developers>
   <contributors>
     <contributor>
@@ -222,6 +228,27 @@
       <email>buddhika AT wso2 DOT com</email>
       <roles>
 	<role>Helps to improve overall quality of the code base</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Manoj Pushpakumara</name>
+      <email>manaj AT wso2 DOT com</email>
+      <roles>
+	<role>Improvements to the Unit Test cases</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Spencer Davis</name>
+      <email>spencerdavis91 AT gmail DOT com</email>
+      <roles>
+	<role>Composing Axis2/C FAQ Documentation</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Alastair FETTES</name>
+      <email>afettes AT mdacorporation DOT com</email>
+      <roles>
+	<role>Suggestion to improve API and several inputs through JIRA</role>
       </roles>
     </contributor>
   </contributors>

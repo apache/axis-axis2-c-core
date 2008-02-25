@@ -12,8 +12,26 @@ Axis2/C (1.3.0)
    * Improvements to API docs
    * Improvements to CA certificate validation mechanisms on SSL Transport
    * Improvements to Neethi
+   * Fixed issue in HTTP GET on mod_axis2
+   * Major Improvements to Guththila Parser
+   * Improvements to libcurl based sender
+   * Creation of a FAQ list
+   * Improvements to Axis2/C documentation
+   * Added Documentation on Archive Based Deployment
+   * Fixes for IIS module
+   * Removed dependency in util for the Axis2/C core
+   * Ability to access transport headers at the service level (for RESTful services)
+   * uint64_t and int64_t support at util layer and codegen level
+   * Removed zlib dependencies when Archive Based Deployment model is disabled
+   * Signal Handling in Windows
+   * Removed over 99% of the warnings found on Windows
+   * Increased build speed on Windows with nmake.
+   * Improvements to Windows build system
+   * Extensions to client API to support HTTP/Proxy Authentication
+   * Memory leak fixes
+   * Many bug fixes
 
--- Axis2/C team <axis-c-dev@ws.apache.org> Mon, 07 February 2008
+-- Axis2/C team <axis-c-dev@ws.apache.org> Fri, 29 February 2008
 Axis2/C (1.2.0)
    * Improvements to Java tool, WSDL2C, that generates C code
    * Improvment to Apache2 module so that it
