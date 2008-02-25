@@ -28,6 +28,7 @@ details are available on the <a href="http://ws.apache.org/axis2/c/mail-lists.ht
   <li><a href="#wsdl2c">WSDL2C Tool</a></li>
   <li><a href="#tcptrans">TCP Transport</a></li>
   <li><a href="#archive">Archive Based Deployment</a></li>
+  <li><a href="#tcpmon">TCPMon Tool</a></li>
   <li><a href="#appA">Appendix A - axis2.xml</a></li>
   <li><a href="#appB">Appendix B - services.xml</a></li>
   <li><a href="#appC">Appendix C - module.xml</a></li>
@@ -1307,8 +1308,20 @@ Your module archives must be placed in the <code>AXIS2C_BIN_DIR/modules</code> d
 Please note that there are a few known issues when running archive based deployment, mainly on Linux based systems.<br />
 <ul><li>If you want to run both client and server from same respository, assign super-user privilideges for your server in order to prevent un-zipped files getting overwritten, which will in return cause a segmentation fault on your server.<p></p></li>
 <li>Please make sure that the application you choose to create archives preserves executable rights, and symbolic links of libraries that are found inside the archive, once unzipped.</li>
-</ul><p style="margin-bottom: 0in"><br />
-</p><p><a name="appA"></a></p></div></div><div class="section"><a name="Appendix_A_-_axis2_xml"></a><h2>Appendix A - axis2.xml</h2><p>The axis2.xml file is the configuration file for Axis2/C. It has 6 top
+</ul></p><p style="margin-bottom: 0in"><br />
+</p><p><a name="tcpmon"></a></p></div></div><div class="section"><a name="20__TCPMon_Tool"></a><h2>20. TCPMon Tool</h2>
+<p>TCPMon is a TCP Monitor tool provided by Axis2/C for monitoring payloads exchanged between client and server. If you are using a source distribution, this may or may not be built for you by default. Thus, to get started, you may require building it from source.</p><p>On Linux</p>
+    <div class="source"><pre>	./configure --prefix=${AXIS2C_HOME} --enable-tests=no
+	make
+</pre></div>
+  <p>On MS Windows</p>
+    <div class="source"><pre>	nmake tcpmon
+</pre></div>
+<p>Please note that in most Linux based installations, this will most probably be built for you. Once you've done with the building process, you can find the executable at <code>${AXIS2C_HOME}/bin/tools</code> on Linux, or at <code>%AXIS2C_HOME%\bin\tools</code> on MS Windows.</p>
+<p>By default, the TCPMon tool will listen on port <b><code>9090</code></b> and reply to port <b><code>8080</code></b>. The default target host will be <b><code>localhost</code></b> and <b><code>tcpmon_traffic.log</code></b> will be the default log_file. If you want to change any of these settings run ./<code>tcpmon -h</code> on Linux, or <code>tcpmon.exe -h</code> on MS Windows for more information.</p>
+<p>The TCPMon tool does depend on the Axis2/C Util, Axis2/C AXIOM and Axis2/C Parser libraries. Thus, if you want to use TCPMon to monitor payloads in any other message transfer, independant of the Axis2/C engine, you will have to build those dependant libraries too. In addition to that, TCPMon does not depend on the Axis2/C Core and installing the Axis2/C engine is not always a pre-requisite to run TCPMon.
+</p><p style="margin-bottom: 0in"><br />
+<p><a name="appA"></a></p></div></div><div class="section"><a name="Appendix_A_-_axis2_xml"></a><h2>Appendix A - axis2.xml</h2><p>The axis2.xml file is the configuration file for Axis2/C. It has 6 top
 level elements. They are <em>parameter, transportReceiver, transportSender,
 module, phaseOrder</em> and <em>messageReceiver</em>. The following sections
 describe these elements, their sub elements, element attributes, possible
