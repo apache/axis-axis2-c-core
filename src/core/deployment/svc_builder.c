@@ -288,10 +288,18 @@ axis2_svc_builder_populate_svc(
         axutil_dll_desc_free(dll_desc, env);
         return AXIS2_FAILURE;
     }
-    class_name = axutil_param_get_value(impl_info_param, env);
+    class_name = axutil_strtrim(env, 
+                     axutil_param_get_value(impl_info_param, env), NULL);
     svc_dll_name =
         axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
                                                           class_name);
+
+    if (class_name)
+    {
+        AXIS2_FREE(env->allocator, class_name);
+        class_name = NULL;
+    }
+
     arch_file_data =
         axis2_dep_engine_get_current_file_item(axis2_desc_builder_get_dep_engine
                                                (svc_builder->desc_builder, env),
