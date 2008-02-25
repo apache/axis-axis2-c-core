@@ -3,7 +3,7 @@
   <types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://soapinterop.org/">
       <s:import namespace="http://soapinterop.org/xsd" />
-      <s:import namespace="http://soapinterop.org/echoheader/" />
+ 
       
       
       

@@ -148,9 +148,7 @@
 	</portType>
 	<binding name="InquireSoap" type="tns:Inquire">
 		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-		<documentation>
-		  This is the SOAP binding for the UDDI inquiry operations.
-		</documentation>
+		
 		<operation name="find_binding">
 			<soap:operation soapAction="find_binding" style="document"/>
 			<input>

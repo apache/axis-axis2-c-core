@@ -15,17 +15,16 @@
 <!-- limitations under the License.                                           -->
 
   <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
-	xmlns:tns="http://tempuri.org/UDDI/" 
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
 	name="UDDI" 
 	targetNamespace="http://tempuri.org/UDDI/" 
-	xmlns:wsdl1="urn:uddi-org:inquiry_v2">
+	xmlns:tns="urn:uddi-org:inquiry_v2">
 
   <wsdl:import namespace="urn:uddi-org:inquiry_v2" location="inquire_v2.wsdl" /> 
 
   <wsdl:service name="UDDI">
-    <wsdl:port binding="wsdl1:InquireSoap" name="UDDIinquire">
+    <wsdl:port binding="tns:InquireSoap" name="UDDIinquire">
       <soap:address location="http://tempuri.org" /> 
     </wsdl:port>
   </wsdl:service>

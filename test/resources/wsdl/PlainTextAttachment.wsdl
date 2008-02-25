@@ -16,11 +16,11 @@
 	xmlns:tns2="http://xml.apache.org/xml-soap" 
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-   <import namespace="http://xml.apache.org/xml-soap"/>
+  
    <element name="echoText">
     <complexType>
      <sequence>
-      <element name="arg2" nillable="true" type="tns2:PlainText"/>      
+      <element name="arg2" nillable="true" type="xsd:string"/>      
      </sequence>
     </complexType>
    </element>

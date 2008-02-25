@@ -3,7 +3,7 @@
   <types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://soapinterop.org/">
       <s:import namespace="http://soapinterop.org/xsd" />
-      <s:import namespace="http://soapinterop.org/echoheader/" />
+     
       
       
       
@@ -32,13 +32,11 @@
     <s:complexType name="AllComplexType">
 		<s:sequence>
 			<s:element minOccurs="1" maxOccurs="1" name="NonAllIntValue" type="s:int" />
-		</s:sequence>
-        <s:all>
+		
             <s:element name="Value0" type="s:int" />
             <s:element minOccurs="0" name="Value1" type="s:int" />
             <s:element minOccurs="0" name="Value2" type="s:string" />
-        </s:all>
-		<s:sequence>
+        
 			<s:element minOccurs="1" maxOccurs="1" name="NonAllStringValue" type="s:string" />
 		</s:sequence>
       </s:complexType>

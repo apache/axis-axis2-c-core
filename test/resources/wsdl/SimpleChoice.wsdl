@@ -3,7 +3,7 @@
   <types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://soapinterop.org/">
       <s:import namespace="http://soapinterop.org/xsd" />
-      <s:import namespace="http://soapinterop.org/echoheader/" />
+      
       
       
       
@@ -93,7 +93,7 @@
   </binding>
   
 <service name="ChoiceTest">
-    <documentation>These operations implement DOC/LIT SOAP operations, for interop testing. Please email johnko@microsoft.com with any questions/coments.</documentation>
+    <documentation>These operations implement DOC/LIT SOAP operations, for interoperable  testing. Please email johnko@microsoft.com with any questions/coments.</documentation>
     <port name="ChoiceTestSoap" binding="s0:ChoiceTestSoap">
       <soap:address location="http://localhost:90/axis/Choice" />
     </port>

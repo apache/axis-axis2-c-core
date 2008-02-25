@@ -2,7 +2,7 @@
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 	xmlns:tns="http://xsd_NOTATION.test.apache.org"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="XSD_NOTATION"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	targetNamespace="http://xsd_NOTATION.test.apache.org">
 	<wsdl:types>
 		<xsd:schema
@@ -12,7 +12,7 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="nonNillableElement"
-							type="xsd:NOTATION" nillable="false" minOccurs="1" maxOccurs="1" />
+							type="xsd:notation" nillable="false" minOccurs="1" maxOccurs="1" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -20,7 +20,7 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="nonNillableElement"
-							type="xsd:NOTATION" nillable="false" minOccurs="1" maxOccurs="1" />
+							type="xsd:notation" nillable="false" minOccurs="1" maxOccurs="1" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -28,7 +28,7 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="nillableElement"
-							type="xsd:NOTATION" nillable="true" minOccurs="1" maxOccurs="1" />
+							type="xsd:notation" nillable="true" minOccurs="1" maxOccurs="1" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
@@ -36,12 +36,12 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="nillableElement"
-							type="xsd:NOTATION" nillable="true" minOccurs="1" maxOccurs="1" />
+							type="xsd:notation" nillable="true" minOccurs="1" maxOccurs="1" />
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:complexType name="RequiredAttributeElement">
-				<xsd:attribute name="requiredAttribute" type="xsd:NOTATION"
+				<xsd:attribute name="requiredAttribute" type="xsd:notation"
 					use="required" />
 			</xsd:complexType>
 			<xsd:element name="asRequiredAttributeResponse">
@@ -61,7 +61,7 @@
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:complexType name="OptionalAttributeElement">
-				<xsd:attribute name="optionalAttribute" type="xsd:NOTATION"
+				<xsd:attribute name="optionalAttribute" type="xsd:notation"
 					use="optional" />
 			</xsd:complexType>
 			<xsd:element name="asOptionalAttributeResponse">
@@ -84,7 +84,7 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="arrayElement"
-							type="xsd:NOTATION" nillable="false" minOccurs="1"
+							type="xsd:notation" nillable="false" minOccurs="1"
 							maxOccurs="unbounded" />
 					</xsd:sequence>
 				</xsd:complexType>
@@ -93,7 +93,7 @@
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="arrayElement"
-							type="xsd:NOTATION" nillable="false" minOccurs="1"
+							type="xsd:notation" nillable="false" minOccurs="1"
 							maxOccurs="unbounded" />
 					</xsd:sequence>
 				</xsd:complexType>
@@ -101,7 +101,7 @@
 			<xsd:complexType name="SimpleComplexType">
 				<xsd:sequence>
 					<xsd:element name="complexTypeElement"
-						type="xsd:NOTATION" minOccurs="1" maxOccurs="1" nillable="false" />
+						type="xsd:notation" minOccurs="1" maxOccurs="1" nillable="false" />
 				</xsd:sequence>
 			</xsd:complexType>
 			<xsd:element name="asComplexTypeResponse">
