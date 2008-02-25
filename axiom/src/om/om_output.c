@@ -555,7 +555,7 @@ axiom_output_write(
            namespace.  Although the XML spec allows it to be declared
            explicitly, this is superfluous and not accepted by all xml
            parsers. */
-        if (strcmp(args_list[0], "xml") != 0)
+        if ((!args_list[0]) || (strcmp(args_list[0], "xml") != 0))
         {
             status = axiom_xml_writer_write_namespace(om_output->xml_writer,
                                                       env,
