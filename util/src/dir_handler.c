@@ -332,19 +332,19 @@ file_select(
       * If this code block is not required, we might as well remove
       * it.
       */
-    /*axis2_char_t *ptr;
+    axis2_char_t *ptr;
 
     if ((strcmp(entry->d_name, ".") == 0) || (strcmp(entry->d_name, "..") == 0))
-        return (AXIS2_FALSE);*/
+        return (AXIS2_FALSE);
 
     /* Check for filename extensions */
-    /*ptr = axutil_rindex(entry->d_name, '.');
+    ptr = axutil_rindex(entry->d_name, '.');
     if ((ptr) && ((strcmp(ptr, AXIS2_LIB_SUFFIX) == 0)))
     {
         return (AXIS2_TRUE);
     }
     else
-        return (AXIS2_FALSE);*/
+        return (AXIS2_FALSE);
     return 0;
 }
 
