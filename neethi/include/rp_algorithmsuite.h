@@ -202,6 +202,16 @@ extern "C"
         rp_algorithmsuite_t * algorithmsuite,
         const axutil_env_t * env);
 
+    AXIS2_EXTERN int AXIS2_CALL
+    rp_algorithmsuite_get_encryption_derivation_keylength(
+        rp_algorithmsuite_t * algorithmsuite,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN int AXIS2_CALL
+    rp_algorithmsuite_get_signature_derivation_keylength(
+        rp_algorithmsuite_t * algorithmsuite,
+        const axutil_env_t * env);
+
 #ifdef __cplusplus
 }
 #endif

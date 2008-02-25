@@ -33,6 +33,8 @@ struct rp_algorithmsuite_t
     axis2_char_t *asymmetrickeywrap;
     axis2_char_t *encryption_key_derivation;
     axis2_char_t *signature_key_derivation;
+    int encryption_key_derivation_keylength;
+    int signature_key_derivation_keylength;
     int min_symmetric_keylength;
     axis2_char_t *c14n;
     axis2_char_t *soap_normalization;
@@ -72,6 +74,8 @@ rp_algorithmsuite_create(
     algorithmsuite->asymmetrickeywrap = NULL;
     algorithmsuite->encryption_key_derivation = NULL;
     algorithmsuite->signature_key_derivation = NULL;
+    algorithmsuite->encryption_key_derivation_keylength = 192;
+    algorithmsuite->signature_key_derivation_keylength = 192;
     algorithmsuite->min_symmetric_keylength = 0;;
     algorithmsuite->c14n = RP_EX_C14N;
     algorithmsuite->soap_normalization = NULL;
@@ -137,6 +141,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L256;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->min_symmetric_keylength = 256;
+        algorithmsuite->encryption_key_derivation_keylength = 256;
+        algorithmsuite->signature_key_derivation_keylength = 192;
 
         return AXIS2_SUCCESS;
     }
@@ -149,6 +155,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->min_symmetric_keylength = 192;
+        algorithmsuite->encryption_key_derivation_keylength = 192;
+        algorithmsuite->signature_key_derivation_keylength = 192;
 
         return AXIS2_SUCCESS;
     }
@@ -161,6 +169,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L128;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L128;
         algorithmsuite->min_symmetric_keylength = 128;
+        algorithmsuite->encryption_key_derivation_keylength = 128;
+        algorithmsuite->signature_key_derivation_keylength = 128;
 
         return AXIS2_SUCCESS;
     }
@@ -173,6 +183,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->min_symmetric_keylength = 192;
+        algorithmsuite->encryption_key_derivation_keylength = 192;
+        algorithmsuite->signature_key_derivation_keylength = 192;
 
         return AXIS2_SUCCESS;
     }
@@ -185,6 +197,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L256;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->min_symmetric_keylength = 256;
+        algorithmsuite->encryption_key_derivation_keylength = 256;
+        algorithmsuite->signature_key_derivation_keylength = 192;
 
         return AXIS2_SUCCESS;
     }
@@ -197,6 +211,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->min_symmetric_keylength = 192;
+        algorithmsuite->encryption_key_derivation_keylength = 192;
+        algorithmsuite->signature_key_derivation_keylength = 192;
 
         return AXIS2_SUCCESS;
     }
@@ -209,6 +225,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L128;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L128;
         algorithmsuite->min_symmetric_keylength = 128;
+        algorithmsuite->encryption_key_derivation_keylength = 128;
+        algorithmsuite->signature_key_derivation_keylength = 128;
 
         return AXIS2_SUCCESS;
     }
@@ -222,6 +240,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->min_symmetric_keylength = 192;
+        algorithmsuite->encryption_key_derivation_keylength = 192;
+        algorithmsuite->signature_key_derivation_keylength = 192;
 
         return AXIS2_SUCCESS;
     }
@@ -235,6 +255,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L256;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->min_symmetric_keylength = 256;
+        algorithmsuite->encryption_key_derivation_keylength = 256;
+        algorithmsuite->signature_key_derivation_keylength = 192;
 
         return AXIS2_SUCCESS;
     }
@@ -248,6 +270,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->min_symmetric_keylength = 192;
+        algorithmsuite->encryption_key_derivation_keylength = 192;
+        algorithmsuite->signature_key_derivation_keylength = 192;
 
         return AXIS2_SUCCESS;
     }
@@ -261,6 +285,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L128;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L128;
         algorithmsuite->min_symmetric_keylength = 128;
+        algorithmsuite->encryption_key_derivation_keylength = 128;
+        algorithmsuite->signature_key_derivation_keylength = 128;
 
         return AXIS2_SUCCESS;
     }
@@ -274,6 +300,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->min_symmetric_keylength = 192;
+        algorithmsuite->encryption_key_derivation_keylength = 192;
+        algorithmsuite->signature_key_derivation_keylength = 192;
 
         return AXIS2_SUCCESS;
     }
@@ -287,6 +315,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L256;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->min_symmetric_keylength = 256;
+        algorithmsuite->encryption_key_derivation_keylength = 256;
+        algorithmsuite->signature_key_derivation_keylength = 192;
 
         return AXIS2_SUCCESS;
     }
@@ -300,6 +330,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->min_symmetric_keylength = 192;
+        algorithmsuite->encryption_key_derivation_keylength = 192;
+        algorithmsuite->signature_key_derivation_keylength = 192;
 
         return AXIS2_SUCCESS;
     }
@@ -313,6 +345,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L128;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L128;
         algorithmsuite->min_symmetric_keylength = 128;
+        algorithmsuite->encryption_key_derivation_keylength = 128;
+        algorithmsuite->signature_key_derivation_keylength = 128;
 
         return AXIS2_SUCCESS;
     }
@@ -326,6 +360,8 @@ rp_algorithmsuite_set_algosuite(
         algorithmsuite->encryption_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->signature_key_derivation = RP_P_SHA1_L192;
         algorithmsuite->min_symmetric_keylength = 192;
+        algorithmsuite->encryption_key_derivation_keylength = 192;
+        algorithmsuite->signature_key_derivation_keylength = 192;
 
         return AXIS2_SUCCESS;
     }
@@ -456,6 +492,26 @@ rp_algorithmsuite_get_min_symmetric_keylength(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     return algorithmsuite->min_symmetric_keylength;
+}
+
+AXIS2_EXTERN int AXIS2_CALL
+rp_algorithmsuite_get_encryption_derivation_keylength(
+    rp_algorithmsuite_t * algorithmsuite,
+    const axutil_env_t * env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    return algorithmsuite->encryption_key_derivation_keylength;
+}
+
+AXIS2_EXTERN int AXIS2_CALL
+rp_algorithmsuite_get_signature_derivation_keylength(
+    rp_algorithmsuite_t * algorithmsuite,
+    const axutil_env_t * env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    return algorithmsuite->signature_key_derivation_keylength;
 }
 
 AXIS2_EXTERN int AXIS2_CALL
