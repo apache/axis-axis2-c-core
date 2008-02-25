@@ -6,6 +6,7 @@
       <h3>Contents</h3>
       <ul>
         <li><a href="#1_2_0">Version 1.2.0 - 17th January 2008</a></li>
+        <li><a href="#1_1_0">Version 1.1.0 - 30th September 2007</a></li>
         <li><a href="#1_0_0">Version 1.0.0 - 06th May 2007</a></li>
         <li><a href="#0_96">Version 0.96 - 22nd December 2006</a></li>
         <li><a href="#0_95">Version 0.95 - 26th October 2006</a></li>
@@ -83,7 +84,67 @@
     </ol>
 </div>
 <!--########################################################################-->
-<a id="1.0.0"></a>
+<a name="1_1_0"></a><div class="subsection"><a name="30th_September_2007_-_Apache_Axis2_C_Version_1_1_0_Released"></a><h3>30th September 2007 - Apache Axis2/C Version 1.1.0 Released</h3><p><a href="http://ws.apache.org/axis2/c/download.cgi" class="externalLink" title="External Link">Download 1.1.0</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
+    <li>Support for one-way messaging (In-Only) and request response messaging (In-Out)</li>
+    <li>Client APIs: Easy to use service client API and more advanced operation client API</li>
+    <li>Transports supported: HTTP
+      <ul>
+        <li>Inbuilt HTTP server called simple axis server</li>
+        <li>Apache2 httpd module called mod_axis2 for server side</li>
+        <li>IIS module for server side</li>
+        <li>Client transport with ability to enable SSL support</li>
+        <li>Basic HTTP Authentication</li>
+        <li>libcurl based client transport</li>
+        </ul>
+    </li>
+    <li>Module architecture, mechanism to extend the SOAP processing model</li>
+    <li>WS-Addressing support, both the submission (2004/08) and final (2005/08) versions, implemented as a module</li>
+      <li>MTOM/XOP support</li>
+    <li>AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages; This has complete XML infoset support</li>
+      <li>XML parser abstraction
+        <ul>
+          <li>Libxml2 wrapper</li>
+          <li>Guththila pull parser support</li>
+        </ul>
+      </li>
+    <li>Both directory based and archive based deployment models for deploying services and modules </li>
+    <li>Description hierarchy providing access to static data of Axis2/C runtime (configuration, service groups, services, operations and messages) </li>
+    <li>Context hierarchy providing access to dynamic Axis2/C runtime information(corresponding contexts to map to each level of description hierarchy)</li>
+      <li>Message receiver abstraction
+        <ul>
+          <li>Inbuilt raw XML message receiver</li>
+        </ul>
+      </li>
+    <li>Code generation tool for stub and skeleton generation for a given WSDL (based on Java tool)        <ul>
+          <li>Axis Data Binding (ADB) support</li>
+      </ul>
+    </li>
+    <li>Transport proxy support </li>
+    <li>REST support (more POX like) using both HTTP POST and GET </li>
+    <li>Comprehensive documentation
+        <ul>
+          <li>Axis2/C Manual </li>
+        </ul>
+    </li>
+    <li>WS-Policy implementation called Neethi/C, with WS-SecurityPolicy extension</li>
+    <li>TCP Transport, for both client and server side </li>
+</ol>
+</div>
+<div class="subsection">
+  <a name="Major_Changes_Since_Last_Release"></a>
+  <h3>Major Changes Since Last Release</h3>
+  <ol>
+    <li>WS-Policy implementation</li>
+    <li>TCP Transport </li>
+    <li>Improvements to Guththila parser to improve performance </li>
+    <li>Improvements to Java tool, WSDL2C, that generates C code </li>
+    <li>Basic HTTP Authentication </li>
+    <li>Memory leak fixes </li>
+    <li>Many <a href="https://issues.apache.org/jira/browse/AXIS2C/fixforversion/12312520">bug fixes</a></li>
+</ol>
+</div>
+<!--########################################################################-->
+<a id="1_0_0"></a>
     <div class="subsection">
       <a name="06th_May_2007_-_Apache_Axis2_C_Version_1_0_0_Released"></a>
       <h3>06th May 2007 - Apache Axis2/C Version 1.0.0 Released</h3>
@@ -147,7 +208,7 @@
           binary compatible</li>
         <li>Transport proxy support</li>
         <li>Memory leak fixes</li>
-      </ol><p><a id="0.96"></a></p></div><div class="subsection"><a name="22nd_December_2006_Axis2_C_Version_0_96_Released"></a><h3>22nd December 2006 Axis2/C Version 0.96 Released</h3><p><a href="download.cgi">Download 0.96</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
+      </ol><p><a id="0_96"></a></p></div><div class="subsection"><a name="22nd_December_2006_Axis2_C_Version_0_96_Released"></a><h3>22nd December 2006 Axis2/C Version 0.96 Released</h3><p><a href="download.cgi">Download 0.96</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
         <li>AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages. This
           has complete XML infoset support</li>
         <li>Support for one-way messaging (In-Only) and request response messaging
@@ -200,7 +261,7 @@
         <li>Complete API documentation and API improvements</li>
         <li>Fix further memory leaks</li>
         <li>Create a comprehensive functional test framework</li>
-      </ol><p><a id="0.95"></a></p></div><div class="subsection"><a name="26th_October_2006_Axis2_C_Version_0_95_Released"></a><h3>26th October 2006 Axis2/C Version 0.95 Released</h3><p><a href="download.cgi">Download 0.95</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
+      </ol><p><a id="0_95"></a></p></div><div class="subsection"><a name="26th_October_2006_Axis2_C_Version_0_95_Released"></a><h3>26th October 2006 Axis2/C Version 0.95 Released</h3><p><a href="download.cgi">Download 0.95</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
         <li>AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages. This
           has complete XML infoset support</li>
         <li>Support for one-way messaging (In-Only) and request response messaging
@@ -249,7 +310,7 @@
         <li>Complete API documentation and API improvements</li>
         <li>Fix further memory leaks</li>
         <li>Create a comprehensive functional test framework</li>
-      </ol><p><a id="0.94"></a></p></div><div class="subsection"><a name="3rd_October_2006_Axis2_C_Version_0_94_Released"></a><h3>3rd October 2006 Axis2/C Version 0.94 Released</h3><p><a href="download.cgi">Download 0.94</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
+      </ol><p><a id="0_94"></a></p></div><div class="subsection"><a name="3rd_October_2006_Axis2_C_Version_0_94_Released"></a><h3>3rd October 2006 Axis2/C Version 0.94 Released</h3><p><a href="download.cgi">Download 0.94</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
         <li>AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages. This
           has complete XML infoset support</li>
         <li>Support for one-way messaging (In-Only) and request response messaging
@@ -302,7 +363,7 @@
         <li>Complete API documentation and API improvements</li>
         <li>Fix further memory leaks</li>
         <li>Create a comprehensive functional test framework</li>
-      </ol><p><a id="0.93"></a></p></div><div class="subsection"><a name="31st_August_2006_Axis2_C_Version_0_93_Released"></a><h3>31st August 2006 Axis2/C Version 0.93 Released</h3><p><a href="download.cgi">Download 0.93</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
+      </ol><p><a id="0_93"></a></p></div><div class="subsection"><a name="31st_August_2006_Axis2_C_Version_0_93_Released"></a><h3>31st August 2006 Axis2/C Version 0.93 Released</h3><p><a href="download.cgi">Download 0.93</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
         <li>AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages. This
           has complete XML infoset support</li>
         <li>Support for one-way messaging (In-Only) and request response messaging
@@ -354,7 +415,7 @@
         <li>Test codegen for both ADB and none cases</li>
         <li>Put in place a comprehensive functional test framework</li>
         <li>WSDL2C tool</li>
-      </ol><p><a id="0.92"></a></p></div><div class="subsection"><a name="16th_June_2006_Axis2_C_Version_0_92_Released"></a><h3>16th June 2006 Axis2/C Version 0.92 Released</h3><p><a href="download.cgi">Download 0.92</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
+      </ol><p><a id="0_92"></a></p></div><div class="subsection"><a name="16th_June_2006_Axis2_C_Version_0_92_Released"></a><h3>16th June 2006 Axis2/C Version 0.92 Released</h3><p><a href="download.cgi">Download 0.92</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
         <li>AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages. This
           has complete XML infoset support.</li>
         <li>Support for One-Way Messaging (In-Only) and Request Response Messaging
@@ -412,7 +473,7 @@
         <li>Server side Web Service Policy support</li>
         <li>C2WSDL</li>
         <li>WSDL2C</li>
-      </ol><p><a id="0.91"></a></p></div><div class="subsection"><a name="15th_May_2006_Axis2_C_Version_0_91_Released"></a><h3>15th May 2006 Axis2/C Version 0.91 Released</h3><p><a href="download.cgi">Download 0.91</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
+      </ol><p><a id="0_91"></a></p></div><div class="subsection"><a name="15th_May_2006_Axis2_C_Version_0_91_Released"></a><h3>15th May 2006 Axis2/C Version 0.91 Released</h3><p><a href="download.cgi">Download 0.91</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
         <li>AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages. This
           has complete XML infoset support.</li>
         <li>Support for One-Way Messaging (In-Only) and Request Response Messaging
@@ -462,7 +523,7 @@
         <li>Security module</li>
         <li>REST (REpresentational State Transfer) support (GET case)</li>
         <li>Web Services policy support</li>
-      </ol><p><a id="0.90"></a></p></div><div class="subsection"><a name="31st_March_2006_Axis2_C_Version_0_90_Released"></a><h3>31st March 2006 Axis2/C Version 0.90 Released</h3><p><a href="download.cgi">Download 0.90</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
+      </ol><p><a id="0_90"></a></p></div><div class="subsection"><a name="31st_March_2006_Axis2_C_Version_0_90_Released"></a><h3>31st March 2006 Axis2/C Version 0.90 Released</h3><p><a href="download.cgi">Download 0.90</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol>
         <li>AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages. This
           has complete XML infoset support.</li>
         <li>Support for One-Way Messaging (In-Only) and Request Response Messaging
@@ -513,7 +574,7 @@
         <li>REST (REpresentational State Transfer) support</li>
         <li>Web Services policy support</li>
         <li>Axis2 Web application (Web App)</li>
-      </ol><p><a id="M0.5"></a></p></div><div class="subsection"><a name="10th_March_2006_Axis2_C_Milestone_0_5_Released"></a><h3>10th March 2006 Axis2/C Milestone 0.5 Released</h3><p><a href="download.cgi">Download M-0.5</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol type="1">
+      </ol><p><a id="M0_5"></a></p></div><div class="subsection"><a name="10th_March_2006_Axis2_C_Milestone_0_5_Released"></a><h3>10th March 2006 Axis2/C Milestone 0.5 Released</h3><p><a href="download.cgi">Download M-0.5</a></p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><ol type="1">
         <li>AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages.</li>
         <li>Support for Request Response Messaging (In-Out)</li>
         <li>Module Architecture, with a mechanism to extend the SOAP Processing
@@ -547,10 +608,10 @@
         <li>Support for MTOM</li>
         <li>Axis Data Binding - ADB (Framework and Schema Compiler)</li>
         <li>REST (REpresentational State Transfer) Support</li>
-      </ol><p><a id="M0.4"></a></p></div><div class="subsection"><a name="17th_February_2006_Axis2_C_Milestone_0_4_Released"></a><h3>17th February 2006 Axis2/C Milestone 0.4 Released</h3><p>We have done a considerable amount of improvements in the past two weeks
-        since the M0.3 release.</p><p>We have the following features added on top of the M0.3 release</p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><p>1. Threading support and threaded simple axis server</p><p>2. Module loading support</p><p>3. Addressing module, and addressing based dispatching</p><p>4. HTTP chunking support</p><p>5. Improved logging mechanism</p><p>6. Ability to build and run on Windows platform</p><p><a id="M0.3"></a></p></div><div class="subsection"><a name="02nd_February_2006_Axis2_C_Milestone_0_3_Released"></a><h3>02nd February 2006 Axis2/C Milestone 0.3 Released</h3><p>This is the first milestone release with a working SOAP engine; we have
+      </ol><p><a id="M0_4"></a></p></div><div class="subsection"><a name="17th_February_2006_Axis2_C_Milestone_0_4_Released"></a><h3>17th February 2006 Axis2/C Milestone 0.4 Released</h3><p>We have done a considerable amount of improvements in the past two weeks
+        since the M0.3 release.</p><p>We have the following features added on top of the M0.3 release</p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><p>1. Threading support and threaded simple axis server</p><p>2. Module loading support</p><p>3. Addressing module, and addressing based dispatching</p><p>4. HTTP chunking support</p><p>5. Improved logging mechanism</p><p>6. Ability to build and run on Windows platform</p><p><a id="M0_3"></a></p></div><div class="subsection"><a name="02nd_February_2006_Axis2_C_Milestone_0_3_Released"></a><h3>02nd February 2006 Axis2/C Milestone 0.3 Released</h3><p>This is the first milestone release with a working SOAP engine; we have
         the simple axis server and client stubs working.</p><p>In addition to the M0.2 feature set, the following features are
         included</p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><p>1. Core engine in place with deployment, description, and context
-        hierarchies and HTTP transport support.</p><p>2. SOAP processing support</p><p>3. Simple HTTP server</p><p>4. Client API implementation</p><p>5. Couple of working service and client samples</p><p><a id="M0.2"></a></p></div><div class="subsection"><a name="08th_December_2005_Axis2_C_Milestone_0_2_Released"></a><h3>08th December 2005 Axis2/C Milestone 0.2 Released</h3><p>We have been able to improve the OM module since the last release, and PHP
-        binding for the OM module is in place.</p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><p>1. Improved OM module</p><p>2. libxml2 parser support</p><p>3. PHP binding for the OM module</p><p>4. Some test cases for PHP binding</p><p>5. Many memory leak fixes</p><p><a id="M0.1"></a></p></div><div class="subsection"><a name="25th_November_2005_Axis2_C_Milestone_0_1_Released"></a><h3>25th November 2005 Axis2/C Milestone 0.1 Released</h3><p>This release includes the C implementation of AXIOM, an important part of
+        hierarchies and HTTP transport support.</p><p>2. SOAP processing support</p><p>3. Simple HTTP server</p><p>4. Client API implementation</p><p>5. Couple of working service and client samples</p><p><a id="M0_2"></a></p></div><div class="subsection"><a name="08th_December_2005_Axis2_C_Milestone_0_2_Released"></a><h3>08th December 2005 Axis2/C Milestone 0.2 Released</h3><p>We have been able to improve the OM module since the last release, and PHP
+        binding for the OM module is in place.</p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><p>1. Improved OM module</p><p>2. libxml2 parser support</p><p>3. PHP binding for the OM module</p><p>4. Some test cases for PHP binding</p><p>5. Many memory leak fixes</p><p><a id="M0_1"></a></p></div><div class="subsection"><a name="25th_November_2005_Axis2_C_Milestone_0_1_Released"></a><h3>25th November 2005 Axis2/C Milestone 0.1 Released</h3><p>This release includes the C implementation of AXIOM, an important part of
         the Axis2C Web service stack.</p></div><div class="subsection"><a name="Key_Features"></a><h3>Key Features</h3><p>1. OM module</p><p>2. Guththila pull parser support</p><p>3. libxml2 parser support (only reader is supported as of now)</p><p>4. doxygen documentation support</p><p>5. A sample demonstrating how to use OM</p></div></div></div></div><div class="clear"><hr></hr></div></body></html>
