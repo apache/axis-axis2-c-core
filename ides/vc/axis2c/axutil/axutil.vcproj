@@ -218,6 +218,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\util\src\digest_calc.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\util\src\dir_handler.c"
 				>
 			</File>
@@ -254,11 +258,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\util\src\http_chunked_stream.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\util\src\linked_list.c"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\..\util\src\log.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\util\src\md5.c"
 				>
 			</File>
 			<File
