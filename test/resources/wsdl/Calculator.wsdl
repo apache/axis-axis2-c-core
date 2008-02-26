@@ -41,14 +41,14 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <wsdl:part name="in1" type="xsd:int"/>
   </wsdl:message>
   <wsdl:message name="mulResponse">
-    <wsdl:part name="addReturn" type="xsd:int"/>
+    <wsdl:part name="mulReturn" type="xsd:int"/>
   </wsdl:message>
   <wsdl:message name="divRequest">
     <wsdl:part name="in0" type="xsd:int"/>
     <wsdl:part name="in1" type="xsd:int"/>
   </wsdl:message>
   <wsdl:message name="divResponse">
-    <wsdl:part name="addReturn" type="xsd:int"/>
+    <wsdl:part name="divReturn" type="xsd:int"/>
   </wsdl:message>
   <wsdl:portType name="Calculator">
     <wsdl:operation name="add" parameterOrder="in0 in1">
