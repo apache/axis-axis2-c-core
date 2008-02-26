@@ -571,10 +571,10 @@ axutil_strncasecmp(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_strstr(
-    const axis2_char_t * heystack,
+    const axis2_char_t * haystack,
     const axis2_char_t * needle)
 {
-    return strstr(heystack, needle);
+    return strstr(haystack, needle);
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -804,14 +804,14 @@ axutil_string_toupper(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_strcasestr(
-    const axis2_char_t * heystack,
+    const axis2_char_t * haystack,
     const axis2_char_t * needle)
 {
     axis2_char_t start,
      current;
     size_t len;
 
-    if (!heystack || !needle)
+    if (!haystack || !needle)
     {
         return NULL;
     }
@@ -823,16 +823,16 @@ axutil_strcasestr(
         {
             do
             {
-                if (!(current = *heystack++))
+                if (!(current = *haystack++))
                 {
                     return NULL;
                 }
             }
             while (toupper(current) != toupper(start));
         }
-        while (axutil_strncasecmp(heystack, needle, (int)len));
+        while (axutil_strncasecmp(haystack, needle, (int)len));
         /* We are sure that the difference lies within the int range */
-        heystack--;
+        haystack--;
     }
-    return (axis2_char_t *) heystack;
+    return (axis2_char_t *) haystack;
 }
