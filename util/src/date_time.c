@@ -99,7 +99,7 @@ axutil_date_time_deserialize_time(
     const axis2_char_t * time_str)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    sscanf(time_str, "%d:%d:%d:%dZ", &date_time->hour, &date_time->min,
+    sscanf(time_str, "%d:%d:%d.%dZ", &date_time->hour, &date_time->min,
            &date_time->sec, &date_time->msec);
     return AXIS2_SUCCESS;
 }
