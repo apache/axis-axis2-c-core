@@ -527,9 +527,6 @@ axutil_log_impl_log_error(
     FILE *fd = NULL;
     axutil_thread_mutex_t *mutex = NULL;
 
-    char value[AXIS2_LEN_VALUE + 1];
-    va_list ap;
-
     if (log && format && log->enabled)
     {
         fd = AXUTIL_INTF_TO_IMPL(log)->stream;
@@ -545,11 +542,16 @@ axutil_log_impl_log_error(
 
         }
 
-        va_start(ap, format);
-        AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
-        va_end(ap);
-        axutil_log_impl_write_to_file(log, mutex, AXIS2_LOG_LEVEL_ERROR,
-                                      filename, linenumber, value);
+        if (AXIS2_LOG_LEVEL_ERROR <= log->level)
+        {
+            char value[AXIS2_LEN_VALUE + 1];
+            va_list ap;
+            va_start(ap, format);
+            AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+            va_end(ap);
+            axutil_log_impl_write_to_file(log, mutex, AXIS2_LOG_LEVEL_ERROR,
+                                          filename, linenumber, value);
+        }
     }
     else
 #ifndef AXIS2_NO_LOG_FILE
