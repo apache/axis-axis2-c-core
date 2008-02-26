@@ -225,9 +225,9 @@ axutil_date_time_set_date_time(
 
     if (year > -1)
         date_time->year = year - 1900;
-    if (month > -1)
+    if (month > 0)
         date_time->mon = month;
-    if (day > -1)
+    if (day > 0)
         date_time->day = day;
     if (hour > -1)
         date_time->hour = hour;
@@ -288,7 +288,7 @@ axutil_date_time_serialize_date_time(
 
     date_time_str = AXIS2_MALLOC(env->allocator, sizeof(char) * 32);
     sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02d.%03dZ",
-            date_time->year + 1900, date_time->mon + 1, date_time->day,
+            date_time->year + 1900, date_time->mon, date_time->day,
             date_time->hour, date_time->min, date_time->sec, date_time->msec);
     return date_time_str;
 }
