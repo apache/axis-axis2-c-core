@@ -11,7 +11,7 @@ pkgconfig_DATA = axis2c.pc
 SUBDIRS = util $(GUTHTHILA_DIR) axiom neethi src $(TESTDIR) include ides tools/tcpmon tools/md5
 include_HEADERS=$(top_builddir)/include/*.h
 data_DATA= samples/server/axis2.xml README \
-	INSTALL CREDITS COPYING NEWS NOTICE 
+	INSTALL CREDITS COPYING NEWS NOTICE AUTHORS
 scripts_DATA=tools/codegen/javatool/WSDL2C.sh
 logs_DATA=
 docs_DATA= 
