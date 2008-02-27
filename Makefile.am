@@ -1,7 +1,7 @@
 datadir=$(prefix)
 scriptsdir=$(prefix)/bin
 logsdir=$(prefix)/logs
-docsdir=$(prefix)/docs/axis2c
+docsdir=$(prefix)
 includedir=$(prefix)/include/axis2-1.3.0
 
 
@@ -14,7 +14,7 @@ data_DATA= samples/server/axis2.xml README \
 	INSTALL CREDITS COPYING NEWS NOTICE 
 scripts_DATA=tools/codegen/javatool/WSDL2C.sh
 logs_DATA=
-docs_DATA=
+docs_DATA= 
 EXTRA_DIST = CREDITS LICENSE build axis2c_build.sh guththila tools AUTHORS NOTICE 
 
 dist-hook:
@@ -40,3 +40,6 @@ bindist: $(bin_PROGRAMS)
 	cp AUTHORS axis2c-bin-${PACKAGE_VERSION}-linux
 	tar -cf - axis2c-bin-${PACKAGE_VERSION}-linux | gzip -c > axis2c-bin-${PACKAGE_VERSION}-linux.tar.gz
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
+
+install-data-hook:
+	cp -r xdocs/docs $(docsdir)
