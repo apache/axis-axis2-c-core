@@ -62,5 +62,6 @@ axutil_rand_get_seed_value_based_on_time(
     rand_var += axutil_date_time_get_hour(date, env);
     rand_var += axutil_date_time_get_minute(date, env);
     rand_var += axutil_date_time_get_second(date, env);
+    axutil_date_time_free(date, env);
     return rand_var;
 }
