@@ -7,6 +7,9 @@ doxygen doxygenconf
 cd ../..
 cp -r xdocs/api/html target/docs/api/
 cp xdocs/docs/mod_log/module.xml target/docs/docs/mod_log
+rm target/docs/README
+rm target/docs/dependencies.html
+rm target/docs/downloads.html
 cp -r target/docs axis2c-src-1.3.0
 
 cd samples   
@@ -24,5 +27,10 @@ done
 for i in `find . -name "*.a"`
 do
 	rm $i
+done
+
+for i in `find . -type d -name ".svn"`
+do
+        rm -rf $i
 done
 

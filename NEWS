@@ -56,11 +56,12 @@ Key Features
       WSDL (based on Java tool)
           *  Axis Data Binding (ADB) support
 
-  17. REST support (more POX like) using both HTTP POST, GET, HEAD, PUT and DELETE
+  17. REST support (more POX like) using HTTP POST, GET, HEAD, PUT and DELETE
           *  Support for RESTful Services
 
   18. Comprehensive documentation
           * Axis2/C Manual
+
   19. WS-Policy implementation called Neethi/C, with WS-SecurityPolicy extension
 
 

@@ -1,5 +1,6 @@
-Apache Axis2/C Team is pleased to announce the release of Apache Axis2/C version 1.0.0
+Apache Axis2/C Team is pleased to announce the release of Apache Axis2/C version 1.3.0
 You can download this release from
+
 http://ws.apache.org/axis2/c/download.cgi
 
 Key Features
@@ -7,40 +8,100 @@ Key Features
    1. Support for one-way messaging (In-Only) and request response messaging (In-Out)
    2. Client APIs: Easy to use service client API and more advanced operation client API
    3. Transports supported: HTTP
-         a. Inbuilt HTTP server called simple axis server
-         b. Apache2 httpd module called mod_axis2 for server side
-         c. IIS module for server side
-         d. Client transport with ability to enable SSL support
-         e. libcurl based client transport
-   4. Module architecture, mechanism to extend the SOAP processing model
-   5. WS-Addressing support, both the submission (2004/08) and final (2005/08) versions, implemented as a module
-   6. MTOM/XOP support
-   7. AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages; This has complete XML infoset support
-   8. XML parser abstraction
-         a. Libxml2 wrapper
-         b. Guththila pull parser support
-   9. Both directory based and archive based deployment models for deploying services and modules
-  10. Description hierarchy providing access to static data of Axis2/C runtime (configuration, service groups, services, operations and messages)
-  11. Context hierarchy providing access to dynamic Axis2/C runtime information(corresponding contexts to map to each level of description hierarchy)
-  12. Message receiver abstraction
-         a. Inbuilt raw XML message receiver
-  13. Code generation tool for stub and skeleton generation for a given WSDL (based on Java tool)
-         a. Axis Data Binding (ADB) support
-  14. Transport proxy support
-  15. REST support (more POX like) using both HTTP POST and GET
-  16. Comprehensive documentation
-         a. Axis2/C Manual
+          * Inbuilt HTTP server called simple axis server
+          * Apache2 httpd module called mod_axis2 for server side
+          * IIS module for server side
+          * Client transport with ability to enable SSL support
+          * Basic HTTP Authentication
+          * Digest HTTP Authentication
+          * libcurl based client transport
 
-Major Changes Since Last Release
+   4. Transports supported: HTTPS
+          * HTTPS Transport implementation using OpenSSL
 
-   1. Many Bug Fixes
-   2. IIS module for server side
-   3. libcurl based client transport
-   4. Improvements to overall API to make it more user friendly, stable and binary compatible
-   5. Transport proxy support
-   6. Memory leak fixes  
+   5. Transports supported: TCP
+          * for both client and server side
+
+   6. Transport proxy support (HTTP)
+          * Proxy Authentication (Basic/Digest)
+
+   7. Module architecture, mechanism to extend the SOAP processing model.
+
+   8. WS-Addressing support, both the submission (2004/08) and final (2005/08) versions, 
+      implemented as a module.
+
+   9. MTOM/XOP support.
+
+  10. AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages; 
+      This has complete XML infoset support.
+
+  11. XML parser abstraction
+          * Libxml2 wrapper
+          * Guththila pull parser support
+
+  12. Both directory based and archive based deployment models for deploying 
+      services and modules
+
+  13. Description hierarchy providing access to static data of 
+      Axis2/C runtime (configuration, service groups, services, operations and messages)
+
+  14. Context hierarchy providing access to dynamic 
+      Axis2/C runtime information (corresponding contexts to map to each level of 
+      description hierarchy)
+
+  15. Message receiver abstraction
+          * Inbuilt raw XML message receiver
+
+  16. Code generation tool for stub and skeleton generation for a given 
+      WSDL (based on Java tool)
+          *  Axis Data Binding (ADB) support
+
+  17. REST support (more POX like) using HTTP POST, GET, HEAD, PUT and DELETE
+          *  Support for RESTful Services
+
+  18. Comprehensive documentation
+          * Axis2/C Manual
+
+  19. WS-Policy implementation called Neethi/C, with WS-SecurityPolicy extension
+
+
+Major Changes Since Last Release.
+--------------------------------
+
+   1. Fixed a bug on version numbering
+   2. List Axis2/C dependencies licensing in LICENSE file
+   3. Add relevant copyright notices to NOTICE file
+   4. Digest Authentication Support
+   5. Proxy Authentication Support
+   6. Enhanced REST support
+   7. Ability to insert xml declaration on outgoing payloads
+   8. MTOM support with libcurl
+   9. Improvements to TCPMon Tool
+  10. Improvements to Test Coverage
+  11. Improvements to API docs
+  12. Improvements to CA certificate validation mechanisms on SSL Transport
+  13. Improvements to Neethi
+  14. Fixed issue in HTTP GET on mod_axis2
+  15. Major Improvements to Guththila Parser
+  16. Improvements to libcurl based sender
+  17. Creation of a FAQ list
+  18. Improvements to Axis2/C documentation
+  19. Added Documentation on Archive Based Deployment
+  20. Fixes for IIS module
+  21. Removed dependency in util for the Axis2/C core
+  22. Ability to access transport headers at the service level (for RESTful services)
+  23. uint64_t and int64_t support at util layer and codegen level
+  24. Removed zlib dependencies when Archive Based Deployment model is disabled
+  25. Signal Handling in Windows
+  26. Removed over 99% of the warnings found on Windows
+  27. Increased build speed on Windows with nmake.
+  28. Improvements to Windows build system
+  29. Extensions to client API to support HTTP/Proxy Authentication
+  30. Memory leak fixes
+  31. Many bug fixes
 
 We welcome your early feedback on this implementation.
 Thanks for your interest in Axis2/C
 
 -- Apache Axis2/C Team -- 
+
