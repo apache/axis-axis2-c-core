@@ -741,6 +741,7 @@ axutil_uri_to_string(
     unsigned flags)
 {
     axis2_char_t *ret = "";
+    axis2_char_t *temp = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     /* If suppressing the site part, omit both user name & scheme://hostname */
@@ -768,6 +769,7 @@ axutil_uri_to_string(
                                                                    && !(flags &
                                                                         AXIS2_URI_UNP_OMITPASSWORD)))
                               ? "@" : "", NULL);
+            temp = ret;
         }
 
         /* Construct scheme://site string */
@@ -794,6 +796,11 @@ axutil_uri_to_string(
                                   uri->hostname, rbrk,
                                   is_default_port ? "" : ":",
                                   is_default_port ? "" : uri->port_str, NULL);
+                if (temp)
+                {
+                    AXIS2_FREE(env->allocator, temp);
+                    temp = ret;
+                }
             }
             else
             {
@@ -806,6 +813,11 @@ axutil_uri_to_string(
                     axutil_strcat(env, "//", ret, lbrk, uri->hostname, rbrk,
                                   is_default_port ? "" : ":",
                                   is_default_port ? "" : uri->port_str, NULL);
+                if (temp)
+                {
+                    AXIS2_FREE(env->allocator, temp);
+                    temp = ret;
+                }
             }
         }
     }
@@ -825,6 +837,10 @@ axutil_uri_to_string(
                           : NULL, (uri->fragment &&
                                    !(flags & AXIS2_URI_UNP_OMITQUERY)) ? uri->
                           fragment : NULL, NULL);
+        if (temp)
+        {
+            AXIS2_FREE(env->allocator, temp);
+        }
     }
     return ret;
 }
