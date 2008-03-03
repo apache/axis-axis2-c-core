@@ -425,6 +425,15 @@ axutil_uri_parse_string(
          */
         if (*hostinfo == '[')
         {
+            if (*(hostinfo + 1) == ']')
+            {
+                if (uri)
+                {
+                    axutil_uri_free(uri, env);
+                }
+                uri = NULL;
+                goto end;
+            }
             uri->is_ipv6 = 1;
             v6_offset1 = 1;
             v6_offset2 = 2;
@@ -443,7 +452,7 @@ axutil_uri_parse_string(
                 s = NULL;       /* no port */
             }
         }
-        else if (*hostinfo == '[')
+        else if (*hostinfo == ':')
         {
             if (uri)
             {
@@ -547,6 +556,11 @@ axutil_uri_parse_hostinfo(
      */
     if (*hostinfo == '[')
     {
+        if (*(hostinfo + 1) == ']')
+        {
+            axutil_uri_free(uri, env);
+            return NULL;
+        }
         uri->is_ipv6 = 1;
         rsb = strchr(hostinfo, ']');
         if (!rsb || *(rsb + 1) != ':')
