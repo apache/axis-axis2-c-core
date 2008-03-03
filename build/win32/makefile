@@ -75,9 +75,11 @@ GUTHTHILA = guththila
 AXIS2_MOD_LOG = axis2_mod_log
 
 PARSER = build
+AXIS2_WITHOUT_SERVER = axis2_core_without_server 
 
 !if "$(ENABLE_GUTHTHILA)" == "1"
 PARSER = $(PARSER)_with_guththila
+AXIS2_WITHOUT_SERVER = $(AXIS2_WITHOUT_SERVER)_guththila
 CFLAGS = $(CFLAGS) /D "AXIS2_GUTHTHILA_ENABLED"
 !endif
 
@@ -837,8 +839,11 @@ axis2_IIS_module : $(AXIS2_LIBS)\mod_axis2_IIS.dll
 axis2_core: axis2_util axis2_parser axiom neethi axis2_engine axis2_http_sender \
 	axis2_http_receiver axis2_mod_addr simple_axis2_http_server
 
+axis2_core_without_server_guththila:  axis2_util guththila axis2_parser_with_guththila axiom neethi \
+	axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr
+
 axis2_core_without_server:  axis2_util axis2_parser axiom neethi axis2_engine axis2_http_sender \
-	axis2_http_receiver axis2_mod_addr
+        axis2_http_receiver axis2_mod_addr
 
 axis2_core_guththila: axis2_util guththila axis2_parser_with_guththila axiom neethi axis2_engine \
 	axis2_http_sender axis2_http_receiver axis2_mod_addr simple_axis2_http_server
@@ -1420,5 +1425,5 @@ install: all copy_extra
 
 dist: install axis2_apache_module axis2_IIS_module tcpmon copy_samples copy_vc_projects clean_manifest mv_dist
 
-dist_as_lib : deploy axis2_core_without_server copy_include clean_manifest mv_dist
+dist_as_lib : deploy $(AXIS2_WITHOUT_SERVER) copy_include clean_manifest mv_dist
 
