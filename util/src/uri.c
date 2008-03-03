@@ -392,7 +392,6 @@ axutil_uri_parse_string(
     {
         s = uri_str; /* restart from beginning as the loop must have ended in
                       * in a wrong place. */
-        uri->scheme = axutil_strdup(env, "http"); /* if no scheme use HTTP */
         goto deal_with_authority;    /* backwards predicted taken! */
     }
 
@@ -851,15 +850,18 @@ axutil_uri_to_string(
             }
             else
             {
-                /* A violation of RFC2396, but it is clear from section 3.2
-                 * that the : belongs above to the scheme, while // belongs
-                 * to the authority, so include the authority prefix while
-                 * omitting the "scheme:" that the user neglected to pass us.
+                /* Fixed to support Abbreviated URLs as in RFC2396.
+                 * Thus, if no scheme, we omit "//" too, eventhough
+                 * it is a part of authority.
                  */
                 ret =
-                    axutil_strcat(env, "//", ret, lbrk, uri->hostname, rbrk,
+                    axutil_strcat(env, ret, lbrk, uri->hostname, rbrk,
                                   is_default_port ? "" : ":",
                                   is_default_port ? "" : uri->port_str, NULL);
+                /*ret =
+                    axutil_strcat(env, "//", ret, lbrk, uri->hostname, rbrk,
+                                  is_default_port ? "" : ":",
+                                  is_default_port ? "" : uri->port_str, NULL);*/
                 if (temp)
                 {
                     AXIS2_FREE(env->allocator, temp);
