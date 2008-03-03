@@ -823,7 +823,7 @@ axutil_uri_to_string(
     return ret;
 }
 
-axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_uri_get_protocol(
     axutil_uri_t * uri,
     const axutil_env_t * env)
@@ -831,7 +831,7 @@ axutil_uri_get_protocol(
     return uri->scheme;
 }
 
-axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_uri_get_server(
     axutil_uri_t * uri,
     const axutil_env_t * env)
@@ -839,7 +839,7 @@ axutil_uri_get_server(
     return uri->hostinfo;
 }
 
-axis2_port_t AXIS2_CALL
+AXIS2_EXTERN axis2_port_t AXIS2_CALL
 axutil_uri_get_port(
     axutil_uri_t * uri,
     const axutil_env_t * env)
@@ -847,7 +847,15 @@ axutil_uri_get_port(
     return uri->port;
 }
 
-axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axutil_uri_get_host(
+    axutil_uri_t * uri,
+    const axutil_env_t * env)
+{
+    return uri->hostname;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_uri_get_path(
     axutil_uri_t * uri,
     const axutil_env_t * env)
