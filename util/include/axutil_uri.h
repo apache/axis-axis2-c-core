@@ -108,6 +108,15 @@ extern "C"
     typedef struct axutil_uri axutil_uri_t;
 
     /**
+     * Creates axutil_uri struct.
+     * @param env pointer to environment struct. MUST NOT be NULL
+     * @return pointer to newly created axutil_uri struct
+     */
+    AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
+    axutil_uri_create(
+        const axutil_env_t * env);
+
+    /**
      * Return the default port for a given scheme.  The schemes recognized are
      * http, ftp, https, gopher, wais, nntp, snews, and prospero
      * @param scheme_str The string that contains the current scheme
@@ -118,7 +127,7 @@ extern "C"
         const axis2_char_t * scheme_str);
 
     /**
-     * Parse a given URI, fill in all supplied fields of a axutil_uri_t
+     * Parse a given URI, fill in all supplied fields of a axutil_uri
      * structure. This eliminates the necessity of extracting host, port,
      * path, query info repeatedly in the modules.
      * @param uri The uri to parse
