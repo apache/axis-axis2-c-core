@@ -119,7 +119,7 @@ axutil_first_token(
     str[index - str] = '\0';
 
     axutil_array_list_add(list, env, str);
-    axutil_array_list_add(list, env, rest);
+    axutil_array_list_add(list, env, axutil_strdup(env, rest));
     return list;
 }
 
@@ -160,7 +160,7 @@ axutil_last_token(
     str[index - str] = '\0';
 
     axutil_array_list_add(list, env, str);
-    axutil_array_list_add(list, env, rest);
+    axutil_array_list_add(list, env, axutil_strdup(env, rest));
 
     return list;
 }
