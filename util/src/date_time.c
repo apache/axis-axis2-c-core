@@ -115,7 +115,7 @@ axutil_date_time_deserialize_date(
     sscanf(date_str, "%d-%d-%d", &date_time->year, &date_time->mon,
            &date_time->day);
     date_time->year -= 1900;
-    date_time->year -= 1;
+    date_time->mon -= 1;
     return AXIS2_SUCCESS;
 }
 
