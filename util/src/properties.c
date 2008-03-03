@@ -119,7 +119,8 @@ axutil_properties_set_property(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, key, AXIS2_FAILURE);
 
-    axutil_hash_set(properties->prop_hash, key, AXIS2_HASH_KEY_STRING, value);
+    axutil_hash_set(properties->prop_hash, axutil_strdup(env, key),
+                    AXIS2_HASH_KEY_STRING, axutil_strdup(env, value));
     return AXIS2_SUCCESS;
 }
 
