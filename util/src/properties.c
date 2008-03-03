@@ -350,10 +350,18 @@ axutil_properties_read(
                              sizeof(axis2_char_t) * total_alloc);
             if (!new_stream)
             {
+                if (out_stream)
+                {
+                    AXIS2_FREE(env->allocator, out_stream);
+                }
                 return NULL;
             }
 
             memcpy(new_stream, out_stream, sizeof(axis2_char_t) * ncount);
+            if (out_stream)
+            {
+                AXIS2_FREE(env->allocator, out_stream);
+            }
             out_stream = new_stream;
         }
     }
