@@ -394,7 +394,7 @@ axutil_uri_parse_string(
         {
             goto deal_with_path;
         }
-        goto deal_with_host;    /* backwards predicted taken! */
+        goto deal_with_authority;    /* backwards predicted taken! */
     }
 
     uri->scheme = axutil_strmemdup(uri_str, s - uri_str, env);
