@@ -80,26 +80,33 @@ extern "C"
     /** Flags passed to unparse_uri_components(): */
 
     /** suppress "scheme://user\@site:port" */
-#define AXIS2_URI_UNP_OMITSITEPART    (1U<<0)
+#define AXIS2_URI_UNP_OMITSITEPART      (1U<<0)
 
     /** Just omit user */
-#define AXIS2_URI_UNP_OMITUSER        (1U<<1)
+#define AXIS2_URI_UNP_OMITUSER          (1U<<1)
 
     /** Just omit password */
-#define AXIS2_URI_UNP_OMITPASSWORD    (1U<<2)
+#define AXIS2_URI_UNP_OMITPASSWORD      (1U<<2)
 
     /** omit "user:password\@" part */
-#define AXIS2_URI_UNP_OMITUSERINFO    (AXIS2_URI_UNP_OMITUSER | \
-                                     AXIS2_URI_UNP_OMITPASSWORD)
+#define AXIS2_URI_UNP_OMITUSERINFO      (AXIS2_URI_UNP_OMITUSER | \
+                                       AXIS2_URI_UNP_OMITPASSWORD)
 
     /** Show plain text password (default: show XXXXXXXX) */
-#define AXIS2_URI_UNP_REVEALPASSWORD  (1U<<3)
+#define AXIS2_URI_UNP_REVEALPASSWORD    (1U<<3)
 
     /** Show "scheme://user\@site:port" only */
-#define AXIS2_URI_UNP_OMITPATHINFO    (1U<<4)
+#define AXIS2_URI_UNP_OMITPATHINFO      (1U<<4)
 
     /** Omit the "?queryarg" from the path */
-#define AXIS2_URI_UNP_OMITQUERY       (1U<<5)
+#define AXIS2_URI_UNP_OMITQUERY_ONLY    (1U<<5)
+
+    /** Omit the "#fragment" from the path */
+#define AXIS2_URI_UNP_OMITFRAGMENT_ONLY (1U<<6)
+
+    /** Omit the "?queryarg" and "#fragment" from the path */
+#define AXIS2_URI_UNP_OMITQUERY         (AXIS2_URI_UNP_OMITQUERY_ONLY | \
+                                       AXIS2_URI_UNP_OMITFRAGMENT_ONLY)
 
     /** @see axutil_uri_t */
     typedef unsigned short axis2_port_t;

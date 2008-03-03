@@ -829,13 +829,13 @@ axutil_uri_to_string(
         ret =
             axutil_strcat(env, ret, (uri->path) ? uri->path : "",
                           (uri->query &&
-                           !(flags & AXIS2_URI_UNP_OMITQUERY)) ? "?" : "",
+                           !(flags & AXIS2_URI_UNP_OMITQUERY_ONLY)) ? "?" : "",
                           (uri->query &&
-                           !(flags & AXIS2_URI_UNP_OMITQUERY)) ? uri->
+                           !(flags & AXIS2_URI_UNP_OMITQUERY_ONLY)) ? uri->
                           query : "", (uri->fragment &&
-                                       !(flags & AXIS2_URI_UNP_OMITQUERY)) ? "#"
+                                       !(flags & AXIS2_URI_UNP_OMITFRAGMENT_ONLY)) ? "#"
                           : NULL, (uri->fragment &&
-                                   !(flags & AXIS2_URI_UNP_OMITQUERY)) ? uri->
+                                   !(flags & AXIS2_URI_UNP_OMITFRAGMENT_ONLY)) ? uri->
                           fragment : NULL, NULL);
         if (temp)
         {
