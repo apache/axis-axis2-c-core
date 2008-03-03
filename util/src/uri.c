@@ -509,7 +509,10 @@ axutil_uri_parse_hostinfo(
     AXIS2_PARAM_CHECK(env->error, hostinfo, NULL);
 
     uri = (axutil_uri_t *) axutil_uri_create(env);
-
+    if (!uri)
+    {
+        return NULL;
+    }
     /* Initialize the structure. parse_uri() and parse_uri_components()
      * can be called more than once per request.
      */
@@ -525,6 +528,7 @@ axutil_uri_parse_hostinfo(
         rsb = strchr(hostinfo, ']');
         if (!rsb || *(rsb + 1) != ':')
         {
+            axutil_uri_free(uri, env);
             return NULL;
         }
         /* literal IPv6 address */
@@ -538,6 +542,7 @@ axutil_uri_parse_hostinfo(
     }
     if (!s)
     {
+        axutil_uri_free(uri, env);
         return NULL;
     }
     uri->hostname = axutil_strndup(env, hostinfo, (int)(s - hostinfo - v6_offset1));
@@ -553,6 +558,7 @@ axutil_uri_parse_hostinfo(
         }
         /* Invalid characters after ':' found */
     }
+    axutil_uri_free(uri, env);
     return NULL;
 }
 
