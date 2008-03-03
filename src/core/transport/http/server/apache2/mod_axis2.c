@@ -442,6 +442,9 @@ static int axis2_post_config(apr_pool_t *pconf, apr_pool_t *plog,
 	/* axis2_post_config() will be called twice. Don't bother
 	 * going through all of the initialization on the first call
 	 * because it will just be thrown away.*/
+    
+    ap_add_version_component(pconf, "Axis2C/" AXIS2_VERSION_STRING);
+
 	apr_pool_userdata_get(&data, userdata_key, svr_rec->process->pool);
 	if (!data) 
 	{

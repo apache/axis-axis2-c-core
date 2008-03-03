@@ -51,7 +51,7 @@ axis2_apache2_worker_create(
 	axutil_hash_index_t *hi = NULL;
 	void* svc = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-	AXIS2_LOG_INFO(env->log,"[Axis2] Axis2 aaa worker created");
+	AXIS2_LOG_INFO(env->log,"[Axis2] Axis2 worker created");
     apache2_worker = (axis2_apache2_worker_t *)
         AXIS2_MALLOC(env->allocator, sizeof(axis2_apache2_worker_t));
 
