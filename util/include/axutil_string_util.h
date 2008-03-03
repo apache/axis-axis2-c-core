@@ -38,6 +38,12 @@ extern "C"
         axis2_char_t * in,
         int delim);
 
+    /**
+     * @return returns array_list containing, the string portion
+     * without the last token as the first item and the last
+     * token as the second. If the last token was the only token
+     * found, the first item will be a "" string.
+     */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axutil_last_token(
         const axutil_env_t * env,
