@@ -390,6 +390,7 @@ axutil_uri_parse_string(
     /* scheme must be non-empty and followed by :// */
     if (s == uri_str || s[0] != ':' || s[1] != '/' || s[2] != '/')
     {
+        uri->scheme = axutil_strdup("http"); /* if no scheme use HTTP */
         goto deal_with_authority;    /* backwards predicted taken! */
     }
 
