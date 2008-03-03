@@ -125,13 +125,70 @@ axutil_date_time_deserialize_date_time(
     const axutil_env_t * env,
     const axis2_char_t * date_time_str)
 {
+    int year;
+    int mon;
+    int day;
+    int hour;
+    int min;
+    int sec;
+    int msec;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    sscanf(date_time_str, "%d-%d-%dT%d:%d:%d.%dZ", &date_time->year,
-           &date_time->mon, &date_time->day, &date_time->hour, &date_time->min,
-           &date_time->sec, &date_time->msec);
-    date_time->year -= 1900;
-    date_time->mon -= 1;
+    sscanf(date_time_str, "%d-%d-%dT%d:%d:%d.%dZ", &year,
+           &mon, &day, &hour, &min,
+           &sec, &msec);
+
+    if (year < 1900)
+    {
+        return AXIS2_FAILURE;
+    }
+    if (mon < 1 || mon > 12)
+    {
+        return AXIS2_FAILURE;
+    }
+    if (day < 1 || day > 31)
+    {
+        return AXIS2_FAILURE;
+    }
+    if (day == 31 && (mon == 2 || mon == 4 ||
+        mon == 6 || mon == 9 || mon == 11))
+    {
+        return AXIS2_FAILURE;
+    }
+    if (day == 30 && mon == 2)
+    {
+        return AXIS2_FAILURE;
+    }
+    if (day == 29 && mon == 2)
+    {
+        if (year % 4 != 0 || year % 400 == 0)
+        {
+            return AXIS2_FAILURE;
+        }
+    }
+    if (hour < 0 || hour > 23)
+    {
+        return AXIS2_FAILURE;
+    }
+    if (min < 0 || min > 59)
+    {
+        return AXIS2_FAILURE;
+    }
+    if (sec < 0 || sec > 59)
+    {
+        return AXIS2_FAILURE;
+    }
+    if (msec < 0 || msec > 999)
+    {
+        return AXIS2_FAILURE;
+    }
+    date_time->year = year - 1900;
+    date_time->mon = mon - 1;
+    date_time->day = day;
+    date_time->hour = hour;
+    date_time->min = min;
+    date_time->sec = sec;
+    date_time->msec = msec;
     return AXIS2_SUCCESS;
 }
 
