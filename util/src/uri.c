@@ -213,6 +213,7 @@ axutil_uri_create(
     uri->query = NULL;
     uri->fragment = NULL;
     uri->hostent = NULL;
+    uri->port = 0;
 
     return uri;
 }
