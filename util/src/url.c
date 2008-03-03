@@ -247,16 +247,41 @@ axutil_url_to_external_form(
     axis2_char_t *external_form = NULL;
     axis2_ssize_t len = 0;
     axis2_char_t port_str[8];
+    axis2_bool_t print_port = AXIS2_FALSE;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, url, NULL);
 
-    sprintf(port_str, "%d", url->port);
-    len =
-        axutil_strlen(url->protocol) + axutil_strlen(url->server) +
-        axutil_strlen(url->path) + strlen(port_str) + 7;
+    if (!url->protocol)
+    {
+        return NULL;
+    }
+
+    if (url->port != 0 &&
+        url->port != axutil_uri_port_of_scheme(url->protocol))
+    {
+        print_port = AXIS2_TRUE;
+        sprintf(port_str, "%d", url->port);
+    }
+
+    len = axutil_strlen(url->protocol) + 6;
+    if (url->server)
+    {
+        len += axutil_strlen(url->server);
+    }
+    if (url->path)
+    {
+        len += axutil_strlen(url->path);
+    }
+    if (print_port)
+    {
+        len += axutil_strlen(port_str) + 1;
+    }
     external_form = (axis2_char_t *) AXIS2_MALLOC(env->allocator, len);
-    sprintf(external_form, "%s://%s:%s%s", url->protocol, url->server, port_str,
-            url->path);
+    sprintf(external_form, "%s://%s%s%s%s", url->protocol,
+            (url->server) ? url->server : "",
+            (print_port) ? ":" : "",
+            (print_port) ? port_str : "",
+            (url->path) ? url->path : "");
     return external_form;
 }
 
