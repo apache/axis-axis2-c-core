@@ -116,9 +116,18 @@ axutil_properties_set_property(
     axis2_char_t * key,
     axis2_char_t * value)
 {
+    axis2_char_t *old = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, key, AXIS2_FAILURE);
 
+    old = axutil_properties_get_property(properties, env, key);
+    if (old)
+    {
+        AXIS2_FREE(env->allocator, old);
+        axutil_hash_set(properties->prop_hash, key,
+                        AXIS2_HASH_KEY_STRING, axutil_strdup(env, value));
+        return AXIS2_SUCCESS;
+    }
     axutil_hash_set(properties->prop_hash, axutil_strdup(env, key),
                     AXIS2_HASH_KEY_STRING, axutil_strdup(env, value));
     return AXIS2_SUCCESS;
