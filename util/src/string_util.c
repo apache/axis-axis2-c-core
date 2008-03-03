@@ -29,6 +29,7 @@ axutil_tokenize(
     axutil_array_list_t *list = NULL;
     axis2_char_t *rest = NULL;
     axis2_char_t *str = NULL;
+    axis2_char_t *temp = NULL;
     axis2_bool_t loop_state = AXIS2_TRUE;
 
     axis2_char_t *index = NULL;
@@ -44,13 +45,15 @@ axutil_tokenize(
     }
 
     str = axutil_strdup(env, in);
+    temp = str;
 
     do
     {
         index = strchr(str, delim);
         if ((!index) && (str) && axutil_strcmp(str, "") != 0)
         {
-            axutil_array_list_add(list, env, str);
+            axutil_array_list_add(list, env,
+                                  axutil_strdup(env, str));
             break;
         }
 
@@ -59,7 +62,8 @@ axutil_tokenize(
         if ((list) && (str) && axutil_strcmp(str, "") != 0)
         {
 
-            axutil_array_list_add(list, env, str);
+            axutil_array_list_add(list, env, 
+                                  axutil_strdup(env, str));
         }
 
         if (!rest || axutil_strcmp(rest, "") == 0)
@@ -72,6 +76,10 @@ axutil_tokenize(
 
     }
     while (loop_state);
+    if (temp)
+    {
+        AXIS2_FREE(env->allocator, temp);
+    }
     return list;
 }
 
