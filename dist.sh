@@ -10,6 +10,7 @@ cp xdocs/docs/mod_log/module.xml target/docs/docs/mod_log
 rm target/docs/README
 rm target/docs/dependencies.html
 rm target/docs/downloads.html
+rm target/xdocs/mail-lists.html
 cp -r target/docs axis2c-src-1.3.0
 
 cd samples   
