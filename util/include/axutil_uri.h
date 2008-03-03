@@ -209,16 +209,25 @@ extern "C"
         const axutil_env_t * env,
         unsigned flags);
 
+    /**
+     * @return returns actual reference, not a cloned copy.
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axutil_uri_get_protocol(
         axutil_uri_t * uri,
         const axutil_env_t * env);
 
+    /**
+     * @return returns actual reference, not a cloned copy.
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axutil_uri_get_server(
         axutil_uri_t * uri,
         const axutil_env_t * env);
 
+    /**
+     * @return returns actual reference, not a cloned copy.
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axutil_uri_get_host(
         axutil_uri_t * uri,
@@ -229,6 +238,9 @@ extern "C"
         axutil_uri_t * uri,
         const axutil_env_t * env);
 
+    /**
+     * @return returns actual reference, not a cloned copy.
+     */   
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axutil_uri_get_path(
         axutil_uri_t * uri,
