@@ -202,11 +202,19 @@ axiom_stax_builder_process_attributes(
         }
         if (uri)
         {
+#ifdef AXIS2_GUTHTHILA_ENABLED
+            AXIS2_FREE(env->allocator,uri);
+#else
             axiom_xml_reader_xml_free(om_builder->parser, env, uri);
+#endif
         }
         if (prefix)
         {
+#ifdef AXIS2_GUTHTHILA_ENABLED
+            AXIS2_FREE(env->allocator,prefix);
+#else
             axiom_xml_reader_xml_free(om_builder->parser, env, prefix);
+#endif
         }
         if (attr_name_str)
         {
