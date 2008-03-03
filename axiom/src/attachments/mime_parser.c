@@ -221,6 +221,13 @@ axiom_mime_parser_parse(
 
         buffer[read+1] = '\0';
         buf_len = read;
+
+        if(buf_len < cb_ctx->content_length)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "All the data in the message does not recieved");
+            return NULL;
+        }
     }
 
     if (buffer)
