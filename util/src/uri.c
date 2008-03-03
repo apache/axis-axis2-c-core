@@ -431,6 +431,10 @@ axutil_uri_parse_string(
             s = axutil_memchr(hostinfo, ']', uri_str - hostinfo);
             if (!s)
             {
+                if (uri)
+                {
+                    axutil_uri_free(uri, env);
+                }
                 uri = NULL;
                 goto end;
             }
@@ -438,6 +442,15 @@ axutil_uri_parse_string(
             {
                 s = NULL;       /* no port */
             }
+        }
+        else if (*hostinfo == '[')
+        {
+            if (uri)
+            {
+                axutil_uri_free(uri, env);
+            }
+            uri = NULL;
+            goto end;
         }
         else
         {
@@ -466,6 +479,10 @@ axutil_uri_parse_string(
                 goto deal_with_path;
             }
             /* Invalid characters after ':' found */
+            if (uri)
+            {
+                axutil_uri_free(uri, env);
+            }
             uri = NULL;
             goto end;
         }
@@ -541,6 +558,11 @@ axutil_uri_parse_hostinfo(
         s = rsb + 1;
         ++hostinfo;
         v6_offset1 = 1;
+    }
+    else if (*hostinfo == ':')
+    {
+        axutil_uri_free(uri, env);
+        return NULL;
     }
     else
     {
