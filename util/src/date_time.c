@@ -115,6 +115,7 @@ axutil_date_time_deserialize_date(
     sscanf(date_str, "%d-%d-%d", &date_time->year, &date_time->mon,
            &date_time->day);
     date_time->year -= 1900;
+    date_time->year -= 1;
     return AXIS2_SUCCESS;
 }
 
@@ -130,6 +131,7 @@ axutil_date_time_deserialize_date_time(
            &date_time->mon, &date_time->day, &date_time->hour, &date_time->min,
            &date_time->sec, &date_time->msec);
     date_time->year -= 1900;
+    date_time->mon -= 1;
     return AXIS2_SUCCESS;
 }
 
@@ -225,9 +227,9 @@ axutil_date_time_set_date_time(
 
     if (year > -1)
         date_time->year = year - 1900;
-    if (month > -1)
-        date_time->mon = month;
-    if (day > -1)
+    if (month > 0)
+        date_time->mon = month - 1;
+    if (day > 0)
         date_time->day = day;
     if (hour > -1)
         date_time->hour = hour;
@@ -272,7 +274,7 @@ axutil_date_time_serialize_date(
         (axis2_char_t *) AXIS2_MALLOC(env->allocator,
                                       sizeof(axis2_char_t) * 32);
 
-    sprintf(date_str, "%d-%d-%d", date_time->year + 1900, date_time->mon,
+    sprintf(date_str, "%d-%d-%d", date_time->year + 1900, date_time->mon + 1,
             date_time->day);
     return date_str;
 }
@@ -307,7 +309,7 @@ axutil_date_time_get_month(
     axutil_date_time_t * date_time,
     const axutil_env_t * env)
 {
-    return (date_time->mon);
+    return (date_time->mon + 1);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
