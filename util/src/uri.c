@@ -187,6 +187,9 @@ struct axutil_uri
 
     /** has the dns been resolved yet */
     unsigned dns_resolved:1;
+
+    /** is it an IPv6 URL */
+    unsigned is_ipv6:1;
 };
 
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
@@ -214,6 +217,7 @@ axutil_uri_create(
     uri->fragment = NULL;
     uri->hostent = NULL;
     uri->port = 0;
+    uri->is_ipv6 = 0;    
 
     return uri;
 }
@@ -421,6 +425,7 @@ axutil_uri_parse_string(
          */
         if (*hostinfo == '[')
         {
+            uri->is_ipv6 = 1;
             v6_offset1 = 1;
             v6_offset2 = 2;
             s = axutil_memchr(hostinfo, ']', uri_str - hostinfo);
@@ -525,6 +530,7 @@ axutil_uri_parse_hostinfo(
      */
     if (*hostinfo == '[')
     {
+        uri->is_ipv6 = 1;
         rsb = strchr(hostinfo, ']');
         if (!rsb || *(rsb + 1) != ':')
         {
@@ -663,6 +669,7 @@ axutil_uri_resolve_relative(
     {
         uri->port = base->port;
     }
+    uri->is_ipv6 = base->is_ipv6;
 
     return uri;
 }
@@ -727,6 +734,7 @@ axutil_uri_clone(
     new_uri->is_initialized = uri->is_initialized;
     new_uri->dns_looked_up = uri->dns_looked_up;
     new_uri->dns_resolved = uri->dns_resolved;
+    new_uri->is_ipv6 = uri->is_ipv6;
 
     return new_uri;
 }
@@ -779,7 +787,7 @@ axutil_uri_to_string(
             const axis2_char_t *lbrk = "",
                 *rbrk = "";
 
-            if (strchr(uri->hostname, ':'))
+            if (uri->is_ipv6)
             {                   /* v6 literal */
                 lbrk = "[";
                 rbrk = "]";
