@@ -1515,17 +1515,19 @@ axis2_http_transport_utils_get_services_static_wsdl(
             c = fgetc(wsdl_file);
             while (c != EOF)
             {
-                if (i > size)
+                if (i >= size)
                 {
-                    size *= size * 3;
+                    size = size * 3;
                     tmp = (axis2_char_t *) AXIS2_MALLOC(env->allocator, size);
                     memcpy(tmp, content, i);
                     AXIS2_FREE(env->allocator, content);
                     content = tmp;
                 }
-                sprintf(&content[i++], "%c", c);
+                /*sprintf(&content[i++], "%c", c);*/
+                content[i++] = c;
                 c = fgetc(wsdl_file);
             }
+            content[i] = '\0';
             wsdl_string = content;
         }
     }
