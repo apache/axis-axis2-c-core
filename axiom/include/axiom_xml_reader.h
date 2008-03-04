@@ -26,6 +26,7 @@
 
 #include <axutil_env.h>
 #include <axutil_utils.h>
+#include <axiom_defines.h>
 
 #ifdef __cplusplus
 extern "C"

@@ -16,42 +16,25 @@
  * limitations under the License.
  */
 
-#ifndef AXIOM_H
-#define AXIOM_H
-#include <axiom_node.h>
-#include <axiom_attribute.h>
-#include <axiom_child_element_iterator.h>
-#include <axiom_children_iterator.h>
-#include <axiom_children_qname_iterator.h>
-#include <axiom_children_with_specific_attribute_iterator.h>
-#include <axiom_comment.h>
-#include <axiom_doctype.h>
-#include <axiom_document.h>
-#include <axiom_element.h>
-#include <axiom_namespace.h>
-#include <axiom_navigator.h>
-#include <axiom_output.h>
-#include <axiom_processing_instruction.h>
-#include <axiom_stax_builder.h>
-#include <axiom_text.h>
-#include <axiom_data_source.h>
-#include <axiom_xml_reader.h>
-#include <axiom_xml_writer.h>
-#include <axiom_defines.h>
+#ifndef AXIOM_DEFINES_H
+#define AXIOM_DEFINES_H
 
-/**
-* @file axiom.h
-* @brief includes all headers in OM
-*/
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-    /** @} */
+    /**
+     * This enum is used to decide the type of storage used
+     */
+    typedef enum _axis2_xml_parser_type
+    {
+        AXIS2_XML_PARSER_TYPE_BUFFER = 1,
+        AXIS2_XML_PARSER_TYPE_FILE,
+        AXIS2_XML_PARSER_TYPE_DOC
+    } axis2_xml_parser_type;
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif                          /* AXIOM_H */
+#endif                          /* AXIOM_DEFINES_H */
