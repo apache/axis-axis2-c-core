@@ -400,6 +400,11 @@ axutil_uri_parse_string(
     /* scheme must be non-empty and followed by :// */
     if (s == uri_str || s[0] != ':' || s[1] != '/' || s[2] != '/')
     {
+        if (uri->scheme)
+        {
+            AXIS2_FREE(env->allocator, uri->scheme);
+            uri->scheme = NULL;
+        }
         s = uri_str; /* restart from beginning as the loop must have ended in
                       * in a wrong place. */
         goto deal_with_authority;    /* backwards predicted taken! */
