@@ -570,11 +570,15 @@ axutil_uri_parse_hostinfo(
             axutil_uri_free(uri, env);
             return NULL;
         }
-        /* literal IPv6 address */
+        /* literal IPv6 address
+         * Special allowances has been made according to RFC3986 for
+         * IPv6 addresses beginning with "::"
+         */
         s = rsb + 1;
         if ((*(hostinfo + 1) >= '0' && *(hostinfo + 1) <= '9') ||
              (*(hostinfo + 1) >= 'a' && *(hostinfo + 1) <= 'z') ||
-             (*(hostinfo + 1) >= 'A' && *(hostinfo + 1) <= 'Z'))
+             (*(hostinfo + 1) >= 'A' && *(hostinfo + 1) <= 'Z') ||
+             (*(hostinfo + 1) == ':' && *(hostinfo + 2) == ':'))
         {
             ++hostinfo;
         }

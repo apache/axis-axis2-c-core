@@ -227,6 +227,8 @@ extern "C"
 
     /**
      * @return returns actual reference, not a cloned copy.
+     * For IPv6 addresses, the IPv6 Address will be returned
+     * rather than the IP-literal as defined in RFC3986.
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axutil_uri_get_host(
