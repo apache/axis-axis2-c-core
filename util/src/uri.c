@@ -471,7 +471,8 @@ axutil_uri_parse_string(
         }
         else if (!*hostinfo || (*hostinfo >= '0' && *hostinfo <= '9') ||
                  (*hostinfo >= 'a' && *hostinfo <= 'z') ||
-                 (*hostinfo >= 'A' && *hostinfo <= 'Z'))
+                 (*hostinfo >= 'A' && *hostinfo <= 'Z') ||
+                 *hostinfo == '?' || *hostinfo == '/' || *hostinfo == '#')
         {
             s = axutil_memchr(hostinfo, ':', uri_str - hostinfo);
         }
