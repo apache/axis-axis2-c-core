@@ -957,6 +957,22 @@ axutil_uri_get_host(
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axutil_uri_get_query(
+    axutil_uri_t * uri,
+    const axutil_env_t * env)
+{
+    return uri->query;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axutil_uri_get_fragment(
+    axutil_uri_t * uri,
+    const axutil_env_t * env)
+{
+    return uri->fragment;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_uri_get_path(
     axutil_uri_t * uri,
     const axutil_env_t * env)

@@ -253,6 +253,16 @@ extern "C"
         const axutil_uri_t * uri,
         const axutil_env_t * env);
 
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_uri_get_query(
+        axutil_uri_t * uri,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_uri_get_fragment(
+        axutil_uri_t * uri,
+        const axutil_env_t * env);
+
     /** @} */
 #ifdef __cplusplus
 }
