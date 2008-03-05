@@ -45,7 +45,7 @@ axutil_url_create(
 
     if (!protocol || !*protocol ||
         strstr(protocol, "://") ||
-        strchr(server, '/'))
+        (server && strchr(server, '/')))
     {
         return NULL;
     }
