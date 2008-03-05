@@ -469,13 +469,13 @@ axutil_uri_parse_string(
                 s = NULL;       /* no port */
             }
         }
-        else if ((*hostinfo >= '0' && *hostinfo <= '9') ||
+        else if (!*hostinfo || (*hostinfo >= '0' && *hostinfo <= '9') ||
                  (*hostinfo >= 'a' && *hostinfo <= 'z') ||
                  (*hostinfo >= 'A' && *hostinfo <= 'Z'))
         {
             s = axutil_memchr(hostinfo, ':', uri_str - hostinfo);
         }
-        else if (*hostinfo)
+        else
         {
             if (uri)
             {
