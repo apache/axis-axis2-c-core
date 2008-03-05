@@ -475,7 +475,7 @@ axutil_uri_parse_string(
         {
             s = axutil_memchr(hostinfo, ':', uri_str - hostinfo);
         }
-        else
+        else if (*hostinfo)
         {
             if (uri)
             {
