@@ -977,13 +977,17 @@ certificate chain file can be created by concatenating the certificate file
 and the private key file in that order, in to another file, say
 <code>client.pem</code>.</p><p>On Linux you can do this as follows: <code>%cat client.crt client.key &gt;
 client.pem</code></p><p>On MS Windows, you can do this by copying the contents of client.crt and
-client.key files and saving them in a file named client.pem using Notepad.</p></div><div class="subsection"><a name="13_1_2_Configuration"></a><h3>13.1.2 Configuration</h3><p>Uncomment the following in the <code>axis2.xml</code> file. This will
-enable the SSL transport for Axis2/C, by recognizing "https" in an end point
-reference (EPR).</p>
+client.key files and saving them in a file named client.pem using Notepad.</p></div><div class="subsection"><a name="13_1_2_Configuration"></a><h3>13.1.2 Configuration</h3><p>Uncomment the following in <code>axis2.xml</code> to enable https transport receiver and https transport sender.
+Axis2/C will then be able to recognize the "https" sheme in a given end point reference (EPR) and use SSL transport.
+</p>
+    <div class="source"><pre>&lt;transportReceiver name="https" class="axis2_http_receiver"&gt;
+        &lt;parameter name="port" locked="false"&gt;6060&lt;/parameter&gt;
+        &lt;parameter name="exposeHeaders" locked="true"&gt;false&lt;/parameter&gt;
+&lt;/transportReceiver&gt;
+</pre></div>
     <div class="source"><pre>&lt;transportSender name="https" class="axis2_http_sender"&gt;
         &lt;parameter name="PROTOCOL" locked="false"&gt;HTTP/1.1&lt;/parameter&gt;
 &lt;/transportSender&gt;
-
 </pre></div>
   <p>For the SSL client to work, the file containing the CA certificate should
 be given as <code>SERVER_CERT</code> parameter in the axis2.xml file. If you
