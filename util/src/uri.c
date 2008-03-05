@@ -572,17 +572,29 @@ axutil_uri_parse_hostinfo(
         }
         /* literal IPv6 address */
         s = rsb + 1;
-        ++hostinfo;
+        if ((*(hostinfo + 1) >= '0' && *(hostinfo + 1) <= '9') ||
+             (*(hostinfo + 1) >= 'a' && *(hostinfo + 1) <= 'z') ||
+             (*(hostinfo + 1) >= 'A' && *(hostinfo + 1) <= 'Z'))
+        {
+            ++hostinfo;
+        }
+        else
+        {
+            axutil_uri_free(uri, env);
+            return NULL;
+        }
         v6_offset1 = 1;
     }
-    else if (*hostinfo == ':')
+    else if ((*hostinfo >= '0' && *hostinfo <= '9') ||
+             (*hostinfo >= 'a' && *hostinfo <= 'z') ||
+             (*hostinfo >= 'A' && *hostinfo <= 'Z'))
     {
-        axutil_uri_free(uri, env);
-        return NULL;
+        s = strchr(hostinfo, ':');
     }
     else
     {
-        s = strchr(hostinfo, ':');
+        axutil_uri_free(uri, env);
+        return NULL;
     }
     if (!s)
     {
