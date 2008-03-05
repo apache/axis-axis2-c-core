@@ -43,6 +43,13 @@ axutil_url_create(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, protocol, NULL);
 
+    if (!protocol || !*protocol ||
+        strstr(protocol, "://") ||
+        strchr(server, '/'))
+    {
+        return NULL;
+    }
+
     url = (axutil_url_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_url_t));
 
     if (!url)
@@ -68,15 +75,27 @@ axutil_url_create(
      */
     if (path)
     {
+        axis2_char_t *params = NULL;
+        axis2_char_t *temp = NULL;
         if (path[0] == '/')
         {
-            url->path = (axis2_char_t *) axutil_strdup(env, path);
+            temp = (axis2_char_t *) axutil_strdup(env, path);
         }
         else
         {
-            url->path = axutil_stracat(env, "/", path);
+            temp = axutil_stracat(env, "/", path);
         }
-
+        params = strchr(temp, '?');
+        if (!params)
+        {
+            params = strchr(temp, '#');
+        }
+        if (params)
+        {
+            *params = '\0';
+        }
+        url->path = (axis2_char_t *) axutil_strdup(env, temp);
+        AXIS2_FREE(env->allocator, temp);
     }
 
     return url;
