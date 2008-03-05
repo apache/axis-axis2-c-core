@@ -861,8 +861,8 @@ axutil_uri_to_string(
                 if (temp)
                 {
                     AXIS2_FREE(env->allocator, temp);
-                    temp = ret;
                 }
+                temp = ret;
             }
             else
             {
@@ -881,8 +881,8 @@ axutil_uri_to_string(
                 if (temp)
                 {
                     AXIS2_FREE(env->allocator, temp);
-                    temp = ret;
                 }
+                temp = ret;
             }
         }
     }
