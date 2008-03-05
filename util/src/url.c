@@ -53,11 +53,15 @@ axutil_url_create(
     url->protocol = axutil_strdup(env, protocol);
     url->server = NULL;
     url->path = NULL;
-    url->port = port;
 
     if (server)
     {
         url->server = (axis2_char_t *) axutil_strdup(env, server);
+        url->port = port;
+    }
+    else
+    {
+        url->port = 0;
     }
 
     /** if the path is not starting with / we have to make it so
