@@ -436,7 +436,22 @@ axutil_uri_parse_string(
                 uri = NULL;
                 goto end;
             }
-            uri->is_ipv6 = 1;
+            if ((*(hostinfo + 1) >= '0' && *(hostinfo + 1) <= '9') ||
+                (*(hostinfo + 1) >= 'a' && *(hostinfo + 1) <= 'z') ||
+                (*(hostinfo + 1) >= 'A' && *(hostinfo + 1) <= 'Z') ||
+                (*(hostinfo + 1) == ':' && *(hostinfo + 2) == ':'))
+            {
+                uri->is_ipv6 = 1;
+            }
+            else
+            {
+                if (uri)
+                {
+                    axutil_uri_free(uri, env);
+                }
+                uri = NULL;
+                goto end;
+            }
             v6_offset1 = 1;
             v6_offset2 = 2;
             s = axutil_memchr(hostinfo, ']', uri_str - hostinfo);
@@ -454,7 +469,13 @@ axutil_uri_parse_string(
                 s = NULL;       /* no port */
             }
         }
-        else if (*hostinfo == ':')
+        else if ((*hostinfo >= '0' && *hostinfo <= '9') ||
+                 (*hostinfo >= 'a' && *hostinfo <= 'z') ||
+                 (*hostinfo >= 'A' && *hostinfo <= 'Z'))
+        {
+            s = axutil_memchr(hostinfo, ':', uri_str - hostinfo);
+        }
+        else
         {
             if (uri)
             {
@@ -462,10 +483,6 @@ axutil_uri_parse_string(
             }
             uri = NULL;
             goto end;
-        }
-        else
-        {
-            s = axutil_memchr(hostinfo, ':', uri_str - hostinfo);
         }
         if (!s)
         {
