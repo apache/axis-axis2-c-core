@@ -348,6 +348,16 @@ axutil_uri_parse_string(
          * that the path could be empty -- http://foobar?query for example
          */
         s = uri_str;
+        if ((!uri->hostinfo && uri_str[0] == '/' && uri_str[1] == '/') ||
+            (!uri->scheme && uri_str[0] == ':'))
+        {
+            if (uri)
+            {
+                axutil_uri_free(uri, env);
+            }
+            uri = NULL;
+            goto end;
+        }
         while ((uri_delims[*(unsigned char *) s] & NOTEND_PATH) == 0)
         {
             ++s;
