@@ -657,7 +657,7 @@ axutil_uri_resolve_relative(
     {
         size_t baselen;
         const char *basepath = base->path ? base->path : "/";
-        const char *path = uri->path;
+        char *path = uri->path;
         const char *base_end = strrchr(basepath, '/');
 
         /* if base is nonsensical, bail out */
@@ -688,6 +688,10 @@ axutil_uri_resolve_relative(
                          sizeof(axis2_char_t) * baselen + strlen(path) + 1);
         memcpy(uri->path, basepath, baselen);
         strcpy(uri->path + baselen, path);
+        if (path)
+        {
+            AXIS2_FREE(env->allocator, path);
+        }
     }
 
     /* The trivial bits are everything-but-path */
@@ -735,13 +739,20 @@ axutil_uri_parse_relative(
     const char *uri)
 {
     axutil_uri_t *uptr = NULL;
+    axutil_uri_t *temp = NULL;
 
     uptr = axutil_uri_parse_string(env, uri);
     if (!uptr && AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         return uptr;
     }
+    temp = uptr;
     uptr = axutil_uri_resolve_relative(env, base, uptr);
+
+    if (!uptr)
+    {
+        axutil_uri_free(temp, env);
+    }
 
     return uptr;
 }
