@@ -45,7 +45,7 @@ extern "C"
     axutil_url_create(
         const axutil_env_t * env,
         const axis2_char_t * protocol,
-        const axis2_char_t * server,
+        const axis2_char_t * host,
         const int port,
         const axis2_char_t * path);
 
@@ -72,6 +72,17 @@ extern "C"
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axutil_url_get_protocol(
+        axutil_url_t * url,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_url_set_host(
+        axutil_url_t * url,
+        const axutil_env_t * env,
+        axis2_char_t * host);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axutil_url_get_host(
         axutil_url_t * url,
         const axutil_env_t * env);
 
