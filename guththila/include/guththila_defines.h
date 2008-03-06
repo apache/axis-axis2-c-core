@@ -66,7 +66,7 @@
 #define GUTHTHILA_FALSE	0
 #endif
 
-#ifndef GUTHTHILA_TURE
+#ifndef GUTHTHILA_TRUE
 #define GUTHTHILA_TRUE		1
 #endif
 
