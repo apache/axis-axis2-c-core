@@ -241,8 +241,8 @@ axutil_log_impl_write(
             fprintf(stderr, "%s %s(%d) %s\n", level_str, file, line, buffer);
         }
     }
-    else if (buffer)
 #ifndef AXIS2_NO_LOG_FILE
+    else if (buffer)
         fprintf(stderr, "please check your log and buffer");
 #endif
     else
@@ -381,8 +381,8 @@ axutil_log_impl_log_user(
                 filename, linenumber, value);
         }
     }
-    else
 #ifndef AXIS2_NO_LOG_FILE
+    else
         fprintf(stderr, "please check your log and buffer");
 #endif
 }
@@ -424,8 +424,8 @@ axutil_log_impl_log_debug(
                                           filename, linenumber, value);
         }
     }
-    else
 #ifndef AXIS2_NO_LOG_FILE
+    else
         fprintf(stderr, "please check your log and buffer");
 #endif
 }
@@ -466,8 +466,8 @@ axutil_log_impl_log_info(
                     NULL, -1, value);
         }
     }
-    else
 #ifndef AXIS2_NO_LOG_FILE
+    else
         fprintf(stderr, "please check your log and buffer");
 #endif
 }
@@ -510,8 +510,8 @@ axutil_log_impl_log_warning(
                 AXIS2_LOG_LEVEL_WARNING, filename, linenumber, value);
         }
     }
-    else
 #ifndef AXIS2_NO_LOG_FILE
+    else
         fprintf(stderr, "please check your log and buffer");
 #endif
 }
@@ -553,8 +553,8 @@ axutil_log_impl_log_error(
                                           filename, linenumber, value);
         }
     }
-    else
 #ifndef AXIS2_NO_LOG_FILE
+    else
         fprintf(stderr, "please check your log and buffer");
 #endif
 
@@ -595,8 +595,8 @@ axutil_log_impl_log_critical(
         axutil_log_impl_write_to_file(log, mutex, AXIS2_LOG_LEVEL_CRITICAL,
                                       filename, linenumber, value);
     }
-    else
 #ifndef AXIS2_NO_LOG_FILE
+    else
         fprintf(stderr, "please check your log and buffer");
 #endif
 
@@ -698,8 +698,8 @@ axutil_log_impl_log_trace(
                                           filename, linenumber, value);
         }
     }
-    else
 #ifndef AXIS2_NO_LOG_FILE
+    else
         fprintf(stderr, "please check your log and buffer");
 #endif
 }
