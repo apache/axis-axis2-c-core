@@ -172,6 +172,14 @@ axutil_url_parse_string(
         path = strchr(host, '/');
         if (!path)
         {
+            path = strchr(host, '?');
+        }
+        if (!path)
+        {
+            path = strchr(host, '#');
+        }
+        if (!path)
+        {
             /* No path - assume def path ('/') */
             /* here we have protocol + host + def port + def path */
             ret = axutil_url_create(env, protocol, host, port, "/");
@@ -180,7 +188,6 @@ axutil_url_parse_string(
         }
         else
         {
-            *path++ = '\0';
             /* here we have protocol + host + def port + path */
             ret = axutil_url_create(env, protocol, host, port, path);
             AXIS2_FREE(env->allocator, tmp_url_str);
@@ -193,6 +200,31 @@ axutil_url_parse_string(
         path = strchr(port_str, '/');
         if (!path)
         {
+            path = strchr(port_str, '?');
+            if (path)
+            {
+                *path = '\0';
+                port = AXIS2_ATOI(port_str);
+                *path = '?';
+            }
+        }
+        else
+        {
+            *path++ = '\0';
+            port = AXIS2_ATOI(port_str);
+        }
+        if (!path)
+        {
+            path = strchr(port_str, '#');
+            if (path)
+            {
+                *path = '\0';
+                port = AXIS2_ATOI(port_str);
+                *path = '#';
+            }
+        }
+        if (!path)
+        {
             port = AXIS2_ATOI(port_str);
             /* here we have protocol + host + port + def path */
             ret = axutil_url_create(env, protocol, host, port, "/");
@@ -201,8 +233,6 @@ axutil_url_parse_string(
         }
         else
         {
-            *path++ = '\0';
-            port = AXIS2_ATOI(port_str);
             if (axutil_strlen(path) > 0)
             {
                 /* here we have protocol + host + port + path */
@@ -541,10 +571,30 @@ axutil_url_clone(
     axutil_url_t * url,
     const axutil_env_t * env)
 {
+    axis2_char_t *temp = NULL;
+    axutil_url_t *ret = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    return axutil_url_create(env, url->protocol, url->host, url->port,
-                             url->path);
+    if (url->path && url->query)
+    {
+        temp = axutil_stracat(env, url->path, url->query);
+    }
+    else if (url->path)
+    {
+        temp = axutil_strdup(env, url->path);
+    }
+    else if (url->query)
+    {
+        temp = axutil_strdup(env, url->query);
+    }
+
+    ret = axutil_url_create(env, url->protocol, url->host, url->port,
+                            url->path);
+    if (temp)
+    {
+        AXIS2_FREE(env->allocator, temp);
+    }
+    return ret;
 }
 
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
