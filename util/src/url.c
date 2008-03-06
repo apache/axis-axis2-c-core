@@ -29,6 +29,7 @@ struct axutil_url
     axis2_char_t *host;
     int port;
     axis2_char_t *path;
+    axis2_char_t *query;
     axis2_char_t *server;
 };
 
@@ -62,6 +63,7 @@ axutil_url_create(
     url->host = NULL;
     url->path = NULL;
     url->server = NULL;
+    url->query = NULL;
 
     if (host)
     {
@@ -94,6 +96,7 @@ axutil_url_create(
         }
         if (params)
         {
+            url->query = (axis2_char_t *) axutil_strdup(env, params);
             *params = '\0';
         }
         url->path = (axis2_char_t *) axutil_strdup(env, temp);
@@ -121,7 +124,6 @@ axutil_url_parse_string(
     axis2_char_t *path = NULL;
     axis2_char_t *port_str = NULL;
     axis2_char_t *host = NULL;
-    axis2_char_t *params = NULL;
     int port = 0;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -162,15 +164,6 @@ axutil_url_parse_string(
         ret = axutil_url_create(env, protocol, NULL, 0, host);
         AXIS2_FREE(env->allocator, tmp_url_str);
         return ret;
-    }
-    params = strchr(host, '?');
-    if (!params)
-    {
-        params = strchr(host, '#');
-    }
-    if (params)
-    {
-        *params = '\0';
     }
 
     port_str = strchr(host, ':');
@@ -254,7 +247,11 @@ axutil_url_free(
         AXIS2_FREE(env->allocator, url->path);
         url->path = NULL;
     }
-
+    if (url->query)
+    {
+        AXIS2_FREE(env->allocator, url->query);
+        url->query = NULL;
+    }
     AXIS2_FREE(env->allocator, url);
     return;
 }
@@ -292,16 +289,21 @@ axutil_url_to_external_form(
     {
         len += axutil_strlen(url->path);
     }
+    if (url->query)
+    {
+        len += axutil_strlen(url->query);
+    }
     if (print_port)
     {
         len += axutil_strlen(port_str) + 1;
     }
     external_form = (axis2_char_t *) AXIS2_MALLOC(env->allocator, len);
-    sprintf(external_form, "%s://%s%s%s%s", url->protocol,
+    sprintf(external_form, "%s://%s%s%s%s%s", url->protocol,
             (url->host) ? url->host : "",
             (print_port) ? ":" : "",
             (print_port) ? port_str : "",
-            (url->path) ? url->path : "");
+            (url->path) ? url->path : "",
+            (url->query) ? url->query : "");
     return external_form;
 }
 

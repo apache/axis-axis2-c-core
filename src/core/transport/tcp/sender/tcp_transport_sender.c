@@ -281,7 +281,7 @@ axis2_tcp_transport_sender_invoke(
             return AXIS2_FAILURE;
         }
 
-        host = axutil_url_get_server(to_url, env);
+        host = axutil_url_get_host(to_url, env);
         if (!host)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "retrieving host failed");

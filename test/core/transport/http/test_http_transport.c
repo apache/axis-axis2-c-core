@@ -115,8 +115,8 @@ test_url(
     }
     printf("Starting URL Test ....\n");
     printf
-        ("Parsed URL : \n Protocol :%s|\n Server :%s|\n Port :%d|\n Path : %s|\n",
-         axutil_url_get_protocol(url, env), axutil_url_get_server(url, env),
+        ("Parsed URL : \n Protocol :%s|\n Host :%s|\n Port :%d|\n Path : %s|\n",
+         axutil_url_get_protocol(url, env), axutil_url_get_host(url, env),
          axutil_url_get_port(url, env), axutil_url_get_path(url, env));
     printf("End of URL Test ... \n");
     axutil_url_free(url, env);
@@ -146,7 +146,7 @@ test_http_client(
                                                NULL, 0, NULL);
     url = axutil_url_create(env, "http", "localhost", 80, NULL);
     header =
-        axis2_http_header_create(env, "Host", axutil_url_get_server(url, env));
+        axis2_http_header_create(env, "Host", axutil_url_get_host(url, env));
     axis2_http_simple_request_add_header(request, env, header);
     client = axis2_http_client_create(env, url);
 
@@ -211,7 +211,7 @@ test_https_client(
     url = axutil_url_create(env, "https", "localhost", 9090, NULL);
 
     header =
-        axis2_http_header_create(env, "Host", axutil_url_get_server(url, env));
+        axis2_http_header_create(env, "Host", axutil_url_get_host(url, env));
     axis2_http_simple_request_add_header(request, env, header);
     client = axis2_http_client_create(env, url);
 

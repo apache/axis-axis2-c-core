@@ -183,7 +183,7 @@ axis2_http_client_send(
     {
         client->sockfd = 
             (int)axutil_network_handler_open_socket(env,
-                                               axutil_url_get_server
+                                               axutil_url_get_host
                                                (client->url, env),
                                                axutil_url_get_port
                                                (client->url, env));
@@ -216,7 +216,7 @@ axis2_http_client_send(
         {
             if (AXIS2_SUCCESS !=
                 axis2_http_client_connect_ssl_host(client, env,
-                                                   axutil_url_get_server
+                                                   axutil_url_get_host
                                                    (client->url, env),
                                                    axutil_url_get_port
                                                    (client->
@@ -296,13 +296,13 @@ axis2_http_client_send(
          * POST http://host:port/path HTTP/1.x if we have enabled proxies
          */
         axis2_char_t *host_port_str = NULL;
-        axis2_char_t *server = axutil_url_get_server(client->url, env);
+        axis2_char_t *host = axutil_url_get_host(client->url, env);
         axis2_http_request_line_t *request_line =
             axis2_http_simple_request_get_request_line(request, env);
         axis2_char_t *path = axis2_http_request_line_get_uri(request_line, env);
 
-        /* length = len(server) + len(:port) + len("http://") + len(path) + 1 */
-        host_port_str = AXIS2_MALLOC(env->allocator, axutil_strlen(server) +
+        /* length = len(host) + len(:port) + len("http://") + len(path) + 1 */
+        host_port_str = AXIS2_MALLOC(env->allocator, axutil_strlen(host) +
                                      +axutil_strlen(path) +
                                      20 * sizeof(axis2_char_t));
         if (!host_port_str)
@@ -310,7 +310,7 @@ axis2_http_client_send(
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
-        sprintf(host_port_str, "http://%s:%d%s", server,
+        sprintf(host_port_str, "http://%s:%d%s", host,
                 axutil_url_get_port(client->url, env), path);
         str_request_line =
             AXIS2_MALLOC(env->allocator,

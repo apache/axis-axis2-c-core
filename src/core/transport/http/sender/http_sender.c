@@ -701,12 +701,12 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         axutil_strcmp (sender->http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
     {
         axis2_char_t *header = NULL;
-        int server_len = 0;
-        server_len = axutil_strlen (axutil_url_get_server (url, env));
+        int host_len = 0;
+        host_len = axutil_strlen (axutil_url_get_host (url, env));
         header = AXIS2_MALLOC (env->allocator,
-                               server_len + 10 * sizeof (axis2_char_t));
+                               host_len + 10 * sizeof (axis2_char_t));
         sprintf (header, "%s:%d",
-                 axutil_url_get_server (url, env), axutil_url_get_port (url,
+                 axutil_url_get_host (url, env), axutil_url_get_port (url,
                                                                         env));
         axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_HOST,
                                            header);
