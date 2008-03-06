@@ -174,6 +174,10 @@ axutil_url_parse_string(
         {
             path = strchr(host, '?');
         }
+        else
+        {
+            *path++ = '\0';
+        }
         if (!path)
         {
             path = strchr(host, '#');
@@ -188,9 +192,14 @@ axutil_url_parse_string(
         }
         else
         {
+            axis2_char_t *path_temp = NULL;
+
+            path_temp = axutil_strdup(env, path);
+            *path = '\0';
             /* here we have protocol + host + def port + path */
-            ret = axutil_url_create(env, protocol, host, port, path);
+            ret = axutil_url_create(env, protocol, host, port, path_temp);
             AXIS2_FREE(env->allocator, tmp_url_str);
+            AXIS2_FREE(env->allocator, path_temp);
             return ret;
         }
     }
@@ -235,9 +244,14 @@ axutil_url_parse_string(
         {
             if (axutil_strlen(path) > 0)
             {
+                axis2_char_t *path_temp = NULL;
+
+                path_temp = axutil_strdup(env, path);
+                *path = '\0';
                 /* here we have protocol + host + port + path */
-                ret = axutil_url_create(env, protocol, host, port, path);
+                ret = axutil_url_create(env, protocol, host, port, path_temp);
                 AXIS2_FREE(env->allocator, tmp_url_str);
+                AXIS2_FREE(env->allocator, path_temp);
                 return ret;
             }
             else
