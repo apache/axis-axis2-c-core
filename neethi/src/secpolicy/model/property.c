@@ -226,6 +226,21 @@ rp_property_set_value(
         rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *) value,
                                            env);
     }
+    else if (type == RP_PROPERTY_SUPPORTING_SUPPORTING_TOKEN)
+    {
+        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *) value,
+                                           env);
+    }
+    else if (type == RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN)
+    {
+        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *) value,
+                                           env);
+    }
+    else if (type == RP_PROPERTY_ENDORSING_SUPPORTING_TOKEN)
+    {
+        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *) value,
+                                           env);
+    }
     else if (type == RP_PROPERTY_ASYMMETRIC_BINDING)
     {
         rp_asymmetric_binding_increment_ref((rp_asymmetric_binding_t *) value,

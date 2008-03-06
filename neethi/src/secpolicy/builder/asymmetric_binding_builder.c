@@ -228,6 +228,16 @@ asymmetric_binding_process_alternatives(
                     rp_binding_commons_set_signed_endorsing_supporting_tokens
                         (commons, env, supporting_tokens);
                 }
+                else if (type == RP_PROPERTY_SUPPORTING_SUPPORTING_TOKEN)
+                {
+                    rp_binding_commons_set_supporting_tokens
+                        (commons, env, supporting_tokens);
+                }
+                else if (type == RP_PROPERTY_ENDORSING_SUPPORTING_TOKEN)
+                {
+                    rp_binding_commons_set_endorsing_supporting_tokens
+                        (commons, env, supporting_tokens);
+                }
                 else
                     return AXIS2_FAILURE;
             }

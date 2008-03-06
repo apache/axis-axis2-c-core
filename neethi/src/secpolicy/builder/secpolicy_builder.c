@@ -160,6 +160,19 @@ secpolicy_process_alternatives(
                     else if (type ==
                              RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN)
                     {
+                        rp_secpolicy_set_signed_endorsing_supporting_tokens(secpolicy,
+                                                                     env,
+                                                                     supporting_tokens);
+                    }
+                    else if (type == RP_PROPERTY_SUPPORTING_SUPPORTING_TOKEN)
+                    {
+                        rp_secpolicy_set_supporting_tokens(secpolicy,
+                                                                  env,
+                                                                  supporting_tokens);
+                    }
+                    else if (type ==
+                             RP_PROPERTY_ENDORSING_SUPPORTING_TOKEN)
+                    {
                         rp_secpolicy_set_endorsing_supporting_tokens(secpolicy,
                                                                      env,
                                                                      supporting_tokens);

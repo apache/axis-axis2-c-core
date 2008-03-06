@@ -69,6 +69,17 @@ rp_supporting_tokens_builder_build(
             rp_supporting_tokens_set_type(supporting_tokens, env,
                                           RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN);
         }
+        else if (axutil_strcmp(local_name, RP_SUPPORTING_TOKENS) == 0)
+        {
+            rp_supporting_tokens_set_type(supporting_tokens, env,
+                                          RP_PROPERTY_SUPPORTING_SUPPORTING_TOKEN);
+        }
+        else if (axutil_strcmp
+                 (local_name, RP_ENDORSING_SUPPORTING_TOKENS) == 0)
+        {
+            rp_supporting_tokens_set_type(supporting_tokens, env,
+                                          RP_PROPERTY_ENDORSING_SUPPORTING_TOKEN);
+        }
         else
             return NULL;
     }

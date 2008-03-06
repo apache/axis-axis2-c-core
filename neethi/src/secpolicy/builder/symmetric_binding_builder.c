@@ -232,13 +232,22 @@ symmetric_binding_process_alternatives(
                 type = rp_supporting_tokens_get_type(supporting_tokens, env);
                 if (type == RP_PROPERTY_SIGNED_SUPPORTING_TOKEN)
                 {
-                    rp_binding_commons_set_signed_supporting_tokens(commons,
-                                                                    env,
-                                                                    supporting_tokens);
+                    rp_binding_commons_set_signed_supporting_tokens
+                        (commons, env, supporting_tokens);
                 }
                 else if (type == RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN)
                 {
                     rp_binding_commons_set_signed_endorsing_supporting_tokens
+                        (commons, env, supporting_tokens);
+                }
+                else if (type == RP_PROPERTY_SUPPORTING_SUPPORTING_TOKEN)
+                {
+                    rp_binding_commons_set_supporting_tokens
+                        (commons, env, supporting_tokens);
+                }
+                else if (type == RP_PROPERTY_ENDORSING_SUPPORTING_TOKEN)
+                {
+                    rp_binding_commons_set_endorsing_supporting_tokens
                         (commons, env, supporting_tokens);
                 }
                 else

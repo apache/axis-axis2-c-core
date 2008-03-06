@@ -340,6 +340,26 @@ neethi_assertion_builder_build(
         else
             return NULL;
     }
+    else if (axutil_strcmp(localname, RP_SUPPORTING_TOKENS) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_SUPPORTING_TOKENS, node, element))
+        {
+            return rp_supporting_tokens_builder_build(env, node, element);
+        }
+        else
+            return NULL;
+    }
+    else if (axutil_strcmp(localname, RP_ENDORSING_SUPPORTING_TOKENS) == 0)
+    {
+        if (rp_match_secpolicy_qname
+            (env, RP_ENDORSING_SUPPORTING_TOKENS, node, element))
+        {
+            return rp_supporting_tokens_builder_build(env, node, element);
+        }
+        else
+            return NULL;
+    }
     else if (axutil_strcmp(localname, RP_SIGNED_ENDORSING_SUPPORTING_TOKENS) ==
              0)
     {
