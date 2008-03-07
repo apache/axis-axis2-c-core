@@ -70,19 +70,23 @@ main(
     if (!axutil_strcmp(argv[1], "-h"))
     {
         printf
-            ("Usage : %s [-lp LISTEN_PORT] [-tp TARGET_PORT] [-th TARGET_HOST] [-f LOG_FILE]\n",
+            ("Usage : %s [-lp LISTEN_PORT] [-tp TARGET_PORT] [-th TARGET_HOST] [-f LOG_FILE] [options]\n",
              argv[0]);
         fprintf(stdout, " Options :\n");
         fprintf(stdout,
-                "\t-lp LISTEN_PORT \t port number to listen on, default is 9090\n");
+                "\t-lp LISTEN_PORT \tport number to listen on, default is 9090\n");
         fprintf(stdout,
-                "\t-tp TARGET_PORT \t port number to connect and re-direct messages, default is 8080\n");
+                "\t-tp TARGET_PORT \tport number to connect and re-direct messages, default is 8080\n");
         fprintf(stdout,
-                "\t-th TARGET_HOST \t target host to connect, default is localhost\n");
+                "\t-th TARGET_HOST \ttarget host to connect, default is localhost\n");
         fprintf(stdout,
-                "\t-f  LOG_FILE    \t file to write the messages to, default is %s\n",
+                "\t-f  LOG_FILE    \tfile to write the messages to, default is %s\n",
                 tcpmon_traffic_log);
-        fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
+        fprintf(stdout,
+                "\t--format        \tenable xml formatting\n");
+        fprintf(stdout,
+                "\t--test          \tenable testing last request/response by logging it seperately\n");
+        fprintf(stdout, " Help :\n\t-h              \tdisplay this help screen.\n\n");
         return 0;
     }
 
