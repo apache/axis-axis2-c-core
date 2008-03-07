@@ -308,6 +308,7 @@ axis2_svc_builder_populate_svc(
     timestamp = axutil_file_get_timestamp(svc_folder, env);
     axutil_dll_desc_set_timestamp(dll_desc, env, timestamp);
     svc_folder_path = axutil_file_get_path(svc_folder, env);
+    axis2_svc_set_svc_folder_path(svc_builder->svc, env, svc_folder_path);
     dll_path = axutil_strcat(env, svc_folder_path, AXIS2_PATH_SEP_STR,
                              svc_dll_name, NULL);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "DLL path is : %s", dll_path);

@@ -35,11 +35,14 @@ struct axis2_svc
     /** to store module descriptions at deploy time parsing */
     axutil_array_list_t *module_list;
 
-    /* service description  */
+    /** service description  */
     axis2_char_t *svc_desc;
 
-    /*wsdl file path */
+    /** wsdl file path */
     axis2_char_t *wsdl_path;
+
+    /** service folder path */
+    axis2_char_t *folder_path;
 
     /**
      * WSDL related stuff
@@ -134,6 +137,7 @@ axis2_svc_create(
     svc->filename = NULL;
     svc->svc_desc = NULL;
     svc->wsdl_path = NULL;
+    svc->folder_path = NULL;
     svc->last_update = 0;
     svc->param_container = NULL;
     svc->flow_container = NULL;
@@ -428,6 +432,18 @@ axis2_svc_free(
     {
         AXIS2_FREE(env->allocator, svc->target_ns);
         svc->target_ns = NULL;
+    }
+
+    if (svc->wsdl_path)
+    {
+        AXIS2_FREE(env->allocator, svc->wsdl_path);
+        svc->wsdl_path = NULL;
+    }
+
+    if (svc->folder_path)
+    {
+        AXIS2_FREE(env->allocator, svc->folder_path);
+        svc->folder_path = NULL;
     }
 
     if (svc->target_ns_prefix)
@@ -1463,7 +1479,26 @@ axis2_svc_set_svc_wsdl_path(
     const axis2_char_t * wsdl_path)
 {
     AXIS2_PARAM_CHECK(env->error, wsdl_path, AXIS2_FAILURE);
-    svc->wsdl_path = (axis2_char_t *) wsdl_path;
+    svc->wsdl_path = (axis2_char_t *) axutil_strdup(env, wsdl_path);
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+axis2_svc_get_svc_folder_path(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
+{
+    return svc->folder_path;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_svc_set_svc_folder_path(
+    axis2_svc_t * svc,
+    const axutil_env_t * env,
+    const axis2_char_t * folder_path)
+{
+    AXIS2_PARAM_CHECK(env->error, folder_path, AXIS2_FAILURE);
+    svc->folder_path = (axis2_char_t *) axutil_strdup(env, folder_path);
     return AXIS2_SUCCESS;
 }
 

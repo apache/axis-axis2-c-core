@@ -38,6 +38,7 @@
 #include <axis2_disp.h>
 #include <axis2_msg.h>
 #include <stdlib.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 #define AXIOM_MIME_BOUNDARY_BYTE 45
 
@@ -1490,9 +1491,16 @@ axis2_http_transport_utils_get_services_static_wsdl(
                                                                    env), env);
             if (!axutil_strcmp(svc_name, sname))
             {
-                wsdl_path =
-                    (axis2_char_t *) axis2_svc_get_svc_wsdl_path((axis2_svc_t *)
-                                                                 service, env);
+                wsdl_path = (axis2_char_t *) axutil_strdup(env, 
+                                axis2_svc_get_svc_wsdl_path((axis2_svc_t *)
+                                                            service, env));
+                if (!wsdl_path)
+                {
+                    wsdl_path = axutil_strcat(env, 
+                                    axis2_svc_get_svc_folder_path((axis2_svc_t *)
+                                     service, env), AXIS2_PATH_SEP_STR,
+                                    svc_name, ".wsdl", NULL);
+                }
                 break;
             }
 
@@ -1530,6 +1538,7 @@ axis2_http_transport_utils_get_services_static_wsdl(
             content[i] = '\0';
             wsdl_string = content;
         }
+        AXIS2_FREE(env->allocator, wsdl_path);
     }
     else
     {
