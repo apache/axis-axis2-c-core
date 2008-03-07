@@ -204,6 +204,11 @@ main(
     do
     {
         c = getchar();
+        if (c == 'f')
+        {
+            format_bit = format_bit ? 0 : 1;
+            TCPMON_SESSION_SET_FORMAT_BIT(session, env, format_bit);
+        }
     }
     while (c != 'q');
 
