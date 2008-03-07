@@ -85,7 +85,7 @@ main(
         fprintf(stdout,
                 "\t--format        \tenable xml formatting\n");
         fprintf(stdout,
-                "\t--test          \tenable testing last request/response by logging it seperately\n");
+                "\t--test          \tenable testing last request/response by logging it separately\n");
         fprintf(stdout, " Help :\n\t-h              \tdisplay this help screen.\n\n");
         return 0;
     }
