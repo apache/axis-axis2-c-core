@@ -999,6 +999,7 @@ $(AXIS2_SERVICES)\Calculator\Calculator.dll : $(CALCULATOR_OBJS)
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_SERVICES)\Calculator\Calculator.dll  
 	-@$(_VC_MANIFEST_EMBED_DLL)
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\Calculator\services.xml $(AXIS2_SERVICES)\Calculator
+	@copy $(AXIS2_SOURCE_DIR)\samples\server\Calculator\Calculator.wsdl $(AXIS2_SERVICES)\Calculator
 
 axis2_services_calculator : $(AXIS2_SERVICES)\Calculator\Calculator.dll
 
