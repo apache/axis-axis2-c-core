@@ -165,7 +165,16 @@ browser. To start the simple axis server, you can go to the AXIS2C_HOME/bin
 folder and run the executable axis2_http_server. The default URL that you can
 test the service list with is <a href="http://localhost:9090/axis2/services" class="externalLink" title="External Link">http://localhost:9090/axis2/services</a>.
 You should get an entry for the hello service on the page that is
-displayed.</p></div><div class="subsection"><a name="1_2_Hello_Client"></a><h3>1.2 Hello Client</h3><p>Now that you know how to write a service with Axis2/C, let's see how to
+displayed.</p></div>
+<div class="subsection"><a name="1_1_8_Providing_a_WSDL_for_the_Service"></a><h3>1.1.8 Providing a WSDL for the Service</h3><p>Axis2/C does not support dynamic WSDL generation. However, it is possible to attach the contract you used to generate the service skeleton, to the respective service. This can be done in two ways.</p>
+<ol>
+<li>Adding the WSDL file to the folder in which the service DLL is found.
+<li>Providing the path of the WSDL file in the services.xml.
+</ol>
+<p>If you choose the first option, you will have to copy the WSDL file to the folder in which the service DLL is found. The name of the WSDL file should be the name of the service. And, if you choose the second option, you will have to make use of the <b><code>wsdl_path</code></b> parameter in the services.xml file. More info on how this can be done is found under the <a href="#appB">services.xml</a> section.</p>
+<p>An example of the second option can be found the services.xml of the <b>echo</b> sample service, which is commented. An example of the first option in use is seen in the <b>Calculator</b> sample service.</p>
+<p>The static WSDL file can be accessed by appending <code>?wsdl</code> to the service end-point. You can view the WSDL provided for the Calculator sample, by pointing to <a href="http://localhost:9090/axis2/services/Calculator?wsdl" class="externalLink" title="External Link">http://localhost:9090/axis2/services/Calculator?wsdl</a>.</p></div>
+<div class="subsection"><a name="1_2_Hello_Client"></a><h3>1.2 Hello Client</h3><p>Now that you know how to write a service with Axis2/C, let's see how to
 write a client to consume that service. The request payload that the client
 will be sending to the service was described in the previous section. The
 client has to prepare the payload, send it to the service, and then receive

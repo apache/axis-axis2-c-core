@@ -1,12 +1,15 @@
 <service name="echo">
     <parameter name="ServiceClass" locked="xsd:false">echo</parameter>
 
+    <!--Uncomment to specify static WSDL path-->
+    <!--parameter name="wsdl_path">PATH</parameter-->
+
     <!--Uncomment to include defaul method with REST as GET-->
     <!--parameter name="defaultRESTMethod">GET</parameter-->
 
-   <description>
+    <description>
         This is a testing service, to test whether the system is working or not
-   </description>
+    </description>
 
     <operation name="echoString">
             <!--messageReceiver class="axis2_receivers" /-->
@@ -28,5 +31,4 @@
             <!--parameter name="RESTMethod">HEAD</parameter>
             <parameter name="RESTLocation">get_echo/{param}</parameter-->
     </operation>
-
 </service>
