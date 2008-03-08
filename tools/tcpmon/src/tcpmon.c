@@ -281,32 +281,6 @@ on_new_entry_to_file(
         }
         else
         {
-            /*int count = 0;
-            int printed = 0;
-            axis2_char_t *temp = NULL;
-            axis2_char_t *formated_buffer_temp = formated_buffer;
-            printf("%s\n", TCPMON_ENTRY_SENT_HEADERS(entry, env));
-            count = TCPMON_ENTRY_GET_SENT_DATA_LENGTH(entry, env) - 4 -
-                    strlen(TCPMON_ENTRY_SENT_HEADERS(entry, env));
-            temp = AXIS2_MALLOC(env->allocator,
-                              sizeof(axis2_char_t) * count + 1);
-            while (count > printed)
-            {
-                if (*formated_buffer)
-                {
-                    temp[printed] = *formated_buffer;
-                }
-                else
-                {
-                    temp[printed] = ' ';
-                }
-                printed++;
-                formated_buffer++;
-            }
-            temp[count] = '\0';
-            printf("%s\n\n", temp);
-            AXIS2_FREE(env->allocator, temp);
-            formated_buffer = formated_buffer_temp;*/
             int count = 0;
             int printed = 0;
             axis2_char_t *formated_buffer_temp = formated_buffer;
@@ -417,32 +391,6 @@ on_new_entry_to_file(
         }
         else
         {
-            /*int count = 0;
-            int printed = 0;
-            axis2_char_t *temp = NULL;
-            axis2_char_t *formated_buffer_temp = formated_buffer;
-            printf("%s\n", TCPMON_ENTRY_ARRIVED_HEADERS(entry, env));
-            count = TCPMON_ENTRY_GET_ARRIVED_DATA_LENGTH(entry, env) - 4 -
-                    strlen(TCPMON_ENTRY_ARRIVED_HEADERS(entry, env));
-            temp = AXIS2_MALLOC(env->allocator,
-                              sizeof(axis2_char_t) * count + 1);
-            while (count > printed)
-            {
-                if (*formated_buffer)
-                {
-                    temp[printed] = *formated_buffer;
-                }
-                else
-                {
-                    temp[printed] = ' ';
-                }
-                printed++;
-                formated_buffer++;
-            }
-            temp[count] = '\0';
-            printf("%s\n\n", temp);
-            AXIS2_FREE(env->allocator, temp);
-            formated_buffer = formated_buffer_temp;*/
             int count = 0;
             int printed = 0;
             axis2_char_t *formated_buffer_temp = formated_buffer;
@@ -541,6 +489,12 @@ on_new_entry(
         plain_buffer = TCPMON_ENTRY_SENT_DATA(entry, env);
         if (plain_buffer)       /* this can be possible as no xml present */
         {
+            if (TCPMON_ENTRY_GET_SENT_DATA_LENGTH(entry, env) ==
+                strlen(TCPMON_ENTRY_SENT_HEADERS(entry, env)) +
+                strlen(plain_buffer) + 4)
+            {
+                format = 0; /* mtom scenario */
+            }
             formated_buffer = tcpmon_util_format_as_xml
                 (env, plain_buffer, format);
         }
@@ -548,18 +502,54 @@ on_new_entry(
         {
             formated_buffer = "";
         }
-        printf("%s\n", "SENDING DATA..");
+        printf("\n\n%s\n", "SENDING DATA..");
         printf("/* sending time = %s*/\n", TCPMON_ENTRY_SENT_TIME(entry, env));
         printf("---------------------\n");
 
-        printf("%s\n\n%s\n\n", TCPMON_ENTRY_SENT_HEADERS(entry, env),
-               formated_buffer);
+        if (format || TCPMON_ENTRY_GET_SENT_DATA_LENGTH(entry, env) ==
+            strlen(TCPMON_ENTRY_SENT_HEADERS(entry, env)) +
+            strlen(formated_buffer) + 4)
+        {
+            printf("%s\n\n%s\n\n", TCPMON_ENTRY_SENT_HEADERS(entry, env),
+                   formated_buffer);
+        }
+        else
+        {
+            int count = 0;
+            int printed = 0;
+            axis2_char_t *formated_buffer_temp = formated_buffer;
+            printf("%s\n", TCPMON_ENTRY_SENT_HEADERS(entry, env));
+            count = TCPMON_ENTRY_GET_SENT_DATA_LENGTH(entry, env) - 4 -
+                    strlen(TCPMON_ENTRY_SENT_HEADERS(entry, env));
+            while (count > printed)
+            {
+                int plen = 0;
+                plen = ((int)strlen(formated_buffer) + 1);
+                if (plen != 1)
+                {
+                    printf("%s", formated_buffer);
+                }
+                printed += plen;
+                if (count > printed)
+                {
+                    printf("%c", '\0');
+                    formated_buffer += plen;
+                }
+            }
+            formated_buffer = formated_buffer_temp;
+        }
     }
     if (status == 1)
     {
         plain_buffer = TCPMON_ENTRY_ARRIVED_DATA(entry, env);
         if (plain_buffer)       /* this can be possible as no xml present */
         {
+            if (TCPMON_ENTRY_GET_ARRIVED_DATA_LENGTH(entry, env) ==
+                strlen(TCPMON_ENTRY_ARRIVED_HEADERS(entry, env)) +
+                strlen(plain_buffer) + 4)
+            {
+                format = 0; /* mtom scenario */
+            }
             formated_buffer = tcpmon_util_format_as_xml
                 (env, plain_buffer, format);
         }
@@ -567,15 +557,45 @@ on_new_entry(
         {
             formated_buffer = "";
         }
-        printf("%s\n", "RETRIEVING DATA..");
+        printf("\n\n%s\n", "RETRIEVING DATA..");
         printf("/* retrieving time = %s*/\n",
                TCPMON_ENTRY_ARRIVED_TIME(entry, env));
         printf("/* time throughput = %s*/\n",
                TCPMON_ENTRY_TIME_DIFF(entry, env));
         printf("---------------------\n");
 
-        printf("%s\n\n%s\n\n", TCPMON_ENTRY_ARRIVED_HEADERS(entry, env),
-               formated_buffer);
+        if (format || TCPMON_ENTRY_GET_ARRIVED_DATA_LENGTH(entry, env) ==
+            strlen(TCPMON_ENTRY_ARRIVED_HEADERS(entry, env)) +
+            strlen(formated_buffer) + 4)
+        {
+            printf("%s\n\n%s\n\n", TCPMON_ENTRY_ARRIVED_HEADERS(entry, env),
+                   formated_buffer);
+        }
+        else
+        {
+            int count = 0;
+            int printed = 0;
+            axis2_char_t *formated_buffer_temp = formated_buffer;
+            printf("%s\n", TCPMON_ENTRY_ARRIVED_HEADERS(entry, env));
+            count = TCPMON_ENTRY_GET_ARRIVED_DATA_LENGTH(entry, env) - 4 -
+                    strlen(TCPMON_ENTRY_ARRIVED_HEADERS(entry, env));
+            while (count > printed)
+            {
+                int plen = 0;
+                plen = ((int)strlen(formated_buffer) + 1);
+                if (plen != 1)
+                {
+                    printf("%s", formated_buffer);
+                }
+                printed += plen;
+                if (count > printed)
+                {
+                    printf("%c", '\0');
+                    formated_buffer += plen;
+                }
+            }
+            formated_buffer = formated_buffer_temp;
+        }
     }
     return 0;
 }
