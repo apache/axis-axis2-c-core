@@ -15,76 +15,76 @@
 <!-- See the License for the specific language governing permissions and      -->
 <!-- limitations under the License.                                           -->
 <!--                                                                          -->
-<wsdl:definitions name="Calculator"
-    targetNamespace="http://localhost:9090/axis2/services/Calculator" 
-    xmlns:impl="http://localhost:9090/axis2/services/Calculator" 
+<wsdl:definitions
+    targetNamespace="http://ws.apache.org/axis2/services/Calculator" 
+    xmlns:impl="http://ws.apache.org/axis2/services/Calculator"
+    xmlns:type="http://ws.apache.org/axis2/services/Calculator/types" 
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"> 
     <wsdl:types>
         <schema
-            elementFormDefault="qualified" 
-            targetNamespace="http://localhost:9090/axis2/services/Calculator"
+            targetNamespace="http://ws.apache.org/axis2/services/Calculator/types"
             xmlns="http://www.w3.org/2001/XMLSchema" 
-            xmlns:impl="http://localhost/axis/Calculator"
+            xmlns:impl="http://ws.apache.org/axis2/services/Calculator"
             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
-            <element name="addRequest">
+            <element name="add">
                 <complexType>
                     <sequence>
-                        <element name="arg_0_0" type="xsd:int"/>
-                        <element name="arg_1_0" type="xsd:int"/>
+                        <element name="param_1" type="xsd:int"/>
+                        <element name="param_2" type="xsd:int"/>
                     </sequence>
                 </complexType>
             </element>
             <element name="addResponse">
                 <complexType>
                     <sequence>
-                        <element name="ret_0" type="xsd:int"/>
+                        <element name="result" type="xsd:int"/>
                     </sequence>
                 </complexType>
             </element>
-            <element name="subRequest">
+            <element name="sub">
                 <complexType>
                     <sequence>
-                        <element name="arg_0_1" type="xsd:int"/>
-                        <element name="arg_1_1" type="xsd:int"/>
+                        <element name="param_1" type="xsd:int"/>
+                        <element name="param_2" type="xsd:int"/>
                     </sequence>
                 </complexType>
             </element>
             <element name="subResponse">
                 <complexType>
                     <sequence>
-                        <element name="ret_1" type="xsd:int"/>
+                        <element name="result" type="xsd:int"/>
                     </sequence>
                 </complexType>
             </element>
-            <element name="mulRequest">
+            <element name="mul">
                 <complexType>
                     <sequence>
-                        <element name="arg_0_2" type="xsd:int"/>
-                        <element name="arg_1_2" type="xsd:int"/>
+                        <element name="param_1" type="xsd:int"/>
+                        <element name="param_2" type="xsd:int"/>
                     </sequence>
                 </complexType>
             </element>
             <element name="mulResponse">
                 <complexType>
                     <sequence>
-                        <element name="ret_2" type="xsd:int"/>
+                        <element name="result" type="xsd:int"/>
                     </sequence>
                 </complexType>
             </element>
-            <element name="divRequest">
+            <element name="div">
                 <complexType>
                     <sequence>
-                        <element name="arg_0_3" type="xsd:int"/>
-                        <element name="arg_1_3" type="xsd:int"/>
+                        <element name="param_1" type="xsd:int"/>
+                        <element name="param_2" type="xsd:int"/>
                     </sequence>
                 </complexType>
             </element>
             <element name="divResponse">
                 <complexType>
                     <sequence>
-                        <element name="ret_3" type="xsd:int"/>
+                        <element name="result" type="xsd:int"/>
                     </sequence>
                 </complexType>
             </element>
@@ -92,28 +92,28 @@
     </wsdl:types>
 
     <wsdl:message name="addResponse">
-        <wsdl:part element="impl:addResponse" name="parameters"/>
+        <wsdl:part element="type:addResponse" name="parameters"/>
     </wsdl:message>
     <wsdl:message name="addRequest">
-        <wsdl:part element="impl:addRequest" name="parameters"/>
+        <wsdl:part element="type:add" name="parameters"/>
     </wsdl:message>
     <wsdl:message name="subResponse">
-        <wsdl:part element="impl:subResponse" name="parameters"/>
+        <wsdl:part element="type:subResponse" name="parameters"/>
     </wsdl:message>
     <wsdl:message name="subRequest">
-        <wsdl:part element="impl:subRequest" name="parameters"/>
+        <wsdl:part element="type:sub" name="parameters"/>
     </wsdl:message>
     <wsdl:message name="divResponse">
-        <wsdl:part element="impl:divResponse" name="parameters"/>
+        <wsdl:part element="type:divResponse" name="parameters"/>
     </wsdl:message>
     <wsdl:message name="divRequest">
-        <wsdl:part element="impl:divRequest" name="parameters"/>
+        <wsdl:part element="type:div" name="parameters"/>
     </wsdl:message>
     <wsdl:message name="mulResponse">
-        <wsdl:part element="impl:mulResponse" name="parameters"/>
+        <wsdl:part element="type:mulResponse" name="parameters"/>
     </wsdl:message>
     <wsdl:message name="mulRequest">
-        <wsdl:part element="impl:mulRequest" name="parameters"/>
+        <wsdl:part element="type:mul" name="parameters"/>
     </wsdl:message>
 
     <wsdl:portType name="CalculatorPortType">
@@ -138,7 +138,7 @@
     <wsdl:binding name="CalculatorSoapBinding" type="impl:CalculatorPortType">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
         <wsdl:operation name="add">
-            <soap:operation soapAction="http://localhost:9090/axis2/services/Calculator/add"/>
+            <soap:operation soapAction="http://ws.apache.org/axis2/services/Calculator/add"/>
             <wsdl:input name="addRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -147,7 +147,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="sub">
-            <soap:operation soapAction="http://localhost:9090/axis2/services/Calculator/sub"/>
+            <soap:operation soapAction="http://ws.apache.org/axis2/services/Calculator/sub"/>
             <wsdl:input name="subRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -156,7 +156,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="mul">
-            <soap:operation soapAction="http://localhost:9090/axis2/services/Calculator/mul"/>
+            <soap:operation soapAction="http://ws.apache.org/axis2/services/Calculator/mul"/>
             <wsdl:input name="mulRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -165,7 +165,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="div">
-            <soap:operation soapAction="http://localhost:9090/axis2/services/Calculator/div"/>
+            <soap:operation soapAction="http://ws.apache.org/axis2/services/Calculator/div"/>
             <wsdl:input name="divRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -176,7 +176,7 @@
     </wsdl:binding>
 
     <wsdl:service name="Calculator">
-        <wsdl:port binding="impl:CalculatorSoapBinding" name="Calculator">
+        <wsdl:port binding="impl:CalculatorSoapBinding" name="CalculatorSOAPport_http">
             <soap:address location="http://localhost:9090/axis2/services/Calculator"/>
         </wsdl:port>
     </wsdl:service>
