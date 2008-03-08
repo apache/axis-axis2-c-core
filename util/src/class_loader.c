@@ -46,7 +46,8 @@ axutil_class_loader_delete_dll(
         return AXIS2_FAILURE;
     }
     axutil_class_loader_unload_lib(env, dll_desc);
-    AXIS2_PLATFORM_LOADLIBEXIT()return AXIS2_SUCCESS;
+    AXIS2_PLATFORM_LOADLIBEXIT();
+    return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN void *AXIS2_CALL
