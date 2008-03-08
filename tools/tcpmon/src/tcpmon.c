@@ -254,7 +254,7 @@ on_new_entry_to_file(
         plain_buffer = TCPMON_ENTRY_SENT_DATA(entry, env);
         if (plain_buffer)       /* this can be possible as no xml present */
         {
-            if (TCPMON_ENTRY_GET_SENT_DATA_LENGTH(entry, env) ==
+            if (TCPMON_ENTRY_GET_SENT_DATA_LENGTH(entry, env) !=
                 strlen(TCPMON_ENTRY_SENT_HEADERS(entry, env)) +
                 strlen(plain_buffer) + 4)
             {
@@ -284,7 +284,7 @@ on_new_entry_to_file(
             int count = 0;
             int printed = 0;
             axis2_char_t *formated_buffer_temp = formated_buffer;
-            printf("%s\n", TCPMON_ENTRY_SENT_HEADERS(entry, env));
+            printf("%s\n\n", TCPMON_ENTRY_SENT_HEADERS(entry, env));
             count = TCPMON_ENTRY_GET_SENT_DATA_LENGTH(entry, env) - 4 -
                     strlen(TCPMON_ENTRY_SENT_HEADERS(entry, env));
             while (count > printed)
@@ -313,7 +313,7 @@ on_new_entry_to_file(
 
         convert = axutil_strdup(env, TCPMON_ENTRY_SENT_HEADERS(entry, env));
         convert = str_replace(convert, "; ", ";\n\t");
-        fprintf(file, "%s", convert);
+        fprintf(file, "%s\r\n\r\n", convert);
         if (convert)
         {
             free(convert);
@@ -361,7 +361,7 @@ on_new_entry_to_file(
         plain_buffer = TCPMON_ENTRY_ARRIVED_DATA(entry, env);
         if (plain_buffer)       /* this can be possible as no xml present */
         {
-            if (TCPMON_ENTRY_GET_ARRIVED_DATA_LENGTH(entry, env) ==
+            if (TCPMON_ENTRY_GET_ARRIVED_DATA_LENGTH(entry, env) !=
                 strlen(TCPMON_ENTRY_ARRIVED_HEADERS(entry, env)) +
                 strlen(plain_buffer) + 4)
             {
@@ -394,7 +394,7 @@ on_new_entry_to_file(
             int count = 0;
             int printed = 0;
             axis2_char_t *formated_buffer_temp = formated_buffer;
-            printf("%s\n", TCPMON_ENTRY_ARRIVED_HEADERS(entry, env));
+            printf("%s\n\n", TCPMON_ENTRY_ARRIVED_HEADERS(entry, env));
             count = TCPMON_ENTRY_GET_ARRIVED_DATA_LENGTH(entry, env) - 4 -
                     strlen(TCPMON_ENTRY_ARRIVED_HEADERS(entry, env));
             while (count > printed)
@@ -425,7 +425,7 @@ on_new_entry_to_file(
 
         convert = axutil_strdup(env, TCPMON_ENTRY_ARRIVED_HEADERS(entry, env));
         convert = str_replace(convert, "; ", ";\n\t");
-        fprintf(file, "%s", convert);
+        fprintf(file, "%s\r\n\r\n", convert);
         if (convert)
         {
             free(convert);
