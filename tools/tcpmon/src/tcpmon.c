@@ -17,6 +17,7 @@
  */
 
 #include <axutil_utils.h>
+#include <axutil_uuid_gen.h>
 #include <axutil_error_default.h>
 #include <axutil_log_default.h>
 #include <axutil_thread_pool.h>
@@ -235,6 +236,7 @@ on_new_entry_to_file(
     int format = 0;
     FILE *file;
     char *convert = NULL;
+    char *uuid = NULL;
 
     file = fopen(tcpmon_traffic_log, "a+");
 
@@ -270,6 +272,8 @@ on_new_entry_to_file(
         /* 2 screen */
         printf("\n\n%s\n", "SENDING DATA..");
         printf("/* sending time = %s*/\n", TCPMON_ENTRY_SENT_TIME(entry, env));
+        uuid = axutil_uuid_gen(env);
+        printf("/* message uuid = %s*/\n", uuid);
         printf("---------------------\n");
 
         if (format || TCPMON_ENTRY_GET_SENT_DATA_LENGTH(entry, env) ==
@@ -309,6 +313,8 @@ on_new_entry_to_file(
         fprintf(file, "%s\n", "SENDING DATA..");
         fprintf(file, "/* sending time = %s*/\n",
                 TCPMON_ENTRY_SENT_TIME(entry, env));
+        fprintf(file, "/* message uuid = %s*/\n", uuid);
+        AXIS2_FREE(env->allocator, uuid);
         fprintf(file, "---------------------\n");
 
         convert = axutil_strdup(env, TCPMON_ENTRY_SENT_HEADERS(entry, env));
@@ -481,6 +487,7 @@ on_new_entry(
     char *plain_buffer = NULL;
     char *formated_buffer = NULL;
     int format = 0;
+    char *uuid = NULL;
 
     format = TCPMON_ENTRY_GET_FORMAT_BIT(entry, env);
 
@@ -504,6 +511,9 @@ on_new_entry(
         }
         printf("\n\n%s\n", "SENDING DATA..");
         printf("/* sending time = %s*/\n", TCPMON_ENTRY_SENT_TIME(entry, env));
+        uuid = axutil_uuid_gen(env);
+        printf("/* message uuid = %s*/\n", uuid);
+        AXIS2_FREE(env->allocator, uuid);
         printf("---------------------\n");
 
         if (format || TCPMON_ENTRY_GET_SENT_DATA_LENGTH(entry, env) ==
