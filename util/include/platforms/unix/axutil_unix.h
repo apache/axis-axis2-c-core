@@ -63,13 +63,13 @@ extern "C"
      ****************************************************************/
 #ifdef USE_LTDL
 #include <ltdl.h>
-#define AXIS2_DLHandler lt_dlhandle
+#define AXIS2_DLHANDLER lt_dlhandle
 
 #define AXIS2_PLATFORM_LOADLIBINIT       lt_dlinit
 #define AXIS2_PLATFORM_LOADLIB(_lib)     lt_dlopen(_lib)
 #define AXIS2_PLATFORM_UNLOADLIB         lt_dlclose
 #define AXIS2_PLATFORM_GETPROCADDR       lt_dlsym
-#define AXIS2_PLATFORM_LOADLIBEXIT       lt_dlexit
+#define AXIS2_PLATFORM_LOADLIBEXIT()     lt_dlexit();
 #define AXIS2_PLATFORM_LOADLIB_ERROR     lt_dlerror()
 #else
 #include <dlfcn.h>
