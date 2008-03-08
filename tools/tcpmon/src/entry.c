@@ -46,6 +46,7 @@ typedef struct tcpmon_entry_impl
     axis2_char_t *time_diff;
     axis2_char_t *test_file_name;
     int format_bit;
+    int data_length;
 }
 tcpmon_entry_impl_t;
 
@@ -109,6 +110,11 @@ int write_to_file(
 int AXIS2_CALL tcpmon_entry_get_format_bit(
     tcpmon_entry_t * entry,
     const axutil_env_t * env);
+
+int AXIS2_CALL tcpmon_entry_get_data_length(
+    tcpmon_entry_t * entry,
+    const axutil_env_t * env);
+
 axis2_status_t AXIS2_CALL tcpmon_entry_set_format_bit(
     tcpmon_entry_t * entry,
     const axutil_env_t * env,
@@ -144,6 +150,7 @@ tcpmon_entry_create(
     entry_impl->sent_headers = NULL;
     entry_impl->is_success = AXIS2_FALSE;
     entry_impl->format_bit = 0;
+    entry_impl->data_length = 0;
 
     entry_impl->entry.ops =
         AXIS2_MALLOC(env->allocator, sizeof(tcpmon_entry_ops_t));
@@ -165,6 +172,7 @@ tcpmon_entry_create(
     entry_impl->entry.ops->is_success = tcpmon_entry_is_success;
     entry_impl->entry.ops->set_format_bit = tcpmon_entry_set_format_bit;
     entry_impl->entry.ops->get_format_bit = tcpmon_entry_get_format_bit;
+    entry_impl->entry.ops->get_data_length = tcpmon_entry_get_data_length;
 
     return &(entry_impl->entry);
 }
@@ -359,6 +367,20 @@ tcpmon_entry_get_format_bit(
     return entry_impl->format_bit;
 }
 
+int AXIS2_CALL
+tcpmon_entry_get_data_length(
+    tcpmon_entry_t * entry,
+    const axutil_env_t * env)
+{
+    tcpmon_entry_impl_t *entry_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    entry_impl = AXIS2_INTF_TO_IMPL(entry);
+
+    return entry_impl->data_length;
+}
+
 axis2_status_t AXIS2_CALL
 tcpmon_entry_set_format_bit(
     tcpmon_entry_t * entry,
@@ -490,6 +512,7 @@ tcpmon_entry_new_entry_funct(
 
     entry_impl->sent_headers = headers;
     entry_impl->sent_data = content;
+    entry_impl->data_length = buffer_size;
 
     if (on_new_entry)
     {
@@ -579,6 +602,7 @@ tcpmon_entry_new_entry_funct(
 
     entry_impl->arrived_headers = headers;
     entry_impl->arrived_data = content;
+    entry_impl->data_length = buffer_size;
     if (buffer == NULL || buffer_size == 0)
     {
         entry_impl->is_success = 0;
@@ -761,7 +785,7 @@ read_current_stream(
             }
             else
             {
-                *(buffer + read_size - 1) = ' ';
+                /**(buffer + read_size - 1) = ' ';*/
             }
         }
     }
@@ -785,7 +809,38 @@ read_current_stream(
         body_ptr = buffer + header_width;
         if (body_ptr && *body_ptr)
         {
-            *data = (axis2_char_t *) axutil_strdup(env, body_ptr);
+            if (mtom_optimized)
+            {
+                int count = read_size - strlen(header_ptr) - 4;
+                int copied = 0;
+                int plen = 0;
+                axis2_char_t *temp = NULL;
+                temp = AXIS2_MALLOC(env->allocator,
+                              sizeof(axis2_char_t) * count + 1);
+                while(count > copied)
+                {
+                    plen = 0;
+                    plen = ((int)strlen(body_ptr) + 1);
+                    if (plen != 1)
+                    {
+                        sprintf(temp, "%s", body_ptr);
+                    }
+                    copied += plen;
+                    if (count > copied)
+                    {
+                        temp += plen;
+                        body_ptr += plen;
+                    }
+                }
+                copied -= plen;
+                temp -= copied;
+                temp[count] = '\0';
+                *data = temp;
+            }
+            else
+            {
+                *data = (axis2_char_t *) axutil_strdup(env, body_ptr);
+            }
         }
         body_ptr = NULL;    
     }
@@ -824,7 +879,6 @@ write_to_file(
     int size = 0;
     if (filename)
     {
-
         FILE *fp = fopen(filename, "a+");
         size = (int)fwrite(buffer, 1, strlen(buffer), fp);
         /* We are sure that the difference lies within the int range */
