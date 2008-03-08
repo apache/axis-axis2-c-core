@@ -138,7 +138,7 @@
     <wsdl:binding name="CalculatorSoapBinding" type="impl:CalculatorPortType">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
         <wsdl:operation name="add">
-            <soap:operation soapAction="http://ws.apache.org/axis2/services/Calculator/add"/>
+            <soap:operation soapAction="Calculator#add"/>
             <wsdl:input name="addRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -147,7 +147,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="sub">
-            <soap:operation soapAction="http://ws.apache.org/axis2/services/Calculator/sub"/>
+            <soap:operation soapAction="Calculator#sub"/>
             <wsdl:input name="subRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -156,7 +156,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="mul">
-            <soap:operation soapAction="http://ws.apache.org/axis2/services/Calculator/mul"/>
+            <soap:operation soapAction="Calculator#mul"/>
             <wsdl:input name="mulRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -165,7 +165,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="div">
-            <soap:operation soapAction="http://ws.apache.org/axis2/services/Calculator/div"/>
+            <soap:operation soapAction="Calculator#div"/>
             <wsdl:input name="divRequest">
                 <soap:body use="literal"/>
             </wsdl:input>
