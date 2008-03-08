@@ -152,7 +152,13 @@ extern "C"
 
         int(
             AXIS2_CALL
-            * get_data_length)(
+            * get_sent_data_length)(
+                tcpmon_entry_t * entry,
+                const axutil_env_t * env);
+
+        int(
+            AXIS2_CALL
+            * get_arrived_data_length)(
                 tcpmon_entry_t * entry,
                 const axutil_env_t * env);
 
@@ -213,8 +219,11 @@ extern "C"
 #define TCPMON_ENTRY_GET_FORMAT_BIT(entry, env) \
         ((entry)->ops->get_format_bit(entry, env))
 
-#define TCPMON_ENTRY_GET_DATA_LENGTH(entry, env) \
-        ((entry)->ops->get_data_length(entry, env))
+#define TCPMON_ENTRY_GET_SENT_DATA_LENGTH(entry, env) \
+        ((entry)->ops->get_sent_data_length(entry, env))
+
+#define TCPMON_ENTRY_GET_ARRIVED_DATA_LENGTH(entry, env) \
+        ((entry)->ops->get_arrived_data_length(entry, env))
 
     /** @} */
 
