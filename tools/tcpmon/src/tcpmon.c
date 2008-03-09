@@ -678,8 +678,9 @@ resend_request(
                     tmp1 = strstr(request_buffer, "\r\n\r\n");
                     if (tmp1)
                     {
+                        tmp1 += 2;
                         *tmp1 = '\0';
-                        req_payload = tmp1 + 4;
+                        req_payload = tmp1 + 2;
                         tmp1 = axutil_strdup(env, request_buffer);
                         req_content_len -= (int)strlen(tmp1);
                         tmp1 = str_replace(tmp1, ";\n\t", "; ");
@@ -687,7 +688,7 @@ resend_request(
                         req_header = tmp1;
                         if (!has_raw_binary)
                         {
-                            tmp2 = strstr(tmp1, "Content-Length:");
+                            tmp2 = strstr(req_header, "Content-Length:");
                             if (tmp2)
                             {
                                 tmp3 = strstr(tmp2, "\r\n");
@@ -710,6 +711,32 @@ resend_request(
                                 }
                             }
                         }
+                        tmp2 = strstr(req_header, "Host:");
+                        if (tmp2)
+                        {
+                            tmp3 = strstr(tmp2, "\r\n");
+                            if (tmp3)
+                            {
+                                int header_len = 0;
+                                axis2_char_t *listen_host = "localhost"; 
+                                header_len = (int)(tmp3 - tmp2) + 2;
+                                tmp1 = AXIS2_MALLOC(env->allocator,
+                                                    sizeof(axis2_char_t) * header_len);
+                                memcpy(tmp1, tmp2, header_len);
+                                tmp1[header_len] = '\0';
+                                header_len = 16 + strlen(listen_host);
+                                tmp2 = AXIS2_MALLOC(env->allocator,
+                                                    sizeof(axis2_char_t) * (header_len + 1));
+                                sprintf(tmp2, "%s%s:%d\r\n", "Host: ", listen_host,
+                                        TCPMON_SESSION_GET_LISTEN_PORT(session, env));
+                                req_header = str_replace(req_header, tmp1, tmp2);
+                                AXIS2_FREE(env->allocator, tmp1);
+                                AXIS2_FREE(env->allocator, tmp2);
+                                tmp1 = NULL;
+                                tmp2 = NULL;
+                            }
+                        }
+                        
                         printf("Header:\n%s\n\nPayload:\n%s\n\nContent Len: %d", req_header, req_payload, req_content_len);
                         AXIS2_FREE(env->allocator, req_header);
                     }
