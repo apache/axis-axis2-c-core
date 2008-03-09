@@ -26,6 +26,7 @@
 #include <tcpmon_util.h>
 #include <signal.h>
 #include <stdio.h>
+#include <axutil_stream.h>
 
 #define SIZE 1024
 axis2_char_t *tcpmon_traffic_log = "tcpmon_traffic.log";
@@ -678,6 +679,9 @@ resend_request(
                     tmp1 = strstr(request_buffer, "\r\n\r\n");
                     if (tmp1)
                     {
+                        axis2_char_t *listen_host = "localhost";
+                        int write_socket = -1;
+                        axutil_stream_t *write_stream = NULL;
                         tmp1 += 2;
                         *tmp1 = '\0';
                         req_payload = tmp1 + 2;
@@ -702,7 +706,8 @@ resend_request(
                                     tmp1[header_len] = '\0';
                                     tmp2 = AXIS2_MALLOC(env->allocator,
                                                         sizeof(axis2_char_t) * (header_len + 2));
-                                    sprintf(tmp2, "%s%d\r\n", "Content-Length: ", (int)strlen(req_payload));
+                                    req_content_len = (int)strlen(req_payload);
+                                    sprintf(tmp2, "%s%d\r\n", "Content-Length: ", req_content_len);
                                     req_header = str_replace(req_header, tmp1, tmp2);
                                     AXIS2_FREE(env->allocator, tmp1);
                                     AXIS2_FREE(env->allocator, tmp2);
@@ -718,7 +723,6 @@ resend_request(
                             if (tmp3)
                             {
                                 int header_len = 0;
-                                axis2_char_t *listen_host = "localhost"; 
                                 header_len = (int)(tmp3 - tmp2) + 2;
                                 tmp1 = AXIS2_MALLOC(env->allocator,
                                                     sizeof(axis2_char_t) * header_len);
@@ -736,8 +740,29 @@ resend_request(
                                 tmp2 = NULL;
                             }
                         }
-                        
-                        printf("Header:\n%s\n\nPayload:\n%s\n\nContent Len: %d", req_header, req_payload, req_content_len);
+                        write_socket =
+                           (int)axutil_network_handler_open_socket(env, listen_host, 
+                            TCPMON_SESSION_GET_LISTEN_PORT(session, env));
+                        if (write_socket == -1)
+                        {
+                            printf("\nerror in creating socket\n");
+                        }
+                        else
+                        {
+                            write_stream = axutil_stream_create_socket(env, write_socket);
+                        }
+                        if (!write_stream)
+                        {
+                            printf("\nerror in creating stream\n");
+                        }
+                        else
+                        {
+                            axutil_stream_write(write_stream, env, req_header, strlen(req_header));
+                            axutil_stream_write(write_stream, env, "\r\n", 2);
+                            axutil_stream_write(write_stream, env, req_payload, req_content_len);
+                            axutil_stream_free(write_stream, env);
+                            axutil_network_handler_close_socket(env, write_socket);
+                        }
                         AXIS2_FREE(env->allocator, req_header);
                     }
                 }
@@ -924,6 +949,12 @@ str_replace(
         free(str_return);
         free(str_tmp);
         return "function str_replace : gimme more memory";
+    }
+    if (!strcmp(search, replace))
+    {
+        free(str_return);
+        free(str_tmp);
+        return str;
     }
 
     strcpy(str_return, str);
