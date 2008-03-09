@@ -536,6 +536,7 @@ resend_request(
     buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * SIZE);
     if (!buffer)
     {
+        printf("\ngimme more memory\n");
         return -1;
     }
 
@@ -558,6 +559,7 @@ resend_request(
         {
             AXIS2_FREE(env->allocator, buffer);
             AXIS2_FREE(env->allocator, uuid);
+            printf("\nbuffer overflow\n");
             return -1;
         }
         if (read_len < SIZE - 1)
@@ -595,6 +597,7 @@ resend_request(
                                       sizeof(axis2_char_t) * 37);
             if (!uuid_match)
             {
+                printf("\ngimme more memory\n");
                 return -1;
             }
             memcpy(uuid_match, tmp2, 36);
@@ -616,159 +619,6 @@ resend_request(
     }
     AXIS2_FREE(env->allocator, buffer);
 
-/*    while ((SIZE - 1 - offset) == fread(buffer + offset, sizeof(char), SIZE - 1 - offset, file))
-    {
-        axis2_char_t *search = "* message uuid = ";
-        axis2_char_t *tmp2 = NULL;
-        axis2_char_t *uuid_match = NULL;
-        tmp1 = NULL;
-        offset = 0;
-        tmp2 = buffer;
-        do
-        {
-            tmp1 = strstr(tmp2, search);
-            if (tmp1 && *tmp1 + 1)
-            {
-                int len = strlen(search);
-                axis2_char_t *tmp3 = NULL;
-                if (SIZE - 1 - (int)(tmp1 - tmp2) <= (int)strlen(search) + 36)
-                {
-                    len = SIZE - 1 - (int)(tmp1 - tmp2);
-                    tmp3 = AXIS2_MALLOC(env->allocator,
-                                        sizeof(axis2_char_t) * len);
-                    memcpy(tmp3, tmp1, len);
-                    offset += len;
-                    memcpy(buffer, tmp3, len);
-                    AXIS2_FREE(env->allocator, tmp3);
-                    break;
-                }
-                tmp3 = tmp1 + strlen(search);
-                if (tmp3)
-                {
-                    int read = 36;
-                    uuid_match = AXIS2_MALLOC(env->allocator,
-                                              sizeof(axis2_char_t) * 37);
-                    if (!uuid_match)
-                    {
-                        return -1;
-                    }
-                    if (read > SIZE - 1 - (int)(tmp3 - tmp2))
-                    {
-                        read = SIZE - 1 - (int)(tmp3 - tmp2);
-                    }
-                    memcpy(uuid_match, tmp3, read);
-                    len = 36 - read;
-                    if (len)
-                    {
-                        if (len == fread(buffer, sizeof(char), len, file))
-                        {
-                            memcpy(uuid_match + len, buffer, len);
-                            uuid_match[36] = '\0';
-                            if (!strcasecmp(uuid_match, uuid))
-                            {
-                                printf("match"); 
-                            }
-                            offset += len;
-                        }
-                        else
-                        {
-                            AXIS2_FREE(env->allocator, uuid_match);
-                            break;
-                        }
-                    }
-                    uuid_match[36] = '\0';
-                    if (!strcasecmp(uuid_match, uuid))
-                    {
-                        printf("match");      
-                    }
-                    AXIS2_FREE(env->allocator, uuid_match);
-                }
-            }
-            tmp2 = tmp1 + strlen(search);
-            if (offset)
-            {
-                break;
-            }
-        }
-        while(tmp1 != NULL);
-        if (offset)
-        {
-            continue;
-        }
-        if (!tmp1)
-        {
-            int len = strlen(search);
-            int inc = 0;
-            axis2_char_t *tmp3 = NULL;
-            tmp2 = AXIS2_MALLOC(env->allocator,
-                sizeof(axis2_char_t) * (len * 2 + 1));
-            if (!tmp2)
-            {
-                return -1;
-            }
-            memcpy(tmp2, buffer + (SIZE - 1 - len), len);
-            if (len == fread(buffer, sizeof(char), len, file))
-            {
-                memcpy(tmp2 + len, buffer, len);
-                inc += len;
-            }
-            else
-            {
-                AXIS2_FREE(env->allocator, tmp2);
-                break;
-            }
-            tmp2[len * 2] = '\0';
-            tmp3 = strstr(tmp2, search);
-            if (tmp3)
-            {
-                tmp3 += strlen(search);
-            }
-            if (tmp3)
-            {
-                int read = 36;
-                tmp3 += strlen(search);
-                uuid_match = AXIS2_MALLOC(env->allocator,
-                                          sizeof(axis2_char_t) * 37);
-                if (!uuid_match)
-                {
-                    return -1;
-                }
-                if (read > len * 2 - (int)(tmp3 - tmp2))
-                {
-                    read = len * 2 - (int)(tmp3 - tmp2);
-                }
-                memcpy(uuid_match, tmp3, read);
-                len = 36 - read;
-                if (len)
-                {
-                    if (len == fread(buffer, sizeof(char), len, file))
-                    {
-                        memcpy(uuid_match + len, buffer, len);               
-                        inc += len;
-                    }
-                    else
-                    {
-                        AXIS2_FREE(env->allocator, tmp2);
-                        AXIS2_FREE(env->allocator, uuid_match);
-                        break;
-                    }
-                }
-                uuid_match[36] = '\0';
-                if (!strcasecmp(uuid_match, uuid))
-                {
-                    printf("match");   
-                }
-                AXIS2_FREE(env->allocator, uuid_match);
-            }
-            AXIS2_FREE(env->allocator, tmp2);
-            if ((SIZE - 1 - inc) != fread(buffer + inc, sizeof(char), SIZE - 1 - inc, file))
-            {
-                break;
-            }
-        }
-    }
-    AXIS2_FREE(env->allocator, buffer); 
-*/
     fclose(file);
     return 0;
 }
