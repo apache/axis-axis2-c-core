@@ -491,9 +491,13 @@ resend_request(
     const axutil_env_t * env,
     int status)
 {
+    FILE *file;
+    axis2_char_t *uuid = NULL;
+    axis2_char_t *buffer = NULL;
+    int read_len = 0;
+
     if (status == 0)
     {
-        axis2_char_t *uuid = NULL;
         int c;
         int i = 0;
         do
@@ -519,8 +523,253 @@ resend_request(
             c = getchar();
         }
         uuid[i] = '\0';
-        printf("\n\n%s", uuid);
     }
+
+    file = fopen(tcpmon_traffic_log, "r");
+
+    if (NULL == file)
+    {
+        printf("\ncould not create or open log-file\n");
+        return -1;
+    }
+
+    buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * SIZE);
+    if (!buffer)
+    {
+        return -1;
+    }
+
+    read_len = fread(buffer, sizeof(char), SIZE - 1, file);
+
+    while(read_len)
+    {
+        axis2_char_t *search = "/* message uuid = ";
+        axis2_char_t *tmp1 = NULL;
+        axis2_char_t *tmp2 = NULL;
+        axis2_char_t *tmp3 = NULL;
+        axis2_char_t *uuid_match = NULL;
+        int offset = 0;
+        int loop_state = 1;
+        int end_reached = 0;
+
+        offset = strlen(search);
+        tmp3 = buffer;
+        if (read_len >= SIZE)
+        {
+            AXIS2_FREE(env->allocator, buffer);
+            AXIS2_FREE(env->allocator, uuid);
+            return -1;
+        }
+        if (read_len < SIZE - 1)
+        {   
+            end_reached = 1;
+        }
+        while (loop_state)
+        {
+            tmp1 = strstr(tmp3, search);
+            if (!tmp1)
+            {
+                if (end_reached)
+                {
+                    break;
+                }
+                memmove(buffer, buffer + (SIZE - 1 - offset), offset);
+                read_len = fread(buffer + offset, sizeof(char),
+                                 SIZE - 1 - offset, file) + offset;
+                break;
+            }
+            if (read_len - offset - 36 < (int)(tmp1 - buffer))
+            {
+                if (end_reached)
+                {
+                    break;
+                }
+                offset += 36;
+                memmove(buffer, buffer + (SIZE - 1 - offset), offset);
+                read_len = fread(buffer + offset, sizeof(char),
+                                 SIZE - 1 - offset, file) + offset;
+                break;
+            }
+            tmp2 = tmp1 + offset;
+            uuid_match = AXIS2_MALLOC(env->allocator,
+                                      sizeof(axis2_char_t) * 37);
+            if (!uuid_match)
+            {
+                return -1;
+            }
+            memcpy(uuid_match, tmp2, 36);
+            uuid_match[36] = '\0';
+            if (!strcasecmp(uuid_match, uuid))
+            {
+                AXIS2_FREE(env->allocator, uuid_match);
+                AXIS2_FREE(env->allocator, uuid);
+                end_reached = 1;
+                break;
+            }
+            AXIS2_FREE(env->allocator, uuid_match);
+            tmp3 += offset + 36;
+        }
+        if (end_reached)
+        {
+            break;
+        }
+    }
+    AXIS2_FREE(env->allocator, buffer);
+
+/*    while ((SIZE - 1 - offset) == fread(buffer + offset, sizeof(char), SIZE - 1 - offset, file))
+    {
+        axis2_char_t *search = "* message uuid = ";
+        axis2_char_t *tmp2 = NULL;
+        axis2_char_t *uuid_match = NULL;
+        tmp1 = NULL;
+        offset = 0;
+        tmp2 = buffer;
+        do
+        {
+            tmp1 = strstr(tmp2, search);
+            if (tmp1 && *tmp1 + 1)
+            {
+                int len = strlen(search);
+                axis2_char_t *tmp3 = NULL;
+                if (SIZE - 1 - (int)(tmp1 - tmp2) <= (int)strlen(search) + 36)
+                {
+                    len = SIZE - 1 - (int)(tmp1 - tmp2);
+                    tmp3 = AXIS2_MALLOC(env->allocator,
+                                        sizeof(axis2_char_t) * len);
+                    memcpy(tmp3, tmp1, len);
+                    offset += len;
+                    memcpy(buffer, tmp3, len);
+                    AXIS2_FREE(env->allocator, tmp3);
+                    break;
+                }
+                tmp3 = tmp1 + strlen(search);
+                if (tmp3)
+                {
+                    int read = 36;
+                    uuid_match = AXIS2_MALLOC(env->allocator,
+                                              sizeof(axis2_char_t) * 37);
+                    if (!uuid_match)
+                    {
+                        return -1;
+                    }
+                    if (read > SIZE - 1 - (int)(tmp3 - tmp2))
+                    {
+                        read = SIZE - 1 - (int)(tmp3 - tmp2);
+                    }
+                    memcpy(uuid_match, tmp3, read);
+                    len = 36 - read;
+                    if (len)
+                    {
+                        if (len == fread(buffer, sizeof(char), len, file))
+                        {
+                            memcpy(uuid_match + len, buffer, len);
+                            uuid_match[36] = '\0';
+                            if (!strcasecmp(uuid_match, uuid))
+                            {
+                                printf("match"); 
+                            }
+                            offset += len;
+                        }
+                        else
+                        {
+                            AXIS2_FREE(env->allocator, uuid_match);
+                            break;
+                        }
+                    }
+                    uuid_match[36] = '\0';
+                    if (!strcasecmp(uuid_match, uuid))
+                    {
+                        printf("match");      
+                    }
+                    AXIS2_FREE(env->allocator, uuid_match);
+                }
+            }
+            tmp2 = tmp1 + strlen(search);
+            if (offset)
+            {
+                break;
+            }
+        }
+        while(tmp1 != NULL);
+        if (offset)
+        {
+            continue;
+        }
+        if (!tmp1)
+        {
+            int len = strlen(search);
+            int inc = 0;
+            axis2_char_t *tmp3 = NULL;
+            tmp2 = AXIS2_MALLOC(env->allocator,
+                sizeof(axis2_char_t) * (len * 2 + 1));
+            if (!tmp2)
+            {
+                return -1;
+            }
+            memcpy(tmp2, buffer + (SIZE - 1 - len), len);
+            if (len == fread(buffer, sizeof(char), len, file))
+            {
+                memcpy(tmp2 + len, buffer, len);
+                inc += len;
+            }
+            else
+            {
+                AXIS2_FREE(env->allocator, tmp2);
+                break;
+            }
+            tmp2[len * 2] = '\0';
+            tmp3 = strstr(tmp2, search);
+            if (tmp3)
+            {
+                tmp3 += strlen(search);
+            }
+            if (tmp3)
+            {
+                int read = 36;
+                tmp3 += strlen(search);
+                uuid_match = AXIS2_MALLOC(env->allocator,
+                                          sizeof(axis2_char_t) * 37);
+                if (!uuid_match)
+                {
+                    return -1;
+                }
+                if (read > len * 2 - (int)(tmp3 - tmp2))
+                {
+                    read = len * 2 - (int)(tmp3 - tmp2);
+                }
+                memcpy(uuid_match, tmp3, read);
+                len = 36 - read;
+                if (len)
+                {
+                    if (len == fread(buffer, sizeof(char), len, file))
+                    {
+                        memcpy(uuid_match + len, buffer, len);               
+                        inc += len;
+                    }
+                    else
+                    {
+                        AXIS2_FREE(env->allocator, tmp2);
+                        AXIS2_FREE(env->allocator, uuid_match);
+                        break;
+                    }
+                }
+                uuid_match[36] = '\0';
+                if (!strcasecmp(uuid_match, uuid))
+                {
+                    printf("match");   
+                }
+                AXIS2_FREE(env->allocator, uuid_match);
+            }
+            AXIS2_FREE(env->allocator, tmp2);
+            if ((SIZE - 1 - inc) != fread(buffer + inc, sizeof(char), SIZE - 1 - inc, file))
+            {
+                break;
+            }
+        }
+    }
+    AXIS2_FREE(env->allocator, buffer); 
+*/
+    fclose(file);
     return 0;
 }
 
