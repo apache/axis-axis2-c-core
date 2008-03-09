@@ -619,6 +619,7 @@ resend_request(
                 axis2_char_t *footer_str =
                     "\n= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =";
                 int seek_len = 0;
+                int has_raw_binary = 0;
                 axis2_char_t *request_buffer = NULL;
                 AXIS2_FREE(env->allocator, uuid_match);
                 AXIS2_FREE(env->allocator, uuid);
@@ -658,14 +659,60 @@ resend_request(
                 /* loop below is for mtom cases */
                 while (!tmp1 && (read_len > temp_len))
                 {
+                    if (!has_raw_binary)
+                    {
+                        has_raw_binary = 1;
+                    }
                     tmp3 += (int)strlen(tmp3) + 1;
                     tmp1 = strstr(tmp3, footer_str);
                     temp_len += (int)strlen(tmp3) + 1;
                 }
                 if (tmp1)
                 {
-                    tmp1 = '\0';
-                    printf(request_buffer);
+                    axis2_char_t *req_header = NULL;
+                    axis2_char_t *req_payload = NULL;
+                    int req_content_len = 0;
+                    req_content_len = (int)(tmp1 - request_buffer) - 4;
+                    *tmp1 = '\0';
+                    tmp1 = NULL;
+                    tmp1 = strstr(request_buffer, "\r\n\r\n");
+                    if (tmp1)
+                    {
+                        *tmp1 = '\0';
+                        req_payload = tmp1 + 4;
+                        tmp1 = axutil_strdup(env, request_buffer);
+                        req_content_len -= (int)strlen(tmp1);
+                        tmp1 = str_replace(tmp1, ";\n\t", "; ");
+                        tmp1 = str_replace(tmp1, "User-Agent: Axis2/C\r\n", "User-Agent: Axis2/C TCPMon\r\n");
+                        req_header = tmp1;
+                        if (!has_raw_binary)
+                        {
+                            tmp2 = strstr(tmp1, "Content-Length:");
+                            if (tmp2)
+                            {
+                                tmp3 = strstr(tmp2, "\r\n");
+                                if (tmp3)
+                                {
+                                    int header_len = 0;
+                                    header_len = (int)(tmp3 - tmp2) + 2;
+                                    tmp1 = AXIS2_MALLOC(env->allocator,
+                                                        sizeof(axis2_char_t) * header_len);
+                                    memcpy(tmp1, tmp2, header_len);
+                                    tmp1[header_len] = '\0';
+                                    tmp2 = AXIS2_MALLOC(env->allocator,
+                                                        sizeof(axis2_char_t) * (header_len + 2));
+                                    sprintf(tmp2, "%s%d\r\n", "Content-Length: ", (int)strlen(req_payload));
+                                    req_header = str_replace(req_header, tmp1, tmp2);
+                                    AXIS2_FREE(env->allocator, tmp1);
+                                    AXIS2_FREE(env->allocator, tmp2);
+                                    tmp1 = NULL;
+                                    tmp2 = NULL;
+                                }
+                            }
+                        }
+                        printf("Header:\n%s\n\nPayload:\n%s\n\nContent Len: %d", req_header, req_payload, req_content_len);
+                        AXIS2_FREE(env->allocator, req_header);
+                    }
                 }
                 else if (read_len == 48 * 1024)
                 {
