@@ -55,6 +55,10 @@ char *str_replace(
 void sig_handler(
     int signal);
 
+int resend_request(
+    const axutil_env_t * env,
+    int status);
+
 int
 main(
     int argc,
@@ -209,6 +213,10 @@ main(
         {
             format_bit = format_bit ? 0 : 1;
             TCPMON_SESSION_SET_FORMAT_BIT(session, env, format_bit);
+        }
+        else if (c == 'r')
+        {
+            resend_request(env, 0);
         }
     }
     while (c != 'q');
@@ -475,6 +483,44 @@ on_new_entry_to_file(
         }
     }
     fclose(file);
+    return 0;
+}
+
+int 
+resend_request(
+    const axutil_env_t * env,
+    int status)
+{
+    if (status == 0)
+    {
+        axis2_char_t *uuid = NULL;
+        int c;
+        int i = 0;
+        do
+        {
+            c = getchar();
+        }
+        while (c == ' ');
+        uuid = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 37);
+        for (i = 0; i < 36; i++)
+        {
+            if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || c == '-')
+            {
+                uuid[i] = (axis2_char_t)c;
+            }
+            else if (c >= 'A' && c <= 'F')
+            {
+                uuid[i] = (axis2_char_t)(c + 32);
+            }
+            else
+            {
+                return 0;
+            }
+            c = getchar();
+        }
+        uuid[i] = '\0';
+        printf("\n\n%s", uuid);
+    }
     return 0;
 }
 
