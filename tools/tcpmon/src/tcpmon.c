@@ -246,6 +246,7 @@ on_new_entry_to_file(
     FILE *file;
     char *convert = NULL;
     char *uuid = NULL;
+    int resend = 0;
 
     file = fopen(tcpmon_traffic_log, "a+");
 
@@ -262,6 +263,10 @@ on_new_entry_to_file(
 
     if (status == 0)
     {
+        if (strstr(TCPMON_ENTRY_SENT_HEADERS(entry, env), "User-Agent: Axis2/C TCPMon\r\n"))
+        {
+            resend = 1;
+        }
         plain_buffer = TCPMON_ENTRY_SENT_DATA(entry, env);
         if (plain_buffer)       /* this can be possible as no xml present */
         {
@@ -279,7 +284,7 @@ on_new_entry_to_file(
             formated_buffer = "";
         }
         /* 2 screen */
-        printf("\n\n%s\n", "SENDING DATA..");
+        printf("\n\n%s\n", resend ? "RESENDING DATA..": "SENDING DATA..");
         printf("/* sending time = %s*/\n", TCPMON_ENTRY_SENT_TIME(entry, env));
         uuid = axutil_uuid_gen(env);
         printf("/* message uuid = %s*/\n", uuid);
@@ -319,7 +324,7 @@ on_new_entry_to_file(
         }
 
         /* 2 file */
-        fprintf(file, "%s\n", "SENDING DATA..");
+        fprintf(file, "%s\n", resend ? "RESENDING DATA..": "SENDING DATA..");
         fprintf(file, "/* sending time = %s*/\n",
                 TCPMON_ENTRY_SENT_TIME(entry, env));
         fprintf(file, "/* message uuid = %s*/\n", uuid);
@@ -797,11 +802,16 @@ on_new_entry(
     char *formated_buffer = NULL;
     int format = 0;
     char *uuid = NULL;
+    int resend = 0;
 
     format = TCPMON_ENTRY_GET_FORMAT_BIT(entry, env);
 
     if (status == 0)
     {
+        if (strstr(TCPMON_ENTRY_SENT_HEADERS(entry, env), "User-Agent: Axis2/C TCPMon\r\n"))
+        {
+            resend = 1;
+        }
         plain_buffer = TCPMON_ENTRY_SENT_DATA(entry, env);
         if (plain_buffer)       /* this can be possible as no xml present */
         {
@@ -818,7 +828,7 @@ on_new_entry(
         {
             formated_buffer = "";
         }
-        printf("\n\n%s\n", "SENDING DATA..");
+        printf("\n\n%s\n", resend ? "RESENDING DATA..": "SENDING DATA..");
         printf("/* sending time = %s*/\n", TCPMON_ENTRY_SENT_TIME(entry, env));
         uuid = axutil_uuid_gen(env);
         printf("/* message uuid = %s*/\n", uuid);
