@@ -552,8 +552,9 @@ resend_request(
         int offset = 0;
         int loop_state = 1;
         int end_reached = 0;
+        int rounds = -1;
 
-        offset = strlen(search);
+        offset = (int)strlen(search);
         tmp3 = buffer;
         if (read_len >= SIZE)
         {
@@ -568,7 +569,17 @@ resend_request(
         }
         while (loop_state)
         {
+            int temp_len = 0;
+            rounds++;
             tmp1 = strstr(tmp3, search);
+            temp_len = (int)strlen(tmp3) + 1;
+            /* loop below is for mtom cases */
+            while (!tmp1 && (read_len - (offset + 36) * rounds > temp_len))
+            {
+                tmp3 += (int)strlen(tmp3) + 1;
+                tmp1 = strstr(tmp3, search);
+                temp_len += (int)strlen(tmp3) + 1;
+            }
             if (!tmp1)
             {
                 if (end_reached)
@@ -604,9 +615,63 @@ resend_request(
             uuid_match[36] = '\0';
             if (!strcasecmp(uuid_match, uuid))
             {
+                axis2_char_t *header_str = "*/\n---------------------\n";
+                axis2_char_t *footer_str =
+                    "\n= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =";
+                int seek_len = 0;
+                axis2_char_t *request_buffer = NULL;
                 AXIS2_FREE(env->allocator, uuid_match);
                 AXIS2_FREE(env->allocator, uuid);
                 end_reached = 1;
+                tmp2 += 36;
+                offset = (int)strlen(header_str);
+                if (read_len - offset < (int)(tmp2 - buffer))
+                {
+                    seek_len = (int)(tmp2 - buffer) + offset - read_len;
+                    if (seek_len > 0)
+                    {
+                        fread(buffer, sizeof(char), seek_len, file);
+                    }
+                    seek_len = 0;
+                }
+                else
+                {
+                    seek_len = read_len - (int)(tmp2 - buffer) - offset;
+                }
+                request_buffer = AXIS2_MALLOC(env->allocator,
+                                              sizeof(axis2_char_t) * (48 * 1024 + 1));
+                if (!request_buffer)
+                {
+                    printf("\ngimme more memory\n");
+                    return -1;
+                }
+                if (seek_len > 0)
+                {
+                    memcpy(request_buffer, buffer + (read_len - seek_len), seek_len);
+                }
+                read_len = fread(request_buffer + seek_len,
+                                 sizeof(char), 48 * 1024 - seek_len, file) + seek_len;
+                tmp1 = NULL;
+                tmp3 = request_buffer;
+                tmp1 = strstr(tmp3, footer_str);
+                temp_len = (int)strlen(tmp3) + 1;
+                /* loop below is for mtom cases */
+                while (!tmp1 && (read_len > temp_len))
+                {
+                    tmp3 += (int)strlen(tmp3) + 1;
+                    tmp1 = strstr(tmp3, footer_str);
+                    temp_len += (int)strlen(tmp3) + 1;
+                }
+                if (tmp1)
+                {
+                    tmp1 = '\0';
+                    printf(request_buffer);
+                }
+                else if (read_len == 48 * 1024)
+                {
+                    printf("\nrequest size greater than buffer\n");
+                }
+                AXIS2_FREE(env->allocator, request_buffer);
                 break;
             }
             AXIS2_FREE(env->allocator, uuid_match);
