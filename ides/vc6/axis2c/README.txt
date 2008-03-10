@@ -30,7 +30,7 @@ ensure path to MS platform SDK is correct in axutil project settings.
 
 
 OUTPUT:
-with axis2_engine selected as active project, "build all" creates target .dll and .lib files in the AXIS2C_HOME/build/deploy/lib directory.
+with axis2_engine selected as active project, "build all" creates target .dll and .lib files in the AXIS2C_HOME/lib directory.
 
 
 KNOWN BUGS:
