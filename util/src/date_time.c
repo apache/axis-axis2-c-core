@@ -117,7 +117,7 @@ axutil_date_time_deserialize_time(
     {
         return AXIS2_FAILURE;
     }
-    if (msec < 0 || msec > 999)
+    if (msec < 0)
     {
         return AXIS2_FAILURE;
     }
@@ -234,7 +234,7 @@ axutil_date_time_deserialize_date_time(
     {
         return AXIS2_FAILURE;
     }
-    if (msec < 0 || msec > 999)
+    if (msec < 0)
     {
         return AXIS2_FAILURE;
     }
@@ -378,7 +378,7 @@ axutil_date_time_set_date_time(
     {
         return AXIS2_FAILURE;
     }
-    if (msec < 0 || msec > 999)
+    if (msec < 0)
     {
         return AXIS2_FAILURE;
     }
