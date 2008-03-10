@@ -900,7 +900,7 @@ write_to_file(
     int size = 0;
     if (filename)
     {
-        FILE *fp = fopen(filename, "a+");
+        FILE *fp = fopen(filename, "ab");
         size = (int)fwrite(buffer, 1, strlen(buffer), fp);
         /* We are sure that the difference lies within the int range */
         fclose(fp);

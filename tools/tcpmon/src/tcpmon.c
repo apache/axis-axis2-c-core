@@ -249,7 +249,7 @@ on_new_entry_to_file(
     char *uuid = NULL;
     int resend = 0;
 
-    file = fopen(tcpmon_traffic_log, "a+");
+    file = fopen(tcpmon_traffic_log, "ab");
 
     if (NULL == file)
     {
@@ -532,7 +532,7 @@ resend_request(
         uuid[i] = '\0';
     }
 
-    file = fopen(tcpmon_traffic_log, "r");
+    file = fopen(tcpmon_traffic_log, "rb");
 
     if (NULL == file)
     {
@@ -546,6 +546,7 @@ resend_request(
         printf("\ngimme more memory\n");
         return -1;
     }
+    buffer[SIZE - 1] = '\0';
 
     read_len = (int)fread(buffer, sizeof(char), SIZE - 1, file);
 
@@ -559,7 +560,7 @@ resend_request(
         int offset = 0;
         int loop_state = 1;
         int end_reached = 0;
-        int rounds = -1;
+        int rounds = 0;
 
         offset = (int)strlen(search);
         tmp3 = buffer;
