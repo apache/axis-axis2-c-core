@@ -832,7 +832,7 @@ read_current_stream(
         {
             if (mtom_optimized)
             {
-                int count = read_size - strlen(header_ptr) - 4;
+                int count = read_size - (int)strlen(header_ptr) - 4;
                 int copied = 0;
                 int plen = 0;
                 axis2_char_t *temp = NULL;
