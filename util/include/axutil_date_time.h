@@ -271,7 +271,7 @@ extern "C"
 
     AXIS2_EXTERN axutil_date_time_t *AXIS2_CALL
     axutil_date_time_utc_to_local(
-        axutil_date_time_t * date_time_in,
+        axutil_date_time_t * date_time,
         const axutil_env_t * env,
         axis2_bool_t is_positive,
         int hour,
@@ -279,7 +279,7 @@ extern "C"
 
     AXIS2_EXTERN axutil_date_time_t *AXIS2_CALL
     axutil_date_time_local_to_utc(
-        axutil_date_time_t * date_time_in,
+        axutil_date_time_t * date_time,
         const axutil_env_t * env);
 
     AXIS2_EXTERN int AXIS2_CALL

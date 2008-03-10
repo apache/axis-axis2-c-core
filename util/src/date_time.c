@@ -899,25 +899,45 @@ axutil_date_time_local_to_utc(
     mon++;
 
     day--;
-    while (day > 30)
+    while (day > 27)
     {
-        mon++;
         if (mon == 2)
         {
-            day -= 28;
             if (year % 4 != 0 || year % 400 == 0)
             {
-                day--;
+                day -= 28;
+                mon++;
+            }
+            else if (day > 28)
+            {
+                day -= 29;
+                mon++;
+            }
+            else
+            {
+                break;
             }
         }
-        if (mon == 4 || mon == 6 ||
-            mon == 9 || mon == 11)
+        else if (day > 29)
         {
-            day -= 30;
+            if (mon == 4 || mon == 6 ||
+                mon == 9 || mon == 11)
+            {
+                day -= 30;
+            }
+            else if (day > 30)
+            {
+                day -= 31;
+            }
+            else
+            {
+                break;
+            }
+            mon++;
         }
         else
         {
-            day -= 31;
+            break;
         }
         if (mon > 12)
         {
@@ -927,11 +947,10 @@ axutil_date_time_local_to_utc(
     }
     while (day < 0)
     {
-        mon--;
         if (mon == 3)
         {
             day += 28;
-            if (year % 4 != 0 || year % 400 == 0)
+            if (year % 4 == 0 || year % 400 != 0)
             {
                 day++;
             }
@@ -945,6 +964,7 @@ axutil_date_time_local_to_utc(
         {
             day += 31;
         }
+        mon--;
         if (mon < 1)
         {
             mon = 12;
