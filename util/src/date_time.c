@@ -72,7 +72,7 @@ axutil_date_time_create_with_offset(
     date_time->msec = axutil_get_milliseconds(env);
     date_time->tz_hour = 0;
     date_time->tz_min = 0;
-    date_time->tz_pos = AXIS2_FALSE;
+    date_time->tz_pos = AXIS2_TRUE;
 
     return date_time;
 }
@@ -145,7 +145,7 @@ axutil_date_time_deserialize_time_with_time_zone(
     int min;
     int sec;
     int msec;
-    axis2_bool_t tz_pos = AXIS2_FALSE;;
+    axis2_bool_t tz_pos = AXIS2_TRUE;;
     int tz_hour;
     int tz_min;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -154,9 +154,9 @@ axutil_date_time_deserialize_time_with_time_zone(
     {
         return AXIS2_FAILURE;
     }
-    else if (strchr(time_str, '+'))
+    else if (!strchr(time_str, '+'))
     {
-        tz_pos = AXIS2_TRUE;
+        tz_pos = AXIS2_FALSE;
     }
 
     if (tz_pos)
@@ -543,6 +543,33 @@ axutil_date_time_compare(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axutil_date_time_set_time_zone(
+    axutil_date_time_t * date_time,
+    const axutil_env_t * env,
+    axis2_bool_t is_positive,
+    int hour,
+    int min)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if (hour < 0 || hour > 14)
+    {
+        return AXIS2_FAILURE;
+    }
+    if (min < 0 || min > 59)
+    {
+        return AXIS2_FAILURE;
+    }
+    if (hour == 14 && min != 0)
+    {
+        return AXIS2_FAILURE;
+    }
+    date_time->tz_pos = is_positive;
+    date_time->tz_hour = hour;
+    date_time->tz_min = min;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_date_time_set_date_time(
     axutil_date_time_t * date_time,
     const axutil_env_t * env,
@@ -715,4 +742,243 @@ axutil_date_time_get_msec(
     const axutil_env_t * env)
 {
     return (date_time->msec);
+}
+
+AXIS2_EXTERN int AXIS2_CALL
+axutil_date_time_get_time_zone_hour(
+    axutil_date_time_t * date_time,
+    const axutil_env_t * env)
+{
+    return (date_time->tz_hour);
+}
+
+AXIS2_EXTERN int AXIS2_CALL
+axutil_date_time_get_time_zone_minute(
+    axutil_date_time_t * date_time,
+    const axutil_env_t * env)
+{
+    return (date_time->tz_min);
+}
+
+AXIS2_EXTERN int AXIS2_CALL
+axutil_date_time_is_time_zone_positive(
+    axutil_date_time_t * date_time,
+    const axutil_env_t * env)
+{
+    return (date_time->tz_pos);
+}
+
+AXIS2_EXTERN axutil_date_time_t *AXIS2_CALL
+axutil_date_time_local_to_utc(
+    axutil_date_time_t * date_time,
+    const axutil_env_t * env)
+{
+    int year;
+    int mon;
+    int day;
+    int hour;
+    int min;
+    int sec;
+    int msec;
+    axis2_bool_t tz_pos = AXIS2_FALSE;;
+    int tz_hour;
+    int tz_min;
+    axutil_date_time_t *ret = NULL;
+
+    year = date_time->year;
+    mon = date_time->mon;
+    day = date_time->day;
+    hour = date_time->hour;
+    min = date_time->min;
+    sec = date_time->msec;
+    tz_pos = date_time->tz_pos;
+    tz_hour = date_time->tz_hour;
+    tz_min = date_time->tz_min;
+
+    if (!tz_pos)
+    {
+        tz_hour *= -1;
+    }
+    hour += tz_hour;
+    if (!tz_pos)
+    {
+        tz_min *= -1;
+    }
+    min += tz_min;
+
+    if (min > 59)
+    {
+        hour += min / 60;
+        min %= 60;
+    }
+    while (min < 0)
+    {
+        hour--;
+        min += 60;
+    }
+
+    if (hour > 23)
+    {
+        day += hour / 24;
+        hour %= 24;
+    }
+    while (hour < 0)
+    {
+        day--;
+        hour += 24;
+    }
+
+    mon--;
+    while (mon < 0)
+    {
+        mon += 12;
+        year--;
+    }
+    while (mon > 11)
+    {
+        mon -= 12;
+        year++;
+    }
+    mon++;
+
+    day--;
+    while (day > 30)
+    {
+        mon++;
+        if (mon == 2)
+        {
+            day -= 28;
+            if (year % 4 != 0 || year % 400 == 0)
+            {
+                day--;
+            }
+        }
+        if (mon == 4 || mon == 6 ||
+            mon == 9 || mon == 11)
+        {
+            day -= 30;
+        }
+        else
+        {
+            day -= 31;
+        }
+        if (mon > 12)
+        {
+            mon = 1;
+            year++;
+        }
+    }
+    while (day < 0)
+    {
+        mon--;
+        if (mon == 3)
+        {
+            day += 28;
+            if (year % 4 != 0 || year % 400 == 0)
+            {
+                day++;
+            }
+        }
+        if (mon == 5 || mon == 7 ||
+            mon == 10 || mon == 12)
+        {
+            day += 30;
+        }
+        else
+        {
+            day += 31;
+        }
+        if (mon < 1)
+        {
+            mon = 12;
+            year--;
+        }
+    }
+    day++;
+
+    if (mon < 1 || mon > 12)
+    {
+        return NULL;
+    }
+    if (day < 1 || day > 31)
+    {
+        return NULL;
+    }
+    if (day == 31 && (mon == 2 || mon == 4 ||
+        mon == 6 || mon == 9 || mon == 11))
+    {
+        return NULL;
+    }
+    if (day == 30 && mon == 2)
+    {
+        return NULL;
+    }
+    if (day == 29 && mon == 2)
+    {
+        if (year % 4 != 0 || year % 400 == 0)
+        {
+            return NULL;
+        }
+    }
+    if (hour < 0 || hour > 23)
+    {
+        return NULL;
+    }
+    if (min < 0 || min > 59)
+    {
+        return NULL;
+    }
+    if (sec < 0 || sec > 59)
+    {
+        return NULL;
+    }
+    if (msec < 0)
+    {
+        return NULL;
+    }
+
+    ret = axutil_date_time_create(env);
+    ret->year = year - 1900;
+    ret->mon = mon - 1;
+    ret->day = day;
+    ret->hour = hour;
+    ret->min = min;
+    ret->sec = sec;
+    ret->msec = msec;
+    return ret;
+}
+
+AXIS2_EXTERN axutil_date_time_t *AXIS2_CALL
+axutil_date_time_utc_to_local(
+    axutil_date_time_t * date_time_in,
+    const axutil_env_t * env,
+    axis2_bool_t is_positive,
+    int hour,
+    int min)
+{
+    axutil_date_time_t * date_time = NULL;
+    if (date_time_in->tz_hour && date_time_in->tz_min)
+    {
+        return NULL;
+    }
+    date_time->year = date_time_in->year;
+    date_time->mon = date_time_in->mon;
+    date_time->day = date_time_in->day;
+    date_time->hour = date_time_in->hour;
+    date_time->min = date_time_in->min;
+    date_time->sec = date_time_in->sec;
+    date_time->msec = date_time_in->msec;
+    date_time->tz_hour = hour;
+    date_time->tz_min = min;
+    
+    date_time->tz_pos = is_positive ? AXIS2_FALSE : AXIS2_TRUE;
+    axutil_date_time_t *ret = 
+        axutil_date_time_local_to_utc(date_time, env);
+    ret->tz_hour = hour;
+    ret->tz_min = min;
+    
+    ret->tz_pos = is_positive;
+
+    axutil_date_time_free(date_time, env);
+    return ret;
 }

@@ -264,11 +264,58 @@ extern "C"
      * @return NOT_EXPIRED/EXPIRED/EQUAL if valid otherwise return FAILURE
      */
     AXIS2_EXTERN axutil_date_time_comp_result_t AXIS2_CALL
-
     axutil_date_time_compare(
         axutil_date_time_t * date_time,
         const axutil_env_t * env,
         axutil_date_time_t * ref);
+
+    AXIS2_EXTERN axutil_date_time_t *AXIS2_CALL
+    axutil_date_time_utc_to_local(
+        axutil_date_time_t * date_time_in,
+        const axutil_env_t * env,
+        axis2_bool_t is_positive,
+        int hour,
+        int min);
+
+    AXIS2_EXTERN axutil_date_time_t *AXIS2_CALL
+    axutil_date_time_local_to_utc(
+        axutil_date_time_t * date_time_in,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN int AXIS2_CALL
+    axutil_date_time_get_time_zone_hour(
+        axutil_date_time_t * date_time,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN int AXIS2_CALL
+    axutil_date_time_get_time_zone_minute(
+        axutil_date_time_t * date_time,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axutil_date_time_is_time_zone_positive(
+        axutil_date_time_t * date_time,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_date_time_set_time_zone(
+        axutil_date_time_t * date_time,
+        const axutil_env_t * env,
+        axis2_bool_t is_positive,
+        int hour,
+        int min);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_date_time_deserialize_date_time_with_time_zone(
+        axutil_date_time_t * date_time,
+        const axutil_env_t * env,
+        const axis2_char_t * date_time_str);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_date_time_deserialize_time_with_time_zone(
+        axutil_date_time_t * date_time,
+        const axutil_env_t * env,
+        const axis2_char_t * time_str);
 
 #ifdef __cplusplus
 }
