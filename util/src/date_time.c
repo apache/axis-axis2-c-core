@@ -473,7 +473,10 @@ axutil_date_time_compare(
     const axutil_env_t * env,
     axutil_date_time_t * ref)
 {
-
+    int dt_min;
+    int ref_min;
+    int dt_hour;
+    int ref_hour;
     AXIS2_ENV_CHECK(env, AXIS2_DATE_TIME_COMP_RES_FAILURE);
 
     if (date_time->year < ref->year)
@@ -503,20 +506,40 @@ axutil_date_time_compare(
         return AXIS2_DATE_TIME_COMP_RES_EXPIRED;
     }
 
-    if (date_time->hour < ref->hour)
+    dt_min = date_time->tz_min;
+    dt_hour = date_time->tz_hour;
+    ref_min = ref->tz_min;
+    ref_hour = ref->tz_hour;
+    if (date_time->tz_pos)
+    {
+        dt_min *= -1;
+        dt_hour *= -1;
+    }
+    if (ref->tz_pos)
+    {
+        ref_min *= -1;
+        ref_hour *= -1;
+    }
+
+    dt_min += date_time->min;
+    dt_hour += date_time->hour;
+    ref_min += ref->min;
+    ref_hour += ref->hour;
+
+    if (dt_hour < ref_hour)
     {
         return AXIS2_DATE_TIME_COMP_RES_NOT_EXPIRED;
     }
-    else if (date_time->hour > ref->hour)
+    else if (dt_hour > ref_hour)
     {
         return AXIS2_DATE_TIME_COMP_RES_EXPIRED;
     }
 
-    if (date_time->min < ref->min)
+    if (dt_min < ref_min)
     {
         return AXIS2_DATE_TIME_COMP_RES_NOT_EXPIRED;
     }
-    else if (date_time->min > ref->min)
+    else if (dt_min > ref_min)
     {
         return AXIS2_DATE_TIME_COMP_RES_EXPIRED;
     }
@@ -648,8 +671,27 @@ axutil_date_time_serialize_time(
         (axis2_char_t *) AXIS2_MALLOC(env->allocator,
                                       sizeof(axis2_char_t) * 32);
 
-    sprintf(time_str, "%d:%d:%d.%dZ", date_time->hour, date_time->min,
+    sprintf(time_str, "%02d:%02d:%02d.%03dZ", date_time->hour, date_time->min,
             date_time->sec, date_time->msec);
+    return time_str;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axutil_date_time_serialize_time_with_time_zone(
+    axutil_date_time_t * date_time,
+    const axutil_env_t * env)
+{
+    axis2_char_t *time_str = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+
+    time_str =
+        (axis2_char_t *) AXIS2_MALLOC(env->allocator,
+                                      sizeof(axis2_char_t) * 37);
+
+    sprintf(time_str, "%02d:%02d:%02d.%03d%c%02d:%02d", date_time->hour, date_time->min,
+            date_time->sec, date_time->msec, date_time->tz_pos ? '+': '-',
+            date_time->tz_hour, date_time->tz_min);
     return time_str;
 }
 
@@ -666,13 +708,13 @@ axutil_date_time_serialize_date(
         (axis2_char_t *) AXIS2_MALLOC(env->allocator,
                                       sizeof(axis2_char_t) * 32);
 
-    sprintf(date_str, "%d-%d-%d", date_time->year + 1900, date_time->mon + 1,
+    sprintf(date_str, "%d-%02d-%02d", date_time->year + 1900, date_time->mon + 1,
             date_time->day);
     return date_str;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-axutil_date_time_serialize_date_time(
+axutil_date_time_serialize_date_time_with_time_zone(
     axutil_date_time_t * date_time,
     const axutil_env_t * env)
 {
@@ -684,6 +726,23 @@ axutil_date_time_serialize_date_time(
     sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02d.%03dZ",
             date_time->year + 1900, date_time->mon + 1, date_time->day,
             date_time->hour, date_time->min, date_time->sec, date_time->msec);
+    return date_time_str;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axutil_date_time_serialize_date_time(
+    axutil_date_time_t * date_time,
+    const axutil_env_t * env)
+{
+    axis2_char_t *date_time_str = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+
+    date_time_str = AXIS2_MALLOC(env->allocator, sizeof(char) * 37);
+    sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02d.%03d%c%02d:%02d",
+            date_time->year + 1900, date_time->mon + 1, date_time->day,
+            date_time->hour, date_time->min, date_time->sec, date_time->msec, 
+            date_time->tz_pos ? '+': '-', date_time->tz_hour, date_time->tz_min);
     return date_time_str;
 }
 
@@ -790,7 +849,8 @@ axutil_date_time_local_to_utc(
     day = date_time->day;
     hour = date_time->hour;
     min = date_time->min;
-    sec = date_time->msec;
+    sec = date_time->sec;
+    msec = date_time->msec;
     tz_pos = date_time->tz_pos;
     tz_hour = date_time->tz_hour;
     tz_min = date_time->tz_min;
@@ -798,12 +858,9 @@ axutil_date_time_local_to_utc(
     if (!tz_pos)
     {
         tz_hour *= -1;
-    }
-    hour += tz_hour;
-    if (!tz_pos)
-    {
         tz_min *= -1;
     }
+    hour += tz_hour;
     min += tz_min;
 
     if (min > 59)
