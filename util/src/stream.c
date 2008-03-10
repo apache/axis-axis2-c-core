@@ -651,6 +651,8 @@ axutil_stream_peek_socket(
     int len = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
+    /* Added to prevent a segfault */
+    AXIS2_PARAM_CHECK(env->error, stream, -1);
 
     if (-1 == stream->socket)
     {
