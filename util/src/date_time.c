@@ -979,7 +979,7 @@ axutil_date_time_local_to_utc(
     tz_hour = date_time->tz_hour;
     tz_min = date_time->tz_min;
 
-    if (!tz_pos)
+    if (tz_pos)
     {
         tz_hour *= -1;
         tz_min *= -1;
