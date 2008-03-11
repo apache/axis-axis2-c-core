@@ -145,9 +145,11 @@ axutil_date_time_deserialize_time_with_time_zone(
     int min;
     int sec;
     int msec;
-    axis2_bool_t tz_pos = AXIS2_TRUE;;
-    int tz_hour;
+	int tz_hour;
     int tz_min;
+
+    axis2_bool_t tz_pos = AXIS2_TRUE;;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (strchr(time_str, 'Z'))
@@ -360,10 +362,11 @@ axutil_date_time_deserialize_date_time_with_time_zone(
     int min;
     int sec;
     int msec;
-    axis2_bool_t tz_pos = AXIS2_FALSE;;
-    int tz_hour;
+	int tz_hour;
     int tz_min;
     int is_year_neg = 0;
+    axis2_bool_t tz_pos = AXIS2_FALSE;;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (!date_time_str || *date_time_str == '+')
@@ -839,9 +842,10 @@ axutil_date_time_local_to_utc(
     int min;
     int sec;
     int msec;
-    axis2_bool_t tz_pos = AXIS2_FALSE;;
-    int tz_hour;
+	int tz_hour;
     int tz_min;
+    axis2_bool_t tz_pos = AXIS2_FALSE;
+    
     axutil_date_time_t *ret = NULL;
 
     year = date_time->year;
@@ -1034,6 +1038,7 @@ axutil_date_time_utc_to_local(
     int min)
 {
     axutil_date_time_t * date_time = NULL;
+	axutil_date_time_t *ret = NULL;
     if (date_time_in->tz_hour && date_time_in->tz_min)
     {
         return NULL;
@@ -1049,7 +1054,7 @@ axutil_date_time_utc_to_local(
     date_time->tz_min = min;
     
     date_time->tz_pos = is_positive ? AXIS2_FALSE : AXIS2_TRUE;
-    axutil_date_time_t *ret = 
+    ret = 
         axutil_date_time_local_to_utc(date_time, env);
     ret->tz_hour = hour;
     ret->tz_min = min;
