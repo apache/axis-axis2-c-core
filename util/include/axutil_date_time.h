@@ -327,6 +327,11 @@ extern "C"
         axutil_date_time_t * date_time,
         const axutil_env_t * env);
 
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axutil_date_time_is_utc(
+        axutil_date_time_t * date_time,
+        const axutil_env_t * env);
+
 #ifdef __cplusplus
 }
 #endif

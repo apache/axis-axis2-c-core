@@ -781,6 +781,11 @@ axutil_date_time_serialize_time_with_time_zone(
 
     AXIS2_ENV_CHECK(env, NULL);
 
+    if (!date_time->tz_hour && !date_time->tz_min)
+    {
+        return axutil_date_time_serialize_time(date_time, env);
+    }
+
     time_str =
         (axis2_char_t *) AXIS2_MALLOC(env->allocator,
                                       sizeof(axis2_char_t) * 37);
@@ -850,6 +855,11 @@ axutil_date_time_serialize_date_time_with_time_zone(
     axis2_char_t *date_time_str = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
+
+    if (!date_time->tz_hour && !date_time->tz_min)
+    {
+        return axutil_date_time_serialize_date_time(date_time, env);
+    }
 
     date_time_str = AXIS2_MALLOC(env->allocator, sizeof(char) * 37);
     if (date_time->msec)
@@ -948,6 +958,19 @@ axutil_date_time_is_time_zone_positive(
     const axutil_env_t * env)
 {
     return (date_time->tz_pos);
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axutil_date_time_is_utc(
+    axutil_date_time_t * date_time,
+    const axutil_env_t * env)
+{
+    axis2_bool_t is_utc = AXIS2_TRUE;
+    if (date_time->tz_hour || date_time->tz_min)
+    {
+        is_utc = AXIS2_FALSE;
+    }
+    return is_utc;
 }
 
 AXIS2_EXTERN axutil_date_time_t *AXIS2_CALL
