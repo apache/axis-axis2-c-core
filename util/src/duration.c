@@ -73,27 +73,50 @@ axutil_duration_create_from_values(
     {
         duration->years = years;
     }
+    else
+    {
+        duration->years = 0;
+    }
     if (months > -1)
     {
         duration->months = months;
+    }
+    else
+    {
+        duration->months = 0;
     }
     if (days > -1)
     {
         duration->days = days;
     }
+    else
+    {
+        duration->days = 0;
+    }
     if (hours > -1)
     {
         duration->hours = hours;
+    }
+    else
+    {
+        duration->hours = 0;
     }
     if (minutes > -1)
     {
         duration->mins = minutes;
     }
+    else
+    {
+        duration->mins = 0;
+    }
     if (seconds >= 0)
     {
         duration->secs = seconds;
     }
-
+    else
+    {
+        duration->secs = 0.0;
+    }
     return duration;
 }
 
