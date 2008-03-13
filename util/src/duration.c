@@ -62,7 +62,7 @@ axutil_duration_create_from_values(
     duration =
         (axutil_duration_t *) AXIS2_MALLOC(env->allocator,
                                            sizeof(axutil_duration_t));
-    if (NULL == duration)
+    if (!duration)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -130,7 +130,7 @@ axutil_duration_create_from_string(
     duration =
         (axutil_duration_t *) AXIS2_MALLOC(env->allocator,
                                            sizeof(axutil_duration_t));
-    if (NULL == duration)
+    if (!duration)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -170,12 +170,14 @@ axutil_duration_deserialize_duration(
     unsigned int seq = 0;
     const char desig[] = { 'Y', 'M', 'D', 'H', 'M', 'S' };
 
-    if (duration_str == NULL)
-    {
-        duration->is_negative = AXIS2_FALSE;
-        duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
-        duration->secs = 0;
+    AXIS2_PARAM_CHECK(env->error, duration, AXIS2_FAILURE);
 
+    duration->is_negative = AXIS2_FALSE;
+    duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
+    duration->secs = 0;
+
+    if (!duration_str)
+    {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -197,7 +199,7 @@ axutil_duration_deserialize_duration(
         return AXIS2_FAILURE;
     }
 
-    if (*cur == 0)
+    if (!*cur)
     {
         duration->is_negative = AXIS2_FALSE;
         duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
@@ -207,7 +209,7 @@ axutil_duration_deserialize_duration(
         return AXIS2_FAILURE;
     }
 
-    while (*cur != 0)
+    while (*cur)
     {
         if (seq >= sizeof(desig))
         {
