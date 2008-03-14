@@ -2945,8 +2945,9 @@ axutil_url_encode (const axutil_env_t * env,
 static int
 is_safe_or_unreserve (char c)
 {
-    char safe[] = { '$', '-', '_', '.', '+' };
-    char reserve[] = { ';', '/', '?', ':', '@', '&', '=' };
+    char safe[] = { '-', '_', '.', '~'};
+    char reserve[] = { ';', '/', '?', ':', '@', '&', '=', '#', '[', ']', '!', 
+                       '$', ''', '(', ')', '*', '+', ','};
 
 /* reserved       = ";" | "/" | "?" | ":" | "@" | "&" | "="
    safe           = "$" | "-" | "_" | "." | "+" */
