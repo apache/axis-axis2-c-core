@@ -493,7 +493,7 @@ extern "C"
     /**
       * RESPONSE_PROXY_AUTHENTICATION_REQUIRED
       */
-#define AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED "401 Proxy Authentication Required"
+#define AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED "407 Proxy Authentication Required"
 
     /**
      * RESPONSE_BAD_REQUEST
