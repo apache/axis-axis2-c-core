@@ -553,6 +553,10 @@ axutil_url_get_port(
     axutil_url_t * url,
     const axutil_env_t * env)
 {
+    if (!url->port)
+    {
+       return axutil_uri_port_of_scheme(url->protocol);
+    }
     return url->port;
 }
 
