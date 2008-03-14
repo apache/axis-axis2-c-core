@@ -295,10 +295,10 @@ axis2_apache2_worker_process_request(
         {
             axis2_char_t *wsdl = NULL;
             axis2_bool_t is_services_path = AXIS2_FALSE;
-            if (!is_delete)
+            if (M_DELETE != request->method_number)
             {
                 axis2_char_t *temp = NULL;
-                temp = strstr(axutil_url_get_path(request_url, env), AXIS2_REQUEST_URL_PREFIX);
+                temp = strstr(req_url, AXIS2_REQUEST_URL_PREFIX);
                 if (temp)
                 {
                     temp += strlen(AXIS2_REQUEST_URL_PREFIX);
@@ -312,14 +312,14 @@ axis2_apache2_worker_process_request(
                     }
                 }
             }
-            wsdl = strstr(url_external_form, AXIS2_REQUEST_WSDL);
+            wsdl = strstr(req_url, AXIS2_REQUEST_WSDL);
             if (is_services_path)
             {
                 body_string =
                     axis2_http_transport_utils_get_services_html(env, conf_ctx);
                 request->content_type = "text/xml";
             }
-            else if (!is_delete && wsdl)
+            else if (M_DELETE != request->method_number && wsdl)
             {
                 body_string =
                     axis2_http_transport_utils_get_services_static_wsdl(env,
