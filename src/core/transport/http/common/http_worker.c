@@ -386,12 +386,26 @@ axis2_http_worker_process_request(
                                                      AXIS2_HTTP_HEADER_APPLICATION_XML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
-            else
+            else if (env->error->error_number == AXIS2_ERROR_SVC_OR_OP_NOT_FOUND)
             {
                 axis2_http_simple_response_set_status_line(response, env,
                                                            http_version,
                                                            404,
                                                            "Not Found");
+
+                body_string = axis2_http_transport_utils_get_not_found(env,
+                                                                       conf_ctx);
+                cont_type = axis2_http_header_create(env,
+                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                axis2_http_simple_response_set_header(response, env, cont_type);
+            }
+            else
+            {
+                axis2_http_simple_response_set_status_line(response, env,
+                                                           http_version,
+                                                           500,
+                                                           "Internal Server Error");
 
                 body_string = axis2_http_transport_utils_get_services_html(env,
                                                                            conf_ctx);

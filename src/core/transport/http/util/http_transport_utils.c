@@ -1316,6 +1316,16 @@ axis2_http_transport_utils_hexit(
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_not_found(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx)
+{
+    return "<html><head><title>404 Not Found</title></head>"
+        "<body><h2>Not Found</h2><p>The requested URL was not"
+        " found on this server.</p></body></html>";
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_transport_utils_get_services_html(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)
