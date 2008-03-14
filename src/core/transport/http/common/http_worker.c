@@ -334,13 +334,49 @@ axis2_http_worker_process_request(
             axis2_http_header_t *cont_type = NULL;
             axis2_char_t *body_string = NULL;
             axis2_char_t *wsdl = NULL;
+            axis2_bool_t is_services_path = AXIS2_FALSE;
             axis2_http_simple_response_set_status_line(response, env,
                                                        http_version,
                                                        AXIS2_HTTP_RESPONSE_OK_CODE_VAL,
                                                        "OK");
-            wsdl = strstr(url_external_form, AXIS2_REQUEST_WSDL);
-            if (wsdl)
+            if (is_get)
             {
+                axis2_char_t *temp = NULL;
+                temp = strstr(axutil_url_get_path(request_url, env), AXIS2_REQUEST_URL_PREFIX);
+                if (temp)
+                {
+                    temp += strlen(AXIS2_REQUEST_URL_PREFIX);
+                    if (*temp == '/')
+                    {
+                        temp++;
+                    }
+                    if (!*temp || *temp == '?' || *temp == '#')
+                    {
+                        is_services_path = AXIS2_TRUE;
+                    }
+                }
+
+            }
+            wsdl = strstr(url_external_form, AXIS2_REQUEST_WSDL);
+            if (is_services_path)
+            {
+                axis2_http_simple_response_set_status_line(response, env,
+                                                           http_version,
+                                                           AXIS2_HTTP_RESPONSE_OK_CODE_VAL,
+                                                           "OK");
+                body_string = axis2_http_transport_utils_get_services_html(env,
+                                                                           conf_ctx);
+                cont_type = axis2_http_header_create(env,
+                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                axis2_http_simple_response_set_header(response, env, cont_type);
+            }
+            else if (wsdl)
+            {
+                axis2_http_simple_response_set_status_line(response, env,
+                                                           http_version,
+                                                           AXIS2_HTTP_RESPONSE_OK_CODE_VAL,
+                                                           "OK");
                 body_string =
                     axis2_http_transport_utils_get_services_static_wsdl(env,
                                                                         conf_ctx,
@@ -349,17 +385,20 @@ axis2_http_worker_process_request(
                                                      AXIS2_HTTP_HEADER_CONTENT_TYPE,
                                                      AXIS2_HTTP_HEADER_APPLICATION_XML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
-
             }
             else
             {
+                axis2_http_simple_response_set_status_line(response, env,
+                                                           http_version,
+                                                           404,
+                                                           "Not Found");
+
                 body_string = axis2_http_transport_utils_get_services_html(env,
                                                                            conf_ctx);
                 cont_type = axis2_http_header_create(env,
                                                      AXIS2_HTTP_HEADER_CONTENT_TYPE,
                                                      AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
-
             }
 
             if (body_string)
