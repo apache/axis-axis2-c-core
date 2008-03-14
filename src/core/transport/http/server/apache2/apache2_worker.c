@@ -291,12 +291,35 @@ axis2_apache2_worker_process_request(
                                                                (axis2_char_t *)
                                                                req_url));
         }
-
         if (AXIS2_FALSE == processed)
         {
             axis2_char_t *wsdl = NULL;
-            wsdl = strstr((axis2_char_t *) req_url, AXIS2_REQUEST_WSDL);
-            if (wsdl)
+            axis2_bool_t is_services_path = AXIS2_FALSE;
+            if (!is_delete)
+            {
+                axis2_char_t *temp = NULL;
+                temp = strstr(axutil_url_get_path(request_url, env), AXIS2_REQUEST_URL_PREFIX);
+                if (temp)
+                {
+                    temp += strlen(AXIS2_REQUEST_URL_PREFIX);
+                    if (*temp == '/')
+                    {
+                        temp++;
+                    }
+                    if (!*temp || *temp == '?' || *temp == '#')
+                    {
+                        is_services_path = AXIS2_TRUE;
+                    }
+                }
+            }
+            wsdl = strstr(url_external_form, AXIS2_REQUEST_WSDL);
+            if (is_services_path)
+            {
+                body_string =
+                    axis2_http_transport_utils_get_services_html(env, conf_ctx);
+                request->content_type = "text/xml";
+            }
+            else if (!is_delete && wsdl)
             {
                 body_string =
                     axis2_http_transport_utils_get_services_static_wsdl(env,
@@ -305,14 +328,21 @@ axis2_apache2_worker_process_request(
                                                                          *)
                                                                         req_url);
                 request->content_type = "text/xml";
-
+                           
+            }
+            else if (env->error->error_number == AXIS2_ERROR_SVC_OR_OP_NOT_FOUND)
+            {
+                body_string =
+                    axis2_http_transport_utils_get_not_found(env, conf_ctx);
+                request->content_type = "text/xml";
+                request->status = 404;
             }
             else
             {
-                body_string = axis2_http_transport_utils_get_services_html(env,
-                                                                           conf_ctx);
-                request->content_type = "text/html";
-
+                body_string =
+                    axis2_http_transport_utils_get_services_html(env, conf_ctx);
+                request->content_type = "text/xml";
+                request->status = HTTP_INTERNAL_SERVER_ERROR;
             }
 
             if (body_string)
@@ -321,7 +351,6 @@ axis2_apache2_worker_process_request(
             }
             send_status = OK;
         }
-
     }
     else if (M_POST == request->method_number || M_PUT == request->method_number)
     {
@@ -340,7 +369,31 @@ axis2_apache2_worker_process_request(
                  content_type, content_length,
                  soap_action, (axis2_char_t *) req_url);
         }
-        if (status == AXIS2_FAILURE)
+        if (AXIS2_FAILURE == status && (M_PUT == request->method_number || 
+            axis2_msg_ctx_get_doing_rest(msg_ctx, env)))
+        {
+            if (env->error->error_number == AXIS2_ERROR_SVC_OR_OP_NOT_FOUND)
+            {
+                body_string =
+                    axis2_http_transport_utils_get_not_found(env, conf_ctx);
+                request->content_type = "text/xml";
+                request->status = 404;
+            }
+            else
+            {
+                body_string =
+                    axis2_http_transport_utils_get_services_html(env, conf_ctx);
+                request->content_type = "text/xml";
+                request->status = HTTP_INTERNAL_SERVER_ERROR;
+            }
+
+            if (body_string)
+            {
+                body_string_len = axutil_strlen(body_string);
+            }
+            send_status = OK;
+        }
+        else if (status == AXIS2_FAILURE)
         {
             axis2_msg_ctx_t *fault_ctx = NULL;
             axis2_char_t *fault_code = NULL;

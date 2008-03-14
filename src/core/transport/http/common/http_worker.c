@@ -451,7 +451,7 @@ axis2_http_worker_process_request(
                  axis2_http_simple_request_get_content_type(simple_request, env),
                  content_length, soap_action_str, url_external_form);
         }
-        if (AXIS2_FALSE == status && (is_put ||
+        if (AXIS2_FAILURE == status && (is_put ||
             axis2_msg_ctx_get_doing_rest(msg_ctx, env)))
         {
             axis2_http_header_t *cont_len = NULL;
