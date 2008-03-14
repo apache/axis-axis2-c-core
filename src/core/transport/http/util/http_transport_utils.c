@@ -399,7 +399,7 @@ axis2_http_transport_utils_process_http_post_request(
 
     if(soap_action_header){
     axis2_msg_ctx_set_soap_action(msg_ctx, env, soap_action_header);
-    }else{
+    }else if (soap_action){
         axutil_string_t *soap_action_str = NULL;
         soap_action_str = axutil_string_create(env,soap_action);
         axis2_msg_ctx_set_soap_action(msg_ctx, env, soap_action_str);
@@ -531,6 +531,15 @@ axis2_http_transport_utils_process_http_post_request(
             axiom_soap_body_add_child(def_body, env, root_node);
             axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
             axis2_msg_ctx_set_rest_http_method(msg_ctx, env, AXIS2_HTTP_POST);
+        }
+        else
+        {
+            return AXIS2_FAILURE;
+        }
+        if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env,
+                                                                            msg_ctx))
+        {
+            return AXIS2_FAILURE;
         }
     }
 
@@ -899,6 +908,15 @@ axis2_http_transport_utils_process_http_put_request(
             axiom_soap_body_add_child(def_body, env, root_node);
             axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
             axis2_msg_ctx_set_rest_http_method(msg_ctx, env, AXIS2_HTTP_PUT);
+        }
+        else
+        {
+            return AXIS2_FAILURE;
+        }
+        if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env,
+                                                                            msg_ctx))
+        {
+            return AXIS2_FAILURE;
         }
     }
 
