@@ -317,7 +317,7 @@ axis2_apache2_worker_process_request(
             {
                 body_string =
                     axis2_http_transport_utils_get_services_html(env, conf_ctx);
-                request->content_type = "text/xml";
+                request->content_type = "text/html";
             }
             else if (M_DELETE != request->method_number && wsdl)
             {
@@ -334,14 +334,14 @@ axis2_apache2_worker_process_request(
             {
                 body_string =
                     axis2_http_transport_utils_get_not_found(env, conf_ctx);
-                request->content_type = "text/xml";
+                request->content_type = "text/html";
                 request->status = 404;
             }
             else
             {
                 body_string =
                     axis2_http_transport_utils_get_services_html(env, conf_ctx);
-                request->content_type = "text/xml";
+                request->content_type = "text/html";
                 request->status = HTTP_INTERNAL_SERVER_ERROR;
             }
 
@@ -376,14 +376,14 @@ axis2_apache2_worker_process_request(
             {
                 body_string =
                     axis2_http_transport_utils_get_not_found(env, conf_ctx);
-                request->content_type = "text/xml";
+                request->content_type = "text/html";
                 request->status = 404;
             }
             else
             {
                 body_string =
                     axis2_http_transport_utils_get_services_html(env, conf_ctx);
-                request->content_type = "text/xml";
+                request->content_type = "text/html";
                 request->status = HTTP_INTERNAL_SERVER_ERROR;
             }
 
