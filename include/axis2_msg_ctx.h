@@ -1447,12 +1447,41 @@ extern "C"
         const axutil_env_t * env);
 
     /**
+     * Sets the list of supported REST HTTP Methods
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @param supported_rest_http_methods pointer array list containing
+     * the list of HTTP Methods supported. Message context does
+     * assumes the ownership of the array list. Anything added to this
+     * arrary list will be freed by the msg_ctx
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_supported_rest_http_methods(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env,
+        axutil_array_list_t * supported_rest_http_methods);
+
+    /**
+     * Gets the list of supported REST HTTP Methods 
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return pointer array list containing
+     * the list of HTTP Methods supported. Message context does
+     * assumes the ownership of the array list
+     */
+    axutil_array_list_t *AXIS2_CALL
+    axis2_msg_ctx_get_supported_rest_http_methods(
+        const axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
+    /**
      * Sets the execution chain to be invoked. The execution chain is a 
      * list of phases containing the handlers to be invoked.
      * @param msg_ctx message context
      * @param env pointer to environment struct
      * @param execution_chain pointer array list containing the list of 
-     * handlers that constitute the execution chain. message context does
+     * handlers that constitute the execution chain. Message context does
      * not assume the ownership of the array list
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
@@ -1468,7 +1497,7 @@ extern "C"
      * @param msg_ctx message context
      * @param env pointer to environment struct
      * @return pointer array list containing the list of handlers that 
-     * constitute the execution chain. message context does not assume 
+     * constitute the execution chain. Message context does not assume 
      * the ownership of the array list
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL

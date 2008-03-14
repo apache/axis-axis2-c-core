@@ -27,6 +27,7 @@
 #include <axiom_soap_builder.h>
 #include <axiom_soap_body.h>
 #include <axiom_soap_const.h>
+#include <axis2_http_transport.h>
 
 
 const axis2_char_t *AXIS2_REST_DISP_NAME = "rest_dispatcher";
@@ -209,8 +210,43 @@ axis2_rest_disp_find_op(
                                  axis2_msg_ctx_get_rest_http_method(msg_ctx, env), location,
                                  &param_count, &params);
                         if (op)
+                        {
                             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                                             "Operation found using target endpoint uri fragment");
+                        }
+                        else
+                        {
+                            int i = 0;
+                            int j = 0;
+                            axutil_array_list_t *supported_rest_methods = NULL;
+                            axis2_char_t *rest_methods[] = {AXIS2_HTTP_GET, AXIS2_HTTP_POST,
+                                AXIS2_HTTP_PUT, AXIS2_HTTP_DELETE, AXIS2_HTTP_HEAD};
+                            supported_rest_methods = axutil_array_list_create(env, 0);
+                            for (i = 0; i < 5; i++)
+                            {
+                                if (axutil_strcasecmp(rest_methods[i],
+                                    axis2_msg_ctx_get_rest_http_method(msg_ctx, env)))
+                                {
+                                    if (axis2_rest_disp_get_rest_op_with_method_and_location(svc, env,
+                                        rest_methods[i], location, &param_count, &params))
+                                    {
+                                        for (j = 0; j < param_count; j++)
+                                        {
+                                            AXIS2_FREE (env->allocator, params[j][0]);
+                                            AXIS2_FREE (env->allocator, params[j][1]);
+                                            AXIS2_FREE (env->allocator, params[j]);
+                                        }
+                                        if (params)
+                                        {
+                                            AXIS2_FREE (env->allocator, params);
+                                        }
+                                        axutil_array_list_add(supported_rest_methods, env,
+                                                              axutil_strdup(env, rest_methods[i]));
+                                    }
+                                }
+                            }
+                            axis2_msg_ctx_set_supported_rest_http_methods(msg_ctx, env, supported_rest_methods);
+                        }
                     }
                 }
                 if (url_tokens[0])

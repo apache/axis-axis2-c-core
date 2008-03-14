@@ -110,6 +110,12 @@ struct axis2_msg_ctx
     /** REST HTTP Method */
     axis2_char_t *rest_http_method;
 
+    /** 
+     * Supported REST HTTP Methods
+     * Made use of in a 405 Error Scenario
+     */
+    axutil_array_list_t *supported_rest_http_methods;
+
     /** are we doing MTOM now? */
     axis2_bool_t doing_mtom;
 
@@ -245,6 +251,7 @@ axis2_msg_ctx_create(
     msg_ctx->paused_handler_name = NULL;
     msg_ctx->soap_action = NULL;
     msg_ctx->rest_http_method = NULL;
+    msg_ctx->supported_rest_http_methods = NULL;
     msg_ctx->doing_mtom = AXIS2_FALSE;
     msg_ctx->doing_rest = AXIS2_FALSE;
     msg_ctx->do_rest_through_post = AXIS2_FALSE;
@@ -420,6 +427,24 @@ axis2_msg_ctx_free(
     if (msg_ctx->auth_type)
     {
         AXIS2_FREE(env->allocator, msg_ctx->auth_type);
+    }
+
+    if (msg_ctx->supported_rest_http_methods)
+    {
+        int i = 0;
+        int size = 0;
+
+        size = axutil_array_list_size(msg_ctx->supported_rest_http_methods, env);
+        for (i = 0; i < size; i++)
+        {
+            axis2_char_t *rest_http_method = NULL;
+            rest_http_method = axutil_array_list_get(msg_ctx->supported_rest_http_methods, env, i);
+            if (rest_http_method)
+            {
+                AXIS2_FREE(env->allocator, rest_http_method);
+            }
+        }
+        axutil_array_list_free(msg_ctx->supported_rest_http_methods, env);
     }
 
     AXIS2_FREE(env->allocator, msg_ctx);
@@ -1838,6 +1863,27 @@ axis2_msg_ctx_get_execution_chain(
 {
     AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
     return msg_ctx->execution_chain;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_supported_rest_http_methods(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env,
+    axutil_array_list_t * supported_rest_http_methods)
+{
+    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    msg_ctx->supported_rest_http_methods = supported_rest_http_methods;
+
+    return AXIS2_SUCCESS;
+}
+
+axutil_array_list_t *AXIS2_CALL
+axis2_msg_ctx_get_supported_rest_http_methods(
+    const axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    return msg_ctx->supported_rest_http_methods;
 }
 
 axis2_status_t AXIS2_CALL
