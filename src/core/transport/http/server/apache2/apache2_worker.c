@@ -166,6 +166,7 @@ axis2_apache2_worker_process_request(
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_char_t *peer_ip = NULL;
     axutil_property_t *peer_property = NULL;
+    axutil_url_t *test_url = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, request, AXIS2_CRITICAL_FAILURE);
@@ -182,6 +183,18 @@ axis2_apache2_worker_process_request(
     /* We are sure that the difference lies within the int range */
     http_version = request->protocol;
     req_url = request->unparsed_uri;
+
+    test_url = axutil_url_parse_string(env, req_url);
+    if (test_url)
+    {
+        axutil_url_free(test_url, env);
+        test_url = NULL;
+    }
+    else
+    {
+        send_status = OK;
+        request->status = HTTP_BAD_REQUEST;
+    }
 
     content_type = (axis2_char_t *) apr_table_get(request->headers_in,
                                                   AXIS2_HTTP_HEADER_CONTENT_TYPE);

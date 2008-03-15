@@ -195,6 +195,27 @@ axis2_http_worker_process_request(
         }
 
     }
+    request_url = axutil_url_create(env, "http", svr_ip,
+                                    http_worker->svr_port, path);
+    if (request_url)
+    {
+        url_external_form = axutil_url_to_external_form(request_url, env);
+    }
+
+    if (!url_external_form)
+    {
+        axis2_http_simple_response_set_status_line(response, env,
+                                                       http_version,
+                                                       AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL,
+                                                       AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_NAME);
+        status =
+            axis2_simple_http_svr_conn_write_response(svr_conn, env,
+                                                          response);
+        axis2_http_simple_response_free(response, env);
+        response = NULL;
+        return status;
+    }
+
     request_body = axis2_http_simple_request_get_body(simple_request, env);
 
     out_desc = axis2_conf_get_transport_out(axis2_conf_ctx_get_conf
@@ -227,11 +248,6 @@ axis2_http_worker_process_request(
     path =
         axis2_http_request_line_get_uri
         (axis2_http_simple_request_get_request_line(simple_request, env), env);
-
-    request_url = axutil_url_create(env, "http", svr_ip,
-                                    http_worker->svr_port, path);
-
-    url_external_form = axutil_url_to_external_form(request_url, env);
 
     axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
