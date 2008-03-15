@@ -384,13 +384,54 @@ axis2_http_worker_process_request(
             }
             else if (env->error->error_number == AXIS2_ERROR_SVC_OR_OP_NOT_FOUND)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           404,
-                                                           "Not Found");
+                axutil_array_list_t *method_list = NULL;
+                int size = 0;
+                method_list = axis2_msg_ctx_get_supported_rest_http_methods(msg_ctx, env);
+                size = axutil_array_list_size(method_list, env);
+                if (method_list && size)
+                {
+                    axis2_http_header_t *allow_header = NULL;
+                    axis2_char_t *method_list_str = NULL;
+                    axis2_char_t *temp;
+                    int i = 0;
+                    method_list_str = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 29);
+                    temp = method_list_str;
+                    for (i = 0; i < size; i++)
+                    {
+                        if (i)
+                        {
+                            sprintf(temp, ", ");
+                            temp += 2;
+                        }
+                        sprintf(temp, "%s", (axis2_char_t *) 
+                                axutil_array_list_get(method_list, env, i));
+                        temp += strlen(temp);
+                    }
+                    *temp = '\0';
+                    axis2_http_simple_response_set_status_line(response, env,
+                                                               http_version,
+                                                               405,
+                                                               "Method Not Allowed");
 
-                body_string = axis2_http_transport_utils_get_not_found(env,
-                                                                       conf_ctx);
+                    body_string =
+                        axis2_http_transport_utils_get_method_not_allowed(env,
+                                                                          conf_ctx);
+                    allow_header = axis2_http_header_create(env,
+                                                            "Allow",
+                                                            method_list_str);
+                    axis2_http_simple_response_set_header(response, env, allow_header);
+                    AXIS2_FREE(env->allocator, method_list_str);
+                }
+                else 
+                {
+                    axis2_http_simple_response_set_status_line(response, env,
+                                                               http_version,
+                                                               404,
+                                                               "Not Found");
+
+                    body_string = axis2_http_transport_utils_get_not_found(env,
+                                                                           conf_ctx);
+                }
                 cont_type = axis2_http_header_create(env,
                                                      AXIS2_HTTP_HEADER_CONTENT_TYPE,
                                                      AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
@@ -459,13 +500,54 @@ axis2_http_worker_process_request(
             axis2_char_t *body_string = NULL;
             if (env->error->error_number == AXIS2_ERROR_SVC_OR_OP_NOT_FOUND)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           404,
-                                                           "Not Found");
+                axutil_array_list_t *method_list = NULL;
+                int size = 0;
+                method_list = axis2_msg_ctx_get_supported_rest_http_methods(msg_ctx, env);
+                size = axutil_array_list_size(method_list, env);
+                if (method_list && size)
+                {
+                    axis2_http_header_t *allow_header = NULL;
+                    axis2_char_t *method_list_str = NULL;
+                    axis2_char_t *temp;
+                    int i = 0;
+                    method_list_str = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 29);
+                    temp = method_list_str;
+                    for (i = 0; i < size; i++)
+                    {
+                        if (i)
+                        {
+                            sprintf(temp, ", ");
+                            temp += 2;
+                        }
+                        sprintf(temp, "%s", (axis2_char_t *)
+                                axutil_array_list_get(method_list, env, i));
+                        temp += strlen(temp);
+                    }
+                    *temp = '\0';
+                    axis2_http_simple_response_set_status_line(response, env,
+                                                               http_version,
+                                                               405,
+                                                               "Method Not Allowed");
 
-                body_string = axis2_http_transport_utils_get_not_found(env,
-                                                                       conf_ctx);
+                    body_string =
+                        axis2_http_transport_utils_get_method_not_allowed(env,
+                                                                          conf_ctx);
+                    allow_header = axis2_http_header_create(env,
+                                                            "Allow",
+                                                            method_list_str);
+                    axis2_http_simple_response_set_header(response, env, allow_header);
+                    AXIS2_FREE(env->allocator, method_list_str);
+                }
+                else
+                {
+                    axis2_http_simple_response_set_status_line(response, env,
+                                                               http_version,
+                                                               404,
+                                                               "Not Found");
+
+                    body_string = axis2_http_transport_utils_get_not_found(env,
+                                                                           conf_ctx);
+                }
                 cont_type = axis2_http_header_create(env,
                                                      AXIS2_HTTP_HEADER_CONTENT_TYPE,
                                                      AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);

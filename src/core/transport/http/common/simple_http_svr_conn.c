@@ -82,10 +82,7 @@ axis2_simple_http_svr_conn_close(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (svr_conn->stream)
-    {
         axutil_stream_free(svr_conn->stream, env);
-    }
     if (-1 != svr_conn->socket)
     {
         axutil_network_handler_close_socket(env, svr_conn->socket);
