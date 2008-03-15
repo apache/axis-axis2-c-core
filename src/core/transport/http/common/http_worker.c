@@ -182,8 +182,9 @@ axis2_http_worker_process_request(
                                (simple_request, env), env), AXIS2_HTTP_PUT))
         {
             axis2_http_simple_response_set_status_line(response, env,
-                                                       http_version, 411,
-                                                       "Length Required");
+                                                       http_version,
+                                                       AXIS2_HTTP_RESPONSE_LENGTH_REQUIRED_CODE_VAL,
+                                                       AXIS2_HTTP_RESPONSE_LENGTH_REQUIRED_CODE_NAME);
             status =
                 axis2_simple_http_svr_conn_write_response(svr_conn, env,
                                                           response);
@@ -359,7 +360,7 @@ axis2_http_worker_process_request(
                 axis2_http_simple_response_set_status_line(response, env,
                                                            http_version,
                                                            AXIS2_HTTP_RESPONSE_OK_CODE_VAL,
-                                                           "OK");
+                                                           AXIS2_HTTP_RESPONSE_OK_CODE_NAME);
                 body_string = axis2_http_transport_utils_get_services_html(env,
                                                                            conf_ctx);
                 cont_type = axis2_http_header_create(env,
@@ -372,7 +373,7 @@ axis2_http_worker_process_request(
                 axis2_http_simple_response_set_status_line(response, env,
                                                            http_version,
                                                            AXIS2_HTTP_RESPONSE_OK_CODE_VAL,
-                                                           "OK");
+                                                           AXIS2_HTTP_RESPONSE_OK_CODE_NAME);
                 body_string =
                     axis2_http_transport_utils_get_services_static_wsdl(env,
                                                                         conf_ctx,
@@ -410,14 +411,14 @@ axis2_http_worker_process_request(
                     *temp = '\0';
                     axis2_http_simple_response_set_status_line(response, env,
                                                                http_version,
-                                                               405,
-                                                               "Method Not Allowed");
+                                                               AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_VAL,
+                                                               AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_NAME);
 
                     body_string =
                         axis2_http_transport_utils_get_method_not_allowed(env,
                                                                           conf_ctx);
                     allow_header = axis2_http_header_create(env,
-                                                            "Allow",
+                                                            AXIS2_HTTP_HEADER_ALLOW,
                                                             method_list_str);
                     axis2_http_simple_response_set_header(response, env, allow_header);
                     AXIS2_FREE(env->allocator, method_list_str);
@@ -426,8 +427,8 @@ axis2_http_worker_process_request(
                 {
                     axis2_http_simple_response_set_status_line(response, env,
                                                                http_version,
-                                                               404,
-                                                               "Not Found");
+                                                               AXIS2_HTTP_RESPONSE_NOT_FOUND_CODE_VAL,
+                                                               AXIS2_HTTP_RESPONSE_NOT_FOUND_CODE_NAME);
 
                     body_string = axis2_http_transport_utils_get_not_found(env,
                                                                            conf_ctx);
@@ -441,8 +442,8 @@ axis2_http_worker_process_request(
             {
                 axis2_http_simple_response_set_status_line(response, env,
                                                            http_version,
-                                                           500,
-                                                           "Internal Server Error");
+                                                           AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_VAL,
+                                                           AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_NAME);
 
                 body_string = axis2_http_transport_utils_get_services_html(env,
                                                                            conf_ctx);
@@ -526,14 +527,14 @@ axis2_http_worker_process_request(
                     *temp = '\0';
                     axis2_http_simple_response_set_status_line(response, env,
                                                                http_version,
-                                                               405,
-                                                               "Method Not Allowed");
+                                                               AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_VAL,
+                                                               AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_NAME);
 
                     body_string =
                         axis2_http_transport_utils_get_method_not_allowed(env,
                                                                           conf_ctx);
                     allow_header = axis2_http_header_create(env,
-                                                            "Allow",
+                                                            AXIS2_HTTP_HEADER_ALLOW,
                                                             method_list_str);
                     axis2_http_simple_response_set_header(response, env, allow_header);
                     AXIS2_FREE(env->allocator, method_list_str);
@@ -542,8 +543,8 @@ axis2_http_worker_process_request(
                 {
                     axis2_http_simple_response_set_status_line(response, env,
                                                                http_version,
-                                                               404,
-                                                               "Not Found");
+                                                               AXIS2_HTTP_RESPONSE_NOT_FOUND_CODE_VAL,
+                                                               AXIS2_HTTP_RESPONSE_NOT_FOUND_CODE_NAME);
 
                     body_string = axis2_http_transport_utils_get_not_found(env,
                                                                            conf_ctx);
@@ -557,8 +558,8 @@ axis2_http_worker_process_request(
             {
                 axis2_http_simple_response_set_status_line(response, env,
                                                            http_version,
-                                                           500,
-                                                           "Internal Server Error");
+                                                           AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_VAL,
+                                                           AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_NAME);
 
                 body_string = axis2_http_transport_utils_get_services_html(env,
                                                                            conf_ctx);
@@ -632,9 +633,9 @@ axis2_http_worker_process_request(
             {
                 if (!http_error_value)
                 {
-                    sprintf(status_line_str, "%s 500 Internal Server Error\r\n",
-                            axis2_http_request_line_get_http_version(req_line,
-                                                                     env));
+                    sprintf(status_line_str, "%s %s\r\n",
+                            axis2_http_request_line_get_http_version(req_line, env),
+                            AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR);
                 }
                 else
                 {
@@ -646,8 +647,8 @@ axis2_http_worker_process_request(
             }
             else
             {
-                sprintf(status_line_str, "HTTP/1.1 500 Internal Server Error\
-                        \r\n");
+                sprintf(status_line_str, "%s %s\r\n", "HTTP/1.1",
+                        AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR);
             }
 
             tmp_stat_line = axis2_http_status_line_create(env, status_line_str);
@@ -681,7 +682,7 @@ axis2_http_worker_process_request(
     {
         axis2_http_simple_response_set_status_line(response, env, http_version,
                                                    AXIS2_HTTP_RESPONSE_OK_CODE_VAL,
-                                                   "OK");
+                                                   AXIS2_HTTP_RESPONSE_OK_CODE_NAME);
         if (!is_head)
         {
             axis2_http_simple_response_set_body_stream(response, env, out_stream);
@@ -691,7 +692,7 @@ axis2_http_worker_process_request(
     {
         axis2_http_simple_response_set_status_line(response, env, http_version,
                                                    AXIS2_HTTP_RESPONSE_ACK_CODE_VAL,
-                                                   "Accepted");
+                                                   AXIS2_HTTP_RESPONSE_ACK_CODE_NAME);
     }
     axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
                                            simple_request, response,

@@ -317,7 +317,7 @@ axis2_apache2_worker_process_request(
             {
                 body_string =
                     axis2_http_transport_utils_get_services_html(env, conf_ctx);
-                request->content_type = "text/html";
+                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
             }
             else if (M_DELETE != request->method_number && wsdl)
             {
@@ -327,7 +327,7 @@ axis2_apache2_worker_process_request(
                                                                         (axis2_char_t
                                                                          *)
                                                                         req_url);
-                request->content_type = "text/xml";
+                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
                            
             }
             else if (env->error->error_number == AXIS2_ERROR_SVC_OR_OP_NOT_FOUND)
@@ -345,28 +345,28 @@ axis2_apache2_worker_process_request(
                     request->allowed = 0;
                     for (i = 0; i < size; i++)
                     {
-                        if (!strcasecmp("PUT", (axis2_char_t *) 
+                        if (!strcasecmp(AXIS2_HTTP_PUT, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
                             request->allowed |= AP_METHOD_BIT << M_PUT;
                         }
-                        else if (!strcasecmp("POST", (axis2_char_t *) 
+                        else if (!strcasecmp(AXIS2_HTTP_POST, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
                             request->allowed |= AP_METHOD_BIT << M_POST;
                         }
-                        else if (!strcasecmp("GET", (axis2_char_t *) 
+                        else if (!strcasecmp(AXIS2_HTTP_GET, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
                             request->allowed |= AP_METHOD_BIT << M_GET;
                         }
-                        else if (!strcasecmp("HEAD", (axis2_char_t *) 
+                        else if (!strcasecmp(AXIS2_HTTP_HEAD, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
                             /* Apache Can't differentiate between HEAD and GET */
                             request->allowed |= AP_METHOD_BIT << M_GET;
                         }
-                        else if (!strcasecmp("DELETE", (axis2_char_t *) 
+                        else if (!strcasecmp(AXIS2_HTTP_DELETE, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
                             request->allowed |= AP_METHOD_BIT << M_DELETE;
@@ -374,21 +374,21 @@ axis2_apache2_worker_process_request(
                     }
                     body_string =
                         axis2_http_transport_utils_get_method_not_allowed(env, conf_ctx);
-                    request->status = 405;
+                    request->status = HTTP_METHOD_NOT_ALLOWED;
                 }
                 else
                 {
                     body_string =
                         axis2_http_transport_utils_get_not_found(env, conf_ctx);
-                    request->status = 404;
+                    request->status = HTTP_NOT_FOUND;
                 }
-                request->content_type = "text/html";
+                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
             }
             else
             {
                 body_string =
                     axis2_http_transport_utils_get_services_html(env, conf_ctx);
-                request->content_type = "text/html";
+                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
                 request->status = HTTP_INTERNAL_SERVER_ERROR;
             }
 
@@ -421,16 +421,63 @@ axis2_apache2_worker_process_request(
         {
             if (env->error->error_number == AXIS2_ERROR_SVC_OR_OP_NOT_FOUND)
             {
-                body_string =
-                    axis2_http_transport_utils_get_not_found(env, conf_ctx);
-                request->content_type = "text/html";
-                request->status = 404;
+                axutil_array_list_t *method_list = NULL;
+                int size = 0;
+                method_list = axis2_msg_ctx_get_supported_rest_http_methods(msg_ctx, env);
+                size = axutil_array_list_size(method_list, env);
+                if (method_list && size)
+                {
+                    int i = 0;
+                    /* The "Allow" header doesn't show up at the moment.
+                     * This needs to be fixed ASAP.
+                     */
+                    request->allowed = 0;
+                    for (i = 0; i < size; i++)
+                    {
+                        if (!strcasecmp(AXIS2_HTTP_PUT, (axis2_char_t *) 
+                                axutil_array_list_get(method_list, env, i)))
+                        {
+                            request->allowed |= AP_METHOD_BIT << M_PUT;
+                        }
+                        else if (!strcasecmp(AXIS2_HTTP_POST, (axis2_char_t *) 
+                                axutil_array_list_get(method_list, env, i)))
+                        {
+                            request->allowed |= AP_METHOD_BIT << M_POST;
+                        }
+                        else if (!strcasecmp(AXIS2_HTTP_GET, (axis2_char_t *) 
+                                axutil_array_list_get(method_list, env, i)))
+                        {
+                            request->allowed |= AP_METHOD_BIT << M_GET;
+                        }
+                        else if (!strcasecmp(AXIS2_HTTP_HEAD, (axis2_char_t *) 
+                                axutil_array_list_get(method_list, env, i)))
+                        {
+                            /* Apache Can't differentiate between HEAD and GET */
+                            request->allowed |= AP_METHOD_BIT << M_GET;
+                        }
+                        else if (!strcasecmp(AXIS2_HTTP_DELETE, (axis2_char_t *) 
+                                axutil_array_list_get(method_list, env, i)))
+                        {
+                            request->allowed |= AP_METHOD_BIT << M_DELETE;
+                        }
+                    }
+                    body_string =
+                        axis2_http_transport_utils_get_method_not_allowed(env, conf_ctx);
+                    request->status = HTTP_METHOD_NOT_ALLOWED;
+                }
+                else
+                {
+                    body_string =
+                        axis2_http_transport_utils_get_not_found(env, conf_ctx);
+                    request->status = HTTP_NOT_FOUND;
+                }
+                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
             }
             else
             {
                 body_string =
                     axis2_http_transport_utils_get_services_html(env, conf_ctx);
-                request->content_type = "text/html";
+                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
                 request->status = HTTP_INTERNAL_SERVER_ERROR;
             }
 
