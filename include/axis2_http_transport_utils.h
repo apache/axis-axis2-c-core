@@ -151,6 +151,11 @@ extern "C"
         axis2_conf_ctx_t * conf_ctx);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_transport_utils_get_method_not_allowed(
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 
     axis2_http_transport_utils_get_services_html(
         const axutil_env_t * env,
