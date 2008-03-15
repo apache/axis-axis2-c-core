@@ -189,7 +189,7 @@ axis2_simple_http_svr_conn_read_request(
         }
     }
 
-    if (strlen(str_line))
+    /*if (strlen(str_line))
     {
         if (0 != axutil_strncasecmp(str_line, "GET", 3) && 0 !=
             axutil_strncasecmp(str_line, "POST", 4) && 0 !=
@@ -206,7 +206,7 @@ axis2_simple_http_svr_conn_read_request(
                                 axutil_strlen(write_buf) + 1);
             return NULL;
         }
-    }
+    }*/
     request_line = axis2_http_request_line_parse_line(env, str_line);
     if (!request_line)
     {

@@ -1344,6 +1344,27 @@ axis2_http_transport_utils_get_not_found(
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_not_implemented(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx)
+{
+    return "<html><head><title>501 Not Implemented</title></head>"
+        "<body><h2>Not Found</h2><p>The requested Method is not"
+        " implemented on this server.</p></body></html>";
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_internal_server_error(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx)
+{
+    return "<html><head><title>500 Internal Server Error</title></head>"
+        "<body><h2>Not Found</h2><p>The server encountered an unexpected"
+        " condition which prevented it from fulfilling the request."
+        "</p></body></html>";
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_transport_utils_get_method_not_allowed(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)
