@@ -387,7 +387,7 @@ axis2_apache2_worker_process_request(
             else
             {
                 body_string =
-                    axis2_http_transport_utils_get_services_html(env, conf_ctx);
+                    axis2_http_transport_utils_get_internal_server_error(env, conf_ctx);
                 request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
                 request->status = HTTP_INTERNAL_SERVER_ERROR;
             }
@@ -476,7 +476,7 @@ axis2_apache2_worker_process_request(
             else
             {
                 body_string =
-                    axis2_http_transport_utils_get_services_html(env, conf_ctx);
+                    axis2_http_transport_utils_get_internal_server_error(env, conf_ctx);
                 request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
                 request->status = HTTP_INTERNAL_SERVER_ERROR;
             }
@@ -526,6 +526,19 @@ axis2_apache2_worker_process_request(
             send_status = OK;
             request->status = HTTP_INTERNAL_SERVER_ERROR;
         }
+    }
+    else
+    {
+        body_string =
+            axis2_http_transport_utils_get_not_implemented(env, conf_ctx);
+        request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+
+        if (body_string)
+        {
+            body_string_len = axutil_strlen(body_string);
+        }
+        send_status = OK;
+        request->status = HTTP_NOT_IMPLEMENTED;
     }
 
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
