@@ -159,7 +159,7 @@ axis2_apache2_worker_process_request(
     axis2_char_t *req_url = NULL;
     axis2_char_t *body_string = NULL;
     unsigned int body_string_len = 0;
-    int send_status = -1;
+    int send_status = DECLINED;
     axis2_char_t *content_type = NULL;
     axis2_http_out_transport_info_t *apache2_out_transport_info = NULL;
     axis2_char_t *ctx_uuid = NULL;
@@ -332,10 +332,57 @@ axis2_apache2_worker_process_request(
             }
             else if (env->error->error_number == AXIS2_ERROR_SVC_OR_OP_NOT_FOUND)
             {
-                body_string =
-                    axis2_http_transport_utils_get_not_found(env, conf_ctx);
+                axutil_array_list_t *method_list = NULL;
+                int size = 0;
+                method_list = axis2_msg_ctx_get_supported_rest_http_methods(msg_ctx, env);
+                size = axutil_array_list_size(method_list, env);
+                if (method_list && size)
+                {
+                    int i = 0;
+                    /* The "Allow" header doesn't show up at the moment.
+                     * This needs to be fixed ASAP.
+                     */
+                    request->allowed = 0;
+                    for (i = 0; i < size; i++)
+                    {
+                        if (!strcasecmp("PUT", (axis2_char_t *) 
+                                axutil_array_list_get(method_list, env, i)))
+                        {
+                            request->allowed |= AP_METHOD_BIT << M_PUT;
+                        }
+                        else if (!strcasecmp("POST", (axis2_char_t *) 
+                                axutil_array_list_get(method_list, env, i)))
+                        {
+                            request->allowed |= AP_METHOD_BIT << M_POST;
+                        }
+                        else if (!strcasecmp("GET", (axis2_char_t *) 
+                                axutil_array_list_get(method_list, env, i)))
+                        {
+                            request->allowed |= AP_METHOD_BIT << M_GET;
+                        }
+                        else if (!strcasecmp("HEAD", (axis2_char_t *) 
+                                axutil_array_list_get(method_list, env, i)))
+                        {
+                            /* Apache Can't differentiate between HEAD and GET */
+                            request->allowed |= AP_METHOD_BIT << M_GET;
+                        }
+                        else if (!strcasecmp("DELETE", (axis2_char_t *) 
+                                axutil_array_list_get(method_list, env, i)))
+                        {
+                            request->allowed |= AP_METHOD_BIT << M_DELETE;
+                        }
+                    }
+                    body_string =
+                        axis2_http_transport_utils_get_method_not_allowed(env, conf_ctx);
+                    request->status = 405;
+                }
+                else
+                {
+                    body_string =
+                        axis2_http_transport_utils_get_not_found(env, conf_ctx);
+                    request->status = 404;
+                }
                 request->content_type = "text/html";
-                request->status = 404;
             }
             else
             {
@@ -436,7 +483,7 @@ axis2_apache2_worker_process_request(
 
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
 
-    if (-1 == send_status)
+    if (send_status == DECLINED)
     {
         if (axis2_op_ctx_get_response_written(op_ctx, env))
         {
