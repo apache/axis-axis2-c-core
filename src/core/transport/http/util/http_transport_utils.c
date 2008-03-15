@@ -1349,7 +1349,7 @@ axis2_http_transport_utils_get_not_implemented(
     axis2_conf_ctx_t * conf_ctx)
 {
     return "<html><head><title>501 Not Implemented</title></head>"
-        "<body><h2>Not Found</h2><p>The requested Method is not"
+        "<body><h2>Not Implemented</h2><p>The requested Method is not"
         " implemented on this server.</p></body></html>";
 }
 
@@ -1359,7 +1359,7 @@ axis2_http_transport_utils_get_internal_server_error(
     axis2_conf_ctx_t * conf_ctx)
 {
     return "<html><head><title>500 Internal Server Error</title></head>"
-        "<body><h2>Not Found</h2><p>The server encountered an unexpected"
+        "<body><h2>Internal Server Error</h2><p>The server encountered an unexpected"
         " condition which prevented it from fulfilling the request."
         "</p></body></html>";
 }
