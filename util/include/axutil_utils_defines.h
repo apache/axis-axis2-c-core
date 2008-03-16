@@ -76,6 +76,10 @@ extern "C"
     typedef unsigned int axis2_ssize_t;
     typedef char axis2_byte_t;
 
+#define AXIS2_STRING(s) s
+
+#define AXIS2_CHAR(c) c
+
 #define AXIS2_CRLF_LENGTH 2
 
     /* These constant definitions should later be moved to platform dependant
@@ -114,18 +118,22 @@ extern "C"
 #if defined(__GNUC__)
 #if defined(__i386)
 #define AXIS2_CALL __attribute__((cdecl))
+#define AXIS2_WUR __attribute__((warn_unused_result))
 #else
 #define AXIS2_CALL
+#define AXIS2_WUR
 
 
 #endif
 #else
 #if defined(__unix)
 #define AXIS2_CALL
+#define AXIS2_WUR
 
 
 #else                           /* WIN32 */
 #define AXIS2_CALL __stdcall
+#define AXIS2_WUR
 #endif
 #endif
 #define AXIS2_THREAD_FUNC AXIS2_CALL
