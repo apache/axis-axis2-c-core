@@ -156,7 +156,7 @@ axis2_apache2_worker_process_request(
     axis2_bool_t processed = AXIS2_FALSE;
     int content_length = -1;
     axis2_char_t *encoding_header_value = NULL;
-    axis2_char_t *req_url = NULL;
+    axis2_char_t *url_external_form = NULL;
     axis2_char_t *body_string = NULL;
     unsigned int body_string_len = 0;
     int send_status = DECLINED;
@@ -166,7 +166,7 @@ axis2_apache2_worker_process_request(
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_char_t *peer_ip = NULL;
     axutil_property_t *peer_property = NULL;
-    axutil_url_t *test_url = NULL;
+    axutil_url_t *request_url = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, request, AXIS2_CRITICAL_FAILURE);
@@ -182,18 +182,27 @@ axis2_apache2_worker_process_request(
     content_length = (int)request->remaining;
     /* We are sure that the difference lies within the int range */
     http_version = request->protocol;
-    req_url = request->unparsed_uri;
 
-    test_url = axutil_url_parse_string(env, req_url);
-    if (test_url)
+    request_url = axutil_url_create(env, "http",
+                                    request->connection->local_host,
+                                    request->server->port,
+                                    request->unparsed_uri);
+    /* request->server->port doesn't give the port of the server.
+     * This has to be fixed. However, the port doesn't matter to the
+     * logic within this method as of present.
+     */
+    if (request_url)
     {
-        axutil_url_free(test_url, env);
-        test_url = NULL;
+        url_external_form = axutil_url_to_external_form(request_url, env);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, url_external_form);
+        axutil_url_free(request_url, env);
+        request_url = NULL;
     }
     else
     {
         send_status = OK;
         request->status = HTTP_BAD_REQUEST;
+        return send_status;
     }
 
     content_type = (axis2_char_t *) apr_table_get(request->headers_in,
@@ -276,33 +285,33 @@ axis2_apache2_worker_process_request(
             processed = axis2_http_transport_utils_process_http_delete_request
                 (env, msg_ctx, request_body, out_stream,
                  content_type, soap_action,
-                 req_url,
+                 url_external_form,
                  conf_ctx,
                  axis2_http_transport_utils_get_request_params(env,
                                                                (axis2_char_t *)
-                                                               req_url));
+                                                               url_external_form));
         }
         else if (request->header_only)
         {
             processed = axis2_http_transport_utils_process_http_head_request
                 (env, msg_ctx, request_body, out_stream,
                  content_type, soap_action,
-                 req_url,
+                 url_external_form,
                  conf_ctx,
                  axis2_http_transport_utils_get_request_params(env,
                                                                (axis2_char_t *)
-                                                               req_url));
+                                                               url_external_form));
         }
         else
         {
             processed = axis2_http_transport_utils_process_http_get_request
                 (env, msg_ctx, request_body, out_stream,
                  content_type, soap_action,
-                 req_url,
+                 url_external_form,
                  conf_ctx,
                  axis2_http_transport_utils_get_request_params(env,
                                                                (axis2_char_t *)
-                                                               req_url));
+                                                               url_external_form));
         }
         if (AXIS2_FALSE == processed)
         {
@@ -311,7 +320,7 @@ axis2_apache2_worker_process_request(
             if (M_DELETE != request->method_number)
             {
                 axis2_char_t *temp = NULL;
-                temp = strstr(req_url, AXIS2_REQUEST_URL_PREFIX);
+                temp = strstr(url_external_form, AXIS2_REQUEST_URL_PREFIX);
                 if (temp)
                 {
                     temp += strlen(AXIS2_REQUEST_URL_PREFIX);
@@ -325,7 +334,7 @@ axis2_apache2_worker_process_request(
                     }
                 }
             }
-            wsdl = strstr(req_url, AXIS2_REQUEST_WSDL);
+            wsdl = strstr(url_external_form, AXIS2_REQUEST_WSDL);
             if (is_services_path)
             {
                 body_string =
@@ -339,7 +348,7 @@ axis2_apache2_worker_process_request(
                                                                         conf_ctx,
                                                                         (axis2_char_t
                                                                          *)
-                                                                        req_url);
+                                                                        url_external_form);
                 request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
                            
             }
@@ -420,14 +429,14 @@ axis2_apache2_worker_process_request(
             status = axis2_http_transport_utils_process_http_post_request
                 (env, msg_ctx, request_body, out_stream,
                  content_type, content_length,
-                 soap_action, (axis2_char_t *) req_url);
+                 soap_action, (axis2_char_t *) url_external_form);
         }
         else
         {
             status = axis2_http_transport_utils_process_http_put_request
                 (env, msg_ctx, request_body, out_stream,
                  content_type, content_length,
-                 soap_action, (axis2_char_t *) req_url);
+                 soap_action, (axis2_char_t *) url_external_form);
         }
         if (AXIS2_FAILURE == status && (M_PUT == request->method_number || 
             axis2_msg_ctx_get_doing_rest(msg_ctx, env)))
