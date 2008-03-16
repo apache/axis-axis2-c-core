@@ -907,84 +907,87 @@ axis2_http_worker_process_request(
                 }
             }
         }
-        if (op_ctx && axis2_op_ctx_get_response_written(op_ctx, env))
+        if (!response_written)
         {
-            if (do_rest)
+            if (op_ctx && axis2_op_ctx_get_response_written(op_ctx, env))
             {
-                axis2_msg_ctx_t *out_msg_ctx = NULL;
-                axis2_msg_ctx_t *in_msg_ctx = NULL;
-                axis2_msg_ctx_t **msg_ctx_map = NULL;
+                if (do_rest)
+                {
+                    axis2_msg_ctx_t *out_msg_ctx = NULL;
+                    axis2_msg_ctx_t *in_msg_ctx = NULL;
+                    axis2_msg_ctx_t **msg_ctx_map = NULL;
 
-                msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
-                out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
-                in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
-                if (in_msg_ctx)
-                {
-                    /* TODO: Add neccessary handling */
-                }
-                if (out_msg_ctx)
-                {
-                    /* TODO: Add neccessary handling */
-                }
-            }
-            if (!request_handled)
-            {
-                axis2_http_simple_response_set_status_line(response, env, http_version,
-                                                           AXIS2_HTTP_RESPONSE_OK_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_OK_CODE_NAME);
-                if (!is_head)
-                {
-                    axis2_http_simple_response_set_body_stream(response, env, out_stream);
-                }
-            }
-        }
-        else if (op_ctx)
-        {
-            if (do_rest)
-            {
-                axis2_msg_ctx_t *out_msg_ctx = NULL;
-                axis2_msg_ctx_t *in_msg_ctx = NULL;
-                axis2_msg_ctx_t **msg_ctx_map = NULL;
-
-                msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
-                out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
-                in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
-                if (in_msg_ctx)
-                {
-                    /* TODO: Add neccessary handling */
-                }
-                if (out_msg_ctx)
-                {
-                    if (axis2_msg_ctx_get_no_content(out_msg_ctx, env))
+                    msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+                    out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+                    in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
+                    if (in_msg_ctx)
                     {
-                        axis2_http_simple_response_set_status_line(response, env, http_version,
-                                                                   AXIS2_HTTP_RESPONSE_NO_CONTENT_CODE_VAL,
-                                                                   AXIS2_HTTP_RESPONSE_NO_CONTENT_CODE_NAME);
-                        request_handled = AXIS2_TRUE;
+                        /* TODO: Add neccessary handling */
+                    }
+                    if (out_msg_ctx)
+                    {
+                        /* TODO: Add neccessary handling */
+                    }
+                }
+                if (!request_handled)
+                {
+                    axis2_http_simple_response_set_status_line(response, env, http_version,
+                                                               AXIS2_HTTP_RESPONSE_OK_CODE_VAL,
+                                                               AXIS2_HTTP_RESPONSE_OK_CODE_NAME);
+                    if (!is_head)
+                    {
+                        axis2_http_simple_response_set_body_stream(response, env, out_stream);
                     }
                 }
             }
-            if (!request_handled)
+            else if (op_ctx)
+            {
+                if (do_rest)
+                {
+                    axis2_msg_ctx_t *out_msg_ctx = NULL;
+                    axis2_msg_ctx_t *in_msg_ctx = NULL;
+                    axis2_msg_ctx_t **msg_ctx_map = NULL;
+
+                    msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+                    out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+                    in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
+                    if (in_msg_ctx)
+                    {
+                        /* TODO: Add neccessary handling */
+                    }
+                    if (out_msg_ctx)
+                    {
+                        if (axis2_msg_ctx_get_no_content(out_msg_ctx, env))
+                        {
+                            axis2_http_simple_response_set_status_line(response, env, http_version,
+                                                                       AXIS2_HTTP_RESPONSE_NO_CONTENT_CODE_VAL,
+                                                                       AXIS2_HTTP_RESPONSE_NO_CONTENT_CODE_NAME);
+                            request_handled = AXIS2_TRUE;
+                        }
+                    }
+                }
+                if (!request_handled)
+                {
+                    axis2_http_simple_response_set_status_line(response, env, http_version,
+                                                               AXIS2_HTTP_RESPONSE_ACK_CODE_VAL,
+                                                               AXIS2_HTTP_RESPONSE_ACK_CODE_NAME);
+                }
+            }
+            else
             {
                 axis2_http_simple_response_set_status_line(response, env, http_version,
                                                            AXIS2_HTTP_RESPONSE_ACK_CODE_VAL,
                                                            AXIS2_HTTP_RESPONSE_ACK_CODE_NAME);
             }
-        }
-        else if (!response_written)
-        {
-            axis2_http_simple_response_set_status_line(response, env, http_version,
-                                                       AXIS2_HTTP_RESPONSE_ACK_CODE_VAL,
-                                                       AXIS2_HTTP_RESPONSE_ACK_CODE_NAME);
-        }
-        if (!response_written)
-        {
-            axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
-                                                   simple_request, response,
-                                                   axutil_stream_get_len(out_stream,
-                                                                         env));
-
-            status = axis2_simple_http_svr_conn_write_response(svr_conn, env, response);
+            if (!response_written)
+            {
+                axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
+                                                       simple_request, response,
+                                                       axutil_stream_get_len(out_stream,
+                                                                             env));
+    
+                status = axis2_simple_http_svr_conn_write_response(svr_conn, env, response);
+            }
         }
     }
     if (url_external_form)
