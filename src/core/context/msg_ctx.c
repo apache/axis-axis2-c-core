@@ -205,6 +205,7 @@ struct axis2_msg_ctx
     axis2_bool_t is_auth_failure;
     axis2_bool_t required_auth_is_http;
     axis2_char_t *auth_type;
+    axis2_bool_t no_content;
 };
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
@@ -279,6 +280,7 @@ axis2_msg_ctx_create(
     msg_ctx->is_auth_failure = AXIS2_FALSE;
     msg_ctx->required_auth_is_http = AXIS2_FALSE;
     msg_ctx->auth_type = NULL;
+    msg_ctx->no_content = AXIS2_FALSE;
 
     msg_ctx->base = axis2_ctx_create(env);
     if (!(msg_ctx->base))
@@ -2294,6 +2296,27 @@ axis2_msg_ctx_set_auth_failed(
 {
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->is_auth_failure = status;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_msg_ctx_get_no_content(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    return msg_ctx->no_content;
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_no_content(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env,
+    const axis2_bool_t no_content)
+{
+    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    msg_ctx->no_content = no_content;
     return AXIS2_SUCCESS;
 }
 

@@ -1783,6 +1783,35 @@ extern "C"
         axis2_char_t * str);
 
     /**
+     * Gets whether there was no content in the response.
+     * This will cater for a situation where the invoke
+     * method in a service returns NULL when no fault has
+     * occured.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return returns AXIS2_TRUE if there was no content
+     * occured or AXIS2_FALSE otherwise
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_msg_ctx_get_no_content(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+    
+    /**
+     * Sets that there was no content in the response.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @param no_content expects AXIS2_TRUE if there was no
+     * content in the response or AXIS2_FALSE otherwise
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_no_content(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env,
+        const axis2_bool_t no_content);
+
+    /**
      * Gets whether an authentication failure occured
      * @param msg_ctx message context
      * @param env pointer to environment struct

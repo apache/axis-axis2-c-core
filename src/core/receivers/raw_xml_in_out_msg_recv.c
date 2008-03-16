@@ -220,6 +220,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
                 AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node, new_msg_ctx);
         }
 
+        axis2_msg_ctx_set_no_content(new_msg_ctx, env, AXIS2_FALSE);
         if (result_node)
         {
             if (0 == axutil_strcmp(style, AXIS2_STYLE_RPC))
@@ -249,6 +250,10 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         else
         {
             status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
+            if (status == AXIS2_SUCCESS)
+            {
+                axis2_msg_ctx_set_no_content(new_msg_ctx, env, AXIS2_TRUE);
+            }
             fault_node = AXIS2_SVC_SKELETON_ON_FAULT(svc_obj, env, om_node);
         }
     }
