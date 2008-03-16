@@ -563,13 +563,70 @@ axis2_apache2_worker_process_request(
 
     if (send_status == DECLINED)
     {
-        if (axis2_op_ctx_get_response_written(op_ctx, env))
+        axis2_bool_t do_rest = AXIS2_FALSE;
+        if (M_POST != request->method_number ||
+            axis2_msg_ctx_get_doing_rest(msg_ctx, env))
         {
-            send_status = OK;
-            if (out_stream)
+            do_rest = AXIS2_TRUE;
+        }
+        if (op_ctx && axis2_op_ctx_get_response_written(op_ctx, env))
+        {
+            if (do_rest)
             {
-                body_string = axutil_stream_get_buffer(out_stream, env);
-                body_string_len = axutil_stream_get_len(out_stream, env);
+                axis2_msg_ctx_t *out_msg_ctx = NULL;
+                axis2_msg_ctx_t *in_msg_ctx = NULL;
+                axis2_msg_ctx_t **msg_ctx_map = NULL;
+
+                msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+                out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+                in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
+                if (in_msg_ctx)
+                {
+                    /* TODO: Add neccessary handling */
+                }
+                if (out_msg_ctx)
+                {
+                    /* TODO: Add neccessary handling */
+                }
+            }
+            if (send_status == DECLINED)
+            {
+                send_status = OK;
+                if (out_stream)
+                {
+                    body_string = axutil_stream_get_buffer(out_stream, env);
+                    body_string_len = axutil_stream_get_len(out_stream, env);
+                }
+            }
+        }
+        else if (op_ctx)
+        {
+            if (do_rest)
+            {
+                axis2_msg_ctx_t *out_msg_ctx = NULL;
+                axis2_msg_ctx_t *in_msg_ctx = NULL;
+                axis2_msg_ctx_t **msg_ctx_map = NULL;
+
+                msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+                out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+                in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
+                if (in_msg_ctx)
+                {
+                    /* TODO: Add neccessary handling */
+                }
+                if (out_msg_ctx)
+                {
+                    if (axis2_msg_ctx_get_no_content(out_msg_ctx, env))
+                    {
+                        request->status = HTTP_NO_CONTENT;
+                        send_status = DONE;
+                    }
+                }
+            }
+            if (send_status == DECLINED)
+            {
+                request->status = HTTP_ACCEPTED;
+                send_status = DONE;
             }
         }
         else
