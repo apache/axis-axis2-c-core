@@ -184,13 +184,9 @@ axis2_apache2_worker_process_request(
     http_version = request->protocol;
 
     request_url = axutil_url_create(env, "http",
-                                    request->connection->local_host,
-                                    request->server->port,
+                                    request->hostname,
+                                    request->parsed_uri.port,
                                     request->unparsed_uri);
-    /* request->server->port doesn't give the port of the server.
-     * This has to be fixed. However, the port doesn't matter to the
-     * logic within this method as of present.
-     */
     if (request_url)
     {
         url_external_form = axutil_url_to_external_form(request_url, env);
