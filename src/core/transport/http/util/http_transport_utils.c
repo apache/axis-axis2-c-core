@@ -1374,6 +1374,16 @@ axis2_http_transport_utils_get_method_not_allowed(
         " allowed for this URL.</p></body></html>";
 }
 
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_not_acceptable(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx)
+{
+    return "<html><head><title>406 Not Acceptable</title></head>"
+        "<body><h2>Not Acceptable</h2><p>An appropriate representation of"
+        " the requested resource could not be found on this server."
+        "</p></body></html>";
+}
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_transport_utils_get_services_html(
