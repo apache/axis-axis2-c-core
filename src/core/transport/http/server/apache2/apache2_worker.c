@@ -356,40 +356,53 @@ axis2_apache2_worker_process_request(
                 size = axutil_array_list_size(method_list, env);
                 if (method_list && size)
                 {
+                    axis2_char_t *method_list_str = NULL;
+                    axis2_char_t *temp;
                     int i = 0;
-                    /* The "Allow" header doesn't show up at the moment.
-                     * This needs to be fixed ASAP.
-                     */
-                    request->allowed = 0;
+                    method_list_str = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 29);
+                    temp = method_list_str;
+                    request->allowed_methods->method_mask = 0;
                     for (i = 0; i < size; i++)
                     {
+                        if (i)
+                        {
+                            sprintf(temp, ", ");
+                            temp += 2;
+                        }
+                        sprintf(temp, "%s", (axis2_char_t *) 
+                                axutil_array_list_get(method_list, env, i));
+                        temp += strlen(temp);
+                        /* Conditions below is to assist down-stream modules */
                         if (!strcasecmp(AXIS2_HTTP_PUT, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
-                            request->allowed |= AP_METHOD_BIT << M_PUT;
+                            request->allowed_methods->method_mask |= AP_METHOD_BIT << M_PUT;
                         }
                         else if (!strcasecmp(AXIS2_HTTP_POST, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
-                            request->allowed |= AP_METHOD_BIT << M_POST;
+                            request->allowed_methods->method_mask |= AP_METHOD_BIT << M_POST;
                         }
                         else if (!strcasecmp(AXIS2_HTTP_GET, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
-                            request->allowed |= AP_METHOD_BIT << M_GET;
+                            request->allowed_methods->method_mask |= AP_METHOD_BIT << M_GET;
                         }
                         else if (!strcasecmp(AXIS2_HTTP_HEAD, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
                             /* Apache Can't differentiate between HEAD and GET */
-                            request->allowed |= AP_METHOD_BIT << M_GET;
+                            request->allowed_methods->method_mask |= AP_METHOD_BIT << M_GET;
                         }
                         else if (!strcasecmp(AXIS2_HTTP_DELETE, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
-                            request->allowed |= AP_METHOD_BIT << M_DELETE;
+                            request->allowed_methods->method_mask |= AP_METHOD_BIT << M_DELETE;
                         }
                     }
+                    *temp = '\0';
+                    apr_table_set(request->err_headers_out, "Allow", method_list_str);
+                    AXIS2_FREE(env->allocator, method_list_str);
                     body_string =
                         axis2_http_transport_utils_get_method_not_allowed(env, conf_ctx);
                     request->status = HTTP_METHOD_NOT_ALLOWED;
@@ -445,40 +458,53 @@ axis2_apache2_worker_process_request(
                 size = axutil_array_list_size(method_list, env);
                 if (method_list && size)
                 {
+                    axis2_char_t *method_list_str = NULL;
+                    axis2_char_t *temp;
                     int i = 0;
-                    /* The "Allow" header doesn't show up at the moment.
-                     * This needs to be fixed ASAP.
-                     */
-                    request->allowed = 0;
+                    method_list_str = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 29);
+                    temp = method_list_str;
+                    request->allowed_methods->method_mask = 0;
                     for (i = 0; i < size; i++)
                     {
+                        if (i)
+                        {
+                            sprintf(temp, ", ");
+                            temp += 2;
+                        }
+                        sprintf(temp, "%s", (axis2_char_t *) 
+                                axutil_array_list_get(method_list, env, i));
+                        temp += strlen(temp);
+                        /* Conditions below is to assist down-stream modules */
                         if (!strcasecmp(AXIS2_HTTP_PUT, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
-                            request->allowed |= AP_METHOD_BIT << M_PUT;
+                            request->allowed_methods->method_mask |= AP_METHOD_BIT << M_PUT;
                         }
                         else if (!strcasecmp(AXIS2_HTTP_POST, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
-                            request->allowed |= AP_METHOD_BIT << M_POST;
+                            request->allowed_methods->method_mask |= AP_METHOD_BIT << M_POST;
                         }
                         else if (!strcasecmp(AXIS2_HTTP_GET, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
-                            request->allowed |= AP_METHOD_BIT << M_GET;
+                            request->allowed_methods->method_mask |= AP_METHOD_BIT << M_GET;
                         }
                         else if (!strcasecmp(AXIS2_HTTP_HEAD, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
                             /* Apache Can't differentiate between HEAD and GET */
-                            request->allowed |= AP_METHOD_BIT << M_GET;
+                            request->allowed_methods->method_mask |= AP_METHOD_BIT << M_GET;
                         }
                         else if (!strcasecmp(AXIS2_HTTP_DELETE, (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i)))
                         {
-                            request->allowed |= AP_METHOD_BIT << M_DELETE;
+                            request->allowed_methods->method_mask |= AP_METHOD_BIT << M_DELETE;
                         }
                     }
+                    *temp = '\0';
+                    apr_table_set(request->err_headers_out, "Allow", method_list_str);
+                    AXIS2_FREE(env->allocator, method_list_str);
                     body_string =
                         axis2_http_transport_utils_get_method_not_allowed(env, conf_ctx);
                     request->status = HTTP_METHOD_NOT_ALLOWED;
