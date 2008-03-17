@@ -50,8 +50,8 @@ file_select(
  */
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axutil_dir_handler_list_services_or_modules_in_dir(
-    const axutil_env_t * env,
-    const axis2_char_t * pathname)
+    const axutil_env_t *env,
+    const axis2_char_t *pathname)
 {
     axutil_array_list_t *file_list = NULL;
     struct stat *buf = NULL;
@@ -75,7 +75,7 @@ axutil_dir_handler_list_services_or_modules_in_dir(
     {
         axutil_array_list_free(file_list, env);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No files in the path %s.",
-                        pathname);
+            pathname);
         return NULL;
     }
 
@@ -181,8 +181,8 @@ axutil_dir_handler_list_services_or_modules_in_dir(
  */
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axutil_dir_handler_list_service_or_module_dirs(
-    const axutil_env_t * env,
-    const axis2_char_t * pathname)
+    const axutil_env_t *env,
+    const axis2_char_t *pathname)
 {
     axutil_array_list_t *file_list = NULL;
     struct stat *buf = NULL;
@@ -208,7 +208,6 @@ axutil_dir_handler_list_service_or_module_dirs(
 #ifdef AXIS2_ARCHIVE_ENABLED
     axis2_archive_extract();
 #endif
-
 
     count = AXIS2_SCANDIR(pathname, &files, dir_select, AXIS2_ALPHASORT);
     AXIS2_CHDIR(cwd);
