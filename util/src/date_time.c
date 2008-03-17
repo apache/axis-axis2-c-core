@@ -46,7 +46,6 @@ axutil_date_time_create_with_offset(
     axutil_date_time_t *date_time = NULL;
     time_t t;
     struct tm *utc_time = NULL;
-    /*struct tm* utc_time_ret = NULL; */
     AXIS2_ENV_CHECK(env, NULL);
 
     date_time =
