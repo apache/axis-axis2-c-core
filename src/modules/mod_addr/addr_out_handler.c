@@ -64,35 +64,13 @@ axis2_addr_out_handler_create(
     axutil_string_t * name)
 {
     axis2_handler_t *handler = NULL;
-    /*axutil_qname_t *handler_qname = NULL; */
 
     AXIS2_ENV_CHECK(env, NULL);
-
-    /*if (qname)
-       {
-       handler_qname = axutil_qname_clone(qname, env);
-       if (!(handler_qname))
-       {
-       AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
-       AXIS2_FAILURE);
-       return NULL;
-       }
-       }
-       else
-       {
-       create default qname 
-       handler_qname = axutil_qname_create(env, "addr_out_handler",
-       "http://axis.ws.apache.org",
-       NULL);
-       if (!handler_qname)
-       {
-       return NULL;
-       }
-       } */
 
     handler = axis2_handler_create(env);
     if (!handler)
     {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -107,53 +85,65 @@ axis2_addr_out_handler_invoke(
     const axutil_env_t * env,
     axis2_msg_ctx_t * msg_ctx)
 {
-    axis2_char_t *addressing_version_from_msg_ctx = NULL;
+    axis2_char_t *addr_ver_from_msg_ctx = NULL;
     const axis2_char_t *addr_ns = NULL;
     axis2_msg_info_headers_t *msg_info_headers = NULL;
     axis2_ctx_t *ctx = NULL;
-    axiom_namespace_t *addressing_namespace = NULL;
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_soap_header_t *soap_header = NULL;
     axiom_node_t *soap_header_node = NULL;
     axiom_element_t *soap_header_ele = NULL;
-    axis2_endpoint_ref_t *epr = NULL;
+    axis2_endpoint_ref_t *epr_to = NULL;
+    axis2_endpoint_ref_t *epr_reply_to = NULL;
+    axis2_endpoint_ref_t *epr_from = NULL;
+    axis2_endpoint_ref_t *epr_fault_to = NULL;
     axutil_property_t *property = NULL;
     const axis2_char_t *wsa_action = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-    msg_info_headers = axis2_msg_ctx_get_msg_info_headers(msg_ctx, env);
-    if (!msg_info_headers)
-        return AXIS2_SUCCESS;   /* no addressing in use */
-    wsa_action = axis2_msg_info_headers_get_action(msg_info_headers, env);
-    if (!wsa_action || !axutil_strcmp(wsa_action, ""))
-        return AXIS2_SUCCESS;   /* If no action present, assume no addressing in use */
+    
+    soap_envelope = axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
+    if (!soap_envelope)
+    {
+        return AXIS2_SUCCESS;   /* Can happen in case of ONE-WAY services/clients */
+    }
 
+    msg_info_headers = axis2_msg_ctx_get_msg_info_headers(msg_ctx, env);
+   
+    if (msg_info_headers)
+    {
+        wsa_action = axis2_msg_info_headers_get_action(msg_info_headers, env);
+    }
+    else
+    {
+        return AXIS2_SUCCESS; /* No addressing in use */
+    }
+    
+    if (!wsa_action || !*wsa_action)
+    {
+        return AXIS2_SUCCESS;   /* If no action present, assume no addressing in use */
+    }
+    
     ctx = axis2_msg_ctx_get_base(msg_ctx, env);
     property = axis2_ctx_get_property(ctx, env, AXIS2_WSA_VERSION);
+
     if (property)
     {
-        addressing_version_from_msg_ctx = axutil_property_get_value(property,
+        addr_ver_from_msg_ctx = axutil_property_get_value(property,
                                                                     env);
         property = NULL;
     }
 
-    if (addressing_version_from_msg_ctx)
+    /* Setting version 1.0 as the default addressing namespace */
+    addr_ns = AXIS2_WSA_NAMESPACE;
+
+    if (addr_ver_from_msg_ctx)
     {
-        if (axutil_strcmp
-            (AXIS2_WSA_NAMESPACE, addressing_version_from_msg_ctx) == 0)
-        {
-            addr_ns = AXIS2_WSA_NAMESPACE;
-        }
-        else if (axutil_strcmp
-                 (AXIS2_WSA_NAMESPACE_SUBMISSION,
-                  addressing_version_from_msg_ctx) == 0)
+        if (!axutil_strcmp(AXIS2_WSA_NAMESPACE_SUBMISSION, 
+                    addr_ver_from_msg_ctx))
         {
             addr_ns = AXIS2_WSA_NAMESPACE_SUBMISSION;
-        }
-        else
-        {
-            addr_ns = AXIS2_WSA_NAMESPACE;
         }
     }
     else if (axis2_msg_ctx_get_op_ctx(msg_ctx, env))
@@ -161,18 +151,14 @@ axis2_addr_out_handler_invoke(
         axis2_op_ctx_t *op_ctx = NULL;
         axis2_msg_ctx_t *in_msg_ctx = NULL;
         op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
+        
         if (op_ctx)
         {
-            in_msg_ctx =
-                axis2_op_ctx_get_msg_ctx(op_ctx, env,
-                                         AXIS2_WSDL_MESSAGE_LABEL_IN);
+            in_msg_ctx = axis2_op_ctx_get_msg_ctx(op_ctx, env, 
+                            AXIS2_WSDL_MESSAGE_LABEL_IN);
         }
 
-        if (!in_msg_ctx)
-        {
-            addr_ns = AXIS2_WSA_NAMESPACE;  /* setting version 1.0 as the default addressing namespace */
-        }
-        else
+        if (in_msg_ctx)
         {
             axis2_ctx_t *in_ctx = NULL;
             in_ctx = axis2_msg_ctx_get_base(in_msg_ctx, env);
@@ -184,41 +170,26 @@ axis2_addr_out_handler_invoke(
                 property = NULL;
             }
 
-            if (!addr_ns)
+            if (!addr_ns || !*addr_ns)
             {
-                addr_ns = AXIS2_WSA_NAMESPACE;  /* Addressing version has not been set in the IN path */
+                addr_ns = AXIS2_WSA_NAMESPACE;
             }
         }
     }
 
-    if (!addr_ns || axutil_strcmp("", addr_ns) == 0)
-    {
-        addr_ns = AXIS2_WSA_NAMESPACE;
-    }
-
-    addressing_namespace =
-        axiom_namespace_create(env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
-    msg_info_headers = axis2_msg_ctx_get_msg_info_headers(msg_ctx, env);
-    soap_envelope = axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
-    if (!soap_envelope)
-    {
-        axiom_namespace_free(addressing_namespace, env);
-        return AXIS2_SUCCESS;   /* can happen in case of one way services/clients */
-    }
+    
     soap_header = axiom_soap_envelope_get_header(soap_envelope, env);
-
     if (!soap_header)
     {
-        axiom_namespace_free(addressing_namespace, env);
-        return AXIS2_SUCCESS;   /*No SOAP header, so no point proceeding */
+        return AXIS2_SUCCESS;   /* No SOAP header, so no point proceeding */
     }
-
-    /* by this time, we definitely have some addressing information to be sent. This is because,
-     * we have tested at the start of this whether msg_info_headers are null or not.
-     * So rather than declaring addressing namespace in each and every addressing header, lets
-     * define that in the Header itself. */
-    if (soap_header)
+    else
     {
+       /* By this time, we definitely have some addressing information to be sent. This is because,
+        * we have tested at the start of this whether msg_info_headers are null or not.
+        * So rather than declaring addressing namespace in each and every addressing header, lets
+        * define that in the Header itself. 
+        */
         const axis2_char_t *action = NULL;
         const axis2_char_t *address = NULL;
         const axis2_char_t *svc_group_context_id = NULL;
@@ -226,57 +197,60 @@ axis2_addr_out_handler_invoke(
         axis2_relates_to_t *relates_to = NULL;
         axiom_node_t *relates_to_header_node = NULL;
         axiom_element_t *relates_to_header_ele = NULL;
+        axiom_namespace_t *addressing_namespace = NULL;
 
         soap_header_node = axiom_soap_header_get_base_node(soap_header, env);
-        soap_header_ele =
-            (axiom_element_t *)
+        soap_header_ele = (axiom_element_t *)
             axiom_node_get_data_element(soap_header_node, env);
+        
+        addressing_namespace =
+            axiom_namespace_create(env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
+        
         axiom_element_declare_namespace(soap_header_ele, env,
                                         soap_header_node, addressing_namespace);
 
-        epr = axis2_msg_info_headers_get_to(msg_info_headers, env);
+        epr_to = axis2_msg_info_headers_get_to(msg_info_headers, env);
 
-        if (soap_envelope && epr)
+        if (epr_to)
         {
             axiom_soap_body_t *body =
                 axiom_soap_envelope_get_body(soap_envelope, env);
+            
             if (body)
             {
-                /* in case of a SOAP fault, we got to send the response to
+                /* In case of a SOAP fault, we got to send the response to
                    the adress specified by FaultTo */
                 if (axiom_soap_body_has_fault(body, env))
                 {
-                    axis2_endpoint_ref_t *fault_epr =
+                    axis2_endpoint_ref_t *epr_fault_to =
                         axis2_msg_info_headers_get_fault_to(msg_info_headers,
                                                             env);
-                    if (fault_epr)
+                    if (epr_fault_to)
                     {
-                        const axis2_char_t *fault_address =
-                            axis2_endpoint_ref_get_address(fault_epr, env);
-                        if (fault_address)
+                        const axis2_char_t *fault_to_address =
+                            axis2_endpoint_ref_get_address(epr_fault_to, env);
+                        if (fault_to_address)
                         {
-                            if (axutil_strcmp(AXIS2_WSA_NONE_URL, fault_address)
-                                != 0 &&
+                            if (axutil_strcmp(AXIS2_WSA_NONE_URL, fault_to_address) 
+                                &&  
                                 axutil_strcmp(AXIS2_WSA_NONE_URL_SUBMISSION,
-                                              fault_address) != 0)
+                                              fault_to_address))
                             {
-                                axis2_endpoint_ref_set_address(epr, env,
-                                                               fault_address);
+                                axis2_endpoint_ref_set_address(epr_to, env,
+                                                               fault_to_address);
                             }
                         }
                     }
                 }
-            }
-        }
-
-        if (epr)
-        {
-            address = axis2_endpoint_ref_get_address(epr, env);
-            if (address && axutil_strcmp(address, "") != 0)
+            } 
+            
+            address = axis2_endpoint_ref_get_address(epr_to, env);
+            if (address && *address)
             {
                 axiom_node_t *to_header_block_node = NULL;
                 axiom_soap_header_block_t *to_header_block = NULL;
                 axutil_array_list_t *ref_param_list = NULL;
+                int size = 0;
 
                 to_header_block =
                     axiom_soap_header_add_header_block(soap_header, env,
@@ -287,8 +261,7 @@ axis2_addr_out_handler_invoke(
                 if (to_header_block_node)
                 {
                     axiom_element_t *to_header_block_element = NULL;
-                    to_header_block_element =
-                        (axiom_element_t *)
+                    to_header_block_element = (axiom_element_t *)
                         axiom_node_get_data_element(to_header_block_node, env);
                     if (to_header_block_element)
                     {
@@ -298,36 +271,35 @@ axis2_addr_out_handler_invoke(
                 }
 
                 ref_param_list =
-                    axis2_endpoint_ref_get_ref_param_list(epr, env);
-                if (ref_param_list &&
-                    axutil_array_list_size(ref_param_list, env) > 0)
+                    axis2_endpoint_ref_get_ref_param_list(epr_to, env);
+                
+                size = axutil_array_list_size(ref_param_list, env);
+                if (ref_param_list && size > 0)
                 {
                     axiom_soap_header_block_t *reference_header_block = NULL;
                     axiom_node_t *reference_node = NULL;
                     int i = 0;
 
-                    for (i = 0; i < axutil_array_list_size(ref_param_list, env);
-                         i++)
+                    for (i = 0; i < size; i++)
                     {
-                        axiom_node_t *ref_node = NULL;
+                        axiom_node_t *temp_node = NULL;
 
-                        ref_node =
-                            (axiom_node_t *)
+                        temp_node = (axiom_node_t *)
                             axutil_array_list_get(ref_param_list, env, i);
-                        if (ref_node)
+                        if (temp_node)
                         {
-                            axiom_element_t *ref_ele = NULL;
+                            axiom_element_t *temp_ele = NULL;
 
-                            ref_ele =
-                                axiom_node_get_data_element(ref_node, env);
-                            if (ref_ele)
+                            temp_ele =
+                                axiom_node_get_data_element(temp_node, env);
+                            if (temp_ele)
                             {
                                 reference_header_block =
                                     axiom_soap_header_add_header_block
                                     (soap_header, env,
-                                     axiom_element_get_localname(ref_ele, env),
-                                     axiom_element_get_namespace(ref_ele, env,
-                                                                 ref_node));
+                                     axiom_element_get_localname(temp_ele, env),
+                                     axiom_element_get_namespace(temp_ele, env,
+                                                                 temp_node));
 
                                 reference_node =
                                     axiom_soap_header_block_get_base_node
@@ -360,8 +332,8 @@ axis2_addr_out_handler_invoke(
                                         axiom_element_set_text(reference_ele,
                                                                env,
                                                                axiom_element_get_text
-                                                               (ref_ele, env,
-                                                                ref_node),
+                                                               (temp_ele, env,
+                                                                temp_node),
                                                                reference_node);
                                     }
                                 }
@@ -370,18 +342,18 @@ axis2_addr_out_handler_invoke(
                     }
                 }
             }
-        }
+        }/* if(epr_to) */
 
         action = axis2_msg_info_headers_get_action(msg_info_headers, env);
-        if (action && axutil_strcmp(action, ""))
+        if (action && *action)
         {
             axis2_addr_out_handler_process_string_info(env, action,
                                                        AXIS2_WSA_ACTION,
                                                        &soap_header, addr_ns);
         }
 
-        epr = axis2_msg_info_headers_get_reply_to(msg_info_headers, env);
-        if (!epr)
+        epr_reply_to = axis2_msg_info_headers_get_reply_to(msg_info_headers, env);
+        if (!epr_reply_to)
         {
             const axis2_char_t *anonymous_uri = NULL;
             axis2_bool_t anonymous =
@@ -389,7 +361,7 @@ axis2_addr_out_handler_invoke(
                                                               env);
             axis2_bool_t none =
                 axis2_msg_info_headers_get_reply_to_none(msg_info_headers, env);
-            if (axutil_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
+            if (!axutil_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION))
             {
                 if (none)
                     anonymous_uri = AXIS2_WSA_NONE_URL_SUBMISSION;
@@ -405,9 +377,9 @@ axis2_addr_out_handler_invoke(
             }
 
             if (anonymous_uri)
-                epr = axis2_endpoint_ref_create(env, anonymous_uri);
-            if (epr)
-                axis2_msg_info_headers_set_reply_to(msg_info_headers, env, epr);
+                epr_reply_to = axis2_endpoint_ref_create(env, anonymous_uri);
+            if (epr_reply_to)
+                axis2_msg_info_headers_set_reply_to(msg_info_headers, env, epr_reply_to);
         }
 
         /* add the service group id as a reference parameter */
@@ -415,31 +387,23 @@ axis2_addr_out_handler_invoke(
             axutil_string_get_buffer(axis2_msg_ctx_get_svc_grp_ctx_id
                                      (msg_ctx, env), env);
 
-        axis2_addr_out_handler_add_to_soap_header(env, epr,
+        axis2_addr_out_handler_add_to_soap_header(env, epr_reply_to,
                                                   AXIS2_WSA_REPLY_TO,
                                                   soap_header, addr_ns);
 
-        /* It is wrong freeing the epr here. Instead I set the locally
-         * created epr to msg_info_headers just after creating it
-         */
-        /*if( epr)
-           {
-           axis2_endpoint_ref_free(epr, env);
-           epr = NULL;
-           } */
 
-        epr = axis2_msg_info_headers_get_from(msg_info_headers, env);
+        epr_from = axis2_msg_info_headers_get_from(msg_info_headers, env);
 
-        if (epr)
+        if (epr_from)
         {
-            axis2_addr_out_handler_add_to_soap_header(env, epr,
+            axis2_addr_out_handler_add_to_soap_header(env, epr_from,
                                                       AXIS2_WSA_FROM,
                                                       soap_header, addr_ns);
 
         }
 
-        epr = axis2_msg_info_headers_get_fault_to(msg_info_headers, env);
-        if (!epr)
+        epr_fault_to = axis2_msg_info_headers_get_fault_to(msg_info_headers, env);
+        if (!epr_fault_to)
         {
             const axis2_char_t *anonymous_uri = NULL;
             axis2_bool_t anonymous =
@@ -447,7 +411,7 @@ axis2_addr_out_handler_invoke(
                                                               env);
             axis2_bool_t none =
                 axis2_msg_info_headers_get_fault_to_none(msg_info_headers, env);
-            if (axutil_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
+            if (!axutil_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION))
             {
                 if (none)
                     anonymous_uri = AXIS2_WSA_NONE_URL_SUBMISSION;
@@ -463,13 +427,13 @@ axis2_addr_out_handler_invoke(
             }
 
             if (anonymous_uri)
-                epr = axis2_endpoint_ref_create(env, anonymous_uri);
+                epr_fault_to = axis2_endpoint_ref_create(env, anonymous_uri);
         }
 
-        if (epr)
+        if (epr_fault_to)
         {
             /* optional */
-            axis2_addr_out_handler_add_to_soap_header(env, epr,
+            axis2_addr_out_handler_add_to_soap_header(env, epr_fault_to,
                                                       AXIS2_WSA_FAULT_TO,
                                                       soap_header, addr_ns);
         }
@@ -502,7 +466,7 @@ axis2_addr_out_handler_invoke(
             const axis2_char_t *relationship_type = NULL;
             relationship_type =
                 axis2_relates_to_get_relationship_type(relates_to, env);
-            if (axutil_strcmp(relationship_type, "") != 0)
+            if (relationship_type  && *relationship_type)
             {
                 axiom_attribute_t *om_attr = NULL;
                 axiom_namespace_t *addr_ns_obj = NULL;
@@ -587,7 +551,7 @@ axis2_addr_out_handler_process_string_info(
 
     soap_header = *(soap_header_p);
 
-    if (value && axutil_strcmp(value, "") != 0)
+    if (value && *value)
     {
         axiom_namespace_t *addr_ns_obj = NULL;
         addr_ns_obj =
@@ -655,7 +619,7 @@ axis2_addr_out_handler_add_to_soap_header(
     }
 
     address = axis2_endpoint_ref_get_address(endpoint_ref, env);
-    if (address && axutil_strcmp("", address) != 0)
+    if (address && *address)
     {
         axiom_node_t *hb_node = NULL;
         axiom_element_t *hb_ele = NULL;
@@ -836,7 +800,7 @@ axis2_addr_out_handler_add_to_header(
         addr_ns_obj =
             axiom_namespace_create(env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
 
-        if (axutil_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
+        if (!axutil_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION))
         {
             element_localname = EPR_PORT_TYPE;
         }
@@ -911,7 +875,7 @@ axis2_addr_out_handler_process_any_content_type(
                     axiom_element_create(env, parent_ele_node, k, NULL, &node);
                 if (ele)
                 {
-                    if (axutil_strcmp(AXIS2_WSA_NAMESPACE, addr_ns) == 0)
+                    if (!axutil_strcmp(AXIS2_WSA_NAMESPACE, addr_ns))
                     {
                         axiom_namespace_t *addr_ns_obj = NULL;
                         axiom_attribute_t *att = NULL;
