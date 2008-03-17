@@ -9,6 +9,7 @@ libaxis2_http_common_la_SOURCES = http_header.c\
                                   http_simple_request.c\
                                   http_simple_response.c\
                                   http_status_line.c\
+                                  http_accept_record.c\
                                   http_response_writer.c\
                                   simple_http_svr_conn.c\
                                   http_worker.c
