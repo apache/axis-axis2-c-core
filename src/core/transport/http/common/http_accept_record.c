@@ -38,7 +38,7 @@ axis2_http_accept_record_create(
     axis2_char_t *tmp_accept_record = NULL;
     axis2_char_t *tmp = NULL;
     axis2_http_accept_record_t *accept_record = NULL;
-    float quality = 0.0;
+    float quality = 1.0;
     int level = -1;
     axis2_char_t *name = NULL;
 
@@ -66,6 +66,7 @@ axis2_http_accept_record_create(
     if (tmp)
     {
         *tmp = '\0';
+        tmp++;
         tmp = axutil_strtrim(env, tmp, " =;");
         if (tmp)
         {
@@ -77,6 +78,7 @@ axis2_http_accept_record_create(
     if (tmp)
     {
         *tmp = '\0';
+        tmp++;
         tmp = axutil_strtrim(env, tmp, " =;");
         if (tmp)
         {
