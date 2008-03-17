@@ -7,3 +7,5 @@ data_DATA= INSTALL README AUTHORS NEWS LICENSE COPYING
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
 	rm -rf `find $(distdir)/ -type d -name .deps`
+
+EXTRA_DIST=LICENSE
