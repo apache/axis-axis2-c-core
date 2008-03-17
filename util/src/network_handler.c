@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,7 +22,7 @@
 #include <fcntl.h>
 
 #if defined(WIN32)
-/* fix for an older version of winsock2.h - */
+/* fix for an older version of winsock2.h */
 #if !defined(SO_EXCLUSIVEADDRUSE)
 #define SO_EXCLUSIVEADDRUSE ((int)(~SO_REUSEADDR))
 #endif
@@ -37,7 +36,7 @@ axis2_bool_t axis2_init_socket(
 
 AXIS2_EXTERN axis2_socket_t AXIS2_CALL
 axutil_network_handler_open_socket(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     char *server,
     int port)
 {
@@ -58,7 +57,7 @@ axutil_network_handler_open_socket(
     AXIS2_PARAM_CHECK(env->error, server, AXIS2_INVALID_SOCKET);
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-        /*nnn AF_INET is not defined in sys/socket.h but PF_INET */
+        /*AF_INET is not defined in sys/socket.h but PF_INET */
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
         return AXIS2_INVALID_SOCKET;
@@ -66,11 +65,10 @@ axutil_network_handler_open_socket(
 
     memset(&sock_addr, 0, sizeof(sock_addr));
     sock_addr.sin_family = AF_INET;
-    sock_addr.sin_addr.s_addr = inet_addr(server);  /*nnn arpa/inet.d */
+    sock_addr.sin_addr.s_addr = inet_addr(server);  /*arpa/inet.d */
 
-    if (sock_addr.sin_addr.s_addr == AXIS2_INADDR_NONE) /*nnn netinet/in.h */
+    if (sock_addr.sin_addr.s_addr == AXIS2_INADDR_NONE) /*netinet/in.h */
     {
-
         /*
          * server may be a host name
          */
@@ -110,7 +108,7 @@ axutil_network_handler_open_socket(
 
 AXIS2_EXTERN axis2_socket_t AXIS2_CALL
 axutil_network_handler_create_server_socket(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     int port)
 {
     axis2_socket_t sock = AXIS2_INVALID_SOCKET;
@@ -135,9 +133,9 @@ axutil_network_handler_create_server_socket(
     /* Address re-use */
     i = 1;
 #if defined(WIN32)
-    setsockopt(sock, SOL_SOCKET, SO_EXCLUSIVEADDRUSE, (char *) &i, sizeof(axis2_socket_t));    /*nnn casted 4th param to char* */
+    setsockopt(sock, SOL_SOCKET, SO_EXCLUSIVEADDRUSE, (char *) &i, sizeof(axis2_socket_t));    /*casted 4th param to char* */
 #else
-    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (char *) &i, sizeof(axis2_socket_t));    /*nnn casted 4th param to char* */
+    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (char *) &i, sizeof(axis2_socket_t));    /*casted 4th param to char* */
 #endif
 
     /* Exec behaviour */
@@ -165,7 +163,7 @@ axutil_network_handler_create_server_socket(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_network_handler_close_socket(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     axis2_socket_t socket)
 {
     int i = 0;
@@ -185,7 +183,7 @@ axutil_network_handler_close_socket(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_network_handler_set_sock_option(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     axis2_socket_t socket,
     int option,
     int value)
@@ -200,7 +198,6 @@ axutil_network_handler_set_sock_option(
         tv.tv_sec = value / 1000;
         tv.tv_usec = (value % 1000) * 1000;
 #endif
-
         setsockopt(socket, SOL_SOCKET, option, (char *) &tv, sizeof(tv));
         return AXIS2_SUCCESS;
     }
@@ -209,11 +206,10 @@ axutil_network_handler_set_sock_option(
 
 AXIS2_EXTERN axis2_socket_t AXIS2_CALL
 axutil_network_handler_svr_socket_accept(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     axis2_socket_t svr_socket)
 {
     struct sockaddr cli_addr;
-
     struct linger ll;
     int nodelay = 1;
     axis2_socket_len_t cli_len = 0;
@@ -244,8 +240,6 @@ axis2_init_socket(
     WORD wVersionRequested;
     WSADATA wsaData;
     int err;
-    /*int sock_opt = SO_SYNCHRONOUS_NONALERT; */
-
     wVersionRequested = MAKEWORD(2, 2);
 
     err = WSAStartup(wVersionRequested, &wsaData);
@@ -253,35 +247,27 @@ axis2_init_socket(
     if (err != 0)
         return 0;               /* WinSock 2.2 not found */
 
-    /*   Confirm that the WinSock DLL supports 2.2. */
-    /*   Note that if the DLL supports versions greater */
-    /*   than 2.2 in addition to 2.2, it will still return */
-    /*   2.2 in wVersion since that is the version we */
-    /*   requested. */
+    /* Confirm that the WinSock DLL supports 2.2. 
+       Note that if the DLL supports versions greater 
+       than 2.2 in addition to 2.2, it will still return 
+       2.2 in wVersion since that is the version we 
+       requested. */
 
     if (LOBYTE(wsaData.wVersion) != 2 || HIBYTE(wsaData.wVersion) != 2)
     {
         WSACleanup();
         return 0;               /* WinSock 2.2 not supported */
     }
-
-    /*
-     *   Enable the use of sockets as filehandles
-     */
-    /*  
-     * setsockopt(INVALID_SOCKET, SOL_SOCKET, SO_OPENTYPE, (char *)&sock_opt,
-     sizeof(sock_opt));*/
     return 1;
 }
 #endif
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_network_handler_get_svr_ip(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     axis2_socket_t socket)
 {
     struct sockaddr_in addr;
-
     axis2_socket_len_t len = sizeof(addr);
     char *ret = NULL;
     memset(&addr, 0, sizeof(addr));
@@ -295,11 +281,10 @@ axutil_network_handler_get_svr_ip(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_network_handler_get_peer_ip(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     axis2_socket_t socket)
 {
     struct sockaddr_in addr;
-
     axis2_socket_len_t len = sizeof(addr);
     char *ret = NULL;
     memset(&addr, 0, sizeof(addr));
