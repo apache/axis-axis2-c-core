@@ -22,6 +22,7 @@
 #include <axis2_msg_ctx.h>
 #include <axis2_http_out_transport_info.h>
 #include <axis2_http_transport_utils.h>
+#include <axis2_http_accept_record.h>
 #include <axis2_op_ctx.h>
 #include <axis2_engine.h>
 #include <axutil_uuid_gen.h>
@@ -32,6 +33,7 @@
 #include <http_protocol.h>
 #include <axiom_soap.h>
 #include <axutil_class_loader.h>
+#include <axutil_string_util.h>
 
 #define READ_SIZE  2048
 
@@ -167,6 +169,8 @@ axis2_apache2_worker_process_request(
     axis2_char_t *peer_ip = NULL;
     axutil_property_t *peer_property = NULL;
     axutil_url_t *request_url = NULL;
+    axis2_char_t *accept_header_value = NULL;
+    axis2_char_t *accept_charset_header_value = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, request, AXIS2_CRITICAL_FAILURE);
@@ -262,6 +266,85 @@ axis2_apache2_worker_process_request(
                                                                          request);
     axis2_msg_ctx_set_http_out_transport_info(msg_ctx, env,
                                               apache2_out_transport_info);
+
+    accept_header_value = (axis2_char_t *)
+        apr_table_get(request->headers_in, AXIS2_HTTP_HEADER_ACCEPT);
+    if (accept_header_value)
+    {
+        axutil_array_list_t *accept_header_field_list = NULL;
+        axutil_array_list_t *accept_record_list = NULL;
+        accept_header_field_list = axutil_tokenize(env, accept_header_value, ',');
+        if (accept_header_field_list && 
+            axutil_array_list_size(accept_header_field_list, env) > 0)
+        {
+            axis2_char_t *token = NULL;
+            accept_record_list =
+                axutil_array_list_create(env,
+                    axutil_array_list_size(accept_header_field_list, env));
+            do
+            {
+                if (token)
+                {
+                    axis2_http_accept_record_t *rec = NULL;
+                    rec = axis2_http_accept_record_create(env, token);
+                    if (rec)
+                    {
+                        axutil_array_list_add(accept_record_list, env, rec);
+                    }
+                    AXIS2_FREE(env->allocator, token);
+                }
+                token = (axis2_char_t *)
+                    axutil_array_list_remove(accept_header_field_list, env, 0);
+            }
+            while(token);
+        }
+        if (accept_record_list && 
+            axutil_array_list_size(accept_record_list, env) > 0)
+        {
+            axis2_msg_ctx_set_http_accept_record_list(msg_ctx, env,
+                accept_record_list);
+        }
+    }
+
+    accept_charset_header_value = (axis2_char_t *)
+        apr_table_get(request->headers_in, AXIS2_HTTP_HEADER_ACCEPT_CHARSET);
+    if (accept_charset_header_value)
+    {
+        axutil_array_list_t *accept_charset_header_field_list = NULL;
+        axutil_array_list_t *accept_charset_record_list = NULL;
+        accept_charset_header_field_list =
+            axutil_tokenize(env, accept_charset_header_value, ',');
+        if (accept_charset_header_field_list && 
+            axutil_array_list_size(accept_charset_header_field_list, env) > 0)
+        {
+            axis2_char_t *token = NULL;
+            accept_charset_record_list =
+                axutil_array_list_create(env,
+                    axutil_array_list_size(accept_charset_header_field_list, env));
+            do
+            {
+                if (token)
+                {
+                    axis2_http_accept_record_t *rec = NULL;
+                    rec = axis2_http_accept_record_create(env, token);
+                    if (rec)
+                    {
+                        axutil_array_list_add(accept_charset_record_list, env, rec);
+                    }
+                    AXIS2_FREE(env->allocator, token);
+                }
+                token = (axis2_char_t *)
+                    axutil_array_list_remove(accept_charset_header_field_list, env, 0);
+            }
+            while(token);
+        }
+        if (accept_charset_record_list && 
+            axutil_array_list_size(accept_charset_record_list, env) > 0)
+        {
+            axis2_msg_ctx_set_http_accept_charset_record_list(msg_ctx, env,
+                accept_charset_record_list);
+        }
+    }
 
     soap_action = axutil_string_create(env,
                                        (axis2_char_t *) apr_table_get(request->
@@ -590,17 +673,11 @@ axis2_apache2_worker_process_request(
     if (send_status == DECLINED)
     {
         axis2_bool_t do_rest = AXIS2_FALSE;
-        axis2_char_t *accept_header_value = NULL;
-        axis2_char_t *accept_charset_header_value = NULL;
         if (M_POST != request->method_number ||
             axis2_msg_ctx_get_doing_rest(msg_ctx, env))
         {
             do_rest = AXIS2_TRUE;
         }
-        accept_header_value = (axis2_char_t *)
-            apr_table_get(request->headers_in, AXIS2_HTTP_HEADER_ACCEPT);
-        accept_charset_header_value = (axis2_char_t *)
-            apr_table_get(request->headers_in, AXIS2_HTTP_HEADER_ACCEPT_CHARSET);
         if ((accept_header_value || accept_charset_header_value) && do_rest)
         {
             axis2_char_t *content_type_header_value = NULL;

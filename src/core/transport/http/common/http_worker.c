@@ -25,6 +25,7 @@
 #include <axis2_http_request_line.h>
 #include <axis2_http_out_transport_info.h>
 #include <axis2_http_transport_utils.h>
+#include <axis2_http_accept_record.h>
 #include <axis2_op_ctx.h>
 #include <axis2_engine.h>
 #include <axutil_uuid_gen.h>
@@ -32,6 +33,7 @@
 #include <axutil_property.h>
 #include <axiom_soap.h>
 #include <string.h>
+#include <axutil_string_util.h>
 
 struct axis2_http_worker
 {
@@ -263,6 +265,42 @@ axis2_http_worker_process_request(
         accept_header_value = axis2_http_header_get_value(accept_header,
                                                           env);
     }
+    if (accept_header_value)
+    {
+        axutil_array_list_t *accept_header_field_list = NULL;
+        axutil_array_list_t *accept_record_list = NULL;
+        accept_header_field_list = axutil_tokenize(env, accept_header_value, ',');
+        if (accept_header_field_list && 
+            axutil_array_list_size(accept_header_field_list, env) > 0)
+        {
+            axis2_char_t *token = NULL;
+            accept_record_list =
+                axutil_array_list_create(env,
+                    axutil_array_list_size(accept_header_field_list, env));
+            do
+            {
+                if (token)
+                {
+                    axis2_http_accept_record_t *rec = NULL;
+                    rec = axis2_http_accept_record_create(env, token);
+                    if (rec)
+                    {
+                        axutil_array_list_add(accept_record_list, env, rec);
+                    }
+                    AXIS2_FREE(env->allocator, token);
+                }
+                token = (axis2_char_t *)
+                    axutil_array_list_remove(accept_header_field_list, env, 0);
+            }
+            while(token);
+        }
+        if (accept_record_list && 
+            axutil_array_list_size(accept_record_list, env) > 0)
+        {
+            axis2_msg_ctx_set_http_accept_record_list(msg_ctx, env,
+                accept_record_list);
+        }
+    }
 
     accept_charset_header = axis2_http_simple_request_get_first_header(
         simple_request,
@@ -272,6 +310,43 @@ axis2_http_worker_process_request(
     {
         accept_charset_header_value = axis2_http_header_get_value(accept_charset_header,
                                                                   env);
+    }
+    if (accept_charset_header_value)
+    {
+        axutil_array_list_t *accept_charset_header_field_list = NULL;
+        axutil_array_list_t *accept_charset_record_list = NULL;
+        accept_charset_header_field_list =
+            axutil_tokenize(env, accept_charset_header_value, ',');
+        if (accept_charset_header_field_list && 
+            axutil_array_list_size(accept_charset_header_field_list, env) > 0)
+        {
+            axis2_char_t *token = NULL;
+            accept_charset_record_list =
+                axutil_array_list_create(env,
+                    axutil_array_list_size(accept_charset_header_field_list, env));
+            do
+            {
+                if (token)
+                {
+                    axis2_http_accept_record_t *rec = NULL;
+                    rec = axis2_http_accept_record_create(env, token);
+                    if (rec)
+                    {
+                        axutil_array_list_add(accept_charset_record_list, env, rec);
+                    }
+                    AXIS2_FREE(env->allocator, token);
+                }
+                token = (axis2_char_t *)
+                    axutil_array_list_remove(accept_charset_header_field_list, env, 0);
+            }
+            while(token);
+        }
+        if (accept_charset_record_list && 
+            axutil_array_list_size(accept_charset_record_list, env) > 0)
+        {
+            axis2_msg_ctx_set_http_accept_charset_record_list(msg_ctx, env,
+                accept_charset_record_list);
+        }
     }
 
     axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);

@@ -1735,6 +1735,80 @@ extern "C"
         axutil_hash_t * transport_headers);
 
     /**
+     * Retrieves HTTP Accept-Charset records.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return HTTP Accept-Charset records associated.
+     */
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axis2_msg_ctx_get_http_accept_charset_record_list(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
+    /**
+     * Retrieves HTTP Accept-Charset records, and removes them
+     * from the message context
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return HTTP Accept-Charset records associated.
+     */
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axis2_msg_ctx_extract_http_accept_charset_record_list(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
+    /**
+     * Sets the HTTP Accept-Charset records
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @param accept_charset_record_list an Array List containing the
+     * HTTP Accept-Charset records
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_http_accept_charset_record_list(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env,
+        axutil_array_list_t * accept_charset_record_list);
+
+    /**
+     * Retrieves HTTP Accept records.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return HTTP Accept records associated.
+     */
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axis2_msg_ctx_get_http_accept_record_list(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
+    /**
+     * Retrieves HTTP Accept records, and removes them
+     * from the message context
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return HTTP Accept records associated.
+     */
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axis2_msg_ctx_extract_http_accept_record_list(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
+    /**
+     * Sets the HTTP Accept records
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @param accept_record_list an Array List containing the
+     * HTTP Accept records
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_http_accept_record_list(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env,
+        axutil_array_list_t * accept_record_list);
+
+    /**
      * Gets the transfer encoding used
      * @param msg_ctx message context
      * @param env pointer to environment struct
