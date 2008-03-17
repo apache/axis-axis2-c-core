@@ -19,6 +19,7 @@
 #define AXIS2_HTTP_TRANSPORT_H
 
 #include <axis2_const.h>
+#include <axutil_version.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -432,7 +433,7 @@ extern "C"
     /**
      * HEADER_USER_AGENT_AXIS2C
      */
-#define AXIS2_HTTP_HEADER_USER_AGENT_AXIS2C "User-Agent: Axis2/C"
+#define AXIS2_HTTP_HEADER_USER_AGENT_AXIS2C "User-Agent: Axis2C/" AXIS2_VERSION_STRING
 
 #define AXIS2_HTTP_HEADER_ACCEPT_ "Accept: "
 

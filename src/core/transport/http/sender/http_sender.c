@@ -35,6 +35,7 @@
 #include <axis2_const.h>
 #include <axis2_util.h>
 #include <axiom_soap.h>
+#include <axutil_version.h>
 
 #ifdef AXIS2_LIBCURL_ENABLED
 #include "libcurl/axis2_libcurl.h"
@@ -503,7 +504,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
     axis2_http_sender_util_add_header (env,
                                        request,
-                                       AXIS2_HTTP_HEADER_USER_AGENT, "Axis2/C");
+                                       AXIS2_HTTP_HEADER_USER_AGENT, "Axis2C/"
+                                       AXIS2_VERSION_STRING);
 
     http_property =
         axis2_msg_ctx_get_property (msg_ctx,

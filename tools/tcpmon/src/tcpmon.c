@@ -28,6 +28,8 @@
 #include <stdio.h>
 #include <axutil_stream.h>
 #include <axutil_network_handler.h>
+#include <axis2_http_transport.h>
+#include <axutil_version.h>
 
 #define SIZE 1024
 axis2_char_t *tcpmon_traffic_log = "tcpmon_traffic.log";
@@ -264,7 +266,8 @@ on_new_entry_to_file(
 
     if (status == 0)
     {
-        if (strstr(TCPMON_ENTRY_SENT_HEADERS(entry, env), "User-Agent: Axis2/C TCPMon\r\n"))
+        if (strstr(TCPMON_ENTRY_SENT_HEADERS(entry, env), AXIS2_HTTP_HEADER_USER_AGENT
+                ": Axis2C/" AXIS2_VERSION_STRING " TCPMon\r\n"))
         {
             resend = 1;
         }
@@ -700,14 +703,15 @@ resend_request(
                         req_content_len -= (int)strlen(tmp1);
                         tmp1 = str_replace(tmp1, ";\n\t", "; ");
                         req_header = tmp1;
-                        tmp2 = strstr(req_header, "User-Agent:");
+                        tmp2 = strstr(req_header, AXIS2_HTTP_HEADER_USER_AGENT ":");
                         if (tmp2)
                         {
                             tmp3 = strstr(tmp2, "\r\n");
                             if (tmp3)
                             {
                                 int header_len = 0;
-                                axis2_char_t *user_agent = "User-Agent: Axis2/C TCPMon";
+                                axis2_char_t *user_agent = AXIS2_HTTP_HEADER_USER_AGENT 
+                                    ": Axis2C/" AXIS2_VERSION_STRING " TCPMon";
                                 header_len = (int)(tmp3 - tmp2) + 2;
                                 tmp1 = AXIS2_MALLOC(env->allocator,
                                                     sizeof(axis2_char_t) * header_len + 1);
@@ -726,7 +730,7 @@ resend_request(
                         }
                         if (!has_raw_binary)
                         {
-                            tmp2 = strstr(req_header, "Content-Length:");
+                            tmp2 = strstr(req_header, AXIS2_HTTP_HEADER_CONTENT_LENGTH ":");
                             if (tmp2)
                             {
                                 tmp3 = strstr(tmp2, "\r\n");
@@ -741,7 +745,8 @@ resend_request(
                                     tmp2 = AXIS2_MALLOC(env->allocator,
                                                         sizeof(axis2_char_t) * (header_len + 2));
                                     req_content_len = (int)strlen(req_payload);
-                                    sprintf(tmp2, "%s%d\r\n", "Content-Length: ", req_content_len);
+                                    sprintf(tmp2, "%s%d\r\n", AXIS2_HTTP_HEADER_CONTENT_LENGTH 
+                                        ": ", req_content_len);
                                     req_header = str_replace(req_header, tmp1, tmp2);
                                     AXIS2_FREE(env->allocator, tmp1);
                                     AXIS2_FREE(env->allocator, tmp2);
@@ -750,7 +755,7 @@ resend_request(
                                 }
                             }
                         }
-                        tmp2 = strstr(req_header, "Host:");
+                        tmp2 = strstr(req_header, AXIS2_HTTP_HEADER_HOST ":");
                         if (tmp2)
                         {
                             tmp3 = strstr(tmp2, "\r\n");
@@ -765,7 +770,7 @@ resend_request(
                                 header_len = 16 + (int)strlen(listen_host);
                                 tmp2 = AXIS2_MALLOC(env->allocator,
                                                     sizeof(axis2_char_t) * (header_len + 1));
-                                sprintf(tmp2, "%s%s:%d\r\n", "Host: ", listen_host,
+                                sprintf(tmp2, "%s%s:%d\r\n", AXIS2_HTTP_HEADER_HOST ": ", listen_host,
                                         TCPMON_SESSION_GET_LISTEN_PORT(session, env));
                                 req_header = str_replace(req_header, tmp1, tmp2);
                                 AXIS2_FREE(env->allocator, tmp1);
@@ -836,7 +841,7 @@ on_new_entry(
 
     if (status == 0)
     {
-        if (strstr(TCPMON_ENTRY_SENT_HEADERS(entry, env), "User-Agent: Axis2/C TCPMon\r\n"))
+        if (strstr(TCPMON_ENTRY_SENT_HEADERS(entry, env), AXIS2_HTTP_HEADER_USER_AGENT ": Axis2C/" AXIS2_VERSION_STRING " TCPMon\r\n"))
         {
             resend = 1;
         }
