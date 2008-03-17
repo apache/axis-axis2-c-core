@@ -35,15 +35,14 @@ struct axutil_dll_desc
 
 AXIS2_EXTERN axutil_dll_desc_t *AXIS2_CALL
 axutil_dll_desc_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axutil_dll_desc_t *dll_desc = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    dll_desc =
-        (axutil_dll_desc_t *) AXIS2_MALLOC(env->allocator,
-                                           sizeof(axutil_dll_desc_t));
+    dll_desc = (axutil_dll_desc_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(axutil_dll_desc_t));
 
     if (!dll_desc)
     {
@@ -66,8 +65,8 @@ axutil_dll_desc_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_dll_desc_free(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env)
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -98,7 +97,7 @@ axutil_dll_desc_free(
 AXIS2_EXTERN void AXIS2_CALL
 axutil_dll_desc_free_void_arg(
     void *dll_desc,
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axutil_dll_desc_t *dll_desc_l = NULL;
 
@@ -110,9 +109,9 @@ axutil_dll_desc_free_void_arg(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_dll_desc_set_name(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env,
-    axis2_char_t * name)
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env,
+    axis2_char_t *name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
@@ -133,16 +132,16 @@ axutil_dll_desc_set_name(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_dll_desc_get_name(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env)
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env)
 {
     return dll_desc->path_qualified_dll_name;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_dll_desc_set_load_options(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env,
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env,
     int options)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -153,8 +152,8 @@ axutil_dll_desc_set_load_options(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_dll_desc_set_type(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env,
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env,
     axis2_dll_type_t type)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -165,24 +164,24 @@ axutil_dll_desc_set_type(
 
 AXIS2_EXTERN axis2_dll_type_t AXIS2_CALL
 axutil_dll_desc_get_type(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env)
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env)
 {
     return dll_desc->dll_type;
 }
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_dll_desc_get_load_options(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env)
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env)
 {
     return dll_desc->load_options;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_dll_desc_set_dl_handler(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env,
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env,
     AXIS2_DLHANDLER dl_handler)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -198,16 +197,16 @@ axutil_dll_desc_set_dl_handler(
 
 AXIS2_EXTERN AXIS2_DLHANDLER AXIS2_CALL
 axutil_dll_desc_get_dl_handler(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env)
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env)
 {
     return dll_desc->dl_handler;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_dll_desc_set_create_funct(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env,
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env,
     CREATE_FUNCT funct)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -217,16 +216,16 @@ axutil_dll_desc_set_create_funct(
 
 AXIS2_EXTERN CREATE_FUNCT AXIS2_CALL
 axutil_dll_desc_get_create_funct(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env)
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env)
 {
     return dll_desc->create_funct;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_dll_desc_set_delete_funct(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env,
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env,
     DELETE_FUNCT funct)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -237,16 +236,16 @@ axutil_dll_desc_set_delete_funct(
 
 AXIS2_EXTERN DELETE_FUNCT AXIS2_CALL
 axutil_dll_desc_get_delete_funct(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env)
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env)
 {
     return dll_desc->delete_funct;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_dll_desc_set_timestamp(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env,
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env,
     AXIS2_TIME_T timestamp)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -256,16 +255,16 @@ axutil_dll_desc_set_timestamp(
 
 AXIS2_EXTERN AXIS2_TIME_T AXIS2_CALL
 axutil_dll_desc_get_timestamp(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env)
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env)
 {
     return dll_desc->timestamp;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_dll_desc_set_error_code(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env,
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env,
     axutil_error_codes_t error_code)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -277,17 +276,17 @@ axutil_dll_desc_set_error_code(
 
 AXIS2_EXTERN axutil_error_codes_t AXIS2_CALL
 axutil_dll_desc_get_error_code(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env)
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env)
 {
     return dll_desc->error_code;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_dll_desc_create_platform_specific_dll_name(
-    axutil_dll_desc_t * dll_desc,
-    const axutil_env_t * env,
-    const axis2_char_t * class_name)
+    axutil_dll_desc_t *dll_desc,
+    const axutil_env_t *env,
+    const axis2_char_t *class_name)
 {
     axis2_char_t *temp_name = NULL;
 
