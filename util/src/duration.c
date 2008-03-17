@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,10 +21,6 @@
 #include <axutil_error.h>
 #include <axutil_utils.h>
 
-/**
- * @brief
- */
-
 struct axutil_duration
 {
     axis2_bool_t is_negative;
@@ -39,14 +34,14 @@ struct axutil_duration
 
 AXIS2_EXTERN axutil_duration_t *AXIS2_CALL
 axutil_duration_create(
-    axutil_env_t * env)
+    axutil_env_t *env)
 {
     return axutil_duration_create_from_values(env, 0, 0, 0, 0, 0, 0, 0.0);
 }
 
 AXIS2_EXTERN axutil_duration_t *AXIS2_CALL
 axutil_duration_create_from_values(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     axis2_bool_t negative,
     int years,
     int months,
@@ -59,12 +54,12 @@ axutil_duration_create_from_values(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    duration =
-        (axutil_duration_t *) AXIS2_MALLOC(env->allocator,
-                                           sizeof(axutil_duration_t));
+    duration = (axutil_duration_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(axutil_duration_t));
     if (!duration)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return NULL;
     }
 
@@ -122,17 +117,17 @@ axutil_duration_create_from_values(
 
 AXIS2_EXTERN axutil_duration_t *AXIS2_CALL
 axutil_duration_create_from_string(
-    const axutil_env_t * env,
-    axis2_char_t * duration_str)
+    const axutil_env_t *env,
+    axis2_char_t *duration_str)
 {
     axutil_duration_t *duration = NULL;
 
-    duration =
-        (axutil_duration_t *) AXIS2_MALLOC(env->allocator,
-                                           sizeof(axutil_duration_t));
+    duration = (axutil_duration_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(axutil_duration_t));
     if (!duration)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return NULL;
     }
 
@@ -144,8 +139,8 @@ axutil_duration_create_from_string(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_duration_free(
-    axutil_duration_t * duration,
-    const axutil_env_t * env)
+    axutil_duration_t *duration,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -160,9 +155,9 @@ axutil_duration_free(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_duration_deserialize_duration(
-    axutil_duration_t * duration,
-    const axutil_env_t * env,
-    const axis2_char_t * duration_str)
+    axutil_duration_t *duration,
+    const axutil_env_t *env,
+    const axis2_char_t *duration_str)
 {
     const axis2_char_t *cur = duration_str;
     double num;
@@ -179,7 +174,7 @@ axutil_duration_deserialize_duration(
     if (!duration_str)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
-                        AXIS2_FAILURE);
+            AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
@@ -334,33 +329,32 @@ axutil_duration_deserialize_duration(
 
 AXIS2_EXTERN char *AXIS2_CALL
 axutil_duration_serialize_duration(
-    axutil_duration_t * duration,
-    const axutil_env_t * env)
+    axutil_duration_t *duration,
+    const axutil_env_t *env)
 {
     axis2_char_t *duration_str = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    duration_str =
-        (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-                                      sizeof(axis2_char_t) * 64);
+    duration_str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
+                       sizeof(axis2_char_t) * 64);
 
     if (duration->is_negative == 0)
         sprintf(duration_str, "P%dY%dM%dDT%dH%dM%fS", duration->years,
-                duration->months, duration->days, duration->hours,
-                duration->mins, duration->secs);
+            duration->months, duration->days, duration->hours,
+            duration->mins, duration->secs);
     else
         sprintf(duration_str, "-P%dY%dM%dDT%dH%dM%fS", duration->years,
-                duration->months, duration->days, duration->hours,
-                duration->mins, duration->secs);
+            duration->months, duration->days, duration->hours,
+            duration->mins, duration->secs);
 
     return duration_str;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_duration_set_duration(
-    axutil_duration_t * duration,
-    const axutil_env_t * env,
+    axutil_duration_t *duration,
+    const axutil_env_t *env,
     axis2_bool_t negative,
     int years,
     int months,
@@ -389,8 +383,8 @@ axutil_duration_set_duration(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_duration_get_years(
-    axutil_duration_t * duration,
-    const axutil_env_t * env)
+    axutil_duration_t *duration,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return duration->years;
@@ -398,8 +392,8 @@ axutil_duration_get_years(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_duration_set_years(
-    axutil_duration_t * duration,
-    const axutil_env_t * env,
+    axutil_duration_t *duration,
+    const axutil_env_t *env,
     int years)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -413,8 +407,8 @@ axutil_duration_set_years(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_duration_get_months(
-    axutil_duration_t * duration,
-    const axutil_env_t * env)
+    axutil_duration_t *duration,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return duration->months;
@@ -422,8 +416,8 @@ axutil_duration_get_months(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_duration_set_months(
-    axutil_duration_t * duration,
-    const axutil_env_t * env,
+    axutil_duration_t *duration,
+    const axutil_env_t *env,
     int months)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -437,8 +431,8 @@ axutil_duration_set_months(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_duration_get_days(
-    axutil_duration_t * duration,
-    const axutil_env_t * env)
+    axutil_duration_t *duration,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return duration->days;
@@ -446,8 +440,8 @@ axutil_duration_get_days(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_duration_set_days(
-    axutil_duration_t * duration,
-    const axutil_env_t * env,
+    axutil_duration_t *duration,
+    const axutil_env_t *env,
     int days)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -461,8 +455,8 @@ axutil_duration_set_days(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_duration_get_hours(
-    axutil_duration_t * duration,
-    const axutil_env_t * env)
+    axutil_duration_t *duration,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return duration->hours;
@@ -470,8 +464,8 @@ axutil_duration_get_hours(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_duration_set_hours(
-    axutil_duration_t * duration,
-    const axutil_env_t * env,
+    axutil_duration_t *duration,
+    const axutil_env_t *env,
     int hours)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -485,8 +479,8 @@ axutil_duration_set_hours(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_duration_get_mins(
-    axutil_duration_t * duration,
-    const axutil_env_t * env)
+    axutil_duration_t *duration,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return duration->mins;
@@ -494,8 +488,8 @@ axutil_duration_get_mins(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_duration_set_mins(
-    axutil_duration_t * duration,
-    const axutil_env_t * env,
+    axutil_duration_t *duration,
+    const axutil_env_t *env,
     int mins)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -509,8 +503,8 @@ axutil_duration_set_mins(
 
 AXIS2_EXTERN double AXIS2_CALL
 axutil_duration_get_seconds(
-    axutil_duration_t * duration,
-    const axutil_env_t * env)
+    axutil_duration_t *duration,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return duration->secs;
@@ -518,8 +512,8 @@ axutil_duration_get_seconds(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_duration_set_seconds(
-    axutil_duration_t * duration,
-    const axutil_env_t * env,
+    axutil_duration_t *duration,
+    const axutil_env_t *env,
     double seconds)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -533,18 +527,17 @@ axutil_duration_set_seconds(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axutil_duration_get_is_negative(
-    axutil_duration_t * duration,
-    const axutil_env_t * env)
+    axutil_duration_t *duration,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return duration->is_negative;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_duration_set_is_negative(
-    axutil_duration_t * duration,
-    const axutil_env_t * env,
+    axutil_duration_t *duration,
+    const axutil_env_t *env,
     axis2_bool_t is_negative)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -555,16 +548,16 @@ axutil_duration_set_is_negative(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axutil_duration_compare(
-    axutil_duration_t * duration_one,
-    axutil_duration_t * duration_two,
-    axutil_env_t * env)
+    axutil_duration_t *duration_one,
+    axutil_duration_t *duration_two,
+    axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
 
     if (!duration_one || !duration_two)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
-                        AXIS2_FAILURE);
+            AXIS2_FAILURE);
         return AXIS2_FALSE;
     }
 
@@ -584,3 +577,4 @@ axutil_duration_compare(
         return AXIS2_FALSE;
     return AXIS2_SUCCESS;
 }
+
