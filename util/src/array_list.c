@@ -74,11 +74,10 @@ axutil_array_list_ensure_capacity(
     AXIS2_PARAM_CHECK (env->error, array_list, AXIS2_FAILURE);
     if (min_capacity > array_list->capacity)
     {
-        int new_capacity =
-            (array_list->capacity * 2 >
+        int new_capacity = (array_list->capacity * 2 >
              min_capacity) ? (array_list->capacity * 2) : min_capacity;
         void **data = (void **) AXIS2_MALLOC(env->allocator,
-                                             sizeof(void *) * new_capacity);
+            sizeof(void *) * new_capacity);
         if (!data)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
