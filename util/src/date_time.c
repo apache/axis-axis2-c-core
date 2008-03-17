@@ -40,7 +40,7 @@ struct axutil_date_time
 
 AXIS2_EXTERN axutil_date_time_t *AXIS2_CALL
 axutil_date_time_create_with_offset(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     int offset)
 {
     axutil_date_time_t *date_time = NULL;
@@ -48,9 +48,8 @@ axutil_date_time_create_with_offset(
     struct tm *utc_time = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    date_time =
-        (axutil_date_time_t *) AXIS2_MALLOC(env->allocator,
-                                            sizeof(axutil_date_time_t));
+    date_time = (axutil_date_time_t *) AXIS2_MALLOC(env->allocator,
+                    sizeof(axutil_date_time_t));
 
     if (!date_time)
     {
@@ -83,15 +82,15 @@ axutil_date_time_create_with_offset(
 
 AXIS2_EXTERN axutil_date_time_t *AXIS2_CALL
 axutil_date_time_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     return axutil_date_time_create_with_offset(env, 0);
 }
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_date_time_free(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -104,9 +103,9 @@ axutil_date_time_free(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_date_time_deserialize_time(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env,
-    const axis2_char_t * time_str)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env,
+    const axis2_char_t *time_str)
 {
     int hour;
     int min;
@@ -116,13 +115,11 @@ axutil_date_time_deserialize_time(
 
     if (strchr(time_str, '.'))
     {
-        sscanf(time_str, "%d:%d:%d.%dZ", &hour, &min,
-               &sec, &msec);
+        sscanf(time_str, "%d:%d:%d.%dZ", &hour, &min, &sec, &msec);
     }
     else
     {
-        sscanf(time_str, "%d:%d:%dZ", &hour, &min,
-               &sec);
+        sscanf(time_str, "%d:%d:%dZ", &hour, &min, &sec);
         msec = 0;
     }
     if (hour < 0 || hour > 23)
@@ -155,9 +152,9 @@ axutil_date_time_deserialize_time(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_date_time_deserialize_time_with_time_zone(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env,
-    const axis2_char_t * time_str)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env,
+    const axis2_char_t *time_str)
 {
     int hour;
     int min;
@@ -184,12 +181,12 @@ axutil_date_time_deserialize_time_with_time_zone(
         if (strchr(time_str, '.'))
         {
             sscanf(time_str, "%d:%d:%d.%d+%d:%d", &hour, &min,
-                   &sec, &msec, &tz_hour, &tz_min);
+                &sec, &msec, &tz_hour, &tz_min);
         }
         else
         {
             sscanf(time_str, "%d:%d:%d+%d:%d", &hour, &min,
-                   &sec, &tz_hour, &tz_min);
+                &sec, &tz_hour, &tz_min);
             msec = 0;
         }
     }
@@ -198,12 +195,12 @@ axutil_date_time_deserialize_time_with_time_zone(
         if (strchr(time_str, '.'))
         {
             sscanf(time_str, "%d:%d:%d.%d-%d:%d", &hour, &min,
-                   &sec, &msec, &tz_hour, &tz_min);
+                &sec, &msec, &tz_hour, &tz_min);
         }
         else
         {
             sscanf(time_str, "%d:%d:%d-%d:%d", &hour, &min,
-                   &sec, &tz_hour, &tz_min);
+                &sec, &tz_hour, &tz_min);
             msec = 0;
         }
     }
@@ -252,9 +249,9 @@ axutil_date_time_deserialize_time_with_time_zone(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_date_time_deserialize_date(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env,
-    const axis2_char_t * date_str)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env,
+    const axis2_char_t *date_str)
 {
     int year;
     int mon;
@@ -308,9 +305,9 @@ axutil_date_time_deserialize_date(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_date_time_deserialize_date_time(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env,
-    const axis2_char_t * date_time_str)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env,
+    const axis2_char_t *date_time_str)
 {
     int year;
     int mon;
@@ -333,13 +330,12 @@ axutil_date_time_deserialize_date_time(
     if (strchr(date_time_str, '.'))
     {
         sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%d.%dZ", &year,
-               &mon, &day, &hour, &min,
-               &sec, &msec);
+            &mon, &day, &hour, &min, &sec, &msec);
     }
     else
     {
         sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%dZ", &year,
-               &mon, &day, &hour, &min, &sec);
+            &mon, &day, &hour, &min, &sec);
         msec = 0;
     }
 
@@ -404,9 +400,9 @@ axutil_date_time_deserialize_date_time(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_date_time_deserialize_date_time_with_time_zone(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env,
-    const axis2_char_t * date_time_str)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env,
+    const axis2_char_t *date_time_str)
 {
     int year;
     int mon;
@@ -445,14 +441,12 @@ axutil_date_time_deserialize_date_time_with_time_zone(
         if (strchr(date_time_str, '.'))
         {
             sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%d.%d+%d:%d", &year,
-                   &mon, &day, &hour, &min,
-                   &sec, &msec, &tz_hour, &tz_min);
+                &mon, &day, &hour, &min, &sec, &msec, &tz_hour, &tz_min);
         }
         else
         {
             sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%d+%d:%d", &year,
-                   &mon, &day, &hour, &min,
-                   &sec, &tz_hour, &tz_min);
+                &mon, &day, &hour, &min, &sec, &tz_hour, &tz_min);
 
             msec = 0;
         }
@@ -462,14 +456,12 @@ axutil_date_time_deserialize_date_time_with_time_zone(
         if (strchr(date_time_str, '.'))
         {
             sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%d.%d-%d:%d", &year,
-                   &mon, &day, &hour, &min,
-                   &sec, &msec, &tz_hour, &tz_min);
+                &mon, &day, &hour, &min, &sec, &msec, &tz_hour, &tz_min);
         }
         else
         {
             sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%d-%d:%d", &year,
-                   &mon, &day, &hour, &min,
-                   &sec, &tz_hour, &tz_min);
+                &mon, &day, &hour, &min, &sec, &tz_hour, &tz_min);
 
             msec = 0;
         }
@@ -552,9 +544,9 @@ axutil_date_time_deserialize_date_time_with_time_zone(
 /*Check if the @data_time is not expired, compared to @ref*/
 AXIS2_EXTERN axutil_date_time_comp_result_t AXIS2_CALL
 axutil_date_time_compare(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env,
-    axutil_date_time_t * ref)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env,
+    axutil_date_time_t *ref)
 {
     int dt_min;
     int ref_min;
@@ -650,8 +642,8 @@ axutil_date_time_compare(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_date_time_set_time_zone(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env,
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env,
     axis2_bool_t is_positive,
     int hour,
     int min)
@@ -677,8 +669,8 @@ axutil_date_time_set_time_zone(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_date_time_set_date_time(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env,
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env,
     int year,
     int mon,
     int day,
@@ -748,33 +740,32 @@ axutil_date_time_set_date_time(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_date_time_serialize_time(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     axis2_char_t *time_str = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    time_str =
-        (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-                                      sizeof(axis2_char_t) * 32);
+    time_str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
+                   sizeof(axis2_char_t) * 32);
     if (date_time->msec)
     {
         sprintf(time_str, "%02d:%02d:%02d.%03dZ", date_time->hour, date_time->min,
-                date_time->sec, date_time->msec);
+            date_time->sec, date_time->msec);
     }
     else
     {
         sprintf(time_str, "%02d:%02d:%02dZ", date_time->hour, date_time->min,
-                date_time->sec);
+            date_time->sec);
     }
     return time_str;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_date_time_serialize_time_with_time_zone(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     axis2_char_t *time_str = NULL;
 
@@ -786,45 +777,43 @@ axutil_date_time_serialize_time_with_time_zone(
     }
 
     time_str =
-        (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-                                      sizeof(axis2_char_t) * 37);
+        (axis2_char_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 37);
     if (date_time->msec)
     {
         sprintf(time_str, "%02d:%02d:%02d.%03d%c%02d:%02d", date_time->hour, date_time->min,
-                date_time->sec, date_time->msec, date_time->tz_pos ? '+': '-',
-                date_time->tz_hour, date_time->tz_min);
+            date_time->sec, date_time->msec, date_time->tz_pos ? '+': '-',
+            date_time->tz_hour, date_time->tz_min);
     }
     else
     {
         sprintf(time_str, "%02d:%02d:%02d%c%02d:%02d", date_time->hour, date_time->min,
-                date_time->sec, date_time->tz_pos ? '+': '-',
-                date_time->tz_hour, date_time->tz_min);
+            date_time->sec, date_time->tz_pos ? '+': '-',
+            date_time->tz_hour, date_time->tz_min);
     }
     return time_str;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_date_time_serialize_date(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     axis2_char_t *date_str = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    date_str =
-        (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-                                      sizeof(axis2_char_t) * 32);
+    date_str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(axis2_char_t) * 32);
 
     sprintf(date_str, "%d-%02d-%02d", date_time->year + 1900, date_time->mon + 1,
-            date_time->day);
+        date_time->day);
     return date_str;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_date_time_serialize_date_time(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     axis2_char_t *date_time_str = NULL;
 
@@ -834,22 +823,22 @@ axutil_date_time_serialize_date_time(
     if (date_time->msec)
     {
         sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02d.%03dZ",
-                date_time->year + 1900, date_time->mon + 1, date_time->day,
-                date_time->hour, date_time->min, date_time->sec, date_time->msec);
+            date_time->year + 1900, date_time->mon + 1, date_time->day,
+            date_time->hour, date_time->min, date_time->sec, date_time->msec);
     }
     else
     {
         sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02dZ",
-                date_time->year + 1900, date_time->mon + 1, date_time->day,
-                date_time->hour, date_time->min, date_time->sec);
+            date_time->year + 1900, date_time->mon + 1, date_time->day,
+            date_time->hour, date_time->min, date_time->sec);
     }
     return date_time_str;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_date_time_serialize_date_time_with_time_zone(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     axis2_char_t *date_time_str = NULL;
 
@@ -864,24 +853,24 @@ axutil_date_time_serialize_date_time_with_time_zone(
     if (date_time->msec)
     {
         sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02d.%03d%c%02d:%02d",
-                date_time->year + 1900, date_time->mon + 1, date_time->day,
-                date_time->hour, date_time->min, date_time->sec, date_time->msec, 
-                date_time->tz_pos ? '+': '-', date_time->tz_hour, date_time->tz_min);
+            date_time->year + 1900, date_time->mon + 1, date_time->day,
+            date_time->hour, date_time->min, date_time->sec, date_time->msec, 
+            date_time->tz_pos ? '+': '-', date_time->tz_hour, date_time->tz_min);
     }
     else
     {
         sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02d%c%02d:%02d",
-                date_time->year + 1900, date_time->mon + 1, date_time->day,
-                date_time->hour, date_time->min, date_time->sec,
-                date_time->tz_pos ? '+': '-', date_time->tz_hour, date_time->tz_min);
+            date_time->year + 1900, date_time->mon + 1, date_time->day,
+            date_time->hour, date_time->min, date_time->sec,
+            date_time->tz_pos ? '+': '-', date_time->tz_hour, date_time->tz_min);
     }
     return date_time_str;
 }
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_date_time_get_year(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return (date_time->year + 1900);
@@ -889,80 +878,80 @@ axutil_date_time_get_year(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_date_time_get_month(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     return (date_time->mon + 1);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_date_time_get_date(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     return (date_time->day);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_date_time_get_hour(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     return (date_time->hour);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_date_time_get_minute(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     return (date_time->min);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_date_time_get_second(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     return (date_time->sec);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_date_time_get_msec(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     return (date_time->msec);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_date_time_get_time_zone_hour(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     return (date_time->tz_hour);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_date_time_get_time_zone_minute(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     return (date_time->tz_min);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_date_time_is_time_zone_positive(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     return (date_time->tz_pos);
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axutil_date_time_is_utc(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     axis2_bool_t is_utc = AXIS2_TRUE;
     if (date_time->tz_hour || date_time->tz_min)
@@ -974,8 +963,8 @@ axutil_date_time_is_utc(
 
 AXIS2_EXTERN axutil_date_time_t *AXIS2_CALL
 axutil_date_time_local_to_utc(
-    axutil_date_time_t * date_time,
-    const axutil_env_t * env)
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
 {
     int year;
     int mon;
@@ -1173,13 +1162,13 @@ axutil_date_time_local_to_utc(
 
 AXIS2_EXTERN axutil_date_time_t *AXIS2_CALL
 axutil_date_time_utc_to_local(
-    axutil_date_time_t * date_time_in,
-    const axutil_env_t * env,
+    axutil_date_time_t *date_time_in,
+    const axutil_env_t *env,
     axis2_bool_t is_positive,
     int hour,
     int min)
 {
-    axutil_date_time_t * date_time = NULL;
+    axutil_date_time_t *date_time = NULL;
     axutil_date_time_t *ret = NULL;
     if (date_time_in->tz_hour && date_time_in->tz_min)
     {
