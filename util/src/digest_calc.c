@@ -26,16 +26,16 @@ void AXIS2_CALL convert_to_hex(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_digest_calc_get_h_a1(
-    const axutil_env_t * env,
-    char * algorithm,                      
-    char * user_name,                      
-    char * realm,                          
-    char * password,                       
-    char * nonce,                          
-    char * cnonce,                         
+    const axutil_env_t *env,
+    char *algorithm,                      
+    char *user_name,                      
+    char *realm,                          
+    char *password,                       
+    char *nonce,                          
+    char *cnonce,                         
     axutil_digest_hash_hex_t session_key)
 {
-    axutil_md5_ctx_t * ctx;
+    axutil_md5_ctx_t *ctx;
     axutil_digest_hash_t ha1;
 
     ctx = axutil_md5_ctx_create(env);
@@ -67,18 +67,18 @@ axutil_digest_calc_get_h_a1(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_digest_calc_get_response(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     axutil_digest_hash_hex_t h_a1,                       
-    char * nonce,                       
-    char * nonce_count,                 
-    char * cnonce,                      
-    char * qop,                         
-    char * method,                      
-    char * digest_uri,                  
+    char *nonce,                       
+    char *nonce_count,                 
+    char *cnonce,                      
+    char *qop,                         
+    char *method,                      
+    char *digest_uri,                  
     axutil_digest_hash_hex_t h_entity,  
     axutil_digest_hash_hex_t response)
 {
-    axutil_md5_ctx_t * ctx;
+    axutil_md5_ctx_t *ctx;
     axutil_digest_hash_t ha2;
     axutil_digest_hash_t resp_hash;
     axutil_digest_hash_hex_t ha2_hex;
