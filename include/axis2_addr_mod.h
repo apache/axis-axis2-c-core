@@ -43,7 +43,10 @@ extern "C"
 {
 #endif
 
-    /**
+#define ADDR_IN_HANDLER "AddressingInHandler"
+#define ADDR_OUT_HANDLER "AddressingOutHandler"
+
+/**
      * Creates Addressing in handler
      * @param env pointer to environment struct
      * @param name name of handler

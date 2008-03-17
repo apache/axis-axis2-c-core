@@ -48,8 +48,6 @@ axis2_svc_ctx_create(
 {
     axis2_svc_ctx_t *svc_ctx = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     svc_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_ctx_t));
     if (!svc_ctx)
     {

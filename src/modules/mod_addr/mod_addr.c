@@ -44,9 +44,17 @@ axis2_mod_addr_create(
     const axutil_env_t * env)
 {
     axis2_module_t *module = NULL;
+
     module = AXIS2_MALLOC(env->allocator, sizeof(axis2_module_t));
 
+    if(!module)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
     module->ops = &addr_module_ops_var;
+    module->handler_create_func_map = NULL;
 
     return module;
 }
@@ -87,17 +95,19 @@ axis2_mod_addr_fill_handler_create_func_map(
     const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, module, AXIS2_FAILURE);
 
     module->handler_create_func_map = axutil_hash_make(env);
+
     if (!module->handler_create_func_map)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    axutil_hash_set(module->handler_create_func_map, "AddressingInHandler",
+    axutil_hash_set(module->handler_create_func_map, ADDR_IN_HANDLER,
                     AXIS2_HASH_KEY_STRING, axis2_addr_in_handler_create);
 
-    axutil_hash_set(module->handler_create_func_map, "AddressingOutHandler",
+    axutil_hash_set(module->handler_create_func_map, ADDR_OUT_HANDLER,
                     AXIS2_HASH_KEY_STRING, axis2_addr_out_handler_create);
 
     return AXIS2_SUCCESS;
@@ -127,9 +137,15 @@ axis2_remove_instance(
     const axutil_env_t * env)
 {
     axis2_status_t status = AXIS2_FAILURE;
+   
     if (inst)
     {
         status = axis2_mod_addr_shutdown(inst, env);
     }
+    else
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND, AXIS2_FAILURE);
+    }
+    
     return status;
 }
