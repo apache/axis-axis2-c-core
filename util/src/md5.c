@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -97,7 +96,7 @@ static unsigned char PADDING[64] =
 
 AXIS2_EXTERN axutil_md5_ctx_t *AXIS2_CALL
 axutil_md5_ctx_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axutil_md5_ctx_t *context;
     AXIS2_ENV_CHECK(env, NULL);
@@ -119,8 +118,8 @@ axutil_md5_ctx_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_md5_ctx_free(
-    axutil_md5_ctx_t * md5_ctx,
-    const axutil_env_t * env)
+    axutil_md5_ctx_t *md5_ctx,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (md5_ctx)
@@ -132,7 +131,7 @@ axutil_md5_ctx_free(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_md5_update(
     axutil_md5_ctx_t *context,
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     const void *input_str,
     size_t inputLen)
 {
@@ -172,7 +171,7 @@ axutil_md5_update(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_md5_final(
     axutil_md5_ctx_t *context,
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     unsigned char digest[AXIS2_MD5_DIGESTSIZE])
 {
     unsigned char bits[8];
@@ -201,13 +200,13 @@ axutil_md5_final(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_md5(
-     const axutil_env_t * env, 
+     const axutil_env_t *env, 
      unsigned char digest[AXIS2_MD5_DIGESTSIZE],
      const void *input_str,
      size_t inputLen)
 {
     const unsigned char *input = input_str;
-    axutil_md5_ctx_t * ctx;
+    axutil_md5_ctx_t *ctx;
     axis2_status_t rv;
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
 
