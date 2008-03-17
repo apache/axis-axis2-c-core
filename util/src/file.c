@@ -28,7 +28,7 @@ struct axutil_file
 
 AXIS2_EXTERN axutil_file_t *AXIS2_CALL
 axutil_file_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axutil_file_t *file = NULL;
 
@@ -51,8 +51,8 @@ axutil_file_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_file_free(
-    axutil_file_t * file,
-    const axutil_env_t * env)
+    axutil_file_t *file,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -75,9 +75,9 @@ axutil_file_free(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_file_set_name(
-    axutil_file_t * file,
-    const axutil_env_t * env,
-    axis2_char_t * name)
+    axutil_file_t *file,
+    const axutil_env_t *env,
+    axis2_char_t *name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
@@ -98,13 +98,13 @@ axutil_file_set_name(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_file_get_name(
-    axutil_file_t * file,
-    const axutil_env_t * env)
+    axutil_file_t *file,
+    const axutil_env_t *env)
 {
     if (!file->name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET,
-                        AXIS2_FAILURE);
+            AXIS2_FAILURE);
         return NULL;
     }
     return (file->name);
@@ -112,9 +112,9 @@ axutil_file_get_name(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_file_set_path(
-    axutil_file_t * file,
-    const axutil_env_t * env,
-    axis2_char_t * path)
+    axutil_file_t *file,
+    const axutil_env_t *env,
+    axis2_char_t *path)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (!path)
@@ -138,13 +138,13 @@ axutil_file_set_path(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_file_get_path(
-    axutil_file_t * file,
-    const axutil_env_t * env)
+    axutil_file_t *file,
+    const axutil_env_t *env)
 {
     if (!(file->path))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET,
-                        AXIS2_FAILURE);
+            AXIS2_FAILURE);
         return NULL;
     }
 
@@ -153,8 +153,8 @@ axutil_file_get_path(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_file_set_timestamp(
-    axutil_file_t * file,
-    const axutil_env_t * env,
+    axutil_file_t *file,
+    const axutil_env_t *env,
     AXIS2_TIME_T timestamp)
 {
     file->timestamp = timestamp;
@@ -163,16 +163,16 @@ axutil_file_set_timestamp(
 
 AXIS2_EXTERN AXIS2_TIME_T AXIS2_CALL
 axutil_file_get_timestamp(
-    axutil_file_t * file,
-    const axutil_env_t * env)
+    axutil_file_t *file,
+    const axutil_env_t *env)
 {
     return file->timestamp;
 }
 
 AXIS2_EXTERN axutil_file_t *AXIS2_CALL
 axutil_file_clone(
-    axutil_file_t * file,
-    const axutil_env_t * env)
+    axutil_file_t *file,
+    const axutil_env_t *env)
 {
     axutil_file_t *new_file = NULL;
     axis2_status_t status = AXIS2_FAILURE;
