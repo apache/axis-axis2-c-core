@@ -500,9 +500,6 @@ axis2_addr_out_handler_invoke(
                                                 om_attr,
                                                 relates_to_header_node);
 
-                }
-                if (relates_to_header_ele)
-                {
                     dec_ns =
                         axiom_element_find_declared_namespace
                         (relates_to_header_ele, env, addr_ns,
@@ -599,6 +596,7 @@ axis2_addr_out_handler_add_to_soap_header(
     axiom_node_t *header_block_node = NULL;
     axiom_node_t *header_node = NULL;
     axiom_namespace_t *addr_ns_obj = NULL;
+    int size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, endpoint_ref, AXIS2_FAILURE);
@@ -675,8 +673,9 @@ axis2_addr_out_handler_add_to_soap_header(
         if (ref_attribute_list)
         {
             int j = 0;
-            for (j = 0; j < axutil_array_list_size(ref_attribute_list, env);
-                 j++)
+
+            size = axutil_array_list_size(ref_attribute_list, env);
+            for (j = 0; j < size; j++)
             {
                 axiom_attribute_t *attr =
                     (axiom_attribute_t *)
@@ -689,7 +688,8 @@ axis2_addr_out_handler_add_to_soap_header(
             }
         }
 
-        for (i = 0; i < axutil_array_list_size(ref_param_list, env); i++)
+        size = axutil_array_list_size(ref_param_list, env);
+        for (i = 0; size; i++)
         {
             axiom_node_t *ref_node =
                 (axiom_node_t *) axutil_array_list_get(ref_param_list, env, i);
@@ -725,8 +725,8 @@ axis2_addr_out_handler_add_to_soap_header(
         if (meta_attribute_list)
         {
             int j = 0;
-            for (j = 0; j < axutil_array_list_size(meta_attribute_list, env);
-                 j++)
+            size = axutil_array_list_size(meta_attribute_list, env);
+            for (j = 0; j < size; j++)
             {
                 axiom_attribute_t *attr =
                     (axiom_attribute_t *)
@@ -739,7 +739,8 @@ axis2_addr_out_handler_add_to_soap_header(
             }
         }
 
-        for (i = 0; i < axutil_array_list_size(meta_data_list, env); i++)
+        size = axutil_array_list_size(meta_data_list, env);
+        for (i = 0; i < size; i++)
         {
             axiom_node_t *ref_node =
                 (axiom_node_t *) axutil_array_list_get(meta_data_list, env, i);
@@ -754,7 +755,9 @@ axis2_addr_out_handler_add_to_soap_header(
     if (extension_list && axutil_array_list_size(extension_list, env) > 0)
     {
         int i = 0;
-        for (i = 0; i < axutil_array_list_size(extension_list, env); i++)
+
+        size =  axutil_array_list_size(extension_list, env);
+        for (i = 0; i < size; i++)
         {
             axiom_node_t *ref_node =
                 (axiom_node_t *) axutil_array_list_get(extension_list, env, i);
