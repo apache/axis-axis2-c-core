@@ -213,7 +213,7 @@ axutil_base64_binary_get_encoded_binary(
     encoded_binary_len =
         axutil_base64_encode_len(base64_binary->plain_binary_len);
     encoded_binary =
-        AXIS2_MALLOC(env->allocator, sizeof(char) *encoded_binary_len);
+        AXIS2_MALLOC(env->allocator, sizeof(char) * encoded_binary_len);
 
     if (!encoded_binary)
     {
