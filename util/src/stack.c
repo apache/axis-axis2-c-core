@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -38,7 +37,7 @@ struct axutil_stack
 
 AXIS2_EXTERN axutil_stack_t *AXIS2_CALL
 axutil_stack_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axutil_stack_t *stack = NULL;
 
@@ -50,6 +49,7 @@ axutil_stack_create(
     if (!stack)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
 
@@ -64,6 +64,7 @@ axutil_stack_create(
     if (!stack->data)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         axutil_stack_free(stack, env);
         return NULL;
     }
@@ -73,8 +74,8 @@ axutil_stack_create(
 
 void AXIS2_CALL
 axutil_stack_free(
-    axutil_stack_t * stack,
-    const axutil_env_t * env)
+    axutil_stack_t *stack,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -88,8 +89,8 @@ axutil_stack_free(
 
 void *AXIS2_CALL
 axutil_stack_pop(
-    axutil_stack_t * stack,
-    const axutil_env_t * env)
+    axutil_stack_t *stack,
+    const axutil_env_t *env)
 {
     void *value = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -113,8 +114,8 @@ axutil_stack_pop(
 
 axis2_status_t AXIS2_CALL
 axutil_stack_push(
-    axutil_stack_t * stack,
-    const axutil_env_t * env,
+    axutil_stack_t *stack,
+    const axutil_env_t *env,
     void *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -134,6 +135,7 @@ axutil_stack_push(
         if (!new_data)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
             return AXIS2_FAILURE;
         }
         memset(new_data, 0, sizeof(void *) * new_capacity);
@@ -151,17 +153,16 @@ axutil_stack_push(
 
 int AXIS2_CALL
 axutil_stack_size(
-    axutil_stack_t * stack,
-    const axutil_env_t * env)
+    axutil_stack_t *stack,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return stack->size;
 }
 
 void *AXIS2_CALL
 axutil_stack_get(
-    axutil_stack_t * stack,
-    const axutil_env_t * env)
+    axutil_stack_t *stack,
+    const axutil_env_t *env)
 {
     if (stack->size > 0)
     {
@@ -172,8 +173,8 @@ axutil_stack_get(
 
 void *AXIS2_CALL
 axutil_stack_get_at(
-    axutil_stack_t * stack,
-    const axutil_env_t * env,
+    axutil_stack_t *stack,
+    const axutil_env_t *env,
     int i)
 {
     if ((stack->size == 0) || (i < 0) || (i >= stack->size))
