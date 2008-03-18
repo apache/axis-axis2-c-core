@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -29,26 +28,26 @@ typedef struct axutil_log_impl axutil_log_impl_t;
 
 static axis2_status_t
 axutil_log_impl_rotate(
-    axutil_log_t * log);
+    axutil_log_t *log);
 
 static void AXIS2_CALL axutil_log_impl_write(
-    axutil_log_t * log,
-    const axis2_char_t * buffer,
+    axutil_log_t *log,
+    const axis2_char_t *buffer,
     axutil_log_levels_t level,
-    const axis2_char_t * file,
+    const axis2_char_t *file,
     const int line);
 
 AXIS2_EXTERN void AXIS2_CALL axutil_log_impl_write_to_file(
-    axutil_log_t * log,
-    axutil_thread_mutex_t * mutex,
+    axutil_log_t *log,
+    axutil_thread_mutex_t *mutex,
     axutil_log_levels_t level,
-    const axis2_char_t * file,
+    const axis2_char_t *file,
     const int line,
-    const axis2_char_t * value);
+    const axis2_char_t *value);
 
 static void AXIS2_CALL axutil_log_impl_free(
-    axutil_allocator_t * allocator,
-    axutil_log_t * log);
+    axutil_allocator_t *allocator,
+    axutil_log_t *log);
 
 struct axutil_log_impl
 {
@@ -67,8 +66,8 @@ static const axutil_log_ops_t axutil_log_ops_var = {
 
 static void AXIS2_CALL
 axutil_log_impl_free(
-    axutil_allocator_t * allocator,
-    axutil_log_t * log)
+    axutil_allocator_t *allocator,
+    axutil_log_t *log)
 {
     axutil_log_impl_t *log_impl = NULL;
 
@@ -90,14 +89,13 @@ axutil_log_impl_free(
         }
         AXIS2_FREE(allocator, log_impl);
     }
-
 }
 
 AXIS2_EXTERN axutil_log_t *AXIS2_CALL
 axutil_log_create(
-    axutil_allocator_t * allocator,
-    axutil_log_ops_t * ops,
-    const axis2_char_t * stream_name)
+    axutil_allocator_t *allocator,
+    axutil_log_ops_t *ops,
+    const axis2_char_t *stream_name)
 {
     axutil_log_impl_t *log_impl;
     axis2_char_t *path_home;
@@ -108,9 +106,8 @@ axutil_log_create(
     if (!allocator)
         return NULL;
 
-    log_impl =
-        (axutil_log_impl_t *) AXIS2_MALLOC(allocator,
-                                           sizeof(axutil_log_impl_t));
+    log_impl = (axutil_log_impl_t *) AXIS2_MALLOC(allocator,
+                   sizeof(axutil_log_impl_t));
 
     if (!log_impl)
         return NULL;
@@ -161,7 +158,7 @@ axutil_log_create(
         else
         {
             fprintf(stderr,
-                    "AXIS2C_HOME is not set - log is written to . dir\n");
+                "AXIS2C_HOME is not set - log is written to . dir\n");
             AXIS2_SNPRINTF(log_file_name, AXUTIL_LOG_FILE_NAME_SIZE, "%s", 
                 tmp_filename);
         }
@@ -203,10 +200,10 @@ axutil_log_create(
 
 static void AXIS2_CALL
 axutil_log_impl_write(
-    axutil_log_t * log,
-    const axis2_char_t * buffer,
+    axutil_log_t *log,
+    const axis2_char_t *buffer,
     axutil_log_levels_t level,
-    const axis2_char_t * file,
+    const axis2_char_t *file,
     const int line)
 {
     if (log && buffer)
@@ -251,12 +248,12 @@ axutil_log_impl_write(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_write_to_file(
-    axutil_log_t * log,
-    axutil_thread_mutex_t * mutex,
+    axutil_log_t *log,
+    axutil_thread_mutex_t *mutex,
     axutil_log_levels_t level,
-    const axis2_char_t * file,
+    const axis2_char_t *file,
     const int line,
-    const axis2_char_t * value)
+    const axis2_char_t *value)
 {
     const char *level_str = "";
     axutil_log_impl_t *log_impl = AXUTIL_INTF_TO_IMPL(log);
@@ -298,10 +295,10 @@ axutil_log_impl_write_to_file(
     {
         if (file)
             fprintf(fd, "[%s] %s%s(%d) %s\n", axutil_log_impl_get_time_str(),
-                    level_str, file, line, value);
+                level_str, file, line, value);
         else
             fprintf(fd, "[%s] %s %s\n", axutil_log_impl_get_time_str(), level_str,
-                    value);
+                value);
         fflush(fd);
     }
     axutil_thread_mutex_unlock(mutex);
@@ -309,7 +306,7 @@ axutil_log_impl_write_to_file(
 
 static axis2_status_t
 axutil_log_impl_rotate(
-    axutil_log_t * log)
+    axutil_log_t *log)
 {
     long size = -1;
     FILE *old_log_fd = NULL;
@@ -348,10 +345,10 @@ axutil_log_impl_rotate(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_user(
-    axutil_log_t * log,
-    const axis2_char_t * filename,
+    axutil_log_t *log,
+    const axis2_char_t *filename,
     const int linenumber,
-    const axis2_char_t * format,
+    const axis2_char_t *format,
     ...)
 {
     FILE *fd = NULL;
@@ -389,10 +386,10 @@ axutil_log_impl_log_user(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_debug(
-    axutil_log_t * log,
-    const axis2_char_t * filename,
+    axutil_log_t *log,
+    const axis2_char_t *filename,
     const int linenumber,
-    const axis2_char_t * format,
+    const axis2_char_t *format,
     ...)
 {
     FILE *fd = NULL;
@@ -421,7 +418,7 @@ axutil_log_impl_log_debug(
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
             axutil_log_impl_write_to_file(log, mutex, AXIS2_LOG_LEVEL_DEBUG,
-                                          filename, linenumber, value);
+                filename, linenumber, value);
         }
     }
 #ifndef AXIS2_NO_LOG_FILE
@@ -432,8 +429,8 @@ axutil_log_impl_log_debug(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_info(
-    axutil_log_t * log,
-    const axis2_char_t * format,
+    axutil_log_t *log,
+    const axis2_char_t *format,
     ...)
 {
     FILE *fd = NULL;
@@ -474,10 +471,10 @@ axutil_log_impl_log_info(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_warning(
-    axutil_log_t * log,
-    const axis2_char_t * filename,
+    axutil_log_t *log,
+    const axis2_char_t *filename,
     const int linenumber,
-    const axis2_char_t * format,
+    const axis2_char_t *format,
     ...)
 {
     FILE *fd = NULL;
@@ -518,10 +515,10 @@ axutil_log_impl_log_warning(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_error(
-    axutil_log_t * log,
-    const axis2_char_t * filename,
+    axutil_log_t *log,
+    const axis2_char_t *filename,
     const int linenumber,
-    const axis2_char_t * format,
+    const axis2_char_t *format,
     ...)
 {
     FILE *fd = NULL;
@@ -550,7 +547,7 @@ axutil_log_impl_log_error(
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
             axutil_log_impl_write_to_file(log, mutex, AXIS2_LOG_LEVEL_ERROR,
-                                          filename, linenumber, value);
+                filename, linenumber, value);
         }
     }
 #ifndef AXIS2_NO_LOG_FILE
@@ -562,10 +559,10 @@ axutil_log_impl_log_error(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_critical(
-    axutil_log_t * log,
-    const axis2_char_t * filename,
+    axutil_log_t *log,
+    const axis2_char_t *filename,
     const int linenumber,
-    const axis2_char_t * format,
+    const axis2_char_t *format,
     ...)
 {
     FILE *fd = NULL;
@@ -586,14 +583,13 @@ axutil_log_impl_log_critical(
         if (!mutex)
         {
             fprintf(stderr, "Log mutex is not found\n");
-
         }
 
         va_start(ap, format);
         AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
         va_end(ap);
         axutil_log_impl_write_to_file(log, mutex, AXIS2_LOG_LEVEL_CRITICAL,
-                                      filename, linenumber, value);
+            filename, linenumber, value);
     }
 #ifndef AXIS2_NO_LOG_FILE
     else
@@ -623,16 +619,15 @@ axutil_log_impl_get_time_str(
 
 AXIS2_EXTERN axutil_log_t *AXIS2_CALL
 axutil_log_create_default(
-    axutil_allocator_t * allocator)
+    axutil_allocator_t *allocator)
 {
     axutil_log_impl_t *log_impl;
 
     if (!allocator)
         return NULL;
 
-    log_impl =
-        (axutil_log_impl_t *) AXIS2_MALLOC(allocator,
-                                           sizeof(axutil_log_impl_t));
+    log_impl = (axutil_log_impl_t *) AXIS2_MALLOC(allocator,
+                   sizeof(axutil_log_impl_t));
 
     if (!log_impl)
         return NULL;
@@ -663,10 +658,10 @@ axutil_log_create_default(
 #ifdef AXIS2_TRACE
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_trace(
-    axutil_log_t * log,
-    const axis2_char_t * filename,
+    axutil_log_t *log,
+    const axis2_char_t *filename,
     const int linenumber,
-    const axis2_char_t * format,
+    const axis2_char_t *format,
     ...)
 {
     FILE *fd = NULL;
@@ -677,13 +672,11 @@ axutil_log_impl_log_trace(
         if (!(fd = AXUTIL_INTF_TO_IMPL(log)->stream))
         {
             fprintf(stderr, "Stream is not found\n");
-
         }
 
         if (!(mutex = AXUTIL_INTF_TO_IMPL(log)->mutex))
         {
             fprintf(stderr, "Log mutex is not found\n");
-
         }
 
         if (AXIS2_LOG_LEVEL_TRACE <= log->level &&
@@ -695,7 +688,7 @@ axutil_log_impl_log_trace(
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
             axutil_log_impl_write_to_file(log, mutex, AXIS2_LOG_LEVEL_TRACE,
-                                          filename, linenumber, value);
+                filename, linenumber, value);
         }
     }
 #ifndef AXIS2_NO_LOG_FILE
@@ -706,10 +699,10 @@ axutil_log_impl_log_trace(
 #else
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_trace(
-    axutil_log_t * log,
-    const axis2_char_t * filename,
+    axutil_log_t *log,
+    const axis2_char_t *filename,
     const int linenumber,
-    const axis2_char_t * format,
+    const axis2_char_t *format,
     ...)
 {
 }
@@ -717,7 +710,7 @@ axutil_log_impl_log_trace(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_free(
-    axutil_allocator_t * allocator,
+    axutil_allocator_t *allocator,
     struct axutil_log *log)
 {
     log->ops->free(allocator, log);
@@ -725,11 +718,12 @@ axutil_log_free(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_write(
-    axutil_log_t * log,
-    const axis2_char_t * buffer,
+    axutil_log_t *log,
+    const axis2_char_t *buffer,
     axutil_log_levels_t level,
-    const axis2_char_t * file,
+    const axis2_char_t *file,
     const int line)
 {
     log->ops->write(log, buffer, level, file, line);
 }
+
