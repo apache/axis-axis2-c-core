@@ -48,7 +48,7 @@ axutil_digest_calc_get_h_a1(
     axutil_md5_update(ctx, env, password, strlen(password));
     axutil_md5_final(ctx, env, ha1);
     axutil_md5_ctx_free(ctx, env);
-    if (axutil_strcasecmp(algorithm, "md5-sess") == 0)
+    if (!axutil_strcasecmp(algorithm, "md5-sess"))
     {
         ctx = axutil_md5_ctx_create(env);
         if (!ctx)
@@ -89,7 +89,7 @@ axutil_digest_calc_get_response(
     axutil_md5_update(ctx, env, method, strlen(method));
     axutil_md5_update(ctx, env, ":", 1);
     axutil_md5_update(ctx, env, digest_uri, strlen(digest_uri));
-    if (axutil_strcasecmp(qop, "auth-int") == 0)
+    if (!axutil_strcasecmp(qop, "auth-int"))
     {
         axutil_md5_update(ctx, env, ":", 1);
         axutil_md5_update(ctx, env, h_entity, AXIS2_DIGEST_HASH_HEX_LEN);
