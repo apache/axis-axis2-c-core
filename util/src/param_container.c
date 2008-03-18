@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,7 +25,7 @@ struct axutil_param_container
 
 AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
 axutil_param_container_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axutil_param_container_t *param_container = NULL;
 
@@ -40,6 +39,7 @@ axutil_param_container_create(
     if (!param_container)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return NULL;
     }
 
@@ -52,6 +52,7 @@ axutil_param_container_create(
     {
         axutil_param_container_free(param_container, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return NULL;
     }
 
@@ -60,8 +61,8 @@ axutil_param_container_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_param_container_free(
-    axutil_param_container_t * param_container,
-    const axutil_env_t * env)
+    axutil_param_container_t *param_container,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -101,7 +102,7 @@ axutil_param_container_free(
 AXIS2_EXTERN void AXIS2_CALL
 axutil_param_container_free_void_arg(
     void *param_container,
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axutil_param_container_t *param_container_l = NULL;
 
@@ -113,9 +114,9 @@ axutil_param_container_free_void_arg(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_param_container_add_param(
-    axutil_param_container_t * param_container,
-    const axutil_env_t * env,
-    axutil_param_t * param)
+    axutil_param_container_t *param_container,
+    const axutil_env_t *env,
+    axutil_param_t *param)
 {
     axis2_char_t *param_name = NULL;
 
@@ -135,6 +136,7 @@ axutil_param_container_add_param(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_PARAM,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid param state");
         return AXIS2_FAILURE;
     }
     axutil_hash_set(param_container->params, param_name, AXIS2_HASH_KEY_STRING,
@@ -145,9 +147,9 @@ axutil_param_container_add_param(
 
 AXIS2_EXTERN axutil_param_t *AXIS2_CALL
 axutil_param_container_get_param(
-    axutil_param_container_t * param_container,
-    const axutil_env_t * env,
-    const axis2_char_t * name)
+    axutil_param_container_t *param_container,
+    const axutil_env_t *env,
+    const axis2_char_t *name)
 {
     return (axutil_param_t
             *) (axutil_hash_get(param_container->params, name,
@@ -156,8 +158,8 @@ axutil_param_container_get_param(
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axutil_param_container_get_params(
-    axutil_param_container_t * param_container,
-    const axutil_env_t * env)
+    axutil_param_container_t *param_container,
+    const axutil_env_t *env)
 {
     axutil_hash_index_t *index_i = 0;
     axis2_status_t status = AXIS2_FAILURE;
@@ -169,6 +171,7 @@ axutil_param_container_get_params(
         if (!param_container->params_list)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
             return NULL;
         }
     }
@@ -191,13 +194,11 @@ axutil_param_container_get_params(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axutil_param_container_is_param_locked(
-    axutil_param_container_t * param_container,
-    const axutil_env_t * env,
-    const axis2_char_t * param_name)
+    axutil_param_container_t *param_container,
+    const axutil_env_t *env,
+    const axis2_char_t *param_name)
 {
     axutil_param_t *param = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     param =
         (axutil_param_t
