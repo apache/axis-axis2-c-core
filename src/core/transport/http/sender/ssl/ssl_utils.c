@@ -15,6 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#ifdef AXIS2_SSL_ENABLED
+
 #include "ssl_utils.h"
 #include <openssl/err.h>
 BIO *bio_err = 0;
@@ -217,3 +219,5 @@ axis2_ssl_utils_cleanup_ssl(
     }
     return AXIS2_SUCCESS;
 }
+
+#endif

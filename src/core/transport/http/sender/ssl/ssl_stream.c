@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#ifdef AXIS2_SSL_ENABLED
 
 #include <string.h>
 #include <stdlib.h>
@@ -241,3 +242,5 @@ axis2_ssl_stream_get_type(
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     return AXIS2_INTF_TO_IMPL(stream)->stream_type;
 }
+
+#endif
