@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -24,16 +23,16 @@
 #define MAX_ALLOC (MAX_SIZE * 64)
 
 axis2_char_t *axutil_properties_read(
-    FILE * input,
-    const axutil_env_t * env);
+    FILE *input,
+    const axutil_env_t *env);
 
 axis2_char_t *axutil_properties_read_next(
-    axis2_char_t * cur);
+    axis2_char_t *cur);
 
 axis2_char_t *axutil_properties_trunk_and_dup(
-    axis2_char_t * start,
-    axis2_char_t * end,
-    const axutil_env_t * env);
+    axis2_char_t *start,
+    axis2_char_t *end,
+    const axutil_env_t *env);
 
 struct axutil_properties
 {
@@ -42,7 +41,7 @@ struct axutil_properties
 
 AXIS2_EXTERN axutil_properties_t *AXIS2_CALL
 axutil_properties_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axutil_properties_t *properties = NULL;
 
@@ -55,6 +54,7 @@ axutil_properties_create(
     if (!properties)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return NULL;
     }
     properties->prop_hash = axutil_hash_make(env);
@@ -64,14 +64,12 @@ axutil_properties_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_properties_free(
-    axutil_properties_t * properties,
-    const axutil_env_t * env)
+    axutil_properties_t *properties,
+    const axutil_env_t *env)
 {
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
     axutil_hash_index_t *hi = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (properties->prop_hash)
     {
@@ -100,9 +98,9 @@ axutil_properties_free(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_properties_get_property(
-    axutil_properties_t * properties,
-    const axutil_env_t * env,
-    axis2_char_t * key)
+    axutil_properties_t *properties,
+    const axutil_env_t *env,
+    axis2_char_t *key)
 {
     AXIS2_PARAM_CHECK(env->error, key, NULL);
 
@@ -111,13 +109,12 @@ axutil_properties_get_property(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_properties_set_property(
-    axutil_properties_t * properties,
-    const axutil_env_t * env,
-    axis2_char_t * key,
-    axis2_char_t * value)
+    axutil_properties_t *properties,
+    const axutil_env_t *env,
+    axis2_char_t *key,
+    axis2_char_t *value)
 {
     axis2_char_t *old = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, key, AXIS2_FAILURE);
 
     old = axutil_properties_get_property(properties, env, key);
@@ -135,23 +132,22 @@ axutil_properties_set_property(
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axutil_properties_get_all(
-    axutil_properties_t * properties,
-    const axutil_env_t * env)
+    axutil_properties_t *properties,
+    const axutil_env_t *env)
 {
     return properties->prop_hash;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_properties_store(
-    axutil_properties_t * properties,
-    const axutil_env_t * env,
-    FILE * output)
+    axutil_properties_t *properties,
+    const axutil_env_t *env,
+    FILE *output)
 {
     axutil_hash_index_t *hi = NULL;
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, output, AXIS2_FAILURE);
 
     if (properties->prop_hash)
@@ -175,9 +171,9 @@ axutil_properties_store(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_properties_load(
-    axutil_properties_t * properties,
-    const axutil_env_t * env,
-    axis2_char_t * input_filename)
+    axutil_properties_t *properties,
+    const axutil_env_t *env,
+    axis2_char_t *input_filename)
 {
     FILE *input = NULL;
     axis2_char_t *cur = NULL;
@@ -193,7 +189,6 @@ axutil_properties_load(
     axis2_char_t *buffer = NULL;
     axis2_char_t loginfo[1024];
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, input_filename, AXIS2_FAILURE);
 
     prop_hash = properties->prop_hash;
@@ -281,7 +276,7 @@ axutil_properties_load(
 
 axis2_char_t *
 axutil_properties_read_next(
-    axis2_char_t * cur)
+    axis2_char_t *cur)
 {
     /* ignore comment */
     if (*cur == '#')
@@ -300,9 +295,9 @@ axutil_properties_read_next(
 
 axis2_char_t *
 axutil_properties_trunk_and_dup(
-    axis2_char_t * start,
-    axis2_char_t * end,
-    const axutil_env_t * env)
+    axis2_char_t *start,
+    axis2_char_t *end,
+    const axutil_env_t *env)
 {
     for (; *start == ' '; start++); /* remove front spaces */
     for (end--; *end == ' '; end--);    /* remove rear spaces */
@@ -313,8 +308,8 @@ axutil_properties_trunk_and_dup(
 
 axis2_char_t *
 axutil_properties_read(
-    FILE * input,
-    const axutil_env_t * env)
+    FILE *input,
+    const axutil_env_t *env)
 {
     size_t nread = 0;
     axis2_char_t *out_stream = NULL;
