@@ -168,19 +168,25 @@ axis2_phase_invoke(
     {
         if (axis2_msg_ctx_is_paused(msg_ctx, env))
         {
+            AXIS2_LOG_INFO(env->log, "Message context is paused in the phase %s", 
+                phase->name);
             return AXIS2_SUCCESS;
         }
         else
         {
+            const axis2_char_t *handler_name = axutil_string_get_buffer(
+                axis2_handler_get_name(phase->first_handler, env), env);
             AXIS2_LOG_INFO(env->log,
-                           "Invoke the first handler %s within the phase %s",
-                           axutil_string_get_buffer(axis2_handler_get_name
-                                                    (phase->first_handler, env),
-                                                    env), phase->name);
+                "Invoke the first handler %s within the phase %s", handler_name, 
+                    phase->name);
 
             status = axis2_handler_invoke(phase->first_handler, env, msg_ctx);
-            if (status != AXIS2_SUCCESS)
+            if (!status)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Handler %s invoke failed", handler_name);
                 return status;
+            }
         }
     }
     /* Invoking the rest of handlers except first_handler and last_handler */
@@ -197,14 +203,18 @@ axis2_phase_invoke(
                 axutil_array_list_get(phase->handlers, env, index);
             if (handler)
             {
+                const axis2_char_t *handler_name = axutil_string_get_buffer(
+                    axis2_handler_get_name(handler, env), env);
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                                "Invoke the handler %s within the phase %s",
-                                axutil_string_get_buffer(axis2_handler_get_name
-                                                         (handler, env), env),
-                                phase->name);
+                    "Invoke the handler %s within the phase %s", handler_name,
+                        phase->name);
                 status = axis2_handler_invoke(handler, env, msg_ctx);
-                if (status != AXIS2_SUCCESS)
+                if (!status)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "Handler %s invoke failed", handler_name);
                     return status;
+                }
                 /* index increment should be done after the invoke function. If the invocation
                    failed this handler is taken care of and no need to revoke again */
                 index++;
@@ -218,18 +228,24 @@ axis2_phase_invoke(
     {
         if (axis2_msg_ctx_is_paused(msg_ctx, env))
         {
+            AXIS2_LOG_INFO(env->log, "Message context is paused in the phase %s", 
+                phase->name);
             return AXIS2_SUCCESS;
         }
         else
         {
+            const axis2_char_t *handler_name = axutil_string_get_buffer(
+                axis2_handler_get_name(phase->last_handler, env), env);
             AXIS2_LOG_INFO(env->log,
-                           "Invoke the last handler %s within the phase %s",
-                           axutil_string_get_buffer(axis2_handler_get_name
-                                                    (phase->last_handler, env),
-                                                    env), phase->name);
+                "Invoke the last handler %s within the phase %s", handler_name, 
+                phase->name);
             status = axis2_handler_invoke(phase->last_handler, env, msg_ctx);
-            if (status != AXIS2_SUCCESS)
+            if (!status)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Handler %s invoke failed", handler_name);
                 return status;
+            }
         }
     }
 
@@ -1192,7 +1208,7 @@ axis2_phase_add_unique(
             break;
         }
     }
-    if (AXIS2_TRUE == add_handler)
+    if (add_handler)
         axutil_array_list_add(list, env, handler);
     return AXIS2_SUCCESS;
 }
@@ -1229,7 +1245,7 @@ axis2_phase_remove_unique(
             break;
         }
     }
-    if (AXIS2_TRUE == remove_handler)
+    if (remove_handler)
         axutil_array_list_remove(list, env, i);
     return AXIS2_SUCCESS;
 }

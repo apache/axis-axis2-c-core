@@ -64,7 +64,7 @@ struct axis2_conf
     /** base description struct */
     axis2_desc_t *base;
 	
-	/** mark whether conf is build using axis2 xml*/
+	/** mark whether conf is built using axis2 xml*/
 	axis2_bool_t axis2_flag;
 
     /* this is a hack to keep rampart_context at client side */
