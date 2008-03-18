@@ -1914,7 +1914,7 @@ axis2_msg_ctx_set_supported_rest_http_methods(
     return AXIS2_SUCCESS;
 }
 
-axutil_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_msg_ctx_get_supported_rest_http_methods(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)

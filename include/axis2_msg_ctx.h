@@ -1470,7 +1470,7 @@ extern "C"
      * the list of HTTP Methods supported. Message context does
      * assumes the ownership of the array list
      */
-    axutil_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN  axutil_array_list_t *AXIS2_CALL
     axis2_msg_ctx_get_supported_rest_http_methods(
         const axis2_msg_ctx_t * msg_ctx,
         const axutil_env_t * env);
