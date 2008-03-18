@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,8 +21,8 @@
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axutil_tokenize(
-    const axutil_env_t * env,
-    axis2_char_t * in,
+    const axutil_env_t *env,
+    axis2_char_t *in,
     int delim)
 {
     axutil_array_list_t *list = NULL;
@@ -34,7 +33,7 @@ axutil_tokenize(
 
     axis2_char_t *index = NULL;
 
-    if (!in || axutil_strcmp(in, "") == 0)
+    if (!in || !*in)
     {
         return NULL;
     }
@@ -50,7 +49,7 @@ axutil_tokenize(
     do
     {
         index = strchr(str, delim);
-        if ((!index) && (str) && axutil_strcmp(str, "") != 0)
+        if ((!index) && str && *str)
         {
             axutil_array_list_add(list, env,
                                   axutil_strdup(env, str));
@@ -59,14 +58,13 @@ axutil_tokenize(
 
         rest = index + 1;
         str[index - str] = '\0';
-        if ((list) && (str) && axutil_strcmp(str, "") != 0)
+        if (str && *str)
         {
-
             axutil_array_list_add(list, env, 
                                   axutil_strdup(env, str));
         }
 
-        if (!rest || axutil_strcmp(rest, "") == 0)
+        if (!rest || !*rest)
         {
             break;
         }
@@ -85,17 +83,16 @@ axutil_tokenize(
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axutil_first_token(
-    const axutil_env_t * env,
-    axis2_char_t * in,
+    const axutil_env_t *env,
+    axis2_char_t *in,
     int delim)
 {
     axutil_array_list_t *list = NULL;
     axis2_char_t *str = NULL;
     axis2_char_t *rest = NULL;
     axis2_char_t *index = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
-    if (!in && (axutil_strcmp(in, "") == 0))
+    if (!in && !*in)
     {
         return NULL;
     }
@@ -125,17 +122,16 @@ axutil_first_token(
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axutil_last_token(
-    const axutil_env_t * env,
-    axis2_char_t * in,
+    const axutil_env_t *env,
+    axis2_char_t *in,
     int delim)
 {
     axutil_array_list_t *list = NULL;
     axis2_char_t *str = NULL;
     axis2_char_t *rest = NULL;
     axis2_char_t *index = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
-    if (!in && (axutil_strcmp(in, "") == 0))
+    if (!in && !*in)
     {
         return NULL;
     }
