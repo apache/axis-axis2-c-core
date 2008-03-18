@@ -344,7 +344,6 @@ file_select(
     }
     else
         return (AXIS2_FALSE);
-    return 0;
 }
 
 #ifdef IS_MACOSX
