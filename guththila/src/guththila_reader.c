@@ -105,7 +105,6 @@ guththila_reader_read(
 		default:
 			return 0;
     }
-    return 0;
 }
 
 
