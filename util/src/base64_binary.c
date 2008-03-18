@@ -39,6 +39,7 @@ axutil_base64_binary_create(
     if (!base64_binary)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return NULL;
     }
     base64_binary->plain_binary = NULL;
@@ -61,6 +62,7 @@ axutil_base64_binary_create_with_plain_binary(
     if (!base64_binary)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return NULL;
     }
 
@@ -71,6 +73,7 @@ axutil_base64_binary_create_with_plain_binary(
     {
         axutil_base64_binary_free(base64_binary, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return NULL;
     }
     memcpy(base64_binary->plain_binary, plain_binary, plain_binary_len);
@@ -94,6 +97,7 @@ axutil_base64_binary_create_with_encoded_binary(
     if (!base64_binary)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return NULL;
     }
 
@@ -105,6 +109,7 @@ axutil_base64_binary_create_with_encoded_binary(
     {
         axutil_base64_binary_free(base64_binary, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return NULL;
     }
     axutil_base64_decode_binary(base64_binary->plain_binary, encoded_binary);
@@ -154,6 +159,7 @@ axutil_base64_binary_set_plain_binary(
     {
         axutil_base64_binary_free(base64_binary, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return AXIS2_FAILURE;
     }
     memcpy(base64_binary->plain_binary, plain_binary,
@@ -193,6 +199,7 @@ axutil_base64_binary_set_encoded_binary(
     {
         axutil_base64_binary_free(base64_binary, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return AXIS2_FAILURE;
     }
     axutil_base64_decode_binary(base64_binary->plain_binary, encoded_binary);
@@ -219,6 +226,7 @@ axutil_base64_binary_get_encoded_binary(
     {
         axutil_base64_binary_free(base64_binary, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return NULL;
     }
     axutil_base64_encode_binary(encoded_binary, base64_binary->plain_binary,
