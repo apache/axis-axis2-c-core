@@ -811,6 +811,10 @@ extern "C"
      */
 #define AXIS2_TRANSPORT_HEADER_PROPERTY "HTTP_HEADER_PROPERTY"
 
+
+#define AXIS2_TRANSPORT_URL_HTTPS "HTTPS"
+
+
     /** @} */
 
 #ifdef __cplusplus

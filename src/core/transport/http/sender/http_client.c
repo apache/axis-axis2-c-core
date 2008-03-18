@@ -93,8 +93,6 @@ axis2_http_client_free(
     axis2_http_client_t * http_client,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (http_client->url)
     {
         axutil_url_free(http_client->url, env);
@@ -124,7 +122,6 @@ axis2_http_client_free_void_arg(
     const axutil_env_t * env)
 {
     axis2_http_client_t *client_l = NULL;
-    AXIS2_ENV_CHECK(env, void);
 
     client_l = (axis2_http_client_t *) client;
     axis2_http_client_free(client_l, env);
@@ -209,7 +206,7 @@ axis2_http_client_send(
     }
 
     if (0 == axutil_strcasecmp(axutil_url_get_protocol(client->url, env),
-                               "HTTPS"))
+                               AXIS2_TRANSPORT_URL_HTTPS))
     {
 #ifdef AXIS2_SSL_ENABLED
         if (AXIS2_TRUE == client->proxy_enabled)
@@ -264,10 +261,17 @@ axis2_http_client_send(
                 axutil_array_list_get(headers, env, i);
             if (!tmp_header)
             {
-                /*No header is added fro */
+                /* This continue is added as a safey mechanism,
+                 * However I see a problem with this logic, AFAIC
+                 * see there can't be null headers in the headers
+                 * array list, because number of headers in "headers"
+                 * array list count with axutil_array_list_size,
+                 * therefore this check and continue might not have a
+                 * real effect.*/
 
                 continue;
             }
+
             /* check whether we have transfer encoding and then see whether the
              * value is "chunked" */
             if (0 == axutil_strcmp(axis2_http_header_get_name(tmp_header, env),
@@ -280,14 +284,19 @@ axis2_http_client_send(
             }
             header_ext_form =
                 axis2_http_header_to_external_form(tmp_header, env);
+
+            /* str_header2 is to hold intermediate value of str_header */
             str_header2 = axutil_stracat(env, str_header, header_ext_form);
             AXIS2_FREE(env->allocator, str_header);
             str_header = NULL;
             AXIS2_FREE(env->allocator, header_ext_form);
             header_ext_form = NULL;
+
+            /* str_header has all HTTP headers to send. */
             str_header = str_header2;
         }
     }
+
     if (AXIS2_FALSE == client->proxy_enabled)
     {
         str_request_line =
@@ -296,6 +305,8 @@ axis2_http_client_send(
     }
     else
     {
+        /* proxy enabled case */
+
         /* we need the request line in the format
          * POST http://host:port/path HTTP/1.x if we have enabled proxies
          */
@@ -311,18 +322,31 @@ axis2_http_client_send(
         if (!host_port_str)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "memory allocation failed\
+ for host %s and %s path", host, path);
             return AXIS2_FAILURE;
         }
+
         sprintf(host_port_str, "http://%s:%d%s", host,
                 axutil_url_get_port(client->url, env), path);
         str_request_line =
             AXIS2_MALLOC(env->allocator,
                          axutil_strlen(host_port_str) +
                          20 * sizeof(axis2_char_t));
+
+        if (!str_request_line)
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "memory allocation failed\
+ for host %s and %s path", host, path);
+            return AXIS2_FAILURE;
+        }
+
         sprintf(str_request_line, "%s %s %s\r\n",
                 axis2_http_request_line_get_method(request_line, env),
                 host_port_str,
                 axis2_http_request_line_get_http_version(request_line, env));
+
         AXIS2_FREE(env->allocator, host_port_str);
         host_port_str = NULL;
 
@@ -356,6 +380,8 @@ axis2_http_client_send(
         }
         else
         {
+
+            /* Sending HTTP request via chunking */
             axutil_http_chunked_stream_t *chunked_stream = NULL;
             chunked_stream = axutil_http_chunked_stream_create(env,
                                                               client->
@@ -363,10 +389,10 @@ axis2_http_client_send(
             status = AXIS2_SUCCESS;
             if (!chunked_stream)
             {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creatoin of chunked"
-                                "stream failed");
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creatoin of chunked stream failed");
                 return AXIS2_FAILURE;
             }
+
             while (written < client->req_body_size)
             {
                 written = axutil_http_chunked_stream_write(chunked_stream, env,
@@ -406,17 +432,23 @@ axis2_http_client_recieve_header(
     axis2_bool_t end_of_line = AXIS2_FALSE;
     axis2_bool_t end_of_headers = AXIS2_FALSE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     if (-1 == client->sockfd || !client->data_stream ||
         AXIS2_FALSE == client->request_sent)
     {
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                        "[axis2c] client data stream  null or socket error");
+        axis2_char_t *host;
+        unsigned int port;
+        host = axutil_url_get_host(client->url, env);
+        port = axutil_url_get_port(client->url, env);
+
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "client data stream  null or socket error for host \
+%s and %d port", host, port);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_HTTP_REQUEST_NOT_SENT,
                         AXIS2_FAILURE);
         return -1;
     }
+
     /* read the status line */
     do
     {
@@ -424,6 +456,7 @@ axis2_http_client_recieve_header(
         while ((read = axutil_stream_read(client->data_stream, env, tmp_buf,
                                           1)) > 0)
         {
+            /* "read" variable is number of characters read by stream */
             tmp_buf[read] = '\0';
             strcat(str_status_line, tmp_buf);
             if (0 != strstr(str_status_line, AXIS2_HTTP_CRLF))
@@ -450,9 +483,13 @@ axis2_http_client_recieve_header(
                             "Response error, Server Shutdown");
             return 0;
         }
+
         status_line = axis2_http_status_line_create(env, str_status_line);
         if (!status_line)
         {
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                             "axis2_http_status_line_create failed for \
+str_status_line %s", str_status_line);
             AXIS2_ERROR_SET(env->error,
                             AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
                             AXIS2_FAILURE);
@@ -461,8 +498,8 @@ axis2_http_client_recieve_header(
 
         }
         http_status = axis2_http_status_line_get_status_code(status_line, env);
-    }
-    while (AXIS2_HTTP_RESPONSE_OK_CODE_VAL > http_status);
+
+    }while (AXIS2_HTTP_RESPONSE_OK_CODE_VAL > http_status);
 
     client->response = axis2_http_simple_response_create_default(env);
     axis2_http_simple_response_set_status_line(
@@ -515,6 +552,7 @@ axis2_http_client_recieve_header(
         axis2_http_status_line_free(status_line, env);
         status_line = NULL;
     }
+
     if (AXIS2_FALSE ==
         axis2_http_simple_response_contains_header(
             client->response, env,
@@ -537,7 +575,6 @@ axis2_http_client_get_response(
     const axis2_http_client_t * client,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return client->response;
 }
 
@@ -547,8 +584,9 @@ axis2_http_client_set_url(
     const axutil_env_t * env,
     axutil_url_t * url)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, url, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, client, AXIS2_FAILURE);
+
     if (client->url)
     {
         axutil_url_free(client->url, env);
@@ -563,7 +601,7 @@ axis2_http_client_get_url(
     const axis2_http_client_t * client,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, client, AXIS2_FAILURE);
     return client->url;
 }
 
@@ -573,7 +611,7 @@ axis2_http_client_set_timeout(
     const axutil_env_t * env,
     int timeout_ms)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, client, AXIS2_FAILURE);
     client->timeout = timeout_ms;
     return AXIS2_SUCCESS;
 }
@@ -583,7 +621,7 @@ axis2_http_client_get_timeout(
     const axis2_http_client_t * client,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, client, AXIS2_FAILURE);
     return client->timeout;
 }
 
@@ -594,31 +632,37 @@ axis2_http_client_set_proxy(
     axis2_char_t * proxy_host,
     int proxy_port)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, proxy_host, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, client, AXIS2_FAILURE);
+
     if (proxy_port <= 0)
     {
         return AXIS2_FAILURE;
     }
+
     client->proxy_port = proxy_port;
     if (client->proxy_host)
     {
         AXIS2_FREE(env->allocator, client->proxy_host);
         client->proxy_host = NULL;
     }
+
     if (client->proxy_host_port)
     {
         AXIS2_FREE(env->allocator, client->proxy_host_port);
         client->proxy_host_port = NULL;
     }
+
     client->proxy_host = axutil_strdup(env, proxy_host);
     if (!client->proxy_host)
     {
         return AXIS2_FAILURE;
     }
+
     client->proxy_host_port =
         AXIS2_MALLOC(env->allocator,
                      axutil_strlen(proxy_host) + 10 * sizeof(axis2_char_t));
+
     sprintf(client->proxy_host_port, "%s:%d", proxy_host, proxy_port);
     client->proxy_enabled = AXIS2_TRUE;
     return AXIS2_SUCCESS;
@@ -629,7 +673,7 @@ axis2_http_client_get_proxy(
     const axis2_http_client_t * client,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, client, AXIS2_FAILURE);
     return client->proxy_host_port;
 }
 
@@ -648,10 +692,14 @@ axis2_http_client_connect_ssl_host(
     axis2_bool_t end_of_line = AXIS2_FALSE;
     axis2_bool_t end_of_response = AXIS2_FALSE;
     axis2_http_status_line_t *status_line = NULL;
+        
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, host, AXIS2_FAILURE);
-
+    AXIS2_PARAM_CHECK(env->error, client, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, client->url, AXIS2_FAILURE);
+    /* This host and port will use for give undersandable log messages
+     * */
+    
     if (port <= 0)
     {
         return AXIS2_FAILURE;
@@ -660,8 +708,12 @@ axis2_http_client_connect_ssl_host(
     tmp_stream = axutil_stream_create_socket(env, client->sockfd);
     if (!tmp_stream)
     {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "unable to create open socket for ssl host %s and %d \
+port", host, port);
         return AXIS2_FAILURE;
     }
+
     connect_string = AXIS2_MALLOC(env->allocator,
                                   axutil_strlen(host) * sizeof(axis2_char_t) +
                                   30 * sizeof(axis2_char_t));
@@ -732,7 +784,6 @@ axis2_http_client_set_dump_input_msg(
     axis2_bool_t dump_input_msg)
 {
     client->dump_input_msg = dump_input_msg;
-
     return AXIS2_SUCCESS;
 }
 
@@ -742,8 +793,9 @@ axis2_http_client_set_server_cert(
     const axutil_env_t * env,
     axis2_char_t * server_cert)
 {
+    AXIS2_PARAM_CHECK(env->error, client, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, server_cert, AXIS2_FAILURE);
     client->server_cert = server_cert;
-
     return AXIS2_SUCCESS;
 }
 
@@ -752,7 +804,6 @@ axis2_http_client_get_server_cert(
     const axis2_http_client_t * client,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return client->server_cert;
 }
 
@@ -762,8 +813,9 @@ axis2_http_client_set_key_file(
     const axutil_env_t * env,
     axis2_char_t * key_file)
 {
+    AXIS2_PARAM_CHECK(env->error, client, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, key_file, AXIS2_FAILURE);
     client->key_file = key_file;
-
     return AXIS2_SUCCESS;
 }
 
@@ -772,6 +824,5 @@ axis2_http_client_get_key_file(
     const axis2_http_client_t * client,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return client->key_file;
 }
