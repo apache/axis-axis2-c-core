@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -42,7 +41,6 @@ struct axutil_hash_entry_t
 
 /*
  * Data structure for iterating through a hash table.
- *
  * We keep a pointer to the next hash entry here to allow the current
  * hash entry to be freed or otherwise mangled between calls to
  * axutil_hash_next().
@@ -81,17 +79,17 @@ struct axutil_hash_t
 
 static axutil_hash_entry_t **
 axutil_hash_alloc_array(
-    axutil_hash_t * ht,
+    axutil_hash_t *ht,
     unsigned int max)
 {
     return
         memset(AXIS2_MALLOC(ht->env->allocator, sizeof(*ht->array) * (max + 1)),
-               0, sizeof(*ht->array) * (max + 1));
+            0, sizeof(*ht->array) * (max + 1));
 }
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axutil_hash_make(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axutil_hash_t *ht;
     AXIS2_ENV_CHECK(env, NULL);
@@ -109,7 +107,7 @@ axutil_hash_make(
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axutil_hash_make_custom(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     axutil_hashfunc_t hash_func)
 {
     axutil_hash_t *ht;
@@ -125,8 +123,8 @@ axutil_hash_make_custom(
 
 AXIS2_EXTERN axutil_hash_index_t *AXIS2_CALL
 axutil_hash_next(
-    const axutil_env_t * env,
-    axutil_hash_index_t * hi)
+    const axutil_env_t *env,
+    axutil_hash_index_t *hi)
 {
     hi->this = hi->next;
     while (!hi->this)
@@ -146,8 +144,8 @@ axutil_hash_next(
 
 AXIS2_EXTERN axutil_hash_index_t *AXIS2_CALL
 axutil_hash_first(
-    axutil_hash_t * ht,
-    const axutil_env_t * env)
+    axutil_hash_t *ht,
+    const axutil_env_t *env)
 {
     axutil_hash_index_t *hi;
     if (env)
@@ -164,9 +162,9 @@ axutil_hash_first(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_hash_this(
-    axutil_hash_index_t * hi,
+    axutil_hash_index_t *hi,
     const void **key,
-    axis2_ssize_t * klen,
+    axis2_ssize_t *klen,
     void **val)
 {
     if (key)
@@ -183,7 +181,7 @@ axutil_hash_this(
 
 static void
 axutil_hash_expand_array(
-    axutil_hash_t * ht)
+    axutil_hash_t *ht)
 {
     axutil_hash_index_t *hi;
 
@@ -206,7 +204,7 @@ axutil_hash_expand_array(
 unsigned int
 axutil_hashfunc_default(
     const char *char_key,
-    axis2_ssize_t * klen)
+    axis2_ssize_t *klen)
 {
     unsigned int hash = 0;
     const unsigned char *key = (const unsigned char *) char_key;
@@ -282,7 +280,7 @@ axutil_hashfunc_default(
 
 static axutil_hash_entry_t **
 axutil_hash_find_entry(
-    axutil_hash_t * ht,
+    axutil_hash_t *ht,
     const void *key,
     axis2_ssize_t klen,
     const void *val)
@@ -323,20 +321,17 @@ axutil_hash_find_entry(
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axutil_hash_copy(
-    const axutil_hash_t * orig,
-    const axutil_env_t * env)
+    const axutil_hash_t *orig,
+    const axutil_env_t *env)
 {
     axutil_hash_t *ht;
     axutil_hash_entry_t *new_vals;
     unsigned int i,
      j;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     ht = AXIS2_MALLOC(env->allocator,
-                      sizeof(axutil_hash_t) + sizeof(*ht->array) * (orig->max +
-                                                                    1) +
-                      sizeof(axutil_hash_entry_t) * orig->count);
+             sizeof(axutil_hash_t) + sizeof(*ht->array) * (orig->max + 1) +
+             sizeof(axutil_hash_entry_t) * orig->count);
     ht->env = env;
     ht->free = NULL;
     ht->count = orig->count;
@@ -344,9 +339,8 @@ axutil_hash_copy(
     ht->hash_func = orig->hash_func;
     ht->array = (axutil_hash_entry_t **) ((char *) ht + sizeof(axutil_hash_t));
 
-    new_vals =
-        (axutil_hash_entry_t *) ((char *) (ht) + sizeof(axutil_hash_t) +
-                                 sizeof(*ht->array) * (orig->max + 1));
+    new_vals = (axutil_hash_entry_t *) ((char *) (ht) + sizeof(axutil_hash_t) +
+            sizeof(*ht->array) * (orig->max + 1));
     j = 0;
     for (i = 0; i <= ht->max; i++)
     {
@@ -369,7 +363,7 @@ axutil_hash_copy(
 
 AXIS2_EXTERN void *AXIS2_CALL
 axutil_hash_get(
-    axutil_hash_t * ht,
+    axutil_hash_t *ht,
     const void *key,
     axis2_ssize_t klen)
 {
@@ -383,7 +377,7 @@ axutil_hash_get(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_hash_set(
-    axutil_hash_t * ht,
+    axutil_hash_t *ht,
     const void *key,
     axis2_ssize_t klen,
     const void *val)
@@ -417,27 +411,26 @@ axutil_hash_set(
 
 AXIS2_EXTERN unsigned int AXIS2_CALL
 axutil_hash_count(
-    axutil_hash_t * ht)
+    axutil_hash_t *ht)
 {
     return ht->count;
 }
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axutil_hash_overlay(
-    const axutil_hash_t * overlay,
-    const axutil_env_t * env,
-    const axutil_hash_t * base)
+    const axutil_hash_t *overlay,
+    const axutil_env_t *env,
+    const axutil_hash_t *base)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return axutil_hash_merge(overlay, env, base, NULL, NULL);
 }
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axutil_hash_merge(
-    const axutil_hash_t * overlay,
-    const axutil_env_t * env,
-    const axutil_hash_t * base,
-    void *(*merger) (const axutil_env_t * env,
+    const axutil_hash_t *overlay,
+    const axutil_env_t *env,
+    const axutil_hash_t *base,
+    void *(*merger) (const axutil_env_t *env,
                      const void *key,
                      axis2_ssize_t klen,
                      const void *h1_val,
@@ -449,10 +442,7 @@ axutil_hash_merge(
     axutil_hash_entry_t *new_vals = NULL;
     axutil_hash_entry_t *iter;
     axutil_hash_entry_t *ent;
-    unsigned int i,
-     j,
-     k;
-    AXIS2_ENV_CHECK(env, NULL);
+    unsigned int i, j, k;
 
 #if AXIS2_POOL_DEBUG
     /* we don't copy keys and values, so it's necessary that
@@ -462,13 +452,13 @@ axutil_hash_merge(
     if (!axutil_env_is_ancestor(overlay->env, p))
     {
         fprintf(stderr,
-                "axutil_hash_merge: overlay's env is not an ancestor of p\n");
+            "axutil_hash_merge: overlay's env is not an ancestor of p\n");
         abort();
     }
     if (!axutil_env_is_ancestor(base->env, p))
     {
         fprintf(stderr,
-                "axutil_hash_merge: base's env is not an ancestor of p\n");
+            "axutil_hash_merge: base's env is not an ancestor of p\n");
         abort();
     }
 #endif
@@ -486,10 +476,9 @@ axutil_hash_merge(
     res->array = axutil_hash_alloc_array(res, res->max);
     if (base->count + overlay->count)
     {
-        new_vals =
-            AXIS2_MALLOC(env->allocator,
-                         sizeof(axutil_hash_entry_t) * (base->count +
-                                                        overlay->count));
+        new_vals = AXIS2_MALLOC(env->allocator,
+                       sizeof(axutil_hash_entry_t) * (base->count +
+                       overlay->count));
     }
     j = 0;
     for (k = 0; k <= base->max; k++)
@@ -521,7 +510,7 @@ axutil_hash_merge(
                     {
                         ent->val =
                             (*merger) (env, iter->key, iter->klen, iter->val,
-                                       ent->val, data);
+                                ent->val, data);
                     }
                     else
                     {
@@ -548,13 +537,11 @@ axutil_hash_merge(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axutil_hash_contains_key(
-    axutil_hash_t * ht,
-    const axutil_env_t * env,
-    const axis2_char_t * key)
+    axutil_hash_t *ht,
+    const axutil_env_t *env,
+    const axis2_char_t *key)
 {
     axutil_hash_index_t *i = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
 
     for (i = axutil_hash_first(ht, env); i; i = axutil_hash_next(env, i))
     {
@@ -572,10 +559,9 @@ axutil_hash_contains_key(
 
 static void
 axutil_hash_entry_free(
-    const axutil_env_t * env,
-    axutil_hash_entry_t * hash_entry)
+    const axutil_env_t *env,
+    axutil_hash_entry_t *hash_entry)
 {
-    AXIS2_ENV_CHECK(env, void);
     if (!hash_entry)
         return;
     if (hash_entry->next)
@@ -588,11 +574,10 @@ axutil_hash_entry_free(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_hash_free(
-    axutil_hash_t * ht,
-    const axutil_env_t * env)
+    axutil_hash_t *ht,
+    const axutil_env_t *env)
 {
     unsigned int i = 0;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (ht)
     {
         for (i = 0; i <= ht->max; i++)
@@ -640,11 +625,10 @@ axutil_hash_free(
 AXIS2_EXTERN void AXIS2_CALL
 axutil_hash_free_void_arg(
     void *ht_void,
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     unsigned int i = 0;
     axutil_hash_t *ht = (axutil_hash_t *) ht_void;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (ht)
     {
         for (i = 0; i < ht->max; i++)
@@ -663,3 +647,4 @@ axutil_hash_free_void_arg(
     }
     return;
 }
+
