@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,8 +25,8 @@
 
 AXIS2_EXTERN void *AXIS2_CALL
 axutil_file_handler_open(
-    const axis2_char_t * file_name,
-    const axis2_char_t * options)
+    const axis2_char_t *file_name,
+    const axis2_char_t *options)
 {
     FILE *file_ptr;
 
@@ -52,7 +51,7 @@ axutil_file_handler_close(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_file_handler_access(
-    const axis2_char_t * path,
+    const axis2_char_t *path,
     int mode)
 {
     int i = 0;

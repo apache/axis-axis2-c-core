@@ -43,7 +43,7 @@ axutil_array_list_create(
     if (!array_list)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
 
@@ -59,7 +59,7 @@ axutil_array_list_create(
     {
         axutil_array_list_free(array_list, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     array_list->capacity = capacity;
@@ -83,7 +83,7 @@ axutil_array_list_ensure_capacity(
         if (!data)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
+			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
             return AXIS2_FAILURE;
         }
         memcpy(data, array_list->data, sizeof(void *) * array_list->capacity);

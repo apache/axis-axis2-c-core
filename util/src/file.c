@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -40,7 +39,7 @@ axutil_file_create(
     if (!file)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     file->name = NULL;
@@ -55,8 +54,6 @@ axutil_file_free(
     axutil_file_t *file,
     const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (file->name)
     {
         AXIS2_FREE(env->allocator, file->name);
@@ -80,7 +77,6 @@ axutil_file_set_name(
     const axutil_env_t *env,
     axis2_char_t *name)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
 
     if (file->name)
@@ -92,7 +88,7 @@ axutil_file_set_name(
     if (!file->name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -118,7 +114,6 @@ axutil_file_set_path(
     const axutil_env_t *env,
     axis2_char_t *path)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (!path)
     {
         return AXIS2_SUCCESS;
@@ -133,7 +128,7 @@ axutil_file_set_path(
     if (!(file->path))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -179,7 +174,6 @@ axutil_file_clone(
 {
     axutil_file_t *new_file = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    AXIS2_ENV_CHECK(env, NULL);
     new_file = axutil_file_create(env);
     status = axutil_file_set_name(new_file, env, file->name);
     if (AXIS2_SUCCESS != status)
@@ -194,3 +188,4 @@ axutil_file_clone(
     axutil_file_set_timestamp(new_file, env, file->timestamp);
     return new_file;
 }
+

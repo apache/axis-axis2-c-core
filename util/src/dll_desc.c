@@ -47,7 +47,7 @@ axutil_dll_desc_create(
     if (!dll_desc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
 
