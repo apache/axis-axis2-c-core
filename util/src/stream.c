@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,61 +22,61 @@
 
 /** basic stream operatons **/
 int AXIS2_CALL axutil_stream_write_basic(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     const void *buffer,
     size_t count);
 
 int AXIS2_CALL axutil_stream_read_basic(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     void *buffer,
     size_t count);
 
 int AXIS2_CALL axutil_stream_skip_basic(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     int count);
 
 /** file stream operations **/
 int AXIS2_CALL axutil_stream_write_file(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     const void *buffer,
     size_t count);
 
 int AXIS2_CALL axutil_stream_read_file(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     void *buffer,
     size_t count);
 
 int AXIS2_CALL axutil_stream_skip_file(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     int count);
 
 /** socket stream operations **/
 int AXIS2_CALL axutil_stream_write_socket(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     const void *buffer,
     size_t count);
 
 int AXIS2_CALL axutil_stream_read_socket(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     void *buffer,
     size_t count);
 
 int AXIS2_CALL axutil_stream_skip_socket(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     int count);
 
 AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
 axutil_stream_create_internal(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axutil_stream_t *stream = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -89,6 +88,7 @@ axutil_stream_create_internal(
     if (!stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     stream->buffer = NULL;
@@ -104,8 +104,8 @@ axutil_stream_create_internal(
 
 void AXIS2_CALL
 axutil_stream_free(
-    axutil_stream_t * stream,
-    const axutil_env_t * env)
+    axutil_stream_t *stream,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -149,11 +149,10 @@ axutil_stream_free(
 void AXIS2_CALL
 axutil_stream_free_void_arg(
     void *stream,
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axutil_stream_t *stream_l = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     stream_l = (axutil_stream_t *) stream;
     axutil_stream_free(stream_l, env);
     return;
@@ -161,11 +160,9 @@ axutil_stream_free_void_arg(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_stream_flush(
-    axutil_stream_t * stream,
-    const axutil_env_t * env)
+    axutil_stream_t *stream,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (stream->fp)
     {
         if (fflush(stream->fp))
@@ -178,11 +175,9 @@ axutil_stream_flush(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_stream_close(
-    axutil_stream_t * stream,
-    const axutil_env_t * env)
+    axutil_stream_t *stream,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     switch (stream->stream_type)
     {
     case AXIS2_STREAM_BASIC:
@@ -231,7 +226,7 @@ axutil_stream_close(
 /************************ Basic Stream Operations *****************************/
 AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
 axutil_stream_create_basic(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axutil_stream_t *stream = NULL;
 
@@ -267,15 +262,13 @@ axutil_stream_create_basic(
 
 int AXIS2_CALL
 axutil_stream_read_basic(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     void *buffer,
     size_t count)
 {
     int len = 0;
     char *buf = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     buf = stream->buffer;
     if (!buf)
@@ -309,14 +302,13 @@ axutil_stream_read_basic(
 
 int AXIS2_CALL
 axutil_stream_write_basic(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     const void *buffer,
     size_t count)
 {
     int new_len = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     if (!buffer)
         return -1;
 
@@ -352,20 +344,19 @@ axutil_stream_write_basic(
 
 int AXIS2_CALL
 axutil_stream_get_len(
-    axutil_stream_t * stream,
-    const axutil_env_t * env)
+    axutil_stream_t *stream,
+    const axutil_env_t *env)
 {
     return stream->len;
 }
 
 int AXIS2_CALL
 axutil_stream_skip_basic(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     int count)
 {
     int del_len = 0;
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     if (count > 0)
     {
@@ -386,18 +377,17 @@ axutil_stream_skip_basic(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_stream_get_buffer(
-    const axutil_stream_t * stream,
-    const axutil_env_t * env)
+    const axutil_stream_t *stream,
+    const axutil_env_t *env)
 {
     return stream->buffer;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_stream_flush_buffer(
-    axutil_stream_t * stream,
-    const axutil_env_t * env)
+    axutil_stream_t *stream,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     stream->len = 0;
     return AXIS2_SUCCESS;
 }
@@ -407,7 +397,7 @@ axutil_stream_flush_buffer(
 /************************** File Stream Operations ****************************/
 AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
 axutil_stream_create_file(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     FILE * fp)
 {
     axutil_stream_t *stream = NULL;
@@ -434,17 +424,19 @@ axutil_stream_create_file(
 
 int AXIS2_CALL
 axutil_stream_read_file(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     void *buffer,
     size_t count)
 {
     FILE *fp = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     if (!stream->fp)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_FD, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Trying to do operation on invalid file descriptor");
+
         return -1;
     }
     fp = stream->fp;
@@ -458,8 +450,8 @@ axutil_stream_read_file(
 
 int AXIS2_CALL
 axutil_stream_write_file(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     const void *buffer,
     size_t count)
 {
@@ -469,10 +461,12 @@ axutil_stream_write_file(
     if (!(stream->fp))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_FD, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Trying to do operation on invalid file descriptor");
+
         return -1;
     }
     fp = stream->fp;
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     if (!buffer)
         return -1;
     len = (int)fwrite(buffer, sizeof(axis2_char_t), count, fp);
@@ -482,16 +476,17 @@ axutil_stream_write_file(
 
 int AXIS2_CALL
 axutil_stream_skip_file(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     int count)
 {
     int c = -1;
     int i = count;
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     if (!(stream->fp))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_FD, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Trying to do operation on invalid file descriptor");
         return -1;
     }
     while (EOF != (c = fgetc(stream->fp)) && i > 0)
@@ -506,7 +501,7 @@ axutil_stream_skip_file(
 /************************** Socket Stream Operations **************************/
 AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
 axutil_stream_create_socket(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     int socket)
 {
     axutil_stream_t *stream = NULL;
@@ -535,8 +530,8 @@ axutil_stream_create_socket(
 
 int AXIS2_CALL
 axutil_stream_read_socket(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     void *buffer,
     size_t count)
 {
@@ -545,11 +540,11 @@ axutil_stream_read_socket(
     axis2_char_t *temp = NULL;
 #endif
 
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
-
     if (-1 == stream->socket)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOCKET, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Trying to do operation on closed/not-opened socket");
         return -1;
     }
     if (!buffer)
@@ -579,8 +574,8 @@ axutil_stream_read_socket(
 
 int AXIS2_CALL
 axutil_stream_write_socket(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     const void *buffer,
     size_t count)
 {
@@ -589,11 +584,11 @@ axutil_stream_write_socket(
     axis2_char_t *temp = NULL;
 #endif
 
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
-
     if (-1 == stream->socket)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOCKET, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Trying to do operation on closed/not-opened socket");
         return -1;
     }
     if (!buffer)
@@ -621,17 +616,18 @@ axutil_stream_write_socket(
 
 int AXIS2_CALL
 axutil_stream_skip_socket(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     int count)
 {
     int len = 0;
     char buffer[2];
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     if (-1 == stream->socket)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOCKET, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Trying to do operation on closed/not-opened socket");
         return -1;
     }
     while (len < count)
@@ -643,20 +639,21 @@ axutil_stream_skip_socket(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_stream_peek_socket(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     void *buffer,
     size_t count)
 {
     int len = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     /* Added to prevent a segfault */
     AXIS2_PARAM_CHECK(env->error, stream, -1);
 
     if (-1 == stream->socket)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOCKET, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Trying to do operation on closed/not-opened socket");
         return -1;
     }
     if (!buffer)
@@ -674,8 +671,8 @@ axutil_stream_peek_socket(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_stream_set_read(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     AXUTIL_STREAM_READ func)
 {
     stream->read = func;
@@ -684,8 +681,8 @@ axutil_stream_set_read(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_stream_set_write(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     AXUTIL_STREAM_WRITE func)
 {
     stream->write = func;
@@ -694,8 +691,8 @@ axutil_stream_set_write(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_stream_set_skip(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     AXUTIL_STREAM_SKIP func)
 {
     stream->skip = func;
@@ -704,8 +701,8 @@ axutil_stream_set_skip(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_stream_read(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     void *buffer,
     size_t count)
 {
@@ -714,8 +711,8 @@ axutil_stream_read(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_stream_write(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     const void *buffer,
     size_t count)
 {
@@ -724,8 +721,8 @@ axutil_stream_write(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_stream_skip(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
     int count)
 {
     return stream->skip(stream, env, count);
