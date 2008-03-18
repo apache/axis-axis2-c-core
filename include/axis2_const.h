@@ -137,7 +137,7 @@ extern "C"
 #define AXIS2_LIST_SERVICE_FOR_MODULE_ENGAMNET "listop"
 
     /**
-     * List service for adminpagse
+     * List service for admin page
      */
 #define AXIS2_ADMIN_LISTSERVICES "listService"
 

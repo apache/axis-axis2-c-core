@@ -162,7 +162,8 @@ axis2_phase_invoke(
     int index = 0,
         size = 0;
     axis2_status_t status = AXIS2_SUCCESS;
-
+    
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_phase_invoke");
     axis2_msg_ctx_set_paused_phase_name(msg_ctx, env, phase->name);
     if (phase->first_handler)
     {
@@ -184,7 +185,8 @@ axis2_phase_invoke(
             if (!status)
             {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                    "Handler %s invoke failed", handler_name);
+                    "Handler %s invoke failed within phase %s", handler_name, 
+                        phase->name);
                 return status;
             }
         }
@@ -212,7 +214,8 @@ axis2_phase_invoke(
                 if (!status)
                 {
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                        "Handler %s invoke failed", handler_name);
+                        "Handler %s invoke failed within phase %s", 
+                            handler_name, phase->name);
                     return status;
                 }
                 /* index increment should be done after the invoke function. If the invocation
@@ -243,12 +246,13 @@ axis2_phase_invoke(
             if (!status)
             {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                    "Handler %s invoke failed", handler_name);
+                    "Handler %s invoke failed within  phase %s", handler_name, 
+                        phase->name);
                 return status;
             }
         }
     }
-
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_phase_invoke");
     return AXIS2_SUCCESS;
 }
 
@@ -277,6 +281,8 @@ _axis2_phase_get_before_after(
         *after = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
     axis2_phase_rule_t *rules = NULL;
+    const axis2_char_t *name = 
+        axutil_string_get_buffer(axis2_handler_get_name(handler, env), env);
 
     handler_desc = axis2_handler_get_handler_desc(handler, env);
     if (!handler_desc)
@@ -284,7 +290,7 @@ _axis2_phase_get_before_after(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Handler description is not set for the Handler");
+            "Handler description is not set for the Handler %s", name);
         return AXIS2_FAILURE;
     }
 
@@ -294,7 +300,7 @@ _axis2_phase_get_before_after(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Handler rules are not set for the Handler Description");
+            "Handler rules are not set for the Handler Description %s", name);
         return AXIS2_FAILURE;
     }
 
@@ -333,12 +339,16 @@ axis2_phase_set_first_handler(
     const axutil_env_t * env,
     axis2_handler_t * handler)
 {
+    const axis2_char_t *handler_name = 
+        axutil_string_get_buffer(axis2_handler_get_name(handler, env), env);
+    const axis2_char_t *phase_name = axis2_phase_get_name(phase, env);
     if (phase->first_handler_set)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_PHASE_FIRST_HANDLER_ALREADY_SET,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "First handler of phase already set");
+            "First handler of phase already set, so cannot set handler %s "\
+            "in to the phase %s as first handler", handler_name, phase_name);
         return AXIS2_FAILURE;
     }
     else
@@ -348,7 +358,8 @@ axis2_phase_set_first_handler(
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_PHASE_FIRST_HANDLER,
                             AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Invalid first handler set for the Phase");
+                "Invalid first handler %s set for the Phase %s", handler_name, 
+                phase_name);
             return AXIS2_FAILURE;
         }
         phase->first_handler = handler;
@@ -364,12 +375,16 @@ axis2_phase_set_last_handler(
     const axutil_env_t * env,
     axis2_handler_t * handler)
 {
+    const axis2_char_t *handler_name = 
+        axutil_string_get_buffer(axis2_handler_get_name(handler, env), env);
+    const axis2_char_t *phase_name = axis2_phase_get_name(phase, env);
     if (phase->last_handler_set)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_PHASE_LAST_HANDLER_ALREADY_SET,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Last handler of phase already set");
+            "Last handler of phase already set, so cannot set handler %s "\
+            "in to the phase %s as last handler", handler_name, phase_name);
         return AXIS2_FAILURE;
     }
     else
@@ -379,7 +394,8 @@ axis2_phase_set_last_handler(
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_PHASE_LAST_HANDLER,
                             AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Invalid last handler set for the phase");
+                "Invalid last handler %s set for the Phase %s", handler_name, 
+                phase_name);
             return AXIS2_FAILURE;
         }
         phase->last_handler = handler;
@@ -400,13 +416,16 @@ axis2_phase_add_handler_desc(
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_bool_t first = AXIS2_FALSE,
         last = AXIS2_FALSE;
-
+    const axis2_char_t *handler_desc_name = 
+        axutil_string_get_buffer(axis2_handler_desc_get_name(handler_desc, env), 
+            env);
     if (phase->is_one_handler)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_PHASE_ADD_HANDLER_INVALID,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Only one handler allowed for phase, adding handler is not allowed");
+            "Only one handler allowed for phase %s, adding handler %s is not "\
+            "allowed", phase->name, handler_desc_name);
         return AXIS2_FAILURE;
     }
     else
@@ -417,7 +436,8 @@ axis2_phase_add_handler_desc(
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                             AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Handler rules are not set for the Hanlder Description");
+                "Handler rules are not set for the Hanlder Description %s "\
+                    "within phase %s", handler_desc_name, phase->name);
             return AXIS2_FAILURE;
         }
 
@@ -431,7 +451,8 @@ axis2_phase_add_handler_desc(
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_RULES,
                                 AXIS2_FAILURE);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Invalid handler rules");
+                    "Invalid handler rules, so unable to add handler %s to "\
+                        "phase %s", handler_desc_name, phase->name);
                 return AXIS2_FAILURE;
             }
 
@@ -441,13 +462,14 @@ axis2_phase_add_handler_desc(
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                                 AXIS2_FAILURE);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Handler is not set for the Handler Description");
+                    "Handler is not set for the Handler Description %s "\
+                        "within phase %s", handler_desc_name, phase->name);
                 return AXIS2_FAILURE;
             }
 
             /*status = axutil_array_list_add(phase->handlers, env, handler); */
             status = axis2_phase_add_unique(env, phase->handlers, handler);
-            if (status == AXIS2_SUCCESS)
+            if (status)
                 phase->is_one_handler = AXIS2_TRUE;
             return status;
         }
@@ -459,7 +481,8 @@ axis2_phase_add_handler_desc(
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                                 AXIS2_FAILURE);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Handler is not set for the Handler Description");
+                    "Handler is not set for the Handler Description %s "\
+                        "within phase %s", handler_desc_name, phase->name);
                 return AXIS2_FAILURE;
             }
             return axis2_phase_set_first_handler(phase, env, handler);
@@ -472,7 +495,8 @@ axis2_phase_add_handler_desc(
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                                 AXIS2_FAILURE);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Handler is not set for the Handler Description");
+                    "Handler is not set for the Handler Description %s "\
+                        "within phase %s", handler_desc_name, phase->name);
                 return AXIS2_FAILURE;
             }
             return axis2_phase_set_last_handler(phase, env, handler);
@@ -485,7 +509,8 @@ axis2_phase_add_handler_desc(
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                                 AXIS2_FAILURE);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Handler is not set for the Handler Description");
+                    "Handler is not set for the Handler Description %s "\
+                        "within phase %s", handler_desc_name, phase->name);
                 return AXIS2_FAILURE;
             }
 
@@ -597,6 +622,9 @@ axis2_phase_insert_before(
         *before = NULL;
     int i = 0;
     int size = 0;
+    const axis2_char_t *name = 
+        axutil_string_get_buffer(axis2_handler_get_name(handler, env), env);
+    const axis2_char_t *handler_desc_name = NULL;
 
     handler_desc = axis2_handler_get_handler_desc(handler, env);
     if (!handler_desc)
@@ -604,9 +632,12 @@ axis2_phase_insert_before(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Handler description is not set in the handler");
+            "Handler description is not set in the handler %s within phase %s", 
+                name, phase->name);
         return AXIS2_FAILURE;
     }
+    handler_desc_name = axutil_string_get_buffer(axis2_handler_desc_get_name(
+        handler_desc, env), env);
 
     rules = axis2_handler_desc_get_rules(handler_desc, env);
     if (!rules)
@@ -614,7 +645,8 @@ axis2_phase_insert_before(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Handler rules are not set in the handler description");
+            "Handler rules are not set in the handler description %s within "\
+                "phase %s", handler_desc_name, phase->name);
         return AXIS2_FAILURE;
     }
 
@@ -624,19 +656,24 @@ axis2_phase_insert_before(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Rule `before` is not set in the handler rules");
+            "Rule `before` is not set in the handler rules for handler %s "\
+                "within phase %s", name, phase->name);
         return AXIS2_FAILURE;
     }
 
     if (phase->last_handler)
     {
+        const axis2_char_t *last_handler_name = 
+            axutil_string_get_buffer(axis2_handler_get_name(phase->last_handler, 
+                env), env);
         handler_desc = axis2_handler_get_handler_desc(phase->last_handler, env);
         if (!handler_desc)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                             AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Handler description is not set in the last handler");
+                "Handler description is not set in the last handler %s of "\
+                    "phase %s", last_handler_name, phase->name);
             return AXIS2_FAILURE;
         }
 
@@ -648,7 +685,9 @@ axis2_phase_insert_before(
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                             AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Handler name is not set in the handler description");
+                "Handler name is not set in the handler description for "\
+                    "last handler %s within phase %s", last_handler_name, 
+                        phase->name);
             return AXIS2_FAILURE;
         }
 
@@ -667,13 +706,17 @@ axis2_phase_insert_before(
             (axis2_handler_t *) axutil_array_list_get(phase->handlers, env, i);
         if (temp_handler)
         {
+            const axis2_char_t *temp_handler_name = 
+                axutil_string_get_buffer(axis2_handler_get_name(temp_handler, 
+                    env), env);
             handler_desc = axis2_handler_get_handler_desc(temp_handler, env);
             if (!handler_desc)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                                 AXIS2_FAILURE);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Handler Description is not set for the Handler");
+                    "Handler Description is not set for the Handler %s "\
+                        "within phase %s", temp_handler_name, phase->name);
                 return AXIS2_FAILURE;
             }
 
@@ -685,7 +728,9 @@ axis2_phase_insert_before(
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                                 AXIS2_FAILURE);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Handler name is not set in the handler description");
+                    "Handler name is not set in the handler description for "\
+                        "handler %s within phase %s", temp_handler_name, 
+                            phase->name);
                 return AXIS2_FAILURE;
             }
 
@@ -713,6 +758,9 @@ axis2_phase_insert_after(
     const axis2_char_t *after = NULL;
     int i = 0;
     int size = 0;
+    const axis2_char_t *name = axutil_string_get_buffer(
+        axis2_handler_get_name(handler, env), env);
+    const axis2_char_t *handler_desc_name = NULL;
 
     handler_desc = axis2_handler_get_handler_desc(handler, env);
     if (!handler_desc)
@@ -720,17 +768,20 @@ axis2_phase_insert_after(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Handler description is not set in the handler");
+            "Handler description is not set in the handler %s within phase %s",
+                name, phase->name);
         return AXIS2_FAILURE;
     }
-
+    handler_desc_name = axutil_string_get_buffer(
+        axis2_handler_desc_get_name(handler_desc, env), env);
     rules = axis2_handler_desc_get_rules(handler_desc, env);
     if (!rules)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Handler rules are not set in the handler description");
+            "Handler rules are not set in the handler description %s within "\
+                "phase %s", handler_desc_name, phase->name);
         return AXIS2_FAILURE;
     }
 
@@ -740,12 +791,15 @@ axis2_phase_insert_after(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Rule `after` is not set in the handler rules");
+            "Rule `after` is not set in the handler rules for handler desc "\
+                "%s within phase %s", handler_desc_name, phase->name);
         return AXIS2_FAILURE;
     }
 
     if (phase->first_handler)
     {
+        const axis2_char_t *first_handler_name = axutil_string_get_buffer(
+            axis2_handler_get_name(phase->first_handler, env), env);
         handler_desc =
             axis2_handler_get_handler_desc(phase->first_handler, env);
         if (!handler_desc)
@@ -753,7 +807,8 @@ axis2_phase_insert_after(
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                             AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Handler description is not set in the first handler");
+                "Handler description is not set in the first handler %s "\
+                    "within phase %s", first_handler_name, phase->name);
             return AXIS2_FAILURE;
         }
 
@@ -765,7 +820,8 @@ axis2_phase_insert_after(
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                             AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Handler name is not set in the handler description");
+                "Handler name is not set in the handler description for "\
+                    "handler %s within phase %s", name, phase->name);
             return AXIS2_FAILURE;
         }
 
@@ -783,13 +839,16 @@ axis2_phase_insert_after(
             (axis2_handler_t *) axutil_array_list_get(phase->handlers, env, i);
         if (temp_handler)
         {
+            const axis2_char_t *temp_handler_name = axutil_string_get_buffer(
+                axis2_handler_get_name(temp_handler, env), env);
             handler_desc = axis2_handler_get_handler_desc(temp_handler, env);
             if (!handler_desc)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                                 AXIS2_FAILURE);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Handler description is not set in the handler");
+                    "Handler description is not set in the handler %s within"\
+                        " phase %s", temp_handler_name, phase->name);
                 return AXIS2_FAILURE;
             }
 
@@ -801,7 +860,8 @@ axis2_phase_insert_after(
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                                 AXIS2_FAILURE);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Handler name is not set in the handler description");
+                    "Handler name is not set in the handler description %s "\
+                        "within phase %s", temp_handler_name, phase->name);
                 return AXIS2_FAILURE;
             }
 
@@ -844,6 +904,9 @@ axis2_phase_insert_before_and_after(
         *handler_name = NULL;
     int i = 0;
     int size = 0;
+    const axis2_char_t *name = axutil_string_get_buffer(
+        axis2_handler_get_name(handler, env), env);
+    const axis2_char_t *handler_desc_name = NULL;
 
     handler_desc = axis2_handler_get_handler_desc(handler, env);
     if (!handler_desc)
@@ -851,9 +914,12 @@ axis2_phase_insert_before_and_after(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Handler description is not set in the handler");
+            "Handler description is not set in the handler %s within phase %s", 
+                name, phase->name);
         return AXIS2_FAILURE;
     }
+    handler_desc_name = axutil_string_get_buffer(
+        axis2_handler_desc_get_name(handler_desc, env), env);
 
     rules = axis2_handler_desc_get_rules(handler_desc, env);
     if (!rules)
@@ -861,7 +927,8 @@ axis2_phase_insert_before_and_after(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Handler rules are not set in the handler description");
+            "Handler rules are not set in the handler description %s within "\
+                "phase %s", handler_desc_name, phase->name);
         return AXIS2_FAILURE;
     }
 
@@ -871,7 +938,8 @@ axis2_phase_insert_before_and_after(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Rule `before` is not set in the handler rules");
+            "Rule `before` is not set in the handler rules for handler desc "\
+            "   %s within phase %s", handler_desc_name, phase->name);
         return AXIS2_FAILURE;
     }
 
@@ -881,12 +949,15 @@ axis2_phase_insert_before_and_after(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Rule `after` is not set in the handler rules");
+            "Rule `after` is not set in the handler rules for handler desc "\
+                "%s within phase %s", handler_desc_name, phase->name);
         return AXIS2_FAILURE;
     }
 
     if (phase->first_handler)
     {
+        const axis2_char_t *first_handler_name = axutil_string_get_buffer(
+            axis2_handler_get_name(phase->first_handler, env), env);
         handler_desc =
             axis2_handler_get_handler_desc(phase->first_handler, env);
         if (!handler_desc)
@@ -894,44 +965,52 @@ axis2_phase_insert_before_and_after(
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                             AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Handler description is not set in the first handler");
+                "Handler description is not set in the first handler %s "\
+                    "within phase %s", first_handler_name, phase->name);
             return AXIS2_FAILURE;
         }
 
         before_handler_name =
             axutil_string_get_buffer(axis2_handler_desc_get_name
                                      (handler_desc, env), env);
-        if (!handler_name)
+        if (!before_handler_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                             AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Handler name is not set in the handler description");
+                "Handler name is not set in the handler description for the "\
+                    "first handler %s within phase %s", first_handler_name, 
+                        phase->name);
             return AXIS2_FAILURE;
         }
     }
 
     if (phase->last_handler)
     {
+        const axis2_char_t *last_handler_name = axutil_string_get_buffer(
+            axis2_handler_get_name(phase->last_handler, env), env);
         handler_desc = axis2_handler_get_handler_desc(phase->last_handler, env);
         if (!handler_desc)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                             AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Handler description is not set in the last handler");
+                "Handler description is not set in the last handler %s "\
+                    "within phase %s", last_handler_name, phase->name);
             return AXIS2_FAILURE;
         }
 
         after_handler_name =
             axutil_string_get_buffer(axis2_handler_desc_get_name
                                      (handler_desc, env), env);
-        if (!handler_name)
+        if (!after_handler_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                             AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Handler name is not set in the handler description");
+                "Handler name is not set in the handler description for the "\
+                    "last handler %s within phase %s", last_handler_name, 
+                        phase->name);
             return AXIS2_FAILURE;
         }
     }
@@ -965,13 +1044,16 @@ axis2_phase_insert_before_and_after(
             (axis2_handler_t *) axutil_array_list_get(phase->handlers, env, i);
         if (temp_handler)
         {
+            const axis2_char_t *temp_handler_name = axutil_string_get_buffer(
+                axis2_handler_get_name(temp_handler, env), env);
             handler_desc = axis2_handler_get_handler_desc(temp_handler, env);
             if (!handler_desc)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                                 AXIS2_FAILURE);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Handler Description is not set for the Handler");
+                    "Handler Description is not set for the Handler %s "\
+                        "within phase %s", temp_handler_name, phase->name);
                 return AXIS2_FAILURE;
             }
 
@@ -983,7 +1065,9 @@ axis2_phase_insert_before_and_after(
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                                 AXIS2_FAILURE);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "Handler name is not set in the handler Description");
+                    "Handler name is not set in the handler Description for "\
+                        "handler %s within phase %s", temp_handler_name, 
+                            phase->name);
                 return AXIS2_FAILURE;
             }
 
@@ -1002,7 +1086,8 @@ axis2_phase_insert_before_and_after(
                                 AXIS2_FAILURE);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                     "Both the before and after indexes have been found and "\
-                    "`after` comes before `before` which is wrong");
+                    "`after` comes before `before` which is wrong within "\
+                    "phase %s", phase->name);
                 return AXIS2_FAILURE;
             }
             else
@@ -1032,7 +1117,9 @@ axis2_phase_insert_handler_desc(
     int type = 0;
     axis2_handler_t *handler = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-
+    const axis2_char_t *handler_desc_name = axutil_string_get_buffer(
+        axis2_handler_desc_get_name(handler_desc, env), env);
+    const axis2_char_t *handler_name = NULL;
     handler = axis2_handler_desc_get_handler(handler_desc, env);
 
     if (!handler)
@@ -1040,16 +1127,20 @@ axis2_phase_insert_handler_desc(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Handler description is not set in the handler");
+            "Handler is not set in the handler description %s", 
+            handler_desc_name);
         return AXIS2_FAILURE;
     }
+    handler_name = axutil_string_get_buffer(
+        axis2_handler_get_name(handler, env), env);
 
     if (!_axis2_phase_is_valid_after(phase, env, handler))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Invalid Handler State");
+            "Invalid Handler State for the handler %s within the phase %s", 
+                handler_name, phase->name);
         return AXIS2_FAILURE;
     }
 
@@ -1058,7 +1149,8 @@ axis2_phase_insert_handler_desc(
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Invalid Handler State");
+            "Invalid Handler State for the handler %s within the phase %s", 
+                handler_name, phase->name);
         return AXIS2_FAILURE;
     }
 
@@ -1079,6 +1171,9 @@ axis2_phase_insert_handler_desc(
         status = axis2_phase_add_unique(env, phase->handlers, handler);
         break;
     default:
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Handler description %s insertion failed within the phase %s", 
+                handler_desc_name, phase->name);
         status = AXIS2_FAILURE;
         break;
     }
@@ -1113,6 +1208,8 @@ axis2_phase_invoke_start_from_handler(
             (axis2_handler_t *) axutil_array_list_get(phase->handlers, env, i);
         if (handler)
         {
+            const axis2_char_t *handler_name = axutil_string_get_buffer(
+                axis2_handler_get_name(handler, env), env);
             int index = -1;
 
             axis2_handler_desc_t *handler_desc =
@@ -1122,7 +1219,8 @@ axis2_phase_invoke_start_from_handler(
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                                 AXIS2_FAILURE);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                    "Invalid Handler State");
+                    "Invalid Handler State for the handler %s within phase %s", 
+                        handler_name, phase->name);
                 return AXIS2_FAILURE;
             }
 
@@ -1164,13 +1262,16 @@ axis2_phase_remove_handler_desc(
     axis2_handler_desc_t * handler_desc)
 {
     axis2_handler_t *handler;
+    const axis2_char_t *handler_desc_name = axutil_string_get_buffer(
+        axis2_handler_desc_get_name(handler_desc, env), env);
     handler = axis2_handler_desc_get_handler(handler_desc, env);
     if (!handler)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Handler is not set in the Handler Description");
+            "Handler is not set in the Handler Description %s within phase %s", 
+                handler_desc_name, phase->name);
         return AXIS2_FAILURE;
     }
     return axis2_phase_remove_unique(env, phase->handlers, handler);
@@ -1201,7 +1302,7 @@ axis2_phase_add_unique(
             add_handler = AXIS2_FALSE;
             break;
         }
-        else if (0 == axutil_strcmp(axutil_string_get_buffer(handler_name, env),
+        else if (!axutil_strcmp(axutil_string_get_buffer(handler_name, env),
                                     axutil_string_get_buffer(obj_name, env)))
         {
             add_handler = AXIS2_FALSE;

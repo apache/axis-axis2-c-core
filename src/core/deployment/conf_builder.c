@@ -152,6 +152,8 @@ axis2_conf_builder_populate_conf(
     axis2_status_t status = AXIS2_FAILURE;
     axutil_param_t *param = NULL;
 
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Entry:axis2_conf_builder_populate_conf");
     conf_node = axis2_desc_builder_build_om(conf_builder->desc_builder, env);
     if (!conf_node)
     {
@@ -277,7 +279,6 @@ axis2_conf_builder_populate_conf(
         return AXIS2_FAILURE;
     }
 
-
     /* processing Phase orders */
     qphaseorder = axutil_qname_create(env, AXIS2_PHASE_ORDER, NULL, NULL);
     phase_orders = axiom_element_get_children_with_qname(conf_element, env,
@@ -292,7 +293,6 @@ axis2_conf_builder_populate_conf(
             "Processing phase orders failed, unable to continue");
         return AXIS2_FAILURE;
     }
-
 
     /* Processing default module versions */
     qdefmodver = axutil_qname_create(env, AXIS2_DEFAULT_MODULE_VERSION, NULL,
@@ -326,11 +326,11 @@ axis2_conf_builder_populate_conf(
         if (value)
         {
             axis2_conf_set_enable_mtom(conf_builder->conf, env,
-                                       (axutil_strcmp(value, AXIS2_VALUE_TRUE)
-                                        == 0));
+                                       (!axutil_strcmp(value, AXIS2_VALUE_TRUE)));
         }
     }
-
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Exit:axis2_conf_builder_populate_conf");
     return AXIS2_SUCCESS;
 }
 
@@ -341,6 +341,8 @@ axis2_conf_builder_process_module_refs(
     axiom_children_qname_iterator_t * module_refs)
 {
     axis2_status_t status = AXIS2_SUCCESS;
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Entry:axis2_conf_builder_process_module_refs");
     AXIS2_PARAM_CHECK(env->error, module_refs, AXIS2_FAILURE);
 
     while (axiom_children_qname_iterator_has_next(module_refs, env))
@@ -386,6 +388,8 @@ axis2_conf_builder_process_module_refs(
             }
         }
     }
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Exit:axis2_conf_builder_process_module_refs");
     return status;
 }
 
@@ -404,6 +408,8 @@ axis2_conf_builder_process_disp_order(
     axis2_bool_t qname_itr_has_next = AXIS2_FALSE;
     axis2_status_t status = AXIS2_FAILURE;
 
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Entry:axis2_conf_builder_process_disp_order");
     AXIS2_PARAM_CHECK(env->error, disp_order_node, AXIS2_FAILURE);
 
     disp_order_element = axiom_node_get_data_element(disp_order_node, env);
@@ -422,7 +428,7 @@ axis2_conf_builder_process_disp_order(
     {
         qname_itr_has_next = axiom_children_qname_iterator_has_next(disps, env);
     }
-    while (AXIS2_TRUE == qname_itr_has_next)
+    while (qname_itr_has_next)
     {
         axiom_node_t *disp_node = NULL;
         axiom_element_t *disp_element = NULL;
@@ -459,7 +465,8 @@ axis2_conf_builder_process_disp_order(
         if (!impl_info_param)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Parameter creation failed. Unable to continue");
+                "Parameter creation failed for %s. Unable to continue", 
+                    class_name);
             axis2_phase_free(disp_phase, env);
             return AXIS2_FAILURE;
         }
@@ -480,7 +487,7 @@ axis2_conf_builder_process_disp_order(
 
     }
 
-    if (AXIS2_TRUE != found_disp)
+    if (!found_disp)
     {
         axis2_phase_free(disp_phase, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_DISPATCHER_FOUND,
@@ -493,7 +500,7 @@ axis2_conf_builder_process_disp_order(
     {
         status =
             axis2_conf_set_dispatch_phase(conf_builder->conf, env, disp_phase);
-        if (AXIS2_SUCCESS != status)
+        if (!status)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
                 "Setting dispatch phase failed. Unable to continue");
@@ -501,6 +508,8 @@ axis2_conf_builder_process_disp_order(
             return status;
         }
     }
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Exit:axis2_conf_builder_process_disp_order");
     return AXIS2_SUCCESS;
 }
 
@@ -516,6 +525,8 @@ axis2_conf_builder_process_phase_orders(
 {
     axis2_phases_info_t *info = NULL;
 
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Entry:axis2_conf_builder_process_phase_orders");
     AXIS2_PARAM_CHECK(env->error, phase_orders, AXIS2_FAILURE);
 
     info =
@@ -565,25 +576,27 @@ axis2_conf_builder_process_phase_orders(
             }
             return AXIS2_SUCCESS;
         }
-        if (flow_type && 0 == axutil_strcmp(AXIS2_IN_FLOW_START, flow_type))
+        if (flow_type && !axutil_strcmp(AXIS2_IN_FLOW_START, flow_type))
         {
             axis2_phases_info_set_in_phases(info, env, phase_list);
         }
-        else if (flow_type && 0 == axutil_strcmp(AXIS2_IN_FAILTFLOW, flow_type))
+        else if (flow_type && !axutil_strcmp(AXIS2_IN_FAILTFLOW, flow_type))
         {
             axis2_phases_info_set_in_faultphases(info, env, phase_list);
         }
         else if (flow_type &&
-                 0 == axutil_strcmp(AXIS2_OUT_FLOW_START, flow_type))
+                 !axutil_strcmp(AXIS2_OUT_FLOW_START, flow_type))
         {
             axis2_phases_info_set_out_phases(info, env, phase_list);
         }
         else if (flow_type &&
-                 0 == axutil_strcmp(AXIS2_OUT_FAILTFLOW, flow_type))
+                 !axutil_strcmp(AXIS2_OUT_FAILTFLOW, flow_type))
         {
             axis2_phases_info_set_out_faultphases(info, env, phase_list);
         }
     }
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Exit:axis2_conf_builder_process_phase_orders");
     return AXIS2_SUCCESS;
 }
 
@@ -598,6 +611,8 @@ axis2_conf_builder_get_phase_list(
     axutil_qname_t *qphase = NULL;
     axiom_element_t *phase_orders_element;
 
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Entry:axis2_conf_builder_get_phase_list");
     AXIS2_PARAM_CHECK(env->error, phase_orders_node, NULL);
 
     phase_orders_element = axiom_node_get_data_element(phase_orders_node, env);
@@ -658,6 +673,8 @@ axis2_conf_builder_get_phase_list(
 
         axutil_qname_free(qattname, env);
     }
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Exit:axis2_conf_builder_get_phase_list");
     return phase_list;
 }
 
@@ -668,7 +685,8 @@ axis2_conf_builder_process_transport_senders(
     axiom_children_qname_iterator_t * trs_senders)
 {
     axis2_status_t status = AXIS2_FAILURE;
-
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Entry:axis2_conf_builder_process_transport_senders");
     while (axiom_children_qname_iterator_has_next(trs_senders, env))
     {
         axis2_transport_out_desc_t *transport_out = NULL;
@@ -753,23 +771,23 @@ axis2_conf_builder_process_transport_senders(
 
             if (name)
             {
-                if (axutil_strcmp(name, AXIS2_TRANSPORT_HTTP) == 0)
+                if (!axutil_strcmp(name, AXIS2_TRANSPORT_HTTP))
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
                 }
-                else if (axutil_strcmp(name, AXIS2_TRANSPORT_SMTP) == 0)
+                else if (!axutil_strcmp(name, AXIS2_TRANSPORT_SMTP))
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_SMTP;
                 }
-                else if (axutil_strcmp(name, AXIS2_TRANSPORT_XMPP) == 0)
+                else if (!axutil_strcmp(name, AXIS2_TRANSPORT_XMPP))
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
                 }
-                else if (axutil_strcmp(name, AXIS2_TRANSPORT_TCP) == 0)
+                else if (!axutil_strcmp(name, AXIS2_TRANSPORT_TCP))
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
                 }
-                else if (axutil_strcmp(name, AXIS2_TRANSPORT_HTTPS) == 0)
+                else if (!axutil_strcmp(name, AXIS2_TRANSPORT_HTTPS))
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
                 }
@@ -811,8 +829,8 @@ axis2_conf_builder_process_transport_senders(
             if (!impl_info_param)
             {
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
-                    "Creating module dll name parameter failed. Unable "\
-                    "to continue");
+                    "Creating module dll name parameter failed for %s. Unable "\
+                    "to continue", class_name);
                 axis2_transport_out_desc_free(transport_out, env);
                 return AXIS2_FAILURE;
             }
@@ -820,7 +838,7 @@ axis2_conf_builder_process_transport_senders(
             dll_name =
                 axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
                                                                   class_name);
-            if (axis2_flag == AXIS2_FALSE)
+            if (!axis2_flag)
             {
                 repos_name =
                     axis2_dep_engine_get_repos_path
@@ -836,7 +854,7 @@ axis2_conf_builder_process_transport_senders(
             }
             else
             {
-                libparam = axis2_conf_get_param (conf, env, "libDir");
+                libparam = axis2_conf_get_param (conf, env, AXIS2_LIB_DIR);
                 if (libparam)
                 {
                     libdir = axutil_param_get_value (libparam, env);
@@ -846,7 +864,7 @@ axis2_conf_builder_process_transport_senders(
                 {
                     AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Specifying" \
                         "services and modules directories using axis2.xml but"\
-                        " path of the library directory is not presant");
+                        " path of the library directory is not present");
                     return AXIS2_FAILURE;
                 }
                 path_qualified_dll_name = axutil_strcat (env, libdir, 
@@ -971,8 +989,8 @@ axis2_conf_builder_process_transport_senders(
                                 AXIS2_ERROR_IN_FLOW_NOT_ALLOWED_IN_TRS_OUT,
                                 AXIS2_FAILURE);
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
-                    "A soap fault has occured in the in flow. Unable to "\
-                    "continue");
+                    "A soap fault has occured in the in flow while "\
+                    "processing transport senders. Unable to continue");
                 return AXIS2_FAILURE;
             }
 
@@ -1021,7 +1039,8 @@ axis2_conf_builder_process_transport_senders(
             }
         }
     }
-
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Exit:axis2_conf_builder_process_transport_senders");
     return AXIS2_SUCCESS;
 }
 
@@ -1035,6 +1054,8 @@ axis2_conf_builder_process_transport_recvs(
     axis2_conf_t *conf;
     axis2_bool_t axis2_flag = AXIS2_FALSE;
 
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Entry:axis2_conf_builder_process_transport_recvs");
     AXIS2_PARAM_CHECK(env->error, trs_recvs, AXIS2_FAILURE);
 
     conf = conf_builder->conf;
@@ -1102,19 +1123,19 @@ axis2_conf_builder_process_transport_recvs(
             name = axiom_attribute_get_value(trs_name, env);
             if (name)
             {
-                if (axutil_strcmp(name, AXIS2_TRANSPORT_HTTP) == 0)
+                if (!axutil_strcmp(name, AXIS2_TRANSPORT_HTTP))
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
                 }
-                else if (axutil_strcmp(name, AXIS2_TRANSPORT_SMTP) == 0)
+                else if (!axutil_strcmp(name, AXIS2_TRANSPORT_SMTP))
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_SMTP;
                 }
-                else if (axutil_strcmp(name, AXIS2_TRANSPORT_TCP) == 0)
+                else if (!axutil_strcmp(name, AXIS2_TRANSPORT_TCP))
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
                 }
-                else if (axutil_strcmp(name, AXIS2_TRANSPORT_HTTPS) == 0)
+                else if (!axutil_strcmp(name, AXIS2_TRANSPORT_HTTPS))
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
                 }
@@ -1185,7 +1206,7 @@ axis2_conf_builder_process_transport_recvs(
                 else
                 {
                     /* Axis2 Configuration is built using axis2.xml */
-                    tnsparam = axis2_conf_get_param (conf, env, "libDir");
+                    tnsparam = axis2_conf_get_param (conf, env, AXIS2_LIB_DIR);
                     if (tnsparam)
                     {
                         libpath = (axis2_char_t *)axutil_param_get_value (tnsparam, env);
@@ -1256,7 +1277,8 @@ axis2_conf_builder_process_transport_recvs(
             if (!status)
             {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                    "Processing parameters failed. Unable to continue");
+                    "Processing transport receiver parameters failed. "\
+                        "Unable to continue");
                 axis2_transport_in_desc_free(transport_in, env);
                 return status;
             }
@@ -1374,6 +1396,8 @@ axis2_conf_builder_process_transport_recvs(
 
         }
     }
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "Exit:axis2_conf_builder_process_transport_recvs");
     return AXIS2_SUCCESS;
 }
 
