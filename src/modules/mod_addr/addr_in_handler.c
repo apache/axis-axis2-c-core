@@ -129,7 +129,7 @@ axis2_addr_in_handler_invoke(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    AXIS2_LOG_INFO(env->log, "Starting addressing in handler .........");
+    AXIS2_LOG_INFO(env->log, "Starting addressing in handler");
 
     soap_envelope = axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
 
@@ -308,21 +308,29 @@ axis2_addr_in_extract_addr_params(
     axis2_bool_t action_found = AXIS2_FALSE;
     axis2_bool_t msg_id_found = AXIS2_FALSE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, soap_header, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_info_headers_p, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, addr_headers, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, addr_ns_str, AXIS2_FAILURE);
 
     if (!msg_info_headers)
+    {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No messgae info header. Creating new");
         msg_info_headers = axis2_msg_info_headers_create(env, NULL, NULL);
-    if (!msg_info_headers)
-        return AXIS2_FAILURE;
+        if (!msg_info_headers)
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MSG_INFO_HEADERS, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+    }
 
     header_block_ht = axiom_soap_header_get_all_header_blocks(soap_header, env);
     if (!header_block_ht)
+    {
         return AXIS2_FAILURE;
+    }
 
+    /* Iterate thru header blocks */
     for (hash_index = axutil_hash_first(header_block_ht, env); hash_index;
          hash_index = axutil_hash_next(env, hash_index))
     {
@@ -353,14 +361,14 @@ axis2_addr_in_extract_addr_params(
 
         if (!axutil_strcmp(ele_localname, AXIS2_WSA_TO))
         {
-            /* here the addressing epr overidde what ever already there in the message context */
+            /* Here the addressing epr overidde what ever already there in the message context */
 
             epr =
                 axis2_endpoint_ref_create(env,
                                           axiom_element_get_text
                                           (header_block_ele, env,
                                            header_block_node));
-            if (to_found == AXIS2_TRUE)
+            if (AXIS2_TRUE == to_found)
             {
                 /* Duplicate To */
                 axis2_addr_in_create_fault_envelope(env,
@@ -381,8 +389,8 @@ axis2_addr_in_extract_addr_params(
             epr = axis2_msg_info_headers_get_from(msg_info_headers, env);
             if (!epr)
             {
-                /* The address is not know now. Pass the empty
-                   string now and fill this once the element 
+                /* The address is not known now. Pass the empty
+                   string and fill this once the element 
                    under this is processed. */
 
                 epr = axis2_endpoint_ref_create(env, "");
@@ -533,7 +541,8 @@ axis2_addr_in_extract_addr_params(
         }
     }
 
-    if (action_found == AXIS2_FALSE)    /* Check is an action was found */
+    /* If an action is not found, it's a false*/
+    if (action_found == AXIS2_FALSE)   
     {
         axis2_addr_in_create_fault_envelope(env,
                                             "wsa:Action", addr_ns_str, msg_ctx);
@@ -556,7 +565,7 @@ axis2_addr_in_extract_epr_information(
     axiom_node_t *header_block_node = NULL;
     axiom_element_t *header_block_ele = NULL;
     axiom_child_element_iterator_t *child_ele_iter = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
     AXIS2_PARAM_CHECK(env->error, soap_header_block, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, endpoint_ref, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, addr_ns_str, AXIS2_FAILURE);
@@ -570,12 +579,16 @@ axis2_addr_in_extract_epr_information(
         axiom_element_get_child_elements(header_block_ele, env,
                                          header_block_node);
     if (!child_ele_iter)
+    {
         return AXIS2_FAILURE;
+    }
+    
     epr_addr_qn = axutil_qname_create(env, EPR_ADDRESS, addr_ns_str, NULL);
     epr_ref_qn =
         axutil_qname_create(env, EPR_REFERENCE_PARAMETERS, addr_ns_str, NULL);
     wsa_meta_qn =
         axutil_qname_create(env, AXIS2_WSA_METADATA, addr_ns_str, NULL);
+
     while (AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(child_ele_iter, env))
     {
         axiom_node_t *child_node = NULL;
@@ -617,11 +630,13 @@ axis2_addr_in_extract_epr_information(
         }
         else if (axis2_addr_in_check_element(env, wsa_meta_qn, child_qn))
         {
+            /* FIXME : Can we remove this?*/
         }
     }
     axutil_qname_free(epr_addr_qn, env);
     axutil_qname_free(epr_ref_qn, env);
     axutil_qname_free(wsa_meta_qn, env);
+
     return AXIS2_SUCCESS;
 }
 
@@ -635,13 +650,14 @@ axis2_addr_in_extract_ref_params(
     axutil_hash_index_t *hash_index = NULL;
     axutil_qname_t *wsa_qname = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, soap_header, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_info_headers, AXIS2_FAILURE);
 
     header_block_ht = axiom_soap_header_get_all_header_blocks(soap_header, env);
     if (!header_block_ht)
+    {
         return AXIS2_FAILURE;
+    }
     wsa_qname =
         axutil_qname_create(env, AXIS2_WSA_IS_REFERENCE_PARAMETER_ATTRIBUTE,
                             AXIS2_WSA_NAMESPACE, NULL);
@@ -698,7 +714,6 @@ axis2_addr_in_extract_to_epr_ref_params(
     axutil_hash_index_t *hash_index = NULL;
     axutil_qname_t *is_ref_qn = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, to_epr, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, soap_header, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, addr_ns_str, AXIS2_FAILURE);
@@ -706,12 +721,17 @@ axis2_addr_in_extract_to_epr_ref_params(
     header_blocks_ht =
         axiom_soap_header_get_all_header_blocks(soap_header, env);
     if (!header_blocks_ht)
+    {
         return AXIS2_FAILURE;
+    }
 
     is_ref_qn =
         axutil_qname_create(env, "IsReferenceParameter", addr_ns_str, NULL);
+    
     if (!is_ref_qn)
+    {
         return AXIS2_FAILURE;
+    }
 
     for (hash_index = axutil_hash_first(header_blocks_ht, env); hash_index;
          hash_index = axutil_hash_next(env, hash_index))
@@ -762,7 +782,6 @@ axis2_addr_in_check_element(
     axis2_char_t *exp_qn_nsuri = NULL;
     axis2_char_t *act_qn_nsuri = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, expected_qname, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, actual_qname, AXIS2_FAILURE);
 

@@ -102,7 +102,9 @@ axis2_addr_out_handler_invoke(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-    
+   
+    AXIS2_LOG_INFO(env->log, "Starting addressing out handler");
+
     soap_envelope = axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (!soap_envelope)
     {

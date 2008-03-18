@@ -364,7 +364,7 @@ extern "C"
         /*
          * Group - mod_addr
          */
-
+        AXIS2_ERROR_NO_MSG_INFO_HEADERS,
         /*
          * Group - platforms
          */

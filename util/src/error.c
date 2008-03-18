@@ -254,7 +254,8 @@ axutil_error_init()
     axutil_error_messages[AXIS2_ERROR_SVC_OR_OP_NOT_FOUND] =
         "Service or operation not found";
     /* mod_addr */
-
+    axutil_error_messages[AXIS2_ERROR_NO_MSG_INFO_HEADERS] =
+            "No messgae info headers";
     /* platforms */
 
     /* utils */
