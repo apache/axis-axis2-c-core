@@ -34,6 +34,9 @@
 #include <axiom_soap.h>
 #include <string.h>
 #include <axutil_string_util.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 struct axis2_http_worker
 {
@@ -59,6 +62,10 @@ static axutil_hash_t *axis2_http_worker_get_headers(
     axis2_http_worker_t * http_worker,
     const axutil_env_t * env,
     axis2_http_simple_request_t * request);
+
+static axis2_char_t *axis2_http_worker_get_server_time(
+    axis2_http_worker_t * http_worker,
+    const axutil_env_t * env);
 
 AXIS2_EXTERN axis2_http_worker_t *AXIS2_CALL
 axis2_http_worker_create(
@@ -169,6 +176,28 @@ axis2_http_worker_process_request(
         simple_request,
         env,
         AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
+
+    if (response)
+    {
+        axis2_http_header_t *server = NULL;
+        axis2_http_header_t *server_date = NULL;
+        axis2_char_t *date_str = NULL;
+        char *date_str_tmp = NULL;
+
+        date_str_tmp = axis2_http_worker_get_server_time(http_worker, env);
+        date_str = AXIS2_MALLOC(env->allocator,
+            sizeof(axis2_char_t) * (strlen(date_str_tmp) + 5));
+        sprintf(date_str, "%s GMT", date_str_tmp);
+        server_date = axis2_http_header_create(env,
+                                          AXIS2_HTTP_HEADER_DATE, date_str);
+        axis2_http_simple_response_set_header(response, env, server_date);
+
+        server = axis2_http_header_create(env,
+                                          AXIS2_HTTP_HEADER_SERVER,
+                                          "Axis2C/" AXIS2_VERSION_STRING
+                                          " (Simple Axis2 HTTP Server)");
+        axis2_http_simple_response_set_header(response, env, server);
+    }
 
     if (encoding_header)
     {
@@ -1295,4 +1324,26 @@ axis2_http_worker_set_svr_port(
 {
     worker->svr_port = port;
     return AXIS2_SUCCESS;
+}
+
+static axis2_char_t *axis2_http_worker_get_server_time(
+    axis2_http_worker_t * http_worker,
+    const axutil_env_t * env)
+{
+    time_t tp;
+    char *time_str;
+    tp = time(&tp);
+    time_str = ctime(&tp);
+    if (!time_str)
+    {
+        return NULL;
+    }
+    if ('\n' == time_str[strlen(time_str) - 1])
+    {
+        time_str[strlen(time_str) - 1] = '\0';
+    }
+    /* We use the ANSI C Date Format, which is Legal according to RFC2616, 
+     * Section 3.3.1. We are not a HTTP/1.1 only server, and thus, it suffices.
+     */
+    return time_str;
 }

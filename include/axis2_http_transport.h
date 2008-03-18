@@ -435,6 +435,21 @@ extern "C"
      */
 #define AXIS2_HTTP_HEADER_USER_AGENT_AXIS2C "User-Agent: Axis2C/" AXIS2_VERSION_STRING
 
+    /**
+     * HEADER_SERVER
+     */
+#define AXIS2_HTTP_HEADER_SERVER "Server"
+
+    /**
+     * HEADER_DATE
+     */
+#define AXIS2_HTTP_HEADER_DATE "Date"
+
+    /**
+     * HEADER_SERVER_AXIS2C
+     */
+#define AXIS2_HTTP_HEADER_SERVER_AXIS2C "Server: Axis2C/" AXIS2_VERSION_STRING
+
 #define AXIS2_HTTP_HEADER_ACCEPT_ "Accept: "
 
 #define AXIS2_HTTP_HEADER_EXPECT_ "Expect: "
