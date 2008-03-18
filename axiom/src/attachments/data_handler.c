@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,25 +25,25 @@ struct axiom_data_handler
     axis2_char_t *file_name;
     axis2_byte_t *buffer;
     int buffer_len;
-    int data_handler_type;
+    axiom_data_handler_type_t data_handler_type;
 };
 
 AXIS2_EXTERN axiom_data_handler_t *AXIS2_CALL
 axiom_data_handler_create(
-    const axutil_env_t * env,
-    const axis2_char_t * file_name,
-    const axis2_char_t * mime_type)
+    const axutil_env_t *env,
+    const axis2_char_t *file_name,
+    const axis2_char_t *mime_type)
 {
     axiom_data_handler_t *data_handler = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    data_handler =
-        (axiom_data_handler_t *) AXIS2_MALLOC(env->allocator,
-                                              sizeof(axiom_data_handler_t));
+    data_handler = (axiom_data_handler_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(axiom_data_handler_t));
 
     if (!data_handler)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return NULL;
     }
 
@@ -52,6 +51,8 @@ axiom_data_handler_create(
     data_handler->file_name = NULL;
     data_handler->buffer = NULL;
     data_handler->buffer_len = 0;
+    /* By default, a Data Handler is of type Buffer */
+    data_handler->data_handler_type = AXIOM_DATA_HANDLER_TYPE_BUFFER;
 
     if (mime_type)
     {
@@ -60,6 +61,7 @@ axiom_data_handler_create(
         {
             axiom_data_handler_free(data_handler, env);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
             return NULL;
         }
     }
@@ -70,13 +72,10 @@ axiom_data_handler_create(
         {
             axiom_data_handler_free(data_handler, env);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
             return NULL;
         }
         data_handler->data_handler_type = AXIOM_DATA_HANDLER_TYPE_FILE;
-    }
-    else
-    {
-        data_handler->data_handler_type = AXIOM_DATA_HANDLER_TYPE_BUFFER;
     }
 
     return data_handler;
@@ -87,8 +86,6 @@ axiom_data_handler_free(
     axiom_data_handler_t * data_handler,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (data_handler->file_name)
     {
         AXIS2_FREE(env->allocator, data_handler->file_name);
@@ -125,7 +122,7 @@ axiom_data_handler_get_input_stream(
     axiom_data_handler_t * data_handler,
     const axutil_env_t * env)
 {
-    return (axis2_byte_t *) data_handler->buffer;
+    return data_handler->buffer;
 }
 
 AXIS2_EXTERN int AXIS2_CALL
@@ -143,7 +140,6 @@ axiom_data_handler_read_from(
     axis2_byte_t ** output_stream,
     int *output_stream_size)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_BUFFER)
     {
         *output_stream = data_handler->buffer;
@@ -160,18 +156,18 @@ axiom_data_handler_read_from(
         int temp_byte_stream_size = 0;
         int read_stream_size = 0;
         int count = 0;
-		struct stat stat_p;
+        struct stat stat_p;
 
         f = fopen(data_handler->file_name, "rb");
         if (!f)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            " error opening file %s for reading ",
-                            data_handler->file_name);
+                "Error opening file %s for reading",
+                data_handler->file_name);
             return AXIS2_FAILURE;
         }
 
-        if (-1 == stat(data_handler->file_name, &stat_p))
+        if (stat(data_handler->file_name, &stat_p) == -1)
         {
 	    fclose(f);
             return AXIS2_FAILURE;
@@ -188,12 +184,12 @@ axiom_data_handler_read_from(
         {
             read_stream_size = stat_p.st_size;
             read_stream = AXIS2_MALLOC(env->allocator,
-                                       (read_stream_size) *
-                                       sizeof(axis2_byte_t));
+                (read_stream_size) * sizeof(axis2_byte_t));
             if (!read_stream)
             {
                 AXIS2_ERROR_SET(env->error,
-                                AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                    AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
                 if (byte_stream)
                 {
                     AXIS2_FREE(env->allocator, byte_stream);
@@ -202,11 +198,11 @@ axiom_data_handler_read_from(
                 return AXIS2_FAILURE;
             }
             count = (int)fread(read_stream, 1, read_stream_size, f);
-            /* We are sure that the difference lies within the int range */
-            if (ferror(f) != 0)
+            /* The count lies within the int range */
+            if (ferror(f))
             {
-                AXIS2_ERROR_SET(env->error,
-                                AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "Error in reading file %s", data_handler->file_name);
                 if (byte_stream)
                 {
                     AXIS2_FREE(env->allocator, byte_stream);
@@ -228,12 +224,13 @@ axiom_data_handler_read_from(
                     temp_byte_stream_size = byte_stream_size;
                     byte_stream_size = temp_byte_stream_size + count;
                     byte_stream = AXIS2_MALLOC(env->allocator,
-                                               (byte_stream_size) *
-                                               sizeof(axis2_byte_t));
+                        (byte_stream_size) * sizeof(axis2_byte_t));
                     if (!byte_stream)
                     {
                         AXIS2_ERROR_SET(env->error,
-                                        AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                            "Not enough memory");
                         if (read_stream)
                         {
                             AXIS2_FREE(env->allocator, read_stream);
@@ -259,6 +256,7 @@ axiom_data_handler_read_from(
                     if (temp_byte_stream)
                     {
                         AXIS2_FREE(env->allocator, temp_byte_stream);
+                        temp_byte_stream = NULL;
                         temp_byte_stream_size = 0;
                     }
                 }
@@ -270,12 +268,9 @@ axiom_data_handler_read_from(
                     read_stream_size = 0;
                 }
             }
-            else
+            else if (read_stream)
             {
-                if (read_stream)
-                {
-                    AXIS2_FREE(env->allocator, read_stream);
-                }
+                AXIS2_FREE(env->allocator, read_stream);
             }
         }
         while (!feof(f));
@@ -285,6 +280,11 @@ axiom_data_handler_read_from(
         data_handler->buffer_len = byte_stream_size;
         *output_stream = byte_stream;
         *output_stream_size = byte_stream_size;
+    }
+    else
+    {
+        /* Data Handler File Name is missing */
+        return AXIS2_FAILURE;
     }
 
     return AXIS2_SUCCESS;
@@ -297,9 +297,6 @@ axiom_data_handler_set_binary_data(
     axis2_byte_t * input_stream,
     int input_stream_len)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    data_handler = data_handler;
-
     data_handler->buffer = input_stream;
     data_handler->buffer_len = input_stream_len;
     return AXIS2_SUCCESS;
@@ -310,8 +307,6 @@ axiom_data_handler_write_to(
     axiom_data_handler_t * data_handler,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (data_handler->file_name)
     {
         FILE *f = NULL;
@@ -321,16 +316,17 @@ axiom_data_handler_write_to(
         if (!f)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            " error opening file %s for writing ",
-                            data_handler->file_name);
+               "Error opening file %s for writing", data_handler->file_name);
             return AXIS2_FAILURE;
         }
 
-        count = (int)fwrite(data_handler->buffer, 1, data_handler->buffer_len, f);
-        /* We are sure that the difference lies within the int range */
+        count = (int)fwrite(data_handler->buffer, 1,
+            data_handler->buffer_len, f);
+        /* The count lies within the int range */
 
-        if (ferror(f) != 0)
+        if (ferror(f))
         {
+            fclose(f);
             return AXIS2_FAILURE;
         }
         fflush(f);
@@ -346,11 +342,10 @@ axiom_data_handler_set_file_name(
     const axutil_env_t * env,
     axis2_char_t * file_name)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (data_handler->file_name)
     {
         AXIS2_FREE(env->allocator, data_handler->file_name);
+        data_handler->file_name = NULL;
     }
 
     if (file_name)
@@ -358,8 +353,8 @@ axiom_data_handler_set_file_name(
         data_handler->file_name = axutil_strdup(env, file_name);
         if (!(data_handler->file_name))
         {
-            axiom_data_handler_free(data_handler, env);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
             return AXIS2_FAILURE;
         }
     }
