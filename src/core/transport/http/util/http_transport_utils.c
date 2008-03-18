@@ -1602,11 +1602,11 @@ axis2_http_transport_utils_get_services_static_wsdl(
                     content = tmp;
                 }
                 /*sprintf(&content[i++], "%c", c);*/
-                content[i++] = c;
+                content[i++] = (axis2_char_t)c;
                 c = fgetc(wsdl_file);
             }
             content[i] = '\0';
-            wsdl_string = content;
+            wsdl_string = (axis2_char_t *)content;
         }
         AXIS2_FREE(env->allocator, wsdl_path);
     }
