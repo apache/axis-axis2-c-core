@@ -40,6 +40,7 @@ axutil_file_create(
     if (!file)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return NULL;
     }
     file->name = NULL;
@@ -91,6 +92,7 @@ axutil_file_set_name(
     if (!file->name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -131,6 +133,7 @@ axutil_file_set_path(
     if (!(file->path))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
