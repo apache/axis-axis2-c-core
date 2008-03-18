@@ -1,3 +1,5 @@
+#ifdef AXIS2_LIBCURL_ENABLED
+
 #include "axis2_libcurl.h"
 #include <axiom_soap.h>
 #include <axutil_string.h>
@@ -759,3 +761,5 @@ axis2_libcurl_get_content_type(
 
     return AXIS2_HTTP_HEADER_ACCEPT_TEXT_PLAIN;
 }
+
+#endif                          /* AXIS2_LIBCURL_ENABLED */

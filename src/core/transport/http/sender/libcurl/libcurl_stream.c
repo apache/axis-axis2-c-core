@@ -1,3 +1,5 @@
+#ifdef AXIS2_LIBCURL_ENABLED
+
 #include "libcurl_stream.h"
 #include <string.h>
 
@@ -175,3 +177,5 @@ libcurl_stream_get_char(
 {
     return 0;
 }
+
+#endif                          /* AXIS2_HTTP_SENDER_H */
