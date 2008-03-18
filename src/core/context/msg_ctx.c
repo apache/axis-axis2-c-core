@@ -203,7 +203,9 @@ struct axis2_msg_ctx
     axutil_hash_t *transport_headers;
     axutil_array_list_t *accept_record_list;
     axutil_array_list_t *accept_charset_record_list;
+    axutil_array_list_t *accept_language_record_list;
     axis2_char_t *transfer_encoding;
+    axis2_char_t *content_language;
     axis2_char_t *transport_url;
     axis2_bool_t is_auth_failure;
     axis2_bool_t required_auth_is_http;
@@ -279,7 +281,9 @@ axis2_msg_ctx_create(
     msg_ctx->transport_headers = NULL;
     msg_ctx->accept_record_list = NULL;
     msg_ctx->accept_charset_record_list = NULL;
+    msg_ctx->accept_language_record_list = NULL;
     msg_ctx->transfer_encoding = NULL;
+    msg_ctx->content_language = NULL;
     msg_ctx->transport_url = NULL;
     msg_ctx->response_soap_envelope = NULL;
     msg_ctx->is_auth_failure = AXIS2_FALSE;
@@ -441,6 +445,21 @@ axis2_msg_ctx_free(
         axutil_array_list_free(msg_ctx->accept_charset_record_list, env);
     }
 
+    if (msg_ctx->accept_language_record_list)
+    {
+        axis2_http_accept_record_t *rec = NULL;
+        while (axutil_array_list_size(msg_ctx->accept_language_record_list, env))
+        {
+            rec = (axis2_http_accept_record_t *)
+                axutil_array_list_remove(msg_ctx->accept_language_record_list, env, 0);
+            if (rec)
+            {
+                axis2_http_accept_record_free(rec, env);
+            }
+        }
+        axutil_array_list_free(msg_ctx->accept_language_record_list, env);
+    }
+
     if (msg_ctx->accept_record_list)
     {
         axis2_http_accept_record_t *rec = NULL;
@@ -459,6 +478,11 @@ axis2_msg_ctx_free(
     if (msg_ctx->transfer_encoding)
     {
         AXIS2_FREE(env->allocator, msg_ctx->transfer_encoding);
+    }
+
+    if (msg_ctx->content_language)
+    {
+        AXIS2_FREE(env->allocator, msg_ctx->content_language);
     }
 
     if (msg_ctx->auth_type)
@@ -2356,6 +2380,72 @@ axis2_msg_ctx_set_http_accept_charset_record_list(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axis2_msg_ctx_get_http_accept_language_record_list(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    if (msg_ctx)
+    {
+        return msg_ctx->accept_language_record_list;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axis2_msg_ctx_extract_http_accept_language_record_list(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    axutil_array_list_t *temp = NULL;
+    if (msg_ctx)
+    {
+        temp = msg_ctx->accept_language_record_list;
+        msg_ctx->accept_language_record_list = NULL;
+        return temp;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_http_accept_language_record_list(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env,
+    axutil_array_list_t * accept_language_record_list)
+{
+    if (msg_ctx)
+    {
+        if (msg_ctx->accept_language_record_list && 
+            msg_ctx->accept_language_record_list != accept_language_record_list)
+        {
+            axis2_http_accept_record_t *rec = NULL;
+            while (axutil_array_list_size(msg_ctx->accept_language_record_list, env))
+            {
+                rec = (axis2_http_accept_record_t *)
+                    axutil_array_list_remove(msg_ctx->accept_language_record_list, env, 0);
+                if (rec)
+                {
+                    axis2_http_accept_record_free(rec, env);
+                }
+            }
+            axutil_array_list_free(msg_ctx->accept_language_record_list, env);
+        }
+        msg_ctx->accept_language_record_list = accept_language_record_list;
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+
+    return AXIS2_SUCCESS;
+}
+
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_msg_ctx_get_transfer_encoding(
     axis2_msg_ctx_t * msg_ctx,
@@ -2383,6 +2473,43 @@ axis2_msg_ctx_set_transfer_encoding(
         if (str)
         {
             msg_ctx->transfer_encoding = str;
+        }
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_msg_ctx_get_content_language(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    if (msg_ctx)
+        return msg_ctx->content_language;
+    else
+        return NULL;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_content_language(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env,
+    axis2_char_t * str)
+{
+    if (msg_ctx)
+    {
+        if (msg_ctx->content_language)
+        {
+            AXIS2_FREE(env->allocator, msg_ctx->content_language);
+            msg_ctx->content_language = NULL;
+        }
+        if (str)
+        {
+            msg_ctx->content_language = str;
         }
     }
     else

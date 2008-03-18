@@ -93,6 +93,8 @@ axis2_core_utils_create_out_msg_ctx(
         axis2_msg_ctx_extract_http_accept_record_list(in_msg_ctx, env));
     axis2_msg_ctx_set_http_accept_charset_record_list(new_msg_ctx, env,
         axis2_msg_ctx_extract_http_accept_charset_record_list(in_msg_ctx, env));
+    axis2_msg_ctx_set_http_accept_language_record_list(new_msg_ctx, env,
+        axis2_msg_ctx_extract_http_accept_language_record_list(in_msg_ctx, env));
 
     old_msg_info_headers = axis2_msg_ctx_get_msg_info_headers(in_msg_ctx, env);
     if (!old_msg_info_headers)

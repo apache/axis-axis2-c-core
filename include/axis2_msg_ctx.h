@@ -1772,6 +1772,67 @@ extern "C"
         axutil_array_list_t * accept_charset_record_list);
 
     /**
+     * Retrieves HTTP Accept-Language records.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return HTTP Accept-Language records associated.
+     */
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axis2_msg_ctx_get_http_accept_language_record_list(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
+    /**
+     * Retrieves HTTP Accept-Language records, and removes them
+     * from the message context
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return HTTP Accept-Language records associated.
+     */
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axis2_msg_ctx_extract_http_accept_language_record_list(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
+    /**
+     * Sets the HTTP Accept-Language records
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @param accept_language_record_list an Array List containing the
+     * HTTP Accept-Language records
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_http_accept_language_record_list(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env,
+        axutil_array_list_t * accept_language_record_list);
+
+    /**
+     * Gets the Content Language used
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return Content Language string
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_msg_ctx_get_content_language(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
+    /**
+     * Sets the Content Language used
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @param str Content Language string
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_content_language(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env,
+        axis2_char_t * str);
+
+    /**
      * Retrieves HTTP Accept records.
      * @param msg_ctx message context
      * @param env pointer to environment struct

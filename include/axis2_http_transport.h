@@ -282,6 +282,11 @@ extern "C"
      */
 #define AXIS2_HTTP_HEADER_CONTENT_LENGTH "Content-Length"
 
+    /**
+     * HEADER_CONTENT_LANGUAGE
+     */
+#define AXIS2_HTTP_HEADER_CONTENT_LANGUAGE "Content-Language"
+
 #define AXIS2_HTTP_HEADER_CONTENT_LENGTH_ "Content-Length: "
 
     /**
@@ -520,6 +525,11 @@ extern "C"
      * HEADER_ACCEPT_CHARSET
      */
 #define AXIS2_HTTP_HEADER_ACCEPT_CHARSET "Accept-Charset"
+
+    /**
+      * AXIS2_HTTP_HEADER_ACCEPT_LANGUAGE
+      */
+#define AXIS2_HTTP_HEADER_ACCEPT_LANGUAGE "Accept-Language"
 
     /**
      * HEADER_ALLOW
