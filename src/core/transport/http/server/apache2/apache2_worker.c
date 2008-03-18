@@ -171,6 +171,8 @@ axis2_apache2_worker_process_request(
     axutil_url_t *request_url = NULL;
     axis2_char_t *accept_header_value = NULL;
     axis2_char_t *accept_charset_header_value = NULL;
+    axis2_char_t *accept_language_header_value = NULL;
+    axis2_char_t *content_language_header_value = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, request, AXIS2_CRITICAL_FAILURE);
@@ -343,6 +345,46 @@ axis2_apache2_worker_process_request(
         {
             axis2_msg_ctx_set_http_accept_charset_record_list(msg_ctx, env,
                 accept_charset_record_list);
+        }
+    }
+
+    accept_language_header_value = (axis2_char_t *)
+        apr_table_get(request->headers_in, AXIS2_HTTP_HEADER_ACCEPT_LANGUAGE);
+    if (accept_language_header_value)
+    {
+        axutil_array_list_t *accept_language_header_field_list = NULL;
+        axutil_array_list_t *accept_language_record_list = NULL;
+        accept_language_header_field_list =
+            axutil_tokenize(env, accept_language_header_value, ',');
+        if (accept_language_header_field_list && 
+            axutil_array_list_size(accept_language_header_field_list, env) > 0)
+        {
+            axis2_char_t *token = NULL;
+            accept_language_record_list =
+                axutil_array_list_create(env,
+                    axutil_array_list_size(accept_language_header_field_list, env));
+            do
+            {
+                if (token)
+                {
+                    axis2_http_accept_record_t *rec = NULL;
+                    rec = axis2_http_accept_record_create(env, token);
+                    if (rec)
+                    {
+                        axutil_array_list_add(accept_language_record_list, env, rec);
+                    }
+                    AXIS2_FREE(env->allocator, token);
+                }
+                token = (axis2_char_t *)
+                    axutil_array_list_remove(accept_language_header_field_list, env, 0);
+            }
+            while(token);
+        }
+        if (accept_language_record_list && 
+            axutil_array_list_size(accept_language_record_list, env) > 0)
+        {
+            axis2_msg_ctx_set_http_accept_language_record_list(msg_ctx, env,
+                accept_language_record_list);
         }
     }
 
@@ -670,6 +712,19 @@ axis2_apache2_worker_process_request(
 
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
 
+    if (op_ctx)
+    {
+        axis2_msg_ctx_t *out_msg_ctx = NULL;
+        axis2_msg_ctx_t **msg_ctx_map = NULL;
+
+        msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+        out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+        if (out_msg_ctx)
+        {
+            content_language_header_value = axis2_msg_ctx_get_content_language(out_msg_ctx, env);
+        }
+    }
+
     if (send_status == DECLINED)
     {
         axis2_bool_t do_rest = AXIS2_FALSE;
@@ -678,11 +733,15 @@ axis2_apache2_worker_process_request(
         {
             do_rest = AXIS2_TRUE;
         }
-        if ((accept_header_value || accept_charset_header_value) && do_rest)
+        if ((accept_header_value || accept_charset_header_value ||
+            accept_language_header_value) && do_rest)
         {
             axis2_char_t *content_type_header_value = NULL;
             axis2_char_t *temp = NULL;
+            axis2_char_t *language_header_value = NULL;
+
             content_type_header_value = (axis2_char_t *) request->content_type;
+            language_header_value = content_language_header_value;
             if (content_type_header_value)
             {
                 temp = axutil_strdup(env, content_type_header_value);
@@ -774,6 +833,23 @@ axis2_apache2_worker_process_request(
                     AXIS2_FREE(env->allocator, char_set);
                 }
             }
+            if (language_header_value)
+            {
+                if (accept_language_header_value &&
+                    !strstr(accept_language_header_value, language_header_value))
+                {
+                    body_string =
+                        axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
+                    request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+
+                    if (body_string)
+                    {
+                        body_string_len = axutil_strlen(body_string);
+                    }
+                    send_status = OK;
+                    request->status = HTTP_NOT_ACCEPTABLE;
+                }
+            }
         }
     }
     if (send_status == DECLINED)
@@ -849,6 +925,12 @@ axis2_apache2_worker_process_request(
             send_status = DONE;
             request->status = HTTP_ACCEPTED;
         }
+    }
+
+    if (content_language_header_value)
+    {
+        apr_table_set(request->err_headers_out, AXIS2_HTTP_HEADER_CONTENT_LANGUAGE,
+            content_language_header_value);
     }
 
     if (op_ctx)
