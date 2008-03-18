@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\..\deploy\lib"
+			OutputDirectory="$(SolutionDir)deploy\lib"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="2"
@@ -179,6 +179,14 @@
 		</Configuration>
 	</Configurations>
 	<References>
+		<ProjectReference
+			ReferencedProjectIdentifier="{7C816A64-FA96-4C6C-8DB0-5256441F54BC}"
+			RelativePathToProject=".\axiom\axiom.vcproj"
+		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
+			RelativePathToProject=".\axutil\axutil.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter

@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\..\deploy\lib"
+			OutputDirectory="$(SolutionDir)deploy\lib"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="2"
@@ -63,7 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="axiom.lib axutil.lib axis2_parser.lib neethi.lib"
+				AdditionalDependencies="axiom.lib axutil.lib neethi.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(SolutionDir)\deploy\lib&quot;"
 				GenerateManifest="true"
@@ -96,7 +96,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy .\..\..\..\..\samples\server\axis2.xml  .\..\deploy\"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -183,6 +183,18 @@
 		</Configuration>
 	</Configurations>
 	<References>
+		<ProjectReference
+			ReferencedProjectIdentifier="{7C816A64-FA96-4C6C-8DB0-5256441F54BC}"
+			RelativePathToProject=".\axiom\axiom.vcproj"
+		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
+			RelativePathToProject=".\axutil\axutil.vcproj"
+		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{20643536-7BF0-4201-9EA6-039E6CF19ADB}"
+			RelativePathToProject=".\neethi\neethi.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter
@@ -528,10 +540,6 @@
 						Name="util"
 						>
 						<File
-							RelativePath="..\..\..\..\src\core\transport\http\util\http_chunked_stream.c"
-							>
-						</File>
-						<File
 							RelativePath="..\..\..\..\src\core\transport\http\util\http_transport_utils.c"
 							>
 						</File>
@@ -552,6 +560,170 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_attribute.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_child_element_iterator.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_children_iterator.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_children_qname_iterator.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_comment.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_data_handler.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_data_source.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_defines.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_doctype.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_document.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_element.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_mime_const.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_mime_parser.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_namespace.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_navigator.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_node.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_output.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_processing_instruction.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_body.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_const.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_envelope.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_fault.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_fault_code.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_fault_detail.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_fault_node.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_fault_reason.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_fault_role.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_fault_text.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_fault_value.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_header.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_soap_header_block.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_stax_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_text.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_util.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_xml_reader.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\include\axiom_xml_writer.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\include\axis2_addr.h"
 				>

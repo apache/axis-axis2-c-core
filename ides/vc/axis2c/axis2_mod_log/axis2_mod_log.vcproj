@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\..\deploy\modules\logging"
+			OutputDirectory="$(SolutionDir)deploy\modules\logging"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="2"
@@ -96,7 +96,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy .\..\..\..\..\modules\mod_log\module.xml .\..\deploy\modules\logging"
+				CommandLine="copy .\..\..\..\..\src\modules\mod_log\module.xml $(SolutionDir)deploy\modules\logging"
 			/>
 		</Configuration>
 		<Configuration
@@ -176,6 +176,18 @@
 		</Configuration>
 	</Configurations>
 	<References>
+		<ProjectReference
+			ReferencedProjectIdentifier="{9524B8C5-79D9-4470-9A47-8BD163ABBB15}"
+			RelativePathToProject=".\axis2_engine\axis2_engine.vcproj"
+		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
+			RelativePathToProject=".\axutil\axutil.vcproj"
+		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{7C816A64-FA96-4C6C-8DB0-5256441F54BC}"
+			RelativePathToProject=".\axiom\axiom.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter
@@ -211,6 +223,10 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath="..\..\..\..\src\modules\mod_log\module.xml"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

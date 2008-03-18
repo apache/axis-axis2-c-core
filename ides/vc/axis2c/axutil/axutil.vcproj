@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\..\deploy\lib"
+			OutputDirectory="$(SolutionDir)deploy\lib"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="2"
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\..\..\..\..\util\include;.\..\..\..\..\util\src;.\..\..\..\..\util\src\minizip;.\..\..\..\..\util\include\platforms;"
+				AdditionalIncludeDirectories=".\..\..\..\..\util\include;.\..\..\..\..\util\src;.\..\..\..\..\util\src\minizip;.\..\..\..\..\util\include\platforms;&quot;$(ZLIB_HOME)\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_UTIL_EXPORTS;AXIS2_DECLARE_EXPORT;_CRT_SECURE_NO_DEPRECATE;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -65,7 +65,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Rpcrt4.lib Ws2_32.lib zdll.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)\deploy\lib&quot;"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\deploy\lib&quot;;&quot;$(ZLIB_HOME)\lib&quot;"
 				GenerateManifest="true"
 				ManifestFile="$(IntDir)\$(TargetFileName).intermediate.manifest"
 				GenerateDebugInformation="true"
@@ -126,7 +126,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
-				AdditionalIncludeDirectories=".\..\..\..\..\util\include;.\..\..\..\..\util\src;.\..\..\..\..\util\src\minizip;.\..\..\..\..\util\include\platforms;"
+				AdditionalIncludeDirectories=".\..\..\..\..\util\include;.\..\..\..\..\util\src;.\..\..\..\..\util\src\minizip;.\..\..\..\..\util\include\platforms;&quot;$(ZLIB_HOME)\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;AXIS2_UTIL_EXPORTS;AXIS2_DECLARE_EXPORT;_CRT_SECURE_NO_DEPRECATE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"

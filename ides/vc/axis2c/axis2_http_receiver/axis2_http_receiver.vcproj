@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\..\deploy\lib"
+			OutputDirectory="$(SolutionDir)deploy\lib"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="2"
@@ -178,6 +178,18 @@
 		</Configuration>
 	</Configurations>
 	<References>
+		<ProjectReference
+			ReferencedProjectIdentifier="{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
+			RelativePathToProject=".\axutil\axutil.vcproj"
+		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{D7D7FBA1-5E43-4586-8F69-D4ED2628D2D8}"
+			RelativePathToProject=".\axis2_parser\axis2_parser.vcproj"
+		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{9524B8C5-79D9-4470-9A47-8BD163ABBB15}"
+			RelativePathToProject=".\axis2_engine\axis2_engine.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter

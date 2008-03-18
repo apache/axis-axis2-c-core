@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)deploy\bin\tools\tcpmon"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".; ./../../../../tools/tcpmon/include;"
+				AdditionalIncludeDirectories=".;./../../../../tools/tcpmon/include;./../../../../util/include;./../../../../axiom/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,9 +63,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="axis2_util.lib axis2_parser.lib axiom.lib"
+				AdditionalDependencies="axutil.lib axis2_parser.lib axiom.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="./../deploy/lib"
+				AdditionalLibraryDirectories="$(SolutionDir)deploy\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -174,6 +174,18 @@
 		</Configuration>
 	</Configurations>
 	<References>
+		<ProjectReference
+			ReferencedProjectIdentifier="{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
+			RelativePathToProject=".\axutil\axutil.vcproj"
+		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{D7D7FBA1-5E43-4586-8F69-D4ED2628D2D8}"
+			RelativePathToProject=".\axis2_parser\axis2_parser.vcproj"
+		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{7C816A64-FA96-4C6C-8DB0-5256441F54BC}"
+			RelativePathToProject=".\axiom\axiom.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter
