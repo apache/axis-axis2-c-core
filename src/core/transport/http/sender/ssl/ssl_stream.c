@@ -17,6 +17,7 @@
  */
 #ifdef AXIS2_SSL_ENABLED
 
+
 #include <string.h>
 #include <stdlib.h>
 #include "ssl_stream.h"
@@ -244,3 +245,4 @@ axis2_ssl_stream_get_type(
 }
 
 #endif
+
