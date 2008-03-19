@@ -65,8 +65,8 @@ struct axutil_hash_t
     const axutil_env_t *env;
     axutil_hash_entry_t **array;
     axutil_hash_index_t iterator;   /* For axutil_hash_first(NULL, ...) */
-    unsigned int count,
-     max;
+    unsigned int count;
+    unsigned int max;
     axutil_hashfunc_t hash_func;
     axutil_hash_entry_t *free;  /* List of recycled entries */
 };
@@ -95,6 +95,11 @@ axutil_hash_make(
     AXIS2_ENV_CHECK(env, NULL);
 
     ht = AXIS2_MALLOC(env->allocator, sizeof(axutil_hash_t));
+    if (!ht)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     axutil_env_increment_ref((axutil_env_t*)env);
     ht->env = env;
     ht->free = NULL;
@@ -113,7 +118,10 @@ axutil_hash_make_custom(
     axutil_hash_t *ht;
     AXIS2_ENV_CHECK(env, NULL);
     ht = axutil_hash_make(env);
-    ht->hash_func = hash_func;
+    if (ht)
+    {
+        ht->hash_func = hash_func;
+    }
     return ht;
 }
 
