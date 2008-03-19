@@ -33,6 +33,8 @@ struct axutil_url
     axis2_char_t *server;
 };
 
+static int is_safe_or_unreserve (char c);
+
 AXIS2_EXTERN axutil_url_t *AXIS2_CALL
 axutil_url_create(
     const axutil_env_t * env,
@@ -626,4 +628,74 @@ axutil_url_to_uri(
     url_str = axutil_url_to_external_form(url, env);
     uri = axutil_uri_parse_string(env, url_str);
     return uri;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
+axutil_url_encode (
+    const axutil_env_t * env,
+    axis2_char_t * dest,
+    axis2_char_t * buff, int len)
+{
+    axis2_char_t string[4];
+    axis2_char_t *expand_buffer;
+    int i;
+    for (i = 0; i < len && buff[i]; i++)
+    {
+        if (isalnum (buff[i]) || is_safe_or_unreserve (buff[i]))
+        {
+            sprintf (string, "%c", buff[i]);
+        }
+        else
+        {
+            /* %%%x is to print % mark with the hex value */
+            sprintf (string, "%%%x", buff[i]);
+        }
+
+        if (((int)strlen (dest) + 4) > len)
+        {
+            expand_buffer =
+                (axis2_char_t *) AXIS2_MALLOC (env->allocator, len * 2);
+            memset (expand_buffer, 0, len * 2);
+            len *= 2;
+            dest = memmove (expand_buffer, dest, strlen (dest));
+        }
+        strcat (dest, string);
+    }
+    return dest;
+}
+
+
+static int
+is_safe_or_unreserve (char c)
+{
+    char safe[] = { '-', '_', '.', '~'};
+    char reserve[] = { ';', '/', '?', ':', '@', '&', '=', '#', '[', ']', '!', 
+                       '$', '\'', '(', ')', '*', '+', ','};
+
+/* reserved       = ";" | "/" | "?" | ":" | "@" | "&" | "="
+   safe           = "$" | "-" | "_" | "." | "+" */
+
+    int flag = 0;
+    int i = 0;
+
+    int size = sizeof (safe) / sizeof (safe[0]);
+    for (i = 0; i < size; i++)
+    {
+        if (c == safe[i])
+        {
+            flag = 1;
+            return flag;
+        }
+    }
+
+    size = sizeof (reserve) / sizeof (reserve[0]);
+    for (i = 0; i < size; i++)
+    {
+        if (c == reserve[i])
+        {
+            flag = 0;
+            return flag;
+        }
+    }
+    return flag;
 }

@@ -48,17 +48,12 @@ struct axis2_http_sender
     axis2_char_t *http_version;
     axis2_bool_t chunked;
     int so_timeout;
-    int connection_timeout;
     axiom_output_t *om_output;
     axis2_http_client_t *client;
     axis2_bool_t is_soap;
 };
 
-static axis2_char_t *axutil_url_encode (const axutil_env_t * env,
-                                        axis2_char_t * dest,
-                                        axis2_char_t * buff, int len);
 
-static int is_safe_or_unreserve (char c);
 
 #ifndef AXIS2_LIBCURL_ENABLED
 static void axis2_http_sender_add_header_list (axis2_http_simple_request_t *
@@ -154,7 +149,6 @@ axis2_http_sender_create (const axutil_env_t * env)
 
     sender->http_version = (axis2_char_t *) AXIS2_HTTP_HEADER_PROTOCOL_11;
     sender->so_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
-    sender->connection_timeout = AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT;
     /* unlike the java impl we don't have a default om output
      * it should be explicitly set and it's a MUST
      */
@@ -649,9 +643,6 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                     AXIS2_FREE (env->allocator, content_type);
                     content_type = temp_content_type;
                 }
-                /*temp_content_type = axutil_stracat(env, content_type, ";");
-                  AXIS2_FREE(env->allocator, content_type);
-                  content_type = temp_content_type; */
             }
         }
         else if (is_soap)
@@ -1109,8 +1100,6 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         axis2_msg_ctx_set_required_auth_is_http(msg_ctx, env, AXIS2_TRUE);
         axis2_http_sender_set_http_auth_type (sender, env, msg_ctx, request);
     }
-    /*AXIS2_FREE(env->allocator, buffer);
-      buffer = NULL; */
 
     axis2_http_simple_request_free (request, env);
     request = NULL;
@@ -2882,7 +2871,7 @@ axis2_http_sender_get_param_string (axis2_http_sender_t * sender,
                 memset (encoded_value, 0, strlen (value));
                 encoded_value =
                     axutil_url_encode (env, encoded_value, value, (int)strlen (value));
-                    /* We are sure that the difference lies within the int range */
+                /* We are sure that the difference lies within the int range */
 
                 axutil_array_list_add (param_list, env,
                                        axutil_strcat (env, name, "=",
@@ -2911,72 +2900,6 @@ axis2_http_sender_get_param_string (axis2_http_sender_t * sender,
     }
     axutil_array_list_free (param_list, env);
     return param_string;
-}
-
-static axis2_char_t *
-axutil_url_encode (const axutil_env_t * env,
-                   axis2_char_t * dest, axis2_char_t * buff, int len)
-{
-    axis2_char_t string[4];
-    axis2_char_t *expand_buffer;
-    int i;
-    for (i = 0; i < len && buff[i]; i++)
-    {
-        if (isalnum (buff[i]) || is_safe_or_unreserve (buff[i]))
-        {
-            sprintf (string, "%c", buff[i]);
-        }
-        else
-        {
-            sprintf (string, "%%%x", buff[i]);
-        }
-
-        if (((int)strlen (dest) + 4) > len)
-        {
-            expand_buffer =
-                (axis2_char_t *) AXIS2_MALLOC (env->allocator, len * 2);
-            memset (expand_buffer, 0, len * 2);
-            len *= 2;
-            dest = memmove (expand_buffer, dest, strlen (dest));
-        }
-        strcat (dest, string);
-    }
-    return dest;
-}
-
-static int
-is_safe_or_unreserve (char c)
-{
-    char safe[] = { '-', '_', '.', '~'};
-    char reserve[] = { ';', '/', '?', ':', '@', '&', '=', '#', '[', ']', '!', 
-                       '$', '\'', '(', ')', '*', '+', ','};
-
-/* reserved       = ";" | "/" | "?" | ":" | "@" | "&" | "="
-   safe           = "$" | "-" | "_" | "." | "+" */
-
-    int flag = 0;
-    int i = 0;
-
-    int size = sizeof (safe) / sizeof (safe[0]);
-    for (i = 0; i < size; i++)
-    {
-        if (c == safe[i])
-        {
-            flag = 1;
-            return flag;
-        }
-    }
-
-    size = sizeof (reserve) / sizeof (reserve[0]);
-    for (i = 0; i < size; i++)
-    {
-        if (c == reserve[i])
-        {
-            flag = 0;
-            return flag;
-        }
-    }
-    return flag;
 }
 
 void AXIS2_CALL
