@@ -26,6 +26,7 @@
 #include <axis2_transport_out_desc.h>
 #include <axis2_http_out_transport_info.h>
 #include <axis2_http_accept_record.h>
+#include <axis2_http_header.h>
 #include <axiom_soap_envelope.h>
 #include <axiom_soap_const.h>
 #include <axis2_options.h>
@@ -130,8 +131,7 @@ struct axis2_msg_ctx
     axis2_bool_t manage_session;
 
     /* http status code */
-
-    unsigned int status_code;
+    int status_code;
 
     /** use SOAP 1.1? */
     axis2_bool_t is_soap_11;
@@ -201,6 +201,7 @@ struct axis2_msg_ctx
     axutil_stream_t *transport_out_stream;
     axis2_http_out_transport_info_t *http_out_transport_info;
     axutil_hash_t *transport_headers;
+    axutil_array_list_t *output_headers;
     axutil_array_list_t *accept_record_list;
     axutil_array_list_t *accept_charset_record_list;
     axutil_array_list_t *accept_language_record_list;
@@ -281,6 +282,7 @@ axis2_msg_ctx_create(
     msg_ctx->transport_headers = NULL;
     msg_ctx->accept_record_list = NULL;
     msg_ctx->accept_charset_record_list = NULL;
+    msg_ctx->output_headers = NULL;
     msg_ctx->accept_language_record_list = NULL;
     msg_ctx->transfer_encoding = NULL;
     msg_ctx->content_language = NULL;
@@ -290,6 +292,7 @@ axis2_msg_ctx_create(
     msg_ctx->required_auth_is_http = AXIS2_FALSE;
     msg_ctx->auth_type = NULL;
     msg_ctx->no_content = AXIS2_FALSE;
+    msg_ctx->status_code = 0;
 
     msg_ctx->base = axis2_ctx_create(env);
     if (!(msg_ctx->base))
@@ -443,6 +446,21 @@ axis2_msg_ctx_free(
             }
         }
         axutil_array_list_free(msg_ctx->accept_charset_record_list, env);
+    }
+
+    if (msg_ctx->output_headers)
+    {
+        axis2_http_header_t *header = NULL;
+        while (axutil_array_list_size(msg_ctx->output_headers, env))
+        {
+            header = (axis2_http_header_t *)
+                axutil_array_list_remove(msg_ctx->output_headers, env, 0);
+            if (header)
+            {
+                axis2_http_header_free(header, env);
+            }
+        }
+        axutil_array_list_free(msg_ctx->output_headers, env);
     }
 
     if (msg_ctx->accept_language_record_list)
@@ -2371,6 +2389,54 @@ axis2_msg_ctx_set_http_accept_charset_record_list(
             axutil_array_list_free(msg_ctx->accept_charset_record_list, env);
         }
         msg_ctx->accept_charset_record_list = accept_charset_record_list;
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axis2_msg_ctx_get_http_output_headers(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    if (msg_ctx)
+    {
+        return msg_ctx->output_headers;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_http_output_headers(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env,
+    axutil_array_list_t * output_headers)
+{
+    if (msg_ctx)
+    {
+        if (msg_ctx->output_headers && 
+            msg_ctx->output_headers != output_headers)
+        {
+            axis2_http_header_t *header = NULL;
+            while (axutil_array_list_size(msg_ctx->output_headers, env))
+            {
+                header = (axis2_http_header_t *)
+                    axutil_array_list_remove(msg_ctx->output_headers, env, 0);
+                if (header)
+                {
+                    axis2_http_header_free(header, env);
+                }
+            }
+            axutil_array_list_free(msg_ctx->output_headers, env);
+        }
+        msg_ctx->output_headers = output_headers;
     }
     else
     {

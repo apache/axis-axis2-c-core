@@ -877,7 +877,40 @@ axis2_apache2_worker_process_request(
                 }
                 if (out_msg_ctx)
                 {
-                    /* TODO: Add neccessary handling */
+                        int size = 0;
+                        axutil_array_list_t *output_header_list = NULL;
+                        output_header_list = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
+                        if (output_header_list)
+                        {
+                            size = axutil_array_list_size(output_header_list, env);
+                        }
+                        while (size)
+                        {
+                            axis2_http_header_t *output_header = NULL;
+                            size--;
+                            output_header = (axis2_http_header_t *)
+                                axutil_array_list_get(output_header_list, env, size);
+                            apr_table_set(request->err_headers_out,
+                            axis2_http_header_get_name(output_header, env),
+                            axis2_http_header_get_value(output_header, env));
+                        }
+                        if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
+                        {
+                            int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
+                            switch (status_code)
+                            {
+                            case AXIS2_HTTP_RESPONSE_CONTINUE_CODE_VAL:
+                                request->status = HTTP_CONTINUE;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_ACK_CODE_VAL:
+                                request->status = HTTP_ACCEPTED;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL:
+                                request->status = HTTP_BAD_REQUEST;
+                                break;
+                            }
+                            send_status = DONE;
+                        }
                 }
             }
             if (send_status == DECLINED)
@@ -907,9 +940,43 @@ axis2_apache2_worker_process_request(
                 }
                 if (out_msg_ctx)
                 {
+                    int size = 0;
+                    axutil_array_list_t *output_header_list = NULL;
+                    output_header_list = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
+                    if (output_header_list)
+                    {
+                        size = axutil_array_list_size(output_header_list, env);
+                    }
+                    while (size)
+                    {
+                        axis2_http_header_t *output_header = NULL;
+                        size--;
+                        output_header = (axis2_http_header_t *)
+                            axutil_array_list_get(output_header_list, env, size);
+                        apr_table_set(request->err_headers_out,
+                        axis2_http_header_get_name(output_header, env),
+                        axis2_http_header_get_value(output_header, env));
+                    }
                     if (axis2_msg_ctx_get_no_content(out_msg_ctx, env))
                     {
                         request->status = HTTP_NO_CONTENT;
+                        send_status = DONE;
+                    }
+                    else if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
+                    {
+                        int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
+                        switch (status_code)
+                        {
+                        case AXIS2_HTTP_RESPONSE_CONTINUE_CODE_VAL:
+                            request->status = HTTP_CONTINUE;
+                            break;
+                        case AXIS2_HTTP_RESPONSE_OK_CODE_VAL:
+                            request->status = HTTP_OK;
+                            break;
+                        case AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL:
+                            request->status = HTTP_BAD_REQUEST;
+                            break;
+                        }
                         send_status = DONE;
                     }
                 }

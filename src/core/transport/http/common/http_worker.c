@@ -1150,7 +1150,40 @@ axis2_http_worker_process_request(
                     }
                     if (out_msg_ctx)
                     {
-                        /* TODO: Add neccessary handling */
+                        int size = 0;
+                        axutil_array_list_t *output_header_list = NULL;
+                        output_header_list = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
+                        if (output_header_list)
+                        {
+                            size = axutil_array_list_size(output_header_list, env);
+                        }
+                        while (size)
+                        {
+                            size--;
+                            axis2_http_simple_response_set_header(response, env, (axis2_http_header_t *)
+                                axutil_array_list_get(output_header_list, env, size));
+                        }
+                        if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
+                        {
+                            int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
+                            axis2_char_t *status_code_str = NULL;
+                            switch (status_code)
+                            {
+                            case AXIS2_HTTP_RESPONSE_CONTINUE_CODE_VAL:
+                                status_code_str = AXIS2_HTTP_RESPONSE_CONTINUE_CODE_NAME;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_ACK_CODE_VAL:
+                                status_code_str = AXIS2_HTTP_RESPONSE_ACK_CODE_NAME;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL:
+                                status_code_str = AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_NAME;
+                                break;
+                            }
+                            axis2_http_simple_response_set_status_line(response, env, http_version,
+                                                                       status_code,
+                                                                       status_code_str);
+                            request_handled = AXIS2_TRUE;
+                        }
                     }
                 }
                 if (!request_handled)
@@ -1181,11 +1214,45 @@ axis2_http_worker_process_request(
                     }
                     if (out_msg_ctx)
                     {
+                        int size = 0;
+                        axutil_array_list_t *output_header_list = NULL;
+                        output_header_list = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
+                        if (output_header_list)
+                        {
+                            size = axutil_array_list_size(output_header_list, env);
+                        }
+                        while (size)
+                        {
+                            size--;
+                            axis2_http_simple_response_set_header(response, env, (axis2_http_header_t *)
+                                axutil_array_list_get(output_header_list, env, size));
+                        }
                         if (axis2_msg_ctx_get_no_content(out_msg_ctx, env))
                         {
                             axis2_http_simple_response_set_status_line(response, env, http_version,
                                                                        AXIS2_HTTP_RESPONSE_NO_CONTENT_CODE_VAL,
                                                                        AXIS2_HTTP_RESPONSE_NO_CONTENT_CODE_NAME);
+                            request_handled = AXIS2_TRUE;
+                        }
+                        else if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
+                        {
+                            int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
+                            axis2_char_t *status_code_str = NULL;
+                            switch (status_code)
+                            {
+                            case AXIS2_HTTP_RESPONSE_CONTINUE_CODE_VAL:
+                                status_code_str = AXIS2_HTTP_RESPONSE_CONTINUE_CODE_NAME;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_OK_CODE_VAL:
+                                status_code_str = AXIS2_HTTP_RESPONSE_OK_CODE_NAME;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL:
+                                status_code_str = AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_NAME;
+                                break;
+                            }
+                            axis2_http_simple_response_set_status_line(response, env, http_version,
+                                                                       status_code,
+                                                                       status_code_str);
                             request_handled = AXIS2_TRUE;
                         }
                     }
