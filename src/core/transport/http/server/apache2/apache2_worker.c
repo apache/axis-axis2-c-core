@@ -540,6 +540,62 @@ axis2_apache2_worker_process_request(
                 }
                 request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
             }
+            else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
+                AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL)
+            {
+                body_string = axis2_http_transport_utils_get_bad_request(env,
+                                                                         conf_ctx);
+                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+                request->status = HTTP_BAD_REQUEST;
+            }
+            else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
+                AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL)
+            {
+                body_string = axis2_http_transport_utils_get_request_timeout(env,
+                                                                             conf_ctx);
+                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+                request->status = HTTP_REQUEST_TIME_OUT;
+            }
+            else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
+                AXIS2_HTTP_RESPONSE_CONFLICT_CODE_VAL)
+            {
+                body_string = axis2_http_transport_utils_get_conflict(env,
+                                                                      conf_ctx);
+                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+                request->status = HTTP_CONFLICT;
+            }
+            else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
+                AXIS2_HTTP_RESPONSE_GONE_CODE_VAL)
+            {
+                body_string = axis2_http_transport_utils_get_gone(env,
+                                                                  conf_ctx);
+                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+                request->status = HTTP_GONE;
+            }
+            else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
+                AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_VAL)
+            {
+                body_string = axis2_http_transport_utils_get_precondition_failed(env,
+                                                                                 conf_ctx);
+                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+                request->status = HTTP_PRECONDITION_FAILED;
+            }
+            else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
+                AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL)
+            {
+                body_string = axis2_http_transport_utils_get_request_entity_too_large(env,
+                                                                                      conf_ctx);
+                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+                request->status = HTTP_REQUEST_ENTITY_TOO_LARGE;
+            }
+            else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
+                AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL)
+            {
+                body_string = axis2_http_transport_utils_get_service_unavailable(env,
+                                                                                 conf_ctx);
+                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+                request->status = HTTP_SERVICE_UNAVAILABLE;
+            }
             else
             {
                 body_string =
@@ -905,8 +961,44 @@ axis2_apache2_worker_process_request(
                             case AXIS2_HTTP_RESPONSE_ACK_CODE_VAL:
                                 request->status = HTTP_ACCEPTED;
                                 break;
+                            case AXIS2_HTTP_RESPONSE_MULTIPLE_CHOICES_CODE_VAL:
+                                request->status = HTTP_MULTIPLE_CHOICES;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_MOVED_PERMANENTLY_CODE_VAL:
+                                request->status = HTTP_MOVED_PERMANENTLY;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_SEE_OTHER_CODE_VAL:
+                                request->status = HTTP_SEE_OTHER;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_NOT_MODIFIED_CODE_VAL:
+                                request->status = HTTP_NOT_MODIFIED;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_TEMPORARY_REDIRECT_CODE_VAL:
+                                request->status = HTTP_TEMPORARY_REDIRECT;
+                                break;
                             case AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL:
                                 request->status = HTTP_BAD_REQUEST;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL:
+                                request->status = HTTP_REQUEST_TIME_OUT;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_CONFLICT_CODE_VAL:
+                                request->status = HTTP_CONFLICT;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_GONE_CODE_VAL:
+                                request->status = HTTP_GONE;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_VAL:
+                                request->status = HTTP_PRECONDITION_FAILED;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL:
+                                request->status = HTTP_REQUEST_ENTITY_TOO_LARGE;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL:
+                                request->status = HTTP_SERVICE_UNAVAILABLE;
+                                break;
+                            default:
+                                request->status = HTTP_OK;
                                 break;
                             }
                             send_status = DONE;
@@ -959,7 +1051,26 @@ axis2_apache2_worker_process_request(
                     }
                     if (axis2_msg_ctx_get_no_content(out_msg_ctx, env))
                     {
-                        request->status = HTTP_NO_CONTENT;
+                        if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
+                        {
+                            int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
+                            switch (status_code)
+                            {
+                            case AXIS2_HTTP_RESPONSE_RESET_CONTENT_CODE_VAL:
+                                request->status = HTTP_RESET_CONTENT;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_NOT_MODIFIED_CODE_VAL:
+                                request->status = HTTP_NOT_MODIFIED;
+                                break;
+                            default:
+                                request->status = HTTP_NO_CONTENT;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            request->status = HTTP_NO_CONTENT;
+                        }
                         send_status = DONE;
                     }
                     else if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
@@ -973,8 +1084,44 @@ axis2_apache2_worker_process_request(
                         case AXIS2_HTTP_RESPONSE_OK_CODE_VAL:
                             request->status = HTTP_OK;
                             break;
+                        case AXIS2_HTTP_RESPONSE_MULTIPLE_CHOICES_CODE_VAL:
+                            request->status = HTTP_MULTIPLE_CHOICES;
+                            break;
+                        case AXIS2_HTTP_RESPONSE_MOVED_PERMANENTLY_CODE_VAL:
+                            request->status = HTTP_MOVED_PERMANENTLY;
+                            break;
+                        case AXIS2_HTTP_RESPONSE_SEE_OTHER_CODE_VAL:
+                            request->status = HTTP_SEE_OTHER;
+                            break;
+                        case AXIS2_HTTP_RESPONSE_NOT_MODIFIED_CODE_VAL:
+                            request->status = HTTP_NOT_MODIFIED;
+                            break;
+                        case AXIS2_HTTP_RESPONSE_TEMPORARY_REDIRECT_CODE_VAL:
+                            request->status = HTTP_TEMPORARY_REDIRECT;
+                            break;
                         case AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL:
                             request->status = HTTP_BAD_REQUEST;
+                            break;
+                        case AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL:
+                            request->status = HTTP_REQUEST_TIME_OUT;
+                            break;
+                        case AXIS2_HTTP_RESPONSE_CONFLICT_CODE_VAL:
+                            request->status = HTTP_CONFLICT;
+                            break;
+                        case AXIS2_HTTP_RESPONSE_GONE_CODE_VAL:
+                            request->status = HTTP_GONE;
+                            break;
+                        case AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_VAL:
+                            request->status = HTTP_PRECONDITION_FAILED;
+                            break;
+                        case AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL:
+                            request->status = HTTP_REQUEST_ENTITY_TOO_LARGE;
+                            break;
+                        case AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL:
+                            request->status = HTTP_SERVICE_UNAVAILABLE;
+                            break;
+                        default:
+                            request->status = HTTP_ACCEPTED;
                             break;
                         }
                         send_status = DONE;

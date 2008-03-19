@@ -954,7 +954,7 @@ axis2_http_worker_process_request(
                                                            AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_NAME);
 
                 body_string = axis2_http_transport_utils_get_service_unavailable(env,
-                                                                      conf_ctx);
+                                                                                 conf_ctx);
                 cont_type = axis2_http_header_create(env,
                                                      AXIS2_HTTP_HEADER_CONTENT_TYPE,
                                                      AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
