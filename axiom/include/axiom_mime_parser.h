@@ -38,6 +38,12 @@ extern "C"
 {
 #endif
 
+#define AXIOM_MIME_PARSER_BUFFER_SIZE (1024 * 1024)
+#define AXIOM_MIME_PARSER_MAX_CHUNK_BUFFERS 1000
+
+#define AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT 100
+
+
     typedef struct axiom_mime_parser axiom_mime_parser_t;
 
     /** @defgroup axiom_mime_parser Flow
