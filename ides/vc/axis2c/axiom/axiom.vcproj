@@ -80,7 +80,7 @@
 			<Tool
 				Name="VCManifestTool"
 				EmbedManifest="true"
-				AdditionalOptions="/nologo /outputresource:&quot;..\deploy\lib\axiom.dll;#2&quot;"
+				AdditionalOptions="/nologo /outputresource:&quot;$(SolutionDir)\deploy\lib\axiom.dll;#2&quot;"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"

@@ -98,7 +98,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="if not exist .\..\deploy\logs mkdir  $(SolutionDir)deploy\logs&#x0D;&#x0A;copy .\..\..\..\..\samples\server\axis2.xml $(SolutionDir)deploy\&#x0D;&#x0A;"
+				CommandLine="if not exist $(SolutionDir)deploy\logs mkdir  $(SolutionDir)deploy\logs&#x0D;&#x0A;copy .\..\..\..\..\samples\server\axis2.xml $(SolutionDir)deploy\&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
