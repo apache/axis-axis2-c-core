@@ -1386,6 +1386,77 @@ axis2_http_transport_utils_get_not_acceptable(
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_bad_request(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx)
+{
+    return "<html><head><title>400 Bad Request</title></head>"
+        "<body><h2>Bad Request</h2><p>Your client sent a request that this"
+        " server could not understand.</p></body></html>";
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_request_timeout(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx)
+{
+    return "<html><head><title>408 Request Timeout</title></head>"
+        "<body><h2>Request Timeout</h2><p>Cannot wait any longer for the HTTP request"
+        " from the client.</p></body></html>";
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_conflict(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx)
+{
+    return "<html><head><title>409 Conflict</title></head>"
+        "<body><h2>Conflict</h2><p>The client attempted to put the server's"
+        " resources into an invalid state.</p></body></html>";
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_gone(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx)
+{
+    return "<html><head><title>410 Gone</title></head>"
+        "<body><h2>Gone</h2><p>The requested resource is no longer"
+        " available on this server.</p></body></html>";
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_precondition_failed(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx)
+{
+    return "<html><head><title>412 Precondition Failed</title></head>"
+        "<body><h2>Precondition Failed</h2><p>A precondition for the requested URL"
+        " failed.</p></body></html>";
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_request_entity_too_large(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx)
+{
+    return "<html><head><title>413 Request Entity Too Large</title></head>"
+        "<body><h2>Request Entity Too Large</h2><p>The data provided in the request"
+        " is too large or the requested resource does not allow request data."
+        "</p></body></html>";
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_service_unavailable(
+    const axutil_env_t * env,
+    axis2_conf_ctx_t * conf_ctx)
+{
+    return "<html><head><title>503 Service Unavailable</title></head>"
+        "<body><h2>Service Unavailable</h2><p>The service is temporarily unable"
+        " to serve your request.</p></body></html>";
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_transport_utils_get_services_html(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)

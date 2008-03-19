@@ -166,6 +166,41 @@ extern "C"
         axis2_conf_ctx_t * conf_ctx);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_transport_utils_get_bad_request(
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_transport_utils_get_request_timeout(
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_transport_utils_get_conflict(
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_transport_utils_get_gone(
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_transport_utils_get_precondition_failed(
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_transport_utils_get_request_entity_too_large(
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_transport_utils_get_service_unavailable(
+        const axutil_env_t * env,
+        axis2_conf_ctx_t * conf_ctx);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_transport_utils_get_internal_server_error(
         const axutil_env_t * env,
         axis2_conf_ctx_t * conf_ctx);
