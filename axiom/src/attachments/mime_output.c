@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,69 +16,65 @@
  */
 
 #include "axiom_mime_output.h"
-#include "axiom_data_handler.h"
+#include <axiom_data_handler.h>
 #include "axiom_mime_body_part.h"
 #include <axutil_string.h>
 #include <axiom_text.h>
 #include <axiom_mime_const.h>
 
-struct axiom_mime_output
-{
-    int dummy;
-};
-
 static axis2_status_t axis2_char_2_byte(
-    const axutil_env_t * env,
-    axis2_char_t * char_buffer,
-    axis2_byte_t ** byte_buffer,
+    const axutil_env_t *env,
+    axis2_char_t *char_buffer,
+    axis2_byte_t **byte_buffer,
     int *byte_buffer_size);
 
 static axiom_mime_body_part_t *axis2_create_mime_body_part(
-    axiom_text_t * text,
-    const axutil_env_t * env);
+    axiom_text_t *text,
+    const axutil_env_t *env);
 
 static axis2_status_t axis2_write_body_part(
-    axiom_mime_output_t * mime_output,
-    const axutil_env_t * env,
-    axis2_byte_t ** output_stream,
+    axiom_mime_output_t *mime_output,
+    const axutil_env_t *env,
+    axis2_byte_t **output_stream,
     int *output_stream_size,
-    axiom_mime_body_part_t * part,
-    axis2_char_t * boundary);
+    axiom_mime_body_part_t *part,
+    axis2_char_t *boundary);
 
 static axis2_status_t axis2_write_mime_boundary(
-    axiom_mime_output_t * mime_output,
-    const axutil_env_t * env,
-    axis2_byte_t ** output_stream,
+    axiom_mime_output_t *mime_output,
+    const axutil_env_t *env,
+    axis2_byte_t **output_stream,
     int *output_stream_size,
-    axis2_char_t * boundary);
+    axis2_char_t *boundary);
 
 static axis2_status_t axis2_write_finish_writing_mime(
-    axiom_mime_output_t * mime_output,
-    const axutil_env_t * env,
-    axis2_byte_t ** output_stream,
+    axiom_mime_output_t *mime_output,
+    const axutil_env_t *env,
+    axis2_byte_t **output_stream,
     int *output_stream_size,
-    axis2_char_t * boundary);
+    axis2_char_t *boundary);
 
 static axis2_status_t axis2_start_writing_mime(
-    axiom_mime_output_t * mime_output,
-    const axutil_env_t * env,
-    axis2_byte_t ** output_stream,
+    axiom_mime_output_t *mime_output,
+    const axutil_env_t *env,
+    axis2_byte_t **output_stream,
     int *output_stream_size,
-    axis2_char_t * boundary);
+    axis2_char_t *boundary);
 
 AXIS2_EXTERN axiom_mime_output_t *AXIS2_CALL
 axiom_mime_output_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axiom_mime_output_t *mime_output = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     mime_output = (axiom_mime_output_t *) AXIS2_MALLOC(env->allocator,
-                                                       sizeof
-                                                       (axiom_mime_output_t));
+        sizeof(axiom_mime_output_t));
 
     if (!mime_output)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "No memory. Cannot create MIME output");
         return NULL;
     }
 
@@ -88,11 +83,9 @@ axiom_mime_output_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_mime_output_free(
-    axiom_mime_output_t * mime_output,
-    const axutil_env_t * env)
+    axiom_mime_output_t *mime_output,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (mime_output)
     {
         AXIS2_FREE(env->allocator, mime_output);
@@ -103,16 +96,16 @@ axiom_mime_output_free(
 
 AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
 axiom_mime_output_complete(
-    axiom_mime_output_t * mime_output,
-    const axutil_env_t * env,
-    axis2_byte_t ** output_stream,
+    axiom_mime_output_t *mime_output,
+    const axutil_env_t *env,
+    axis2_byte_t **output_stream,
     int *output_stream_size,
-    axis2_char_t * soap_body_buffer,
-    axutil_array_list_t * binary_node_list,
-    axis2_char_t * boundary,
-    axis2_char_t * content_id,
-    axis2_char_t * char_set_encoding,
-    const axis2_char_t * soap_content_type)
+    axis2_char_t *soap_body_buffer,
+    axutil_array_list_t *binary_node_list,
+    axis2_char_t *boundary,
+    axis2_char_t *content_id,
+    axis2_char_t *char_set_encoding,
+    const axis2_char_t *soap_content_type)
 {
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *header_value = NULL;
@@ -316,11 +309,11 @@ axiom_mime_output_complete(
 
 static axis2_status_t
 axis2_start_writing_mime(
-    axiom_mime_output_t * mime_output,
-    const axutil_env_t * env,
-    axis2_byte_t ** output_stream,
+    axiom_mime_output_t *mime_output,
+    const axutil_env_t *env,
+    axis2_byte_t **output_stream,
     int *output_stream_size,
-    axis2_char_t * boundary)
+    axis2_char_t *boundary)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return axis2_write_mime_boundary(mime_output, env, output_stream,
@@ -329,11 +322,11 @@ axis2_start_writing_mime(
 
 static axis2_status_t
 axis2_write_mime_boundary(
-    axiom_mime_output_t * mime_output,
-    const axutil_env_t * env,
-    axis2_byte_t ** output_stream,
+    axiom_mime_output_t *mime_output,
+    const axutil_env_t *env,
+    axis2_byte_t **output_stream,
     int *output_stream_size,
-    axis2_char_t * boundary)
+    axis2_char_t *boundary)
 {
     axis2_byte_t *byte_buffer = NULL;
     axis2_byte_t *byte_stream = NULL;
@@ -371,8 +364,8 @@ axis2_write_mime_boundary(
 
 static axiom_mime_body_part_t *
 axis2_create_mime_body_part(
-    axiom_text_t * text,
-    const axutil_env_t * env)
+    axiom_text_t *text,
+    const axutil_env_t *env)
 {
     axiom_data_handler_t *data_handler = NULL;
     const axis2_char_t *content_type = "application/octet-stream";
@@ -410,12 +403,12 @@ axis2_create_mime_body_part(
 
 static axis2_status_t
 axis2_write_body_part(
-    axiom_mime_output_t * mime_output,
-    const axutil_env_t * env,
-    axis2_byte_t ** output_stream,
+    axiom_mime_output_t *mime_output,
+    const axutil_env_t *env,
+    axis2_byte_t **output_stream,
     int *output_stream_size,
-    axiom_mime_body_part_t * part,
-    axis2_char_t * boundary)
+    axiom_mime_body_part_t *part,
+    axis2_char_t *boundary)
 {
     axis2_byte_t *byte_buffer = NULL;
     axis2_byte_t *byte_stream = NULL;
@@ -467,11 +460,11 @@ axis2_write_body_part(
 
 static axis2_status_t
 axis2_write_finish_writing_mime(
-    axiom_mime_output_t * mime_output,
-    const axutil_env_t * env,
-    axis2_byte_t ** output_stream,
+    axiom_mime_output_t *mime_output,
+    const axutil_env_t *env,
+    axis2_byte_t **output_stream,
     int *output_stream_size,
-    axis2_char_t * boundary)
+    axis2_char_t *boundary)
 {
     axis2_byte_t *byte_buffer;
     axis2_byte_t *byte_stream;
@@ -506,12 +499,12 @@ axis2_write_finish_writing_mime(
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axiom_mime_output_get_content_type_for_mime(
-    axiom_mime_output_t * mime_output,
-    const axutil_env_t * env,
-    axis2_char_t * boundary,
-    axis2_char_t * content_id,
-    axis2_char_t * char_set_encoding,
-    const axis2_char_t * soap_content_type)
+    axiom_mime_output_t *mime_output,
+    const axutil_env_t *env,
+    axis2_char_t *boundary,
+    axis2_char_t *content_id,
+    axis2_char_t *char_set_encoding,
+    const axis2_char_t *soap_content_type)
 {
     axis2_char_t *content_type_string = NULL;
     axis2_char_t *temp_content_type_string = NULL;
@@ -600,9 +593,9 @@ axiom_mime_output_get_content_type_for_mime(
 
 static axis2_status_t
 axis2_char_2_byte(
-    const axutil_env_t * env,
-    axis2_char_t * char_buffer,
-    axis2_byte_t ** byte_buffer,
+    const axutil_env_t *env,
+    axis2_char_t *char_buffer,
+    axis2_byte_t **byte_buffer,
     int *byte_buffer_size)
 {
     int length;

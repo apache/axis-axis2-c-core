@@ -559,7 +559,7 @@ extern "C"
     /**
      * HEADER APPLICATION_XML
      */
-#define AXIS2_HTTP_HEADER_APPLICATION_XML "application/xml"
+#define AXIS2_HTTP_HEADER_ACCEPT_APPLICATION_XML "application/xml"
 
     /**
      * HEADER_ACCEPT_TEXT_XML
@@ -579,7 +579,7 @@ extern "C"
     /**
      * HEADER XOP XML
      */
-#define AXIS2_HTTP_HEADER_XOP_XML "application/xop+xml"
+#define AXIS2_HTTP_HEADER_ACCEPT_XOP_XML "application/xop+xml"
 
     /**
      * HEADER_ACCEPT_MULTIPART_RELATED

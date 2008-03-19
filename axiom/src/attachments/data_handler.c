@@ -43,7 +43,8 @@ axiom_data_handler_create(
     if (!data_handler)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "No memory. Cannot create data handler");
         return NULL;
     }
 
@@ -185,7 +186,8 @@ axiom_data_handler_read_from(
             {
                 AXIS2_ERROR_SET(env->error,
                     AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "No memory. Cannot create binary stream");
                 if (byte_stream)
                 {
                     AXIS2_FREE(env->allocator, byte_stream);
@@ -226,7 +228,7 @@ axiom_data_handler_read_from(
                         AXIS2_ERROR_SET(env->error,
                             AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
                         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                            "Not enough memory");
+                            "No memory. Cannot create binary stream");
                         if (read_stream)
                         {
                             AXIS2_FREE(env->allocator, read_stream);

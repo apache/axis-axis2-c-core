@@ -575,7 +575,7 @@ axis2_http_worker_process_request(
                                                                         url_external_form);
                 cont_type = axis2_http_header_create(env,
                                                      AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_APPLICATION_XML);
+                                                     AXIS2_HTTP_HEADER_ACCEPT_APPLICATION_XML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else if (env->error->error_number == AXIS2_ERROR_SVC_OR_OP_NOT_FOUND)

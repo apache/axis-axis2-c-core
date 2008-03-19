@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -37,10 +36,7 @@ extern "C"
 {
 #endif
 
-    /* This should be moved to header file later axutil_utils_defines.h*/
-#define axis2_byte_t char
-
-    typedef struct axiom_mime_output axiom_mime_output_t;
+    typedef void axiom_mime_output_t;
 
     /** @defgroup axiom_mime_output Flow
       * @ingroup axiom_mime_output
@@ -61,7 +57,6 @@ extern "C"
         const axis2_char_t * soap_content_type);
 
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-
     axiom_mime_output_get_content_type_for_mime(
         axiom_mime_output_t * mime_output,
         const axutil_env_t * env,

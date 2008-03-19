@@ -312,7 +312,7 @@ axis2_simple_http_svr_conn_write_response(
     if (content_type)
     {
         if (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED)
-            && strstr(content_type, AXIS2_HTTP_HEADER_XOP_XML))
+            && strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_XOP_XML))
             binary_content = AXIS2_TRUE;
     }
     if (!response_writer)

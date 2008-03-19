@@ -518,7 +518,7 @@ axis2_libcurl_send(
     if (content_type)
     {    
         if (strstr (content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED)
-            && strstr (content_type, AXIS2_HTTP_HEADER_XOP_XML))
+            && strstr (content_type, AXIS2_HTTP_HEADER_ACCEPT_XOP_XML))
         {
             axis2_ctx_t *axis_ctx =
                 axis2_op_ctx_get_base (axis2_msg_ctx_get_op_ctx (msg_ctx, env),

@@ -39,7 +39,8 @@ axiom_mime_body_part_create(
     if (!mime_body_part)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "No memory. Cannot create MIME body part");
         return NULL;
     }
 
@@ -193,7 +194,8 @@ axiom_mime_body_part_write_to(
     if (!byte_stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "No memory. Cannot create binary stream");
 
         if (header_str)
         {
