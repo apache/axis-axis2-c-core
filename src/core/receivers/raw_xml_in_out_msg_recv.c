@@ -254,6 +254,15 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
             {
                 axis2_msg_ctx_set_no_content(new_msg_ctx, env, AXIS2_TRUE);
             }
+            else
+            {
+                axis2_msg_ctx_set_status_code(msg_ctx, env,
+                    axis2_msg_ctx_get_status_code(new_msg_ctx, env));
+            }
+            /* The new_msg_ctx is passed to the service. The status code must
+             * be taken from here and set to the old message context which is
+             * used by the worker when the request processing fails.
+             */
             fault_node = AXIS2_SVC_SKELETON_ON_FAULT(svc_obj, env, om_node);
         }
     }
