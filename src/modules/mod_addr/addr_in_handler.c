@@ -372,7 +372,7 @@ axis2_addr_in_extract_addr_params(
             {
                 /* Duplicate To */
                 axis2_addr_in_create_fault_envelope(env,
-                                                    "wsa:To", addr_ns_str,
+                                                    AXIS2_WSA_PREFIX_TO, addr_ns_str,
                                                     msg_ctx);
                 status = AXIS2_FAILURE;
                 continue;
@@ -408,7 +408,7 @@ axis2_addr_in_extract_addr_params(
             {
                 /* Duplicate Reply To */
                 axis2_addr_in_create_fault_envelope(env,
-                                                    "wsa:ReplyTo", addr_ns_str,
+                                                    AXIS2_WSA_PREFIX_REPLY_TO, addr_ns_str,
                                                     msg_ctx);
                 status = AXIS2_FAILURE;
                 continue;
@@ -432,7 +432,7 @@ axis2_addr_in_extract_addr_params(
             {
                 /* Duplicate Fault To */
                 axis2_addr_in_create_fault_envelope(env,
-                                                    "wsa:FaultTo", addr_ns_str,
+                                                    AXIS2_WSA_PREFIX_FAULT_TO, addr_ns_str,
                                                     msg_ctx);
                 status = AXIS2_FAILURE;
                 axis2_msg_info_headers_set_fault_to(msg_info_headers, env,
@@ -458,7 +458,7 @@ axis2_addr_in_extract_addr_params(
             {
                 /* Duplicate Message ID */
                 axis2_addr_in_create_fault_envelope(env,
-                                                    "wsa:MessageID",
+                                                    AXIS2_WSA_PREFIX_MESSAGE_ID,
                                                     addr_ns_str, msg_ctx);
                 status = AXIS2_FAILURE;
                 continue;
@@ -479,7 +479,7 @@ axis2_addr_in_extract_addr_params(
             {
                 /* Duplicate Action */
                 axis2_addr_in_create_fault_envelope(env,
-                                                    "wsa:Action", addr_ns_str,
+                                                    AXIS2_WSA_PREFIX_ACTION, addr_ns_str,
                                                     msg_ctx);
                 status = AXIS2_FAILURE;
                 continue;
@@ -545,7 +545,7 @@ axis2_addr_in_extract_addr_params(
     if (action_found == AXIS2_FALSE)   
     {
         axis2_addr_in_create_fault_envelope(env,
-                                            "wsa:Action", addr_ns_str, msg_ctx);
+                                            AXIS2_WSA_PREFIX_ACTION, addr_ns_str, msg_ctx);
         status = AXIS2_FAILURE;
     }
 
@@ -814,7 +814,7 @@ axis2_addr_in_create_fault_envelope(
         soap_version = AXIOM_SOAP11;
     }
 
-    ns1 = axiom_namespace_create(env, addr_ns_str, "wsa");
+    ns1 = axiom_namespace_create(env, addr_ns_str, AXIS2_WSA_DEFAULT_PREFIX);
     text_om_ele =
         axiom_element_create(env, NULL, "ProblemHeaderQName", ns1,
                              &text_om_node);

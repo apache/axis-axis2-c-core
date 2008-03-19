@@ -144,6 +144,21 @@ extern "C"
     /** WS-Addressing Default Prefix */
 #define AXIS2_WSA_DEFAULT_PREFIX "wsa"
 
+    /** WS-Addressing Prefixes for faults*/
+#define AXIS2_WSA_PREFIX_FAULT_TO "wsa:FaultTo"
+
+    /** WS-Addressing Prefixes for faults*/
+#define AXIS2_WSA_PREFIX_REPLY_TO "wsa:ReplyTo"
+
+    /** WS-Addressing Prefixes for faults*/
+#define AXIS2_WSA_PREFIX_TO "wsa:To"
+
+    /** WS-Addressing Prefixes for faults*/
+#define AXIS2_WSA_PREFIX_MESSAGE_ID "wsa:MessageID"
+
+    /** WS-Addressing Prefixes for faults*/
+#define AXIS2_WSA_PREFIX_ACTION "wsa:Action"
+
     /* ======================================================================= */
 
     /** WS-Addressing Param Service Group Context ID */
