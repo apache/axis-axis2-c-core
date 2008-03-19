@@ -709,7 +709,7 @@ resend_request(
                             tmp3 = strstr(tmp2, "\r\n");
                             if (tmp3)
                             {
-                                int header_len = 0;
+                                size_t header_len = 0;
                                 axis2_char_t *user_agent = AXIS2_HTTP_HEADER_USER_AGENT 
                                     ": Axis2C/" AXIS2_VERSION_STRING " TCPMon";
                                 header_len = (int)(tmp3 - tmp2) + 2;
