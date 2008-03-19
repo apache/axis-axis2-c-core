@@ -60,8 +60,6 @@ axiom_data_handler_create(
         if (!(data_handler->mime_type))
         {
             axiom_data_handler_free(data_handler, env);
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
             return NULL;
         }
     }
@@ -71,8 +69,6 @@ axiom_data_handler_create(
         if (!(data_handler->file_name))
         {
             axiom_data_handler_free(data_handler, env);
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
             return NULL;
         }
         data_handler->data_handler_type = AXIOM_DATA_HANDLER_TYPE_FILE;
@@ -83,8 +79,8 @@ axiom_data_handler_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_data_handler_free(
-    axiom_data_handler_t * data_handler,
-    const axutil_env_t * env)
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env)
 {
     if (data_handler->file_name)
     {
@@ -111,33 +107,33 @@ axiom_data_handler_free(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_data_handler_get_content_type(
-    axiom_data_handler_t * data_handler,
-    const axutil_env_t * env)
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env)
 {
     return data_handler->mime_type;
 }
 
 AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
 axiom_data_handler_get_input_stream(
-    axiom_data_handler_t * data_handler,
-    const axutil_env_t * env)
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env)
 {
     return data_handler->buffer;
 }
 
 AXIS2_EXTERN int AXIS2_CALL
 axiom_data_handler_get_input_stream_len(
-    axiom_data_handler_t * data_handler,
-    const axutil_env_t * env)
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env)
 {
     return data_handler->buffer_len;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_data_handler_read_from(
-    axiom_data_handler_t * data_handler,
-    const axutil_env_t * env,
-    axis2_byte_t ** output_stream,
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env,
+    axis2_byte_t **output_stream,
     int *output_stream_size)
 {
     if (data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_BUFFER)
@@ -292,9 +288,9 @@ axiom_data_handler_read_from(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_data_handler_set_binary_data(
-    axiom_data_handler_t * data_handler,
-    const axutil_env_t * env,
-    axis2_byte_t * input_stream,
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env,
+    axis2_byte_t *input_stream,
     int input_stream_len)
 {
     data_handler->buffer = input_stream;
@@ -304,8 +300,8 @@ axiom_data_handler_set_binary_data(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_data_handler_write_to(
-    axiom_data_handler_t * data_handler,
-    const axutil_env_t * env)
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env)
 {
     if (data_handler->file_name)
     {
@@ -338,9 +334,9 @@ axiom_data_handler_write_to(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_data_handler_set_file_name(
-    axiom_data_handler_t * data_handler,
-    const axutil_env_t * env,
-    axis2_char_t * file_name)
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env,
+    axis2_char_t *file_name)
 {
     if (data_handler->file_name)
     {
@@ -353,8 +349,6 @@ axiom_data_handler_set_file_name(
         data_handler->file_name = axutil_strdup(env, file_name);
         if (!(data_handler->file_name))
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
             return AXIS2_FAILURE;
         }
     }

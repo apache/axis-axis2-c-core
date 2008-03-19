@@ -82,6 +82,8 @@ extern "C"
 
 #define AXIS2_CRLF_LENGTH 2
 
+#define AXIS2_CRLF "\r\n"
+
     /* These constant definitions should later be moved to platform dependant
      * files
      */

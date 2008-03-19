@@ -67,6 +67,13 @@ extern "C"
         axiom_data_handler_t * data_handler,
         const axutil_env_t * env);
 
+    /**
+     * @param output_stream parameter to store reference to output byte stream.
+     * The data_handler is responsible for memory occupied by the stream 
+     * returned
+     * @param output_stream_size parameter to store reference to output byte 
+     * stream length
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_data_handler_read_from(
         axiom_data_handler_t * data_handler,

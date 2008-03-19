@@ -23,8 +23,6 @@
 #include <axiom_text.h>
 #include <axiom_mime_const.h>
 
-axis2_char_t AXIS2_CRLF[] = { 13, 10 };
-
 struct axiom_mime_output
 {
     int dummy;
