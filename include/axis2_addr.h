@@ -145,19 +145,19 @@ extern "C"
 #define AXIS2_WSA_DEFAULT_PREFIX "wsa"
 
     /** WS-Addressing Prefixes for faults*/
-#define AXIS2_WSA_PREFIX_FAULT_TO "wsa:FaultTo"
+#define AXIS2_WSA_PREFIX_FAULT_TO AXIS2_WSA_DEFAULT_PREFIX":"AXIS2_WSA_FAULT_TO
 
     /** WS-Addressing Prefixes for faults*/
-#define AXIS2_WSA_PREFIX_REPLY_TO "wsa:ReplyTo"
+#define AXIS2_WSA_PREFIX_REPLY_TO AXIS2_WSA_DEFAULT_PREFIX":"AXIS2_WSA_REPLY_TO
 
     /** WS-Addressing Prefixes for faults*/
-#define AXIS2_WSA_PREFIX_TO "wsa:To"
+#define AXIS2_WSA_PREFIX_TO AXIS2_WSA_DEFAULT_PREFIX":"AXIS2_WSA_TO 
 
     /** WS-Addressing Prefixes for faults*/
-#define AXIS2_WSA_PREFIX_MESSAGE_ID "wsa:MessageID"
+#define AXIS2_WSA_PREFIX_MESSAGE_ID AXIS2_WSA_DEFAULT_PREFIX":"AXIS2_WSA_MESSAGE_ID
 
     /** WS-Addressing Prefixes for faults*/
-#define AXIS2_WSA_PREFIX_ACTION "wsa:Action"
+#define AXIS2_WSA_PREFIX_ACTION AXIS2_WSA_DEFAULT_PREFIX":"AXIS2_WSA_ACTION 
 
     /* ======================================================================= */
 

@@ -50,14 +50,14 @@ axis2_status_t axis2_addr_in_extract_ref_params(
     const axutil_env_t * env,
     axiom_soap_header_t * soap_header,
     axis2_msg_info_headers_t * msg_info_headers);
-
+/*
 axis2_status_t axis2_addr_in_extract_addr_final_info(
     const axutil_env_t * env,
     axiom_soap_header_t * soap_header,
     axis2_msg_info_headers_t ** msg_info_headers,
     axutil_array_list_t * addr_headers,
     axis2_msg_ctx_t * msg_ctx);
-
+*/
 axis2_status_t axis2_addr_in_extract_to_epr_ref_params(
     const axutil_env_t * env,
     axis2_endpoint_ref_t * to_epr,
@@ -77,14 +77,14 @@ axis2_status_t axis2_addr_in_extract_addr_params(
     axutil_array_list_t * addr_headers,
     const axis2_char_t * addr_ns,
     axis2_msg_ctx_t * msg_ctx);
-
-axis2_status_t axis2_addr_in_extract_addr_submission_info(
+/*
+axis2_addr_in_extract_addr_submission_info(
     const axutil_env_t * env,
     axiom_soap_header_t * soap_header,
     axis2_msg_info_headers_t ** msg_info_headers,
     axutil_array_list_t * addr_headers,
     axis2_msg_ctx_t * msg_ctx);
-
+*/
 void axis2_addr_in_create_fault_envelope(
     const axutil_env_t * env,
     const axis2_char_t * header_name,
@@ -151,11 +151,17 @@ axis2_addr_in_handler_invoke(
             {
                 addr_ns_str =
                     axutil_strdup(env, AXIS2_WSA_NAMESPACE_SUBMISSION);
-                status =
+                /*status =
                     axis2_addr_in_extract_addr_submission_info(env, soap_header,
                                                                &msg_info_headers,
                                                                addr_headers,
-                                                               msg_ctx);
+                                                               msg_ctx);*/
+                status = axis2_addr_in_extract_addr_params(env,
+                                             soap_header,
+                                             &msg_info_headers,
+                                             addr_headers,
+                                             AXIS2_WSA_NAMESPACE_SUBMISSION,
+                                             msg_ctx);
             }
             else
             {
@@ -165,11 +171,17 @@ axis2_addr_in_handler_invoke(
                 if (addr_headers)
                 {
                     addr_ns_str = axutil_strdup(env, AXIS2_WSA_NAMESPACE);
-                    status = axis2_addr_in_extract_addr_final_info(env,
+                    /*status = axis2_addr_in_extract_addr_final_info(env,
                                                                    soap_header,
                                                                    &msg_info_headers,
                                                                    addr_headers,
-                                                                   msg_ctx);
+                                                                   msg_ctx);*/
+                    status = axis2_addr_in_extract_addr_params(env,
+                                             soap_header,
+                                             &msg_info_headers,
+                                             addr_headers,
+                                             AXIS2_WSA_NAMESPACE, msg_ctx);
+                                                                    
                     axis2_addr_in_extract_ref_params(env, soap_header,
                                                      axis2_msg_ctx_get_msg_info_headers
                                                      (msg_ctx, env));
@@ -213,12 +225,12 @@ axis2_addr_in_extract_svc_grp_ctx_id(
     axiom_node_t *node = NULL;
     axiom_element_t *element = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     node = axiom_soap_header_get_base_node(soap_header, env);
+    
     if (node && axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
     {
         axutil_qname_t *qname = NULL;
+    
         element = (axiom_element_t *) axiom_node_get_data_element(node, env);
         qname = axutil_qname_create(env, AXIS2_SVC_GRP_ID, AXIS2_NAMESPACE_URI,
                                     AXIS2_NAMESPACE_PREFIX);
@@ -226,12 +238,14 @@ axis2_addr_in_extract_svc_grp_ctx_id(
         {
             axiom_node_t *child_node = NULL;
             axiom_element_t *child_element = NULL;
+
             child_element =
                 axiom_element_get_first_child_with_qname(element, env, qname,
                                                          node, &child_node);
             if (child_element)
             {
                 axis2_conf_ctx_t *conf_ctx = NULL;
+            
                 axis2_char_t *grp_id =
                     axiom_element_get_text(child_element, env,
                                            child_node);
@@ -249,6 +263,7 @@ axis2_addr_in_extract_svc_grp_ctx_id(
                     axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env,
                                                      svc_grp_ctx_id_str);
                     axutil_string_free(svc_grp_ctx_id_str, env);
+
                     return AXIS2_SUCCESS;
                 }
             }
@@ -257,7 +272,7 @@ axis2_addr_in_extract_svc_grp_ctx_id(
     }
     return AXIS2_FAILURE;
 }
-
+/*
 axis2_status_t
 axis2_addr_in_extract_addr_final_info(
     const axutil_env_t * env,
@@ -288,7 +303,7 @@ axis2_addr_in_extract_addr_submission_info(
                                              AXIS2_WSA_NAMESPACE_SUBMISSION,
                                              msg_ctx);
 }
-
+*/
 axis2_status_t
 axis2_addr_in_extract_addr_params(
     const axutil_env_t * env,
