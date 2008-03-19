@@ -20,6 +20,7 @@
 
 #include <axis2_const.h>
 #include <axutil_version.h>
+#include <axiom_mime_const.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -47,7 +48,7 @@ extern "C"
     /**
      * CARRIAGE RETURN AND LINE FEED
      */
-#define AXIS2_HTTP_CRLF "\r\n"
+#define AXIS2_HTTP_CRLF AXIS2_CRLF
 
     /**
      * PROTOCOL_VERSION
@@ -579,12 +580,12 @@ extern "C"
     /**
      * HEADER XOP XML
      */
-#define AXIS2_HTTP_HEADER_ACCEPT_XOP_XML "application/xop+xml"
+#define AXIS2_HTTP_HEADER_ACCEPT_XOP_XML AXIOM_MIME_TYPE_XOP_XML
 
     /**
      * HEADER_ACCEPT_MULTIPART_RELATED
      */
-#define AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED "multipart/related"
+#define AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED AXIOM_MIME_TYPE_MULTIPART_RELATED
 
     /**
      * HEADER_ACCEPT_APPLICATION_DIME

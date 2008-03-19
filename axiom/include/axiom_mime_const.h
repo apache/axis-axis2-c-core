@@ -31,6 +31,22 @@ extern "C"
 #define AXIOM_MIME_BOUNDARY_BYTE 45
 #define AXIOM_MIME_CRLF_BYTE 13
 
+#define AXIOM_MIME_TYPE_XOP_XML "application/xop+xml"
+#define AXIOM_MIME_TYPE_MULTIPART_RELATED "multipart/related"
+#define AXIOM_MIME_TYPE_OCTET_STREAM "application/octet-stream"
+
+#define AXIOM_MIME_HEADER_FIELD_CHARSET "charset"
+#define AXIOM_MIME_HEADER_FIELD_TYPE "type"
+#define AXIOM_MIME_HEADER_FIELD_BOUNDARY "boundary"
+#define AXIOM_MIME_HEADER_FIELD_START_INFO "start-info"
+#define AXIOM_MIME_HEADER_FIELD_START "start"
+
+#define AXIOM_MIME_HEADER_CONTENT_TYPE "content-type"
+#define AXIOM_MIME_HEADER_CONTENT_TRANSFER_ENCODING "content-transfer-encoding"
+#define AXIOM_MIME_HEADER_CONTENT_ID "content-id"
+
+#define AXIOM_MIME_CONTENT_TRANSFER_ENCODING_BINARY "binary"
+
     /** @} */
 
 #ifdef __cplusplus

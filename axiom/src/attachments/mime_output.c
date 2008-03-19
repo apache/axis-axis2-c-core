@@ -66,7 +66,6 @@ axiom_mime_output_create(
     const axutil_env_t *env)
 {
     axiom_mime_output_t *mime_output = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     mime_output = (axiom_mime_output_t *) AXIS2_MALLOC(env->allocator,
         sizeof(axiom_mime_output_t));
 
@@ -89,7 +88,6 @@ axiom_mime_output_free(
     if (mime_output)
     {
         AXIS2_FREE(env->allocator, mime_output);
-        mime_output = NULL;
     }
     return;
 }
@@ -100,7 +98,7 @@ axiom_mime_output_complete(
     const axutil_env_t *env,
     axis2_byte_t **output_stream,
     int *output_stream_size,
-    axis2_char_t *soap_body_buffer,
+    axis2_char_t *soap_body,
     axutil_array_list_t *binary_node_list,
     axis2_char_t *boundary,
     axis2_char_t *content_id,
@@ -124,24 +122,31 @@ axiom_mime_output_complete(
     axis2_byte_t *stream_buffer = NULL;
     int stream_buffer_size = 0;
     int soap_body_buffer_size = 0;
-    axis2_char_t *temp_soap_body_buffer;
+    axis2_char_t *temp_soap_body_buffer = NULL;
+    axis2_char_t *soap_body_buffer = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
-    status =
-        axis2_start_writing_mime(mime_output, env, &output_stream_start,
-                                 &output_stream_start_size, boundary);
-    if (status == AXIS2_FAILURE)
+    status = axis2_start_writing_mime(mime_output, env, &output_stream_start,
+        &output_stream_start_size, boundary);
+    if (status != AXIS2_SUCCESS)
+    {
         return NULL;
+    }
 
     root_mime_body_part = axiom_mime_body_part_create(env);
 
-    /* content-type */
-    header_value = axutil_strdup(env, "application/xop+xml; charset=");
+    if (!root_mime_body_part)
+    {
+        return NULL;
+    }
+
+    /* Adding Content-Type Header */
+    header_value = axutil_strdup(env, AXIOM_MIME_TYPE_XOP_XML 
+        ";" AXIOM_MIME_HEADER_FIELD_CHARSET "=");
     temp_header_value = axutil_stracat(env, header_value, char_set_encoding);
     AXIS2_FREE(env->allocator, header_value);
     header_value = temp_header_value;
-    temp_header_value = axutil_stracat(env, header_value, "; type=\"");
+    temp_header_value = axutil_stracat(env, header_value, ";"
+        AXIOM_MIME_HEADER_FIELD_TYPE "=\"");
     AXIS2_FREE(env->allocator, header_value);
     header_value = temp_header_value;
     temp_header_value = axutil_stracat(env, header_value, soap_content_type);
@@ -150,26 +155,25 @@ axiom_mime_output_complete(
     temp_header_value = axutil_stracat(env, header_value, "\";");
     AXIS2_FREE(env->allocator, header_value);
     header_value = temp_header_value;
-    AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-type",
-                                    header_value);
-
-    /* content-transfer-encoding */
     AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env,
-                                    "content-transfer-encoding",
-                                    axutil_strdup(env, "binary"));
+        AXIOM_MIME_HEADER_CONTENT_TYPE, header_value);
 
-    /* content-id */
+    /* Adding Content-Transfer Encoding Header */
+    AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env,
+        AXIOM_MIME_HEADER_CONTENT_TRANSFER_ENCODING,
+        axutil_strdup(env, AXIOM_MIME_CONTENT_TRANSFER_ENCODING_BINARY));
+
+    /* Adding Content-ID Header */
     content_id_string = (axis2_char_t *) "<";
     content_id_string = axutil_stracat(env, content_id_string, content_id);
     temp_content_id_string = axutil_stracat(env, content_id_string, ">");
     AXIS2_FREE(env->allocator, content_id_string);
     content_id_string = temp_content_id_string;
-    AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-id",
-                                    content_id_string);
+    AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env,
+        AXIOM_MIME_HEADER_CONTENT_ID, content_id_string);
 
     axis2_write_body_part(mime_output, env, &output_stream_body,
-                          &output_stream_body_size, root_mime_body_part,
-                          boundary);
+        &output_stream_body_size, root_mime_body_part, boundary);
 
     AXIOM_MIME_BODY_PART_FREE(root_mime_body_part, env);
     root_mime_body_part = NULL;
@@ -183,16 +187,14 @@ axiom_mime_output_complete(
         int temp_size = 0;
         for (j = 0; j < axutil_array_list_size(binary_node_list, env); j++)
         {
-            axiom_text_t *text =
-                (axiom_text_t *) axutil_array_list_get(binary_node_list, env,
-                                                       j);
+            axiom_text_t *text = (axiom_text_t *) 
+                axutil_array_list_get(binary_node_list, env, j);
             if (text)
             {
                 axiom_mime_body_part_t *mime_body_part = NULL;
                 mime_body_part = axis2_create_mime_body_part(text, env);
                 axis2_write_body_part(mime_output, env, &temp_stream,
-                                      &temp_stream_size, mime_body_part,
-                                      boundary);
+                    &temp_stream_size, mime_body_part, boundary);
 
                 AXIOM_MIME_BODY_PART_FREE(mime_body_part, env);
                 mime_body_part = NULL;
@@ -202,12 +204,13 @@ axiom_mime_output_complete(
                 output_stream_body_parts_size = temp_size +
                     output_stream_start_size + temp_stream_size;
                 output_stream_body_parts = AXIS2_MALLOC(env->allocator,
-                                                        output_stream_body_parts_size
-                                                        * sizeof(axis2_byte_t));
+                    output_stream_body_parts_size * sizeof(axis2_byte_t));
                 if (!output_stream_body_parts)
                 {
                     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
-                                    AXIS2_FAILURE);
+                        AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create output stream");
                     return NULL;
                 }
 
@@ -221,14 +224,14 @@ axiom_mime_output_complete(
                 if (output_stream_start)
                 {
                     memcpy(output_stream_body_parts + temp_size,
-                           output_stream_start, output_stream_start_size);
+                        output_stream_start, output_stream_start_size);
                 }
 
                 if (temp_stream)
                 {
                     memcpy(output_stream_body_parts + temp_size +
-                           output_stream_start_size, temp_stream,
-                           temp_stream_size);
+                        output_stream_start_size, temp_stream, 
+                        temp_stream_size);
                     AXIS2_FREE(env->allocator, temp_stream);
                     temp_stream = NULL;
                 }
@@ -240,66 +243,62 @@ axiom_mime_output_complete(
     }
 
     axis2_write_finish_writing_mime(mime_output, env, &boundary_stream,
-                                    &boundary_stream_size, boundary);
+        &boundary_stream_size, boundary);
 
     if (soap_body_buffer)
     {
-        temp_soap_body_buffer = axutil_stracat(env, soap_body_buffer, "\r\n");
-
-        /*AXIS2_FREE(env->allocator, soap_body_buffer); */
+        temp_soap_body_buffer = axutil_stracat(env, soap_body, AXIS2_CRLF);
         soap_body_buffer = temp_soap_body_buffer;
-
-        soap_body_buffer_size = axutil_strlen(soap_body_buffer);
+        soap_body_buffer_size = (int) axutil_strlen(soap_body_buffer);
     }
 
-    stream_buffer_size = output_stream_start_size + output_stream_body_size +
-        soap_body_buffer_size + output_stream_body_parts_size +
-        boundary_stream_size;
-
     stream_buffer = AXIS2_MALLOC(env->allocator,
-                                 stream_buffer_size * sizeof(axis2_byte_t));
+        (output_stream_start_size + output_stream_body_size +
+        soap_body_buffer_size + output_stream_body_parts_size +
+        boundary_stream_size) * sizeof(axis2_byte_t));
 
     if (output_stream_start)
     {
         memcpy(stream_buffer, output_stream_start, output_stream_start_size);
         AXIS2_FREE(env->allocator, output_stream_start);
         output_stream_start = NULL;
+        stream_buffer_size += output_stream_start_size;
     }
 
     if (output_stream_body)
     {
-        memcpy(stream_buffer + output_stream_start_size, output_stream_body,
-               output_stream_body_size);
+        memcpy(stream_buffer + stream_buffer_size, output_stream_body,
+            output_stream_body_size);
         AXIS2_FREE(env->allocator, output_stream_body);
         output_stream_body = NULL;
+        stream_buffer_size += output_stream_body_size;
     }
 
     if (soap_body_buffer)
     {
-        memcpy(stream_buffer + output_stream_start_size +
-               output_stream_body_size, soap_body_buffer,
-               soap_body_buffer_size);
+        memcpy(stream_buffer + stream_buffer_size, soap_body_buffer,
+            soap_body_buffer_size);
         AXIS2_FREE(env->allocator, soap_body_buffer);
         soap_body_buffer = NULL;
+        stream_buffer_size += soap_body_buffer_size;
     }
 
     if (output_stream_body_parts)
     {
-        memcpy(stream_buffer + output_stream_start_size +
-               output_stream_body_size + soap_body_buffer_size,
-               output_stream_body_parts, output_stream_body_parts_size);
+        memcpy(stream_buffer + stream_buffer_size, output_stream_body_parts,
+            output_stream_body_parts_size);
         AXIS2_FREE(env->allocator, output_stream_body_parts);
         output_stream_body_parts = NULL;
+        stream_buffer_size += output_stream_body_parts_size;
     }
 
     if (boundary_stream)
     {
-        memcpy(stream_buffer + output_stream_start_size +
-               output_stream_body_size + soap_body_buffer_size +
-               output_stream_body_parts_size, boundary_stream,
-               boundary_stream_size);
+        memcpy(stream_buffer + stream_buffer_size, boundary_stream,
+            boundary_stream_size);
         AXIS2_FREE(env->allocator, boundary_stream);
         boundary_stream = NULL;
+        stream_buffer_size += boundary_stream_size;
     }
 
     *output_stream = stream_buffer;
@@ -315,9 +314,8 @@ axis2_start_writing_mime(
     int *output_stream_size,
     axis2_char_t *boundary)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return axis2_write_mime_boundary(mime_output, env, output_stream,
-                                     output_stream_size, boundary);
+        output_stream_size, boundary);
 }
 
 static axis2_status_t
@@ -332,29 +330,27 @@ axis2_write_mime_boundary(
     axis2_byte_t *byte_stream = NULL;
     int size = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     axis2_char_2_byte(env, boundary, &byte_buffer, &size);
     if (!byte_buffer)
+    {
         return AXIS2_FAILURE;
+    }
     byte_stream =
         AXIS2_MALLOC(env->allocator, (size + 2) * sizeof(axis2_byte_t));
     if (!byte_stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "No memory. Cannot create byte stream");
         return AXIS2_FAILURE;
     }
 
     byte_stream[0] = AXIOM_MIME_BOUNDARY_BYTE;
     byte_stream[1] = AXIOM_MIME_BOUNDARY_BYTE;
-    if (byte_buffer)
-    {
-        memcpy(byte_stream + 2, byte_buffer, size);
-        AXIS2_FREE(env->allocator, byte_buffer);
-        byte_buffer = NULL;
-    }
 
-    /*AXIS2_FREE(env->allocator, byte_buffer); */
+    memcpy(byte_stream + 2, byte_buffer, size);
+    AXIS2_FREE(env->allocator, byte_buffer);
+    byte_buffer = NULL;
 
     *output_stream = byte_stream;
     *output_stream_size = size + 2;
@@ -368,12 +364,18 @@ axis2_create_mime_body_part(
     const axutil_env_t *env)
 {
     axiom_data_handler_t *data_handler = NULL;
-    const axis2_char_t *content_type = "application/octet-stream";
-    axiom_mime_body_part_t *mime_body_part = axiom_mime_body_part_create(env);
-    axis2_char_t *content_id = (axis2_char_t *) "<";
+    axiom_mime_body_part_t *mime_body_part = NULL;
+    axis2_char_t *content_id = NULL;
     axis2_char_t *temp_content_id = NULL;
+    const axis2_char_t *content_type = AXIOM_MIME_TYPE_OCTET_STREAM;
+
+    mime_body_part = axiom_mime_body_part_create(env);
     if (!mime_body_part)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "MIME body part creation failed");
         return NULL;
+    }
     data_handler = axiom_text_get_data_handler(text, env);
 
     if (data_handler)
@@ -382,21 +384,21 @@ axis2_create_mime_body_part(
     }
 
     AXIOM_MIME_BODY_PART_SET_DATA_HANDLER(mime_body_part, env, data_handler);
-    content_id = axutil_stracat(env,
-                                content_id,
-                                axiom_text_get_content_id(text, env));
+    content_id = (axis2_char_t *) "<";
+    content_id = axutil_stracat(env, content_id,
+        axiom_text_get_content_id(text, env));
     temp_content_id = axutil_stracat(env, content_id, ">");
 
     AXIS2_FREE(env->allocator, content_id);
     content_id = temp_content_id;
 
-    AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-id",
-                                    content_id);
-    AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-type",
-                                    axutil_strdup(env, content_type));
     AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env,
-                                    "content-transfer-encoding",
-                                    axutil_strdup(env, "binary"));
+        AXIOM_MIME_HEADER_CONTENT_ID, content_id);
+    AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env,
+        AXIOM_MIME_HEADER_CONTENT_TYPE, axutil_strdup(env, content_type));
+    AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env,
+        AXIOM_MIME_HEADER_CONTENT_TRANSFER_ENCODING,
+        axutil_strdup(env, AXIOM_MIME_CONTENT_TRANSFER_ENCODING_BINARY));
 
     return mime_body_part;
 }
@@ -410,23 +412,19 @@ axis2_write_body_part(
     axiom_mime_body_part_t *part,
     axis2_char_t *boundary)
 {
-    axis2_byte_t *byte_buffer = NULL;
     axis2_byte_t *byte_stream = NULL;
-    int byte_buffer_size = 0;
     axis2_byte_t *body_stream = NULL;
     int body_stream_size = 0;
-    int size = 0;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     AXIOM_MIME_BODY_PART_WRITE_TO(part, env, &body_stream, &body_stream_size);
 
-    size = byte_buffer_size + body_stream_size + 4;
-
-    byte_stream = AXIS2_MALLOC(env->allocator, size * sizeof(axis2_byte_t));
+    byte_stream = AXIS2_MALLOC(env->allocator,
+        (body_stream_size + 4) * sizeof(axis2_byte_t));
     if (!byte_stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "No memory. Cannot create byte stream");
         return AXIS2_FAILURE;
     }
 
@@ -439,20 +437,18 @@ axis2_write_body_part(
         AXIS2_FREE(env->allocator, body_stream);
         body_stream = NULL;
     }
+    else
+    {
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "Body Stream not available for writing");
+    }
+
 
     byte_stream[body_stream_size + 2] = AXIS2_CRLF[0];
     byte_stream[body_stream_size + 3] = AXIS2_CRLF[1];
 
-    if (byte_buffer)
-    {
-        memcpy(byte_stream + 2 + body_stream_size + 2, byte_buffer,
-               byte_buffer_size);
-        AXIS2_FREE(env->allocator, byte_buffer);
-        byte_buffer = NULL;
-    }
-
     *output_stream = byte_stream;
-    *output_stream_size = size;
+    *output_stream_size = body_stream_size + 4;
 
     return AXIS2_SUCCESS;
 
@@ -466,15 +462,20 @@ axis2_write_finish_writing_mime(
     int *output_stream_size,
     axis2_char_t *boundary)
 {
-    axis2_byte_t *byte_buffer;
-    axis2_byte_t *byte_stream;
-    int size;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    axis2_byte_t *byte_buffer = NULL;
+    axis2_byte_t *byte_stream = NULL;
+    int size = 0;
 
     axis2_char_2_byte(env, boundary, &byte_buffer, &size);
     byte_stream =
         AXIS2_MALLOC(env->allocator, (size + 4) * sizeof(axis2_byte_t));
+    if (!byte_stream)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "No memory. Cannot create byte stream");
+        return AXIS2_FAILURE;
+    }
 
     byte_stream[0] = AXIOM_MIME_BOUNDARY_BYTE;
     byte_stream[1] = AXIOM_MIME_BOUNDARY_BYTE;
@@ -484,11 +485,14 @@ axis2_write_finish_writing_mime(
         AXIS2_FREE(env->allocator, byte_buffer);
         byte_buffer = NULL;
     }
+    else
+    {
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "Byte buffer not available for writing");
+    }
 
     byte_stream[size + 2] = AXIOM_MIME_BOUNDARY_BYTE;
     byte_stream[size + 3] = AXIOM_MIME_BOUNDARY_BYTE;
-
-    AXIS2_FREE(env->allocator, byte_buffer);
 
     *output_stream = byte_stream;
     *output_stream_size = size + 4;
@@ -509,16 +513,22 @@ axiom_mime_output_get_content_type_for_mime(
     axis2_char_t *content_type_string = NULL;
     axis2_char_t *temp_content_type_string = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
-    content_type_string = axutil_strdup(env, "multipart/related");
+    content_type_string = 
+        axutil_strdup(env, AXIOM_MIME_TYPE_MULTIPART_RELATED);
+    if (!content_type_string)
+    {
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+            "Creation of Content-Type string failed");
+        return NULL;
+    }
     temp_content_type_string = axutil_stracat(env, content_type_string, "; ");
     AXIS2_FREE(env->allocator, content_type_string);
     content_type_string = temp_content_type_string;
     if (boundary)
     {
         temp_content_type_string =
-            axutil_stracat(env, content_type_string, "boundary=");
+            axutil_stracat(env, content_type_string,
+            AXIOM_MIME_HEADER_FIELD_BOUNDARY "=");
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
         temp_content_type_string =
@@ -532,7 +542,7 @@ axiom_mime_output_get_content_type_for_mime(
     }
     temp_content_type_string =
         axutil_stracat(env, content_type_string,
-                       "type=\"application/xop+xml\"");
+        AXIOM_MIME_HEADER_FIELD_TYPE "=\"" AXIOM_MIME_TYPE_XOP_XML "\"");
     AXIS2_FREE(env->allocator, content_type_string);
     content_type_string = temp_content_type_string;
     temp_content_type_string = axutil_stracat(env, content_type_string, "; ");
@@ -541,7 +551,8 @@ axiom_mime_output_get_content_type_for_mime(
     if (content_id)
     {
         temp_content_type_string =
-            axutil_stracat(env, content_type_string, "start=\"<");
+            axutil_stracat(env, content_type_string, 
+            AXIOM_MIME_HEADER_FIELD_START "=\"<");
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
         temp_content_type_string =
@@ -560,7 +571,8 @@ axiom_mime_output_get_content_type_for_mime(
     if (soap_content_type)
     {
         temp_content_type_string =
-            axutil_stracat(env, content_type_string, "start-info=\"");
+            axutil_stracat(env, content_type_string, 
+            AXIOM_MIME_HEADER_FIELD_START_INFO "=\"");
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
         temp_content_type_string =
@@ -575,7 +587,8 @@ axiom_mime_output_get_content_type_for_mime(
     if (char_set_encoding)
     {
         temp_content_type_string =
-            axutil_stracat(env, content_type_string, "charset=\"");
+            axutil_stracat(env, content_type_string, 
+            AXIOM_MIME_HEADER_FIELD_CHARSET "=\"");
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
         temp_content_type_string =
@@ -598,13 +611,21 @@ axis2_char_2_byte(
     axis2_byte_t **byte_buffer,
     int *byte_buffer_size)
 {
-    int length;
+    int length = 0;
     int i = 0;
-    axis2_byte_t *bytes;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    axis2_byte_t *bytes = NULL;
 
-    length = axutil_strlen(char_buffer);
-    bytes = AXIS2_MALLOC(env->allocator, length * sizeof(axis2_byte_t));
+    length = (int) axutil_strlen(char_buffer);
+    bytes = (axis2_byte_t *)
+        AXIS2_MALLOC(env->allocator, length * sizeof(axis2_byte_t));
+
+    if (!bytes)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "No memory. Cannot create byte buffer");
+        return AXIS2_FAILURE;
+    }
 
     for (i = 0; i < length; i++)
     {
