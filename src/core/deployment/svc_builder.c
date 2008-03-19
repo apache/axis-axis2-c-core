@@ -45,8 +45,6 @@ axis2_svc_builder_create(
 {
     axis2_svc_builder_t *svc_builder = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     svc_builder = (axis2_svc_builder_t *) AXIS2_MALLOC(env->allocator,
                                                        sizeof
                                                        (axis2_svc_builder_t));
@@ -54,6 +52,8 @@ axis2_svc_builder_create(
     if (!svc_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "No memory. Allocation to svc_builder failed");
         return NULL;
     }
 
@@ -72,7 +72,6 @@ axis2_svc_builder_create_with_file_and_dep_engine_and_svc(
 {
     axis2_svc_builder_t *svc_builder = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
     AXIS2_PARAM_CHECK(env->error, dep_engine, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
@@ -87,6 +86,9 @@ axis2_svc_builder_create_with_file_and_dep_engine_and_svc(
     if (!svc_builder->desc_builder)
     {
         axis2_svc_builder_free(svc_builder, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating description builder for service builder %s failed", 
+            file_name);
         return NULL;
     }
     svc_builder->svc = svc;
@@ -101,7 +103,6 @@ axis2_svc_builder_create_with_dep_engine_and_svc(
 {
     axis2_svc_builder_t *svc_builder = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, dep_engine, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
     svc_builder = (axis2_svc_builder_t *) axis2_svc_builder_create(env);
@@ -114,6 +115,8 @@ axis2_svc_builder_create_with_dep_engine_and_svc(
     if (!svc_builder->desc_builder)
     {
         axis2_svc_builder_free(svc_builder, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating description builder for service builder failed");
         return NULL;
     }
     svc_builder->svc = svc;
@@ -125,9 +128,6 @@ axis2_svc_builder_free(
     axis2_svc_builder_t * svc_builder,
     const axutil_env_t * env)
 {
-
-    AXIS2_ENV_CHECK(env, void);
-
     if (svc_builder->desc_builder)
     {
         axis2_desc_builder_free(svc_builder->desc_builder, env);
@@ -198,7 +198,6 @@ axis2_svc_builder_populate_svc(
     axutil_array_list_t *svc_module_qnames = NULL;
     int svc_module_qname_size = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_node, AXIS2_FAILURE);
 
     svc_element = axiom_node_get_data_element(svc_node, env);
@@ -207,6 +206,7 @@ axis2_svc_builder_populate_svc(
     if (!qparamst)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
         return AXIS2_FAILURE;
     }
     itr = axiom_element_get_children_with_qname(svc_element, env, qparamst,
@@ -227,6 +227,8 @@ axis2_svc_builder_populate_svc(
                                                (parent, env));
     if (AXIS2_SUCCESS != status)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Processing parameters failed");
         return status;
     }
 
@@ -286,6 +288,8 @@ axis2_svc_builder_populate_svc(
     if (!impl_info_param)
     {
         axutil_dll_desc_free(dll_desc, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "%s parameter not found", AXIS2_SERVICE_CLASS);
         return AXIS2_FAILURE;
     }
     class_name = axutil_strtrim(env, 
@@ -316,6 +320,8 @@ axis2_svc_builder_populate_svc(
     if (AXIS2_SUCCESS != status)
     {
         axutil_dll_desc_free(dll_desc, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Setting name to  %s dll description failed", dll_path);
         return status;
     }
     AXIS2_FREE(env->allocator, dll_path);
@@ -328,6 +334,8 @@ axis2_svc_builder_populate_svc(
     if (AXIS2_SUCCESS != status)
     {
         axutil_dll_desc_free(dll_desc, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Setting dll_desc to parameter %s failed", class_name);
         return status;
     }
     /* processing service wide modules which required to engage globally */
@@ -340,6 +348,8 @@ axis2_svc_builder_populate_svc(
         axis2_svc_builder_process_module_refs(svc_builder, env, module_refs);
     if (AXIS2_SUCCESS != status)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Processing module references failed");
         return status;
     }
     
@@ -492,7 +502,6 @@ axis2_svc_builder_process_ops(
 {
     axutil_array_list_t *ops = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, op_itr, NULL);
 
     ops = axutil_array_list_create(env, 0);
@@ -534,6 +543,7 @@ axis2_svc_builder_process_ops(
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_OP_NAME_MISSING,
                             AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "");
             return NULL;
         }
 
@@ -618,6 +628,9 @@ axis2_svc_builder_process_ops(
                                                            module_itr, op_desc);
         if (AXIS2_SUCCESS != status)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Processing module operation references failed for operation %s", 
+                op_name);
             return NULL;
         }
 
@@ -689,7 +702,7 @@ axis2_svc_builder_process_msgs(
     axiom_children_qname_iterator_t * iterator,
     axis2_op_t * op)
 {
-    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(iterator, env))
+    while (axiom_children_qname_iterator_has_next(iterator, env))
     {
         axiom_node_t *node = NULL;
         axiom_element_t *element = NULL;
@@ -783,8 +796,7 @@ axis2_svc_builder_process_svc_module_conf(
     axutil_param_container_t * parent,
     axis2_svc_t * svc)
 {
-    while (AXIS2_TRUE ==
-           axiom_children_qname_iterator_has_next(module_confs, env))
+    while (axiom_children_qname_iterator_has_next(module_confs, env))
     {
         axiom_element_t *module_conf_element = NULL;
         axiom_node_t *module_conf_node = NULL;
@@ -804,6 +816,8 @@ axis2_svc_builder_process_svc_module_conf(
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODULE_CONF,
                             AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Module name attribute not found for module node");
             return AXIS2_FAILURE;
         }
     }
@@ -816,11 +830,9 @@ axis2_svc_builder_process_module_refs(
     const axutil_env_t * env,
     axiom_children_qname_iterator_t * module_refs)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_refs, AXIS2_FAILURE);
 
-    while (AXIS2_TRUE ==
-           axiom_children_qname_iterator_has_next(module_refs, env))
+    while (axiom_children_qname_iterator_has_next(module_refs, env))
     {
         axiom_element_t *module_ref_element = NULL;
         axiom_node_t *module_ref_node = NULL;
@@ -868,3 +880,4 @@ axis2_svc_builder_get_desc_builder(
 {
     return svc_builder->desc_builder;
 }
+

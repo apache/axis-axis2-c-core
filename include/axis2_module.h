@@ -140,17 +140,17 @@ extern "C"
 
     /** Initializes module.
         @sa axis2_module_ops#init */
-#define AXIS2_MODULE_INIT(module, env, conf_ctx, module_desc) \
+#define axis2_module_init(module, env, conf_ctx, module_desc) \
       ((module)->ops->init (module, env, conf_ctx, module_desc))
 
     /** Shutdowns module.
         @sa axis2_module_ops#shutdown */
-#define AXIS2_MODULE_SHUTDOWN(module, env) \
+#define axis2_module_shutdown(module, env) \
       ((module)->ops->shutdown (module, env))
 
     /** Fills handler create function map.
         @sa axis2_module_ops#fill_handler_create_func_map */
-#define AXIS2_MODULE_FILL_HANDLER_CREATE_FUNC_MAP(module, env) \
+#define axis2_module_fill_handler_create_func_map(module, env) \
       ((module)->ops->fill_handler_create_func_map (module, env))
 
     /** @} */

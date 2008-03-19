@@ -295,7 +295,7 @@ axis2_init_modules(
                             axis2_module_desc_get_module(mod_desc, env);
                         if (mod)
                         {
-                            AXIS2_MODULE_INIT(mod, env, conf_ctx, mod_desc);
+                            axis2_module_init(mod, env, conf_ctx, mod_desc);
                         }
                     }
                 }

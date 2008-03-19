@@ -126,7 +126,7 @@ axis2_module_desc_free(
 
     if (module_desc->module)
     {
-        AXIS2_MODULE_SHUTDOWN(module_desc->module, env);
+        axis2_module_shutdown(module_desc->module, env);
     }
 
     if (module_desc->params)

@@ -47,8 +47,6 @@ axis2_desc_builder_create(
 {
     axis2_desc_builder_t *desc_builder = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     desc_builder = (axis2_desc_builder_t *) AXIS2_MALLOC(env->
                                                          allocator,
                                                          sizeof
@@ -57,6 +55,8 @@ axis2_desc_builder_create(
     if (!desc_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "No memory. Cannot allocate memory to desc_builder");
         return NULL;
     }
     desc_builder->file_name = NULL;
@@ -74,7 +74,6 @@ axis2_desc_builder_create_with_file_and_dep_engine(
 {
     axis2_desc_builder_t *desc_builder = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
     AXIS2_PARAM_CHECK(env->error, engine, NULL);
 
@@ -82,6 +81,8 @@ axis2_desc_builder_create_with_file_and_dep_engine(
     if (!desc_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "No memory. Cannot allocate memory to desc_builder");
         return NULL;
     }
 
@@ -91,6 +92,8 @@ axis2_desc_builder_create_with_file_and_dep_engine(
     if (!desc_builder->file_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "No memory. Cannot allocate memory to desc_builder->file_name");
         return NULL;
     }
     desc_builder->engine = engine;
@@ -105,13 +108,14 @@ axis2_desc_builder_create_with_dep_engine(
 {
     axis2_desc_builder_t *desc_builder = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, engine, NULL);
 
     desc_builder = (axis2_desc_builder_t *) axis2_desc_builder_create(env);
     if (!desc_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "No memory. Cannot allocate memory to desc_builder");
         return NULL;
     }
 
@@ -125,8 +129,6 @@ axis2_desc_builder_free(
     axis2_desc_builder_t * desc_builder,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (desc_builder->file_name)
     {
         AXIS2_FREE(env->allocator, desc_builder->file_name);
@@ -156,12 +158,12 @@ axis2_desc_builder_build_om(
     axiom_document_t *document = NULL;
     axiom_node_t *root = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (!desc_builder->file_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_DESC_BUILDER,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Invalid state desc builder. Unable to continue");
         return NULL;
     }
 
@@ -173,6 +175,8 @@ axis2_desc_builder_build_om(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
                         AXIS2_FAILURE) return NULL;
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Could not create xml reader for %s", desc_builder->file_name);
     }
 
     /** create axiom_stax_builder by parsing pull_parser struct */
@@ -182,6 +186,9 @@ axis2_desc_builder_build_om(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
                         AXIS2_FAILURE) return NULL;
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Could not create xml stream reader for desc builder %s. Unable "\
+                "to continue", desc_builder->file_name);
     }
 
     /**
@@ -215,7 +222,6 @@ axis2_desc_builder_process_flow(
     axiom_children_qname_iterator_t *handlers = NULL;
     axutil_qname_t *qchild = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, parent, NULL);
     AXIS2_PARAM_CHECK(env->error, flow_node, NULL);
 
@@ -223,11 +229,15 @@ axis2_desc_builder_process_flow(
     if (!flow)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "No memory. Could not allocate to flow");
         return NULL;
     }
 
     if (!flow_element)
     {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+            "There is no flow element to process");
         return NULL;
     }
 
@@ -239,7 +249,7 @@ axis2_desc_builder_process_flow(
         axutil_qname_free(qchild, env);
     }
 
-    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(handlers, env))
+    while (axiom_children_qname_iterator_has_next(handlers, env))
     {
         axiom_node_t *handler_node = NULL;
         axis2_handler_desc_t *handler_desc = NULL;
@@ -251,13 +261,18 @@ axis2_desc_builder_process_flow(
         handler_desc = axis2_desc_builder_process_handler(desc_builder, env,
                                                           handler_node, parent);
         status = axis2_flow_add_handler(flow, env, handler_desc);
-        if (AXIS2_SUCCESS != status)
+        if (!status)
         {
+            const axutil_string_t *handler_name = NULL;
+            const axis2_char_t *hname = NULL;
+            handler_name = axis2_handler_desc_get_name(handler_desc, env);
+            hname = axutil_string_get_buffer(handler_name, env);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Adding handler %s to flow failed", hname);
             axis2_flow_free(flow, env);
             return NULL;
         }
     }
-
     return flow;
 }
 
@@ -279,14 +294,17 @@ axis2_desc_builder_process_handler(
     axiom_node_t *order_node = NULL;
     axiom_element_t *order_element = NULL;
     axutil_qname_t *order_qname = NULL;
+    axutil_string_t *handler_name = NULL;
+    const axis2_char_t *hname = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, handler_node, NULL);
     AXIS2_PARAM_CHECK(env->error, parent, NULL);
 
     handler_desc = axis2_handler_desc_create(env, NULL);
     if (!handler_desc)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Could not create handler description");
         return NULL;
     }
     /* Setting Handler name */
@@ -303,11 +321,12 @@ axis2_desc_builder_process_handler(
         axis2_handler_desc_free(handler_desc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Name attribute not fould for handler.");
         return NULL;
     }
     else
     {
-        axutil_string_t *handler_name = NULL;
         axis2_char_t *value = NULL;
 
         value = axiom_attribute_get_value(name_attrib, env);
@@ -318,13 +337,16 @@ axis2_desc_builder_process_handler(
             axutil_string_free(handler_name, env);
         }
 
-        if (AXIS2_SUCCESS != status)
+        if (!status)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Setting name for handler description failed in %s", 
+                    desc_builder->file_name);
             axis2_handler_desc_free(handler_desc, env);
             return NULL;
         }
     }
-
+    hname = axutil_string_get_buffer(handler_name, env);
     /*Setting Handler Class name */
     class_qname = axutil_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
     class_attrib = axiom_element_get_attribute(handler_element, env,
@@ -339,6 +361,8 @@ axis2_desc_builder_process_handler(
         axis2_handler_desc_free(handler_desc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Library name attribute not found for handler %s", hname);
         return NULL;
     }
     else
@@ -365,6 +389,8 @@ axis2_desc_builder_process_handler(
         axis2_handler_desc_free(handler_desc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Order node not found for handler description %s", hname);
         return NULL;
     }
     else
@@ -377,6 +403,9 @@ axis2_desc_builder_process_handler(
         order_itr = axiom_element_get_all_attributes(order_element, env);
         if (!order_itr)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Order element for handler desc %s does not contain any "\
+                "attribute", hname);
             axis2_handler_desc_free(handler_desc, env);
             return NULL;
         }
@@ -397,61 +426,73 @@ axis2_desc_builder_process_handler(
             name = axutil_qname_get_localpart(qname, env);
 
             value = axiom_attribute_get_value(order_attrib, env);
-            if (0 == axutil_strcmp(AXIS2_AFTER, name))
+            if (!axutil_strcmp(AXIS2_AFTER, name))
             {
                 struct axis2_phase_rule *phase_rule = NULL;
 
                 phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
                 status = axis2_phase_rule_set_after(phase_rule, env, value);
-                if (AXIS2_SUCCESS != status)
+                if (!status)
                 {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "Setting %s phase rule failed for handler %s", 
+                            AXIS2_AFTER, hname);
                     axis2_handler_desc_free(handler_desc, env);
                     return NULL;
                 }
             }
-            if (0 == axutil_strcmp(AXIS2_BEFORE, name))
+            if (!axutil_strcmp(AXIS2_BEFORE, name))
             {
                 struct axis2_phase_rule *phase_rule = NULL;
                 phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
                 status = axis2_phase_rule_set_before(phase_rule, env, value);
-                if (AXIS2_SUCCESS != status)
+                if (!status)
                 {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "Setting %s phase rule failed for handler %s", 
+                            AXIS2_BEFORE, hname);
                     axis2_handler_desc_free(handler_desc, env);
                     return NULL;
                 }
             }
-            if (0 == axutil_strcmp(AXIS2_PHASE, name))
+            if (!axutil_strcmp(AXIS2_PHASE, name))
             {
                 struct axis2_phase_rule *phase_rule = NULL;
                 phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
                 status = axis2_phase_rule_set_name(phase_rule, env, value);
-                if (AXIS2_SUCCESS != status)
+                if (!status)
                 {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "Setting phase rule name failed for handler %s", 
+                            hname);
                     axis2_handler_desc_free(handler_desc, env);
                     return NULL;
                 }
             }
-            if (0 == axutil_strcmp(AXIS2_PHASEFIRST, name))
+            if (!axutil_strcmp(AXIS2_PHASEFIRST, name))
             {
                 axis2_char_t *bool_val = NULL;
 
                 bool_val = axis2_desc_builder_get_value(desc_builder, env,
                                                         value);
-                if (0 == axutil_strcmp(bool_val, "true"))
+                if (!axutil_strcmp(bool_val, AXIS2_VALUE_TRUE))
                 {
                     struct axis2_phase_rule *phase_rule = NULL;
                     phase_rule =
                         axis2_handler_desc_get_rules(handler_desc, env);
                     status =
                         axis2_phase_rule_set_first(phase_rule, env, AXIS2_TRUE);
-                    if (AXIS2_SUCCESS != status)
+                    if (!status)
                     {
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                            "Setting %s property for phase rules for handler "\
+                            "%s failed", AXIS2_PHASEFIRST, hname);
                         axis2_handler_desc_free(handler_desc, env);
                         AXIS2_FREE(env->allocator, bool_val);
                         return NULL;
                     }
                 }
-                else if (0 == axutil_strcmp(bool_val, "false"))
+                else if (!axutil_strcmp(bool_val, AXIS2_VALUE_FALSE))
                 {
                     struct axis2_phase_rule *phase_rule = NULL;
                     phase_rule =
@@ -459,8 +500,11 @@ axis2_desc_builder_process_handler(
                     status =
                         axis2_phase_rule_set_first(phase_rule, env,
                                                    AXIS2_FALSE);
-                    if (AXIS2_SUCCESS != status)
+                    if (!status)
                     {
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                            "Setting %s property for phase rules for handler "\
+                            "%s failed", AXIS2_PHASEFIRST, hname);
                         axis2_handler_desc_free(handler_desc, env);
                         AXIS2_FREE(env->allocator, bool_val);
                         return NULL;
@@ -477,18 +521,22 @@ axis2_desc_builder_process_handler(
                                                        handler_node);
         axutil_qname_free(param_qname, env);
         status = axis2_desc_builder_process_params(desc_builder, env, params,
-                                                   axis2_handler_desc_get_param_container
-                                                   (handler_desc, env), parent);
-        if (AXIS2_SUCCESS != status)
+                                       axis2_handler_desc_get_param_container
+                                       (handler_desc, env), parent);
+        if (!status)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Processing params failed for handler %s", hname);
             axis2_handler_desc_free(handler_desc, env);
             return NULL;
         }
     }
 
     status = axis2_handler_desc_set_parent(handler_desc, env, parent);
-    if (AXIS2_SUCCESS != status)
+    if (!status)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Setting parent failed for handler %s", hname);
         axis2_handler_desc_free(handler_desc, env);
         return NULL;
     }
@@ -507,7 +555,6 @@ set_attrs_and_value(
     axutil_hash_t *attrs = NULL;
     axiom_child_element_iterator_t *childs = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param_element, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param_node, AXIS2_FAILURE);
@@ -529,6 +576,8 @@ set_attrs_and_value(
             axutil_hash_this(i, NULL, NULL, &v);
             if (!v)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Attibute missing in the parameter element");
                 axutil_param_free(param, env);
                 return AXIS2_FAILURE;
             }
@@ -538,6 +587,7 @@ set_attrs_and_value(
                 axutil_param_free(param, env);
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
                 return AXIS2_FAILURE;
             }
             value = (axiom_attribute_t *) v;
@@ -559,7 +609,7 @@ set_attrs_and_value(
         value_list = axutil_array_list_create(env, 0);
         axutil_param_set_value_list(param, env, value_list);
 
-        while (AXIS2_TRUE == AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(childs, env))
+        while (AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(childs, env))
         {
             axiom_node_t *node = NULL;
             axiom_element_t *element = NULL;
@@ -571,8 +621,10 @@ set_attrs_and_value(
             param = axutil_param_create(env, NULL, NULL);
             pname = axiom_element_get_localname(element, env);
             status = axutil_param_set_name(param, env, pname);
-            if (AXIS2_SUCCESS != status)
+            if (!status)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Setting name to parameter failed");
                 axutil_param_free(param, env);
                 return status;
             }
@@ -589,8 +641,10 @@ set_attrs_and_value(
         temp = axiom_element_get_text(param_element, env, param_node);
         para_test_value = axutil_strdup(env, temp);
         status = axutil_param_set_value(param, env, para_test_value);
-        if (AXIS2_SUCCESS != status)
+        if (!status)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Setting value to parameter failed");
             axutil_param_free(param, env);
             AXIS2_FREE(env->allocator, para_test_value);
             return status;
@@ -614,7 +668,6 @@ axis2_desc_builder_process_rest_params(
     axiom_element_t *rest_element = NULL;
     axiom_children_qname_iterator_t *rest_mappings = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
 
     op_element = axiom_node_get_data_element(op_node, env);
@@ -635,14 +688,14 @@ axis2_desc_builder_process_rest_params(
             axiom_children_qname_iterator_next(rest_mappings, env);
         rest_element = axiom_node_get_data_element(rest_node, env);
         param_value = axiom_element_get_attribute_value(rest_element, env, qname);
-        if (0 == strcmp(param_value, AXIS2_REST_HTTP_METHOD))
+        if (!strcmp(param_value, AXIS2_REST_HTTP_METHOD))
         {
             axis2_op_set_rest_http_method(op_desc, env,
                                           axiom_element_get_text(rest_element,
                                                                  env, rest_node));
         }
         param_value = axiom_element_get_attribute_value(rest_element, env, qname);
-        if (0 == strcmp(param_value, AXIS2_REST_HTTP_LOCATION))
+        if (!strcmp(param_value, AXIS2_REST_HTTP_LOCATION))
         {
             axis2_op_set_rest_http_location(op_desc, env,
                                             axiom_element_get_text(rest_element,
@@ -679,7 +732,6 @@ axis2_desc_builder_process_action_mappings(
     axutil_qname_t *qname = NULL;
     axiom_children_qname_iterator_t *action_mappings = NULL;
     axutil_array_list_t *mapping_list = axutil_array_list_create(env, 0);
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
 
     op_element = axiom_node_get_data_element(op_node, env);
@@ -718,14 +770,14 @@ axis2_desc_builder_process_action_mappings(
         input_action_string = axutil_strtrim(env, temp_str, NULL);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Input action mapping found %s",
                         input_action_string);
-        if (0 != axutil_strcmp("", input_action_string))
+        if (axutil_strcmp("", input_action_string))
         {
             axutil_array_list_add(mapping_list, env, input_action_string);
         }
         else
         {
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Zero length "
-                            "input_action_string found. Not added to the mapping list");
+                "input_action_string found. Not added to the mapping list");
         }
     }
     axis2_op_set_wsamapping_list(op_desc, env, mapping_list);
@@ -742,11 +794,10 @@ axis2_desc_builder_process_params(
 {
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, params, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param_container, AXIS2_FAILURE);
 
-    while (AXIS2_FALSE != axiom_children_qname_iterator_has_next(params, env))
+    while (axiom_children_qname_iterator_has_next(params, env))
     {
         axiom_element_t *param_element = NULL;
         axiom_node_t *param_node = NULL;
@@ -772,13 +823,17 @@ axis2_desc_builder_process_params(
         axutil_qname_free(att_qname, env);
         if (!para_name)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Parameter name attribute not found for parameter");
             axutil_param_free(param, env);
             return AXIS2_FAILURE;
         }
         pname = axiom_attribute_get_value(para_name, env);
         status = axutil_param_set_name(param, env, pname);
-        if (AXIS2_SUCCESS != status)
+        if (!status)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Could not set parameter name for parameter");
             axutil_param_free(param, env);
             return status;
         }
@@ -803,7 +858,7 @@ axis2_desc_builder_process_params(
         {
             axis2_char_t *locked_value = NULL;
             locked_value = axiom_attribute_get_value(para_locked, env);
-            if (0 == axutil_strcmp("true", locked_value))
+            if (!axutil_strcmp(AXIS2_VALUE_TRUE, locked_value))
             {
                 axis2_char_t *param_name = NULL;
                 axis2_bool_t is_param_locked = AXIS2_FALSE;
@@ -814,12 +869,14 @@ axis2_desc_builder_process_params(
                 is_param_locked = axutil_param_container_is_param_locked(parent,
                                                                          env,
                                                                          param_name);
-                if (parent && AXIS2_TRUE == is_param_locked)
+                if (parent && is_param_locked)
                 {
                     axutil_param_free(param, env);
                     AXIS2_ERROR_SET(env->error,
                                     AXIS2_ERROR_CONFIG_NOT_FOUND,
                                     AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "Parameter %s is locked", param_name);
                     return AXIS2_FAILURE;
                 }
                 else
@@ -840,12 +897,14 @@ axis2_desc_builder_process_params(
 
             name = axutil_param_get_name(param, env);
             bvalue = axutil_param_container_is_param_locked(parent, env, name);
-            if (parent_para || AXIS2_FALSE == bvalue)
+            if (parent_para || !bvalue)
             {
                 status = axutil_param_container_add_param(param_container, env,
                                                           param);
-                if (AXIS2_SUCCESS != status)
+                if (!status)
                 {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "Adding parameter %s failed", name);
                     axutil_param_free(param, env);
                     return status;
                 }
@@ -855,8 +914,10 @@ axis2_desc_builder_process_params(
         {
             status = axutil_param_container_add_param(param_container, env,
                                                       param);
-            if (AXIS2_SUCCESS != status)
+            if (!status)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Adding parameter %s failed", pname);
                 axutil_param_free(param, env);
                 return status;
             }
@@ -877,12 +938,10 @@ axis2_desc_builder_process_op_module_refs(
     axutil_qname_t *qref = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
 
     while (module_refs &&
-           AXIS2_TRUE == axiom_children_qname_iterator_has_next(module_refs,
-                                                                env))
+           axiom_children_qname_iterator_has_next(module_refs, env))
     {
         moduleref = (axiom_element_t *)
             axiom_children_qname_iterator_next(module_refs, env);
@@ -904,16 +963,22 @@ axis2_desc_builder_process_op_module_refs(
                 axutil_qname_free(ref_qname, env);
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Module %s not found in the deployment engine", ref_name);
                 return AXIS2_FAILURE;
             }
             else
             {
                 status = axis2_op_add_module_qname(op, env, ref_qname);
                 axutil_qname_free(ref_qname, env);
-                if (AXIS2_SUCCESS != status)
+                if (!status)
                 {
                     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND,
                                     AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "Adding module ref %s to operation %s failed", ref_name, 
+                        axutil_qname_get_localpart(axis2_op_get_qname(op, env), 
+                            env));
                     return AXIS2_FAILURE;
                 }
             }
@@ -942,7 +1007,6 @@ axis2_desc_builder_load_msg_recv(
     axis2_conf_t *conf = NULL;
     axis2_char_t *msg_recv_dll_name = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, recv_element, NULL);
 
     class_qname = axutil_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
@@ -953,6 +1017,8 @@ axis2_desc_builder_load_msg_recv(
     conf = axis2_dep_engine_get_axis_conf(desc_builder->engine, env);
     if (!conf)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Configuration not found in the deployment engine");
         return NULL;
     }
     impl_info_param = axis2_conf_get_param(conf, env, class_name);
@@ -1011,13 +1077,13 @@ axis2_desc_builder_get_short_file_name(
     axis2_char_t *file_name_l = NULL;
     axis2_char_t *short_name = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
 
     file_name_l = axutil_strdup(env, file_name);
     if (!file_name_l)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "");
         return NULL;
     }
     separator = ".";
@@ -1039,12 +1105,12 @@ axis2_desc_builder_get_file_name_without_prefix(
     axis2_char_t *file_name_l = NULL;
     axis2_char_t *short_name = NULL;
     int len = 0;
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, short_file_name, NULL);
     file_name_l = axutil_strdup(env, short_file_name);
     if (!file_name_l)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "");
         return NULL;
     }
     len = axutil_strlen(AXIS2_LIB_PREFIX);
@@ -1063,13 +1129,13 @@ axis2_desc_builder_get_value(
     axis2_char_t *value = NULL;
     axis2_char_t *in_l = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, in, NULL);
 
     in_l = axutil_strdup(env, in);
     if (!in_l)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "");
         return NULL;
     }
     value = axutil_strstr(in_l, separator);
@@ -1106,6 +1172,7 @@ axis2_process_policy_elements(
             policy = neethi_engine_get_policy(env, node, element);
             if (!policy)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "");
                 return AXIS2_FAILURE;
             }
             axis2_policy_include_add_policy_element(policy_include, env,
@@ -1141,3 +1208,4 @@ axis2_process_policy_reference_elements(
     }
     return AXIS2_SUCCESS;
 }
+

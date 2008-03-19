@@ -106,6 +106,8 @@ extern "C"
 #define AXIS2_SERVICE_FOLDER "services"
 #define AXIS2_LIB_FOLDER "lib"
 #define AXIS2_LIB_DIR "libDir"
+#define AXIS2_SERVICE_DIR "servicesDir"
+#define AXIS2_MODULE_DIR "moduleDir"
 
 #define AXIS2_ATTRIBUTE_DEFAULT_VERSION "version"
 #define AXIS2_DEFAULT_MODULE_VERSION "defaultModuleVersions"

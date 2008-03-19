@@ -36,15 +36,14 @@ axis2_module_builder_create(
 {
     axis2_module_builder_t *module_builder = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     module_builder = (axis2_module_builder_t *) AXIS2_MALLOC(env->allocator,
-                                                             sizeof
-                                                             (axis2_module_builder_t));
+        sizeof(axis2_module_builder_t));
 
     if (!module_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "No memory to create module builder");
         return NULL;
     }
 
@@ -60,13 +59,13 @@ axis2_module_builder_create_with_file_and_dep_engine_and_module(
 {
     axis2_module_builder_t *module_builder = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     module_builder =
         (axis2_module_builder_t *) axis2_module_builder_create(env);
     if (!module_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "No memory to create module builder %s", file_name);
         return NULL;
     }
     module_builder->desc_builder =
@@ -74,6 +73,9 @@ axis2_module_builder_create_with_file_and_dep_engine_and_module(
                                                            dep_engine);
     if (!module_builder->desc_builder)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Description builder creation failed for module builder %s", 
+                file_name);
         axis2_module_builder_free(module_builder, env);
         return NULL;
     }
@@ -86,8 +88,6 @@ axis2_module_builder_free(
     axis2_module_builder_t * module_builder,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (module_builder->desc_builder)
     {
         axis2_desc_builder_free(module_builder->desc_builder, env);
@@ -131,41 +131,37 @@ axis2_module_builder_populate_module(
     axutil_param_container_t *parent_container = NULL;
     int size = 0;
     int i = 0;
+    axis2_arch_file_data_t *file_data = NULL;
+    axis2_char_t *module_name = NULL;
+    axutil_qname_t *module_qname = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
-                    "axis2_module_builder_populate_module start");
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+                    "Entry:axis2_module_builder_populate_module");
 
     module_node =
         axis2_desc_builder_build_om(module_builder->desc_builder, env);
     module_element = axiom_node_get_data_element(module_node, env);
     if (!module_element)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Data element not found for the module node, Unable to proceed");
         return AXIS2_FAILURE;
     }
+    file_data =
+        axis2_dep_engine_get_current_file_item
+        (axis2_desc_builder_get_dep_engine
+         (module_builder->desc_builder, env), env);
+    module_name = axis2_arch_file_data_get_module_name(file_data, env);
+
+    module_qname = axutil_qname_create(env, module_name, NULL, NULL);
+    axis2_module_desc_set_qname(module_builder->module_desc, env,
+                                module_qname);
+
+    if (module_qname)
     {
-        axis2_arch_file_data_t *file_data = NULL;
-        axis2_char_t *module_name = NULL;
-        axutil_qname_t *module_qname = NULL;
-
-        file_data =
-            axis2_dep_engine_get_current_file_item
-            (axis2_desc_builder_get_dep_engine
-             (module_builder->desc_builder, env), env);
-        module_name = axis2_arch_file_data_get_module_name(file_data, env);
-
-        module_qname = axutil_qname_create(env, module_name, NULL, NULL);
-        axis2_module_desc_set_qname(module_builder->module_desc, env,
-                                    module_qname);
-
-        if (module_qname)
-        {
-            axutil_qname_free(module_qname, env);
-        }
+        axutil_qname_free(module_qname, env);
     }
-
     /* Setting Module Dll Name , if it is there */
 
     qdllname = axutil_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
@@ -180,7 +176,7 @@ axis2_module_builder_populate_module(
         axis2_char_t *class_name = NULL;
 
         class_name = axiom_attribute_get_value(module_dll_att, env);
-        if (class_name && (0 != axutil_strcmp("", class_name)))
+        if (class_name && (axutil_strcmp("", class_name)))
         {
             axis2_dep_engine_t *dep_engine =
                 axis2_desc_builder_get_dep_engine(module_builder->desc_builder,
@@ -230,7 +226,7 @@ axis2_module_builder_populate_module(
         axutil_qname_free(qinflowst, env);
     }
 
-    if (in_flow_element && NULL != in_flow_node)
+    if (in_flow_element && in_flow_node)
     {
         axis2_flow_t *flow = NULL;
 
@@ -243,12 +239,14 @@ axis2_module_builder_populate_module(
             axis2_module_desc_set_in_flow(module_builder->module_desc, env,
                                           flow);
 
-        if (AXIS2_SUCCESS != status)
+        if (!status)
         {
             if (flow)
             {
                 axis2_flow_free(flow, env);
             }
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Setting in flow failed for module desc %s", module_name);
             return status;
         }
     }
@@ -263,7 +261,7 @@ axis2_module_builder_populate_module(
         axutil_qname_free(qoutflowst, env);
     }
 
-    if (out_flow_element && NULL != out_flow_node)
+    if (out_flow_element && out_flow_node)
     {
         axis2_flow_t *flow = NULL;
 
@@ -276,9 +274,11 @@ axis2_module_builder_populate_module(
             axis2_module_desc_set_out_flow(module_builder->module_desc, env,
                                            flow);
 
-        if (AXIS2_SUCCESS != status)
+        if (!status)
         {
             axis2_flow_free(flow, env);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Setting out flow failed for module desc %s", module_name);
             return status;
         }
     }
@@ -306,9 +306,11 @@ axis2_module_builder_populate_module(
             axis2_module_desc_set_fault_in_flow(module_builder->module_desc,
                                                 env, flow);
 
-        if (AXIS2_SUCCESS != status)
+        if (!status)
         {
             axis2_flow_free(flow, env);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Setting fault in flow failed for module desc %s", module_name);
             return status;
         }
     }
@@ -338,6 +340,8 @@ axis2_module_builder_populate_module(
         if (AXIS2_SUCCESS != status)
         {
             axis2_flow_free(flow, env);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Setting fault out flow failed for module desc %s", module_name);
             return status;
         }
     }
@@ -361,7 +365,7 @@ axis2_module_builder_populate_module(
     }
     axutil_array_list_free(ops, env);
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
-                    "axis2_module_builder_populate_module end");
+                    "Exit:axis2_module_builder_populate_module");
     return AXIS2_SUCCESS;
 }
 
@@ -373,11 +377,10 @@ axis2_module_builder_process_ops(
 {
     axutil_array_list_t *ops = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, op_itr, NULL);
 
     ops = axutil_array_list_create(env, 0);
-    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(op_itr, env))
+    while (axiom_children_qname_iterator_has_next(op_itr, env))
     {
         axiom_element_t *op_element = NULL;
         axiom_node_t *op_node = NULL;
@@ -413,6 +416,8 @@ axis2_module_builder_process_ops(
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_OP_NAME_MISSING,
                             AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Operation name missing for module operation.");
             return NULL;
         }
         qmep = axutil_qname_create(env, AXIS2_MEP, NULL, NULL);
@@ -517,3 +522,4 @@ axis2_module_builder_process_ops(
     }
     return ops;
 }
+
