@@ -50,6 +50,8 @@ axis2_mod_addr_create(
     if(!module)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create the addressing module");
         return NULL;
     }
 
@@ -102,6 +104,8 @@ axis2_mod_addr_fill_handler_create_func_map(
     if (!module->handler_create_func_map)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create the function map");
         return AXIS2_FAILURE;
     }
     axutil_hash_set(module->handler_create_func_map, ADDR_IN_HANDLER,
@@ -126,6 +130,8 @@ axis2_get_instance(
     if (!(*inst))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create addressing module");
         return AXIS2_FAILURE;
     }
 
@@ -146,6 +152,8 @@ axis2_remove_instance(
     else
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Addressing module not found");
     }
     
     return status;

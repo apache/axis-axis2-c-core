@@ -92,6 +92,8 @@ axis2_addr_in_handler_create(
     if (!handler)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create addressing in handler");
         return NULL;
     }
 
@@ -291,6 +293,8 @@ axis2_addr_in_extract_addr_params(
         if (!msg_info_headers)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MSG_INFO_HEADERS, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No message information headers available");
             return AXIS2_FAILURE;
         }
     }
@@ -702,6 +706,8 @@ axis2_addr_in_extract_to_epr_ref_params(
     if (!is_ref_qn)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create qname for %s", addr_ns_str);
         return AXIS2_FAILURE;
     }
 

@@ -71,6 +71,8 @@ axis2_addr_out_handler_create(
     if (!handler)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create addressing out handler");
         return NULL;
     }
 
