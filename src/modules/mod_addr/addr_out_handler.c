@@ -366,22 +366,35 @@ axis2_addr_out_handler_invoke(
             if (!axutil_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION))
             {
                 if (none)
+                {
                     anonymous_uri = AXIS2_WSA_NONE_URL_SUBMISSION;
+                }
                 else if (anonymous)
+                {
                     anonymous_uri = AXIS2_WSA_ANONYMOUS_URL_SUBMISSION;
+                }
             }
             else
             {
                 if (none)
+                {
                     anonymous_uri = AXIS2_WSA_NONE_URL;
+                }
                 else if (anonymous)
+                {
                     anonymous_uri = AXIS2_WSA_ANONYMOUS_URL;
+                }
             }
 
             if (anonymous_uri)
+            {
                 epr_reply_to = axis2_endpoint_ref_create(env, anonymous_uri);
+            }
+            
             if (epr_reply_to)
+            {
                 axis2_msg_info_headers_set_reply_to(msg_info_headers, env, epr_reply_to);
+            }
         }
 
         /* add the service group id as a reference parameter */
@@ -416,9 +429,13 @@ axis2_addr_out_handler_invoke(
             if (!axutil_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION))
             {
                 if (none)
+                {
                     anonymous_uri = AXIS2_WSA_NONE_URL_SUBMISSION;
+                }
                 else if (anonymous)
+                {
                     anonymous_uri = AXIS2_WSA_ANONYMOUS_URL_SUBMISSION;
+                }
             }
             else
             {
@@ -429,7 +446,9 @@ axis2_addr_out_handler_invoke(
             }
 
             if (anonymous_uri)
+            {
                 epr_fault_to = axis2_endpoint_ref_create(env, anonymous_uri);
+            }
         }
 
         if (epr_fault_to)
@@ -600,7 +619,6 @@ axis2_addr_out_handler_add_to_soap_header(
     axiom_namespace_t *addr_ns_obj = NULL;
     int size = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, endpoint_ref, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, type, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, soap_header, AXIS2_FAILURE);
@@ -788,7 +806,6 @@ axis2_addr_out_handler_add_to_header(
     axis2_svc_name_t *service_name = NULL;
     axiom_namespace_t *addr_ns_obj = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, epr, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, parent_node_p, AXIS2_FAILURE);
 
@@ -857,27 +874,28 @@ axis2_addr_out_handler_process_any_content_type(
     axutil_hash_t *value_ht = NULL;
     axutil_hash_index_t *hash_index = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (reference_values)
     {
-        const void *k = NULL;
-        void *v = NULL;
+        const void *key = NULL;
+        void *val = NULL;
         axis2_ssize_t len = 0;
         value_ht = axis2_any_content_type_get_value_map(reference_values, env);
         if (!value_ht)
+        {
             return AXIS2_FAILURE;
+        }
 
         for (hash_index = axutil_hash_first(value_ht, env); hash_index;
              hash_index = axutil_hash_next(env, hash_index))
         {
-            axutil_hash_this(hash_index, &k, &len, &v);
-            if (k)
+            axutil_hash_this(hash_index, &key, &len, &val);
+            if (key)
             {
                 axiom_node_t *node = NULL;
                 axiom_element_t *ele = NULL;
                 ele =
-                    axiom_element_create(env, parent_ele_node, k, NULL, &node);
+                    axiom_element_create(env, parent_ele_node, key, NULL, &node);
                 if (ele)
                 {
                     if (!axutil_strcmp(AXIS2_WSA_NAMESPACE, addr_ns))
@@ -893,7 +911,7 @@ axis2_addr_out_handler_process_any_content_type(
                                                    AXIS2_WSA_TYPE_ATTRIBUTE_VALUE,
                                                    addr_ns_obj);
                     }
-                    axiom_element_set_text(ele, env, v, node);
+                    axiom_element_set_text(ele, env, val, node);
                 }
             }
         }

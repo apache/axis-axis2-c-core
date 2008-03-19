@@ -125,6 +125,7 @@ axis2_get_instance(
     *inst = axis2_mod_addr_create(env);
     if (!(*inst))
     {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
