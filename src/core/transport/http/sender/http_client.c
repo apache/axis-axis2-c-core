@@ -601,7 +601,7 @@ axis2_http_client_get_url(
     const axis2_http_client_t * client,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK(env->error, client, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, client, NULL);
     return client->url;
 }
 
@@ -673,7 +673,7 @@ axis2_http_client_get_proxy(
     const axis2_http_client_t * client,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK(env->error, client, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, client, NULL);
     return client->proxy_host_port;
 }
 
