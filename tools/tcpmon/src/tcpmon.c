@@ -709,7 +709,7 @@ resend_request(
                             tmp3 = strstr(tmp2, "\r\n");
                             if (tmp3)
                             {
-                                size_t header_len = 0;
+                                int header_len = 0;
                                 axis2_char_t *user_agent = AXIS2_HTTP_HEADER_USER_AGENT 
                                     ": Axis2C/" AXIS2_VERSION_STRING " TCPMon";
                                 header_len = (int)(tmp3 - tmp2) + 2;
@@ -717,7 +717,7 @@ resend_request(
                                                     sizeof(axis2_char_t) * header_len + 1);
                                 memcpy(tmp1, tmp2, header_len);
                                 tmp1[header_len] = '\0';
-                                header_len = 2 + strlen(user_agent);
+                                header_len = 2 + (int)strlen(user_agent);
                                 tmp2 = AXIS2_MALLOC(env->allocator,
                                                     sizeof(axis2_char_t) * (header_len + 1));
                                 sprintf(tmp2, "%s\r\n", user_agent);
