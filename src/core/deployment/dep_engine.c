@@ -1411,7 +1411,7 @@ axis2_dep_engine_add_new_module(
     axis2_flow_t *out_fault_flow = NULL;
     axis2_module_t *module = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axutil_qname_t *module_qname = NULL;
+    const axutil_qname_t *module_qname = NULL;
     axis2_char_t *module_name = NULL;
 
     AXIS2_PARAM_CHECK (env->error, dep_engine, AXIS2_FAILURE);
