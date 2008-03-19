@@ -757,7 +757,7 @@ axis2_apache2_worker_process_request(
                 {
                     *temp2 = '\0';
                     temp2++;
-                    char_set = strstr(temp2, AXIS2_HTTP_CHAR_SET_ENCODING);
+                    char_set = axutil_strcasestr(temp2, AXIS2_HTTP_CHAR_SET_ENCODING);
                 }
                 if (char_set)
                 {
@@ -779,7 +779,7 @@ axis2_apache2_worker_process_request(
                     temp = NULL;
                 }
                 if (content_type && accept_header_value &&
-                    !strstr(accept_header_value, content_type))
+                    !axutil_strcasestr(accept_header_value, content_type))
                 {
                     temp2 = strchr(content_type, '/');
                     if (temp2)
@@ -793,7 +793,7 @@ axis2_apache2_worker_process_request(
                             return AXIS2_FALSE;
                         }
                         sprintf(temp, "%s/*", content_type);
-                        if (!strstr(accept_header_value, temp) &&
+                        if (!axutil_strcasestr(accept_header_value, temp) &&
                             !strstr(accept_header_value, AXIS2_HTTP_HEADER_ACCEPT_ALL))
                         {
                             body_string =
@@ -815,7 +815,7 @@ axis2_apache2_worker_process_request(
                     AXIS2_FREE(env->allocator, content_type);
                 }
                 if (char_set && accept_charset_header_value && 
-                    !strstr(accept_charset_header_value, char_set))
+                    !axutil_strcasestr(accept_charset_header_value, char_set))
                 {
                     body_string =
                         axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
@@ -836,7 +836,7 @@ axis2_apache2_worker_process_request(
             if (language_header_value)
             {
                 if (accept_language_header_value &&
-                    !strstr(accept_language_header_value, language_header_value))
+                    !axutil_strcasestr(accept_language_header_value, language_header_value))
                 {
                     body_string =
                         axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
