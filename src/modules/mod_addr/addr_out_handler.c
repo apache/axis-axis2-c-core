@@ -110,6 +110,8 @@ axis2_addr_out_handler_invoke(
     soap_envelope = axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (!soap_envelope)
     {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+            "No SOAP envelope. Stop processing addressing");
         return AXIS2_SUCCESS;   /* Can happen in case of ONE-WAY services/clients */
     }
 
@@ -121,11 +123,15 @@ axis2_addr_out_handler_invoke(
     }
     else
     {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+            "No addressing in use");
         return AXIS2_SUCCESS; /* No addressing in use */
     }
     
     if (!wsa_action || !*wsa_action)
     {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+            "No action present. Stop processing addressing");
         return AXIS2_SUCCESS;   /* If no action present, assume no addressing in use */
     }
     
@@ -185,6 +191,8 @@ axis2_addr_out_handler_invoke(
     soap_header = axiom_soap_envelope_get_header(soap_envelope, env);
     if (!soap_header)
     {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+            "No SOAP header. Stop processing addressing");
         return AXIS2_SUCCESS;   /* No SOAP header, so no point proceeding */
     }
     else
@@ -661,11 +669,6 @@ axis2_addr_out_handler_add_to_soap_header(
             dec_ns = axiom_element_find_declared_namespace(address_ele, env,
                                                            addr_ns,
                                                            AXIS2_WSA_DEFAULT_PREFIX);
-            /*if (! dec_ns)
-               {
-               axiom_namespace_free(addr_ns_obj, env);
-               addr_ns_obj = NULL;
-               } */
         }
     }
 
