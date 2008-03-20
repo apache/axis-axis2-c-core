@@ -56,17 +56,19 @@ axiom_soap11_builder_helper_create(
     axiom_stax_builder_t * om_builder)
 {
     axiom_soap11_builder_helper_t *builder_helper = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
+    
     AXIS2_PARAM_CHECK(env->error, soap_builder, NULL);
     AXIS2_PARAM_CHECK(env->error, om_builder, NULL);
 
     builder_helper =
         (axiom_soap11_builder_helper_t *) AXIS2_MALLOC(env->allocator,
-                                                       sizeof
-                                                       (axiom_soap11_builder_helper_t));
+                sizeof(axiom_soap11_builder_helper_t));
+
     if (!builder_helper)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create SOAP 1.1 builder helper");
         return NULL;
     }
 
@@ -86,7 +88,6 @@ axiom_soap11_builder_helper_free(
     axiom_soap11_builder_helper_t * builder_helper,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
 
     AXIS2_FREE(env->allocator, builder_helper);
     builder_helper = NULL;
@@ -106,7 +107,6 @@ axiom_soap11_builder_helper_handle_event(
     axiom_soap_body_t *soap_body = NULL;
     axiom_soap_fault_t *soap_fault = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_element_node, AXIS2_FAILURE);
 
     om_ele =
@@ -324,6 +324,8 @@ axiom_soap11_builder_helper_handle_event(
             AXIS2_ERROR_SET(env->error,
                             AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS,
                             AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "SOAP 1.1 Actor should not have child elements"); 
             return AXIS2_FAILURE;
         }
     }
@@ -349,6 +351,8 @@ axiom_soap11_builder_helper_process_text(
             AXIS2_ERROR_SET(env->error,
                             AXIS2_ERROR_ONLY_CHARACTERS_ARE_ALLOWED_HERE,
                             AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Unidentified character in SOAP 1.1 builder helper processing");
             return AXIS2_FAILURE;
 
         }
