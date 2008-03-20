@@ -1311,8 +1311,18 @@ axis2_op_client_two_way_send(
     }
     if (!(axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY)) && response)
     {
+        if (axis2_msg_ctx_get_doing_rest(response, env) &&
+            axis2_msg_ctx_get_status_code (response, env) >= 400)
+        {
+            /* All HTTP 4xx and 5xx status codes are treated as errors */
+            AXIS2_ERROR_SET(env->error,
+                            AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
+                            AXIS2_FAILURE);
+            return NULL;
+        }
         switch(axis2_msg_ctx_get_status_code (response, env))
         {
+            /* In a SOAP request HTTP status code 500 is used for errors */
             case 500:
                 AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,

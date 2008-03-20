@@ -907,8 +907,9 @@ axis2_svc_client_send_receive_with_op_qname(
 
     if (axis2_msg_ctx_get_doing_rest (res_msg_ctx, env))
     {
-        if (axis2_msg_ctx_get_status_code (res_msg_ctx, env) ==
-            AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_VAL)
+        /* All HTTP 4xx and 5xx status codes are treated as errors */
+        if (axis2_msg_ctx_get_status_code (res_msg_ctx, env) >=
+            400)
         {
             svc_client->last_response_has_fault = AXIS2_TRUE;
         }

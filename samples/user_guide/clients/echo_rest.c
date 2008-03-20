@@ -167,7 +167,19 @@ main(
     /* Send request */
     ret_node = axis2_svc_client_send_receive(svc_client, env, payload);
 
-    if (ret_node)
+    if (ret_node && 
+        axis2_svc_client_get_last_response_has_fault(svc_client, env))
+    {
+        axis2_char_t *om_str = NULL;
+        om_str = axiom_node_to_string(ret_node, env);
+        if (om_str)
+        {
+            printf("\nReceived OM : %s\n", om_str);
+            AXIS2_FREE(env->allocator, om_str);
+        }
+        printf("\necho client invoke FAILED!\n");
+    }
+    else if (ret_node)
     {
         axis2_char_t *om_str = NULL;
         om_str = axiom_node_to_string(ret_node, env);
@@ -177,6 +189,14 @@ main(
             AXIS2_FREE(env->allocator, om_str);
         }
         printf("\necho client invoke SUCCESSFUL!\n");
+    }
+    else if (method_head &&
+        axis2_svc_client_get_last_response_has_fault(svc_client, env))
+    {
+        /* HEAD request should probably be removed from this file,
+         * and be relocated to transport unit tests.
+         */
+        printf("\necho client invoke FAILED!\n");
     }
     else if (method_head)
     {
