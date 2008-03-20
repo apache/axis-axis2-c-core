@@ -1759,7 +1759,7 @@ axis2_svc_client_set_http_info(
     if (expose_headers)
     {
         if (svc_client->http_headers ==
-            axis2_msg_ctx_extract_http_output_headers(msg_ctx, env))
+            axis2_msg_ctx_get_http_output_headers(msg_ctx, env))
         {
             svc_client->http_status_code = 
                 axis2_msg_ctx_get_status_code(msg_ctx, env);
