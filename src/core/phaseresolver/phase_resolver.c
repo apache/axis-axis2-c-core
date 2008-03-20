@@ -871,7 +871,8 @@ axis2_phase_resolver_build_out_transport_chains(
  * This is in general called to engage a module to the axis2 engine. In other
  * words modules handlers are added into all global and operation specific
  * phases appropriately. Where these handlers should go is determined by the
- * module handler specific descriptions in module.xml file.
+ * module handler specific descriptions in module.xml file. Also module 
+ * operations are added to service and built exeuction chains.
  * First add all the handlers in the module into the global chains. Then
  * retrieve all services from axis2 configuration and add module handlers 
  * into each services operation phases.
@@ -929,6 +930,7 @@ axis2_phase_resolver_engage_module_globally(
         svc = (axis2_svc_t *) w;
         svc_name = axis2_svc_get_name(svc, env);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "svc name is:%s", svc_name);
+        /* Module operations are added to service and built execution chains */
         status = axis2_svc_add_module_ops(svc, env, module_desc,
                                           phase_resolver->axis2_config);
         if (AXIS2_SUCCESS != status)
@@ -1444,7 +1446,8 @@ axis2_phase_resolver_engage_to_global_chain(
  * other words all module handlers are added into service operation's execution
  * chains appropriately. Where each module handler should go is determined by
  * module handler descriptions in module.xml file.
- * First we add the operations defined in the module into the service.
+ * First we add the operations defined in the module into the service and built
+ * execution chains for them.
  * Then for all the operations of the service we check whether the module 
  * already engaged to operation. If not engage it to service operation.
  * Also if the module is newly engaged to operation add the module qnname to
@@ -1479,6 +1482,7 @@ axis2_phase_resolver_engage_module_to_svc(
             "Service %s has no operation", svcname);
         return AXIS2_FAILURE;
     }
+    /* Module operations are added to service and built execution chains */
     status = axis2_svc_add_module_ops(svc, env, module_desc,
                                       phase_resolver->axis2_config);
 
@@ -1522,7 +1526,8 @@ axis2_phase_resolver_engage_module_to_svc(
                 engaged = AXIS2_TRUE;
                 status = AXIS2_SUCCESS;
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                    "Module %s already engaged to %s of %s", opname, svcname);
+                    "Module %s already engaged to operation %s of service %s", 
+                    modname_d, opname, svcname);
                 break;
             }
         }

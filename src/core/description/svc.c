@@ -28,14 +28,14 @@ struct axis2_svc
     axis2_svc_grp_t *parent;
     axis2_char_t *axis_svc_name;
 
-    /** to keep last update time of the service */
+    /** To keep last update time of the service */
     long last_update;
     axis2_char_t *filename;
 
-    /** to store module descriptions at deploy time parsing */
+    /** To store module descriptions at deploy time parsing */
     axutil_array_list_t *module_list;
 
-    /** service description  */
+    /** Service description  */
     axis2_char_t *svc_desc;
 
     /** wsdl file path */
@@ -48,9 +48,9 @@ struct axis2_svc
      * WSDL related stuff
      */
     axutil_hash_t *ns_map;
-    /* count of the entries in the namespace map */
+    /* Count of the entries in the namespace map */
     int ns_count;
-    /* to keep the XML scheama either from WSDL or
+    /* To keep the XML scheama either from WSDL or
      * C2WSDL(in the future)
      */
     axutil_array_list_t *schema_list;
@@ -95,10 +95,10 @@ struct axis2_svc
      * A good place to add a file extension if needed
      */
     axis2_char_t *custom_schema_name_suffix;
-    /* to store the target namespace for the schema */
+    /* To store the target namespace for the schema */
     axis2_char_t *schema_target_ns;
     axis2_char_t *schema_target_ns_prefix;
-    /* to keep the service target name space */
+    /* To keep the service target name space */
     axis2_char_t *target_ns;
     axis2_char_t *target_ns_prefix;
     /* Used for schema name calculations */
@@ -109,13 +109,13 @@ struct axis2_svc
     axis2_char_t *style;
     axutil_array_list_t *engaged_modules;
 
-    /** parameter container to hold service related parameters */
+    /** Parameter container to hold service related parameters */
     struct axutil_param_container *param_container;
 
-    /** flow container that encapsulates the flow related data */
+    /** Flow container that encapsulates the flow related data */
     struct axis2_flow_container *flow_container;
 
-    /** base description struct */
+    /** Base description struct */
     axis2_desc_t *base;
 };
 
@@ -129,6 +129,7 @@ axis2_svc_create(
     if (!svc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
         return NULL;
     }
 
@@ -167,6 +168,8 @@ axis2_svc_create(
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service param container creation failed");
         return NULL;
     }
 
@@ -175,6 +178,8 @@ axis2_svc_create(
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service flow container creation failed");
         return NULL;
     }
 
@@ -183,6 +188,8 @@ axis2_svc_create(
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service operation alias map creation failed");
         return NULL;
     }
 
@@ -191,6 +198,8 @@ axis2_svc_create(
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service operation action map creation failed");
         return NULL;
     }
 
@@ -199,15 +208,19 @@ axis2_svc_create(
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service operation rest map creation failed");
         return NULL;
     }
 
-    /** create module list of default size */
+    /** Create module list of default size */
     svc->module_list = axutil_array_list_create(env, 0);
     if (!svc->module_list)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service module list creation failed");
         return NULL;
     }
 
@@ -216,6 +229,8 @@ axis2_svc_create(
     if (!svc->schema_list)
     {
         axis2_svc_free(svc, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service schema list creation failed");
         return NULL;
     }
 
@@ -224,6 +239,8 @@ axis2_svc_create(
     if (!svc->engaged_modules)
     {
         axis2_svc_free(svc, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service engaged modules list creation failed");
         return NULL;
     }
 
@@ -254,6 +271,7 @@ axis2_svc_create(
     if (!svc->base)
     {
         axis2_svc_free(svc, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service base creation failed");
         return NULL;
     }
 
@@ -274,6 +292,9 @@ axis2_svc_create_with_qname(
     if (!svc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service creation failed for name %s", 
+            axutil_qname_get_localpart(qname, env));
         return NULL;
     }
 
@@ -281,6 +302,9 @@ axis2_svc_create_with_qname(
     if (AXIS2_FAILURE == status)
     {
         axis2_svc_free(svc, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Setting name %s to service failed", 
+            axutil_qname_get_localpart(qname, env));
         return NULL;
     }
 
@@ -486,21 +510,20 @@ axis2_svc_add_op(
     axis2_msg_recv_t *msg_recv = NULL;
     const axutil_qname_t *qname = NULL;
     axis2_char_t *key = NULL;
+    const axis2_char_t *svcname = NULL;
     axutil_array_list_t *mappings_list = NULL;
     int size = 0;
     int j = 0;
 
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
-
+    svcname = axis2_svc_get_name(svc, env);
+    qname = axis2_op_get_qname(op, env);
+    if (qname)
+        key = axutil_qname_get_localpart(qname, env);
     mappings_list = axis2_op_get_wsamapping_list(op, env);
-    /* adding action mappings into service */
+    /* Adding action mappings into service */
     if (mappings_list)
         size = axutil_array_list_size(mappings_list, env);
-
-    if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
-    {
-        return status;
-    }
     for (j = 0; j < size; j++)
     {
         axis2_char_t *mapping = NULL;
@@ -510,6 +533,9 @@ axis2_svc_add_op(
         status = axis2_svc_add_mapping(svc, env, mapping, op);
         if (AXIS2_SUCCESS != status)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Adding operation %s to service %s mapping list failed", 
+                svcname, key);
             return status;
         }
     }
@@ -517,6 +543,8 @@ axis2_svc_add_op(
     status = axis2_op_set_parent(op, env, svc);
     if (AXIS2_SUCCESS != status)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Setting service %s as operation %s parent failed", svcname, key);
         return status;
     }
     msg_recv = axis2_op_get_msg_recv(op, env);
@@ -525,9 +553,6 @@ axis2_svc_add_op(
         msg_recv = axis2_desc_builder_load_default_msg_recv(env);
         axis2_op_set_msg_recv(op, env, msg_recv);
     }
-    qname = axis2_op_get_qname(op, env);
-    if (qname)
-        key = axutil_qname_get_localpart(qname, env);
     if (key)
         axutil_hash_set(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING, op);
     return AXIS2_SUCCESS;
@@ -720,7 +745,7 @@ axis2_svc_get_rest_op_list_with_method_and_location(
     AXIS2_PARAM_CHECK(env->error, method, NULL);
     AXIS2_PARAM_CHECK(env->error, location, NULL);
 
-    loc_str_tmp = (axis2_char_t *) location; /* casted to facilitate loop */
+    loc_str_tmp = (axis2_char_t *) location; /* Casted to facilitate loop */
     if (loc_str_tmp[1] == '/')
     {
         loc_str_tmp++;
@@ -851,15 +876,18 @@ axis2_svc_add_param(
     const axutil_env_t * env,
     axutil_param_t * param)
 {
+    axis2_char_t *paramname = NULL;
+    const axis2_char_t *svcname = axis2_svc_get_name(svc, env);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
+    paramname = axutil_param_get_name(param, env);
 
-    if (AXIS2_TRUE == axis2_svc_is_param_locked(svc, env,
-                                                axutil_param_get_name(param,
-                                                                      env)))
+    if (axis2_svc_is_param_locked(svc, env, axutil_param_get_name(param, env)))
     {
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Parameter %s is locked for service %s", paramname, svcname);
         return AXIS2_FAILURE;
     }
     return axutil_param_container_add_param(svc->param_container, env,
@@ -876,7 +904,7 @@ axis2_svc_get_param(
     AXIS2_PARAM_CHECK(env->error, name, NULL);
 
     param = axutil_param_container_get_param(svc->param_container, env, name);
-    if (param == NULL && svc->parent)
+    if (!param && svc->parent)
     {
         param = axis2_svc_grp_get_param(svc->parent, env, name);
     }
@@ -904,12 +932,12 @@ axis2_svc_is_param_locked(
 
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FALSE);
 
-    /* checking the locked value of parent */
+    /* Checking the locked value of parent */
 
     parent = axis2_svc_get_parent(svc, env);
     if (parent)
         locked = axis2_svc_grp_is_param_locked(parent, env, param_name);
-    if (parent && AXIS2_TRUE == locked)
+    if (parent && locked)
     {
         return AXIS2_TRUE;
     }
@@ -930,14 +958,17 @@ axis2_svc_engage_module(
 {
     axis2_phase_resolver_t *phase_resolver = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    const axis2_char_t *svcname = NULL;
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_svc_engage_module");
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
-
+    svcname = axis2_svc_get_name(svc, env);
     phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
     if (!phase_resolver)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating phase resolver failed for service %s", svcname);
         return AXIS2_FAILURE;
     }
     status = axis2_phase_resolver_engage_module_to_svc(phase_resolver, env, svc,
@@ -996,13 +1027,17 @@ axis2_svc_disengage_module(
 {
     axis2_phase_resolver_t *phase_resolver = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    const axis2_char_t *svcname = NULL;
 
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
+    svcname = axis2_svc_get_name(svc, env);
 
     phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
     if (!phase_resolver)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating phase resolver failed for service %s", svcname);
         return AXIS2_FAILURE;
     }
     status =
@@ -1014,6 +1049,12 @@ axis2_svc_disengage_module(
     return status;
 }
 
+/**
+ * Here we extract all operations defined in module.xml and built execution 
+ * chains for them by calling axis2_phase_resolver_build_module_op()
+ * function. Within that function handlers of the modules defined for that 
+ * operation are added to module operation chains appropriately.
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_add_module_ops(
     axis2_svc_t * svc,
@@ -1026,16 +1067,23 @@ axis2_svc_add_module_ops(
     axis2_phase_resolver_t *phase_resolver = NULL;
     axis2_op_t *op_desc = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    const axis2_char_t *svcname = NULL;
+    axis2_char_t *modname = NULL;
+    axis2_char_t *opname = NULL;
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_svc_add_module_ops");
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
-
+    svcname = axis2_svc_get_name(svc, env);
+    modname = axutil_qname_get_localpart(axis2_module_desc_get_qname(module_desc, 
+        env), env);
     map = axis2_module_desc_get_all_ops(module_desc, env);
     phase_resolver = axis2_phase_resolver_create_with_config_and_svc(env, conf,
                                                                      svc);
     if (!phase_resolver)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating phase resolver failed for service %s", svcname);
         return AXIS2_FAILURE;
     }
     for (index = axutil_hash_first(map, env); index; index =
@@ -1044,16 +1092,8 @@ axis2_svc_add_module_ops(
         void *v = NULL;
         axutil_hash_this(index, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
-
-        if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
-        {
-            if (phase_resolver)
-            {
-                axis2_phase_resolver_free(phase_resolver, env);
-            }
-            return AXIS2_FAILURE;
-        }
-
+        opname = axutil_qname_get_localpart(axis2_op_get_qname(op_desc, env), 
+            env);
         status =
             axis2_phase_resolver_build_module_op(phase_resolver, env, op_desc);
 
@@ -1063,6 +1103,9 @@ axis2_svc_add_module_ops(
             {
                 axis2_phase_resolver_free(phase_resolver, env);
             }
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Builidng module operation %s failed for module %s", opname, 
+                modname);
             return status;
         }
 
@@ -1073,6 +1116,8 @@ axis2_svc_add_module_ops(
             {
                 axis2_phase_resolver_free(phase_resolver, env);
             }
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Adding operation %s to service %s failed", opname, svcname);
             return status;
         }
 
@@ -1116,6 +1161,7 @@ axis2_svc_set_name(
     if (!svc->axis_svc_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -1162,6 +1208,7 @@ axis2_svc_set_file_name(
     if (!svc->filename)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -1192,6 +1239,7 @@ axis2_svc_set_svc_desc(
     if (!svc->svc_desc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -1225,9 +1273,10 @@ axis2_svc_add_rest_mapping(
     axis2_char_t *loc_str = NULL;
     axis2_char_t *loc_str_tmp = NULL;
     axis2_char_t *rindex = NULL;
+    const axis2_char_t *svcname = NULL;
     int plen;
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
-
+    svcname = axis2_svc_get_name(svc, env);
     op_list = axis2_svc_get_rest_op_list_with_method_and_location(svc, env,
                                                                   method, location);
     if (!op_list)
@@ -1236,9 +1285,11 @@ axis2_svc_add_rest_mapping(
         if (!op_list)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Creating rest operation list failed for service", svcname);
             return AXIS2_FAILURE;
         }
-        loc_str_tmp = (axis2_char_t *) location; /* casted to facilitate loop */
+        loc_str_tmp = (axis2_char_t *) location; /* Casted to facilitate loop */
         if (loc_str_tmp[1] == '/')
         {
             loc_str_tmp++;
@@ -1509,3 +1560,4 @@ axis2_svc_get_base(
 {
     return svc->base;
 }
+
