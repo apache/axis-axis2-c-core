@@ -672,8 +672,11 @@ is_safe_or_unreserve (char c)
     char reserve[] = { ';', '/', '?', ':', '@', '&', '=', '#', '[', ']', '!', 
                        '$', '\'', '(', ')', '*', '+', ','};
 
-/* reserved       = ";" | "/" | "?" | ":" | "@" | "&" | "="
-   safe           = "$" | "-" | "_" | "." | "+" */
+/* These are reserved and safe charaters , got from RFC
+ * 
+ * reserved       = ";" | "/" | "?" | ":" | "@" | "&" | "="
+ * safe           = "$" | "-" | "_" | "." | "+" 
+ */
 
     int flag = 0;
     int i = 0;
