@@ -2025,11 +2025,10 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * Sets the Output Header list
+     * Gets the Output Header list
      * @param msg_ctx message context
      * @param env pointer to environment struct
-     * @param output_headers Output Header list
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return Output Header list
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_msg_ctx_get_http_output_headers(
@@ -2037,10 +2036,23 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * Gets the Output Header list
+     * Retrieves the Output Headers, and removes them
+     * from the message context
      * @param msg_ctx message context
      * @param env pointer to environment struct
      * @return Output Header list
+     */
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axis2_msg_ctx_extract_http_output_headers(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
+    /**
+     * Sets the Output Header list
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @param output_headers Output Header list
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_http_output_headers(

@@ -226,6 +226,20 @@ axis2_http_simple_response_get_headers(
     return simple_response->header_group;
 }
 
+axutil_array_list_t *AXIS2_CALL
+axis2_http_simple_response_extract_headers(
+    axis2_http_simple_response_t * simple_response,
+    const axutil_env_t * env)
+{
+    axutil_array_list_t *temp = NULL;
+    temp = simple_response->header_group;
+    if (temp)
+    {
+        simple_response->header_group = NULL;
+    }
+    return temp;
+}
+
 axis2_http_header_t *AXIS2_CALL
 axis2_http_simple_response_get_first_header(
     axis2_http_simple_response_t * simple_response,

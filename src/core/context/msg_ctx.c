@@ -2413,6 +2413,24 @@ axis2_msg_ctx_get_http_output_headers(
     }
 }
 
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axis2_msg_ctx_extract_http_output_headers(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    if (msg_ctx)
+    {
+        axutil_array_list_t *temp = NULL;
+        temp = msg_ctx->output_headers;
+        msg_ctx->output_headers = NULL;
+        return temp;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_http_output_headers(
     axis2_msg_ctx_t * msg_ctx,

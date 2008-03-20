@@ -1116,7 +1116,12 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     axis2_msg_ctx_set_status_code (msg_ctx, env, status_code);
 
     response = axis2_http_client_get_response (sender->client, env);
-    if (AXIS2_HTTP_RESPONSE_OK_CODE_VAL == status_code ||
+    if (!is_soap)
+    {
+        return axis2_http_sender_process_response (sender, env,
+                                                   msg_ctx, response);
+    }
+    else if (AXIS2_HTTP_RESPONSE_OK_CODE_VAL == status_code ||
         AXIS2_HTTP_RESPONSE_ACK_CODE_VAL == status_code)
     {
         return axis2_http_sender_process_response (sender, env,
@@ -1326,6 +1331,8 @@ axis2_http_sender_process_response (axis2_http_sender_t * sender,
     }
 
     axis2_http_sender_get_header_info (sender, env, msg_ctx, response);
+    axis2_msg_ctx_set_http_output_headers(msg_ctx, env,
+        axis2_http_simple_response_extract_headers(response, env));
     /*axis_ctx = axis2_op_ctx_get_base( axis2_msg_ctx_get_op_ctx(msg_ctx, env),
       env); */
     property = axutil_property_create (env);
