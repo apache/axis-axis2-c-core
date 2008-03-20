@@ -184,8 +184,9 @@ axiom_soap12_builder_helper_handle_event(
                 axiom_soap_fault_code_t *soap_fault_code = NULL;
                 soap_fault_code = axiom_soap_fault_code_create(env);
                 if (!soap_fault_code)
+                {
                     return AXIS2_FAILURE;
-
+                }
                 axiom_soap_fault_code_set_base_node(soap_fault_code, env,
                                                     om_ele_node);
 
