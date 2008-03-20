@@ -783,6 +783,20 @@ extern "C"
         const axis2_char_t * http_method);
 
     /**
+     * Sets the Additional HTTP Headers to be sent.
+     * @param options pointer to options struct
+     * @param env pointer to environment struct
+     * @param http_header_list array list containing
+     * HTTP Headers.
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_options_set_http_headers(
+        axis2_options_t * options,
+        const axutil_env_t * env,
+        axutil_array_list_t * http_header_list);
+
+    /**
      * Creates the options struct.
      * @param env pointer to environment struct
      * @return a pointer to newly created options struct, or NULL on error 
@@ -801,7 +815,6 @@ extern "C"
      * or NULL on error with error code set in environment's error.
      */
     AXIS2_EXTERN axis2_options_t *AXIS2_CALL
-
     axis2_options_create_with_parent(
         const axutil_env_t * env,
         axis2_options_t * parent);

@@ -1010,6 +1010,24 @@ axis2_options_set_http_method(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_options_set_http_headers(
+    axis2_options_t * options,
+    const axutil_env_t * env,
+    axutil_array_list_t * http_header_list)
+{
+    axutil_property_t *headers_property = NULL;
+
+    headers_property = axutil_property_create(env);
+    axutil_property_set_value(headers_property, env,
+                              http_header_list);
+    axis2_options_set_property(options, env, AXIS2_TRANSPORT_HEADER_PROPERTY,
+                               headers_property);
+    axutil_property_set_free_func(headers_property, env,
+                                  axutil_array_list_free_void_arg);
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_proxy_auth_info(
     axis2_options_t * options,
     const axutil_env_t * env,
