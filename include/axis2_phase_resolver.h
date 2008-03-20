@@ -142,7 +142,10 @@ extern "C"
     /**
      * Engages the given global module to the given service. This means 
      * the given module would be engaged to all operations of the given 
-     * service. 
+     * service. This function should not be used to engage a module to
+     * a service. Use axis2_phase_resolver_engage_module_to_svc() instead.
+     * In future this function will be moved as a local function into
+     * phase resolver.
      * @param phase_resolver pointer to phase resolver
      * @param env pointer to environment struct
      * @param svc pointer to service
