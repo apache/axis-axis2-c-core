@@ -713,9 +713,9 @@ extern "C"
 #define AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP "application/soap+xml"
 
     /**
-     * HEADER_ACCEPT_X_WWW_FROM_URLENCODED
+     * HEADER_ACCEPT_X_WWW_FORM_URLENCODED
      */
-#define AXIS2_HTTP_HEADER_ACCEPT_X_WWW_FROM_URLENCODED "application/x-www-form-urlencoded"
+#define AXIS2_HTTP_HEADER_ACCEPT_X_WWW_FORM_URLENCODED "application/x-www-form-urlencoded"
 
     /**
      * HEADER XOP XML

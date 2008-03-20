@@ -497,7 +497,7 @@ axis2_http_transport_utils_process_http_post_request(
         }
     }
     else if (strstr
-             (content_type, AXIS2_HTTP_HEADER_ACCEPT_X_WWW_FROM_URLENCODED))
+             (content_type, AXIS2_HTTP_HEADER_ACCEPT_X_WWW_FORM_URLENCODED))
     {
         /* REST support */
         do_rest = AXIS2_TRUE;
@@ -874,7 +874,7 @@ axis2_http_transport_utils_process_http_put_request(
         }
     }
     else if (strstr
-             (content_type, AXIS2_HTTP_HEADER_ACCEPT_X_WWW_FROM_URLENCODED))
+             (content_type, AXIS2_HTTP_HEADER_ACCEPT_X_WWW_FORM_URLENCODED))
     {
         /* REST support */
         do_rest = AXIS2_TRUE;
