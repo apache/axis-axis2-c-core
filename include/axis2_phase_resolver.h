@@ -29,9 +29,12 @@
 /**
  * @defgroup axis2_phase_res phase resolver
  * @ingroup axis2_phase_resolver
- * holds phase information in relation to a given service. Encapsulates a
- * reference to axis configuration, the service the phase resolver related to
- * and a phase holder instance that holds the list of phases.
+ * Engaging module descriptions into axis2 configuration, services and 
+ * operations are done here. This is accomplished mainly by following
+ * operations respectively.
+ * axis2_phase_resolver_engage_module_globally().
+ * axis2_phase_resolver_engage_module_to_svc().
+ * axis2_phase_resolver_engage_module_to_op().
  * @{
  */
 

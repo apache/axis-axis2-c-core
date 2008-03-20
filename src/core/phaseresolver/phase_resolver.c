@@ -19,7 +19,15 @@
 #include <axis2_phase_resolver.h>
 #include <axutil_property.h>
 #include <axis2_addr.h>
-
+/*
+ * It is important to understand the following relationships between the
+ * functions defined here and else where.
+ * axis2_phase_resolver_engage_module_globally->axis2_svc_add_module_ops->
+ * ->axis2_phase_resolver_build_module_op->axis2_phase_resolver_build_execution_chains
+ *  and
+ * axis2_phase_resolver_engage_module_to_svc->axis2_svc_add_module_ops->
+ * ->axis2_phase_resolver_build_module_op->axis2_phase_resolver_build_execution_chains
+ */
 struct axis2_phase_resolver
 {
 
