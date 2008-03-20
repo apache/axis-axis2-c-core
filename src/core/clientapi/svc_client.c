@@ -35,6 +35,7 @@
 #include <stdio.h>
 #include <axutil_generic_obj.h>
 #include <axis2_http_transport.h>
+#include <axis2_http_header.h>
 #include <neethi_util.h>
 #include <axis2_policy_include.h>
 
@@ -52,9 +53,10 @@ struct axis2_svc_client
 
     axis2_options_t *override_options;
 
+    /* SOAP Headers */
     axutil_array_list_t *headers;
 
-    /** for receiving the async messages */
+    /* for receiving the async messages */
     axis2_callback_recv_t *callback_recv;
 
     axis2_listener_manager_t *listener_manager;
@@ -73,7 +75,16 @@ struct axis2_svc_client
 
     axis2_char_t *auth_type;
 
+    axutil_array_list_t *http_headers;
+
+    int http_status_code;
+
 };
+
+static void axis2_svc_client_set_http_info(
+    axis2_svc_client_t * svc_client,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx);
 
 static axis2_svc_t *axis2_svc_client_create_annonymous_svc(
     axis2_svc_client_t * svc_client,
@@ -151,6 +162,8 @@ axis2_svc_client_create_for_dynamic_invocation(
     svc_client->callback_recv = NULL;
     svc_client->listener_manager = NULL;
     svc_client->op_client = NULL;
+    svc_client->http_headers = NULL;
+    svc_client->http_status_code = 0;
 
     /** initialize private data to NULL, create options */
     if (!axis2_svc_client_init_data(env, svc_client))
@@ -565,6 +578,7 @@ axis2_svc_client_send_robust_with_op_qname(
 
     axis2_op_client_add_out_msg_ctx(svc_client->op_client, env, msg_ctx);
     status = axis2_op_client_execute(svc_client->op_client, env, AXIS2_TRUE);
+    axis2_svc_client_set_http_info(svc_client, env, msg_ctx);
     svc_client->auth_failed = axis2_msg_ctx_get_auth_failed(msg_ctx, env);
     svc_client->required_auth_is_http =
         axis2_msg_ctx_get_required_auth_is_http(msg_ctx, env);
@@ -643,6 +657,7 @@ axis2_svc_client_fire_and_forget_with_op_qname(
 
     axis2_op_client_add_out_msg_ctx(svc_client->op_client, env, msg_ctx);
     axis2_op_client_execute(svc_client->op_client, env, AXIS2_FALSE);
+    axis2_svc_client_set_http_info(svc_client, env, msg_ctx);
     svc_client->auth_failed = axis2_msg_ctx_get_auth_failed(msg_ctx, env);
     svc_client->required_auth_is_http =
         axis2_msg_ctx_get_required_auth_is_http(msg_ctx, env);
@@ -848,6 +863,7 @@ axis2_svc_client_send_receive_with_op_qname(
 
         axis2_op_client_add_msg_ctx(svc_client->op_client, env, msg_ctx);
         axis2_op_client_execute(svc_client->op_client, env, AXIS2_TRUE);
+        axis2_svc_client_set_http_info(svc_client, env, msg_ctx);
         svc_client->auth_failed = axis2_msg_ctx_get_auth_failed(msg_ctx, env);
         svc_client->required_auth_is_http =
             axis2_msg_ctx_get_required_auth_is_http(msg_ctx, env);
@@ -1019,6 +1035,7 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
     }
 
     axis2_op_client_execute(svc_client->op_client, env, AXIS2_FALSE);
+    axis2_svc_client_set_http_info(svc_client, env, msg_ctx);
     svc_client->auth_failed = axis2_msg_ctx_get_auth_failed(msg_ctx, env);
     svc_client->required_auth_is_http =
         axis2_msg_ctx_get_required_auth_is_http(msg_ctx, env);
@@ -1383,6 +1400,11 @@ axis2_svc_client_free(
         AXIS2_FREE(env->allocator, svc_client->auth_type);
     }
 
+    if (svc_client->http_headers)
+    {
+        axis2_svc_client_set_http_info(svc_client, env, NULL);
+    }
+
     AXIS2_FREE(env->allocator, svc_client);
 
     return;
@@ -1687,3 +1709,90 @@ axis2_svc_client_set_policy(
                                             AXIS2_SERVICE_POLICY, policy);
     return AXIS2_SUCCESS;
 }
+
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axis2_svc_client_get_http_headers(
+    axis2_svc_client_t * svc_client,
+    const axutil_env_t * env)
+{
+    return svc_client->http_headers;
+}
+
+AXIS2_EXTERN int AXIS2_CALL
+axis2_svc_client_get_http_status_code(
+    axis2_svc_client_t * svc_client,
+    const axutil_env_t * env)
+{
+    return svc_client->http_status_code;
+}
+
+void
+axis2_svc_client_set_http_info(
+    axis2_svc_client_t * svc_client,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx)
+{
+    axis2_transport_in_desc_t *transport_in = NULL;
+    axutil_param_t *expose_headers_param = NULL;
+    axis2_bool_t expose_headers = AXIS2_FALSE;
+
+    if (msg_ctx)
+    {
+        transport_in = axis2_msg_ctx_get_transport_in_desc(msg_ctx, env);
+        if (transport_in)
+        {
+            expose_headers_param =
+                 axutil_param_container_get_param(
+                     axis2_transport_in_desc_param_container(transport_in, env), env,
+                     AXIS2_EXPOSE_HEADERS);
+        }
+        if (expose_headers_param)
+        {
+            axis2_char_t *expose_headers_value = NULL;
+            expose_headers_value = axutil_param_get_value(expose_headers_param, env);
+            if (expose_headers_value && 0 == axutil_strcasecmp (expose_headers_value, AXIS2_VALUE_TRUE))
+            {
+                expose_headers = AXIS2_TRUE;
+            }
+        }
+    }
+    if (expose_headers)
+    {
+        if (svc_client->http_headers ==
+            axis2_msg_ctx_extract_http_output_headers(msg_ctx, env))
+        {
+            svc_client->http_status_code = 
+                axis2_msg_ctx_get_status_code(msg_ctx, env);
+            return;
+        }
+    }
+    
+    if (svc_client->http_headers)
+    {
+        axis2_http_header_t *header = NULL;
+        while (axutil_array_list_size(svc_client->http_headers, env))
+        {
+            header = (axis2_http_header_t *)
+                axutil_array_list_remove(svc_client->http_headers, env, 0);
+            if (header)
+            {
+                axis2_http_header_free(header, env);
+            }
+        }
+        axutil_array_list_free(svc_client->http_headers, env);
+        svc_client->http_headers = NULL;
+    }
+    svc_client->http_status_code = 0;
+
+    if (msg_ctx)
+    {
+        if (expose_headers)
+        {
+            svc_client->http_headers =
+                axis2_msg_ctx_extract_http_output_headers(msg_ctx, env);
+        }
+        svc_client->http_status_code = 
+            axis2_msg_ctx_get_status_code(msg_ctx, env);
+    }
+}
+

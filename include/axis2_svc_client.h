@@ -625,6 +625,28 @@ extern "C"
         const axutil_env_t * env,
         neethi_policy_t * policy);
 
+    /**
+     * Gets the HTTP Headers of the last response.
+     * @param svc_client pointer to service_client struct
+     * @param env pointer to environemt struct
+     * @return list of HTTP Response Headers
+     */
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axis2_svc_client_get_http_headers(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
+
+    /**
+     * Gets the HTTP Status Code of the last response.
+     * @param svc_client pointer to service_client struct
+     * @param env pointer to environemt struct
+     * @return HTTP Status Code
+     */
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_svc_client_get_http_status_code(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
+
     /** @} */
 #ifdef __cplusplus
 }
