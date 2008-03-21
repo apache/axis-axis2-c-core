@@ -47,8 +47,6 @@ axis2_phase_rule_create(
 {
     axis2_phase_rule_t *phase_rule = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     phase_rule = AXIS2_MALLOC(env->allocator, sizeof(axis2_phase_rule_t));
     if (!phase_rule)
     {
@@ -85,8 +83,6 @@ axis2_phase_rule_set_before(
     const axutil_env_t * env,
     const axis2_char_t * before)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (phase_rule->before)
     {
         AXIS2_FREE(env->allocator, phase_rule->before);
@@ -120,8 +116,6 @@ axis2_phase_rule_set_after(
     const axutil_env_t * env,
     const axis2_char_t * after)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (phase_rule->after)
     {
         AXIS2_FREE(env->allocator, phase_rule->after);
@@ -155,8 +149,6 @@ axis2_phase_rule_set_name(
     const axutil_env_t * env,
     const axis2_char_t * name)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (phase_rule->name)
     {
         AXIS2_FREE(env->allocator, phase_rule->name);
@@ -181,7 +173,6 @@ axis2_phase_rule_is_first(
     const axis2_phase_rule_t * phase_rule,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return phase_rule->first;
 }
 
@@ -191,7 +182,6 @@ axis2_phase_rule_set_first(
     const axutil_env_t * env,
     axis2_bool_t first)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     phase_rule->first = first;
     return AXIS2_SUCCESS;
 }
@@ -201,7 +191,6 @@ axis2_phase_rule_is_last(
     const axis2_phase_rule_t * phase_rule,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return phase_rule->last;
 }
 
@@ -211,7 +200,6 @@ axis2_phase_rule_set_last(
     const axutil_env_t * env,
     axis2_bool_t last)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     phase_rule->last = last;
     return AXIS2_SUCCESS;
 }
@@ -221,8 +209,6 @@ axis2_phase_rule_free(
     axis2_phase_rule_t * phase_rule,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (phase_rule->before)
     {
         AXIS2_FREE(env->allocator, phase_rule->before);
@@ -249,7 +235,6 @@ axis2_phase_rule_clone(
     const axutil_env_t * env)
 {
     axis2_phase_rule_t *phase_rule_new = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     phase_rule_new = axis2_phase_rule_create(env, NULL);
     if (!phase_rule_new)
@@ -272,3 +257,4 @@ axis2_phase_rule_clone(
 
     return phase_rule_new;
 }
+
