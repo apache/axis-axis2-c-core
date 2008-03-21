@@ -309,7 +309,7 @@ _axis2_phase_get_before_after(
 
     if (before && after)
     {
-        if (axutil_strcmp(before, after) == 0)
+        if (!axutil_strcmp(before, after))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BEFORE_AFTER_HANDLERS_SAME,
                             AXIS2_FAILURE);
@@ -556,7 +556,7 @@ _axis2_phase_is_valid_before(
         if (!before)
             return AXIS2_TRUE;
 
-        if (axutil_strcmp(first_handler_name, before) == 0)
+        if (!axutil_strcmp(first_handler_name, before))
             return AXIS2_FALSE;
         else
             return AXIS2_TRUE;
@@ -601,7 +601,7 @@ _axis2_phase_is_valid_after(
         if (!after)
             return AXIS2_TRUE;
 
-        if (axutil_strcmp(last_handler_name, after) == 0)
+        if (!axutil_strcmp(last_handler_name, after))
             return AXIS2_FALSE;
         else
             return AXIS2_TRUE;
@@ -691,7 +691,7 @@ axis2_phase_insert_before(
             return AXIS2_FAILURE;
         }
 
-        if (axutil_strcmp(before, handler_name) == 0)
+        if (!axutil_strcmp(before, handler_name))
         {
             /*return axutil_array_list_add(phase->handlers, env, handler); */
             return axis2_phase_add_unique(env, phase->handlers, handler);
@@ -734,7 +734,7 @@ axis2_phase_insert_before(
                 return AXIS2_FAILURE;
             }
 
-            if (axutil_strcmp(before, handler_name) == 0)
+            if (!axutil_strcmp(before, handler_name))
             {
                 return axutil_array_list_add_at(phase->handlers, env, i,
                                                 handler);
@@ -825,7 +825,7 @@ axis2_phase_insert_after(
             return AXIS2_FAILURE;
         }
 
-        if (axutil_strcmp(after, handler_name) == 0)
+        if (!axutil_strcmp(after, handler_name))
         {
             return axutil_array_list_add_at(phase->handlers, env, 0, handler);
         }
@@ -865,7 +865,7 @@ axis2_phase_insert_after(
                 return AXIS2_FAILURE;
             }
 
-            if (axutil_strcmp(after, handler_name) == 0)
+            if (!axutil_strcmp(after, handler_name))
             {
                 if (i == (size - 1))
                 {
@@ -1017,8 +1017,8 @@ axis2_phase_insert_before_and_after(
 
     if (before_handler_name && after_handler_name)
     {
-        if (axutil_strcmp(before_handler_name, before_name) == 0 &&
-            axutil_strcmp(after_handler_name, after_name) == 0)
+        if (!axutil_strcmp(before_handler_name, before_name) &&
+            !axutil_strcmp(after_handler_name, after_name))
         {
             return axis2_phase_add_unique(env, phase->handlers, handler);
         }
@@ -1026,7 +1026,7 @@ axis2_phase_insert_before_and_after(
 
     if (after_handler_name)
     {
-        if (axutil_strcmp(after_handler_name, after_name) == 0)
+        if (!axutil_strcmp(after_handler_name, after_name))
             after = 0;
     }
 
@@ -1034,7 +1034,7 @@ axis2_phase_insert_before_and_after(
 
     if (after_handler_name)
     {
-        if (axutil_strcmp(before_handler_name, before_name) == 0)
+        if (!axutil_strcmp(before_handler_name, before_name))
             before = size;
     }
 
@@ -1071,9 +1071,9 @@ axis2_phase_insert_before_and_after(
                 return AXIS2_FAILURE;
             }
 
-            if (axutil_strcmp(handler_name, after_name) == 0)
+            if (!axutil_strcmp(handler_name, after_name))
                 after = i;
-            if (axutil_strcmp(handler_name, before_name) == 0)
+            if (!axutil_strcmp(handler_name, before_name))
                 before = i;
         }
 
