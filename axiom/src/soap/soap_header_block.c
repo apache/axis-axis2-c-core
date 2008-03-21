@@ -66,7 +66,6 @@ axiom_soap_header_block_create_with_parent(
     axiom_node_t *this_node = NULL;
     axiom_node_t *parent_node = NULL;
     axiom_element_t *om_ele = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
 
     header_block = axiom_soap_header_block_create(env);
@@ -98,7 +97,6 @@ axiom_soap_header_block_free(
     axiom_soap_header_block_t * header_block,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
     AXIS2_FREE(env->allocator, header_block);
     return;
 }
@@ -111,7 +109,6 @@ axiom_soap_header_block_set_role(
 {
     const axis2_char_t *attr_localname = NULL;
     const axis2_char_t *attr_nsuri = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (header_block->soap_version == AXIOM_SOAP_VERSION_NOT_SET)
         return AXIS2_FAILURE;
@@ -138,7 +135,6 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL axiom_soap_header_block_get_role(
     const axis2_char_t *attr_localname = NULL;
     const axis2_char_t *attr_nsuri = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
 
     if (header_block->soap_version == AXIOM_SOAP_VERSION_NOT_SET)
         return NULL;
@@ -165,7 +161,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
     const axis2_char_t *attr_nsuri = NULL;
     const axis2_char_t *attr_value = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (header_block->soap_version == AXIOM_SOAP_VERSION_NOT_SET)
         return AXIS2_FAILURE;
@@ -200,7 +195,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 {
     const axis2_char_t *attr_nsuri = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, must_understand, AXIS2_FAILURE);
 
     if (header_block->soap_version == AXIOM_SOAP_VERSION_NOT_SET)
@@ -238,13 +232,13 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
     }
 }
 
-AXIS2_EXTERN axis2_bool_t AXIS2_CALL axiom_soap_header_block_get_must_understand(
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
+axiom_soap_header_block_get_must_understand(
     axiom_soap_header_block_t * header_block,
     const axutil_env_t * env)
 {
     const axis2_char_t *must_understand = NULL;
     const axis2_char_t *attr_nsuri = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (header_block->soap_version == AXIOM_SOAP_VERSION_NOT_SET)
         return AXIS2_FAILURE;
@@ -282,7 +276,8 @@ AXIS2_EXTERN axis2_bool_t AXIS2_CALL axiom_soap_header_block_get_must_understand
     return AXIS2_FALSE;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_header_block_set_attribute(
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+axiom_soap_header_block_set_attribute(
     axiom_soap_header_block_t * header_block,
     const axutil_env_t * env,
     const axis2_char_t * attr_name,
@@ -298,7 +293,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_header_block_set_attribute(
     axiom_namespace_t *om_ns = NULL;
     axiom_element_t *om_ele = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, attr_name, AXIS2_FAILURE);
 
     header_node = axiom_node_get_parent(header_block->om_ele_node, env);
@@ -356,7 +350,8 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_header_block_set_attribute(
                                        header_block->om_ele_node);
 }
 
-AXIS2_EXTERN axis2_char_t *AXIS2_CALL axiom_soap_header_block_get_attribute(
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
+axiom_soap_header_block_get_attribute(
     axiom_soap_header_block_t * header_block,
     const axutil_env_t * env,
     const axis2_char_t * attr_name,
@@ -370,7 +365,6 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL axiom_soap_header_block_get_attribute(
     axis2_char_t *prefix = NULL;
     axutil_qname_t *qn = NULL;
     axiom_element_t *om_ele = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, attr_name, NULL);
     AXIS2_PARAM_CHECK(env->error, soap_envelope_namespace_uri, NULL);
 
@@ -410,7 +404,6 @@ AXIS2_EXTERN axis2_bool_t AXIS2_CALL axiom_soap_header_block_is_processed(
     axiom_soap_header_block_t * header_block,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return header_block->processed;
 }
 
@@ -418,7 +411,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_header_block_set_processed(
     axiom_soap_header_block_t * header_block,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     header_block->processed = AXIS2_TRUE;
     return AXIS2_SUCCESS;
 }
@@ -428,7 +420,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_header_block_set_base_node(
     const axutil_env_t * env,
     axiom_node_t * node)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
     if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
@@ -446,7 +437,6 @@ AXIS2_EXTERN axiom_node_t *AXIS2_CALL axiom_soap_header_block_get_base_node(
     axiom_soap_header_block_t * header_block,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return header_block->om_ele_node;
 }
 
@@ -454,7 +444,6 @@ AXIS2_EXTERN int AXIS2_CALL axiom_soap_header_block_get_soap_version(
     axiom_soap_header_block_t * header_block,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return header_block->soap_version;
 }
 
@@ -463,7 +452,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_header_block_set_soap_version(
     const axutil_env_t * env,
     int soap_version)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     header_block->soap_version = soap_version;
     return AXIS2_SUCCESS;

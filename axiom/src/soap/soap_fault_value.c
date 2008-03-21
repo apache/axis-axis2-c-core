@@ -33,7 +33,6 @@ axiom_soap_fault_value_create(
     const axutil_env_t * env)
 {
     axiom_soap_fault_value_t *fault_value = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     fault_value = (axiom_soap_fault_value_t *) AXIS2_MALLOC(env->allocator,
                                                             sizeof
@@ -64,7 +63,6 @@ axiom_soap_fault_value_create_with_subcode(
     axiom_element_t *parent_ele = NULL;
     int soap_version = -1;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, parent, NULL);
 
     fault_value = axiom_soap_fault_value_create(env);
@@ -127,7 +125,6 @@ axiom_soap_fault_value_create_with_code(
     axiom_node_t *parent_node = NULL;
     axiom_element_t *parent_ele = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, parent, NULL);
 
     fault_value = axiom_soap_fault_value_create(env);
@@ -177,7 +174,6 @@ axiom_soap_fault_value_free(
     axiom_soap_fault_value_t * fault_value,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
     AXIS2_FREE(env->allocator, fault_value);
     return;
 }
@@ -188,7 +184,6 @@ axiom_soap_fault_value_set_base_node(
     const axutil_env_t * env,
     axiom_node_t * node)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (node && (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT))
     {
@@ -237,7 +232,6 @@ axiom_soap_fault_value_set_text(
     const axutil_env_t * env,
     axis2_char_t * text)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, text, AXIS2_FAILURE);
     if (fault_value->om_ele_node &&
         axiom_node_get_node_type(fault_value->om_ele_node,

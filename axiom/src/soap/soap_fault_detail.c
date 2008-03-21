@@ -32,7 +32,6 @@ axiom_soap_fault_detail_create(
 {
     axiom_soap_fault_detail_t *fault_detail = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
 
     fault_detail = (axiom_soap_fault_detail_t *) AXIS2_MALLOC(env->allocator,
                                                               sizeof
@@ -61,7 +60,6 @@ AXIS2_EXTERN axiom_soap_fault_detail_t *AXIS2_CALL
     axiom_namespace_t *parent_ns = NULL;
     int soap_version = -1;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, fault, NULL);
 
     fault_detail = axiom_soap_fault_detail_create(env);
@@ -101,7 +99,6 @@ axiom_soap_fault_detail_free(
     axiom_soap_fault_detail_t * fault_detail,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
     AXIS2_FREE(env->allocator, fault_detail);
     return;
 }
@@ -111,7 +108,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_fault_detail_add_detail_entry(
     const axutil_env_t * env,
     axiom_node_t * node)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
     if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
@@ -146,7 +142,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_fault_detail_set_base_node(
     const axutil_env_t * env,
     axiom_node_t * node)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
     if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)

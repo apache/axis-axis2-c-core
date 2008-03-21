@@ -32,8 +32,6 @@ axiom_soap_fault_role_create(
 {
     axiom_soap_fault_role_t *fault_role = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     fault_role = (axiom_soap_fault_role_t *) AXIS2_MALLOC(env->allocator,
                                                           sizeof
                                                           (axiom_soap_fault_role_t));
@@ -65,7 +63,6 @@ axiom_soap_fault_role_create_with_parent(
 
     axiom_namespace_t *parent_ns = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, fault, NULL);
 
     fault_role = axiom_soap_fault_role_create(env);
@@ -114,7 +111,6 @@ axiom_soap_fault_role_free(
     axiom_soap_fault_role_t * fault_role,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
     AXIS2_FREE(env->allocator, fault_role);
     return;
 }
@@ -126,7 +122,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_fault_role_set_role_value(
 {
     axiom_element_t *role_ele = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, uri, AXIS2_FAILURE);
 
     if (!fault_role->om_ele_node)
@@ -167,7 +162,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_fault_role_set_base_node(
     const axutil_env_t * env,
     axiom_node_t * node)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
     if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)

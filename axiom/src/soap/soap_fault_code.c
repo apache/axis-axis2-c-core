@@ -41,7 +41,6 @@ axiom_soap_fault_code_create(
     const axutil_env_t * env)
 {
     axiom_soap_fault_code_t *fault_code = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     fault_code = (axiom_soap_fault_code_t *) AXIS2_MALLOC(env->allocator,
                                                           sizeof
                                                           (axiom_soap_fault_code_t));
@@ -75,7 +74,6 @@ axiom_soap_fault_code_create_with_parent(
 
     axiom_namespace_t *parent_ns = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, fault, NULL);
 
     fault_code = axiom_soap_fault_code_create(env);
@@ -129,7 +127,6 @@ axiom_soap_fault_code_create_with_parent_value(
 {
     axiom_soap_fault_code_t *fault_code = NULL;
     axiom_soap_fault_value_t *fault_value = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, value, NULL);
 
     fault_code = axiom_soap_fault_code_create_with_parent(env, fault);
@@ -153,7 +150,6 @@ axiom_soap_fault_code_free(
     axiom_soap_fault_code_t * fault_code,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
 
     if (fault_code->subcode)
     {
@@ -174,7 +170,6 @@ axiom_soap_fault_code_set_value(
     const axutil_env_t * env,
     axiom_soap_fault_value_t * fault_val)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     AXIS2_PARAM_CHECK(env->error, fault_val, AXIS2_FAILURE);
 
@@ -197,7 +192,6 @@ axiom_soap_fault_code_set_sub_code(
     const axutil_env_t * env,
     axiom_soap_fault_sub_code_t * fault_subcode)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, fault_subcode, AXIS2_FAILURE);
 
     if (!(fault_code->subcode))
@@ -271,7 +265,6 @@ axiom_soap_fault_code_set_base_node(
     const axutil_env_t * env,
     axiom_node_t * node)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
     if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
@@ -298,7 +291,6 @@ axiom_soap_fault_code_set_builder(
     const axutil_env_t * env,
     axiom_soap_builder_t * soap_builder)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, soap_builder, AXIS2_FAILURE);
     fault_code->builder = soap_builder;
     return AXIS2_SUCCESS;
@@ -318,7 +310,6 @@ axiom_soap_fault_code_set_soap_version(
     const axutil_env_t * env,
     int soap_version)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     fault_code->soap_version = soap_version;
     return AXIS2_SUCCESS;
 }

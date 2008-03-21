@@ -39,7 +39,6 @@ axiom_soap_fault_text_create(
     const axutil_env_t * env)
 {
     axiom_soap_fault_text_t *fault_text = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     fault_text = (axiom_soap_fault_text_t *) AXIS2_MALLOC(env->allocator,
                                                           sizeof
@@ -78,7 +77,6 @@ axiom_soap_fault_text_create_with_parent(
     axiom_node_t *parent_node = NULL;
     axiom_element_t *parent_ele = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, parent, NULL);
 
     fault_text = axiom_soap_fault_text_create(env);
@@ -130,7 +128,6 @@ axiom_soap_fault_text_free(
     axiom_soap_fault_text_t * fault_text,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
 
     if (fault_text->lang_ns_used == AXIS2_FALSE && fault_text->lang_namespace)
     {
@@ -151,7 +148,6 @@ axiom_soap_fault_text_set_lang(
     int status = AXIS2_SUCCESS;
     axiom_element_t *om_ele = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, lang, AXIS2_FAILURE);
 
     if (fault_text->lang_attribute)
@@ -210,7 +206,6 @@ axiom_soap_fault_text_get_lang(
     axiom_element_t *om_ele = NULL;
     axutil_qname_t *tmp_qname = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     if (!fault_text->om_ele_node)
         return NULL;
 
@@ -246,7 +241,6 @@ axiom_soap_fault_text_set_base_node(
     const axutil_env_t * env,
     axiom_node_t * node)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (node && (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT))
     {
@@ -263,7 +257,6 @@ axiom_soap_fault_text_get_base_node(
     axiom_soap_fault_text_t * fault_text,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return fault_text->om_ele_node;
 }
 
@@ -274,7 +267,6 @@ axiom_soap_fault_text_set_text(
     axis2_char_t * value,
     axis2_char_t * lang)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
 
     if (fault_text->om_ele_node)
@@ -302,7 +294,6 @@ axiom_soap_fault_text_get_text(
     const axutil_env_t * env)
 {
     axis2_char_t *text = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     if (fault_text->om_ele_node)
     {
