@@ -35,6 +35,7 @@
 #include <axis2_defines.h>
 #include <axutil_env.h>
 #include <axis2_http_simple_response.h>
+#include <axis2_out_transport_info.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -47,6 +48,7 @@ extern "C"
 
     struct axis2_http_out_transport_info
     {
+        axis2_out_transport_info_t out_transport;
         axis2_http_simple_response_t *response;
         axis2_char_t *encoding;
 

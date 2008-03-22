@@ -121,7 +121,7 @@ extern "C"
     struct axis2_options;
     struct axis2_transport_in_desc;
     struct axis2_transport_out_desc;
-    struct axis2_http_out_transport_info;
+    struct axis2_out_transport_info;
 
     /** Type name for pointer to a function to find a service */
     typedef struct axis2_svc *(
@@ -1667,8 +1667,8 @@ extern "C"
      * @param env pointer to environment struct
      * @return reference to HTTP Out Transport Info associated 
      */
-    AXIS2_EXTERN struct axis2_http_out_transport_info *AXIS2_CALL
-    axis2_msg_ctx_get_http_out_transport_info(
+    AXIS2_EXTERN struct axis2_out_transport_info *AXIS2_CALL
+    axis2_msg_ctx_get_out_transport_info(
         axis2_msg_ctx_t * msg_ctx,
         const axutil_env_t * env);
 
@@ -1676,15 +1676,15 @@ extern "C"
      * Sets the HTTP Out Transport Info associated
      * @param msg_ctx message context
      * @param env pointer to environment struct
-     * @param http_out_transport_info reference to HTTP Out
+     * @param out_transport_info reference to HTTP Out
      * Transport Info associated 
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_msg_ctx_set_http_out_transport_info(
+    axis2_msg_ctx_set_out_transport_info(
         axis2_msg_ctx_t * msg_ctx,
         const axutil_env_t * env,
-        struct axis2_http_out_transport_info *http_out_transport_info);
+        struct axis2_out_transport_info *out_transport_info);
 
     /**
      * Resets the HTTP Out Transport Info associated
@@ -1693,7 +1693,7 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_msg_ctx_reset_http_out_transport_info(
+    axis2_msg_ctx_reset_out_transport_info(
         axis2_msg_ctx_t * msg_ctx,
         const axutil_env_t * env);
 

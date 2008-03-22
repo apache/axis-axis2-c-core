@@ -24,7 +24,7 @@
 #include <axis2_conf.h>
 #include <axis2_transport_in_desc.h>
 #include <axis2_transport_out_desc.h>
-#include <axis2_http_out_transport_info.h>
+#include <axis2_out_transport_info.h>
 #include <axis2_http_accept_record.h>
 #include <axis2_http_header.h>
 #include <axiom_soap_envelope.h>
@@ -199,7 +199,7 @@ struct axis2_msg_ctx
 
     axutil_string_t *charset_encoding;
     axutil_stream_t *transport_out_stream;
-    axis2_http_out_transport_info_t *http_out_transport_info;
+    axis2_out_transport_info_t *out_transport_info;
     axutil_hash_t *transport_headers;
     axutil_array_list_t *output_headers;
     axutil_array_list_t *accept_record_list;
@@ -278,7 +278,7 @@ axis2_msg_ctx_create(
     msg_ctx->paused_phase_index = 0;
     msg_ctx->charset_encoding = NULL;
     msg_ctx->transport_out_stream = NULL;
-    msg_ctx->http_out_transport_info = NULL;
+    msg_ctx->out_transport_info = NULL;
     msg_ctx->transport_headers = NULL;
     msg_ctx->accept_record_list = NULL;
     msg_ctx->accept_charset_record_list = NULL;
@@ -422,9 +422,9 @@ axis2_msg_ctx_free(
         axutil_stream_free(msg_ctx->transport_out_stream, env);
     }
 
-    if (msg_ctx->http_out_transport_info)
+    if (msg_ctx->out_transport_info)
     {
-        AXIS2_HTTP_OUT_TRANSPORT_INFO_FREE(msg_ctx->http_out_transport_info,
+        AXIS2_OUT_TRANSPORT_INFO_FREE(msg_ctx->out_transport_info,
                                            env);
     }
 
@@ -2151,15 +2151,15 @@ axis2_msg_ctx_reset_transport_out_stream(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_http_out_transport_info_t *AXIS2_CALL
-axis2_msg_ctx_get_http_out_transport_info(
+AXIS2_EXTERN axis2_out_transport_info_t *AXIS2_CALL
+axis2_msg_ctx_get_out_transport_info(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
     AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
     if (msg_ctx)
     {
-        return msg_ctx->http_out_transport_info;
+        return msg_ctx->out_transport_info;
     }
     else
     {
@@ -2168,21 +2168,21 @@ axis2_msg_ctx_get_http_out_transport_info(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_msg_ctx_set_http_out_transport_info(
+axis2_msg_ctx_set_out_transport_info(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env,
-    axis2_http_out_transport_info_t * http_out_transport_info)
+    axis2_out_transport_info_t * out_transport_info)
 {
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
     if (msg_ctx)
     {
-        if (msg_ctx->http_out_transport_info)
+        if (msg_ctx->out_transport_info)
         {
-            AXIS2_HTTP_OUT_TRANSPORT_INFO_FREE(msg_ctx->http_out_transport_info,
+            AXIS2_OUT_TRANSPORT_INFO_FREE(msg_ctx->out_transport_info,
                                                env);
         }
 
-        msg_ctx->http_out_transport_info = http_out_transport_info;
+        msg_ctx->out_transport_info = out_transport_info;
     }
     else
     {
@@ -2193,14 +2193,14 @@ axis2_msg_ctx_set_http_out_transport_info(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_msg_ctx_reset_http_out_transport_info(
+axis2_msg_ctx_reset_out_transport_info(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
     if (msg_ctx)
     {
-        msg_ctx->http_out_transport_info = NULL;
+        msg_ctx->out_transport_info = NULL;
     }
     else
     {

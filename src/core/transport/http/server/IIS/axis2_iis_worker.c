@@ -194,8 +194,8 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
     }
     iis_out_transport_info = axis2_iis_out_transport_info_create(env, lpECB);
 
-    axis2_msg_ctx_set_http_out_transport_info(msg_ctx, env,
-        iis_out_transport_info);
+    axis2_msg_ctx_set_out_transport_info(msg_ctx, env,
+        &(iis_out_transport_info->out_transport));
     cbSize = INTERNET_MAX_URL_LENGTH;
     if (lpECB->GetServerVariable(lpECB->ConnID, "HTTP_SOAPAction", soap_action, &cbSize))
     {
@@ -248,8 +248,8 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
                 body_str_len = (int)strlen(body_string);
                 /* We are sure that the difference lies within the int range */
             }
-            axis2_http_out_transport_info_set_content_type
-                (iis_out_transport_info, env, "text/html");
+            AXIS2_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(&(iis_out_transport_info->out_transport),
+                env, "text/html");
             send_status = OK;
         }
     }
@@ -389,7 +389,7 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
             msg_id =
                 axutil_strdup(env, axis2_msg_ctx_get_msg_id(in_msg_ctx, env));
             conf_ctx = axis2_msg_ctx_get_conf_ctx(in_msg_ctx, env);
-            axis2_msg_ctx_reset_http_out_transport_info(in_msg_ctx, env);
+            axis2_msg_ctx_reset_out_transport_info(in_msg_ctx, env);
             axis2_msg_ctx_reset_transport_out_stream(in_msg_ctx, env);
             axis2_msg_ctx_free(in_msg_ctx, env);
             in_msg_ctx = NULL;

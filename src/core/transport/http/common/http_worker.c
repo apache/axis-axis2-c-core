@@ -443,8 +443,8 @@ axis2_http_worker_process_request(
 
     http_out_transport_info =
         axis2_http_out_transport_info_create(env, response);
-    axis2_msg_ctx_set_http_out_transport_info(msg_ctx, env,
-                                              http_out_transport_info);
+    axis2_msg_ctx_set_out_transport_info(msg_ctx, env,
+        &(http_out_transport_info->out_transport));
 
     if (axis2_http_simple_request_get_first_header(simple_request, env,
                                                    AXIS2_HTTP_HEADER_SOAP_ACTION))

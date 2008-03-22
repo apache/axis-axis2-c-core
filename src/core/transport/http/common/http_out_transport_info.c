@@ -21,6 +21,45 @@
 #include <axis2_http_transport.h>
 #include <axutil_string.h>
 
+#define AXIS2_INTF_TO_IMPL(out_transport_info)   \
+            ((axis2_http_out_transport_info_t *) \
+            (out_transport_info))
+
+axis2_status_t AXIS2_CALL
+axis2_out_transport_info_impl_set_content_type(
+    axis2_out_transport_info_t * out_transport_info,
+    const axutil_env_t * env,
+    const axis2_char_t * content_type)
+{
+    return axis2_http_out_transport_info_set_content_type(AXIS2_INTF_TO_IMPL(out_transport_info),
+        env, content_type);
+}
+
+axis2_status_t AXIS2_CALL
+axis2_out_transport_info_impl_set_char_encoding(
+    axis2_out_transport_info_t * out_transport_info,
+    const axutil_env_t * env,
+    const axis2_char_t * encoding)
+{
+    return axis2_http_out_transport_info_set_char_encoding(AXIS2_INTF_TO_IMPL(out_transport_info),
+        env, encoding);
+}
+
+void AXIS2_CALL
+axis2_out_transport_info_impl_free(
+    axis2_out_transport_info_t * out_transport_info,
+    const axutil_env_t * env)
+{
+    axis2_http_out_transport_info_free(AXIS2_INTF_TO_IMPL(out_transport_info), env);
+    return;
+}
+
+static const axis2_out_transport_info_ops_t ops_var = {
+    axis2_out_transport_info_impl_set_content_type,
+    axis2_out_transport_info_impl_set_char_encoding,
+    axis2_out_transport_info_impl_free
+};
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_out_transport_info_impl_set_content_type(
     axis2_http_out_transport_info_t * http_out_transport_info,
@@ -118,6 +157,7 @@ axis2_http_out_transport_info_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+    http_out_transport_info->out_transport.ops = &ops_var;
     http_out_transport_info->response = response;
     http_out_transport_info->encoding = NULL;
     http_out_transport_info->set_char_encoding = NULL;
@@ -151,7 +191,7 @@ axis2_http_out_transport_info_free_void_arg(
     axis2_http_out_transport_info_t *transport_info_l = NULL;
 
     AXIS2_ENV_CHECK(env, void);
-    transport_info_l = (axis2_http_out_transport_info_t *) transport_info;
+    transport_info_l = AXIS2_INTF_TO_IMPL(transport_info);
     axis2_http_out_transport_info_free(transport_info_l, env);
     return;
 }

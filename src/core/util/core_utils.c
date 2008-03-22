@@ -154,9 +154,9 @@ axis2_core_utils_create_out_msg_ctx(
 
     out_stream = axis2_msg_ctx_get_transport_out_stream(in_msg_ctx, env);
     axis2_msg_ctx_set_transport_out_stream(new_msg_ctx, env, out_stream);
-    axis2_msg_ctx_set_http_out_transport_info(new_msg_ctx, env,
-                                              axis2_msg_ctx_get_http_out_transport_info
-                                              (in_msg_ctx, env));
+    axis2_msg_ctx_set_out_transport_info(new_msg_ctx, env,
+         axis2_msg_ctx_get_out_transport_info
+         (in_msg_ctx, env));
 
     /* Setting the charater set encoding */
     doing_rest = axis2_msg_ctx_get_doing_rest(in_msg_ctx, env);
@@ -204,7 +204,7 @@ axis2_core_utils_reset_out_msg_ctx(
     axis2_msg_ctx_set_op_ctx(out_msg_ctx, env, NULL);
     axis2_msg_ctx_set_svc_ctx(out_msg_ctx, env, NULL);
     axis2_msg_ctx_reset_transport_out_stream(out_msg_ctx, env);
-    axis2_msg_ctx_reset_http_out_transport_info(out_msg_ctx, env);
+    axis2_msg_ctx_reset_out_transport_info(out_msg_ctx, env);
     axis2_msg_ctx_set_svc_grp_ctx(out_msg_ctx, env, NULL);
 
     return;

@@ -317,7 +317,8 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
             axis2_bool_t is_soap11 = AXIS2_FALSE;
             axis2_op_ctx_t *op_ctx = NULL;
 
-            out_info = axis2_msg_ctx_get_http_out_transport_info(msg_ctx, env);
+            out_info = (axis2_http_out_transport_info_t *)
+                axis2_msg_ctx_get_out_transport_info(msg_ctx, env);
 
             if (!out_info)
             {

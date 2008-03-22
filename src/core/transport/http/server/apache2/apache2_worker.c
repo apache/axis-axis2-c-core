@@ -266,8 +266,8 @@ axis2_apache2_worker_process_request(
 
     apache2_out_transport_info = axis2_apache2_out_transport_info_create(env,
                                                                          request);
-    axis2_msg_ctx_set_http_out_transport_info(msg_ctx, env,
-                                              apache2_out_transport_info);
+    axis2_msg_ctx_set_out_transport_info(msg_ctx, env,
+        &(apache2_out_transport_info->out_transport));
 
     accept_header_value = (axis2_char_t *)
         apr_table_get(request->headers_in, AXIS2_HTTP_HEADER_ACCEPT);
@@ -1171,7 +1171,7 @@ axis2_apache2_worker_process_request(
             msg_id =
                 axutil_strdup(env, axis2_msg_ctx_get_msg_id(in_msg_ctx, env));
             conf_ctx = axis2_msg_ctx_get_conf_ctx(in_msg_ctx, env);
-            axis2_msg_ctx_reset_http_out_transport_info(in_msg_ctx, env);
+            axis2_msg_ctx_reset_out_transport_info(in_msg_ctx, env);
             axis2_msg_ctx_free(in_msg_ctx, env);
             in_msg_ctx = NULL;
             msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;

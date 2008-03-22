@@ -26,7 +26,6 @@
 #include <axiom_soap_header.h>
 #include <axiom_soap_header_block.h>
 #include <axis2_transport_sender.h>
-#include <axis2_http_transport.h>
 #include <axis2_addr.h>
 #include <axutil_uuid_gen.h>
 
@@ -628,9 +627,9 @@ axis2_engine_create_fault_msg_ctx(
     axis2_msg_ctx_set_doing_rest (fault_ctx, env, doing_rest);
 
     axis2_msg_ctx_set_soap_envelope(fault_ctx, env, envelope);
-    axis2_msg_ctx_set_http_out_transport_info(fault_ctx, env,
-                                              axis2_msg_ctx_get_http_out_transport_info
-                                              (processing_context, env));
+    axis2_msg_ctx_set_out_transport_info(fault_ctx, env,
+                                         axis2_msg_ctx_get_out_transport_info
+                                         (processing_context, env));
     return fault_ctx;
 }
 
