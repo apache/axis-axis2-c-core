@@ -113,6 +113,32 @@ extern "C"
         AXIS2_ERROR_SET_STATUS_CODE(error, status_code);    \
     }
 
+    /**
+     * This macro is used to set and error, and log it. In addition to that
+     * you are capable of specifying the file name and line number
+     * @param env Reference to env struct
+     * @param error_number Error number for the error occured
+     * @param status_code The Error Status to be set
+     * @param file_name_line_no File name and line number constant
+     */
+#define AXIS2_HANDLE_ERROR_WITH_FILE(env, error_number,          \
+            status_code, file_name_line_no)                      \
+    {                                                            \
+        AXIS2_ERROR_SET(env->error, error_number, status_code);  \
+        AXIS2_LOG_ERROR(env->log, file_name_line_no,             \
+            AXIS2_ERROR_GET_MESSAGE(env->error));                \
+    } 
+
+    /**
+     * This macro is used to set and error, and log it
+     * @param env Reference to env struct
+     * @param error_number Error number for the error occured
+     * @param status_code The Error Status to be set
+     */
+#define AXIS2_HANDLE_ERROR(env, error_number, status_code)               \
+            AXIS2_HANDLE_ERROR_WITH_FILE(env, error_number, status_code, \
+            AXIS2_LOG_SI)                                                \
+
     /** Method names in the loadable libraries */
 
 #define AXIS2_CREATE_FUNCTION "axis2_get_instance"
