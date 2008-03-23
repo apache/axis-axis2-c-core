@@ -33,8 +33,8 @@ struct axutil_string
 
 AXIS2_EXTERN axutil_string_t *AXIS2_CALL
 axutil_string_create(
-    const axutil_env_t * env,
-    const axis2_char_t * str)
+    const axutil_env_t *env,
+    const axis2_char_t *str)
 {
     axutil_string_t *string = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -44,6 +44,8 @@ axutil_string_create(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "NULL parameter was passed when a non NULL parameter was expected");
         return NULL;
     }
 
@@ -53,6 +55,7 @@ axutil_string_create(
     if (!string)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     /* set properties */
@@ -66,6 +69,8 @@ axutil_string_create(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "NULL parameter was passed when a non NULL parameter was expected");
         axutil_string_free(string, env);
         return NULL;
     }
@@ -77,6 +82,7 @@ axutil_string_create(
     if (!(string->buffer))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         axutil_string_free(string, env);
         return NULL;
     }
@@ -87,8 +93,8 @@ axutil_string_create(
 
 AXIS2_EXTERN axutil_string_t *AXIS2_CALL
 axutil_string_create_assume_ownership(
-    const axutil_env_t * env,
-    axis2_char_t ** str)
+    const axutil_env_t *env,
+    axis2_char_t **str)
 {
     axutil_string_t *string = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -98,6 +104,8 @@ axutil_string_create_assume_ownership(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "NULL parameter was passed when a non NULL parameter was expected");
         return NULL;
     }
 
@@ -107,6 +115,7 @@ axutil_string_create_assume_ownership(
     if (!string)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     /* set properties */
@@ -119,6 +128,8 @@ axutil_string_create_assume_ownership(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "NULL parameter was passed when a non NULL parameter was expected");
         axutil_string_free(string, env);
         return NULL;
     }
@@ -128,8 +139,8 @@ axutil_string_create_assume_ownership(
 
 AXIS2_EXTERN axutil_string_t *AXIS2_CALL
 axutil_string_create_const(
-    const axutil_env_t * env,
-    axis2_char_t ** str)
+    const axutil_env_t *env,
+    axis2_char_t **str)
 {
     axutil_string_t *string = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -139,6 +150,9 @@ axutil_string_create_const(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "NULL parameter was passed when a non NULL parameter was expected");
+
         return NULL;
     }
 
@@ -148,6 +162,7 @@ axutil_string_create_const(
     if (!string)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     /* set properties */
@@ -160,6 +175,8 @@ axutil_string_create_const(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "NULL parameter was passed when a non NULL parameter was expected");
         axutil_string_free(string, env);
         return NULL;
     }
@@ -170,10 +187,8 @@ axutil_string_create_const(
 AXIS2_EXTERN void AXIS2_CALL
 axutil_string_free(
     struct axutil_string *string,
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (!string)
     {
         return;
@@ -197,12 +212,10 @@ axutil_string_free(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axutil_string_equals(
-    const struct axutil_string * string,
+    const struct axutil_string *string,
     const axutil_env_t * env,
-    const struct axutil_string * string1)
+    const struct axutil_string *string1)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (!string || !string1)
     {
         return AXIS2_FALSE;
@@ -214,10 +227,8 @@ axutil_string_equals(
 AXIS2_EXTERN struct axutil_string *AXIS2_CALL
 axutil_string_clone(
     struct axutil_string *string,
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (!string)
     {
         return NULL;
@@ -231,7 +242,7 @@ axutil_string_clone(
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axutil_string_get_buffer(
     const struct axutil_string *string,
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     if (!string)
     {
@@ -244,7 +255,7 @@ axutil_string_get_buffer(
 AXIS2_EXTERN unsigned int AXIS2_CALL
 axutil_string_get_length(
     const struct axutil_string *string,
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     int error_return = -1;
     if (!string)
@@ -262,10 +273,9 @@ axutil_string_get_length(
 
 AXIS2_EXTERN void *AXIS2_CALL
 axutil_strdup(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     const void *ptr)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     if (ptr)
     {
         int len = axutil_strlen(ptr);
@@ -275,6 +285,7 @@ axutil_strdup(
         if (!str)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
             return NULL;
         }
         memcpy(str, ptr, len + 1);
@@ -290,11 +301,10 @@ AXIS2_EXTERN void *AXIS2_CALL
 axutil_strmemdup(
     const void *ptr,
     size_t n,
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axis2_char_t *str;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ptr, NULL);
 
     str =
@@ -303,6 +313,7 @@ axutil_strmemdup(
     if (!str)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     memcpy(str, ptr, n);
@@ -330,14 +341,13 @@ axutil_memchr(
 
 AXIS2_EXTERN void *AXIS2_CALL
 axutil_strndup(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     const void *ptr,
     int n)
 {
     const axis2_char_t *end;
     axis2_char_t *str;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ptr, NULL);
 
     end = axutil_memchr(ptr, '\0', n);
@@ -350,6 +360,7 @@ axutil_strndup(
     if (!str)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     memcpy(str, ptr, n);
@@ -360,7 +371,7 @@ axutil_strndup(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_strcat(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     ...)
 {
     axis2_char_t *cp,
@@ -398,6 +409,7 @@ axutil_strcat(
     if (!str)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     cp = str;
@@ -434,9 +446,9 @@ axutil_strcat(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_stracat(
-    const axutil_env_t * env,
-    const axis2_char_t * s1,
-    const axis2_char_t * s2)
+    const axutil_env_t *env,
+    const axis2_char_t *s1,
+    const axis2_char_t *s2)
 {
     axis2_char_t *ret = NULL;
     int alloc_len = -1;
@@ -471,8 +483,8 @@ axutil_stracat(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_strcmp(
-    const axis2_char_t * s1,
-    const axis2_char_t * s2)
+    const axis2_char_t *s1,
+    const axis2_char_t *s2)
 {
     if (s1 && s2)
     {
@@ -486,8 +498,8 @@ axutil_strcmp(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_strncmp(
-    const axis2_char_t * s1,
-    const axis2_char_t * s2,
+    const axis2_char_t *s1,
+    const axis2_char_t *s2,
     int n)
 {
     if (s1 && s2)
@@ -502,7 +514,7 @@ axutil_strncmp(
 
 AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
 axutil_strlen(
-    const axis2_char_t * s)
+    const axis2_char_t *s)
 {
     int error_return = -1;
     if (s)
@@ -515,8 +527,8 @@ axutil_strlen(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_strcasecmp(
-    const axis2_char_t * s1,
-    const axis2_char_t * s2)
+    const axis2_char_t *s1,
+    const axis2_char_t *s2)
 {
     while (*s1 != '\0' && *s2 != '\0')
     {
@@ -551,8 +563,8 @@ axutil_strcasecmp(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_strncasecmp(
-    const axis2_char_t * s1,
-    const axis2_char_t * s2,
+    const axis2_char_t *s1,
+    const axis2_char_t *s2,
     const int n)
 {
     axis2_char_t *str1 = (axis2_char_t *) s1,
@@ -571,15 +583,15 @@ axutil_strncasecmp(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_strstr(
-    const axis2_char_t * haystack,
-    const axis2_char_t * needle)
+    const axis2_char_t *haystack,
+    const axis2_char_t *needle)
 {
     return strstr(haystack, needle);
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_strchr(
-    const axis2_char_t * s,
+    const axis2_char_t *s,
     axis2_char_t ch)
 {
     return (axis2_char_t *) strchr(s, ch);
@@ -587,7 +599,7 @@ axutil_strchr(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_rindex(
-    const axis2_char_t * _s,
+    const axis2_char_t *_s,
     axis2_char_t _ch)
 {
     int i,
@@ -608,8 +620,8 @@ axutil_rindex(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_replace(
-    const axutil_env_t * env,
-    axis2_char_t * str,
+    const axutil_env_t *env,
+    axis2_char_t *str,
     int s1,
     int s2)
 {
@@ -633,9 +645,9 @@ axutil_replace(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_strltrim(
-    const axutil_env_t * env,
-    const axis2_char_t * _s,
-    const axis2_char_t * _trim)
+    const axutil_env_t *env,
+    const axis2_char_t *_s,
+    const axis2_char_t *_trim)
 {
     axis2_char_t *_p = NULL;
     axis2_char_t *ret = NULL;
@@ -664,9 +676,9 @@ axutil_strltrim(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_strrtrim(
-    const axutil_env_t * env,
-    const axis2_char_t * _in,
-    const axis2_char_t * _trim)
+    const axutil_env_t *env,
+    const axis2_char_t *_in,
+    const axis2_char_t *_trim)
 {
     axis2_char_t *__tail;
     axis2_char_t *_s = NULL;
@@ -703,9 +715,9 @@ axutil_strrtrim(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_strtrim(
-    const axutil_env_t * env,
-    const axis2_char_t * _s,
-    const axis2_char_t * _trim)
+    const axutil_env_t *env,
+    const axis2_char_t *_s,
+    const axis2_char_t *_trim)
 {
     axis2_char_t *_p = NULL;
     axis2_char_t *_q = NULL;
@@ -721,7 +733,7 @@ axutil_strtrim(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_string_replace(
-    axis2_char_t * str,
+    axis2_char_t *str,
     axis2_char_t old,
     axis2_char_t new)
 {
@@ -738,7 +750,7 @@ axutil_string_replace(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_string_substring_starting_at(
-    axis2_char_t * str,
+    axis2_char_t *str,
     int s)
 {
     int len;
@@ -758,7 +770,7 @@ axutil_string_substring_starting_at(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_string_substring_ending_at(
-    axis2_char_t * str,
+    axis2_char_t *str,
     int e)
 {
     axis2_char_t *ptr = NULL;
@@ -778,7 +790,7 @@ axutil_string_substring_ending_at(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_string_tolower(
-    axis2_char_t * str)
+    axis2_char_t *str)
 {
     axis2_char_t *temp_str = NULL;
     for (temp_str = str; *temp_str != '\0'; temp_str++)
@@ -791,7 +803,7 @@ axutil_string_tolower(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_string_toupper(
-    axis2_char_t * str)
+    axis2_char_t *str)
 {
     axis2_char_t *temp_str = NULL;
     for (temp_str = str; *temp_str != '\0'; temp_str++)
@@ -804,8 +816,8 @@ axutil_string_toupper(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_strcasestr(
-    const axis2_char_t * haystack,
-    const axis2_char_t * needle)
+    const axis2_char_t *haystack,
+    const axis2_char_t *needle)
 {
     axis2_char_t start,
      current;
