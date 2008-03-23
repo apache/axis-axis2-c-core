@@ -2,45 +2,59 @@
 #include "../util/create_env.h"
 #include <axutil_array_list.h>
 
-axutil_env_t *env = NULL;
-axis2_char_t * in =  "this is a test string";
-int delim = ' ';
-
 /** @brief test string 
  *  tokenize a string  
  */
 
-axis2_status_t test_string()
+axis2_status_t test_string(axutil_env_t *env)
 {   
-    env = create_environment();
+    int delim = ' ';
+    void *token = NULL;
+    void *last_token_string = NULL;
+    void *first_token_string = NULL; 
+    axis2_char_t * in =  "this is a test string";
+    
     axutil_array_list_t * tokenize = (axutil_array_list_t *)axutil_tokenize(env, in, delim);
-    axutil_array_list_t * first_token = (axutil_array_list_t *)axutil_first_token(env,in,delim);
-    axutil_array_list_t * last_token = (axutil_array_list_t *)axutil_last_token(env,in,delim);
-    void * token  = axutil_array_list_get(tokenize,env,4);
-    printf("%s\n",(char *)token);
-    void * first_token_string = axutil_array_list_get(first_token,env,1);
-    printf("%s\n",(char *)first_token_string);
-    void * last_token_string = axutil_array_list_get(last_token,env,1);
-    printf("%s\n",(char *)last_token_string);
+    if(tokenize)
+    {
+        token  = axutil_array_list_get(tokenize,env,4);
+        printf("The test axutil_tokenize is successfull\n");
+        printf("The tokenize string is %s\n",(char *)token);
+    }
+    else 
+        return AXIS2_FAILURE;
 
-    if(tokenize && first_token && last_token)
+    axutil_array_list_t * first_token = (axutil_array_list_t *)axutil_first_token(env,in,delim);
+    if(first_token)
     {
-    printf("The test is SUCCESS\n"); 
+        first_token_string = axutil_array_list_get(first_token,env,1);
+        printf("The test axutil_first_token is successfull\n");
+        printf("First token string is %s\n",(char *)first_token_string);
     }
-    if(!tokenize || !first_token || !last_token)
+    else
+        return AXIS2_FAILURE;
+    
+    axutil_array_list_t * last_token = (axutil_array_list_t *)axutil_last_token(env,in,delim);
+    if(last_token)
     {
-    printf("The test is FAIL");
+        last_token_string = axutil_array_list_get(last_token,env,1);
+        printf("The test axutil_last_token is successfull\n");
+        printf("Last token string is %s\n",(char *)last_token_string);
     }
+    else
+        return AXIS2_FAILURE;
+
     return AXIS2_SUCCESS;
 }
 int main()
 {
+    axutil_env_t *env = NULL;
     int status = AXIS2_SUCCESS;
     env = create_environment();
-    status = test_string();
+    status = test_string(env);
     if(status == AXIS2_FAILURE)
     {
-        printf(" test  failed");
+        printf("build  failed");
     }
     axutil_env_free(env);
     return 0;
