@@ -31,8 +31,7 @@ struct axutil_date_time
     int day;
     int hour;
     int min;
-    int sec;
-    int msec;
+    float sec;
     axis2_bool_t tz_pos;
     int tz_hour;
     int tz_min;
@@ -68,12 +67,7 @@ axutil_date_time_create_with_offset(
     date_time->hour = utc_time->tm_hour;
     date_time->min = utc_time->tm_min;
     date_time->sec = utc_time->tm_sec;
-    date_time->msec = axutil_get_milliseconds(env);
-    /* Round off msec */
-    while (date_time->msec && !(date_time->msec % 10))
-    {
-        date_time->msec /= 10;
-    }
+    date_time->sec += (float)axutil_get_milliseconds(env) / 1000;
     date_time->tz_hour = 0;
     date_time->tz_min = 0;
     date_time->tz_pos = AXIS2_TRUE;
@@ -110,19 +104,10 @@ axutil_date_time_deserialize_time(
 {
     int hour;
     int min;
-    int sec;
-    int msec;
+    float sec;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (strchr(time_str, '.'))
-    {
-        sscanf(time_str, "%d:%d:%d.%dZ", &hour, &min, &sec, &msec);
-    }
-    else
-    {
-        sscanf(time_str, "%d:%d:%dZ", &hour, &min, &sec);
-        msec = 0;
-    }
+    sscanf(time_str, "%d:%d:%fZ", &hour, &min, &sec);
     if (hour < 0 || hour > 23)
     {
         return AXIS2_FAILURE;
@@ -131,23 +116,13 @@ axutil_date_time_deserialize_time(
     {
         return AXIS2_FAILURE;
     }
-    if (sec < 0 || sec > 59)
+    if (sec < 0 || sec >= 60)
     {
         return AXIS2_FAILURE;
-    }
-    if (msec < 0)
-    {
-        return AXIS2_FAILURE;
-    }
-    /* Round off msec */
-    while (msec && !(msec % 10))
-    {
-        msec /= 10;
     }
     date_time->hour = hour;
     date_time->min = min;
     date_time->sec = sec;
-    date_time->msec = msec;
     return AXIS2_SUCCESS;
 }
 
@@ -159,8 +134,7 @@ axutil_date_time_deserialize_time_with_time_zone(
 {
     int hour;
     int min;
-    int sec;
-    int msec;
+    float sec;
     int tz_hour;
     int tz_min;
 
@@ -179,31 +153,13 @@ axutil_date_time_deserialize_time_with_time_zone(
 
     if (tz_pos)
     {
-        if (strchr(time_str, '.'))
-        {
-            sscanf(time_str, "%d:%d:%d.%d+%d:%d", &hour, &min,
-                &sec, &msec, &tz_hour, &tz_min);
-        }
-        else
-        {
-            sscanf(time_str, "%d:%d:%d+%d:%d", &hour, &min,
-                &sec, &tz_hour, &tz_min);
-            msec = 0;
-        }
+        sscanf(time_str, "%d:%d:%f+%d:%d", &hour, &min,
+            &sec, &tz_hour, &tz_min);
     }
     else
     {
-        if (strchr(time_str, '.'))
-        {
-            sscanf(time_str, "%d:%d:%d.%d-%d:%d", &hour, &min,
-                &sec, &msec, &tz_hour, &tz_min);
-        }
-        else
-        {
-            sscanf(time_str, "%d:%d:%d-%d:%d", &hour, &min,
-                &sec, &tz_hour, &tz_min);
-            msec = 0;
-        }
+        sscanf(time_str, "%d:%d:%f-%d:%d", &hour, &min,
+            &sec, &tz_hour, &tz_min);
     }
     if (hour < 0 || hour > 23)
     {
@@ -213,18 +169,9 @@ axutil_date_time_deserialize_time_with_time_zone(
     {
         return AXIS2_FAILURE;
     }
-    if (sec < 0 || sec > 59)
+    if (sec < 0 || sec >= 60)
     {
         return AXIS2_FAILURE;
-    }
-    if (msec < 0)
-    {
-        return AXIS2_FAILURE;
-    }
-    /* Round off msec */
-    while (msec && !(msec % 10))
-    {
-        msec /= 10;
     }
     if (tz_hour < 0 || tz_hour > 14)
     {
@@ -241,7 +188,6 @@ axutil_date_time_deserialize_time_with_time_zone(
     date_time->hour = hour;
     date_time->min = min;
     date_time->sec = sec;
-    date_time->msec = msec;
     date_time->tz_pos = tz_pos;
     date_time->tz_hour = tz_hour;
     date_time->tz_min = tz_min;
@@ -315,8 +261,7 @@ axutil_date_time_deserialize_date_time(
     int day;
     int hour;
     int min;
-    int sec;
-    int msec;
+    float sec;
     int is_year_neg = 0;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -328,17 +273,8 @@ axutil_date_time_deserialize_date_time(
     {
         is_year_neg++;
     }
-    if (strchr(date_time_str, '.'))
-    {
-        sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%d.%dZ", &year,
-            &mon, &day, &hour, &min, &sec, &msec);
-    }
-    else
-    {
-        sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%dZ", &year,
-            &mon, &day, &hour, &min, &sec);
-        msec = 0;
-    }
+    sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%fZ", &year,
+        &mon, &day, &hour, &min, &sec);
 
     if (is_year_neg)
     {
@@ -376,18 +312,9 @@ axutil_date_time_deserialize_date_time(
     {
         return AXIS2_FAILURE;
     }
-    if (sec < 0 || sec > 59)
+    if (sec < 0 || sec >= 60)
     {
         return AXIS2_FAILURE;
-    }
-    if (msec < 0)
-    {
-        return AXIS2_FAILURE;
-    }
-    /* Round off msec */
-    while (msec && !(msec % 10))
-    {
-        msec /= 10;
     }
     date_time->year = year - 1900;
     date_time->mon = mon - 1;
@@ -395,7 +322,6 @@ axutil_date_time_deserialize_date_time(
     date_time->hour = hour;
     date_time->min = min;
     date_time->sec = sec;
-    date_time->msec = msec;
     return AXIS2_SUCCESS;
 }
 
@@ -410,8 +336,7 @@ axutil_date_time_deserialize_date_time_with_time_zone(
     int day;
     int hour;
     int min;
-    int sec;
-    int msec;
+    float sec;
     int tz_hour;
     int tz_min;
     int is_year_neg = 0;
@@ -439,33 +364,13 @@ axutil_date_time_deserialize_date_time_with_time_zone(
 
     if (tz_pos)
     {
-        if (strchr(date_time_str, '.'))
-        {
-            sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%d.%d+%d:%d", &year,
-                &mon, &day, &hour, &min, &sec, &msec, &tz_hour, &tz_min);
-        }
-        else
-        {
-            sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%d+%d:%d", &year,
-                &mon, &day, &hour, &min, &sec, &tz_hour, &tz_min);
-
-            msec = 0;
-        }
+        sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%f+%d:%d", &year,
+            &mon, &day, &hour, &min, &sec, &tz_hour, &tz_min);
     }
     else
     {
-        if (strchr(date_time_str, '.'))
-        {
-            sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%d.%d-%d:%d", &year,
-                &mon, &day, &hour, &min, &sec, &msec, &tz_hour, &tz_min);
-        }
-        else
-        {
-            sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%d-%d:%d", &year,
-                &mon, &day, &hour, &min, &sec, &tz_hour, &tz_min);
-
-            msec = 0;
-        }
+        sscanf(date_time_str + is_year_neg, "%d-%d-%dT%d:%d:%f-%d:%d", &year,
+            &mon, &day, &hour, &min, &sec, &tz_hour, &tz_min);
     }
 
     if (is_year_neg)
@@ -504,18 +409,9 @@ axutil_date_time_deserialize_date_time_with_time_zone(
     {
         return AXIS2_FAILURE;
     }
-    if (sec < 0 || sec > 59)
+    if (sec < 0 || sec >= 60)
     {
         return AXIS2_FAILURE;
-    }
-    if (msec < 0)
-    {
-        return AXIS2_FAILURE;
-    }
-    /* Round off msec */
-    while (msec && !(msec % 10))
-    {
-        msec /= 10;
     }
     if (tz_hour < 0 || tz_hour > 14)
     {
@@ -535,7 +431,6 @@ axutil_date_time_deserialize_date_time_with_time_zone(
     date_time->hour = hour;
     date_time->min = min;
     date_time->sec = sec;
-    date_time->msec = msec;
     date_time->tz_pos = tz_pos;
     date_time->tz_hour = tz_hour;
     date_time->tz_min = tz_min;
@@ -629,15 +524,6 @@ axutil_date_time_compare(
         return AXIS2_DATE_TIME_COMP_RES_EXPIRED;
     }
 
-    if (date_time->msec < ref->msec)
-    {
-        return AXIS2_DATE_TIME_COMP_RES_NOT_EXPIRED;
-    }
-    else if (date_time->msec > ref->msec)
-    {
-        return AXIS2_DATE_TIME_COMP_RES_EXPIRED;
-    }
-
     return AXIS2_DATE_TIME_COMP_RES_EQUAL;
 }
 
@@ -718,14 +604,9 @@ axutil_date_time_set_date_time(
     {
         return AXIS2_FAILURE;
     }
-    if (msec < 0)
+    if (msec < 0 || msec > 999)
     {
         return AXIS2_FAILURE;
-    }
-    /* Round off msec */
-    while (msec && !(msec % 10))
-    {
-        msec /= 10;
     }
 
     date_time->year = year - 1900;
@@ -733,8 +614,8 @@ axutil_date_time_set_date_time(
     date_time->day = day;
     date_time->hour = hour;
     date_time->min = min;
-    date_time->sec = sec;
-    date_time->msec = msec;
+    date_time->sec = (float)sec;
+    date_time->sec += (float)msec / 1000;
 
     return AXIS2_SUCCESS;
 }
@@ -750,16 +631,8 @@ axutil_date_time_serialize_time(
 
     time_str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
                    sizeof(axis2_char_t) * 32);
-    if (date_time->msec)
-    {
-        sprintf(time_str, "%02d:%02d:%02d.%03dZ", date_time->hour, date_time->min,
-            date_time->sec, date_time->msec);
-    }
-    else
-    {
-        sprintf(time_str, "%02d:%02d:%02dZ", date_time->hour, date_time->min,
-            date_time->sec);
-    }
+    sprintf(time_str, "%02d:%02d:%02.3fZ", date_time->hour, date_time->min,
+        date_time->sec);
     return time_str;
 }
 
@@ -779,18 +652,9 @@ axutil_date_time_serialize_time_with_time_zone(
 
     time_str =
         (axis2_char_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 37);
-    if (date_time->msec)
-    {
-        sprintf(time_str, "%02d:%02d:%02d.%03d%c%02d:%02d", date_time->hour, date_time->min,
-            date_time->sec, date_time->msec, date_time->tz_pos ? '+': '-',
-            date_time->tz_hour, date_time->tz_min);
-    }
-    else
-    {
-        sprintf(time_str, "%02d:%02d:%02d%c%02d:%02d", date_time->hour, date_time->min,
-            date_time->sec, date_time->tz_pos ? '+': '-',
-            date_time->tz_hour, date_time->tz_min);
-    }
+    sprintf(time_str, "%02d:%02d:%02.3f%c%02d:%02d", date_time->hour, date_time->min,
+        date_time->sec, date_time->tz_pos ? '+': '-',
+        date_time->tz_hour, date_time->tz_min);
     return time_str;
 }
 
@@ -821,18 +685,9 @@ axutil_date_time_serialize_date_time(
     AXIS2_ENV_CHECK(env, NULL);
 
     date_time_str = AXIS2_MALLOC(env->allocator, sizeof(char) * 32);
-    if (date_time->msec)
-    {
-        sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02d.%03dZ",
-            date_time->year + 1900, date_time->mon + 1, date_time->day,
-            date_time->hour, date_time->min, date_time->sec, date_time->msec);
-    }
-    else
-    {
-        sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02dZ",
-            date_time->year + 1900, date_time->mon + 1, date_time->day,
-            date_time->hour, date_time->min, date_time->sec);
-    }
+    sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02.3fZ",
+        date_time->year + 1900, date_time->mon + 1, date_time->day,
+        date_time->hour, date_time->min, date_time->sec);
     return date_time_str;
 }
 
@@ -851,20 +706,10 @@ axutil_date_time_serialize_date_time_with_time_zone(
     }
 
     date_time_str = AXIS2_MALLOC(env->allocator, sizeof(char) * 37);
-    if (date_time->msec)
-    {
-        sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02d.%03d%c%02d:%02d",
-            date_time->year + 1900, date_time->mon + 1, date_time->day,
-            date_time->hour, date_time->min, date_time->sec, date_time->msec, 
-            date_time->tz_pos ? '+': '-', date_time->tz_hour, date_time->tz_min);
-    }
-    else
-    {
-        sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02d%c%02d:%02d",
-            date_time->year + 1900, date_time->mon + 1, date_time->day,
-            date_time->hour, date_time->min, date_time->sec,
-            date_time->tz_pos ? '+': '-', date_time->tz_hour, date_time->tz_min);
-    }
+    sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02.3f%c%02d:%02d",
+        date_time->year + 1900, date_time->mon + 1, date_time->day,
+        date_time->hour, date_time->min, date_time->sec, 
+        date_time->tz_pos ? '+': '-', date_time->tz_hour, date_time->tz_min);
     return date_time_str;
 }
 
@@ -914,7 +759,7 @@ axutil_date_time_get_second(
     axutil_date_time_t *date_time,
     const axutil_env_t *env)
 {
-    return (date_time->sec);
+    return (int)(date_time->sec);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
@@ -922,7 +767,13 @@ axutil_date_time_get_msec(
     axutil_date_time_t *date_time,
     const axutil_env_t *env)
 {
-    return (date_time->msec);
+    if (date_time->sec >= 1)
+    {
+        float temp = (int)date_time->sec * 1000;
+        temp /= 1000;
+        return (int)((date_time->sec - temp) * 1000);
+    }
+    return (int)(date_time->sec * 1000);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
@@ -972,8 +823,7 @@ axutil_date_time_local_to_utc(
     int day;
     int hour;
     int min;
-    int sec;
-    int msec;
+    float sec;
     int tz_hour;
     int tz_min;
     axis2_bool_t tz_pos = AXIS2_FALSE;
@@ -986,7 +836,6 @@ axutil_date_time_local_to_utc(
     hour = date_time->hour;
     min = date_time->min;
     sec = date_time->sec;
-    msec = date_time->msec;
     tz_pos = date_time->tz_pos;
     tz_hour = date_time->tz_hour;
     tz_min = date_time->tz_min;
@@ -1141,11 +990,7 @@ axutil_date_time_local_to_utc(
     {
         return NULL;
     }
-    if (sec < 0 || sec > 59)
-    {
-        return NULL;
-    }
-    if (msec < 0)
+    if (sec < 0 || sec >= 60)
     {
         return NULL;
     }
@@ -1157,7 +1002,6 @@ axutil_date_time_local_to_utc(
     ret->hour = hour;
     ret->min = min;
     ret->sec = sec;
-    ret->msec = msec;
     return ret;
 }
 
@@ -1181,7 +1025,6 @@ axutil_date_time_utc_to_local(
     date_time->hour = date_time_in->hour;
     date_time->min = date_time_in->min;
     date_time->sec = date_time_in->sec;
-    date_time->msec = date_time_in->msec;
     date_time->tz_hour = hour;
     date_time->tz_min = min;
     
