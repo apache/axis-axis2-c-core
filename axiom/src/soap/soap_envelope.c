@@ -62,6 +62,8 @@ axiom_soap_envelope_create_null(
     if (!soap_envelope)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                          "No memory. Cannot create a SOAP Envelope");
         return NULL;
     }
     soap_envelope->om_ele_node = NULL;
@@ -102,6 +104,8 @@ axiom_soap_envelope_create(
     if (!ele)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                          "No memory. Cannot create a SOAP element");
         axiom_soap_envelope_free(soap_envelope, env);
         return NULL;
     }
@@ -130,6 +134,8 @@ axiom_soap_envelope_create_with_soap_version_prefix(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOAP_VERSION,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                  "Invalid SOAP version");
         return NULL;
     }
     if (!prefix || axutil_strcmp(prefix, "") == 0)
@@ -199,8 +205,7 @@ axiom_soap_envelope_set_base_node(
 
     if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BASE_TYPE,
-                        AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     soap_envelope->om_ele_node = node;
@@ -447,8 +452,7 @@ axiom_soap_envelope_create_default_soap_envelope(
         return soap_envelope;
     }
 
-    AXIS2_ERROR_SET(env->error,
-                    AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
+    AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
     return NULL;
 }
 
@@ -467,8 +471,7 @@ axiom_soap_envelope_create_default_soap_fault_envelope(
 
     if (AXIOM_SOAP11 != soap_version && AXIOM_SOAP12 != soap_version)
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -557,8 +560,7 @@ check_and_set_soap_version(
     }
     else
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI, AXIS2_FAILURE); 
     }
     return AXIS2_FAILURE;
 }
