@@ -218,7 +218,7 @@ axis2_http_simple_response_get_status_line(
     return axis2_http_status_line_to_string(simple_response->status_line, env);
 }
 
-axutil_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_http_simple_response_get_headers(
     axis2_http_simple_response_t * simple_response,
     const axutil_env_t * env)

@@ -284,6 +284,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     svc_client->auth_failed = AXIS2_FALSE;
     svc_client->required_auth_is_http = AXIS2_FALSE;
     svc_client->auth_type = NULL;
+	svc_client->http_headers = NULL;
 
     /** initialize private data to NULL, create options */
     if (!axis2_svc_client_init_data(env, svc_client))

@@ -128,7 +128,7 @@ extern "C"
      * @param simple_response pointer to simple response struct
      * @param env pointer to environment struct
      */
-    axutil_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
         axis2_http_simple_response_extract_headers(
         axis2_http_simple_response_t * simple_response,
         const axutil_env_t * env);
