@@ -971,6 +971,14 @@ extern "C"
 
 #define AXIS2_AND_SIGN "&"
 
+#define AXIS2_ESC_DOUBLE_QUOTE '\"'
+
+#define AXIS2_ESC_NULL '\"'
+
+#define AXIS2_CONTENT_TYPE_ACTION ";action=\""
+
+#define AXIS2_CONTENT_TYPE_CHARSET ";charset="
+
     /** @} */
 
 #ifdef __cplusplus

@@ -196,7 +196,7 @@ axis2_http_worker_process_request(
 
         server = axis2_http_header_create(env,
                                           AXIS2_HTTP_HEADER_SERVER,
-                                          "Axis2C/" AXIS2_VERSION_STRING
+                                          AXIS2_HTTP_HEADER_SERVER_AXIS2C
                                           " (Simple Axis2 HTTP Server)");
         axis2_http_simple_response_set_header(response, env, server);
     }

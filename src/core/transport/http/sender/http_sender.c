@@ -295,7 +295,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         }
 
         /* The default is POST */
-        if (method_value && 0 == axutil_strcmp (method_value, AXIS2_HTTP_GET))
+        if (method_value && 
+            0 == axutil_strcmp (method_value, AXIS2_HTTP_GET))
         {
             send_via_get = AXIS2_TRUE;
         }
@@ -408,6 +409,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
     if (!send_via_get && !send_via_head && !send_via_delete)
     {
+        /* processing POST and PUT methods */
         axutil_property_t *property = NULL;
 
         /* We put the client into msg_ctx so that we can free it once the processing
@@ -452,6 +454,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
         if (!send_via_put && is_soap)
         {
+            /* HTTP POST case */
+            /* dump property use to dump message without sending */
             dump_property = axis2_msg_ctx_get_property (msg_ctx, env,
                                                         AXIS2_DUMP_INPUT_MSG_TRUE);
             if (dump_property)
@@ -480,6 +484,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             axiom_node_serialize (data_out, env, sender->om_output);
         }
 
+
         if (doing_mtom)
         {
             axiom_output_flush (sender->om_output, env, &output_stream,
@@ -490,7 +495,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             buffer = axiom_xml_writer_get_xml (xml_writer, env);
         }
 
-        if (!buffer && !doing_mtom)
+        if (!(buffer || doing_mtom))
         {
             AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
                              "NULL xml returned from xml writer");
@@ -499,6 +504,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
         if (!send_via_put)
         {
+            /* HTTP POST */
             request_line =
                 axis2_http_request_line_create (env, AXIS2_HTTP_POST,
                                                 axutil_url_get_path (url, env),
@@ -506,6 +512,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         }
         else
         {
+            /* HTTP PUT */
             request_line =
                 axis2_http_request_line_create (env, AXIS2_HTTP_PUT,
                                                 axutil_url_get_path (url, env),
@@ -514,6 +521,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     }
     else
     {
+        /* Processing HTTP GET, HEAD and DELETE */
+
         axis2_char_t *request_params = NULL;
         axis2_char_t *path = NULL;
 
@@ -524,21 +533,25 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         path = axutil_strcat (env,
                               axutil_url_get_path (url, env),
                               AXIS2_Q_MARK, request_params, NULL);
+
         if (send_via_get)
         {
-            request_line = axis2_http_request_line_create (env, AXIS2_HTTP_GET, 
+            request_line = axis2_http_request_line_create (env, 
+                                                           AXIS2_HTTP_GET, 
                                                            path,
                                                            sender->http_version);
         }
         else if (send_via_head)
         {
-            request_line = axis2_http_request_line_create (env, AXIS2_HTTP_HEAD, 
+            request_line = axis2_http_request_line_create (env, 
+                                                           AXIS2_HTTP_HEAD, 
                                                            path,
                                                            sender->http_version);
         }
         else if (send_via_delete)
         {
-            request_line = axis2_http_request_line_create (env, AXIS2_HTTP_DELETE, 
+            request_line = axis2_http_request_line_create (env, 
+                                                           AXIS2_HTTP_DELETE,
                                                            path,
                                                            sender->http_version);
         }
@@ -547,6 +560,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     request = axis2_http_simple_request_create (env, request_line, NULL, 0,
                                                 NULL);
 
+    /* User-Agent:Axis2/C header */
     axis2_http_sender_util_add_header (env,
                                        request,
                                        AXIS2_HTTP_HEADER_USER_AGENT, 
@@ -566,7 +580,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     if (!send_via_get && !send_via_head && !send_via_put && !send_via_delete &&
         AXIS2_TRUE == axis2_msg_ctx_get_is_soap_11 (msg_ctx, env))
     {
-        if ('\"' != *soap_action)
+        if (AXIS2_ESC_DOUBLE_QUOTE != *soap_action)
         {
             axis2_char_t *tmp_soap_action = NULL;
             tmp_soap_action =
@@ -599,6 +613,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
     if (!send_via_get && !send_via_head && !send_via_delete)
     {
+        /* processing PUT and POST */
         buffer_size = axiom_xml_writer_get_xml_size (xml_writer, env);
 
         if (AXIS2_FALSE == sender->chunked)
@@ -628,6 +643,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
         if (!send_via_put && is_soap)
         {
+            /* HTTP POST */
             if (doing_mtom)
             {
                 content_type =
@@ -641,7 +657,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                     axis2_char_t *temp_content_type = NULL;
                     temp_content_type = axutil_stracat (env,
                                                         content_type,
-                                                        ";action=\"");
+                                                        AXIS2_CONTENT_TYPE_ACTION);
                     content_type = temp_content_type;
                     temp_content_type = axutil_stracat (env,
                                                         content_type,
@@ -649,7 +665,9 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                     AXIS2_FREE (env->allocator, content_type);
                     content_type = temp_content_type;
                     temp_content_type =
-                        axutil_stracat (env, content_type, "\"");
+                        axutil_stracat (env, content_type, 
+                                        (const axis2_char_t *)
+                                        AXIS2_ESC_DOUBLE_QUOTE);
                     AXIS2_FREE (env->allocator, content_type);
                     content_type = temp_content_type;
                 }
@@ -663,7 +681,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                 axis2_char_t *temp_content_type = NULL;
                 content_type =
                     (axis2_char_t *) AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
-                content_type = axutil_stracat (env, content_type, ";charset=");
+                content_type = axutil_stracat (env, content_type, 
+                                               AXIS2_CONTENT_TYPE_CHARSET);
                 temp_content_type = axutil_stracat (env,
                                                     content_type, char_set_enc);
                 AXIS2_FREE (env->allocator, content_type);
@@ -674,7 +693,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                 axis2_char_t *temp_content_type = NULL;
                 content_type =
                     (axis2_char_t *) AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP;
-                content_type = axutil_stracat (env, content_type, ";charset=");
+                content_type = axutil_stracat (env, content_type, 
+                                               AXIS2_CONTENT_TYPE_CHARSET);
                 temp_content_type = axutil_stracat (env,
                                                     content_type, char_set_enc);
                 AXIS2_FREE (env->allocator, content_type);
@@ -683,7 +703,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                 {
                     temp_content_type = axutil_stracat (env,
                                                         content_type,
-                                                        ";action=\"");
+                                                        AXIS2_CONTENT_TYPE_ACTION);
                     AXIS2_FREE (env->allocator, content_type);
                     content_type = temp_content_type;
                     temp_content_type = axutil_stracat (env,
@@ -692,7 +712,9 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                     AXIS2_FREE (env->allocator, content_type);
                     content_type = temp_content_type;
                     temp_content_type =
-                        axutil_stracat (env, content_type, "\"");
+                        axutil_stracat (env, content_type, 
+                                        (const axis2_char_t *)
+                                        AXIS2_ESC_DOUBLE_QUOTE);
                     AXIS2_FREE (env->allocator, content_type);
                     content_type = temp_content_type;
                 }
@@ -2211,17 +2233,17 @@ axis2_http_sender_configure_http_digest_auth (axis2_http_sender_t * sender,
                              AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_REALM);
         if (temp)
         {
-            realm = axutil_strchr(temp, '\"');
+            realm = axutil_strchr(temp, AXIS2_ESC_DOUBLE_QUOTE);
             if (realm)
             {
                 realm++;
-                temp = axutil_strchr(realm, '\"');
+                temp = axutil_strchr(realm, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t
                               *) (AXIS2_MALLOC (env->allocator,
                               sizeof (axis2_char_t) * (temp-realm + 1)));
                 strncpy(alloc_temp, realm, (temp-realm));
                 if (alloc_temp)
-                    alloc_temp[temp-realm] = '\0';
+                    alloc_temp[temp-realm] = AXIS2_ESC_NULL;
                 realm = alloc_temp;
                 alloc_temp = NULL;
                 elen += print_const + 
@@ -2238,17 +2260,17 @@ axis2_http_sender_configure_http_digest_auth (axis2_http_sender_t * sender,
                              AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_QOP);
         if (temp)
         {
-            qop = axutil_strchr(temp, '\"');
+            qop = axutil_strchr(temp, AXIS2_ESC_DOUBLE_QUOTE);
             if (qop)
             {
                 qop++;
-                temp = axutil_strchr(qop, '\"');
+                temp = axutil_strchr(qop, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t
                               *) (AXIS2_MALLOC (env->allocator,
                               sizeof (axis2_char_t) * (temp-qop + 1)));
                 strncpy(alloc_temp, qop, (temp-qop));
                 if (alloc_temp)
-                    alloc_temp[temp-qop] = '\0';
+                    alloc_temp[temp-qop] = AXIS2_ESC_NULL;
                 qop = alloc_temp;
                 alloc_temp = NULL;
             }
@@ -2258,17 +2280,17 @@ axis2_http_sender_configure_http_digest_auth (axis2_http_sender_t * sender,
                              AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_NONCE);
         if (temp)
         {
-            nonce = axutil_strchr(temp, '\"');
+            nonce = axutil_strchr(temp, AXIS2_ESC_DOUBLE_QUOTE);
             if (nonce)
             {
                 nonce++;
-                temp = axutil_strchr(nonce, '\"');
+                temp = axutil_strchr(nonce, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t
                               *) (AXIS2_MALLOC (env->allocator,
                               sizeof (axis2_char_t) * (temp-nonce + 1)));
                 strncpy(alloc_temp, nonce, (temp-nonce));
                 if (alloc_temp)
-                    alloc_temp[temp-nonce] = '\0';
+                    alloc_temp[temp-nonce] = AXIS2_ESC_NULL;
                 nonce = alloc_temp;
                 alloc_temp = NULL;
 
@@ -2288,17 +2310,17 @@ axis2_http_sender_configure_http_digest_auth (axis2_http_sender_t * sender,
                              AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_OPAQUE);
         if (temp)
         {
-            opaque = axutil_strchr(temp, '\"');
+            opaque = axutil_strchr(temp, AXIS2_ESC_DOUBLE_QUOTE);
             if (opaque)
             {
                 opaque++;
-                temp = axutil_strchr(opaque, '\"');
+                temp = axutil_strchr(opaque, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t
                               *) (AXIS2_MALLOC (env->allocator,
                               sizeof (axis2_char_t) * (temp-opaque + 1)));
                 strncpy(alloc_temp, opaque, (temp-opaque));
                 if (alloc_temp)
-                    alloc_temp[temp-opaque] = '\0';
+                    alloc_temp[temp-opaque] = AXIS2_ESC_NULL;
                 opaque = alloc_temp;
                 alloc_temp = NULL;
                 elen += print_const + 
@@ -2330,7 +2352,7 @@ axis2_http_sender_configure_http_digest_auth (axis2_http_sender_t * sender,
             cnonce = temp;
             temp += CLIENT_NONCE_LENGTH;
             if (temp)
-                *temp = '\0';
+                *temp = AXIS2_ESC_NULL;
             elen += 11 
                 + axutil_strlen(
                     AXIS2_HTTP_AUTHORIZATION_REQUEST_DEFAULT_CLIENT_NONCE)
@@ -2587,17 +2609,17 @@ axis2_http_sender_configure_proxy_digest_auth (axis2_http_sender_t * sender,
                              AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_REALM);
         if (temp)
         {
-            realm = axutil_strchr(temp, '\"');
+            realm = axutil_strchr(temp, AXIS2_ESC_DOUBLE_QUOTE);
             if (realm)
             {
                 realm++;
-                temp = axutil_strchr(realm, '\"');
+                temp = axutil_strchr(realm, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t
                               *) (AXIS2_MALLOC (env->allocator,
                               sizeof (axis2_char_t) * (temp-realm + 1)));
                 strncpy(alloc_temp, realm, (temp-realm));
                 if (alloc_temp)
-                    alloc_temp[temp-realm] = '\0';
+                    alloc_temp[temp-realm] = AXIS2_ESC_NULL;
                 realm = alloc_temp;
                 alloc_temp = NULL;
                 elen += print_const + 
@@ -2614,17 +2636,17 @@ axis2_http_sender_configure_proxy_digest_auth (axis2_http_sender_t * sender,
                              AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_QOP);
         if (temp)
         {
-            qop = axutil_strchr(temp, '\"');
+            qop = axutil_strchr(temp, AXIS2_ESC_DOUBLE_QUOTE);
             if (qop)
             {
                 qop++;
-                temp = axutil_strchr(qop, '\"');
+                temp = axutil_strchr(qop, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t
                               *) (AXIS2_MALLOC (env->allocator,
                               sizeof (axis2_char_t) * (temp-qop + 1)));
                 strncpy(alloc_temp, qop, (temp-qop));
                 if (alloc_temp)
-                    alloc_temp[temp-qop] = '\0';
+                    alloc_temp[temp-qop] = AXIS2_ESC_NULL;
                 qop = alloc_temp;
                 alloc_temp = NULL;
             }
@@ -2633,17 +2655,17 @@ axis2_http_sender_configure_proxy_digest_auth (axis2_http_sender_t * sender,
         temp = axutil_strstr(header_data, AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_NONCE);
         if (temp)
         {
-            nonce = axutil_strchr(temp, '\"');
+            nonce = axutil_strchr(temp, AXIS2_ESC_DOUBLE_QUOTE);
             if (nonce)
             {
                 nonce++;
-                temp = axutil_strchr(nonce, '\"');
+                temp = axutil_strchr(nonce, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t
                               *) (AXIS2_MALLOC (env->allocator,
                               sizeof (axis2_char_t) * (temp-nonce + 1)));
                 strncpy(alloc_temp, nonce, (temp-nonce));
                 if (alloc_temp)
-                    alloc_temp[temp-nonce] = '\0';
+                    alloc_temp[temp-nonce] = AXIS2_ESC_NULL;
                 nonce = alloc_temp;
                 alloc_temp = NULL;
 
@@ -2663,17 +2685,17 @@ axis2_http_sender_configure_proxy_digest_auth (axis2_http_sender_t * sender,
                              AXIS2_HTTP_AUTHORIZATION_REQUEST_PARAM_OPAQUE);
         if (temp)
         {
-            opaque = axutil_strchr(temp, '\"');
+            opaque = axutil_strchr(temp, AXIS2_ESC_DOUBLE_QUOTE);
             if (opaque)
             {
                 opaque++;
-                temp = axutil_strchr(opaque, '\"');
+                temp = axutil_strchr(opaque, AXIS2_ESC_DOUBLE_QUOTE);
                 alloc_temp = (axis2_char_t
                               *) (AXIS2_MALLOC (env->allocator,
                               sizeof (axis2_char_t) * (temp-opaque + 1)));
                 strncpy(alloc_temp, opaque, (temp-opaque));
                 if (alloc_temp)
-                    alloc_temp[temp-opaque] = '\0';
+                    alloc_temp[temp-opaque] = AXIS2_ESC_NULL;
                 opaque = alloc_temp;
                 alloc_temp = NULL;
                 elen += print_const + 
@@ -2705,7 +2727,7 @@ axis2_http_sender_configure_proxy_digest_auth (axis2_http_sender_t * sender,
             cnonce = temp;
             temp += CLIENT_NONCE_LENGTH;
             if (temp)
-                *temp = '\0';
+                *temp = AXIS2_ESC_NULL;
             elen += 11 + axutil_strlen(
                 AXIS2_HTTP_AUTHORIZATION_REQUEST_DEFAULT_CLIENT_NONCE)
                 + axutil_strlen(
@@ -2884,7 +2906,7 @@ axis2_http_sender_configure_http_auth (axis2_http_sender_t * sender,
         if (auth_type)
         {
             auth_type_end = axutil_strchr (auth_type, ' ');
-            *auth_type_end = '\0';
+            *auth_type_end = AXIS2_ESC_NULL;
             auth_type_end++;
             /*Read the realm and the rest stuff now from auth_type_end */
         }
@@ -2995,7 +3017,7 @@ axis2_http_sender_configure_proxy_auth (axis2_http_sender_t * sender,
         if (auth_type)
         {
             auth_type_end = axutil_strchr (auth_type, ' ');
-            *auth_type_end = '\0';
+            *auth_type_end = AXIS2_ESC_NULL;
             auth_type_end++;
             /*Read the realm and the rest stuff now from auth_type_end */
         }
@@ -3064,7 +3086,7 @@ axis2_http_sender_set_http_auth_type (axis2_http_sender_t * sender,
     if (auth_type)
     {
         auth_type_end = axutil_strchr (auth_type, ' ');
-        *auth_type_end = '\0';
+        *auth_type_end = AXIS2_ESC_NULL;
         auth_type_end++;
             /*Read the realm and the rest stuff now from auth_type_end */
     }
@@ -3126,7 +3148,7 @@ axis2_http_sender_set_proxy_auth_type (axis2_http_sender_t * sender,
     if (auth_type)
     {
         auth_type_end = axutil_strchr (auth_type, ' ');
-        *auth_type_end = '\0';
+        *auth_type_end = AXIS2_ESC_NULL;
         auth_type_end++;
             /*Read the realm and the rest stuff now from auth_type_end */
     }
@@ -3134,12 +3156,21 @@ axis2_http_sender_set_proxy_auth_type (axis2_http_sender_t * sender,
     if (auth_type)
     {
         if (axutil_strcasecmp (auth_type, AXIS2_PROXY_AUTH_TYPE_BASIC) == 0)
-            status = axis2_msg_ctx_set_auth_type (msg_ctx, env, AXIS2_PROXY_AUTH_TYPE_BASIC);
+        {
+            status = axis2_msg_ctx_set_auth_type (msg_ctx, 
+                                                  env, 
+                                                  AXIS2_PROXY_AUTH_TYPE_BASIC);
+        }
         else if (axutil_strcasecmp (auth_type, AXIS2_PROXY_AUTH_TYPE_DIGEST) == 0)
-            status = axis2_msg_ctx_set_auth_type (msg_ctx, env, AXIS2_PROXY_AUTH_TYPE_DIGEST);
+        {
+            status = axis2_msg_ctx_set_auth_type (msg_ctx, env, 
+                                                  AXIS2_PROXY_AUTH_TYPE_DIGEST);
+        }
         else
-            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Authtype %s is not"
-                             "supported", auth_type);
+        {
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                             "Authtype %s is not supported", auth_type);
+        }
     }
     else
     {

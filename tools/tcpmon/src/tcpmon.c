@@ -267,7 +267,7 @@ on_new_entry_to_file(
     if (status == 0)
     {
         if (strstr(TCPMON_ENTRY_SENT_HEADERS(entry, env), AXIS2_HTTP_HEADER_USER_AGENT
-                ": Axis2C/" AXIS2_VERSION_STRING " TCPMon\r\n"))
+                ": " AXIS2_HTTP_HEADER_SERVER_AXIS2C "TCPMon\r\n"))
         {
             resend = 1;
         }
@@ -711,7 +711,7 @@ resend_request(
                             {
                                 int header_len = 0;
                                 axis2_char_t *user_agent = AXIS2_HTTP_HEADER_USER_AGENT 
-                                    ": Axis2C/" AXIS2_VERSION_STRING " TCPMon";
+                                    ": " AXIS2_HTTP_HEADER_SERVER_AXIS2C " TCPMon";
                                 header_len = (int)(tmp3 - tmp2) + 2;
                                 tmp1 = AXIS2_MALLOC(env->allocator,
                                                     sizeof(axis2_char_t) * header_len + 1);
@@ -841,7 +841,9 @@ on_new_entry(
 
     if (status == 0)
     {
-        if (strstr(TCPMON_ENTRY_SENT_HEADERS(entry, env), AXIS2_HTTP_HEADER_USER_AGENT ": Axis2C/" AXIS2_VERSION_STRING " TCPMon\r\n"))
+        if (strstr(TCPMON_ENTRY_SENT_HEADERS(entry, env), 
+                   AXIS2_HTTP_HEADER_USER_AGENT ": "\
+                   AXIS2_HTTP_HEADER_SERVER_AXIS2C " TCPMon\r\n"))
         {
             resend = 1;
         }
