@@ -39,6 +39,8 @@ axiom_soap_fault_node_create(
     if (!fault_node)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                          "No memory. Cannot create a SOAP fault node");
         return NULL;
     }
     fault_node->om_ele_node = NULL;
@@ -166,7 +168,7 @@ axiom_soap_fault_node_set_base_node(
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
     if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }

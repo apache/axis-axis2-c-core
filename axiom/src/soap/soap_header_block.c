@@ -45,6 +45,8 @@ axiom_soap_header_block_create(
     if (!header_block)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                          "No memory. Cannot create SOAP header block");
         return NULL;
     }
 
@@ -225,7 +227,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
     }
     else
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_MUST_UNDERSTAND_SHOULD_BE_1_0_TRUE_FALSE,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -270,7 +272,7 @@ axiom_soap_header_block_get_must_understand(
     {
         return AXIS2_FALSE;
     }
-    AXIS2_ERROR_SET(env->error,
+    AXIS2_HANDLE_ERROR(env,
                     AXIS2_ERROR_INVALID_VALUE_FOUND_IN_MUST_UNDERSTAND,
                     AXIS2_FAILURE);
     return AXIS2_FALSE;
@@ -424,7 +426,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_header_block_set_base_node(
 
     if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BASE_TYPE,
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_BASE_TYPE,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
