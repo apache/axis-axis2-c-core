@@ -245,7 +245,7 @@ axiom_mime_output_complete(
     axis2_write_finish_writing_mime(mime_output, env, &boundary_stream,
         &boundary_stream_size, boundary);
 
-    if (soap_body_buffer)
+    if (soap_body)
     {
         temp_soap_body_buffer = axutil_stracat(env, soap_body, AXIS2_CRLF);
         soap_body_buffer = temp_soap_body_buffer;

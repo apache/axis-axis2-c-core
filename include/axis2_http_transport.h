@@ -973,7 +973,7 @@ extern "C"
 
 #define AXIS2_ESC_DOUBLE_QUOTE '\"'
 
-#define AXIS2_ESC_NULL '\"'
+#define AXIS2_ESC_NULL '\0'
 
 #define AXIS2_CONTENT_TYPE_ACTION ";action=\""
 
