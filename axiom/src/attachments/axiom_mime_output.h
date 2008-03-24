@@ -36,7 +36,7 @@ extern "C"
 {
 #endif
 
-    typedef void axiom_mime_output_t;
+    typedef char axiom_mime_output_t; /*this can be void. But in windows, we are getting a compilation error*/
 
     /** @defgroup axiom_mime_output Flow
       * @ingroup axiom_mime_output
