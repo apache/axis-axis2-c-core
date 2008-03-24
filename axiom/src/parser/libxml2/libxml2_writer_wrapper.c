@@ -359,6 +359,8 @@ axiom_xml_writer_create(
     if (!writer_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                          "No memory. Cannot create an XML writer wrapper");
         return NULL;
     }
     writer_impl->xml_writer = xmlNewTextWriterFilename(filename, compression);
@@ -366,7 +368,7 @@ axiom_xml_writer_create(
     if (!(writer_impl->xml_writer))
     {
         AXIS2_FREE(env->allocator, writer_impl);
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_CREATING_XML_STREAM_WRITER, AXIS2_FAILURE);
         return NULL;
     }
@@ -396,6 +398,8 @@ axiom_xml_writer_create(
     {
         axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                          "No memory. Cannot create URI prefix hash map");
         return NULL;
     }
     writer_impl->writer.ops = &axiom_xml_writer_ops_var;
@@ -419,6 +423,8 @@ axiom_xml_writer_create_for_memory(
     if (!writer_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                          "No memory. Cannot create writer wrapper");
         return NULL;
     }
 
@@ -440,6 +446,8 @@ axiom_xml_writer_create_for_memory(
         {
             axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                              "No memory. Cannot create a buffer for writer wrapper");
             return NULL;
         }
 
@@ -454,7 +462,7 @@ axiom_xml_writer_create_for_memory(
     else
     {
         axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE,
+        AXIS2_AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE,
                         AXIS2_FAILURE);
         return NULL;
     }
@@ -462,7 +470,7 @@ axiom_xml_writer_create_for_memory(
     if (!(writer_impl->xml_writer))
     {
         axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_WRITER,
+        AXIS2_AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_CREATING_XML_STREAM_WRITER,
                         AXIS2_FAILURE);
         return NULL;
     }
@@ -481,6 +489,8 @@ axiom_xml_writer_create_for_memory(
     {
         axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                          "No memory. Cannot create URI prefix hash map");
         return NULL;
     }
     writer_impl->stack = axutil_stack_create(env);
@@ -488,6 +498,8 @@ axiom_xml_writer_create_for_memory(
     {
         axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                          "No memory. Cannot create the stack for writer wrapper");
         return NULL;
     }
 
@@ -560,7 +572,7 @@ axis2_libxml2_writer_wrapper_write_start_element(
                                   (xmlChar *) localname);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_START_ELEMENT,
+        AXIS2_AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_WRITING_START_ELEMENT,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -598,7 +610,7 @@ axis2_libxml2_writer_wrapper_write_start_element_with_namespace(
 
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -629,7 +641,7 @@ axis2_libxml2_writer_wrapper_write_start_element_with_namespace_prefix(
                                          BAD_CAST localname, BAD_CAST NULL);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE_PREFIX,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -655,14 +667,14 @@ axis2_libxml2_writer_wrapper_write_empty_element(
 
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_EMPTY_ELEMENT,
+        AXIS2_AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_WRITING_EMPTY_ELEMENT,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     status = xmlTextWriterEndElement(writer_impl->xml_writer);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_EMPTY_ELEMENT,
+        AXIS2_AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_WRITING_EMPTY_ELEMENT,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -690,7 +702,7 @@ axis2_libxml2_writer_wrapper_write_empty_element_with_namespace(
 
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -698,7 +710,7 @@ axis2_libxml2_writer_wrapper_write_empty_element_with_namespace(
     status = xmlTextWriterEndElement(writer_impl->xml_writer);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -729,7 +741,7 @@ axis2_libxml2_writer_wrapper_write_empty_element_with_namespace_prefix(
                                          BAD_CAST localname, BAD_CAST NULL);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE_PREFIX,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -737,7 +749,7 @@ axis2_libxml2_writer_wrapper_write_empty_element_with_namespace_prefix(
     status = xmlTextWriterEndElement(writer_impl->xml_writer);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_EMPTY_ELEMENT_WITH_NAMESPACE_PREFIX,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -765,7 +777,7 @@ axis2_libxml2_writer_wrapper_write_end_element(
     status = xmlTextWriterEndElement(writer_impl->xml_writer);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_END_ELEMENT,
+        AXIS2_AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_WRITING_END_ELEMENT,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -785,7 +797,7 @@ axis2_libxml2_writer_wrapper_write_end_document(
     status = xmlTextWriterEndDocument(writer_impl->xml_writer);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_END_DOCUMENT,
+        AXIS2_AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_WRITING_END_DOCUMENT,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -813,7 +825,7 @@ axis2_libxml2_writer_wrapper_write_attribute(
                                          BAD_CAST localname, BAD_CAST value);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_ATTRIBUTE,
+        AXIS2_AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_WRITING_ATTRIBUTE,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -845,7 +857,7 @@ axis2_libxml2_writer_wrapper_write_attribute_with_namespace(
                                            BAD_CAST NULL, BAD_CAST value);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_ATTRIBUTE_WITH_NAMESPACE,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -879,7 +891,7 @@ axis2_libxml2_writer_wrapper_write_attribute_with_namespace_prefix(
                                            BAD_CAST NULL, BAD_CAST value);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_ATTRIBUTE_WITH_NAMESPACE_PREFIX,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -925,7 +937,7 @@ axis2_libxml2_writer_wrapper_write_namespace(
 
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_ATTRIBUTE_WITH_NAMESPACE_PREFIX,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -961,7 +973,7 @@ axis2_libxml2_writer_wrapper_write_default_namespace(
     }
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_DEFAULT_NAMESPACE,
+        AXIS2_AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_WRITING_DEFAULT_NAMESPACE,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -983,7 +995,7 @@ axis2_libxml2_writer_wrapper_write_comment(
     status = xmlTextWriterWriteComment(writer_impl->xml_writer, BAD_CAST value);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_COMMENT, AXIS2_FAILURE);
+        AXIS2_AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_WRITING_COMMENT, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -1004,7 +1016,7 @@ axis2_libxml2_writer_wrapper_write_processing_instruction(
     status = xmlTextWriterStartPI(writer_impl->xml_writer, BAD_CAST target);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_PROCESSING_INSTRUCTION,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -1030,7 +1042,7 @@ axis2_libxml2_writer_wrapper_write_processing_instruction_data(
                                   BAD_CAST target, BAD_CAST data);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_PROCESSING_INSTRUCTION,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -1054,7 +1066,7 @@ axis2_libxml2_writer_wrapper_write_cdata(
     status = xmlTextWriterWriteCDATA(writer_impl->xml_writer, BAD_CAST data);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_CDATA, AXIS2_FAILURE);
+        AXIS2_AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_WRITING_CDATA, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -1075,7 +1087,7 @@ axis2_libxml2_writer_wrapper_write_dtd(
                                    BAD_CAST dtd, NULL, NULL);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_DTD, AXIS2_FAILURE);
+        AXIS2_AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_WRITING_DTD, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -1106,7 +1118,7 @@ axis2_libxml2_writer_wrapper_write_start_document(
                                         NULL, NULL, NULL);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_START_DOCUMENT, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -1129,7 +1141,7 @@ axis2_libxml2_writer_wrapper_write_start_document_with_version(
                                         version, NULL, NULL);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_START_DOCUMENT, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -1152,7 +1164,7 @@ axis2_libxml2_writer_wrapper_write_start_document_with_version_encoding(
                                         version, encoding, NULL);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_START_DOCUMENT, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -1176,7 +1188,7 @@ axis2_libxml2_writer_wrapper_write_characters(
     status = xmlTextWriterWriteString(writer_impl->xml_writer, BAD_CAST text);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_START_DOCUMENT, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -1459,6 +1471,8 @@ uri_prefix_element_create(
     if (!up_element)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                          "No memory. Cannot create URI prefix element %s", uri);
         return NULL;
     }
     up_element->key = NULL;
@@ -1594,7 +1608,7 @@ axis2_libxml2_writer_wrapper_write_raw(
     status = xmlTextWriterWriteRaw(writer_impl->xml_writer, BAD_CAST content);
     if (status < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_WRITING_DATA_SOURCE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
