@@ -299,15 +299,18 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         {
             send_via_get = AXIS2_TRUE;
         }
-        else if (method_value && 0 == axutil_strcmp (method_value, AXIS2_HTTP_HEAD))
+        else if (method_value && 
+                 0 == axutil_strcmp (method_value, AXIS2_HTTP_HEAD))
         {
             send_via_head = AXIS2_TRUE;
         }
-        else if (method_value && 0 == axutil_strcmp (method_value, AXIS2_HTTP_PUT))
+        else if (method_value && 
+                 0 == axutil_strcmp (method_value, AXIS2_HTTP_PUT))
         {
             send_via_put = AXIS2_TRUE;
         }
-        else if (method_value && 0 == axutil_strcmp (method_value, AXIS2_HTTP_DELETE))
+        else if (method_value && 
+                 0 == axutil_strcmp (method_value, AXIS2_HTTP_DELETE))
         {
             send_via_delete = AXIS2_TRUE;
         }
@@ -315,7 +318,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
     if (!url)
     {
-        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "url is NULL");
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "url is null for string %s", str_url);
         return AXIS2_FAILURE;
     }
 
@@ -328,7 +332,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     sender->client = axis2_http_client_create (env, url);
     if (!sender->client)
     {
-        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "sender->client is NULL");
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "sender->client creation failed for url %s", url);
         return AXIS2_FAILURE;
     }
 
@@ -346,11 +351,13 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     if (conf)
     {
         trans_desc = axis2_conf_get_transport_out (conf,
-                                                   env, AXIS2_TRANSPORT_ENUM_HTTP);
+                                                   env, 
+                                                   AXIS2_TRANSPORT_ENUM_HTTP);
     }
 
     if (trans_desc)
     {
+        /* get xml declaration details from axis2.xml */
         write_xml_declaration_param =
             axutil_param_container_get_param
             (axis2_transport_out_desc_param_container (trans_desc, env), env,
@@ -360,6 +367,9 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
     if (write_xml_declaration_param)
     {
+        /* accessing attributes of the HTTP transport's , xml
+         * declaration element from axis2.xml*/
+
         transport_attrs = axutil_param_get_attributes (write_xml_declaration_param, env);
         if (transport_attrs)
         {
@@ -371,16 +381,20 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                                    AXIS2_HASH_KEY_STRING);
             if (obj)
             {
-                write_xml_declaration_attr = (axiom_attribute_t *) axutil_generic_obj_get_value (obj,
-                                                                                                 env);
+                write_xml_declaration_attr = 
+                    (axiom_attribute_t *) axutil_generic_obj_get_value (obj,
+                                                                        env);
             }
 
             if (write_xml_declaration_attr)
             {
-                write_xml_declaration_attr_value = axiom_attribute_get_value (write_xml_declaration_attr, env);
+                write_xml_declaration_attr_value = 
+                    axiom_attribute_get_value (write_xml_declaration_attr, env);
             }
 
-            if (write_xml_declaration_attr_value && 0 == axutil_strcasecmp (write_xml_declaration_attr_value, AXIS2_VALUE_TRUE))
+            if (write_xml_declaration_attr_value && 
+                0 == axutil_strcasecmp (write_xml_declaration_attr_value, 
+                                        AXIS2_VALUE_TRUE))
             {
                 write_xml_declaration = AXIS2_TRUE;
             }
@@ -391,6 +405,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     {
         axiom_output_write_xml_version_encoding (sender->om_output, env);
     }
+
     if (!send_via_get && !send_via_head && !send_via_delete)
     {
         axutil_property_t *property = NULL;
@@ -417,11 +432,17 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                 AXIS2_ERROR_GET_MESSAGE(env->error));
             return AXIS2_FAILURE;
         }
+
         xml_writer = axiom_output_get_xml_writer (sender->om_output, env);
 
         char_set_enc_str = axis2_msg_ctx_get_charset_encoding (msg_ctx, env);
+
         if (!char_set_enc_str)
         {
+            /* if there is no character encoding details available
+             * use default one.  
+             * #define AXIS2_DEFAULT_CHAR_SET_ENCODING "UTF-8"
+             */
             char_set_enc = AXIS2_DEFAULT_CHAR_SET_ENCODING;
         }
         else
@@ -450,8 +471,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         }
         else if (is_soap)
         {
-            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Attempt to send SOAP"
-                             "message using HTTP PUT failed");
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                             "Attempt to send SOAP message using HTTP PUT failed");
             return AXIS2_FAILURE;
         }
         else
@@ -471,22 +492,22 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
         if (!buffer && !doing_mtom)
         {
-            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "NULL xml returned"
-                             "from xml writer");
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                             "NULL xml returned from xml writer");
             return AXIS2_FAILURE;
         }
 
         if (!send_via_put)
         {
             request_line =
-                axis2_http_request_line_create (env, "POST",
+                axis2_http_request_line_create (env, AXIS2_HTTP_POST,
                                                 axutil_url_get_path (url, env),
                                                 sender->http_version);
         }
         else
         {
             request_line =
-                axis2_http_request_line_create (env, "PUT",
+                axis2_http_request_line_create (env, AXIS2_HTTP_PUT,
                                                 axutil_url_get_path (url, env),
                                                 sender->http_version);
         }
@@ -498,22 +519,27 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
         request_params = axis2_http_sender_get_param_string (sender,
                                                              env, msg_ctx);
+
+        /* substituting AXIS2_Q_MARK for "?" */
         path = axutil_strcat (env,
                               axutil_url_get_path (url, env),
-                              "?", request_params, NULL);
+                              AXIS2_Q_MARK, request_params, NULL);
         if (send_via_get)
         {
-            request_line = axis2_http_request_line_create (env, "GET", path,
+            request_line = axis2_http_request_line_create (env, AXIS2_HTTP_GET, 
+                                                           path,
                                                            sender->http_version);
         }
         else if (send_via_head)
         {
-            request_line = axis2_http_request_line_create (env, "HEAD", path,
+            request_line = axis2_http_request_line_create (env, AXIS2_HTTP_HEAD, 
+                                                           path,
                                                            sender->http_version);
         }
         else if (send_via_delete)
         {
-            request_line = axis2_http_request_line_create (env, "DELETE", path,
+            request_line = axis2_http_request_line_create (env, AXIS2_HTTP_DELETE, 
+                                                           path,
                                                            sender->http_version);
         }
     }
@@ -523,8 +549,9 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
     axis2_http_sender_util_add_header (env,
                                        request,
-                                       AXIS2_HTTP_HEADER_USER_AGENT, "Axis2C/"
-                                       AXIS2_VERSION_STRING);
+                                       AXIS2_HTTP_HEADER_USER_AGENT, 
+                                       AXIS2_USER_AGENT);
+
 
     http_property =
         axis2_msg_ctx_get_property (msg_ctx,
@@ -564,8 +591,9 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     }
     else if (AXIS2_TRUE == axis2_msg_ctx_get_is_soap_11 (msg_ctx, env))
     {
-        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Adding of SOAP Action Failed for"
-                             "REST request");
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "Adding of SOAP Action Failed for REST request");
+
         return AXIS2_FAILURE;
     }
 
@@ -672,8 +700,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         }
         else if (is_soap)
         {
-            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Attempt to send SOAP"
-                             "message using HTTP PUT failed");
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                             "Attempt to send SOAP message using HTTP PUT failed");
             return AXIS2_FAILURE;
         }
         else
@@ -937,7 +965,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             axis2_http_request_line_t *temp = NULL;
 
             temp = axis2_http_simple_request_get_request_line(request, env);
-            head_request_line = axis2_http_request_line_create(env, "HEAD",
+            head_request_line = axis2_http_request_line_create(env, 
+                                                               AXIS2_HTTP_HEAD,
                                  axis2_http_request_line_get_uri(temp, env),
                                  axis2_http_request_line_get_http_version(temp, 
                                                                           env));
@@ -1006,7 +1035,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             axis2_http_request_line_t *temp = NULL;
 
             temp = axis2_http_simple_request_get_request_line(request, env);
-            head_request_line = axis2_http_request_line_create(env, "HEAD",
+            head_request_line = axis2_http_request_line_create(env, 
+                                                               AXIS2_HTTP_HEAD,
                                  axis2_http_request_line_get_uri(temp, env),
                                  axis2_http_request_line_get_http_version(temp, 
                                                                           env));
@@ -1134,7 +1164,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                 axis2_http_request_line_t *temp = NULL;
 
                 temp = axis2_http_simple_request_get_request_line(request, env);
-                head_request_line = axis2_http_request_line_create(env, "HEAD",
+                head_request_line = axis2_http_request_line_create(env, 
+                                                                   AXIS2_HTTP_HEAD,
                                      axis2_http_request_line_get_uri(temp, env),
                                      axis2_http_request_line_get_http_version(
                                          temp, env));
@@ -3216,7 +3247,8 @@ axis2_http_sender_get_param_string (axis2_http_sender_t * sender,
         }
         else
         {
-            tmp_string = axutil_strcat (env, param_string, "&", pair, NULL);
+            tmp_string = axutil_strcat (env, param_string, AXIS2_AND_SIGN,
+                                        pair, NULL);
         }
 
         if (param_string)
