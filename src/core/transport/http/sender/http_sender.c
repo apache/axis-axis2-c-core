@@ -678,6 +678,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             }
             else if (AXIS2_TRUE == axis2_msg_ctx_get_is_soap_11 (msg_ctx, env))
             {
+                /* SOAP 1.1 without MTOM */
                 axis2_char_t *temp_content_type = NULL;
                 content_type =
                     (axis2_char_t *) AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
@@ -690,6 +691,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             }
             else
             {
+                /* SOAP 1.2 without MTOM */
                 axis2_char_t *temp_content_type = NULL;
                 content_type =
                     (axis2_char_t *) AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP;
@@ -768,11 +770,13 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             AXIS2_FREE (env->allocator, content_type);
             content_type = NULL;
         }
+        /* Finished Processing PUT and POST */
     }
 
     if (0 ==
         axutil_strcmp (sender->http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
     {
+        /* HTTP 1.1 */
         axis2_char_t *header = NULL;
         int host_len = 0;
         host_len = axutil_strlen (axutil_url_get_host (url, env));
@@ -839,7 +843,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                                                         env);
     }
 
-    if (test_auth_property_value && 0 == axutil_strcmp (test_auth_property_value, AXIS2_VALUE_TRUE))
+    if (test_auth_property_value && 
+        0 == axutil_strcmp (test_auth_property_value, AXIS2_VALUE_TRUE))
     {
         test_proxy_auth = AXIS2_TRUE;
     }
@@ -994,7 +999,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                                                                           env));
             axis2_http_simple_request_set_request_line(request, env, 
                                                        head_request_line);
-            /* how should this status_code be handled? */
+
             status_code = axis2_http_client_send (sender->client, env, 
                                                   request, ssl_pp);
 
@@ -1044,7 +1049,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             status_code = axis2_http_client_send (sender->client, env, 
                                                   request, ssl_pp);
 
-            status_code = axis2_http_client_recieve_header (sender->client, env);
+            status_code = axis2_http_client_recieve_header (sender->client, 
+                                                            env);
         }
     }
 
@@ -1064,7 +1070,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                                                                           env));
             axis2_http_simple_request_set_request_line(request, env, 
                                                        head_request_line);
-            /* how should this status_code be handled? */
+
             status_code = axis2_http_client_send (sender->client, env, 
                                                   request, ssl_pp);
 
@@ -1093,7 +1099,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                 if ((force_http_auth_with_head || force_http_auth) && 
                     !http_auth_header_added)
                 {
-                     status_code = AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL;
+                     status_code = 
+                         AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL;
                 }
                 else
                 {
@@ -1108,7 +1115,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             else if (status_code != 
                      AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL)
             {
-                /* how should this status_code be handled? */
+
                 status_code = axis2_http_client_send (sender->client, env, 
                                                       request, ssl_pp);
 
@@ -1138,7 +1145,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             if (auth_status != AXIS2_SUCCESS)
             {
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
-                                 "Error in setting Proxy Authentication header");
+                                 "Error in setting Proxy Authentication \
+header");
             }
 
             if ((force_http_auth_with_head || force_http_auth) && 
@@ -1148,14 +1156,13 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             }
             else
             {
-                /* how should this status_code be handled? */
                 status_code = axis2_http_client_send (sender->client, env, 
                                                       request, ssl_pp);
     
                 status_code = axis2_http_client_recieve_header (sender->client, 
                                                                 env);
 
-                if (AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL == 
+                if (AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL ==
                     status_code)
                 {
                     AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
@@ -1193,7 +1200,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                                          temp, env));
                 axis2_http_simple_request_set_request_line(request, env, 
                                                            head_request_line);
-                /* how should this status_code be handled? */
+
                 status_code = axis2_http_client_send (sender->client, env, 
                                                       request, ssl_pp);
  
@@ -1257,7 +1264,7 @@ Authentication header");
                 axis2_status_t auth_status;
                 auth_status = axis2_http_sender_configure_http_auth (sender,
                                                                      env,
-                                                                     msg_ctx, 
+                                                                     msg_ctx,
                                                                      request);
 
                 if (auth_status != AXIS2_SUCCESS)
@@ -1545,13 +1552,10 @@ axis2_http_sender_process_response (axis2_http_sender_t * sender,
     axis2_http_sender_get_header_info (sender, env, msg_ctx, response);
     axis2_msg_ctx_set_http_output_headers(msg_ctx, env,
         axis2_http_simple_response_extract_headers(response, env));
-    /*axis_ctx = axis2_op_ctx_get_base( axis2_msg_ctx_get_op_ctx(msg_ctx, env),
-      env); */
     property = axutil_property_create (env);
     axutil_property_set_scope (property, env, AXIS2_SCOPE_REQUEST);
     axutil_property_set_free_func (property, env, axutil_stream_free_void_arg);
     axutil_property_set_value (property, env, in_stream);
-    /*axis2_ctx_set_property(axis_ctx, env, AXIS2_TRANSPORT_IN, property); */
     axis2_msg_ctx_set_property (msg_ctx, env, AXIS2_TRANSPORT_IN, property);
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
         "Exit:axis2_http_sender_process_response");
