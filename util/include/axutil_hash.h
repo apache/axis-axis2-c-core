@@ -287,6 +287,11 @@ extern "C"
         void *ht_void,
         const axutil_env_t * env);
 
+    AXIS2_EXTERN void AXIS2_CALL
+    axutil_hash_set_env(
+        axutil_hash_t * ht,
+        const axutil_env_t * env);
+
     /** @} */
 
 #ifdef __cplusplus

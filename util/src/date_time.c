@@ -66,7 +66,7 @@ axutil_date_time_create_with_offset(
     date_time->day = utc_time->tm_mday;
     date_time->hour = utc_time->tm_hour;
     date_time->min = utc_time->tm_min;
-    date_time->sec = utc_time->tm_sec;
+    date_time->sec = (float)utc_time->tm_sec;
     date_time->sec += (float)axutil_get_milliseconds(env) / 1000;
     date_time->tz_hour = 0;
     date_time->tz_min = 0;
@@ -769,7 +769,7 @@ axutil_date_time_get_msec(
 {
     if (date_time->sec >= 1)
     {
-        float temp = (int)date_time->sec * 1000;
+        float temp = (float)((int)date_time->sec * 1000);
         temp /= 1000;
         return (int)((date_time->sec - temp) * 1000);
     }
