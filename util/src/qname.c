@@ -55,8 +55,7 @@ axutil_qname_create(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
                         AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "NULL parameter was passed 
-                        when a non NULL parameter was expected");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "NULL parameter was passed when a non NULL parameter was expected");
         return NULL;
     }
 
@@ -168,8 +167,7 @@ axutil_qname_equals(
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error,
                                      AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "NULL parameter was passed 
-                        when a non NULL parameter was expected");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "NULL parameter was passed when a non NULL parameter was expected");
         AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
         return AXIS2_FALSE;
     }
