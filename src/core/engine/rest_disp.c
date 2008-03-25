@@ -205,7 +205,7 @@ axis2_rest_disp_find_op(
                         location += strlen(url_tokens[0]);
                         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                                         "Checking for operation using \
-                                 REST HTTP Location fragment : %s", location);
+REST HTTP Location fragment : %s", location);
                         op = axis2_rest_disp_get_rest_op_with_method_and_location(svc, env,
                                  axis2_msg_ctx_get_rest_http_method(msg_ctx, env), location,
                                  &param_count, &params);
@@ -219,13 +219,23 @@ axis2_rest_disp_find_op(
                             int i = 0;
                             int j = 0;
                             axutil_array_list_t *supported_rest_methods = NULL;
+                            const axis2_char_t *http_method = NULL;
                             axis2_char_t *rest_methods[] = {AXIS2_HTTP_GET, AXIS2_HTTP_POST,
                                 AXIS2_HTTP_PUT, AXIS2_HTTP_DELETE, AXIS2_HTTP_HEAD};
                             supported_rest_methods = axutil_array_list_create(env, 0);
+                            http_method = axis2_msg_ctx_get_rest_http_method(msg_ctx, env);
+                            if (!http_method)
+                            {
+                                AXIS2_LOG_WARNING (env->log, AXIS2_LOG_SI,
+                                                 "unable to find http method \
+for location: %s", location);
+                                return NULL;
+                            }
+
                             for (i = 0; i < 5; i++)
                             {
-                                if (axutil_strcasecmp(rest_methods[i],
-                                    axis2_msg_ctx_get_rest_http_method(msg_ctx, env)))
+                                if (axutil_strcasecmp(rest_methods[i], 
+                                                      http_method))
                                 {
                                     if (axis2_rest_disp_get_rest_op_with_method_and_location(svc, env,
                                         rest_methods[i], location, &param_count, &params))

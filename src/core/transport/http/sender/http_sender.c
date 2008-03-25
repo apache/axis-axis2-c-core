@@ -807,6 +807,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                                                    env, buffer, buffer_size);
     }
     
+
+    /* HTTPS request processing */
     axis2_http_sender_configure_server_cert (sender, env, msg_ctx);
 
     axis2_http_sender_configure_key_file (sender, env, msg_ctx);
@@ -899,9 +901,11 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     }
 
     if (proxy_auth_property)
+    {
         proxy_auth_property_value = (axis2_char_t *) 
             axutil_property_get_value (proxy_auth_property,
                                        env);
+    }
 
     if (proxy_auth_property_value && 
         0 == axutil_strcmp (proxy_auth_property_value, 
@@ -960,10 +964,12 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
     if (force_proxy_auth || force_proxy_auth_with_head)
     {
-        status_code = AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL;
+        status_code = 
+            AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL;
     }
     else
     {
+        /* NOT forcing proxy authentication  */
         if (force_http_auth)
         {
             axis2_status_t auth_status;
@@ -978,7 +984,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                                  "Error in setting HTTP Authentication header");
             }
             http_auth_header_added = AXIS2_TRUE;
-            /* how should this status_code be handled? */
+
             status_code = axis2_http_client_send (sender->client, 
                                                   env, request, ssl_pp);
 
@@ -1028,7 +1034,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             if (status_code != 
                 AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL)
             {
-                /* how should this status_code be handled? */
+
                 status_code = axis2_http_client_send (sender->client, env, 
                                                       request, ssl_pp);
 
@@ -1045,7 +1051,6 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         }
         else 
         {
-            /* how should this status_code be handled? */
             status_code = axis2_http_client_send (sender->client, env, 
                                                   request, ssl_pp);
 
@@ -1104,7 +1109,6 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                 }
                 else
                 {
-                    /* how should this status_code be handled? */
                     status_code = axis2_http_client_send (sender->client, env, 
                                                           request, ssl_pp);
 
@@ -1122,6 +1126,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                 status_code = axis2_http_client_recieve_header (sender->client,
                                                                 env);
             }
+
             /* Proxies have no idea about HTTP Methods therefore, if
              * it fails no need to re-check */ 
             if (AXIS2_HTTP_RESPONSE_PROXY_AUTHENTICATION_REQUIRED_CODE_VAL == 
@@ -1136,6 +1141,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         }
         else
         {
+
+            /* not forcing proxy auth with head */
             axis2_status_t auth_status;
             auth_status = axis2_http_sender_configure_proxy_auth (sender,
                                                                   env,
@@ -1330,6 +1337,7 @@ header");
 
     axis2_msg_ctx_set_status_code (msg_ctx, env, status_code);
 
+    /* Start processing response */
     response = axis2_http_client_get_response (sender->client, env);
     if (!is_soap)
     {
@@ -1572,8 +1580,8 @@ axis2_http_sender_get_timeout_values (axis2_http_sender_t * sender,
     axutil_param_t *tmp_param = NULL;
     axutil_property_t *property = NULL;
 
-    AXIS2_ENV_CHECK (env, AXIS2_FAILURE);
-
+    AXIS2_PARAM_CHECK (env->error, sender, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
     /* check if timeout has been set by user using options 
      * with axis2_options_set_timeout_in_milli_seconds
      */
@@ -1622,7 +1630,6 @@ axis2_http_sender_set_http_version (axis2_http_sender_t * sender,
                                     const axutil_env_t * env,
                                     axis2_char_t * version)
 {
-    AXIS2_ENV_CHECK (env, AXIS2_FAILURE);
     sender->http_version = axutil_strdup (env, version);
     if (!sender->http_version)
     {
@@ -1662,7 +1669,6 @@ axis2_http_sender_configure_proxy (axis2_http_sender_t * sender,
     axis2_char_t *proxy_host = NULL;
     axis2_char_t *proxy_port = NULL;
 
-    AXIS2_ENV_CHECK (env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
 
     conf_ctx = axis2_msg_ctx_get_conf_ctx (msg_ctx, env);
@@ -3214,7 +3220,6 @@ axis2_http_sender_get_param_string (axis2_http_sender_t * sender,
     axis2_char_t *param_string = NULL;
     int i = 0;
 
-    AXIS2_ENV_CHECK (env, NULL);
     AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
 
     soap_env = axis2_msg_ctx_get_soap_envelope (msg_ctx, env);
