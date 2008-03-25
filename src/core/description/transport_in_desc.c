@@ -44,8 +44,6 @@ axis2_transport_in_desc_create(
 {
     axis2_transport_in_desc_t *transport_in = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     transport_in = (axis2_transport_in_desc_t *) AXIS2_MALLOC(env->allocator,
                                                               sizeof
                                                               (axis2_transport_in_desc_t));
@@ -80,8 +78,6 @@ axis2_transport_in_desc_free(
     axis2_transport_in_desc_t * transport_in,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (transport_in->recv)
     {
         axis2_transport_receiver_free(transport_in->recv, env);
@@ -124,8 +120,6 @@ axis2_transport_in_desc_free_void_arg(
 {
     axis2_transport_in_desc_t *transport_in_l = NULL;
 
-    AXIS2_ENV_CHECK(env, void);
-
     transport_in_l = (axis2_transport_in_desc_t *) transport_in;
     axis2_transport_in_desc_free(transport_in_l, env);
     return;
@@ -136,7 +130,6 @@ axis2_transport_in_desc_get_enum(
     const axis2_transport_in_desc_t * transport_in,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return transport_in->trans_enum;
 }
 
@@ -146,8 +139,6 @@ axis2_transport_in_desc_set_enum(
     const axutil_env_t * env,
     const AXIS2_TRANSPORT_ENUMS trans_enum)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     transport_in->trans_enum = trans_enum;
     return AXIS2_SUCCESS;
 }
@@ -157,7 +148,6 @@ axis2_transport_in_desc_get_in_flow(
     const axis2_transport_in_desc_t * transport_in,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return transport_in->in_flow;
 }
 
@@ -167,7 +157,6 @@ axis2_transport_in_desc_set_in_flow(
     const axutil_env_t * env,
     axis2_flow_t * in_flow)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, in_flow, AXIS2_FAILURE);
 
     if (transport_in->in_flow)
@@ -192,7 +181,6 @@ axis2_transport_in_desc_set_fault_in_flow(
     const axutil_env_t * env,
     axis2_flow_t * fault_in_flow)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, fault_in_flow, AXIS2_FAILURE);
 
     if (transport_in->fault_in_flow)
@@ -208,7 +196,6 @@ axis2_transport_in_desc_get_recv(
     const axis2_transport_in_desc_t * transport_in,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return transport_in->recv;
 }
 
@@ -218,7 +205,6 @@ axis2_transport_in_desc_set_recv(
     const axutil_env_t * env,
     axis2_transport_receiver_t * recv)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, recv, AXIS2_FAILURE);
 
     if (transport_in->recv)
@@ -235,8 +221,6 @@ axis2_transport_in_desc_get_in_phase(
     const axis2_transport_in_desc_t * transport_in,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return transport_in->in_phase;
 }
 
@@ -246,7 +230,6 @@ axis2_transport_in_desc_set_in_phase(
     const axutil_env_t * env,
     axis2_phase_t * in_phase)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, in_phase, AXIS2_FAILURE);
 
     if (transport_in->in_phase)
@@ -262,8 +245,6 @@ axis2_transport_in_desc_get_fault_phase(
     const axis2_transport_in_desc_t * transport_in,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return transport_in->fault_phase;
 }
 
@@ -273,7 +254,6 @@ axis2_transport_in_desc_set_fault_phase(
     const axutil_env_t * env,
     axis2_phase_t * fault_phase)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, fault_phase, AXIS2_FAILURE);
 
     if (transport_in->fault_phase)
@@ -291,7 +271,6 @@ axis2_transport_in_desc_add_param(
     const axutil_env_t * env,
     axutil_param_t * param)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
 
     return axutil_param_container_add_param(transport_in_desc->
@@ -304,8 +283,6 @@ axis2_transport_in_desc_get_param(
     const axutil_env_t * env,
     const axis2_char_t * param_name)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return axutil_param_container_get_param(transport_in_desc->param_container,
                                             env, param_name);
 }
@@ -316,7 +293,6 @@ axis2_transport_in_desc_is_param_locked(
     const axutil_env_t * env,
     const axis2_char_t * param_name)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FAILURE);
 
     return axutil_param_container_is_param_locked(transport_in_desc->
@@ -331,3 +307,4 @@ axis2_transport_in_desc_param_container(
 {
     return transport_in_desc->param_container;
 }
+

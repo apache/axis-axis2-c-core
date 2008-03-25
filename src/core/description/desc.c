@@ -41,8 +41,6 @@ axis2_desc_create(
 {
     axis2_desc_t *desc = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     desc = (axis2_desc_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_desc_t));
 
     if (!desc)
@@ -81,8 +79,6 @@ axis2_desc_free(
     axis2_desc_t * desc,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (desc->children)
     {
         axutil_hash_index_t *hi = NULL;
@@ -126,7 +122,6 @@ axis2_desc_add_param(
     const axutil_env_t * env,
     axutil_param_t * param)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FALSE);
 
     return axutil_param_container_add_param(desc->param_container, env, param);
@@ -161,7 +156,6 @@ axis2_desc_is_param_locked(
 {
     axutil_param_t *param_l = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FALSE);
 
     param_l = axis2_desc_get_param(desc, env, param_name);
@@ -176,8 +170,6 @@ axis2_desc_add_child(
     const axis2_char_t * key,
     const void *child)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-
     if (desc->children)
     {
         axutil_hash_set(desc->children, key, AXIS2_HASH_KEY_STRING, child);
@@ -209,8 +201,6 @@ axis2_desc_remove_child(
     const axutil_env_t * env,
     const axis2_char_t * key)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-
     if (desc->children)
     {
         axutil_hash_set(desc->children, key, AXIS2_HASH_KEY_STRING, NULL);
@@ -265,3 +255,4 @@ axis2_desc_get_policy_include(
     }
     return desc->policy_include;
 }
+

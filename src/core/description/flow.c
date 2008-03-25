@@ -29,7 +29,6 @@ axis2_flow_create(
 {
     axis2_flow_t *flow = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     flow = (axis2_flow_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_flow_t));
 
     if (!flow)
@@ -56,8 +55,6 @@ axis2_flow_free(
     axis2_flow_t * flow,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (flow->list)
     {
         int i = 0;
@@ -91,7 +88,6 @@ axis2_flow_free_void_arg(
 {
     axis2_flow_t *flow_l = NULL;
 
-    AXIS2_ENV_CHECK(env, void);
     flow_l = (axis2_flow_t *) flow;
     axis2_flow_free(flow_l, env);
     return;
@@ -103,7 +99,6 @@ axis2_flow_add_handler(
     const axutil_env_t * env,
     axis2_handler_desc_t * handler)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, handler, AXIS2_FAILURE);
 
     if (!flow->list)
@@ -135,3 +130,4 @@ axis2_flow_get_handler_count(
 {
     return axutil_array_list_size(flow->list, env);
 }
+
