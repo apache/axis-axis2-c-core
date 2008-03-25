@@ -666,8 +666,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                     content_type = temp_content_type;
                     temp_content_type =
                         axutil_stracat (env, content_type, 
-                                        (const axis2_char_t *)
-                                        AXIS2_ESC_DOUBLE_QUOTE);
+                                        AXIS2_ESC_DOUBLE_QUOTE_STR);
                     AXIS2_FREE (env->allocator, content_type);
                     content_type = temp_content_type;
                 }
@@ -715,8 +714,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                     content_type = temp_content_type;
                     temp_content_type =
                         axutil_stracat (env, content_type, 
-                                        (const axis2_char_t *)
-                                        AXIS2_ESC_DOUBLE_QUOTE);
+                                        AXIS2_ESC_DOUBLE_QUOTE_STR);
                     AXIS2_FREE (env->allocator, content_type);
                     content_type = temp_content_type;
                 }
