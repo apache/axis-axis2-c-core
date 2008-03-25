@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,9 +16,7 @@
  */
 
 #include <stdlib.h>
-
 #define AXIS2_WANT_STRFUNC
-
 #include <axutil_uri.h>
 
 typedef struct schemes_t schemes_t;
@@ -27,7 +24,6 @@ typedef struct schemes_t schemes_t;
 /** Structure to store various schemes and their default ports */
 struct schemes_t
 {
-
     /** The name of the scheme */
     const axis2_char_t *name;
 
@@ -145,7 +141,6 @@ static const unsigned char uri_delims[256] = {
  */
 struct axutil_uri
 {
-
     /** scheme ("http"/"ftp"/...) */
     axis2_char_t *scheme;
 
@@ -194,7 +189,7 @@ struct axutil_uri
 
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
 axutil_uri_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axutil_uri_t *uri = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -204,6 +199,7 @@ axutil_uri_create(
     if (!uri)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     uri->scheme = NULL;
@@ -224,8 +220,8 @@ axutil_uri_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_uri_free(
-    axutil_uri_t * uri,
-    const axutil_env_t * env)
+    axutil_uri_t *uri,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -299,8 +295,8 @@ axutil_uri_free(
 
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
 axutil_uri_parse_string(
-    const axutil_env_t * env,
-    const axis2_char_t * uri_str)
+    const axutil_env_t *env,
+    const axis2_char_t *uri_str)
 {
     axutil_uri_t *uri = NULL;
     const axis2_char_t *s;
@@ -311,7 +307,6 @@ axutil_uri_parse_string(
     int v6_offset1 = 0,
         v6_offset2 = 0;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, uri_str, NULL);
 
     uri = (axutil_uri_t *) axutil_uri_create(env);
@@ -319,7 +314,6 @@ axutil_uri_parse_string(
     /* Initialize the structure. parse_uri() and parse_uri_components()
      * can be called more than once per request.
      */
-    /*memset (uri, '\0', sizeof(*uri)); */
     uri->is_initialized = 1;
 
     /* We assume the processor has a branch predictor like most --
@@ -562,8 +556,8 @@ axutil_uri_parse_string(
  */
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
 axutil_uri_parse_hostinfo(
-    const axutil_env_t * env,
-    const axis2_char_t * hostinfo)
+    const axutil_env_t *env,
+    const axis2_char_t *hostinfo)
 {
     axutil_uri_t *uri = NULL;
     const axis2_char_t *s;
@@ -571,7 +565,6 @@ axutil_uri_parse_hostinfo(
     const axis2_char_t *rsb;
     int v6_offset1 = 0;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, hostinfo, NULL);
 
     uri = (axutil_uri_t *) axutil_uri_create(env);
@@ -658,11 +651,10 @@ axutil_uri_parse_hostinfo(
 /* Resolve relative to a base.  This means host/etc, and (crucially) path */
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
 axutil_uri_resolve_relative(
-    const axutil_env_t * env,
-    const axutil_uri_t * base,
-    axutil_uri_t * uri)
+    const axutil_env_t *env,
+    const axutil_uri_t *base,
+    axutil_uri_t *uri)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, base, NULL);
     AXIS2_PARAM_CHECK(env->error, uri, NULL);
 
@@ -770,8 +762,8 @@ axutil_uri_resolve_relative(
 
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
 axutil_uri_parse_relative(
-    const axutil_env_t * env,
-    const axutil_uri_t * base,
+    const axutil_env_t *env,
+    const axutil_uri_t *base,
     const char *uri)
 {
     axutil_uri_t *uptr = NULL;
@@ -794,7 +786,7 @@ axutil_uri_parse_relative(
 }
 AXIS2_EXTERN axis2_port_t AXIS2_CALL
 axutil_uri_port_of_scheme(
-    const axis2_char_t * scheme_str)
+    const axis2_char_t *scheme_str)
 {
     schemes_t *scheme;
 
@@ -813,12 +805,11 @@ axutil_uri_port_of_scheme(
 
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
 axutil_uri_clone(
-    const axutil_uri_t * uri,
-    const axutil_env_t * env)
+    const axutil_uri_t *uri,
+    const axutil_env_t *env)
 {
     axutil_uri_t *new_uri = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     new_uri = (axutil_uri_t *) axutil_uri_create(env);
 
     new_uri->scheme = axutil_strdup(env, uri->scheme);
@@ -845,8 +836,8 @@ axutil_uri_clone(
  */
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_uri_to_string(
-    const axutil_uri_t * uri,
-    const axutil_env_t * env,
+    const axutil_uri_t *uri,
+    const axutil_env_t *env,
     unsigned flags)
 {
     axis2_char_t *ret = "";
@@ -959,56 +950,56 @@ axutil_uri_to_string(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_uri_get_protocol(
-    axutil_uri_t * uri,
-    const axutil_env_t * env)
+    axutil_uri_t *uri,
+    const axutil_env_t *env)
 {
     return uri->scheme;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_uri_get_server(
-    axutil_uri_t * uri,
-    const axutil_env_t * env)
+    axutil_uri_t *uri,
+    const axutil_env_t *env)
 {
     return uri->hostinfo;
 }
 
 AXIS2_EXTERN axis2_port_t AXIS2_CALL
 axutil_uri_get_port(
-    axutil_uri_t * uri,
-    const axutil_env_t * env)
+    axutil_uri_t *uri,
+    const axutil_env_t *env)
 {
     return uri->port;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_uri_get_host(
-    axutil_uri_t * uri,
-    const axutil_env_t * env)
+    axutil_uri_t *uri,
+    const axutil_env_t *env)
 {
     return uri->hostname;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_uri_get_query(
-    axutil_uri_t * uri,
-    const axutil_env_t * env)
+    axutil_uri_t *uri,
+    const axutil_env_t *env)
 {
     return uri->query;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_uri_get_fragment(
-    axutil_uri_t * uri,
-    const axutil_env_t * env)
+    axutil_uri_t *uri,
+    const axutil_env_t *env)
 {
     return uri->fragment;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_uri_get_path(
-    axutil_uri_t * uri,
-    const axutil_env_t * env)
+    axutil_uri_t *uri,
+    const axutil_env_t *env)
 {
     return uri->path;
 }
