@@ -30,7 +30,7 @@
 #include <axutil_version.h>
 #include <apr_rmm.h>
 #include <apr_shm.h>
-
+#include <axis2_http_transport.h>
 
 /* Configuration structure populated by apache2.conf */
 typedef struct axis2_config_rec
