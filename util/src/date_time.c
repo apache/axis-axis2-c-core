@@ -767,13 +767,9 @@ axutil_date_time_get_msec(
     axutil_date_time_t *date_time,
     const axutil_env_t *env)
 {
-    if (date_time->sec >= 1)
-    {
-        float temp = (float)((int)date_time->sec * 1000);
-        temp /= 1000;
-        return (int)((date_time->sec - temp) * 1000);
-    }
-    return (int)(date_time->sec * 1000);
+    /* Precision is 1/100 of a millisecond */
+    float ret = (date_time->sec - (float)((int)date_time->sec)) * 1000.0;
+    return (int)((ret * 100.0 + 0.5) / 100.0);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
