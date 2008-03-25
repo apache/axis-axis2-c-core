@@ -175,7 +175,6 @@ axis2_phase_resolver_build_chains(
                                                                  env, j, op);
         }
     }
-
     return status;
 }
 

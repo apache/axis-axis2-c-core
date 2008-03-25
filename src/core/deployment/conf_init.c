@@ -47,11 +47,8 @@ axis2_build_conf_ctx(
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_conf_t *conf = NULL;
-    axis2_phase_resolver_t *phase_resolver = NULL;
     axutil_property_t *property = NULL;
     axis2_ctx_t *conf_ctx_base = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
 
     dep_engine = axis2_dep_engine_create_with_repos_name(env, repo_name);
     if (!dep_engine)
@@ -71,15 +68,6 @@ axis2_build_conf_ctx(
     }
     axis2_conf_set_dep_engine(conf, env, dep_engine);
 
-    phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
-    if (!phase_resolver)
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "phase resolver create with config failed. phase resolver value "\
-            "is NULL");
-        return NULL;
-    }
-
     conf_ctx = axis2_conf_ctx_create(env, conf);
     if (!conf_ctx)
     {
@@ -91,13 +79,10 @@ axis2_build_conf_ctx(
     conf_ctx_base = axis2_conf_ctx_get_base(conf_ctx, env);
     property = axutil_property_create_with_args(env, 2, 0, 0, AXIS2_VALUE_TRUE);
     axis2_ctx_set_property(conf_ctx_base, env, AXIS2_IS_SVR_SIDE, property);
-    axis2_phase_resolver_build_chains(phase_resolver, env);
 
     axis2_init_modules(env, conf_ctx);
     axis2_load_services(env, conf_ctx);
     axis2_init_transports(env, conf_ctx);
-
-    axis2_phase_resolver_free(phase_resolver, env);
 
     return conf_ctx;
 }
@@ -111,9 +96,6 @@ axis2_build_conf_ctx_with_file(
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_conf_t *conf = NULL;
-    axis2_phase_resolver_t *phase_resolver = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
 
     dep_engine = axis2_dep_engine_create_with_axis2_xml (env, file);
     if (!dep_engine)
@@ -135,16 +117,6 @@ axis2_build_conf_ctx_with_file(
     }
 	
     axis2_conf_set_dep_engine(conf, env, dep_engine);
-    phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
-    if (!phase_resolver)
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                        "phase resolver create with config failed."
-						" phase resolver value is NULL");
-        return NULL;
-    }
-
-	
 	
     conf_ctx = axis2_conf_ctx_create(env, conf);
     if (!conf_ctx)
@@ -154,13 +126,9 @@ axis2_build_conf_ctx_with_file(
         return NULL;
     }
 
-    axis2_phase_resolver_build_chains(phase_resolver, env);
-
     axis2_init_modules(env, conf_ctx);
     axis2_load_services(env, conf_ctx);
     axis2_init_transports(env, conf_ctx);
-
-    axis2_phase_resolver_free(phase_resolver, env);
 
     return conf_ctx;
 }
@@ -173,14 +141,11 @@ axis2_build_client_conf_ctx(
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_conf_t *conf = NULL;
-    axis2_phase_resolver_t *phase_resolver = NULL;
     axutil_property_t *property = NULL;
     axis2_ctx_t *conf_ctx_base = NULL;
 
     axis2_status_t status;
     unsigned int len = 0;
-
-    AXIS2_ENV_CHECK(env, NULL);
 
     /* building conf using axis2.xml, in that case we check whether
      * last 9 characters of the axis2_home equals to the "axis2.xml"
@@ -233,15 +198,6 @@ value is NULL");
     }
     axis2_conf_set_dep_engine(conf, env, dep_engine);
 
-    phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
-    if (!phase_resolver)
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                        "phase resolver create with config failed. \
-phase resolver value is NULL");
-        return NULL;
-    }
-
     conf_ctx = axis2_conf_ctx_create(env, conf);
     if (!conf_ctx)
     {
@@ -252,12 +208,9 @@ phase resolver value is NULL");
     conf_ctx_base = axis2_conf_ctx_get_base(conf_ctx, env);
     property = axutil_property_create_with_args(env, 2, 0, 0, AXIS2_VALUE_FALSE);
     axis2_ctx_set_property(conf_ctx_base, env, AXIS2_IS_SVR_SIDE, property);
-    axis2_phase_resolver_build_chains(phase_resolver, env);
 
     axis2_init_modules(env, conf_ctx);
     axis2_init_transports(env, conf_ctx);
-
-    axis2_phase_resolver_free(phase_resolver, env);
 
     return conf_ctx;
 }
@@ -270,7 +223,6 @@ axis2_init_modules(
     axis2_conf_t *conf = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
 
     conf = axis2_conf_ctx_get_conf(conf_ctx, env);
@@ -320,7 +272,6 @@ axis2_load_services(
     axis2_conf_t *conf = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
 
     conf = axis2_conf_ctx_get_conf(conf_ctx, env);
@@ -402,7 +353,6 @@ axis2_init_transports(
     axis2_conf_t *conf = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
 
     conf = axis2_conf_ctx_get_conf(conf_ctx, env);
@@ -456,3 +406,4 @@ axis2_init_transports(
 
     return status;
 }
+
