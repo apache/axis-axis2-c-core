@@ -981,6 +981,13 @@ extern "C"
 
 #define AXIS2_CONTENT_TYPE_CHARSET ";charset="
 
+#define AXIS2_PORT_STRING "port"
+
+#define AXIS2_DEFAULT_HOST_ADDRESS "127.0.0.1"
+
+#define AXIS2_DEFAULT_SVC_PATH "/axis2/services/"
+
+#define AXIS2_HTTP_PROTOCOL "http"
     /** @} */
 
 #ifdef __cplusplus

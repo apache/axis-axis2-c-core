@@ -95,7 +95,6 @@ axis2_http_server_create(
     const int port)
 {
     axis2_http_server_impl_t *server_impl = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     server_impl = (axis2_http_server_impl_t *) AXIS2_MALLOC
         (env->allocator, sizeof(axis2_http_server_impl_t));
@@ -125,6 +124,9 @@ axis2_http_server_create(
         server_impl->conf_ctx_private = axis2_build_conf_ctx(env, repo);
         if (!server_impl->conf_ctx_private)
         {
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                             "unable to create private configuration context\
+for repo path %s", repo);
             axis2_http_server_free((axis2_transport_receiver_t *) server_impl,
                                    env);
             return NULL;
@@ -143,13 +145,13 @@ axis2_http_server_create_with_file(
     const int port)
 {
     axis2_http_server_impl_t *server_impl = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
+
     server_impl = (axis2_http_server_impl_t *) AXIS2_MALLOC
         (env->allocator, sizeof(axis2_http_server_impl_t));
 
     if (!server_impl)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -176,6 +178,8 @@ axis2_http_server_create_with_file(
         {
             axis2_http_server_free((axis2_transport_receiver_t *) server_impl,
                                    env);
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "unable to create\
+configuration context for file %s", file);
             return NULL;
         }
         server_impl->conf_ctx = server_impl->conf_ctx_private;
@@ -191,7 +195,14 @@ axis2_http_server_free(
     const axutil_env_t * env)
 {
     axis2_http_server_impl_t *server_impl = NULL;
-    AXIS2_ENV_CHECK(env, void);
+
+    if (!server)
+    {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "failure, server value is null , nothing to free");
+        return;
+    }
+
     server_impl = AXIS2_INTF_TO_IMPL(server);
     if (server_impl->svr_thread)
     {
@@ -227,18 +238,22 @@ axis2_http_server_init(
     axis2_char_t *port_str = NULL;
     axutil_param_t *param = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, server, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, conf_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, in_desc, AXIS2_FAILURE);
+
     server_impl = AXIS2_INTF_TO_IMPL(server);
 
     server_impl->conf_ctx = conf_ctx;
     param =
         (axutil_param_t *)
         axutil_param_container_get_param(axis2_transport_in_desc_param_container
-                                         (in_desc, env), env, "port");
+                                         (in_desc, env), env, AXIS2_PORT_STRING);
     if (param)
     {
         port_str = axutil_param_get_value(param, env);
     }
+
     if (port_str)
     {
         server_impl->port = atoi(port_str);
@@ -254,22 +269,31 @@ axis2_http_server_start(
 
     axis2_http_server_impl_t *server_impl = NULL;
     axis2_http_worker_t *worker = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    AXIS2_PARAM_CHECK (env->error, server, AXIS2_FAILURE);
 
     server_impl = AXIS2_INTF_TO_IMPL(server);
     server_impl->svr_thread = axis2_http_svr_thread_create(env,
                                                            server_impl->port);
     if (!server_impl->svr_thread)
     {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
+                         "unable to create server thread for port %d",
+                         server_impl->port);
+
         return AXIS2_FAILURE;
     }
+
     worker = axis2_http_worker_create(env, server_impl->conf_ctx);
-    axis2_http_worker_set_svr_port(worker, env, server_impl->port);
     if (!worker)
     {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
+                         "axis2 http worker creation failed");
+
         axis2_http_svr_thread_free(server_impl->svr_thread, env);
         return AXIS2_FAILURE;
     }
+    axis2_http_worker_set_svr_port(worker, env, server_impl->port);
     AXIS2_LOG_INFO(env->log, "Starting HTTP server thread");
     axis2_http_svr_thread_set_worker(server_impl->svr_thread, env, worker);
     axis2_http_svr_thread_run(server_impl->svr_thread, env);
@@ -281,8 +305,8 @@ axis2_http_server_stop(
     axis2_transport_receiver_t * server,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
+    AXIS2_PARAM_CHECK (env->error, server, AXIS2_FAILURE);
     AXIS2_LOG_INFO(env->log, "Terminating HTTP server thread");
     if (AXIS2_INTF_TO_IMPL(server)->svr_thread)
     {
@@ -298,7 +322,7 @@ axis2_http_server_get_conf_ctx(
     axis2_transport_receiver_t * server,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK (env->error, server, NULL);
     return AXIS2_INTF_TO_IMPL(server)->conf_ctx;
 }
 
@@ -312,12 +336,13 @@ axis2_http_server_get_reply_to_epr(
     const axis2_char_t *host_address = NULL;
     axis2_char_t *svc_path = NULL;
     axutil_url_t *url = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
 
-    host_address = "127.0.0.1"; /* TODO : get from axis2.xml */
-    svc_path = axutil_stracat(env, "/axis2/services/", svc_name);
-    url = axutil_url_create(env, "http", host_address,
+    AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
+    AXIS2_PARAM_CHECK(env->error, server, NULL);
+
+    host_address = AXIS2_DEFAULT_HOST_ADDRESS; /* TODO : get from axis2.xml */
+    svc_path = axutil_stracat(env, AXIS2_DEFAULT_SVC_PATH, svc_name);
+    url = axutil_url_create(env, AXIS2_HTTP_PROTOCOL, host_address,
                             AXIS2_INTF_TO_IMPL(server)->port, svc_path);
     AXIS2_FREE(env->allocator, svc_path);
     if (!url)
@@ -336,7 +361,7 @@ axis2_http_server_is_running(
     const axutil_env_t * env)
 {
     axis2_http_server_impl_t *server_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK (env->error, server, AXIS2_FALSE);
     server_impl = AXIS2_INTF_TO_IMPL(server);
     if (server_impl->svr_thread)
     {

@@ -1499,6 +1499,7 @@ axis2_http_sender_get_header_info (axis2_http_sender_t * sender,
                                     env, MTOM_RECIVED_CONTENT_TYPE, property);
         }
     }
+
     if (charset)
     {
         axis2_ctx_t *axis_ctx =
@@ -1512,6 +1513,8 @@ axis2_http_sender_get_header_info (axis2_http_sender_t * sender,
                                     property);
         }
     }
+
+
     if (AXIS2_FALSE == response_chunked)
     {
         int tmp_len = 0;

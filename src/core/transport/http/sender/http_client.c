@@ -73,6 +73,7 @@ axis2_http_client_create(
     http_client->sockfd = -1;
     http_client->response = NULL;
     http_client->request_sent = AXIS2_FALSE;
+
     /* default timeout is 60000 milliseconds */
     http_client->timeout = AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT;
     http_client->proxy_enabled = AXIS2_FALSE;
