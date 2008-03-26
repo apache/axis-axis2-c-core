@@ -4,21 +4,16 @@
 #include <stdio.h>
 #include "../util/create_env.h"
 
-FILE *f = NULL;
-unsigned char *plain_binary ;
-const char *encoded_binary;
-unsigned char buffer[1024];
 int plain_binary_len;
-
-axutil_base64_binary_t *base64_binary;
-axutil_env_t *env = NULL;
-axutil_base64_binary_t *base64_binary;
+unsigned char *plain_binary ;
 
 /** @brief read binary
  *  read the binary file 
  */
+
 int read_binary()
 {
+      unsigned char buffer[1024];
       FILE *in = fopen("test","rb");
       FILE *out = fopen("test.doc","w");
 
@@ -30,8 +25,9 @@ int read_binary()
 
       while((plain_binary_len = fread(buffer,1,sizeof(buffer),in)) > 0)
       {
-         fwrite(buffer,1,plain_binary_len,out);
+          fwrite(buffer,1,plain_binary_len,out);
       }
+
       fclose(in);
       fclose(out);
       plain_binary = buffer;
@@ -42,41 +38,100 @@ int read_binary()
 /** @brief test base64
  *  create duration from values and retrieve values
  */
-axis2_status_t test_base64()
+axis2_status_t test_base64(axutil_env_t *env)
 {  
-    env = create_environment();
+    axis2_status_t status = AXIS2_FAILURE;
+    axutil_base64_binary_t *base64_binary;
+    axutil_base64_binary_t *plain_base64_binary;
+    const char *encoded_binary;
+    char * get_binary = NULL;
+    int binary_len;
+    unsigned char * plain_binary = NULL;
     read_binary(); 
-    axutil_base64_binary_create(env);
-    printf(" base64 binary created\n");
-    base64_binary = axutil_base64_binary_create_with_plain_binary(env,
-                                                                  plain_binary,
-                                                                  plain_binary_len); 
-    printf(" base64 binary created with plain binary\n"); 
+
+    base64_binary = axutil_base64_binary_create(env);
+    if(!base64_binary)
+    {
+        printf("The test axutil_base64_binary_create is failed\n");
+        axutil_base64_binary_free(base64_binary,env);
+        return AXIS2_FAILURE;
+    }
+    else 
+        printf("The test axutil_base64_binary_create is successfull\n");
+
+    plain_base64_binary = axutil_base64_binary_create_with_plain_binary(env,
+                                                                        plain_binary,
+                                                                        plain_binary_len); 
+    if(!plain_base64_binary)
+    {
+        printf("The test axutil_base64_binary_create_with_plain_binary is failed\n");
+        axutil_base64_binary_free(plain_base64_binary,env);
+    }
+    else
+        printf("The test axutil_base64_binary_create_with_plain_binary is successfull\n");
+
     encoded_binary = axutil_base64_binary_get_encoded_binary(base64_binary,env);
-    printf(" get encorded binary \n");
-    axutil_base64_binary_create_with_encoded_binary(env,encoded_binary);
-    printf(" base64 binary created with encorded binary \n");
-    axutil_base64_binary_set_plain_binary(base64_binary,env,plain_binary,plain_binary_len);
-    axutil_base64_binary_get_plain_binary(base64_binary,env,&plain_binary_len);
-    axutil_base64_binary_set_encoded_binary(base64_binary,env,encoded_binary);
-    axutil_base64_binary_get_encoded_binary(base64_binary,env);
-    axutil_base64_binary_get_encoded_binary_len(base64_binary,env);
-    axutil_base64_binary_free(base64_binary,env);
+    if(!encoded_binary)
+    {
+        printf("The test axutil_base64_binary_get_encoded_binary is failed\n");
+        axutil_base64_binary_free(base64_binary,env);
+    }
+    else
+        printf("The test axutil_base64_binary_get_encoded_binary is successfull\n");
+
+    status = axutil_base64_binary_set_plain_binary(base64_binary,env,plain_binary,
+                                                   plain_binary_len);
+    if (status == AXIS2_SUCCESS)
+        printf("The test axutil_base64_binary_set_plain_binary is successful\n");
+    else
+        printf("The test axutil_base64_binary_set_plain_binary failed\n") ;
+
+    plain_binary = axutil_base64_binary_get_plain_binary(base64_binary,env,&plain_binary_len);
+    if(!plain_binary)
+    {   
+        printf("The test axutil_base64_binary_get_plain_binary is failed\n");
+        axutil_base64_binary_free(base64_binary,env);
+    }
+    else
+        printf("The test axutil_base64_binary_get_plain_binary is successfull\n" );
+
+    status = axutil_base64_binary_set_encoded_binary(base64_binary,env,encoded_binary);
+    if (status == AXIS2_SUCCESS)
+        printf("The test axutil_base64_binary_set_encoded_binary is successful\n");
+    else
+        printf("The test axutil_base64_binary_set_encoded_binary failed\n");
+
+    get_binary = axutil_base64_binary_get_encoded_binary(base64_binary,env);
+    if(!get_binary)
+    {
+        printf("The test axutil_base64_binary_get_encoded_binary is failed\n");
+        axutil_base64_binary_free(base64_binary,env);
+    }
+    else
+        printf("The test axutil_base64_binary_get_encoded_binary is successfull\n");
+
+    binary_len = axutil_base64_binary_get_encoded_binary_len(base64_binary,env);
+    if(!binary_len)
+    {
+        printf("The test axutil_base64_binary_get_encoded_binary_len is failed\n");
+        axutil_base64_binary_free(base64_binary,env);
+    }
+    else
+        printf("The test  axutil_base64_binary_get_encoded_binary_len is successfull\n");
+
     return AXIS2_SUCCESS;
 }
 
 int main()
 {
     int status = AXIS2_SUCCESS;
-
     axutil_env_t *env = NULL;
     env = create_environment();
-
-    status = test_base64();
+    status = test_base64(env);
 
     if(status == AXIS2_FAILURE)
     {
-        printf(" build  failed");
+        printf("build  failed");
     }
     axutil_env_free(env);
     return 0;
