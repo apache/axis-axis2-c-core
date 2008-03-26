@@ -50,27 +50,41 @@ extern "C"
       * @{
       */
 
+    /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     axiom_data_handler_get_content_type(
         axiom_data_handler_t * data_handler,
         const axutil_env_t * env);
 
+    /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
     AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
 
     axiom_data_handler_get_input_stream(
         axiom_data_handler_t * data_handler,
         const axutil_env_t * env);
 
+    /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
     AXIS2_EXTERN int AXIS2_CALL
     axiom_data_handler_get_input_stream_len(
         axiom_data_handler_t * data_handler,
         const axutil_env_t * env);
 
     /**
-     * @param output_stream parameter to store reference to output byte stream.
      * The data_handler is responsible for memory occupied by the stream 
      * returned
+     * @param output_stream parameter to store reference to output byte stream.
      * @param output_stream_size parameter to store reference to output byte 
      * stream length
      */
@@ -81,6 +95,11 @@ extern "C"
         axis2_byte_t ** output_stream,
         int *output_stream_size);
 
+    /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
     axiom_data_handler_set_binary_data(
@@ -89,17 +108,32 @@ extern "C"
         axis2_byte_t * input_stream,
         int input_stream_len);
 
+    /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_data_handler_write_to(
         axiom_data_handler_t * data_handler,
         const axutil_env_t * env);
 
+    /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_data_handler_set_file_name(
         axiom_data_handler_t * data_handler,
         const axutil_env_t * env,
         axis2_char_t * file_name);
 
+    /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_data_handler_free(
         axiom_data_handler_t * data_handler,
