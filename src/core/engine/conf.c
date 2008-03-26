@@ -35,9 +35,9 @@ struct axis2_conf
      * Field modules
      */
     axutil_array_list_t *engaged_modules;
-    /*to store all the available modules (including version) */
+    /*To store all the available modules (including version) */
     axutil_hash_t *all_modules;
-    /*to store mapping between default version to module name */
+    /*To store mapping between default version to module name */
     axutil_hash_t *name_to_version_map;
     axutil_array_list_t *out_phases;
     axutil_array_list_t *in_fault_phases;
@@ -58,16 +58,16 @@ struct axis2_conf
     /*This is used in rampart */
     axis2_bool_t enable_security;
 
-    /** configuration parameter container */
+    /** Configuration parameter container */
     axutil_param_container_t *param_container;
 
-    /** base description struct */
+    /** Base description struct */
     axis2_desc_t *base;
 	
-	/** mark whether conf is built using axis2 xml*/
+	/** Mark whether conf is built using axis2 xml*/
 	axis2_bool_t axis2_flag;
 
-    /* this is a hack to keep rampart_context at client side */
+    /* This is a hack to keep rampart_context at client side */
     void *security_context;
 };
 
@@ -87,6 +87,7 @@ axis2_conf_create(
     if (!conf)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
         return NULL;
     }
 	memset ((void *)conf, 0, sizeof (axis2_conf_t));
@@ -101,6 +102,8 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating parameter container failed");
         return NULL;
     }
 
@@ -109,6 +112,8 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating service group map failed");
         return NULL;
     }
 
@@ -127,6 +132,8 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating engaged module list failed");
         return NULL;
     }
 
@@ -135,6 +142,8 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating handler list failed");
         return NULL;
     }
 
@@ -144,6 +153,8 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating in phases list upto and including post dispatch failed");
         return NULL;
     }
     else
@@ -155,10 +166,13 @@ axis2_conf_create(
         if (!phase)
         {
             axis2_conf_free(conf, env);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating phase %s failed", 
+                AXIS2_PHASE_TRANSPORT_IN);
             return NULL;
         }
-        /*Incase of using security we need to find the service/operation parameters before the dispatch phase.
-         *This is required to give parameters to the security inflow.*/
+        /* Incase of using security we need to find the service/operation
+         * parameters before the dispatch phase.
+         * This is required to give parameters to the security inflow.*/
 
         uri_dispatch = axis2_req_uri_disp_create(env);
         if (uri_dispatch)
@@ -188,6 +202,9 @@ axis2_conf_create(
         {
             axis2_conf_free(conf, env);
             axis2_phase_free(phase, env);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Adding phase %s into in phases upto and including post "\
+                "dispatch list failed", AXIS2_PHASE_TRANSPORT_IN);
             return NULL;
 
         }
@@ -195,6 +212,8 @@ axis2_conf_create(
         if (!phase)
         {
             axis2_conf_free(conf, env);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating phase %s failed", 
+                AXIS2_PHASE_PRE_DISPATCH);
             return NULL;
         }
         status = axutil_array_list_add(conf->
@@ -204,6 +223,9 @@ axis2_conf_create(
         {
             axis2_conf_free(conf, env);
             axis2_phase_free(phase, env);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Adding phase %s into in phases upto and including post "\
+                "dispatch list failed", AXIS2_PHASE_PRE_DISPATCH);
             return NULL;
         }
     }
@@ -213,6 +235,8 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating all services map failed");
         return NULL;
     }
 
@@ -221,6 +245,8 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating all init services map failed");
         return NULL;
     }
 
@@ -229,6 +255,8 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating message receivers map failed.");
         return NULL;
     }
 
@@ -237,6 +265,8 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating fault services map failed");
         return NULL;
     }
 
@@ -245,6 +275,8 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating fault modules map failed");
         return NULL;
     }
 
@@ -253,6 +285,8 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating all modules map failed");
         return NULL;
     }
 
@@ -261,6 +295,8 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating name to version map failed");
         return NULL;
     }
 
@@ -268,6 +304,8 @@ axis2_conf_create(
     if (!conf->base)
     {
         axis2_conf_free(conf, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating Axis2 configuration base description failed");
         return NULL;
     }
 
@@ -280,8 +318,6 @@ axis2_conf_free(
     const axutil_env_t * env)
 {
     int i = 0;
-
-    AXIS2_ENV_CHECK(env, void);
 
     if (conf->param_container)
     {
@@ -427,13 +463,13 @@ axis2_conf_free(
     {
         int i = 0;
         for (i = 0; i < axutil_array_list_size(conf->
-                                               in_phases_upto_and_including_post_dispatch,
-                                               env); i++)
+                                   in_phases_upto_and_including_post_dispatch,
+                                   env); i++)
         {
             axis2_phase_t *phase = NULL;
             phase = (axis2_phase_t *) axutil_array_list_get(conf->
-                                                            in_phases_upto_and_including_post_dispatch,
-                                                            env, i);
+                                    in_phases_upto_and_including_post_dispatch,
+                                    env, i);
 
             if (phase)
                 axis2_phase_free(phase, env);
@@ -542,7 +578,6 @@ axis2_conf_add_svc_grp(
     const axis2_char_t *svc_grp_name = NULL;
     int k = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
 
     svcs = axis2_svc_grp_get_all_svcs(svc_grp, env);
@@ -550,7 +585,11 @@ axis2_conf_add_svc_grp(
     {
         conf->all_svcs = axutil_hash_make(env);
         if (!conf->all_svcs)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Creating all services map failed");
             return AXIS2_FAILURE;
+        }
     }
     k = axutil_hash_count(svcs);
     index_i = axutil_hash_first(svcs, env);
@@ -558,7 +597,7 @@ axis2_conf_add_svc_grp(
     {
         void *value = NULL;
         axis2_svc_t *desc = NULL;
-        axis2_char_t *svc_name2 = NULL;
+        axis2_svc_t *temp_svc = NULL;
         const axutil_qname_t *svc_qname = NULL;
 
         axutil_hash_this(index_i, NULL, NULL, &value);
@@ -566,10 +605,10 @@ axis2_conf_add_svc_grp(
         svc_qname = axis2_svc_get_qname(desc, env);
         svc_name = axutil_qname_get_localpart(svc_qname, env);
 
-        svc_name2 = axutil_hash_get(conf->all_svcs, svc_name,
+        temp_svc = axutil_hash_get(conf->all_svcs, svc_name,
                                     AXIS2_HASH_KEY_STRING);
-        /* no two service names deployed in the engine can be same */
-        if (svc_name2)
+        /* No two service names deployed in the engine can be same */
+        if (temp_svc)
         {
             AXIS2_ERROR_SET(env->error,
                             AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME,
@@ -613,7 +652,6 @@ axis2_conf_get_svc_grp(
     const axutil_env_t * env,
     const axis2_char_t * svc_grp_name)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc_grp_name, NULL);
 
     if (!conf->svc_grps)
@@ -645,7 +683,6 @@ axis2_conf_add_svc(
     const axutil_qname_t *svc_grp_qname = NULL;
     axis2_char_t *svc_grp_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
 
     svc_grp = axis2_svc_grp_create(env);
@@ -695,7 +732,6 @@ axis2_conf_get_svc(
     const axutil_env_t * env,
     const axis2_char_t * svc_name)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
 
     return axutil_hash_get(conf->all_svcs, svc_name, AXIS2_HASH_KEY_STRING);
@@ -707,7 +743,6 @@ axis2_conf_remove_svc(
     const axutil_env_t * env,
     const axis2_char_t * svc_name)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_name, AXIS2_FAILURE);
 
     axutil_hash_set(conf->all_svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
@@ -722,12 +757,10 @@ axis2_conf_add_param(
 {
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
 
-    if (AXIS2_TRUE == axis2_conf_is_param_locked(conf, env,
-                                                 axutil_param_get_name(param,
-                                                                       env)))
+    if (axis2_conf_is_param_locked(conf, env,
+                                   axutil_param_get_name(param, env)))
     {
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
@@ -748,7 +781,6 @@ axis2_conf_get_param(
     const axutil_env_t * env,
     const axis2_char_t * name)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, name, NULL);
 
     if (!conf->param_container)
@@ -768,7 +800,6 @@ axis2_conf_get_all_params(
     const axis2_conf_t * conf,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return axutil_param_container_get_params(conf->param_container, env);
 
 }
@@ -781,7 +812,6 @@ axis2_conf_is_param_locked(
 {
     axutil_param_t *param = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FALSE);
 
     param = axis2_conf_get_param(conf, env, param_name);
@@ -828,7 +858,6 @@ axis2_conf_add_transport_out(
     axis2_transport_out_desc_t * transport,
     const AXIS2_TRANSPORT_ENUMS trans_enum)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, transport, AXIS2_FAILURE);
 
     conf->transports_out[trans_enum] = transport;
@@ -856,7 +885,6 @@ axis2_conf_get_module(
     axutil_qname_t *mod_qname = NULL;
     const axis2_char_t *def_mod_ver = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
     name = axutil_qname_to_string((axutil_qname_t *) qname, env);
@@ -964,8 +992,6 @@ axis2_conf_get_all_svcs(
     axis2_svc_t *svc = NULL;
     axis2_char_t *svc_name = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     sgs = axis2_conf_get_all_svc_grps(conf, env);
     index_i = axutil_hash_first(sgs, env);
     while (index_i)
@@ -1006,8 +1032,6 @@ axis2_conf_get_all_svcs_to_load(
     axis2_svc_t *svc = NULL;
     axis2_char_t *svc_name = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     sgs = axis2_conf_get_all_svc_grps(conf, env);
     index_i = axutil_hash_first(sgs, env);
     while (index_i)
@@ -1046,7 +1070,6 @@ axis2_conf_is_engaged(
     axis2_module_desc_t *def_mod = NULL;
     int i = 0;
     int size = 0;
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FALSE);
 
     def_mod = axis2_conf_get_default_module(conf, env,
@@ -1066,9 +1089,9 @@ axis2_conf_is_engaged(
                                                          engaged_modules, env,
                                                          i);
 
-        if (AXIS2_TRUE == axutil_qname_equals(module_name, env, qname) ||
+        if (axutil_qname_equals(module_name, env, qname) ||
             (def_mod_qname &&
-             AXIS2_TRUE == axutil_qname_equals(def_mod_qname, env, qname)))
+             axutil_qname_equals(def_mod_qname, env, qname)))
         {
             return AXIS2_TRUE;
         }
@@ -1090,7 +1113,6 @@ axis2_conf_set_phases_info(
     const axutil_env_t * env,
     axis2_phases_info_t * phases_info)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, phases_info, AXIS2_FAILURE);
 
     if (conf->phases_info)
@@ -1109,7 +1131,6 @@ axis2_conf_add_msg_recv(
     const axis2_char_t * key,
     axis2_msg_recv_t * msg_recv)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, key, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_recv, AXIS2_FAILURE);
     if (!conf->msg_recvs)
@@ -1138,7 +1159,6 @@ axis2_conf_set_out_phases(
     const axutil_env_t * env,
     axutil_array_list_t * out_phases)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, out_phases, AXIS2_FAILURE);
 
     if (conf->out_phases)
@@ -1164,7 +1184,6 @@ axis2_conf_set_in_fault_phases(
     const axutil_env_t * env,
     axutil_array_list_t * list)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
 
     if (conf->in_fault_phases)
@@ -1182,7 +1201,6 @@ axis2_conf_set_out_fault_phases(
     const axutil_env_t * env,
     axutil_array_list_t * list)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
 
     if (conf->out_fault_phases)
@@ -1211,7 +1229,6 @@ axis2_conf_add_module(
     const axutil_qname_t *module_qname = NULL;
 
     axis2_status_t status = AXIS2_FAILURE;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module, AXIS2_FAILURE);
 
     status = axis2_module_desc_set_parent(module, env, conf);
@@ -1250,8 +1267,6 @@ axis2_conf_set_default_dispatchers(
     axis2_handler_t *handler = NULL;
     axis2_phase_t *post_dispatch = NULL;
     axis2_disp_checker_t *disp_checker = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     dispatch = axis2_phase_create(env, AXIS2_PHASE_DISPATCH);
     if (!dispatch)
@@ -1346,7 +1361,6 @@ axis2_conf_set_dispatch_phase(
     axis2_phase_t *post_dispatch = NULL;
     axis2_disp_checker_t *disp_checker = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, dispatch, AXIS2_FAILURE);
 
     status = axutil_array_list_add(conf->
@@ -1401,7 +1415,6 @@ axis2_conf_engage_module(
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_ref, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK (env->error, conf, AXIS2_FAILURE);
 
@@ -1429,7 +1442,7 @@ axis2_conf_engage_module(
          * xml instead of a repo. */
 		flag = axis2_conf_get_axis2_flag (conf, env);
 
-		if (flag == AXIS2_FALSE)
+		if (!flag)
 		{
         	repos_path = axis2_conf_get_repo(conf, env);
         	temp_path1 = axutil_stracat(env, repos_path, AXIS2_PATH_SEP_STR);
@@ -1520,7 +1533,7 @@ axis2_conf_engage_module(
             qname = (axutil_qname_t *) axutil_array_list_get(conf->
                                                              engaged_modules,
                                                              env, i);
-            if (AXIS2_TRUE == axutil_qname_equals(module_qname, env, qname))
+            if (axutil_qname_equals(module_qname, env, qname))
             {
                 to_be_engaged = AXIS2_FALSE;
             }
@@ -1579,8 +1592,6 @@ axis2_conf_set_repo(
     const axutil_env_t * env,
     axis2_char_t * repos_path)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (conf->axis2_repo)
     {
         AXIS2_FREE(env->allocator, conf->axis2_repo);
@@ -1605,7 +1616,6 @@ axis2_conf_set_axis2_xml(
     const axutil_env_t * env,
     axis2_char_t * axis2_xml)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK (env->error, axis2_xml, AXIS2_FAILURE);
     conf->axis2_xml = axutil_strdup(env, axis2_xml);
     return AXIS2_SUCCESS;
@@ -1629,7 +1639,6 @@ axis2_conf_get_default_module_version(
     const axis2_char_t * module_name)
 {
     axutil_hash_t *def_ver_map = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
     def_ver_map = conf->name_to_version_map;
@@ -1652,7 +1661,6 @@ axis2_conf_get_default_module(
     axutil_hash_t *all_modules = NULL;
     axutil_qname_t *mod_qname = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
     all_modules = conf->all_modules;
@@ -1694,7 +1702,6 @@ axis2_conf_add_default_module_version(
 {
     axutil_hash_t *name_to_ver_map = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_version, AXIS2_FAILURE);
     /*
@@ -1727,7 +1734,6 @@ axis2_conf_engage_module_with_version(
     axutil_qname_t *module_qname = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FAILURE);
 
     module_qname = axis2_core_utils_get_module_qname(env, module_name,
@@ -1792,7 +1798,6 @@ axis2_conf_set_enable_security(
     const axutil_env_t * env,
     axis2_bool_t enable_security)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
 
     conf->enable_security = enable_security;
@@ -1813,7 +1818,6 @@ axis2_conf_set_security_context(
     const axutil_env_t * env,
     void *security_context)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
 
     conf->security_context = (void *) security_context;
@@ -1835,3 +1839,4 @@ axis2_conf_get_base(
 {
     return conf->base;
 }
+
