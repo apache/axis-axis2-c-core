@@ -631,7 +631,7 @@ axutil_date_time_serialize_time(
 
     time_str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
                    sizeof(axis2_char_t) * 32);
-    sprintf(time_str, "%02d:%02d:%02.3fZ", date_time->hour, date_time->min,
+    sprintf(time_str, "%02d:%02d:%06.3fZ", date_time->hour, date_time->min,
         date_time->sec);
     return time_str;
 }
@@ -652,7 +652,7 @@ axutil_date_time_serialize_time_with_time_zone(
 
     time_str =
         (axis2_char_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 37);
-    sprintf(time_str, "%02d:%02d:%02.3f%c%02d:%02d", date_time->hour, date_time->min,
+    sprintf(time_str, "%02d:%02d:%06.3f%c%02d:%02d", date_time->hour, date_time->min,
         date_time->sec, date_time->tz_pos ? '+': '-',
         date_time->tz_hour, date_time->tz_min);
     return time_str;
@@ -685,7 +685,7 @@ axutil_date_time_serialize_date_time(
     AXIS2_ENV_CHECK(env, NULL);
 
     date_time_str = AXIS2_MALLOC(env->allocator, sizeof(char) * 32);
-    sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02.3fZ",
+    sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%06.3fZ",
         date_time->year + 1900, date_time->mon + 1, date_time->day,
         date_time->hour, date_time->min, date_time->sec);
     return date_time_str;
@@ -706,7 +706,7 @@ axutil_date_time_serialize_date_time_with_time_zone(
     }
 
     date_time_str = AXIS2_MALLOC(env->allocator, sizeof(char) * 37);
-    sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02.3f%c%02d:%02d",
+    sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%06.3f%c%02d:%02d",
         date_time->year + 1900, date_time->mon + 1, date_time->day,
         date_time->hour, date_time->min, date_time->sec, 
         date_time->tz_pos ? '+': '-', date_time->tz_hour, date_time->tz_min);
@@ -768,7 +768,7 @@ axutil_date_time_get_msec(
     const axutil_env_t *env)
 {
     /* Precision is 1/100 of a millisecond */
-    float ret = (date_time->sec - (float)((int)date_time->sec)) * 1000.0;
+    float ret = (float)((date_time->sec - (float)((int)date_time->sec)) * 1000.0);
     return (int)((ret * 100.0 + 0.5) / 100.0);
 }
 
