@@ -79,6 +79,7 @@ axis2_svc_grp_ctx_create(
         svc_grp_ctx->svc_grp = svc_grp;
         svc_grp_ctx->svc_grp_name =
             (axis2_char_t *) axis2_svc_grp_get_name(svc_grp_ctx->svc_grp, env);
+        svc_grp_ctx->id = axutil_strdup(env, svc_grp_ctx->svc_grp_name);
     }
 
     if (conf_ctx)

@@ -134,15 +134,14 @@ axis2_ctx_handler_invoke(
         if (svc_ctx)
         {
             axutil_string_t *svc_grp_ctx_id_str = NULL;
+            const axis2_char_t *grp_ctx_id = NULL;
 
             svc_grp_ctx = axis2_svc_ctx_get_parent(svc_ctx, env);
             axis2_msg_ctx_set_svc_ctx(msg_ctx, env, svc_ctx);
             axis2_msg_ctx_set_svc_grp_ctx(msg_ctx, env, svc_grp_ctx);
-
+            grp_ctx_id = axis2_svc_grp_ctx_get_id(svc_grp_ctx, env);
             svc_grp_ctx_id_str =
-                axutil_string_create(env,
-                                     axis2_svc_grp_ctx_get_id(svc_grp_ctx,
-                                                              env));
+                axutil_string_create(env, grp_ctx_id);
             axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
             axutil_string_free(svc_grp_ctx_id_str, env);
         }

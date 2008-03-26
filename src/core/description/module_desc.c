@@ -352,7 +352,6 @@ axis2_module_desc_set_parent(
     const axutil_env_t * env,
     axis2_conf_t * parent)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, parent, AXIS2_FAILURE);
 
     module_desc->parent = parent;

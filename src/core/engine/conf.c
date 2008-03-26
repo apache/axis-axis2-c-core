@@ -613,6 +613,9 @@ axis2_conf_add_svc_grp(
             AXIS2_ERROR_SET(env->error,
                             AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME,
                             AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "There is already a service called %s in the all services "\
+                "list of axis2 configuration.", svc_name);
             return AXIS2_FAILURE;
         }
         index_i = axutil_hash_next(env, index_i);
@@ -638,7 +641,11 @@ axis2_conf_add_svc_grp(
     {
         conf->svc_grps = axutil_hash_make(env);
         if (!conf->svc_grps)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Creating service group map failed");
             return AXIS2_FAILURE;
+        }
     }
     axutil_hash_set(conf->svc_grps, svc_grp_name,
                     AXIS2_HASH_KEY_STRING, svc_grp);
@@ -658,6 +665,8 @@ axis2_conf_get_svc_grp(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_CONF,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Axis2 configuration does not contain a service group map");
         return NULL;
     }
     return (axis2_svc_grp_t *) (axutil_hash_get(conf->svc_grps,
@@ -680,45 +689,46 @@ axis2_conf_add_svc(
     axis2_svc_t * svc)
 {
     axis2_svc_grp_t *svc_grp = NULL;
-    const axutil_qname_t *svc_grp_qname = NULL;
-    axis2_char_t *svc_grp_name = NULL;
+    const axis2_char_t *svc_grp_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
 
-    svc_grp = axis2_svc_grp_create(env);
-
-    if (!svc_grp)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE)
-            return AXIS2_FAILURE;
-    }
-
-    svc_grp_qname = axis2_svc_get_qname(svc, env);
-    if (!svc_grp_qname)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,
-                        AXIS2_FAILURE);
-        return AXIS2_FAILURE;
-    }
-
-    svc_grp_name = axutil_qname_get_localpart(svc_grp_qname, env);
+    svc_grp_name = axis2_svc_get_name(svc, env);
     if (!svc_grp_name)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service has no name set");
         return AXIS2_FAILURE;
+    }
+    svc_grp = axis2_svc_grp_create(env);
+    if (!svc_grp)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating service group as parent of service %s failed", 
+            svc_grp_name);
+            return AXIS2_FAILURE;
     }
     status = axis2_svc_grp_set_name(svc_grp, env, svc_grp_name);
     if (AXIS2_FAILURE == status)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Setting name to service group failed");
         return status;
     }
     status = axis2_svc_grp_set_parent(svc_grp, env, conf);
     if (AXIS2_FAILURE == status)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Setting parent to service group %s failed", svc_grp_name);
         return status;
     }
     status = axis2_svc_grp_add_svc(svc_grp, env, svc);
     if (AXIS2_FAILURE == status)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Adding service %s to service group %s failed", svc_grp_name, 
+            svc_grp_name);
         return status;
     }
     status = axis2_conf_add_svc_grp(conf, env, svc_grp);
@@ -756,15 +766,17 @@ axis2_conf_add_param(
     axutil_param_t * param)
 {
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_char_t *param_name = axutil_param_get_name(param, env);
 
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
 
-    if (axis2_conf_is_param_locked(conf, env,
-                                   axutil_param_get_name(param, env)))
+    if (axis2_conf_is_param_locked(conf, env, param_name))
     {
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Parameter %s is locked for Axis2 configuration", param_name);
         return AXIS2_FAILURE;
     }
     else
@@ -788,6 +800,8 @@ axis2_conf_get_param(
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Param container is not set in axis2 configuraion");
         return NULL;
     }
 
@@ -815,7 +829,7 @@ axis2_conf_is_param_locked(
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FALSE);
 
     param = axis2_conf_get_param(conf, env, param_name);
-    return (param && AXIS2_TRUE == axutil_param_is_locked(param, env));
+    return (param && axutil_param_is_locked(param, env));
 }
 
 AXIS2_EXTERN axis2_transport_in_desc_t *AXIS2_CALL
@@ -1137,7 +1151,11 @@ axis2_conf_add_msg_recv(
     {
         conf->msg_recvs = axutil_hash_make(env);
         if (!conf->msg_recvs)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Creating message receiver map failed");
             return AXIS2_FAILURE;
+        }
     }
     axutil_hash_set(conf->msg_recvs, key, AXIS2_HASH_KEY_STRING, msg_recv);
     return AXIS2_SUCCESS;
@@ -1228,19 +1246,10 @@ axis2_conf_add_module(
 {
     const axutil_qname_t *module_qname = NULL;
 
-    axis2_status_t status = AXIS2_FAILURE;
     AXIS2_PARAM_CHECK(env->error, module, AXIS2_FAILURE);
 
-    status = axis2_module_desc_set_parent(module, env, conf);
-    if (AXIS2_FAILURE == status)
-    {
-        return status;
-    }
+    axis2_module_desc_set_parent(module, env, conf);
 
-    if (!conf->all_modules)
-    {
-        return AXIS2_FAILURE;
-    }
     module_qname = axis2_module_desc_get_qname(module, env);
     if (module_qname)
     {
@@ -1271,12 +1280,16 @@ axis2_conf_set_default_dispatchers(
     dispatch = axis2_phase_create(env, AXIS2_PHASE_DISPATCH);
     if (!dispatch)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating phase %s failed", 
+            AXIS2_PHASE_DISPATCH);
         return AXIS2_FAILURE;
     }
 
     rest_dispatch = axis2_rest_disp_create(env);
     if (!rest_dispatch)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating rest dispatcher failed");
         return AXIS2_FAILURE;
     }
 
@@ -1289,6 +1302,8 @@ axis2_conf_set_default_dispatchers(
     soap_msg_body_based_dispatch = axis2_soap_body_disp_create(env);
     if (!soap_msg_body_based_dispatch)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating soap body based dispatcher failed");
         return AXIS2_FAILURE;
     }
 
@@ -1301,6 +1316,8 @@ axis2_conf_set_default_dispatchers(
     soap_action_based_dispatch = axis2_soap_action_disp_create(env);
     if (!soap_action_based_dispatch)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating soap action based dispatcher failed");
         return AXIS2_FAILURE;
     }
 
@@ -1316,6 +1333,9 @@ axis2_conf_set_default_dispatchers(
     if (AXIS2_SUCCESS != status)
     {
         axis2_phase_free(dispatch, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Adding dispatcher into in phases upto and including post "\
+            "dispatch list failed");
         return status;
     }
 
@@ -1323,6 +1343,8 @@ axis2_conf_set_default_dispatchers(
     if (!post_dispatch)
     {
         axis2_phase_free(dispatch, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating phase %s failed", 
+            AXIS2_PHASE_POST_DISPATCH);
         return AXIS2_FAILURE;
     }
 
@@ -1345,6 +1367,9 @@ axis2_conf_set_default_dispatchers(
     {
         axis2_phase_free(dispatch, env);
         axis2_phase_free(post_dispatch, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Adding post dispatcher into in phases upto and including post "\
+            "dispatch list failed");
         return status;
     }
     return AXIS2_SUCCESS;
@@ -1368,12 +1393,17 @@ axis2_conf_set_dispatch_phase(
                                    env, dispatch);
     if (AXIS2_FAILURE == status)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Adding dispatcher into in phases upto and including post "\
+            "dispatch list failed");
         return AXIS2_FAILURE;
     }
 
     post_dispatch = axis2_phase_create(env, AXIS2_PHASE_POST_DISPATCH);
     if (!post_dispatch)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating phase %s failed", AXIS2_PHASE_POST_DISPATCH);
         axis2_phase_free(dispatch, env);
         return AXIS2_FAILURE;
     }
@@ -1391,6 +1421,9 @@ axis2_conf_set_dispatch_phase(
         axis2_phase_free(dispatch, env);
         axis2_phase_free(post_dispatch, env);
         axis2_disp_checker_free(disp_checker, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Adding post dispatcher into in phases upto and including post "\
+            "dispatch list failed");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -1414,6 +1447,7 @@ axis2_conf_engage_module(
     axis2_bool_t to_be_engaged = AXIS2_TRUE;
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_char_t *file_name = NULL;
 
     AXIS2_PARAM_CHECK(env->error, module_ref, AXIS2_FAILURE);
 	AXIS2_PARAM_CHECK (env->error, conf, AXIS2_FAILURE);
@@ -1422,7 +1456,6 @@ axis2_conf_engage_module(
     if (!module_desc)
     {
         axutil_file_t *file = NULL;
-        axis2_char_t *file_name = NULL;
         const axis2_char_t *repos_path = NULL;
         axis2_arch_file_data_t *file_data = NULL;
         axis2_char_t *temp_path1 = NULL;
@@ -1438,7 +1471,7 @@ axis2_conf_engage_module(
         file =
             (axutil_file_t *) axis2_arch_reader_create_module_arch(env,
                                                                    file_name);
-        /* this flag is to check whether conf is build using axis2
+        /* This flag is to check whether conf is build using axis2
          * xml instead of a repo. */
 		flag = axis2_conf_get_axis2_flag (conf, env);
 
@@ -1456,7 +1489,7 @@ axis2_conf_engage_module(
 		else
 		{
 			/**
-			 * this case is to obtain module path from the axis2.xml
+			 * This case is to obtain module path from the axis2.xml
 			 */
 			axis2_xml = (axis2_char_t *)axis2_conf_get_axis2_xml (conf, env);
 			module_dir_param = axis2_conf_get_param (conf, env, "moduleDir");
@@ -1469,7 +1502,7 @@ axis2_conf_engage_module(
             else
             {
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
-                                 "moduleDir parameter not available in axis2.xml.");
+                    "moduleDir parameter not available in axis2.xml.");
                 return AXIS2_FAILURE;
             }
 			temp_path1 = axutil_strcat (env, 
@@ -1542,6 +1575,9 @@ axis2_conf_engage_module(
     else
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODULE, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Either module description not set or building module description"\
+            " failed for module %s", file_name);
         return AXIS2_FAILURE;
     }
 
@@ -1550,7 +1586,10 @@ axis2_conf_engage_module(
         axis2_phase_resolver_t *phase_resolver = NULL;
         axutil_qname_t *module_qref_l = NULL;
         const axutil_qname_t *module_qname = NULL;
+        axis2_char_t *module_name = NULL;
 
+        module_qname = axis2_module_desc_get_qname(module_desc, env);
+        module_name = axutil_qname_get_localpart(module_qname, env);
         phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
         if (!phase_resolver)
         {
@@ -1563,9 +1602,10 @@ axis2_conf_engage_module(
         axis2_phase_resolver_free(phase_resolver, env);
         if (!status)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Engaging module %s globally failed", module_name);
             return status;
         }
-        module_qname = axis2_module_desc_get_qname(module_desc, env);
         module_qref_l =
             axutil_qname_clone((axutil_qname_t *) module_qname, env);
         status =
