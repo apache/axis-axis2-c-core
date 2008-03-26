@@ -40,7 +40,13 @@ extern "C"
      * @ingroup axiom_om
      * @{
      */
-
+    
+    /**
+     * Free the iterator
+     * @param iterator a pointer to child element iterator struct
+     * @param env environment, MUST NOT be NULL.
+     */
+    
     AXIS2_EXTERN void AXIS2_CALL
     axiom_child_element_iterator_free(
         void *iterator,
@@ -52,9 +58,11 @@ extern "C"
     * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
     * the underlying collection is modified while the iteration is in
     * progress in any way other than by calling this method.
+    *  @param iterator a pointer to child element iterator struct
+     * @param env environment, MUST NOT be NULL.
     */
+    
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_child_element_iterator_remove(
         axiom_child_element_iterator_t * iterator,
         const axutil_env_t * env);
@@ -63,6 +71,8 @@ extern "C"
      * returns true if the iteration has more elements 
      * in otherwords it returns true if the next() would return an element
      * rather than null with an error code set to environments error
+     * @param iterator a pointer to child element iterator struct
+     * @param env environment, MUST NOT be NULL.
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 
@@ -72,7 +82,9 @@ extern "C"
 
     /**
      * Returns the next element in the iteration. Returns null if there 
-    * is no more elements 
+     * is no more elements 
+     * @param iterator a pointer to child element iterator struct
+     * @param env environment, MUST NOT be NULL.
      */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
     axiom_child_element_iterator_next(
@@ -80,13 +92,13 @@ extern "C"
         const axutil_env_t * env);
 
     /**
+     * Create a child element interator for the current child
      * @param current child
-     * @param env environment
+     * @param env environment, MUST NOT be NULL.
      * return axiom_child_element_iterator_t
      */
 
     AXIS2_EXTERN axiom_child_element_iterator_t *AXIS2_CALL
-
     axiom_child_element_iterator_create(
         const axutil_env_t * env,
         axiom_node_t * current_child);

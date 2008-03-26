@@ -58,10 +58,13 @@ extern "C"
         axiom_namespace_t * ns);
 
     /**
-     * Free om attribute passed as void pointer. This will be
-     * cast into appropriate type and then pass the cast object
-     * into the om_attribute structure's free method
-     */
+      * Free om attribute passed as void pointer. This will be
+      * cast into appropriate type and then pass the cast object
+      * into the om_attribute structure's free method
+      * @param  om_attribute pointer to attribute struct to be freed
+      * @param  env Environment. MUST NOT be NULL
+      */
+   
     AXIS2_EXTERN void AXIS2_CALL
     axiom_attribute_free_void_arg(
         void *om_attribute,
@@ -71,8 +74,6 @@ extern "C"
       * Free an axiom_attribute struct
       * @param  om_attribute pointer to attribute struct to be freed
       * @param  env Environment. MUST NOT be NULL
-      * @return satus of the op. AXIS2_SUCCESS on success 
-      *         else AXIS2_FAILURE
       */
 
     AXIS2_EXTERN void AXIS2_CALL
@@ -107,11 +108,11 @@ extern "C"
         const axutil_env_t * env,
         axiom_output_t * om_output);
 
-    /**  returns the localname of this attribute
-     *@param om_attribute pointer to attribute struct 
-     *@param env environment. MUST NOT not be NULL.
-     *@return localname returns NULL on error.
-     */
+    /** Returns the localname of this attribute
+      * @param om_attribute pointer to attribute struct 
+      * @param env environment. MUST NOT not be NULL.
+      * @return localname returns NULL on error.
+      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_attribute_get_localname(
         struct axiom_attribute *om_attribute,
@@ -189,11 +190,21 @@ extern "C"
                     struct axiom_attribute *om_attribute,
                     const axutil_env_t * env);
 
+    /** Increment the reference counter.
+     * @param om_attribute a pointer to om_attribute struct  
+     * @param env environment, MUST NOT be NULL.
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_attribute_increment_ref(
         struct axiom_attribute *om_attribute,
         const axutil_env_t * env);
 
+    /** Create OM attribute 
+     * @param om_attribute a pointer to om_attribute struct  
+     * @param env environment, MUST NOT be NULL.
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
     AXIS2_EXTERN axiom_attribute_t *AXIS2_CALL
     axiom_attribute_create_str(
         const axutil_env_t * env,
@@ -201,23 +212,42 @@ extern "C"
         axutil_string_t * value,
         axiom_namespace_t * ns);
 
+    /**  Get the localname as a string
+     * @param om_attribute a pointer to om_attribute struct  
+     * @param env environment, MUST NOT be NULL.
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
     AXIS2_EXTERN axutil_string_t *AXIS2_CALL
-
     axiom_attribute_get_localname_str(
         axiom_attribute_t * attribute,
         const axutil_env_t * env);
 
+    /**  Get the value as a string
+     * @param om_attribute a pointer to om_attribute struct  
+     * @param env environment, MUST NOT be NULL.
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
     AXIS2_EXTERN axutil_string_t *AXIS2_CALL
     axiom_attribute_get_value_str(
         axiom_attribute_t * attribute,
         const axutil_env_t * env);
 
+    /**  Set the localname of the attribute
+     * @param om_attribute a pointer to om_attribute struct  
+     * @param env environment, MUST NOT be NULL.
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_attribute_set_localname_str(
         axiom_attribute_t * attribute,
         const axutil_env_t * env,
         axutil_string_t * localname);
 
+    /**  Set the value of the attribute
+     * @param om_attribute a pointer to om_attribute struct  
+     * @param env environment, MUST NOT be NULL.
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_attribute_set_value_str(
         axiom_attribute_t * attribute,

@@ -54,6 +54,8 @@ extern "C"
 
     /**
     * Free the om_children_iterator struct
+    * @param iterator a pointer to axiom children iterator struct
+    * @param env environment, MUST NOT be NULL
     */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_children_iterator_free(
@@ -66,6 +68,8 @@ extern "C"
     * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
     * the underlying collection is modified while the iteration is in
     * progress in any way other than by calling this method.
+    * @param iterator a pointer to axiom children iterator struct
+    * @param env environment, MUST NOT be NULL
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_children_iterator_remove(
@@ -76,6 +80,8 @@ extern "C"
      * @returns true if the iteration has more elements. In other
      * words, returns true if next() would return an om_node_t struct 
      * rather than null with error code set in environment
+     * @param iterator a pointer to axiom children iterator struct
+     * @param env environment, MUST NOT be NULL
      */
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -85,7 +91,9 @@ extern "C"
 
     /**
      * Returns the next element in the iteration. Returns null if there are
-    * no more elements in the iteration
+     * no more elements in the iteration
+     * @param iterator a pointer to axiom children iterator struct
+     * @param env environment, MUST NOT be NULL
      */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
     axiom_children_iterator_next(
@@ -95,7 +103,8 @@ extern "C"
     /**
      * Resets the Iterator. This moves the cursor back to the initial.
      * iterator chidren_iterator to be reset.
-     * @param env Environment. MUST NOT be NULL.
+     * @param iterator a pointer to axiom children iterator struct
+     * @param env environment, MUST NOT be NULL
      * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL

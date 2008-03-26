@@ -43,23 +43,25 @@ extern "C"
      */
 
     /**
-    * Free function free the om_children_with_specific_attribute_iterator struct
-    */
+     * Free function free the om_children_with_specific_attribute_iterator struct
+     * @param iterator a pointer to axiom children with specific attribute iterator struct
+     * @param env environment, MUST NOT be NULL
+     */
     AXIS2_EXTERN void AXIS2_CALL
-
     axiom_children_with_specific_attribute_iterator_free(
         axiom_children_with_specific_attribute_iterator_t * iterator,
         const axutil_env_t * env);
 
     /**
-    * Removes from the underlying collection the last element returned by the
-    * iterator (optional op).  This method can be called only once per
-    * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
-    * the underlying collection is modified while the iteration is in
-    * progress in any way other than by calling this method.
-    */
+     * Removes from the underlying collection the last element returned by the
+     * iterator (optional op).  This method can be called only once per
+     * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
+     * the underlying collection is modified while the iteration is in
+     * progress in any way other than by calling this method.
+     * @param iterator a pointer to axiom children with specific attribute iterator struct
+     * @param env environment, MUST NOT be NULL
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_children_with_specific_attribute_iterator_remove(
         axiom_children_with_specific_attribute_iterator_t * iterator,
         const axutil_env_t * env);
@@ -68,32 +70,36 @@ extern "C"
      * Returns true< if the iteration has more elements. (In other
      * words, returns true if next would return an axiom_node_t struct
      * rather than NULL with error code set in environment
+     * @param iterator a pointer to axiom children with specific attribute iterator struct
+     * @param env environment, MUST NOT be NULL
      */
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     axiom_children_with_specific_attribute_iterator_has_next(
         axiom_children_with_specific_attribute_iterator_t * iterator,
         const axutil_env_t * env);
 
     /**
      * Returns the next element in the iteration. returns null if there is no 
-    * more elements in the iteration
+     * more elements in the iteration
+     * @param iterator a pointer to axiom children with specific attribute iterator struct
+     * @param env environment, MUST NOT be NULL
      */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
-
     axiom_children_with_specific_attribute_iterator_next(
         axiom_children_with_specific_attribute_iterator_t * iterator,
         const axutil_env_t * env);
 
     /**
-     * @param current child
-     * @param env environment
+     * @param env environment, MUST NOT be NULL
+     * @param current_child the current child for the interation
+     * @param attr_qname the qname for the attribute
+     * @param attr_value the value string for the attribute
+     * @param detach AXIS2_TRUE to detach AXIS2_FALSE not to
      * return axiom_children_with_specific_attribute_iterator_t
      */
 
-    AXIS2_EXTERN axiom_children_with_specific_attribute_iterator_t
-    *AXIS2_CALL
+    AXIS2_EXTERN axiom_children_with_specific_attribute_iterator_t *AXIS2_CALL
     axiom_children_with_specific_attribute_iterator_create(
         const axutil_env_t * env,
         axiom_node_t * current_child,

@@ -43,7 +43,6 @@ extern "C"
      */
 
     AXIS2_EXTERN axiom_children_qname_iterator_t *AXIS2_CALL
-
     axiom_children_qname_iterator_create(
         const axutil_env_t * env,
         axiom_node_t * current_child,
@@ -51,6 +50,8 @@ extern "C"
 
     /**
      * free om_children_qname_iterator struct 
+     * @param iterator a pointer to axiom children iterator struct
+     * @param env environment, MUST NOT be NULL
      */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_children_qname_iterator_free(
@@ -63,6 +64,8 @@ extern "C"
      * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
      * the underlying collection is modified while the iteration is in
      * progress in any way other than by calling this method.
+     * @param iterator a pointer to axiom children iterator struct
+     * @param env environment, MUST NOT be NULL
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
@@ -74,6 +77,8 @@ extern "C"
      * Returns <tt>true</tt> if the iteration has more elements. (In other
      * words, returns <tt>true</tt> if <tt>next</tt> would return an 
      * axiom_node_t struct rather than null with error code set in environment
+     * @param iterator a pointer to axiom children iterator struct
+     * @param env environment, MUST NOT be NULL
      */
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -84,6 +89,8 @@ extern "C"
 
     /**
      * Returns the next element in the iteration.
+     * @param iterator a pointer to axiom children iterator struct
+     * @param env environment, MUST NOT be NULL
      */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
     axiom_children_qname_iterator_next(

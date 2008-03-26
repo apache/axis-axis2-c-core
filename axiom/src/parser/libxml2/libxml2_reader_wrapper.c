@@ -275,6 +275,8 @@ axiom_xml_reader_create_for_file(
     if (!wrapper_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                          "No memory. Cannot create libxml2 reader wrapper");
         return NULL;
     }
 
@@ -283,7 +285,7 @@ axiom_xml_reader_create_for_file(
     if (!(wrapper_impl->reader))
     {
         AXIS2_FREE(env->allocator, wrapper_impl);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_CREATING_XML_STREAM_READER,
                         AXIS2_FAILURE);
         return NULL;
     }
@@ -325,6 +327,8 @@ axiom_xml_reader_create_for_io(
     if (!wrapper_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                          "No memory. Cannot create libxml2 reader wrapper");
         return NULL;
     }
     wrapper_impl->close_input_callback = NULL;
@@ -349,7 +353,7 @@ axiom_xml_reader_create_for_io(
     if (!(wrapper_impl->reader))
     {
         AXIS2_FREE(env->allocator, wrapper_impl);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_CREATING_XML_STREAM_READER,
                         AXIS2_FAILURE);
         return NULL;
     }
@@ -387,6 +391,8 @@ axiom_xml_reader_create_for_memory(
     if (!wrapper_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                          "No memory. Cannot create libxml2 reader wrapper");
         return NULL;
     }
     wrapper_impl->close_input_callback = NULL;
@@ -406,7 +412,7 @@ axiom_xml_reader_create_for_memory(
     else
     {
         AXIS2_FREE(env->allocator, wrapper_impl);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE,
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE,
                         AXIS2_FAILURE);
         return NULL;
     }
@@ -414,7 +420,7 @@ axiom_xml_reader_create_for_memory(
     if (!(wrapper_impl->reader))
     {
         AXIS2_FREE(env->allocator, wrapper_impl);
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_CREATING_XML_STREAM_READER, AXIS2_FAILURE);
         return NULL;
     }
