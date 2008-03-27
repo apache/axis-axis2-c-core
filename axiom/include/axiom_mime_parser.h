@@ -51,6 +51,14 @@ extern "C"
       * @{
       */
 
+    /**
+      * Parse and returns mime parts as a hash map
+      * @param mime_parser the pointer for the mime parser struct 
+      * @param env Environment. MUST NOT be NULL.
+      * @param callback_ctx the callback context
+      * @param mime_boundary the MIME boundary
+      * @return mime parts as a hash map 
+      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axiom_mime_parser_parse(
         axiom_mime_parser_t * mime_parser,
@@ -59,45 +67,79 @@ extern "C"
         void *callback_ctx,
         axis2_char_t * mime_boundary);
 
+    /**
+      * Returns mime parts as a hash map
+      * @param mime_parser the pointer for the mime parser struct 
+      * @param env Environment. MUST NOT be NULL.
+      * @return mime parts as a hash map 
+      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-
     axiom_mime_parser_get_mime_parts_map(
         axiom_mime_parser_t * mime_parser,
         const axutil_env_t * env);
 
-    /** Deallocate memory
-      * @return status code
+    /**
+      * Deallocate memory. Free the mime parser struct
+      * @param mime_parser the pointer for the mime parser struct 
+      * @param env Environment. MUST NOT be NULL.
+      * @return VOID
       */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_mime_parser_free(
         axiom_mime_parser_t * mime_parser,
         const axutil_env_t * env);
 
+    /**
+      * Returns the length of the SOAP Body
+      * @param mime_parser the pointer for the mime parser struct 
+      * @param env Environment. MUST NOT be NULL.
+      * @return the length of the SOAP Body
+      */
     AXIS2_EXTERN int AXIS2_CALL
     axiom_mime_parser_get_soap_body_len(
         axiom_mime_parser_t * mime_parser,
         const axutil_env_t * env);
 
+    /**
+      * Get the SOAP Body as a string 
+      * @param mime_parser the pointer for the mime parser struct 
+      * @param env Environment. MUST NOT be NULL.
+      * @return the SOAP Body as a string 
+      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     axiom_mime_parser_get_soap_body_str(
         axiom_mime_parser_t * mime_parser,
         const axutil_env_t * env);
 
     /**
-     * Creates mime_parser struct
-     * @return pointer to newly created mime_parser
-     */
+      * Create a mime parser struct
+      * @param env Environment. MUST NOT be NULL.
+      * @return created mime parser 
+      */
     AXIS2_EXTERN axiom_mime_parser_t *AXIS2_CALL
     axiom_mime_parser_create(
         const axutil_env_t * env);
 
+    /**
+      * Set the size of the chink buffer
+      * @param mime_parser the pointer for the mime parser struct 
+      * @param env Environment. MUST NOT be NULL.
+      * @param size the size of the chink buffer
+      * @return mime parts as a hash map 
+      */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_mime_parser_set_chunk_buffer_size(
         axiom_mime_parser_t * mime_parser,
         const axutil_env_t * env,
         int size);
 
+    /**
+      * Set maximum number of chunk buffers
+      * @param mime_parser the pointer for the mime parser struct 
+      * @param env Environment. MUST NOT be NULL.
+      * @param num maximum number of chunk buffers
+      * @return VOID
+      */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_mime_parser_set_max_chunk_buffers(
         axiom_mime_parser_t * mime_parser,

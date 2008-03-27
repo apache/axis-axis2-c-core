@@ -577,7 +577,6 @@ extern "C"
      * @param om_element pointer to om_element
      * @param env environment MUST not be NULL
      * @param om_node pointer to this element node
-     *
      * @param om_ns pointer to namespace to be set
      * @returns 
      */
@@ -601,13 +600,29 @@ extern "C"
         const axutil_env_t * env,
         axiom_node_t * ele_node);
 
+    /**
+     * Returns the attribute value as a string for the given element
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param attr_name the attribute name
+     * 
+     * @return the attribute value as a string
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     axiom_element_get_attribute_value_by_name(
         axiom_element_t * om_ele,
         const axutil_env_t * env,
         axis2_char_t * attr_name);
 
+    /**
+     * Create an OM Element and an OM node from given string params
+     * @param env environment MUST not be NULL
+     * @param parent pointer to this parent element node
+     * @param localname the locanmae of the element
+     * @param ns the namespace of the element
+     * @param node the reference ot the created node
+     * @return 
+     */
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
     axiom_element_create_str(
         const axutil_env_t * env,
@@ -616,22 +631,53 @@ extern "C"
         axiom_namespace_t * ns,
         axiom_node_t ** node);
 
+    /**
+     * Returns the Local name of the element
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param om_node pointer to this element node
+     * 
+     * @return the Local name of the element
+     */
     AXIS2_EXTERN axutil_string_t *AXIS2_CALL
     axiom_element_get_localname_str(
         axiom_element_t * om_element,
         const axutil_env_t * env);
 
+    /**
+     * Set the Local name of the element
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param localname  the Local name of the element 
+     * 
+     * @return
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_set_localname_str(
         axiom_element_t * om_element,
         const axutil_env_t * env,
         axutil_string_t * localname);
 
+    /**
+     * Return whether the element is empty or not
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * 
+     * @return AXIS2_TRUE if empty AXIS2_FALSE if not empty
+     */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_element_get_is_empty(
         axiom_element_t * om_element,
         const axutil_env_t * env);
 
+    /**
+     * Set whether the element is empty or not
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param is_empty AXIS2_TRUE if empty AXIS2_FALSE if not empty
+     * 
+     * @return VOID
+     */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_element_set_is_empty(
         axiom_element_t * om_element,
