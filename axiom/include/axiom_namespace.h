@@ -109,7 +109,7 @@ extern "C"
     /**
       * Clones an om_namespace struct
       * @param om_namespace pointer to namespace struct
-      * @param env environment
+      * @param env Environment. MUST NOT be NULL
       * @returns axiom_namespace on success , NULL on error
       */
     AXIS2_EXTERN struct axiom_namespace *AXIS2_CALL
@@ -121,7 +121,7 @@ extern "C"
       * to string , returns the string by combining namespace_uri,
       * and prefix seperated by a '|' character
       * @param om_namespace 
-      * @param env environment
+      * @param env Environment. MUST NOT be NULL
       * @returns pointer to string , This is a property of namespace,
       * should not be freed by user
       */
@@ -130,28 +130,63 @@ extern "C"
         struct axiom_namespace *om_namespace,
         const axutil_env_t * env);
 
+    /**
+     * Incerament the reference value. The struct will be freed when the ref value is zero
+     * @param om_namespace pointer to the axiom namespace struct
+     * @param env Environment. MUST NOT be NULL
+     *
+     * @return AXIS2_SUCCESS on success else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_namespace_increment_ref(
         struct axiom_namespace *om_namespace,
         const axutil_env_t * env);
 
+    /**
+     * Create an OM namespace from a URI and a Prefix
+     * @param om_namespace pointer to the axiom namespace struct
+     * @param env Environment. MUST NOT be NULL
+     *
+     * @return created OM namespace
+     */
     AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
     axiom_namespace_create_str(
         const axutil_env_t * env,
         axutil_string_t * uri,
         axutil_string_t * prefix);
 
+    /**
+     * Set the uri string
+     * @param om_namespace pointer to the axiom namespace struct
+     * @param env Environment. MUST NOT be NULL
+     *
+     * @return AXIS2_SUCCESS on success else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_namespace_set_uri_str(
         axiom_namespace_t * om_namespace,
         const axutil_env_t * env,
         axutil_string_t * uri);
 
+    /**
+     * Get the uri as a string
+     * @param om_namespace pointer to the axiom namespace struct
+     * @param env Environment. MUST NOT be NULL
+     *
+     * @return the uri as a string
+     */
     AXIS2_EXTERN axutil_string_t *AXIS2_CALL
     axiom_namespace_get_uri_str(
         axiom_namespace_t * om_namespace,
         const axutil_env_t * env);
 
+    /**
+     * Get the prefix as a string
+     * @param om_namespace pointer to the axiom namespace struct
+     * @param env Environment. MUST NOT be NULL
+     *
+     * @return the prefix as a string 
+     */
     AXIS2_EXTERN axutil_string_t *AXIS2_CALL
     axiom_namespace_get_prefix_str(
         axiom_namespace_t * om_namespace,
