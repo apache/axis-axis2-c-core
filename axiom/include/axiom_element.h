@@ -118,7 +118,13 @@ extern "C"
         const axutil_env_t * env,
         axiom_node_t * node,
         axiom_namespace_t * ns);
-
+    /**
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param om_node pointer to this element node
+     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+     *
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
     axiom_element_declare_namespace_assume_param_ownership(
@@ -214,13 +220,14 @@ extern "C"
         axiom_node_t * ele_node);
 
     /**
-      * Serializes the end part of the given element. serialize_start_part must 
-      *     have been called before calling this method.
-      * @param om_element element to be serialized.
-      * @param env Environment must not be null.
-      * @param om_output AXIOM output handler to be used in serializing
-      * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
-      */
+     * Serializes the end part of the given element. serialize_start_part must 
+     *     have been called before calling this method.
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param om_node pointer to this element node
+     * @param om_output AXIOM output handler to be used in serializing
+     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_serialize_end_part(
         axiom_element_t * om_element,
@@ -230,8 +237,8 @@ extern "C"
     /**
      * finds a namespace in current element's scope, 
      *     by uri or prefix or both
-     * @param om_element
-     * @param env environemt must not be null
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
      * @param uri namespace uri, may be null
      * @param prefix prefix 
      * @return axiom_namespace_t if found, else return NULL
@@ -246,8 +253,8 @@ extern "C"
 
     /**
      * returns the localname of this element
-     * @param om_element om_element struct
-     * @param env environment struct
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
      * @returns localname of element, returns NULL on error.
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -257,8 +264,8 @@ extern "C"
 
     /**
      * set the localname of this element
-     * @param om_element om_element_struct to with localname is set
-     * @param env environment struct
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
      * @localname text value to be set as localname 
      * @returns status code of op, AXIS2_SUCCESS on success,
      *                   AXIS2_FAILURE on error.
@@ -285,8 +292,8 @@ extern "C"
 
     /**
      * set the namespace of the element
-     * @param om_element Om_element struct
-     * @param env environment must not be null
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
      * @param ns pointer to namespace
      *                       If the value of the namespace has not already been declared
      *                       then the namespace structure ns will be declared and will be 
@@ -304,8 +311,8 @@ extern "C"
 
     /**
      * unconditionally set the namespace of the element
-     * @param om_element Om_element struct
-     * @param env environment must not be null
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
      * @param ns pointer to namespace
      *                       The namespace ns is assumed to have been declared already.
      * @returns status code of the op, with error code
@@ -319,8 +326,8 @@ extern "C"
 
     /**
      * get  the attribute list of the element 
-     * @param om_element om element
-     * @param env environment must not be null
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
      * @returns axutil_hash poiner to attributes hash
      * This hash table is read only 
      */
@@ -331,8 +338,8 @@ extern "C"
 
     /**
      * get the namespace list of the element
-     * @param om_element om element
-     * @param env environment
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
      * @returns axutil_hash pointer to namespaces hash
      * this hash table is read only
      */
@@ -346,6 +353,10 @@ extern "C"
      * the returned qname should not be externaly freed
      * when om_element struct is freed qname is also
      * freed 
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param ele_node pointer to this element node
+     *
      * @returns axutil_qname_t struct , NULL on failure
      */
     AXIS2_EXTERN axutil_qname_t *AXIS2_CALL
@@ -359,6 +370,10 @@ extern "C"
      *   returned iterator is freed when om_element struct
      *   is freed
      *   iterators reset function must be called by user
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param element_node pointer to this element node
+     *
      */
     AXIS2_EXTERN axiom_children_iterator_t *AXIS2_CALL
 
@@ -371,10 +386,9 @@ extern "C"
      *   returns a list of children iterator with qname
      *   returned iterator is freed when om element struct
      *  is freed 
-     * @param om_element 
-     * @param env 
-     * @param element_qname 
-     * @param element_node 
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param element_node pointer to this element node
      * @returns children qname iterator struct
      */
 
@@ -387,7 +401,14 @@ extern "C"
         axiom_node_t * element_node);
 
     /**
-     * returns the om_element corresponding to element_qname
+     * Returns the om_element corresponding to element_qname
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param element_qname qname of the element 
+     * @param om_node pointer to this element node
+     * @param element_node 
+     * @param child_node 
+     * @returns children qname iterator struct
      */
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
@@ -403,8 +424,8 @@ extern "C"
      * removes an attribute from the element attribute list
      * user must free this attribute, element free function does not free 
      * attributes that are not is it's attribute list
-     * @param om_element
-     * @param env
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
      * @param om_attribute attribute to be removed
      * @return AXIS2_SUCCESS if attribute was found and removed, else 
      *           AXIS2_FAILURE
@@ -419,8 +440,8 @@ extern "C"
      * Sets the text of the given element.
      * caution - This method will wipe out all the text elements (and hence any
      * mixed content) before setting the text
-     * @param om_element
-     * @param env
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
      * @param text text to set.
      * @param element_node node of element.
      * @return AXIS2_SUCCESS if attribute was found and removed, else 
@@ -435,6 +456,8 @@ extern "C"
 
     /**
      * select all the text children and concat them to a single string
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
      * @param element node , the container node of this om element
      * @return the contanated text of all text childrens text values
      *         return null if no text children is avilable or on error
@@ -447,7 +470,9 @@ extern "C"
 
     /**
      * returns the first child om element of this om element node
-     * @param element_node the container node of this om_element
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param om_node pointer to this element node
      * @return om_element if one is availble otherwise return NULL
      */
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
@@ -459,6 +484,8 @@ extern "C"
 
     /**
      * returns the serilized text of this element and its children
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
      * @param element_node the container node this on element is contained 
      * @return a char array of xml , returns NULL on error
      */
@@ -471,9 +498,9 @@ extern "C"
     /**
      * returns an iterator with child elements of type AXIOM_ELEMENT
      * iterator is freed when om_element node is freed
-     * @param om_element
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
      * @param element_node
-     * @param env enviroment must not be null
      * @returns axiom_child_element_iterator_t , NULL on error    
      */
     AXIS2_EXTERN axiom_child_element_iterator_t *AXIS2_CALL
@@ -486,8 +513,9 @@ extern "C"
     /**
      * builds this om_element_node completely, This is only possible 
      * if the om_stax_builder is associated with the om_element_node,
-     * @param om_element om_element struct
-     * @param env environment
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param om_node pointer to this element node
      * @param element_node corresponding om element node of this om element
      * struct 
      * @returns AXIS2_SUCCESS if this element node was successfully completed,
@@ -503,6 +531,7 @@ extern "C"
      * retrieves the default namespace of this element , if available,
      * @param om_element pointer to om element
      * @param env axutil_environment MUST Not be NULL
+     * @param element_node corresponding om element node of this om element
      * @returns pointer to default namespace if availale , NULL otherwise
      */
     AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
@@ -545,6 +574,10 @@ extern "C"
      *This will not search the namespace in the scope nor will 
      * declare in the current element, as in set_namespace. This will
      * just assign the given namespace to the element.
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param om_node pointer to this element node
+     *
      * @param om_ns pointer to namespace to be set
      * @returns 
      */
@@ -557,6 +590,10 @@ extern "C"
     /**
      *  Extract attributes , returns a clones hash table of attributes,
      *  if attributes are associated with a namespace it is also cloned
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param om_node pointer to this element node
+     *
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axiom_element_extract_attributes(
@@ -649,6 +686,7 @@ extern "C"
      * @param om_element pointer to om_element
      * @param env environment MUST not be NULL
      * @param om_node pointer to this element node
+     *
      * @param root_element pointer to the subtree root element node
      * @param inscope_namespaces pointer to hash of parent namespaces
      */
