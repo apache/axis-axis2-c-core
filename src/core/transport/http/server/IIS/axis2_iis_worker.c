@@ -248,7 +248,7 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
                 body_str_len = (int)strlen(body_string);
                 /* We are sure that the difference lies within the int range */
             }
-            AXIS2_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(iis_out_transport_info,
+            axis2_http_out_transport_info_set_content_type(iis_out_transport_info,
                 env, "text/html");
             send_status = OK;
         }
