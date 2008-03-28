@@ -48,7 +48,6 @@ extern "C"
       * @return a pointer tonewly created processing instruction struct 
       */
     AXIS2_EXTERN axiom_processing_instruction_t *AXIS2_CALL
-
     axiom_processing_instruction_create(
         const axutil_env_t * env,
         axiom_node_t * parent,
@@ -70,11 +69,10 @@ extern "C"
     /**
      * Set processing instruction data
      * @param om_pi
-     * @param env    
+     * @param env Environment. MUST NOT be NULL, .
      * @param value 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_processing_instruction_set_value(
         struct axiom_processing_instruction *om_pi,
         const axutil_env_t * env,
@@ -89,7 +87,6 @@ extern "C"
      *     AXIS2_FAILURE on error.
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_processing_instruction_set_target(
         struct axiom_processing_instruction *om_pi,
         const axutil_env_t * env,
@@ -98,11 +95,10 @@ extern "C"
     /**
      * Get PI target
      * @param om_pi processing_instruction struct
-     * @param env environment 
+     * @param env Environment. MUST NOT be NULL, .
      * @return target text , NULL on error or if target is null
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     axiom_processing_instruction_get_target(
         struct axiom_processing_instruction *om_pi,
         const axutil_env_t * env);
@@ -114,7 +110,6 @@ extern "C"
      * @return data text , NULL if there is no data,
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     axiom_processing_instruction_get_value(
         struct axiom_processing_instruction *om_pi,
         const axutil_env_t * env);
@@ -128,7 +123,6 @@ extern "C"
      *     AXIS2_FAILURE on error 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_processing_instruction_serialize(
         struct axiom_processing_instruction *om_pi,
         const axutil_env_t * env,

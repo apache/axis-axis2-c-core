@@ -58,10 +58,11 @@ extern "C"
     /**
       * creates a soap body struct 
       * @param env Environment. MUST NOT be NULL
+      * @param envelope the SOAP envelope to set the SOAP Body
+      * @return created SOAP Body
       */
 
     AXIS2_EXTERN axiom_soap_body_t *AXIS2_CALL
-
     axiom_soap_body_create_with_parent(
         const axutil_env_t * env,
         struct axiom_soap_envelope *envelope);
@@ -127,7 +128,9 @@ extern "C"
 
     /**
      * build the soap body completely . return the status code,
-    * @return AXIS2_SUCCESS on success and AXIS2_FAILURE on error
+     * @param body pointer to soap_body struct
+     * @param env axutil_environment struct MUST not be NULL
+     * @returns status code , AXIS2_SUCCESS on success , AXIS2_ERROR
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_soap_body_build(
@@ -152,9 +155,11 @@ extern "C"
     * SOAP builder construct a SOAP 1.2 fault all the time. 
     * So when SOAP 1.1 is in use, we should convert SOAP fault to 
     * SOAP 1.1 fault format before use.
+     * @param body pointer to soap_body struct
+     * @param env axutil_environment struct MUST not be NULL
+     * @returns status code , AXIS2_SUCCESS on success , AXIS2_ERROR
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_soap_body_convert_fault_to_soap11(
         axiom_soap_body_t * soap_body,
         const axutil_env_t * env);
