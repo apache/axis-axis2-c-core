@@ -49,41 +49,54 @@ extern "C"
      */
 
     /**
-     * @param env Environment. MUST NOT be NULL
      * create a soap_envelope with the given namespace prefix and uri
      * as the prefix and uri, The uri of ns should be valid soap uri
+     * @param env Environment. MUST NOT be NULL
+     * @param ns The OM namespace
+     *
+     * @return Created SOAP envelope
      */
     AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
-
     axiom_soap_envelope_create(
         const axutil_env_t * env,
         axiom_namespace_t * ns);
 
     /**
-     * @param env Environment. MUST NOT be NULL
      * create a soap_envelope with the given namespace prefix and uri is selected 
      * according to soap_version, soap version should be one of AXIOM_SOAP11
      * or AXIOM_SOAP12
+     * @param env Environment. MUST NOT be NULL
      * @param prefix soap envelope prefix
      * if prefix is NULL default prefix is used
-     * @returns a pointer to soap envelope struct
-     * 
+     *
+     * @return a pointer to soap envelope struct
      */
     AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
-
     axiom_soap_envelope_create_with_soap_version_prefix(
         const axutil_env_t * env,
         int soap_version,
         const axis2_char_t * prefix);
 
+    /**
+     * Create the default SOAP envelope
+     * @param envelope OM SOAP Envelope
+     * @param env Environment. MUST NOT be NULL
+     *
+     * @return Created SOAP envelope
+     */
     AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
-
     axiom_soap_envelope_create_default_soap_envelope(
         const axutil_env_t * env,
         int soap_version);
 
+    /**
+     * Create the default SOAP fault envelope
+     * @param envelope OM SOAP Envelope
+     * @param env Environment. MUST NOT be NULL
+     *
+     * @return Created SOAP fault envelope
+     */
     AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
-
     axiom_soap_envelope_create_default_soap_fault_envelope(
         const axutil_env_t * env,
         const axis2_char_t * code_value,
@@ -99,10 +112,9 @@ extern "C"
      * @return soap header null it no header is present
      */
     AXIS2_EXTERN struct axiom_soap_header *AXIS2_CALL
-
-                axiom_soap_envelope_get_header(
-                    axiom_soap_envelope_t * envelope,
-                    const axutil_env_t * env);
+    axiom_soap_envelope_get_header(
+         axiom_soap_envelope_t * envelope,
+         const axutil_env_t * env);
 
     /**
      * Returns the soap body associated with this soap envelope
@@ -111,10 +123,9 @@ extern "C"
      * @return soap_body
      */
     AXIS2_EXTERN struct axiom_soap_body *AXIS2_CALL
-
-                axiom_soap_envelope_get_body(
-                    axiom_soap_envelope_t * envelope,
-                    const axutil_env_t * env);
+    axiom_soap_envelope_get_body(
+         axiom_soap_envelope_t * envelope,
+         const axutil_env_t * env);
 
     /**
      * serialize function , serialize the soap envelope 
@@ -141,7 +152,7 @@ extern "C"
      * om node tree by calling axiom_node_free_tree function
      * @param envelope soap_envelope
      * @param env environment
-     * @return status code AXIS2_SUCCESS on success , AXIS2_FAILURE otherwise
+     * @return VOID
      */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_envelope_free(
@@ -176,18 +187,32 @@ extern "C"
      * @return axiom_namespace_t 
      */
     AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
-
     axiom_soap_envelope_get_namespace(
         axiom_soap_envelope_t * envelope,
         const axutil_env_t * env);
 
+    /**
+     * Set the SOAP version 
+     * @param envelope OM SOAP Envelope
+     * @param env Environment. MUST NOT be NULL
+     * @param soap_version, the SOAP version number. 
+     *      Must be either AXIOM_SOAP11 or AXIOM_SOAP12
+     *
+     * @return AXIS2_SUCCESS on success else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_soap_envelope_set_soap_version(
         axiom_soap_envelope_t * envelope,
         const axutil_env_t * env,
         int soap_version);
 
+    /**
+     * Increment the reference number for the created instance 
+     * @param envelope OM SOAP Envelope
+     * @param env Environment. MUST NOT be NULL
+     *
+     * @return AXIS2_SUCCESS on success else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_soap_envelope_increment_ref(
         axiom_soap_envelope_t * envelope,
