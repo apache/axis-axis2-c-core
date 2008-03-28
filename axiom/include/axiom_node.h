@@ -295,23 +295,47 @@ extern "C"
      * returns null if no document is available
      * @param om_node 
      * @param env environment, MUST NOT be NULL.
+     *
+     * @return the OM document of the node
      */
     AXIS2_EXTERN struct axiom_document *AXIS2_CALL
                 axiom_node_get_document(
                     axiom_node_t * om_node,
                     const axutil_env_t * env);
 
+    /**
+     *
+     * @param om_node pointer to the OM node struct
+     * @param env environment, MUST NOT be NULL
+     *
+     * @return the string representation of the node
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_node_to_string(
         axiom_node_t * om_node,
         const axutil_env_t * env);
 
+    /**
+     *
+     * @param om_node pointer to the OM node struct
+     * @param env environment, MUST NOT be NULL
+     * @param om_output the serialized output will be placed here
+     *
+     * @return AXIS2_SUCCESS on success else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_node_serialize_sub_tree(
         axiom_node_t * om_node,
         const axutil_env_t * env,
         struct axiom_output *om_output);
 
+    /**
+     *
+     * @param om_node pointer to the OM node struct
+     * @param env environment, MUST NOT be NULL
+     *
+     * @return the tree as a string
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_node_sub_tree_to_string(
         axiom_node_t * om_node,
@@ -320,6 +344,10 @@ extern "C"
     /**
      * Convert the node to string, treating the binary contents, if any, 
      * as non-optimized content.
+     * @param om_node pointer to the OM node struct
+     * @param env environment, MUST NOT be NULL
+     *
+     * @return the none optimized string 
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_node_to_string_non_optimized(

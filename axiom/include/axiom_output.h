@@ -150,7 +150,6 @@ extern "C"
      * Sets the char set encoding property
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_output_set_char_set_encoding(
         axiom_output_t * om_output,
         const axutil_env_t * env,
@@ -189,7 +188,6 @@ extern "C"
      *  @returns content id
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-
     axiom_output_get_content_type(
         axiom_output_t * om_output,
         const axutil_env_t * env);
@@ -198,7 +196,6 @@ extern "C"
      * Writes the xml versio encoding 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_output_write_xml_version_encoding(
         axiom_output_t * om_output,
         const axutil_env_t * env);
@@ -226,12 +223,16 @@ extern "C"
     axiom_output_get_root_content_id(
         axiom_output_t * om_output,
         const axutil_env_t * env);
-
+    /**
+     *
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_output_get_mime_boundry(
         axiom_output_t * om_output,
         const axutil_env_t * env);
-
+    /**
+     *
+     */
     AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
     axiom_output_flush(
         axiom_output_t * om_output,

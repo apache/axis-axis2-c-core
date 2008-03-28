@@ -126,7 +126,6 @@ extern "C"
      *
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_element_declare_namespace_assume_param_ownership(
         axiom_element_t * om_element,
         const axutil_env_t * env,
@@ -143,7 +142,6 @@ extern "C"
      *           NULL and sets the error code in environment's error struct.
      */
     AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
-
     axiom_element_find_namespace_with_qname(
         axiom_element_t * om_element,
         const axutil_env_t * env,
@@ -212,7 +210,6 @@ extern "C"
       * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_element_serialize_start_part(
         axiom_element_t * om_element,
         const axutil_env_t * env,
@@ -376,7 +373,6 @@ extern "C"
      *
      */
     AXIS2_EXTERN axiom_children_iterator_t *AXIS2_CALL
-
     axiom_element_get_children(
         axiom_element_t * om_element,
         const axutil_env_t * env,
@@ -393,7 +389,6 @@ extern "C"
      */
 
     AXIS2_EXTERN axiom_children_qname_iterator_t *AXIS2_CALL
-
     axiom_element_get_children_with_qname(
         axiom_element_t * om_element,
         const axutil_env_t * env,
@@ -412,7 +407,6 @@ extern "C"
      */
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_element_get_first_child_with_qname(
         axiom_element_t * om_element,
         const axutil_env_t * env,
@@ -504,7 +498,6 @@ extern "C"
      * @returns axiom_child_element_iterator_t , NULL on error    
      */
     AXIS2_EXTERN axiom_child_element_iterator_t *AXIS2_CALL
-
     axiom_element_get_child_elements(
         axiom_element_t * om_element,
         const axutil_env_t * env,
@@ -535,7 +528,6 @@ extern "C"
      * @returns pointer to default namespace if availale , NULL otherwise
      */
     AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
-
     axiom_element_get_default_namespace(
         axiom_element_t * om_element,
         const axutil_env_t * env,
@@ -549,7 +541,6 @@ extern "C"
      * @returns the declared namespace
                                                  */
     AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
-
     axiom_element_declare_default_namespace(
         axiom_element_t * om_element,
         const axutil_env_t * env,
