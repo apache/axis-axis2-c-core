@@ -732,7 +732,8 @@ axiom_soap_builder_construct_node(
     return status;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_builder_process_namespace_data(
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+axiom_soap_builder_process_namespace_data(
     axiom_soap_builder_t * soap_builder,
     const axutil_env_t * env,
     axiom_node_t * om_node,

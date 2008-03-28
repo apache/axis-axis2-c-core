@@ -169,7 +169,8 @@ extern "C"
         axiom_soap_envelope_t * envelope,
         const axutil_env_t * env);
 
-    /** return the soap envelope namespace
+    /** 
+     * Return the soap envelope namespace
      * @param envelope 
      * @param env 
      * @return axiom_namespace_t 

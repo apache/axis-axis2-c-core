@@ -138,7 +138,7 @@ extern "C"
         axis2_bool_t value);
 
     /**
-     *
+     * 
      * @param builder pointer to the SOAP Builder struct
      * @param env Environment. MUST NOT be NULL
      *
@@ -150,7 +150,7 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     *
+     * Get the SOAP version
      * @param builder pointer to the SOAP Builder struct
      * @param env Environment. MUST NOT be NULL
      *
@@ -162,7 +162,7 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     *
+     * Process and verifies namespace data of @param om_node
      * @param builder pointer to the SOAP Builder struct
      * @param env Environment. MUST NOT be NULL
      *
