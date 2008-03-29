@@ -44,9 +44,11 @@ extern "C"
     /**
       * creates a soap struct 
       * @param env Environment. MUST NOT be NULL
+      * @param  fault The SOAP fault
+      *
+      * @return the created OM SOAP fault detail
       */
     AXIS2_EXTERN axiom_soap_fault_detail_t *AXIS2_CALL
-
     axiom_soap_fault_detail_create_with_parent(
         const axutil_env_t * env,
         axiom_soap_fault_t * fault);
@@ -58,27 +60,44 @@ extern "C"
       * @return satus of the op. AXIS2_SUCCESS on success 
       *         else AXIS2_FAILURE
       */
-
     AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_fault_detail_free(
         axiom_soap_fault_detail_t * fault_detail,
         const axutil_env_t * env);
 
+    /**
+     * Adds a detail entry to the SOAP fault detail 
+     * @param  fault_detail pointer to soap_fault_detail struct
+     * @param  env Environment. MUST NOT be NULL
+     * @return satus of the op. AXIS2_SUCCESS on success 
+     *         else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_soap_fault_detail_add_detail_entry(
         axiom_soap_fault_detail_t * fault_detail,
         const axutil_env_t * env,
         axiom_node_t * ele_node);
 
+    /**
+     * Return all detail entries in the SOAP fault detail
+     * @param  fault_detail pointer to soap_fault_detail struct
+     * @param  env Environment. MUST NOT be NULL
+     * @return satus of the op. AXIS2_SUCCESS on success 
+     *         else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axiom_children_iterator_t *AXIS2_CALL
-
     axiom_soap_fault_detail_get_all_detail_entries(
         axiom_soap_fault_detail_t * fault_detail,
         const axutil_env_t * env);
 
+    /**
+     * Returns the base node of the SOAP fault detail
+     * @param  fault_detail pointer to soap_fault_detail struct
+     * @param  env Environment. MUST NOT be NULL
+     * @return satus of the op. AXIS2_SUCCESS on success 
+     *         else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
-
     axiom_soap_fault_detail_get_base_node(
         axiom_soap_fault_detail_t * fault_code,
         const axutil_env_t * env);
