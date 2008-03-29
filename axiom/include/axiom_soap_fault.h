@@ -62,7 +62,6 @@ extern "C"
      *  otherwise return NULL with error code set in environments error
      */
     AXIS2_EXTERN axiom_soap_fault_t *AXIS2_CALL
-
     axiom_soap_fault_create_with_parent(
         const axutil_env_t * env,
         struct axiom_soap_body *parent);
@@ -77,14 +76,22 @@ extern "C"
      * otherwise return NULL
      */
     AXIS2_EXTERN axiom_soap_fault_t *AXIS2_CALL
-
     axiom_soap_fault_create_with_exception(
         const axutil_env_t * env,
         struct axiom_soap_body *parent,
         axis2_char_t * exception);
 
+    /**
+     *
+     * @param env environment must not be NULL
+     * @param parent soap body struct must not be NULL
+     * @param code_value 
+     * @param reason_text
+     * @param soap_version
+     *
+     * @return the created default OM SOAP fault
+     */
     AXIS2_EXTERN axiom_soap_fault_t *AXIS2_CALL
-
     axiom_soap_fault_create_default_fault(
         const axutil_env_t * env,
         struct axiom_soap_body *parent,
@@ -115,10 +122,9 @@ extern "C"
       *  with this soap_fault struct , NULL is returned otherwise
       */
     AXIS2_EXTERN struct axiom_soap_fault_code *AXIS2_CALL
-
-                axiom_soap_fault_get_code(
-                    axiom_soap_fault_t * fault,
-                    const axutil_env_t * env);
+    axiom_soap_fault_get_code(
+         axiom_soap_fault_t * fault,
+         const axutil_env_t * env);
 
     /**
      * @param fault soap fault struct
@@ -128,10 +134,9 @@ extern "C"
      */
 
     AXIS2_EXTERN struct axiom_soap_fault_reason *AXIS2_CALL
-
-                axiom_soap_fault_get_reason(
-                    axiom_soap_fault_t * fault,
-                    const axutil_env_t * env);
+    axiom_soap_fault_get_reason(
+         axiom_soap_fault_t * fault,
+         const axutil_env_t * env);
 
     /**
      * @param fault soap fault struct
@@ -140,10 +145,9 @@ extern "C"
      *  with this soap_fault struct , NULL is returned otherwise
      */
     AXIS2_EXTERN struct axiom_soap_fault_node *AXIS2_CALL
-
-                axiom_soap_fault_get_node(
-                    axiom_soap_fault_t * fault,
-                    const axutil_env_t * env);
+    axiom_soap_fault_get_node(
+        axiom_soap_fault_t * fault,
+        const axutil_env_t * env);
 
     /**
      * @param fault soap fault struct
@@ -152,10 +156,9 @@ extern "C"
      * with this soap_fault struct , NULL is returned otherwise
      */
     AXIS2_EXTERN struct axiom_soap_fault_role *AXIS2_CALL
-
-                axiom_soap_fault_get_role(
-                    axiom_soap_fault_t * fault,
-                    const axutil_env_t * env);
+    axiom_soap_fault_get_role(
+         axiom_soap_fault_t * fault,
+         const axutil_env_t * env);
 
     /**
       * @param fault soap fault struct
@@ -163,12 +166,10 @@ extern "C"
       * @returns a pointer to  soap_fault_code struct if one is 
       * associated with this soap_fault struct , NULL is returned otherwise
       */
-
     AXIS2_EXTERN struct axiom_soap_fault_detail *AXIS2_CALL
-
-                axiom_soap_fault_get_detail(
-                    axiom_soap_fault_t * fault,
-                    const axutil_env_t * env);
+    axiom_soap_fault_get_detail(
+         axiom_soap_fault_t * fault,
+         const axutil_env_t * env);
 
     /**
       * @param fault soap fault struct 
