@@ -44,15 +44,24 @@ extern "C"
     /**
       * creates a soap struct 
       * @param env Environment. MUST NOT be NULL
+      * @param fault_code SOAP fault code
+      *
+      * @return Created SOAP fault sub code
       */
     AXIS2_EXTERN axiom_soap_fault_sub_code_t *AXIS2_CALL
-
     axiom_soap_fault_sub_code_create_with_parent(
         const axutil_env_t * env,
         axiom_soap_fault_code_t * fault_code);
 
+    /**
+      * Create a SOAP fault sub code from the given SOAP fault and value
+      * @param  fault_sub_code pointer to soap_fault_sub_code struct
+      * @param  env Environment. MUST NOT be NULL
+      * @param value the value to be set to the SOAP fault
+      *
+      * @return Created SOAP sub code
+      */
     AXIS2_EXTERN axiom_soap_fault_sub_code_t *AXIS2_CALL
-
     axiom_soap_fault_sub_code_create_with_parent_value(
         const axutil_env_t * env,
         axiom_soap_fault_code_t * fault_code,
@@ -62,28 +71,45 @@ extern "C"
       * Free an axiom_soap_fault_sub_code
       * @param  fault_sub_code pointer to soap_fault_sub_code struct
       * @param  env Environment. MUST NOT be NULL
-      * @return satus of the op. AXIS2_SUCCESS on success 
-      *         else AXIS2_FAILURE
+      * @return VOID 
       */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_fault_sub_code_free(
         axiom_soap_fault_sub_code_t * fault_sub_code,
         const axutil_env_t * env);
 
+    /**
+      * Get the SOAP fault sub code
+      * @param  fault_sub_code pointer to soap_fault_sub_code struct
+      * @param  env Environment. MUST NOT be NULL
+      *
+      * @return the SOAP fault sub code
+      */
     AXIS2_EXTERN axiom_soap_fault_sub_code_t *AXIS2_CALL
-
     axiom_soap_fault_sub_code_get_sub_code(
         axiom_soap_fault_sub_code_t * fault_sub_code,
         const axutil_env_t * env);
 
+    /**
+      * Get the value of the SOAP fault sub code
+      * @param  fault_sub_code pointer to soap_fault_sub_code struct
+      * @param  env Environment. MUST NOT be NULL
+      *
+      * @return the SOAP fault value
+      */
     AXIS2_EXTERN struct axiom_soap_fault_value *AXIS2_CALL
+    axiom_soap_fault_sub_code_get_value(
+        axiom_soap_fault_sub_code_t * fault_sub_code,
+        const axutil_env_t * env);
 
-                axiom_soap_fault_sub_code_get_value(
-                    axiom_soap_fault_sub_code_t * fault_sub_code,
-                    const axutil_env_t * env);
-
+    /**
+      * Get the base node of the SOAP fault sub code 
+      * @param  fault_sub_code pointer to soap_fault_sub_code struct
+      * @param  env Environment. MUST NOT be NULL
+      *
+      * @return the base node of the SOAP fault sub code as OM node
+      */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
-
     axiom_soap_fault_sub_code_get_base_node(
         axiom_soap_fault_sub_code_t * fault_sub_code,
         const axutil_env_t * env);
