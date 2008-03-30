@@ -1106,7 +1106,7 @@ axis2_op_find_existing_op_ctx(
 
         if (!op_ctx)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
                 "Cannot correlate message to %s for operation %s", value, opname);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG,
                 AXIS2_FAILURE);
@@ -1145,7 +1145,8 @@ axis2_op_register_op_ctx(
     msg_id = axis2_msg_ctx_get_msg_id(msg_ctx, env);
     if (!msg_id)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, 
             "Message id not found for message context while "\
             "registering operation context for operation %s", opname);
         return AXIS2_FAILURE;

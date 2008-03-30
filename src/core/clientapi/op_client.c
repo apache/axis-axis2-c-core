@@ -1207,12 +1207,7 @@ axis2_op_client_two_way_send(
         property = NULL;
     }
 
-    if (op)
-    {
-        axis2_op_register_op_ctx(op,
-                                 env, response,
-                                 axis2_msg_ctx_get_op_ctx(msg_ctx, env));
-    }
+
     axis2_msg_ctx_set_server_side(response, env, AXIS2_FALSE);
     axis2_msg_ctx_set_conf_ctx(response, env,
                                axis2_msg_ctx_get_conf_ctx(msg_ctx, env));
@@ -1225,6 +1220,14 @@ axis2_op_client_two_way_send(
                                  axis2_msg_ctx_get_doing_rest(msg_ctx, env));
     axis2_msg_ctx_set_status_code (response, env, 
                                    axis2_msg_ctx_get_status_code (msg_ctx, env));
+
+    if (op)
+    {
+        axis2_op_register_op_ctx(op,
+                                 env, response,
+                                 axis2_msg_ctx_get_op_ctx(msg_ctx, env));
+    }
+
     /* set response envelope */
     if (engine)
     {
