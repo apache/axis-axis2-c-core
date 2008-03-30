@@ -73,7 +73,7 @@ axutil_stream_create_libcurl(
     unsigned int size)
 {
     libcurl_stream_impl_t *stream_impl = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
+
     AXIS2_PARAM_CHECK(env->error, buffer, NULL);
 
     stream_impl =
@@ -104,7 +104,6 @@ libcurl_stream_free(
     const axutil_env_t * env)
 {
     libcurl_stream_impl_t *stream_impl = NULL;
-    AXIS2_ENV_CHECK(env, void);
 
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
     AXIS2_FREE(env->allocator, stream_impl);
@@ -122,7 +121,6 @@ libcurl_stream_read(
     libcurl_stream_impl_t *stream_impl = NULL;
     int read = 0;
     int unread = 0;
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
     if (stream_impl->size >= (int)count)
@@ -195,3 +193,4 @@ libcurl_stream_get_char(
 }
 
 #endif                          /* AXIS2_HTTP_SENDER_H */
+

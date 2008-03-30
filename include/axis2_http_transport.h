@@ -967,6 +967,8 @@ extern "C"
 
 #define AXIS2_Q_MARK "?"
 
+#define AXIS2_ALL "ALL"
+
 #define AXIS2_USER_AGENT "Axis2C/" AXIS2_VERSION_STRING
 
 #define AXIS2_AND_SIGN "&"
@@ -976,6 +978,8 @@ extern "C"
 #define AXIS2_ESC_DOUBLE_QUOTE_STR "\""
 
 #define AXIS2_ESC_NULL '\0'
+
+#define AXIS2_SEMI_COLON ";"
 
 #define AXIS2_CONTENT_TYPE_ACTION ";action=\""
 
