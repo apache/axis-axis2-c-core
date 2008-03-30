@@ -45,13 +45,18 @@ extern "C"
       * @param env Environment. MUST NOT be NULL
       */
     AXIS2_EXTERN axiom_soap_fault_value_t *AXIS2_CALL
-
     axiom_soap_fault_value_create_with_subcode(
         const axutil_env_t * env,
         axiom_soap_fault_sub_code_t * parent);
 
+    /**
+      * Create s SOAP fault value givn a SOAP fault code 
+      * @param  fault_value pointer to soap_fault_value struct
+      * @param  env Environment. MUST NOT be NULL
+      *
+      * @return Created SOAP fault value 
+      */
     AXIS2_EXTERN axiom_soap_fault_value_t *AXIS2_CALL
-
     axiom_soap_fault_value_create_with_code(
         const axutil_env_t * env,
         axiom_soap_fault_code_t * parent);
@@ -60,10 +65,9 @@ extern "C"
       * Free an axiom_soap_fault_value
       * @param  fault_value pointer to soap_fault_value struct
       * @param  env Environment. MUST NOT be NULL
-      * @return satus of the op. AXIS2_SUCCESS on success 
-      *         else AXIS2_FAILURE
+      *
+      * @return VOID 
       */
-
     AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_fault_value_free(
         axiom_soap_fault_value_t * fault_value,
@@ -85,9 +89,10 @@ extern "C"
       * @param fault_value pointer to axiom_soap_fault_t
       * @param env Environment. MUST NOT BE NULL
       * @param text value to be set
+      *
+      * @return the base node
       */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
-
     axiom_soap_fault_value_get_base_node(
         axiom_soap_fault_value_t * fault_value,
         const axutil_env_t * env);
@@ -97,8 +102,9 @@ extern "C"
      * @param fault_value pointer to soap fault value struct
      * @param env environment MUST not be NULL
      * @param text Text value to be set
+     * @return satus of the op. AXIS2_SUCCESS on success 
+     *         else AXIS2_FAILURE
      */
-
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_soap_fault_value_set_text(
         axiom_soap_fault_value_t * fault_value,
