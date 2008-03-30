@@ -98,14 +98,14 @@ axutil_stream_create_ssl(
     if (!stream_impl->ctx)
     {
         axis2_ssl_stream_free((axutil_stream_t *) stream_impl, env);
-        AXIS2_HANDLE_ERROR(env->error, AXIS2_ERROR_SSL_ENGINE, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_SSL_ENGINE, AXIS2_FAILURE);
         return NULL;
     }
     stream_impl->ssl = axis2_ssl_utils_initialize_ssl(env, stream_impl->ctx,
                                                       stream_impl->socket);
     if (!stream_impl->ssl)
     {
-        AXIS2_HANDLE_ERROR(env->error, AXIS2_ERROR_SSL_ENGINE, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_SSL_ENGINE, AXIS2_FAILURE);
         return NULL;
     }
     stream_impl->stream_type = AXIS2_STREAM_MANAGED;

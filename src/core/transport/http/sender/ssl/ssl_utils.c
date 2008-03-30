@@ -45,12 +45,10 @@ axis2_ssl_utils_initialize_ctx(
     SSL_CTX *ctx = NULL;
     axis2_char_t *ca_file = server_cert;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (!ca_file)
     {
         AXIS2_LOG_INFO(env->log, "[ssl client] CA certificate not specified");
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SSL_NO_CA_FILE, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_SSL_NO_CA_FILE, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -74,7 +72,11 @@ axis2_ssl_utils_initialize_ctx(
     if (key_file)               /*can we check if the server needs client auth? */
     {
         if (!ssl_pp)
-            AXIS2_LOG_INFO(env->log, "[ssl client] No passphrase specified");
+        {
+            AXIS2_LOG_INFO(env->log, 
+                           "[ssl client] No passphrase specified for \
+key file %s and server cert %s", key_file, server_cert);
+        }
 
         SSL_CTX_set_default_passwd_cb_userdata(ctx, (void *) ssl_pp);
         SSL_CTX_set_default_passwd_cb(ctx, password_cb);
@@ -82,7 +84,8 @@ axis2_ssl_utils_initialize_ctx(
         if (!(SSL_CTX_use_certificate_chain_file(ctx, key_file)))
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            "[ssl client] Loading client certificate failed ");
+                            "[ssl client] Loading client certificate failed \
+, key file %s", key_file);
             SSL_CTX_free(ctx);
             return NULL;
         }
@@ -90,31 +93,28 @@ axis2_ssl_utils_initialize_ctx(
         if (!(SSL_CTX_use_PrivateKey_file(ctx, key_file, SSL_FILETYPE_PEM)))
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            "[ssl client] Loading client key failed");
+                            "[ssl client] Loading client key failed, key file \
+%s", key_file);
             SSL_CTX_free(ctx);
             return NULL;
         }
     }
     else
     {
-        AXIS2_LOG_INFO(env->log, "[ssl client] Client certificate chain file "
-                                 "not specified");
+        AXIS2_LOG_INFO(env->log, 
+                       "[ssl client] Client certificate chain file"
+                       "not specified");
     }
 
     /* Load the CAs we trust */
     if (!(SSL_CTX_load_verify_locations(ctx, ca_file, 0)))
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "[ssl client] Loading CA certificate failed");
+                        "[ssl client] Loading CA certificate failed, \
+ca_file is %s", ca_file);
         SSL_CTX_free(ctx);
         return NULL;
     }
-
-    /* verify depth should be read from axis2.xml, let's use the default for
-     * the moment*/
-#if (OPENSSL_VERSION_NUMBER < 0x00905100L)
-    /*SSL_CTX_set_verify_depth(ctx, 1); */
-#endif
 
     return ctx;
 }
@@ -128,25 +128,29 @@ axis2_ssl_utils_initialize_ssl(
     SSL *ssl = NULL;
     BIO *sbio = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ctx, NULL);
 
     ssl = SSL_new(ctx);
     if (!ssl)
     {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "[ssl]unable to create new ssl context");
         return NULL;
     }
 
     sbio = BIO_new_socket((int)socket, BIO_NOCLOSE);
     if (!sbio)
     {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "[ssl]unable to create BIO new socket for socket %d", 
+                         (int)socket);
         return NULL;
     }
 
     SSL_set_bio(ssl, sbio, sbio);
     if (SSL_connect(ssl) <= 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SSL_ENGINE, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_SSL_ENGINE, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -164,6 +168,7 @@ axis2_ssl_utils_initialize_ssl(
         {
             peer_name = (peer_cert->cert_info)->subject;
         }
+
         cert_store = SSL_CTX_get_cert_store(ctx);
         if (peer_name && cert_store)
         {
@@ -207,7 +212,6 @@ axis2_ssl_utils_cleanup_ssl(
     SSL_CTX * ctx,
     SSL * ssl)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (ssl)
     {
