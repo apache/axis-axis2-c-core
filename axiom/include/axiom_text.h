@@ -85,7 +85,6 @@ extern "C"
       * @return pointer to newly created text struct 
       */
     AXIS2_EXTERN axiom_text_t *AXIS2_CALL
-
     axiom_text_create_with_data_handler(
         const axutil_env_t * env,
         axiom_node_t * parent,
@@ -205,17 +204,38 @@ extern "C"
         const axutil_env_t * env,
         const axis2_bool_t is_binary);
 
+    /**
+     * Get the data handler of the OM text
+     * @param om_text pointer to the OM Text struct
+     * @param environment Environment. MUST NOT be NULL
+     *
+     * @return the data handler of the OM text
+     */
     AXIS2_EXTERN axiom_data_handler_t *AXIS2_CALL
-
     axiom_text_get_data_handler(
         struct axiom_text *om_text,
         const axutil_env_t * env);
 
+    /**
+     * Get the Content ID of the OM text
+     * @param om_text pointer to the OM Text struct
+     * @param environment Environment. MUST NOT be NULL
+     *
+     * @return the content id of the OM text
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_text_get_content_id(
         struct axiom_text *om_text,
         const axutil_env_t * env);
 
+    /**
+     * Set the content ID of the OM text
+     * @param om_text pointer to the OM Text struct
+     * @param environment Environment. MUST NOT be NULL
+     * @param content_id the content ID
+     * @return status of the op. AXIS2_SUCCESS on success
+     *         else AXIS2_FAILURE
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_text_set_content_id(
         axiom_text_t * om_text,
