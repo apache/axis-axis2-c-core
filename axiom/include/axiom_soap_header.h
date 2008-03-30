@@ -49,7 +49,6 @@ extern "C"
      */
 
     AXIS2_EXTERN axiom_soap_header_t *AXIS2_CALL
-
     axiom_soap_header_create_with_parent(
         const axutil_env_t * env,
         struct axiom_soap_envelope *envelope);
@@ -69,9 +68,10 @@ extern "C"
     /**
      * create a new axiom_soap_header_block_t struct initialized  with the
      * specified name and adds it to passed axiom_soap_header_t struct.
-     * @param env environment must not be null
-     * @param localName
-     * @param ns
+     * @param  header pointer to soap_header struct
+     * @param  env Environment. MUST NOT be NULL
+     * @param localName the localname of the SOAP header block
+     * @param ns the namespace of the SOAP header block
      * @return The newly created axiom_soap_header_block_t struct
      */
     AXIS2_EXTERN struct axiom_soap_header_block *AXIS2_CALL
@@ -91,9 +91,13 @@ extern "C"
      * recipient for the message, so if no actor attribute is set in a
      * axiom_soap_header_t struct the message is sent to its ultimate
      * destination.
+     * @param  header pointer to soap_header struct
+     * @param  env Environment. MUST NOT be NULL
+     * @param role the role value for the examination
+     *
+     * @return hash_table of all the soap_header_block_t  struct
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-
     axiom_soap_header_examine_header_blocks(
         axiom_soap_header_t * header,
         const axutil_env_t * env,
@@ -101,15 +105,14 @@ extern "C"
 
     /**
      * returns an arraylist of header_blocks which has a given namesapce uri
-     * @param header 
-     * @param env envirbonment must not be null
+     * @param  header pointer to soap_header struct
+     * @param  env Environment. MUST NOT be NULL
      * @param ns_uri namespace uri 
      * @return pointer to axutil_array_list_t, or null if no header_blocks with
      * given namespace uri exists
      * The returned array_list must be freed by the user.
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-
     axiom_soap_header_get_header_blocks_with_namespace_uri(
         axiom_soap_header_t * header,
         const axutil_env_t * env,
@@ -117,13 +120,12 @@ extern "C"
 
     /**
      * returns an iterator to iterate through all soap header block's om nodes 
-     * @param header 
-     * @param env environment
+     * @param  header pointer to soap_header struct
+     * @param  env Environment. MUST NOT be NULL
      * @returns axiom_children_qname_iterator_t or null if no header blocks 
      * present
      */
     AXIS2_EXTERN axiom_children_qname_iterator_t *AXIS2_CALL
-
     axiom_soap_header_examine_all_header_blocks(
         axiom_soap_header_t * header,
         const axutil_env_t * env);
@@ -131,8 +133,8 @@ extern "C"
     /**
      * returns an iterator to iterate through all  header blocks om_nodes 
      * with the matching role attribute
-     * @param header soap_header
-     * @param env environment 
+     * @param  header pointer to soap_header struct
+     * @param  env Environment. MUST NOT be NULL
      * @param role 
      * @returns iterator or null if no header blocks present with matching 
      * role attribute
@@ -146,9 +148,10 @@ extern "C"
 
     /**
      * returns the axiom_node_t struct wrapped in soap_header
-     * @param header soap_header_t
-     * @param env environment must not be null
-     * @return axiom_node_t
+     * @param  header pointer to soap_header struct
+     * @param  env Environment. MUST NOT be NULL
+     *
+     * @return the base node of the SOAP header
      */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
     axiom_soap_header_get_base_node(
@@ -157,8 +160,9 @@ extern "C"
 
     /**
      *  return the soap_version of this soap_header
-     *  @param header soap_header
-     *  @param env environment must not be null
+     * @param  header pointer to soap_header struct
+     * @param  env Environment. MUST NOT be NULL
+     *
      *  @return AXIOM_SOAP11 or AXIOM_SOAP12
      */
     AXIS2_EXTERN int AXIS2_CALL
@@ -167,11 +171,14 @@ extern "C"
         const axutil_env_t * env);
 
     /**
+     * Get all the SOAP headers
+     * @param  header pointer to soap_header struct
+     * @param  env Environment. MUST NOT be NULL
+     *
      * @returns a hash table of all header_blocks in this header
      * the returned hash is a readonly hash should not be modified
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-
     axiom_soap_header_get_all_header_blocks(
         axiom_soap_header_t * header,
         const axutil_env_t * env);
@@ -179,10 +186,13 @@ extern "C"
     /**
      * remove header block that matches to the given qname
      * qname should not be null
+     * @param  header pointer to soap_header struct
+     * @param  env Environment. MUST NOT be NULL
      * 
+     * @return status of the op. AXIS2_SUCCESS on success
+     *         else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_soap_header_remove_header_block(
         axiom_soap_header_t * header,
         const axutil_env_t * env,
