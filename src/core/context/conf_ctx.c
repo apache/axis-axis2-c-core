@@ -60,6 +60,7 @@ axis2_conf_ctx_create(
     if (!conf_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
         return NULL;
     }
 
@@ -74,6 +75,7 @@ axis2_conf_ctx_create(
     if (!conf_ctx->mutex)
     {
         axis2_conf_ctx_free(conf_ctx, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Could not create thread mutex");
         return NULL;
     }
 
@@ -84,6 +86,7 @@ axis2_conf_ctx_create(
     if (!(conf_ctx->base))
     {
         axis2_conf_ctx_free(conf_ctx, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Could not create base context");
         return NULL;
     }
 
@@ -91,6 +94,8 @@ axis2_conf_ctx_create(
     if (!(conf_ctx->op_ctx_map))
     {
         axis2_conf_ctx_free(conf_ctx, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Could not create operation context map");
         return NULL;
     }
 
@@ -98,6 +103,8 @@ axis2_conf_ctx_create(
     if (!(conf_ctx->svc_ctx_map))
     {
         axis2_conf_ctx_free(conf_ctx, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Could not create service context map");
         return NULL;
     }
 
@@ -105,6 +112,8 @@ axis2_conf_ctx_create(
     if (!(conf_ctx->svc_grp_ctx_map))
     {
         axis2_conf_ctx_free(conf_ctx, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Could not create service group context map");
         return NULL;
     }
 
@@ -117,7 +126,7 @@ axis2_conf_ctx_set_conf(
     const axutil_env_t * env,
     axis2_conf_t * conf)
 {
-    conf_ctx->conf = conf;      /* we just maintain a shallow copy here */
+    conf_ctx->conf = conf;      /* We just maintain a shallow copy here */
     return AXIS2_SUCCESS;
 }
 
@@ -186,7 +195,6 @@ axis2_conf_ctx_get_op_ctx(
 {
     axis2_op_ctx_t *rv = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, message_id, NULL);
 
     axutil_thread_mutex_lock(conf_ctx->mutex);
@@ -288,8 +296,6 @@ axis2_conf_ctx_set_root_dir(
     const axutil_env_t * env,
     const axis2_char_t * path)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     axutil_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->root_dir)
     {
@@ -304,6 +310,7 @@ axis2_conf_ctx_set_root_dir(
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             axutil_thread_mutex_unlock(conf_ctx->mutex);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
             return AXIS2_FAILURE;
         }
     }
@@ -366,8 +373,6 @@ axis2_conf_ctx_free(
     axis2_conf_ctx_t * conf_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (conf_ctx->base)
     {
         axis2_ctx_free(conf_ctx->base, env);
@@ -460,8 +465,6 @@ axis2_conf_ctx_fill_ctxs(
     axis2_char_t *svc_id = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
     svc = axis2_msg_ctx_get_svc(msg_ctx, env);
@@ -469,6 +472,8 @@ axis2_conf_ctx_fill_ctxs(
     {
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_SERVICE_NOT_YET_FOUND, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service not yet found in message context. Cannot proceed");
         return NULL;
     }
 
@@ -477,6 +482,8 @@ axis2_conf_ctx_fill_ctxs(
     {
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_INVALID_STATE_SVC, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service found in message context has no name.");
         return NULL;
     }
 
@@ -485,6 +492,8 @@ axis2_conf_ctx_fill_ctxs(
     {
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_INVALID_STATE_SVC, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service found message context has no name.");
         return NULL;
     }
 
@@ -502,7 +511,7 @@ axis2_conf_ctx_fill_ctxs(
                                      (msg_ctx, env), env);
     }
 
-    /* by this time service group context id must have a value,
+    /* By this time service group context id must have a value,
        either from transport or from addressing */
     if (svc_grp_ctx_id)
     {
@@ -517,6 +526,9 @@ axis2_conf_ctx_fill_ctxs(
                 AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_INVALID_STATE_SVC_GRP,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Service group context has no servie context set for "\
+                    "service %s", svc_id);
                 return NULL;
             }
         }
@@ -544,6 +556,9 @@ axis2_conf_ctx_fill_ctxs(
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC_GRP,
                             AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Service group context has no servie context set for "\
+                "service %s", svc_id);
             return NULL;
         }
         axis2_svc_grp_ctx_set_id(svc_grp_ctx, env, svc_grp_ctx_id);
@@ -551,13 +566,15 @@ axis2_conf_ctx_fill_ctxs(
                                             svc_grp_ctx);
     }
 
-    /* when you come here operation context MUST already been assigned
+    /* When you come here operation context MUST have already been assigned
        to the message context */
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (!op_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_MSG_CTX,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Operation context not set for message context");
         return NULL;
     }
 
@@ -566,3 +583,4 @@ axis2_conf_ctx_fill_ctxs(
     axis2_msg_ctx_set_svc_grp_ctx(msg_ctx, env, svc_grp_ctx);
     return svc_grp_ctx;
 }
+
