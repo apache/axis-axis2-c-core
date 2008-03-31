@@ -965,7 +965,11 @@ extern "C"
 
 #define AXIS2_TRANSPORT_URL_HTTPS "HTTPS"
 
-#define AXIS2_Q_MARK "?"
+#define AXIS2_Q_MARK_STR "?"
+
+#define AXIS2_Q_MARK '?'
+
+#define AXIS2_H_MARK '#'
 
 #define AXIS2_ALL "ALL"
 
@@ -997,7 +1001,11 @@ extern "C"
 
 #define AXIS2_HTTP_PROTOCOL "http"
 
-#define AXIS2_COMMA " ,"
+#define AXIS2_HTTP "HTTP"
+
+#define AXIS2_SPACE_COMMA " ,"
+
+#define AXIS2_COMMA ','
 
 #define AXIS2_Q 'q'
 
@@ -1014,6 +1022,8 @@ extern "C"
 #define AXIS2_F_SLASH '/'
 
 #define AXIS2_EQ '='
+
+#define AXIS2_HTTP_SERVER " (Simple Axis2 HTTP Server)"
     /** @} */
 
 #ifdef __cplusplus

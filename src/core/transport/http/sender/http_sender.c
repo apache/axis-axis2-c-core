@@ -532,7 +532,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         /* substituting AXIS2_Q_MARK for "?" */
         path = axutil_strcat (env,
                               axutil_url_get_path (url, env),
-                              AXIS2_Q_MARK, request_params, NULL);
+                              AXIS2_Q_MARK_STR, request_params, NULL);
 
         if (send_via_get)
         {

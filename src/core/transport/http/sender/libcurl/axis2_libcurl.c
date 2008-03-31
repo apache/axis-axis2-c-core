@@ -466,7 +466,7 @@ axis2_libcurl_send(
         request_param =
             (axis2_char_t *) axis2_http_sender_get_param_string(NULL, env,
                                                                 msg_ctx);
-        url_encode = axutil_strcat(env, str_url, AXIS2_Q_MARK, 
+        url_encode = axutil_strcat(env, str_url, AXIS2_Q_MARK_STR, 
                                    request_param, NULL);
         if (send_via_get)
         {

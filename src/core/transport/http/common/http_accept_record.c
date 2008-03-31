@@ -62,7 +62,7 @@ axis2_http_accept_record_create(
         return NULL;
     }
     memset ((void *)accept_record, 0, sizeof (axis2_http_accept_record_t));
-    accept_record->record = axutil_strtrim(env, tmp_accept_record, AXIS2_COMMA);
+    accept_record->record = axutil_strtrim(env, tmp_accept_record, AXIS2_SPACE_COMMA);
 
     tmp = strchr(tmp_accept_record, AXIS2_Q);
     if (tmp)
