@@ -981,6 +981,8 @@ extern "C"
 
 #define AXIS2_SEMI_COLON ";"
 
+#define AXIS2_COLON ':'
+
 #define AXIS2_CONTENT_TYPE_ACTION ";action=\""
 
 #define AXIS2_CONTENT_TYPE_CHARSET ";charset="
@@ -992,6 +994,20 @@ extern "C"
 #define AXIS2_DEFAULT_SVC_PATH "/axis2/services/"
 
 #define AXIS2_HTTP_PROTOCOL "http"
+
+#define AXIS2_COMMA " ,"
+
+#define AXIS2_Q 'q'
+
+#define AXIS2_EQ_N_SEMICOLON " =;"
+
+#define AXIS2_LEVEL "level"
+
+#define AXIS2_SPACE_SEMICOLON " ;"
+
+#define AXIS2_SPACE ' '
+
+#define AXIS2_RETURN '\r'
     /** @} */
 
 #ifdef __cplusplus
