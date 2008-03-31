@@ -1012,6 +1012,8 @@ extern "C"
 #define AXIS2_RETURN '\r'
 
 #define AXIS2_F_SLASH '/'
+
+#define AXIS2_EQ '='
     /** @} */
 
 #ifdef __cplusplus

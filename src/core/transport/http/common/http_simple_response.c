@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -31,6 +30,7 @@ struct axis2_http_simple_response
     axutil_stream_t *stream;
 };
 
+
 AXIS2_EXTERN axis2_http_simple_response_t *AXIS2_CALL
 axis2_http_simple_response_create(
     const axutil_env_t * env,
@@ -41,21 +41,22 @@ axis2_http_simple_response_create(
 {
     axis2_http_simple_response_t *ret = NULL;
     axis2_http_simple_response_t *simple_response = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_ENV_CHECK(env, NULL);
 
     ret = axis2_http_simple_response_create_default(env);
     if (!ret)
     {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "axis2 http simple response creation failed");
         return NULL;
     }
     simple_response = ret;
 
     if (!simple_response)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+
     simple_response->status_line = status_line;
     if (http_hdr_count > 0 && http_headers)
     {
@@ -80,11 +81,16 @@ axis2_http_simple_response_create_default(
     const axutil_env_t * env)
 {
     axis2_http_simple_response_t *simple_response = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     simple_response = (axis2_http_simple_response_t *) AXIS2_MALLOC
         (env->allocator, sizeof(axis2_http_simple_response_t));
 
+    if (!simple_response)
+    {
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    memset ((void *)simple_response, 0, sizeof(axis2_http_simple_response_t));
     simple_response->status_line = NULL;
     simple_response->header_group = NULL;
     simple_response->stream = NULL;
@@ -97,12 +103,12 @@ axis2_http_simple_response_free(
     axis2_http_simple_response_t * simple_response,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
 
     if (simple_response->status_line)
     {
         axis2_http_status_line_free(simple_response->status_line, env);
     }
+
     if (simple_response->header_group)
     {
         int i = 0;
@@ -139,7 +145,7 @@ axis2_http_simple_response_set_status_line(
     const axis2_char_t * phrase)
 {
     axis2_char_t *tmp_status_line_str = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
     AXIS2_PARAM_CHECK(env->error, http_ver, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, status_code, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, phrase, AXIS2_FAILURE);
@@ -148,8 +154,15 @@ axis2_http_simple_response_set_status_line(
                                        (axutil_strlen(http_ver) +
                                         axutil_strlen(phrase) +
                                         8) * sizeof(axis2_char_t *));
+
+    if (!tmp_status_line_str)
+    {
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+    }
+
     sprintf(tmp_status_line_str, "%s %3d %s%s", http_ver, status_code, phrase,
             AXIS2_HTTP_CRLF);
+
     if (simple_response->status_line)
     {
         axis2_http_status_line_free(simple_response->status_line, env);
@@ -161,6 +174,9 @@ axis2_http_simple_response_set_status_line(
 
     if (!simple_response->status_line)
     {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "axis2 http status line creation failed for tmp \
+string %s", tmp_status_line_str);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -173,8 +189,11 @@ axis2_http_simple_response_get_phrase(
 {
     if (!(simple_response->status_line))
     {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "axis2 simple response , status line is not available");
         return NULL;
     }
+
     return axis2_http_status_line_get_reason_phrase(simple_response->
                                                     status_line, env);
 }
@@ -186,6 +205,8 @@ axis2_http_simple_response_get_status_code(
 {
     if (!(simple_response->status_line))
     {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "axis2 simple response , status line is not available");
         return -1;
     }
     return axis2_http_status_line_get_status_code(simple_response->status_line,
@@ -199,6 +220,9 @@ axis2_http_simple_response_get_http_version(
 {
     if (!(simple_response->status_line))
     {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "axis2 simple response , status line is not available");
+     
         return NULL;
     }
     return axis2_http_status_line_get_http_version(simple_response->status_line,
@@ -210,9 +234,12 @@ axis2_http_simple_response_get_status_line(
     axis2_http_simple_response_t * simple_response,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
+
     if (!(simple_response->status_line))
     {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "axis2 simple response , status line is not available");
+     
         return NULL;
     }
     return axis2_http_status_line_to_string(simple_response->status_line, env);
@@ -252,16 +279,21 @@ axis2_http_simple_response_get_first_header(
     int count = 0;
     axutil_array_list_t *header_group = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, str, NULL);
 
     header_group = simple_response->header_group;
     if (!simple_response->header_group)
     {
-        return NULL;
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "axis2 simple response , headers not available");
+             return NULL;
     }
+
     if (0 == axutil_array_list_size(header_group, env))
     {
+        AXIS2_LOG_WARNING (env->log, AXIS2_LOG_SI, 
+                         "axis2 simple response , contains zero headers");
+
         return NULL;
     }
 
@@ -293,7 +325,6 @@ axis2_http_simple_response_remove_headers(
     int i = 0;
     int count = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, str, AXIS2_FAILURE);
 
     header_group = simple_response->header_group;
@@ -335,7 +366,6 @@ axis2_http_simple_response_set_header(
     axis2_char_t *tmp_name = NULL;
     axutil_array_list_t *header_group = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, header, AXIS2_FAILURE);
 
     if (!simple_response->header_group)
@@ -374,7 +404,7 @@ axis2_http_simple_response_get_charset(
     const axutil_env_t * env)
 {
     axis2_http_header_t *tmp_header = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
+
     tmp_header = axis2_http_simple_response_get_first_header
         (simple_response, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
     if (tmp_header)
@@ -385,7 +415,7 @@ axis2_http_simple_response_get_charset(
                                                         AXIS2_HTTP_CHAR_SET_ENCODING);
         if (charset)
         {
-            charset = strchr((char *) charset, '=');
+            charset = strchr((char *) charset, AXIS2_EQ);
             return charset;
         }
     }
@@ -400,7 +430,7 @@ axis2_http_simple_response_get_content_length(
 {
     axis2_http_header_t *tmp_header = NULL;
     int error_return = -1;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
     tmp_header = axis2_http_simple_response_get_first_header
         (simple_response, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH);
     if (tmp_header)
@@ -416,11 +446,13 @@ axis2_http_simple_response_get_content_type(
     const axutil_env_t * env)
 {
     axis2_http_header_t *tmp_header = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
+
     tmp_header = axis2_http_simple_response_get_first_header
         (simple_response, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
     if (tmp_header)
+    {
         return axis2_http_header_get_value(tmp_header, env);
+    }
 
     return AXIS2_HTTP_HEADER_ACCEPT_TEXT_PLAIN;
 }
@@ -432,7 +464,7 @@ axis2_http_simple_response_set_body_string(
     axis2_char_t * str)
 {
     axutil_stream_t *body_stream = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
     AXIS2_PARAM_CHECK(env->error, str, AXIS2_FAILURE);
 
     body_stream = simple_response->stream;
@@ -441,6 +473,8 @@ axis2_http_simple_response_set_body_string(
         body_stream = axutil_stream_create_basic(env);
         if (!body_stream)
         {
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                             "unable to create basic stream for string %s", str);
             return AXIS2_FAILURE;
         }
         simple_response->stream = body_stream;
@@ -482,11 +516,9 @@ axis2_http_simple_response_get_body_bytes(
     axis2_bool_t loop_state = AXIS2_TRUE;
     int return_size = -1;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (!simple_response->stream)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_BODY, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NULL_BODY, AXIS2_FAILURE);
         return return_size;
     }
     tmp_stream = axutil_stream_create_basic(env);
@@ -494,8 +526,8 @@ axis2_http_simple_response_get_body_bytes(
     {
         int read = 0;
         int write = 0;
-        /*   int AXIS2_HTTP_SIMPLE_RESPONSE_READ_SIZE = 32; */
         char buf[AXIS2_HTTP_SIMPLE_RESPONSE_READ_SIZE];
+
         read =
             axutil_stream_read(simple_response->stream, env, buf,
                                AXIS2_HTTP_SIMPLE_RESPONSE_READ_SIZE);
@@ -515,6 +547,13 @@ axis2_http_simple_response_get_body_bytes(
     {
         *buffer = (char *) AXIS2_MALLOC(env->allocator, sizeof(char) *
                                         (return_size + 1));
+
+        if (!buffer)
+        {
+            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return -1;
+        }
+
         return_size = axutil_stream_read(tmp_stream, env, *buffer,
                                          return_size + 1);
     }
@@ -532,15 +571,19 @@ axis2_http_simple_response_contains_header(
     int count = 0;
     int i = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
     if (!simple_response->header_group)
     {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "axis2 simple response , headers not available");
+
         return AXIS2_FALSE;
     }
     count = axutil_array_list_size(simple_response->header_group, env);
     if (0 == count)
     {
+        AXIS2_LOG_WARNING (env->log, AXIS2_LOG_SI, 
+                           "axis2 simple response , contains zero headers");
         return AXIS2_FALSE;
     }
 
@@ -555,3 +598,8 @@ axis2_http_simple_response_contains_header(
     }
     return AXIS2_FALSE;
 }
+
+
+
+
+
