@@ -30,7 +30,6 @@ extern "C"
 #endif
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_first_child_element_with_uri(
         axiom_node_t * ele_node,
         const axutil_env_t * env,
@@ -38,7 +37,6 @@ extern "C"
         axiom_node_t ** child);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_next_sibling_element_with_uri(
         axiom_node_t * ele_node,
         const axutil_env_t * env,
@@ -46,7 +44,6 @@ extern "C"
         axiom_node_t ** next_node);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_first_child_element(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -54,7 +51,6 @@ extern "C"
         axiom_node_t ** child_node);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_last_child_element(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -62,7 +58,6 @@ extern "C"
         axiom_node_t ** child_node);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_next_sibling_element(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -70,7 +65,6 @@ extern "C"
         axiom_node_t ** next_node);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_first_child_element_with_localname(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -79,7 +73,6 @@ extern "C"
         axiom_node_t ** child_node);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_last_child_element_with_localname(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -88,7 +81,6 @@ extern "C"
         axiom_node_t ** child_node);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_next_siblng_element_with_localname(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -97,7 +89,6 @@ extern "C"
         axiom_node_t ** next_node);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_first_child_element_with_uri_localname(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -106,7 +97,6 @@ extern "C"
         axis2_char_t * uri,
         axiom_node_t ** child_node);
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_last_child_element_with_uri_localname(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -116,7 +106,6 @@ extern "C"
         axiom_node_t ** child_node);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_next_sibling_element_with_uri_localname(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -126,7 +115,6 @@ extern "C"
         axiom_node_t ** next_node);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_first_child_element_with_localnames(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -135,7 +123,6 @@ extern "C"
         axiom_node_t ** child_node);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_last_child_element_with_localnames(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -144,7 +131,6 @@ extern "C"
         axiom_node_t ** child_node);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_next_siblng_element_with_localnames(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -153,7 +139,6 @@ extern "C"
         axiom_node_t ** next_node);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_first_child_element_with_localname_attr(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -164,7 +149,6 @@ extern "C"
         axiom_node_t ** child_node);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_last_child_element_with_localname_attr(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -175,7 +159,6 @@ extern "C"
         axiom_node_t ** child_node);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-
     axiom_util_get_next_siblng_element_with_localname_attr(
         axiom_element_t * ele,
         const axutil_env_t * env,
@@ -201,7 +184,6 @@ extern "C"
         const axutil_env_t * env);
 
     AXIS2_EXTERN axiom_child_element_iterator_t *AXIS2_CALL
-
     axiom_util_get_child_elements(
         axiom_element_t * om_ele,
         const axutil_env_t * env,

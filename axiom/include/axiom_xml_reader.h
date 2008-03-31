@@ -426,117 +426,230 @@ extern "C"
     axiom_xml_reader_cleanup(
     );
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN int AXIS2_CALL
     axiom_xml_reader_next(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_xml_reader_free(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN int AXIS2_CALL
     axiom_xml_reader_get_attribute_count(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     axiom_xml_reader_get_attribute_name_by_number(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env,
         int i);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     axiom_xml_reader_get_attribute_prefix_by_number(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env,
         int i);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     axiom_xml_reader_get_attribute_value_by_number(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env,
         int i);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     axiom_xml_reader_get_attribute_namespace_by_number(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env,
         int i);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_xml_reader_get_value(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN int AXIS2_CALL
     axiom_xml_reader_get_namespace_count(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     axiom_xml_reader_get_namespace_uri_by_number(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env,
         int i);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     axiom_xml_reader_get_namespace_prefix_by_number(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env,
         int i);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_xml_reader_get_prefix(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_xml_reader_get_name(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_xml_reader_get_pi_target(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_xml_reader_get_pi_data(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_xml_reader_get_dtd(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_xml_reader_xml_free(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env,
         void *data);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     axiom_xml_reader_get_char_set_encoding(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env);
 
+    /**
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_xml_reader_get_namespace_uri(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env);
 
+    /**
+     * 
+     * @param parser pointer to the OM XML Reader struct
+     * @param env environment struct, must not be null
+     *
+     * @return 
+     */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
     axiom_xml_reader_get_namespace_uri_by_prefix(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env,
