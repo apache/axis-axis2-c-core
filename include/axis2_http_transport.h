@@ -987,6 +987,8 @@ extern "C"
 
 #define AXIS2_CONTENT_TYPE_CHARSET ";charset="
 
+#define AXIS2_CHARSET "charset"
+
 #define AXIS2_PORT_STRING "port"
 
 #define AXIS2_DEFAULT_HOST_ADDRESS "127.0.0.1"
@@ -1008,6 +1010,8 @@ extern "C"
 #define AXIS2_SPACE ' '
 
 #define AXIS2_RETURN '\r'
+
+#define AXIS2_F_SLASH '/'
     /** @} */
 
 #ifdef __cplusplus

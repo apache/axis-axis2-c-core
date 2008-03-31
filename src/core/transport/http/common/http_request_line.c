@@ -37,7 +37,7 @@ axis2_http_request_line_create(
     const axis2_char_t * http_version)
 {
     axis2_http_request_line_t *request_line = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
+
     AXIS2_PARAM_CHECK(env->error, method, NULL);
     AXIS2_PARAM_CHECK(env->error, uri, NULL);
     AXIS2_PARAM_CHECK(env->error, http_version, NULL);
@@ -47,9 +47,10 @@ axis2_http_request_line_create(
 
     if (!request_line)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+    memset ((void *)request_line, 0, sizeof (axis2_http_request_line_t));
     request_line->method = (axis2_char_t *) axutil_strdup(env, method);
     request_line->uri = (axis2_char_t *) axutil_strdup(env, uri);
     request_line->http_version =
@@ -63,7 +64,11 @@ axis2_http_request_line_free(
     axis2_http_request_line_t * request_line,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
+
+    if (!request_line)
+    {
+        return;
+    }
 
     if (request_line->method)
     {
@@ -81,6 +86,7 @@ axis2_http_request_line_free(
     AXIS2_FREE(env->allocator, request_line);
     return;
 }
+
 
 AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL
 axis2_http_request_line_parse_line(
@@ -101,45 +107,46 @@ axis2_http_request_line_parse_line(
 
     if (!tmp)
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
-                        AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env,
+                           AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
+                           AXIS2_FAILURE);
         return NULL;
     }
+
     i = (int)(tmp - str);
     /* We are sure that the difference lies within the int range */
     req_line = AXIS2_MALLOC(env->allocator, i * sizeof(axis2_char_t) + 1);
     if (!req_line)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     memcpy(req_line, str, i * sizeof(axis2_char_t));
-    req_line[i] = '\0';
+    req_line[i] = AXIS2_ESC_NULL;
     tmp = req_line;
 
     method = tmp;
-    tmp = strchr(tmp, ' ');
+    tmp = strchr(tmp, AXIS2_SPACE);
     if (!tmp)
     {
         AXIS2_FREE(env->allocator, req_line);
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
-                        AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env,
+                           AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
+                           AXIS2_FAILURE);
         return NULL;
     }
-    *tmp++ = '\0';
+    *tmp++ = AXIS2_ESC_NULL;
     uri = tmp;
-    tmp = strrchr(tmp, ' ');
+    tmp = strrchr(tmp, AXIS2_SPACE);
     if (!tmp)
     {
         AXIS2_FREE(env->allocator, req_line);
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
-                        AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env,
+                           AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
+                           AXIS2_FAILURE);
         return NULL;
     }
-    *tmp++ = '\0';
+    *tmp++ = AXIS2_ESC_NULL;
     http_version = tmp;
     ret = axis2_http_request_line_create(env, method, uri, http_version);
     AXIS2_FREE(env->allocator, req_line);
@@ -179,8 +186,6 @@ axis2_http_request_line_to_string(
     int alloc_len = 0;
     axis2_char_t *ret = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     alloc_len = axutil_strlen(request_line->method) +
         axutil_strlen(request_line->uri) +
         axutil_strlen(request_line->http_version) + 6;
@@ -189,10 +194,11 @@ axis2_http_request_line_to_string(
     ret = AXIS2_MALLOC(env->allocator, alloc_len * sizeof(axis2_char_t));
     if (!ret)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    if (request_line->uri[0] != '/')
+
+    if (request_line->uri[0] != AXIS2_F_SLASH)
     {
         sprintf(ret, "%s /%s %s%s", request_line->method, request_line->uri,
                 request_line->http_version, AXIS2_HTTP_CRLF);
