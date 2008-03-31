@@ -693,6 +693,8 @@ axis2_conf_add_svc(
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
 
+    /* We need to first create a service group with the same name as the 
+     * service and make it the parent of service */
     svc_grp_name = axis2_svc_get_name(svc, env);
     if (!svc_grp_name)
     {
@@ -1006,6 +1008,11 @@ axis2_conf_get_all_svcs(
     axis2_svc_t *svc = NULL;
     axis2_char_t *svc_name = NULL;
 
+    /* Do we need to do all the following of retrieving all service groups and
+     * then add all services from each group to conf->all_svcs and then finally 
+     * return conf->all_svcs?. We have already done this when
+     * adding each service group to the conf, so just returning conf->all_svcs
+     * here would be enough - Damitha */
     sgs = axis2_conf_get_all_svc_grps(conf, env);
     index_i = axutil_hash_first(sgs, env);
     while (index_i)
@@ -1432,8 +1439,8 @@ axis2_conf_set_dispatch_phase(
 /**
  * For each module reference qname stored in dep_engine this function is called.
  * All module_desc instances are stored in axis2_conf. So each module_desc
- * is retrieved from their by giving module_qname and engaged globally by
- * calling phase_resolvers engage_module_globally function. Modules is added
+ * is retrieved from there by giving module_qname and engaged globally by
+ * calling phase_resolvers engage_module_globally function. Modules are added
  * to axis2_conf's engaged module list.
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -1471,8 +1478,8 @@ axis2_conf_engage_module(
         file =
             (axutil_file_t *) axis2_arch_reader_create_module_arch(env,
                                                                    file_name);
-        /* This flag is to check whether conf is build using axis2
-         * xml instead of a repo. */
+        /* This flag is to check whether conf is built using axis2
+         * xml configuration file instead of a repository. */
 		flag = axis2_conf_get_axis2_flag (conf, env);
 
 		if (!flag)
@@ -1492,7 +1499,7 @@ axis2_conf_engage_module(
 			 * This case is to obtain module path from the axis2.xml
 			 */
 			axis2_xml = (axis2_char_t *)axis2_conf_get_axis2_xml (conf, env);
-			module_dir_param = axis2_conf_get_param (conf, env, "moduleDir");
+			module_dir_param = axis2_conf_get_param (conf, env, AXIS2_MODULE_DIR);
 
             if (module_dir_param)
             {

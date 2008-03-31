@@ -391,6 +391,8 @@ extern "C"
 #define AXIS2_HANDLER_ALREADY_VISITED "handler_already_visited"
 #define AXIS2_IS_SVR_SIDE "axis2_is_svr_side"
 
+#define AXIS2_SERVICE_DIR "servicesDir"
+#define AXIS2_MODULE_DIR "moduleDir"
 #ifdef __cplusplus
 }
 #endif
