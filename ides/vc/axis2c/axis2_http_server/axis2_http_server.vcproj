@@ -200,6 +200,14 @@
 			ReferencedProjectIdentifier="{7C816A64-FA96-4C6C-8DB0-5256441F54BC}"
 			RelativePathToProject=".\axiom\axiom.vcproj"
 		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{7332F525-8C77-4FB3-A0C0-FCEB2382F03C}"
+			RelativePathToProject=".\axis2_http_sender\axis2_http_sender.vcproj"
+		/>
+		<ProjectReference
+			ReferencedProjectIdentifier="{0DEEAA74-F06D-4C60-B408-1B875B4FB338}"
+			RelativePathToProject=".\axis2_mod_addr\axis2_mod_addr.vcproj"
+		/>
 	</References>
 	<Files>
 		<Filter
