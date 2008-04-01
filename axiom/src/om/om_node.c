@@ -143,6 +143,13 @@ axiom_node_free_detached_subtree(
             axiom_text_free((axiom_text_t *) (om_node->data_element), env);
         }
     }
+    else if (om_node->node_type == AXIOM_DATA_SOURCE)
+    {
+        if (om_node->data_element)
+        {
+            axiom_data_source_free((axiom_data_source_t *) (om_node->data_element), env);
+        }
+    }
 
     AXIS2_FREE(env->allocator, om_node);
 
