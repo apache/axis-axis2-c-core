@@ -42,20 +42,17 @@ struct axis2_op_client
     axis2_callback_t *callback;
 
     axis2_bool_t completed;
+
     /* to hold the locally created async result */
     axis2_async_result_t *async_result;
+
     axis2_callback_recv_t *callback_recv;
 
     /** message exchange pattern */
     axis2_char_t *mep;
 
-    /** SOAP version URI */
     axis2_char_t *soap_version_uri;
-
-    /** SOAP action */
     axutil_string_t *soap_action;
-
-    /** WSA action  */
     axis2_char_t *wsa_action;
     axis2_bool_t reuse;
 
@@ -74,7 +71,7 @@ void *AXIS2_THREAD_FUNC axis2_op_client_worker_func(
     axutil_thread_t * thd,
     void *data);
 
-static axis2_char_t *AXIS2_CALL axis2_get_transport_from_url(
+static axis2_char_t *AXIS2_CALL axis2_op_client_get_transport_from_url(
     const axis2_char_t * url,
     const axutil_env_t * env);
 
@@ -97,13 +94,11 @@ axis2_op_client_create(
     if (!op_client)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create op client.");
         return NULL;
     }
 
     /** initialize data */
-    op_client->svc_ctx = NULL;
-    op_client->options = NULL;
-    op_client->op_ctx = NULL;
     op_client->callback = NULL;
     op_client->completed = AXIS2_FALSE;
     op_client->reuse = AXIS2_FALSE;
@@ -129,19 +124,20 @@ axis2_op_client_create(
 
     if (!mep_uri)
     {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MEP_CANNOT_DETERMINE_MEP, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot find message exchange pattern uri.");
         axis2_op_client_free(op_client, env);
         return NULL;
     }
-    else
-    {
-        op_client->mep = axutil_strdup(env, mep_uri);
-    }
+        
+    op_client->mep = axutil_strdup(env, mep_uri);
 
     op_client->soap_version_uri =
         axutil_strdup(env, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
     if (!(op_client->soap_version_uri))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create soap version uri.");
         axis2_op_client_free(op_client, env);
         return NULL;
     }
@@ -157,8 +153,6 @@ axis2_op_client_set_options(
     const axutil_env_t * env,
     const axis2_options_t * options)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (op_client->options)
     {
         axis2_options_free(op_client->options, env);
@@ -173,8 +167,6 @@ axis2_op_client_get_options(
     const axis2_op_client_t * op_client,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return op_client->options;
 }
 
@@ -188,7 +180,6 @@ axis2_op_client_add_msg_ctx(
         *in_msg_ctx = NULL;
     axis2_msg_ctx_t **msg_ctx_map = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     /* Don't use AXIS2_PARAM_CHECK to verify op_client, as it clobbers 
        env->error->status_code on no error destroying the information 
        therein that an error has already occurred. */
@@ -305,8 +296,6 @@ axis2_op_client_add_out_msg_ctx(
 {
     axis2_msg_ctx_t **msg_ctx_map = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_client->op_ctx, env);
 
     msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = mc;
@@ -329,8 +318,6 @@ axis2_op_client_set_callback(
     const axutil_env_t * env,
     axis2_callback_t * callback)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (op_client->callback)
     {
         axis2_callback_free(op_client->callback, env);
@@ -364,10 +351,9 @@ axis2_op_client_execute(
     axis2_op_t *op = NULL;
     axis2_char_t *msg_id = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (op_client->completed)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Op client execute failed. Already completed.");
         return AXIS2_FAILURE;
     }
 
@@ -378,6 +364,7 @@ axis2_op_client_execute(
 
     if (!msg_ctx)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Op client execute failed. Message context is not valid.");
         return AXIS2_FAILURE;
     }
 
@@ -414,6 +401,7 @@ axis2_op_client_execute(
 
     if (!transport_out)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Op client execute failed. Cannot find transport out.");
         return AXIS2_FAILURE;
     }
 
@@ -442,6 +430,7 @@ axis2_op_client_execute(
     }
     if (!transport_in)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Op client execute failed. Cannot find transport in.");
         return AXIS2_FAILURE;
     }
 
@@ -454,11 +443,13 @@ axis2_op_client_execute(
 
     if (!op)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Op client execute failed. Cannot find operation.");
         return AXIS2_FAILURE;
     }
     status = axis2_op_client_prepare_invocation(op_client, env, op, msg_ctx);
     if (status != AXIS2_SUCCESS)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Op client execute failed. Preparing for invocation failed.");
         return AXIS2_FAILURE;
     }
     msg_id = (axis2_char_t *) axutil_uuid_gen(env);
@@ -486,6 +477,7 @@ axis2_op_client_execute(
         engine = axis2_engine_create(env, conf_ctx);
         if (!engine)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Op client execute failed due to engine creation failure.");
             return AXIS2_FAILURE;
         }
         axis2_engine_send(engine, env, msg_ctx);
@@ -537,6 +529,8 @@ axis2_op_client_execute(
                                     sizeof(axis2_op_client_worker_func_args_t));
             if (!arg_list)
             {
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create op client worker function argument list.");
                 return AXIS2_FAILURE;
             }
             arg_list->env = env;
@@ -556,8 +550,11 @@ axis2_op_client_execute(
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                                     "Thread creation failed call invoke non blocking");
                 }
-                axutil_thread_pool_thread_detach(env->thread_pool,
-                                                 worker_thread);
+                else
+                {
+                    axutil_thread_pool_thread_detach(env->thread_pool,
+                                                    worker_thread);
+                }
             }
             else
             {
@@ -579,8 +576,6 @@ axis2_op_client_reset(
     axis2_op_client_t * op_client,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (!op_client->completed)
         return AXIS2_FAILURE;
 
@@ -600,8 +595,6 @@ axis2_op_client_complete(
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_listener_manager_t *listener_manager = NULL;
     AXIS2_TRANSPORT_ENUMS transport = AXIS2_TRANSPORT_ENUM_HTTP;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     conf_ctx = axis2_msg_ctx_get_conf_ctx(mc, env);
 
@@ -627,7 +620,8 @@ axis2_op_client_free(
     axis2_op_client_t * op_client,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
+    if(!op_client)
+        return;
 
     if (op_client->callback)
     {
@@ -656,8 +650,6 @@ axis2_op_client_free(
     }
 
     AXIS2_FREE(env->allocator, op_client);
-
-    return;
 }
 
 void *AXIS2_THREAD_FUNC
@@ -677,7 +669,6 @@ axis2_op_client_worker_func(
         return NULL;
     }
 
-    AXIS2_ENV_CHECK(args_list->env, AXIS2_FAILURE);
     th_env = axutil_init_thread_env(args_list->env);
 
     op_ctx = axis2_op_ctx_create(th_env, args_list->op,
@@ -750,7 +741,6 @@ axis2_op_client_prepare_invocation(
 {
     axis2_svc_t *svc = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
@@ -762,6 +752,7 @@ axis2_op_client_prepare_invocation(
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT,
                             AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Message exchange pattern of op client and operation are different.");
             return AXIS2_FAILURE;
         }
     }
@@ -770,6 +761,7 @@ axis2_op_client_prepare_invocation(
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_MEP_CANNOT_BE_NULL_IN_MEP_CLIENT,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Message exchange pattern of op client is not valid.");
         return AXIS2_FAILURE;
     }
     /* If operation has a parent service get it */
@@ -815,8 +807,6 @@ axis2_op_client_prepare_soap_envelope(
     axis2_msg_ctx_t *msg_ctx = NULL;
     axiom_soap_envelope_t *envelope = NULL;
     int soap_version = AXIOM_SOAP12;
-
-    AXIS2_ENV_CHECK(env, NULL);
 
     if (op_client->svc_ctx)
     {
@@ -876,15 +866,13 @@ axis2_op_client_infer_transport(
     axis2_char_t *transport = NULL;
     axis2_transport_out_desc_t *transport_out_desc = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                     "Start:axis2_op_client_infer_transport");
     if (epr)
     {
         const axis2_char_t *to_url = axis2_endpoint_ref_get_address(epr, env);
 
-        transport = axis2_get_transport_from_url(to_url, env);
+        transport = axis2_op_client_get_transport_from_url(to_url, env);
     }
 
     if (transport)
@@ -893,19 +881,19 @@ axis2_op_client_infer_transport(
         axis2_conf_t *conf = NULL;
         AXIS2_TRANSPORT_ENUMS transport_enum = 0;
 
-        if (!axutil_strcmp(transport, "http"))
+        if (!axutil_strcmp(transport, AXIS2_TRANSPORT_HTTP))
         {
             transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
         }
-        else if (!axutil_strcmp(transport, "https"))
+        else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_HTTPS))
         {
             transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
         }
-        else if (!axutil_strcmp(transport, "xmpp"))
+        else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_XMPP))
         {
             transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
         }
-        else if (!axutil_strcmp(transport, "tcp"))
+        else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_TCP))
         {
             transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
         }
@@ -945,8 +933,6 @@ axis2_op_client_create_default_soap_envelope(
 {
     axiom_soap_envelope_t *envelope = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (!(axutil_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI,
                         op_client->soap_version_uri)))
     {
@@ -974,8 +960,6 @@ axis2_op_client_engage_module(
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_conf_t *conf = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (op_client->svc_ctx)
     {
         conf_ctx = axis2_svc_ctx_get_conf_ctx(op_client->svc_ctx, env);
@@ -1002,8 +986,6 @@ axis2_op_client_set_soap_version_uri(
     const axutil_env_t * env,
     const axis2_char_t * soap_version_uri)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (op_client->soap_version_uri)
     {
         AXIS2_FREE(env->allocator, op_client->soap_version_uri);
@@ -1016,6 +998,7 @@ axis2_op_client_set_soap_version_uri(
         if (!(op_client->soap_version_uri))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create soap version uri.");
             return AXIS2_FAILURE;
         }
     }
@@ -1029,8 +1012,6 @@ axis2_op_client_set_soap_action(
     const axutil_env_t * env,
     axutil_string_t * soap_action)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (op_client->soap_action)
     {
         axutil_string_free(op_client->soap_action, env);
@@ -1043,6 +1024,7 @@ axis2_op_client_set_soap_action(
         if (!(op_client->soap_action))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create soap action.");
             return AXIS2_FAILURE;
         }
     }
@@ -1056,8 +1038,6 @@ axis2_op_client_set_wsa_action(
     const axutil_env_t * env,
     const axis2_char_t * wsa_action)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (op_client->wsa_action)
     {
         AXIS2_FREE(env->allocator, op_client->wsa_action);
@@ -1070,6 +1050,7 @@ axis2_op_client_set_wsa_action(
         if (!(op_client->wsa_action))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create wsa action.");
             return AXIS2_FAILURE;
         }
     }
@@ -1078,7 +1059,7 @@ axis2_op_client_set_wsa_action(
 }
 
 static axis2_char_t *AXIS2_CALL
-axis2_get_transport_from_url(
+axis2_op_client_get_transport_from_url(
     const axis2_char_t * url,
     const axutil_env_t * env)
 {
@@ -1099,6 +1080,7 @@ axis2_get_transport_from_url(
         if (!transport)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create transport protocol identifier.");
             return NULL;
         }
 
@@ -1136,8 +1118,6 @@ axis2_op_client_two_way_send(
     long index = -1;
     axis2_bool_t wait_indefinitely = AXIS2_FALSE;
     axis2_char_t *mep = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
 
     conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
     engine = axis2_engine_create(env, conf_ctx);
@@ -1182,6 +1162,7 @@ axis2_op_client_two_way_send(
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_MEP_CANNOT_DETERMINE_MEP,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot determine message exchange pattern.");
         return NULL;
     }
 
@@ -1242,10 +1223,6 @@ axis2_op_client_two_way_send(
         if (engine)
         {
             status = axis2_engine_receive(engine, env, response);
-            /*
-               if (status != AXIS2_SUCCESS)
-               return NULL;
-             */
         }
     }
     else
@@ -1293,6 +1270,7 @@ axis2_op_client_two_way_send(
                 AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Response is not valid. Blocking invocation expects response.");
                 if (engine)
                 {
                     axis2_engine_free(engine, env);
@@ -1322,6 +1300,7 @@ axis2_op_client_two_way_send(
             AXIS2_ERROR_SET(env->error,
                             AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
                             AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "HTTP client transport error.");
             return NULL;
         }
         switch(axis2_msg_ctx_get_status_code (response, env))
@@ -1331,16 +1310,19 @@ axis2_op_client_two_way_send(
                 AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "HTTP client transport error.");
                 break;
             case 0:
                 AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Response is not valid. Blocking invocation expects response.");
                 break;
             case -1:
                 AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Response is not valid. Blocking invocation expects response.");
                 break;
         }
         return NULL;
@@ -1360,8 +1342,6 @@ axis2_op_client_receive(
     axis2_op_t *op = NULL;
     axiom_soap_envelope_t *response_envelope = NULL;
     axutil_property_t *property = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
 
     /* create the response */
     response = axis2_msg_ctx_create(env, conf_ctx,
