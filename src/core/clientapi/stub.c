@@ -37,6 +37,7 @@ axis2_stub_create(
     if (!stub)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create stub.");
         return NULL;
     }
     stub->svc_client = NULL;
@@ -62,7 +63,7 @@ axis2_stub_create_with_endpoint_ref_and_client_home(
     {
         return NULL;
     }
-    /* create service_client */
+   
     stub->svc_client = axis2_svc_client_create(env, client_home);
 
     if (!stub->svc_client)
@@ -70,14 +71,14 @@ axis2_stub_create_with_endpoint_ref_and_client_home(
         axis2_stub_free(stub, env);
         return NULL;
     }
-    /* create options */
+
     stub->options = axis2_options_create(env);
     if (!stub->options)
     {
         axis2_stub_free(stub, env);
         return NULL;
     }
-    /* Set service client options */
+
     axis2_svc_client_set_options(stub->svc_client, env, stub->options);
 
     axis2_options_set_to(stub->options, env, endpoint_ref);
@@ -119,19 +120,15 @@ axis2_stub_free(
     axis2_stub_t * stub,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
-    if (stub->svc_client)
-    {
-        axis2_svc_client_free(stub->svc_client, env);
-    }
-
     if (stub)
     {
+        if (stub->svc_client)
+        {
+            axis2_svc_client_free(stub->svc_client, env);
+        }
+        
         AXIS2_FREE(env->allocator, stub);
     }
-
-    return;
 }
 
 axis2_status_t AXIS2_CALL
@@ -154,7 +151,6 @@ axis2_stub_set_endpoint_uri(
 {
     axis2_endpoint_ref_t *endpoint_ref = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, endpoint_uri, AXIS2_FAILURE);
 
     endpoint_ref = axis2_endpoint_ref_create(env, endpoint_uri);
@@ -196,6 +192,7 @@ axis2_stub_set_soap_version(
 {
     if (!stub->options)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot set soap version. Stub option is not valid.");
         return AXIS2_FAILURE;
     }
     return axis2_options_set_soap_version(stub->options, env, soap_version);

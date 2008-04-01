@@ -40,6 +40,7 @@ axis2_async_result_create(
     if (!async_result)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create asynchronous result.");
         return NULL;
     }
 
@@ -58,8 +59,6 @@ axis2_async_result_get_envelope(
     axis2_async_result_t * async_result,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (async_result->result)
     {
         return axis2_msg_ctx_get_soap_envelope(async_result->result, env);
@@ -81,9 +80,5 @@ axis2_async_result_free(
     axis2_async_result_t * async_result,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     AXIS2_FREE(env->allocator, async_result);
-
-    return;
 }

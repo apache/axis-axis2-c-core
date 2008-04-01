@@ -86,6 +86,7 @@ axis2_callback_create(
     if (!callback)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create callback.");
         return NULL;
     }
 
@@ -110,7 +111,6 @@ axis2_callback_invoke_on_complete(
 {
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     axis2_callback_set_envelope(callback, env,
                                 axis2_async_result_get_envelope(result, env));
     status = callback->on_complete(callback, env);
@@ -151,7 +151,6 @@ axis2_callback_get_envelope(
     const axis2_callback_t * callback,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return callback->envelope;
 }
 
@@ -188,16 +187,12 @@ axis2_callback_free(
     axis2_callback_t * callback,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (callback->mutex)
     {
         axutil_thread_mutex_destroy(callback->mutex);
     }
 
     AXIS2_FREE(env->allocator, callback);
-
-    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

@@ -71,6 +71,7 @@ axis2_options_create(
     if (!options)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create options.");
         return NULL;
     }
 
@@ -91,14 +92,14 @@ axis2_options_create(
     options->xml_parser_reset = AXIS2_TRUE;
 
     options->msg_info_headers = axis2_msg_info_headers_create(env, NULL, NULL);
-    if (!(options->msg_info_headers))
+    if (!options->msg_info_headers)
     {
         axis2_options_free(options, env);
         return NULL;
     }
 
     options->properties = axutil_hash_make(env);
-    if (!(options->properties))
+    if (!options->properties)
     {
         axis2_options_free(options, env);
         return NULL;
@@ -130,11 +131,9 @@ axis2_options_get_action(
     const axutil_env_t * env)
 {
     const axis2_char_t *action = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-
     action = axis2_msg_info_headers_get_action(options->msg_info_headers, env);
 
-    if (action == NULL && options->parent)
+    if (!action && options->parent)
     {
         return axis2_options_get_action(options->parent, env);
     }
@@ -148,12 +147,11 @@ axis2_options_get_fault_to(
     const axutil_env_t * env)
 {
     axis2_endpoint_ref_t *fault_to = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     fault_to =
         axis2_msg_info_headers_get_fault_to(options->msg_info_headers, env);
 
-    if (fault_to == NULL && options->parent)
+    if (!fault_to && options->parent)
     {
         return axis2_options_get_fault_to(options->parent, env);
     }
@@ -167,11 +165,10 @@ axis2_options_get_from(
     const axutil_env_t * env)
 {
     axis2_endpoint_ref_t *from = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     from = axis2_msg_info_headers_get_from(options->msg_info_headers, env);
 
-    if (from == NULL && options->parent)
+    if (!from && options->parent)
     {
         return axis2_options_get_from(options->parent, env);
     }
@@ -184,9 +181,7 @@ axis2_options_get_transport_receiver(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
-    if (options->receiver == NULL && options->parent)
+    if (!options->receiver && options->parent)
     {
         return axis2_options_get_transport_receiver(options->parent, env);
     }
@@ -199,9 +194,7 @@ axis2_options_get_transport_in(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
-    if (options->transport_in == NULL && options->parent)
+    if (!options->transport_in && options->parent)
     {
         return axis2_options_get_transport_in(options->parent, env);
     }
@@ -214,8 +207,6 @@ axis2_options_get_transport_in_protocol(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (options->parent)
     {
         return axis2_options_get_transport_in_protocol(options->parent, env);
@@ -230,12 +221,11 @@ axis2_options_get_message_id(
     const axutil_env_t * env)
 {
     const axis2_char_t *message_id = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     message_id =
         axis2_msg_info_headers_get_message_id(options->msg_info_headers, env);
 
-    if (message_id == NULL && options->parent)
+    if (!message_id && options->parent)
     {
         return axis2_options_get_message_id(options->parent, env);
     }
@@ -248,9 +238,7 @@ axis2_options_get_properties(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
-    if (axutil_hash_count(options->properties) == 0 && options->parent)
+    if (!axutil_hash_count(options->properties) && options->parent)
     {
         return axis2_options_get_properties(options->parent, env);
     }
@@ -265,11 +253,10 @@ axis2_options_get_property(
     const axis2_char_t * key)
 {
     void *property = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     property = axutil_hash_get(options->properties, key, AXIS2_HASH_KEY_STRING);
 
-    if (property == NULL && options->parent)
+    if (!property && options->parent)
     {
         return axis2_options_get_property(options->parent, env, key);
     }
@@ -283,12 +270,11 @@ axis2_options_get_relates_to(
     const axutil_env_t * env)
 {
     axis2_relates_to_t *relates_to = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     relates_to =
         axis2_msg_info_headers_get_relates_to(options->msg_info_headers, env);
 
-    if (relates_to == NULL && options->parent)
+    if (!relates_to && options->parent)
     {
         return axis2_options_get_relates_to(options->parent, env);
     }
@@ -302,12 +288,11 @@ axis2_options_get_reply_to(
     const axutil_env_t * env)
 {
     axis2_endpoint_ref_t *reply_to = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     reply_to =
         axis2_msg_info_headers_get_reply_to(options->msg_info_headers, env);
 
-    if (reply_to == NULL && options->parent)
+    if (!reply_to && options->parent)
     {
         return axis2_options_get_reply_to(options->parent, env);
     }
@@ -320,9 +305,7 @@ axis2_options_get_transport_out(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
-    if (options->transport_out == NULL && options->parent)
+    if (!options->transport_out && options->parent)
     {
         return axis2_options_get_transport_out(options->parent, env);
     }
@@ -335,9 +318,6 @@ axis2_options_get_sender_transport_protocol(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (options->parent)
     {
         return axis2_options_get_sender_transport_protocol(options->parent,
@@ -352,9 +332,7 @@ axis2_options_get_soap_version_uri(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
-    if (options->soap_version_uri == NULL && options->parent)
+    if (!options->soap_version_uri && options->parent)
     {
         return axis2_options_get_soap_version_uri(options->parent, env);
     }
@@ -372,14 +350,16 @@ axis2_options_get_timeout_in_milli_seconds(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    if (options->timeout_in_milli_seconds == -1 && options->parent)
-    {
-        return axis2_options_get_timeout_in_milli_seconds(options->parent, env);
-    }
-
     if (options->timeout_in_milli_seconds == -1)
     {
-        return AXIS2_DEFAULT_TIMEOUT_MILLISECONDS;
+        if (options->parent)
+        {
+            return axis2_options_get_timeout_in_milli_seconds(options->parent, env);
+        }
+        else
+        {
+            return AXIS2_DEFAULT_TIMEOUT_MILLISECONDS;
+        }
     }
 
     return options->timeout_in_milli_seconds;
@@ -391,11 +371,10 @@ axis2_options_get_to(
     const axutil_env_t * env)
 {
     axis2_endpoint_ref_t *to = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     to = axis2_msg_info_headers_get_to(options->msg_info_headers, env);
 
-    if (to == NULL && options->parent)
+    if (!to && options->parent)
     {
         return axis2_options_get_to(options->parent, env);
     }
@@ -408,14 +387,16 @@ axis2_options_get_use_separate_listener(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    if (options->use_separate_listener == -1 && options->parent)
-    {
-        return axis2_options_get_use_separate_listener(options->parent, env);
-    }
-
     if (options->use_separate_listener == -1)
     {
-        return AXIS2_FALSE;
+        if (options->parent)
+        {
+            return axis2_options_get_use_separate_listener(options->parent, env);
+        }
+        else
+        {
+            return AXIS2_FALSE;
+        }
     }
 
     return options->use_separate_listener;
@@ -527,8 +508,6 @@ axis2_options_set_properties(
     const axutil_env_t * env,
     axutil_hash_t * properties)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (options->properties)
     {
         axutil_hash_free(options->properties, env);
@@ -588,12 +567,10 @@ axis2_options_set_sender_transport(
     const AXIS2_TRANSPORT_ENUMS sender_transport,
     axis2_conf_t * conf)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     options->transport_out =
         axis2_conf_get_transport_out(conf, env, sender_transport);
 
-    if (!(options->transport_out))
+    if (!options->transport_out)
     {
         return AXIS2_FAILURE;
     }
@@ -655,9 +632,7 @@ axis2_options_set_transport_info(
     const AXIS2_TRANSPORT_ENUMS receiver_transport,
     const axis2_bool_t use_separate_listener)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    /**
+    /*
       here we check for the legal combination
       */
     if (!use_separate_listener)
@@ -714,16 +689,16 @@ axis2_options_get_manage_session(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-
-    if (options->manage_session == -1 && options->parent)
-    {
-        return axis2_options_get_manage_session(options->parent, env);
-    }
-
     if (options->manage_session == -1)
     {
-        return AXIS2_FALSE;
+        if (options->parent)
+        {
+            return axis2_options_get_manage_session(options->parent, env);
+        }
+        else
+        {
+            return AXIS2_FALSE;
+        }
     }
 
     return options->manage_session;
@@ -744,8 +719,6 @@ axis2_options_get_msg_info_headers(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return options->msg_info_headers;
 }
 
@@ -754,8 +727,6 @@ axis2_options_free(
     axis2_options_t * options,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (options->properties)
     {
         axutil_hash_index_t *hi = NULL;
@@ -793,8 +764,6 @@ axis2_options_free(
     }
 
     AXIS2_FREE(env->allocator, options);
-
-    return;
 }
 
 AXIS2_EXTERN int AXIS2_CALL
@@ -812,8 +781,6 @@ axis2_options_set_soap_version(
     const axutil_env_t * env,
     const int soap_version)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (soap_version == AXIOM_SOAP11)
     {
         options->soap_version = soap_version;
@@ -874,8 +841,6 @@ axis2_options_set_soap_action(
     const axutil_env_t * env,
     axutil_string_t * soap_action)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (options->soap_action)
     {
         axutil_string_free(options->soap_action, env);
@@ -915,7 +880,6 @@ axis2_options_set_enable_rest(
 {
     axutil_property_t *rest_property = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     if (enable_rest)
     {
         rest_property = axutil_property_create(env);
@@ -943,7 +907,6 @@ axis2_options_set_test_http_auth(
 {
     axutil_property_t *test_auth_property = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     if (test_http_auth)
     {
         test_auth_property = axutil_property_create(env);
@@ -971,7 +934,6 @@ axis2_options_set_test_proxy_auth(
 {
     axutil_property_t *test_auth_property = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     if (test_proxy_auth)
     {
         test_auth_property = axutil_property_create(env);
@@ -999,7 +961,6 @@ axis2_options_set_http_method(
     const axis2_char_t * http_method)
 {
     axutil_property_t *method_property = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     method_property = axutil_property_create(env);
     axutil_property_set_value(method_property, env,
@@ -1038,8 +999,6 @@ axis2_options_set_proxy_auth_info(
     axis2_bool_t force_proxy_auth = AXIS2_FALSE;
     axutil_property_t *prop_pw = NULL;
     axutil_property_t *prop_un = NULL;
-    
-    AXIS2_ENV_CHECK(env, NULL);
 
     prop_un = axutil_property_create(env);
     axutil_property_set_value(prop_un, env, axutil_strdup(env, username));
@@ -1095,9 +1054,7 @@ axis2_options_set_http_auth_info(
     axis2_bool_t force_http_auth = AXIS2_FALSE;
     axutil_property_t *prop_un = NULL;
     axutil_property_t *prop_pw = NULL;
-    
-    AXIS2_ENV_CHECK(env, NULL);
-    
+        
     prop_un = axutil_property_create(env); 
     axutil_property_set_value(prop_un, env, axutil_strdup(env, username));
     axis2_options_set_property(options, env, AXIS2_HTTP_AUTH_UNAME, prop_un);

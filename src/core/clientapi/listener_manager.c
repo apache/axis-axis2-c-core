@@ -68,6 +68,7 @@ axis2_listener_manager_create(
     if (!listener_manager)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create listener manager.");
         return NULL;
     }
 
@@ -90,7 +91,6 @@ axis2_listener_manager_make_sure_started(
 {
     axis2_transport_listener_state_t *tl_state = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
 
     if (listener_manager->conf_ctx)
@@ -100,6 +100,7 @@ axis2_listener_manager_make_sure_started(
             AXIS2_ERROR_SET(env->error,
                             AXIS2_ERROR_CLIENT_SIDE_SUPPORT_ONLY_ONE_CONF_CTX,
                             AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Only one configuration context is supported at client side.");
             return AXIS2_FAILURE;
         }
     }
@@ -133,6 +134,8 @@ axis2_listener_manager_make_sure_started(
                                             (axis2_listener_manager_worker_func_args_t));
                     if (!arg_list)
                     {
+                        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create listener manager worker function arguments.");
                         return AXIS2_FAILURE;
                     }
                     arg_list->env = env;
@@ -178,6 +181,7 @@ axis2_listener_manager_make_sure_started(
                     {
                         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
                                         AXIS2_FAILURE);
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create transport listener state.");
                     }
                     else
                     {
@@ -208,8 +212,6 @@ axis2_listener_manager_stop(
     axis2_transport_listener_state_t *tl_state = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     tl_state = listener_manager->listener_map[transport];
 
     if (tl_state)
@@ -218,10 +220,8 @@ axis2_listener_manager_stop(
         if (tl_state->waiting_calls == 0)
         {
             status = axis2_transport_receiver_stop(tl_state->listener, env);
-            if (status != AXIS2_SUCCESS)
-                return status;
-
-            listener_manager->listener_map[transport] = NULL;
+            if (status == AXIS2_SUCCESS)
+                listener_manager->listener_map[transport] = NULL;
         }
     }
 
@@ -236,8 +236,6 @@ axis2_listener_manager_get_reply_to_epr(
     const AXIS2_TRANSPORT_ENUMS transport)
 {
     axis2_transport_listener_state_t *tl_state = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     tl_state = listener_manager->listener_map[transport];
     if (tl_state)
@@ -255,8 +253,6 @@ axis2_listener_manager_free(
 {
     int i = 0;
 
-    AXIS2_ENV_CHECK(env, void);
-
     for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
         if (listener_manager->listener_map[i])
@@ -264,8 +260,6 @@ axis2_listener_manager_free(
     }
 
     AXIS2_FREE(env->allocator, listener_manager);
-
-    return;
 }
 
 AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
@@ -288,7 +282,6 @@ axis2_listener_manager_worker_func(
     if (!args_list)
         return NULL;
 
-    AXIS2_ENV_CHECK(args_list->env, AXIS2_FAILURE);
     th_env = axutil_init_thread_env(args_list->env);
     if (args_list->listener)
     {

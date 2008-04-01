@@ -118,11 +118,6 @@ axis2_svc_client_create(
                                                                client_home,
                                                                NULL, NULL);
 
-    if (!svc_client)
-    {
-        return NULL;
-    }
-
     return svc_client;
 }
 
@@ -149,6 +144,7 @@ axis2_svc_client_create_for_dynamic_invocation(
     if (!svc_client)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create service client.");
         return NULL;
     }
 
@@ -165,14 +161,13 @@ axis2_svc_client_create_for_dynamic_invocation(
     svc_client->http_headers = NULL;
     svc_client->http_status_code = 0;
 
-    /** initialize private data to NULL, create options */
     if (!axis2_svc_client_init_data(env, svc_client))
     {
         axis2_svc_client_free(svc_client, env);
         return NULL;
     }
 
-    /* the following method call will create the default conf_ctx if it is NULL */
+    /*create the default conf_ctx if it is NULL */
     if (!axis2_svc_client_init_transports_from_conf_ctx(env, svc_client,
                                                         conf_ctx, client_home))
     {
@@ -183,7 +178,7 @@ axis2_svc_client_create_for_dynamic_invocation(
     svc_client->conf = axis2_conf_ctx_get_conf(svc_client->conf_ctx, env);
     repos_path = axis2_conf_get_repo(svc_client->conf, env);
     wsdl_path =
-        axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR, "woden", NULL);
+        axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR, AXIS2_WSDL_LOCATION_IN_REPO, NULL);
 
     svc_client->options = axis2_options_create(env);
     if (svc_client->svc)
@@ -220,6 +215,7 @@ axis2_svc_client_create_for_dynamic_invocation(
     svc_grp = axis2_svc_get_parent(svc_client->svc, env);
     if (!svc_grp)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot access service group of service client.");
         return NULL;
     }
 
@@ -227,12 +223,14 @@ axis2_svc_client_create_for_dynamic_invocation(
                                                 svc_client->conf_ctx);
     if (!svc_grp_ctx)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot access service group context of service client.");
         return NULL;
     }
 
     svc_grp_name = axis2_svc_grp_get_name(svc_grp, env);
     if (!svc_grp_name)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot access service group name of service client.");
         return NULL;            /* service group name is mandatory */
     }
 
@@ -258,15 +256,13 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     const axis2_char_t *svc_grp_name = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     svc_client = AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_client_t));
     if (!svc_client)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create service client.");
         return NULL;
     }
-    
     
     svc_client->svc = NULL;
     svc_client->conf = NULL;
@@ -286,14 +282,13 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     svc_client->auth_type = NULL;
 	svc_client->http_headers = NULL;
 
-    /** initialize private data to NULL, create options */
     if (!axis2_svc_client_init_data(env, svc_client))
     {
         axis2_svc_client_free(svc_client, env);
         return NULL;
     }
 
-    /* the following method call will create the default conf_ctx if it is NULL */
+    /*create the default conf_ctx if it is NULL */
     if (!axis2_svc_client_init_transports_from_conf_ctx(env, svc_client,
                                                         conf_ctx, client_home))
     {
@@ -313,6 +308,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
         if (!svc_client->svc)
         {
             axis2_svc_client_free(svc_client, env);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create annonymous service.");
             return NULL;
         }
     }
@@ -330,6 +326,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     svc_grp = axis2_svc_get_parent(svc_client->svc, env);
     if (!svc_grp)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot access service group of service client.");
         return NULL;
     }
 
@@ -337,12 +334,14 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
                                                 svc_client->conf_ctx);
     if (!svc_grp_ctx)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot access service group context of service client.");
         return NULL;
     }
 
     svc_grp_name = axis2_svc_grp_get_name(svc_grp, env);
     if (!svc_grp_name)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot access service group name of service client.");
         return NULL;            /* service group name is mandatory */
     }
 
@@ -429,17 +428,15 @@ axis2_svc_client_engage_module(
 
     mod_qname = axutil_qname_create(env, module_name, NULL, NULL);
 
-    if (mod_qname)
-    {
-        module = axis2_conf_get_module(svc_client->conf, env, mod_qname);
-
-        axutil_qname_free(mod_qname, env);
-        mod_qname = NULL;
-    }
-    else
+    if (!mod_qname)
     {
         return AXIS2_FAILURE;
     }
+
+    module = axis2_conf_get_module(svc_client->conf, env, mod_qname);
+
+    axutil_qname_free(mod_qname, env);
+    mod_qname = NULL;
 
     if (module)
     {
@@ -462,16 +459,14 @@ axis2_svc_client_disengage_module(
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FAILURE);
 
     mod_qname = axutil_qname_create(env, module_name, NULL, NULL);
-    if (mod_qname)
-    {
-        module = axis2_conf_get_module(svc_client->conf, env, mod_qname);
-        axutil_qname_free(mod_qname, env);
-        mod_qname = NULL;
-    }
-    else
+    if (!mod_qname)
     {
         return AXIS2_FAILURE;
     }
+
+    module = axis2_conf_get_module(svc_client->conf, env, mod_qname);
+    axutil_qname_free(mod_qname, env);
+    mod_qname = NULL;
 
     if (module)
     {
@@ -494,7 +489,6 @@ axis2_svc_client_add_header(
         svc_client->headers = axutil_array_list_create(env, 0);
         if (!svc_client->headers)
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
@@ -522,14 +516,6 @@ axis2_svc_client_remove_all_headers(
 
     for (i = size-1; i >-1; i--)
     {
-        /*axiom_node_t *node = NULL;
-           node = axutil_array_list_get(svc_client->headers, env, i);
-
-           if (node)
-           {
-           axiom_node_free_tree(node, env);
-           node = NULL;
-           } */
         axutil_array_list_remove(svc_client->headers, env, i);
     }
     return AXIS2_SUCCESS;
@@ -552,6 +538,10 @@ axis2_svc_client_send_robust_with_op_qname(
     {
         op_qname =
             axutil_qname_create(env, AXIS2_ANON_ROBUST_OUT_ONLY_OP, NULL, NULL);
+        if(!op_qname)
+        {
+            return AXIS2_FAILURE;
+        }
         qname_free_flag = AXIS2_TRUE;
     }
 
@@ -564,8 +554,7 @@ axis2_svc_client_send_robust_with_op_qname(
     svc_client->auth_type = NULL;
 
     msg_ctx = axis2_msg_ctx_create(env,
-                                   axis2_svc_ctx_get_conf_ctx(svc_client->
-                                                              svc_ctx, env),
+                                   axis2_svc_ctx_get_conf_ctx(svc_client->svc_ctx, env),
                                    NULL, NULL);
     if (!axis2_svc_client_fill_soap_envelope(env, svc_client, msg_ctx, payload))
     {
@@ -603,7 +592,6 @@ axis2_svc_client_send_robust(
     const axutil_env_t * env,
     const axiom_node_t * payload)
 {
-    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     return axis2_svc_client_send_robust_with_op_qname(svc_client, env, NULL,
                                                       payload);
 }
@@ -618,19 +606,15 @@ axis2_svc_client_fire_and_forget_with_op_qname(
     axis2_msg_ctx_t *msg_ctx = NULL;
     axis2_bool_t qname_free_flag = AXIS2_FALSE;
 
-    if (!svc_client)
-    {
-        return;
-    }
-
-    if (!env)
-    {
-        return;
-    }
+    AXIS2_PARAM_CHECK_VOID(env->error, svc_client);
 
     if (!op_qname)
     {
         op_qname = axutil_qname_create(env, AXIS2_ANON_OUT_ONLY_OP, NULL, NULL);
+        if(!op_qname)
+        {
+            return;
+        }
         qname_free_flag = AXIS2_TRUE;
     }
 
@@ -643,8 +627,7 @@ axis2_svc_client_fire_and_forget_with_op_qname(
     svc_client->auth_type = NULL;
 
     msg_ctx = axis2_msg_ctx_create(env,
-                                   axis2_svc_ctx_get_conf_ctx(svc_client->
-                                                              svc_ctx, env),
+                                   axis2_svc_ctx_get_conf_ctx(svc_client->svc_ctx, env),
                                    NULL, NULL);
     if (!axis2_svc_client_fill_soap_envelope(env, svc_client, msg_ctx, payload))
     {
@@ -672,8 +655,6 @@ axis2_svc_client_fire_and_forget_with_op_qname(
     {
         axutil_qname_free((axutil_qname_t *) op_qname, env);
     }
-
-    return;
 }
 
 AXIS2_EXTERN void AXIS2_CALL
@@ -682,10 +663,6 @@ axis2_svc_client_fire_and_forget(
     const axutil_env_t * env,
     const axiom_node_t * payload)
 {
-    if (!svc_client)
-    {
-        return;
-    }
     axis2_svc_client_fire_and_forget_with_op_qname(svc_client, env, NULL,
                                                    payload);
 }
@@ -737,8 +714,11 @@ axis2_svc_client_send_receive_with_op_qname(
 
     if (!op_qname)
     {
-        qname_free_flag = AXIS2_TRUE;
         op_qname = axutil_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
+        if(!op_qname)
+            return NULL;
+
+        qname_free_flag = AXIS2_TRUE;
     }
 
     if (axis2_options_get_use_separate_listener(svc_client->options, env))
@@ -817,6 +797,7 @@ axis2_svc_client_send_receive_with_op_qname(
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_RESPONSE_TIMED_OUT,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Response time out.");
                 return NULL;
             }
         }
@@ -828,6 +809,9 @@ axis2_svc_client_send_receive_with_op_qname(
                                        axis2_svc_ctx_get_conf_ctx(svc_client->
                                                                   svc_ctx, env),
                                        NULL, NULL);
+        if(!msg_ctx)
+            return NULL;
+
         axis2_op_client_add_msg_ctx(svc_client->op_client, env, msg_ctx);
 
         axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
@@ -848,11 +832,12 @@ axis2_svc_client_send_receive_with_op_qname(
     else
     {
         msg_ctx = axis2_msg_ctx_create(env,
-                                       axis2_svc_ctx_get_conf_ctx(svc_client->
-                                                                  svc_ctx, env),
+                                       axis2_svc_ctx_get_conf_ctx(svc_client->svc_ctx, env),
                                        NULL, NULL);
-        if (!axis2_svc_client_fill_soap_envelope
-            (env, svc_client, msg_ctx, payload))
+        if(!msg_ctx)
+            return NULL;
+
+        if (!axis2_svc_client_fill_soap_envelope(env, svc_client, msg_ctx, payload))
         {
             return NULL;
         }
@@ -961,7 +946,6 @@ axis2_svc_client_send_receive(
     const axutil_env_t * env,
     const axiom_node_t * payload)
 {
-    AXIS2_PARAM_CHECK (env->error, svc_client, NULL);
     return axis2_svc_client_send_receive_with_op_qname(svc_client, env, NULL,
                                                        payload);
 }
@@ -978,14 +962,13 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
     AXIS2_TRANSPORT_ENUMS transport_in_protocol;
     axis2_bool_t qname_free_flag = AXIS2_FALSE;
     
-    if (!svc_client)
-    {
-        return;
-    }
+    AXIS2_PARAM_CHECK_VOID(env->error, svc_client);
 
     if (!op_qname)
     {
         op_qname = axutil_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
+        if(!op_qname)
+            return;
         qname_free_flag = AXIS2_TRUE;
     }
 
@@ -1001,6 +984,9 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
                                    axis2_svc_ctx_get_conf_ctx(svc_client->
                                                               svc_ctx, env),
                                    NULL, NULL);
+    if(!msg_ctx)
+        return;
+
     if (!axis2_svc_client_fill_soap_envelope(env, svc_client, msg_ctx, payload))
     {
         return;
@@ -1051,8 +1037,6 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
         axutil_qname_free((axutil_qname_t *) op_qname, env);
         op_qname = NULL;
     }
-
-    return;
 }
 
 AXIS2_EXTERN void AXIS2_CALL
@@ -1062,11 +1046,6 @@ axis2_svc_client_send_receive_non_blocking(
     const axiom_node_t * payload,
     axis2_callback_t * callback)
 {
-    if (!svc_client)
-    {
-        return;
-    }
-
     axis2_svc_client_send_receive_non_blocking_with_op_qname(svc_client, env,
                                                              NULL, payload,
                                                              callback);
@@ -1086,12 +1065,13 @@ axis2_svc_client_create_op_client(
 
     if (!op)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot find operation to create op client.");
         return NULL;
     }
 
     if (!(svc_client->op_client) || svc_client->reuse)
     {
-        if (svc_client->reuse)
+        if ((svc_client->reuse) && (svc_client->op_client))
             axis2_op_client_free(svc_client->op_client, env);
         svc_client->op_client =
             axis2_op_client_create(env, op, svc_client->svc_ctx,
@@ -1179,26 +1159,23 @@ axis2_svc_client_init_transports_from_conf_ctx(
     axis2_conf_ctx_t * conf_ctx,
     const axis2_char_t * client_home)
 {
-
-    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
     svc_client->conf_ctx = conf_ctx;
-    if (!(svc_client->conf_ctx))
+    if (!svc_client->conf_ctx)
     {
         svc_client->conf_ctx = axis2_build_client_conf_ctx(env, client_home);
-        if (!(svc_client->conf_ctx))
+        if (!svc_client->conf_ctx)
         {
             return AXIS2_FALSE;
         }
     }
 
-    if (!(svc_client->listener_manager))
+    if (!svc_client->listener_manager)
     {
         svc_client->listener_manager = axis2_listener_manager_create(env);
-    }
-
-    if (!(svc_client->listener_manager))
-    {
-        return AXIS2_FALSE;
+        if (!svc_client->listener_manager)
+        {
+            return AXIS2_FALSE;
+        }
     }
 
     return AXIS2_TRUE;
@@ -1209,24 +1186,17 @@ axis2_svc_client_init_data(
     const axutil_env_t * env,
     axis2_svc_client_t * svc_client)
 {
-
-    AXIS2_PARAM_CHECK (env->error, svc_client, AXIS2_FAILURE);
-
     svc_client->svc = NULL;
-
     svc_client->conf_ctx = NULL;
-
     svc_client->svc_ctx = NULL;
 
     svc_client->options = axis2_options_create(env);
     if (!svc_client->options)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FALSE;
     }
 
     svc_client->override_options = NULL;
-
     svc_client->headers = NULL;
 
     if (svc_client->callback_recv)
@@ -1236,9 +1206,8 @@ axis2_svc_client_init_data(
     }
 
     svc_client->callback_recv = axis2_callback_recv_create(env);
-    if (!(svc_client->callback_recv))
+    if (!svc_client->callback_recv)
     {
-        axis2_svc_client_free(svc_client, env);
         return AXIS2_FALSE;
     }
 
@@ -1263,50 +1232,40 @@ axis2_svc_client_create_annonymous_svc(
     *op_out_only,
     *op_robust_out_only;
     axis2_phases_info_t *info = NULL;
-    AXIS2_PARAM_CHECK (env->error, svc_client, NULL);
-    tmp_qname = axutil_qname_create(env, AXIS2_ANON_SERVICE, NULL, NULL);
 
+    tmp_qname = axutil_qname_create(env, AXIS2_ANON_SERVICE, NULL, NULL);
     if (!tmp_qname)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
     svc = axis2_svc_create_with_qname(env, tmp_qname);
-
+    axutil_qname_free(tmp_qname, env);
     if (!svc)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axutil_qname_free(tmp_qname, env);
+    
 
     tmp_qname = axutil_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
-
     if (!tmp_qname)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     op_out_in = axis2_op_create_with_qname(env, tmp_qname);
     axutil_qname_free(tmp_qname, env);
 
     tmp_qname = axutil_qname_create(env, AXIS2_ANON_OUT_ONLY_OP, NULL, NULL);
-
     if (!tmp_qname)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     op_out_only = axis2_op_create_with_qname(env, tmp_qname);
     axutil_qname_free(tmp_qname, env);
 
-    tmp_qname =
-        axutil_qname_create(env, AXIS2_ANON_ROBUST_OUT_ONLY_OP, NULL, NULL);
-
+    tmp_qname = axutil_qname_create(env, AXIS2_ANON_ROBUST_OUT_ONLY_OP, NULL, NULL);
     if (!tmp_qname)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     op_robust_out_only = axis2_op_create_with_qname(env, tmp_qname);
@@ -1352,8 +1311,6 @@ axis2_svc_client_free(
     axis2_svc_client_t * svc_client,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-    
     if (!svc_client)
     {
         return;
@@ -1428,6 +1385,7 @@ axis2_svc_client_fill_soap_envelope(
 
     if (!soap_version_uri)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot find soap version uri.");
         return AXIS2_FALSE;
     }
 
@@ -1445,6 +1403,7 @@ axis2_svc_client_fill_soap_envelope(
         axiom_soap_envelope_create_default_soap_envelope(env, soap_version);
     if (!envelope)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create default soap envelope.");
         return AXIS2_FALSE;
     }
 
@@ -1691,18 +1650,21 @@ axis2_svc_client_set_policy(
 
     if (!svc)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot find service of service client. Cannot set policy.");
         return AXIS2_FAILURE;
     }
 
     desc = axis2_svc_get_base(svc, env);
     if (!desc)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot find service description of service client. Cannot set policy.");
         return AXIS2_FAILURE;
     }
 
     policy_include = axis2_desc_get_policy_include(desc, env);
     if (!policy_include)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot find policy include. Cannot set policy.");
         return AXIS2_FAILURE;
     }
 
@@ -1727,8 +1689,7 @@ axis2_svc_client_get_http_status_code(
     return svc_client->http_status_code;
 }
 
-void
-axis2_svc_client_set_http_info(
+void axis2_svc_client_set_http_info(
     axis2_svc_client_t * svc_client,
     const axutil_env_t * env,
     axis2_msg_ctx_t * msg_ctx)

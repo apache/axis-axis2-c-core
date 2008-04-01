@@ -22,7 +22,6 @@
 
 struct axis2_callback_recv
 {
-
     /** base context struct */
     axis2_msg_recv_t *base;
     axis2_bool_t base_deep_copy;
@@ -51,6 +50,7 @@ axis2_callback_recv_create(
     if (!callback_recv)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create callback receive.");
         return NULL;
     }
 
@@ -60,7 +60,7 @@ axis2_callback_recv_create(
     callback_recv->mutex = NULL;
 
     callback_recv->base = axis2_msg_recv_create(env);
-    if (!(callback_recv->base))
+    if (!callback_recv->base)
     {
         axis2_callback_recv_free(callback_recv, env);
         return NULL;
@@ -70,7 +70,7 @@ axis2_callback_recv_create(
                                axis2_callback_recv_receive);
 
     callback_recv->callback_map = axutil_hash_make(env);
-    if (!(callback_recv->callback_map))
+    if (!callback_recv->callback_map)
     {
         axis2_callback_recv_free(callback_recv, env);
         return NULL;
@@ -95,8 +95,6 @@ axis2_callback_recv_free(
     axis2_callback_recv_t * callback_recv,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (callback_recv->mutex)
     {
         axutil_thread_mutex_destroy(callback_recv->mutex);
@@ -128,8 +126,6 @@ axis2_callback_recv_free(
     {
         AXIS2_FREE(env->allocator, callback_recv);
     }
-
-    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -139,8 +135,6 @@ axis2_callback_recv_add_callback(
     const axis2_char_t * msg_id,
     axis2_callback_t * callback)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (msg_id)
     {
         axis2_char_t *mid = axutil_strdup(env, msg_id);
@@ -160,8 +154,6 @@ axis2_callback_recv_receive(
     axis2_callback_recv_t *callback_recv = NULL;
     axis2_relates_to_t *relates_to = NULL;
     axis2_msg_info_headers_t *msg_info_headers = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     callback_recv = axis2_msg_recv_get_derived(msg_recv, env);
 
