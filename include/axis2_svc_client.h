@@ -67,6 +67,9 @@
 /** out-in MEP operation name */
 #define AXIS2_ANON_OUT_IN_OP "__OPERATION_OUT_IN__"
 
+/** wsdl location in repo*/
+#define AXIS2_WSDL_LOCATION_IN_REPO "woden"
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -468,7 +471,6 @@ extern "C"
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-
     AXIS2_EXTERN void AXIS2_CALL
     axis2_svc_client_free(
         axis2_svc_client_t * svc_client,

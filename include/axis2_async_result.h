@@ -52,7 +52,6 @@ extern "C"
      * @return pointer to the result SOAP envelope in the message context.
      */
     AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
-
     axis2_async_result_get_envelope(
         axis2_async_result_t * async_result,
         const axutil_env_t * env);

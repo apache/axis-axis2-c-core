@@ -131,7 +131,6 @@ extern "C"
      * @return result SOAP envelope if present, else NULL
      */
     AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
-
     axis2_callback_get_envelope(
         const axis2_callback_t * callback,
         const axutil_env_t * env);

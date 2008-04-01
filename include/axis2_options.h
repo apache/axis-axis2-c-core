@@ -102,7 +102,6 @@ extern "C"
      * @return pointer to transport receiver struct if set, else NULL
      */
     AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
-
     axis2_options_get_transport_receiver(
         const axis2_options_t * options,
         const axutil_env_t * env);
@@ -114,7 +113,6 @@ extern "C"
      * @return pointer to transport in struct if set, else NULL
      */
     AXIS2_EXTERN axis2_transport_in_desc_t *AXIS2_CALL
-
     axis2_options_get_transport_in(
         const axis2_options_t * options,
         const axutil_env_t * env);
@@ -126,7 +124,6 @@ extern "C"
      * @return pointer to transport in protocol string if set, else NULL
      */
     AXIS2_EXTERN AXIS2_TRANSPORT_ENUMS AXIS2_CALL
-
     axis2_options_get_transport_in_protocol(
         const axis2_options_t * options,
         const axutil_env_t * env);
@@ -196,7 +193,6 @@ extern "C"
      * @return pointer to transport out struct if set, else NULL
      */
     AXIS2_EXTERN axis2_transport_out_desc_t *AXIS2_CALL
-
     axis2_options_get_transport_out(
         const axis2_options_t * options,
         const axutil_env_t * env);
@@ -208,7 +204,6 @@ extern "C"
      * @return pointer to transport out protocol string if set, else NULL
      */
     AXIS2_EXTERN AXIS2_TRANSPORT_ENUMS AXIS2_CALL
-
     axis2_options_get_sender_transport_protocol(
         const axis2_options_t * options,
         const axutil_env_t * env);
@@ -220,7 +215,6 @@ extern "C"
      * @return string representing SOAP version URI
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-
     axis2_options_get_soap_version_uri(
         const axis2_options_t * options,
         const axutil_env_t * env);
@@ -256,7 +250,6 @@ extern "C"
      * @return AXIS2_TRUE if using separate listener, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     axis2_options_get_use_separate_listener(
         const axis2_options_t * options,
         const axutil_env_t * env);
@@ -349,7 +342,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_options_set_transport_receiver(
         axis2_options_t * options,
         const axutil_env_t * env,
@@ -377,7 +369,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_options_set_transport_in_protocol(
         axis2_options_t * options,
         const axutil_env_t * env,
@@ -477,7 +468,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_options_set_sender_transport(
         axis2_options_t * options,
         const axutil_env_t * env,
@@ -494,7 +484,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_options_set_soap_version_uri(
         axis2_options_t * options,
         const axutil_env_t * env,
@@ -508,7 +497,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_options_set_timeout_in_milli_seconds(
         axis2_options_t * options,
         const axutil_env_t * env,
@@ -543,7 +531,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_options_set_use_separate_listener(
         axis2_options_t * options,
         const axutil_env_t * env,
@@ -558,7 +545,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_options_add_reference_parameter(
         axis2_options_t * options,
         const axutil_env_t * env,
@@ -596,7 +582,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_options_set_msg_info_headers(
         axis2_options_t * options,
         const axutil_env_t * env,
@@ -610,7 +595,6 @@ extern "C"
      * else NULL
      */
     AXIS2_EXTERN axis2_msg_info_headers_t *AXIS2_CALL
-
     axis2_options_get_msg_info_headers(
         const axis2_options_t * options,
         const axutil_env_t * env);
@@ -696,7 +680,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_options_set_xml_parser_reset(
         axis2_options_t * options,
         const axutil_env_t * env,

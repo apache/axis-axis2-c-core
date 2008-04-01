@@ -100,7 +100,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_stub_set_use_separate_listener(
         axis2_stub_t * stub,
         const axutil_env_t * env,
@@ -174,7 +173,6 @@ extern "C"
      * @return pointer to newly created axis2_stub struct
      */
     AXIS2_EXTERN axis2_stub_t *AXIS2_CALL
-
     axis2_stub_create_with_endpoint_ref_and_client_home(
         const axutil_env_t * env,
         axis2_endpoint_ref_t * endpoint_ref,
@@ -188,7 +186,6 @@ extern "C"
      * @return pointer to newly created axis2_stub struct
      */
     AXIS2_EXTERN axis2_stub_t *AXIS2_CALL
-
     axis2_stub_create_with_endpoint_uri_and_client_home(
         const axutil_env_t * env,
         const axis2_char_t * endpoint_uri,

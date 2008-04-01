@@ -60,7 +60,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_listener_manager_make_sure_started(
         axis2_listener_manager_t * listener_manager,
         const axutil_env_t * env,
@@ -91,7 +90,6 @@ extern "C"
      * endpoint
      */
     AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
-
     axis2_listener_manager_get_reply_to_epr(
         const axis2_listener_manager_t * listener_manager,
         const axutil_env_t * env,
@@ -105,7 +103,6 @@ extern "C"
      * @param env pointer to environment struct    
      */
     AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
-
     axis2_listener_manager_get_conf_ctx(
         const axis2_listener_manager_t * listener_manager,
         const axutil_env_t * env);
@@ -128,7 +125,6 @@ extern "C"
      *         or NULL on error with error code set in environment's error
      */
     AXIS2_EXTERN axis2_listener_manager_t *AXIS2_CALL
-
     axis2_listener_manager_create(
         const axutil_env_t * env);
 

@@ -84,7 +84,6 @@ extern "C"
      * Returns a reference, not a cloned copy.    
      */
     AXIS2_EXTERN const axis2_options_t *AXIS2_CALL
-
     axis2_op_client_get_options(
         const axis2_op_client_t * op_client,
         const axutil_env_t * env);
@@ -126,7 +125,6 @@ extern "C"
      * Returns a reference, not a cloned copy.
      */
     AXIS2_EXTERN const axis2_msg_ctx_t *AXIS2_CALL
-
     axis2_op_client_get_msg_ctx(
         const axis2_op_client_t * op_client,
         const axutil_env_t * env,
@@ -281,7 +279,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_op_client_prepare_invocation(
         axis2_op_client_t * op_client,
         const axutil_env_t * env,
@@ -297,7 +294,6 @@ extern "C"
      * envelope to be sent
      */
     AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
-
     axis2_op_client_prepare_soap_envelope(
         axis2_op_client_t * op_client,
         const axutil_env_t * env,
@@ -313,7 +309,6 @@ extern "C"
      * @return pointer to the transport description with inferred information
      */
     AXIS2_EXTERN axis2_transport_out_desc_t *AXIS2_CALL
-
     axis2_op_client_infer_transport(
         axis2_op_client_t * op_client,
         const axutil_env_t * env,
@@ -326,7 +321,6 @@ extern "C"
      * @return pointer to default SOAP envelope created
      */
     AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
-
     axis2_op_client_create_default_soap_envelope(
         axis2_op_client_t * op_client,
         const axutil_env_t * env);
@@ -355,7 +349,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_op_client_set_soap_version_uri(
         axis2_op_client_t * op_client,
         const axutil_env_t * env,
@@ -398,6 +391,14 @@ extern "C"
         const axis2_op_client_t * op_client,
         const axutil_env_t * env);
 
+
+    /**
+     * Sets whether to reuse op client.
+     * @param op_client pointer to op client struct
+     * @param env pointer to environment struct    
+     * @param reuse flag is a boolean value
+     * @return void
+     */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_op_client_set_reuse(
         axis2_op_client_t * op_client,

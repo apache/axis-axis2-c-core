@@ -90,7 +90,6 @@ extern "C"
      *         or NULL on error with error code set in environment's error
      */
     AXIS2_EXTERN axis2_callback_recv_t *AXIS2_CALL
-
     axis2_callback_recv_create(
         const axutil_env_t * env);
 
