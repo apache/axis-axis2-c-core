@@ -26,44 +26,6 @@
 #define TOK_LIST_SIZE(tok_list) (tok_list->size)
 
 
-        guththila_tok_list_t *
-        GUTHTHILA_CALL guththila_tok_list_create(const axutil_env_t * env) 
-    {
-        int i = 0;
-        guththila_tok_list_t * tok_list =
-            (guththila_tok_list_t *) AXIS2_MALLOC(env->allocator,
-                                                  sizeof(guththila_tok_list_t));
-        if (!tok_list)
-            return NULL;
-        tok_list->list =
-            (guththila_token_t **) AXIS2_MALLOC(env->allocator,
-                                                sizeof(guththila_token_t *) *
-                                                GUTHTHILA_TOK_DEF_LIST_SIZE);
-        if (tok_list->list && guththila_stack_init(&tok_list->fr_stack, env))
-        {
-            tok_list->capacity =
-                (int *) AXIS2_MALLOC(env->allocator,
-                                     sizeof(int) * GUTHTHILA_TOK_DEF_LIST_SIZE);
-            if (tok_list->capacity)
-            {
-                tok_list->no_list = GUTHTHILA_TOK_DEF_LIST_SIZE;
-                tok_list->list[0] =
-		  (guththila_token_t *) AXIS2_MALLOC(env->allocator,
-                              sizeof(guththila_token_t)*GUTHTHILA_TOK_DEF_SIZE);
-                for (i = 0; i < GUTHTHILA_TOK_DEF_SIZE; i++)
-                {
-                    guththila_stack_push(&tok_list->fr_stack,
-                                          &tok_list->list[0][i], env);
-                }
-                tok_list->capacity[0] = GUTHTHILA_TOK_DEF_SIZE;
-                tok_list->cur_list = 0;
-                tok_list->no_list = GUTHTHILA_TOK_DEF_LIST_SIZE;
-                return tok_list;
-            }
-        }
-        AXIS2_FREE(env->allocator, tok_list);
-        return NULL;
-    }
 int GUTHTHILA_CALL
 guththila_tok_list_grow(
     guththila_tok_list_t * tok_list,

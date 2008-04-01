@@ -16,31 +16,7 @@
  * limitations under the License.
  */  
 #include <guththila_stack.h>
-    guththila_stack_t *
-    GUTHTHILA_CALL guththila_stack_create(const axutil_env_t * env) 
-{
-    guththila_stack_t * stack = NULL;
-    stack =
-        (guththila_stack_t *) AXIS2_MALLOC(env->allocator,
-                                           sizeof(guththila_stack_t));
-    if (!stack)
-        return NULL;
-    stack->data = NULL;
-    stack->data =
-        (void **) AXIS2_MALLOC(env->allocator,
-                               sizeof(void **) * GUTHTHILA_STACK_DEFAULT);
-    if (!stack->data)
-    {
-        AXIS2_FREE(env->allocator, stack);
-        return NULL;
-    }
-    else
-    {
-        stack->max = GUTHTHILA_STACK_DEFAULT;
-        stack->top = 0;
-        return stack;
-    }
-}
+
 int GUTHTHILA_CALL
 guththila_stack_init(
     guththila_stack_t * stack,
@@ -102,7 +78,6 @@ guththila_stack_push(
     if (stack->top >= stack->max)
     {
         
-            /*stack->data = (void **) realloc(stack->data, sizeof(void **) * (stack->max += GUTHTHILA_STACK_DEFAULT)); */ 
             temp =
             (void **) AXIS2_MALLOC(env->allocator,
                                    sizeof(void **) * (stack->max +=

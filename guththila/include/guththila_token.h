@@ -82,8 +82,6 @@ guththila_tok_list_t;
     }
 #endif  /*  */
 
-guththila_tok_list_t *
-GUTHTHILA_CALL guththila_tok_list_create(const axutil_env_t * env);
 int GUTHTHILA_CALL
 guththila_tok_list_init(
     guththila_tok_list_t * tok_list,

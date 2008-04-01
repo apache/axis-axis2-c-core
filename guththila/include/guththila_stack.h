@@ -47,8 +47,6 @@ guththila_stack_t;
 #ifndef GUTHTHILA_STACK_TOP_INDEX
 #define GUTHTHILA_STACK_TOP_INDEX(_stack) (((_stack).top - 1))
 #endif  /*  */
-guththila_stack_t *
-GUTHTHILA_CALL guththila_stack_create(const axutil_env_t * env);
 int GUTHTHILA_CALL
 guththila_stack_init(
     guththila_stack_t * stack,

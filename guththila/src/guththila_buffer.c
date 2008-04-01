@@ -49,9 +49,8 @@ guththila_buffer_un_init(guththila_buffer_t * buffer,const axutil_env_t * env)
     
     if (buffer->type == GUTHTHILA_SINGLE_BUFFER && buffer->buff && buffer->cur_buff == 0)
     {
-            /*This is commented. because the ownership of the buffer is with the user.  */ 
+
             
-            /*if (buffer->buff[0]) AXIS2_FREE(env->allocator, buffer->buff[0]); */ 
         if (buffer->buffs_size)
             AXIS2_FREE(env->allocator, buffer->buffs_size);
         if (buffer->data_size)
