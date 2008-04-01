@@ -983,7 +983,9 @@ extern "C"
 
 #define AXIS2_ESC_NULL '\0'
 
-#define AXIS2_SEMI_COLON ";"
+#define AXIS2_SEMI_COLON_STR ";"
+
+#define AXIS2_SEMI_COLON ';'
 
 #define AXIS2_COLON ':'
 
@@ -1021,6 +1023,8 @@ extern "C"
 
 #define AXIS2_RETURN '\r'
 
+#define AXIS2_NEW_LINE '\n'
+
 #define AXIS2_F_SLASH '/'
 
 #define AXIS2_EQ '='
@@ -1028,6 +1032,8 @@ extern "C"
 #define AXIS2_HTTP_SERVER " (Simple Axis2 HTTP Server)"
 
 #define AXIS2_COMMA_SPACE_STR ", "
+
+#define AXIS2_SPACE_TAB_EQ " \t="
     /** @} */
 
 #ifdef __cplusplus

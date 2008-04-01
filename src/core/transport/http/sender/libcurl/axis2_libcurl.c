@@ -373,7 +373,7 @@ axis2_libcurl_send(
                     content_type = temp_content_type;
                 }
                 temp_content_type = axutil_stracat(env, content_type, 
-                                                   AXIS2_SEMI_COLON);
+                                                   AXIS2_SEMI_COLON_STR);
                 AXIS2_FREE(env->allocator, content_type);
                 content_type = temp_content_type;
             }
