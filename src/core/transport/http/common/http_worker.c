@@ -152,6 +152,9 @@ axis2_http_worker_process_request(
     axis2_char_t *accept_language_header_value = NULL;
     axis2_http_header_t *accept_language_header = NULL;
 
+    axis2_char_t *http_method = NULL;
+    axis2_http_request_line_t *request_line = NULL;
+
     AXIS2_PARAM_CHECK(env->error, svr_conn, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, simple_request, AXIS2_FALSE);
 
@@ -476,8 +479,7 @@ axis2_http_worker_process_request(
         soap_action_str = axutil_string_create(env, soap_action);
     }
 
-    axis2_char_t *http_method = NULL;
-    axis2_http_request_line_t *request_line = NULL;
+    
     request_line = axis2_http_simple_request_get_request_line (simple_request,
                                                                env);
 
