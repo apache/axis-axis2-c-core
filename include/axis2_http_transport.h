@@ -987,6 +987,8 @@ extern "C"
 
 #define AXIS2_COLON ':'
 
+#define AXIS2_COLON_STR ":"
+
 #define AXIS2_CONTENT_TYPE_ACTION ";action=\""
 
 #define AXIS2_CONTENT_TYPE_CHARSET ";charset="
@@ -1024,6 +1026,8 @@ extern "C"
 #define AXIS2_EQ '='
 
 #define AXIS2_HTTP_SERVER " (Simple Axis2 HTTP Server)"
+
+#define AXIS2_COMMA_SPACE_STR ", "
     /** @} */
 
 #ifdef __cplusplus

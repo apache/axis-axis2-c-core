@@ -168,9 +168,16 @@ axis2_http_worker_process_request(
 
     content_length =
         axis2_http_simple_request_get_content_length(simple_request, env);
-    http_version =
-        axis2_http_request_line_get_http_version
-        (axis2_http_simple_request_get_request_line(simple_request, env), env);
+
+    request_line = axis2_http_simple_request_get_request_line (simple_request,
+                                                               env);
+    if (request_line)
+    {
+        http_method = axis2_http_request_line_get_method(request_line, env);
+    }
+
+    http_version = axis2_http_request_line_get_http_version (request_line, env);
+
     if (!http_version)
     {
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NULL_HTTP_VERSION,
@@ -228,14 +235,8 @@ axis2_http_worker_process_request(
                                (encoding_header_value,
                                 AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED)))
     {
-        if (0 ==
-            axutil_strcasecmp(axis2_http_request_line_get_method
-                              (axis2_http_simple_request_get_request_line
-                               (simple_request, env), env), AXIS2_HTTP_POST) ||
-            0 ==
-            axutil_strcasecmp(axis2_http_request_line_get_method
-                              (axis2_http_simple_request_get_request_line
-                               (simple_request, env), env), AXIS2_HTTP_PUT))
+        if (0 == axutil_strcasecmp(http_method, AXIS2_HTTP_POST) ||
+            0 == axutil_strcasecmp(http_method, AXIS2_HTTP_PUT))
         {
             axis2_http_simple_response_set_status_line(
                 response, env,
@@ -284,9 +285,7 @@ axis2_http_worker_process_request(
                                    peer_property);
     }
 
-    path =
-        axis2_http_request_line_get_uri
-        (axis2_http_simple_request_get_request_line(simple_request, env), env);
+    path = axis2_http_request_line_get_uri (request_line, env);
 
     request_url = axutil_url_create(env, AXIS2_HTTP_PROTOCOL, svr_ip,
                                     http_worker->svr_port, path);
@@ -394,6 +393,7 @@ axis2_http_worker_process_request(
             }
             while(token);
         }
+
         if (accept_charset_record_list && 
             axutil_array_list_size(accept_charset_record_list, env) > 0)
         {
@@ -480,14 +480,6 @@ axis2_http_worker_process_request(
     }
 
     
-    request_line = axis2_http_simple_request_get_request_line (simple_request,
-                                                               env);
-
-    if (request_line)
-    {
-        http_method = axis2_http_request_line_get_method(request_line, env);
-    }
-            
 
     if (0 == axutil_strcasecmp(http_method, AXIS2_HTTP_GET))
     {
@@ -506,29 +498,27 @@ axis2_http_worker_process_request(
         is_put = AXIS2_TRUE;
     }
 
+    axutil_hash_t *request_params = NULL;
+    axis2_char_t *request_uri = NULL;
+    axis2_char_t *url_ext_form = NULL;
+    const axis2_char_t *content_type = NULL;
+        
+    request_uri = axis2_http_request_line_get_uri (request_line, env);
+    request_params = 
+        axis2_http_transport_utils_get_request_params(env,
+                                                      request_uri);
+    url_ext_form = axutil_url_to_external_form(request_url, env);
+        
+    content_type = 
+        axis2_http_simple_request_get_content_type(simple_request, 
+                                                   env);
+    
     if (is_get || is_head || is_delete)
     {
-
-        axutil_hash_t *request_params = NULL;
-        axis2_char_t *request_uri = NULL;
-        axis2_char_t *url_ext_form = NULL;
-        const axis2_char_t *content_type = NULL;
-        
-        request_uri = axis2_http_request_line_get_uri (request_line, env);
-        request_params = 
-            axis2_http_transport_utils_get_request_params(env,
-                                                          request_uri);
-        url_ext_form = axutil_url_to_external_form(request_url, env);
-        
-        content_type = 
-            axis2_http_simple_request_get_content_type(simple_request, 
-                                                       env);
-        
         
         if (is_get)
         {  
-            
-            
+            /* HTTP GET */
             processed = 
                 axis2_http_transport_utils_process_http_get_request (env, 
                                                                      msg_ctx, 
@@ -542,6 +532,7 @@ axis2_http_worker_process_request(
         }
         else if (is_delete)
         {
+            /* HTTP DELETE */
             processed = 
                 axis2_http_transport_utils_process_http_delete_request (env, 
                                                                         msg_ctx, 
@@ -555,6 +546,7 @@ axis2_http_worker_process_request(
         }
         else if (is_head)
         {
+            /* HTTP HEAD */
             processed = 
                 axis2_http_transport_utils_process_http_head_request (env, 
                                                                       msg_ctx, 
@@ -575,9 +567,11 @@ axis2_http_worker_process_request(
             axis2_char_t *body_string = NULL;
             axis2_char_t *wsdl = NULL;
             axis2_bool_t is_services_path = AXIS2_FALSE;
+
             if (!is_delete)
             {
                 axis2_char_t *temp = NULL;
+                /* check whether request url have "/services"  */
                 temp = strstr(axutil_url_get_path(request_url, env), AXIS2_REQUEST_URL_PREFIX);
                 if (temp)
                 {
@@ -594,9 +588,11 @@ axis2_http_worker_process_request(
 
             }
 
+            /* processing request for WSDL via "?wsdl" */
             wsdl = strstr(url_external_form, AXIS2_REQUEST_WSDL);
             if (is_services_path)
             {
+                /* request for service */
                 axis2_http_simple_response_set_status_line(response, env,
                                                            http_version,
                                                            AXIS2_HTTP_RESPONSE_OK_CODE_VAL,
@@ -612,6 +608,7 @@ axis2_http_worker_process_request(
             }
             else if (!is_delete && wsdl)
             {
+                /* Request is not for delete and ask for wsdl */
                 axis2_http_simple_response_set_status_line(response, env,
                                                            http_version,
                                                            AXIS2_HTTP_RESPONSE_OK_CODE_VAL,
@@ -627,6 +624,8 @@ axis2_http_worker_process_request(
             }
             else if (env->error->error_number == AXIS2_ERROR_SVC_OR_OP_NOT_FOUND)
             {
+
+                /* Processing SVC or Operation Not found case */
                 axutil_array_list_t *method_list = NULL;
                 int size = 0;
                 method_list = axis2_msg_ctx_get_supported_rest_http_methods(msg_ctx, env);
@@ -637,24 +636,33 @@ axis2_http_worker_process_request(
                     axis2_char_t *method_list_str = NULL;
                     axis2_char_t *temp;
                     int i = 0;
-                    method_list_str = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 29);
+                    method_list_str = AXIS2_MALLOC(env->allocator, 
+                                                   sizeof(axis2_char_t) * 29);
+
+                    if (!method_list_str)
+                    {
+                        AXIS2_HANDLE_ERROR (env, AXIS2_ERROR_NO_MEMORY, AXIS2_FALSE);
+                    }
+
                     temp = method_list_str;
                     for (i = 0; i < size; i++)
                     {
                         if (i)
                         {
-                            sprintf(temp, ", ");
+                            sprintf(temp, AXIS2_COMMA_SPACE_STR);
                             temp += 2;
                         }
                         sprintf(temp, "%s", (axis2_char_t *) 
                                 axutil_array_list_get(method_list, env, i));
                         temp += strlen(temp);
                     }
-                    *temp = '\0';
-                    axis2_http_simple_response_set_status_line(response, env,
-                                                               http_version,
-                                                               AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_VAL,
-                                                               AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_NAME);
+                    *temp = AXIS2_ESC_NULL;
+
+                    axis2_http_simple_response_set_status_line(
+                        response, env,
+                        http_version,
+                        AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_VAL,
+                        AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_NAME);
 
                     body_string =
                         axis2_http_transport_utils_get_method_not_allowed(env,
@@ -662,15 +670,18 @@ axis2_http_worker_process_request(
                     allow_header = axis2_http_header_create(env,
                                                             AXIS2_HTTP_HEADER_ALLOW,
                                                             method_list_str);
-                    axis2_http_simple_response_set_header(response, env, allow_header);
+                    axis2_http_simple_response_set_header(response, 
+                                                          env, allow_header);
                     AXIS2_FREE(env->allocator, method_list_str);
                 }
                 else 
                 {
-                    axis2_http_simple_response_set_status_line(response, env,
-                                                               http_version,
-                                                               AXIS2_HTTP_RESPONSE_NOT_FOUND_CODE_VAL,
-                                                               AXIS2_HTTP_RESPONSE_NOT_FOUND_CODE_NAME);
+                    /* 404 Not Found */
+                    axis2_http_simple_response_set_status_line(
+                        response, env,
+                        http_version,
+                        AXIS2_HTTP_RESPONSE_NOT_FOUND_CODE_VAL,
+                        AXIS2_HTTP_RESPONSE_NOT_FOUND_CODE_NAME);
 
                     body_string = axis2_http_transport_utils_get_not_found(env,
                                                                            conf_ctx);
@@ -683,120 +694,155 @@ axis2_http_worker_process_request(
             else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
                 AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_NAME);
+                /* 400 Bad Request */
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_NAME);
 
                 body_string = axis2_http_transport_utils_get_bad_request(env,
                                                                          conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                cont_type = axis2_http_header_create(
+                    env,
+                    AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                    AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
                 AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_NAME);
 
-                body_string = axis2_http_transport_utils_get_request_timeout(env,
-                                                                             conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                /* 408 , Request Time Out */
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_NAME);
+
+                body_string = 
+                    axis2_http_transport_utils_get_request_timeout(env,
+                                                                   conf_ctx);
+                cont_type = axis2_http_header_create(
+                    env,
+                    AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                    AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
                 AXIS2_HTTP_RESPONSE_CONFLICT_CODE_VAL)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_CONFLICT_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_CONFLICT_CODE_NAME);
+                /* 409, Conflict */
 
-                body_string = axis2_http_transport_utils_get_conflict(env,
-                                                                      conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_CONFLICT_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_CONFLICT_CODE_NAME);
+
+                body_string = 
+                    axis2_http_transport_utils_get_conflict(env,
+                                                            conf_ctx);
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
                 AXIS2_HTTP_RESPONSE_GONE_CODE_VAL)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_GONE_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_GONE_CODE_NAME);
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_GONE_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_GONE_CODE_NAME);
 
-                body_string = axis2_http_transport_utils_get_gone(env,
-                                                                  conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                body_string = 
+                    axis2_http_transport_utils_get_gone(env,
+                                                        conf_ctx);
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
                 AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_VAL)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_NAME);
+                /* 412 Precondition failed */
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_NAME);
 
-                body_string = axis2_http_transport_utils_get_precondition_failed(env,
-                                                                                 conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                body_string = 
+                    axis2_http_transport_utils_get_precondition_failed(env,
+                                                                       conf_ctx);
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
                 AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_NAME);
-
-                body_string = axis2_http_transport_utils_get_request_entity_too_large(env,
-                                                                                      conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                /* 413 entity too large */
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_NAME);
+                
+                body_string = 
+                    axis2_http_transport_utils_get_request_entity_too_large(env,
+                                                                            conf_ctx);
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
                 AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_NAME);
+                /* 503, Service Unavailable*/
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_NAME);
 
-                body_string = axis2_http_transport_utils_get_service_unavailable(env,
-                                                                      conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                body_string = 
+                    axis2_http_transport_utils_get_service_unavailable(env,
+                                                                       conf_ctx);
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_NAME);
+                /* 500 Internal Server Error */
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_NAME);
 
-                body_string = axis2_http_transport_utils_get_internal_server_error(env,
-                                                                                   conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                body_string = 
+                    axis2_http_transport_utils_get_internal_server_error(env,
+                                                                         conf_ctx);
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
 
@@ -809,41 +855,57 @@ axis2_http_worker_process_request(
                                                                body_string);
                 }
                 sprintf(str_len, "%d", axutil_strlen(body_string));
-                cont_len = axis2_http_header_create(env,
-                                                    AXIS2_HTTP_HEADER_CONTENT_LENGTH,
-                                                    str_len);
+                cont_len = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_LENGTH,
+                                             str_len);
                 axis2_http_simple_response_set_header(response, env, cont_len);
             }
+
             axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
                                                    simple_request, response, 0);
+
             axis2_simple_http_svr_conn_write_response(svr_conn, env, response);
             axis2_http_simple_response_free(response, env);
             request_handled = AXIS2_TRUE;
             status = AXIS2_TRUE;
         }
     }
-    else if (0 ==
-             axutil_strcasecmp(axis2_http_request_line_get_method
-                               (axis2_http_simple_request_get_request_line
-                                (simple_request, env), env), AXIS2_HTTP_POST) || is_put)
+    else if (0 == axutil_strcasecmp(http_method, AXIS2_HTTP_POST) || is_put)
     {
         if (is_put)
         {
-            status = axis2_http_transport_utils_process_http_put_request
-                (env, msg_ctx, request_body, out_stream,
-                 axis2_http_simple_request_get_content_type(simple_request, env),
-                 content_length, soap_action_str, url_external_form);
+            status = 
+                axis2_http_transport_utils_process_http_put_request (env, 
+                                                                     msg_ctx, 
+                                                                     request_body, 
+                                                                     out_stream,
+                                                                     content_type,
+                                                                     content_length,
+                                                                     soap_action_str,
+                                                                     url_ext_form);
+
+
         }
         else
         {
-            status = axis2_http_transport_utils_process_http_post_request
-                (env, msg_ctx, request_body, out_stream,
-                 axis2_http_simple_request_get_content_type(simple_request, env),
-                 content_length, soap_action_str, url_external_form);
+            status = 
+                axis2_http_transport_utils_process_http_post_request (env, 
+                                                                      msg_ctx, 
+                                                                      request_body, 
+                                                                      out_stream,
+                                                                      content_type,
+                                                                      content_length,
+                                                                      soap_action_str,
+                                                                      url_ext_form);
+
         }
+
         if (AXIS2_FAILURE == status && (is_put ||
             axis2_msg_ctx_get_doing_rest(msg_ctx, env)))
         {
+            /* Failure Occure while processing REST */
+
             axis2_http_header_t *cont_len = NULL;
             axis2_http_header_t *cont_type = NULL;
             axis2_char_t *body_string = NULL;
@@ -851,7 +913,8 @@ axis2_http_worker_process_request(
             {
                 axutil_array_list_t *method_list = NULL;
                 int size = 0;
-                method_list = axis2_msg_ctx_get_supported_rest_http_methods(msg_ctx, env);
+                method_list = 
+                    axis2_msg_ctx_get_supported_rest_http_methods(msg_ctx, env);
                 size = axutil_array_list_size(method_list, env);
                 if (method_list && size)
                 {
@@ -859,24 +922,33 @@ axis2_http_worker_process_request(
                     axis2_char_t *method_list_str = NULL;
                     axis2_char_t *temp;
                     int i = 0;
-                    method_list_str = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 29);
+                    method_list_str = AXIS2_MALLOC(env->allocator, 
+                                                   sizeof(axis2_char_t) * 29);
+                    if (!method_list_str)
+                    {
+                        AXIS2_HANDLE_ERROR (env, AXIS2_ERROR_NO_MEMORY, AXIS2_FALSE);
+                    }
+
                     temp = method_list_str;
                     for (i = 0; i < size; i++)
                     {
                         if (i)
                         {
-                            sprintf(temp, ", ");
+                            sprintf(temp, AXIS2_COMMA_SPACE_STR);
                             temp += 2;
                         }
                         sprintf(temp, "%s", (axis2_char_t *)
                                 axutil_array_list_get(method_list, env, i));
                         temp += strlen(temp);
                     }
-                    *temp = '\0';
-                    axis2_http_simple_response_set_status_line(response, env,
-                                                               http_version,
-                                                               AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_VAL,
-                                                               AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_NAME);
+                    *temp = AXIS2_ESC_NULL;
+
+                    /* 405 Method Not Allowed */
+                    axis2_http_simple_response_set_status_line(
+                        response, env,
+                        http_version,
+                        AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_VAL,
+                        AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_NAME);
 
                     body_string =
                         axis2_http_transport_utils_get_method_not_allowed(env,
@@ -889,136 +961,179 @@ axis2_http_worker_process_request(
                 }
                 else
                 {
-                    axis2_http_simple_response_set_status_line(response, env,
-                                                               http_version,
-                                                               AXIS2_HTTP_RESPONSE_NOT_FOUND_CODE_VAL,
-                                                               AXIS2_HTTP_RESPONSE_NOT_FOUND_CODE_NAME);
+                    /* 404 Not Found */
+                    axis2_http_simple_response_set_status_line(
+                        response, env,
+                        http_version,
+                        AXIS2_HTTP_RESPONSE_NOT_FOUND_CODE_VAL,
+                        AXIS2_HTTP_RESPONSE_NOT_FOUND_CODE_NAME);
 
-                    body_string = axis2_http_transport_utils_get_not_found(env,
-                                                                           conf_ctx);
+                    body_string = 
+                        axis2_http_transport_utils_get_not_found(env,
+                                                                 conf_ctx);
                 }
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
                 AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_NAME);
+                /* 400, Bad Request */
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_NAME);
 
-                body_string = axis2_http_transport_utils_get_bad_request(env,
-                                                                         conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                body_string = 
+                    axis2_http_transport_utils_get_bad_request(env,
+                                                               conf_ctx);
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
                 AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_NAME);
+                /* 408, Request Timeout */
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_NAME);
 
-                body_string = axis2_http_transport_utils_get_request_timeout(env,
-                                                                             conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                body_string = 
+                    axis2_http_transport_utils_get_request_timeout(env,
+                                                                   conf_ctx);
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
                 AXIS2_HTTP_RESPONSE_CONFLICT_CODE_VAL)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_CONFLICT_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_CONFLICT_CODE_NAME);
+                /* 409, Conflict Types */
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_CONFLICT_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_CONFLICT_CODE_NAME);
 
-                body_string = axis2_http_transport_utils_get_conflict(env,
-                                                                      conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                body_string = 
+                    axis2_http_transport_utils_get_conflict(env,
+                                                            conf_ctx);
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
                 AXIS2_HTTP_RESPONSE_GONE_CODE_VAL)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_GONE_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_GONE_CODE_NAME);
+                /* 410, Gone. Resource no longer available */
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_GONE_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_GONE_CODE_NAME);
 
-                body_string = axis2_http_transport_utils_get_gone(env,
-                                                                  conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                body_string = 
+                    axis2_http_transport_utils_get_gone(env,
+                                                        conf_ctx);
+
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
                 AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_VAL)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_NAME);
+                /*410, Precondition for the url failed  */
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_NAME);
 
-                body_string = axis2_http_transport_utils_get_precondition_failed(env,
-                                                                                 conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                body_string = 
+                    axis2_http_transport_utils_get_precondition_failed(env,
+                                                                       conf_ctx);
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
                 AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_NAME);
+                /* 413, Request entity too large */
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_NAME);
 
-                body_string = axis2_http_transport_utils_get_request_entity_too_large(env,
-                                                                                      conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                body_string = 
+                    axis2_http_transport_utils_get_request_entity_too_large(env,
+                                                                            conf_ctx);
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else if (axis2_msg_ctx_get_status_code(msg_ctx, env) == 
                 AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL)
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_NAME);
+                /* 513, Service Unavailable */
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_NAME);
 
-                body_string = axis2_http_transport_utils_get_service_unavailable(env,
-                                                                                 conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                body_string = 
+                    axis2_http_transport_utils_get_service_unavailable(env,
+                                                                       conf_ctx);
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
             else
             {
-                axis2_http_simple_response_set_status_line(response, env,
-                                                           http_version,
-                                                           AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_VAL,
-                                                           AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_NAME);
+                /* 500, Internal Server Error */
+                axis2_http_simple_response_set_status_line(
+                    response, env,
+                    http_version,
+                    AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_VAL,
+                    AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_NAME);
 
-                body_string = axis2_http_transport_utils_get_internal_server_error(env,
-                                                                                   conf_ctx);
-                cont_type = axis2_http_header_create(env,
-                                                     AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                                                     AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+                body_string = 
+                    axis2_http_transport_utils_get_internal_server_error(env,
+                                                                         conf_ctx);
+
+                cont_type = 
+                    axis2_http_header_create(env,
+                                             AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                                             AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML);
+
                 axis2_http_simple_response_set_header(response, env, cont_type);
             }
 
@@ -1068,12 +1183,12 @@ axis2_http_worker_process_request(
 
             if (axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
             {
-                fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
+                fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX AXIS2_COLON_STR
                     AXIOM_SOAP11_FAULT_CODE_SENDER;
             }
             else
             {
-                fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
+                fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX AXIS2_COLON_STR
                     AXIOM_SOAP12_SOAP_FAULT_VALUE_SENDER;
             }
 
@@ -1088,42 +1203,48 @@ axis2_http_worker_process_request(
                 if (!http_error_value)
                 {
                     sprintf(status_line_str, "%s %s\r\n",
-                            axis2_http_request_line_get_http_version(req_line, env),
+                            http_version,
                             AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR);
                 }
                 else
                 {
                     sprintf(status_line_str, "%s %s",
-                            axis2_http_request_line_get_http_version(req_line,
-                                                                     env),
+                            http_version,
                             http_error_value);
                 }
             }
             else
             {
-                sprintf(status_line_str, "%s %s\r\n", "HTTP/1.1",
+                sprintf(status_line_str, "%s %s\r\n", 
+                        AXIS2_HTTP_HEADER_PROTOCOL_11,
                         AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR);
             }
 
             tmp_stat_line = axis2_http_status_line_create(env, status_line_str);
 
             if (!http_error_value)
+            {
                 axis2_engine_send_fault(engine, env, fault_ctx);
+            }
+            int status_code = 0;
+            axis2_char_t *reason_phrase = NULL;
+            int stream_len = 0;
+            status_code = axis2_http_status_line_get_status_code(tmp_stat_line, env);
+            reason_phrase = axis2_http_status_line_get_reason_phrase(tmp_stat_line, env);
 
             axis2_http_simple_response_set_status_line(response, env,
-                                                       axis2_http_status_line_get_http_version
-                                                       (tmp_stat_line, env),
-                                                       axis2_http_status_line_get_status_code
-                                                       (tmp_stat_line, env),
-                                                       axis2_http_status_line_get_reason_phrase
-                                                       (tmp_stat_line, env));
+                                                       http_version,
+                                                       status_code,
+                                                       reason_phrase);
+
             axis2_http_simple_response_set_body_stream(response, env,
                                                        out_stream);
+
+            stream_len = axutil_stream_get_len (out_stream, env);
             axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
                                                    simple_request, response,
-                                                   axutil_stream_get_len
-                                                   (out_stream, env));
-
+                                                   stream_len);
+             
             status = axis2_simple_http_svr_conn_write_response(svr_conn, env,
                                                                response);
             request_handled = AXIS2_TRUE;
