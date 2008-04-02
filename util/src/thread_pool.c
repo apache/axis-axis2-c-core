@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -27,7 +26,7 @@ struct axutil_thread_pool
 
 AXIS2_EXTERN axutil_thread_pool_t *AXIS2_CALL
 axutil_thread_pool_init(
-    axutil_allocator_t * allocator)
+    axutil_allocator_t *allocator)
 {
     axutil_thread_pool_t *pool = NULL;
 
@@ -46,7 +45,7 @@ axutil_thread_pool_init(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_thread_pool_free(
-    axutil_thread_pool_t * pool)
+    axutil_thread_pool_t *pool)
 {
     if (!pool)
     {
@@ -62,7 +61,7 @@ axutil_thread_pool_free(
 
 AXIS2_EXTERN axutil_thread_t *AXIS2_CALL
 axutil_thread_pool_get_thread(
-    axutil_thread_pool_t * pool,
+    axutil_thread_pool_t *pool,
     axutil_thread_start_t func,
     void *data)
 {
@@ -79,8 +78,8 @@ axutil_thread_pool_get_thread(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_thread_pool_join_thread(
-    axutil_thread_pool_t * pool,
-    axutil_thread_t * thd)
+    axutil_thread_pool_t *pool,
+    axutil_thread_t *thd)
 {
     if (!pool || !thd)
     {
@@ -91,8 +90,8 @@ axutil_thread_pool_join_thread(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_thread_pool_exit_thread(
-    axutil_thread_pool_t * pool,
-    axutil_thread_t * thd)
+    axutil_thread_pool_t *pool,
+    axutil_thread_t *thd)
 {
     if (!pool || !thd)
     {
@@ -103,8 +102,8 @@ axutil_thread_pool_exit_thread(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_thread_pool_thread_detach(
-    axutil_thread_pool_t * pool,
-    axutil_thread_t * thd)
+    axutil_thread_pool_t *pool,
+    axutil_thread_t *thd)
 {
     if (!pool || !thd)
     {
@@ -115,7 +114,7 @@ axutil_thread_pool_thread_detach(
 
 AXIS2_EXTERN axutil_env_t *AXIS2_CALL
 axutil_init_thread_env(
-    const axutil_env_t * system_env)
+    const axutil_env_t *system_env)
 {
     axutil_error_t *error = axutil_error_create(system_env->allocator);
     return axutil_env_create_with_error_log_thread_pool(system_env->allocator,

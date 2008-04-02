@@ -20,7 +20,7 @@
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_uuid_gen(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
 
     axis2_char_t *str = AXIS2_MALLOC(env->allocator, 40 * sizeof(char));
@@ -28,6 +28,7 @@ axutil_uuid_gen(
     if (!str)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_UUID_GEN_FAILED, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "AXIS2_ERROR_UUID_GEN_FAILED");
         return NULL;
     }
     return str;

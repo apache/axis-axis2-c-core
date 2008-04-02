@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -37,11 +36,11 @@ static int is_safe_or_unreserve (char c);
 
 AXIS2_EXTERN axutil_url_t *AXIS2_CALL
 axutil_url_create(
-    const axutil_env_t * env,
-    const axis2_char_t * protocol,
-    const axis2_char_t * host,
+    const axutil_env_t *env,
+    const axis2_char_t *protocol,
+    const axis2_char_t *host,
     const int port,
-    const axis2_char_t * path)
+    const axis2_char_t *path)
 {
     axutil_url_t *url = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -59,6 +58,7 @@ axutil_url_create(
     if (!url)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     url->protocol = axutil_strdup(env, protocol);
@@ -110,8 +110,8 @@ axutil_url_create(
 
 AXIS2_EXTERN axutil_url_t *AXIS2_CALL
 axutil_url_parse_string(
-    const axutil_env_t * env,
-    const axis2_char_t * str_url)
+    const axutil_env_t *env,
+    const axis2_char_t *str_url)
 {
     /**
      * Only accepted format is : 
@@ -141,12 +141,14 @@ axutil_url_parse_string(
     if (!host)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
+  
         AXIS2_FREE(env->allocator, tmp_url_str);
         return NULL;
     }
     if (axutil_strlen(host) < 3 * sizeof(axis2_char_t))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid IP or hostname");
         AXIS2_FREE(env->allocator, tmp_url_str);
         return NULL;
     }
@@ -155,6 +157,7 @@ axutil_url_parse_string(
     if (axutil_strlen(host) <= 0)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid IP or hostname");
         AXIS2_FREE(env->allocator, tmp_url_str);
         return NULL;
     }
@@ -269,10 +272,9 @@ axutil_url_parse_string(
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_url_free(
-    axutil_url_t * url,
-    const axutil_env_t * env)
+    axutil_url_t *url,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (url->protocol)
     {
         AXIS2_FREE(env->allocator, url->protocol);
@@ -304,14 +306,13 @@ axutil_url_free(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_url_to_external_form(
-    axutil_url_t * url,
-    const axutil_env_t * env)
+    axutil_url_t *url,
+    const axutil_env_t *env)
 {
     axis2_char_t *external_form = NULL;
     axis2_ssize_t len = 0;
     axis2_char_t port_str[8];
     axis2_bool_t print_port = AXIS2_FALSE;
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, url, NULL);
 
     if (!url->protocol)
@@ -355,11 +356,10 @@ axutil_url_to_external_form(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_url_set_protocol(
-    axutil_url_t * url,
-    const axutil_env_t * env,
-    axis2_char_t * protocol)
+    axutil_url_t *url,
+    const axutil_env_t *env,
+    axis2_char_t *protocol)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, protocol, AXIS2_FAILURE);
     if (url->protocol)
     {
@@ -372,22 +372,21 @@ axutil_url_set_protocol(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_url_get_protocol(
-    axutil_url_t * url,
-    const axutil_env_t * env)
+    axutil_url_t *url,
+    const axutil_env_t *env)
 {
     return url->protocol;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_url_set_host(
-    axutil_url_t * url,
-    const axutil_env_t * env,
-    axis2_char_t * host)
+    axutil_url_t *url,
+    const axutil_env_t *env,
+    axis2_char_t *host)
 {
     axis2_ssize_t len = 0;
     axis2_char_t port_str[8];
     axis2_bool_t print_port = AXIS2_FALSE;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, host, AXIS2_FAILURE);
 
     if (url->host)
@@ -420,21 +419,20 @@ axutil_url_set_host(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_url_get_host(
-    axutil_url_t * url,
-    const axutil_env_t * env)
+    axutil_url_t *url,
+    const axutil_env_t *env)
 {
     return url->host;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_url_set_server(
-    axutil_url_t * url,
-    const axutil_env_t * env,
-    axis2_char_t * server)
+    axutil_url_t *url,
+    const axutil_env_t *env,
+    axis2_char_t *server)
 {
     axis2_char_t *temp = NULL;
     axis2_char_t *port_str = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, server, AXIS2_FAILURE);
 
     temp = axutil_strdup(env, server);
@@ -476,13 +474,12 @@ axutil_url_set_server(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_url_get_server(
-    axutil_url_t * url,
-    const axutil_env_t * env)
+    axutil_url_t *url,
+    const axutil_env_t *env)
 {
     axis2_ssize_t len = 0;
     axis2_char_t port_str[8];
     axis2_bool_t print_port = AXIS2_FALSE;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (!url->server && !url->host)
     {
@@ -514,14 +511,13 @@ axutil_url_get_server(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_url_set_port(
-    axutil_url_t * url,
-    const axutil_env_t * env,
+    axutil_url_t *url,
+    const axutil_env_t *env,
     int port)
 {
     axis2_ssize_t len = 0;
     axis2_char_t port_str[8];
     axis2_bool_t print_port = AXIS2_FALSE;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (url->port == port)
     {
         return AXIS2_SUCCESS;
@@ -552,8 +548,8 @@ axutil_url_set_port(
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_url_get_port(
-    axutil_url_t * url,
-    const axutil_env_t * env)
+    axutil_url_t *url,
+    const axutil_env_t *env)
 {
     if (!url->port)
     {
@@ -564,11 +560,10 @@ axutil_url_get_port(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_url_set_path(
-    axutil_url_t * url,
-    const axutil_env_t * env,
+    axutil_url_t *url,
+    const axutil_env_t *env,
     axis2_char_t * path)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, path, AXIS2_FAILURE);
     if (url->path)
     {
@@ -580,20 +575,19 @@ axutil_url_set_path(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_url_get_path(
-    axutil_url_t * url,
-    const axutil_env_t * env)
+    axutil_url_t *url,
+    const axutil_env_t *env)
 {
     return url->path;
 }
 
 AXIS2_EXTERN axutil_url_t *AXIS2_CALL
 axutil_url_clone(
-    axutil_url_t * url,
-    const axutil_env_t * env)
+    axutil_url_t *url,
+    const axutil_env_t *env)
 {
     axis2_char_t *temp = NULL;
     axutil_url_t *ret = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
 
     if (url->path && url->query)
     {
@@ -619,12 +613,11 @@ axutil_url_clone(
 
 AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
 axutil_url_to_uri(
-    axutil_url_t * url,
-    const axutil_env_t * env)
+    axutil_url_t *url,
+    const axutil_env_t *env)
 {
     axis2_char_t *url_str = NULL;
     axutil_uri_t *uri = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     url_str = axutil_url_to_external_form(url, env);
     uri = axutil_uri_parse_string(env, url_str);
     return uri;
@@ -632,9 +625,9 @@ axutil_url_to_uri(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
 axutil_url_encode (
-    const axutil_env_t * env,
-    axis2_char_t * dest,
-    axis2_char_t * buff, int len)
+    const axutil_env_t *env,
+    axis2_char_t *dest,
+    axis2_char_t *buff, int len)
 {
     axis2_char_t string[4];
     axis2_char_t *expand_buffer;

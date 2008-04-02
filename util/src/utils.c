@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,11 +25,11 @@ AXIS2_EXPORT axis2_char_t *axis2_request_url_prefix = "services";
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_parse_rest_url_for_params(
-    const axutil_env_t * env,
-    const axis2_char_t * tmpl,
-    const axis2_char_t * url,
-    int * match_count,
-    axis2_char_t **** matches)
+    const axutil_env_t *env,
+    const axis2_char_t *tmpl,
+    const axis2_char_t *url,
+    int *match_count,
+    axis2_char_t ****matches)
 {
     axis2_char_t ***ret = NULL;
     axis2_char_t *tmp1 = NULL;
@@ -48,7 +47,6 @@ axutil_parse_rest_url_for_params(
     int i = 0;
     int j = 0;
     axis2_bool_t in_tok = AXIS2_FALSE;
-    AXIS2_ENV_CHECK(env, NULL);
 
     tmp2 = AXIS2_MALLOC(env->allocator, 2 * (sizeof(axis2_char_t *)));
     memset(tmp2, 0, 2 * sizeof(axis2_char_t *));
@@ -91,6 +89,7 @@ axutil_parse_rest_url_for_params(
     /* Validation of Template */
     i = (int)strlen(resource);
     /* We are sure that the difference lies within the int range */
+
     if (!strchr(resource, '{') && !strchr(resource, '}'))
     {
         i = 0;
@@ -160,7 +159,9 @@ axutil_parse_rest_url_for_params(
         url_resource = axutil_strdup(env, url);
     }
     i = (int)strlen(url_resource);
+
     /* We are sure that the difference lies within the int range */
+
     if (url_resource[i] == '/')
     {
         url_resource[i] = '\0';
@@ -184,6 +185,7 @@ axutil_parse_rest_url_for_params(
     tmp1 = resource;
 
     /* Simplest case match */
+
     if (!strchr(resource, '{'))
     {
         if (strcmp(resource, url_resource) == 0)
@@ -394,15 +396,14 @@ axutil_parse_rest_url_for_params(
 
 AXIS2_EXTERN axis2_char_t **AXIS2_CALL
 axutil_parse_request_url_for_svc_and_op(
-    const axutil_env_t * env,
-    const axis2_char_t * request)
+    const axutil_env_t *env,
+    const axis2_char_t *request)
 {
     axis2_char_t **ret = NULL;
     axis2_char_t *service_str = NULL;
     axis2_char_t *tmp = NULL;
     axis2_bool_t loop_state = AXIS2_TRUE;
     int i = 0;
-    AXIS2_ENV_CHECK(env, NULL);
     ret = AXIS2_MALLOC(env->allocator, 2 * (sizeof(axis2_char_t *)));
     memset(ret, 0, 2 * sizeof(axis2_char_t *));
     tmp = (axis2_char_t *) request;
@@ -467,8 +468,8 @@ axutil_parse_request_url_for_svc_and_op(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_xml_quote_string(
-    const axutil_env_t * env,
-    const axis2_char_t * s,
+    const axutil_env_t *env,
+    const axis2_char_t *s,
     axis2_bool_t quotes)
 {
     const char *scan;
@@ -539,9 +540,9 @@ axutil_xml_quote_string(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_url_decode(
-    const axutil_env_t * env,
-    axis2_char_t * dest,
-    axis2_char_t * src)
+    const axutil_env_t *env,
+    axis2_char_t *dest,
+    axis2_char_t *src)
 {
     AXIS2_PARAM_CHECK(env->error, dest, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, src, AXIS2_FAILURE);

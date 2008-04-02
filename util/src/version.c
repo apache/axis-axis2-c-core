@@ -20,7 +20,7 @@
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_version(
-    axis2_version_t * pvsn)
+    axis2_version_t *pvsn)
 {
     pvsn->major = AXIS2_MAJOR_VERSION;
     pvsn->minor = AXIS2_MINOR_VERSION;
