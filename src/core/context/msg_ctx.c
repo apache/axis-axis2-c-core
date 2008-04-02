@@ -223,8 +223,6 @@ axis2_msg_ctx_create(
 {
     axis2_msg_ctx_t *msg_ctx = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     msg_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_msg_ctx_t));
     if (!msg_ctx)
     {
@@ -537,7 +535,6 @@ axis2_msg_ctx_init(
     const axutil_env_t * env,
     struct axis2_conf * conf)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
 

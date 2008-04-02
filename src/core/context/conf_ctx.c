@@ -54,8 +54,6 @@ axis2_conf_ctx_create(
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     conf_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_conf_ctx_t));
     if (!conf_ctx)
     {
@@ -326,8 +324,6 @@ axis2_conf_ctx_init(
 {
     axutil_hash_index_t *hi = NULL;
     void *ctx = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     axutil_thread_mutex_lock(conf_ctx->mutex);
     conf_ctx->conf = conf;

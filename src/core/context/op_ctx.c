@@ -73,8 +73,6 @@ axis2_op_ctx_create(
     axis2_op_ctx_t *op_ctx = NULL;
     int i = 0;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     op_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_op_ctx_t));
     if (!op_ctx)
     {
@@ -145,7 +143,6 @@ axis2_op_ctx_free(
     const axutil_env_t * env)
 {
     int i = 0;
-    AXIS2_ENV_CHECK(env, void);
 
     if (--(op_ctx->ref) > 0)
     {
@@ -196,8 +193,6 @@ axis2_op_ctx_init(
     struct axis2_conf *conf)
 {
     int i = 0;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (op_ctx->op_qname && op_ctx->svc_qname)
     {
@@ -253,7 +248,6 @@ axis2_op_ctx_add_msg_ctx(
 {
     axis2_msg_ctx_t *out_msg_ctx = NULL;
     axis2_msg_ctx_t *in_msg_ctx = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     axutil_thread_mutex_lock(op_ctx->mutex);
 
@@ -340,8 +334,6 @@ axis2_op_ctx_cleanup(
 {
     int i = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     for (i = 0; i < AXIS2_WSDL_MESSAGE_LABEL_MAX; i++)
     {
         if (op_ctx->msg_ctx_array[i])
@@ -360,8 +352,6 @@ axis2_op_ctx_set_parent(
     const axutil_env_t * env,
     struct axis2_svc_ctx * svc_ctx)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (svc_ctx)
     {
         op_ctx->parent = svc_ctx;
@@ -428,7 +418,6 @@ axis2_op_ctx_increment_ref(
     axis2_op_ctx_t * op_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     op_ctx->ref++;
     return AXIS2_SUCCESS;
 }

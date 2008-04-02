@@ -217,7 +217,6 @@ axis2_core_utils_get_module_qname(
     const axis2_char_t * version)
 {
     axutil_qname_t *ret_qname = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, name, NULL);
 
     if (version && 0 != axutil_strlen(version))
@@ -255,7 +254,6 @@ axis2_core_utils_calculate_default_module_version(
     axutil_hash_index_t *hi = NULL;
     void *val = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, modules_map, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, axis_conf, AXIS2_FAILURE);
 
@@ -373,7 +371,6 @@ axis2_core_utils_get_module_name(
     axis2_char_t *name = NULL;
     axis2_char_t *version_sep_loc = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
     name = axutil_strdup(env, module_name);
@@ -397,7 +394,6 @@ axis2_core_utils_get_module_version(
     axis2_char_t version_seperator = '-';
     axis2_char_t *version_sep_loc = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
     version_sep_loc = axutil_rindex(module_name, version_seperator);
@@ -416,7 +412,6 @@ axis2_core_utils_is_latest_mod_ver(
 {
     double cur_ver = 0.0;
     double mod_ver = 0.0;
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, module_ver, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, current_def_ver, AXIS2_FALSE);
     cur_ver = atof(current_def_ver);
@@ -427,3 +422,4 @@ axis2_core_utils_is_latest_mod_ver(
     }
     return AXIS2_FAILURE;
 }
+

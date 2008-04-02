@@ -51,8 +51,6 @@ axis2_svc_grp_ctx_create(
 {
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     svc_grp_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_grp_ctx_t));
     if (!svc_grp_ctx)
     {
@@ -120,8 +118,6 @@ axis2_svc_grp_ctx_free(
     struct axis2_svc_grp_ctx *svc_grp_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (svc_grp_ctx->id)
     {
         AXIS2_FREE(env->allocator, svc_grp_ctx->id);
@@ -163,8 +159,6 @@ axis2_svc_grp_ctx_init(
     const axutil_env_t * env,
     axis2_conf_t * conf)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (svc_grp_ctx->svc_grp_name)
     {
         svc_grp_ctx->svc_grp =
@@ -188,8 +182,6 @@ axis2_svc_grp_ctx_set_id(
     const axutil_env_t * env,
     const axis2_char_t * id)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (svc_grp_ctx->id)
     {
         AXIS2_FREE(env->allocator, svc_grp_ctx->id);
@@ -221,8 +213,6 @@ axis2_svc_grp_ctx_fill_svc_ctx_map(
 {
     axutil_hash_index_t *hi = NULL;
     void *next_svc = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_SUCCESS);
 
     if (svc_grp_ctx->svc_grp)
     {
@@ -269,3 +259,4 @@ axis2_svc_grp_ctx_get_svc_ctx_map(
 {
     return svc_grp_ctx->svc_ctx_map;
 }
+

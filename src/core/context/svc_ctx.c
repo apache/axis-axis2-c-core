@@ -118,8 +118,6 @@ axis2_svc_ctx_free(
     struct axis2_svc_ctx *svc_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (svc_ctx->base)
     {
         axis2_ctx_free(svc_ctx->base, env);
@@ -135,8 +133,6 @@ axis2_svc_ctx_init(
     const axutil_env_t * env,
     axis2_conf_t * conf)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (svc_ctx->svc_qname)
     {
         axis2_char_t *svc_name =
@@ -169,7 +165,6 @@ axis2_svc_ctx_set_svc(
     const axutil_env_t * env,
     axis2_svc_t * svc)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
 
     svc_ctx->svc = svc;
@@ -186,7 +181,6 @@ axis2_svc_ctx_get_conf_ctx(
     const axis2_svc_ctx_t * svc_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return axis2_svc_grp_ctx_get_parent(svc_ctx->parent, env);
 }
 
@@ -198,8 +192,6 @@ axis2_svc_ctx_create_op_ctx(
 {
     axis2_op_t *op = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (svc_ctx->svc)
     {
         op = axis2_svc_get_op_with_qname(svc_ctx->svc, env, qname);
@@ -208,3 +200,4 @@ axis2_svc_ctx_create_op_ctx(
 
     return NULL;
 }
+
