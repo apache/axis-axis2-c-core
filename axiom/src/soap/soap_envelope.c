@@ -89,8 +89,9 @@ axiom_soap_envelope_create(
 
     soap_envelope = axiom_soap_envelope_create_null(env);
     if (!soap_envelope)
+    {
         return NULL;
-
+    }
     status = check_and_set_soap_version(soap_envelope, env, ns);
     if (status == AXIS2_FAILURE)
     {
@@ -250,7 +251,9 @@ axiom_soap_envelope_get_header(
         {
             status = axiom_soap_builder_next(soap_envelope->soap_builder, env);
             if (status == AXIS2_FAILURE)
+            {
                 break;
+            }
         }
     }
 
@@ -267,8 +270,9 @@ axiom_soap_envelope_add_header(
     axiom_namespace_t *ns = NULL;
 
     if (!soap_envelope->header)
+    {
         return NULL;
-
+    }
     if (namespace_uri)
     {
         ns = axiom_namespace_create(env, namespace_uri, NULL);
@@ -427,7 +431,9 @@ axiom_soap_envelope_create_default_soap_envelope(
                                        AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI,
                                        AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX);
         if (!om_ns)
+        {
             return NULL;
+        }
         soap_envelope = axiom_soap_envelope_create(env, om_ns);
 
         soap_header = axiom_soap_header_create_with_parent(env, soap_envelope);
@@ -442,7 +448,9 @@ axiom_soap_envelope_create_default_soap_envelope(
                                        AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI,
                                        AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX);
         if (!om_ns)
+        {
             return NULL;
+        }
         soap_envelope = axiom_soap_envelope_create(env, om_ns);
 
         soap_header = axiom_soap_header_create_with_parent(env, soap_envelope);
@@ -540,14 +548,18 @@ check_and_set_soap_version(
 {
     axis2_char_t *uri = NULL;
     if (!soap_envelope)
+    {
         return AXIS2_FAILURE;
+    }
     if (!ns)
+    {
         return AXIS2_FAILURE;
-
+    }
     uri = axiom_namespace_get_uri(ns, env);
     if (!uri)
+    {
         return AXIS2_FAILURE;
-
+    }
     if (axutil_strcmp(uri, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
     {
         soap_envelope->soap_version = AXIOM_SOAP11;
@@ -599,8 +611,9 @@ axiom_soap_envelope_set_soap_version(
     env_ns =
         axiom_element_get_namespace(env_ele, env, soap_envelope->om_ele_node);
     if (!env_ns)
+    {
         return AXIS2_FAILURE;
-
+    }
     status = axiom_namespace_set_uri(env_ns, env, ns_uri);
     if (status == AXIS2_SUCCESS)
     {
