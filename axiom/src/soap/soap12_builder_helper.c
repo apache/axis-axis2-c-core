@@ -460,15 +460,17 @@ axiom_soap12_builder_helper_handle_event(
 
                     soap_fault_value = axiom_soap_fault_value_create(env);
                     if (!soap_fault_value)
+                    {
                         return AXIS2_FAILURE;
-
+                    }
                     axiom_soap_fault_value_set_base_node(soap_fault_value, env,
                                                          om_ele_node);
 
                     parent_fcode = axiom_soap_fault_get_code(soap_fault, env);
                     if (!parent_fcode)
+                    {
                         return AXIS2_FAILURE;
-
+                    }
                     axiom_soap_fault_code_set_value(parent_fcode, env,
                                                     soap_fault_value);
 
@@ -498,16 +500,18 @@ axiom_soap12_builder_helper_handle_event(
 
                         fault_subcode = axiom_soap_fault_sub_code_create(env);
                         if (!fault_subcode)
+                        {
                             return AXIS2_FAILURE;
-
+                        }
                         axiom_soap_fault_sub_code_set_base_node(fault_subcode,
                                                                 env,
                                                                 om_ele_node);
 
                         fault_code = axiom_soap_fault_get_code(soap_fault, env);
                         if (!fault_code)
+                        {
                             return AXIS2_FAILURE;
-
+                        }
                         axiom_soap_fault_code_set_sub_code(fault_code, env,
                                                            fault_subcode);
 
