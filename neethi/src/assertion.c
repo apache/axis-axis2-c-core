@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -47,7 +46,7 @@ struct neethi_assertion_t
 
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 neethi_assertion_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     neethi_assertion_t *neethi_assertion = NULL;
 
@@ -60,6 +59,7 @@ neethi_assertion_create(
     if (neethi_assertion == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     neethi_assertion->policy_components = NULL;
@@ -67,9 +67,8 @@ neethi_assertion_create(
     neethi_assertion->policy_components = axutil_array_list_create(env, 0);
     if (!(neethi_assertion->policy_components))
     {
-
-/*      policy_free(policy, env);*/
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     neethi_assertion->value = NULL;
@@ -84,7 +83,7 @@ neethi_assertion_create(
 
 neethi_assertion_t *AXIS2_CALL
 neethi_assertion_create_with_args(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     AXIS2_FREE_VOID_ARG free_func,
     void *value,
     neethi_assertion_type_t type)
@@ -100,6 +99,7 @@ neethi_assertion_create_with_args(
     if (neethi_assertion == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     neethi_assertion->policy_components = NULL;
@@ -108,8 +108,8 @@ neethi_assertion_create_with_args(
     if (!(neethi_assertion->policy_components))
     {
 
-/*      policy_free(policy, env);*/
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
 
@@ -224,11 +224,9 @@ neethi_assertion_create_with_args(
 
 AXIS2_EXTERN void AXIS2_CALL
 neethi_assertion_free(
-    neethi_assertion_t * neethi_assertion,
-    const axutil_env_t * env)
+    neethi_assertion_t *neethi_assertion,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (neethi_assertion)
     {
         if (neethi_assertion->policy_components)
@@ -267,33 +265,27 @@ neethi_assertion_free(
 
 AXIS2_EXTERN neethi_assertion_type_t AXIS2_CALL
 neethi_assertion_get_type(
-    neethi_assertion_t * neethi_assertion,
-    const axutil_env_t * env)
+    neethi_assertion_t *neethi_assertion,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return neethi_assertion->type;
 }
 
 AXIS2_EXTERN void *AXIS2_CALL
 neethi_assertion_get_value(
-    neethi_assertion_t * neethi_assertion,
-    const axutil_env_t * env)
+    neethi_assertion_t *neethi_assertion,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return neethi_assertion->value;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_assertion_set_value(
-    neethi_assertion_t * neethi_assertion,
-    const axutil_env_t * env,
+    neethi_assertion_t *neethi_assertion,
+    const axutil_env_t *env,
     void *value,
     neethi_assertion_type_t type)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     neethi_assertion->type = type;
     if (type == ASSERTION_TYPE_X509_TOKEN)
     {
@@ -310,8 +302,8 @@ neethi_assertion_set_value(
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 neethi_assertion_get_element(
-    neethi_assertion_t * neethi_assertion,
-    const axutil_env_t * env)
+    neethi_assertion_t *neethi_assertion,
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -320,75 +312,63 @@ neethi_assertion_get_element(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_assertion_set_element(
-    neethi_assertion_t * neethi_assertion,
-    const axutil_env_t * env,
-    axiom_element_t * element)
+    neethi_assertion_t *neethi_assertion,
+    const axutil_env_t *env,
+    axiom_element_t *element)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     neethi_assertion->element = element;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 neethi_assertion_get_node(
-    neethi_assertion_t * neethi_assertion,
-    const axutil_env_t * env)
+    neethi_assertion_t *neethi_assertion,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return neethi_assertion->node;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_assertion_set_node(
-    neethi_assertion_t * neethi_assertion,
-    const axutil_env_t * env,
+    neethi_assertion_t *neethi_assertion,
+    const axutil_env_t *env,
     axiom_node_t * node)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     neethi_assertion->node = node;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 neethi_assertion_get_is_optional(
-    neethi_assertion_t * neethi_assertion,
-    const axutil_env_t * env)
+    neethi_assertion_t *neethi_assertion,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return neethi_assertion->is_optional;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_assertion_set_is_optional(
-    neethi_assertion_t * neethi_assertion,
-    const axutil_env_t * env,
+    neethi_assertion_t *neethi_assertion,
+    const axutil_env_t *env,
     axis2_bool_t is_optional)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     neethi_assertion->is_optional = is_optional;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 neethi_assertion_get_policy_components(
-    neethi_assertion_t * neethi_assertion,
-    const axutil_env_t * env)
+    neethi_assertion_t *neethi_assertion,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return neethi_assertion->policy_components;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_assertion_add_policy_components(
-    neethi_assertion_t * neethi_assertion,
-    axutil_array_list_t * arraylist,
-    const axutil_env_t * env)
+    neethi_assertion_t *neethi_assertion,
+    axutil_array_list_t *arraylist,
+    const axutil_env_t *env)
 {
 
     int size = axutil_array_list_size(arraylist, env);
@@ -410,12 +390,10 @@ neethi_assertion_add_policy_components(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_assertion_add_operator(
-    neethi_assertion_t * neethi_assertion,
-    const axutil_env_t * env,
-    neethi_operator_t * operator)
+    neethi_assertion_t *neethi_assertion,
+    const axutil_env_t *env,
+    neethi_operator_t *operator)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     neethi_operator_increment_ref(operator, env);
     axutil_array_list_add(neethi_assertion->policy_components, env, operator);
     return AXIS2_SUCCESS;
@@ -423,17 +401,17 @@ neethi_assertion_add_operator(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 neethi_assertion_is_empty(
-    neethi_assertion_t * neethi_assertion,
-    const axutil_env_t * env)
+    neethi_assertion_t *neethi_assertion,
+    const axutil_env_t *env)
 {
     return axutil_array_list_is_empty(neethi_assertion->policy_components, env);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_assertion_serialize(
-    neethi_assertion_t * assertion,
-    axiom_node_t * parent,
-    const axutil_env_t * env)
+    neethi_assertion_t *assertion,
+    axiom_node_t *parent,
+    const axutil_env_t *env)
 {
     axiom_namespace_t *namespace = NULL;
     axiom_element_t *element = NULL;
@@ -448,7 +426,6 @@ neethi_assertion_serialize(
 
     if (!node)
     {
-        /*printf("Assertion serialization failed\n"); */
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
