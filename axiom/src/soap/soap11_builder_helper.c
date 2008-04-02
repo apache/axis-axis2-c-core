@@ -158,8 +158,9 @@ axiom_soap11_builder_helper_handle_event(
 
             fault_code = axiom_soap_fault_code_create(env);
             if (!fault_code)
+            {
                 return AXIS2_FAILURE;
-
+            }
             axiom_soap_fault_code_set_base_node(fault_code, env,
                                                 om_element_node);
 
@@ -174,13 +175,15 @@ axiom_soap11_builder_helper_handle_event(
             fault_value =
                 axiom_soap_fault_value_create_with_code(env, fault_code);
             if (!fault_value)
+            {
                 return AXIS2_FAILURE;
-
+            }
             fault_value_node =
                 axiom_soap_fault_value_get_base_node(fault_value, env);
             if (!fault_value_node)
+            {
                 return AXIS2_FAILURE;
-
+            }
             fault_value_ele =
                 (axiom_element_t *)
                 axiom_node_get_data_element(fault_value_node, env);
@@ -222,8 +225,9 @@ axiom_soap11_builder_helper_handle_event(
 
             fault_reason = axiom_soap_fault_reason_create(env);
             if (!fault_reason)
+            {
                 return AXIS2_FAILURE;
-
+            }
             axiom_soap_fault_reason_set_base_node(fault_reason, env,
                                                   om_element_node);
 
@@ -232,21 +236,24 @@ axiom_soap11_builder_helper_handle_event(
             fault_text =
                 axiom_soap_fault_text_create_with_parent(env, fault_reason);
             if (!fault_text)
+            {
                 return AXIS2_FAILURE;
-
+            }
             fault_text_node =
                 axiom_soap_fault_text_get_base_node(fault_text, env);
             if (!fault_text_node)
+            {
                 return AXIS2_FAILURE;
-
+            }
             axiom_stax_builder_set_lastnode(builder_helper->om_builder, env,
                                             fault_text_node);
 
             status =
                 axiom_soap11_builder_helper_process_text(builder_helper, env);
             if (status == AXIS2_FAILURE)
+            {
                 return AXIS2_FAILURE;
-
+            }
             axiom_stax_builder_set_lastnode(builder_helper->om_builder, env,
                                             om_element_node);
 
@@ -264,8 +271,9 @@ axiom_soap11_builder_helper_handle_event(
             axiom_soap_fault_role_t *fault_role = NULL;
             fault_role = axiom_soap_fault_role_create(env);
             if (!fault_role)
+            {
                 return AXIS2_FAILURE;
-
+            }
             axiom_element_set_localname(om_ele, env,
                                         AXIOM_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME);
 
@@ -287,8 +295,9 @@ axiom_soap11_builder_helper_handle_event(
             axiom_soap_fault_detail_t *fault_detail = NULL;
             fault_detail = axiom_soap_fault_detail_create(env);
             if (!fault_detail)
+            {
                 return AXIS2_FAILURE;
-
+            }
             axiom_element_set_localname(om_ele, env,
                                         AXIOM_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME);
 
@@ -310,14 +319,18 @@ axiom_soap11_builder_helper_handle_event(
 
         parent_node = axiom_node_get_parent(om_element_node, env);
         if (!parent_node)
+        {
             return AXIS2_FAILURE;
+        }
         parent_element =
             (axiom_element_t *) axiom_node_get_data_element(om_element_node,
                                                             env);
         parent_localname = axiom_element_get_localname(parent_element, env);
 
         if (!parent_localname)
+        {
             return AXIS2_FAILURE;
+        }
         if (axutil_strcmp
             (parent_localname, AXIOM_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME) == 0)
         {
@@ -342,8 +355,9 @@ axiom_soap11_builder_helper_process_text(
     token = axiom_stax_builder_next_with_token(builder_helper->om_builder, env);
 
     if (token == -1)
+    {
         return AXIS2_FAILURE;
-
+    }
     while (token != AXIOM_XML_READER_END_ELEMENT)
     {
         if (token != AXIOM_XML_READER_CHARACTER)
@@ -359,7 +373,9 @@ axiom_soap11_builder_helper_process_text(
         token =
             axiom_stax_builder_next_with_token(builder_helper->om_builder, env);
         if (token == -1)
+        {
             return AXIS2_FAILURE;
+        }
     }
     return AXIS2_SUCCESS;
 }
