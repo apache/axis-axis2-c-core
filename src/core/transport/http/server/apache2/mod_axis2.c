@@ -593,7 +593,7 @@ axis2_module_init(
     axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
                 svr_rec->module_config, &axis2_module);
 
-    if (!(conf->axis2_global_pool_size > 0))
+    if (conf->axis2_global_pool_size > 0)
 	{
         /*
             If we are using shared memory, no need to init the child, as the 
