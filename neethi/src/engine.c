@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,59 +21,59 @@
 /*Private functions*/
 
 neethi_all_t *AXIS2_CALL get_operator_all(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element);
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element);
 
 neethi_exactlyone_t *AXIS2_CALL get_operator_exactlyone(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element);
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element);
 
 neethi_reference_t *AXIS2_CALL get_operator_reference(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element);
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element);
 
 neethi_policy_t *AXIS2_CALL get_operator_neethi_policy(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element);
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element);
 
 axis2_status_t AXIS2_CALL process_operation_element(
-    const axutil_env_t * env,
-    neethi_operator_t * neethi_operator,
-    axiom_node_t * node,
-    axiom_element_t * element);
+    const axutil_env_t *env,
+    neethi_operator_t *neethi_operator,
+    axiom_node_t *node,
+    axiom_element_t *element);
 
 axis2_status_t AXIS2_CALL neethi_engine_add_policy_component(
-    const axutil_env_t * env,
-    neethi_operator_t * container_operator,
-    neethi_operator_t * component);
+    const axutil_env_t *env,
+    neethi_operator_t *container_operator,
+    neethi_operator_t *component);
 
 axis2_bool_t AXIS2_CALL operator_is_empty(
-    neethi_operator_t * operator,
-    const axutil_env_t * env);
+    neethi_operator_t *operator,
+    const axutil_env_t *env);
 
 neethi_exactlyone_t *AXIS2_CALL compute_resultant_component(
-    axutil_array_list_t * normalized_inner_components,
+    axutil_array_list_t *normalized_inner_components,
     neethi_operator_type_t type,
-    const axutil_env_t * env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL operator_get_components(
-    neethi_operator_t * operator,
-    const axutil_env_t * env);
+    neethi_operator_t *operator,
+    const axutil_env_t *env);
 
 neethi_exactlyone_t *AXIS2_CALL normalize_operator(
-    neethi_operator_t * operator,
-    neethi_registry_t * registry,
+    neethi_operator_t *operator,
+    neethi_registry_t *registry,
     axis2_bool_t deep,
-    const axutil_env_t * env);
+    const axutil_env_t *env);
 
 neethi_exactlyone_t *AXIS2_CALL get_cross_product(
-    neethi_exactlyone_t * exactlyone1,
-    neethi_exactlyone_t * exactlyone2,
-    const axutil_env_t * env);
+    neethi_exactlyone_t *exactlyone1,
+    neethi_exactlyone_t *exactlyone2,
+    const axutil_env_t *env);
 
 /*Implementations*/
 
@@ -82,20 +81,18 @@ neethi_exactlyone_t *AXIS2_CALL get_cross_product(
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
 neethi_engine_get_policy(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element)
-{
-
-    return get_operator_neethi_policy(env, node, element);
-
-}
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element)
+    {
+        return get_operator_neethi_policy(env, node, element);
+    }
 
 neethi_all_t *AXIS2_CALL
 get_operator_all(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element)
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element)
 {
     neethi_all_t *all = NULL;
     neethi_operator_t *neethi_operator = NULL;
@@ -105,12 +102,14 @@ get_operator_all(
     if (!all)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     neethi_operator = neethi_operator_create(env);
     if (!neethi_operator)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     neethi_operator_set_value(neethi_operator, env, all, OPERATOR_TYPE_ALL);
@@ -135,9 +134,9 @@ get_operator_all(
 
 neethi_exactlyone_t *AXIS2_CALL
 get_operator_exactlyone(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element)
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element)
 {
     neethi_exactlyone_t *exactlyone = NULL;
     neethi_operator_t *neethi_operator = NULL;
@@ -148,12 +147,16 @@ get_operator_exactlyone(
     if (!exactlyone)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
+
         return NULL;
     }
     neethi_operator = neethi_operator_create(env);
     if (!neethi_operator)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
+
         return NULL;
     }
     neethi_operator_set_value(neethi_operator, env, exactlyone,
@@ -181,9 +184,9 @@ get_operator_exactlyone(
 
 neethi_reference_t *AXIS2_CALL
 get_operator_reference(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element)
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element)
 {
     neethi_reference_t *reference = NULL;
     axutil_qname_t *qname = NULL;
@@ -194,6 +197,8 @@ get_operator_reference(
     if (!reference)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
+
         return NULL;
     }
     qname = axutil_qname_create(env, NEETHI_URI, NULL, NULL);
@@ -213,9 +218,9 @@ get_operator_reference(
 
 neethi_policy_t *AXIS2_CALL
 get_operator_neethi_policy(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element)
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element)
 {
     neethi_policy_t *neethi_policy = NULL;
     neethi_operator_t *neethi_operator = NULL;
@@ -226,12 +231,14 @@ get_operator_neethi_policy(
     if (!neethi_policy)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     neethi_operator = neethi_operator_create(env);
     if (!neethi_operator)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     neethi_operator_set_value(neethi_operator, env, neethi_policy,
@@ -246,6 +253,7 @@ get_operator_neethi_policy(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_POLICY_CREATION_FAILED,
                         AXIS2_FAILURE);
+
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                         "[neethi] Policy creation failed.");
         neethi_policy_free(neethi_policy, env);
@@ -257,10 +265,10 @@ get_operator_neethi_policy(
 
 axis2_status_t AXIS2_CALL
 process_operation_element(
-    const axutil_env_t * env,
-    neethi_operator_t * neethi_operator,
-    axiom_node_t * node,
-    axiom_element_t * element)
+    const axutil_env_t *env,
+    neethi_operator_t *neethi_operator,
+    axiom_node_t *node,
+    axiom_element_t *element)
 {
 
     neethi_operator_type_t type;
@@ -287,6 +295,7 @@ process_operation_element(
         if (!qname)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
             return AXIS2_FAILURE;
         }
         id = axiom_element_get_attribute_value(element, env, qname);
@@ -297,6 +306,7 @@ process_operation_element(
         if (!qname)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
             return AXIS2_FAILURE;
         }
         name = axiom_element_get_attribute_value(element, env, qname);
@@ -509,9 +519,9 @@ process_operation_element(
 
 axis2_status_t AXIS2_CALL
 neethi_engine_add_policy_component(
-    const axutil_env_t * env,
-    neethi_operator_t * container_operator,
-    neethi_operator_t * component)
+    const axutil_env_t *env,
+    neethi_operator_t *container_operator,
+    neethi_operator_t *component)
 {
 
     neethi_operator_type_t type;
@@ -567,8 +577,8 @@ neethi_engine_add_policy_component(
  *Remove it later*/
 void
 check_neethi_policy(
-    neethi_policy_t * neethi_policy,
-    const axutil_env_t * env)
+    neethi_policy_t *neethi_policy,
+    const axutil_env_t *env)
 {
     axutil_array_list_t *list = NULL;
     neethi_operator_t *op = NULL;
@@ -578,7 +588,6 @@ check_neethi_policy(
 
     if (axutil_array_list_size(list, env) > 1)
     {
-        /*printf("Error with Normalized neethi_policy\n"); */
         return;
     }
     op = (neethi_operator_t *) axutil_array_list_get(list, env, 0);
@@ -588,13 +597,11 @@ check_neethi_policy(
         void *value = neethi_operator_get_value(op, env);
         if (value)
         {
-            /*printf("Check is ok\n"); */
             return;
         }
     }
     else
     {
-        /*printf("Not properly normalized\n"); */
         return;
     }
 }
@@ -603,18 +610,18 @@ check_neethi_policy(
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
 neethi_engine_get_normalize(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     axis2_bool_t deep,
-    neethi_policy_t * neethi_policy)
+    neethi_policy_t *neethi_policy)
 {
     return neethi_engine_normalize(env, neethi_policy, NULL, deep);
 }
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
 neethi_engine_normalize(
-    const axutil_env_t * env,
-    neethi_policy_t * neethi_policy,
-    neethi_registry_t * registry,
+    const axutil_env_t *env,
+    neethi_policy_t *neethi_policy,
+    neethi_registry_t *registry,
     axis2_bool_t deep)
 {
     neethi_policy_t *resultant_neethi_policy = NULL;
@@ -628,6 +635,7 @@ neethi_engine_normalize(
     if (!resultant_neethi_policy)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
 
@@ -647,6 +655,7 @@ neethi_engine_normalize(
     if (!operator)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
 
@@ -666,7 +675,6 @@ neethi_engine_normalize(
                                   OPERATOR_TYPE_EXACTLYONE);
         neethi_policy_add_operator(resultant_neethi_policy, env, component);
 
-        /*check_neethi_policy(resultant_neethi_policy,env); */
         return resultant_neethi_policy;
     }
     else
@@ -681,9 +689,9 @@ neethi_engine_normalize(
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
 neethi_engine_merge(
-    const axutil_env_t * env,
-    neethi_policy_t * neethi_policy1,
-    neethi_policy_t * neethi_policy2)
+    const axutil_env_t *env,
+    neethi_policy_t *neethi_policy1,
+    neethi_policy_t *neethi_policy2)
 {
 
     neethi_exactlyone_t *exactlyone1 = NULL;
@@ -711,6 +719,7 @@ neethi_engine_merge(
         if (!neethi_policy || !component)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
             return NULL;
         }
         neethi_operator_set_value(component, env, exactlyone,
@@ -730,8 +739,8 @@ neethi_engine_merge(
 
 axis2_bool_t AXIS2_CALL
 operator_is_empty(
-    neethi_operator_t * operator,
-    const axutil_env_t * env)
+    neethi_operator_t *operator,
+    const axutil_env_t *env)
 {
 
     neethi_operator_type_t type;
@@ -784,8 +793,8 @@ operator_is_empty(
 
 axutil_array_list_t *AXIS2_CALL
 operator_get_components(
-    neethi_operator_t * operator,
-    const axutil_env_t * env)
+    neethi_operator_t *operator,
+    const axutil_env_t *env)
 {
 
     neethi_operator_type_t type;
@@ -836,10 +845,10 @@ operator_get_components(
 
 neethi_exactlyone_t *AXIS2_CALL
 normalize_operator(
-    neethi_operator_t * operator,
-    neethi_registry_t * registry,
+    neethi_operator_t *operator,
+    neethi_registry_t *registry,
     axis2_bool_t deep,
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     axutil_array_list_t *child_component_list = NULL;
     neethi_operator_t *child_component = NULL;
@@ -855,6 +864,7 @@ normalize_operator(
         if (!exactlyone)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
             return NULL;
         }
         if (type != OPERATOR_TYPE_EXACTLYONE)
@@ -867,6 +877,7 @@ normalize_operator(
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
                 return NULL;
             }
             neethi_operator_set_value(component, env, all, OPERATOR_TYPE_ALL);
@@ -890,7 +901,6 @@ normalize_operator(
             /*Assertion normalization part comes here */
             if (deep)
             {
-                /*printf("We still not handling deep normalization of assertions"); */
                 return NULL;
             }
             else
@@ -907,6 +917,7 @@ normalize_operator(
                 {
                     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
                                     AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
                     return NULL;
                 }
                 neethi_all_add_operator(all, env, child_component);
@@ -928,6 +939,7 @@ normalize_operator(
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
                 return NULL;
             }
             neethi_policy =
@@ -945,6 +957,7 @@ normalize_operator(
                     {
                         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
                                         AXIS2_FAILURE);
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
                         return NULL;
                     }
                     neethi_operator_set_value(to_normalize, env, all,
@@ -1010,6 +1023,7 @@ normalize_operator(
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
                 return NULL;
             }
 
@@ -1027,6 +1041,7 @@ normalize_operator(
                     {
                         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
                                         AXIS2_FAILURE);
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
                         return NULL;
                     }
                     neethi_operator_set_value(to_normalize, env, all,
@@ -1187,9 +1202,9 @@ compute_resultant_component(
 
 neethi_exactlyone_t *AXIS2_CALL
 get_cross_product(
-    neethi_exactlyone_t * exactlyone1,
-    neethi_exactlyone_t * exactlyone2,
-    const axutil_env_t * env)
+    neethi_exactlyone_t *exactlyone1,
+    neethi_exactlyone_t *exactlyone2,
+    const axutil_env_t *env)
 {
     neethi_exactlyone_t *cross_product = NULL;
     neethi_all_t *cross_product_all = NULL;
@@ -1205,6 +1220,7 @@ get_cross_product(
     if (!cross_product)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     array_list1 = neethi_exactlyone_get_policy_components(exactlyone1, env);
@@ -1253,6 +1269,7 @@ get_cross_product(
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
                 return NULL;
             }
             neethi_all_add_policy_components(cross_product_all,
@@ -1268,6 +1285,7 @@ get_cross_product(
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
                 return NULL;
             }
             neethi_operator_set_value(component, env, cross_product_all,
@@ -1282,8 +1300,8 @@ get_cross_product(
 
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 neethi_engine_serialize(
-    neethi_policy_t * policy,
-    const axutil_env_t * env)
+    neethi_policy_t *policy,
+    const axutil_env_t *env)
 {
 
     return neethi_policy_serialize(policy, NULL, env);
