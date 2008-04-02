@@ -155,6 +155,11 @@ axis2_http_worker_process_request(
     axis2_char_t *http_method = NULL;
     axis2_http_request_line_t *request_line = NULL;
 
+    axutil_hash_t *request_params = NULL;
+    axis2_char_t *request_uri = NULL;
+    axis2_char_t *url_ext_form = NULL;
+    const axis2_char_t *content_type = NULL;
+
     AXIS2_PARAM_CHECK(env->error, svr_conn, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, simple_request, AXIS2_FALSE);
 
@@ -498,10 +503,7 @@ axis2_http_worker_process_request(
         is_put = AXIS2_TRUE;
     }
 
-    axutil_hash_t *request_params = NULL;
-    axis2_char_t *request_uri = NULL;
-    axis2_char_t *url_ext_form = NULL;
-    const axis2_char_t *content_type = NULL;
+
         
     request_uri = axis2_http_request_line_get_uri (request_line, env);
     request_params = 
@@ -1168,7 +1170,11 @@ axis2_http_worker_process_request(
             axutil_property_t *http_error_property = NULL;
             axis2_char_t *http_error_value = NULL;
             axis2_char_t *fault_code = NULL;
-            if (!engine)
+            int status_code = 0;
+            axis2_char_t *reason_phrase = NULL;
+            int stream_len = 0;
+
+			if (!engine)
             {
                 return AXIS2_FALSE;
             }
@@ -1226,9 +1232,7 @@ axis2_http_worker_process_request(
             {
                 axis2_engine_send_fault(engine, env, fault_ctx);
             }
-            int status_code = 0;
-            axis2_char_t *reason_phrase = NULL;
-            int stream_len = 0;
+            
             status_code = axis2_http_status_line_get_status_code(tmp_stat_line, env);
             reason_phrase = axis2_http_status_line_get_reason_phrase(tmp_stat_line, env);
 
@@ -1595,8 +1599,8 @@ axis2_http_worker_process_request(
                         }
                         while (size)
                         {
+							axis2_http_header_t *simple_header = NULL;
                             size--;
-                            axis2_http_header_t *simple_header = NULL;
                             simple_header = (axis2_http_header_t *) 
                                 axutil_array_list_get(output_header_list, 
                                                       env, size);
@@ -1608,9 +1612,9 @@ axis2_http_worker_process_request(
                         if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
                         {
                             int status_code = 0;
-                            status_code = 
-                                axis2_msg_ctx_get_status_code(out_msg_ctx, env);
-                            axis2_char_t *status_code_str = NULL;
+							axis2_char_t *status_code_str = NULL;
+                            status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
+                            
                             switch (status_code)
                             {
                             case AXIS2_HTTP_RESPONSE_CONTINUE_CODE_VAL:
@@ -1729,8 +1733,8 @@ axis2_http_worker_process_request(
 
                         while (size)
                         {
+							axis2_http_header_t *simeple_header = NULL;
                             size--;
-                            axis2_http_header_t *simeple_header = NULL;
                             simeple_header = (axis2_http_header_t *)
                                 axutil_array_list_get(output_header_list,
                                                       env, size);

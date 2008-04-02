@@ -174,10 +174,11 @@ axis2_desc_builder_build_om(
     if (!reader)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
-                        AXIS2_FAILURE) return NULL;
+                        AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
             "Could not create xml reader for %s", desc_builder->file_name);
-    }
+		return NULL;
+    };
 
     /** create axiom_stax_builder by parsing pull_parser struct */
     desc_builder->builder = axiom_stax_builder_create(env, reader);
@@ -185,10 +186,11 @@ axis2_desc_builder_build_om(
     if (!(desc_builder->builder))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
-                        AXIS2_FAILURE) return NULL;
+                        AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
             "Could not create xml stream reader for desc builder %s. Unable "\
                 "to continue", desc_builder->file_name);
+		 return NULL;
     }
 
     /**
