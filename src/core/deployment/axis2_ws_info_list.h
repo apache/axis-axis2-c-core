@@ -26,7 +26,8 @@
 
 /**
  * @file axis2_ws_info_list.h
- * @brief Axis2 Ws Info List interface
+ * @brief Axis2 Ws Info List interface. Ws Info List is the list of ws_info structs.
+ *  Each ws_info construct contain file information for module or service configuration file.
  */
 
 #include <axis2_const.h>
@@ -66,7 +67,7 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * This method is used to initialize the vector
+     * This method is used to initialize the ws info list.
      * @param info_list pointer to ws info list
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
@@ -77,20 +78,20 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * First it check whether the file is already available in the
-     * system call isFileExist , if it is not deployed yet then it will add
-     * that to jarlist and to the deployment engine as new service or module
-     * in adding new item to jarlist it first create optimice and requird object to
-     * keep those infor call WSInfo and that will be added to jarist and actual
-     * jar file will be added to DeploymentEngine
-     * <p/>
-     * If it is alredy exsit then it check whether it has been updated
-     * then change the last update date of the wsInfo and added two entries to 
-     * DeploymentEngine one for New Deployment and other for undeployment
+     * This will add the deployment info struct(ws_info) into the deployment info 
+     * list and deployment info file to the deployment engine as new 
+     * service or module deployment info struct/file.
+     * In doing this, it first create an deployment info struct called ws_info 
+     * to keep the file info that will be added to deployment info file 
+     * list and then create deployment info file called arch_file_data that will 
+     * be added to deployment engine for actual deployment of the service/module.
+     *
+     * This will add two entries to deployment engine one for new Deployment and 
+     * other for undeployment.
      * @param info_list pointer to ws info list
      * @param env pointer to environment struct
-     * @param file actual jar files for either Module or service
-     * @param type indicate either Service or Module
+     * @param file actual axis2 configuration file for module/service.
+     * @param type indicate either service or module
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -102,8 +103,9 @@ extern "C"
         int type);
 
     /**
-     * This method is used to check whether the file exist and if so
-     * it will return related wsinfo object to the file, else return null;
+     * This method is used to check whether the service/module configuration 
+     * file exist and if so it will return related ws_info object to the file, 
+     * else return NULL;
      * @param info_list pointer to ws info list
      * @param env pointer to environment struct
      * @param file_name pointer to file name
@@ -116,12 +118,12 @@ extern "C"
         axis2_char_t * file_name);
 
     /**
-     * compare the last update dates of both files and if those differ
-     * it will assumed as the file has been modified
+     * Compare the last update dates of both files and if those differ
+     * it will be assumed as the file has been modified.
      * @param info_list pointer to ws info list
      * @param env pointer to environment struct
-     * @param file pointer to file
-     * @param ws_info pointer to ws info
+     * @param file pointer to servie/module configuration file.
+     * @param ws_info pointer to ws info struct.
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_ws_info_list_is_modified(
@@ -131,7 +133,7 @@ extern "C"
         struct axis2_ws_info *ws_info);
 
     /**
-     * to check whether the file is alredy in the list
+     * To check whether the deployment info file is alredy in the list.
      * @param info_list pointer to ws info list
      * @param env pointer to environment struct
      * @param file_name pointer to file name
@@ -143,13 +145,14 @@ extern "C"
         axis2_char_t * file_name);
 
     /**
-     * this is to check , undeploye WS
-     * What this relly does is it check older jars files and
-     * current jars. If name of the old jar file does not exit in the currentjar
-     * list then it is assumed that the jar file has been removed
-     * that is hot undeployment
+     * This is to check whether to undeploy ws info struct.
+     * What this realy does is, it check ws_info list and current deployment 
+     * info name list. If ws_info exists in the ws_info_list but it's 
+     * corresponding file name does not exist in the current deploymet file 
+     * name list then, struct is deemed non existant. ie. that is hot 
+     * undeployment.
+     * @param info_list pointer to ws info list
      * @param env pointer to environment struct
-     * @param file_name pointer to file name
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -159,8 +162,8 @@ extern "C"
         const axutil_env_t * env);
 
     /**
+     * @param info_list pointer to ws info list
      * @param env pointer to environment struct
-     * @param file_name pointer to file name
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -180,7 +183,6 @@ extern "C"
         const axutil_env_t * env,
         struct axis2_dep_engine *dep_engine);
 
-    /*************************** End of function macros ***************************/
 
     /** @} */
 

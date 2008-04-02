@@ -33,8 +33,8 @@ axis2_svc_grp_builder_create(
     AXIS2_ENV_CHECK(env, NULL);
 
     svc_grp_builder = (axis2_svc_grp_builder_t *) AXIS2_MALLOC(env->allocator,
-                                                               sizeof
-                                                               (axis2_svc_grp_builder_t));
+                                                    sizeof
+                                                    (axis2_svc_grp_builder_t));
 
     if (!svc_grp_builder)
     {
@@ -80,8 +80,6 @@ axis2_svc_grp_builder_free(
     axis2_svc_grp_builder_t * svc_grp_builder,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (svc_grp_builder->desc_builder)
     {
         axis2_desc_builder_free(svc_grp_builder->desc_builder, env);
@@ -159,7 +157,7 @@ axis2_svc_grp_builder_populate_svc_grp(
         qsvc_element = NULL;
     }
 
-    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(svc_itr, env))
+    while (axiom_children_qname_iterator_has_next(svc_itr, env))
     {
         axiom_node_t *svc_node = NULL;
         axiom_element_t *svc_element = NULL;
@@ -184,6 +182,8 @@ axis2_svc_grp_builder_populate_svc_grp(
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_NAME_ERROR,
                             AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Service name attribute has no value");
             return AXIS2_FAILURE;
         }
         else
@@ -208,18 +208,17 @@ axis2_svc_grp_builder_populate_svc_grp(
                 axis2_arch_file_data_add_svc(file_data, env, axis_svc);
 
             }
-            /* the service that has to be deployed */
-
+            /* Adding service to the deployable services list */
             deployable_svcs =
                 axis2_arch_file_data_get_deployable_svcs(file_data, env);
             axutil_array_list_add(deployable_svcs, env, axis_svc);
             axis2_svc_set_parent(axis_svc, env, svc_grp);
             svc_builder = axis2_svc_builder_create_with_dep_engine_and_svc(env,
-                                                                           axis2_desc_builder_get_dep_engine
-                                                                           (svc_grp_builder->
-                                                                            desc_builder,
-                                                                            env),
-                                                                           axis_svc);
+                                               axis2_desc_builder_get_dep_engine
+                                               (svc_grp_builder->
+                                                desc_builder,
+                                                env),
+                                               axis_svc);
             status = axis2_svc_builder_populate_svc(svc_builder, env, svc_node);
             axis2_svc_builder_free(svc_builder, env);
 
@@ -235,12 +234,10 @@ axis2_svc_grp_builder_process_module_refs(
     axiom_children_qname_iterator_t * module_refs,
     axis2_svc_grp_t * svc_grp)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_refs, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
 
-    while (AXIS2_TRUE ==
-           axiom_children_qname_iterator_has_next(module_refs, env))
+    while (axiom_children_qname_iterator_has_next(module_refs, env))
     {
         axiom_node_t *module_ref_node = NULL;
         axiom_element_t *module_ref_element = NULL;
@@ -269,6 +266,8 @@ axis2_svc_grp_builder_process_module_refs(
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND,
                                 AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Module %s not found in deployment engine.", ref_name);
                 return AXIS2_FAILURE;
             }
             else
@@ -290,3 +289,4 @@ axis2_svc_grp_builder_get_desc_builder(
 {
     return svc_grp_builder->desc_builder;
 }
+

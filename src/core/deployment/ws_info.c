@@ -38,7 +38,6 @@ axis2_ws_info_create_with_file_name_and_last_modified_date(
 {
     axis2_ws_info_t *ws_info = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
 
     ws_info = (axis2_ws_info_t *) AXIS2_MALLOC(env->allocator,
@@ -76,7 +75,6 @@ axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
 {
     axis2_ws_info_t *ws_info = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
 
     ws_info = (axis2_ws_info_t *)
@@ -98,8 +96,6 @@ axis2_ws_info_free(
     axis2_ws_info_t * ws_info,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (ws_info->file_name)
     {
         AXIS2_FREE(env->allocator, ws_info->file_name);
@@ -127,7 +123,6 @@ axis2_ws_info_set_file_name(
     const axutil_env_t * env,
     axis2_char_t * file_name)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, file_name, AXIS2_FAILURE);
 
     if (ws_info->file_name)
@@ -144,8 +139,6 @@ axis2_ws_info_get_last_modified_date(
     const axis2_ws_info_t * ws_info,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return ws_info->last_modified_date;
 }
 
@@ -155,7 +148,6 @@ axis2_ws_info_set_last_modified_date(
     const axutil_env_t * env,
     long last_modified_date)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ws_info->last_modified_date = last_modified_date;
     return AXIS2_SUCCESS;
 }
@@ -167,3 +159,4 @@ axis2_ws_info_get_type(
 {
     return ws_info->type;
 }
+

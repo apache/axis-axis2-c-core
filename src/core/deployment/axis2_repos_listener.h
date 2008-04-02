@@ -106,17 +106,6 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * this is the actual method that is call from scheduler
-     * @param repos_listener pointer to repos listener
-     * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_repos_listener_start_listen(
-        axis2_repos_listener_t * listener,
-        const axutil_env_t * env);
-
-    /**
      * @param env pointer to environment struct
      * @return pointer to newly created deployment engine
      */

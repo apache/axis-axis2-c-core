@@ -25,6 +25,11 @@
  * @{
  */
 
+/**
+ * @file axis2_ws_info.h
+ * @brief Axis2 Ws Info interface. ws_info construct contain file information 
+ * for module or service configuration file.
+ */
 #include <axis2_const.h>
 #include <axutil_error.h>
 #include <axis2_defines.h>
@@ -104,7 +109,7 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * Creates description builder struct
+     * Creates ws_info struct
      * @param env pointer to environment struct
      * @param file_name pointer to file name
      * @param last_modified_date pointer to last modified date

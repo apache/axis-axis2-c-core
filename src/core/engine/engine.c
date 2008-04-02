@@ -32,7 +32,7 @@
 struct axis2_engine
 {
 
-    /** configuration context */
+    /** Configuration context */
     axis2_conf_ctx_t *conf_ctx;
 };
 
@@ -53,6 +53,7 @@ axis2_engine_create(
     if (!engine)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
         return NULL;
     }
 
@@ -71,7 +72,6 @@ axis2_engine_free(
     axis2_engine_t * engine,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
     AXIS2_FREE(env->allocator, engine);
     return;
 }
@@ -90,10 +90,9 @@ axis2_engine_send(
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "axis2_engine_send start");
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    /* find and invoke the phases */
+    /* Find and invoke the phases */
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx)
     {
@@ -106,7 +105,7 @@ axis2_engine_send(
 
     if (axis2_msg_ctx_is_paused(msg_ctx, env))
     {
-        /* message has paused, so rerun it from the position it stopped.
+        /* Message has paused, so rerun it from the position it stopped.
            The handler which paused the message will be the first one to resume 
            invocation
          */
@@ -114,6 +113,8 @@ axis2_engine_send(
             axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
         if (status != AXIS2_SUCCESS)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Resuming invocation of phases failed");
             return status;
         }
 
@@ -160,7 +161,7 @@ axis2_engine_send(
 
     if (!(axis2_msg_ctx_is_paused(msg_ctx, env)))
     {
-        /* write the message to wire */
+        /* Write the message to wire */
         axis2_transport_sender_t *transport_sender = NULL;
         axis2_transport_out_desc_t *transport_out =
             axis2_msg_ctx_get_transport_out_desc(msg_ctx, env);
@@ -175,6 +176,8 @@ axis2_engine_send(
             status = AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx);
             if (status != AXIS2_SUCCESS)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Transport sender invoke failed");
                 return status;
             }
         }
@@ -206,7 +209,6 @@ axis2_engine_receive(
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Start:axis2_engine_receive");
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
@@ -218,7 +220,7 @@ axis2_engine_receive(
 
     if (axis2_msg_ctx_is_paused(msg_ctx, env))
     {
-        /* the message has paused, so re-run them from the position they stopped. */
+        /* The message has paused, so re-run them from the position they stopped. */
         axis2_engine_resume_invocation_phases(engine, env,
                                               pre_calculated_phases, msg_ctx);
         if (axis2_msg_ctx_is_paused(msg_ctx, env))
@@ -226,7 +228,7 @@ axis2_engine_receive(
             return AXIS2_SUCCESS;
         }
 
-        /* resume op specific phases */
+        /* Resume op specific phases */
         op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         if (op_ctx)
         {
@@ -247,10 +249,14 @@ axis2_engine_receive(
         if (status != AXIS2_SUCCESS)
         {
             if (axis2_msg_ctx_get_server_side(msg_ctx, env))
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Invoking pre-calculated phases failed");
                 return status;
+            }
         }
 
-        if (AXIS2_TRUE == axis2_msg_ctx_is_paused(msg_ctx, env))
+        if (axis2_msg_ctx_is_paused(msg_ctx, env))
         {
             return AXIS2_SUCCESS;
         }
@@ -264,10 +270,16 @@ axis2_engine_receive(
                                                 op_specific_phases, msg_ctx);
             if (status != AXIS2_SUCCESS)
             {
+                axis2_char_t *op_name = NULL;
+                op_name = axutil_qname_get_localpart(axis2_op_get_qname(op, env), 
+                    env);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Invoking operation specific phases failed for "\
+                    "operation %s", op_name);
                 return status;
             }
 
-            if (AXIS2_TRUE == axis2_msg_ctx_is_paused(msg_ctx, env))
+            if (axis2_msg_ctx_is_paused(msg_ctx, env))
             {
                 return AXIS2_SUCCESS;
             }
@@ -281,15 +293,22 @@ axis2_engine_receive(
 
         status = axis2_engine_check_must_understand_headers(env, msg_ctx);
         if (status != AXIS2_SUCCESS)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Check for must understand headers failed");
             return status;
+        }
 
-        /* invoke the message receivers */
+        /* Invoke the message receivers */
         if (!op)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Operation not found");
             return AXIS2_FAILURE;
+        }
         receiver = axis2_op_get_msg_recv(op, env);
         if (!receiver)
         {
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                             "Message receiver not set in operation description");
             return AXIS2_FAILURE;
         }
@@ -298,7 +317,6 @@ axis2_engine_receive(
                                                                    env));
     }
 
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Axis2 engine receive completed!");
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_engine_receive");
 
     return status;
@@ -316,7 +334,6 @@ axis2_engine_send_fault(
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_conf_t *conf = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
@@ -331,7 +348,7 @@ axis2_engine_send_fault(
 
     if (axis2_msg_ctx_is_paused(msg_ctx, env))
     {
-        /* message has paused, so rerun it from the position it stopped.
+        /* Message has paused, so rerun it from the position it stopped.
            The handler which paused the message will be the first one to resume 
            invocation
          */
@@ -339,6 +356,8 @@ axis2_engine_send_fault(
             axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
         if (status != AXIS2_SUCCESS)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Resuming invoking the phases failed");
             return status;
         }
 
@@ -381,7 +400,7 @@ axis2_engine_send_fault(
 
     if (!(axis2_msg_ctx_is_paused(msg_ctx, env)))
     {
-        /* write the message to wire */
+        /* Write the message to wire */
         axis2_transport_sender_t *transport_sender = NULL;
         axis2_transport_out_desc_t *transport_out =
             axis2_msg_ctx_get_transport_out_desc(msg_ctx, env);
@@ -396,7 +415,11 @@ axis2_engine_send_fault(
                 AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx);
             }
             else
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Transport sender not found");
                 return AXIS2_FAILURE;
+            }
         }
         else
         {
@@ -418,14 +441,13 @@ axis2_engine_receive_fault(
     axis2_op_ctx_t *op_ctx = NULL;
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Start:axis2_engine_receive_fault");
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
 
     if (!op_ctx)
     {
-        /* if we do not have an op context that means this may be an incoming
+        /* If we do not have an op context that means this may be an incoming
            dual channel response. So try to dispatch the service */
         axis2_conf_ctx_t *conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
         if (conf_ctx)
@@ -455,7 +477,7 @@ axis2_engine_receive_fault(
     }
 
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-    /* find and execute the fault in flow handlers */
+    /* Find and execute the fault in flow handlers */
     if (op_ctx)
     {
         axis2_op_t *op = axis2_op_ctx_get_op(op_ctx, env);
@@ -493,7 +515,6 @@ axis2_engine_create_fault_msg_ctx(
     axis2_msg_info_headers_t *msg_info_headers = NULL;
     axis2_bool_t doing_rest = AXIS2_FALSE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, processing_context, NULL);
 
     if (axis2_msg_ctx_get_process_fault(processing_context, env))
@@ -501,6 +522,8 @@ axis2_engine_create_fault_msg_ctx(
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_INVALID_STATE_PROCESSING_FAULT_ALREADY,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating fault message contex failed");
         return NULL;
     }
 
@@ -552,10 +575,12 @@ axis2_engine_create_fault_msg_ctx(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NOWHERE_TO_SEND_FAULT,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Soap fault target destination not found");
         return NULL;
     }
 
-    /* set WSA action */
+    /* Set WSA action */
     msg_info_headers =
         axis2_msg_ctx_get_msg_info_headers(processing_context, env);
     if (msg_info_headers)
@@ -571,13 +596,13 @@ axis2_engine_create_fault_msg_ctx(
         }
     }
 
-    /* set relates to */
+    /* Set relates to */
     msg_id = axis2_msg_ctx_get_msg_id(processing_context, env);
     relates_to = axis2_relates_to_create(env, msg_id,
                                          AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE);
     axis2_msg_ctx_set_relates_to(fault_ctx, env, relates_to);
 
-    /* set msg id */
+    /* Set msg id */
     msg_uuid = axutil_uuid_gen(env);
     axis2_msg_ctx_set_message_id(fault_ctx, env, msg_uuid);
     if (msg_uuid)
@@ -619,6 +644,8 @@ axis2_engine_create_fault_msg_ctx(
 
         if (!envelope)
         {
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+                "Creating default soap envelope failed");
             return NULL;
         }
     }
@@ -644,8 +671,7 @@ axis2_engine_invoke_phases(
     int count = 0;
     axis2_status_t status = AXIS2_SUCCESS;
 
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Start:axis2_engine_invoke_phases");
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Start:axis2_engine_invoke_phases");
     AXIS2_PARAM_CHECK(env->error, phases, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
@@ -656,17 +682,17 @@ axis2_engine_invoke_phases(
         axis2_phase_t *phase = (axis2_phase_t *)
             axutil_array_list_get(phases, env, i);
 
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                        "Invoking phase %s", axis2_phase_get_name(phase, env));
-
         status = axis2_phase_invoke(phase, env, msg_ctx);
 
         if (status != AXIS2_SUCCESS)
         {
+            const axis2_char_t *phase_name = axis2_phase_get_name(phase, env);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invoking phase %s failed", 
+                phase_name);
             return status;
         }
     }
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "End:axis2_engine_invoke_phases");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "End:axis2_engine_invoke_phases");
     return AXIS2_SUCCESS;
 }
 
@@ -681,9 +707,8 @@ axis2_engine_resume_invocation_phases(
     int count = 0;
     axis2_bool_t found_match = AXIS2_FALSE;
 
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
                     "Start:axis2_engine_resume_invocation_phases");
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, phases, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
@@ -698,7 +723,7 @@ axis2_engine_resume_invocation_phases(
         const axis2_char_t *phase_name = axis2_phase_get_name(phase, env);
         const axis2_char_t *paused_phase_name =
             axis2_msg_ctx_get_paused_phase_name(msg_ctx, env);
-        /* skip invoking handlers until we find the paused phase */
+        /* Skip invoking handlers until we find the paused phase */
         if (phase_name && paused_phase_name && 0 ==
             axutil_strcmp(phase_name, paused_phase_name))
         {
@@ -707,14 +732,14 @@ axis2_engine_resume_invocation_phases(
 
             paused_handler_i = axis2_msg_ctx_get_current_handler_index(msg_ctx,
                                                                        env);
-            /* invoke the paused handler and rest of the handlers of the paused
+            /* Invoke the paused handler and rest of the handlers of the paused
              * phase */
             axis2_phase_invoke_start_from_handler(phase, env, paused_handler_i,
                                                   msg_ctx);
         }
         else
         {
-            /* now we have found the paused phase and invoked the rest of the
+            /* Now we have found the paused phase and invoked the rest of the
              * handlers of that phase, invoke all the phases after that */
             if (found_match)
             {
@@ -723,7 +748,7 @@ axis2_engine_resume_invocation_phases(
         }
     }
 
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
                     "End:axis2_engine_resume_invocation_phases");
     return AXIS2_SUCCESS;
 }
@@ -749,12 +774,15 @@ axis2_engine_check_must_understand_headers(
     axutil_hash_t *header_block_ht = NULL;
     axutil_hash_index_t *hash_index = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     soap_envelope = axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (!soap_envelope)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Soap envelope not found in message context");
         return AXIS2_FAILURE;
+    }
 
     soap_header = axiom_soap_envelope_get_header(soap_envelope, env);
     if (!soap_header)
@@ -782,7 +810,7 @@ axis2_engine_check_must_understand_headers(
                 continue;
             }
 
-            /* if this header block is not targeted to me then its not my
+            /* If this header block is not targeted to me then its not my
                problem. Currently this code only supports the "next" role; we
                need to fix this to allow the engine/service to be in one or more
                additional roles and then to check that any headers targeted for
@@ -805,6 +833,8 @@ axis2_engine_check_must_understand_headers(
                                                           temp_env);
                     axis2_msg_ctx_set_wsa_action(msg_ctx, env,
                                                  "http://www.w3.org/2005/08/addressing/fault");
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "Must understand soap fault occured");
                     return AXIS2_FAILURE;
                 }
             }
@@ -824,6 +854,8 @@ axis2_engine_check_must_understand_headers(
                                                           temp_env);
                     axis2_msg_ctx_set_wsa_action(msg_ctx, env,
                                                  "http://www.w3.org/2005/08/addressing/fault");
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                        "Must understand soap fault occured");
                     return AXIS2_FAILURE;
                 }
 
@@ -848,24 +880,28 @@ axis2_engine_resume_receive(
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
                     "Start:axis2_engine_resume_receive");
-    /* find and invoke the phases */
+    /* Find and invoke the phases */
     conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
     conf = axis2_conf_ctx_get_conf(conf_ctx, env);
     phases =
         axis2_conf_get_in_phases_upto_and_including_post_dispatch(conf, env);
 
     axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
-    /* invoking the message receiver */
+    /* Invoking the message receiver */
     if (axis2_msg_ctx_get_server_side(msg_ctx, env) &&
         !axis2_msg_ctx_is_paused(msg_ctx, env))
     {
-        /* invoke the message receivers */
+        /* Invoke the message receivers */
         axis2_op_ctx_t *op_ctx = NULL;
 
         status = axis2_engine_check_must_understand_headers(env, msg_ctx);
 
         if (status != AXIS2_SUCCESS)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Checking for must understand headers failed");
             return status;
+        }
 
         op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         if (op_ctx)
@@ -877,8 +913,8 @@ axis2_engine_resume_receive(
                 receiver = axis2_op_get_msg_recv(op, env);
                 if (!receiver)
                 {
-                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                                    "Message receiver not set in operation description");
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Message receiver not set in operation description");
                     return AXIS2_FAILURE;
                 }
                 status = axis2_msg_recv_receive(receiver, env, msg_ctx,
@@ -902,7 +938,7 @@ axis2_engine_resume_send(
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Start:axis2_engine_resume_send");
-    /* invoke the phases */
+    /* Invoke the phases */
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx)
     {
@@ -914,10 +950,10 @@ axis2_engine_resume_send(
     }
     axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
 
-    /* invoking transport sender */
+    /* Invoking transport sender */
     if (!axis2_msg_ctx_is_paused(msg_ctx, env))
     {
-        /* write the message to the wire */
+        /* Write the message to the wire */
         axis2_transport_out_desc_t *transport_out = NULL;
         axis2_transport_sender_t *sender = NULL;
         transport_out = axis2_msg_ctx_get_transport_out_desc(msg_ctx, env);
@@ -933,3 +969,4 @@ axis2_engine_resume_send(
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_engine_resume_send");
     return status;
 }
+

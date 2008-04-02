@@ -29,9 +29,8 @@ struct axis2_arch_file_data
     axis2_char_t *module_dll_name;
     axis2_char_t *name;
     /*
-     * To store services in a serviceGroup. If there are wsdl for those 
-     * servics ,so wsdl service will be created for each wsdl an those will be 
-     * temporarily store in this table
+     * To store services in a service group. Those services are temporarily 
+     * stored in this table
      */
     axutil_hash_t *svc_map;
     axutil_array_list_t *deployable_svcs;
@@ -43,9 +42,6 @@ axis2_arch_file_data_create(
     const axutil_env_t * env)
 {
     axis2_arch_file_data_t *arch_file_data = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
-
     arch_file_data = (axis2_arch_file_data_t *) AXIS2_MALLOC(env->
                                                              allocator,
                                                              sizeof
@@ -80,6 +76,9 @@ axis2_arch_file_data_create_with_type_and_file(
         axis2_arch_file_data_create(env);
     if (!arch_file_data)
     {
+        axis2_char_t *file_name = axutil_file_get_name(file, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Could not create arch_file_data for file %s", file_name);
         return NULL;
     }
 
@@ -99,6 +98,8 @@ axis2_arch_file_data_create_with_type_and_name(
         axis2_arch_file_data_create(env);
     if (!arch_file_data)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Could not create arch_file_data for %s", name);
         return NULL;
     }
     arch_file_data->type = type;
@@ -111,8 +112,6 @@ axis2_arch_file_data_free(
     axis2_arch_file_data_t * arch_file_data,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (arch_file_data->file)
     {
         axutil_file_free(arch_file_data->file, env);
@@ -181,7 +180,6 @@ axis2_arch_file_data_set_msg_recv(
     const axutil_env_t * env,
     axis2_char_t * msg_recv)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_recv, AXIS2_FAILURE);
 
     if (arch_file_data->msg_recv)
@@ -207,8 +205,6 @@ axis2_arch_file_data_get_svc_name(
     const axutil_env_t * env)
 {
     axis2_char_t *svc_name = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
 
     if (arch_file_data->file)
     {
@@ -245,8 +241,6 @@ axis2_arch_file_data_get_module_name(
 {
     axis2_char_t *module_name = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (arch_file_data->file)
     {
         module_name = axutil_file_get_name(arch_file_data->file, env);
@@ -264,7 +258,6 @@ axis2_arch_file_data_set_module_name(
     const axutil_env_t * env,
     axis2_char_t * module_name)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FAILURE);
 
     if (arch_file_data->module_name)
@@ -290,7 +283,6 @@ axis2_arch_file_data_set_module_dll_name(
     const axutil_env_t * env,
     axis2_char_t * module_dll_name)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_dll_name, AXIS2_FAILURE);
 
     if (arch_file_data->module_dll_name)
@@ -310,7 +302,6 @@ axis2_arch_file_data_add_svc(
 {
     const axutil_qname_t *svc_qname = NULL;
     axis2_char_t *svc_name = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_desc, AXIS2_FAILURE);
 
     svc_qname = axis2_svc_get_qname(svc_desc, env);
@@ -337,7 +328,6 @@ axis2_arch_file_data_get_svc(
 {
     axis2_svc_t *svc = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
 
     if (arch_file_data->svc_map)
@@ -374,7 +364,6 @@ axis2_arch_file_data_set_deployable_svcs(
     const axutil_env_t * env,
     axutil_array_list_t * deployable_svcs)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, deployable_svcs, AXIS2_FAILURE);
     if (arch_file_data->deployable_svcs)
     {
@@ -384,3 +373,4 @@ axis2_arch_file_data_set_deployable_svcs(
     arch_file_data->deployable_svcs = deployable_svcs;
     return AXIS2_SUCCESS;
 }
+

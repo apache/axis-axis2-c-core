@@ -24,6 +24,11 @@
  * @{
  */
 
+/**
+ * @file axis2_arch_file_data.h
+ * @brief Axis2 Arch File Data interface. arch_file_data construct contain 
+ * deployment information retrieved from a module or service configuration file.
+ */
 #include <axis2_const.h>
 #include <axutil_error.h>
 #include <axis2_defines.h>
@@ -90,7 +95,7 @@ extern "C"
     /**
      * @param file_data pointer to arch_file_data
      * @param env pointer to environment struct
-     * @return the service name. if contained file is not null this is the
+     * @return the service name. If contained file is not null this is the
      * file name. else this is the name property
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL

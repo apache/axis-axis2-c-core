@@ -34,8 +34,6 @@ axis2_arch_reader_create(
 {
     axis2_arch_reader_t *arch_reader = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     arch_reader = (axis2_arch_reader_t *) AXIS2_MALLOC(env->
                                                        allocator,
                                                        sizeof
@@ -57,9 +55,7 @@ axis2_arch_reader_free(
     axis2_arch_reader_t * arch_reader,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
-    /* desc builder is owned by dep_engine, so do not free it here */
+    /* Description builder is owned by dep_engine, so do not free it here */
 
     if (arch_reader)
     {
@@ -88,22 +84,21 @@ axis2_arch_reader_process_svc_grp(
     axis2_svc_grp_t * svc_grp)
 {
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_char_t *svcs_xml = NULL;
+    axis2_char_t *svc_grp_xml = NULL;
     axis2_char_t *repos_path = NULL;
     axis2_bool_t file_flag = AXIS2_FALSE;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, file_name, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
 
     file_flag = axis2_dep_engine_get_file_flag (dep_engine, env);
 
-    if (file_flag == AXIS2_FALSE)
+    if (!file_flag)
     { 
 
         repos_path = axis2_dep_engine_get_repos_path(dep_engine, env);
         
-        svcs_xml = axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR,
+        svc_grp_xml = axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR,
                                  AXIS2_SERVICE_FOLDER, AXIS2_PATH_SEP_STR,
                                  file_name, AXIS2_PATH_SEP_STR, AXIS2_SVC_XML,
                                  NULL);
@@ -111,23 +106,25 @@ axis2_arch_reader_process_svc_grp(
     else
     {
         repos_path = axis2_dep_engine_get_svc_dir (dep_engine, env);
-        svcs_xml = axutil_strcat (env, repos_path, AXIS2_PATH_SEP_STR,
+        svc_grp_xml = axutil_strcat (env, repos_path, AXIS2_PATH_SEP_STR,
                                   file_name, AXIS2_PATH_SEP_STR, AXIS2_SVC_XML,
                                   NULL);
     }
 
-    if (!svcs_xml)
+    if (!svc_grp_xml)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Service xml file not found for %s", file_name);
         return AXIS2_FAILURE;
     }
-    status = axutil_file_handler_access(svcs_xml, AXIS2_F_OK);
+    status = axutil_file_handler_access(svc_grp_xml, AXIS2_F_OK);
     if (AXIS2_SUCCESS == status)
     {
         struct axis2_arch_file_data *arch_file_data = NULL;
         axis2_char_t *svc_name = NULL;
 
-        status = axis2_arch_reader_build_svc_grp(arch_reader, env, svcs_xml,
+        status = axis2_arch_reader_build_svc_grp(arch_reader, env, svc_grp_xml,
                                                  dep_engine, svc_grp);
         if (AXIS2_SUCCESS != status)
         {
@@ -142,9 +139,11 @@ axis2_arch_reader_process_svc_grp(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SERVICE_XML_NOT_FOUND,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Access to  service configuration file %s failed", file_name);
         status = AXIS2_FAILURE;
     }
-    AXIS2_FREE(env->allocator, svcs_xml);
+    AXIS2_FREE(env->allocator, svc_grp_xml);
     return status;
 }
 
@@ -157,11 +156,10 @@ axis2_arch_reader_build_svc_grp(
     axis2_svc_grp_t * svc_grp)
 {
     axis2_char_t *root_element_name = NULL;
-    axiom_node_t *svcs = NULL;
-    axiom_element_t *svcs_element = NULL;
+    axiom_node_t *svc_grp_node = NULL;
+    axiom_element_t *svc_grp_element = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_xml, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
@@ -171,25 +169,29 @@ axis2_arch_reader_build_svc_grp(
                                                            dep_engine);
     if (!arch_reader->desc_builder)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Creating description builder for service file %s failed", svc_xml);
         return AXIS2_FAILURE;
     }
     axis2_dep_engine_add_desc_builder(dep_engine, env,
                                       arch_reader->desc_builder);
 
-    svcs = axis2_desc_builder_build_om(arch_reader->desc_builder, env);
+    svc_grp_node = axis2_desc_builder_build_om(arch_reader->desc_builder, env);
 
-    if (svcs)
+    if (svc_grp_node)
     {
-        svcs_element = axiom_node_get_data_element(svcs, env);
-        if (svcs_element)
+        svc_grp_element = axiom_node_get_data_element(svc_grp_node, env);
+        if (svc_grp_element)
         {
-            root_element_name = axiom_element_get_localname(svcs_element, env);
+            root_element_name = axiom_element_get_localname(svc_grp_element, env);
         }
     }
 
     if (root_element_name &&
         0 == axutil_strcmp(AXIS2_SVC_ELEMENT, root_element_name))
     {
+        /* If service group is actually a service. In this case service group 
+         * contain only single service */
         axis2_svc_t *svc = NULL;
         axis2_svc_builder_t *svc_builder = NULL;
         axis2_arch_file_data_t *file_data = NULL;
@@ -218,19 +220,20 @@ axis2_arch_reader_build_svc_grp(
         svc_builder = axis2_svc_builder_create_with_dep_engine_and_svc(env,
                                                                        dep_engine,
                                                                        svc);
-        status = axis2_svc_builder_populate_svc(svc_builder, env, svcs);
+        status = axis2_svc_builder_populate_svc(svc_builder, env, svc_grp_node);
         axis2_dep_engine_add_svc_builder(dep_engine, env, svc_builder);
         if (AXIS2_SUCCESS != status)
         {
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
-                           "populating service is not successful");
-
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Populating service failed for %s", svc_name);
             return AXIS2_FAILURE;
         }
 
         dep_svcs = axis2_arch_file_data_get_deployable_svcs(file_data, env);
         if (!dep_svcs)
         {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "Deployable services list is NULL within arch file data");
             return AXIS2_FAILURE;
         }
         status = axutil_array_list_add(dep_svcs, env, svc);
@@ -245,7 +248,7 @@ axis2_arch_reader_build_svc_grp(
     {
         axis2_svc_grp_builder_t *grp_builder = NULL;
         grp_builder = axis2_svc_grp_builder_create_with_svc_and_dep_engine(env,
-                                                                           svcs,
+                                                                  svc_grp_node,
                                                                            dep_engine);
         status =
             axis2_svc_grp_builder_populate_svc_grp(grp_builder, env, svc_grp);
@@ -266,14 +269,12 @@ axis2_arch_reader_read_module_arch(
     axis2_char_t *repos_path = NULL;
     axis2_bool_t file_flag;
 
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, file_name, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
 
     file_flag = axis2_dep_engine_get_file_flag (dep_engine, env);
-	if (file_flag == AXIS2_FALSE)
+	if (!file_flag)
 	{
     	repos_path = axis2_dep_engine_get_repos_path(dep_engine, env);
     	module_xml = axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR,
@@ -292,6 +293,7 @@ axis2_arch_reader_read_module_arch(
     if (!module_xml)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
         return AXIS2_FAILURE;
     }
     status = axutil_file_handler_access(module_xml, AXIS2_F_OK);
@@ -312,6 +314,9 @@ axis2_arch_reader_read_module_arch(
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_MODULE_XML_NOT_FOUND_FOR_THE_MODULE,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Module configuration file access failed for module file %s", 
+            module_xml);
         status = AXIS2_FAILURE;
     }
     AXIS2_FREE(env->allocator, module_xml);
@@ -325,8 +330,6 @@ axis2_arch_reader_create_module_arch(
 {
     axutil_file_t *file = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     file = axutil_file_create(env);
     if (!file)
     {
@@ -335,3 +338,4 @@ axis2_arch_reader_create_module_arch(
     axutil_file_set_name(file, env, module_name);
     return file;
 }
+

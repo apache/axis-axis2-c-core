@@ -63,9 +63,8 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * To create a ServiceDescrption <code>AxisService</code>   using given wsdl.
-     * If the service.wsdl is there in the arcive file AxisService will be creted 
-     * using that, else default AxisService will be created
+     * To create a service descrption <code>axis2_svc_t</code> using given 
+     * deployment info file.
      * @param env pointer to environment struct
      * @param file pointer to file
      */
@@ -75,12 +74,14 @@ extern "C"
                     struct axis2_arch_file_data *file);
 
     /**
-     * it take two arguments filename and refereance to DeployEngine
+     * Construct the path to the service group configuration file(services.xml)
+     * using the passed file name and populate the passed service group 
+     * description.
      * @param arch_reader pointer to arch reader
      * @param env pointer to environment struct
-     * @param file_name pointer to file name
+     * @param file_name pointer to service group configuration file.
      * @param dep_engine pointer to deployment engine
-     * @param svc_grp pointer to service group
+     * @param svc_grp pointer to service group to be populated.
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -92,9 +93,11 @@ extern "C"
         axis2_svc_grp_t * svc_grp);
 
     /**
+     * Populate the passed service group description using the service group 
+     * configuration file(services.xml).
      * @param arch_reader pointer to arch reader
      * @param env pointer to environment struct
-     * @param file_path pointer to file path
+     * @param file_path path to the service group configuration file(services.xml)
      * @param dep_engine pointer to deployment engine
      * @param svc_grp pointer to service group
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
@@ -108,6 +111,8 @@ extern "C"
         struct axis2_svc_grp *svc_grp);
 
     /**
+     * Construct the path to the module configuration file(module.xml)
+     * using the passed file name and populate the passed module description.
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
@@ -120,6 +125,7 @@ extern "C"
         axis2_module_desc_t * module);
 
     /**
+     * Create an axis2 file using the passed module name.
      * @param env pointer to environment struct
      * @param module_name pointer to module name
      */
