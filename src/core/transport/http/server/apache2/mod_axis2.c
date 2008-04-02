@@ -315,6 +315,11 @@ axis2_handler(
     axutil_env_t *thread_env = NULL;
     axutil_allocator_t *allocator = NULL;
     axutil_error_t *error = NULL;
+    apr_allocator_t *local_allocator = NULL;
+    apr_pool_t *local_pool = NULL;
+
+    apr_allocator_create(&local_allocator);
+    apr_pool_create_ex(&local_pool, NULL, NULL, local_allocator);
 
     if (strcmp(req->handler, "axis2_module"))
     {
@@ -334,7 +339,7 @@ axis2_handler(
     rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, axutil_env, req);*/
 
     /* create new allocator for this request */
-    allocator = (axutil_allocator_t *) apr_palloc( req->pool,
+    allocator = (axutil_allocator_t *) apr_palloc(local_pool,
                                                   sizeof(axutil_allocator_t));
     if (!allocator)
     {
@@ -343,8 +348,8 @@ axis2_handler(
     allocator->malloc_fn = axis2_module_malloc;
     allocator->realloc = axis2_module_realloc;
     allocator->free_fn = axis2_module_free;
-    allocator->local_pool = (void *) req->pool;
-    allocator->current_pool = (void *) req->pool;
+    allocator->local_pool = (void *) local_pool;
+    allocator->current_pool = (void *) local_pool;
     allocator->global_pool = axutil_env->allocator->global_pool;
 
     error = axutil_error_create(allocator);
@@ -359,6 +364,9 @@ axis2_handler(
     {
         return HTTP_INTERNAL_SERVER_ERROR;
     }
+
+    apr_pool_destroy(local_pool);
+    apr_allocator_destroy(local_allocator);
 
     return rv;
 }
@@ -508,93 +516,66 @@ static int axis2_post_config(apr_pool_t *pconf, apr_pool_t *plog,
 		allocator->local_pool = (void *) rmm;
 		allocator->current_pool = (void *) rmm;
 		allocator->global_pool = (void *) rmm;
+
+        /* We need to init xml readers before we go into threaded env
+         */
+        axiom_xml_reader_init();
+        axutil_error_init();
+
+        error = axutil_error_create(allocator);
+        if (!error)
+        {
+            ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
+                         "[Axis2] Error creating mod_axis2 error structure");
+            exit(APEXIT_CHILDFATAL);
+        }
+    	
+        axutil_logger = axutil_log_create(allocator, NULL, conf->axutil_log_file);
+        if (!axutil_logger)
+        {
+            ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
+                         "[Axis2] Error creating mod_axis2 log structure");
+            exit(APEXIT_CHILDFATAL);
+        }
+        thread_pool = axutil_thread_pool_init(allocator);
+        if (!thread_pool)
+        {
+            ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
+                         "[Axis2] Error initializing mod_axis2 thread pool");
+            exit(APEXIT_CHILDFATAL);
+        }
+        axutil_env = axutil_env_create_with_error_log_thread_pool(allocator, error,
+                                                                  axutil_logger,
+                                                                  thread_pool);
+        if (!axutil_env)
+        {
+            ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
+                         "[Axis2] Error creating mod_axis2 environment");
+            exit(APEXIT_CHILDFATAL);
+        }
+        if (axutil_logger)
+        {
+            axutil_logger->level = conf->log_level;
+            axutil_logger->size = conf->max_log_file_size;
+            AXIS2_LOG_INFO(axutil_env->log, "Apache Axis2/C version in use : %s",
+                           axis2_version_string());
+            AXIS2_LOG_INFO(axutil_env->log, 
+                "Starting log with log level %d and max log file size %d",
+                           conf->log_level, conf->max_log_file_size);
+        }
+
+	    axis2_worker = axis2_apache2_worker_create(axutil_env,
+												    conf->axis2_repo_path);
+        if (!axis2_worker)
+        {
+            ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
+                         "[Axis2] Error creating mod_axis2 apache2 worker");
+            exit(APEXIT_CHILDFATAL);
+        }
 	}
-	else
-#endif
-    /* create an allocator that uses APR memory pools and lasts the
-     * lifetime of the httpd server child process
-     */
-	{
-		apr_pool_t *pool = NULL;
-		status = apr_pool_create(&pool, pconf);
-		if (status)
-		{
-			ap_log_error(APLOG_MARK, APLOG_EMERG, status, svr_rec,
-						 "[Axis2] Error allocating mod_axis2 memory pool");
-			exit(APEXIT_INIT);
-		}
-		allocator = (axutil_allocator_t *) apr_palloc(pool,
-													  sizeof(axutil_allocator_t));
-		if (!allocator)
-		{
-			ap_log_error(APLOG_MARK, APLOG_EMERG, APR_ENOMEM, svr_rec,
-						 "[Axis2] Error allocating mod_axis2 allocator");
-			exit(APEXIT_INIT);
-		}
-		allocator->malloc_fn = axis2_module_malloc;
-		allocator->realloc = axis2_module_realloc;
-		allocator->free_fn = axis2_module_free;
-		allocator->local_pool = (void *) pool;
-		allocator->current_pool = (void *) pool;
-		allocator->global_pool = (void *) pool;
-	}
-
-
-    /* We need to init xml readers before we go into threaded env
-     */
-    axiom_xml_reader_init();
-    axutil_error_init();
-
-    error = axutil_error_create(allocator);
-    if (!error)
-    {
-        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
-                     "[Axis2] Error creating mod_axis2 error structure");
-        exit(APEXIT_CHILDFATAL);
-    }
 	
-    axutil_logger = axutil_log_create(allocator, NULL, conf->axutil_log_file);
-    if (!axutil_logger)
-    {
-        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
-                     "[Axis2] Error creating mod_axis2 log structure");
-        exit(APEXIT_CHILDFATAL);
-    }
-    thread_pool = axutil_thread_pool_init(allocator);
-    if (!thread_pool)
-    {
-        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
-                     "[Axis2] Error initializing mod_axis2 thread pool");
-        exit(APEXIT_CHILDFATAL);
-    }
-    axutil_env = axutil_env_create_with_error_log_thread_pool(allocator, error,
-                                                              axutil_logger,
-                                                              thread_pool);
-    if (!axutil_env)
-    {
-        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
-                     "[Axis2] Error creating mod_axis2 environment");
-        exit(APEXIT_CHILDFATAL);
-    }
-    if (axutil_logger)
-    {
-        axutil_logger->level = conf->log_level;
-        axutil_logger->size = conf->max_log_file_size;
-        AXIS2_LOG_INFO(axutil_env->log, "Apache Axis2/C version in use : %s",
-                       axis2_version_string());
-        AXIS2_LOG_INFO(axutil_env->log, 
-            "Starting log with log level %d and max log file size %d",
-                       conf->log_level, conf->max_log_file_size);
-    }
-
-	axis2_worker = axis2_apache2_worker_create(axutil_env,
-												conf->axis2_repo_path);
-    if (!axis2_worker)
-    {
-        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
-                     "[Axis2] Error creating mod_axis2 apache2 worker");
-        exit(APEXIT_CHILDFATAL);
-    }
+#endif
+    
 	return OK;
 }
 
@@ -603,6 +584,109 @@ axis2_module_init(
     apr_pool_t * p,
     server_rec * svr_rec)
 {
+    apr_pool_t *pool;
+    apr_status_t status;
+    axutil_allocator_t *allocator = NULL;
+    axutil_error_t *error = NULL;
+    axutil_log_t *axutil_logger = NULL;
+    axutil_thread_pool_t *thread_pool = NULL;
+    axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
+                svr_rec->module_config, &axis2_module);
+
+    if (!(conf->axis2_global_pool_size > 0))
+	{
+        /*
+            If we are using shared memory, no need to init the child, as the 
+            worker has been created in post config.
+        */
+        return;
+    }
+
+
+    /* We need to init xml readers before we go into threaded env
+     */
+    axiom_xml_reader_init();
+
+    /* create an allocator that uses APR memory pools and lasts the
+     * lifetime of the httpd server child process
+     */
+    status = apr_pool_create(&pool, p);
+    if (status)
+    {
+        ap_log_error(APLOG_MARK, APLOG_EMERG, status, svr_rec,
+                     "[Axis2] Error allocating mod_axis2 memory pool");
+        exit(APEXIT_CHILDFATAL);
+    }
+    allocator = (axutil_allocator_t*) apr_palloc(pool,
+                                                sizeof(axutil_allocator_t));
+    if (! allocator)
+    {
+        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_ENOMEM, svr_rec,
+                     "[Axis2] Error allocating mod_axis2 allocator");
+        exit(APEXIT_CHILDFATAL);
+    }
+    allocator->malloc_fn = axis2_module_malloc;
+    allocator->realloc = axis2_module_realloc;
+    allocator->free_fn = axis2_module_free;
+    allocator->local_pool = (void*) pool;
+    allocator->current_pool = (void*) pool;
+    allocator->global_pool = (void*) pool;
+
+    if (! allocator)
+    {
+        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
+                         "[Axis2] Error initializing mod_axis2 allocator");
+        exit(APEXIT_CHILDFATAL);
+    }
+    
+    axutil_error_init();
+    
+    error = axutil_error_create(allocator);
+    if (! error)
+    {
+        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
+                     "[Axis2] Error creating mod_axis2 error structure");
+        exit(APEXIT_CHILDFATAL);
+    }
+    axutil_logger = axutil_log_create(allocator, NULL, conf->axutil_log_file);
+    if (! axutil_logger)
+    {
+        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
+                     "[Axis2] Error creating mod_axis2 log structure");
+        exit(APEXIT_CHILDFATAL);
+    }
+    thread_pool = axutil_thread_pool_init(allocator);
+    if (! thread_pool)
+    {
+        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
+                     "[Axis2] Error initializing mod_axis2 thread pool");
+        exit(APEXIT_CHILDFATAL);
+    }
+    axutil_env = axutil_env_create_with_error_log_thread_pool(allocator, error,
+            axutil_logger, thread_pool);
+    if (! axutil_env)
+    {
+        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
+                     "[Axis2] Error creating mod_axis2 environment");
+        exit(APEXIT_CHILDFATAL);
+    }
+    if (axutil_logger)
+    {
+
+        axutil_logger->level = conf->log_level;
+        AXIS2_LOG_INFO(axutil_env->log, "Apache Axis2/C version in use : %s", 
+            axis2_version_string());
+        AXIS2_LOG_INFO(axutil_env->log, "Starting log with log level %d",
+            conf->log_level);
+    }
+    axis2_worker = axis2_apache2_worker_create(axutil_env,
+            conf->axis2_repo_path);
+    if (! axis2_worker)
+    {
+        ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
+                     "[Axis2] Error creating mod_axis2 apache2 worker");
+        exit(APEXIT_CHILDFATAL);
+    }
 }
 
 static void
