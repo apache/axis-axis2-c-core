@@ -100,8 +100,9 @@ axiom_soap_header_create_with_parent(
 
     soap_header = axiom_soap_header_create(env);
     if (!soap_header)
+    {
         return NULL;
-
+    }
     soap_header->soap_version =
         axiom_soap_envelope_get_soap_version(envelope, env);
 
@@ -215,15 +216,17 @@ axiom_soap_header_add_header_block(
 
     cloned_ns = axiom_namespace_clone(ns, env);
     if (!cloned_ns)
+    {
         return NULL;
-
+    }
     header_block =
         axiom_soap_header_block_create_with_parent(env, localname, cloned_ns,
                                                    soap_header);
 
     if (!header_block)
+    {
         return NULL;
-
+    }
     header_block_node =
         axiom_soap_header_block_get_base_node(header_block, env);
 
@@ -257,8 +260,9 @@ AXIS2_EXTERN axiom_children_qname_iterator_t *AXIS2_CALL
 
 
     if (!soap_header->om_ele_node)
+    {
         return NULL;
-
+    }
     om_ele =
         (axiom_element_t *) axiom_node_get_data_element(soap_header->
                                                         om_ele_node, env);
@@ -291,7 +295,9 @@ AXIS2_EXTERN axiom_children_with_specific_attribute_iterator_t *AXIS2_CALL
     axiom_children_with_specific_attribute_iterator_t *iter = NULL;
 
     if (soap_header->soap_version == AXIOM_SOAP_VERSION_NOT_SET)
+    {
         return NULL;
+    }
     if (soap_header->soap_version == AXIOM_SOAP11)
     {
         localname = AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
@@ -305,8 +311,9 @@ AXIS2_EXTERN axiom_children_with_specific_attribute_iterator_t *AXIS2_CALL
 
     qn = axutil_qname_create(env, localname, nsuri, NULL);
     if (!qn)
+    {
         return NULL;
-
+    }
     header_om_ele = (axiom_element_t *)
         axiom_node_get_data_element(soap_header->om_ele_node, env);
 
@@ -396,8 +403,9 @@ axiom_soap_header_set_header_block(
                                       sizeof(axis2_char_t) * 10);
 
     if (!key)
+    {
         return AXIS2_FAILURE;
-
+    }
     sprintf(key, "%d", soap_header->hbnumber++);
 
     if (soap_header->header_blocks)
@@ -453,12 +461,14 @@ AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     AXIS2_PARAM_CHECK(env->error, ns_uri, NULL);
 
     if (!(soap_header->header_blocks))
+    {
         return NULL;
-
+    }
     header_block_list = axutil_array_list_create(env, 10);
     if (!header_block_list)
+    {
         return NULL;
-
+    }
     for (hash_index = axutil_hash_first(soap_header->header_blocks, env);
          hash_index; hash_index = axutil_hash_next(env, hash_index))
     {
@@ -534,8 +544,9 @@ axiom_soap_header_remove_header_block(
     qname_prefix = axutil_qname_get_prefix(qname, env);
 
     if (!soap_header->header_blocks)
+    {
         return AXIS2_FAILURE;
-
+    }
     for (hi = axutil_hash_first(soap_header->header_blocks, env);
          hi; hi = axutil_hash_next(env, hi))
     {
@@ -588,7 +599,9 @@ axiom_soap_header_qname_matches(
     axis2_char_t *match_nsuri = NULL;
 
     if (!(qname_to_match))
+    {
         return AXIS2_TRUE;
+    }
     if (qname_to_match)
     {
         match_lpart = axutil_qname_get_localpart(qname_to_match, env);
