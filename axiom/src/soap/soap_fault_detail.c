@@ -66,16 +66,20 @@ AXIS2_EXTERN axiom_soap_fault_detail_t *AXIS2_CALL
 
     fault_detail = axiom_soap_fault_detail_create(env);
     if (!fault_detail)
+    {
         return NULL;
-
+    }
     parent_node = axiom_soap_fault_get_base_node(fault, env);
     if (!parent_node)
+    {
         return NULL;
-
+    }
     parent_ele =
         (axiom_element_t *) axiom_node_get_data_element(parent_node, env);
     if (!parent_ele)
+    {
         return NULL;
+    }
     soap_version = axiom_soap_fault_get_soap_version(fault, env);
     if (soap_version == AXIOM_SOAP12)
     {

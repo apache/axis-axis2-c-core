@@ -78,8 +78,9 @@ axiom_soap_fault_reason_create_with_parent(
 
     fault_reason = axiom_soap_fault_reason_create(env);
     if (!fault_reason)
+    {
         return NULL;
-
+    }
     parent_node = axiom_soap_fault_get_base_node(fault, env);
     if (!parent_node)
     {
@@ -158,8 +159,9 @@ AXIS2_EXTERN axiom_soap_fault_text_t *AXIS2_CALL
 
     AXIS2_PARAM_CHECK(env->error, fault_reason, NULL);
     if (!lang || (axutil_strcmp(lang, "") == 0))
+    {
         return NULL;
-
+    }
     /** Here we have to build the soap fault reason element completly */
     if (!fault_reason->fault_texts)
     {
@@ -172,14 +174,17 @@ AXIS2_EXTERN axiom_soap_fault_text_t *AXIS2_CALL
                 status =
                     axiom_soap_builder_next(fault_reason->soap_builder, env);
                 if (status == AXIS2_FAILURE)
+                {
                     return NULL;
+                }
             }
         }
     }
 
     if (!fault_reason->fault_texts)
+    {
         return NULL;
-
+    }
     /** iterate the array list */
     size = axutil_array_list_size(fault_reason->fault_texts, env);
     for (i = 0; i < size; i++)
@@ -255,7 +260,9 @@ AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
                 status =
                     axiom_soap_builder_next(fault_reason->soap_builder, env);
                 if (status == AXIS2_FAILURE)
+                {
                     return NULL;
+                }
             }
         }
     }
@@ -278,7 +285,9 @@ AXIS2_EXTERN axiom_soap_fault_text_t *AXIS2_CALL
                 status =
                     axiom_soap_builder_next(fault_reason->soap_builder, env);
                 if (status == AXIS2_FAILURE)
+                {
                     return NULL;
+                }
             }
         }
     }
@@ -287,7 +296,9 @@ AXIS2_EXTERN axiom_soap_fault_text_t *AXIS2_CALL
         void *value = NULL;
         value = axutil_array_list_get(fault_reason->fault_texts, env, 0);
         if (value)
+        {
             return (axiom_soap_fault_text_t *) value;
+        }
     }
     return NULL;
 }
@@ -299,13 +310,16 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_soap_fault_text_t * fault_text)
 {
     if (!fault_text)
+    {
         return AXIS2_FAILURE;
-
+    }
     if (!(fault_reason->fault_texts))
     {
         fault_reason->fault_texts = axutil_array_list_create(env, 1);
         if (!fault_reason->fault_texts)
+        {
             return AXIS2_FAILURE;
+        }
         axutil_array_list_add(fault_reason->fault_texts, env, fault_text);
     }
     else
@@ -318,8 +332,9 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
             is_exists =
                 axiom_soap_fault_reason_lang_exists(fault_reason, env, lang);
             if (is_exists == AXIS2_TRUE)
+            {
                 return AXIS2_FAILURE;
-
+            }
             /** this soap_fault text already exists */
         }
         axutil_array_list_add(fault_reason->fault_texts, env, fault_text);
@@ -337,8 +352,9 @@ axiom_soap_fault_reason_lang_exists(
     int i = 0;
 
     if (!lang || (axutil_strcmp(lang, "") == 0) || !fault_reason->fault_texts)
+    {
         return AXIS2_FALSE;
-
+    }
     size = axutil_array_list_size(fault_reason->fault_texts, env);
     for (i = 0; i < size; i++)
     {

@@ -66,8 +66,9 @@ axiom_soap_fault_node_create_with_parent(
 
     fault_node = axiom_soap_fault_node_create(env);
     if (!fault_node)
+    {
         return NULL;
-
+    }
     parent_node = axiom_soap_fault_get_base_node(fault, env);
     if (!parent_node)
     {
