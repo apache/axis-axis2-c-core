@@ -151,7 +151,9 @@ axiom_soap_body_has_fault(
             {
                 status = axiom_soap_builder_next(soap_body->soap_builder, env);
                 if (status == AXIS2_FAILURE)
+                {
                     return AXIS2_FALSE;
+                }
             }
             if (soap_body->soap_fault)
             {
