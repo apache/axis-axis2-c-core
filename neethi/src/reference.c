@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,7 +24,7 @@ struct neethi_reference_t
 
 AXIS2_EXTERN neethi_reference_t *AXIS2_CALL
 neethi_reference_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     neethi_reference_t *neethi_reference = NULL;
 
@@ -38,6 +37,7 @@ neethi_reference_create(
     if (neethi_reference == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     neethi_reference->uri = NULL;
@@ -47,11 +47,9 @@ neethi_reference_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 neethi_reference_free(
-    neethi_reference_t * neethi_reference,
-    const axutil_env_t * env)
+    neethi_reference_t *neethi_reference,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (neethi_reference)
     {
         AXIS2_FREE(env->allocator, neethi_reference);
@@ -64,33 +62,28 @@ neethi_reference_free(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 neethi_reference_get_uri(
-    neethi_reference_t * neethi_reference,
-    const axutil_env_t * env)
+    neethi_reference_t *neethi_reference,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return neethi_reference->uri;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_reference_set_uri(
-    neethi_reference_t * neethi_reference,
-    const axutil_env_t * env,
-    axis2_char_t * uri)
+    neethi_reference_t *neethi_reference,
+    const axutil_env_t *env,
+    axis2_char_t *uri)
 {
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     neethi_reference->uri = uri;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_reference_serialize(
-    neethi_reference_t * neethi_reference,
-    axiom_node_t * parent,
-    const axutil_env_t * env)
+    neethi_reference_t *neethi_reference,
+    axiom_node_t *parent,
+    const axutil_env_t *env)
 {
-
     axiom_node_t *ref_node = NULL;
     axiom_element_t *ref_ele = NULL;
     axiom_namespace_t *policy_ns = NULL;
@@ -103,7 +96,6 @@ neethi_reference_serialize(
                              &ref_node);
     if (!ref_node)
     {
-        /*printf("Reference serialization failed\n"); */
         return AXIS2_FAILURE;
     }
 

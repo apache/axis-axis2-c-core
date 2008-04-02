@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -30,9 +29,9 @@
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_token_identifier_set_token(
-    rp_property_t * token,
-    neethi_assertion_t * assertion,
-    const axutil_env_t * env)
+    rp_property_t *token,
+    neethi_assertion_t *assertion,
+    const axutil_env_t *env)
 {
     void *value = NULL;
     neethi_assertion_type_t type;

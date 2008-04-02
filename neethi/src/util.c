@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -20,8 +19,8 @@
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
 neethi_util_create_policy_from_file(
-    const axutil_env_t * env,
-    axis2_char_t * file_name)
+    const axutil_env_t *env,
+    axis2_char_t *file_name)
 {
 
     axiom_xml_reader_t *reader = NULL;
@@ -35,6 +34,7 @@ neethi_util_create_policy_from_file(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
 
@@ -68,8 +68,8 @@ neethi_util_create_policy_from_file(
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
 neethi_util_create_policy_from_om(
-    const axutil_env_t * env,
-    axiom_node_t * root_node)
+    const axutil_env_t *env,
+    axiom_node_t *root_node)
 {
 
     axiom_element_t *root_ele = NULL;

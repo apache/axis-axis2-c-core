@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -27,17 +26,17 @@
 /*private functions*/
 
 axis2_status_t AXIS2_CALL encryption_token_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
-    rp_property_t * encryption_token);
+    const axutil_env_t *env,
+    neethi_all_t *all,
+    rp_property_t *encryption_token);
 
 /***********************************/
 
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_encryption_token_builder_build(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element)
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element)
 {
     rp_property_t *encryption_token = NULL;
     neethi_policy_t *policy = NULL;
@@ -100,9 +99,9 @@ rp_encryption_token_builder_build(
 
 axis2_status_t AXIS2_CALL
 encryption_token_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
-    rp_property_t * encryption_token)
+    const axutil_env_t *env,
+    neethi_all_t *all,
+    rp_property_t *encryption_token)
 {
 
     neethi_operator_t *operator = NULL;

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,21 +25,21 @@
 /*private functions*/
 
 axis2_status_t AXIS2_CALL supporting_tokens_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
-    rp_supporting_tokens_t * supporting_tokens);
+    const axutil_env_t *env,
+    neethi_all_t *all,
+    rp_supporting_tokens_t *supporting_tokens);
 
 axis2_bool_t AXIS2_CALL is_token_assertion(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     neethi_assertion_type_t type);
 
 /***********************************/
 
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_supporting_tokens_builder_build(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element)
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element)
 {
     rp_supporting_tokens_t *supporting_tokens = NULL;
     neethi_policy_t *policy = NULL;
@@ -135,9 +134,9 @@ rp_supporting_tokens_builder_build(
 
 axis2_status_t AXIS2_CALL
 supporting_tokens_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
-    rp_supporting_tokens_t * supporting_tokens)
+    const axutil_env_t *env,
+    neethi_all_t *all,
+    rp_supporting_tokens_t *supporting_tokens)
 {
     neethi_operator_t *operator = NULL;
     axutil_array_list_t *arraylist = NULL;
@@ -193,10 +192,9 @@ supporting_tokens_process_alternatives(
 
 axis2_bool_t AXIS2_CALL
 is_token_assertion(
-    const axutil_env_t * env,
+    const axutil_env_t *env,
     neethi_assertion_type_t type)
 {
-
     if (type == ASSERTION_TYPE_USERNAME_TOKEN)
     {
         return AXIS2_TRUE;

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,21 +24,21 @@
 #include <rp_qname_matcher.h>
 
 rp_header_t *AXIS2_CALL rp_signed_encrypted_parts_builder_build_header(
-    axiom_element_t * element,
-    const axutil_env_t * env);
+    axiom_element_t *element,
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL rp_signed_encrypted_parts_builder_set_properties(
-    axiom_node_t * node,
-    axiom_element_t * element,
-    axis2_char_t * local_name,
-    rp_signed_encrypted_parts_t * signed_encrypted_parts,
-    const axutil_env_t * env);
+    axiom_node_t *node,
+    axiom_element_t *element,
+    axis2_char_t *local_name,
+    rp_signed_encrypted_parts_t *signed_encrypted_parts,
+    const axutil_env_t *env);
 
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_signed_encrypted_parts_builder_build(
-    const axutil_env_t * env,
-    axiom_node_t * parts,
-    axiom_element_t * parts_ele)
+    const axutil_env_t *env,
+    axiom_node_t *parts,
+    axiom_element_t *parts_ele)
 {
 
     rp_signed_encrypted_parts_t *signed_encrypted_parts = NULL;
@@ -122,14 +121,12 @@ rp_signed_encrypted_parts_builder_build(
 
 axis2_status_t AXIS2_CALL
 rp_signed_encrypted_parts_builder_set_properties(
-    axiom_node_t * node,
-    axiom_element_t * element,
-    axis2_char_t * local_name,
+    axiom_node_t *node,
+    axiom_element_t *element,
+    axis2_char_t *local_name,
     rp_signed_encrypted_parts_t * signed_encrypted_parts,
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (strcmp(local_name, RP_BODY) == 0)
     {
         if (rp_match_secpolicy_qname(env, RP_BODY, node, element))
@@ -171,14 +168,12 @@ rp_signed_encrypted_parts_builder_set_properties(
 
 rp_header_t *AXIS2_CALL
 rp_signed_encrypted_parts_builder_build_header(
-    axiom_element_t * element,
-    const axutil_env_t * env)
+    axiom_element_t *element,
+    const axutil_env_t *env)
 {
     rp_header_t *header = NULL;
     axis2_char_t *name = NULL;
     axis2_char_t *nspace = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
 
     header = rp_header_create(env);
     if (!header)

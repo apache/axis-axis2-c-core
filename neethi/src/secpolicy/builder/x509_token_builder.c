@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,17 +25,17 @@
 /*private functions*/
 
 axis2_status_t AXIS2_CALL x509_token_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
-    rp_x509_token_t * x509_token);
+    const axutil_env_t *env,
+    neethi_all_t *all,
+    rp_x509_token_t *x509_token);
 
 /***********************************/
 
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_x509_token_builder_build(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element)
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element)
 {
     rp_x509_token_t *x509_token = NULL;
     neethi_policy_t *policy = NULL;
@@ -49,7 +48,6 @@ rp_x509_token_builder_build(
     axutil_qname_t *qname = NULL;
     neethi_assertion_t *assertion = NULL;
     neethi_policy_t *normalized_policy = NULL;
-    /*axutil_array_list_t *temp = NULL; */
 
     x509_token = rp_x509_token_create(env);
     qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS, RP_SP_PREFIX);
@@ -110,9 +108,9 @@ rp_x509_token_builder_build(
 
 axis2_status_t AXIS2_CALL
 x509_token_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
-    rp_x509_token_t * x509_token)
+    const axutil_env_t *env,
+    neethi_all_t *all,
+    rp_x509_token_t *x509_token)
 {
     neethi_operator_t *operator = NULL;
     axutil_array_list_t *arraylist = NULL;

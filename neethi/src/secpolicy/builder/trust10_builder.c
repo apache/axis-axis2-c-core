@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,17 +25,17 @@
 /*private functions*/
 
 axis2_status_t AXIS2_CALL trust10_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
-    rp_trust10_t * trust10);
+    const axutil_env_t *env,
+    neethi_all_t *all,
+    rp_trust10_t *trust10);
 
 /***********************************/
 
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_trust10_builder_build(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element)
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element)
 {
     rp_trust10_t *trust10 = NULL;
     neethi_policy_t *policy = NULL;
@@ -97,9 +96,9 @@ rp_trust10_builder_build(
 
 axis2_status_t AXIS2_CALL
 trust10_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
-    rp_trust10_t * trust10)
+    const axutil_env_t *env,
+    neethi_all_t *all,
+    rp_trust10_t *trust10)
 {
     neethi_operator_t *operator = NULL;
     axutil_array_list_t *arraylist = NULL;

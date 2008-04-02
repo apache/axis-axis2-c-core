@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,24 +21,22 @@
 /*private functions*/
 
 axis2_status_t AXIS2_CALL rp_rampart_config_builder_populate(
-    const axutil_env_t * env,
-    rp_rampart_config_t * rampart_config,
-    axiom_node_t * node,
-    axiom_element_t * element,
-    axis2_char_t * local_name);
+    const axutil_env_t *env,
+    rp_rampart_config_t *rampart_config,
+    axiom_node_t *node,
+    axiom_element_t *element,
+    axis2_char_t *local_name);
 
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_rampart_config_builder_build(
-    const axutil_env_t * env,
-    axiom_node_t * config,
-    axiom_element_t * config_ele)
+    const axutil_env_t *env,
+    axiom_node_t *config,
+    axiom_element_t *config_ele)
 {
     rp_rampart_config_t *rampart_config = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
     axiom_children_iterator_t *children_iter = NULL;
     neethi_assertion_t *assertion = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
 
     rampart_config = rp_rampart_config_create(env);
     if (!rampart_config)
@@ -92,14 +89,12 @@ rp_rampart_config_builder_build(
 
 axis2_status_t AXIS2_CALL
 rp_rampart_config_builder_populate(
-    const axutil_env_t * env,
-    rp_rampart_config_t * rampart_config,
-    axiom_node_t * node,
-    axiom_element_t * element,
-    axis2_char_t * local_name)
+    const axutil_env_t *env,
+    rp_rampart_config_t *rampart_config,
+    axiom_node_t *node,
+    axiom_element_t *element,
+    axis2_char_t *local_name)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (axutil_strcmp(local_name, RP_USER) == 0)
     {
         if (rp_match_rampart_config_qname(env, RP_USER, node, element))
@@ -268,7 +263,6 @@ rp_rampart_config_builder_populate(
         {
             axis2_char_t *rd_val = NULL;
             rd_val = axiom_element_get_text(element, env, node);
-            /*printf("rd_val = %s", rd_val); */
             rp_rampart_config_set_rd_val(rampart_config, env, rd_val);
             return AXIS2_SUCCESS;
         }

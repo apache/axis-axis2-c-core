@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,26 +25,23 @@
 /*private functions*/
 
 axis2_status_t AXIS2_CALL secpolicy_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
-    rp_secpolicy_t * secpolicy);
+    const axutil_env_t *env,
+    neethi_all_t *all,
+    rp_secpolicy_t *secpolicy);
 
 /***********************************/
 
 AXIS2_EXTERN rp_secpolicy_t *AXIS2_CALL
 rp_secpolicy_builder_build(
-    const axutil_env_t * env,
-    neethi_policy_t * policy)
+    const axutil_env_t *env,
+    neethi_policy_t *policy)
 {
     axutil_array_list_t *alternatives = NULL;
     neethi_operator_t *component = NULL;
     neethi_all_t *all = NULL;
     rp_secpolicy_t *secpolicy = NULL;
-    /*neethi_policy_t *normalized_policy = NULL; */
 
     secpolicy = rp_secpolicy_create(env);
-
-    /*normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy); */
 
     alternatives = neethi_policy_get_alternatives(policy, env);
 
@@ -62,9 +58,9 @@ rp_secpolicy_builder_build(
 
 axis2_status_t AXIS2_CALL
 secpolicy_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
-    rp_secpolicy_t * secpolicy)
+    const axutil_env_t *env,
+    neethi_all_t *all,
+    rp_secpolicy_t *secpolicy)
 {
 
     neethi_operator_t *operator = NULL;
@@ -115,7 +111,6 @@ secpolicy_process_alternatives(
                     neethi_assertion_get_value(assertion, env);
                 if (!asymmetric_binding)
                 {
-                    /*printf("Asymmetric Binding not set\n"); */
                     return AXIS2_FAILURE;
                 }
                 binding = rp_property_create(env);

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,7 +25,7 @@ struct neethi_registry_t
 
 AXIS2_EXTERN neethi_registry_t *AXIS2_CALL
 neethi_registry_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     neethi_registry_t *neethi_registry = NULL;
 
@@ -39,6 +38,7 @@ neethi_registry_create(
     if (neethi_registry == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     neethi_registry->registry = NULL;
@@ -48,6 +48,7 @@ neethi_registry_create(
     {
         neethi_registry_free(neethi_registry, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     neethi_registry->parent = NULL;
@@ -57,8 +58,8 @@ neethi_registry_create(
 
 AXIS2_EXTERN neethi_registry_t *AXIS2_CALL
 neethi_registry_create_with_parent(
-    const axutil_env_t * env,
-    neethi_registry_t * parent)
+    const axutil_env_t *env,
+    neethi_registry_t *parent)
 {
     neethi_registry_t *neethi_registry = NULL;
 
@@ -72,11 +73,9 @@ neethi_registry_create_with_parent(
 
 AXIS2_EXTERN void AXIS2_CALL
 neethi_registry_free(
-    neethi_registry_t * neethi_registry,
-    const axutil_env_t * env)
+    neethi_registry_t *neethi_registry,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (neethi_registry->registry)
     {
         axutil_hash_index_t *hi = NULL;
@@ -97,7 +96,6 @@ neethi_registry_free(
     }
     if (neethi_registry->parent)
     {
-        /*neethi_registry_free(neethi_registry->parent, env); */
         neethi_registry->parent = NULL;
     }
     AXIS2_FREE(env->allocator, neethi_registry);
@@ -107,10 +105,10 @@ neethi_registry_free(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_registry_register(
-    neethi_registry_t * neethi_registry,
-    const axutil_env_t * env,
-    axis2_char_t * key,
-    neethi_policy_t * value)
+    neethi_registry_t *neethi_registry,
+    const axutil_env_t *env,
+    axis2_char_t *key,
+    neethi_policy_t *value)
 {
     axutil_hash_set(neethi_registry->registry, key, AXIS2_HASH_KEY_STRING,
                     value);
@@ -119,9 +117,9 @@ neethi_registry_register(
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
 neethi_registry_lookup(
-    neethi_registry_t * neethi_registry,
-    const axutil_env_t * env,
-    axis2_char_t * key)
+    neethi_registry_t *neethi_registry,
+    const axutil_env_t *env,
+    axis2_char_t *key)
 {
     neethi_policy_t *policy = NULL;
 

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -27,17 +26,17 @@
 /*private functions*/
 
 axis2_status_t AXIS2_CALL security_context_token_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
+    const axutil_env_t *env,
+    neethi_all_t *all,
     rp_security_context_token_t * security_context_token);
 
 /***********************************/
 
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_security_context_token_builder_build(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element,
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element,
     axis2_bool_t is_secure_conversation_token)
 {
     rp_security_context_token_t *security_context_token = NULL;
@@ -52,7 +51,6 @@ rp_security_context_token_builder_build(
     axutil_qname_t *qname = NULL;
     neethi_assertion_t *assertion = NULL;
     neethi_policy_t *normalized_policy = NULL;
-    /*axutil_array_list_t *temp = NULL; */
 
     security_context_token = rp_security_context_token_create(env);
     qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS, RP_SP_PREFIX);
@@ -137,8 +135,8 @@ rp_security_context_token_builder_build(
 
 axis2_status_t AXIS2_CALL
 security_context_token_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
+    const axutil_env_t *env,
+    neethi_all_t *all,
     rp_security_context_token_t * security_context_token)
 {
     neethi_operator_t *operator = NULL;
@@ -175,7 +173,7 @@ security_context_token_process_alternatives(
         }
         else if(type == ASSERTION_TYPE_ISSUER)
         {
-            axis2_char_t* issuer = NULL;
+            axis2_char_t *issuer = NULL;
             issuer = (axis2_char_t *)neethi_assertion_get_value(assertion, env);
             rp_security_context_token_set_issuer(security_context_token, env, issuer);
         }

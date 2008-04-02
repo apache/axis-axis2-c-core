@@ -18,15 +18,15 @@
 #include <rp_saml_token_builder.h>
 
 axis2_status_t AXIS2_CALL saml_token_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
-    rp_saml_token_t * saml_token);
+    const axutil_env_t *env,
+    neethi_all_t *all,
+    rp_saml_token_t *saml_token);
 
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
     rp_saml_token_builder_build(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element)
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element)
 {
     rp_saml_token_t *saml_token = NULL;
     axis2_char_t *inclusion_value = NULL;
@@ -101,9 +101,9 @@ AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 }
 
 axis2_status_t AXIS2_CALL saml_token_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
-    rp_saml_token_t * saml_token)
+    const axutil_env_t *env,
+    neethi_all_t *all,
+    rp_saml_token_t *saml_token)
 {
     neethi_operator_t *operator = NULL;
     axutil_array_list_t *arraylist = NULL;

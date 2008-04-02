@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,7 +24,7 @@ struct neethi_exactlyone_t
 
 AXIS2_EXTERN neethi_exactlyone_t *AXIS2_CALL
 neethi_exactlyone_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     neethi_exactlyone_t *neethi_exactlyone = NULL;
 
@@ -38,6 +37,7 @@ neethi_exactlyone_create(
     if (neethi_exactlyone == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     neethi_exactlyone->policy_components = NULL;
@@ -47,6 +47,7 @@ neethi_exactlyone_create(
     {
         neethi_exactlyone_free(neethi_exactlyone, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     return neethi_exactlyone;
@@ -54,11 +55,9 @@ neethi_exactlyone_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 neethi_exactlyone_free(
-    neethi_exactlyone_t * neethi_exactlyone,
-    const axutil_env_t * env)
+    neethi_exactlyone_t *neethi_exactlyone,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (neethi_exactlyone)
     {
         if (neethi_exactlyone->policy_components)
@@ -91,19 +90,17 @@ neethi_exactlyone_free(
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 neethi_exactlyone_get_policy_components(
-    neethi_exactlyone_t * neethi_exactlyone,
-    const axutil_env_t * env)
+    neethi_exactlyone_t *neethi_exactlyone,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return neethi_exactlyone->policy_components;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_exactlyone_add_policy_components(
-    neethi_exactlyone_t * exactlyone,
-    axutil_array_list_t * arraylist,
-    const axutil_env_t * env)
+    neethi_exactlyone_t *exactlyone,
+    axutil_array_list_t *arraylist,
+    const axutil_env_t *env)
 {
 
     int size = axutil_array_list_size(arraylist, env);
@@ -125,12 +122,10 @@ neethi_exactlyone_add_policy_components(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_exactlyone_add_operator(
-    neethi_exactlyone_t * neethi_exactlyone,
-    const axutil_env_t * env,
-    neethi_operator_t * operator)
+    neethi_exactlyone_t *neethi_exactlyone,
+    const axutil_env_t *env,
+    neethi_operator_t *operator)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     neethi_operator_increment_ref(operator, env);
     axutil_array_list_add(neethi_exactlyone->policy_components, env, operator);
     return AXIS2_SUCCESS;
@@ -138,8 +133,8 @@ neethi_exactlyone_add_operator(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 neethi_exactlyone_is_empty(
-    neethi_exactlyone_t * exactlyone,
-    const axutil_env_t * env)
+    neethi_exactlyone_t *exactlyone,
+    const axutil_env_t *env)
 {
     return axutil_array_list_is_empty(exactlyone->policy_components, env);
 }
@@ -147,9 +142,9 @@ neethi_exactlyone_is_empty(
 /*This function is for serializing*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_exactlyone_serialize(
-    neethi_exactlyone_t * neethi_exactlyone,
-    axiom_node_t * parent,
-    const axutil_env_t * env)
+    neethi_exactlyone_t *neethi_exactlyone,
+    axiom_node_t *parent,
+    const axutil_env_t *env)
 {
 
     axiom_node_t *exactlyone_node = NULL;
@@ -165,7 +160,6 @@ neethi_exactlyone_serialize(
                              &exactlyone_node);
     if (!exactlyone_node)
     {
-        /*printf("Exactlyone serialization failed\n"); */
         return AXIS2_FAILURE;
     }
     components =
@@ -185,7 +179,6 @@ neethi_exactlyone_serialize(
                     neethi_operator_serialize(operator, env, exactlyone_node);
                 if (status != AXIS2_SUCCESS)
                 {
-                    /*printf("Operator Serializing failed\n"); */
                     return status;
                 }
             }
@@ -196,8 +189,8 @@ neethi_exactlyone_serialize(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_exactlyone_set_components_null(
-    neethi_exactlyone_t * exactlyone,
-    const axutil_env_t * env)
+    neethi_exactlyone_t *exactlyone,
+    const axutil_env_t *env)
 {
     exactlyone->policy_components = NULL;
     return AXIS2_SUCCESS;

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,9 +24,9 @@
 
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_algorithmsuite_builder_build(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element)
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element)
 {
     rp_algorithmsuite_t *algorithmsuite = NULL;
     axiom_node_t *child_node = NULL;

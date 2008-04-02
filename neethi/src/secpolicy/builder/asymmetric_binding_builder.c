@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,17 +25,17 @@
 /*private functions*/
 
 axis2_status_t AXIS2_CALL asymmetric_binding_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
-    rp_asymmetric_binding_t * asymmetric_binding);
+    const axutil_env_t *env,
+    neethi_all_t *all,
+    rp_asymmetric_binding_t *asymmetric_binding);
 
 /***********************************/
 
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_asymmetric_binding_builder_build(
-    const axutil_env_t * env,
-    axiom_node_t * node,
-    axiom_element_t * element)
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axiom_element_t *element)
 {
     rp_asymmetric_binding_t *asymmetric_binding = NULL;
     neethi_policy_t *policy = NULL;
@@ -99,8 +98,8 @@ rp_asymmetric_binding_builder_build(
 
 axis2_status_t AXIS2_CALL
 asymmetric_binding_process_alternatives(
-    const axutil_env_t * env,
-    neethi_all_t * all,
+    const axutil_env_t *env,
+    neethi_all_t *all,
     rp_asymmetric_binding_t * asymmetric_binding)
 {
 

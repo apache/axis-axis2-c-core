@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -32,7 +31,7 @@ struct neethi_operator_t
 
 AXIS2_EXTERN neethi_operator_t *AXIS2_CALL
 neethi_operator_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     neethi_operator_t *neethi_operator = NULL;
 
@@ -45,6 +44,7 @@ neethi_operator_create(
     if (neethi_operator == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     neethi_operator->value = NULL;
@@ -56,11 +56,9 @@ neethi_operator_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 neethi_operator_free(
-    neethi_operator_t * neethi_operator,
-    const axutil_env_t * env)
+    neethi_operator_t *neethi_operator,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (neethi_operator)
     {
         if (--(neethi_operator->ref) > 0)
@@ -104,7 +102,6 @@ neethi_operator_free(
             case OPERATOR_TYPE_UNKNOWN:
                 break;
             }
-            /*AXIS2_FREE(env->allocator,neethi_operator->value); */
         }
         AXIS2_FREE(env->allocator, neethi_operator);
     }
@@ -115,44 +112,37 @@ neethi_operator_free(
 
 AXIS2_EXTERN neethi_operator_type_t AXIS2_CALL
 neethi_operator_get_type(
-    neethi_operator_t * neethi_operator,
-    const axutil_env_t * env)
+    neethi_operator_t *neethi_operator,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return neethi_operator->type;
 }
 
 AXIS2_EXTERN void *AXIS2_CALL
 neethi_operator_get_value(
-    neethi_operator_t * neethi_operator,
-    const axutil_env_t * env)
+    neethi_operator_t *neethi_operator,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return neethi_operator->value;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_operator_set_value(
-    neethi_operator_t * neethi_operator,
-    const axutil_env_t * env,
+    neethi_operator_t *neethi_operator,
+    const axutil_env_t *env,
     void *value,
     neethi_operator_type_t type)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     neethi_operator->type = type;
     neethi_operator->value = (void *) value;
-
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_operator_serialize(
-    neethi_operator_t * neethi_operator,
-    const axutil_env_t * env,
-    axiom_node_t * parent)
+    neethi_operator_t *neethi_operator,
+    const axutil_env_t *env,
+    axiom_node_t *parent)
 {
 
     neethi_policy_t *policy = NULL;
@@ -218,8 +208,8 @@ neethi_operator_serialize(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_operator_set_value_null(
-    neethi_operator_t * neethi_operator,
-    const axutil_env_t * env)
+    neethi_operator_t *neethi_operator,
+    const axutil_env_t *env)
 {
     neethi_operator->value = NULL;
     return AXIS2_SUCCESS;
@@ -227,10 +217,9 @@ neethi_operator_set_value_null(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_operator_increment_ref(
-    neethi_operator_t * operator,
-    const axutil_env_t * env)
+    neethi_operator_t *operator,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     operator-> ref++;
     return AXIS2_SUCCESS;
 }
