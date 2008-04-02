@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,7 +24,7 @@ struct neethi_all_t
 
 AXIS2_EXTERN neethi_all_t *AXIS2_CALL
 neethi_all_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     neethi_all_t *neethi_all = NULL;
 
@@ -37,6 +36,7 @@ neethi_all_create(
     if (neethi_all == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     neethi_all->policy_components = NULL;
@@ -46,6 +46,7 @@ neethi_all_create(
     {
         neethi_all_free(neethi_all, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     return neethi_all;
@@ -53,11 +54,9 @@ neethi_all_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 neethi_all_free(
-    neethi_all_t * neethi_all,
-    const axutil_env_t * env)
+    neethi_all_t *neethi_all,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (neethi_all)
     {
         if (neethi_all->policy_components)
@@ -89,19 +88,17 @@ neethi_all_free(
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 neethi_all_get_policy_components(
-    neethi_all_t * neethi_all,
-    const axutil_env_t * env)
+    neethi_all_t *neethi_all,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return neethi_all->policy_components;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_all_add_policy_components(
-    neethi_all_t * all,
-    axutil_array_list_t * arraylist,
-    const axutil_env_t * env)
+    neethi_all_t *all,
+    axutil_array_list_t *arraylist,
+    const axutil_env_t *env)
 {
 
     int size = axutil_array_list_size(arraylist, env);
@@ -123,12 +120,10 @@ neethi_all_add_policy_components(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_all_add_operator(
-    neethi_all_t * neethi_all,
-    const axutil_env_t * env,
-    neethi_operator_t * operator)
+    neethi_all_t *neethi_all,
+    const axutil_env_t *env,
+    neethi_operator_t *operator)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     neethi_operator_increment_ref(operator, env);
     axutil_array_list_add(neethi_all->policy_components, env, operator);
     return AXIS2_SUCCESS;
@@ -136,17 +131,17 @@ neethi_all_add_operator(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 neethi_all_is_empty(
-    neethi_all_t * all,
-    const axutil_env_t * env)
+    neethi_all_t *all,
+    const axutil_env_t *env)
 {
     return axutil_array_list_is_empty(all->policy_components, env);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_all_serialize(
-    neethi_all_t * neethi_all,
-    axiom_node_t * parent,
-    const axutil_env_t * env)
+    neethi_all_t *neethi_all,
+    axiom_node_t *parent,
+    const axutil_env_t *env)
 {
 
     axiom_node_t *all_node = NULL;
@@ -161,7 +156,6 @@ neethi_all_serialize(
         axiom_element_create(env, parent, NEETHI_ALL, policy_ns, &all_node);
     if (!all_node)
     {
-        /*printf("Exactlyone serialization failed\n"); */
         return AXIS2_FAILURE;
     }
     components = neethi_all_get_policy_components(neethi_all, env);
@@ -179,7 +173,6 @@ neethi_all_serialize(
                 status = neethi_operator_serialize(operator, env, all_node);
                 if (status != AXIS2_SUCCESS)
                 {
-                    /*printf("Operator Serializing failed\n"); */
                     return status;
                 }
             }
