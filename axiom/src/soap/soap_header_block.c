@@ -72,12 +72,14 @@ axiom_soap_header_block_create_with_parent(
 
     header_block = axiom_soap_header_block_create(env);
     if (!header_block)
+    {
         return NULL;
-
+    }
     parent_node = axiom_soap_header_get_base_node(header, env);
     if (!parent_node)
+    {
         return NULL;
-
+    }
     om_ele = axiom_element_create(env, parent_node, localname, ns, &this_node);
     if (!om_ele)
     {
@@ -113,7 +115,9 @@ axiom_soap_header_block_set_role(
     const axis2_char_t *attr_nsuri = NULL;
 
     if (header_block->soap_version == AXIOM_SOAP_VERSION_NOT_SET)
+    {
         return AXIS2_FAILURE;
+    }
     if (header_block->soap_version == AXIOM_SOAP11)
     {
         attr_localname = AXIOM_SOAP11_ATTR_ACTOR;
@@ -139,7 +143,9 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL axiom_soap_header_block_get_role(
 
 
     if (header_block->soap_version == AXIOM_SOAP_VERSION_NOT_SET)
+    {
         return NULL;
+    }
     if (header_block->soap_version == AXIOM_SOAP11)
     {
         attr_localname = AXIOM_SOAP11_ATTR_ACTOR;
@@ -165,8 +171,9 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
 
     if (header_block->soap_version == AXIOM_SOAP_VERSION_NOT_SET)
+    {
         return AXIS2_FAILURE;
-
+    }
     if (header_block->soap_version == AXIOM_SOAP11)
     {
         attr_nsuri = AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
@@ -200,8 +207,9 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
     AXIS2_PARAM_CHECK(env->error, must_understand, AXIS2_FAILURE);
 
     if (header_block->soap_version == AXIOM_SOAP_VERSION_NOT_SET)
+    {
         return AXIS2_FAILURE;
-
+    }
     if (header_block->soap_version == AXIOM_SOAP11)
     {
         attr_nsuri = AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
@@ -243,7 +251,9 @@ axiom_soap_header_block_get_must_understand(
     const axis2_char_t *attr_nsuri = NULL;
 
     if (header_block->soap_version == AXIOM_SOAP_VERSION_NOT_SET)
+    {
         return AXIS2_FAILURE;
+    }
     if (header_block->soap_version == AXIOM_SOAP11)
     {
         attr_nsuri = AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
@@ -257,8 +267,9 @@ axiom_soap_header_block_get_must_understand(
                                                             AXIOM_SOAP_ATTR_MUST_UNDERSTAND,
                                                             attr_nsuri);
     if (!must_understand)
+    {
         return AXIS2_FALSE;
-
+    }
     if (axutil_strcmp(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_1) == 0
         || axutil_strcmp(must_understand,
                          AXIOM_SOAP_ATTR_MUST_UNDERSTAND_TRUE) == 0)
@@ -312,7 +323,9 @@ axiom_soap_header_block_set_attribute(
         }
         header_ns = axiom_element_get_namespace(header_ele, env, header_node);
         if (!header_ns)
+        {
             return AXIS2_FAILURE;
+        }
         prefix = axiom_namespace_get_prefix(header_ns, env);
     }
 
@@ -320,11 +333,13 @@ axiom_soap_header_block_set_attribute(
                              prefix);
 
     if (!qn)
+    {
         return AXIS2_FAILURE;
-
+    }
     if (!header_block->om_ele_node)
+    {
         return AXIS2_FAILURE;
-
+    }
     om_ele =
         (axiom_element_t *) axiom_node_get_data_element(header_block->
                                                         om_ele_node, env);
@@ -337,10 +352,11 @@ axiom_soap_header_block_set_attribute(
         return axiom_attribute_set_value(om_attr, env, attr_value);
     }
     if (soap_envelope_namespace_uri)
+    {
         om_ns = axiom_namespace_create(env,
                                        soap_envelope_namespace_uri,
                                        AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX);
-
+    }
     om_attr = axiom_attribute_create(env, attr_name, attr_value, om_ns);
     if (!om_attr && om_ns)
     {
@@ -385,19 +401,25 @@ axiom_soap_header_block_get_attribute(
         }
         header_ns = axiom_element_get_namespace(header_ele, env, header_node);
         if (!header_ns)
+        {
             return NULL;
+        }
         prefix = axiom_namespace_get_prefix(header_ns, env);
     }
     qn = axutil_qname_create(env, attr_name, soap_envelope_namespace_uri,
                              prefix);
     if (!qn)
+    {
         return NULL;
+    }
     om_ele =
         (axiom_element_t *) axiom_node_get_data_element(header_block->
                                                         om_ele_node, env);
     om_attr = axiom_element_get_attribute(om_ele, env, qn);
     if (om_attr)
+    {
         attr_value = axiom_attribute_get_value(om_attr, env);
+    }
     axutil_qname_free(qn, env);
     return attr_value;
 }

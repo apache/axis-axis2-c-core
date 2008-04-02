@@ -217,14 +217,16 @@ axiom_soap_fault_value_get_text(
     value_node = axiom_soap_fault_value_get_base_node(fault_value, env);
 
     if (!value_node)
+    {
         return NULL;
-
+    }
     value_element =
         (axiom_element_t *) axiom_node_get_data_element(value_node, env);
 
     if (!value_element)
+    {
         return NULL;
-
+    }
     return axiom_element_get_text(value_element, env, value_node);
 }
 

@@ -77,8 +77,9 @@ axiom_soap_fault_sub_code_create_with_parent(
     fault_sub_code = axiom_soap_fault_sub_code_create(env);
 
     if (!fault_sub_code)
+    {
         return NULL;
-
+    }
     parent_node = axiom_soap_fault_code_get_base_node(fault_code, env);
     if (!parent_node)
     {
@@ -204,7 +205,9 @@ AXIS2_EXTERN axiom_soap_fault_value_t *AXIS2_CALL
         {
             status = axiom_soap_builder_next(fault_sub_code->builder, env);
             if (status == AXIS2_FAILURE)
+            {
                 break;
+            }
         }
     }
     return fault_sub_code->value;
@@ -245,7 +248,9 @@ axiom_soap_fault_sub_code_get_subcode(
         {
             status = axiom_soap_builder_next(fault_sub_code->builder, env);
             if (status == AXIS2_FAILURE)
+            {
                 break;
+            }
         }
     }
     return fault_sub_code->subcode;

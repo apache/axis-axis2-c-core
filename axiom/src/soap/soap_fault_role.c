@@ -69,8 +69,9 @@ axiom_soap_fault_role_create_with_parent(
 
     fault_role = axiom_soap_fault_role_create(env);
     if (!fault_role)
+    {
         return NULL;
-
+    }
     parent_node = axiom_soap_fault_get_base_node(fault, env);
     if (!parent_node)
     {
@@ -127,8 +128,9 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_fault_role_set_role_value(
     AXIS2_PARAM_CHECK(env->error, uri, AXIS2_FAILURE);
 
     if (!fault_role->om_ele_node)
+    {
         return AXIS2_FAILURE;
-
+    }
     role_ele = (axiom_element_t *) axiom_node_get_data_element
         (fault_role->om_ele_node, env);
 
@@ -147,8 +149,9 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL axiom_soap_fault_role_get_role_value(
     axiom_element_t *role_ele = NULL;
 
     if (!fault_role->om_ele_node)
+    {
         return NULL;
-
+    }
     role_ele = (axiom_element_t *) axiom_node_get_data_element
         (fault_role->om_ele_node, env);
 

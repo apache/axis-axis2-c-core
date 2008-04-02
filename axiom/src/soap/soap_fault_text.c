@@ -61,7 +61,9 @@ axiom_soap_fault_text_create(
                                                         AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
 
     if (!(fault_text->lang_namespace))
+    {
         return NULL;
+    }
 
     return fault_text;
 }
@@ -175,23 +177,30 @@ axiom_soap_fault_text_set_lang(
                                                         fault_text->
                                                         lang_namespace);
     if (!fault_text->lang_attribute)
+    {
         return AXIS2_FAILURE;
+    }
 
     if (!fault_text->om_ele_node)
+    {
         return AXIS2_FAILURE;
-
+    }
     om_ele =
         (axiom_element_t *) axiom_node_get_data_element(fault_text->om_ele_node,
                                                         env);
     if (!om_ele)
+    {
         return AXIS2_FAILURE;
+    }
 
     status =
         axiom_element_add_attribute(om_ele, env, fault_text->lang_attribute,
                                     fault_text->om_ele_node);
 
     if (status == AXIS2_SUCCESS)
+    {
         fault_text->lang_ns_used = AXIS2_TRUE;
+    }
     else
     {
         axiom_attribute_free(fault_text->lang_attribute, env);
@@ -209,13 +218,15 @@ axiom_soap_fault_text_get_lang(
     axutil_qname_t *tmp_qname = NULL;
 
     if (!fault_text->om_ele_node)
+    {
         return NULL;
-
+    }
     om_ele = (axiom_element_t *)
         axiom_node_get_data_element(fault_text->om_ele_node, env);
     if (!om_ele)
+    {
         return NULL;
-
+    }
     if (!(fault_text->lang_attribute))
     {
 
