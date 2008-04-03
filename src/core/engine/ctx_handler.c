@@ -44,8 +44,6 @@ axis2_ctx_handler_create(
     axis2_handler_desc_t *handler_desc = NULL;
     axutil_string_t *handler_string = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (string)
     {
         handler_string = axutil_string_clone((axutil_string_t *) string, env);
@@ -164,8 +162,10 @@ axis2_ctx_handler_invoke(
         op_ctx = axis2_op_ctx_create(env, op, NULL);
         if (!op_ctx)
         {
+            axis2_char_t *op_name = 
+                axutil_qname_get_localpart(axis2_op_get_qname(op, env), env);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Operation context not found");
+                "Could not create Operation context for operatoin %s", op_name);
             return AXIS2_FAILURE;
         }
 
@@ -204,3 +204,4 @@ axis2_ctx_handler_invoke(
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_ctx_handler_invoke"); 
     return AXIS2_SUCCESS;
 }
+

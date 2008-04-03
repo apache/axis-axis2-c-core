@@ -63,8 +63,6 @@ axis2_rest_disp_create(
     axis2_handler_t *handler = NULL;
     axutil_string_t *name = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     name = axutil_string_create_const(env,
                                       (axis2_char_t **) &
                                       AXIS2_REST_DISP_NAME);
@@ -98,8 +96,6 @@ axis2_rest_disp_find_svc(
 {
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     axis2_svc_t *svc = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
 
     if (!axis2_msg_ctx_get_doing_rest(msg_ctx, env))
         return NULL;
@@ -174,7 +170,6 @@ axis2_rest_disp_find_op(
     axis2_char_t ***params = NULL;
     int i = 0;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
 
     if (!axis2_msg_ctx_get_doing_rest(msg_ctx, env))
@@ -339,8 +334,6 @@ axis2_rest_disp_invoke(
     const axutil_env_t * env,
     struct axis2_msg_ctx * msg_ctx)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     axis2_msg_ctx_set_find_svc(msg_ctx, env, axis2_rest_disp_find_svc);
     axis2_msg_ctx_set_find_op(msg_ctx, env, axis2_rest_disp_find_op);
     return axis2_disp_find_svc_and_op(handler, env, msg_ctx);
@@ -455,3 +448,4 @@ axis2_rest_disp_get_rest_op_with_method_and_location(
     AXIS2_FREE (env->allocator, loc_str);
     return NULL;
 }
+

@@ -49,8 +49,6 @@ axis2_handler_create(
 {
     axis2_handler_t *handler = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     handler = AXIS2_MALLOC(env->allocator, sizeof(axis2_handler_t));
     if (!handler)
     {
@@ -69,7 +67,6 @@ axis2_handler_free(
     axis2_handler_t * handler,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_FREE(env->allocator, handler);
     return;
 }
@@ -79,8 +76,6 @@ axis2_handler_get_name(
     const axis2_handler_t * handler,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (!(handler->handler_desc))
         return NULL;
 
@@ -102,8 +97,6 @@ axis2_handler_get_param(
     const axutil_env_t * env,
     const axis2_char_t * name)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (!(handler->handler_desc))
         return NULL;
 
@@ -116,7 +109,6 @@ axis2_handler_init(
     const axutil_env_t * env,
     axis2_handler_desc_t * handler_desc)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     handler->handler_desc = handler_desc;
     axis2_handler_desc_set_handler(handler_desc, env, handler);
 
@@ -140,3 +132,4 @@ axis2_handler_set_invoke(
     handler->invoke = func;
     return AXIS2_SUCCESS;
 }
+

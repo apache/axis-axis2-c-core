@@ -48,8 +48,6 @@ axis2_disp_create(
     axis2_disp_t *disp = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     disp = AXIS2_MALLOC(env->allocator, sizeof(axis2_disp_t));
     if (!disp)
     {
@@ -125,8 +123,6 @@ axis2_disp_set_name(
     const axutil_env_t * env,
     axutil_string_t * name)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (disp->name)
     {
         axutil_string_free(disp->name, env);
@@ -151,7 +147,6 @@ axis2_disp_find_svc_and_op(
     axis2_svc_t *axis_service = NULL;
     axis2_op_t *op = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     axis_service = axis2_msg_ctx_get_svc(msg_ctx, env);
@@ -183,7 +178,6 @@ axis2_disp_free(
     struct axis2_disp *disp,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
     if (disp->name)
     {
         axutil_string_free(disp->name, env);
@@ -191,3 +185,4 @@ axis2_disp_free(
     AXIS2_FREE(env->allocator, disp);
     return;
 }
+

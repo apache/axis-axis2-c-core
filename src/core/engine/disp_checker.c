@@ -54,8 +54,6 @@ axis2_disp_checker_create(
     axis2_disp_checker_t *disp_checker = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     disp_checker = AXIS2_MALLOC(env->allocator, sizeof(axis2_disp_checker_t));
     if (!disp_checker)
     {
@@ -120,8 +118,6 @@ axis2_disp_checker_set_name(
     const axutil_env_t * env,
     const axutil_string_t * name)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (disp_checker->name)
     {
         axutil_string_free(disp_checker->name, env);
@@ -143,8 +139,6 @@ axis2_disp_checker_free(
     axis2_disp_checker_t * disp_checker,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (disp_checker->name)
     {
         axutil_string_free(disp_checker->name, env);
@@ -175,8 +169,6 @@ axis2_disp_checker_invoke(
 
     axis2_char_t exception[1024];
     axis2_char_t *wsa_action;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
@@ -295,3 +287,4 @@ axis2_disp_checker_invoke(
     }
     return AXIS2_SUCCESS;
 }
+

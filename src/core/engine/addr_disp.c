@@ -50,8 +50,6 @@ axis2_addr_disp_create(
     axis2_handler_t *handler = NULL;
     axutil_string_t *name = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     name =
         axutil_string_create_const(env,
                                    (axis2_char_t **) & AXIS2_ADDR_DISP_NAME);
@@ -92,8 +90,6 @@ axis2_addr_disp_find_svc(
 {
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     axis2_svc_t *svc = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
 
     if (axis2_msg_ctx_get_doing_rest(msg_ctx, env))
         return NULL;
@@ -202,8 +198,6 @@ axis2_addr_disp_invoke(
 {
     axis2_relates_to_t *relates_to = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     relates_to = axis2_msg_ctx_get_relates_to(msg_ctx, env);
 
     /** first check if we can dispatch using the relates_to */
@@ -270,3 +264,4 @@ axis2_addr_disp_invoke(
 
     return axis2_disp_find_svc_and_op(handler, env, msg_ctx);
 }
+

@@ -37,8 +37,6 @@ axis2_svc_name_create(
 {
     axis2_svc_name_t *svc_name = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     svc_name = AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_name_t));
     if (!svc_name)
     {
@@ -88,8 +86,6 @@ axis2_svc_name_set_qname(
     const axutil_env_t * env,
     const axutil_qname_t * qname)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (svc_name->qname)
     {
         axutil_qname_free(svc_name->qname, env);
@@ -119,8 +115,6 @@ axis2_svc_name_set_endpoint_name(
     const axutil_env_t * env,
     const axis2_char_t * endpoint_name)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (svc_name->endpoint_name)
     {
         AXIS2_FREE(env->allocator, svc_name->endpoint_name);
@@ -141,8 +135,6 @@ axis2_svc_name_free(
     struct axis2_svc_name *svc_name,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     if (svc_name->qname)
     {
         axutil_qname_free(svc_name->qname, env);
@@ -157,3 +149,4 @@ axis2_svc_name_free(
 
     return;
 }
+

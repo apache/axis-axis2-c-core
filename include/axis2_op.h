@@ -236,8 +236,7 @@ extern "C"
 
     /**
      * Sets operation QName.
-     * @param op pointer to operation as a void pointer, as this would be 
-     * assigned to get_qname() method of base WSDL operation
+     * @param op pointer to operation as a void pointer.
      * @param env pointer to environment struct
      * @param qname pointer to QName, this method creates a clone of the 
      * QName
