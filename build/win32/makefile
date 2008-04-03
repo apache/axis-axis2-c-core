@@ -1406,7 +1406,10 @@ $(AXIS2_TOOLS)\tcpmon.exe : $(TCPMON_OBJS)
 
 tcpmon: $(AXIS2_TOOLS)\tcpmon.exe
 
-
+##############################################################################################
+#Copy axis2 xml
+copy_axis2_xml:
+	@copy $(AXIS2_SOURCE_DIR)\samples\server\axis2.xml $(AXIS2_BINDIR)\
 
 ##############################################################################################
 
@@ -1426,5 +1429,5 @@ install: all copy_extra
 
 dist: install axis2_apache_module axis2_IIS_module tcpmon copy_samples copy_vc_projects clean_manifest mv_dist
 
-dist_as_lib : deploy $(AXIS2_WITHOUT_SERVER) copy_include clean_manifest mv_dist
+dist_as_lib : deploy $(AXIS2_WITHOUT_SERVER) copy_axis2_xml copy_include clean_manifest mv_dist
 
