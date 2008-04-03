@@ -105,10 +105,10 @@ axis2_http_transport_sender_create(
 
     if (!transport_sender_impl)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    memset (transport_sender_impl, 0, sizeof (axis2_http_transport_sender_impl_t));
+    memset ((void *)transport_sender_impl, 0, sizeof (axis2_http_transport_sender_impl_t));
 
     transport_sender_impl->http_version =
         axutil_strdup(env, AXIS2_HTTP_HEADER_PROTOCOL_11);
@@ -124,7 +124,7 @@ axis2_http_transport_sender_create(
     if (!transport_sender_impl->libcurl)
     {
         AXIS2_FREE(env->allocator, transport_sender_impl);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 #endif
@@ -137,6 +137,11 @@ axis2_http_transport_sender_free(
     axis2_transport_sender_t * transport_sender,
     const axutil_env_t * env)
 {
+    if (!transport_sender)
+    {
+        return;
+    }
+
     axis2_http_transport_sender_impl_t *transport_sender_impl = NULL;
     transport_sender_impl = AXIS2_INTF_TO_IMPL(transport_sender);
 
@@ -255,9 +260,9 @@ axis2_http_transport_sender_invoke(
     soap_data_out = axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (!soap_data_out)
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX,
-                        AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env,
+                           AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX,
+                           AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
                         AXIS2_ERROR_GET_MESSAGE(env->error));
         return AXIS2_SUCCESS;
@@ -322,11 +327,9 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
 
             if (!out_info)
             {
-                AXIS2_ERROR_SET(env->error,
+                AXIS2_HANDLE_ERROR(env,
                                 AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL,
                                 AXIS2_FAILURE);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
-                    AXIS2_ERROR_GET_MESSAGE(env->error));
                 axiom_output_free(om_output, env);
                 om_output = NULL;
                 xml_writer = NULL;
@@ -426,11 +429,9 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
 
                 if (!soap_body)
                 {
-                    AXIS2_ERROR_SET(env->error,
+                    AXIS2_HANDLE_ERROR(env,
                                     AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
                                     AXIS2_FAILURE);
-                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
                     axiom_output_free(om_output, env);
                     om_output = NULL;
                     xml_writer = NULL;
@@ -665,10 +666,8 @@ axis2_http_transport_sender_init(
     else
     {
         /* HTTP version is not available in axis2.xml */
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_HTTP_VERSION,
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NULL_HTTP_VERSION,
                         AXIS2_FAILURE);
-        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "%s",
-                         AXIS2_ERROR_GET_MESSAGE(env->error));
         return AXIS2_FAILURE;
     }
 

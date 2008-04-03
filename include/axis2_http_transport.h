@@ -981,6 +981,10 @@ extern "C"
 
 #define AXIS2_ESC_DOUBLE_QUOTE_STR "\""
 
+#define AXIS2_ESC_SINGLE_QUOTE '\''
+
+#define AXIS2_DOUBLE_QUOTE '"'
+
 #define AXIS2_ESC_NULL '\0'
 
 #define AXIS2_SEMI_COLON_STR ";"
@@ -1029,11 +1033,73 @@ extern "C"
 
 #define AXIS2_EQ '='
 
+#define AXIS2_AND '&'
+
+#define AXIS2_PERCENT '%'
+
 #define AXIS2_HTTP_SERVER " (Simple Axis2 HTTP Server)"
 
 #define AXIS2_COMMA_SPACE_STR ", "
 
 #define AXIS2_SPACE_TAB_EQ " \t="
+
+#define AXIS2_ACTION "action"
+
+    /* Error Messages */
+
+#define AXIS2_HTTP_NOT_FOUND "<html><head><title>404 Not Found</title></head>\
+ <body><h2>Not Found</h2><p>The requested URL was not found on this server.\
+</p></body></html>"  
+
+
+#define AXIS2_HTTP_NOT_IMPLEMENTED "<html><head><title>501 Not Implemented\
+</title></head><body><h2>Not Implemented</h2><p>The requested Method is not\
+implemented on this server.</p></body></html>"
+
+
+#define AXIS2_HTTP_INTERNAL_SERVER_ERROR "<html><head><title>500 Internal Server\
+ Error</title></head><body><h2>Internal Server Error</h2><p>The server \
+encountered an unexpected condition which prevented it from fulfilling the \
+request.</p></body></html>"
+
+
+#define AXIS2_HTTP_METHOD_NOT_ALLOWED "<html><head><title>405 Method Not Allowed\
+</title></head><body><h2>Method Not Allowed</h2><p>The requested method is not\
+allowed for this URL.</p></body></html>"
+
+#define AXIS2_HTTP_NOT_ACCEPTABLE "<html><head><title>406 Not Acceptable\
+</title></head><body><h2>Not Acceptable</h2><p>An appropriate representation of \
+the requested resource could not be found on this server.</p></body></html>"
+
+#define AXIS2_HTTP_BAD_REQUEST "<html><head><title>400 Bad Request</title>\
+</head><body><h2>Bad Request</h2><p>Your client sent a request that this server\
+ could not understand.</p></body></html>"
+
+#define AXIS2_HTTP_REQUEST_TIMEOUT "<html><head><title>408 Request Timeout\
+</title></head><body><h2>Request Timeout</h2><p>Cannot wait any longer for \
+the HTTP request from the client.</p></body></html>" 
+
+#define AXIS2_HTTP_CONFLICT "<html><head><title>409 Conflict</title></head>\
+<body><h2>Conflict</h2><p>The client attempted to put the server\'s resources\
+ into an invalid state.</p></body></html>"
+
+#define AXIS2_HTTP_GONE "<html><head><title>410 Gone</title></head><body>\
+<h2>Gone</h2><p>The requested resource is no longer available on this server.\
+</p></body></html>"
+
+#define AXIS2_HTTP_PRECONDITION_FAILED "<html><head><title>412 Precondition \
+Failed</title></head><body><h2>Precondition Failed</h2><p>A precondition for\
+ the requested URL failed.</p></body></html>"
+
+#define AXIS2_HTTP_TOO_LARGE "<html><head><title>413 Request Entity Too Large\
+</title></head><body><h2>Request Entity Too Large</h2><p>The data provided in\
+ the request is too large or the requested resource does not allow request \
+data.</p></body></html>"
+
+#define AXIS2_HTTP_SERVICE_UNAVILABLE "<html><head><title>503 Service \
+Unavailable</title></head><body><h2>Service Unavailable</h2><p>The service\
+ is temporarily unable to serve your request.</p></body></html>"
+
     /** @} */
 
 #ifdef __cplusplus

@@ -61,6 +61,7 @@ axis2_http_accept_record_create(
         AXIS2_HANDLE_ERROR (env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+
     memset ((void *)accept_record, 0, sizeof (axis2_http_accept_record_t));
     accept_record->record = axutil_strtrim(env, tmp_accept_record, AXIS2_SPACE_COMMA);
 

@@ -62,7 +62,7 @@ axis2_http_client_create(
 
     if (!http_client)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -160,7 +160,7 @@ axis2_http_client_send(
 
     if (!client->url)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_URL, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NULL_URL, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Request url not set");
         return AXIS2_FAILURE;
     }
@@ -190,7 +190,7 @@ axis2_http_client_send(
 
     if (client->sockfd < 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Socket Creation failed.");
         return AXIS2_FAILURE;
     }
@@ -227,7 +227,7 @@ axis2_http_client_send(
                                      axis2_http_client_get_key_file
                                      (client, env), ssl_pp);
 #else
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_TRANSPORT_PROTOCOL,
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_TRANSPORT_PROTOCOL,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid Transport Protocol,\
             HTTPS transport not enabled.");
@@ -322,7 +322,7 @@ axis2_http_client_send(
                                      20 * sizeof(axis2_char_t));
         if (!host_port_str)
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "memory allocation failed\
  for host %s and %s path", host, path);
             return AXIS2_FAILURE;
@@ -337,7 +337,7 @@ axis2_http_client_send(
 
         if (!str_request_line)
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "memory allocation failed\
  for host %s and %s path", host, path);
             return AXIS2_FAILURE;
@@ -445,7 +445,7 @@ axis2_http_client_recieve_header(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                         "client data stream  null or socket error for host \
 %s and %d port", host, port);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_HTTP_REQUEST_NOT_SENT,
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_HTTP_REQUEST_NOT_SENT,
                         AXIS2_FAILURE);
         return -1;
     }
@@ -470,14 +470,14 @@ axis2_http_client_recieve_header(
         if (read < 0)
         {
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                            "[axis2c] http client , response timed out");
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_RESPONSE_TIMED_OUT,
+                            "http client , response timed out");
+            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_RESPONSE_TIMED_OUT,
                             AXIS2_FAILURE);
             return -1;
         }
         else if (read == 0)
         {
-            AXIS2_ERROR_SET(env->error,
+            AXIS2_HANDLE_ERROR(env,
                             AXIS2_ERROR_RESPONSE_SERVER_SHUTDOWN,
                             AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
@@ -491,7 +491,7 @@ axis2_http_client_recieve_header(
             AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
                              "axis2_http_status_line_create failed for \
 str_status_line %s", str_status_line);
-            AXIS2_ERROR_SET(env->error,
+            AXIS2_HANDLE_ERROR(env,
                             AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
                             AXIS2_FAILURE);
             http_status = 0;
@@ -562,7 +562,7 @@ str_status_line %s", str_status_line);
         axis2_http_simple_response_get_content_length(client->response,
                                                       env) > 0)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING,
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING,
                         AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                         "Response does not contain" " Content-Type");
@@ -735,14 +735,14 @@ port", host, port);
     }
     if (read < 0)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_RESPONSE_TIMED_OUT, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     status_line = axis2_http_status_line_create(env, str_status_line);
     if (!status_line)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
                         AXIS2_FAILURE);
         return AXIS2_FAILURE;

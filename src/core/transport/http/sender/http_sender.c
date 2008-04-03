@@ -141,7 +141,7 @@ axis2_http_sender_create (const axutil_env_t * env)
 
     if (!sender)
     {
-        AXIS2_ERROR_SET (env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -271,9 +271,9 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     {
         if (!soap_body)
         {
-            AXIS2_ERROR_SET (env->error,
-                             AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
-                             AXIS2_FAILURE);
+            AXIS2_HANDLE_ERROR(env,
+                               AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
+                               AXIS2_FAILURE);
             AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "%s",
                              AXIS2_ERROR_GET_MESSAGE (env->error));
             return AXIS2_FAILURE;
@@ -428,8 +428,8 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
         if (!sender->om_output)
         {
-            AXIS2_ERROR_SET (env->error, AXIS2_ERROR_NULL_OM_OUTPUT,
-                             AXIS2_FAILURE);
+            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NULL_OM_OUTPUT,
+                               AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
                 AXIS2_ERROR_GET_MESSAGE(env->error));
             return AXIS2_FAILURE;
@@ -1360,9 +1360,9 @@ header");
         {
             const axis2_char_t *mep =
                 axis2_op_get_msg_exchange_pattern (op, env);
-            AXIS2_ERROR_SET (env->error,
-                             AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
-                             AXIS2_FAILURE);
+            AXIS2_HANDLE_ERROR(env,
+                               AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
+                               AXIS2_FAILURE);
             /* handle one way case */
 
             if (axutil_strcmp (mep, AXIS2_MEP_URI_OUT_ONLY) == 0)
@@ -1393,8 +1393,8 @@ header");
         }
     }
 
-    AXIS2_ERROR_SET (env->error,
-                     AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR, AXIS2_FAILURE);
+    AXIS2_HANDLE_ERROR(env,
+                       AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR, AXIS2_FAILURE);
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_http_sender_send");
     return AXIS2_FAILURE;
 }
@@ -1553,8 +1553,8 @@ axis2_http_sender_process_response (axis2_http_sender_t * sender,
     in_stream = axis2_http_simple_response_get_body (response, env);
     if (!in_stream)
     {
-        AXIS2_ERROR_SET (env->error, AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY,
-                         AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY,
+                           AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
@@ -2950,7 +2950,7 @@ axis2_http_sender_configure_http_auth (axis2_http_sender_t * sender,
     }
     else
     {
-        AXIS2_ERROR_SET (env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
                          AXIS2_FAILURE);
     }
 
@@ -3058,7 +3058,7 @@ axis2_http_sender_configure_proxy_auth (axis2_http_sender_t * sender,
     }
     else
     {
-        AXIS2_ERROR_SET (env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
                          AXIS2_FAILURE);
     }
 
@@ -3124,7 +3124,7 @@ axis2_http_sender_set_http_auth_type (axis2_http_sender_t * sender,
     }
     else
     {
-        AXIS2_ERROR_SET (env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
                          AXIS2_FAILURE);
     }
     return status;
@@ -3185,7 +3185,7 @@ axis2_http_sender_set_proxy_auth_type (axis2_http_sender_t * sender,
     }
     else
     {
-        AXIS2_ERROR_SET (env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
                          AXIS2_FAILURE);
     }
     return status;

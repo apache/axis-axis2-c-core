@@ -85,7 +85,7 @@ axutil_stream_create_ssl(
 
     if (!stream_impl)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     memset ((void *)stream_impl, 0, sizeof (ssl_stream_impl_t));
@@ -211,7 +211,7 @@ axis2_ssl_stream_skip(
     tmp_buffer = AXIS2_MALLOC(env->allocator, count * sizeof(axis2_char_t));
     if (tmp_buffer == NULL)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return -1;
     }
     len = SSL_read(stream_impl->ssl, tmp_buffer, count);

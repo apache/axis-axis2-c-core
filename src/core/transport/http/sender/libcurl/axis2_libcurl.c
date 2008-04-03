@@ -519,8 +519,8 @@ axis2_libcurl_send(
     if (curl_easy_perform(handler)) 
     {
         AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "%s", &data->errorbuffer);
-        AXIS2_ERROR_SET (env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
-                         AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
+                           AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 

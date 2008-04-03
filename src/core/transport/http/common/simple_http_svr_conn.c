@@ -95,6 +95,7 @@ axis2_simple_http_svr_conn_close(
     return AXIS2_SUCCESS;
 }
 
+
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_simple_http_svr_conn_is_open(
     axis2_simple_http_svr_conn_t * svr_conn,
@@ -107,6 +108,7 @@ axis2_simple_http_svr_conn_is_open(
     return AXIS2_FALSE;
 }
 
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_simple_http_svr_conn_set_keep_alive(
     axis2_simple_http_svr_conn_t * svr_conn,
@@ -117,6 +119,7 @@ axis2_simple_http_svr_conn_set_keep_alive(
     return AXIS2_SUCCESS;
 }
 
+
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_simple_http_svr_conn_is_keep_alive(
     axis2_simple_http_svr_conn_t * svr_conn,
@@ -124,6 +127,7 @@ axis2_simple_http_svr_conn_is_keep_alive(
 {
     return svr_conn->keep_alive;
 }
+
 
 AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
 axis2_simple_http_svr_conn_get_stream(
@@ -133,6 +137,7 @@ axis2_simple_http_svr_conn_get_stream(
     return svr_conn->stream;
 }
 
+
 AXIS2_EXTERN axis2_http_response_writer_t *AXIS2_CALL
 axis2_simple_http_svr_conn_get_writer(
     const axis2_simple_http_svr_conn_t * svr_conn,
@@ -140,6 +145,7 @@ axis2_simple_http_svr_conn_get_writer(
 {
     return axis2_http_response_writer_create(env, svr_conn->stream);
 }
+
 
 AXIS2_EXTERN axis2_http_simple_request_t *AXIS2_CALL
 axis2_simple_http_svr_conn_read_request(
@@ -195,7 +201,7 @@ axis2_simple_http_svr_conn_read_request(
     request_line = axis2_http_request_line_parse_line(env, str_line);
     if (!request_line)
     {
-        AXIS2_ERROR_SET(env->error,
+        AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
                         AXIS2_FAILURE);
         return NULL;
@@ -328,9 +334,9 @@ axis2_simple_http_svr_conn_write_response(
     status_line = axis2_http_simple_response_get_status_line(response, env);
     if (!status_line)
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
-                        AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env,
+                           AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
+                           AXIS2_FAILURE);
         axis2_http_response_writer_free(response_writer, env);
         response_writer = NULL;
         return AXIS2_FAILURE;
@@ -377,9 +383,11 @@ axis2_simple_http_svr_conn_write_response(
     {
         axis2_status_t write_stat = AXIS2_FAILURE;
         if (AXIS2_FALSE == binary_content)
+        {
             write_stat = axis2_http_response_writer_println_str(response_writer,
                                                                 env,
                                                                 response_body);
+        }
         else
         {
             write_stat = axis2_http_response_writer_write_buf(response_writer,
@@ -390,8 +398,8 @@ axis2_simple_http_svr_conn_write_response(
 
         if (AXIS2_SUCCESS != write_stat)
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_RESPONSE,
-                            AXIS2_FAILURE);
+            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_WRITING_RESPONSE,
+                               AXIS2_FAILURE);
             axis2_http_response_writer_free(response_writer, env);
             return AXIS2_FAILURE;
         }
@@ -415,6 +423,7 @@ axis2_simple_http_svr_conn_write_response(
     return AXIS2_SUCCESS;
 }
 
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_simple_http_svr_conn_set_rcv_timeout(
     axis2_simple_http_svr_conn_t * svr_conn,
@@ -425,6 +434,7 @@ axis2_simple_http_svr_conn_set_rcv_timeout(
                                                   svr_conn->socket, SO_RCVTIMEO,
                                                   timeout);
 }
+
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_simple_http_svr_conn_set_snd_timeout(
@@ -437,6 +447,7 @@ axis2_simple_http_svr_conn_set_snd_timeout(
                                                   timeout);
 }
 
+
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_simple_http_svr_conn_get_svr_ip(
     const axis2_simple_http_svr_conn_t * svr_conn,
@@ -444,6 +455,7 @@ axis2_simple_http_svr_conn_get_svr_ip(
 {
     return axutil_network_handler_get_svr_ip(env, svr_conn->socket);
 }
+
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_simple_http_svr_conn_get_peer_ip(

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -204,7 +203,7 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_bool_t is_soap11 = AXIS2_FALSE;
     axiom_xml_reader_t *xml_reader = NULL;
     axutil_string_t *char_set_str = NULL;
-    /*axis2_char_t *xml_char_set = NULL; */
+
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_callback_info_t *callback_ctx;
     axutil_hash_t *headers = NULL;
@@ -244,19 +243,19 @@ axis2_http_transport_utils_process_http_post_request(
     if (soap_action && (soap_action_len > 0))
     {
         /* remove leading and trailing " s */
-        if ('"' == soap_action[0])
+        if (AXIS2_DOUBLE_QUOTE == soap_action[0])
         {
             memmove(soap_action, soap_action + sizeof(char),
                     soap_action_len - 1 + sizeof(char));
         }
-        if ('"' == soap_action[soap_action_len - 2])
+        if (AXIS2_DOUBLE_QUOTE == soap_action[soap_action_len - 2])
         {
-            soap_action[soap_action_len - 2] = '\0';
+            soap_action[soap_action_len - 2] = AXIS2_ESC_NULL;
         }
     }else{
     /** soap action is null, check whether soap action is in content_type header */
         soap_action = axis2_http_transport_utils_get_value_from_content_type(env,
-                content_type, "action");
+                content_type, AXIS2_ACTION);
     }
 
 
@@ -273,17 +272,20 @@ axis2_http_transport_utils_process_http_post_request(
         {
             axis2_char_t *encoding_value = NULL;
             encoding_value = axis2_http_header_get_value(encoding_header, env);
-            if (encoding_value && 0 == axutil_strcasecmp(encoding_value,
-                                                         AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
+            if (encoding_value && 
+                0 == axutil_strcasecmp(encoding_value,
+                                       AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
             {
                 callback_ctx->chunked_stream =
                     axutil_http_chunked_stream_create(env, in_stream);
+
                 if (!callback_ctx->chunked_stream)
                 {
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
                                     " creating in chunked stream.");
                     return AXIS2_FAILURE;
                 }
+
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "HTTP"
                                 " stream chunked");
             }
@@ -291,6 +293,7 @@ axis2_http_transport_utils_process_http_post_request(
     }
     else
     {
+        /* Encoding header is not available */
         /* check content encoding from msg ctx property */
         axis2_char_t *value = axis2_msg_ctx_get_transfer_encoding(msg_ctx, env);
 
@@ -311,9 +314,10 @@ axis2_http_transport_utils_process_http_post_request(
     {
         /* get mime boundry */
         axis2_char_t *mime_boundary =
-            axis2_http_transport_utils_get_value_from_content_type(env,
-                                                                   content_type,
-                                                                   AXIS2_HTTP_HEADER_CONTENT_TYPE_MIME_BOUNDARY);
+            axis2_http_transport_utils_get_value_from_content_type(
+                env,
+                content_type,
+                AXIS2_HTTP_HEADER_CONTENT_TYPE_MIME_BOUNDARY);
 
         if (mime_boundary)
         {
@@ -358,10 +362,11 @@ axis2_http_transport_utils_process_http_post_request(
 
             if (mime_parser)
             {
-                binary_data_map = axiom_mime_parser_parse(mime_parser, env,
-                                                          axis2_http_transport_utils_on_data_request,
-                                                          (void *) callback_ctx,
-                                                          mime_boundary);
+                binary_data_map = 
+                    axiom_mime_parser_parse(mime_parser, env,
+                                            axis2_http_transport_utils_on_data_request,
+                                            (void *) callback_ctx,
+                                            mime_boundary);
                 if (!binary_data_map)
                 {
                     return AXIS2_FAILURE;
@@ -387,9 +392,12 @@ axis2_http_transport_utils_process_http_post_request(
         AXIS2_FREE(env->allocator, mime_boundary);
     }
 
-    if(soap_action_header){
-    axis2_msg_ctx_set_soap_action(msg_ctx, env, soap_action_header);
-    }else if (soap_action){
+    if(soap_action_header)
+    {
+        axis2_msg_ctx_set_soap_action(msg_ctx, env, soap_action_header);
+
+    }else if (soap_action)
+    {
         axutil_string_t *soap_action_str = NULL;
         soap_action_str = axutil_string_create(env,soap_action);
         axis2_msg_ctx_set_soap_action(msg_ctx, env, soap_action_str);
@@ -432,7 +440,6 @@ axis2_http_transport_utils_process_http_post_request(
         {
             /* We should not be freeing om_builder here as it is done by
                axiom_soap_builder_create in case of error - Samisa */
-            /*axiom_stax_builder_free(om_builder, env); */
             om_builder = NULL;
             xml_reader = NULL;
             axis2_msg_ctx_set_is_soap_11(msg_ctx, env, is_soap11);
@@ -462,7 +469,6 @@ axis2_http_transport_utils_process_http_post_request(
             {
                 /* We should not be freeing om_builder here as it is done by
                    axiom_soap_builder_create in case of error - Samisa */
-                /*axiom_stax_builder_free(om_builder, env); */
                 om_builder = NULL;
                 xml_reader = NULL;
                 axis2_msg_ctx_set_is_soap_11(msg_ctx, env, is_soap11);
@@ -588,6 +594,7 @@ axis2_http_transport_utils_process_http_post_request(
     {
         status = axis2_engine_receive(engine, env, msg_ctx);
     }
+
     if (!axis2_msg_ctx_get_soap_envelope(msg_ctx, env) &&
         AXIS2_FALSE == is_soap11)
     {
@@ -641,7 +648,7 @@ axis2_http_transport_utils_process_http_put_request(
     axis2_bool_t is_soap11 = AXIS2_FALSE;
     axiom_xml_reader_t *xml_reader = NULL;
     axutil_string_t *char_set_str = NULL;
-    /*axis2_char_t *xml_char_set = NULL; */
+
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_callback_info_t *callback_ctx;
     axutil_hash_t *headers = NULL;
@@ -686,8 +693,9 @@ axis2_http_transport_utils_process_http_put_request(
         {
             axis2_char_t *encoding_value = NULL;
             encoding_value = axis2_http_header_get_value(encoding_header, env);
-            if (encoding_value && 0 == axutil_strcasecmp(encoding_value,
-                                                         AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
+            if (encoding_value && 
+                0 == axutil_strcasecmp(encoding_value,
+                                       AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
             {
                 callback_ctx->chunked_stream =
                     axutil_http_chunked_stream_create(env, in_stream);
@@ -724,9 +732,10 @@ axis2_http_transport_utils_process_http_put_request(
     {
         /* get mime boundry */
         axis2_char_t *mime_boundary =
-            axis2_http_transport_utils_get_value_from_content_type(env,
-                                                                   content_type,
-                                                                   AXIS2_HTTP_HEADER_CONTENT_TYPE_MIME_BOUNDARY);
+            axis2_http_transport_utils_get_value_from_content_type(
+                env,
+                content_type,
+                AXIS2_HTTP_HEADER_CONTENT_TYPE_MIME_BOUNDARY);
 
         if (mime_boundary)
         {
@@ -741,9 +750,10 @@ axis2_http_transport_utils_process_http_put_request(
 
             mime_parser = axiom_mime_parser_create(env);
 
-            chunk_buffer_size_param = axis2_msg_ctx_get_parameter (msg_ctx,
-                                                               env,
-                                                               AXIS2_MTOM_CHUNK_BUFFER_SIZE);
+            chunk_buffer_size_param = 
+                axis2_msg_ctx_get_parameter (msg_ctx,
+                                             env,
+                                             AXIS2_MTOM_CHUNK_BUFFER_SIZE);
             if (chunk_buffer_size_param)
             {
                 value_size =
@@ -771,10 +781,11 @@ axis2_http_transport_utils_process_http_put_request(
 
             if (mime_parser)
             {
-                binary_data_map = axiom_mime_parser_parse(mime_parser, env,
-                                                          axis2_http_transport_utils_on_data_request,
-                                                          (void *) callback_ctx,
-                                                          mime_boundary);
+                binary_data_map = 
+                    axiom_mime_parser_parse(mime_parser, env,
+                                            axis2_http_transport_utils_on_data_request,
+                                            (void *) callback_ctx,
+                                            mime_boundary);
                 if (!binary_data_map)
                 {
                     return AXIS2_FAILURE;
@@ -838,7 +849,6 @@ axis2_http_transport_utils_process_http_put_request(
         {
             /* We should not be freeing om_builder here as it is done by
                axiom_soap_builder_create in case of error - Samisa */
-            /*axiom_stax_builder_free(om_builder, env); */
             om_builder = NULL;
             xml_reader = NULL;
             axis2_msg_ctx_set_is_soap_11(msg_ctx, env, is_soap11);
@@ -1024,14 +1034,12 @@ axis2_http_transport_utils_process_http_head_request(
     axiom_soap_envelope_t *soap_envelope = NULL;
     axis2_engine_t *engine = NULL;
     axis2_bool_t do_rest = AXIS2_TRUE;
-    /*xml_schema_element_t *schema_element = NULL; */
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, in_stream, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, out_stream, AXIS2_FALSE);
-    /*AXIS2_PARAM_CHECK(env->error, content_type, AXIS2_FALSE); */
+
     AXIS2_PARAM_CHECK(env->error, request_uri, AXIS2_FALSE);
-    /*AXIS2_PARAM_CHECK(env->error, request_params, AXIS2_FALSE); */
 
     axis2_msg_ctx_set_to(msg_ctx, env, axis2_endpoint_ref_create(env,
                                                                  request_uri));
@@ -1213,25 +1221,6 @@ axis2_http_transport_utils_process_http_delete_request(
     return AXIS2_TRUE;
 }
 
-AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
-axis2_http_transport_utils_select_builder_for_mime(
-    const axutil_env_t * env,
-    axis2_char_t * request_uri,
-    axis2_msg_ctx_t * msg_ctx,
-    axutil_stream_t * in_stream,
-    axis2_char_t * content_type)
-{
-    return NULL;
-}
-
-AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_http_transport_utils_is_optimized(
-    const axutil_env_t * env,
-    axiom_element_t * om_element)
-{
-    return AXIS2_FALSE;
-}
-
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_http_transport_utils_do_write_mtom(
     const axutil_env_t * env,
@@ -1249,7 +1238,7 @@ axis2_http_transport_utils_get_request_params(
 {
 
     axis2_char_t *query_str = NULL;
-    axis2_char_t *tmp = strchr(request_uri, '?');
+    axis2_char_t *tmp = strchr(request_uri, AXIS2_Q_MARK);
     axis2_char_t *tmp2 = NULL;
     axis2_char_t *tmp_name = NULL;
     axis2_char_t *tmp_value = NULL;
@@ -1257,24 +1246,24 @@ axis2_http_transport_utils_get_request_params(
 
     AXIS2_PARAM_CHECK(env->error, request_uri, NULL);
 
-    if (!tmp || '\0' == *(tmp + 1))
+    if (!tmp || AXIS2_ESC_NULL == *(tmp + 1))
     {
         return NULL;
     }
     query_str = axutil_strdup(env, tmp + 1);
 
-    for (tmp2 = tmp = query_str; *tmp != '\0'; ++tmp)
+    for (tmp2 = tmp = query_str; *tmp != AXIS2_ESC_NULL; ++tmp)
     {
-        if ('=' == *tmp)
+        if (AXIS2_EQ == *tmp)
         {
-            *tmp = '\0';
+            *tmp = AXIS2_ESC_NULL;
             tmp_name = axutil_strdup(env, tmp2);
             axis2_http_transport_utils_strdecode(env, tmp_name, tmp_name);
             tmp2 = tmp + 1;
         }
-        if ('&' == *tmp)
+        if (AXIS2_AND == *tmp)
         {
-            *tmp = '\0';
+            *tmp = AXIS2_ESC_NULL;
             tmp_value = axutil_strdup(env, tmp2);
             axis2_http_transport_utils_strdecode(env, tmp_value, tmp_value);
             tmp2 = tmp + 1;
@@ -1290,7 +1279,7 @@ axis2_http_transport_utils_get_request_params(
             tmp_value = NULL;
         }
     }
-    if (tmp_name && '\0' != *tmp2)
+    if (tmp_name && AXIS2_ESC_NULL != *tmp2)
     {
         if (!ret)
         {
@@ -1313,9 +1302,9 @@ axis2_http_transport_utils_strdecode(
     AXIS2_PARAM_CHECK(env->error, dest, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, src, AXIS2_FAILURE);
 
-    for (; *src != '\0'; ++dest, ++src)
+    for (; *src != AXIS2_ESC_NULL; ++dest, ++src)
     {
-        if (src[0] == '%' && isxdigit(src[1]) && isxdigit(src[2]))
+        if (src[0] == AXIS2_PERCENT && isxdigit(src[1]) && isxdigit(src[2]))
         {
             *dest = (axis2_char_t)(axis2_http_transport_utils_hexit(src[1]) * 16 +
                 axis2_http_transport_utils_hexit(src[2]));
@@ -1327,7 +1316,7 @@ axis2_http_transport_utils_strdecode(
             *dest = *src;
         }
     }
-    *dest = '\0';
+    *dest = AXIS2_ESC_NULL;
 
     return AXIS2_SUCCESS;
 }
@@ -1356,9 +1345,7 @@ axis2_http_transport_utils_get_not_found(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)
 {
-    return "<html><head><title>404 Not Found</title></head>"
-        "<body><h2>Not Found</h2><p>The requested URL was not"
-        " found on this server.</p></body></html>";
+    return AXIS2_HTTP_NOT_FOUND;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -1366,9 +1353,7 @@ axis2_http_transport_utils_get_not_implemented(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)
 {
-    return "<html><head><title>501 Not Implemented</title></head>"
-        "<body><h2>Not Implemented</h2><p>The requested Method is not"
-        " implemented on this server.</p></body></html>";
+    return AXIS2_HTTP_NOT_IMPLEMENTED;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -1376,10 +1361,7 @@ axis2_http_transport_utils_get_internal_server_error(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)
 {
-    return "<html><head><title>500 Internal Server Error</title></head>"
-        "<body><h2>Internal Server Error</h2><p>The server encountered an unexpected"
-        " condition which prevented it from fulfilling the request."
-        "</p></body></html>";
+    return AXIS2_HTTP_INTERNAL_SERVER_ERROR;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -1387,9 +1369,7 @@ axis2_http_transport_utils_get_method_not_allowed(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)
 {
-    return "<html><head><title>405 Method Not Allowed</title></head>"
-        "<body><h2>Method Not Allowed</h2><p>The requested method is not"
-        " allowed for this URL.</p></body></html>";
+    return AXIS2_HTTP_METHOD_NOT_ALLOWED;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -1397,10 +1377,7 @@ axis2_http_transport_utils_get_not_acceptable(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)
 {
-    return "<html><head><title>406 Not Acceptable</title></head>"
-        "<body><h2>Not Acceptable</h2><p>An appropriate representation of"
-        " the requested resource could not be found on this server."
-        "</p></body></html>";
+    return AXIS2_HTTP_NOT_ACCEPTABLE;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -1408,9 +1385,7 @@ axis2_http_transport_utils_get_bad_request(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)
 {
-    return "<html><head><title>400 Bad Request</title></head>"
-        "<body><h2>Bad Request</h2><p>Your client sent a request that this"
-        " server could not understand.</p></body></html>";
+    return AXIS2_HTTP_BAD_REQUEST;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -1418,9 +1393,7 @@ axis2_http_transport_utils_get_request_timeout(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)
 {
-    return "<html><head><title>408 Request Timeout</title></head>"
-        "<body><h2>Request Timeout</h2><p>Cannot wait any longer for the HTTP request"
-        " from the client.</p></body></html>";
+    return AXIS2_HTTP_REQUEST_TIMEOUT;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -1428,9 +1401,7 @@ axis2_http_transport_utils_get_conflict(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)
 {
-    return "<html><head><title>409 Conflict</title></head>"
-        "<body><h2>Conflict</h2><p>The client attempted to put the server's"
-        " resources into an invalid state.</p></body></html>";
+    return AXIS2_HTTP_CONFLICT;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -1438,9 +1409,7 @@ axis2_http_transport_utils_get_gone(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)
 {
-    return "<html><head><title>410 Gone</title></head>"
-        "<body><h2>Gone</h2><p>The requested resource is no longer"
-        " available on this server.</p></body></html>";
+    return AXIS2_HTTP_GONE;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -1448,9 +1417,7 @@ axis2_http_transport_utils_get_precondition_failed(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)
 {
-    return "<html><head><title>412 Precondition Failed</title></head>"
-        "<body><h2>Precondition Failed</h2><p>A precondition for the requested URL"
-        " failed.</p></body></html>";
+    return AXIS2_HTTP_PRECONDITION_FAILED;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -1458,10 +1425,7 @@ axis2_http_transport_utils_get_request_entity_too_large(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)
 {
-    return "<html><head><title>413 Request Entity Too Large</title></head>"
-        "<body><h2>Request Entity Too Large</h2><p>The data provided in the request"
-        " is too large or the requested resource does not allow request data."
-        "</p></body></html>";
+    return AXIS2_HTTP_TOO_LARGE;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -1469,10 +1433,9 @@ axis2_http_transport_utils_get_service_unavailable(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx)
 {
-    return "<html><head><title>503 Service Unavailable</title></head>"
-        "<body><h2>Service Unavailable</h2><p>The service is temporarily unable"
-        " to serve your request.</p></body></html>";
+    return AXIS2_HTTP_SERVICE_UNAVILABLE;
 }
+
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_transport_utils_get_services_html(
@@ -1540,7 +1503,9 @@ axis2_http_transport_utils_get_services_html(
                      hi2 = axutil_hash_next(env, hi2))
                 {
                     axutil_hash_this(hi2, NULL, NULL, &op);
-                    oname = axutil_qname_get_localpart(axis2_op_get_qname(((axis2_op_t *) op), env), env);
+                    oname = axutil_qname_get_localpart(
+                        axis2_op_get_qname(((axis2_op_t *) op), env), 
+                        env);
                     ret = axutil_stracat(env, tmp2, "<li>");
                     AXIS2_FREE(env->allocator, tmp2);
                     tmp2 = ret;
@@ -1559,11 +1524,11 @@ axis2_http_transport_utils_get_services_html(
             else
             {
                 ret = axutil_stracat(env, tmp2, "No operations Available");
-                /*AXIS2_FREE(env->allocator, tmp); */
                 tmp2 = ret;
             }
         }
     }
+
     if (errorneous_svc_map && 0 != axutil_hash_count(errorneous_svc_map))
     {
         void *fsname = NULL;
@@ -1687,11 +1652,10 @@ axis2_http_transport_utils_get_services_static_wsdl(
                     AXIS2_FREE(env->allocator, content);
                     content = tmp;
                 }
-                /*sprintf(&content[i++], "%c", c);*/
                 content[i++] = (axis2_char_t)c;
                 c = fgetc(wsdl_file);
             }
-            content[i] = '\0';
+            content[i] = AXIS2_ESC_NULL;
             wsdl_string = (axis2_char_t *)content;
         }
         AXIS2_FREE(env->allocator, wsdl_path);
@@ -1728,10 +1692,10 @@ axis2_http_transport_utils_get_charset_enc(
 
     if (tmp)
     {
-        tmp = strchr(tmp, '=');
+        tmp = strchr(tmp, AXIS2_EQ);
         if (tmp)
         {
-            tmp2 = strchr(tmp, ';');
+            tmp2 = strchr(tmp, AXIS2_SEMI_COLON);
             if (!tmp2)
             {
                tmp2 = tmp + strlen(tmp); 
@@ -1745,7 +1709,7 @@ axis2_http_transport_utils_get_charset_enc(
             {
                 tmp2 -= sizeof(axis2_char_t);
             }
-            *tmp2 = '\0';
+            *tmp2 = AXIS2_ESC_NULL;
         }
     }
 
@@ -1757,9 +1721,8 @@ axis2_http_transport_utils_get_charset_enc(
          * charset=UTF-8
          * But for our requirements charset we get should be UTF-8
          */
-        if ('\'' == *(tmp + sizeof(axis2_char_t)) || '\"' == *(tmp +
-                                                               sizeof
-                                                               (axis2_char_t)))
+        if (AXIS2_ESC_SINGLE_QUOTE == *(tmp + sizeof(axis2_char_t)) || 
+            AXIS2_ESC_DOUBLE_QUOTE == *(tmp + sizeof(axis2_char_t)))
         {
             tmp += 2 * sizeof(axis2_char_t);
         }
@@ -1810,7 +1773,7 @@ axis2_http_transport_utils_on_data_request(
                                              buffer, size);
         if (len >= 0)
         {
-            buffer[len] = '\0';
+            buffer[len] = AXIS2_ESC_NULL;
         }
     }
     else
@@ -1822,7 +1785,7 @@ axis2_http_transport_utils_on_data_request(
         len = axutil_stream_read(in_stream, env, buffer, size);
         if (len >= 0)
         {
-            buffer[len] = '\0';
+            buffer[len] = AXIS2_ESC_NULL;
             ((axis2_callback_info_t *) ctx)->unread_len -= len;
         }
     }
@@ -1860,7 +1823,7 @@ axis2_http_transport_utils_create_soap_msg(
        as this is passed on to the reader */
     if (!callback_ctx)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     callback_ctx->in_stream = in_stream;
@@ -1883,8 +1846,8 @@ axis2_http_transport_utils_create_soap_msg(
     }
     if (!in_stream)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX,
-                        AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX,
+                           AXIS2_FAILURE);
         AXIS2_FREE(env->allocator, callback_ctx);
         return NULL;
     }
@@ -1925,6 +1888,7 @@ axis2_http_transport_utils_create_soap_msg(
 
         }
     }
+
     if (!char_set_enc)
     {
         char_set_enc = AXIS2_DEFAULT_CHAR_SET_ENCODING;
@@ -1935,9 +1899,10 @@ axis2_http_transport_utils_create_soap_msg(
         axis2_msg_ctx_set_doing_mtom(msg_ctx, env, AXIS2_TRUE);
         /* get mime boundry */
         mime_boundary =
-            axis2_http_transport_utils_get_value_from_content_type(env,
-                                                                   content_type,
-                                                                   AXIS2_HTTP_HEADER_CONTENT_TYPE_MIME_BOUNDARY);
+            axis2_http_transport_utils_get_value_from_content_type(
+                env,
+                content_type,
+                AXIS2_HTTP_HEADER_CONTENT_TYPE_MIME_BOUNDARY);
 
         if (mime_boundary)
         {
@@ -1954,13 +1919,15 @@ axis2_http_transport_utils_create_soap_msg(
  
             mime_parser = axiom_mime_parser_create(env);
 
-            chunk_buffer_size_param = axis2_msg_ctx_get_parameter (msg_ctx,
-                                                               env,
-                                                               AXIS2_MTOM_CHUNK_BUFFER_SIZE);
+            chunk_buffer_size_param = 
+                axis2_msg_ctx_get_parameter (msg_ctx,
+                                             env,
+                                             AXIS2_MTOM_CHUNK_BUFFER_SIZE);
             if (chunk_buffer_size_param)
             {
                 value_size =
                     (axis2_char_t *) axutil_param_get_value (chunk_buffer_size_param, env);
+
                 if(value_size)
                 {
                     size = atoi(value_size);
@@ -1969,8 +1936,8 @@ axis2_http_transport_utils_create_soap_msg(
             }
 
             max_chunk_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
-                                                               env,
-                                                               AXIS2_MTOM_MAX_CHUNK_BUFFERS);
+                                                                   env,
+                                                                   AXIS2_MTOM_MAX_CHUNK_BUFFERS);
             if(max_chunk_buffers_param)
             {
                 value_num =
@@ -1984,10 +1951,11 @@ axis2_http_transport_utils_create_soap_msg(
             
             if (mime_parser)
             {
-                binary_data_map = axiom_mime_parser_parse(mime_parser, env,
-                                                          axis2_http_transport_utils_on_data_request,
-                                                          (void *) callback_ctx,
-                                                          mime_boundary);
+                binary_data_map = 
+                    axiom_mime_parser_parse(mime_parser, env,
+                                            axis2_http_transport_utils_on_data_request,
+                                            (void *) callback_ctx,
+                                            mime_boundary);
                 if(!binary_data_map)
                 {
                     return NULL;
@@ -2020,10 +1988,11 @@ axis2_http_transport_utils_create_soap_msg(
         axiom_stax_builder_t *om_builder = NULL;
         axiom_soap_builder_t *soap_builder = NULL;
         
-        xml_reader = axiom_xml_reader_create_for_io(env,
-                                                    axis2_http_transport_utils_on_data_request,
-                                                    NULL, (void *) callback_ctx,
-                                                    char_set_enc);
+        xml_reader = 
+            axiom_xml_reader_create_for_io(env,
+                                           axis2_http_transport_utils_on_data_request,
+                                           NULL, (void *) callback_ctx,
+                                           char_set_enc);
         if (!xml_reader)
         {
             return NULL;
@@ -2040,7 +2009,6 @@ axis2_http_transport_utils_create_soap_msg(
         {
             /* We should not be freeing om_builder here as it is done by
                axiom_soap_builder_create in case of error - Samisa */
-            /*axiom_stax_builder_free(om_builder, env); */
             om_builder = NULL;
             xml_reader = NULL;
             return NULL;
@@ -2068,16 +2036,18 @@ axis2_http_transport_utils_create_soap_msg(
     }
     else
     {
+        /* REST processing */
         axiom_xml_reader_t *xml_reader = NULL;
         axiom_stax_builder_t *om_builder = NULL;
         axiom_soap_body_t *def_body = NULL;
         axiom_document_t *om_doc = NULL;
         axiom_node_t *root_node = NULL;
 
-        xml_reader = axiom_xml_reader_create_for_io(env,
-                                                    axis2_http_transport_utils_on_data_request,
-                                                    NULL, (void *) callback_ctx,
-                                                    char_set_enc);
+        xml_reader = 
+            axiom_xml_reader_create_for_io(env,
+                                           axis2_http_transport_utils_on_data_request,
+                                           NULL, (void *) callback_ctx,
+                                           char_set_enc);
         if (!xml_reader)
         {
             return NULL;
@@ -2125,26 +2095,27 @@ axis2_http_transport_utils_get_value_from_content_type(
         return NULL;
     }
 
-    tmp = strchr(tmp, '=');
-    tmp2 = strchr(tmp, ';');
+    tmp = strchr(tmp, AXIS2_EQ);
+    tmp2 = strchr(tmp, AXIS2_SEMI_COLON);
 
     if (tmp2)
     {
-        *tmp2 = '\0';
+        *tmp2 = AXIS2_ESC_NULL;
     }
     if (!tmp)
     {
         AXIS2_FREE(env->allocator, tmp_content_type);
         return NULL;
     }
+
     tmp2 = axutil_strdup(env, tmp + 1);
 
     AXIS2_FREE(env->allocator, tmp_content_type);
-    if (*tmp2 == '"')
+    if (*tmp2 == AXIS2_DOUBLE_QUOTE)
     {
         tmp = tmp2;
         tmp2 = axutil_strdup(env, tmp + 1);
-        tmp2[strlen(tmp2) - 1] = '\0';
+        tmp2[strlen(tmp2) - 1] = AXIS2_ESC_NULL;
     }
     return tmp2;
 }
@@ -2176,8 +2147,8 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
     soap_body = axiom_soap_envelope_get_body(soap_env, env);
     if (!soap_body)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
-                        AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
+                           AXIS2_FAILURE);
         return NULL;
     }
 
@@ -2222,6 +2193,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
     return soap_env;
 }
 
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_dispatch_and_verify(
     const axutil_env_t * env,
@@ -2242,8 +2214,8 @@ axis2_http_transport_utils_dispatch_and_verify(
         if (!axis2_msg_ctx_get_svc(msg_ctx, env) ||
             !axis2_msg_ctx_get_op(msg_ctx, env))
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_OR_OP_NOT_FOUND,
-                            AXIS2_FAILURE);
+            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_SVC_OR_OP_NOT_FOUND,
+                               AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
@@ -2256,8 +2228,8 @@ axis2_http_transport_utils_dispatch_and_verify(
         if (!axis2_msg_ctx_get_svc(msg_ctx, env) ||
             !axis2_msg_ctx_get_op(msg_ctx, env))
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_OR_OP_NOT_FOUND,
-                            AXIS2_FAILURE);
+            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_SVC_OR_OP_NOT_FOUND,
+                               AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
