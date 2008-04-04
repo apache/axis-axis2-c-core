@@ -137,12 +137,13 @@ axis2_http_transport_sender_free(
     axis2_transport_sender_t * transport_sender,
     const axutil_env_t * env)
 {
+	
+    axis2_http_transport_sender_impl_t *transport_sender_impl = NULL;
     if (!transport_sender)
     {
         return;
     }
 
-    axis2_http_transport_sender_impl_t *transport_sender_impl = NULL;
     transport_sender_impl = AXIS2_INTF_TO_IMPL(transport_sender);
 
     if (transport_sender_impl->http_version)
