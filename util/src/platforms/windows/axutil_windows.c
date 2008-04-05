@@ -44,15 +44,23 @@ std::string* getPlatformErrorMessage(long errorNumber)
 */ 
     AXIS2_EXTERN HMODULE AXIS2_CALL  callLoadLib(char *lib) 
 {
-    SetErrorMode(SEM_FAILCRITICALERRORS); //Disable display of the critical-error-handler message box
+    SetErrorMode(SEM_FAILCRITICALERRORS); //Disable display of the critical-error-handler message box
     return LoadLibrary(lib);
-}
+}
 AXIS2_EXTERN struct tm *AXIS2_CALL 
 axis2_win_gmtime(
     const time_t * timep,
     struct tm *result) 
 {
-    return gmtime(timep);
-}
+    return gmtime(timep);
+}
+
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL axutil_win32_get_last_error()
+{
+    return "Something went wrong loading the DLL. \
+If you happen to see this message, \
+please note that getting the exact error form Windows is a TODO. \
+And if possible please help fix it. :)";
+}
 
 

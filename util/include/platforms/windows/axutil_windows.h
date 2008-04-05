@@ -63,6 +63,18 @@ extern "C"
     /* get opt */
 #include "axutil_getopt_windows.h"
 
+    AXIS2_EXTERN HMODULE AXIS2_CALL
+    callLoadLib(
+        char *lib);
+
+    AXIS2_EXTERN struct tm *AXIS2_CALL
+                axis2_win_gmtime(
+                    const time_t * timep,
+                    struct tm *result);
+
+    AXIS2_EXTERN axis2_char_t * AXIS2_CALL 
+        axutil_win32_get_last_error();
+
     /***************************************************************
      * Default paths to shared library/DLLs and files
      ***************************************************************
@@ -98,7 +110,7 @@ extern "C"
 #define AXIS2_PLATFORM_UNLOADLIB         FreeLibrary
 #define AXIS2_PLATFORM_GETPROCADDR       GetProcAddress
 #define AXIS2_PLATFORM_LOADLIBEXIT()
-#define AXIS2_PLATFORM_LOADLIB_ERROR     ""
+#define AXIS2_PLATFORM_LOADLIB_ERROR     axutil_win32_get_last_error()
 
 #define AXIS2_DLHANDLER void*
 
@@ -155,14 +167,6 @@ extern "C"
 #define AXIS2_PRINTF_LONGLONG_FORMAT_SPECIFIER "%I64d"
 #define AXIS2_PRINTF_LONGLONG_FORMAT_SPECIFIER_CHARS "I64d"
 
-    AXIS2_EXTERN HMODULE AXIS2_CALL
-    callLoadLib(
-        char *lib);
-
-    AXIS2_EXTERN struct tm *AXIS2_CALL
-                axis2_win_gmtime(
-                    const time_t * timep,
-                    struct tm *result);
 
     /**
      * Platform specific path separator char

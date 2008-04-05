@@ -158,6 +158,7 @@ axutil_class_loader_load_lib(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_LOADING_FAILED,
                         AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "dlerror reason: %s", AXIS2_PLATFORM_LOADLIB_ERROR);
         return AXIS2_FAILURE;
     }
     status = axutil_dll_desc_set_dl_handler(dll_desc, env, dl_handler);
