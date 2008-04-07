@@ -3,6 +3,7 @@ scriptsdir=$(prefix)/bin
 logsdir=$(prefix)/logs
 docsdir=$(prefix)
 includedir=$(prefix)/include/axis2-1.3.1
+wsdl2cdir=$(prefix)/bin/tools/wsdl2c
 
 
 pkgconfigdir = $(libdir)/pkgconfig
@@ -15,7 +16,8 @@ data_DATA= samples/server/axis2.xml README \
 scripts_DATA=tools/codegen/javatool/WSDL2C.sh
 logs_DATA=
 docs_DATA= 
-EXTRA_DIST = CREDITS LICENSE build axis2c_build.sh guththila tools AUTHORS NOTICE 
+wsdl2c_DATA=tools/codegen/javatool/WSDL2C.sh tools/codegen/javatool/README.txt
+EXTRA_DIST = CREDITS LICENSE build axis2c_build.sh guththila tools AUTHORS NOTICE tools/codegen/javatool/README.txt  tools/codegen/javatool/WSDL2C.bat  tools/codegen/javatool/WSDL2C.sh
 
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
