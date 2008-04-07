@@ -2,7 +2,7 @@ datadir=$(prefix)
 scriptsdir=$(prefix)/bin
 logsdir=$(prefix)/logs
 docsdir=$(prefix)
-includedir=$(prefix)/include/axis2-1.3.0
+includedir=$(prefix)/include/axis2-1.3.1
 
 
 pkgconfigdir = $(libdir)/pkgconfig

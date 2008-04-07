@@ -31,7 +31,7 @@ AUTOCONF = configure.in
 !include $(AUTOCONF)
 
 # directory structure of install directory
-RELEASE_VER = 1.3.0
+RELEASE_VER = 1.3.1
 
 AXIS2_RELEASE_DIR=axis2c-bin-$(RELEASE_VER)-win32
 

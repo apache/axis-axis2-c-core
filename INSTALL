@@ -116,7 +116,7 @@ Table of Contents
 
         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/axis2c/lib/
         cd samples
-        ./configure --prefix=${AXIS2C_HOME} --with-axis2=${AXIS2C_HOME}/include/axis2-1.3.0
+        ./configure --prefix=${AXIS2C_HOME} --with-axis2=${AXIS2C_HOME}/include/axis2-1.3.1
         make
         sudo make install
 
@@ -355,7 +355,7 @@ Table of Contents
 
     This will install mod_axis2.so into your "<your_path_to_axis2c>/lib"
 
-5. 1.3.0 On Win32 platform
+5. 1.3.1 On Win32 platform
 
     Provide the apache2 location in configure.in file in APACHE_INSTALL_DIR
     Example:

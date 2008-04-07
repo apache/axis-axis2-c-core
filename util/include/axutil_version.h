@@ -40,7 +40,7 @@
  * The Patch Level never includes API changes, simply bug fixes.
  * Reset to 0 when upgrading AXIS2_MINOR_VERSION
  */
-#define AXIS2_PATCH_VERSION       0
+#define AXIS2_PATCH_VERSION       1
 
 /**
  * The symbol AXIS2_IS_DEV_VERSION is only defined for internal,
