@@ -72,14 +72,42 @@ guththila_buffer_t;
 #define GUTHTHILA_BUF_POS(_buffer, _pos) ((_buffer).buff[(_buffer).cur_buff] + _pos - (_buffer).pre_tot_data)
 #endif
 
+/**
+ * This method is the create method of guththila_buffer_s structure
+ * @param buffer structure which is going to create
+ * @param size size of the buffer which is going to create
+ * @param env environment, MUST NOT be NULL.
+ * return status of op AXIS2_SUCCESS on success,
+ * AXIS2_FAILURE on error
+ */
+
 int GUTHTHILA_CALL 
 guththila_buffer_init(guththila_buffer_t * buffer,
 					  int size,
 					  const axutil_env_t * env);
 
+/**
+ * This is the free method of guththila_buffer_s structure
+ * @param buffer structure which is going to create
+ * @param env environment, MUST NOT be NULL.
+ * return status of op AXIS2_SUCCESS on success,
+ * AXIS2_FAILURE on error
+ */
+
 int GUTHTHILA_CALL 
 guththila_buffer_un_init(guththila_buffer_t * buffer,
 					   const axutil_env_t * env);
+/**
+ * This method creates a new buffer and copy the content of given
+ * data by buffer variable
+ * @param mu_buff structure which is going to create
+ * @param buffer data to copy in to new buffer
+ * @param size size of the buffer to create
+ * @param env environment, MUST NOT be NULL.
+ * return status of op AXIS2_SUCCESS on success,
+ * AXIS2_FAILURE on error
+ */
+
 
 int GUTHTHILA_CALL 
 guththila_buffer_init_for_buffer(guththila_buffer_t * mu_buff, 
@@ -96,9 +124,20 @@ int GUTHTHILA_CALL
 guththila_buffer_next(guththila_buffer_t * buffer, 
 					  const axutil_env_t * env);
 
+
+/**
+ * This method create new xml element which is having the 
+ * size of cur_buff
+ * data by buffer variable
+ * @param buffer 
+ * @param env environment, MUST NOT be NULL.
+ * return xml element of guththila_buffer_s structure 
+ */
+
 void *GUTHTHILA_CALL 
 guththila_buffer_get(guththila_buffer_t * buffer, 
 					 const axutil_env_t * env);
+
 
 int GUTHTHILA_CALL 
 guththila_buffer_shift(guththila_buffer_t * buffer, 
