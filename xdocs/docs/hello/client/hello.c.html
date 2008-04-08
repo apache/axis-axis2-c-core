@@ -93,12 +93,6 @@
         <font color="#000000">printf</font>(<font color="#FF0000">"hello client invoke FAILED!\n"</font>);<br></br>
     }<br></br>
 <br></br>
-    <font color="#000000"><b>if</b></font> (<font color="#000000">payload</font>)<br></br>
-    {<br></br>
-        <font color="#000000">axiom_node_free_tree</font>(<font color="#000000">payload</font>, <font color="#000000">env</font>);<br></br>
-        <font color="#000000">payload</font> = <font color="#000000">NULL</font>;<br></br>
-    }<br></br>
-<br></br>
     <font color="#000000"><b>if</b></font> (<font color="#000000">svc_client</font>)<br></br>
     {<br></br>
         <font color="#000000">axis2_svc_client_free</font>(<font color="#000000">svc_client</font>, <font color="#000000">env</font>);<br></br>

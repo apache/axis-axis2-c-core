@@ -98,12 +98,6 @@ main(
         printf("hello client invoke FAILED!\n");
     }
 
-    if (payload)
-    {
-        axiom_node_free_tree(payload, env);
-        payload = NULL;
-    }
-
     if (svc_client)
     {
         axis2_svc_client_free(svc_client, env);
