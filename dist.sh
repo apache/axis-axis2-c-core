@@ -11,14 +11,14 @@ rm target/docs/README
 rm target/docs/dependencies.html
 rm target/docs/downloads.html
 rm target/xdocs/mail-lists.html
-cp -r target/docs axis2c-src-1.3.0
+cp -r target/docs axis2c-src-1.3.1
 
 cd samples   
 make dist   
-tar -xf axis2c-src-1.3.0.tar.gz     
-mv  axis2c-src-1.3.0 ../axis2c-src-1.3.0    
-cd ../axis2c-src-1.3.0      
-mv axis2c-src-1.3.0 samples
+tar -xf axis2c-src-1.3.1.tar.gz     
+mv  axis2c-src-1.3.1 ../axis2c-src-1.3.1    
+cd ../axis2c-src-1.3.1      
+mv axis2c-src-1.3.1 samples
 
 for i in `find . -name "*.la"`
 do
@@ -34,4 +34,3 @@ for i in `find . -type d -name ".svn"`
 do
         rm -rf $i
 done
-
