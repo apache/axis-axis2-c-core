@@ -69,7 +69,7 @@ Major Changes Since Last Release.
 --------------------------------
 
    1. Fixed library version numbering
-   2. Made Guththila default parser for Axis2/C
+   2. Made Guththila as default XML parser
    3. Many bug fixes.
    4. Memory leak fixes
 
