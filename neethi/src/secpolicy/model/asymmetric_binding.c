@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -29,7 +28,7 @@ struct rp_asymmetric_binding_t
 
 AXIS2_EXTERN rp_asymmetric_binding_t *AXIS2_CALL
 rp_asymmetric_binding_create(
-    const axutil_env_t * env)
+    const axutil_env_t *env)
 {
     rp_asymmetric_binding_t *asymmetric_binding = NULL;
 
@@ -43,6 +42,7 @@ rp_asymmetric_binding_create(
     if (asymmetric_binding == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
     asymmetric_binding->symmetric_asymmetric_binding_commons = NULL;
@@ -56,11 +56,9 @@ rp_asymmetric_binding_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 rp_asymmetric_binding_free(
-    rp_asymmetric_binding_t * asymmetric_binding,
-    const axutil_env_t * env)
+    rp_asymmetric_binding_t *asymmetric_binding,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (asymmetric_binding)
     {
 
@@ -96,22 +94,19 @@ rp_asymmetric_binding_free(
 
 AXIS2_EXTERN rp_symmetric_asymmetric_binding_commons_t *AXIS2_CALL
 rp_asymmetric_binding_get_symmetric_asymmetric_binding_commons(
-    rp_asymmetric_binding_t * asymmetric_binding,
-    const axutil_env_t * env)
+    rp_asymmetric_binding_t *asymmetric_binding,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return asymmetric_binding->symmetric_asymmetric_binding_commons;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_asymmetric_binding_set_symmetric_asymmetric_binding_commons(
-    rp_asymmetric_binding_t * asymmetric_binding,
-    const axutil_env_t * env,
+    rp_asymmetric_binding_t *asymmetric_binding,
+    const axutil_env_t *env,
     rp_symmetric_asymmetric_binding_commons_t *
     symmetric_asymmetric_binding_commons)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, symmetric_asymmetric_binding_commons,
                       AXIS2_FAILURE);
 
@@ -122,60 +117,51 @@ rp_asymmetric_binding_set_symmetric_asymmetric_binding_commons(
 
 AXIS2_EXTERN rp_property_t *AXIS2_CALL
 rp_asymmetric_binding_get_initiator_token(
-    rp_asymmetric_binding_t * asymmetric_binding,
-    const axutil_env_t * env)
+    rp_asymmetric_binding_t *asymmetric_binding,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return asymmetric_binding->initiator_token;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_asymmetric_binding_set_initiator_token(
-    rp_asymmetric_binding_t * asymmetric_binding,
-    const axutil_env_t * env,
-    rp_property_t * initiator_token)
+    rp_asymmetric_binding_t *asymmetric_binding,
+    const axutil_env_t *env,
+    rp_property_t *initiator_token)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, initiator_token, AXIS2_FAILURE);
 
     rp_property_increment_ref(initiator_token, env);
     asymmetric_binding->initiator_token = initiator_token;
     return AXIS2_SUCCESS;
-
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_asymmetric_binding_set_recipient_token(
-    rp_asymmetric_binding_t * asymmetric_binding,
-    const axutil_env_t * env,
-    rp_property_t * recipient_token)
+    rp_asymmetric_binding_t *asymmetric_binding,
+    const axutil_env_t *env,
+    rp_property_t *recipient_token)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, recipient_token, AXIS2_FAILURE);
 
     rp_property_increment_ref(recipient_token, env);
     asymmetric_binding->recipient_token = recipient_token;
     return AXIS2_SUCCESS;
-
 }
 
 AXIS2_EXTERN rp_property_t *AXIS2_CALL
 rp_asymmetric_binding_get_recipient_token(
-    rp_asymmetric_binding_t * asymmetric_binding,
-    const axutil_env_t * env)
+    rp_asymmetric_binding_t *asymmetric_binding,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return asymmetric_binding->recipient_token;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_asymmetric_binding_increment_ref(
-    rp_asymmetric_binding_t * asymmetric_binding,
-    const axutil_env_t * env)
+    rp_asymmetric_binding_t *asymmetric_binding,
+    const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     asymmetric_binding->ref++;
     return AXIS2_SUCCESS;
 }
