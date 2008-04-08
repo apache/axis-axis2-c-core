@@ -315,8 +315,13 @@ axis2_archive_extract(
      i;
     axis2_char_t *ptr;
 
-    n = scandir(".", &namelist, 0, alphasort);
-    if (n < 0)
+#ifdef WIN32
+	n = axis2_scandir(".", &namelist, 0, alphasort);
+#else
+	n = scandir(".", &namelist, 0, alphasort);
+#endif
+
+	if (n < 0)
         return AXIS2_FALSE;
     else
     {

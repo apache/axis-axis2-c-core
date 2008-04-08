@@ -204,13 +204,13 @@ extern "C"
     /**
     * windows specific directory handling functions
     */
-#define AXIS2_SCANDIR      scandir
+#define AXIS2_SCANDIR      axis2_scandir
 #define AXIS2_ALPHASORT      alphasort
-#define AXIS2_OPENDIR      opendir
-#define AXIS2_CLOSEDIR      closedir
-#define AXIS2_READDIR      readdir
-#define AXIS2_READDIR_R      readdir_r
-#define AXIS2_REWINDDIR      rewinddir
+#define AXIS2_OPENDIR      axis2_opendir
+#define AXIS2_CLOSEDIR      axis2_closedir
+#define AXIS2_READDIR      axis2_readdir
+#define AXIS2_READDIR_R      axis2_readdir_r
+#define AXIS2_REWINDDIR      axis2_rewinddir
 #define AXIS2_MKDIR(path,x)  _mkdir(path)
 #define AXIS2_GETCWD      _getcwd
 #define AXIS2_CHDIR      _chdir

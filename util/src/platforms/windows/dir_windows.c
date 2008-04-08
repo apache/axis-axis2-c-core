@@ -24,11 +24,11 @@
 
 /*dirent.h style mehtods for win32*/
 
-DIR *AXIS2_CALL
-opendir(
+AXIS2_DIR *AXIS2_CALL
+axis2_opendir(
     const char *_dirname)
 {
-    DIR *dirp;
+    AXIS2_DIR *dirp;
     char *filespec;
     long handle;
     int index;
@@ -42,7 +42,7 @@ opendir(
         filespec[index] = '\0';
     strcat(filespec, "/*");
 
-    dirp = (DIR *) malloc(sizeof(DIR));
+    dirp = (AXIS2_DIR *) malloc(sizeof(AXIS2_DIR));
     dirp->offset = 0;
     dirp->finished = 0;
 
@@ -67,8 +67,8 @@ opendir(
 }
 
 int AXIS2_CALL
-closedir(
-    DIR * _dirp)
+axis2_closedir(
+    AXIS2_DIR * _dirp)
 {
     int iret = -1;
     if (!_dirp)
@@ -83,8 +83,8 @@ closedir(
 }
 
 struct dirent *AXIS2_CALL
-readdir(
-    DIR * _dirp)
+axis2_readdir(
+    AXIS2_DIR * _dirp)
 {
     if (!_dirp || _dirp->finished)
         return NULL;
@@ -108,8 +108,8 @@ readdir(
 }
 
 int AXIS2_CALL
-readdir_r(
-    DIR * _dirp,
+axis2_readdir_r(
+    AXIS2_DIR * _dirp,
     struct dirent *_entry,
     struct dirent **__result)
 {
@@ -143,8 +143,8 @@ readdir_r(
 }
 
 int AXIS2_CALL
-rewinddir(
-    DIR * dirp)
+axis2_rewinddir(
+    AXIS2_DIR * dirp)
 {
     char *filespec;
     long handle;
@@ -183,14 +183,14 @@ alphasort(
 }
 
 int AXIS2_CALL
-scandir(
+axis2_scandir(
     const char *_dirname,
     struct dirent **__namelist[],
     int (*selector) (const struct dirent * entry),
     int (*compare) (const struct dirent ** __d1,
                     const struct dirent ** __d2))
 {
-    DIR *dirp = NULL;
+    AXIS2_DIR *dirp = NULL;
     struct dirent **vector = NULL;
     struct dirent *dp = NULL;
     int vector_size = 0;
@@ -200,12 +200,12 @@ scandir(
     {
         return -1;
     }
-    dirp = opendir(_dirname);
+    dirp = axis2_opendir(_dirname);
     if (!dirp)
     {
         return -1;
     }
-    dp = readdir(dirp);
+    dp = axis2_readdir(dirp);
     while (dp)
     {
         int dsize = 0;
@@ -213,7 +213,7 @@ scandir(
 
         if (selector && (*selector) (dp) == 0)
         {
-            dp = readdir(dirp);
+            dp = axis2_readdir(dirp);
             continue;
         }
 
@@ -257,10 +257,10 @@ scandir(
         }
 
         vector[nfiles++] = (struct dirent *) memcpy(newdp, dp, dsize);
-        dp = readdir(dirp);
+        dp = axis2_readdir(dirp);
     }
 
-    closedir(dirp);
+    axis2_closedir(dirp);
 
     *__namelist = vector;
 
