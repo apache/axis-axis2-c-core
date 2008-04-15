@@ -70,8 +70,10 @@ AC_FUNC_REALLOC
 
 
 UTILINC=$axis2_utilinc
+VERSION_NO="3:1:3"
 
 AC_SUBST(UTILINC)
+AC_SUBST(VERSION_NO)
 
 AC_CONFIG_FILES([Makefile \
     src/Makefile \
