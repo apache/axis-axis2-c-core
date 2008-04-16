@@ -18,6 +18,10 @@
 #ifndef GUTHTHILA_H
 #define GUTHTHILA_H
 
+#ifndef AXIS2_GUTHTHILA_ENABLED
+#define AXIS2_GUTHTHILA_ENABLED
+#endif  /* AXIS2_GUTHTHILA_ENABLED */
+
 #include <guththila_defines.h>
 #include <guththila_token.h>
 #include <guththila_reader.h>
@@ -56,6 +60,7 @@ typedef enum guththila_type
 	type_reader, 
 	type_io
 } guththila_type_t;
+
 enum guththila_event_types
 {
     GUTHTHILA_START_DOCUMENT =0, 
@@ -67,6 +72,7 @@ enum guththila_event_types
 	GUTHTHILA_START_ELEMENT,
     GUTHTHILA_EMPTY_ELEMENT
 };
+
 typedef struct guththila_s
 {
 
@@ -108,6 +114,7 @@ typedef struct guththila_s
 
     guththila_token_t *temp_tok;
 } guththila_t;
+
 
 typedef struct guththila_elem_namesp_s
 {
