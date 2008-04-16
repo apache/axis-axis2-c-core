@@ -1,5 +1,4 @@
 datadir=$(prefix)
-scriptsdir=$(prefix)/bin
 logsdir=$(prefix)/logs
 docsdir=$(prefix)
 includedir=$(prefix)/include/axis2-1.3.1
@@ -13,7 +12,6 @@ SUBDIRS = util $(GUTHTHILA_DIR) axiom neethi src $(TESTDIR) include ides tools/t
 include_HEADERS=$(top_builddir)/include/*.h
 data_DATA= samples/server/axis2.xml README \
 	INSTALL CREDITS COPYING NEWS NOTICE AUTHORS
-scripts_DATA=tools/codegen/javatool/WSDL2C.sh
 logs_DATA=
 docs_DATA= 
 wsdl2c_DATA=tools/codegen/javatool/WSDL2C.sh tools/codegen/javatool/README.txt
