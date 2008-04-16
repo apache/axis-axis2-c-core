@@ -79,21 +79,7 @@ dnl AC_FUNC_MALLOC
 dnl AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
-AC_MSG_CHECKING(whether to build libxml2 xml parser library)
-AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library wrapper. default=no],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    WRAPPER_DIR=""
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    WRAPPER_DIR="libxml2"
 
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-)
 
 AC_MSG_CHECKING(whether to build guththila xml parser library)
 AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser library wrapper. default=yes],
@@ -103,7 +89,6 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser lib
     ;;
   *)
     AC_MSG_RESULT(yes)
-    CFLAGS="$CFLAGS -DAXIS2_GUTHTHILA_ENABLED"
     WRAPPER_DIR="guththila"
 
     ;;
@@ -111,6 +96,24 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser lib
   AC_MSG_RESULT(yes)
   WRAPPER_DIR="guththila"
 )
+
+AC_MSG_CHECKING(whether to build libxml2 xml parser library)
+AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library wrapper. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -DAXIS2_LIBXML2_ENABLED"
+    WRAPPER_DIR="libxml2"
+	PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
 
 AC_MSG_CHECKING(whether to build tests)
 AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
@@ -130,7 +133,6 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
 )
 
 PKG_PROG_PKG_CONFIG(0.15)
-PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
 CFLAGS="$CFLAGS $LIBXML2_CFLAGS $GUTHTHILA_CFLAGS"
 VERSION_NO="3:1:3"
 
