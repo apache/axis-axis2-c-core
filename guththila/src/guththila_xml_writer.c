@@ -1158,10 +1158,6 @@ guththila_write_start_element_with_prefix_and_namespace(
     size_t elem_len = 0;
     guththila_xml_writer_namesp_t * writer_namesp = NULL;
 
-    namesp =
-        (guththila_xml_writer_namesp_t *) AXIS2_MALLOC(env->allocator,
-                                                   sizeof
-                                                   (guththila_xml_writer_namesp_t));
     elem =
         (guththila_xml_writer_element_t *) AXIS2_MALLOC(env->allocator,
                                                     sizeof
@@ -1193,7 +1189,7 @@ guththila_write_start_element_with_prefix_and_namespace(
             }
         }
     }
-    if (namesp && elem)
+    if (elem)
     {
         elem->name_sp_stack_no = -1;
         if (wr->status == START)
@@ -1264,6 +1260,10 @@ guththila_write_start_element_with_prefix_and_namespace(
         }
         if (!nmsp_found)
         {
+	    namesp =
+        	(guththila_xml_writer_namesp_t *) AXIS2_MALLOC(env->allocator,
+                                                   sizeof
+                                                   (guththila_xml_writer_namesp_t));	
             
 #ifndef GUTHTHILA_XML_WRITER_TOKEN
             namesp->name =
