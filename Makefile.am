@@ -14,8 +14,8 @@ data_DATA= samples/server/axis2.xml README \
 	INSTALL CREDITS COPYING NEWS NOTICE AUTHORS
 logs_DATA=
 docs_DATA= 
-wsdl2c_DATA=tools/codegen/javatool/WSDL2C.sh tools/codegen/javatool/README.txt
-EXTRA_DIST = CREDITS LICENSE build axis2c_build.sh guththila tools AUTHORS NOTICE tools/codegen/javatool/README.txt  tools/codegen/javatool/WSDL2C.bat  tools/codegen/javatool/WSDL2C.sh
+wsdl2c_DATA=tools/codegen/javatool/WSDL2C.sh tools/codegen/javatool/README
+EXTRA_DIST = CREDITS LICENSE build axis2c_build.sh guththila tools AUTHORS NOTICE tools/codegen/javatool/README  tools/codegen/javatool/WSDL2C.bat  tools/codegen/javatool/WSDL2C.sh
 
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
