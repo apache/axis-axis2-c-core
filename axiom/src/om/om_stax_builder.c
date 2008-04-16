@@ -202,18 +202,18 @@ axiom_stax_builder_process_attributes(
         }
         if (uri)
         {
-#ifdef AXIS2_GUTHTHILA_ENABLED
-            AXIS2_FREE(env->allocator,uri);
-#else
+#ifdef AXIS2_LIBXML2_ENABLED
             axiom_xml_reader_xml_free(om_builder->parser, env, uri);
+#else
+            AXIS2_FREE(env->allocator,uri);
 #endif
         }
         if (prefix)
         {
-#ifdef AXIS2_GUTHTHILA_ENABLED
-            AXIS2_FREE(env->allocator,prefix);
-#else
+#ifdef AXIS2_LIBXML2_ENABLED
             axiom_xml_reader_xml_free(om_builder->parser, env, prefix);
+#else
+            AXIS2_FREE(env->allocator,prefix);
 #endif
         }
         if (attr_name_str)
@@ -475,10 +475,10 @@ axiom_stax_builder_process_namespaces(
             return AXIS2_FAILURE;
         }
     }
-#ifdef AXIS2_GUTHTHILA_ENABLED
-    AXIS2_FREE(env->allocator,temp_prefix);
-#else
+#ifdef AXIS2_LIBXML2_ENABLED
     axiom_xml_reader_xml_free(om_builder->parser, env, temp_prefix);
+#else
+    AXIS2_FREE(env->allocator,temp_prefix);
 #endif
     return status;
 }
@@ -607,12 +607,11 @@ axiom_stax_builder_create_om_comment(
 
     if (!(om_builder->lastnode))
     {
-        /* do nothing */
-#ifdef AXIS2_GUTHTHILA_ENABLED
 
-        AXIS2_FREE(env->allocator,comment_value);
-#else
+#ifdef AXIS2_LIBXML2_ENABLED
         axiom_xml_reader_xml_free(om_builder->parser, env, comment_value);
+#else
+        AXIS2_FREE(env->allocator,comment_value);
 #endif
         return NULL;
     }
@@ -641,14 +640,10 @@ axiom_stax_builder_create_om_comment(
 
     om_builder->element_level++;
 
-#ifdef AXIS2_GUTHTHILA_ENABLED
-
-    AXIS2_FREE(env->allocator,comment_value);
-
-#else
-
+#ifdef AXIS2_LIBXML2_ENABLED
     axiom_xml_reader_xml_free(om_builder->parser,env,comment_value);
-
+#else
+    AXIS2_FREE(env->allocator,comment_value);
 #endif
 
 	om_builder->lastnode = comment_node;
@@ -829,12 +824,11 @@ axiom_stax_builder_next(
             break;
 
         case AXIOM_XML_READER_EMPTY_ELEMENT:
-#ifdef AXIS2_GUTHTHILA_ENABLED
-            node = axiom_stax_builder_create_om_element(om_builder, env,
-                                                        AXIS2_TRUE);
+
+#ifdef AXIS2_LIBXML2_ENABLED
+            node = axiom_stax_builder_create_om_element(om_builder, env, AXIS2_FALSE);
 #else
-            node = axiom_stax_builder_create_om_element(om_builder, env,
-                                                        AXIS2_FALSE);
+            node = axiom_stax_builder_create_om_element(om_builder, env, AXIS2_TRUE);
 #endif
 
         case AXIOM_XML_READER_END_ELEMENT:
@@ -1145,13 +1139,13 @@ axiom_stax_builder_next_with_token(
         break;
 
     case AXIOM_XML_READER_EMPTY_ELEMENT:
-#ifdef AXIS2_GUTHTHILA_ENABLED
-        val = axiom_stax_builder_create_om_element(om_builder, env,
-                                                   AXIS2_TRUE);
+
+#ifdef AXIS2_LIBXML2_ENABLED
+        val = axiom_stax_builder_create_om_element(om_builder, env, AXIS2_FALSE);
 #else
-        val = axiom_stax_builder_create_om_element(om_builder, env,
-                                                   AXIS2_FALSE);
+        val = axiom_stax_builder_create_om_element(om_builder, env, AXIS2_TRUE);
 #endif
+
         if (!val)
         {
             return -1;

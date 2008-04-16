@@ -18,10 +18,6 @@
 #ifndef GUTHTHILA_H
 #define GUTHTHILA_H
 
-#ifndef AXIS2_GUTHTHILA_ENABLED
-#define AXIS2_GUTHTHILA_ENABLED
-#endif  /* AXIS2_GUTHTHILA_ENABLED */
-
 #include <guththila_defines.h>
 #include <guththila_token.h>
 #include <guththila_reader.h>
