@@ -39,6 +39,11 @@ extern "C"
 
     /** @} */
 
+    void AXIS2_CALL libcurl_stream_free(
+        void * stream,
+        const axutil_env_t * env);
+
+
 #ifdef __cplusplus
 }
 #endif

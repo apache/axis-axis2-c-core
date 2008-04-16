@@ -760,7 +760,7 @@ axis2_http_transport_sender_write_message(
                                   AXIS2_INTF_TO_IMPL(transport_sender)->
                                   http_version);
 #ifdef AXIS2_LIBCURL_ENABLED
-    AXIS2_LOG_DEBUG (env->log, AXIS2_LOG_SI, "using axis2 liburl http sender.");
+    AXIS2_LOG_DEBUG (env->log, AXIS2_LOG_SI, "using axis2 libcurl http sender.");
     status =
         axis2_libcurl_http_send(AXIS2_INTF_TO_IMPL(transport_sender)->libcurl,
                                 sender, env, msg_ctx, out, url, soap_action);

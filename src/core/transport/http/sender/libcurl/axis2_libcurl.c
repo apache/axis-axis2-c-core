@@ -528,7 +528,7 @@ axis2_libcurl_send(
     trans_in_property = axutil_property_create(env);
     axutil_property_set_scope(trans_in_property, env, AXIS2_SCOPE_REQUEST);
     axutil_property_set_free_func(trans_in_property, env,
-                                  axutil_stream_free_void_arg);
+                                  libcurl_stream_free);
     axutil_property_set_value(trans_in_property, env, in_stream);
     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN,
                                trans_in_property);
