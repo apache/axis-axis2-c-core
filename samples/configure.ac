@@ -61,7 +61,6 @@ dnl Checks for library functions.
 dnl AC_FUNC_MALLOC
 dnl AC_FUNC_REALLOC
 
-PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
 CFLAGS="$CFLAGS $LIBXML2_CFLAGS $GUTHTHILA_CFLAGS"
 
 AC_MSG_CHECKING(whether to build dynamic invocation client)
