@@ -1367,6 +1367,11 @@ copy_vc_projects:
 
       @copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\services\services.sln $(AXIS2_BINDIR)\ides\vc\samples\services
 
+copy_wsdl2c:
+       @if not exist $(AXIS2_BINDIR)\bin\tools\wsdl2c mkdir $(AXIS2_BINDIR)\bin\tools\wsdl2c
+       @copy $(AXIS2_SOURCE_DIR)\tools\codegen\javatool\README $(AXIS2_BINDIR)\bin\tools\wsdl2c
+       @copy $(AXIS2_SOURCE_DIR)\tools\codegen\javatool\WSDL2C.bat $(AXIS2_BINDIR)\bin\tools\wsdl2c
+       @copy $(AXIS2_SOURCE_DIR)\tools\codegen\javatool\WSDL2C.sh $(AXIS2_BINDIR)\bin\tools\wsdl2c
 
 mv_dist:
 	cd $(AXIS2_BINDIR)
@@ -1425,7 +1430,7 @@ all: $(PARSER)
 
 ##############################################################################################
 
-install: all copy_extra
+install: all copy_extra copy_wsdl2c
 
 dist: install axis2_apache_module axis2_IIS_module tcpmon copy_samples copy_vc_projects clean_manifest mv_dist
 
