@@ -42,7 +42,7 @@
             
             _divresponse2 = adb_divResponse_create(env);
             int_2 = int_0 / int_1;
-            adb_divResponse_set_addReturn(_divresponse2, env, int_2);
+            adb_divResponse_set_divReturn(_divresponse2, env, int_2);
             
             return _divresponse2;
         }
@@ -78,7 +78,7 @@
             
             _mulresponse2 = adb_mulResponse_create(env);
             int_5 = int_3 * int_4;
-            adb_mulResponse_set_addReturn(_mulresponse2, env, int_5);
+            adb_mulResponse_set_mulReturn(_mulresponse2, env, int_5);
             
             return _mulresponse2;
         }
