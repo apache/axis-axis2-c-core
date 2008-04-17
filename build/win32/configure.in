@@ -9,7 +9,7 @@ ENABLE_SSL = 0
 ENABLE_LIBCURL = 0
 #
 # build axis2 with guththila parser
-ENABLE_GUTHTHILA = 0
+ENABLE_GUTHTHILA = 1
 #
 # build tcp server in addition to http server
 WITH_TCP = 0
