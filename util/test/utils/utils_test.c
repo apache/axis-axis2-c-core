@@ -1,4 +1,5 @@
 #include "../util/create_env.h"
+#include <axutil_utils.h>
 
 axutil_env_t *env = NULL;
 axis2_char_t * request = "This is a requset";
@@ -10,12 +11,14 @@ axis2_char_t c = 'c';
  */
 
 axis2_status_t test_utils()
-{   
+{
+    axis2_char_t **op, *quote_string;
+    int hexit;
     env = create_environment();
-    axis2_char_t **op = (axis2_char_t **)axutil_parse_request_url_for_svc_and_op(env,request);
-    axis2_char_t * quote_string = (axis2_char_t *)axutil_xml_quote_string(env,s,1);
+    op = axutil_parse_request_url_for_svc_and_op(env,request);
+    quote_string = axutil_xml_quote_string(env,s,1);
     printf("The quote string is%s\n",(char *)quote_string);
-    int hexit = axutil_hexit(c);
+    hexit = axutil_hexit(c);
     printf("%d\n",hexit);
     if(op && quote_string)
     {

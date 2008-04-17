@@ -13,6 +13,8 @@ libaxis2_engine_la_SOURCES= ../transport/transport_receiver.c handler.c \
                         	ctx_handler.c \
                         	engine.c
 
+libaxis2_engine_la_LDFLAGS = -version-info $(VERSION_NO)
+
 libaxis2_engine_la_LIBADD=$(top_builddir)/src/core/description/libaxis2_description.la \
                           $(top_builddir)/src/core/receivers/libaxis2_receivers.la \
 	                  $(top_builddir)/src/core/deployment/libaxis2_deployment.la \

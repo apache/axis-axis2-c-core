@@ -3,6 +3,10 @@
 #include "../util/create_env.h"
 #include <axutil_properties.h>
 
+axis2_char_t *
+axutil_properties_read(
+    FILE *input,
+    const axutil_env_t *env);
 
 /** @brief test properties
   * read file and give the output
@@ -35,7 +39,7 @@ axis2_status_t test_properties(axutil_env_t *env)
     else
     printf("The the axutil_properties_create is successfull\n");
  
-    cur = (axis2_char_t*)axutil_properties_read(input,env);
+    cur = axutil_properties_read(input,env);
     if(!cur)
     {
         printf("Can't read properties\n");
