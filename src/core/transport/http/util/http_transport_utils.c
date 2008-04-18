@@ -1839,11 +1839,13 @@ axis2_http_transport_utils_create_soap_msg(
         content_length = axutil_property_get_value(property, env);
         property = NULL;
     }
+
     if (content_length)
     {
         callback_ctx->content_length = *content_length;
         callback_ctx->unread_len = *content_length;
     }
+
     if (!in_stream)
     {
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX,

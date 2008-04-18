@@ -79,7 +79,6 @@ axis2_http_header_create_by_str(
     ch = strchr((const char *) tmp_str, AXIS2_COLON);
     if (!ch)
     {
-        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_HEADER, AXIS2_FAILURE);
         AXIS2_FREE(env->allocator, tmp_str);
         return NULL;
     }
