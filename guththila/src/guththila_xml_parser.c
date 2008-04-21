@@ -1550,20 +1550,19 @@ guththila_next_char(guththila_t * m, int eof, const axutil_env_t * env)
     else if (m->reader->type == GUTHTHILA_IO_READER ||
              m->reader->type == GUTHTHILA_FILE_READER)
     {
-        if (m->next <
-             GUTHTHILA_BUFFER_PRE_DATA_SIZE(m->buffer) +
-             GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer) &&
-             m->buffer.cur_buff != -1)
+        
+        if ( m->buffer.cur_buff != -1 && 
+             m->next < GUTHTHILA_BUFFER_PRE_DATA_SIZE(m->buffer) +
+             GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer))
         {
             c = m->buffer.buff[m->buffer.cur_buff][m->next++ -
                                                     GUTHTHILA_BUFFER_PRE_DATA_SIZE
                                                     (m->buffer)];
             return c >= 0 ? c : -1;
         }
-        else if (m->next >=
-                 GUTHTHILA_BUFFER_PRE_DATA_SIZE(m->buffer) +
-                 GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer) &&
-                 m->buffer.cur_buff != -1)
+        else if ( m->buffer.cur_buff != -1 &&
+                  m->next >= GUTHTHILA_BUFFER_PRE_DATA_SIZE(m->buffer) +
+                  GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer))
         {
             /* We are sure that the difference lies within the int range */
             if (m->buffer.cur_buff == (int)m->buffer.no_buffers - 1)
