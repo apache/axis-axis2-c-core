@@ -84,6 +84,10 @@ guththila_reader_free(
     {
         fclose(r->fp);
     }
+    if (r->type == GUTHTHILA_IO_READER && r->context)
+    {
+      AXIS2_FREE(env->allocator, r->context);
+    }  
     AXIS2_FREE(env->allocator, r);
     
 }

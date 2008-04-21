@@ -252,8 +252,7 @@ guththila_create(void *reader,const axutil_env_t *env)
 GUTHTHILA_EXPORT void GUTHTHILA_CALL
 guththila_free(guththila_t * m, const axutil_env_t * env) 
 {
-    int size = 0,
-        i = 0;
+  int size = 0, i = 0, j = 0;
     guththila_attr_t * attr = NULL;
     guththila_element_t* elem = NULL;
     guththila_elem_namesp_t * e_namesp = NULL;
@@ -337,15 +336,15 @@ guththila_free(guththila_t * m, const axutil_env_t * env)
     {
         e_namesp =
             (guththila_elem_namesp_t *) guththila_stack_pop(&m->namesp, env);
-        for (i = 0; i < e_namesp->no; i++)
+        for (j = 0; j < e_namesp->no; j++)
         {
-            if(e_namesp->namesp[i].name)
+            if(e_namesp->namesp[j].name)
             {
-                guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].name,env);
+                guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[j].name,env);
             }
-			if(e_namesp->namesp[i].uri)
+			if(e_namesp->namesp[j].uri)
             {
-                guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].uri, env);
+                guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[j].uri, env);
             }
         }
         AXIS2_FREE(env->allocator, e_namesp->namesp);
@@ -362,8 +361,7 @@ guththila_free(guththila_t * m, const axutil_env_t * env)
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
 guththila_un_init(guththila_t * m,const axutil_env_t * env) 
 {
-    int size = 0,
-        i = 0;
+  int size = 0, i = 0, j = 0;
     guththila_attr_t * attr = NULL;
     guththila_element_t* elem = NULL;
 	guththila_elem_namesp_t * e_namesp = NULL;
@@ -434,15 +432,15 @@ guththila_un_init(guththila_t * m,const axutil_env_t * env)
             (guththila_elem_namesp_t *) guththila_stack_pop(&m->namesp, env);
         if(e_namesp)
         {
-        for (i = 0; i < e_namesp->no; i++)
+        for (j = 0; j < e_namesp->no; j++)
         {
-            if(e_namesp->namesp[i].name)
+            if(e_namesp->namesp[j].name)
             {
-                guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].name,env);
+                guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[j].name,env);
             }
-            if(e_namesp->namesp[i].uri)
+            if(e_namesp->namesp[j].uri)
             {
-                guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[i].uri, env);
+                guththila_tok_list_release_token(&m->tokens,e_namesp->namesp[j].uri, env);
             }
         }
         AXIS2_FREE(env->allocator, e_namesp->namesp);
