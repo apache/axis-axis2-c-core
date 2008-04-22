@@ -1181,14 +1181,6 @@ axis2_op_client_two_way_send(
     if (!response)
         return NULL;
 
-    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_TRANSPORT_IN);
-    if (property)
-    {
-        axis2_msg_ctx_set_property(response, env, AXIS2_TRANSPORT_IN, property);
-        property = NULL;
-    }
-
-
     axis2_msg_ctx_set_server_side(response, env, AXIS2_FALSE);
     axis2_msg_ctx_set_conf_ctx(response, env,
                                axis2_msg_ctx_get_conf_ctx(msg_ctx, env));
