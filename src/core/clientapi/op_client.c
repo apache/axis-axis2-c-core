@@ -1274,9 +1274,11 @@ axis2_op_client_two_way_send(
         }
     }
 
+    /*following is no longer valid. Just keeping for others view*/
+
     /* property is NULL, and we set null for AXIS2_TRANSPORT_IN in msg_ctx to
        avoid double free of this property */
-    axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property);
+    /*axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property);*/
 
     if (engine)
     {
