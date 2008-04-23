@@ -191,8 +191,9 @@ guththila_tok_tok_cmp(
                return -1;
             }
         }
+		return 0;
     }
-    return 0;
+    return -1;
 }
 void GUTHTHILA_CALL
 guththila_set_token(guththila_token_t* tok,

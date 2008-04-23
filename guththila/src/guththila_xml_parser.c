@@ -564,7 +564,7 @@ guththila_token_close(guththila_t * m, guththila_token_t * tok,
     guththila_element_t * elem = NULL;
     guththila_elem_namesp_t * e_namesp = NULL;
     guththila_namespace_t * namesp;
-    int counter = 0, nmsp_no = 0, i = 0;
+    int i = 0;
     /* We are sure that the difference lies within the short range */
     m->temp_tok->type = (short)tok_type;
     m->temp_tok->size = m->next - m->temp_tok->_start;
@@ -664,44 +664,12 @@ guththila_token_close(guththila_t * m, guththila_token_t * tok,
         {
             attr = (guththila_attr_t *) AXIS2_MALLOC(env->allocator,
                                                   sizeof(guththila_attr_t));           
-#ifdef GUTHTHILA_VALIDATION_PARSER
-            if (m->temp_prefix)
-            {
-                nmsp_no = GUTHTHILA_STACK_SIZE(m->namesp);
-                for (counter = nmsp_no - 1; counter >= 0; counter--)
-                {
-                    e_namesp =
-                        (guththila_elem_namesp_t *)
-                        guththila_stack_get_by_index(&m->namesp, counter, env);
-                    for (i = 0; i < e_namesp->no; i++)
-                    {
-                        if (!guththila_tok_tok_cmp
-                             (e_namesp->namesp[i].name, m->temp_prefix, env))
-                        {
-                            GUTHTHILA_ATTRIBUTE_INITIALIZE(attr,
-                                                            m->temp_prefix,
-                                                            m->temp_name,
-                                                            m->temp_tok);
-                            guththila_stack_push(&m->attrib, attr, env);
-                            counter = 0;    /* force exit from outer loop */
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                GUTHTHILA_ATTRIBUTE_INITIALIZE(attr, m->temp_prefix,
-                                                m->temp_name, m->temp_tok);
-                guththila_stack_push(&m->attrib, attr, env);
-            }
-            
-#else   
-            GUTHTHILA_ATTRIBUTE_INITIALIZE(attr, m->temp_prefix,
-                                                m->temp_name, m->temp_tok);
-            guththila_stack_push(&m->attrib, attr, env);
-            
-#endif  
+
+            GUTHTHILA_ATTRIBUTE_INITIALIZE(attr,
+                                            m->temp_prefix,
+                                            m->temp_name,
+                                            m->temp_tok);
+            guththila_stack_push(&m->attrib, attr, env);                                                                        
         }
         m->temp_prefix = NULL;
         m->temp_name = NULL;
@@ -719,6 +687,67 @@ guththila_token_close(guththila_t * m, guththila_token_t * tok,
         break;
     }
 }
+
+int GUTHTHILA_CALL
+guththila_validate_namespaces(guththila_t *m, const axutil_env_t *env)
+{
+    int size = 0, i = 0, nmsp_no = 0, j = 0, k = 0;
+    int namesp_found = GUTHTHILA_FALSE;
+    guththila_elem_namesp_t *e_namesp = NULL;
+
+    size = GUTHTHILA_STACK_SIZE(m->attrib);
+    for (i = 0; i < size; i++)
+    {
+        guththila_attr_t *attr =
+                        (guththila_attr_t *)
+                        guththila_stack_get_by_index(&m->attrib, i, env);
+        if (attr && attr->pref)
+        {
+            nmsp_no = GUTHTHILA_STACK_SIZE(m->namesp);
+            for (j = nmsp_no - 1; j >= 0; j--)
+            {
+                e_namesp =
+                    (guththila_elem_namesp_t *)
+                    guththila_stack_get_by_index(&m->namesp, j, env);
+                for (k = 0; k < e_namesp->no; k++)
+                {
+                    if (!guththila_tok_tok_cmp
+                         (e_namesp->namesp[k].name, attr->pref, env))
+                    {              
+                        namesp_found = GUTHTHILA_TRUE;
+                        j = -1;    /* force exit from second for loop */
+                        break;
+                    }
+                }
+            }                                            
+            if (!namesp_found) return GUTHTHILA_FAILURE;
+        }
+    }    
+    if (m->prefix)
+    {
+        namesp_found = AXIS2_FALSE;
+        nmsp_no = GUTHTHILA_STACK_SIZE(m->namesp);
+        for (j = nmsp_no - 1; j >= 0; j--)
+        {
+            e_namesp =
+                (guththila_elem_namesp_t *)
+                guththila_stack_get_by_index(&m->namesp, j, env);
+            for (k = 0; k < e_namesp->no; k++)
+            {
+                if (!guththila_tok_tok_cmp
+                     (e_namesp->namesp[k].name, m->prefix, env))
+                {              
+                    namesp_found = GUTHTHILA_TRUE;
+                    j = -1;    /* force exit from outer loop */
+                    break;
+                }
+            }
+        }
+        if (!namesp_found) return AXIS2_FAILURE;
+    }
+    return GUTHTHILA_SUCCESS;
+}
+
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
 guththila_next(guththila_t * m,const axutil_env_t * env) 
@@ -850,7 +879,8 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                         if (c == '>')
                         {
                             m->guththila_event = GUTHTHILA_EMPTY_ELEMENT;
-                            return GUTHTHILA_EMPTY_ELEMENT;
+                            if (!guththila_validate_namespaces(m, env)) return -1;
+                            else return GUTHTHILA_EMPTY_ELEMENT;
                         }
                         else
                         {
@@ -860,7 +890,8 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                     else if (c == '>')
                     {
                         m->guththila_event = GUTHTHILA_START_ELEMENT;
-                        return GUTHTHILA_START_ELEMENT;
+                        if (!guththila_validate_namespaces(m, env)) return -1;
+                        else return GUTHTHILA_START_ELEMENT;
                     }
                     else if (c != -1)
                     {
