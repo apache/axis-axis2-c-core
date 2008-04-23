@@ -120,6 +120,13 @@ main(
         axis2_svc_client_free(svc_client, env);
         svc_client = NULL;
     }
+
+    if (env)
+    {
+        axutil_env_free((axutil_env_t *) env);
+        env = NULL;
+    }
+
     return 0;
 }
 
@@ -134,9 +141,7 @@ build_yahoo_rest_payload(
     axiom_element_t *appid_element;
     axiom_element_t *query_element;
     axiom_element_t *root_element;
-    root_node = axiom_node_create(env);
-    appid_node = axiom_node_create(env);
-    query_node = axiom_node_create(env);
+
     root_element =
         axiom_element_create(env, NULL, "yahoo_rest_search", NULL, &root_node);
     appid_element =
@@ -144,10 +149,16 @@ build_yahoo_rest_payload(
     axiom_element_set_text(appid_element, env, "YahooDemo", appid_node);
     query_element =
         axiom_element_create(env, root_node, "query", NULL, &query_node);
+
     if (string)
+    {
         axiom_element_set_text(query_element, env, string, query_node);
+    }
     else
+    {
         axiom_element_set_text(query_element, env, "finance", query_node);
+    }
+
     return root_node;
 }
 
