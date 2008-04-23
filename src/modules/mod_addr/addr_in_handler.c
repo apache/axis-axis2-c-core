@@ -508,6 +508,7 @@ axis2_addr_in_extract_addr_params(
                                        header_block_node);
             relates_to =
                 axis2_relates_to_create(env, address, relationship_type_value);
+
             axis2_msg_info_headers_set_relates_to(msg_info_headers, env,
                                                   relates_to);
             axiom_soap_header_block_set_processed(header_block, env);

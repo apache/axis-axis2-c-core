@@ -171,6 +171,10 @@ struct axis2_msg_ctx
     /** Index into the current Phase of the currently executing handler (if any)*/
     int current_phase_index;
 
+    /* axis2 options container */
+
+    axis2_options_t *options;
+
     /**
      * Finds the service to be invoked. This function is used by dispatchers 
      * to locate the service to be invoked.
@@ -230,6 +234,7 @@ axis2_msg_ctx_create(
         return NULL;
     }
 
+    memset ((void *)msg_ctx, 0, sizeof (axis2_msg_ctx_t));
     msg_ctx->base = NULL;
     msg_ctx->process_fault = AXIS2_FALSE;
     msg_ctx->msg_info_headers = NULL;
@@ -291,7 +296,7 @@ axis2_msg_ctx_create(
     msg_ctx->auth_type = NULL;
     msg_ctx->no_content = AXIS2_FALSE;
     msg_ctx->status_code = 0;
-
+    msg_ctx->options = NULL;
     msg_ctx->base = axis2_ctx_create(env);
     if (!(msg_ctx->base))
     {
@@ -522,6 +527,14 @@ axis2_msg_ctx_free(
             }
         }
         axutil_array_list_free(msg_ctx->supported_rest_http_methods, env);
+    }
+
+    if (msg_ctx->options)
+    {
+        /* freeing only axis2_options_t allocated space, should not
+         * call axis2_options_free because it will free internal
+         * properties as well. */
+        AXIS2_FREE (env->allocator, msg_ctx->options);
     }
 
     AXIS2_FREE(env->allocator, msg_ctx);
@@ -1833,15 +1846,23 @@ axis2_msg_ctx_get_options(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    axis2_options_t *options = NULL;
     axutil_hash_t *properties = NULL;
     AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
 
-    options = axis2_options_create(env);
-    axis2_options_set_msg_info_headers(options, env, msg_ctx->msg_info_headers);
+    if (!msg_ctx->options)
+    {
+        msg_ctx->options = axis2_options_create(env);
+
+        if (!msg_ctx->options)
+        {
+            return NULL;
+        }
+    }
+
+    axis2_options_set_msg_info_headers(msg_ctx->options, env, msg_ctx->msg_info_headers);
     properties = axis2_ctx_get_property_map(msg_ctx->base, env);
-    axis2_options_set_properties(options, env, properties);
-    return options;
+    axis2_options_set_properties(msg_ctx->options, env, properties);
+    return msg_ctx->options;
 }
 
 axis2_status_t AXIS2_CALL

@@ -267,6 +267,10 @@ axis2_msg_info_headers_set_relates_to(
     const axutil_env_t * env,
     axis2_relates_to_t * relates_to)
 {
+    if (msg_info_headers->relates_to)
+    {
+        axis2_relates_to_free (msg_info_headers->relates_to, env);
+    }
     msg_info_headers->relates_to = relates_to;
     return AXIS2_SUCCESS;
 }

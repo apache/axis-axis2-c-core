@@ -710,6 +710,11 @@ axis2_options_set_msg_info_headers(
     const axutil_env_t * env,
     axis2_msg_info_headers_t * msg_info_headers)
 {
+    if (options->msg_info_headers)
+    {
+        axis2_msg_info_headers_free (options->msg_info_headers, env);
+    }
+
     options->msg_info_headers = msg_info_headers;
     return AXIS2_SUCCESS;
 }
