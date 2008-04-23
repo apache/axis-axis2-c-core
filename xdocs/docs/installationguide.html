@@ -363,10 +363,6 @@ distributions.) </p><p>For both binary and source distributions, you have to dow
 
     <ul>
 
-      <li>libxml2.dll [http://www.zlatkovic.com/pub/libxml/ - download the version &gt;=
-
-        libxml2-2.6.27.win32] (optional - required only if you are not using Guththila parser)</li>
-
       <li>iconv.dll [http://www.zlatkovic.com/pub/libxml/ - download the
 
         version &gt;= iconv-1.9.1.win32]</li>
@@ -378,6 +374,19 @@ distributions.) </p><p>For both binary and source distributions, you have to dow
     </ul>
 
   </li>
+
+  <li>You might optionally need the following DLLs:
+
+    <ul>
+
+      <li>libxml2.dll [http://www.zlatkovic.com/pub/libxml/ - download the version &gt;=
+
+        libxml2-2.6.27.win32] (optional - required only if you are not using Guththila parser)</li>
+
+    </ul>
+
+  </li>
+
 
 </ul><p><a id="bin_binaries"></a></p></div><div class="subsection"><a name="2_1_2__Binaries_in_the_Release"></a><h3>2.1.2. Binaries in the Release</h3><ul>
 
@@ -413,9 +422,11 @@ distributions.) </p><p>For both binary and source distributions, you have to dow
 
   </ul>
 
-  <li>Copy libxml2.dll, iconv.dll, and zlib1.dll downloaded to
+  <li>Copy iconv.dll, and zlib1.dll downloaded to
 
   C:\axis2c\lib</li>
+
+  <li>You might optionally require to copy the libxml2.dll as well</li>
 
 </ul><p><a id="bin_run"></a></p></div><div class="subsection"><a name="2_1_3__Running_the_Binaries"></a><h3>2.1.3. Running the Binaries</h3><ul>
 
@@ -481,21 +492,29 @@ distributions.) </p><p>For both binary and source distributions, you have to dow
 
   folders to the makefile)</p>
 
-  <li>You also need
+    <li>You also need the following DLLs:
 
     <ul>
 
-      <li>libxml2 [http://www.zlatkovic.com/pub/libxml/ - download the version &gt;=
+      <li>iconv.dll [http://www.zlatkovic.com/pub/libxml/ - download the
 
-        libxml2-2.6.27.win32] (optional - required only if you are not using Guththila parser)</li>
+        version &gt;= iconv-1.9.1.win32]</li>
 
-      <li>iconv [http://www.zlatkovic.com/pub/libxml/ - download the version
-
-        &gt;= iconv-1.9.1.win32]</li>
-
-      <li>zlib [http://www.zlatkovic.com/pub/libxml/ - download the version &gt;=
+      <li>zlib1.dll [http://www.zlatkovic.com/pub/libxml/ - download the version &gt;=
 
         zlib-1.2.3.win32]</li>
+
+    </ul>
+
+  </li>
+
+  <li>You might optionally need the following DLLs:
+
+    <ul>
+
+      <li>libxml2.dll [http://www.zlatkovic.com/pub/libxml/ - download the version &gt;=
+
+        libxml2-2.6.27.win32] (optional - required only if you are not using Guththila parser)</li>
 
     </ul>
 
@@ -507,25 +526,25 @@ to include the following information.</p><p>The paths for the following required
 
 <ul>
 
-<li>libxml2 (required if you are not using Guththila) [LIBXML2_BIN_DIR]<br></br></li>
-
 <li>iconv [ICONV_BIN_DIR]<br></br></li>
 
 <li>zlib [ZLIB_BIN_DIR]<br></br></li>
+
+<li>libxml2 (required if you are not using Guththila) [LIBXML2_BIN_DIR]<br></br></li>
 
 </ul>
 
 </p><p>The default paths for these external libraries are already specified in configure.in file.<br></br>
 
-  Example: If libxml2 is installed into C:\libxml2, edit the
+  Example: If zlib is installed into C:\zlib, edit the
 
 configure.in file accordingly.<br></br>
 
 <br></br>
 
-You can either extract libxml2 to this folder, in which case the folder
+You can either extract zlib to this folder, in which case the folder
 
-structure for C:\libxml2 should look like the following:</p><p><img alt="Figure: C:\libxml2 Folder Structure" src="images/folder_structure_libxml2.jpg"></img><br></br>
+structure for C:\zlib should look like the following:</p><p><img alt="Figure: C:\zlib Folder Structure" src="images/folder_structure_zlib.jpg"></img><br></br>
 
   Else, extract it to a location of your choice and edit the configure.in
 
@@ -645,9 +664,11 @@ If you want to enable <a href="http://curl.haxx.se/" class="externalLink" title=
 
         (%AXIS2C_HOME%\lib)</li>
 
-      <li>Copy libxml2.dll, iconv.dll and zlib1.dll to Axis2/C lib folder
+      <li>Copy iconv.dll and zlib1.dll to Axis2/C lib folder
 
-        (%AXIS2C_HOME%\lib)</li>
+	  (%AXIS2C_HOME%\lib)</li>
+
+	  <li>You might optionally require to copy the libxml2.dll as well</li>
 
     </ul>
 
