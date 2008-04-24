@@ -986,7 +986,7 @@ guththila_write_namespace(
                                                 sizeof(guththila_token_t *) *
                                                 (GUTHTHILA_XML_WRITER_NAMESP_DEF_SIZE
                                                  + namesp->size));
-                for (i = 0; i <= namesp->no; i++)
+                for (i = 0; i < namesp->no; i++)
                 {
                     tok_name[i] = namesp->name[i];
                     tok_uri[i] = namesp->uri[i];
@@ -996,12 +996,19 @@ guththila_write_namespace(
                 namesp->name = tok_name;
                 namesp->uri = tok_uri;
                 namesp->size = GUTHTHILA_XML_WRITER_NAMESP_DEF_SIZE + namesp->size;
-                namesp->name[++(namesp->no) - 1]->start =
+
+                namesp->name[namesp->no] =
+                    guththila_tok_list_get_token(&wr->tok_list, env);
+                namesp->uri[namesp->no] =
+                    guththila_tok_list_get_token(&wr->tok_list, env);
+
+                namesp->name[namesp->no ]->start =
                     GUTHTHILA_BUF_POS(wr->buffer, pref_start);
-                namesp->name[namesp->no - 1]->size = pref_len;
-                namesp->uri[namesp->no - 1]->start =
+                namesp->name[namesp->no ]->size = pref_len;
+                namesp->uri[namesp->no ]->start =
                     GUTHTHILA_BUF_POS(wr->buffer, uri_start);
-                namesp->uri[namesp->no - 1]->size = uri_len;                
+                namesp->uri[namesp->no ]->size = uri_len;
+                namesp->no ++;
 #endif  
             }
         }
