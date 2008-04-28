@@ -64,6 +64,7 @@ rp_rampart_config_create(
     rampart_config->sct_provider = NULL;
     rampart_config->password_type = NULL;
     rampart_config->time_to_live = NULL;
+	rampart_config->pkcs12_file = NULL;
     rampart_config->rd_val = NULL;
     rampart_config->ref = 0;
 
