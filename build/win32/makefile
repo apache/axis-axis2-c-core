@@ -81,6 +81,8 @@ AXIS2_WITHOUT_SERVER = axis2_core_without_server
 PARSER = $(PARSER)_with_guththila
 AXIS2_WITHOUT_SERVER = $(AXIS2_WITHOUT_SERVER)_guththila
 CFLAGS = $(CFLAGS) /D "AXIS2_GUTHTHILA_ENABLED"
+!else
+CFLAGS = $(CFLAGS) /D "AXIS2_LIBXML2_ENABLED"
 !endif
 
 # include path
@@ -138,6 +140,12 @@ CFLAGS = $(CFLAGS) /D "AXIS2_SSL_ENABLED"
 
 !if "$(ENABLE_LIBCURL)" == "1"
 CFLAGS = $(CFLAGS) /D "AXIS2_LIBCURL_ENABLED"
+!endif
+
+!if "$(ENABLE_GUTHTHILA)" == "1"
+CFLAGS = $(CFLAGS) /D "AXIS2_GUTHTHILA_ENABLED"
+!else
+CFLAGS = $(CFLAGS) /D "AXIS2_LIBXML2_ENABLED"
 !endif
 
 ################### linker options
