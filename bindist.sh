@@ -20,13 +20,13 @@ cd ../../samples
 
 ./autogen.sh
 
-./configure --prefix=${AXIS2C_HOME} --with-axis2=${AXIS2C_HOME}/include/axis2-1.3.1
+./configure --prefix=${AXIS2C_HOME} --with-axis2=${AXIS2C_HOME}/include/axis2-1.4.0
 make
 make install
 
 make dist
-tar xf axis2c-sample-src-1.3.1.tar.gz
-mv axis2c-sample-src-1.3.1 samples
+tar xf axis2c-sample-src-1.4.0.tar.gz
+mv axis2c-sample-src-1.4.0 samples
 rm -rf ${AXIS2C_HOME}/samples
 mv samples ${AXIS2C_HOME}
 
