@@ -143,8 +143,11 @@ axis2_op_ctx_free(
     const axutil_env_t * env)
 {
     int i = 0;
-
     if (--(op_ctx->ref) > 0)
+    {
+        return;
+    }
+    if(op_ctx->is_in_use)
     {
         return;
     }

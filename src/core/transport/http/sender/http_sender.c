@@ -269,22 +269,14 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
     if (!is_soap)
     {
-        if (!soap_body)
+        if(soap_body)
         {
-            AXIS2_HANDLE_ERROR(env,
-                               AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
-                               AXIS2_FAILURE);
-            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "%s",
-                             AXIS2_ERROR_GET_MESSAGE (env->error));
-            return AXIS2_FAILURE;
+            body_node = axiom_soap_body_get_base_node (soap_body, env);
         }
-        body_node = axiom_soap_body_get_base_node (soap_body, env);
-        if (!body_node)
+        if(body_node)
         {
-            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "body_node is NULL");
-            return AXIS2_FAILURE;
+            data_out = axiom_node_get_first_element (body_node, env);
         }
-        data_out = axiom_node_get_first_element (body_node, env);
 
         method = (axutil_property_t *) axis2_msg_ctx_get_property (msg_ctx, env,
                                                                    AXIS2_HTTP_METHOD);
@@ -411,7 +403,6 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     {
         /* processing POST and PUT methods */
         axutil_property_t *property = NULL;
-
         /* We put the client into msg_ctx so that we can free it once the processing
          * is done at client side
          */
@@ -481,9 +472,14 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         }
         else
         {
+            if (!data_out)
+            {
+                AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                    "body node payload is NULL");
+                return AXIS2_FAILURE;
+            }
             axiom_node_serialize (data_out, env, sender->om_output);
         }
-
 
         if (doing_mtom)
         {
@@ -529,11 +525,17 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         request_params = axis2_http_sender_get_param_string (sender,
                                                              env, msg_ctx);
 
-        /* substituting AXIS2_Q_MARK for "?" */
-        path = axutil_strcat (env,
+        if(request_params)
+        {
+            /* substituting AXIS2_Q_MARK for "?" */
+            path = axutil_strcat (env,
                               axutil_url_get_path (url, env),
                               AXIS2_Q_MARK_STR, request_params, NULL);
-
+        }
+        else
+        {
+            path = axutil_url_to_external_form(url, env);
+        }
         if (send_via_get)
         {
             request_line = axis2_http_request_line_create (env, 
@@ -3213,6 +3215,7 @@ axis2_http_sender_get_param_string (axis2_http_sender_t * sender,
                                     axis2_msg_ctx_t * msg_ctx)
 {
     axiom_soap_envelope_t *soap_env = NULL;
+    axiom_soap_body_t *soap_body = NULL;
     axiom_node_t *body_node = NULL;
     axiom_node_t *data_node = NULL;
     axiom_element_t *data_element = NULL;
@@ -3228,9 +3231,16 @@ axis2_http_sender_get_param_string (axis2_http_sender_t * sender,
     {
         return NULL;
     }
+    soap_body = axiom_soap_envelope_get_body(soap_env, env);
     body_node =
-        axiom_soap_body_get_base_node (axiom_soap_envelope_get_body
-                                       (soap_env, env), env);
+        axiom_soap_body_get_base_node(soap_body, env);
+    if(!body_node)
+    {
+        /* This could be the situation where service client does not provide
+         * a xml payload and instead add url parameters to the endpoint url
+         */
+        return NULL;
+    }
     data_node = axiom_node_get_first_child (body_node, env);
     if (!data_node)
     {
