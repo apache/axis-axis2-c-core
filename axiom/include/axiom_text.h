@@ -242,6 +242,20 @@ extern "C"
         const axutil_env_t * env,
         const axis2_char_t * content_id);
 
+    /**
+     * Sets the boolean value indicating if the binary data associated with the text 
+     * node should be sent in SOAP with Attachment (SwA) format or not. 
+     * @param om_text text node
+     * @param env environment
+     * @param is_swa bool value, AXIS2_TRUE means use SwA format, else AXIS2_FALSE
+     * @returns AXIS2_SUCCESS
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_text_set_is_swa(
+        struct axiom_text *om_text,
+        const axutil_env_t * env,
+        const axis2_bool_t is_swa);
+
     /** @} */
 
 #ifdef __cplusplus

@@ -46,6 +46,7 @@ struct axiom_text
     axis2_bool_t optimize;
     const axis2_char_t *localname;
     axis2_bool_t is_binary;
+    axis2_bool_t is_swa;
     axis2_char_t *content_id;
     axiom_attribute_t *om_attribute;
     axiom_namespace_t *ns;
@@ -83,6 +84,7 @@ axiom_text_create(
     om_text->optimize = AXIS2_FALSE;
     om_text->localname = "Include";
     om_text->is_binary = AXIS2_FALSE;
+    om_text->is_swa = AXIS2_FALSE;
     om_text->content_id = NULL;
     om_text->om_attribute = NULL;
     om_text->value = NULL;
@@ -223,7 +225,16 @@ axiom_text_serialize(
             AXIS2_FREE(env->allocator, attribute_value);
             attribute_value = NULL;
 
-            axiom_text_serialize_start_part(om_text, env, om_output);
+            if (!om_text->is_swa) // This is a hack to get SwA working
+            {
+                axiom_text_serialize_start_part(om_text, env, om_output);
+            }
+            else
+            {
+                status = axiom_output_write(om_output, env,
+                                        AXIOM_TEXT, 1,
+                                        om_text->content_id);
+            }
 
             axiom_output_write_optimized(om_output, env, om_text);
 
@@ -636,4 +647,16 @@ axiom_text_get_value_str(
     const axutil_env_t * env)
 {
     return om_text->value;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_text_set_is_swa(
+    axiom_text_t * om_text,
+    const axutil_env_t * env,
+    const axis2_bool_t is_swa)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, om_text, AXIS2_FAILURE);
+    om_text->is_swa = is_swa;
+    return AXIS2_SUCCESS;
 }
