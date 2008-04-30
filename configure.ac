@@ -131,6 +131,32 @@ AC_ARG_WITH(archive,
   AC_MSG_RESULT(no)
 )
 
+
+GUTHTHILA_LIBS=""
+
+AC_MSG_CHECKING(whether to build guththila xml parser library)
+AC_ARG_ENABLE(guththila, [  --enable-guththila
+                          build Guththila XML parser library wrapper (default=yes)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -DAXIS2_GUTHTHILA_ENABLED"
+    WRAPPER_DIR="guththila"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+  WRAPPER_DIR="guththila"
+  CFLAGS="$CFLAGS -DAXIS2_GUTHTHILA_ENABLED"
+  AC_CONFIG_SUBDIRS(guththila)
+  GUTHTHILA_LIBS="/guththila/src/"
+  GUTHTHILA_DIR="guththila"
+)
+
+
 AC_MSG_CHECKING(whether to build libxml2 xml parser library)
 AC_ARG_ENABLE(libxml2, [  --enable-libxml2    
                           build Libxml2 XML parser library wrapper (default=no)],
@@ -150,29 +176,6 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2
   AC_MSG_RESULT(no)
 )
 
-
-GUTHTHILA_LIBS=""
-
-AC_MSG_CHECKING(whether to build guththila xml parser library)
-AC_ARG_ENABLE(guththila, [  --enable-guththila    
-                          build Guththila XML parser library wrapper (default=yes)],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    CFLAGS="$CFLAGS -DAXIS2_GUTHTHILA_ENABLED"
-    WRAPPER_DIR="guththila"
-   
-    ;;
-  esac ],
-  AC_MSG_RESULT(yes)
-  WRAPPER_DIR="guththila"
-  AC_CONFIG_SUBDIRS(guththila)
-  GUTHTHILA_LIBS="/guththila/src/"
-  GUTHTHILA_DIR="guththila"
-)
 
 AC_MSG_CHECKING(whether to build tcp transport)
 AC_ARG_ENABLE(tcp, [  --enable-tcp
