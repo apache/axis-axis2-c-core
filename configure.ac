@@ -346,7 +346,7 @@ AC_ARG_ENABLE(libcurl, [  --enable-libcurl
 APACHE2INC=$apache2inc
 IKSEMELINC=$iksemelinc
 APRINC=$aprinc
-VERSION_NO="3:1:3"
+VERSION_NO="4:0:4"
 
 AC_SUBST(VERSION_NO)
 AC_SUBST(PARSER_LIBS)
