@@ -225,7 +225,7 @@ axiom_text_serialize(
             AXIS2_FREE(env->allocator, attribute_value);
             attribute_value = NULL;
 
-            if (!om_text->is_swa) // This is a hack to get SwA working
+            if (!om_text->is_swa) /* This is a hack to get SwA working */
             {
                 axiom_text_serialize_start_part(om_text, env, om_output);
             }
