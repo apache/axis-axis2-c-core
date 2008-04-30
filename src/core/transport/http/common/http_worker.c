@@ -221,6 +221,11 @@ axis2_http_worker_process_request(
 
         server_date = axis2_http_header_create(env,
                                           AXIS2_HTTP_HEADER_DATE, date_str);
+        if(date_str)
+        {
+            AXIS2_FREE(env->allocator, date_str);
+            date_str = NULL;
+        }
         axis2_http_simple_response_set_header(response, env, server_date);
 
         server = axis2_http_header_create(env,
@@ -902,7 +907,8 @@ axis2_http_worker_process_request(
                                                                       url_ext_form);
 
         }
-
+        if(url_ext_form)
+            AXIS2_FREE(env->allocator, url_ext_form);
         if (AXIS2_FAILURE == status && (is_put ||
             axis2_msg_ctx_get_doing_rest(msg_ctx, env)))
         {
