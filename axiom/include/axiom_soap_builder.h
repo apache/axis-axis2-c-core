@@ -188,6 +188,18 @@ extern "C"
         const axutil_env_t * env,
         axutil_hash_t * map);
 
+    /**
+     * Get the MIME body parts
+     * @param builder pointer to the SOAP Builder struct
+     * @param env Environment. MUST NOT be NULL
+     *
+     * @return hash of mime body parts
+     */
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+    axiom_soap_builder_get_mime_body_parts(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env);
+
     /** @} */
 #ifdef __cplusplus
 }

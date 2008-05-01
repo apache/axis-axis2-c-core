@@ -218,6 +218,18 @@ extern "C"
         axiom_soap_envelope_t * envelope,
         const axutil_env_t * env);
 
+    /**
+     * get the soap builder of the envelope 
+     * @param envelope OM SOAP Envelope
+     * @param env Environment. MUST NOT be NULL
+     *
+     * @return soap_builder struct related to the envelope
+     */
+    AXIS2_EXTERN struct axiom_soap_builder *AXIS2_CALL
+    axiom_soap_envelope_get_soap_builder(
+        axiom_soap_envelope_t * envelope,
+        const axutil_env_t * env);
+
     /** @} */
 
 #ifdef __cplusplus

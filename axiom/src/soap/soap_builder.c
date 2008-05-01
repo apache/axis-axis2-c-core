@@ -1164,3 +1164,11 @@ static axis2_status_t axiom_soap_builder_construct_node_for_empty_element(
     }
     return status;
 }
+
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+axiom_soap_builder_get_mime_body_parts(
+    axiom_soap_builder_t * builder,
+    const axutil_env_t * env)
+{
+    return builder->mime_body_parts;
+}
