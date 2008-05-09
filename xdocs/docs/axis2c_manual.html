@@ -1047,7 +1047,7 @@ settings:</p><ol>
 </ol><div class="subsection"><a name="14_1_Specifying_Proxy_Settings_in_axis2_xml"></a><h3>14.1 Specifying Proxy Settings in axis2.xml</h3>
     <div class="source"><pre>&lt;transportSender name="http" class="axis2_http_sender"&gt;
    &lt;parameter name="PROTOCOL" locked="false"&gt;HTTP/1.1&lt;/parameter&gt;
-   &lt;parameter name="PROXY" proxy_host="127.0.0.1" proxy_port="8080" proxy_username="" proxy_password="" locked="true"/&gt;
+   &lt;parameter name="PROXY" proxy_host="127.0.0.1" proxy_port="8080" locked="true"/&gt;
 &lt;/transportSender&gt;
 
 </pre></div>
@@ -1068,7 +1068,7 @@ authentication settings:</p><ol>
 </ol><div class="subsection"><a name="15_1_Specifying_Proxy_Settings_with_Authentication_in_axis2_xml"></a><h3>15.1 Specifying Proxy Settings with Authentication in axis2.xml</h3>
     <div class="source"><pre>&lt;transportSender name="http" class="axis2_http_sender"&gt;
    &lt;parameter name="PROTOCOL" locked="false"&gt;HTTP/1.1&lt;/parameter&gt;
-   &lt;parameter name="PROXY" proxy_host="127.0.0.1" proxy_port="8080"  locked="true"/&gt;
+   &lt;parameter name="PROXY" proxy_host="127.0.0.1" proxy_port="8080" proxy_username="" proxy_password="" locked="true"/&gt;
 &lt;/transportSender&gt;
 
 </pre></div>
