@@ -155,6 +155,7 @@ axis2_apache2_worker_process_request(
     axis2_transport_in_desc_t *in_desc = NULL;
     axis2_char_t *http_version = NULL;
     axutil_string_t *soap_action = NULL;
+    axis2_char_t *soap_action_header_txt = NULL;
     axis2_bool_t processed = AXIS2_FALSE;
     int content_length = -1;
     axis2_char_t *encoding_header_value = NULL;
@@ -388,10 +389,12 @@ axis2_apache2_worker_process_request(
         }
     }
 
-    soap_action = axutil_string_create(env,
-                                       (axis2_char_t *) apr_table_get(request->
-                                                                      headers_in,
-                                                                      AXIS2_HTTP_HEADER_SOAP_ACTION));
+    soap_action_header_txt = (axis2_char_t *) apr_table_get(request->headers_in,AXIS2_HTTP_HEADER_SOAP_ACTION);
+
+    if(soap_action_header_txt){
+	    soap_action = axutil_string_create(env, soap_action_header_txt);
+    }
+    
     request_body = axutil_stream_create_apache2(env, request);
     if (!request_body)
     {
