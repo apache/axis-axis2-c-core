@@ -102,7 +102,7 @@ axis2_mtom_mtom(
                     data_handler = axiom_text_get_data_handler(bin_text, env);
                     if (data_handler)
                     {
-                        axiom_data_handler_t *data_handler_res = NULL;
+                        /*axiom_data_handler_t *data_handler_res = NULL;
                         axis2_byte_t *input_buff = NULL;
                         axis2_byte_t *buff = NULL;
                         int buff_len = 0;
@@ -117,7 +117,7 @@ axis2_mtom_mtom(
                         
                         data_handler_res = axiom_data_handler_create(env, NULL, NULL);
                         
-                        buff = AXIS2_MALLOC(env->allocator, sizeof(axis2_byte_t)*buff_len);
+                        buff = AXIS2_MALLOC(env->allocator, sizeof(axis2_byte_t)*buff_len);*/
 	/*		if (!buff)
 			  {
 			    AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
@@ -125,12 +125,12 @@ axis2_mtom_mtom(
 			    return AXIS2_FAILURE;
 			  }*/
 
-                        memcpy(buff, input_buff, buff_len);
+                        /*memcpy(buff, input_buff, buff_len);*/
 
-                        axiom_data_handler_set_binary_data(data_handler_res, env, buff, buff_len);
+                        /*axiom_data_handler_set_binary_data(data_handler_res, env, buff, buff_len);
 
                         axis2_msg_ctx_set_doing_mtom (msg_ctx, env, AXIS2_TRUE);
-                        ret_node = build_response2(env, data_handler_res);
+                        ret_node = build_response2(env, data_handler_res);*/
                     }
                     else if (axiom_node_get_node_type(binary_node, env) == AXIOM_TEXT) /* attachment has come by value, as non-optimized binary */
                     {
