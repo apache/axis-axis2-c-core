@@ -1,0 +1,7057 @@
+# Microsoft Developer Studio Project File - Name="neethi" - Package Owner=<4>
+# Microsoft Developer Studio Generated Build File, Format Version 6.00
+# ** DO NOT EDIT **
+
+# TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
+
+CFG=neethi - Win32 Debug
+!MESSAGE This is not a valid makefile. To build this project using NMAKE,
+!MESSAGE use the Export Makefile command and run
+!MESSAGE 
+!MESSAGE NMAKE /f "neethi.mak".
+!MESSAGE 
+!MESSAGE You can specify a configuration when running NMAKE
+!MESSAGE by defining the macro CFG on the command line. For example:
+!MESSAGE 
+!MESSAGE NMAKE /f "neethi.mak" CFG="neethi - Win32 Debug"
+!MESSAGE 
+!MESSAGE Possible choices for configuration are:
+!MESSAGE 
+!MESSAGE "neethi - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "neethi - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE 
+
+# Begin Project
+# PROP AllowPerConfigDependencies 0
+# PROP Scc_ProjName ""
+# PROP Scc_LocalPath ""
+CPP=cl.exe
+MTL=midl.exe
+RSC=rc.exe
+
+!IF  "$(CFG)" == "neethi - Win32 Release"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "Release"
+# PROP BASE Intermediate_Dir "Release"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "Release"
+# PROP Intermediate_Dir "Release"
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "NEETHI_EXPORTS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "NEETHI_EXPORTS" /YX /FD /c
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
+# ADD BASE RSC /l 0xc0c /d "NDEBUG"
+# ADD RSC /l 0xc0c /d "NDEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
+
+!ELSEIF  "$(CFG)" == "neethi - Win32 Debug"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "Debug"
+# PROP BASE Intermediate_Dir "Debug"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "Debug"
+# PROP Intermediate_Dir "Debug"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "NEETHI_EXPORTS" /YX /FD /GZ /c
+# ADD CPP /nologo /MDd /w /W0 /Z7 /Od /I "..\..\..\..\util\include" /I "..\..\..\..\util\src\\" /I "..\..\..\..\util\src\minizip\\" /I "..\..\..\..\axiom\include" /I "..\..\..\..\axiom\src\om" /I "..\..\..\..\axiom\src\soap" /I "..\..\..\..\util\include\platforms" /I "..\..\..\..\neethi\include" /I "..\..\..\..\neethi\src" /I "..\..\..\..\neethi\src\secpolicy\builder" /I "..\..\..\..\neethi\src\secpolicy\model" /I "..\..\..\..\src\core\clientapi" /I "..\..\..\..\src\core\deployment" /I "..\..\..\..\src\core\description" /I "..\..\..\..\src\core\transport" /I "..\..\..\..\src\core\transport\tcp" /I "..\..\..\..\include" /I "..\..\..\..\src\core\engine" /I "..\..\..\..\src\core\context" /I "..\..\..\..\src\core\util" /I "..\..\..\..\src\core\transport\http\server\apache2" /I "..\..\..\..\axiom\src\attachments" /I "..\..\..\..\tools\tcpmon\include" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_DEBUG" /D "AXIS2_DECLARE_EXPORT" /D "_CRT_SECURE_NO_DEPRECATE" /D "_CRT_SECURE_NO_WARNINGS" /D "AXIS2_SVR_MULTI_THREADED" /I..\..\..\..\axis2c_deps\libxml2-2.6.27.win32\include /I..\..\..\..\axis2c_deps\iconv-1.9.2.win32\include /I..\..\..\..\axis2c_deps\zlib-1.2.3.win32\include /c
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
+# ADD BASE RSC /l 0xc0c /d "_DEBUG"
+# ADD RSC /l 0xc0c /d "_DEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib axiom.lib axutil.lib /nologo /dll /incremental:no /pdb:"../../../../build/deploy/lib/neethi.pdb" /debug /machine:I386 /out:"../../../../build/deploy/lib/neethi.dll" /pdbtype:sept /libpath:"../../../../build/deploy/lib"
+# SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=copy .\debug\*.lib .\..\..\..\..\build\deploy\lib
+# End Special Build Tool
+
+!ENDIF 
+
+# Begin Target
+
+# Name "neethi - Win32 Release"
+# Name "neethi - Win32 Debug"
+# Begin Group "Source Files"
+
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\algorithmsuite.c
+DEP_CPP_ALGOR=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\algorithmsuite_builder.c
+DEP_CPP_ALGORI=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite_builder.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\all.c
+DEP_CPP_ALL_C=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\assertion.c
+DEP_CPP_ASSER=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_asymmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_rampart_config.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_asymmetric_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_transport_binding.h"\
+	"..\..\..\..\neethi\include\rp_trust10.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_wss10.h"\
+	"..\..\..\..\neethi\include\rp_wss11.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\assertion_builder.c
+DEP_CPP_ASSERT=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_assertion_builder.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite_builder.h"\
+	"..\..\..\..\neethi\include\rp_asymmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_asymmetric_binding_builder.h"\
+	"..\..\..\..\neethi\include\rp_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_bootstrap_policy_builder.h"\
+	"..\..\..\..\neethi\include\rp_builders.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_encryption_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_https_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_initiator_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_issued_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_layout_builder.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_protection_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_qname_matcher.h"\
+	"..\..\..\..\neethi\include\rp_rampart_config.h"\
+	"..\..\..\..\neethi\include\rp_rampart_config_builder.h"\
+	"..\..\..\..\neethi\include\rp_recipient_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_saml_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_signature_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts_builder.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens_builder.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_asymmetric_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_binding_builder.h"\
+	"..\..\..\..\neethi\include\rp_token_identifier.h"\
+	"..\..\..\..\neethi\include\rp_transport_binding.h"\
+	"..\..\..\..\neethi\include\rp_transport_binding_builder.h"\
+	"..\..\..\..\neethi\include\rp_transport_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_trust10.h"\
+	"..\..\..\..\neethi\include\rp_trust10_builder.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_wss10.h"\
+	"..\..\..\..\neethi\include\rp_wss10_builder.h"\
+	"..\..\..\..\neethi\include\rp_wss11.h"\
+	"..\..\..\..\neethi\include\rp_wss11_builder.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token_builder.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\asymmetric_binding.c
+DEP_CPP_ASYMM=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_asymmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_asymmetric_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\asymmetric_binding_builder.c
+DEP_CPP_ASYMME=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_asymmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_asymmetric_binding_builder.h"\
+	"..\..\..\..\neethi\include\rp_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_asymmetric_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\binding_commons.c
+DEP_CPP_BINDI=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\bootstrap_policy_builder.c
+DEP_CPP_BOOTS=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_bootstrap_policy_builder.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\element.c
+DEP_CPP_ELEME=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_element.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\encryption_token_builder.c
+DEP_CPP_ENCRY=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_encryption_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\engine.c
+DEP_CPP_ENGIN=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_assertion_builder.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite_builder.h"\
+	"..\..\..\..\neethi\include\rp_asymmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_asymmetric_binding_builder.h"\
+	"..\..\..\..\neethi\include\rp_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_bootstrap_policy_builder.h"\
+	"..\..\..\..\neethi\include\rp_builders.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_encryption_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_https_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_initiator_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_issued_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_layout_builder.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_protection_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_qname_matcher.h"\
+	"..\..\..\..\neethi\include\rp_rampart_config.h"\
+	"..\..\..\..\neethi\include\rp_rampart_config_builder.h"\
+	"..\..\..\..\neethi\include\rp_recipient_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_saml_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_signature_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts_builder.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens_builder.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_asymmetric_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_binding_builder.h"\
+	"..\..\..\..\neethi\include\rp_token_identifier.h"\
+	"..\..\..\..\neethi\include\rp_transport_binding.h"\
+	"..\..\..\..\neethi\include\rp_transport_binding_builder.h"\
+	"..\..\..\..\neethi\include\rp_transport_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_trust10.h"\
+	"..\..\..\..\neethi\include\rp_trust10_builder.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_wss10.h"\
+	"..\..\..\..\neethi\include\rp_wss10_builder.h"\
+	"..\..\..\..\neethi\include\rp_wss11.h"\
+	"..\..\..\..\neethi\include\rp_wss11_builder.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token_builder.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\exactlyone.c
+DEP_CPP_EXACT=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\header.c
+DEP_CPP_HEADE=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\https_token.c
+DEP_CPP_HTTPS=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\https_token_builder.c
+DEP_CPP_HTTPS_=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_https_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\initiator_token_builder.c
+DEP_CPP_INITI=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_initiator_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\issued_token.c
+DEP_CPP_ISSUE=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\issued_token_builder.c
+DEP_CPP_ISSUED=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_issued_token_builder.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\layout.c
+DEP_CPP_LAYOU=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\layout_builder.c
+DEP_CPP_LAYOUT=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_layout_builder.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\operator.c
+DEP_CPP_OPERA=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\policy.c
+DEP_CPP_POLIC=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\property.c
+DEP_CPP_PROPE=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_asymmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_asymmetric_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_transport_binding.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_wss10.h"\
+	"..\..\..\..\neethi\include\rp_wss11.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\protection_token_builder.c
+DEP_CPP_PROTE=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_protection_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\qname_matcher.c
+DEP_CPP_QNAME=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_qname_matcher.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\rampart_config.c
+DEP_CPP_RAMPA=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_rampart_config.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\rampart_config_builder.c
+DEP_CPP_RAMPAR=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_qname_matcher.h"\
+	"..\..\..\..\neethi\include\rp_rampart_config.h"\
+	"..\..\..\..\neethi\include\rp_rampart_config_builder.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\recipient_token_builder.c
+DEP_CPP_RECIP=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_recipient_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\reference.c
+DEP_CPP_REFER=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\registry.c
+DEP_CPP_REGIS=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\saml_token.c
+DEP_CPP_SAML_=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\saml_token_builder.c
+DEP_CPP_SAML_T=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_saml_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\secpolicy.c
+DEP_CPP_SECPO=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_asymmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_element.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_rampart_config.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_secpolicy.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_items.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_asymmetric_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_transport_binding.h"\
+	"..\..\..\..\neethi\include\rp_trust10.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_wss10.h"\
+	"..\..\..\..\neethi\include\rp_wss11.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\secpolicy_builder.c
+DEP_CPP_SECPOL=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_asymmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_element.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_rampart_config.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_secpolicy.h"\
+	"..\..\..\..\neethi\include\rp_secpolicy_builder.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_items.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_asymmetric_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_transport_binding.h"\
+	"..\..\..\..\neethi\include\rp_trust10.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_wss10.h"\
+	"..\..\..\..\neethi\include\rp_wss11.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\security_context_token.c
+DEP_CPP_SECUR=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\security_context_token_builder.c
+DEP_CPP_SECURI=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_qname_matcher.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\signature_token_builder.c
+DEP_CPP_SIGNA=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signature_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\signed_encrypted_elements.c
+DEP_CPP_SIGNE=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\signed_encrypted_items.c
+DEP_CPP_SIGNED=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_element.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_items.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\signed_encrypted_parts.c
+DEP_CPP_SIGNED_=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\signed_encrypted_parts_builder.c
+DEP_CPP_SIGNED_E=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_qname_matcher.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts_builder.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\supporting_tokens.c
+DEP_CPP_SUPPO=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\supporting_tokens_builder.c
+DEP_CPP_SUPPOR=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens_builder.h"\
+	"..\..\..\..\neethi\include\rp_token_identifier.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\symmetric_asymmetric_binding_commons.c
+DEP_CPP_SYMME=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_asymmetric_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\symmetric_binding.c
+DEP_CPP_SYMMET=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_asymmetric_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\symmetric_binding_builder.c
+DEP_CPP_SYMMETR=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_asymmetric_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_binding.h"\
+	"..\..\..\..\neethi\include\rp_symmetric_binding_builder.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\token_identifier.c
+DEP_CPP_TOKEN=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_token_identifier.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\transport_binding.c
+DEP_CPP_TRANS=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_transport_binding.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\transport_binding_builder.c
+DEP_CPP_TRANSP=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_algorithmsuite.h"\
+	"..\..\..\..\neethi\include\rp_binding_commons.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_header.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_layout.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_elements.h"\
+	"..\..\..\..\neethi\include\rp_signed_encrypted_parts.h"\
+	"..\..\..\..\neethi\include\rp_supporting_tokens.h"\
+	"..\..\..\..\neethi\include\rp_transport_binding.h"\
+	"..\..\..\..\neethi\include\rp_transport_binding_builder.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\transport_token_builder.c
+DEP_CPP_TRANSPO=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_transport_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\trust10.c
+DEP_CPP_TRUST=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_trust10.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\trust10_builder.c
+DEP_CPP_TRUST1=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_trust10.h"\
+	"..\..\..\..\neethi\include\rp_trust10_builder.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\username_token_builder.c
+DEP_CPP_USERN=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token_builder.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\ut.c
+DEP_CPP_UT_C6c=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\util.c
+DEP_CPP_UTIL_=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\neethi_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\wss10.c
+DEP_CPP_WSS10=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_wss10.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\wss10_builder.c
+DEP_CPP_WSS10_=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_wss10.h"\
+	"..\..\..\..\neethi\include\rp_wss10_builder.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\wss11.c
+DEP_CPP_WSS11=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_wss11.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\wss11_builder.c
+DEP_CPP_WSS11_=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_wss11.h"\
+	"..\..\..\..\neethi\include\rp_wss11_builder.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\model\x509_token.c
+DEP_CPP_X509_=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\src\secpolicy\builder\x509_token_builder.c
+DEP_CPP_X509_T=\
+	"..\..\..\..\axiom\include\axiom.h"\
+	"..\..\..\..\axiom\include\axiom_attribute.h"\
+	"..\..\..\..\axiom\include\axiom_child_element_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_qname_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_children_with_specific_attribute_iterator.h"\
+	"..\..\..\..\axiom\include\axiom_comment.h"\
+	"..\..\..\..\axiom\include\axiom_data_handler.h"\
+	"..\..\..\..\axiom\include\axiom_data_source.h"\
+	"..\..\..\..\axiom\include\axiom_doctype.h"\
+	"..\..\..\..\axiom\include\axiom_document.h"\
+	"..\..\..\..\axiom\include\axiom_element.h"\
+	"..\..\..\..\axiom\include\axiom_namespace.h"\
+	"..\..\..\..\axiom\include\axiom_navigator.h"\
+	"..\..\..\..\axiom\include\axiom_node.h"\
+	"..\..\..\..\axiom\include\axiom_output.h"\
+	"..\..\..\..\axiom\include\axiom_processing_instruction.h"\
+	"..\..\..\..\axiom\include\axiom_soap.h"\
+	"..\..\..\..\axiom\include\axiom_soap_body.h"\
+	"..\..\..\..\axiom\include\axiom_soap_builder.h"\
+	"..\..\..\..\axiom\include\axiom_soap_const.h"\
+	"..\..\..\..\axiom\include\axiom_soap_envelope.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_detail.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_node.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_reason.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_role.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_sub_code.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_text.h"\
+	"..\..\..\..\axiom\include\axiom_soap_fault_value.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header.h"\
+	"..\..\..\..\axiom\include\axiom_soap_header_block.h"\
+	"..\..\..\..\axiom\include\axiom_stax_builder.h"\
+	"..\..\..\..\axiom\include\axiom_text.h"\
+	"..\..\..\..\axiom\include\axiom_xml_reader.h"\
+	"..\..\..\..\axiom\include\axiom_xml_writer.h"\
+	"..\..\..\..\include\axis2_const.h"\
+	"..\..\..\..\include\axis2_defines.h"\
+	"..\..\..\..\include\axis2_util.h"\
+	"..\..\..\..\neethi\include\neethi_all.h"\
+	"..\..\..\..\neethi\include\neethi_assertion.h"\
+	"..\..\..\..\neethi\include\neethi_constants.h"\
+	"..\..\..\..\neethi\include\neethi_engine.h"\
+	"..\..\..\..\neethi\include\neethi_exactlyone.h"\
+	"..\..\..\..\neethi\include\neethi_includes.h"\
+	"..\..\..\..\neethi\include\neethi_operator.h"\
+	"..\..\..\..\neethi\include\neethi_policy.h"\
+	"..\..\..\..\neethi\include\neethi_reference.h"\
+	"..\..\..\..\neethi\include\neethi_registry.h"\
+	"..\..\..\..\neethi\include\rp_defines.h"\
+	"..\..\..\..\neethi\include\rp_https_token.h"\
+	"..\..\..\..\neethi\include\rp_includes.h"\
+	"..\..\..\..\neethi\include\rp_issued_token.h"\
+	"..\..\..\..\neethi\include\rp_property.h"\
+	"..\..\..\..\neethi\include\rp_saml_token.h"\
+	"..\..\..\..\neethi\include\rp_security_context_token.h"\
+	"..\..\..\..\neethi\include\rp_username_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token.h"\
+	"..\..\..\..\neethi\include\rp_x509_token_builder.h"\
+	"..\..\..\..\util\include\axutil_allocator.h"\
+	"..\..\..\..\util\include\axutil_array_list.h"\
+	"..\..\..\..\util\include\axutil_base64.h"\
+	"..\..\..\..\util\include\axutil_base64_binary.h"\
+	"..\..\..\..\util\include\axutil_class_loader.h"\
+	"..\..\..\..\util\include\axutil_config.h"\
+	"..\..\..\..\util\include\axutil_date_time.h"\
+	"..\..\..\..\util\include\axutil_dir_handler.h"\
+	"..\..\..\..\util\include\axutil_dll_desc.h"\
+	"..\..\..\..\util\include\axutil_env.h"\
+	"..\..\..\..\util\include\axutil_error.h"\
+	"..\..\..\..\util\include\axutil_error_default.h"\
+	"..\..\..\..\util\include\axutil_file.h"\
+	"..\..\..\..\util\include\axutil_file_handler.h"\
+	"..\..\..\..\util\include\axutil_hash.h"\
+	"..\..\..\..\util\include\axutil_linked_list.h"\
+	"..\..\..\..\util\include\axutil_log.h"\
+	"..\..\..\..\util\include\axutil_log_default.h"\
+	"..\..\..\..\util\include\axutil_network_handler.h"\
+	"..\..\..\..\util\include\axutil_param.h"\
+	"..\..\..\..\util\include\axutil_param_container.h"\
+	"..\..\..\..\util\include\axutil_property.h"\
+	"..\..\..\..\util\include\axutil_qname.h"\
+	"..\..\..\..\util\include\axutil_stack.h"\
+	"..\..\..\..\util\include\axutil_stream.h"\
+	"..\..\..\..\util\include\axutil_string.h"\
+	"..\..\..\..\util\include\axutil_string_util.h"\
+	"..\..\..\..\util\include\axutil_thread.h"\
+	"..\..\..\..\util\include\axutil_thread_pool.h"\
+	"..\..\..\..\util\include\axutil_types.h"\
+	"..\..\..\..\util\include\axutil_uri.h"\
+	"..\..\..\..\util\include\axutil_url.h"\
+	"..\..\..\..\util\include\axutil_utils.h"\
+	"..\..\..\..\util\include\axutil_utils_defines.h"\
+	"..\..\..\..\util\include\axutil_uuid_gen.h"\
+	"..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_date_time_util_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_unix.h"\
+	"..\..\..\..\util\include\platforms\unix\axutil_uuid_gen_unix.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"\
+	"..\..\..\..\util\include\platforms\windows\axutil_windows.h"\
+	
+# End Source File
+# End Group
+# Begin Group "Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\neethi_all.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\neethi_assertion.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\neethi_assertion_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\neethi_constants.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\neethi_engine.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\neethi_exactlyone.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\neethi_includes.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\neethi_operator.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\neethi_policy.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\neethi_reference.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\neethi_registry.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\neethi_util.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_algorithmsuite.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_algorithmsuite_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_asymmetric_binding.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_asymmetric_binding_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_binding_commons.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_builders.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_defines.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_element.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_encryption_token_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_header.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_https_token.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_https_token_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_includes.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_initiator_token_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_layout.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_layout_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_policy_creator.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_property.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_protection_token_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_qname_matcher.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_rampart_config.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_rampart_config_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_recipient_token_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_secpolicy.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_secpolicy_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_security_context_token.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_signature_token_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_signed_encrypted_elements.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_signed_encrypted_items.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_signed_encrypted_parts.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_signed_encrypted_parts_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_supporting_tokens.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_supporting_tokens_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_symmetric_asymmetric_binding_commons.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_symmetric_binding.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_symmetric_binding_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_token_identifier.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_transport_binding.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_transport_binding_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_transport_token_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_trust10.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_trust10_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_username_token.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_username_token_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_wss10.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_wss10_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_wss11.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_wss11_builder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_x509_token.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\..\neethi\include\rp_x509_token_builder.h
+# End Source File
+# End Group
+# Begin Group "Resource Files"
+
+# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# End Group
+# End Target
+# End Project

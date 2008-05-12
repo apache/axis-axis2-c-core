@@ -1,0 +1,4 @@
+SUBDIRS = src 
+includedir=$(prefix)/include/axis2-1.4.0
+data_DATA= INSTALL README AUTHORS NEWS LICENSE COPYING
+EXTRA_DIST=LICENSE

@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Apache Axis2/C - The Web Services Engine</title>
+    <h2>Welcome to Apache Axis2/C</h2>
+    <p>Apache Axis2/C is a Web services engine implemented in the C programming language. It is based on the extensible and flexible <a href="http://ws.apache.org/axis2/1_2/Axis2ArchitectureGuide.html" class="externalLink" title="External Link">Axis2 architecture</a>. Apache Axis2/C can be used to provide and consume WebServices. It has been implemented with portability and ability to embed in mind, hence could be used as a Web services enabler in other software.</p>
+
+    <p>Apache Axis2/C supports <a href="http://www.w3.org/TR/2000/NOTE-SOAP-20000508/" class="externalLink" title="External Link">SOAP 1.1</a> and <a href="http://www.w3.org/TR/soap12-part1/" class="externalLink" title="External Link">SOAP 1.2</a>, as well as <a href="http://www.xfront.com/REST-Web-Services.html" class="externalLink" title="External Link">REST</a> style of Webservices. A single service could be exposed both as a SOAP style as well as a REST style service simultaneously. It also has built in <a href="http://www.w3.org/TR/soap12-mtom/" class="externalLink" title="External Link">MTOM</a> support, that can be used to exchange binary data.</p>
+
+    <p>Apache Axis2/C is efficient, modular and is designed with extensibility. The extensible design allows it to support the full WS-* stack with the concept of modules. Apache Axis2/C is the Web services engine that supports the most number of WS-* specification implementations in C, with guaranteed interoperability. This enables using C in Service Oriented Architecture (SOA) implementations, and would be very useful when integrating legacy systems into SOA.
+      <br></br>
+      The following WS-* specifications are supported, either as built in modules
+      or as separate Apache projects: </p>
+    <ul>
+      <li><a href="http://www.w3.org/Submission/ws-addressing/" class="externalLink" title="External Link">WS-Addressing</a> - Built in to Axis2/C </li>
+      <li><a href="http://www.w3.org/Submission/WS-Policy/" class="externalLink" title="External Link">WS-Policy</a> - Built in to Axis2/C </li>
+      <li><a href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=wss" class="externalLink" title="External Link">WS-Security</a> - Implemented by <a href="http://ws.apache.org/axis2/modules/rampart/1_2/security-module.html" class="externalLink" title="External Link">Apache Rampart/C</a> project </li>
+      <li> <a href="http://specs.xmlsoap.org/ws/2005/07/securitypolicy/ws-securitypolicy.pdf" class="externalLink" title="External Link">WS-SecurityPolicy</a> - Built in to Axis2/C </li>
+      <li> <a href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=wsrm" class="externalLink" title="External Link">WS-ReliableMessaging</a> - Implemented by <a href="http://ws.apache.org/sandesha/sandesha2/c" class="externalLink" title="External Link">Apache Sandesha2/C</a>project
+      </li>
+      <li><a href="http://www.w3.org/Submission/WS-Eventing/" class="externalLink" title="External Link">WS-Eventing</a> - Implemented by <a href="http://ws.apache.org/savan/c/" class="externalLink" title="External Link">Apache Savan/C</a>project</li>
+    </ul>
+    <div class="subsection">
+      <a name="Latest_Release"></a>
+      <h3>Latest Release</h3>
+    </div>
+    <div class="subsection">
+      <a name="17_January_2008_-_Apache_Axis2_C_Version_1_2_0_Released"></a>
+      <h3>6th May 2008 - Apache Axis2/C Version 1.4.0 Released</h3>
+      <p><a href="http://ws.apache.org/axis2/c/download.cgi" class="externalLink" title="External Link">Download 1.4.0</a></p>
+    </div>
+    <div class="subsection">
+      <a name="Key_Features"></a>
+      <h3>Key Features</h3>
+      <ol>
+        <li>Support for one-way messaging (In-Only) and request response messaging (In-Out)</li>
+        <li>Client APIs: Easy to use service client API and more advanced operation client API</li>
+        <li>Transports supported: HTTP
+          <ul>
+            <li>Inbuilt HTTP server called simple axis server</li>
+            <li>Apache2 httpd module called mod_axis2 for server side</li>
+            <li>IIS module for server side</li>
+            <li>Client transport with ability to enable SSL support</li>
+            <li>Basic HTTP Authentication</li>
+            <li>libcurl based client transport</li>
+          </ul>
+        </li>
+        <li>Module architecture, mechanism to extend the SOAP processing model</li>
+        <li>WS-Addressing support, both the submission (2004/08) and final (2005/08) versions, implemented as a module</li>
+        <li>MTOM/XOP support</li>
+        <li>AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages; This has complete XML infoset support </li>
+        <li>XML parser abstraction
+          <ul>
+            <li>Libxml2 wrapper</li>
+            <li>Guththila pull parser support</li>
+          </ul>
+        </li>
+        <li>Both directory based and archive based deployment models for deploying services and modules </li>
+        <li>Description hierarchy providing access to static data of Axis2/C runtime (configuration, service groups, services, operations and messages) </li>
+        <li>Context hierarchy providing access to dynamic Axis2/C runtime information(corresponding contexts to map to each level of description hierarchy) </li>
+        <li>Message receiver abstraction
+          <ul>
+            <li>Inbuilt raw XML message receiver</li>
+          </ul>
+        </li>
+        <li>Code generation tool for stub and skeleton generation for a given WSDL (based on Java tool)        <ul>
+            <li>Axis Data Binding (ADB) support </li>
+          </ul>
+        </li>
+        <li>Transport proxy support</li>
+        <li>REST support (more POX like) using both HTTP POST and GET </li>
+        <li>Comprehensive documentation
+          <ul>
+            <li>Axis2/C Manual </li>
+          </ul>
+        </li>
+        <li>WS-Policy implementation called Neethi/C, with WS-SecurityPolicy extension</li>
+        <li>TCP Transport, for both client and server side </li>
+    </ol></div>
+    <div class="subsection">
+      <a name="Major_Changes_Since_Last_Release"></a>
+      <h3>Changes Since Last Release</h3>
+      <ol> 
+        <li>Fixed library version numbering</li>
+        <li>Made Guththila as default XML parser</li>
+        <li>Memory leak fixes</li>
+        <li>Many bug fixes</li>
+      </ol>
+    </div>
+    <div class="subsection">
+      <a name="Archived_News"></a>
+      <h3>Archived News</h3>
+      <p>Refer to information on the <a href="archived_news.html">previous releases</a>.
+      </p>
+  </div></div><div class="clear"><hr></hr></div>
+</body></html>

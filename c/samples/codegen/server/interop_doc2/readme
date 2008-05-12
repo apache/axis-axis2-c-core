@@ -1,0 +1,10 @@
+This sample demonstrates the use of code generation using Axis2/Java WSDL2Java
+tool (Axis2/Java source revision 414253).
+
+wsdl                 $AXIS2C_HOME/test/resources/wsdl/interoptestdoclitparameters.wsdl
+
+Command to execute the code generation: 
+WSDL2C.sh -uri Calculator.wsdl -u -d adb -ss
+WSDL2C.bat -uri Calculator.wsdl -u -d adb -ss
+
+Please check the instruction of $AXIS2C_SRC_HOME/c/tools/codegen/javatool/README.txt
