@@ -99,7 +99,7 @@ static axis2_char_t *axiom_mime_parser_search_string(
     axiom_search_info_t *search_info,
     const axutil_env_t *env);
 
-static axis2_status_t axiom_mime_parser_cache(
+static axis2_status_t axis2_caching_callback(
     const axutil_env_t *env,
     axis2_char_t *buf,
     int buf_len,
@@ -714,7 +714,7 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
                 }
             }
 
-            status = axiom_mime_parser_cache(env, buf_array[*buf_num - 1],
+            status = axis2_caching_callback(env, buf_array[*buf_num - 1],
                 len_array[*buf_num - 1], search_info->handler);
             /*printf("\nBuffer\n%s\n", buf_array[*buf_num - 1]);*/
             if(status == AXIS2_FAILURE)
@@ -780,13 +780,13 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
     {
         if(search_info->match_len2 == 0)
         {
-            status = axiom_mime_parser_cache(env, buf_array[*buf_num - 1], 
+            status = axis2_caching_callback(env, buf_array[*buf_num - 1], 
                 len_array[*buf_num - 1], search_info->handler);                                     
             if(status == AXIS2_FAILURE) 
             {
                 return NULL;
             }   
-            status = axiom_mime_parser_cache(env, buf_array[*buf_num], 
+            status = axis2_caching_callback(env, buf_array[*buf_num], 
                 found - buf_array[*buf_num], search_info->handler);
             if(status == AXIS2_FAILURE)
             {
@@ -795,7 +795,7 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
         }
         else if(search_info->match_len2 > 0)
         {
-            status = axiom_mime_parser_cache(env, buf_array[*buf_num - 1], search_info->match_len1, search_info->handler);
+            status = axis2_caching_callback(env, buf_array[*buf_num - 1], search_info->match_len1, search_info->handler);
             if(status == AXIS2_FAILURE)
             {
                 return NULL;
@@ -821,7 +821,7 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
     return found;
 }
 
-static axis2_status_t axiom_mime_parser_cache(
+static axis2_status_t axis2_caching_callback(
     const axutil_env_t *env,
     axis2_char_t *buf,
     int buf_len,
@@ -936,6 +936,7 @@ static axis2_char_t *axiom_mime_parser_search_string(
     axis2_char_t *old_pos = NULL;
     axis2_char_t *found = NULL;
     int str_length = 0;
+    int search_length = 0;
 
     str_length = strlen(search_info->search_str);
 
@@ -951,11 +952,22 @@ static axis2_char_t *axiom_mime_parser_search_string(
              because the buffer1 can be containg binary data*/
 
             pos = NULL;
+
+            search_length = search_info->buffer1 + search_info->len1
+                                - old_pos - str_length + 1;
+
+            if(search_length < 0)
+            {
+                break;
+            }
+
             if (old_pos)
             {
-                pos = memchr(old_pos, *(search_info->search_str),
+                /*pos = memchr(old_pos, *(search_info->search_str),
                         search_info->buffer1 + search_info->len1
-                        - old_pos - str_length + 1);
+                        - old_pos - str_length + 1);*/
+                pos = memchr(old_pos, *(search_info->search_str),
+                        search_length);
             }
 
             /* found it so lets check the remaining */
@@ -994,6 +1006,7 @@ static axis2_char_t *axiom_mime_parser_search_string(
         pos = NULL;
         old_pos = NULL;
         found = NULL;
+        search_length = 0;
 
         if(search_info->buffer2)
         {
@@ -1003,8 +1016,18 @@ static axis2_char_t *axiom_mime_parser_search_string(
                 /*First check the starting byte*/
                 pos = NULL;
                 found = NULL;
-                pos = memchr(old_pos, *(search_info->search_str),
-                search_info->buffer1 + search_info->len1 - old_pos);
+
+                search_length = search_info->buffer1 + search_info->len1 - old_pos;
+
+                if(search_length < 0)
+                {
+                    break;
+                }
+
+                /*pos = memchr(old_pos, *(search_info->search_str),
+                search_info->buffer1 + search_info->len1 - old_pos);*/
+
+                pos = memchr(old_pos, *(search_info->search_str), search_length);
 
                 if(pos)
                 {
