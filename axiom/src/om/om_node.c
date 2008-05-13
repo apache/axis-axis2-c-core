@@ -365,6 +365,13 @@ axiom_node_insert_sibling_after(
 
     AXIS2_PARAM_CHECK(env->error, node_to_insert, AXIS2_FAILURE);
 
+    if (!om_node->parent)
+    {
+        /* We shouldn't add a sibling becuase this node doesn't has a parent. 
+         * This can be the root node of the tree*/        
+        return AXIS2_FAILURE;
+    }
+
     node_to_insert->parent = om_node->parent;
 
     node_to_insert->prev_sibling = om_node;
@@ -392,6 +399,13 @@ axiom_node_insert_sibling_before(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node_to_insert, AXIS2_FAILURE);
+
+    if (!om_node->parent)
+    {
+        /* We shouldn't add a sibling becuase this node doesn't has a parent. 
+         * This can be the root node of the tree*/
+        return AXIS2_FAILURE;
+    }
 
     node_to_insert->parent = om_node->parent;
 
