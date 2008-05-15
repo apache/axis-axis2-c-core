@@ -693,11 +693,18 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
                 AXIS2_FREE(env->allocator, attr);
         }
     }
-    GUTHTHILA_VARIABLE_INITIALZE(m);
     
-#ifdef GUTHTHILA_VALIDATION_PARSER
+#ifdef GUTHTHILA_VALIDATION_PARSER    
+    if (m->guththila_event == GUTHTHILA_END_ELEMENT && m->name)
+    {
+        guththila_tok_list_release_token(&m->tokens, m->name, env);
+        if (m->prefix)
+        {
+            guththila_tok_list_release_token(&m->tokens, m->prefix, env);
+        }
+    }
     /* If the previous event was a empty element we need to do some clean up */
-    if (m->guththila_event == GUTHTHILA_EMPTY_ELEMENT)
+    else if (m->guththila_event == GUTHTHILA_EMPTY_ELEMENT)
     {
         elem = (guththila_element_t *) guththila_stack_pop(&m->elem, env);
         if (elem->is_namesp)
@@ -724,8 +731,8 @@ guththila_next(guththila_t * m,const axutil_env_t * env)
         if (elem->prefix)
             guththila_tok_list_release_token(&m->tokens, elem->prefix, env);
         AXIS2_FREE(env->allocator, elem);
-    }
-    
+    }    
+    GUTHTHILA_VARIABLE_INITIALZE(m);
 #endif  
     /* Actual XML parsing logic */
     do

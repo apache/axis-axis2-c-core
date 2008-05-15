@@ -62,7 +62,7 @@ typedef struct guththila_tok_list_s
 guththila_tok_list_t;
 
 #ifndef GUTHTHILA_TOK_DEF_SIZE
-#define GUTHTHILA_TOK_DEF_SIZE 4
+#define GUTHTHILA_TOK_DEF_SIZE 16
 #endif  /*  */
 
 #ifndef GUTHTHILA_TOK_DEF_LIST_SIZE
