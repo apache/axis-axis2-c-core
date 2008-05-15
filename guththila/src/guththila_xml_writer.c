@@ -110,6 +110,31 @@
 	} 
 #endif*/ 
 
+/* 
+ * Write the contents of the buff in to the guththila_xml_writer buffer. 
+ * len indicates the number of items in the buff.
+ */
+int GUTHTHILA_CALL guththila_write(
+    guththila_xml_writer_t * wr,
+    char *buff,
+    size_t buff_size,
+    const axutil_env_t * env);
+
+/* 
+ * Same functionality as the guththila_write only difference is here we are given 
+ * a token to write, not a buffer.
+ */
+int GUTHTHILA_CALL guththila_write_token(
+    guththila_xml_writer_t * wr,
+    guththila_token_t * tok,
+    const axutil_env_t * env);
+
+int GUTHTHILA_CALL guththila_write_xtoken(
+    guththila_xml_writer_t * wr,
+    char *buff,
+    size_t buff_len,
+    const axutil_env_t * env);
+
 GUTHTHILA_EXPORT guththila_xml_writer_t * GUTHTHILA_CALL 
 guththila_create_xml_stream_writer(guththila_char_t *file_name,
                                    const axutil_env_t * env) 
@@ -220,6 +245,7 @@ guththila_write(guththila_xml_writer_t * wr, guththila_char_t *buff,
     {
         remain_len = wr->buffer.buffs_size[wr->buffer.cur_buff] -
                      wr->buffer.data_size[wr->buffer.cur_buff];
+        /* We have space */
         if (buff_len < remain_len)
         {
             memcpy(wr->buffer.buff[wr->buffer.cur_buff] +
@@ -240,6 +266,7 @@ guththila_write(guththila_xml_writer_t * wr, guththila_char_t *buff,
             /* We are sure that the difference lies within the int range */
             if (((int)wr->buffer.no_buffers - 1) == wr->buffer.cur_buff)
             {
+                /* Out of allocated array buffers. Need to allocate*/
                 wr->buffer.no_buffers = wr->buffer.no_buffers * 2;
                 temp3 = (guththila_char_t **) AXIS2_MALLOC(env->allocator,
                          sizeof(guththila_char_t *) * wr->buffer.no_buffers);
@@ -266,6 +293,7 @@ guththila_write(guththila_xml_writer_t * wr, guththila_char_t *buff,
             {
                 temp = temp * 2;
             }
+            /* Create a be buffer */
             wr->buffer.buff[wr->buffer.cur_buff] =
                 (guththila_char_t *) AXIS2_MALLOC(env->allocator, sizeof(guththila_char_t) * temp);
             wr->buffer.buffs_size[wr->buffer.cur_buff] = temp;
@@ -284,6 +312,7 @@ guththila_write(guththila_xml_writer_t * wr, guththila_char_t *buff,
     }
     return GUTHTHILA_FAILURE;
 }
+
 
 int GUTHTHILA_CALL
 guththila_write_token(guththila_xml_writer_t * wr, guththila_token_t * tok,
@@ -500,19 +529,22 @@ guththila_write_start_element(guththila_xml_writer_t * wr,
                                    sizeof(guththila_xml_writer_element_t));
     len = strlen(start_element);
     if (wr->status == START)
-    {
+    {   
+        /* If we are in a start we need to close and start */
         guththila_write(wr, "><", 2u, env);
         cur_pos = wr->next;
         guththila_write_xtoken(wr, start_element, len, env);
     }
     else if (wr->status == START_EMPTY)
     {
+        /* We need to close and start */
         guththila_write(wr, "/><", 3u, env);
         cur_pos = wr->next;
         guththila_write_xtoken(wr, start_element, len, env);
     }
     else if (wr->status == BEGINING)
     {
+        /* We can start rightaway*/
         guththila_write(wr, "<", 1u, env);
         cur_pos = wr->next;
         guththila_write_xtoken(wr, start_element, len, env);
@@ -546,6 +578,7 @@ guththila_write_end_element(guththila_xml_writer_t * wr, const axutil_env_t * en
     if (wr->status == START)
     {
         guththila_write(wr, "></", 3u, env);
+        /* Write the contents of the element at the top */
         elem =
             (guththila_xml_writer_element_t *) guththila_stack_pop(&wr->element, env);
         if (elem)
@@ -847,6 +880,7 @@ guththila_write_namespace(
     guththila_token_t ** tok_name = NULL, **tok_uri = NULL;
     size_t pref_len = strlen(prefix), uri_len = strlen(uri);
     stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
+    /* Check weather we have met the namespace before */
     for (i = stack_size - 1; i >= 0; i--)
     {
         writer_namesp =
@@ -869,6 +903,7 @@ guththila_write_namespace(
             }
         }
     }
+    /* Proceed if we didn't find the namespace */    
     if (!nmsp_found && (wr->status == START || wr->status == START_EMPTY))
     {
         guththila_write(wr, " xmlns:", 7u, env);
@@ -1066,7 +1101,9 @@ guththila_write_attribute_with_prefix(
     size_t pref_len = strlen(prefix);
     guththila_xml_writer_namesp_t * writer_namesp = NULL;
     if (wr->status == START || wr->status == START_EMPTY)
-    {
+    {   
+        /* We need to make sure that there is a namespace defined with the 
+         * given prefix as the name */
         for (i = stack_size - 1; i >= 0; i--)
         {
             writer_namesp =
@@ -1115,6 +1152,7 @@ guththila_write_attribute_with_namespace(
     guththila_xml_writer_namesp_t * writer_namesp = NULL;
     if (wr->status == START || wr->status == START_EMPTY)
     {
+        /* We need to make sure that the namespace is previously declared */
         for (i = stack_size - 1; i >= 0; i--)
         {
             writer_namesp = (guththila_xml_writer_namesp_t *)
@@ -1173,6 +1211,7 @@ guththila_write_start_element_with_prefix_and_namespace(
     pref_len = strlen(prefix);
     elem_len = strlen(local_name);
     stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
+    /* We have to determine weather we have seen the namespace before */
     for (i = stack_size - 1; i >= 0; i--)
     {
         writer_namesp =
@@ -1267,8 +1306,9 @@ guththila_write_start_element_with_prefix_and_namespace(
         }
         if (!nmsp_found)
         {
-	    namesp =
-        	(guththila_xml_writer_namesp_t *) AXIS2_MALLOC(env->allocator,
+            /* If this namespace not defined previously we need to add it */
+	        namesp =
+        	    (guththila_xml_writer_namesp_t *) AXIS2_MALLOC(env->allocator,
                                                    sizeof
                                                    (guththila_xml_writer_namesp_t));	
             
@@ -1464,7 +1504,7 @@ guththila_write_start_element_with_prefix(
         temp = writer_namesp->no;
         for (j = 0; j < temp; j++)
         {
-            
+            /* if we found a namespace with the given prefix we can proceed */
 #ifndef GUTHTHILA_XML_WRITER_TOKEN
             if (!strcmp(prefix, writer_namesp->name[j]))
             {                
@@ -1562,6 +1602,7 @@ guththila_write_empty_element_with_prefix_and_namespace(
     pref_len = strlen(prefix);
     elem_len = strlen(local_name);
     stack_size = GUTHTHILA_STACK_SIZE(wr->namesp);
+    /* Chech weather we have defined this namespace before */
     for (i = stack_size - 1; i >= 0; i--)
     {
         writer_namesp =
@@ -1656,7 +1697,7 @@ guththila_write_empty_element_with_prefix_and_namespace(
         }
         if (!nmsp_found)
         {
-            
+            /* If the namespace is not defined we need to remember it for later*/
 #ifndef GUTHTHILA_XML_WRITER_TOKEN
             namesp->name =
                 (guththila_char_t **) AXIS2_MALLOC(env->allocator,
@@ -1845,7 +1886,7 @@ guththila_write_empty_element_with_prefix(
         temp = writer_namesp->no;
         for (j = 0; j < temp; j++)
         {
-            
+            /* Proceed if we found the namespace */
 #ifndef GUTHTHILA_XML_WRITER_TOKEN
             if (!strcmp(prefix, writer_namesp->name[j]))
             {                
@@ -1907,6 +1948,7 @@ guththila_write_empty_element_with_prefix(
 #endif  
                 wr->status = START_EMPTY;
                 element->name_sp_stack_no = -1;
+                /* remember the element */
                 return guththila_stack_push(&wr->element, element, env);
             }
         }
@@ -1923,6 +1965,7 @@ guththila_write_end_document(
     int size = GUTHTHILA_STACK_SIZE(wr->element);
     if (wr->status == START_EMPTY)
         guththila_write_end_element(wr, env);
+    /* For all the open elements in the element stack close them */
     for (i = 0; i < size; i++)
     {
         if (!guththila_write_end_element(wr, env))
@@ -2011,6 +2054,7 @@ guththila_write_to_buffer(
     int size,
     const axutil_env_t * env) 
 {
+    /* Just write what ever given. But need to close things before */
     if(wr->status == START)
     {
         guththila_write(wr,">", 1u, env);
