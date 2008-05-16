@@ -323,8 +323,8 @@ axis2_http_transport_utils_process_http_post_request(
         {
             axiom_mime_parser_t *mime_parser = NULL;
             int soap_body_len = 0;
-            axutil_param_t *chunk_buffer_size_param = NULL;
-            axutil_param_t *max_chunk_buffers_param = 0;
+            axutil_param_t *buffer_size_param = NULL;
+            axutil_param_t *max_buffers_param = 0;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
             int size = 0;
@@ -332,13 +332,13 @@ axis2_http_transport_utils_process_http_post_request(
 
             mime_parser = axiom_mime_parser_create(env);
 
-            chunk_buffer_size_param = axis2_msg_ctx_get_parameter (msg_ctx,
+            buffer_size_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                env,
-                                                               AXIS2_MTOM_CHUNK_BUFFER_SIZE);
-            if (chunk_buffer_size_param)
+                                                               AXIS2_MTOM_BUFFER_SIZE);
+            if (buffer_size_param)
             {
                 value_size =
-                    (axis2_char_t *) axutil_param_get_value (chunk_buffer_size_param, env);
+                    (axis2_char_t *) axutil_param_get_value (buffer_size_param, env);
                 if(value_size)
                 {
                     size = atoi(value_size);
@@ -346,13 +346,13 @@ axis2_http_transport_utils_process_http_post_request(
                 }
             }
 
-            max_chunk_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
+            max_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                env,
-                                                               AXIS2_MTOM_MAX_CHUNK_BUFFERS);
-            if (max_chunk_buffers_param)
+                                                               AXIS2_MTOM_MAX_BUFFERS);
+            if (max_buffers_param)
             {
                 value_num =
-                    (axis2_char_t *) axutil_param_get_value (max_chunk_buffers_param, env);
+                    (axis2_char_t *) axutil_param_get_value (max_buffers_param, env);
                 if(value_num)
                 {
                     num = atoi(value_num);
@@ -741,8 +741,8 @@ axis2_http_transport_utils_process_http_put_request(
         {
             axiom_mime_parser_t *mime_parser = NULL;
             int soap_body_len = 0;
-            axutil_param_t *chunk_buffer_size_param = NULL;
-            axutil_param_t *max_chunk_buffers_param = 0;
+            axutil_param_t *buffer_size_param = NULL;
+            axutil_param_t *max_buffers_param = 0;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
             int size = 0;
@@ -750,14 +750,14 @@ axis2_http_transport_utils_process_http_put_request(
 
             mime_parser = axiom_mime_parser_create(env);
 
-            chunk_buffer_size_param = 
+            buffer_size_param = 
                 axis2_msg_ctx_get_parameter (msg_ctx,
                                              env,
-                                             AXIS2_MTOM_CHUNK_BUFFER_SIZE);
-            if (chunk_buffer_size_param)
+                                             AXIS2_MTOM_BUFFER_SIZE);
+            if (buffer_size_param)
             {
                 value_size =
-                    (axis2_char_t *) axutil_param_get_value (chunk_buffer_size_param, env);
+                    (axis2_char_t *) axutil_param_get_value (buffer_size_param, env);
                 if(value_size)
                 {
                     size = atoi(value_size);
@@ -765,13 +765,13 @@ axis2_http_transport_utils_process_http_put_request(
                 }
             }
 
-            max_chunk_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
+            max_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                env,
-                                                               AXIS2_MTOM_MAX_CHUNK_BUFFERS);
-            if (max_chunk_buffers_param)
+                                                               AXIS2_MTOM_MAX_BUFFERS);
+            if (max_buffers_param)
             {
                 value_num =
-                    (axis2_char_t *) axutil_param_get_value (max_chunk_buffers_param, env);
+                    (axis2_char_t *) axutil_param_get_value (max_buffers_param, env);
                 if(value_num)
                 {
                     num = atoi(value_num);
@@ -1912,8 +1912,8 @@ axis2_http_transport_utils_create_soap_msg(
             axutil_stream_t *stream = NULL;
             int soap_body_len = 0;
             axis2_char_t *soap_body_str = NULL;
-            axutil_param_t *chunk_buffer_size_param = NULL;
-            axutil_param_t *max_chunk_buffers_param = 0;
+            axutil_param_t *buffer_size_param = NULL;
+            axutil_param_t *max_buffers_param = 0;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
             int size = 0;
@@ -1921,14 +1921,14 @@ axis2_http_transport_utils_create_soap_msg(
  
             mime_parser = axiom_mime_parser_create(env);
 
-            chunk_buffer_size_param = 
+            buffer_size_param = 
                 axis2_msg_ctx_get_parameter (msg_ctx,
                                              env,
-                                             AXIS2_MTOM_CHUNK_BUFFER_SIZE);
-            if (chunk_buffer_size_param)
+                                             AXIS2_MTOM_BUFFER_SIZE);
+            if (buffer_size_param)
             {
                 value_size =
-                    (axis2_char_t *) axutil_param_get_value (chunk_buffer_size_param, env);
+                    (axis2_char_t *) axutil_param_get_value (buffer_size_param, env);
 
                 if(value_size)
                 {
@@ -1937,13 +1937,13 @@ axis2_http_transport_utils_create_soap_msg(
                 }
             }
 
-            max_chunk_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
+            max_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                    env,
-                                                                   AXIS2_MTOM_MAX_CHUNK_BUFFERS);
-            if(max_chunk_buffers_param)
+                                                                   AXIS2_MTOM_MAX_BUFFERS);
+            if(max_buffers_param)
             {
                 value_num =
-                    (axis2_char_t *) axutil_param_get_value (max_chunk_buffers_param, env);
+                    (axis2_char_t *) axutil_param_get_value (max_buffers_param, env);
                 if(value_num)
                 {
                     num = atoi(value_num);

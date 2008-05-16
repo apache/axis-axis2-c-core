@@ -39,7 +39,7 @@ extern "C"
 #endif
 
 #define AXIOM_MIME_PARSER_BUFFER_SIZE 1024
-#define AXIOM_MIME_PARSER_MAX_CHUNK_BUFFERS 1000
+#define AXIOM_MIME_PARSER_MAX_BUFFERS 1000
 
 #define AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT 100
 
@@ -128,7 +128,7 @@ extern "C"
       * @return mime parts as a hash map 
       */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_mime_parser_set_chunk_buffer_size(
+    axiom_mime_parser_set_buffer_size(
         axiom_mime_parser_t * mime_parser,
         const axutil_env_t * env,
         int size);
@@ -141,7 +141,7 @@ extern "C"
       * @return VOID
       */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_mime_parser_set_max_chunk_buffers(
+    axiom_mime_parser_set_max_buffers(
         axiom_mime_parser_t * mime_parser,
         const axutil_env_t * env,
         int num);

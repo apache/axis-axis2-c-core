@@ -26,8 +26,8 @@ struct axiom_mime_parser
     axutil_hash_t *mime_parts_map;
     int soap_body_len;
     axis2_char_t *soap_body_str;
-    int chunk_buffer_size;
-    int max_chunk_buffers;
+    int buffer_size;
+    int max_buffers;
 };
 
 struct axiom_search_info
@@ -156,8 +156,8 @@ axiom_mime_parser_create(
     mime_parser->mime_parts_map = NULL;
     mime_parser->soap_body_len = 0;
     mime_parser->soap_body_str = NULL;  /* shallow copy */
-    mime_parser->chunk_buffer_size = 1;
-    mime_parser->max_chunk_buffers = AXIOM_MIME_PARSER_MAX_CHUNK_BUFFERS;
+    mime_parser->buffer_size = 1;
+    mime_parser->max_buffers = AXIOM_MIME_PARSER_MAX_BUFFERS;
 
     mime_parser->mime_parts_map = axutil_hash_make(env);
     if (!(mime_parser->mime_parts_map))
@@ -218,7 +218,7 @@ axiom_mime_parser_parse(
     int malloc_len = 0;
 
     buf_array = AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_char_t *) * (mime_parser->max_chunk_buffers));
+        sizeof(axis2_char_t *) * (mime_parser->max_buffers));
 
 
     if (!buf_array)
@@ -229,7 +229,7 @@ axiom_mime_parser_parse(
     }
 
     len_array = AXIS2_MALLOC(env->allocator,
-        sizeof(int) * (mime_parser->max_chunk_buffers));
+        sizeof(int) * (mime_parser->max_buffers));
 
     if (!len_array)
     {
@@ -477,8 +477,6 @@ axiom_mime_parser_parse(
                         {
                             return NULL;
                         }
-                        /*buf_array[buf_num] = buf_array[buf_num] + search_info->match_len1 + temp_mime_boundary_size;
-                        len_array[buf_num] = len_array[buf_num] - search_info->match_len1 - temp_mime_boundary_size;*/
                     }     
                     else
                     {
@@ -499,16 +497,12 @@ axiom_mime_parser_parse(
                         {
                             return NULL;
                         }
-                        /*buf_array[buf_num] = buf_array[buf_num] + search_info->match_len2;
-                        len_array[buf_num] = len_array[buf_num] - search_info->match_len2; */
                     }
                     else
                     {
                         return NULL;
                     }
                 }
-                /*end_of_mime = (AXIOM_MIME_BOUNDARY_BYTE == *(buf_array[*buf_num])) &&
-                        (AXIOM_MIME_BOUNDARY_BYTE == *(buf_array[*buf_num] + 1));*/
             }
            
             if(search_info->match_len2 == 0)
@@ -547,9 +541,34 @@ axiom_mime_parser_parse(
         {
             return NULL;
         }
-    }            
+    }   
+
+    if (buf_array)
+    {
+        AXIS2_FREE(env->allocator, buf_array);
+        buf_array = NULL;
+    }
+
+    if (len_array)
+    {
+        AXIS2_FREE(env->allocator, len_array);
+        len_array = NULL;
+    }
+
+    if(temp_mime_boundary)
+    {
+        AXIS2_FREE(env->allocator, temp_mime_boundary);
+        temp_mime_boundary = NULL;
+    }
+    
+    if(search_info)
+    {
+        AXIS2_FREE(env->allocator, search_info);
+        search_info = NULL;
+    }
 
     return mime_parser->mime_parts_map;
+
 }
 
 static axis2_char_t *axiom_mime_parser_search_for_crlf(
@@ -897,8 +916,6 @@ static axis2_char_t * axiom_mime_parser_create_part(
         {
             memcpy(part_str + temp, buf_list[i], len_list[i]);
             temp += len_list[i];
-            /*AXIS2_FREE(env->allocator, buf_list[i]);
-            buf_list[i] = NULL;*/
         }
     }
 
@@ -1245,20 +1262,20 @@ axis2_status_t close_handler(void *handler)
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axiom_mime_parser_set_chunk_buffer_size(
+axiom_mime_parser_set_buffer_size(
     axiom_mime_parser_t *mime_parser,
     const axutil_env_t *env,
     int size)
 {
-    mime_parser->chunk_buffer_size = size;
+    mime_parser->buffer_size = size;
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axiom_mime_parser_set_max_chunk_buffers(
+axiom_mime_parser_set_max_buffers(
     axiom_mime_parser_t *mime_parser,
     const axutil_env_t *env,
     int num)
 {
-    mime_parser->max_chunk_buffers = num;
+    mime_parser->max_buffers = num;
 }
  
