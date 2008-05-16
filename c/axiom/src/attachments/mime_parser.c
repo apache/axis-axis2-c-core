@@ -195,7 +195,7 @@ axiom_mime_parser_parse(
     void *callback_ctx,
     axis2_char_t * mime_boundary)
 {
-    int size = AXIOM_MIME_PARSER_BUFFER_SIZE;
+    int size = 0;
     axis2_char_t *soap_str = NULL;
     int soap_len = 0;
     axis2_char_t *mime_headers = NULL;
@@ -217,6 +217,10 @@ axiom_mime_parser_parse(
     axis2_char_t *buffer = NULL;
     int malloc_len = 0;
 
+    size = AXIOM_MIME_PARSER_BUFFER_SIZE * (mime_parser->buffer_size); 
+
+    /*An array to keep the set of buffers*/
+
     buf_array = AXIS2_MALLOC(env->allocator,
         sizeof(axis2_char_t *) * (mime_parser->max_buffers));
 
@@ -227,6 +231,8 @@ axiom_mime_parser_parse(
             "No memory. Failed in creating buffer array");
         return NULL;
     }
+
+    /*Keeps the corresponding lenghts of buffers in buf_array*/
 
     len_array = AXIS2_MALLOC(env->allocator,
         sizeof(int) * (mime_parser->max_buffers));
@@ -241,6 +247,7 @@ axiom_mime_parser_parse(
     temp_mime_boundary = axutil_stracat(env, "--", mime_boundary);
     temp_mime_boundary_size = strlen(mime_boundary) + 2;
 
+    /*This struct keeps the pre-post search informations*/
     search_info = AXIS2_MALLOC(env->allocator,
         sizeof(axiom_search_info_t));
 
@@ -259,7 +266,11 @@ axiom_mime_parser_parse(
         return NULL;
     }
 
+    /*starting buffer for the current search*/
     part_start = buf_num;
+
+    /*We are passing the address of the buf_num , beacause that value 
+    is changing inside the method.*/
 
     pos = axiom_mime_parser_search_for_crlf(env, callback, callback_ctx, &buf_num,
             len_array, buf_array, search_info, size);
@@ -270,8 +281,12 @@ axiom_mime_parser_parse(
     }   
 
     /*The patteren contains in one buffer*/
+
     if((search_info->match_len2 == 0))
     {
+        /*Readusting the buffers for the next search and discarding the prevoius 
+        buffers*/
+
         malloc_len = buf_array[buf_num] + len_array[buf_num] - pos - 4;
         buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (
             size + 1));
@@ -280,6 +295,8 @@ axiom_mime_parser_parse(
         buf_array[buf_num] = buffer;
         len_array[buf_num] = malloc_len;                    
     }
+
+    /*The pattern divides among two buffers*/
         
     else if(search_info->match_len2 > 0)
     {
@@ -296,12 +313,18 @@ axiom_mime_parser_parse(
         return NULL;
     }
 
+    /*Resetting the previous search data and getting ready 
+      for the next search */
+
     pos = NULL;
     malloc_len = 0;
     part_start = buf_num;   
  
     search_info->match_len1 = 0;
     search_info->match_len2 = 0;
+
+    /*In order to extract the soap envelope we need to search for the first
+      --MIMEBOUNDARY  */
 
     pos = axiom_mime_parser_search_for_soap(env, callback, callback_ctx, &buf_num,
           len_array, buf_array, search_info, size, temp_mime_boundary);
@@ -313,6 +336,8 @@ axiom_mime_parser_parse(
     
     if(search_info->match_len2 == 0)
     {
+        /*Calculating the length of the SOAP str*/
+
         soap_len = axiom_mime_parser_calculate_part_len (
             env, buf_num, len_array, part_start, pos, buf_array[buf_num]);
         if(soap_len > 0)
@@ -370,8 +395,19 @@ axiom_mime_parser_parse(
 
     printf("\n\n%s\n\n", soap_str);
 
+    /*<SOAP></SOAP>--MIMEBOUNDARY
+      mime_headr1:.......
+      mime_jeadr2:....
+
+      Binarstart.................
+      ...............--MIMEBOUNDARY      
+ */
+    
+
     while (!end_of_mime && count < AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT)
     {
+        /*First we will search for \r\n\r\n*/
+ 
         search_info->match_len1 = 0;
         search_info->match_len2 = 0;
         pos = NULL;
@@ -394,6 +430,9 @@ axiom_mime_parser_parse(
         /*The patteren contains in one buffer*/
         if(search_info->match_len2 == 0)
         {
+            /*We found it . so lets seperates the details of this binary into 
+              mime headers.*/
+
             mime_headers_len = axiom_mime_parser_calculate_part_len (
                 env, buf_num, len_array, part_start, pos, buf_array[buf_num]);
             if(mime_headers_len > 0)
@@ -458,11 +497,16 @@ axiom_mime_parser_parse(
         part_start = buf_num;
         malloc_len = 0;
 
+        /*We extract the mime headers. So lets searc for the attachment.*/
+
         pos = axiom_mime_parser_search_for_attachment(env, callback, callback_ctx, &buf_num,
           len_array, buf_array, search_info, size, temp_mime_boundary);
 
         if(pos)
         {
+            /*If it is small we are not caching. Hence the attachment 
+              is in memory. So store it in a buffer. */
+
             if(!search_info->cached)
             {
                 if(search_info->match_len2 == 0)
@@ -530,13 +574,23 @@ axiom_mime_parser_parse(
         {
             return NULL;
         }
-        
+
+        /*We have the attachment now either cached or not. So lets process the mime headers.*/        
+
         status = axiom_mime_parser_process_mime_headers(env, mime_parser, mime_headers,
             mime_binary, mime_binary_len);
 
+        /*Check wether we encounter --MIMEBOUNDARY-- to find the end of mime*/
+
         end_of_mime = (AXIOM_MIME_BOUNDARY_BYTE == *(buf_array[buf_num])) &&
                         (AXIOM_MIME_BOUNDARY_BYTE == *(buf_array[buf_num] + 1));
-    
+
+        if(mime_headers)
+        {
+            AXIS2_FREE(env->allocator, mime_headers);
+            mime_headers = NULL;
+        }    
+
         if(status != AXIS2_SUCCESS)
         {
             return NULL;
@@ -571,6 +625,8 @@ axiom_mime_parser_parse(
 
 }
 
+/*This method will search for \r\n\r\n */
+
 static axis2_char_t *axiom_mime_parser_search_for_crlf(
     const axutil_env_t * env,
     AXIS2_READ_INPUT_CALLBACK callback,
@@ -595,12 +651,16 @@ static axis2_char_t *axiom_mime_parser_search_for_crlf(
     search_info->cached = AXIS2_FALSE;
     search_info->handler = NULL;
 
+    /*First do a search in the first buffer*/
+
     search_info->buffer1 = buf_array[*buf_num];
     search_info->len1 = len_array[*buf_num];
     found = axiom_mime_parser_search_string(search_info, env);
 
     while(!found)
     {
+        /*Let's read another buffer and do a boundary search in both*/
+
         *buf_num = *buf_num + 1;
         buf_array[*buf_num] = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
         if(buf_array[*buf_num])
@@ -620,6 +680,8 @@ static axis2_char_t *axiom_mime_parser_search_for_crlf(
         }
         if(!found)
         {
+            /*Let's do a full search in the second buffer*/
+
             search_info->buffer1 = buf_array[*buf_num];
             search_info->len1 = len_array[*buf_num];
             search_info->primary_search = AXIS2_FALSE;
@@ -631,6 +693,8 @@ static axis2_char_t *axiom_mime_parser_search_for_crlf(
 
     return found;
 }
+
+
 
 static axis2_char_t *axiom_mime_parser_search_for_soap(
     const axutil_env_t * env,
@@ -692,6 +756,12 @@ static axis2_char_t *axiom_mime_parser_search_for_soap(
     return found;
 }
 
+/*The caching is done in this function. Caching happens when we did not 
+  find the mime_boundary in initial two buffers. So the maximum size
+  that we are keeping in memory is 2 * size. This size can be configurable from
+  the aixs.xml. The caching may starts the search failed with the
+  second buffer.  */
+
 static axis2_char_t *axiom_mime_parser_search_for_attachment(
     const axutil_env_t * env,
     AXIS2_READ_INPUT_CALLBACK callback,
@@ -740,12 +810,17 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
                 }
             }
 
+            /*We always cache the buffer which is done with full and
+             buffer boudary searched.*/
+
             status = axis2_caching_callback(env, buf_array[*buf_num - 1],
                 len_array[*buf_num - 1], search_info->handler);
             if(status == AXIS2_FAILURE)
             {
                 return NULL;
             }
+            /*Here we interchange the buffers.*/
+
             temp = buf_array[*buf_num - 1];    
             buf_array[*buf_num - 1] = buf_array[*buf_num];
             buf_array[*buf_num] = temp;
@@ -754,8 +829,10 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
             len_array[*buf_num] = temp_length;
             if(buf_array[*buf_num])
             {
+                /*The cached buffer is the one which get filled.*/
+
                 printf("requested: %d\n", size);
-                len = callback(buf_array[*buf_num], /*len_array[*buf_num]*/size, (void *) callback_ctx);
+                len = callback(buf_array[*buf_num], size, (void *) callback_ctx);
                 printf("read length: %d\n", len);
             }
         }
@@ -801,16 +878,23 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
         }
     }
 
+    /*Caching of the final buffer*/
+
     if(search_info->cached)
     {
         if(search_info->match_len2 == 0)
         {
+            /*We first cache the previous buffer*/
+
             status = axis2_caching_callback(env, buf_array[*buf_num - 1], 
                 len_array[*buf_num - 1], search_info->handler);                                     
             if(status == AXIS2_FAILURE) 
             {
                 return NULL;
             }   
+            
+            /*Then cache up to the mime boundary*/
+
             status = axis2_caching_callback(env, buf_array[*buf_num], 
                 found - buf_array[*buf_num], search_info->handler);
             if(status == AXIS2_FAILURE)
@@ -820,7 +904,11 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
         }
         else if(search_info->match_len2 > 0)
         {
-            status = axis2_caching_callback(env, buf_array[*buf_num - 1], search_info->match_len1, search_info->handler);
+            /*Here the curent buffer has partial mime boundary. So we need 
+            to cache only the previous buffer. */
+
+            status = axis2_caching_callback(env, buf_array[*buf_num - 1], 
+                search_info->match_len1, search_info->handler);
             if(status == AXIS2_FAILURE)
             {
                 return NULL;
@@ -845,6 +933,8 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
     return found;
 }
 
+/*User can have his own implementation here.*/
+
 static axis2_status_t axis2_caching_callback(
     const axutil_env_t *env,
     axis2_char_t *buf,
@@ -865,6 +955,11 @@ static axis2_status_t axis2_caching_callback(
     }
 }
 
+/*following two functions are used to extract important information 
+  for the buffer list. eg: SOAP, MIME_HEADERS*/
+
+/*marker is the starting buffer of the required 
+     part  */
 
 static int axiom_mime_parser_calculate_part_len (
     const axutil_env_t *env,
@@ -949,6 +1044,11 @@ axiom_mime_parser_get_soap_body_str(
 {
     return mime_parser->soap_body_str;
 }
+
+/*This is the new search function. This will first do a
+search for the entire search string.Then will do a search 
+for the partial string which can be divided among two buffers.*/
+
 
 static axis2_char_t *axiom_mime_parser_search_string(
     axiom_search_info_t *search_info,
@@ -1103,6 +1203,9 @@ static axis2_char_t *axiom_mime_parser_search_string(
     }
 }
 
+/*This will parse the string containing the mime header
+information and extract necessary details.*/
+
 
 static axis2_status_t 
 axiom_mime_parser_process_mime_headers(
@@ -1224,6 +1327,10 @@ axiom_mime_parser_process_mime_headers(
     }    
 }
 
+/*This is used to free some unwanted buffers. For example we did
+not want the buffers which contains the data before the soap
+envelope starts. */
+
 static void axiom_mime_parser_clear_buffers(
     const axutil_env_t *env,
     axis2_char_t **buf_list,
@@ -1242,6 +1349,7 @@ static void axiom_mime_parser_clear_buffers(
     }
     return;
 }
+
 
 void *init_handler()
 {
