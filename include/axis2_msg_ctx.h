@@ -804,7 +804,7 @@ extern "C"
      * @return HTTP Method string, returns a reference,
      * not a cloned copy
      */
-    const axis2_char_t *AXIS2_CALL
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_msg_ctx_get_rest_http_method(
         const axis2_msg_ctx_t * msg_ctx,
         const axutil_env_t * env);
@@ -818,7 +818,7 @@ extern "C"
      * ownership of rest_http_method.
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_rest_http_method(
         struct axis2_msg_ctx * msg_ctx,
         const axutil_env_t * env,
@@ -1456,7 +1456,7 @@ extern "C"
      * arrary list will be freed by the msg_ctx
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_supported_rest_http_methods(
         axis2_msg_ctx_t * msg_ctx,
         const axutil_env_t * env,
