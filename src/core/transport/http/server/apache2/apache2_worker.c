@@ -158,7 +158,6 @@ axis2_apache2_worker_process_request(
     axis2_char_t *soap_action_header_txt = NULL;
     axis2_bool_t processed = AXIS2_FALSE;
     int content_length = -1;
-    axis2_char_t *encoding_header_value = NULL;
     axis2_char_t *url_external_form = NULL;
     axis2_char_t *body_string = NULL;
     unsigned int body_string_len = 0;
@@ -229,8 +228,6 @@ axis2_apache2_worker_process_request(
     out_stream = axutil_stream_create_basic(env);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Client HTTP version %s",
                     http_version);
-
-    encoding_header_value = (axis2_char_t *) request->content_encoding;
 
     out_desc = axis2_conf_get_transport_out(axis2_conf_ctx_get_conf
                                             (apache2_worker->conf_ctx, env),
