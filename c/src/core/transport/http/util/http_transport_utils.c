@@ -342,7 +342,7 @@ axis2_http_transport_utils_process_http_post_request(
                 if(value_size)
                 {
                     size = atoi(value_size);
-                    axiom_mime_parser_set_chunk_buffer_size(mime_parser, env, size);
+                    axiom_mime_parser_set_buffer_size(mime_parser, env, size);
                 }
             }
 
@@ -356,7 +356,7 @@ axis2_http_transport_utils_process_http_post_request(
                 if(value_num)
                 {
                     num = atoi(value_num);
-                    axiom_mime_parser_set_max_chunk_buffers(mime_parser, env, num);
+                    axiom_mime_parser_set_max_buffers(mime_parser, env, num);
                 }
             }
 
@@ -761,7 +761,7 @@ axis2_http_transport_utils_process_http_put_request(
                 if(value_size)
                 {
                     size = atoi(value_size);
-                    axiom_mime_parser_set_chunk_buffer_size(mime_parser, env, size);
+                    axiom_mime_parser_set_buffer_size(mime_parser, env, size);
                 }
             }
 
@@ -775,7 +775,7 @@ axis2_http_transport_utils_process_http_put_request(
                 if(value_num)
                 {
                     num = atoi(value_num);
-                    axiom_mime_parser_set_max_chunk_buffers(mime_parser, env, num);
+                    axiom_mime_parser_set_max_buffers(mime_parser, env, num);
                 }
             }
 
@@ -1933,7 +1933,7 @@ axis2_http_transport_utils_create_soap_msg(
                 if(value_size)
                 {
                     size = atoi(value_size);
-                    axiom_mime_parser_set_chunk_buffer_size(mime_parser, env, size);
+                    axiom_mime_parser_set_buffer_size(mime_parser, env, size);
                 }
             }
 
@@ -1947,7 +1947,7 @@ axis2_http_transport_utils_create_soap_msg(
                 if(value_num)
                 {
                     num = atoi(value_num);
-                    axiom_mime_parser_set_max_chunk_buffers(mime_parser, env, num);
+                    axiom_mime_parser_set_max_buffers(mime_parser, env, num);
                 }
             }
             
