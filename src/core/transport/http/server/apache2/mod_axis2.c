@@ -101,6 +101,10 @@ void AXIS2_CALL axis2_module_free(
     axutil_allocator_t * allocator,
     void *ptr);
 
+void AXIS2_CALL
+axis2_module_pool_allocator_destroy(
+    axutil_allocator_t *allocator);
+
 static void axis2_module_init(
     apr_pool_t * p,
     server_rec * svr_rec);
@@ -351,6 +355,9 @@ axis2_handler(
     allocator->local_pool = (void *) local_pool;
     allocator->current_pool = (void *) local_pool;
     allocator->global_pool = axutil_env->allocator->global_pool;
+    allocator->pool_allocator_destroy = axis2_module_pool_allocator_destroy;
+    allocator->pool_allocator = local_allocator;
+    allocator->ref_pool_allocator = 1; 
 
     error = axutil_error_create(allocator);
     thread_env = axutil_env_create_with_error_log_thread_pool(allocator,
@@ -365,8 +372,10 @@ axis2_handler(
         return HTTP_INTERNAL_SERVER_ERROR;
     }
 
-    apr_pool_destroy(local_pool);
-    apr_allocator_destroy(local_allocator);
+    axis2_module_pool_allocator_destroy(allocator);    
+
+    /*apr_pool_destroy(local_pool);
+    apr_allocator_destroy(local_allocator);*/
 
     return rv;
 }
@@ -432,6 +441,18 @@ axis2_module_free(
 	}
 #endif
 }
+
+void AXIS2_CALL 
+axis2_module_pool_allocator_destroy(
+    axutil_allocator_t *allocator)
+{
+    if((--(allocator->ref_pool_allocator)) == 0)
+    {
+        apr_pool_destroy(allocator->local_pool);
+        apr_allocator_destroy(allocator->pool_allocator);
+    }
+}
+
 
 static int axis2_post_config(apr_pool_t *pconf, apr_pool_t *plog,
 								 apr_pool_t *ptemp, server_rec *svr_rec)
