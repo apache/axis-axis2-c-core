@@ -59,6 +59,18 @@ extern "C"
     axiom_data_handler_get_content_type(
         axiom_data_handler_t * data_handler,
         const axutil_env_t * env);
+	
+    /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
+	 * @param mime type, 
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_data_handler_set_content_type(
+        axiom_data_handler_t * data_handler,
+        const axutil_env_t * env,
+		const axis2_char_t *mime_type);
 
     /**
      * @param data_handler, a pointer to data handler struct

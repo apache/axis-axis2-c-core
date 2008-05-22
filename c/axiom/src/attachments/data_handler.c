@@ -114,6 +114,20 @@ axiom_data_handler_get_content_type(
     return data_handler->mime_type;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_data_handler_set_content_type(
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env,
+	const axis2_char_t *mime_type)
+{
+	if(data_handler->mime_type)
+	{
+		AXIS2_FREE(env->allocator, data_handler->mime_type);
+	}
+	data_handler->mime_type = axutil_strdup(env, mime_type);
+    return AXIS2_SUCCESS;
+}
+
 AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
 axiom_data_handler_get_input_stream(
     axiom_data_handler_t *data_handler,
