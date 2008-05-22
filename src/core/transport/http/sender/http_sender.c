@@ -247,6 +247,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     axutil_param_t *write_xml_declaration_param = NULL;
     axutil_hash_t *transport_attrs = NULL;
     axis2_bool_t write_xml_declaration = AXIS2_FALSE;
+    axutil_property_t *property = NULL;/* Property for holding http client */
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_http_sender_send");
     soap_body = axiom_soap_envelope_get_body (out, env);
@@ -329,6 +330,16 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                          "sender->client creation failed for url %s", url);
         return AXIS2_FAILURE;
     }
+   
+    /* We put the client into msg_ctx so that we can free it once the processing
+     * is done at client side
+     */
+    property = axutil_property_create (env);
+    axutil_property_set_scope (property, env, AXIS2_SCOPE_REQUEST);
+    axutil_property_set_free_func (property, env,
+                                   axis2_http_client_free_void_arg);
+    axutil_property_set_value (property, env, sender->client);
+    axis2_msg_ctx_set_property (msg_ctx, env, AXIS2_HTTP_CLIENT, property);
 
     /* configure proxy settings if we have set so
      */
@@ -402,16 +413,6 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     if (!send_via_get && !send_via_head && !send_via_delete)
     {
         /* processing POST and PUT methods */
-        axutil_property_t *property = NULL;
-        /* We put the client into msg_ctx so that we can free it once the processing
-         * is done at client side
-         */
-        property = axutil_property_create (env);
-        axutil_property_set_scope (property, env, AXIS2_SCOPE_REQUEST);
-        axutil_property_set_free_func (property, env,
-                                       axis2_http_client_free_void_arg);
-        axutil_property_set_value (property, env, sender->client);
-        axis2_msg_ctx_set_property (msg_ctx, env, AXIS2_HTTP_CLIENT, property);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "msg_ctx_id:%s", 
             axis2_msg_ctx_get_msg_id(msg_ctx,env));
 
@@ -531,11 +532,14 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
             path = axutil_strcat (env,
                               axutil_url_get_path (url, env),
                               AXIS2_Q_MARK_STR, request_params, NULL);
+			AXIS2_FREE(env->allocator, request_params);
+			request_params = NULL;
         }
         else
         {
             path = axutil_url_to_external_form(url, env);
         }
+
         if (send_via_get)
         {
             request_line = axis2_http_request_line_create (env, 
@@ -3283,6 +3287,8 @@ axis2_http_sender_get_param_string (axis2_http_sender_t * sender,
                 axutil_array_list_add (param_list, env,
                                        axutil_strcat (env, name, "=",
                                                       encoded_value, NULL));
+				AXIS2_FREE(env->allocator, encoded_value);
+				encoded_value = NULL;
             }
         }
     }
