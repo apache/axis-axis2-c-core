@@ -74,8 +74,8 @@ axiom_soap_fault_text_create_with_parent(
     axiom_soap_fault_reason_t * parent)
 {
     axiom_soap_fault_text_t *fault_text = NULL;
-    int soap_version = -1;
     axiom_element_t *this_ele = NULL;
+	int soap_version = -1;
     axiom_node_t *this_node = NULL;
     axiom_namespace_t *parent_ns = NULL;
     axiom_node_t *parent_node = NULL;
@@ -104,8 +104,9 @@ axiom_soap_fault_text_create_with_parent(
         axiom_soap_fault_text_free(fault_text, env);
         return NULL;
     }
-    soap_version = axiom_soap_fault_reason_get_soap_version(parent, env);
-    if (soap_version == AXIOM_SOAP12)
+    
+	soap_version = axiom_soap_fault_reason_get_soap_version(parent, env);
+	if (AXIOM_SOAP12 == soap_version)
     {
         parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
     }
