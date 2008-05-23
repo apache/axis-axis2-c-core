@@ -1506,7 +1506,7 @@ static void axiom_mime_parser_clear_buffers(
 void *init_handler()
 {
     FILE *fp = NULL;
-    fp = fopen("temp", "a+");
+    fp = fopen("/tmp/attachment", "a+");
     return (void *)fp;
 }
 
