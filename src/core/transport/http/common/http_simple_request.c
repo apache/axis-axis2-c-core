@@ -419,6 +419,12 @@ axis2_http_simple_request_get_body_bytes(
 
     }
 
+	if(tmp_buf2)
+	{
+		AXIS2_FREE(env->allocator, tmp_buf2);
+		tmp_buf2 = NULL;
+	}
+
     if (tmp_buf)
     {
         *buf = tmp_buf;

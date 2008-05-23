@@ -561,6 +561,12 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                                                            path,
                                                            sender->http_version);
         }
+
+		if(path)
+		{
+			AXIS2_FREE(env->allocator, path);
+			path = NULL;
+		}
     }
 
     request = axis2_http_simple_request_create (env, request_line, NULL, 0,
