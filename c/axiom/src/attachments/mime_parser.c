@@ -816,26 +816,6 @@ static axis2_char_t *axiom_mime_parser_search_for_crlf(
         found = axiom_mime_parser_search_string(search_info, env);
     }
 
-    /*If the incoming buffer is NULL then we need to fill one and 
-      set it as the new buffer*/
-
-    /*else
-    {
-        *buf_num = *buf_num + 1;
-        buf_array[*buf_num] = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
-        if(buf_array[*buf_num])
-        {
-            len = callback(buf_array[*buf_num], size, (void *) callback_ctx);
-        }
-        if(len > 0)
-        {
-            len_array[*buf_num] = len;
-            search_info->buffer1 = buf_array[*buf_num];
-            search_info->len1 = len_array[*buf_num];
-            found = axiom_mime_parser_search_string(search_info, env);
-        }    
-    }*/
-
     while(!found)
     {
         /*Let's read another buffer and do a boundary search in both*/
@@ -904,24 +884,6 @@ static axis2_char_t *axiom_mime_parser_search_for_soap(
         search_info->len1 = len_array[*buf_num];
         found = axiom_mime_parser_search_string(search_info, env);
     }
-    /*
-    else
-    {
-        *buf_num = *buf_num + 1;
-        buf_array[*buf_num] = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
-        if(buf_array[*buf_num])
-        {
-            len = callback(buf_array[*buf_num], size, (void *) callback_ctx);
-        }
-        if(len > 0)
-        {
-            len_array[*buf_num] = len;
-            search_info->buffer1 = buf_array[*buf_num];
-            search_info->len1 = len_array[*buf_num];
-            found = axiom_mime_parser_search_string(search_info, env);
-        }
-    }
-    */
 
     while(!found)
     {
@@ -999,25 +961,6 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
         found = axiom_mime_parser_search_string(search_info, env);
     }
 
-    /*If it is NULL then we need to create a new one fill and search*/
-    /*else
-    {
-        *buf_num = *buf_num + 1;
-        buf_array[*buf_num] = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
-        if(buf_array[*buf_num])
-        {
-            len = callback(buf_array[*buf_num], size, (void *) callback_ctx);
-        }
-        if(len > 0)
-        {
-            len_array[*buf_num] = len;
-            search_info->buffer1 = buf_array[*buf_num];
-            search_info->len1 = len_array[*buf_num];
-            found = axiom_mime_parser_search_string(search_info, env);
-        }
-    }
-    */
-
     while(!found)
     {
         if(search_info->cached)
@@ -1058,7 +1001,7 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
             }
         }
 
-        /*Caching is not started yet do we will create a new buffer and fill*/
+        /*Caching is not started yet so we will create a new buffer and fill*/
         else
         {
             *buf_num = *buf_num + 1;
