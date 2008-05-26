@@ -32,23 +32,34 @@ struct axiom_mime_parser
 
 struct axiom_search_info
 {
+    /*String need to be searched*/
     const axis2_char_t *search_str;
+
+    /*The buffers and the lengths need to be searched*/
     axis2_char_t *buffer1;
     int len1;
     axis2_char_t *buffer2;
     int len2;
+
+    /*Flag to keep what type of search is this buffer has done*/
     axis2_bool_t primary_search;
+
+    /*The offset where we found the pattern entirely in one buffer*/
     int match_len1;
+
+    /*when pattern contains in two buffers the length of partial pattern
+    in buffer2 */
     int match_len2;
+
+    /*Whether we need caching or not*/
     axis2_bool_t cached;
-    /*FILE *fp;*/
+
+    /*A pointer to a user provided storage to which we cache the attachment*/
     void *handler;
 };
 
 typedef struct axiom_search_info axiom_search_info_t;
 
-
-/*#define AXIOM_MIME_PARSER_BUFFER_SIZE (2 * 1024 * 1024)*/
 
 #define AXIOM_MIME_PARSER_CONTENT_ID "content-id"
 #define AXIOM_MIME_PARSER_CONTENT_TYPE "content-type"
@@ -477,7 +488,7 @@ axiom_mime_parser_parse(
             return NULL;
         }
         
-        /*The patteren contains in one buffer*/
+        /*The pattern contains in one buffer*/
         if(search_info->match_len2 == 0)
         {
             /*We found it . so lets seperates the details of this binary into 
@@ -516,6 +527,9 @@ axiom_mime_parser_parse(
                 return NULL;
             }
         }    
+
+        /*pattern is divided among the two buffers*/
+
         else if(search_info->match_len2 > 0)
         {
             mime_headers_len = axiom_mime_parser_calculate_part_len (
@@ -757,6 +771,10 @@ static axis2_char_t *axiom_mime_parser_search_for_crlf(
         search_info->len1 = len_array[*buf_num];
         found = axiom_mime_parser_search_string(search_info, env);
     }
+
+    /*If the incoming buffer is NULL then we need to fill one and 
+      set it as the new buffer*/
+
     else
     {
         *buf_num = *buf_num + 1;
@@ -895,7 +913,7 @@ static axis2_char_t *axiom_mime_parser_search_for_soap(
 /*The caching is done in this function. Caching happens when we did not 
   find the mime_boundary in initial two buffers. So the maximum size
   that we are keeping in memory is 2 * size. This size can be configurable from
-  the aixs.xml. The caching may starts the search failed with the
+  the aixs.xml. The caching may starts when the search failed with the
   second buffer.  */
 
 static axis2_char_t *axiom_mime_parser_search_for_attachment(
@@ -926,12 +944,16 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
     search_info->cached = AXIS2_FALSE;
     search_info->handler = NULL;
 
+    /*First search in the incoming buffer*/
+
     if(buf_array[*buf_num])
     {
         search_info->buffer1 = buf_array[*buf_num];
         search_info->len1 = len_array[*buf_num];
         found = axiom_mime_parser_search_string(search_info, env);
     }
+
+    /*If it is NULL then we need to create a new one fill and search*/
     else
     {
         *buf_num = *buf_num + 1;
@@ -962,8 +984,8 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
                 }
             }
 
-            /*We always cache the buffer which is done with full and
-             buffer boudary searched.*/
+            /*So lets cache the previous buffer which has underdone the
+              full search and the partial search.  */
 
             status = axis2_caching_callback(env, buf_array[*buf_num - 1],
                 len_array[*buf_num - 1], search_info->handler);
@@ -988,6 +1010,8 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
                 printf("read length: %d\n", len);
             }
         }
+
+        /*Caching is not started yet do we will create a new buffer and fill*/
         else
         {
             *buf_num = *buf_num + 1;
@@ -1001,6 +1025,8 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
             }
         }
         
+        /*Doing  a complete search in newly cretaed buffer*/       
+ 
         if(len > 0)
         {
             len_array[*buf_num] = len;
