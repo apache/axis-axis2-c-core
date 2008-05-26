@@ -483,7 +483,12 @@ axiom_mime_parser_parse(
         part_start = buf_num;
 
         malloc_len = 0;
-       
+
+        /*We need this count in order to handle cases where the recieving 
+        stream does not contain --*/
+
+        count++;       
+ 
         printf("before crlf method %d\n", len_array[buf_num]);
  
         pos = axiom_mime_parser_search_for_crlf(env, callback, callback_ctx, &buf_num,
@@ -1160,6 +1165,10 @@ static axis2_char_t * axiom_mime_parser_create_part(
     axis2_char_t *pos,
     axis2_char_t **buf_list)
 {
+    /*We will copy the set of buffers which contains the rrquired part.
+     This part can be the SOAP message , mime headers or the mime 
+     binary in the case of none cahced.*/
+
     axis2_char_t *part_str = NULL;
     int i = 0;
     int temp = 0;
