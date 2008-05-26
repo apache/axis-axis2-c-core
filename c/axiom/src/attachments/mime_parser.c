@@ -243,7 +243,7 @@ axiom_mime_parser_parse(
         return NULL;
     }
 
-    /*Keeps the corresponding lenghts of buffers in buf_array*/
+    /*Keeps the corresponding lengths of buffers in buf_array*/
 
     len_array = AXIS2_MALLOC(env->allocator,
         sizeof(int) * (mime_parser->max_buffers));
@@ -299,19 +299,25 @@ axiom_mime_parser_parse(
         buffers*/
 
         malloc_len = buf_array[buf_num] + len_array[buf_num] - pos - 4;
-        if(malloc_len > 0)
+        if(malloc_len < 0)
+        {
+            return NULL;
+        }
+        else    
         {
             buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (
                 size + 1));
-            memcpy(buffer, pos + 4, malloc_len);
+            if(malloc_len > 0)
+            {
+                memcpy(buffer, pos + 4, malloc_len);
+            }
+            len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);           
             axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-            buf_array[buf_num] = buffer;
-            len_array[buf_num] = malloc_len;                    
-        }
-        else
-        {
-            buf_array[buf_num] = NULL;
-            len_array[buf_num] = 0;
+            if(len > 0)
+            {
+                buf_array[buf_num] = buffer;
+                len_array[buf_num] = malloc_len + len;                    
+            }
         }
     }
 
@@ -319,20 +325,26 @@ axiom_mime_parser_parse(
         
     else if(search_info->match_len2 > 0)
     {
-        malloc_len = len_array[buf_num] - search_info->match_len2;       
-        if(malloc_len > 0)
+        malloc_len = len_array[buf_num] - search_info->match_len2;      
+        if(malloc_len < 0)
+        {
+            return NULL;
+        } 
+        else
         {
             buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (
                 size + 1));
-            memcpy(buffer, buf_array[buf_num] + search_info->match_len2, malloc_len);        
+            if(malloc_len > 0)
+            {
+                memcpy(buffer, buf_array[buf_num] + search_info->match_len2, malloc_len);        
+            }
+            len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
             axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-            buf_array[buf_num] = buffer;
-            len_array[buf_num] = malloc_len; 
-        }
-        else
-        {
-            buf_array[buf_num] = NULL;
-            len_array[buf_num] = 0;
+            if(len > 0)
+            {
+                buf_array[buf_num] = buffer;
+                len_array[buf_num] = malloc_len + len; 
+            }
         }
     }
     else
@@ -343,14 +355,7 @@ axiom_mime_parser_parse(
     /*Resetting the previous search data and getting ready 
       for the next search */
 
-    if(!buf_array[buf_num])
-    {
-        part_start = buf_num + 1;
-    }
-    else
-    {
-        part_start = buf_num;
-    }
+    part_start = buf_num;
     pos = NULL;
     malloc_len = 0;
  
@@ -384,21 +389,27 @@ axiom_mime_parser_parse(
             }
 
             malloc_len = len_array[buf_num] - search_info->match_len1 - temp_mime_boundary_size;
-            if(malloc_len > 0)
+            if(malloc_len < 0)
+            {
+                return NULL;
+            }    
+            else
             {
                 buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (
                     size + 1));
                 memset(buffer, 0, size + 1);
-                memcpy(buffer, pos + temp_mime_boundary_size, malloc_len);
+                if(malloc_len > 0)
+                {
+                    memcpy(buffer, pos + temp_mime_boundary_size, malloc_len);
+                }
+                len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
                 axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-                buf_array[buf_num] = buffer;
-                len_array[buf_num] = malloc_len;
+                if(len > 0)
+                {
+                    buf_array[buf_num] = buffer;
+                    len_array[buf_num] = malloc_len + len;
+                }
                 printf("Malloc_len after soap : %d \n", malloc_len);
-            }
-            else
-            {
-                buf_array[buf_num] = NULL;
-                len_array[buf_num] = 0;
             }
         }     
         else
@@ -421,20 +432,25 @@ axiom_mime_parser_parse(
             }
 
             malloc_len = len_array[buf_num] - search_info->match_len2;
-
-            if(malloc_len > 0)
+            if(malloc_len < 0)
+            {
+                return NULL;
+            }    
+            else
             {
                 buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (
                     size + 1));
-                memcpy(buffer, buf_array[buf_num] + search_info->match_len2, malloc_len);
+                if(malloc_len > 0)
+                {
+                    memcpy(buffer, buf_array[buf_num] + search_info->match_len2, malloc_len);
+                }
+                len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
                 axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-                buf_array[buf_num] = buffer;
-                len_array[buf_num] = malloc_len;
-            }
-            else
-            {
-                buf_array[buf_num] = NULL;
-                len_array[buf_num] = 0;
+                if(len > 0)
+                {
+                    buf_array[buf_num] = buffer;
+                    len_array[buf_num] = malloc_len + len;
+                }
             }
         }     
         else
@@ -464,15 +480,7 @@ axiom_mime_parser_parse(
         search_info->match_len1 = 0;
         search_info->match_len2 = 0;
         pos = NULL;
-
-        if(!buf_array[buf_num])
-        {
-            part_start = buf_num + 1;
-        }
-        else
-        {
-            part_start = buf_num;
-        }
+        part_start = buf_num;
 
         malloc_len = 0;
        
@@ -507,19 +515,30 @@ axiom_mime_parser_parse(
                 }
                 printf("after calculate len method %d\n", len_array[buf_num]);
                 malloc_len = buf_array[buf_num] + len_array[buf_num] - pos - 4;
-                if(malloc_len > 0)
+
+                /*This should be > 0 , > 0 means there is some part to copy = 0 means
+                there is nothing to copy*/
+                if(malloc_len < 0)
+                {
+                    return NULL;
+                }
+
+                else
                 {
                     buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (
                         size + 1));
-                    memcpy(buffer, pos + 4, malloc_len);
+                    if(malloc_len > 0)
+                    {
+                        memcpy(buffer, pos + 4, malloc_len);
+                    }
+                    len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
+
                     axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-                    buf_array[buf_num] = buffer;
-                    len_array[buf_num] = malloc_len;
-                }
-                else
-                {
-                    buf_array[buf_num] = NULL;
-                    len_array[buf_num] = 0;
+                    if(len > 0)
+                    {
+                        buf_array[buf_num] = buffer;
+                        len_array[buf_num] = malloc_len + len;
+                    }
                 }
             }     
             else
@@ -528,10 +547,10 @@ axiom_mime_parser_parse(
             }
         }    
 
-        /*pattern is divided among the two buffers*/
-
         else if(search_info->match_len2 > 0)
         {
+            /*Now we extract the mime headers */
+
             mime_headers_len = axiom_mime_parser_calculate_part_len (
                 env, buf_num - 1, len_array, part_start, pos, buf_array[buf_num - 1]);
 
@@ -545,19 +564,25 @@ axiom_mime_parser_parse(
                 }
 
                 malloc_len = len_array[buf_num] - search_info->match_len2;
-                if(malloc_len > 0)
+                if(malloc_len < 0)
                 {
-                    buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (
-                        size + 1));
-                    memcpy(buffer, buf_array[buf_num] + search_info->match_len2, malloc_len);
-                    axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-                    buf_array[buf_num] = buffer;
-                    len_array[buf_num] = malloc_len;
+                    return NULL;
                 }
                 else
                 {
-                    buf_array[buf_num] = NULL;
-                    len_array[buf_num] = 0;
+                    buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (
+                        size + 1));
+                    if(malloc_len > 0)
+                    {
+                        memcpy(buffer, buf_array[buf_num] + search_info->match_len2, malloc_len);
+                    }
+                    len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
+                    axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
+                    if(len > 0)
+                    {
+                        buf_array[buf_num] = buffer;
+                        len_array[buf_num] = malloc_len + len;
+                    }
                 }
             }     
             else
@@ -575,15 +600,7 @@ axiom_mime_parser_parse(
         search_info->match_len1 = 0;
         search_info->match_len2 = 0;
 
-        if(!buf_array[buf_num])
-        {
-            part_start = buf_num + 1;
-        }
-        else
-        {
-            part_start = buf_num;
-        }
-        
+        part_start = buf_num;
         malloc_len = 0;
 
         /*We extract the mime headers. So lets search for the attachment.*/
@@ -640,42 +657,69 @@ axiom_mime_parser_parse(
            
             if(search_info->match_len2 == 0)
             {
-                
                 malloc_len = len_array[buf_num] - search_info->match_len1 - temp_mime_boundary_size;
-
-                if(malloc_len > 0)
+                if(malloc_len < 0)
                 {
-                    buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (
-                        size + 1));
-                    memcpy(buffer, pos + temp_mime_boundary_size, malloc_len);
-                    axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-                    buf_array[buf_num] = buffer;
-                    len_array[buf_num] = malloc_len;
+                    return NULL;
                 }
                 else
                 {
-                    buf_array[buf_num] = NULL;
-                    len_array[buf_num] = 0;
-                }                
+                    buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (
+                        size + 1));
+                    if(malloc_len > 0)
+                    {
+                        memcpy(buffer, pos + temp_mime_boundary_size, malloc_len);
+                    }
+                    
+                    /*When the last buffer only containing -- we know this is the end 
+                     of the attachments. Hence we don't need to read again*/
 
+                    if(malloc_len != 2)
+                    {
+                        len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);        
+                        if(len > 0)
+                        {
+                            len_array[buf_num] = malloc_len + len;
+                        }
+                    }
+                    else
+                    {
+                        len_array[buf_num] = malloc_len;
+                    }
+                    axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
+                    buf_array[buf_num] = buffer;
+                }
             }   
             else if(search_info->match_len2 > 0)
             {
                 malloc_len = len_array[buf_num] - search_info->match_len2;
 
-                if(malloc_len > 0)
+                if(malloc_len < 0)
                 {
-                    buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (
-                        size + 1));
-                    memcpy(buffer, buf_array[buf_num] + search_info->match_len2, malloc_len);
-                    axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-                    buf_array[buf_num] = buffer;
-                    len_array[buf_num] = malloc_len;
+                    return NULL;
                 }
                 else
                 {
-                    buf_array[buf_num] = NULL;
-                    len_array[buf_num] = 0;
+                    buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (
+                        size + 1));
+                    if(malloc_len > 0)
+                    {
+                        memcpy(buffer, buf_array[buf_num] + search_info->match_len2, malloc_len);
+                    }
+                    if(malloc_len != 2)
+                    {
+                        len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
+                        if(len > 0)
+                        {
+                            len_array[buf_num] = malloc_len + len;
+                        }
+                    }
+                    else
+                    {
+                        len_array[buf_num] = malloc_len;
+                    }
+                    axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
+                    buf_array[buf_num] = buffer;
                 }
             }              
         }
@@ -775,7 +819,7 @@ static axis2_char_t *axiom_mime_parser_search_for_crlf(
     /*If the incoming buffer is NULL then we need to fill one and 
       set it as the new buffer*/
 
-    else
+    /*else
     {
         *buf_num = *buf_num + 1;
         buf_array[*buf_num] = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
@@ -790,7 +834,7 @@ static axis2_char_t *axiom_mime_parser_search_for_crlf(
             search_info->len1 = len_array[*buf_num];
             found = axiom_mime_parser_search_string(search_info, env);
         }    
-    }
+    }*/
 
     while(!found)
     {
@@ -860,6 +904,7 @@ static axis2_char_t *axiom_mime_parser_search_for_soap(
         search_info->len1 = len_array[*buf_num];
         found = axiom_mime_parser_search_string(search_info, env);
     }
+    /*
     else
     {
         *buf_num = *buf_num + 1;
@@ -876,6 +921,7 @@ static axis2_char_t *axiom_mime_parser_search_for_soap(
             found = axiom_mime_parser_search_string(search_info, env);
         }
     }
+    */
 
     while(!found)
     {
@@ -954,7 +1000,7 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
     }
 
     /*If it is NULL then we need to create a new one fill and search*/
-    else
+    /*else
     {
         *buf_num = *buf_num + 1;
         buf_array[*buf_num] = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
@@ -970,6 +1016,7 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
             found = axiom_mime_parser_search_string(search_info, env);
         }
     }
+    */
 
     while(!found)
     {
