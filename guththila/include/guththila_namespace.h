@@ -25,24 +25,25 @@ EXTERN_C_START()
 
 #ifndef GUTHTHILA_NAMESPACE_DEF_SIZE
 #define GUTHTHILA_NAMESPACE_DEF_SIZE 4
-#endif  /*  */
+#endif  
 
 typedef struct guththila_namespace_s
 {
-    guththila_token_t *name;
-    guththila_token_t *uri;   
+    guththila_token_t *name;	/* Name */
+    guththila_token_t *uri;		/* URI */
 } guththila_namespace_t;
 
 typedef struct guththila_namespace_list_s
 {
-    guththila_namespace_t *list;
+    guththila_namespace_t *list;	
     guththila_stack_t fr_stack;
     int size;
     int capacity;
 } guththila_namespace_list_t;
 
-guththila_namespace_list_t *
-GUTHTHILA_CALL guththila_namespace_list_create(const axutil_env_t * env);
+guththila_namespace_list_t *GUTHTHILA_CALL 
+guththila_namespace_list_create(
+	const axutil_env_t * env);
 
 int GUTHTHILA_CALL
 guththila_namespace_list_init(
@@ -50,7 +51,8 @@ guththila_namespace_list_init(
     const axutil_env_t * env);
 
 guththila_namespace_t * GUTHTHILA_CALL 
-guththila_namespace_list_get(guththila_namespace_list_t *at_list,
+guththila_namespace_list_get(
+		guththila_namespace_list_t *at_list,
         const axutil_env_t * env);
 
 int GUTHTHILA_CALL
@@ -70,5 +72,5 @@ guththila_namespace_list_free(
     const axutil_env_t * env);
 
 EXTERN_C_END() 
-#endif  /*  */
+#endif  
 

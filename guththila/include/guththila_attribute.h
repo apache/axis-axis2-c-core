@@ -21,46 +21,35 @@
 #include <guththila_defines.h>
 #include <guththila_token.h>
 #include <axutil_utils.h>
+
 EXTERN_C_START() 
+
 #ifndef GUTHTHILA_ATTR_DEF_SIZE
 #define GUTHTHILA_ATTR_DEF_SIZE 16
-#endif  /* */
+#endif  
+
+/* Representation of an attribute */
 typedef struct guththila_attr_s
 {
+    guththila_token_t *pref; /* Prefix */
+    guththila_token_t *name; /* Name */
+    guththila_token_t *val;  /* Value */ 
+} guththila_attr_t;
 
-    guththila_token_t *
-    pref;
-
-    guththila_token_t *
-    name;
-
-    guththila_token_t *
-    val;
-    
-}
-guththila_attr_t;
 typedef struct guththila_attr_list_s
 {
+    guththila_attr_t *list;
+    guththila_stack_t fr_stack;
+    int size;
+    int capacity;
+} guththila_attr_list_t;
 
-    guththila_attr_t *
-    list;
-
-    guththila_stack_t
-    fr_stack;
-    int
-    size;
-    int
-    capacity;
-    
-}
-guththila_attr_list_t;
 /**
 * Create function of guththila_attr_list_t type structure
 * @param env environment, MUST NOT be NULL.
 * return new pointer to structure guththila_attr_list_s with initializing stack
 * fr_stack 
 */
-
 guththila_attr_list_t *
 GUTHTHILA_CALL guththila_attr_list_create(const axutil_env_t * env);
 
@@ -73,22 +62,21 @@ GUTHTHILA_CALL guththila_attr_list_create(const axutil_env_t * env);
  * return status of op AXIS2_SUCCESS on success,
  * AXIS2_FAILURE on error
  */
-
 int GUTHTHILA_CALL
 guththila_attr_list_init(
     guththila_attr_list_t * at_list,
     const axutil_env_t * env);
+
 /**
  * @param at_list keeps the list of attributes in this structure using
  * a guththila_stack_t variable
  * @param env environment, MUST NOT be NULL.
  * return the top value of the stack which is inside guththila_attr_list_t
  */
-
-
 guththila_attr_t *
 GUTHTHILA_CALL guththila_attr_list_get(guththila_attr_list_t * at_list,
         const axutil_env_t * env);
+
 
 /**
  * This method push the given attribute in to the stack which is a
@@ -100,13 +88,12 @@ GUTHTHILA_CALL guththila_attr_list_get(guththila_attr_list_t * at_list,
  * return status of op AXIS2_SUCCESS on success,
  * AXIS2_FAILURE on error
  */
-
-
 int GUTHTHILA_CALL
 guththila_attr_list_release(
     guththila_attr_list_t * at_list,
     guththila_attr_t * attr,
     const axutil_env_t * env);
+
 /**
  * Free method for the stack which is inside guththila_attr_list_s
  * structure, free the stack and other members
@@ -116,12 +103,11 @@ guththila_attr_list_release(
  * return status of op AXIS2_SUCCESS on success,
  * AXIS2_FAILURE on error
  */
-
-
 void GUTHTHILA_CALL
 msuila_attr_list_free_data(
     guththila_attr_list_t * at_list,
     const axutil_env_t * env);
+
 /**
  * Free method for guththila_attr_list_s structure,this free at_list too.
  * @param at_list keeps the list of attributes in this structure using
@@ -131,8 +117,6 @@ msuila_attr_list_free_data(
  * return status of op AXIS2_SUCCESS on success,
  * AXIS2_FAILURE on error
  */
-
-
 void GUTHTHILA_CALL
 guththila_attr_list_free(
     guththila_attr_list_t * at_list,
