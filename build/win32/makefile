@@ -625,11 +625,10 @@ $(AXIS2_LIBS)\$(AXIS2_HTTP_SENDER).dll : $(HTTP_SENDER_OBJS)
 
 axis2_http_sender : $(AXIS2_LIBS)\$(AXIS2_HTTP_SENDER).dll
 
+# axis2 http sender
 
-##### axis2 http sender
-
-##### axis2_tcp_sender
-
+# axis2_tcp_sender
+##########################
 
 TCP_SENDER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\tcp\sender
 TCP_SENDER_INTDIR = $(AXIS2_INTDIR)\tcp_sender
@@ -653,11 +652,12 @@ $(AXIS2_LIBS)\$(AXIS2_TCP_SENDER).dll : $(TCP_SENDER_OBJS)
 
 axis2_tcp_sender : $(AXIS2_LIBS)\$(AXIS2_TCP_SENDER).dll
 
+# end axis2_tcp_sender
 
-##### end axis2_tcp_sender
 
+# axis2 http receiver
+##############################
 
-##### axis2 http receiver
 
 HTTP_RECEIVER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\receiver
 HTTP_RECEIVER_INTDIR = $(AXIS2_INTDIR)\http_receiver
@@ -680,9 +680,10 @@ $(AXIS2_LIBS)\$(AXIS2_HTTP_RECEIVER).dll : $(HTTP_RECEIVER_OBJS)
 
 axis2_http_receiver : $(AXIS2_LIBS)\$(AXIS2_HTTP_RECEIVER).dll
 
-##### end axis2 http receiver
+# end axis2 http receiver
 
-##### axis2_tcp_receiver
+# axis2_tcp_receiver
+##########################
 
 TCP_RECEIVER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\tcp\receiver
 TCP_RECEIVER_INTDIR = $(AXIS2_INTDIR)\tcp_receiver
@@ -1216,172 +1217,37 @@ copy_extra:
 
 copy_samples:
 	@if not exist $(AXIS2_BINDIR)\samples mkdir $(AXIS2_BINDIR)\samples
-
-	@if not exist $(AXIS2_BINDIR)\samples\client mkdir $(AXIS2_BINDIR)\samples\client
-	@if not exist $(AXIS2_BINDIR)\samples\user_guide mkdir $(AXIS2_BINDIR)\samples\user_guide
-
-	@if not exist $(AXIS2_BINDIR)\samples\client\echo mkdir $(AXIS2_BINDIR)\samples\client\echo
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\echo\echo.c $(AXIS2_BINDIR)\samples\client\echo
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\echo\README.txt $(AXIS2_BINDIR)\samples\client\echo
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\echo\echo.mk $(AXIS2_BINDIR)\samples\client\echo
-
-	@if not exist $(AXIS2_BINDIR)\samples\client\math mkdir $(AXIS2_BINDIR)\samples\client\math
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\math\*.c $(AXIS2_BINDIR)\samples\client\math
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\math\*.h $(AXIS2_BINDIR)\samples\client\math
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\math\math.mk $(AXIS2_BINDIR)\samples\client\math
-
-
-	@if not exist $(AXIS2_BINDIR)\samples\client\google mkdir $(AXIS2_BINDIR)\samples\client\google
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\google\*.c $(AXIS2_BINDIR)\samples\client\google
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\google\README.txt $(AXIS2_BINDIR)\samples\client\google
-        @copy $(AXIS2_SOURCE_DIR)\samples\client\google\google.mk $(AXIS2_BINDIR)\samples\client\google
-
-	@if not exist $(AXIS2_BINDIR)\samples\client\notify mkdir $(AXIS2_BINDIR)\samples\client\notify
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\notify\*.c $(AXIS2_BINDIR)\samples\client\notify
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\notify\notify.mk $(AXIS2_BINDIR)\samples\client\notify
-
-	@if not exist $(AXIS2_BINDIR)\samples\client\mtom\resources mkdir $(AXIS2_BINDIR)\samples\client\mtom\resources
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\mtom\*.c $(AXIS2_BINDIR)\samples\client\mtom
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\mtom\resources\*.jpg $(AXIS2_BINDIR)\samples\client\mtom\resources
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\mtom\mtom.mk $(AXIS2_BINDIR)\samples\client\mtom
-
-	@if not exist $(AXIS2_BINDIR)\samples\client\yahoo mkdir $(AXIS2_BINDIR)\samples\client\yahoo
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\yahoo\*.c $(AXIS2_BINDIR)\samples\client\yahoo
-	@copy $(AXIS2_SOURCE_DIR)\samples\client\yahoo\yahoo.mk $(AXIS2_BINDIR)\samples\client\yahoo
-
+	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\client $(AXIS2_BINDIR)\samples\client
 	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\user_guide $(AXIS2_BINDIR)\samples\user_guide
-
-	@if not exist $(AXIS2_BINDIR)\samples\server mkdir $(AXIS2_BINDIR)\samples\server
-
-	@if not exist $(AXIS2_BINDIR)\samples\server\Calculator mkdir $(AXIS2_BINDIR)\samples\server\Calculator
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\Calculator\*.c $(AXIS2_BINDIR)\samples\server\Calculator 
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\Calculator\*.h $(AXIS2_BINDIR)\samples\server\Calculator 
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\Calculator\*.xml $(AXIS2_BINDIR)\samples\server\Calculator 
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\Calculator\Calculator.mk $(AXIS2_BINDIR)\samples\server\Calculator 
-
-	@if not exist $(AXIS2_BINDIR)\samples\server\echo mkdir $(AXIS2_BINDIR)\samples\server\echo
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\echo\*.c $(AXIS2_BINDIR)\samples\server\echo
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\echo\*.h $(AXIS2_BINDIR)\samples\server\echo
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\echo\*.xml $(AXIS2_BINDIR)\samples\server\echo
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\echo\echo.mk $(AXIS2_BINDIR)\samples\server\echo
-
-	@if not exist $(AXIS2_BINDIR)\samples\server\math mkdir $(AXIS2_BINDIR)\samples\server\math
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\math\*.c $(AXIS2_BINDIR)\samples\server\math
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\math\*.h $(AXIS2_BINDIR)\samples\server\math
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\math\*.xml $(AXIS2_BINDIR)\samples\server\math
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\math\math.mk $(AXIS2_BINDIR)\samples\server\math
-
-	@if not exist $(AXIS2_BINDIR)\samples\server\notify mkdir $(AXIS2_BINDIR)\samples\server\notify
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\notify\*.c $(AXIS2_BINDIR)\samples\server\notify
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\notify\*.h $(AXIS2_BINDIR)\samples\server\notify
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\notify\*.xml $(AXIS2_BINDIR)\samples\server\notify
-        @copy $(AXIS2_SOURCE_DIR)\samples\server\notify\notify.mk $(AXIS2_BINDIR)\samples\server\notify
-
-	@if not exist $(AXIS2_BINDIR)\samples\server\sg_math mkdir $(AXIS2_BINDIR)\samples\server\sg_math
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\sg_math\*.c $(AXIS2_BINDIR)\samples\server\sg_math
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\sg_math\*.h $(AXIS2_BINDIR)\samples\server\sg_math
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\sg_math\*.xml $(AXIS2_BINDIR)\samples\server\sg_math
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\sg_math\sg_math.mk $(AXIS2_BINDIR)\samples\server\sg_math
-
-	@if not exist $(AXIS2_BINDIR)\samples\server\mtom mkdir $(AXIS2_BINDIR)\samples\server\mtom
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\*.c $(AXIS2_BINDIR)\samples\server\mtom
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\*.h $(AXIS2_BINDIR)\samples\server\mtom
-	@copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\*.xml $(AXIS2_BINDIR)\samples\server\mtom
-        @copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\mtom.mk $(AXIS2_BINDIR)\samples\server\mtom
+	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\codegen $(AXIS2_BINDIR)\samples\codegen
+	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\server $(AXIS2_BINDIR)\samples\server
+	@cd $(AXIS2_BINDIR)\samples
+	@del /s /q *.am
+	@cd .\..\..\win32
 
 copy_include: 
-	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\include $(AXIS2_BINDIR)\include\
-
+	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\include $(AXIS2_BINDIR)\include
+	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\axiom\include $(AXIS2_BINDIR)\include
+	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\util\include $(AXIS2_BINDIR)\include
+	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\neethi\include $(AXIS2_BINDIR)\include
 	@if exist $(AXIS2_BINDIR)\include\Makefile.am del $(AXIS2_BINDIR)\include\Makefile.am
 
-	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\axiom\include $(AXIS2_BINDIR)\include\
-
-	@if exist $(AXIS2_BINDIR)\include\Makefile.am del $(AXIS2_BINDIR)\include\Makefile.am
-
-	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\util\include $(AXIS2_BINDIR)\include\
-
-	@if exist $(AXIS2_BINDIR)\include\Makefile.am del $(AXIS2_BINDIR)\include\Makefile.am
-
-    	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\neethi\include $(AXIS2_BINDIR)\include\
-	
 
 copy_vc_projects:
 	@if not exist $(AXIS2_BINDIR)\ides mkdir $(AXIS2_BINDIR)\ides
-	@if not exist $(AXIS2_BINDIR)\ides\vc mkdir $(AXIS2_BINDIR)\ides\vc
 	@if not exist $(AXIS2_BINDIR)\ides\vc\samples mkdir $(AXIS2_BINDIR)\ides\vc\samples
-
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\clients mkdir $(AXIS2_BINDIR)\ides\vc\samples\clients
-	
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\clients\echo mkdir $(AXIS2_BINDIR)\ides\vc\samples\clients\echo
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\clients\echo\echo.vcproj $(AXIS2_BINDIR)\ides\vc\samples\clients\echo
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\clients\math mkdir $(AXIS2_BINDIR)\ides\vc\samples\clients\math
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\clients\math\math.vcproj $(AXIS2_BINDIR)\ides\vc\samples\clients\math
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\clients\google mkdir $(AXIS2_BINDIR)\ides\vc\samples\clients\google
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\clients\google\google.vcproj $(AXIS2_BINDIR)\ides\vc\samples\clients\google
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\clients\mtom mkdir $(AXIS2_BINDIR)\ides\vc\samples\clients\mtom
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\clients\mtom\mtom.vcproj $(AXIS2_BINDIR)\ides\vc\samples\clients\mtom
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\clients\notify mkdir $(AXIS2_BINDIR)\ides\vc\samples\clients\notify
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\clients\notify\notify.vcproj $(AXIS2_BINDIR)\ides\vc\samples\clients\notify
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\clients\yahoo mkdir $(AXIS2_BINDIR)\ides\vc\samples\clients\yahoo
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\clients\yahoo\yahoo.vcproj $(AXIS2_BINDIR)\ides\vc\samples\clients\yahoo
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_blocking mkdir $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_blocking
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\clients\echo_blocking\echo_blocking.vcproj $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_blocking
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_blocking_addr mkdir $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_blocking_addr
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\clients\echo_blocking_addr\echo_blocking_addr.vcproj $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_blocking_addr
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_blocking_dual mkdir $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_blocking_dual
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\clients\echo_blocking_dual\echo_blocking_dual.vcproj $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_blocking_dual
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_non_blocking mkdir $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_non_blocking
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\clients\echo_non_blocking\echo_non_blocking.vcproj $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_non_blocking
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_non_blocking_dual mkdir $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_non_blocking_dual
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\clients\echo_non_blocking_dual\echo_non_blocking_dual.vcproj $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_non_blocking_dual
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_rest mkdir $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_rest
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\clients\echo_rest\echo_rest.vcproj $(AXIS2_BINDIR)\ides\vc\samples\clients\echo_rest
-
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\clients\clients.sln $(AXIS2_BINDIR)\ides\vc\samples\clients
-
-
- 	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\services mkdir $(AXIS2_BINDIR)\ides\vc\samples\services
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\services\echo mkdir $(AXIS2_BINDIR)\ides\vc\samples\services\echo
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\services\echo\echo.vcproj $(AXIS2_BINDIR)\ides\vc\samples\services\echo
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\services\math mkdir $(AXIS2_BINDIR)\ides\vc\samples\services\math
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\services\math\math.vcproj $(AXIS2_BINDIR)\ides\vc\samples\services\math
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\services\mtom mkdir $(AXIS2_BINDIR)\ides\vc\samples\services\mtom
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\services\mtom\mtom.vcproj $(AXIS2_BINDIR)\ides\vc\samples\services\mtom
-
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\services\notify mkdir $(AXIS2_BINDIR)\ides\vc\samples\services\notify
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\services\notify\notify.vcproj $(AXIS2_BINDIR)\ides\vc\samples\services\notify
-	@if not exist $(AXIS2_BINDIR)\ides\vc\samples\services\Calculator mkdir $(AXIS2_BINDIR)\ides\vc\samples\services\Calculator
-	@copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\services\Calculator\Calculator.vcproj $(AXIS2_BINDIR)\ides\vc\samples\services\Calculator
-
-      @copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\services\services.sln $(AXIS2_BINDIR)\ides\vc\samples\services
-
+	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\ides\vc\samples $(AXIS2_BINDIR)\ides\vc\samples
+		
 copy_wsdl2c:
 	if not exist $(AXIS2_BINDIR)\bin\tools\wsdl2c mkdir $(AXIS2_BINDIR)\bin\tools\wsdl2c
 	@copy $(AXIS2_SOURCE_DIR)\tools\codegen\javatool\README $(AXIS2_BINDIR)\bin\tools\wsdl2c
 	@copy $(AXIS2_SOURCE_DIR)\tools\codegen\javatool\WSDL2C.bat $(AXIS2_BINDIR)\bin\tools\wsdl2c
 	@copy $(AXIS2_SOURCE_DIR)\tools\codegen\javatool\WSDL2C.sh $(AXIS2_BINDIR)\bin\tools\wsdl2c
 
-
 mv_dist:
 	cd $(AXIS2_BINDIR)
 	cd ..
 	@if exist $(AXIS2_RELEASE_DIR) rmdir /S /Q $(AXIS2_RELEASE_DIR)
-#	rename  deploy $(AXIS2_RELEASE_DIR)
 	@xcopy /Y /E /I deploy $(AXIS2_RELEASE_DIR)
 
 
@@ -1393,7 +1259,7 @@ axis2_samples: axis2_mod_log all_services all_clients
 
 axis2_server_modules: axis2_apache_module axis2_IIS_module
 
-################################# tools ##################################################
+################ tools ###################
 # tcpmon
 TCPMON_SRC = $(AXIS2_SOURCE_DIR)\tools\tcpmon\src
 TCPMON_INTDIR = $(AXIS2_INTDIR)\tools\tcpmon
@@ -1415,12 +1281,12 @@ $(AXIS2_TOOLS)\tcpmon.exe : $(TCPMON_OBJS)
 
 tcpmon: $(AXIS2_TOOLS)\tcpmon.exe
 
-##############################################################################################
+#########################################
 #Copy axis2 xml
 copy_axis2_xml:
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\axis2.xml $(AXIS2_BINDIR)\
 
-##############################################################################################
+#########################################
 
 build: deploy axis2_core axis2_samples copy_include
 
