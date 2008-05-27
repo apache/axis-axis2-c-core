@@ -92,8 +92,6 @@ axiom_text_create(
     om_text->data_handler = NULL;
     om_text->mime_type = NULL;
 
-    om_text->ns = NULL;
-
     if (value)
     {
         om_text->value = axutil_string_create(env, value);
@@ -434,6 +432,8 @@ axiom_text_serialize_start_part(
     if (om_text->ns)
     {
         axiom_namespace_serialize(om_text->ns, env, om_output);
+		axiom_namespace_free(om_text->ns, env);
+		om_text->ns = NULL;
     }
 
     return AXIS2_SUCCESS;
@@ -603,8 +603,6 @@ axiom_text_create_str(
     om_text->ns = NULL;
     om_text->data_handler = NULL;
     om_text->mime_type = NULL;
-
-    om_text->ns = NULL;
 
     if (value)
     {
