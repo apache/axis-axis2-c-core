@@ -479,7 +479,7 @@ extern "C"
     /**
      * Gets the operation client
      * @param svc_client pointer to service_client struct
-     * @param env env pointer to environemt struct
+     * @param env env pointer to environment struct
      * @return pointer to service context struct. service client owns 
      * the returned pointer
      */
@@ -525,7 +525,7 @@ extern "C"
      * @param env pointer to environment struct
      * @param conf_ctx pointer to configuration context. Newly created client 
      * assumes ownership of the conf_ctx
-     * @param wsdl_uri pointer to uri of the wsdl file.
+     * @param wsdl_uri pointer to Uri of the wsdl file.
      * @param wsdl_svc_qname pointer to qname of the wsdl service. If this is NULL
      * first service is assumed
      * @param endpoint_name pointer to endpoint name. If this is NULL first endpoint
@@ -544,9 +544,9 @@ extern "C"
         const axis2_char_t * client_home);
 
     /**
-     * Gets the last respose SOAP envelope. 
+     * Gets the last response SOAP envelope. 
      * @param svc_client pointer to service_client struct
-     * @param env env pointer to environemt struct
+     * @param env env pointer to environment struct
      * @return pointer to SOAP envelope that was returned as a result 
      * when send_receieve was called last time
      */
@@ -556,9 +556,9 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * Gets the boolean value indicating if the last respose had a SOAP fault. 
+     * Gets the boolean value indicating if the last response had a SOAP fault. 
      * @param svc_client pointer to service_client struct
-     * @param env env pointer to environemt struct
+     * @param env env pointer to environment struct
      * @return AXIS2_TRUE if there was a fault, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -569,8 +569,8 @@ extern "C"
     /**
      * Gets the authentication type required.
      * @param svc_client pointer to service_client struct
-     * @param env env pointer to environemt struct
-     * @return AXIS2_TRUE if the operation succeded, else AXIS2_FALSE
+     * @param env env pointer to environment struct
+     * @return AXIS2_TRUE if the operation succeeded, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_svc_client_get_auth_type(
@@ -581,7 +581,7 @@ extern "C"
      * Gets the boolean value indicating whether HTTP Authentication
      * is required.
      * @param svc_client pointer to service_client struct
-     * @param env env pointer to environemt struct
+     * @param env env pointer to environment struct
      * @return AXIS2_TRUE if Authentication is required, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -593,7 +593,7 @@ extern "C"
      * Gets the boolean value indicating whether Proxy Authentication
      * is required.
      * @param svc_client pointer to service_client struct
-     * @param env env pointer to environemt struct
+     * @param env env pointer to environment struct
      * @return AXIS2_TRUE if Authentication is required, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -604,7 +604,7 @@ extern "C"
     /**
      * Create a policy object and set it to the description hierarchy
      * @param svc_client pointer to service_client struct
-     * @param env pointer to environemt struct
+     * @param env pointer to environment struct
      * @param root_node pointer to a policy node    
      * @return AXIS2_FAILURE if there was a fault, else AXIS2_SUCCESS
      */
@@ -617,7 +617,7 @@ extern "C"
     /**
      * Set the given policy object to the description hierarchy
      * @param svc_client pointer to service_client struct
-     * @param env pointer to environemt struct
+     * @param env pointer to environment struct
      * @param policy neethi_policy_t to a policy struct
      * @return AXIS2_FAILURE if there was a fault, else AXIS2_SUCCESS
      */
@@ -630,7 +630,7 @@ extern "C"
     /**
      * Gets the HTTP Headers of the last response.
      * @param svc_client pointer to service_client struct
-     * @param env pointer to environemt struct
+     * @param env pointer to environment struct
      * @return list of HTTP Response Headers
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
@@ -641,7 +641,7 @@ extern "C"
     /**
      * Gets the HTTP Status Code of the last response.
      * @param svc_client pointer to service_client struct
-     * @param env pointer to environemt struct
+     * @param env pointer to environment struct
      * @return HTTP Status Code
      */
     AXIS2_EXTERN int AXIS2_CALL
