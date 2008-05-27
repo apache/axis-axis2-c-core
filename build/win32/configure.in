@@ -8,14 +8,14 @@ ENABLE_SSL = 0
 # build libcurl transport 
 ENABLE_LIBCURL = 0
 #
-# build axis2 with guththila parser
-ENABLE_GUTHTHILA = 1
+# build axis2 with Libxml2 Parser. Axis2/C will be built with embeded guththila # parser by Default. 
+ENABLE_LIBXML2=0
 #
 # build tcp server in addition to http server
 WITH_TCP = 0
 #
 # build with archive based deployment
-WITH_ARCHIVE = 1
+WITH_ARCHIVE = 0
 #
 #
 #############################################################################
@@ -23,7 +23,7 @@ WITH_ARCHIVE = 1
 #############################################################################
 #
 # libxml2 binary location ( axis2c is built with libxml2 )
-LIBXML2_BIN_DIR = E:\libxml2-2.6.27.win32
+LIBXML2_BIN_DIR = E:\libxml2-2.6.30.win32
 #
 # iconv binary location
 ICONV_BIN_DIR = E:\iconv-1.9.2.win32
@@ -64,9 +64,9 @@ APACHE_VERSION_2_0_X = 0
 CRUNTIME = /MD
 #
 # Embed Manifest Files
-EMBED_MANIFEST = 0
+EMBED_MANIFEST = 1
 #
 # debug symbols
 # To build with debug symbols use DEBUG = 1
-DEBUG = 1
+DEBUG = 0
 #
