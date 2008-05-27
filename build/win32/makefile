@@ -33,10 +33,11 @@
 AUTOCONF = configure.in
 !include $(AUTOCONF)
 
-# directory structure of install directory
 RELEASE_VER = 1.4.0
-
 AXIS2_RELEASE_DIR=axis2c-bin-$(RELEASE_VER)-win32
+
+# Directory structure
+##################################
 
 AXIS2_BINDIR     = ..\deploy
 AXIS2_SERVICES   = $(AXIS2_BINDIR)\services
@@ -53,12 +54,14 @@ AXIS2_TESTS_UNIT = $(AXIS2_TESTS)\unit_tests
 AXIS2_SOURCE_DIR = ..\..
 
 #directories for intermediate files
+###################################
 
 AXIS2_INTDIR= .\int.msvc
 AXIS2_INTDIR_SAMPLES = $(AXIS2_INTDIR)\samples
 
 
 # Binary distribution librarys
+##############################
 
 AXUTIL = axutil
 AXIS2_PARSER = axis2_parser
@@ -77,19 +80,11 @@ AXIS2_TCP_SERVER = axis2_tcp_server
 GUTHTHILA = guththila
 AXIS2_MOD_LOG = axis2_mod_log
 
-PARSER = build
-AXIS2_WITHOUT_SERVER = axis2_core_without_server 
-
-!if "$(ENABLE_GUTHTHILA)" == "1"
-PARSER = $(PARSER)_with_guththila
-AXIS2_WITHOUT_SERVER = $(AXIS2_WITHOUT_SERVER)_guththila
-CFLAGS = $(CFLAGS) /D "AXIS2_GUTHTHILA_ENABLED"
-!else
-CFLAGS = $(CFLAGS) /D "AXIS2_LIBXML2_ENABLED"
-!endif
-
 # include path
+################
+
 APACHE_INCLUDE_PATH = /I$(APACHE_BIN_DIR)\include
+
 AXIS2_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\util\src\  \
 		/I$(AXIS2_SOURCE_DIR)\util\src\minizip\  \
@@ -112,24 +107,29 @@ AXIS2_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\src\core\util \
 		/I$(AXIS2_SOURCE_DIR)\src\core\transport\http\server\apache2 \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\attachments \
-		/I$(AXIS2_SOURCE_DIR)\tools\tcpmon\include \
-		/I$(LIBXML2_BIN_DIR)\include \
-		/I$(ICONV_BIN_DIR)\include
+		/I$(AXIS2_SOURCE_DIR)\tools\tcpmon\include
 		
+GUTHTHILA_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\guththila\include
+
+LIBXML2_INCLUDE_PATH = /I$(LIBXML2_BIN_DIR)\include /I$(ICONV_BIN_DIR)\include
+
+# optional include paths
+########################
+
 !if "$(WITH_ARCHIVE)" == "1"
 AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(ZLIB_BIN_DIR)\include
 !endif
-
-GUTHTHILA_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\guththila\include
  
 !if "$(ENABLE_SSL)" == "1"
 AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(OPENSSL_BIN_DIR)\include
 !endif
+
 !if "$(ENABLE_LIBCURL)" == "1"
 AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(LIBCURL_BIN_DIR)\include
 !endif
 
-##################### compiler options
+# Compiler Options
+###################
 
 CC = @cl.exe 
 CFLAGS = /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT"  \
@@ -145,19 +145,19 @@ CFLAGS = $(CFLAGS) /D "AXIS2_SSL_ENABLED"
 CFLAGS = $(CFLAGS) /D "AXIS2_LIBCURL_ENABLED"
 !endif
 
-!if "$(ENABLE_GUTHTHILA)" == "1"
-CFLAGS = $(CFLAGS) /D "AXIS2_GUTHTHILA_ENABLED"
+!if "$(ENABLE_LIBXML2)" == "1"
+CFLAGS = $(CFLAGS) /D "AXIS2_LIBXML2_ENABLED" $(LIBXML2_INCLUDE_PATH)
 !else
-CFLAGS = $(CFLAGS) /D "AXIS2_LIBXML2_ENABLED"
+CFLAGS = $(CFLAGS) /D "AXIS2_GUTHTHILA_ENABLED" $(GUTHTHILA_INCLUDE_PATH)
 !endif
 
-################### linker options
+# Linker Options
+####################
 
 LD = @link.exe
-LDFLAGS = /NOLOGO /WX /LIBPATH:$(AXIS2_LIBS) \
-            /LIBPATH:$(LIBXML2_BIN_DIR)\lib \
-       	/LIBPATH:$(APACHE_BIN_DIR)\lib /LIBPATH:$(ZLIB_BIN_DIR)\lib
-		 
+LDFLAGS = /NOLOGO /WX /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXML2_BIN_DIR)\lib \
+	  /LIBPATH:$(APACHE_BIN_DIR)\lib /LIBPATH:$(ZLIB_BIN_DIR)\lib
+
 LIBS =  Rpcrt4.lib Ws2_32.lib
 
 !if "$(ENABLE_SSL)" == "1"
@@ -176,6 +176,7 @@ APACHE_LIBS = apr.lib xml.lib libhttpd.lib libaprutil.lib libapr.lib
 APACHE_LIBS = apr-1.lib xml.lib libhttpd.lib libapr-1.lib libaprutil-1.lib
 !endif
 
+# Manifest Options
 ####################
 MT=mt.exe
 MT="$(MT)"
@@ -188,7 +189,9 @@ _VC_MANIFEST_EMBED_EXE= if exist $@.manifest $(MT) -nologo -manifest $@.manifest
 _VC_MANIFEST_EMBED_DLL= if exist $@.manifest $(MT) -nologo -manifest $@.manifest -outputresource:$@;2
 !endif
 
-#################### debug symbols
+# Debug Symbols
+#####################
+
 !if "$(DEBUG)" == "1"
 CFLAGS = $(CFLAGS) /D "_DEBUG" /Od /Z7 $(CRUNTIME)d
 LDFLAGS = $(LDFLAGS) /DEBUG
@@ -197,8 +200,8 @@ CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 $(CRUNTIME)
 LDFLAGS = $(LDFLAGS)
 !endif
 
-
-################################################################
+# Build Targets
+#################
 
 # create the directory structure
 deploy:
@@ -219,7 +222,9 @@ clean:
 	if exist $(AXIS2_BINDIR) rmdir /S /Q $(AXIS2_BINDIR)
 	if exist $(AXIS2_INTDIR) rmdir /S /Q $(AXIS2_INTDIR)
 	
-##### axutil 
+
+# axutil 
+###################
 
 AXUTIL_SRC = $(AXIS2_SOURCE_DIR)\util\src
 AXIS2_INTDIR_AXUTIL  = $(AXIS2_INTDIR)\util
@@ -228,7 +233,6 @@ AXIS2_INTDIR_AXUTIL2 =$(AXIS2_INTDIR_AXUTIL)\minizip
 
 AXUTIL_OBJS = $(AXIS2_INTDIR_AXUTIL)\*.obj \
 	      $(AXIS2_INTDIR_AXUTIL)\platform\*.obj
-
 
 !if "$(WITH_ARCHIVE)" == "1"
 AXUTIL_OBJS = $(AXUTIL_OBJS)  $(AXIS2_INTDIR_AXUTIL)\minizip\*.obj
@@ -274,9 +278,14 @@ $(AXIS2_LIBS)\$(AXUTIL).dll : $(AXUTIL_OBJS)
 !endif
 
 axis2_util : $(AXIS2_LIBS)\$(AXUTIL).dll
-##### end axutil
 
-##### guththila
+#end axutil
+
+
+
+# guththila
+##################
+
 GUTHTHILA_SRC = $(AXIS2_SOURCE_DIR)\guththila\src
 AXIS2_INTDIR_GUTHTHILA = $(AXIS2_INTDIR)\guththila
 
@@ -284,7 +293,6 @@ GUTHTHILA_OBJS = $(AXIS2_INTDIR_GUTHTHILA)\*.obj
 
 $(AXIS2_INTDIR_GUTHTHILA) :
 	@if not exist $(AXIS2_INTDIR_GUTHTHILA) mkdir $(AXIS2_INTDIR_GUTHTHILA)	
-
 
 {$(GUTHTHILA_SRC)}.c{$(AXIS2_INTDIR_GUTHTHILA)}.obj ::
 	$(CC) $(CFLAGS) $(GUTHTHILA_INCLUDE_PATH) /Fo$(AXIS2_INTDIR_GUTHTHILA)\ /c $<
@@ -298,9 +306,11 @@ $(AXIS2_LIBS)\$(GUTHTHILA).dll : $(GUTHTHILA_OBJS)
 
 guththila: $(AXIS2_LIBS)\$(GUTHTHILA).dll
 
-##### end guththila
+# end guththila
 
-##### axis2 parser
+
+# axis2 parser
+###################
 
 AXIS2_PARSER_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\parser
 AXIS2_INTDIR_PARSER = $(AXIS2_INTDIR)\parser
@@ -308,64 +318,56 @@ AXIS2_INTDIR_PARSER = $(AXIS2_INTDIR)\parser
 $(AXIS2_INTDIR_PARSER) :
 	@if not exist $(AXIS2_INTDIR_PARSER) mkdir $(AXIS2_INTDIR_PARSER)
 
-##### end axis2 parser
 
-##### libxml2 wrapper
+!if "$(ENABLE_LIBXML2)" == "1"
 
 AXIS2_INTDIR_PARSER1 = $(AXIS2_INTDIR)\parser\libxml2
-
 AXIS2_PARSER_OBJS = $(AXIS2_INTDIR_PARSER)\*.obj \
 		    $(AXIS2_INTDIR_PARSER)\libxml2\*.obj 
+
+PARSER_LIB= $(LIBXML2_BIN_DIR)\lib\libxml2.lib
+!else
+
+AXIS2_INTDIR_PARSER1 = $(AXIS2_INTDIR)\parser\guththila
+AXIS2_PARSER_OBJS = $(AXIS2_INTDIR_PARSER)\*.obj \
+		    $(AXIS2_INTDIR_PARSER)\guththila\*.obj
+
+PARSER_LIB = $(AXIS2_LIBS)\$(GUTHTHILA).lib
+!endif
 
 $(AXIS2_INTDIR_PARSER1) :
 	@if not exist $(AXIS2_INTDIR_PARSER1) mkdir $(AXIS2_INTDIR_PARSER1)
 
-
 {$(AXIS2_PARSER_SRC)}.c{$(AXIS2_INTDIR_PARSER)}.obj ::
 	$(CC) $(CFLAGS) /Fo$(AXIS2_INTDIR_PARSER)\ /c $<
 
+
+!if "$(ENABLE_LIBXML2)"=="1"
 {$(AXIS2_PARSER_SRC)\libxml2}.c{$(AXIS2_INTDIR_PARSER1)}.obj ::
 	$(CC) $(CFLAGS) /Fo$(AXIS2_INTDIR_PARSER1)\ /c $<
+!else
+{$(AXIS2_PARSER_SRC)\guththila}.c{$(AXIS2_INTDIR_PARSER1)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(AXIS2_INTDIR_PARSER1)\ /c $<
+!endif
 
 $(AXIS2_PARSER_OBJS) : $(AXIS2_INTDIR_PARSER) $(AXIS2_INTDIR_PARSER1)
 
-
 $(AXIS2_LIBS)\$(AXIS2_PARSER).dll : $(AXIS2_PARSER_OBJS)
-	$(LD) $(LDFLAGS) $(AXIS2_PARSER_OBJS) $(AXUTIL).lib $(LIBS) \
-	$(LIBXML2_BIN_DIR)\lib\libxml2.lib  /DLL \
+	$(LD) $(LDFLAGS) $(AXIS2_PARSER_OBJS) $(AXUTIL).lib $(LIBS) $(PARSER_LIB) /DLL \
 	/OUT:$(AXIS2_LIBS)\$(AXIS2_PARSER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_PARSER).lib
 	-@$(_VC_MANIFEST_EMBED_DLL)
 
 axis2_parser : $(AXIS2_LIBS)\$(AXIS2_PARSER).dll
 
-##### end libxml2 wrapper
+# decide build order
 
-##### guththila wrapper
+!if "$(ENABLE_LIBXML2)"=="1"
+axis2_basic_modules: axis2_util axis2_parser
+!else
+axis2_basic_modules: axis2_util guththila axis2_parser
+!endif
 
-GHTHTHILA_WRAPPER_SRC = $(AXIS2_PARSER_SRC)
-GUTHTHILA_WRAPPER_INTDIR = $(AXIS2_INTDIR_PARSER)
-GUTHTHILA_WRAPPER_INTDIR1 = $(AXIS2_INTDIR)\parser\guththila
-
-GUTHTHILA_WRAPPER_OBJS = $(GUTHTHILA_WRAPPER_INTDIR)\*.obj \
-			 $(GUTHTHILA_WRAPPER_INTDIR1)\*.obj
-
-$(GUTHTHILA_WRAPPER_INTDIR1) :
-	@if not exist $(GUTHTHILA_WRAPPER_INTDIR1) mkdir $(GUTHTHILA_WRAPPER_INTDIR1)
-
-{$(GHTHTHILA_WRAPPER_SRC)}.c{$(GUTHTHILA_WRAPPER_INTDIR)}.obj ::
-	$(CC) $(CFLAGS) /Fo$(GUTHTHILA_WRAPPER_INTDIR)\ /c $<
-
-{$(GHTHTHILA_WRAPPER_SRC)\guththila}.c{$(GUTHTHILA_WRAPPER_INTDIR1)}.obj ::
-	$(CC) $(CFLAGS) $(GUTHTHILA_INCLUDE_PATH) /Fo$(GUTHTHILA_WRAPPER_INTDIR1)\ /c $<
-
-$(GUTHTHILA_WRAPPER_OBJS) : $(GUTHTHILA_WRAPPER_INTDIR) $(GUTHTHILA_WRAPPER_INTDIR1)
-
-axis2_parser_with_guththila: $(GUTHTHILA_WRAPPER_OBJS)
-	$(LD) $(LDFLAGS) $(GUTHTHILA_WRAPPER_OBJS) $(AXUTIL).lib $(LIBS) $(AXIS2_LIBS)\$(GUTHTHILA).lib  /DLL \
-	/OUT:$(AXIS2_LIBS)\$(AXIS2_PARSER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_PARSER).lib
-	-@$(_VC_MANIFEST_EMBED_DLL)
-
-##### end guththila wrapper
+#end parser
 
 ##### axiom
 
@@ -785,8 +787,6 @@ simple_axis2_tcp_server : $(AXIS2_BINS)\$(AXIS2_TCP_SERVER).exe
 
 ##### end simple tcp server
 
-
-
 ##########  server modules 
 #apache module 
 
@@ -844,20 +844,16 @@ $(AXIS2_LIBS)\mod_axis2_IIS.dll : $(MOD_IIS_OBJS)
 
 axis2_IIS_module : $(AXIS2_LIBS)\mod_axis2_IIS.dll
 
-############# end modules  ###################
+# end modules
 
+#  Core Build Targets
+################################
 
-axis2_core: axis2_util axis2_parser axiom neethi axis2_engine axis2_http_sender \
+axis2_core:axis2_basic_modules axiom neethi axis2_engine axis2_http_sender \
 	axis2_http_receiver axis2_mod_addr simple_axis2_http_server
 
-axis2_core_without_server_guththila:  axis2_util guththila axis2_parser_with_guththila axiom neethi \
-	axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr
-
-axis2_core_without_server:  axis2_util axis2_parser axiom neethi axis2_engine axis2_http_sender \
+axis2_core_without_server:  axis2_basic_modules axiom neethi axis2_engine axis2_http_sender \
         axis2_http_receiver axis2_mod_addr
-
-axis2_core_guththila: axis2_util guththila axis2_parser_with_guththila axiom neethi axis2_engine \
-	axis2_http_sender axis2_http_receiver axis2_mod_addr simple_axis2_http_server
 
 axis2_tcp : axis2_tcp_sender axis2_tcp_receiver simple_axis2_tcp_server
 
@@ -865,15 +861,11 @@ axis2_tcp : axis2_tcp_sender axis2_tcp_receiver simple_axis2_tcp_server
 	
 MOD_LOG_SRC =  $(AXIS2_SOURCE_DIR)\src\modules\mod_log
 MOD_LOG_INTDIR = $(AXIS2_INTDIR)\mod_log
-
 MOD_LOG_OBJS = $(MOD_LOG_INTDIR)\*.obj
-
-
 
 $(MOD_LOG_INTDIR) :
 	@if not exist $(AXIS2_MDOULES)\logging mkdir $(AXIS2_MODULES)\logging
 	@if not exist $(MOD_LOG_INTDIR) mkdir $(MOD_LOG_INTDIR)
-
 
 {$(MOD_LOG_SRC)}.c{$(MOD_LOG_INTDIR)}.obj ::
 	$(CC) $(CFLAGS) /Fo$(MOD_LOG_INTDIR)\ /c $<
@@ -1379,10 +1371,11 @@ copy_vc_projects:
       @copy $(AXIS2_SOURCE_DIR)\ides\vc\samples\services\services.sln $(AXIS2_BINDIR)\ides\vc\samples\services
 
 copy_wsdl2c:
-       @if not exist $(AXIS2_BINDIR)\bin\tools\wsdl2c mkdir $(AXIS2_BINDIR)\bin\tools\wsdl2c
-       @copy $(AXIS2_SOURCE_DIR)\tools\codegen\javatool\README $(AXIS2_BINDIR)\bin\tools\wsdl2c
-       @copy $(AXIS2_SOURCE_DIR)\tools\codegen\javatool\WSDL2C.bat $(AXIS2_BINDIR)\bin\tools\wsdl2c
-       @copy $(AXIS2_SOURCE_DIR)\tools\codegen\javatool\WSDL2C.sh $(AXIS2_BINDIR)\bin\tools\wsdl2c
+	if not exist $(AXIS2_BINDIR)\bin\tools\wsdl2c mkdir $(AXIS2_BINDIR)\bin\tools\wsdl2c
+	@copy $(AXIS2_SOURCE_DIR)\tools\codegen\javatool\README $(AXIS2_BINDIR)\bin\tools\wsdl2c
+	@copy $(AXIS2_SOURCE_DIR)\tools\codegen\javatool\WSDL2C.bat $(AXIS2_BINDIR)\bin\tools\wsdl2c
+	@copy $(AXIS2_SOURCE_DIR)\tools\codegen\javatool\WSDL2C.sh $(AXIS2_BINDIR)\bin\tools\wsdl2c
+
 
 mv_dist:
 	cd $(AXIS2_BINDIR)
@@ -1431,12 +1424,10 @@ copy_axis2_xml:
 
 build: deploy axis2_core axis2_samples copy_include
 
-build_with_guththila : deploy axis2_core_guththila axis2_samples copy_include
-
 !if "$(WITH_TCP)" == "1"
-all: $(PARSER) axis2_tcp
+all: build axis2_tcp
 !else
-all: $(PARSER)
+all: build
 !endif
 
 ##############################################################################################
@@ -1445,5 +1436,5 @@ install: all copy_extra copy_wsdl2c
 
 dist: install axis2_apache_module axis2_IIS_module tcpmon copy_samples copy_vc_projects clean_manifest mv_dist
 
-dist_as_lib : deploy $(AXIS2_WITHOUT_SERVER) copy_axis2_xml copy_include clean_manifest mv_dist
-
+dist_as_lib : deploy axis2_core_without_server copy_axis2_xml copy_include clean_manifest mv_dist
+	
