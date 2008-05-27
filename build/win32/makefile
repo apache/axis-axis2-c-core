@@ -1,31 +1,34 @@
-# THIS IS THE MAKE FILE FOR AXIS2/C
-# This file should reside in the win32 directory of the source directory
-# when executed.
-# nmake [all]   - builds dlls, server and samples [ client, server ] 
-# nmake clean   - cleans everything
-# nmake samples - builds samples
-# nmake install - installs axis2 with server all modules and services
-# nmake dist    - creates the distribution, builds all distributable components
-
-# It is possible to run individual targets to build those targets only.
-#  eg: nmake axis2_apache_module, will build apache module
-
-
-# The default install directory is ..\deploy with a directory structure as 
-# follows.
+#######################################################################################
+## This is the make file for Axis2/C  						       					   
+#									                                                   
+# This file should reside in the win32 directory of the source directory when executed.
+# nmake [all]   - builds dlls, server and samples [ client, server ]                   
+# nmake clean   - cleans everything                                                    
+# nmake samples - builds samples                                                       
+# nmake install - installs axis2 with server all modules and services                  
+# nmake dist    - creates the distribution, builds all distributable components        
+#										                                             
+#										                                             
+# It is possible to run individual targets to build those targets only.                
+#  eg: nmake axis2_apache_module, will build httpd module of Axis2/C                   
+#  										                                             
+# The default install directory is ..\deploy with a directory structure as follows.    
+#                                                                                      
+#   AXIS2_BINDIR                                                                       
+#	|									                                             
+#	|- bin         - server and other executables                                      
+#       |- samples     - samples                                                       
+#       |- logs	       - log file location                                             
+#	|- lib	       - library modules                                                   
+#	|- services    - deployed services                                                 
+#	|- modules     - deployed modules                                                  
+#       |- include - Axis2/C header files                                                              
+#       |- tests                                                                       
+#            |- system_tests                                                           
+#            |- unit tests                                                             
 #
-#   AXIS2_BINDIR
-#	|
-#	|- bin         - server and other executables
-#       |- samples     - samples
-#       |- logs	       - log file location
-#	|- lib	       - library modules
-#	|- services    - deployed services will be hear
-#	|- modules     - deployed modules will be hear
-#       |- include - all include files of axis2 will go here
-#       |- tests
-#            |- system_tests
-#            |- unit tests           
+#########################################################################################
+
 
 AUTOCONF = configure.in
 !include $(AUTOCONF)
@@ -54,8 +57,8 @@ AXIS2_SOURCE_DIR = ..\..
 AXIS2_INTDIR= .\int.msvc
 AXIS2_INTDIR_SAMPLES = $(AXIS2_INTDIR)\samples
 
-#binary distribution dll names
-#core modules
+
+# Binary distribution librarys
 
 AXUTIL = axutil
 AXIS2_PARSER = axis2_parser
