@@ -101,12 +101,50 @@ BOOL WINAPI GetExtensionVersion(HSE_VERSION_INFO * pVer)
  */ 
 DWORD WINAPI HttpExtensionProc(LPEXTENSION_CONTROL_BLOCK lpECB) 
 {
-    lpECB->dwHttpStatusCode = HTTP_INTERNAL_SERVER_ERROR;
-    if (axis2_worker)
-        AXIS2_IIS_WORKER_PROCESS_REQUEST(axis2_worker, axutil_env, lpECB);
-    else
-        return HSE_STATUS_ERROR;
-    return HSE_STATUS_SUCCESS;}
+	DWORD rc = HSE_STATUS_ERROR;
+	lpECB->dwHttpStatusCode = HTTP_INTERNAL_SERVER_ERROR;
+	if (axis2_worker)
+	{
+		/* windows cannot find the correct dlls unless the dir is set
+		but we want to reset to previous dir after the load */
+		char szOriginalPath[_MAX_PATH + 1];
+		char szPath[_MAX_PATH + 1];
+		DWORD dwBufferSize = 0;
+		ZeroMemory(szOriginalPath, sizeof szOriginalPath);
+		dwBufferSize = sizeof szOriginalPath;
+#if _WIN32_WINNT >= 0x0502
+		GetDllDirectory( dwBufferSize, szOriginalPath );
+#else
+		GetCurrentDirectory( dwBufferSize, szOriginalPath );
+#endif
+
+		ZeroMemory(szPath, sizeof szPath);
+		dwBufferSize = sizeof szPath;
+		lpECB->GetServerVariable(lpECB->ConnID, "APPL_PHYSICAL_PATH", szPath, &dwBufferSize);
+		if ( strlen( szPath ) > 0 )
+		{
+			/* windows cannot find the correct dlls unless the path is set */
+#if _WIN32_WINNT >= 0x0502
+			SetDllDirectory( szPath );
+#else
+			SetCurrentDirectory( szPath );
+#endif
+		}
+
+		AXIS2_IIS_WORKER_PROCESS_REQUEST(axis2_worker, axutil_env, lpECB);
+
+		/* windows cannot find the correct dlls unless the dir is set
+		but we want to reset to previous dir after the load */
+#if _WIN32_WINNT >= 0x0502
+		SetDllDirectory( szOriginalPath );
+#else
+		SetCurrentDirectory( szOriginalPath );
+#endif
+	}
+	else
+		return HSE_STATUS_ERROR;
+	return HSE_STATUS_SUCCESS;
+}
 
 /**
  * This method initializes the axis2 engine. All the required variables are set to 

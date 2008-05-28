@@ -15,7 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
+ 
+
 #include <windows/axutil_windows.h>
 #include <stdio.h>
     
@@ -42,12 +44,15 @@ std::string* getPlatformErrorMessage(long errorNumber)
     return returningString;
 }
 */ 
-    AXIS2_EXTERN HMODULE AXIS2_CALL  callLoadLib(char *lib) 
+    AXIS2_EXTERN HMODULE AXIS2_CALL 
+ callLoadLib(char *lib) 
 {
     SetErrorMode(SEM_FAILCRITICALERRORS); //Disable display of the critical-error-handler message box
-    return LoadLibrary(lib);
+    return LoadLibraryEx(lib, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
 }
-AXIS2_EXTERN struct tm *AXIS2_CALL 
+
+
+AXIS2_EXTERN struct tm *AXIS2_CALL 
 axis2_win_gmtime(
     const time_t * timep,
     struct tm *result) 
@@ -63,4 +68,5 @@ please note that getting the exact error form Windows is a TODO. \
 And if possible please help fix it. :)";
 }
 
-
+
+
