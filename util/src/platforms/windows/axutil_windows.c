@@ -44,10 +44,11 @@ std::string* getPlatformErrorMessage(long errorNumber)
     return returningString;
 }
 */ 
-    AXIS2_EXTERN HMODULE AXIS2_CALL 
- callLoadLib(char *lib) 
+AXIS2_EXTERN HMODULE AXIS2_CALL 
+callLoadLib(char *lib) 
 {
-    SetErrorMode(SEM_FAILCRITICALERRORS); //Disable display of the critical-error-handler message box
+	/* Disable display of the critical-error-handler message box */
+    SetErrorMode(SEM_FAILCRITICALERRORS); 
     return LoadLibraryEx(lib, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
 }
 
