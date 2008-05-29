@@ -460,7 +460,7 @@ axis2_libxml2_reader_wrapper_next(
     if (ret_val == -1)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        " error occured in reading xml stream ");
+                        " error occurred in reading xml stream ");
         return -1;
     }
 
@@ -489,6 +489,15 @@ axis2_libxml2_reader_wrapper_next(
     }
 }
 
+
+/**
+* If your application crashes here, it may be due to an earlier call to
+* xmlCleanupParser() function. In client API, op_client create function has a call
+* to axiom_xml_reader_init and op_client_free function has a call to axiom_xml_reader_cleanup
+* function. You can avoid the call to axiom_xml_reader_cleanup using 
+* axis2_options_set_xml_parser_reset function in client API.
+* refer to jira issue:  https://issues.apache.org/jira/browse/AXIS2C-884
+*/
 void AXIS2_CALL
 axis2_libxml2_reader_wrapper_free(
     axiom_xml_reader_t * parser,
