@@ -262,7 +262,8 @@ axiom_mime_parser_parse(
     search_info = AXIS2_MALLOC(env->allocator,
         sizeof(axiom_search_info_t));
 
-    buf_array[buf_num] = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
+    buf_array[buf_num] = AXIS2_MALLOC(env->allocator, 
+            sizeof(axis2_char_t) * (size + 1));
 
     if(buf_array[buf_num])
     {
@@ -979,7 +980,7 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
                 }
             }
 
-            /*So lets cache the previous buffer which has underdone the
+            /*So lets cache the previous buffer which has undergone the
               full search and the partial search.  */
 
             status = axis2_caching_callback(env, buf_array[*buf_num - 1],
