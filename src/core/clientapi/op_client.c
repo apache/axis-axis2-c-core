@@ -1214,6 +1214,15 @@ axis2_op_client_two_way_send(
         engine = axis2_engine_create(env, conf_ctx);
         if (engine)
         {
+            property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HANDLER_ALREADY_VISITED);
+            if (property)
+            {
+                axis2_char_t *value = axutil_property_get_value(property, env);
+                if (!axutil_strcmp(AXIS2_VALUE_TRUE, value))
+                {
+                    return response;
+                }
+            }
             status = axis2_engine_receive(engine, env, response);
         }
     }
