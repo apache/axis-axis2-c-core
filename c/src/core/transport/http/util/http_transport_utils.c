@@ -324,9 +324,11 @@ axis2_http_transport_utils_process_http_post_request(
             axiom_mime_parser_t *mime_parser = NULL;
             int soap_body_len = 0;
             axutil_param_t *buffer_size_param = NULL;
-            axutil_param_t *max_buffers_param = 0;
+            axutil_param_t *max_buffers_param = NULL;
+            axutil_param_t *callback_name_param = NULL;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
+            axis2_char_t *value_callback = NULL;
             int size = 0;
             int num = 0;
 
@@ -357,6 +359,20 @@ axis2_http_transport_utils_process_http_post_request(
                 {
                     num = atoi(value_num);
                     axiom_mime_parser_set_max_buffers(mime_parser, env, num);
+                }
+            }
+
+            callback_name_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                                   env,
+                                                                   AXIS2_MTOM_CACHING_CALLBACK);
+
+            if(callback_name_param)
+            {
+                value_callback =
+                    (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
+                if(value_callback)
+                {
+                    axiom_mime_parser_set_caching_callback_name(mime_parser, env, value_callback);
                 }
             }
 
@@ -742,9 +758,11 @@ axis2_http_transport_utils_process_http_put_request(
             axiom_mime_parser_t *mime_parser = NULL;
             int soap_body_len = 0;
             axutil_param_t *buffer_size_param = NULL;
-            axutil_param_t *max_buffers_param = 0;
+            axutil_param_t *max_buffers_param = NULL;
+            axutil_param_t *callback_name_param = NULL;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
+            axis2_char_t *value_callback = NULL;
             int size = 0;
             int num = 0;
 
@@ -778,6 +796,21 @@ axis2_http_transport_utils_process_http_put_request(
                     axiom_mime_parser_set_max_buffers(mime_parser, env, num);
                 }
             }
+   
+            callback_name_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                                   env,
+                                                                   AXIS2_MTOM_CACHING_CALLBACK);
+
+            if(callback_name_param)
+            {
+                value_callback =
+                    (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
+                if(value_callback)
+                {
+                    axiom_mime_parser_set_caching_callback_name(mime_parser, env, value_callback);
+                }
+            }
+
 
             if (mime_parser)
             {
@@ -1913,9 +1946,11 @@ axis2_http_transport_utils_create_soap_msg(
             int soap_body_len = 0;
             axis2_char_t *soap_body_str = NULL;
             axutil_param_t *buffer_size_param = NULL;
-            axutil_param_t *max_buffers_param = 0;
+            axutil_param_t *max_buffers_param = NULL;
+            axutil_param_t *callback_name_param = NULL;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
+            axis2_char_t *value_callback = NULL;
             int size = 0;
             int num = 0;
  
@@ -1950,7 +1985,21 @@ axis2_http_transport_utils_create_soap_msg(
                     axiom_mime_parser_set_max_buffers(mime_parser, env, num);
                 }
             }
-            
+           
+            callback_name_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                                   env,
+                                                                   AXIS2_MTOM_CACHING_CALLBACK);
+            if(callback_name_param)
+            {
+                value_callback =
+                    (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
+                if(value_callback)
+                {
+                    axiom_mime_parser_set_caching_callback_name(mime_parser, env, value_callback);
+                }
+            }
+   
+ 
             if (mime_parser)
             {
                 binary_data_map = 
