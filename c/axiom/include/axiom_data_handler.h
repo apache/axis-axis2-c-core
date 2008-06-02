@@ -75,6 +75,29 @@ extern "C"
     /**
      * @param data_handler, a pointer to data handler struct
      * @param env environment, MUST NOT be NULL.
+     * @return bool whether attachment is cached or not
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axiom_data_handler_get_cached(
+        axiom_data_handler_t * data_handler,
+        const axutil_env_t * env);
+	
+    /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
+	 * @param cached, 
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_data_handler_set_cached(
+        axiom_data_handler_t * data_handler,
+        const axutil_env_t * env,
+		axis2_bool_t cached);
+
+
+    /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
      * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
      */
     AXIS2_EXTERN axis2_byte_t *AXIS2_CALL

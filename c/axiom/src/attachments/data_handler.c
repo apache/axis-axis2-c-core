@@ -26,6 +26,7 @@ struct axiom_data_handler
     axis2_byte_t *buffer;
     int buffer_len;
     axiom_data_handler_type_t data_handler_type;
+    axis2_bool_t cached;
 };
 
 AXIS2_EXTERN axiom_data_handler_t *AXIS2_CALL
@@ -54,6 +55,7 @@ axiom_data_handler_create(
     data_handler->buffer_len = 0;
     /* By default, a Data Handler is of type Buffer */
     data_handler->data_handler_type = AXIOM_DATA_HANDLER_TYPE_BUFFER;
+    data_handler->cached = AXIS2_FALSE;
 
     if (mime_type)
     {
@@ -127,6 +129,25 @@ axiom_data_handler_set_content_type(
 	data_handler->mime_type = axutil_strdup(env, mime_type);
     return AXIS2_SUCCESS;
 }
+
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axiom_data_handler_get_cached(
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env)
+{
+    return data_handler->cached;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axiom_data_handler_set_cached(
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env,
+	axis2_bool_t cached)
+{
+    data_handler->cached = cached;
+}
+
 
 AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
 axiom_data_handler_get_input_stream(
