@@ -138,6 +138,7 @@ AC_CONFIG_FILES([Makefile \
     client/yahoo/Makefile \
     user_guide/Makefile \
     user_guide/clients/Makefile \
+    mtom_caching_callback/Makefile
     ])
     
 AC_OUTPUT
