@@ -929,7 +929,7 @@ axis2_apache2_worker_process_request(
                 in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
                 if (in_msg_ctx)
                 {
-                    /* TODO: Add neccessary handling */
+                    /* TODO: Add necessary handling */
                 }
                 if (out_msg_ctx)
                 {
@@ -1028,7 +1028,7 @@ axis2_apache2_worker_process_request(
                 in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
                 if (in_msg_ctx)
                 {
-                    /* TODO: Add neccessary handling */
+                    /* TODO: Add necessary handling */
                 }
                 if (out_msg_ctx)
                 {
