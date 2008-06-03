@@ -531,6 +531,7 @@ axis2_http_transport_utils_process_http_post_request(
             }
             axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
             axis2_msg_ctx_set_rest_http_method(msg_ctx, env, AXIS2_HTTP_POST);
+			axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
         }
         else
         {
@@ -718,7 +719,7 @@ axis2_http_transport_utils_process_http_put_request(
         if (value &&
             axutil_strstr(value, AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
         {
-            /* this is an UGLY hack to get some of the trnaports working 
+            /* this is an UGLY hack to get some of the transports working 
                e.g. PHP transport where it strips the chunking info in case of chunking 
                and also gives out a content lenght of 0.
                We need to fix the transport design to fix sutuations like this.
@@ -919,6 +920,7 @@ axis2_http_transport_utils_process_http_put_request(
             }
             axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
             axis2_msg_ctx_set_rest_http_method(msg_ctx, env, AXIS2_HTTP_PUT);
+			axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
         }
         else
         {
@@ -1067,21 +1069,19 @@ axis2_http_transport_utils_process_http_head_request(
         axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_FALSE);
     }
 
-    if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env,
-                                                                        msg_ctx))
-    {
-        return AXIS2_FALSE;
-    }
-
     soap_envelope =
-        axis2_http_transport_utils_handle_media_type_url_encoded(env, msg_ctx,
-                                                                 request_params,
+        axis2_http_transport_utils_handle_media_type_url_encoded(env, msg_ctx, 
+																 request_params,
                                                                  AXIS2_HTTP_HEAD);
     if (!soap_envelope)
     {
         return AXIS2_FALSE;
     }
     axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
+	if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env, msg_ctx))
+	{
+		return AXIS2_FALSE;
+	}
     engine = axis2_engine_create(env, conf_ctx);
     axis2_engine_receive(engine, env, msg_ctx);
     return AXIS2_TRUE;
@@ -1134,12 +1134,6 @@ axis2_http_transport_utils_process_http_get_request(
         axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_FALSE);
     }
 
-    if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env,
-                                                                        msg_ctx))
-    {
-        return AXIS2_FALSE;
-    }
-
     soap_envelope =
         axis2_http_transport_utils_handle_media_type_url_encoded(env, msg_ctx,
                                                                  request_params,
@@ -1149,6 +1143,11 @@ axis2_http_transport_utils_process_http_get_request(
         return AXIS2_FALSE;
     }
     axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
+	if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env, msg_ctx))
+	{
+		return AXIS2_FALSE;
+	}
+
     engine = axis2_engine_create(env, conf_ctx);
     axis2_engine_receive(engine, env, msg_ctx);
     return AXIS2_TRUE;
@@ -1201,11 +1200,6 @@ axis2_http_transport_utils_process_http_delete_request(
         axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_FALSE);
     }
 
-    if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env,
-                                                                        msg_ctx))
-    {
-        return AXIS2_FALSE;
-    }
 
     soap_envelope =
         axis2_http_transport_utils_handle_media_type_url_encoded(env, msg_ctx,
@@ -1215,7 +1209,14 @@ axis2_http_transport_utils_process_http_delete_request(
     {
         return AXIS2_FALSE;
     }
-    axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
+    
+	axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
+
+
+	if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env, msg_ctx))
+	{
+		return AXIS2_FALSE;
+	}
     engine = axis2_engine_create(env, conf_ctx);
     axis2_engine_receive(engine, env, msg_ctx);
     return AXIS2_TRUE;
