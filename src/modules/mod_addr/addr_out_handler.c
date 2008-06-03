@@ -714,7 +714,7 @@ axis2_addr_out_handler_add_to_soap_header(
         }
 
         size = axutil_array_list_size(ref_param_list, env);
-        for (i = 0; size; i++)
+        for (i = 0; i < size; i++)
         {
             axiom_node_t *ref_node =
                 (axiom_node_t *) axutil_array_list_get(ref_param_list, env, i);
