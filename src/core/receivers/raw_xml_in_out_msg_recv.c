@@ -220,7 +220,6 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
                 AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node, new_msg_ctx);
         }
 
-        axis2_msg_ctx_set_no_content(new_msg_ctx, env, AXIS2_FALSE);
         if (result_node)
         {
             if (0 == axutil_strcmp(style, AXIS2_STYLE_RPC))
@@ -354,6 +353,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         {
             fault_detail =
                 axiom_soap_fault_detail_create_with_parent(env, soap_fault);
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "fault_detail:%s", fault_detail);
             axiom_soap_fault_detail_add_detail_entry(fault_detail, env,
                                                      fault_node);
         }

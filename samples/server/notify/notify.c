@@ -26,7 +26,9 @@ axis2_notify_notify(
     axiom_node_t *text_node = NULL;
 
     if (!env || !env)
+    {
         return;
+    }
 
     /* Expected request format is :-
        <m:notify xmlns:m="http://example.org/notify">Message 3</m:notify>
@@ -35,7 +37,7 @@ axis2_notify_notify(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL,
                         AXIS2_FAILURE);
-        printf("Echo client ERROR: input parameter NULL\n");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Echo client ERROR: input parameter NULL");
         return;
     }
 
@@ -45,7 +47,7 @@ axis2_notify_notify(
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST,
                         AXIS2_FAILURE);
-        printf("Echo client ERROR: invalid XML in request\n");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Echo client ERROR: invalid XML in request");
         return;
     }
 
@@ -57,7 +59,7 @@ axis2_notify_notify(
         {
             axis2_char_t *text_str =
                 (axis2_char_t *) axiom_text_get_value(text, env);
-            printf("Notification received :  %s \n", text_str);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Notification received :  %s", text_str);
         }
     }
     else
@@ -65,9 +67,11 @@ axis2_notify_notify(
         AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST,
                         AXIS2_FAILURE);
-        printf("Echo client ERROR: invalid XML in request\n");
+        printf("\n");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Echo client ERROR: invalid XML in request");
         return;
     }
 
     return;
 }
+
