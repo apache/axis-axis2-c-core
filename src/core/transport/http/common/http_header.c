@@ -71,7 +71,7 @@ axis2_http_header_create_by_str(
         return NULL;
     }
     /* remove trailing \r\n */
-    if (AXIS2_RETURN == tmp_str[axutil_strlen(tmp_str) - 2])
+    if ((axutil_strlen(tmp_str) >= 2) && (AXIS2_RETURN == tmp_str[axutil_strlen(tmp_str) - 2]))
     {
         tmp_str[axutil_strlen(tmp_str) - 2] = AXIS2_ESC_NULL;
     }
