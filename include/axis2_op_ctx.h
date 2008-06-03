@@ -144,7 +144,9 @@ extern "C"
      * Gets message context with the given message ID.
      * @param op_ctx pointer to operation context
      * @param env pointer to environment struct
-     * @param message_id message ID string
+     * @param message_id message label of type axis2_wsdl_msg_labels_t. 
+	 * This can be one of AXIS2_WSDL_MESSAGE_LABEL_IN or AXIS2_WSDL_MESSAGE_LABEL_OUT 
+	 * from the axis2_wsdl_msg_labels enum.
      * @return pointer to message context with given ID
      */
     AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
