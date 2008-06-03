@@ -1724,7 +1724,7 @@ static void* axiom_mime_parser_initiate_callback(
         if (!ptr)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "[rampart][rampart_util] Unable to load the module %s. ERROR", mime_parser->callback_name);
+                "Unable to load the module %s. ERROR", mime_parser->callback_name);
             return NULL;
         }
 
