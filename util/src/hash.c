@@ -566,7 +566,7 @@ axutil_hash_contains_key(
     return AXIS2_FALSE;
 }
 
-static void
+void
 axutil_hash_entry_free(
     const axutil_env_t *env,
     axutil_hash_entry_t *hash_entry)
