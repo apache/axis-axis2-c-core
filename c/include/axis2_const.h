@@ -355,6 +355,7 @@ extern "C"
 #define AXIS2_FILE_SIZE_THRESHOLD "sizeThreshold"
 #define AXIS2_MTOM_BUFFER_SIZE "MTOMBufferSize"
 #define AXIS2_MTOM_MAX_BUFFERS "MTOMMaxBuffers"
+#define AXIS2_MTOM_CACHING_CALLBACK "MTOMCachingCallback"
 
     /* op_ctx persistance */
 #define AXIS2_PERSIST_OP_CTX "persistOperationContext"
