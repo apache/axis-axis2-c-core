@@ -1142,22 +1142,26 @@ axis2_op_register_op_ctx(
             "registering operation context for operation %s", opname);
         return AXIS2_FAILURE;
     }
-    msg_id = axis2_msg_ctx_get_msg_id(msg_ctx, env);
-    if (!msg_id)
-    {
 
-        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, 
-            "Message id not found for message context while "\
-            "registering operation context for operation %s", opname);
-        return AXIS2_FAILURE;
-    }
     status = axis2_msg_ctx_set_op_ctx(msg_ctx, env, op_ctx);
-    if (AXIS2_FAILURE == status)
+
+    if (AXIS2_SUCCESS != status)
     {
         axutil_hash_t *op_ctx_map = NULL;
-        op_ctx_map =
-            (axutil_hash_t *) axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
-        axutil_hash_set(op_ctx_map, msg_id, AXIS2_HASH_KEY_STRING, NULL);
+
+        msg_id = axis2_msg_ctx_get_msg_id(msg_ctx, env);
+        if (msg_id)
+        {
+            op_ctx_map = (axutil_hash_t *) axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
+            axutil_hash_set(op_ctx_map, msg_id, AXIS2_HASH_KEY_STRING, NULL);
+        }
+        else
+        {
+            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, 
+                "Message id not found for message context while registering operation context "\
+                "for operation %s. The reason could be that there is no addressing enabled for "\
+                "communication", opname);
+        }
     }
     if (axis2_op_ctx_get_is_complete(op_ctx, env))
     {
