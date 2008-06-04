@@ -235,9 +235,9 @@ process_response_node(
         data_handler = axiom_text_get_data_handler(axiom_text, env);
 
         /*axiom_data_handler_set_file_name(data_handler, env, (axis2_char_t *)to_save_name);*/
-        if(axiom_data_handler_get_cached) 
+        if(axiom_data_handler_get_cached(data_handler, env)) 
         {
-            printf("Attachmrnt is cached.\n");    
+            printf("Attachment is cached.\n");    
         }   
         else
         {

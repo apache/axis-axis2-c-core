@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <axiom_caching_callback.h>
 #include <axutil_class_loader.h>
+#include <axutil_http_chunked_stream.h>
 
 struct axiom_mime_parser
 {
@@ -160,6 +161,10 @@ static void* axiom_mime_parser_initiate_callback(
     axiom_mime_parser_t *mime_parser,
     const axutil_env_t *env);
 
+static axis2_bool_t axiom_mime_parser_is_more_data(
+    axiom_mime_parser_t *mime_parser,
+    const axutil_env_t *env,
+    axis2_callback_info_t *callback_info);
 
 AXIS2_EXTERN axiom_mime_parser_t *AXIS2_CALL
 axiom_mime_parser_create(
@@ -244,6 +249,9 @@ axiom_mime_parser_parse(
     axis2_status_t status = AXIS2_FAILURE; 
     axis2_char_t *buffer = NULL;
     int malloc_len = 0;
+    axis2_callback_info_t *callback_info = NULL;
+
+    callback_info = (axis2_callback_info_t *)callback_ctx;
 
     size = AXIOM_MIME_PARSER_BUFFER_SIZE * (mime_parser->buffer_size); 
 
@@ -339,9 +347,13 @@ axiom_mime_parser_parse(
             {
                 memcpy(buffer, pos + 4, malloc_len);
             }
-            len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);           
+
+            if(axiom_mime_parser_is_more_data(mime_parser, env, callback_info))
+            {
+                len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);           
+            }
             axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-            if(len > 0)
+            if(len >= 0)
             {
                 buf_array[buf_num] = buffer;
                 len_array[buf_num] = malloc_len + len;                    
@@ -369,9 +381,12 @@ axiom_mime_parser_parse(
             {
                 memcpy(buffer, buf_array[buf_num] + search_info->match_len2, malloc_len);        
             }
-            len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
+            if(axiom_mime_parser_is_more_data(mime_parser, env, callback_info))
+            {
+                len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
+            }
             axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-            if(len > 0)
+            if(len >= 0)
             {
                 buf_array[buf_num] = buffer;
                 len_array[buf_num] = malloc_len + len; 
@@ -436,9 +451,13 @@ axiom_mime_parser_parse(
                 {
                     memcpy(buffer, pos + temp_mime_boundary_size, malloc_len);
                 }
-                len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
+                if(axiom_mime_parser_is_more_data(mime_parser, env, callback_info))
+                {
+                    len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
+                }
+
                 axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-                if(len > 0)
+                if(len >= 0)
                 {
                     buf_array[buf_num] = buffer;
                     len_array[buf_num] = malloc_len + len;
@@ -481,9 +500,13 @@ axiom_mime_parser_parse(
                 {
                     memcpy(buffer, buf_array[buf_num] + search_info->match_len2, malloc_len);
                 }
-                len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
+
+                if(axiom_mime_parser_is_more_data(mime_parser, env, callback_info))
+                {
+                    len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
+                }
                 axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-                if(len > 0)
+                if(len >= 0)
                 {
                     buf_array[buf_num] = buffer;
                     len_array[buf_num] = malloc_len + len;
@@ -577,10 +600,14 @@ axiom_mime_parser_parse(
                     {
                         memcpy(buffer, pos + 4, malloc_len);
                     }
-                    len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
+                    
+                    if(axiom_mime_parser_is_more_data(mime_parser, env, callback_info))
+                    {
+                        len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
+                    }
 
                     axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-                    if(len > 0)
+                    if(len >= 0)
                     {
                         buf_array[buf_num] = buffer;
                         len_array[buf_num] = malloc_len + len;
@@ -625,9 +652,12 @@ axiom_mime_parser_parse(
                     {
                         memcpy(buffer, buf_array[buf_num] + search_info->match_len2, malloc_len);
                     }
-                    len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
+                    if(axiom_mime_parser_is_more_data(mime_parser, env, callback_info))
+                    {
+                        len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
+                    }
                     axiom_mime_parser_clear_buffers(env, buf_array, part_start, buf_num);
-                    if(len > 0)
+                    if(len >= 0)
                     {
                         buf_array[buf_num] = buffer;
                         len_array[buf_num] = malloc_len + len;
@@ -728,8 +758,11 @@ axiom_mime_parser_parse(
 
                     if(malloc_len != 2)
                     {
-                        len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);        
-                        if(len > 0)
+                        if(axiom_mime_parser_is_more_data(mime_parser, env, callback_info))
+                        {
+                            len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);        
+                        }
+                        if(len >= 0)
                         {
                             len_array[buf_num] = malloc_len + len;
                         }
@@ -763,8 +796,11 @@ axiom_mime_parser_parse(
                     }
                     if(malloc_len != 2)
                     {
-                        len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
-                        if(len > 0)
+                        if(axiom_mime_parser_is_more_data(mime_parser, env, callback_info))
+                        {
+                            len = callback(buffer + malloc_len, size - malloc_len, (void *) callback_ctx);
+                        }
+                        if(len >= 0)
                         {
                             len_array[buf_num] = malloc_len + len;
                         }
@@ -1739,4 +1775,32 @@ static void* axiom_mime_parser_initiate_callback(
         return NULL;
     }
 
+}
+
+static axis2_bool_t axiom_mime_parser_is_more_data(
+    axiom_mime_parser_t *mime_parser,
+    const axutil_env_t *env,
+    axis2_callback_info_t *callback_info)
+{
+    if(callback_info->chunked_stream)
+    {
+        if(axutil_http_chunked_stream_get_end_of_chunks(
+            callback_info->chunked_stream, env))
+        {
+            return AXIS2_FALSE;
+        }
+        else
+        {
+            return AXIS2_TRUE;
+        }
+    }
+
+    else if(callback_info->unread_len <= 0)
+    {
+        return AXIS2_FALSE;
+    }
+    else
+    {
+        return AXIS2_TRUE;
+    }
 }

@@ -40,7 +40,18 @@ caching_callback_init_handler(axiom_caching_callback_t *caching_callback,
                               const axutil_env_t* env)
 {
     FILE *fp = NULL;
+    
+
     fp = fopen("/tmp/attachment", "a+");
+
+    #if !defined(WIN32)
+    {
+        axis2_char_t permission_str[256];
+        sprintf(permission_str, "chmod 777 /tmp/attachment");
+        system(permission_str);
+    }
+    #endif
+
     return (void *)fp;
 }
 
