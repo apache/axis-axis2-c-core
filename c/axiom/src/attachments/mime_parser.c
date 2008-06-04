@@ -211,6 +211,20 @@ axiom_mime_parser_free(
 
     /* This map is passed on to SOAP builder, and SOAP builder take over the
        ownership of the map */
+    if(mime_parser->caching_callback)
+    {
+        axutil_param_t *param = NULL;
+        param = mime_parser->caching_callback->param;
+
+        AXIOM_CACHING_CALLBACK_FREE(mime_parser->caching_callback, env);
+        mime_parser->caching_callback = NULL;
+
+        if(param)
+        {
+            axutil_param_free(param, env);
+            param = NULL;
+        }
+    }
 
     if (mime_parser)
     {
