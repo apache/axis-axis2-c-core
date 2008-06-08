@@ -897,6 +897,10 @@ axis2_op_client_infer_transport(
         {
             transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
         }
+		else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_AMQP))
+		{
+			transport_enum = AXIS2_TRANSPORT_ENUM_AMQP;
+		}
 
         conf_ctx = axis2_svc_ctx_get_conf_ctx(op_client->svc_ctx, env);
         if (conf_ctx)
