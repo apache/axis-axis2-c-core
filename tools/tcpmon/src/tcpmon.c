@@ -70,8 +70,8 @@ main(
 {
     axutil_env_t *env = NULL;
     int c;
-    int listen_port = 9090,
-        target_port = 8080;
+    int listen_port = 9099,
+        target_port = 9090; /* the default port simple axis2 server is run on 9090  */
     int test_bit = 0;
     int format_bit = 0;
     int ii = 1;
@@ -83,9 +83,9 @@ main(
              argv[0]);
         fprintf(stdout, " Options :\n");
         fprintf(stdout,
-                "\t-lp LISTEN_PORT \tport number to listen on, default is 9090\n");
+                "\t-lp LISTEN_PORT \tport number to listen on, default is 9099\n");
         fprintf(stdout,
-                "\t-tp TARGET_PORT \tport number to connect and re-direct messages, default is 8080\n");
+                "\t-tp TARGET_PORT \tport number to connect and re-direct messages, default is 9090\n");
         fprintf(stdout,
                 "\t-th TARGET_HOST \ttarget host to connect, default is localhost\n");
         fprintf(stdout,
@@ -107,50 +107,58 @@ main(
     signal(SIGPIPE, sig_handler);
 #endif
 
-    target_host = axutil_strdup(env, "localhost");
+    target_host = axutil_strdup(env, "localhost"); 
 
     while (ii < argc)
     {
         if (!strcmp("-lp", argv[ii]))
         {
             ii++;
-            listen_port = atoi(argv[ii++]);
-            if (listen_port == 0)
+            if (argv[ii])
             {
-                printf("INVALID value for listen port\n");
-                printf("Use -h for help\n");
-                AXIS2_FREE(env->allocator, target_host);
-                if (env)
+                listen_port = atoi(argv[ii++]);
+                if (listen_port == 0)
                 {
-                    axutil_env_free((axutil_env_t *) env);
-                    env = NULL;
+                    printf("INVALID value for listen port\n");
+                    printf("Use -h for help\n");
+                    AXIS2_FREE(env->allocator, target_host);
+                    if (env)
+                    {
+                        axutil_env_free((axutil_env_t *) env);
+                        env = NULL;
+                    }
+                    return 0;
                 }
-                return 0;
             }
-
         }
         else if (!strcmp("-tp", argv[ii]))
         {
             ii++;
-            target_port = atoi(argv[ii++]);
-            if (target_port == 0)
+            if (argv[ii])
             {
-                printf("INVALID value for target port\n");
-                printf("Use -h for help\n");
-                AXIS2_FREE(env->allocator, target_host);
-                if (env)
+                target_port = atoi(argv[ii++]);
+                if (target_port == 0)
                 {
-                    axutil_env_free((axutil_env_t *) env);
-                    env = NULL;
+                    printf("INVALID value for target port\n");
+                    printf("Use -h for help\n");
+                    AXIS2_FREE(env->allocator, target_host);
+                    if (env)
+                    {
+                        axutil_env_free((axutil_env_t *) env);
+                        env = NULL;
+                    }
+                    return 0;
                 }
-                return 0;
             }
         }
         else if (!strcmp("-th", argv[ii]))
         {
             ii++;
-            AXIS2_FREE(env->allocator, target_host);
-            target_host = (char *) axutil_strdup(env, argv[ii++]);
+            if (argv[ii])
+            {
+                AXIS2_FREE(env->allocator, target_host);
+                target_host = (char *) axutil_strdup(env, argv[ii++]);
+            }
         }
         else if (!strcmp("--test", argv[ii]))
         {
@@ -165,7 +173,10 @@ main(
         else if (!strcmp("-f", argv[ii]))
         {
             ii++;
-            tcpmon_traffic_log = argv[ii++];
+            if (argv[ii])
+            {
+                tcpmon_traffic_log = argv[ii++];
+            }
         }
         else
         {
