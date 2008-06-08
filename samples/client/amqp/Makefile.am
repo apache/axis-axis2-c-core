@@ -1,0 +1,2 @@
+SUBDIRS = echo
+SUBDIRS = echo
