@@ -478,9 +478,10 @@ axis2_addr_out_handler_invoke(
                                                        AXIS2_WSA_MESSAGE_ID,
                                                        &soap_header, addr_ns);
         }
-
+        
         relates_to =
             axis2_msg_info_headers_get_relates_to(msg_info_headers, env);
+
         if (relates_to)
         {
             const axis2_char_t *value = NULL;

@@ -283,6 +283,9 @@ axis2_listener_manager_worker_func(
         return NULL;
 
     th_env = axutil_init_thread_env(args_list->env);
+    /* Start the protocol server. For examlle if protocol is http axis2_http_server_start function
+     * of the axis2_http_receiver is called.
+     */
     if (args_list->listener)
     {
         axis2_transport_receiver_start(args_list->listener, th_env);

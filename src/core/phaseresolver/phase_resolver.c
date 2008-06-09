@@ -38,6 +38,23 @@ struct axis2_phase_resolver
     axis2_svc_t *svc;
 };
 
+/*
+ * Engages the given global module to the given service. This means 
+ * the given module would be engaged to all operations of the given 
+ * service.
+ * @param phase_resolver pointer to phase resolver
+ * @param env pointer to environment struct
+ * @param svc pointer to service
+ * @param module_desc pointer to module description
+ * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+ */
+static axis2_status_t
+axis2_phase_resolver_engage_module_to_svc_from_global(
+    axis2_phase_resolver_t * phase_resolver,
+    const axutil_env_t * env,
+    struct axis2_svc *svc,
+    struct axis2_module_desc *module_desc);
+
 static axis2_status_t axis2_phase_resolver_build_execution_chains(
     axis2_phase_resolver_t * phase_resolver,
     const axutil_env_t * env,
@@ -1059,7 +1076,7 @@ axis2_phase_resolver_engage_module_globally(
  * axis2_phase_resolver_engage_module_globally() to add handlers from module
  * into each services all operations.
  */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+static axis2_status_t
 axis2_phase_resolver_engage_module_to_svc_from_global(
     axis2_phase_resolver_t * phase_resolver,
     const axutil_env_t * env,
@@ -1076,6 +1093,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
         "Entry:axis2_phase_resolver_engage_module_to_svc_from_global");
+
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     svc_name = axis2_svc_get_name(svc, env);
@@ -1279,8 +1297,10 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
             return status;
         }
     }
+
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
         "Exit:axis2_phase_resolver_engage_module_to_svc_from_global");
+
     return AXIS2_SUCCESS;
 }
 

@@ -22,7 +22,7 @@
 #include <axis2_client.h>
 
 /* my on_complete callback function */
-axis2_status_t AXIS2_CALL echo_callback_on_complete(
+axis2_status_t AXIS2_CALL echo_process_response_envelope(
     struct axis2_callback * callback,
     const axutil_env_t * env);
 
@@ -33,7 +33,6 @@ axis2_status_t AXIS2_CALL echo_callback_on_error(
     int exception);
 
 /* to check whether the callback is completed */
-int isComplete = 0;
 
 int
 main(
@@ -107,7 +106,7 @@ main(
     callback = axis2_callback_create(env);
 
     /* Set our on_complete fucntion pointer to the callback object */
-    axis2_callback_set_on_complete(callback, echo_callback_on_complete);
+    /*axis2_callback_set_on_complete(callback, echo_callback_on_complete);*/
 
     /* Set our on_error function pointer to the callback object */
     axis2_callback_set_on_error(callback, echo_callback_on_error);
@@ -118,27 +117,21 @@ main(
 
     /** Wait till callback is complete. Simply keep the parent thread running
        until our on_complete or on_error is invoked */
-    while (count < 30)
+    
+    while(!axis2_callback_get_complete(callback, env))
     {
-        if (isComplete)
-        {
-            /* We are done with the callback */
-            break;
-        }
         AXIS2_SLEEP(1);
-        count++;
+        if(count < 30)
+        {
+            count++;
+        }
+        else
+        {
+            printf("\necho client invoke FAILED. Counter timed out.\n");
+        }
+        
     }
-
-    if (!(count < 30))
-    {
-        printf("\necho client invoke FAILED. Counter timed out.\n");
-    }
-
-    if (svc_client)
-    {
-        axis2_svc_client_free(svc_client, env);
-        svc_client = NULL;
-    }
+    echo_process_response_envelope(callback, env);
 
     if (env)
     {
@@ -150,7 +143,7 @@ main(
 }
 
 axis2_status_t AXIS2_CALL
-echo_callback_on_complete(
+echo_process_response_envelope(
     struct axis2_callback * callback,
     const axutil_env_t * env)
 {
@@ -198,7 +191,7 @@ echo_callback_on_complete(
             printf("\necho client invoke SUCCESSFUL!\n");
         }
     }
-    isComplete = 1;
+
     return status;
 }
 
@@ -212,6 +205,6 @@ echo_callback_on_error(
     /** take necessary action on error */
     printf("\necho client invike FAILED. Error code:%d ::%s", exception,
            AXIS2_ERROR_GET_MESSAGE(env->error));
-    isComplete = 1;
+    
     return AXIS2_SUCCESS;
 }
