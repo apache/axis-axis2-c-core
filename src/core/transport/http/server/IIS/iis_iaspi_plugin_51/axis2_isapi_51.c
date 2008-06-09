@@ -22,6 +22,11 @@
 #include <string.h>
 #include <httpfilt.h>
     
+#include <axis2_const.h>
+#include <axis2_defines.h>
+#include <axutil_env.h>
+#include <axutil_stream.h>
+
 #include "..\\axis2_iis_constants.h"
 
 static axis2_char_t redirect_word[INTERNET_MAX_URL_LENGTH] = "/axis2/mod_axis2_IIS.dll\?";
