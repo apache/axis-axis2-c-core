@@ -22,7 +22,6 @@
 #include <string.h>
 #include <httpfilt.h>
     
-#include "..\\axis2_isapi_plugin.h"
 #include "..\\axis2_iis_constants.h"
 
 static axis2_char_t redirect_word[INTERNET_MAX_URL_LENGTH] = "/axis2/mod_axis2_IIS.dll\?";
