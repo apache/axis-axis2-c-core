@@ -373,11 +373,11 @@ axis2_status_t AXIS2_CALL read_registery_init_data()
 	}
 	if (get_registry_config_parameter(hkey, AXIS2_IIS_SERVICE_URL_PREFIX, tmpbuf, sizeof(tmpbuf)))
 	{
-		axis2_request_url_prefix = strdup(tmpbuf); 
+		axis2_request_url_prefix = _strdup(tmpbuf); 
 	}
 	if (get_registry_config_parameter(hkey, AXIS2_IIS_AXIS2_LOCATION, tmpbuf, sizeof(tmpbuf)))
 	{
-		axis2_location = strdup(tmpbuf); 
+		axis2_location = _strdup(tmpbuf); 
 	}
     RegCloseKey(hkey);
     return ok;
