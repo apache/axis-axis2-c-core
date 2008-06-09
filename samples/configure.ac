@@ -136,6 +136,8 @@ AC_CONFIG_FILES([Makefile \
     client/notify/Makefile \
     client/google/Makefile \
     client/yahoo/Makefile \
+    client/amqp/Makefile \
+    client/amqp/echo/Makefile \
     user_guide/Makefile \
     user_guide/clients/Makefile \
     ])

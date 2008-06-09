@@ -1,2 +1,1 @@
 SUBDIRS = echo
-SUBDIRS = echo
