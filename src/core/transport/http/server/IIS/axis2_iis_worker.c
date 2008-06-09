@@ -173,9 +173,14 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
 	if (server_version <= 5)
 	{
 		axis2_worker_get_original_url(redirect_url, original_url);
+		/* create the url using the above variables */                     
+		sprintf(req_url, "%s%s%s%s", "http://", server_name, port, original_url);
 	}
-    /* create the url using the above variables */                     
-	sprintf(req_url, "%s%s%s%s", "http://", server_name, port, original_url);
+	else
+	{
+		sprintf(req_url, "%s%s%s%s", "http://", server_name, port, redirect_url);
+	}
+
     out_stream = axutil_stream_create_basic(env);
     out_desc = axis2_conf_get_transport_out(
         axis2_conf_ctx_get_conf (iis_worker->conf_ctx, env), env, AXIS2_TRANSPORT_ENUM_HTTP);
