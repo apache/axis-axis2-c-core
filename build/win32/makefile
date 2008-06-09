@@ -830,7 +830,7 @@ $(MOD_IIS_INTDIR1) :
 
 
 {$(MOD_IIS_SRC)\iis_iaspi_plugin_51}.c{$(MOD_IIS_INTDIR1)}.obj ::
-	$(CC) $(CFLAGS) /Fo$(MOD_IIS_INTDIR1)\ /c $<
+	$(CC) $(CFLAGS) /D "WIN32"  /D "_WINDOWS" /D "_CRT_SECURE_NO_DEPRECATE" /Fo$(MOD_IIS_INTDIR1)\ /c $<
 
 {$(MOD_IIS_SRC)}.c{$(MOD_IIS_INTDIR)}.obj ::
 	$(CC) $(CFLAGS) /Fo$(MOD_IIS_INTDIR)\ /c $<
