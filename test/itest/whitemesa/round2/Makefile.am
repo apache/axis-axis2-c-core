@@ -7,9 +7,7 @@ round2_LDADD   =    $(LDFLAGS) \
                     ../../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
 					$(top_builddir)/modules/core/transport/http/sender/libaxis2_http_sender.la \
-					$(top_builddir)/modules/core/transport/http/receiver/libaxis2_http_receiver.la \
-                    -L$(top_builddir)/$(GUTHTHILA_LIBS) \
-                    $(LIBXML2_LIBS)
+					$(top_builddir)/modules/core/transport/http/receiver/libaxis2_http_receiver.la
 
 INCLUDES = -I$(top_builddir)/include \
            -I ../../../../util/include \

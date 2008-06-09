@@ -13,10 +13,7 @@ libmod_axis2_la_LIBADD   = $(LDFLAGS) \
 		     $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la\
 		     $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la\
 		     $(top_builddir)/axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la\
-                    -lpthread \
-                    -L$(top_builddir)$(GUTHTHILA_LIBS) \
-					$(PARSER_LIBS) \
-					$(LIBXML2_LIBS)
+             -lpthread
 
 libmod_axis2_la_LDFLAGS = -version-info $(VERSION_NO)
 

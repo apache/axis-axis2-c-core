@@ -10,8 +10,7 @@ google_LDADD   =    $(LDFLAGS) \
                     -laxis2_parser \
                     -laxis2_http_sender \
                     -laxis2_http_receiver \
-                    $(GUTHTHILA_LIBS) \
-                    $(LIBXML2_LIBS)
+                    $(GUTHTHILA_LIBS)
 
 INCLUDES = @AXIS2INC@
 

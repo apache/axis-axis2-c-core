@@ -11,7 +11,7 @@ test_echo_string_LDADD = \
            $(LDFLAGS) -L$(AXIS2C_HOME)/lib -laxutil -laxis2_axiom \
             -laxis2_wsdl -laxis2_engine -laxis2_parser -lpthread -laxis2_http_sender \
             -laxis2_http_receiver \
-           $(GUTHTHILA_LIBS) $(LIBXML2_LIBS)
+           $(GUTHTHILA_LIBS)
 
 test_echo_struct_SOURCES = \
   axis2_ArrayOfstring_literal.c axis2_echoStringArray.c \
@@ -23,7 +23,7 @@ test_echo_struct_LDADD = \
            $(LDFLAGS) -L$(AXIS2C_HOME)/lib -laxutil -laxis2_axiom \
             -laxis2_wsdl -laxis2_engine -laxis2_parser -lpthread -laxis2_http_sender \
             -laxis2_http_receiver \
-           $(GUTHTHILA_LIBS) $(LIBXML2_LIBS)
+           $(GUTHTHILA_LIBS)
 
 test_echo_string_array_SOURCES = \
   axis2_ArrayOfstring_literal.c axis2_echoStringArray.c \
@@ -35,7 +35,7 @@ test_echo_string_array_LDADD = \
            $(LDFLAGS) -L$(AXIS2C_HOME)/lib -laxutil -laxis2_axiom \
             -laxis2_wsdl -laxis2_engine -laxis2_parser -lpthread -laxis2_http_sender \
             -laxis2_http_receiver \
-           $(GUTHTHILA_LIBS) $(LIBXML2_LIBS)
+           $(GUTHTHILA_LIBS)
 
 INCLUDES = -I$(AXIS2C_HOME)/include \
                @UTILINC@ \
