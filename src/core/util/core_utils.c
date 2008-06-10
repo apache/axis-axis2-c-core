@@ -424,7 +424,7 @@ axis2_core_utils_is_latest_mod_ver(
 }
 
 
-axis2_op_t *AXIS2_CALL
+AXIS2_EXTERN axis2_op_t *AXIS2_CALL
 axis2_core_utils_get_rest_op_with_method_and_location(
 	const axis2_svc_t * svc,
 	const axutil_env_t * env,
