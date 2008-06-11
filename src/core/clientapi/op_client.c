@@ -1203,7 +1203,6 @@ axis2_op_client_two_way_send(
                                axis2_msg_ctx_get_conf_ctx(msg_ctx, env));
     axis2_msg_ctx_set_svc_grp_ctx(response, env,
                                   axis2_msg_ctx_get_svc_grp_ctx(msg_ctx, env));
-    axis2_msg_ctx_set_options(response, env, axis2_msg_ctx_get_options(msg_ctx, env));
 
     /* If request is REST we assume the response is REST, so set the variable */
     axis2_msg_ctx_set_doing_rest(response, env,
