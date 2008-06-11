@@ -20,7 +20,11 @@
 #define AXIS2_CALLBACK_RECV_H
 
 /**
- * @defgroup axis2_callback_recv callback message receiver
+ * @defgroup axis2_callback_recv callback message receiver. This can be considered as a
+ * message receiver implementation for application client side which is similar to 
+ * server side message receivers like raw_xml_in_out_msg_recv. Messages received by
+ * listener manager will finally end up here.
+ *
  * @ingroup axis2_client_api
  * callback message receiver, that is used as the message receiver in the
  * operation in case of asynchronous invocation for receiving the result.

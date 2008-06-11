@@ -53,6 +53,9 @@ extern "C"
      *              AXIS2_SCOPE_SESSION
      *              AXIS2_SCOPE_APPLICATION
      *              pass 0 to use default scope of AXIS2_SCOPE_REQUEST
+     * @param own_value whether value is owned by the property or not.
+     *              if the value is owned by the property it should be freed
+     *              by the proeprty.
      * @param free_func free function for the value freeing. Pass 0 if
      *              param value is a string
      * @param value value of the property

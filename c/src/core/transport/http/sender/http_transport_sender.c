@@ -370,7 +370,7 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
             if (trans_desc)
             {
 
-                /* accesing parameter in axis2.xml which set to have
+                /* accessing parameter in axis2.xml which set to have
                  * an ability to send xml versoin processing
                  * instruction <?xml version = "1.0"?> */
                 write_xml_declaration_param =
@@ -449,7 +449,7 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
                     {
                         
                         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            "Rest fault has occure, error described below");
+                            "Rest fault has occur, error described below");
                         axiom_output_free(om_output, env);
                         om_output = NULL;
                         xml_writer = NULL;

@@ -413,14 +413,16 @@ extern "C"
         int type);
 
     /**
-     * init function initializes the parser
+     * init function initializes the parser. When using libxml2 parser, this function 
+     * is needed to initialize libxml2. 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_xml_reader_init(
     );
 
     /**
-     * parser cleanup function
+     * parser cleanup function. This function is used to clean up the globals of libxml2
+     * parser.
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_xml_reader_cleanup(

@@ -474,12 +474,14 @@ axiom_stax_builder_process_namespaces(
                             AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
+
+        #ifdef AXIS2_LIBXML2_ENABLED
+            axiom_xml_reader_xml_free(om_builder->parser, env, temp_prefix);
+        #else
+            AXIS2_FREE(env->allocator,temp_prefix);
+        #endif
     }
-#ifdef AXIS2_LIBXML2_ENABLED
-    axiom_xml_reader_xml_free(om_builder->parser, env, temp_prefix);
-#else
-    AXIS2_FREE(env->allocator,temp_prefix);
-#endif
+
     return status;
 }
 

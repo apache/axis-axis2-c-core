@@ -60,6 +60,7 @@ fi
 
 #CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
+CPPFLAGS="$CPPFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
     CFLAGS="$CFLAGS -ansi -Wall -Werror -Wno-implicit-function-declaration -g"
 #    CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration"
@@ -118,6 +119,7 @@ AC_ARG_WITH(archive,
     AC_MSG_RESULT(yes)
     zliblibs="minizip/libaxis2_minizip.la"
     CFLAGS="$CFLAGS -DAXIS2_ARCHIVE_ENABLED"
+    CPPFLAGS="$CPPFLAGS -DAXIS2_ARCHIVE_ENABLED"
     if test -d $withval; then
         zlibinc="-I$withval"
     elif test -d '/usr/include'; then
@@ -144,6 +146,7 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila
   *)
     AC_MSG_RESULT(yes)
     CFLAGS="$CFLAGS -DAXIS2_GUTHTHILA_ENABLED"
+    CPPFLAGS="$CPPFLAGS -DAXIS2_GUTHTHILA_ENABLED"
     WRAPPER_DIR="guththila"
 
     ;;
@@ -151,6 +154,7 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila
   AC_MSG_RESULT(yes)
   WRAPPER_DIR="guththila"
   CFLAGS="$CFLAGS -DAXIS2_GUTHTHILA_ENABLED"
+  CPPFLAGS="$CPPFLAGS -DAXIS2_GUTHTHILA_ENABLED"
   AC_CONFIG_SUBDIRS(guththila)
   GUTHTHILA_LIBS="/guththila/src/"
   GUTHTHILA_DIR="guththila"
@@ -168,8 +172,9 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2
   *)
     AC_MSG_RESULT(yes)
     WRAPPER_DIR="libxml2"
-    PKG_CHECK_MODULES(PARSER, libxml-2.0)
-    CFLAGS="$CFLAGS $PARSER_CFLAGS -DAXIS2_LIBXML2_ENABLED"
+    PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
+    CFLAGS="$CFLAGS -DAXIS2_LIBXML2_ENABLED"
+    CPPFLAGS="$CPPFLAGS $PARSER_CFLAGS -DAXIS2_LIBXML2_ENABLED"
     LDFLAGS="$LDFLAGS $PARSER_LIBS"
     ;;
   esac ],
@@ -188,6 +193,33 @@ AC_ARG_ENABLE(tcp, [  --enable-tcp
     AC_MSG_RESULT(yes)
     TCP_DIR="tcp"
 
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+
+AC_MSG_CHECKING(whether to build AMQP transport)
+AC_ARG_WITH(qpid,
+[  --with-qpid[=PATH]	'PATH' specifies the location where the Qpid is installed into.
+    If this option is specified, AMQP transport would be built.
+    If you omit the '=PATH' part completely, the configure script will take 
+    '/usr/local' as the Qpid home.],
+[ case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    AMQP_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    if test -d $withval; then
+        qpidhome="$withval"
+    elif test -d '/usr/local/include/qpid'; then
+        qpidhome="/usr/local"
+    else
+        AC_MSG_ERROR(*** Could not Find Qpid in /usr/local ...)
+    fi
+    AMQP_DIR="amqp"
     ;;
   esac ],
   AC_MSG_RESULT(no)
@@ -277,14 +309,17 @@ AC_ARG_ENABLE(trace, [  --enable-trace
   no)
     AC_MSG_RESULT(no)
     CFLAGS="$CFLAGS"
+    CPPFLAGS="$CPPFLAGS"
     ;;
   *)
     AC_MSG_RESULT(yes)
     CFLAGS="$CFLAGS -DAXIS2_TRACE"
+    CPPFLAGS="$CPPFLAGS -DAXIS2_TRACE"
     ;;
   esac ],
   AC_MSG_RESULT(no)
   CFLAGS="$CFLAGS"
+  CPPFLAGS="$CPPFLAGS"
 )
 
 AC_MSG_CHECKING(whether to enable multi threading)
@@ -294,14 +329,17 @@ AC_ARG_ENABLE(multi-thread, [  --enable-multi-thread
   no)
     AC_MSG_RESULT(no)
     CFLAGS="$CFLAGS"
+    CPPFLAGS="$CPPFLAGS"
     ;;
   *)
     AC_MSG_RESULT(yes)
     CFLAGS="$CFLAGS -DAXIS2_SVR_MULTI_THREADED"
+    CPPFLAGS="$CPPFLAGS -DAXIS2_SVR_MULTI_THREADED"
     ;;
   esac ],[
   AC_MSG_RESULT(yes)
-  CFLAGS="$CFLAGS -DAXIS2_SVR_MULTI_THREADED"]
+  CFLAGS="$CFLAGS -DAXIS2_SVR_MULTI_THREADED"
+  CPPFLAGS="$CPPFLAGS -DAXIS2_SVR_MULTI_THREADED"]
 )
 
 AC_MSG_CHECKING(whether to use openssl)
@@ -311,16 +349,19 @@ AC_ARG_ENABLE(openssl, [  --enable-openssl
   no)
     AC_MSG_RESULT(no)
     CFLAGS="$CFLAGS"
+    CPPFLAGS="$CPPFLAGS"
     ssl_enabled=false
     ;;
   *)
     AC_MSG_RESULT(yes)
     CFLAGS="$CFLAGS -DAXIS2_SSL_ENABLED"
+    CPPFLAGS="$CPPFLAGS -DAXIS2_SSL_ENABLED"
     ssl_enabled=true
     ;;
   esac ],
   AC_MSG_RESULT(no)
   CFLAGS="$CFLAGS"
+  CPPFLAGS="$CPPFLAGS"
 )
 
 AC_MSG_CHECKING(whether to use libcurl)
@@ -330,16 +371,19 @@ AC_ARG_ENABLE(libcurl, [  --enable-libcurl
   no)
     AC_MSG_RESULT(no)
     CFLAGS="$CFLAGS"
+    CPPFLAGS="$CPPFLAGS"
     libcurl_enabled=false
     ;;
   *)
     AC_MSG_RESULT(yes)
     CFLAGS="$CFLAGS -DAXIS2_LIBCURL_ENABLED"
+    CPPFLAGS="$CPPFLAGS -DAXIS2_LIBCURL_ENABLED"
     libcurl_enabled=true
     ;;
   esac ],
   AC_MSG_RESULT(no)
   CFLAGS="$CFLAGS"
+  CPPFLAGS="$CPPFLAGS"
 )
 
 
@@ -347,25 +391,25 @@ APACHE2INC=$apache2inc
 IKSEMELINC=$iksemelinc
 APRINC=$aprinc
 VERSION_NO="4:0:4"
+QPID_HOME=$qpidhome
 
 AC_SUBST(VERSION_NO)
-AC_SUBST(PARSER_LIBS)
 AC_SUBST(APACHE2INC)
 AC_SUBST(APRINC)
 AC_SUBST(DICLIENT_DIR)
 AC_SUBST(TESTDIR)
 AC_SUBST(SAMPLES)
 AC_SUBST(APACHE2BUILD)
-AC_SUBST(PARSER_DIR)
 AC_SUBST(WRAPPER_DIR)
 AC_SUBST(TCP_DIR)
+AC_SUBST(AMQP_DIR)
+AC_SUBST(QPID_HOME)
 AC_SUBST(GUTHTHILA_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(ZLIBBUILD)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_LIBCURL_ENABLED, test x$libcurl_enabled = xtrue)
 
-#export PARSER_DIR
 export WRAPPER_DIR
 export prefix 
 
@@ -393,6 +437,15 @@ AC_CONFIG_FILES([Makefile \
     src/core/transport/tcp/receiver/Makefile \
     src/core/transport/tcp/server/Makefile \
     src/core/transport/tcp/server/simple_tcp_server/Makefile \
+    src/core/transport/amqp/Makefile \
+    src/core/transport/amqp/util/Makefile \
+	src/core/transport/amqp/receiver/Makefile \
+	src/core/transport/amqp/receiver/qpid_receiver/Makefile \
+	src/core/transport/amqp/receiver/qpid_receiver/request_processor/Makefile \
+	src/core/transport/amqp/sender/Makefile \
+	src/core/transport/amqp/sender/qpid_sender/Makefile \
+	src/core/transport/amqp/server/Makefile \
+    src/core/transport/amqp/server/axis2_amqp_server/Makefile \
     src/core/deployment/Makefile \
     src/core/clientapi/Makefile \
     src/core/receivers/Makefile \

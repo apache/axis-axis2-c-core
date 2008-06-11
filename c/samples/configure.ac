@@ -61,7 +61,7 @@ dnl Checks for library functions.
 dnl AC_FUNC_MALLOC
 dnl AC_FUNC_REALLOC
 
-CFLAGS="$CFLAGS $LIBXML2_CFLAGS $GUTHTHILA_CFLAGS"
+CFLAGS="$CFLAGS $GUTHTHILA_CFLAGS"
 
 AC_MSG_CHECKING(whether to build dynamic invocation client)
 AC_ARG_ENABLE(diclient, [  --enable-diclient    build diclient. default=no],
@@ -113,9 +113,6 @@ APRINC=$aprinc
 AC_SUBST(APACHE2INC)
 AC_SUBST(APRINC)
 AC_SUBST(AXIS2INC)
-AC_SUBST(LIBXML2_CFLAGS)
-AC_SUBST(LIBXML2_LIBS)
-AC_SUBST(LIBXML2_DIR)
 AC_SUBST(GUTHTHILA_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(DICLIENT_DIR)
@@ -136,6 +133,8 @@ AC_CONFIG_FILES([Makefile \
     client/notify/Makefile \
     client/google/Makefile \
     client/yahoo/Makefile \
+    client/amqp/Makefile \
+    client/amqp/echo/Makefile \
     user_guide/Makefile \
     user_guide/clients/Makefile \
     mtom_caching_callback/Makefile

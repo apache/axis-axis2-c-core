@@ -28,6 +28,7 @@
 #include <axiom_soap_body.h>
 #include <axiom_soap_const.h>
 #include <axis2_http_transport.h>
+#include <axis2_core_utils.h>
 
 
 const axis2_char_t *AXIS2_REST_DISP_NAME = "rest_dispatcher";
@@ -201,7 +202,7 @@ axis2_rest_disp_find_op(
                         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                                         "Checking for operation using \
 REST HTTP Location fragment : %s", location);
-                        op = axis2_rest_disp_get_rest_op_with_method_and_location(svc, env,
+                        op = axis2_core_utils_get_rest_op_with_method_and_location(svc, env,
                                  axis2_msg_ctx_get_rest_http_method(msg_ctx, env), location,
                                  &param_count, &params);
                         if (op)
@@ -232,7 +233,7 @@ for location: %s", location);
                                 if (axutil_strcasecmp(rest_methods[i], 
                                                       http_method))
                                 {
-                                    if (axis2_rest_disp_get_rest_op_with_method_and_location(svc, env,
+                                    if (axis2_core_utils_get_rest_op_with_method_and_location(svc, env,
                                         rest_methods[i], location, &param_count, &params))
                                     {
                                         for (j = 0; j < param_count; j++)
@@ -339,6 +340,7 @@ axis2_rest_disp_invoke(
     return axis2_disp_find_svc_and_op(handler, env, msg_ctx);
 }
 
+/*
 axis2_op_t *AXIS2_CALL
 axis2_rest_disp_get_rest_op_with_method_and_location(
     const axis2_svc_t * svc,
@@ -381,7 +383,6 @@ axis2_rest_disp_get_rest_op_with_method_and_location(
         if (rindex && *rindex)
         {
             loc_str_tmp = axutil_string_substring_ending_at(loc_str_tmp, (int)(rindex - loc_str_tmp));
-            /* We are sure that the difference lies within the int range */
         }
         else if (pass_one)
         {
@@ -391,7 +392,6 @@ axis2_rest_disp_get_rest_op_with_method_and_location(
         {
             int i = 0;
             i = (int)strlen(loc_str_tmp);
-            /* We are sure that the difference lies within the int range */
             if (i == 0)
             {
                 break;
@@ -448,4 +448,6 @@ axis2_rest_disp_get_rest_op_with_method_and_location(
     AXIS2_FREE (env->allocator, loc_str);
     return NULL;
 }
+
+*/
 

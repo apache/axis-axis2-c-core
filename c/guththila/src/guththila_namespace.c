@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 int GUTHTHILA_CALL
 guththila_namespace_list_grow(guththila_namespace_list_t * namesp_list,int addition,const axutil_env_t * env) 
 {

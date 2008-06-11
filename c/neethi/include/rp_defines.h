@@ -158,7 +158,7 @@ extern "C"
 
 #define RP_REQUEST_SEC_TOKEN_TEMPLATE "RequestSecurityTokenTemplate"
     
-#define RP_REQUIRE_KEY_IDENTIFIRE_REFERENCE "RequireKeyIdentifireReference"
+#define RP_REQUIRE_KEY_IDENTIFIRE_REFERENCE "RequireKeyIdentifierReference"
 #define RP_REQUIRE_ISSUER_SERIAL_REFERENCE "RequireIssuerSerialReference"
 #define RP_REQUIRE_EMBEDDED_TOKEN_REFERENCE "RequireEmbeddedTokenReference"
 #define RP_REQUIRE_THUMBPRINT_REFERENCE "RequireThumbprintReference"

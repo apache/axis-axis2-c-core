@@ -26,12 +26,11 @@
 
 struct axis2_desc_builder
 {
-
     /**
      * Store the full path to configuration file.
      */
     axis2_char_t *file_name;
-    axiom_stax_builder_t *builder;
+	axiom_node_t *root;
     struct axis2_dep_engine *engine;
 };
 
@@ -61,7 +60,7 @@ axis2_desc_builder_create(
     }
     desc_builder->file_name = NULL;
     desc_builder->engine = NULL;
-    desc_builder->builder = NULL;
+    desc_builder->root = NULL;
 
     return desc_builder;
 }
@@ -86,7 +85,7 @@ axis2_desc_builder_create_with_file_and_dep_engine(
         return NULL;
     }
 
-    desc_builder->builder = NULL;
+	desc_builder->root = NULL;
 
     desc_builder->file_name = axutil_strdup(env, file_name);
     if (!desc_builder->file_name)
@@ -134,9 +133,9 @@ axis2_desc_builder_free(
         AXIS2_FREE(env->allocator, desc_builder->file_name);
     }
 
-    if (desc_builder->builder)
+    if (desc_builder->root)
     {
-        axiom_stax_builder_free(desc_builder->builder, env);
+		axiom_node_free_tree(desc_builder->root,env);
     }
 
     /* we cannot free deployment engine here */
@@ -156,7 +155,7 @@ axis2_desc_builder_build_om(
 {
     axiom_xml_reader_t *reader = NULL;
     axiom_document_t *document = NULL;
-    axiom_node_t *root = NULL;
+	axiom_stax_builder_t *builder = NULL;
 
     if (!desc_builder->file_name)
     {
@@ -168,7 +167,7 @@ axis2_desc_builder_build_om(
     }
 
     /** create pull parser using the file path to configuration file */
-    reader = axiom_xml_reader_create_for_file(env, desc_builder->file_name,
+    reader = axiom_xml_reader_create_for_file(env, desc_builder->file_name, 
                                               NULL);
 
     if (!reader)
@@ -181,9 +180,9 @@ axis2_desc_builder_build_om(
     };
 
     /** create axiom_stax_builder by parsing pull_parser struct */
-    desc_builder->builder = axiom_stax_builder_create(env, reader);
+    builder = axiom_stax_builder_create(env, reader);
 
-    if (!(desc_builder->builder))
+    if (!(builder))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
                         AXIS2_FAILURE);
@@ -197,7 +196,7 @@ axis2_desc_builder_build_om(
         get the om document form builder 
         document is the container of om model created using builder
     */
-    document = axiom_stax_builder_get_document(desc_builder->builder, env);
+    document = axiom_stax_builder_get_document(builder, env);
 
     /**
      * In description building we don't want defferred building. So build
@@ -208,8 +207,13 @@ axis2_desc_builder_build_om(
     /**
         get root element , building starts hear 
      */
-    root = axiom_document_get_root_element(document, env);
-    return root;
+    desc_builder->root = axiom_document_get_root_element(document, env);
+	/**
+		We have built the whole document. So no need of keeping the builder.
+	*/
+	axiom_stax_builder_free_self(builder, env);
+
+    return desc_builder->root;
 }
 
 AXIS2_EXTERN axis2_flow_t *AXIS2_CALL

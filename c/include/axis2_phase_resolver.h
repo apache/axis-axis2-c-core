@@ -143,27 +143,6 @@ extern "C"
         struct axis2_module_desc *module);
 
     /**
-     * Engages the given global module to the given service. This means 
-     * the given module would be engaged to all operations of the given 
-     * service. This function should not be used to engage a module to
-     * a service. Use axis2_phase_resolver_engage_module_to_svc() instead.
-     * In future this function will be moved as a local function into
-     * phase resolver.
-     * @param phase_resolver pointer to phase resolver
-     * @param env pointer to environment struct
-     * @param svc pointer to service
-     * @param module_desc pointer to module description
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
-    axis2_phase_resolver_engage_module_to_svc_from_global(
-        axis2_phase_resolver_t * phase_resolver,
-        const axutil_env_t * env,
-        struct axis2_svc *svc,
-        struct axis2_module_desc *module_desc);
-
-    /**
      * Engages the given module to the given service. This means 
      * the given module would be engaged to all operations of the given 
      * service. 

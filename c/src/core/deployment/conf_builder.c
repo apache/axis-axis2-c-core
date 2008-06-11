@@ -791,6 +791,10 @@ axis2_conf_builder_process_transport_senders(
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
                 }
+				else if (!axutil_strcmp(name, AXIS2_TRANSPORT_AMQP))
+				{
+					transport_enum = AXIS2_TRANSPORT_ENUM_AMQP;
+				}
                 else
                 {
                     AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
@@ -1139,6 +1143,10 @@ axis2_conf_builder_process_transport_recvs(
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
                 }
+				else if (!axutil_strcmp(name, AXIS2_TRANSPORT_AMQP))
+				{
+					transport_enum = AXIS2_TRANSPORT_ENUM_AMQP;
+				}
                 else
                 {
                     AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
@@ -1459,4 +1467,5 @@ axis2_conf_builder_process_default_module_versions(
     }
     return AXIS2_SUCCESS;
 }
+
 

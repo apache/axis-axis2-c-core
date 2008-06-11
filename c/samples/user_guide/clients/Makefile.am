@@ -20,8 +20,7 @@ LINK_FLAGS = $(LDFLAGS) \
              -lpthread \
              -laxis2_http_sender \
              -laxis2_http_receiver \
-             $(GUTHTHILA_LIBS) \
-             $(LIBXML2_LIBS)
+             $(GUTHTHILA_LIBS)
 
 echo_blocking_LDADD = $(LINK_FLAGS)
 echo_non_blocking_LDADD = $(LINK_FLAGS)

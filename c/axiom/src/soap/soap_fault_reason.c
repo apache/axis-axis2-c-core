@@ -58,8 +58,8 @@ axiom_soap_fault_reason_create(
 
     fault_reason->om_ele_node = NULL;
     fault_reason->fault_texts = NULL;
-
-    return fault_reason;
+	fault_reason->soap_version = -1;
+	return fault_reason;
 }
 
 AXIS2_EXTERN axiom_soap_fault_reason_t *AXIS2_CALL

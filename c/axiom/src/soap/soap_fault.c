@@ -75,6 +75,7 @@ axiom_soap_fault_create(
     soap_fault->frole = NULL;
     soap_fault->om_ele_node = NULL;
     soap_fault->soap_builder = NULL;
+	soap_fault->soap_version = -1;
     return soap_fault;
 }
 

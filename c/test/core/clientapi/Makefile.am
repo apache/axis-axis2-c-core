@@ -11,12 +11,10 @@ test_clientapi_LDADD   =  \
                     ../../../util/src/libaxutil.la \
                     ../../../axiom/src/om/libaxis2_axiom.la \
                     ../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
-			$(top_builddir)/neethi/src/libneethi.la \
+					$(top_builddir)/neethi/src/libneethi.la \
                     -lpthread \
                     $(top_builddir)/src/core/engine/libaxis2_engine.la \
-                    $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
-                    $(LIBXML2_LIBS) \
-                    -L$(top_builddir)$(GUTHTHILA_LIBS)
+                    $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la
 
 test_client_LDADD   =  \
                     ../../../util/src/libaxutil.la \
@@ -25,20 +23,16 @@ test_client_LDADD   =  \
 			$(top_builddir)/neethi/src/libneethi.la \
                     -lpthread \
                     $(top_builddir)/src/core/engine/libaxis2_engine.la \
-                    $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
-                    $(LIBXML2_LIBS) \
-                    -L$(top_builddir)$(GUTHTHILA_LIBS)
+                    $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la
 
 test_svc_client_handler_count_LDADD   =  \
 					../../../util/src/libaxutil.la \
 					../../../axiom/src/om/libaxis2_axiom.la \
 					../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
-			$(top_builddir)/neethi/src/libneethi.la \
+					$(top_builddir)/neethi/src/libneethi.la \
 					-lpthread \
 					$(top_builddir)/src/core/engine/libaxis2_engine.la \
-					$(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
-					$(LIBXML2_LIBS) \
-					-L$(top_builddir)$(GUTHTHILA_LIBS)
+					$(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la
 
 
 INCLUDES = -I${CUTEST_HOME}/include \

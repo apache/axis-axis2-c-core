@@ -24,6 +24,7 @@
 #include <axutil_error.h>
 #include <axutil_env.h>
 #include <axis2_msg_ctx.h>
+#include <axis2_op.h>
 #include <axutil_qname.h>
 #include <axis2_core_dll_desc.h>
 
@@ -80,6 +81,15 @@ extern "C"
         const axutil_env_t * env,
         axis2_char_t * module_ver,
         axis2_char_t * current_def_ver);
+
+	AXIS2_EXTERN axis2_op_t *AXIS2_CALL
+	axis2_core_utils_get_rest_op_with_method_and_location(
+		const axis2_svc_t * svc,
+		const axutil_env_t * env,
+		const axis2_char_t * method,
+		const axis2_char_t * location,
+		int * param_count,
+		axis2_char_t **** params);
 
     /** @} */
 

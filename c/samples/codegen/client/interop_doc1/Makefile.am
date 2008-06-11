@@ -24,8 +24,7 @@ test_echo_date_LDADD   =  \
                     -lpthread \
                     -laxis2_http_sender \
                     -laxis2_http_receiver \
-                    $(GUTHTHILA_LIBS) \
-                    $(LIBXML2_LIBS)
+                    $(GUTHTHILA_LIBS)
 
 test_echo_struct_array_SOURCES = \
 axis2_echoBase64.c              axis2_echoFloat.c                 axis2_echoString.c \
@@ -50,9 +49,7 @@ test_echo_struct_array_LDADD   =  \
                     -lpthread \
                     -laxis2_http_sender \
                     -laxis2_http_receiver \
-                    $(GUTHTHILA_LIBS) \
-                    $(LIBXML2_LIBS)
-
+                    $(GUTHTHILA_LIBS)
 
 INCLUDES = -I$(AXIS2C_HOME)/include \
             @UTILINC@ \

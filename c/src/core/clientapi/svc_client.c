@@ -721,6 +721,10 @@ axis2_svc_client_send_receive_with_op_qname(
         qname_free_flag = AXIS2_TRUE;
     }
 
+    /* If dual channel blocking. We come to this block if the client indicate to use
+     * a separate listener but don't provide a callback function to acted upon when
+     * response is recieved in the listener thread. What we do here is we create a callback
+     * and call axis2_svc_client_send_receive_non_blocking_with_op_qname with it. */
     if (axis2_options_get_use_separate_listener(svc_client->options, env))
     {
         axis2_callback_t *callback = NULL;
@@ -738,7 +742,9 @@ axis2_svc_client_send_receive_with_op_qname(
             return NULL;
         }
 
-        /* call two channel non blocking invoke to do the work and wait on the callback */
+        /* call two channel non blocking invoke to do the work and wait on the callback. Note
+         * that we don't set a callback function for the callback. Instead we plan to call
+         * engine_receive through op_client_receive() function periodically. */
         axis2_svc_client_send_receive_non_blocking_with_op_qname(svc_client,
                                                                  env, op_qname,
                                                                  payload,
@@ -748,50 +754,11 @@ axis2_svc_client_send_receive_with_op_qname(
             axis2_options_get_timeout_in_milli_seconds(svc_client->options,
                                                        env) / 10;
 
-        while (!(axis2_callback_get_complete(callback, env)))
+        while(!axis2_callback_get_complete(callback, env))
         {
-            /*wait till the response arrives */
             if (index-- >= 0)
             {
                 AXIS2_USLEEP(10000);
-                msg_ctx =
-                    (axis2_msg_ctx_t *) axis2_op_client_get_msg_ctx(svc_client->
-                                                                    op_client,
-                                                                    env,
-                                                                    AXIS2_WSDL_MESSAGE_LABEL_OUT);
-                if (msg_ctx)
-                {
-                    axis2_msg_ctx_t *res_msg_ctx =
-                        axis2_op_client_receive(env, msg_ctx);
-                    if (res_msg_ctx)
-                    {
-                        soap_envelope =
-                            axis2_msg_ctx_get_soap_envelope(res_msg_ctx, env);
-                        svc_client->last_response_soap_envelope = soap_envelope;
-                        if (soap_envelope)
-                        {
-                            soap_body =
-                                axiom_soap_envelope_get_body(soap_envelope,
-                                                             env);
-
-                            if (soap_body)
-                            {
-                                svc_client->last_response_has_fault =
-                                    axiom_soap_body_has_fault(soap_body, env);
-                                soap_node =
-                                    axiom_soap_body_get_base_node(soap_body,
-                                                                  env);
-                                if (soap_node)
-                                {
-                                    return
-                                        axiom_node_get_first_element(soap_node,
-                                                                     env);
-                                }
-                            }
-                        }
-                    }
-                }
-
             }
             else
             {
@@ -1000,6 +967,7 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
     axis2_op_client_set_callback(svc_client->op_client, env, callback);
     axis2_op_client_add_out_msg_ctx(svc_client->op_client, env, msg_ctx);
 
+    /* If dual channel */
     if (axis2_options_get_use_separate_listener(svc_client->options, env))
     {
         axis2_op_t *op = NULL;
@@ -1014,6 +982,7 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
         AXIS2_USLEEP(1);
 
         op = axis2_svc_get_op_with_qname(svc_client->svc, env, op_qname);
+        /* At the end of the incoming flow this message receiver will be hit */
         axis2_op_set_msg_recv(op, env,
                               AXIS2_CALLBACK_RECV_GET_BASE(svc_client->
                                                            callback_recv, env));

@@ -21,28 +21,27 @@
 #include <guththila_defines.h>
 #include <axutil_utils.h>
 
-
 EXTERN_C_START()
+
 typedef enum guththila_buffer_type
 {
-    GUTHTHILA_SINGLE_BUFFER = 0,
-    GUTHTHILA_MULTIPLE_BUFFER
+    GUTHTHILA_SINGLE_BUFFER = 0, /* One buffer */
+    GUTHTHILA_MULTIPLE_BUFFER    /* Mulitple buffers in a buff array */
 } guththila_buffer_type_t;
 
 typedef struct guththila_buffer_s
 {
     /* Required to manupulate multiple buffers */
-    size_t *data_size;
-    size_t *buffs_size;
-    guththila_char_t **buff;
-    int cur_buff;
-    int cur_buff_pos;
-    size_t pre_tot_data;
-    unsigned int no_buffers;
-    short type;
-    guththila_char_t *xml;
-}
-guththila_buffer_t;
+    size_t *data_size;			/* Array containing filled sizes of buffers */
+    size_t *buffs_size;			/* Array containing actual sizes of buffers */
+    guththila_char_t **buff;	/* Array of buffers */
+    int cur_buff;				/* Current buffer */
+    int cur_buff_pos;			/* Position of the current buffer */
+    size_t pre_tot_data;		/* All the data in the previous buffers. Not include cur */
+    unsigned int no_buffers;	/* No of buffers */
+    short type;					/* Buffer type */
+    guththila_char_t *xml;		/* All the buffers serialized together */
+} guththila_buffer_t;
 
 #define GUTHTHILA_BUFFER_DEF_SIZE 16384
 #define GUTHTHILA_BUFFER_NUMBER_OF_BUFFERS 16
@@ -80,7 +79,6 @@ guththila_buffer_t;
  * return status of op AXIS2_SUCCESS on success,
  * AXIS2_FAILURE on error
  */
-
 int GUTHTHILA_CALL 
 guththila_buffer_init(guththila_buffer_t * buffer,
 					  int size,
@@ -93,10 +91,10 @@ guththila_buffer_init(guththila_buffer_t * buffer,
  * return status of op AXIS2_SUCCESS on success,
  * AXIS2_FAILURE on error
  */
-
 int GUTHTHILA_CALL 
 guththila_buffer_un_init(guththila_buffer_t * buffer,
 					   const axutil_env_t * env);
+
 /**
  * This method creates a new buffer and copy the content of given
  * data by buffer variable
@@ -107,8 +105,6 @@ guththila_buffer_un_init(guththila_buffer_t * buffer,
  * return status of op AXIS2_SUCCESS on success,
  * AXIS2_FAILURE on error
  */
-
-
 int GUTHTHILA_CALL 
 guththila_buffer_init_for_buffer(guththila_buffer_t * mu_buff, 
 								 guththila_char_t *buffer, 
@@ -133,7 +129,6 @@ guththila_buffer_next(guththila_buffer_t * buffer,
  * @param env environment, MUST NOT be NULL.
  * return xml element of guththila_buffer_s structure 
  */
-
 void *GUTHTHILA_CALL 
 guththila_buffer_get(guththila_buffer_t * buffer, 
 					 const axutil_env_t * env);

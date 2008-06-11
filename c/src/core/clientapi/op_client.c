@@ -335,6 +335,9 @@ axis2_op_client_get_callback(
     return op_client->callback;
 }
 
+/* This function is called from service client irrespective of the message exchange pattern 
+ * and whether one/two way channel used.
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_client_execute(
     axis2_op_client_t * op_client,
@@ -460,6 +463,7 @@ axis2_op_client_execute(
         msg_id = NULL;
     }
 
+    /* If dual channel. */
     if (axis2_options_get_use_separate_listener(op_client->options, env))
     {
         axis2_engine_t *engine = NULL;
@@ -483,7 +487,7 @@ axis2_op_client_execute(
         axis2_engine_send(engine, env, msg_ctx);
         axis2_engine_free(engine, env);
     }
-    else
+    else /* Same channel will be used irrespective of message exchange pattern. */
     {
         if (block)
         {
@@ -652,6 +656,8 @@ axis2_op_client_free(
     AXIS2_FREE(env->allocator, op_client);
 }
 
+/* This function is the thread worker function for the single channel non blocking case. Here
+ * being non-blocking implies that message is two way. */
 void *AXIS2_THREAD_FUNC
 axis2_op_client_worker_func(
     axutil_thread_t * thd,
@@ -684,6 +690,11 @@ axis2_op_client_worker_func(
     /* send the request and wait for response */
     response = axis2_op_client_two_way_send(th_env, args_list->msg_ctx);
 
+    /* We do not need to handle the NULL reponse here because this thread function is called only
+     * in the single channel non blocking case which, imply this is two way message by design.
+     */
+
+    /* Here after the code is a subset of what callback receiver do in dual channel case.*/
     axis2_op_client_add_msg_ctx(args_list->op_client, th_env, response);
     args_list->op_client->async_result = axis2_async_result_create(th_env,
                                                                    response);
@@ -693,10 +704,11 @@ axis2_op_client_worker_func(
         axis2_callback_invoke_on_complete(args_list->callback,
                                           th_env,
                                           args_list->op_client->async_result);
+
         axis2_callback_set_complete(args_list->callback, th_env, AXIS2_TRUE);
     }
 
-    /* clean up memory */
+    /* Clean up memory */
     axis2_async_result_free(args_list->op_client->async_result, th_env);
 
     axis2_op_ctx_free(op_ctx, th_env);
@@ -897,6 +909,10 @@ axis2_op_client_infer_transport(
         {
             transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
         }
+		else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_AMQP))
+		{
+			transport_enum = AXIS2_TRANSPORT_ENUM_AMQP;
+		}
 
         conf_ctx = axis2_svc_ctx_get_conf_ctx(op_client->svc_ctx, env);
         if (conf_ctx)
@@ -1103,6 +1119,7 @@ axis2_op_client_get_svc_ctx(
     return op_client->svc_ctx;
 }
 
+/* This function is called only for single cannel invocations */
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
 axis2_op_client_two_way_send(
     const axutil_env_t * env,
@@ -1166,7 +1183,7 @@ axis2_op_client_two_way_send(
         return NULL;
     }
 
-    /* handle one way case */
+    /* handle one way non robust case */
     if (!(axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY)))
     {
         return NULL;
@@ -1186,7 +1203,6 @@ axis2_op_client_two_way_send(
                                axis2_msg_ctx_get_conf_ctx(msg_ctx, env));
     axis2_msg_ctx_set_svc_grp_ctx(response, env,
                                   axis2_msg_ctx_get_svc_grp_ctx(msg_ctx, env));
-    axis2_msg_ctx_set_options(response, env, axis2_msg_ctx_get_options(msg_ctx, env));
 
     /* If request is REST we assume the response is REST, so set the variable */
     axis2_msg_ctx_set_doing_rest(response, env,
@@ -1214,6 +1230,15 @@ axis2_op_client_two_way_send(
         engine = axis2_engine_create(env, conf_ctx);
         if (engine)
         {
+            property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HANDLER_ALREADY_VISITED);
+            if (property)
+            {
+                axis2_char_t *value = axutil_property_get_value(property, env);
+                if (!axutil_strcmp(AXIS2_VALUE_TRUE, value))
+                {
+                    return response;
+                }
+            }
             status = axis2_engine_receive(engine, env, response);
         }
     }
@@ -1233,7 +1258,7 @@ axis2_op_client_two_way_send(
         if (response_envelope)
         {
             axis2_msg_ctx_set_soap_envelope(response, env, response_envelope);
-            /* There could be a scenaria where the message has already passed
+            /* There could be a scenariao where the message has already passed
              * through the incoming phases. eg. Reliable Messaging 1.0 two
              * way single channel
              */

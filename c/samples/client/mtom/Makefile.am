@@ -13,8 +13,7 @@ mtom_LDADD   = $(LDFLAGS) \
                     -lpthread \
                     -laxis2_http_sender \
                     -laxis2_http_receiver \
-                    $(GUTHTHILA_LIBS) \
-                    $(LIBXML2_LIBS)
+                    $(GUTHTHILA_LIBS)
 
 INCLUDES = @AXIS2INC@
 

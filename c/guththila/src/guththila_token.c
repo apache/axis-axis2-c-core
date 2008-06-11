@@ -71,6 +71,7 @@ guththila_tok_list_grow(
     }
     return GUTHTHILA_FAILURE;
 }
+
 int GUTHTHILA_CALL
 guththila_tok_list_init(
     guththila_tok_list_t * tok_list,
@@ -106,6 +107,7 @@ guththila_tok_list_init(
     }
     return GUTHTHILA_FAILURE;
 }
+
 void GUTHTHILA_CALL
 guththila_tok_list_free(
     guththila_tok_list_t * tok_list,
@@ -121,6 +123,7 @@ guththila_tok_list_free(
     AXIS2_FREE(env->allocator,tok_list->capacity);
     AXIS2_FREE(env->allocator, tok_list);
 }
+
 void GUTHTHILA_CALL
 guththila_tok_list_free_data(
     guththila_tok_list_t * tok_list,
@@ -135,6 +138,7 @@ guththila_tok_list_free_data(
     AXIS2_FREE(env->allocator,tok_list->capacity);
     AXIS2_FREE(env->allocator, tok_list->list);
 }
+
 guththila_token_t *GUTHTHILA_CALL
 guththila_tok_list_get_token(guththila_tok_list_t * tok_list,
                                                 const axutil_env_t * env) 
@@ -145,6 +149,7 @@ guththila_tok_list_get_token(guththila_tok_list_t * tok_list,
     }
     return NULL;
 }
+
 int GUTHTHILA_CALL
 guththila_tok_list_release_token(
     guththila_tok_list_t * tok_list,
@@ -153,6 +158,7 @@ guththila_tok_list_release_token(
 {
     return guththila_stack_push(&tok_list->fr_stack, token, env);
 }
+
 int GUTHTHILA_CALL
 guththila_tok_str_cmp(
     guththila_token_t * tok,
@@ -172,6 +178,7 @@ guththila_tok_str_cmp(
     }
     return 0;
 }
+
 int GUTHTHILA_CALL
 guththila_tok_tok_cmp(
     guththila_token_t * tok1,
@@ -195,6 +202,7 @@ guththila_tok_tok_cmp(
     }
     return -1;
 }
+
 void GUTHTHILA_CALL
 guththila_set_token(guththila_token_t* tok,
                        guththila_char_t* start,

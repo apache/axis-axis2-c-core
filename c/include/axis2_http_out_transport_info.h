@@ -164,7 +164,7 @@ extern "C"
 #define AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_transport_info, \
                env, content_type) axis2_http_out_transport_info_set_content_type (out_transport_info, env, content_type)
 
-    /** Set cahr encoding. */
+    /** Set char encoding. */
 #define AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CHAR_ENCODING(out_transport_info,\
                env, encoding) axis2_http_out_transport_info_set_char_encoding(out_transport_info, env, encoding)
 

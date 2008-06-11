@@ -1,3 +1,13 @@
+@if "%VV32CALLED%"=="" goto call_vv32
+
+:call_nmake
+@nmake /NOLOGO install
+@goto end
+
+:call_vv32
 @call vcvars32.bat > vc.tmp
 @del vc.tmp
-@nmake /NOLOGO install
+@set VV32CALLED="YES"
+@goto call_nmake
+
+:end

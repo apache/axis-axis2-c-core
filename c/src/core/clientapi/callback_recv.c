@@ -144,6 +144,12 @@ axis2_callback_recv_add_callback(
     return AXIS2_SUCCESS;
 }
 
+/* In the dual channel invocations client set a callback function to be invoked when a resonse
+ * is received from the server. When the response is received by the listening port of the
+ * listener manager, in the engine receive call the message is finally hit by callback receiver
+ * which is an implementation of the axis2 message receiver. This is the function that is called
+ * at that stage. The client set callback function is called from within here.
+ */
 static axis2_status_t AXIS2_CALL
 axis2_callback_recv_receive(
     axis2_msg_recv_t * msg_recv,
@@ -190,3 +196,4 @@ axis2_callback_recv_receive(
 
     return AXIS2_FAILURE;
 }
+

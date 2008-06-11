@@ -630,7 +630,8 @@ axutil_url_encode (
     axis2_char_t *buff, int len)
 {
     axis2_char_t string[4];
-    axis2_char_t *expand_buffer;
+    axis2_char_t *expand_buffer = NULL;
+	axis2_char_t *temp = NULL;
     int i;
     for (i = 0; i < len && buff[i]; i++)
     {
@@ -650,7 +651,13 @@ axutil_url_encode (
                 (axis2_char_t *) AXIS2_MALLOC (env->allocator, len * 2);
             memset (expand_buffer, 0, len * 2);
             len *= 2;
-            dest = memmove (expand_buffer, dest, strlen (dest));
+            temp = memmove (expand_buffer, dest, strlen (dest));
+			if(dest)
+			{
+				AXIS2_FREE(env->allocator, dest);
+				dest = NULL;
+			}
+			dest = temp;
         }
         strcat (dest, string);
     }
