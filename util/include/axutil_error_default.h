@@ -29,7 +29,7 @@ extern "C"
 #endif
 
     /**
-     * @defgroup axutil_error Error
+     * @defgroup axutil_error error
      * @ingroup axis2_util
      * @{
      */
