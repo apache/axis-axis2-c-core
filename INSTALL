@@ -155,11 +155,11 @@ Table of Contents
           website and install it to run these binaries
 
     * You also need the following dlls
-        - iconv.dll [http://www.zlatkovic.com/pub/libxml - version >= iconv-1.9.1.win32]
         - zlib1.dll [http://www.zlatkovic.com/pub/libxml - version >= zlib-1.2.3.win32]
 	
 	* You might optionally need the following dlls
 	    - libxml2.dll [http://www.zlatkovic.com/pub/libxml - version >= libxml2-2.6.20.win32]
+          - iconv.dll [http://www.zlatkovic.com/pub/libxml - version >= iconv-1.9.1.win32]
 
 3.2 Binaries in the release
 ---------------------------
@@ -192,8 +192,8 @@ Table of Contents
       |
       +- services    - deployed services 
       
-    Copy the downloaded iconv.dll and zlib1.dll to C:\axis2c\lib
-	You might optionally require to copy the libxml2.dll as well
+    Copy the downloaded zlib1.dll to C:\axis2c\lib
+	You might optionally require to copy the libxml2.dll and iconv.dll as well
     (Or you can have these dll's some other place and add the location to PATH 
      environment variable)
 
@@ -239,11 +239,11 @@ Table of Contents
           and Lib folders to the makefile.
 
     * You also need 
-        - iconv [http://www.zlatkovic.com/pub/libxml - download the version >= iconv-1.9.1.win32]
         - zlib [http://www.zlatkovic.com/pub/libxml - download the version >= zlib-1.2.3.win32]
 	
-	* You might optionally need the following dlls
+	* You might optionally need the following dlls (Only if you build with libxml2 xml parser) 
 	    - libxml2.dll [http://www.zlatkovic.com/pub/libxml - version >= libxml2-2.6.20.win32]
+          - iconv [http://www.zlatkovic.com/pub/libxml - download the version >= iconv-1.9.1.win32]
 
 4.2 Editing configure.in file
 -----------------------------
