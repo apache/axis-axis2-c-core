@@ -21,6 +21,13 @@
 #include <axutil_network_handler.h>
 #include <fcntl.h>
 
+#define AXUTIL_NETWORK_HANDLER_ERRBUFSIZE 256 
+
+static void AXIS2_CALL
+axutil_network_handler_get_win32_error_message(const axutil_env_t *env, 
+											   axis2_char_t *buff,
+											   unsigned int buf_size);
+
 #if defined(WIN32)
 /* fix for an older version of winsock2.h */
 #if !defined(SO_EXCLUSIVEADDRUSE)
@@ -56,12 +63,28 @@ axutil_network_handler_open_socket(
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, server, AXIS2_INVALID_SOCKET);
 
+#ifndef WIN32
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         /*AF_INET is not defined in sys/socket.h but PF_INET */
     {
+		INVALID_SOCKET
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
         return AXIS2_INVALID_SOCKET;
     }
+#else
+	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
+        /* In Win 32 if the socket creation failed it return 0 not a negative value */
+    {
+		char buf[AXUTIL_NETWORK_HANDLER_ERRBUFSIZE]; 
+		/* Get the detailed error message */
+		axutil_network_handler_get_win32_error_message(env, buf, 
+			AXUTIL_NETWORK_HANDLER_ERRBUFSIZE);	
+
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, buf); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
+        return AXIS2_INVALID_SOCKET;
+    }
+#endif 
 
     memset(&sock_addr, 0, sizeof(sock_addr));
     sock_addr.sin_family = AF_INET;
@@ -124,12 +147,23 @@ axutil_network_handler_create_server_socket(
     }
 #endif
     sock = socket(AF_INET, SOCK_STREAM, 0);
+
+#ifndef WIN32
     if (sock < 0)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
         return AXIS2_INVALID_SOCKET;
     }
-
+#else
+	if (sock == INVALID_SOCKET)
+	{
+		axis2_char_t buf[AXUTIL_NETWORK_HANDLER_ERRBUFSIZE];
+		axutil_network_handler_get_win32_error_message(env, buf, AXUTIL_NETWORK_HANDLER_ERRBUFSIZE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, buf); 
+        return AXIS2_INVALID_SOCKET;
+	}
+#endif
     /* Address re-use */
     i = 1;
 #if defined(WIN32)
@@ -218,10 +252,21 @@ axutil_network_handler_svr_socket_accept(
 
     cli_len = sizeof(cli_addr);
     cli_socket = accept(svr_socket, (struct sockaddr *) &cli_addr, &cli_len);
+#ifndef WIN32
     if (cli_socket < 0)
+	{
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                         "[Axis2][network_handler] Socket accept \
                 failed");
+	}
+#else
+	if (cli_socket == INVALID_SOCKET)
+	{
+		axis2_char_t buf[AXUTIL_NETWORK_HANDLER_ERRBUFSIZE];
+		axutil_network_handler_get_win32_error_message(env, buf, AXUTIL_NETWORK_HANDLER_ERRBUFSIZE);
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, buf); 
+	}
+#endif 
 
     setsockopt(svr_socket, IPPROTO_TCP, TCP_NODELAY, (const char *)&nodelay, (int)sizeof(nodelay));
     /* We are sure that the difference lies within the int range */
@@ -295,4 +340,25 @@ axutil_network_handler_get_peer_ip(
     }
     ret = inet_ntoa(addr.sin_addr);
     return ret;
+}
+
+static void AXIS2_CALL
+axutil_network_handler_get_win32_error_message(const axutil_env_t *env, 
+											   axis2_char_t *buf, 
+											   unsigned int buf_size)
+{
+	LPVOID lpMsgBuf;	
+	int rc = WSAGetLastError();
+	sprintf( buf, "Winsock error %d: ", rc );
+	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+				  NULL,
+	              rc,
+	              MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), 
+				  (LPTSTR) &lpMsgBuf,
+				  0,
+				  NULL
+				);
+
+	strncat( buf, (char*)lpMsgBuf, buf_size - strlen( buf ) - 1 );
+	LocalFree( lpMsgBuf );
 }
