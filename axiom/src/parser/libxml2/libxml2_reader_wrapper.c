@@ -24,7 +24,6 @@
 #include <string.h>
 #include <axutil_string.h>
 
-#define AXIS2_ATTR_NS_MAX   20
 
 int AXIS2_CALL axis2_libxml2_reader_wrapper_next(
     axiom_xml_reader_t * parser,
@@ -151,10 +150,10 @@ typedef struct axis2_libxml2_reader_wrapper_impl_t
     int event_map[18];
 
     void *ctx;
-    /* assuming that max ns and attri will be 20 */
+    /* assuming that max ns and attribute will be 20 */
 
-    int namespace_map[AXIS2_ATTR_NS_MAX];
-    int attribute_map[AXIS2_ATTR_NS_MAX];
+    int *namespace_map;
+    int *attribute_map;
 
     AXIS2_READ_INPUT_CALLBACK read_input_callback;
 
@@ -242,20 +241,44 @@ axis2_libxml2_reader_wrapper_init_map(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_xml_reader_init(
-    )
+axiom_xml_reader_init()
 {
     xmlInitParser();
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_xml_reader_cleanup(
-    )
+axiom_xml_reader_cleanup()
 {
     xmlCleanupParser();
     return AXIS2_SUCCESS;
 }
+
+static axis2_libxml2_reader_wrapper_impl_t*
+libxml2_reader_wrapper_create(const axutil_env_t *env)
+{
+	axis2_libxml2_reader_wrapper_impl_t *wrapper_impl = NULL;
+	wrapper_impl = (axis2_libxml2_reader_wrapper_impl_t *)AXIS2_MALLOC(env->allocator,
+		sizeof(axis2_libxml2_reader_wrapper_impl_t));
+
+	if (!wrapper_impl)
+	{
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create libxml2 reader wrapper");
+		return NULL;
+	}
+	memset(wrapper_impl, 0, sizeof(axis2_libxml2_reader_wrapper_impl_t));
+	wrapper_impl->attribute_map = NULL;
+	wrapper_impl->namespace_map = NULL;
+	wrapper_impl->close_input_callback = NULL;
+	wrapper_impl->read_input_callback = NULL;
+	wrapper_impl->ctx = NULL;
+	wrapper_impl->current_namespace_count = 0;
+	wrapper_impl->current_attribute_count = 0;
+	wrapper_impl->current_event = -1;
+	return wrapper_impl;
+}
+
 
 AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
 axiom_xml_reader_create_for_file(
@@ -268,20 +291,13 @@ axiom_xml_reader_create_for_file(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, filename, NULL);
 
-    wrapper_impl =
-        (axis2_libxml2_reader_wrapper_impl_t *) AXIS2_MALLOC(env->allocator,
-                                                             sizeof
-                                                             (axis2_libxml2_reader_wrapper_impl_t));
+    wrapper_impl = libxml2_reader_wrapper_create(env);
     if (!wrapper_impl)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                          "No memory. Cannot create libxml2 reader wrapper");
         return NULL;
     }
 
-    wrapper_impl->reader =
-        xmlReaderForFile(filename, encoding, XML_PARSE_RECOVER);
+    wrapper_impl->reader = xmlReaderForFile(filename, encoding, XML_PARSE_RECOVER);
     if (!(wrapper_impl->reader))
     {
         AXIS2_FREE(env->allocator, wrapper_impl);
@@ -296,7 +312,6 @@ axiom_xml_reader_create_for_file(
                                  (void *) env);
     wrapper_impl->current_event = -1;
     wrapper_impl->ctx = NULL;
-
     axis2_libxml2_reader_wrapper_init_map(wrapper_impl);
 
     wrapper_impl->parser.ops = &axiom_xml_reader_ops_var;
@@ -320,15 +335,9 @@ axiom_xml_reader_create_for_io(
         return NULL;
     }
 
-    wrapper_impl =
-        (axis2_libxml2_reader_wrapper_impl_t *) AXIS2_MALLOC(env->allocator,
-                                                             sizeof
-                                                             (axis2_libxml2_reader_wrapper_impl_t));
+    wrapper_impl = libxml2_reader_wrapper_create(env);
     if (!wrapper_impl)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                          "No memory. Cannot create libxml2 reader wrapper");
         return NULL;
     }
     wrapper_impl->close_input_callback = NULL;
@@ -381,18 +390,11 @@ axiom_xml_reader_create_for_memory(
 {
     axis2_libxml2_reader_wrapper_impl_t *wrapper_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, container, NULL);
 
-    wrapper_impl =
-        (axis2_libxml2_reader_wrapper_impl_t *) AXIS2_MALLOC(env->allocator,
-                                                             sizeof
-                                                             (axis2_libxml2_reader_wrapper_impl_t));
+    wrapper_impl = libxml2_reader_wrapper_create(env);
     if (!wrapper_impl)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                          "No memory. Cannot create libxml2 reader wrapper");
         return NULL;
     }
     wrapper_impl->close_input_callback = NULL;
@@ -503,18 +505,28 @@ axis2_libxml2_reader_wrapper_free(
     axiom_xml_reader_t * parser,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (AXIS2_INTF_TO_IMPL(parser)->ctx)
+	axis2_libxml2_reader_wrapper_impl_t *parser_impl = NULL;
+	parser_impl = AXIS2_INTF_TO_IMPL(parser);
+    if (parser_impl->ctx)
     {
-        AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(parser)->ctx);
+        AXIS2_FREE(env->allocator, parser_impl->ctx);
     }
 
-    if (AXIS2_INTF_TO_IMPL(parser)->reader)
+    if (parser_impl->reader)
     {
-        xmlTextReaderClose(AXIS2_INTF_TO_IMPL(parser)->reader);
-        xmlFreeTextReader(AXIS2_INTF_TO_IMPL(parser)->reader);
+        xmlTextReaderClose(parser_impl->reader);
+        xmlFreeTextReader(parser_impl->reader);
     }
-
+	if(parser_impl->namespace_map)
+	{
+		AXIS2_FREE(env->allocator,parser_impl->namespace_map);
+		parser_impl->namespace_map = NULL;
+	}
+	if(parser_impl->attribute_map)
+	{
+		AXIS2_FREE(env->allocator, parser_impl->attribute_map);
+		parser_impl->attribute_map = NULL;
+	}
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(parser));
     return;
 }
@@ -868,17 +880,35 @@ axis2_libxml2_reader_wrapper_fill_maps(
     int i = 0;
     char *q_name = NULL;
     axis2_libxml2_reader_wrapper_impl_t *parser_impl = NULL;
-
+	int map_size = 0;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     parser_impl = AXIS2_INTF_TO_IMPL(parser);
 
     libxml2_attribute_count = xmlTextReaderAttributeCount(parser_impl->reader);
     if (libxml2_attribute_count == 0)
     {
+		parser_impl->current_attribute_count = 0;
+		parser_impl->current_namespace_count = 0;
         return AXIS2_SUCCESS;
     }
+	map_size = libxml2_attribute_count +1;
+	if(parser_impl->namespace_map)
+	{
+		AXIS2_FREE(env->allocator, parser_impl->namespace_map);
+		parser_impl->namespace_map = NULL;
+	}
+	if(parser_impl->attribute_map)
+	{
+		AXIS2_FREE(env->allocator, parser_impl->attribute_map);
+		parser_impl->attribute_map = NULL;
+	}	
+	parser_impl->attribute_map = AXIS2_MALLOC(env->allocator, sizeof(int)* map_size);
+	memset(parser_impl->attribute_map, 0, map_size*sizeof(int));
 
-    for (i = 0; i < AXIS2_ATTR_NS_MAX; i++)
+	parser_impl->namespace_map = AXIS2_MALLOC(env->allocator, sizeof(int)*map_size);
+	memset(parser_impl->namespace_map,0, map_size*sizeof(int));
+	
+    for (i = 0; i < map_size ; i++)
     {
         parser_impl->namespace_map[i] = -1;
         parser_impl->attribute_map[i] = -1;
