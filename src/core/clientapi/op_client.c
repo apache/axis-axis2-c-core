@@ -219,7 +219,7 @@ axis2_op_client_add_msg_ctx(
 
     if (op_client->reuse)
     {
-        /* This is the second invocation using the same service clinet,
+        /* This is the second invocation using the same service client,
            so reset */
         if (out_msg_ctx)
         {
@@ -690,7 +690,7 @@ axis2_op_client_worker_func(
     /* send the request and wait for response */
     response = axis2_op_client_two_way_send(th_env, args_list->msg_ctx);
 
-    /* We do not need to handle the NULL reponse here because this thread function is called only
+    /* We do not need to handle the NULL response here because this thread function is called only
      * in the single channel non blocking case which, imply this is two way message by design.
      */
 
