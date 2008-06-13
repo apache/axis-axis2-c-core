@@ -164,7 +164,8 @@ axutil_class_loader_load_lib(
 #else
 		axis2_char_t buff[AXUTIL_WIN32_ERROR_BUFSIZE];
 		axutil_win32_get_last_error(buff, AXUTIL_WIN32_ERROR_BUFSIZE);
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Loading DLL failed: %s %s", buff);
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Loading shared library %s  Failed. DLERROR IS %s", 
+			dll_name, buff);
 #endif
 		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_LOADING_FAILED,
                         AXIS2_FAILURE);
