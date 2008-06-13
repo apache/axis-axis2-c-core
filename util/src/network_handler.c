@@ -365,3 +365,4 @@ axutil_network_handler_get_win32_error_message(const axutil_env_t *env,
 	LocalFree( lpMsgBuf );
 }
 #endif
+
