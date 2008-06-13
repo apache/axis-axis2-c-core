@@ -131,15 +131,17 @@ axutil_class_loader_create_dll(
     if (!obj)
     {
         axutil_class_loader_unload_lib(env, dll_desc);
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                        "Object create function returned NULL");
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Object create function returned NULL");
         AXIS2_ERROR_SET(env->error, error_code, AXIS2_FAILURE);
         return NULL;
     }
-    else
-    {
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Object loaded successfully");
-    }
+	else
+	{
+		AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "%s shared lib loaded successfully", 
+			axutil_dll_desc_get_name(dll_desc, env));
+	}
+
+   
     return obj;
 }
 
@@ -158,7 +160,8 @@ axutil_class_loader_load_lib(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_LOADING_FAILED,
                         AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "dlerror reason: %s", AXIS2_PLATFORM_LOADLIB_ERROR);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Loading shared library %s  Failed. DLERROR IS %s", 
+			dll_name, AXIS2_PLATFORM_LOADLIB_ERROR);
         return AXIS2_FAILURE;
     }
     status = axutil_dll_desc_set_dl_handler(dll_desc, env, dl_handler);
@@ -167,8 +170,7 @@ axutil_class_loader_load_lib(
     {
         AXIS2_PLATFORM_UNLOADLIB(dl_handler);
         dl_handler = NULL;
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_LOADING_FAILED,
-                        AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_LOADING_FAILED, AXIS2_FAILURE);
         return status;
     }
 
