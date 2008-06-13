@@ -23,10 +23,12 @@
 
 #define AXUTIL_NETWORK_HANDLER_ERRBUFSIZE 256 
 
+#ifdef WIN32
 static void AXIS2_CALL
 axutil_network_handler_get_win32_error_message(const axutil_env_t *env, 
 											   axis2_char_t *buff,
 											   unsigned int buf_size);
+#endif
 
 #if defined(WIN32)
 /* fix for an older version of winsock2.h */
@@ -67,7 +69,6 @@ axutil_network_handler_open_socket(
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         /*AF_INET is not defined in sys/socket.h but PF_INET */
     {
-		INVALID_SOCKET
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
         return AXIS2_INVALID_SOCKET;
     }
@@ -342,6 +343,7 @@ axutil_network_handler_get_peer_ip(
     return ret;
 }
 
+#ifdef WIN32
 static void AXIS2_CALL
 axutil_network_handler_get_win32_error_message(const axutil_env_t *env, 
 											   axis2_char_t *buf, 
@@ -362,3 +364,4 @@ axutil_network_handler_get_win32_error_message(const axutil_env_t *env,
 	strncat( buf, (char*)lpMsgBuf, buf_size - strlen( buf ) - 1 );
 	LocalFree( lpMsgBuf );
 }
+#endif
