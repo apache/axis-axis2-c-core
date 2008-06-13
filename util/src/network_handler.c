@@ -21,14 +21,8 @@
 #include <axutil_network_handler.h>
 #include <fcntl.h>
 
-#define AXUTIL_NETWORK_HANDLER_ERRBUFSIZE 256 
 
-#ifdef WIN32
-static void AXIS2_CALL
-axutil_network_handler_get_win32_error_message(const axutil_env_t *env, 
-											   axis2_char_t *buff,
-											   unsigned int buf_size);
-#endif
+
 
 #if defined(WIN32)
 /* fix for an older version of winsock2.h */
@@ -76,11 +70,9 @@ axutil_network_handler_open_socket(
 	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
         /* In Win 32 if the socket creation failed it return 0 not a negative value */
     {
-		char buf[AXUTIL_NETWORK_HANDLER_ERRBUFSIZE]; 
+		char buf[AXUTIL_WIN32_ERROR_BUFSIZE]; 
 		/* Get the detailed error message */
-		axutil_network_handler_get_win32_error_message(env, buf, 
-			AXUTIL_NETWORK_HANDLER_ERRBUFSIZE);	
-
+		axutil_win32_get_last_wsa_error(buf, AXUTIL_WIN32_ERROR_BUFSIZE);	
 		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, buf); 
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
         return AXIS2_INVALID_SOCKET;
@@ -158,8 +150,8 @@ axutil_network_handler_create_server_socket(
 #else
 	if (sock == INVALID_SOCKET)
 	{
-		axis2_char_t buf[AXUTIL_NETWORK_HANDLER_ERRBUFSIZE];
-		axutil_network_handler_get_win32_error_message(env, buf, AXUTIL_NETWORK_HANDLER_ERRBUFSIZE);
+		axis2_char_t buf[AXUTIL_WIN32_ERROR_BUFSIZE];
+		axutil_win32_get_last_wsa_error(buf, AXUTIL_WIN32_ERROR_BUFSIZE);
 		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
 		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, buf); 
         return AXIS2_INVALID_SOCKET;
@@ -263,8 +255,8 @@ axutil_network_handler_svr_socket_accept(
 #else
 	if (cli_socket == INVALID_SOCKET)
 	{
-		axis2_char_t buf[AXUTIL_NETWORK_HANDLER_ERRBUFSIZE];
-		axutil_network_handler_get_win32_error_message(env, buf, AXUTIL_NETWORK_HANDLER_ERRBUFSIZE);
+		axis2_char_t buf[AXUTIL_WIN32_ERROR_BUFSIZE];
+		axutil_win32_get_last_wsa_error(buf, AXUTIL_WIN32_ERROR_BUFSIZE);
 		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, buf); 
 	}
 #endif 
@@ -343,26 +335,4 @@ axutil_network_handler_get_peer_ip(
     return ret;
 }
 
-#ifdef WIN32
-static void AXIS2_CALL
-axutil_network_handler_get_win32_error_message(const axutil_env_t *env, 
-											   axis2_char_t *buf, 
-											   unsigned int buf_size)
-{
-	LPVOID lpMsgBuf;	
-	int rc = WSAGetLastError();
-	sprintf( buf, "Winsock error %d: ", rc );
-	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-				  NULL,
-	              rc,
-	              MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), 
-				  (LPTSTR) &lpMsgBuf,
-				  0,
-				  NULL
-				);
-
-	strncat( buf, (char*)lpMsgBuf, buf_size - strlen( buf ) - 1 );
-	LocalFree( lpMsgBuf );
-}
-#endif
 

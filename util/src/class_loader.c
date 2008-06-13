@@ -157,11 +157,18 @@ axutil_class_loader_load_lib(
     dll_name = axutil_dll_desc_get_name(dll_desc, env);
     dl_handler = AXIS2_PLATFORM_LOADLIB(dll_name);
     if (!dl_handler)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_LOADING_FAILED,
-                        AXIS2_FAILURE);
+    {        
+#ifndef WIN32
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Loading shared library %s  Failed. DLERROR IS %s", 
 			dll_name, AXIS2_PLATFORM_LOADLIB_ERROR);
+#else
+		axis2_char_t buff[AXUTIL_WIN32_ERROR_BUFSIZE];
+		axutil_win32_get_last_error(buff, AXUTIL_WIN32_ERROR_BUFSIZE);
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Loading DLL failed: %s %s", buff);
+#endif
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_LOADING_FAILED,
+                        AXIS2_FAILURE);
+        
         return AXIS2_FAILURE;
     }
     status = axutil_dll_desc_set_dl_handler(dll_desc, env, dl_handler);

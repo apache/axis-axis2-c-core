@@ -61,13 +61,46 @@ axis2_win_gmtime(
     return gmtime(timep);
 }
 
-AXIS2_EXTERN axis2_char_t * AXIS2_CALL axutil_win32_get_last_error()
+AXIS2_EXTERN void AXIS2_CALL 
+axutil_win32_get_last_error(axis2_char_t *buf, 
+							unsigned int buf_size)
 {
-    return "Something went wrong loading the DLL. \
-If you happen to see this message, \
-please note that getting the exact error form Windows is a TODO. \
-And if possible please help fix it. :)";
+	LPVOID lpMsgBuf;	
+	int rc = GetLastError();
+	sprintf( buf, "DLL Load Error %d: ", rc );
+	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+				  NULL,
+	              rc,
+	              0, 
+				  (LPTSTR) &lpMsgBuf,
+				  0,
+				  NULL
+				);
+	if (lpMsgBuf)
+	{
+		strncat( buf, (char*)lpMsgBuf, buf_size - strlen( buf ) - 1 );
+	}
+	LocalFree( lpMsgBuf );
 }
 
-
-
+AXIS2_EXTERN void AXIS2_CALL
+axutil_win32_get_last_wsa_error(axis2_char_t *buf, 
+								unsigned int buf_size)
+{
+	LPVOID lpMsgBuf;	
+	int rc = WSAGetLastError();
+	sprintf( buf, "Winsock error %d: ", rc );
+	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+				  NULL,
+	              rc,
+	              0, 
+				  (LPTSTR) &lpMsgBuf,
+				  0,
+				  NULL
+				);
+	if (lpMsgBuf)
+	{
+		strncat( buf, (char*)lpMsgBuf, buf_size - strlen( buf ) - 1 );
+	}
+	LocalFree( lpMsgBuf );
+}

@@ -68,12 +68,22 @@ extern "C"
         char *lib);
 
     AXIS2_EXTERN struct tm *AXIS2_CALL
-                axis2_win_gmtime(
+    axis2_win_gmtime(
                     const time_t * timep,
                     struct tm *result);
 
-    AXIS2_EXTERN axis2_char_t * AXIS2_CALL 
-        axutil_win32_get_last_error();
+
+	/* Get the last Error */
+    AXIS2_EXTERN void AXIS2_CALL 
+    axutil_win32_get_last_error(axis2_char_t *buff,
+								unsigned int buf_size);
+
+	/* Get the last Socket Error */
+	AXIS2_EXTERN void AXIS2_CALL
+	axutil_win32_get_last_wsa_error(axis2_char_t *buff,
+									unsigned int buf_size);
+
+#define AXUTIL_WIN32_ERROR_BUFSIZE 256 
 
     /***************************************************************
      * Default paths to shared library/DLLs and files
@@ -113,6 +123,7 @@ extern "C"
 #define AXIS2_PLATFORM_LOADLIB_ERROR     axutil_win32_get_last_error()
 
 #define AXIS2_DLHANDLER void*
+
 
 /* 
  * =============================================================
