@@ -1,7 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html><head><title>Apache Axis2/C - Manual</title>
 
-</head><body>
+</head>
+<body>
 <h2>Preamble</h2>
 <p style="margin-bottom: 0in;">This document is intended
 to be a reference
@@ -1592,57 +1593,6 @@ to run the command</p>
 <pre>nmake axis2_iis_module</pre>
 </div>
 <p>In this document I assume that the mod_axis2_IIS.dll
-is in the directory <code>c:\axis2c\lib</code> and AXIS2C_HOME
-is <code>c:\axis2c</code></p><p>Add the following key to the
-registery.</p><p><code>HKEY_LOCAL_MACHINE\SOFTWARE\Apache Axis2c\IIS ISAPI
-Redirector</code></p><p>Add a string value with the name <code>AXIS2C_HOME</code> and a
-value of <code>c:\axis2c</code></p><p>Add a string value with the name <code>log_file</code> and a value
-of <code>c:\axis2c\logs\axis2.log</code></p><p>Add a string value with the name <code>log_level</code>. The value
-can be either <code>trace</code>, <code>error</code>, <code>info</code>, <code>critical</code>, <code>user</code>, <code>debug</code>, or <code>warning</code>.</p>
-<p><b>IIS 5.1 or Below</b></p>
-<p>Using the IIS management console, add a new virtual
-directory to your IIS/PWS web site. The name of the virtual directory must be <code>axis2</code>. Its
-physical path should be the directory in which you placed mod_axis2_IIS.dll (in our example it is
-c:\axis2c\lib). When creating this new virtual directory, <b>assign execute access to it</b>.</p><p>By using the IIS management console, add
-mod_axis2_IIS.dll as a filter in your IIS/PWS web site and restart the IIS
-admin service.</p>
-
-<p><b>IIS 6 & 7</b></p>
-Using the IIS management console, add the mod_axis2_IIS.dll as a Wildcard Script Map.</p>
-<ul>
-    <li>Executable should be the complete path to the mod_axis2_IIS.dll</li>
-    <li>You can put any name as the name of the Wildcard Script Map</li>
-</ul>
-<p>Please don't add the mod_axis2_IIS.dll as a filter to IIS as in the IIS 5.1 case.</p>
-
-<p>Note: If the Axis2/C failed to load, verify that Axis2/C and its dependent DLLs are in the System Path (not the user path). </p>
-
-<p style="margin-bottom: 0in"><br />
-</p><p><a name="ssl_client"></a></p></div><div class="section"><a name="13__Using_SSL_Client"></a><h2>13. Using SSL Client</h2><div class="subsection"><a name="13_1_Building_and_Configuring_the_Client"></a><h3>13.1 Building and Configuring the Client</h3><p>In order to allow an Axis2/C client to communicate with an SSL enabled
-server, we need to compile Axis2/C with SSL support enabled.</p><p>To build with SSL client support, first of all, make sure you have
-installed <a href="http://www.openssl.org/" class="externalLink" title="External Link">OpenSSL</a> on your machine. Then
-you can start building with SSL client support. This can be achieved on Linux
-by configuring Axis2/C with the <code>--enable-openssl=yes</code> option.</p><p>Example <code><br />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
 is in the directory <code>c:\axis2c\lib</code> and
 AXIS2C_HOME
 is <code>c:\axis2c</code></p>
@@ -1662,6 +1612,7 @@ The value
 can be either <code>trace</code>, <code>error</code>,
 <code>info</code>, <code>critical</code>, <code>user</code>,
 <code>debug</code>, or <code>warning</code>.</p>
+<p><b>IIS 5.1 or Below</b></p>
 <p>Using the IIS management console, add a new virtual
 directory to your IIS/PWS web site. The name of the virtual directory
 must be <code>axis2</code>. Its
@@ -1673,6 +1624,18 @@ execute access to it</b>.</p>
 mod_axis2_IIS.dll as a filter in your IIS/PWS web site and restart the
 IIS
 admin service.</p>
+<p><b>IIS 6 &amp; 7</b></p>
+Using the IIS management console, add the mod_axis2_IIS.dll as a
+Wildcard Script Map.
+<ul>
+<li>Executable should be the complete path to the
+mod_axis2_IIS.dll</li>
+<li>You can put any name as the name of the Wildcard Script Map</li>
+</ul>
+<p>Please don't add the mod_axis2_IIS.dll as a filter to IIS as
+in the IIS 5.1 case.</p>
+<p>Note: If the Axis2/C failed to load, verify that Axis2/C and
+its dependent DLLs are in the System Path (not the user path). </p>
 <p style="margin-bottom: 0in;"><br />
 </p>
 <p><a name="ssl_client"></a></p>
@@ -2259,7 +2222,7 @@ with '-h' option<br />
 </div>
 </div>
 <div class="section"><a name="19__Archive_Based_Deployment"></a>
-<h2>19. Archive Based Deployment</h2>
+<h2>20. Archive Based Deployment</h2>
 <p>Axis2/C supports two main deployment models,<br />
 </p>
 <ol>
@@ -2291,7 +2254,7 @@ in the
 <code>configure.in</code> file.</p>
 </div>
 <div class="subsection"><a name="19_1_Deploying_Services"></a>
-<h3>19.1 Deploying Services</h3>
+<h3>20.1 Deploying Services</h3>
 <p>Once you have successfully completed the installation, you
 will have to deploy services as archives in order to make use of this
 deployment model. Please note that directory based deployment can
@@ -2312,7 +2275,7 @@ archives, will also get loaded.
 </p>
 </div>
 <div class="subsection"><a name="19_2_Deploying_Modules"></a>
-<h3>19.2 Deploying Modules</h3>
+<h3>20.2 Deploying Modules</h3>
 <p>Similar to services, you also can deploy modules as archives.
 You also can optionally rename your zip files to have the extension, <code>.mar</code>
 as in service archives.</p>
@@ -2320,7 +2283,7 @@ as in service archives.</p>
 directory.</p>
 </div>
 <div class="subsection"><a name="19_3_Known_Issues"></a>
-<h3>19.3 Known Issues</h3>
+<h3>20.3 Known Issues</h3>
 <p>Please note that there are a few known issues when running
 archive based deployment, mainly on Linux based systems.<br />
 </p>
@@ -2341,7 +2304,7 @@ that are found inside the archive, once unzipped.</li>
 </div>
 </div>
 <div class="section"><a name="20__TCPMon_Tool"></a>
-<h2>20. TCPMon Tool</h2>
+<h2>21. TCPMon Tool</h2>
 <p>TCPMon is a TCP Monitor tool provided by Axis2/C for
 monitoring payloads exchanged between client and server. If you are
 using a source distribution, this may or may not be built for you by
@@ -3945,4 +3908,5 @@ AXIS2_TRUE to enable, AXIS2_FALSE to disable</td>
 <div class="clear">
 <hr /></div>
 </div>
+
 </body></html>
