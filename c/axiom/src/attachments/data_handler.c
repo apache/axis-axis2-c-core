@@ -18,6 +18,7 @@
 #include <axiom_data_handler.h>
 #include <stdio.h>
 #include <sys/stat.h>
+#include "axiom_mime_output.h"
 
 struct axiom_data_handler
 {
@@ -389,6 +390,64 @@ axiom_data_handler_set_file_name(
             return AXIS2_FAILURE;
         }
     }
+
+    return AXIS2_SUCCESS;
+}
+
+/* This method will add the data_handler binary data to the array_list.
+ * If it is a buffer the part type is buffer. otherwise it is a file
+ */
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_data_handler_add_binary_data(
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env,
+    axutil_array_list_t *list)
+    
+{
+    axiom_mime_output_part_t *binary_part = NULL;
+    
+    binary_part = axiom_mime_output_part_create(env);
+    
+    if(!binary_part)
+    {
+        return AXIS2_FAILUE;
+    }    
+    
+    if (data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_BUFFER)
+    {
+        binary_part->part = (axis2_byte_t *)data_handler->buffer;
+        binary_part->part_size = (axis2_byte_t *)data_handler->buffer_len;
+        binary_part->type = AXIOM_MIME_OUTPUT_PART_TYPE_BUFFER;
+    }
+    
+    else if (data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_FILE
+             && data_handler->file_name)
+    {
+        struct stat stat_p;
+
+        if (stat(data_handler->file_name, &stat_p) == -1)
+        {
+	    return AXIS2_FAILURE;
+        }
+        else if (stat_p.st_size == 0)
+        {
+            return AXIS2_SUCCESS;
+        }
+        else
+        {
+            binary_part->file_name = data_handler->file_name;
+            binary_part->part_size = stat_p.st_size;
+            binary_part->type = AXIOM_MIME_OUTPUT_PART_TYPE_FILE;
+        }    
+    }
+    else
+    {
+        /* Data Handler File Name is missing */
+        return AXIS2_FAILURE;
+    }
+    
+    axutil_array_list_add(list, env, binary_part);
 
     return AXIS2_SUCCESS;
 }

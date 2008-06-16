@@ -42,6 +42,31 @@ extern "C"
       * @ingroup axiom_mime_output
       * @{
       */
+    
+    typedef struct axiom_mime_output_part_t axiom_mime_output_part_t;
+    
+    
+    typedef enum axiom_mime_output_part_type_t
+    {
+
+        /** Char buffer */
+        AXIOM_MIME_OUTPUT_PART_BUFFER = 0,
+        
+        /* A file */
+        AXIOM_MIME_OUTPUT_PART_FILE;
+        
+        /* unknown type*/
+        AXIOM_MIME_OUTPUT_PART_UNKNOWN
+        
+    } axiom_mime_output_part_type_t;
+    
+    struct axiom_mime_output_part_t
+    {
+        axis2_byte_t *part;
+        axis2_char_t *file_name;
+        int part_size;    
+        axiom_mime_output_part_type_t type;
+    }
 
     AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
     axiom_mime_output_complete(
@@ -80,6 +105,16 @@ extern "C"
     AXIS2_EXTERN axiom_mime_output_t *AXIS2_CALL
     axiom_mime_output_create(
         const axutil_env_t * env);
+    
+    /**
+     * Creates mime_output part struct
+     * @return pointer to newly created mime_output_part
+     */
+    
+    AXIS2_EXTERN axiom_mime_output_part_t *AXIS2_CALL 
+    axiom_mime_output_part_create(
+        const axutil_env_t *env);
+
 
     /** @} */
 

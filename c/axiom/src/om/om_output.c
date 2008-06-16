@@ -676,3 +676,46 @@ axiom_output_flush(
     }
     return NULL;
 }
+
+
+/*axis2_status_t AXIS2_CALL
+axiom_output_flush_to_wire(
+    axiom_output_t * om_output,
+    const axutil_env_t * env,
+    axutil_stream_t *stream)
+{
+    const axis2_char_t *soap_content_type = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+
+    AXIS2_ENV_CHECK(env, NULL);
+
+    if (om_output->do_optimize)
+    {
+        axis2_byte_t *byte_stream = NULL;
+        axis2_char_t *root_content_id = NULL;
+        axis2_char_t *buffer =
+            (axis2_char_t *) axiom_xml_writer_get_xml(om_output->xml_writer,
+                                                      env);
+        int stream_size = 0;
+        if (om_output->is_soap11)
+        {
+            soap_content_type = AXIOM_SOAP11_CONTENT_TYPE;
+        }
+        else
+        {
+            soap_content_type = AXIOM_SOAP12_CONTENT_TYPE;
+        }
+        om_output->mime_output = axiom_mime_output_create(env);
+        om_output->mime_boundry = axiom_output_get_mime_boundry(om_output, env);
+        root_content_id = axiom_output_get_root_content_id(om_output, env);
+        status = axiom_mime_output_write_to_wire(om_output->mime_output,
+                                   env, stream,
+                                   buffer, om_output->binary_node_list,
+                                   om_output->mime_boundry,
+                                   om_output->root_content_id,
+                                   om_output->char_set_encoding,
+                                   soap_content_type);
+        return status;
+    }
+    return status;
+}*/

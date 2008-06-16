@@ -184,6 +184,20 @@ extern "C"
         const axis2_char_t * file_name,
         const axis2_char_t * mime_type);
 
+    /* Add the binary to the array_list
+     * @param data_handler, a pointer to data handler struct
+     * data_handler, a pointer to data handler struct
+     * list, a pointer to an array_list which containing some message parts need 
+     * to be written to the wire
+     * data_handler, a pointer to data handler struct
+     */ 
+    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_data_handler_add_binary_data(
+        axiom_data_handler_t *data_handler,
+        const axutil_env_t *env,
+        axutil_array_list_t *list);
+    
     /** @} */
 
 #ifdef __cplusplus
