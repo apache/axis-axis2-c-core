@@ -244,15 +244,12 @@ axis2_http_transport_sender_invoke(
         axis2_endpoint_ref_t *ctx_epr = axis2_msg_ctx_get_to(msg_ctx, env);
         if(ctx_epr)
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "ctx_epr:%s", 
-                axis2_endpoint_ref_get_address(ctx_epr, env)); 
-        if (ctx_epr && 0 != axutil_strcmp(AXIS2_WSA_ANONYMOUS_URL_SUBMISSION,
-                                          axis2_endpoint_ref_get_address
-                                          (ctx_epr, env)) &&
-            0 != axutil_strcmp(AXIS2_WSA_ANONYMOUS_URL,
-                               axis2_endpoint_ref_get_address(ctx_epr, env)) &&
-            !(axutil_strstr
-              (axis2_endpoint_ref_get_address(ctx_epr, env),
-               AXIS2_WS_RM_ANONYMOUS_URL)))
+                axis2_endpoint_ref_get_address(ctx_epr, env));
+
+        if (ctx_epr && axutil_strcmp(AXIS2_WSA_ANONYMOUS_URL_SUBMISSION, axis2_endpoint_ref_get_address(
+            ctx_epr, env)) && axutil_strcmp(AXIS2_WSA_ANONYMOUS_URL, axis2_endpoint_ref_get_address(
+                ctx_epr, env)) && !(axutil_strstr(axis2_endpoint_ref_get_address(ctx_epr, env), 
+                    AXIS2_WS_RM_ANONYMOUS_URL)))
         {
             epr = ctx_epr;
         }
@@ -312,6 +309,9 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
         }
     }
 
+    /* If no endpoint reference could be derived from the the message context. It could well be the
+     * single channel two way scenario in the application server side send.
+     */
     if (!epr)
     {
         axutil_stream_t *out_stream =
@@ -336,6 +336,7 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
                 xml_writer = NULL;
                 return AXIS2_FAILURE;
             }
+
             is_soap11 = axis2_msg_ctx_get_is_soap_11(msg_ctx, env);
 
             AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CHAR_ENCODING(out_info, env,
@@ -518,7 +519,6 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
             }
             else
             {
-
                 /* SOAP Processing */
                 axiom_output_set_do_optimize(om_output, env, do_mtom);
                 axiom_soap_envelope_serialize(soap_data_out, env, om_output,
@@ -540,11 +540,13 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
                 }
                 else
                 {
-                    buffer =
-                        (axis2_char_t *) axiom_xml_writer_get_xml(xml_writer,
-                                                                  env);
-                    buffer_size =
-                        axiom_xml_writer_get_xml_size(xml_writer, env);
+                    buffer = (axis2_char_t *) axiom_xml_writer_get_xml(xml_writer, env);
+                    buffer_size = axiom_xml_writer_get_xml_size(xml_writer, env);
+
+                    /* This is where it actually fill the buffer in out_stream. In application server
+                     * side this is the out_stream passed to the in message context from http_worker
+                     * function and then copied to the out message context. 
+                     */
                     axutil_stream_write(out_stream, env, buffer, buffer_size);
                 }
             }
