@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include "axiom_mime_output.h"
+#include <axiom_mime_output.h>
 #include <axiom_data_handler.h>
 #include "axiom_mime_body_part.h"
 #include <axutil_string.h>

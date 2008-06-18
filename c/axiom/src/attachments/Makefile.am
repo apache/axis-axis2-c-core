@@ -11,5 +11,5 @@ INCLUDES =	-I$(top_builddir)/include \
             -I$(top_builddir)/parser \
 			-I ../../../util/include
 
-EXTRA_DIST = axiom_mime_body_part.h axiom_mime_output.h
+EXTRA_DIST = axiom_mime_body_part.h 
 

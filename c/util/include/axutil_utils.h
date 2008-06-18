@@ -246,6 +246,13 @@ extern "C"
         const axutil_env_t * env,
         axis2_char_t * dest,
         axis2_char_t * src);
+    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_char_2_byte(
+        const axutil_env_t *env,
+        axis2_char_t *char_buffer,
+        axis2_byte_t **byte_buffer,
+        int *byte_buffer_size);
 
     /** @} */
 

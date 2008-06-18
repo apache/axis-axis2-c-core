@@ -66,6 +66,8 @@ struct axiom_output
 
     axis2_char_t *content_type;
 
+    axutil_array_list_t *mime_parts;
+
 };
 
 AXIS2_EXTERN axiom_output_t *AXIS2_CALL
@@ -99,6 +101,7 @@ axiom_output_create(
     om_output->mime_output = NULL;
     om_output->mime_boundry = NULL;
     om_output->content_type = NULL;
+    om_output->mime_parts = NULL;
 
     return om_output;
 }
@@ -631,12 +634,16 @@ axiom_output_write_xml_version_encoding(
 
 }
 
-axis2_byte_t *AXIS2_CALL
-axiom_output_flush(
+/* This method will be called from transport. After this method each and every
+ * message part needs to be send are stored in an arraylits. So the transport 
+ * sender should correctly figure out how to send from the given information.
+ */ 
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    axiom_output_flush(
     axiom_output_t * om_output,
-    const axutil_env_t * env,
-    axis2_byte_t ** output_stream,
-    int *output_stream_size)
+    const axutil_env_t * env)
 {
     const axis2_char_t *soap_content_type = NULL;
 
@@ -644,13 +651,13 @@ axiom_output_flush(
 
     if (om_output->do_optimize)
     {
-        axis2_byte_t *byte_stream = NULL;
         axis2_char_t *root_content_id = NULL;
         axis2_char_t *buffer = NULL;
 
+        /* Extracting the soap part */
+
         buffer = axiom_xml_writer_get_xml(om_output->xml_writer,
                                                       env);
-        int stream_size = 0;
         if (om_output->is_soap11)
         {
             soap_content_type = AXIOM_SOAP11_CONTENT_TYPE;
@@ -660,63 +667,42 @@ axiom_output_flush(
             soap_content_type = AXIOM_SOAP12_CONTENT_TYPE;
         }
         om_output->mime_output = axiom_mime_output_create(env);
+        
+        /* The created mime_boundary for this soap message */
+        
         om_output->mime_boundry = axiom_output_get_mime_boundry(om_output, env);
+        
+        /* This is also created for attachments*/
         root_content_id = axiom_output_get_root_content_id(om_output, env);
-        /*axiom_mime_output_complete(om_output->mime_output,
-                                   env, &byte_stream, &stream_size,
-                                   buffer, om_output->binary_node_list,
-                                   om_output->mime_boundry,
-                                   om_output->root_content_id,
-                                   om_output->char_set_encoding,
-                                   soap_content_type);*/
-
-        *output_stream = byte_stream;
-        *output_stream_size = stream_size;
-
-        return byte_stream;
+        
+        /* different parts of the message is added according to their order
+         * to an arraylist */
+        om_output->mime_parts = axiom_mime_output_create_part_list( 
+                                    om_output->mime_output, 
+                                    env, buffer, om_output->binary_node_list,
+                                    om_output->mime_boundry, 
+                                    om_output->root_content_id, 
+                                    om_output->char_set_encoding,
+                                    soap_content_type);
+        
+        if(om_output->mime_parts)
+        {
+            return AXIS2_SUCCESS;
+        }
+        else
+        {
+            return AXSI2_FAILURE;
+        }
     }
-    return NULL;
+    return AXIS2_SUCCESS;
 }
 
-
-/*axis2_status_t AXIS2_CALL
-axiom_output_flush_to_wire(
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axiom_output_get_mime_parts(
     axiom_output_t * om_output,
-    const axutil_env_t * env,
-    axutil_stream_t *stream)
+    const axutil_env_t * env)
 {
-    const axis2_char_t *soap_content_type = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return om_output->mime_parts;
+}
 
-    AXIS2_ENV_CHECK(env, NULL);
-
-    if (om_output->do_optimize)
-    {
-        axis2_byte_t *byte_stream = NULL;
-        axis2_char_t *root_content_id = NULL;
-        axis2_char_t *buffer =
-            (axis2_char_t *) axiom_xml_writer_get_xml(om_output->xml_writer,
-                                                      env);
-        int stream_size = 0;
-        if (om_output->is_soap11)
-        {
-            soap_content_type = AXIOM_SOAP11_CONTENT_TYPE;
-        }
-        else
-        {
-            soap_content_type = AXIOM_SOAP12_CONTENT_TYPE;
-        }
-        om_output->mime_output = axiom_mime_output_create(env);
-        om_output->mime_boundry = axiom_output_get_mime_boundry(om_output, env);
-        root_content_id = axiom_output_get_root_content_id(om_output, env);
-        status = axiom_mime_output_write_to_wire(om_output->mime_output,
-                                   env, stream,
-                                   buffer, om_output->binary_node_list,
-                                   om_output->mime_boundry,
-                                   om_output->root_content_id,
-                                   om_output->char_set_encoding,
-                                   soap_content_type);
-        return status;
-    }
-    return status;
-}*/

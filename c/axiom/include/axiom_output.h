@@ -236,9 +236,7 @@ extern "C"
     AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
     axiom_output_flush(
         axiom_output_t * om_output,
-        const axutil_env_t * env,
-        axis2_byte_t ** output_stream,
-        int *output_stream_size);
+        const axutil_env_t * env);
 
     /** @} */
 
