@@ -203,13 +203,8 @@ axiom_mime_body_part_write_to_list(
     axis2_char_t *header_str = NULL;
     axis2_char_t *temp_header_str = NULL;
     int header_str_size = 0;
-    axis2_byte_t *data_handler_stream = NULL;
-    int data_handler_stream_size = 0;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_byte_t *byte_stream = NULL;
-    int size = 0;
     axiom_mime_output_part_t *mime_header_part = NULL;
-    axiom_mime_output_part_t *binary_part = NULL;
 
 
     /* We have the mime headers in the hash with thier keys 
@@ -293,7 +288,7 @@ axiom_mime_body_part_write_to_list(
      
     if (mime_body_part->data_handler)
     {
-        status = axiom_data_handler_add_binary_data(data_handler, env, list);
+        status = axiom_data_handler_add_binary_data(mime_body_part->data_handler, env, list);
         if (status != AXIS2_SUCCESS)
         {
             return status;

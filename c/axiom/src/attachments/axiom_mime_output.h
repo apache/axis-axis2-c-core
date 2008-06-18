@@ -53,7 +53,7 @@ extern "C"
         AXIOM_MIME_OUTPUT_PART_BUFFER = 0,
         
         /* A file */
-        AXIOM_MIME_OUTPUT_PART_FILE;
+        AXIOM_MIME_OUTPUT_PART_FILE,
         
         /* unknown type*/
         AXIOM_MIME_OUTPUT_PART_UNKNOWN
@@ -66,20 +66,7 @@ extern "C"
         axis2_char_t *file_name;
         int part_size;    
         axiom_mime_output_part_type_t type;
-    }
-
-    AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
-    axiom_mime_output_complete(
-        axiom_mime_output_t * mime_output,
-        const axutil_env_t * env,
-        axis2_byte_t ** output_stream,
-        int *output_stream_size,
-        axis2_char_t * soap_body_buffer,
-        axutil_array_list_t * binary_node_list,
-        axis2_char_t * boundary,
-        axis2_char_t * content_id,
-        axis2_char_t * char_set_encoding,
-        const axis2_char_t * soap_content_type);
+    };
 
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axiom_mime_output_get_content_type_for_mime(
@@ -114,6 +101,18 @@ extern "C"
     AXIS2_EXTERN axiom_mime_output_part_t *AXIS2_CALL 
     axiom_mime_output_part_create(
         const axutil_env_t *env);
+
+    AXIS2_EXTERN axutil_array_list_t  *AXIS2_CALL
+    axiom_mime_output_create_part_list(
+        axiom_mime_output_t *mime_output,
+        const axutil_env_t *env,
+        axis2_char_t *soap_body,
+        axutil_array_list_t *binary_node_list,
+        axis2_char_t *boundary,
+        axis2_char_t *content_id,
+        axis2_char_t *char_set_encoding,
+        const axis2_char_t *soap_content_type);
+
 
 
     /** @} */

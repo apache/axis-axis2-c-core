@@ -646,8 +646,9 @@ axiom_output_flush(
     {
         axis2_byte_t *byte_stream = NULL;
         axis2_char_t *root_content_id = NULL;
-        axis2_char_t *buffer =
-            (axis2_char_t *) axiom_xml_writer_get_xml(om_output->xml_writer,
+        axis2_char_t *buffer = NULL;
+
+        buffer = axiom_xml_writer_get_xml(om_output->xml_writer,
                                                       env);
         int stream_size = 0;
         if (om_output->is_soap11)
@@ -661,13 +662,13 @@ axiom_output_flush(
         om_output->mime_output = axiom_mime_output_create(env);
         om_output->mime_boundry = axiom_output_get_mime_boundry(om_output, env);
         root_content_id = axiom_output_get_root_content_id(om_output, env);
-        axiom_mime_output_complete(om_output->mime_output,
+        /*axiom_mime_output_complete(om_output->mime_output,
                                    env, &byte_stream, &stream_size,
                                    buffer, om_output->binary_node_list,
                                    om_output->mime_boundry,
                                    om_output->root_content_id,
                                    om_output->char_set_encoding,
-                                   soap_content_type);
+                                   soap_content_type);*/
 
         *output_stream = byte_stream;
         *output_stream_size = stream_size;

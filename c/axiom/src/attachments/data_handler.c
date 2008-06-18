@@ -411,14 +411,14 @@ axiom_data_handler_add_binary_data(
     
     if(!binary_part)
     {
-        return AXIS2_FAILUE;
+        return AXIS2_FAILURE;
     }    
     
     if (data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_BUFFER)
     {
         binary_part->part = (axis2_byte_t *)data_handler->buffer;
-        binary_part->part_size = (axis2_byte_t *)data_handler->buffer_len;
-        binary_part->type = AXIOM_MIME_OUTPUT_PART_TYPE_BUFFER;
+        binary_part->part_size = data_handler->buffer_len;
+        binary_part->type = AXIOM_MIME_OUTPUT_PART_BUFFER;
     }
     
     else if (data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_FILE
@@ -438,7 +438,7 @@ axiom_data_handler_add_binary_data(
         {
             binary_part->file_name = data_handler->file_name;
             binary_part->part_size = stat_p.st_size;
-            binary_part->type = AXIOM_MIME_OUTPUT_PART_TYPE_FILE;
+            binary_part->type = AXIOM_MIME_OUTPUT_PART_FILE;
         }    
     }
     else
