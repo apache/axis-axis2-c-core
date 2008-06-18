@@ -1,13 +1,18 @@
-Apache Axis2/C Team is pleased to announce the release of Apache Axis2/C version 1.4.0
-You can download this release from
+Apache Axis2/C Team is pleased to announce the release of Apache Axis2/C 
+version 1.4.0.
 
-http://ws.apache.org/axis2/c/download.cgi
+You can download this release from http://ws.apache.org/axis2/c/download.cgi
 
 Key Features
+============
 
-   1. Support for one-way messaging (In-Only) and request response messaging (In-Out)
-   2. Client APIs: Easy to use service client API and more advanced operation client API
-   3. Transports supported: HTTP
+   1. Support for one-way messaging (In-Only) and 
+      request response messaging (In-Out)
+   
+   2. Client APIs : Easy to use service client API and 
+   	  more advanced operation client API
+
+   3. Transports supported : HTTP
           * Inbuilt HTTP server called simple axis server
           * Apache2 httpd module called mod_axis2 for server side
           * IIS module for server side
@@ -16,57 +21,60 @@ Key Features
           * Digest HTTP Authentication
           * libcurl based client transport
 
-   4. Transports supported: HTTPS
+   4. Transports supported : HTTPS
           * HTTPS Transport implementation using OpenSSL
 
-   5. Transports supported: TCP
+   5. Transports supported : TCP
           * for both client and server side
 
-   6. Transport proxy support (HTTP)
+   6. Transports supported : AMQP
+          * AMQP Transport implementation using Apache Qpid
+
+   7. Transport proxy support (HTTP)
           * Proxy Authentication (Basic/Digest)
 
-   7. Module architecture, mechanism to extend the SOAP processing model.
+   8. Module architecture, mechanism to extend the SOAP processing model.
 
-   8. WS-Addressing support, both the submission (2004/08) and final (2005/08) versions, 
-      implemented as a module.
+   9. WS-Addressing support, both the submission (2004/08) and 
+   	  final (2005/08) versions, implemented as a module.
 
-   9. MTOM/XOP support.
+  10. MTOM/XOP support.
 
-  10. AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages; 
+  11. AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages; 
       This has complete XML infoset support.
 
-  11. XML parser abstraction
+  12. XML parser abstraction
           * Libxml2 wrapper
           * Guththila pull parser support
 
-  12. Both directory based and archive based deployment models for deploying 
+  13. Both directory based and archive based deployment models for deploying 
       services and modules
 
-  13. Description hierarchy providing access to static data of 
-      Axis2/C runtime (configuration, service groups, services, operations and messages)
+  14. Description hierarchy providing access to static data of Axis2/C runtime 
+  	  (configuration, service groups, services, operations and messages)
 
-  14. Context hierarchy providing access to dynamic 
-      Axis2/C runtime information (corresponding contexts to map to each level of 
-      description hierarchy)
+  15. Context hierarchy providing access to dynamic 
+      Axis2/C runtime information (corresponding contexts to map to 
+	  each level of description hierarchy)
 
-  15. Message receiver abstraction
+  16. Message receiver abstraction
           * Inbuilt raw XML message receiver
 
-  16. Code generation tool for stub and skeleton generation for a given 
+  17. Code generation tool for stub and skeleton generation for a given 
       WSDL (based on Java tool)
           *  Axis Data Binding (ADB) support
 
-  17. REST support (more POX like) using HTTP POST, GET, HEAD, PUT and DELETE
+  18. REST support (more POX like) using HTTP POST, GET, HEAD, PUT and DELETE
           *  Support for RESTful Services
 
-  18. Comprehensive documentation
+  19. Comprehensive documentation
           * Axis2/C Manual
 
-  19. WS-Policy implementation called Neethi/C, with WS-SecurityPolicy extension
+  20. WS-Policy implementation called Neethi/C, with WS-SecurityPolicy extension
 
 
-Major Changes Since Last Release.
---------------------------------
+Major Changes Since Last Release
+================================
 
    1. Fixed library version numbering
    2. Made Guththila as default XML parser
@@ -74,7 +82,9 @@ Major Changes Since Last Release.
    4. Memory leak fixes
 
 We welcome your early feedback on this implementation.
-Thanks for your interest in Axis2/C
+
+Thanks for your interest in Axis2/C !!!
 
 -- Apache Axis2/C Team -- 
+
 

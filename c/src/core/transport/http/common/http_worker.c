@@ -98,7 +98,11 @@ axis2_http_worker_free(
     return;
 }
 
-
+/* Each in-coming request is passed into this function for process. Basically http method to deliver
+ * is deduced here and call appropriate http processing function. 
+ * eg. transport_utils_process_http_post_request() function. Once this fuction call done it will go
+ * through engine inflow phases and finally hit the message receiver for the operation.
+ */
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_http_worker_process_request(
     axis2_http_worker_t * http_worker,
@@ -460,6 +464,10 @@ axis2_http_worker_process_request(
         }
     }
 
+    /* Here out_stream is set into the in message context. out_stream is copied from in message context
+     * into the out message context later in core_utils_create_out_msg_ctx() function. The buffer in
+     * out_stream is finally filled with the soap envelope in http_transport_sender_invoke() function.
+     */
     axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
     headers = axis2_http_worker_get_headers(http_worker, env, simple_request);
@@ -1576,6 +1584,10 @@ axis2_http_worker_process_request(
 
         if (!response_written)
         {
+            /* If in there is a soap message is to to be sent in the back channel then we go inside this
+             * block. Somewhere in the receiveing end axis2_op_ctx_set_response_written() function has
+             * been called by this time to indicate to append the message into the http back channel.
+             */
             if (op_ctx && axis2_op_ctx_get_response_written(op_ctx, env))
             {
                 if (do_rest)
@@ -1704,6 +1716,7 @@ axis2_http_worker_process_request(
 
                     if (!is_head)
                     {
+                        /* This is where we append the message into the http back channel.*/
                         axis2_http_simple_response_set_body_stream(response, env, out_stream);
                     }
                 }
@@ -1889,7 +1902,9 @@ axis2_http_worker_process_request(
                 axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
                                                        simple_request, response,
                                                        stream_len);
-    
+   
+                /* This is where it actually write to the wire in the http back channel
+                 * append case. */ 
                 status = axis2_simple_http_svr_conn_write_response(svr_conn, 
                                                                    env, 
                                                                    response);

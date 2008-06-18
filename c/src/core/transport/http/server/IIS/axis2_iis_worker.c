@@ -64,6 +64,7 @@ write_response(LPEXTENSION_CONTROL_BLOCK lpECB,
                const void *b,
                unsigned int l);
 
+axutil_hash_t *axis2_iis_worker_read_http_headers(const axutil_env_t * env, LPEXTENSION_CONTROL_BLOCK lpECB);
 
 static struct reasons
 {    
@@ -147,6 +148,9 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
     axis2_char_t port[MAX_TCP_PORT_LEN];
     CHAR redirect_url[INTERNET_MAX_PATH_LENGTH];
     axis2_op_ctx_t *op_ctx = NULL;
+    axutil_hash_t *headers = NULL;
+    CHAR peer_ip[50];
+    axutil_property_t *peer_property = NULL;
 
     soap_action[0] = '\0';
     
@@ -216,6 +220,26 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in" 
             " creating input stream.");
         return HSE_STATUS_ERROR;
+    }
+
+    cbSize = 50;
+    ret_val = lpECB->GetServerVariable(lpECB->ConnID, "REMOTE_ADDR", peer_ip, &cbSize);
+    if (strlen(peer_ip) > 0)
+    {
+        peer_property = axutil_property_create(env);
+        axutil_property_set_value(peer_property, env,
+                                  axutil_strdup(env, peer_ip));
+        axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_SVR_PEER_IP_ADDR,
+                                   peer_property);
+        /*AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Peer ip=%s", peer_ip);*/
+    }
+
+    /* Set the http headers into the message context */
+    headers = axis2_iis_worker_read_http_headers(env, lpECB);
+    if (axis2_msg_ctx_set_transport_headers(msg_ctx, env, headers) == AXIS2_FAILURE)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "IIS: Error occured in" 
+            " setting transport headers.");
     }
 
     if (AXIS2_STRICMP(lpECB->lpszMethod, "GET") == 0 
@@ -605,3 +629,63 @@ axis2_iis_worker_get_bytes(
     axutil_stream_free(tmp_stream, env);
     return buffer;
 }
+
+/** Read all HTTP headers.
+  */
+axutil_hash_t *axis2_iis_worker_read_http_headers(const axutil_env_t * env, 
+												  LPEXTENSION_CONTROL_BLOCK lpECB)
+{
+    const char szHTTP_[] = "HTTP_";
+    char szBuffer[4096];
+    DWORD dwBufferSize = sizeof szBuffer;
+    axutil_hash_t *headers = NULL;
+    axis2_http_header_t* http_header = NULL;
+
+    BOOL bGet = lpECB->GetServerVariable(lpECB->ConnID, "ALL_HTTP", szBuffer, &dwBufferSize);    
+    if (bGet)
+    {
+        /* Find lines, split key/data pair and write them as output */
+        LPTSTR pOpts = NULL;
+        LPTSTR pEnd = NULL;
+        LPTSTR pChar = NULL;
+        char szTmpBuf[512];
+        char szTmpName[256];
+
+        headers = axutil_hash_make(env);
+        szTmpBuf[0] = 0;
+        for (pChar = szBuffer; '\0' != *pChar;)
+        {
+            if (*pChar == '\r' || *pChar == '\n')
+            {
+                pChar++;
+                continue;
+            }
+            pOpts = strchr(pChar, ':');/* findseparator */
+            if (pOpts && *pOpts)
+            {
+                pEnd = pOpts;
+                while (*pEnd && *pEnd != '\r' && *pEnd != '\n')
+                {
+                    pEnd++;
+                }
+                *pOpts = '\0'; /* split the strings */
+                *pEnd = '\0';
+                if (0 == strncmp(pChar, szHTTP_, strlen(szHTTP_)))
+                {
+                  pChar += strlen(szHTTP_);
+                }
+                strcpy(szTmpName, pChar);
+                axutil_string_replace(szTmpName, '_', '-');
+                http_header = axis2_http_header_create(env, szTmpName, pOpts + 1);
+                axutil_hash_set(headers, axutil_strdup(env, szTmpName), AXIS2_HASH_KEY_STRING, http_header);                
+                pChar = pEnd + 1;
+            }
+        }
+    }
+    else
+    {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "axis2_iis_worker_read_http_headers: no http headers");
+    }
+    return headers;
+}
+
