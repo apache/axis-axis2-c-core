@@ -466,6 +466,8 @@ axis2_http_worker_process_request(
     /* Here out_stream is set into the in message context. out_stream is copied from in message context
      * into the out message context later in core_utils_create_out_msg_ctx() function. The buffer in
      * out_stream is finally filled with the soap envelope in http_transport_sender_invoke() function.
+     * To avoid double freeing of out_stream we reset the out message context at the end of engine 
+     * receive function.
      */
     axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
