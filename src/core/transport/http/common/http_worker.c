@@ -170,8 +170,7 @@ axis2_http_worker_process_request(
     conf_ctx = http_worker->conf_ctx;
     if (!conf_ctx)
     {
-        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
-                           AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT, AXIS2_FAILURE);
         return AXIS2_FALSE;
     }
 
