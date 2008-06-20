@@ -2616,7 +2616,7 @@ axis2_http_transport_utils_process_request(
 		}
 	}
 	else if (AXIS2_HTTP_METHOD_POST == request->request_method || 
-		AXIS2_HTTP_METHOD_POST == request->request_method)
+		AXIS2_HTTP_METHOD_PUT == request->request_method)
 	{
 		if (AXIS2_HTTP_METHOD_POST == request->request_method)
 		{
@@ -2672,7 +2672,7 @@ axis2_http_transport_utils_process_request(
 			}
 			status = AXIS2_SUCCESS;
 		}
-		else if (status == AXIS2_FAILURE)
+		else if (processed == AXIS2_FAILURE)
 		{
 			axis2_msg_ctx_t *fault_ctx = NULL;
 			axis2_char_t *fault_code = NULL;
