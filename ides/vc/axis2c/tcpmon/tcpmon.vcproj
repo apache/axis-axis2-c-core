@@ -77,7 +77,7 @@
 			<Tool
 				Name="VCManifestTool"
 				UseUnicodeResponseFiles="false"
-				UseFAT32Workaround="true"
+				UseFAT32Workaround="false"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
