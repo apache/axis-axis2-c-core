@@ -449,7 +449,10 @@ extern "C"
         axiom_node_t * element_node);
 
     /**
-     * select all the text children and concat them to a single string
+     * Select all the text children and concat them to a single string. The string 
+	 * returned by this method call will be free by axiom when this method is called again. 
+	 * So it is recomended to have a copy of the return value if this method is going to 
+	 * be called more that once and the return values of the earlier calls are important.
      * @param om_element pointer to om_element
      * @param env environment MUST not be NULL
      * @param element node , the container node of this om element
