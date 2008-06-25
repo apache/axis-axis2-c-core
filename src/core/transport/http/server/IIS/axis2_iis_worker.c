@@ -66,6 +66,8 @@ write_response(LPEXTENSION_CONTROL_BLOCK lpECB,
 
 axutil_hash_t *axis2_iis_worker_read_http_headers(const axutil_env_t * env, LPEXTENSION_CONTROL_BLOCK lpECB);
 
+AXIS2_IMPORT extern axis2_char_t *axis2_request_url_prefix;
+
 static struct reasons
 {    
     axis2_char_t * status_code;
@@ -271,6 +273,8 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
 		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "IIS: Unsupported HTTP Method.");
 		return AXIS2_FAILURE;
 	}
+	/* Set the URL prefix */
+	request.request_url_prefix = axis2_request_url_prefix;
 	/* Create the transport out info */
 	request.out_transport_info = axis2_iis_out_transport_info_create(env, lpECB);
 	/* Set the content type */
@@ -313,8 +317,14 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
 			is_out_headers_created = AXIS2_TRUE;
 		}
 		sprintf(content_length_str, "%d", response.response_data_length);
-
-		content_type_header = axis2_http_header_create(env, "Content-Type", axis2_iis_out_transport_get_content(request.out_transport_info));
+		if (!response.content_type)
+		{
+			content_type_header = axis2_http_header_create(env, "Content-Type", axis2_iis_out_transport_get_content(request.out_transport_info));
+		}
+		else
+		{
+			content_type_header = axis2_http_header_create(env, "Content-Type", response.content_type);
+		}
 		content_length_header = axis2_http_header_create(env, "Content-Length", content_length_str);
 		axutil_array_list_add(response.output_headers, env, content_length_header);
 		axutil_array_list_add(response.output_headers, env, content_type_header);
