@@ -664,7 +664,7 @@ axis2_addr_in_extract_ref_params(
                 axiom_element_get_attribute(header_block_ele, env, wsa_qname);
             if (om_attr)
             {
-                attr_value = axiom_attribute_get_localname(om_attr, env);
+                attr_value = axiom_attribute_get_value(om_attr, env);
                 if (!axutil_strcmp(attr_value, AXIS2_WSA_TYPE_ATTRIBUTE_VALUE))
                 {
                     axis2_msg_info_headers_add_ref_param(msg_info_headers, env,
