@@ -393,7 +393,7 @@ axis2_op_ctx_get_response_written(
     if (op_ctx)
         return op_ctx->response_written;
     else
-        return AXIS2_FAILURE;
+        return AXIS2_FALSE;
 
 }
 
