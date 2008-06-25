@@ -68,7 +68,7 @@ axis2_op_create(
     op->msg_recv = NULL;
     op->mep = AXIS2_MEP_CONSTANT_INVALID;
     op->param_container = NULL;
-    op->module_qnames = NULL;
+    op->module_qnames = axutil_array_list_create(env, 0);
     op->engaged_module_list = NULL;
     op->from_module = AXIS2_FALSE;
     op->wsamapping_list = NULL;

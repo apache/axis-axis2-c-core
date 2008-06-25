@@ -400,6 +400,10 @@ axis2_module_builder_process_ops(
         axiom_node_t *recv_node = NULL;
         axis2_phases_info_t *info = NULL;
         axis2_op_t *op_desc = NULL;
+        axutil_qname_t *qpolicy = NULL;
+        axiom_children_qname_iterator_t *itr = NULL;
+        axis2_desc_t *desc = NULL;
+        axis2_policy_include_t *policy_include = NULL;
 
         op_node = (axiom_node_t *)
             axiom_children_qname_iterator_next(op_itr, env);
@@ -471,6 +475,42 @@ axis2_module_builder_process_ops(
         /* To process REST params */
         axis2_desc_builder_process_rest_params(module_builder->desc_builder,
                                                    env, op_node, op_desc);
+
+        /* setting the policy_include */
+
+        desc = axis2_op_get_base(op_desc, env);
+        policy_include = axis2_desc_get_policy_include(desc, env);
+
+        /* processing <wsp:Policy> .. </..> elements */
+
+        qpolicy =
+            axutil_qname_create(env, NEETHI_POLICY, NEETHI_NAMESPACE, NULL);
+        itr =
+            axiom_element_get_children_with_qname(op_element, env, qpolicy,
+                                                  op_node);
+        axutil_qname_free(qpolicy, env);
+        qpolicy = NULL;
+
+        if (itr)
+        {
+            axis2_process_policy_elements(env, AXIS2_MODULE_OPERATION_POLICY, itr,
+                                          policy_include);
+        }
+
+        /* processing <wsp:PolicyReference> .. </..> elements */
+        qpolicy =
+            axutil_qname_create(env, NEETHI_REFERENCE, NEETHI_NAMESPACE, NULL);
+        itr =
+            axiom_element_get_children_with_qname(op_element, env, qpolicy,
+                                                  op_node);
+        axutil_qname_free(qpolicy, env);
+        qpolicy = NULL;
+
+        if (itr)
+        {
+            axis2_process_policy_reference_elements(env, AXIS2_POLICY_REF, itr,
+                                                    policy_include);
+        }
 
         /* setting the mep of the operation */
 

@@ -554,7 +554,15 @@ axis2_svc_add_op(
         axis2_op_set_msg_recv(op, env, msg_recv);
     }
     if (key)
-        axutil_hash_set(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING, op);
+    {
+        /* If service defines the operation, then we should not override with module level 
+         * operation. Module operations are global. If any setting to be modified, those operations
+         * can be defined in service */
+        if(!axutil_hash_get(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING))
+        {
+            axutil_hash_set(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING, op);
+        }
+    }
     return AXIS2_SUCCESS;
 }
 
