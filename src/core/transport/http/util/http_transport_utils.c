@@ -206,32 +206,10 @@ axis2_http_transport_utils_transport_out_init(axis2_http_transport_out_t *respon
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_transport_out_uninit(axis2_http_transport_out_t *response, 
 											const axutil_env_t *env)
-{
-	if (response->response_data)
-	{
-		AXIS2_FREE(env->allocator, response->response_data);
-	}
-
+{	
 	if (response->msg_ctx)
 	{
 		axis2_msg_ctx_free(response->msg_ctx, env);
-	}
-
-	if (response->output_headers)
-	{
-		int size = 0, i = 0;
-		axis2_http_header_t *header = NULL;
-		size = axutil_array_list_size(response->output_headers, env);
-		for (; i < size; i++)
-		{
-			header = axutil_array_list_get(response->output_headers, env, i);
-		}
-		axutil_array_list_free(response->output_headers, env);
-	}
-
-	if (response->http_status_code_name)
-	{
-		AXIS2_FREE(env->allocator, response->http_status_code_name);
 	}
 	return AXIS2_SUCCESS;
 }
@@ -264,6 +242,7 @@ axis2_http_transport_utils_transport_in_uninit(axis2_http_transport_in_t *reques
 {
 	if (request->msg_ctx)
 	{
+		axis2_msg_ctx_reset_out_transport_info(request->msg_ctx, env);
 		axis2_msg_ctx_free(request->msg_ctx, env);
 	}
 	return AXIS2_SUCCESS;
@@ -1746,7 +1725,7 @@ axis2_http_transport_utils_get_services_static_wsdl(
     }
     else
     {
-        wsdl_string = "Unable to retrieve wsdl for this service";
+        wsdl_string = axutil_strdup(env, "Unable to retrieve wsdl for this service");
     }
 
     return wsdl_string;
@@ -2444,7 +2423,6 @@ axis2_http_transport_utils_process_request(
 	axis2_op_ctx_t *op_ctx = NULL;
 	axis2_char_t *peer_ip = NULL;
 	axutil_property_t *peer_property = NULL;
-/*	int read_chunked =0; */
 	axis2_msg_ctx_t *out_msg_ctx = NULL;
 	axis2_msg_ctx_t **msg_ctx_map = NULL; 
 
@@ -2825,123 +2803,122 @@ axis2_http_transport_utils_process_request(
 		if ((request->accept_header || request->accept_charset_header ||
 			request->accept_language_header) && do_rest)
 		{
-		axis2_char_t *content_type_header_value = NULL;
-		axis2_char_t *temp = NULL;
-		axis2_char_t *language_header_value = NULL;
+			axis2_char_t *content_type_header_value = NULL;
+			axis2_char_t *temp = NULL;
+			axis2_char_t *language_header_value = NULL;
 
-		content_type_header_value = (axis2_char_t *) request->content_type;
-		language_header_value = axis2_msg_ctx_get_content_language(out_msg_ctx,env);
-		if (content_type_header_value)
-		{
-			temp = axutil_strdup(env, content_type_header_value);
-		}
-		if (temp)
-		{
-			axis2_char_t *content_type = NULL;
-			axis2_char_t *char_set = NULL;
-			axis2_char_t *temp2 = NULL;
-
-			temp2 = strchr(temp, ';');
-			if (temp2)
+			content_type_header_value = (axis2_char_t *) request->content_type;
+			language_header_value = axis2_msg_ctx_get_content_language(out_msg_ctx,env);
+			if (content_type_header_value)
 			{
-				*temp2 = '\0';
-				temp2++;
-				char_set = axutil_strcasestr(temp2, AXIS2_HTTP_CHAR_SET_ENCODING);
+				temp = axutil_strdup(env, content_type_header_value);
 			}
-			if (char_set)
-			{
-				char_set = axutil_strltrim(env, char_set, " \t=");
-			}
-			if (char_set)
-			{
-				temp2 = strchr(char_set, ';');
-			}
-			if (temp2)
-			{
-				*temp2 = '\0';
-			}
-			content_type = axutil_strtrim(env, temp, NULL);
-
 			if (temp)
 			{
-				AXIS2_FREE(env->allocator, temp);
-				temp = NULL;
-			}
-			if (content_type && request->accept_header &&
-				!axutil_strcasestr(request->accept_header, content_type))
-			{
-				temp2 = strchr(content_type, '/');
+				axis2_char_t *content_type = NULL;
+				axis2_char_t *char_set = NULL;
+				axis2_char_t *temp2 = NULL;
+
+				temp2 = strchr(temp, ';');
 				if (temp2)
 				{
 					*temp2 = '\0';
-					temp = AXIS2_MALLOC(env->allocator,
-						sizeof(axis2_char_t) * ((int)strlen(content_type) + 3));
-					if (!temp)
-					{
-						AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-						return AXIS2_FALSE;
-					}
-					sprintf(temp, "%s/*", content_type);
-					if (!axutil_strcasestr(request->accept_header, temp) &&
-						!strstr(request->accept_header, AXIS2_HTTP_HEADER_ACCEPT_ALL))
-					{
-						response->response_data = 
-							axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
-						response->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
-						if (response->response_data)
-						{
-							response->response_data_length = axutil_strlen(response->response_data);
-						}
-						response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_VAL;
-						response->http_status_code_name = AXIS2_HTTP_RESPONSE_NOT_IMPLEMENTED_CODE_NAME;
-						status = AXIS2_TRUE;
-					}
-					AXIS2_FREE(env->allocator, temp);
+					temp2++;
+					char_set = axutil_strcasestr(temp2, AXIS2_HTTP_CHAR_SET_ENCODING);
 				}
-			}
-			if (content_type)
-			{
-				AXIS2_FREE(env->allocator, content_type);
-			}
-			if (char_set && request->accept_charset_header && 
-				!axutil_strcasestr(request->accept_charset_header , char_set))
-			{
-				response->response_data = 
-					axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
-				response->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+				if (char_set)
+				{
+					char_set = axutil_strltrim(env, char_set, " \t=");
+				}
+				if (char_set)
+				{
+					temp2 = strchr(char_set, ';');
+				}
+				if (temp2)
+				{
+					*temp2 = '\0';
+				}
+				content_type = axutil_strtrim(env, temp, NULL);
 
-				if (response->response_data)
+				if (temp)
 				{
-					response->response_data_length= axutil_strlen(response->response_data);
+					AXIS2_FREE(env->allocator, temp);
+					temp = NULL;
 				}
-				status = AXIS2_SUCCESS;
-				response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_VAL;
-				response->http_status_code_name = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_NAME;
-			}
-			if (char_set)
-			{
-				AXIS2_FREE(env->allocator, char_set);
-			}
-		}
-		if (language_header_value)
-		{
-			if (request->accept_language_header &&
-				!axutil_strcasestr(request->accept_language_header	, language_header_value))
-			{
-				response->response_data = 
-					axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
-				response->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
-				if (response->response_data)
+				if (content_type && request->accept_header &&
+					!axutil_strcasestr(request->accept_header, content_type))
 				{
-					response->response_data_length = axutil_strlen(response->response_data);
+					temp2 = strchr(content_type, '/');
+					if (temp2)
+					{
+						*temp2 = '\0';
+						temp = AXIS2_MALLOC(env->allocator,
+							sizeof(axis2_char_t) * ((int)strlen(content_type) + 3));
+						if (!temp)
+						{
+							AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+							return AXIS2_FALSE;
+						}
+						sprintf(temp, "%s/*", content_type);
+						if (!axutil_strcasestr(request->accept_header, temp) &&
+							!strstr(request->accept_header, AXIS2_HTTP_HEADER_ACCEPT_ALL))
+						{
+							response->response_data = 
+								axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
+							response->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+							if (response->response_data)
+							{
+								response->response_data_length = axutil_strlen(response->response_data);
+							}
+							response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_VAL;
+							response->http_status_code_name = AXIS2_HTTP_RESPONSE_NOT_IMPLEMENTED_CODE_NAME;
+							status = AXIS2_TRUE;
+						}
+						AXIS2_FREE(env->allocator, temp);
+					}
 				}
-				response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_VAL;
-				response->http_status_code_name = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_NAME;
+				if (content_type)
+				{
+					AXIS2_FREE(env->allocator, content_type);
+				}
+				if (char_set && request->accept_charset_header && 
+					!axutil_strcasestr(request->accept_charset_header , char_set))
+				{
+					response->response_data = 
+						axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
+					response->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+
+					if (response->response_data)
+					{
+						response->response_data_length= axutil_strlen(response->response_data);
+					}
+					status = AXIS2_SUCCESS;
+					response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_VAL;
+					response->http_status_code_name = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_NAME;
+				}
+				if (char_set)
+				{
+					AXIS2_FREE(env->allocator, char_set);
+				}
+			}
+			if (language_header_value)
+			{
+				if (request->accept_language_header &&
+					!axutil_strcasestr(request->accept_language_header	, language_header_value))
+				{
+					response->response_data = 
+						axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
+					response->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+					if (response->response_data)
+					{
+						response->response_data_length = axutil_strlen(response->response_data);
+					}
+					response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_VAL;
+					response->http_status_code_name = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_NAME;
+				}
 			}
 		}
 	}
-
-		}
 	if (status == AXIS2_FAILURE)
 	{
 		axis2_bool_t do_rest = AXIS2_FALSE;
@@ -3048,7 +3025,6 @@ axis2_http_transport_utils_process_request(
 		}
 	}
 	axutil_string_free(soap_action, env);
-
 	msg_ctx = NULL;
 	
 	return status;
