@@ -18,6 +18,7 @@
 
 #include <tcpmon_util.h>
 #include <axiom.h>
+#include <stdlib.h>
 
 #define START_ELEMENT 1
 #define CHAR_VALUE 2
@@ -487,3 +488,64 @@ tcpmon_strcat(
 
     return dest;
 }
+
+char *
+str_replace(
+    char *str,
+    const char *search,
+    const char *replace)
+{
+    int size = ((int)strlen(str)) * 2;
+    /* We are sure that the difference lies within the int range */
+    int addmem = size;
+    int diff = (int)(strlen(replace) - strlen(search));
+    /* We are sure that the difference lies within the int range */
+
+    char *str_return = (char *) malloc((size + 1) * sizeof(char));
+    char *str_tmp = (char *) malloc(size * sizeof(char));
+    char *str_relic;
+
+    if (str_return == NULL || str_tmp == NULL)
+    {
+        free(str_return);
+        free(str_tmp);
+        return "function str_replace : give me more memory";
+    }
+    if (!strcmp(search, replace))
+    {
+        free(str_return);
+        free(str_tmp);
+        return str;
+    }
+
+    strcpy(str_return, str);
+
+    while ((str_relic = strstr(str_return, search)) != NULL)
+    {
+        if ((int)strlen(str_return) + diff >= addmem)
+            /* We are sure that the difference lies within the int range */
+        {
+            str_return = (char *) realloc(str_return, addmem += size);
+            str_tmp = (char *) realloc(str_tmp, addmem);
+
+            if (str_return == NULL || str_tmp == NULL)
+            {
+                free(str_return);
+                free(str_tmp);
+                return "function str_replace : gimme more memory";
+            }
+        }
+
+        strcpy(str_tmp, replace);
+        strcat(str_tmp, (str_relic + strlen(search)));
+        *str_relic = '\0';
+
+        strcat(str_return, str_tmp);
+    }
+
+    free(str_tmp);
+    /* free(str); */ /* we are not allocating memory using str */
+    str_return[addmem] = '\0';
+    return (str_return);
+}
+

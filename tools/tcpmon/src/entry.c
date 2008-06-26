@@ -26,6 +26,7 @@
 
 #include "tcpmon_entry_local.h"
 #include "tcpmon_session_local.h"
+#include "tcpmon_util.h"
 
 #define AXIS2_TCPMON
 
