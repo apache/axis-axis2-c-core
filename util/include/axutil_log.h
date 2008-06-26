@@ -234,6 +234,19 @@ extern "C"
 # endif
 #endif
 
+#ifndef AXIS2_LOG_PROJECT_PREFIX
+    /** Each module/project should undef and define the following.. */
+#define AXIS2_LOG_PROJECT_PREFIX "[axis2c]"
+#endif 
+
+#define AXIS2_LOG_USER_MSG(log, msg) AXIS2_LOG_USER (log, AXIS2_LOG_SI, "%s %s", AXIS2_LOG_PROJECT_PREFIX, msg)
+#define AXIS2_LOG_DEBUG_MSG(log, msg) AXIS2_LOG_DEBUG (log, AXIS2_LOG_SI, "%s %s", AXIS2_LOG_PROJECT_PREFIX, msg)
+#define AXIS2_LOG_INFO_MSG(log, msg) AXIS2_LOG_INFO (log, AXIS2_LOG_SI, "%s %s", AXIS2_LOG_PROJECT_PREFIX, msg)
+#define AXIS2_LOG_WARNING_MSG(log, msg) AXIS2_LOG_WARNING (log, AXIS2_LOG_SI, "%s %s", AXIS2_LOG_PROJECT_PREFIX, msg)
+#define AXIS2_LOG_ERROR_MSG(log, msg) AXIS2_LOG_ERROR (log, AXIS2_LOG_SI, "%s %s", AXIS2_LOG_PROJECT_PREFIX, msg)
+#define AXIS2_LOG_CRITICAL_MSG(log, msg) AXIS2_LOG_CRITICAL (log, AXIS2_LOG_SI, "%s %s", AXIS2_LOG_PROJECT_PREFIX, msg)
+#define AXIS2_LOG_TRACE_MSG(log, msg) AXIS2_LOG_TRACE (log, AXIS2_LOG_SI, "%s %s", AXIS2_LOG_PROJECT_PREFIX, msg)
+
     /** @} */
 
 #ifdef __cplusplus
