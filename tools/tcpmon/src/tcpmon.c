@@ -73,7 +73,7 @@ main(
     int listen_port = 9099,
         target_port = 9090; /* the default port simple axis2 server is run on 9090  */
     int test_bit = 0;
-    int format_bit = 0;
+    int format_bit = 0;  /* pretty print the request/response SOAP messages */
     int ii = 1;
 
     if (!axutil_strcmp(argv[1], "-h"))
@@ -548,7 +548,7 @@ resend_request(
 
     file = fopen(tcpmon_traffic_log, "rb");
 
-    if (NULL == file)
+    if (!file)
     {
         printf("\ncould not create or open log-file\n");
         return -1;
@@ -778,10 +778,10 @@ resend_request(
                                                     sizeof(axis2_char_t) * header_len + 1);
                                 memcpy(tmp1, tmp2, header_len);
                                 tmp1[header_len] = '\0';
-                                header_len = 16 + (int)strlen(listen_host);
+                                header_len = 16 + (int)strlen(target_host);
                                 tmp2 = AXIS2_MALLOC(env->allocator,
                                                     sizeof(axis2_char_t) * (header_len + 1));
-                                sprintf(tmp2, "%s%s:%d\r\n", AXIS2_HTTP_HEADER_HOST ": ", listen_host,
+                                sprintf(tmp2, "%s%s:%d\r\n", AXIS2_HTTP_HEADER_HOST ": ", target_host,
                                         TCPMON_SESSION_GET_LISTEN_PORT(session, env));
                                 req_header = str_replace(req_header, tmp1, tmp2);
                                 AXIS2_FREE(env->allocator, tmp1);
@@ -1004,7 +1004,7 @@ str_replace(
     {
         free(str_return);
         free(str_tmp);
-        return "function str_replace : gimme more memory";
+        return "function str_replace : give me more memory";
     }
     if (!strcmp(search, replace))
     {
@@ -1039,7 +1039,7 @@ str_replace(
     }
 
     free(str_tmp);
-    free(str);
+    /* free(str); */ /* we are not allocating memory using str */
     str_return[addmem] = '\0';
     return (str_return);
 }

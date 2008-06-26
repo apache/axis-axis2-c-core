@@ -372,7 +372,7 @@ tcpmon_session_set_target_host(
     session_impl = AXIS2_INTF_TO_IMPL(session);
 
     session_impl->target_host =
-        (axis2_char_t *) axutil_strdup(env, target_host);
+        (axis2_char_t *) axutil_strdup(env, target_host);  
     return AXIS2_SUCCESS;
 }
 
@@ -492,7 +492,7 @@ server_funct(
     axutil_thread_t * thd,
     void *data)
 {
-    tcpmon_session_server_thread_data_t *thread_data = data;
+    tcpmon_session_server_thread_data_t *thread_data = (tcpmon_session_server_thread_data_t *)data;
     tcpmon_session_impl_t *session_impl = NULL;
     const axutil_env_t *env = NULL;
     int listen_socket = -1;

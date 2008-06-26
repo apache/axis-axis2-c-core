@@ -427,7 +427,7 @@ tcpmon_entry_new_entry_funct(
     axutil_thread_t * thd,
     void *data)
 {
-    tcpmon_entry_request_data_t *req_data = data;
+    tcpmon_entry_request_data_t *req_data = (tcpmon_entry_request_data_t *) data;
     const axutil_env_t *env = NULL;
     int client_socket = -1;
     int host_socket = -1;
@@ -464,7 +464,6 @@ tcpmon_entry_new_entry_funct(
 
     target_port = TCPMON_SESSION_GET_TARGET_PORT(session, env);
     target_host = TCPMON_SESSION_GET_TARGET_HOST(session, env);
-
     if (target_port == -1 || target_host == NULL)
     {
         axutil_network_handler_close_socket(env, client_socket);
@@ -508,8 +507,9 @@ tcpmon_entry_new_entry_funct(
     }
 
     buffer = read_current_stream(client_stream, env, &buffer_size,
-                                 &headers, &content);
+            &headers, &content);
 
+    headers =(char *) str_replace(headers,"localhost", target_host);
     test_bit = TCPMON_SESSION_GET_TEST_BIT(session, env);
 
     if (test_bit)
@@ -531,7 +531,7 @@ tcpmon_entry_new_entry_funct(
 
     /*free ( localTime); */
 
-    entry_impl->sent_headers = headers;
+    entry_impl->sent_headers = headers; 
     entry_impl->sent_data = content;
     entry_impl->sent_data_length = buffer_size;
 
