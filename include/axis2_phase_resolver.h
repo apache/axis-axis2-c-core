@@ -38,14 +38,22 @@
  * application client engage a module programmatically he can use axis2_op_client_engage_module()
  * function, or axis2_svc_client_engage_module() function. Engaging using configuration files means
  * adding a module_ref parameter into services.xml or axis2.xml.
- * In whatever way engaging a module finally sums upto addding handlers into each operations flows.
- * Here flows in operations are actually array lists of phases
- * (See op.c).
- * There are user defined phases and system defined phases(See axis2.xml). Handlers 
- * These handlers are taken from modules or  for system defined and defined by user defined.
- * Handlers for all user defined phases are taken from modules. when modules are built from module.xml
- * these handlers are added into module flows(See moudule_desc.c).
+ * In whatever way engaging a module finally sums upto addding module handlers into each operations flows
+ * in the order defined in module.xml. Here flows in operations are actually array lists of user defined
+ * phases (See op.c).
  *
+ * Above functions in phase resolver add module handlers into operation flows as mentioned above as well
+ * as add module handlers into system defined phases. User defined phases are added into each operation
+ * at deployment time before handlers are added into them by phase resolver. System define phase lists
+ * are added into axis2_conf_t structure and predefined handlers are added to them before module handlers
+ * are added to them by phase resolver.
+ *
+ * In server side modules are engaged by call to axis2_conf_engage_module() function from deployment engine
+ * which in turn call axis2_phase_resolver_engage_module_globally() function. In client side modules are 
+ * engaged by call to axis2_phase_resolver_engage_module_to_svc() or axis2_phase_resolver_engage_module_to_op().
+ *
+ * Also building initial operation execution phases are done in phase resolver. The functions are
+ * axis2_phase_resolver_build_execution_chains_for_svc().
  *
  * @{
  */
@@ -151,9 +159,7 @@ extern "C"
 
     /**
      * Builds the execution chains. Execution chains are collection of phases that are invoked in
-     * the execution path. This will be moved into the implementation c file in the next release. 
-     * Therefore this is marked as deprecated.
-     * @deprecated
+     * the execution path.
      * @param phase_resolver pointer to phase resolver
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE

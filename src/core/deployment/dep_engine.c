@@ -592,12 +592,12 @@ struct axis2_module_desc *AXIS2_CALL
 axis2_dep_engine_get_module(
     const axis2_dep_engine_t * dep_engine,
     const axutil_env_t * env,
-    axutil_qname_t * module_name)
+    axutil_qname_t * module_qname)
 {
-    AXIS2_PARAM_CHECK(env->error, module_name, NULL);
+    AXIS2_PARAM_CHECK(env->error, module_qname, NULL);
     AXIS2_PARAM_CHECK (env->error, dep_engine, NULL);
 
-    return axis2_conf_get_module(dep_engine->conf, env, module_name);
+    return axis2_conf_get_module(dep_engine->conf, env, module_qname);
 }
 
 AXIS2_EXTERN struct axis2_arch_file_data *AXIS2_CALL

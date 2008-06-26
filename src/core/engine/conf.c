@@ -588,11 +588,11 @@ axis2_conf_add_svc_grp(
         conf->all_svcs = axutil_hash_make(env);
         if (!conf->all_svcs)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Creating all services map failed");
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating all services map failed");
             return AXIS2_FAILURE;
         }
     }
+
     k = axutil_hash_count(svcs);
     index_i = axutil_hash_first(svcs, env);
     while (index_i)
@@ -607,24 +607,25 @@ axis2_conf_add_svc_grp(
         svc_qname = axis2_svc_get_qname(desc, env);
         svc_name = axutil_qname_get_localpart(svc_qname, env);
 
-        temp_svc = axutil_hash_get(conf->all_svcs, svc_name,
-                                    AXIS2_HASH_KEY_STRING);
+        temp_svc = axutil_hash_get(conf->all_svcs, svc_name, AXIS2_HASH_KEY_STRING);
+
         /* No two service names deployed in the engine can be same */
         if (temp_svc)
         {
-            AXIS2_ERROR_SET(env->error,
-                            AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME,
-                            AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME, AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "There is already a service called %s in the all services "\
-                "list of axis2 configuration.", svc_name);
+                "There is already a service called %s in the all services list of axis2 configuration.", 
+                svc_name);
+
             return AXIS2_FAILURE;
         }
+
         index_i = axutil_hash_next(env, index_i);
     }
 
     svcs = axis2_svc_grp_get_all_svcs(svc_grp, env);
     index_i = axutil_hash_first(svcs, env);
+
     while (index_i)
     {
         void *value = NULL;
@@ -632,8 +633,7 @@ axis2_conf_add_svc_grp(
 
         axutil_hash_this(index_i, NULL, NULL, &value);
         desc = (axis2_svc_t *) value;
-        svc_name =
-            axutil_qname_get_localpart(axis2_svc_get_qname(desc, env), env);
+        svc_name = axutil_qname_get_localpart(axis2_svc_get_qname(desc, env), env);
         axutil_hash_set(conf->all_svcs, svc_name, AXIS2_HASH_KEY_STRING, desc);
         index_i = axutil_hash_next(env, index_i);
     }
@@ -644,13 +644,12 @@ axis2_conf_add_svc_grp(
         conf->svc_grps = axutil_hash_make(env);
         if (!conf->svc_grps)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Creating service group map failed");
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating service group map failed");
             return AXIS2_FAILURE;
         }
     }
-    axutil_hash_set(conf->svc_grps, svc_grp_name,
-                    AXIS2_HASH_KEY_STRING, svc_grp);
+
+    axutil_hash_set(conf->svc_grps, svc_grp_name, AXIS2_HASH_KEY_STRING, svc_grp);
 
     return AXIS2_SUCCESS;
 }

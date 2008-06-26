@@ -651,6 +651,7 @@ axis2_op_engage_module(
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                 "Module %s already engaged to operation %s", modname, opname);
+
             need_to_add = AXIS2_FALSE;
             return AXIS2_FAILURE;
         }
@@ -662,15 +663,13 @@ axis2_op_engage_module(
         axis2_module_t *module = NULL;
         axis2_status_t status = AXIS2_FAILURE;
 
-        status = axis2_phase_resolver_engage_module_to_op(pr, env,
-                                                          op, moduleref);
+        status = axis2_phase_resolver_engage_module_to_op(pr, env, op, moduleref);
         if (AXIS2_SUCCESS != status)
         {
             /* Ignore the status */
             AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_SUCCESS);
             AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, 
-                "Engaging module %s to operaion %s failed. But ignore this.", 
-                    modname, opname);
+                "Engaging module %s to operaion %s failed. But ignore this.", modname, opname);
         }
         module = axis2_module_desc_get_module(moduleref, env);
 

@@ -379,34 +379,34 @@ axis2_phase_resolver_engage_module_to_svc(
     axis2_char_t *modname_d = NULL;
     const axis2_char_t *svcname = NULL;
 
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
-        "Entry:axis2_phase_resolver_engage_module_to_svc");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_phase_resolver_engage_module_to_svc");
+
     module_d_qname = axis2_module_desc_get_qname(module_desc, env);
     modname_d = axutil_qname_get_localpart(module_d_qname, env); 
     svcname = axis2_svc_get_name(svc, env);
 
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-        "Module %s will be engaged to %s", modname_d, svcname);
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Module %s will be engaged to %s", modname_d, svcname);
+
     ops = axis2_svc_get_all_ops(svc, env);
     if (!ops)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Service %s has no operation", svcname);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service %s has no operation", svcname);
+
         return AXIS2_FAILURE;
     }
+
     /* Module operations are added to service and built execution chains */
-    status = axis2_svc_add_module_ops(svc, env, module_desc,
-                                      phase_resolver->axis2_config);
+    status = axis2_svc_add_module_ops(svc, env, module_desc, phase_resolver->axis2_config);
 
     if (AXIS2_SUCCESS != status)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Adding module operations from module %s into service %s failed",
-                modname_d, svcname);
+            "Adding module operations from module %s into service %s failed", modname_d, svcname);
+
         return status;
     }
-    for (index_i = axutil_hash_first(ops, env); index_i; index_i =
-         axutil_hash_next(env, index_i))
+
+    for (index_i = axutil_hash_first(ops, env); index_i; index_i = axutil_hash_next(env, index_i))
     {
         axutil_array_list_t *modules = NULL;
         axis2_op_t *op_desc = NULL;
@@ -418,13 +418,15 @@ axis2_phase_resolver_engage_module_to_svc(
 
         axutil_hash_this(index_i, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
-        opname = axutil_qname_get_localpart(axis2_op_get_qname(op_desc, env), 
-            env),
+
+        opname = axutil_qname_get_localpart(axis2_op_get_qname(op_desc, env), env);
+
         modules = axis2_op_get_all_modules(op_desc, env);
         if (modules)
         {
             size = axutil_array_list_size(modules, env);
         }
+
         for (j = 0; j < size; j++)
         {
             axis2_module_desc_t *module_desc_l = NULL;
@@ -432,38 +434,38 @@ axis2_phase_resolver_engage_module_to_svc(
 
             module_desc_l = axutil_array_list_get(modules, env, j);
             module_d_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
-            if (axutil_qname_equals(module_d_qname, env,
-                                                  module_d_qname_l))
+            if (axutil_qname_equals(module_d_qname, env, module_d_qname_l))
             {
                 engaged = AXIS2_TRUE;
                 status = AXIS2_SUCCESS;
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                    "Module %s already engaged to operation %s of service %s", 
-                    modname_d, opname, svcname);
+                    "Module %s already engaged to operation %s of service %s", modname_d, opname, 
+                    svcname);
+
                 break;
             }
         }
 
         if (!engaged)
         {
-            status =
-                axis2_phase_resolver_engage_module_to_op(phase_resolver, env,
-                                                         op_desc, module_desc);
+            status = axis2_phase_resolver_engage_module_to_op(phase_resolver, env, op_desc, 
+                    module_desc);
+
             if (AXIS2_SUCCESS != status)
             {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                    "Engaging module %s to operation %s failed.", modname_d, 
-                    opname);
+                    "Engaging module %s to operation %s failed.", modname_d, opname);
+
                 return status;
             }
 
-            status = axis2_op_add_to_engaged_module_list(op_desc, env,
-                                                         module_desc);
+            status = axis2_op_add_to_engaged_module_list(op_desc, env, module_desc);
         }
 
     }
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_phase_resolver_engage_module_to_svc");
+
     return status;
 }
 
@@ -571,12 +573,13 @@ axis2_phase_resolver_engage_module_to_op(
                 handlername = axutil_string_get_buffer(handlersname, env);
                 phase_rule = axis2_handler_desc_get_rules(metadata, env);
                 phase_name = axis2_phase_rule_get_name(phase_rule, env);
+                
+                /* For user/operation specific phases */
                 if ((axutil_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name))
                     && (axutil_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) &&
                     (axutil_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name))
                     && (axutil_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
-                    /* For operation specific phases */
                     status = axis2_phase_holder_add_handler(phase_holder, env, metadata);
                     if (AXIS2_SUCCESS != status)
                     {
@@ -591,12 +594,13 @@ axis2_phase_resolver_engage_module_to_op(
                     }
 
                 }
+
+                /* For System defined phases */
                 if ((!axutil_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name))
                     || (!axutil_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) ||
                     (!axutil_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name))
                     || (!axutil_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
-                    /* For global phases */
                     axutil_array_list_t *phase_list = NULL;
                     axis2_phase_holder_t *phase_holder = NULL;
 
@@ -618,8 +622,9 @@ axis2_phase_resolver_engage_module_to_op(
                     if (AXIS2_SUCCESS != status)
                     {
                         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                            "Adding handler %s to phase %s within flow %s failed", 
-                            handlername, phase_name, flowname);
+                            "Adding handler %s to phase %s within flow %s failed", handlername, 
+                            phase_name, flowname);
+
                         return status;
                     }
                 }
@@ -632,8 +637,9 @@ axis2_phase_resolver_engage_module_to_op(
             phase_holder = NULL;
         }
     }
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
-        "Exit:axis2_phase_resolver_engage_module_to_op");
+
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_phase_resolver_engage_module_to_op");
+
     return AXIS2_SUCCESS;
 }
 
@@ -661,19 +667,19 @@ axis2_phase_resolver_build_execution_chains_for_svc(
 
     ops = axis2_svc_get_all_ops(phase_resolver->svc, env);
 
-    for (index_i = axutil_hash_first(ops, env); index_i; index_i =
-         axutil_hash_next(env, index_i))
+    for (index_i = axutil_hash_first(ops, env); index_i; index_i = axutil_hash_next(env, index_i))
     {
         void *v = NULL;
         int j = 0;
+
         axutil_hash_this(index_i, NULL, NULL, &v);
         op = (axis2_op_t *) v;
         for (j = 1; j < 5; j++)
         {
-            status = axis2_phase_resolver_build_execution_chains_for_op(phase_resolver,
-                                                                 env, j, op);
+            status = axis2_phase_resolver_build_execution_chains_for_op(phase_resolver, env, j, op);
         }
     }
+
     return status;
 }
 
@@ -682,7 +688,7 @@ axis2_phase_resolver_build_execution_chains_for_svc(
  * from the axis2 configuration and for each module get the all handlers to be 
  * add to the operation specific phases. Then for each operation specific phases 
  * add those handlers. It should be noted that by the time this function is called
- * the module handlers are already added to global chains. 
+ * the module handlers are already added to system specific phases. 
  * This function is called from axis2_phase_resolver_build_execution_chains_for_svc() function and 
  * axis2_phase_resolver_build_execution_chains_for_module_op() function.
  */

@@ -969,18 +969,21 @@ axis2_svc_engage_module(
     const axis2_char_t *svcname = NULL;
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_svc_engage_module");
+
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
+
     svcname = axis2_svc_get_name(svc, env);
     phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
     if (!phase_resolver)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
             "Creating phase resolver failed for service %s", svcname);
+
         return AXIS2_FAILURE;
     }
-    status = axis2_phase_resolver_engage_module_to_svc(phase_resolver, env, svc,
-                                                       module_desc);
+
+    status = axis2_phase_resolver_engage_module_to_svc(phase_resolver, env, svc, module_desc);
     if (status)
     {
         const axutil_qname_t *qname = NULL;
@@ -988,12 +991,14 @@ axis2_svc_engage_module(
         qname = axis2_module_desc_get_qname(module_desc, env);
         axis2_svc_add_module_qname(svc, env, qname);
     }
+
     if (phase_resolver)
     {
         axis2_phase_resolver_free(phase_resolver, env);
     }
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_svc_engage_module");
+
     return status;
 }
 
