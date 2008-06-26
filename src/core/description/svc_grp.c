@@ -213,7 +213,6 @@ axis2_svc_grp_add_svc(
     const axutil_env_t * env,
     axis2_svc_t * svc)
 {
-    axis2_phase_resolver_t *handler_resolver = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     const axutil_qname_t *svc_qname = NULL;
     axis2_char_t *svc_name = NULL;
@@ -234,36 +233,12 @@ axis2_svc_grp_add_svc(
     svc_name = axutil_qname_to_string((axutil_qname_t *) svc_qname, env);
     axutil_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, svc);
 
-    handler_resolver = axis2_phase_resolver_create_with_config_and_svc(env, svc_grp->parent, svc);
-
-    if (!handler_resolver)
-    {
-        /* remove the previously added service */
-        axutil_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating phase resolver failed for service %s", 
-                svc_name);
-
-        return AXIS2_FAILURE;
-    }
-
-    status = axis2_phase_resolver_build_execution_chains_for_svc(handler_resolver, env);
-    if (AXIS2_SUCCESS != status)
-    {
-        /* remove the previously added service */
-        axutil_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
-        axis2_phase_resolver_free(handler_resolver, env);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Building chains failed within phase resolver for service %s", svc_name);
-        return status;
-    }
-
     status = axis2_svc_set_last_update(svc, env);
 
     if (AXIS2_SUCCESS != status)
     {
         /* remove the previously added service */
         axutil_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
-        axis2_phase_resolver_free(handler_resolver, env);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Setting last update failed for service %s", 
                 svc_name);
 
@@ -275,13 +250,10 @@ axis2_svc_grp_add_svc(
     {
         /* remove the previously added service */
         axutil_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
-        axis2_phase_resolver_free(handler_resolver, env);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Setting parent failed for service %s", svc_name);
 
         return status;
     }
-
-    axis2_phase_resolver_free(handler_resolver, env);
 
     return status;
 }

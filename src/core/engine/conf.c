@@ -689,9 +689,11 @@ axis2_conf_add_svc(
     const axutil_env_t * env,
     axis2_svc_t * svc)
 {
+    axis2_phase_resolver_t *phase_resolver = NULL;
     axis2_svc_grp_t *svc_grp = NULL;
     const axis2_char_t *svc_grp_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
 
     /* We need to first create a service group with the same name as the 
@@ -699,41 +701,68 @@ axis2_conf_add_svc(
     svc_grp_name = axis2_svc_get_name(svc, env);
     if (!svc_grp_name)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Service has no name set");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service has no name set");
+
         return AXIS2_FAILURE;
     }
+
     svc_grp = axis2_svc_grp_create(env);
     if (!svc_grp)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Creating service group as parent of service %s failed", 
-            svc_grp_name);
+            "Creating service group as parent of service %s failed", svc_grp_name);
+
             return AXIS2_FAILURE;
     }
+
     status = axis2_svc_grp_set_name(svc_grp, env, svc_grp_name);
-    if (AXIS2_FAILURE == status)
+    if (AXIS2_SUCCESS != status)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
             "Setting name to service group failed");
         return status;
     }
+
     status = axis2_svc_grp_set_parent(svc_grp, env, conf);
-    if (AXIS2_FAILURE == status)
+    if (AXIS2_SUCCESS != status)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
             "Setting parent to service group %s failed", svc_grp_name);
+
         return status;
     }
-    status = axis2_svc_grp_add_svc(svc_grp, env, svc);
-    if (AXIS2_FAILURE == status)
+
+    phase_resolver = axis2_phase_resolver_create_with_config_and_svc(env, conf, svc);
+
+    if (!phase_resolver)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating phase resolver failed for service %s", 
+                axis2_svc_get_name(svc, env));
+
+        return AXIS2_FAILURE;
+    }
+
+    status = axis2_phase_resolver_build_execution_chains_for_svc(phase_resolver, env);
+    axis2_phase_resolver_free(phase_resolver, env);
+    if (AXIS2_SUCCESS != status)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Adding service %s to service group %s failed", svc_grp_name, 
-            svc_grp_name);
+            "Building chains failed within phase resolver for service %s", axis2_svc_get_name(svc, env));
+
         return status;
     }
+
+    status = axis2_svc_grp_add_svc(svc_grp, env, svc);
+
+    if (AXIS2_SUCCESS != status)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Adding service %s to service group %s failed", svc_grp_name, svc_grp_name);
+
+        return status;
+    }
+
     status = axis2_conf_add_svc_grp(conf, env, svc_grp);
 
     return status;
