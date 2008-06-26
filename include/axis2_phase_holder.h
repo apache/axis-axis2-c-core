@@ -122,8 +122,10 @@ extern "C"
                     const axis2_char_t * phase_name);
 
     /**
-     * Builds the transport phase. This method loads the corresponding 
-     * handlers and added them into correct phase. 
+     * Builds the transport phase. This method loads the corresponding handlers and added them into 
+     * correct phase. This function is no longer used in Axis2/C and
+     * marked as deprecated.
+     * @deprecated
      * @param phase_holder pointer to phase holder
      * @param env pointer to environment struct
      * @param phase pointer to phase, phase holder does not assume the 
@@ -133,7 +135,6 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_phase_holder_build_transport_handler_chain(
         axis2_phase_holder_t * phase_holder,
         const axutil_env_t * env,

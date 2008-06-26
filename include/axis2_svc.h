@@ -300,6 +300,17 @@ extern "C"
         axutil_qname_t * module_qname);
 
     /**
+     * Return the engaged module list.
+     * @param svc pointer to service struct
+     * @param env pointer to environment struct
+     * @return engaged module list 
+     */
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axis2_svc_get_engaged_module_list(
+        const axis2_svc_t * svc,
+        const axutil_env_t * env);
+
+    /**
      * Adds operations defined in a module to this service. It is possible 
      * to define operations that are associated to a module in a module.xml 
      * file. These operations in turn could be invoked in relation to a 
