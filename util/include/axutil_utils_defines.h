@@ -99,7 +99,7 @@ extern "C"
     /**
       *   Exporting
       */
-#if defined(WIN32)
+#if defined(WIN32) && !defined(AXIS2_DECLARE_STATIC)
 #define AXIS2_EXPORT __declspec(dllexport)
 #else
 #define AXIS2_EXPORT
