@@ -30,6 +30,7 @@ dist-hook:
 	rm -rf `find $(distdir)/ -type d -name autom4te.cache`
 	rm -rf $(distdir)/tools/tcpmon/src/tcpmon
 	rm -rf $(distdir)/tools/md5/src/md5
+	find $(distdir) -name "makefile" | xargs sed -i "s/\/WX//g"
 	sh dist.sh
 
 bindist: $(bin_PROGRAMS)
