@@ -41,6 +41,7 @@
 #include <stdlib.h>
 #include <axutil_uuid_gen.h>
 #include <platforms/axutil_platform_auto_sense.h>
+#include <axiom_mime_output.h>
 
 #define AXIOM_MIME_BOUNDARY_BYTE 45
 
@@ -186,6 +187,14 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
     axis2_msg_ctx_t * msg_ctx,
     axutil_hash_t * param_map,
     axis2_char_t * method);
+
+static axis2_status_t
+axis2_http_transport_utils_send_attachment(
+    const axutil_env_t * env,
+    axutil_http_chunked_stream_t *chunked_stream,
+    FILE *fp,
+    axis2_byte_t *buffer,
+    int buffer_size);
 
 /***************************** End of function headers ************************/
 
@@ -3022,4 +3031,179 @@ axis2_http_transport_utils_process_request(
 	msg_ctx = NULL;
 	
 	return status;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL  
+axis2_http_transport_utils_send_mtom_message(
+    axutil_http_chunked_stream_t * chunked_stream,
+    const axutil_env_t * env,
+    axutil_array_list_t *mime_parts)
+{
+    int i = 0;
+    axiom_mime_output_part_t *mime_part = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
+    int written = 0;
+    int len = 0;    
+
+    if(mime_parts)
+    {
+        for(i = 0; i < axutil_array_list_size
+                (mime_parts, env); i++)
+        {
+            mime_part = (axiom_mime_output_part_t *)axutil_array_list_get(
+                mime_parts, env, i);
+            if((mime_part->type) == AXIOM_MIME_OUTPUT_PART_BUFFER)
+            {
+                written = 0;
+                while(written < mime_part->part_size)
+                {
+                    len = 0;
+                    len = axutil_http_chunked_stream_write(chunked_stream, env,
+                        mime_part->part + written, mime_part->part_size - written);
+                    if (len == -1)
+                    {
+                        status = AXIS2_FAILURE;
+                        break;
+                    }
+                    else
+                    {
+                        written += len;
+                    }
+                }
+            }
+            else if((mime_part->type) == AXIOM_MIME_OUTPUT_PART_FILE)
+            {
+                FILE *f = NULL;
+                axis2_byte_t *output_buffer = NULL;                
+                int output_buffer_size = 0;
+
+                f = fopen(mime_part->file_name, "rb");
+                if (!f)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Error opening file %s for reading",
+                    mime_part->file_name);
+                    return AXIS2_FAILURE;
+                }
+                if(mime_part->part_size > AXIS2_MTOM_OUTPUT_BUFFER_SIZE)
+                {
+                    output_buffer_size = AXIS2_MTOM_OUTPUT_BUFFER_SIZE;
+                }
+                else
+                {
+                    output_buffer_size = mime_part->part_size;
+                }
+               
+                output_buffer =  AXIS2_MALLOC(env->allocator, 
+                    (output_buffer_size + 1) * sizeof(axis2_char_t));
+ 
+ 
+                status = axis2_http_transport_utils_send_attachment(env, chunked_stream, 
+                    f, output_buffer, output_buffer_size);
+                if(status == AXIS2_FAILURE)
+                {
+                    return status;
+                }
+            }
+            else
+            {
+                return AXIS2_FAILURE;
+            }
+            if(status == AXIS2_FAILURE)
+            {
+                break;
+            }
+        }
+        if(status == AXIS2_SUCCESS)
+        {
+           /* send the end of chunk */
+            axutil_http_chunked_stream_write_last_chunk(chunked_stream, env);
+            axutil_http_chunked_stream_free(chunked_stream, env);
+            chunked_stream = NULL;
+            return AXIS2_SUCCESS;
+        }
+        else
+        {
+            return status;
+        }
+    }    
+    else
+    {
+        return AXIS2_FAILURE;
+    }    
+}
+
+
+static axis2_status_t
+axis2_http_transport_utils_send_attachment(
+    const axutil_env_t * env,
+    axutil_http_chunked_stream_t *chunked_stream,
+    FILE *fp,
+    axis2_byte_t *buffer,
+    int buffer_size)
+{
+
+    int count = 0;     
+    int len = 0;
+    int written = 0;
+    axis2_status_t status = AXIS2_SUCCESS;   
+ 
+    do
+    {
+        count = (int)fread(buffer, 1, buffer_size + 1, fp);
+        if (ferror(fp))
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Error in reading file containg the attachment");
+            if (buffer)
+            {
+                AXIS2_FREE(env->allocator, buffer);
+            }
+            fclose(fp);
+            return AXIS2_FAILURE;
+        }
+
+        if(count > 0)
+        {
+            written = 0;
+            while(written < count)
+            {
+                len = 0;
+                len = axutil_http_chunked_stream_write(chunked_stream, env,
+                    buffer + written, count - written);
+                if (len == -1)
+                {
+                    status = AXIS2_FAILURE;
+                    break;
+                }
+                else
+                {
+                    written += len;
+                }
+            }
+        }
+        else
+        {
+            if (buffer)
+            {
+                AXIS2_FREE(env->allocator, buffer);
+            }
+            fclose(fp);
+            return AXIS2_FAILURE;
+        }   
+        memset(buffer, 0, buffer_size);    
+        if(status == AXIS2_FAILURE)
+        {
+            if (buffer)
+            {
+                AXIS2_FREE(env->allocator, buffer);
+            }
+            fclose(fp);
+            return AXIS2_FAILURE;
+        } 
+    }
+    while(!feof(fp));
+    
+    fclose(fp);
+    return AXIS2_SUCCESS;    
 }

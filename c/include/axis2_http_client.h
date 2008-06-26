@@ -38,6 +38,8 @@
 #include <axis2_http_simple_request.h>
 #include <axutil_url.h>
 
+
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -230,6 +232,29 @@ extern "C"
     axis2_http_client_free_void_arg(
         void *client,
         const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_client_set_mime_parts(
+        axis2_http_client_t * client,
+        const axutil_env_t * env,
+        axutil_array_list_t *mime_parts);
+
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axis2_http_client_get_mime_parts(
+        const axis2_http_client_t * client,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_client_set_doing_mtom(
+        axis2_http_client_t * client,
+        const axutil_env_t * env,
+        axis2_bool_t doing_mtom);
+
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_http_client_get_doing_mtom(
+        const axis2_http_client_t * client,
+        const axutil_env_t * env);
+
 
     /** @} */
 #ifdef __cplusplus

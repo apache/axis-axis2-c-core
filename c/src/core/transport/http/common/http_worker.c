@@ -164,6 +164,11 @@ axis2_http_worker_process_request(
     axis2_char_t *url_ext_form = NULL;
     const axis2_char_t *content_type = NULL;
 
+    axis2_msg_ctx_t *out_msg_ctx = NULL;
+    axis2_msg_ctx_t *in_msg_ctx = NULL;
+    axis2_msg_ctx_t **msg_ctx_map = NULL;
+
+
     AXIS2_PARAM_CHECK(env->error, svr_conn, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, simple_request, AXIS2_FALSE);
 
@@ -516,8 +521,6 @@ axis2_http_worker_process_request(
         is_put = AXIS2_TRUE;
     }
 
-
-        
     request_uri = axis2_http_request_line_get_uri (request_line, env);
     request_params = 
         axis2_http_transport_utils_get_request_params(env,
@@ -1312,8 +1315,8 @@ axis2_http_worker_process_request(
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx)
     {
-        axis2_msg_ctx_t *out_msg_ctx = NULL;
-        axis2_msg_ctx_t **msg_ctx_map = NULL;
+        /*axis2_msg_ctx_t *out_msg_ctx = NULL;
+        axis2_msg_ctx_t **msg_ctx_map = NULL;*/
         axis2_char_t *language_str = NULL;
 
         msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
@@ -1592,12 +1595,12 @@ axis2_http_worker_process_request(
             {
                 if (do_rest)
                 {
-                    axis2_msg_ctx_t *out_msg_ctx = NULL;
+                    /*axis2_msg_ctx_t *out_msg_ctx = NULL;
                     axis2_msg_ctx_t *in_msg_ctx = NULL;
-                    axis2_msg_ctx_t **msg_ctx_map = NULL;
+                    axis2_msg_ctx_t **msg_ctx_map = NULL;*/
 
-                    msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
-                    out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+                    /*msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+                    out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];*/
                     in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
                     if (in_msg_ctx)
                     {
@@ -1726,9 +1729,9 @@ axis2_http_worker_process_request(
                 /* If response is not written */
                 if (do_rest)
                 {
-                    axis2_msg_ctx_t *out_msg_ctx = NULL;
+                    /*axis2_msg_ctx_t *out_msg_ctx = NULL;
                     axis2_msg_ctx_t *in_msg_ctx = NULL;
-                    axis2_msg_ctx_t **msg_ctx_map = NULL;
+                    axis2_msg_ctx_t **msg_ctx_map = NULL;*/
 
                     msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
                     out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
@@ -1905,6 +1908,15 @@ axis2_http_worker_process_request(
    
                 /* This is where it actually write to the wire in the http back channel
                  * append case. */ 
+                if(out_msg_ctx)
+                {
+                    axutil_array_list_t *mime_parts = NULL;
+                    mime_parts = axis2_msg_ctx_get_mime_parts(out_msg_ctx, env);
+                    if(mime_parts)
+                    {
+                        axis2_http_simple_response_set_mime_parts(response, env, mime_parts);    
+                    }
+                }
                 status = axis2_simple_http_svr_conn_write_response(svr_conn, 
                                                                    env, 
                                                                    response);
@@ -1919,15 +1931,15 @@ axis2_http_worker_process_request(
     } 
     if (op_ctx)
     {
-        axis2_msg_ctx_t *out_msg_ctx = NULL;
+        /*axis2_msg_ctx_t *out_msg_ctx = NULL;
         axis2_msg_ctx_t *in_msg_ctx = NULL;
-        axis2_msg_ctx_t **msg_ctx_map = NULL;
+        axis2_msg_ctx_t **msg_ctx_map = NULL;*/
         axis2_char_t *msg_id = NULL;
         axis2_conf_ctx_t *conf_ctx = NULL;
-        msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+        /*msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
 
         out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
-        in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
+        in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];*/
 
         if (out_msg_ctx)
         {

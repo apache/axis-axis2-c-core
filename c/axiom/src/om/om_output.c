@@ -691,7 +691,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
         }
         else
         {
-            return AXSI2_FAILURE;
+            return AXIS2_FAILURE;
         }
     }
     return AXIS2_SUCCESS;

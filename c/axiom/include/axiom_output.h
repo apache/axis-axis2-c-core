@@ -24,6 +24,7 @@
 #include <axutil_env.h>
 #include <axiom_node.h>
 #include <axiom_xml_writer.h>
+#include <axutil_array_list.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -233,10 +234,16 @@ extern "C"
     /**
      *
      */
-    AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
-    axiom_output_flush(
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+        axiom_output_flush(
         axiom_output_t * om_output,
         const axutil_env_t * env);
+
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axiom_output_get_mime_parts(
+        axiom_output_t * om_output,
+        const axutil_env_t * env);
+
 
     /** @} */
 

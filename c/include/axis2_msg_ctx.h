@@ -2060,7 +2060,22 @@ extern "C"
         const axutil_env_t * env,
         axutil_array_list_t * output_headers);
 
-    /** @} */
+
+
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+    axis2_msg_ctx_get_mime_parts(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_msg_ctx_set_mime_parts(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env,
+        axutil_array_list_t *mime_parts);
+
+
+/** @} */
 
 #ifdef __cplusplus
 }

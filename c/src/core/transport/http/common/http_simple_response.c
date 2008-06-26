@@ -28,6 +28,7 @@ struct axis2_http_simple_response
     axis2_http_status_line_t *status_line;
     axutil_array_list_t *header_group;
     axutil_stream_t *stream;
+    axutil_array_list_t *mime_parts;
 };
 
 
@@ -94,6 +95,7 @@ axis2_http_simple_response_create_default(
     simple_response->status_line = NULL;
     simple_response->header_group = NULL;
     simple_response->stream = NULL;
+    simple_response->mime_parts = NULL;
 
     return simple_response;
 }
@@ -600,6 +602,24 @@ axis2_http_simple_response_contains_header(
 }
 
 
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axis2_http_simple_response_get_mime_parts(
+    axis2_http_simple_response_t * simple_response,
+    const axutil_env_t * env)
+{
 
+    return simple_response->mime_parts;
 
+}
+
+void AXIS2_EXTERN AXIS2_CALL
+axis2_http_simple_response_set_mime_parts(
+    axis2_http_simple_response_t * simple_response,
+    const axutil_env_t * env,
+    axutil_array_list_t *mime_parts)
+{
+
+    simple_response->mime_parts = mime_parts;
+
+}
 

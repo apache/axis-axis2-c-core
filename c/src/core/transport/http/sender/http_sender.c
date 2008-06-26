@@ -484,8 +484,20 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
         if (doing_mtom)
         {
-            axiom_output_flush (sender->om_output, env, &output_stream,
-                                &output_stream_size);
+            axis2_status_t mtom_status = AXIS2_FAILURE;
+            axutil_array_list_t *mime_parts = NULL;
+
+            mtom_status = axiom_output_flush (sender->om_output, env);
+            if(mtom_status == AXIS2_FAILURE)
+            {
+                return mtom_status;
+            }
+            axis2_http_client_set_doing_mtom(sender->client, env, doing_mtom);
+            mime_parts = axiom_output_get_mime_parts(sender->om_output, env);
+            if(mime_parts)
+            {
+                axis2_http_client_set_mime_parts(sender->client, env, mime_parts);    
+            }
         }
         else
         {
@@ -803,13 +815,13 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
     if (doing_mtom)
     {
-        axutil_stream_t *stream = axis2_http_simple_request_get_body (request,
+        /*axutil_stream_t *stream = axis2_http_simple_request_get_body (request,
                                                                       env);
         if (stream)
         {
             axutil_stream_write (stream, env, output_stream,
                                  output_stream_size);
-        }
+        }*/
     }
     else
     {

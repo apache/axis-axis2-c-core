@@ -28,7 +28,8 @@ axiom_mime_output_write_body_part_to_list(
     axiom_mime_output_t *mime_output,
     const axutil_env_t *env,
     axutil_array_list_t *list,
-    axiom_mime_body_part_t *part);
+    axiom_mime_body_part_t *part,
+    axis2_char_t *boundary);
 
 static axis2_status_t
 axiom_mime_output_write_mime_boundary(
@@ -119,6 +120,7 @@ axiom_mime_output_write_mime_boundary(
     boundary_part = axiom_mime_output_part_create(env);
     
     byte_buffer = (axis2_byte_t *)boundary;
+    size = axutil_strlen(boundary);
     
     byte_stream =
         AXIS2_MALLOC(env->allocator, (size + 2) * sizeof(axis2_byte_t));
@@ -149,10 +151,23 @@ axiom_mime_output_write_body_part_to_list(
     axiom_mime_output_t *mime_output,
     const axutil_env_t *env,
     axutil_array_list_t *list,
-    axiom_mime_body_part_t *part)
+    axiom_mime_body_part_t *part,
+    axis2_char_t *boundary)
 {
     axiom_mime_output_part_t *crlf1 = NULL;
     axiom_mime_output_part_t *crlf2 = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
+
+    /* First add the mime_boundary*/
+
+    status = axiom_mime_output_write_mime_boundary(mime_output, 
+            env, list, boundary);
+    
+    if(status != AXIS2_SUCCESS)
+    {
+        return status;
+    }
+
    
     /* There is a \r\n before the attachment data
      * So first add it
@@ -215,8 +230,8 @@ axiom_mime_output_finish_adding_parts(
     if (byte_buffer)
     {
         memcpy(byte_stream + 2, byte_buffer, size);
-        AXIS2_FREE(env->allocator, byte_buffer);
-        byte_buffer = NULL;
+        /*AXIS2_FREE(env->allocator, byte_buffer);
+        byte_buffer = NULL;*/
     }
     else
     {
@@ -394,13 +409,13 @@ axiom_mime_output_create_part_list(
         return NULL;
     }    
     
-    status = axiom_mime_output_write_mime_boundary(mime_output, 
+    /*status = axiom_mime_output_write_mime_boundary(mime_output, 
             env, part_list, boundary);
     
     if (status != AXIS2_SUCCESS)
     {
         return NULL;
-    }
+    }*/
 
     root_mime_body_part = axiom_mime_body_part_create(env);
 
@@ -447,7 +462,7 @@ axiom_mime_output_create_part_list(
     /* Now first write the headers needed for SOAP */
     
     status = axiom_mime_output_write_body_part_to_list(mime_output, env, part_list,
-            root_mime_body_part);
+            root_mime_body_part, boundary);
     
     if(status == AXIS2_FAILURE)
     {
@@ -465,7 +480,9 @@ axiom_mime_output_create_part_list(
     {
         return AXIS2_FAILURE;
     }    
-    
+
+    soap_body_buffer = soap_body; 
+   
     soap_part->part = (axis2_byte_t *)soap_body_buffer;
     soap_part->part_size = (int) axutil_strlen(soap_body_buffer);
     soap_part->type = AXIOM_MIME_OUTPUT_PART_BUFFER;
@@ -495,9 +512,9 @@ axiom_mime_output_create_part_list(
                 }    
                 
                 status = axiom_mime_output_write_body_part_to_list(mime_output, 
-                        env, part_list, mime_body_part);
+                        env, part_list, mime_body_part, boundary);
                 
-                if(status == AXIS2_FAILURE);
+                if(status == AXIS2_FAILURE)
                 {
                     return NULL;
                 }
@@ -506,12 +523,12 @@ axiom_mime_output_create_part_list(
                 mime_body_part = NULL;
                 
                 /* Then we need to add a mime_boundary */
-                status = axiom_mime_output_write_mime_boundary(mime_output, env, part_list, boundary);
+                /*status = axiom_mime_output_write_mime_boundary(mime_output, env, part_list, boundary);
                 
                 if(status == AXIS2_FAILURE)
                 {
                     return NULL;
-                }    
+                } */   
             }
         }
     }

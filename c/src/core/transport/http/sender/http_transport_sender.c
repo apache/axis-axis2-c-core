@@ -29,6 +29,7 @@
 #include <axiom_soap_body.h>
 #include <axutil_types.h>
 #include <axiom_soap_fault_detail.h>
+#include <axis2_msg_ctx.h>
 
 #ifdef AXIS2_LIBCURL_ENABLED
 #include "libcurl/axis2_libcurl.h"
@@ -180,7 +181,7 @@ axis2_http_transport_sender_invoke(
     axis2_bool_t do_mtom;
     axutil_property_t *property = NULL;
     axiom_node_t *data_out = NULL;
-    axis2_byte_t *output_stream = NULL;
+    /*axis2_byte_t *output_stream = NULL;*/
     int buffer_size = 0;
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -525,18 +526,33 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
                                               AXIS2_FALSE);
                 if (do_mtom)
                 {
+                    axis2_status_t mtom_status = AXIS2_FAILURE;
                     axis2_char_t *content_type = NULL;
-                    axiom_output_flush(om_output, env, &output_stream,
-                                       &buffer_size);
+                    axutil_array_list_t *mime_parts = NULL;
+                    
+                    mtom_status = axiom_output_flush(om_output, env);
+                    if(mtom_status == AXIS2_SUCCESS)
+                    {
+                        mime_parts = axiom_output_get_mime_parts(om_output, env);
+                        if(!mime_parts)
+                        {
+                            return AXIS2_FAILURE;
+                        }
+                        else
+                        {
+                            axis2_msg_ctx_set_mime_parts(msg_ctx, env, mime_parts);
+                        }
+                    }
+
                     content_type =
                         (axis2_char_t *)
                         axiom_output_get_content_type(om_output, env);
                     AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info,
                                                                    env,
                                                                    content_type);
-                    buffer = output_stream;
+                    /*buffer = output_stream;
                     axutil_stream_write(out_stream, env, buffer, buffer_size);
-                    AXIS2_FREE(env->allocator, buffer);
+                    AXIS2_FREE(env->allocator, buffer);*/
                 }
                 else
                 {
@@ -556,9 +572,9 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
         }
     }
 
-    axiom_output_free(om_output, env);
+    /*axiom_output_free(om_output, env);
     om_output = NULL;
-    xml_writer = NULL;
+    xml_writer = NULL;*/
 
     if (transport_url)
     {

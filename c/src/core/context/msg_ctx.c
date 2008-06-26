@@ -216,6 +216,8 @@ struct axis2_msg_ctx
     axis2_bool_t required_auth_is_http;
     axis2_char_t *auth_type;
     axis2_bool_t no_content;
+
+    axutil_array_list_t *mime_parts;
 };
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
@@ -297,6 +299,8 @@ axis2_msg_ctx_create(
     msg_ctx->no_content = AXIS2_FALSE;
     msg_ctx->status_code = 0;
     msg_ctx->options = NULL;
+    msg_ctx->mime_parts = NULL;
+
     msg_ctx->base = axis2_ctx_create(env);
     if (!(msg_ctx->base))
     {
@@ -2760,4 +2764,26 @@ axis2_msg_ctx_get_auth_type(
     const axutil_env_t * env)
 {
     return msg_ctx->auth_type;
+}
+
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axis2_msg_ctx_get_mime_parts(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    return msg_ctx->mime_parts;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axis2_msg_ctx_set_mime_parts(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env,
+    axutil_array_list_t *mime_parts)
+{
+    if(msg_ctx->mime_parts)
+    {
+        axutil_array_list_free(mime_parts, env);
+        msg_ctx->mime_parts = NULL;        
+    }
+    msg_ctx->mime_parts = mime_parts;
 }

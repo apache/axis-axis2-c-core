@@ -45,6 +45,8 @@
 #include <axis2_http_out_transport_info.h>
 #include <axutil_url.h>
 
+#define AXIS2_MTOM_OUTPUT_BUFFER_SIZE 1024
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -347,6 +349,12 @@ extern "C"
 	axis2_http_transport_utils_process_accept_headers(
 		const axutil_env_t *env,
 		axis2_char_t *accept_value);
+        
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL  
+    axis2_http_transport_utils_send_mtom_message(
+        axutil_http_chunked_stream_t * chunked_stream,
+        const axutil_env_t * env,
+        axutil_array_list_t *mime_parts);
 
     /** @} */
 #ifdef __cplusplus
