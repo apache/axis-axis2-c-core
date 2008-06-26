@@ -29,6 +29,7 @@
 /**
  * @defgroup axis2_phase_res phase resolver
  * @ingroup axis2_phase_resolver
+ *
  * Engaging modules into axis2 configuration, services and operations are done here. 
  * This is accomplished mainly by following operations respectively.
  * axis2_phase_resolver_engage_module_globally().
@@ -44,16 +45,21 @@
  *
  * Above functions in phase resolver add module handlers into operation flows as mentioned above as well
  * as add module handlers into system defined phases. User defined phases are added into each operation
- * at deployment time before handlers are added into them by phase resolver. System define phase lists
+ * at deployment time before handlers are added into them by phase resolver. System define phases
  * are added into axis2_conf_t structure and predefined handlers are added to them before module handlers
  * are added to them by phase resolver.
  *
- * In server side modules are engaged by call to axis2_conf_engage_module() function from deployment engine
- * which in turn call axis2_phase_resolver_engage_module_globally() function. In client side modules are 
- * engaged by call to axis2_phase_resolver_engage_module_to_svc() or axis2_phase_resolver_engage_module_to_op().
+ * Modules defined in axis2.xml are engaged by call to axis2_conf_engage_module() function. Modules defined in 
+ * services xml are engaged by call to axis2_svc_enage_module() or axis2_svc_grp_engage_module(). Modules
+ * define in operation tag under services.xml are engaged by call to axis2_op_engage_module() function.
+ * These function in tern call one of axis2_phase_resolver_engage_module_globally() or 
+ * axis2_phase_resolver_engage_module_to_svc() or axis2_phase_resolver_engage_module_to_op.
  *
- * Also building initial operation execution phases are done in phase resolver. The functions are
- * axis2_phase_resolver_build_execution_chains_for_svc().
+ * Also when you add a service programmaticaly into axis2_conf_t you need to build execution chains for that
+ * services operations.
+ * axis2_phase_resolver_build_execution_chains_for_svc() is the function to be called for that purpose.
+ * This will extract the already engaged modules for the configuration and service and add handlers from
+ * them into operation phases.
  *
  * @{
  */
@@ -158,8 +164,9 @@ extern "C"
         struct axis2_module_desc *module_desc);
 
     /**
-     * Builds the execution chains. Execution chains are collection of phases that are invoked in
-     * the execution path.
+     * Builds the execution chains for service. Execution chains are collection of phases that are 
+     * invoked in the execution path. Execution chains for system defined phases are created when
+     * call to engage_module_globally() function. Here it is created for service operations.
      * @param phase_resolver pointer to phase resolver
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
@@ -170,7 +177,7 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * Builds execution chains for given operation.
+     * Builds execution chains for given module operation.
      * @param phase_resolver pointer to phase resolver
      * @param env pointer to environment struct
      * @param op pointer to operation
