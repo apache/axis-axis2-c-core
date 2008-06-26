@@ -1270,7 +1270,7 @@ $(TCPMON_INTDIR) :
 	@if not exist $(TCPMON_INTDIR) mkdir $(TCPMON_INTDIR)
 
 {$(TCPMON_SRC)}.c{$(TCPMON_INTDIR)}.obj ::
-	$(CC) $(CFLAGS) /Fo$(TCPMON_INTDIR)\ /c $<
+	$(CC) $(CFLAGS) /I $(TCPMON_INTDIR)\include /Fo$(TCPMON_INTDIR)\ /c $<
 
 $(TCPMON_OBJS) : $(TCPMON_INTDIR)
 
