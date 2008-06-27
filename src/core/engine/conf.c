@@ -32,18 +32,22 @@ struct axis2_conf
     axis2_transport_out_desc_t *transports_out[AXIS2_TRANSPORT_ENUM_MAX];
 
     /**
-     * Field modules
+     * All the modules already engaged can be found here.
      */
     axutil_array_list_t *engaged_module_list;
+
     /*To store all the available modules (including version) */
     axutil_hash_t *all_modules;
+
     /*To store mapping between default version to module name */
     axutil_hash_t *name_to_version_map;
     axutil_array_list_t *out_phases;
     axutil_array_list_t *in_fault_phases;
     axutil_array_list_t *out_fault_phases;
 
+    /* All the system specific phases are stored here */
     axutil_array_list_t *in_phases_upto_and_including_post_dispatch;
+
     axis2_phases_info_t *phases_info;
     axutil_hash_t *all_svcs;
     axutil_hash_t *all_init_svcs;
@@ -90,20 +94,19 @@ axis2_conf_create(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
         return NULL;
     }
+
 	memset ((void *)conf, 0, sizeof (axis2_conf_t));
 
     conf->enable_mtom = AXIS2_FALSE;
     conf->enable_security = AXIS2_FALSE;
 	conf->axis2_flag = AXIS2_FALSE;
 
-    conf->param_container = (axutil_param_container_t *)
-        axutil_param_container_create(env);
+    conf->param_container = (axutil_param_container_t *) axutil_param_container_create(env);
     if (!conf->param_container)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Creating parameter container failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating parameter container failed");
         return NULL;
     }
 
@@ -112,8 +115,7 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Creating service group map failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating service group map failed");
         return NULL;
     }
 
@@ -132,8 +134,7 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Creating engaged module list failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating engaged module list failed");
         return NULL;
     }
 
@@ -142,8 +143,7 @@ axis2_conf_create(
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Creating handler list failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating handler list failed");
         return NULL;
     }
 
@@ -154,7 +154,7 @@ axis2_conf_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Creating in phases list upto and including post dispatch failed");
+                "Creating in phases list upto and including post dispatch failed");
 
         return NULL;
     }
@@ -168,13 +168,13 @@ axis2_conf_create(
         {
             axis2_conf_free(conf, env);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating phase %s failed", 
-                AXIS2_PHASE_TRANSPORT_IN);
+                    AXIS2_PHASE_TRANSPORT_IN);
+
             return NULL;
         }
 
-        /* Incase of using security we need to find the service/operation
-         * parameters before the dispatch phase.
-         * This is required to give parameters to the security inflow.*/
+        /* In case of using security we need to find the service/operation parameters before the 
+         * dispatch phase. This is required to give parameters to the security inflow.*/
 
         uri_dispatch = axis2_req_uri_disp_create(env);
         if (uri_dispatch)
@@ -210,6 +210,7 @@ axis2_conf_create(
             return NULL;
 
         }
+
         phase = axis2_phase_create(env, AXIS2_PHASE_PRE_DISPATCH);
         if (!phase)
         {
@@ -1121,24 +1122,22 @@ axis2_conf_is_engaged(
     axis2_module_desc_t *def_mod = NULL;
     int i = 0;
     int size = 0;
+
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FALSE);
 
-    def_mod = axis2_conf_get_default_module(conf, env,
-                                            axutil_qname_get_localpart
-                                            (module_name, env));
+    def_mod = axis2_conf_get_default_module(conf, env, axutil_qname_get_localpart(module_name, env));
     if (def_mod)
     {
         def_mod_qname = axis2_module_desc_get_qname(def_mod, env);
     }
+
     size = axutil_array_list_size(conf->engaged_module_list, env);
 
     for (i = 0; i < size; i++)
     {
         axutil_qname_t *qname = NULL;
 
-        qname = (axutil_qname_t *) axutil_array_list_get(conf->
-                                                         engaged_module_list, env,
-                                                         i);
+        qname = (axutil_qname_t *) axutil_array_list_get(conf->engaged_module_list, env, i);
 
         if (axutil_qname_equals(module_name, env, qname) ||
             (def_mod_qname &&
@@ -1147,6 +1146,7 @@ axis2_conf_is_engaged(
             return AXIS2_TRUE;
         }
     }
+
     return AXIS2_FALSE;
 }
 
