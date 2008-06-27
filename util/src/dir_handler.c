@@ -216,8 +216,7 @@ axutil_dir_handler_list_service_or_module_dirs(
     if (count <= 0)
     {
         axutil_array_list_free(file_list, env);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No files in the path %s.",
-                        pathname);
+        AXIS2_LOG_INFO(env->log, "No files in the path %s.", pathname);
         return NULL;
     }
 
