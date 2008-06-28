@@ -765,9 +765,9 @@ axis2_svc_client_send_receive_with_op_qname(
             return NULL;
         }
 
-        /* call two channel non blocking invoke to do the work and wait on the callback. Note
-         * that we don't set a callback function for the callback. Instead we plan to call
-         * engine_receive through op_client_receive() function periodically. */
+        /* Call two channel non blocking invoke to do the work and wait on the callback. We don't 
+         * set a callback function for the callback. That functionality is handled here. 
+         */
         axis2_svc_client_send_receive_non_blocking_with_op_qname(svc_client,
                                                                  env, op_qname,
                                                                  payload,
