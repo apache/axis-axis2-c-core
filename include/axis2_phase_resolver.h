@@ -21,13 +21,6 @@
 
 /**
  * @defgroup axis2_phase_resolver phase resolver
- * @ingroup axis2
- * @{
- * @}
- */
-
-/**
- * @defgroup axis2_phase_res phase resolver
  * @ingroup axis2_phase_resolver
  *
  * Engaging modules into axis2 configuration, services and operations are done here. 

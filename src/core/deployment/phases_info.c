@@ -217,6 +217,9 @@ axis2_phases_info_get_out_faultphases(
     return phases_info->out_faultphases;
 }
 
+/* Here we create the operation inflow as an array list and create phases for phases defined in
+ * inflow of axis2.xml and add them into the array list.
+ */
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_phases_info_get_op_in_phases(
     const axis2_phases_info_t * phases_info,
@@ -242,17 +245,19 @@ axis2_phases_info_get_op_in_phases(
     {
         return op_in_phases;
     }
+
+    /* For each inflow phase name create a phase instance and add into the inflow. */
     size = axutil_array_list_size(phases_info->in_phases, env);
     for (i = 0; i < size; i++)
     {
-        phase_name = (axis2_char_t *)
-            axutil_array_list_get(phases_info->in_phases, env, i);
+        phase_name = (axis2_char_t *) axutil_array_list_get(phases_info->in_phases, env, i);
+
         if (!axutil_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name) ||
             !axutil_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name) ||
             !axutil_strcmp(AXIS2_PHASE_DISPATCH, phase_name) ||
             !axutil_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name))
         {
-            /* Do nothing */
+            /* We are not concerned here with system phases. */
         }
         else
         {
@@ -293,6 +298,9 @@ axis2_phases_info_get_op_in_phases(
     return op_in_phases;
 }
 
+/* Here we create the operation outflow as an array list and create phases for phases defined in
+ * outflow of axis2.xml and add them into the array list.
+ */
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_phases_info_get_op_out_phases(
     const axis2_phases_info_t * phases_info,
@@ -311,24 +319,18 @@ axis2_phases_info_get_op_out_phases(
     {
         size = axutil_array_list_size(phases_info->out_phases, env);
     }
+
     op_out_phases = axutil_array_list_create(env, 0);
     if (!op_out_phases)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+
     for (i = 0; i < size; i++)
     {
-        phase_name = (axis2_char_t *) axutil_array_list_get(phases_info->
-                                                            out_phases, env, i);
-        /*phase = axutil_hash_get(phases_info->op_out_phases, phase_name, 
-           AXIS2_HASH_KEY_STRING);
-           if(!phase)
-           {
-           phase = axis2_phase_create(env, phase_name);
-           axutil_hash_set(phases_info->op_out_phases, phase_name,
-           AXIS2_HASH_KEY_STRING, phase);
-           } */
+        phase_name = (axis2_char_t *) axutil_array_list_get(phases_info->out_phases, env, i);
+
         phase = axis2_phase_create(env, phase_name);
         status = axutil_array_list_add(op_out_phases, env, phase);
         if (AXIS2_SUCCESS != status)
@@ -345,11 +347,13 @@ axis2_phases_info_get_op_out_phases(
                 axis2_phase_free(phase, env);
                 phase = NULL;
             }
+
             axutil_array_list_free(op_out_phases, env);
             op_out_phases = NULL;
             return NULL;
         }
     }
+
     return op_out_phases;
 }
 
@@ -371,11 +375,13 @@ axis2_phases_info_get_op_in_faultphases(
     {
         return NULL;
     }
+
     size = axutil_array_list_size(phases_info->in_faultphases, env);
     if (0 == size)
     {
         return NULL;
     }
+
     op_in_faultphases = axutil_array_list_create(env, 0);
     if (!op_in_faultphases)
     {
@@ -384,16 +390,8 @@ axis2_phases_info_get_op_in_faultphases(
     }
     for (i = 0; i < size; i++)
     {
-        phase_name = (axis2_char_t *)
-            axutil_array_list_get(phases_info->in_faultphases, env, i);
-        /*phase = axutil_hash_get(phases_info->op_in_faultphases, phase_name, 
-           AXIS2_HASH_KEY_STRING);
-           if(!phase)
-           {
-           phase = axis2_phase_create(env, phase_name);
-           axutil_hash_set(phases_info->op_in_faultphases, 
-           phase_name, AXIS2_HASH_KEY_STRING, phase);
-           } */
+        phase_name = (axis2_char_t *) axutil_array_list_get(phases_info->in_faultphases, env, i);
+
         phase = axis2_phase_create(env, phase_name);
         status = axutil_array_list_add(op_in_faultphases, env, phase);
         if (AXIS2_SUCCESS != status)
@@ -416,6 +414,7 @@ axis2_phases_info_get_op_in_faultphases(
 
         }
     }
+
     return op_in_faultphases;
 }
 
@@ -443,24 +442,17 @@ axis2_phases_info_get_op_out_faultphases(
     {
         return NULL;
     }
+
     op_out_faultphases = axutil_array_list_create(env, 0);
     if (!op_out_faultphases)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+
     for (i = 0; i < size; i++)
     {
-        phase_name = (axis2_char_t *)
-            axutil_array_list_get(phases_info->out_faultphases, env, i);
-        /*phase = axutil_hash_get(phases_info->op_out_faultphases, phase_name, 
-           AXIS2_HASH_KEY_STRING);
-           if(!phase)
-           {
-           phase = axis2_phase_create(env, phase_name);
-           axutil_hash_set(phases_info->op_out_faultphases, 
-           phase_name, AXIS2_HASH_KEY_STRING, phase);
-           } */
+        phase_name = (axis2_char_t *) axutil_array_list_get(phases_info->out_faultphases, env, i);
         phase = axis2_phase_create(env, phase_name);
         status = axutil_array_list_add(op_out_faultphases, env, phase);
         if (AXIS2_SUCCESS != status)
@@ -483,9 +475,15 @@ axis2_phases_info_get_op_out_faultphases(
 
         }
     }
+
     return op_out_faultphases;
 }
 
+/* 
+ * Get user defined phase instances for each flow defined in axis2.xml in an array list and add it 
+ * into operation. This is called service builder, module builder and service client to add phases
+ * into operations.
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phases_info_set_op_phases(
     axis2_phases_info_t * phases_info,
@@ -517,10 +515,8 @@ axis2_phases_info_set_op_phases(
         return status;
     }
 
-    op_in_faultphases =
-        axis2_phases_info_get_op_in_faultphases(phases_info, env);
-    op_out_faultphases =
-        axis2_phases_info_get_op_out_faultphases(phases_info, env);
+    op_in_faultphases = axis2_phases_info_get_op_in_faultphases(phases_info, env);
+    op_out_faultphases = axis2_phases_info_get_op_out_faultphases(phases_info, env);
 
     status = axis2_op_set_in_flow(op_desc, env, op_in_phases);
     status = axis2_op_set_out_flow(op_desc, env, op_out_phases);
@@ -533,6 +529,7 @@ axis2_phases_info_set_op_phases(
     {
         status = axis2_op_set_fault_out_flow(op_desc, env, op_out_faultphases);
     }
+
     return status;
 }
 
@@ -543,12 +540,14 @@ axis2_phases_info_copy_flow(
 {
     int size = 0,
         i = 0;
+
     axutil_array_list_t *new_flow = NULL;
     if (flow_to_copy)
     {
         size =
             axutil_array_list_size((axutil_array_list_t *) flow_to_copy, env);
     }
+
     if (size > 0)
     {
         new_flow = axutil_array_list_create(env, 0);
@@ -558,13 +557,14 @@ axis2_phases_info_copy_flow(
             return NULL;
         }
     }
+
     for (i = 0; i < size; i++)
     {
-        void *item = axutil_array_list_get((axutil_array_list_t *) flow_to_copy,
-                                           env, i);
+        void *item = axutil_array_list_get((axutil_array_list_t *) flow_to_copy, env, i);
         axis2_phase_increment_ref((axis2_phase_t *) item, env);
         axutil_array_list_add(new_flow, env, item);
     }
+
     return new_flow;
 }
 

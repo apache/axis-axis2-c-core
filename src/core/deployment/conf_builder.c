@@ -515,7 +515,10 @@ axis2_conf_builder_process_disp_order(
 }
 
 /**
- * To process all the phase orders which are defined in axis2.xml
+ * To process all the phase orders which are defined in axis2.xml retrieve each phase order node
+ * from the iterator passed as parameter and from each phase order node retrieve phases list
+ * defined for that phase order. Add the phases names into a array list and set it into the 
+ * dep_engine->phases_info with the corresponding phase order name.
  * @param phase_orders
  */
 static axis2_status_t
@@ -526,16 +529,14 @@ axis2_conf_builder_process_phase_orders(
 {
     axis2_phases_info_t *info = NULL;
 
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
-        "Entry:axis2_conf_builder_process_phase_orders");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_conf_builder_process_phase_orders");
+
     AXIS2_PARAM_CHECK(env->error, phase_orders, AXIS2_FAILURE);
 
-    info =
-        axis2_dep_engine_get_phases_info(axis2_desc_builder_get_dep_engine
-                                         (conf_builder->desc_builder, env),
-                                         env);
-    while (AXIS2_TRUE ==
-           axiom_children_qname_iterator_has_next(phase_orders, env))
+    info = axis2_dep_engine_get_phases_info(axis2_desc_builder_get_dep_engine(
+                conf_builder->desc_builder, env), env);
+
+    while (axiom_children_qname_iterator_has_next(phase_orders, env))
     {
         axiom_node_t *phase_orders_node = NULL;
         axiom_element_t *phase_orders_element = NULL;
@@ -544,19 +545,15 @@ axis2_conf_builder_process_phase_orders(
         axis2_char_t *flow_type = NULL;
         axutil_array_list_t *phase_list = NULL;
 
-        phase_orders_node =
-            (axiom_node_t *) axiom_children_qname_iterator_next(phase_orders,
-                                                                env);
+        phase_orders_node = (axiom_node_t *) axiom_children_qname_iterator_next(phase_orders, env);
         if (phase_orders_node)
         {
-            phase_orders_element =
-                axiom_node_get_data_element(phase_orders_node, env);
+            phase_orders_element = axiom_node_get_data_element(phase_orders_node, env);
         }
         if (phase_orders_element)
         {
             qtype = axutil_qname_create(env, AXIS2_TYPE, NULL, NULL);
-            phase_orders_att = axiom_element_get_attribute(phase_orders_element,
-                                                           env, qtype);
+            phase_orders_att = axiom_element_get_attribute(phase_orders_element, env, qtype);
             axutil_qname_free(qtype, env);
         }
 
@@ -565,18 +562,20 @@ axis2_conf_builder_process_phase_orders(
             flow_type = axiom_attribute_get_value(phase_orders_att, env);
         }
 
-        phase_list = axis2_conf_builder_get_phase_list(conf_builder, env,
-                                                       phase_orders_node);
+        phase_list = axis2_conf_builder_get_phase_list(conf_builder, env, phase_orders_node);
         if (!phase_list)
         {
             axis2_status_t status_code = AXIS2_FAILURE;
+
             status_code = AXIS2_ERROR_GET_STATUS_CODE(env->error);
             if (AXIS2_SUCCESS != status_code)
             {
                 return status_code;
             }
+
             return AXIS2_SUCCESS;
         }
+
         if (flow_type && !axutil_strcmp(AXIS2_IN_FLOW_START, flow_type))
         {
             axis2_phases_info_set_in_phases(info, env, phase_list);
@@ -585,22 +584,24 @@ axis2_conf_builder_process_phase_orders(
         {
             axis2_phases_info_set_in_faultphases(info, env, phase_list);
         }
-        else if (flow_type &&
-                 !axutil_strcmp(AXIS2_OUT_FLOW_START, flow_type))
+        else if (flow_type && !axutil_strcmp(AXIS2_OUT_FLOW_START, flow_type))
         {
             axis2_phases_info_set_out_phases(info, env, phase_list);
         }
-        else if (flow_type &&
-                 !axutil_strcmp(AXIS2_OUT_FAILTFLOW, flow_type))
+        else if (flow_type && !axutil_strcmp(AXIS2_OUT_FAILTFLOW, flow_type))
         {
             axis2_phases_info_set_out_faultphases(info, env, phase_list);
         }
     }
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
-        "Exit:axis2_conf_builder_process_phase_orders");
+
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_conf_builder_process_phase_orders");
+
     return AXIS2_SUCCESS;
 }
 
+/* From the phase order node passed as parameter retrieve all phase element nodes. From them extract
+ * the phase name and add it to a array list. Return the array list.
+ */
 static axutil_array_list_t *
 axis2_conf_builder_get_phase_list(
     axis2_conf_builder_t * conf_builder,
@@ -612,31 +613,33 @@ axis2_conf_builder_get_phase_list(
     axutil_qname_t *qphase = NULL;
     axiom_element_t *phase_orders_element;
 
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
-        "Entry:axis2_conf_builder_get_phase_list");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_conf_builder_get_phase_list");
+
     AXIS2_PARAM_CHECK(env->error, phase_orders_node, NULL);
 
     phase_orders_element = axiom_node_get_data_element(phase_orders_node, env);
     if (!phase_orders_element)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DATA_ELEMENT_IS_NULL,
-                        AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DATA_ELEMENT_IS_NULL, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Retrieving phase orders data element from phase orders node "\
-            "failed. Unable to continue");
+            "Retrieving phase orders data element from phase orders node failed. Unable to continue");
+
         return NULL;
     }
+
     phase_list = axutil_array_list_create(env, 0);
     qphase = axutil_qname_create(env, AXIS2_PHASE, NULL, NULL);
-    phases = axiom_element_get_children_with_qname(phase_orders_element, env,
-                                                   qphase, phase_orders_node);
+    phases = axiom_element_get_children_with_qname(phase_orders_element, env, qphase, 
+            phase_orders_node);
+
     axutil_qname_free(qphase, env);
     if (!phases)
     {
         axutil_array_list_free(phase_list, env);
+
         /* I guess this is not an error. So adding debug message*/
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
-            "No phase node found in the phase orders node");
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No phase node found in the phase orders node");
+
         return NULL;
     }
 
@@ -648,25 +651,23 @@ axis2_conf_builder_get_phase_list(
         axutil_qname_t *qattname = NULL;
         axis2_char_t *att_value = NULL;
 
-        phase_node =
-            (axiom_node_t *) axiom_children_qname_iterator_next(phases, env);
+        phase_node = (axiom_node_t *) axiom_children_qname_iterator_next(phases, env);
         if (phase_node)
         {
-            phase_element =
-                (axiom_element_t *) axiom_node_get_data_element(phase_node,
-                                                                env);
+            phase_element = (axiom_element_t *) axiom_node_get_data_element(phase_node, env);
         }
 
         qattname = axutil_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         if (phase_element)
         {
-            phase_att = axiom_element_get_attribute(phase_element, env,
-                                                    qattname);
+            phase_att = axiom_element_get_attribute(phase_element, env, qattname);
         }
+
         if (phase_att)
         {
             att_value = axiom_attribute_get_value(phase_att, env);
         }
+
         if (att_value)
         {
             axutil_array_list_add(phase_list, env, att_value);
@@ -674,8 +675,9 @@ axis2_conf_builder_get_phase_list(
 
         axutil_qname_free(qattname, env);
     }
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
-        "Exit:axis2_conf_builder_get_phase_list");
+
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_conf_builder_get_phase_list");
+
     return phase_list;
 }
 
