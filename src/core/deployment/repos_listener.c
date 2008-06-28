@@ -180,7 +180,7 @@ axis2_repos_listener_check_modules(
 
     conf = axis2_repos_listener_get_conf (repos_listener, env);
 
-    /* conf is needed only to decide we are using axis2.xml. Other
+    /* Configuration  is needed only to decide we are using axis2.xml. Other
      * case we don't need. Hence even if conf is NULL we can continue.
      */
 
@@ -192,8 +192,7 @@ axis2_repos_listener_check_modules(
     if (!axis2_flag)
     {
 
-        temp_path =
-            axutil_stracat(env, repos_listener->folder_name, AXIS2_PATH_SEP_STR);
+        temp_path = axutil_stracat(env, repos_listener->folder_name, AXIS2_PATH_SEP_STR);
         module_path = axutil_stracat(env, temp_path, AXIS2_MODULE_PATH);
         AXIS2_FREE(env->allocator, temp_path);
     }
@@ -207,16 +206,16 @@ axis2_repos_listener_check_modules(
         }
         else
         {
-            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
-                "While creating axis2 configuration using axis2.xml, modulesDir"\
-                " parameter not available.");
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "While creating axis2 configuration using "\
+                    "axis2.xml, modulesDir  parameter not available.");
         }
 
     }
-    status =
-        axis2_repos_listener_search(repos_listener, env, module_path,
-                                    AXIS2_MODULE);
+
+    status = axis2_repos_listener_search(repos_listener, env, module_path, AXIS2_MODULE);
+
     AXIS2_FREE(env->allocator, module_path);
+
     return status;
 }
 

@@ -56,8 +56,7 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * this method ask serachWS to serch for the folder to caheck
-     * for updates
+     * 
      * @param repos_listener pointer to repos listener
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
@@ -69,8 +68,7 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * this method ask serachWS to serch for the folder to caheck
-     * for updates
+     * 
      * @param repos_listener pointer to repos listener
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
@@ -81,7 +79,7 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * call to update method of WSInfoList object
+     * 
      * @param repos_listener pointer to repos listener
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
@@ -92,10 +90,9 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * First it call to initalize method of WSInfoList to initilizat that.
-     * then it call to checkModules to load all the module.jar s
-     * and then it call to update() method inorder to update the Deployment engine and
-     * engine regsitry
+     * 
+     * then it call to check_modules to load all the modules.
+     * and then it call to update() method inorder to update the deployment engine and engine.
      * @param repos_listener pointer to repos listener
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
