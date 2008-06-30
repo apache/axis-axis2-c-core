@@ -88,6 +88,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     axiom_namespace_t *env_ns = NULL;
     axiom_node_t *fault_node = NULL;
     axiom_soap_fault_detail_t *fault_detail;
+	axis2_bool_t is_fault = AXIS2_FALSE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -266,7 +267,11 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
 				 * be taken from here and set to the old message context which is
 				 * used by the worker when the request processing fails.
 				 */
-				fault_node = AXIS2_SVC_SKELETON_ON_FAULT(svc_obj, env, om_node);
+				if (svc_obj->ops->on_fault)
+				{
+					fault_node = AXIS2_SVC_SKELETON_ON_FAULT(svc_obj, env, om_node);
+				}
+				is_fault = AXIS2_TRUE;
 			}
 			else
 			{	
@@ -288,7 +293,11 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
 						 * be taken from here and set to the old message context which is
 						 * used by the worker when the request processing fails.
 						 */
-						fault_node = AXIS2_SVC_SKELETON_ON_FAULT(svc_obj, env, om_node);
+						if (svc_obj->ops->on_fault)
+						{
+							fault_node = AXIS2_SVC_SKELETON_ON_FAULT(svc_obj, env, om_node);
+						}
+						is_fault = AXIS2_TRUE;
 					}
 				}
 			}
@@ -341,7 +350,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         return AXIS2_FAILURE;
     }
 
-    if (status != AXIS2_SUCCESS || fault_node)
+    if (status != AXIS2_SUCCESS || is_fault)
     {
         /* something went wrong. set a SOAP Fault */
         const axis2_char_t *fault_value_str = "soapenv:Sender";
