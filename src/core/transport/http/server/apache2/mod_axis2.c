@@ -88,6 +88,10 @@ static const char *axis2_set_svc_url_prefix(
 static int axis2_handler(
     request_rec * req);
 
+/* Shutdown Axis2 */
+apr_status_t 
+axis2_shutdown(void *tmp);
+
 void *AXIS2_CALL axis2_module_malloc(
     axutil_allocator_t * allocator,
     size_t size);
@@ -708,6 +712,8 @@ axis2_module_init(
                      "[Axis2] Error creating mod_axis2 apache2 worker");
         exit(APEXIT_CHILDFATAL);
     }
+	/* If we are initialized we register a clean up as well */
+	apr_pool_cleanup_register(p, NULL, axis2_shutdown, apr_pool_cleanup_null);
 }
 
 static void
@@ -717,4 +723,14 @@ axis2_register_hooks(
 	ap_hook_post_config(axis2_post_config, NULL, NULL, APR_HOOK_MIDDLE);
     ap_hook_handler(axis2_handler, NULL, NULL, APR_HOOK_MIDDLE);
     ap_hook_child_init(axis2_module_init, NULL, NULL, APR_HOOK_MIDDLE);
+}
+
+apr_status_t 
+axis2_shutdown(void *tmp)
+{
+	if (axis2_worker)
+	{
+		axis2_apache2_worker_free(axis2_worker, axutil_env);
+	}
+	return APR_SUCCESS;
 }
