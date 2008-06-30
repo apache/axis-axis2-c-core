@@ -34,14 +34,14 @@ extern int AXIS2_ALPHASORT(
 #ifdef IS_MACOSX
 int dir_select(
     struct dirent *entry);
+int file_select(
+    struct dirent *entry);
 #else
 int dir_select(
     const struct dirent *entry);
+int file_select(
+    const struct dirent *entry); 
 #endif
-
-int
-file_select(
-    const struct dirent *entry);
 
 /**
  * List the dll files in the given service or module folder path
@@ -319,10 +319,17 @@ axutil_dir_handler_list_service_or_module_dirs(
     return file_list;
 }
 
+
 int
 file_select(
     const struct dirent *entry)
 {
+
+	#ifdef IS_MACOSX
+		int	file_select(struct dirent *entry);
+	#else
+ 		int file_select(const struct dirent *entry);
+	#endif 
     /** FIXME:
       * This block of code has been sitting here doing nothing.
       * I have made the existing logic use this code portion.
