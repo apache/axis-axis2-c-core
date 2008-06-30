@@ -198,11 +198,11 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
 	{
 		axis2_worker_get_original_url(redirect_url, original_url);
 		/* create the url using the above variables */                     
-		sprintf(req_url, "%s%s%s%s", "http://", server_name, port, original_url);
+		sprintf(req_url, "%s%s%s%s%s", "http://", server_name, ":", port, original_url);
 	}
 	else
 	{
-		sprintf(req_url, "%s%s%s%s", "http://", server_name, port, redirect_url);
+		sprintf(req_url, "%s%s%s%s%s", "http://", server_name, ":", port, redirect_url);
 	}
 	/* Set the request url */
 	request.request_uri = req_url;
