@@ -248,21 +248,50 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         }
         else
         {
-            status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
-            if (status == AXIS2_SUCCESS)
-            {
-                axis2_msg_ctx_set_no_content(new_msg_ctx, env, AXIS2_TRUE);
-            }
-            else
-            {
-                axis2_msg_ctx_set_status_code(msg_ctx, env,
-                    axis2_msg_ctx_get_status_code(new_msg_ctx, env));
-            }
-            /* The new_msg_ctx is passed to the service. The status code must
-             * be taken from here and set to the old message context which is
-             * used by the worker when the request processing fails.
-             */
-            fault_node = AXIS2_SVC_SKELETON_ON_FAULT(svc_obj, env, om_node);
+			axis2_char_t *mep = (axis2_char_t *)axis2_op_get_msg_exchange_pattern(op_desc, env);
+			if (axutil_strcmp(mep, AXIS2_MEP_URI_IN_ONLY) && 
+				axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_IN_ONLY))
+			{
+				status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
+				if (status == AXIS2_SUCCESS)
+				{
+					axis2_msg_ctx_set_no_content(new_msg_ctx, env, AXIS2_TRUE);
+				}
+				else
+				{
+					axis2_msg_ctx_set_status_code(msg_ctx, env,	
+						axis2_msg_ctx_get_status_code(new_msg_ctx, env));
+				}
+				/* The new_msg_ctx is passed to the service. The status code must
+				 * be taken from here and set to the old message context which is
+				 * used by the worker when the request processing fails.
+				 */
+				fault_node = AXIS2_SVC_SKELETON_ON_FAULT(svc_obj, env, om_node);
+			}
+			else
+			{	
+				/* If we have a in only message result node is NULL. We create fault only if 
+				 * an error is set 
+				 */
+				status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
+				if (status == AXIS2_SUCCESS)
+				{
+					axis2_msg_ctx_set_no_content(new_msg_ctx, env, AXIS2_TRUE);
+				}
+				else
+				{
+					axis2_msg_ctx_set_status_code(msg_ctx, env,
+						axis2_msg_ctx_get_status_code(new_msg_ctx, env));
+					if (!axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_IN_ONLY))
+					{
+						/* The new_msg_ctx is passed to the service. The status code must
+						 * be taken from here and set to the old message context which is
+						 * used by the worker when the request processing fails.
+						 */
+						fault_node = AXIS2_SVC_SKELETON_ON_FAULT(svc_obj, env, om_node);
+					}
+				}
+			}
         }
     }
 
@@ -312,7 +341,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         return AXIS2_FAILURE;
     }
 
-    if (status != AXIS2_SUCCESS)
+    if (status != AXIS2_SUCCESS || fault_node)
     {
         /* something went wrong. set a SOAP Fault */
         const axis2_char_t *fault_value_str = "soapenv:Sender";
