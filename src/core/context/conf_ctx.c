@@ -466,30 +466,26 @@ axis2_conf_ctx_fill_ctxs(
     svc = axis2_msg_ctx_get_svc(msg_ctx, env);
     if (!svc)
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_SERVICE_NOT_YET_FOUND, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SERVICE_NOT_YET_FOUND, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Service not yet found in message context. Cannot proceed");
+                "Service not yet found in message context. Cannot proceed");
+
         return NULL;
     }
 
     qname = axis2_svc_get_qname(svc, env);
     if (!qname)
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_INVALID_STATE_SVC, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Service found in message context has no name.");
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service found in message context has no name.");
         return NULL;
     }
 
     svc_id = axutil_qname_get_localpart(qname, env);
     if (!svc_id)
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_INVALID_STATE_SVC, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Service found message context has no name.");
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service found in message context has no name.");
         return NULL;
     }
 
@@ -501,30 +497,27 @@ axis2_conf_ctx_fill_ctxs(
 
     if (!svc_grp_ctx_id)
     {
-        svc_grp_ctx_id =
-            (axis2_char_t *)
-            axutil_string_get_buffer(axis2_msg_ctx_get_svc_grp_ctx_id
-                                     (msg_ctx, env), env);
+        svc_grp_ctx_id = (axis2_char_t *) axutil_string_get_buffer(axis2_msg_ctx_get_svc_grp_ctx_id(
+            msg_ctx, env), env);
     }
 
-    /* By this time service group context id must have a value,
-       either from transport or from addressing */
+    /* By this time service group context id must have a value, either from transport or from 
+     * addressing 
+     */
     if (svc_grp_ctx_id)
     {
-        svc_grp_ctx = (axis2_svc_grp_ctx_t *)
-            axutil_hash_get(conf_ctx->svc_grp_ctx_map,
-                            svc_grp_ctx_id, AXIS2_HASH_KEY_STRING);
+        svc_grp_ctx = (axis2_svc_grp_ctx_t *) axutil_hash_get(conf_ctx->svc_grp_ctx_map, 
+            svc_grp_ctx_id, AXIS2_HASH_KEY_STRING);
+
         if (svc_grp_ctx)
         {
             svc_ctx = axis2_svc_grp_ctx_get_svc_ctx(svc_grp_ctx, env, svc_id);
             if (!svc_ctx)
             {
-                AXIS2_ERROR_SET(env->error,
-                                AXIS2_ERROR_INVALID_STATE_SVC_GRP,
-                                AXIS2_FAILURE);
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC_GRP, AXIS2_FAILURE);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                    "Service group context has no servie context set for "\
-                    "service %s", svc_id);
+                        "Service group context has no servie context set for service %s", svc_id);
+
                 return NULL;
             }
         }
@@ -535,8 +528,9 @@ axis2_conf_ctx_fill_ctxs(
         svc_grp_ctx_id = axutil_uuid_gen(env);
         if (svc_grp_ctx_id)
         {
-            axutil_string_t *svc_grp_ctx_id_str =
-                axutil_string_create_assume_ownership(env, &svc_grp_ctx_id);
+            axutil_string_t *svc_grp_ctx_id_str = axutil_string_create_assume_ownership(env, 
+                    &svc_grp_ctx_id);
+
             axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
             axutil_string_free(svc_grp_ctx_id_str, env);
         }
@@ -550,16 +544,15 @@ axis2_conf_ctx_fill_ctxs(
         svc_ctx = axis2_svc_grp_ctx_get_svc_ctx(svc_grp_ctx, env, svc_id);
         if (!svc_ctx)
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC_GRP,
-                            AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC_GRP, AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Service group context has no servie context set for "\
-                "service %s", svc_id);
+                "Service group context has no servie context set for service %s", svc_id);
+
             return NULL;
         }
+
         axis2_svc_grp_ctx_set_id(svc_grp_ctx, env, svc_grp_ctx_id);
-        axis2_conf_ctx_register_svc_grp_ctx(conf_ctx, env, svc_grp_ctx_id,
-                                            svc_grp_ctx);
+        axis2_conf_ctx_register_svc_grp_ctx(conf_ctx, env, svc_grp_ctx_id, svc_grp_ctx);
     }
 
     /* When you come here operation context MUST have already been assigned
@@ -567,10 +560,8 @@ axis2_conf_ctx_fill_ctxs(
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (!op_ctx)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_MSG_CTX,
-                        AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Operation context not set for message context");
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_MSG_CTX, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Operation context not set for message context");
         return NULL;
     }
 
