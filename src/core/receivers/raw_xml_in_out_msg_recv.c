@@ -39,7 +39,6 @@ axis2_raw_xml_in_out_msg_recv_create(
     axis2_msg_recv_t *msg_recv = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_ENV_CHECK(env, NULL);
     msg_recv = axis2_msg_recv_create(env);
     if (!msg_recv)
     {
@@ -47,15 +46,15 @@ axis2_raw_xml_in_out_msg_recv_create(
         return NULL;
     }
     status = axis2_msg_recv_set_scope(msg_recv, env, AXIS2_APPLICATION_SCOPE);
-    if (AXIS2_TRUE != status)
+    if (!status)
     {
         axis2_msg_recv_free(msg_recv, env);
         return NULL;
     }
 
-    axis2_msg_recv_set_invoke_business_logic(
-        msg_recv, env,
+    axis2_msg_recv_set_invoke_business_logic(msg_recv, env,
         axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync);
+
     return msg_recv;
 }
 
@@ -90,9 +89,9 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     axiom_soap_fault_detail_t *fault_detail;
 	axis2_bool_t is_fault = AXIS2_FALSE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, new_msg_ctx, AXIS2_FAILURE);
+
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
         "[axis2]Entry:axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync");
 
@@ -113,11 +112,10 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
             svc_name = "unknown";
         }
 
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "Impl object for service '%s' not set in message receiver. %d :: %s",
-                        svc_name,
-                        env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Impl object for service '%s' not set in message receiver. %d :: %s", svc_name, 
+            env->error->error_number, AXIS2_ERROR_GET_MESSAGE(env->error));
+
         status = AXIS2_FAILURE;
     }
     else
@@ -168,57 +166,47 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
                     {
                         axis2_char_t *function_name = NULL;
 
-                        function_name =
-                            (axis2_char_t *) axutil_array_list_get(function_arr,
-                                                                   env, i);
-                        if (0 == axutil_strcmp(function_name, local_name))
+                        function_name = (axis2_char_t *) axutil_array_list_get(function_arr, env, i);
+                        if (!axutil_strcmp(function_name, local_name))
                         {
                             matches = AXIS2_TRUE;
 
                         }
                     }
 
-                    if (AXIS2_TRUE == matches)
+                    if (matches)
                     {
                         om_node = axiom_node_get_first_child(op_node, env);
                         om_element = axiom_node_get_data_element(om_node, env);
                     }
                     else
                     {
-                        AXIS2_ERROR_SET(env->error,
-                                        AXIS2_ERROR_OM_ELEMENT_MISMATCH,
-                                        AXIS2_FAILURE);
+                        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_OM_ELEMENT_MISMATCH, AXIS2_FAILURE);
                         status = AXIS2_FAILURE;
                     }
                 }
                 else
                 {
-                    AXIS2_ERROR_SET(env->error,
-                                    AXIS2_ERROR_OM_ELEMENT_INVALID_STATE,
-                                    AXIS2_FAILURE);
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_OM_ELEMENT_INVALID_STATE, AXIS2_FAILURE);
                     status = AXIS2_FAILURE;
                 }
             }
             else
             {
-                AXIS2_ERROR_SET(env->error,
-                                AXIS2_ERROR_RPC_NEED_MATCHING_CHILD,
-                                AXIS2_FAILURE);
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_RPC_NEED_MATCHING_CHILD, AXIS2_FAILURE);
                 status = AXIS2_FAILURE;
             }
         }
         else
         {
-            AXIS2_ERROR_SET(env->error,
-                            AXIS2_ERROR_UNKNOWN_STYLE, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_UNKNOWN_STYLE, AXIS2_FAILURE);
             status = AXIS2_FAILURE;
         }
 
         if (status == AXIS2_SUCCESS)
         {
             skel_invoked = AXIS2_TRUE;
-            result_node =
-                AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node, new_msg_ctx);
+            result_node = AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node, new_msg_ctx);
         }
 
         if (result_node)
@@ -237,8 +225,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
                 else
                 {
                     body_content_element =
-                        axiom_element_create(env, NULL, res_name, ns,
-                                             &body_content_node);
+                        axiom_element_create(env, NULL, res_name, ns, &body_content_node);
                     axiom_node_add_child(body_content_node, env, result_node);
                 }
             }
@@ -380,28 +367,29 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         }
         else
         {
-            fault_reason_str = "Something went wrong";
+            fault_reason_str = "An error has occured, but could not determine exact details";
         }
 
-        soap_fault = axiom_soap_fault_create_default_fault(env, out_body,
-                                                           fault_value_str,
-                                                           fault_reason_str,
-                                                           soap_version);
+        soap_fault = axiom_soap_fault_create_default_fault(env, out_body, fault_value_str, 
+            fault_reason_str, soap_version);
+
         if (fault_node)
         {
-            fault_detail =
-                axiom_soap_fault_detail_create_with_parent(env, soap_fault);
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "fault_detail:%s", fault_detail);
-            axiom_soap_fault_detail_add_detail_entry(fault_detail, env,
-                                                     fault_node);
+            axiom_node_t *fault_detail_node = NULL;
+
+            fault_detail = axiom_soap_fault_detail_create_with_parent(env, soap_fault);
+            fault_detail_node = axiom_soap_fault_detail_get_base_node(fault_detail, env);
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "fault_detail:%s", axiom_node_to_string(
+                fault_detail_node, env));
+
+            axiom_soap_fault_detail_add_detail_entry(fault_detail, env, fault_node);
         }
     }
 
     if (body_content_node)
     {
         axiom_node_add_child(out_node, env, body_content_node);
-        status =
-            axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
+        status = axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
     }
     else if (soap_fault)
     {
@@ -414,8 +402,10 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         axiom_soap_envelope_free(default_envelope, env);
         default_envelope = NULL;
     }
+
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
         "[axis2]Exit:axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync");
+
     return status;
 }
 
