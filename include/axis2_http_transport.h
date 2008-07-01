@@ -1031,6 +1031,8 @@ extern "C"
 
 #define AXIS2_F_SLASH '/'
 
+#define AXIS2_B_SLASH '\\'
+
 #define AXIS2_EQ '='
 
 #define AXIS2_AND '&'
