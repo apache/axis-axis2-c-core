@@ -2197,6 +2197,14 @@ axis2_http_transport_utils_get_value_from_content_type(
         tmp2 = axutil_strdup(env, tmp + 1);
         tmp2[strlen(tmp2) - 1] = AXIS2_ESC_NULL;
     }
+    /* handle XOP */
+    if(*tmp2 == AXIS2_B_SLASH && *(tmp2 + 1) == '\"')
+    {
+        tmp = tmp2;
+        tmp2 = axutil_strdup(env, tmp + 2);
+        tmp2[strlen(tmp2) - 3] = AXIS2_ESC_NULL;
+    }
+
     return tmp2;
 }
 
@@ -3024,4 +3032,5 @@ axis2_http_transport_utils_process_request(
 	
 	return status;
 }
+
 
