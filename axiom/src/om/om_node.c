@@ -835,8 +835,11 @@ axiom_node_serialize_sub_tree(
                     return status;
                 }
             }
-
-            temp_node = axiom_node_get_next_sibling(om_node, env);
+			/* We need to make make sure that om_node is not the root when we take the next sibling */
+			if (count > 1)
+			{
+				temp_node = axiom_node_get_next_sibling(om_node, env);
+			}
             if (temp_node)
             {
                 om_node = temp_node;
