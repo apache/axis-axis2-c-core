@@ -639,7 +639,7 @@ axis2_http_transport_utils_process_http_post_request(
 
     axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
 
-    engine = axis2_engine_create(env, conf_ctx);g
+    engine = axis2_engine_create(env, conf_ctx);
 
     if (!soap_envelope)
         return AXIS2_FAILURE;
