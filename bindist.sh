@@ -33,7 +33,7 @@ mv samples ${AXIS2C_HOME}
 cd ..
 
 rm -rf xdocs/api/html
-maven site
+mvn site
 cd xdocs/api 
 doxygen doxygenconf
 cd ../..
