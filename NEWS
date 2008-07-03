@@ -1,5 +1,5 @@
 Apache Axis2/C Team is pleased to announce the release of Apache Axis2/C 
-version 1.4.0.
+version 1.5.0.
 
 You can download this release from http://ws.apache.org/axis2/c/download.cgi
 
@@ -15,7 +15,7 @@ Key Features
    3. Transports supported : HTTP
           * Inbuilt HTTP server called simple axis server
           * Apache2 httpd module called mod_axis2 for server side
-          * IIS module for server side
+          * IIS module for server side. Supports IIS 5.1, 6 and 7.
           * Client transport with ability to enable SSL support
           * Basic HTTP Authentication
           * Digest HTTP Authentication
@@ -76,10 +76,13 @@ Key Features
 Major Changes Since Last Release
 ================================
 
-   1. Fixed library version numbering
-   2. Made Guththila as default XML parser
-   3. Many bug fixes.
-   4. Memory leak fixes
+   1. AMQP Transport implementation using Apache Qpid
+   2. IIS 6 & 7 Support.
+   3. A JScript file for editing registry configurations for IIS module.
+   4. Improvements to Guththila
+   5. Improvements to TCPMon
+   6. Many bug fixes.
+   7. Memory leak fixes
 
 We welcome your early feedback on this implementation.
 
