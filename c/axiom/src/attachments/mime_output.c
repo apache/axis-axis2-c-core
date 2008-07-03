@@ -481,7 +481,7 @@ axiom_mime_output_create_part_list(
         return AXIS2_FAILURE;
     }    
 
-    soap_body_buffer = soap_body; 
+    soap_body_buffer = axutil_stracat(env, soap_body, AXIS2_CRLF); 
    
     soap_part->part = (axis2_byte_t *)soap_body_buffer;
     soap_part->part_size = (int) axutil_strlen(soap_body_buffer);

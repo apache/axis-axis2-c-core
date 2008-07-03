@@ -75,13 +75,13 @@ axis2_char_t    general_error[] = "<html>\r\n"
                         "<head><title> An IIS server error occurred. </title></head>\r\n" 
                         "<h1> An IIS server error occurred </h1>\r\n" 
                         "<hr>\r\n" 
-                        "An error occurred in IIS while processing this request."; 
+                        "An error occurred in IIS while processing this request.</hr></html>"; 
 
 axis2_char_t	initializing_error[] = "<html>\r\n" 
                         "<head><title> An IIS server error occurred. </title></head>\r\n" 
                         "<h1> An IIS server error occurred </h1>\r\n" 
                         "<hr>\r\n" 
-                        "An error occurred while initilizing Axis2/C. Please verify the configuration"; 
+                        "An error occurred while initilizing Axis2/C.</hr></html>"; 
 
 
 /*
@@ -227,6 +227,7 @@ HttpExtensionProc(EXTENSION_CONTROL_BLOCK * pecb)
 			if (AXIS2_FAILURE == init_axis2())
 			{
 				send_error(pecb, initializing_error);
+				return HSE_STATUS_ERROR;
 			}
 #if _WIN32_WINNT >= 0x0502
 			SetDllDirectory( szOriginalPath );

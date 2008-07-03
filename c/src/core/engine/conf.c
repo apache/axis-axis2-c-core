@@ -34,7 +34,7 @@ struct axis2_conf
     /**
      * Field modules
      */
-    axutil_array_list_t *engaged_modules;
+    axutil_array_list_t *engaged_module_list;
     /*To store all the available modules (including version) */
     axutil_hash_t *all_modules;
     /*To store mapping between default version to module name */
@@ -127,8 +127,8 @@ axis2_conf_create(
         conf->transports_out[i] = NULL;
     }
 
-    conf->engaged_modules = axutil_array_list_create(env, 0);
-    if (!conf->engaged_modules)
+    conf->engaged_module_list = axutil_array_list_create(env, 0);
+    if (!conf->engaged_module_list)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -147,14 +147,15 @@ axis2_conf_create(
         return NULL;
     }
 
-    conf->in_phases_upto_and_including_post_dispatch =
-        axutil_array_list_create(env, 0);
+    conf->in_phases_upto_and_including_post_dispatch = axutil_array_list_create(env, 0);
     if (!conf->in_phases_upto_and_including_post_dispatch)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
             "Creating in phases list upto and including post dispatch failed");
+
         return NULL;
     }
     else
@@ -170,6 +171,7 @@ axis2_conf_create(
                 AXIS2_PHASE_TRANSPORT_IN);
             return NULL;
         }
+
         /* Incase of using security we need to find the service/operation
          * parameters before the dispatch phase.
          * This is required to give parameters to the security inflow.*/
@@ -399,18 +401,18 @@ axis2_conf_free(
         axutil_hash_free(conf->name_to_version_map, env);
     }
 
-    if (conf->engaged_modules)
+    if (conf->engaged_module_list)
     {
         int i = 0;
-        for (i = 0; i < axutil_array_list_size(conf->engaged_modules, env); i++)
+        for (i = 0; i < axutil_array_list_size(conf->engaged_module_list, env); i++)
         {
             axutil_qname_t *module_desc_qname = NULL;
             module_desc_qname = (axutil_qname_t *)
-                axutil_array_list_get(conf->engaged_modules, env, i);
+                axutil_array_list_get(conf->engaged_module_list, env, i);
             if (module_desc_qname)
                 axutil_qname_free(module_desc_qname, env);
         }
-        axutil_array_list_free(conf->engaged_modules, env);
+        axutil_array_list_free(conf->engaged_module_list, env);
     }
 
     if (conf->out_phases)
@@ -934,7 +936,7 @@ axis2_conf_get_all_engaged_modules(
     const axis2_conf_t * conf,
     const axutil_env_t * env)
 {
-    return conf->engaged_modules;
+    return conf->engaged_module_list;
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
@@ -1100,14 +1102,14 @@ axis2_conf_is_engaged(
     {
         def_mod_qname = axis2_module_desc_get_qname(def_mod, env);
     }
-    size = axutil_array_list_size(conf->engaged_modules, env);
+    size = axutil_array_list_size(conf->engaged_module_list, env);
 
     for (i = 0; i < size; i++)
     {
         axutil_qname_t *qname = NULL;
 
         qname = (axutil_qname_t *) axutil_array_list_get(conf->
-                                                         engaged_modules, env,
+                                                         engaged_module_list, env,
                                                          i);
 
         if (axutil_qname_equals(module_name, env, qname) ||
@@ -1475,9 +1477,7 @@ axis2_conf_engage_module(
         axis2_char_t *axis2_xml = NULL;
 
         file_name = axutil_qname_get_localpart(module_ref, env);
-        file =
-            (axutil_file_t *) axis2_arch_reader_create_module_arch(env,
-                                                                   file_name);
+        file = (axutil_file_t *) axis2_arch_reader_create_module_arch(env, file_name);
         /* This flag is to check whether conf is built using axis2
          * xml configuration file instead of a repository. */
 		flag = axis2_conf_get_axis2_flag (conf, env);
@@ -1503,34 +1503,29 @@ axis2_conf_engage_module(
 
             if (module_dir_param)
             {
-                module_dir = (axis2_char_t *) 
-					axutil_param_get_value (module_dir_param, env);
+                module_dir = (axis2_char_t *) axutil_param_get_value (module_dir_param, env);
             }
             else
             {
                 AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
-                    "moduleDir parameter not available in axis2.xml.");
+                        "moduleDir parameter not available in axis2.xml.");
+
                 return AXIS2_FAILURE;
             }
-			temp_path1 = axutil_strcat (env, 
-                                        module_dir, 
-                                        AXIS2_PATH_SEP_STR, NULL);
+
+			temp_path1 = axutil_strcat (env, module_dir, AXIS2_PATH_SEP_STR, NULL);
 			path = axutil_strcat (env, temp_path1, file_name, NULL);
 		}
 		
         axutil_file_set_path(file, env, path);
-        file_data = axis2_arch_file_data_create_with_type_and_file(env,
-                                                                   AXIS2_MODULE,
-                                                                   file);
+        file_data = axis2_arch_file_data_create_with_type_and_file(env, AXIS2_MODULE, file);
 		if (!flag)
         {
-        	dep_engine = 
-                axis2_dep_engine_create_with_repos_name(env, repos_path);
+        	dep_engine = axis2_dep_engine_create_with_repos_name(env, repos_path);
         }
 		else
         {
-			dep_engine = 
-                axis2_dep_engine_create_with_axis2_xml (env, axis2_xml);
+			dep_engine = axis2_dep_engine_create_with_axis2_xml (env, axis2_xml);
         }
 		
         axis2_dep_engine_set_current_file_item(dep_engine, env, file_data);
@@ -1552,8 +1547,7 @@ axis2_conf_engage_module(
             axis2_arch_file_data_free(file_data, env);
         }
 
-        module_desc =
-            axis2_dep_engine_build_module(dep_engine, env, file, conf);
+        module_desc = axis2_dep_engine_build_module(dep_engine, env, file, conf);
         axutil_file_free (file, env);
         is_new_module = AXIS2_TRUE;
     }
@@ -1564,15 +1558,13 @@ axis2_conf_engage_module(
         int i = 0;
         const axutil_qname_t *module_qname = NULL;
 
-        size = axutil_array_list_size(conf->engaged_modules, env);
+        size = axutil_array_list_size(conf->engaged_module_list, env);
         module_qname = axis2_module_desc_get_qname(module_desc, env);
         for (i = 0; i < size; i++)
         {
             axutil_qname_t *qname = NULL;
 
-            qname = (axutil_qname_t *) axutil_array_list_get(conf->
-                                                             engaged_modules,
-                                                             env, i);
+            qname = (axutil_qname_t *) axutil_array_list_get(conf->engaged_module_list, env, i);
             if (axutil_qname_equals(module_qname, env, qname))
             {
                 to_be_engaged = AXIS2_FALSE;
@@ -1582,9 +1574,9 @@ axis2_conf_engage_module(
     else
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODULE, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Either module description not set or building module description"\
-            " failed for module %s", file_name);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Either module description not set or building"\
+                "module description failed for module %s", file_name);
+
         return AXIS2_FAILURE;
     }
 
@@ -1603,25 +1595,22 @@ axis2_conf_engage_module(
             return AXIS2_FAILURE;
         }
 
-        status =
-            axis2_phase_resolver_engage_module_globally(phase_resolver, env,
-                                                        module_desc);
+        status = axis2_phase_resolver_engage_module_globally(phase_resolver, env, module_desc);
         axis2_phase_resolver_free(phase_resolver, env);
         if (!status)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Engaging module %s globally failed", module_name);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Engaging module %s globally failed", module_name);
             return status;
         }
-        module_qref_l =
-            axutil_qname_clone((axutil_qname_t *) module_qname, env);
-        status =
-            axutil_array_list_add(conf->engaged_modules, env, module_qref_l);
+        module_qref_l = axutil_qname_clone((axutil_qname_t *) module_qname, env);
+        status = axutil_array_list_add(conf->engaged_module_list, env, module_qref_l);
     }
+
     if (is_new_module)
     {
         status = axis2_conf_add_module(conf, env, module_desc);
     }
+
     return status;
 }
 

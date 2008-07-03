@@ -107,7 +107,7 @@ struct axis2_svc
     void *impl_class;
     axutil_qname_t *qname;
     axis2_char_t *style;
-    axutil_array_list_t *engaged_modules;
+    axutil_array_list_t *engaged_module_list;
 
     /** Parameter container to hold service related parameters */
     struct axutil_param_container *param_container;
@@ -234,9 +234,9 @@ axis2_svc_create(
         return NULL;
     }
 
-    svc->engaged_modules = axutil_array_list_create(env,
+    svc->engaged_module_list = axutil_array_list_create(env,
                                                     AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
-    if (!svc->engaged_modules)
+    if (!svc->engaged_module_list)
     {
         axis2_svc_free(svc, env);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
@@ -367,9 +367,9 @@ axis2_svc_free(
         axutil_array_list_free(svc->schema_list, env);
     }
 
-    if (svc->engaged_modules)
+    if (svc->engaged_module_list)
     {
-        axutil_array_list_free(svc->engaged_modules, env);
+        axutil_array_list_free(svc->engaged_module_list, env);
     }
 
     if (svc->axis_svc_name)
@@ -554,7 +554,15 @@ axis2_svc_add_op(
         axis2_op_set_msg_recv(op, env, msg_recv);
     }
     if (key)
-        axutil_hash_set(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING, op);
+    {
+        /* If service defines the operation, then we should not override with module level 
+         * operation. Module operations are global. If any setting to be modified, those operations
+         * can be defined in service */
+        if(!axutil_hash_get(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING))
+        {
+            axutil_hash_set(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING, op);
+        }
+    }
     return AXIS2_SUCCESS;
 }
 
@@ -976,7 +984,7 @@ axis2_svc_engage_module(
     if (status)
     {
         const axutil_qname_t *qname = NULL;
-        status = axutil_array_list_add(svc->engaged_modules, env, module_desc);
+        status = axutil_array_list_add(svc->engaged_module_list, env, module_desc);
         qname = axis2_module_desc_get_qname(module_desc, env);
         axis2_svc_add_module_qname(svc, env, qname);
     }
@@ -998,14 +1006,14 @@ axis2_svc_is_module_engaged(
     int i = 0,
         size = 0;
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_svc_is_module_engaged");
-    size = axutil_array_list_size(svc->engaged_modules, env);
+    size = axutil_array_list_size(svc->engaged_module_list, env);
     for (i = 0; i < size; i++)
     {
         const axutil_qname_t *module_qname_l = NULL;
         axis2_module_desc_t *module_desc_l = NULL;
 
         module_desc_l =
-            (axis2_module_desc_t *) axutil_array_list_get(svc->engaged_modules,
+            (axis2_module_desc_t *) axutil_array_list_get(svc->engaged_module_list,
                                                           env, i);
         module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
 
@@ -1016,6 +1024,14 @@ axis2_svc_is_module_engaged(
     }
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_svc_is_module_engaged");
     return AXIS2_FALSE;
+}
+
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axis2_svc_get_engaged_module_list(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
+{
+    return svc->engaged_module_list;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -1051,7 +1067,7 @@ axis2_svc_disengage_module(
 
 /**
  * Here we extract all operations defined in module.xml and built execution 
- * chains for them by calling axis2_phase_resolver_build_module_op()
+ * chains for them by calling axis2_phase_resolver_build_execution_chains_for_module_op()
  * function. Within that function handlers of the modules defined for that 
  * operation are added to module operation chains appropriately.
  */
@@ -1095,7 +1111,7 @@ axis2_svc_add_module_ops(
         opname = axutil_qname_get_localpart(axis2_op_get_qname(op_desc, env), 
             env);
         status =
-            axis2_phase_resolver_build_module_op(phase_resolver, env, op_desc);
+            axis2_phase_resolver_build_execution_chains_for_module_op(phase_resolver, env, op_desc);
 
         if (AXIS2_SUCCESS != status)
         {

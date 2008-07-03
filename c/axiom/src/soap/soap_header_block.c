@@ -353,9 +353,18 @@ axiom_soap_header_block_set_attribute(
     }
     if (soap_envelope_namespace_uri)
     {
-        om_ns = axiom_namespace_create(env,
+		if (prefix)
+		{
+			om_ns = axiom_namespace_create(env,
+                                       soap_envelope_namespace_uri,
+                                       prefix);
+		}
+		else
+		{
+			om_ns = axiom_namespace_create(env,
                                        soap_envelope_namespace_uri,
                                        AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX);
+		}
     }
     om_attr = axiom_attribute_create(env, attr_name, attr_value, om_ns);
     if (!om_attr && om_ns)

@@ -362,6 +362,11 @@ axis2_msg_recv_receive_impl(
         }
     }
     axis2_engine_free(engine, env);
+
+    /* Reset the out message context to avoid double freeing at http worker. For example if this is
+     * not done here both in and out message context will try to free the transport out stream 
+     * which will result in memeory corruption.
+     */
     if (!axis2_msg_ctx_is_paused(out_msg_ctx, env) &&
         !axis2_msg_ctx_is_keep_alive(out_msg_ctx, env))
     {

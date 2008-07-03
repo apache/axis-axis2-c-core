@@ -1221,8 +1221,7 @@ axis2_dep_engine_add_new_svc(
         }
 
         ops = axis2_svc_get_all_ops(svc, env);
-        for (index_i = axutil_hash_first(ops, env);
-             index_i; index_i = axutil_hash_next(env, index_i))
+        for (index_i = axutil_hash_first(ops, env); index_i; index_i = axutil_hash_next(env, index_i))
         {
             void *v = NULL;
             axis2_op_t *op_desc = NULL;
@@ -1245,28 +1244,27 @@ axis2_dep_engine_add_new_svc(
 
                 module_qname = (axutil_qname_t *) axutil_array_list_get(modules,
                                                                         env, k);
-                module = axis2_conf_get_module(dep_engine->conf, env,
-                                               module_qname);
+                module = axis2_conf_get_module(dep_engine->conf, env, module_qname);
 
                 if (module)
                 {
-                    axis2_op_engage_module(op_desc, env, module,
-                                           dep_engine->conf);
+                    axis2_op_engage_module(op_desc, env, module, dep_engine->conf);
                 }
                 else
                 {
-                    AXIS2_ERROR_SET(env->error,
-                                    AXIS2_ERROR_INVALID_MODUELE_REF_BY_OP,
-                                    AXIS2_FAILURE);
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODUELE_REF_BY_OP, AXIS2_FAILURE);
 		            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
-                        "Module %s is not added to the Axis2 Configuration", 
-                        axutil_qname_get_localpart(module_qname, env));
+                            "Module %s is not added to the Axis2 Configuration", 
+                            axutil_qname_get_localpart(module_qname, env));
+
                     return AXIS2_FAILURE;
                 }
             }
         }
+
         axis2_svc_grp_add_svc(svc_metadata, env, svc);
     }
+
     return axis2_conf_add_svc_grp(dep_engine->conf, env, svc_metadata);
 }
 

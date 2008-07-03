@@ -949,8 +949,9 @@ axis2_desc_builder_process_op_module_refs(
     while (module_refs &&
            axiom_children_qname_iterator_has_next(module_refs, env))
     {
-        moduleref = (axiom_element_t *)
-            axiom_children_qname_iterator_next(module_refs, env);
+        axiom_node_t *moduleref_node = axiom_children_qname_iterator_next(module_refs, env);
+        moduleref = (axiom_element_t *)axiom_node_get_data_element(moduleref_node, env);
+            
         qref = axutil_qname_create(env, AXIS2_REF, NULL, NULL);
         module_ref_attrib = axiom_element_get_attribute(moduleref, env, qref);
         axutil_qname_free(qref, env);

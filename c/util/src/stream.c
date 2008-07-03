@@ -621,6 +621,7 @@ axutil_stream_skip_socket(
     int count)
 {
     int len = 0;
+	int received = 0;
     char buffer[2];
 
     if (-1 == stream->socket)
@@ -632,7 +633,22 @@ axutil_stream_skip_socket(
     }
     while (len < count)
     {
-        len += recv(stream->socket, buffer, 1, 0);
+        received = recv(stream->socket, buffer, 1, 0);
+		if (received == 0)
+		{
+			AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
+			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Socket has being shutdown");
+			return -1;
+		}
+		if (received < 0)
+		{
+			AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
+			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Error while trying to read the socke");        
+			return -1;
+		}
+		len += received;
     }
     return len;
 }

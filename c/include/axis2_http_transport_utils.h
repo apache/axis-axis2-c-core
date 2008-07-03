@@ -1,4 +1,3 @@
-
 /*
  * Licensedo to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,6 +17,8 @@
 
 #ifndef AXIS2_HTTP_TRANSPORT_UTILS_H
 #define AXIS2_HTTP_TRANSPORT_UTILS_H
+
+#define AXIS2_MTOM_OUTPUT_BUFFER_SIZE 1024
 
 /**
  * @ingroup axis2_core_transport_http
@@ -44,8 +45,6 @@
 #include <axutil_http_chunked_stream.h>
 #include <axis2_http_out_transport_info.h>
 #include <axutil_url.h>
-
-#define AXIS2_MTOM_OUTPUT_BUFFER_SIZE 1024
 
 #ifdef __cplusplus
 extern "C"
@@ -97,7 +96,7 @@ extern "C"
 		
 		/** HTTP accept charset header */
 		axis2_char_t *accept_charset_header;
-		/** HTTP METHOD  Should be one of AXIS2_HTTP_METHOD_GET | AXIS2_HTTP_METHOD_POST |"
+		/** H&TTP METHOD  Should be one of AXIS2_HTTP_METHOD_GET | AXIS2_HTTP_METHOD_POST |"
 		AXIS2_HTTP_METHOD_HEAD | AXIS2_HTTP_METHOD_PUT | AXIS2_HTTP_METHOD_DELETE" */
 		int request_method;
 		/** out transport */
@@ -129,6 +128,40 @@ extern "C"
 	}axis2_http_transport_out_t;
 
 
+	/** 
+	 * Initialize the axis2_http_tranport_in_t. Before using this structure users should 
+	 * initialize it using this method.
+	 * @param in a pointer to a axis2_http_tranport_in_t 
+	 * @param env, environments 
+	 */
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+	axis2_http_transport_utils_transport_in_init(axis2_http_transport_in_t *in, 
+												const axutil_env_t *env);
+
+	/** 
+	 * Uninitialize the axis2_http_tranport_in_t. Before using this structure users should 
+	 * initialize it using this method.
+	 * @param in a pointer to a axis2_http_tranport_in_t 
+	 * @param env, environments 
+	 */
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+	axis2_http_transport_utils_transport_in_uninit(axis2_http_transport_in_t *request, 
+												   const axutil_env_t *env);
+
+	/** 
+	 * Initialize the axis2_http_tranport_out_t. Before using this structure users should 
+	 * initialize it using this method.
+	 * @param out a pointer to a axis2_http_tranport_out_t 
+	 * @param env, environments 
+	 */
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+	axis2_http_transport_utils_transport_out_init(axis2_http_transport_out_t *out, 
+												const axutil_env_t *env);
+
+
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+	axis2_http_transport_utils_transport_out_uninit(axis2_http_transport_out_t *response, 
+												const axutil_env_t *env);
 	/**
 	* This methods provides the HTTP request handling functionality using axis2 for server side 
 	* HTTP modules.
@@ -349,12 +382,13 @@ extern "C"
 	axis2_http_transport_utils_process_accept_headers(
 		const axutil_env_t *env,
 		axis2_char_t *accept_value);
-        
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL  
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_transport_utils_send_mtom_message(
         axutil_http_chunked_stream_t * chunked_stream,
         const axutil_env_t * env,
         axutil_array_list_t *mime_parts);
+
 
     /** @} */
 #ifdef __cplusplus

@@ -29,12 +29,24 @@
 /**
  * @defgroup axis2_phase_res phase resolver
  * @ingroup axis2_phase_resolver
- * Engaging module descriptions into axis2 configuration, services and 
- * operations are done here. This is accomplished mainly by following
- * operations respectively.
+ * Engaging modules into axis2 configuration, services and operations are done here. 
+ * This is accomplished mainly by following operations respectively.
  * axis2_phase_resolver_engage_module_globally().
  * axis2_phase_resolver_engage_module_to_svc().
  * axis2_phase_resolver_engage_module_to_op().
+ * The user normally engage a module programmatically or using configuration files. When an
+ * application client engage a module programmatically he can use axis2_op_client_engage_module()
+ * function, or axis2_svc_client_engage_module() function. Engaging using configuration files means
+ * adding a module_ref parameter into services.xml or axis2.xml.
+ * In whatever way engaging a module finally sums upto addding handlers into each operations flows.
+ * Here flows in operations are actually array lists of phases
+ * (See op.c).
+ * There are user defined phases and system defined phases(See axis2.xml). Handlers 
+ * These handlers are taken from modules or  for system defined and defined by user defined.
+ * Handlers for all user defined phases are taken from modules. when modules are built from module.xml
+ * these handlers are added into module flows(See moudule_desc.c).
+ *
+ *
  * @{
  */
 
@@ -89,44 +101,6 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * Builds the execution chains. Execution chains are collection of 
-     * phases that are invoked in the execution path.
-     * @param phase_resolver pointer to phase resolver
-     * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_phase_resolver_build_chains(
-        axis2_phase_resolver_t * phase_resolver,
-        const axutil_env_t * env);
-
-    /**
-     * Builds execution chains for given operation.
-     * @param phase_resolver pointer to phase resolver
-     * @param env pointer to environment struct
-     * @param op pointer to operation
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
-    axis2_phase_resolver_build_module_op(
-        axis2_phase_resolver_t * phase_resolver,
-        const axutil_env_t * env,
-        struct axis2_op *op);
-
-    /**
-     * Builds transport chains.
-     * @param phase_resolver pointer to phase resolver
-     * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
-    axis2_phase_resolver_build_transport_chains(
-        axis2_phase_resolver_t * phase_resolver,
-        const axutil_env_t * env);
-
-    /**
      * Engages the given module globally. Engaging a module globally means 
      * that the given module would be engaged to all operations in all 
      * services.
@@ -161,6 +135,49 @@ extern "C"
         struct axis2_module_desc *module_desc);
 
     /**
+     * Engages the given module to the given operation.
+     * @param phase_resolver pointer to phase resolver
+     * @param env pointer to environment struct
+     * @param axis_op pointer to axis operation
+     * @param pointer to module description
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_resolver_engage_module_to_op(
+        axis2_phase_resolver_t * phase_resolver,
+        const axutil_env_t * env,
+        struct axis2_op *axis_op,
+        struct axis2_module_desc *module_desc);
+
+    /**
+     * Builds the execution chains. Execution chains are collection of phases that are invoked in
+     * the execution path. This will be moved into the implementation c file in the next release. 
+     * Therefore this is marked as deprecated.
+     * @deprecated
+     * @param phase_resolver pointer to phase resolver
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_resolver_build_execution_chains_for_svc(
+        axis2_phase_resolver_t * phase_resolver,
+        const axutil_env_t * env);
+
+    /**
+     * Builds execution chains for given operation.
+     * @param phase_resolver pointer to phase resolver
+     * @param env pointer to environment struct
+     * @param op pointer to operation
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+    axis2_phase_resolver_build_execution_chains_for_module_op(
+        axis2_phase_resolver_t * phase_resolver,
+        const axutil_env_t * env,
+        struct axis2_op *op);
+
+    /**
      * Disengages the given module from the given service. This means 
      * the given module would be disengaged from all operations of the given 
      * service. 
@@ -171,27 +188,10 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_phase_resolver_disengage_module_from_svc(
         axis2_phase_resolver_t * phase_resolver,
         const axutil_env_t * env,
         struct axis2_svc *svc,
-        struct axis2_module_desc *module_desc);
-
-    /**
-     * Engages the given module to the given operation.
-     * @param phase_resolver pointer to phase resolver
-     * @param env pointer to environment struct
-     * @param axis_op pointer to axis operation
-     * @param pointer to module description
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
-    axis2_phase_resolver_engage_module_to_op(
-        axis2_phase_resolver_t * phase_resolver,
-        const axutil_env_t * env,
-        struct axis2_op *axis_op,
         struct axis2_module_desc *module_desc);
 
     /**
@@ -203,12 +203,24 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axis2_phase_resolver_disengage_module_from_op(
         axis2_phase_resolver_t * phase_resolver,
         const axutil_env_t * env,
         struct axis2_op *axis_op,
         struct axis2_module_desc *module_desc);
+
+    /**
+     * Builds transport chains. This function is no longer used in Axis2/C and hence
+     * marked as deprecated.
+     * @deprecated
+     * @param phase_resolver pointer to phase resolver
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_resolver_build_transport_chains(
+        axis2_phase_resolver_t * phase_resolver,
+        const axutil_env_t * env);
 
     /**
      * Creates phase resolver struct.

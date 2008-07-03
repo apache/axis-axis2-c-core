@@ -1809,7 +1809,7 @@ static axis2_bool_t axiom_mime_parser_is_more_data(
         }
     }
 
-    else if(callback_info->unread_len <= 0)
+    else if(callback_info->unread_len == 0)
     {
         return AXIS2_FALSE;
     }

@@ -330,7 +330,7 @@ axis2_handler(
         return DECLINED;
     }
     /* Set up the read policy from the client. */
-    if ((rv = ap_setup_client_block(req, REQUEST_CHUNKED_DECHUNK)) != OK)
+    if ((rv = ap_setup_client_block(req, REQUEST_CHUNKED_DECHUNK/*REQUEST_CHUNKED_PASS*/)) != OK)
     {
         return rv;
     }

@@ -222,6 +222,7 @@ axis2_phase_holder_get_phase(
     return NULL;
 }
 
+/* This function is deprecated */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_holder_build_transport_handler_chain(
     axis2_phase_holder_t * phase_holder,

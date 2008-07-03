@@ -225,6 +225,7 @@ axis2_engine_receive(
                                               pre_calculated_phases, msg_ctx);
         if (axis2_msg_ctx_is_paused(msg_ctx, env))
         {
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Message context is paused. So return here.");
             return AXIS2_SUCCESS;
         }
 
@@ -238,6 +239,7 @@ axis2_engine_receive(
                                                   op_specific_phases, msg_ctx);
             if (axis2_msg_ctx_is_paused(msg_ctx, env))
             {
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Message context is paused. So return here.");
                 return AXIS2_SUCCESS;
             }
         }
@@ -258,6 +260,7 @@ axis2_engine_receive(
 
         if (axis2_msg_ctx_is_paused(msg_ctx, env))
         {
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Message context is paused. So return here.");
             return AXIS2_SUCCESS;
         }
 
@@ -274,13 +277,13 @@ axis2_engine_receive(
                 op_name = axutil_qname_get_localpart(axis2_op_get_qname(op, env), 
                     env);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                    "Invoking operation specific phases failed for "\
-                    "operation %s", op_name);
+                    "Invoking operation specific phases failed for operation %s", op_name);
                 return status;
             }
 
             if (axis2_msg_ctx_is_paused(msg_ctx, env))
             {
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Message context is paused. So return here.");
                 return AXIS2_SUCCESS;
             }
         }

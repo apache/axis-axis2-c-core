@@ -181,7 +181,6 @@ axis2_http_transport_sender_invoke(
     axis2_bool_t do_mtom;
     axutil_property_t *property = NULL;
     axiom_node_t *data_out = NULL;
-    /*axis2_byte_t *output_stream = NULL;*/
     int buffer_size = 0;
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -550,9 +549,6 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
                     AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info,
                                                                    env,
                                                                    content_type);
-                    /*buffer = output_stream;
-                    axutil_stream_write(out_stream, env, buffer, buffer_size);
-                    AXIS2_FREE(env->allocator, buffer);*/
                 }
                 else
                 {

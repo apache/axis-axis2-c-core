@@ -51,12 +51,12 @@ axis2_iis_worker_get_bytes(const axutil_env_t * env,
 
 
 axis2_status_t AXIS2_CALL 
-start_response(LPEXTENSION_CONTROL_BLOCK lpECB,
-               int status,
+start_response(const axutil_env_t * env, 
+			   LPEXTENSION_CONTROL_BLOCK lpECB,
+               int status, 
                const char *reason,
-               const char *const *header_names,
-               const char *const *header_values,
-               unsigned int num_of_headers);
+               axutil_array_list_t *headers
+               );
 
 
 axis2_status_t 
@@ -66,6 +66,8 @@ write_response(LPEXTENSION_CONTROL_BLOCK lpECB,
 
 axutil_hash_t *axis2_iis_worker_read_http_headers(const axutil_env_t * env, LPEXTENSION_CONTROL_BLOCK lpECB);
 
+AXIS2_IMPORT extern axis2_char_t *axis2_request_url_prefix;
+
 static struct reasons
 {    
     axis2_char_t * status_code;
@@ -73,7 +75,7 @@ static struct reasons
 } reasons[] = {
     {"200 OK", 6}, 
     {"202 Accepted", 12}, 
-    { "500 Internal Server Error", 25} 
+    {"500 Internal Server Error", 25} 
 };
 
 struct axis2_iis_worker 
@@ -125,32 +127,35 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
                                  LPEXTENSION_CONTROL_BLOCK lpECB) 
 {
     axis2_conf_ctx_t * conf_ctx = NULL;
-    axis2_msg_ctx_t * msg_ctx = NULL;
-    axutil_stream_t * request_body = NULL;
     axutil_stream_t * out_stream = NULL;
     axis2_transport_out_desc_t * out_desc = NULL;
     axis2_transport_in_desc_t * in_desc = NULL;
-    axis2_bool_t processed = AXIS2_FALSE;
-    /*int content_length = -1;*/
-    /*axis2_char_t *req_url = NULL;*/
-    axis2_char_t * body_string = NULL;
-    int send_status = -1;
-    axis2_http_out_transport_info_t * iis_out_transport_info = NULL;
-    axis2_char_t * ctx_uuid = NULL;
-    axis2_char_t soap_action[INTERNET_MAX_URL_LENGTH];
-    axutil_string_t * soap_str_action = NULL;
+    axis2_char_t soap_action[INTERNET_MAX_URL_LENGTH];    
     axis2_char_t original_url[INTERNET_MAX_URL_LENGTH];
     axis2_char_t req_url[INTERNET_MAX_URL_LENGTH];
-    int body_str_len = 0;
-    DWORD ret_val = 0;
     DWORD cbSize = 0;
     CHAR server_name[MAX_SERVERNAME];
     axis2_char_t port[MAX_TCP_PORT_LEN];
-    CHAR redirect_url[INTERNET_MAX_PATH_LENGTH];
-    axis2_op_ctx_t *op_ctx = NULL;
+    axis2_char_t redirect_url[INTERNET_MAX_PATH_LENGTH];
+	axis2_char_t accept_language[INTERNET_MAX_PATH_LENGTH];
     axutil_hash_t *headers = NULL;
-    CHAR peer_ip[50];
-    axutil_property_t *peer_property = NULL;
+    axis2_char_t peer_ip[50];
+	axis2_char_t accept_header[INTERNET_MAX_URL_LENGTH];
+	axis2_char_t accept_charset[INTERNET_MAX_URL_LENGTH];
+    /*axutil_property_t *peer_property = NULL;*/
+	
+	axis2_http_header_t *content_type_header = NULL;
+	axis2_http_header_t *content_length_header = NULL;
+
+	/* New Code variables */
+	axis2_http_transport_in_t request;
+	axis2_http_transport_out_t response;
+
+	/* initialize tranport in structure */
+	axis2_http_transport_utils_transport_in_init(&request, env);
+
+	/* initialize tranport out structure */
+	axis2_http_transport_utils_transport_out_init(&response, env);
 
     soap_action[0] = '\0';
     
@@ -158,20 +163,35 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
     if (!lpECB)
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_INVALID_NULL_PARAM);
-        return HSE_STATUS_ERROR;
+        return AXIS2_FAILURE;
     }
     conf_ctx = iis_worker->conf_ctx;
     if (!conf_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT, AXIS2_FAILURE);
-        return HSE_STATUS_ERROR;
+        return AXIS2_FAILURE;
     }
+
     cbSize = INTERNET_MAX_PATH_LENGTH;
-    ret_val = lpECB->GetServerVariable(lpECB->ConnID,  "SERVER_NAME",  server_name,&cbSize);
+    if (lpECB->GetServerVariable(lpECB->ConnID,  "SERVER_NAME",  server_name, &cbSize) == FALSE)
+	{
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot get server name from IIS.");        
+		return AXIS2_FAILURE;
+	}
     cbSize = MAX_TCP_PORT_LEN;
-    ret_val = lpECB->GetServerVariable(lpECB->ConnID, "SERVER_PORT", port, &cbSize);
+	if (lpECB->GetServerVariable(lpECB->ConnID, "SERVER_PORT", port, &cbSize) == FALSE)
+	{
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot get server port from IIS.");        
+		return AXIS2_FAILURE;
+	}
+    request.svr_port = port;
+
     cbSize = INTERNET_MAX_PATH_LENGTH;
-    ret_val = lpECB->GetServerVariable(lpECB->ConnID, "HTTP_URL", redirect_url, &cbSize);
+    if(lpECB->GetServerVariable(lpECB->ConnID, "HTTP_URL", redirect_url, &cbSize) == FALSE)
+	{
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot get server port from IIS.");        
+		return AXIS2_FAILURE;
+	}
 
 	/* We have a mapped URL only when the server version is 5 or less than that. */
 	if (server_version <= 5)
@@ -184,270 +204,162 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
 	{
 		sprintf(req_url, "%s%s%s%s", "http://", server_name, port, redirect_url);
 	}
+	/* Set the request url */
+	request.request_uri = req_url;
 
     out_stream = axutil_stream_create_basic(env);
     out_desc = axis2_conf_get_transport_out(
         axis2_conf_ctx_get_conf (iis_worker->conf_ctx, env), env, AXIS2_TRANSPORT_ENUM_HTTP);
     in_desc = axis2_conf_get_transport_in(
         axis2_conf_ctx_get_conf (iis_worker->conf_ctx, env), env, AXIS2_TRANSPORT_ENUM_HTTP);
-    msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
-    axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
 
-    axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
-
-    ctx_uuid = axutil_uuid_gen(env);
-
-    if (ctx_uuid)
-    {
-        axutil_string_t * uuid_str =
-            axutil_string_create_assume_ownership(env, &ctx_uuid);
-
-        axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, uuid_str);
-        axutil_string_free(uuid_str, env);
-    }
-    iis_out_transport_info = axis2_iis_out_transport_info_create(env, lpECB);
-
-    axis2_msg_ctx_set_out_transport_info(msg_ctx, env,
-        &(iis_out_transport_info->out_transport));
-    cbSize = INTERNET_MAX_URL_LENGTH;
+	/* Create the in message context */
+    request.msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
+    axis2_msg_ctx_set_server_side(request.msg_ctx, env, AXIS2_TRUE);
+    axis2_msg_ctx_set_transport_out_stream(request.msg_ctx, env, out_stream);
+    
+	/* Get the SOAPAction Header */
+	cbSize = INTERNET_MAX_URL_LENGTH;
     if (lpECB->GetServerVariable(lpECB->ConnID, "HTTP_SOAPAction", soap_action, &cbSize))
-    {
-        soap_str_action = axutil_string_create(env, soap_action);
-    }
-    request_body = axutil_stream_create_iis(env, lpECB);
-    if (!request_body)
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in" 
-            " creating input stream.");
-        return HSE_STATUS_ERROR;
+    {		
+		request.soap_action = soap_action;
     }
 
-    cbSize = 50;
-    ret_val = lpECB->GetServerVariable(lpECB->ConnID, "REMOTE_ADDR", peer_ip, &cbSize);
-    if (strlen(peer_ip) > 0)
+	/* Create the in stream */
+    request.in_stream = axutil_stream_create_iis(env, lpECB);
+    if (!request.in_stream)
     {
-        peer_property = axutil_property_create(env);
-        axutil_property_set_value(peer_property, env,
-                                  axutil_strdup(env, peer_ip));
-        axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_SVR_PEER_IP_ADDR,
-                                   peer_property);
-        /*AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Peer ip=%s", peer_ip);*/
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in creating input stream.");
+        return AXIS2_FAILURE;
     }
+
+	/* Get the Remote Adrress */
+    if (lpECB->GetServerVariable(lpECB->ConnID, "REMOTE_ADDR", peer_ip, &cbSize))
+	{
+		request.remote_ip = peer_ip;
+	}    
 
     /* Set the http headers into the message context */
     headers = axis2_iis_worker_read_http_headers(env, lpECB);
-    if (axis2_msg_ctx_set_transport_headers(msg_ctx, env, headers) == AXIS2_FAILURE)
+    if (axis2_msg_ctx_set_transport_headers(request.msg_ctx, env, headers) == AXIS2_FAILURE)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "IIS: Error occured in" 
-            " setting transport headers.");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "IIS: Error occured in setting transport headers.");
     }
+	/* Set the content length */
+	request.content_length = lpECB->cbTotalBytes;
+	/* Set the HTTP method */
+	if (axutil_strcasecmp(lpECB->lpszMethod, "POST") == 0)
+	{
+		request.request_method = AXIS2_HTTP_METHOD_POST;
+	}
+	else if (axutil_strcasecmp(lpECB->lpszMethod, "GET") == 0)
+	{
+		request.request_method = AXIS2_HTTP_METHOD_GET;
+	}
+	else if (axutil_strcasecmp(lpECB->lpszMethod, "HEAD") == 0)
+	{
+		request.request_method = AXIS2_HTTP_METHOD_HEAD;
+	}
+	else if (axutil_strcasecmp(lpECB->lpszMethod, "PUT") == 0)
+	{
+		request.request_method = AXIS2_HTTP_METHOD_PUT;
+	}
+	else if (axutil_strcasecmp(lpECB->lpszMethod, "DELETE") == 0)
+	{
+		request.request_method = AXIS2_HTTP_METHOD_DELETE;
+	}
+	else
+	{
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "IIS: Unsupported HTTP Method.");
+		return AXIS2_FAILURE;
+	}
+	/* Set the URL prefix */
+	request.request_url_prefix = axis2_request_url_prefix;
+	/* Create the transport out info */
+	request.out_transport_info = axis2_iis_out_transport_info_create(env, lpECB);
+	/* Set the content type */
+	request.content_type = lpECB->lpszContentType;
+	
+	/* Get accept headaer */
+	cbSize = INTERNET_MAX_PATH_LENGTH;
+    if(lpECB->GetServerVariable(lpECB->ConnID, "HTTP_Accept", accept_header, &cbSize))
+	{
+		request.accept_header = accept_header;
+	}	
+	
+	/* Get the accept langauge */
+	cbSize = INTERNET_MAX_PATH_LENGTH;
+    if (lpECB->GetServerVariable(lpECB->ConnID, "HTTP_Accept-Language", accept_language, &cbSize))
+	{
+		request.accept_language_header = accept_language;
+	}	
+	
+	cbSize = INTERNET_MAX_PATH_LENGTH;
+    if (lpECB->GetServerVariable(lpECB->ConnID, "HTTP_Accept-Charset", accept_charset, &cbSize))
+	{
+		request.accept_charset_header = accept_charset;
+	}
 
-    if (AXIS2_STRICMP(lpECB->lpszMethod, "GET") == 0 
-        || AXIS2_STRICMP(lpECB->lpszMethod, "HEAD") == 0
-        || AXIS2_STRICMP(lpECB->lpszMethod, "DELETE") == 0)
-    {
-        if (AXIS2_STRICMP(lpECB->lpszMethod, "GET") == 0)
-        {
-            processed = axis2_http_transport_utils_process_http_get_request 
-                (env, msg_ctx, request_body, out_stream, lpECB->lpszContentType,
-                soap_str_action, req_url, conf_ctx,
-                axis2_http_transport_utils_get_request_params(env,
-                (axis2_char_t *) req_url));
-        }
-        else if (AXIS2_STRICMP(lpECB->lpszMethod, "HEAD") == 0)
-        {
-            processed = axis2_http_transport_utils_process_http_head_request 
-                (env, msg_ctx, request_body, out_stream, lpECB->lpszContentType,
-                soap_str_action, req_url, conf_ctx,
-                axis2_http_transport_utils_get_request_params(env,
-                (axis2_char_t *) req_url));
-        }
-        else if (AXIS2_STRICMP(lpECB->lpszMethod, "DELETE") == 0)
-        {
-            processed = axis2_http_transport_utils_process_http_delete_request
-                (env, msg_ctx, request_body, out_stream, lpECB->lpszContentType,
-                soap_str_action, req_url, conf_ctx,
-                axis2_http_transport_utils_get_request_params(env,
-                (axis2_char_t *) req_url));
-        }
-        /* If this is not a valid GET request display the list of displayed services.*/
-        if (processed == AXIS2_FAILURE)
-        {
-            body_string =
-                axis2_http_transport_utils_get_services_html(env, 
-                conf_ctx);
-            if (body_string)
-            {
-                body_str_len = (int)strlen(body_string);
-                /* We are sure that the difference lies within the int range */
-            }
-            axis2_http_out_transport_info_set_content_type(iis_out_transport_info,
-                env, "text/html");
-            send_status = OK;
-        }
-    }
-    else if (AXIS2_STRICMP(lpECB->lpszMethod, "POST") == 0 || AXIS2_STRICMP(lpECB->lpszMethod, "PUT") == 0)
-    {
-        axis2_status_t status = AXIS2_FAILURE;
-        if (AXIS2_STRICMP(lpECB->lpszMethod, "POST") == 0)
-        { 
-            status = axis2_http_transport_utils_process_http_post_request 
-                (env, msg_ctx, request_body, out_stream, 
-                lpECB->lpszContentType,
-                lpECB->cbTotalBytes, 
-                soap_str_action, 
-                req_url);
-        }
-        if (AXIS2_STRICMP(lpECB->lpszMethod, "PUT") == 0)
-        {
-            status = axis2_http_transport_utils_process_http_put_request
-                (env, msg_ctx, request_body, out_stream,
-                lpECB->lpszContentType,
-                lpECB->cbTotalBytes,
-                soap_str_action,
-                req_url);
-        }
-        /* generate a soap fault and send it*/
-        if (status == AXIS2_FAILURE)
-        {
-            axis2_msg_ctx_t * fault_ctx = NULL;
-            axis2_char_t * fault_code = NULL;
-            axis2_engine_t * engine = axis2_engine_create(env, conf_ctx);
-            if (!engine)
-            {
-                send_status = HTTP_INTERNAL_SERVER_ERROR;
-            }
-            if (axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
-            {
-                fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":" 
-                    AXIOM_SOAP11_FAULT_CODE_SENDER;
-            }
-            else
-            {
-                fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":" 
-                    AXIOM_SOAP12_SOAP_FAULT_VALUE_SENDER;
-            }
-            fault_ctx =
-                axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx,
-                fault_code,
-                axutil_error_get_message(env->
-                error));
-
-            axis2_engine_send_fault(engine, env, fault_ctx);
-            if (out_stream)
-            {
-                body_string = axutil_stream_get_buffer(out_stream, env);
-                body_str_len = axutil_stream_get_len(out_stream, env);
-            }
-            send_status = HTTP_INTERNAL_SERVER_ERROR;
-            /*axis2_msg_ctx_free(fault_ctx, env);*/
-        }
-    }
-    /* Nothing wrong has happen. So proceed with the request*/
-    op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-    if (-1 == send_status)
-    {
-        if (axis2_op_ctx_get_response_written(op_ctx, env))
-        {
-            if (out_stream)
-            {
-                body_string = axutil_stream_get_buffer(out_stream, env);
-                body_str_len = axutil_stream_get_len(out_stream, env);
-            }
-            send_status = OK;
-        }
-        else
-        {
-            send_status = HTTP_ACCEPTED;
-        }
-    }
-    if (body_string)
-    {
-        const char *headers_names[] = { 
-            "Content-Type", 
-            "Content-Length" 
-        };
-        char *headers_vhtml[2];
-
-        headers_vhtml[1] = (char *) malloc(16);
-        headers_vhtml[0] =
-            axis2_iis_out_transport_get_content(iis_out_transport_info);
-        sprintf(headers_vhtml[1], "%d", body_str_len);
-        if (!start_response
-            (lpECB, send_status, NULL, headers_names, headers_vhtml, 2))
-        {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in" 
-                " writing response.");
-        }
-        if (AXIS2_STRICMP(lpECB->lpszMethod, "HEAD") != 0)
-        {
-            if (!write_response(lpECB, body_string, body_str_len))
-            {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in" 
-                    " writing response.");
-            }
-        }
-        AXIS2_FREE(env->allocator, body_string);
-        body_string = NULL;
-    }
-    else
-    {
-        if (!start_response(lpECB, send_status, NULL, NULL, NULL, 0))
-        {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in" 
-                " writing response.");
-        }
-    }
-    if (op_ctx)
-    {
-        axis2_msg_ctx_t *out_msg_ctx = NULL,
-            *in_msg_ctx = NULL;
-        axis2_msg_ctx_t **msg_ctx_map = NULL;
-        axis2_char_t *msg_id = NULL;
-        axis2_conf_ctx_t *conf_ctx = NULL;
-        msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
-
-        out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
-        in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
-
-        if (out_msg_ctx)
-        {
-            axis2_msg_ctx_free(out_msg_ctx, env);
-            out_msg_ctx = NULL;
-            msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = NULL;
-        }
-
-        if (in_msg_ctx)
-        {
-            msg_id =
-                axutil_strdup(env, axis2_msg_ctx_get_msg_id(in_msg_ctx, env));
-            conf_ctx = axis2_msg_ctx_get_conf_ctx(in_msg_ctx, env);
-            axis2_msg_ctx_reset_out_transport_info(in_msg_ctx, env);
-            axis2_msg_ctx_reset_transport_out_stream(in_msg_ctx, env);
-            axis2_msg_ctx_free(in_msg_ctx, env);
-            in_msg_ctx = NULL;
-            msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;
-        }
-
-        if (!axis2_op_ctx_is_in_use(op_ctx, env))
-        {
-            axis2_op_ctx_destroy_mutex(op_ctx, env);
-            if (conf_ctx && msg_id)
-            {
-                axis2_conf_ctx_register_op_ctx(conf_ctx, env, msg_id, NULL);
-                AXIS2_FREE(env->allocator, msg_id);
-            }
-            axis2_op_ctx_free(op_ctx, env);
-        }
-
-    }                           /* Done freeing message contexts */
-    if (request_body)
-    {
-        axutil_stream_free(request_body, env);
-        request_body = NULL;
-    }
-    msg_ctx = NULL;
-    return HSE_STATUS_SUCCESS;
+	/* Now we have set everything. We can call process method to process the request */
+	if (axis2_http_transport_utils_process_request(env, conf_ctx, &request, &response) == AXIS2_FAILURE)
+	{
+		return AXIS2_FAILURE;
+	}
+		
+	/* Write the response */
+	if (response.response_data && response.response_data_length > 0)
+	{	
+		axis2_char_t content_length_str[16]={0}; 
+		axis2_bool_t is_out_headers_created = AXIS2_FALSE;
+		if (!response.output_headers)
+		{
+			response.output_headers = axutil_array_list_create(env, 2);
+			is_out_headers_created = AXIS2_TRUE;
+		}
+		sprintf(content_length_str, "%d", response.response_data_length);
+		if (!response.content_type)
+		{
+			content_type_header = axis2_http_header_create(env, "Content-Type", axis2_iis_out_transport_get_content(request.out_transport_info));
+		}
+		else
+		{
+			content_type_header = axis2_http_header_create(env, "Content-Type", response.content_type);
+		}
+		content_length_header = axis2_http_header_create(env, "Content-Length", content_length_str);
+		axutil_array_list_add(response.output_headers, env, content_length_header);
+		axutil_array_list_add(response.output_headers, env, content_type_header);
+		/* Write the headers */
+		start_response(env, lpECB, response.http_status_code, response.http_status_code_name, response.output_headers);
+		/* Write the response body */
+		if(write_response(lpECB, response.response_data, response.response_data_length) == AXIS2_FAILURE)
+		{
+			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "IIS: Writing data to IIS");
+			return AXIS2_FAILURE;
+		}
+		if (is_out_headers_created)
+		{
+			if (content_length_header)
+			{
+				axis2_http_header_free(content_length_header, env);
+			}
+			if (content_type_header)
+			{
+				axis2_http_header_free(content_type_header, env);
+			}
+			axutil_array_list_free(response.output_headers, env);
+		}
+	}
+	else
+	{
+		/* If we don't have a body we should write the HTTP headers */
+		start_response(env, lpECB, response.http_status_code, response.http_status_code_name, response.output_headers);
+		AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Response is NULL");
+	}
+	
+	/* Do some cleaning */
+	axis2_http_transport_utils_transport_in_uninit(&request, env);
+	axis2_http_transport_utils_transport_out_uninit(&response, env);
+	return AXIS2_SUCCESS;
 }
 
 
@@ -470,29 +382,31 @@ axis2_status_t write_response(LPEXTENSION_CONTROL_BLOCK lpECB, const void *b,
                     buf + written, &try_to_write,
                     0))
                 {
-                    return FALSE;
+                    return AXIS2_FAILURE;
                 }
                 written += try_to_write;
             }
         }
-        return TRUE;
+        return AXIS2_SUCCESS;
     }
-    return FALSE;
+    return AXIS2_FAILURE;
 }
 
 
 
-axis2_status_t AXIS2_CALL start_response(LPEXTENSION_CONTROL_BLOCK lpECB,
+axis2_status_t AXIS2_CALL start_response(const axutil_env_t *env, 
+										 LPEXTENSION_CONTROL_BLOCK lpECB,
                                          int status, 
                                          const char *reason,
-                                         const char *const *header_names,
-                                         const char *const *header_values,
-                                         unsigned int num_of_headers) 
+                                         axutil_array_list_t *headers
+                                         ) 
 {
     static char crlf[3] = { (char) 13, (char) 10, '\0' };
+	unsigned int num_of_headers = 0;
+
     if (status < 100 || status > 1000)
     {
-        return FALSE;
+        return AXIS2_FAILURE;
     }
     if (lpECB)
     {
@@ -531,17 +445,18 @@ axis2_status_t AXIS2_CALL start_response(LPEXTENSION_CONTROL_BLOCK lpECB,
                 break;
             }
         }
-
         /*
         * Create response headers string
         */ 
-        if (num_of_headers)
+        if (headers && (num_of_headers = axutil_array_list_size(headers, env)) > 0)
         {
             size_t i, len_of_headers;
+			axis2_http_header_t *header = NULL;
             for (i = 0, len_of_headers = 0; i < num_of_headers; i++)
             {
-                len_of_headers += strlen(header_names[i]);
-                len_of_headers += strlen(header_values[i]);
+				header = axutil_array_list_get(headers, env, (int)i);
+                len_of_headers += strlen(axis2_http_header_get_name(header, env));
+                len_of_headers += strlen(axis2_http_header_get_value(header, env));
                 len_of_headers += 4;   /* extra for colon, space and crlf */
             }
             len_of_headers += 3;  /* crlf and terminating null char */
@@ -549,9 +464,10 @@ axis2_status_t AXIS2_CALL start_response(LPEXTENSION_CONTROL_BLOCK lpECB,
             headers_str[0] = '\0';
             for (i = 0; i < num_of_headers; i++)
             {
-                strcat(headers_str, header_names[i]);
+				header = axutil_array_list_get(headers, env, (int)i);
+                strcat(headers_str, axis2_http_header_get_name(header, env));
                 strcat(headers_str, ": ");
-                strcat(headers_str, header_values[i]);
+                strcat(headers_str, axis2_http_header_get_value(header, env));
                 strcat(headers_str, "\r\n");
             }
             strcat(headers_str, "\r\n");
@@ -567,11 +483,11 @@ axis2_status_t AXIS2_CALL start_response(LPEXTENSION_CONTROL_BLOCK lpECB,
             (LPDWORD) & len_of_status,
             (LPDWORD) headers_str))
         {
-            return FALSE;
+            return AXIS2_FAILURE;
         }
-        return TRUE;
+        return AXIS2_SUCCESS;
     }
-    return FALSE;
+    return AXIS2_FAILURE;
 }
 
 axis2_status_t AXIS2_CALL axis2_worker_get_original_url(char url[],

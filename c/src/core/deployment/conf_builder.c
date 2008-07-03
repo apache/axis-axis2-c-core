@@ -456,20 +456,20 @@ axis2_conf_builder_process_disp_order(
         }
         class_name = axiom_attribute_get_value(disp_att, env);
         dll_desc = axutil_dll_desc_create(env);
-        dll_name =
-            axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
-                                                              class_name);
+        dll_name = axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env, class_name);
         axutil_dll_desc_set_name(dll_desc, env, dll_name);
         axutil_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
         impl_info_param = axutil_param_create(env, class_name, NULL);
         if (!impl_info_param)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Parameter creation failed for %s. Unable to continue", 
-                    class_name);
+                    "Parameter creation failed for %s. Unable to continue", class_name);
+
             axis2_phase_free(disp_phase, env);
+
             return AXIS2_FAILURE;
         }
+
         axutil_param_set_value(impl_info_param, env, dll_desc);
         axutil_param_set_value_free(impl_info_param, env,
                                     axutil_dll_desc_free_void_arg);
@@ -490,10 +490,9 @@ axis2_conf_builder_process_disp_order(
     if (!found_disp)
     {
         axis2_phase_free(disp_phase, env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_DISPATCHER_FOUND,
-                        AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No dispatcher found."\
-            " Unable to continue");
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_DISPATCHER_FOUND, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No dispatcher found. Unable to continue");
+
         return AXIS2_FAILURE;
     }
     else
@@ -503,13 +502,15 @@ axis2_conf_builder_process_disp_order(
         if (!status)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Setting dispatch phase failed. Unable to continue");
+                    "Setting dispatch phase failed. Unable to continue");
+
             axis2_phase_free(disp_phase, env);
+
             return status;
         }
     }
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
-        "Exit:axis2_conf_builder_process_disp_order");
+
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_conf_builder_process_disp_order");
     return AXIS2_SUCCESS;
 }
 
