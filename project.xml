@@ -18,7 +18,6 @@
 -->
 
 <project>
-  <name>Axis2C</name>
   <pomVersion>3</pomVersion>
 
   <!-- a unique name for this project -->

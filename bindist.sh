@@ -1,5 +1,5 @@
 #!/bin/bash
-sh clean.sh
+./clean.sh
 
 ./autogen.sh
 AXIS2C_HOME=`pwd`/deploy
@@ -33,7 +33,7 @@ mv samples ${AXIS2C_HOME}
 cd ..
 
 rm -rf xdocs/api/html
-mvn site
+maven site
 cd xdocs/api 
 doxygen doxygenconf
 cd ../..
