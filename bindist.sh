@@ -1,5 +1,5 @@
 #!/bin/bash
-./clean.sh
+sh clean.sh
 
 ./autogen.sh
 AXIS2C_HOME=`pwd`/deploy
