@@ -1,3 +1,14 @@
+Axis2/C (1.5.0)
+   * AMQP Transport support with Apache Qpid.
+   * Modifications to IIS Module to support IIS 6 & 7
+   * Added a JScript file to automate IIS module registry configuration
+   * Improved the in-only message handling
+   * Specifying the MEP in the services.xml for non in-out messages made mandatory
+   * Improvements to Guthtila for better performance
+   * Improvements to TCPMon tool
+   * Memory leak fixes
+   * Bug fixes
+
 Axis2/C (1.4.0)
    * Fixed library version numbering
    * Made Guththila as default XML parser

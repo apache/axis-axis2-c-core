@@ -251,6 +251,34 @@
 	<role>Suggestion to improve API and several inputs through JIRA</role>
       </roles>
     </contributor>
+    <contributor>
+      <name>Rajika Kumarasiri</name>
+      <email>rajikacc AT gmail DOT com</email>
+      <roles>
+        <role>Bug Fixes</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Danushka Menikkumbura</name>
+      <email>danushka AT wso2 DOT com</email>
+      <roles>
+        <role>AMQP Transport implementation</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Frederic Heem</name>
+      <email>frederic DOT heem AT telsey DOT it</email>
+      <roles>
+        <role>Suggestions for improvements through Jiras and Bug fixes</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Diluka Moratuwage</name>
+      <email>diluka DOT wso2 DOT com</email>
+      <roles>
+        <role>Suggestions for improvements through Jiras and Bug fixes</role>
+      </roles>
+    </contributor>
   </contributors>
 
   <!-- ################################################################ -->
