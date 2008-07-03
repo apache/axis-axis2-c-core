@@ -18,6 +18,6 @@ make
 make install
 
 cd samples
-./configure --prefix=${AXIS2C_DEPLOY} --with-axis2=${AXIS2C_DEPLOY}/include/axis2-1.4.0
+./configure --prefix=${AXIS2C_DEPLOY} --with-axis2=${AXIS2C_DEPLOY}/include/axis2-1.5.0
 make 
 make install
