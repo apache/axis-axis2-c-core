@@ -33,7 +33,7 @@
 AUTOCONF = configure.in
 !include $(AUTOCONF)
 
-RELEASE_VER = 1.4.0
+RELEASE_VER = 1.5.0
 AXIS2_RELEASE_DIR=axis2c-bin-$(RELEASE_VER)-win32
 
 # Directory structure
@@ -841,6 +841,7 @@ $(MOD_IIS_OBJS) : $(MOD_IIS_INTDIR) $(MOD_IIS_INTDIR1)
 $(AXIS2_LIBS)\mod_axis2_IIS.dll : $(MOD_IIS_OBJS)
 	$(LD) $(LDFLAGS) $(MOD_IIS_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(LIBS) Advapi32.lib $(AXIS2_ENGINE).lib /DEF:$(DEF_FILE) /DLL /OUT:$(AXIS2_LIBS)\mod_axis2_IIS.dll
+	@copy $(MOD_IIS_SRC)\axis2_iis_regedit.js $(AXIS2_BINDIR)
 	-@$(_VC_MANIFEST_EMBED_DLL)
 
 axis2_IIS_module : $(AXIS2_LIBS)\mod_axis2_IIS.dll
