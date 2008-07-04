@@ -523,10 +523,20 @@ axis2_addr_out_handler_invoke(
                                                    AXIS2_WSA_DEFAULT_PREFIX);
                     }
 
-                    om_attr = axiom_attribute_create(env,
+                    if (!axutil_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION))
+                    {
+                        om_attr = axiom_attribute_create(env,
                                                      AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE,
-                                                     AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE,
+                                                     AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE_SUBMISSION,
                                                      addr_ns_obj);
+                    } 
+                    else 
+                    {
+                        om_attr = axiom_attribute_create(env,
+                                                         AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE,
+                                                         AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE,
+                                                         addr_ns_obj);
+                    }                    
 
                     axiom_element_add_attribute(relates_to_header_ele, env,
                                                 om_attr,
