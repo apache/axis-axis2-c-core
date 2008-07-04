@@ -29,6 +29,7 @@ Key Features
 
    6. Transports supported : AMQP
           * AMQP Transport implementation using Apache Qpid
+	    * Available only in Linux platforms.	
 
    7. Transport proxy support (HTTP)
           * Proxy Authentication (Basic/Digest)

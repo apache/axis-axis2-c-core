@@ -402,7 +402,7 @@ Table of Contents
 	(b) Enable Guththila
 	--------------------
 	
-		- Set the ENABLE_GUTHTHILA option to 1
+		- Now Guththila is the defualt parser. Unless you enable libxml2 Guththila will be built.
 
    	(c) Enable libxml2
 	------------------
@@ -557,11 +557,11 @@ Table of Contents
     NOTE : To do the following tasks, you might need super user privileges 
 		   on your machine.
 
-    Copy the mod_axis2 (libmod_axis2.so.0.3.1 on Linux and mod_axis2.dll 
+    Copy the mod_axis2 (libmod_axis2.so.0.5.0 on Linux and mod_axis2.dll 
 	on Windows) to "<apache2 modules directory>" as mod_axis2.so 
     
 	Example:
-    	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.3.1 
+    	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.5.0 
 		/usr/lib/apache2/modules/mod_axis2.so (on Linux)
 		
 		copy C:\axis2c\build\deploy\lib\mod_axis2.dll 
