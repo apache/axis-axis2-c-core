@@ -1,2 +1,3 @@
 SUBDIRS=http $(TCP_DIR) $(AMQP_DIR)
-EXTRA_DIST=Makefile.am amqp
+DIST_SUBDIRS=tcp amqp
+EXTRA_DIST=Makefile.am 
