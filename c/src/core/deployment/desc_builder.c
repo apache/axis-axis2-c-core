@@ -946,8 +946,7 @@ axis2_desc_builder_process_op_module_refs(
 
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
 
-    while (module_refs &&
-           axiom_children_qname_iterator_has_next(module_refs, env))
+    while (module_refs && axiom_children_qname_iterator_has_next(module_refs, env))
     {
         axiom_node_t *moduleref_node = axiom_children_qname_iterator_next(module_refs, env);
         moduleref = (axiom_element_t *)axiom_node_get_data_element(moduleref_node, env);
@@ -963,34 +962,33 @@ axis2_desc_builder_process_op_module_refs(
 
             ref_name = axiom_attribute_get_value(module_ref_attrib, env);
             ref_qname = axutil_qname_create(env, ref_name, NULL, NULL);
-            module_desc = axis2_dep_engine_get_module(desc_builder->engine, env,
-                                                      ref_qname);
+            module_desc = axis2_dep_engine_get_module(desc_builder->engine, env, ref_qname);
             if (!module_desc)
             {
                 axutil_qname_free(ref_qname, env);
-                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND,
-                                AXIS2_FAILURE);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                    "Module %s not found in the deployment engine", ref_name);
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Module %s not found in the deployment engine", 
+                        ref_name);
+
                 return AXIS2_FAILURE;
             }
             else
             {
                 status = axis2_op_add_module_qname(op, env, ref_qname);
                 axutil_qname_free(ref_qname, env);
-                if (!status)
+                if (AXIS2_SUCCESS != status)
                 {
-                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND,
-                                    AXIS2_FAILURE);
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND, AXIS2_FAILURE);
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                        "Adding module ref %s to operation %s failed", ref_name, 
-                        axutil_qname_get_localpart(axis2_op_get_qname(op, env), 
-                            env));
+                            "Adding module ref %s to operation %s failed", ref_name, 
+                            axutil_qname_get_localpart(axis2_op_get_qname(op, env), env));
+
                     return AXIS2_FAILURE;
                 }
             }
         }
     }
+
     return AXIS2_SUCCESS;
 }
 

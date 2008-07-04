@@ -182,7 +182,7 @@ Table of Contents
 	$ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${AXIS2C_HOME}/lib/
     $ cd samples
     $ ./configure --prefix=${AXIS2C_HOME} 
-				  --with-axis2=${AXIS2C_HOME}/include/axis2-1.4.0
+				  --with-axis2=${AXIS2C_HOME}/include/axis2-1.5.0
     $ make
     $ make install
 
@@ -402,7 +402,7 @@ Table of Contents
 	(b) Enable Guththila
 	--------------------
 	
-		- Set the ENABLE_GUTHTHILA option to 1
+		- Now Guththila is the defualt parser. Unless you enable libxml2 Guththila will be built.
 
    	(c) Enable libxml2
 	------------------
@@ -557,11 +557,11 @@ Table of Contents
     NOTE : To do the following tasks, you might need super user privileges 
 		   on your machine.
 
-    Copy the mod_axis2 (libmod_axis2.so.0.3.1 on Linux and mod_axis2.dll 
+    Copy the mod_axis2 (libmod_axis2.so.0.5.0 on Linux and mod_axis2.dll 
 	on Windows) to "<apache2 modules directory>" as mod_axis2.so 
     
 	Example:
-    	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.3.1 
+    	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.5.0 
 		/usr/lib/apache2/modules/mod_axis2.so (on Linux)
 		
 		copy C:\axis2c\build\deploy\lib\mod_axis2.dll 
@@ -648,6 +648,28 @@ Table of Contents
 		debug	 - Log debug and above (default)
 	 	warning  - Log warnings
 
+    You can add a string value with the name services_url_prefix. This is optional and defaults to "/services".
+    As an example, if you have "/web_services" as the prefix, then all the services hosted would have the endpoint prefix of : 
+    http://localhost/axis2/web_services.
+    Note: don't forget the / at the begining.
+
+    If you wish, you can also change the location as well by adding a string value with the name axis2_location. 
+    This is also optional and defaults to /axis2. If you have /myserser as the value you can access your web 
+    services with a url like http://localhost/myserver/services.
+    Note: Don't forget the / at the beginning.
+
+    Now you can do all the registry editing using the JScript file axis2_iis_regedit.js 
+    provided with the distribution. When you build axis2/C with the IIS module the file 
+    is copied to the root directory of the binary distribution. Just double click it and 
+    everything will be set to the defaults. The axis2c_home is taken as the current directory, 
+    so make sure you run the file in the Axis2/C repository location (or root of the binary distribution). 
+    If you want to change the values you can manually edit the the .js file or give it as command line arguments 
+    to the script when running the script. To run the jscript from the command line use the command 
+    :\cscript axis2_iis_regedit.js optional arguments. 
+    We recomend the manual editing as it is the easiest way to specify the values
+
+    IIS 5.1 or Below
+    -----------------
     Using the IIS management console, add a new virtual directory to the
 	IIS/PWS web site called "axis2". The physical path of this virtual
 	directory should be the axis2\lib directory (Where the mod_axis2_IIS.dll
@@ -659,7 +681,17 @@ Table of Contents
 
     Restart IIS and test whether mod_axis2_IIS module is loaded by typing the
 	URL http://localhost/axis2 in your Web browser.
+    
+    IIS 6 & 7
+    ---------
+    Using the IIS management console, add the mod_axis2_IIS.dll as a Wildcard Script Map.
+      Executable should be the complete path to the mod_axis2_IIS.dll
+      You can put any name as the name of the Wildcard Script Map
 
+    Please don't add the mod_axis2_IIS.dll as a filter to IIS as in the IIS 5.1 case.
+    
+    Note: If the Axis2/C failed to load, verify that Axis2/C and its dependent DLLs are in the 
+    System Path (not the user path). 
 
 5. FAQ
 ======

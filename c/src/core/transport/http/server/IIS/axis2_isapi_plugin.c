@@ -43,7 +43,7 @@
 #define AXIS2_IIS_EXTENSION_URI_TAG	 "extension_uri"
 #define AXIS2_IIS_REDIRECT_WORD_TAG	 "redirect_uri"
 #define AXIS2_IIS_AXIS2_LOCATION	 "axis2_location"
-#define AXIS2_IIS_SERVICE_URL_PREFIX "services"
+#define AXIS2_IIS_SERVICE_URL_PREFIX "services_url_prefix"
 
 #define AXIS2_IIS_LOG_TRACE_VERB	 "trace"
 #define AXIS2_IIS_LOG_ERROR_VERB	 "error"
@@ -61,8 +61,8 @@ static axis2_iis_worker_t *axis2_worker		 = NULL;
 static const axutil_env_t *axutil_env		 = NULL;
 
 /* Configuration parameters */
-static axis2_char_t *axis2_location			 = "axis2";
-static axis2_char_t *axis2_service_url_prefix= "services";
+axis2_char_t *axis2_location			 = "/axis2";
+static axis2_char_t *axis2_service_url_prefix= "/services";
 static axis2_char_t repo_path[MAX_FILE_PATH];
 static axis2_char_t log_file[MAX_FILE_PATH];
 static axutil_log_levels_t log_level		 = AXIS2_LOG_LEVEL_CRITICAL;
@@ -157,7 +157,7 @@ HttpExtensionProc(EXTENSION_CONTROL_BLOCK * pecb)
     HSE_EXEC_URL_INFO   ExecUrlInfo; 
     DWORD               cbData = INTERNET_MAX_URL_LENGTH; 
     char				url[INTERNET_MAX_URL_LENGTH]; 
-	axis2_bool_t		is_for_us = AXIS2_FALSE;
+	axis2_bool_t		is_for_us = AXIS2_TRUE;
 
     /* Get the URL */      
     if ( pecb->GetServerVariable( pecb->ConnID, 
@@ -167,75 +167,80 @@ HttpExtensionProc(EXTENSION_CONTROL_BLOCK * pecb)
     { 
         return HSE_STATUS_ERROR;  
     } 
+
+	if (!is_inited) 
+	{			
+		DWORD dwBufferSize = 0;
+		axis2_char_t server_software[256];
+		axis2_char_t *version = NULL;
+
+		ZeroMemory(szOriginalPath, sizeof szOriginalPath);
+		dwBufferSize = sizeof szOriginalPath;
+
+#if _WIN32_WINNT >= 0x0502
+		GetDllDirectory( dwBufferSize, szOriginalPath );
+#else
+		GetCurrentDirectory( dwBufferSize, szOriginalPath );
+#endif
+		ZeroMemory(szPath, sizeof szPath);
+		dwBufferSize = sizeof szPath;
+		/* Get the current physical paht */
+		if (pecb->GetServerVariable(pecb->ConnID, "APPL_PHYSICAL_PATH", szPath, &dwBufferSize) == FALSE)
+		{
+			send_error(pecb, initializing_error);
+			return HSE_STATUS_ERROR;				
+		}
+		/* Retrieve the server version */
+		dwBufferSize = 32;
+		if (pecb->GetServerVariable(pecb->ConnID, "SERVER_SOFTWARE", server_software, &dwBufferSize) == FALSE)
+		{
+			send_error(pecb, initializing_error);
+			return HSE_STATUS_ERROR;				
+		}
+		version = axutil_strchr(server_software, '/');	
+		if (version)
+		{
+			server_version = atoi(version + 1);
+		}
+#if _WIN32_WINNT >= 0x0502
+		SetDllDirectory( szPath );
+#else
+		SetCurrentDirectory( szPath );
+#endif
+		/* If we haven't initialized axis2/c before initialization failed */
+		if (AXIS2_FAILURE == init_axis2())
+		{
+			send_error(pecb, initializing_error);
+			return HSE_STATUS_ERROR;
+		}
+#if _WIN32_WINNT >= 0x0502
+		SetDllDirectory( szOriginalPath );
+#else
+		SetCurrentDirectory( szOriginalPath );
+#endif
+	}
+
 	/* Check weather we have a request for Axis2/C */
-	if (strlen(url) > strlen(axis2_location))
+	if (server_version >= 6 && strlen(url) >= strlen(axis2_location))
     {
 		int i = 0;
 		is_for_us = AXIS2_TRUE;	
 		while (axis2_location[i] != '\0')
 		{
-			if (axis2_location[i] != (url + 1)[i]) {
+			if (axis2_location[i] != (url)[i]) {
 				is_for_us = AXIS2_FALSE;
 				break;
 			}
 			i++;
 		}		
+		if (url[i] != '/' && url[i] != '\0')
+		{
+			is_for_us = AXIS2_FALSE;
+		}
 	}
 		
 	if (is_for_us)
-	{		
-		if (!is_inited) 
-		{			
-			DWORD dwBufferSize = 0;
-			axis2_char_t server_software[256];
-			axis2_char_t *version = NULL;
-
-			ZeroMemory(szOriginalPath, sizeof szOriginalPath);
-			dwBufferSize = sizeof szOriginalPath;
-
-#if _WIN32_WINNT >= 0x0502
-			GetDllDirectory( dwBufferSize, szOriginalPath );
-#else
-			GetCurrentDirectory( dwBufferSize, szOriginalPath );
-#endif
-			ZeroMemory(szPath, sizeof szPath);
-			dwBufferSize = sizeof szPath;
-			/* Get the current physical paht */
-			if (pecb->GetServerVariable(pecb->ConnID, "APPL_PHYSICAL_PATH", szPath, &dwBufferSize) == FALSE)
-			{
-				send_error(pecb, initializing_error);
-				return HSE_STATUS_ERROR;				
-			}
-			/* Retrieve the server version */
-			dwBufferSize = 32;
-			if (pecb->GetServerVariable(pecb->ConnID, "SERVER_SOFTWARE", server_software, &dwBufferSize) == FALSE)
-			{
-				send_error(pecb, initializing_error);
-				return HSE_STATUS_ERROR;				
-			}
-			version = axutil_strchr(server_software, '/');	
-			if (version)
-			{
-				server_version = atoi(version + 1);
-			}
-#if _WIN32_WINNT >= 0x0502
-			SetDllDirectory( szPath );
-#else
-			SetCurrentDirectory( szPath );
-#endif
-			/* If we haven't initialized axis2/c before initialization failed */
-			if (AXIS2_FAILURE == init_axis2())
-			{
-				send_error(pecb, initializing_error);
-				return HSE_STATUS_ERROR;
-			}
-#if _WIN32_WINNT >= 0x0502
-			SetDllDirectory( szOriginalPath );
-#else
-			SetCurrentDirectory( szOriginalPath );
-#endif
-		}	
-
+	{			
 		/* Windows cannot find the correct dlls unless the path is set*/ 
 #if _WIN32_WINNT >= 0x0502
 		SetDllDirectory( szPath );

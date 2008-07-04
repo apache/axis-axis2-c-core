@@ -2,7 +2,7 @@ dnl run autogen.sh to generate the configure script.
 
 AC_PREREQ(2.59)
 
-AC_INIT(guththilac-src, 1.4.0)
+AC_INIT(guththilac-src, 1.5.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 dnl AM_INIT_AUTOMAKE([tar-ustar])
@@ -70,7 +70,7 @@ AC_FUNC_REALLOC
 
 
 UTILINC=$axis2_utilinc
-VERSION_NO="4:0:4"
+VERSION_NO="5:0:5"
 
 AC_SUBST(UTILINC)
 AC_SUBST(VERSION_NO)

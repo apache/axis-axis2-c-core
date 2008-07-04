@@ -87,8 +87,7 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(
     axis2_conf_t *conf;
     axis2_bool_t file_flag;
 
-    repos_listener =
-        (axis2_repos_listener_t *) axis2_repos_listener_create(env);
+    repos_listener = (axis2_repos_listener_t *) axis2_repos_listener_create(env);
 
     if (!repos_listener)
     {
@@ -107,8 +106,7 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(
         }
     }
 
-    repos_listener->info_list =
-        axis2_ws_info_list_create_with_dep_engine(env, dep_engine);
+    repos_listener->info_list = axis2_ws_info_list_create_with_dep_engine(env, dep_engine);
     if (!repos_listener->info_list)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating ws info list failed");
@@ -123,7 +121,8 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(
     if (!conf)
     {
         AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
-                    "Deployment engines axis2 configuration not available");
+                "Deployment engines axis2 configuration not available");
+
         return NULL;
     }
     axis2_repos_listener_set_conf (repos_listener, env, conf);
@@ -131,10 +130,9 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(
     status = axis2_repos_listener_init(repos_listener, env);
     if (AXIS2_SUCCESS != status)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_REPOS_LISTENER_INIT_FAILED,
-                        AXIS2_FAILURE);
-        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
-            "Repository listener initialization failed");
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_REPOS_LISTENER_INIT_FAILED, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "Repository listener initialization failed");
+
         return NULL;
     }
     return repos_listener;
@@ -182,7 +180,7 @@ axis2_repos_listener_check_modules(
 
     conf = axis2_repos_listener_get_conf (repos_listener, env);
 
-    /* conf is needed only to decide we are using axis2.xml. Other
+    /* Configuration  is needed only to decide we are using axis2.xml. Other
      * case we don't need. Hence even if conf is NULL we can continue.
      */
 
@@ -194,8 +192,7 @@ axis2_repos_listener_check_modules(
     if (!axis2_flag)
     {
 
-        temp_path =
-            axutil_stracat(env, repos_listener->folder_name, AXIS2_PATH_SEP_STR);
+        temp_path = axutil_stracat(env, repos_listener->folder_name, AXIS2_PATH_SEP_STR);
         module_path = axutil_stracat(env, temp_path, AXIS2_MODULE_PATH);
         AXIS2_FREE(env->allocator, temp_path);
     }
@@ -209,16 +206,16 @@ axis2_repos_listener_check_modules(
         }
         else
         {
-            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
-                "While creating axis2 configuration using axis2.xml, modulesDir"\
-                " parameter not available.");
+            AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "While creating axis2 configuration using "\
+                    "axis2.xml, modulesDir  parameter not available.");
         }
 
     }
-    status =
-        axis2_repos_listener_search(repos_listener, env, module_path,
-                                    AXIS2_MODULE);
+
+    status = axis2_repos_listener_search(repos_listener, env, module_path, AXIS2_MODULE);
+
     AXIS2_FREE(env->allocator, module_path);
+
     return status;
 }
 

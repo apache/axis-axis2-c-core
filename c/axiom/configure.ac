@@ -2,7 +2,7 @@ dnl run autogen.sh to generate the configure script.
 
 AC_PREREQ(2.59)
 
-AC_INIT(axis2_axiom-src, 1.4.0)
+AC_INIT(axis2_axiom-src, 1.5.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE
@@ -134,7 +134,7 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
 
 PKG_PROG_PKG_CONFIG(0.15)
 CFLAGS="$CFLAGS $GUTHTHILA_CFLAGS"
-VERSION_NO="4:0:4"
+VERSION_NO="5:0:5"
 
 AC_SUBST(VERSION_NO)
 AC_SUBST(LIBXML2_CFLAGS)

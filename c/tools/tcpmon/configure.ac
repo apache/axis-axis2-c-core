@@ -2,7 +2,7 @@ dnl run autogen.sh to generate the configure script.
 
 AC_PREREQ(2.59)
 
-AC_INIT(tcpmon-src, 1.4.0)
+AC_INIT(tcpmon-src, 1.5.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
@@ -57,6 +57,53 @@ AC_ARG_ENABLE(tests,
   esac ],
   AC_MSG_RESULT(no)
   TESTDIR=""
+)
+
+GUTHTHILA_LIBS=""
+
+AC_MSG_CHECKING(whether to build guththila xml parser library)
+AC_ARG_ENABLE(guththila, [  --enable-guththila
+                          build Guththila XML parser library wrapper (default=yes)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -DAXIS2_GUTHTHILA_ENABLED"
+    CPPFLAGS="$CPPFLAGS -DAXIS2_GUTHTHILA_ENABLED"
+    WRAPPER_DIR="guththila"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+  WRAPPER_DIR="guththila"
+  CFLAGS="$CFLAGS -DAXIS2_GUTHTHILA_ENABLED"
+  CPPFLAGS="$CPPFLAGS -DAXIS2_GUTHTHILA_ENABLED"
+  AC_CONFIG_SUBDIRS(guththila)
+  GUTHTHILA_LIBS="/guththila/src/"
+  GUTHTHILA_DIR="guththila"
+)
+
+
+AC_MSG_CHECKING(whether to build libxml2 xml parser library)
+AC_ARG_ENABLE(libxml2, [  --enable-libxml2    
+                          build Libxml2 XML parser library wrapper (default=no)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    WRAPPER_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    WRAPPER_DIR="libxml2"
+    PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
+    CFLAGS="$CFLAGS -DAXIS2_LIBXML2_ENABLED"
+    CPPFLAGS="$CPPFLAGS $PARSER_CFLAGS -DAXIS2_LIBXML2_ENABLED"
+    LDFLAGS="$LDFLAGS $PARSER_LIBS"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
 )
 
 

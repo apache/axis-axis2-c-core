@@ -198,11 +198,11 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
 	{
 		axis2_worker_get_original_url(redirect_url, original_url);
 		/* create the url using the above variables */                     
-		sprintf(req_url, "%s%s%s%s", "http://", server_name, port, original_url);
+		sprintf(req_url, "%s%s%s%s%s", "http://", server_name, ":", port, original_url);
 	}
 	else
 	{
-		sprintf(req_url, "%s%s%s%s", "http://", server_name, port, redirect_url);
+		sprintf(req_url, "%s%s%s%s%s", "http://", server_name, ":", port, redirect_url);
 	}
 	/* Set the request url */
 	request.request_uri = req_url;
@@ -273,7 +273,7 @@ axis2_iis_worker_process_request(axis2_iis_worker_t * iis_worker,
 		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "IIS: Unsupported HTTP Method.");
 		return AXIS2_FAILURE;
 	}
-	/* Set the URL prefix */
+	/* Set the URL prefix. axis2_request_url_prefix is a global variable set at the init time */
 	request.request_url_prefix = axis2_request_url_prefix;
 	/* Create the transport out info */
 	request.out_transport_info = axis2_iis_out_transport_info_create(env, lpECB);
@@ -493,12 +493,9 @@ axis2_status_t AXIS2_CALL start_response(const axutil_env_t *env,
 axis2_status_t AXIS2_CALL axis2_worker_get_original_url(char url[],
                                                         char ret_url[]) 
 {
-    int i = 0;
-    for (i = 0; i < 7; i++)
-        ret_url[i] = url[i];
-    for (i = 7; url[i] != '\0'; i++)
-        ret_url[i] = url[i + 18];
-    ret_url[i] = '\0';
+	extern axis2_char_t *axis2_location;
+	strcpy(ret_url, axis2_location);
+	strcat(ret_url, &url[25]);
     return URI_MATCHED;
 }
 

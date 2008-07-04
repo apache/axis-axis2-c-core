@@ -23,13 +23,14 @@ WITH_ARCHIVE = 0
 #############################################################################
 #
 # libxml2 binary location ( axis2c is built with libxml2 )
-LIBXML2_BIN_DIR = E:\libxml2-2.6.30.win32
+LIBXML2_BIN_DIR = F:\applications\libxml2-2.6.30.win32
+
 #
 # iconv binary location
-ICONV_BIN_DIR = E:\iconv-1.9.2.win32
+ICONV_BIN_DIR = F:\applications\iconv-1.9.2.win32
 #
 # zlib binary location
-ZLIB_BIN_DIR=E:\zlib-1.2.3.win32
+ZLIB_BIN_DIR= F:\applications\zlib-1.2.3.win32
 #
 #
 #############################################################################
@@ -38,7 +39,7 @@ ZLIB_BIN_DIR=E:\zlib-1.2.3.win32
 #
 # openssl  binary location
 # required if ENABLE_SSL = 1
-OPENSSL_BIN_DIR = E:\OpenSSL
+OPENSSL_BIN_DIR = c:\OpenSSL
 #
 # libcurl binary location, only required if libcurl transport is enabled
 LIBCURL_BIN_DIR = E:\libcurl-7.15.1-msvc-win32-ssl-0.9.8a-zlib-1.2.3
@@ -49,7 +50,7 @@ LIBCURL_BIN_DIR = E:\libcurl-7.15.1-msvc-win32-ssl-0.9.8a-zlib-1.2.3
 #############################################################################
 #
 # apache binary location
-APACHE_BIN_DIR = "E:\Apache22"
+APACHE_BIN_DIR = "C:\Program Files\Apache Software Foundation\Apache2.2"
 #
 # apache 2 server family
 # To use apache 2.2 family, use  APACHE_VERSION_IS_2_0_X = 0
@@ -61,12 +62,12 @@ APACHE_VERSION_2_0_X = 0
 #############################################################################
 #
 # C runtime LIBRARY OPTION ( Use /MD or /MT )
-CRUNTIME = /MD
+CRUNTIME = /MD 
 #
 # Embed Manifest Files
 EMBED_MANIFEST = 1
 #
 # debug symbols
 # To build with debug symbols use DEBUG = 1
-DEBUG = 0
+DEBUG = 1
 #

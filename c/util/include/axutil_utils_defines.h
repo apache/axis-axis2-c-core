@@ -75,6 +75,7 @@ extern "C"
     typedef int axis2_scope_t;
     typedef unsigned int axis2_ssize_t;
     typedef char axis2_byte_t;
+	typedef unsigned char axis2_unsigned_byte_t;
 
 #define AXIS2_STRING(s) s
 

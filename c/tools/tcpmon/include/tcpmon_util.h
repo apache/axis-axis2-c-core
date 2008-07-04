@@ -48,6 +48,12 @@ extern "C"
         axis2_char_t * data,
         int format);
 
+	char *str_replace(
+		char *str,
+		const char *search,
+		const char *replace);
+
+
     /** @} */
 
 #ifdef __cplusplus

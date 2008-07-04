@@ -31,6 +31,8 @@
 #include <axis2_http_transport.h>
 #include <axutil_version.h>
 
+#include <tcpmon_util.h>
+
 #define SIZE 1024
 axis2_char_t *tcpmon_traffic_log = "tcpmon_traffic.log";
 axutil_env_t *system_env = NULL;
@@ -51,10 +53,6 @@ int on_error_func(
     const axutil_env_t * env,
     char *error_message);
 
-char *str_replace(
-    char *str,
-    const char *search,
-    const char *replace);
 
 void sig_handler(
     int signal);
@@ -984,65 +982,6 @@ on_error_func(
     return 0;
 }
 
-char *
-str_replace(
-    char *str,
-    const char *search,
-    const char *replace)
-{
-    int size = ((int)strlen(str)) * 2;
-    /* We are sure that the difference lies within the int range */
-    int addmem = size;
-    int diff = (int)(strlen(replace) - strlen(search));
-    /* We are sure that the difference lies within the int range */
-
-    char *str_return = (char *) malloc((size + 1) * sizeof(char));
-    char *str_tmp = (char *) malloc(size * sizeof(char));
-    char *str_relic;
-
-    if (str_return == NULL || str_tmp == NULL)
-    {
-        free(str_return);
-        free(str_tmp);
-        return "function str_replace : give me more memory";
-    }
-    if (!strcmp(search, replace))
-    {
-        free(str_return);
-        free(str_tmp);
-        return str;
-    }
-
-    strcpy(str_return, str);
-
-    while ((str_relic = strstr(str_return, search)) != NULL)
-    {
-        if ((int)strlen(str_return) + diff >= addmem)
-            /* We are sure that the difference lies within the int range */
-        {
-            str_return = (char *) realloc(str_return, addmem += size);
-            str_tmp = (char *) realloc(str_tmp, addmem);
-
-            if (str_return == NULL || str_tmp == NULL)
-            {
-                free(str_return);
-                free(str_tmp);
-                return "function str_replace : gimme more memory";
-            }
-        }
-
-        strcpy(str_tmp, replace);
-        strcat(str_tmp, (str_relic + strlen(search)));
-        *str_relic = '\0';
-
-        strcat(str_return, str_tmp);
-    }
-
-    free(str_tmp);
-    /* free(str); */ /* we are not allocating memory using str */
-    str_return[addmem] = '\0';
-    return (str_return);
-}
 
 /**
  * Signal handler

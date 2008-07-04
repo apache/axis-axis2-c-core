@@ -1382,17 +1382,13 @@ header");
         op = axis2_msg_ctx_get_op (msg_ctx, env);
         if (op)
         {
-            const axis2_char_t *mep =
-                axis2_op_get_msg_exchange_pattern (op, env);
-            AXIS2_HANDLE_ERROR(env,
-                               AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
-                               AXIS2_FAILURE);
+            const axis2_char_t *mep = axis2_op_get_msg_exchange_pattern (op, env);
+            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR, AXIS2_FAILURE);
             /* handle one way case */
 
-            if (axutil_strcmp (mep, AXIS2_MEP_URI_OUT_ONLY) == 0)
+            if (!axutil_strcmp (mep, AXIS2_MEP_URI_OUT_ONLY))
             {
-                AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
-                                 "mep is AXIS2_MEP_URI_OUT_ONLY");
+                AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "mep is AXIS2_MEP_URI_OUT_ONLY");
                 return AXIS2_FAILURE;
             }
         }

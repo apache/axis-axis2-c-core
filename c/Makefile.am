@@ -1,7 +1,7 @@
 datadir=$(prefix)
 logsdir=$(prefix)/logs
 docsdir=$(prefix)
-includedir=$(prefix)/include/axis2-1.4.0
+includedir=$(prefix)/include/axis2-1.5.0
 wsdl2cdir=$(prefix)/bin/tools/wsdl2c
 
 
@@ -30,6 +30,7 @@ dist-hook:
 	rm -rf `find $(distdir)/ -type d -name autom4te.cache`
 	rm -rf $(distdir)/tools/tcpmon/src/tcpmon
 	rm -rf $(distdir)/tools/md5/src/md5
+	find $(distdir) -name "makefile" | xargs sed -i "s/\/WX//g"
 	sh dist.sh
 
 bindist: $(bin_PROGRAMS)

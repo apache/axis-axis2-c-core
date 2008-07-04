@@ -1,7 +1,7 @@
 dnl run autogen.sh to generate the configure script.
 AC_PREREQ(2.59)
 
-AC_INIT(axis2c-src, 1.4.0)
+AC_INIT(axis2c-src, 1.5.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE([tar-ustar])
@@ -390,7 +390,7 @@ AC_ARG_ENABLE(libcurl, [  --enable-libcurl
 APACHE2INC=$apache2inc
 IKSEMELINC=$iksemelinc
 APRINC=$aprinc
-VERSION_NO="4:0:4"
+VERSION_NO="5:0:5"
 QPID_HOME=$qpidhome
 
 AC_SUBST(VERSION_NO)

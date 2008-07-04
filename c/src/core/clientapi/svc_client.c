@@ -544,6 +544,29 @@ axis2_svc_client_send_robust_with_op_qname(
         }
         qname_free_flag = AXIS2_TRUE;
     }
+	else
+	{
+		axis2_op_t *op = NULL;
+		axis2_char_t *mep = NULL;
+		axis2_svc_t *svc = NULL;
+		svc = axis2_svc_client_get_svc(svc_client, env);
+		if (!svc)
+		{
+			return AXIS2_FAILURE;
+		}
+		op = axis2_svc_get_op_with_qname(svc, env, op_qname);
+		if (!op)
+		{
+			return AXIS2_FAILURE;
+		}
+		mep = (axis2_char_t *)axis2_op_get_msg_exchange_pattern(op, env);
+		if (!mep || axutil_strcmp(AXIS2_MEP_URI_OUT_ONLY, mep) != 0)
+		{
+			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s%s", "To use this method opeation uri should be",
+				AXIS2_MEP_URI_OUT_ONLY);
+			return AXIS2_FAILURE;
+		}
+	}
 
     svc_client->auth_failed = AXIS2_FALSE;
     svc_client->required_auth_is_http = AXIS2_FALSE;
@@ -742,9 +765,9 @@ axis2_svc_client_send_receive_with_op_qname(
             return NULL;
         }
 
-        /* call two channel non blocking invoke to do the work and wait on the callback. Note
-         * that we don't set a callback function for the callback. Instead we plan to call
-         * engine_receive through op_client_receive() function periodically. */
+        /* Call two channel non blocking invoke to do the work and wait on the callback. We don't 
+         * set a callback function for the callback. That functionality is handled here. 
+         */
         axis2_svc_client_send_receive_non_blocking_with_op_qname(svc_client,
                                                                  env, op_qname,
                                                                  payload,
