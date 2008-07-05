@@ -155,6 +155,9 @@ axiom_mime_body_part_free(
     return;
 }
 
+/* This method will add a mime_header to the hash */
+
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_mime_body_part_add_header(
     axiom_mime_body_part_t *mime_body_part,
@@ -204,7 +207,7 @@ axiom_mime_body_part_write_to_list(
     axis2_char_t *temp_header_str = NULL;
     int header_str_size = 0;
     axis2_status_t status = AXIS2_FAILURE;
-    axiom_mime_output_part_t *mime_header_part = NULL;
+    axiom_mime_part_t *mime_header_part = NULL;
 
 
     /* We have the mime headers in the hash with thier keys 

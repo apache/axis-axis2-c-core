@@ -22,13 +22,27 @@
 
 struct axiom_data_handler
 {
+    /* The content type */
     axis2_char_t *mime_type;
+    
+    /* If in a file then the file name*/
     axis2_char_t *file_name;
+
+    /* If it is in a buffer then the buffer */
     axis2_byte_t *buffer;
+
+    /* The length of the buffer */
     int buffer_len;
+
+    /* Is this a data_handler with a file name or a buffer*/
     axiom_data_handler_type_t data_handler_type;
+
+    /* When parsing whether we have cached it or not */
     axis2_bool_t cached;
 };
+
+
+/* Creates the data_handler. The file name is not mandatory */
 
 AXIS2_EXTERN axiom_data_handler_t *AXIS2_CALL
 axiom_data_handler_create(
@@ -165,6 +179,11 @@ axiom_data_handler_get_input_stream_len(
 {
     return data_handler->buffer_len;
 }
+
+
+/* With MTOM caching support this function is no longer used
+ * Because this will load whole file in to buffer. So for large 
+ * attachment this is not wise */
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_data_handler_read_from(
@@ -336,6 +355,12 @@ axiom_data_handler_set_binary_data(
     return AXIS2_SUCCESS;
 }
 
+/* This function will write the data in the buffer 
+ * to a file. When caching is being used this will 
+ * not be called , because the parser it self cache 
+ * the attachment while parsing */
+
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_data_handler_write_to(
     axiom_data_handler_t *data_handler,
@@ -395,7 +420,9 @@ axiom_data_handler_set_file_name(
 }
 
 /* This method will add the data_handler binary data to the array_list.
- * If it is a buffer the part type is buffer. otherwise it is a file
+ * If it is a buffer the part type is buffer. otherwise it is a file. In the
+ * case of file the array_list have just the file name and the size. The content
+ * is not loaded to the memory.
  */
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -405,7 +432,7 @@ axiom_data_handler_add_binary_data(
     axutil_array_list_t *list)
     
 {
-    axiom_mime_output_part_t *binary_part = NULL;
+    axiom_mime_part_t *binary_part = NULL;
     
     binary_part = axiom_mime_output_part_create(env);
     
@@ -420,6 +447,9 @@ axiom_data_handler_add_binary_data(
         binary_part->part_size = data_handler->buffer_len;
         binary_part->type = AXIOM_MIME_OUTPUT_PART_BUFFER;
     }
+
+    /* In the case of file we first calculate the file size
+     * and then add the file name */
     
     else if (data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_FILE
              && data_handler->file_name)
@@ -446,7 +476,9 @@ axiom_data_handler_add_binary_data(
         /* Data Handler File Name is missing */
         return AXIS2_FAILURE;
     }
-    
+
+    /* Finaly we add the binary details to the list */    
+
     axutil_array_list_add(list, env, binary_part);
 
     return AXIS2_SUCCESS;
