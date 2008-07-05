@@ -265,13 +265,13 @@ axiom_mime_body_part_write_to_list(
      * First wrap it as a mime_output_part_t .Then add it to the array list so
      * later through the transport this can be written to the wire. */
     
-    mime_header_part = axiom_mime_output_part_create(env);
+    mime_header_part = axiom_mime_part_create(env);
     
     if(mime_header_part)
     {
         mime_header_part->part = (axis2_byte_t *)header_str;
         mime_header_part->part_size = header_str_size;
-        mime_header_part->type = AXIOM_MIME_OUTPUT_PART_BUFFER;
+        mime_header_part->type = AXIOM_MIME_PART_BUFFER;
     }    
     else
     {

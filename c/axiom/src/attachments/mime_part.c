@@ -98,9 +98,9 @@ axiom_mime_part_write_mime_boundary(
     axis2_byte_t *byte_buffer = NULL;
     axis2_byte_t *byte_stream = NULL;
     int size = 0;
-    axiom_mime_part_part_t *boundary_part = NULL;
+    axiom_mime_part_t *boundary_part = NULL;
     
-    boundary_part = axiom_mime_part_part_create(env);
+    boundary_part = axiom_mime_part_create(env);
     
     byte_buffer = (axis2_byte_t *)boundary;
     size = axutil_strlen(boundary);
@@ -125,7 +125,7 @@ axiom_mime_part_write_mime_boundary(
     
     boundary_part->part = byte_stream;
     boundary_part->part_size = size + 2;
-    boundary_part->type = AXIOM_MIME_OUTPUT_PART_BUFFER;
+    boundary_part->type = AXIOM_MIME_PART_BUFFER;
     
     axutil_array_list_add(list, env, boundary_part);
 
@@ -147,8 +147,8 @@ axiom_mime_part_write_body_part_to_list(
     axiom_mime_body_part_t *part,
     axis2_char_t *boundary)
 {
-    axiom_mime_part_part_t *crlf1 = NULL;
-    axiom_mime_part_part_t *crlf2 = NULL;
+    axiom_mime_part_t *crlf1 = NULL;
+    axiom_mime_part_t *crlf2 = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
 
     /* We adding the following format here.
@@ -157,8 +157,8 @@ axiom_mime_part_write_body_part_to_list(
      * mime_header2
      * mime_header3 */   
 
-    status = axiom_mime_part_write_mime_boundary(mime_part, 
-            env, list, boundary);
+    status = axiom_mime_part_write_mime_boundary(
+        env, list, boundary);
     
     if(status != AXIS2_SUCCESS)
     {
@@ -168,11 +168,11 @@ axiom_mime_part_write_body_part_to_list(
     /* Then we will add the new line charator after 
      * the mime_boundary */  
  
-    crlf1 = axiom_mime_part_part_create(env);
+    crlf1 = axiom_mime_part_create(env);
     
     crlf1->part = (axis2_byte_t *)axutil_strdup(env, AXIS2_CRLF);
     crlf1->part_size = 2;
-    crlf1->type = AXIOM_MIME_OUTPUT_PART_BUFFER;
+    crlf1->type = AXIOM_MIME_PART_BUFFER;
     
     axutil_array_list_add(list, env, crlf1);
     
@@ -183,11 +183,11 @@ axiom_mime_part_write_body_part_to_list(
 
     /* Then add the next \r\n after the attachment */
     
-    crlf2 = axiom_mime_part_part_create(env);
+    crlf2 = axiom_mime_part_create(env);
     
     crlf2->part = (axis2_byte_t *)axutil_strdup(env, AXIS2_CRLF);
     crlf2->part_size = 2;
-    crlf2->type = AXIOM_MIME_OUTPUT_PART_BUFFER;
+    crlf2->type = AXIOM_MIME_PART_BUFFER;
     
     axutil_array_list_add(list, env, crlf2);
       
@@ -207,7 +207,7 @@ axiom_mime_part_finish_adding_parts(
     axis2_byte_t *byte_buffer = NULL;
     axis2_byte_t *byte_stream = NULL;
     int size = 0;
-    axiom_mime_part_part_t *final_part = NULL;
+    axiom_mime_part_t *final_part = NULL;
 
     size = axutil_strlen(boundary);
     byte_buffer = (axis2_byte_t *)boundary;
@@ -247,7 +247,7 @@ axiom_mime_part_finish_adding_parts(
     /* Now we add this as an mime_part part to 
      * the list. */ 
     
-    final_part = axiom_mime_part_part_create(env);
+    final_part = axiom_mime_part_create(env);
     
     if(!final_part)
     {
@@ -259,7 +259,7 @@ axiom_mime_part_finish_adding_parts(
     
     final_part->part = byte_stream;
     final_part->part_size = size + 4;
-    final_part->type = AXIOM_MIME_OUTPUT_PART_BUFFER;
+    final_part->type = AXIOM_MIME_PART_BUFFER;
     
     axutil_array_list_add(list, env, final_part);
 
@@ -399,7 +399,7 @@ axiom_mime_part_create_part_list(
     axiom_mime_body_part_t *root_mime_body_part = NULL;
     axis2_char_t *soap_body_buffer = NULL;
     axutil_array_list_t *part_list = NULL;
-    axiom_mime_part_part_t *soap_part = NULL;
+    axiom_mime_part_t *soap_part = NULL;
     
     part_list = axutil_array_list_create(env, 0);
     
@@ -479,7 +479,7 @@ axiom_mime_part_create_part_list(
     AXIOM_MIME_BODY_PART_FREE(root_mime_body_part, env);
     root_mime_body_part = NULL;
     
-    soap_part = axiom_mime_part_part_create(env);
+    soap_part = axiom_mime_part_create(env);
     
     if(!soap_part)
     {
@@ -492,7 +492,7 @@ axiom_mime_part_create_part_list(
    
     soap_part->part = (axis2_byte_t *)soap_body_buffer;
     soap_part->part_size = (int) axutil_strlen(soap_body_buffer);
-    soap_part->type = AXIOM_MIME_OUTPUT_PART_BUFFER;
+    soap_part->type = AXIOM_MIME_PART_BUFFER;
     
     axutil_array_list_add(part_list, env, soap_part);
     

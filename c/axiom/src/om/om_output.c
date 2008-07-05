@@ -60,8 +60,6 @@ struct axiom_output
 
     axutil_array_list_t *binary_node_list;
 
-    axiom_mime_output_t *mime_output;
-
     axis2_char_t *mime_boundry;
 
     axis2_char_t *content_type;
@@ -98,7 +96,6 @@ axiom_output_create(
     om_output->xml_version = NULL;
     om_output->ignore_xml_declaration = AXIS2_TRUE;
     om_output->binary_node_list = NULL;
-    om_output->mime_output = NULL;
     om_output->mime_boundry = NULL;
     om_output->content_type = NULL;
     om_output->mime_parts = NULL;
@@ -140,10 +137,6 @@ axiom_output_free(
         axutil_array_list_free(om_output->binary_node_list, env);
     }
 
-    if (om_output->mime_output)
-    {
-        axiom_mime_output_free(om_output->mime_output, env);
-    }
     if (om_output->content_type)
     {
         AXIS2_FREE(env->allocator, om_output->content_type);
@@ -295,13 +288,9 @@ axiom_output_get_content_type(
 
         om_output->content_type =
             (axis2_char_t *)
-            axiom_mime_output_get_content_type_for_mime(om_output->mime_output,
-                                                        env,
-                                                        om_output->mime_boundry,
-                                                        om_output->
-                                                        root_content_id,
-                                                        om_output->
-                                                        char_set_encoding,
+            axiom_mime_part_get_content_type_for_mime(env, om_output->mime_boundry,
+                                                        om_output->root_content_id,
+                                                        om_output->char_set_encoding,
                                                         soap_content_type);
         return om_output->content_type;
     }
@@ -666,7 +655,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
         {
             soap_content_type = AXIOM_SOAP12_CONTENT_TYPE;
         }
-        om_output->mime_output = axiom_mime_output_create(env);
         
         /* The created mime_boundary for this soap message */
         
@@ -677,8 +665,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
         
         /* different parts of the message is added according to their order
          * to an arraylist */
-        om_output->mime_parts = axiom_mime_output_create_part_list( 
-                                    om_output->mime_output, 
+        om_output->mime_parts = axiom_mime_part_create_part_list( 
                                     env, buffer, om_output->binary_node_list,
                                     om_output->mime_boundry, 
                                     om_output->root_content_id, 

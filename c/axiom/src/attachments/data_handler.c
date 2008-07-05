@@ -434,7 +434,7 @@ axiom_data_handler_add_binary_data(
 {
     axiom_mime_part_t *binary_part = NULL;
     
-    binary_part = axiom_mime_output_part_create(env);
+    binary_part = axiom_mime_part_create(env);
     
     if(!binary_part)
     {
@@ -445,7 +445,7 @@ axiom_data_handler_add_binary_data(
     {
         binary_part->part = (axis2_byte_t *)data_handler->buffer;
         binary_part->part_size = data_handler->buffer_len;
-        binary_part->type = AXIOM_MIME_OUTPUT_PART_BUFFER;
+        binary_part->type = AXIOM_MIME_PART_BUFFER;
     }
 
     /* In the case of file we first calculate the file size
@@ -468,7 +468,7 @@ axiom_data_handler_add_binary_data(
         {
             binary_part->file_name = data_handler->file_name;
             binary_part->part_size = stat_p.st_size;
-            binary_part->type = AXIOM_MIME_OUTPUT_PART_FILE;
+            binary_part->type = AXIOM_MIME_PART_FILE;
         }    
     }
     else
