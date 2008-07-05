@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include <axiom_mime_output.h>
+#include <axiom_mime_part.h>
 #include <axiom_data_handler.h>
 #include "axiom_mime_body_part.h"
 #include <axutil_string.h>
@@ -24,62 +24,43 @@
 
 
 static axis2_status_t
-axiom_mime_output_write_body_part_to_list(
-    axiom_mime_output_t *mime_output,
+axiom_mime_part_write_body_part_to_list(
     const axutil_env_t *env,
     axutil_array_list_t *list,
     axiom_mime_body_part_t *part,
     axis2_char_t *boundary);
 
 static axis2_status_t
-axiom_mime_output_write_mime_boundary(
-    axiom_mime_output_t *mime_output,
+axiom_mime_part_write_mime_boundary(
     const axutil_env_t *env,
     axutil_array_list_t *list,
     axis2_char_t *boundary);
 
 static axis2_status_t
-axiom_mime_output_finish_adding_parts(
-    axiom_mime_output_t *mime_output,
+axiom_mime_part_finish_adding_parts(
     const axutil_env_t *env,
     axutil_array_list_t *list,
     axis2_char_t *boundary);
 
+/* This method will creates a mime_part 
+ * A mime part will encapsulate a buffer 
+ * or a file which needs to be send */
 
-AXIS2_EXTERN axiom_mime_output_t *AXIS2_CALL
-axiom_mime_output_create(
-    const axutil_env_t *env)
-{
-    axiom_mime_output_t *mime_output = NULL;
-    mime_output = (axiom_mime_output_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axiom_mime_output_t));
-
-    if (!mime_output)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "No memory. Cannot create MIME output");
-        return NULL;
-    }
-
-    return mime_output;
-}
-
-AXIS2_EXTERN axiom_mime_output_part_t *AXIS2_CALL 
-axiom_mime_output_part_create(
+AXIS2_EXTERN axiom_mime_part_t *AXIS2_CALL 
+axiom_mime_part_create(
         const axutil_env_t *env)
 {
-    axiom_mime_output_part_t *mime_output_part = NULL;
-    mime_output_part = AXIS2_MALLOC(env->allocator, sizeof(axiom_mime_output_part_t));
+    axiom_mime_part_t *mime_part = NULL;
+    mime_part = AXIS2_MALLOC(env->allocator, sizeof(axiom_mime_part_t));
 
-    if(mime_output_part)
+    if(mime_part)
     {
-        mime_output_part->part = NULL;
-        mime_output_part->file_name = NULL;
-        mime_output_part->part_size = 0;
-        mime_output_part->type = AXIOM_MIME_OUTPUT_PART_UNKNOWN;
+        mime_part->part = NULL;
+        mime_part->file_name = NULL;
+        mime_part->part_size = 0;
+        mime_part->type = AXIOM_MIME_PART_UNKNOWN;
         
-        return mime_output_part;
+        return mime_part;
     }    
     else
     {
@@ -87,27 +68,29 @@ axiom_mime_output_part_create(
     }        
 }        
 
+/* Frees the mime_part */
+
 AXIS2_EXTERN void AXIS2_CALL
-axiom_mime_output_free(
-    axiom_mime_output_t *mime_output,
+axiom_mime_part_free(
+    axiom_mime_part_t *mime_part,
     const axutil_env_t *env)
 {
-    if (mime_output)
+    if (mime_part)
     {
-        AXIS2_FREE(env->allocator, mime_output);
+        AXIS2_FREE(env->allocator, mime_part);
+        mime_part = NULL;
     }
     return;
 }
 
 
 /* This method will create a mime_boundary buffer
- * and based on the buffer creates a mime_output part
+ * and based on the buffer creates a mime_part. 
  * This will be added to the array_list so later in the trasnport
  * this can be put to the wire. */
 
 static axis2_status_t
-axiom_mime_output_write_mime_boundary(
-    axiom_mime_output_t *mime_output,
+axiom_mime_part_write_mime_boundary(
     const axutil_env_t *env,
     axutil_array_list_t *list,
     axis2_char_t *boundary)
@@ -115,9 +98,9 @@ axiom_mime_output_write_mime_boundary(
     axis2_byte_t *byte_buffer = NULL;
     axis2_byte_t *byte_stream = NULL;
     int size = 0;
-    axiom_mime_output_part_t *boundary_part = NULL;
+    axiom_mime_part_part_t *boundary_part = NULL;
     
-    boundary_part = axiom_mime_output_part_create(env);
+    boundary_part = axiom_mime_part_part_create(env);
     
     byte_buffer = (axis2_byte_t *)boundary;
     size = axutil_strlen(boundary);
@@ -131,6 +114,9 @@ axiom_mime_output_write_mime_boundary(
             "No memory. Cannot create byte stream");
         return AXIS2_FAILURE;
     }
+
+    /* Mime boundary is always in the following form
+       --MimeBoundary */
 
     byte_stream[0] = AXIOM_MIME_BOUNDARY_BYTE;
     byte_stream[1] = AXIOM_MIME_BOUNDARY_BYTE;
@@ -146,21 +132,32 @@ axiom_mime_output_write_mime_boundary(
     return AXIS2_SUCCESS;
 }
 
+
+
+/* This method will add the attachment file related information 
+   to the list. It will create a mime_part from those information
+   and add to the list. If there are not data_handlers in the mime_body
+   then this method just add the headers. */
+
+
 static axis2_status_t
-axiom_mime_output_write_body_part_to_list(
-    axiom_mime_output_t *mime_output,
+axiom_mime_part_write_body_part_to_list(
     const axutil_env_t *env,
     axutil_array_list_t *list,
     axiom_mime_body_part_t *part,
     axis2_char_t *boundary)
 {
-    axiom_mime_output_part_t *crlf1 = NULL;
-    axiom_mime_output_part_t *crlf2 = NULL;
+    axiom_mime_part_part_t *crlf1 = NULL;
+    axiom_mime_part_part_t *crlf2 = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
 
-    /* First add the mime_boundary*/
+    /* We adding the following format here.
+     * --MimeBoundart
+     * mime_header1
+     * mime_header2
+     * mime_header3 */   
 
-    status = axiom_mime_output_write_mime_boundary(mime_output, 
+    status = axiom_mime_part_write_mime_boundary(mime_part, 
             env, list, boundary);
     
     if(status != AXIS2_SUCCESS)
@@ -168,12 +165,10 @@ axiom_mime_output_write_body_part_to_list(
         return status;
     }
 
-   
-    /* There is a \r\n before the attachment data
-     * So first add it
-     */
-    
-    crlf1 = axiom_mime_output_part_create(env);
+    /* Then we will add the new line charator after 
+     * the mime_boundary */  
+ 
+    crlf1 = axiom_mime_part_part_create(env);
     
     crlf1->part = (axis2_byte_t *)axutil_strdup(env, AXIS2_CRLF);
     crlf1->part_size = 2;
@@ -181,13 +176,14 @@ axiom_mime_output_write_body_part_to_list(
     
     axutil_array_list_add(list, env, crlf1);
     
-    /* Write the attachemnt and realted haeders to the list */
+    /*This method will fill the list with mime_headers and 
+     *if there is an attachment with attachment details*/
     
     axiom_mime_body_part_write_to_list(part, env, list);
 
     /* Then add the next \r\n after the attachment */
     
-    crlf2 = axiom_mime_output_part_create(env);
+    crlf2 = axiom_mime_part_part_create(env);
     
     crlf2->part = (axis2_byte_t *)axutil_strdup(env, AXIS2_CRLF);
     crlf2->part_size = 2;
@@ -198,9 +194,12 @@ axiom_mime_output_write_body_part_to_list(
     return AXIS2_SUCCESS;
 }
 
+
+/* This methos will add the final mime_boundary
+ * It is in --MimeBoundary-- format */
+
 static axis2_status_t
-axiom_mime_output_finish_adding_parts(
-    axiom_mime_output_t *mime_output,
+axiom_mime_part_finish_adding_parts(
     const axutil_env_t *env,
     axutil_array_list_t *list,
     axis2_char_t *boundary)
@@ -208,11 +207,14 @@ axiom_mime_output_finish_adding_parts(
     axis2_byte_t *byte_buffer = NULL;
     axis2_byte_t *byte_stream = NULL;
     int size = 0;
-    axiom_mime_output_part_t *final_part = NULL;
+    axiom_mime_part_part_t *final_part = NULL;
 
     size = axutil_strlen(boundary);
     byte_buffer = (axis2_byte_t *)boundary;
     
+    /* There is -- before and after so the lenght of the
+     * actual part is mime_boundary_len + 4 */
+
     byte_stream =
         AXIS2_MALLOC(env->allocator, (size + 4) * sizeof(axis2_byte_t));
     if (!byte_stream)
@@ -230,8 +232,6 @@ axiom_mime_output_finish_adding_parts(
     if (byte_buffer)
     {
         memcpy(byte_stream + 2, byte_buffer, size);
-        /*AXIS2_FREE(env->allocator, byte_buffer);
-        byte_buffer = NULL;*/
     }
     else
     {
@@ -244,10 +244,10 @@ axiom_mime_output_finish_adding_parts(
     byte_stream[size + 2] = AXIOM_MIME_BOUNDARY_BYTE;
     byte_stream[size + 3] = AXIOM_MIME_BOUNDARY_BYTE;
     
-    /* Now we add this as an mime_output part to 
+    /* Now we add this as an mime_part part to 
      * the list. */ 
     
-    final_part = axiom_mime_output_part_create(env);
+    final_part = axiom_mime_part_part_create(env);
     
     if(!final_part)
     {
@@ -268,9 +268,12 @@ axiom_mime_output_finish_adding_parts(
 }
 
 
+/* This is the method which creates the content-type string 
+   which is in the HTTP header or in mime_headers*/
+
+
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-axiom_mime_output_get_content_type_for_mime(
-    axiom_mime_output_t *mime_output,
+axiom_mime_part_get_content_type_for_mime(
     const axutil_env_t *env,
     axis2_char_t *boundary,
     axis2_char_t *content_id,
@@ -374,13 +377,12 @@ axiom_mime_output_get_content_type_for_mime(
 
 /* This method is the core of attachment sending
  * part. It will build each and every part and put them in
- * a array_list. Instead of a big buffer we pass the array_list
- * with small buffers and attachment locations . */
+ * an array_list. Instead of a big buffer we pass the array_list
+ * with small buffers and attachment locations. */
 
 
 AXIS2_EXTERN axutil_array_list_t  *AXIS2_CALL
-axiom_mime_output_create_part_list(
-    axiom_mime_output_t *mime_output,
+axiom_mime_part_create_part_list(
     const axutil_env_t *env,
     axis2_char_t *soap_body,
     axutil_array_list_t *binary_node_list,
@@ -397,7 +399,7 @@ axiom_mime_output_create_part_list(
     axiom_mime_body_part_t *root_mime_body_part = NULL;
     axis2_char_t *soap_body_buffer = NULL;
     axutil_array_list_t *part_list = NULL;
-    axiom_mime_output_part_t *soap_part = NULL;
+    axiom_mime_part_part_t *soap_part = NULL;
     
     part_list = axutil_array_list_create(env, 0);
     
@@ -408,21 +410,21 @@ axiom_mime_output_create_part_list(
             "No memory. Cannot create part list array");
         return NULL;
     }    
-    
-    /*status = axiom_mime_output_write_mime_boundary(mime_output, 
-            env, part_list, boundary);
-    
-    if (status != AXIS2_SUCCESS)
-    {
-        return NULL;
-    }*/
 
+    /* This mime_body part just keeps the mime_headers of the 
+     * SOAP part. Since it is not created from an axiom_text
+     * this will not contain an attachment*/
+    
     root_mime_body_part = axiom_mime_body_part_create(env);
 
     if (!root_mime_body_part)
     {
         return NULL;
     }
+
+    /* In order to understand the following code which creates 
+     * mime_headers go through the code with a sample mtom message */
+
 
     /* Adding Content-Type Header */
     header_value = axutil_strdup(env, AXIOM_MIME_TYPE_XOP_XML 
@@ -461,7 +463,10 @@ axiom_mime_output_create_part_list(
 
     /* Now first write the headers needed for SOAP */
     
-    status = axiom_mime_output_write_body_part_to_list(mime_output, env, part_list,
+    /* After calling this method we have mime_headers of the SOAP envelope
+     * as an mime_part in the array_list */
+
+    status = axiom_mime_part_write_body_part_to_list(env, part_list,
             root_mime_body_part, boundary);
     
     if(status == AXIS2_FAILURE)
@@ -474,12 +479,14 @@ axiom_mime_output_create_part_list(
     AXIOM_MIME_BODY_PART_FREE(root_mime_body_part, env);
     root_mime_body_part = NULL;
     
-    soap_part = axiom_mime_output_part_create(env);
+    soap_part = axiom_mime_part_part_create(env);
     
     if(!soap_part)
     {
         return AXIS2_FAILURE;
     }    
+
+    /* The atachment's mime_boundary will start after a new line charator */
 
     soap_body_buffer = axutil_stracat(env, soap_body, AXIS2_CRLF); 
    
@@ -505,14 +512,18 @@ axiom_mime_output_create_part_list(
                 axiom_mime_body_part_t *mime_body_part = NULL;
                 mime_body_part = axiom_mime_body_part_create_from_om_text(env, text);
                 
-                /* Let's fill the mime_output_part arraylist with attachment data*/
+                /* Let's fill the mime_part arraylist with attachment data*/
                 if(!mime_body_part)
                 {
                     return NULL;
                 }    
                 
-                status = axiom_mime_output_write_body_part_to_list(mime_output, 
-                        env, part_list, mime_body_part, boundary);
+                /* This call will create mime_headers for the attachment and put 
+                 * them to the array_list. Then put the attachment file_name to the 
+                 * list */                    
+                
+                status = axiom_mime_part_write_body_part_to_list(env, 
+                    part_list, mime_body_part, boundary);
                 
                 if(status == AXIS2_FAILURE)
                 {
@@ -521,23 +532,18 @@ axiom_mime_output_create_part_list(
                 
                 AXIOM_MIME_BODY_PART_FREE(mime_body_part, env);
                 mime_body_part = NULL;
-                
-                /* Then we need to add a mime_boundary */
-                /*status = axiom_mime_output_write_mime_boundary(mime_output, env, part_list, boundary);
-                
-                if(status == AXIS2_FAILURE)
-                {
-                    return NULL;
-                } */   
             }
         }
     }
 
-    /* Now all the attachments and headers are added to the  list.
+    /* Now we have the SOAP message, all the attachments and headers are added to the  list.
      * So let's add the final mime_boundary with -- at the end */
     
-    axiom_mime_output_finish_adding_parts(mime_output, env, part_list, boundary);
-    
+    status = axiom_mime_part_finish_adding_parts(env, part_list, boundary);
+    if(status == AXIS2_FAILURE)
+    {
+        return NULL;
+    }
     return part_list;    
 }
 

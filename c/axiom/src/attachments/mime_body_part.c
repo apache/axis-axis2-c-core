@@ -16,7 +16,7 @@
  */
 
 #include "axiom_mime_body_part.h"
-#include <axiom_mime_output.h>
+#include <axiom_mime_part.h>
 #include <axiom_data_handler.h>
 #include <axutil_hash.h>
 

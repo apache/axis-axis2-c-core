@@ -18,7 +18,7 @@
 #include <axiom_data_handler.h>
 #include <stdio.h>
 #include <sys/stat.h>
-#include <axiom_mime_output.h>
+#include <axiom_mime_part.h>
 
 struct axiom_data_handler
 {
