@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-#ifndef AXIOM_MIME_OUTPUT_H
-#define AXIOM_MIME_OUTPUT_H
+#ifndef AXIOM_MIME_PART_H
+#define AXIOM_MIME_PART_H
 
 /**
- * @file axiom_mime_output.h
- * @brief axis2 mime_output interface
+ * @file axiom_mime_part.h
+ * @brief axis2 mime_part interface
  */
 
 #include <axutil_utils.h>
@@ -36,75 +36,70 @@ extern "C"
 {
 #endif
 
-    typedef char axiom_mime_output_t; /*this can be void. But in windows, we are getting a compilation error*/
+    typedef struct axiom_mime_part_t axiom_mime_part_t;
+    
+    
+    /* An enum to keep different mime_part types */
 
-    /** @defgroup axiom_mime_output Flow
-      * @ingroup axiom_mime_output
-      * @{
-      */
-    
-    typedef struct axiom_mime_output_part_t axiom_mime_output_part_t;
-    
-    
-    typedef enum axiom_mime_output_part_type_t
+    typedef enum axiom_mime_part_type_t
     {
 
         /** Char buffer */
-        AXIOM_MIME_OUTPUT_PART_BUFFER = 0,
+        AXIOM_MIME_PART_BUFFER = 0,
         
         /* A file */
-        AXIOM_MIME_OUTPUT_PART_FILE,
+        AXIOM_MIME_PART_FILE,
         
         /* unknown type*/
-        AXIOM_MIME_OUTPUT_PART_UNKNOWN
+        AXIOM_MIME_PART_UNKNOWN
         
-    } axiom_mime_output_part_type_t;
+    } axiom_mime_part_type_t;
     
-    struct axiom_mime_output_part_t
+    struct axiom_mime_part_t
     {
+        /* This is when the mime part is a buffer.
+         * This will be null when the part is a file */
         axis2_byte_t *part;
+
+        /* This is to keep file name when the part is a file
+         * NULL when the part is a buffer */
         axis2_char_t *file_name;
+
+        /* Size of the part. In the case of buffer this is 
+         * the buffer size and in the case of file this is 
+           the file size */
         int part_size;    
-        axiom_mime_output_part_type_t type;
+
+        /* This is one from the above defined enum */
+        axiom_mime_part_type_t type;
     };
 
+
+
+
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axiom_mime_output_get_content_type_for_mime(
-        axiom_mime_output_t * mime_output,
+    axiom_mime_part_get_content_type_for_mime(
         const axutil_env_t * env,
         axis2_char_t * boundary,
         axis2_char_t * content_id,
         axis2_char_t * char_set_encoding,
         const axis2_char_t * soap_content_type);
 
-    /** Deallocate memory
-      * @return status code
-      */
-    AXIS2_EXTERN void AXIS2_CALL
-    axiom_mime_output_free(
-        axiom_mime_output_t * mime_output,
-        const axutil_env_t * env);
-
-    /**
-     * Creates mime_output struct
-     * @return pointer to newly created mime_output
-     */
-    AXIS2_EXTERN axiom_mime_output_t *AXIS2_CALL
-    axiom_mime_output_create(
-        const axutil_env_t * env);
     
     /**
-     * Creates mime_output part struct
-     * @return pointer to newly created mime_output_part
+     * Creates mime_part struct
+     * @return pointer to newly created mime_part
      */
     
-    AXIS2_EXTERN axiom_mime_output_part_t *AXIS2_CALL 
-    axiom_mime_output_part_create(
+    AXIS2_EXTERN axiom_mime_part_t *AXIS2_CALL 
+    axiom_mime_part_create(
         const axutil_env_t *env);
 
+    /* This method will create the output part 
+     * list.*/
+
     AXIS2_EXTERN axutil_array_list_t  *AXIS2_CALL
-    axiom_mime_output_create_part_list(
-        axiom_mime_output_t *mime_output,
+    axiom_mime_part_create_part_list(
         const axutil_env_t *env,
         axis2_char_t *soap_body,
         axutil_array_list_t *binary_node_list,
@@ -120,4 +115,4 @@ extern "C"
 #ifdef __cplusplus
 }
 #endif
-#endif                          /* AXIOM_MIME_OUTPUT_H */
+#endif                          /* AXIOM_MIME_PART_H */
