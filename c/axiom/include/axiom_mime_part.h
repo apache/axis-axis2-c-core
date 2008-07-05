@@ -109,6 +109,13 @@ extern "C"
         const axis2_char_t *soap_content_type);
 
 
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_mime_part_free(
+        axiom_mime_part_t *mime_part,
+        const axutil_env_t *env);
+
+    
+
 
     /** @} */
 

@@ -24,7 +24,7 @@
 #include <axiom_soap_const.h>
 #include <axutil_array_list.h>
 #include <axutil_uuid_gen.h>
-#include <axiom_mime_output.h>
+#include <axiom_mime_part.h>
 
 #define AXIS2_DEFAULT_CHAR_SET_ENCODING  "UTF-8"
 
