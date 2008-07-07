@@ -128,6 +128,9 @@ axis2_core_utils_create_out_msg_ctx(
     axis2_msg_info_headers_set_from(msg_info_headers, env, to);
 
     msg_id = axis2_msg_info_headers_get_message_id(old_msg_info_headers, env);
+   
+    /* we can create with default Relates to namespace. 
+    Actual namespace based on addressing version will be created in addressing out handler */
     relates_to = axis2_relates_to_create(env, msg_id,
                                          AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE);
     axis2_msg_info_headers_set_relates_to(msg_info_headers, env, relates_to);

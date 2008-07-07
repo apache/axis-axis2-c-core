@@ -48,5 +48,3 @@ INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/util/include \
            -I$(top_builddir)/axiom/include \
 		   -I$(QPID_HOME)/include
-
-

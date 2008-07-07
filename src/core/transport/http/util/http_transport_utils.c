@@ -463,6 +463,7 @@ axis2_http_transport_utils_process_http_post_request(
         axutil_string_t *soap_action_str = NULL;
         soap_action_str = axutil_string_create(env,soap_action);
         axis2_msg_ctx_set_soap_action(msg_ctx, env, soap_action_str);
+        axutil_string_free(soap_action_str, env);
     }
     axis2_msg_ctx_set_to(msg_ctx, env, axis2_endpoint_ref_create(env,
                                                                  request_uri));
@@ -690,6 +691,11 @@ axis2_http_transport_utils_process_http_post_request(
     {
         axiom_stax_builder_free_self(om_builder, env);
         om_builder = NULL;
+    }
+    if(!axutil_string_get_buffer(soap_action_header, env) && soap_action)
+    {
+        AXIS2_FREE(env->allocator, soap_action);
+        soap_action = NULL;
     }
     return status;
 }
@@ -2196,6 +2202,12 @@ axis2_http_transport_utils_get_value_from_content_type(
         tmp = tmp2;
         tmp2 = axutil_strdup(env, tmp + 1);
         tmp2[strlen(tmp2) - 1] = AXIS2_ESC_NULL;
+        if(tmp)
+        {
+            AXIS2_FREE(env->allocator, tmp); 
+            tmp = NULL;
+        }
+
     }
     /* handle XOP */
     if(*tmp2 == AXIS2_B_SLASH && *(tmp2 + 1) == '\"')
@@ -2203,8 +2215,12 @@ axis2_http_transport_utils_get_value_from_content_type(
         tmp = tmp2;
         tmp2 = axutil_strdup(env, tmp + 2);
         tmp2[strlen(tmp2) - 3] = AXIS2_ESC_NULL;
+        if(tmp)
+        {
+            AXIS2_FREE(env->allocator, tmp);
+            tmp = NULL;
+        }
     }
-
     return tmp2;
 }
 
@@ -3032,5 +3048,6 @@ axis2_http_transport_utils_process_request(
 	
 	return status;
 }
+
 
 

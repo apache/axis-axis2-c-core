@@ -442,7 +442,7 @@ axis2_addr_in_extract_addr_params(
             text =
                 axiom_element_get_text(header_block_ele, env,
                                        header_block_node);
-            axis2_msg_info_headers_set_message_id(msg_info_headers, env, text);
+            axis2_msg_info_headers_set_in_message_id(msg_info_headers, env, text);
             axiom_soap_header_block_set_processed(header_block, env);
             msg_id_found = AXIS2_TRUE;
         }

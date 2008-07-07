@@ -365,8 +365,8 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * Sets message ID. message ID is an absolute IRI that uniquely 
-     * identifies the message.
+     * Sets message ID. message ID is an absolute URI that uniquely 
+     * identifies the message. Message ID will be prefixed with "urn:uuid:"
      * @param msg_info_headers pointer to message information headers struct
      * @param env pointer to environment struct
      * @param message_id message ID string
@@ -374,6 +374,20 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_set_message_id(
+        struct axis2_msg_info_headers *msg_info_headers,
+        const axutil_env_t * env,
+        const axis2_char_t * message_id);
+
+    /**
+     * Sets message ID. message ID is an absolute URI that uniquely 
+     * identifies the message. Message ID Given will be used.
+     * @param msg_info_headers pointer to message information headers struct
+     * @param env pointer to environment struct
+     * @param message_id message ID string
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_info_headers_set_in_message_id(
         struct axis2_msg_info_headers *msg_info_headers,
         const axutil_env_t * env,
         const axis2_char_t * message_id);

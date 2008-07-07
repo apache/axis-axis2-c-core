@@ -60,5 +60,3 @@ INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/src/core/transport/amqp/receiver/qpid_receiver \
            -I$(top_builddir)/util/include \
            -I$(top_builddir)/axiom/include
-
-

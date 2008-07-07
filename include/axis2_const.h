@@ -395,6 +395,8 @@ extern "C"
 
 #define AXIS2_SERVICE_DIR "servicesDir"
 #define AXIS2_MODULE_DIR "moduleDir"
+
+#define AXIS2_MESSAGE_ID_PREFIX "urn:uuid:"
 #ifdef __cplusplus
 }
 #endif

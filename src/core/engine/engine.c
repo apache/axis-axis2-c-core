@@ -601,6 +601,9 @@ axis2_engine_create_fault_msg_ctx(
 
     /* Set relates to */
     msg_id = axis2_msg_ctx_get_msg_id(processing_context, env);
+
+    /* we can create with default Relates to namespace. 
+    Actual namespace based on addressing version will be created in addressing out handler */
     relates_to = axis2_relates_to_create(env, msg_id,
                                          AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE);
     axis2_msg_ctx_set_relates_to(fault_ctx, env, relates_to);
