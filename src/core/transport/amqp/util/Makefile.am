@@ -1,5 +1,6 @@
 lib_LTLIBRARIES = libaxis2_amqp_util.la
 
+
 libaxis2_amqp_util_la_SOURCES = axis2_amqp_util.c
 
 libaxis2_amqp_util_la_LIBADD = $(top_builddir)/util/src/libaxutil.la
@@ -30,3 +31,7 @@ INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/src/core/deployment \
            -I$(top_builddir)/util/include \
            -I$(top_builddir)/axiom/include
+
+EXTRA_DIST=axis2_amqp_defines.h axis2_amqp_util.h
+
+
