@@ -137,7 +137,7 @@ axis2_mtom_mtom(
                     {
                         axiom_data_handler_t *data_handler_res = NULL;
 
-                        data_handler_res = axiom_data_handler_create(env, "/home/manjula/axis2/mtom/c/deploy/bin/samples/resources/deep.tar.gz", NULL);
+                        data_handler_res = axiom_data_handler_create(env, "/home/manjula/axis2/mtom/c/deploy/bin/samples/resources/axis2.jpg", NULL);
 
                         axis2_msg_ctx_set_doing_mtom (msg_ctx, env, AXIS2_TRUE);
                         ret_node = build_response2(env, data_handler_res);

@@ -51,6 +51,9 @@ axis2_http_transport_utils_send_attachment(
     axis2_byte_t *buffer,
     int buffer_size);
 
+static void apache2_worker_destroy_mime_parts(
+    axutil_array_list_t *mime_parts,
+    const axutil_env_t *env);
 
 struct axis2_apache2_worker
 {
@@ -247,8 +250,6 @@ axis2_apache2_worker_process_request(
     {
         content_length = -1;
         request->chunked = 1;
-        /*axis2_msg_ctx_set_transfer_encoding(msg_ctx, env, 
-            AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);*/
     }
     if (!http_version)
     {
@@ -259,17 +260,6 @@ axis2_apache2_worker_process_request(
     out_stream = axutil_stream_create_basic(env);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Client HTTP version %s",
                     http_version);
-
-    /*out_desc = axis2_conf_get_transport_out(axis2_conf_ctx_get_conf
-                                            (apache2_worker->conf_ctx, env),
-                                            env, AXIS2_TRANSPORT_ENUM_HTTP);
-    in_desc =
-        axis2_conf_get_transport_in(axis2_conf_ctx_get_conf
-                                    (apache2_worker->conf_ctx, env), env,
-                                    AXIS2_TRANSPORT_ENUM_HTTP);
-
-    msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
-    axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);*/
 
     peer_ip = request->connection->remote_ip;
     
@@ -1247,6 +1237,9 @@ axis2_apache2_worker_process_request(
         {
             send_status = DECLINED;
         }
+
+        apache2_worker_destroy_mime_parts(mime_parts, env);
+        mime_parts = NULL;
     }
 
     else if (body_string)
@@ -1335,23 +1328,6 @@ static axis2_status_t apache2_worker_send_mtom_message(
             if((mime_part->type) == AXIOM_MIME_PART_BUFFER)
             {
                 len = 0;
-                /*written = 0;
-                while(written < mime_part->part_size)
-                {
-                    len = 0;
-                    len = ap_rwrite(mime_part->part + written, mime_part->part_size - written, 
-                            request);
-                    ap_rflush(request);
-                    if (len == -1)
-                    {
-                        status = AXIS2_FAILURE;
-                        break;
-                    }
-                    else
-                    {
-                        written += len;
-                    }
-                }*/
                 len = ap_rwrite(mime_part->part, mime_part->part_size, request);
                 ap_rflush(request);
                 if(len == -1)
@@ -1436,6 +1412,7 @@ axis2_http_transport_utils_send_attachment(
             if (buffer)
             {
                 AXIS2_FREE(env->allocator, buffer);
+                buffer = NULL;
             }
             fclose(fp);
             return AXIS2_FAILURE;
@@ -1444,22 +1421,6 @@ axis2_http_transport_utils_send_attachment(
         if(count > 0)
         {
             len = 0;
-            /*written = 0;
-            while(written < count)
-            {
-                len = 0;
-                len = ap_rwrite(buffer + written, count - written, request);
-                ap_rflush(request);
-                if (len == -1)
-                {
-                    status = AXIS2_FAILURE;
-                    break;
-                }
-                else
-                {
-                    written += len;
-                }
-            }*/
             len = ap_rwrite(buffer, count, request);
             ap_rflush(request);
             if(len == -1)
@@ -1473,6 +1434,7 @@ axis2_http_transport_utils_send_attachment(
             if (buffer)
             {
                 AXIS2_FREE(env->allocator, buffer);
+                buffer = NULL;
             }
             fclose(fp);
             return AXIS2_FAILURE;
@@ -1483,6 +1445,7 @@ axis2_http_transport_utils_send_attachment(
             if (buffer)
             {
                 AXIS2_FREE(env->allocator, buffer);
+                buffer = NULL;
             }
             fclose(fp);
             return AXIS2_FAILURE;
@@ -1491,6 +1454,28 @@ axis2_http_transport_utils_send_attachment(
     while(!feof(fp));
     
     fclose(fp);
+    AXIS2_FREE(env->allocator, buffer);
+    buffer = NULL;    
     return AXIS2_SUCCESS;    
 }
 
+static void apache2_worker_destroy_mime_parts(
+    axutil_array_list_t *mime_parts,
+    const axutil_env_t *env)
+{
+    if (mime_parts)
+    {
+        int i = 0;
+        for (i = 0; i < axutil_array_list_size(mime_parts, env); i++)
+        {
+            axiom_mime_part_t *mime_part = NULL;
+            mime_part = (axiom_mime_part_t *)
+                axutil_array_list_get(mime_parts, env, i);
+            if (mime_part)
+            {
+                axiom_mime_part_free(mime_part, env);
+            }
+        }
+        axutil_array_list_free(mime_parts, env);
+    }
+}

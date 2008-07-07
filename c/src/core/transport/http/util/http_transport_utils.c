@@ -3236,6 +3236,7 @@ axis2_http_transport_utils_send_attachment(
             if (buffer)
             {
                 AXIS2_FREE(env->allocator, buffer);
+                buffer = NULL;
             }
             fclose(fp);
             return AXIS2_FAILURE;
@@ -3265,6 +3266,7 @@ axis2_http_transport_utils_send_attachment(
             if (buffer)
             {
                 AXIS2_FREE(env->allocator, buffer);
+                buffer = NULL;
             }
             fclose(fp);
             return AXIS2_FAILURE;
@@ -3275,6 +3277,7 @@ axis2_http_transport_utils_send_attachment(
             if (buffer)
             {
                 AXIS2_FREE(env->allocator, buffer);
+                buffer = NULL;
             }
             fclose(fp);
             return AXIS2_FAILURE;
@@ -3282,6 +3285,12 @@ axis2_http_transport_utils_send_attachment(
     }
     while(!feof(fp));
     
+    if(buffer)
+    {
+        AXIS2_FREE(env->allocator, buffer);    
+        buffer = NULL;
+    }
+
     fclose(fp);
     return AXIS2_SUCCESS;    
 }

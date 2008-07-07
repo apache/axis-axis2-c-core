@@ -130,6 +130,23 @@ axis2_http_simple_response_free(
         axutil_array_list_free(simple_response->header_group, env);
     }
 
+    if (simple_response->mime_parts)
+    {
+        int i = 0;
+        for (i = 0; i < axutil_array_list_size(simple_response->mime_parts, env); i++)
+        {
+            axiom_mime_part_t *mime_part = NULL;
+            mime_part = (axiom_mime_part_t *)
+                axutil_array_list_get(simple_response->mime_parts, env, i);
+            if (mime_part)
+            {
+                axiom_mime_part_free(mime_part, env);
+            }
+        }
+        axutil_array_list_free(simple_response->mime_parts, env);
+    }
+
+
     AXIS2_FREE(env->allocator, simple_response);
     /* 
      * Stream is not freed

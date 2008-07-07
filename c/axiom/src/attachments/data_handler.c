@@ -466,7 +466,7 @@ axiom_data_handler_add_binary_data(
         }
         else
         {
-            binary_part->file_name = data_handler->file_name;
+            binary_part->file_name = (axis2_char_t *)axutil_strdup(env, data_handler->file_name);
             binary_part->part_size = stat_p.st_size;
             binary_part->type = AXIOM_MIME_PART_FILE;
         }    

@@ -133,6 +133,21 @@ axis2_http_client_free(
     {
         AXIS2_FREE(env->allocator, http_client->req_body);
     }
+    if (http_client->mime_parts)
+    {
+        int i = 0;
+        for (i = 0; i < axutil_array_list_size(http_client->mime_parts, env); i++)
+        {
+            axiom_mime_part_t *mime_part = NULL;
+            mime_part = (axiom_mime_part_t *)
+                axutil_array_list_get(http_client->mime_parts, env, i);
+            if (mime_part)
+            {
+                axiom_mime_part_free(mime_part, env);
+            }
+        }
+        axutil_array_list_free(http_client->mime_parts, env);
+    }
 
     AXIS2_FREE(env->allocator, http_client);
     return;

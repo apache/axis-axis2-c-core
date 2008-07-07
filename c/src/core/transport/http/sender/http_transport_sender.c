@@ -229,7 +229,6 @@ axis2_http_transport_sender_invoke(
     }
 
     do_mtom = axis2_http_transport_utils_do_write_mtom(env, msg_ctx);
-    /*axis2_msg_ctx_set_doing_mtom(msg_ctx, env, do_mtom);*/
 
     transport_url = axis2_msg_ctx_get_transport_url(msg_ctx, env);
     if (transport_url)
@@ -568,9 +567,9 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
         }
     }
 
-    /*axiom_output_free(om_output, env);
+    axiom_output_free(om_output, env);
     om_output = NULL;
-    xml_writer = NULL;*/
+    xml_writer = NULL;
 
     if (transport_url)
     {

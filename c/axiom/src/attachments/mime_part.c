@@ -77,6 +77,23 @@ axiom_mime_part_free(
 {
     if (mime_part)
     {
+        if(mime_part->type == AXIOM_MIME_PART_BUFFER)
+        {
+            if(mime_part->part)
+            {
+                AXIS2_FREE(env->allocator, mime_part->part);
+                mime_part->part = NULL;
+            }
+        }
+        else if(mime_part->type == AXIOM_MIME_PART_FILE)
+        {
+            if(mime_part->file_name)
+            {
+                AXIS2_FREE(env->allocator, mime_part->file_name);
+                mime_part->file_name = NULL;
+            }
+        }
+        
         AXIS2_FREE(env->allocator, mime_part);
         mime_part = NULL;
     }
