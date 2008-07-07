@@ -110,6 +110,14 @@ extern "C"
         const axutil_env_t * env,
         const axis2_char_t * str);
 
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_http_status_line_set_http_version(
+        axis2_http_status_line_t * status_line,
+        const axutil_env_t * env,
+        axis2_char_t *http_version);
+
+
+
     /** @} */
 #ifdef __cplusplus
 }

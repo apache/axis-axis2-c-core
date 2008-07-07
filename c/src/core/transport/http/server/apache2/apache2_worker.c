@@ -34,7 +34,7 @@
 #include <axiom_soap.h>
 #include <axutil_class_loader.h>
 #include <axutil_string_util.h>
-#include <axiom_mime_output.h>
+#include <axiom_mime_part.h>
 
 #define READ_SIZE  2048
 
@@ -1320,7 +1320,7 @@ static axis2_status_t apache2_worker_send_mtom_message(
     axutil_array_list_t *mime_parts)
 {
     int i = 0;
-    axiom_mime_output_part_t *mime_part = NULL;
+    axiom_mime_part_t *mime_part = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
     /*int written = 0;*/
     int len = 0;    
@@ -1330,9 +1330,9 @@ static axis2_status_t apache2_worker_send_mtom_message(
         for(i = 0; i < axutil_array_list_size
                 (mime_parts, env); i++)
         {
-            mime_part = (axiom_mime_output_part_t *)axutil_array_list_get(
+            mime_part = (axiom_mime_part_t *)axutil_array_list_get(
                 mime_parts, env, i);
-            if((mime_part->type) == AXIOM_MIME_OUTPUT_PART_BUFFER)
+            if((mime_part->type) == AXIOM_MIME_PART_BUFFER)
             {
                 len = 0;
                 /*written = 0;
@@ -1360,7 +1360,7 @@ static axis2_status_t apache2_worker_send_mtom_message(
                     break;
                 }
             }
-            else if((mime_part->type) == AXIOM_MIME_OUTPUT_PART_FILE)
+            else if((mime_part->type) == AXIOM_MIME_PART_FILE)
             {
                 FILE *f = NULL;
                 axis2_byte_t *output_buffer = NULL;                

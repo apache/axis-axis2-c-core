@@ -420,7 +420,10 @@ axis2_simple_http_svr_conn_write_response(
         if(mime_parts)
         {            
             write_stat = axis2_http_transport_utils_send_mtom_message(
-                    chunked_stream, env, mime_parts);                    
+                    chunked_stream, env, mime_parts);
+            axutil_http_chunked_stream_free(chunked_stream, env);
+            chunked_stream = NULL;
+                    
             if(write_stat == AXIS2_FAILURE)
             {
                 return write_stat;

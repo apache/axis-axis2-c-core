@@ -41,7 +41,7 @@
 #include <stdlib.h>
 #include <axutil_uuid_gen.h>
 #include <platforms/axutil_platform_auto_sense.h>
-#include <axiom_mime_output.h>
+#include <axiom_mime_part.h>
 
 #define AXIOM_MIME_BOUNDARY_BYTE 45
 
@@ -3108,6 +3108,11 @@ axis2_http_transport_utils_process_request(
 	return status;
 }
 
+/* This method takes an array_list as the input. It has items some 
+   may be buffers and some may be files. This will send these part
+   one by one to the wire using the chunked stream.*/
+
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL  
 axis2_http_transport_utils_send_mtom_message(
     axutil_http_chunked_stream_t * chunked_stream,
@@ -3115,7 +3120,7 @@ axis2_http_transport_utils_send_mtom_message(
     axutil_array_list_t *mime_parts)
 {
     int i = 0;
-    axiom_mime_output_part_t *mime_part = NULL;
+    axiom_mime_part_t *mime_part = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
     int written = 0;
     int len = 0;    
@@ -3125,9 +3130,9 @@ axis2_http_transport_utils_send_mtom_message(
         for(i = 0; i < axutil_array_list_size
                 (mime_parts, env); i++)
         {
-            mime_part = (axiom_mime_output_part_t *)axutil_array_list_get(
+            mime_part = (axiom_mime_part_t *)axutil_array_list_get(
                 mime_parts, env, i);
-            if((mime_part->type) == AXIOM_MIME_OUTPUT_PART_BUFFER)
+            if((mime_part->type) == AXIOM_MIME_PART_BUFFER)
             {
                 written = 0;
                 while(written < mime_part->part_size)
@@ -3146,7 +3151,7 @@ axis2_http_transport_utils_send_mtom_message(
                     }
                 }
             }
-            else if((mime_part->type) == AXIOM_MIME_OUTPUT_PART_FILE)
+            else if((mime_part->type) == AXIOM_MIME_PART_FILE)
             {
                 FILE *f = NULL;
                 axis2_byte_t *output_buffer = NULL;                
@@ -3193,8 +3198,6 @@ axis2_http_transport_utils_send_mtom_message(
         {
            /* send the end of chunk */
             axutil_http_chunked_stream_write_last_chunk(chunked_stream, env);
-            axutil_http_chunked_stream_free(chunked_stream, env);
-            chunked_stream = NULL;
             return AXIS2_SUCCESS;
         }
         else

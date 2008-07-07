@@ -231,6 +231,25 @@ axis2_http_simple_response_get_http_version(
                                                    env);
 }
 
+axis2_status_t AXIS2_CALL
+axis2_http_simple_response_set_http_version(
+    axis2_http_simple_response_t * simple_response,
+    const axutil_env_t * env,
+    axis2_char_t *http_version)
+{
+    if (!(simple_response->status_line))
+    {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "axis2 simple response , status line is not available");
+     
+        return AXIS2_FAILURE;
+    }
+    axis2_http_status_line_set_http_version(simple_response->status_line,
+                                                   env, http_version);
+    return AXIS2_SUCCESS;
+}
+
+
 axis2_char_t *AXIS2_CALL
 axis2_http_simple_response_get_status_line(
     axis2_http_simple_response_t * simple_response,

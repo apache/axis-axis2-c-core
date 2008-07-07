@@ -26,7 +26,7 @@
 #include <axis2_http_status_line.h>
 #include <axutil_http_chunked_stream.h>
 #include <platforms/axutil_platform_auto_sense.h>
-#include <axiom_mime_output.h>
+#include <axiom_mime_part.h>
 #include <axis2_http_transport_utils.h>
 
 #ifdef AXIS2_SSL_ENABLED
@@ -166,6 +166,9 @@ axis2_http_client_send(
     axis2_bool_t chunking_enabled = AXIS2_FALSE;
     axis2_char_t *host = NULL;
     unsigned int port = 0; 
+
+    /* In the MTOM case request body is not set. Instead mime_parts
+       array_list is there */
 
     if (!client->req_body && !(client->doing_mtom))
     {
@@ -360,6 +363,8 @@ axis2_http_client_send(
         host_port_str = NULL;
 
     }
+    
+    /* Here first we send the http header part */ 
 
     wire_format = axutil_stracat(env, str_request_line, str_header);
     AXIS2_FREE(env->allocator, str_header);
@@ -369,22 +374,38 @@ axis2_http_client_send(
     written = axutil_stream_write(client->data_stream, env, wire_format, axutil_strlen(wire_format));
     AXIS2_FREE(env->allocator, wire_format);
     wire_format = NULL;
+
+    /* Then we write the two new line charaters before the http body*/
+
     written = axutil_stream_write(client->data_stream, env, AXIS2_HTTP_CRLF, 2);
     
+    /* When sending MTOM it is bit different. We keep the attachment + other
+       mime headers in an array_list and send them one by one */
+
     if(client->doing_mtom)
     {
         axis2_status_t status = AXIS2_SUCCESS;
         axutil_http_chunked_stream_t *chunked_stream = NULL;
         chunked_stream = axutil_http_chunked_stream_create(env, 
                 client->data_stream);
+    
+        /* This method will write the Attachment + data to the wire */
+
         status = axis2_http_transport_utils_send_mtom_message(chunked_stream, env, 
-                client->mime_parts);                
+                client->mime_parts);      
+
+        axutil_http_chunked_stream_free(chunked_stream, env);
+        chunked_stream = NULL;
+          
     }
 
     else if (client->req_body_size > 0 && client->req_body)
     {
         int len = 0;
         written = 0;
+
+        /* Keep on writing data in a loop until we finised 
+           with all the data in the buffer */
 
         if (!chunking_enabled)
         {
@@ -891,186 +912,3 @@ axis2_http_client_get_doing_mtom(
     return client->doing_mtom;
 }
 
-/*static axis2_status_t 
-axis2_http_client_send_mtom_message(
-    axis2_http_client_t * client,
-    const axutil_env_t * env)
-{
-    int i = 0;
-    axiom_mime_output_part_t *mime_part = NULL;
-    axis2_status_t status = AXIS2_SUCCESS;
-    axutil_http_chunked_stream_t *chunked_stream = NULL;
-    int written = 0;
-    int len = 0;    
-
-    chunked_stream = axutil_http_chunked_stream_create(env,
-        client->data_stream);
-    if (!chunked_stream)
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Creatoin of chunked stream failed");
-        return AXIS2_FAILURE;
-    }
-
-    if(client->mime_parts)
-    {
-        for(i = 0; i < axutil_array_list_size
-                (client->mime_parts, env); i++)
-        {
-            mime_part = (axiom_mime_output_part_t *)axutil_array_list_get(
-                client->mime_parts, env, i);
-            if((mime_part->type) == AXIOM_MIME_OUTPUT_PART_BUFFER)
-            {
-                written = 0;
-                while(written < mime_part->part_size)
-                {
-                    len = 0;
-                    len = axutil_http_chunked_stream_write(chunked_stream, env,
-                        mime_part->part + written, mime_part->part_size - written);
-                    if (len == -1)
-                    {
-                        status = AXIS2_FAILURE;
-                        break;
-                    }
-                    else
-                    {
-                        written += len;
-                    }
-                }
-            }
-            else if((mime_part->type) == AXIOM_MIME_OUTPUT_PART_FILE)
-            {
-                FILE *f = NULL;
-                axis2_byte_t *output_buffer = NULL;                
-                int output_buffer_size = 0;
-
-                f = fopen(mime_part->file_name, "rb");
-                if (!f)
-                {
-                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "Error opening file %s for reading",
-                    mime_part->file_name);
-                    return AXIS2_FAILURE;
-                }
-                if(mime_part->part_size > AXIS2_MTOM_OUTPUT_BUFFER_SIZE)
-                {
-                    output_buffer_size = AXIS2_MTOM_OUTPUT_BUFFER_SIZE;
-                }
-                else
-                {
-                    output_buffer_size = mime_part->part_size;
-                }
-               
-                output_buffer =  AXIS2_MALLOC(env->allocator, 
-                    (output_buffer_size + 1) * sizeof(axis2_char_t));
- 
- 
-                status = axis2_http_client_send_attachment(env, chunked_stream, 
-                    f, output_buffer, output_buffer_size);
-                if(status == AXIS2_FAILURE)
-                {
-                    return status;
-                }
-            }
-            else
-            {
-                return AXIS2_FAILURE;
-            }
-            if(status == AXIS2_FAILURE)
-            {
-                break;
-            }
-        }
-        if(status == AXIS2_SUCCESS)
-        {
-           
-            axutil_http_chunked_stream_write_last_chunk(chunked_stream, env);
-            axutil_http_chunked_stream_free(chunked_stream, env);
-            chunked_stream = NULL;
-            return AXIS2_SUCCESS;
-        }
-        else
-        {
-            return status;
-        }
-    }    
-    else
-    {
-        return AXIS2_FAILURE;
-    }    
-}
-
-
-static axis2_status_t
-axis2_http_client_send_attachment(
-    const axutil_env_t * env,
-    axutil_http_chunked_stream_t *chunked_stream,
-    FILE *fp,
-    axis2_byte_t *buffer,
-    int buffer_size)
-{
-
-    int count = 0;     
-    int len = 0;
-    int written = 0;
-    axis2_status_t status = AXIS2_SUCCESS;   
- 
-    do
-    {
-        count = (int)fread(buffer, 1, buffer_size + 1, fp);
-        if (ferror(fp))
-        {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Error in reading file containg the attachment");
-            if (buffer)
-            {
-                AXIS2_FREE(env->allocator, buffer);
-            }
-            fclose(fp);
-            return AXIS2_FAILURE;
-        }
-
-        if(count > 0)
-        {
-            written = 0;
-            while(written < count)
-            {
-                len = 0;
-                len = axutil_http_chunked_stream_write(chunked_stream, env,
-                    buffer + written, count - written);
-                if (len == -1)
-                {
-                    status = AXIS2_FAILURE;
-                    break;
-                }
-                else
-                {
-                    written += len;
-                }
-            }
-        }
-        else
-        {
-            if (buffer)
-            {
-                AXIS2_FREE(env->allocator, buffer);
-            }
-            fclose(fp);
-            return AXIS2_FAILURE;
-        }   
-        memset(buffer, 0, buffer_size);    
-        if(status == AXIS2_FAILURE)
-        {
-            if (buffer)
-            {
-                AXIS2_FREE(env->allocator, buffer);
-            }
-            fclose(fp);
-            return AXIS2_FAILURE;
-        } 
-    }
-    while(!feof(fp));
-    
-    fclose(fp);
-    return AXIS2_SUCCESS;    
-}*/

@@ -1903,9 +1903,9 @@ axis2_http_worker_process_request(
                 int stream_len = 0;
                 stream_len = axutil_stream_get_len(out_stream, env);
 
-                axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
+                /*axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
                                                        simple_request, response,
-                                                       stream_len);
+                                                       stream_len);*/
    
                 /* This is where it actually write to the wire in the http back channel
                  * append case. */ 
@@ -1915,7 +1915,28 @@ axis2_http_worker_process_request(
                     mime_parts = axis2_msg_ctx_get_mime_parts(out_msg_ctx, env);
                     if(mime_parts)
                     {
-                        axis2_http_simple_response_set_mime_parts(response, env, mime_parts);    
+                        axis2_http_header_t *transfer_enc_header = NULL;                        
+
+                        axis2_http_simple_response_set_mime_parts(response, env, mime_parts);  
+
+                        axis2_http_simple_response_set_http_version(response, env, 
+                            AXIS2_HTTP_HEADER_PROTOCOL_11);
+ 
+                        transfer_enc_header = axis2_http_header_create(env,
+                                         AXIS2_HTTP_HEADER_TRANSFER_ENCODING,
+                                         AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
+
+                        axis2_http_simple_response_set_header(response, env,
+                                                  transfer_enc_header);
+                        axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
+                                                       simple_request, response,
+                                                       0);
+                    }
+                    else
+                    {
+                        axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
+                                                       simple_request, response,
+                                                       stream_len);
                     }
                 }
                 status = axis2_simple_http_svr_conn_write_response(svr_conn, 
@@ -2057,34 +2078,39 @@ axis2_http_worker_set_response_headers(
                                                           AXIS2_FALSE);
             }
         }
-        if (AXIS2_FALSE ==
-            axis2_http_simple_request_contains_header(simple_request, env,
-                                                      AXIS2_HTTP_HEADER_TRANSFER_ENCODING))
-        {
-            if (0 != content_length)
-            {
-                axis2_char_t content_len_str[10];
-                axis2_http_header_t *content_len_hdr = NULL;
 
-                sprintf(content_len_str, "%d", content_length);
-                content_len_hdr =
-                    axis2_http_header_create(env,
+        if(!axis2_http_simple_response_contains_header(simple_response, env, 
+            AXIS2_HTTP_HEADER_TRANSFER_ENCODING))
+        {
+            if (AXIS2_FALSE ==
+                axis2_http_simple_request_contains_header(simple_request, env,
+                                                      AXIS2_HTTP_HEADER_TRANSFER_ENCODING))
+            {
+                if (0 != content_length)
+                {
+                    axis2_char_t content_len_str[10];
+                    axis2_http_header_t *content_len_hdr = NULL;
+
+                    sprintf(content_len_str, "%d", content_length);
+                    content_len_hdr =
+                        axis2_http_header_create(env,
                                              AXIS2_HTTP_HEADER_CONTENT_LENGTH,
                                              content_len_str);
-                axis2_http_simple_response_set_header(simple_response, env,
+                    axis2_http_simple_response_set_header(simple_response, env,
                                                       content_len_hdr);
+                }
             }
-        }
-        else
-        {
+            else
+            {
             /* Having Transfer encoding Header */
-            axis2_http_header_t *transfer_enc_header =
-                axis2_http_header_create(env,
+                axis2_http_header_t *transfer_enc_header =
+                    axis2_http_header_create(env,
                                          AXIS2_HTTP_HEADER_TRANSFER_ENCODING,
                                          AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
 
-            axis2_http_simple_response_set_header(simple_response, env,
+                axis2_http_simple_response_set_header(simple_response, env,
                                                   transfer_enc_header);
+            }
         }
     }
     return AXIS2_SUCCESS;

@@ -229,7 +229,7 @@ axis2_http_transport_sender_invoke(
     }
 
     do_mtom = axis2_http_transport_utils_do_write_mtom(env, msg_ctx);
-    axis2_msg_ctx_set_doing_mtom(msg_ctx, env, do_mtom);
+    /*axis2_msg_ctx_set_doing_mtom(msg_ctx, env, do_mtom);*/
 
     transport_url = axis2_msg_ctx_get_transport_url(msg_ctx, env);
     if (transport_url)
@@ -766,13 +766,22 @@ axis2_http_transport_sender_write_message(
         return AXIS2_FAILURE;
     }
 
-    AXIS2_HTTP_SENDER_SET_CHUNKED(sender, env,
-                                  AXIS2_INTF_TO_IMPL(transport_sender)->
-                                  chunked);
+    /* For the MTOM case we should on chunking. */
+
+    if(axis2_msg_ctx_get_doing_mtom(msg_ctx, env))
+    {
+        AXIS2_HTTP_SENDER_SET_CHUNKED(sender, env, AXIS2_TRUE);
+        AXIS2_HTTP_SENDER_SET_HTTP_VERSION(sender, env, AXIS2_HTTP_HEADER_PROTOCOL_11);        
+    }
+    else
+    {
+        AXIS2_HTTP_SENDER_SET_CHUNKED(sender, env,
+            AXIS2_INTF_TO_IMPL(transport_sender)->chunked);
+        AXIS2_HTTP_SENDER_SET_HTTP_VERSION(sender, env,
+            AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
+    }
     AXIS2_HTTP_SENDER_SET_OM_OUTPUT(sender, env, om_output);
-    AXIOM_SENDER_SET_HTTP_VERSION(sender, env,
-                                  AXIS2_INTF_TO_IMPL(transport_sender)->
-                                  http_version);
+
 #ifdef AXIS2_LIBCURL_ENABLED
     AXIS2_LOG_DEBUG (env->log, AXIS2_LOG_SI, "using axis2 libcurl http sender.");
     status =

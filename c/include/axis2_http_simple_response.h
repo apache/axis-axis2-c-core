@@ -309,6 +309,14 @@ extern "C"
         const axutil_env_t * env,
         axutil_array_list_t *mime_parts);
 
+    axis2_status_t AXIS2_CALL
+    axis2_http_simple_response_set_http_version(
+        axis2_http_simple_response_t * simple_response,
+        const axutil_env_t * env,
+        axis2_char_t *http_version);
+
+
+
 
     /** @} */
 #ifdef __cplusplus
