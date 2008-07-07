@@ -36,9 +36,10 @@
           <ul>
             <li>Inbuilt HTTP server called simple axis server</li>
             <li>Apache2 httpd module called mod_axis2 for server side</li>
-            <li>IIS module for server side</li>
+            <li>IIS module for server side. Supports IIS 5.1, 6 and 7</li>
             <li>Client transport with ability to enable SSL support</li>
             <li>Basic HTTP Authentication</li>
+            <li>AMQP Transport based on Apache Qpid (Experimental)<li>
             <li>libcurl based client transport</li>
           </ul>
         </li>
@@ -78,8 +79,13 @@
       <a name="Major_Changes_Since_Last_Release"></a>
       <h3>Changes Since Last Release</h3>
       <ol> 
-        <li>Fixed library version numbering</li>
-        <li>Made Guththila as default XML parser</li>
+        <li>AMQP Transport support with Apache Qpid. (At an experimental stage and not working under Windows)</li>
+        <li>Modifications to IIS Module to support IIS 6 & 7.</li>
+        <li>Added a JScript file to automate IIS module registry configuration</li>
+        <li>Specifying the MEP in the services.xml for non in-out messages made mandatory</li>
+        <li>Improved the in-only message handling</li>
+        <li>Improvements to Guthtila for better performance</li>
+        <li>Improvements to TCPMon tool</li>
         <li>Memory leak fixes</li>
         <li>Many bug fixes</li>
       </ol>
