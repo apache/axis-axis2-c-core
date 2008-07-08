@@ -290,6 +290,9 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
     /* setting SOAP version for OM_OUTPUT.  */
     axiom_output_set_soap11(om_output, env,
                             axis2_msg_ctx_get_is_soap_11(msg_ctx, env));
+    
+    /* This is the case where normal client send the requet using a http_client*/
+    
     if (epr)
     {
         if (axutil_strcmp
@@ -527,13 +530,17 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
                     axis2_status_t mtom_status = AXIS2_FAILURE;
                     axis2_char_t *content_type = NULL;
                     axutil_array_list_t *mime_parts = NULL;
-                    
+                   
+                    /*Create the attachment related data and put them to an
+                     *arra_list */
                     mtom_status = axiom_output_flush(om_output, env);
                     if(mtom_status == AXIS2_SUCCESS)
                     {
                         mime_parts = axiom_output_get_mime_parts(om_output, env);
                         if(!mime_parts)
                         {
+                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                            "Unable to create the mime_part list from om_output");
                             return AXIS2_FAILURE;
                         }
                         else
@@ -541,7 +548,7 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
                             axis2_msg_ctx_set_mime_parts(msg_ctx, env, mime_parts);
                         }
                     }
-
+                    /*om_out put has the details of content_type */
                     content_type =
                         (axis2_char_t *)
                         axiom_output_get_content_type(om_output, env);
@@ -765,7 +772,8 @@ axis2_http_transport_sender_write_message(
         return AXIS2_FAILURE;
     }
 
-    /* For the MTOM case we should on chunking. */
+    /* For the MTOM case we should on chunking. And for chunking to work the
+     * protocol should be http 1.1*/
 
     if(axis2_msg_ctx_get_doing_mtom(msg_ctx, env))
     {

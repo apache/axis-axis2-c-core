@@ -443,7 +443,7 @@ axiom_data_handler_add_binary_data(
     
     if (data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_BUFFER)
     {
-        binary_part->part = (axis2_byte_t *)data_handler->buffer;
+        binary_part->part = (axis2_byte_t *)axutil_strdup(env, data_handler->buffer);
         binary_part->part_size = data_handler->buffer_len;
         binary_part->type = AXIOM_MIME_PART_BUFFER;
     }

@@ -394,6 +394,10 @@ axis2_http_transport_utils_process_http_post_request(
         }
     }
 
+    /* when the message contains does not contain pure XML we can't send it 
+     * directly to the parser, First we need to seperate the SOAP part from
+     * the attachment */
+    
     if (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED))
     {
         /* get mime boundary */
@@ -417,7 +421,8 @@ axis2_http_transport_utils_process_http_post_request(
             int num = 0;
 
             mime_parser = axiom_mime_parser_create(env);
-
+            /* This is the size of the buffer we keep inside mime_parser
+             * when parsing. */
             buffer_size_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                env,
                                                                AXIS2_MTOM_BUFFER_SIZE);
@@ -431,7 +436,9 @@ axis2_http_transport_utils_process_http_post_request(
                     axiom_mime_parser_set_buffer_size(mime_parser, env, size);
                 }
             }
-
+            
+            /* We create an array of buffers in order to conatin SOAP data inside
+             * mime_parser. This is the number of sucj buffers */
             max_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                env,
                                                                AXIS2_MTOM_MAX_BUFFERS);
@@ -445,7 +452,8 @@ axis2_http_transport_utils_process_http_post_request(
                     axiom_mime_parser_set_max_buffers(mime_parser, env, num);
                 }
             }
-
+            /* If this paramter is there mime_parser will cached the attachment 
+             * using this callback for large attachments. */    
             callback_name_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                    env,
                                                                    AXIS2_MTOM_CACHING_CALLBACK);
@@ -3165,6 +3173,10 @@ axis2_http_transport_utils_send_mtom_message(
         {
             mime_part = (axiom_mime_part_t *)axutil_array_list_get(
                 mime_parts, env, i);
+            
+            /* If it is a buffer just wite it to the wire. This incudes mime_bounadaries,
+             * mime_headers and SOAP */
+            
             if((mime_part->type) == AXIOM_MIME_PART_BUFFER)
             {
                 written = 0;
@@ -3184,6 +3196,10 @@ axis2_http_transport_utils_send_mtom_message(
                     }
                 }
             }
+            
+            /* If it is a file we load a very little portion to memory 
+             * and send it as chunked , we keep on doing this until we find
+             * the end of the file */ 
             else if((mime_part->type) == AXIOM_MIME_PART_FILE)
             {
                 FILE *f = NULL;
@@ -3198,6 +3214,10 @@ axis2_http_transport_utils_send_mtom_message(
                     mime_part->file_name);
                     return AXIS2_FAILURE;
                 }
+                
+                /*If the part_size is less than the defined buffer size then 
+                 *from the first write to the wire we can send the file */
+                
                 if(mime_part->part_size > AXIS2_MTOM_OUTPUT_BUFFER_SIZE)
                 {
                     output_buffer_size = AXIS2_MTOM_OUTPUT_BUFFER_SIZE;
@@ -3210,7 +3230,7 @@ axis2_http_transport_utils_send_mtom_message(
                 output_buffer =  AXIS2_MALLOC(env->allocator, 
                     (output_buffer_size + 1) * sizeof(axis2_char_t));
  
- 
+                /*This is the method responsible for writing to the wire */    
                 status = axis2_http_transport_utils_send_attachment(env, chunked_stream, 
                     f, output_buffer, output_buffer_size);
                 if(status == AXIS2_FAILURE)
@@ -3220,6 +3240,7 @@ axis2_http_transport_utils_send_mtom_message(
             }
             else
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unknown mime_part.");
                 return AXIS2_FAILURE;
             }
             if(status == AXIS2_FAILURE)
@@ -3240,6 +3261,8 @@ axis2_http_transport_utils_send_mtom_message(
     }    
     else
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot send the attachment.Mime"
+                "Parts are not set properly.");
         return AXIS2_FAILURE;
     }    
 }
@@ -3259,6 +3282,9 @@ axis2_http_transport_utils_send_attachment(
     int written = 0;
     axis2_status_t status = AXIS2_SUCCESS;   
  
+    /*We do not load the whole file to memory. Just load a buffer_size portion
+     *and send it. Keep on doing this until the end of file */
+    
     do
     {
         count = (int)fread(buffer, 1, buffer_size + 1, fp);
@@ -3275,6 +3301,7 @@ axis2_http_transport_utils_send_attachment(
             return AXIS2_FAILURE;
         }
 
+        /*Writing the part we loaded to memory to the wire*/
         if(count > 0)
         {
             written = 0;
@@ -3303,7 +3330,10 @@ axis2_http_transport_utils_send_attachment(
             }
             fclose(fp);
             return AXIS2_FAILURE;
-        }   
+        }  
+        
+        /*We keep on loading the next part to the same buffer. So need to reset 
+         * te buffer */
         memset(buffer, 0, buffer_size);    
         if(status == AXIS2_FAILURE)
         {

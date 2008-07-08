@@ -33,21 +33,6 @@
 #include "ssl/ssl_stream.h"
 #endif
 
-/*static axis2_status_t
-axis2_http_client_send_mtom_message(
-    axis2_http_client_t * client,
-    const axutil_env_t * env);
-
-static axis2_status_t
-axis2_http_client_send_attachment(
-    const axutil_env_t * env,
-    axutil_http_chunked_stream_t *chunked_stream,
-    FILE *fp,
-    axis2_byte_t *buffer,
-    int buffer_size);
-*/
-
-
 struct axis2_http_client
 {
     int sockfd;
@@ -65,6 +50,8 @@ struct axis2_http_client
     axis2_char_t *key_file;
     axis2_char_t *req_body;
     int req_body_size;
+    
+    /* These are for mtom case */
     axutil_array_list_t *mime_parts;
     axis2_bool_t doing_mtom;
 };
@@ -133,6 +120,10 @@ axis2_http_client_free(
     {
         AXIS2_FREE(env->allocator, http_client->req_body);
     }
+    
+    /* There is no other appropriate place to free the mime_part list when a 
+     * particular client send requests. */
+    
     if (http_client->mime_parts)
     {
         int i = 0;
@@ -164,6 +155,12 @@ axis2_http_client_free_void_arg(
     axis2_http_client_free(client_l, env);
     return;
 }
+
+/*This is the main method which writes to the socket in the case of a client 
+ * sends an http_request. Previously this mrthod does not distinguish between a 
+ * mtom request and non mtom request. Because what finally it had was the 
+ * complete buffer with the request. But now MTOM invocations are done 
+ * differently so this method should distinguish those invocations*/
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_send(
@@ -401,6 +398,8 @@ axis2_http_client_send(
     {
         axis2_status_t status = AXIS2_SUCCESS;
         axutil_http_chunked_stream_t *chunked_stream = NULL;
+        
+        /* For MTOM we automatically enabled chunking */
         chunked_stream = axutil_http_chunked_stream_create(env, 
                 client->data_stream);
     
@@ -413,7 +412,7 @@ axis2_http_client_send(
         chunked_stream = NULL;
           
     }
-
+    /* Non MTOM case */
     else if (client->req_body_size > 0 && client->req_body)
     {
         int len = 0;
@@ -444,8 +443,7 @@ axis2_http_client_send(
         }
         else
         {
-
-            /* Sending HTTP request via chunking */
+            /* Not MTOM but chunking is enabled */
             axutil_http_chunked_stream_t *chunked_stream = NULL;
             chunked_stream = axutil_http_chunked_stream_create(env, client->data_stream);
             status = AXIS2_SUCCESS;
@@ -469,6 +467,7 @@ axis2_http_client_send(
 
             if (AXIS2_SUCCESS == status)
             {
+                /* Writing the trailing null charactor */
                 axutil_http_chunked_stream_write_last_chunk(chunked_stream, env);
             }
 

@@ -1918,6 +1918,10 @@ axis2_http_worker_process_request(
                 {
                     axutil_array_list_t *mime_parts = NULL;
                     mime_parts = axis2_msg_ctx_get_mime_parts(out_msg_ctx, env);
+                    /* If mime_parts is there then that means we send MTOM. So
+                     * in order to send MTOM we are enabling HTTP1.1 and cunk transfer
+                     * encoding */
+
                     if(mime_parts)
                     {
                         axis2_http_header_t *transfer_enc_header = NULL;                        
@@ -1933,6 +1937,8 @@ axis2_http_worker_process_request(
 
                         axis2_http_simple_response_set_header(response, env,
                                                   transfer_enc_header);
+
+                        /* In the chunking case content-lenght is zero */
                         axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
                                                        simple_request, response,
                                                        0);

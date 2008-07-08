@@ -381,6 +381,7 @@ axis2_simple_http_svr_conn_write_response(
         return AXIS2_SUCCESS;
     }
 
+    /* This sending a normal SOAP response without chunk transfer encoding */
     if (AXIS2_FALSE == chuked_encoding && !binary_content)
     {
         axis2_status_t write_stat = AXIS2_FAILURE;
@@ -406,6 +407,9 @@ axis2_simple_http_svr_conn_write_response(
             return AXIS2_FAILURE;
         }
     }
+    
+    /* In the MTOM case we enable chunking inorder to send the attachment */
+    
     else if(binary_content)
     {
         axutil_http_chunked_stream_t *chunked_stream = NULL;
@@ -433,7 +437,9 @@ axis2_simple_http_svr_conn_write_response(
         {
             return AXIS2_FAILURE;
         }
-    }    
+    } 
+    
+    /* Sending a normal SOAP response enabling htpp chunking */
     else 
     {    
         axutil_http_chunked_stream_t *chunked_stream = NULL;
