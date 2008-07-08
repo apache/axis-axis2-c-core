@@ -1270,6 +1270,11 @@ axis2_http_worker_process_request(
             status = axis2_simple_http_svr_conn_write_response(svr_conn, env,
                                                                response);
             request_handled = AXIS2_TRUE;
+            if(tmp_stat_line)
+            {
+                axis2_http_status_line_free(tmp_stat_line, env);
+                tmp_stat_line = NULL;
+            }
         }
     }
     else
@@ -2218,4 +2223,5 @@ static axis2_char_t *axis2_http_worker_get_server_time(
      */
     return time_str;
 }
+
 

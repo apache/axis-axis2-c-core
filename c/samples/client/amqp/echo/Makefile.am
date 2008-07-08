@@ -40,3 +40,5 @@ echo_blocking_LDADD = $(LINK_FLAGS)
 echo_non_blocking_LDADD = $(LINK_FLAGS)
 
 INCLUDES = @AXIS2INC@
+EXTRA_DIST=echo_util.h
+

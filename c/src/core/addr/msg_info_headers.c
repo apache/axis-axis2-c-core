@@ -242,7 +242,33 @@ axis2_msg_info_headers_set_message_id(
 
     if (message_id)
     {
+        msg_info_headers->message_id = axutil_stracat(env, AXIS2_MESSAGE_ID_PREFIX, message_id);
+        if (!(msg_info_headers->message_id))
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_info_headers_set_in_message_id(
+    struct axis2_msg_info_headers * msg_info_headers,
+    const axutil_env_t * env,
+    const axis2_char_t * message_id)
+{
+    if (msg_info_headers->message_id)
+    {
+        AXIS2_FREE(env->allocator, msg_info_headers->message_id);
+        msg_info_headers->message_id = NULL;
+    }
+
+    if (message_id)
+    {
         msg_info_headers->message_id = axutil_strdup(env, message_id);
+        
         if (!(msg_info_headers->message_id))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
