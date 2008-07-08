@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <axutil_types.h>
+#include <axiom_mime_part.h>
 
 #define AXIS2_HTTP_SIMPLE_RESPONSE_READ_SIZE 2048
 

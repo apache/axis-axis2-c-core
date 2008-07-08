@@ -850,6 +850,11 @@ axiom_mime_parser_parse(
         {
             end_of_mime = (AXIOM_MIME_BOUNDARY_BYTE == *(buf_array[buf_num])) &&
                             (AXIOM_MIME_BOUNDARY_BYTE == *(buf_array[buf_num] + 1));
+            if(end_of_mime)
+            {
+                AXIS2_FREE(env->allocator, buf_array[buf_num]);
+                buf_array[buf_num] = NULL;
+            }
         }
 
         if(mime_headers)
