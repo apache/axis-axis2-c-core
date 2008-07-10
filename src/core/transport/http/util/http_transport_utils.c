@@ -2477,6 +2477,11 @@ axis2_http_transport_utils_process_request(
 	in_desc = axis2_conf_get_transport_in(axis2_conf_ctx_get_conf(conf_ctx, env), 
 		env, AXIS2_TRANSPORT_ENUM_HTTP);
 
+	axis2_msg_ctx_set_transport_in_desc(request->msg_ctx, env, in_desc);
+	axis2_msg_ctx_set_transport_out_desc(request->msg_ctx, env, out_desc);
+	if(request->transfer_encoding)
+		axis2_msg_ctx_set_transfer_encoding(request->msg_ctx, env, request->transfer_encoding);
+
 	axis2_msg_ctx_set_server_side(request->msg_ctx , env, AXIS2_TRUE);
 	msg_ctx = request->msg_ctx;
 	peer_ip = request->remote_ip;
