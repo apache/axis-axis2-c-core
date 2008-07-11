@@ -713,7 +713,7 @@ axis2_module_init(
         exit(APEXIT_CHILDFATAL);
     }
 	/* If we are initialized we register a clean up as well */
-	apr_pool_cleanup_register(p, NULL, axis2_shutdown, apr_pool_cleanup_null);
+	/* apr_pool_cleanup_register(p, NULL, axis2_shutdown, apr_pool_cleanup_null);*/
 }
 
 static void
