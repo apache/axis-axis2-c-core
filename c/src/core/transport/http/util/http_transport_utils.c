@@ -502,8 +502,10 @@ axis2_http_transport_utils_process_http_post_request(
             }
             axiom_mime_parser_free(mime_parser, env);
             mime_parser = NULL;
+
+            AXIS2_FREE(env->allocator, mime_boundary);
         }
-        AXIS2_FREE(env->allocator, mime_boundary);
+        /*AXIS2_FREE(env->allocator, mime_boundary);*/
     }
 
     if(soap_action_header)
