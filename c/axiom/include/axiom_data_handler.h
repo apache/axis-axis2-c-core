@@ -167,6 +167,16 @@ extern "C"
     /**
      * @param data_handler, a pointer to data handler struct
      * @param env environment, MUST NOT be NULL.
+     * @return file name, in the case of file type data handler.
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axiom_data_handler_get_file_name(
+        axiom_data_handler_t * data_handler,
+        const axutil_env_t * env);
+
+    /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
      * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
      */
     AXIS2_EXTERN void AXIS2_CALL

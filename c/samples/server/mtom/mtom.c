@@ -136,12 +136,15 @@ axis2_mtom_mtom(
                     else if(data_handler && axiom_data_handler_get_cached(data_handler, env))
                     {
                         axiom_data_handler_t *data_handler_res = NULL;
+                        axis2_char_t *file_name = NULL;
 
-                        data_handler_res = axiom_data_handler_create(env, "/home/manjula/axis2/mtom/c/deploy/bin/samples/resources/axis2.jpg", NULL);
+                        file_name = axiom_data_handler_get_file_name(data_handler, env);
+
+
+                        data_handler_res = axiom_data_handler_create(env, file_name, NULL);
 
                         axis2_msg_ctx_set_doing_mtom (msg_ctx, env, AXIS2_TRUE);
                         ret_node = build_response2(env, data_handler_res);
-
                     }
 
                     else if (axiom_node_get_node_type(binary_node, env) == AXIOM_TEXT) /* attachment has come by value, as non-optimized binary */

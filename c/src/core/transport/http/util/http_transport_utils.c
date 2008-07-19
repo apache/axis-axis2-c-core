@@ -413,10 +413,10 @@ axis2_http_transport_utils_process_http_post_request(
             int soap_body_len = 0;
             axutil_param_t *buffer_size_param = NULL;
             axutil_param_t *max_buffers_param = NULL;
-            axutil_param_t *callback_name_param = NULL;
+            axutil_param_t *attachment_dir_param = NULL;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
-            axis2_char_t *value_callback = NULL;
+            axis2_char_t *value_dir = NULL;
             int size = 0;
             int num = 0;
 
@@ -453,18 +453,18 @@ axis2_http_transport_utils_process_http_post_request(
                 }
             }
             /* If this paramter is there mime_parser will cached the attachment 
-             * using this callback for large attachments. */    
-            callback_name_param = axis2_msg_ctx_get_parameter (msg_ctx,
+             * using to the directory for large attachments. */    
+            attachment_dir_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                    env,
-                                                                   AXIS2_MTOM_CACHING_CALLBACK);
+                                                                   AXIS2_ATTACHMENT_DIR);
 
-            if(callback_name_param)
+            if(attachment_dir_param)
             {
-                value_callback =
-                    (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
-                if(value_callback)
+                value_dir =
+                    (axis2_char_t *) axutil_param_get_value (attachment_dir_param, env);
+                if(value_dir)
                 {
-                    axiom_mime_parser_set_caching_callback_name(mime_parser, env, value_callback);
+                    axiom_mime_parser_set_attachment_dir(mime_parser, env, value_dir);
                 }
             }
 
@@ -866,10 +866,10 @@ axis2_http_transport_utils_process_http_put_request(
             int soap_body_len = 0;
             axutil_param_t *buffer_size_param = NULL;
             axutil_param_t *max_buffers_param = NULL;
-            axutil_param_t *callback_name_param = NULL;
+            axutil_param_t *attachment_dir_param = NULL;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
-            axis2_char_t *value_callback = NULL;
+            axis2_char_t *value_dir = NULL;
             int size = 0;
             int num = 0;
 
@@ -904,17 +904,17 @@ axis2_http_transport_utils_process_http_put_request(
                 }
             }
    
-            callback_name_param = axis2_msg_ctx_get_parameter (msg_ctx,
+            attachment_dir_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                    env,
-                                                                   AXIS2_MTOM_CACHING_CALLBACK);
+                                                                   AXIS2_ATTACHMENT_DIR);
 
-            if(callback_name_param)
+            if(attachment_dir_param)
             {
-                value_callback =
-                    (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
-                if(value_callback)
+                value_dir =
+                    (axis2_char_t *) axutil_param_get_value (attachment_dir_param, env);
+                if(value_dir)
                 {
-                    axiom_mime_parser_set_caching_callback_name(mime_parser, env, value_callback);
+                    axiom_mime_parser_set_attachment_dir(mime_parser, env, value_dir);
                 }
             }
 
@@ -2058,10 +2058,10 @@ axis2_http_transport_utils_create_soap_msg(
             axis2_char_t *soap_body_str = NULL;
             axutil_param_t *buffer_size_param = NULL;
             axutil_param_t *max_buffers_param = NULL;
-            axutil_param_t *callback_name_param = NULL;
+            axutil_param_t *attachment_dir_param = NULL;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
-            axis2_char_t *value_callback = NULL;
+            axis2_char_t *value_dir = NULL;
             int size = 0;
             int num = 0;
  
@@ -2097,16 +2097,16 @@ axis2_http_transport_utils_create_soap_msg(
                 }
             }
            
-            callback_name_param = axis2_msg_ctx_get_parameter (msg_ctx,
+            attachment_dir_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                    env,
-                                                                   AXIS2_MTOM_CACHING_CALLBACK);
-            if(callback_name_param)
+                                                                   AXIS2_ATTACHMENT_DIR);
+            if(attachment_dir_param)
             {
-                value_callback =
-                    (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
-                if(value_callback)
+                value_dir =
+                    (axis2_char_t *) axutil_param_get_value (attachment_dir_param, env);
+                if(value_dir)
                 {
-                    axiom_mime_parser_set_caching_callback_name(mime_parser, env, value_callback);
+                    axiom_mime_parser_set_attachment_dir(mime_parser, env, value_dir);
                 }
             }
    

@@ -136,8 +136,7 @@ AC_CONFIG_FILES([Makefile \
     client/amqp/Makefile \
     client/amqp/echo/Makefile \
     user_guide/Makefile \
-    user_guide/clients/Makefile \
-    mtom_caching_callback/Makefile
+    user_guide/clients/Makefile
     ])
     
 AC_OUTPUT

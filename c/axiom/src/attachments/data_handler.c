@@ -419,6 +419,22 @@ axiom_data_handler_set_file_name(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axiom_data_handler_get_file_name(
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env)
+{
+    if (data_handler->file_name)
+    {
+        return data_handler->file_name;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+
 /* This method will add the data_handler binary data to the array_list.
  * If it is a buffer the part type is buffer. otherwise it is a file. In the
  * case of file the array_list have just the file name and the size. The content

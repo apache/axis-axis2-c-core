@@ -1,4 +1,4 @@
-SUBDIRS = server client user_guide mtom_caching_callback 
+SUBDIRS = server client user_guide
 
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`

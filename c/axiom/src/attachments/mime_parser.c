@@ -20,8 +20,6 @@
 #include <axutil_string.h>
 #include <axiom_data_handler.h>
 #include <stdio.h>
-#include <axiom_caching_callback.h>
-#include <axutil_class_loader.h>
 #include <axutil_http_chunked_stream.h>
 
 struct axiom_mime_parser
@@ -42,11 +40,8 @@ struct axiom_mime_parser
     /* The number of buffers */
     int max_buffers;
 
-    /*A pointer to the caching callback */
-    axiom_caching_callback_t *caching_callback;
-
-    /* The caching callback name specified */
-    axis2_char_t *callback_name;
+    /* The attachment dir name, in the case of caching */
+    axis2_char_t *attachment_dir;
 };
 
 struct axiom_search_info
@@ -145,13 +140,14 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
     axis2_char_t **buf_array,
     axiom_search_info_t *search_info,
     int size,
-    axis2_char_t *mime_boundary);
+    axis2_char_t *mime_boundary,
+    axis2_char_t *mime_id);
 
-static axis2_status_t
-axiom_mime_parser_process_mime_headers(
+static axis2_status_t axiom_mime_parser_store_attachment(
     const axutil_env_t *env,
     axiom_mime_parser_t *mime_parser,
-    axis2_char_t *mime_headers,
+    axis2_char_t *mime_id,
+    axis2_char_t *mime_type,
     axis2_char_t *mime_binary,
     int mime_binary_len,
     axis2_bool_t cached);
@@ -170,14 +166,25 @@ static axis2_status_t axiom_mime_parser_cache_to_buffer(
     axiom_mime_parser_t *mime_parser);
 
 
-static void* axiom_mime_parser_initiate_callback(
-    axiom_mime_parser_t *mime_parser,
-    const axutil_env_t *env);
-
 static axis2_bool_t axiom_mime_parser_is_more_data(
     axiom_mime_parser_t *mime_parser,
     const axutil_env_t *env,
     axis2_callback_info_t *callback_info);
+
+static axis2_char_t *
+    axiom_mime_parser_process_mime_headers(
+    const axutil_env_t *env,
+    axiom_mime_parser_t *mime_parser,
+    axis2_char_t **mime_id,
+    axis2_char_t *mime_headers);
+
+static axis2_status_t 
+axiom_mime_parser_cache_to_file(
+    const axutil_env_t* env,
+    axis2_char_t *buf,
+    int buf_len,
+    void *handler);
+
 
 AXIS2_EXTERN axiom_mime_parser_t *AXIS2_CALL
 axiom_mime_parser_create(
@@ -201,8 +208,7 @@ axiom_mime_parser_create(
     mime_parser->soap_body_str = NULL;  /* shallow copy */
     mime_parser->buffer_size = 1;
     mime_parser->max_buffers = AXIOM_MIME_PARSER_MAX_BUFFERS;
-    mime_parser->caching_callback = NULL;
-    mime_parser->callback_name = NULL;
+    mime_parser->attachment_dir = NULL;
 
     mime_parser->mime_parts_map = axutil_hash_make(env);
     if (!(mime_parser->mime_parts_map))
@@ -223,23 +229,6 @@ axiom_mime_parser_free(
 
     /* The map is passed on to SOAP builder, and SOAP builder take over the
        ownership of the map */
-
-    /* We will unload the callback at the end */
-
-    if(mime_parser->caching_callback)
-    {
-        axutil_param_t *param = NULL;
-        param = mime_parser->caching_callback->param;
-
-        AXIOM_CACHING_CALLBACK_FREE(mime_parser->caching_callback, env);
-        mime_parser->caching_callback = NULL;
-
-        if(param)
-        {
-            axutil_param_free(param, env);
-            param = NULL;
-        }
-    }
 
     if (mime_parser)
     {
@@ -610,7 +599,8 @@ axiom_mime_parser_parse(
     while (!end_of_mime && count < AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT)
     {
         /*First we will search for \r\n\r\n*/
- 
+        axis2_char_t *mime_id = NULL;
+        axis2_char_t *mime_type = NULL; 
         search_info->match_len1 = 0;
         search_info->match_len2 = 0;
         pos = NULL;
@@ -750,10 +740,25 @@ axiom_mime_parser_parse(
         part_start = buf_num;
         malloc_len = 0;
 
+        mime_type = axiom_mime_parser_process_mime_headers(env, mime_parser, &mime_id, mime_headers);
+        
+        if(!mime_id )
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "Error in parsing for mime headers.Mime id did not find");
+            return NULL;
+        }
+        
+        if(!mime_type)
+        {
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                    "Mime type did not find");
+        }
+
         /*We extract the mime headers. So lets search for the attachment.*/
 
         pos = axiom_mime_parser_search_for_attachment(mime_parser, env, callback, callback_ctx, &buf_num,
-          len_array, buf_array, search_info, size, temp_mime_boundary);
+          len_array, buf_array, search_info, size, temp_mime_boundary, mime_id);
 
         if(pos)
         {
@@ -791,9 +796,9 @@ axiom_mime_parser_parse(
 
                     if(mime_binary_len > 0)
                     {
-                        mime_headers = axiom_mime_parser_create_part(
+                        mime_binary = axiom_mime_parser_create_part(
                             env, soap_len, buf_num - 1, len_array, part_start, pos, buf_array, mime_parser);
-                        if(!mime_headers)
+                        if(!mime_binary)
                         {
                             return NULL;
                         }
@@ -805,6 +810,10 @@ axiom_mime_parser_parse(
                 }
             }
            
+            /* The functionality below is common when it is cached or not. It deals with remaining
+             * after a particualr attachment, Those may be related to a end of mime_boundary or 
+             * another attachment */
+
             if(search_info->match_len2 == 0)
             {
                 malloc_len = len_array[buf_num] - search_info->match_len1 - temp_mime_boundary_size;
@@ -888,16 +897,23 @@ axiom_mime_parser_parse(
             return NULL;
         }
 
-        /*We have the attachment now either cached or not. So lets process the mime headers.*/        
+        /*We have the attachment now either cached or not. So lets put it in the mime_parts 
+         * hash map with the mime_id. Remember at this moment we have already processed the 
+         * mime_headers and mime_id is already there */        
 
-        if((search_info->cached) && (!mime_parser->caching_callback))
+        /* In this case user has not specified the attachment dir . So we cached it to a memory
+         * buffer. Hence the data_handler type we need to create is different */
+
+        if((search_info->cached) && (!mime_parser->attachment_dir))
         {
             mime_binary = (axis2_char_t *)search_info->handler;
             mime_binary_len = search_info->binary_size;
         }
 
-        status = axiom_mime_parser_process_mime_headers(env, mime_parser, mime_headers,
-            mime_binary, mime_binary_len, search_info->cached);
+        /* Storing the attachment in the hash map with the id*/
+
+        status = axiom_mime_parser_store_attachment(env, mime_parser, mime_id,
+            mime_type, mime_binary, mime_binary_len, search_info->cached);
 
         /*Check wether we encounter --MIMEBOUNDARY-- to find the end of mime*/
 
@@ -1124,13 +1140,15 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
     axis2_char_t **buf_array,
     axiom_search_info_t *search_info,
     int size,
-    axis2_char_t *mime_boundary)
+    axis2_char_t *mime_boundary,
+    axis2_char_t *mime_id)
 {
     axis2_char_t *found = NULL;
     int len = 0;   
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *temp = NULL;    
     int temp_length = 0;
+    axis2_char_t *file_name = NULL;
 
     search_info->search_str = mime_boundary;
     search_info->buffer1 = NULL;
@@ -1156,43 +1174,39 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
     {
         if(search_info->cached)
         {
-            if(!(search_info->handler))
+            if(mime_parser->attachment_dir)
             {
-                if(mime_parser->callback_name)
+                if(!(search_info->handler))
                 {
-                    /* If the callback is not loaded yet then we load it*/
-                    if(!mime_parser->caching_callback)
+                    /* If the File is not opened yet we will open it*/
+                    file_name = axutil_stracat(env, mime_parser->attachment_dir, 
+                        mime_id);
+                    if(!file_name)
                     {
-                        search_info->handler = axiom_mime_parser_initiate_callback(mime_parser, env);
-                        if(!(search_info->handler))
-                        {
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "Caching file name creation error");
+                        return NULL;
+                    }
+                    search_info->handler = (void *)fopen(file_name, "a+");
+                    if(!(search_info->handler))
+                    {
                             return NULL;
-                        }
                     }
                 }
+            
+                /*So lets cache the previous buffer which has undergone the
+                full search and the partial search.  */
+
+                status = axiom_mime_parser_cache_to_file(env, buf_array[*buf_num - 1], 
+                    len_array[*buf_num - 1], search_info->handler);            
             }
 
-            /*So lets cache the previous buffer which has undergone the
-              full search and the partial search.  */
-
-            if(mime_parser->caching_callback)
-            {
-                /* Caching callback is loaded. So we can cache the previous buffer */
-
-                status = AXIOM_CACHING_CALLBACK_CACHE(mime_parser->caching_callback, 
-                    env, buf_array[*buf_num - 1], len_array[*buf_num - 1], search_info->handler);
-            }
-            else if(!mime_parser->callback_name)
-            {
-                /* Here the user has not specified the caching callback. So we are 
-                 * not going to cache. Instead we store the attachment in the buffer */
-
-                status = axiom_mime_parser_cache_to_buffer(env, buf_array[*buf_num - 1], 
-                    len_array[*buf_num - 1], search_info, mime_parser);
-            }
             else
             {
-                return NULL;
+                /* Here the user has not specified the caching File location. So we are 
+                 * not going to cache. Instead we store the attachment in the buffer */
+                status = axiom_mime_parser_cache_to_buffer(env, buf_array[*buf_num - 1], 
+                    len_array[*buf_num - 1], search_info, mime_parser);
             }
 
             if(status == AXIS2_FAILURE)
@@ -1272,24 +1286,24 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
 
         if(search_info->match_len2 == 0)
         {
-            /* This is the case where cwe found the whole string in one buffer 
+            /* This is the case where we found the whole string in one buffer 
              * So we need to cache previous buffer and the data up to the starting
              * point of the search string in the current buffer */
 
-            if(mime_parser->caching_callback)
+            if(mime_parser->attachment_dir)
             {
-                status = AXIOM_CACHING_CALLBACK_CACHE(mime_parser->caching_callback,
-                    env, buf_array[*buf_num - 1], len_array[*buf_num - 1], search_info->handler);
+                status = axiom_mime_parser_cache_to_file(env, buf_array[*buf_num - 1], 
+                    len_array[*buf_num - 1], search_info->handler);
                 if(status == AXIS2_SUCCESS)
                 {
-                    status = AXIOM_CACHING_CALLBACK_CACHE(mime_parser->caching_callback,
-                        env, buf_array[*buf_num], found - buf_array[*buf_num], search_info->handler);
+                    status = axiom_mime_parser_cache_to_file(env, buf_array[*buf_num], 
+                        found - buf_array[*buf_num], search_info->handler);
                 }
             }
             
             /* If the callback is not there then the data is appended to the buffer */
 
-            else if(!mime_parser->callback_name)
+            else
             {
                 status = axiom_mime_parser_cache_to_buffer(env, buf_array[*buf_num - 1],
                     len_array[*buf_num - 1], search_info, mime_parser);
@@ -1304,12 +1318,12 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
         {
             /*Here the curent buffer has partial mime boundary. So we need 
             to cache only the previous buffer. */
-            if(mime_parser->caching_callback)
+            if(mime_parser->attachment_dir)
             {
-                status = AXIOM_CACHING_CALLBACK_CACHE(mime_parser->caching_callback,
-                    env, buf_array[*buf_num - 1], search_info->match_len1, search_info->handler);
+                status = axiom_mime_parser_cache_to_file(env, buf_array[*buf_num - 1], 
+                    search_info->match_len1, search_info->handler);
             }
-            else if(!mime_parser->callback_name)
+            else
             {
                 status = axiom_mime_parser_cache_to_buffer(env, buf_array[*buf_num - 1],
                     search_info->match_len1, search_info, mime_parser);
@@ -1326,12 +1340,22 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
         }
     }
 
-    /* Parsing is doen so lets close the relative handlers */
+    /* Parsing is done so lets close the relative handlers */
 
-    if(search_info->handler && mime_parser->caching_callback)
+    if(search_info->handler && mime_parser->attachment_dir)
     {
-        status = AXIOM_CACHING_CALLBACK_CLOSE_HANDLER(mime_parser->caching_callback, env,
-            search_info->handler);
+        if(fclose((FILE *)(search_info->handler)) == 0)
+        {
+            status = AXIS2_SUCCESS;
+        }
+        else
+        {
+            status = AXIS2_FAILURE;
+        }
+
+        AXIS2_FREE(env->allocator, file_name);
+        file_name = NULL;        
+
         if(status == AXIS2_FAILURE)
         {
             return NULL;
@@ -1592,64 +1616,140 @@ static axis2_char_t *axiom_mime_parser_search_string(
     }
 }
 
-/*This will parse the string containing the mime header
-information and extract necessary details.*/
 
+/* This method creates a data_handler out of the attachment 
+ * and store the data_handler in the mime_parts map */
 
 static axis2_status_t 
-axiom_mime_parser_process_mime_headers(
+axiom_mime_parser_store_attachment(
     const axutil_env_t *env,
     axiom_mime_parser_t *mime_parser,
-    axis2_char_t *mime_headers,
+    axis2_char_t *mime_id,
+    axis2_char_t *mime_type,
     axis2_char_t *mime_binary,
     int mime_binary_len,
     axis2_bool_t cached)
 {
 	if (mime_parser->mime_parts_map)
     {
-        axis2_char_t *id = NULL;
-        axis2_char_t *type = NULL;
-        axis2_char_t *pos = NULL;        
-
-        /* Get the MIME ID */
-        if (mime_headers)
+        if (mime_id)
         {
-            id = axutil_strcasestr(mime_headers, AXIOM_MIME_HEADER_CONTENT_ID);
-            type = axutil_strcasestr(mime_headers,
-                AXIOM_MIME_HEADER_CONTENT_TYPE);
-            if (type)
+            axiom_data_handler_t *data_handler = NULL;
+
+            /* Handling the case where attachment is cached to a file*/
+
+            if(!mime_binary && cached)
             {
-                axis2_char_t *end = NULL;
-                axis2_char_t *temp_type = NULL;
-                type += axutil_strlen(AXIOM_MIME_HEADER_CONTENT_TYPE);
-                while (type && *type && *type != ':')
+                axis2_char_t *attachment_location = NULL;
+
+                attachment_location = axutil_stracat(env, 
+                    mime_parser->attachment_dir, mime_id);
+                if(attachment_location)
                 {
-                    type++;
-                }
-                type++;
-                while (type && *type && *type == ' ')
-                {
-                    type++;
-                }
-                end = type;
-                while (end && *end && !isspace(*end))
-                {
-                    end++;
-                }
-                if ((end - type) > 0)
-                {
-                    temp_type = AXIS2_MALLOC(env->allocator,
-                        sizeof(axis2_char_t) * ((end - type) + 1));
-                    if (!temp_type)
+                    data_handler = axiom_data_handler_create(env, 
+                        attachment_location, mime_type);
+                    if(data_handler)
                     {
-                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            "No memory. Failed in creating Content-Type");
-                        return AXIS2_FAILURE;
+                        axiom_data_handler_set_cached(data_handler, env, AXIS2_TRUE);
                     }
-                    memcpy(temp_type, type, (end - type));
-                    temp_type[end - type] = '\0';
-                    type = temp_type;
+                    AXIS2_FREE(env->allocator, attachment_location);
+                    attachment_location = NULL; 
                 }
+            }
+
+            /* Attachment is in memory, either it is small to be cached or
+             * user does not provided the attachment cached directory */
+
+            else if(mime_binary)
+            {
+                data_handler = axiom_data_handler_create(env, 
+                    NULL, mime_type);
+                if(data_handler)
+                {
+                    axiom_data_handler_set_binary_data(data_handler,
+                        env, mime_binary, mime_binary_len - 2);
+                }
+            }
+            axutil_hash_set(mime_parser->mime_parts_map,
+                    mime_id, AXIS2_HASH_KEY_STRING, data_handler);
+            if(mime_type)
+            {
+                AXIS2_FREE(env->allocator, mime_type);
+            }
+        }
+        else
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Mime Id or Mime rype not found");
+            return AXIS2_FAILURE;
+            /*axis2_char_t temp_boundry[1024];
+            sprintf(temp_boundry, "--%s--", mime_boundary);
+            if (body_mime && axutil_strstr(body_mime, temp_boundry))
+            {
+                break;
+            }*/
+        }
+        return AXIS2_SUCCESS;
+    }	
+    else
+    {
+        return AXIS2_FAILURE;
+    }    
+}
+
+/* This method will process the mime_headers for a particualr
+   attacment and return the mime_id  */
+
+
+static axis2_char_t *
+    axiom_mime_parser_process_mime_headers(
+    const axutil_env_t *env,
+    axiom_mime_parser_t *mime_parser,
+    axis2_char_t **mime_id,
+    axis2_char_t *mime_headers)
+{
+    axis2_char_t *id = NULL;
+    axis2_char_t *type = NULL;
+    axis2_char_t *pos = NULL;      
+
+    /* Get the MIME ID */
+    if (mime_headers)
+    {
+        id = axutil_strcasestr(mime_headers, AXIOM_MIME_HEADER_CONTENT_ID);
+        type = axutil_strcasestr(mime_headers,
+            AXIOM_MIME_HEADER_CONTENT_TYPE);
+        if (type)
+        {
+            axis2_char_t *end = NULL;
+            axis2_char_t *temp_type = NULL;
+            type += axutil_strlen(AXIOM_MIME_HEADER_CONTENT_TYPE);
+            while (type && *type && *type != ':')
+            {
+                type++;
+            }
+            type++;
+            while (type && *type && *type == ' ')
+            {
+                type++;
+            }
+            end = type;
+            while (end && *end && !isspace(*end))
+            {
+                end++;
+            }
+            if ((end - type) > 0)
+            {
+                temp_type = AXIS2_MALLOC(env->allocator,
+                    sizeof(axis2_char_t) * ((end - type) + 1));
+                if (!temp_type)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Failed in creating Content-Type");
+                    return NULL;
+                }
+                memcpy(temp_type, type, (end - type));
+                temp_type[end - type] = '\0';
+                type = temp_type;
             }
         }
         if (id)
@@ -1669,43 +1769,21 @@ axiom_mime_parser_process_mime_headers(
                 pos = axutil_strstr(id, ">");
                 if (pos)
                 {
-                    axis2_char_t *mime_id = NULL;
                     int mime_id_len = 0;
                     mime_id_len = (int)(pos - id);
-                    mime_id = AXIS2_MALLOC(env->allocator,
+                    *mime_id = AXIS2_MALLOC(env->allocator,
                         sizeof(axis2_char_t) * mime_id_len + 1); 
                     /* The MIME ID will be freed by the SOAP builder */
-                    if (mime_id)
+                    if (*mime_id)
                     {
-                        axiom_data_handler_t *data_handler = NULL;
-                        memcpy(mime_id, id, mime_id_len);
-                        mime_id[mime_id_len] = '\0';
-                        data_handler =
-                            axiom_data_handler_create(env, NULL, type);
-
-                        AXIS2_FREE(env->allocator, type);
-
-                        if(!mime_binary && cached)
-                        {
-                            axiom_data_handler_set_cached(data_handler, env, AXIS2_TRUE);    
-                        }
-                        else if(mime_binary)
-                        {
-                            axiom_data_handler_set_binary_data(data_handler,
-                                env, mime_binary, mime_binary_len - 2);
-                        }
-                        else
-                        {
-                            return AXIS2_FAILURE;
-                        }
-                        axutil_hash_set(mime_parser->mime_parts_map,
-                                mime_id, AXIS2_HASH_KEY_STRING, data_handler);
+                        memcpy(*mime_id, id, mime_id_len);
+                        (*mime_id)[mime_id_len] = '\0';
                     }
                     else
                     {
                         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                             "No memory. Failed in creating MIME ID");
-                        return AXIS2_FAILURE;
+                        return NULL;
                     }
                 }
             }
@@ -1718,15 +1796,16 @@ axiom_mime_parser_process_mime_headers(
             {
                 break;
             }*/
-            return AXIS2_FAILURE;
+            return NULL;
         }
-        return AXIS2_SUCCESS;
-    }	
+        return type;
+    }
     else
     {
-        return AXIS2_FAILURE;
-    }    
-}
+        return NULL;
+    }	
+} 
+
 
 /*This is used to free some unwanted buffers. For example we did
 not want the buffers which contains the data before the soap
@@ -1821,53 +1900,14 @@ axiom_mime_parser_set_max_buffers(
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axiom_mime_parser_set_caching_callback_name(
+axiom_mime_parser_set_attachment_dir(
     axiom_mime_parser_t *mime_parser,
     const axutil_env_t *env,
-    axis2_char_t *callback_name)
+    axis2_char_t *attachment_dir)
 {
-    mime_parser->callback_name = callback_name;
+    mime_parser->attachment_dir = attachment_dir;
 }
 
-static void* axiom_mime_parser_initiate_callback(
-    axiom_mime_parser_t *mime_parser,
-    const axutil_env_t *env)
-{
-    axutil_dll_desc_t *dll_desc = NULL;
-    axutil_param_t *impl_info_param = NULL;
-    void *ptr = NULL;
-
-    if(mime_parser->callback_name)
-    {
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Trying to load module = %s", 
-                mime_parser->callback_name);
-        dll_desc = axutil_dll_desc_create(env);
-        axutil_dll_desc_set_name(dll_desc, env, mime_parser->callback_name);
-        impl_info_param = axutil_param_create(env, NULL, dll_desc);
-        /*Set the free function*/
-        axutil_param_set_value_free(impl_info_param, env, axutil_dll_desc_free_void_arg);
-        axutil_class_loader_init(env);
-        ptr = axutil_class_loader_create_dll(env, impl_info_param);
-
-        if (!ptr)
-        {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Unable to load the module %s. ERROR", mime_parser->callback_name);
-            return NULL;
-        }
-
-        mime_parser->caching_callback =  (axiom_caching_callback_t *)ptr;
-        mime_parser->caching_callback->param = impl_info_param;
-
-        return AXIOM_CACHING_CALLBACK_INIT_HANDLER(mime_parser->caching_callback, env);
-    }
-
-    else
-    {
-        return NULL;
-    }
-
-}
 
 /* This method will tell whether there are more data in the 
  * stream */
@@ -1905,3 +1945,27 @@ static axis2_bool_t axiom_mime_parser_is_more_data(
         return AXIS2_TRUE;
     }
 }
+
+static axis2_status_t 
+axiom_mime_parser_cache_to_file(
+    const axutil_env_t* env,
+    axis2_char_t *buf,
+    int buf_len,
+    void *handler)
+{
+    int len = 0;
+    FILE *fp = NULL;
+
+    fp = (FILE *)handler;
+
+    len = fwrite(buf, 1, buf_len, fp);
+    if(len < 0)
+    {
+        return AXIS2_FAILURE;
+    }
+    else
+    {
+        return AXIS2_SUCCESS;
+    }
+}
+
