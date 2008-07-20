@@ -1329,7 +1329,7 @@ static axis2_status_t apache2_worker_send_mtom_message(
             {
                 len = 0;
                 len = ap_rwrite(mime_part->part, mime_part->part_size, request);
-                ap_rflush(request);
+                /*ap_rflush(request);*/
                 if(len == -1)
                 {
                     status = AXIS2_FAILURE;
