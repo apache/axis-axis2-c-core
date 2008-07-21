@@ -1188,7 +1188,7 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
                             "Caching file name creation error");
                         return NULL;
                     }
-                    search_info->handler = (void *)fopen(file_name, "a+");
+                    search_info->handler = (void *)fopen(file_name, "ab+");
                     if(!(search_info->handler))
                     {
                             return NULL;
