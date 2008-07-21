@@ -398,7 +398,7 @@ axiom_mime_part_get_content_type_for_mime(
  * with small buffers and attachment locations. */
 
 
-AXIS2_EXTERN axutil_array_list_t  *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axiom_mime_part_create_part_list(
     const axutil_env_t *env,
     axis2_char_t *soap_body,
@@ -500,7 +500,7 @@ axiom_mime_part_create_part_list(
     
     if(!soap_part)
     {
-        return AXIS2_FAILURE;
+        return NULL;
     }    
 
     /* The atachment's mime_boundary will start after a new line charator */
