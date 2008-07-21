@@ -123,7 +123,7 @@ axis2_mtom_mtom(
 			            {
 			                AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
 					        "malloc failed, not enough memory");
-			                return AXIS2_FAILURE;
+			                return NULL;
 			            }
 
                         memcpy(buff, input_buff, buff_len);
