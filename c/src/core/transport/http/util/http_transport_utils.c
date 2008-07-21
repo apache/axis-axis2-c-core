@@ -2541,8 +2541,6 @@ axis2_http_transport_utils_process_request(
 	axis2_status_t status = AXIS2_FAILURE;
 	axis2_msg_ctx_t *msg_ctx = NULL;
 	axutil_stream_t *out_stream = NULL;
-	axis2_transport_out_desc_t *out_desc = NULL;
-	axis2_transport_in_desc_t *in_desc = NULL;
 	axutil_string_t *soap_action = NULL;
 	axis2_bool_t processed = AXIS2_FALSE;
 	axis2_char_t *body_string = NULL;
@@ -2573,12 +2571,8 @@ axis2_http_transport_utils_process_request(
 	/** creating the out stream */
 	out_stream = axutil_stream_create_basic(env);
 
-	/** transport out description */
-	out_desc = axis2_conf_get_transport_out(axis2_conf_ctx_get_conf(conf_ctx, env),
-		env, AXIS2_TRANSPORT_ENUM_HTTP);
-	/** transport in description */
-	in_desc = axis2_conf_get_transport_in(axis2_conf_ctx_get_conf(conf_ctx, env), 
-		env, AXIS2_TRANSPORT_ENUM_HTTP);
+	if(request->transfer_encoding)
+		axis2_msg_ctx_set_transfer_encoding(request->msg_ctx, env, request->transfer_encoding);
 
 	axis2_msg_ctx_set_server_side(request->msg_ctx , env, AXIS2_TRUE);
 	msg_ctx = request->msg_ctx;
