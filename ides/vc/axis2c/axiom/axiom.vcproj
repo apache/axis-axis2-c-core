@@ -428,10 +428,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\axiom\src\attachments\axiom_mime_output.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\..\..\axiom\src\attachments\data_handler.c"
 					>
 				</File>
@@ -440,11 +436,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\axiom\src\attachments\mime_output.c"
+					RelativePath="..\..\..\..\axiom\src\attachments\mime_parser.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\axiom\src\attachments\mime_parser.c"
+					RelativePath="..\..\..\..\axiom\src\attachments\mime_part.c"
 					>
 				</File>
 			</Filter>
