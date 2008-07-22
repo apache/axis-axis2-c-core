@@ -86,7 +86,11 @@ main(
                              "http://ws.apache.org/axis2/c/samples/mtomSample");
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
-    axis2_options_set_enable_mtom(options, env, AXIS2_TRUE);
+
+    if(optimized)
+    {
+        axis2_options_set_enable_mtom(options, env, AXIS2_TRUE);
+    }
 
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up
      * using the axis2.xml file.
