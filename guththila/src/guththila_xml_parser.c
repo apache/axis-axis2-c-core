@@ -1508,7 +1508,8 @@ static int
 guththila_next_char(guththila_t * m, int eof, const axutil_env_t * env) 
 {
     int c;
-    size_t temp, data_move, i;
+    size_t data_move, i;
+	int temp;
     guththila_char_t **temp1;
     size_t * temp2, *temp3;
     /* we have a buffered reader. Easiest case just fetch the character from 
