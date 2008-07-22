@@ -164,6 +164,11 @@ axis2_http_worker_process_request(
     axis2_char_t *url_ext_form = NULL;
     const axis2_char_t *content_type = NULL;
 
+    axis2_msg_ctx_t *out_msg_ctx = NULL;
+    axis2_msg_ctx_t *in_msg_ctx = NULL;
+    axis2_msg_ctx_t **msg_ctx_map = NULL;
+
+
     AXIS2_PARAM_CHECK(env->error, svr_conn, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, simple_request, AXIS2_FALSE);
 
@@ -517,8 +522,6 @@ axis2_http_worker_process_request(
         is_put = AXIS2_TRUE;
     }
 
-
-        
     request_uri = axis2_http_request_line_get_uri (request_line, env);
     request_params = 
         axis2_http_transport_utils_get_request_params(env,
@@ -1318,8 +1321,8 @@ axis2_http_worker_process_request(
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx)
     {
-        axis2_msg_ctx_t *out_msg_ctx = NULL;
-        axis2_msg_ctx_t **msg_ctx_map = NULL;
+        /*axis2_msg_ctx_t *out_msg_ctx = NULL;
+        axis2_msg_ctx_t **msg_ctx_map = NULL;*/
         axis2_char_t *language_str = NULL;
 
         msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
@@ -1598,12 +1601,12 @@ axis2_http_worker_process_request(
             {
                 if (do_rest)
                 {
-                    axis2_msg_ctx_t *out_msg_ctx = NULL;
+                    /*axis2_msg_ctx_t *out_msg_ctx = NULL;
                     axis2_msg_ctx_t *in_msg_ctx = NULL;
-                    axis2_msg_ctx_t **msg_ctx_map = NULL;
+                    axis2_msg_ctx_t **msg_ctx_map = NULL;*/
 
-                    msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
-                    out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+                    /*msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+                    out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];*/
                     in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
                     if (in_msg_ctx)
                     {
@@ -1732,9 +1735,9 @@ axis2_http_worker_process_request(
                 /* If response is not written */
                 if (do_rest)
                 {
-                    axis2_msg_ctx_t *out_msg_ctx = NULL;
+                    /*axis2_msg_ctx_t *out_msg_ctx = NULL;
                     axis2_msg_ctx_t *in_msg_ctx = NULL;
-                    axis2_msg_ctx_t **msg_ctx_map = NULL;
+                    axis2_msg_ctx_t **msg_ctx_map = NULL;*/
 
                     msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
                     out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
@@ -1905,12 +1908,48 @@ axis2_http_worker_process_request(
                 int stream_len = 0;
                 stream_len = axutil_stream_get_len(out_stream, env);
 
-                axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
+                /*axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
                                                        simple_request, response,
-                                                       stream_len);
+                                                       stream_len);*/
    
                 /* This is where it actually write to the wire in the http back channel
                  * append case. */ 
+                if(out_msg_ctx)
+                {
+                    axutil_array_list_t *mime_parts = NULL;
+                    mime_parts = axis2_msg_ctx_get_mime_parts(out_msg_ctx, env);
+                    /* If mime_parts is there then that means we send MTOM. So
+                     * in order to send MTOM we are enabling HTTP1.1 and cunk transfer
+                     * encoding */
+
+                    if(mime_parts)
+                    {
+                        axis2_http_header_t *transfer_enc_header = NULL;                        
+
+                        axis2_http_simple_response_set_mime_parts(response, env, mime_parts);  
+
+                        axis2_http_simple_response_set_http_version(response, env, 
+                            AXIS2_HTTP_HEADER_PROTOCOL_11);
+ 
+                        transfer_enc_header = axis2_http_header_create(env,
+                                         AXIS2_HTTP_HEADER_TRANSFER_ENCODING,
+                                         AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
+
+                        axis2_http_simple_response_set_header(response, env,
+                                                  transfer_enc_header);
+
+                        /* In the chunking case content-lenght is zero */
+                        axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
+                                                       simple_request, response,
+                                                       0);
+                    }
+                    else
+                    {
+                        axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
+                                                       simple_request, response,
+                                                       stream_len);
+                    }
+                }
                 status = axis2_simple_http_svr_conn_write_response(svr_conn, 
                                                                    env, 
                                                                    response);
@@ -1925,15 +1964,15 @@ axis2_http_worker_process_request(
     } 
     if (op_ctx)
     {
-        axis2_msg_ctx_t *out_msg_ctx = NULL;
+        /*axis2_msg_ctx_t *out_msg_ctx = NULL;
         axis2_msg_ctx_t *in_msg_ctx = NULL;
-        axis2_msg_ctx_t **msg_ctx_map = NULL;
+        axis2_msg_ctx_t **msg_ctx_map = NULL;*/
         axis2_char_t *msg_id = NULL;
         axis2_conf_ctx_t *conf_ctx = NULL;
-        msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+        /*msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
 
         out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
-        in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
+        in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];*/
 
         if (out_msg_ctx)
         {
@@ -2050,34 +2089,39 @@ axis2_http_worker_set_response_headers(
                                                           AXIS2_FALSE);
             }
         }
-        if (AXIS2_FALSE ==
-            axis2_http_simple_request_contains_header(simple_request, env,
-                                                      AXIS2_HTTP_HEADER_TRANSFER_ENCODING))
-        {
-            if (0 != content_length)
-            {
-                axis2_char_t content_len_str[10];
-                axis2_http_header_t *content_len_hdr = NULL;
 
-                sprintf(content_len_str, "%d", content_length);
-                content_len_hdr =
-                    axis2_http_header_create(env,
+        if(!axis2_http_simple_response_contains_header(simple_response, env, 
+            AXIS2_HTTP_HEADER_TRANSFER_ENCODING))
+        {
+            if (AXIS2_FALSE ==
+                axis2_http_simple_request_contains_header(simple_request, env,
+                                                      AXIS2_HTTP_HEADER_TRANSFER_ENCODING))
+            {
+                if (0 != content_length)
+                {
+                    axis2_char_t content_len_str[10];
+                    axis2_http_header_t *content_len_hdr = NULL;
+
+                    sprintf(content_len_str, "%d", content_length);
+                    content_len_hdr =
+                        axis2_http_header_create(env,
                                              AXIS2_HTTP_HEADER_CONTENT_LENGTH,
                                              content_len_str);
-                axis2_http_simple_response_set_header(simple_response, env,
+                    axis2_http_simple_response_set_header(simple_response, env,
                                                       content_len_hdr);
+                }
             }
-        }
-        else
-        {
+            else
+            {
             /* Having Transfer encoding Header */
-            axis2_http_header_t *transfer_enc_header =
-                axis2_http_header_create(env,
+                axis2_http_header_t *transfer_enc_header =
+                    axis2_http_header_create(env,
                                          AXIS2_HTTP_HEADER_TRANSFER_ENCODING,
                                          AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
 
-            axis2_http_simple_response_set_header(simple_response, env,
+                axis2_http_simple_response_set_header(simple_response, env,
                                                   transfer_enc_header);
+            }
         }
     }
     return AXIS2_SUCCESS;

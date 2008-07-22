@@ -582,3 +582,36 @@ axutil_hexit(axis2_char_t c)
     }
     return 0;    
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_char_2_byte(
+    const axutil_env_t *env,
+    axis2_char_t *char_buffer,
+    axis2_byte_t **byte_buffer,
+    int *byte_buffer_size)
+{
+    int length = 0;
+    int i = 0;
+    axis2_byte_t *bytes = NULL;
+
+    length = (int) axutil_strlen(char_buffer);
+    bytes = (axis2_byte_t *)
+        AXIS2_MALLOC(env->allocator, length * sizeof(axis2_byte_t));
+
+    if (!bytes)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "No memory. Cannot create byte buffer");
+        return AXIS2_FAILURE;
+    }
+
+    for (i = 0; i < length; i++)
+    {
+        bytes[i] = (axis2_byte_t) char_buffer[i];
+    }
+    *byte_buffer = bytes;
+    *byte_buffer_size = length;
+    return AXIS2_SUCCESS;
+}
+

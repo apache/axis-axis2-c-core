@@ -26,6 +26,8 @@
 #include <axis2_http_status_line.h>
 #include <axutil_http_chunked_stream.h>
 #include <platforms/axutil_platform_auto_sense.h>
+#include <axiom_mime_part.h>
+#include <axis2_http_transport_utils.h>
 
 #ifdef AXIS2_SSL_ENABLED
 #include "ssl/ssl_stream.h"
@@ -48,6 +50,10 @@ struct axis2_http_client
     axis2_char_t *key_file;
     axis2_char_t *req_body;
     int req_body_size;
+    
+    /* These are for mtom case */
+    axutil_array_list_t *mime_parts;
+    axis2_bool_t doing_mtom;
 };
 
 AXIS2_EXTERN axis2_http_client_t *AXIS2_CALL
@@ -85,6 +91,8 @@ axis2_http_client_create(
     http_client->key_file = NULL;
     http_client->req_body = NULL;
     http_client->req_body_size = 0;
+    http_client->mime_parts = NULL;
+    http_client->doing_mtom = AXIS2_FALSE;
 
     return http_client;
 }
@@ -112,6 +120,25 @@ axis2_http_client_free(
     {
         AXIS2_FREE(env->allocator, http_client->req_body);
     }
+    
+    /* There is no other appropriate place to free the mime_part list when a 
+     * particular client send requests. */
+    
+    if (http_client->mime_parts)
+    {
+        int i = 0;
+        for (i = 0; i < axutil_array_list_size(http_client->mime_parts, env); i++)
+        {
+            axiom_mime_part_t *mime_part = NULL;
+            mime_part = (axiom_mime_part_t *)
+                axutil_array_list_get(http_client->mime_parts, env, i);
+            if (mime_part)
+            {
+                axiom_mime_part_free(mime_part, env);
+            }
+        }
+        axutil_array_list_free(http_client->mime_parts, env);
+    }
 
     AXIS2_FREE(env->allocator, http_client);
     return;
@@ -128,6 +155,12 @@ axis2_http_client_free_void_arg(
     axis2_http_client_free(client_l, env);
     return;
 }
+
+/*This is the main method which writes to the socket in the case of a client 
+ * sends an http_request. Previously this mrthod does not distinguish between a 
+ * mtom request and non mtom request. Because what finally it had was the 
+ * complete buffer with the request. But now MTOM invocations are done 
+ * differently so this method should distinguish those invocations*/
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_send(
@@ -146,7 +179,10 @@ axis2_http_client_send(
     axis2_char_t *host = NULL;
     unsigned int port = 0; 
 
-    if (!client->req_body)
+    /* In the MTOM case request body is not set. Instead mime_parts
+       array_list is there */
+
+    if (!client->req_body && !(client->doing_mtom))
     {
         client->req_body_size = axis2_http_simple_request_get_body_bytes(request, env, 
                 &client->req_body);
@@ -339,6 +375,8 @@ axis2_http_client_send(
         host_port_str = NULL;
 
     }
+    
+    /* Here first we send the http header part */ 
 
     wire_format = axutil_stracat(env, str_request_line, str_header);
     AXIS2_FREE(env->allocator, str_header);
@@ -348,27 +386,64 @@ axis2_http_client_send(
     written = axutil_stream_write(client->data_stream, env, wire_format, axutil_strlen(wire_format));
     AXIS2_FREE(env->allocator, wire_format);
     wire_format = NULL;
+
+    /* Then we write the two new line charaters before the http body*/
+
     written = axutil_stream_write(client->data_stream, env, AXIS2_HTTP_CRLF, 2);
-    if (client->req_body_size > 0 && client->req_body)
+    
+    /* When sending MTOM it is bit different. We keep the attachment + other
+       mime headers in an array_list and send them one by one */
+
+    if(client->doing_mtom)
     {
+        axis2_status_t status = AXIS2_SUCCESS;
+        axutil_http_chunked_stream_t *chunked_stream = NULL;
+        
+        /* For MTOM we automatically enabled chunking */
+        chunked_stream = axutil_http_chunked_stream_create(env, 
+                client->data_stream);
+    
+        /* This method will write the Attachment + data to the wire */
+
+        status = axis2_http_transport_utils_send_mtom_message(chunked_stream, env, 
+                client->mime_parts);      
+
+        axutil_http_chunked_stream_free(chunked_stream, env);
+        chunked_stream = NULL;
+          
+    }
+    /* Non MTOM case */
+    else if (client->req_body_size > 0 && client->req_body)
+    {
+        int len = 0;
+        written = 0;
+
+        /* Keep on writing data in a loop until we finised 
+           with all the data in the buffer */
+
         if (!chunking_enabled)
         {
             status = AXIS2_SUCCESS;
             while (written < client->req_body_size)
             {
-                written = axutil_stream_write(client->data_stream, env, client->req_body, 
-                    client->req_body_size);
-                if (-1 == written)
+                len = 0;
+                len = axutil_stream_write(client->data_stream, env,
+                                              client->req_body + written,
+                                              client->req_body_size - written);
+                if (-1 == len)
                 {
                     status = AXIS2_FAILURE;
                     break;
+                }
+                else
+                {
+                    written += len;
                 }
             }
         }
         else
         {
-
-            /* Sending HTTP request via chunking */
+            /* Not MTOM but chunking is enabled */
             axutil_http_chunked_stream_t *chunked_stream = NULL;
             chunked_stream = axutil_http_chunked_stream_create(env, client->data_stream);
             status = AXIS2_SUCCESS;
@@ -392,6 +467,7 @@ axis2_http_client_send(
 
             if (AXIS2_SUCCESS == status)
             {
+                /* Writing the trailing null charactor */
                 axutil_http_chunked_stream_write_last_chunk(chunked_stream, env);
             }
 
@@ -812,3 +888,41 @@ axis2_http_client_get_key_file(
 {
     return client->key_file;
 }
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_http_client_set_mime_parts(
+    axis2_http_client_t * client,
+    const axutil_env_t * env,
+    axutil_array_list_t *mime_parts)
+{
+    client->mime_parts = mime_parts;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axis2_http_client_get_mime_parts(
+    const axis2_http_client_t * client,
+    const axutil_env_t * env)
+{
+    return client->mime_parts;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_http_client_set_doing_mtom(
+    axis2_http_client_t * client,
+    const axutil_env_t * env,
+    axis2_bool_t doing_mtom)
+{
+    client->doing_mtom = doing_mtom;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_http_client_get_doing_mtom(
+    const axis2_http_client_t * client,
+    const axutil_env_t * env)
+{
+    return client->doing_mtom;
+}
+

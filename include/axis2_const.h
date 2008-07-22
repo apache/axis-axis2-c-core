@@ -352,11 +352,9 @@ extern "C"
 
     /* globally enable MTOM */
 #define AXIS2_ENABLE_MTOM "enableMTOM"
-#define AXIS2_ATTACHMENT_TEMP_DIR "attachmentDIR"
-#define AXIS2_CACHE_ATTACHMENTS "cacheAttachments"
-#define AXIS2_FILE_SIZE_THRESHOLD "sizeThreshold"
-#define AXIS2_MTOM_CHUNK_BUFFER_SIZE "MTOMChunkBufferSize"
-#define AXIS2_MTOM_MAX_CHUNK_BUFFERS "MTOMMaxChunkBuffers"
+#define AXIS2_ATTACHMENT_DIR "attachmentDIR"
+#define AXIS2_MTOM_BUFFER_SIZE "MTOMBufferSize"
+#define AXIS2_MTOM_MAX_BUFFERS "MTOMMaxBuffers"
 
     /* op_ctx persistance */
 #define AXIS2_PERSIST_OP_CTX "persistOperationContext"

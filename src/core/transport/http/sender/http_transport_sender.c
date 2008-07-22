@@ -29,6 +29,7 @@
 #include <axiom_soap_body.h>
 #include <axutil_types.h>
 #include <axiom_soap_fault_detail.h>
+#include <axis2_msg_ctx.h>
 
 #ifdef AXIS2_LIBCURL_ENABLED
 #include "libcurl/axis2_libcurl.h"
@@ -180,7 +181,6 @@ axis2_http_transport_sender_invoke(
     axis2_bool_t do_mtom;
     axutil_property_t *property = NULL;
     axiom_node_t *data_out = NULL;
-    axis2_byte_t *output_stream = NULL;
     int buffer_size = 0;
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -229,7 +229,6 @@ axis2_http_transport_sender_invoke(
     }
 
     do_mtom = axis2_http_transport_utils_do_write_mtom(env, msg_ctx);
-    axis2_msg_ctx_set_doing_mtom(msg_ctx, env, do_mtom);
 
     transport_url = axis2_msg_ctx_get_transport_url(msg_ctx, env);
     if (transport_url)
@@ -291,6 +290,9 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
     /* setting SOAP version for OM_OUTPUT.  */
     axiom_output_set_soap11(om_output, env,
                             axis2_msg_ctx_get_is_soap_11(msg_ctx, env));
+    
+    /* This is the case where normal client send the requet using a http_client*/
+    
     if (epr)
     {
         if (axutil_strcmp
@@ -525,18 +527,34 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
                                               AXIS2_FALSE);
                 if (do_mtom)
                 {
+                    axis2_status_t mtom_status = AXIS2_FAILURE;
                     axis2_char_t *content_type = NULL;
-                    axiom_output_flush(om_output, env, &output_stream,
-                                       &buffer_size);
+                    axutil_array_list_t *mime_parts = NULL;
+                   
+                    /*Create the attachment related data and put them to an
+                     *arra_list */
+                    mtom_status = axiom_output_flush(om_output, env);
+                    if(mtom_status == AXIS2_SUCCESS)
+                    {
+                        mime_parts = axiom_output_get_mime_parts(om_output, env);
+                        if(!mime_parts)
+                        {
+                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                            "Unable to create the mime_part list from om_output");
+                            return AXIS2_FAILURE;
+                        }
+                        else
+                        {
+                            axis2_msg_ctx_set_mime_parts(msg_ctx, env, mime_parts);
+                        }
+                    }
+                    /*om_out put has the details of content_type */
                     content_type =
                         (axis2_char_t *)
                         axiom_output_get_content_type(om_output, env);
                     AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info,
                                                                    env,
                                                                    content_type);
-                    buffer = output_stream;
-                    axutil_stream_write(out_stream, env, buffer, buffer_size);
-                    AXIS2_FREE(env->allocator, buffer);
                 }
                 else
                 {
@@ -754,13 +772,23 @@ axis2_http_transport_sender_write_message(
         return AXIS2_FAILURE;
     }
 
-    AXIS2_HTTP_SENDER_SET_CHUNKED(sender, env,
-                                  AXIS2_INTF_TO_IMPL(transport_sender)->
-                                  chunked);
+    /* For the MTOM case we should on chunking. And for chunking to work the
+     * protocol should be http 1.1*/
+
+    if(axis2_msg_ctx_get_doing_mtom(msg_ctx, env))
+    {
+        AXIS2_HTTP_SENDER_SET_CHUNKED(sender, env, AXIS2_TRUE);
+        AXIS2_HTTP_SENDER_SET_HTTP_VERSION(sender, env, AXIS2_HTTP_HEADER_PROTOCOL_11);        
+    }
+    else
+    {
+        AXIS2_HTTP_SENDER_SET_CHUNKED(sender, env,
+            AXIS2_INTF_TO_IMPL(transport_sender)->chunked);
+        AXIS2_HTTP_SENDER_SET_HTTP_VERSION(sender, env,
+            AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
+    }
     AXIS2_HTTP_SENDER_SET_OM_OUTPUT(sender, env, om_output);
-    AXIOM_SENDER_SET_HTTP_VERSION(sender, env,
-                                  AXIS2_INTF_TO_IMPL(transport_sender)->
-                                  http_version);
+
 #ifdef AXIS2_LIBCURL_ENABLED
     AXIS2_LOG_DEBUG (env->log, AXIS2_LOG_SI, "using axis2 libcurl http sender.");
     status =

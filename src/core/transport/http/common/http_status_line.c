@@ -177,12 +177,29 @@ axis2_http_status_line_get_status_code(
 
 }
 
+
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_status_line_get_http_version(
     const axis2_http_status_line_t * status_line,
     const axutil_env_t * env)
 {
     return status_line->http_version;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axis2_http_status_line_set_http_version(
+    axis2_http_status_line_t * status_line,
+    const axutil_env_t * env,
+    axis2_char_t *http_version)
+{
+    if(status_line->http_version)
+    {
+        AXIS2_FREE(env->allocator, status_line->http_version);
+        status_line->http_version = NULL;
+    }
+
+    status_line->http_version = (axis2_char_t *) axutil_strdup(env, http_version);
+
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL

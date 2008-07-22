@@ -484,8 +484,28 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
         if (doing_mtom)
         {
-            axiom_output_flush (sender->om_output, env, &output_stream,
-                                &output_stream_size);
+            axis2_status_t mtom_status = AXIS2_FAILURE;
+            axutil_array_list_t *mime_parts = NULL;
+
+            /* Here we put all the attachment related stuff in a array_list
+               After this method we have the message in parts */
+
+            mtom_status = axiom_output_flush (sender->om_output, env);
+            if(mtom_status == AXIS2_FAILURE)
+            {
+                return mtom_status;
+            }
+            /* HTTP client should distinguish an MTOM invocation because the way
+               of sending the message in MTOM case is different */
+            axis2_http_client_set_doing_mtom(sender->client, env, doing_mtom);
+
+            /* HTTP client will keep this mime_parts, which it will send in chunks at
+               th end */
+            mime_parts = axiom_output_get_mime_parts(sender->om_output, env);
+            if(mime_parts)
+            {
+                axis2_http_client_set_mime_parts(sender->client, env, mime_parts);    
+            }
         }
         else
         {
@@ -801,17 +821,11 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         header = NULL;
     }
 
-    if (doing_mtom)
-    {
-        axutil_stream_t *stream = axis2_http_simple_request_get_body (request,
-                                                                      env);
-        if (stream)
-        {
-            axutil_stream_write (stream, env, output_stream,
-                                 output_stream_size);
-        }
-    }
-    else
+    /* If this is a normal invocation the buffer has the full SOAP message
+       which needs to be send. In the MTOM case instead of this buffer 
+       it has the mime_parts array_list */
+
+    if(!doing_mtom)
     {
         axis2_http_simple_request_set_body_string (request,
                                                    env, buffer, buffer_size);

@@ -22,6 +22,8 @@
 #include <axutil_http_chunked_stream.h>
 #include <platforms/axutil_platform_auto_sense.h>
 #include <string.h>
+#include <axis2_http_simple_response.h>
+#include <axis2_http_transport_utils.h>
 
 struct axis2_simple_http_svr_conn
 {
@@ -373,13 +375,14 @@ axis2_simple_http_svr_conn_write_response(
         response_body[body_size] = AXIS2_ESC_NULL;
     }
 
-    if (body_size <= 0)
+    if (body_size <= 0 && !binary_content)
     {
         axis2_http_response_writer_free(response_writer, env);
         return AXIS2_SUCCESS;
     }
 
-    if (AXIS2_FALSE == chuked_encoding)
+    /* This sending a normal SOAP response without chunk transfer encoding */
+    if (AXIS2_FALSE == chuked_encoding && !binary_content)
     {
         axis2_status_t write_stat = AXIS2_FAILURE;
         if (AXIS2_FALSE == binary_content)
@@ -404,16 +407,48 @@ axis2_simple_http_svr_conn_write_response(
             return AXIS2_FAILURE;
         }
     }
-    else
+    
+    /* In the MTOM case we enable chunking inorder to send the attachment */
+    
+    else if(binary_content)
     {
         axutil_http_chunked_stream_t *chunked_stream = NULL;
-        int left = body_size;
+        axis2_status_t write_stat = AXIS2_FAILURE;
+        axutil_array_list_t *mime_parts = NULL;
+        
         chunked_stream = axutil_http_chunked_stream_create(env,
                                                           svr_conn->stream);
+        
+        mime_parts = axis2_http_simple_response_get_mime_parts(response, env);
+
+        if(mime_parts)
+        {            
+            write_stat = axis2_http_transport_utils_send_mtom_message(
+                    chunked_stream, env, mime_parts);
+            axutil_http_chunked_stream_free(chunked_stream, env);
+            chunked_stream = NULL;
+                    
+            if(write_stat == AXIS2_FAILURE)
+            {
+                return write_stat;
+            }
+        }    
+        else
+        {
+            return AXIS2_FAILURE;
+        }
+    } 
+    
+    /* Sending a normal SOAP response enabling htpp chunking */
+    else 
+    {    
+        axutil_http_chunked_stream_t *chunked_stream = NULL;
+        int left = body_size;
+        chunked_stream = axutil_http_chunked_stream_create(env, svr_conn->stream);
         while (left > 0)
         {
             left -= axutil_http_chunked_stream_write(chunked_stream, env,
-                                                    response_body, body_size);
+                response_body, body_size);
         }
         axutil_http_chunked_stream_write_last_chunk(chunked_stream, env);
         axutil_http_chunked_stream_free(chunked_stream, env);
@@ -464,3 +499,5 @@ axis2_simple_http_svr_conn_get_peer_ip(
 {
     return axutil_network_handler_get_peer_ip(env, svr_conn->socket);
 }
+
+

@@ -32,6 +32,8 @@
 #include <axutil_string.h>
 #include <axutil_array_list.h>
 #include <axiom_data_handler.h>
+#include <axiom_text.h>
+#include <axiom_mime_const.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -73,15 +75,31 @@ extern "C"
     axiom_mime_body_part_free(
         axiom_mime_body_part_t * mime_body_part,
         const axutil_env_t * env);
+    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+        axiom_mime_body_part_write_to_list(
+        axiom_mime_body_part_t *mime_body_part,
+        const axutil_env_t *env,
+        axutil_array_list_t *list);
 
     /**
      * Creates mime_body_part struct
      * @return pointer to newly created mime_body_part
      */
     AXIS2_EXTERN axiom_mime_body_part_t *AXIS2_CALL
-
     axiom_mime_body_part_create(
         const axutil_env_t * env);
+    
+    /**
+     * Creates mime_body_part struct from a om_text
+     * @return pointer to newly created mime_body_part
+     */
+    
+    AXIS2_EXTERN axiom_mime_body_part_t *AXIS2_CALL 
+    axiom_mime_body_part_create_from_om_text(
+        const axutil_env_t *env,    
+        axiom_text_t *text);
+        
 
 #define AXIOM_MIME_BODY_PART_FREE(mime_body_part, env) \
     axiom_mime_body_part_free (mime_body_part, env)

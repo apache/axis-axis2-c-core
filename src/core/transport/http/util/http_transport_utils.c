@@ -41,6 +41,7 @@
 #include <stdlib.h>
 #include <axutil_uuid_gen.h>
 #include <platforms/axutil_platform_auto_sense.h>
+#include <axiom_mime_part.h>
 
 #define AXIOM_MIME_BOUNDARY_BYTE 45
 
@@ -187,6 +188,15 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
     axutil_hash_t * param_map,
     axis2_char_t * method);
 
+static axis2_status_t
+axis2_http_transport_utils_send_attachment(
+    const axutil_env_t * env,
+    axutil_http_chunked_stream_t *chunked_stream,
+    FILE *fp,
+    axis2_byte_t *buffer,
+    int buffer_size);
+
+/***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_transport_out_init(axis2_http_transport_out_t *response, 
@@ -367,11 +377,27 @@ axis2_http_transport_utils_process_http_post_request(
                and also gives out a content lenght of 0.
                We need to fix the transport design to fix sutuations like this.
              */
-            callback_ctx->content_length = AXIS2_CHUNKED_CONTENT_LENGTH;
-            callback_ctx->unread_len = callback_ctx->content_length;
+            /*callback_ctx->content_length = AXIS2_CHUNKED_CONTENT_LENGTH;
+            callback_ctx->unread_len = callback_ctx->content_length;*/
+            callback_ctx->chunked_stream =
+                    axutil_http_chunked_stream_create(env, in_stream);
+
+                if (!callback_ctx->chunked_stream)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
+                                    " creating in chunked stream.");
+                    return AXIS2_FAILURE;
+                }
+
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "HTTP"
+                                " stream chunked");
         }
     }
 
+    /* when the message contains does not contain pure XML we can't send it 
+     * directly to the parser, First we need to seperate the SOAP part from
+     * the attachment */
+    
     if (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED))
     {
         /* get mime boundary */
@@ -385,40 +411,60 @@ axis2_http_transport_utils_process_http_post_request(
         {
             axiom_mime_parser_t *mime_parser = NULL;
             int soap_body_len = 0;
-            axutil_param_t *chunk_buffer_size_param = NULL;
-            axutil_param_t *max_chunk_buffers_param = 0;
+            axutil_param_t *buffer_size_param = NULL;
+            axutil_param_t *max_buffers_param = NULL;
+            axutil_param_t *attachment_dir_param = NULL;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
+            axis2_char_t *value_dir = NULL;
             int size = 0;
             int num = 0;
 
             mime_parser = axiom_mime_parser_create(env);
-
-            chunk_buffer_size_param = axis2_msg_ctx_get_parameter (msg_ctx,
+            /* This is the size of the buffer we keep inside mime_parser
+             * when parsing. */
+            buffer_size_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                env,
-                                                               AXIS2_MTOM_CHUNK_BUFFER_SIZE);
-            if (chunk_buffer_size_param)
+                                                               AXIS2_MTOM_BUFFER_SIZE);
+            if (buffer_size_param)
             {
                 value_size =
-                    (axis2_char_t *) axutil_param_get_value (chunk_buffer_size_param, env);
+                    (axis2_char_t *) axutil_param_get_value (buffer_size_param, env);
                 if(value_size)
                 {
                     size = atoi(value_size);
-                    axiom_mime_parser_set_chunk_buffer_size(mime_parser, env, size);
+                    axiom_mime_parser_set_buffer_size(mime_parser, env, size);
                 }
             }
-
-            max_chunk_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
+            
+            /* We create an array of buffers in order to conatin SOAP data inside
+             * mime_parser. This is the number of sucj buffers */
+            max_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                env,
-                                                               AXIS2_MTOM_MAX_CHUNK_BUFFERS);
-            if (max_chunk_buffers_param)
+                                                               AXIS2_MTOM_MAX_BUFFERS);
+            if (max_buffers_param)
             {
                 value_num =
-                    (axis2_char_t *) axutil_param_get_value (max_chunk_buffers_param, env);
+                    (axis2_char_t *) axutil_param_get_value (max_buffers_param, env);
                 if(value_num)
                 {
                     num = atoi(value_num);
-                    axiom_mime_parser_set_max_chunk_buffers(mime_parser, env, num);
+                    axiom_mime_parser_set_max_buffers(mime_parser, env, num);
+                }
+            }
+            /* If this paramter is there mime_parser will cached the attachment 
+             * using to the directory for large attachments. */    
+            attachment_dir_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                                   env,
+                                                                   AXIS2_ATTACHMENT_DIR);
+
+            if(attachment_dir_param)
+            {
+                value_dir =
+                    (axis2_char_t *) axutil_param_get_value (attachment_dir_param, env);
+                if(value_dir)
+                {
+                    axiom_mime_parser_set_attachment_dir(mime_parser, env, value_dir);
                 }
             }
 
@@ -439,6 +485,12 @@ axis2_http_transport_utils_process_http_post_request(
                     axiom_mime_parser_get_soap_body_str(mime_parser, env);
             }
 
+            if(callback_ctx->chunked_stream)
+            {
+                axutil_http_chunked_stream_free(callback_ctx->chunked_stream, env);
+                callback_ctx->chunked_stream = NULL;
+            }
+
             stream = axutil_stream_create_basic(env);
             if (stream)
             {
@@ -450,8 +502,10 @@ axis2_http_transport_utils_process_http_post_request(
             }
             axiom_mime_parser_free(mime_parser, env);
             mime_parser = NULL;
+
+            AXIS2_FREE(env->allocator, mime_boundary);
         }
-        AXIS2_FREE(env->allocator, mime_boundary);
+        /*AXIS2_FREE(env->allocator, mime_boundary);*/
     }
 
     if(soap_action_header)
@@ -810,43 +864,60 @@ axis2_http_transport_utils_process_http_put_request(
         {
             axiom_mime_parser_t *mime_parser = NULL;
             int soap_body_len = 0;
-            axutil_param_t *chunk_buffer_size_param = NULL;
-            axutil_param_t *max_chunk_buffers_param = 0;
+            axutil_param_t *buffer_size_param = NULL;
+            axutil_param_t *max_buffers_param = NULL;
+            axutil_param_t *attachment_dir_param = NULL;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
+            axis2_char_t *value_dir = NULL;
             int size = 0;
             int num = 0;
 
             mime_parser = axiom_mime_parser_create(env);
 
-            chunk_buffer_size_param = 
+            buffer_size_param = 
                 axis2_msg_ctx_get_parameter (msg_ctx,
                                              env,
-                                             AXIS2_MTOM_CHUNK_BUFFER_SIZE);
-            if (chunk_buffer_size_param)
+                                             AXIS2_MTOM_BUFFER_SIZE);
+            if (buffer_size_param)
             {
                 value_size =
-                    (axis2_char_t *) axutil_param_get_value (chunk_buffer_size_param, env);
+                    (axis2_char_t *) axutil_param_get_value (buffer_size_param, env);
                 if(value_size)
                 {
                     size = atoi(value_size);
-                    axiom_mime_parser_set_chunk_buffer_size(mime_parser, env, size);
+                    axiom_mime_parser_set_buffer_size(mime_parser, env, size);
                 }
             }
 
-            max_chunk_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
+            max_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                env,
-                                                               AXIS2_MTOM_MAX_CHUNK_BUFFERS);
-            if (max_chunk_buffers_param)
+                                                               AXIS2_MTOM_MAX_BUFFERS);
+            if (max_buffers_param)
             {
                 value_num =
-                    (axis2_char_t *) axutil_param_get_value (max_chunk_buffers_param, env);
+                    (axis2_char_t *) axutil_param_get_value (max_buffers_param, env);
                 if(value_num)
                 {
                     num = atoi(value_num);
-                    axiom_mime_parser_set_max_chunk_buffers(mime_parser, env, num);
+                    axiom_mime_parser_set_max_buffers(mime_parser, env, num);
                 }
             }
+   
+            attachment_dir_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                                   env,
+                                                                   AXIS2_ATTACHMENT_DIR);
+
+            if(attachment_dir_param)
+            {
+                value_dir =
+                    (axis2_char_t *) axutil_param_get_value (attachment_dir_param, env);
+                if(value_dir)
+                {
+                    axiom_mime_parser_set_attachment_dir(mime_parser, env, value_dir);
+                }
+            }
+
 
             if (mime_parser)
             {
@@ -1852,10 +1923,14 @@ axis2_http_transport_utils_on_data_request(
             (axutil_stream_t *) ((axis2_callback_info_t *) ctx)->in_stream;
         --size;                         /* reserve space to insert trailing null */
         len = axutil_stream_read(in_stream, env, buffer, size);
-        if (len >= 0)
+        if (len > 0)
         {
             buffer[len] = AXIS2_ESC_NULL;
             ((axis2_callback_info_t *) ctx)->unread_len -= len;
+        }
+        else if(len == 0)
+        {
+            ((axis2_callback_info_t *) ctx)->unread_len = 0;
         }
     }
     return len;
@@ -1981,45 +2056,61 @@ axis2_http_transport_utils_create_soap_msg(
             axiom_mime_parser_t *mime_parser = NULL;
             int soap_body_len = 0;
             axis2_char_t *soap_body_str = NULL;
-            axutil_param_t *chunk_buffer_size_param = NULL;
-            axutil_param_t *max_chunk_buffers_param = 0;
+            axutil_param_t *buffer_size_param = NULL;
+            axutil_param_t *max_buffers_param = NULL;
+            axutil_param_t *attachment_dir_param = NULL;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
+            axis2_char_t *value_dir = NULL;
             int size = 0;
             int num = 0;
  
             mime_parser = axiom_mime_parser_create(env);
 
-            chunk_buffer_size_param = 
+            buffer_size_param = 
                 axis2_msg_ctx_get_parameter (msg_ctx,
                                              env,
-                                             AXIS2_MTOM_CHUNK_BUFFER_SIZE);
-            if (chunk_buffer_size_param)
+                                             AXIS2_MTOM_BUFFER_SIZE);
+            if (buffer_size_param)
             {
                 value_size =
-                    (axis2_char_t *) axutil_param_get_value (chunk_buffer_size_param, env);
+                    (axis2_char_t *) axutil_param_get_value (buffer_size_param, env);
 
                 if(value_size)
                 {
                     size = atoi(value_size);
-                    axiom_mime_parser_set_chunk_buffer_size(mime_parser, env, size);
+                    axiom_mime_parser_set_buffer_size(mime_parser, env, size);
                 }
             }
 
-            max_chunk_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
+            max_buffers_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                    env,
-                                                                   AXIS2_MTOM_MAX_CHUNK_BUFFERS);
-            if(max_chunk_buffers_param)
+                                                                   AXIS2_MTOM_MAX_BUFFERS);
+            if(max_buffers_param)
             {
                 value_num =
-                    (axis2_char_t *) axutil_param_get_value (max_chunk_buffers_param, env);
+                    (axis2_char_t *) axutil_param_get_value (max_buffers_param, env);
                 if(value_num)
                 {
                     num = atoi(value_num);
-                    axiom_mime_parser_set_max_chunk_buffers(mime_parser, env, num);
+                    axiom_mime_parser_set_max_buffers(mime_parser, env, num);
                 }
             }
-            
+           
+            attachment_dir_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                                   env,
+                                                                   AXIS2_ATTACHMENT_DIR);
+            if(attachment_dir_param)
+            {
+                value_dir =
+                    (axis2_char_t *) axutil_param_get_value (attachment_dir_param, env);
+                if(value_dir)
+                {
+                    axiom_mime_parser_set_attachment_dir(mime_parser, env, value_dir);
+                }
+            }
+   
+ 
             if (mime_parser)
             {
                 binary_data_map = 
@@ -2036,6 +2127,12 @@ axis2_http_transport_utils_create_soap_msg(
                     axiom_mime_parser_get_soap_body_len(mime_parser, env);
                 soap_body_str =
                     axiom_mime_parser_get_soap_body_str(mime_parser, env);
+            }
+
+            if(callback_ctx->chunked_stream)
+            {
+                axutil_http_chunked_stream_free(callback_ctx->chunked_stream, env);
+                callback_ctx->chunked_stream = NULL;
             }
 
             stream = axutil_stream_create_basic(env);
@@ -2118,6 +2215,12 @@ axis2_http_transport_utils_create_soap_msg(
 			axutil_stream_free(stream, env);
 			callback_ctx->in_stream = NULL;
 		}
+        if(callback_ctx->chunked_stream)
+        {
+            axutil_http_chunked_stream_free(callback_ctx->chunked_stream, env);
+            callback_ctx->chunked_stream = NULL;
+        }
+
     }
     else
     {
@@ -3043,5 +3146,210 @@ axis2_http_transport_utils_process_request(
 	return status;
 }
 
+/* This method takes an array_list as the input. It has items some 
+   may be buffers and some may be files. This will send these part
+   one by one to the wire using the chunked stream.*/
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL  
+axis2_http_transport_utils_send_mtom_message(
+    axutil_http_chunked_stream_t * chunked_stream,
+    const axutil_env_t * env,
+    axutil_array_list_t *mime_parts)
+{
+    int i = 0;
+    axiom_mime_part_t *mime_part = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
+    int written = 0;
+    int len = 0;    
+
+    if(mime_parts)
+    {
+        for(i = 0; i < axutil_array_list_size
+                (mime_parts, env); i++)
+        {
+            mime_part = (axiom_mime_part_t *)axutil_array_list_get(
+                mime_parts, env, i);
+            
+            /* If it is a buffer just wite it to the wire. This incudes mime_bounadaries,
+             * mime_headers and SOAP */
+            
+            if((mime_part->type) == AXIOM_MIME_PART_BUFFER)
+            {
+                written = 0;
+                while(written < mime_part->part_size)
+                {
+                    len = 0;
+                    len = axutil_http_chunked_stream_write(chunked_stream, env,
+                        mime_part->part + written, mime_part->part_size - written);
+                    if (len == -1)
+                    {
+                        status = AXIS2_FAILURE;
+                        break;
+                    }
+                    else
+                    {
+                        written += len;
+                    }
+                }
+            }
+            
+            /* If it is a file we load a very little portion to memory 
+             * and send it as chunked , we keep on doing this until we find
+             * the end of the file */ 
+            else if((mime_part->type) == AXIOM_MIME_PART_FILE)
+            {
+                FILE *f = NULL;
+                axis2_byte_t *output_buffer = NULL;                
+                int output_buffer_size = 0;
+
+                f = fopen(mime_part->file_name, "rb");
+                if (!f)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Error opening file %s for reading",
+                    mime_part->file_name);
+                    return AXIS2_FAILURE;
+                }
+                
+                /*If the part_size is less than the defined buffer size then 
+                 *from the first write to the wire we can send the file */
+                
+                if(mime_part->part_size > AXIS2_MTOM_OUTPUT_BUFFER_SIZE)
+                {
+                    output_buffer_size = AXIS2_MTOM_OUTPUT_BUFFER_SIZE;
+                }
+                else
+                {
+                    output_buffer_size = mime_part->part_size;
+                }
+               
+                output_buffer =  AXIS2_MALLOC(env->allocator, 
+                    (output_buffer_size + 1) * sizeof(axis2_char_t));
+ 
+                /*This is the method responsible for writing to the wire */    
+                status = axis2_http_transport_utils_send_attachment(env, chunked_stream, 
+                    f, output_buffer, output_buffer_size);
+                if(status == AXIS2_FAILURE)
+                {
+                    return status;
+                }
+            }
+            else
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unknown mime_part.");
+                return AXIS2_FAILURE;
+            }
+            if(status == AXIS2_FAILURE)
+            {
+                break;
+            }
+        }
+        if(status == AXIS2_SUCCESS)
+        {
+           /* send the end of chunk */
+            axutil_http_chunked_stream_write_last_chunk(chunked_stream, env);
+            return AXIS2_SUCCESS;
+        }
+        else
+        {
+            return status;
+        }
+    }    
+    else
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot send the attachment.Mime"
+                "Parts are not set properly.");
+        return AXIS2_FAILURE;
+    }    
+}
 
 
+static axis2_status_t
+axis2_http_transport_utils_send_attachment(
+    const axutil_env_t * env,
+    axutil_http_chunked_stream_t *chunked_stream,
+    FILE *fp,
+    axis2_byte_t *buffer,
+    int buffer_size)
+{
+
+    int count = 0;     
+    int len = 0;
+    int written = 0;
+    axis2_status_t status = AXIS2_SUCCESS;   
+ 
+    /*We do not load the whole file to memory. Just load a buffer_size portion
+     *and send it. Keep on doing this until the end of file */
+    
+    do
+    {
+        count = (int)fread(buffer, 1, buffer_size + 1, fp);
+        if (ferror(fp))
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Error in reading file containg the attachment");
+            if (buffer)
+            {
+                AXIS2_FREE(env->allocator, buffer);
+                buffer = NULL;
+            }
+            fclose(fp);
+            return AXIS2_FAILURE;
+        }
+
+        /*Writing the part we loaded to memory to the wire*/
+        if(count > 0)
+        {
+            written = 0;
+            while(written < count)
+            {
+                len = 0;
+                len = axutil_http_chunked_stream_write(chunked_stream, env,
+                    buffer + written, count - written);
+                if (len == -1)
+                {
+                    status = AXIS2_FAILURE;
+                    break;
+                }
+                else
+                {
+                    written += len;
+                }
+            }
+        }
+        else
+        {
+            if (buffer)
+            {
+                AXIS2_FREE(env->allocator, buffer);
+                buffer = NULL;
+            }
+            fclose(fp);
+            return AXIS2_FAILURE;
+        }  
+        
+        /*We keep on loading the next part to the same buffer. So need to reset 
+         * te buffer */
+        memset(buffer, 0, buffer_size);    
+        if(status == AXIS2_FAILURE)
+        {
+            if (buffer)
+            {
+                AXIS2_FREE(env->allocator, buffer);
+                buffer = NULL;
+            }
+            fclose(fp);
+            return AXIS2_FAILURE;
+        } 
+    }
+    while(!feof(fp));
+    
+    if(buffer)
+    {
+        AXIS2_FREE(env->allocator, buffer);    
+        buffer = NULL;
+    }
+
+    fclose(fp);
+    return AXIS2_SUCCESS;    
+}

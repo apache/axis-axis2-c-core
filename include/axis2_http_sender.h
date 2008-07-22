@@ -201,7 +201,7 @@ extern "C"
                         axis2_http_sender_set_om_output (sender, env, om_output)
 
     /** Set http version. */
-#define AXIOM_SENDER_SET_HTTP_VERSION(sender, env, version)\
+#define AXIS2_HTTP_SENDER_SET_HTTP_VERSION(sender, env, version)\
                         axis2_http_sender_set_http_version (sender, env, version)
 
     /** Frees the soap over http sender. */

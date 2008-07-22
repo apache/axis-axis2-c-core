@@ -38,8 +38,8 @@ extern "C"
 {
 #endif
 
-#define AXIOM_MIME_PARSER_BUFFER_SIZE (1024 * 1024)
-#define AXIOM_MIME_PARSER_MAX_CHUNK_BUFFERS 1000
+#define AXIOM_MIME_PARSER_BUFFER_SIZE (1024 * 1024/2)
+#define AXIOM_MIME_PARSER_MAX_BUFFERS 1000
 
 #define AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT 100
 
@@ -128,7 +128,7 @@ extern "C"
       * @return mime parts as a hash map 
       */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_mime_parser_set_chunk_buffer_size(
+    axiom_mime_parser_set_buffer_size(
         axiom_mime_parser_t * mime_parser,
         const axutil_env_t * env,
         int size);
@@ -141,10 +141,26 @@ extern "C"
       * @return VOID
       */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_mime_parser_set_max_chunk_buffers(
+    axiom_mime_parser_set_max_buffers(
         axiom_mime_parser_t * mime_parser,
         const axutil_env_t * env,
         int num);
+
+    
+    /**
+      * Set attachment dir specified in the axis2.xml
+      * @param mime_parser the pointer for the mime parser struct 
+      * @param env Environment. MUST NOT be NULL.
+      * @param attachment_dir is string containg the directory path
+      * @return VOID
+      */
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_mime_parser_set_attachment_dir(
+        axiom_mime_parser_t *mime_parser,
+        const axutil_env_t *env,
+        axis2_char_t *attachment_dir);
+
 
 
 

@@ -75,6 +75,29 @@ extern "C"
     /**
      * @param data_handler, a pointer to data handler struct
      * @param env environment, MUST NOT be NULL.
+     * @return bool whether attachment is cached or not
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axiom_data_handler_get_cached(
+        axiom_data_handler_t * data_handler,
+        const axutil_env_t * env);
+	
+    /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
+	 * @param cached, 
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_data_handler_set_cached(
+        axiom_data_handler_t * data_handler,
+        const axutil_env_t * env,
+		axis2_bool_t cached);
+
+
+    /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
      * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
      */
     AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
@@ -144,6 +167,16 @@ extern "C"
     /**
      * @param data_handler, a pointer to data handler struct
      * @param env environment, MUST NOT be NULL.
+     * @return file name, in the case of file type data handler.
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axiom_data_handler_get_file_name(
+        axiom_data_handler_t * data_handler,
+        const axutil_env_t * env);
+
+    /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
      * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
      */
     AXIS2_EXTERN void AXIS2_CALL
@@ -161,6 +194,20 @@ extern "C"
         const axis2_char_t * file_name,
         const axis2_char_t * mime_type);
 
+    /* Add the binary to the array_list
+     * @param data_handler, a pointer to data handler struct
+     * data_handler, a pointer to data handler struct
+     * list, a pointer to an array_list which containing some message parts need 
+     * to be written to the wire
+     * data_handler, a pointer to data handler struct
+     */ 
+    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_data_handler_add_binary_data(
+        axiom_data_handler_t *data_handler,
+        const axutil_env_t *env,
+        axutil_array_list_t *list);
+    
     /** @} */
 
 #ifdef __cplusplus

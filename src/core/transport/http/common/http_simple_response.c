@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <axutil_types.h>
+#include <axiom_mime_part.h>
 
 #define AXIS2_HTTP_SIMPLE_RESPONSE_READ_SIZE 2048
 
@@ -28,6 +29,7 @@ struct axis2_http_simple_response
     axis2_http_status_line_t *status_line;
     axutil_array_list_t *header_group;
     axutil_stream_t *stream;
+    axutil_array_list_t *mime_parts;
 };
 
 
@@ -94,6 +96,7 @@ axis2_http_simple_response_create_default(
     simple_response->status_line = NULL;
     simple_response->header_group = NULL;
     simple_response->stream = NULL;
+    simple_response->mime_parts = NULL;
 
     return simple_response;
 }
@@ -127,6 +130,23 @@ axis2_http_simple_response_free(
         }
         axutil_array_list_free(simple_response->header_group, env);
     }
+
+    if (simple_response->mime_parts)
+    {
+        int i = 0;
+        for (i = 0; i < axutil_array_list_size(simple_response->mime_parts, env); i++)
+        {
+            axiom_mime_part_t *mime_part = NULL;
+            mime_part = (axiom_mime_part_t *)
+                axutil_array_list_get(simple_response->mime_parts, env, i);
+            if (mime_part)
+            {
+                axiom_mime_part_free(mime_part, env);
+            }
+        }
+        axutil_array_list_free(simple_response->mime_parts, env);
+    }
+
 
     AXIS2_FREE(env->allocator, simple_response);
     /* 
@@ -228,6 +248,25 @@ axis2_http_simple_response_get_http_version(
     return axis2_http_status_line_get_http_version(simple_response->status_line,
                                                    env);
 }
+
+axis2_status_t AXIS2_CALL
+axis2_http_simple_response_set_http_version(
+    axis2_http_simple_response_t * simple_response,
+    const axutil_env_t * env,
+    axis2_char_t *http_version)
+{
+    if (!(simple_response->status_line))
+    {
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
+                         "axis2 simple response , status line is not available");
+     
+        return AXIS2_FAILURE;
+    }
+    axis2_http_status_line_set_http_version(simple_response->status_line,
+                                                   env, http_version);
+    return AXIS2_SUCCESS;
+}
+
 
 axis2_char_t *AXIS2_CALL
 axis2_http_simple_response_get_status_line(
@@ -600,6 +639,24 @@ axis2_http_simple_response_contains_header(
 }
 
 
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
+axis2_http_simple_response_get_mime_parts(
+    axis2_http_simple_response_t * simple_response,
+    const axutil_env_t * env)
+{
 
+    return simple_response->mime_parts;
 
+}
+
+void AXIS2_EXTERN AXIS2_CALL
+axis2_http_simple_response_set_mime_parts(
+    axis2_http_simple_response_t * simple_response,
+    const axutil_env_t * env,
+    axutil_array_list_t *mime_parts)
+{
+
+    simple_response->mime_parts = mime_parts;
+
+}
 
