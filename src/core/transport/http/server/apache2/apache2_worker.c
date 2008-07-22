@@ -44,7 +44,7 @@ static axis2_status_t apache2_worker_send_mtom_message(
     axutil_array_list_t *mime_parts);
 
 static axis2_status_t 
-axis2_http_transport_utils_send_attachment(
+apache2_worker_send_attachment(
     const axutil_env_t * env,
     request_rec *request,
     FILE *fp,
@@ -1363,7 +1363,7 @@ static axis2_status_t apache2_worker_send_mtom_message(
                     (output_buffer_size + 1) * sizeof(axis2_char_t));
  
  
-                status = axis2_http_transport_utils_send_attachment(env, request, 
+                status = apache2_worker_send_attachment(env, request, 
                     f, output_buffer, output_buffer_size);
                 if(status == AXIS2_FAILURE)
                 {
@@ -1389,7 +1389,7 @@ static axis2_status_t apache2_worker_send_mtom_message(
 
 
 static axis2_status_t
-axis2_http_transport_utils_send_attachment(
+apache2_worker_send_attachment(
     const axutil_env_t * env,
     request_rec *request,
     FILE *fp,
