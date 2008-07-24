@@ -65,6 +65,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="guththila.lib axutil.lib"
+				OutputFile="$(OutDir)\axis2_parser.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="$(SolutionDir)\deploy\lib"
 				GenerateDebugInformation="true"
@@ -175,11 +176,11 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
-			RelativePathToProject=".\axutil\axutil.vcproj"
+			RelativePathToProject="..\Axis2C\ides\vc\axis2c\axutil\axutil.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{81FDD803-8611-4EB4-AB0E-85F498061A2D}"
-			RelativePathToProject=".\guththila\guththila.vcproj"
+			RelativePathToProject="..\Axis2C\ides\vc\axis2c\guththila\guththila.vcproj"
 		/>
 	</References>
 	<Files>
@@ -194,6 +195,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\axiom\src\parser\guththila\guththila_xml_writer_wrapper.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\src\parser\xml_reader.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\src\parser\xml_writer.c"
 				>
 			</File>
 		</Filter>
