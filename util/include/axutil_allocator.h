@@ -108,14 +108,6 @@ extern "C"
          */
         void *current_pool;
 
-        void *pool_allocator;
-        int ref_pool_allocator;
-
-        void(
-            AXIS2_CALL
-            * pool_allocator_destroy)(
-                struct axutil_allocator * allocator);
-
     }
     axutil_allocator_t;
 
@@ -175,10 +167,6 @@ extern "C"
 
 #define AXIS2_FREE(allocator, ptr) \
       ((allocator)->free_fn(allocator, ptr))
-
-#define AXIS2_POOL_ALLOCATOR_DESTROY(allocator) \
-      ((allocator)->pool_allocator_destroy(allocator))  
-
 
     /** @} */
 

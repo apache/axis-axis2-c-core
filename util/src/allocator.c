@@ -49,9 +49,6 @@ axutil_allocator_init(
             allocator->malloc_fn = axutil_allocator_malloc_impl;
             allocator->realloc = axutil_allocator_realloc_impl;
             allocator->free_fn = axutil_allocator_free_impl;
-            allocator->pool_allocator_destroy = NULL;
-            allocator->pool_allocator = NULL;
-            allocator->ref_pool_allocator = 0;
 
             return allocator;
         }
