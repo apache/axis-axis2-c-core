@@ -1236,6 +1236,10 @@ axis2_op_client_two_way_send(
                 axis2_char_t *value = axutil_property_get_value(property, env);
                 if (!axutil_strcmp(AXIS2_VALUE_TRUE, value))
                 {
+                    if(engine)
+                    {
+                        axis2_engine_free(engine, env);
+                    }
                     return response;
                 }
             }
