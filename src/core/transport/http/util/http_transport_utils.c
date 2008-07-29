@@ -3339,3 +3339,25 @@ axis2_http_transport_utils_send_attachment(
     fclose(fp);
     return AXIS2_SUCCESS;    
 }
+
+AXIS2_EXTERN void AXIS2_CALL axis2_http_transport_utils_destroy_mime_parts(
+    axutil_array_list_t *mime_parts,
+    const axutil_env_t *env)
+{
+    if (mime_parts)
+    {
+        int i = 0;
+        for (i = 0; i < axutil_array_list_size(mime_parts, env); i++)
+        {
+            axiom_mime_part_t *mime_part = NULL;
+            mime_part = (axiom_mime_part_t *)
+                axutil_array_list_get(mime_parts, env, i);
+            if (mime_part)
+            {
+                axiom_mime_part_free(mime_part, env);
+            }
+        }
+        axutil_array_list_free(mime_parts, env);
+    }
+}
+
