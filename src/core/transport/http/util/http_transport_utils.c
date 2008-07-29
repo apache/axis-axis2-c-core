@@ -353,7 +353,7 @@ axis2_http_transport_utils_process_http_post_request(
 
                 if (!callback_ctx->chunked_stream)
                 {
-                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occurred in"
                                     " creating in chunked stream.");
                     return AXIS2_FAILURE;
                 }
@@ -369,33 +369,19 @@ axis2_http_transport_utils_process_http_post_request(
         /* check content encoding from msg ctx property */
         axis2_char_t *value = axis2_msg_ctx_get_transfer_encoding(msg_ctx, env);
 
-        if (value &&
-            axutil_strstr(value, AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
+        if (value && axutil_strstr(value, AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
         {
-            /* this is an UGLY hack to get some of the transports working 
-               e.g. PHP transport where it strips the chunking info in case of chunking 
-               and also gives out a content lenght of 0.
-               We need to fix the transport design to fix sutuations like this.
-             */
-            /*callback_ctx->content_length = AXIS2_CHUNKED_CONTENT_LENGTH;
-            callback_ctx->unread_len = callback_ctx->content_length;*/
-            callback_ctx->chunked_stream =
-                    axutil_http_chunked_stream_create(env, in_stream);
-
-                if (!callback_ctx->chunked_stream)
-                {
-                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
-                                    " creating in chunked stream.");
-                    return AXIS2_FAILURE;
-                }
-
-                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "HTTP"
-                                " stream chunked");
+            /* In case Transfer encoding is set to message context, some streams strip chunking meta
+			data, so chunked streams should not be created */
+            
+			callback_ctx->content_length = -1;
+			callback_ctx->unread_len = -1;
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[chunked ] setting length to -1");
         }
     }
 
     /* when the message contains does not contain pure XML we can't send it 
-     * directly to the parser, First we need to seperate the SOAP part from
+     * directly to the parser, First we need to separate the SOAP part from
      * the attachment */
     
     if (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED))
