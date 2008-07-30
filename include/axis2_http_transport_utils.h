@@ -389,6 +389,12 @@ extern "C"
         const axutil_env_t * env,
         axutil_array_list_t *mime_parts);
 
+    AXIS2_EXTERN void AXIS2_CALL 
+    axis2_http_transport_utils_destroy_mime_parts(
+        axutil_array_list_t *mime_parts,
+        const axutil_env_t *env);
+
+
 
     /** @} */
 #ifdef __cplusplus
