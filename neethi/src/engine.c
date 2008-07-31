@@ -17,6 +17,7 @@
 
 #include <neethi_engine.h>
 #include <neethi_assertion_builder.h>
+#include <axiom_attribute.h>
 
 /*Private functions*/
 
@@ -75,6 +76,11 @@ neethi_exactlyone_t *AXIS2_CALL get_cross_product(
     neethi_exactlyone_t *exactlyone2,
     const axutil_env_t *env);
 
+static void neethi_engine_clear_element_attributes(
+    axutil_hash_t *attr_hash,
+    const axutil_env_t *env);
+
+
 /*Implementations*/
 
 /*This is the function which is called from outside*/
@@ -84,9 +90,9 @@ neethi_engine_get_policy(
     const axutil_env_t *env,
     axiom_node_t *node,
     axiom_element_t *element)
-    {
-        return get_operator_neethi_policy(env, node, element);
-    }
+{
+    return get_operator_neethi_policy(env, node, element);
+}
 
 neethi_all_t *AXIS2_CALL
 get_operator_all(
@@ -285,41 +291,66 @@ process_operation_element(
          *comes here.Following is a little hack until we implement attribute
          hash map logic.*/
 
-        axis2_char_t *id = NULL;
-        axutil_qname_t *qname = NULL;
-        axis2_char_t *name = NULL;
+        axutil_hash_t *attributes = axiom_element_extract_attributes(
+            element, env, node);
 
-        qname =
-            axutil_qname_create(env, NEETHI_ID, NEETHI_WSU_NS,
-                                NULL/*NEETHI_WSU_NS_PREFIX*/);
-        if (!qname)
+        if(attributes)
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
-            return AXIS2_FAILURE;
-        }
-        id = axiom_element_get_attribute_value(element, env, qname);
-        axutil_qname_free(qname, env);
-        qname = NULL;
+            axutil_hash_index_t *hi = NULL;            
+            
+            axutil_hash_t *ht = neethi_policy_get_attributes(
+                (neethi_policy_t *)value, env);
 
-        qname = axutil_qname_create(env, NEETHI_NAME, NULL, NULL);
-        if (!qname)
-        {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
-            return AXIS2_FAILURE;
-        }
-        name = axiom_element_get_attribute_value(element, env, qname);
-        axutil_qname_free(qname, env);
-        qname = NULL;
+            if(!ht)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "[neethi] Policy hash map creation failed.");
+                return AXIS2_FAILURE;
+            }
+            
 
-        if (id)
-        {
-            neethi_policy_set_id((neethi_policy_t *) value, env, id);
-        }
-        if (name)
-        {
-            neethi_policy_set_name((neethi_policy_t *) value, env, name);
+            for (hi = axutil_hash_first(attributes, env);
+                hi; hi = axutil_hash_next(env, hi))
+            {
+                axis2_char_t *key = NULL;
+                void *val = NULL;
+                axutil_qname_t *qname = NULL;
+                axis2_char_t *attr_val = NULL;    
+                axiom_namespace_t *ns = NULL;
+                axis2_char_t *ns_uri = NULL;
+                axiom_attribute_t *om_attr = NULL;                
+    
+                axutil_hash_this(hi, NULL, NULL, &val);
+                if(val)
+                {
+                    om_attr = (axiom_attribute_t *) val;
+                    ns = axiom_attribute_get_namespace(om_attr, env);
+                    if(ns)
+                    {
+                        ns_uri = axiom_namespace_get_uri(ns, env);
+                    }
+
+                    qname = axutil_qname_create(env, 
+                        axiom_attribute_get_localname(om_attr, env),
+                        ns_uri, NULL);
+                    if(qname)
+                    {
+                        key = axutil_qname_to_string(qname, env);
+                        if(key)
+                        {
+                            attr_val = axiom_attribute_get_value(om_attr, env);
+                            if(attr_val)
+                            {
+                                axutil_hash_set(ht, axutil_strdup(env,key), AXIS2_HASH_KEY_STRING, 
+                                    axutil_strdup(env, attr_val));
+                            }                                
+                        }   
+                        axutil_qname_free(qname, env);  
+                    }
+                }    
+            }
+            neethi_engine_clear_element_attributes(attributes, env);
+            attributes = NULL;
         }
     }
 
@@ -1305,4 +1336,26 @@ neethi_engine_serialize(
 {
 
     return neethi_policy_serialize(policy, NULL, env);
+}
+
+static void neethi_engine_clear_element_attributes(
+    axutil_hash_t *attr_hash,
+    const axutil_env_t *env)
+{
+    axutil_hash_index_t *hi = NULL;
+
+    for(hi = axutil_hash_first(attr_hash, env); hi; hi = axutil_hash_next(env, hi))
+    {
+        void *val = NULL;
+        axutil_hash_this(hi, NULL, NULL, &val);
+        if (val)
+        {
+            axiom_attribute_free((axiom_attribute_t *)val, env);
+            val = NULL;
+        }
+    }
+    axutil_hash_free(attr_hash, env);
+    attr_hash = NULL;
+
+    return;
 }

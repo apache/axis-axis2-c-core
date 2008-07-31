@@ -76,6 +76,27 @@ main(
                     return 0;
                 }
 
+                if(neethi_policy)
+                {
+                    axis2_char_t *id = NULL;
+                    axis2_char_t *name = NULL;
+
+                    id = neethi_policy_get_id(neethi_policy, env); 
+                    if(id)
+                    {
+                        printf("Id is : %s\n", id);
+                    }   
+                    name = neethi_policy_get_name(neethi_policy, env);
+                    if(name)
+                    {
+                        printf("Name is : %s\n", name);
+                    }
+                    neethi_policy_free(neethi_policy, env);
+                    neethi_policy = NULL;
+
+                    printf("Successful \n");
+                }
+
                 /*else
                 {
                     axiom_node_t *s_node = NULL;

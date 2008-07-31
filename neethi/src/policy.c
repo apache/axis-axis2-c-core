@@ -17,14 +17,20 @@
 
 #include <neethi_policy.h>
 #include <neethi_engine.h>
+#include <axiom_attribute.h>
+
 
 struct neethi_policy_t
 {
     axutil_array_list_t *policy_components;
-    axis2_char_t *name;
-    axis2_char_t *id;
+    axutil_hash_t *attributes;
     axiom_node_t *root_node;
 };
+
+static void neethi_policy_clear_attributes(
+    axutil_hash_t *attributes,
+    const axutil_env_t *env);
+
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
 neethi_policy_create(
@@ -53,8 +59,7 @@ neethi_policy_create(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
-    neethi_policy->name = NULL;
-    neethi_policy->id = NULL;
+    neethi_policy->attributes = axutil_hash_make(env);
     neethi_policy->root_node = NULL;
 
     return neethi_policy;
@@ -86,7 +91,7 @@ neethi_policy_free(
             axutil_array_list_free(neethi_policy->policy_components, env);
             neethi_policy->policy_components = NULL;
         }
-        if (neethi_policy->id)
+        /*if (neethi_policy->id)
         {
             AXIS2_FREE(env->allocator, neethi_policy->id);
             neethi_policy->id = NULL;
@@ -95,7 +100,14 @@ neethi_policy_free(
         {
             AXIS2_FREE(env->allocator, neethi_policy->name);
             neethi_policy->name = NULL;
+        }*/
+        if(neethi_policy->attributes)
+        {
+            neethi_policy_clear_attributes(neethi_policy->attributes, 
+                env);
+            neethi_policy->attributes = NULL;
         }
+
         if (neethi_policy->root_node)
         {
             axiom_node_free_tree(neethi_policy->root_node, env);
@@ -107,6 +119,31 @@ neethi_policy_free(
     return;
 }
 
+
+static void neethi_policy_clear_attributes(
+    axutil_hash_t *attributes,
+    const axutil_env_t *env)
+{
+    if(attributes)
+    {
+        axutil_hash_index_t *hi = NULL;
+        void *val = NULL;
+
+        for (hi = axutil_hash_first(attributes, env); hi;
+             hi = axutil_hash_next(env, hi))
+        {
+            axutil_hash_this(hi, NULL, NULL, &val);
+
+            if (val)
+            {
+                AXIS2_FREE(env->allocator, (axis2_char_t *)val);
+                val = NULL;
+            }
+        }
+        axutil_hash_free(attributes, env);
+        attributes = NULL;
+    }
+}
 /* Implementations */
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
@@ -212,34 +249,151 @@ neethi_policy_get_name(
     neethi_policy_t *neethi_policy,
     const axutil_env_t *env)
 {
-    return neethi_policy->name;
+    if(neethi_policy->attributes)
+    {
+        axutil_qname_t *qname = NULL;
+        qname = axutil_qname_create(env, NEETHI_NAME, NULL, NULL);
+
+        if(qname)
+        {
+            axis2_char_t *key = axutil_qname_to_string(qname, env);
+            if(key)
+            {
+                return (axis2_char_t *)axutil_hash_get(neethi_policy->attributes, key, 
+                    AXIS2_HASH_KEY_STRING);
+            }
+            else
+            {
+                return NULL;
+            }
+        }        
+        else
+        {
+            return NULL;
+        }
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-neethi_policy_set_name(
-    neethi_policy_t *neethi_policy,
-    const axutil_env_t *env,
-    axis2_char_t *name)
-{
-    neethi_policy->name = name;
-    return AXIS2_SUCCESS;
-}
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 neethi_policy_get_id(
     neethi_policy_t *neethi_policy,
     const axutil_env_t *env)
 {
-    return neethi_policy->id;
+    if(neethi_policy->attributes)
+    {
+        axis2_char_t *id = NULL;
+        axutil_qname_t *qname = NULL;
+        qname = axutil_qname_create(env, NEETHI_ID, NEETHI_WSU_NS, NULL);
+
+        if(qname)
+        {
+            axis2_char_t *key = axutil_qname_to_string(qname, env);
+            if(key)
+            {
+                id =  (axis2_char_t *)axutil_hash_get(neethi_policy->attributes, key, 
+                    AXIS2_HASH_KEY_STRING);
+            }
+            axutil_qname_free(qname, env);
+            qname = NULL;
+            return id;
+        }        
+        else
+        {
+            return NULL;
+        }
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    neethi_policy_set_id(
+    neethi_policy_t * neethi_policy,
+    const axutil_env_t * env,
+    axis2_char_t * id)
+{
+    axutil_qname_t *qname = NULL;
+    axis2_char_t *key = NULL;
+
+    qname = axutil_qname_create(env, NEETHI_ID, NEETHI_WSU_NS, NULL);
+
+    if(qname)
+    {
+        key = axutil_qname_to_string(qname, env);
+        if(key)
+        {
+            axutil_hash_set(neethi_policy->attributes, key, 
+                AXIS2_HASH_KEY_STRING, axutil_strdup(env, id));
+        }
+        axutil_qname_free(qname, env);
+        return AXIS2_SUCCESS;
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    neethi_policy_set_name(
+    neethi_policy_t * neethi_policy,
+    const axutil_env_t * env,
+    axis2_char_t * name)
+{
+    axutil_qname_t *qname = NULL;
+    axis2_char_t *key = NULL;
+
+    qname = axutil_qname_create(env, NEETHI_NAME, NULL, NULL);
+
+    if(qname)
+    {
+        key = axutil_qname_to_string(qname, env);
+        if(key)
+        {
+            axutil_hash_set(neethi_policy->attributes, key, 
+                AXIS2_HASH_KEY_STRING, axutil_strdup(env, name));
+        }
+        axutil_qname_free(qname, env);
+        return AXIS2_SUCCESS;
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+}
+
+
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+neethi_policy_get_attributes(
+    neethi_policy_t *neethi_policy,
+    const axutil_env_t *env)
+{
+    return neethi_policy->attributes;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-neethi_policy_set_id(
+neethi_policy_set_attributes(
     neethi_policy_t *neethi_policy,
     const axutil_env_t *env,
-    axis2_char_t *id)
+    axutil_hash_t  *attributes)
 {
-    neethi_policy->id = axutil_strdup(env, id);
+    if(neethi_policy->attributes)
+    {
+        neethi_policy_clear_attributes(neethi_policy->attributes,
+                env);
+        neethi_policy->attributes = NULL;
+    }
+
+    neethi_policy->attributes = attributes;
     return AXIS2_SUCCESS;
 }
 
