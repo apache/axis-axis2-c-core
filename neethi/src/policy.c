@@ -128,11 +128,18 @@ static void neethi_policy_clear_attributes(
     {
         axutil_hash_index_t *hi = NULL;
         void *val = NULL;
+        const void *key = NULL;
 
         for (hi = axutil_hash_first(attributes, env); hi;
              hi = axutil_hash_next(env, hi))
         {
-            axutil_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, &key, NULL, &val);
+
+            if(key)
+            {
+                AXIS2_FREE(env->allocator, (axis2_char_t *)key);
+                key = NULL;
+            }
 
             if (val)
             {
