@@ -252,6 +252,7 @@ neethi_policy_get_name(
     if(neethi_policy->attributes)
     {
         axutil_qname_t *qname = NULL;
+        axis2_char_t *name = NULL;
         qname = axutil_qname_create(env, NEETHI_NAME, NULL, NULL);
 
         if(qname)
@@ -259,13 +260,12 @@ neethi_policy_get_name(
             axis2_char_t *key = axutil_qname_to_string(qname, env);
             if(key)
             {
-                return (axis2_char_t *)axutil_hash_get(neethi_policy->attributes, key, 
+                name = (axis2_char_t *)axutil_hash_get(neethi_policy->attributes, key, 
                     AXIS2_HASH_KEY_STRING);
             }
-            else
-            {
-                return NULL;
-            }
+            axutil_qname_free(qname, env);
+            qname = NULL;
+            return name;
         }        
         else
         {
@@ -330,7 +330,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
         key = axutil_qname_to_string(qname, env);
         if(key)
         {
-            axutil_hash_set(neethi_policy->attributes, key, 
+            axutil_hash_set(neethi_policy->attributes, axutil_strdup(env, key), 
                 AXIS2_HASH_KEY_STRING, axutil_strdup(env, id));
         }
         axutil_qname_free(qname, env);
@@ -359,7 +359,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
         key = axutil_qname_to_string(qname, env);
         if(key)
         {
-            axutil_hash_set(neethi_policy->attributes, key, 
+            axutil_hash_set(neethi_policy->attributes, axutil_strdup(env, key), 
                 AXIS2_HASH_KEY_STRING, axutil_strdup(env, name));
         }
         axutil_qname_free(qname, env);
