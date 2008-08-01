@@ -583,6 +583,23 @@ axiom_mime_parser_parse(
     mime_parser->soap_body_str = soap_str;
     mime_parser->soap_body_len = soap_len;
 
+    /* There are multipart/related messages which does not contain attachments 
+     * The only mime_part is the soap envelope. So for those messages the mime
+     * boundary after the soap will end up with --
+     * So we will check that here and if we found then the logic inside the 
+     * while loop will not be executed */
+
+    if(len_array[buf_num] == 2)
+    {
+        end_of_mime = (AXIOM_MIME_BOUNDARY_BYTE == *(buf_array[buf_num])) &&
+                            (AXIOM_MIME_BOUNDARY_BYTE == *(buf_array[buf_num] + 1));
+        if(end_of_mime)
+        {
+            AXIS2_FREE(env->allocator, buf_array[buf_num]);
+            buf_array[buf_num] = NULL;
+        }
+    }
+
     /*<SOAP></SOAP>--MIMEBOUNDARY
       mime_headr1:.......
       mime_headr2:....
