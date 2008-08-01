@@ -262,7 +262,7 @@ axiom_mime_body_part_write_to_list(
     }
     
     /* Now we have the complete mime_headers string for a particular mime part.
-     * First wrap it as a mime_output_part_t .Then add it to the array list so
+     * First wrap it as a mime_part_t .Then add it to the array list so
      * later through the transport this can be written to the wire. */
     
     mime_header_part = axiom_mime_part_create(env);
@@ -280,11 +280,6 @@ axiom_mime_body_part_write_to_list(
     
     axutil_array_list_add(list, env, mime_header_part);
 
-    /* TODO: We only support binary as of now,
-     * Need to support "base64", "uuencode", "x-uuencode", "x-uue" and,
-     * "quoted-printable"
-     */
-    
     /* Then if the data_handler is there let's add the binary data, may be
      * buffer , may be file name and information. 
      */

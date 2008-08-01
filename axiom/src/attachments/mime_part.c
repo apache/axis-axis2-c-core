@@ -168,8 +168,8 @@ axiom_mime_part_write_body_part_to_list(
     axiom_mime_part_t *crlf2 = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
 
-    /* We adding the following format here.
-     * --MimeBoundart
+    /* We are adding accoarding to the following format here.
+     * --MimeBoundary
      * mime_header1
      * mime_header2
      * mime_header3 */   
@@ -229,7 +229,7 @@ axiom_mime_part_finish_adding_parts(
     size = axutil_strlen(boundary);
     byte_buffer = (axis2_byte_t *)boundary;
     
-    /* There is -- before and after so the lenght of the
+    /* There is -- before and after so the length of the
      * actual part is mime_boundary_len + 4 */
 
     byte_stream =
@@ -261,7 +261,7 @@ axiom_mime_part_finish_adding_parts(
     byte_stream[size + 2] = AXIOM_MIME_BOUNDARY_BYTE;
     byte_stream[size + 3] = AXIOM_MIME_BOUNDARY_BYTE;
     
-    /* Now we add this as an mime_part part to 
+    /* Now we add this as an mime_part to 
      * the list. */ 
     
     final_part = axiom_mime_part_create(env);
@@ -478,10 +478,10 @@ axiom_mime_part_create_part_list(
     AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env,
         AXIOM_MIME_HEADER_CONTENT_ID, content_id_string);
 
-    /* Now first write the headers needed for SOAP */
+    /* Now first insert the headers needed for SOAP */
     
     /* After calling this method we have mime_headers of the SOAP envelope
-     * as an mime_part in the array_list */
+     * as a mime_part in the array_list */
 
     status = axiom_mime_part_write_body_part_to_list(env, part_list,
             root_mime_body_part, boundary);

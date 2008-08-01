@@ -459,7 +459,6 @@ axiom_data_handler_add_binary_data(
     
     if (data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_BUFFER)
     {
-        /*binary_part->part = (axis2_byte_t *)axutil_strdup(env, data_handler->buffer);*/
         binary_part->part = (axis2_byte_t *)AXIS2_MALLOC(env->allocator, 
             (data_handler->buffer_len) * sizeof(axis2_byte_t));
         memcpy(binary_part->part, data_handler->buffer, data_handler->buffer_len);
