@@ -1348,6 +1348,12 @@ axis2_op_client_two_way_send(
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Response is not valid. Blocking invocation expects response.");
                 break;
         }
+
+        if(response)
+        {
+            axis2_msg_ctx_free(response, env);
+        }
+
         return NULL;
     }
     return response;
