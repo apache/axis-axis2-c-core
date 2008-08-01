@@ -371,8 +371,10 @@ axis2_msg_ctx_free(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    if (msg_ctx->paused || msg_ctx->keep_alive)
+    if (msg_ctx->keep_alive)
+    {
         return;
+    }
 
     if (msg_ctx->base)
     {
