@@ -577,6 +577,7 @@ axiom_soap_header_remove_header_block(
                     axutil_hash_set(soap_header->header_blocks, key,
                                     AXIS2_HASH_KEY_STRING, NULL);
                     axiom_soap_header_block_free(header_block, env);
+                    axiom_node_free_tree(node, env);
                     return AXIS2_SUCCESS;
                 }
             }
