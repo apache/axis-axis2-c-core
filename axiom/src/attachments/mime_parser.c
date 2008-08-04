@@ -589,15 +589,12 @@ axiom_mime_parser_parse(
      * So we will check that here and if we found then the logic inside the 
      * while loop will not be executed */
 
-    if(len_array[buf_num] == 2)
-    {
-        end_of_mime = (AXIOM_MIME_BOUNDARY_BYTE == *(buf_array[buf_num])) &&
+   end_of_mime = (AXIOM_MIME_BOUNDARY_BYTE == *(buf_array[buf_num])) &&
                             (AXIOM_MIME_BOUNDARY_BYTE == *(buf_array[buf_num] + 1));
-        if(end_of_mime)
-        {
-            AXIS2_FREE(env->allocator, buf_array[buf_num]);
-            buf_array[buf_num] = NULL;
-        }
+    if(end_of_mime)
+    {
+        AXIS2_FREE(env->allocator, buf_array[buf_num]);
+        buf_array[buf_num] = NULL;
     }
 
     /*<SOAP></SOAP>--MIMEBOUNDARY
