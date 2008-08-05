@@ -20,7 +20,6 @@
 
 #include <axis2_http_transport.h>
 #include <axis2_http_svr_thread.h>
-#include <axis2_http_server.h>
 #include <axis2_transport_in_desc.h>
 #include <axutil_param_container.h>
 #include <axutil_url.h>
