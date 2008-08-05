@@ -210,7 +210,24 @@ axis2_phase_invoke(
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                     "Invoke the handler %s within the phase %s", handler_name,
                         phase->name);
-                status = axis2_handler_invoke(handler, env, msg_ctx);
+
+                /* Test code. This is used when valgrind is used to find leaks in Axis2/C modules.
+                 * if(!axutil_strcmp(handler_name, "SandeshaGlobalInHandler") || !axutil_strcmp(
+                            handler_name, "SandeshaInHandler"))
+                {
+                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                        "dam_handler_name %s. dam_phase_name %s", handler_name, phase->name);
+                    if(!axutil_strcmp(handler_name, "SandeshaGlobalInHandler"))
+                    {
+                        status = sandesha2_global_in_handler_invoke(phase->first_handler, env, msg_ctx);
+                    }
+                    if(!axutil_strcmp(handler_name, "SandeshaInHandler"))
+                    {
+                        status = sandesha2_in_handler_invoke(phase->first_handler, env, msg_ctx);
+                    }
+                }
+                else*/
+                    status = axis2_handler_invoke(handler, env, msg_ctx);
                 if (!status)
                 {
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
@@ -242,6 +259,7 @@ axis2_phase_invoke(
             AXIS2_LOG_INFO(env->log,
                 "Invoke the last handler %s within the phase %s", handler_name, 
                 phase->name);
+            
             status = axis2_handler_invoke(phase->last_handler, env, msg_ctx);
             if (!status)
             {

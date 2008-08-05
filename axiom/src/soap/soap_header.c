@@ -547,8 +547,7 @@ axiom_soap_header_remove_header_block(
     {
         return AXIS2_FAILURE;
     }
-    for (hi = axutil_hash_first(soap_header->header_blocks, env);
-         hi; hi = axutil_hash_next(env, hi))
+    for (hi = axutil_hash_first(soap_header->header_blocks, env); hi; hi = axutil_hash_next(env, hi))
     {
         const void *key = NULL;
         void *val = NULL;
@@ -569,8 +568,7 @@ axiom_soap_header_remove_header_block(
                 ele =
                     (axiom_element_t *) axiom_node_get_data_element(node, env);
                 element_qname = axiom_element_get_qname(ele, env, node);
-                if (axiom_soap_header_qname_matches(env, element_qname, qname)
-                    == AXIS2_TRUE)
+                if (axiom_soap_header_qname_matches(env, element_qname, qname) == AXIS2_TRUE)
                 {
                     axiom_node_detach(node, env);
                     /* axiom_node_free_tree(node, env); */
@@ -578,11 +576,17 @@ axiom_soap_header_remove_header_block(
                                     AXIS2_HASH_KEY_STRING, NULL);
                     axiom_soap_header_block_free(header_block, env);
                     axiom_node_free_tree(node, env);
-                    return AXIS2_SUCCESS;
+                    break;
                 }
             }
         }
     }
+
+    if(hi)
+    {
+        AXIS2_FREE(env->allocator, hi);
+    }
+
     return AXIS2_SUCCESS;
 }
 
