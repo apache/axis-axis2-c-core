@@ -17,15 +17,17 @@ main(
     int argc,
     char **argv)
 {
-    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
+    /*axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     axutil_error_t *error = axutil_error_create(allocator);
-    const axutil_env_t *env = axutil_env_create_with_error(allocator, error);
-
+    const axutil_env_t *env = axutil_env_create_with_error(allocator, error);*/
+    const axutil_env_t *env = NULL;
     axiom_xml_reader_t *reader = NULL;
     axiom_stax_builder_t *builder = NULL;
     axiom_document_t *document = NULL;
     axiom_node_t *root = NULL;
     axiom_element_t *root_ele = NULL;
+
+    env = axutil_env_create_all("test.log", AXIS2_LOG_LEVEL_TRACE);
 
     reader = axiom_xml_reader_create_for_file(env, argv[1], NULL);
 
@@ -112,6 +114,15 @@ main(
             }
         }
     }
+
+    if(builder)
+    {
+        axiom_stax_builder_free(builder, env);
+        builder = NULL;
+    }
+
+    axutil_env_free((axutil_env_t *)env);
+    env = NULL;    
 
     printf("Successful\n");
     return 0;
