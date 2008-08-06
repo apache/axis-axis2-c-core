@@ -557,7 +557,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         }
         else
         {
-            path = axutil_url_to_external_form(url, env);
+            path = axutil_strdup(env,axutil_url_get_path(url, env));
         }
 
         if (send_via_get)
