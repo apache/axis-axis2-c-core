@@ -211,8 +211,8 @@ axis2_phase_invoke(
                     "Invoke the handler %s within the phase %s", handler_name,
                         phase->name);
 
-                /* Test code. This is used when valgrind is used to find leaks in Axis2/C modules.
-                 * if(!axutil_strcmp(handler_name, "SandeshaGlobalInHandler") || !axutil_strcmp(
+                /* Test code. This is used when valgrind is used to find leaks in Axis2/C modules.*/
+                /*if(!axutil_strcmp(handler_name, "SandeshaGlobalInHandler") || !axutil_strcmp(
                             handler_name, "SandeshaInHandler"))
                 {
                     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
