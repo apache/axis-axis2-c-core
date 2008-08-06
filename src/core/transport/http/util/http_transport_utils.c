@@ -1193,20 +1193,18 @@ axis2_http_transport_utils_process_http_head_request(
     {
         axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_FALSE);
     }
+    if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env, msg_ctx))
+    {
+		return AXIS2_FALSE;
+    }
 
-    soap_envelope =
-        axis2_http_transport_utils_handle_media_type_url_encoded(env, msg_ctx, 
-																 request_params,
-                                                                 AXIS2_HTTP_HEAD);
+    soap_envelope = axis2_http_transport_utils_handle_media_type_url_encoded(env, msg_ctx, 
+   		 request_params, AXIS2_HTTP_HEAD);
     if (!soap_envelope)
     {
         return AXIS2_FALSE;
     }
     axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
-	if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env, msg_ctx))
-	{
-		return AXIS2_FALSE;
-	}
     engine = axis2_engine_create(env, conf_ctx);
     axis2_engine_receive(engine, env, msg_ctx);
     return AXIS2_TRUE;
@@ -1259,8 +1257,11 @@ axis2_http_transport_utils_process_http_get_request(
         axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_FALSE);
     }
 
-    soap_envelope =
-        axis2_http_transport_utils_handle_media_type_url_encoded(env, msg_ctx,
+	if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env, msg_ctx))
+	{
+		return AXIS2_FALSE;
+	}
+    soap_envelope = axis2_http_transport_utils_handle_media_type_url_encoded(env, msg_ctx,
                                                                  request_params,
                                                                  AXIS2_HTTP_GET);
     if (!soap_envelope)
@@ -1268,11 +1269,7 @@ axis2_http_transport_utils_process_http_get_request(
         return AXIS2_FALSE;
     }
     axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
-	if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env, msg_ctx))
-	{
-		return AXIS2_FALSE;
-	}
-
+	
     engine = axis2_engine_create(env, conf_ctx);
     axis2_engine_receive(engine, env, msg_ctx);
     return AXIS2_TRUE;
@@ -2412,20 +2409,7 @@ axis2_http_transport_utils_dispatch_and_verify(
             return AXIS2_FAILURE;
         }
     }
-    else
-    {
-        req_uri_disp = axis2_req_uri_disp_create(env);
-        handler = axis2_disp_get_base(req_uri_disp, env);
-        axis2_handler_invoke(handler, env, msg_ctx);
-
-        if (!axis2_msg_ctx_get_svc(msg_ctx, env) ||
-            !axis2_msg_ctx_get_op(msg_ctx, env))
-        {
-            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_SVC_OR_OP_NOT_FOUND,
-                               AXIS2_FAILURE);
-            return AXIS2_FAILURE;
-        }
-    }
+   
     return AXIS2_SUCCESS;
 }
 
