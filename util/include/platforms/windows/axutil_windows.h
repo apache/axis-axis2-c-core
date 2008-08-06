@@ -55,7 +55,7 @@ extern "C"
 #include <winsock2.h>
 #include <fcntl.h>
 #include <Mswsock.h>
-
+#include <Ws2tcpip.h>
     /* for time */
 #include <time.h>
 #include <sys/timeb.h>
