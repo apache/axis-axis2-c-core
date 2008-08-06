@@ -440,8 +440,7 @@ axutil_network_handler_read_dgram(const axutil_env_t *env, axis2_socket_t sock,
 {
 	struct sockaddr_in sender_address;
 	int received = 0; 
-	axis2_char_t buf[AXUTIL_WIN32_ERROR_BUFSIZE];
-	int sender_address_size = sizeof(sender_address);
+	unsigned int sender_address_size = sizeof(sender_address);
 
 	received = recvfrom(sock,  
 						buffer, 
@@ -453,6 +452,7 @@ axutil_network_handler_read_dgram(const axutil_env_t *env, axis2_socket_t sock,
 #ifdef WIN32
 	if (SOCKET_ERROR == received)
 	{
+	    axis2_char_t buf[AXUTIL_WIN32_ERROR_BUFSIZE];
 		axutil_win32_get_last_wsa_error(buf, AXUTIL_WIN32_ERROR_BUFSIZE);
 		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
 		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, buf); 
@@ -483,9 +483,9 @@ axutil_network_handler_send_dgram(const axutil_env_t *env, axis2_socket_t sock,
 								 axis2_char_t *addr, int dest_port, int *source_port)
 {
     struct sockaddr_in recv_addr, source_addr;
-	int send_bytes = 0;	
-	int recv_addr_size;
-	int source_addr_size = sizeof(source_addr);
+	int send_bytes = 0;		
+    unsigned int recv_addr_size = 0;
+	unsigned int source_addr_size = sizeof(source_addr);
 	recv_addr_size = sizeof(recv_addr);	
 
 	memset(&recv_addr, 0, sizeof(recv_addr));
@@ -523,7 +523,7 @@ axutil_network_handler_send_dgram(const axutil_env_t *env, axis2_socket_t sock,
 					(struct sockaddr *) &recv_addr, 
 					recv_addr_size);	
 
-	getsockname(sock, (SOCKADDR *)&source_addr, &source_addr_size);
+	getsockname(sock, (struct sockaddr *)&source_addr, &source_addr_size);
 
 #ifdef WIN32
 	if (send_bytes == SOCKET_ERROR)
@@ -585,7 +585,6 @@ axutil_network_hadler_create_multicast_svr_socket(const axutil_env_t *env, int p
 	axis2_socket_t sock = AXIS2_INVALID_SOCKET;
     struct sockaddr_in sock_addr;
 	struct ip_mreq mc_req;
-	axis2_char_t buf[AXUTIL_WIN32_ERROR_BUFSIZE];
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 #if defined(WIN32)
@@ -606,6 +605,7 @@ axutil_network_hadler_create_multicast_svr_socket(const axutil_env_t *env, int p
 #else
 	if (sock == INVALID_SOCKET)
 	{		
+	    axis2_char_t buf[AXUTIL_WIN32_ERROR_BUFSIZE];
 		axutil_win32_get_last_wsa_error(buf, AXUTIL_WIN32_ERROR_BUFSIZE);
 		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
 		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, buf); 
@@ -633,6 +633,7 @@ axutil_network_hadler_create_multicast_svr_socket(const axutil_env_t *env, int p
 	mc_req.imr_interface.s_addr = htonl(INADDR_ANY) ;
 #ifdef WIN32	
 	if ((setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char *) &mc_req, sizeof(mc_req))) == SOCKET_ERROR) {
+	    axis2_char_t buf[AXUTIL_WIN32_ERROR_BUFSIZE];
 		axutil_win32_get_last_wsa_error(buf, AXUTIL_WIN32_ERROR_BUFSIZE);
 		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
 		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, buf); 
@@ -640,7 +641,7 @@ axutil_network_hadler_create_multicast_svr_socket(const axutil_env_t *env, int p
 	}
 #else
 	if ((setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char *) &mc_req, sizeof(mc_req))) < 0) {
-	    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);s
+	    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
         return AXIS2_FAILURE;
 	}
 #endif	

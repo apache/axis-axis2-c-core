@@ -24,7 +24,7 @@
  */
 
 #include <axutil_utils_defines.h>
-
+#include <stdlib.h>
 #ifdef __cplusplus
 extern "C"
 {
@@ -160,13 +160,15 @@ extern "C"
         axutil_allocator_t * allocator);
 
 #define AXIS2_MALLOC(allocator, size) \
-      ((allocator)->malloc_fn(allocator, size))
+    malloc(size)
+     /* ((allocator)->malloc_fn(allocator, size))*/
 
 #define AXIS2_REALLOC(allocator, ptr, size) \
       ((allocator)->realloc(allocator, ptr, size))
 
 #define AXIS2_FREE(allocator, ptr) \
-      ((allocator)->free_fn(allocator, ptr))
+    free(ptr)
+     /* ((allocator)->free_fn(allocator, ptr))*/
 
     /** @} */
 
