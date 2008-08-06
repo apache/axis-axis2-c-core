@@ -21,57 +21,57 @@
 
 /*Private functions*/
 
-neethi_all_t *AXIS2_CALL get_operator_all(
+static neethi_all_t *neethi_engine_get_operator_all(
     const axutil_env_t *env,
     axiom_node_t *node,
     axiom_element_t *element);
 
-neethi_exactlyone_t *AXIS2_CALL get_operator_exactlyone(
+static neethi_exactlyone_t *neethi_engine_get_operator_exactlyone(
     const axutil_env_t *env,
     axiom_node_t *node,
     axiom_element_t *element);
 
-neethi_reference_t *AXIS2_CALL get_operator_reference(
+static neethi_reference_t *neethi_engine_get_operator_reference(
     const axutil_env_t *env,
     axiom_node_t *node,
     axiom_element_t *element);
 
-neethi_policy_t *AXIS2_CALL get_operator_neethi_policy(
+static neethi_policy_t *neethi_engine_get_operator_neethi_policy(
     const axutil_env_t *env,
     axiom_node_t *node,
     axiom_element_t *element);
 
-axis2_status_t AXIS2_CALL process_operation_element(
+static axis2_status_t neethi_engine_process_operation_element(
     const axutil_env_t *env,
     neethi_operator_t *neethi_operator,
     axiom_node_t *node,
     axiom_element_t *element);
 
-axis2_status_t AXIS2_CALL neethi_engine_add_policy_component(
+static axis2_status_t neethi_engine_add_policy_component(
     const axutil_env_t *env,
     neethi_operator_t *container_operator,
     neethi_operator_t *component);
 
-axis2_bool_t AXIS2_CALL operator_is_empty(
+static axis2_bool_t neethi_engine_operator_is_empty(
     neethi_operator_t *operator,
     const axutil_env_t *env);
 
-neethi_exactlyone_t *AXIS2_CALL compute_resultant_component(
+static neethi_exactlyone_t *neethi_engine_compute_resultant_component(
     axutil_array_list_t *normalized_inner_components,
     neethi_operator_type_t type,
     const axutil_env_t *env);
 
-axutil_array_list_t *AXIS2_CALL operator_get_components(
+static axutil_array_list_t *neethi_engine_operator_get_components(
     neethi_operator_t *operator,
     const axutil_env_t *env);
 
-neethi_exactlyone_t *AXIS2_CALL normalize_operator(
+static neethi_exactlyone_t *neethi_engine_normalize_operator(
     neethi_operator_t *operator,
     neethi_registry_t *registry,
     axis2_bool_t deep,
     const axutil_env_t *env);
 
-neethi_exactlyone_t *AXIS2_CALL get_cross_product(
+static neethi_exactlyone_t *neethi_engine_get_cross_product(
     neethi_exactlyone_t *exactlyone1,
     neethi_exactlyone_t *exactlyone2,
     const axutil_env_t *env);
@@ -91,11 +91,12 @@ neethi_engine_get_policy(
     axiom_node_t *node,
     axiom_element_t *element)
 {
-    return get_operator_neethi_policy(env, node, element);
+    /* This function will be called recursively */
+
+    return neethi_engine_get_operator_neethi_policy(env, node, element);
 }
 
-neethi_all_t *AXIS2_CALL
-get_operator_all(
+static neethi_all_t *neethi_engine_get_operator_all(
     const axutil_env_t *env,
     axiom_node_t *node,
     axiom_element_t *element)
@@ -120,7 +121,7 @@ get_operator_all(
     }
     neethi_operator_set_value(neethi_operator, env, all, OPERATOR_TYPE_ALL);
 
-    status = process_operation_element(env, neethi_operator, node, element);
+    status = neethi_engine_process_operation_element(env, neethi_operator, node, element);
 
     neethi_operator_set_value_null(neethi_operator, env);
     neethi_operator_free(neethi_operator, env);
@@ -138,8 +139,7 @@ get_operator_all(
     return all;
 }
 
-neethi_exactlyone_t *AXIS2_CALL
-get_operator_exactlyone(
+static neethi_exactlyone_t *neethi_engine_get_operator_exactlyone(
     const axutil_env_t *env,
     axiom_node_t *node,
     axiom_element_t *element)
@@ -167,7 +167,7 @@ get_operator_exactlyone(
     }
     neethi_operator_set_value(neethi_operator, env, exactlyone,
                               OPERATOR_TYPE_EXACTLYONE);
-    status = process_operation_element(env, neethi_operator, node, element);
+    status = neethi_engine_process_operation_element(env, neethi_operator, node, element);
 
     neethi_operator_set_value_null(neethi_operator, env);
     neethi_operator_free(neethi_operator, env);
@@ -188,8 +188,7 @@ get_operator_exactlyone(
     return exactlyone;
 }
 
-neethi_reference_t *AXIS2_CALL
-get_operator_reference(
+neethi_reference_t *neethi_engine_get_operator_reference(
     const axutil_env_t *env,
     axiom_node_t *node,
     axiom_element_t *element)
@@ -222,8 +221,11 @@ get_operator_reference(
     return reference;
 }
 
-neethi_policy_t *AXIS2_CALL
-get_operator_neethi_policy(
+/* This function will be called when we encounter a wsp:Policy
+ * element */
+
+
+static neethi_policy_t *neethi_engine_get_operator_neethi_policy(
     const axutil_env_t *env,
     axiom_node_t *node,
     axiom_element_t *element)
@@ -231,6 +233,8 @@ get_operator_neethi_policy(
     neethi_policy_t *neethi_policy = NULL;
     neethi_operator_t *neethi_operator = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
+
+    /* Creates a policy struct */
 
     neethi_policy = neethi_policy_create(env);
 
@@ -240,6 +244,9 @@ get_operator_neethi_policy(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
+
+    /* Then we wrap it in a neethi_operator */
+
     neethi_operator = neethi_operator_create(env);
     if (!neethi_operator)
     {
@@ -249,7 +256,15 @@ get_operator_neethi_policy(
     }
     neethi_operator_set_value(neethi_operator, env, neethi_policy,
                               OPERATOR_TYPE_POLICY);
-    status = process_operation_element(env, neethi_operator, node, element);
+
+    /* This function will do all the processing and build the 
+     * policy object model */
+
+    status = neethi_engine_process_operation_element(env, neethi_operator, node, element);
+
+    /* To prevent freeing the policy object from the operator
+     * we set it to null. This object will be freed from a parent 
+     * or from an outsider who creates a policy object */
 
     neethi_operator_set_value_null(neethi_operator, env);
     neethi_operator_free(neethi_operator, env);
@@ -269,8 +284,12 @@ get_operator_neethi_policy(
     return neethi_policy;
 }
 
-axis2_status_t AXIS2_CALL
-process_operation_element(
+/* This function will construct the policy objecy model by 
+ * filling the component array_list inside the passing 
+ * policy operator */
+
+
+static axis2_status_t neethi_engine_process_operation_element(
     const axutil_env_t *env,
     neethi_operator_t *neethi_operator,
     axiom_node_t *node,
@@ -285,11 +304,11 @@ process_operation_element(
 
     type = neethi_operator_get_type(neethi_operator, env);
     value = neethi_operator_get_value(neethi_operator, env);
+
     if (type == OPERATOR_TYPE_POLICY)
     {
-        /*Adding attribute values to the hashmap logic
-         *comes here.Following is a little hack until we implement attribute
-         hash map logic.*/
+        /* wsp:Policy element can have any number of attributes
+         * we will store them in a hash from the uri and localname */
 
         axutil_hash_t *attributes = axiom_element_extract_attributes(
             element, env, node);
@@ -297,7 +316,9 @@ process_operation_element(
         if(attributes)
         {
             axutil_hash_index_t *hi = NULL;            
-            
+        
+            /* When creating the policy object we created the hash */        
+    
             axutil_hash_t *ht = neethi_policy_get_attributes(
                 (neethi_policy_t *)value, env);
 
@@ -341,6 +362,9 @@ process_operation_element(
                             attr_val = axiom_attribute_get_value(om_attr, env);
                             if(attr_val)
                             {
+                                /* axutil_qname_free will free the returned key 
+                                 * of the qname so will duplicate it when storing */                                
+
                                 axutil_hash_set(ht, axutil_strdup(env,key), AXIS2_HASH_KEY_STRING, 
                                     axutil_strdup(env, attr_val));
                             }                                
@@ -349,6 +373,9 @@ process_operation_element(
                     }
                 }    
             }
+            /* axiom_element_extract_attributes method will always returns 
+             * a cloned copy, so we need to free it after we have done with it */
+
             neethi_engine_clear_element_attributes(attributes, env);
             attributes = NULL;
         }
@@ -359,6 +386,11 @@ process_operation_element(
     {
         while (axiom_children_iterator_has_next(children_iter, env))
         {
+            /* Extract the element and check the namespace. If the namespace 
+             * is in ws_policy then we call the relevent operator builder 
+             * otherwise we will call the assertion_builder */
+
+
             child_node = axiom_children_iterator_next(children_iter, env);
             if (child_node)
             {
@@ -398,13 +430,19 @@ process_operation_element(
                                             "[neethi] Invalid Empty namespace uri.");
                             return AXIS2_FAILURE;
                         }
-                        if (axutil_strcmp(uri, NEETHI_NAMESPACE) == 0)
+                        if ((axutil_strcmp(uri, NEETHI_NAMESPACE) == 0) || 
+                            (axutil_strcmp(uri, NEETHI_POLICY_15_NAMESPACE) == 0))
                         {
+                            /* Looking at the localname we will call the relevent 
+                             * operator function. After that the newly created 
+                             * object is wrapped in a neethi_operator and stored in 
+                             * the parent's component list */
+
                             if (axutil_strcmp(local_name, NEETHI_POLICY) == 0)
                             {
                                 neethi_policy_t *neethi_policy = NULL;
                                 neethi_policy =
-                                    get_operator_neethi_policy(env, child_node,
+                                    neethi_engine_get_operator_neethi_policy(env, child_node,
                                                                child_element);
                                 if (neethi_policy)
                                 {
@@ -431,7 +469,7 @@ process_operation_element(
                             {
                                 neethi_all_t *all = NULL;
                                 all =
-                                    get_operator_all(env, child_node,
+                                    neethi_engine_get_operator_all(env, child_node,
                                                      child_element);
                                 if (all)
                                 {
@@ -459,7 +497,7 @@ process_operation_element(
                             {
                                 neethi_exactlyone_t *exactlyone = NULL;
                                 exactlyone =
-                                    get_operator_exactlyone(env, child_node,
+                                    neethi_engine_get_operator_exactlyone(env, child_node,
                                                             child_element);
                                 if (exactlyone)
                                 {
@@ -487,18 +525,15 @@ process_operation_element(
                             {
                                 neethi_reference_t *reference = NULL;
                                 reference =
-                                    get_operator_reference(env, child_node,
+                                    neethi_engine_get_operator_reference(env, child_node,
                                                            child_element);
                                 if (reference)
                                 {
-                                    operator = neethi_operator_create(
-    env);
-                                    neethi_operator_set_value(operator, env,
-                                                              reference,
-                                                              OPERATOR_TYPE_REFERENCE);
-                                    neethi_engine_add_policy_component(env,
-                                                                       neethi_operator,
-                                                                       operator);
+                                    operator = neethi_operator_create(env);
+                                    neethi_operator_set_value(operator, env, reference, 
+                                        OPERATOR_TYPE_REFERENCE);
+                                    neethi_engine_add_policy_component(env, neethi_operator,
+                                        operator);
                                 }
                                 else
                                 {
@@ -511,22 +546,22 @@ process_operation_element(
                                 }
                             }
                         }
+
                         else
                         {
+                            /* This is an assertion in a different domain. Assertion builder
+                             * should be called and that will call the relevent assertion builder 
+                             * after looking at the localname and the namespace */
+                
                             neethi_assertion_t *assertion = NULL;
                             assertion =
-                                neethi_assertion_builder_build(env, child_node,
-                                                               child_element);
+                                neethi_assertion_builder_build(env, child_node, child_element);
                             if (assertion)
                             {
-                                operator = neethi_operator_create(
-    env);
-                                neethi_operator_set_value(operator, env,
-                                                          assertion,
+                                operator = neethi_operator_create(env);
+                                neethi_operator_set_value(operator, env, assertion,
                                                           OPERATOR_TYPE_ASSERTION);
-                                neethi_engine_add_policy_component(env,
-                                                                   neethi_operator,
-                                                                   operator);
+                                neethi_engine_add_policy_component(env, neethi_operator, operator);
                             }
                             else
                             {
@@ -548,8 +583,12 @@ process_operation_element(
         return AXIS2_FAILURE;
 }
 
-axis2_status_t AXIS2_CALL
-neethi_engine_add_policy_component(
+
+/* After looking at the operator_type this function will 
+ * call the relevent neethi operator's add operator 
+ * function */
+
+static axis2_status_t neethi_engine_add_policy_component(
     const axutil_env_t *env,
     neethi_operator_t *container_operator,
     neethi_operator_t *component)
@@ -638,6 +677,20 @@ check_neethi_policy(
 }
 
 /************************************************/
+/*
+
+Following function will normalize accorading to the 
+WS-Policy spec. Normalize policy is in the following 
+format.
+
+<wsp:Policy>
+    <wsp:ExactlyOne>
+        ( <wsp:All> ( <Assertion …> … </Assertion> )* </wsp:All> )*
+   </wsp:ExactlyOne>
+</wsp:Policy> 
+
+*/
+
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
 neethi_engine_get_normalize(
@@ -645,8 +698,12 @@ neethi_engine_get_normalize(
     axis2_bool_t deep,
     neethi_policy_t *neethi_policy)
 {
+    /* In the first call we pass the registry as null.*/
+
     return neethi_engine_normalize(env, neethi_policy, NULL, deep);
 }
+
+
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
 neethi_engine_normalize(
@@ -661,6 +718,9 @@ neethi_engine_normalize(
     neethi_exactlyone_t *exactlyone = NULL;
     axis2_char_t *policy_name = NULL;
     axis2_char_t *policy_id = NULL;
+
+    /* Normalize policy will be contained in the new policy
+     * created below */
 
     resultant_neethi_policy = neethi_policy_create(env);
     if (!resultant_neethi_policy)
@@ -681,8 +741,7 @@ neethi_engine_normalize(
         neethi_policy_set_id(resultant_neethi_policy, env, policy_id);
     }
 
-    operator = neethi_operator_create(
-    env);
+    operator = neethi_operator_create(env);
     if (!operator)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -690,14 +749,21 @@ neethi_engine_normalize(
         return NULL;
     }
 
-    neethi_operator_set_value(operator, env, neethi_policy,
-                              OPERATOR_TYPE_POLICY);
+    neethi_operator_set_value(operator, env, neethi_policy, OPERATOR_TYPE_POLICY);
 
-    exactlyone = normalize_operator(operator, registry, deep, env);
+    /* When we call the normalization it should always return an exactlyone as the 
+     * out put. */
+
+    exactlyone = neethi_engine_normalize_operator(operator, registry, deep, env);
+
+    /* We are frreing the operator used to wrap the object */
 
     neethi_operator_set_value_null(operator, env);
     neethi_operator_free(operator, env);
     operator = NULL;
+
+    /* This exactlyone is set as the first component of the 
+     * normalized policy */
 
     if (exactlyone)
     {
@@ -742,7 +808,7 @@ neethi_engine_merge(
                         "[neethi] Wrong input for merge.");
         return NULL;
     }
-    exactlyone = get_cross_product(exactlyone1, exactlyone2, env);
+    exactlyone = neethi_engine_get_cross_product(exactlyone1, exactlyone2, env);
     if (exactlyone)
     {
         neethi_policy = neethi_policy_create(env);
@@ -768,8 +834,7 @@ neethi_engine_merge(
     }
 }
 
-axis2_bool_t AXIS2_CALL
-operator_is_empty(
+static axis2_bool_t neethi_engine_operator_is_empty(
     neethi_operator_t *operator,
     const axutil_env_t *env)
 {
@@ -822,8 +887,7 @@ operator_is_empty(
         return AXIS2_FALSE;
 }
 
-axutil_array_list_t *AXIS2_CALL
-operator_get_components(
+static axutil_array_list_t *neethi_engine_operator_get_components(
     neethi_operator_t *operator,
     const axutil_env_t *env)
 {
@@ -874,8 +938,7 @@ operator_get_components(
     return NULL;
 }
 
-neethi_exactlyone_t *AXIS2_CALL
-normalize_operator(
+static neethi_exactlyone_t *neethi_engine_normalize_operator(
     neethi_operator_t *operator,
     neethi_registry_t *registry,
     axis2_bool_t deep,
@@ -888,8 +951,11 @@ normalize_operator(
 
     neethi_operator_type_t type = neethi_operator_get_type(operator, env);
 
-    if (operator_is_empty(operator, env))
+    if (neethi_engine_operator_is_empty(operator, env))
     {
+        /* If this is an empty operator we just add 
+         * an exactlyone and all */
+
         neethi_exactlyone_t *exactlyone = NULL;
         exactlyone = neethi_exactlyone_create(env);
         if (!exactlyone)
@@ -918,7 +984,9 @@ normalize_operator(
     }
 
     child_component_list = axutil_array_list_create(env, 0);
-    arraylist = operator_get_components(operator, env);
+    arraylist = neethi_engine_operator_get_components(operator, env);
+
+    /* Here we are recursively normalize each and every component */
 
     for (i = 0; i < axutil_array_list_size(arraylist, env); i++)
     {
@@ -951,6 +1019,9 @@ normalize_operator(
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
                     return NULL;
                 }
+
+                /* We wrap everything inside an exactlyone */
+
                 neethi_all_add_operator(all, env, child_component);
                 neethi_operator_set_value(op, env, all, OPERATOR_TYPE_ALL);
                 neethi_exactlyone_add_operator(exactlyone, env, op);
@@ -994,7 +1065,7 @@ normalize_operator(
                     neethi_operator_set_value(to_normalize, env, all,
                                               OPERATOR_TYPE_ALL);
                     exactlyone =
-                        normalize_operator(to_normalize, registry, deep, env);
+                        neethi_engine_normalize_operator(to_normalize, registry, deep, env);
                     if (exactlyone)
                     {
                         axutil_array_list_add(child_component_list, env,
@@ -1078,7 +1149,7 @@ normalize_operator(
                     neethi_operator_set_value(to_normalize, env, all,
                                               OPERATOR_TYPE_ALL);
                     exactlyone =
-                        normalize_operator(to_normalize, registry, deep, env);
+                        neethi_engine_normalize_operator(to_normalize, registry, deep, env);
                     if (exactlyone)
                     {
                         axutil_array_list_add(child_component_list, env,
@@ -1100,7 +1171,7 @@ normalize_operator(
         {
             neethi_exactlyone_t *exactlyone = NULL;
             exactlyone =
-                normalize_operator(child_component, registry, deep, env);
+                neethi_engine_normalize_operator(child_component, registry, deep, env);
             if (exactlyone)
             {
                 axutil_array_list_add(child_component_list, env, exactlyone);
@@ -1108,25 +1179,39 @@ normalize_operator(
         }
     }
 
-    return compute_resultant_component(child_component_list, type, env);
+    /* So at this point we have set of exactlyones in the array_list, So we will 
+     * compute one exactlyone out of those after the following call */
+
+    return neethi_engine_compute_resultant_component(child_component_list, type, env);
 }
 
-neethi_exactlyone_t *AXIS2_CALL
-compute_resultant_component(
+/* This function will return a single exactlyone from all the 
+ * components in the list */
+
+
+static neethi_exactlyone_t *neethi_engine_compute_resultant_component(
     axutil_array_list_t * normalized_inner_components,
     neethi_operator_type_t type,
     const axutil_env_t * env)
 {
     neethi_exactlyone_t *exactlyone = NULL;
+    int size = 0;
+
+    if(normalized_inner_components)
+    {
+        size = axutil_array_list_size(normalized_inner_components, env);
+    }
 
     if (type == OPERATOR_TYPE_EXACTLYONE)
     {
+        /* If the operator is an exactlyone then we get all the components
+         * in the exatlyones and add them to a newly created exactlyone */
+
         int i = 0;
         neethi_exactlyone_t *inner_exactlyone = NULL;
         exactlyone = neethi_exactlyone_create(env);
 
-        for (i = 0;
-             i < axutil_array_list_size(normalized_inner_components, env); i++)
+        for (i = 0; i < size; i++)
         {
             inner_exactlyone =
                 (neethi_exactlyone_t *)
@@ -1151,12 +1236,18 @@ compute_resultant_component(
     }
     else if (type == OPERATOR_TYPE_POLICY || type == OPERATOR_TYPE_ALL)
     {
-        if (axutil_array_list_size(normalized_inner_components, env) > 1)
+        /* Here arry_list contains one exactlyone means this operator 
+         * is already normalized. So we will return that. Otherwise we 
+         * will get the crossproduct. */
+
+        if (size > 1)
         {
+            /* Get the first one and do the cross product with other 
+             * components */
+
             int i = 0;
-            exactlyone =
-                (neethi_exactlyone_t *)
-                axutil_array_list_get(normalized_inner_components, env, 0);
+            exactlyone = (neethi_exactlyone_t *)axutil_array_list_get
+                (normalized_inner_components, env, 0);
             if (!exactlyone)
             {
                 AXIS2_ERROR_SET(env->error,
@@ -1170,14 +1261,10 @@ compute_resultant_component(
             {
                 neethi_exactlyone_t *current_exactlyone = NULL;
                 i = 1;
-                for (i = 1;
-                     i < axutil_array_list_size(normalized_inner_components,
-                                                env); i++)
+                for (i = 1; i < size; i++)
                 {
-                    current_exactlyone =
-                        (neethi_exactlyone_t *)
-                        axutil_array_list_get(normalized_inner_components, env,
-                                              i);
+                    current_exactlyone = (neethi_exactlyone_t *)
+                        axutil_array_list_get(normalized_inner_components, env, i);
                     if (!current_exactlyone)
                     {
                         AXIS2_ERROR_SET(env->error,
@@ -1198,9 +1285,8 @@ compute_resultant_component(
                         neethi_exactlyone_t *temp1 = NULL;
                         temp = exactlyone;
                         temp1 = current_exactlyone;
-                        exactlyone =
-                            get_cross_product(exactlyone, current_exactlyone,
-                                              env);
+                        exactlyone = neethi_engine_get_cross_product(
+                            exactlyone, current_exactlyone, env);
                         neethi_exactlyone_free(temp, env);
                         neethi_exactlyone_free(temp1, env);
                         temp = NULL;
@@ -1220,9 +1306,8 @@ compute_resultant_component(
         }
         else
         {
-            exactlyone =
-                (neethi_exactlyone_t *)
-                axutil_array_list_get(normalized_inner_components, env, 0);
+            exactlyone = (neethi_exactlyone_t *)axutil_array_list_get(
+                normalized_inner_components, env, 0);
         }
     }
     axutil_array_list_free(normalized_inner_components, env);
@@ -1231,8 +1316,11 @@ compute_resultant_component(
     return exactlyone;
 }
 
-neethi_exactlyone_t *AXIS2_CALL
-get_cross_product(
+/* The cross product will return all the different combinations 
+ * of alternatives and put them into one exactlyone */
+
+
+static neethi_exactlyone_t *neethi_engine_get_cross_product(
     neethi_exactlyone_t *exactlyone1,
     neethi_exactlyone_t *exactlyone2,
     const axutil_env_t *env)
@@ -1269,7 +1357,8 @@ get_cross_product(
 
     for (i = 0; i < axutil_array_list_size(array_list1, env); i++)
     {
-        current_all1 = (neethi_all_t *) neethi_operator_get_value((neethi_operator_t *) axutil_array_list_get(array_list1, env, i), env);
+        current_all1 = (neethi_all_t *) neethi_operator_get_value(
+            (neethi_operator_t *) axutil_array_list_get(array_list1, env, i), env);
 
         if (!current_all1)
         {
@@ -1283,7 +1372,8 @@ get_cross_product(
 
         for (j = 0; j < axutil_array_list_size(array_list2, env); j++)
         {
-            current_all2 = (neethi_all_t *) neethi_operator_get_value((neethi_operator_t *) axutil_array_list_get(array_list2, env, j), env);
+            current_all2 = (neethi_all_t *) neethi_operator_get_value(
+                (neethi_operator_t *) axutil_array_list_get(array_list2, env, j), env);
 
             if (!current_all2)
             {

@@ -107,11 +107,6 @@ extern "C"
         const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    neethi_policy_set_components_null(
-        neethi_policy_t * policy,
-        const axutil_env_t * env);
-
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     neethi_policy_set_root_node(
         neethi_policy_t * policy,
         const axutil_env_t * env,
@@ -121,12 +116,6 @@ extern "C"
     neethi_policy_get_attributes(
         neethi_policy_t *neethi_policy,
         const axutil_env_t *env);
-
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    neethi_policy_set_attributes(
-        neethi_policy_t *neethi_policy,
-        const axutil_env_t *env,
-        axutil_hash_t  *attributes);
 
 
     /** @} */

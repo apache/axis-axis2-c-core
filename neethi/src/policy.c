@@ -22,15 +22,24 @@
 
 struct neethi_policy_t
 {
+    /* Contains the child components */
     axutil_array_list_t *policy_components;
+
+    /* A wsp:Policy element can have any number of attributes
+     * This has will store those */
     axutil_hash_t *attributes;
+
+    /* This is the node containing the policy */
     axiom_node_t *root_node;
 };
+
 
 static void neethi_policy_clear_attributes(
     axutil_hash_t *attributes,
     const axutil_env_t *env);
 
+
+/* Creates a neethi_policy object */
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
 neethi_policy_create(
@@ -65,6 +74,9 @@ neethi_policy_create(
     return neethi_policy;
 }
 
+/* Deallocate the memory for the neethi_policy object */
+
+
 AXIS2_EXTERN void AXIS2_CALL
 neethi_policy_free(
     neethi_policy_t *neethi_policy,
@@ -72,42 +84,36 @@ neethi_policy_free(
 {
     if (neethi_policy)
     {
+        /* We first remove the component list */
+
         if (neethi_policy->policy_components)
         {
             int i = 0;
-            for (i = 0;
-                 i < axutil_array_list_size(neethi_policy->policy_components,
-                                            env); i++)
+            int size = 0;
+
+            size = axutil_array_list_size(
+                neethi_policy->policy_components, env);
+
+            for (i = 0; i < size; i++)
             {
                 neethi_operator_t *operator = NULL;
-                operator =(neethi_operator_t *)
-                    axutil_array_list_get(neethi_policy->policy_components, env,
-                                          i);
+                operator =(neethi_operator_t *)axutil_array_list_get(
+                    neethi_policy->policy_components, env, i);
                 if (operator)
+                {    
                     neethi_operator_free(operator, env);
-
+                }
                 operator = NULL;
             }
             axutil_array_list_free(neethi_policy->policy_components, env);
             neethi_policy->policy_components = NULL;
         }
-        /*if (neethi_policy->id)
-        {
-            AXIS2_FREE(env->allocator, neethi_policy->id);
-            neethi_policy->id = NULL;
-        }
-        if (neethi_policy->name)
-        {
-            AXIS2_FREE(env->allocator, neethi_policy->name);
-            neethi_policy->name = NULL;
-        }*/
         if(neethi_policy->attributes)
         {
             neethi_policy_clear_attributes(neethi_policy->attributes, 
                 env);
             neethi_policy->attributes = NULL;
         }
-
         if (neethi_policy->root_node)
         {
             axiom_node_free_tree(neethi_policy->root_node, env);
@@ -119,6 +125,7 @@ neethi_policy_free(
     return;
 }
 
+/* This will free the attribute hash and its content.*/
 
 static void neethi_policy_clear_attributes(
     axutil_hash_t *attributes,
@@ -172,12 +179,15 @@ neethi_policy_add_policy_components(
 
     if (axutil_array_list_ensure_capacity
         (neethi_policy->policy_components, env, size + 1) != AXIS2_SUCCESS)
+    {    
         return AXIS2_FAILURE;
+    }
 
     for (i = 0; i < size; i++)
     {
         void *value = NULL;
         value = axutil_array_list_get(arraylist, env, i);
+        /* The ref count is incremented in order to prvent double frees.*/
         neethi_operator_increment_ref((neethi_operator_t *) value, env);
         axutil_array_list_add(neethi_policy->policy_components, env, value);
     }
@@ -202,6 +212,9 @@ neethi_policy_is_empty(
 {
     return axutil_array_list_is_empty(neethi_policy->policy_components, env);
 }
+
+/* A normalized policy always has just one child and it is an exactlyone
+ * first child. So this method */
 
 AXIS2_EXTERN neethi_exactlyone_t *AXIS2_CALL
 neethi_policy_get_exactlyone(
@@ -237,6 +250,11 @@ neethi_policy_get_exactlyone(
         return NULL;
 }
 
+/* This function is called for a normalized policy
+ * So it will return the components of the only
+ * child. That should be an exactlyone The children
+ * of that exactlyone are alls.*/
+
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 neethi_policy_get_alternatives(
     neethi_policy_t *neethi_policy,
@@ -250,6 +268,9 @@ neethi_policy_get_alternatives(
     return neethi_exactlyone_get_policy_components(exactlyone, env);
 
 }
+
+/* This will return any attribute which has 
+ * the local name of Name */
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 neethi_policy_get_name(
@@ -286,6 +307,9 @@ neethi_policy_get_name(
 }
 
 
+/* This method will return the attribute value of 
+ * wsu:Id if there are any such attributes */
+
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 neethi_policy_get_id(
     neethi_policy_t *neethi_policy,
@@ -321,6 +345,11 @@ neethi_policy_get_id(
 }
 
 
+/* When we encounter an attribute with wsu:Id 
+ * we will store it in the hash. We are not 
+ * considering the prefix. Just the namespace and
+ * the local_name. */
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
     neethi_policy_set_id(
     neethi_policy_t * neethi_policy,
@@ -348,6 +377,10 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
         return AXIS2_FAILURE;
     }
 }
+
+/* When we encounter an attribute with Name 
+ * we will store it in the hash. This has no
+ * Namespace.*/
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -385,23 +418,6 @@ neethi_policy_get_attributes(
     const axutil_env_t *env)
 {
     return neethi_policy->attributes;
-}
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-neethi_policy_set_attributes(
-    neethi_policy_t *neethi_policy,
-    const axutil_env_t *env,
-    axutil_hash_t  *attributes)
-{
-    if(neethi_policy->attributes)
-    {
-        neethi_policy_clear_attributes(neethi_policy->attributes,
-                env);
-        neethi_policy->attributes = NULL;
-    }
-
-    neethi_policy->attributes = attributes;
-    return AXIS2_SUCCESS;
 }
 
 /*This function is for serializing*/
@@ -449,15 +465,6 @@ neethi_policy_serialize(
         }
     }
     return policy_node;
-}
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-neethi_policy_set_components_null(
-    neethi_policy_t *policy,
-    const axutil_env_t *env)
-{
-    policy->policy_components = NULL;
-    return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

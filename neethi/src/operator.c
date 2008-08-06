@@ -24,8 +24,14 @@
 
 struct neethi_operator_t
 {
+    /* This may be a policy, all, exatlyone, refernece 
+     * or an assertion */
     void *value;
+
+    /* The type */
     neethi_operator_type_t type;
+
+    /* Ref count to prevent double frees*/
     int ref;
 };
 
@@ -51,7 +57,6 @@ neethi_operator_create(
     neethi_operator->type = OPERATOR_TYPE_UNKNOWN;
     neethi_operator->ref = 0;
     return neethi_operator;
-
 }
 
 AXIS2_EXTERN void AXIS2_CALL
@@ -205,6 +210,13 @@ neethi_operator_serialize(
     else
         return AXIS2_FAILURE;
 }
+
+/* We need this method to prevent freeing the 
+ * value of operator, because some times we 
+ * wrap certail policy operators inside neethi_operator
+ * in order to call some functions.See engine.c in 
+ * neethi for more info */
+
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 neethi_operator_set_value_null(

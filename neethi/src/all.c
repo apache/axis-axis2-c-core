@@ -62,17 +62,21 @@ neethi_all_free(
         if (neethi_all->policy_components)
         {
             int i = 0;
-            for (i = 0;
-                 i < axutil_array_list_size(neethi_all->policy_components, env);
-                 i++)
+            int size = 0;
+
+            size = axutil_array_list_size(neethi_all->policy_components, env);
+
+            for (i = 0; i < size; i++)
             {
                 neethi_operator_t *operator = NULL;
                 operator =(neethi_operator_t *)
                     axutil_array_list_get(neethi_all->policy_components, env,
                                           i);
                 if (operator)
+                {
                     neethi_operator_free(operator, env);
-
+                    operator = NULL;    
+                }
                 operator = NULL;
             }
             axutil_array_list_free(neethi_all->policy_components, env);

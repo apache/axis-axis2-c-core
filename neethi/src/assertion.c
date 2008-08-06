@@ -113,6 +113,11 @@ neethi_assertion_create_with_args(
         return NULL;
     }
 
+    /* This ref count is for asertions which are represented from a struct.
+     * These assertion structs are more probably referenced from some other
+     * struct. So we need to increment the ref count in order to prevent
+     * unnecessary memory freeing */
+
     if (type == ASSERTION_TYPE_X509_TOKEN)
     {
         rp_x509_token_increment_ref((rp_x509_token_t *) value, env);

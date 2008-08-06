@@ -73,11 +73,6 @@ extern "C"
         axiom_node_t * parent,
         const axutil_env_t * env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    neethi_exactlyone_set_components_null(
-        neethi_exactlyone_t * exactlyone,
-        const axutil_env_t * env);
-
     /** @} */
 #ifdef __cplusplus
 }

@@ -63,19 +63,21 @@ neethi_exactlyone_free(
         if (neethi_exactlyone->policy_components)
         {
             int i = 0;
-            for (i = 0;
-                 i <
-                 axutil_array_list_size(neethi_exactlyone->policy_components,
-                                        env); i++)
+            int size = 0;
+
+            size = axutil_array_list_size(neethi_exactlyone->policy_components, env);
+
+            for (i = 0; i < size; i++)
             {
                 neethi_operator_t *operator = NULL;
                 operator =(neethi_operator_t *)
                     axutil_array_list_get(neethi_exactlyone->policy_components,
                                           env, i);
                 if (operator)
+                {
                     neethi_operator_free(operator, env);
-
-                operator = NULL;
+                    operator = NULL;
+                }
             }
             axutil_array_list_free(neethi_exactlyone->policy_components, env);
             neethi_exactlyone->policy_components = NULL;
@@ -185,13 +187,4 @@ neethi_exactlyone_serialize(
         }
     }
     return status;
-}
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-neethi_exactlyone_set_components_null(
-    neethi_exactlyone_t *exactlyone,
-    const axutil_env_t *env)
-{
-    exactlyone->policy_components = NULL;
-    return AXIS2_SUCCESS;
 }
