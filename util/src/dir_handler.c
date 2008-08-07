@@ -35,7 +35,7 @@ extern int AXIS2_ALPHASORT(
 int dir_select(
     struct dirent *entry);
 int file_select(
-    struct dirent *entry);
+    const struct dirent *entry);
 #else
 int dir_select(
     const struct dirent *entry);
@@ -326,7 +326,7 @@ file_select(
 {
 
 	#ifdef IS_MACOSX
-		int	file_select(struct dirent *entry);
+		int	file_select(const struct dirent *entry);
 	#else
  		int file_select(const struct dirent *entry);
 	#endif 
