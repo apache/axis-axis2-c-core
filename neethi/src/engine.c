@@ -1086,6 +1086,12 @@ static neethi_exactlyone_t *neethi_engine_normalize_operator(
 
         else if (component_type == OPERATOR_TYPE_REFERENCE)
         {
+
+            /* If the operator is a policy reference we will 
+             * extract the relevent policy from the uri and 
+             * normalize as we are doing for a neethi_policy 
+             * object */
+
             neethi_reference_t *policy_ref = NULL;
             axis2_char_t *uri = NULL;
             neethi_policy_t *policy = NULL;
@@ -1107,6 +1113,14 @@ static neethi_exactlyone_t *neethi_engine_normalize_operator(
                                 "[neethi] Uri not specified");
                 return NULL;
             }
+
+            if(!registry)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                "[neethi] Cannot resolve the reference.Registry Not provided");
+                return NULL;
+            }
+
             policy = neethi_registry_lookup(registry, env, uri);
             if (!policy)
             {
