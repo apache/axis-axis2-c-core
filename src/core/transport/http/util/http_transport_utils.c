@@ -2390,7 +2390,6 @@ axis2_http_transport_utils_dispatch_and_verify(
     axis2_msg_ctx_t * msg_ctx)
 {
     axis2_disp_t *rest_disp = NULL;
-    axis2_disp_t *req_uri_disp = NULL;
     axis2_handler_t *handler = NULL;
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
