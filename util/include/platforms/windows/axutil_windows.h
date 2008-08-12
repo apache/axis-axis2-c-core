@@ -24,6 +24,28 @@
   * @brief axis2 unix platform specific interface
   */
 #include <axutil_utils_defines.h>
+#define _WINSOCKAPI_            /* Prevent inclusion of winsock.h in windows.h */
+#include <windows.h>
+
+    /*for minizip uncompression library */
+# include <direct.h>
+
+    /*for file access check */
+#include <io.h>
+#include <sys/stat.h>
+
+    /*for network handling */
+#include <winsock2.h>
+#include <fcntl.h>
+#include <Mswsock.h>
+#include <Ws2tcpip.h>
+
+    /* for time */
+#include <time.h>
+#include <sys/timeb.h>
+
+    /* get opt */
+#include "axutil_getopt_windows.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -41,27 +63,7 @@ extern "C"
        PLATFORM_ERROR_OUT_OF_MEMORY = 1
        }; */
 
-#define _WINSOCKAPI_            /* Prevent inclusion of winsock.h in windows.h */
-#include <windows.h>
 
-    /*for minizip uncompression library */
-# include <direct.h>
-
-    /*for file access check */
-#include <io.h>
-#include <sys/stat.h>
-
-    /*for network handling */
-#include <winsock2.h>
-#include <fcntl.h>
-#include <Mswsock.h>
-#include <Ws2tcpip.h>
-    /* for time */
-#include <time.h>
-#include <sys/timeb.h>
-
-    /* get opt */
-#include "axutil_getopt_windows.h"
 
     AXIS2_EXTERN HMODULE AXIS2_CALL
     callLoadLib(

@@ -24,10 +24,12 @@
   * @brief axis2 platform auto sense
   */
 
+/*
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+*/
 
     /** @defgroup axis2_platform_auto_sense
      * @ingroup axis2_platforms
@@ -52,8 +54,10 @@ extern "C"
 #endif
 
     /** @} */
+/*
 #ifdef __cplusplus
 }
 #endif
+*/ 
 
-#endif                          /* AXIS2_PLATFORM_AUTOSENSE_H */
+#endif                      /* AXIS2_PLATFORM_AUTOSENSE_H */
