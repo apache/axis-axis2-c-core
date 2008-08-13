@@ -2074,6 +2074,20 @@ extern "C"
         const axutil_env_t * env,
         axutil_array_list_t *mime_parts);
 
+    /**
+     * Incrementing the msg_ctx ref count. This is necessary when 
+     * prevent freeing msg_ctx through op_client when it is in use 
+     * as in sandesha2.
+     * @param msg_ctx pointer to message context  
+     * @param env pointer to environment struct
+     * @return AXIS2_TRUE if still in use, else AXIS2_FALSE 
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_increment_ref(
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
+
+
 
 /** @} */
 

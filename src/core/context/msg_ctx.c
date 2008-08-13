@@ -218,6 +218,7 @@ struct axis2_msg_ctx
     axis2_bool_t no_content;
 
     axutil_array_list_t *mime_parts;
+    int ref;
 };
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
@@ -329,6 +330,7 @@ axis2_msg_ctx_create(
         return NULL;
     }
     msg_ctx->msg_info_headers_deep_copy = AXIS2_TRUE;
+    msg_ctx->ref = 1;
 
     return msg_ctx;
 }
@@ -371,6 +373,11 @@ axis2_msg_ctx_free(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
+    if (--(msg_ctx->ref) > 0)
+    {
+        return;
+    }
+
     if (msg_ctx->keep_alive)
     {
         return;
@@ -546,6 +553,15 @@ axis2_msg_ctx_free(
     AXIS2_FREE(env->allocator, msg_ctx);
 
     return;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_increment_ref(
+    axis2_msg_ctx_t * msg_ctx,
+    const axutil_env_t * env)
+{
+    msg_ctx->ref++;
+    return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
