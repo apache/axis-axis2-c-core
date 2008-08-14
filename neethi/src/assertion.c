@@ -89,27 +89,23 @@ neethi_assertion_create_with_args(
     neethi_assertion_type_t type)
 {
     neethi_assertion_t *neethi_assertion = NULL;
+    neethi_assertion = (neethi_assertion_t *) AXIS2_MALLOC(
+        env->allocator, sizeof(neethi_assertion_t));
 
-    AXIS2_ENV_CHECK(env, NULL);
-
-    neethi_assertion = (neethi_assertion_t *) AXIS2_MALLOC(env->allocator,
-                                                           sizeof
-                                                           (neethi_assertion_t));
-
-    if (neethi_assertion == NULL)
+    if (!neethi_assertion)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Neethi assertion creation failed. Out of memory");
         return NULL;
     }
-    neethi_assertion->policy_components = NULL;
 
+    neethi_assertion->policy_components = NULL;
     neethi_assertion->policy_components = axutil_array_list_create(env, 0);
     if (!(neethi_assertion->policy_components))
     {
-
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "Neethi assertion policy components creation failed.");
         return NULL;
     }
 
@@ -172,46 +168,37 @@ neethi_assertion_create_with_args(
     }
     else if (type == ASSERTION_TYPE_SUPPORTING_TOKENS)
     {
-        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *) value,
-                                           env);
+        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *) value, env);
     }
     else if (type == ASSERTION_TYPE_USERNAME_TOKEN)
     {
         rp_username_token_increment_ref((rp_username_token_t *) value, env);
     }
-
     else if (type == ASSERTION_TYPE_ASSYMMETRIC_BINDING)
     {
-        rp_asymmetric_binding_increment_ref((rp_asymmetric_binding_t *) value,
-                                            env);
+        rp_asymmetric_binding_increment_ref((rp_asymmetric_binding_t *) value, env);
     }
-    
     else if (type == ASSERTION_TYPE_SYMMETRIC_BINDING)
     {
-        rp_symmetric_binding_increment_ref((rp_symmetric_binding_t *) value,
-                                            env);
+        rp_symmetric_binding_increment_ref((rp_symmetric_binding_t *) value, env);
     }
-
     else if (type == ASSERTION_TYPE_TRANSPORT_BINDING)
     {
-        rp_transport_binding_increment_ref((rp_transport_binding_t *) value,
-                                            env);
+        rp_transport_binding_increment_ref((rp_transport_binding_t *) value, env);
     }
-    
     else if (type == ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS)
     {
-        rp_signed_encrypted_parts_increment_ref((rp_signed_encrypted_parts_t *)
-                                                value, env);
+        rp_signed_encrypted_parts_increment_ref((rp_signed_encrypted_parts_t *)value, env);
     }
     else if (type == ASSERTION_TYPE_RAMPART_CONFIG)
     {
         rp_rampart_config_increment_ref((rp_rampart_config_t *) value, env);
     }
-    if (type == ASSERTION_TYPE_ISSUED_TOKEN)
+    else if (type == ASSERTION_TYPE_ISSUED_TOKEN)
     {
         rp_issued_token_increment_ref((rp_issued_token_t *) value, env);
     }
-    if (type == ASSERTION_TYPE_SAML_TOKEN)
+    else if (type == ASSERTION_TYPE_SAML_TOKEN)
     {
         rp_saml_token_increment_ref((rp_saml_token_t *) value, env);
     }
@@ -224,7 +211,6 @@ neethi_assertion_create_with_args(
     neethi_assertion->free_func = free_func;
 
     return neethi_assertion;
-
 }
 
 AXIS2_EXTERN void AXIS2_CALL
@@ -295,10 +281,6 @@ neethi_assertion_set_value(
     if (type == ASSERTION_TYPE_X509_TOKEN)
     {
         rp_x509_token_increment_ref((rp_x509_token_t *) value, env);
-    }
-    else if (type == ASSERTION_TYPE_SECURITY_CONTEXT_TOKEN)
-    {
-        rp_security_context_token_increment_ref((rp_security_context_token_t *)value, env);
     }
     neethi_assertion->value = (void *) value;
 

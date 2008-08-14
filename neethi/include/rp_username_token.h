@@ -1,10 +1,11 @@
 
 /*
- * Copyright 2004,2005 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -24,11 +25,19 @@
  */
 
 #include <rp_includes.h>
+#include <rp_token.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+    typedef enum
+    {
+        PASSWORD_PLAIN = 0,
+        PASSWORD_HASH,
+        PASSWORD_NONE /* no password will be provided in the user name token */
+    } password_type_t;
 
     typedef struct rp_username_token_t rp_username_token_t;
 
@@ -53,17 +62,6 @@ extern "C"
         axis2_char_t * inclusion);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    rp_username_token_get_derivedkeys(
-        rp_username_token_t * username_token,
-        const axutil_env_t * env);
-
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_username_token_set_derivedkeys(
-        rp_username_token_t * username_token,
-        const axutil_env_t * env,
-        axis2_bool_t derivedkeys);
-
-    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     rp_username_token_get_useUTprofile10(
         rp_username_token_t * username_token,
         const axutil_env_t * env);
@@ -84,6 +82,50 @@ extern "C"
         rp_username_token_t * username_token,
         const axutil_env_t * env,
         axis2_bool_t useUTprofile11);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rp_username_token_get_issuer(
+        rp_username_token_t * username_token,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_username_token_set_issuer(
+        rp_username_token_t * username_token,
+        const axutil_env_t * env,
+        axis2_char_t * issuer);
+
+    AXIS2_EXTERN derive_key_type_t AXIS2_CALL
+    rp_username_token_get_derivedkey_type(
+        rp_username_token_t * username_token,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_username_token_set_derivedkey_type(
+        rp_username_token_t * username_token,
+        const axutil_env_t * env,
+        derive_key_type_t derivedkey);
+
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    rp_username_token_get_is_issuer_name(
+        rp_username_token_t * username_token,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_username_token_set_is_issuer_name(
+        rp_username_token_t * username_token,
+        const axutil_env_t * env,
+        axis2_bool_t is_issuer_name);
+
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    rp_username_token_get_claim(
+        rp_username_token_t * username_token,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_username_token_set_claim(
+        rp_username_token_t * username_token,
+        const axutil_env_t * env,
+        axiom_node_t *claim);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     rp_username_token_increment_ref(

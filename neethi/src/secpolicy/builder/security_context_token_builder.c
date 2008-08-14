@@ -21,7 +21,6 @@
 #include <neethi_exactlyone.h>
 #include <neethi_all.h>
 #include <neethi_engine.h>
-#include <rp_qname_matcher.h>
 
 /*private functions*/
 
@@ -53,7 +52,7 @@ rp_security_context_token_builder_build(
     neethi_policy_t *normalized_policy = NULL;
 
     security_context_token = rp_security_context_token_create(env);
-    qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS, RP_SP_PREFIX);
+    qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS_11, RP_SP_PREFIX);
 
     inclusion_value = axiom_element_get_attribute_value(element, env, qname);
 
@@ -87,15 +86,37 @@ rp_security_context_token_builder_build(
                         localname = axiom_element_get_localname(child_element, env);
                         if (axutil_strcmp(localname, RP_ISSUER) == 0)
                         {
-                            if (rp_match_secpolicy_qname(env, RP_ISSUER, child_node, child_element))
+                            axis2_char_t *ns = NULL;
+                            axutil_qname_t *node_qname = NULL;
+
+                            node_qname = axiom_element_get_qname(element, env, node);
+                            if(!node_qname)
+                            {
+                                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                                    "[neethi] Cannot get qname from element %s.", localname);
+                                return NULL;
+                            }
+
+                            ns = axutil_qname_get_uri(node_qname, env);
+                            if(!ns)
+                            {
+                                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                                    "[neethi] Cannot get namespace from element %s.", localname);
+                                return NULL;
+                            }
+                            if(!(axutil_strcmp(ns, RP_SP_NS_11) && axutil_strcmp(ns, RP_SP_NS_12)))
                             {
                                 axis2_char_t *issuer = NULL;
-
                                 issuer = axiom_element_get_text(child_element, env, child_node);
-                                rp_security_context_token_set_issuer(security_context_token, env, issuer);
+                                rp_security_context_token_set_issuer(
+                                    security_context_token, env, issuer);
                             }
                             else
+                            {
+                                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                                    "[neethi] Unknown Assertion %s with namespace %s", localname, ns);
                                 return NULL;
+                            }
                         }
                         else
                         {

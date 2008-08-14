@@ -21,58 +21,47 @@
 #include <neethi_exactlyone.h>
 #include <neethi_all.h>
 #include <neethi_engine.h>
-#include <rp_qname_matcher.h>
 
-rp_header_t *AXIS2_CALL rp_signed_encrypted_parts_builder_build_header(
+static rp_header_t *AXIS2_CALL rp_signed_encrypted_parts_builder_build_header(
     axiom_element_t *element,
     const axutil_env_t *env);
 
-axis2_status_t AXIS2_CALL rp_signed_encrypted_parts_builder_set_properties(
+static axis2_status_t AXIS2_CALL rp_signed_encrypted_parts_builder_set_properties(
     axiom_node_t *node,
     axiom_element_t *element,
     axis2_char_t *local_name,
     rp_signed_encrypted_parts_t *signed_encrypted_parts,
     const axutil_env_t *env);
 
+/**
+ * Builts EncryptedParts or SignedParts assertion
+ * @param env Pointer to environment struct
+ * @param node Assertion node
+ * @param element Assertion element
+ * @param is_signed boolean showing whether signing or encryption
+ * @returns neethi assertion created. NULL if failure.
+ */
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_signed_encrypted_parts_builder_build(
     const axutil_env_t *env,
     axiom_node_t *parts,
-    axiom_element_t *parts_ele)
+    axiom_element_t *parts_ele, 
+    axis2_bool_t is_signed)
 {
-
     rp_signed_encrypted_parts_t *signed_encrypted_parts = NULL;
     axiom_children_iterator_t *children_iter = NULL;
     neethi_assertion_t *assertion = NULL;
-    axis2_char_t *ele_name = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
-
-    AXIS2_ENV_CHECK(env, NULL);
 
     signed_encrypted_parts = rp_signed_encrypted_parts_create(env);
     if (!signed_encrypted_parts)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "[neethi] Cannot create signed_encrypted_parts.");
         return NULL;
     }
 
-    ele_name = axiom_element_get_localname(parts_ele, env);
-    if (ele_name)
-    {
-        if ((axutil_strcmp(ele_name, RP_SIGNED_PARTS) == 0))
-        {
-            rp_signed_encrypted_parts_set_signedparts(signed_encrypted_parts,
-                                                      env, AXIS2_TRUE);
-        }
-        else if (axutil_strcmp(ele_name, RP_ENCRYPTED_PARTS) == 0)
-        {
-            rp_signed_encrypted_parts_set_signedparts(signed_encrypted_parts,
-                                                      env, AXIS2_FALSE);
-        }
-        else
-            return NULL;
-    }
-    else
-        return NULL;
+    rp_signed_encrypted_parts_set_signedparts(signed_encrypted_parts, env, is_signed);
 
     children_iter = axiom_element_get_children(parts_ele, env, parts);
     if (children_iter)
@@ -87,23 +76,22 @@ rp_signed_encrypted_parts_builder_build(
             {
                 if (axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
                 {
-                    ele =
-                        (axiom_element_t *) axiom_node_get_data_element(node,
-                                                                        env);
+                    ele = (axiom_element_t *) axiom_node_get_data_element(node, env);
                     if (ele)
                     {
                         local_name = axiom_element_get_localname(ele, env);
                         if (local_name)
                         {
-                            status =
-                                rp_signed_encrypted_parts_builder_set_properties
-                                (node, ele, local_name, signed_encrypted_parts,
-                                 env);
+                            status = rp_signed_encrypted_parts_builder_set_properties
+                                (node, ele, local_name, signed_encrypted_parts, env);
                             if (status != AXIS2_SUCCESS)
                             {
-                                rp_signed_encrypted_parts_free
-                                    (signed_encrypted_parts, env);
+                                rp_signed_encrypted_parts_free (signed_encrypted_parts, env);
                                 signed_encrypted_parts = NULL;
+                                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                                    "[neethi] Cannot create signed_encrypted_parts. "
+                                    "Error in processing child element %s", local_name);
+                                    return NULL;
                             }
                         }
                     }
@@ -111,15 +99,13 @@ rp_signed_encrypted_parts_builder_build(
             }
         }
     }
-    assertion =
-        neethi_assertion_create_with_args(env,
-                                          (AXIS2_FREE_VOID_ARG)rp_signed_encrypted_parts_free,
-                                          signed_encrypted_parts,
-                                          ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS);
+    assertion = neethi_assertion_create_with_args(
+        env, (AXIS2_FREE_VOID_ARG)rp_signed_encrypted_parts_free, 
+        signed_encrypted_parts, ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS);
     return assertion;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rp_signed_encrypted_parts_builder_set_properties(
     axiom_node_t *node,
     axiom_element_t *element,
@@ -127,46 +113,66 @@ rp_signed_encrypted_parts_builder_set_properties(
     rp_signed_encrypted_parts_t * signed_encrypted_parts,
     const axutil_env_t *env)
 {
-    if (strcmp(local_name, RP_BODY) == 0)
+    axis2_char_t *ns = NULL;
+    axutil_qname_t *node_qname = NULL;
+
+    node_qname = axiom_element_get_qname(element, env, node);
+    if(!node_qname)
     {
-        if (rp_match_secpolicy_qname(env, RP_BODY, node, element))
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "[neethi] Cannot get qname from element %s.", local_name);
+        return AXIS2_FAILURE;
+    }
+
+    ns = axutil_qname_get_uri(node_qname, env);
+    if(!ns)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "[neethi] Cannot get namespace from element %s.", local_name);
+        return AXIS2_FAILURE;
+    }
+
+    /* process assertions common for WS-SecPolicy 1.1 and 1.2 */
+    if(!(axutil_strcmp(ns, RP_SP_NS_11) && axutil_strcmp(ns, RP_SP_NS_12)))
+    {
+        /* this assertion is in WS-SecurityPolicy namespace */
+        if(!strcmp(local_name, RP_BODY))
         {
-            rp_signed_encrypted_parts_set_body(signed_encrypted_parts, env,
-                                               AXIS2_TRUE);
+            rp_signed_encrypted_parts_set_body(signed_encrypted_parts, env, AXIS2_TRUE);
             return AXIS2_SUCCESS;
         }
-        else
-        {
-            return AXIS2_FAILURE;
-        }
-    }
-    else if (strcmp(local_name, RP_HEADER) == 0)
-    {
-        if (rp_match_secpolicy_qname(env, RP_HEADER, node, element))
+        else if(!strcmp(local_name, RP_HEADER))
         {
             rp_header_t *header = NULL;
-            header =
-                rp_signed_encrypted_parts_builder_build_header(element, env);
-            if (!header)
+            header = rp_signed_encrypted_parts_builder_build_header(element, env);
+            if(!header)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "[neethi] Failed to process Header Assertion.");
                 return AXIS2_FAILURE;
             }
 
-            return rp_signed_encrypted_parts_add_header(signed_encrypted_parts,
-                                                        env, header);
-        }
-        else
-        {
-            return AXIS2_FAILURE;
+            return rp_signed_encrypted_parts_add_header(signed_encrypted_parts, env, header);
         }
     }
-    else
+
+    /* process assertions specific to WS-SecPolicy 1.2 */
+    if(!axutil_strcmp(ns, RP_SP_NS_12))
     {
-        return AXIS2_FAILURE;
+        if(!strcmp(local_name, RP_ATTACHMENTS))
+        {
+            rp_signed_encrypted_parts_set_attachments(signed_encrypted_parts, env, AXIS2_TRUE);
+            return AXIS2_SUCCESS;
+        }
     }
+    
+    /* either namespace or assertion is not understood */
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+        "[neethi] Unknown Assertion %s with namespace %s", local_name, ns);
+    return AXIS2_FAILURE;
 }
 
-rp_header_t *AXIS2_CALL
+static rp_header_t *AXIS2_CALL
 rp_signed_encrypted_parts_builder_build_header(
     axiom_element_t *element,
     const axutil_env_t *env)
@@ -175,25 +181,28 @@ rp_signed_encrypted_parts_builder_build_header(
     axis2_char_t *name = NULL;
     axis2_char_t *nspace = NULL;
 
-    header = rp_header_create(env);
-    if (!header)
-        return NULL;
-
     name = axiom_element_get_attribute_value_by_name(element, env, RP_NAME);
-    nspace =
-        axiom_element_get_attribute_value_by_name(element, env, RP_NAMESPACE);
+    nspace = axiom_element_get_attribute_value_by_name(element, env, RP_NAMESPACE);
     if (!nspace)
     {
-        rp_header_free(header, env);
-        header = NULL;
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "[neethi] Header assertion should have namespace associated with it.");
         return NULL;
     }
+
+    header = rp_header_create(env);
+    if (!header)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "[neethi] Cannot create rp_header structure. Insufficient memory.");
+        return NULL;
+    }
+
     if (name)
     {
         rp_header_set_name(header, env, name);
     }
 
     rp_header_set_namespace(header, env, nspace);
-
     return header;
 }

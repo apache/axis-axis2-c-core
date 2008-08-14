@@ -16,7 +16,6 @@
  */
 
 #include <rp_rampart_config_builder.h>
-#include <rp_qname_matcher.h>
 
 /*private functions*/
 
@@ -95,182 +94,114 @@ rp_rampart_config_builder_populate(
     axiom_element_t *element,
     axis2_char_t *local_name)
 {
-    if (axutil_strcmp(local_name, RP_USER) == 0)
+    axis2_char_t *ns = NULL;
+    axutil_qname_t *node_qname = NULL;
+
+    node_qname = axiom_element_get_qname(element, env, node);
+    if(!node_qname)
     {
-        if (rp_match_rampart_config_qname(env, RP_USER, node, element))
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "[neethi] Cannot get qname from element %s.", local_name);
+        return AXIS2_FAILURE;
+    }
+
+    ns = axutil_qname_get_uri(node_qname, env);
+    if(!ns)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            "[neethi] Cannot get namespace from element %s.", local_name);
+        return AXIS2_FAILURE;
+    }
+
+    if(!axutil_strcmp(ns, RP_RAMPART_NS))
+    {
+        if(!axutil_strcmp(local_name, RP_USER))
         {
             axis2_char_t *user = NULL;
             user = axiom_element_get_text(element, env, node);
-
             return rp_rampart_config_set_user(rampart_config, env, user);
         }
-        else
-            return AXIS2_FAILURE;
-    }
-    else if (axutil_strcmp(local_name, RP_ENCRYPTION_USER) == 0)
-    {
-        if (rp_match_rampart_config_qname
-            (env, RP_ENCRYPTION_USER, node, element))
+        else if(!axutil_strcmp(local_name, RP_ENCRYPTION_USER))
         {
             axis2_char_t *encryption_user = NULL;
             encryption_user = axiom_element_get_text(element, env, node);
-            return rp_rampart_config_set_encryption_user(rampart_config, env,
-                                                         encryption_user);
+            return rp_rampart_config_set_encryption_user(rampart_config, env,encryption_user);
         }
-        else
-            return AXIS2_FAILURE;
-    }
-    else if (axutil_strcmp(local_name, RP_PASSWORD_CALLBACK_CLASS) == 0)
-    {
-        if (rp_match_rampart_config_qname
-            (env, RP_PASSWORD_CALLBACK_CLASS, node, element))
+        else if(!axutil_strcmp(local_name, RP_PASSWORD_CALLBACK_CLASS))
         {
             axis2_char_t *password_callback_class = NULL;
-            password_callback_class =
-                axiom_element_get_text(element, env, node);
-            return rp_rampart_config_set_password_callback_class(rampart_config,
-                                                                 env,
-                                                                 password_callback_class);
+            password_callback_class = axiom_element_get_text(element, env, node);
+            return rp_rampart_config_set_password_callback_class(
+                rampart_config, env, password_callback_class);
         }
-        else
-            return AXIS2_FAILURE;
-    }
-    else if (axutil_strcmp(local_name, RP_AUTHN_MODULE_NAME) == 0)
-    {
-        if (rp_match_rampart_config_qname
-            (env, RP_AUTHN_MODULE_NAME, node, element))
+        else if(!axutil_strcmp(local_name, RP_AUTHN_MODULE_NAME))
         {
             axis2_char_t *authenticate_module = NULL;
             authenticate_module = axiom_element_get_text(element, env, node);
-            return rp_rampart_config_set_authenticate_module(rampart_config,
-                                                             env,
-                                                             authenticate_module);
+            return rp_rampart_config_set_authenticate_module(
+                rampart_config, env, authenticate_module);
         }
-        else
-            return AXIS2_FAILURE;
-    }
-    else if (axutil_strcmp(local_name, RP_RD_MODULE) == 0)
-    {
-        if (rp_match_rampart_config_qname
-            (env, RP_RD_MODULE, node, element))
+        else if(!axutil_strcmp(local_name, RP_RD_MODULE))
         {
             axis2_char_t *replay_detector = NULL;
             replay_detector = axiom_element_get_text(element, env, node);
-            return rp_rampart_config_set_replay_detector(rampart_config,
-														 env,
-														 replay_detector);
+            return rp_rampart_config_set_replay_detector(rampart_config, env, replay_detector);
         }
-        else
-            return AXIS2_FAILURE;
-    }
-    else if (axutil_strcmp(local_name, RP_SCT_MODULE) == 0)
-    {
-        if (rp_match_rampart_config_qname
-            (env, RP_SCT_MODULE, node, element))
+        else if(!axutil_strcmp(local_name, RP_SCT_MODULE))
         {
             axis2_char_t *sct_module = NULL;
             sct_module = axiom_element_get_text(element, env, node);
-            return rp_rampart_config_set_sct_provider(rampart_config,
-														 env,
-														 sct_module);
+            return rp_rampart_config_set_sct_provider(rampart_config, env, sct_module);
         }
-        else
-            return AXIS2_FAILURE;
-    }
-    else if (axutil_strcmp(local_name, RP_PASSWORD_TYPE) == 0)
-    {
-        if (rp_match_rampart_config_qname(env, RP_PASSWORD_TYPE, node, element))
+        else if(!axutil_strcmp(local_name, RP_PASSWORD_TYPE))
         {
             axis2_char_t *password_type = NULL;
             password_type = axiom_element_get_text(element, env, node);
-            return rp_rampart_config_set_password_type(rampart_config, env,
-                                                       password_type);
+            return rp_rampart_config_set_password_type(rampart_config, env, password_type);
         }
-        else
-            return AXIS2_FAILURE;
-    }
-
-    else if (axutil_strcmp(local_name, RP_CERTIFICATE) == 0)
-    {
-        if (rp_match_rampart_config_qname(env, RP_CERTIFICATE, node, element))
+        else if(!axutil_strcmp(local_name, RP_CERTIFICATE))
         {
             axis2_char_t *certificate_file = NULL;
             certificate_file = axiom_element_get_text(element, env, node);
-            return rp_rampart_config_set_certificate_file(rampart_config, env,
-                                                          certificate_file);
+            return rp_rampart_config_set_certificate_file(rampart_config, env, certificate_file);
         }
-        else
-            return AXIS2_FAILURE;
-    }
-
-    else if (axutil_strcmp(local_name, RP_RECEIVER_CERTIFICATE) == 0)
-    {
-        if (rp_match_rampart_config_qname
-            (env, RP_RECEIVER_CERTIFICATE, node, element))
+        else if(!axutil_strcmp(local_name, RP_RECEIVER_CERTIFICATE))
         {
             axis2_char_t *receiver_certificate_file = NULL;
-            receiver_certificate_file =
-                axiom_element_get_text(element, env, node);
-            return
-                rp_rampart_config_set_receiver_certificate_file(rampart_config,
-                                                                env,
-                                                                receiver_certificate_file);
+            receiver_certificate_file = axiom_element_get_text(element, env, node);
+            return rp_rampart_config_set_receiver_certificate_file(
+                rampart_config, env, receiver_certificate_file);
         }
-        else
-            return AXIS2_FAILURE;
-    }
-
-    else if (axutil_strcmp(local_name, RP_PRIVATE_KEY) == 0)
-    {
-        if (rp_match_rampart_config_qname(env, RP_PRIVATE_KEY, node, element))
+        else if(!axutil_strcmp(local_name, RP_PRIVATE_KEY))
         {
             axis2_char_t *private_key_file = NULL;
             private_key_file = axiom_element_get_text(element, env, node);
-            return rp_rampart_config_set_private_key_file(rampart_config, env,
-                                                          private_key_file);
+            return rp_rampart_config_set_private_key_file(rampart_config, env, private_key_file);
         }
-        else
-            return AXIS2_FAILURE;
-    }
-    else if (axutil_strcmp(local_name, RP_PKCS12_KEY_STORE) == 0)
-    {
-        if (rp_match_rampart_config_qname(env, RP_PKCS12_KEY_STORE, node, element))
+        else if(!axutil_strcmp(local_name, RP_PKCS12_KEY_STORE))
         {
             axis2_char_t *pkcs12_key_store = NULL;
             pkcs12_key_store = axiom_element_get_text(element, env, node);
-            return rp_rampart_config_set_pkcs12_file(rampart_config, env, 
-            										pkcs12_key_store);
+            return rp_rampart_config_set_pkcs12_file(rampart_config, env, pkcs12_key_store);
         }
-        else
-            return AXIS2_FAILURE;
-    }
-    else if (axutil_strcmp(local_name, RP_TIME_TO_LIVE) == 0)
-    {
-        if (rp_match_rampart_config_qname(env, RP_TIME_TO_LIVE, node, element))
+        else if(!axutil_strcmp(local_name, RP_TIME_TO_LIVE))
         {
             axis2_char_t *time_to_live = NULL;
             time_to_live = axiom_element_get_text(element, env, node);
-            return rp_rampart_config_set_time_to_live(rampart_config, env,
-                                                      time_to_live);
+            return rp_rampart_config_set_time_to_live(rampart_config, env, time_to_live);
         }
-        else
-            return AXIS2_FAILURE;
-    }
-
-    else if (axutil_strcmp(local_name, RP_RD) == 0)
-    {
-        if (rp_match_rampart_config_qname(env, RP_RD, node, element))
+        else if(!axutil_strcmp(local_name, RP_RD))
         {
             axis2_char_t *rd_val = NULL;
             rd_val = axiom_element_get_text(element, env, node);
-            rp_rampart_config_set_rd_val(rampart_config, env, rd_val);
-            return AXIS2_SUCCESS;
-        }
-        else
-        {
-            return AXIS2_FAILURE;
+            return rp_rampart_config_set_rd_val(rampart_config, env, rd_val);
         }
     }
-    else
-        return AXIS2_FAILURE;
+
+    /* either the assertion or the namespace is not identified */
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+        "[neethi] Unknown Assertion %s with namespace %s", local_name, ns);
+    return AXIS2_FAILURE;
+
+
 }

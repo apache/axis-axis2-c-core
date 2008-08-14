@@ -182,11 +182,11 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{7C816A64-FA96-4C6C-8DB0-5256441F54BC}"
-			RelativePathToProject=".\axiom\axiom.vcproj"
+			RelativePathToProject="..\Axis2C\ides\vc\axis2c\axiom\axiom.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
-			RelativePathToProject=".\axutil\axutil.vcproj"
+			RelativePathToProject="..\Axis2C\ides\vc\axis2c\axutil\axutil.vcproj"
 		/>
 	</References>
 	<Files>
@@ -275,10 +275,6 @@
 					</File>
 					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\protection_token_builder.c"
-						>
-					</File>
-					<File
-						RelativePath="..\..\..\..\neethi\src\secpolicy\builder\qname_matcher.c"
 						>
 					</File>
 					<File
@@ -427,6 +423,10 @@
 					</File>
 					<File
 						RelativePath="..\..\..\..\neethi\src\secpolicy\model\symmetric_binding.c"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\neethi\src\secpolicy\model\token.c"
 						>
 					</File>
 					<File
@@ -598,10 +598,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\neethi\include\rp_qname_matcher.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\neethi\include\rp_rampart_config.h"
 				>
 			</File>
@@ -675,6 +671,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\neethi\include\rp_symmetric_binding_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\rp_token.h"
 				>
 			</File>
 			<File

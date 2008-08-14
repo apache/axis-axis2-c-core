@@ -41,7 +41,7 @@ AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
     neethi_policy_t *normalized_policy = NULL;
     
     saml_token = rp_saml_token_create(env);
-    qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS, RP_SP_PREFIX);
+    qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS_11, RP_SP_PREFIX);
 
     inclusion_value = axiom_element_get_attribute_value(element, env, qname);
 

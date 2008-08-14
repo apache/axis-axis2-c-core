@@ -24,7 +24,7 @@
 
 /*private functions*/
 
-axis2_status_t AXIS2_CALL username_token_process_alternatives(
+static axis2_status_t AXIS2_CALL username_token_process_alternatives(
     const axutil_env_t *env,
     neethi_all_t *all,
     rp_username_token_t *username_token);
@@ -50,12 +50,18 @@ rp_username_token_builder_build(
     neethi_policy_t *normalized_policy = NULL;
 
     username_token = rp_username_token_create(env);
-    qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS, RP_SP_PREFIX);
-
+    qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS_11, RP_SP_PREFIX);
     inclusion_value = axiom_element_get_attribute_value(element, env, qname);
-
     axutil_qname_free(qname, env);
     qname = NULL;
+    if(!inclusion_value)
+    {
+        /* we can try whether WS-SP1.2 specific inclusion value */
+        qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS_12, RP_SP_PREFIX);
+        inclusion_value = axiom_element_get_attribute_value(element, env, qname);
+        axutil_qname_free(qname, env);
+        qname = NULL;
+    }
 
     rp_username_token_set_inclusion(username_token, env, inclusion_value);
 
@@ -63,9 +69,7 @@ rp_username_token_builder_build(
     if (!child_node)
     {
         assertion = neethi_assertion_create(env);
-        neethi_assertion_set_value(assertion, env,
-                                   username_token,
-                                   ASSERTION_TYPE_USERNAME_TOKEN);
+        neethi_assertion_set_value(assertion, env, username_token, ASSERTION_TYPE_USERNAME_TOKEN);
         return assertion;
     }
 
@@ -80,23 +84,17 @@ rp_username_token_builder_build(
             {
                 return NULL;
             }
-            normalized_policy =
-                neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
+            normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
             neethi_policy_free(policy, env);
             policy = NULL;
-            alternatives =
-                neethi_policy_get_alternatives(normalized_policy, env);
-            component =
-                (neethi_operator_t *) axutil_array_list_get(alternatives, env,
-                                                            0);
+            alternatives = neethi_policy_get_alternatives(normalized_policy, env);
+            component = (neethi_operator_t *) axutil_array_list_get(alternatives, env, 0);
             all = (neethi_all_t *) neethi_operator_get_value(component, env);
             username_token_process_alternatives(env, all, username_token);
 
-            assertion =
-                neethi_assertion_create_with_args(env,
-                                                  (AXIS2_FREE_VOID_ARG)rp_username_token_free,
-                                                  username_token,
-                                                  ASSERTION_TYPE_USERNAME_TOKEN);
+            assertion = neethi_assertion_create_with_args(
+                env,(AXIS2_FREE_VOID_ARG)rp_username_token_free, 
+                username_token, ASSERTION_TYPE_USERNAME_TOKEN);
 
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
@@ -110,7 +108,7 @@ rp_username_token_builder_build(
         return NULL;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 username_token_process_alternatives(
     const axutil_env_t *env,
     neethi_all_t *all,

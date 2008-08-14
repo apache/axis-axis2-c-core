@@ -1,10 +1,10 @@
-
 /*
- * Copyright 2004,2005 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -52,6 +52,7 @@ extern "C"
 #define RP_NAME "Name"
 #define RP_NAMESPACE "Namespace"
 #define RP_ELEMENT "Element"
+#define RP_ATTACHMENTS "Attachments"
 
 #define RP_XPATH "XPath"
 #define RP_XPATH_VERSION "XPathVersion"
@@ -155,6 +156,11 @@ extern "C"
 #define RP_INCLUDE_NEVER "http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never"
 #define RP_INCLUDE_ONCE "http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Once"
 #define RP_INCLUDE_ALWAYS_TO_RECIPIENT "http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient"
+#define RP_INCLUDE_NEVER_SP12 "http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/Never"
+#define RP_INCLUDE_ONCE_SP12 "http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/Once"
+#define RP_INCLUDE_ALWAYS_TO_RECIPIENT_SP12 "http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient"
+#define RP_INCLUDE_ALWAYS_TO_INITIATOR_SP12 "http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToInitiator"
+#define RP_INCLUDE_ALWAYS_SP12 "http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/Always"
 
 #define RP_REQUEST_SEC_TOKEN_TEMPLATE "RequestSecurityTokenTemplate"
     
@@ -207,7 +213,8 @@ extern "C"
 #define RP_RD_MODULE "ReplayDetectionModule"
 #define RP_SCT_MODULE "SecurityContextTokenProvider"
 
-#define RP_SP_NS "http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"
+#define RP_SP_NS_11 "http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"
+#define RP_SP_NS_12 "http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
 #define RP_SECURITY_NS "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
 #define RP_POLICY_NS "http://schemas.xmlsoap.org/ws/2004/09/policy"
 #define RP_RAMPART_NS "http://ws.apache.org/rampart/c/policy"

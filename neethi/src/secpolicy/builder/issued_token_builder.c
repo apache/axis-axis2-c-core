@@ -41,7 +41,7 @@ rp_issued_token_builder_build(const axutil_env_t *env,
 	neethi_assertion_t *assertion= NULL;
 
 	issued_token = rp_issued_token_create(env);
-	qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS, RP_SP_PREFIX);
+	qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS_11, RP_SP_PREFIX);
 
 	inclusoin_value = axiom_element_get_attribute_value(element, env, qname);
 
@@ -53,7 +53,7 @@ rp_issued_token_builder_build(const axutil_env_t *env,
 		rp_issued_token_set_inclusion(issued_token, env, inclusoin_value);
 	}
 
-	qname = axutil_qname_create(env, RP_ISSUER, RP_SP_NS, RP_SP_PREFIX);
+	qname = axutil_qname_create(env, RP_ISSUER, RP_SP_NS_11, RP_SP_PREFIX);
 	issuer_ele = axiom_element_get_first_child_with_qname(element, env, qname,
 			node, &issuer_node);
 	if (issuer_ele) 
@@ -69,7 +69,7 @@ rp_issued_token_builder_build(const axutil_env_t *env,
 	axutil_qname_free(qname, env);
 	qname = NULL;
 
-	qname = axutil_qname_create(env, RP_REQUEST_SEC_TOKEN_TEMPLATE, RP_SP_NS,
+	qname = axutil_qname_create(env, RP_REQUEST_SEC_TOKEN_TEMPLATE, RP_SP_NS_11,
 			RP_SP_PREFIX);
 	req_sec_tok_template_ele = axiom_element_get_first_child_with_qname(
 			element, env, qname, node, &req_sec_tok_template_node);
