@@ -3,7 +3,7 @@ TESTS =
 noinst_LTLIBRARIES = librp_builder.la
 
 librp_builder_la_SOURCES = algorithmsuite_builder.c \
-						   layout_builder.c qname_matcher.c \
+						   layout_builder.c \
 						   supporting_tokens_builder.c \
 						   transport_binding_builder.c username_token_builder.c \
 						   wss10_builder.c transport_token_builder.c \

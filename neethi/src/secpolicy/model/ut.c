@@ -75,7 +75,7 @@ rp_username_token_free(
             return;
         }
 
-        rp_token_free(username_token, env);
+        rp_token_free(username_token->token, env);
         AXIS2_FREE(env->allocator, username_token);
         username_token = NULL;
     }
