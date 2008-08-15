@@ -8,7 +8,7 @@ librp_model_la_SOURCES = algorithmsuite.c asymmetric_binding.c \
 							signed_encrypted_elements.c signed_encrypted_parts.c signed_encrypted_items.c \
 							supporting_tokens.c symmetric_asymmetric_binding_commons.c \
 							symmetric_binding.c transport_binding.c ut.c wss10.c wss11.c x509_token.c \
-							trust10.c issued_token.c saml_token.c
+							trust10.c issued_token.c saml_token.c token.c
 
 
 librp_model_la_LIBADD  = ../../../../util/src/libaxutil.la
