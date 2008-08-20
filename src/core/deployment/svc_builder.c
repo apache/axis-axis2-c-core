@@ -468,7 +468,7 @@ axis2_svc_builder_populate_svc(
     itr = axiom_element_get_children_with_qname(svc_element, env, qpolicy, svc_node);
     axutil_qname_free(qpolicy, env);
     qpolicy = NULL;
-    if(!axiom_children_qname_iterator_has_next(itr, env))
+    if((!itr) || (!axiom_children_qname_iterator_has_next(itr, env)))
     {
         qpolicy = axutil_qname_create(env, NEETHI_POLICY, NEETHI_POLICY_15_NAMESPACE, NULL);
         itr = axiom_element_get_children_with_qname(svc_element, env, qpolicy, svc_node);
@@ -488,7 +488,7 @@ axis2_svc_builder_populate_svc(
     axutil_qname_free(qpolicy, env);
     qpolicy = NULL;
 
-    if(!axiom_children_qname_iterator_has_next(itr, env))
+    if((!itr) || (!axiom_children_qname_iterator_has_next(itr, env)))
     {
         qpolicy = axutil_qname_create(env, NEETHI_REFERENCE, NEETHI_POLICY_15_NAMESPACE, NULL);
         itr = axiom_element_get_children_with_qname(svc_element, env, qpolicy, svc_node);
@@ -653,7 +653,7 @@ axis2_svc_builder_process_ops(
         axutil_qname_free(qpolicy, env);
         qpolicy = NULL;
 
-        if(!axiom_children_qname_iterator_has_next(itr, env))
+        if((!itr) || (!axiom_children_qname_iterator_has_next(itr, env)))
         {
             qpolicy = axutil_qname_create(env, NEETHI_POLICY, NEETHI_POLICY_15_NAMESPACE, NULL);
             itr = axiom_element_get_children_with_qname(op_element, env, qpolicy, op_node);
@@ -673,7 +673,7 @@ axis2_svc_builder_process_ops(
         axutil_qname_free(qpolicy, env);
         qpolicy = NULL;
 
-        if(!axiom_children_qname_iterator_has_next(itr, env))
+        if((!itr) || (!axiom_children_qname_iterator_has_next(itr, env)))
         {
             qpolicy = axutil_qname_create(env, NEETHI_REFERENCE, NEETHI_POLICY_15_NAMESPACE, NULL);
             itr = axiom_element_get_children_with_qname(op_element, env, qpolicy, op_node);
@@ -777,7 +777,7 @@ axis2_svc_builder_process_msgs(
             axutil_qname_free(qpolicy, env);
             qpolicy = NULL;
             
-            if(!axiom_children_qname_iterator_has_next(itr, env))
+            if((!itr) || (!axiom_children_qname_iterator_has_next(itr, env)))
             {
                 qpolicy = axutil_qname_create(env, NEETHI_POLICY, NEETHI_POLICY_15_NAMESPACE, NULL);
                 itr = axiom_element_get_children_with_qname(element, env, qpolicy, node);
@@ -800,7 +800,7 @@ axis2_svc_builder_process_msgs(
             axutil_qname_free(qpolicy, env);
             qpolicy = NULL;
 
-            if(!axiom_children_qname_iterator_has_next(itr, env))
+            if((!itr) || (!axiom_children_qname_iterator_has_next(itr, env)))
             {
                 qpolicy = axutil_qname_create(env, NEETHI_REFERENCE, NEETHI_POLICY_15_NAMESPACE, NULL);
                 itr = axiom_element_get_children_with_qname(element, env, qpolicy,node);

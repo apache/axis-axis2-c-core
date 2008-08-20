@@ -225,6 +225,11 @@ neethi_assertion_builder_build(
         {
             return rp_trust10_builder_build(env, node, element);
         }
+        else if(!axutil_strcmp(localname, RP_TRUST13))
+        {
+            /* we can still use rp_trust10 structures */
+            return rp_trust10_builder_build(env, node, element);
+        }
         else if(!axutil_strcmp(localname, RP_INCLUDE_TIMESTAMP))
         {
             neethi_assertion_t *assertion = NULL;

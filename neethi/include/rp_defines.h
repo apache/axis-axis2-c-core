@@ -60,6 +60,7 @@ extern "C"
 #define RP_WSS10 "Wss10"
 #define RP_WSS11 "Wss11"
 #define RP_TRUST10 "Trust10"
+#define RP_TRUST13 "Trust13"
 
 #define RP_MUST_SUPPORT_REF_KEY_IDENTIFIER "MustSupportRefKeyIdentifier"
 #define RP_MUST_SUPPORT_REF_ISSUER_SERIAL "MustSupportRefIssuerSerial"
