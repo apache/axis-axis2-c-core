@@ -51,11 +51,18 @@ rp_x509_token_builder_build(
 
     x509_token = rp_x509_token_create(env);
     qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS_11, RP_SP_PREFIX);
-
     inclusion_value = axiom_element_get_attribute_value(element, env, qname);
-
     axutil_qname_free(qname, env);
     qname = NULL;
+
+    if(!inclusion_value)
+    {
+        /* we can try whether WS-SP1.2 specific inclusion value */
+        qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS_12, RP_SP_PREFIX);
+        inclusion_value = axiom_element_get_attribute_value(element, env, qname);
+        axutil_qname_free(qname, env);
+        qname = NULL;
+    }
 
     rp_x509_token_set_inclusion(x509_token, env, inclusion_value);
 
@@ -129,11 +136,16 @@ x509_token_process_alternatives(
             (neethi_assertion_t *) neethi_operator_get_value(operator, env);
         type = neethi_assertion_get_type(assertion, env);
 
-        if(type == ASSERTION_TYPE_REQUIRE_DERIVED_KEYS)
+        if(type == ASSERTION_TYPE_REQUIRE_DERIVED_KEYS_SC10)
         {
-            rp_x509_token_set_derivedkeys(x509_token, env, 
-                                         AXIS2_TRUE);
-        }    
+            rp_x509_token_set_derivedkey(x509_token, env, DERIVEKEY_NEEDED);
+            rp_x509_token_set_derivedkey_version(x509_token, env, DERIVEKEY_VERSION_SC10);
+        }  
+        else if(type == ASSERTION_TYPE_REQUIRE_DERIVED_KEYS_SC13)
+        {
+            rp_x509_token_set_derivedkey(x509_token, env, DERIVEKEY_NEEDED);
+            rp_x509_token_set_derivedkey_version(x509_token, env, DERIVEKEY_VERSION_SC13);
+        }
         else if (type == ASSERTION_TYPE_REQUIRE_KEY_IDENTIFIRE_REFERENCE)
         {
             rp_x509_token_set_require_key_identifier_reference(x509_token, env,

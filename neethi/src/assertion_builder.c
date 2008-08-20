@@ -97,11 +97,11 @@ neethi_assertion_builder_build(
         }
         else if(!axutil_strcmp(localname, RP_SECURITY_CONTEXT_TOKEN))
         {
-            return rp_security_context_token_builder_build(env, node, element, AXIS2_FALSE);
+            return rp_security_context_token_builder_build(env, node, element, ns, AXIS2_FALSE);
         }
         else if(!axutil_strcmp(localname, RP_SECURE_CONVERSATION_TOKEN))
         {
-            return rp_security_context_token_builder_build(env, node, element, AXIS2_TRUE);
+            return rp_security_context_token_builder_build(env, node, element, ns, AXIS2_TRUE);
         }
         else if(!axutil_strcmp(localname, RP_ENCRYPT_BEFORE_SIGNING))
         {
@@ -366,7 +366,18 @@ neethi_assertion_builder_build(
         {
             neethi_assertion_t *assertion = NULL;
             assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, NULL, ASSERTION_TYPE_REQUIRE_DERIVED_KEYS);
+            if(!axutil_strcmp(ns, RP_SP_NS_11))
+            {
+                /* derived key should be as defined in WS-SecConversation 1.0 */
+                neethi_assertion_set_value(
+                    assertion, env, NULL, ASSERTION_TYPE_REQUIRE_DERIVED_KEYS_SC10);
+            }
+            else
+            {
+                /* derived key should be as defined in WS-SecConversation 1.3 */
+                neethi_assertion_set_value(
+                    assertion, env, NULL, ASSERTION_TYPE_REQUIRE_DERIVED_KEYS_SC13);
+            }
             return assertion;
         }
         else if(!axutil_strcmp(localname, RP_REQUIRE_EXTERNAL_URI_REFERENCE))
@@ -382,6 +393,14 @@ neethi_assertion_builder_build(
             assertion = neethi_assertion_create(env);
             neethi_assertion_set_value(assertion, env, NULL, 
                 ASSERTION_TYPE_SC10_SECURITY_CONTEXT_TOKEN);
+            return assertion;
+        }
+        else if(!axutil_strcmp(localname, RP_SC13_SECURITY_CONTEXT_TOKEN))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL, 
+                ASSERTION_TYPE_SC13_SECURITY_CONTEXT_TOKEN);
             return assertion;
         }
         else if(!axutil_strcmp(localname, RP_ISSUER))

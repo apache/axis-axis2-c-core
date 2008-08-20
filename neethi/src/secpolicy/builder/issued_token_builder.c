@@ -28,7 +28,7 @@ rp_issued_token_builder_build(const axutil_env_t *env,
 	neethi_all_t *all= NULL;
 	axutil_array_list_t *alternatives= NULL;
 	neethi_operator_t *component= NULL;
-	axis2_char_t *inclusoin_value= NULL;
+	axis2_char_t *inclusion_value= NULL;
 	axutil_qname_t *qname= NULL;
 	axiom_node_t *issuer_node= NULL;
 	axiom_element_t *issuer_ele= NULL;
@@ -42,15 +42,22 @@ rp_issued_token_builder_build(const axutil_env_t *env,
 
 	issued_token = rp_issued_token_create(env);
 	qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS_11, RP_SP_PREFIX);
-
-	inclusoin_value = axiom_element_get_attribute_value(element, env, qname);
-
+	inclusion_value = axiom_element_get_attribute_value(element, env, qname);
 	axutil_qname_free(qname, env);
 	qname = NULL;
 
-	if (inclusoin_value) 
+    if(!inclusion_value)
+    {
+        /* we can try whether WS-SP1.2 specific inclusion value */
+        qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS_12, RP_SP_PREFIX);
+        inclusion_value = axiom_element_get_attribute_value(element, env, qname);
+        axutil_qname_free(qname, env);
+        qname = NULL;
+    }
+
+	if (inclusion_value) 
 	{
-		rp_issued_token_set_inclusion(issued_token, env, inclusoin_value);
+		rp_issued_token_set_inclusion(issued_token, env, inclusion_value);
 	}
 
 	qname = axutil_qname_create(env, RP_ISSUER, RP_SP_NS_11, RP_SP_PREFIX);
@@ -147,7 +154,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL rp_issued_token_builder_process_alternati
 				env);
 		type = neethi_assertion_get_type(assertion, env);
 
-		if (type == ASSERTION_TYPE_REQUIRE_DERIVED_KEYS) 
+		if (type == ASSERTION_TYPE_REQUIRE_DERIVED_KEYS_SC10) 
 		{
 			rp_issued_token_set_derivedkeys(issued_token, env, AXIS2_TRUE);
 		} 

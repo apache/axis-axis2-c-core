@@ -39,6 +39,12 @@ extern "C"
         DERIVEKEY_EXPLICIT
     } derive_key_type_t;
 
+    typedef enum
+    {
+        DERIVEKEY_VERSION_SC10 =0,
+        DERIVEKEY_VERSION_SC13
+    } derive_key_version_t;
+
     typedef struct rp_token_t rp_token_t;
 
     AXIS2_EXTERN rp_token_t *AXIS2_CALL
@@ -98,6 +104,28 @@ extern "C"
     rp_token_increment_ref(
         rp_token_t * token,
         const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_token_set_derive_key_version(
+        rp_token_t *token, 
+        const axutil_env_t *env, 
+        derive_key_version_t version);
+
+    AXIS2_EXTERN derive_key_version_t AXIS2_CALL
+    rp_token_get_derive_key_version(
+        rp_token_t *token, 
+        const axutil_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_token_set_inclusion(
+        rp_token_t *token, 
+        const axutil_env_t *env, 
+        axis2_char_t *inclusion);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rp_token_get_inclusion(
+        rp_token_t *token, 
+        const axutil_env_t *env);
 
 
 #ifdef __cplusplus

@@ -21,9 +21,11 @@
 struct rp_token_t
 {
     axis2_char_t *issuer;
-    axis2_bool_t is_issuer_name; /* shows whether 'issuer' points to issuer name or end point */
+    axis2_char_t *inclusion;
     axiom_node_t *claim;
+    axis2_bool_t is_issuer_name; /* shows whether 'issuer' points to issuer name or end point */
     derive_key_type_t derive_key;
+    derive_key_version_t derive_key_version;
     int ref;
 };
 
@@ -41,10 +43,12 @@ rp_token_create(
             "[neethi] Token creation failed. Insufficient memory");
         return NULL;
     }
-    token->issuer = RP_INCLUDE_ALWAYS;
+    token->issuer = NULL;
     token->is_issuer_name = AXIS2_FALSE;
     token->claim = NULL;
     token->derive_key = DERIVEKEY_NONE;
+    token->derive_key_version = DERIVEKEY_VERSION_SC13;
+    token->inclusion = RP_INCLUDE_ALWAYS_SP12;
     token->ref = 0;
 
     return token;
@@ -85,6 +89,42 @@ rp_token_set_issuer(
 {
     token->issuer = issuer;
     return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_token_set_derive_key_version(
+    rp_token_t *token, 
+    const axutil_env_t *env, 
+    derive_key_version_t version)
+{
+    token->derive_key_version = version;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN derive_key_version_t AXIS2_CALL
+rp_token_get_derive_key_version(
+    rp_token_t *token, 
+    const axutil_env_t *env)
+{
+    return token->derive_key_version;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_token_set_inclusion(
+    rp_token_t *token, 
+    const axutil_env_t *env, 
+    axis2_char_t *inclusion)
+{
+    token->inclusion = inclusion;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+rp_token_get_inclusion(
+    rp_token_t *token, 
+    const axutil_env_t *env)
+{
+    return token->inclusion;
 }
 
 AXIS2_EXTERN derive_key_type_t AXIS2_CALL

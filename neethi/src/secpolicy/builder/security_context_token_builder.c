@@ -36,6 +36,7 @@ rp_security_context_token_builder_build(
     const axutil_env_t *env,
     axiom_node_t *node,
     axiom_element_t *element,
+    axis2_char_t *sp_ns_uri,
     axis2_bool_t is_secure_conversation_token)
 {
     rp_security_context_token_t *security_context_token = NULL;
@@ -52,15 +53,25 @@ rp_security_context_token_builder_build(
     neethi_policy_t *normalized_policy = NULL;
 
     security_context_token = rp_security_context_token_create(env);
-    qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, RP_SP_NS_11, RP_SP_PREFIX);
-
+    qname = axutil_qname_create(env, RP_INCLUDE_TOKEN, sp_ns_uri, RP_SP_PREFIX);
     inclusion_value = axiom_element_get_attribute_value(element, env, qname);
-
     axutil_qname_free(qname, env);
     qname = NULL;
 
     rp_security_context_token_set_inclusion(security_context_token, env, inclusion_value);
-    rp_security_context_token_set_is_secure_conversation_token(security_context_token, env, is_secure_conversation_token);
+    rp_security_context_token_set_is_secure_conversation_token(
+        security_context_token, env, is_secure_conversation_token);
+
+    if(!axutil_strcmp(sp_ns_uri, RP_SP_NS_11))
+    {
+        rp_security_context_token_set_sc10_security_context_token(
+            security_context_token, env, AXIS2_TRUE);
+    }
+    else
+    {
+        rp_security_context_token_set_sc10_security_context_token(
+            security_context_token, env, AXIS2_FALSE);
+    }
 
     child_node = axiom_node_get_first_element(node, env);
     if (!child_node)
@@ -89,7 +100,7 @@ rp_security_context_token_builder_build(
                             axis2_char_t *ns = NULL;
                             axutil_qname_t *node_qname = NULL;
 
-                            node_qname = axiom_element_get_qname(element, env, node);
+                            node_qname = axiom_element_get_qname(child_element, env, child_node);
                             if(!node_qname)
                             {
                                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
@@ -177,10 +188,17 @@ security_context_token_process_alternatives(
             (neethi_assertion_t *) neethi_operator_get_value(operator, env);
         type = neethi_assertion_get_type(assertion, env);
 
-        if(type == ASSERTION_TYPE_REQUIRE_DERIVED_KEYS)
+        if(type == ASSERTION_TYPE_REQUIRE_DERIVED_KEYS_SC10)
         {
-            rp_security_context_token_set_derivedkeys(security_context_token, env, 
-                                         AXIS2_TRUE);
+            rp_security_context_token_set_derivedkey(security_context_token, env, DERIVEKEY_NEEDED);
+            rp_security_context_token_set_derivedkey_version(
+                security_context_token, env, DERIVEKEY_VERSION_SC10);
+        }   
+        else if(type == ASSERTION_TYPE_REQUIRE_DERIVED_KEYS_SC13)
+        {
+            rp_security_context_token_set_derivedkey(security_context_token, env, DERIVEKEY_NEEDED);
+            rp_security_context_token_set_derivedkey_version(
+                security_context_token, env, DERIVEKEY_VERSION_SC13);
         }    
         else if(type == ASSERTION_TYPE_REQUIRE_EXTERNAL_URI)
         {
@@ -191,6 +209,11 @@ security_context_token_process_alternatives(
         {
             rp_security_context_token_set_sc10_security_context_token(security_context_token, env,
                                                      AXIS2_TRUE);
+        }
+        else if(type == ASSERTION_TYPE_SC13_SECURITY_CONTEXT_TOKEN)
+        {
+            rp_security_context_token_set_sc10_security_context_token(security_context_token, env,
+                                                     AXIS2_FALSE);
         }
         else if(type == ASSERTION_TYPE_ISSUER)
         {

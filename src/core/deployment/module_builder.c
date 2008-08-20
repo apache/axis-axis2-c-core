@@ -483,14 +483,18 @@ axis2_module_builder_process_ops(
 
         /* processing <wsp:Policy> .. </..> elements */
 
-        qpolicy =
-            axutil_qname_create(env, NEETHI_POLICY, NEETHI_NAMESPACE, NULL);
-        itr =
-            axiom_element_get_children_with_qname(op_element, env, qpolicy,
-                                                  op_node);
+        qpolicy = axutil_qname_create(env, NEETHI_POLICY, NEETHI_NAMESPACE, NULL);
+        itr = axiom_element_get_children_with_qname(op_element, env, qpolicy, op_node);
         axutil_qname_free(qpolicy, env);
         qpolicy = NULL;
 
+        if(!axiom_children_qname_iterator_has_next(itr, env))
+        {
+            qpolicy = axutil_qname_create(env, NEETHI_POLICY, NEETHI_POLICY_15_NAMESPACE, NULL);
+            itr = axiom_element_get_children_with_qname(op_element, env, qpolicy, op_node);
+            axutil_qname_free(qpolicy, env);
+            qpolicy = NULL;
+        }
         if (itr)
         {
             axis2_process_policy_elements(env, AXIS2_MODULE_OPERATION_POLICY, itr,
@@ -498,13 +502,18 @@ axis2_module_builder_process_ops(
         }
 
         /* processing <wsp:PolicyReference> .. </..> elements */
-        qpolicy =
-            axutil_qname_create(env, NEETHI_REFERENCE, NEETHI_NAMESPACE, NULL);
-        itr =
-            axiom_element_get_children_with_qname(op_element, env, qpolicy,
-                                                  op_node);
+        qpolicy = axutil_qname_create(env, NEETHI_REFERENCE, NEETHI_NAMESPACE, NULL);
+        itr = axiom_element_get_children_with_qname(op_element, env, qpolicy, op_node);
         axutil_qname_free(qpolicy, env);
         qpolicy = NULL;
+
+        if(!axiom_children_qname_iterator_has_next(itr, env))
+        {
+            qpolicy = axutil_qname_create(env, NEETHI_REFERENCE, NEETHI_POLICY_15_NAMESPACE, NULL);
+            itr = axiom_element_get_children_with_qname(op_element, env, qpolicy, op_node);
+            axutil_qname_free(qpolicy, env);
+            qpolicy = NULL;
+        }
 
         if (itr)
         {

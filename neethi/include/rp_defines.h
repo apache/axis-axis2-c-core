@@ -191,6 +191,7 @@ extern "C"
 
 #define RP_REQUIRE_EXTERNAL_URI_REFERENCE "RequireExternalUriReference"
 #define RP_SC10_SECURITY_CONTEXT_TOKEN "SC10SecurityContextToken"
+#define RP_SC13_SECURITY_CONTEXT_TOKEN "SC13SecurityContextToken"
 #define RP_BOOTSTRAP_POLICY "BootstrapPolicy"
 #define RP_ISSUER "Issuer"
 
