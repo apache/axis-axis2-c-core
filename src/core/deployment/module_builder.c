@@ -443,6 +443,7 @@ axis2_module_builder_process_ops(
         else
         {
             op_desc = axis2_op_create_from_module(env);
+            axis2_op_set_msg_exchange_pattern(op_desc, env, mep_url);
         }
 
         op_name = axiom_attribute_get_value(op_name_att, env);

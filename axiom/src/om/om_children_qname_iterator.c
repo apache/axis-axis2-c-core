@@ -144,14 +144,6 @@ axiom_children_qname_iterator_has_next(
             if(om_element)
             {
                 element_qname = axiom_element_get_qname(om_element, env, iterator->current_child);
-                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[axiom] element_qname:%s", 
-                        axutil_qname_get_localpart(element_qname, env));
-            }
-
-            if(iterator->given_qname)
-            {
-                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[axiom] iterator->given_qname:%s", 
-                    axutil_qname_get_localpart(iterator->given_qname, env));
             }
 
             if (om_element &&
