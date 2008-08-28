@@ -125,13 +125,13 @@ axiom_children_qname_iterator_has_next(
     axiom_children_qname_iterator_t * iterator,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-
     while (iterator->need_to_move_forward)
     {
         if (iterator->current_child)
         {
             axiom_element_t *om_element = NULL;
+            axutil_qname_t *element_qname = NULL;
+
             if (axiom_node_get_node_type(iterator->current_child, env) ==
                 AXIOM_ELEMENT)
             {
@@ -140,11 +140,22 @@ axiom_children_qname_iterator_has_next(
                                                                     current_child,
                                                                     env);
             }
+           
+            if(om_element)
+            {
+                element_qname = axiom_element_get_qname(om_element, env, iterator->current_child);
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[axiom] element_qname:%s", 
+                        axutil_qname_get_localpart(element_qname, env));
+            }
+
+            if(iterator->given_qname)
+            {
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[axiom] iterator->given_qname:%s", 
+                    axutil_qname_get_localpart(iterator->given_qname, env));
+            }
 
             if (om_element &&
-                axutil_qname_equals(axiom_element_get_qname
-                                    (om_element, env, iterator->current_child),
-                                    env, iterator->given_qname))
+                axutil_qname_equals(element_qname, env, iterator->given_qname))
             {
                 iterator->matching_node_found = AXIS2_TRUE;
                 iterator->need_to_move_forward = AXIS2_FALSE;
