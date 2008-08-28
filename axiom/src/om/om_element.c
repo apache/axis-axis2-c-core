@@ -1102,19 +1102,21 @@ axiom_element_get_first_child_with_qname(
 {
     axiom_node_t *om_node = NULL;
     axiom_children_qname_iterator_t *children_iterator = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
+
     AXIS2_PARAM_CHECK(env->error, element_qname, NULL);
     AXIS2_PARAM_CHECK(env->error, element_node, NULL);
 
     om_node = axiom_node_get_first_child(element_node, env);
     if (!om_node)
     {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "There are no child elements for the node");
         return NULL;
     }
     children_iterator = axiom_children_qname_iterator_create(env, om_node, 
                                                              element_qname);
     if (!children_iterator)
     {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Could not create children qname iterator");
         return NULL;
     }
     om_node = NULL;
@@ -1132,7 +1134,9 @@ axiom_element_get_first_child_with_qname(
         }
         return (axiom_element_t *) axiom_node_get_data_element(om_node, env);
     }
+
     axiom_children_qname_iterator_free(children_iterator, env);
+
     return NULL;
 }
 
