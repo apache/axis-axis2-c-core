@@ -1692,6 +1692,7 @@ axiom_element_create_str(
     element->children_qname_iter = NULL;
     element->text_value = NULL;
     element->next_ns_prefix_number = 0;
+	element->is_empty = AXIS2_FALSE;
 
     element->localname = axutil_string_clone(localname, env);
     if (!element->localname)
