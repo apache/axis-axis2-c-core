@@ -486,6 +486,24 @@ neethi_assertion_builder_build(
             return rp_rampart_config_builder_build(env, node, element);
         }
     }
+    else if(!axutil_strcmp(ns, AXIS2_MTOM_POLICY_NS))
+    {
+        if(!axutil_strcmp(localname, AXIS2_OPTIMIZED_MIME_SERIALIZATION))
+        {
+            neethi_assertion_t *assertion = NULL;
+            assertion = neethi_assertion_create(env);  
+            neethi_assertion_set_value(assertion, env, NULL, ASSERTION_TYPE_OPTIMIZED_MIME_SERIALIZATION) ;
+            return assertion;     
+        }
+    }
+    else if((!axutil_strcmp(ns, AXIS2_RM_POLICY_10_NS))||
+        (!axutil_strcmp(ns, AXIS2_RM_POLICY_11_NS)))
+    {
+        if(!axutil_strcmp(localname, AXIS2_RM_RMASSERTION))
+        {
+            return axis2_rm_assertion_builder_build(env, node, element);
+        }
+    }
 
     /* This assertion cannot be processed */
     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_UNKNOWN_ASSERTION, AXIS2_FAILURE);

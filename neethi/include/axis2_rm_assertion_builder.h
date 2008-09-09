@@ -15,30 +15,30 @@
  * limitations under the License.
  */
 
-#ifndef NEETHI_ASSERTION_BUILDER_H
-#define NEETHI_ASSERTION_BUILDER_H
+#ifndef AXIS2_RM_ASSERTION_BUILDER_H
+#define AXIS2_RM_ASSERTION_BUILDER_H
 
-/** @defgroup neethi_assertion_builder
- * @ingroup neethi_assertion_builder
+/** @defgroup axis2_rm_assertion_builder
+ * @ingroup axis2_rm_assertion_builder
  * @{
  */
 
-#include <rp_includes.h>
-#include <rp_property.h>
+#include <neethi_constants.h>
+#include <axis2_rm_assertion.h>
 #include <neethi_assertion.h>
-#include <rp_builders.h>
-#include <axis2_rm_assertion_builder.h>
+#include <neethi_includes.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-    AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
-    neethi_assertion_builder_build(
-        const axutil_env_t * env,
-        axiom_node_t * node,
-        axiom_element_t * element);
+   AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
+    axis2_rm_assertion_builder_build(
+        const axutil_env_t *env,
+        axiom_node_t *rm_assertion_node,
+        axiom_element_t *rm_assertion_ele);
+ 
 
 #ifdef __cplusplus
 }

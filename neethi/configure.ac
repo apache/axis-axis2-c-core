@@ -67,7 +67,8 @@ AC_CONFIG_FILES([Makefile \
     src/secpolicy/Makefile \
     src/secpolicy/model/Makefile \
     src/secpolicy/builder/Makefile \
-    test/Makefile \
+    src/rmpolicy/Makefile \
+    test/Makefile
     ])
     
 AC_OUTPUT

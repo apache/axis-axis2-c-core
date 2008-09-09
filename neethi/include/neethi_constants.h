@@ -31,6 +31,43 @@
 #define NEETHI_ID "Id"
 #define NEETHI_WSU_NS_PREFIX "wsu"
 #define NEETHI_NAME "Name"
+#define AXIS2_OPTIMIZED_MIME_SERIALIZATION "OptimizedMimeSerialization"
+#define AXIS2_MTOM_POLICY_NS "http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization"
+#define AXIS2_RM_POLICY_10_NS "http://schemas.xmlsoap.org/ws/2005/02/rm/policy"
+#define AXIS2_RM_POLICY_11_NS "http://docs.oasis-open.org/ws-rx/wsrmp/200702"
+#define AXIS2_SANDESHA2_NS "http://ws.apache.org/sandesha2/c/policy"
+
+/* Reliable messaging related constatnts */
+
+/* RMPolicy 1.0 */
+
+#define AXIS2_RM_RMASSERTION "RMAssertion"
+#define AXIS2_RM_INACTIVITY_TIMEOUT "InactivityTimeout"
+#define AXIS2_RM_BASE_RETRANSMISSION_INTERVAL "BaseRetransmissionInterval"
+#define AXIS2_RM_EXPONENTIAL_BACK_OFF "ExponentialBackoff"
+#define AXIS2_RM_ACKNOWLEDGEMENT_INTERVAL "AcknowledgementInterval"
+
+/* RM policy 1.1 */
+
+#define AXIS2_RM_SEQUENCE_STR "SequenceSTR"
+#define AXIS2_RM_SEQUENCE_TRANSPORT_SECURITY "SequenceTransportSecurity"
+#define AXIS2_RM_DELIVERY_ASSURANCE "DeliveryAssurance"
+#define AXIS2_RM_EXACTLY_ONCE "ExactlyOnce"
+#define AXIS2_RM_AT_LEAST_ONCE "AtLeastOnce"
+#define AXIS2_RM_AT_MOST_ONCE "AtMostOnce"
+#define AXIS2_RM_IN_ORDER "InOrder"
+
+/* Sandesha2/C specific */
+
+#define AXIS2_RM_SANDESHA2_DB "sandesha2_db"
+#define AXIS2_RM_STORAGE_MANAGER "StorageManager"
+#define AXIS2_RM_MESSAGE_TYPES_TO_DROP "MessageTypesToDrop"
+#define AXIS2_RM_MAX_RETRANS_COUNT "MaxRetransCount"
+#define AXIS2_RM_SENDER_SLEEP_TIME "SenderSleepTime"
+#define AXIS2_RM_INVOKER_SLEEP_TIME "InvokerSleepTime"
+#define AXIS2_RM_POLLING_WAIT_TIME "PollingWaitTime"
+#define AXIS2_RM_TERMINATE_DELAY "TerminateDelay"
+
 
 /**
 * @file neethi_constants.h
