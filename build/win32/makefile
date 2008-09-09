@@ -425,10 +425,12 @@ NEETHI_SRC = $(AXIS2_SOURCE_DIR)\neethi\src
 NEETHI_INTDIR = $(AXIS2_INTDIR)\neethi
 NEETHI_INTDIR1 = $(AXIS2_INTDIR)\neethi\model
 NEETHI_INTDIR2 = $(AXIS2_INTDIR)\neethi\builder
+NEETHI_INTDIR3 = $(AXIS2_INTDIR))\neethi\rmpolicy
 
 NEETHI_OBJS = $(NEETHI_INTDIR)\*.obj \
-	      $(NEETHI_INTDIR)\model\*.obj \
-	      $(NEETHI_INTDIR)\builder\*.obj 
+			$(NEETHI_INTDIR)\model\*.obj \
+			$(NEETHI_INTDIR)\builder\*.obj \
+			$(NEETHI_INTDIR)\rmpolicy\*.obj								 
 
 $(NEETHI_INTDIR) :
 	@if not exist $(NEETHI_INTDIR) mkdir $(NEETHI_INTDIR)
@@ -439,6 +441,9 @@ $(NEETHI_INTDIR1) :
 $(NEETHI_INTDIR2) :
 	@if not exist $(NEETHI_INTDIR2) mkdir $(NEETHI_INTDIR2)
 
+$(NEETHI_INTDIR3) :
+	@if not exist $(NEETHI_INTDIR3) mkdir $(NEETHI_INTDIR3)
+
 {$(NEETHI_SRC)}.c{$(NEETHI_INTDIR)}.obj ::
 	$(CC) $(CFLAGS) /Fo$(NEETHI_INTDIR)\ /c $<
 
@@ -448,8 +453,10 @@ $(NEETHI_INTDIR2) :
 {$(NEETHI_SRC)\secpolicy\builder}.c{$(NEETHI_INTDIR2)}.obj ::
 	$(CC) $(CFLAGS) /Fo$(NEETHI_INTDIR2)\ /c $<
 
+{$(NEETHI_SRC)\rmpolicy}.c{$(NEETHI_INTDIR3)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(NEETHI_INTDIR3)\ /c $<
 
-$(NEETHI_OBJS) : $(NEETHI_INTDIR) $(NEETHI_INTDIR1) $(NEETHI_INTDIR2)
+$(NEETHI_OBJS) : $(NEETHI_INTDIR) $(NEETHI_INTDIR1) $(NEETHI_INTDIR2) $(NEETHI_INTDIR3)
 
 $(AXIS2_LIBS)\$(NEETHI).dll : $(NEETHI_OBJS)
 	$(LD) $(LDFLAGS) $(NEETHI_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
