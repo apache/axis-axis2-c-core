@@ -468,9 +468,13 @@ axis2_op_client_execute(
     {
         axis2_engine_t *engine = NULL;
 
-        AXIS2_CALLBACK_RECV_ADD_CALLBACK(op_client->callback_recv, env,
+        if(op_client->callback)
+        {
+            AXIS2_CALLBACK_RECV_ADD_CALLBACK(op_client->callback_recv, env,
                                          axis2_msg_ctx_get_msg_id(msg_ctx, env),
                                          op_client->callback);
+        }
+
         axis2_msg_ctx_set_op_ctx(msg_ctx, env, axis2_op_find_op_ctx(op, env,
                                                                     msg_ctx,
                                                                     op_client->

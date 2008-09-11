@@ -663,7 +663,7 @@ axis2_svc_client_fire_and_forget_with_op_qname(
     }
 
     axis2_op_client_add_out_msg_ctx(svc_client->op_client, env, msg_ctx);
-    axis2_op_client_execute(svc_client->op_client, env, AXIS2_FALSE);
+    axis2_op_client_execute(svc_client->op_client, env, AXIS2_TRUE);
     axis2_svc_client_set_http_info(svc_client, env, msg_ctx);
     svc_client->auth_failed = axis2_msg_ctx_get_auth_failed(msg_ctx, env);
     svc_client->required_auth_is_http =
