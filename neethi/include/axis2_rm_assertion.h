@@ -26,7 +26,7 @@
  */
 
 #include <neethi_includes.h>
-
+#include <neethi_policy.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -242,6 +242,12 @@ extern "C"
         axis2_rm_assertion_t *rm_assertion,
         const axutil_env_t * env,
         axis2_char_t* sandesha2_db);
+
+    AXIS2_EXTERN axis2_rm_assertion_t* AXIS2_CALL
+        axis2_rm_assertion_get_from_policy(
+        const axutil_env_t *env,
+        neethi_policy_t *policy);
+
 
 
 #ifdef __cplusplus

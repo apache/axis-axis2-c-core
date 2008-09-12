@@ -17,6 +17,8 @@
  */
 
 #include <axis2_rm_assertion.h>
+#include <neethi_assertion.h>
+#include <neethi_all.h>
 
 struct axis2_rm_assertion_t
 {
@@ -535,3 +537,49 @@ axis2_rm_assertion_set_sandesha2_db(
  
     return AXIS2_SUCCESS;
 }
+
+
+AXIS2_EXTERN axis2_rm_assertion_t* AXIS2_CALL
+axis2_rm_assertion_get_from_policy(
+    const axutil_env_t *env,
+    neethi_policy_t *policy)
+{
+    axutil_array_list_t *alternatives = NULL;
+    neethi_operator_t *component = NULL;
+    neethi_all_t *all = NULL;
+    axutil_array_list_t *arraylist = NULL;
+    neethi_operator_t *operator = NULL;
+    neethi_assertion_t *assertion = NULL;
+    neethi_assertion_type_t type;
+    void *value = NULL;
+    int i = 0;
+
+    alternatives = neethi_policy_get_alternatives(policy, env);
+
+    component =
+        (neethi_operator_t *) axutil_array_list_get(alternatives, env, 0);
+    all = (neethi_all_t *) neethi_operator_get_value(component, env);
+
+    arraylist = neethi_all_get_policy_components(all, env);
+
+    for (i = 0; i < axutil_array_list_size(arraylist, env); i++)
+    {
+        operator =(neethi_operator_t *) axutil_array_list_get(arraylist, env,
+                                                              i);
+        assertion =
+            (neethi_assertion_t *) neethi_operator_get_value(operator, env);
+        value = neethi_assertion_get_value(assertion, env);
+        type = neethi_assertion_get_type(assertion, env);
+
+        if (value)
+        {
+            if (type == ASSERTION_TYPE_RM_ASSERTION)
+            {
+                return (axis2_rm_assertion_t *)value;
+            }
+        }
+    }
+    
+    return NULL;
+}
+
