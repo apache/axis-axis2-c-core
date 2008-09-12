@@ -659,7 +659,23 @@ axis2_options_set_use_separate_listener(
     const axutil_env_t * env,
     const axis2_bool_t use_separate_listener)
 {
+    axutil_property_t *property = NULL;
+
     options->use_separate_listener = use_separate_listener;
+
+    if (use_separate_listener)
+    {
+        property = axutil_property_create(env);
+        axutil_property_set_value(property, env, axutil_strdup(env, AXIS2_VALUE_TRUE));
+        axis2_options_set_property(options, env, AXIS2_USE_SEPARATE_LISTENER, property);
+    }
+    else
+    {
+        property = axutil_property_create(env);
+        axutil_property_set_value(property, env, axutil_strdup(env, AXIS2_VALUE_FALSE));
+        axis2_options_set_property(options, env, AXIS2_USE_SEPARATE_LISTENER, property);
+    }
+    
     return AXIS2_SUCCESS;
 }
 

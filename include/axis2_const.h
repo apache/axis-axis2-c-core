@@ -211,6 +211,8 @@ extern "C"
 
 #define AXIS2_MODULE_ADDRESSING "addressing"
 
+#define AXIS2_USE_SEPARATE_LISTENER "use_listener"
+
 #define AXIS2_USER_NAME "userName"
 #define AXIS2_PASSWORD "password"
 
