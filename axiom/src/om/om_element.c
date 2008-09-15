@@ -128,12 +128,13 @@ axiom_element_create(
         uri = axiom_namespace_get_uri(ns, env);
         prefix = axiom_namespace_get_prefix(ns, env);
 
+        /*
         if (prefix && axutil_strcmp(prefix, "") == 0)
         {
             element->ns = NULL;
             return element;
         }
-
+        */
         element->ns = axiom_element_find_namespace(element,
                                                    env, *node, uri, prefix);
 
@@ -756,6 +757,7 @@ axiom_element_serialize_start_part(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
+
 
     if (om_element->is_empty)
     {
