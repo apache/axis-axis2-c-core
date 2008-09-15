@@ -335,7 +335,8 @@ axis2_addr_out_handler_invoke(
                                                                    AXIS2_WSA_DEFAULT_PREFIX);
                                         reference_attr =
                                             axiom_attribute_create(env,
-                                                                   "isReferenceParameter",
+                                                                   /*"isReferenceParameter"*/
+                                                                   AXIS2_WSA_IS_REFERENCE_PARAMETER_ATTRIBUTE,
                                                                    "true",
                                                                    addr_ns_obj);
                                         axiom_element_add_attribute

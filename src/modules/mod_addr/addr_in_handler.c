@@ -600,6 +600,7 @@ axis2_addr_in_extract_epr_information(
                     om_ele =
                         (axiom_element_t *) axiom_node_get_data_element(om_node,
                                                                         env);
+                    axis2_endpoint_ref_add_ref_param(endpoint_ref, env, om_node);                    
                 }
             }
 
