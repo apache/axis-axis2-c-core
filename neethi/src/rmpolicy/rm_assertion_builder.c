@@ -74,7 +74,7 @@ axis2_rm_assertion_builder_build(
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[neethi] Cannot get qname from element");
-        return AXIS2_FAILURE;
+        return NULL;
     }
 
     ns = axutil_qname_get_uri(node_qname, env);
@@ -82,7 +82,7 @@ axis2_rm_assertion_builder_build(
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[neethi] Cannot get namespace from element.");
-        return AXIS2_FAILURE;
+        return NULL;
     }
 
     rm_assertion = axis2_rm_assertion_create(env);
@@ -135,14 +135,14 @@ axis2_rm_assertion_builder_build(
                     {
                         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                             "[neethi] Cannot get qname from element %s.", local_name);
-                        return AXIS2_FAILURE;
+                        return NULL;
                     }
                     ns = axutil_qname_get_uri(node_qname, env);
                     if(!ns)
                     {
                         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                             "[neethi] Cannot get namespace from element %s.", local_name);
-                        return AXIS2_FAILURE;
+                        return NULL;
                     }
                     if(!axutil_strcmp(ns, AXIS2_SANDESHA2_NS))
                     {
