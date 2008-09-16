@@ -77,6 +77,7 @@ AXIS2_IIS_MODULE = axis2_mod_IIS
 AXIS2_MOD_ADDR = axis2_mod_addr
 AXIS2_HTTP_SERVER = axis2_http_server
 AXIS2_TCP_SERVER = axis2_tcp_server
+AXIS2_CGI        = axis2.cgi
 GUTHTHILA = guththila
 AXIS2_MOD_LOG = axis2_mod_log
 
@@ -853,6 +854,29 @@ $(AXIS2_LIBS)\mod_axis2_IIS.dll : $(MOD_IIS_OBJS)
 
 axis2_IIS_module : $(AXIS2_LIBS)\mod_axis2_IIS.dll
 
+
+#CGI module
+
+MOD_CGI_SRC=$(AXIS2_SOURCE_DIR)\src\core\transport\http\server\CGI
+MOD_CGI_INTDIR = $(AXIS2_INTDIR)\CGI
+
+MOD_CGI_OBJS = $(MOD_CGI_INTDIR)\*.obj
+
+$(MOD_CGI_INTDIR) :
+		@if not exist $(MOD_CGI_INTDIR) mkdir $(MOD_CGI_INTDIR)
+
+{$(MOD_CGI_SRC)}.c{$(MOD_CGI_INTDIR)}.obj ::
+		$(CC) $(CFLAGS) /Fo$(MOD_CGI_INTDIR)\ /c $<
+
+$(MOD_CGI_OBJS) : $(MOD_CGI_INTDIR)
+
+$(AXIS2_BINS)\axis2.cgi : $(MOD_CGI_OBJS)
+	$(LD) $(LDFLAGS) $(MOD_CGI_OBJS) $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(LIBS) $(AXIS2_ENGINE).lib /OUT:$(AXIS2_BINS)\$(AXIS2_CGI)
+	-@$(_VC_MANIFEST_EMBED_EXE)
+
+axis2_cgi : $(AXIS2_BINS)\$(AXIS2_CGI)
+		
 # end modules
 
 #  Core Build Targets
@@ -1308,7 +1332,7 @@ all: build
 
 install: all copy_extra copy_wsdl2c
 
-dist: install axis2_apache_module axis2_IIS_module tcpmon copy_samples copy_vc_projects clean_manifest mv_dist
+dist: install axis2_apache_module axis2_IIS_module axis2_cgi tcpmon copy_samples copy_vc_projects clean_manifest mv_dist
 
 dist_as_lib : deploy axis2_core_without_server copy_axis2_xml copy_include clean_manifest mv_dist
 	
