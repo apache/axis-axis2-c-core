@@ -425,7 +425,7 @@ NEETHI_SRC = $(AXIS2_SOURCE_DIR)\neethi\src
 NEETHI_INTDIR = $(AXIS2_INTDIR)\neethi
 NEETHI_INTDIR1 = $(AXIS2_INTDIR)\neethi\model
 NEETHI_INTDIR2 = $(AXIS2_INTDIR)\neethi\builder
-NEETHI_INTDIR3 = $(AXIS2_INTDIR))\neethi\rmpolicy
+NEETHI_INTDIR3 = $(AXIS2_INTDIR)\neethi\rmpolicy
 
 NEETHI_OBJS = $(NEETHI_INTDIR)\*.obj \
 			$(NEETHI_INTDIR)\model\*.obj \
