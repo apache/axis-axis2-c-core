@@ -54,8 +54,11 @@ Table of Contents
 	
 	4.1 Building mod_axis2_IIS from Source
 	4.2 Deploying in the IIS
+5. Using Axis2/C with CGI
+	5.1  Deploying in Apache2
+	5.2  Deploying in IIS
 
-5. FAQ
+6. FAQ
 
 
 1. Getting Axis2/C Working on Linux
@@ -693,7 +696,77 @@ Table of Contents
     Note: If the Axis2/C failed to load, verify that Axis2/C and its dependent DLLs are in the 
     System Path (not the user path). 
 
-5. FAQ
+5. Using Axis2/C with CGI
+	5.1  Deploying in Apache2
+		
+       		If you havent already done so you need to configure and set up an cgi-bin/ directory
+	        that holds your CGI scripts,where we will put Axis2/C cgi executable axis2.cgi.
+
+	(Note: most of recent Apache web servers already have an cgi-bin dir set up, usually 
+		/usr/lib/cgi-bin/. )
+
+	Add following to your Apache2 configuration (httpd.conf) file.
+
+        ScriptAlias /cgi-bin/ /usr/local/apache/cgi-bin/    (Or some other directory of your choice)
+
+	OR you can use
+
+       <Directory /usr/local/apache/cgi-bin/>
+               Options +ExecCGI
+       </Directory>
+
+       AddHandler cgi-script .cgi
+
+	{ It's recomended to restrict all your cgi scripts to single ScriptAlias directory for security reasons.}
+
+	Now we have to set up configuration parameters via environment variables for the cgi 
+	deployment using the SetEnv directive.
+
+	 { You need to have mod_env enabled for this to work )
+	Add the following to your apache2 configuration file (httpd.conf)
+
+        SetEnv AXIS2C_HOME <your path to axis2c home dir>
+
+        ( i.e. SetEnv AXIS2C_HOME /usr/local/axis2c/ )
+
+	If you have chosen another alias for you cgi-bin you can also set up an AXIS2C_URL_PREFIX
+        environment variable, but it's not needed if you have chosen /cgi-bin/.
+	AXIS2C_URL_PREFIX defines your web services deployment url prefix. Lets say you have chosen URL
+        /private/scripts/ for your cgi-bin URL and named your cgi exec as 'axis2.cgi',
+	Then you need to set AXIS2_URL_PREFIX environment variable as follows:
+
+        SetEnv AXIS2C_URL_PREFIX /private/scrips/axis2foo.cgi/
+
+       
+       Now we have configured apache such that all requests with URL  http://<domain-name>/cgi-bin/ requests
+       are located at your configured cgi folder. We have granted Apache server to execute CGI from that directory 
+       and treat files with .cgi extensions as CGI executables.
+
+       Now you need to copy the Axis2/C cgi executable "axis2.cgi" located in <AXIS2C_HOME>\bin directory.
+		
+       5.2  Deploying in IIS
+		
+		IIS 5.1
+		1. Open your 'Internet services manager'	
+		2. Under your computer name and 'Default Web Site' you must create an virtual
+		   directory called 'cgi-bin' (if you haven't done so by now) so right click
+		   'Default Web Site' -> New -> Virtual Directory.
+		3. In wizard enter 'cgi-bin' as Alias.
+		4. Choose a directory of your choice for cgi scripts placement. (like C:\www\cgi-bin\)
+		5. In access permissions select Read and Execute.
+		6. Finish the wizard so that Virtual Directory is created.
+		7. Open your selected folder (i.e. C:\www\cgi-bin\) and copy axis2.cgi there.
+	
+	
+   NOTE: 
+ 	Your Axis2 endpoints now looks like this when deployed under cgi.
+
+         http://domain-name.com/cgi-bin/axis2.cgi/<services directory>/<service name>
+
+	For the echo service found under /services/ directory of Axis2, the endpoint will become
+         http://domain-name.com/cgi-bin/axis2.cgi/services/echo
+	
+6. FAQ
 ======
 
 1. Although I was able to get simple axis server up, unable to run samples.
