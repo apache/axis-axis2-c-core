@@ -45,7 +45,7 @@ axis2_cgi_out_transport_info_free(
 
     info_impl = AXIS2_INTF_TO_IMPL(info);
     
-    info_impl->request = NULL; // doesn't belong here so no need to free it here
+    info_impl->request = NULL; /* doesn't belong here so no need to free it here */
     if (info_impl->encoding)
     {
         AXIS2_FREE(env->allocator, info_impl->encoding);

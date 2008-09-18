@@ -95,13 +95,13 @@ cgi_stream_read(
     void *buffer,
     size_t count)
 {
-    void *temp_buff = NULL;
-    unsigned int data_to_read = 0;
+    /*void *temp_buff = NULL;*/
+    /*unsigned int data_to_read = 0;*/
     unsigned int read_bytes = 0;
-	axis2_bool_t ret_ok = AXIS2_TRUE;
+	/*axis2_bool_t ret_ok = AXIS2_TRUE;*/
 
     cgi_stream_impl_t *stream_impl = NULL;
-    char *temp = NULL;
+    /*char *temp = NULL;*/
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     stream_impl = (cgi_stream_impl_t *) stream;
@@ -125,7 +125,7 @@ cgi_stream_write(
     const void *buf,
     size_t count)
 {	
-	// Cannot write on cgi stdin, explicitly an input stream
+	/* Cannot write on cgi stdin, explicitly an input stream */
 
 	return -1;
 }
