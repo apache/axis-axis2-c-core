@@ -994,9 +994,14 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
     if (axis2_options_get_use_separate_listener(svc_client->options, env))
     {
         axis2_op_t *op = NULL;
-
+		
         transport_in_protocol =
             axis2_options_get_transport_in_protocol(svc_client->options, env);
+		if (transport_in_protocol == AXIS2_TRANSPORT_ENUM_MAX)
+		{
+			axis2_options_set_transport_in_protocol(svc_client->options, env, AXIS2_TRANSPORT_ENUM_HTTP);
+			transport_in_protocol = AXIS2_TRANSPORT_ENUM_HTTP;
+		}
         axis2_listener_manager_make_sure_started(svc_client->listener_manager,
                                                  env, transport_in_protocol,
                                                  svc_client->conf_ctx);

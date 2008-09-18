@@ -82,9 +82,9 @@ axis2_options_create(
     options->use_separate_listener = -1;
     options->receiver = NULL;
     options->transport_in = NULL;
-    options->transport_in_protocol = AXIS2_TRANSPORT_ENUM_HTTP;
+    options->transport_in_protocol = AXIS2_TRANSPORT_ENUM_MAX;
     options->transport_out = NULL;
-    options->sender_transport_protocol = AXIS2_TRANSPORT_ENUM_HTTP;
+    options->sender_transport_protocol = AXIS2_TRANSPORT_ENUM_MAX;
     options->manage_session = -1;
     options->soap_version = AXIOM_SOAP12;
     options->enable_mtom = AXIS2_FALSE;

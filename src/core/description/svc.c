@@ -22,6 +22,7 @@
 #include <axis2_module.h>
 #include "../deployment/axis2_desc_builder.h"
 #include <axis2_svc_skeleton.h>
+#include <axutil_thread.h>
 
 struct axis2_svc
 {
@@ -117,6 +118,9 @@ struct axis2_svc
 
     /** Base description struct */
     axis2_desc_t *base;
+
+	/* Mutex to avoid loading the same service dll twice */
+	axutil_thread_mutex_t *mutex;
 };
 
 AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
@@ -274,7 +278,13 @@ axis2_svc_create(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service base creation failed");
         return NULL;
     }
-
+	svc->mutex = axutil_thread_mutex_create(env->allocator, AXIS2_THREAD_MUTEX_DEFAULT);
+	if (!svc->mutex)
+	{
+		axis2_svc_free(svc, env);
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service mutex creation failed");
+        return NULL;
+	}
     return svc;
 }
 
@@ -490,13 +500,15 @@ axis2_svc_free(
     {
         axis2_desc_free(svc->base, env);
     }
-
+	if (svc->mutex)
+	{
+		axutil_thread_mutex_destroy(svc->mutex);
+	}
     if (svc)
     {
         AXIS2_FREE(env->allocator, svc);
         svc = NULL;
     }
-
     return;
 }
 
@@ -1582,3 +1594,10 @@ axis2_svc_get_base(
     return svc->base;
 }
 
+AXIS2_EXTERN axutil_thread_mutex_t * AXIS2_CALL
+axis2_svc_get_mutex(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
+{
+	return svc->mutex;
+}

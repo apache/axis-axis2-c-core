@@ -25,6 +25,7 @@
 #include <axutil_property.h>
 #include <axiom_soap_envelope.h>
 #include <axiom_soap_body.h>
+#include <axutil_thread.h>
 
 struct axis2_msg_recv
 {
@@ -145,30 +146,41 @@ axis2_msg_recv_make_new_svc_obj(
     {
         return impl_class;
     }
+	else
+	{
+		/* When we load the DLL we have to make sure that only one thread will load it */
+		axutil_thread_mutex_lock(axis2_svc_get_mutex(svc, env));
+		/* If more than one thread tries to acuire the lock, first thread loads the DLL. 
+		Others should not load the DLL */
+		impl_class = axis2_svc_get_impl_class(svc, env);
+		if (impl_class)
+		{
+			return impl_class;
+		}
+		impl_info_param = axis2_svc_get_param(svc, env, AXIS2_SERVICE_CLASS);
+		if (!impl_info_param)
+		{
+			AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,
+							AXIS2_FAILURE);
+			return NULL;
+		}
 
-    impl_info_param = axis2_svc_get_param(svc, env, AXIS2_SERVICE_CLASS);
-    if (!impl_info_param)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,
-                        AXIS2_FAILURE);
-        return NULL;
-    }
+		axutil_allocator_switch_to_global_pool(env->allocator);
 
-    axutil_allocator_switch_to_global_pool(env->allocator);
+		axutil_class_loader_init(env);
 
-    axutil_class_loader_init(env);
+		impl_class = axutil_class_loader_create_dll(env, impl_info_param);
+		axis2_svc_set_impl_class(svc, env, impl_class);
 
-    impl_class = axutil_class_loader_create_dll(env, impl_info_param);
-    axis2_svc_set_impl_class(svc, env, impl_class);
+		if (impl_class)
+		{
+			AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *) impl_class, env);
+		}
 
-    if (impl_class)
-    {
-        AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *) impl_class, env);
-    }
-
-    axutil_allocator_switch_to_local_pool(env->allocator);
-
-    return impl_class;
+		axutil_allocator_switch_to_local_pool(env->allocator);
+		axutil_thread_mutex_unlock(axis2_svc_get_mutex(svc, env));
+		return impl_class;
+	}
 }
 
 AXIS2_EXPORT axis2_svc_skeleton_t *AXIS2_CALL

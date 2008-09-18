@@ -375,7 +375,7 @@ axis2_op_client_execute(
 
     /**
        if the transport to use for sending is not specified, try to find it
-       from the URL
+       from the URL or the client option.
     */
     transport_out = axis2_options_get_transport_out(op_client->options, env);
     if (!transport_out)
@@ -881,62 +881,68 @@ axis2_op_client_infer_transport(
 {
     axis2_char_t *transport = NULL;
     axis2_transport_out_desc_t *transport_out_desc = NULL;
+	axis2_conf_ctx_t *conf_ctx = NULL;
+	axis2_conf_t *conf = NULL;
+	AXIS2_TRANSPORT_ENUMS transport_enum = AXIS2_TRANSPORT_ENUM_MAX;
 
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                    "Start:axis2_op_client_infer_transport");
-    if (epr)
-    {
-        const axis2_char_t *to_url = axis2_endpoint_ref_get_address(epr, env);
+                    "Start:axis2_op_client_infer_transport");	
+	
+	/* We first try the client option */
+	transport_enum = axis2_options_get_sender_transport_protocol(op_client->options, env);
+	if (transport_enum == AXIS2_TRANSPORT_ENUM_MAX)
+	{
+		/* If we couldn't find the transport we default to HTTP */
+		transport_enum = AXIS2_TRANSPORT_ENUM_HTTP; 
+		/* We try to infer transport from the url */
+		if (epr)
+		{
+			const axis2_char_t *to_url = axis2_endpoint_ref_get_address(epr, env);
 
-        transport = axis2_op_client_get_transport_from_url(to_url, env);
+			transport = axis2_op_client_get_transport_from_url(to_url, env);
+		}
+
+		if (transport)
+		{			
+			if (!axutil_strcmp(transport, AXIS2_TRANSPORT_HTTP))
+			{
+				transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
+			}
+			else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_HTTPS))
+			{
+				transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
+			}
+			else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_XMPP))
+			{
+				transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
+			}
+			else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_TCP))
+			{
+				transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
+			}
+			else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_AMQP))
+			{
+				transport_enum = AXIS2_TRANSPORT_ENUM_AMQP;
+			}
+			else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_UDP))
+			{
+				transport_enum = AXIS2_TRANSPORT_ENUM_UDP;
+			}			
+			
+			AXIS2_FREE(env->allocator, transport);
+			transport = NULL;
+		}
     }
-
-    if (transport)
+	conf_ctx = axis2_svc_ctx_get_conf_ctx(op_client->svc_ctx, env);
+    if (conf_ctx)
     {
-        axis2_conf_ctx_t *conf_ctx = NULL;
-        axis2_conf_t *conf = NULL;
-        AXIS2_TRANSPORT_ENUMS transport_enum = 0;
-
-        if (!axutil_strcmp(transport, AXIS2_TRANSPORT_HTTP))
+        conf = axis2_conf_ctx_get_conf(conf_ctx, env);
+        if (conf)
         {
-            transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
+            transport_out_desc = axis2_conf_get_transport_out(conf,
+                                                              env,
+                                                              transport_enum);
         }
-        else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_HTTPS))
-        {
-            transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
-        }
-        else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_XMPP))
-        {
-            transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
-        }
-        else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_TCP))
-        {
-            transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
-        }
-		else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_AMQP))
-		{
-			transport_enum = AXIS2_TRANSPORT_ENUM_AMQP;
-		}
-		else if (!axutil_strcmp(transport, AXIS2_TRANSPORT_UDP))
-		{
-			transport_enum = AXIS2_TRANSPORT_ENUM_UDP;
-		}
-
-        conf_ctx = axis2_svc_ctx_get_conf_ctx(op_client->svc_ctx, env);
-        if (conf_ctx)
-        {
-            conf = axis2_conf_ctx_get_conf(conf_ctx, env);
-            if (conf)
-            {
-                transport_out_desc = axis2_conf_get_transport_out(conf,
-                                                                  env,
-                                                                  transport_enum);
-            }
-        }
-
-        AXIS2_FREE(env->allocator, transport);
-        transport = NULL;
-
     }
     if (!transport_out_desc)
     {
