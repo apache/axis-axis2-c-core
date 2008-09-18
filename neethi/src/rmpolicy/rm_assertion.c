@@ -53,8 +53,6 @@ axis2_rm_assertion_create(
 {
     axis2_rm_assertion_t *rm_assertion;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     rm_assertion = (axis2_rm_assertion_t *) AXIS2_MALLOC(env->allocator,
                                                 sizeof(axis2_rm_assertion_t));
 
@@ -69,7 +67,7 @@ axis2_rm_assertion_create(
     rm_assertion->is_exactly_once = AXIS2_TRUE;
     rm_assertion->is_atleast_once = AXIS2_FALSE;
     rm_assertion->is_atmost_once = AXIS2_FALSE;
-    rm_assertion->is_inorder = AXIS2_TRUE;
+    rm_assertion->is_inorder = AXIS2_FALSE;
 
     /* RM Policy 1.0 assertions */
     rm_assertion->inactivity_timeout = NULL;
@@ -95,8 +93,6 @@ axis2_rm_assertion_free(
     axis2_rm_assertion_t * rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if(rm_assertion)
     {
         AXIS2_FREE(env->allocator, rm_assertion);
@@ -115,8 +111,6 @@ axis2_rm_assertion_get_is_sequence_str(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->is_sequence_str;
 }
 
@@ -126,8 +120,6 @@ axis2_rm_assertion_set_is_sequence_str(
     const axutil_env_t * env,
     axis2_bool_t is_sequence_str)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->is_sequence_str = is_sequence_str;
  
     return AXIS2_SUCCESS;
@@ -138,8 +130,6 @@ axis2_rm_assertion_get_is_sequence_transport_security(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->is_sequence_transport_security;
 }
 
@@ -149,8 +139,6 @@ axis2_rm_assertion_set_is_sequence_transport_security(
     const axutil_env_t * env,
     axis2_bool_t is_sequence_transport_security)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->is_sequence_transport_security = 
         is_sequence_transport_security;
  
@@ -162,8 +150,6 @@ axis2_rm_assertion_get_is_exactly_once(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->is_exactly_once;
 }
 
@@ -173,8 +159,6 @@ axis2_rm_assertion_set_is_exactly_once(
     const axutil_env_t * env,
     axis2_bool_t is_exactly_once)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->is_exactly_once = is_exactly_once;
  
     return AXIS2_SUCCESS;
@@ -186,8 +170,6 @@ axis2_rm_assertion_get_is_atleast_once(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->is_atleast_once;
 }
 
@@ -197,8 +179,6 @@ axis2_rm_assertion_set_is_atleast_once(
     const axutil_env_t * env,
     axis2_bool_t is_atleast_once)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->is_atleast_once = is_atleast_once;
  
     return AXIS2_SUCCESS;
@@ -209,8 +189,6 @@ axis2_rm_assertion_get_is_atmost_once(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->is_atmost_once;
 }
 
@@ -220,8 +198,6 @@ axis2_rm_assertion_set_is_atmost_once(
     const axutil_env_t * env,
     axis2_bool_t is_atmost_once)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->is_atmost_once = is_atmost_once;
  
     return AXIS2_SUCCESS;
@@ -232,8 +208,6 @@ axis2_rm_assertion_get_is_inorder(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->is_inorder;
 }
 
@@ -243,8 +217,6 @@ axis2_rm_assertion_set_is_inorder(
     const axutil_env_t * env,
     axis2_bool_t is_inorder)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->is_inorder = is_inorder;
  
     return AXIS2_SUCCESS;
@@ -255,8 +227,6 @@ axis2_rm_assertion_get_inactivity_timeout(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->inactivity_timeout;
 }
 
@@ -266,8 +236,6 @@ axis2_rm_assertion_set_inactivity_timeout(
     const axutil_env_t * env,
     axis2_char_t* inactivity_timeout)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->inactivity_timeout = inactivity_timeout;
  
     return AXIS2_SUCCESS;
@@ -278,8 +246,6 @@ axis2_rm_assertion_get_retrans_interval(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->retrans_interval;
 }
 
@@ -289,8 +255,6 @@ axis2_rm_assertion_set_retrans_interval(
     const axutil_env_t * env,
     axis2_char_t* retrans_interval)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->retrans_interval = retrans_interval;
  
     return AXIS2_SUCCESS;
@@ -302,8 +266,6 @@ axis2_rm_assertion_get_ack_interval(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->ack_interval;
 }
 
@@ -313,8 +275,6 @@ axis2_rm_assertion_set_ack_interval(
     const axutil_env_t * env,
     axis2_char_t* ack_interval)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->ack_interval = ack_interval;
  
     return AXIS2_SUCCESS;
@@ -326,8 +286,6 @@ axis2_rm_assertion_get_is_exp_backoff(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->is_exp_backoff;
 }
 
@@ -337,8 +295,6 @@ axis2_rm_assertion_set_is_exp_backoff(
     const axutil_env_t * env,
     axis2_bool_t is_exp_backoff)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->is_exp_backoff = is_exp_backoff;
  
     return AXIS2_SUCCESS;
@@ -351,8 +307,6 @@ axis2_rm_assertion_get_storage_mgr(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->storage_mgr;
 }
 
@@ -362,8 +316,6 @@ axis2_rm_assertion_set_storage_mgr(
     const axutil_env_t * env,
     axis2_char_t* storage_mgr)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->storage_mgr = storage_mgr;
  
     return AXIS2_SUCCESS;
@@ -376,8 +328,6 @@ axis2_rm_assertion_get_message_types_to_drop(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->message_types_to_drop;
 }
 
@@ -387,8 +337,6 @@ axis2_rm_assertion_set_message_types_to_drop(
     const axutil_env_t * env,
     axis2_char_t* message_types_to_drop)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->message_types_to_drop = message_types_to_drop;
  
     return AXIS2_SUCCESS;
@@ -400,8 +348,6 @@ axis2_rm_assertion_get_max_retrans_count(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->max_retrans_count;
 }
 
@@ -411,8 +357,6 @@ axis2_rm_assertion_set_max_retrans_count(
     const axutil_env_t * env,
     axis2_char_t* max_retrans_count)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->max_retrans_count = max_retrans_count;
  
     return AXIS2_SUCCESS;
@@ -424,8 +368,6 @@ axis2_rm_assertion_get_sender_sleep_time(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->sender_sleep_time;
 }
 
@@ -435,8 +377,6 @@ axis2_rm_assertion_set_sender_sleep_time(
     const axutil_env_t * env,
     axis2_char_t* sender_sleep_time)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->sender_sleep_time = sender_sleep_time;
  
     return AXIS2_SUCCESS;
@@ -448,8 +388,6 @@ axis2_rm_assertion_get_invoker_sleep_time(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->invoker_sleep_time;
 }
 
@@ -459,8 +397,6 @@ axis2_rm_assertion_set_invoker_sleep_time(
     const axutil_env_t * env,
     axis2_char_t* invoker_sleep_time)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->invoker_sleep_time = invoker_sleep_time;
  
     return AXIS2_SUCCESS;
@@ -473,8 +409,6 @@ axis2_rm_assertion_get_polling_wait_time(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->polling_wait_time;
 }
 
@@ -484,8 +418,6 @@ axis2_rm_assertion_set_polling_wait_time(
     const axutil_env_t * env,
     axis2_char_t* polling_wait_time)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->polling_wait_time = polling_wait_time;
  
     return AXIS2_SUCCESS;
@@ -496,8 +428,6 @@ axis2_rm_assertion_get_terminate_delay(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->terminate_delay;
 }
 
@@ -507,8 +437,6 @@ axis2_rm_assertion_set_terminate_delay(
     const axutil_env_t * env,
     axis2_char_t* terminate_delay)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->terminate_delay = terminate_delay;
  
     return AXIS2_SUCCESS;
@@ -520,8 +448,6 @@ axis2_rm_assertion_get_sandesha2_db(
     axis2_rm_assertion_t *rm_assertion,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return rm_assertion->sandesha2_db;
 }
 
@@ -531,8 +457,6 @@ axis2_rm_assertion_set_sandesha2_db(
     const axutil_env_t * env,
     axis2_char_t* sandesha2_db)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   
     rm_assertion->sandesha2_db = sandesha2_db;
  
     return AXIS2_SUCCESS;
