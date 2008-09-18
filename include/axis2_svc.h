@@ -1195,6 +1195,15 @@ extern "C"
         const axis2_svc_t * svc,
         const axutil_env_t * env);
 
+	/* Get the mutex associated with this service 
+	 * @param svc pointer to message
+     * @param env pointer to environment struct
+     * @return pointer to a axutil_thread_mutext_t
+     */
+	AXIS2_EXTERN axutil_thread_mutex_t * AXIS2_CALL
+	axis2_svc_get_mutex(
+		const axis2_svc_t * svc,
+		const axutil_env_t * env);
     /** @} */
 #ifdef __cplusplus
 }
