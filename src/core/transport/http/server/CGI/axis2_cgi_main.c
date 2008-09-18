@@ -64,17 +64,17 @@ main(
     axis2_cgi_request_t *cgi_request = NULL;
     int content_length = 0;
     axis2_char_t *request_url = NULL;
-    axutil_stream_t *request_body_stream = NULL;
+    /* axutil_stream_t *request_body_stream = NULL; */
     axutil_stream_t *out_stream = NULL;
     axis2_transport_in_desc_t *in_desc = NULL;
     axis2_transport_out_desc_t *out_desc = NULL;
-    axis2_msg_ctx_t *msg_ctx = NULL;
-    axis2_bool_t processed = AXIS2_FALSE;
+    /* axis2_msg_ctx_t *msg_ctx = NULL; */
+    /* axis2_bool_t processed = AXIS2_FALSE; */
     axis2_http_transport_in_t request;	
     axis2_http_transport_out_t response;
-    axis2_http_header_t* http_header = NULL;
-    axutil_hash_t *headers = NULL;
-    axis2_char_t *axis2_cgi_url_prefix = NULL;
+    /*axis2_http_header_t* http_header = NULL; */
+    /*axutil_hash_t *headers = NULL; */
+    /* axis2_char_t *axis2_cgi_url_prefix = NULL; */
     
 	if (!(repo_path = AXIS2_GETENV("AXIS2C_HOME")))
 	{
@@ -91,7 +91,7 @@ main(
 		axis2_cgi_system_exit(env, -1);
     }
     
-    // Set configuration
+    /* Set configuration */
 
 	conf_ctx = axis2_build_conf_ctx(env, repo_path);
 	if (!conf_ctx)
@@ -103,19 +103,19 @@ main(
 	axis2_http_transport_utils_transport_out_init(&response, env);
     axis2_http_transport_utils_transport_in_init(&request, env);
 
-    // Get input info    
+    /* Get input info */
     
     cgi_request = AXIS2_MALLOC(allocator, sizeof(axis2_cgi_request_t));
     axis2_cgi_set_request_vars(cgi_request);
     
     request_url = (axis2_char_t *) AXIS2_MALLOC(allocator, 
-           (7 + // "http://"
+           (7 +                 /* "http:" */
 		    strlen(cgi_request->server_name) + 
-			((strlen(cgi_request->server_port))?1:0) + // ":"
+			((strlen(cgi_request->server_port))?1:0) + /* ":"*/
 		    strlen(cgi_request->server_port) +
 			strlen(cgi_request->script_name) + 
             strlen(cgi_request->path_info) +
-            ((strlen(cgi_request->path_info))?1:0) + // "?"
+            ((strlen(cgi_request->path_info))?1:0) + /* "?" */
             strlen(cgi_request->query_string) ) * sizeof(axis2_char_t));
             
     request_url[0] = '\0';
@@ -132,11 +132,11 @@ main(
     if (cgi_request->content_length) content_length = axutil_atoi(cgi_request->content_length);
     else content_length = 0;
     
-    // Set streams
+    /* Set streams */
 
     out_stream = axutil_stream_create_basic(env);
         
-	// Set message contexts
+	/* Set message contexts */
         
     out_desc = axis2_conf_get_transport_out(axis2_conf_ctx_get_conf
                                             (conf_ctx, env),
@@ -151,7 +151,7 @@ main(
     axis2_msg_ctx_set_transport_out_stream(request.msg_ctx, env, out_stream);
     axis2_msg_ctx_set_transport_headers(request.msg_ctx, env, NULL);
 
-    // Set request parameters
+    /* Set request parameters */
 
     request.soap_action = cgi_request->soap_action;
     request.in_stream = axutil_stream_create_cgi(env, content_length);
@@ -190,11 +190,11 @@ main(
 	
 	request.out_transport_info = axis2_cgi_out_transport_info_create(env, cgi_request);
         
-    //Process request
+    /*Process request */
     fprintf(stderr, "ok\n");
     axis2_http_transport_utils_process_request(env, conf_ctx, &request, &response);
     fprintf(stderr, "ok\n");
-    //Send status
+    /*Send status */
     
     fprintf(stdout, "Status: %d %s \r\n", response.http_status_code, response.http_status_code_name);
 
@@ -208,9 +208,9 @@ main(
         fprintf(stdout, "Content-type: %s \r\n", axis2_cgi_out_transport_get_content(request.out_transport_info));
     }
     
-    fprintf(stdout, "\r\n"); // End of headers for server
+    fprintf(stdout, "\r\n"); /* End of headers for server */
     
-    // Write data body
+    /* Write data body */
     if (!axis2_cgi_write_response(response.response_data, response.response_data_length))
     {
         fprintf(stderr, "Error writing output data\n");
