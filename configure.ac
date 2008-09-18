@@ -198,6 +198,21 @@ AC_ARG_ENABLE(tcp, [  --enable-tcp
   AC_MSG_RESULT(no)
 )
 
+AC_MSG_CHECKING(whether to use cgi transport)
+AC_ARG_ENABLE(cgi, [  --enable-cgi
+                          build tcp transport (default=no)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CGI_DIR="CGI"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
 
 AC_MSG_CHECKING(whether to build AMQP transport)
 AC_ARG_WITH(qpid,
@@ -402,6 +417,7 @@ AC_SUBST(SAMPLES)
 AC_SUBST(APACHE2BUILD)
 AC_SUBST(WRAPPER_DIR)
 AC_SUBST(TCP_DIR)
+AC_SUBST(CGI_DIR)
 AC_SUBST(AMQP_DIR)
 AC_SUBST(QPID_HOME)
 AC_SUBST(GUTHTHILA_DIR)
@@ -430,6 +446,7 @@ AC_CONFIG_FILES([Makefile \
     src/core/transport/http/sender/libcurl/Makefile \
     src/core/transport/http/receiver/Makefile \
     src/core/transport/http/server/simple_axis2_server/Makefile \
+	src/core/transport/http/server/CGI/Makefile \
     src/core/transport/http/server/Makefile \
     src/core/transport/http/server/apache2/Makefile \
     src/core/transport/tcp/Makefile \
