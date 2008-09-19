@@ -182,11 +182,11 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{7C816A64-FA96-4C6C-8DB0-5256441F54BC}"
-			RelativePathToProject="..\Axis2C\ides\vc\axis2c\axiom\axiom.vcproj"
+			RelativePathToProject=".\axiom\axiom.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
-			RelativePathToProject="..\Axis2C\ides\vc\axis2c\axutil\axutil.vcproj"
+			RelativePathToProject=".\axutil\axutil.vcproj"
 		/>
 	</References>
 	<Files>
@@ -455,12 +455,32 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="rmpolicy"
+				>
+				<File
+					RelativePath="..\..\..\..\neethi\src\rmpolicy\rm_assertion.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\neethi\src\rmpolicy\rm_assertion_builder.c"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\..\..\..\neethi\include\axis2_rm_assertion.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\axis2_rm_assertion_builder.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\..\neethi\include\neethi_all.h"
 				>
@@ -487,6 +507,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\neethi\include\neethi_includes.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\neethi\include\neethi_mtom_assertion_checker.h"
 				>
 			</File>
 			<File
