@@ -1601,3 +1601,4 @@ axis2_svc_get_mutex(
 {
 	return svc->mutex;
 }
+
