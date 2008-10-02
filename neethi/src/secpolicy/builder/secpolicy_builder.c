@@ -254,7 +254,9 @@ secpolicy_process_alternatives(
                 rp_secpolicy_set_rampart_config(secpolicy, env, rampart_config);
             }
             else
-                return AXIS2_FAILURE;
+            {
+                continue;
+            }
         }
         else
             return AXIS2_FAILURE;

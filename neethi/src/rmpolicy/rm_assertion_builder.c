@@ -94,10 +94,15 @@ axis2_rm_assertion_builder_build(
     /* First we check whether this is in 1.0 or 1.1 
      * namespace. Then we called the appropriate builder */
 
+    children_iter = axiom_element_get_children(rm_assertion_ele, env, rm_assertion_node);
+
     if(!axutil_strcmp(ns, AXIS2_RM_POLICY_10_NS))
     {
         status = axis2_rm_assertion_builder_populate_for_10(env, rm_assertion, 
             rm_assertion_node, rm_assertion_ele);
+
+        axiom_children_iterator_reset(children_iter, env);
+
     }
     else if(!axutil_strcmp(ns, AXIS2_RM_POLICY_11_NS))
     {
@@ -112,7 +117,7 @@ axis2_rm_assertion_builder_build(
         return NULL;
     }
 
-    children_iter = axiom_element_get_children(rm_assertion_ele, env, rm_assertion_node);
+    /*children_iter = axiom_element_get_children(rm_assertion_ele, env, rm_assertion_node);*/
     if (children_iter)
     {
         while (axiom_children_iterator_has_next(children_iter, env))
