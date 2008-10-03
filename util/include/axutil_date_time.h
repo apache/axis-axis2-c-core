@@ -171,14 +171,25 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * retrive the stored date time  as a string
+     * retrive the stored date time  as a string with millisecond precision
+     * @param date_time represet the type object
+     * @param env pointer to environment struct. MUST NOT be NULL
+     * @return time as a string format YYYY-MM-DDTHH:MM:SS.msZ
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+
+    axutil_date_time_serialize_date_time(
+        axutil_date_time_t * date_time,
+        const axutil_env_t * env);
+
+    /**
+     * retrive the stored date time  as a string without millisecond
      * @param date_time represet the type object
      * @param env pointer to environment struct. MUST NOT be NULL
      * @return time as a string format YYYY-MM-DDTHH:MM:SSZ
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-
-    axutil_date_time_serialize_date_time(
+    axutil_date_time_serialize_date_time_without_millisecond(
         axutil_date_time_t * date_time,
         const axutil_env_t * env);
 

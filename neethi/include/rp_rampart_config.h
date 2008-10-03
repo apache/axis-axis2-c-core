@@ -163,6 +163,28 @@ extern "C"
         axis2_char_t * time_to_live);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rp_rampart_config_get_clock_skew_buffer(
+        rp_rampart_config_t * rampart_config,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_rampart_config_set_clock_skew_buffer(
+        rp_rampart_config_t * rampart_config,
+        const axutil_env_t * env,
+        axis2_char_t * clock_skew_buffer);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rp_rampart_config_get_need_millisecond_precision(
+        rp_rampart_config_t * rampart_config,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_rampart_config_set_need_millisecond_precision(
+        rp_rampart_config_t * rampart_config,
+        const axutil_env_t * env,
+        axis2_char_t * need_millisecond_precision);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     rp_rampart_config_get_rd_val(
         rp_rampart_config_t * rampart_config,
         const axutil_env_t * env);

@@ -190,6 +190,19 @@ rp_rampart_config_builder_populate(
             time_to_live = axiom_element_get_text(element, env, node);
             return rp_rampart_config_set_time_to_live(rampart_config, env, time_to_live);
         }
+        else if(!axutil_strcmp(local_name, RP_CLOCK_SKEW_BUFFER))
+        {
+            axis2_char_t *clock_skew_buffer = NULL;
+            clock_skew_buffer = axiom_element_get_text(element, env, node);
+            return rp_rampart_config_set_clock_skew_buffer(rampart_config, env, clock_skew_buffer);
+        }
+        else if(!axutil_strcmp(local_name, RP_NEED_MILLISECOND_PRECISION))
+        {
+            axis2_char_t *need_ms_precision = NULL;
+            need_ms_precision = axiom_element_get_text(element, env, node);
+            return rp_rampart_config_set_need_millisecond_precision(
+                rampart_config, env, need_ms_precision);
+        }
         else if(!axutil_strcmp(local_name, RP_RD))
         {
             axis2_char_t *rd_val = NULL;
