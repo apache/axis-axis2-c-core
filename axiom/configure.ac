@@ -152,6 +152,7 @@ AC_CONFIG_FILES([Makefile \
     src/om/Makefile \
     src/util/Makefile \
     src/attachments/Makefile \
+    src/xpath/Makefile \
     test/Makefile \
     test/om/Makefile \
     test/soap/Makefile \
