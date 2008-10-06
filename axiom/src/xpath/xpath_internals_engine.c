@@ -810,7 +810,7 @@ int axiom_xpath_function_call_operator(
     if (!func)
     {
 #ifdef AXIOM_XPATH_DEBUG
-        printf("Function %s not found\n", op->par1);
+        printf("Function %s not found\n", (char *)op->par1);
 #endif
 
         return AXIOM_XPATH_EVALUATION_ERROR;

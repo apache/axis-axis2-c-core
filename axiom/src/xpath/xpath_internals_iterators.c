@@ -385,8 +385,11 @@ int axiom_xpath_attribute_iterator(
     axiom_element_t *element;
     axutil_hash_t *ht;
     axutil_hash_index_t *hi;
-    void *key;
-    axis2_ssize_t klen;
+
+/*  void *key;
+ *  axis2_ssize_t klen;
+ */
+    void *attr;
 
     AXIOM_XPATH_ITERATOR_INITIALIZE;
 
@@ -409,9 +412,10 @@ int axiom_xpath_attribute_iterator(
                 hi;
                 hi = axutil_hash_next(context->env, hi))
         {
-            axutil_hash_this(hi, &key, &klen, (void **)&context->attribute);
+            attr = &context->attribute;
+            axutil_hash_this(hi, NULL, NULL, attr);
 
-           if (axiom_xpath_node_test_match(
+            if (axiom_xpath_node_test_match(
                         context, (axiom_xpath_node_test_t *)node_test_op->par1))
             {
                 n_nodes +=
@@ -440,8 +444,12 @@ int axiom_xpath_namespace_iterator(
     axiom_element_t *element;
     axutil_hash_t *ht;
     axutil_hash_index_t *hi;
-    void *key;
-    axis2_ssize_t klen;
+
+/*  void *key;
+ *  axis2_ssize_t klen;
+ */
+    
+    void *ns;
 
     AXIOM_XPATH_ITERATOR_INITIALIZE;
 
@@ -464,7 +472,8 @@ int axiom_xpath_namespace_iterator(
                 hi;
                 hi = axutil_hash_next(context->env, hi))
         {
-            axutil_hash_this(hi, &key, &klen, (void **)&context->ns);
+            ns = &context->ns;
+            axutil_hash_this(hi, NULL, NULL, ns);
 
             if (axiom_xpath_node_test_match(
                         context, (axiom_xpath_node_test_t *)node_test_op->par1))
