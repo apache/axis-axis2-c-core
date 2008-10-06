@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libaxis2_xpath.la
+lib_LTLIBRARIES = libaxis2_xpath.la
 libaxis2_xpath_la_SOURCES = xpath.c \
 			xpath_functions.c \
 			xpath_internals.c \

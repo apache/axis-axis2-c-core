@@ -79,7 +79,21 @@ dnl AC_FUNC_MALLOC
 dnl AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
+AC_MSG_CHECKING(whether to build xpath)
+AC_ARG_ENABLE(xpath, [  --enable-xpath    build xpath. default=yes],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    XPATH_DIR="xpath"
 
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+  XPATH_DIR="xpath"
+)
 
 AC_MSG_CHECKING(whether to build guththila xml parser library)
 AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser library wrapper. default=yes],
@@ -142,6 +156,7 @@ AC_SUBST(LIBXML2_LIBS)
 AC_SUBST(WRAPPER_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(TESTDIR)
+AC_SUBST(XPATH_DIR)
 
 AC_CONFIG_FILES([Makefile \
     src/Makefile \

@@ -1,1 +1,1 @@
-SUBDIRS = parser attachments soap util xpath om
+SUBDIRS = parser attachments soap util ${XPATH_DIR} om
