@@ -309,8 +309,9 @@ axis2_libcurl_send(
 
             if (doing_mtom)
             {
-                axiom_output_flush(om_output, env, &output_stream,
-                                   &output_stream_size);
+                /*axiom_output_flush(om_output, env, &output_stream,
+                                   &output_stream_size);*/
+                axiom_output_flush(om_output, env);
                 content_type =
                     (axis2_char_t *) axiom_output_get_content_type(om_output,
                                                                    env);
