@@ -170,12 +170,14 @@ axis2_msg_recv_make_new_svc_obj(
 		axutil_class_loader_init(env);
 
 		impl_class = axutil_class_loader_create_dll(env, impl_info_param);
-		axis2_svc_set_impl_class(svc, env, impl_class);
+		
 
 		if (impl_class)
 		{
 			AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *) impl_class, env);
 		}
+
+		axis2_svc_set_impl_class(svc, env, impl_class);
 
 		axutil_allocator_switch_to_local_pool(env->allocator);
 		axutil_thread_mutex_unlock(axis2_svc_get_mutex(svc, env));
