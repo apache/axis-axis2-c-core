@@ -155,6 +155,7 @@ axis2_msg_recv_make_new_svc_obj(
 		impl_class = axis2_svc_get_impl_class(svc, env);
 		if (impl_class)
 		{
+            axutil_thread_mutex_unlock(axis2_svc_get_mutex(svc, env));
 			return impl_class;
 		}
 		impl_info_param = axis2_svc_get_param(svc, env, AXIS2_SERVICE_CLASS);
@@ -162,6 +163,7 @@ axis2_msg_recv_make_new_svc_obj(
 		{
 			AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,
 							AXIS2_FAILURE);
+            axutil_thread_mutex_unlock(axis2_svc_get_mutex(svc, env));
 			return NULL;
 		}
 
