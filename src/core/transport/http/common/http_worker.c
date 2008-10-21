@@ -1407,16 +1407,6 @@ axis2_http_worker_process_request(
                     char_set = axutil_strltrim(env, char_set, AXIS2_SPACE_TAB_EQ);
                 }
 
-                if (char_set)
-                {
-                    temp2 = strchr(char_set, AXIS2_COMMA);
-                }
-
-                if (temp2)
-                {
-                    *temp2 = AXIS2_ESC_NULL;
-                }
-
                 content_type = axutil_strtrim(env, temp, NULL);
 
                 if (temp)
@@ -1496,8 +1486,19 @@ axis2_http_worker_process_request(
                     AXIS2_FREE(env->allocator, content_type);
                 }
 
+                if (char_set)
+                {
+                    temp2 = strchr(char_set, AXIS2_EQ);
+                }
+
+                if (temp2)
+                {
+                    ++temp2;
+                }
+
                 if (char_set && accept_charset_header_value && 
-                    !axutil_strcasestr(accept_charset_header_value, char_set))
+                    !axutil_strcasestr(accept_charset_header_value, char_set) &&
+                    !axutil_strcasestr(accept_charset_header_value, temp2))
                 {
                     /* 406, Not Acceptable */
                     axis2_http_header_t *cont_len = NULL;
