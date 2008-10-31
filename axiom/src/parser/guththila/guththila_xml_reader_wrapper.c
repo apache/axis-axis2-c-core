@@ -578,8 +578,8 @@ guththila_xml_reader_wrapper_xml_free(
     const axutil_env_t * env,
     void *data)
 {
-    /*if (data)
-       AXIS2_FREE(env->allocator, data); */
+    if (data)
+       AXIS2_FREE(env->allocator, data);
 }
 
 axis2_char_t *AXIS2_CALL
