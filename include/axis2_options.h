@@ -804,7 +804,7 @@ extern "C"
 
     /**
      * Sets HTTP authentication information.
-     * @param env pointer to environment stnuct
+     * @param env pointer to environment struct
      * @param parent pointer to parent struct
      * @param username string representing username
      * @param password string representing password
@@ -823,7 +823,7 @@ extern "C"
 
     /**
       * Sets proxy authentication information.
-      * @param env pointer to environment stnuct
+      * @param env pointer to environment struct
       * @param parent pointer to parent struct
       * @param username string representing username
       * @param password string representing password
