@@ -1427,7 +1427,7 @@ axis2_http_transport_utils_strdecode(
 
     for (; *src != AXIS2_ESC_NULL; ++dest, ++src)
     {
-        if (src[0] == AXIS2_PERCENT && isxdigit(src[1]) && isxdigit(src[2]))
+        if (src[0] == AXIS2_PERCENT && isxdigit((int)src[1]) && isxdigit((int)src[2]))
         {
             *dest = (axis2_char_t)(axis2_http_transport_utils_hexit(src[1]) * 16 +
                 axis2_http_transport_utils_hexit(src[2]));

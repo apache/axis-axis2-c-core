@@ -1748,7 +1748,7 @@ static axis2_char_t *
                 type++;
             }
             end = type;
-            while (end && *end && !isspace(*end))
+            while (end && *end && !isspace((int)*end))
             {
                 end++;
             }

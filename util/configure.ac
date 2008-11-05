@@ -46,6 +46,11 @@ dnl Checks for libraries.
 AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_LIB(z, inflate)
 
+dnl This can be removed when the ftime call in 
+dnl ./util/src/platforms/unix/date_time_util_unix.c 
+dnl is changed to call gettimeofday
+AC_CHECK_LIB(compat, ftime)
+
 #CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
@@ -99,6 +104,7 @@ dnl Checks for library functions.
 dnl AC_FUNC_MALLOC
 dnl AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
+AC_CHECK_FUNCS(getifaddrs)
 
 # System-dependent adjustments.
 cygwin=no

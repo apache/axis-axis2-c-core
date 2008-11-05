@@ -571,14 +571,14 @@ axutil_strncasecmp(
         *str2 = (axis2_char_t *) s2;
     int i = (int) n;
 
-    while (--i >= 0 && toupper(*str1) == toupper(*str2++))
+    while (--i >= 0 && toupper((int)*str1) == toupper((int)*str2++))
     {
-        if (toupper(*str1++) == '\0')
+        if (toupper((int)*str1++) == '\0')
         {
             return (0);
         }
     }
-    return (i < 0 ? 0 : toupper(*str1) - toupper(*--str2));
+    return (i < 0 ? 0 : toupper((int)*str1) - toupper((int)*--str2));
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -795,7 +795,7 @@ axutil_string_tolower(
     axis2_char_t *temp_str = NULL;
     for (temp_str = str; *temp_str != '\0'; temp_str++)
     {
-        *temp_str = (axis2_char_t)tolower(*temp_str);
+        *temp_str = (axis2_char_t)tolower((int)*temp_str);
         /* We are sure that the conversion is safe */
     }
     return str;
@@ -808,7 +808,7 @@ axutil_string_toupper(
     axis2_char_t *temp_str = NULL;
     for (temp_str = str; *temp_str != '\0'; temp_str++)
     {
-        *temp_str = (axis2_char_t)toupper(*temp_str);
+        *temp_str = (axis2_char_t)toupper((int)*temp_str);
         /* We are sure that the conversion is safe */
     }
     return str;
@@ -840,7 +840,7 @@ axutil_strcasestr(
                     return NULL;
                 }
             }
-            while (toupper(current) != toupper(start));
+            while (toupper((int)current) != toupper((int)start));
         }
         while (axutil_strncasecmp(haystack, needle, (int)len));
         /* We are sure that the difference lies within the int range */

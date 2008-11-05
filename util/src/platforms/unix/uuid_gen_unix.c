@@ -44,7 +44,7 @@
 #  include <net/if_dl.h>
 # endif
 #endif
-#ifdef IS_MACOSX
+#ifdef HAVE_GETIFADDRS
 #include <ifaddrs.h>
 #endif
 #include <platforms/unix/axutil_uuid_gen_unix.h>
@@ -267,7 +267,7 @@ axutil_uuid_get_mac_addr(
 
 #else
 
-#ifdef IS_MACOSX                /* Darwin */
+#ifdef HAVE_GETIFADDRS   /* NetBSD, MacOSX, etc... */
 
 #ifndef max
 # define        max(a,b)        ((a) > (b) ? (a) : (b))
