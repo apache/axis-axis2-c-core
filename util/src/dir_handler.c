@@ -326,7 +326,7 @@ file_select(
 {
 
 	#ifdef IS_MACOSX
-		int	file_select(const struct dirent *entry);
+		int	file_select(struct dirent *entry);
 	#else
  		int file_select(const struct dirent *entry);
 	#endif 
