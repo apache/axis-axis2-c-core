@@ -583,12 +583,17 @@ axutil_error_get_message(
         else
         {
             if (error->message)
+            {
                 message = error->message;
+            }
             else if (error->error_number == AXIS2_ERROR_NONE)
+            {
                 message = axutil_error_messages[AXIS2_ERROR_NONE];
+            }
             else
-                message =
-                    "Undefined error returned by business logic implementation";
+            {
+                message = "Undefined error returned by business logic implementation";
+            }
         }
     }
 

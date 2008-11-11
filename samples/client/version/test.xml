@@ -1,0 +1,5 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="http://localhost:80/axisae/aewebservices71.wsdl">
+    <SOAP-ENV:Body>
+        <GetVersion xmlns="urn:aewebservices71" />
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope> 

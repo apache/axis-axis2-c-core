@@ -121,6 +121,7 @@ AC_CONFIG_FILES([Makefile \
     server/Makefile \
     server/echo/Makefile \
     server/math/Makefile \
+    server/version/Makefile \
     server/Calculator/Makefile \
     server/notify/Makefile \
     server/sg_math/Makefile \
@@ -128,6 +129,7 @@ AC_CONFIG_FILES([Makefile \
     client/Makefile \
     client/echo/Makefile \
     client/math/Makefile \
+    client/version/Makefile \
     client/mtom/Makefile \
     client/mtom/resources/Makefile \
     client/notify/Makefile \

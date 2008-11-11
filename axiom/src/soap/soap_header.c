@@ -18,6 +18,7 @@
 
 #include  "_axiom_soap_envelope.h"
 #include "_axiom_soap_header.h"
+#include "_axiom_soap_body.h"
 #include <axiom_soap_header_block.h>
 #include <axutil_hash.h>
 #include <axiom_soap_const.h>
@@ -37,6 +38,8 @@ struct axiom_soap_header
     int hbnumber;
 
     axiom_soap_builder_t *soap_builder;
+    
+    axiom_soap_envelope_t *soap_envelope;
 
     axutil_array_list_t *header_block_keys;
 };
@@ -64,6 +67,7 @@ axiom_soap_header_create(
     }
 
     soap_header->om_ele_node = NULL;
+    soap_header->soap_envelope = NULL;
     soap_header->hbnumber = 0;
     soap_header->header_blocks = NULL;
 
@@ -88,13 +92,13 @@ axiom_soap_header_create_with_parent(
 {
     axiom_soap_header_t *soap_header = NULL;
 
-    axiom_element_t *this_ele = NULL;
-    axiom_node_t *this_node = NULL;
+    /*axiom_element_t *this_ele = NULL;
+    axiom_node_t *this_node = NULL;*/
     axiom_node_t *body_node = NULL;
     axiom_node_t *parent_node = NULL;
     axiom_element_t *parent_ele = NULL;
 
-    axiom_namespace_t *parent_ns = NULL;
+    /*axiom_namespace_t *parent_ns = NULL;*/
 
     AXIS2_PARAM_CHECK(env->error, envelope, NULL);
 
@@ -128,7 +132,7 @@ axiom_soap_header_create_with_parent(
         axiom_node_detach(body_node, env);
     }
 
-    parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
+    /*parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
     this_ele = axiom_element_create(env, parent_node,
                                     AXIOM_SOAP_HEADER_LOCAL_NAME, parent_ns,
                                     &this_node);
@@ -138,13 +142,17 @@ axiom_soap_header_create_with_parent(
         return NULL;
     }
 
-    soap_header->om_ele_node = this_node;
+    soap_header->om_ele_node = this_node;*/
+
     axiom_soap_envelope_set_header(envelope, env, soap_header);
 
     if (body_node)
     {
         axiom_node_add_child(parent_node, env, body_node);
     }
+    
+    soap_header->soap_envelope = envelope;
+
     return soap_header;
 }
 
@@ -363,6 +371,52 @@ axiom_soap_header_get_base_node(
     axiom_soap_header_t * soap_header,
     const axutil_env_t * env)
 {
+    if(!soap_header->om_ele_node)
+    {
+        axiom_node_t *parent_node = NULL;
+        axiom_element_t *parent_ele = NULL;
+        axiom_namespace_t *parent_ns = NULL;
+        axiom_element_t *this_ele = NULL;
+        axiom_node_t *this_node = NULL;
+        axiom_soap_body_t *soap_body  = NULL;
+        axiom_node_t *body_node = NULL;
+
+        parent_node = axiom_soap_envelope_get_base_node(soap_header->soap_envelope, env);
+
+        if (!parent_node ||
+            axiom_node_get_node_type(parent_node, env) != AXIOM_ELEMENT)
+        {
+            axiom_soap_header_free(soap_header, env);
+            return NULL;
+        }
+
+        parent_ele = (axiom_element_t *)
+            axiom_node_get_data_element(parent_node, env);
+        if (!parent_ele)
+        {
+            axiom_soap_header_free(soap_header, env);
+            return NULL;
+        }
+
+        soap_body = axiom_soap_envelope_get_body(soap_header->soap_envelope, env);
+        if(soap_body)
+        {
+            body_node = axiom_soap_body_get_base_node(soap_body, env);
+        }
+
+        parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
+        this_ele = axiom_element_create(env, NULL, AXIOM_SOAP_HEADER_LOCAL_NAME, parent_ns,
+                                        &this_node);
+        if (!this_ele)
+        {
+            axiom_soap_header_free(soap_header, env);
+            return NULL;
+        }
+
+        axiom_node_insert_sibling_before(body_node, env, this_node);
+        soap_header->om_ele_node = this_node;
+    }
+
     return soap_header->om_ele_node;
 }
 

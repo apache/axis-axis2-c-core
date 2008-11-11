@@ -1,0 +1,9 @@
+<service name="version">
+    <parameter name="ServiceClass" locked="xsd:false">version</parameter>
+   <description>
+        This is a testing service, named 'version' to test multiple operations in the same service
+   </description>
+    <operation name="GetVersion">
+            <!--messageReceiver class="axis2_receivers" /-->
+    </operation>
+</service>
