@@ -206,37 +206,14 @@ axutil_log_impl_write(
     const axis2_char_t *file,
     const int line)
 {
-    if (log && buffer)
+    if (log && log->enabled && buffer && (level <= log->level || level == AXIS2_LOG_LEVEL_CRITICAL))
     {
-
-        if (level <= log->level)
-        {
-            const char *level_str = "";
-            switch (level)
-            {
-            case AXIS2_LOG_LEVEL_CRITICAL:
-                level_str = "[critical] ";
-                break;
-            case AXIS2_LOG_LEVEL_ERROR:
-                level_str = "[error] ";
-                break;
-            case AXIS2_LOG_LEVEL_WARNING:
-                level_str = "[warning] ";
-                break;
-            case AXIS2_LOG_LEVEL_INFO:
-                level_str = "[info] ";
-                break;
-            case AXIS2_LOG_LEVEL_DEBUG:
-                level_str = "[debug] ";
-                break;
-            case AXIS2_LOG_LEVEL_TRACE:
-                level_str = "[...TRACE...] ";
-                break;
-            case AXIS2_LOG_LEVEL_USER:
-                break;
-            }
-            fprintf(stderr, "%s %s(%d) %s\n", level_str, file, line, buffer);
-        }
+        axutil_log_impl_t *l = AXUTIL_INTF_TO_IMPL(log);
+        if (!l->mutex)
+            fprintf(stderr, "Log mutex is not found\n");
+        if (!l->stream)
+            fprintf(stderr, "Stream is not found\n");
+        axutil_log_impl_write_to_file(log, l->mutex, level, file, line, buffer);
     }
 #ifndef AXIS2_NO_LOG_FILE
     else if (buffer)
@@ -346,37 +323,21 @@ axutil_log_impl_rotate(
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_user(
     axutil_log_t *log,
-    const axis2_char_t *filename,
-    const int linenumber,
+    const axis2_char_t *file,
+    const int line,
     const axis2_char_t *format,
     ...)
 {
-    FILE *fd = NULL;
-    axutil_thread_mutex_t *mutex = NULL;
-
-    if (log && format)
-    {
-        fd = AXUTIL_INTF_TO_IMPL(log)->stream;
-        if (!fd)
-        {
-            fprintf(stderr, "Stream is not found\n");
-        }
-        mutex = AXUTIL_INTF_TO_IMPL(log)->mutex;
-        if (!mutex)
-        {
-            fprintf(stderr, "Log mutex is not found\n");
-
-        }
-        if (AXIS2_LOG_LEVEL_DEBUG <= log->level)
+    if (log && log->ops && log->ops->write &&
+        format && log->enabled &&
+        AXIS2_LOG_LEVEL_DEBUG <= log->level)
         {
             char value[AXIS2_LEN_VALUE + 1];
             va_list ap;
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            axutil_log_impl_write_to_file(log, mutex, AXIS2_LOG_LEVEL_DEBUG,
-                filename, linenumber, value);
-        }
+        log->ops->write(log, value, AXIS2_LOG_LEVEL_DEBUG, file, line);
     }
 #ifndef AXIS2_NO_LOG_FILE
     else
@@ -387,39 +348,21 @@ axutil_log_impl_log_user(
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_debug(
     axutil_log_t *log,
-    const axis2_char_t *filename,
-    const int linenumber,
+    const axis2_char_t *file,
+    const int line,
     const axis2_char_t *format,
     ...)
 {
-    FILE *fd = NULL;
-    axutil_thread_mutex_t *mutex = NULL;
-
-    if (log && format && log->enabled)
-    {
-        fd = AXUTIL_INTF_TO_IMPL(log)->stream;
-        if (!fd)
-        {
-            fprintf(stderr, "Stream is not found\n");
-        }
-        mutex = AXUTIL_INTF_TO_IMPL(log)->mutex;
-        if (!mutex)
-        {
-            fprintf(stderr, "Log mutex is not found\n");
-
-        }
-
-        if (AXIS2_LOG_LEVEL_DEBUG <= log->level && 
-            log->level != AXIS2_LOG_LEVEL_USER)
+    if (log && log->ops && log->ops->write &&
+        format && log->enabled &&
+        AXIS2_LOG_LEVEL_DEBUG <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
         {
             char value[AXIS2_LEN_VALUE + 1];
             va_list ap;
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            axutil_log_impl_write_to_file(log, mutex, AXIS2_LOG_LEVEL_DEBUG,
-                filename, linenumber, value);
-        }
+        log->ops->write(log, value, AXIS2_LOG_LEVEL_DEBUG, file, line);
     }
 #ifndef AXIS2_NO_LOG_FILE
     else
@@ -433,35 +376,16 @@ axutil_log_impl_log_info(
     const axis2_char_t *format,
     ...)
 {
-    FILE *fd = NULL;
-    axutil_thread_mutex_t *mutex = NULL;
-
-    if (log && format && log->enabled)
-    {
-        fd = AXUTIL_INTF_TO_IMPL(log)->stream;
-        if (!fd)
-        {
-            fprintf(stderr, "Stream is not found\n");
-
-        }
-        mutex = AXUTIL_INTF_TO_IMPL(log)->mutex;
-        if (!mutex)
-        {
-            fprintf(stderr, "Log mutex is not found\n");
-
-        }
-
-        if (AXIS2_LOG_LEVEL_INFO <= log->level &&
-            log->level != AXIS2_LOG_LEVEL_USER)
+    if (log && log->ops && log->ops->write &&
+        format && log->enabled &&
+        AXIS2_LOG_LEVEL_INFO <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
         {
             char value[AXIS2_LEN_VALUE + 1];
             va_list ap;
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            axutil_log_impl_write_to_file(log, mutex, AXIS2_LOG_LEVEL_INFO, 
-                    NULL, -1, value);
-        }
+        log->ops->write(log, value, AXIS2_LOG_LEVEL_INFO, NULL, -1);
     }
 #ifndef AXIS2_NO_LOG_FILE
     else
@@ -472,40 +396,21 @@ axutil_log_impl_log_info(
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_warning(
     axutil_log_t *log,
-    const axis2_char_t *filename,
-    const int linenumber,
+    const axis2_char_t *file,
+    const int line,
     const axis2_char_t *format,
     ...)
 {
-    FILE *fd = NULL;
-    axutil_thread_mutex_t *mutex = NULL;
-
-    if (log && format && log->enabled)
-    {
-        fd = AXUTIL_INTF_TO_IMPL(log)->stream;
-        if (!fd)
-        {
-            fprintf(stderr, "Stream is not found\n");
-
-        }
-        mutex = AXUTIL_INTF_TO_IMPL(log)->mutex;
-        if (!mutex)
-        {
-            fprintf(stderr, "Log mutex is not found\n");
-
-        }
-
-        if (AXIS2_LOG_LEVEL_WARNING <= log->level &&
-            log->level != AXIS2_LOG_LEVEL_USER)
+    if (log && log->ops && log->ops->write &&
+        format && log->enabled &&
+        AXIS2_LOG_LEVEL_WARNING <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
         {
             char value[AXIS2_LEN_VALUE + 1];
             va_list ap;
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            axutil_log_impl_write_to_file(log, mutex, 
-                AXIS2_LOG_LEVEL_WARNING, filename, linenumber, value);
-        }
+        log->ops->write(log, value, AXIS2_LOG_LEVEL_WARNING, file, line);
     }
 #ifndef AXIS2_NO_LOG_FILE
     else
@@ -516,86 +421,49 @@ axutil_log_impl_log_warning(
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_error(
     axutil_log_t *log,
-    const axis2_char_t *filename,
-    const int linenumber,
+    const axis2_char_t *file,
+    const int line,
     const axis2_char_t *format,
     ...)
 {
-    FILE *fd = NULL;
-    axutil_thread_mutex_t *mutex = NULL;
-
-    if (log && format && log->enabled)
-    {
-        fd = AXUTIL_INTF_TO_IMPL(log)->stream;
-        if (!fd)
-        {
-            fprintf(stderr, "Stream is not found\n");
-
-        }
-        mutex = AXUTIL_INTF_TO_IMPL(log)->mutex;
-        if (!mutex)
-        {
-            fprintf(stderr, "Log mutex is not found\n");
-
-        }
-
-        if (AXIS2_LOG_LEVEL_ERROR <= log->level)
+    if (log && log->ops && log->ops->write &&
+        format && log->enabled)
         {
             char value[AXIS2_LEN_VALUE + 1];
             va_list ap;
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            axutil_log_impl_write_to_file(log, mutex, AXIS2_LOG_LEVEL_ERROR,
-                filename, linenumber, value);
-        }
+        log->ops->write(log, value, AXIS2_LOG_LEVEL_ERROR, file, line);
     }
 #ifndef AXIS2_NO_LOG_FILE
     else
         fprintf(stderr, "please check your log and buffer");
 #endif
-
 }
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_critical(
     axutil_log_t *log,
-    const axis2_char_t *filename,
-    const int linenumber,
+    const axis2_char_t *file,
+    const int line,
     const axis2_char_t *format,
     ...)
 {
-    FILE *fd = NULL;
-    axutil_thread_mutex_t *mutex = NULL;
-
+    if (log && log->ops && log->ops->write &&
+        format && log->enabled)
+    {
     char value[AXIS2_LEN_VALUE + 1];
     va_list ap;
-
-    if (log && format && log->enabled)
-    {
-        fd = AXUTIL_INTF_TO_IMPL(log)->stream;
-        if (!fd)
-        {
-            fprintf(stderr, "Stream is not found\n");
-
-        }
-        mutex = AXUTIL_INTF_TO_IMPL(log)->mutex;
-        if (!mutex)
-        {
-            fprintf(stderr, "Log mutex is not found\n");
-        }
-
         va_start(ap, format);
         AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
         va_end(ap);
-        axutil_log_impl_write_to_file(log, mutex, AXIS2_LOG_LEVEL_CRITICAL,
-            filename, linenumber, value);
+        log->ops->write(log, value, AXIS2_LOG_LEVEL_CRITICAL, file, line);
     }
 #ifndef AXIS2_NO_LOG_FILE
     else
         fprintf(stderr, "please check your log and buffer");
 #endif
-
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -659,43 +527,28 @@ axutil_log_create_default(
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_trace(
     axutil_log_t *log,
-    const axis2_char_t *filename,
-    const int linenumber,
+    const axis2_char_t *file,
+    const int line,
     const axis2_char_t *format,
     ...)
 {
-    FILE *fd = NULL;
-    axutil_thread_mutex_t *mutex = NULL;
-
-    if (log && format && log->enabled)
-    {
-        if (!(fd = AXUTIL_INTF_TO_IMPL(log)->stream))
-        {
-            fprintf(stderr, "Stream is not found\n");
-        }
-
-        if (!(mutex = AXUTIL_INTF_TO_IMPL(log)->mutex))
-        {
-            fprintf(stderr, "Log mutex is not found\n");
-        }
-
-        if (AXIS2_LOG_LEVEL_TRACE <= log->level &&
-            log->level != AXIS2_LOG_LEVEL_USER)
+    if (log && log->ops && log->ops->write &&
+        format && log->enabled &&
+        AXIS2_LOG_LEVEL_TRACE <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
         {
             char value[AXIS2_LEN_VALUE + 1];
             va_list ap;
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            axutil_log_impl_write_to_file(log, mutex, AXIS2_LOG_LEVEL_TRACE,
-                filename, linenumber, value);
-        }
+        log->ops->write(log, value, AXIS2_LOG_LEVEL_TRACE, file, line);
     }
 #ifndef AXIS2_NO_LOG_FILE
     else
         fprintf(stderr, "please check your log and buffer");
 #endif
 }
+
 #else
 AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_trace(
