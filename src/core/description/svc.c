@@ -23,6 +23,7 @@
 #include "../deployment/axis2_desc_builder.h"
 #include <axis2_svc_skeleton.h>
 #include <axutil_thread.h>
+#include <axis2_core_utils.h>
 
 struct axis2_svc
 {
@@ -433,27 +434,7 @@ axis2_svc_free(
 
     if (svc->op_rest_map)
     {
-        axutil_hash_index_t *hi = NULL;
-        const void *key = NULL;
-        void *val = NULL;
-
-        for (hi = axutil_hash_first(svc->op_rest_map, env); hi;
-             hi = axutil_hash_next(env, hi))
-        {
-            axutil_hash_this(hi, &key, NULL, &val);
-
-            if (val)
-            {
-                axutil_array_list_free_void_arg(val, env);
-            }
-
-            if (key)
-            {
-                AXIS2_FREE(env->allocator, (axis2_char_t *) key);
-                key = NULL;
-            }
-        }
-        axutil_hash_free(svc->op_rest_map, env);
+        axis2_core_utils_free_rest_map(env, svc->op_rest_map);
     }
 
     if (svc->schema_target_ns_prefix)
@@ -1301,77 +1282,54 @@ axis2_svc_add_rest_mapping(
     const axis2_char_t * location,
     axis2_op_t * op_desc)
 {
-    axutil_array_list_t *op_list = NULL;
-    axis2_char_t *key = NULL;
-    axis2_char_t *loc_str = NULL;
-    axis2_char_t *loc_str_tmp = NULL;
-    axis2_char_t *rindex = NULL;
-    const axis2_char_t *svcname = NULL;
-    int plen;
-    AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
-    svcname = axis2_svc_get_name(svc, env);
-    op_list = axis2_svc_get_rest_op_list_with_method_and_location(svc, env,
-                                                                  method, location);
-    if (!op_list)
+
+    axis2_char_t *mapping_url = NULL;
+    int key_len = 0;
+    axis2_char_t* question_char = NULL;
+    axis2_char_t* local_location_str = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
+
+    local_location_str = (axis2_char_t *) location; /* Casted to facilitate loop */
+
+    /* skip the biginning '/' */
+    if(*local_location_str == '/') 
     {
-        op_list = axutil_array_list_create(env, 0);
-        if (!op_list)
-        {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Creating rest operation list failed for service", svcname);
-            return AXIS2_FAILURE;
-        }
-        loc_str_tmp = (axis2_char_t *) location; /* Casted to facilitate loop */
-        if (loc_str_tmp[1] == '/')
-        {
-            loc_str_tmp++;
-        } /* ignore any '/' at the beginning */
-        if (strchr(loc_str_tmp, '?'))
-        {
-            axis2_char_t *temp = NULL;
-
-            temp = strchr(loc_str_tmp, '?');
-            temp[0] = '\0';
-        } /* ignore block after '?' */
-        do
-        {
-            axis2_char_t *temp = NULL;
-            temp = strchr(loc_str_tmp, '{');
-            if (temp)
-            {
-                loc_str_tmp = temp;
-            }
-            else
-            {
-                loc_str_tmp += strlen(loc_str_tmp);
-                break;
-            }
-        } while (loc_str_tmp[1] &&
-                 loc_str_tmp[1] == '{');
-
-        loc_str = (axis2_char_t *) axutil_strmemdup(location, (loc_str_tmp - location), env);
-
-        rindex = axutil_rindex(loc_str, '/');
-        if (rindex && *rindex)
-        {
-            loc_str_tmp = axutil_string_substring_ending_at(loc_str, (int)(rindex - loc_str));
-            /* We are sure that the difference lies within the int range */
-        }
-        else
-        {
-            loc_str_tmp = loc_str;
-        }
-
-        plen = axutil_strlen (method) + axutil_strlen (loc_str_tmp) + 2;
-        key = (axis2_char_t *) (AXIS2_MALLOC (env->allocator,
-                                              sizeof (axis2_char_t) * plen));
-        sprintf (key, "%s:%s", method, loc_str_tmp);
-        AXIS2_FREE (env->allocator, loc_str);
-        axutil_hash_set(svc->op_rest_map, key, AXIS2_HASH_KEY_STRING, op_list);
+        local_location_str ++;
+    }
+    question_char = axutil_strchr(local_location_str, '?');
+    if(question_char) 
+    {
+        *question_char = '\0';
     }
 
-    return axutil_array_list_add(op_list, env, op_desc);
+    key_len = axutil_strlen(method) + axutil_strlen(local_location_str) + 2;
+
+    mapping_url = (axis2_char_t *) (AXIS2_MALLOC (env->allocator,
+                                              sizeof (axis2_char_t) * key_len));
+    if(!mapping_url) {
+       AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+       AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "No memory. Cannot create the rest mapping url");
+       return AXIS2_FAILURE;
+    }
+
+    sprintf(mapping_url, "%s:%s", method, local_location_str);
+
+    status = axis2_core_utils_prepare_rest_mapping(env,
+                    mapping_url,
+                    svc->op_rest_map,
+                    op_desc);
+
+    if(mapping_url) {
+        AXIS2_FREE(env->allocator, mapping_url);    
+    }
+
+    /* restore the question character */
+    if(question_char) {
+        *question_char = '?';
+    }
+
+    return status;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -1600,5 +1558,13 @@ axis2_svc_get_mutex(
     const axutil_env_t * env)
 {
 	return svc->mutex;
+}
+
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+axis2_svc_get_rest_map(
+    const axis2_svc_t * svc,
+    const axutil_env_t * env)
+{
+    return svc->op_rest_map;
 }
 

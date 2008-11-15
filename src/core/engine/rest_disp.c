@@ -167,9 +167,16 @@ axis2_rest_disp_find_op(
     axiom_node_t *body_child_node = NULL;
     axiom_node_t *body_element_node = NULL;
     axis2_bool_t soap_env_exists = AXIS2_TRUE;
-    int param_count = 0;
-    axis2_char_t ***params = NULL;
     int i = 0;
+
+    axutil_array_list_t *param_keys = NULL;
+    axutil_array_list_t *param_values = NULL;
+    
+    /* param_values keeps pointer to
+     the live_mapping_url and local_url
+     so should not free until param_values are freed */
+    axis2_char_t *live_mapping_url = NULL;
+    axis2_char_t *local_url = NULL;
 
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
 
@@ -198,60 +205,149 @@ axis2_rest_disp_find_op(
                     location = strstr(address, url_tokens[0]);
                     if (location)
                     {
+                        axis2_char_t *addition_params_str = NULL;
+                        axis2_char_t *adjusted_local_url = NULL;
+                        const axis2_char_t *method = NULL;
+     
+                        int key_len = 0;
+
                         location += strlen(url_tokens[0]);
+                        method = axis2_msg_ctx_get_rest_http_method(msg_ctx, env);
+
+
                         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                                        "Checking for operation using \
-REST HTTP Location fragment : %s", location);
-                        op = axis2_core_utils_get_rest_op_with_method_and_location(svc, env,
-                                 axis2_msg_ctx_get_rest_http_method(msg_ctx, env), location,
-                                 &param_count, &params);
-                        if (op)
+                                        "Checking for operation using "
+                                        "REST HTTP Location fragment : %s", location);
+
+                        /* we are creating a dup of the location */
+                        local_url = (axis2_char_t*)axutil_strdup(env, location);
+                        if(!local_url) {
+                           AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                           AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                    "No memory. Cannot create the live rest mapping url");
+                           return NULL;
+                        }
+     
+                        /* checking the existance of the addition parameters
+                           after the question mark '?' */
+                        addition_params_str = strchr(local_url, '?');
+                        if(addition_params_str)
                         {
-                            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                                            "Operation found using target endpoint uri fragment");
+                            *addition_params_str = '\0';
+                            addition_params_str ++;
+                        }
+     
+                        /* if the first character is '/' ignore that */
+                        if(*local_url == '/')
+                        {
+                            adjusted_local_url = local_url + 1;
                         }
                         else
                         {
-                            int i = 0;
-                            int j = 0;
-                            axutil_array_list_t *supported_rest_methods = NULL;
-                            const axis2_char_t *http_method = NULL;
-                            axis2_char_t *rest_methods[] = {AXIS2_HTTP_GET, AXIS2_HTTP_POST,
-                                AXIS2_HTTP_PUT, AXIS2_HTTP_DELETE, AXIS2_HTTP_HEAD};
-                            supported_rest_methods = axutil_array_list_create(env, 0);
-                            http_method = axis2_msg_ctx_get_rest_http_method(msg_ctx, env);
-                            if (!http_method)
-                            {
-                                AXIS2_LOG_WARNING (env->log, AXIS2_LOG_SI,
-                                                 "unable to find http method \
-for location: %s", location);
-                                return NULL;
-                            }
+                            adjusted_local_url = local_url;
+                        }
+     
+                        /* now create the mapping url */
+                        key_len = axutil_strlen(method) + axutil_strlen(adjusted_local_url) + 2;
+     
+                        live_mapping_url = (axis2_char_t *) (AXIS2_MALLOC (env->allocator,
+                                                                  sizeof (axis2_char_t) * key_len));
+     
+                        if(!live_mapping_url)
+                        {
+                            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                    "No memory. Cannot create the live rest mapping url");
+                            AXIS2_FREE(env->allocator, local_url);
+                            return NULL;
+                        }
 
-                            for (i = 0; i < 5; i++)
+                        sprintf(live_mapping_url, "%s:%s", method, adjusted_local_url);
+
+                        param_keys = axutil_array_list_create(env, 10);
+                        param_values = axutil_array_list_create(env, 10);
+
+                        if(!param_keys || !param_values)
+                        {
+                            AXIS2_FREE(env->allocator, local_url);
+                            AXIS2_FREE(env->allocator, live_mapping_url);
+                            if(param_keys)
                             {
-                                if (axutil_strcasecmp(rest_methods[i], 
-                                                      http_method))
+                                axutil_array_list_free(param_keys, env);
+                            }
+                            if(param_values)
+                            {
+                                axutil_array_list_free(param_values, env);
+                            }
+                            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                    "No memory. Cannot create the live rest parameter maps");
+                            AXIS2_FREE(env->allocator, local_url);
+                            return NULL;
+                        }
+
+                        op = axis2_core_utils_infer_op_from_parent_rest_map(
+                                    env,
+                                    axis2_svc_get_rest_map(svc, env),
+                                    live_mapping_url,
+                                    param_keys,
+                                    param_values);
+     
+     
+                        if (op)
+                        {
+                            axis2_char_t *params_str;
+
+                            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                                            "Operation found using target endpoint uri fragment");
+
+                            /* here we are going to extract out the additional parameters 
+                             * put after '?' mark */
+                            params_str =  addition_params_str;
+                            while(params_str && *params_str != '\0')
+                            {
+                                axis2_char_t *next_params_str = NULL;
+                                axis2_char_t *key_value_seperator = NULL;
+
+                                axis2_char_t *key = NULL;
+                                axis2_char_t *value= NULL;
+
+                                
+                                /* we take one parameter pair to the params_str */
+                                next_params_str = strchr(params_str, '&');
+                                if(next_params_str) 
                                 {
-                                    if (axis2_core_utils_get_rest_op_with_method_and_location(svc, env,
-                                        rest_methods[i], location, &param_count, &params))
-                                    {
-                                        for (j = 0; j < param_count; j++)
-                                        {
-                                            AXIS2_FREE (env->allocator, params[j][0]);
-                                            AXIS2_FREE (env->allocator, params[j][1]);
-                                            AXIS2_FREE (env->allocator, params[j]);
-                                        }
-                                        if (params)
-                                        {
-                                            AXIS2_FREE (env->allocator, params);
-                                        }
-                                        axutil_array_list_add(supported_rest_methods, env,
-                                                              axutil_strdup(env, rest_methods[i]));
-                                    }
+                                    *next_params_str = '\0';
+                                }
+                                
+                                key_value_seperator = strchr(params_str, '=');
+                                if(key_value_seperator) 
+                                {
+                                    /* devide the key value pair */
+                                    *key_value_seperator = '\0';
+                                    key = params_str;
+                                    value = key_value_seperator + 1;
+                                }
+                                else {
+                                    /* there is no '=' symbol, that mean only the key exist */
+                                    key = params_str;
+                                }
+                                if(key) {
+                                    axutil_array_list_add(param_keys, env, key);
+                                }
+                                if(value) {
+                                    axutil_array_list_add(param_values, env, value);
+                                }
+
+                                if(next_params_str)
+                                {
+                                    /* if there was an '&' character then */
+                                    params_str = next_params_str + 1;
+                                }
+                                else {
+                                    params_str = NULL; /* just to end the loop */
                                 }
                             }
-                            axis2_msg_ctx_set_supported_rest_http_methods(msg_ctx, env, supported_rest_methods);
                         }
                     }
                 }
@@ -266,6 +362,23 @@ for location: %s", location);
 
     if (!op)
     {
+        if(param_keys)
+        {
+            axutil_array_list_free(param_keys, env);
+        }
+        if(param_values)
+        {
+            axutil_array_list_free(param_values, env);
+        }
+        /* after freeing param_values, it is safe to free live_mapping_url and local_url*/
+        if (live_mapping_url)
+        {
+            AXIS2_FREE (env->allocator, live_mapping_url);
+        }
+        if(local_url)
+        {
+            AXIS2_FREE(env->allocator, local_url);
+        }
         return NULL;
     }
 
@@ -285,6 +398,24 @@ for location: %s", location);
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
                         AXIS2_FAILURE);
+
+        if(param_keys)
+        {
+            axutil_array_list_free(param_keys, env);
+        }
+        if(param_values)
+        {
+            axutil_array_list_free(param_values, env);
+        }
+        /* after freeing param_values, it is safe to free live_mapping_url and local_url*/
+        if (live_mapping_url)
+        {
+            AXIS2_FREE (env->allocator, live_mapping_url);
+        }
+        if(local_url)
+        {
+            AXIS2_FREE(env->allocator, local_url);
+        }
         return NULL;
     }
 
@@ -303,22 +434,36 @@ for location: %s", location);
                                                      &body_child_node);
         axiom_soap_body_add_child(soap_body, env, body_child_node);
     }
-    for (i = 0; i < param_count; i++)
-    {
-        axiom_node_t *node = NULL;
-        axiom_element_t *element = NULL;
+   
+    if(param_keys && param_values) {
+        for (i = 0; i < axutil_array_list_size(param_keys, env); i++)
+        {
+            axis2_char_t *param_key = NULL;
+            axis2_char_t *param_value = NULL;
 
-        element = axiom_element_create(env, NULL, params[i][0],
-                                       NULL, &node);
-        axiom_element_set_text(element, env, params[i][1], node);
-        axiom_node_add_child(body_child_node, env, node);
-        AXIS2_FREE (env->allocator, params[i][0]);
-        AXIS2_FREE (env->allocator, params[i][1]);
-        AXIS2_FREE (env->allocator, params[i]);
+            axiom_node_t *node = NULL;
+            axiom_element_t *element = NULL;
+
+            param_key = axutil_array_list_get(param_keys, env, i);
+            param_value = axutil_array_list_get(param_values, env, i);
+
+            element = axiom_element_create(env, NULL, param_key,
+                                           NULL, &node);
+            axiom_element_set_text(element, env, param_value, node);
+            axiom_node_add_child(body_child_node, env, node);
+        }
+
+        axutil_array_list_free(param_keys, env);
+        axutil_array_list_free(param_values, env);
     }
-    if (params)
+    /* after freeing param_values, it is safe to free live_mapping_url */
+    if (live_mapping_url)
     {
-        AXIS2_FREE (env->allocator, params);
+        AXIS2_FREE (env->allocator, live_mapping_url);
+    }
+    if(local_url)
+    {
+        AXIS2_FREE(env->allocator, local_url);
     }
 
     if (!soap_env_exists)
@@ -339,115 +484,4 @@ axis2_rest_disp_invoke(
     axis2_msg_ctx_set_find_op(msg_ctx, env, axis2_rest_disp_find_op);
     return axis2_disp_find_svc_and_op(handler, env, msg_ctx);
 }
-
-/*
-axis2_op_t *AXIS2_CALL
-axis2_rest_disp_get_rest_op_with_method_and_location(
-    const axis2_svc_t * svc,
-    const axutil_env_t * env,
-    const axis2_char_t * method,
-    const axis2_char_t * location,
-    int * param_count,
-    axis2_char_t **** params)
-{
-    axutil_array_list_t *op_list = NULL;
-    axis2_char_t *loc_str = NULL;
-    axis2_char_t *loc_str_tmp = NULL;
-    axis2_char_t *rindex = NULL;
-    axis2_bool_t pass_one = AXIS2_TRUE;
-    axis2_bool_t loop_state = AXIS2_TRUE;
-    AXIS2_PARAM_CHECK(env->error, location, NULL);
-    AXIS2_PARAM_CHECK(env->error, method, NULL);
-    
-    loc_str = axutil_strtrim(env, location, NULL);
-    if (!loc_str)
-    {
-        return NULL;
-    }
-    loc_str_tmp = loc_str;
-    if (loc_str_tmp[0] == '/')
-    {
-        loc_str_tmp++;
-    }
-    if (strchr(loc_str_tmp, '?'))
-    {
-        axis2_char_t *temp = NULL;
-
-        temp = strchr(loc_str_tmp, '?');
-        temp[0] = '\0';
-    }
-    while(loop_state)
-    {
-        rindex = axutil_rindex(loc_str_tmp, '/');
-
-        if (rindex && *rindex)
-        {
-            loc_str_tmp = axutil_string_substring_ending_at(loc_str_tmp, (int)(rindex - loc_str_tmp));
-        }
-        else if (pass_one)
-        {
-            pass_one = AXIS2_FALSE;
-        }
-        else
-        {
-            int i = 0;
-            i = (int)strlen(loc_str_tmp);
-            if (i == 0)
-            {
-                break;
-            }
-            loc_str_tmp[i - 1] = '\0';
-        }
-
-        if (!loc_str_tmp || !*loc_str_tmp)
-        {
-            break;
-        }
-        op_list = axis2_svc_get_rest_op_list_with_method_and_location(svc, env,
-                                                                      method, loc_str_tmp);
-        if (op_list && axutil_array_list_size(op_list, env) != 0)
-        {
-            int i = 0;
-            int size = 0;
-
-            size = axutil_array_list_size(op_list, env);
-            for (i = 0; i < size; i++)
-            {
-                axis2_op_t *op_temp = NULL;
-                axis2_char_t *op_location = NULL;
-                int match_count = 0;
-                axis2_char_t ***matches = NULL;
-                axis2_status_t status = AXIS2_FAILURE;
-
-                op_temp = axutil_array_list_get(op_list, env, i);
-                op_location = axis2_op_get_rest_http_location(op_temp, env);
-                if (!op_location)
-                {
-                    continue;
-                }
-                status = axutil_parse_rest_url_for_params(env, op_location, location,
-                                                          &match_count, &matches);
-                if (status == AXIS2_SUCCESS)
-                {
-                    *params = matches;
-                    *param_count = match_count;
-                    AXIS2_FREE (env->allocator, loc_str);
-                    return op_temp;
-                }
-                else if (matches)
-                {
-                    for (i = 0; i < match_count; i++)
-                    {
-                        AXIS2_FREE (env->allocator, matches[i]);
-                    }
-                    AXIS2_FREE (env->allocator, matches);
-                }
-            }
-        }
-    }
-    AXIS2_FREE (env->allocator, loc_str);
-    return NULL;
-}
-
-*/
 

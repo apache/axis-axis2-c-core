@@ -127,6 +127,19 @@ extern "C"
         const axis2_char_t * http_method,
         const axis2_char_t * http_location);
 
+
+    /**
+     * Gets the RESTful operation map for a given service 
+     * @param svc pointer to service struct
+     * @param env pointer to environment struct
+     * @return pointer to hash with the information 
+     * (method, url)=> processing structure for each ops
+     */
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+    axis2_svc_get_rest_map(
+        const axis2_svc_t * svc,
+        const axutil_env_t * env);
+
     /**
      * Gets operation corresponding to the name.
      * @param svc pointer to service struct

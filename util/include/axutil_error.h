@@ -336,6 +336,10 @@ extern "C"
 
         /** URL NULL in http client */
         AXIS2_ERROR_NULL_URL,
+        /** Invalid URL format */
+        AXIS2_ERROR_INVALID_URL_FORMAT,
+        /** Duplicate URL REST Mapping */
+        AXIS2_ERROR_DUPLICATE_URL_REST_MAPPING,
         /* We need transport_info in msg_ctx */
         AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL,
         /*Content-Type header missing in HTTP response" */

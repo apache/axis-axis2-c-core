@@ -427,114 +427,556 @@ axis2_core_utils_is_latest_mod_ver(
 }
 
 
-AXIS2_EXTERN axis2_op_t *AXIS2_CALL
-axis2_core_utils_get_rest_op_with_method_and_location(
-	const axis2_svc_t * svc,
+
+/* internal structure to keep the rest map in a multi level hash */
+typedef struct {
+    /* the structure will keep as many as following fields */
+
+    /* if the mapped value is directly the operation */
+    axis2_op_t *op_desc;
+
+    /* if the mapped value is a constant, this keeps a hash map of
+    possible constants => corrosponding map_internal structure */
+    axutil_hash_t *consts_map;
+
+    /* if the mapped value is a param, this keeps a hash map of
+    possible param_values => corrosponding_map_internal structre */
+    axutil_hash_t *params_map;
+
+} axutil_core_utils_map_internal_t;
+
+
+/* build the restmap recursively - internal function*/
+axis2_status_t AXIS2_CALL
+axis2_core_utils_internal_build_rest_map_recursively(
 	const axutil_env_t * env,
-	const axis2_char_t * method,
-	const axis2_char_t * location,
-	int * param_count,
-	axis2_char_t **** params)
-	{
-	axutil_array_list_t *op_list = NULL;
-	axis2_char_t *loc_str = NULL;
-	axis2_char_t *loc_str_tmp = NULL;
-	axis2_char_t *rindex = NULL;
-	axis2_bool_t pass_one = AXIS2_TRUE;
-	axis2_bool_t loop_state = AXIS2_TRUE;
-	AXIS2_PARAM_CHECK(env->error, location, NULL);
-	AXIS2_PARAM_CHECK(env->error, method, NULL);
+	axis2_char_t * url,
+    axutil_core_utils_map_internal_t *mapping_struct,
+    axis2_op_t *op_desc);
 
-	loc_str = axutil_strtrim(env, location, NULL);
-	if (!loc_str)
-		{
-		return NULL;
-		}
-	loc_str_tmp = loc_str;
-	if (loc_str_tmp[0] == '/')
-		{
-		loc_str_tmp++;
-		}
-	if (strchr(loc_str_tmp, '?'))
-		{
-		axis2_char_t *temp = NULL;
-
-		temp = strchr(loc_str_tmp, '?');
-		temp[0] = '\0';
-		}
-	while(loop_state)
-		{
-		rindex = axutil_rindex(loc_str_tmp, '/');
-
-		if (rindex && *rindex)
-			{
-			loc_str_tmp = axutil_string_substring_ending_at(loc_str_tmp, (int)(rindex - loc_str_tmp));
-			/* We are sure that the difference lies within the int range */
-			}
-		else if (pass_one)
-			{
-			pass_one = AXIS2_FALSE;
-			}
-		else
-			{
-			int i = 0;
-			i = (int)strlen(loc_str_tmp);
-			/* We are sure that the difference lies within the int range */
-			if (i == 0)
-				{
-				break;
-				}
-			loc_str_tmp[i - 1] = '\0';
-			}
-
-		if (!loc_str_tmp || !*loc_str_tmp)
-			{
-			break;
-			}
-		op_list = axis2_svc_get_rest_op_list_with_method_and_location(svc, env,
-			method, loc_str_tmp);
-		if (op_list && axutil_array_list_size(op_list, env) != 0)
-			{
-			int i = 0;
-			int size = 0;
-
-			size = axutil_array_list_size(op_list, env);
-			for (i = 0; i < size; i++)
-				{
-				axis2_op_t *op_temp = NULL;
-				axis2_char_t *op_location = NULL;
-				int match_count = 0;
-				axis2_char_t ***matches = NULL;
-				axis2_status_t status = AXIS2_FAILURE;
-
-				op_temp = axutil_array_list_get(op_list, env, i);
-				op_location = axis2_op_get_rest_http_location(op_temp, env);
-				if (!op_location)
-					{
-					continue;
-					}
-				status = axutil_parse_rest_url_for_params(env, op_location, location,
-					&match_count, &matches);
-				if (status == AXIS2_SUCCESS)
-					{
-					*params = matches;
-					*param_count = match_count;
-					AXIS2_FREE (env->allocator, loc_str);
-					return op_temp;
-					}
-				else if (matches)
-					{
-					for (i = 0; i < match_count; i++)
-						{
-						AXIS2_FREE (env->allocator, matches[i]);
-						}
-					AXIS2_FREE (env->allocator, matches);
-					}
-				}
-			}
-		}
-	AXIS2_FREE (env->allocator, loc_str);
-	return NULL;
-	}
+/* infer op from the live url recursively */
+axis2_op_t *AXIS2_CALL
+axis2_core_utils_internal_infer_op_from_rest_map_recursively(
+	const axutil_env_t *env,
+    const axutil_core_utils_map_internal_t *parent_mapping_struct,
+	axis2_char_t *live_url,
+	axutil_array_list_t *param_keys,
+	axutil_array_list_t *param_values);
 
 
+/* build the rest map - external function */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_core_utils_prepare_rest_mapping (
+	const axutil_env_t * env,
+	axis2_char_t * url,
+    axutil_hash_t *rest_map,
+    axis2_op_t *op_desc)
+{
+    
+    
+    axis2_char_t *first_delimitter = NULL;
+    axis2_char_t *next_level_url = NULL;
+    axis2_char_t *mapping_key = NULL;
+    axutil_core_utils_map_internal_t *mapping_struct =  NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
+
+    first_delimitter = axutil_strchr(url, '/');
+   
+    if(first_delimitter)
+    {
+        /* if there is another recurisive level,
+           this will get the url of that level */
+        next_level_url = first_delimitter + 1;
+        *first_delimitter = '\0';
+    }
+
+    
+    /* only constants are allowed in this level, so here url become the mapping_key */
+    mapping_key = url;
+
+    if(*mapping_key == '\0') /* empty mappng key */
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_URL_FORMAT, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid URL Format: empty mapping key");
+        return AXIS2_FAILURE;
+    }
+
+
+    /* retrieve or create the maping structure for the key*/
+    mapping_struct = axutil_hash_get(rest_map,
+                            mapping_key, AXIS2_HASH_KEY_STRING);
+    if(!mapping_struct)
+    {
+        mapping_struct = (axutil_core_utils_map_internal_t*)AXIS2_MALLOC (env->allocator,
+                                       sizeof(axutil_core_utils_map_internal_t));
+        if(!mapping_struct) {
+           AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+           AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "No memory. Cannot create internal rest mapping structure");
+           return AXIS2_FAILURE;
+
+        }
+        memset(mapping_struct, 0, sizeof(axutil_core_utils_map_internal_t));
+        
+        mapping_key = axutil_strdup(env, mapping_key);
+        axutil_hash_set(rest_map, mapping_key, AXIS2_HASH_KEY_STRING, mapping_struct);
+    }
+
+    if(!next_level_url) {
+        /* if no next level url, put the op_desc in right this level */
+        if(mapping_struct->op_desc) {
+           AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DUPLICATE_URL_REST_MAPPING, AXIS2_FAILURE);
+           AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "Duplicate URL Mapping found");
+           return AXIS2_FAILURE;
+        }
+        mapping_struct->op_desc = op_desc;
+    }
+    else {
+        /* we have to build the map_internal structure recursively */
+        status = axis2_core_utils_internal_build_rest_map_recursively(env,
+                            next_level_url,
+                            mapping_struct,
+                            op_desc);
+    }
+
+    return status;
+
+}
+
+/* build the restmap recursively - internal function*/
+axis2_status_t AXIS2_CALL
+axis2_core_utils_internal_build_rest_map_recursively(
+	const axutil_env_t * env,
+	axis2_char_t * url,
+    axutil_core_utils_map_internal_t *parent_mapping_struct,
+    axis2_op_t *op_desc) {
+
+ /* Here url is expected to be in the form
+    {student}/marks/{subject} or
+    marks/{subject} 
+    */
+
+    axis2_char_t *first_delimitter = NULL;
+    axis2_char_t *next_level_url = NULL;
+    axis2_char_t *mapping_key = NULL;
+    axutil_core_utils_map_internal_t *mapping_struct =  NULL;
+    axutil_hash_t *cur_level_rest_map = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
+
+    axis2_bool_t is_key_a_param = AXIS2_FALSE;
+
+    first_delimitter = axutil_strchr(url, '/');
+   
+    if(first_delimitter)
+    {
+        /* if there is another recurisive level,
+           this will get the url of that level */
+        next_level_url = first_delimitter + 1;
+        *first_delimitter = '\0';
+    }
+
+    if(*url == '{')
+    {
+        axis2_char_t *last_url_char = url + axutil_strlen(url) -1;
+        if(*last_url_char == '}')
+        {
+            *last_url_char = '\0';
+
+            /* mapipng key is url excluding { } */
+            mapping_key = url + 1;
+            is_key_a_param = AXIS2_TRUE;
+        }
+
+        else
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_URL_FORMAT, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Invalid URL Format, no closing bracket in declaring parameters");
+            return AXIS2_FAILURE;
+        }
+    }
+    else
+    {
+        /* here the url become the mapping_key */
+        mapping_key = url;
+    }
+
+    if(*mapping_key == '\0') /* empty mappng key */
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_URL_FORMAT, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid URL Format: empty mapping key");
+        return AXIS2_FAILURE;
+    }
+
+    if(is_key_a_param) {
+        /* set the rest map as the params_map */
+        if(parent_mapping_struct->params_map == NULL) {
+            parent_mapping_struct->params_map = axutil_hash_make(env);
+            if(!parent_mapping_struct->params_map) {
+               AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+               AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create internal rest mapping structure");
+               return AXIS2_FAILURE;
+            }
+        }
+        cur_level_rest_map = parent_mapping_struct->params_map;
+    }
+    else {
+        /* set the rest map as the consts_map */
+        if(parent_mapping_struct->consts_map == NULL) {
+            parent_mapping_struct->consts_map = axutil_hash_make(env);
+            if(!parent_mapping_struct->consts_map) {
+               AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+               AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create internal rest mapping structure");
+               return AXIS2_FAILURE;
+            }
+        }
+        cur_level_rest_map = parent_mapping_struct->consts_map;
+    }
+
+    /* retrieve or create the maping structure for the key*/
+    mapping_struct = axutil_hash_get(cur_level_rest_map,
+                            mapping_key, AXIS2_HASH_KEY_STRING);
+    if(!mapping_struct) {
+        mapping_struct = (axutil_core_utils_map_internal_t*)AXIS2_MALLOC (env->allocator,
+                                       sizeof(axutil_core_utils_map_internal_t));
+        if(!mapping_struct) {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "No memory. Cannot create internal rest mapping structure");
+            return AXIS2_FAILURE;
+
+        }
+        memset(mapping_struct, 0, sizeof(axutil_core_utils_map_internal_t));
+        
+        mapping_key = axutil_strdup(env, mapping_key);
+        axutil_hash_set(cur_level_rest_map, mapping_key, AXIS2_HASH_KEY_STRING, mapping_struct);
+    }
+
+    if(!next_level_url) {
+        /* if no next level url, put the op_desc in right this level */
+        if(mapping_struct->op_desc) {
+           AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DUPLICATE_URL_REST_MAPPING, AXIS2_FAILURE);
+           AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "Duplicate URL Mapping found");
+           return AXIS2_FAILURE;
+        }
+        mapping_struct->op_desc = op_desc;
+    }
+    else {
+        /* we have to build the map_internal structure recursively */
+        status = axis2_core_utils_internal_build_rest_map_recursively(env,
+                            next_level_url,
+                            mapping_struct,
+                            op_desc);
+    }
+
+    return status;
+}
+
+
+/* free the rest map recursively */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_core_utils_free_rest_map (
+	const axutil_env_t *env,
+    axutil_hash_t *rest_map) {
+
+    axutil_hash_index_t *hi = NULL;
+    const void *key = NULL;
+    void *val = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
+
+    for (hi = axutil_hash_first(rest_map, env); hi;
+         hi = axutil_hash_next(env, hi))
+    {
+        axutil_hash_this(hi, &key, NULL, &val);
+
+        if (val)
+        {
+            axutil_core_utils_map_internal_t *mapping_struct = NULL;
+            mapping_struct = (axutil_core_utils_map_internal_t*)val;
+            
+            /* freeing the consts_map and params_map */
+            if(mapping_struct->consts_map) {
+                axis2_core_utils_free_rest_map(env, mapping_struct->consts_map);
+            }
+            
+            if(mapping_struct->params_map) {
+                axis2_core_utils_free_rest_map(env, mapping_struct->params_map);
+            }  
+        }
+
+        if (key)
+        {
+            AXIS2_FREE(env->allocator, (axis2_char_t *) key);
+            key = NULL;
+        }
+    }
+    axutil_hash_free(rest_map, env);
+    return status;
+}
+
+
+/* infer op from the live url */
+AXIS2_EXTERN axis2_op_t *AXIS2_CALL
+axis2_core_utils_infer_op_from_parent_rest_map(
+	const axutil_env_t *env,
+    axutil_hash_t *rest_map,
+	axis2_char_t *live_url,
+	axutil_array_list_t *param_keys,
+	axutil_array_list_t *param_values) 
+{
+    axis2_char_t *first_delimitter = NULL;
+    axis2_char_t *next_level_url = NULL;
+    axis2_char_t *url_component = NULL;
+
+    axis2_op_t *op_desc = NULL;
+    axutil_core_utils_map_internal_t *mapping_struct =  NULL;
+
+    first_delimitter = axutil_strchr(live_url, '/');
+   
+    if(first_delimitter)
+    {
+        /* if there is another recurisive level,
+           this will get the url of that level */
+        next_level_url = first_delimitter + 1;
+        *first_delimitter = '\0';
+    }
+
+    /* so live url is the url_component */
+    url_component = live_url;
+
+    /* check it in the hash map */
+    mapping_struct = (axutil_core_utils_map_internal_t*)axutil_hash_get(rest_map,
+                            url_component, AXIS2_HASH_KEY_STRING);
+    
+    if(mapping_struct == NULL)
+    {
+        /* the op is not here */
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_URL_FORMAT, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "REST maping structure is NULL for the accessed URL");
+        return NULL;
+    }
+
+    if(!next_level_url)
+    {
+        /* there is no another level, so the op should be here */
+        op_desc = mapping_struct->op_desc;
+        if(!op_desc) {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_URL_FORMAT, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                "The operation descriptor not found for the accessed URL");
+        }
+    }
+    else {
+
+        op_desc = axis2_core_utils_internal_infer_op_from_rest_map_recursively(
+                    env,
+                    mapping_struct,
+                    next_level_url,
+                    param_keys,
+                    param_values);
+    }
+    return op_desc;
+}
+
+/* infer op from the live url recursively */
+axis2_op_t *AXIS2_CALL
+axis2_core_utils_internal_infer_op_from_rest_map_recursively(
+	const axutil_env_t *env,
+    const axutil_core_utils_map_internal_t *parent_mapping_struct,
+	axis2_char_t *live_url,
+	axutil_array_list_t *param_keys,
+	axutil_array_list_t *param_values)
+{
+
+    axis2_char_t *first_delimitter = NULL;
+    axis2_char_t *next_level_url = NULL;
+    axis2_char_t *url_component = NULL;
+
+    axis2_op_t *op_desc = NULL;
+    axutil_core_utils_map_internal_t *child_mapping_struct = NULL;
+    int params_map_count = 0;
+   
+    axutil_hash_index_t *hi = NULL;
+    const void *key = NULL;
+    void *val = NULL;
+
+    
+    first_delimitter = axutil_strchr(live_url, '/');
+   
+    if(first_delimitter)
+    {
+        /* if there is another recurisive level,
+           this will get the url of that level */
+        next_level_url = first_delimitter + 1;
+        *first_delimitter = '\0';
+    }
+
+    /* so live url is the url_component */
+    url_component = live_url;
+    
+    /* first check the url component in the constants array list */
+    if(parent_mapping_struct->consts_map) 
+    {
+        child_mapping_struct = axutil_hash_get(parent_mapping_struct->consts_map,
+                            url_component, AXIS2_HASH_KEY_STRING);
+    }
+    
+    /* if the url component exists in the consts_map, go through it inside */
+
+    if(child_mapping_struct)
+    {
+        if(!next_level_url)
+        {
+            /* there is no another level, so the op should be here */
+
+            op_desc = child_mapping_struct->op_desc;
+            
+            if(!op_desc) {
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+                    "The operation descriptor not found constant given in the url");
+            }
+            /* rather than returning NULL we continue to search params_map */
+            
+        }
+        else {
+
+            op_desc = axis2_core_utils_internal_infer_op_from_rest_map_recursively(
+                        env,
+                        child_mapping_struct,
+                        next_level_url,
+                        param_keys,
+                        param_values);
+        }
+    }
+
+    if(op_desc)
+    {
+        /* if the op for the accessed url found, no further searching is needed */
+        return op_desc;
+    }
+
+    /* if it is not found in the consts_map we have to assume it is in a params_map */
+
+    if(!parent_mapping_struct->params_map)
+    {
+        /* wrong operation, abort to continue to let calling function to check other operations */
+        if(first_delimitter)
+        {
+            /* restore the delimmiters */
+            *first_delimitter = '/';
+        }
+        return NULL;
+    }
+
+    params_map_count = axutil_hash_count(parent_mapping_struct->params_map);
+
+    for (hi = axutil_hash_first(parent_mapping_struct->params_map, env); hi;
+         hi = axutil_hash_next(env, hi))
+    {
+        axutil_hash_this(hi, &key, NULL, &val);
+
+        if (key && val)
+        {
+            axis2_char_t *hash_key = (axis2_char_t*)key;
+
+            child_mapping_struct = (axutil_core_utils_map_internal_t*)val;
+
+            if(!next_level_url)
+            {
+                /* there is no another level, so the op should be here */
+                op_desc = child_mapping_struct->op_desc;
+
+                if(op_desc) {
+                    /* adding the hash key as the param key */
+                    axutil_array_list_add(param_keys, env, hash_key);
+
+                    /* adding the url component as the parma value */
+                    axutil_array_list_add(param_values, env, url_component);
+                    
+                    break;
+                }
+                
+            }
+            else {
+
+                /* temporary param keys and values for each entry */
+                axutil_array_list_t *tmp_param_keys;
+                axutil_array_list_t *tmp_param_values;
+
+                if(params_map_count == 1) {
+                    /* if it is only one param entry, just use the original one */
+                    tmp_param_keys = param_keys;
+                    tmp_param_values = param_values;
+                }
+                else {
+                    tmp_param_keys = axutil_array_list_create(env, 10);
+                    tmp_param_values = axutil_array_list_create(env, 10);
+                }
+               
+                /* adding the hash key as the param key */
+                axutil_array_list_add(tmp_param_keys, env, hash_key);
+
+                /* adding the url component as the parma value */
+                axutil_array_list_add(tmp_param_values, env, url_component);
+
+                op_desc = axis2_core_utils_internal_infer_op_from_rest_map_recursively(
+                            env,
+                            child_mapping_struct,
+                            next_level_url,
+                            tmp_param_keys,
+                            tmp_param_values);
+
+                if(op_desc) {
+                    /* the operation is found */
+                    /* but before leaving should merge the param arrays */
+
+                    if(params_map_count != 1) {
+                        int i = 0;
+                        void *param_key = NULL;
+                        void *param_value = NULL;
+                        for(i = 0; i < axutil_array_list_size(tmp_param_keys, env); i ++)
+                        {
+                            /* size(tmp_param_keys) == size(tmp_param_values) */
+                            param_key = axutil_array_list_get(tmp_param_keys, env, i);
+                            param_value = axutil_array_list_get(tmp_param_values, env, i);
+
+                            /* add it to original array */
+                            axutil_array_list_add(param_keys, env, param_key);
+                            axutil_array_list_add(param_values, env, param_value);
+
+                        }
+                        
+                        /* freeing the temporary arrays */
+                        axutil_array_list_free(tmp_param_keys, env);
+                        axutil_array_list_free(tmp_param_values, env);
+                    }
+                    /* since of is found, no more searches needed */
+                    break;
+                }
+                
+                /* if the op not found, contiue, before that free the temp arrays */
+                axutil_array_list_free(tmp_param_keys, env);
+                axutil_array_list_free(tmp_param_values, env);
+            }
+        }
+    }
+
+    if(!op_desc) {
+        /* this is not an error, since the calling function
+            may find another opertion match with the url */
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+                    "The operation descriptor not found for the accessed URL");
+
+        if(first_delimitter)
+        {
+            /* restore the delimmiters */
+            *first_delimitter = '/';
+        }
+    }
+    return op_desc;
+}
