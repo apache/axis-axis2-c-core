@@ -172,11 +172,6 @@ axis2_rest_disp_find_op(
     axutil_array_list_t *param_keys = NULL;
     axutil_array_list_t *param_values = NULL;
     
-    /* param_values keeps pointer to
-     the live_mapping_url and local_url
-     so should not free until param_values are freed */
-    axis2_char_t *live_mapping_url = NULL;
-    axis2_char_t *local_url = NULL;
 
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
 
@@ -205,150 +200,30 @@ axis2_rest_disp_find_op(
                     location = strstr(address, url_tokens[0]);
                     if (location)
                     {
-                        axis2_char_t *addition_params_str = NULL;
-                        axis2_char_t *adjusted_local_url = NULL;
                         const axis2_char_t *method = NULL;
-     
-                        int key_len = 0;
-
+                        
                         location += strlen(url_tokens[0]);
-                        method = axis2_msg_ctx_get_rest_http_method(msg_ctx, env);
-
-
-                        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                                        "Checking for operation using "
-                                        "REST HTTP Location fragment : %s", location);
-
-                        /* we are creating a dup of the location */
-                        local_url = (axis2_char_t*)axutil_strdup(env, location);
-                        if(!local_url) {
-                           AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-                           AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                                    "No memory. Cannot create the live rest mapping url");
-                           return NULL;
-                        }
-     
-                        /* checking the existance of the addition parameters
-                           after the question mark '?' */
-                        addition_params_str = strchr(local_url, '?');
-                        if(addition_params_str)
-                        {
-                            *addition_params_str = '\0';
-                            addition_params_str ++;
-                        }
-     
-                        /* if the first character is '/' ignore that */
-                        if(*local_url == '/')
-                        {
-                            adjusted_local_url = local_url + 1;
-                        }
-                        else
-                        {
-                            adjusted_local_url = local_url;
-                        }
-     
-                        /* now create the mapping url */
-                        key_len = axutil_strlen(method) + axutil_strlen(adjusted_local_url) + 2;
-     
-                        live_mapping_url = (axis2_char_t *) (AXIS2_MALLOC (env->allocator,
-                                                                  sizeof (axis2_char_t) * key_len));
-     
-                        if(!live_mapping_url)
-                        {
-                            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                                    "No memory. Cannot create the live rest mapping url");
-                            AXIS2_FREE(env->allocator, local_url);
-                            return NULL;
-                        }
-
-                        sprintf(live_mapping_url, "%s:%s", method, adjusted_local_url);
-
                         param_keys = axutil_array_list_create(env, 10);
-                        param_values = axutil_array_list_create(env, 10);
-
-                        if(!param_keys || !param_values)
+                        if(!param_keys)
                         {
-                            AXIS2_FREE(env->allocator, local_url);
-                            AXIS2_FREE(env->allocator, live_mapping_url);
-                            if(param_keys)
-                            {
-                                axutil_array_list_free(param_keys, env);
-                            }
-                            if(param_values)
-                            {
-                                axutil_array_list_free(param_values, env);
-                            }
                             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
                             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                                     "No memory. Cannot create the live rest parameter maps");
-                            AXIS2_FREE(env->allocator, local_url);
                             return NULL;
                         }
-
-                        op = axis2_core_utils_infer_op_from_parent_rest_map(
-                                    env,
-                                    axis2_svc_get_rest_map(svc, env),
-                                    live_mapping_url,
-                                    param_keys,
-                                    param_values);
+                        param_values = axutil_array_list_create(env, 10);
      
-     
-                        if (op)
+                        if(!param_values)
                         {
-                            axis2_char_t *params_str;
-
-                            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                                            "Operation found using target endpoint uri fragment");
-
-                            /* here we are going to extract out the additional parameters 
-                             * put after '?' mark */
-                            params_str =  addition_params_str;
-                            while(params_str && *params_str != '\0')
-                            {
-                                axis2_char_t *next_params_str = NULL;
-                                axis2_char_t *key_value_seperator = NULL;
-
-                                axis2_char_t *key = NULL;
-                                axis2_char_t *value= NULL;
-
-                                
-                                /* we take one parameter pair to the params_str */
-                                next_params_str = strchr(params_str, '&');
-                                if(next_params_str) 
-                                {
-                                    *next_params_str = '\0';
-                                }
-                                
-                                key_value_seperator = strchr(params_str, '=');
-                                if(key_value_seperator) 
-                                {
-                                    /* devide the key value pair */
-                                    *key_value_seperator = '\0';
-                                    key = params_str;
-                                    value = key_value_seperator + 1;
-                                }
-                                else {
-                                    /* there is no '=' symbol, that mean only the key exist */
-                                    key = params_str;
-                                }
-                                if(key) {
-                                    axutil_array_list_add(param_keys, env, key);
-                                }
-                                if(value) {
-                                    axutil_array_list_add(param_values, env, value);
-                                }
-
-                                if(next_params_str)
-                                {
-                                    /* if there was an '&' character then */
-                                    params_str = next_params_str + 1;
-                                }
-                                else {
-                                    params_str = NULL; /* just to end the loop */
-                                }
-                            }
+                            axutil_array_list_free(param_keys, env);
+                            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                    "No memory. Cannot create the live rest parameter maps");
+                            return NULL;
                         }
+                        method = axis2_msg_ctx_get_rest_http_method(msg_ctx, env);
+                        op = axis2_core_utils_get_rest_op_with_method_and_location(svc,
+                                   env, method, location, param_keys, param_values);
                     }
                 }
                 if (url_tokens[0])
@@ -364,20 +239,21 @@ axis2_rest_disp_find_op(
     {
         if(param_keys)
         {
+            for (i = 0; i < axutil_array_list_size(param_keys, env); i++)
+            {
+                void *value = axutil_array_list_get(param_keys, env, i);
+                AXIS2_FREE(env->allocator, value);
+            }
             axutil_array_list_free(param_keys, env);
         }
         if(param_values)
         {
+            for (i = 0; i < axutil_array_list_size(param_values, env); i++)
+            {
+                void *value = axutil_array_list_get(param_values, env, i);
+                AXIS2_FREE(env->allocator, value);
+            }
             axutil_array_list_free(param_values, env);
-        }
-        /* after freeing param_values, it is safe to free live_mapping_url and local_url*/
-        if (live_mapping_url)
-        {
-            AXIS2_FREE (env->allocator, live_mapping_url);
-        }
-        if(local_url)
-        {
-            AXIS2_FREE(env->allocator, local_url);
         }
         return NULL;
     }
@@ -401,20 +277,21 @@ axis2_rest_disp_find_op(
 
         if(param_keys)
         {
+            for (i = 0; i < axutil_array_list_size(param_keys, env); i++)
+            {
+                void *value = axutil_array_list_get(param_keys, env, i);
+                AXIS2_FREE(env->allocator, value);
+            }
             axutil_array_list_free(param_keys, env);
         }
         if(param_values)
         {
+            for (i = 0; i < axutil_array_list_size(param_values, env); i++)
+            {
+                void *value = axutil_array_list_get(param_values, env, i);
+                AXIS2_FREE(env->allocator, value);
+            }
             axutil_array_list_free(param_values, env);
-        }
-        /* after freeing param_values, it is safe to free live_mapping_url and local_url*/
-        if (live_mapping_url)
-        {
-            AXIS2_FREE (env->allocator, live_mapping_url);
-        }
-        if(local_url)
-        {
-            AXIS2_FREE(env->allocator, local_url);
         }
         return NULL;
     }
@@ -451,19 +328,13 @@ axis2_rest_disp_find_op(
                                            NULL, &node);
             axiom_element_set_text(element, env, param_value, node);
             axiom_node_add_child(body_child_node, env, node);
+
+            AXIS2_FREE(env->allocator, param_key);
+            AXIS2_FREE(env->allocator, param_value);
         }
 
         axutil_array_list_free(param_keys, env);
         axutil_array_list_free(param_values, env);
-    }
-    /* after freeing param_values, it is safe to free live_mapping_url */
-    if (live_mapping_url)
-    {
-        AXIS2_FREE (env->allocator, live_mapping_url);
-    }
-    if(local_url)
-    {
-        AXIS2_FREE(env->allocator, local_url);
     }
 
     if (!soap_env_exists)

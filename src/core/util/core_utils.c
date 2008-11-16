@@ -26,6 +26,60 @@
 #include <axutil_property.h>
 #include <axis2_conf_ctx.h>
 
+
+
+/* internal structure to keep the rest map in a multi level hash */
+typedef struct {
+    /* the structure will keep as many as following fields */
+
+    /* if the mapped value is directly the operation */
+    axis2_op_t *op_desc;
+
+    /* if the mapped value is a constant, this keeps a hash map of
+    possible constants => corrosponding map_internal structure */
+    axutil_hash_t *consts_map;
+
+    /* if the mapped value is a param, this keeps a hash map of
+    possible param_values => corrosponding_map_internal structre */
+    axutil_hash_t *params_map;
+
+} axutil_core_utils_map_internal_t;
+
+/* some functions to use internally in handling rest map */
+/* infer op from the live url */
+axis2_op_t *
+axis2_core_utils_infer_op_from_parent_rest_map(
+	const axutil_env_t *env,
+    axutil_hash_t *rest_map,
+	axis2_char_t *live_url,
+	axutil_array_list_t *param_keys,
+	axutil_array_list_t *param_values);
+
+/* build the restmap recursively - internal function*/
+axis2_status_t AXIS2_CALL
+axis2_core_utils_internal_build_rest_map_recursively(
+	const axutil_env_t * env,
+	axis2_char_t * url,
+    axutil_core_utils_map_internal_t *mapping_struct,
+    axis2_op_t *op_desc);
+
+/* infer op from the live url recursively */
+axis2_op_t *AXIS2_CALL
+axis2_core_utils_internal_infer_op_from_rest_map_recursively(
+	const axutil_env_t *env,
+    const axutil_core_utils_map_internal_t *parent_mapping_struct,
+	axis2_char_t *live_url,
+	axutil_array_list_t *param_keys,
+	axutil_array_list_t *param_values);
+
+/* match a pattern with a url component */
+axis2_status_t
+axis2_core_utils_match_url_component_with_pattern(const axutil_env_t *env,
+             axis2_char_t *pattern,
+             axis2_char_t *url_component, 
+             axutil_array_list_t *param_keys, 
+             axutil_array_list_t *param_values);
+
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
 axis2_core_utils_create_out_msg_ctx(
     const axutil_env_t * env,
@@ -427,43 +481,6 @@ axis2_core_utils_is_latest_mod_ver(
 }
 
 
-
-/* internal structure to keep the rest map in a multi level hash */
-typedef struct {
-    /* the structure will keep as many as following fields */
-
-    /* if the mapped value is directly the operation */
-    axis2_op_t *op_desc;
-
-    /* if the mapped value is a constant, this keeps a hash map of
-    possible constants => corrosponding map_internal structure */
-    axutil_hash_t *consts_map;
-
-    /* if the mapped value is a param, this keeps a hash map of
-    possible param_values => corrosponding_map_internal structre */
-    axutil_hash_t *params_map;
-
-} axutil_core_utils_map_internal_t;
-
-
-/* build the restmap recursively - internal function*/
-axis2_status_t AXIS2_CALL
-axis2_core_utils_internal_build_rest_map_recursively(
-	const axutil_env_t * env,
-	axis2_char_t * url,
-    axutil_core_utils_map_internal_t *mapping_struct,
-    axis2_op_t *op_desc);
-
-/* infer op from the live url recursively */
-axis2_op_t *AXIS2_CALL
-axis2_core_utils_internal_infer_op_from_rest_map_recursively(
-	const axutil_env_t *env,
-    const axutil_core_utils_map_internal_t *parent_mapping_struct,
-	axis2_char_t *live_url,
-	axutil_array_list_t *param_keys,
-	axutil_array_list_t *param_values);
-
-
 /* build the rest map - external function */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_core_utils_prepare_rest_mapping (
@@ -494,7 +511,7 @@ axis2_core_utils_prepare_rest_mapping (
     /* only constants are allowed in this level, so here url become the mapping_key */
     mapping_key = url;
 
-    if(*mapping_key == '\0') /* empty mappng key */
+    if(*mapping_key == '\0') /* empty mapping key */
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_URL_FORMAT, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid URL Format: empty mapping key");
@@ -563,6 +580,7 @@ axis2_core_utils_internal_build_rest_map_recursively(
     axutil_core_utils_map_internal_t *mapping_struct =  NULL;
     axutil_hash_t *cur_level_rest_map = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
+    axis2_char_t *bracket_start = NULL;
 
     axis2_bool_t is_key_a_param = AXIS2_FALSE;
 
@@ -576,15 +594,10 @@ axis2_core_utils_internal_build_rest_map_recursively(
         *first_delimitter = '\0';
     }
 
-    if(*url == '{')
+    if((bracket_start = axutil_strchr(url, '{')))
     {
-        axis2_char_t *last_url_char = url + axutil_strlen(url) -1;
-        if(*last_url_char == '}')
+        if(axutil_strchr(bracket_start, '}'))
         {
-            *last_url_char = '\0';
-
-            /* mapipng key is url excluding { } */
-            mapping_key = url + 1;
             is_key_a_param = AXIS2_TRUE;
         }
 
@@ -596,11 +609,9 @@ axis2_core_utils_internal_build_rest_map_recursively(
             return AXIS2_FAILURE;
         }
     }
-    else
-    {
-        /* here the url become the mapping_key */
-        mapping_key = url;
-    }
+    
+    /* here the url become the mapping_key */
+    mapping_key = url;
 
     if(*mapping_key == '\0') /* empty mappng key */
     {
@@ -718,9 +729,154 @@ axis2_core_utils_free_rest_map (
     return status;
 }
 
+AXIS2_EXTERN axis2_op_t *AXIS2_CALL
+axis2_core_utils_get_rest_op_with_method_and_location(axis2_svc_t *svc,
+                    const axutil_env_t *env, 
+                    const axis2_char_t *method, 
+                    const axis2_char_t *location,
+                    axutil_array_list_t *param_keys,
+                    axutil_array_list_t *param_values) 
+{
+    axis2_char_t *addition_params_str = NULL;
+    axis2_char_t *adjusted_local_url = NULL;
+
+    axis2_char_t *live_mapping_url = NULL;
+    axis2_char_t *local_url = NULL;
+
+    axis2_op_t *op = NULL;
+    
+    int key_len = 0;
+
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                    "Checking for operation using "
+                    "REST HTTP Location fragment : %s", location);
+
+    /* we are creating a dup of the location */
+    local_url = (axis2_char_t*)axutil_strdup(env, location);
+    if(!local_url) {
+       AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+       AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "No memory. Cannot create the live rest mapping url");
+       return NULL;
+    }
+    
+    /* checking the existance of the addition parameters
+       after the question mark '?' */
+    addition_params_str = strchr(local_url, '?');
+    if(addition_params_str)
+    {
+        *addition_params_str = '\0';
+        addition_params_str ++;
+    }
+    
+    /* if the first character is '/' ignore that */
+    if(*local_url == '/')
+    {
+        adjusted_local_url = local_url + 1;
+    }
+    else
+    {
+        adjusted_local_url = local_url;
+    }
+    
+    /* now create the mapping url */
+    key_len = axutil_strlen(method) + axutil_strlen(adjusted_local_url) + 2;
+    
+    live_mapping_url = (axis2_char_t *) (AXIS2_MALLOC (env->allocator,
+                                              sizeof (axis2_char_t) * key_len));
+    
+    if(!live_mapping_url)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "No memory. Cannot create the live rest mapping url");
+        AXIS2_FREE(env->allocator, local_url);
+        return NULL;
+    }
+
+    sprintf(live_mapping_url, "%s:%s", method, adjusted_local_url);
+
+
+    op = axis2_core_utils_infer_op_from_parent_rest_map(
+                env,
+                axis2_svc_get_rest_map(svc, env),
+                live_mapping_url,
+                param_keys,
+                param_values);
+    
+    
+    if (op)
+    {
+        axis2_char_t *params_str;
+
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                        "Operation found using target endpoint uri fragment");
+
+        /* here we are going to extract out the additional parameters 
+         * put after '?' mark */
+        params_str =  addition_params_str;
+        while(params_str && *params_str != '\0')
+        {
+            axis2_char_t *next_params_str = NULL;
+            axis2_char_t *key_value_seperator = NULL;
+
+            axis2_char_t *key = NULL;
+            axis2_char_t *value= NULL;
+
+            
+            /* we take one parameter pair to the params_str */
+            next_params_str = strchr(params_str, '&');
+            if(next_params_str) 
+            {
+                *next_params_str = '\0';
+            }
+            
+            key_value_seperator = strchr(params_str, '=');
+            if(key_value_seperator) 
+            {
+                /* devide the key value pair */
+                *key_value_seperator = '\0';
+                key = params_str;
+                value = key_value_seperator + 1;
+            }
+            else {
+                /* there is no '=' symbol, that mean only the key exist */
+                key = params_str;
+            }
+            if(key) {
+                key = axutil_strdup(env, key);
+                axutil_array_list_add(param_keys, env, key);
+            }
+            if(value) {
+                value = axutil_strdup(env, value);
+                axutil_array_list_add(param_values, env, value);
+            }
+
+            if(next_params_str)
+            {
+                /* if there was an '&' character then */
+                params_str = next_params_str + 1;
+            }
+            else {
+                params_str = NULL; /* just to end the loop */
+            }
+        }
+    }
+
+    if (live_mapping_url)
+    {
+        AXIS2_FREE (env->allocator, live_mapping_url);
+    }
+    if(local_url)
+    {
+        AXIS2_FREE(env->allocator, local_url);
+    }
+    return op;
+}
+
 
 /* infer op from the live url */
-AXIS2_EXTERN axis2_op_t *AXIS2_CALL
+axis2_op_t *
 axis2_core_utils_infer_op_from_parent_rest_map(
 	const axutil_env_t *env,
     axutil_hash_t *rest_map,
@@ -799,7 +955,6 @@ axis2_core_utils_internal_infer_op_from_rest_map_recursively(
 
     axis2_op_t *op_desc = NULL;
     axutil_core_utils_map_internal_t *child_mapping_struct = NULL;
-    int params_map_count = 0;
    
     axutil_hash_index_t *hi = NULL;
     const void *key = NULL;
@@ -873,8 +1028,6 @@ axis2_core_utils_internal_infer_op_from_rest_map_recursively(
         return NULL;
     }
 
-    params_map_count = axutil_hash_count(parent_mapping_struct->params_map);
-
     for (hi = axutil_hash_first(parent_mapping_struct->params_map, env); hi;
          hi = axutil_hash_next(env, hi))
     {
@@ -882,87 +1035,128 @@ axis2_core_utils_internal_infer_op_from_rest_map_recursively(
 
         if (key && val)
         {
+            int i = 0;
             axis2_char_t *hash_key = (axis2_char_t*)key;
+            axis2_status_t matched_status = AXIS2_SUCCESS;
+            axis2_char_t *dup_url_component = NULL;
+            axis2_char_t *dup_pattern = NULL;
 
-            child_mapping_struct = (axutil_core_utils_map_internal_t*)val;
+            /* temporary param keys and values for each entry */
+            axutil_array_list_t *tmp_param_keys;
+            axutil_array_list_t *tmp_param_values;
 
-            if(!next_level_url)
+
+            tmp_param_keys = axutil_array_list_create(env, 10);
+            if(!tmp_param_keys)
             {
-                /* there is no another level, so the op should be here */
-                op_desc = child_mapping_struct->op_desc;
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create internal rest mapping structure");
 
-                if(op_desc) {
-                    /* adding the hash key as the param key */
-                    axutil_array_list_add(param_keys, env, hash_key);
-
-                    /* adding the url component as the parma value */
-                    axutil_array_list_add(param_values, env, url_component);
-                    
-                    break;
-                }
-                
+                return NULL;
             }
-            else {
+            tmp_param_values = axutil_array_list_create(env, 10);
+            if(!tmp_param_values)
+            {
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create internal rest mapping structure");
+                axutil_array_list_free(tmp_param_keys, env);
+                return NULL;
+            }
 
-                /* temporary param keys and values for each entry */
-                axutil_array_list_t *tmp_param_keys;
-                axutil_array_list_t *tmp_param_values;
+            dup_url_component = axutil_strdup(env, url_component);
+            if(!dup_url_component)
+            {
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create internal rest mapping structure");
+                axutil_array_list_free(tmp_param_keys, env);
+                axutil_array_list_free(tmp_param_values, env);
+                return NULL;
+            }
+            dup_pattern = axutil_strdup(env, hash_key);
+            if(!dup_pattern)
+            {
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create internal rest mapping structure");
+                axutil_array_list_free(tmp_param_keys, env);
+                axutil_array_list_free(tmp_param_values, env);
+                AXIS2_FREE(env->allocator, dup_url_component);
+                return NULL;
+            }
 
-                if(params_map_count == 1) {
-                    /* if it is only one param entry, just use the original one */
-                    tmp_param_keys = param_keys;
-                    tmp_param_values = param_values;
+            matched_status = axis2_core_utils_match_url_component_with_pattern(env,
+                             dup_pattern, dup_url_component, tmp_param_keys, tmp_param_values);
+
+            AXIS2_FREE(env->allocator, dup_url_component);
+            AXIS2_FREE(env->allocator, dup_pattern);
+
+            if(matched_status == AXIS2_SUCCESS)
+            {
+                child_mapping_struct = (axutil_core_utils_map_internal_t*)val;
+
+                if(!next_level_url)
+                {
+                    /* there is no another level, so the op should be here */
+                    op_desc = child_mapping_struct->op_desc;
+                    
                 }
                 else {
-                    tmp_param_keys = axutil_array_list_create(env, 10);
-                    tmp_param_values = axutil_array_list_create(env, 10);
+                    
+                    /* if there is next level, we should check that level too */
+                    op_desc = axis2_core_utils_internal_infer_op_from_rest_map_recursively(
+                                env,
+                                child_mapping_struct,
+                                next_level_url,
+                                tmp_param_keys,
+                                tmp_param_values);
                 }
-               
-                /* adding the hash key as the param key */
-                axutil_array_list_add(tmp_param_keys, env, hash_key);
-
-                /* adding the url component as the parma value */
-                axutil_array_list_add(tmp_param_values, env, url_component);
-
-                op_desc = axis2_core_utils_internal_infer_op_from_rest_map_recursively(
-                            env,
-                            child_mapping_struct,
-                            next_level_url,
-                            tmp_param_keys,
-                            tmp_param_values);
 
                 if(op_desc) {
                     /* the operation is found */
                     /* but before leaving should merge the param arrays */
 
-                    if(params_map_count != 1) {
-                        int i = 0;
-                        void *param_key = NULL;
-                        void *param_value = NULL;
-                        for(i = 0; i < axutil_array_list_size(tmp_param_keys, env); i ++)
-                        {
-                            /* size(tmp_param_keys) == size(tmp_param_values) */
-                            param_key = axutil_array_list_get(tmp_param_keys, env, i);
-                            param_value = axutil_array_list_get(tmp_param_values, env, i);
+                    int i = 0;
+                    void *param_key = NULL;
+                    void *param_value = NULL;
+                    for(i = 0; i < axutil_array_list_size(tmp_param_keys, env); i ++)
+                    {
+                        /* size(tmp_param_keys) == size(tmp_param_values) */
+                        param_key = axutil_array_list_get(tmp_param_keys, env, i);
+                        param_value = axutil_array_list_get(tmp_param_values, env, i);
 
-                            /* add it to original array */
-                            axutil_array_list_add(param_keys, env, param_key);
-                            axutil_array_list_add(param_values, env, param_value);
+                        /* add it to original array */
+                        axutil_array_list_add(param_keys, env, param_key);
+                        axutil_array_list_add(param_values, env, param_value);
 
-                        }
-                        
-                        /* freeing the temporary arrays */
-                        axutil_array_list_free(tmp_param_keys, env);
-                        axutil_array_list_free(tmp_param_values, env);
                     }
+                    
+                    /* freeing the temporary arrays */
+                    axutil_array_list_free(tmp_param_keys, env);
+                    axutil_array_list_free(tmp_param_values, env);
                     /* since of is found, no more searches needed */
                     break;
                 }
-                
-                /* if the op not found, contiue, before that free the temp arrays */
-                axutil_array_list_free(tmp_param_keys, env);
-                axutil_array_list_free(tmp_param_values, env);
             }
+
+            /* if we come here => op is not yet found */
+            /* just freeing the temp key and value arrays */
+            for(i = 0; i < axutil_array_list_size(tmp_param_keys, env); i ++) {
+                void *value = axutil_array_list_get(tmp_param_keys, env, i);
+                if(value) {
+                    AXIS2_FREE(env->allocator, value);
+                }
+            }
+            for(i = 0; i < axutil_array_list_size(tmp_param_values, env); i ++) {
+                void *value = axutil_array_list_get(tmp_param_values, env, i);
+                if(value) {
+                    AXIS2_FREE(env->allocator, value);
+                }
+            }
+            axutil_array_list_free(tmp_param_keys, env);
+            axutil_array_list_free(tmp_param_values, env);
         }
     }
 
@@ -979,4 +1173,337 @@ axis2_core_utils_internal_infer_op_from_rest_map_recursively(
         }
     }
     return op_desc;
+}
+
+
+/* match a pattern with a url component */
+axis2_status_t
+axis2_core_utils_match_url_component_with_pattern(const axutil_env_t *env,
+             axis2_char_t *pattern,
+             axis2_char_t *url_component, 
+             axutil_array_list_t *param_keys, 
+             axutil_array_list_t *param_values)
+{
+    axutil_array_list_t *const_components = NULL;
+    axis2_char_t *c = NULL;
+    axis2_char_t *url_c = NULL;
+    axis2_char_t *pattern_c = NULL;
+    axis2_char_t *const_part = NULL;
+    axis2_char_t *param_part = NULL;
+    axis2_char_t *param_value = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
+    /* here the state can have following values
+       0 - inside a constant
+       1 - inside a param 
+     */
+    int loop_state = 0;
+    int i = 0;
+    int pattern_ending_with_param = 0;
+
+    /* the constant that undergoing matching */
+    int matching_constant_index = 0;
+    axis2_char_t *matching_constant = NULL;
+
+
+    /* dividing the pattern to consts */
+    const_components = axutil_array_list_create(env, 10);
+    if(!const_components)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "No memory. Cannot create internal rest mapping structure");
+    }
+    /* check whether the pattern ending with a param */
+    if(*(pattern + axutil_strlen(pattern) -1) == '}')
+    {
+        pattern_ending_with_param = 1;
+    }
+
+    const_part = pattern;
+    /* a parse to fil the const array and key array */
+    for(c = pattern; c && *c != '\0'; c ++)
+    {
+        if(loop_state == 0) 
+        {
+            /* inside a constant */
+            if(*c == '{')
+            {
+                if(const_part == c) 
+                {
+                    /* no const part */
+                }
+                else 
+                {
+                    /* add the constant */
+                    *c = '\0';
+                    const_part = axutil_strdup(env, const_part);
+                    if(!const_part)
+                    {
+                        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                    "No memory. Cannot create internal rest mapping structure");
+
+                        status = AXIS2_FAILURE;
+                        break;
+
+                    }
+                    axutil_array_list_add(const_components, env, const_part);
+
+                }
+                param_part = c + 1; /* start the param */
+                loop_state = 1; /* moving to the param from next iteration */
+            }
+            else if(*c == '}')
+            {
+                /* invalid state */
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_URL_FORMAT, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "Error in parsing the url for %s", url_component);
+
+                status = AXIS2_FAILURE;
+                break;
+            }
+        }
+        else
+        {
+            /* inside a param */
+            if(*c == '}')
+            {
+                if(*(c + 1) == '{') /* you can not have two params without a constant in between */
+                {
+                    /* invalid state */
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_URL_FORMAT, AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Error in parsing the url for %s, Please put constant between 2 parameters",
+                        url_component);
+
+                    status = AXIS2_FAILURE;
+                    break;
+                }
+                if(param_part == c) 
+                {
+                    /* no param part */
+                }
+                else
+                {
+                    /* add the param */
+                    *c = '\0';
+                    param_part = axutil_strdup(env, param_part);
+
+                    if(param_part == NULL)
+                    {
+                        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                    "No memory. Cannot create internal rest mapping structure");
+                        status = AXIS2_FAILURE;
+                        break;
+                    }
+                    axutil_array_list_add(param_keys, env, param_part);
+
+                    const_part = c + 1; /* start the const */
+                }
+                loop_state = 0; /* moving to the const from next iteration */
+            }
+            else if(*c == '{')
+            {
+                /* invalid state */
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_URL_FORMAT, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "Error in parsing the url for %s", url_component);
+
+                status = AXIS2_FAILURE;
+                break;
+
+            }
+        }
+    }
+    /* loop should stop in state 0 */
+    if(loop_state != 0)
+    {
+        status = AXIS2_FAILURE;
+    }
+
+    if(const_part != c) {
+        /* add the tailing const */
+        const_part = axutil_strdup(env, const_part);
+        if(!const_part) {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "No memory. Cannot create internal rest mapping structure");
+            status = AXIS2_FAILURE;
+        }
+        axutil_array_list_add(const_components, env, const_part);
+    }
+
+    if(axutil_array_list_size(const_components, env) == 0 && status == AXIS2_SUCCESS) {
+        /* no constants mean, the url componenent itself is the value */
+        url_component = axutil_strdup(env, url_component);
+        if(url_component)
+        {
+            axutil_array_list_add(param_values, env, url_component);
+
+            /* free the empty const array */
+            
+            axutil_array_list_free(const_components, env);
+            return AXIS2_SUCCESS;
+        }
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    "No memory. Cannot create internal rest mapping structure");
+        status = AXIS2_FAILURE;
+       
+    }
+    
+    if(status == AXIS2_FAILURE)
+    {
+        /* invalid state */
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_URL_FORMAT, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Error in parsing the url for %s", url_component);
+
+        /* free the const array */
+        for(i = 0; i < axutil_array_list_size(const_components, env); i ++)
+        {
+            void *value;
+            value = axutil_array_list_get(const_components, env, i);
+
+            AXIS2_FREE(env->allocator, value);
+        }
+
+        axutil_array_list_free(const_components, env);
+       
+        return status;
+    }
+
+    /* we are tracking the loop_state here too - this is useful only to track start*/
+    /* we are using the param_value part to track the matching param value */
+    if(*pattern != '{') {
+        /* starting_with_constant  */
+        loop_state = 0;
+        param_value = NULL;
+    }
+    else {
+        /* starting_with_param  */
+        loop_state = 1;
+        param_value = url_component;
+        
+    }
+
+    matching_constant_index = 0;
+    matching_constant = axutil_array_list_get(const_components, env, 0);
+
+    /* now parse the url component */
+    for(url_c = url_component;
+        *url_c != '\0' && status == AXIS2_SUCCESS && matching_constant != NULL; url_c ++ )
+    {
+        axis2_char_t *tmp_url_c = url_c;
+        pattern_c = matching_constant;
+        
+        while(*tmp_url_c == *pattern_c && *tmp_url_c != '\0' && *pattern_c != '\0')
+        {
+            tmp_url_c ++;
+            pattern_c ++;
+        }
+
+        if(*pattern_c == '\0')
+        {
+            /* we finised matching the constant pattern successfuly*/
+            if(loop_state == 0) 
+            {
+                /* loop_state => we expected there is a constant */
+            }
+            else {
+                /* we expected a param, but the constant is found => 
+                   url_c should mark the end of the param */
+                if(param_value == NULL) {
+                    /* unexpected invalid state */
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_URL_FORMAT, AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Error in parsing the url for %s", url_component);
+                    status = AXIS2_FAILURE;
+                }
+                *url_c = '\0';
+                param_value = axutil_strdup(env, param_value);
+
+                if(param_value == NULL)
+                {
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                "No memory. Cannot create internal rest mapping structure");
+                    status = AXIS2_FAILURE;
+                    break;
+                }
+                axutil_array_list_add(param_values, env, param_value);
+
+            }
+            /* next the param part is starting */
+            param_value = tmp_url_c; 
+
+            loop_state = 1; /* the end of the constant expects, start of a variable */
+
+            /* so we found one constant, go for the other */
+            matching_constant_index ++;
+            matching_constant = axutil_array_list_get(const_components,
+                    env, matching_constant_index);
+
+            tmp_url_c --;
+            /* increment the url_c to tmp_url_c */
+            url_c = tmp_url_c;
+        }
+        else
+        {
+            /* pattern not matched */
+            if(loop_state == 0)
+            {
+                /* we are expected this to be a constant, but it has not happend
+                 * mean: the pattern match failed 
+                 */
+                status = AXIS2_FAILURE;
+                break;
+            }
+        }
+       
+    }
+
+    if(matching_constant_index !=  axutil_array_list_size(const_components, env))
+    {
+        status = AXIS2_FAILURE;
+    }
+
+    if(pattern_ending_with_param)
+    {
+        if(param_value)
+        {
+            param_value = axutil_strdup(env, param_value);
+
+            if(param_value == NULL)
+            {
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "No memory. Cannot create internal rest mapping structure");
+                status = AXIS2_FAILURE;
+            }
+            else {
+                axutil_array_list_add(param_values, env, param_value);
+            }
+        }
+    }
+    else if(*url_c != '\0')
+    {
+        /* here the pattern ending is a constant (not a param), and matches all are already made
+         * but some url part left => this is a not mach */
+        status = AXIS2_FAILURE;
+    }
+
+    /* finally freeing the const array */
+    for(i = 0; i < axutil_array_list_size(const_components, env); i ++)
+    {
+        void *value;
+        value = axutil_array_list_get(const_components, env, i);
+
+        AXIS2_FREE(env->allocator, value);
+    }
+    axutil_array_list_free(const_components, env);
+
+    return status;
 }
