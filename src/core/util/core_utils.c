@@ -496,6 +496,7 @@ axis2_core_utils_prepare_rest_mapping (
     axis2_char_t *mapping_key = NULL;
     axutil_core_utils_map_internal_t *mapping_struct =  NULL;
     axis2_status_t status = AXIS2_SUCCESS;
+    axis2_char_t *bracket_start = NULL;
 
     first_delimitter = axutil_strchr(url, '/');
    
@@ -505,6 +506,24 @@ axis2_core_utils_prepare_rest_mapping (
            this will get the url of that level */
         next_level_url = first_delimitter + 1;
         *first_delimitter = '\0';
+    }
+
+    if((bracket_start = axutil_strchr(url, '{')))
+    {
+        /* we support multiple param per url component,
+           but we validate only one param */
+        if(axutil_strchr(bracket_start, '}'))
+        {
+            /* this is validated */
+        }
+
+        else
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_URL_FORMAT, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Invalid URL Format, no closing bracket in declaring parameters");
+            return AXIS2_FAILURE;
+        }
     }
 
     
@@ -596,6 +615,8 @@ axis2_core_utils_internal_build_rest_map_recursively(
 
     if((bracket_start = axutil_strchr(url, '{')))
     {
+        /* we support multiple param per url component,
+           but we validate only one param */
         if(axutil_strchr(bracket_start, '}'))
         {
             is_key_a_param = AXIS2_TRUE;
@@ -908,34 +929,159 @@ axis2_core_utils_infer_op_from_parent_rest_map(
     mapping_struct = (axutil_core_utils_map_internal_t*)axutil_hash_get(rest_map,
                             url_component, AXIS2_HASH_KEY_STRING);
     
-    if(mapping_struct == NULL)
+    if(mapping_struct)
     {
-        /* the op is not here */
+        if(!next_level_url)
+        {
+            /* if no level exists, find it here */
+            op_desc = mapping_struct->op_desc;
+        }
+        else 
+        {
+
+            op_desc = axis2_core_utils_internal_infer_op_from_rest_map_recursively(
+                        env,
+                        mapping_struct,
+                        next_level_url,
+                        param_keys,
+                        param_values);
+        }
+    }
+    if(!op_desc)
+    {
+        /* if the url is not mapped to the given constant url 
+         * we have to match it with the url pattern */
+
+        axutil_hash_index_t *hi = NULL;
+        const void *key = NULL;
+        void *val = NULL;
+        axis2_status_t matched_status = AXIS2_FAILURE;
+
+        for (hi = axutil_hash_first(rest_map, env); hi;
+             hi = axutil_hash_next(env, hi))
+        {
+            axutil_hash_this(hi, &key, NULL, &val);
+            
+            if(key == url_component)
+            {
+                continue; /* skip the already checked key */
+            }
+            if (key && val)
+            {
+                axis2_char_t *hash_key = (axis2_char_t*)key;
+                axis2_char_t *dup_url_component = NULL;
+                axis2_char_t *dup_pattern = NULL;
+
+                /* temporary param keys and values for each entry */
+                axutil_array_list_t *tmp_param_keys = NULL;
+                axutil_array_list_t *tmp_param_values = NULL;
+
+
+                tmp_param_keys = axutil_array_list_create(env, 10);
+                if(!tmp_param_keys)
+                {
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "No memory. Cannot create internal rest mapping structure");
+
+                    return NULL;
+                }
+                tmp_param_values = axutil_array_list_create(env, 10);
+                if(!tmp_param_values)
+                {
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "No memory. Cannot create internal rest mapping structure");
+                    axutil_array_list_free(tmp_param_keys, env);
+                    return NULL;
+                }
+
+                dup_url_component = axutil_strdup(env, url_component);
+                if(!dup_url_component)
+                {
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "No memory. Cannot create internal rest mapping structure");
+                    axutil_array_list_free(tmp_param_keys, env);
+                    axutil_array_list_free(tmp_param_values, env);
+                    return NULL;
+                }
+                dup_pattern = axutil_strdup(env, hash_key);
+                if(!dup_pattern)
+                {
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "No memory. Cannot create internal rest mapping structure");
+                    axutil_array_list_free(tmp_param_keys, env);
+                    axutil_array_list_free(tmp_param_values, env);
+                    AXIS2_FREE(env->allocator, dup_url_component);
+                    return NULL;
+                }
+
+                matched_status = axis2_core_utils_match_url_component_with_pattern(env,
+                                 dup_pattern, dup_url_component, tmp_param_keys, tmp_param_values);
+
+                AXIS2_FREE(env->allocator, dup_url_component);
+                AXIS2_FREE(env->allocator, dup_pattern);
+
+                if(matched_status == AXIS2_SUCCESS && val)
+                {
+                    mapping_struct = (axutil_core_utils_map_internal_t*)val;
+
+                    if(!next_level_url)
+                    {
+                        op_desc = mapping_struct->op_desc;
+                    }
+                    else
+                    {
+
+                        op_desc = axis2_core_utils_internal_infer_op_from_rest_map_recursively(
+                                    env,
+                                    mapping_struct,
+                                    next_level_url,
+                                    tmp_param_keys,
+                                    tmp_param_values);
+                    }
+                    if(op_desc)
+                    {
+                        /* we are done, the url is matched with a pattern */
+                        /* but before leaving should merge the param arrays */
+
+                        int i = 0;
+                        void *param_key = NULL;
+                        void *param_value = NULL;
+
+                        for(i = 0; i < axutil_array_list_size(tmp_param_keys, env); i ++)
+                        {
+                            /* size(tmp_param_keys) == size(tmp_param_values) */
+                            param_key = axutil_array_list_get(tmp_param_keys, env, i);
+                            param_value = axutil_array_list_get(tmp_param_values, env, i);
+
+                            /* add it to original array */
+                            axutil_array_list_add(param_keys, env, param_key);
+                            axutil_array_list_add(param_values, env, param_value);
+
+                        }
+                        /* since of is found, no more searches needed */
+                        break;
+                    }
+                }
+                /* freeing the temporary arrays */
+                axutil_array_list_free(tmp_param_keys, env);
+                axutil_array_list_free(tmp_param_values, env);
+            }
+        }
+    }
+
+    if(!op_desc)
+    {
+        /* no more to look up */
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_URL_FORMAT, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "REST maping structure is NULL for the accessed URL");
         return NULL;
     }
 
-    if(!next_level_url)
-    {
-        /* there is no another level, so the op should be here */
-        op_desc = mapping_struct->op_desc;
-        if(!op_desc) {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_URL_FORMAT, AXIS2_FAILURE);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "The operation descriptor not found for the accessed URL");
-        }
-    }
-    else {
-
-        op_desc = axis2_core_utils_internal_infer_op_from_rest_map_recursively(
-                    env,
-                    mapping_struct,
-                    next_level_url,
-                    param_keys,
-                    param_values);
-    }
     return op_desc;
 }
 
