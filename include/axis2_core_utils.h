@@ -102,13 +102,6 @@ extern "C"
         const axutil_env_t * env,
         axutil_hash_t *rest_map);
 
-    AXIS2_EXTERN axis2_op_t *AXIS2_CALL
-    axis2_core_utils_infer_op_from_parent_rest_map(
-        const axutil_env_t *env,
-        axutil_hash_t *rest_map,
-        axis2_char_t *live_url,
-        axutil_array_list_t *param_keys,
-        axutil_array_list_t *param_values);
 
 
     /** @} */
