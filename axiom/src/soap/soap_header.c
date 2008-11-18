@@ -398,11 +398,6 @@ axiom_soap_header_get_base_node(
             return NULL;
         }
 
-        soap_body = axiom_soap_envelope_get_body(soap_header->soap_envelope, env);
-        if(soap_body)
-        {
-            body_node = axiom_soap_body_get_base_node(soap_body, env);
-        }
 
         parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
         this_ele = axiom_element_create(env, NULL, AXIOM_SOAP_HEADER_LOCAL_NAME, parent_ns,
@@ -413,7 +408,17 @@ axiom_soap_header_get_base_node(
             return NULL;
         }
 
-        axiom_node_insert_sibling_before(body_node, env, this_node);
+		
+        soap_body = axiom_soap_envelope_get_body(soap_header->soap_envelope, env);
+        if(soap_body)
+        {
+            body_node = axiom_soap_body_get_base_node(soap_body, env);
+			axiom_node_insert_sibling_before(body_node, env, this_node);
+        }
+		else 
+		{
+			axiom_node_add_child(parent_node, env, this_node);
+		}
         soap_header->om_ele_node = this_node;
     }
 
