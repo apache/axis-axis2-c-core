@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\..\..\..\..\..\include;.\..\..\..\..\..\util\include;.\..\..\..\..\..\axiom\include;"
+				AdditionalIncludeDirectories=".\..\..\..\..\..\include;.\..\..\..\..\..\util\include;.\..\..\..\..\..\neethi\include;.\..\..\..\..\..\axiom\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;ECHO_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -175,19 +175,19 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{9524B8C5-79D9-4470-9A47-8BD163ABBB15}"
-			RelativePathToProject=".\axis2_engine\axis2_engine.vcproj"
+			RelativePathToProject="..\Axis2C\ides\vc\axis2c\axis2_engine\axis2_engine.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{7C816A64-FA96-4C6C-8DB0-5256441F54BC}"
-			RelativePathToProject=".\axiom\axiom.vcproj"
+			RelativePathToProject="..\Axis2C\ides\vc\axis2c\axiom\axiom.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
-			RelativePathToProject=".\axutil\axutil.vcproj"
+			RelativePathToProject="..\Axis2C\ides\vc\axis2c\axutil\axutil.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{D7D7FBA1-5E43-4586-8F69-D4ED2628D2D8}"
-			RelativePathToProject=".\axis2_parser\axis2_parser.vcproj"
+			RelativePathToProject="..\Axis2C\ides\vc\axis2c\axis2_parser\axis2_parser.vcproj"
 		/>
 	</References>
 	<Files>
