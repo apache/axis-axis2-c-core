@@ -1,0 +1,16 @@
+TESTS = 
+noinst_PROGRAMS = test_xpath
+check_PROGRAMS = test_xpath
+SUBDIRS =
+AM_CFLAGS = -g -O2 -pthread
+test_xpath_SOURCES = test_xpath.c
+
+test_xpath_LDADD   =	../../../util/src/libaxutil.la \
+                    $(top_builddir)/src/om/libaxis2_axiom.la \
+                    $(top_builddir)/src/xpath/libaxis2_xpath.la \
+                    $(top_builddir)/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la
+
+INCLUDES = -I$(top_builddir)/include \
+            -I$(top_builddir)/src/parser \
+			-I ../../../include \
+			-I ../../../util/include 
