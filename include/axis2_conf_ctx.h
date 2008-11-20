@@ -289,6 +289,35 @@ extern "C"
         const axutil_env_t * env,
         axis2_msg_ctx_t * msg_ctx);
 
+	/**
+     * Sets a property with the given key.
+     * @param ctx pointer to context struct
+     * @param env pointer to environment struct
+     * @param key key string to store the property with
+     * @param value pointer to property to be stored, context assumes the 
+     * ownership of the property
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_conf_ctx_set_property(
+        axis2_conf_ctx_t *conf_ctx,
+        const axutil_env_t * env,
+        const axis2_char_t * key,
+        axutil_property_t * value);
+
+    /**
+     * Gets the property with the given key.
+     * @param ctx pointer to context struct
+     * @param env pointer to environment struct
+     * @param key key string
+     * @return pointer to property struct corresponding to the given key
+     */
+    AXIS2_EXTERN axutil_property_t *AXIS2_CALL
+    axis2_conf_ctx_get_property(
+        const axis2_conf_ctx_t * conf_ctx,
+        const axutil_env_t * env,
+        const axis2_char_t * key);
+
     /** @} */
 
 #ifdef __cplusplus

@@ -571,3 +571,38 @@ axis2_conf_ctx_fill_ctxs(
     return svc_grp_ctx;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_conf_ctx_set_property(
+	axis2_conf_ctx_t *conf_ctx,
+	const axutil_env_t * env,
+	const axis2_char_t * key,
+	axutil_property_t * value)
+{
+    axis2_status_t status = AXIS2_FAILURE;
+    AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, key, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
+	
+	axutil_thread_mutex_lock(conf_ctx->mutex);
+	status = axis2_ctx_set_property(conf_ctx->base, env, key, value);
+	axutil_thread_mutex_unlock(conf_ctx->mutex);
+
+	return status;
+}
+
+AXIS2_EXTERN axutil_property_t *AXIS2_CALL
+axis2_conf_ctx_get_property(
+	const axis2_conf_ctx_t * conf_ctx,
+	const axutil_env_t * env,
+	const axis2_char_t * key)
+{
+    axutil_property_t* property = NULL;
+    AXIS2_PARAM_CHECK(env->error, conf_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, key, NULL);
+	
+	axutil_thread_mutex_lock(conf_ctx->mutex);
+	property = axis2_ctx_get_property(conf_ctx->base, env, key);
+	axutil_thread_mutex_unlock(conf_ctx->mutex);
+
+	return property;
+}
