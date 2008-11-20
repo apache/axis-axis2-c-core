@@ -26,29 +26,30 @@ extern "C"
 {
 #endif
 
-typedef struct axis2_qpid_receiver_resource_pack
-{
-	void* qpid_receiver;
-}
-axis2_qpid_receiver_resource_pack_t;
+	typedef struct axis2_qpid_receiver_resource_pack
+	{
+		void* qpid_receiver;
+	}axis2_qpid_receiver_resource_pack_t;
 
-axis2_qpid_receiver_resource_pack_t* AXIS2_CALL
-axis2_qpid_receiver_create (const axutil_env_t* env,
-						    axis2_conf_ctx_t*   conf_ctx,
-						    const axis2_char_t* qpid_broker_ip,
-						    int				    qpid_broker_port);
+	AXIS2_EXTERN axis2_qpid_receiver_resource_pack_t* AXIS2_CALL
+	axis2_qpid_receiver_create(
+		const axutil_env_t* env,
+		axis2_conf_ctx_t* conf_ctx);
 
-axis2_status_t AXIS2_CALL
-axis2_qpid_receiver_start (axis2_qpid_receiver_resource_pack_t* receiver_resource_pack,
-						   const axutil_env_t*    	  		    env);
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+		axis2_qpid_receiver_start(
+		axis2_qpid_receiver_resource_pack_t* receiver_resource_pack,
+		const axutil_env_t* env);
 
-axis2_bool_t AXIS2_CALL
-axis2_qpid_receiver_is_running (axis2_qpid_receiver_resource_pack_t* receiver_resource_pack,
-							    const axutil_env_t*    	   		     env);
+	AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+		axis2_qpid_receiver_is_running(
+		axis2_qpid_receiver_resource_pack_t* receiver_resource_pack,
+		const axutil_env_t* env);
 
-void AXIS2_CALL
-axis2_qpid_receiver_free (axis2_qpid_receiver_resource_pack_t* receiver_resource_pack,
-						  const axutil_env_t*    	 		   env);
+	AXIS2_EXTERN void AXIS2_CALL
+		axis2_qpid_receiver_free(
+		axis2_qpid_receiver_resource_pack_t* receiver_resource_pack,
+		const axutil_env_t* env);
 
 #ifdef __cplusplus
 }

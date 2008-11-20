@@ -19,10 +19,11 @@
 #define AXIS2_QPID_SENDER_H
 
 #include <qpid/client/Connection.h>
-#include <qpid/client/Dispatcher.h>
 #include <qpid/client/Session.h>
 #include <qpid/client/Message.h>
 #include <qpid/client/MessageListener.h>
+#include <qpid/client/SubscriptionManager.h>
+#include <axis2_util.h>
 
 #include <sstream>
 #include <string>
@@ -35,31 +36,33 @@ using std::string;
 class Axis2QpidSender : public MessageListener
 {
 	public:
-		Axis2QpidSender  (string qpidBrokerIP,
-						  int    qpidBrokerPort);
-		~Axis2QpidSender (void);
+		Axis2QpidSender(string qpidBrokerIP, int qpidBrokerPort, const axutil_env_t* env);
+		~Axis2QpidSender(void);
 
-		/* Out-In */
-		string 		 Request (string messageContent);			 /* Used by Clients */
+		/* Client */
+		bool ClientSendReceive(string messageContent, string toQueueName, bool isSOAP11, 
+				string contentType, string soapAction, axutil_array_list_t* mime_parts);
+		bool ClientSendRobust(string messageContent, string toQueueName, bool isSOAP11, 
+				string contentType, string soapAction, axutil_array_list_t* mime_parts);
+		bool ClientSendDual(string messageContent, string toQueueName, string replyToQueueName, bool isSOAP11, 
+				string contentType, string soapAction, axutil_array_list_t* mime_parts);
 		
-		/* Out Only */
-		void 		 Send	 (string messageContent, string to); /* Used by Server */
-		void 		 Send	 (string messageContent); 			 /* Used by Clients */
+		/* Server */
+		bool ServerSend(string messageContent, string toQueueName, bool isSOAP11, 
+				string contentType, string soapAction, axutil_array_list_t* mime_parts);
+
+		string 		 responseContent;
+		string		 responseContentType;
 
 	private:
-		bool	CreateSession  (void);
+		virtual void received(Message& message);
 
-		virtual void received  (Message& message);
-		virtual void listen	   (void);
-		virtual void wait	   (void);
-    
-		string		  	qpidBrokerIP;
-		int			  	qpidBrokerPort;
-		Connection    	connection;
-		Dispatcher*		dispatcher;
-		Session		  	session;
-		string 			responseContent;
-		stringstream 	responseQueue;
+		void GetMimeBody(axutil_array_list_t* mime_parts, string& mimeBody);
+
+		string		  		 qpidBrokerIP;
+		int			  		 qpidBrokerPort;
+		const axutil_env_t*  env;
+		SubscriptionManager* subscriptionManager;
 };
 
 #endif

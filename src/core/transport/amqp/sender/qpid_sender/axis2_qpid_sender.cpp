@@ -16,143 +16,306 @@
  */
 
 #include <axis2_amqp_defines.h>
+#include <axiom_mime_part.h>
+#include <fstream>
 #include <axis2_qpid_sender.h>
 
-Axis2QpidSender::Axis2QpidSender (string qpidBrokerIP,
-								  int 	 qpidBrokerPort)
+using namespace std;
+
+Axis2QpidSender::Axis2QpidSender(string qpidBrokerIP, int qpidBrokerPort, const axutil_env_t* env)
 {
 	this->qpidBrokerIP = qpidBrokerIP;
 	this->qpidBrokerPort = qpidBrokerPort;
-	this->dispatcher = NULL;
+	this->env = env;
 	this->responseContent = "";
-	this->responseQueue.clear ();
+	this->responseContentType = "";
+	this->subscriptionManager = NULL;
 }
 
 
-Axis2QpidSender::~Axis2QpidSender (void)
+Axis2QpidSender::~Axis2QpidSender(void)
 {
-	if (dispatcher)
-		delete dispatcher;
+	if (subscriptionManager)
+		delete subscriptionManager;
 }
 
 
-bool Axis2QpidSender::CreateSession (void)
+bool Axis2QpidSender::ClientSendReceive(string messageContent, string toQueueName, bool isSOAP11, 
+		string contentType, string soapAction, axutil_array_list_t* mime_parts)
 {
 	bool status = false;
-
+	this->responseContent = "";
+	this->responseContentType = "";
+	
 	try
 	{
-		/* Create Connection to Qpid Broker */
-		connection.open (qpidBrokerIP, qpidBrokerPort);
+		Connection connection;
+		connection.open(qpidBrokerIP, qpidBrokerPort);
+		
+		Session session = connection.newSession();
 
-		session = connection.newSession ();
+		/* Declare Private Queue */
+		string replyToQueueName = AXIS2_AMQP_TEMP_QUEUE_NAME_PREFIX;
+		replyToQueueName.append(axutil_uuid_gen(env));
 
+		session.queueDeclare(arg::queue = replyToQueueName, arg::autoDelete = true);
+		session.exchangeBind(arg::exchange = AXIS2_AMQP_EXCHANGE_DIRECT, 
+							 arg::queue = replyToQueueName,
+							 arg::bindingKey = replyToQueueName);
+
+		/* Create Message */
+		Message message;
+		
+		message.getDeliveryProperties().setRoutingKey(toQueueName);
+		message.getMessageProperties().setReplyTo(ReplyTo(AXIS2_AMQP_EXCHANGE_DIRECT, replyToQueueName));
+
+		message.getHeaders().setString(AXIS2_AMQP_HEADER_CONTENT_TYPE, contentType);
+		message.getHeaders().setString(AXIS2_AMQP_HEADER_SOAP_ACTION, soapAction);
+
+		if (mime_parts)
+		{
+			string mimeBody;
+			GetMimeBody(mime_parts, mimeBody);
+			
+			messageContent.clear();/* MIME parts include SOAP envelop */
+			
+			messageContent.append(mimeBody);
+		}
+
+		message.setData(messageContent);
+	
+		async(session).messageTransfer(arg::content = message, arg::destination = AXIS2_AMQP_EXCHANGE_DIRECT);
+		
+		/* Create Subscription manager */
+		subscriptionManager = new SubscriptionManager(session);
+		
+		subscriptionManager->subscribe(*this, replyToQueueName);
+		subscriptionManager->run(); 
+		
+		/* Current thread gets bloked here until the response hits the message listener */
+
+		connection.close();
+		
 		status = true;
 	}
 	catch (const std::exception& e)
 	{
-		connection.close ();
 	}
 
 	return status;
 }
 
 
-string Axis2QpidSender::Request (string messageContent)
+bool Axis2QpidSender::ClientSendRobust(string messageContent, string toQueueName, bool isSOAP11, 
+		string contentType, string soapAction, axutil_array_list_t* mime_parts)
 {
-	responseContent = "";
-		
-	bool sessionCreated = CreateSession ();
-	if (sessionCreated)
+	bool status = false;
+
+	try
 	{
+		Connection connection;
+		connection.open(qpidBrokerIP, qpidBrokerPort);
+		
+		Session session = connection.newSession();
+
 		/* Declare Private Queue */
-		responseQueue << "client" << session.getId ().getName ();
+		string replyToQueueName = AXIS2_AMQP_TEMP_QUEUE_NAME_PREFIX;
+		replyToQueueName.append(axutil_uuid_gen(env));
 
-		session.queueDeclare (arg::queue = responseQueue.str ());
-		session.exchangeBind (arg::exchange = AXIS2_AMQP_EXCHANGE_DIRECT, 
-							  arg::queue = responseQueue.str (),
-							  arg::bindingKey = responseQueue.str ());
+		session.queueDeclare(arg::queue = replyToQueueName);
+		session.exchangeBind(arg::exchange = AXIS2_AMQP_EXCHANGE_DIRECT, 
+							 arg::queue = replyToQueueName,
+							 arg::bindingKey = replyToQueueName);
 
-		dispatcher = new Dispatcher (session);
+		/* Create Message */ 
+		Message message;
+
+		message.getDeliveryProperties().setRoutingKey(toQueueName);
+		message.getMessageProperties().setReplyTo(ReplyTo(AXIS2_AMQP_EXCHANGE_DIRECT, replyToQueueName));
 		
-		listen ();
+		message.getHeaders().setString(AXIS2_AMQP_HEADER_CONTENT_TYPE, contentType);
+		message.getHeaders().setString(AXIS2_AMQP_HEADER_SOAP_ACTION, soapAction);
 
-		/* Create Message */
-		Message message;
-		message.getDeliveryProperties ().setRoutingKey (AXIS2_AMQP_RECEIVER_QUEUE_BIND_KEY);
-		message.getMessageProperties ().setReplyTo (ReplyTo (AXIS2_AMQP_EXCHANGE_DIRECT, responseQueue.str ()));
-		message.setData (messageContent);
+		if (mime_parts)
+		{
+			string mimeBody;
+			GetMimeBody(mime_parts, mimeBody);
+		
+			messageContent.clear();/* MIME parts include SOAP envelop */
 
-		async (session).messageTransfer (arg::content = message, arg::destination = AXIS2_AMQP_EXCHANGE_DIRECT);
+			messageContent.append(mimeBody);
+		}
 
-		wait ();
-
-		connection.close ();
-	}
-
-	return responseContent;
-}
-
-
-void Axis2QpidSender::Send (string messageContent, string to)
-{
-	bool sessionCreated = CreateSession ();
-	if (sessionCreated)
-	{
-		Message message;
-
-		message.getDeliveryProperties ().setRoutingKey (to);
-		message.setData (messageContent);
+		message.setData(messageContent);
 
 		async(session).messageTransfer(arg::content = message, arg::destination = AXIS2_AMQP_EXCHANGE_DIRECT);
 
-		connection.close ();
+		connection.close();
+
+		status = true;
 	}
+	catch (const std::exception& e)
+	{
+	}
+
+	return status;
 }
 
 
-void Axis2QpidSender::Send (string messageContent)
+bool Axis2QpidSender::ClientSendDual(string messageContent, string toQueueName, string replyToQueueName, 
+		bool isSOAP11, string contentType, string soapAction, axutil_array_list_t* mime_parts)
 {
-	bool sessionCreated = CreateSession ();
-	if (sessionCreated)
+	bool status = false;
+
+	try
 	{
+		Connection connection;
+		connection.open(qpidBrokerIP, qpidBrokerPort);
+		
+		Session session = connection.newSession();
+
+		session.queueDeclare(arg::queue = replyToQueueName);
+		session.exchangeBind(arg::exchange = AXIS2_AMQP_EXCHANGE_DIRECT,
+							 arg::queue = replyToQueueName,
+							 arg::bindingKey = replyToQueueName);
+
+		/* Create Message */ 
 		Message message;
 
-		message.setData (messageContent);
+		message.getDeliveryProperties().setRoutingKey(toQueueName);
+		message.getMessageProperties().setReplyTo(ReplyTo(AXIS2_AMQP_EXCHANGE_DIRECT, replyToQueueName));
+		
+		message.getHeaders().setString(AXIS2_AMQP_HEADER_CONTENT_TYPE, contentType);
+		message.getHeaders().setString(AXIS2_AMQP_HEADER_SOAP_ACTION, soapAction);
+
+		if (mime_parts)
+		{
+			string mimeBody;
+			GetMimeBody(mime_parts, mimeBody);
+		
+			messageContent.clear();/* MIME parts include SOAP envelop */
+
+			messageContent.append(mimeBody);
+		}
+
+		message.setData(messageContent);
 
 		async(session).messageTransfer(arg::content = message, arg::destination = AXIS2_AMQP_EXCHANGE_DIRECT);
 
-		connection.close ();
+		connection.close();
+
+		status = true;
 	}
+	catch (const std::exception& e)
+	{
+	}
+
+	return status;
 }
 
 
-void Axis2QpidSender::received (Message& message)
+bool Axis2QpidSender::ServerSend(string messageContent, string toQueueName, bool isSOAP11, 
+		string contentType, string soapAction, axutil_array_list_t* mime_parts)
 {
-	responseContent = message.getData ();
+	bool status = false;
 
-	dispatcher->stop ();
+	try
+	{
+		Connection connection;
+		connection.open(qpidBrokerIP, qpidBrokerPort);
+		
+		Session session = connection.newSession();
+
+		/* Create Message */ 
+		Message message;
+
+		message.getDeliveryProperties().setRoutingKey(toQueueName);
+		
+		message.getHeaders().setString(AXIS2_AMQP_HEADER_CONTENT_TYPE, contentType);
+		message.getHeaders().setString(AXIS2_AMQP_HEADER_SOAP_ACTION, soapAction);
+
+		if (mime_parts)
+		{
+			string mimeBody;
+			GetMimeBody(mime_parts, mimeBody);
+		
+			messageContent.clear();/* MIME parts include SOAP envelop */
+
+			messageContent.append(mimeBody);
+		}
+
+		message.setData(messageContent);
+
+		async(session).messageTransfer(arg::content = message, arg::destination = AXIS2_AMQP_EXCHANGE_DIRECT);
+
+		connection.close();
+
+		status = true;
+	}
+	catch (const std::exception& e)
+	{
+	}
+
+	return status;
+}
+
+void Axis2QpidSender::received(Message& message)
+{
+	responseContent = message.getData();
+	responseContentType = message.getHeaders().getString(AXIS2_AMQP_HEADER_CONTENT_TYPE);
+
+	if (subscriptionManager)
+		subscriptionManager->cancel(message.getDestination());
 }
 
 
-void Axis2QpidSender::listen (void)
+void Axis2QpidSender::GetMimeBody(axutil_array_list_t* mime_parts, string& mimeBody)
 {
-	if (!dispatcher)
+	int i = 0;
+	axiom_mime_part_t *mime_part = NULL;
+	axis2_status_t status = AXIS2_SUCCESS;
+
+	if (!mime_parts)
 		return;
 
-	session.messageSubscribe (arg::queue = responseQueue.str (), arg::destination = responseQueue.str ());
+	for (i = 0; i < axutil_array_list_size(mime_parts, env); i++)
+	{
+		mime_part = (axiom_mime_part_t *)axutil_array_list_get(mime_parts, env, i);
 
-	session.messageFlow (arg::destination = responseQueue.str (), arg::unit = MESSAGE_CREDIT, arg::value = 1);
-	session.messageFlow (arg::destination = responseQueue.str (), arg::unit = BYTE_CREDIT, arg::value = UNLIMITED_CREDIT);
+		if (mime_part->type == AXIOM_MIME_PART_BUFFER)
+		{
+			mimeBody.append(mime_part->part, mime_part->part_size);
+		}
+		else if (mime_part->type == AXIOM_MIME_PART_FILE)
+		{
+			int length;
+			char* buffer;
 
-	dispatcher->listen (responseQueue.str (), this);
-}
+			ifstream file;
+			file.open(mime_part->file_name, ios::binary);
 
+			file.seekg(0, ios::end);
+			length = file.tellg();
+			file.seekg(0, ios::beg);
 
-void Axis2QpidSender::wait (void)
-{
-	if (!dispatcher)
-		return;
+			buffer = new char[length];
 
-	dispatcher->run ();
+			file.read(buffer, length);
+			file.close();
+
+			mimeBody.append(buffer, length);
+
+			delete [] buffer;
+		}
+		else
+		{
+			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unknown mime type");
+			return;
+		}
+            
+		if (status == AXIS2_FAILURE)
+		{
+			break;
+		}
+	}
 }

@@ -17,6 +17,7 @@ axis2_amqp_server_LDADD = $(LDFLAGS) \
 						  $(top_builddir)/src/core/engine/libaxis2_engine.la \
 						  $(top_builddir)/neethi/src/libneethi.la \
 						  $(top_builddir)/src/core/transport/amqp/receiver/libaxis2_amqp_receiver.la \
+						  $(top_builddir)/src/core/transport/amqp/util/libaxis2_amqp_util.la \
 						  -lpthread
                     
 INCLUDES = -I$(top_builddir)/include \
@@ -27,5 +28,6 @@ INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/src/core/engine \
            -I$(top_builddir)/src/core/transport/amqp/receiver \
            -I$(top_builddir)/src/core/transport/amqp/receiver/qpid_receiver \
+           -I$(top_builddir)/src/core/transport/amqp/util \
            -I$(top_builddir)/util/include \
            -I$(top_builddir)/axiom/include

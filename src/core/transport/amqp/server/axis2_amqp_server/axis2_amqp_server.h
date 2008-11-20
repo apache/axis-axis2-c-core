@@ -18,26 +18,24 @@
 #ifndef AXIS2_AMQP_SERVER_H
 #define AXIS2_AMQP_SERVER_H
 
+#include <axis2_amqp_defines.h>
 #include <platforms/axutil_platform_auto_sense.h>
 
 axutil_env_t*
-init_server_env (axutil_allocator_t* allocator,
-				 const axis2_char_t* log_file_name);
+init_server_env(axutil_allocator_t* allocator,
+		const axis2_char_t* log_file_name);
 
 void 
-server_exit (int status);
+server_exit(int status);
 
 void
-show_usage (axis2_char_t* prog_name);
+show_usage(axis2_char_t* prog_name);
 
 #ifndef WIN32
 
 void
-sig_handler (int signal);
+sig_handler(int signal);
 
 #endif
-
-#define AXIS2_AMQP_SERVER_LOG_FILE_NAME "axis2_amqp_server.log"
-#define AXIS2_AMQP_SERVER_REPO_PATH		"../"
 
 #endif

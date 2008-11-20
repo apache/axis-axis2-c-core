@@ -15,23 +15,27 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_QPID_RECEIVER_H
-#define AXIS2_QPID_RECEIVER_H
+#ifndef AXIS2_QPID_RECEIVER_LISTENER_H
+#define AXIS2_QPID_RECEIVER_LISTENER_H
 
+#include <qpid/client/MessageListener.h>
+#include <qpid/client/Message.h>
 #include <axutil_env.h>
 #include <axis2_conf_init.h>
 
-class Axis2QpidReceiver
+using namespace qpid::client;
+using namespace qpid::framing;
+
+class Axis2QpidReceiverListener : public MessageListener
 {
 	public:
-		Axis2QpidReceiver(const axutil_env_t* env,
-						  axis2_conf_ctx_t* conf_ctx);
-		~Axis2QpidReceiver(void);
-
-		bool start(void);
-		bool shutdown(void);
+		Axis2QpidReceiverListener(const axutil_env_t* env,
+								  axis2_conf_ctx_t* conf_ctx);
+		~Axis2QpidReceiverListener(void);
 
 	private:
+		virtual void received(Message& message);
+    
 		const axutil_env_t* env;
 		axis2_conf_ctx_t*   conf_ctx;
 };

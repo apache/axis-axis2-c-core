@@ -26,25 +26,27 @@ extern "C"
 {
 #endif
 
-typedef struct axis2_amqp_request_processor_resource_pack
-{
-	axutil_env_t*	  env;
-	axis2_conf_ctx_t* conf_ctx;
-	axis2_char_t*	  request_content;
-	axis2_char_t*     reply_to;
-	axis2_char_t*	  qpid_broker_ip;
-	int				  qpid_broker_port;
-}
-axis2_amqp_request_processor_resource_pack_t;
+	typedef struct axis2_amqp_request_processor_resource_pack
+	{
+		axutil_env_t* env;
+		axis2_conf_ctx_t* conf_ctx;
+		axis2_char_t* request_content;
+		int content_length;
+		axis2_char_t* reply_to;
+		axis2_char_t* content_type;
+		axis2_char_t* soap_action;
+	} axis2_amqp_request_processor_resource_pack_t;
 
-/* The worker thread function */
-void* AXIS2_THREAD_FUNC
-axis2_amqp_request_processor_thread_function (axutil_thread_t* thread,
-						   					  void*			   request_data);
+	/* The worker thread function */
+	void* AXIS2_THREAD_FUNC
+	axis2_amqp_request_processor_thread_function(
+		axutil_thread_t* thread,
+		void* request_data);
 
-axis2_status_t
-axis2_amqp_process_request (const axutil_env_t* 						  env,
-							axis2_amqp_request_processor_resource_pack_t* request_resource_pack);
+	axis2_status_t
+	axis2_amqp_process_request(
+		const axutil_env_t* env,
+		axis2_amqp_request_processor_resource_pack_t* request_resource_pack);
 
 #ifdef __cplusplus
 }

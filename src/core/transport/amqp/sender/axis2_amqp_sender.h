@@ -26,33 +26,38 @@
 typedef struct axis2_amqp_sender_resource_pack
 {
 	axis2_transport_sender_t sender;
+	axis2_conf_ctx_t* conf_ctx;
 }
 axis2_amqp_sender_resource_pack_t;
 
 #define AXIS2_AMQP_SENDER_TO_RESOURCE_PACK(amqp_sender) \
 	((axis2_amqp_sender_resource_pack_t*)(amqp_sender))
 
-axis2_transport_sender_t* AXIS2_CALL
-axis2_amqp_sender_create (const axutil_env_t* env);
+AXIS2_EXTERN axis2_transport_sender_t* AXIS2_CALL
+axis2_amqp_sender_create(const axutil_env_t* env);
 
-axis2_status_t AXIS2_CALL 
-axis2_amqp_sender_init (axis2_transport_sender_t*   sender,
-					    const axutil_env_t* 		env,
-					    axis2_conf_ctx_t* 		    conf_ctx,
-					    axis2_transport_out_desc_t* out_desc);
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+axis2_amqp_sender_init(
+	axis2_transport_sender_t* sender,
+	const axutil_env_t* env,
+	axis2_conf_ctx_t* conf_ctx,
+	axis2_transport_out_desc_t* out_desc);
 
-axis2_status_t AXIS2_CALL 
-axis2_amqp_sender_invoke (axis2_transport_sender_t* sender,
-						  const axutil_env_t* 	    env,
-						  axis2_msg_ctx_t* 		    msg_ctx);
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+axis2_amqp_sender_invoke(
+	axis2_transport_sender_t* sender,
+	const axutil_env_t* env,
+	axis2_msg_ctx_t* msg_ctx);
 
-axis2_status_t AXIS2_CALL 
-axis2_amqp_sender_clean_up (axis2_transport_sender_t* sender,
-						    const axutil_env_t* 	  env,
-						    axis2_msg_ctx_t* 		  msg_ctx);
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+axis2_amqp_sender_clean_up(
+	axis2_transport_sender_t* sender,
+	const axutil_env_t* env,
+	axis2_msg_ctx_t* msg_ctx);
 
-void AXIS2_CALL 
-axis2_amqp_sender_free (axis2_transport_sender_t* sender,
-					    const axutil_env_t* 	  env);
+AXIS2_EXTERN void AXIS2_CALL 
+axis2_amqp_sender_free(
+	axis2_transport_sender_t* sender,
+	const axutil_env_t* env);
 
 #endif

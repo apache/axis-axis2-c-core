@@ -20,28 +20,45 @@
 
 #include <axis2_util.h>
 #include <axis2_conf_init.h>
+#include <axis2_amqp_util.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-axis2_char_t* AXIS2_CALL
-axis2_qpid_client_request (const axis2_char_t* request_content,
-						   const axis2_char_t* qpid_broker_ip,
-						   int				   qpid_broker_port,
-						   const axutil_env_t* env);
+AXIS2_EXTERN axis2_amqp_binary_data_buffer_t* AXIS2_CALL
+axis2_qpid_client_send_receive(
+	const axis2_char_t* request_content,
+	const axutil_env_t* env,
+	const axis2_char_t* content_type,
+	const axis2_char_t* soap_action,
+	axis2_msg_ctx_t* msg_ctx);
 
-void AXIS2_CALL
-axis2_qpid_server_send (const axis2_char_t* request_content,
-						const axis2_char_t* qpid_broker_ip,
-						int                 qpid_broker_port,
-						const axis2_char_t* to);
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_qpid_client_send_robust(
+	const axis2_char_t* request_content,
+	const axutil_env_t* env,
+	const axis2_char_t* content_type,
+	const axis2_char_t* soap_action,
+	axis2_msg_ctx_t* msg_ctx);
 
-void AXIS2_CALL
-axis2_qpid_client_send (const axis2_char_t* request_content,
-						const axis2_char_t* qpid_broker_ip,
-						int                 qpid_broker_port);
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_qpid_client_send_dual(
+	const axis2_char_t* request_content,
+	const axutil_env_t* env,
+	const axis2_char_t* reply_to_queue_name,
+	const axis2_char_t* content_type,
+	const axis2_char_t* soap_action,
+	axis2_msg_ctx_t* msg_ctx);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_qpid_server_send(
+	const axis2_char_t* request_content,
+	const axutil_env_t* env,
+	const axis2_char_t* content_type,
+	const axis2_char_t* soap_action,
+	axis2_msg_ctx_t* msg_ctx);
 
 #ifdef __cplusplus
 }

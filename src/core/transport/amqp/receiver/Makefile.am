@@ -13,6 +13,7 @@ libaxis2_amqp_receiver_la_LDFLAGS = -version-info $(VERSION_NO)
 INCLUDES = -I$(top_builddir)/include \
 	       -I$(top_builddir)/src/core/transport/amqp/util \
 	       -I$(top_builddir)/src/core/transport/amqp/receiver \
+	       -I$(top_builddir)/src/core/transport/amqp/sender/qpid_sender \
 	       -I$(top_builddir)/src/core/transport/amqp/receiver/qpid_receiver \
            -I$(top_builddir)/src/core/description \
            -I$(top_builddir)/src/core/context \

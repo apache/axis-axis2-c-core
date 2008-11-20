@@ -1,1 +1,1 @@
-SUBDIRS = echo
+SUBDIRS = echo notify mtom
