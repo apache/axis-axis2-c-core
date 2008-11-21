@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-#include "xpath.h"
+#include <axiom_xpath.h>
 #include "xpath_internals.h"
 
 /* Make a copy of the xpath expression */

@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-#include "xpath.h"
+#include <axiom_xpath.h>
 #include "xpath_internals.h"
 #include "xpath_internals_engine.h"
 #include "xpath_internals_iterators.h"

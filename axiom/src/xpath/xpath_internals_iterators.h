@@ -19,7 +19,7 @@
 #ifndef XPATH_INTERNALS_ITERATORS_H
 #define XPATH_INTERNALS_ITERATORS_H
 
-#include "xpath.h"
+#include <axiom_xpath.h>
 
 #ifdef __cplusplus
 extern "C"

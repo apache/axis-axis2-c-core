@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
+#include <axiom_xpath.h>
 #include "xpath_functions.h"
-#include "xpath.h"
 #include "xpath_internals_engine.h"
 
 int axiom_xpath_function_count(axiom_xpath_context_t *context, int np)

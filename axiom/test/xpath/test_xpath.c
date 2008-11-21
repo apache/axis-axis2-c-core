@@ -25,8 +25,7 @@ link.exe /LIBPATH:%AXIS2C_HOME%\lib axutil.lib axiom.lib axis2_parser.lib axis2_
 #include <axiom.h>
 #include <axis2_util.h>
 #include <axiom_soap.h>
-
-#include "xpath.h"
+#include <axiom_xpath.h>
 
 /* Function headers */
 axiom_node_t *build_test_xml(const axutil_env_t *env);

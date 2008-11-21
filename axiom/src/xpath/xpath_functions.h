@@ -19,7 +19,7 @@
 #ifndef XPATH_FUNCTIONS_H
 #define XPATH_FUNCTIONS_H
 
-#include "xpath.h"
+#include <axiom_xpath.h>
 
 #ifdef __cplusplus
 extern "C"
