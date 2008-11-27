@@ -30,12 +30,12 @@ extern "C"
 {
 #endif
 
-	typedef struct axis2_amqp_binary_data_buffer
+	typedef struct axis2_amqp_response
 	{
 		void* data;
 		int length;
 		axis2_char_t* content_type;
-	} axis2_amqp_binary_data_buffer_t;
+	} axis2_amqp_response_t;
 
 	typedef struct axis2_amqp_destination_info
 	{
@@ -45,20 +45,32 @@ extern "C"
 	} axis2_amqp_destination_info_t;
 
 	AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-	axis2_amqp_util_get_conf_value_string(
+	axis2_amqp_util_get_in_desc_conf_value_string(
 		axis2_transport_in_desc_t* in_desc,
 		const axutil_env_t* env,
 		const axis2_char_t* param_name);
 
 	AXIS2_EXTERN int AXIS2_CALL
-	axis2_amqp_util_get_conf_value_int(
+	axis2_amqp_util_get_in_desc_conf_value_int(
 		axis2_transport_in_desc_t* in_desc,
+		const axutil_env_t* env,
+		const axis2_char_t* param_name);
+
+	AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+	axis2_amqp_util_get_out_desc_conf_value_string(
+		axis2_transport_out_desc_t* out_desc,
+		const axutil_env_t* env,
+		const axis2_char_t* param_name);
+
+	AXIS2_EXTERN int AXIS2_CALL
+	axis2_amqp_util_get_out_desc_conf_value_int(
+		axis2_transport_out_desc_t* out_desc,
 		const axutil_env_t* env,
 		const axis2_char_t* param_name);
 
 	AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
 	axis2_amqp_util_get_soap_envelope(
-		axis2_amqp_binary_data_buffer_t* binary_data_buffer,
+		axis2_amqp_response_t* response,
 		const axutil_env_t* env,
 		axis2_msg_ctx_t* msg_ctx);
 
@@ -102,6 +114,26 @@ extern "C"
 	AXIS2_EXTERN axis2_amqp_destination_info_t* AXIS2_CALL 
 	axis2_amqp_util_msg_ctx_get_destination_info(
 		axis2_msg_ctx_t* msg_ctx,
+		const axutil_env_t* env);
+
+	AXIS2_EXTERN int AXIS2_CALL 
+	axis2_amqp_util_msg_ctx_get_request_timeout(
+		axis2_msg_ctx_t* msg_ctx,
+		const axutil_env_t* env);
+
+	AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
+	axis2_amqp_util_msg_ctx_get_server_side(
+		axis2_msg_ctx_t* msg_ctx,
+		const axutil_env_t* env);
+
+	AXIS2_EXTERN void AXIS2_CALL 
+	axis2_amqp_response_free(
+		axis2_amqp_response_t* response,
+		const axutil_env_t* env);
+
+	AXIS2_EXTERN void AXIS2_CALL 
+	axis2_amqp_destination_info_free(
+		axis2_amqp_destination_info_t* destination_info,
 		const axutil_env_t* env);
 
 #ifdef __cplusplus

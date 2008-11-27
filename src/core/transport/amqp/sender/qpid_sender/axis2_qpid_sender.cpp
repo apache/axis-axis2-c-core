@@ -15,12 +15,19 @@
  * limitations under the License.
  */
 
+#include <qpid/client/Connection.h>
+#include <qpid/client/Session.h>
+#include <qpid/client/Message.h>
+#include <qpid/client/SubscriptionManager.h>
+#include <qpid/sys/Time.h>
 #include <axis2_amqp_defines.h>
 #include <axiom_mime_part.h>
-#include <fstream>
 #include <axis2_qpid_sender.h>
+#include <fstream>
 
 using namespace std;
+using namespace qpid::client;
+using namespace qpid::framing;
 
 Axis2QpidSender::Axis2QpidSender(string qpidBrokerIP, int qpidBrokerPort, const axutil_env_t* env)
 {
@@ -29,19 +36,15 @@ Axis2QpidSender::Axis2QpidSender(string qpidBrokerIP, int qpidBrokerPort, const 
 	this->env = env;
 	this->responseContent = "";
 	this->responseContentType = "";
-	this->subscriptionManager = NULL;
 }
 
 
 Axis2QpidSender::~Axis2QpidSender(void)
-{
-	if (subscriptionManager)
-		delete subscriptionManager;
-}
+{}
 
 
-bool Axis2QpidSender::ClientSendReceive(string messageContent, string toQueueName, bool isSOAP11, 
-		string contentType, string soapAction, axutil_array_list_t* mime_parts)
+bool Axis2QpidSender::SendReceive(string messageContent, string toQueueName, bool isSOAP11, 
+		string contentType, string soapAction, axutil_array_list_t* mime_parts, int timeout)
 {
 	bool status = false;
 	this->responseContent = "";
@@ -64,13 +67,13 @@ bool Axis2QpidSender::ClientSendReceive(string messageContent, string toQueueNam
 							 arg::bindingKey = replyToQueueName);
 
 		/* Create Message */
-		Message message;
+		Message reqMessage;
 		
-		message.getDeliveryProperties().setRoutingKey(toQueueName);
-		message.getMessageProperties().setReplyTo(ReplyTo(AXIS2_AMQP_EXCHANGE_DIRECT, replyToQueueName));
+		reqMessage.getDeliveryProperties().setRoutingKey(toQueueName);
+		reqMessage.getMessageProperties().setReplyTo(ReplyTo(AXIS2_AMQP_EXCHANGE_DIRECT, replyToQueueName));
 
-		message.getHeaders().setString(AXIS2_AMQP_HEADER_CONTENT_TYPE, contentType);
-		message.getHeaders().setString(AXIS2_AMQP_HEADER_SOAP_ACTION, soapAction);
+		reqMessage.getHeaders().setString(AXIS2_AMQP_HEADER_CONTENT_TYPE, contentType);
+		reqMessage.getHeaders().setString(AXIS2_AMQP_HEADER_SOAP_ACTION, soapAction);
 
 		if (mime_parts)
 		{
@@ -82,77 +85,25 @@ bool Axis2QpidSender::ClientSendReceive(string messageContent, string toQueueNam
 			messageContent.append(mimeBody);
 		}
 
-		message.setData(messageContent);
+		reqMessage.setData(messageContent);
 	
-		async(session).messageTransfer(arg::content = message, arg::destination = AXIS2_AMQP_EXCHANGE_DIRECT);
+		async(session).messageTransfer(arg::content = reqMessage, arg::destination = AXIS2_AMQP_EXCHANGE_DIRECT);
 		
-		/* Create Subscription manager */
-		subscriptionManager = new SubscriptionManager(session);
+		/* Create subscription manager */
+		SubscriptionManager subscriptionManager(session);
 		
-		subscriptionManager->subscribe(*this, replyToQueueName);
-		subscriptionManager->run(); 
-		
-		/* Current thread gets bloked here until the response hits the message listener */
+		Message resMessage;
+		qpid::sys::Duration reqTimeout(timeout * AXIS2_AMQP_NANOSEC_PER_MILLISEC);
 
-		connection.close();
-		
-		status = true;
-	}
-	catch (const std::exception& e)
-	{
-	}
-
-	return status;
-}
-
-
-bool Axis2QpidSender::ClientSendRobust(string messageContent, string toQueueName, bool isSOAP11, 
-		string contentType, string soapAction, axutil_array_list_t* mime_parts)
-{
-	bool status = false;
-
-	try
-	{
-		Connection connection;
-		connection.open(qpidBrokerIP, qpidBrokerPort);
-		
-		Session session = connection.newSession();
-
-		/* Declare Private Queue */
-		string replyToQueueName = AXIS2_AMQP_TEMP_QUEUE_NAME_PREFIX;
-		replyToQueueName.append(axutil_uuid_gen(env));
-
-		session.queueDeclare(arg::queue = replyToQueueName);
-		session.exchangeBind(arg::exchange = AXIS2_AMQP_EXCHANGE_DIRECT, 
-							 arg::queue = replyToQueueName,
-							 arg::bindingKey = replyToQueueName);
-
-		/* Create Message */ 
-		Message message;
-
-		message.getDeliveryProperties().setRoutingKey(toQueueName);
-		message.getMessageProperties().setReplyTo(ReplyTo(AXIS2_AMQP_EXCHANGE_DIRECT, replyToQueueName));
-		
-		message.getHeaders().setString(AXIS2_AMQP_HEADER_CONTENT_TYPE, contentType);
-		message.getHeaders().setString(AXIS2_AMQP_HEADER_SOAP_ACTION, soapAction);
-
-		if (mime_parts)
+		if (subscriptionManager.get(resMessage, replyToQueueName, reqTimeout))
 		{
-			string mimeBody;
-			GetMimeBody(mime_parts, mimeBody);
+			responseContent = resMessage.getData();
+			responseContentType = resMessage.getHeaders().getString(AXIS2_AMQP_HEADER_CONTENT_TYPE);
 		
-			messageContent.clear();/* MIME parts include SOAP envelop */
-
-			messageContent.append(mimeBody);
+			status = true;
 		}
 
-		message.setData(messageContent);
-
-		async(session).messageTransfer(arg::content = message, arg::destination = AXIS2_AMQP_EXCHANGE_DIRECT);
-
 		connection.close();
-
-		status = true;
 	}
 	catch (const std::exception& e)
 	{
@@ -162,7 +113,7 @@ bool Axis2QpidSender::ClientSendRobust(string messageContent, string toQueueName
 }
 
 
-bool Axis2QpidSender::ClientSendDual(string messageContent, string toQueueName, string replyToQueueName, 
+bool Axis2QpidSender::Send(string messageContent, string toQueueName, string replyToQueueName, 
 		bool isSOAP11, string contentType, string soapAction, axutil_array_list_t* mime_parts)
 {
 	bool status = false;
@@ -174,16 +125,20 @@ bool Axis2QpidSender::ClientSendDual(string messageContent, string toQueueName, 
 		
 		Session session = connection.newSession();
 
-		session.queueDeclare(arg::queue = replyToQueueName);
-		session.exchangeBind(arg::exchange = AXIS2_AMQP_EXCHANGE_DIRECT,
-							 arg::queue = replyToQueueName,
-							 arg::bindingKey = replyToQueueName);
-
 		/* Create Message */ 
 		Message message;
 
 		message.getDeliveryProperties().setRoutingKey(toQueueName);
-		message.getMessageProperties().setReplyTo(ReplyTo(AXIS2_AMQP_EXCHANGE_DIRECT, replyToQueueName));
+
+		if (!replyToQueueName.empty()) /* Client dual-channel */
+		{
+			message.getMessageProperties().setReplyTo(ReplyTo(AXIS2_AMQP_EXCHANGE_DIRECT, replyToQueueName));
+
+			session.queueDeclare(arg::queue = replyToQueueName);
+			session.exchangeBind(arg::exchange = AXIS2_AMQP_EXCHANGE_DIRECT,
+								 arg::queue = replyToQueueName,
+							 	 arg::bindingKey = replyToQueueName);
+		}
 		
 		message.getHeaders().setString(AXIS2_AMQP_HEADER_CONTENT_TYPE, contentType);
 		message.getHeaders().setString(AXIS2_AMQP_HEADER_SOAP_ACTION, soapAction);
@@ -211,61 +166,6 @@ bool Axis2QpidSender::ClientSendDual(string messageContent, string toQueueName, 
 	}
 
 	return status;
-}
-
-
-bool Axis2QpidSender::ServerSend(string messageContent, string toQueueName, bool isSOAP11, 
-		string contentType, string soapAction, axutil_array_list_t* mime_parts)
-{
-	bool status = false;
-
-	try
-	{
-		Connection connection;
-		connection.open(qpidBrokerIP, qpidBrokerPort);
-		
-		Session session = connection.newSession();
-
-		/* Create Message */ 
-		Message message;
-
-		message.getDeliveryProperties().setRoutingKey(toQueueName);
-		
-		message.getHeaders().setString(AXIS2_AMQP_HEADER_CONTENT_TYPE, contentType);
-		message.getHeaders().setString(AXIS2_AMQP_HEADER_SOAP_ACTION, soapAction);
-
-		if (mime_parts)
-		{
-			string mimeBody;
-			GetMimeBody(mime_parts, mimeBody);
-		
-			messageContent.clear();/* MIME parts include SOAP envelop */
-
-			messageContent.append(mimeBody);
-		}
-
-		message.setData(messageContent);
-
-		async(session).messageTransfer(arg::content = message, arg::destination = AXIS2_AMQP_EXCHANGE_DIRECT);
-
-		connection.close();
-
-		status = true;
-	}
-	catch (const std::exception& e)
-	{
-	}
-
-	return status;
-}
-
-void Axis2QpidSender::received(Message& message)
-{
-	responseContent = message.getData();
-	responseContentType = message.getHeaders().getString(AXIS2_AMQP_HEADER_CONTENT_TYPE);
-
-	if (subscriptionManager)
-		subscriptionManager->cancel(message.getDestination());
 }
 
 

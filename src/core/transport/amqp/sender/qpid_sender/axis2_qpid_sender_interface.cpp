@@ -24,8 +24,8 @@ extern "C"
 {
 #endif
 
-AXIS2_EXTERN axis2_amqp_binary_data_buffer_t* AXIS2_CALL
-axis2_qpid_client_send_receive(
+AXIS2_EXTERN axis2_amqp_response_t* AXIS2_CALL
+axis2_qpid_send_receive(
 	const axis2_char_t* request_content,
 	const axutil_env_t* env,
 	const axis2_char_t* content_type,
@@ -33,7 +33,6 @@ axis2_qpid_client_send_receive(
 	axis2_msg_ctx_t* msg_ctx)
 {
 	axis2_amqp_destination_info_t* destination_info = NULL;
-
 	destination_info = axis2_amqp_util_msg_ctx_get_destination_info(msg_ctx, env);
 
 	if (!destination_info || !destination_info->broker_ip || 
@@ -44,45 +43,45 @@ axis2_qpid_client_send_receive(
 
 	axis2_bool_t is_soap_11 = axis2_msg_ctx_get_is_soap_11(msg_ctx, env);
 	axutil_array_list_t* mime_parts = axis2_msg_ctx_get_mime_parts(msg_ctx, env);
+	int timeout = axis2_amqp_util_msg_ctx_get_request_timeout(msg_ctx, env);
 
 	/* Get Response */
 	Axis2QpidSender qpid_sender(destination_info->broker_ip, 
 			destination_info->broker_port, env);
-	bool status = qpid_sender.ClientSendReceive(request_content, destination_info->queue_name, 
-			is_soap_11, content_type, soap_action, mime_parts);
+	
+	bool status = qpid_sender.SendReceive(request_content, destination_info->queue_name, 
+			is_soap_11, content_type, soap_action, mime_parts, timeout);
 
-	AXIS2_FREE(env->allocator, destination_info->broker_ip);
-	AXIS2_FREE(env->allocator, destination_info->queue_name);
-	AXIS2_FREE(env->allocator, destination_info);
+	axis2_amqp_destination_info_free(destination_info, env);
 
 	if (!status)
 	{
 		return NULL;
 	}
 
-	/* Create a Copy and Return */
-	axis2_amqp_binary_data_buffer_t* binary_data_buffer = (axis2_amqp_binary_data_buffer_t*)
-		AXIS2_MALLOC(env->allocator, sizeof(axis2_amqp_binary_data_buffer_t));
+	/* Create response */
+	axis2_amqp_response_t* response = (axis2_amqp_response_t*)AXIS2_MALLOC(
+			env->allocator, sizeof(axis2_amqp_response_t));
 
 	/* Data */
-	binary_data_buffer->data = AXIS2_MALLOC(env->allocator, qpid_sender.responseContent.size());
-	memcpy(binary_data_buffer->data, qpid_sender.responseContent.c_str(), 
+	response->data = AXIS2_MALLOC(env->allocator, qpid_sender.responseContent.size());
+	memcpy(response->data, qpid_sender.responseContent.c_str(), 
 			qpid_sender.responseContent.size());
 
 	/* Length */
-	binary_data_buffer->length = qpid_sender.responseContent.size();
+	response->length = qpid_sender.responseContent.size();
 
 	/* ContentType */
-	binary_data_buffer->content_type = (axis2_char_t*)
-		AXIS2_MALLOC(env->allocator, qpid_sender.responseContentType.size() + 1);
-	strcpy(binary_data_buffer->content_type, qpid_sender.responseContentType.c_str());
+	response->content_type = (axis2_char_t*)AXIS2_MALLOC(
+			env->allocator, qpid_sender.responseContentType.size() + 1);
+	strcpy(response->content_type, qpid_sender.responseContentType.c_str());
 
-	return binary_data_buffer;
+	return response;
 }
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_qpid_client_send_robust(
+axis2_qpid_send(
 	const axis2_char_t* request_content,
 	const axutil_env_t* env,
 	const axis2_char_t* content_type,
@@ -91,6 +90,7 @@ axis2_qpid_client_send_robust(
 {
 	axis2_amqp_destination_info_t* destination_info = NULL;
 	axis2_status_t status =  AXIS2_FAILURE;
+	string reply_to_queue_name = "";
 
 	destination_info = axis2_amqp_util_msg_ctx_get_destination_info(msg_ctx, env);
 
@@ -102,89 +102,25 @@ axis2_qpid_client_send_robust(
 
 	axis2_bool_t is_soap_11 = axis2_msg_ctx_get_is_soap_11(msg_ctx, env);
 	axutil_array_list_t* mime_parts = axis2_msg_ctx_get_mime_parts(msg_ctx, env);
-	
-	Axis2QpidSender qpid_sender(destination_info->broker_ip, 
-			destination_info->broker_port, env);
 
-	status = qpid_sender.ClientSendRobust(request_content, destination_info->queue_name, 
-			is_soap_11, content_type, soap_action, mime_parts);
-
-	AXIS2_FREE(env->allocator, destination_info->broker_ip);
-	AXIS2_FREE(env->allocator, destination_info->queue_name);
-	AXIS2_FREE(env->allocator, destination_info);
-
-	return status;
-}
- 
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_qpid_client_send_dual(
-	const axis2_char_t* request_content,
-	const axutil_env_t* env,
-	const axis2_char_t* reply_to_queue_name,
-	const axis2_char_t* content_type,
-	const axis2_char_t* soap_action,
-	axis2_msg_ctx_t* msg_ctx)
-{
-	axis2_amqp_destination_info_t* destination_info = NULL;
-	axis2_status_t status =  AXIS2_FAILURE;
-
-	destination_info = axis2_amqp_util_msg_ctx_get_destination_info(msg_ctx, env);
-
-	if (!destination_info || !destination_info->broker_ip || 
-		!destination_info->broker_port || !destination_info->queue_name)
+	/* If client side, find reply_to_queue_name */
+	if (!axis2_msg_ctx_get_server_side(msg_ctx, env))
 	{
-		return AXIS2_FAILURE;
+		axis2_conf_ctx_t* conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
+
+		axis2_char_t* queue_name = 
+			axis2_amqp_util_conf_ctx_get_dual_channel_queue_name(conf_ctx, env);
+		if (queue_name)
+			reply_to_queue_name = queue_name;
 	}
 
-	axis2_bool_t is_soap_11 = axis2_msg_ctx_get_is_soap_11(msg_ctx, env);
-	axutil_array_list_t* mime_parts = axis2_msg_ctx_get_mime_parts(msg_ctx, env);
-	
 	Axis2QpidSender qpid_sender(destination_info->broker_ip, 
 			destination_info->broker_port, env);
 
-	status = qpid_sender.ClientSendDual(request_content, destination_info->queue_name, 
+	status = qpid_sender.Send(request_content, destination_info->queue_name, 
 			reply_to_queue_name, is_soap_11, content_type, soap_action, mime_parts);
 
-	AXIS2_FREE(env->allocator, destination_info->broker_ip);
-	AXIS2_FREE(env->allocator, destination_info->queue_name);
-	AXIS2_FREE(env->allocator, destination_info);
-
-	return status;
-}
- 
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_qpid_server_send(
-	const axis2_char_t* request_content,
-	const axutil_env_t* env,
-	const axis2_char_t* content_type,
-	const axis2_char_t* soap_action,
-	axis2_msg_ctx_t* msg_ctx)
-{
-	axis2_amqp_destination_info_t* destination_info = NULL;
-	axis2_status_t status =  AXIS2_FAILURE;
-
-	destination_info = axis2_amqp_util_msg_ctx_get_destination_info(msg_ctx, env);
-
-	if (!destination_info || !destination_info->broker_ip || 
-		!destination_info->broker_port || !destination_info->queue_name)
-	{
-		return AXIS2_FAILURE;
-	}
-
-	axis2_bool_t is_soap_11 = axis2_msg_ctx_get_is_soap_11(msg_ctx, env);
-	axutil_array_list_t* mime_parts = axis2_msg_ctx_get_mime_parts(msg_ctx, env);
-
-	Axis2QpidSender qpid_sender(destination_info->broker_ip, 
-			destination_info->broker_port, env);
-
-	status = qpid_sender.ServerSend(request_content, destination_info->queue_name, 
-			is_soap_11, content_type, soap_action, mime_parts);
-
-	AXIS2_FREE(env->allocator, destination_info->broker_ip);
-	AXIS2_FREE(env->allocator, destination_info->queue_name);
-	AXIS2_FREE(env->allocator, destination_info);
+	axis2_amqp_destination_info_free(destination_info, env);
 
 	return status;
 }

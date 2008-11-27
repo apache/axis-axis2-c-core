@@ -27,8 +27,8 @@ extern "C"
 {
 #endif
 
-AXIS2_EXTERN axis2_amqp_binary_data_buffer_t* AXIS2_CALL
-axis2_qpid_client_send_receive(
+AXIS2_EXTERN axis2_amqp_response_t* AXIS2_CALL
+axis2_qpid_send_receive(
 	const axis2_char_t* request_content,
 	const axutil_env_t* env,
 	const axis2_char_t* content_type,
@@ -36,24 +36,7 @@ axis2_qpid_client_send_receive(
 	axis2_msg_ctx_t* msg_ctx);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_qpid_client_send_robust(
-	const axis2_char_t* request_content,
-	const axutil_env_t* env,
-	const axis2_char_t* content_type,
-	const axis2_char_t* soap_action,
-	axis2_msg_ctx_t* msg_ctx);
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_qpid_client_send_dual(
-	const axis2_char_t* request_content,
-	const axutil_env_t* env,
-	const axis2_char_t* reply_to_queue_name,
-	const axis2_char_t* content_type,
-	const axis2_char_t* soap_action,
-	axis2_msg_ctx_t* msg_ctx);
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_qpid_server_send(
+axis2_qpid_send(
 	const axis2_char_t* request_content,
 	const axutil_env_t* env,
 	const axis2_char_t* content_type,

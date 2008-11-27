@@ -60,9 +60,26 @@ axis2_amqp_sender_init(
 	axis2_transport_out_desc_t* out_desc)
 {
 	axis2_amqp_sender_resource_pack_t* sender_resource_pack = NULL;
-    sender_resource_pack = AXIS2_AMQP_SENDER_TO_RESOURCE_PACK(sender);
+    axutil_property_t* property = NULL;
+	int* request_timeout = (int*)AXIS2_MALLOC(env->allocator, sizeof(int));
+	*request_timeout = AXIS2_QPID_NULL_CONF_INT;
 
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+	sender_resource_pack = AXIS2_AMQP_SENDER_TO_RESOURCE_PACK(sender);
 	sender_resource_pack->conf_ctx = conf_ctx;
+
+	/* Set request timeout */
+    *request_timeout = axis2_amqp_util_get_out_desc_conf_value_int(
+            out_desc, env, AXIS2_AMQP_CONF_QPID_REQUEST_TIMEOUT);
+    if (*request_timeout == AXIS2_QPID_NULL_CONF_INT)
+    {
+        *request_timeout = AXIS2_QPID_DEFAULT_REQUEST_TIMEOUT;
+    }
+    property = axutil_property_create_with_args(
+            env, AXIS2_SCOPE_APPLICATION, 0, 0, (void*)request_timeout);
+    axis2_conf_ctx_set_property(sender_resource_pack->conf_ctx, env,
+            AXIS2_AMQP_CONF_CTX_PROPERTY_REQUEST_TIMEOUT, property);
 
 	return AXIS2_SUCCESS;
 }
@@ -81,7 +98,6 @@ axis2_amqp_sender_invoke(
 	axiom_xml_writer_t* xml_writer = NULL;
 	axiom_output_t* request_om_output = NULL;
 	axis2_char_t* request_content = NULL;
-	axiom_soap_envelope_t* response_soap_envelope = NULL;
 	axis2_bool_t is_server = AXIS2_TRUE;
 	axis2_bool_t is_soap_11 = AXIS2_FALSE;
 	axutil_string_t* content_type = NULL;
@@ -171,71 +187,92 @@ axis2_amqp_sender_invoke(
 		return AXIS2_FAILURE;
 	}
 	
-	is_server = axis2_msg_ctx_get_server_side(msg_ctx, env);
+	is_server = axis2_amqp_util_msg_ctx_get_server_side(msg_ctx, env);
 
 	if (is_server)
 	{
-		status = axis2_qpid_server_send(request_content, env, 
+		status = axis2_qpid_send(request_content, env, 
 				axutil_string_get_buffer(content_type, env), soap_action, msg_ctx);
 	}
 	else
 	{
-		axis2_op_t* op = NULL;
-		const axis2_char_t* mep = NULL;
-		
-		op = axis2_msg_ctx_get_op(msg_ctx, env);
-		mep = axis2_op_get_msg_exchange_pattern(op, env);
-
-		if (axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 || 
-			axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0) /* One-way */
+		if (AXIS2_TRUE == axis2_amqp_util_msg_ctx_get_use_separate_listener(
+					msg_ctx, env)) /* Dual Channel */
 		{
-			status = axis2_qpid_client_send_robust(request_content, env, 
+			status = axis2_qpid_send(request_content, env, 
 					axutil_string_get_buffer(content_type, env), soap_action, msg_ctx);
-
-			/* Set Status Code in msg_ctx */
-			axis2_msg_ctx_set_status_code(msg_ctx, env, status);
 		}
 		else
 		{
-			if (AXIS2_TRUE == axis2_amqp_util_msg_ctx_get_use_separate_listener(msg_ctx, env)) /* Dual Channel */
+			axis2_op_t* op = NULL;
+			const axis2_char_t* mep = NULL;
+			
+			op = axis2_msg_ctx_get_op(msg_ctx, env);
+			
+			if (op)
 			{
-				axis2_amqp_sender_resource_pack_t* sender_resource_pack = NULL;
-				sender_resource_pack = AXIS2_AMQP_SENDER_TO_RESOURCE_PACK(sender);
-				
-				if (!sender_resource_pack->conf_ctx)
-					return AXIS2_FAILURE;
-					
-				axis2_char_t* reply_to_queue_name = NULL;
-				reply_to_queue_name = axis2_amqp_util_conf_ctx_get_dual_channel_queue_name(
-						sender_resource_pack->conf_ctx, env);
-
-				if (!reply_to_queue_name)
-					return AXIS2_FAILURE;
-				
-				status = axis2_qpid_client_send_dual(request_content, env, reply_to_queue_name, 
-						axutil_string_get_buffer(content_type, env), soap_action, msg_ctx);
+				mep = axis2_op_get_msg_exchange_pattern(op, env);
 			}
-			else /* Single Channel */
+
+			axis2_amqp_response_t* response = NULL;
+			response = axis2_qpid_send_receive(request_content, env, 
+					axutil_string_get_buffer(content_type, env), soap_action, msg_ctx);
+		
+			if (response)
 			{
-				axis2_amqp_binary_data_buffer_t* binary_data_buffer = NULL;
-				binary_data_buffer = axis2_qpid_client_send_receive(request_content, env, 
-						axutil_string_get_buffer(content_type, env), soap_action, msg_ctx);
-
-				if (binary_data_buffer)
+				/* Create in stream */
+				if (response->data)
 				{
-					response_soap_envelope = axis2_amqp_util_get_soap_envelope(binary_data_buffer, env, msg_ctx);
+					axutil_stream_t* in_stream = NULL;
+					axutil_property_t* property = NULL;
 				
-					if (response_soap_envelope)
-						axis2_msg_ctx_set_response_soap_envelope(msg_ctx, env, response_soap_envelope);
+					in_stream = axutil_stream_create_basic(env);
+					axutil_stream_write(in_stream, env, response->data, 
+							response->length);
+			
+					property = axutil_property_create(env);
+					axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
+					axutil_property_set_free_func(property, env, axutil_stream_free_void_arg);
+					axutil_property_set_value(property, env, in_stream);
+				
+					axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property);
+				}
+			
+				if (mep)
+				{
+					if (0 == axutil_strcmp(mep, AXIS2_MEP_URI_OUT_IN)) /* Out-In */
+					{
+						axiom_soap_envelope_t* response_soap_envelope = NULL;
+					
+						response_soap_envelope = axis2_amqp_util_get_soap_envelope(response, env, msg_ctx);
+						if (response_soap_envelope)
+						{
+							axis2_msg_ctx_set_response_soap_envelope(msg_ctx, env, response_soap_envelope);
+						}
+					}
+				}
+			
+				status = AXIS2_SUCCESS;
+				
+				axis2_msg_ctx_set_status_code(msg_ctx, env, status);
 
-					AXIS2_FREE(env->allocator, binary_data_buffer->data);
-					AXIS2_FREE(env->allocator, binary_data_buffer->content_type);
-					AXIS2_FREE(env->allocator, binary_data_buffer);
-
-					status = AXIS2_SUCCESS;
+				axis2_amqp_response_free(response, env);
+			}
+			else
+			{
+				if (mep)
+				{
+					if (axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 || 
+						axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0) /* One-way */
+					{
+						status = AXIS2_SUCCESS;
+						
+						/* Set status code in msg_ctx */
+						axis2_msg_ctx_set_status_code(msg_ctx, env, status);
+					}
 				}
 			}
-        }
+		}
 	}
 
 	if (content_type)

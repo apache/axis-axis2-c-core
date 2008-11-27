@@ -133,7 +133,7 @@ main(int argc, char* argv[])
 	extern int optopt;
 	int c;
 	const axis2_char_t* qpid_broker_ip = NULL;
-	int qpid_broker_port = AXIS2_QPID_NULL_BROKER_PORT;
+	int qpid_broker_port = AXIS2_QPID_NULL_CONF_INT;
 	const axis2_char_t* repo_path = AXIS2_AMQP_SERVER_REPO_PATH;
 	axutil_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
 	const axis2_char_t* log_file_name = AXIS2_AMQP_SERVER_LOG_FILE_NAME;

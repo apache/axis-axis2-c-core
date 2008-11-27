@@ -24,13 +24,16 @@
 
 #define AXIS2_AMQP_CONF_QPID_BROKER_IP				 "qpid_broker_ip"
 #define AXIS2_AMQP_CONF_QPID_BROKER_PORT			 "qpid_broker_port"
+#define AXIS2_AMQP_CONF_QPID_REQUEST_TIMEOUT		 "request_timeout"
 
 #define AXIS2_QPID_DEFAULT_BROKER_IP    			 "127.0.0.1"
 #define AXIS2_QPID_DEFAULT_BROKER_PORT  			 5672
-#define AXIS2_QPID_NULL_BROKER_PORT  			 	 0
+#define AXIS2_QPID_DEFAULT_REQUEST_TIMEOUT  		 500
+#define AXIS2_QPID_NULL_CONF_INT	  			 	 -1
 
 #define AXIS2_AMQP_CONF_CTX_PROPERTY_BROKER_IP		 "qpid_broker_ip"
 #define AXIS2_AMQP_CONF_CTX_PROPERTY_BROKER_PORT	 "qpid_broker_port"
+#define AXIS2_AMQP_CONF_CTX_PROPERTY_REQUEST_TIMEOUT "request_timeout"
 #define AXIS2_AMQP_CONF_CTX_PROPERTY_QUEUE_NAME		 "queue_name"
 
 #define AXIS2_AMQP_MSG_CTX_PROPERTY_REPLY_TO		 "qpid_reply_to"
@@ -51,10 +54,12 @@
 #define AXIS2_AMQP_EPR_SERVICE_PREFIX				 "services"
 #define AXIS2_AMQP_EPR_ANON_SERVICE_NAME			 "__ANONYMOUS_SERVICE__"
 
-#define AXIS2_AMQP_EQ 				'='
-#define AXIS2_AMQP_SEMI_COLON 		';'
-#define AXIS2_AMQP_ESC_NULL 		'\0'
-#define AXIS2_AMQP_DOUBLE_QUOTE 	'"'
-#define AXIS2_AMQP_B_SLASH 			'\\'
+#define AXIS2_AMQP_EQ 								 '='
+#define AXIS2_AMQP_SEMI_COLON 						 ';'
+#define AXIS2_AMQP_ESC_NULL 						 '\0'
+#define AXIS2_AMQP_DOUBLE_QUOTE 					 '"'
+#define AXIS2_AMQP_B_SLASH 							 '\\'
+
+#define AXIS2_AMQP_NANOSEC_PER_MILLISEC				 1000*1000
 
 #endif

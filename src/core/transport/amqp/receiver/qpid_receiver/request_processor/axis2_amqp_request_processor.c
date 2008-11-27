@@ -99,7 +99,6 @@ axis2_amqp_process_request(
 	axis2_status_t status = AXIS2_FAILURE;
 	axutil_hash_t *binary_data_map = NULL;
 	axiom_soap_body_t *soap_body = NULL;
-	axis2_endpoint_ref_t* reply_to = NULL;
 	axutil_property_t* reply_to_property = NULL;
 
 	/* Create msg_ctx */
@@ -307,13 +306,10 @@ axis2_amqp_process_request(
 	/* SOAP version */
 	axis2_msg_ctx_set_is_soap_11(msg_ctx, env, is_soap_11);
 
-	/* Set ReplyTo in the msg_ctx */
-	reply_to = axis2_endpoint_ref_create(env, request_resource_pack->reply_to);
-	axis2_msg_ctx_set_reply_to(msg_ctx, env, reply_to);
-
-	/* Set ReplyTo in the msg_ctx as a property. This is useful when 
-	 * server replies in the dual-channel case */
-	reply_to_property = axutil_property_create_with_args(env, AXIS2_SCOPE_REQUEST, 0, 0, 
+	/* Set ReplyTo in the msg_ctx as a property. This is used by the server when
+	 * 1. WS-A is not in use 
+	 * 2. ReplyTo is an anonymous EPR - Sandesha2/Dual-channel */
+	reply_to_property = axutil_property_create_with_args(env, AXIS2_SCOPE_REQUEST, 0, 0,
 			(void*)request_resource_pack->reply_to);
 	axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_AMQP_MSG_CTX_PROPERTY_REPLY_TO, 
 			reply_to_property);

@@ -24,7 +24,7 @@
 #include <axis2_amqp_util.h>
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_amqp_util_get_conf_value_string(
+axis2_amqp_util_get_in_desc_conf_value_string(
 	axis2_transport_in_desc_t* in_desc,
 	const axutil_env_t* env,
 	const axis2_char_t* param_name)
@@ -47,16 +47,59 @@ axis2_amqp_util_get_conf_value_string(
 
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_amqp_util_get_conf_value_int(
+axis2_amqp_util_get_in_desc_conf_value_int(
 	axis2_transport_in_desc_t* in_desc,
 	const axutil_env_t* env,
 	const axis2_char_t* param_name)
 {
 	axis2_char_t* value_str = NULL;
-	int value = 0;
+	int value = AXIS2_QPID_NULL_CONF_INT;
 
-	value_str = axis2_amqp_util_get_conf_value_string(
+	value_str = axis2_amqp_util_get_in_desc_conf_value_string(
 			in_desc, env, param_name);
+	if (value_str)
+	{
+		value = atoi(value_str);
+	}
+
+	return value;
+}
+
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+axis2_amqp_util_get_out_desc_conf_value_string(
+	axis2_transport_out_desc_t* out_desc,
+	const axutil_env_t* env,
+	const axis2_char_t* param_name)
+{
+	axutil_param_t* param = NULL;
+    axis2_char_t* value = NULL;
+
+	param = (axutil_param_t*)
+			axutil_param_container_get_param(
+				axis2_transport_out_desc_param_container(out_desc, env),
+				env,
+				param_name);
+    if (param)
+    {
+		value = axutil_param_get_value(param, env);
+    }
+
+	return value;
+}
+
+
+AXIS2_EXTERN int AXIS2_CALL
+axis2_amqp_util_get_out_desc_conf_value_int(
+	axis2_transport_out_desc_t* out_desc,
+	const axutil_env_t* env,
+	const axis2_char_t* param_name)
+{
+	axis2_char_t* value_str = NULL;
+	int value = AXIS2_QPID_NULL_CONF_INT;
+
+	value_str = axis2_amqp_util_get_out_desc_conf_value_string(
+			out_desc, env, param_name);
 	if (value_str)
 	{
 		value = atoi(value_str);
@@ -68,7 +111,7 @@ axis2_amqp_util_get_conf_value_int(
 
 AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
 axis2_amqp_util_get_soap_envelope(
-	axis2_amqp_binary_data_buffer_t* binary_data_buffer,
+	axis2_amqp_response_t* response,
 	const axutil_env_t* env,
 	axis2_msg_ctx_t* msg_ctx)
 {
@@ -83,7 +126,7 @@ axis2_amqp_util_get_soap_envelope(
 	axutil_hash_t *binary_data_map = NULL;
 	axis2_bool_t is_soap_11 = AXIS2_FALSE;
 
-	if (!binary_data_buffer || !binary_data_buffer->data || !binary_data_buffer->content_type)
+	if (!response || !response->data || !response->content_type)
 	{
 		return NULL;
 	}
@@ -91,10 +134,10 @@ axis2_amqp_util_get_soap_envelope(
 	is_soap_11 = axis2_msg_ctx_get_is_soap_11(msg_ctx, env);
 
 	/* Handle MTOM */
-	if (strstr(binary_data_buffer->content_type, AXIS2_AMQP_HEADER_ACCEPT_MULTIPART_RELATED))
+	if (strstr(response->content_type, AXIS2_AMQP_HEADER_ACCEPT_MULTIPART_RELATED))
 	{
 		axis2_char_t* mime_boundary = axis2_amqp_util_get_value_from_content_type(env,
-				binary_data_buffer->content_type,
+				response->content_type,
 				AXIS2_AMQP_HEADER_CONTENT_TYPE_MIME_BOUNDARY);
 		
 		if (mime_boundary)
@@ -165,12 +208,12 @@ axis2_amqp_util_get_soap_envelope(
 
             	if (stream)
             	{
-					axutil_stream_write(stream, env, binary_data_buffer->data, 
-							binary_data_buffer->length);
+					axutil_stream_write(stream, env, response->data, 
+							response->length);
                 	callback_ctx->env = env;
                 	callback_ctx->in_stream = stream;
-                	callback_ctx->content_length = binary_data_buffer->length;
-                	callback_ctx->unread_len = binary_data_buffer->length;
+                	callback_ctx->content_length = response->length;
+                	callback_ctx->unread_len = response->length;
                 	callback_ctx->chunked_stream = NULL;
             	}
 
@@ -203,8 +246,8 @@ axis2_amqp_util_get_soap_envelope(
 	}
 	else
 	{
-		soap_body_str = binary_data_buffer->data;
-		soap_body_len = axutil_strlen(binary_data_buffer->data);
+		soap_body_str = response->data;
+		soap_body_len = axutil_strlen(response->data);
 	}
 
 	soap_body_len = axutil_strlen(soap_body_str);
@@ -403,7 +446,7 @@ axis2_amqp_util_conf_ctx_get_dual_channel_queue_name(
 	axutil_property_t* property = NULL;
 	axis2_char_t* queue_name = NULL;
 	axis2_char_t* value = NULL;
-	
+
 	/* Get property */
 	property = axis2_conf_ctx_get_property(conf_ctx, env, 
 			AXIS2_AMQP_CONF_CTX_PROPERTY_QUEUE_NAME);
@@ -429,7 +472,7 @@ axis2_amqp_util_conf_ctx_get_dual_channel_queue_name(
 			AXIS2_MALLOC(env->allocator, axutil_strlen(value) + 1);
 		strcpy(queue_name, value);
 
-		axutil_property_set_value(property, env, NULL);
+		/*axutil_property_set_value(property, env, NULL);*/
 	}
 	else
 	{
@@ -451,15 +494,21 @@ axis2_amqp_util_conf_ctx_get_qpid_broker_ip(
 	const axutil_env_t* env)
 {
 	axutil_property_t* property = NULL;
-	axis2_char_t* broker_ip = NULL;
+	void* value = NULL;
+	axis2_char_t* broker_ip = AXIS2_QPID_DEFAULT_BROKER_IP;
 
 	property = axis2_conf_ctx_get_property(conf_ctx, env, 
 			AXIS2_AMQP_CONF_CTX_PROPERTY_BROKER_IP);
 
-	if (!property)
-		return NULL;
+	if (property)
+	{
+		value = axutil_property_get_value(property, env);
 
-	broker_ip = (axis2_char_t*)axutil_property_get_value(property, env);
+		if (value)
+		{
+			broker_ip = (axis2_char_t*)value;
+		}
+	}
 
 	return broker_ip;
 }
@@ -472,7 +521,7 @@ axis2_amqp_util_conf_ctx_get_qpid_broker_port(
 {
 	axutil_property_t* property = NULL;
 	void* value = NULL;
-	int broker_port = 0;
+	int broker_port = AXIS2_QPID_DEFAULT_BROKER_PORT;
 
 	property = axis2_conf_ctx_get_property(conf_ctx, env, 
 			AXIS2_AMQP_CONF_CTX_PROPERTY_BROKER_PORT);
@@ -505,7 +554,7 @@ axis2_amqp_util_msg_ctx_get_use_separate_listener(
 	if (property)
 	{
 		value = (axis2_char_t*)axutil_property_get_value(property, env);
-		
+	
 		if (value && (axutil_strcmp(AXIS2_VALUE_TRUE, value) == 0))
 		{
 			use_separate_listener = AXIS2_TRUE;
@@ -528,83 +577,85 @@ axis2_amqp_util_msg_ctx_get_destination_info(
 	 * 3. TempQueue... */
 
 	axis2_endpoint_ref_t* endpoint_ref = NULL;
-	const axis2_char_t* endpoint_address_original = NULL;
-	axis2_char_t* endpoint_address = NULL;
 	axis2_amqp_destination_info_t* destination_info = NULL;
-	char* substr = NULL;
-	char* token = NULL;
-
-	endpoint_ref = axis2_msg_ctx_get_to(msg_ctx, env);
-	if (!endpoint_ref)
-		return NULL;
-
-	endpoint_address_original = axis2_endpoint_ref_get_address(endpoint_ref, env);
-	if (!endpoint_address_original)
-		return NULL;
-
-	endpoint_address = (axis2_char_t*)AXIS2_MALLOC(env->allocator, 
-			(sizeof(axis2_char_t) * axutil_strlen(endpoint_address_original)) + 1);
-	strcpy((char*)endpoint_address, (char*)endpoint_address_original);
 
 	destination_info = (axis2_amqp_destination_info_t*)
 		AXIS2_MALLOC(env->allocator, sizeof(axis2_amqp_destination_info_t));
 
 	destination_info->broker_ip = NULL;
-	destination_info->broker_port = AXIS2_QPID_NULL_BROKER_PORT;
+	destination_info->broker_port = AXIS2_QPID_NULL_CONF_INT;
 	destination_info->queue_name = NULL;
-
-	if ((substr = strstr(endpoint_address, AXIS2_AMQP_EPR_PREFIX))) /* Start with amqp: */ 
+	
+	endpoint_ref = axis2_msg_ctx_get_to(msg_ctx, env);
+	
+	if (endpoint_ref)
 	{
-		if (strstr(endpoint_address, AXIS2_AMQP_EPR_ANON_SERVICE_NAME))
-		{
-			/* Server reply to dual-channel client */
-			axutil_property_t* property = NULL;
-            property = axis2_msg_ctx_get_property(msg_ctx, env,
-                    AXIS2_AMQP_MSG_CTX_PROPERTY_REPLY_TO);
+		const axis2_char_t* endpoint_address_original = NULL;
+		axis2_char_t* endpoint_address = NULL;
+		char* substr = NULL;
+		char* token = NULL;
+		endpoint_address_original = axis2_endpoint_ref_get_address(endpoint_ref, env);
+	
+		if (!endpoint_address_original)
+			return NULL;
 
-            if (property)
-            {
-                axis2_char_t* queue_name = (axis2_char_t*)
-                    axutil_property_get_value(property, env);
-
-				if (queue_name)
-				{
-					destination_info->queue_name = (axis2_char_t*)AXIS2_MALLOC(
-							env->allocator, (sizeof(axis2_char_t) * strlen(queue_name)) + 1);
-					strcpy(destination_info->queue_name, queue_name);
-				}
-            }
-		}
-		else
+		endpoint_address = (axis2_char_t*)AXIS2_MALLOC(env->allocator, 
+				(sizeof(axis2_char_t) * axutil_strlen(endpoint_address_original)) + 1);
+		strcpy((char*)endpoint_address, (char*)endpoint_address_original);
+		
+		if ((substr = strstr(endpoint_address, AXIS2_AMQP_EPR_PREFIX))) /* Start with amqp: */
 		{
-			substr+= strlen(AXIS2_AMQP_EPR_PREFIX) + 2; /* 2 -> "//" */
-			if (substr) /* IP:PORT/services/SERVICE_NAME */
+			if (strstr(endpoint_address, AXIS2_AMQP_EPR_ANON_SERVICE_NAME))
 			{
-				token = strtok(substr, ":");
-				if (token) /* IP */
+				/* Server reply to dual-channel client */
+				axutil_property_t* property = NULL;
+				property = axis2_msg_ctx_get_property(msg_ctx, env,
+						AXIS2_AMQP_MSG_CTX_PROPERTY_REPLY_TO);
+
+				if (property)
 				{
-					axis2_char_t* broker_ip = (axis2_char_t*)AXIS2_MALLOC(env->allocator,
-							(sizeof(axis2_char_t) * strlen(token)) + 1);
-					strcpy(broker_ip, token);
-					destination_info->broker_ip = broker_ip;
+					axis2_char_t* queue_name = (axis2_char_t*)
+						axutil_property_get_value(property, env);
 
-					token = strtok(NULL, "/"); /* PORT */
-					if (token)
+					if (queue_name)
 					{
-						destination_info->broker_port = atoi(token);
+						destination_info->queue_name = (axis2_char_t*)AXIS2_MALLOC(
+								env->allocator, (sizeof(axis2_char_t) * strlen(queue_name)) + 1);
+						strcpy(destination_info->queue_name, queue_name);
+					}
+				}
+			}
+			else
+			{
+				substr+= strlen(AXIS2_AMQP_EPR_PREFIX) + 2; /* 2 -> "//" */
+				if (substr) /* IP:PORT/services/SERVICE_NAME */
+				{
+					token = strtok(substr, ":");
+					if (token) /* IP */
+					{
+						axis2_char_t* broker_ip = (axis2_char_t*)AXIS2_MALLOC(env->allocator,
+								(sizeof(axis2_char_t) * strlen(token)) + 1);
+						strcpy(broker_ip, token);
+						destination_info->broker_ip = broker_ip;
 
-						token = strtok(NULL, "#"); /* ... services/SERVICE_NAME */
+						token = strtok(NULL, "/"); /* PORT */
 						if (token)
 						{
-							if ((substr = strstr(token, AXIS2_AMQP_EPR_SERVICE_PREFIX)))
+							destination_info->broker_port = atoi(token);
+
+							token = strtok(NULL, "#"); /* ... services/SERVICE_NAME */
+							if (token)
 							{
-								substr+= strlen(AXIS2_AMQP_EPR_SERVICE_PREFIX) + 1; /* 1 -> "/" */ 
-								if (substr)
+								if ((substr = strstr(token, AXIS2_AMQP_EPR_SERVICE_PREFIX)))
 								{
-									axis2_char_t* queue_name = (axis2_char_t*)AXIS2_MALLOC(env->allocator,
-											(sizeof(axis2_char_t) * strlen(substr)) + 1);
-									strcpy(queue_name, substr);
-									destination_info->queue_name = queue_name;
+									substr+= strlen(AXIS2_AMQP_EPR_SERVICE_PREFIX) + 1; /* 1 -> "/" */
+									if (substr)
+									{
+										axis2_char_t* queue_name = (axis2_char_t*)AXIS2_MALLOC(env->allocator,
+												(sizeof(axis2_char_t) * strlen(substr)) + 1);
+										strcpy(queue_name, substr);
+										destination_info->queue_name = queue_name;
+									}
 								}
 							}
 						}
@@ -612,10 +663,36 @@ axis2_amqp_util_msg_ctx_get_destination_info(
 				}
 			}
 		}
+		else if (0 == strcmp(endpoint_address, AXIS2_WSA_ANONYMOUS_URL)) /* Required to work with Sandesha2 */
+		{
+			axutil_property_t* property = NULL;
+			property = axis2_msg_ctx_get_property(msg_ctx, env, 
+					AXIS2_AMQP_MSG_CTX_PROPERTY_REPLY_TO);
+		
+			if (property)
+			{
+				axis2_char_t* queue_name = (axis2_char_t*)
+					axutil_property_get_value(property, env);
+			
+				if (queue_name)
+				{
+					destination_info->queue_name = (axis2_char_t*)AXIS2_MALLOC(
+							env->allocator, (sizeof(axis2_char_t) * strlen(queue_name)) + 1);
+					strcpy(destination_info->queue_name, queue_name);
+				}
+			}
+		}
+		else if ((substr = strstr(endpoint_address, "jms:/")) &&
+			 	 (substr == endpoint_address))
+		{
+
+		}
+		
+		AXIS2_FREE(env->allocator, endpoint_address);
 	}
-	else if (0 == strcmp(endpoint_address, AXIS2_WSA_ANONYMOUS_URL)) /* Required to work with Sandesha2  */
+	else
 	{
-		/* Server reply to dual-channel client */
+		/* Single-channel blocking */
 		axutil_property_t* property = NULL;
 		property = axis2_msg_ctx_get_property(msg_ctx, env, 
 				AXIS2_AMQP_MSG_CTX_PROPERTY_REPLY_TO);
@@ -624,7 +701,7 @@ axis2_amqp_util_msg_ctx_get_destination_info(
 		{
 			axis2_char_t* queue_name = (axis2_char_t*)
 				axutil_property_get_value(property, env);
-
+			
 			if (queue_name)
 			{
 				destination_info->queue_name = (axis2_char_t*)AXIS2_MALLOC(
@@ -632,25 +709,6 @@ axis2_amqp_util_msg_ctx_get_destination_info(
 				strcpy(destination_info->queue_name, queue_name);
 			}
 		}
-	}
-	else if ((substr = strstr(endpoint_address, "jms:/")) &&
-			 (substr == endpoint_address))
-	{
-
-	}
-	else if ((substr = strstr(endpoint_address, "TempQueue")) &&
-			 (substr == endpoint_address))
-	{
-		axis2_char_t* queue_name = (axis2_char_t*)AXIS2_MALLOC(env->allocator, 
-				(sizeof(axis2_char_t) * strlen(endpoint_address)) + 1);
-		strcpy(queue_name, endpoint_address);
-		destination_info->queue_name = queue_name;
-	}
-	else
-	{
-		AXIS2_FREE(env->allocator, destination_info);
-		AXIS2_FREE(env->allocator, endpoint_address);
-		return NULL;
 	}
 
 	/* Get broker IP/Port from conf_ctx if they are not 
@@ -682,7 +740,7 @@ axis2_amqp_util_msg_ctx_get_destination_info(
 		}
 	}
 
-	if (AXIS2_QPID_NULL_BROKER_PORT == destination_info->broker_port)
+	if (AXIS2_QPID_NULL_CONF_INT == destination_info->broker_port)
 	{
 		axis2_conf_ctx_t* conf_ctx = NULL;
 
@@ -705,7 +763,103 @@ axis2_amqp_util_msg_ctx_get_destination_info(
 		}
 	}
 
-	AXIS2_FREE(env->allocator, endpoint_address);
-
 	return destination_info;
 }
+
+
+AXIS2_EXTERN int AXIS2_CALL 
+axis2_amqp_util_msg_ctx_get_request_timeout(
+	axis2_msg_ctx_t* msg_ctx,
+	const axutil_env_t* env)
+{
+	axis2_conf_ctx_t* conf_ctx = NULL;
+	axutil_property_t* property = NULL;
+	void* value = NULL;
+	int request_timeout = AXIS2_QPID_DEFAULT_REQUEST_TIMEOUT;
+
+	conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
+
+	if (conf_ctx)
+	{
+		property = axis2_conf_ctx_get_property(conf_ctx, env, 
+				AXIS2_AMQP_CONF_CTX_PROPERTY_REQUEST_TIMEOUT);
+		
+		if (property)
+		{
+			value = axutil_property_get_value(property, env);
+			
+			if (value)
+			{
+				request_timeout = *(int*)value;
+			}
+		}
+	}
+
+	return request_timeout;
+}
+
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
+axis2_amqp_util_msg_ctx_get_server_side(
+	axis2_msg_ctx_t* msg_ctx,
+	const axutil_env_t* env)
+{
+	axis2_conf_ctx_t* conf_ctx = NULL;
+	axis2_bool_t is_server = AXIS2_FALSE;
+
+	conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
+
+	if (conf_ctx)
+	{
+		is_server = 
+			axis2_amqp_util_conf_ctx_get_server_side(
+					conf_ctx, env);
+	}
+
+	return is_server;
+}
+
+
+AXIS2_EXTERN void AXIS2_CALL 
+axis2_amqp_response_free(
+	axis2_amqp_response_t* response,
+	const axutil_env_t* env)
+{
+	if (response)
+	{
+		if (response->data)
+		{
+			AXIS2_FREE(env->allocator, response->data);
+		}
+
+		if (response->content_type)
+		{
+			AXIS2_FREE(env->allocator, response->content_type);
+		}
+
+		AXIS2_FREE(env->allocator, response);
+	}
+}
+
+
+AXIS2_EXTERN void AXIS2_CALL 
+axis2_amqp_destination_info_free(
+	axis2_amqp_destination_info_t* destination_info,
+	const axutil_env_t* env)
+{
+	if (destination_info)
+	{
+		if (destination_info->broker_ip)
+		{
+			AXIS2_FREE(env->allocator, destination_info->broker_ip);
+		}
+
+		if (destination_info->queue_name)
+		{
+			AXIS2_FREE(env->allocator, destination_info->queue_name);
+		}
+		
+		AXIS2_FREE(env->allocator, destination_info);
+	}
+}
+

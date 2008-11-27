@@ -70,7 +70,7 @@ axis2_amqp_receiver_create(
 		axutil_property_t* property = NULL;
 		const axis2_char_t* broker_ip = NULL;
 		int* broker_port = (int*)AXIS2_MALLOC(env->allocator, sizeof(int));
-		*broker_port = AXIS2_QPID_DEFAULT_BROKER_PORT;
+		*broker_port = AXIS2_QPID_NULL_CONF_INT;
 
         receiver_resource_pack->conf_ctx_private = axis2_build_conf_ctx(env, repo);
         if (!receiver_resource_pack->conf_ctx_private)
@@ -86,7 +86,7 @@ axis2_amqp_receiver_create(
 				AXIS2_AMQP_CONF_CTX_PROPERTY_BROKER_IP, property);
 
 		/* Set broker port */
-    	*broker_port = (qpid_broker_port != AXIS2_QPID_NULL_BROKER_PORT) ? 
+    	*broker_port = (qpid_broker_port != AXIS2_QPID_NULL_CONF_INT) ? 
 			qpid_broker_port : AXIS2_QPID_DEFAULT_BROKER_PORT;
 		property = axutil_property_create_with_args(env, AXIS2_SCOPE_APPLICATION, 0, 0, (void*)broker_port);
 		axis2_conf_ctx_set_property(receiver_resource_pack->conf_ctx_private, env,
@@ -110,7 +110,7 @@ axis2_amqp_receiver_init(
 	axutil_property_t* property = NULL;
 	const axis2_char_t* broker_ip = NULL;
 	int* broker_port = (int*)AXIS2_MALLOC(env->allocator, sizeof(int));
-	*broker_port = AXIS2_QPID_DEFAULT_BROKER_PORT;
+	*broker_port = AXIS2_QPID_NULL_CONF_INT;
 
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -118,22 +118,26 @@ axis2_amqp_receiver_init(
 	receiver_resource_pack->conf_ctx = conf_ctx;
 	
 	/* Set broker IP */
-	broker_ip = axis2_amqp_util_get_conf_value_string(in_desc, env, AXIS2_AMQP_CONF_QPID_BROKER_IP); 
+	broker_ip = axis2_amqp_util_get_in_desc_conf_value_string(
+			in_desc, env, AXIS2_AMQP_CONF_QPID_BROKER_IP); 
 	if (!broker_ip)
 	{
 		broker_ip = AXIS2_QPID_DEFAULT_BROKER_IP;
 	}
-	property = axutil_property_create_with_args(env, AXIS2_SCOPE_APPLICATION, 0, 0, (void*)broker_ip);
+	property = axutil_property_create_with_args(
+			env, AXIS2_SCOPE_APPLICATION, 0, 0, (void*)broker_ip);
 	axis2_conf_ctx_set_property(receiver_resource_pack->conf_ctx, env, 
 			AXIS2_AMQP_CONF_CTX_PROPERTY_BROKER_IP, property);
 
 	/* Set broker port */
-	*broker_port = axis2_amqp_util_get_conf_value_int(in_desc, env, AXIS2_AMQP_CONF_QPID_BROKER_PORT);
-    if (!broker_port)
+	*broker_port = axis2_amqp_util_get_in_desc_conf_value_int(
+			in_desc, env, AXIS2_AMQP_CONF_QPID_BROKER_PORT);
+    if (*broker_port == AXIS2_QPID_NULL_CONF_INT)
 	{
 		*broker_port = AXIS2_QPID_DEFAULT_BROKER_PORT;
 	}
-	property = axutil_property_create_with_args(env, AXIS2_SCOPE_APPLICATION, 0, 0, (void*)broker_port);
+	property = axutil_property_create_with_args(
+			env, AXIS2_SCOPE_APPLICATION, 0, 0, (void*)broker_port);
 	axis2_conf_ctx_set_property(receiver_resource_pack->conf_ctx, env,
 			AXIS2_AMQP_CONF_CTX_PROPERTY_BROKER_PORT, property);
 	
@@ -250,7 +254,7 @@ axis2_amqp_receiver_get_instance(
 {
 	int status = AXIS2_SUCCESS;
 
-	*inst = axis2_amqp_receiver_create(env, NULL, NULL, AXIS2_QPID_NULL_BROKER_PORT);
+	*inst = axis2_amqp_receiver_create(env, NULL, NULL, AXIS2_QPID_NULL_CONF_INT);
 	if (!(*inst))
 	{
 		status = AXIS2_FAILURE;
