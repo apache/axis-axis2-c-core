@@ -21,7 +21,7 @@
 #include <axiom_soap.h>
 #include <axis2_client.h>
 
-#define MAX_COUNT  3000000
+#define MAX_COUNT  10
 
 /* my on_complete callback function */
 axis2_status_t AXIS2_CALL echo_callback_on_complete(
@@ -144,8 +144,8 @@ main(
             /* We are done with the callback */
             break;
         }
-
-/*         AXIS2_SLEEP(1); */
+		
+		AXIS2_SLEEP(1);
         count++;
     }
 
