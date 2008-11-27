@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 #include <axis2_svc_skeleton.h>
-#include <axis2_svc_client.h>
 #include "echo.h"
 #include <axutil_array_list.h>
 #include <axis2_msg_ctx.h>

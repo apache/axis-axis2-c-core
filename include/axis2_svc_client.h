@@ -55,21 +55,6 @@
 #include <axutil_string.h>
 #include <neethi_policy.h>
 
-/** Name of anonymous service */
-#define AXIS2_ANON_SERVICE  "__ANONYMOUS_SERVICE__"
-
-/** out-only MEP operation name */
-#define AXIS2_ANON_OUT_ONLY_OP "__OPERATION_OUT_ONLY__"
-
-/** out-only robust MEP operation name */
-#define AXIS2_ANON_ROBUST_OUT_ONLY_OP "__OPERATION_ROBUST_OUT_ONLY__"
-
-/** out-in MEP operation name */
-#define AXIS2_ANON_OUT_IN_OP "__OPERATION_OUT_IN__"
-
-/** wsdl location in repo*/
-#define AXIS2_WSDL_LOCATION_IN_REPO "woden"
-
 #ifdef __cplusplus
 extern "C"
 {
