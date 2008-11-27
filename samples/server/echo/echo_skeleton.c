@@ -99,7 +99,7 @@ echo_invoke(
 	if (to_epr)
 	{
 		axis2_char_t* to_address = NULL;
-		to_address = axis2_endpoint_ref_get_address(to_epr, env);
+		to_address = (axis2_char_t*)axis2_endpoint_ref_get_address(to_epr, env);
 	
 		if (to_address && strstr(to_address, AXIS2_ANON_SERVICE))
 		{
