@@ -49,6 +49,9 @@ extern "C"
         
         /* A file */
         AXIOM_MIME_PART_FILE,
+
+        /* User specified callback */
+        AXIOM_MIME_PART_CALLBACK,
         
         /* unknown type*/
         AXIOM_MIME_PART_UNKNOWN
@@ -72,6 +75,9 @@ extern "C"
 
         /* This is one from the above defined enum */
         axiom_mime_part_type_t type;
+
+        /* This is required in the case of the callback */
+        void *user_param;
     };
 
 

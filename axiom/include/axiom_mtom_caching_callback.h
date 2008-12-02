@@ -15,11 +15,11 @@
 * limitations under the License.
 */
 
-#ifndef AXIOM_CACHING_CALLBACK_H 
-#define AXIOM_CACHING_CALLBACK_H
+#ifndef AXIOM_MTOM_CACHING_CALLBACK_H 
+#define AXIOM_MTOM_CACHING_CALLBACK_H
 
 /**
-  * @file axiom_caching_callback.h
+  * @file axiom_mtom_caching_callback.h
   * @brief Caching callback for mime parser 
   */
 
@@ -38,14 +38,14 @@ extern "C"
 #endif
 
     /**
-     * Type name for struct axiom_caching_callback_ops 
+     * Type name for struct axiom_mtom_caching_callback_ops 
      */
-    typedef struct axiom_caching_callback_ops axiom_caching_callback_ops_t;
+    typedef struct axiom_mtom_caching_callback_ops axiom_mtom_caching_callback_ops_t;
 
     /**
-     * Type name for struct axiom_caching_callback
+     * Type name for struct axiom_mtom_caching_callback
      */
-    typedef struct axiom_caching_callback axiom_caching_callback_t;
+    typedef struct axiom_mtom_caching_callback axiom_mtom_caching_callback_t;
 
 
     /**
@@ -60,53 +60,54 @@ extern "C"
      * close_handler will close the storage
      */
 
-    struct axiom_caching_callback_ops
+    struct axiom_mtom_caching_callback_ops
     {
         void* (AXIS2_CALL*
-            init_handler)(axiom_caching_callback_t *caching_callback,
-            const axutil_env_t* env);
+            init_handler)(axiom_mtom_caching_callback_t *mtom_caching_callback,
+            const axutil_env_t* env,
+            axis2_char_t *key);
 
         axis2_status_t (AXIS2_CALL*
-            cache)(axiom_caching_callback_t *caching_callback,
+            cache)(axiom_mtom_caching_callback_t *mtom_caching_callback,
             const axutil_env_t* env,
             axis2_char_t *data,
             int length,
             void *handler);
 
         axis2_status_t (AXIS2_CALL*
-            close_handler)(axiom_caching_callback_t *caching_callback,
+            close_handler)(axiom_mtom_caching_callback_t *mtom_caching_callback,
             const axutil_env_t* env,
             void *handler);
 
         axis2_status_t (AXIS2_CALL*
-            free)(axiom_caching_callback_t *caching_callback,
+            free)(axiom_mtom_caching_callback_t *mtom_caching_callback,
             const axutil_env_t* env);
     };
 
-    struct axiom_caching_callback
+    struct axiom_mtom_caching_callback
     {
-        axiom_caching_callback_ops_t *ops;
+        axiom_mtom_caching_callback_ops_t *ops;
 		axutil_param_t *param;
     };
 
     /*************************** Function macros **********************************/
-#define AXIOM_CACHING_CALLBACK_INIT_HANDLER(caching_callback, env) \
-        ((caching_callback)->ops->init_handler(caching_callback, env))
+#define AXIOM_MTOM_CACHING_CALLBACK_INIT_HANDLER(mtom_caching_callback, env, key) \
+        ((mtom_caching_callback)->ops->init_handler(mtom_caching_callback, env, key))
 
-#define AXIOM_CACHING_CALLBACK_CACHE(caching_callback, env, data, length, handler) \
-        ((caching_callback)->ops->cache(caching_callback, env, data, length, handler))
+#define AXIOM_MTOM_CACHING_CALLBACK_CACHE(mtom_caching_callback, env, data, length, handler) \
+        ((mtom_caching_callback)->ops->cache(mtom_caching_callback, env, data, length, handler))
 
-#define AXIOM_CACHING_CALLBACK_CLOSE_HANDLER(caching_callback, env, handler) \
-        ((caching_callback)->ops->close_handler(caching_callback, env, handler))
+#define AXIOM_MTOM_CACHING_CALLBACK_CLOSE_HANDLER(mtom_caching_callback, env, handler) \
+        ((mtom_caching_callback)->ops->close_handler(mtom_caching_callback, env, handler))
 
-#define AXIOM_CACHING_CALLBACK_FREE(caching_callback, env) \
-        ((caching_callback)->ops->free(caching_callback, env))
+#define AXIOM_MTOM_CACHING_CALLBACK_FREE(mtom_caching_callback, env) \
+        ((mtom_caching_callback)->ops->free(mtom_caching_callback, env))
 
     /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* AXIOM_CACHING_CALLBACK */
+#endif                          /* AXIOM_MTOM_CACHING_CALLBACK */
 
 

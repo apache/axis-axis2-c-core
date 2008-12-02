@@ -162,6 +162,22 @@ extern "C"
         axis2_char_t *attachment_dir);
 
 
+    /**
+      * Set Caching callback name specified in the axis2.xml
+      * @param mime_parser the pointer for the mime parser struct 
+      * @param env Environment. MUST NOT be NULL.
+      * @param callback_name is string containg the dll path
+      * @return VOID
+      */
+
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_mime_parser_set_caching_callback_name(
+        axiom_mime_parser_t *mime_parser,
+        const axutil_env_t *env,
+        axis2_char_t *callback_name);
+
+
 
 
     /** @} */

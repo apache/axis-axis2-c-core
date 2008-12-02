@@ -40,7 +40,8 @@ extern "C"
     typedef enum axiom_data_handler_type
     {
         AXIOM_DATA_HANDLER_TYPE_FILE,
-        AXIOM_DATA_HANDLER_TYPE_BUFFER
+        AXIOM_DATA_HANDLER_TYPE_BUFFER,
+        AXIOM_DATA_HANDLER_TYPE_CALLBACK
     } axiom_data_handler_type_t;
 
     typedef struct axiom_data_handler axiom_data_handler_t;
@@ -207,6 +208,49 @@ extern "C"
         axiom_data_handler_t *data_handler,
         const axutil_env_t *env,
         axutil_array_list_t *list);
+   
+ 
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axiom_data_handler_get_mime_id(
+        axiom_data_handler_t *data_handler,
+        const axutil_env_t *env);
+
+     /**
+     * @param data_handler, a pointer to data handler struct
+     * @param env environment, MUST NOT be NULL.
+     * @param mime id, 
+     * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
+     */
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_data_handler_set_mime_id(
+        axiom_data_handler_t *data_handler,
+        const axutil_env_t *env,
+        const axis2_char_t *mime_id);
+
+
+    AXIS2_EXTERN axiom_data_handler_type_t AXIS2_CALL
+    axiom_data_handler_get_data_handler_type(
+        axiom_data_handler_t *data_handler,
+        const axutil_env_t *env);
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_data_handler_set_data_handler_type(
+        axiom_data_handler_t *data_handler,
+        const axutil_env_t *env,
+        axiom_data_handler_type_t data_handler_type);
+
+    AXIS2_EXTERN void *AXIS2_CALL
+    axiom_data_handler_get_user_param(
+        axiom_data_handler_t *data_handler,
+        const axutil_env_t *env);
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_data_handler_set_user_param(
+        axiom_data_handler_t *data_handler,
+        const axutil_env_t *env,
+        void *user_param);
+
     
     /** @} */
 
