@@ -42,9 +42,10 @@ axiom_mime_part_finish_adding_parts(
     axutil_array_list_t *list,
     axis2_char_t *boundary);
 
-/* This method will creates a mime_part 
+/* This method will create a mime_part 
  * A mime part will encapsulate a buffer 
- * or a file which needs to be send */
+ * a file or a callback to load the attachment 
+   which needs to be send */
 
 AXIS2_EXTERN axiom_mime_part_t *AXIS2_CALL 
 axiom_mime_part_create(
@@ -59,7 +60,8 @@ axiom_mime_part_create(
         mime_part->file_name = NULL;
         mime_part->part_size = 0;
         mime_part->type = AXIOM_MIME_PART_UNKNOWN;
-        
+        mime_part->user_param = NULL; 
+       
         return mime_part;
     }    
     else
