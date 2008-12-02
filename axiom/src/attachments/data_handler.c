@@ -39,6 +39,13 @@ struct axiom_data_handler
 
     /* When parsing whether we have cached it or not */
     axis2_bool_t cached;
+
+    /* The Content Id */
+    axis2_char_t *mime_id;
+
+    /* In the case of sending callback this is required */
+    void *user_param;    
+
 };
 
 
@@ -71,6 +78,8 @@ axiom_data_handler_create(
     /* By default, a Data Handler is of type Buffer */
     data_handler->data_handler_type = AXIOM_DATA_HANDLER_TYPE_BUFFER;
     data_handler->cached = AXIS2_FALSE;
+    data_handler->mime_id = NULL;
+    data_handler->user_param = NULL;
 
     if (mime_type)
     {
@@ -113,6 +122,11 @@ axiom_data_handler_free(
     if (data_handler->buffer)
     {
         AXIS2_FREE(env->allocator, data_handler->buffer);
+    }
+
+    if(data_handler->mime_id)
+    {
+        AXIS2_FREE(env->allocator, data_handler->mime_id);
     }
 
     if (data_handler)
@@ -490,6 +504,16 @@ axiom_data_handler_add_binary_data(
             binary_part->type = AXIOM_MIME_PART_FILE;
         }    
     }
+    /* In the case of Callback the user should specify the callback name in the
+     * configuration file. We just set the correct type. Inside the transport 
+     * it will load the callback and send the attachment appropriately */
+
+    else if(data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_CALLBACK)
+    {
+        binary_part->type = AXIOM_MIME_PART_CALLBACK;
+        binary_part->user_param = data_handler->user_param;
+    }
+
     else
     {
         /* Data Handler File Name is missing */
@@ -502,3 +526,63 @@ axiom_data_handler_add_binary_data(
 
     return AXIS2_SUCCESS;
 }
+
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axiom_data_handler_get_mime_id(
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env)
+{
+    return data_handler->mime_id;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_data_handler_set_mime_id(
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env,
+	const axis2_char_t *mime_id)
+{
+	if(data_handler->mime_id)
+	{
+		AXIS2_FREE(env->allocator, data_handler->mime_id);
+	}
+	data_handler->mime_id = axutil_strdup(env, mime_id);
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axiom_data_handler_type_t AXIS2_CALL
+axiom_data_handler_get_data_handler_type(
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env)
+{
+    return data_handler->data_handler_type;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axiom_data_handler_set_data_handler_type(
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env,
+	axiom_data_handler_type_t data_handler_type)
+{
+	data_handler->data_handler_type = data_handler_type;
+    return;
+}
+
+AXIS2_EXTERN void *AXIS2_CALL
+axiom_data_handler_get_user_param(
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env)
+{
+    return data_handler->user_param;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axiom_data_handler_set_user_param(
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env,
+	void *user_param)
+{
+	data_handler->user_param = user_param;
+    return;
+}
+
