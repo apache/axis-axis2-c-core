@@ -762,7 +762,7 @@ axiom_node_serialize_sub_tree(
             }
             if (status != AXIS2_SUCCESS)
             {
-                return status;
+                break;
             }
         }
         else if (om_node->node_type == AXIOM_DATA_SOURCE)
@@ -776,7 +776,7 @@ axiom_node_serialize_sub_tree(
             }
             if (status != AXIS2_SUCCESS)
             {
-                return status;
+                break;
             }
         }
         else if (om_node->node_type == AXIOM_TEXT)
@@ -790,7 +790,7 @@ axiom_node_serialize_sub_tree(
             }
             if (status != AXIS2_SUCCESS)
             {
-                return status;
+                break;
             }
         }
         else if (om_node->node_type == AXIOM_COMMENT)
@@ -804,7 +804,7 @@ axiom_node_serialize_sub_tree(
             }
             if (status != AXIS2_SUCCESS)
             {
-                return status;
+                break;
             }
         }
         else if (om_node->node_type == AXIOM_DOCTYPE)
@@ -818,7 +818,7 @@ axiom_node_serialize_sub_tree(
             }
             if (status != AXIS2_SUCCESS)
             {
-                return status;
+                break;
             }
         }
         else if (om_node->node_type == AXIOM_PROCESSING_INSTRUCTION)
@@ -831,7 +831,7 @@ axiom_node_serialize_sub_tree(
 
             if (status != AXIS2_SUCCESS)
             {
-                return status;
+                break;
             }
         }
 
@@ -924,7 +924,7 @@ axiom_node_serialize_sub_tree(
                 }
                 if (status != AXIS2_SUCCESS)
                 {
-                    return status;
+                    break;
                 }
             }
 			/* We need to make make sure that om_node is not the root when we take the next sibling */
@@ -1019,7 +1019,7 @@ axiom_node_serialize_sub_tree(
                         }
                         if (status != AXIS2_SUCCESS)
                         {
-                            return status;
+                            break;
                         }
                     }
 
@@ -1041,6 +1041,7 @@ axiom_node_serialize_sub_tree(
     while (count > 0);
 
     axutil_hash_free(namespaces_from_parents, env);
+    axutil_hash_free(namespaces, env);
 
     return status;
 }
