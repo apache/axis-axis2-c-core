@@ -1000,6 +1000,7 @@ MTOM_OBJS = $(MTOM_INTDIR)\*.obj
 $(MTOM_INTDIR) :
 	@if not exist $(MTOM_INTDIR) mkdir $(MTOM_INTDIR)
 	@if not exist $(AXIS2_SERVICES)\mtom mkdir $(AXIS2_SERVICES)\mtom
+	@if not exist $(AXIS2_SERVICES)\mtom_callback mkdir $(AXIS2_SERVICES)\mtom_callback
 
 {$(MTOM_SRC)}.c{$(MTOM_INTDIR)}.obj ::
 	$(CC) $(CFLAGS) /Fo$(MTOM_INTDIR)\ /c $<
@@ -1013,6 +1014,14 @@ $(AXIS2_SERVICES)\mtom\mtom.dll : $(MTOM_OBJS)
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\services.xml $(AXIS2_SERVICES)\mtom
 
 axis2_services_mtom: $(AXIS2_SERVICES)\mtom\mtom.dll
+
+$(AXIS2_SERVICES)\mtom_callback\mtom_callback.dll : $(MTOM_OBJS)
+	$(LD) $(LDFLAGS) $(MTOM_OBJS) $(AXUTIL).lib $(AXIOM).lib \
+	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_SERVICES)\mtom_callback\mtom_callback.dll  
+	-@$(_VC_MANIFEST_EMBED_DLL)
+	@copy $(AXIS2_SOURCE_DIR)\samples\server\mtom_callback\services.xml $(AXIS2_SERVICES)\mtom_callback
+
+axis2_services_mtom_callback: $(AXIS2_SERVICES)\mtom_callback\mtom_callback.dll
 
 #### Calculator
 
@@ -1100,6 +1109,8 @@ axis2_clients_intdir:
 	@if not exist $(AXIS2_INTDIR_CLI)\yahoo mkdir $(AXIS2_INTDIR_CLI)\yahoo
 	@if not exist $(AXIS2_INTDIR_CLI)\notify mkdir $(AXIS2_INTDIR_CLI)\notify
 	@if not exist $(AXIS2_INTDIR_CLI)\mtom mkdir $(AXIS2_INTDIR_CLI)\mtom
+	@if not exist $(AXIS2_INTDIR_CLI)\mtom_callback mkdir $(AXIS2_INTDIR_CLI)\mtom_callback
+
 
 $(AXIS2_BINS)\samples\math.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\math\*.c /Fo$(AXIS2_INTDIR_CLI)\math\ /c
@@ -1152,6 +1163,14 @@ $(AXIS2_BINS)\samples\mtom.exe :
 	@xcopy /Y $(AXIS2_SOURCE_DIR)\samples\client\mtom\resources $(AXIS2_BINS)\samples\resources 
 
 axis2_client_mtom: $(AXIS2_BINS)\samples\mtom.exe
+
+$(AXIS2_BINS)\samples\mtom_callback.exe :
+	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\mtom_callback\*.c /Fo$(AXIS2_INTDIR_CLI)\mtom_callback\ /c
+	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\mtom_callback\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
+	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\mtom_callback.exe
+	-@$(_VC_MANIFEST_EMBED_EXE)
+
+axis2_client_mtom_callback: $(AXIS2_BINS)\samples\mtom_callback.exe
 
 axis2_client_userguide_int:
 	@if not exist $(AXIS2_INTDIR)\userguide\echo_blocking mkdir $(AXIS2_INTDIR)\userguide\echo_blocking
@@ -1283,9 +1302,9 @@ mv_dist:
 	@xcopy /Y /E /I deploy $(AXIS2_RELEASE_DIR)
 
 
-all_services: axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_services_calculator 
+all_services: axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_services_mtom_callback axis2_services_calculator 
 
-all_clients: axis2_clients_intdir axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_yahoo axis2_client_notify axis2_client_mtom axis2_client_userguide 
+all_clients: axis2_clients_intdir axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_yahoo axis2_client_notify axis2_client_mtom axis2_client_mtom_callback axis2_client_userguide 
 
 axis2_samples: axis2_mod_log all_services all_clients
 
