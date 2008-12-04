@@ -21,6 +21,7 @@
 #include <axis2_util.h>
 #include <axiom_soap.h>
 #include <axis2_client.h>
+#include <axutil_uuid_gen.h>
 
 axiom_node_t *build_om_programatically(
     const axutil_env_t * env,
@@ -207,11 +208,22 @@ build_om_programatically(
     image_om_ele =
         axiom_element_create(env, mtom_om_node, "image", ns1, &image_om_node);
 
+    /* This is when we directly give file name */
+
     data_handler = axiom_data_handler_create(env, image_name, "image/jpeg");
+
+    /* Uncomment following to set a callback instead of a file */
+
+    /*data_handler = axiom_data_handler_create(env, NULL, "image/jpeg");
+    axiom_data_handler_set_data_handler_type(data_handler, env, AXIOM_DATA_HANDLER_TYPE_CALLBACK); 
+    axiom_data_handler_set_user_param(data_handler, env, (void *)image_name);*/
+
     data_text =
         axiom_text_create_with_data_handler(env, image_om_node, data_handler,
                                             &data_om_node);
+
     axiom_text_set_optimize(data_text, env, optimized);
+    /*axiom_text_set_is_swa(data_text, env, AXIS2_TRUE);*/
     om_str = axiom_node_to_string(mtom_om_node, env);
     if (om_str)
     {
