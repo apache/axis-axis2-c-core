@@ -49,7 +49,7 @@ main(
     const axis2_char_t *image_name = "resources/axis2.jpg";
 
     /* Set up the environment */
-    env = axutil_env_create_all("mtom.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("mtom_callback.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of mtom service */
     address = "http://localhost:9090/axis2/services/mtom_callback";
