@@ -626,6 +626,7 @@ axiom_node_serialize_sub_tree(
     axiom_node_t *nodes[256];
     int count = 0;
     axutil_hash_t *namespaces = NULL;
+    axutil_hash_t *namespaces_from_parents = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -635,6 +636,21 @@ axiom_node_serialize_sub_tree(
     }
 
     namespaces = axutil_hash_make(env);
+    if(!namespaces)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "hash for namespaces creation failed");
+        return AXIS2_FAILURE;
+    }
+
+    namespaces_from_parents = axutil_hash_make(env);
+    if(!namespaces_from_parents)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "hash for namespaces_from_parents creation failed");
+        return AXIS2_FAILURE;
+    }
+
     nodes[count++] = om_node;
 
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
@@ -682,10 +698,15 @@ axiom_node_serialize_sub_tree(
                                              AXIS2_HASH_KEY_STRING);
                         if (!ns)
                         {
-                            axiom_namespace_serialize(namespace, env,
-                                                      om_output);
-                            axutil_hash_set(namespaces, prefix,
-                                            AXIS2_HASH_KEY_STRING, namespace);
+                            ns = axutil_hash_get(namespaces_from_parents, prefix,
+                                                    AXIS2_HASH_KEY_STRING);
+                            if (!ns)
+                            {
+                                axiom_namespace_serialize(namespace, env,
+                                                          om_output);
+                                axutil_hash_set(namespaces_from_parents, prefix,
+                                                AXIS2_HASH_KEY_STRING, namespace);
+                            }
                         }
                     }
                 }
@@ -719,12 +740,15 @@ axiom_node_serialize_sub_tree(
                                                          AXIS2_HASH_KEY_STRING);
                                     if (!ns)
                                     {
-                                        axiom_namespace_serialize(namespace,
-                                                                  env,
-                                                                  om_output);
-                                        axutil_hash_set(namespaces, prefix,
-                                                        AXIS2_HASH_KEY_STRING,
-                                                        namespace);
+                                        ns = axutil_hash_get(namespaces_from_parents, prefix,
+                                                                AXIS2_HASH_KEY_STRING);
+                                        if (!ns)
+                                        {
+                                            axiom_namespace_serialize(namespace, env,
+                                                                      om_output);
+                                            axutil_hash_set(namespaces_from_parents, prefix,
+                                                            AXIS2_HASH_KEY_STRING, namespace);
+                                        }
                                     }
                                 }
                             }
@@ -824,6 +848,74 @@ axiom_node_serialize_sub_tree(
             {
                 if (om_node->data_element)
                 {
+
+                    axutil_hash_t *temp_attributes = NULL;
+                    axiom_namespace_t *namespace = NULL;
+                    /* at the writing of end part all the namespaces declared
+                       specially to that element should be cancelled */
+
+                    /* first checking the element namespace */
+                    namespace = axiom_element_get_namespace((axiom_element_t
+                                                             *) (om_node->
+                                                                 data_element), env,
+                                                            om_node);
+                    if (namespace)
+                    {
+                        axiom_namespace_t *ns = NULL;
+                        axis2_char_t *prefix = NULL;
+                        prefix = axiom_namespace_get_prefix(namespace, env);
+                        if (prefix)
+                        {
+                            ns = axutil_hash_get(namespaces_from_parents, prefix,
+                                                 AXIS2_HASH_KEY_STRING);
+                            if (ns)
+                            {
+                                axutil_hash_set(namespaces_from_parents, prefix,
+                                                    AXIS2_HASH_KEY_STRING, NULL);
+                            }
+                        }
+                    }
+                    
+                    /* then checking the attribute namespaces */
+
+                    temp_attributes = axiom_element_get_all_attributes((axiom_element_t *) (om_node->data_element), env);
+                    if (temp_attributes)
+                    {
+                        axutil_hash_index_t *hi;
+                        void *val;
+                        for (hi = axutil_hash_first(temp_attributes, env); hi;
+                             hi = axutil_hash_next(env, hi))
+                        {
+                            axutil_hash_this(hi, NULL, NULL, &val);
+
+                            if (val)
+                            {
+                                axiom_namespace_t *ns = NULL;
+                                axis2_char_t *prefix = NULL;
+
+                                namespace =
+                                    axiom_attribute_get_namespace((axiom_attribute_t
+                                                                   *) val, env);
+
+                                if (namespace)
+                                {
+                                    prefix =
+                                        axiom_namespace_get_prefix(namespace, env);
+                                    if (prefix)
+                                    {
+                                        ns = axutil_hash_get(namespaces_from_parents, prefix,
+                                                             AXIS2_HASH_KEY_STRING);
+                                        if (ns)
+                                        {
+                                            axutil_hash_set(namespaces_from_parents, prefix,
+                                                        AXIS2_HASH_KEY_STRING, NULL);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     status =
                         axiom_element_serialize_end_part((axiom_element_t
                                                           *) (om_node->
@@ -855,6 +947,73 @@ axiom_node_serialize_sub_tree(
                     {
                         if (om_node->data_element)
                         {
+                            axutil_hash_t *temp_attributes = NULL;
+                            axiom_namespace_t *namespace = NULL;
+
+                            /* similar to the earlier time, whenever the ending is happend
+                             * namespaces declared specially to that element should be cancelled */
+                         
+                            /* first checking the element namespace */
+                            namespace = axiom_element_get_namespace((axiom_element_t
+                                                                     *) (om_node->
+                                                                         data_element), env,
+                                                                    om_node);
+                            if (namespace)
+                            {
+                                axiom_namespace_t *ns = NULL;
+                                axis2_char_t *prefix = NULL;
+                                prefix = axiom_namespace_get_prefix(namespace, env);
+                                if (prefix)
+                                {
+                                    ns = axutil_hash_get(namespaces_from_parents, prefix,
+                                                         AXIS2_HASH_KEY_STRING);
+                                    if (ns)
+                                    {
+                                        axutil_hash_set(namespaces_from_parents, prefix,
+                                                            AXIS2_HASH_KEY_STRING, NULL);
+                                    }
+                                }
+                            }
+                            
+                            /* then checking the attribute namespaces */
+                         
+                            temp_attributes = axiom_element_get_all_attributes((axiom_element_t *) (om_node->data_element), env);
+                            if (temp_attributes)
+                            {
+                                axutil_hash_index_t *hi;
+                                void *val;
+                                for (hi = axutil_hash_first(temp_attributes, env); hi;
+                                     hi = axutil_hash_next(env, hi))
+                                {
+                                    axutil_hash_this(hi, NULL, NULL, &val);
+                         
+                                    if (val)
+                                    {
+                                        axiom_namespace_t *ns = NULL;
+                                        axis2_char_t *prefix = NULL;
+                         
+                                        namespace =
+                                            axiom_attribute_get_namespace((axiom_attribute_t
+                                                                           *) val, env);
+                         
+                                        if (namespace)
+                                        {
+                                            prefix =
+                                                axiom_namespace_get_prefix(namespace, env);
+                                            if (prefix)
+                                            {
+                                                ns = axutil_hash_get(namespaces_from_parents, prefix,
+                                                                     AXIS2_HASH_KEY_STRING);
+                                                if (ns)
+                                                {
+                                                    axutil_hash_set(namespaces_from_parents, prefix,
+                                                                AXIS2_HASH_KEY_STRING, NULL);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             status =
                                 axiom_element_serialize_end_part((axiom_element_t *) (om_node->data_element), env, om_output);
                         }
@@ -877,10 +1036,11 @@ axiom_node_serialize_sub_tree(
                     count--;
                 }
             }
-
         }
     }
     while (count > 0);
+
+    axutil_hash_free(namespaces_from_parents, env);
 
     return status;
 }
