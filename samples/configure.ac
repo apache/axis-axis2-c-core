@@ -126,11 +126,14 @@ AC_CONFIG_FILES([Makefile \
     server/notify/Makefile \
     server/sg_math/Makefile \
     server/mtom/Makefile \
+    server/mtom_callback/Makefile \
+    server/mtom_interop_service/Makefile \
     client/Makefile \
     client/echo/Makefile \
     client/math/Makefile \
     client/version/Makefile \
     client/mtom/Makefile \
+    client/mtom_callback/Makefile \
     client/mtom/resources/Makefile \
     client/notify/Makefile \
     client/google/Makefile \
@@ -141,7 +144,15 @@ AC_CONFIG_FILES([Makefile \
     client/amqp/mtom/Makefile \
     client/amqp/mtom/resources/Makefile \
     user_guide/Makefile \
-    user_guide/clients/Makefile
+    user_guide/clients/Makefile \
+    client/interop/Makefile \
+    client/interop/mtom/Makefile \
+    client/interop/mtom/mtom_echoBinaryAsString/Makefile \
+    client/interop/mtom/mtom_echoStringAsBinary/Makefile \
+    client/interop/mtom/mtom_echoBinaryArrayAsStringArray/Makefile \
+    client/interop/mtom/mtom_echoBinaryFieldAsString/Makefile \
+    mtom_caching_callback/Makefile \
+    mtom_sending_callback/Makefile    
     ])
     
 AC_OUTPUT
