@@ -1,0 +1,9 @@
+prglibdir=$(prefix)/services/mtom_callback
+prglib_LTLIBRARIES = libmtom_callback.la
+prglib_DATA= services.xml
+EXTRA_DIST = services.xml mtom_callback.mk mtom_callback.h
+noinst_HEADERS = mtom_callback.h
+SUBDIRS =
+libmtom_callback_la_SOURCES = mtom_callback.c mtom_skeleton.c
+libmtom_callback_la_LIBADD  =
+INCLUDES = @AXIS2INC@
