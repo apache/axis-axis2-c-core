@@ -139,7 +139,10 @@ axis2_mtom_mtom(
                         axis2_char_t *file_name = NULL;
 
                         file_name = axiom_data_handler_get_file_name(data_handler, env);
-
+                        if(!file_name)
+                        {
+                            return NULL;
+                        }
 
                         data_handler_res = axiom_data_handler_create(env, file_name, NULL);
 

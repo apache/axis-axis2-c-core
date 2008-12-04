@@ -9,6 +9,9 @@
     <!--parameter name="MTOMBufferSize" locked="false">10</parameter-->
     <!--parameter name="MTOMMaxBuffers" locked="false">1000</parameter-->
     <!--parameter name="attachmentDIR" locked="false">/path/to/the/attachment/caching/dir/</parameter-->    
+    <!--parameter name="MTOMCachingCallback" locked="false">/path/to/teh/attachment/caching/dir/</parameter-->
+    <!--paramter name="MTOMSendingCallback" locked="false">/path/to/the/attachment/sending/dir/</parameter-->
+
     <!-- Enable REST -->
     <parameter name="enableREST" locked="false">true</parameter>
 
