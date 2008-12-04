@@ -18,12 +18,12 @@
 #include <stdio.h>
 #include <axutil_string.h>
 #include <axutil_utils.h>
-#include <axiom_caching_callback.h>
+#include <axiom_mtom_caching_callback.h>
 
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-caching_callback_free(axiom_caching_callback_t *caching_callback,
+caching_callback_free(axiom_mtom_caching_callback_t *caching_callback,
 								const axutil_env_t* env)
 {
 	if (caching_callback)
@@ -38,7 +38,7 @@ caching_callback_free(axiom_caching_callback_t *caching_callback,
 }
 
 AXIS2_EXTERN void* AXIS2_CALL
-caching_callback_init_handler(axiom_caching_callback_t *caching_callback, 
+caching_callback_init_handler(axiom_mtom_caching_callback_t *caching_callback, 
                               const axutil_env_t* env,
                               axis2_char_t *key)
 {
@@ -78,7 +78,7 @@ caching_callback_init_handler(axiom_caching_callback_t *caching_callback,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-caching_callback_cache(axiom_caching_callback_t *caching_callback, 
+caching_callback_cache(axiom_mtom_caching_callback_t *caching_callback, 
             const axutil_env_t* env,
             axis2_char_t *buf,
             int buf_len,
@@ -100,7 +100,7 @@ caching_callback_cache(axiom_caching_callback_t *caching_callback,
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-caching_callback_close_handler(axiom_caching_callback_t *caching_callback, 
+caching_callback_close_handler(axiom_mtom_caching_callback_t *caching_callback, 
             const axutil_env_t* env,
             void* handler)
 {
@@ -118,16 +118,16 @@ caching_callback_close_handler(axiom_caching_callback_t *caching_callback,
  * Following block distinguish the exposed part of the dll.
  */
 AXIS2_EXPORT int
-axis2_get_instance(axiom_caching_callback_t **inst,
+axis2_get_instance(axiom_mtom_caching_callback_t **inst,
         const axutil_env_t *env)
 {
-    axiom_caching_callback_t* caching_callback = NULL;
+    axiom_mtom_caching_callback_t* caching_callback = NULL;
 
     caching_callback = AXIS2_MALLOC(env->allocator,
-            sizeof(axiom_caching_callback_t));
+            sizeof(axiom_mtom_caching_callback_t));
 
     caching_callback->ops = AXIS2_MALLOC(
-                env->allocator, sizeof(axiom_caching_callback_ops_t));
+                env->allocator, sizeof(axiom_mtom_caching_callback_ops_t));
 
     /*assign function pointers*/
 
@@ -148,13 +148,13 @@ axis2_get_instance(axiom_caching_callback_t **inst,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXPORT int axis2_remove_instance(axiom_caching_callback_t *inst,
+AXIS2_EXPORT int axis2_remove_instance(axiom_mtom_caching_callback_t *inst,
         const axutil_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
     if (inst)
     {
-        status = AXIOM_CACHING_CALLBACK_FREE(inst, env);
+        status = AXIOM_MTOM_CACHING_CALLBACK_FREE(inst, env);
     }
     return status;
 }
