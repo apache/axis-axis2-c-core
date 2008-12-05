@@ -127,7 +127,6 @@ AC_CONFIG_FILES([Makefile \
     server/sg_math/Makefile \
     server/mtom/Makefile \
     server/mtom_callback/Makefile \
-    server/mtom_interop_service/Makefile \
     client/Makefile \
     client/echo/Makefile \
     client/math/Makefile \
