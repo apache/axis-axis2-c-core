@@ -145,12 +145,6 @@ AC_CONFIG_FILES([Makefile \
     client/amqp/mtom/resources/Makefile \
     user_guide/Makefile \
     user_guide/clients/Makefile \
-    client/interop/Makefile \
-    client/interop/mtom/Makefile \
-    client/interop/mtom/mtom_echoBinaryAsString/Makefile \
-    client/interop/mtom/mtom_echoStringAsBinary/Makefile \
-    client/interop/mtom/mtom_echoBinaryArrayAsStringArray/Makefile \
-    client/interop/mtom/mtom_echoBinaryFieldAsString/Makefile \
     mtom_caching_callback/Makefile \
     mtom_sending_callback/Makefile    
     ])
