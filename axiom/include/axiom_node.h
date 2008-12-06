@@ -102,6 +102,18 @@ extern "C"
         const axutil_env_t * env);
 
     /**
+      * Creates a node struct from a character buffer.
+      * @param env Environment. MUST NOT be NULL, .
+      * @param buffer string. buffer to make the node
+      * @return a pointer to newly created node struct. NULL on error. 
+      */
+    AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+    axiom_node_create_from_buffer(    
+        const axutil_env_t * env,
+        axis2_char_t *buffer);
+
+
+    /**
     * Frees an om node and all of its children. Please note that the attached
     * data_element will also be freed along with the node.  If the node is
     * still attached to a parent, it will be detached first, then freed.
