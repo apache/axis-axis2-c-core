@@ -664,6 +664,14 @@ axutil_url_encode (
     return dest;
 }
 
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axutil_url_get_query(
+		axutil_url_t *url,
+		const axutil_env_t *env)
+{
+	return url->query;
+}
+
 
 static int
 is_safe_or_unreserve (char c)
