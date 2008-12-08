@@ -135,6 +135,11 @@ extern "C"
         axis2_char_t * dest,
         axis2_char_t * buff, int len);
 
+	AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+		axutil_url_get_query(
+		axutil_url_t * url,
+		const axutil_env_t * env);
+
 
     /** @} */
 #ifdef __cplusplus
