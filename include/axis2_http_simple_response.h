@@ -315,6 +315,17 @@ extern "C"
         const axutil_env_t * env,
         axis2_char_t *http_version);
 
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_simple_response_get_mtom_sending_callback_name(
+        axis2_http_simple_response_t * simple_response,
+        const axutil_env_t * env);
+
+    void AXIS2_EXTERN AXIS2_CALL
+    axis2_http_simple_response_set_mtom_sending_callback_name(
+        axis2_http_simple_response_t * simple_response,
+        const axutil_env_t * env,
+        axis2_char_t *mtom_sending_callback_name);
+
 
 
 

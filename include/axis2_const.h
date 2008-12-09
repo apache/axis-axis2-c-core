@@ -359,6 +359,8 @@ extern "C"
 #define AXIS2_ATTACHMENT_DIR "attachmentDIR"
 #define AXIS2_MTOM_BUFFER_SIZE "MTOMBufferSize"
 #define AXIS2_MTOM_MAX_BUFFERS "MTOMMaxBuffers"
+#define AXIS2_MTOM_CACHING_CALLBACK "MTOMCachingCallback"
+#define AXIS2_MTOM_SENDING_CALLBACK "MTOMSendingCallback"
 
     /* op_ctx persistance */
 #define AXIS2_PERSIST_OP_CTX "persistOperationContext"

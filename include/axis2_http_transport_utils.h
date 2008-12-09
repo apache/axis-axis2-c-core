@@ -45,6 +45,7 @@
 #include <axutil_http_chunked_stream.h>
 #include <axis2_http_out_transport_info.h>
 #include <axutil_url.h>
+#include <axiom_mtom_sending_callback.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -387,12 +388,24 @@ extern "C"
     axis2_http_transport_utils_send_mtom_message(
         axutil_http_chunked_stream_t * chunked_stream,
         const axutil_env_t * env,
-        axutil_array_list_t *mime_parts);
+        axutil_array_list_t *mime_parts,
+        axis2_char_t *sending_callback_name);
 
     AXIS2_EXTERN void AXIS2_CALL 
     axis2_http_transport_utils_destroy_mime_parts(
         axutil_array_list_t *mime_parts,
         const axutil_env_t *env);
+
+    AXIS2_EXTERN void *AXIS2_CALL 
+        axis2_http_transport_utils_initiate_callback(
+        const axutil_env_t *env,
+        axis2_char_t *callback_name,
+        void *user_param,
+        axiom_mtom_sending_callback_t **callback);
+
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL axis2_http_transport_utils_is_callback_required(
+        const axutil_env_t *env,
+        axutil_array_list_t *mime_parts);
 
 
 
