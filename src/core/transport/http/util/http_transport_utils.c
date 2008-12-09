@@ -42,6 +42,7 @@
 #include <axutil_uuid_gen.h>
 #include <platforms/axutil_platform_auto_sense.h>
 #include <axiom_mime_part.h>
+#include <axutil_class_loader.h>
 
 #define AXIOM_MIME_BOUNDARY_BYTE 45
 
@@ -189,12 +190,21 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
     axis2_char_t * method);
 
 static axis2_status_t
-axis2_http_transport_utils_send_attachment(
+axis2_http_transport_utils_send_attachment_using_file(
     const axutil_env_t * env,
     axutil_http_chunked_stream_t *chunked_stream,
     FILE *fp,
     axis2_byte_t *buffer,
     int buffer_size);
+
+static axis2_status_t
+axis2_http_transport_utils_send_attachment_using_callback(
+    const axutil_env_t * env,
+    axutil_http_chunked_stream_t *chunked_stream,
+    axiom_mtom_sending_callback_t *callback,
+    void *handler,
+    void *user_param);
+
 
 /***************************** End of function headers ************************/
 
@@ -400,9 +410,11 @@ axis2_http_transport_utils_process_http_post_request(
             axutil_param_t *buffer_size_param = NULL;
             axutil_param_t *max_buffers_param = NULL;
             axutil_param_t *attachment_dir_param = NULL;
+            axutil_param_t *callback_name_param = NULL;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
             axis2_char_t *value_dir = NULL;
+            axis2_char_t *value_callback = NULL;
             int size = 0;
             int num = 0;
 
@@ -440,6 +452,20 @@ axis2_http_transport_utils_process_http_post_request(
             }
             /* If this paramter is there mime_parser will cached the attachment 
              * using to the directory for large attachments. */    
+
+            callback_name_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                                   env,
+                                                                   AXIS2_MTOM_CACHING_CALLBACK);
+            if(callback_name_param)
+            {
+                value_callback =
+                    (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
+                if(value_callback)
+                {
+                    axiom_mime_parser_set_caching_callback_name(mime_parser, env, value_callback);
+                }
+            }
+
             attachment_dir_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                    env,
                                                                    AXIS2_ATTACHMENT_DIR);
@@ -853,9 +879,11 @@ axis2_http_transport_utils_process_http_put_request(
             axutil_param_t *buffer_size_param = NULL;
             axutil_param_t *max_buffers_param = NULL;
             axutil_param_t *attachment_dir_param = NULL;
+            axutil_param_t *callback_name_param = NULL;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
             axis2_char_t *value_dir = NULL;
+            axis2_char_t *value_callback = NULL;
             int size = 0;
             int num = 0;
 
@@ -889,6 +917,20 @@ axis2_http_transport_utils_process_http_put_request(
                     axiom_mime_parser_set_max_buffers(mime_parser, env, num);
                 }
             }
+
+            callback_name_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                                   env,
+                                                                   AXIS2_MTOM_CACHING_CALLBACK);
+            if(callback_name_param)
+            {
+                value_callback =
+                    (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
+                if(value_callback)
+                {
+                    axiom_mime_parser_set_caching_callback_name(mime_parser, env, value_callback);
+                }
+            }
+
    
             attachment_dir_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                    env,
@@ -2042,13 +2084,18 @@ axis2_http_transport_utils_create_soap_msg(
             axutil_param_t *buffer_size_param = NULL;
             axutil_param_t *max_buffers_param = NULL;
             axutil_param_t *attachment_dir_param = NULL;
+            axutil_param_t *callback_name_param = NULL;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
             axis2_char_t *value_dir = NULL;
+            axis2_char_t *value_callback = NULL;
             int size = 0;
             int num = 0;
  
             mime_parser = axiom_mime_parser_create(env);
+
+            /* Following are the parameters in the axis2.xml regarding MTOM */
+
 
             buffer_size_param = 
                 axis2_msg_ctx_get_parameter (msg_ctx,
@@ -2077,6 +2124,19 @@ axis2_http_transport_utils_create_soap_msg(
                 {
                     num = atoi(value_num);
                     axiom_mime_parser_set_max_buffers(mime_parser, env, num);
+                }
+            }
+
+            callback_name_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                                   env,
+                                                                   AXIS2_MTOM_CACHING_CALLBACK);
+            if(callback_name_param)
+            {
+                value_callback =
+                    (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
+                if(value_callback)
+                {
+                    axiom_mime_parser_set_caching_callback_name(mime_parser, env, value_callback);
                 }
             }
            
@@ -3123,7 +3183,8 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_send_mtom_message(
     axutil_http_chunked_stream_t * chunked_stream,
     const axutil_env_t * env,
-    axutil_array_list_t *mime_parts)
+    axutil_array_list_t *mime_parts,
+    axis2_char_t *sending_callback_name)
 {
     int i = 0;
     axiom_mime_part_t *mime_part = NULL;
@@ -3139,7 +3200,7 @@ axis2_http_transport_utils_send_mtom_message(
             mime_part = (axiom_mime_part_t *)axutil_array_list_get(
                 mime_parts, env, i);
             
-            /* If it is a buffer just wite it to the wire. This incudes mime_bounadaries,
+            /* If it is a buffer just write it to the wire. This includes mime_bounadaries,
              * mime_headers and SOAP */
             
             if((mime_part->type) == AXIOM_MIME_PART_BUFFER)
@@ -3196,8 +3257,38 @@ axis2_http_transport_utils_send_mtom_message(
                     (output_buffer_size + 1) * sizeof(axis2_char_t));
  
                 /*This is the method responsible for writing to the wire */    
-                status = axis2_http_transport_utils_send_attachment(env, chunked_stream, 
+                status = axis2_http_transport_utils_send_attachment_using_file(env, chunked_stream, 
                     f, output_buffer, output_buffer_size);
+                if(status == AXIS2_FAILURE)
+                {
+                    return status;
+                }
+            }
+            else if((mime_part->type) == AXIOM_MIME_PART_CALLBACK) 
+            {
+                void *handler = NULL;
+                axiom_mtom_sending_callback_t *callback = NULL;
+
+                handler = axis2_http_transport_utils_initiate_callback(env, 
+                    sending_callback_name, mime_part->user_param, &callback);
+
+                if(handler)
+                {
+                    status = axis2_http_transport_utils_send_attachment_using_callback(env, 
+                        chunked_stream, callback, handler, mime_part->user_param);
+                }
+                else
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "MTOM Sending Callback loading failed");
+                    status = AXIS2_FAILURE;
+                }               
+
+                if(callback)
+                {
+                    AXIOM_MTOM_SENDING_CALLBACK_FREE(callback, env);
+                    callback = NULL;
+                }
+
                 if(status == AXIS2_FAILURE)
                 {
                     return status;
@@ -3234,7 +3325,7 @@ axis2_http_transport_utils_send_mtom_message(
 
 
 static axis2_status_t
-axis2_http_transport_utils_send_attachment(
+axis2_http_transport_utils_send_attachment_using_file(
     const axutil_env_t * env,
     axutil_http_chunked_stream_t *chunked_stream,
     FILE *fp,
@@ -3344,3 +3435,120 @@ AXIS2_EXTERN void AXIS2_CALL axis2_http_transport_utils_destroy_mime_parts(
     }
 }
 
+AXIS2_EXTERN void *AXIS2_CALL axis2_http_transport_utils_initiate_callback(
+    const axutil_env_t *env,
+    axis2_char_t *callback_name,
+    void *user_param,
+    axiom_mtom_sending_callback_t **callback)
+{
+
+    axutil_dll_desc_t *dll_desc = NULL;
+    axutil_param_t *impl_info_param = NULL;
+    void *ptr = NULL;
+
+    if(callback_name)
+    {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Trying to load module = %s",
+                callback_name);
+        dll_desc = axutil_dll_desc_create(env);
+        axutil_dll_desc_set_name(dll_desc, env, callback_name);
+        impl_info_param = axutil_param_create(env, NULL, dll_desc);
+        /*Set the free function*/
+        axutil_param_set_value_free(impl_info_param, env, axutil_dll_desc_free_void_arg);
+        axutil_class_loader_init(env);
+        ptr = axutil_class_loader_create_dll(env, impl_info_param);
+
+        if (!ptr)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Unable to load the module %s. ERROR", callback_name);
+            return NULL;
+        }
+
+        *callback =  (axiom_mtom_sending_callback_t *)ptr;
+        (*callback)->param = impl_info_param;
+
+        return AXIOM_MTOM_SENDING_CALLBACK_INIT_HANDLER(*callback, env, user_param);
+    }
+
+    else
+    {
+        return NULL;
+    }
+}
+
+static axis2_status_t
+axis2_http_transport_utils_send_attachment_using_callback(
+    const axutil_env_t * env,
+    axutil_http_chunked_stream_t *chunked_stream,
+    axiom_mtom_sending_callback_t *callback,
+    void *handler,
+    void *user_param)
+{
+    int count = 0;     
+    int len = 0;
+    int written = 0;
+    axis2_status_t status = AXIS2_SUCCESS;   
+    axis2_char_t *buffer = NULL;
+ 
+    /* Keep on loading the data in a loop until 
+     * all the data is sent */   
+
+    while((count = AXIOM_MTOM_SENDING_CALLBACK_LOAD_DATA(callback, env, handler, &buffer)) > 0)
+    {
+        written = 0;
+        while(written < count)
+        {
+            len = 0;
+            len = axutil_http_chunked_stream_write(chunked_stream, env,
+            buffer + written, count - written);
+            if(len == -1)
+            {
+                status = AXIS2_FAILURE;
+                break;
+            }
+            else
+            {
+                written += len;
+            }
+        }
+    }
+
+    if (status == AXIS2_FAILURE)
+    {
+        AXIOM_MTOM_SENDING_CALLBACK_CLOSE_HANDLER(callback, env, handler);
+        return status;
+    }
+    
+    status = AXIOM_MTOM_SENDING_CALLBACK_CLOSE_HANDLER(callback, env, handler);
+    return status;    
+}
+
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL axis2_http_transport_utils_is_callback_required(
+    const axutil_env_t *env,
+    axutil_array_list_t *mime_parts)
+{
+    int size = 0;
+    int i = 0;
+    axiom_mime_part_t *mime_part = NULL;
+    axis2_bool_t is_required = AXIS2_FALSE;
+
+    size = axutil_array_list_size(mime_parts, env);
+
+    for(i = 0; i < size; i++)
+    {
+        mime_part = (axiom_mime_part_t *)axutil_array_list_get(mime_parts, env, i);    
+        if(mime_part)
+        {
+            if(mime_part->type == AXIOM_MIME_PART_CALLBACK)
+            {
+                is_required = AXIS2_TRUE;
+                break;
+            }    
+        }
+    }
+
+    return is_required;
+
+}
