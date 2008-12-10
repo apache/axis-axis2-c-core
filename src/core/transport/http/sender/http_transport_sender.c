@@ -532,7 +532,7 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
                     axutil_array_list_t *mime_parts = NULL;
                    
                     /*Create the attachment related data and put them to an
-                     *arra_list */
+                     *array_list */
                     mtom_status = axiom_output_flush(om_output, env);
                     if(mtom_status == AXIS2_SUCCESS)
                     {

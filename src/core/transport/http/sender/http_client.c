@@ -54,6 +54,7 @@ struct axis2_http_client
     /* These are for mtom case */
     axutil_array_list_t *mime_parts;
     axis2_bool_t doing_mtom;
+    axis2_char_t *mtom_sending_callback_name;
 };
 
 AXIS2_EXTERN axis2_http_client_t *AXIS2_CALL
@@ -93,6 +94,7 @@ axis2_http_client_create(
     http_client->req_body_size = 0;
     http_client->mime_parts = NULL;
     http_client->doing_mtom = AXIS2_FALSE;
+    http_client->mtom_sending_callback_name = NULL;
 
     return http_client;
 }
@@ -156,11 +158,12 @@ axis2_http_client_free_void_arg(
     return;
 }
 
-/*This is the main method which writes to the socket in the case of a client 
- * sends an http_request. Previously this mrthod does not distinguish between a 
+/* This is the main method which writes to the socket in the case of a client 
+ * sends an http_request. Previously this method does not distinguish between a 
  * mtom request and non mtom request. Because what finally it had was the 
  * complete buffer with the request. But now MTOM invocations are done 
- * differently so this method should distinguish those invocations*/
+ * differently in order to support large attachments so this method should 
+ * distinguish those invocations */
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_send(
@@ -399,14 +402,29 @@ axis2_http_client_send(
         axis2_status_t status = AXIS2_SUCCESS;
         axutil_http_chunked_stream_t *chunked_stream = NULL;
         
+        /* If the callback name is not there, then we will check whether there 
+         * is any mime_parts which has type callback. If we found then no point 
+         * of continuing we should return a failure */
+   
+        if(!(client->mtom_sending_callback_name))
+        {
+            if(axis2_http_transport_utils_is_callback_required(
+                env, client->mime_parts))
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Sender callback not specified");
+                return AXIS2_FAILURE;
+            }
+        }
+
         /* For MTOM we automatically enabled chunking */
-        chunked_stream = axutil_http_chunked_stream_create(env, 
+        chunked_stream = axutil_http_chunked_stream_create(env,
                 client->data_stream);
-    
+
+
         /* This method will write the Attachment + data to the wire */
 
         status = axis2_http_transport_utils_send_mtom_message(chunked_stream, env, 
-                client->mime_parts);      
+                client->mime_parts, client->mtom_sending_callback_name);      
 
         axutil_http_chunked_stream_free(chunked_stream, env);
         chunked_stream = NULL;
@@ -926,3 +944,13 @@ axis2_http_client_get_doing_mtom(
     return client->doing_mtom;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_http_client_set_mtom_sending_callback_name(
+    axis2_http_client_t * client,
+    const axutil_env_t * env,
+    axis2_char_t *callback_name)
+{
+    client->mtom_sending_callback_name = 
+        callback_name;
+    return AXIS2_SUCCESS;
+}

@@ -484,8 +484,26 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
 
         if (doing_mtom)
         {
+            axutil_param_t *callback_name_param = NULL;
             axis2_status_t mtom_status = AXIS2_FAILURE;
             axutil_array_list_t *mime_parts = NULL;
+            axis2_char_t *mtom_sending_callback_name = NULL;
+
+            /* Getting the sender callback name paramter if it is 
+             * specified in the configuration file */
+
+            callback_name_param = axis2_msg_ctx_get_parameter(msg_ctx, env ,
+                AXIS2_MTOM_SENDING_CALLBACK);
+            if(callback_name_param)
+            {
+                mtom_sending_callback_name =
+                    (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
+                if(mtom_sending_callback_name)
+                {
+                    axis2_http_client_set_mtom_sending_callback_name(
+                        sender->client, env, mtom_sending_callback_name);
+                }
+            }
 
             /* Here we put all the attachment related stuff in a array_list
                After this method we have the message in parts */
