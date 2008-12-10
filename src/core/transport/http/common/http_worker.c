@@ -1925,7 +1925,25 @@ axis2_http_worker_process_request(
 
                     if(mime_parts)
                     {
-                        axis2_http_header_t *transfer_enc_header = NULL;                        
+                        axis2_http_header_t *transfer_enc_header = NULL;   
+                        axutil_param_t *callback_name_param = NULL;
+                        axis2_char_t *mtom_sending_callback_name = NULL;
+
+                        /* Getting the sender callback name paramter if it is 
+                         * specified in the configuration file */
+
+                        callback_name_param = axis2_msg_ctx_get_parameter(out_msg_ctx, env ,
+                            AXIS2_MTOM_SENDING_CALLBACK);
+                        if(callback_name_param)
+                        {
+                            mtom_sending_callback_name =
+                                (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
+                            if(mtom_sending_callback_name)
+                            {
+                                axis2_http_simple_response_set_mtom_sending_callback_name(
+                                    response, env, mtom_sending_callback_name);
+                            }
+                        }
 
                         axis2_http_simple_response_set_mime_parts(response, env, mime_parts);  
 

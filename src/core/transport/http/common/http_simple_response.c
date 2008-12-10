@@ -30,6 +30,7 @@ struct axis2_http_simple_response
     axutil_array_list_t *header_group;
     axutil_stream_t *stream;
     axutil_array_list_t *mime_parts;
+    axis2_char_t *mtom_sending_callback_name;
 };
 
 
@@ -97,6 +98,7 @@ axis2_http_simple_response_create_default(
     simple_response->header_group = NULL;
     simple_response->stream = NULL;
     simple_response->mime_parts = NULL;
+    simple_response->mtom_sending_callback_name = NULL;
 
     return simple_response;
 }
@@ -660,3 +662,20 @@ axis2_http_simple_response_set_mime_parts(
 
 }
 
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_simple_response_get_mtom_sending_callback_name(
+    axis2_http_simple_response_t * simple_response,
+    const axutil_env_t * env)
+{
+    return simple_response->mtom_sending_callback_name;
+}
+
+void AXIS2_EXTERN AXIS2_CALL
+axis2_http_simple_response_set_mtom_sending_callback_name(
+    axis2_http_simple_response_t * simple_response,
+    const axutil_env_t * env,
+    axis2_char_t *mtom_sending_callback_name)
+{
+    simple_response->mtom_sending_callback_name = 
+        mtom_sending_callback_name;
+}

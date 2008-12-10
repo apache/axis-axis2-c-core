@@ -415,16 +415,34 @@ axis2_simple_http_svr_conn_write_response(
         axutil_http_chunked_stream_t *chunked_stream = NULL;
         axis2_status_t write_stat = AXIS2_FAILURE;
         axutil_array_list_t *mime_parts = NULL;
-        
-        chunked_stream = axutil_http_chunked_stream_create(env,
-                                                          svr_conn->stream);
+        axis2_char_t *mtom_sending_callback_name = NULL;
         
         mime_parts = axis2_http_simple_response_get_mime_parts(response, env);
+
+        mtom_sending_callback_name = axis2_http_simple_response_get_mtom_sending_callback_name(
+            response, env);
+
+        /* If the callback name is not there, then we will check whether there 
+         * is any mime_parts which has type callback. If we found then no point 
+         * of continuing we should return a failure */
+
+        if(!mtom_sending_callback_name)
+        {
+            if(axis2_http_transport_utils_is_callback_required(
+                env, mime_parts))
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Sender callback not specified");
+                return AXIS2_FAILURE;
+            }
+        }
+
+        chunked_stream = axutil_http_chunked_stream_create(env,
+                                                          svr_conn->stream);
 
         if(mime_parts)
         {            
             write_stat = axis2_http_transport_utils_send_mtom_message(
-                    chunked_stream, env, mime_parts);
+                    chunked_stream, env, mime_parts, mtom_sending_callback_name);
             axutil_http_chunked_stream_free(chunked_stream, env);
             chunked_stream = NULL;
                     
