@@ -451,7 +451,7 @@ axutil_hash_merge(
     axutil_hash_entry_t *new_vals = NULL;
     axutil_hash_entry_t *iter;
     axutil_hash_entry_t *ent;
-    unsigned int i, j, k;
+    unsigned int i, k;
 
 #if AXIS2_POOL_DEBUG
     /* we don't copy keys and values, so it's necessary that
@@ -483,25 +483,18 @@ axutil_hash_merge(
         res->max = res->max * 2 + 1;
     }
     res->array = axutil_hash_alloc_array(res, res->max);
-    if (base->count + overlay->count)
-    {
-        new_vals = AXIS2_MALLOC(env->allocator,
-                       sizeof(axutil_hash_entry_t) * (base->count +
-                       overlay->count));
-    }
-    j = 0;
     for (k = 0; k <= base->max; k++)
     {
         for (iter = base->array[k]; iter; iter = iter->next)
         {
             i = iter->hash & res->max;
-            new_vals[j].klen = iter->klen;
-            new_vals[j].key = iter->key;
-            new_vals[j].val = iter->val;
-            new_vals[j].hash = iter->hash;
-            new_vals[j].next = res->array[i];
-            res->array[i] = &new_vals[j];
-            j++;
+            new_vals = AXIS2_MALLOC(env->allocator, sizeof(axutil_hash_entry_t));
+            new_vals->klen = iter->klen;
+            new_vals->key = iter->key;
+            new_vals->val = iter->val;
+            new_vals->hash = iter->hash;
+            new_vals->next = res->array[i];
+            res->array[i] = new_vals;
         }
     }
 
@@ -530,14 +523,14 @@ axutil_hash_merge(
             }
             if (!ent)
             {
-                new_vals[j].klen = iter->klen;
-                new_vals[j].key = iter->key;
-                new_vals[j].val = iter->val;
-                new_vals[j].hash = iter->hash;
-                new_vals[j].next = res->array[i];
-                res->array[i] = &new_vals[j];
+                new_vals = AXIS2_MALLOC(env->allocator, sizeof(axutil_hash_entry_t));
+                new_vals->klen = iter->klen;
+                new_vals->key = iter->key;
+                new_vals->val = iter->val;
+                new_vals->hash = iter->hash;
+                new_vals->next = res->array[i];
+                res->array[i] = new_vals;
                 res->count++;
-                j++;
             }
         }
     }

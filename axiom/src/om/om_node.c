@@ -725,8 +725,8 @@ axiom_node_serialize_sub_tree(
                     axutil_hash_t *new_hash = NULL;
                     new_hash =
                         axutil_hash_overlay(temp_namespaces, env, namespaces);
-                    /*if(namespaces)
-                      axutil_hash_free(namespaces, env);*/
+                    if(namespaces)
+                        axutil_hash_free(namespaces, env);
                     namespaces = new_hash;
                 }
                 namespace = axiom_element_get_namespace((axiom_element_t
