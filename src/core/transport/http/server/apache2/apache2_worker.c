@@ -35,21 +35,31 @@
 #include <axutil_class_loader.h>
 #include <axutil_string_util.h>
 #include <axiom_mime_part.h>
+#include <axiom_mtom_sending_callback.h>
 
 #define READ_SIZE  2048
 
 static axis2_status_t apache2_worker_send_mtom_message(
     request_rec *request,
     const axutil_env_t * env,
-    axutil_array_list_t *mime_parts);
+    axutil_array_list_t *mime_parts,
+    axis2_char_t *mtom_sending_callback_name);
 
 static axis2_status_t 
-apache2_worker_send_attachment(
+apache2_worker_send_attachment_using_file(
     const axutil_env_t * env,
     request_rec *request,
     FILE *fp,
     axis2_byte_t *buffer,
     int buffer_size);
+
+static axis2_status_t
+apache2_worker_send_attachment_using_callback(
+    const axutil_env_t * env,
+    request_rec *request,
+    axiom_mtom_sending_callback_t *callback,
+    void *handler,
+    void *user_param);
 
 
 struct axis2_apache2_worker
@@ -190,6 +200,10 @@ axis2_apache2_worker_process_request(
     axis2_char_t *content_language_header_value = NULL;
     axis2_bool_t do_mtom = AXIS2_FALSE;
     axutil_array_list_t *mime_parts = NULL;
+    axutil_param_t *callback_name_param = NULL;
+    axis2_char_t *mtom_sending_callback_name = NULL;
+    
+
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, request, AXIS2_CRITICAL_FAILURE);
@@ -1187,6 +1201,13 @@ axis2_apache2_worker_process_request(
             {
                 return AXIS2_FAILURE;
             }
+            callback_name_param = axis2_msg_ctx_get_parameter(msg_ctx, env ,
+                AXIS2_MTOM_SENDING_CALLBACK);
+            if(callback_name_param)
+            {
+                mtom_sending_callback_name =
+                    (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
+            }            
         }
 
         if (out_msg_ctx)
@@ -1225,7 +1246,26 @@ axis2_apache2_worker_process_request(
     if(do_mtom)
     {
         axis2_status_t mtom_status = AXIS2_FAILURE;
-        mtom_status = apache2_worker_send_mtom_message(request, env, mime_parts);
+
+        if(!mtom_sending_callback_name)
+        {
+            /* If the callback name is not there, then we will check whether there 
+             * is any mime_parts which has type callback. If we found then no point 
+             * of continuing we should return a failure */
+
+            if(!mtom_sending_callback_name)
+            {
+                if(axis2_http_transport_utils_is_callback_required(
+                    env, mime_parts))
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Sender callback not specified");
+                    return AXIS2_FAILURE;
+                }
+            }
+        }
+
+        mtom_status = apache2_worker_send_mtom_message(request, env, mime_parts, 
+            mtom_sending_callback_name);
         if(mtom_status == AXIS2_SUCCESS)
         {
             send_status = DONE;
@@ -1307,7 +1347,8 @@ axis2_apache2_worker_get_bytes(
 static axis2_status_t apache2_worker_send_mtom_message(
     request_rec *request,
     const axutil_env_t * env,
-    axutil_array_list_t *mime_parts)
+    axutil_array_list_t *mime_parts,
+    axis2_char_t *mtom_sending_callback_name)
 {
     int i = 0;
     axiom_mime_part_t *mime_part = NULL;
@@ -1360,8 +1401,37 @@ static axis2_status_t apache2_worker_send_mtom_message(
                     (output_buffer_size + 1) * sizeof(axis2_char_t));
  
  
-                status = apache2_worker_send_attachment(env, request, 
+                status = apache2_worker_send_attachment_using_file(env, request, 
                     f, output_buffer, output_buffer_size);
+                if(status == AXIS2_FAILURE)
+                {
+                    return status;
+                }
+            }
+            else if((mime_part->type) == AXIOM_MIME_PART_CALLBACK)
+            {
+                void *handler = NULL;
+                axiom_mtom_sending_callback_t *callback = NULL;
+
+                handler = axis2_http_transport_utils_initiate_callback(env,
+                    mtom_sending_callback_name, mime_part->user_param, &callback);
+               
+                if(handler)
+                {
+                    status = apache2_worker_send_attachment_using_callback(env,
+                        request, callback, handler, mime_part->user_param);
+                }
+                else
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "MTOM Sending Callback loading failed");
+                    status = AXIS2_FAILURE;
+                }
+                if(callback)
+                {
+                    AXIOM_MTOM_SENDING_CALLBACK_FREE(callback, env);
+                    callback = NULL;
+                }
+
                 if(status == AXIS2_FAILURE)
                 {
                     return status;
@@ -1386,7 +1456,7 @@ static axis2_status_t apache2_worker_send_mtom_message(
 
 
 static axis2_status_t
-apache2_worker_send_attachment(
+apache2_worker_send_attachment_using_file(
     const axutil_env_t * env,
     request_rec *request,
     FILE *fp,
@@ -1454,4 +1524,42 @@ apache2_worker_send_attachment(
     AXIS2_FREE(env->allocator, buffer);
     buffer = NULL;    
     return AXIS2_SUCCESS;    
+}
+
+static axis2_status_t
+apache2_worker_send_attachment_using_callback(
+    const axutil_env_t * env,
+    request_rec *request,
+    axiom_mtom_sending_callback_t *callback,
+    void *handler,
+    void *user_param)
+{
+    int count = 0;
+    int len = 0;
+    axis2_status_t status = AXIS2_SUCCESS;
+    axis2_char_t *buffer = NULL;
+
+    /* Keep on loading the data in a loop until 
+     * all the data is sent */
+
+    while((count = AXIOM_MTOM_SENDING_CALLBACK_LOAD_DATA(callback, env, handler, &buffer)) > 0)
+    {
+        len = 0;
+        len = ap_rwrite(buffer, count, request);
+        ap_rflush(request);
+        if(len == -1)
+        {
+            status = AXIS2_FAILURE;
+            break;
+        }
+    }
+
+    if (status == AXIS2_FAILURE)
+    {
+        AXIOM_MTOM_SENDING_CALLBACK_CLOSE_HANDLER(callback, env, handler);
+        return status;
+    }
+
+    status = AXIOM_MTOM_SENDING_CALLBACK_CLOSE_HANDLER(callback, env, handler);
+    return status;
 }

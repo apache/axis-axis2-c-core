@@ -320,10 +320,14 @@ axis2_handler(
     axutil_allocator_t *allocator = NULL;
     axutil_error_t *error = NULL;
 
+    apr_allocator_t *local_allocator = NULL;
+    apr_pool_t *local_pool = NULL;
+
     if (strcmp(req->handler, "axis2_module"))
     {
         return DECLINED;
     }
+
     /* Set up the read policy from the client. */
     if ((rv = ap_setup_client_block(req, REQUEST_CHUNKED_DECHUNK)) != OK)
     {
@@ -331,6 +335,10 @@ axis2_handler(
     }
     ap_should_client_block(req);
 
+    apr_allocator_create(&local_allocator);
+    apr_pool_create_ex(&local_pool, NULL, NULL, local_allocator);
+
+    
 
     /*thread_env = axutil_init_thread_env(axutil_env);*/
 
@@ -338,8 +346,12 @@ axis2_handler(
     rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, axutil_env, req);*/
 
     /* create new allocator for this request */
-    allocator = (axutil_allocator_t *) apr_palloc(req->pool,
+    /*allocator = (axutil_allocator_t *) apr_palloc(req->pool,
+                                                  sizeof(axutil_allocator_t));*/
+
+    allocator = (axutil_allocator_t *) apr_palloc(local_pool,
                                                   sizeof(axutil_allocator_t));
+
     if (!allocator)
     {
         return HTTP_INTERNAL_SERVER_ERROR;
@@ -347,8 +359,8 @@ axis2_handler(
     allocator->malloc_fn = axis2_module_malloc;
     allocator->realloc = axis2_module_realloc;
     allocator->free_fn = axis2_module_free;
-    allocator->local_pool = (void *)req->pool ;
-    allocator->current_pool = (void *)req->pool;
+    allocator->local_pool = (void *)local_pool;
+    allocator->current_pool = (void *)local_pool;
     allocator->global_pool = axutil_env->allocator->global_pool;
 
     error = axutil_error_create(allocator);
@@ -363,6 +375,10 @@ axis2_handler(
     {
         return HTTP_INTERNAL_SERVER_ERROR;
     }
+
+    apr_pool_destroy(local_pool);
+    apr_allocator_destroy(local_allocator);
+
 
     return rv;
 }
