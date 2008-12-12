@@ -206,14 +206,17 @@ axutil_log_impl_write(
     const axis2_char_t *file,
     const int line)
 {
-    if (log && log->enabled && buffer && (level <= log->level || level == AXIS2_LOG_LEVEL_CRITICAL))
+    if (log && log->enabled && buffer)
     {
         axutil_log_impl_t *l = AXUTIL_INTF_TO_IMPL(log);
         if (!l->mutex)
             fprintf(stderr, "Log mutex is not found\n");
         if (!l->stream)
             fprintf(stderr, "Stream is not found\n");
-        axutil_log_impl_write_to_file(log, l->mutex, level, file, line, buffer);
+        if(level <= log->level || level == AXIS2_LOG_LEVEL_CRITICAL)
+        {
+            axutil_log_impl_write_to_file(log, l->mutex, level, file, line, buffer);
+        }
     }
 #ifndef AXIS2_NO_LOG_FILE
     else if (buffer)
@@ -329,15 +332,17 @@ axutil_log_impl_log_user(
     ...)
 {
     if (log && log->ops && log->ops->write &&
-        format && log->enabled &&
-        AXIS2_LOG_LEVEL_DEBUG <= log->level)
+        format && log->enabled)
+    {
+        char value[AXIS2_LEN_VALUE + 1];
+        va_list ap;
+        va_start(ap, format);
+        AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+        va_end(ap);
+        if(AXIS2_LOG_LEVEL_DEBUG <= log->level)
         {
-            char value[AXIS2_LEN_VALUE + 1];
-            va_list ap;
-            va_start(ap, format);
-            AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
-            va_end(ap);
-        log->ops->write(log, value, AXIS2_LOG_LEVEL_DEBUG, file, line);
+            log->ops->write(log, value, AXIS2_LOG_LEVEL_DEBUG, file, line);
+        }
     }
 #ifndef AXIS2_NO_LOG_FILE
     else
@@ -354,15 +359,17 @@ axutil_log_impl_log_debug(
     ...)
 {
     if (log && log->ops && log->ops->write &&
-        format && log->enabled &&
-        AXIS2_LOG_LEVEL_DEBUG <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
+        format && log->enabled)
+    {
+        char value[AXIS2_LEN_VALUE + 1];
+        va_list ap;
+        va_start(ap, format);
+        AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+        va_end(ap);
+        if(AXIS2_LOG_LEVEL_DEBUG <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
         {
-            char value[AXIS2_LEN_VALUE + 1];
-            va_list ap;
-            va_start(ap, format);
-            AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
-            va_end(ap);
-        log->ops->write(log, value, AXIS2_LOG_LEVEL_DEBUG, file, line);
+            log->ops->write(log, value, AXIS2_LOG_LEVEL_DEBUG, file, line);
+        }
     }
 #ifndef AXIS2_NO_LOG_FILE
     else
@@ -377,15 +384,17 @@ axutil_log_impl_log_info(
     ...)
 {
     if (log && log->ops && log->ops->write &&
-        format && log->enabled &&
-        AXIS2_LOG_LEVEL_INFO <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
+        format && log->enabled)
+    {
+        char value[AXIS2_LEN_VALUE + 1];
+        va_list ap;
+        va_start(ap, format);
+        AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+        va_end(ap);
+        if(AXIS2_LOG_LEVEL_INFO <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
         {
-            char value[AXIS2_LEN_VALUE + 1];
-            va_list ap;
-            va_start(ap, format);
-            AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
-            va_end(ap);
-        log->ops->write(log, value, AXIS2_LOG_LEVEL_INFO, NULL, -1);
+            log->ops->write(log, value, AXIS2_LOG_LEVEL_INFO, NULL, -1);
+        }
     }
 #ifndef AXIS2_NO_LOG_FILE
     else
@@ -402,15 +411,17 @@ axutil_log_impl_log_warning(
     ...)
 {
     if (log && log->ops && log->ops->write &&
-        format && log->enabled &&
-        AXIS2_LOG_LEVEL_WARNING <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
+        format && log->enabled)
+    {
+        char value[AXIS2_LEN_VALUE + 1];
+        va_list ap;
+        va_start(ap, format);
+        AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+        va_end(ap);
+        if(AXIS2_LOG_LEVEL_WARNING <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
         {
-            char value[AXIS2_LEN_VALUE + 1];
-            va_list ap;
-            va_start(ap, format);
-            AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
-            va_end(ap);
-        log->ops->write(log, value, AXIS2_LOG_LEVEL_WARNING, file, line);
+            log->ops->write(log, value, AXIS2_LOG_LEVEL_WARNING, file, line);
+        }
     }
 #ifndef AXIS2_NO_LOG_FILE
     else
@@ -428,12 +439,12 @@ axutil_log_impl_log_error(
 {
     if (log && log->ops && log->ops->write &&
         format && log->enabled)
-        {
-            char value[AXIS2_LEN_VALUE + 1];
-            va_list ap;
-            va_start(ap, format);
-            AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
-            va_end(ap);
+    {
+        char value[AXIS2_LEN_VALUE + 1];
+        va_list ap;
+        va_start(ap, format);
+        AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+        va_end(ap);
         log->ops->write(log, value, AXIS2_LOG_LEVEL_ERROR, file, line);
     }
 #ifndef AXIS2_NO_LOG_FILE
@@ -453,8 +464,8 @@ axutil_log_impl_log_critical(
     if (log && log->ops && log->ops->write &&
         format && log->enabled)
     {
-    char value[AXIS2_LEN_VALUE + 1];
-    va_list ap;
+        char value[AXIS2_LEN_VALUE + 1];
+        va_list ap;
         va_start(ap, format);
         AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
         va_end(ap);
