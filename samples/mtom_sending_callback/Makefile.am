@@ -3,8 +3,7 @@ prglib_LTLIBRARIES = libmtom_sending_callback.la
 libmtom_sending_callback_la_SOURCES = mtom_sending_callback.c 
 libmtom_sending_callback_la_LIBADD  = $(LDFLAGS) \
 						   		-L$(AXIS2C_HOME)/lib \
-								-laxutil \
-								-lmysqlclient
+								-laxutil 
 
 INCLUDES = -I ../../util/include \
 			../../axiom/include \
