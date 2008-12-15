@@ -1,7 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html><head><title>Apache Axis2/C - Manual</title>
-
-</head>
+<html><head><title>Apache Axis2/C - Manual</title></head>
 <body>
 <h2>Preamble</h2>
 <p style="margin-bottom: 0in;">This document is intended
@@ -994,12 +992,24 @@ binary
 optimized format. In the case of binary non-optimized format, where
 enableMTOM is False, the attachment content is sent in the payload
 itself, as
-a base64 encoded string.</p>
-<p>Please have a look at the <code>mtom</code>
-sample for a complete example
-on how to use MTOM.</p>
-<p style="margin-bottom: 0in;"><br />
-</p>
+a base64 encoded string.</p><h3><span style="font-weight: bold;">6.1 Using MTOM Callbacks</span></h3>Axis2/C
+Can send and receive very large attachments with a very low memory foot
+print. User can specify callbacks to load attachments before sending
+and store attachments while recieving.<br /><h4>6.1.1 Sender side Callback</h4>The attachment can be loaded from any data source. User need to implement the callback using <a href="http://svn.apache.org/repos/asf/webservices/axis2/trunk/c/axiom/include/axiom_mtom_sending_callback.h">axiom_mtom_sending_callback.h</a>. A &nbsp;sample Callback can be found <a href="http://svn.apache.org/repos/asf/webservices/axis2/trunk/c/samples/mtom_sending_callback/mtom_sending_callback.c">here</a>. Following is what need to be done with data_handler in the case of a callback.<br />&nbsp;<br /><span style="font-family: monospace;">data_handler = axiom_data_handler_create(env, NULL,&nbsp;content-type);</span><br style="font-family: monospace;" /><span style="font-family: monospace;">axiom_data_handler_set_data_handler_type(data_handler, env, AXIOM_DATA_HANDLER_TYPE_CALLBACK);</span><br style="font-family: monospace;" /><span style="font-family: monospace;">axiom_data_handler_set_user_param(data_handler, env, (void *)user_param);</span><p>user_param
+is of any type which the user should know how to handle from the
+callback. The path to the implemented callback should be specified in
+the axis2.xml as follows.</p><p><span style="font-family: monospace;">&lt;parameter name="MTOMSendingCallback" locked="false"&gt;/path/to/the/attachment_sending_callback&lt;/parameter&gt;</span></p><h4><span style="font-family: monospace;"></span><span style="font-weight: bold;">6.1.2 Receiver side callback</span></h4><p>For
+large attachments users can specify them to be cached either to a file
+or to a any storage. In order to enable caching user should set either "attachmentDir" or "MTOMCachingCallback<span style="font-family: monospace;"></span>"
+parameters in the axis2.xml. If both are set the callback will be used.
+If nothing is set attachment will reside in memory.&nbsp;</p><p>Following is an example of specifying the attachmentDir.</p><p style="font-family: monospace;">&lt;parameter name="attachmentDIR" locked="false"&gt;/path/to/the/dir/&lt;/parameter&gt;</p><p>So the attachments will be saved
+in the specified directory using the attachment content id as the file
+name.</p><p>In the callback case the callback should be implemented using <a href="http://svn.apache.org/repos/asf/webservices/axis2/trunk/c/axiom/include/axiom_mtom_caching_callback.h">axiom_mtom_caching_callback.h</a>. The following paramter will enbale the caching callback.</p><p><span style="font-family: monospace;">&lt;parameter name="MTOMCachingCallback" locked="false"&gt;/path/to/the/attachment_caching_callback&lt;/parameter&gt;</span></p>A sample callback implementation can be found <a href="http://svn.apache.org/repos/asf/webservices/axis2/trunk/c/samples/mtom_caching_callback/mtom_caching_callback.c">here</a>.<p>Axis2/C
+allows&nbsp;to set the caching threshold. The default is 1MB. For
+example to cache attachments which are greater than 10MB in size user
+need to add the following directive in axis2.xml.</p><p> <span style="font-family: monospace;">&lt;parameter name="MTOMBufferSize" locked="false"&gt;10&lt;/parameter&gt;</span></p><p><span style="font-family: monospace;"></span>This will give the control to the users to use the availbale memory even with larger attachments.</p><p>When the attachment is cached the ultimate receiver can always identify it by calling ,</p><p style="font-family: monospace;">if (axiom_data_handler_get_cached(data_handler, env))<br />{<br />&nbsp;&nbsp;&nbsp; /* logic for attachment handling */<br />}</p>
+<p>The logic on how to handle the attachment will depend on the mechanism which is used to cached the attachment.</p><p>Please have a look at the MTOM related samples in the Axis2/C samples directory.</p><br />
+
 <p><a name="engaging_module"></a></p>
 </div>
 <div class="section"><a name="7__Engaging_a_Module"></a>
@@ -1471,7 +1481,9 @@ AXIS2C_INSTALL_DIR\lib directory.
 <h3>11.3 Deploying mod_axis2</h3>
 <p><font color="#666666">NOTE: To execute some of
 the commands given below,
-you might require super user privileges on your machine. If you are using the binary release of Axis2/C, please note that it is built with Apache 2.2.</font></p>
+you might require super user privileges on your machine. If you are
+using the binary release of Axis2/C, please note that it is built with
+Apache 2.2.</font></p>
 <p>Copy the mod_axis2 shared library <font color="#4169e1">(libmod_axis2.so.0.0.0
 on Linux and mod_axis2.dll on MS
 Windows)</font> to the Apache2 modules directory as mod_axis2.so</p>
@@ -1620,13 +1632,19 @@ http://localhost/axis2/web_services.<br />Note: don't forget the / at the begini
 </p>
 <p>
 If you wish, you can also change the location as well by adding a string value with the name <code>axis2_location</code>. This is also optional and defaults to /axis2.
-If you have /myserser as the value you can access your web services with a url like http://localhost/myserver/services. <br/>Note: Don't forget the / at the beginning.</p>
+If you have /myserser as the value you can access your web services with a url like http://localhost/myserver/services. <br />Note: Don't forget the / at the beginning.</p>
 <p>
 
-<p>Now you can do all the registry editing using the JScript file axis2_iis_regedit.js provided with the distribution. 
-When you build axis2/C with the IIS module the file is copied to the root directory of the binary distribution. 
-Just double click it and everything will be set to the defaults. The axis2c_home is taken as the current directory, so make sure you run the file in the Axis2/C repository location (or root of the binary distribution). If you want to change the values you can 
-manually edit the the .js file or give it as command line arguments to the script when running the script. To run the jscript from the command line use the command <code>:\cscript axis2_iis_regedit.js optional arguments</code>. We recomend the manual editing as it is the easiest way to specify the values.</p>
+</p><p>Now you can do all the registry editing using the JScript file
+axis2_iis_regedit.js provided with the distribution. When you build
+axis2/C with the IIS module the file is copied to the root directory of
+the binary distribution. Just double click it and everything will be
+set to the defaults. The axis2c_home is taken as the current directory,
+so make sure you run the file in the Axis2/C repository location (or
+root of the binary distribution). If you want to change the values you
+can manually edit the the .js file or give it as command line arguments
+to the script when running the script. To run the jscript from the
+command line use the command <code>:\cscript axis2_iis_regedit.js optional arguments</code>. We recomend the manual editing as it is the easiest way to specify the values.</p>
 <p><b>IIS 5.1 or Below</b></p>
 Using the IIS management console, add a new virtual
 directory to your IIS/PWS web site. The name of the virtual directory
@@ -1634,7 +1652,7 @@ must be <code>axis2</code>. Its
 physical path should be the directory in which you placed
 mod_axis2_IIS.dll (in our example it is
 c:\axis2c\lib). When creating this new virtual directory, <b>assign
-execute access to it</b>.</p>
+execute access to it</b>.
 <p>By using the IIS management console, add
 mod_axis2_IIS.dll as a filter in your IIS/PWS web site and restart the
 IIS
