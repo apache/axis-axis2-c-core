@@ -1000,7 +1000,6 @@ MTOM_OBJS = $(MTOM_INTDIR)\*.obj
 $(MTOM_INTDIR) :
 	@if not exist $(MTOM_INTDIR) mkdir $(MTOM_INTDIR)
 	@if not exist $(AXIS2_SERVICES)\mtom mkdir $(AXIS2_SERVICES)\mtom
-	@if not exist $(AXIS2_SERVICES)\mtom_callback mkdir $(AXIS2_SERVICES)\mtom_callback
 
 {$(MTOM_SRC)}.c{$(MTOM_INTDIR)}.obj ::
 	$(CC) $(CFLAGS) /Fo$(MTOM_INTDIR)\ /c $<
@@ -1015,8 +1014,22 @@ $(AXIS2_SERVICES)\mtom\mtom.dll : $(MTOM_OBJS)
 
 axis2_services_mtom: $(AXIS2_SERVICES)\mtom\mtom.dll
 
-$(AXIS2_SERVICES)\mtom_callback\mtom_callback.dll : $(MTOM_OBJS)
-	$(LD) $(LDFLAGS) $(MTOM_OBJS) $(AXUTIL).lib $(AXIOM).lib \
+MTOM_SERVICE_CALLBACK_SRC =  $(AXIS2_SOURCE_DIR)\samples\server\mtom_callback
+MTOM_SERVICE_CALLBACK_INTDIR = $(AXIS2_INTDIR_SAMPLES)\services\mtom_callback
+
+MTOM_SERVICE_CALLBACK_OBJS = $(MTOM_SERVICE_CALLBACK_INTDIR)\*.obj
+
+$(MTOM_SERVICE_CALLBACK_INTDIR) :
+	@if not exist $(MTOM_SERVICE_CALLBACK_INTDIR) mkdir $(MTOM_SERVICE_CALLBACK_INTDIR)
+	@if not exist $(AXIS2_SERVICES)\mtom_callback mkdir $(AXIS2_SERVICES)\mtom_callback
+
+{$(MTOM_SERVICE_CALLBACK_SRC)}.c{$(MTOM_SERVICE_CALLBACK_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(MTOM_SERVICE_CALLBACK_INTDIR)\ /c $<
+
+$(MTOM_SERVICE_CALLBACK_OBJS) : $(MTOM_SERVICE_CALLBACK_INTDIR)
+
+$(AXIS2_SERVICES)\mtom_callback\mtom_callback.dll : $(MTOM_SERVICE_CALLBACK_OBJS)
+	$(LD) $(LDFLAGS) $(MTOM_SERVICE_CALLBACK_OBJS) $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_SERVICES)\mtom_callback\mtom_callback.dll  
 	-@$(_VC_MANIFEST_EMBED_DLL)
 	@copy $(AXIS2_SOURCE_DIR)\samples\server\mtom_callback\services.xml $(AXIS2_SERVICES)\mtom_callback
@@ -1245,6 +1258,50 @@ $(AXIS2_BINS)\samples\echo_blocking_auth.exe :
 	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\echo_blocking_auth.exe
         -@$(_VC_MANIFEST_EMBED_EXE)
 
+################ callbacks ###################
+AXIS2_INTDIR_CALLBACK = $(AXIS2_INTDIR)\samples\callback
+MTOM_SENDING_CALLBACK_SRC =  $(AXIS2_SOURCE_DIR)\samples\mtom_sending_callback
+MTOM_SENDING_CALLBACK_INTDIR = $(AXIS2_INTDIR_CALLBACK)\mtom_sending_callback
+MTOM_SENDING_CALLBACK_OBJS = $(MTOM_SENDING_CALLBACK_INTDIR)\*.obj
+
+$(MTOM_SENDING_CALLBACK_INTDIR) :
+	@if not exist $(AXIS2_INTDIR_CALLBACK) mkdir $(AXIS2_INTDIR_CALLBACK)
+	@if not exist $(MTOM_SENDING_CALLBACK_INTDIR) mkdir $(MTOM_SENDING_CALLBACK_INTDIR)
+	@if not exist $(AXIS2_BINS)\mtom_sending_callback mkdir $(AXIS2_BINS)\mtom_sending_callback
+
+{$(MTOM_SENDING_CALLBACK_SRC)}.c{$(MTOM_SENDING_CALLBACK_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(MTOM_SENDING_CALLBACK_INTDIR)\ /c $<
+
+$(MTOM_SENDING_CALLBACK_OBJS) : $(MTOM_SENDING_CALLBACK_INTDIR)
+
+$(AXIS2_BINS)\mtom_sending_callback\mtom_sending_callback.dll : $(MTOM_SENDING_CALLBACK_OBJS)
+	$(LD) $(LDFLAGS) $(MTOM_SENDING_CALLBACK_OBJS) $(AXUTIL).lib $(AXIOM).lib \
+	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_BINS)\mtom_sending_callback\mtom_sending_callback.dll  
+	-@$(_VC_MANIFEST_EMBED_DLL)
+
+axis2_mtom_sending_callback: $(AXIS2_BINS)\mtom_sending_callback\mtom_sending_callback.dll
+
+MTOM_CACHING_CALLBACK_SRC =  $(AXIS2_SOURCE_DIR)\samples\mtom_caching_callback
+MTOM_CACHING_CALLBACK_INTDIR = $(AXIS2_INTDIR_CALLBACK)\mtom_caching_callback
+MTOM_CACHING_CALLBACK_OBJS = $(MTOM_CACHING_CALLBACK_INTDIR)\*.obj
+
+$(MTOM_CACHING_CALLBACK_INTDIR) :
+	@if not exist $(AXIS2_INTDIR_CALLBACK) mkdir $(AXIS2_INTDIR_CALLBACK)
+	@if not exist $(MTOM_CACHING_CALLBACK_INTDIR) mkdir $(MTOM_CACHING_CALLBACK_INTDIR)
+	@if not exist $(AXIS2_BINS)\mtom_caching_callback mkdir $(AXIS2_BINS)\mtom_caching_callback
+
+{$(MTOM_CACHING_CALLBACK_SRC)}.c{$(MTOM_CACHING_CALLBACK_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(MTOM_CACHING_CALLBACK_INTDIR)\ /c $<
+
+$(MTOM_CACHING_CALLBACK_OBJS) : $(MTOM_CACHING_CALLBACK_INTDIR)
+
+$(AXIS2_BINS)\mtom_caching_callback\mtom_caching_callback.dll : $(MTOM_CACHING_CALLBACK_OBJS)
+	$(LD) $(LDFLAGS) $(MTOM_CACHING_CALLBACK_OBJS) $(AXUTIL).lib $(AXIOM).lib \
+	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_BINS)\mtom_caching_callback\mtom_caching_callback.dll  
+	-@$(_VC_MANIFEST_EMBED_DLL)
+
+axis2_mtom_caching_callback: $(AXIS2_BINS)\mtom_caching_callback\mtom_caching_callback.dll
+
 
 axis2_client_userguide : axis2_client_userguide_int $(AXIS2_BINS)\samples\echo_blocking_soap11.exe \
 	$(AXIS2_BINS)\samples\echo_non_blocking_dual.exe $(AXIS2_BINS)\samples\echo_blocking.exe \
@@ -1306,7 +1363,8 @@ all_services: axis2_services_echo axis2_services_math axis2_services_notify axis
 
 all_clients: axis2_clients_intdir axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_yahoo axis2_client_notify axis2_client_mtom axis2_client_mtom_callback axis2_client_userguide 
 
-axis2_samples: axis2_mod_log all_services all_clients
+all_callback: axis2_mtom_sending_callback axis2_mtom_caching_callback
+axis2_samples: axis2_mod_log all_services all_clients all_callback
 
 axis2_server_modules: axis2_apache_module axis2_IIS_module
 
