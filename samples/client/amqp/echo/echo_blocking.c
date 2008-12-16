@@ -81,7 +81,7 @@ main (int argc, char **argv)
     /* Build the SOAP request message payload using OM API. */
     payload = build_om_payload_for_echo_svc (env);
 
-    /* Send request */
+    /* Send request and get response */
     ret_node = axis2_svc_client_send_receive (svc_client, env, payload);
 
     if (ret_node)
