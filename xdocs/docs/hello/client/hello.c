@@ -60,7 +60,7 @@ main(
     axis2_options_set_to(options, env, endpoint_ref);
 
     client_home = AXIS2_GETENV("AXIS2C_HOME");
-    if (!client_home && !strcmp(client_home, ""))
+    if (!client_home || !strcmp(client_home, ""))
         client_home = "../..";
 
     svc_client = axis2_svc_client_create(env, client_home);
