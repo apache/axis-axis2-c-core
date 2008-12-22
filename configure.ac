@@ -45,6 +45,7 @@ fi
 dnl Checks for libraries.
 AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_LIB(z, inflate)
+AC_CHECK_LIB(socket, socket)
 
 if test -d $srcdir/util; then
     AC_CONFIG_SUBDIRS(util)

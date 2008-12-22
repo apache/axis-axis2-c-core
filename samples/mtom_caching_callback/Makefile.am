@@ -6,5 +6,5 @@ libmtom_caching_callback_la_LIBADD  = $(LDFLAGS) \
 								-laxutil
 
 INCLUDES = -I ../../util/include \
-			../../axiom/include \
+			-I ../../axiom/include \
 		@AXIS2INC@

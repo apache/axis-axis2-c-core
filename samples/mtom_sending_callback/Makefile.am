@@ -6,6 +6,6 @@ libmtom_sending_callback_la_LIBADD  = $(LDFLAGS) \
 								-laxutil 
 
 INCLUDES = -I ../../util/include \
-			../../axiom/include \
+			-I ../../axiom/include \
 			-I /usr/include/mysql \
 		@AXIS2INC@

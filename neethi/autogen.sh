@@ -3,9 +3,9 @@
 echo -n 'Running libtoolize...'
 if [ `uname -s` = Darwin ]
 then
-    export LIBTOOLIZE=glibtoolize
+    LIBTOOLIZE=glibtoolize
 else
-    export LIBTOOLIZE=libtoolize
+    LIBTOOLIZE=libtoolize
 fi
 
 if $LIBTOOLIZE --force > /dev/null 2>&1; then
