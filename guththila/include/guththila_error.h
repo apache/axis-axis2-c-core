@@ -24,7 +24,7 @@ EXTERN_C_START() typedef enum guththila_error_l
     GUTHTHILA_VALIDITY_ERROR,
     GUTHTHILA_VALIDITY_WARNING,
     GUTHTHILA_PARSER_ERROR,
-    GUTHTHILA_PARSER_WARNING,
+    GUTHTHILA_PARSER_WARNING
 } guththila_error_level;
 enum guththila_error_codes
 {
