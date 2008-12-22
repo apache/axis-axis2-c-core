@@ -559,6 +559,7 @@ axutil_hash_contains_key(
     return AXIS2_FALSE;
 }
 
+/*
 void
 axutil_hash_entry_free(
     const axutil_env_t *env,
@@ -573,6 +574,7 @@ axutil_hash_entry_free(
     AXIS2_FREE(env->allocator, hash_entry);
     return;
 }
+*/
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_hash_free(
