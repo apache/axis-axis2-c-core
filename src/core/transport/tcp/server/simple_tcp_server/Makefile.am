@@ -2,8 +2,7 @@ prgbindir=$(bindir)
 prgbin_PROGRAMS = axis2_tcp_server
 SUBDIRS =
 AM_CFLAGS = -g -pthread
-axis2_tcp_server_SOURCES = tcp_server_main.c \
-                            tcp_receiver.c
+axis2_tcp_server_SOURCES = tcp_server_main.c 
 
 axis2_tcp_server_LDADD   =  $(LDFLAGS) \
 		             $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \

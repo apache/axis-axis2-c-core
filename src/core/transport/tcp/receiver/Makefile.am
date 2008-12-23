@@ -5,7 +5,8 @@ libaxis2_tcp_receiver_la_LIBADD=$(top_builddir)/util/src/libaxutil.la\
 
 libaxis2_tcp_receiver_la_SOURCES = tcp_svr_thread.c \
                                     tcp_worker.c \
-                                    simple_tcp_svr_conn.c
+                                    simple_tcp_svr_conn.c \
+									tcp_receiver.c
 
 
 libaxis2_tcp_receiver_la_LDFLAGS = -version-info $(VERSION_NO)
