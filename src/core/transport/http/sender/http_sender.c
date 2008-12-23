@@ -2865,6 +2865,11 @@ axis2_http_sender_configure_proxy_digest_auth (axis2_http_sender_t * sender,
         {
             AXIS2_FREE (env->allocator, nonce);
         }
+        
+        if (cnonce)
+        {
+            AXIS2_FREE (env->allocator, cnonce);
+        }
 
         if (opaque)
         {
