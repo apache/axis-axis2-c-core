@@ -132,6 +132,7 @@ axis2_libcurl_send(
     int *response_length = NULL;
     axis2_http_status_line_t *status_line = NULL;
     axis2_char_t *status_line_str = NULL;
+    axis2_char_t *tmp_strcat = NULL;
     int status_code = 0;
 
     AXIS2_PARAM_CHECK(env->error, data, AXIS2_FAILURE);
@@ -292,18 +293,16 @@ axis2_libcurl_send(
                                      (axutil_strlen(soap_action) +
                                       5) * sizeof(axis2_char_t));
                     sprintf(tmp_soap_action, "\"%s\"", soap_action);
-                    headers = curl_slist_append(headers,
-                                                axutil_stracat(env,
-                                                               soap_action_header,
-                                                               tmp_soap_action));
+                    tmp_strcat = axutil_stracat(env, soap_action_header,tmp_soap_action);
+                    headers = curl_slist_append(headers, tmp_strcat);
+                    AXIS2_FREE(env->allocator, tmp_strcat);
                     AXIS2_FREE(env->allocator, tmp_soap_action);
                 }
                 else
                 {
-                    headers = curl_slist_append(headers,
-                                                axutil_stracat(env,
-                                                               soap_action_header,
-                                                               soap_action));
+                    tmp_strcat = axutil_stracat(env, soap_action_header, soap_action);
+                    headers = curl_slist_append(headers, tmp_strcat );
+                    AXIS2_FREE(env->allocator, tmp_strcat);
                 }
             }
 
@@ -433,12 +432,15 @@ axis2_libcurl_send(
         {
             char tmp_buf[10];
             sprintf(tmp_buf, "%d", buffer_size);
-            headers =
-                curl_slist_append(headers,
-                                  axutil_stracat(env, content_len, tmp_buf));
-            headers =
-                curl_slist_append(headers,
-                                  axutil_stracat(env, content, content_type));
+            tmp_strcat = axutil_stracat(env, content_len, tmp_buf);
+            headers = curl_slist_append(headers, tmp_strcat);
+            AXIS2_FREE(env->allocator, tmp_strcat);
+            tmp_strcat = NULL;
+
+            tmp_strcat = axutil_stracat(env, content, content_type);
+            headers = curl_slist_append(headers, tmp_strcat);
+            AXIS2_FREE(env->allocator, tmp_strcat);
+            tmp_strcat = NULL;
         }
 
         if (!doing_mtom)
@@ -516,7 +518,16 @@ axis2_libcurl_send(
 
     curl_easy_setopt (handler, CURLOPT_WRITEHEADER, data);
 
-    data->size = 0;
+    /* Free response data from previous request */
+    if( data->size )
+    {
+        if (data->memory)
+        {
+            AXIS2_FREE(data->env->allocator, data->memory);
+        }
+        data->size = 0;
+    }
+
     if (curl_easy_perform(handler)) 
     {
         AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, "%s", &data->errorbuffer);
@@ -549,6 +560,7 @@ axis2_libcurl_send(
     }
 
     axis2_msg_ctx_set_status_code (msg_ctx, env, status_code);
+    AXIS2_FREE(data->env->allocator, content_type);
     content_type = axis2_libcurl_get_content_type(data, env); 
 
     if (content_type)
@@ -586,6 +598,8 @@ axis2_libcurl_send(
        condition in subsequent messages, as they will be read using the content-length
        of the first message.) */
     axis2_libcurl_free_headers(data, env);
+    AXIS2_FREE(data->env->allocator, content_type);
+    axis2_http_status_line_free( status_line, env);
 
     return AXIS2_SUCCESS;
 }
@@ -634,9 +648,7 @@ axis2_libcurl_header_callback(
     {
         memcpy(&(memory[0]), ptr, realsize);
         memory[realsize] = 0;
-        axutil_array_list_add(curl->alist, curl->env,
-                              axutil_strdup(curl->env, memory));
-        AXIS2_FREE(curl->env->allocator, memory);
+        axutil_array_list_add(curl->alist, curl->env, memory);
     }
     return realsize;
 }
@@ -781,6 +793,11 @@ axis2_libcurl_get_first_header(
         {
             return tmp_header;
         }
+        else
+        {
+            axis2_http_header_free( tmp_header, env );
+        }
+
     }
     return NULL;
 }
@@ -791,14 +808,16 @@ axis2_libcurl_get_content_length(
     const axutil_env_t * env)
 {
     axis2_http_header_t *tmp_header;
+    int rtn_value = -1;
 
     tmp_header = axis2_libcurl_get_first_header
         (curl, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH);
     if (tmp_header)
     {
-        return AXIS2_ATOI(axis2_http_header_get_value(tmp_header, env));
+        rtn_value = AXIS2_ATOI(axis2_http_header_get_value(tmp_header, env));
+        axis2_http_header_free( tmp_header, env );
     }
-    return -1;
+    return rtn_value;
 }
 
 
@@ -808,13 +827,17 @@ axis2_libcurl_get_content_type(
     const axutil_env_t * env)
 {
     axis2_http_header_t *tmp_header;
+    axis2_char_t *rtn_value	= AXIS2_HTTP_HEADER_ACCEPT_TEXT_PLAIN;
 
     tmp_header = axis2_libcurl_get_first_header
         (curl, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
     if (tmp_header)
-        return axis2_http_header_get_value(tmp_header, env);
+    {
+        rtn_value = axutil_strdup (env, axis2_http_header_get_value(tmp_header, env) );
+        axis2_http_header_free( tmp_header, env );
+    }
 
-    return AXIS2_HTTP_HEADER_ACCEPT_TEXT_PLAIN;
+    return rtn_value;
 }
 
 #endif                          /* AXIS2_LIBCURL_ENABLED */
