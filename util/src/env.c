@@ -71,27 +71,23 @@ axutil_env_create_with_error_log(
     if (!allocator || !error)
         return NULL;
 
-    env = axutil_env_create(allocator);
+    env = (axutil_env_t *) AXIS2_MALLOC(allocator, sizeof(axutil_env_t));
 
     if (!env)
         return NULL;
 
+    memset(env, 0, sizeof(axutil_env_t));
+
     env->allocator = allocator;
     env->error = error;
+    env->log = log;
 
-    if (!log)
-    {
-        env->log_enabled = AXIS2_FALSE;
-    }
-    else
-    {
+    if (env->log)
         env->log_enabled = AXIS2_TRUE;
-        if (env->log) /* free the default log */
-        {
-            AXIS2_LOG_FREE(env->allocator, env->log);
-        }
-        env->log = log; /* set the given log */
-    }
+    else
+        env->log_enabled = AXIS2_FALSE;
+
+    axutil_error_init();
 
     env->ref = 1;
 
