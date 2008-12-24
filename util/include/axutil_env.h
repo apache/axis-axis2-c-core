@@ -175,16 +175,21 @@ extern "C"
     axutil_env_free(
         axutil_env_t * env);
 
+
+    #define AXIS_ENV_FREE_LOG        0x1
+    #define AXIS_ENV_FREE_ERROR      0x2
+    #define AXIS_ENV_FREE_THREADPOOL 0x4
+
     /**
      * Frees the environment components based on the mask.
      * @param env pointer to environment struct to be freed
      * @param mask bit pattern indicating which components of the env 
      * struct are to be freed
-     *       0x1 - Frees the log
-     *       0x2 - Frees the error
-     *       0x4 - Frees the thread pool
+     *       AXIS_ENV_FREE_LOG        - Frees the log
+     *       AXIS_ENV_FREE_ERROR      - Frees the error
+     *       AXIS_ENV_FREE_THREADPOOL - Frees the thread pool
      *       You can use combinations to free multiple components as well
-     *       E.g : 0x3 frees both log and error, but not the thread pool
+     *       E.g : AXIS_ENV_FREE_LOG | AXIS_ENV_FREE_ERROR frees both log and error, but not the thread pool
      * @return void
      */
     AXIS2_EXTERN void AXIS2_CALL

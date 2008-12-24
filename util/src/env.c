@@ -267,17 +267,17 @@ axutil_env_free_masked(
         return;
     }
 
-    if (mask & 0x1)
+    if (mask & AXIS_ENV_FREE_LOG)
     {
         AXIS2_LOG_FREE(env->allocator, env->log);
     }
     
-    if (mask & 0x2)
+    if (mask & AXIS_ENV_FREE_ERROR)
     {
         AXIS2_ERROR_FREE(env->error);
     }
     
-    if (mask & 0x4)
+    if (mask & AXIS_ENV_FREE_THREADPOOL)
     {
         axutil_thread_pool_free(env->thread_pool);
     }
