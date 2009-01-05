@@ -21,6 +21,7 @@
 
 #include <axutil_env.h>
 #include <axutil_string.h>
+#include <axutil_stream.h>
 
 /**
  * @file tcpmon_util.h
@@ -52,6 +53,33 @@ extern "C"
 		char *str,
 		const char *search,
 		const char *replace);
+
+    axis2_char_t * tcpmon_util_strcat(
+        axis2_char_t * dest,
+        axis2_char_t * source,
+        int *buff_size,
+        const axutil_env_t * env);
+
+    axis2_char_t *
+    tcpmon_util_read_current_stream(
+        const axutil_env_t * env,
+        axutil_stream_t * stream,
+        int *stream_size,
+        axis2_char_t ** header,
+        axis2_char_t ** data);
+
+    char *
+    tcpmon_util_str_replace(
+        const axutil_env_t *env,    
+        char *str,
+        const char *search,
+        const char *replace);
+
+    int
+    tcpmon_util_write_to_file(
+        char *filename,
+        char *buffer);
+
 
 
     /** @} */

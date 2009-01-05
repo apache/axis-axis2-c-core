@@ -27,6 +27,7 @@
 
 #include "tcpmon_session_local.h"
 #include "tcpmon_entry_local.h"
+#include "tcpmon_util.h"
 
 /**
  * @brief
@@ -131,7 +132,7 @@ int AXIS2_CALL tcpmon_session_set_format_bit(
 
 /** internal implementations */
 
-void *AXIS2_THREAD_FUNC server_funct(
+static void *AXIS2_THREAD_FUNC server_funct(
     axutil_thread_t * thd,
     void *data);
 
@@ -487,7 +488,7 @@ tcpmon_session_on_trans_fault(
 }
 
 /** internal implementations */
-void *AXIS2_THREAD_FUNC
+static void *AXIS2_THREAD_FUNC
 server_funct(
     axutil_thread_t * thd,
     void *data)

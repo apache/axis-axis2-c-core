@@ -57,6 +57,7 @@ tcpmon_entry_impl_t;
 
 /************************* Function prototypes ********************************/
 
+
 axis2_status_t AXIS2_CALL tcpmon_entry_free(
     tcpmon_entry_t * entry,
     const axutil_env_t * env);
@@ -94,20 +95,10 @@ axis2_bool_t AXIS2_CALL tcpmon_entry_is_success(
     const axutil_env_t * env);
 
 axis2_char_t *get_current_stream_to_buffer(
-    axutil_stream_t * stream,
     const axutil_env_t * env,
+    axutil_stream_t * stream,
     int *stream_size);
 
-axis2_char_t *read_current_stream(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
-    int *stream_size,
-    axis2_char_t ** header,
-    axis2_char_t ** data);
-
-int write_to_file(
-    char *filename,
-    char *buffer);
 
 int AXIS2_CALL tcpmon_entry_get_format_bit(
     tcpmon_entry_t * entry,
@@ -507,15 +498,15 @@ tcpmon_entry_new_entry_funct(
         return NULL;
     }
 
-    buffer = read_current_stream(client_stream, env, &buffer_size,
+    buffer = tcpmon_util_read_current_stream(env, client_stream, &buffer_size,
             &headers, &content);
 
-    headers =(char *) str_replace(headers,"localhost", target_host);
+    headers =(char *) tcpmon_util_str_replace(env, headers,"localhost", target_host);
     test_bit = TCPMON_SESSION_GET_TEST_BIT(session, env);
 
     if (test_bit)
     {
-        write_to_file("reqest", buffer);
+        tcpmon_util_write_to_file("reqest", buffer);
     }
 
     format_bit = TCPMON_SESSION_GET_FORMAT_BIT(session, env);
@@ -596,13 +587,13 @@ tcpmon_entry_new_entry_funct(
     axutil_stream_write(host_stream, env, buffer, buffer_size);
     AXIS2_FREE(env->allocator, buffer);
 
-    buffer = read_current_stream(host_stream, env, &buffer_size,
+    buffer = tcpmon_util_read_current_stream(env, host_stream, &buffer_size,
                                  &headers, &content);
 
     test_bit = TCPMON_SESSION_GET_TEST_BIT(session, env);
     if (test_bit)
     {
-        write_to_file("response", buffer);
+        tcpmon_util_write_to_file("response", buffer);
     }
 
     now = time(NULL);
@@ -662,249 +653,4 @@ tcpmon_entry_new_entry_funct(
     return NULL;
 }
 
-axis2_char_t *
-read_current_stream(
-    axutil_stream_t * stream,
-    const axutil_env_t * env,
-    int *stream_size,
-    axis2_char_t ** header,
-    axis2_char_t ** data)
-{
-    int read_size = 0;
-    axis2_char_t *buffer = NULL;
-    axis2_char_t *header_ptr = NULL;
-    axis2_char_t *body_ptr = NULL;
-    int header_found = 0;
-    int header_just_finished = 0;
-    int read = 0;
-    int header_width = 0;
-    int current_line_offset = 0;
-    int mtom_optimized = 0;
-    axis2_char_t *current_line = NULL;
-    int line_just_ended = 1;
-    axis2_char_t *length_char = 0;
-    int length = -1;
-    int chunked_encoded = 0;
-    int is_get = 0;
-    int zero_content_length = 0;
 
-    buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t));
-    *data = NULL;
-    *header = NULL;
-    do
-    {
-        buffer = AXIS2_REALLOC(env->allocator, buffer,
-                               sizeof(axis2_char_t) * (read_size + 1));
-        *(buffer + read_size) = '\0';
-        read = axutil_stream_read(stream, env, buffer + read_size, 1);
-
-        if (header_just_finished)
-        {
-            header_just_finished = 0;
-            header_width = read_size;
-        }
-
-                          /** identify the content lenth*/
-        if (!header_found && *(buffer + read_size) == '\r')
-        {
-            *(buffer + read_size) = '\0';
-            current_line = buffer + current_line_offset;
-            if (!mtom_optimized && strstr(current_line, "multipart/related"))
-                mtom_optimized = 1;
-            if (strstr(current_line, "Content-Length"))
-            {
-                length_char = strstr(current_line, ":");
-                if (length_char)
-                {
-                    length_char++;
-                    length = atoi(length_char);
-                    if (length == 0)
-                    {
-                        zero_content_length = 1;
-                    }
-                }
-            }
-            if (strstr(current_line, "GET") || strstr(current_line, "HEAD")
-                || strstr(current_line, "DELETE"))
-            {
-                is_get = 1;
-                    /** Captures GET style requests */
-            }
-            *(buffer + read_size) = '\r';
-        }
-        if (!header_found && line_just_ended)
-        {
-            line_just_ended = 0;
-            current_line_offset = read_size;
-        }
-        if (!header_found && *(buffer + read_size) == '\n')
-        {
-            line_just_ended = 1;    /* set for the next loop to read */
-        }
-        if (header_found)
-        {
-            length--;
-        }
-        if (header_found &&
-            read_size >= 4 &&
-            chunked_encoded == 1 &&
-            *(buffer + read_size) == '\n' &&
-            *(buffer + read_size - 1) == '\r' &&
-            *(buffer + read_size - 2) == '\n' &&
-            *(buffer + read_size - 3) == '\r' &&
-            *(buffer + read_size - 4) == '0')
-        {
-
-            length = 0;          /** this occurs in chunked transfer encoding */
-        }
-
-                          /** identify the end of the header */
-        if (!header_found &&
-            read_size >= 3 &&
-            *(buffer + read_size) == '\n' &&
-            *(buffer + read_size - 1) == '\r' &&
-            *(buffer + read_size - 2) == '\n' &&
-            *(buffer + read_size - 3) == '\r')
-        {
-            header_found = 1;
-            *(buffer + read_size - 3) = '\0';
-            if (header_ptr)
-            {
-                AXIS2_FREE(env->allocator, header_ptr);
-            }
-            header_ptr = (axis2_char_t *) axutil_strdup(env, buffer);
-            header_just_finished = 1;
-            *(buffer + read_size - 3) = '\r';
-            if (is_get && length == -1)
-            {
-                break;
-            }
-        }
-        read_size++;
-        if (!chunked_encoded && length < -1)
-        {
-            header_width = 0;
-            /* break; */
-
-                                  /** this is considered as transfer-encoding = chunked */
-            chunked_encoded = 1;
-            header_found = 1;
-            *(buffer + read_size - 3) = '\0';
-            if (header_ptr)
-            {
-                AXIS2_FREE(env->allocator, header_ptr); 
-            }
-            header_ptr = (axis2_char_t *) axutil_strdup(env, buffer);
-            header_just_finished = 1;
-            *(buffer + read_size - 3) = '\r';
-        }
-        if (!(*(buffer + read_size - 1)))
-        {
-            if (!mtom_optimized)
-            {
-                read_size--;
-                length = 0;
-            }
-            else
-            {
-                /**(buffer + read_size - 1) = ' ';*/
-            }
-        }
-    }
-    while (length != 0);
-    
-    if (is_get)
-    {
-        read_size++;
-    }
-    else if (zero_content_length)
-    {
-        read_size += 3;
-    }
-
-    buffer = AXIS2_REALLOC(env->allocator, buffer,
-                           sizeof(axis2_char_t) * (read_size + 1));
-    *(buffer + read_size) = '\0';
-    
-    if (header_width != 0)
-    {
-        body_ptr = buffer + header_width;
-        if (body_ptr && *body_ptr)
-        {
-            if (mtom_optimized)
-            {
-                int count = read_size - (int)strlen(header_ptr) - 4;
-                int copied = 0;
-                int plen = 0;
-                axis2_char_t *temp = NULL;
-                temp = AXIS2_MALLOC(env->allocator,
-                              sizeof(axis2_char_t) * count + 1);
-                while(count > copied)
-                {
-                    plen = 0;
-                    plen = ((int)strlen(body_ptr) + 1);
-                    if (plen != 1)
-                    {
-                        sprintf(temp, "%s", body_ptr);
-                    }
-                    copied += plen;
-                    if (count > copied)
-                    {
-                        temp += plen;
-                        body_ptr += plen;
-                    }
-                }
-                copied -= plen;
-                temp -= copied;
-                temp[count] = '\0';
-                *data = temp;
-            }
-            else
-            {
-                *data = (axis2_char_t *) axutil_strdup(env, body_ptr);
-            }
-        }
-        body_ptr = NULL;    
-    }
-    else
-    {
-        /** soap body part is unavailable */
-        if (is_get)
-        {
-            *data = (axis2_char_t *) axutil_strdup(env, "\n");
-            *(buffer + read_size - 1) = '\n';
-        }
-        else if (zero_content_length)
-        {
-            *data = (axis2_char_t *) axutil_strdup(env, "\n");
-            *(buffer + read_size - 3) = '\n';
-            *(buffer + read_size - 2) = '\r';
-            *(buffer + read_size - 1) = '\n';
-        }
-        if (header_ptr)
-        {
-            AXIS2_FREE(env->allocator, header_ptr);
-        }
-        header_ptr = (axis2_char_t *) axutil_strdup(env, buffer);
-    }
-
-    *header = header_ptr;
-    *stream_size = read_size;
-    return buffer;
-}
-
-int
-write_to_file(
-    char *filename,
-    char *buffer)
-{
-    int size = 0;
-    if (filename)
-    {
-        FILE *fp = fopen(filename, "ab");
-        size = (int)fwrite(buffer, 1, strlen(buffer), fp);
-        /* We are sure that the difference lies within the int range */
-        fclose(fp);
-    }
-    return size;
-}
