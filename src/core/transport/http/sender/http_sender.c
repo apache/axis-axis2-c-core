@@ -822,7 +822,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
     }
 
     if (0 ==
-        axutil_strcmp (sender->http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
+        axutil_strcasecmp (sender->http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
     {
         /* HTTP 1.1 */
         axis2_char_t *header = NULL;
@@ -1489,9 +1489,9 @@ axis2_http_sender_get_header_info (axis2_http_sender_t * sender,
                                                          header, env);
         if (name)
         {
-            if (0 == axutil_strcmp (name, AXIS2_HTTP_HEADER_TRANSFER_ENCODING)
+            if (0 == axutil_strcasecmp (name, AXIS2_HTTP_HEADER_TRANSFER_ENCODING)
                 && 0 ==
-                axutil_strcmp (axis2_http_header_get_value (header, env),
+                axutil_strcasecmp (axis2_http_header_get_value (header, env),
                                AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
             {
                 axis2_char_t *transfer_encoding = NULL;
@@ -1503,7 +1503,7 @@ axis2_http_sender_get_header_info (axis2_http_sender_t * sender,
                                                      env, transfer_encoding);
 
             }
-            if (0 != axutil_strcmp (name, AXIS2_HTTP_HEADER_CONTENT_TYPE))
+            if (0 != axutil_strcasecmp (name, AXIS2_HTTP_HEADER_CONTENT_TYPE))
             {
                 axis2_char_t *tmp_charset = NULL;
                 axis2_char_t *content_type =
