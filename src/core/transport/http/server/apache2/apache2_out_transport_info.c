@@ -138,6 +138,8 @@ axis2_apache2_out_transport_info_create(
     info->encoding = NULL;
 
     out_transport_info = &(info->out_transport_info);
+    out_transport_info->encoding = NULL;
+    out_transport_info->response = NULL;
 
     axis2_http_out_transport_info_set_char_encoding_func(out_transport_info,
                                                          env,
