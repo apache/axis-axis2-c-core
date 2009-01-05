@@ -104,6 +104,14 @@ axis2_http_client_free(
     axis2_http_client_t * http_client,
     const axutil_env_t * env)
 {
+    if (http_client->proxy_host)
+    {
+        AXIS2_FREE(env->allocator, http_client->proxy_host);
+    }
+    if (http_client->proxy_host_port)
+    {
+        AXIS2_FREE(env->allocator, http_client->proxy_host_port);
+    }
     if (http_client->url)
     {
         axutil_url_free(http_client->url, env);
@@ -246,8 +254,10 @@ axis2_http_client_send(
 #ifdef AXIS2_SSL_ENABLED
         if (client->proxy_enabled)
         {
-            if (AXIS2_SUCCESS != axis2_http_client_connect_ssl_host(client, env, host, port));
+            if (AXIS2_SUCCESS != axis2_http_client_connect_ssl_host(client, env, host, port))
             {
+                axutil_network_handler_close_socket(env, client->sockfd);
+                client->sockfd = -1;
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "HTTPS connection creation failed");
                 return AXIS2_FAILURE;
             }
@@ -256,6 +266,8 @@ axis2_http_client_send(
             axutil_stream_create_ssl(env, client->sockfd, axis2_http_client_get_server_cert(client, 
                         env), axis2_http_client_get_key_file(client, env), ssl_pp);
 #else
+        axutil_network_handler_close_socket(env, client->sockfd);
+        client->sockfd = -1;
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_TRANSPORT_PROTOCOL, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
                 "Invalid Transport Protocol, HTTPS transport not enabled.");
@@ -271,6 +283,7 @@ axis2_http_client_send(
     if (!client->data_stream)
     {
         axutil_network_handler_close_socket(env, client->sockfd);
+        client->sockfd = -1;
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
                 "Data stream creation failed for Host %s and %d port", host, port);
 
@@ -351,6 +364,8 @@ axis2_http_client_send(
 
         if (!host_port_str)
         {
+            axutil_network_handler_close_socket(env, client->sockfd);
+            client->sockfd = -1;
             AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
                     "Memory allocation failed for host %s and %s path", host, path);
@@ -364,6 +379,9 @@ axis2_http_client_send(
 
         if (!str_request_line)
         {
+            axutil_network_handler_close_socket(env, client->sockfd);
+            client->sockfd = -1;
+            AXIS2_FREE(env->allocator, host_port_str);
             AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
                     "memory allocation failed for host %s and %s path", host, path);
@@ -467,6 +485,8 @@ axis2_http_client_send(
             status = AXIS2_SUCCESS;
             if (!chunked_stream)
             {
+                axutil_network_handler_close_socket(env, client->sockfd);
+                client->sockfd = -1;
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creatoin of chunked stream failed");
                 return AXIS2_FAILURE;
             }
@@ -581,6 +601,8 @@ str_status_line %s", str_status_line);
 
     }while (AXIS2_HTTP_RESPONSE_OK_CODE_VAL > http_status);
 
+    if (client->response)
+        axis2_http_simple_response_free(client->response, env);
     client->response = axis2_http_simple_response_create_default(env);
     axis2_http_simple_response_set_status_line(
         client->response, env,
@@ -816,6 +838,8 @@ port", host, port);
     {
         AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_RESPONSE_TIMED_OUT, AXIS2_FAILURE);
+        AXIS2_FREE(env->allocator, connect_string);
+        axutil_stream_free(tmp_stream, env);
         return AXIS2_FAILURE;
     }
     status_line = axis2_http_status_line_create(env, str_status_line);
@@ -824,10 +848,14 @@ port", host, port);
         AXIS2_HANDLE_ERROR(env,
                         AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
                         AXIS2_FAILURE);
+        AXIS2_FREE(env->allocator, connect_string);
+        axutil_stream_free(tmp_stream, env);
         return AXIS2_FAILURE;
     }
     if (200 != axis2_http_status_line_get_status_code(status_line, env))
     {
+        AXIS2_FREE(env->allocator, connect_string);
+        axutil_stream_free(tmp_stream, env);
         return AXIS2_FAILURE;
     }
     /* We need to empty the stream before we return
@@ -853,6 +881,7 @@ port", host, port);
             }
         }
     }
+    AXIS2_FREE(env->allocator, connect_string);
     axutil_stream_free(tmp_stream, env);
     return AXIS2_SUCCESS;
 }
