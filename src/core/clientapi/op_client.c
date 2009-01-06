@@ -1133,7 +1133,7 @@ axis2_op_client_get_svc_ctx(
     return op_client->svc_ctx;
 }
 
-/* This function is called only for single cannel invocations */
+/* This function is called only for single channel invocations */
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
 axis2_op_client_two_way_send(
     const axutil_env_t * env,
