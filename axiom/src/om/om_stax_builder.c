@@ -52,7 +52,7 @@ struct axiom_stax_builder
 
     /** current event */
     int current_event;
-
+	/** Indicate the  current element level. */
     int element_level;
     axutil_hash_t *declared_namespaces;
 };
