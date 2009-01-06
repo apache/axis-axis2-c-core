@@ -154,7 +154,7 @@ axis2_simple_http_svr_conn_read_request(
     axis2_simple_http_svr_conn_t * svr_conn,
     const axutil_env_t * env)
 {
-    axis2_char_t str_line[2048];
+    axis2_char_t* str_line = NULL;
     axis2_char_t tmp_buf[2048];
     int read = -1;
     axis2_bool_t end_of_line = AXIS2_FALSE;
@@ -162,7 +162,6 @@ axis2_simple_http_svr_conn_read_request(
     axis2_http_request_line_t *request_line = NULL;
     axis2_http_simple_request_t *request = NULL;
 
-    memset(str_line, 0, 2048);
     while ((read =
             axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf,
                                       2048 - 1)) > 0)
@@ -178,8 +177,14 @@ axis2_simple_http_svr_conn_read_request(
                                    end - start + 2);
             if (read > 0)
             {
+                axis2_char_t* tmp_str_line = NULL;
                 tmp_buf[read] = AXIS2_ESC_NULL;
-                strcat(str_line, tmp_buf);
+                tmp_str_line = axutil_stracat(env, str_line, tmp_buf);
+                if(tmp_str_line)
+                {
+                    AXIS2_FREE(env->allocator, str_line);
+                    str_line = tmp_str_line;
+                }
                 break;
             }
             else
@@ -194,13 +199,22 @@ axis2_simple_http_svr_conn_read_request(
             read = axutil_stream_read(svr_conn->stream, env, tmp_buf, 2048 - 1);
             if (read > 0)
             {
+                axis2_char_t* tmp_str_line = NULL;
                 tmp_buf[read] = AXIS2_ESC_NULL;
-                strcat(str_line, tmp_buf);
+                tmp_str_line = axutil_stracat(env, str_line, tmp_buf);
+                if(tmp_str_line)
+                {
+                    AXIS2_FREE(env->allocator, str_line);
+                    str_line = tmp_str_line;
+                }
             }
         }
     }
 
     request_line = axis2_http_request_line_parse_line(env, str_line);
+    AXIS2_FREE(env->allocator, str_line);
+    str_line = NULL;
+
     if (!request_line)
     {
         AXIS2_HANDLE_ERROR(env,
@@ -211,7 +225,6 @@ axis2_simple_http_svr_conn_read_request(
     request = axis2_http_simple_request_create(env, request_line, NULL, 0,
                                                svr_conn->stream);
     /* now read the headers */
-    memset(str_line, 0, 2048);
     end_of_line = AXIS2_FALSE;
     while (AXIS2_FALSE == end_of_headers)
     {
@@ -232,8 +245,14 @@ axis2_simple_http_svr_conn_read_request(
                                        end - start + 2);
                 if (read > 0)
                 {
+		    axis2_char_t* tmp_str_line = NULL;
                     tmp_buf[read] = AXIS2_ESC_NULL;
-                    strcat(str_line, tmp_buf);
+                    tmp_str_line = axutil_stracat(env, str_line, tmp_buf);
+                    if(tmp_str_line)
+                    {
+                        AXIS2_FREE(env->allocator, str_line);
+                        str_line = tmp_str_line;
+                    }
                     end_of_line = AXIS2_TRUE;
                     break;
                 }
@@ -249,8 +268,14 @@ axis2_simple_http_svr_conn_read_request(
                                        2048 - 1);
                 if (read > 0)
                 {
+		    axis2_char_t* tmp_str_line = NULL;
                     tmp_buf[read] = AXIS2_ESC_NULL;
-                    strcat(str_line, tmp_buf);
+                    tmp_str_line = axutil_stracat(env, str_line, tmp_buf);
+                    if(tmp_str_line)
+                    {
+                        AXIS2_FREE(env->allocator, str_line);
+                        str_line = tmp_str_line;
+                    }
                 }
             }
 
@@ -266,7 +291,8 @@ axis2_simple_http_svr_conn_read_request(
             {
                 axis2_http_header_t *tmp_header =
                     axis2_http_header_create_by_str(env, str_line);
-                memset(str_line, 0, 2048);
+                AXIS2_FREE(env->allocator, str_line);
+                str_line = NULL;
                 if (tmp_header)
                 {
                     axis2_http_simple_request_add_header(request, env,
