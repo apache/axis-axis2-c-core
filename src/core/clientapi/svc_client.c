@@ -746,7 +746,7 @@ axis2_svc_client_send_receive_with_op_qname(
 
     /* If dual channel blocking. We come to this block if the client indicate to use
      * a separate listener but don't provide a callback function to acted upon when
-     * response is recieved in the listener thread. What we do here is we create a callback
+     * response is received in the listener thread. What we do here is we create a callback
      * and call axis2_svc_client_send_receive_non_blocking_with_op_qname with it. */
     if (axis2_options_get_use_separate_listener(svc_client->options, env))
     {
