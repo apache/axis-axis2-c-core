@@ -18,8 +18,8 @@
 
 #include <axis2_desc.h>
 #include <axutil_property.h>
-#include <axis2_msg.h>
 #include <axis2_policy_include.h>
+#include <axis2_msg.h>
 
 struct axis2_desc
 {
@@ -168,11 +168,17 @@ axis2_desc_add_child(
     const axis2_desc_t * desc,
     const axutil_env_t * env,
     const axis2_char_t * key,
-    const void *child)
+    const axis2_msg_t *child)
 {
     if (desc->children)
     {
-        axutil_hash_set(desc->children, key, AXIS2_HASH_KEY_STRING, child);
+        axis2_msg_t* msg = (axis2_msg_t *) axutil_hash_get(desc->children, key, AXIS2_HASH_KEY_STRING);
+        if ( msg != NULL )
+        {
+            axis2_msg_free(msg, env);
+            msg = NULL;
+        }
+        axutil_hash_set(desc->children, key, AXIS2_HASH_KEY_STRING, (void *)child);
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
