@@ -44,6 +44,7 @@ extern "C"
     typedef struct axis2_desc axis2_desc_t;
 
     struct axis2_policy_include;
+    struct axis2_msg;
 
     /**
      * Creates a description struct instance.    
@@ -131,7 +132,7 @@ extern "C"
         const axis2_desc_t * desc,
         const axutil_env_t * env,
         const axis2_char_t * key,
-        const void *child);
+        const struct axis2_msg *child);
 
     /**
      * Gets all children. 
