@@ -215,12 +215,14 @@ axis2_simple_http_svr_conn_read_request(
     end_of_line = AXIS2_FALSE;
     while (AXIS2_FALSE == end_of_headers)
     {
+	axis2_bool_t is_read = AXIS2_FALSE;
         while ((read =
                 axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf,
                                           2048 - 1)) > 0)
         {
             axis2_char_t *start = tmp_buf;
             axis2_char_t *end = NULL;
+            is_read = AXIS2_TRUE;
             tmp_buf[read] = AXIS2_ESC_NULL;
             end = strstr(tmp_buf, AXIS2_HTTP_CRLF);
             if (end)
@@ -273,6 +275,10 @@ axis2_simple_http_svr_conn_read_request(
             }
         }
         end_of_line = AXIS2_FALSE;
+        if(!is_read)
+        {
+            break; /*if nothing is read, this loop should be broken. Otherwise, going to be endless loop */
+        }
     }
     return request;
 }
