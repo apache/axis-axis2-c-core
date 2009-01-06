@@ -502,7 +502,7 @@ axis2_core_utils_prepare_rest_mapping (
    
     if(first_delimitter)
     {
-        /* if there is another recurisive level,
+        /* if there is another recursive level,
            this will get the url of that level */
         next_level_url = first_delimitter + 1;
         *first_delimitter = '\0';
@@ -538,7 +538,7 @@ axis2_core_utils_prepare_rest_mapping (
     }
 
 
-    /* retrieve or create the maping structure for the key*/
+    /* retrieve or create the mapping structure for the key*/
     mapping_struct = axutil_hash_get(rest_map,
                             mapping_key, AXIS2_HASH_KEY_STRING);
     if(!mapping_struct)
@@ -781,7 +781,7 @@ axis2_core_utils_get_rest_op_with_method_and_location(axis2_svc_t *svc,
        return NULL;
     }
     
-    /* checking the existance of the addition parameters
+    /* checking the existence of the addition parameters
        after the question mark '?' */
     addition_params_str = strchr(local_url, '?');
     if(addition_params_str)
@@ -916,7 +916,7 @@ axis2_core_utils_infer_op_from_parent_rest_map(
    
     if(first_delimitter)
     {
-        /* if there is another recurisive level,
+        /* if there is another recursive level,
            this will get the url of that level */
         next_level_url = first_delimitter + 1;
         *first_delimitter = '\0';
