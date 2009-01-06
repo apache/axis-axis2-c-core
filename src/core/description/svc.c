@@ -1291,7 +1291,7 @@ axis2_svc_add_rest_mapping(
 
     local_location_str = (axis2_char_t *) location; /* Casted to facilitate loop */
 
-    /* skip the biginning '/' */
+    /* skip the beginning '/' */
     if(*local_location_str == '/') 
     {
         local_location_str ++;
