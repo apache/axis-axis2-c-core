@@ -29,7 +29,7 @@
 struct axiom_node
 {
 
-    /** document only availble if build through builder */
+    /** document only available if build through builder */
     struct axiom_document *om_doc;
 
     axiom_stax_builder_t *builder;
@@ -413,7 +413,7 @@ axiom_node_insert_sibling_after(
 
     if (!om_node->parent)
     {
-        /* We shouldn't add a sibling becuase this node doesn't has a parent. 
+        /* We shouldn't add a sibling because this node doesn't has a parent. 
          * This can be the root node of the tree*/        
         return AXIS2_FAILURE;
     }
@@ -448,7 +448,7 @@ axiom_node_insert_sibling_before(
 
     if (!om_node->parent)
     {
-        /* We shouldn't add a sibling becuase this node doesn't has a parent. 
+        /* We shouldn't add a sibling because this node doesn't has a parent. 
          * This can be the root node of the tree*/
         return AXIS2_FAILURE;
     }
@@ -996,7 +996,7 @@ axiom_node_serialize_sub_tree(
                             axutil_hash_t *temp_attributes = NULL;
                             axiom_namespace_t *namespace = NULL;
 
-                            /* similar to the earlier time, whenever the ending is happend
+                            /* similar to the earlier time, whenever the ending is happened
                              * namespaces declared specially to that element should be cancelled */
                          
                             /* first checking the element namespace */
