@@ -66,7 +66,7 @@ extern "C"
      * @return MAC address as a <code>char[6]</code>
      */
     char *AXIS2_CALL
-    axutil_uuid_get_mac_addr(
+    axutil_uuid_get_mac_addr(void
     );
 
     /**
@@ -74,7 +74,7 @@ extern "C"
      * @return generated uuid as a axutil_uuid_t
      */
     axutil_uuid_t *AXIS2_CALL
-    axutil_uuid_gen_v1(
+    axutil_uuid_gen_v1(void
     );
 
     /**

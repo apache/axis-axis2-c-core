@@ -832,7 +832,7 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axutil_error_init();
+    axutil_error_init(void);
 
     /**
      * De-allocates an error struct instance.

@@ -417,7 +417,7 @@ extern "C"
      * is needed to initialize libxml2. 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_xml_reader_init(
+    axiom_xml_reader_init(void
     );
 
     /**
@@ -425,7 +425,7 @@ extern "C"
      * parser.
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_xml_reader_cleanup(
+    axiom_xml_reader_cleanup(void
     );
 
     /**

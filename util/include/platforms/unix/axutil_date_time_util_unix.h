@@ -36,7 +36,7 @@ extern "C"
      * @{
      */
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_platform_get_milliseconds(
+    axis2_platform_get_milliseconds(void
     );
 
 #ifdef __cplusplus

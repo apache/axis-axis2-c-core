@@ -136,7 +136,7 @@ extern "C"
      * force the current thread to yield the processor
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axutil_thread_yield(
+    axutil_thread_yield(void
     );
 
     /**
