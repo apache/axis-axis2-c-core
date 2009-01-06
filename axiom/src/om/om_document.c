@@ -214,7 +214,7 @@ axiom_document_build_all(
                 else
                 {
 
-                    /** error occured */
+                    /** error occurred */
                     return NULL;
                 }
             }
