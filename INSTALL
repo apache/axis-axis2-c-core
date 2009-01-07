@@ -699,7 +699,7 @@ Table of Contents
 5. Using Axis2/C with CGI
 	5.1  Deploying in Apache2
 		
-       		If you havent already done so you need to configure and set up an cgi-bin/ directory
+       		If you haven't already done so you need to configure and set up an cgi-bin/ directory
 	        that holds your CGI scripts,where we will put Axis2/C cgi executable axis2.cgi.
 
 	(Note: most of recent Apache web servers already have an cgi-bin dir set up, usually 
