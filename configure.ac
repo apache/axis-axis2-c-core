@@ -478,6 +478,7 @@ AC_CONFIG_FILES([Makefile \
 	src/core/transport/amqp/sender/qpid_sender/Makefile \
 	src/core/transport/amqp/server/Makefile \
     src/core/transport/amqp/server/axis2_amqp_server/Makefile \
+	src/core/transport/http/server/CGI/Makefile \
     src/core/deployment/Makefile \
     src/core/clientapi/Makefile \
     src/core/receivers/Makefile \
