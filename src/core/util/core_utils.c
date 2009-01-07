@@ -738,6 +738,7 @@ axis2_core_utils_free_rest_map (
             if(mapping_struct->params_map) {
                 axis2_core_utils_free_rest_map(env, mapping_struct->params_map);
             }  
+            AXIS2_FREE(env->allocator, mapping_struct);
         }
 
         if (key)
