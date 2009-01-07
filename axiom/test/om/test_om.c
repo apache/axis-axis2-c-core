@@ -31,7 +31,7 @@
 #include <axutil_env.h>
 
 /**
-   Define the environment related variables globaly so that they are available
+   Define the environment related variables globally so that they are available
    for both functions
 */
 
@@ -44,7 +44,7 @@ FILE *f = NULL;
 
 /** a method that demonstrate creating a om model using an xml file */
 
-int
+int AXIS2_CALL
 read_input(
     char *buffer,
     int size,
@@ -385,7 +385,7 @@ int
 main(
     int argc,
     char *argv[])
-{
+ {
     const char *file_name = "../../resources/xml/om/test.xml";
     if (argc > 1)
         file_name = argv[1];
