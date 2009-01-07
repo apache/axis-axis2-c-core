@@ -1,5 +1,5 @@
 prgbindir=$(bindir)
-prgbin_PROGRAMS = axis2_cgi
+prgbin_PROGRAMS = axis2.cgi
 SUBDIRS =
 AM_CFLAGS = -g -pthread
 axis2_cgi_SOURCES = axis2_cgi_main.c \
