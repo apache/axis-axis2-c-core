@@ -216,7 +216,7 @@ AC_ARG_ENABLE(tcp, [  --enable-tcp
 
 AC_MSG_CHECKING(whether to use cgi transport)
 AC_ARG_ENABLE(cgi, [  --enable-cgi
-                          build tcp transport (default=no)],
+                          build cgi transport (default=no)],
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
