@@ -827,7 +827,7 @@ axis2_libcurl_get_content_type(
     const axutil_env_t * env)
 {
     axis2_http_header_t *tmp_header;
-    axis2_char_t *rtn_value	= AXIS2_HTTP_HEADER_ACCEPT_TEXT_PLAIN;
+    axis2_char_t *rtn_value	= NULL;
 
     tmp_header = axis2_libcurl_get_first_header
         (curl, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
@@ -835,6 +835,10 @@ axis2_libcurl_get_content_type(
     {
         rtn_value = axutil_strdup (env, axis2_http_header_get_value(tmp_header, env) );
         axis2_http_header_free( tmp_header, env );
+    }
+    else
+    {
+        rtn_value = axutil_strdup (env, AXIS2_HTTP_HEADER_ACCEPT_TEXT_PLAIN);
     }
 
     return rtn_value;
