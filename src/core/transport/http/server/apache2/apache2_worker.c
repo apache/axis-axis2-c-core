@@ -202,7 +202,7 @@ axis2_apache2_worker_process_request(
     axutil_array_list_t *mime_parts = NULL;
     axutil_param_t *callback_name_param = NULL;
     axis2_char_t *mtom_sending_callback_name = NULL;
-    
+    axis2_status_t status = AXIS2_FAILURE;
 
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
@@ -645,7 +645,7 @@ axis2_apache2_worker_process_request(
     }
     else if (M_POST == request->method_number || M_PUT == request->method_number)
     {
-        axis2_status_t status = AXIS2_FAILURE;
+        /*axis2_status_t status = AXIS2_FAILURE;*/
         if (M_POST == request->method_number)
         {
             status = axis2_http_transport_utils_process_http_post_request
@@ -1193,21 +1193,27 @@ axis2_apache2_worker_process_request(
 
         /* In mtom case we send the attachment differently */
 
-        do_mtom = axis2_msg_ctx_get_doing_mtom(out_msg_ctx, env);
-        if(do_mtom)
+        /* status = AXIS2_FAILURE means fault scenario. We are not 
+         * doing MTOM for fault cases. */
+
+        if(status != AXIS2_FAILURE)
         {
-            mime_parts = axis2_msg_ctx_get_mime_parts(out_msg_ctx, env);
-            if(!mime_parts)
+            do_mtom = axis2_msg_ctx_get_doing_mtom(out_msg_ctx, env);
+            if(do_mtom)
             {
-                return AXIS2_FAILURE;
+                mime_parts = axis2_msg_ctx_get_mime_parts(out_msg_ctx, env);
+                if(!mime_parts)
+                {
+                    return AXIS2_FAILURE;
+                }
+                callback_name_param = axis2_msg_ctx_get_parameter(msg_ctx, env ,
+                    AXIS2_MTOM_SENDING_CALLBACK);
+                if(callback_name_param)
+                {
+                    mtom_sending_callback_name =
+                        (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
+                }            
             }
-            callback_name_param = axis2_msg_ctx_get_parameter(msg_ctx, env ,
-                AXIS2_MTOM_SENDING_CALLBACK);
-            if(callback_name_param)
-            {
-                mtom_sending_callback_name =
-                    (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
-            }            
         }
 
         if (out_msg_ctx)
