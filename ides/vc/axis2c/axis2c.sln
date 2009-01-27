@@ -156,6 +156,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yahoo", "clients\yahoo\yaho
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "echo", "clients\echo\echo.vcproj", "{57414A3E-782C-4472-9EEE-981EF0649258}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "axis2_xpath", "xpath\xpath.vcproj", "{2C2A104B-5161-4014-B3D3-C1770F378A50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -305,6 +307,10 @@ Global
 		{57414A3E-782C-4472-9EEE-981EF0649258}.Debug|Win32.Build.0 = Debug|Win32
 		{57414A3E-782C-4472-9EEE-981EF0649258}.Release|Win32.ActiveCfg = Release|Win32
 		{57414A3E-782C-4472-9EEE-981EF0649258}.Release|Win32.Build.0 = Release|Win32
+		{2C2A104B-5161-4014-B3D3-C1770F378A50}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2C2A104B-5161-4014-B3D3-C1770F378A50}.Debug|Win32.Build.0 = Debug|Win32
+		{2C2A104B-5161-4014-B3D3-C1770F378A50}.Release|Win32.ActiveCfg = Release|Win32
+		{2C2A104B-5161-4014-B3D3-C1770F378A50}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
