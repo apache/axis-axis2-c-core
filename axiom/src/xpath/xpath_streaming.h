@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-#ifndef XPATH_STREAMING_H
-#define XPATH_STREAMING_H
+#ifndef AXIOM_XPATH_STREAMING_H
+#define AXIOM_XPATH_STREAMING_H
 
 #include "xpath_internals.h"
 

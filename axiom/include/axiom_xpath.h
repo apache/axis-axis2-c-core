@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-#ifndef XPATH_H
-#define XPATH_H
+#ifndef AXIOM_XPATH_H
+#define AXIOM_XPATH_H
 
 #include <axiom.h>
 #include <axis2_util.h>

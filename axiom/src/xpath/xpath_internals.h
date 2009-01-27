@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-#ifndef XPATH_INTERNALS_H
-#define XPATH_INTERNALS_H
+#ifndef AXIOM_XPATH_INTERNALS_H
+#define AXIOM_XPATH_INTERNALS_H
 
 #ifdef __cplusplus
 extern "C"

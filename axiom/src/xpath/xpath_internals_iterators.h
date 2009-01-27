@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-#ifndef XPATH_INTERNALS_ITERATORS_H
-#define XPATH_INTERNALS_ITERATORS_H
+#ifndef AXIOM_XPATH_INTERNALS_ITERATORS_H
+#define AXIOM_XPATH_INTERNALS_ITERATORS_H
 
 #include <axiom_xpath.h>
 

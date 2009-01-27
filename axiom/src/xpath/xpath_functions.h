@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-#ifndef XPATH_FUNCTIONS_H
-#define XPATH_FUNCTIONS_H
+#ifndef AXIOM_XPATH_FUNCTIONS_H
+#define AXIOM_XPATH_FUNCTIONS_H
 
 #include <axiom_xpath.h>
 

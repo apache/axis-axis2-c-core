@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-#ifndef XPATH_INTERNALS_PARSER_H
-#define XPATH_INTERNALS_PARSER_H
+#ifndef AXIOM_XPATH_INTERNALS_PARSER_H
+#define AXIOM_XPATH_INTERNALS_PARSER_H
 
 #ifdef __cplusplus
 extern "C"
