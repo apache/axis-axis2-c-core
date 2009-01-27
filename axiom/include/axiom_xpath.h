@@ -20,7 +20,8 @@
 #define AXIOM_XPATH_H
 
 #include <axiom.h>
-#include <axis2_util.h>
+#include <axutil_env.h>
+#include <axutil_stack.h>
 #include <axiom_soap.h>
 
 #ifdef __cplusplus
