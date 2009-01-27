@@ -66,6 +66,7 @@ AXIS2_INTDIR_SAMPLES = $(AXIS2_INTDIR)\samples
 AXUTIL = axutil
 AXIS2_PARSER = axis2_parser
 AXIOM = axiom
+AXIS2_XPATH = axis2_xpath
 NEETHI = neethi				 
 AXIS2_HTTP_SENDER = axis2_http_sender
 AXIS2_HTTP_RECEIVER = axis2_http_receiver
@@ -421,6 +422,29 @@ axiom : $(AXIS2_LIBS)\$(AXIOM).dll
 
 ##### end axiom
 
+##### axis2_xpath
+
+XPATH_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\xpath
+XPATH_INTDIR = $(AXIS2_INTDIR)\axiom\xpath
+
+XPATH_OBJS = $(XPATH_INTDIR)\*.obj
+
+$(XPATH_INTDIR) :
+	@if not exist $(XPATH_INTDIR) mkdir $(XPATH_INTDIR)
+
+{$(AXIOM_SRC)\xpath}.c{$(XPATH_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(XPATH_INTDIR)\ /c $<
+
+$(XPATH_OBJS) : $(XPATH_INTDIR)
+
+$(AXIS2_LIBS)\$(AXIS2_XPATH).dll : $(XPATH_OBJS) 
+	$(LD) $(LDFLAGS) $(XPATH_OBJS) $(AXUTIL).lib $(AXIOM).lib $(LIBS) \
+	/DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_XPATH).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_XPATH).lib
+	-@$(_VC_MANIFEST_EMBED_DLL)
+
+axis2_xpath : $(AXIS2_LIBS)\$(AXIS2_XPATH).dll
+
+##### end axis2_xpath
 ##### neethi
 NEETHI_SRC = $(AXIS2_SOURCE_DIR)\neethi\src
 NEETHI_INTDIR = $(AXIS2_INTDIR)\neethi
@@ -890,10 +914,10 @@ axis2_cgi : $(AXIS2_BINS)\$(AXIS2_CGI)
 #  Core Build Targets
 ################################
 
-axis2_core:axis2_basic_modules axiom neethi axis2_engine axis2_http_sender \
+axis2_core:axis2_basic_modules axiom axis2_xpath neethi axis2_engine axis2_http_sender \
 	axis2_http_receiver axis2_mod_addr simple_axis2_http_server
 
-axis2_core_without_server:  axis2_basic_modules axiom neethi axis2_engine axis2_http_sender \
+axis2_core_without_server:  axis2_basic_modules axiom axis2_xpath neethi axis2_engine axis2_http_sender \
         axis2_http_receiver axis2_mod_addr
 
 axis2_tcp : axis2_tcp_sender axis2_tcp_receiver simple_axis2_tcp_server
