@@ -195,7 +195,7 @@ extern "C"
       * @return The parsed XPath expression. Returns NULL if an error occured
       *         while parsing.
       */
-    axiom_xpath_expression_t * AXIS2_CALL axiom_xpath_compile_expression(
+    AXIS2_EXTERN axiom_xpath_expression_t * AXIS2_CALL axiom_xpath_compile_expression(
         const axutil_env_t *env,
         const axis2_char_t* xpath_expr);
 
@@ -206,7 +206,7 @@ extern "C"
       * @param root_node A pointer to the root of the tree
       * @return The initialized XPath context.
       */
-    axiom_xpath_context_t * AXIS2_CALL axiom_xpath_context_create(
+    AXIS2_EXTERN axiom_xpath_context_t * AXIS2_CALL axiom_xpath_context_create(
         axutil_env_t *env,
         axiom_node_t * root_node);
 
@@ -219,7 +219,7 @@ extern "C"
       * @param xpath_expr XPath expression to be evaluated
       * @return The set of results.
       */
-    axiom_xpath_result_t * AXIS2_CALL axiom_xpath_evaluate(
+    AXIS2_EXTERN axiom_xpath_result_t * AXIS2_CALL axiom_xpath_evaluate(
         axiom_xpath_context_t *context,
         axiom_xpath_expression_t *xpath_expr);
 
@@ -235,7 +235,7 @@ extern "C"
       * @param node A pointer to the XPath result
       * @return The boolean value.
       */
-    axis2_bool_t AXIS2_CALL axiom_xpath_cast_node_to_boolean(
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL axiom_xpath_cast_node_to_boolean(
         const axutil_env_t *env,
         axiom_xpath_result_node_t * node);
 
@@ -249,7 +249,7 @@ extern "C"
       * @param node A pointer to the XPath result
       * @return The numerical value.
       */
-    double AXIS2_CALL axiom_xpath_cast_node_to_number(
+    AXIS2_EXTERN double AXIS2_CALL axiom_xpath_cast_node_to_number(
         const axutil_env_t *env,
         axiom_xpath_result_node_t * node);
 
@@ -265,7 +265,7 @@ extern "C"
       * @param node A pointer to the XPath result
       * @return The text value.
       */
-    axis2_char_t * AXIS2_CALL axiom_xpath_cast_node_to_string(
+    AXIS2_EXTERN axis2_char_t * AXIS2_CALL axiom_xpath_cast_node_to_string(
         const axutil_env_t *env,
         axiom_xpath_result_node_t * node);
 
@@ -277,7 +277,7 @@ extern "C"
       * @param node A pointer to the XPath result
       * @return The axiom node.
       */
-    axiom_node_t * AXIS2_CALL axiom_xpath_cast_node_to_axiom_node(
+    AXIS2_EXTERN axiom_node_t * AXIS2_CALL axiom_xpath_cast_node_to_axiom_node(
         const axutil_env_t *env,
         axiom_xpath_result_node_t * node);
 
@@ -288,7 +288,7 @@ extern "C"
       * @param env Environment must not be null
       * @param context XPath context must not be null
       */
-    void AXIS2_CALL axiom_xpath_free_context(
+    AXIS2_EXTERN void AXIS2_CALL axiom_xpath_free_context(
         const axutil_env_t *env,
         axiom_xpath_context_t *context);
 
@@ -298,7 +298,7 @@ extern "C"
       * @param env Environment must not be null
       * @param xpath_expr XPath expression must not be null
       */
-    void AXIS2_CALL axiom_xpath_free_expression(
+    AXIS2_EXTERN void AXIS2_CALL axiom_xpath_free_expression(
         const axutil_env_t *env,
         axiom_xpath_expression_t * xpath_expr);
 
@@ -308,7 +308,7 @@ extern "C"
       * @param env Environment must not be null
       * @param result XPath result set must not be null
       */
-    void AXIS2_CALL axiom_xpath_free_result(
+    AXIS2_EXTERN void AXIS2_CALL axiom_xpath_free_result(
         const axutil_env_t *env,
         axiom_xpath_result_t* result);
 
@@ -318,7 +318,7 @@ extern "C"
       * @param context XPath Context, must not be null
       * @param ns AXIOM namespace, must not be null
       */
-    void AXIS2_CALL axiom_xpath_register_namespace(
+    AXIS2_EXTERN void AXIS2_CALL axiom_xpath_register_namespace(
         axiom_xpath_context_t *context,
         axiom_namespace_t *ns);
 
@@ -330,7 +330,7 @@ extern "C"
       * @param prefix Prefix of the namespace, must not be null
       * @return The namespace corresponding to the prefix.
       */
-    axiom_namespace_t * AXIS2_CALL axiom_xpath_get_namespace(
+    AXIS2_EXTERN axiom_namespace_t * AXIS2_CALL axiom_xpath_get_namespace(
         axiom_xpath_context_t *context,
         axis2_char_t *prefix);
 
@@ -339,7 +339,7 @@ extern "C"
       *
       * @param context XPath Context, must not be null
       */
-    void AXIS2_CALL axiom_xpath_clear_namespaces(
+    AXIS2_EXTERN void AXIS2_CALL axiom_xpath_clear_namespaces(
         axiom_xpath_context_t *context);
 
     /**
@@ -350,7 +350,7 @@ extern "C"
       * @param context XPath Context, must not be null
       * @param xpath_expr XPath expression to be evaluated
       */
-    axiom_xpath_result_t * AXIS2_CALL axiom_xpath_evaluate_streaming(
+    AXIS2_EXTERN axiom_xpath_result_t * AXIS2_CALL axiom_xpath_evaluate_streaming(
         axiom_xpath_context_t *context,
         axiom_xpath_expression_t *xpath_expr);
 
@@ -362,7 +362,7 @@ extern "C"
       * @param expr Complied XPath expression, must not be null
       * @return A boolean indicating whether the expression can be evaluated on streaming XML.
       */
-    axis2_bool_t AXIS2_CALL axiom_xpath_streaming_check(
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL axiom_xpath_streaming_check(
         const axutil_env_t *env,
         axiom_xpath_expression_t* expr);
 
@@ -371,7 +371,7 @@ extern "C"
       *
       * @param context XPath Context, must not be null
       */
-    void AXIS2_CALL axiom_xpath_register_default_functions_set(
+    AXIS2_EXTERN void AXIS2_CALL axiom_xpath_register_default_functions_set(
         axiom_xpath_context_t *context);
 
     /**
@@ -381,7 +381,7 @@ extern "C"
       * @param name Name of the function, must not be null
       * @param func Pointer to the function, must not be null
       */
-    void AXIS2_CALL axiom_xpath_register_function(
+    AXIS2_EXTERN void AXIS2_CALL axiom_xpath_register_function(
         axiom_xpath_context_t *context,
         axis2_char_t *name,
         axiom_xpath_function_t func);
@@ -394,7 +394,7 @@ extern "C"
       * @param name Name of the function, must not be null
       * @return The corresponding function.
       */
-    axiom_xpath_function_t AXIS2_CALL axiom_xpath_get_function(
+    AXIS2_EXTERN axiom_xpath_function_t AXIS2_CALL axiom_xpath_get_function(
         axiom_xpath_context_t *context,
         axis2_char_t *name);
 

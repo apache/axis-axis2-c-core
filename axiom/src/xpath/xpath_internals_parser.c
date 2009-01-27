@@ -19,6 +19,7 @@
 #include <axiom_xpath.h>
 #include "xpath_internals.h"
 #include "xpath_internals_parser.h"
+#include <ctype.h>
 
 /* Compile an XPath expression */
 int axiom_xpath_compile(
