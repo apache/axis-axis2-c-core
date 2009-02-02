@@ -188,7 +188,7 @@ extern "C"
      * Create and initialize a mutex that can be used to synchronize threads.
      * @param allocator Memory allocator to allocate memory for the mutex
      * @warning Be cautious in using AXIS2_THREAD_MUTEX_DEFAULT.  While this is the
-     * most optimial mutex based on a given platform's performance charateristics,
+     * most optimal mutex based on a given platform's performance characteristics,
      * it will behave as either a nested or an unnested lock.
      */
     AXIS2_EXTERN axutil_thread_mutex_t *AXIS2_CALL
