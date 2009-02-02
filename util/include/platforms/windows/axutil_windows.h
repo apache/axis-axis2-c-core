@@ -158,7 +158,7 @@ extern "C"
      * Get the last error code from the system.
      * Please ensure that this is a thread safe implementation
      * and that it returns a long
-     * @return long the lsat error message for this thread
+     * @return long the last error message for this thread
      */
 #define AXIS2_GETLASTERROR GetLastError();
 
@@ -169,6 +169,10 @@ extern "C"
      */
 #define AXIS2_PLATFORM_GET_ERROR_MESSAGE(errorNumber) getPlatformErrorMessage(errorNumber);
 
+	/**
+	 * Platform specific method to obtain current thread ID
+	 */
+#define AXIS2_PLATFORM_GET_THREAD_ID GetCurrentThreadId()
     /**
      * type to be used for 64bit integers
      */
