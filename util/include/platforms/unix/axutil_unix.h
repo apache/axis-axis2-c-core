@@ -150,7 +150,7 @@ extern int usleep (__useconds_t __useconds);
      * Get the last error code from the system.
      * Please ensure that this is a thread safe implementation
      * and that it returns a long
-     * @return long the lsat error message for this thread
+     * @return long the last error message for this thread
      */
 
     /*#define AXIS2_GETLASTERROR errno; */
