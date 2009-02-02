@@ -140,6 +140,12 @@ extern "C"
      */
 #define AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL 401
 
+	/**
+	* RESPONSE_HTTP_FORBIDDEN_CODE_VAL
+	*/
+#define AXIS2_HTTP_RESPONSE_FORBIDDEN_CODE_VAL 403
+
+
     /**
      * RESPONSE_NOT_FOUND_CODE_VAL
      */
@@ -274,6 +280,12 @@ extern "C"
      * RESPONSE_HTTP_UNAUTHORIZED_CODE_NAME
      */
 #define AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_NAME "Unauthorized"
+
+
+	/**
+	 *  RESPONSE_HTTP_FORBIDDEN_CODE_NAME                                                                     
+	 */
+#define AXIS2_HTTP_RESPONSE_HTTP_FORBIDDEN_CODE_NAME "Forbidden"
 
     /**
      * RESPONSE_NOT_FOUND_CODE_NAME
@@ -771,6 +783,12 @@ extern "C"
      * RESPONSE_HTTP_UNAUTHORIZED
      */
 #define AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED "401 Unauthorized"
+
+
+   /**
+    *	RESPONSE_HTTP_FORBIDDEN
+	*/
+#define AXIS2_HTTP_RESPONSE_HTTP_FORBIDDEN "403 Forbidden"
 
     /**
       * RESPONSE_PROXY_AUTHENTICATION_REQUIRED
