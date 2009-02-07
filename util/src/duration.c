@@ -118,7 +118,7 @@ axutil_duration_create_from_values(
 AXIS2_EXTERN axutil_duration_t *AXIS2_CALL
 axutil_duration_create_from_string(
     const axutil_env_t *env,
-    axis2_char_t *duration_str)
+    const axis2_char_t *duration_str)
 {
     axutil_duration_t *duration = NULL;
 

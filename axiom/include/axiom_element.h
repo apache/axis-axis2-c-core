@@ -561,7 +561,7 @@ extern "C"
     axiom_element_find_namespace_uri(
         axiom_element_t * om_element,
         const axutil_env_t * env,
-        axis2_char_t * prefix,
+        const axis2_char_t * prefix,
         axiom_node_t * element_node);
 
     /**

@@ -60,7 +60,7 @@ extern "C"
 
     axutil_duration_create_from_string(
         const axutil_env_t * env,
-        axis2_char_t * duration_str);
+        const axis2_char_t * duration_str);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_duration_free(
