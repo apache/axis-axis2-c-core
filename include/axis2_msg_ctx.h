@@ -1453,7 +1453,7 @@ extern "C"
      * @param supported_rest_http_methods pointer array list containing
      * the list of HTTP Methods supported. Message context does
      * assumes the ownership of the array list. Anything added to this
-     * arrary list will be freed by the msg_ctx
+     * array list will be freed by the msg_ctx
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
