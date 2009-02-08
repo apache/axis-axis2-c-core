@@ -172,7 +172,7 @@ extern "C"
 	/**
 	 * Platform specific method to obtain current thread ID
 	 */
-#define AXIS2_PLATFORM_GET_THREAD_ID GetCurrentThreadId()
+#define AXIS2_PLATFORM_GET_THREAD_ID() GetCurrentThreadId()
     /**
      * type to be used for 64bit integers
      */
