@@ -167,7 +167,7 @@ extern int usleep (__useconds_t __useconds);
      * Platform specific method to obtain current thread ID
      */
 #include <pthread.h>
-#define AXIS2_PLATFORM_GET_THREAD_ID pthread_self()
+#define AXIS2_PLATFORM_GET_THREAD_ID() pthread_self()
 
     /**
      * Platform specific method to obtain current time in milli seconds
