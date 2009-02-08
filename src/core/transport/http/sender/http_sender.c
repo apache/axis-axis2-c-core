@@ -540,10 +540,15 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
         if (!send_via_put)
         {
             /* HTTP POST */
+            axis2_char_t *path_with_query = NULL;
+
+            path_with_query = axutil_strcat(env, axutil_url_get_path (url, env),
+                                                 axutil_url_get_query(url, env), NULL);
             request_line =
                 axis2_http_request_line_create (env, AXIS2_HTTP_POST,
-                                                axutil_url_get_path (url, env),
+                                                path_with_query,
                                                 sender->http_version);
+            AXIS2_FREE(env->allocator, path_with_query);
         }
         else
         {
