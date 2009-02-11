@@ -59,13 +59,32 @@ extern "C"
       * @param mime_boundary the MIME boundary
       * @return mime parts as a hash map 
       */
-    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+    /*AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axiom_mime_parser_parse(
         axiom_mime_parser_t * mime_parser,
         const axutil_env_t * env,
         AXIS2_READ_INPUT_CALLBACK,
         void *callback_ctx,
+        axis2_char_t * mime_boundary);*/
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_mime_parser_parse_for_soap(
+        axiom_mime_parser_t * mime_parser,
+        const axutil_env_t * env,
+        AXIS2_READ_INPUT_CALLBACK callback,
+        void *callback_ctx,
         axis2_char_t * mime_boundary);
+
+
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+    axiom_mime_parser_parse_for_attachments(
+        axiom_mime_parser_t * mime_parser,
+        const axutil_env_t * env,
+        AXIS2_READ_INPUT_CALLBACK callback,
+        void *callback_ctx,
+        axis2_char_t * mime_boundary,
+        void *user_param);
+
 
     /**
       * Returns mime parts as a hash map
@@ -176,6 +195,19 @@ extern "C"
         axiom_mime_parser_t *mime_parser,
         const axutil_env_t *env,
         axis2_char_t *callback_name);
+
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_mime_parser_set_mime_boundary(
+        axiom_mime_parser_t *mime_parser,
+        const axutil_env_t *env,
+        axis2_char_t *mime_boundary);
+
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axiom_mime_parser_get_mime_boundary(
+        axiom_mime_parser_t *mime_parser,
+        const axutil_env_t *env);
 
 
 
