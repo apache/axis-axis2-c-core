@@ -52,6 +52,16 @@ struct axiom_mime_parser
     /* The caching callback name specified */
     axis2_char_t *callback_name;
 
+    axis2_char_t **buf_array;
+
+    int *len_array;
+
+    int current_buf_num;
+
+    axis2_bool_t end_of_mime;
+
+    axis2_char_t *mime_boundary;
+
 };
 
 struct axiom_search_info
@@ -151,7 +161,8 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
     axiom_search_info_t *search_info,
     int size,
     axis2_char_t *mime_boundary,
-    axis2_char_t *mime_id);
+    axis2_char_t *mime_id,
+    void *user_param);
 
 static axis2_status_t axiom_mime_parser_store_attachment(
     const axutil_env_t *env,
@@ -198,7 +209,8 @@ axiom_mime_parser_cache_to_file(
 static void* axiom_mime_parser_initiate_callback(
     axiom_mime_parser_t *mime_parser,
     const axutil_env_t *env,
-    axis2_char_t *mime_id);
+    axis2_char_t *mime_id,
+    void *user_param);
 
 
 
@@ -227,6 +239,11 @@ axiom_mime_parser_create(
     mime_parser->attachment_dir = NULL;
     mime_parser->mtom_caching_callback = NULL;
     mime_parser->callback_name = NULL;
+    mime_parser->buf_array = NULL;
+    mime_parser->len_array = NULL;
+    mime_parser->current_buf_num = 0;
+    mime_parser->end_of_mime = AXIS2_FALSE;
+    mime_parser->mime_boundary = NULL;
 
     mime_parser->mime_parts_map = axutil_hash_make(env);
     if (!(mime_parser->mime_parts_map))
@@ -265,6 +282,18 @@ axiom_mime_parser_free(
         }
     }
 
+    if(mime_parser->buf_array)
+    {
+        AXIS2_FREE(env->allocator, mime_parser->buf_array);
+        mime_parser->buf_array = NULL;
+    }
+    
+    if(mime_parser->len_array)
+    {
+        AXIS2_FREE(env->allocator, mime_parser->len_array);
+        mime_parser->len_array = NULL;
+    }
+
     if (mime_parser)
     {
         AXIS2_FREE(env->allocator, mime_parser);
@@ -273,8 +302,8 @@ axiom_mime_parser_free(
     return;
 }
 
-AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
-axiom_mime_parser_parse(
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_mime_parser_parse_for_soap(
     axiom_mime_parser_t * mime_parser,
     const axutil_env_t * env,
     AXIS2_READ_INPUT_CALLBACK callback,
@@ -284,8 +313,6 @@ axiom_mime_parser_parse(
     int size = 0;
     axis2_char_t *soap_str = NULL;
     int soap_len = 0;
-    axis2_char_t *mime_headers = NULL;
-    int mime_headers_len = 0;
     int temp_mime_boundary_size = 0;
     axis2_char_t *temp_mime_boundary = NULL;
     axis2_char_t **buf_array = NULL;
@@ -295,11 +322,7 @@ axiom_mime_parser_parse(
     axiom_search_info_t *search_info = NULL;
     int part_start = 0;
     axis2_bool_t end_of_mime = AXIS2_FALSE;
-    int count = 0; 
-    int mime_binary_len = 0;
-    axis2_char_t *mime_binary = NULL;
     int len = 0;
-    axis2_status_t status = AXIS2_FAILURE; 
     axis2_char_t *buffer = NULL;
     int malloc_len = 0;
     axis2_callback_info_t *callback_info = NULL;
@@ -319,7 +342,7 @@ axiom_mime_parser_parse(
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "No memory. Failed in creating buffer array");
-        return NULL;
+        return AXIS2_FAILURE;
     }
 
     /*Keeps the corresponding lengths of buffers in buf_array*/
@@ -332,8 +355,11 @@ axiom_mime_parser_parse(
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "No memory. Failed in creating length array");
-        return NULL;
+        return AXIS2_FAILURE;
     }
+
+    mime_parser->buf_array = buf_array;
+    mime_parser->len_array = len_array;
 
     temp_mime_boundary = axutil_stracat(env, "--", mime_boundary);
     temp_mime_boundary_size = strlen(mime_boundary) + 2;
@@ -360,7 +386,7 @@ axiom_mime_parser_parse(
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "Error reading from the stream");
-        return NULL;
+        return AXIS2_FAILURE;
     }
 
     /*starting buffer for the current search*/
@@ -378,7 +404,7 @@ axiom_mime_parser_parse(
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "Error in the message.");
-        return NULL;
+        return AXIS2_FAILURE;
     }   
 
     /* The patteren contains in one buffer */
@@ -395,7 +421,7 @@ axiom_mime_parser_parse(
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "Error in parsing.");
-            return NULL;
+            return AXIS2_FAILURE;
         }
         else    
         {
@@ -446,7 +472,7 @@ axiom_mime_parser_parse(
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "Error in parsing.");
-            return NULL;
+            return AXIS2_FAILURE;
         } 
         else
         {
@@ -476,7 +502,7 @@ axiom_mime_parser_parse(
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "Error in parsing.");
-        return NULL;
+        return AXIS2_FAILURE;
     }
 
     /*Resetting the previous search data and getting ready 
@@ -499,7 +525,7 @@ axiom_mime_parser_parse(
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "Error while searching for the SOAP part ");
-        return NULL;
+        return AXIS2_FAILURE;
     }
     
     if(search_info->match_len2 == 0)
@@ -519,7 +545,7 @@ axiom_mime_parser_parse(
             {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                     "Error while creating the SOAP part from the message ");
-                return NULL;
+                return AXIS2_FAILURE;
             }
 
             malloc_len = len_array[buf_num] - search_info->match_len1 - temp_mime_boundary_size;
@@ -527,7 +553,7 @@ axiom_mime_parser_parse(
             {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                     "Error in parsing for mime.");
-                return NULL;
+                return AXIS2_FAILURE;
             }    
             else
             {
@@ -557,7 +583,7 @@ axiom_mime_parser_parse(
         }     
         else
         {
-            return NULL;
+            return AXIS2_FAILURE;
         }
     }    
 
@@ -578,13 +604,13 @@ axiom_mime_parser_parse(
             env, soap_len, buf_num - 1, len_array, part_start, pos, buf_array, mime_parser);
             if(!soap_str)
             {
-                return NULL;
+                return AXIS2_FAILURE;
             }
 
             malloc_len = len_array[buf_num] - search_info->match_len2;
             if(malloc_len < 0)
             {
-                return NULL;
+                return AXIS2_FAILURE;
             }    
             else
             {
@@ -610,12 +636,13 @@ axiom_mime_parser_parse(
         }     
         else
         {
-            return NULL;
+            return AXIS2_FAILURE;
         }
     }
 
     mime_parser->soap_body_str = soap_str;
     mime_parser->soap_body_len = soap_len;
+    mime_parser->current_buf_num = buf_num;
 
     /* There are multipart/related messages which does not contain attachments 
      * The only mime_part is the soap envelope. So for those messages the mime
@@ -631,25 +658,89 @@ axiom_mime_parser_parse(
         buf_array[buf_num] = NULL;
     }
 
+    if(temp_mime_boundary)
+    {
+        AXIS2_FREE(env->allocator, temp_mime_boundary);
+        temp_mime_boundary = NULL;
+    }
+
+    if(search_info)
+    {
+        AXIS2_FREE(env->allocator, search_info);
+        search_info = NULL;
+    }
+
+    mime_parser->end_of_mime = end_of_mime;
+
+    return AXIS2_SUCCESS;
+}
+
+
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
+axiom_mime_parser_parse_for_attachments(
+    axiom_mime_parser_t * mime_parser,
+    const axutil_env_t * env,
+    AXIS2_READ_INPUT_CALLBACK callback,
+    void *callback_ctx,
+    axis2_char_t * mime_boundary,
+    void *user_param)
+{
+    int count = 0;
+    axiom_search_info_t *search_info = NULL;
+    axis2_char_t *pos = NULL;
+    int part_start = 0;
+    axis2_char_t **buf_array = NULL;
+    int *len_array = NULL;
+    int buf_num = 0;;
+    int size = 0;
+    int malloc_len = 0;
+    axis2_callback_info_t *callback_info = NULL;
+    axis2_char_t *temp_mime_boundary = NULL;
+    int temp_mime_boundary_size = 0;
+    axis2_bool_t end_of_mime = AXIS2_FALSE;
+
+    callback_info = (axis2_callback_info_t *)callback_ctx;
+
+    search_info = AXIS2_MALLOC(env->allocator,
+        sizeof(axiom_search_info_t));
+
+    size = AXIOM_MIME_PARSER_BUFFER_SIZE * (mime_parser->buffer_size);
+
+    buf_array = mime_parser->buf_array;
+    len_array = mime_parser->len_array;
+    buf_num = mime_parser->current_buf_num;
+
+
     /*<SOAP></SOAP>--MIMEBOUNDARY
       mime_headr1:.......
       mime_headr2:....
 
       Binarstart.................
       ...............--MIMEBOUNDARY      
- */
+    */
     
     /* This loop will extract all the attachments in the message. The condition
      * with the count is needed because if the sender not marked the end of the 
      * attachment wiht -- then this loop may run infinitely. To prevent that
      * this additional condition has been put */
 
+    temp_mime_boundary = axutil_stracat(env, "--", mime_boundary);
+    temp_mime_boundary_size = strlen(mime_boundary) + 2;
 
-    while (!end_of_mime && count < AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT)
+
+    while ((!(mime_parser->end_of_mime)) && count < AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT)
     {
         /*First we will search for \r\n\r\n*/
         axis2_char_t *mime_id = NULL;
         axis2_char_t *mime_type = NULL; 
+        int mime_headers_len = 0;
+        int mime_binary_len = 0;
+        axis2_char_t *mime_binary = NULL;
+        axis2_char_t *mime_headers = NULL;
+        axis2_char_t *buffer = NULL;
+        int len = 0;    
+        axis2_status_t status = AXIS2_FAILURE;
+     
         search_info->match_len1 = 0;
         search_info->match_len2 = 0;
         pos = NULL;
@@ -680,7 +771,10 @@ axiom_mime_parser_parse(
             if(mime_headers_len > 0)
             {
                 mime_headers = axiom_mime_parser_create_part(
-                    env, mime_headers_len, buf_num, len_array, part_start, pos, buf_array, mime_parser);
+                    env, mime_headers_len, buf_num, 
+                    len_array, part_start, pos, 
+                    buf_array, mime_parser);
+
                 if(!mime_headers)
                 {
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
@@ -739,7 +833,7 @@ axiom_mime_parser_parse(
             if(mime_headers_len > 0)
             {
                 mime_headers = axiom_mime_parser_create_part(
-                    env, soap_len, buf_num - 1, len_array, part_start, pos, buf_array, mime_parser);
+                    env, mime_headers_len, buf_num - 1, len_array, part_start, pos, buf_array, mime_parser);
                 if(!mime_headers)
                 {
                     return NULL;
@@ -807,7 +901,7 @@ axiom_mime_parser_parse(
         /*We extract the mime headers. So lets search for the attachment.*/
 
         pos = axiom_mime_parser_search_for_attachment(mime_parser, env, callback, callback_ctx, &buf_num,
-          len_array, buf_array, search_info, size, temp_mime_boundary, mime_id);
+          len_array, buf_array, search_info, size, temp_mime_boundary, mime_id, user_param);
 
         if(pos)
         {
@@ -846,7 +940,7 @@ axiom_mime_parser_parse(
                     if(mime_binary_len > 0)
                     {
                         mime_binary = axiom_mime_parser_create_part(
-                            env, soap_len, buf_num - 1, len_array, part_start, pos, buf_array, mime_parser);
+                            env, mime_binary_len, buf_num - 1, len_array, part_start, pos, buf_array, mime_parser);
                         if(!mime_binary)
                         {
                             return NULL;
@@ -978,6 +1072,7 @@ axiom_mime_parser_parse(
                 AXIS2_FREE(env->allocator, buf_array[buf_num]);
                 buf_array[buf_num] = NULL;
             }
+            mime_parser->end_of_mime = end_of_mime;
         }
 
         if(mime_headers)
@@ -994,7 +1089,7 @@ axiom_mime_parser_parse(
 
     /*Do the necessary cleaning */
 
-    if (buf_array)
+    /*if (buf_array)
     {
         AXIS2_FREE(env->allocator, buf_array);
         buf_array = NULL;
@@ -1004,7 +1099,7 @@ axiom_mime_parser_parse(
     {
         AXIS2_FREE(env->allocator, len_array);
         len_array = NULL;
-    }
+    }*/
 
     if(temp_mime_boundary)
     {
@@ -1195,7 +1290,8 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
     axiom_search_info_t *search_info,
     int size,
     axis2_char_t *mime_boundary,
-    axis2_char_t *mime_id)
+    axis2_char_t *mime_id,
+    void *user_param)
 {
     axis2_char_t *found = NULL;
     int len = 0;   
@@ -1235,7 +1331,7 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
                     /* If the callback is not loaded yet then we load it*/
                     if(!mime_parser->mtom_caching_callback)
                     {
-                        search_info->handler = axiom_mime_parser_initiate_callback(mime_parser, env, mime_id);
+                        search_info->handler = axiom_mime_parser_initiate_callback(mime_parser, env, mime_id, user_param);
                         if(!(search_info->handler))
                         {
                             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
@@ -2048,13 +2144,32 @@ axiom_mime_parser_set_caching_callback_name(
     mime_parser->callback_name = callback_name;
 }
 
+AXIS2_EXTERN void AXIS2_CALL
+axiom_mime_parser_set_mime_boundary(
+    axiom_mime_parser_t *mime_parser,
+    const axutil_env_t *env,
+    axis2_char_t *mime_boundary)
+{
+    mime_parser->mime_boundary = mime_boundary;
+}
+
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axiom_mime_parser_get_mime_boundary(
+    axiom_mime_parser_t *mime_parser,
+    const axutil_env_t *env)
+{
+    return mime_parser->mime_boundary;
+}
+
 /* Load the caching callback dll */
 
 
 static void* axiom_mime_parser_initiate_callback(
     axiom_mime_parser_t *mime_parser,
     const axutil_env_t *env,
-    axis2_char_t *mime_id)
+    axis2_char_t *mime_id,
+    void *user_param)
 {
     axutil_dll_desc_t *dll_desc = NULL;
     axutil_param_t *impl_info_param = NULL;
@@ -2081,6 +2196,7 @@ static void* axiom_mime_parser_initiate_callback(
 
         mime_parser->mtom_caching_callback =  (axiom_mtom_caching_callback_t *)ptr;
         mime_parser->mtom_caching_callback->param = impl_info_param;
+        mime_parser->mtom_caching_callback->user_param = user_param;
 
         return AXIOM_MTOM_CACHING_CALLBACK_INIT_HANDLER(mime_parser->mtom_caching_callback, env, mime_id);
     }
@@ -2153,4 +2269,5 @@ axiom_mime_parser_cache_to_file(
         return AXIS2_SUCCESS;
     }
 }
+
 
