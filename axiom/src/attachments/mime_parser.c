@@ -691,7 +691,7 @@ axiom_mime_parser_parse_for_attachments(
     int part_start = 0;
     axis2_char_t **buf_array = NULL;
     int *len_array = NULL;
-    int buf_num = 0;;
+    int buf_num = 0;
     int size = 0;
     int malloc_len = 0;
     axis2_callback_info_t *callback_info = NULL;
@@ -2196,7 +2196,7 @@ static void* axiom_mime_parser_initiate_callback(
 
         mime_parser->mtom_caching_callback =  (axiom_mtom_caching_callback_t *)ptr;
         mime_parser->mtom_caching_callback->param = impl_info_param;
-        mime_parser->mtom_caching_callback->user_param = user_param;
+        /* mime_parser->mtom_caching_callback->user_param = user_param; */
 
         return AXIOM_MTOM_CACHING_CALLBACK_INIT_HANDLER(mime_parser->mtom_caching_callback, env, mime_id);
     }
