@@ -529,3 +529,25 @@ axiom_soap_body_convert_fault_to_soap11(
     }
     return AXIS2_SUCCESS;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_soap_body_process_attachments(
+    axiom_soap_body_t * soap_body,
+    const axutil_env_t * env,
+    void *user_pram,
+    axis2_char_t *callback_name)
+{
+    axis2_status_t status = AXIS2_FAILURE;
+
+    status = axiom_soap_builder_create_attachments(
+        soap_body->soap_builder, env, user_pram, callback_name);
+
+    if(status == AXIS2_FAILURE)
+    {
+        return status;                 
+    }    
+    else
+    {
+        return axiom_soap_body_build(soap_body, env);                        
+    }
+}

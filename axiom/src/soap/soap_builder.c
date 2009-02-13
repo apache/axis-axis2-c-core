@@ -26,6 +26,7 @@
 #include "_axiom_soap_header_block.h"
 #include <axiom_stax_builder_internal.h>
 #include "_axiom_soap_fault.h"
+#include <axutil_http_chunked_stream.h>
 
 axis2_status_t axiom_soap_builder_create_om_element(
     axiom_soap_builder_t * soap_builder,
@@ -89,6 +90,12 @@ struct axiom_soap_builder
 
     axutil_hash_t *mime_body_parts;
 
+    axiom_mime_parser_t *mime_parser;
+
+    AXIS2_READ_INPUT_CALLBACK callback;
+
+    void *callback_ctx;
+
 };
 
 typedef enum axis2_builder_last_node_states
@@ -136,6 +143,9 @@ axiom_soap_builder_create(
     soap_builder->soap_envelope = NULL;
     soap_builder->mime_body_parts = NULL;
     soap_builder->om_builder = stax_builder;
+    soap_builder->mime_parser = NULL;
+    soap_builder->callback = NULL;
+    soap_builder->callback_ctx = NULL;
 
     status =
         axiom_soap_builder_identify_soap_version(soap_builder, env,
@@ -210,6 +220,31 @@ axiom_soap_builder_free(
 
         axutil_hash_free(soap_builder->mime_body_parts, env);
         soap_builder->mime_body_parts = NULL;
+    }
+
+    if(soap_builder->mime_parser)
+    {
+        axiom_mime_parser_free(soap_builder->mime_parser, env);
+        soap_builder->mime_parser = NULL;
+    }        
+
+    if(soap_builder->callback_ctx)
+    {
+        axis2_callback_info_t *callback_info = NULL;
+
+        callback_info = (axis2_callback_info_t *)(soap_builder->callback_ctx);
+        if(callback_info)
+        {
+            if(callback_info->chunked_stream)
+            {
+                axutil_http_chunked_stream_free(callback_info->chunked_stream, env);
+                callback_info->chunked_stream = NULL;
+            }
+
+            AXIS2_FREE(env->allocator, callback_info);
+            callback_info = NULL;
+            soap_builder->callback_ctx = NULL;
+        }
     }
 
     if (soap_builder)
@@ -1172,3 +1207,88 @@ axiom_soap_builder_get_mime_body_parts(
 {
     return builder->mime_body_parts;
 }
+
+AXIS2_EXTERN void AXIS2_CALL
+axiom_soap_builder_set_mime_parser(
+    axiom_soap_builder_t * builder,
+    const axutil_env_t * env,
+    axiom_mime_parser_t *mime_parser)
+{
+    builder->mime_parser = mime_parser;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axiom_soap_builder_set_callback_function(
+    axiom_soap_builder_t * builder,
+    const axutil_env_t * env,
+    AXIS2_READ_INPUT_CALLBACK callback)
+{
+    builder->callback = callback;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axiom_soap_builder_set_callback_ctx(
+    axiom_soap_builder_t * builder,
+    const axutil_env_t * env,
+    void *callback_ctx)
+{
+    builder->callback_ctx = callback_ctx;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+axiom_soap_builder_create_attachments(
+    axiom_soap_builder_t * builder,
+    const axutil_env_t * env,
+    void *user_param,
+    axis2_char_t *callback_name)
+{
+    axutil_hash_t *attachments_map = NULL;
+    axis2_char_t *mime_boundary = NULL;
+
+    if(builder->mime_parser)
+    {
+        if(builder->callback_ctx)
+        {
+            mime_boundary = axiom_mime_parser_get_mime_boundary(
+                builder->mime_parser, env);
+
+            if(mime_boundary)
+            {
+                if(callback_name)
+                {
+                    axiom_mime_parser_set_caching_callback_name(builder->mime_parser, env, 
+                        callback_name);
+                }
+                attachments_map = axiom_mime_parser_parse_for_attachments(
+                    builder->mime_parser, env,
+                    builder->callback,
+                    builder->callback_ctx,
+                    mime_boundary,
+                    user_param);
+
+                if(attachments_map)
+                {
+                    builder->mime_body_parts = attachments_map;
+                    return AXIS2_SUCCESS; 
+                }  
+                else
+                {
+                    return AXIS2_FAILURE;
+                }  
+            }
+            else
+            {
+                return AXIS2_FAILURE;
+            }
+        }
+        else
+        {
+            return AXIS2_FAILURE;
+        }
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+}
+
