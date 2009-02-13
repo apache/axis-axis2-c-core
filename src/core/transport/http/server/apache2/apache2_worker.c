@@ -1434,8 +1434,19 @@ static axis2_status_t apache2_worker_send_mtom_message(
                 }
                 if(callback)
                 {
+                    axutil_param_t *param = NULL;
+
+                    param = callback->param;
+
                     AXIOM_MTOM_SENDING_CALLBACK_FREE(callback, env);
                     callback = NULL;
+
+                    if(param)
+                    {
+                        axutil_param_free(param, env);
+                        param = NULL;
+                    }
+
                 }
 
                 if(status == AXIS2_FAILURE)

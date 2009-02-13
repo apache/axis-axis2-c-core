@@ -288,6 +288,7 @@ axis2_http_transport_utils_process_http_post_request(
 
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_callback_info_t *callback_ctx;
+    axis2_callback_info_t *mime_cb_ctx;
     axutil_hash_t *headers = NULL;
     axis2_engine_t *engine = NULL;
     axiom_soap_body_t *soap_body = NULL;
@@ -300,6 +301,9 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_char_t *soap_action = NULL;
     unsigned int soap_action_len = 0;
     axutil_property_t *http_error_property = NULL;
+    axiom_mime_parser_t *mime_parser = NULL;
+    axis2_bool_t is_svc_callback = AXIS2_FALSE;
+
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, in_stream, AXIS2_FAILURE);
@@ -405,22 +409,42 @@ axis2_http_transport_utils_process_http_post_request(
 
         if (mime_boundary)
         {
-            axiom_mime_parser_t *mime_parser = NULL;
+            /*axiom_mime_parser_t *mime_parser = NULL;*/
             int soap_body_len = 0;
             axutil_param_t *buffer_size_param = NULL;
             axutil_param_t *max_buffers_param = NULL;
             axutil_param_t *attachment_dir_param = NULL;
             axutil_param_t *callback_name_param = NULL;
+            axutil_param_t *enable_service_callback_param = NULL;
             axis2_char_t *value_size = NULL;
             axis2_char_t *value_num = NULL;
             axis2_char_t *value_dir = NULL;
             axis2_char_t *value_callback = NULL;
+            axis2_char_t *value_enable_service_callback = NULL; 
             int size = 0;
             int num = 0;
 
             mime_parser = axiom_mime_parser_create(env);
             /* This is the size of the buffer we keep inside mime_parser
              * when parsing. */
+
+            enable_service_callback_param = axis2_msg_ctx_get_parameter (msg_ctx,
+                                                               env,
+                                                               AXIS2_ENABLE_MTOM_SERVICE_CALLBACK);
+            if(enable_service_callback_param)
+            {
+                value_enable_service_callback = (axis2_char_t *) axutil_param_get_value 
+                    (enable_service_callback_param, env);
+                if(value_enable_service_callback)
+                {
+                    if(!axutil_strcmp(value_enable_service_callback, AXIS2_VALUE_TRUE))
+                    {
+                        is_svc_callback = AXIS2_TRUE;        
+                    }
+                }    
+            }
+
+
             buffer_size_param = axis2_msg_ctx_get_parameter (msg_ctx,
                                                                env,
                                                                AXIS2_MTOM_BUFFER_SIZE);
@@ -480,27 +504,53 @@ axis2_http_transport_utils_process_http_post_request(
                 }
             }
 
-            if (mime_parser)
+            axiom_mime_parser_set_mime_boundary(mime_parser, env, mime_boundary);
+
+            if(axiom_mime_parser_parse_for_soap(mime_parser, env, 
+                    axis2_http_transport_utils_on_data_request, 
+                    (void *) callback_ctx,
+                    mime_boundary) == AXIS2_FAILURE)
+            {
+                return AXIS2_FAILURE;
+            }
+            
+            if(!is_svc_callback)
             {
                 binary_data_map = 
-                    axiom_mime_parser_parse(mime_parser, env,
-                                            axis2_http_transport_utils_on_data_request,
-                                            (void *) callback_ctx,
-                                            mime_boundary);
-                if (!binary_data_map)
+                    axiom_mime_parser_parse_for_attachments(mime_parser, env,
+                                        axis2_http_transport_utils_on_data_request,
+                                        (void *) callback_ctx,
+                                        mime_boundary,
+                                        NULL);
+                if(!binary_data_map)
                 {
                     return AXIS2_FAILURE;
                 }
-                soap_body_len =
-                    axiom_mime_parser_get_soap_body_len(mime_parser, env);
-                soap_body_str =
-                    axiom_mime_parser_get_soap_body_str(mime_parser, env);
             }
+            soap_body_len =
+                axiom_mime_parser_get_soap_body_len(mime_parser, env);
+            soap_body_str =
+                axiom_mime_parser_get_soap_body_str(mime_parser, env);
 
-            if(callback_ctx->chunked_stream)
+            if(!is_svc_callback)
             {
-                axutil_http_chunked_stream_free(callback_ctx->chunked_stream, env);
-                callback_ctx->chunked_stream = NULL;
+                if(callback_ctx->chunked_stream)
+                {
+                    axutil_http_chunked_stream_free(callback_ctx->chunked_stream, env);
+                    callback_ctx->chunked_stream = NULL;
+                }
+            }    
+            else
+            {
+                mime_cb_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_callback_info_t)); 
+                if(mime_cb_ctx)
+                {
+                    mime_cb_ctx->in_stream = callback_ctx->in_stream;
+                    mime_cb_ctx->env = callback_ctx->env;
+                    mime_cb_ctx->content_length = callback_ctx->content_length;
+                    mime_cb_ctx->unread_len = callback_ctx->unread_len;
+                    mime_cb_ctx->chunked_stream = callback_ctx->chunked_stream;
+                }
             }
 
             stream = axutil_stream_create_basic(env);
@@ -512,10 +562,10 @@ axis2_http_transport_utils_process_http_post_request(
                 callback_ctx->content_length = soap_body_len;
                 callback_ctx->unread_len = soap_body_len;
             }
-            axiom_mime_parser_free(mime_parser, env);
-            mime_parser = NULL;
+            /*axiom_mime_parser_free(mime_parser, env);
+            mime_parser = NULL;*/
 
-            AXIS2_FREE(env->allocator, mime_boundary);
+            /*AXIS2_FREE(env->allocator, mime_boundary);*/
         }
         /*AXIS2_FREE(env->allocator, mime_boundary);*/
     }
@@ -621,6 +671,7 @@ axis2_http_transport_utils_process_http_post_request(
             do_rest = AXIS2_TRUE;
         }
     }
+
     else if (strstr
              (content_type, AXIS2_HTTP_HEADER_ACCEPT_X_WWW_FORM_URLENCODED))
     {
@@ -635,6 +686,24 @@ axis2_http_transport_utils_process_http_post_request(
                                   AXIS2_HTTP_UNSUPPORTED_MEDIA_TYPE);
         axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_TRANSPORT_ERROR,
                                    http_error_property);
+    }
+
+    if(soap_builder)
+    {
+        if(mime_parser)
+        {
+            axiom_soap_builder_set_mime_parser(soap_builder, env, mime_parser);
+            if(mime_cb_ctx)
+            {
+                axiom_soap_builder_set_callback_ctx(soap_builder, env, mime_cb_ctx);
+                axiom_soap_builder_set_callback_function(soap_builder, env,
+                    axis2_http_transport_utils_on_data_request);
+            }
+            else
+            {
+                return AXIS2_FAILURE;
+            }
+        }
     }
 
     if (do_rest)
@@ -716,9 +785,16 @@ axis2_http_transport_utils_process_http_post_request(
     if (!soap_body)
         return AXIS2_FAILURE;
 
-    if (AXIS2_TRUE == axiom_soap_body_has_fault(soap_body, env))
+    if(!is_svc_callback)
     {
-        status = axis2_engine_receive_fault(engine, env, msg_ctx);
+        if (AXIS2_TRUE == axiom_soap_body_has_fault(soap_body, env))
+        {
+            status = axis2_engine_receive_fault(engine, env, msg_ctx);
+        }
+        else
+        {
+            status = axis2_engine_receive(engine, env, msg_ctx);
+        }
     }
     else
     {
@@ -949,11 +1025,11 @@ axis2_http_transport_utils_process_http_put_request(
 
             if (mime_parser)
             {
-                binary_data_map = 
+                /*binary_data_map = 
                     axiom_mime_parser_parse(mime_parser, env,
                                             axis2_http_transport_utils_on_data_request,
                                             (void *) callback_ctx,
-                                            mime_boundary);
+                                            mime_boundary);*/
                 if (!binary_data_map)
                 {
                     return AXIS2_FAILURE;
@@ -2156,11 +2232,25 @@ axis2_http_transport_utils_create_soap_msg(
  
             if (mime_parser)
             {
-                binary_data_map = 
-                    axiom_mime_parser_parse(mime_parser, env,
+                if(axiom_mime_parser_parse_for_soap(mime_parser, env,
+                        axis2_http_transport_utils_on_data_request,
+                        (void *) callback_ctx,
+                        mime_boundary) == AXIS2_FAILURE)
+                {
+                    return AXIS2_FAILURE;
+                }
+
+                binary_data_map =
+                    axiom_mime_parser_parse_for_attachments(mime_parser, env,
                                             axis2_http_transport_utils_on_data_request,
                                             (void *) callback_ctx,
-                                            mime_boundary);
+                                            mime_boundary,
+                                            NULL);
+                if(!binary_data_map)
+                {
+                    return AXIS2_FAILURE;
+                }
+
                 if(!binary_data_map)
                 {
                     return NULL;
@@ -3285,8 +3375,17 @@ axis2_http_transport_utils_send_mtom_message(
 
                 if(callback)
                 {
+                    axutil_param_t *param = NULL;
+                    
+                    param = callback->param;
+
                     AXIOM_MTOM_SENDING_CALLBACK_FREE(callback, env);
                     callback = NULL;
+                    if(param)
+                    {
+                        axutil_param_free(param, env);
+                        param = NULL;    
+                    }
                 }
 
                 if(status == AXIS2_FAILURE)
