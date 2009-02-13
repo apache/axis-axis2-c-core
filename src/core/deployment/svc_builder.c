@@ -623,7 +623,7 @@ axis2_svc_builder_process_ops(
         else
         {
             axis2_msg_recv_t *msg_recv = NULL;
-            /* setting the default messgae receiver */
+            /* setting the default message receiver */
             msg_recv = axis2_desc_builder_load_default_msg_recv(env);
             axis2_op_set_msg_recv(op_desc, env, msg_recv);
         }
