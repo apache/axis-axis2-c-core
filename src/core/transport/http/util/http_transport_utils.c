@@ -2237,7 +2237,7 @@ axis2_http_transport_utils_create_soap_msg(
                         (void *) callback_ctx,
                         mime_boundary) == AXIS2_FAILURE)
                 {
-                    return AXIS2_FAILURE;
+                    return NULL;
                 }
 
                 binary_data_map =
@@ -2248,7 +2248,7 @@ axis2_http_transport_utils_create_soap_msg(
                                             NULL);
                 if(!binary_data_map)
                 {
-                    return AXIS2_FAILURE;
+                    return NULL;
                 }
 
                 if(!binary_data_map)
