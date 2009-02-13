@@ -361,6 +361,7 @@ extern "C"
 #define AXIS2_MTOM_MAX_BUFFERS "MTOMMaxBuffers"
 #define AXIS2_MTOM_CACHING_CALLBACK "MTOMCachingCallback"
 #define AXIS2_MTOM_SENDING_CALLBACK "MTOMSendingCallback"
+#define AXIS2_ENABLE_MTOM_SERVICE_CALLBACK "EnableMTOMServiceCallback"
 
     /* op_ctx persistance */
 #define AXIS2_PERSIST_OP_CTX "persistOperationContext"
