@@ -122,7 +122,8 @@ axis2_apache2_worker_create(
 			hi; hi = axutil_hash_next(env, hi))
 	{
 		void *impl_class = NULL;
-		axutil_param_t *impl_info_param = NULL;
+		axis2_msg_recv_t *msg_recv = NULL;
+		axutil_hash_t *ops_hash = NULL;
 
 		axutil_hash_this(hi, NULL, NULL, &svc);
 		if (!svc)
@@ -130,16 +131,23 @@ axis2_apache2_worker_create(
 		impl_class = axis2_svc_get_impl_class(svc, env);
 		if (impl_class)
 			continue;
-		impl_info_param = axis2_svc_get_param(svc, env, AXIS2_SERVICE_CLASS);
-		if (!impl_info_param)
-			continue;
-
-		axutil_class_loader_init(env);
-		impl_class = axutil_class_loader_create_dll(env, impl_info_param);
-		axis2_svc_set_impl_class(svc, env, impl_class);
-		if (impl_class)
+		ops_hash  = axis2_svc_get_all_ops(svc, env);
+		if(ops_hash)
 		{
-			AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *) impl_class, env);
+			axutil_hash_index_t *op_hi = NULL;
+			void *op = NULL;
+			op_hi = axutil_hash_first(ops_hash, env);
+			if(op_hi)
+			{
+				axutil_hash_this(op_hi, NULL, NULL, &op);
+				if(op)
+				{
+					msg_recv = axis2_op_get_msg_recv(op,env);
+					if(msg_recv)
+						axis2_msg_recv_load_and_init_svc(msg_recv, env, svc);
+				}
+			}
+
 		}
 	}
 

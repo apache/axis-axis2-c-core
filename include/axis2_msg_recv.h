@@ -49,6 +49,7 @@ extern "C"
 #include <axis2_msg_ctx.h>
 #include <axis2_op_ctx.h>
 #include <axis2_svr_callback.h>
+#include <axis2_svc.h>
 
     struct axis2_msg_ctx;
 
@@ -71,6 +72,12 @@ extern "C"
             struct axis2_msg_ctx * in_msg_ctx,
             void *callback_recv_param);
 
+	typedef axis2_status_t(
+		AXIS2_CALL * AXIS2_MSG_RECV_LOAD_AND_INIT_SVC)(
+			axis2_msg_recv_t *msg_recv,
+			const axutil_env_t *env,
+			struct axis2_svc *svc);
+
     /**
      * Deallocate memory
      * @param msg_recv pinter to message receiver
@@ -86,7 +93,7 @@ extern "C"
      * This method is called from axis2_engine_receive method. This method's
      * actual implementation is decided from the create method of the 
      * extended message receiver object. There depending on the synchronous or
-     * asynchronous type, receive metho is assigned with the synchronous or
+     * asynchronous type, receive method is assigned with the synchronous or
      * asynchronous implementation of receive.
      * @see raw_xml_in_out_msg_recv_create method where receive is assigned
      * to receive_sync
@@ -121,7 +128,7 @@ extern "C"
     /**
      * this will create a new service skeleton object
      * @param msg_recv pointer to message receiver
-     * @param env pointer to enviornment struct
+     * @param env pointer to environment struct
      * @param msg_ctx pointer to message context
      * @return service skeleton object
      */
@@ -150,7 +157,7 @@ extern "C"
      * Set the application scope
      * @param msg_recv pointer to message receiver
      * @param env pointer to environment struct
-     * @param scope ointer to scope
+     * @param scope pointer to scope
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -162,7 +169,7 @@ extern "C"
     /**
      * Get the application scope
      * @param msg_recv pointer to message receiver
-     * @env pointer to enviornment struct
+     * @env pointer to environment struct
      * @return scope
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -206,6 +213,18 @@ extern "C"
         axis2_msg_recv_t * msg_recv,
         const axutil_env_t * env,
         AXIS2_MSG_RECV_RECEIVE func);
+
+	AXIS2_EXPORT axis2_status_t AXIS2_CALL
+	axis2_msg_recv_set_load_and_init_svc(
+		axis2_msg_recv_t *msg_recv,
+		const axutil_env_t *env,
+		AXIS2_MSG_RECV_LOAD_AND_INIT_SVC func);
+
+	AXIS2_EXPORT axis2_status_t AXIS2_CALL
+	axis2_msg_recv_load_and_init_svc(
+		axis2_msg_recv_t *msg_recv,
+		const axutil_env_t *env,
+		struct axis2_svc *svc);
 
     /**
      * Create new message receiver object. usually this will be called from the

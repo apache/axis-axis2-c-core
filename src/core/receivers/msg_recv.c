@@ -52,7 +52,7 @@ struct axis2_msg_recv
      * This method is called from axis2_engine_receive method. This method's
      * actual implementation is decided from the create method of the 
      * extended message receiver object. There depending on the synchronous or
-     * asynchronous type, receive metho is assigned with the synchronous or
+     * asynchronous type, receive method is assigned with the synchronous or
      * asynchronous implementation of receive.
      * @see raw_xml_in_out_msg_recv_create method where receive is assigned
      * to receive_sync
@@ -67,13 +67,80 @@ struct axis2_msg_recv
     const axutil_env_t * env,
     struct axis2_msg_ctx * in_msg_ctx,
     void *callback_recv_param);
+
+	axis2_status_t(
+	AXIS2_CALL *load_and_init_svc)(
+	axis2_msg_recv_t *msg_recv,
+	const axutil_env_t *env,
+	struct axis2_svc *svc);
+
 };
 
-static axis2_status_t AXIS2_CALL axis2_msg_recv_receive_impl(
+static axis2_status_t AXIS2_CALL 
+axis2_msg_recv_receive_impl(
     axis2_msg_recv_t * msg_recv,
     const axutil_env_t * env,
     axis2_msg_ctx_t * msg_ctx,
     void *callback_recv_param);
+
+static axis2_status_t AXIS2_CALL
+axis2_msg_recv_load_and_init_svc_impl(
+	axis2_msg_recv_t *msg_recv,
+	const axutil_env_t *env,
+	struct axis2_svc *svc)
+{
+	axutil_param_t *impl_info_param = NULL;
+	void *impl_class = NULL;
+
+	AXIS2_ENV_CHECK(env, NULL);
+
+	if (!svc)
+	{
+		return AXIS2_FAILURE;
+	}
+
+	impl_class = axis2_svc_get_impl_class(svc, env);
+	if (impl_class)
+	{
+		return AXIS2_SUCCESS;
+	}
+	/* When we load the DLL we have to make sure that only one thread will load it */
+	axutil_thread_mutex_lock(axis2_svc_get_mutex(svc, env));
+	/* If more than one thread tries to acquires the lock, first thread loads the DLL. 
+	Others should not load the DLL */
+	impl_class = axis2_svc_get_impl_class(svc, env);
+	if (impl_class)
+	{
+		axutil_thread_mutex_unlock(axis2_svc_get_mutex(svc, env));
+		return AXIS2_SUCCESS;
+	}
+	impl_info_param = axis2_svc_get_param(svc, env, AXIS2_SERVICE_CLASS);
+	if (!impl_info_param)
+	{
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,
+			AXIS2_FAILURE);
+		axutil_thread_mutex_unlock(axis2_svc_get_mutex(svc, env));
+		return AXIS2_FAILURE;
+	}
+
+	axutil_allocator_switch_to_global_pool(env->allocator);
+
+	axutil_class_loader_init(env);
+
+	impl_class = axutil_class_loader_create_dll(env, impl_info_param);
+	AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "loading the services from msg_recv_load_and_init_svc");
+
+	if (impl_class)
+	{
+		AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *) impl_class, env);
+	}
+
+	axis2_svc_set_impl_class(svc, env, impl_class);
+
+	axutil_allocator_switch_to_local_pool(env->allocator);
+	axutil_thread_mutex_unlock(axis2_svc_get_mutex(svc, env));
+	return AXIS2_SUCCESS;
+}
 
 AXIS2_EXPORT axis2_msg_recv_t *AXIS2_CALL
 axis2_msg_recv_create(
@@ -94,6 +161,7 @@ axis2_msg_recv_create(
 
     msg_recv->scope = axutil_strdup(env, "app*");
     msg_recv->derived = NULL;
+	msg_recv->load_and_init_svc = axis2_msg_recv_load_and_init_svc_impl;
     msg_recv->receive = axis2_msg_recv_receive_impl;
     return msg_recv;
 }
@@ -150,7 +218,7 @@ axis2_msg_recv_make_new_svc_obj(
 	{
 		/* When we load the DLL we have to make sure that only one thread will load it */
 		axutil_thread_mutex_lock(axis2_svc_get_mutex(svc, env));
-		/* If more than one thread tries to acuire the lock, first thread loads the DLL. 
+		/* If more than one thread tries to acquires the lock, first thread loads the DLL. 
 		Others should not load the DLL */
 		impl_class = axis2_svc_get_impl_class(svc, env);
 		if (impl_class)
@@ -381,7 +449,7 @@ axis2_msg_recv_receive_impl(
 
     /* Reset the out message context to avoid double freeing at http worker. For example if this is
      * not done here both in and out message context will try to free the transport out stream 
-     * which will result in memeory corruption.
+     * which will result in memory corruption.
      */
     if (!axis2_msg_ctx_is_paused(out_msg_ctx, env) &&
         !axis2_msg_ctx_is_keep_alive(out_msg_ctx, env))
@@ -450,4 +518,23 @@ axis2_msg_recv_receive(
     void *callback_recv_param)
 {
     return msg_recv->receive(msg_recv, env, msg_ctx, callback_recv_param);
+}
+
+AXIS2_EXPORT axis2_status_t AXIS2_CALL
+axis2_msg_recv_set_load_and_init_svc(
+	 axis2_msg_recv_t *msg_recv,
+	 const axutil_env_t *env,
+	 AXIS2_MSG_RECV_LOAD_AND_INIT_SVC func)
+{
+	msg_recv->load_and_init_svc = func;
+	return AXIS2_SUCCESS;
+}
+
+AXIS2_EXPORT axis2_status_t AXIS2_CALL
+axis2_msg_recv_load_and_init_svc(
+	 axis2_msg_recv_t *msg_recv,
+	 const axutil_env_t *env,
+	 struct axis2_svc *svc)
+{
+	return msg_recv->load_and_init_svc(msg_recv, env, svc);
 }
