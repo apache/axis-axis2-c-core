@@ -21,6 +21,7 @@
 
 #include <axiom_stax_builder.h>
 #include <axiom_soap_envelope.h>
+#include <axiom_mime_parser.h>
 
 /**
  * @file axiom_soap_builder.h
@@ -199,6 +200,56 @@ extern "C"
     axiom_soap_builder_get_mime_body_parts(
         axiom_soap_builder_t * builder,
         const axutil_env_t * env);
+
+    /**
+     * Set the mime_parser
+     * @param builder pointer to the SOAP Builder struct
+     * @param env Environment. MUST NOT be NULL
+     * @paran mime_parser pointer to a axiom_mime_parser_t instance
+     */ 
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_soap_builder_set_mime_parser(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env,
+        axiom_mime_parser_t *mime_parser);
+
+     /**
+     * Set the callback function
+     * @param builder pointer to the SOAP Builder struct
+     * @param env Environment. MUST NOT be NULL
+     * @param callback to the callback function pointer
+     */
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_soap_builder_set_callback_function(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env,
+        AXIS2_READ_INPUT_CALLBACK callback);
+
+     /**
+     * Set the callback_ctx 
+     * @param builder pointer to the SOAP Builder struct
+     * @param env Environment. MUST NOT be NULL
+     * @param void pointer to the callback_ctx 
+     */ 
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_soap_builder_set_callback_ctx(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env,
+        void *callback_ctx);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_builder_create_attachments(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env,
+        void *user_param,
+        axis2_char_t *callback_name);
+
+
+
+
 
     /** @} */
 #ifdef __cplusplus

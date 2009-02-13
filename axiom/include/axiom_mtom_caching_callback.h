@@ -88,6 +88,7 @@ extern "C"
     {
         axiom_mtom_caching_callback_ops_t *ops;
 		axutil_param_t *param;
+        void *user_param;
     };
 
     /*************************** Function macros **********************************/
