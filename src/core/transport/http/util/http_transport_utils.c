@@ -287,8 +287,8 @@ axis2_http_transport_utils_process_http_post_request(
     axutil_string_t *char_set_str = NULL;
 
     axis2_conf_ctx_t *conf_ctx = NULL;
-    axis2_callback_info_t *callback_ctx;
-    axis2_callback_info_t *mime_cb_ctx;
+    axis2_callback_info_t *callback_ctx = NULL;
+    axis2_callback_info_t *mime_cb_ctx = NULL;
     axutil_hash_t *headers = NULL;
     axis2_engine_t *engine = NULL;
     axiom_soap_body_t *soap_body = NULL;
