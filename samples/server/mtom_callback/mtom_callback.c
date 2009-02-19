@@ -17,11 +17,21 @@
 #include "mtom_callback.h"
 #include <axiom.h>
 #include <stdio.h>
-
+#include <axis2_op_ctx.h>
+#include <axiom_soap_envelope.h>
+#include <axiom_soap_body.h>
+#include <axis2_const.h>
+#include <axutil_param.h>
 
 axiom_node_t *build_response(
     const axutil_env_t *env,
     axiom_data_handler_t *data_handler);
+
+axis2_status_t process_attachments(
+    axis2_msg_ctx_t *msg_ctx,
+    const axutil_env_t * env,
+    void *user_param,
+    axis2_char_t *callback_name);
 
 axiom_node_t*
 axis2_mtom_callback_mtom(
@@ -32,6 +42,10 @@ axis2_mtom_callback_mtom(
     axiom_node_t *attachment_node = NULL;
     axiom_node_t *binary_node = NULL;
     axiom_node_t *ret_node = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    void *user_param = NULL;
+    axutil_param_t *callback_name_param = NULL;
+    axis2_char_t *callback_name = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -60,6 +74,19 @@ axis2_mtom_callback_mtom(
         return NULL;
     }
 
+    callback_name_param = axis2_msg_ctx_get_parameter (msg_ctx, env, 
+        AXIS2_MTOM_CACHING_CALLBACK);
+
+    if(callback_name_param)
+    {
+        callback_name = (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
+    }
+
+    status = process_attachments(msg_ctx, env, user_param, callback_name);
+    if(status == AXIS2_FAILURE)
+    {
+        return NULL;
+    }
                 
     binary_node = axiom_node_get_first_child(attachment_node, env);
     if (binary_node)
@@ -107,7 +134,18 @@ axis2_mtom_callback_mtom(
 
             if(data_handler_type == AXIOM_DATA_HANDLER_TYPE_CALLBACK)
             {
-                location = attachment_id;
+                /* The service implementer should be aware of how to deal with the attachment 
+                 * Becasue it was stored using the callback he provided. */
+
+                  /*axis2_char_t command[1000];
+
+                  sprintf(command, "rm -f /opt/tmp/%s", attachment_id);  
+                  system(command);*/  
+  
+                /*location = attachment_id;*/
+                  /*location = "/home/manjula/axis2/mtom/resources/song.MP3"; */
+                    
+                    location = "/opt/manjula-mtom.MPG"; 
             }
             else if(data_handler_type == AXIOM_DATA_HANDLER_TYPE_FILE)
             {
@@ -120,6 +158,12 @@ axis2_mtom_callback_mtom(
                 }
             }
         }
+
+        /* The samples sends back an attachment to the client. Hence we are creating the 
+         * response data_handler as a type CALLBACK. So the sender callback should be
+         * specified either in the services.xml or in the axis2.xml.  
+         */
+
         data_handler_res = axiom_data_handler_create(env, NULL, NULL);
         axiom_data_handler_set_data_handler_type(data_handler_res, env, AXIOM_DATA_HANDLER_TYPE_CALLBACK);
         axiom_data_handler_set_user_param(data_handler_res, env, (void *)location);
@@ -163,5 +207,49 @@ axiom_node_t *build_response(
     return mtom_om_node;
 }
 
+axis2_status_t process_attachments(
+    axis2_msg_ctx_t *msg_ctx,
+    const axutil_env_t * env,
+    void *user_param,
+    axis2_char_t *callback_name)
+{
+    axis2_op_ctx_t *op_ctx = NULL;
+    axis2_msg_ctx_t *in_msg_ctx = NULL;
+    axiom_soap_envelope_t *soap_envelope = NULL;
+    axiom_soap_body_t *soap_body = NULL;
 
+    op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
+    if(op_ctx)
+    {
+        in_msg_ctx = axis2_op_ctx_get_msg_ctx(op_ctx, env, AXIS2_WSDL_MESSAGE_LABEL_IN);
+        if(in_msg_ctx)
+        {
+            soap_envelope = axis2_msg_ctx_get_soap_envelope(in_msg_ctx, env);        
+            if(soap_envelope)
+            {
+                soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
+                if(soap_body)
+                {
+                    return axiom_soap_body_process_attachments(soap_body, env, user_param, callback_name);
+                }
+                else
+                {
+                    return AXIS2_FAILURE;
+                }
+            }
+            else 
+            {
+                return AXIS2_FAILURE;
+            }
+        }
+        else
+        {
+            return AXIS2_FAILURE;
+        }
+    }    
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+}
 
