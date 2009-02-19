@@ -45,11 +45,18 @@ caching_callback_init_handler(axiom_mtom_caching_callback_t *caching_callback,
     FILE *fp = NULL;
     axis2_char_t *file_name = NULL;
 
-    
+    if(caching_callback->user_param)
+    {
+        /* If this is set the callback implementer may use 
+           it to create the void return value at the end of
+           this function.  
+         */
+    }   
+ 
     if(key)
     {
-        /*file_name = axutil_stracat(env, "/tmp/", key);*/
-        file_name = key;
+        file_name = axutil_stracat(env, "/opt/tmp/", "test"/*key*/);
+        /*file_name = key;*/
         if(file_name)
         {
             fp = fopen(file_name, "ab+");
@@ -68,11 +75,11 @@ caching_callback_init_handler(axiom_mtom_caching_callback_t *caching_callback,
     }
     #endif
     
-    /*if(file_name)
+    if(file_name)
     {
         AXIS2_FREE(env->allocator, file_name);
         file_name = NULL;
-    }*/
+    }
 
     return (void *)fp;
 }
