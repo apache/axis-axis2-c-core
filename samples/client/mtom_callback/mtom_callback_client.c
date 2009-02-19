@@ -226,7 +226,22 @@ process_response_node(
 
         if(axiom_data_handler_get_cached(data_handler, env)) 
         {
-            printf("Attachment is cached.\n");    
+            axis2_char_t *mime_id = NULL;
+            
+            printf("Attachment is cached.\n");
+
+            mime_id = axiom_data_handler_get_mime_id(data_handler, env);
+            if(mime_id)
+            {
+                /* The client implementer should know what to do with 
+                 * the attachment in the response. Becasue the attachment 
+                 * was stored using the callback given by the client */
+
+                /*axis2_char_t command[1000];
+
+                sprintf(command, "rm -f /opt/tmp/%s", mime_id);
+                system(command);*/
+            }
         }   
         else
         {
