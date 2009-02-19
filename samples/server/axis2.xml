@@ -8,6 +8,7 @@
     <!-- Set the suitable size for optimum memory usage when sending large attachments -->
     <!--parameter name="MTOMBufferSize" locked="false">10</parameter-->
     <!--parameter name="MTOMMaxBuffers" locked="false">1000</parameter-->
+    <!--parameter name="EnableMTOMServiceCallback" locked="false">true</parameter-->
     <!--parameter name="attachmentDIR" locked="false">/path/to/the/attachment/caching/dir/</parameter-->    
     <!--parameter name="MTOMCachingCallback" locked="false">/path/to/the/caching_callback</parameter-->
     <!--parameter name="MTOMSendingCallback" locked="false">/path/to/the/sending_callback</parameter-->
