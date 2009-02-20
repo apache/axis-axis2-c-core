@@ -74,6 +74,10 @@ axis2_mtom_callback_mtom(
         return NULL;
     }
 
+    /* This is the paramter specified in the services.xml 
+     * or in axis2.xml
+     */
+
     callback_name_param = axis2_msg_ctx_get_parameter (msg_ctx, env, 
         AXIS2_MTOM_CACHING_CALLBACK);
 
@@ -81,6 +85,8 @@ axis2_mtom_callback_mtom(
     {
         callback_name = (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
     }
+
+    /* This will process the attachment data in the stream */
 
     status = process_attachments(msg_ctx, env, user_param, callback_name);
     if(status == AXIS2_FAILURE)
