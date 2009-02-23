@@ -73,8 +73,7 @@ main(
         address = argv[4];
 
     printf("Using endpoint : %s\n", address);
-    printf("\nInvoking operation %s\n", operation, param1,
-           param2);
+    printf("\nInvoking operation %s\n", operation);
 
     node = build_om_programatically(env);
     stub =
@@ -153,8 +152,6 @@ build_om_programatically(
 {
     axiom_node_t *version_om_node = NULL;
     axiom_element_t *version_om_ele = NULL;
-    axiom_node_t *text_om_node = NULL;
-    axiom_element_t *text_om_ele = NULL;
     axiom_namespace_t *ns1 = NULL;
 
     axiom_xml_writer_t *xml_writer = NULL;
