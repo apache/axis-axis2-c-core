@@ -699,7 +699,7 @@ axis2_http_transport_utils_process_http_post_request(
                 axiom_soap_builder_set_callback_function(soap_builder, env,
                     axis2_http_transport_utils_on_data_request);
             }
-            else
+            else if(is_svc_callback)
             {
                 return AXIS2_FAILURE;
             }
