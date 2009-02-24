@@ -40,7 +40,7 @@ axis2_version_get_version(
         axiom_namespace_t *ns1 = NULL;
         axiom_text_t *text1 = NULL;
 
-        sprintf(result_str, "%s", "Version 1.0");
+        sprintf(result_str, "%s", "Version 1.6");
 
         ns1 = axiom_namespace_create(env,
                                      "urn:aewebservices71", "ns1");
