@@ -1,7 +1,7 @@
 datadir=$(prefix)
 logsdir=$(prefix)/logs
 docsdir=$(prefix)
-includedir=$(prefix)/include/axis2-1.5.0
+includedir=$(prefix)/include/axis2-1.6.0
 wsdl2cdir=$(prefix)/bin/tools/wsdl2c
 
 

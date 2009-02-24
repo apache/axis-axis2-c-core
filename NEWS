@@ -1,5 +1,5 @@
 Apache Axis2/C Team is pleased to announce the release of Apache Axis2/C 
-version 1.5.0.
+version 1.6.0.
 
 You can download this release from http://ws.apache.org/axis2/c/download.cgi
 
@@ -20,6 +20,7 @@ Key Features
           * Basic HTTP Authentication
           * Digest HTTP Authentication
           * libcurl based client transport
+          * CGI interface
 
    4. Transports supported : HTTPS
           * HTTPS Transport implementation using OpenSSL
@@ -45,46 +46,47 @@ Key Features
   11. AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages; 
       This has complete XML infoset support.
 
-  12. XML parser abstraction
+  12. XPath support for Axiom XML Object model  
+
+  13. XML parser abstraction
           * Libxml2 wrapper
           * Guththila pull parser support
 
-  13. Both directory based and archive based deployment models for deploying 
+  14. Both directory based and archive based deployment models for deploying 
       services and modules
 
-  14. Description hierarchy providing access to static data of Axis2/C runtime 
+  15. Description hierarchy providing access to static data of Axis2/C runtime 
   	  (configuration, service groups, services, operations and messages)
 
-  15. Context hierarchy providing access to dynamic 
+  16. Context hierarchy providing access to dynamic 
       Axis2/C runtime information (corresponding contexts to map to 
 	  each level of description hierarchy)
 
-  16. Message receiver abstraction
+  17. Message receiver abstraction
           * Inbuilt raw XML message receiver
 
-  17. Code generation tool for stub and skeleton generation for a given 
+  18. Code generation tool for stub and skeleton generation for a given 
       WSDL (based on Java tool)
           *  Axis Data Binding (ADB) support
 
-  18. REST support (more POX like) using HTTP POST, GET, HEAD, PUT and DELETE
+  19. REST support (more POX like) using HTTP POST, GET, HEAD, PUT and DELETE
           *  Support for RESTful Services
 
-  19. Comprehensive documentation
+  20. Comprehensive documentation
           * Axis2/C Manual
 
-  20. WS-Policy implementation called Neethi/C, with WS-SecurityPolicy extension
+  21. WS-Policy implementation called Neethi/C, with WS-SecurityPolicy extension
 
 
 Major Changes Since Last Release
 ================================
 
-   1. AMQP Transport implementation using Apache Qpid
-   2. IIS 6 & 7 Support.
-   3. A JScript file for editing registry configurations for IIS module.
-   4. Improvements to Guththila
-   5. Improvements to TCPMon
-   6. Many bug fixes.
-   7. Memory leak fixes
+   1. XPath support for Axiom XML object model
+   2. CGI support
+   3. Improvements to MTOM to send, receive very large attachments
+   4. Improvements to AMQP transport
+   5. Many bug fixes.
+   6. Memory leak fixes
 
 We welcome your early feedback on this implementation.
 
