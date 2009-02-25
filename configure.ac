@@ -421,7 +421,7 @@ AC_ARG_ENABLE(libcurl, [  --enable-libcurl
 APACHE2INC=$apache2inc
 IKSEMELINC=$iksemelinc
 APRINC=$aprinc
-VERSION_NO="5:0:5"
+VERSION_NO="6:0:6"
 QPID_HOME=$qpidhome
 
 AC_SUBST(VERSION_NO)
