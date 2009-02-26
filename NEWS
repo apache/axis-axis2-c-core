@@ -85,8 +85,9 @@ Major Changes Since Last Release
    2. CGI support
    3. Improvements to MTOM to send, receive very large attachments
    4. Improvements to AMQP transport
-   5. Many bug fixes.
-   6. Memory leak fixes
+   5. Improvements to WSDL2C codegen tool  
+   6. Many bug fixes.
+   7. Memory leak fixes
 
 We welcome your early feedback on this implementation.
 
