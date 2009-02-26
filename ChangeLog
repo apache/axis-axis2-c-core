@@ -3,6 +3,7 @@ Axis2/C (1.6.0)
    * CGI support
    * Improvements to MTOM to send, receive very large attachments
    * Improvements to AMQP transport
+   * Improvemnets to WSDL2C codegen tool
    * Many bug fixes.
    * Memory leak fixes
 
