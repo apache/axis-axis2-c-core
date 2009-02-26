@@ -158,7 +158,19 @@
       <id>bmitchell</id>
       <email>wtmitchell3 AT acm DOT org </email>
       <organization></organization>
-    </developer>    
+    </developer>   
+    <developer>
+      <name>Danushka Menikkumbura</name>
+      <id>danushka</id>
+      <email>danushka AT wso2 DOT com</email>
+      <organization></organization>
+    </developer> 
+    <developer>
+      <name>Diluka Moratuwage</name>
+      <id>diluka</id>
+      <email>diluka AT wso2 DOT com</email>
+      <organization></organization>
+    </developer>  
     <developer>
       <name>Dumindu Pallewela</name>
       <id>dumindu</id>
@@ -258,22 +270,8 @@
       </roles>
     </contributor>
     <contributor>
-      <name>Danushka Menikkumbura</name>
-      <email>danushka AT wso2 DOT com</email>
-      <roles>
-        <role>AMQP Transport implementation</role>
-      </roles>
-    </contributor>
-    <contributor>
       <name>Frederic Heem</name>
       <email>frederic DOT heem AT telsey DOT it</email>
-      <roles>
-        <role>Suggestions for improvements through Jiras and Bug fixes</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Diluka Moratuwage</name>
-      <email>diluka DOT wso2 DOT com</email>
       <roles>
         <role>Suggestions for improvements through Jiras and Bug fixes</role>
       </roles>
