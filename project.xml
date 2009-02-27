@@ -235,20 +235,6 @@
       </roles>
     </contributor>
     <contributor>
-      <name>Buddhika Semashinghe</name>
-      <email>buddhika AT wso2 DOT com</email>
-      <roles>
-	<role>Helps to improve overall quality of the code base</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Manoj Pushpakumara</name>
-      <email>manaj AT wso2 DOT com</email>
-      <roles>
-	<role>Improvements to the Unit Test cases</role>
-      </roles>
-    </contributor>
-    <contributor>
       <name>Spencer Davis</name>
       <email>spencerdavis91 AT gmail DOT com</email>
       <roles>
@@ -263,6 +249,13 @@
       </roles>
     </contributor>
     <contributor>
+      <name>Frederic Heem</name>
+      <email>frederic DOT heem AT telsey DOT it</email>
+      <roles>
+        <role>Suggestions for improvements through Jiras and Bug fixes</role>
+      </roles>
+    </contributor>
+    <contributor>
       <name>Rajika Kumarasiri</name>
       <email>rajikacc AT gmail DOT com</email>
       <roles>
@@ -270,13 +263,33 @@
       </roles>
     </contributor>
     <contributor>
-      <name>Frederic Heem</name>
-      <email>frederic DOT heem AT telsey DOT it</email>
+      <name>Manoj Pushpakumara</name>
+      <email>manaj AT wso2 DOT com</email>
       <roles>
-        <role>Suggestions for improvements through Jiras and Bug fixes</role>
+	<role>Improvements to the Unit Test cases</role>
       </roles>
     </contributor>
-  </contributors>
+    <contributor>
+      <name>Buddhika Semashinghe</name>
+      <email>buddhika AT wso2 DOT com</email>
+      <roles>
+	<role>Helps to improve overall quality of the code base</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Varuna Jayasiri</name>
+      <email>vpjayasiri AT gmail DOT com</email>
+      <roles>
+	<role>Axiom XPath implementation</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Nikola Tankovic</name>
+      <email>nikola DOT tankovic AT gmail DOT com</email>
+      <roles>
+	<role>CGI deployment support</role>
+      </roles>
+    </contributor>  </contributors>
 
   <!-- ################################################################ -->
   <!--        Project dependency section                                -->
