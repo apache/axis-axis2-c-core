@@ -24,6 +24,7 @@
 #include <axutil_http_chunked_stream.h>
 #include <axiom_mtom_caching_callback.h>
 #include <axutil_class_loader.h>
+#include <axutil_url.h>
 
 struct axiom_mime_parser
 {
@@ -1388,8 +1389,29 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
                 if(!(search_info->handler))
                 {
                     /* If the File is not opened yet we will open it*/
+                    
+                    axis2_char_t *encoded_mime_id = NULL;
+
+                    /* Some times content-ids urls, hence we need to encode them 
+                     * becasue we can't create files with / */
+
+                    encoded_mime_id = AXIS2_MALLOC(env->allocator,
+                        (sizeof(axis2_char_t))* (strlen(mime_id)));
+                    memset(encoded_mime_id, 0, strlen(mime_id));
+                    encoded_mime_id = axutil_url_encode(env, encoded_mime_id,
+                        mime_id, strlen(mime_id));
+                    if(!encoded_mime_id)
+                    {
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "Mime Id encoding failed");
+                        return AXIS2_FAILURE;
+                    }
+
                     file_name = axutil_stracat(env, mime_parser->attachment_dir, 
-                        mime_id);
+                        encoded_mime_id);
+                    AXIS2_FREE(env->allocator, encoded_mime_id);
+                    encoded_mime_id = NULL;
+            
                     if(!file_name)
                     {
                         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
@@ -1895,11 +1917,32 @@ axiom_mime_parser_store_attachment(
             else if(mime_parser->attachment_dir && cached)
             {
                 axis2_char_t *attachment_location = NULL;
+                axis2_char_t *encoded_mime_id = NULL;
+
+                /* Some times content-ids urls, hence we need to encode them 
+                 * becasue we can't create files with / */
+
+                encoded_mime_id = AXIS2_MALLOC(env->allocator, 
+                    (sizeof(axis2_char_t))* (strlen(mime_id)));
+                memset(encoded_mime_id, 0, strlen(mime_id));
+                encoded_mime_id = axutil_url_encode(env, encoded_mime_id, 
+                    mime_id, strlen(mime_id));
+                if(!encoded_mime_id)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Mime Id encoding failed");
+                    return AXIS2_FAILURE;
+                }
 
                 attachment_location = axutil_stracat(env, 
-                    mime_parser->attachment_dir, mime_id);
+                    mime_parser->attachment_dir, encoded_mime_id);
+
+                AXIS2_FREE(env->allocator, encoded_mime_id);
+                encoded_mime_id = NULL;    
+
                 if(attachment_location)
                 {
+
                     data_handler = axiom_data_handler_create(env, 
                         attachment_location, mime_type);
                     if(data_handler)
