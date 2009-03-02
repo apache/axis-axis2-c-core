@@ -19,7 +19,7 @@
 #include <axutil_string.h>
 #include <axutil_utils.h>
 #include <axiom_mtom_caching_callback.h>
-
+#include <axutil_url.h>
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -44,6 +44,7 @@ caching_callback_init_handler(axiom_mtom_caching_callback_t *caching_callback,
 {
     FILE *fp = NULL;
     axis2_char_t *file_name = NULL;
+    axis2_char_t *encoded_key = NULL;
 
     if(caching_callback->user_param)
     {
@@ -55,7 +56,16 @@ caching_callback_init_handler(axiom_mtom_caching_callback_t *caching_callback,
  
     if(key)
     {
-        file_name = axutil_stracat(env, "/opt/tmp/", "test"/*key*/);
+        /*encoded_key = axutil_strdup(env, key);*/
+        encoded_key = AXIS2_MALLOC(env->allocator, (sizeof(axis2_char_t ))* (strlen(key)));
+        memset(encoded_key, 0, strlen(key));
+
+        if(encoded_key)
+        {
+            encoded_key = axutil_url_encode(env, encoded_key, key, strlen(key));
+        }
+
+        file_name = axutil_stracat(env, "/opt/tmp/", encoded_key);
         /*file_name = key;*/
         if(file_name)
         {
@@ -75,6 +85,13 @@ caching_callback_init_handler(axiom_mtom_caching_callback_t *caching_callback,
     }
     #endif
     
+    if(encoded_key)
+    {
+        AXIS2_FREE(env->allocator, encoded_key);
+        encoded_key = NULL;
+    }
+
+
     if(file_name)
     {
         AXIS2_FREE(env->allocator, file_name);
