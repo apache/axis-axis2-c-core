@@ -1,5 +1,14 @@
+Axis2/C (1.6.0)
+   * XPath support for Axiom XML object model
+   * CGI support
+   * Improvements to MTOM to send, receive very large attachments
+   * Improvements to AMQP transport
+   * Improvemnets to WSDL2C codegen tool
+   * Many bug fixes.
+   * Memory leak fixes
+
 Axis2/C (1.5.0)
-   * AMQP Transport support with Apache Qpid.
+   * AMQP Transport support with Apache Qpid. (At an experimental stage. Not working under Windows. Please refer the INSTALL file to build this)
    * Modifications to IIS Module to support IIS 6 & 7
    * Added a JScript file to automate IIS module registry configuration
    * Improved the in-only message handling
@@ -204,4 +213,3 @@ Axis2/C (M0.1)
   * doxygen documentation support
   * A sample demonstrating how to use OM
  -- Axis2/C team <axis-c-dev@ws.apache.org>  Fri, 25 Nov 2005
-

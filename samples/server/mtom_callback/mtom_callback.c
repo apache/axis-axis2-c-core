@@ -124,9 +124,9 @@ axis2_mtom_callback_mtom(
 
         if (!axiom_data_handler_get_cached(data_handler, env))
         {
-            axis2_byte_t *input_buff = NULL;
+           /* axis2_byte_t *input_buff = NULL;
             axis2_byte_t *buff = NULL;
-            int buff_len = 0;
+            int buff_len = 0;*/
             
             axiom_data_handler_set_file_name(data_handler, env, attachment_id);
             axiom_data_handler_write_to(data_handler, env);

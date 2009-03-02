@@ -33,3 +33,4 @@ echo_blocking_soap11_LDADD = $(LINK_FLAGS)
 
 INCLUDES = @AXIS2INC@
 
+EXTRA_DIST=echo_util.h
