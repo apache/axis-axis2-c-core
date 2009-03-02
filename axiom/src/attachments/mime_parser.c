@@ -1404,7 +1404,7 @@ static axis2_char_t *axiom_mime_parser_search_for_attachment(
                     {
                         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                             "Mime Id encoding failed");
-                        return AXIS2_FAILURE;
+                        return NULL;
                     }
 
                     file_name = axutil_stracat(env, mime_parser->attachment_dir, 
