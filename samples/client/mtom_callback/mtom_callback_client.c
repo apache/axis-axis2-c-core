@@ -144,6 +144,7 @@ main(
                         env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("\nmtom client invoke FAILED!\n");
+        printf("\nSending callback may not be set. Check the log for more details.\n");
     }
 
     if (svc_client)
