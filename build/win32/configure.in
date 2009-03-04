@@ -12,7 +12,7 @@ ENABLE_LIBCURL = 0
 ENABLE_LIBXML2=0
 #
 # build tcp server in addition to http server
-WITH_TCP = 0
+WITH_TCP = 1
 #
 # build with archive based deployment
 WITH_ARCHIVE = 0
@@ -23,14 +23,14 @@ WITH_ARCHIVE = 0
 #############################################################################
 #
 # libxml2 binary location ( axis2c is built with libxml2 )
-LIBXML2_BIN_DIR = F:\applications\libxml2-2.6.30.win32
+LIBXML2_BIN_DIR = E:\libxml2-2.6.30.win32
 
 #
 # iconv binary location
-ICONV_BIN_DIR = F:\applications\iconv-1.9.2.win32
+ICONV_BIN_DIR = E:\iconv-1.9.2.win32
 #
 # zlib binary location
-ZLIB_BIN_DIR= F:\applications\zlib-1.2.3.win32
+ZLIB_BIN_DIR= E:\zlib-1.2.3.win32
 #
 #
 #############################################################################
@@ -39,7 +39,7 @@ ZLIB_BIN_DIR= F:\applications\zlib-1.2.3.win32
 #
 # openssl  binary location
 # required if ENABLE_SSL = 1
-OPENSSL_BIN_DIR = c:\OpenSSL
+OPENSSL_BIN_DIR = E:\OpenSSL
 #
 # libcurl binary location, only required if libcurl transport is enabled
 LIBCURL_BIN_DIR = E:\libcurl-7.15.1-msvc-win32-ssl-0.9.8a-zlib-1.2.3
@@ -50,7 +50,7 @@ LIBCURL_BIN_DIR = E:\libcurl-7.15.1-msvc-win32-ssl-0.9.8a-zlib-1.2.3
 #############################################################################
 #
 # apache binary location
-APACHE_BIN_DIR = "C:\Program Files\Apache Software Foundation\Apache2.2"
+APACHE_BIN_DIR = "E:\Apache22"
 #
 # apache 2 server family
 # To use apache 2.2 family, use  APACHE_VERSION_IS_2_0_X = 0
@@ -69,5 +69,5 @@ EMBED_MANIFEST = 1
 #
 # debug symbols
 # To build with debug symbols use DEBUG = 1
-DEBUG = 1
+DEBUG = 0
 #
