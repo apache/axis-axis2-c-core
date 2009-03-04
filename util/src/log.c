@@ -544,16 +544,18 @@ axutil_log_impl_log_trace(
     ...)
 {
     if (log && log->ops && log->ops->write &&
-        format && log->enabled &&
-        AXIS2_LOG_LEVEL_TRACE <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
+        format && log->enabled)
         {
-            char value[AXIS2_LEN_VALUE + 1];
-            va_list ap;
-            va_start(ap, format);
-            AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
-            va_end(ap);
-        log->ops->write(log, value, AXIS2_LOG_LEVEL_TRACE, file, line);
-    }
+            if(AXIS2_LOG_LEVEL_TRACE <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
+            {
+                char value[AXIS2_LEN_VALUE + 1];
+                va_list ap;
+                va_start(ap, format);
+                AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+                va_end(ap);
+                log->ops->write(log, value, AXIS2_LOG_LEVEL_TRACE, file, line);
+            }
+        }
 #ifndef AXIS2_NO_LOG_FILE
     else
         fprintf(stderr, "please check your log and buffer");
