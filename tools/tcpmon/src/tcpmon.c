@@ -659,7 +659,7 @@ resend_request(
                     seek_len = (int)(tmp2 - buffer) + offset - read_len;
                     if (seek_len > 0)
                     {
-                        fread(buffer, sizeof(char), seek_len, file);
+                        read_len = fread(buffer, sizeof(char), seek_len, file);
                     }
                     seek_len = 0;
                 }
