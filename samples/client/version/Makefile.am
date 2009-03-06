@@ -1,4 +1,4 @@
-prgbindir=$(prefix)/bin/samples
+prgbindir=$(prefix)/samples/bin
 prgbin_PROGRAMS = version
 noinst_HEADERS = axis2_version_stub.h
 version_SOURCES = axis2_version_stub.c \

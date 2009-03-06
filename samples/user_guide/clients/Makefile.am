@@ -1,4 +1,4 @@
-prgbindir=$(prefix)/bin/samples
+prgbindir=$(prefix)/samples/bin
 prgbin_PROGRAMS = echo_blocking echo_non_blocking echo_blocking_addr echo_rest echo_blocking_dual echo_non_blocking_dual echo_blocking_soap11 echo_blocking_auth
 
 

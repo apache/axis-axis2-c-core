@@ -1,5 +1,5 @@
 SUBDIRS=resources
-prgbindir=$(prefix)/bin/samples
+prgbindir=$(prefix)/samples/bin
 prgbin_PROGRAMS = mtom
 
 mtom_SOURCES = mtom_client.c

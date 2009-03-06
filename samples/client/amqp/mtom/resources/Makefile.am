@@ -1,4 +1,4 @@
-samplesdir = $(prefix)/bin/samples/amqp/resources
+samplesdir = $(prefix)/samples/bin/amqp/resources
 
 samples_DATA = axis2.jpg 
 

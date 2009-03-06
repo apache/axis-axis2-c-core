@@ -1,4 +1,4 @@
-prgbindir=$(prefix)/bin/samples
+prgbindir=$(prefix)/samples/bin
 prgbin_PROGRAMS = math
 noinst_HEADERS = axis2_math_stub.h
 math_SOURCES = axis2_math_stub.c \

@@ -1,4 +1,4 @@
-prgbindir=$(prefix)/bin/samples
+prgbindir=$(prefix)/samples/bin
 prgbin_PROGRAMS = yahoosearch
 yahoosearch_SOURCES = yahoo_client.c
 

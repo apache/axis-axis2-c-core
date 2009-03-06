@@ -1,6 +1,6 @@
 SUBDIRS = resources
 
-prgbindir = $(prefix)/bin/samples/amqp
+prgbindir = $(prefix)/samples/bin/amqp
 
 prgbin_PROGRAMS = mtom
 

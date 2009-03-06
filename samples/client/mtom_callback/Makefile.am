@@ -1,4 +1,4 @@
-prgbindir=$(prefix)/bin/samples
+prgbindir=$(prefix)/samples/bin
 prgbin_PROGRAMS = mtom_callback
 
 mtom_callback_SOURCES = mtom_callback_client.c
