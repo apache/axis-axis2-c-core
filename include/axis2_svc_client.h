@@ -77,6 +77,19 @@ extern "C"
         const axutil_env_t * env);
 
     /**
+     * Returns the axis2_conf_ctx_t. This is useful when creating service clients using
+     * the same configuration context as the original service client.
+     * @param svc_client pointer to service client struct
+     * @param env pointer to environment struct
+     * @return a pointer to axis configuration context struct, or NULL. 
+     * Returns a reference, not a cloned copy. 
+     */
+    AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
+    axis2_svc_client_get_conf_ctx(
+        const axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
+
+    /**
      * Sets the options to be used by service client.
      * @param svc_client pointer to service client struct
      * @param env pointer to environment struct

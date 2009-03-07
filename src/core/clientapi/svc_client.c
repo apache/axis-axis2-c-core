@@ -78,6 +78,8 @@ struct axis2_svc_client
     axutil_array_list_t *http_headers;
 
     int http_status_code;
+    
+    axis2_bool_t keep_externally_passed_ctx_and_svc;
 
 };
 
@@ -159,6 +161,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     svc_client->required_auth_is_http = AXIS2_FALSE;
     svc_client->auth_type = NULL;
 	svc_client->http_headers = NULL;
+    svc_client->keep_externally_passed_ctx_and_svc = AXIS2_FALSE;
 
     if (!axis2_svc_client_init_data(env, svc_client))
     {
@@ -178,6 +181,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
 
     if (svc)
     {
+        svc_client->keep_externally_passed_ctx_and_svc = AXIS2_TRUE;
         svc_client->svc = svc;
     }
     else
@@ -240,6 +244,15 @@ axis2_svc_client_get_svc(
 {
     AXIS2_PARAM_CHECK (env->error, svc_client, NULL);
     return svc_client->svc;
+}
+
+AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
+axis2_svc_client_get_conf_ctx(
+    const axis2_svc_client_t * svc_client,
+    const axutil_env_t * env)
+{
+    AXIS2_PARAM_CHECK (env->error, svc_client, NULL);
+    return svc_client->conf_ctx;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -1043,6 +1056,10 @@ axis2_svc_client_init_transports_from_conf_ctx(
             return AXIS2_FALSE;
         }
     }
+    else
+    {
+        svc_client->keep_externally_passed_ctx_and_svc = AXIS2_TRUE;
+    }
 
     if (!svc_client->listener_manager)
     {
@@ -1198,7 +1215,7 @@ axis2_svc_client_free(
         svc_client->headers = NULL;        
     }
 
-    if (svc_client->svc)
+    if (svc_client->svc && !svc_client->keep_externally_passed_ctx_and_svc)
     {
         axis2_svc_free(svc_client->svc, env);
     }
@@ -1223,7 +1240,7 @@ axis2_svc_client_free(
         axis2_listener_manager_free(svc_client->listener_manager, env);
     }
 
-    if (svc_client->conf_ctx)
+    if (svc_client->conf_ctx && !svc_client->keep_externally_passed_ctx_and_svc)
     {
         axis2_conf_ctx_free(svc_client->conf_ctx, env);
     }
