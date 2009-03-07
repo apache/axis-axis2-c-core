@@ -278,7 +278,7 @@ axutil_duration_deserialize_duration(
             if (*cur == desig[seq])
             {
                 num_type = 0;
-                if (seq < (sizeof(desig) - 1))
+                /*if (seq < (sizeof(desig) - 1))
                 {
                     duration->is_negative = AXIS2_FALSE;
                     duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
@@ -287,7 +287,7 @@ axutil_duration_deserialize_duration(
                     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE,
                                     AXIS2_FAILURE);
                     return AXIS2_FAILURE;
-                }
+                }*/
 
                 switch (seq)
                 {
