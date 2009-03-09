@@ -1362,7 +1362,7 @@ axis2_conf_set_default_dispatchers(
     axis2_disp_free(soap_action_based_dispatch, env);
     axis2_phase_add_handler_at(dispatch, env, 2, handler);
     axutil_array_list_add(conf->handlers, env,
-                          axis2_handler_get_handler_desc(handler, env));
+                          axis2_handler_get_handler_desc(handler, env));	
 
     status = axutil_array_list_add(conf->
                                    in_phases_upto_and_including_post_dispatch,
@@ -1904,3 +1904,9 @@ axis2_conf_get_base(
     return conf->base;
 }
 
+AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
+axis2_conf_get_handlers(const axis2_conf_t * conf,
+    const axutil_env_t * env)
+{
+	return conf->handlers;
+}
