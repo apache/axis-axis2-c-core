@@ -27,6 +27,7 @@
 #include <axiom_soap_fault_role.h>
 #include "_axiom_soap_fault_value.h"
 #include "_axiom_soap_fault_text.h"
+#include <axiom_util.h>
 
 struct axiom_soap_body
 {
@@ -246,9 +247,27 @@ axiom_soap_body_build(
     const axutil_env_t * env)
 {
     int status = AXIS2_SUCCESS;
-    
+    axiom_node_t *xop_node = NULL;    
+    axis2_bool_t is_replaced = AXIS2_FALSE;
+    axiom_element_t *xop_element = NULL;
+
+                                                                                                                                    
     if (soap_body->om_ele_node && soap_body->soap_builder)
     {
+        xop_node = axiom_util_get_node_by_local_name(env, 
+            soap_body->om_ele_node, AXIS2_XOP_INCLUDE);
+
+        if(xop_node)
+        {
+            xop_element = (axiom_element_t *)axiom_node_get_data_element(
+                xop_node, env);
+            if(xop_element)
+            {
+                is_replaced = axiom_soap_builder_replace_xop(soap_body->soap_builder, 
+                    env, xop_node, xop_element);
+            }
+        }    
+
         while (axiom_node_is_complete(soap_body->om_ele_node, env) !=
                AXIS2_TRUE)
         {

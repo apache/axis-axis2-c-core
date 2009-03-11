@@ -247,7 +247,13 @@ extern "C"
         void *user_param,
         axis2_char_t *callback_name);
 
-
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axiom_soap_builder_replace_xop(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env,
+        axiom_node_t *om_element_node,
+        axiom_element_t *om_element);
+        
 
 
 

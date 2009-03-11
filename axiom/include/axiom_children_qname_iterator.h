@@ -97,6 +97,7 @@ extern "C"
         axiom_children_qname_iterator_t * iterator,
         const axutil_env_t * env);
 
+
     /** @} */
 
 #ifdef __cplusplus

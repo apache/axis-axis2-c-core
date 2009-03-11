@@ -197,3 +197,4 @@ axiom_children_qname_iterator_next(
     }
     return iterator->last_child;
 }
+

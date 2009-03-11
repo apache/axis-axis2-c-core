@@ -1153,3 +1153,51 @@ axiom_util_new_document(
 
     return doc;
 }
+
+
+AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+axiom_util_get_node_by_local_name(
+    const axutil_env_t *env,
+    axiom_node_t *node,
+    axis2_char_t *local_name)
+{
+    axis2_char_t *temp_name = NULL;
+
+    if(!node)
+    {
+        return NULL;
+    }
+
+    if(axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
+    {
+        return NULL;
+    }
+
+    temp_name = axiom_util_get_localname(node, env);
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+        "[rampart]Checking node %s for %s", temp_name, local_name );
+
+    if(!axutil_strcmp(temp_name, local_name))
+    {
+        /* Gottcha.. return this node */
+        return node;
+    }
+    else
+    {
+        /* Doesn't match? Get the children and search for them */
+        axiom_node_t *temp_node = NULL;
+
+        temp_node = axiom_node_get_first_element(node, env);
+        while(temp_node)
+        {
+            axiom_node_t *res_node = NULL;
+            res_node = axiom_util_get_node_by_local_name(env, temp_node, local_name);
+            if(res_node)
+            {
+                return res_node;
+            }
+            temp_node = axiom_node_get_next_sibling(temp_node, env);
+        }
+    }
+    return NULL;
+}

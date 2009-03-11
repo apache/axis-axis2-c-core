@@ -1292,3 +1292,92 @@ axiom_soap_builder_create_attachments(
     }
 }
 
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axiom_soap_builder_replace_xop(
+    axiom_soap_builder_t * builder,
+    const axutil_env_t * env,
+    axiom_node_t *om_element_node,
+    axiom_element_t *om_element)
+{
+    axiom_namespace_t *ns = NULL;
+    axis2_bool_t is_replaced = AXIS2_FALSE;
+
+    ns = axiom_element_get_namespace(om_element, env, om_element_node);
+    if (ns)
+    {
+        axis2_char_t *uri = axiom_namespace_get_uri(ns, env);
+        if (uri)
+        {
+            if (axutil_strcmp(uri, AXIS2_XOP_NAMESPACE_URI) == 0)
+            {
+                axutil_qname_t *qname = NULL;
+                qname = axutil_qname_create(env, "href", NULL, NULL);
+                if (qname)
+                {
+                    axis2_char_t *id = NULL;
+                    id = axiom_element_get_attribute_value(om_element, env,
+                                                               qname);
+                    if (id)
+                    {
+                        axis2_char_t *pos = NULL;
+                        pos = axutil_strstr(id, "cid:");
+                        if (pos)
+                        {
+                            axiom_data_handler_t *data_handler = NULL;
+                            id += 4;
+
+                            if (builder->mime_body_parts)
+                            {
+
+                                axis2_char_t *id_decoded = NULL;
+                              
+                                id_decoded = axutil_strdup(env, id);
+                                
+                                axutil_url_decode(env, id_decoded, id_decoded);
+                                
+                                data_handler =
+                                    (axiom_data_handler_t *)
+                                    axutil_hash_get(builder->
+                                                    mime_body_parts,
+                                                    (void *) id_decoded,
+                                                    AXIS2_HASH_KEY_STRING);
+                                if (data_handler)
+                                {
+                                    axiom_text_t *data_text = NULL;
+                                    axiom_node_t *data_om_node = NULL;
+                                    axiom_node_t *parent = NULL;
+
+                                    parent = axiom_node_get_parent(om_element_node, 
+                                                                env);
+
+                                    /*remove the <xop:Include> element */
+                                    axiom_node_free_tree(om_element_node,
+                                                         env);
+
+                                    data_text =
+                                        axiom_text_create_with_data_handler
+                                        (env, parent, data_handler,
+                                         &data_om_node);
+
+                                    axiom_text_set_content_id(data_text,
+                                                              env, id_decoded);
+                                    /*axiom_stax_builder_set_lastnode
+                                        (soap_builder->om_builder, env,
+                                         parent);*/
+                                    is_replaced = AXIS2_TRUE;
+                                }
+                                if(id_decoded)
+                                {
+                                    AXIS2_FREE(env->allocator, id_decoded);
+                                }
+                            }
+                        }
+                    }
+                }
+                axutil_qname_free(qname, env);
+            }
+        }
+    }
+
+    return is_replaced;
+} 
