@@ -1360,13 +1360,16 @@ copy_extra:
 
 copy_samples:
 	@if not exist $(AXIS2_BINDIR)\samples mkdir $(AXIS2_BINDIR)\samples
-	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\client $(AXIS2_BINDIR)\samples\client
-	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\user_guide $(AXIS2_BINDIR)\samples\user_guide
-	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\codegen $(AXIS2_BINDIR)\samples\codegen
-	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\server $(AXIS2_BINDIR)\samples\server
-	@cd $(AXIS2_BINDIR)\samples
+	@if not exist $(AXIS2_BINDIR)\samples\src mkdir $(AXIS2_BINDIR)\samples\src
+	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\client $(AXIS2_BINDIR)\samples\src\client
+	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\user_guide $(AXIS2_BINDIR)\samples\src\user_guide
+	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\codegen $(AXIS2_BINDIR)\samples\src\codegen
+	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\server $(AXIS2_BINDIR)\samples\src\server
+	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\mtom_caching_callback $(AXIS2_BINDIR)\samples\src\mtom_caching_callback
+	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\samples\mtom_sending_callback $(AXIS2_BINDIR)\samples\src\mtom_sending_callback
+	@cd $(AXIS2_BINDIR)\samples\src
 	@del /s /q *.am
-	@cd .\..\..\win32
+	@cd .\..\..\..\win32
 
 copy_include: 
 	@xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\include $(AXIS2_BINDIR)\include
