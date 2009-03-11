@@ -1228,6 +1228,7 @@ axis2_svc_client_free(
     if (svc_client->op_client)
     {
         axis2_op_client_free(svc_client->op_client, env);
+        svc_client->op_client = NULL;
     }
 
     if (svc_client->options)
