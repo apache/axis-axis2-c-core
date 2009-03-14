@@ -296,7 +296,7 @@ Table of Contents
 	When the axis2_amqp_server is up and running, you can run the sample 
 	clients in a new shell as follows.
         
-	$ cd ${AXIS2C_HOME}/bin/samples/amqp
+	$ cd ${AXIS2C_HOME}/samples/bin/amqp
     $ ./echo_blocking
 	This will invoke the echo service.
 
@@ -509,7 +509,7 @@ Table of Contents
 	(b) Clients
 	-----------
 
-   	Now you can run any sample client deployed under %AXIS2C_HOME%\bin\samples\
+   	Now you can run any sample client deployed under %AXIS2C_HOME%\samples\bin
     		
 	Example:
    		> cd %AXIS2C_HOME%\samples\bin
