@@ -298,7 +298,7 @@ LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${AXIS2C_HOME}/lib</code><br />
 When the axis2_http_server is up and running, you can run the sample
 clients in a new shell as follows.<br />
 <br />
-<code>$ cd ${AXIS2C_HOME}/bin/samples</code><br />
+<code>$ cd ${AXIS2C_HOME}/samples/bin</code><br />
 <code>$ ./echo</code><br />
 <br />
 This will invoke the echo service.<br />
@@ -405,7 +405,9 @@ The C:\axis2c folder structure is as follows:<br />
 <p><em>The above folders contain the following files:</em></p>
 <ul>
 <li>bin - server and other executables</li>
-<li>bin\samples - client samples </li>
+<li>samples\bin - client sample binaries </li>
+<li>samples\lib - sample libraries </li>
+<li>samples\src - sample sources </li>
 <li>lib - library modules</li>
 <li>services - deployed services</li>
 <li>modules - deployed modules</li>
@@ -493,7 +495,8 @@ directory named deploy under the build directory,
 <p><em>The above folders contain the following files:</em></p>
 <ul>
 <li>bin - server and other executable</li>
-<li>bin\samples - client samples</li>
+<li>samples\bin - client sample binaries</li>
+<li>samples\lib - client samples libraries</li>
 <li>lib - library modules</li>
 <li>services - deployed services</li>
 <li>modules - deployed modules</li>
@@ -535,11 +538,11 @@ behaviour. Type 'axis2_http_server.exe -h' to learn about the usage
 <div class="subsection"><a name="2.4.1.b"></a>
 <h4>(b) Clients</h4>
 Now you can run any sample client deployed under
-%AXIS2C_HOME%\bin\samples\<br />
+%AXIS2C_HOME%\samples\bin<br />
 <br />
 Example:<br />
 <ul>
-<code>&gt; cd %AXIS2C_HOME%\bin\samples</code><br />
+<code>&gt; cd %AXIS2C_HOME%\samples\bin</code><br />
 <code>&gt; echo.exe</code>
 </ul>
 </div>
