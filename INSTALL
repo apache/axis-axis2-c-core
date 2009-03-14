@@ -244,7 +244,7 @@ Table of Contents
 	When the axis2_http_server is up and running, you can run the sample 
 	clients in a new shell as follows.
         
-	$ cd ${AXIS2C_HOME}/bin/samples
+	$ cd ${AXIS2C_HOME}/samples/bin
     $ ./echo
 	This will invoke the echo service.
 
@@ -347,11 +347,15 @@ Table of Contents
 
     axis2c
       |
-      +- bin         - server and other executables
-      |   |
-      |   +- samples - samples go here
+      +- bin         - server 
+      |   
+      +- samples - samples go here
       |         |
-      |         +...
+      |         +- bin - sample client executables
+      |         |
+      |         +- lib - sample libraries
+      |         |
+      |         +- src - source files of the sampels in bin and lib folders
       |
       |
       +- docs        - documentation 
@@ -363,8 +367,6 @@ Table of Contents
       +- logs        - system and client logs are written to this folder
       |
       +- modules     - deployed modules 
-      |
-      +- samples     - source files of the samples in bin
       |
       +- services    - deployed services 
       
@@ -452,11 +454,16 @@ Table of Contents
     	deploy
       	|
       	+- bin         - server and other executables
-      	|   |
-      	|   +- samples - samples go here
+      	|   
+      	+- samples - samples go here
       	|         |
-      	|         +...
+      	|         +- bin - sample client executables
+        |         |
+        |         +- lib - sample libraries
+        |         |     
+        |         +- src - sources of the samples in bin and lib folders 
       	|
+        |
       	+- lib         - library modules
       	|
       	+- services    - deployed services 
@@ -505,7 +512,7 @@ Table of Contents
    	Now you can run any sample client deployed under %AXIS2C_HOME%\bin\samples\
     		
 	Example:
-   		> cd %AXIS2C_HOME%\bin\samples
+   		> cd %AXIS2C_HOME%\samples\bin
 		> echo.exe
 
 
