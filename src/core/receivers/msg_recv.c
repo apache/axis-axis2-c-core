@@ -536,5 +536,13 @@ axis2_msg_recv_load_and_init_svc(
 	 const axutil_env_t *env,
 	 struct axis2_svc *svc)
 {
-	return msg_recv->load_and_init_svc(msg_recv, env, svc);
+    if(msg_recv->load_and_init_svc)
+    {
+	    return msg_recv->load_and_init_svc(msg_recv, env, svc);
+    }
+    else
+    {
+        /* message receivers without physical service (e.g : programatical service injection) */
+        return AXIS2_SUCCESS;
+    }
 }
