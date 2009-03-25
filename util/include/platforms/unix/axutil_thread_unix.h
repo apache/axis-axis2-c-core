@@ -56,4 +56,10 @@ struct axutil_thread_mutex_t
     pthread_mutex_t mutex;
 };
 
+struct axutil_thread_cond_t
+{
+    axutil_allocator_t *allocator;
+    pthread_cond_t cond;
+};
+
 #endif                          /* AXIS2_THREAD_UNIX_H */

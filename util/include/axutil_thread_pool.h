@@ -28,6 +28,9 @@
 #include <axutil_allocator.h>
 #include <axutil_thread.h>
 
+/* maximum number of threads allowed in the pool */
+#define MAXT_IN_POOL 200
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -48,8 +51,8 @@ extern "C"
      * @param data arguments to be passed to the function
      * @return pointer to a thread in ready state.
      */
-    AXIS2_EXTERN axutil_thread_t *AXIS2_CALL
-    axutil_thread_pool_get_thread(
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_thread_pool_dispatch(
         axutil_thread_pool_t * pool,
         axutil_thread_start_t func,
         void *data);
@@ -95,11 +98,13 @@ extern "C"
     /**
     * Initializes (creates) an thread_pool.
     * @param allocator user defined allocator for the memory allocation.
+    * @param size Size of the thread pool.
     * @return initialized thread_pool. NULL on error.
     */
     AXIS2_EXTERN axutil_thread_pool_t *AXIS2_CALL
     axutil_thread_pool_init(
-        axutil_allocator_t * allocator);
+        axutil_allocator_t * allocator,
+        int size);
 
     /**
      * This function can be used to initialize the environment in case of

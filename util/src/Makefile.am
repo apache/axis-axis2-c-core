@@ -18,6 +18,7 @@ libaxutil_la_SOURCES = hash.c \
                         network_handler.c \
                         file.c\
                         uuid_gen.c\
+						pool_queue.c\
                         thread_pool.c \
                         property.c \
                         types.c \

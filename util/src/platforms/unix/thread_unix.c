@@ -86,7 +86,7 @@ axutil_threadattr_detach_get(
 }
 
 static void *
-dummy_worker(
+axutil_thread_dummy_worker(
     void *opaque)
 {
     axutil_thread_t *thread = (axutil_thread_t *) opaque;
@@ -129,10 +129,11 @@ axutil_thread_create(
         temp = NULL;
     }
 
-    if ((stat = pthread_create(new->td, temp, dummy_worker, new)) == 0)
+    if ((stat = pthread_create(new->td, temp, axutil_thread_dummy_worker, new)) == 0)
     {
         return new;
     }
+
     return NULL;
 }
 
@@ -345,3 +346,59 @@ axutil_thread_mutex_destroy(
     AXIS2_FREE(mutex->allocator, mutex);
     return AXIS2_SUCCESS;
 }
+
+AXIS2_EXTERN axutil_thread_cond_t *AXIS2_CALL
+axutil_thread_cond_create(
+    axutil_allocator_t * allocator,
+    unsigned int flags)
+{
+    axutil_thread_cond_t *new_cond = NULL;
+
+    new_cond = AXIS2_MALLOC(allocator, sizeof(axutil_thread_cond_t));
+    new_cond->allocator = allocator;
+
+    if (pthread_cond_init(&(new_cond->cond), NULL) != 0)
+    {
+        AXIS2_FREE(allocator, new_cond);
+        return NULL;
+    }
+    return new_cond;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axutil_thread_cond_wait(
+    axutil_thread_cond_t *cond,
+    axutil_thread_mutex_t * mutex)
+{
+    if (pthread_cond_wait(&(cond->cond), &(mutex->mutex)) != 0)
+    {
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axutil_thread_cond_signal(
+    axutil_thread_cond_t *cond)
+{
+    if (pthread_cond_signal(&(cond->cond)) != 0)
+    {
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axutil_thread_cond_destroy(
+    axutil_thread_cond_t * cond)
+{
+    if (0 != pthread_cond_destroy(&(cond->cond)))
+    {
+        return AXIS2_FAILURE;
+    }
+    AXIS2_FREE(cond->allocator, cond);
+    return AXIS2_SUCCESS;
+}
+
+
