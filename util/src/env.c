@@ -22,6 +22,8 @@
 #include <axutil_log_default.h>
 #include <axutil_string.h>
 
+#define INIT_THREAD_POOL_SIZE 150
+
 AXIS2_EXTERN axutil_env_t *AXIS2_CALL
 axutil_env_create(
     axutil_allocator_t *allocator)
@@ -165,7 +167,7 @@ axutil_env_create_all(
         log = axutil_log_create_default(allocator);
     }
     
-    thread_pool = axutil_thread_pool_init(allocator);
+    thread_pool = axutil_thread_pool_init(allocator, INIT_THREAD_POOL_SIZE);
     
     env = axutil_env_create_with_error_log_thread_pool(allocator, error, log,
                                                        thread_pool);

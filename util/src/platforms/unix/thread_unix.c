@@ -17,7 +17,7 @@
  */
 
 #include <config.h>
-#include "axutil_thread_unix.h"
+#include <axutil_thread_unix.h>
 
 AXIS2_EXTERN axutil_threadattr_t *AXIS2_CALL
 axutil_threadattr_create(
