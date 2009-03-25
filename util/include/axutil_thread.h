@@ -177,6 +177,7 @@ extern "C"
 
     /** Opaque thread-local mutex structure */
     typedef struct axutil_thread_mutex_t axutil_thread_mutex_t;
+    typedef struct axutil_thread_cond_t axutil_thread_cond_t;
 
 #define AXIS2_THREAD_MUTEX_DEFAULT  0x0   /**< platform-optimal lock behavior */
 
@@ -230,6 +231,35 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_thread_mutex_destroy(
         axutil_thread_mutex_t * mutex);
+
+    /**
+     */
+    AXIS2_EXTERN axutil_thread_cond_t *AXIS2_CALL
+    axutil_thread_cond_create(
+        axutil_allocator_t * allocator,
+        unsigned int flags);
+
+    /**
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_thread_cond_wait(
+        axutil_thread_cond_t * cond,
+        axutil_thread_mutex_t * mutex);
+
+    /**
+     *
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_thread_cond_signal(
+        axutil_thread_cond_t * cond);
+
+    /**
+     * Destroy the cond and free the memory associated with the lock.
+     * @param cond the cond to destroy.
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_thread_cond_destroy(
+        axutil_thread_cond_t * cond);
 
     /** @} */
 #ifdef __cplusplus
