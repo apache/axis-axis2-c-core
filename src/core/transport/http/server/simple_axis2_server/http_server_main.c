@@ -36,6 +36,7 @@ AXIS2_IMPORT extern int axis2_http_socket_read_timeout;
 AXIS2_IMPORT extern axis2_char_t *axis2_request_url_prefix;
 
 #define DEFAULT_REPO_PATH "../"
+#define INIT_THREAD_POOL_SIZE 150
 
 /***************************** Function headers *******************************/
 axutil_env_t *init_syetem_env(
@@ -63,7 +64,7 @@ init_syetem_env(
     /* if (!log) */
 
 /* 		  log = axutil_log_create_default (allocator); */
-    axutil_thread_pool_t *thread_pool = axutil_thread_pool_init(allocator);
+    axutil_thread_pool_t *thread_pool = axutil_thread_pool_init(allocator, INIT_THREAD_POOL_SIZE);
     /* We need to init the parser in main thread before spawning child
      * threads
      */

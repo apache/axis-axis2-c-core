@@ -32,6 +32,8 @@
 #include <apr_shm.h>
 #include <axis2_http_transport.h>
 
+#define INIT_THREAD_POOL_SIZE 150
+
 /* Configuration structure populated by apache2.conf */
 typedef struct axis2_config_rec
 {
@@ -549,7 +551,7 @@ static int axis2_post_config(apr_pool_t *pconf, apr_pool_t *plog,
                          "[Axis2] Error creating mod_axis2 log structure");
             exit(APEXIT_CHILDFATAL);
         }
-        thread_pool = axutil_thread_pool_init(allocator);
+        thread_pool = axutil_thread_pool_init(allocator, INIT_THREAD_POOL_SIZE);
         if (!thread_pool)
         {
             ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
@@ -667,7 +669,7 @@ axis2_module_init(
                      "[Axis2] Error creating mod_axis2 log structure");
         exit(APEXIT_CHILDFATAL);
     }
-    thread_pool = axutil_thread_pool_init(allocator);
+    thread_pool = axutil_thread_pool_init(allocator, INIT_THREAD_POOL_SIZE);
     if (! thread_pool)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,

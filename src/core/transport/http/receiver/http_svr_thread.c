@@ -28,6 +28,7 @@
 #include <axutil_error_default.h>
 #include <axiom_xml_reader.h>
 #include <signal.h>
+#include <stdio.h>
 
 AXIS2_EXPORT int axis2_http_socket_read_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
 
@@ -123,7 +124,6 @@ axis2_http_svr_thread_run(
     {
         int socket = -1;
         axis2_http_svr_thd_args_t *arg_list = NULL;
-        axutil_thread_t *worker_thread = NULL;
 
         socket = (int)axutil_network_handler_svr_socket_accept(env,
                                                           svr_thread->
@@ -148,16 +148,8 @@ axis2_http_svr_thread_run(
         arg_list->socket = socket;
         arg_list->worker = svr_thread->worker;
 #ifdef AXIS2_SVR_MULTI_THREADED
-        worker_thread = axutil_thread_pool_get_thread(env->thread_pool,
-                                                      axis2_svr_thread_worker_func,
-                                                      (void *) arg_list);
-        if (!worker_thread)
-        {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
-                            "server thread loop");
-            continue;
-        }
-        axutil_thread_pool_thread_detach(env->thread_pool, worker_thread);
+        axutil_thread_pool_dispatch(env->thread_pool, axis2_svr_thread_worker_func, 
+                (void *) arg_list);
 #else
         axis2_svr_thread_worker_func(NULL, (void *) arg_list);
 #endif
@@ -300,7 +292,7 @@ axis2_svr_thread_worker_func(
     }
 
 #ifdef AXIS2_SVR_MULTI_THREADED
-    axutil_thread_pool_exit_thread(env->thread_pool, thd);
+    /*axutil_thread_pool_exit_thread(env->thread_pool, thd);*/
 #endif
 
     return NULL;

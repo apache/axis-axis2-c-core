@@ -127,7 +127,6 @@ axis2_listener_manager_make_sure_started(
                 listener = axis2_transport_in_desc_get_recv(transport_in, env);
                 if (listener)
                 {
-                    axutil_thread_t *worker_thread = NULL;
                     axis2_listener_manager_worker_func_args_t *arg_list = NULL;
                     arg_list = AXIS2_MALLOC(env->allocator,
                                             sizeof
@@ -144,21 +143,8 @@ axis2_listener_manager_make_sure_started(
 #ifdef AXIS2_SVR_MULTI_THREADED
                     if (env->thread_pool)
                     {
-                        worker_thread =
-                            axutil_thread_pool_get_thread(env->thread_pool,
-                                                          axis2_listener_manager_worker_func,
-                                                          (void *) arg_list);
-                        if (!worker_thread)
-                        {
-                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                                            "Thread creation failed"
-                                            "Invoke non blocking failed");
-                        }
-                        else
-                        {
-                            axutil_thread_pool_thread_detach(env->thread_pool,
-                                                             worker_thread);
-                        }
+                        axutil_thread_pool_dispatch(env->thread_pool, 
+                                axis2_listener_manager_worker_func, (void *) arg_list);
                     }
                     else
                     {

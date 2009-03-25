@@ -57,7 +57,6 @@ tcpmon_session_server_thread_data_t;
 
 #define AXIS2_INTF_TO_IMPL(session) \
     ((tcpmon_session_impl_t *) session)
-axutil_thread_t *server_thread = NULL;
 tcpmon_session_server_thread_data_t *thread_data = NULL;
 
 
@@ -410,21 +409,7 @@ tcpmon_session_start(
     thread_data->env = env;
 
     session_impl->is_running = AXIS2_TRUE;
-    server_thread = axutil_thread_pool_get_thread(env->thread_pool,
-                                                  server_funct,
-                                                  (void *) thread_data);
-    if (!server_thread)
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
-                        "server thread");
-        if (session_impl->on_trans_fault_funct)
-        {
-            (session_impl->on_trans_fault_funct) (env,
-                                                  "error in creating the server thread");
-        }
-    }
-
-    axutil_thread_pool_thread_detach(env->thread_pool, server_thread);
+    axutil_thread_pool_dispatch(env->thread_pool, server_funct, (void *) thread_data);
     return AXIS2_SUCCESS;
 }
 
@@ -440,11 +425,6 @@ tcpmon_session_stop(
     session_impl = AXIS2_INTF_TO_IMPL(session);
     session_impl->is_running = AXIS2_FALSE;
 
-    if (server_thread)
-    {
-        AXIS2_FREE(env->allocator, server_thread);
-        server_thread = NULL;
-    }
     if (thread_data)
     {
         AXIS2_FREE(env->allocator, (tcpmon_session_server_thread_data_t *)thread_data);
@@ -498,7 +478,6 @@ server_funct(
     const axutil_env_t *env = NULL;
     int listen_socket = -1;
     int socket = -1;
-    axutil_thread_t *request_thread = NULL;
     tcpmon_entry_request_data_t *request_thread_data = NULL;
 
     session_impl = thread_data->session_impl;
@@ -519,8 +498,6 @@ server_funct(
         }
         if (thd)
         {
-            AXIS2_FREE(env->allocator, server_thread);
-            server_thread = NULL;
         }
         if (data)
         {
@@ -552,29 +529,12 @@ server_funct(
         request_thread_data->socket = socket;
         request_thread_data->session = (tcpmon_session_t *) session_impl;
 
-        request_thread = axutil_thread_pool_get_thread(env->thread_pool,
-                                                       tcpmon_entry_new_entry_funct,
-                                                       (void *)
-                                                       request_thread_data);
-        if (!request_thread)
-        {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
-                            "request thread");
-            if (session_impl->on_trans_fault_funct)
-            {
-                (session_impl->on_trans_fault_funct) (env,
-                                                      "fail in creating the thread");
-            }
-            break;
-        }
-
-        axutil_thread_pool_thread_detach(env->thread_pool, request_thread);
+        axutil_thread_pool_dispatch(env->thread_pool, tcpmon_entry_new_entry_funct, 
+                (void *) request_thread_data);
     }
     axutil_network_handler_close_socket(env, listen_socket);
     if (thd)
     {
-        AXIS2_FREE(env->allocator, server_thread);
-        server_thread = NULL;
     }
     if (data)
     {
