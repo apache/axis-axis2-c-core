@@ -334,13 +334,13 @@ axutil_log_impl_log_user(
     if (log && log->ops && log->ops->write &&
         format && log->enabled)
     {
-        char value[AXIS2_LEN_VALUE + 1];
-        va_list ap;
-        va_start(ap, format);
-        AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
-        va_end(ap);
         if(AXIS2_LOG_LEVEL_DEBUG <= log->level)
         {
+            char value[AXIS2_LEN_VALUE + 1];
+            va_list ap;
+            va_start(ap, format);
+            AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+            va_end(ap);
             log->ops->write(log, value, AXIS2_LOG_LEVEL_DEBUG, file, line);
         }
     }
@@ -361,13 +361,13 @@ axutil_log_impl_log_debug(
     if (log && log->ops && log->ops->write &&
         format && log->enabled)
     {
-        char value[AXIS2_LEN_VALUE + 1];
-        va_list ap;
-        va_start(ap, format);
-        AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
-        va_end(ap);
         if(AXIS2_LOG_LEVEL_DEBUG <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
         {
+            char value[AXIS2_LEN_VALUE + 1];
+            va_list ap;
+            va_start(ap, format);
+            AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+            va_end(ap);
             log->ops->write(log, value, AXIS2_LOG_LEVEL_DEBUG, file, line);
         }
     }
@@ -386,13 +386,13 @@ axutil_log_impl_log_info(
     if (log && log->ops && log->ops->write &&
         format && log->enabled)
     {
-        char value[AXIS2_LEN_VALUE + 1];
-        va_list ap;
-        va_start(ap, format);
-        AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
-        va_end(ap);
         if(AXIS2_LOG_LEVEL_INFO <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
         {
+            char value[AXIS2_LEN_VALUE + 1];
+            va_list ap;
+            va_start(ap, format);
+            AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+            va_end(ap);
             log->ops->write(log, value, AXIS2_LOG_LEVEL_INFO, NULL, -1);
         }
     }
@@ -413,13 +413,13 @@ axutil_log_impl_log_warning(
     if (log && log->ops && log->ops->write &&
         format && log->enabled)
     {
-        char value[AXIS2_LEN_VALUE + 1];
-        va_list ap;
-        va_start(ap, format);
-        AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
-        va_end(ap);
         if(AXIS2_LOG_LEVEL_WARNING <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
         {
+            char value[AXIS2_LEN_VALUE + 1];
+            va_list ap;
+            va_start(ap, format);
+            AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
+            va_end(ap);
             log->ops->write(log, value, AXIS2_LOG_LEVEL_WARNING, file, line);
         }
     }
