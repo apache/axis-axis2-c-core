@@ -32,7 +32,7 @@
 #include <apr_shm.h>
 #include <axis2_http_transport.h>
 
-#define INIT_THREAD_POOL_SIZE 150
+#define INIT_THREAD_POOL_SIZE 100
 
 /* Configuration structure populated by apache2.conf */
 typedef struct axis2_config_rec

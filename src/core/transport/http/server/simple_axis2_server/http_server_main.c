@@ -36,7 +36,7 @@ AXIS2_IMPORT extern int axis2_http_socket_read_timeout;
 AXIS2_IMPORT extern axis2_char_t *axis2_request_url_prefix;
 
 #define DEFAULT_REPO_PATH "../"
-#define INIT_THREAD_POOL_SIZE 150
+#define INIT_THREAD_POOL_SIZE 100
 
 /***************************** Function headers *******************************/
 axutil_env_t *init_syetem_env(

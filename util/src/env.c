@@ -22,7 +22,7 @@
 #include <axutil_log_default.h>
 #include <axutil_string.h>
 
-#define INIT_THREAD_POOL_SIZE 150
+#define INIT_THREAD_POOL_SIZE 100
 
 AXIS2_EXTERN axutil_env_t *AXIS2_CALL
 axutil_env_create(
