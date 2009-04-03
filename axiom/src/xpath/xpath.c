@@ -30,12 +30,18 @@ AXIS2_EXTERN axiom_xpath_context_t * AXIS2_CALL axiom_xpath_context_create(
 {
     axiom_xpath_context_t* context;
 
+    /*HACK: xpath impl requires a dummy root node in order to process properly.*/
+    axiom_node_t * dummy_root;
+    dummy_root = axiom_node_create(env);
+    axiom_node_add_child(dummy_root, env, root_node);
+
+
     context = AXIS2_MALLOC(env->allocator,
             sizeof(axiom_xpath_context_t));
 
     context->env = env;
-    context->root_node = root_node;
-    context->node = root_node;
+    context->root_node = dummy_root;
+    context->node = dummy_root;
     context->expr = NULL;
     context->attribute = NULL;
     context->namespaces = NULL;
@@ -77,7 +83,7 @@ AXIS2_EXTERN axiom_xpath_result_t * AXIS2_CALL axiom_xpath_evaluate(
     axiom_xpath_expression_copy(context, xpath_expr);
 
     context->streaming = AXIS2_FALSE;
-
+    
     return axiom_xpath_run(context);
 }
 
