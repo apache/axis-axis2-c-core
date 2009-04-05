@@ -424,7 +424,6 @@ axiom_node_t *read_test_xml(const axutil_env_t *env, axis2_char_t *file_name)
     axiom_stax_builder_t *builder = NULL;
     axiom_document_t *document = NULL;
     axiom_node_t *root = NULL;
-    axiom_node_t *doc_root = NULL;
 
     /* Create parser */
     reader = axiom_xml_reader_create_for_file(env, file_name, NULL);
@@ -464,10 +463,7 @@ axiom_node_t *read_test_xml(const axutil_env_t *env, axis2_char_t *file_name)
 
     while (axiom_document_build_next(document, env));
 
-    doc_root = axiom_node_create(env);
-    axiom_node_add_child(doc_root, env, root);
-
-    return doc_root;
+    return root;
 }
 
 axiom_node_t * build_test_xml(const axutil_env_t *env)
