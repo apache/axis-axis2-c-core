@@ -183,9 +183,9 @@ axis2_conf_builder_populate_conf(
         axiom_node_t *msg_recv_node = NULL;
         axiom_element_t *msg_recv_element = NULL;
         axis2_msg_recv_t *msg_recv = NULL;
-        axiom_attribute_t *mep_att = NULL;
-        axutil_qname_t *qmep = NULL;
-        axis2_char_t *att_value = NULL;
+        axiom_attribute_t *recv_name = NULL;
+        axutil_qname_t *class_qname = NULL;
+        axis2_char_t *class_name = NULL;
 
         msg_recv_node = (axiom_node_t *)
             axiom_children_qname_iterator_next(msg_recvs, env);
@@ -199,11 +199,12 @@ axis2_conf_builder_populate_conf(
                 "Message receiver loading failed. Unable to continue");
             return AXIS2_FAILURE;
         }
-        qmep = axutil_qname_create(env, AXIS2_MEP, NULL, NULL);
-        mep_att = axiom_element_get_attribute(msg_recv_element, env, qmep);
-        att_value = axiom_attribute_get_value(mep_att, env);
-        axis2_conf_add_msg_recv(conf_builder->conf, env, att_value, msg_recv);
-        axutil_qname_free(qmep, env);
+
+        class_qname = axutil_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
+        recv_name = axiom_element_get_attribute(msg_recv_element, env, class_qname);
+        axutil_qname_free(class_qname, env);
+        class_name = axiom_attribute_get_value(recv_name, env);
+        axis2_conf_add_msg_recv(conf_builder->conf, env, class_name, msg_recv);
     }
 
     /* processing Dispatching Order */
