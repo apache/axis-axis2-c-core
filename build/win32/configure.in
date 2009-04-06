@@ -62,10 +62,10 @@ APACHE_VERSION_2_0_X = 0
 #############################################################################
 #
 # C runtime LIBRARY OPTION ( Use /MD or /MT )
-CRUNTIME = /MD 
+CRUNTIME = /MT 
 #
 # Embed Manifest Files
-EMBED_MANIFEST = 1
+EMBED_MANIFEST = 0
 #
 # debug symbols
 # To build with debug symbols use DEBUG = 1
