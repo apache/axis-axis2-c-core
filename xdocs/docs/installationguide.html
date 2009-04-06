@@ -238,7 +238,7 @@ To build the samples:<br />
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${AXIS2C_HOME}/lib/</code><br />
 <code>$ cd samples</code><br />
 <code>$ ./configure --prefix=${AXIS2C_HOME}
---with-axis2=${AXIS2C_HOME}/include/axis2-1.4.0</code><br />
+--with-axis2=${AXIS2C_HOME}/include/axis2-1.6.0</code><br />
 <code>$ make</code><br />
 <code>$ make install</code><br />
 <br />
@@ -510,10 +510,8 @@ the server and samples.<br />
 Set the variable AXIS2C_HOME to the deploy folder (C:\axis2c)<br />
 Add the path to lib directory to the PATH variable (%AXIS2C_HOME%\lib)<br />
 <br />
-Copy iconv.dll and zlib1.dll to the %AXIS2C_HOME%\lib folder.<br />
-<br />
-You might optionally require to copy the libxml2.dll to the
-%AXIS2C_HOME%\lib folder.<br />
+Copy iconv.dll, zlib1.dll, libxml2.dll to the %AXIS2C_HOME%\lib folder. This is 
+optional.<br />
 <div class="subsection"><a name="2.4.1"></a>
 <h4>2.4.1 HTTP transport</h4>
 <div class="subsection"><a name="2.4.1.a"></a>
@@ -594,12 +592,12 @@ C:\axis2c\build\deploy\lib </div>
 NOTE : To do the following tasks, you might need super user privileges
 on your machine. If you are using the binary release of Axis2/C, please note that it is built with Apache 2.2.<br />
 <br />
-Copy the mod_axis2 (libmod_axis2.so.0.3.1 on Linux and mod_axis2.dll on
+Copy the mod_axis2 (libmod_axis2.so.0.6.0 on Linux and mod_axis2.dll on
 Windows) to "&lt;apache2 modules directory&gt;" as
 mod_axis2.so <br />
 <br />
 Example:<br />
-<code>cp $AXIS2C_HOME/lib/libmod_axis2.so.0.3.1
+<code>cp $AXIS2C_HOME/lib/libmod_axis2.so.0.6.0
 /usr/lib/apache2/modules/mod_axis2.so </code>(on Linux)<br />
 <code>copy C:\axis2c\build\deploy\lib\mod_axis2.dll
 C:\Apache2\modules\mod_axis2.so </code>(on Windows)<br />

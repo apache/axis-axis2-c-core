@@ -83,7 +83,7 @@ path.</p>
 folder of the
 extracted folder, and run the simple axis server in one command shell.
 Then
-change the directory to bin/samples in another command shell and run
+change the directory to samples/bin in another command shell and run
 any of
 the samples there (you may have to set the environment variables in
 this new
@@ -251,7 +251,7 @@ one operation, with the name "greet".<br />
 <p>You can compile the service sample as shown below.</p>
 <p>On Linux:</p>
 <div class="source">
-<pre>gcc -shared -olibhello.so -I$AXIS2C_HOME/include/axis2-1.2/ -L$AXIS2C_HOME/lib -laxutil -laxis2_axiom -laxis2_parser -laxis2_engine -lpthread -laxis2_http_sender -laxis2_http_receiver hello_svc.c<br /><br /></pre>
+<pre>gcc -shared -olibhello.so -I$AXIS2C_HOME/include/axis2-1.6.0/ -L$AXIS2C_HOME/lib -laxutil -laxis2_axiom -laxis2_parser -laxis2_engine -lpthread -laxis2_http_sender -laxis2_http_receiver hello_svc.c<br /><br /></pre>
 </div>
 <p>On MS Windows:</p>
 <p>to compile,</p>
@@ -405,7 +405,7 @@ response further.</p>
 <p>You can compile the client sample as shown below.</p>
 <p>On Linux:</p>
 <div class="source">
-<pre>gcc -o hello -I$AXIS2C_HOME/include/axis2-1.2/ -L$AXIS2C_HOME/lib -laxutil -laxis2_axiom -laxis2_parser -laxis2_engine -lpthread -laxis2_http_sender -laxis2_http_receiver hello.c -ldl -Wl,--rpath -Wl,$AXIS2C_HOME/lib<br /><br /></pre>
+<pre>gcc -o hello -I$AXIS2C_HOME/include/axis2-1.6.0/ -L$AXIS2C_HOME/lib -laxutil -laxis2_axiom -laxis2_parser -laxis2_engine -lpthread -laxis2_http_sender -laxis2_http_receiver hello.c -ldl -Wl,--rpath -Wl,$AXIS2C_HOME/lib<br /><br /></pre>
 </div>
 <p>On MS Windows:</p>
 <p>to compile,</p>
@@ -1484,12 +1484,12 @@ the commands given below,
 you might require super user privileges on your machine. If you are
 using the binary release of Axis2/C, please note that it is built with
 Apache 2.2.</font></p>
-<p>Copy the mod_axis2 shared library <font color="#4169e1">(libmod_axis2.so.0.0.0
+<p>Copy the mod_axis2 shared library <font color="#4169e1">(libmod_axis2.so.0.6.0
 on Linux and mod_axis2.dll on MS
 Windows)</font> to the Apache2 modules directory as mod_axis2.so</p>
 <p>On Linux</p>
 <div class="source">
-<pre>	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.0.0 /usr/lib/apache2/modules/mod_axis2.so<br /></pre>
+<pre>	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.6.0 /usr/lib/apache2/modules/mod_axis2.so<br /></pre>
 </div>
 <p>On MS Windows</p>
 <div class="source">
@@ -1982,7 +1982,7 @@ used to
 generate C code that works with Axis2/C API. You should use <a href="http://svn.apache.org/viewvc/webservices/axis2/trunk/java" class="externalLink" title="External Link">Axis2/Java
 SVN</a> revision 529533 or later revisions. You can download the <a href="http://people.apache.org/dist/axis2/nightly/" class="externalLink" title="External Link">Axis2/Java
 nightly
-build</a> and use those binaries to generate code. Check out a <a href="http://ws.apache.org/axis2/1_2/reference.html#wsdl2java" class="externalLink" title="External Link">basic
+build</a> and use those binaries to generate code. Check out a <a href="http://ws.apache.org/axis2/1_4_1/reference.html#wsdl2java" class="externalLink" title="External Link">basic
 guide</a> on the Java tool.</p>
 <p>Before you run the tool, make sure that all the .jar library
 files that
@@ -1997,7 +1997,7 @@ skeleton and other required files with ADB (Axis Data Binding) support.</p>
 </div>
 <p>To understand the meanings of the options used with the tool,
 please have
-a look at the <a href="http://ws.apache.org/axis2/1_2/reference.html#wsdl2java" class="externalLink" title="External Link"> Java tool
+a look at the <a href="http://ws.apache.org/axis2/1_4_1/reference.html#wsdl2java" class="externalLink" title="External Link"> Java tool
 documentation</a>.</p>
 <p>If you need an XML in/out programming model, you can just
 ignore the data
@@ -2246,7 +2246,7 @@ When the axis2_amqp_server is up and running, you can run the sample
 clients in a new shell as follows.<br />
 <br />
 </p>
-<pre>$ cd ${AXIS2C_HOME}/bin/samples/amqp<br /><br />$ ./echo_blocking<br /></pre>
+<pre>$ cd ${AXIS2C_HOME}/samples/bin/amqp<br /><br />$ ./echo_blocking<br /></pre>
 This will invoke the echo service.<br />
 <br />
 To see the possible command line options for sample clients run them

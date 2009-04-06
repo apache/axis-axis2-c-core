@@ -570,11 +570,11 @@ Table of Contents
     NOTE : To do the following tasks, you might need super user privileges 
 		   on your machine.
 
-    Copy the mod_axis2 (libmod_axis2.so.0.5.0 on Linux and mod_axis2.dll 
+    Copy the mod_axis2 (libmod_axis2.so.0.6.0 on Linux and mod_axis2.dll 
 	on Windows) to "<apache2 modules directory>" as mod_axis2.so 
     
 	Example:
-    	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.5.0 
+    	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.6.0 
 		/usr/lib/apache2/modules/mod_axis2.so (on Linux)
 		
 		copy C:\axis2c\build\deploy\lib\mod_axis2.dll 

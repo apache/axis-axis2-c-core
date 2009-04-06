@@ -26,6 +26,8 @@ AXIS2/C release process
 3. Update the documents inside xdocs
     * download.html
     * index.html
+    * installationguide.html
+    * axis2c_manual
 
 4. Run the build.sh
     make sure for the configure option you have the following.
