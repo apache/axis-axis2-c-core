@@ -42,6 +42,21 @@ AXIS2/C release process
 
 8. Test the source distribution in Windows and create the Sorce zip
    and the windows binary
+
+   Building Windows Binary
+   --------------------------
+
+    Edit the build/win32/configure.in as follows
+
+    * CRUNTIME = /MT
+    * EMBED_MANIFEST = 0
+    * DEBUG = 0
+
+    To create the binary distribution
+
+    * nmake dist  
+
+
 9. Sign the packs
     * use existing key pair if you have
     * To create a new key pair
