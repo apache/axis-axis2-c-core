@@ -69,11 +69,11 @@ remember to prefix the subject with [Axis2].</p>
 <ul>
 2.3.1 <a href="#2.3.1">Setting Build Options</a><br />
 <ul>
-(a) <a href="#2.3.1.a">Setting zlib Location</a><br />
-(b) <a href="#2.3.1.b">Enable Guththila</a><br />
-(c) <a href="#2.3.1.c">Enable libxml2</a><br />
-(d) <a href="#2.3.1.d">Enable SSL Support</a><br />
-(e) <a href="#2.3.1.e">Enable libcurl</a><br />
+(a) <a href="#2.3.1.a">Enable Guththila</a><br />
+(b) <a href="#2.3.1.b">Enable libxml2</a><br />
+(c) <a href="#2.3.1.c">Enable SSL Support</a><br />
+(d) <a href="#2.3.1.d">Enable libcurl</a><br />
+(e) <a href="#2.3.1.e">Setting zlib Location</a><br />
 </ul>
 2.3.2 <a href="#2.3.2">Compiling the Source</a><br />
 </ul>
@@ -113,7 +113,7 @@ Server) Integration Module (mod_axis2_IIS)</a><br />
 <h3>1.1 Setting up Prerequisites</h3>
 <div class="subsection"><a name="1.1.1"></a>
 <h4>1.1.1 Mandatory</h4>
-<p>(a) zlib - <a class="externalLink" href="http://www.zlib.net/">http://www.zlib.net/</a></p>
+<p>By default Axis2/C is not dependent on any other software libraries.</p>
 </div>
 <div class="subsection"><a name="1.1.2"></a>
 <h4>1.1.2 Optional</h4>
@@ -121,7 +121,9 @@ Server) Integration Module (mod_axis2_IIS)</a><br />
 <br />
 (b) libiconv - <a class="externalLink" href="http://www.gnu.org/software/libiconv/">http://www.gnu.org/software/libiconv/</a>
 <br />
-(c) Apache Qpid - </p>
+(c) zlib - <a class="externalLink" href="http://www.zlib.net/">http://www.zlib.net/</a>
+<br />
+(d) Apache Qpid - </p>
 <ul>
 You need to have Qpid libraries installed on your
 machine if you are going to use AMQP transport. It is imperative that
@@ -384,9 +386,6 @@ Microsoft VS Express2005 Edition and Platform
 SDK from Microsoft website. You need to add the path to Platform SDK
 Include and Lib folders to the makefile in order for you to compile the
 source.<br />
-<br />
-(b) zlib [<a class="externalLink" href="http://www.zlatkovic.com/pub/libxml">http://www.zlatkovic.com/pub/libxml</a>
-version &gt;= zlib-1.2.3.win32]
 </div>
 <div class="subsection"><a name="2.1.2"></a>
 <h4>2.1.2 Optional</h4>
@@ -394,6 +393,8 @@ version &gt;= zlib-1.2.3.win32]
 version &gt;= libxml2-2.6.20.win32]<br />
 (b) iconv [<a class="externalLink" href="http://www.zlatkovic.com/pub/libxml">http://www.zlatkovic.com/pub/libxml</a>
 version &gt;= iconv-1.9.1.win32]<br />
+(c) zlib [<a class="externalLink" href="http://www.zlatkovic.com/pub/libxml">http://www.zlatkovic.com/pub/libxml</a>
+version &gt;= zlib-1.2.3.win32]<br />
 </div>
 </div>
 <div class="subsection"><a name="2.2"></a>
@@ -401,8 +402,6 @@ version &gt;= iconv-1.9.1.win32]<br />
 Extract the binary distribution to a folder of your choice.(example:
 C:\axis2c)<br />
 The C:\axis2c folder structure is as follows:<br />
-<p><img alt="Figure: c:\axis2c Folder Structure" src="images/binary_folder_structure.jpg" /></p>
-<p><em>The above folders contain the following files:</em></p>
 <ul>
 <li>bin - server and other executables</li>
 <li>samples\bin - client sample binaries </li>
@@ -414,8 +413,7 @@ The C:\axis2c folder structure is as follows:<br />
 <li>include - all Include files of Axis2/C</li>
 <li>logs - system and client logs are written to this folder</li>
 </ul>
-Copy the downloaded zlib1.dll to C:\axis2c\lib.You might
-optionally require to copy the iconv.dll and libxml2.dll as well.<br />
+Optionally you might require to copy the iconv.dll, libxml2.dll and zlib1.dll to C:\axis2c\lib as well.<br />
 (Or you can have these dll's in some other place and add that location
 to PATH environment variable)
 </div>
@@ -425,7 +423,7 @@ to PATH environment variable)
 <h4>2.3.1 Setting Build Options</h4>
 <p>Please edit the
 &lt;source_distribution&gt;\build\win32\configure.in file
-to set the following build options.</p>
+to set the following build options. These are optional</p>
 <div class="subsection"><a name="2.3.1.a"></a>
 <h4>(a) Setting zlib Location</h4>
 Set the ZLIB_BIN_DIR to the location where zlib is installed to<br />
@@ -490,9 +488,7 @@ directory named deploy under the build directory,
 <li><code>C:\axis2c\build\win32&gt;nmake install</code></li>
 </ul>
 </li>
-<li>The deploy folder structure is as follows:</li>
-<p><img alt="Figure: deploy Folder Structure" src="images/folder_structure.jpg" /></p>
-<p><em>The above folders contain the following files:</em></p>
+<li><p>The deploy folder structure is as follows:</p></li>
 <ul>
 <li>bin - server and other executable</li>
 <li>samples\bin - client sample binaries</li>

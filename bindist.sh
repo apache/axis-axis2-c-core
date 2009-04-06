@@ -59,7 +59,7 @@ strip -s modules/addressing/*
 strip -s modules/logging/*
 
 strip -s ./bin/axis2_http_server
-strip -s ./bin/samples/*
+strip -s ./samples/bin/*
 strip -s ./bin/tools/tcpmon
 
 rm -rf ./lib/pkgconfig

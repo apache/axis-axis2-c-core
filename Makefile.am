@@ -39,6 +39,8 @@ bindist: $(bin_PROGRAMS)
 	mkdir axis2c-bin-${PACKAGE_VERSION}-linux
 	cp -r `pwd`/deploy/* axis2c-bin-${PACKAGE_VERSION}-linux
 	cp AUTHORS axis2c-bin-${PACKAGE_VERSION}-linux
+	cp README axis2c-bin-${PACKAGE_VERSION}-linux
+	cp ChangeLog axis2c-bin-${PACKAGE_VERSION}-linux		
 	tar -cf - axis2c-bin-${PACKAGE_VERSION}-linux | gzip -c > axis2c-bin-${PACKAGE_VERSION}-linux.tar.gz
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
 

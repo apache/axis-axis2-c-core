@@ -1,4 +1,4 @@
-prgbindir=$(prefix)/bin/tools
+prgbindir=$(prefix)/bin/tools/md5
 
 prgbin_PROGRAMS = md5
 

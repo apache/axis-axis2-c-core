@@ -31,11 +31,11 @@ Table of Contents
 	2.2 Using Binary Release
 	2.3 Using Source Release
 		2.3.1 Setting Build Options
-			(a) Setting zlib Location
-			(b) Enable Guththila
-			(c) Enable libxml2
-			(d) Enable SSL Support
-			(e) Enable libcurl
+			(a) Enable Guththila
+			(b) Enable libxml2
+			(c) Enable SSL Support
+			(d) Enable libcurl
+			(e) Setting zlib Location
 		2.3.2 Compiling the Source
 	2.4 Running Samples
 		2.4.1 HTTP transport
@@ -67,16 +67,17 @@ Table of Contents
 	1.1 Setting up Prerequisites
 	----------------------------
 
-	1.1.1 Mandatory
-	---------------
-    (a) zlib - http://www.zlib.net/
-	
+    1.1.1 Mandotory
+    --------------
+    By default Axis2/C is not depenendent on any other software libraries.
+
 	1.1.2 Optional
 	--------------
     (a) libxml2 - http://www.xmlsoft.org/
-    (b) libiconv - http://www.gnu.org/software/libiconv/
+    (b) zlib - http://www.zlib.net/
+    (c) libiconv - http://www.gnu.org/software/libiconv/
 	
-	(c) Apache Qpid - You need to have Qpid libraries installed on your machine 
+	(d) Apache Qpid - You need to have Qpid libraries installed on your machine 
 	                  if you are going to use AMQP transport. It is imperative 
 					  that you compile and install Qpid from SVN source. 
 					  You can checkout Qpid SVN source from 
@@ -327,14 +328,16 @@ Table of Contents
 			   Platform SDK Include and Lib folders to the makefile in order 
 			   for you to compile the source.
 
-    (b) zlib [http://www.zlatkovic.com/pub/libxml 
-			  version >= zlib-1.2.3.win32]
 	
 	2.1.2 Optional
 	--------------
 	(a) libxml2 [http://www.zlatkovic.com/pub/libxml 
 				 version >= libxml2-2.6.20.win32]
-    (b) iconv [http://www.zlatkovic.com/pub/libxml 
+
+    (b) zlib [http://www.zlatkovic.com/pub/libxml
+              version >= zlib-1.2.3.win32]
+
+    (c) iconv [http://www.zlatkovic.com/pub/libxml 
 			   version >= iconv-1.9.1.win32]
 
 	2.2 Using Binary Release
@@ -370,8 +373,8 @@ Table of Contents
       |
       +- services    - deployed services 
       
-	Copy the downloaded zlib1.dll to C:\axis2c\lib.
-	You might optionally require to copy the iconv.dll and libxml2.dll as well
+	You might optionally require to copy zlib1.dll ,iconv.dll and libxml2.dll. Copy 
+    them to C:\axis2c\lib .
     (Or you can have these dll's in some other place and add that 
 	location to PATH environment variable)
 	
@@ -383,50 +386,52 @@ Table of Contents
 	Please edit the <source_distribution>\build\win32\configure.in file 
 	to set the following build options.
 
-	(a) Setting zlib Location
-	-------------------------
-
-		Set the ZLIB_BIN_DIR to the location where zlib is installed to
-   			
-		Default location for zlib is E:\zlib-1.2.3.win32 and the folder 
-		structure should look like the following
-
-       	E:\zlib-1.2.3.win32
-          	|
-           	+- include
-           	|
-           	+- bin
-           	|
-           	+- lib
-
-		You can either extract zlib to this folder or extract it to a location 
-		of your choice and edit the configure.in file accordingly.
-
-   		NOTE : You need to have zlib1.dll in the library path.
-
-	(b) Enable Guththila
+	(a) Enable Guththila
 	--------------------
 	
 		- Now Guththila is the defualt parser. Unless you enable libxml2 Guththila will be built.
 
-   	(c) Enable libxml2
+   	(b) Enable libxml2
 	------------------
 	
 		- Set the ENABLE_LIBXML2 option to 1
 		- Set the LIBXML2_BIN_DIR to the location where libxml2 is installed to
 		- Set the ICONV_BIN_DIR to the location where iconv is installed to
 	
-	(d) Enable SSL Support
+	(c) Enable SSL Support
 	----------------------
 	
 		- Set ENABLE_SSL option to 1
 		- Set OPENSSL_BIN_DIR to the location where OpenSSL is installed to
 
-	(e) Enable libcurl
+	(d) Enable libcurl
 	------------------
 	
 		- Set ENABLE_LIBCURL to 1
 		- Set LIBCURL_BIN_DIR to the location where libcurl is installed to
+
+    (e) Setting zlib Location
+    -------------------------
+
+        Set the ZLIB_BIN_DIR to the location where zlib is installed to
+
+        Default location for zlib is E:\zlib-1.2.3.win32 and the folder
+        structure should look like the following
+
+        E:\zlib-1.2.3.win32
+            |
+            +- include
+            |
+            +- bin
+            |
+            +- lib
+
+        You can either extract zlib to this folder or extract it to a location
+        of your choice and edit the configure.in file accordingly.
+
+        NOTE : You need to have zlib1.dll in the library path.
+
+
 		
 	2.3.2 Compiling the Source
 	--------------------------
@@ -483,9 +488,7 @@ Table of Contents
     Set the variable AXIS2C_HOME to the deploy folder (C:\axis2c)
     Add the path to lib directory to the PATH variable (%AXIS2C_HOME%\lib)
 
-    Copy iconv.dll and zlib1.dll to the %AXIS2C_HOME%\lib folder.
-
-	You might optionally require to copy the libxml2.dll to 
+	You might optionally require to copy the iconv.dll, zlib1.dll, libxml2.dll to 
 	the %AXIS2C_HOME%\lib folder.
 
 	2.4.1 HTTP transport

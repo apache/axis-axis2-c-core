@@ -1,4 +1,4 @@
-datadir=$(prefix)
+datadir=$(prefix)/bin/tools/tcpmon
 SUBDIRS = src 
 includedir=$(prefix)/include/axis2-1.6.0
 include_HEADERS=$(top_builddir)/include/*.h

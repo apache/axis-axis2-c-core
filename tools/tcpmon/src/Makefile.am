@@ -1,4 +1,4 @@
-prgbindir=$(prefix)/bin/tools
+prgbindir=$(prefix)/bin/tools/tcpmon
 
 prgbin_PROGRAMS = tcpmon
 
