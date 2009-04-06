@@ -1356,6 +1356,7 @@ copy_extra:
 	@copy $(AXIS2_SOURCE_DIR)\AUTHORS $(AXIS2_BINDIR)
 	@copy $(AXIS2_SOURCE_DIR)\NEWS $(AXIS2_BINDIR)
 	@copy $(AXIS2_SOURCE_DIR)\NOTICE $(AXIS2_BINDIR)
+	@copy $(AXIS2_SOURCE_DIR)\ChangeLog $(AXIS2_BINDIR)
 	@if exist $(AXIS2_SOURCE_DIR)\docs xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\docs $(AXIS2_BINDIR)\docs
 
 copy_samples:
