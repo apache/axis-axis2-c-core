@@ -342,6 +342,7 @@ axutil_hash_copy(
              sizeof(axutil_hash_t) + sizeof(*ht->array) * (orig->max + 1) +
              sizeof(axutil_hash_entry_t) * orig->count);
     ht->env = env;
+    axutil_env_increment_ref((axutil_env_t*)env);
     ht->free = NULL;
     ht->count = orig->count;
     ht->max = orig->max;
@@ -474,6 +475,7 @@ axutil_hash_merge(
 
     res = AXIS2_MALLOC(env->allocator, sizeof(axutil_hash_t));
     res->env = env;
+    axutil_env_increment_ref((axutil_env_t*)env);
     res->free = NULL;
     res->hash_func = base->hash_func;
     res->count = base->count;
