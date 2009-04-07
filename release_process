@@ -125,11 +125,11 @@ AXIS2/C release process
         tar -zcf axis2c_1.6.0.tar.gz 1.6.0
         scp axis2c_1.6.0.tar.gz manjula@people.apache.org:~/
 
-11. Put RCs till all the packs a throughly tested and there are no more 
+11. Put RCs till all the packs are throughly tested and there are no more 
     known issues.
 12. Then upload the release packs to your directory at apache
 13. Call for vote
-14. When the required votes get upload the release.
+14. When the required number of votes is received, upload the release.
         Copy the release from your home to /www/www.apache.org/dist/ws/axis2-c/
         update the keys (cat KEYS >> /www/www.apache.org/dist/ws/axis2-c/KEYS)
         Move earlier releases to archive.apache.org (/www/archive.apache.org/dist/ws/axis2/c/)
