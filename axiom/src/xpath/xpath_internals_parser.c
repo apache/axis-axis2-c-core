@@ -59,12 +59,110 @@ int axiom_xpath_compile(
     }
 }
 
-/* Parse Or Expression : Stub*/
+/* Parse Or Expression */
 int axiom_xpath_compile_orexpr(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
-    return axiom_xpath_compile_equalexpr(env, expr);
+    int op1, op2;
+
+    if (!AXIOM_XPATH_HAS_MORE)
+    {
+        return AXIOM_XPATH_PARSE_END;
+    }
+
+    op1 = axiom_xpath_compile_andexpr(env, expr);
+
+    if (op1 == AXIOM_XPATH_PARSE_ERROR)
+    {
+#ifdef AXIOM_XPATH_DEBUG
+        printf(
+            "Parse error: AndEpxr expected - %s\n",
+            expr->expr_str + expr->expr_ptr);
+#endif
+
+        return AXIOM_XPATH_PARSE_ERROR;
+    }
+
+    AXIOM_XPATH_SKIP_WHITESPACES;
+
+    while (AXIOM_XPATH_CURRENT == 'o' && AXIOM_XPATH_NEXT(1) == 'r')
+    {
+        AXIOM_XPATH_READ(2);
+        AXIOM_XPATH_SKIP_WHITESPACES;
+
+        op2 = axiom_xpath_compile_andexpr(env, expr);
+
+        if (op2 == AXIOM_XPATH_PARSE_ERROR)
+        {
+#ifdef AXIOM_XPATH_DEBUG
+            printf(
+                "Parse error: AndEpxr expected - %s\n",
+                expr->expr_str + expr->expr_ptr);
+#endif
+
+            return AXIOM_XPATH_PARSE_ERROR;
+        }
+
+        op1 = AXIOM_XPATH_PUSH(AXIOM_XPATH_OPERATION_OR_EXPR, op1, op2);
+
+        AXIOM_XPATH_SKIP_WHITESPACES;
+    }
+
+    return op1;
+}
+
+/* Parse And Expression */
+int axiom_xpath_compile_andexpr(
+    const axutil_env_t *env,
+    axiom_xpath_expression_t* expr)
+{
+    int op1, op2;
+
+    if (!AXIOM_XPATH_HAS_MORE)
+    {
+        return AXIOM_XPATH_PARSE_END;
+    }
+
+    op1 = axiom_xpath_compile_equalexpr(env, expr);
+
+    if (op1 == AXIOM_XPATH_PARSE_ERROR)
+    {
+#ifdef AXIOM_XPATH_DEBUG
+        printf(
+            "Parse error: EqualityExpr expected - %s\n",
+            expr->expr_str + expr->expr_ptr);
+#endif
+
+        return AXIOM_XPATH_PARSE_ERROR;
+    }
+
+    AXIOM_XPATH_SKIP_WHITESPACES;
+
+    while (AXIOM_XPATH_CURRENT == 'a' && AXIOM_XPATH_NEXT(1) == 'n' && AXIOM_XPATH_NEXT(1) == 'd')
+    {
+        AXIOM_XPATH_READ(2);
+        AXIOM_XPATH_SKIP_WHITESPACES;
+
+        op2 = axiom_xpath_compile_equalexpr(env, expr);
+
+        if (op2 == AXIOM_XPATH_PARSE_ERROR)
+        {
+#ifdef AXIOM_XPATH_DEBUG
+            printf(
+                "Parse error: EqualityExpr expected - %s\n",
+                expr->expr_str + expr->expr_ptr);
+#endif
+
+            return AXIOM_XPATH_PARSE_ERROR;
+        }
+
+        op1 = AXIOM_XPATH_PUSH(AXIOM_XPATH_OPERATION_AND_EXPR, op1, op2);
+
+        AXIOM_XPATH_SKIP_WHITESPACES;
+    }
+
+    return op1;
 }
 
 /* Parse Equality Expression */
@@ -1090,13 +1188,13 @@ axis2_char_t * axiom_xpath_compile_ncname(
         return NULL;
     }
 
-     /* TODO: Add CombiningChar and Extender 
-      * Link http://www.w3.org/TR/REC-xml/#NT-NameChar */
+    /* TODO: Add CombiningChar and Extender
+     * Link http://www.w3.org/TR/REC-xml/#NT-NameChar */
     while (AXIOM_XPATH_HAS_MORE
             && (isalnum(AXIOM_XPATH_CURRENT)
                     || AXIOM_XPATH_CURRENT == '_'
                     || AXIOM_XPATH_CURRENT == '.'
-                    || AXIOM_XPATH_CURRENT == '-')) 
+                    || AXIOM_XPATH_CURRENT == '-'))
     {
         name[i] = AXIOM_XPATH_CURRENT;
         AXIOM_XPATH_READ(1);

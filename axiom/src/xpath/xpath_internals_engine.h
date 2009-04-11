@@ -36,10 +36,14 @@ extern "C"
     /* Macros */
 
     /** Set node->value to _value */
-#define AXIOM_XPATH_CAST_SET_VALUE(type, _value) { \
-    type * _var; \
-    if(node->value) { AXIS2_FREE(context->env->allocator, node->value); } \
-    _var = AXIS2_MALLOC(context->env->allocator, sizeof(type)); \
+#define AXIOM_XPATH_CAST_SET_VALUE(_type, _value) { \
+    _type * _var; \
+    if(node->value \
+      && node->type != AXIOM_XPATH_TYPE_NODE \
+      && node->type != AXIOM_XPATH_TYPE_ATTRIBUTE \
+      && node->type != AXIOM_XPATH_TYPE_NAMESPACE) \
+      { AXIS2_FREE(context->env->allocator, node->value); } \
+    _var = AXIS2_MALLOC(context->env->allocator, sizeof(_type)); \
     *_var = _value; \
     node->value = (void *) _var; \
 }
@@ -98,6 +102,24 @@ extern "C"
       * @return Number of nodes added to the stack
       */
     int axiom_xpath_union_operator(axiom_xpath_context_t *context, axiom_xpath_operation_t * op);
+
+    /**
+      * Perform or operation
+      *
+      * @param context XPath context
+      * @param op XPath operation
+      * @return Number of nodes added to the stack; which is one
+      */
+    int axiom_xpath_orexpr_operator(axiom_xpath_context_t *context, axiom_xpath_operation_t * op);
+
+    /**
+      * Perform and operation
+      *
+      * @param context XPath context
+      * @param op XPath operation
+      * @return Number of nodes added to the stack; which is one
+      */
+    int axiom_xpath_andexpr_operator(axiom_xpath_context_t *context, axiom_xpath_operation_t * op);
 
     /**
       * Perform equality test operation
@@ -177,6 +199,15 @@ extern "C"
       * @param context XPath context
       */
     void axiom_xpath_cast_string(axiom_xpath_result_node_t *node, axiom_xpath_context_t *context);
+
+    /* Convert a node set to boolean */
+    /**
+      * Convert a XPath node set to boolean
+      *
+      * @param node_set Node set
+      * @return AXIS2_TRUE if true; AXIS2_FALSE otherwise
+      */
+    axis2_bool_t axiom_xpath_convert_to_boolean(axutil_array_list_t *node_set, axiom_xpath_context_t *context);
 
     /**
       * Test if two result nodes are equal

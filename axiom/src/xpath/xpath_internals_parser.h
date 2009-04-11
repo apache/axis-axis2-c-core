@@ -233,8 +233,10 @@ extern "C"
         axiom_xpath_expression_t* expr);
 
     /**
-      * Compiles an OrExpr. This function is not complete.
+      * Compiles an OrExpr.
       *
+      * [21]   	OrExpr	   ::=   	AndExpr
+    		   *                          | OrExpr 'or' AndExpr
       * @param env Environment must not be null
       * @param expr A pointer to the XPath expression
       * @return Index of the operation in the array
@@ -242,6 +244,20 @@ extern "C"
     int axiom_xpath_compile_orexpr(
         const axutil_env_t *env,
         axiom_xpath_expression_t* expr);
+
+    /**
+      * Compiles an AndExpr.
+      *
+      * [22]   	AndExpr	   ::=   	EqualityExpr
+    		   *                           | AndExpr 'and' EqualityExpr
+      * @param env Environment must not be null
+      * @param expr A pointer to the XPath expression
+      * @return Index of the operation in the array
+      */
+    int axiom_xpath_compile_andexpr(
+        const axutil_env_t *env,
+        axiom_xpath_expression_t* expr);
+
 
     /**
       * Compiles a FunctionCall

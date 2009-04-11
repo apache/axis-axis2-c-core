@@ -60,8 +60,9 @@ void axiom_xpath_cast_boolean(
     axiom_xpath_result_node_t *node,
     axiom_xpath_context_t *context)
 {
-    AXIOM_XPATH_CAST_SET_VALUE(
-        axis2_bool_t, axiom_xpath_cast_node_to_boolean(context->env, node));
+    axis2_bool_t v = axiom_xpath_cast_node_to_boolean(context->env, node);
+
+    AXIOM_XPATH_CAST_SET_VALUE(axis2_bool_t, v);
 
     node->type = AXIOM_XPATH_TYPE_BOOLEAN;
 }
@@ -70,8 +71,9 @@ void axiom_xpath_cast_number(
     axiom_xpath_result_node_t *node,
     axiom_xpath_context_t *context)
 {
-    AXIOM_XPATH_CAST_SET_VALUE(
-        double, axiom_xpath_cast_node_to_number(context->env, node));
+    double v = axiom_xpath_cast_node_to_number(context->env, node);
+
+    AXIOM_XPATH_CAST_SET_VALUE(double, v);
 
     node->type = AXIOM_XPATH_TYPE_NUMBER;
 }
@@ -86,7 +88,10 @@ void axiom_xpath_cast_string(
 }
 
 /* Evaluate whether two results are equal
-   TODO: Comment */
+
+   If either node is a boolean other is casted to a boolean;
+   Otherwise, if either node is a number other is casted to a number;
+   Otherwise, both nodes are casted to strings.*/
 axis2_bool_t axiom_xpath_compare_equal(
     axiom_xpath_result_node_t *node1,
     axiom_xpath_result_node_t *node2,
@@ -136,6 +141,28 @@ axis2_bool_t axiom_xpath_compare_equal(
     else
     {
         return AXIS2_FALSE;
+    }
+}
+
+/* Convert a node set to boolean */
+axis2_bool_t axiom_xpath_convert_to_boolean(
+    axutil_array_list_t *node_set,
+    axiom_xpath_context_t *context)
+{
+    if (axutil_array_list_size(node_set, context->env) == 0)
+    {
+        return AXIS2_FALSE;
+    }
+    else if (axutil_array_list_size(node_set, context->env) >= 2)
+    {
+        return AXIS2_TRUE;
+    }
+    else
+    {
+        axiom_xpath_result_node_t *node = axutil_array_list_get(node_set, context->env, 0);
+        axiom_xpath_cast_boolean(node, context);
+
+        return *(axis2_bool_t *)node->value;
     }
 }
 
@@ -248,6 +275,140 @@ int axiom_xpath_path_expression_operator(
     return n_nodes;
 }
 
+/* Or Expression */
+int axiom_xpath_orexpr_operator(
+    axiom_xpath_context_t *context,
+    axiom_xpath_operation_t * op)
+{
+    axiom_xpath_result_node_t *node;
+    int n_nodes[2];
+    int i, j;
+    int op12[2];
+    axutil_array_list_t *arr[2];
+
+    op12[0] = op->op1;
+    op12[1] = op->op2;
+
+    /* Evaluate both operands and get number of results */
+    for (i = 0; i < 2; i++)
+    {
+        if (op12[i] == AXIOM_XPATH_PARSE_END)
+        {
+            continue;
+        }
+
+        n_nodes[i] = axiom_xpath_evaluate_operation(context, op12[i]);
+    }
+
+
+    for (i = 1; i >= 0; i--)
+    {
+        arr[i] = axutil_array_list_create(context->env, 0);
+
+        for (j = 0; j < n_nodes[i]; j++)
+        {
+            axutil_array_list_add(
+                arr[i],
+                context->env,
+                axutil_stack_pop(context->stack, context->env));
+        }
+    }
+
+    node = AXIS2_MALLOC(context->env->allocator,
+            sizeof(axiom_xpath_result_node_t));
+
+    node->type = AXIOM_XPATH_TYPE_BOOLEAN;
+    node->value = NULL;
+
+    /* Checking equality
+       - If any node from the first set is equal to any node from the second set
+         the result is true */
+    if (axiom_xpath_convert_to_boolean(arr[0], context) || axiom_xpath_convert_to_boolean(arr[1], context))
+    {
+        AXIOM_XPATH_CAST_SET_VALUE(axis2_bool_t, AXIS2_TRUE);
+
+        axutil_stack_push(context->stack, context->env, node);
+    }
+    else
+    {
+        AXIOM_XPATH_CAST_SET_VALUE(axis2_bool_t, AXIS2_FALSE);
+
+        axutil_stack_push(context->stack, context->env, node);
+    }
+
+    axutil_array_list_free(arr[0], context->env);
+    axutil_array_list_free(arr[1], context->env);
+
+    return 1;
+}
+
+/* And Expression */
+int axiom_xpath_andexpr_operator(
+    axiom_xpath_context_t *context,
+    axiom_xpath_operation_t * op)
+{
+    axiom_xpath_result_node_t *node;
+    int n_nodes[2];
+    int i, j;
+    int op12[2];
+    axutil_array_list_t *arr[2];
+
+    op12[0] = op->op1;
+    op12[1] = op->op2;
+
+    /* Evaluate both operands and get number of results */
+    for (i = 0; i < 2; i++)
+    {
+        if (op12[i] == AXIOM_XPATH_PARSE_END)
+        {
+            continue;
+        }
+
+        n_nodes[i] = axiom_xpath_evaluate_operation(context, op12[i]);
+    }
+
+
+    for (i = 1; i >= 0; i--)
+    {
+        arr[i] = axutil_array_list_create(context->env, 0);
+
+        for (j = 0; j < n_nodes[i]; j++)
+        {
+            axutil_array_list_add(
+                arr[i],
+                context->env,
+                axutil_stack_pop(context->stack, context->env));
+        }
+    }
+
+    node = AXIS2_MALLOC(context->env->allocator,
+            sizeof(axiom_xpath_result_node_t));
+
+    node->type = AXIOM_XPATH_TYPE_BOOLEAN;
+    node->value = NULL;
+
+    /* Checking equality
+       - If any node from the first set is equal to any node from the second set
+         the result is true */
+    if (axiom_xpath_convert_to_boolean(arr[0], context) && axiom_xpath_convert_to_boolean(arr[1], context))
+    {
+        AXIOM_XPATH_CAST_SET_VALUE(axis2_bool_t, AXIS2_TRUE);
+
+        axutil_stack_push(context->stack, context->env, node);
+    }
+    else
+    {
+        AXIOM_XPATH_CAST_SET_VALUE(axis2_bool_t, AXIS2_FALSE);
+
+        axutil_stack_push(context->stack, context->env, node);
+    }
+
+    axutil_array_list_free(arr[0], context->env);
+    axutil_array_list_free(arr[1], context->env);
+
+    return 1;
+}
+
 /* Equal Expression */
 int axiom_xpath_equalexpr_operator(
     axiom_xpath_context_t *context,
@@ -309,14 +470,25 @@ int axiom_xpath_equalexpr_operator(
 
                 axutil_stack_push(context->stack, context->env, node);
 
-                return 1;
+                break;
             }
+        }
+
+        if (j < n_nodes[1])
+        {
+            break;
         }
     }
 
-    AXIOM_XPATH_CAST_SET_VALUE(axis2_bool_t, AXIS2_FALSE);
+    if (!node->value)
+    {
+        AXIOM_XPATH_CAST_SET_VALUE(axis2_bool_t, AXIS2_FALSE);
 
-    axutil_stack_push(context->stack, context->env, node);
+        axutil_stack_push(context->stack, context->env, node);
+    }
+
+    axutil_array_list_free(arr[0], context->env);
+    axutil_array_list_free(arr[1], context->env);
 
     return 1;
 }
@@ -913,6 +1085,12 @@ axiom_xpath_operator_t axiom_xpath_get_operator(axiom_xpath_operation_t * op)
 
         case AXIOM_XPATH_OPERATION_UNION:
             return axiom_xpath_union_operator;
+
+        case AXIOM_XPATH_OPERATION_OR_EXPR:
+            return axiom_xpath_orexpr_operator;
+
+        case AXIOM_XPATH_OPERATION_AND_EXPR:
+            return axiom_xpath_andexpr_operator;
 
         case AXIOM_XPATH_OPERATION_EQUAL_EXPR:
             return axiom_xpath_equalexpr_operator;

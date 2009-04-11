@@ -141,7 +141,7 @@ AXIS2_EXTERN axiom_xpath_function_t AXIS2_CALL axiom_xpath_get_function(
 {
     axiom_xpath_function_t func = NULL;
 
-    if(context->functions)
+    if (context->functions)
     {
         func = axutil_hash_get(context->functions, name, AXIS2_HASH_KEY_STRING);
     }
@@ -175,7 +175,7 @@ AXIS2_EXTERN axiom_namespace_t * AXIS2_CALL axiom_xpath_get_namespace(
 {
     axiom_namespace_t *ns = NULL;
 
-    if(context->namespaces)
+    if (context->namespaces)
     {
         ns = axutil_hash_get(context->namespaces, prefix, AXIS2_HASH_KEY_STRING);
     }
@@ -250,7 +250,7 @@ AXIS2_EXTERN double AXIS2_CALL axiom_xpath_cast_node_to_number(
         }
         else
         {
-            return 1.0;
+            return 0.0;
         }
     }
     else if (node->type == AXIOM_XPATH_TYPE_NUMBER)
@@ -263,7 +263,7 @@ AXIS2_EXTERN double AXIS2_CALL axiom_xpath_cast_node_to_number(
     }
     else
     {
-        return 1.0;
+        return 0.0;
     }
 }
 
@@ -293,8 +293,8 @@ AXIS2_EXTERN axis2_char_t * AXIS2_CALL axiom_xpath_cast_node_to_string(
     }
     else if (node->type == AXIOM_XPATH_TYPE_NUMBER)
     {
-        /* Allocate 20 bytes */
-        res = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 20);
+        /* Allocate 50 bytes */
+        res = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 50);
 
         sprintf(res, "%lf", *(double *)(node->value));
 

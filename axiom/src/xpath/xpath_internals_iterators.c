@@ -386,9 +386,9 @@ int axiom_xpath_attribute_iterator(
     axutil_hash_t *ht;
     axutil_hash_index_t *hi;
 
-/*  void *key;
- *  axis2_ssize_t klen;
- */
+    /*  void *key;
+     *  axis2_ssize_t klen;
+     */
     void *attr;
 
     AXIOM_XPATH_ITERATOR_INITIALIZE;
@@ -445,10 +445,10 @@ int axiom_xpath_namespace_iterator(
     axutil_hash_t *ht;
     axutil_hash_index_t *hi;
 
-/*  void *key;
- *  axis2_ssize_t klen;
- */
-    
+    /*  void *key;
+     *  axis2_ssize_t klen;
+     */
+
     void *ns;
 
     AXIOM_XPATH_ITERATOR_INITIALIZE;
