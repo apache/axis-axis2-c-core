@@ -1027,39 +1027,17 @@ int axiom_xpath_collect_operator(
 
     if (context->node)
     {
-        if (context->streaming)
-        {
-            node->value = axiom_node_detach(context->node, context->env);
-        }
-        else
-        {
-            node->value = context->node;
-        }
+        node->value = context->node;
         node->type = AXIOM_XPATH_TYPE_NODE;
     }
     else if (context->attribute)
     {
-        if (context->streaming)
-        {
-            node->value =
-                axiom_attribute_clone(context->attribute, context->env);
-        }
-        else
-        {
-            node->value = context->attribute;
-        }
+        node->value = context->attribute;
         node->type = AXIOM_XPATH_TYPE_ATTRIBUTE;
     }
     else if (context->ns)
     {
-        if (context->streaming)
-        {
-            node->value = axiom_namespace_clone(context->ns, context->env);
-        }
-        else
-        {
-            node->value = context->ns;
-        }
+        node->value = context->ns;
         node->type = AXIOM_XPATH_TYPE_NAMESPACE;
     }
 

@@ -28,8 +28,6 @@ link.exe /LIBPATH:%AXIS2C_HOME%\lib axutil.lib axiom.lib axis2_parser.lib axis2_
 #include <axiom_xpath.h>
 
 /* Function headers */
-axiom_node_t *build_test_xml(const axutil_env_t *env);
-
 void output_results(const axutil_env_t *env, axiom_xpath_result_t *xpath_result);
 
 axiom_node_t *read_test_xml(const axutil_env_t *env, char *file_name);
@@ -38,11 +36,9 @@ void output_results(const axutil_env_t *env,
         axiom_xpath_result_t *xpath_result);
 
 void evaluate(const axutil_env_t *env,
-        axiom_xpath_context_t *context,
         axis2_char_t *expr_str);
 
 void evaluate_expressions(const axutil_env_t *env,
-        axiom_xpath_context_t *context,
         char *file_name);
 
 void add_namespaces(const axutil_env_t *env,
@@ -52,17 +48,17 @@ void add_namespaces(const axutil_env_t *env,
 int readline(FILE *fin, char *str);
 
 FILE *fcor;
+char *xml_file = "test.xml";
+char *xpath_file = "test.xpath";
+char *cor_file = "results.txt";
+char *ns_file = "test.ns";
+
 /*FILE *ftemp;*/
 
 int main(int argc, char *argv[])
 {
     axiom_node_t *test_tree = NULL;
     axis2_char_t *test_tree_str;
-    char *xml_file = "test.xml";
-    char *xpath_file = "test.xpath";
-    char *ns_file = "test.ns";
-    char *cor_file = "results.txt";
-    axiom_xpath_context_t *context = NULL;
 
     /* Create environment */
     axutil_env_t *env =
@@ -85,7 +81,6 @@ int main(int argc, char *argv[])
     }
 
     /*Create the request */
-    /* test_tree = build_test_xml(env); */
     test_tree = read_test_xml(env, (axis2_char_t *)xml_file);
 
     fcor = fopen(cor_file, "r");
@@ -101,29 +96,12 @@ int main(int argc, char *argv[])
         test_tree_str = axiom_node_to_string(test_tree, env);
         printf("\nTesting XML\n-----------\n\"%s\"\n\n\n", test_tree_str);
 
-        /* Create XPath Context */
-        context = axiom_xpath_context_create(env, test_tree);
+        axiom_node_free_tree(test_tree, env);
 
-        /* Namespaces */
-        add_namespaces(env, context, ns_file);
-
-        evaluate_expressions(env, context, xpath_file);
-
-        test_tree_str = axiom_node_to_string(test_tree, env);
-        printf("\n\nFinal XML\n-----------\n\"%s\"\n\n\n", test_tree_str);
+        evaluate_expressions(env, xpath_file);
     }
 
     /* Freeing memory */
-    if (context)
-    {
-        axiom_xpath_free_context(env, context);
-    }
-
-    if (test_tree)
-    {
-        axiom_node_free_tree(test_tree, env);
-    }
-
     if (env)
     {
         axutil_env_free((axutil_env_t *) env);
@@ -200,7 +178,6 @@ void add_namespaces(const axutil_env_t *env,
 
 void evaluate_expressions(
     const axutil_env_t *env,
-    axiom_xpath_context_t *context,
     char *file_name)
 {
     FILE *fin = NULL;
@@ -228,7 +205,7 @@ void evaluate_expressions(
             continue;
         }
 
-        evaluate(env, context, (axis2_char_t *)str);
+        evaluate(env, (axis2_char_t *)str);
     }
 
     fclose(fin);
@@ -236,11 +213,33 @@ void evaluate_expressions(
 
 void evaluate(
     const axutil_env_t *env,
-    axiom_xpath_context_t *context,
     axis2_char_t *expr_str)
 {
     axiom_xpath_expression_t *expr = NULL;
     axiom_xpath_result_t *result = NULL;
+    axiom_node_t *test_tree = NULL;
+    axiom_xpath_context_t *context = NULL;
+
+    test_tree = read_test_xml(env, (axis2_char_t *)xml_file);
+
+    if(!test_tree)
+    {
+        printf("Error reading file: %s\n", xml_file);
+        return;
+    }
+
+    /* Create XPath Context */
+    context = axiom_xpath_context_create((axutil_env_t *)env, test_tree);
+
+    if(!context)
+    {
+        printf("Could not initialise XPath context\n");
+        return;
+    }
+
+    /* Namespaces */
+    add_namespaces(env, context, ns_file);
+
 
     printf("\nCompiling XPath expression: \"%s\" ...\n", expr_str);
     expr = axiom_xpath_compile_expression(env, expr_str);
@@ -255,10 +254,11 @@ void evaluate(
 
     /* Evaluating XPath expression */
     printf("Evaluating...\n");
-    result = axiom_xpath_evaluate(context, expr);
+    result = axiom_xpath_evaluate_streaming(context, expr);
 
     if (!result)
     {
+        compare_result("");
         printf("An error occured while evaluating the expression.\n");
 
         axiom_xpath_free_expression(env, expr);
@@ -268,6 +268,7 @@ void evaluate(
 
     if (result->flag == AXIOM_XPATH_ERROR_STREAMING_NOT_SUPPORTED)
     {
+        compare_result("");
         printf("Streaming not supported.\n");
 
         axiom_xpath_free_expression(env, expr);
@@ -464,50 +465,4 @@ axiom_node_t *read_test_xml(const axutil_env_t *env, axis2_char_t *file_name)
     while (axiom_document_build_next(document, env));
 
     return root;
-}
-
-axiom_node_t * build_test_xml(const axutil_env_t *env)
-{
-    axiom_node_t *main_node;
-    axiom_node_t *order_node;
-    axiom_node_t *values_node;
-    axiom_node_t *value_node;
-    axiom_node_t *grandchild;
-    axis2_char_t value_str[255];
-    axiom_element_t *order_ele;
-    axiom_element_t *values_ele;
-    axiom_element_t *value_ele;
-    axiom_element_t *grandchild_ele;
-    axiom_attribute_t *attribute;
-    int i, N = 20;
-
-    axiom_namespace_t *ns1 =
-        axiom_namespace_create(env, "http://xpath/test", "ns1");
-
-    axiom_element_create(env, NULL, "test", ns1, &main_node);
-
-    order_ele =
-        axiom_element_create(env, main_node, "node1", NULL, &order_node);
-    axiom_element_set_text(order_ele, env, "10", order_node);
-    attribute =
-        axiom_attribute_create(env, "attr1", "attribute_value_1", NULL);
-    axiom_element_add_attribute(order_ele, env, attribute, order_node);
-
-    values_ele =
-        axiom_element_create(env, main_node, "node2", NULL, &values_node);
-
-    for (i = 0 ; i < N; i++)
-    {
-        sprintf(value_str, "%d", i + 1);
-
-        value_ele =
-            axiom_element_create(env, values_node, "child", NULL, &value_node);
-        axiom_element_set_text(value_ele, env, value_str, value_node);
-
-        grandchild_ele =
-            axiom_element_create(env, value_node, "grandchild", NULL, &grandchild);
-        axiom_element_set_text(grandchild_ele, env, value_str /*"3 rd level"*/, grandchild);
-    }
-
-    return main_node;
 }
