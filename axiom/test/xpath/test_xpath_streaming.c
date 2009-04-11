@@ -229,7 +229,7 @@ void evaluate(
     }
 
     /* Create XPath Context */
-    context = axiom_xpath_context_create((axutil_env_t *)env, test_tree);
+    context = axiom_xpath_context_create(env, test_tree);
 
     if(!context)
     {

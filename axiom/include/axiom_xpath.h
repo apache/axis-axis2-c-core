@@ -120,7 +120,7 @@ extern "C"
     struct axiom_xpath_context
     {
         /** Environment */
-        axutil_env_t *env;
+        const axutil_env_t *env;
 
         /** List of namespaces */
         axutil_hash_t *namespaces;
@@ -207,7 +207,7 @@ extern "C"
       * @return The initialized XPath context.
       */
     AXIS2_EXTERN axiom_xpath_context_t * AXIS2_CALL axiom_xpath_context_create(
-        axutil_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t * root_node);
 
     /**

@@ -25,7 +25,7 @@
 
 /* Create XPath context */
 AXIS2_EXTERN axiom_xpath_context_t * AXIS2_CALL axiom_xpath_context_create(
-    axutil_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t * root_node)
 {
     axiom_xpath_context_t* context;

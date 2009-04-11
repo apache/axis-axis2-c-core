@@ -2,7 +2,6 @@ TESTS =
 noinst_PROGRAMS = test_xpath test_xpath_streaming
 check_PROGRAMS = test_xpath test_xpath_streaming
 SUBDIRS =
-AM_CFLAGS = -g -O2 -pthread
 test_xpath_SOURCES = test_xpath.c
 
 test_xpath_streaming_SOURCES = test_xpath_streaming.c
