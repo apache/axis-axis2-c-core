@@ -1,0 +1,616 @@
+
+"<child>20<grandchild>20</grandchild></child>"
+"<child>19<grandchild>19</grandchild></child>"
+"<child>18<grandchild>18</grandchild></child>"
+"<child>17<grandchild>17</grandchild></child>"
+"<child>16<grandchild>16</grandchild></child>"
+"<child>15<grandchild>15</grandchild></child>"
+"<child>14<grandchild>14</grandchild></child>"
+"<child>13<grandchild>13</grandchild></child>"
+"<child>12<grandchild>12</grandchild></child>"
+"<child>11<grandchild>11</grandchild></child>"
+"<child>10<grandchild>10</grandchild></child>"
+"<child>9<grandchild>9</grandchild></child>"
+"<child>8<grandchild>8</grandchild></child>"
+"<child>7<grandchild>7</grandchild></child>"
+"<child>6<grandchild>6</grandchild></child>"
+"<child>5<grandchild>5</grandchild></child>"
+"<child>4<grandchild>4</grandchild></child>"
+"<child>3<grandchild>3</grandchild></child>"
+"<child>2<grandchild>2</grandchild></child>"
+"<child>1<grandchild>1</grandchild></child>"
+"<child>20<grandchild>20</grandchild></child>"
+"<child>19<grandchild>19</grandchild></child>"
+"<child>18<grandchild>18</grandchild></child>"
+"<child>17<grandchild>17</grandchild></child>"
+"<child>16<grandchild>16</grandchild></child>"
+"<child>15<grandchild>15</grandchild></child>"
+"<child>14<grandchild>14</grandchild></child>"
+"<child>13<grandchild>13</grandchild></child>"
+"<child>12<grandchild>12</grandchild></child>"
+"<child>11<grandchild>11</grandchild></child>"
+"<child>10<grandchild>10</grandchild></child>"
+"<child>9<grandchild>9</grandchild></child>"
+"<child>8<grandchild>8</grandchild></child>"
+"<child>7<grandchild>7</grandchild></child>"
+"<child>6<grandchild>6</grandchild></child>"
+"<child>5<grandchild>5</grandchild></child>"
+"<child>4<grandchild>4</grandchild></child>"
+"<child xmlns:ns44="http://xpath/testsasd">3<grandchild>3</grandchild></child>"
+"<child>2<grandchild>2</grandchild></child>"
+"<child>1<grandchild>1</grandchild></child>"
+#
+"40.000000"
+#
+"<child>5<grandchild>5</grandchild></child>"
+#
+"<child>20<grandchild>20</grandchild></child>"
+"<child>19<grandchild>19</grandchild></child>"
+"<child>18<grandchild>18</grandchild></child>"
+"<child>17<grandchild>17</grandchild></child>"
+"<child>16<grandchild>16</grandchild></child>"
+"<child>15<grandchild>15</grandchild></child>"
+"<child>14<grandchild>14</grandchild></child>"
+"<child>13<grandchild>13</grandchild></child>"
+"<child>12<grandchild>12</grandchild></child>"
+"<child>11<grandchild>11</grandchild></child>"
+"<child>10<grandchild>10</grandchild></child>"
+"<child>9<grandchild>9</grandchild></child>"
+"<child>8<grandchild>8</grandchild></child>"
+"<child>7<grandchild>7</grandchild></child>"
+"<child>6<grandchild>6</grandchild></child>"
+"<child>5<grandchild>5</grandchild></child>"
+"<child>4<grandchild>4</grandchild></child>"
+"<child>3<grandchild>3</grandchild></child>"
+"<child>2<grandchild>2</grandchild></child>"
+"<child>1<grandchild>1</grandchild></child>"
+"<child>20<grandchild>20</grandchild></child>"
+"<child>19<grandchild>19</grandchild></child>"
+"<child>18<grandchild>18</grandchild></child>"
+"<child>17<grandchild>17</grandchild></child>"
+"<child>16<grandchild>16</grandchild></child>"
+"<child>15<grandchild>15</grandchild></child>"
+"<child>14<grandchild>14</grandchild></child>"
+"<child>13<grandchild>13</grandchild></child>"
+"<child>12<grandchild>12</grandchild></child>"
+"<child>11<grandchild>11</grandchild></child>"
+"<child>10<grandchild>10</grandchild></child>"
+"<child>9<grandchild>9</grandchild></child>"
+"<child>8<grandchild>8</grandchild></child>"
+"<child>7<grandchild>7</grandchild></child>"
+"<child>6<grandchild>6</grandchild></child>"
+"<child>5<grandchild>5</grandchild></child>"
+"<child>4<grandchild>4</grandchild></child>"
+"<child xmlns:ns44="http://xpath/testsasd">3<grandchild>3</grandchild></child>"
+"<child>2<grandchild>2</grandchild></child>"
+"<child>1<grandchild>1</grandchild></child>"
+#
+"<test xmlns:ns1="http://xpath/test">
+
+	<ns1:node1 attr1="attribute_value_1" xmlns:nsx="http://xpath/test">10</ns1:node1>
+
+	<ns1:node2>
+		<child>1<grandchild>1</grandchild></child>
+		<child>2<grandchild>2</grandchild></child>
+		<child xmlns:ns44="http://xpath/testsasd">3<grandchild>3</grandchild></child>
+		<child>4<grandchild>4</grandchild></child>
+		<child>5<grandchild>5</grandchild></child>
+		<child>6<grandchild>6</grandchild></child>
+		<child>7<grandchild>7</grandchild></child>
+		<child>8<grandchild>8</grandchild></child>
+		<child>9<grandchild>9</grandchild></child>
+		<child>10<grandchild>10</grandchild></child>
+		<child>11<grandchild>11</grandchild></child>
+		<child>12<grandchild>12</grandchild></child>
+		<child>13<grandchild>13</grandchild></child>
+		<child>14<grandchild>14</grandchild></child>
+		<child>15<grandchild>15</grandchild></child>
+		<child>16<grandchild>16</grandchild></child>
+		<child>17<grandchild>17</grandchild></child>
+		<child>18<grandchild>18</grandchild></child>
+		<child>19<grandchild>19</grandchild></child>
+		<child>20<grandchild>20</grandchild></child>
+	</ns1:node2>
+
+	<node1 attr1="attribute_value_2" xmlns:nsp="http://xpath/test">5</node1>
+
+	<node2>
+		<child>1<grandchild>1</grandchild></child>
+		<child>2<grandchild>2</grandchild></child>
+		<child>3<grandchild>3</grandchild></child>
+		<child>4<grandchild>4</grandchild></child>
+		<child>5<grandchild>5</grandchild></child>
+		<child>6<grandchild>6</grandchild></child>
+		<child>7<grandchild>7</grandchild></child>
+		<child>8<grandchild>8</grandchild></child>
+		<child>9<grandchild>9</grandchild></child>
+		<child>10<grandchild>10</grandchild></child>
+		<child>11<grandchild>11</grandchild></child>
+		<child>12<grandchild>12</grandchild></child>
+		<child>13<grandchild>13</grandchild></child>
+		<child>14<grandchild>14</grandchild></child>
+		<child>15<grandchild>15</grandchild></child>
+		<child>16<grandchild>16</grandchild></child>
+		<child>17<grandchild>17</grandchild></child>
+		<child>18<grandchild>18</grandchild></child>
+		<child>19<grandchild>19</grandchild></child>
+		<child>20<grandchild>20</grandchild></child>
+	</node2>
+
+</test>"
+#
+"<test xmlns:ns1="http://xpath/test">
+
+	<ns1:node1 attr1="attribute_value_1" xmlns:nsx="http://xpath/test">10</ns1:node1>
+
+	<ns1:node2>
+		<child>1<grandchild>1</grandchild></child>
+		<child>2<grandchild>2</grandchild></child>
+		<child xmlns:ns44="http://xpath/testsasd">3<grandchild>3</grandchild></child>
+		<child>4<grandchild>4</grandchild></child>
+		<child>5<grandchild>5</grandchild></child>
+		<child>6<grandchild>6</grandchild></child>
+		<child>7<grandchild>7</grandchild></child>
+		<child>8<grandchild>8</grandchild></child>
+		<child>9<grandchild>9</grandchild></child>
+		<child>10<grandchild>10</grandchild></child>
+		<child>11<grandchild>11</grandchild></child>
+		<child>12<grandchild>12</grandchild></child>
+		<child>13<grandchild>13</grandchild></child>
+		<child>14<grandchild>14</grandchild></child>
+		<child>15<grandchild>15</grandchild></child>
+		<child>16<grandchild>16</grandchild></child>
+		<child>17<grandchild>17</grandchild></child>
+		<child>18<grandchild>18</grandchild></child>
+		<child>19<grandchild>19</grandchild></child>
+		<child>20<grandchild>20</grandchild></child>
+	</ns1:node2>
+
+	<node1 attr1="attribute_value_2" xmlns:nsp="http://xpath/test">5</node1>
+
+	<node2>
+		<child>1<grandchild>1</grandchild></child>
+		<child>2<grandchild>2</grandchild></child>
+		<child>3<grandchild>3</grandchild></child>
+		<child>4<grandchild>4</grandchild></child>
+		<child>5<grandchild>5</grandchild></child>
+		<child>6<grandchild>6</grandchild></child>
+		<child>7<grandchild>7</grandchild></child>
+		<child>8<grandchild>8</grandchild></child>
+		<child>9<grandchild>9</grandchild></child>
+		<child>10<grandchild>10</grandchild></child>
+		<child>11<grandchild>11</grandchild></child>
+		<child>12<grandchild>12</grandchild></child>
+		<child>13<grandchild>13</grandchild></child>
+		<child>14<grandchild>14</grandchild></child>
+		<child>15<grandchild>15</grandchild></child>
+		<child>16<grandchild>16</grandchild></child>
+		<child>17<grandchild>17</grandchild></child>
+		<child>18<grandchild>18</grandchild></child>
+		<child>19<grandchild>19</grandchild></child>
+		<child>20<grandchild>20</grandchild></child>
+	</node2>
+
+</test>"
+"<node2>
+		<child>1<grandchild>1</grandchild></child>
+		<child>2<grandchild>2</grandchild></child>
+		<child>3<grandchild>3</grandchild></child>
+		<child>4<grandchild>4</grandchild></child>
+		<child>5<grandchild>5</grandchild></child>
+		<child>6<grandchild>6</grandchild></child>
+		<child>7<grandchild>7</grandchild></child>
+		<child>8<grandchild>8</grandchild></child>
+		<child>9<grandchild>9</grandchild></child>
+		<child>10<grandchild>10</grandchild></child>
+		<child>11<grandchild>11</grandchild></child>
+		<child>12<grandchild>12</grandchild></child>
+		<child>13<grandchild>13</grandchild></child>
+		<child>14<grandchild>14</grandchild></child>
+		<child>15<grandchild>15</grandchild></child>
+		<child>16<grandchild>16</grandchild></child>
+		<child>17<grandchild>17</grandchild></child>
+		<child>18<grandchild>18</grandchild></child>
+		<child>19<grandchild>19</grandchild></child>
+		<child>20<grandchild>20</grandchild></child>
+	</node2>"
+"<child>3<grandchild>3</grandchild></child>"
+#
+"<child>20<grandchild>20</grandchild></child>"
+"<child>19<grandchild>19</grandchild></child>"
+"<child>18<grandchild>18</grandchild></child>"
+"<child>17<grandchild>17</grandchild></child>"
+"<child>16<grandchild>16</grandchild></child>"
+"<child>15<grandchild>15</grandchild></child>"
+"<child>14<grandchild>14</grandchild></child>"
+"<child>13<grandchild>13</grandchild></child>"
+"<child>12<grandchild>12</grandchild></child>"
+"<child>11<grandchild>11</grandchild></child>"
+"<child>10<grandchild>10</grandchild></child>"
+"<child>9<grandchild>9</grandchild></child>"
+"<child>8<grandchild>8</grandchild></child>"
+"<child>7<grandchild>7</grandchild></child>"
+"<child>6<grandchild>6</grandchild></child>"
+"<child>5<grandchild>5</grandchild></child>"
+"<child>4<grandchild>4</grandchild></child>"
+#
+"<child>1<grandchild>1</grandchild></child>"
+"<child>2<grandchild>2</grandchild></child>"
+#
+"<grandchild>20</grandchild>"
+"<child>20<grandchild>20</grandchild></child>"
+"<grandchild>19</grandchild>"
+"<child>19<grandchild>19</grandchild></child>"
+"<grandchild>18</grandchild>"
+"<child>18<grandchild>18</grandchild></child>"
+"<grandchild>17</grandchild>"
+"<child>17<grandchild>17</grandchild></child>"
+"<grandchild>16</grandchild>"
+"<child>16<grandchild>16</grandchild></child>"
+"<grandchild>15</grandchild>"
+"<child>15<grandchild>15</grandchild></child>"
+"<grandchild>14</grandchild>"
+"<child>14<grandchild>14</grandchild></child>"
+"<grandchild>13</grandchild>"
+"<child>13<grandchild>13</grandchild></child>"
+"<grandchild>12</grandchild>"
+"<child>12<grandchild>12</grandchild></child>"
+"<grandchild>11</grandchild>"
+"<child>11<grandchild>11</grandchild></child>"
+"<grandchild>10</grandchild>"
+"<child>10<grandchild>10</grandchild></child>"
+"<grandchild>9</grandchild>"
+"<child>9<grandchild>9</grandchild></child>"
+"<grandchild>8</grandchild>"
+"<child>8<grandchild>8</grandchild></child>"
+"<grandchild>7</grandchild>"
+"<child>7<grandchild>7</grandchild></child>"
+"<grandchild>6</grandchild>"
+"<child>6<grandchild>6</grandchild></child>"
+"<grandchild>5</grandchild>"
+"<child>5<grandchild>5</grandchild></child>"
+"<grandchild>4</grandchild>"
+"<child>4<grandchild>4</grandchild></child>"
+"<grandchild>20</grandchild>"
+"<child>20<grandchild>20</grandchild></child>"
+"<grandchild>19</grandchild>"
+"<child>19<grandchild>19</grandchild></child>"
+"<grandchild>18</grandchild>"
+"<child>18<grandchild>18</grandchild></child>"
+"<grandchild>17</grandchild>"
+"<child>17<grandchild>17</grandchild></child>"
+"<grandchild>16</grandchild>"
+"<child>16<grandchild>16</grandchild></child>"
+"<grandchild>15</grandchild>"
+"<child>15<grandchild>15</grandchild></child>"
+"<grandchild>14</grandchild>"
+"<child>14<grandchild>14</grandchild></child>"
+"<grandchild>13</grandchild>"
+"<child>13<grandchild>13</grandchild></child>"
+"<grandchild>12</grandchild>"
+"<child>12<grandchild>12</grandchild></child>"
+"<grandchild>11</grandchild>"
+"<child>11<grandchild>11</grandchild></child>"
+"<grandchild>10</grandchild>"
+"<child>10<grandchild>10</grandchild></child>"
+"<grandchild>9</grandchild>"
+"<child>9<grandchild>9</grandchild></child>"
+"<grandchild>8</grandchild>"
+"<child>8<grandchild>8</grandchild></child>"
+"<grandchild>7</grandchild>"
+"<child>7<grandchild>7</grandchild></child>"
+"<grandchild>6</grandchild>"
+"<child>6<grandchild>6</grandchild></child>"
+"<grandchild>5</grandchild>"
+"<child>5<grandchild>5</grandchild></child>"
+"<grandchild>4</grandchild>"
+"<child>4<grandchild>4</grandchild></child>"
+#
+"<ns1:node1 xmlns:ns1="http://xpath/test" attr1="attribute_value_1" xmlns:nsx="http://xpath/test">10</ns1:node1>"
+"<grandchild>1</grandchild>"
+"<child>1<grandchild>1</grandchild></child>"
+"<grandchild>2</grandchild>"
+"<child>2<grandchild>2</grandchild></child>"
+"<grandchild>3</grandchild>"
+"<child xmlns:ns44="http://xpath/testsasd">3<grandchild>3</grandchild></child>"
+"<grandchild>4</grandchild>"
+"<child>4<grandchild>4</grandchild></child>"
+"<grandchild>5</grandchild>"
+"<child>5<grandchild>5</grandchild></child>"
+"<grandchild>6</grandchild>"
+"<child>6<grandchild>6</grandchild></child>"
+"<grandchild>7</grandchild>"
+"<child>7<grandchild>7</grandchild></child>"
+"<grandchild>8</grandchild>"
+"<child>8<grandchild>8</grandchild></child>"
+"<grandchild>9</grandchild>"
+"<child>9<grandchild>9</grandchild></child>"
+"<grandchild>10</grandchild>"
+"<child>10<grandchild>10</grandchild></child>"
+"<grandchild>11</grandchild>"
+"<child>11<grandchild>11</grandchild></child>"
+"<grandchild>12</grandchild>"
+"<child>12<grandchild>12</grandchild></child>"
+"<grandchild>13</grandchild>"
+"<child>13<grandchild>13</grandchild></child>"
+"<grandchild>14</grandchild>"
+"<child>14<grandchild>14</grandchild></child>"
+"<grandchild>15</grandchild>"
+"<child>15<grandchild>15</grandchild></child>"
+"<grandchild>16</grandchild>"
+"<child>16<grandchild>16</grandchild></child>"
+"<grandchild>17</grandchild>"
+"<child>17<grandchild>17</grandchild></child>"
+"<grandchild>18</grandchild>"
+"<child>18<grandchild>18</grandchild></child>"
+"<grandchild>19</grandchild>"
+"<child>19<grandchild>19</grandchild></child>"
+"<grandchild>20</grandchild>"
+"<child>20<grandchild>20</grandchild></child>"
+"<ns1:node2 xmlns:ns1="http://xpath/test">
+		<child>1<grandchild>1</grandchild></child>
+		<child>2<grandchild>2</grandchild></child>
+		<child xmlns:ns44="http://xpath/testsasd">3<grandchild>3</grandchild></child>
+		<child>4<grandchild>4</grandchild></child>
+		<child>5<grandchild>5</grandchild></child>
+		<child>6<grandchild>6</grandchild></child>
+		<child>7<grandchild>7</grandchild></child>
+		<child>8<grandchild>8</grandchild></child>
+		<child>9<grandchild>9</grandchild></child>
+		<child>10<grandchild>10</grandchild></child>
+		<child>11<grandchild>11</grandchild></child>
+		<child>12<grandchild>12</grandchild></child>
+		<child>13<grandchild>13</grandchild></child>
+		<child>14<grandchild>14</grandchild></child>
+		<child>15<grandchild>15</grandchild></child>
+		<child>16<grandchild>16</grandchild></child>
+		<child>17<grandchild>17</grandchild></child>
+		<child>18<grandchild>18</grandchild></child>
+		<child>19<grandchild>19</grandchild></child>
+		<child>20<grandchild>20</grandchild></child>
+	</ns1:node2>"
+"<node1 attr1="attribute_value_2" xmlns:nsp="http://xpath/test">5</node1>"
+"<grandchild>1</grandchild>"
+"<child>1<grandchild>1</grandchild></child>"
+"<grandchild>2</grandchild>"
+"<child>2<grandchild>2</grandchild></child>"
+#
+attr1 = "attribute_value_2"
+attr1 = "attribute_value_1"
+#
+nsp = "http://xpath/test"
+nsx = "http://xpath/test"
+#
+"<node1 attr1="attribute_value_2" xmlns:nsp="http://xpath/test">5</node1>"
+#
+"<child>20<grandchild>20</grandchild></child>"
+"<child>19<grandchild>19</grandchild></child>"
+"<child>18<grandchild>18</grandchild></child>"
+"<child>17<grandchild>17</grandchild></child>"
+"<child>16<grandchild>16</grandchild></child>"
+"<child>15<grandchild>15</grandchild></child>"
+"<child>14<grandchild>14</grandchild></child>"
+"<child>13<grandchild>13</grandchild></child>"
+"<child>12<grandchild>12</grandchild></child>"
+"<child>11<grandchild>11</grandchild></child>"
+"<child>10<grandchild>10</grandchild></child>"
+"<child>9<grandchild>9</grandchild></child>"
+"<child>8<grandchild>8</grandchild></child>"
+"<child>7<grandchild>7</grandchild></child>"
+"<child>6<grandchild>6</grandchild></child>"
+"<child>5<grandchild>5</grandchild></child>"
+"<child>4<grandchild>4</grandchild></child>"
+"<child>3<grandchild>3</grandchild></child>"
+"<child>2<grandchild>2</grandchild></child>"
+"<child>1<grandchild>1</grandchild></child>"
+"<child>20<grandchild>20</grandchild></child>"
+"<child>19<grandchild>19</grandchild></child>"
+"<child>18<grandchild>18</grandchild></child>"
+"<child>17<grandchild>17</grandchild></child>"
+"<child>16<grandchild>16</grandchild></child>"
+"<child>15<grandchild>15</grandchild></child>"
+"<child>14<grandchild>14</grandchild></child>"
+"<child>13<grandchild>13</grandchild></child>"
+"<child>12<grandchild>12</grandchild></child>"
+"<child>11<grandchild>11</grandchild></child>"
+"<child>10<grandchild>10</grandchild></child>"
+"<child>9<grandchild>9</grandchild></child>"
+"<child>8<grandchild>8</grandchild></child>"
+"<child>7<grandchild>7</grandchild></child>"
+"<child>6<grandchild>6</grandchild></child>"
+"<child>5<grandchild>5</grandchild></child>"
+"<child>4<grandchild>4</grandchild></child>"
+"<child xmlns:ns44="http://xpath/testsasd">3<grandchild>3</grandchild></child>"
+"<child>2<grandchild>2</grandchild></child>"
+"<child>1<grandchild>1</grandchild></child>"
+#
+"<child>4<grandchild>4</grandchild></child>"
+#
+"<grandchild>20</grandchild>"
+"<grandchild>19</grandchild>"
+"<grandchild>18</grandchild>"
+"<grandchild>17</grandchild>"
+"<grandchild>16</grandchild>"
+"<grandchild>15</grandchild>"
+"<grandchild>14</grandchild>"
+"<grandchild>13</grandchild>"
+"<grandchild>12</grandchild>"
+"<grandchild>11</grandchild>"
+"<grandchild>10</grandchild>"
+"<grandchild>9</grandchild>"
+"<grandchild>8</grandchild>"
+"<grandchild>7</grandchild>"
+"<grandchild>6</grandchild>"
+"<grandchild>5</grandchild>"
+"<grandchild>4</grandchild>"
+"<grandchild>3</grandchild>"
+"<grandchild>2</grandchild>"
+"<grandchild>1</grandchild>"
+#
+"<child>20<grandchild>20</grandchild></child>"
+"<child>19<grandchild>19</grandchild></child>"
+"<child>18<grandchild>18</grandchild></child>"
+"<child>17<grandchild>17</grandchild></child>"
+"<child>16<grandchild>16</grandchild></child>"
+"<child>15<grandchild>15</grandchild></child>"
+"<child>14<grandchild>14</grandchild></child>"
+"<child>13<grandchild>13</grandchild></child>"
+"<child>12<grandchild>12</grandchild></child>"
+"<child>11<grandchild>11</grandchild></child>"
+"<child>10<grandchild>10</grandchild></child>"
+"<child>9<grandchild>9</grandchild></child>"
+"<child>8<grandchild>8</grandchild></child>"
+"<child>7<grandchild>7</grandchild></child>"
+"<child>6<grandchild>6</grandchild></child>"
+"<child>5<grandchild>5</grandchild></child>"
+"<child>4<grandchild>4</grandchild></child>"
+"<child xmlns:ns44="http://xpath/testsasd">3<grandchild>3</grandchild></child>"
+"<child>2<grandchild>2</grandchild></child>"
+"<child>1<grandchild>1</grandchild></child>"
+#
+"<child>20<grandchild>20</grandchild></child>"
+"<child>19<grandchild>19</grandchild></child>"
+"<child>18<grandchild>18</grandchild></child>"
+"<child>17<grandchild>17</grandchild></child>"
+"<child>16<grandchild>16</grandchild></child>"
+"<child>15<grandchild>15</grandchild></child>"
+"<child>14<grandchild>14</grandchild></child>"
+"<child>13<grandchild>13</grandchild></child>"
+"<child>12<grandchild>12</grandchild></child>"
+"<child>11<grandchild>11</grandchild></child>"
+"<child>10<grandchild>10</grandchild></child>"
+"<child>9<grandchild>9</grandchild></child>"
+"<child>8<grandchild>8</grandchild></child>"
+"<child>7<grandchild>7</grandchild></child>"
+"<child>6<grandchild>6</grandchild></child>"
+"<child>5<grandchild>5</grandchild></child>"
+"<child>4<grandchild>4</grandchild></child>"
+"<child xmlns:ns44="http://xpath/testsasd">3<grandchild>3</grandchild></child>"
+"<child>2<grandchild>2</grandchild></child>"
+"<child>1<grandchild>1</grandchild></child>"
+#
+attr1 = "attribute_value_2"
+#
+"<node1 attr1="attribute_value_2" xmlns:nsp="http://xpath/test">5</node1>"
+"<ns1:node1 xmlns:ns1="http://xpath/test" attr1="attribute_value_1" xmlns:nsx="http://xpath/test">10</ns1:node1>"
+#
+"<ns1:node1 xmlns:ns1="http://xpath/test" attr1="attribute_value_1" xmlns:nsx="http://xpath/test">10</ns1:node1>"
+#
+"<child>5<grandchild>5</grandchild></child>"
+#
+"true"
+#
+"<grandchild>20</grandchild>"
+"<grandchild>19</grandchild>"
+"<grandchild>18</grandchild>"
+"<grandchild>17</grandchild>"
+"<grandchild>16</grandchild>"
+"<grandchild>15</grandchild>"
+"<grandchild>14</grandchild>"
+"<grandchild>13</grandchild>"
+"<grandchild>12</grandchild>"
+"<grandchild>11</grandchild>"
+"<grandchild>10</grandchild>"
+"<grandchild>9</grandchild>"
+"<grandchild>8</grandchild>"
+"<grandchild>7</grandchild>"
+"<grandchild>6</grandchild>"
+"<grandchild>5</grandchild>"
+"<grandchild>4</grandchild>"
+"<grandchild>3</grandchild>"
+"<grandchild>2</grandchild>"
+"<grandchild>1</grandchild>"
+#
+"<child>20<grandchild>20</grandchild></child>"
+"<child>19<grandchild>19</grandchild></child>"
+"<child>18<grandchild>18</grandchild></child>"
+"<child>17<grandchild>17</grandchild></child>"
+"<child>16<grandchild>16</grandchild></child>"
+"<child>15<grandchild>15</grandchild></child>"
+"<child>14<grandchild>14</grandchild></child>"
+"<child>13<grandchild>13</grandchild></child>"
+"<child>12<grandchild>12</grandchild></child>"
+"<child>11<grandchild>11</grandchild></child>"
+"<child>10<grandchild>10</grandchild></child>"
+"<child>9<grandchild>9</grandchild></child>"
+"<child>8<grandchild>8</grandchild></child>"
+"<child>7<grandchild>7</grandchild></child>"
+"<child>6<grandchild>6</grandchild></child>"
+"<child>5<grandchild>5</grandchild></child>"
+"<child>4<grandchild>4</grandchild></child>"
+"<child>3<grandchild>3</grandchild></child>"
+"<child>2<grandchild>2</grandchild></child>"
+"<child>1<grandchild>1</grandchild></child>"
+#
+"<child>20<grandchild>20</grandchild></child>"
+"<child>19<grandchild>19</grandchild></child>"
+"<child>18<grandchild>18</grandchild></child>"
+"<child>17<grandchild>17</grandchild></child>"
+"<child>16<grandchild>16</grandchild></child>"
+"<child>15<grandchild>15</grandchild></child>"
+"<child>14<grandchild>14</grandchild></child>"
+"<child>13<grandchild>13</grandchild></child>"
+"<child>12<grandchild>12</grandchild></child>"
+"<child>11<grandchild>11</grandchild></child>"
+"<child>10<grandchild>10</grandchild></child>"
+"<child>9<grandchild>9</grandchild></child>"
+"<child>8<grandchild>8</grandchild></child>"
+"<child>7<grandchild>7</grandchild></child>"
+"<child>6<grandchild>6</grandchild></child>"
+"<child>5<grandchild>5</grandchild></child>"
+"<child>4<grandchild>4</grandchild></child>"
+"<child>3<grandchild>3</grandchild></child>"
+"<child>2<grandchild>2</grandchild></child>"
+"<child>1<grandchild>1</grandchild></child>"
+#
+"<node1 attr1="attribute_value_2" xmlns:nsp="http://xpath/test">5</node1>"
+"<ns1:node1 xmlns:ns1="http://xpath/test" attr1="attribute_value_1" xmlns:nsx="http://xpath/test">10</ns1:node1>"
+#
+"<node2>
+		<child>1<grandchild>1</grandchild></child>
+		<child>2<grandchild>2</grandchild></child>
+		<child>3<grandchild>3</grandchild></child>
+		<child>4<grandchild>4</grandchild></child>
+		<child>5<grandchild>5</grandchild></child>
+		<child>6<grandchild>6</grandchild></child>
+		<child>7<grandchild>7</grandchild></child>
+		<child>8<grandchild>8</grandchild></child>
+		<child>9<grandchild>9</grandchild></child>
+		<child>10<grandchild>10</grandchild></child>
+		<child>11<grandchild>11</grandchild></child>
+		<child>12<grandchild>12</grandchild></child>
+		<child>13<grandchild>13</grandchild></child>
+		<child>14<grandchild>14</grandchild></child>
+		<child>15<grandchild>15</grandchild></child>
+		<child>16<grandchild>16</grandchild></child>
+		<child>17<grandchild>17</grandchild></child>
+		<child>18<grandchild>18</grandchild></child>
+		<child>19<grandchild>19</grandchild></child>
+		<child>20<grandchild>20</grandchild></child>
+	</node2>"
+#
+"<ns1:node2 xmlns:ns1="http://xpath/test">
+		<child>1<grandchild>1</grandchild></child>
+		<child>2<grandchild>2</grandchild></child>
+		<child xmlns:ns44="http://xpath/testsasd">3<grandchild>3</grandchild></child>
+		<child>4<grandchild>4</grandchild></child>
+		<child>5<grandchild>5</grandchild></child>
+		<child>6<grandchild>6</grandchild></child>
+		<child>7<grandchild>7</grandchild></child>
+		<child>8<grandchild>8</grandchild></child>
+		<child>9<grandchild>9</grandchild></child>
+		<child>10<grandchild>10</grandchild></child>
+		<child>11<grandchild>11</grandchild></child>
+		<child>12<grandchild>12</grandchild></child>
+		<child>13<grandchild>13</grandchild></child>
+		<child>14<grandchild>14</grandchild></child>
+		<child>15<grandchild>15</grandchild></child>
+		<child>16<grandchild>16</grandchild></child>
+		<child>17<grandchild>17</grandchild></child>
+		<child>18<grandchild>18</grandchild></child>
+		<child>19<grandchild>19</grandchild></child>
+		<child>20<grandchild>20</grandchild></child>
+	</ns1:node2>"
+#
+attr1 = "attribute_value_1"
+#

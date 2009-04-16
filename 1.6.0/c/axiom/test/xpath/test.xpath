@@ -1,0 +1,37 @@
+#Test: Functions
+test/descendant::child
+count(test/descendant::child)
+#Test: Axes
+test/node2/child::child[5]
+test/descendant::child
+test/node2/parent::*
+test/node2/child[3]/grandchild/ancestor::*
+test/node2/child[3]/following-sibling::*
+test/node2/child[3]/preceding-sibling::*
+test/node2/child[3]/following::*
+test/node2/child[3]/preceding::*
+test/*/attribute::*
+test/*/namespace::*
+test/node1/self::*
+test/descendant-or-self::child
+test/node2/child[4]/grandchild/ancestor-or-self::child
+#Test: Namespaces
+test/test:node2//grandchild
+test/test:node2/child
+test/test:node2/*
+#Test: Attributes and Predicates
+test/node1/@*
+//*[@*]
+//*[@attr1 = 'attribute_value_1']
+test/node2/child[grandchild = /test/node1]
+#Test: Equality Expressions
+test/node1 = test/node2/child
+#Test: Abbreviated Axes
+test/node2//grandchild
+test/node2/child
+test/node2/*
+#Test: Random
+test/*[@*]
+test/node2
+test/test:node2
+test/test:node1/@*

@@ -1,0 +1,21 @@
+<wsp:Policy wsu:Id="RmPolicy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsrm="http://schemas.xmlsoap.org/ws/2005/02/rm/policy" xmlns:sanc="http://ws.apache.org/sandesha2/c/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+    <wsp:ExactlyOne>
+        <wsp:All>
+            <wsrm:RMAssertion>
+                <wsrm:InactivityTimeout Milliseconds="600000"/>
+                <wsrm:AcknowledgementInterval Milliseconds="200"/>
+                <wsrm:BaseRetransmissionInterval Milliseconds="300"/>
+                <wsrm:ExponentialBackoff/>
+                <sanc:sandesha2_db>/tmp/sandesha2_db</sanc:sandesha2_db>
+                <sanc:InactivityTimeout>64</sanc:InactivityTimeout>
+                <sanc:StorageManager>persistent</sanc:StorageManager>
+                <sanc:MessageTypesToDrop>none</sanc:MessageTypesToDrop>
+                <sanc:MaxRetransCount>10</sanc:MaxRetransCount>
+                <sanc:SenderSleepTime>1</sanc:SenderSleepTime><!--In seconds-->
+                <sanc:InvokerSleepTime>1</sanc:InvokerSleepTime>
+                <sanc:PollingWaitTime>4</sanc:PollingWaitTime>
+                <sanc:TerminateDelay>4</sanc:TerminateDelay>
+            </wsrm:RMAssertion>
+        </wsp:All>
+    </wsp:ExactlyOne>
+</wsp:Policy>

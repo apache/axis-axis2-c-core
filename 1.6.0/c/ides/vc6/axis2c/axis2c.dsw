@@ -1,0 +1,218 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "axiom"=.\axiom\axiom.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "axis2_engine"=.\axis2_engine\axis2_engine.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name neethi
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "axis2_http_receiver"=.\axis2_http_receiver\axis2_http_receiver.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "axis2_http_sender"=.\axis2_http_sender\axis2_http_sender.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "axis2_http_server"=.\axis2_http_server\axis2_http_server.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name axis2_http_receiver
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "axis2_mod_addr"=.\axis2_mod_addr\axis2_mod_addr.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "axis2_mod_log"=.\axis2_mod_log\axis2_mod_log.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "axis2_parser"=.\axis2_parser\axis2_parser.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name axutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "axis2_tcp_receiver"=.\axis2_tcp_receiver\axis2_tcp_receiver.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "axis2_tcp_sender"=.\axis2_tcp_sender\axis2_tcp_sender.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "axis2_tcp_server"=.\axis2_tcp_server\axis2_tcp_server.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name axis2_tcp_receiver
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "axutil"=.\axutil\axutil.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_axis2"=.\mod_axis2\mod_axis2.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_axis2_IIS"=.\mod_axis2_IIS\mod_axis2_IIS.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name axis2_http_sender
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "neethi"=.\neethi\neethi.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name axis2_parser
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name axiom
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+
