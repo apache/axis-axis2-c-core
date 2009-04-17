@@ -3,8 +3,8 @@
   <body>
       <menu name="Apache Axis2/C">
       <item name="Apache Axis2/C Home" href="index.html"/>
-      <item name="Download Axis2/C" href="download.cgi">
-        <item name="Releases" href="download.cgi"/>
+      <item name="Download Axis2/C" href="http://ws.apache.org/axis2/c/download.cgi">
+        <item name="Releases" href="http://ws.apache.org/axis2/c/download.cgi"/>
       </item>
       <item name="Documentation" href="docs/index.html">
 	<item name="Installation Guide" href="docs/installationguide.html"/>
