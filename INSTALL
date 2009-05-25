@@ -81,7 +81,7 @@ Table of Contents
 	                  if you are going to use AMQP transport. It is imperative 
 					  that you compile and install Qpid from SVN source. 
 					  You can checkout Qpid SVN source from 
-					  https://svn.apache.org/repos/asf/incubator/qpid/trunk/qpid.
+					  https://svn.apache.org/repos/asf/qpid/trunk.
 
 	1.2 Using Binary Release
 	------------------------
