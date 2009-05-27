@@ -1039,7 +1039,7 @@ axis2_http_sender_send (axis2_http_sender_t * sender,
                                                             env); 
         }
 
-        if (force_http_auth_with_head)
+        else if (force_http_auth_with_head)
         {
             axis2_http_request_line_t *head_request_line = NULL;
             axis2_http_request_line_t *temp = NULL;
