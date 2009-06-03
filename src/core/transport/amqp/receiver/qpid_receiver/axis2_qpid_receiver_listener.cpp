@@ -82,7 +82,7 @@ void Axis2QpidReceiverListener::received(Message& message)
 	/* Copy AMQP headers */
 	/* Content-Type */
 	request_data->content_type = NULL;
-	std::string content_type_tmp = message.getHeaders().getString(AXIS2_AMQP_HEADER_CONTENT_TYPE);
+	std::string content_type_tmp = message.getHeaders().getAsString(AXIS2_AMQP_HEADER_CONTENT_TYPE);
 	if (!content_type_tmp.empty())
 	{
 		axis2_char_t* content_type = (axis2_char_t*)AXIS2_MALLOC(env->allocator,
@@ -94,7 +94,7 @@ void Axis2QpidReceiverListener::received(Message& message)
 	
 	/* SOAPAction */
 	request_data->soap_action = NULL;
-	std::string soap_action_tmp = message.getHeaders().getString(AXIS2_AMQP_HEADER_SOAP_ACTION);
+	std::string soap_action_tmp = message.getHeaders().getAsString(AXIS2_AMQP_HEADER_SOAP_ACTION);
 	if (!soap_action_tmp.empty())
 	{
 		axis2_char_t* soap_action = (axis2_char_t*)AXIS2_MALLOC(env->allocator,

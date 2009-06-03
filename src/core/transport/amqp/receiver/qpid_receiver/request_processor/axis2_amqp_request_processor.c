@@ -207,11 +207,11 @@ axis2_amqp_process_request(
                 	callback_ctx->chunked_stream = NULL;
             	}
 
-                binary_data_map = 
+                /*binary_data_map = 
                     axiom_mime_parser_parse(mime_parser, env,
                                             axis2_amqp_util_on_data_request,
                                             (void*)callback_ctx,
-                                            mime_boundary);
+                                            mime_boundary);*/
                 if (!binary_data_map)
                 {
                     return AXIS2_FAILURE;

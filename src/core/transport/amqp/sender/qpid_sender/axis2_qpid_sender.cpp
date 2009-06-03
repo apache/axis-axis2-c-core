@@ -87,7 +87,7 @@ bool Axis2QpidSender::SendReceive(string messageContent, string toQueueName, boo
 
 		reqMessage.setData(messageContent);
 	
-		async(session).messageTransfer(arg::content = reqMessage, arg::destination = AXIS2_AMQP_EXCHANGE_DIRECT);
+		session.messageTransfer(arg::content = reqMessage, arg::destination = AXIS2_AMQP_EXCHANGE_DIRECT);
 		
 		/* Create subscription manager */
 		SubscriptionManager subscriptionManager(session);
@@ -98,7 +98,7 @@ bool Axis2QpidSender::SendReceive(string messageContent, string toQueueName, boo
 		if (subscriptionManager.get(resMessage, replyToQueueName, reqTimeout))
 		{
 			responseContent = resMessage.getData();
-			responseContentType = resMessage.getHeaders().getString(AXIS2_AMQP_HEADER_CONTENT_TYPE);
+			responseContentType = resMessage.getHeaders().getAsString(AXIS2_AMQP_HEADER_CONTENT_TYPE);
 		
 			status = true;
 		}
@@ -155,7 +155,7 @@ bool Axis2QpidSender::Send(string messageContent, string toQueueName, string rep
 
 		message.setData(messageContent);
 
-		async(session).messageTransfer(arg::content = message, arg::destination = AXIS2_AMQP_EXCHANGE_DIRECT);
+		session.messageTransfer(arg::content = message, arg::destination = AXIS2_AMQP_EXCHANGE_DIRECT);
 
 		connection.close();
 
