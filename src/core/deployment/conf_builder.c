@@ -923,13 +923,17 @@ axis2_conf_builder_process_transport_senders(
                                                         env, qparamst,
                                                         transport_node);
             axutil_qname_free(qparamst, env);
-            status =
-                axis2_desc_builder_process_params(conf_builder->desc_builder,
+
+            if(itr)
+            {
+                status =
+                 axis2_desc_builder_process_params(conf_builder->desc_builder,
                                                   env, itr,
                                                   axis2_transport_out_desc_param_container
                                                   (transport_out, env),
                                                   axis2_conf_get_param_container
                                                   (conf_builder->conf, env));
+            }
             if (!status)
             {
                 axis2_transport_out_desc_free(transport_out, env);
