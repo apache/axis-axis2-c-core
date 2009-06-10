@@ -1147,6 +1147,10 @@ axis2_conf_builder_process_transport_recvs(
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_SMTP;
                 }
+                else if (!axutil_strcmp(name, AXIS2_TRANSPORT_XMPP))
+                {
+                    transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
+                }
                 else if (!axutil_strcmp(name, AXIS2_TRANSPORT_TCP))
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
