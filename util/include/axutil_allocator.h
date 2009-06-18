@@ -122,6 +122,15 @@ extern "C"
         axutil_allocator_t * allocator);
 
     /**
+     * Creates a clone of given allocator
+     * @param allocator user defined allocator. Cannot be NULL
+     * @return initialized allocator. NULL on error.
+     */
+    AXIS2_EXTERN axutil_allocator_t *AXIS2_CALL
+    axutil_allocator_clone(
+        axutil_allocator_t * allocator);
+
+    /**
      * This function should be used to deallocate memory if the default 
      * allocator was provided by the axutil_allocator_init() call.
      * @param allocator allocator struct to be freed

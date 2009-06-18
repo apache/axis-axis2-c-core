@@ -331,10 +331,16 @@ axis2_http_client_send(
 
             /* str_header2 is to hold intermediate value of str_header */
             str_header2 = axutil_stracat(env, str_header, header_ext_form);
-            AXIS2_FREE(env->allocator, str_header);
-            str_header = NULL;
-            AXIS2_FREE(env->allocator, header_ext_form);
-            header_ext_form = NULL;
+            if(str_header)
+            {
+                AXIS2_FREE(env->allocator, str_header);
+                str_header = NULL;
+            }
+            if(header_ext_form)
+            {
+                AXIS2_FREE(env->allocator, header_ext_form);
+                header_ext_form = NULL;
+            }
 
             /* str_header has all HTTP headers to send. */
             str_header = str_header2;

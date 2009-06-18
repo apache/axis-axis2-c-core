@@ -56,6 +56,32 @@ axutil_allocator_init(
     return NULL;
 }
 
+AXIS2_EXTERN axutil_allocator_t *AXIS2_CALL
+axutil_allocator_clone(
+    axutil_allocator_t * allocator)
+{
+    if (!allocator)
+        return NULL;
+
+    else
+    {
+        axutil_allocator_t* clone = NULL;
+        clone = (axutil_allocator_t *) malloc(sizeof(axutil_allocator_t));
+        memset(clone , 0, sizeof(axutil_allocator_t)); 
+        if (clone )
+        {
+            clone->malloc_fn = allocator->malloc_fn;
+            clone->realloc = allocator->realloc;
+            clone->free_fn = allocator->free_fn;
+            clone->current_pool = allocator->current_pool;
+            clone->global_pool =  allocator->global_pool;
+            clone->local_pool =   allocator->local_pool;
+
+            return clone ;
+        }
+    }
+    return NULL;
+}
 AXIS2_EXTERN void AXIS2_CALL
 axutil_allocator_free(
     axutil_allocator_t * allocator)

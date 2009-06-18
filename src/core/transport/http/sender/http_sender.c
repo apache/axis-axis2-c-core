@@ -1373,8 +1373,11 @@ header");
     axis2_http_simple_request_free (request, env);
     request = NULL;
 
-    AXIS2_FREE (env->allocator, output_stream);
-    output_stream = NULL;
+    if(output_stream)
+    {
+        AXIS2_FREE (env->allocator, output_stream);
+        output_stream = NULL;
+    }
 
     if (status_code < 0)
     {

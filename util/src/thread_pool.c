@@ -116,8 +116,11 @@ AXIS2_EXTERN axutil_env_t *AXIS2_CALL
 axutil_init_thread_env(
     const axutil_env_t *system_env)
 {
-    axutil_error_t *error = axutil_error_create(system_env->allocator);
-    return axutil_env_create_with_error_log_thread_pool(system_env->allocator,
+    axutil_allocator_t * allocator = NULL;
+    axutil_error_t *error = NULL;
+    allocator = axutil_allocator_clone(system_env->allocator);
+    error = axutil_error_create(allocator);
+    return axutil_env_create_with_error_log_thread_pool(allocator,
                                                         error, system_env->log,
                                                         system_env->
                                                         thread_pool);
