@@ -49,6 +49,7 @@ axutil_allocator_init(
             allocator->malloc_fn = axutil_allocator_malloc_impl;
             allocator->realloc = axutil_allocator_realloc_impl;
             allocator->free_fn = axutil_allocator_free_impl;
+            allocator->global_pool_ref = 0;
 
             return allocator;
         }
@@ -76,6 +77,7 @@ axutil_allocator_clone(
             clone->current_pool = allocator->current_pool;
             clone->global_pool =  allocator->global_pool;
             clone->local_pool =   allocator->local_pool;
+            clone->global_pool_ref = 0;
 
             return clone ;
         }
@@ -124,6 +126,7 @@ axutil_allocator_switch_to_global_pool(
 {
     if (!allocator)
         return;
+    allocator->global_pool_ref++;
     allocator->current_pool = allocator->global_pool;
     return;
 }
@@ -134,7 +137,15 @@ axutil_allocator_switch_to_local_pool(
 {
     if (!allocator)
         return;
-    allocator->current_pool = allocator->local_pool;
+    if(allocator->global_pool_ref > 0)
+    {
+        allocator->global_pool_ref--;
+    }
+
+    if(allocator->global_pool_ref == 0)
+    {
+        allocator->current_pool = allocator->local_pool;
+    }
     return;
 }
 

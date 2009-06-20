@@ -108,6 +108,20 @@ extern "C"
          */
         void *current_pool;
 
+        /**
+         * This variable has meaning only when allocator is initialized when Axis2/C is used in 
+         * Apache2 module. When switching to global poo this ref counter is increased by one. When 
+         * switching to local pool it is descreased by one. When creating allocator this variable 
+         * is initialized to 0 which means it points to the local pool. If user has switched to the
+         * global pool several times without switching back to the local pool this ref counter has
+         * a positive value. If at this stage switching to lcoal pool called then this ref counter
+         * is reduced and checked if its value is zero. If only it's value is zero then pool is 
+         * switched to local pool. This functionality avoid unintended switching to localpool by
+         * some code fragment. Still user has to make sure that each global switch has a 
+         * corresponding local switch.
+         */
+        int global_pool_ref;
+
     }
     axutil_allocator_t;
 
