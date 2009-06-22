@@ -314,7 +314,6 @@ axis2_load_services(
                                 "Invalid state of the service %s", svc_name);
                             return AXIS2_FAILURE;
                         }
-                        axutil_allocator_switch_to_global_pool(env->allocator);
                         axutil_class_loader_init(env);
                         impl_class =
                             axutil_class_loader_create_dll(env,
@@ -323,14 +322,12 @@ axis2_load_services(
                         {
                             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                                 "Service %s could not be loaded", svc_name);
-                            axutil_allocator_switch_to_local_pool(env->allocator);
                             return AXIS2_FAILURE;
                         }
 
                         axis2_svc_set_impl_class(svc_desc, env, impl_class);
                         status = AXIS2_SVC_SKELETON_INIT_WITH_CONF(
                             (axis2_svc_skeleton_t *) impl_class, env, conf);
-                        axutil_allocator_switch_to_local_pool(env->allocator);
                         if(!status)
                         {
                             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
