@@ -359,6 +359,7 @@ axis2_handler(
     allocator->malloc_fn = axis2_module_malloc;
     allocator->realloc = axis2_module_realloc;
     allocator->free_fn = axis2_module_free;
+    allocator->global_pool_ref = 0;
     allocator->local_pool = (void *)local_pool;
     allocator->current_pool = (void *)local_pool;
     allocator->global_pool = axutil_env->allocator->global_pool;
@@ -525,6 +526,7 @@ static int axis2_post_config(apr_pool_t *pconf, apr_pool_t *plog,
 		allocator->malloc_fn = axis2_module_malloc;
 		allocator->realloc = axis2_module_realloc;
 		allocator->free_fn = axis2_module_free;
+        allocator->global_pool_ref = 0;
 		allocator->local_pool = (void *) rmm;
 		allocator->current_pool = (void *) rmm;
 		allocator->global_pool = (void *) rmm;
@@ -640,6 +642,7 @@ axis2_module_init(
     allocator->malloc_fn = axis2_module_malloc;
     allocator->realloc = axis2_module_realloc;
     allocator->free_fn = axis2_module_free;
+    allocator->global_pool_ref = 0;
     allocator->local_pool = (void*) pool;
     allocator->current_pool = (void*) pool;
     allocator->global_pool = (void*) pool;
