@@ -157,9 +157,9 @@ hello_on_fault(
     axiom_node_t *error_node = NULL;
     axiom_node_t *text_node = NULL;
     axiom_element_t *error_ele = NULL;
-    error_ele = axiom_element_create(env, node, "EchoServiceError", NULL,
+    error_ele = axiom_element_create(env, node, "HelloServiceError", NULL,
                                      &error_node);
-    axiom_element_set_text(error_ele, env, "Echo service failed ", text_node);
+    axiom_element_set_text(error_ele, env, "Hello service failed ", text_node);
     return error_node;
 }
 
