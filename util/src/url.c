@@ -500,9 +500,9 @@ axutil_url_get_server(
     {
         print_port = AXIS2_TRUE;
         sprintf(port_str, "%d", url->port);
-        len += axutil_strlen(port_str) + 1;
+        len += axutil_strlen(port_str);
     }
-    url->server = (axis2_char_t *) AXIS2_MALLOC(env->allocator, len);
+    url->server = (axis2_char_t *) AXIS2_MALLOC(env->allocator, len + 1);
     sprintf(url->server, "%s%s%s", url->host,
             (print_port) ? ":" : "",
             (print_port) ? port_str : "");
