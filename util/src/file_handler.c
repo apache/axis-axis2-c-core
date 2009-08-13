@@ -44,9 +44,19 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_file_handler_close(
     void *file_ptr)
 {
+    int status = 0;
+
     if (!file_ptr)
-        return -1;
-    return (axis2_status_t) fclose(file_ptr);
+        return AXIS2_FAILURE;
+
+    status = fclose(file_ptr);
+
+    /*if successfully closed, it will return 0. otherwise EOF is returned */
+    if(status != 0)
+    {
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
