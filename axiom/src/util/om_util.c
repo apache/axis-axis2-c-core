@@ -1201,3 +1201,91 @@ axiom_util_get_node_by_local_name(
     }
     return NULL;
 }
+
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+axiom_util_string_to_node(
+    const axutil_env_t *env,
+    axis2_char_t* buffer)
+{
+    axiom_document_t *doc = NULL;
+    axiom_stax_builder_t *builder = NULL;
+    axiom_xml_reader_t *reader = NULL;
+    axiom_node_t *node = NULL;
+
+    if(!buffer)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Deserialize method called with invalid buffer.");
+        return NULL;
+    }
+    reader = axiom_xml_reader_create_for_memory(
+        env, (void*)buffer, axutil_strlen(buffer), NULL, AXIS2_XML_PARSER_TYPE_BUFFER);
+
+    if(!reader)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Could not be able to create axiom_xml_reader.");
+        return NULL;
+    }
+
+    builder = axiom_stax_builder_create(env, reader);
+    if(!builder)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Could not be able to create axiom_stax_builder.");
+        return NULL;
+    }
+
+    doc = axiom_document_create(env, NULL, builder);
+    if(!doc)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Could not be able to create axiom_document.");
+        return NULL;
+    }
+
+    node = axiom_document_build_all(doc, env);
+    if(!node)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Could not be able to deserialize the node.");
+        axiom_document_free(doc, env);
+        return NULL;
+    }
+
+    /* Free stax builder. The stax builder will free the reader. */
+    axiom_stax_builder_free_self(builder, env);
+    builder = NULL;
+
+    axiom_document_free_self(doc, env);
+    doc = NULL;
+
+    return node;
+}
+
+/**
+ * Creates a clone of given node
+ * @param env environment, MUST not be NULL
+ * @param node node to be cloned
+ * @return cloned node
+ */
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+axiom_util_clone_node(
+    const axutil_env_t *env,
+    axiom_node_t *node)
+{
+    axis2_char_t* node_string = NULL;
+    axiom_node_t *clone = NULL;
+
+    if(!node)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Could not be able to clone the node. Given node is not valid.");
+        return NULL;
+    }
+
+    node_string = axiom_node_sub_tree_to_string(node, env);
+    clone = oxs_axiom_deserialize_node(env, node_string);
+
+    if(node_string)
+    {
+        AXIS2_FREE(env->allocator, node_string);
+    }
+
+    return clone;
+}

@@ -379,6 +379,28 @@ extern "C"
         axiom_node_t *node,
         axis2_char_t *local_name);
 
+    /**
+     * Creates a clone of given node
+     * @param env environment, MUST not be NULL
+     * @param node node to be cloned
+     * @return cloned node
+     */
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_util_clone_node(
+        const axutil_env_t *env,
+        axiom_node_t *node);
+
+    /**
+     * Creates a node from given string
+     * @param env environment, MUST not be NULL
+     * @param buffer
+     * @return node created from string
+     */
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_util_string_to_node(
+        const axutil_env_t *env,
+        axis2_char_t* buffer);
+
 
 #ifdef __cplusplus
  }
