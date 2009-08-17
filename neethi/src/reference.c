@@ -30,11 +30,10 @@ neethi_reference_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    neethi_reference = (neethi_reference_t *) AXIS2_MALLOC(env->allocator,
-                                                           sizeof
-                                                           (neethi_reference_t));
+    neethi_reference = (neethi_reference_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(neethi_reference_t));
 
-    if (neethi_reference == NULL)
+    if(neethi_reference == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -50,7 +49,7 @@ neethi_reference_free(
     neethi_reference_t *neethi_reference,
     const axutil_env_t *env)
 {
-    if (neethi_reference)
+    if(neethi_reference)
     {
         AXIS2_FREE(env->allocator, neethi_reference);
         neethi_reference = NULL;
@@ -90,19 +89,16 @@ neethi_reference_serialize(
     axiom_attribute_t *att_uri = NULL;
 
     policy_ns = axiom_namespace_create(env, NEETHI_NAMESPACE, NEETHI_PREFIX);
-
-    ref_ele =
-        axiom_element_create(env, parent, NEETHI_REFERENCE, policy_ns,
-                             &ref_node);
-    if (!ref_node)
+    ref_ele = axiom_element_create(env, parent, NEETHI_REFERENCE, policy_ns, &ref_node);
+    if(!ref_node)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "'reference' node creation failed. Cannot serialize 'reference' assertion");
         return AXIS2_FAILURE;
     }
 
-    att_uri =
-        axiom_attribute_create(env, NEETHI_URI, neethi_reference->uri, NULL);
+    att_uri = axiom_attribute_create(env, NEETHI_URI, neethi_reference->uri, NULL);
     axiom_element_add_attribute(ref_ele, env, att_uri, ref_node);
 
     return AXIS2_SUCCESS;
-
 }

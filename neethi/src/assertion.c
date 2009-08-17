@@ -52,11 +52,10 @@ neethi_assertion_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    neethi_assertion = (neethi_assertion_t *) AXIS2_MALLOC(env->allocator,
-                                                           sizeof
-                                                           (neethi_assertion_t));
+    neethi_assertion = (neethi_assertion_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(neethi_assertion_t));
 
-    if (neethi_assertion == NULL)
+    if(neethi_assertion == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -65,7 +64,7 @@ neethi_assertion_create(
     neethi_assertion->policy_components = NULL;
 
     neethi_assertion->policy_components = axutil_array_list_create(env, 0);
-    if (!(neethi_assertion->policy_components))
+    if(!(neethi_assertion->policy_components))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -89,10 +88,10 @@ neethi_assertion_create_with_args(
     neethi_assertion_type_t type)
 {
     neethi_assertion_t *neethi_assertion = NULL;
-    neethi_assertion = (neethi_assertion_t *) AXIS2_MALLOC(
-        env->allocator, sizeof(neethi_assertion_t));
+    neethi_assertion = (neethi_assertion_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(neethi_assertion_t));
 
-    if (!neethi_assertion)
+    if(!neethi_assertion)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Neethi assertion creation failed. Out of memory");
@@ -101,10 +100,10 @@ neethi_assertion_create_with_args(
 
     neethi_assertion->policy_components = NULL;
     neethi_assertion->policy_components = axutil_array_list_create(env, 0);
-    if (!(neethi_assertion->policy_components))
+    if(!(neethi_assertion->policy_components))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "Neethi assertion policy components creation failed.");
         return NULL;
     }
@@ -114,95 +113,95 @@ neethi_assertion_create_with_args(
      * struct. So we need to increment the ref count in order to prevent
      * unnecessary memory freeing */
 
-    if (type == ASSERTION_TYPE_X509_TOKEN)
+    if(type == ASSERTION_TYPE_X509_TOKEN)
     {
-        rp_x509_token_increment_ref((rp_x509_token_t *) value, env);
+        rp_x509_token_increment_ref((rp_x509_token_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_SECURITY_CONTEXT_TOKEN)
+    else if(type == ASSERTION_TYPE_SECURITY_CONTEXT_TOKEN)
     {
-        rp_security_context_token_increment_ref((rp_security_context_token_t *) value, env);
+        rp_security_context_token_increment_ref((rp_security_context_token_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_INITIATOR_TOKEN)
+    else if(type == ASSERTION_TYPE_INITIATOR_TOKEN)
     {
-        rp_property_increment_ref((rp_property_t *) value, env);
+        rp_property_increment_ref((rp_property_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_RECIPIENT_TOKEN)
+    else if(type == ASSERTION_TYPE_RECIPIENT_TOKEN)
     {
-        rp_property_increment_ref((rp_property_t *) value, env);
+        rp_property_increment_ref((rp_property_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_PROTECTION_TOKEN)
+    else if(type == ASSERTION_TYPE_PROTECTION_TOKEN)
     {
-        rp_property_increment_ref((rp_property_t *) value, env);
+        rp_property_increment_ref((rp_property_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_ENCRYPTION_TOKEN)
+    else if(type == ASSERTION_TYPE_ENCRYPTION_TOKEN)
     {
-        rp_property_increment_ref((rp_property_t *) value, env);
+        rp_property_increment_ref((rp_property_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_TRANSPORT_TOKEN)
+    else if(type == ASSERTION_TYPE_TRANSPORT_TOKEN)
     {
-        rp_property_increment_ref((rp_property_t *) value, env);
-    }    
-    else if (type == ASSERTION_TYPE_SIGNATURE_TOKEN)
-    {
-        rp_property_increment_ref((rp_property_t *) value, env);
+        rp_property_increment_ref((rp_property_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_LAYOUT)
+    else if(type == ASSERTION_TYPE_SIGNATURE_TOKEN)
     {
-        rp_layout_increment_ref((rp_layout_t *) value, env);
+        rp_property_increment_ref((rp_property_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_ALGORITHM_SUITE)
+    else if(type == ASSERTION_TYPE_LAYOUT)
     {
-        rp_algorithmsuite_increment_ref((rp_algorithmsuite_t *) value, env);
+        rp_layout_increment_ref((rp_layout_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_WSS10)
+    else if(type == ASSERTION_TYPE_ALGORITHM_SUITE)
     {
-        rp_wss10_increment_ref((rp_wss10_t *) value, env);
+        rp_algorithmsuite_increment_ref((rp_algorithmsuite_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_WSS11)
+    else if(type == ASSERTION_TYPE_WSS10)
     {
-        rp_wss11_increment_ref((rp_wss11_t *) value, env); 
+        rp_wss10_increment_ref((rp_wss10_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_TRUST10)
+    else if(type == ASSERTION_TYPE_WSS11)
     {
-        rp_trust10_increment_ref((rp_trust10_t *) value, env); 
+        rp_wss11_increment_ref((rp_wss11_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_SUPPORTING_TOKENS)
+    else if(type == ASSERTION_TYPE_TRUST10)
     {
-        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *) value, env);
+        rp_trust10_increment_ref((rp_trust10_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_USERNAME_TOKEN)
+    else if(type == ASSERTION_TYPE_SUPPORTING_TOKENS)
     {
-        rp_username_token_increment_ref((rp_username_token_t *) value, env);
+        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_ASSYMMETRIC_BINDING)
+    else if(type == ASSERTION_TYPE_USERNAME_TOKEN)
     {
-        rp_asymmetric_binding_increment_ref((rp_asymmetric_binding_t *) value, env);
+        rp_username_token_increment_ref((rp_username_token_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_SYMMETRIC_BINDING)
+    else if(type == ASSERTION_TYPE_ASSYMMETRIC_BINDING)
     {
-        rp_symmetric_binding_increment_ref((rp_symmetric_binding_t *) value, env);
+        rp_asymmetric_binding_increment_ref((rp_asymmetric_binding_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_TRANSPORT_BINDING)
+    else if(type == ASSERTION_TYPE_SYMMETRIC_BINDING)
     {
-        rp_transport_binding_increment_ref((rp_transport_binding_t *) value, env);
+        rp_symmetric_binding_increment_ref((rp_symmetric_binding_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS)
+    else if(type == ASSERTION_TYPE_TRANSPORT_BINDING)
+    {
+        rp_transport_binding_increment_ref((rp_transport_binding_t *)value, env);
+    }
+    else if(type == ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS)
     {
         rp_signed_encrypted_parts_increment_ref((rp_signed_encrypted_parts_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_RAMPART_CONFIG)
+    else if(type == ASSERTION_TYPE_RAMPART_CONFIG)
     {
-        rp_rampart_config_increment_ref((rp_rampart_config_t *) value, env);
+        rp_rampart_config_increment_ref((rp_rampart_config_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_ISSUED_TOKEN)
+    else if(type == ASSERTION_TYPE_ISSUED_TOKEN)
     {
-        rp_issued_token_increment_ref((rp_issued_token_t *) value, env);
+        rp_issued_token_increment_ref((rp_issued_token_t *)value, env);
     }
-    else if (type == ASSERTION_TYPE_SAML_TOKEN)
+    else if(type == ASSERTION_TYPE_SAML_TOKEN)
     {
-        rp_saml_token_increment_ref((rp_saml_token_t *) value, env);
+        rp_saml_token_increment_ref((rp_saml_token_t *)value, env);
     }
-    
+
     neethi_assertion->value = value;
     neethi_assertion->type = type;
     neethi_assertion->element = NULL;
@@ -218,20 +217,17 @@ neethi_assertion_free(
     neethi_assertion_t *neethi_assertion,
     const axutil_env_t *env)
 {
-    if (neethi_assertion)
+    if(neethi_assertion)
     {
-        if (neethi_assertion->policy_components)
+        if(neethi_assertion->policy_components)
         {
             int i = 0;
-            for (i = 0;
-                 i < axutil_array_list_size(neethi_assertion->policy_components,
-                                            env); i++)
+            for(i = 0; i < axutil_array_list_size(neethi_assertion->policy_components, env); i++)
             {
                 neethi_operator_t *operator = NULL;
-                operator =(neethi_operator_t *)
-                    axutil_array_list_get(neethi_assertion->policy_components,
-                                          env, i);
-                if (operator)
+                operator = (neethi_operator_t *)axutil_array_list_get(
+                    neethi_assertion->policy_components, env, i);
+                if(operator)
                     neethi_operator_free(operator, env);
 
                 operator = NULL;
@@ -239,9 +235,9 @@ neethi_assertion_free(
             axutil_array_list_free(neethi_assertion->policy_components, env);
             neethi_assertion->policy_components = NULL;
         }
-        if (neethi_assertion->value)
+        if(neethi_assertion->value)
         {
-            if (neethi_assertion->free_func)
+            if(neethi_assertion->free_func)
             {
                 neethi_assertion->free_func(neethi_assertion->value, env);
             }
@@ -278,11 +274,11 @@ neethi_assertion_set_value(
     neethi_assertion_type_t type)
 {
     neethi_assertion->type = type;
-    if (type == ASSERTION_TYPE_X509_TOKEN)
+    if(type == ASSERTION_TYPE_X509_TOKEN)
     {
-        rp_x509_token_increment_ref((rp_x509_token_t *) value, env);
+        rp_x509_token_increment_ref((rp_x509_token_t *)value, env);
     }
-    neethi_assertion->value = (void *) value;
+    neethi_assertion->value = (void *)value;
 
     return AXIS2_SUCCESS;
 }
@@ -361,15 +357,15 @@ neethi_assertion_add_policy_components(
     int size = axutil_array_list_size(arraylist, env);
     int i = 0;
 
-    if (axutil_array_list_ensure_capacity
-        (neethi_assertion->policy_components, env, size + 1) != AXIS2_SUCCESS)
+    if(axutil_array_list_ensure_capacity(neethi_assertion->policy_components, env, size + 1)
+        != AXIS2_SUCCESS)
         return AXIS2_FAILURE;
 
-    for (i = 0; i < size; i++)
+    for(i = 0; i < size; i++)
     {
         void *value = NULL;
         value = axutil_array_list_get(arraylist, env, i);
-        neethi_operator_increment_ref((neethi_operator_t *) value, env);
+        neethi_operator_increment_ref((neethi_operator_t *)value, env);
         axutil_array_list_add(neethi_assertion->policy_components, env, value);
     }
     return AXIS2_SUCCESS;
@@ -405,14 +401,14 @@ neethi_assertion_serialize(
     axiom_node_t *node = NULL;
     axis2_char_t *localname = NULL;
 
-    namespace =
-        axiom_element_get_namespace(assertion->element, env, assertion->node);
+    namespace = axiom_element_get_namespace(assertion->element, env, assertion->node);
     localname = axiom_element_get_localname(assertion->element, env);
-
     element = axiom_element_create(env, parent, localname, namespace, &node);
 
-    if (!node)
+    if(!node)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "%s node creation failed. Cannot serialize %s assertion", localname, localname);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;

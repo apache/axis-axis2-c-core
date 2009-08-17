@@ -30,10 +30,9 @@ neethi_all_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    neethi_all = (neethi_all_t *) AXIS2_MALLOC(env->allocator,
-                                               sizeof(neethi_all_t));
+    neethi_all = (neethi_all_t *)AXIS2_MALLOC(env->allocator, sizeof(neethi_all_t));
 
-    if (neethi_all == NULL)
+    if(neethi_all == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -42,7 +41,7 @@ neethi_all_create(
     neethi_all->policy_components = NULL;
 
     neethi_all->policy_components = axutil_array_list_create(env, 0);
-    if (!(neethi_all->policy_components))
+    if(!(neethi_all->policy_components))
     {
         neethi_all_free(neethi_all, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -57,25 +56,24 @@ neethi_all_free(
     neethi_all_t *neethi_all,
     const axutil_env_t *env)
 {
-    if (neethi_all)
+    if(neethi_all)
     {
-        if (neethi_all->policy_components)
+        if(neethi_all->policy_components)
         {
             int i = 0;
             int size = 0;
 
             size = axutil_array_list_size(neethi_all->policy_components, env);
 
-            for (i = 0; i < size; i++)
+            for(i = 0; i < size; i++)
             {
                 neethi_operator_t *operator = NULL;
-                operator =(neethi_operator_t *)
-                    axutil_array_list_get(neethi_all->policy_components, env,
-                                          i);
-                if (operator)
+                operator = (neethi_operator_t *)axutil_array_list_get(
+                    neethi_all->policy_components, env, i);
+                if(operator)
                 {
                     neethi_operator_free(operator, env);
-                    operator = NULL;    
+                    operator = NULL;
                 }
                 operator = NULL;
             }
@@ -108,15 +106,14 @@ neethi_all_add_policy_components(
     int size = axutil_array_list_size(arraylist, env);
     int i = 0;
 
-    if (axutil_array_list_ensure_capacity(all->policy_components, env, size + 1)
-        != AXIS2_SUCCESS)
+    if(axutil_array_list_ensure_capacity(all->policy_components, env, size + 1) != AXIS2_SUCCESS)
         return AXIS2_FAILURE;
 
-    for (i = 0; i < size; i++)
+    for(i = 0; i < size; i++)
     {
         void *value = NULL;
         value = axutil_array_list_get(arraylist, env, i);
-        neethi_operator_increment_ref((neethi_operator_t *) value, env);
+        neethi_operator_increment_ref((neethi_operator_t *)value, env);
         axutil_array_list_add(all->policy_components, env, value);
     }
     return AXIS2_SUCCESS;
@@ -147,40 +144,40 @@ neethi_all_serialize(
     axiom_node_t *parent,
     const axutil_env_t *env)
 {
-
     axiom_node_t *all_node = NULL;
     axiom_element_t *all_ele = NULL;
     axiom_namespace_t *policy_ns = NULL;
     axutil_array_list_t *components = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
 
     policy_ns = axiom_namespace_create(env, NEETHI_NAMESPACE, NEETHI_PREFIX);
-
-    all_ele =
-        axiom_element_create(env, parent, NEETHI_ALL, policy_ns, &all_node);
-    if (!all_node)
+    all_ele = axiom_element_create(env, parent, NEETHI_ALL, policy_ns, &all_node);
+    if(!all_node)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Neethi 'all' node creation failed. Cannot serialize 'all' assertion");
         return AXIS2_FAILURE;
     }
-    components = neethi_all_get_policy_components(neethi_all, env);
 
-    if (components)
+    components = neethi_all_get_policy_components(neethi_all, env);
+    if(components)
     {
+        axis2_status_t status = AXIS2_FAILURE;
         int i = 0;
-        for (i = 0; i < axutil_array_list_size(components, env); i++)
+        for(i = 0; i < axutil_array_list_size(components, env); i++)
         {
             neethi_operator_t *operator = NULL;
-            operator =(neethi_operator_t *) axutil_array_list_get(components,
-                                                                  env, i);
-            if (operator)
+            operator = (neethi_operator_t *)axutil_array_list_get(components, env, i);
+            if(operator)
             {
                 status = neethi_operator_serialize(operator, env, all_node);
-                if (status != AXIS2_SUCCESS)
+                if(status != AXIS2_SUCCESS)
                 {
-                    return status;
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Neethi operator serialization failed. Cannot serialize 'all' assertion");
+                    return AXIS2_FAILURE;
                 }
             }
         }
     }
-    return status;
+    return AXIS2_SUCCESS;
 }
