@@ -229,18 +229,18 @@ axis2_svr_thread_worker_func(
 
     if(!data)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot get thread argument list");
         return NULL;
     }
     arg_list = (axis2_http_svr_thd_args_t *)data;
+
+    env = arg_list->env;
+    thread_env = axutil_init_thread_env(env);
 
     IF_AXIS2_LOG_DEBUG_ENABLED(env->log)
     {
         AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t1);
     }
 
-    env = arg_list->env;
-    thread_env = axutil_init_thread_env(env);
     socket = arg_list->socket;
     svr_conn = axis2_simple_http_svr_conn_create(thread_env, (int)socket);
     axis2_simple_http_svr_conn_set_rcv_timeout(svr_conn, thread_env, axis2_http_socket_read_timeout);
