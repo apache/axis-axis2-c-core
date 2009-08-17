@@ -234,7 +234,7 @@ axis2_svr_thread_worker_func(
     }
     arg_list = (axis2_http_svr_thd_args_t *)data;
 
-    IF_AXIS2_LOG_DEBUG_ENABLED(log)
+    IF_AXIS2_LOG_DEBUG_ENABLED(env->log)
     {
         AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t1);
     }
@@ -253,7 +253,7 @@ axis2_svr_thread_worker_func(
         axis2_http_simple_request_free(request, thread_env);
     }
 
-    IF_AXIS2_LOG_DEBUG_ENABLED(log)
+    IF_AXIS2_LOG_DEBUG_ENABLED(env->log)
     {
         AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t2);
         millisecs = t2.millitm - t1.millitm;
