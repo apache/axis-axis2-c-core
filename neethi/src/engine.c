@@ -562,6 +562,7 @@ static axis2_status_t neethi_engine_process_operation_element(
                                 neethi_operator_set_value(operator, env, assertion,
                                                           OPERATOR_TYPE_ASSERTION);
                                 neethi_engine_add_policy_component(env, neethi_operator, operator);
+                                neethi_assertion_set_node(assertion, env, child_node);
                             }
                             else
                             {

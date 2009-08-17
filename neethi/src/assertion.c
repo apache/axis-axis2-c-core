@@ -16,6 +16,7 @@
  */
 
 #include <neethi_assertion.h>
+#include <axiom_util.h>
 #include <rp_x509_token.h>
 #include <rp_property.h>
 #include <rp_layout.h>
@@ -317,7 +318,16 @@ neethi_assertion_set_node(
     const axutil_env_t *env,
     axiom_node_t * node)
 {
-    neethi_assertion->node = node;
+    if(neethi_assertion->node)
+    {
+        axiom_node_free_tree(neethi_assertion->node, env);
+        neethi_assertion->node = NULL;
+    }
+
+    if(node)
+    {
+        neethi_assertion->node = axiom_util_clone_node(env, node);
+    }
     return AXIS2_SUCCESS;
 }
 
@@ -396,20 +406,19 @@ neethi_assertion_serialize(
     axiom_node_t *parent,
     const axutil_env_t *env)
 {
-    axiom_namespace_t *namespace = NULL;
-    axiom_element_t *element = NULL;
     axiom_node_t *node = NULL;
-    axis2_char_t *localname = NULL;
-
-    namespace = axiom_element_get_namespace(assertion->element, env, assertion->node);
-    localname = axiom_element_get_localname(assertion->element, env);
-    element = axiom_element_create(env, parent, localname, namespace, &node);
+    if(assertion->node)
+    {
+        node = axiom_util_clone_node(env, assertion->node);
+    }
 
     if(!node)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "%s node creation failed. Cannot serialize %s assertion", localname, localname);
+            "assertion node creation failed. Cannot serialize assertion");
         return AXIS2_FAILURE;
     }
+
+    axiom_node_add_child(parent, env, node);
     return AXIS2_SUCCESS;
 }
