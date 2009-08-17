@@ -62,14 +62,13 @@ init_syetem_env(
     axutil_log_t *log = axutil_log_create(allocator, NULL, log_file);
     /* if (!log) */
 
-/* 		  log = axutil_log_create_default (allocator); */
+    /* 		  log = axutil_log_create_default (allocator); */
     axutil_thread_pool_t *thread_pool = axutil_thread_pool_init(allocator);
     /* We need to init the parser in main thread before spawning child
      * threads
      */
     axiom_xml_reader_init();
-    return axutil_env_create_with_error_log_thread_pool(allocator, error, log,
-                                                        thread_pool);
+    return axutil_env_create_with_error_log_thread_pool(allocator, error, log, thread_pool);
 }
 
 void
@@ -78,11 +77,11 @@ system_exit(
     int status)
 {
     axutil_allocator_t *allocator = NULL;
-    if (server)
+    if(server)
     {
         axis2_transport_receiver_free(server, system_env);
     }
-    if (env)
+    if(env)
     {
         allocator = env->allocator;
         axutil_env_free(env);
@@ -102,65 +101,64 @@ main(
     extern char *optarg;
     extern int optopt;
     int c;
-	unsigned int len;
+    unsigned int len;
     int log_file_size = AXUTIL_LOG_FILE_SIZE;
-	unsigned int file_flag = 0;
+    unsigned int file_flag = 0;
     axutil_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
     const axis2_char_t *log_file = "axis2.log";
     const axis2_char_t *repo_path = DEFAULT_REPO_PATH;
     int port = 9090;
-	axis2_status_t status;
-	
+    axis2_status_t status;
 
     /* Set the service URL prefix to be used. This could default to services if not 
-       set with AXIS2_REQUEST_URL_PREFIX macro at compile time */
+     set with AXIS2_REQUEST_URL_PREFIX macro at compile time */
     axis2_request_url_prefix = AXIS2_REQUEST_URL_PREFIX;
 
-    while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:s:f:")) != -1)
+    while((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:s:f:")) != -1)
     {
 
-        switch (c)
+        switch(c)
         {
-        case 'p':
-            port = AXIS2_ATOI(optarg);
-            break;
-        case 'r':
-            repo_path = optarg;
-            break;
-        case 't':
-            axis2_http_socket_read_timeout = AXIS2_ATOI(optarg) * 1000;
-            break;
-        case 'l':
-            log_level = AXIS2_ATOI(optarg);
-            if (log_level < AXIS2_LOG_LEVEL_CRITICAL)
-                log_level = AXIS2_LOG_LEVEL_CRITICAL;
-            if (log_level > AXIS2_LOG_LEVEL_TRACE)
-                log_level = AXIS2_LOG_LEVEL_TRACE;
-            break;
-        case 's':
-            log_file_size = 1024 * 1024 * AXIS2_ATOI(optarg);
-            break;
-        case 'f':
-            log_file = optarg;
-            break;
-        case 'h':
-            usage(argv[0]);
-            return 0;
-        case ':':
-            fprintf(stderr, "\nOption -%c requires an operand\n", optopt);
-            usage(argv[0]);
-            return -1;
-        case '?':
-            if (isprint(optopt))
-                fprintf(stderr, "\nUnknown option `-%c'.\n", optopt);
-            usage(argv[0]);
-            return -1;
+            case 'p':
+                port = AXIS2_ATOI(optarg);
+                break;
+            case 'r':
+                repo_path = optarg;
+                break;
+            case 't':
+                axis2_http_socket_read_timeout = AXIS2_ATOI(optarg) * 1000;
+                break;
+            case 'l':
+                log_level = AXIS2_ATOI(optarg);
+                if(log_level < AXIS2_LOG_LEVEL_CRITICAL)
+                    log_level = AXIS2_LOG_LEVEL_CRITICAL;
+                if(log_level > AXIS2_LOG_LEVEL_TRACE)
+                    log_level = AXIS2_LOG_LEVEL_TRACE;
+                break;
+            case 's':
+                log_file_size = 1024 * 1024 * AXIS2_ATOI(optarg);
+                break;
+            case 'f':
+                log_file = optarg;
+                break;
+            case 'h':
+                usage(argv[0]);
+                return 0;
+            case ':':
+                fprintf(stderr, "\nOption -%c requires an operand\n", optopt);
+                usage(argv[0]);
+                return -1;
+            case '?':
+                if(isprint(optopt))
+                    fprintf(stderr, "\nUnknown option `-%c'.\n", optopt);
+                usage(argv[0]);
+                return -1;
         }
     }
 
     allocator = axutil_allocator_init(NULL);
 
-    if (!allocator)
+    if(!allocator)
     {
         system_exit(NULL, -1);
     }
@@ -178,54 +176,46 @@ main(
 #endif
 
     AXIS2_LOG_INFO(env->log, "Starting Axis2 HTTP server....");
-    AXIS2_LOG_INFO(env->log, "Apache Axis2/C version in use : %s",
-                   axis2_version_string());
+    AXIS2_LOG_INFO(env->log, "Apache Axis2/C version in use : %s", axis2_version_string());
     AXIS2_LOG_INFO(env->log, "Server port : %d", port);
     AXIS2_LOG_INFO(env->log, "Repo location : %s", repo_path);
-    AXIS2_LOG_INFO(env->log, "Read Timeout : %d ms",
-                   axis2_http_socket_read_timeout);
-	
-	status = axutil_file_handler_access (repo_path, AXIS2_R_OK);
-	if (status == AXIS2_SUCCESS)
-	{
-		len = (unsigned int)strlen (repo_path);
-        /* We are sure that the difference lies within the unsigned int range */
-		if ((len >= 9) &&
-            !strcmp ((repo_path + (len - 9)), "axis2.xml"))
-		{
-			file_flag = 1;
-		}
-	}
-	else
-	{
-		AXIS2_LOG_WARNING (env->log, AXIS2_LOG_SI, "provided repo path %s does " 
-						   "not exist or no permissions to read, set "
-						   "repo_path to DEFAULT_REPO_PATH", repo_path);
-		repo_path = DEFAULT_REPO_PATH;
-	}
-	
+    AXIS2_LOG_INFO(env->log, "Read Timeout : %d ms", axis2_http_socket_read_timeout);
 
-	if (!file_flag)
-    	server = axis2_http_server_create(env, repo_path, port);
-	else
-		server = axis2_http_server_create_with_file (env, repo_path, port);
-	
-    if (!server)
+    status = axutil_file_handler_access(repo_path, AXIS2_R_OK);
+    if(status == AXIS2_SUCCESS)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "Server creation failed: Error code:" " %d :: %s",
-                        env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
+        len = (unsigned int)strlen(repo_path);
+        /* We are sure that the difference lies within the unsigned int range */
+        if((len >= 9) && !strcmp((repo_path + (len - 9)), "axis2.xml"))
+        {
+            file_flag = 1;
+        }
+    }
+    else
+    {
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, "provided repo path %s does "
+            "not exist or no permissions to read, set "
+            "repo_path to DEFAULT_REPO_PATH", repo_path);
+        repo_path = DEFAULT_REPO_PATH;
+    }
+
+    if(!file_flag)
+        server = axis2_http_server_create(env, repo_path, port);
+    else
+        server = axis2_http_server_create_with_file(env, repo_path, port);
+
+    if(!server)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server creation failed: Error code:" " %d :: %s",
+            env->error->error_number, AXIS2_ERROR_GET_MESSAGE(env->error));
         system_exit(env, -1);
 
     }
     printf("Started Simple Axis2 HTTP Server ...\n");
-    if (axis2_transport_receiver_start(server, env) == AXIS2_FAILURE)
+    if(axis2_transport_receiver_start(server, env) == AXIS2_FAILURE)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "Server start failed: Error code:" " %d :: %s",
-                        env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server start failed: Error code:" " %d :: %s",
+            env->error->error_number, AXIS2_ERROR_GET_MESSAGE(env->error));
         system_exit(env, -1);
     }
     return 0;
@@ -245,24 +235,21 @@ usage(
     fprintf(stdout, " Options :\n");
     fprintf(stdout, "\t-p PORT \t port number to use, default port is 9090\n");
     fprintf(stdout, "\t-r REPO_PATH \t repository path, default is ../\n");
-    fprintf(stdout,
-            "\t-t TIMEOUT\t socket read timeout, default is 30 seconds\n");
-    fprintf(stdout,
-            "\t-l LOG_LEVEL\t log level, available log levels:"
-            "\n\t\t\t 0 - critical    1 - errors 2 - warnings"
-            "\n\t\t\t 3 - information 4 - debug  5- user 6- trace"
-            "\n\t\t\t Default log level is 4(debug).\n");
+    fprintf(stdout, "\t-t TIMEOUT\t socket read timeout, default is 30 seconds\n");
+    fprintf(stdout, "\t-l LOG_LEVEL\t log level, available log levels:"
+        "\n\t\t\t 0 - critical    1 - errors 2 - warnings"
+        "\n\t\t\t 3 - information 4 - debug  5- user 6- trace"
+        "\n\t\t\t Default log level is 4(debug).\n");
 #ifndef WIN32
-    fprintf(stdout,
-            "\t-f LOG_FILE\t log file, default is $AXIS2C_HOME/logs/axis2.log"
-            "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
+    fprintf(stdout, "\t-f LOG_FILE\t log file, default is $AXIS2C_HOME/logs/axis2.log"
+        "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
 #else
     fprintf(stdout,
-            "\t-f LOG_FILE\t log file, default is %%AXIS2C_HOME%%\\logs\\axis2.log"
-            "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
+        "\t-f LOG_FILE\t log file, default is %%AXIS2C_HOME%%\\logs\\axis2.log"
+        "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
 #endif
     fprintf(stdout,
-            "\t-s LOG_FILE_SIZE\t Maximum log file size in mega bytes, default maximum size is 1MB.\n");
+        "\t-s LOG_FILE_SIZE\t Maximum log file size in mega bytes, default maximum size is 1MB.\n");
     fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
 }
 
@@ -274,24 +261,27 @@ sig_handler(
     int signal)
 {
 
-    if (!system_env)
+    if(!system_env)
     {
-        AXIS2_LOG_ERROR(system_env->log, AXIS2_LOG_SI,
-                        "Received signal %d, unable to proceed system_env is NULL ,\
-                         system exit with -1", signal);
-        _exit (-1);
+        AXIS2_LOG_ERROR(
+            system_env->log,
+            AXIS2_LOG_SI,
+            "Received signal %d, unable to proceed system_env is NULL ,\
+                         system exit with -1",
+            signal);
+        _exit(-1);
     }
 
-    switch (signal)
+    switch(signal)
     {
-    case SIGINT:
+        case SIGINT:
         {
             /* Use of SIGINT in Windows is valid, since we have a console application
              * Thus, eventhough this may a single threaded application, it does work.
              */
             AXIS2_LOG_INFO(system_env->log, "Received signal SIGINT. Server "
-                           "shutting down");
-            if (server)
+                "shutting down");
+            if(server)
             {
                 axis2_http_server_stop(server, system_env);
             }
@@ -300,14 +290,14 @@ sig_handler(
             system_exit(system_env, 0);
         }
 #ifndef WIN32
-    case SIGPIPE:
+        case SIGPIPE:
         {
             AXIS2_LOG_INFO(system_env->log, "Received signal SIGPIPE.  Client "
-                           "request serve aborted");
+                "request serve aborted");
             return;
         }
 #endif
-    case SIGSEGV:
+        case SIGSEGV:
         {
             fprintf(stderr, "Received deadly signal SIGSEGV. Terminating\n");
             _exit(-1);

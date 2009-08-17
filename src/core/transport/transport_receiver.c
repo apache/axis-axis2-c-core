@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -33,8 +32,7 @@ axis2_transport_receiver_init(
     struct axis2_conf_ctx *conf_ctx,
     struct axis2_transport_in_desc *transport_in)
 {
-    return (transport_receiver->ops)->init(transport_receiver, env,
-                                           conf_ctx, transport_in);
+    return (transport_receiver->ops)->init(transport_receiver, env, conf_ctx, transport_in);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -59,8 +57,7 @@ axis2_transport_receiver_get_reply_to_epr(
     const axutil_env_t * env,
     const axis2_char_t * svc_name)
 {
-    return (transport_receiver->ops)->get_reply_to_epr(transport_receiver, env,
-                                                       svc_name);
+    return (transport_receiver->ops)->get_reply_to_epr(transport_receiver, env, svc_name);
 }
 
 AXIS2_EXTERN struct axis2_conf_ctx *AXIS2_CALL
