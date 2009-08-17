@@ -1280,7 +1280,7 @@ axiom_util_clone_node(
     }
 
     node_string = axiom_node_sub_tree_to_string(node, env);
-    clone = oxs_axiom_deserialize_node(env, node_string);
+    clone = axiom_util_string_to_node(env, node_string);
 
     if(node_string)
     {
