@@ -247,6 +247,9 @@ extern "C"
 #define AXIS2_LOG_CRITICAL_MSG(log, msg) AXIS2_LOG_CRITICAL (log, AXIS2_LOG_SI, "%s %s", AXIS2_LOG_PROJECT_PREFIX, msg)
 #define AXIS2_LOG_TRACE_MSG(log, msg) AXIS2_LOG_TRACE (log, AXIS2_LOG_SI, "%s %s", AXIS2_LOG_PROJECT_PREFIX, msg)
 
+
+#define IF_AXIS2_LOG_DEBUG_ENABLED(log) if(AXIS2_LOG_LEVEL_DEBUG <= log->level && log->level != AXIS2_LOG_LEVEL_USER)
+
     /** @} */
 
 #ifdef __cplusplus
