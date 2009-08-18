@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -37,7 +36,7 @@ axis2_async_result_create(
     AXIS2_ENV_CHECK(env, NULL);
 
     async_result = AXIS2_MALLOC(env->allocator, sizeof(axis2_async_result_t));
-    if (!async_result)
+    if(!async_result)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create asynchronous result.");
@@ -46,9 +45,9 @@ axis2_async_result_create(
 
     async_result->result = NULL;
 
-    if (result)
+    if(result)
     {
-        async_result->result = result;  /* shallow copy */
+        async_result->result = result; /* shallow copy */
     }
 
     return async_result;
@@ -59,7 +58,7 @@ axis2_async_result_get_envelope(
     axis2_async_result_t * async_result,
     const axutil_env_t * env)
 {
-    if (async_result->result)
+    if(async_result->result)
     {
         return axis2_msg_ctx_get_soap_envelope(async_result->result, env);
     }

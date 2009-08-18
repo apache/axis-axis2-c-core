@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -68,7 +67,7 @@ axis2_options_create(
     AXIS2_ENV_CHECK(env, NULL);
 
     options = AXIS2_MALLOC(env->allocator, sizeof(axis2_options_t));
-    if (!options)
+    if(!options)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create options.");
@@ -92,14 +91,14 @@ axis2_options_create(
     options->xml_parser_reset = AXIS2_TRUE;
 
     options->msg_info_headers = axis2_msg_info_headers_create(env, NULL, NULL);
-    if (!options->msg_info_headers)
+    if(!options->msg_info_headers)
     {
         axis2_options_free(options, env);
         return NULL;
     }
 
     options->properties = axutil_hash_make(env);
-    if (!options->properties)
+    if(!options->properties)
     {
         axis2_options_free(options, env);
         return NULL;
@@ -118,7 +117,7 @@ axis2_options_create_with_parent(
 
     options = axis2_options_create(env);
 
-    if (options)
+    if(options)
     {
         options->parent = parent;
     }
@@ -133,7 +132,7 @@ axis2_options_get_action(
     const axis2_char_t *action = NULL;
     action = axis2_msg_info_headers_get_action(options->msg_info_headers, env);
 
-    if (!action && options->parent)
+    if(!action && options->parent)
     {
         return axis2_options_get_action(options->parent, env);
     }
@@ -148,10 +147,9 @@ axis2_options_get_fault_to(
 {
     axis2_endpoint_ref_t *fault_to = NULL;
 
-    fault_to =
-        axis2_msg_info_headers_get_fault_to(options->msg_info_headers, env);
+    fault_to = axis2_msg_info_headers_get_fault_to(options->msg_info_headers, env);
 
-    if (!fault_to && options->parent)
+    if(!fault_to && options->parent)
     {
         return axis2_options_get_fault_to(options->parent, env);
     }
@@ -168,7 +166,7 @@ axis2_options_get_from(
 
     from = axis2_msg_info_headers_get_from(options->msg_info_headers, env);
 
-    if (!from && options->parent)
+    if(!from && options->parent)
     {
         return axis2_options_get_from(options->parent, env);
     }
@@ -181,7 +179,7 @@ axis2_options_get_transport_receiver(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    if (!options->receiver && options->parent)
+    if(!options->receiver && options->parent)
     {
         return axis2_options_get_transport_receiver(options->parent, env);
     }
@@ -194,7 +192,7 @@ axis2_options_get_transport_in(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    if (!options->transport_in && options->parent)
+    if(!options->transport_in && options->parent)
     {
         return axis2_options_get_transport_in(options->parent, env);
     }
@@ -207,7 +205,7 @@ axis2_options_get_transport_in_protocol(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    if (options->parent)
+    if(options->parent)
     {
         return axis2_options_get_transport_in_protocol(options->parent, env);
     }
@@ -222,10 +220,9 @@ axis2_options_get_message_id(
 {
     const axis2_char_t *message_id = NULL;
 
-    message_id =
-        axis2_msg_info_headers_get_message_id(options->msg_info_headers, env);
+    message_id = axis2_msg_info_headers_get_message_id(options->msg_info_headers, env);
 
-    if (!message_id && options->parent)
+    if(!message_id && options->parent)
     {
         return axis2_options_get_message_id(options->parent, env);
     }
@@ -238,7 +235,7 @@ axis2_options_get_properties(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    if (!axutil_hash_count(options->properties) && options->parent)
+    if(!axutil_hash_count(options->properties) && options->parent)
     {
         return axis2_options_get_properties(options->parent, env);
     }
@@ -256,7 +253,7 @@ axis2_options_get_property(
 
     property = axutil_hash_get(options->properties, key, AXIS2_HASH_KEY_STRING);
 
-    if (!property && options->parent)
+    if(!property && options->parent)
     {
         return axis2_options_get_property(options->parent, env, key);
     }
@@ -271,10 +268,9 @@ axis2_options_get_relates_to(
 {
     axis2_relates_to_t *relates_to = NULL;
 
-    relates_to =
-        axis2_msg_info_headers_get_relates_to(options->msg_info_headers, env);
+    relates_to = axis2_msg_info_headers_get_relates_to(options->msg_info_headers, env);
 
-    if (!relates_to && options->parent)
+    if(!relates_to && options->parent)
     {
         return axis2_options_get_relates_to(options->parent, env);
     }
@@ -289,10 +285,9 @@ axis2_options_get_reply_to(
 {
     axis2_endpoint_ref_t *reply_to = NULL;
 
-    reply_to =
-        axis2_msg_info_headers_get_reply_to(options->msg_info_headers, env);
+    reply_to = axis2_msg_info_headers_get_reply_to(options->msg_info_headers, env);
 
-    if (!reply_to && options->parent)
+    if(!reply_to && options->parent)
     {
         return axis2_options_get_reply_to(options->parent, env);
     }
@@ -305,7 +300,7 @@ axis2_options_get_transport_out(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    if (!options->transport_out && options->parent)
+    if(!options->transport_out && options->parent)
     {
         return axis2_options_get_transport_out(options->parent, env);
     }
@@ -318,10 +313,9 @@ axis2_options_get_sender_transport_protocol(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    if (options->parent)
+    if(options->parent)
     {
-        return axis2_options_get_sender_transport_protocol(options->parent,
-                                                           env);
+        return axis2_options_get_sender_transport_protocol(options->parent, env);
     }
 
     return options->sender_transport_protocol;
@@ -332,12 +326,12 @@ axis2_options_get_soap_version_uri(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    if (!options->soap_version_uri && options->parent)
+    if(!options->soap_version_uri && options->parent)
     {
         return axis2_options_get_soap_version_uri(options->parent, env);
     }
 
-    if (options->soap_version_uri)
+    if(options->soap_version_uri)
     {
         return options->soap_version_uri;
     }
@@ -350,9 +344,9 @@ axis2_options_get_timeout_in_milli_seconds(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    if (options->timeout_in_milli_seconds == -1)
+    if(options->timeout_in_milli_seconds == -1)
     {
-        if (options->parent)
+        if(options->parent)
         {
             return axis2_options_get_timeout_in_milli_seconds(options->parent, env);
         }
@@ -374,7 +368,7 @@ axis2_options_get_to(
 
     to = axis2_msg_info_headers_get_to(options->msg_info_headers, env);
 
-    if (!to && options->parent)
+    if(!to && options->parent)
     {
         return axis2_options_get_to(options->parent, env);
     }
@@ -387,9 +381,9 @@ axis2_options_get_use_separate_listener(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    if (options->use_separate_listener == -1)
+    if(options->use_separate_listener == -1)
     {
-        if (options->parent)
+        if(options->parent)
         {
             return axis2_options_get_use_separate_listener(options->parent, env);
         }
@@ -416,7 +410,7 @@ axis2_options_set_parent(
     const axutil_env_t * env,
     const axis2_options_t * parent)
 {
-    options->parent = (axis2_options_t *) parent;
+    options->parent = (axis2_options_t *)parent;
     return AXIS2_SUCCESS;
 }
 
@@ -436,8 +430,7 @@ axis2_options_set_fault_to(
     const axutil_env_t * env,
     axis2_endpoint_ref_t * fault_to)
 {
-    axis2_msg_info_headers_set_fault_to(options->msg_info_headers, env,
-                                        fault_to);
+    axis2_msg_info_headers_set_fault_to(options->msg_info_headers, env, fault_to);
     return AXIS2_SUCCESS;
 }
 
@@ -497,8 +490,7 @@ axis2_options_set_message_id(
     const axutil_env_t * env,
     const axis2_char_t * message_id)
 {
-    axis2_msg_info_headers_set_message_id(options->msg_info_headers, env,
-                                          message_id);
+    axis2_msg_info_headers_set_message_id(options->msg_info_headers, env, message_id);
     return AXIS2_SUCCESS;
 }
 
@@ -508,7 +500,7 @@ axis2_options_set_properties(
     const axutil_env_t * env,
     axutil_hash_t * properties)
 {
-    if (options->properties)
+    if(options->properties)
     {
         axutil_hash_free(options->properties, env);
     }
@@ -523,8 +515,7 @@ axis2_options_set_property(
     const axis2_char_t * property_key,
     const void *property)
 {
-    axutil_hash_set(options->properties, property_key,
-                    AXIS2_HASH_KEY_STRING, property);
+    axutil_hash_set(options->properties, property_key, AXIS2_HASH_KEY_STRING, property);
     return AXIS2_SUCCESS;
 }
 
@@ -534,8 +525,7 @@ axis2_options_set_relates_to(
     const axutil_env_t * env,
     axis2_relates_to_t * relates_to)
 {
-    axis2_msg_info_headers_set_relates_to(options->msg_info_headers, env,
-                                          relates_to);
+    axis2_msg_info_headers_set_relates_to(options->msg_info_headers, env, relates_to);
     return AXIS2_SUCCESS;
 }
 
@@ -545,8 +535,7 @@ axis2_options_set_reply_to(
     const axutil_env_t * env,
     axis2_endpoint_ref_t * reply_to)
 {
-    axis2_msg_info_headers_set_reply_to(options->msg_info_headers, env,
-                                        reply_to);
+    axis2_msg_info_headers_set_reply_to(options->msg_info_headers, env, reply_to);
     return AXIS2_SUCCESS;
 }
 
@@ -567,10 +556,9 @@ axis2_options_set_sender_transport(
     const AXIS2_TRANSPORT_ENUMS sender_transport,
     axis2_conf_t * conf)
 {
-    options->transport_out =
-        axis2_conf_get_transport_out(conf, env, sender_transport);
+    options->transport_out = axis2_conf_get_transport_out(conf, env, sender_transport);
 
-    if (!options->transport_out)
+    if(!options->transport_out)
     {
         return AXIS2_FAILURE;
     }
@@ -583,13 +571,13 @@ axis2_options_set_soap_version_uri(
     const axutil_env_t * env,
     const axis2_char_t * soap_version_uri)
 {
-    if (options->soap_version_uri)
+    if(options->soap_version_uri)
     {
         AXIS2_FREE(env->allocator, options->soap_version_uri);
         options->soap_version_uri = NULL;
     }
 
-    if (soap_version_uri)
+    if(soap_version_uri)
     {
         options->soap_version_uri = axutil_strdup(env, soap_version_uri);
     }
@@ -602,23 +590,21 @@ axis2_options_set_timeout_in_milli_seconds(
     axis2_options_t * options,
     const axutil_env_t * env,
     const long timeout_in_milli_seconds)
-{	
+{
     options->timeout_in_milli_seconds = timeout_in_milli_seconds;
     /* set the property AXIS2_HTTP_CONNECTION_TIMEOUT,
      * to be picked up by http_sender
      */
-    if (options->timeout_in_milli_seconds > 0)
-    {        
+    if(options->timeout_in_milli_seconds > 0)
+    {
         axis2_char_t time_str[19]; /* supports 18 digit timeout */
         axutil_property_t *property = axutil_property_create(env);
-        sprintf(time_str, "%ld", options->timeout_in_milli_seconds); 
-        if (property)
+        sprintf(time_str, "%ld", options->timeout_in_milli_seconds);
+        if(property)
         {
             axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
-            axutil_property_set_value(property, env,
-                                      axutil_strdup(env, time_str));
-            axis2_options_set_property(options, env, AXIS2_HTTP_CONNECTION_TIMEOUT,
-                                       property);
+            axutil_property_set_value(property, env, axutil_strdup(env, time_str));
+            axis2_options_set_property(options, env, AXIS2_HTTP_CONNECTION_TIMEOUT, property);
         }
     }
     return AXIS2_SUCCESS;
@@ -633,19 +619,18 @@ axis2_options_set_transport_info(
     const axis2_bool_t use_separate_listener)
 {
     /*
-      here we check for the legal combination
-      */
-    if (!use_separate_listener)
+     here we check for the legal combination
+     */
+    if(!use_separate_listener)
     {
-        if (sender_transport != receiver_transport)
+        if(sender_transport != receiver_transport)
         {
             return AXIS2_FAILURE;
         }
     }
     else
     {
-        axis2_options_set_use_separate_listener(options,
-                                                env, use_separate_listener);
+        axis2_options_set_use_separate_listener(options, env, use_separate_listener);
     }
     axis2_options_set_transport_in_protocol(options, env, receiver_transport);
     options->sender_transport_protocol = sender_transport;
@@ -663,7 +648,7 @@ axis2_options_set_use_separate_listener(
 
     options->use_separate_listener = use_separate_listener;
 
-    if (use_separate_listener)
+    if(use_separate_listener)
     {
         property = axutil_property_create(env);
         axutil_property_set_value(property, env, axutil_strdup(env, AXIS2_VALUE_TRUE));
@@ -675,7 +660,7 @@ axis2_options_set_use_separate_listener(
         axutil_property_set_value(property, env, axutil_strdup(env, AXIS2_VALUE_FALSE));
         axis2_options_set_property(options, env, AXIS2_USE_SEPARATE_LISTENER, property);
     }
-    
+
     return AXIS2_SUCCESS;
 }
 
@@ -685,8 +670,7 @@ axis2_options_add_reference_parameter(
     const axutil_env_t * env,
     axiom_node_t * reference_parameter)
 {
-    axis2_msg_info_headers_add_ref_param(options->msg_info_headers,
-                                         env, reference_parameter);
+    axis2_msg_info_headers_add_ref_param(options->msg_info_headers, env, reference_parameter);
     return AXIS2_SUCCESS;
 }
 
@@ -705,9 +689,9 @@ axis2_options_get_manage_session(
     const axis2_options_t * options,
     const axutil_env_t * env)
 {
-    if (options->manage_session == -1)
+    if(options->manage_session == -1)
     {
-        if (options->parent)
+        if(options->parent)
         {
             return axis2_options_get_manage_session(options->parent, env);
         }
@@ -726,9 +710,9 @@ axis2_options_set_msg_info_headers(
     const axutil_env_t * env,
     axis2_msg_info_headers_t * msg_info_headers)
 {
-    if (options->msg_info_headers)
+    if(options->msg_info_headers)
     {
-        axis2_msg_info_headers_free (options->msg_info_headers, env);
+        axis2_msg_info_headers_free(options->msg_info_headers, env);
     }
 
     options->msg_info_headers = msg_info_headers;
@@ -748,20 +732,19 @@ axis2_options_free(
     axis2_options_t * options,
     const axutil_env_t * env)
 {
-    if (options->properties)
+    if(options->properties)
     {
         axutil_hash_index_t *hi = NULL;
         void *val = NULL;
         const void *key = NULL;
-        for (hi = axutil_hash_first(options->properties, env);
-             hi; hi = axutil_hash_next(env, hi))
+        for(hi = axutil_hash_first(options->properties, env); hi; hi = axutil_hash_next(env, hi))
         {
             axutil_property_t *property = NULL;
 
             axutil_hash_this(hi, &key, NULL, &val);
-            property = (axutil_property_t *) val;
+            property = (axutil_property_t *)val;
 
-            if (property)
+            if(property)
             {
                 axutil_property_free(property, env);
             }
@@ -769,17 +752,17 @@ axis2_options_free(
         axutil_hash_free(options->properties, env);
     }
 
-    if (options->soap_version_uri)
+    if(options->soap_version_uri)
     {
         AXIS2_FREE(env->allocator, options->soap_version_uri);
     }
 
-    if (options->msg_info_headers)
+    if(options->msg_info_headers)
     {
         axis2_msg_info_headers_free(options->msg_info_headers, env);
     }
 
-    if (options->soap_action)
+    if(options->soap_action)
     {
         axutil_string_free(options->soap_action, env);
     }
@@ -802,17 +785,15 @@ axis2_options_set_soap_version(
     const axutil_env_t * env,
     const int soap_version)
 {
-    if (soap_version == AXIOM_SOAP11)
+    if(soap_version == AXIOM_SOAP11)
     {
         options->soap_version = soap_version;
-        axis2_options_set_soap_version_uri(options, env,
-                                           AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
+        axis2_options_set_soap_version_uri(options, env, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
     }
     else
     {
         options->soap_version = AXIOM_SOAP12;
-        axis2_options_set_soap_version_uri(options, env,
-                                           AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+        axis2_options_set_soap_version_uri(options, env, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
     }
     return AXIS2_SUCCESS;
 }
@@ -825,16 +806,14 @@ axis2_options_set_enable_mtom(
 {
     options->enable_mtom = enable_mtom;
 
-    if (enable_mtom)
+    if(enable_mtom)
     {
         axutil_property_t *property = axutil_property_create(env);
-        if (property)
+        if(property)
         {
             axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
-            axutil_property_set_value(property, env,
-                                      axutil_strdup(env, AXIS2_VALUE_TRUE));
-            axis2_options_set_property(options, env, AXIS2_ENABLE_MTOM,
-                                       property);
+            axutil_property_set_value(property, env, axutil_strdup(env, AXIS2_VALUE_TRUE));
+            axis2_options_set_property(options, env, AXIS2_ENABLE_MTOM, property);
         }
     }
     return AXIS2_SUCCESS;
@@ -862,13 +841,13 @@ axis2_options_set_soap_action(
     const axutil_env_t * env,
     axutil_string_t * soap_action)
 {
-    if (options->soap_action)
+    if(options->soap_action)
     {
         axutil_string_free(options->soap_action, env);
         options->soap_action = NULL;
     }
 
-    if (soap_action)
+    if(soap_action)
     {
         options->soap_action = axutil_string_clone(soap_action, env);
     }
@@ -901,21 +880,17 @@ axis2_options_set_enable_rest(
 {
     axutil_property_t *rest_property = NULL;
 
-    if (enable_rest)
+    if(enable_rest)
     {
         rest_property = axutil_property_create(env);
-        axutil_property_set_value(rest_property, env,
-                                  axutil_strdup(env, AXIS2_VALUE_TRUE));
-        axis2_options_set_property(options, env, AXIS2_ENABLE_REST,
-                                   rest_property);
+        axutil_property_set_value(rest_property, env, axutil_strdup(env, AXIS2_VALUE_TRUE));
+        axis2_options_set_property(options, env, AXIS2_ENABLE_REST, rest_property);
     }
     else
     {
         rest_property = axutil_property_create(env);
-        axutil_property_set_value(rest_property, env,
-                                  axutil_strdup(env, AXIS2_VALUE_FALSE));
-        axis2_options_set_property(options, env, AXIS2_ENABLE_REST,
-                                   rest_property);
+        axutil_property_set_value(rest_property, env, axutil_strdup(env, AXIS2_VALUE_FALSE));
+        axis2_options_set_property(options, env, AXIS2_ENABLE_REST, rest_property);
     }
     return AXIS2_SUCCESS;
 }
@@ -928,21 +903,17 @@ axis2_options_set_test_http_auth(
 {
     axutil_property_t *test_auth_property = NULL;
 
-    if (test_http_auth)
+    if(test_http_auth)
     {
         test_auth_property = axutil_property_create(env);
-        axutil_property_set_value(test_auth_property, env,
-                                  axutil_strdup(env, AXIS2_VALUE_TRUE));
-        axis2_options_set_property(options, env, AXIS2_TEST_HTTP_AUTH,
-                                   test_auth_property);
+        axutil_property_set_value(test_auth_property, env, axutil_strdup(env, AXIS2_VALUE_TRUE));
+        axis2_options_set_property(options, env, AXIS2_TEST_HTTP_AUTH, test_auth_property);
     }
     else
     {
         test_auth_property = axutil_property_create(env);
-        axutil_property_set_value(test_auth_property, env,
-                                  axutil_strdup(env, AXIS2_VALUE_FALSE));
-        axis2_options_set_property(options, env, AXIS2_TEST_HTTP_AUTH,
-                                   test_auth_property);
+        axutil_property_set_value(test_auth_property, env, axutil_strdup(env, AXIS2_VALUE_FALSE));
+        axis2_options_set_property(options, env, AXIS2_TEST_HTTP_AUTH, test_auth_property);
     }
     return AXIS2_SUCCESS;
 }
@@ -955,25 +926,20 @@ axis2_options_set_test_proxy_auth(
 {
     axutil_property_t *test_auth_property = NULL;
 
-    if (test_proxy_auth)
+    if(test_proxy_auth)
     {
         test_auth_property = axutil_property_create(env);
-        axutil_property_set_value(test_auth_property, env,
-                                  axutil_strdup(env, AXIS2_VALUE_TRUE));
-        axis2_options_set_property(options, env, AXIS2_TEST_PROXY_AUTH,
-                                   test_auth_property);
+        axutil_property_set_value(test_auth_property, env, axutil_strdup(env, AXIS2_VALUE_TRUE));
+        axis2_options_set_property(options, env, AXIS2_TEST_PROXY_AUTH, test_auth_property);
     }
     else
     {
         test_auth_property = axutil_property_create(env);
-        axutil_property_set_value(test_auth_property, env,
-                                  axutil_strdup(env, AXIS2_VALUE_FALSE));
-        axis2_options_set_property(options, env, AXIS2_TEST_PROXY_AUTH,
-                                   test_auth_property);
+        axutil_property_set_value(test_auth_property, env, axutil_strdup(env, AXIS2_VALUE_FALSE));
+        axis2_options_set_property(options, env, AXIS2_TEST_PROXY_AUTH, test_auth_property);
     }
     return AXIS2_SUCCESS;
 }
-
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_http_method(
@@ -984,10 +950,8 @@ axis2_options_set_http_method(
     axutil_property_t *method_property = NULL;
 
     method_property = axutil_property_create(env);
-    axutil_property_set_value(method_property, env,
-                              axutil_strdup(env, http_method));
-    axis2_options_set_property(options, env, AXIS2_HTTP_METHOD,
-                               method_property);
+    axutil_property_set_value(method_property, env, axutil_strdup(env, http_method));
+    axis2_options_set_property(options, env, AXIS2_HTTP_METHOD, method_property);
     return AXIS2_SUCCESS;
 }
 
@@ -1000,12 +964,9 @@ axis2_options_set_http_headers(
     axutil_property_t *headers_property = NULL;
 
     headers_property = axutil_property_create(env);
-    axutil_property_set_value(headers_property, env,
-                              http_header_list);
-    axis2_options_set_property(options, env, AXIS2_TRANSPORT_HEADER_PROPERTY,
-                               headers_property);
-    axutil_property_set_free_func(headers_property, env,
-                                  axutil_array_list_free_void_arg);
+    axutil_property_set_value(headers_property, env, http_header_list);
+    axis2_options_set_property(options, env, AXIS2_TRANSPORT_HEADER_PROPERTY, headers_property);
+    axutil_property_set_free_func(headers_property, env, axutil_array_list_free_void_arg);
     return AXIS2_SUCCESS;
 }
 
@@ -1029,39 +990,32 @@ axis2_options_set_proxy_auth_info(
     axutil_property_set_value(prop_pw, env, axutil_strdup(env, password));
     axis2_options_set_property(options, env, AXIS2_PROXY_AUTH_PASSWD, prop_pw);
 
-
     if(auth_type)
     {
-        if ((axutil_strcasecmp (auth_type, AXIS2_PROXY_AUTH_TYPE_BASIC) == 0) ||
-           (axutil_strcasecmp (auth_type, AXIS2_PROXY_AUTH_TYPE_DIGEST) == 0))
+        if((axutil_strcasecmp(auth_type, AXIS2_PROXY_AUTH_TYPE_BASIC) == 0) || (axutil_strcasecmp(
+            auth_type, AXIS2_PROXY_AUTH_TYPE_DIGEST) == 0))
         {
             force_proxy_auth = AXIS2_TRUE;
         }
     }
-    if (force_proxy_auth)
+    if(force_proxy_auth)
     {
         axutil_property_t *proxy_auth_property = axutil_property_create(env);
         axutil_property_t *proxy_auth_type_property = axutil_property_create(env);
-        
-        axutil_property_set_value(proxy_auth_property, env,
-                                  axutil_strdup(env, AXIS2_VALUE_TRUE));
-        axis2_options_set_property(options, env, AXIS2_FORCE_PROXY_AUTH,
-                                   proxy_auth_property);
 
-        axutil_property_set_value(proxy_auth_type_property, env,
-                                  axutil_strdup(env, auth_type));
-        axis2_options_set_property(options, env, AXIS2_PROXY_AUTH_TYPE,
-                                   proxy_auth_type_property);
+        axutil_property_set_value(proxy_auth_property, env, axutil_strdup(env, AXIS2_VALUE_TRUE));
+        axis2_options_set_property(options, env, AXIS2_FORCE_PROXY_AUTH, proxy_auth_property);
+
+        axutil_property_set_value(proxy_auth_type_property, env, axutil_strdup(env, auth_type));
+        axis2_options_set_property(options, env, AXIS2_PROXY_AUTH_TYPE, proxy_auth_type_property);
     }
     else
     {
         axutil_property_t *proxy_auth_property = axutil_property_create(env);
-        axutil_property_set_value(proxy_auth_property, env,
-                                  axutil_strdup(env, AXIS2_VALUE_FALSE));
-        axis2_options_set_property(options, env, AXIS2_FORCE_PROXY_AUTH,
-                                   proxy_auth_property);
+        axutil_property_set_value(proxy_auth_property, env, axutil_strdup(env, AXIS2_VALUE_FALSE));
+        axis2_options_set_property(options, env, AXIS2_FORCE_PROXY_AUTH, proxy_auth_property);
     }
-    return AXIS2_SUCCESS; 
+    return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -1075,47 +1029,40 @@ axis2_options_set_http_auth_info(
     axis2_bool_t force_http_auth = AXIS2_FALSE;
     axutil_property_t *prop_un = NULL;
     axutil_property_t *prop_pw = NULL;
-        
-    prop_un = axutil_property_create(env); 
+
+    prop_un = axutil_property_create(env);
     axutil_property_set_value(prop_un, env, axutil_strdup(env, username));
     axis2_options_set_property(options, env, AXIS2_HTTP_AUTH_UNAME, prop_un);
 
     prop_pw = axutil_property_create(env);
     axutil_property_set_value(prop_pw, env, axutil_strdup(env, password));
     axis2_options_set_property(options, env, AXIS2_HTTP_AUTH_PASSWD, prop_pw);
-    
 
-    if (auth_type)
+    if(auth_type)
     {
-        if ((axutil_strcasecmp (auth_type, AXIS2_HTTP_AUTH_TYPE_BASIC) == 0) || 
-           (axutil_strcasecmp (auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) == 0))
+        if((axutil_strcasecmp(auth_type, AXIS2_HTTP_AUTH_TYPE_BASIC) == 0) || (axutil_strcasecmp(
+            auth_type, AXIS2_HTTP_AUTH_TYPE_DIGEST) == 0))
         {
             force_http_auth = AXIS2_TRUE;
         }
-    }    
-    if (force_http_auth)
+    }
+    if(force_http_auth)
     {
         axutil_property_t *http_auth_property = axutil_property_create(env);
         axutil_property_t *http_auth_type_property = axutil_property_create(env);
-        
-        axutil_property_set_value(http_auth_property, env,
-                                  axutil_strdup(env, AXIS2_VALUE_TRUE));
-        axis2_options_set_property(options, env, AXIS2_FORCE_HTTP_AUTH,
-                                   http_auth_property);
 
-        axutil_property_set_value(http_auth_type_property, env,
-                                  axutil_strdup(env, auth_type));
-        axis2_options_set_property(options, env, AXIS2_HTTP_AUTH_TYPE,
-                                   http_auth_type_property);
+        axutil_property_set_value(http_auth_property, env, axutil_strdup(env, AXIS2_VALUE_TRUE));
+        axis2_options_set_property(options, env, AXIS2_FORCE_HTTP_AUTH, http_auth_property);
+
+        axutil_property_set_value(http_auth_type_property, env, axutil_strdup(env, auth_type));
+        axis2_options_set_property(options, env, AXIS2_HTTP_AUTH_TYPE, http_auth_type_property);
     }
     else
     {
         axutil_property_t *http_auth_property = axutil_property_create(env);
-        axutil_property_set_value(http_auth_property, env,
-                                  axutil_strdup(env, AXIS2_VALUE_FALSE));
-        axis2_options_set_property(options, env, AXIS2_FORCE_HTTP_AUTH,
-                                   http_auth_property);
+        axutil_property_set_value(http_auth_property, env, axutil_strdup(env, AXIS2_VALUE_FALSE));
+        axis2_options_set_property(options, env, AXIS2_FORCE_HTTP_AUTH, http_auth_property);
     }
-    return AXIS2_SUCCESS;    
+    return AXIS2_SUCCESS;
 }
 

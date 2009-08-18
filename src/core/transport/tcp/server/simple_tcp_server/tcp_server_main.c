@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -46,18 +45,22 @@ axis2_transport_receiver_t *server = NULL;
 int axis2_tcp_socket_read_timeout = 60000;
 
 /***************************** Function headers *******************************/
-axutil_env_t *init_syetem_env(
+axutil_env_t *
+init_syetem_env(
     axutil_allocator_t * allocator,
     const axis2_char_t * log_file);
 
-void system_exit(
+void
+system_exit(
     axutil_env_t * env,
     int status);
 
-void usage(
+void
+usage(
     axis2_char_t * prog_name);
 
-void sig_handler(
+void
+sig_handler(
     int signal);
 
 /***************************** End of function headers ************************/
@@ -73,8 +76,7 @@ init_syetem_env(
      * threads
      */
     axiom_xml_reader_init();
-    return axutil_env_create_with_error_log_thread_pool(allocator, error, log,
-                                                        thread_pool);
+    return axutil_env_create_with_error_log_thread_pool(allocator, error, log, thread_pool);
 }
 
 void
@@ -83,11 +85,11 @@ system_exit(
     int status)
 {
     axutil_allocator_t *allocator = NULL;
-    if (server)
+    if(server)
     {
         axis2_transport_receiver_free(server, system_env);
     }
-    if (env)
+    if(env)
     {
         allocator = env->allocator;
         axutil_env_free(env);
@@ -112,50 +114,50 @@ main(
     int port = AXIS2_TCP_SERVER_PORT;
     const axis2_char_t *repo_path = AXIS2_TCP_SERVER_REPO_PATH;
 
-    while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:s:f:")) != -1)
+    while((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:s:f:")) != -1)
     {
 
-        switch (c)
+        switch(c)
         {
-        case 'p':
-            port = AXIS2_ATOI(optarg);
-            break;
-        case 'r':
-            repo_path = optarg;
-            break;
-        case 't':
-            axis2_tcp_socket_read_timeout = AXIS2_ATOI(optarg) * 1000;
-            break;
-        case 'l':
-            log_level = AXIS2_ATOI(optarg);
-            if (log_level < AXIS2_LOG_LEVEL_CRITICAL)
-                log_level = AXIS2_LOG_LEVEL_CRITICAL;
-            if (log_level > AXIS2_LOG_LEVEL_TRACE)
-                log_level = AXIS2_LOG_LEVEL_TRACE;
-            break;
-        case 's':
-            log_file_size = 1024 * 1024 * AXIS2_ATOI(optarg);
-            break;
-        case 'f':
-            log_file = optarg;
-            break;
-        case 'h':
-            usage(argv[0]);
-            return 0;
-        case ':':
-            fprintf(stderr, "\nOption -%c requires an operand\n", optopt);
-            usage(argv[0]);
-            return -1;
-        case '?':
-            if (isprint(optopt))
-                fprintf(stderr, "\nUnknown option `-%c'.\n", optopt);
-            usage(argv[0]);
-            return -1;
+            case 'p':
+                port = AXIS2_ATOI(optarg);
+                break;
+            case 'r':
+                repo_path = optarg;
+                break;
+            case 't':
+                axis2_tcp_socket_read_timeout = AXIS2_ATOI(optarg) * 1000;
+                break;
+            case 'l':
+                log_level = AXIS2_ATOI(optarg);
+                if(log_level < AXIS2_LOG_LEVEL_CRITICAL)
+                    log_level = AXIS2_LOG_LEVEL_CRITICAL;
+                if(log_level > AXIS2_LOG_LEVEL_TRACE)
+                    log_level = AXIS2_LOG_LEVEL_TRACE;
+                break;
+            case 's':
+                log_file_size = 1024 * 1024 * AXIS2_ATOI(optarg);
+                break;
+            case 'f':
+                log_file = optarg;
+                break;
+            case 'h':
+                usage(argv[0]);
+                return 0;
+            case ':':
+                fprintf(stderr, "\nOption -%c requires an operand\n", optopt);
+                usage(argv[0]);
+                return -1;
+            case '?':
+                if(isprint(optopt))
+                    fprintf(stderr, "\nUnknown option `-%c'.\n", optopt);
+                usage(argv[0]);
+                return -1;
         }
     }
 
     allocator = axutil_allocator_init(NULL);
-    if (!allocator)
+    if(!allocator)
     {
         system_exit(NULL, -1);
     }
@@ -173,26 +175,21 @@ main(
     AXIS2_LOG_INFO(env->log, "Starting Axis2 TCP server....");
     AXIS2_LOG_INFO(env->log, "Server port : %d", port);
     AXIS2_LOG_INFO(env->log, "Repo location : %s", repo_path);
-    AXIS2_LOG_INFO(env->log, "Read Timeout : %d ms",
-                   axis2_tcp_socket_read_timeout);
+    AXIS2_LOG_INFO(env->log, "Read Timeout : %d ms", axis2_tcp_socket_read_timeout);
 
     server = axis2_tcp_server_create(env, repo_path, port);
-    if (!server)
+    if(!server)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "Server creation failed: Error code:" " %d :: %s",
-                        env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server creation failed: Error code:" " %d :: %s",
+            env->error->error_number, AXIS2_ERROR_GET_MESSAGE(env->error));
         system_exit(env, -1);
 
     }
     printf("Started Simple Axis2 TCP Server ...\n");
-    if (axis2_transport_receiver_start(server, env) == AXIS2_FAILURE)
+    if(axis2_transport_receiver_start(server, env) == AXIS2_FAILURE)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "Server start failed: Error code:" " %d :: %s",
-                        env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server start failed: Error code:" " %d :: %s",
+            env->error->error_number, AXIS2_ERROR_GET_MESSAGE(env->error));
         system_exit(env, -1);
     }
     return 0;
@@ -212,24 +209,21 @@ usage(
     fprintf(stdout, " Options :\n");
     fprintf(stdout, "\t-p PORT \t port number to use, default port is %d\n", AXIS2_TCP_SERVER_PORT);
     fprintf(stdout, "\t-r REPO_PATH \t repository path, default is ../\n");
-    fprintf(stdout,
-            "\t-t TIMEOUT\t socket read timeout, default is 30 seconds\n");
-    fprintf(stdout,
-            "\t-l LOG_LEVEL\t log level, available log levels:"
-            "\n\t\t\t 0 - critical    1 - errors 2 - warnings"
-            "\n\t\t\t 3 - information 4 - debug  5- user 6 - trace"
-            "\n\t\t\t Default log level is 4(debug).\n");
+    fprintf(stdout, "\t-t TIMEOUT\t socket read timeout, default is 30 seconds\n");
+    fprintf(stdout, "\t-l LOG_LEVEL\t log level, available log levels:"
+        "\n\t\t\t 0 - critical    1 - errors 2 - warnings"
+        "\n\t\t\t 3 - information 4 - debug  5- user 6 - trace"
+        "\n\t\t\t Default log level is 4(debug).\n");
 #ifndef WIN32
-    fprintf(stdout,
-            "\t-f LOG_FILE\t log file, default is $AXIS2C_HOME/logs/axis2.log"
-            "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
+    fprintf(stdout, "\t-f LOG_FILE\t log file, default is $AXIS2C_HOME/logs/axis2.log"
+        "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
 #else
     fprintf(stdout,
-            "\t-f LOG_FILE\t log file, default is %%AXIS2C_HOME%%\\logs\\axis2.log"
-            "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
+        "\t-f LOG_FILE\t log file, default is %%AXIS2C_HOME%%\\logs\\axis2.log"
+        "\n\t\t\t or axis2.log in current folder if AXIS2C_HOME not set\n");
 #endif
     fprintf(stdout,
-            "\t-s LOG_FILE_SIZE\t Maximum log file size in mega bytes, default maximum size is 1MB.\n");
+        "\t-s LOG_FILE_SIZE\t Maximum log file size in mega bytes, default maximum size is 1MB.\n");
     fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
 }
 
@@ -242,23 +236,23 @@ void
 sig_handler(
     int signal)
 {
-    switch (signal)
+    switch(signal)
     {
-    case SIGINT:
+        case SIGINT:
         {
             AXIS2_LOG_INFO(system_env->log, "Received signal SIGINT. Server "
-                           "shutting down");
+                "shutting down");
             axis2_tcp_server_stop(server, system_env);
             AXIS2_LOG_INFO(system_env->log, "Shutdown complete ...");
             system_exit(system_env, 0);
         }
-    case SIGPIPE:
+        case SIGPIPE:
         {
             AXIS2_LOG_INFO(system_env->log, "Received signal SIGPIPE.  Client "
-                           "request serve aborted");
+                "request serve aborted");
             return;
         }
-    case SIGSEGV:
+        case SIGSEGV:
         {
             fprintf(stderr, "Received deadly signal SIGSEGV. Terminating\n");
             _exit(-1);

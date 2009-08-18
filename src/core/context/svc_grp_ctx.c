@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -52,7 +51,7 @@ axis2_svc_grp_ctx_create(
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
 
     svc_grp_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_grp_ctx_t));
-    if (!svc_grp_ctx)
+    if(!svc_grp_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -66,27 +65,27 @@ axis2_svc_grp_ctx_create(
     svc_grp_ctx->svc_grp_name = NULL;
 
     svc_grp_ctx->base = axis2_ctx_create(env);
-    if (!(svc_grp_ctx->base))
+    if(!(svc_grp_ctx->base))
     {
         axis2_svc_grp_ctx_free(svc_grp_ctx, env);
         return NULL;
     }
 
-    if (svc_grp)
+    if(svc_grp)
     {
         svc_grp_ctx->svc_grp = svc_grp;
-        svc_grp_ctx->svc_grp_name =
-            (axis2_char_t *) axis2_svc_grp_get_name(svc_grp_ctx->svc_grp, env);
+        svc_grp_ctx->svc_grp_name = (axis2_char_t *)axis2_svc_grp_get_name(svc_grp_ctx->svc_grp,
+            env);
         svc_grp_ctx->id = axutil_strdup(env, svc_grp_ctx->svc_grp_name);
     }
 
-    if (conf_ctx)
+    if(conf_ctx)
     {
         svc_grp_ctx->parent = conf_ctx;
     }
 
     svc_grp_ctx->svc_ctx_map = axutil_hash_make(env);
-    if (!(svc_grp_ctx->svc_ctx_map))
+    if(!(svc_grp_ctx->svc_ctx_map))
     {
         axis2_svc_grp_ctx_free(svc_grp_ctx, env);
         return NULL;
@@ -118,28 +117,28 @@ axis2_svc_grp_ctx_free(
     struct axis2_svc_grp_ctx *svc_grp_ctx,
     const axutil_env_t * env)
 {
-    if (svc_grp_ctx->id)
+    if(svc_grp_ctx->id)
     {
         AXIS2_FREE(env->allocator, svc_grp_ctx->id);
     }
 
-    if (svc_grp_ctx->base)
+    if(svc_grp_ctx->base)
     {
         axis2_ctx_free(svc_grp_ctx->base, env);
     }
 
-    if (svc_grp_ctx->svc_ctx_map)
+    if(svc_grp_ctx->svc_ctx_map)
     {
         axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axutil_hash_first(svc_grp_ctx->svc_ctx_map, env);
-             hi; hi = axutil_hash_next(env, hi))
+        for(hi = axutil_hash_first(svc_grp_ctx->svc_ctx_map, env); hi; hi = axutil_hash_next(env,
+            hi))
         {
             axutil_hash_this(hi, NULL, NULL, &val);
-            if (val)
+            if(val)
             {
                 axis2_svc_ctx_t *svc_ctx = NULL;
-                svc_ctx = (axis2_svc_ctx_t *) val;
+                svc_ctx = (axis2_svc_ctx_t *)val;
                 axis2_svc_ctx_free(svc_ctx, env);
             }
         }
@@ -159,10 +158,9 @@ axis2_svc_grp_ctx_init(
     const axutil_env_t * env,
     axis2_conf_t * conf)
 {
-    if (svc_grp_ctx->svc_grp_name)
+    if(svc_grp_ctx->svc_grp_name)
     {
-        svc_grp_ctx->svc_grp =
-            axis2_conf_get_svc_grp(conf, env, svc_grp_ctx->svc_grp_name);
+        svc_grp_ctx->svc_grp = axis2_conf_get_svc_grp(conf, env, svc_grp_ctx->svc_grp_name);
     }
 
     return AXIS2_SUCCESS;
@@ -182,13 +180,13 @@ axis2_svc_grp_ctx_set_id(
     const axutil_env_t * env,
     const axis2_char_t * id)
 {
-    if (svc_grp_ctx->id)
+    if(svc_grp_ctx->id)
     {
         AXIS2_FREE(env->allocator, svc_grp_ctx->id);
         svc_grp_ctx->id = NULL;
     }
 
-    if (id)
+    if(id)
     {
         svc_grp_ctx->id = axutil_strdup(env, id);
     }
@@ -202,8 +200,8 @@ axis2_svc_grp_ctx_get_svc_ctx(
     const axutil_env_t * env,
     const axis2_char_t * svc_name)
 {
-    return (axis2_svc_ctx_t *) axutil_hash_get(svc_grp_ctx->svc_ctx_map,
-                                               svc_name, AXIS2_HASH_KEY_STRING);
+    return (axis2_svc_ctx_t *)axutil_hash_get(svc_grp_ctx->svc_ctx_map, svc_name,
+        AXIS2_HASH_KEY_STRING);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -214,29 +212,25 @@ axis2_svc_grp_ctx_fill_svc_ctx_map(
     axutil_hash_index_t *hi = NULL;
     void *next_svc = NULL;
 
-    if (svc_grp_ctx->svc_grp)
+    if(svc_grp_ctx->svc_grp)
     {
-        axutil_hash_t *service_map =
-            axis2_svc_grp_get_all_svcs(svc_grp_ctx->svc_grp, env);
-        if (service_map)
+        axutil_hash_t *service_map = axis2_svc_grp_get_all_svcs(svc_grp_ctx->svc_grp, env);
+        if(service_map)
         {
-            for (hi = axutil_hash_first(service_map, env);
-                 hi; hi = axutil_hash_next(env, hi))
+            for(hi = axutil_hash_first(service_map, env); hi; hi = axutil_hash_next(env, hi))
             {
                 axutil_hash_this(hi, NULL, NULL, &next_svc);
-                if (next_svc)
+                if(next_svc)
                 {
                     axis2_svc_t *svc = NULL;
                     axis2_svc_ctx_t *svc_ctx = NULL;
                     axis2_char_t *svc_name = NULL;
-                    svc = (axis2_svc_t *) next_svc;
+                    svc = (axis2_svc_t *)next_svc;
                     svc_ctx = axis2_svc_ctx_create(env, svc, svc_grp_ctx);
-                    svc_name =
-                        axutil_qname_get_localpart(axis2_svc_get_qname
-                                                   (svc, env), env);
-                    if (svc_name)
-                        axutil_hash_set(svc_grp_ctx->svc_ctx_map, svc_name,
-                                        AXIS2_HASH_KEY_STRING, svc_ctx);
+                    svc_name = axutil_qname_get_localpart(axis2_svc_get_qname(svc, env), env);
+                    if(svc_name)
+                        axutil_hash_set(svc_grp_ctx->svc_ctx_map, svc_name, AXIS2_HASH_KEY_STRING,
+                            svc_ctx);
                 }
             }
         }

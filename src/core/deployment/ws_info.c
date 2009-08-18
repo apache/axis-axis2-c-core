@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -40,10 +39,9 @@ axis2_ws_info_create_with_file_name_and_last_modified_date(
 
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
 
-    ws_info = (axis2_ws_info_t *) AXIS2_MALLOC(env->allocator,
-                                               sizeof(axis2_ws_info_t));
+    ws_info = (axis2_ws_info_t *)AXIS2_MALLOC(env->allocator, sizeof(axis2_ws_info_t));
 
-    if (!ws_info)
+    if(!ws_info)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -54,7 +52,7 @@ axis2_ws_info_create_with_file_name_and_last_modified_date(
     ws_info->type = 0;
 
     ws_info->file_name = axutil_strdup(env, file_name);
-    if (!ws_info->file_name)
+    if(!ws_info->file_name)
     {
         axis2_ws_info_free(ws_info, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -77,11 +75,9 @@ axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
 
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
 
-    ws_info = (axis2_ws_info_t *)
-        axis2_ws_info_create_with_file_name_and_last_modified_date(env,
-                                                                   file_name,
-                                                                   last_modified_date);
-    if (!ws_info)
+    ws_info = (axis2_ws_info_t *)axis2_ws_info_create_with_file_name_and_last_modified_date(env,
+        file_name, last_modified_date);
+    if(!ws_info)
     {
         axis2_ws_info_free(ws_info, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -96,12 +92,12 @@ axis2_ws_info_free(
     axis2_ws_info_t * ws_info,
     const axutil_env_t * env)
 {
-    if (ws_info->file_name)
+    if(ws_info->file_name)
     {
         AXIS2_FREE(env->allocator, ws_info->file_name);
     }
 
-    if (ws_info)
+    if(ws_info)
     {
         AXIS2_FREE(env->allocator, ws_info);
     }
@@ -125,7 +121,7 @@ axis2_ws_info_set_file_name(
 {
     AXIS2_PARAM_CHECK(env->error, file_name, AXIS2_FAILURE);
 
-    if (ws_info->file_name)
+    if(ws_info->file_name)
     {
         AXIS2_FREE(env->allocator, ws_info->file_name);
         ws_info->file_name = NULL;

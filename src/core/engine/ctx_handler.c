@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -30,7 +29,8 @@ const axis2_char_t *AXIS2_CTX_HANDLER_NAME = "context_handler";
  * and the operation.
  */
 
-axis2_status_t AXIS2_CALL axis2_ctx_handler_invoke(
+axis2_status_t AXIS2_CALL
+axis2_ctx_handler_invoke(
     axis2_handler_t * handler,
     const axutil_env_t * env,
     struct axis2_msg_ctx *msg_ctx);
@@ -44,10 +44,10 @@ axis2_ctx_handler_create(
     axis2_handler_desc_t *handler_desc = NULL;
     axutil_string_t *handler_string = NULL;
 
-    if (string)
+    if(string)
     {
-        handler_string = axutil_string_clone((axutil_string_t *) string, env);
-        if (!(handler_string))
+        handler_string = axutil_string_clone((axutil_string_t *)string, env);
+        if(!(handler_string))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
@@ -56,16 +56,15 @@ axis2_ctx_handler_create(
     else
     {
         /* create default string */
-        handler_string =
-            axutil_string_create_const(env, (axis2_char_t **) & AXIS2_CTX_HANDLER_NAME);
-        if (!handler_string)
+        handler_string = axutil_string_create_const(env, (axis2_char_t **)&AXIS2_CTX_HANDLER_NAME);
+        if(!handler_string)
         {
             return NULL;
         }
     }
 
     handler = axis2_handler_create(env);
-    if (!handler)
+    if(!handler)
     {
         return NULL;
     }
@@ -73,7 +72,7 @@ axis2_ctx_handler_create(
     /* handler desc of base handler */
     handler_desc = axis2_handler_desc_create(env, handler_string);
     axutil_string_free(handler_string, env);
-    if (!handler_desc)
+    if(!handler_desc)
     {
         axis2_handler_free(handler, env);
         return NULL;
@@ -99,20 +98,18 @@ axis2_ctx_handler_invoke(
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_ctx_handler_invoke"); 
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_ctx_handler_invoke");
 
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     svc_ctx = axis2_msg_ctx_get_svc_ctx(msg_ctx, env);
 
-    if (op_ctx && svc_ctx)
+    if(op_ctx && svc_ctx)
     {
         svc_grp_ctx = axis2_svc_ctx_get_parent(svc_ctx, env);
-        if (svc_grp_ctx)
+        if(svc_grp_ctx)
         {
-            axutil_string_t *svc_grp_ctx_id_str =
-                axutil_string_create(env,
-                                     axis2_svc_grp_ctx_get_id(svc_grp_ctx,
-                                                              env));
+            axutil_string_t *svc_grp_ctx_id_str = axutil_string_create(env,
+                axis2_svc_grp_ctx_get_id(svc_grp_ctx, env));
             axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
             axutil_string_free(svc_grp_ctx_id_str, env);
         }
@@ -120,16 +117,16 @@ axis2_ctx_handler_invoke(
     }
 
     op = axis2_msg_ctx_get_op(msg_ctx, env);
-    if (op)
+    if(op)
     {
         op_ctx = axis2_op_find_existing_op_ctx(op, env, msg_ctx);
     }
 
-    if (op_ctx)
+    if(op_ctx)
     {
         axis2_op_register_op_ctx(op, env, msg_ctx, op_ctx);
         svc_ctx = axis2_op_ctx_get_parent(op_ctx, env);
-        if (svc_ctx)
+        if(svc_ctx)
         {
             axutil_string_t *svc_grp_ctx_id_str = NULL;
             const axis2_char_t *grp_ctx_id = NULL;
@@ -138,33 +135,32 @@ axis2_ctx_handler_invoke(
             axis2_msg_ctx_set_svc_ctx(msg_ctx, env, svc_ctx);
             axis2_msg_ctx_set_svc_grp_ctx(msg_ctx, env, svc_grp_ctx);
             grp_ctx_id = axis2_svc_grp_ctx_get_id(svc_grp_ctx, env);
-            svc_grp_ctx_id_str =
-                axutil_string_create(env, grp_ctx_id);
+            svc_grp_ctx_id_str = axutil_string_create(env, grp_ctx_id);
             axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
             axutil_string_free(svc_grp_ctx_id_str, env);
         }
 
         return AXIS2_SUCCESS;
     }
-    else if (op)                /*  2. if no op_ctx, create new op_ctx */
+    else if(op) /*  2. if no op_ctx, create new op_ctx */
     {
         axis2_conf_ctx_t *conf_ctx = NULL;
         axis2_bool_t use_pools = AXIS2_FALSE;
         axutil_param_t *param = axis2_msg_ctx_get_parameter(msg_ctx, env, AXIS2_PERSIST_OP_CTX);
 
-        use_pools = (param && 0 == axutil_strcmp(AXIS2_VALUE_TRUE, axutil_param_get_value(param, 
-                        env)));
+        use_pools = (param && 0 == axutil_strcmp(AXIS2_VALUE_TRUE, axutil_param_get_value(param,
+            env)));
 
-        if (use_pools)
+        if(use_pools)
         {
             axutil_allocator_switch_to_global_pool(env->allocator);
         }
         op_ctx = axis2_op_ctx_create(env, op, NULL);
-        if (!op_ctx)
+        if(!op_ctx)
         {
             axis2_char_t *op_name = axutil_qname_get_localpart(axis2_op_get_qname(op, env), env);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                    "Could not create Operation context for operatoin %s", op_name);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Could not create Operation context for operatoin %s", op_name);
 
             return AXIS2_FAILURE;
         }
@@ -174,34 +170,34 @@ axis2_ctx_handler_invoke(
         axis2_op_register_op_ctx(op, env, msg_ctx, op_ctx);
 
         conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
-        if (conf_ctx)
+        if(conf_ctx)
         {
-            if (!use_pools)
+            if(!use_pools)
             {
                 axutil_allocator_switch_to_global_pool(env->allocator);
             }
 
             svc_grp_ctx = axis2_conf_ctx_fill_ctxs(conf_ctx, env, msg_ctx);
 
-            if (!use_pools)
+            if(!use_pools)
             {
                 axutil_allocator_switch_to_local_pool(env->allocator);
             }
         }
 
-        if (use_pools)
+        if(use_pools)
         {
             axutil_allocator_switch_to_local_pool(env->allocator);
         }
     }
 
-    if (!svc_grp_ctx && (axis2_msg_ctx_get_server_side(msg_ctx, env)))
+    if(!svc_grp_ctx && (axis2_msg_ctx_get_server_side(msg_ctx, env)))
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service group context not found"); 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service group context not found");
         return AXIS2_FAILURE;
     }
 
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_ctx_handler_invoke"); 
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_ctx_handler_invoke");
 
     return AXIS2_SUCCESS;
 }

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -20,28 +19,28 @@
 
 #include "mod_log.h"
 
-axis2_status_t AXIS2_CALL axis2_mod_log_shutdown(
+axis2_status_t AXIS2_CALL
+axis2_mod_log_shutdown(
     axis2_module_t * module,
     const axutil_env_t * env);
 
-axis2_status_t AXIS2_CALL axis2_mod_log_init(
+axis2_status_t AXIS2_CALL
+axis2_mod_log_init(
     axis2_module_t * module,
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx,
     axis2_module_desc_t * module_desc);
 
-axis2_status_t AXIS2_CALL axis2_mod_log_fill_handler_create_func_map(
+axis2_status_t AXIS2_CALL
+axis2_mod_log_fill_handler_create_func_map(
     axis2_module_t * module,
     const axutil_env_t * env);
 
 /**
  * Module operations struct variable with functions assigned to members
  */
-static const axis2_module_ops_t log_module_ops_var = {
-    axis2_mod_log_init,
-    axis2_mod_log_shutdown,
-    axis2_mod_log_fill_handler_create_func_map
-};
+static const axis2_module_ops_t log_module_ops_var = { axis2_mod_log_init, axis2_mod_log_shutdown,
+    axis2_mod_log_fill_handler_create_func_map };
 
 axis2_module_t *
 axis2_mod_log_create(
@@ -72,12 +71,12 @@ axis2_mod_log_shutdown(
     axis2_module_t * module,
     const axutil_env_t * env)
 {
-    if (module->handler_create_func_map)
+    if(module->handler_create_func_map)
     {
         axutil_hash_free(module->handler_create_func_map, env);
     }
 
-    if (module)
+    if(module)
     {
         AXIS2_FREE(env->allocator, module);
     }
@@ -92,19 +91,19 @@ axis2_mod_log_fill_handler_create_func_map(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     module->handler_create_func_map = axutil_hash_make(env);
-    if (!module->handler_create_func_map)
+    if(!module->handler_create_func_map)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
     /* add in handler */
-    axutil_hash_set(module->handler_create_func_map, "LoggingInHandler",
-                    AXIS2_HASH_KEY_STRING, axutil_log_in_handler_create);
+    axutil_hash_set(module->handler_create_func_map, "LoggingInHandler", AXIS2_HASH_KEY_STRING,
+        axutil_log_in_handler_create);
 
     /* add out handler */
-    axutil_hash_set(module->handler_create_func_map, "LoggingOutHandler",
-                    AXIS2_HASH_KEY_STRING, axutil_log_out_handler_create);
+    axutil_hash_set(module->handler_create_func_map, "LoggingOutHandler", AXIS2_HASH_KEY_STRING,
+        axutil_log_out_handler_create);
 
     return AXIS2_SUCCESS;
 }
@@ -120,7 +119,7 @@ axis2_get_instance(
     const axutil_env_t * env)
 {
     *inst = axis2_mod_log_create(env);
-    if (!(*inst))
+    if(!(*inst))
     {
         return AXIS2_FAILURE;
     }
@@ -134,7 +133,7 @@ axis2_remove_instance(
     const axutil_env_t * env)
 {
     axis2_status_t status = AXIS2_FAILURE;
-    if (inst)
+    if(inst)
     {
         status = axis2_mod_log_shutdown(inst, env);
     }

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -38,7 +37,7 @@ axis2_svc_name_create(
     axis2_svc_name_t *svc_name = NULL;
 
     svc_name = AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_name_t));
-    if (!svc_name)
+    if(!svc_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -47,10 +46,10 @@ axis2_svc_name_create(
     svc_name->qname = NULL;
     svc_name->endpoint_name = NULL;
 
-    if (qname)
+    if(qname)
     {
-        svc_name->qname = axutil_qname_clone((axutil_qname_t *) qname, env);
-        if (!(svc_name->qname))
+        svc_name->qname = axutil_qname_clone((axutil_qname_t *)qname, env);
+        if(!(svc_name->qname))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             axis2_svc_name_free(svc_name, env);
@@ -58,10 +57,10 @@ axis2_svc_name_create(
         }
     }
 
-    if (endpoint_name)
+    if(endpoint_name)
     {
         svc_name->endpoint_name = axutil_strdup(env, endpoint_name);
-        if (!(svc_name->endpoint_name))
+        if(!(svc_name->endpoint_name))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             axis2_svc_name_free(svc_name, env);
@@ -86,15 +85,15 @@ axis2_svc_name_set_qname(
     const axutil_env_t * env,
     const axutil_qname_t * qname)
 {
-    if (svc_name->qname)
+    if(svc_name->qname)
     {
         axutil_qname_free(svc_name->qname, env);
     }
 
-    if (qname)
+    if(qname)
     {
-        svc_name->qname = axutil_qname_clone((axutil_qname_t *) qname, env);
-        if (!(svc_name->qname))
+        svc_name->qname = axutil_qname_clone((axutil_qname_t *)qname, env);
+        if(!(svc_name->qname))
             return AXIS2_FAILURE;
     }
 
@@ -115,15 +114,15 @@ axis2_svc_name_set_endpoint_name(
     const axutil_env_t * env,
     const axis2_char_t * endpoint_name)
 {
-    if (svc_name->endpoint_name)
+    if(svc_name->endpoint_name)
     {
         AXIS2_FREE(env->allocator, svc_name->endpoint_name);
     }
 
-    if (endpoint_name)
+    if(endpoint_name)
     {
         svc_name->endpoint_name = axutil_strdup(env, endpoint_name);
-        if (!(svc_name->endpoint_name))
+        if(!(svc_name->endpoint_name))
             return AXIS2_FAILURE;
     }
 
@@ -135,12 +134,12 @@ axis2_svc_name_free(
     struct axis2_svc_name *svc_name,
     const axutil_env_t * env)
 {
-    if (svc_name->qname)
+    if(svc_name->qname)
     {
         axutil_qname_free(svc_name->qname, env);
     }
 
-    if (svc_name->endpoint_name)
+    if(svc_name->endpoint_name)
     {
         AXIS2_FREE(env->allocator, svc_name->endpoint_name);
     }

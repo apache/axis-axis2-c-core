@@ -83,12 +83,8 @@ axis2_http_server_free(
     const axutil_env_t * env);
 
 static const axis2_transport_receiver_ops_t http_transport_receiver_ops_var = {
-    axis2_http_server_init,
-    axis2_http_server_start,
-    axis2_http_server_get_reply_to_epr,
-    axis2_http_server_get_conf_ctx,
-    axis2_http_server_is_running,
-    axis2_http_server_stop,
+    axis2_http_server_init, axis2_http_server_start, axis2_http_server_get_reply_to_epr,
+    axis2_http_server_get_conf_ctx, axis2_http_server_is_running, axis2_http_server_stop,
     axis2_http_server_free };
 
 AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
@@ -325,8 +321,8 @@ axis2_http_server_get_reply_to_epr(
     AXIS2_FREE(env->allocator, svc_path);
     if(!url)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Cannot create reply to epr for service %s.", svc_name);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create reply to epr for service %s.",
+            svc_name);
         return NULL;
     }
     epr = axis2_endpoint_ref_create(env, axutil_url_to_external_form(url, env));

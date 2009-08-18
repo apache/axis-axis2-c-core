@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -48,7 +47,7 @@ axis2_phase_rule_create(
     axis2_phase_rule_t *phase_rule = NULL;
 
     phase_rule = AXIS2_MALLOC(env->allocator, sizeof(axis2_phase_rule_t));
-    if (!phase_rule)
+    if(!phase_rule)
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
         AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
@@ -61,7 +60,7 @@ axis2_phase_rule_create(
     phase_rule->first = AXIS2_FALSE;
     phase_rule->last = AXIS2_FALSE;
 
-    if (name)
+    if(name)
     {
         phase_rule->name = axutil_strdup(env, name);
     }
@@ -83,15 +82,15 @@ axis2_phase_rule_set_before(
     const axutil_env_t * env,
     const axis2_char_t * before)
 {
-    if (phase_rule->before)
+    if(phase_rule->before)
     {
         AXIS2_FREE(env->allocator, phase_rule->before);
     }
 
-    if (before)
+    if(before)
     {
         phase_rule->before = axutil_strdup(env, before);
-        if (!phase_rule->before)
+        if(!phase_rule->before)
         {
             AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
             AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
@@ -116,15 +115,15 @@ axis2_phase_rule_set_after(
     const axutil_env_t * env,
     const axis2_char_t * after)
 {
-    if (phase_rule->after)
+    if(phase_rule->after)
     {
         AXIS2_FREE(env->allocator, phase_rule->after);
     }
 
-    if (after)
+    if(after)
     {
         phase_rule->after = axutil_strdup(env, after);
-        if (!phase_rule->after)
+        if(!phase_rule->after)
         {
             AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
             AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
@@ -149,15 +148,15 @@ axis2_phase_rule_set_name(
     const axutil_env_t * env,
     const axis2_char_t * name)
 {
-    if (phase_rule->name)
+    if(phase_rule->name)
     {
         AXIS2_FREE(env->allocator, phase_rule->name);
     }
 
-    if (name)
+    if(name)
     {
         phase_rule->name = axutil_strdup(env, name);
-        if (!phase_rule->name)
+        if(!phase_rule->name)
         {
             AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
             AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
@@ -209,17 +208,17 @@ axis2_phase_rule_free(
     axis2_phase_rule_t * phase_rule,
     const axutil_env_t * env)
 {
-    if (phase_rule->before)
+    if(phase_rule->before)
     {
         AXIS2_FREE(env->allocator, phase_rule->before);
     }
 
-    if (phase_rule->after)
+    if(phase_rule->after)
     {
         AXIS2_FREE(env->allocator, phase_rule->after);
     }
 
-    if (phase_rule->name)
+    if(phase_rule->name)
     {
         AXIS2_FREE(env->allocator, phase_rule->name);
     }
@@ -237,23 +236,18 @@ axis2_phase_rule_clone(
     axis2_phase_rule_t *phase_rule_new = NULL;
 
     phase_rule_new = axis2_phase_rule_create(env, NULL);
-    if (!phase_rule_new)
+    if(!phase_rule_new)
         return NULL;
 
-    axis2_phase_rule_set_before(phase_rule_new, env,
-                                axis2_phase_rule_get_before(phase_rule, env));
+    axis2_phase_rule_set_before(phase_rule_new, env, axis2_phase_rule_get_before(phase_rule, env));
 
-    axis2_phase_rule_set_after(phase_rule_new, env,
-                               axis2_phase_rule_get_after(phase_rule, env));
+    axis2_phase_rule_set_after(phase_rule_new, env, axis2_phase_rule_get_after(phase_rule, env));
 
-    axis2_phase_rule_set_name(phase_rule_new, env,
-                              axis2_phase_rule_get_name(phase_rule, env));
+    axis2_phase_rule_set_name(phase_rule_new, env, axis2_phase_rule_get_name(phase_rule, env));
 
-    axis2_phase_rule_set_first(phase_rule_new, env,
-                               axis2_phase_rule_is_first(phase_rule, env));
+    axis2_phase_rule_set_first(phase_rule_new, env, axis2_phase_rule_is_first(phase_rule, env));
 
-    axis2_phase_rule_set_last(phase_rule_new, env,
-                              axis2_phase_rule_is_last(phase_rule, env));
+    axis2_phase_rule_set_last(phase_rule_new, env, axis2_phase_rule_is_last(phase_rule, env));
 
     return phase_rule_new;
 }

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -56,9 +55,9 @@ axis2_msg_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    msg = (axis2_msg_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_msg_t));
+    msg = (axis2_msg_t *)AXIS2_MALLOC(env->allocator, sizeof(axis2_msg_t));
 
-    if (!msg)
+    if(!msg)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -73,23 +72,22 @@ axis2_msg_create(
     msg->base = NULL;
     msg->ref = 1;
 
-    msg->param_container =
-        (axutil_param_container_t *) axutil_param_container_create(env);
-    if (!msg->param_container)
+    msg->param_container = (axutil_param_container_t *)axutil_param_container_create(env);
+    if(!msg->param_container)
     {
         axis2_msg_free(msg, env);
         return NULL;
     }
 
     msg->flow = axutil_array_list_create(env, 0);
-    if (!msg->flow)
+    if(!msg->flow)
     {
         axis2_msg_free(msg, env);
         return NULL;
     }
 
     msg->base = axis2_desc_create(env);
-    if (!msg->base)
+    if(!msg->base)
     {
         axis2_msg_free(msg, env);
         return NULL;
@@ -105,54 +103,53 @@ axis2_msg_free(
 {
     AXIS2_ENV_CHECK(env, void);
 
-    if (--(msg->ref) > 0)
+    if(--(msg->ref) > 0)
     {
         return;
     }
 
-    if (msg->flow)
+    if(msg->flow)
     {
-        int i = 0,
-            size = 0;
+        int i = 0, size = 0;
         size = axutil_array_list_size(msg->flow, env);
-        for (i = 0; i < size; i++)
+        for(i = 0; i < size; i++)
         {
             axis2_phase_t *phase = NULL;
             phase = axutil_array_list_get(msg->flow, env, i);
-            if (phase)
+            if(phase)
                 axis2_phase_free(phase, env);
         }
         axutil_array_list_free(msg->flow, env);
     }
 
-    if (msg->name)
+    if(msg->name)
     {
         AXIS2_FREE(env->allocator, msg->name);
     }
 
-    if (msg->element_qname)
+    if(msg->element_qname)
     {
         axutil_qname_free(msg->element_qname, env);
     }
 
-    if (msg->direction)
+    if(msg->direction)
     {
         AXIS2_FREE(env->allocator, msg->direction);
     }
 
-    if (msg->param_container)
+    if(msg->param_container)
     {
         axutil_param_container_free(msg->param_container, env);
     }
 
-    if (msg->base)
+    if(msg->base)
     {
         axis2_desc_free(msg->base, env);
     }
 
     msg->parent = NULL;
 
-    if (msg)
+    if(msg)
     {
         AXIS2_FREE(env->allocator, msg);
     }
@@ -172,15 +169,12 @@ axis2_msg_add_param(
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FALSE);
 
     param_name = axutil_param_get_name(param, env);
-    if (AXIS2_TRUE == axis2_msg_is_param_locked(msg, env, param_name))
+    if(AXIS2_TRUE == axis2_msg_is_param_locked(msg, env, param_name))
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
-                        AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    return axutil_param_container_add_param(msg->param_container, env,
-                                            param);
+    return axutil_param_container_add_param(msg->param_container, env, param);
 }
 
 AXIS2_EXTERN axutil_param_t *AXIS2_CALL
@@ -191,8 +185,7 @@ axis2_msg_get_param(
 {
     AXIS2_PARAM_CHECK(env->error, param_name, NULL);
 
-    return axutil_param_container_get_param(msg->param_container, env,
-                                            param_name);
+    return axutil_param_container_get_param(msg->param_container, env, param_name);
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
@@ -213,7 +206,7 @@ axis2_msg_set_parent(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     msg->parent = op;
-    if (op)
+    if(op)
     {
         axis2_desc_set_parent(msg->base, env, axis2_op_get_base(op, env));
     }
@@ -251,11 +244,11 @@ axis2_msg_is_param_locked(
 
     /* checking the locked status in parent */
     parent_l = axis2_msg_get_parent(msg, env);
-    if (parent_l)
+    if(parent_l)
     {
         locked = axis2_op_is_param_locked(parent_l, env, param_name);
     }
-    if (AXIS2_TRUE == locked)
+    if(AXIS2_TRUE == locked)
     {
         return AXIS2_TRUE;
     }
@@ -273,12 +266,12 @@ axis2_msg_set_flow(
     axutil_array_list_t * flow)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (msg->flow)
+    if(msg->flow)
     {
         axutil_array_list_free(msg->flow, env);
         msg->flow = NULL;
     }
-    if (flow)
+    if(flow)
     {
         msg->flow = flow;
     }
@@ -301,16 +294,16 @@ axis2_msg_set_direction(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (msg->direction)
+    if(msg->direction)
     {
         AXIS2_FREE(env->allocator, msg->direction);
         msg->direction = NULL;
     }
 
-    if (direction)
+    if(direction)
     {
         msg->direction = axutil_strdup(env, direction);
-        if (!(msg->direction))
+        if(!(msg->direction))
         {
             return AXIS2_FAILURE;
         }
@@ -335,17 +328,16 @@ axis2_msg_set_element_qname(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (msg->element_qname)
+    if(msg->element_qname)
     {
         axutil_qname_free(msg->element_qname, env);
         msg->element_qname = NULL;
     }
 
-    if (element_qname)
+    if(element_qname)
     {
-        msg->element_qname =
-            axutil_qname_clone((axutil_qname_t *) element_qname, env);
-        if (!(msg->element_qname))
+        msg->element_qname = axutil_qname_clone((axutil_qname_t *)element_qname, env);
+        if(!(msg->element_qname))
         {
             return AXIS2_FAILURE;
         }
@@ -370,16 +362,16 @@ axis2_msg_set_name(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (msg->name)
+    if(msg->name)
     {
         AXIS2_FREE(env->allocator, msg->name);
         msg->name = NULL;
     }
 
-    if (name)
+    if(name)
     {
         msg->name = axutil_strdup(env, name);
-        if (!(msg->name))
+        if(!(msg->name))
         {
             return AXIS2_FAILURE;
         }

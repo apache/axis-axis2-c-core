@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -62,10 +61,9 @@ axis2_listener_manager_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    listener_manager =
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_listener_manager_t));
+    listener_manager = AXIS2_MALLOC(env->allocator, sizeof(axis2_listener_manager_t));
 
-    if (!listener_manager)
+    if(!listener_manager)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create listener manager.");
@@ -74,7 +72,7 @@ axis2_listener_manager_create(
 
     listener_manager->conf_ctx = NULL;
 
-    for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
+    for(i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
         listener_manager->listener_map[i] = NULL;
     }
@@ -93,14 +91,14 @@ axis2_listener_manager_make_sure_started(
 
     AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
 
-    if (listener_manager->conf_ctx)
+    if(listener_manager->conf_ctx)
     {
-        if (conf_ctx != listener_manager->conf_ctx)
+        if(conf_ctx != listener_manager->conf_ctx)
         {
-            AXIS2_ERROR_SET(env->error,
-                            AXIS2_ERROR_CLIENT_SIDE_SUPPORT_ONLY_ONE_CONF_CTX,
-                            AXIS2_FAILURE);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Only one configuration context is supported at client side.");
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CLIENT_SIDE_SUPPORT_ONLY_ONE_CONF_CTX,
+                AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Only one configuration context is supported at client side.");
             return AXIS2_FAILURE;
         }
     }
@@ -111,7 +109,7 @@ axis2_listener_manager_make_sure_started(
 
     tl_state = listener_manager->listener_map[transport];
 
-    if (!tl_state)
+    if(!tl_state)
     {
         /*means this transport not yet started, start the transport */
         axis2_transport_in_desc_t *transport_in = NULL;
@@ -119,23 +117,23 @@ axis2_listener_manager_make_sure_started(
         axis2_transport_receiver_t *listener = NULL;
 
         conf = axis2_conf_ctx_get_conf(conf_ctx, env);
-        if (conf)
+        if(conf)
         {
             transport_in = axis2_conf_get_transport_in(conf, env, transport);
-            if (transport_in)
+            if(transport_in)
             {
                 listener = axis2_transport_in_desc_get_recv(transport_in, env);
-                if (listener)
+                if(listener)
                 {
                     axutil_thread_t *worker_thread = NULL;
                     axis2_listener_manager_worker_func_args_t *arg_list = NULL;
                     arg_list = AXIS2_MALLOC(env->allocator,
-                                            sizeof
-                                            (axis2_listener_manager_worker_func_args_t));
-                    if (!arg_list)
+                        sizeof(axis2_listener_manager_worker_func_args_t));
+                    if(!arg_list)
                     {
                         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create listener manager worker function arguments.");
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "No memory. Cannot create listener manager worker function arguments.");
                         return AXIS2_FAILURE;
                     }
                     arg_list->env = env;
@@ -145,43 +143,41 @@ axis2_listener_manager_make_sure_started(
                     if (env->thread_pool)
                     {
                         worker_thread =
-                            axutil_thread_pool_get_thread(env->thread_pool,
-                                                          axis2_listener_manager_worker_func,
-                                                          (void *) arg_list);
+                        axutil_thread_pool_get_thread(env->thread_pool,
+                            axis2_listener_manager_worker_func,
+                            (void *) arg_list);
                         if (!worker_thread)
                         {
                             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                                            "Thread creation failed"
-                                            "Invoke non blocking failed");
+                                "Thread creation failed"
+                                "Invoke non blocking failed");
                         }
                         else
                         {
                             axutil_thread_pool_thread_detach(env->thread_pool,
-                                                             worker_thread);
+                                worker_thread);
                         }
                     }
                     else
                     {
                         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                                        "Thread pool not set in environment."
-                                        " Cannot invoke call non blocking");
+                            "Thread pool not set in environment."
+                            " Cannot invoke call non blocking");
                     }
 #else
-                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                                    "Threading not enabled."
-                                    " Cannot start separate listener");
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Threading not enabled."
+                        " Cannot start separate listener");
                     return AXIS2_FAILURE;
 #endif
 
                     tl_state = AXIS2_MALLOC(env->allocator,
-                                            sizeof
-                                            (axis2_transport_listener_state_t));
+                        sizeof(axis2_transport_listener_state_t));
 
-                    if (!tl_state)
+                    if(!tl_state)
                     {
-                        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
-                                        AXIS2_FAILURE);
-                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create transport listener state.");
+                        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "No memory. Cannot create transport listener state.");
                     }
                     else
                     {
@@ -194,7 +190,7 @@ axis2_listener_manager_make_sure_started(
         }
     }
 
-    if (tl_state)
+    if(tl_state)
     {
         tl_state->waiting_calls++;
         return AXIS2_SUCCESS;
@@ -214,13 +210,13 @@ axis2_listener_manager_stop(
 
     tl_state = listener_manager->listener_map[transport];
 
-    if (tl_state)
+    if(tl_state)
     {
         tl_state->waiting_calls--;
-        if (tl_state->waiting_calls == 0)
+        if(tl_state->waiting_calls == 0)
         {
             status = axis2_transport_receiver_stop(tl_state->listener, env);
-            if (status == AXIS2_SUCCESS)
+            if(status == AXIS2_SUCCESS)
                 listener_manager->listener_map[transport] = NULL;
         }
     }
@@ -238,10 +234,9 @@ axis2_listener_manager_get_reply_to_epr(
     axis2_transport_listener_state_t *tl_state = NULL;
 
     tl_state = listener_manager->listener_map[transport];
-    if (tl_state)
+    if(tl_state)
     {
-        return axis2_transport_receiver_get_reply_to_epr(tl_state->listener,
-                                                         env, svc_name);
+        return axis2_transport_receiver_get_reply_to_epr(tl_state->listener, env, svc_name);
     }
     return NULL;
 }
@@ -253,9 +248,9 @@ axis2_listener_manager_free(
 {
     int i = 0;
 
-    for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
+    for(i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
-        if (listener_manager->listener_map[i])
+        if(listener_manager->listener_map[i])
             AXIS2_FREE(env->allocator, listener_manager->listener_map[i]);
     }
 
@@ -278,15 +273,15 @@ axis2_listener_manager_worker_func(
     axis2_listener_manager_worker_func_args_t *args_list = NULL;
     const axutil_env_t *th_env = NULL;
 
-    args_list = (axis2_listener_manager_worker_func_args_t *) data;
-    if (!args_list)
+    args_list = (axis2_listener_manager_worker_func_args_t *)data;
+    if(!args_list)
         return NULL;
 
     th_env = axutil_init_thread_env(args_list->env);
     /* Start the protocol server. For examlle if protocol is http axis2_http_server_start function
      * of the axis2_http_receiver is called.
      */
-    if (args_list->listener)
+    if(args_list->listener)
     {
         axis2_transport_receiver_start(args_list->listener, th_env);
     }

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -49,7 +48,7 @@ axis2_svc_ctx_create(
     axis2_svc_ctx_t *svc_ctx = NULL;
 
     svc_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_ctx_t));
-    if (!svc_ctx)
+    if(!svc_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -62,24 +61,23 @@ axis2_svc_ctx_create(
     svc_ctx->svc_qname = NULL;
 
     svc_ctx->base = axis2_ctx_create(env);
-    if (!(svc_ctx->base))
+    if(!(svc_ctx->base))
     {
         axis2_svc_ctx_free(svc_ctx, env);
         return NULL;
     }
 
-    if (svc)
+    if(svc)
     {
         svc_ctx->svc = svc;
-        svc_ctx->svc_qname = (axutil_qname_t *) axis2_svc_get_qname(svc, env);
-        if (svc_ctx->svc_qname)
+        svc_ctx->svc_qname = (axutil_qname_t *)axis2_svc_get_qname(svc, env);
+        if(svc_ctx->svc_qname)
         {
-            svc_ctx->svc_id =
-                axutil_qname_get_localpart(svc_ctx->svc_qname, env);
+            svc_ctx->svc_id = axutil_qname_get_localpart(svc_ctx->svc_qname, env);
         }
     }
 
-    if (svc_grp_ctx)
+    if(svc_grp_ctx)
     {
         svc_ctx->parent = svc_grp_ctx;
     }
@@ -118,7 +116,7 @@ axis2_svc_ctx_free(
     struct axis2_svc_ctx *svc_ctx,
     const axutil_env_t * env)
 {
-    if (svc_ctx->base)
+    if(svc_ctx->base)
     {
         axis2_ctx_free(svc_ctx->base, env);
     }
@@ -133,10 +131,9 @@ axis2_svc_ctx_init(
     const axutil_env_t * env,
     axis2_conf_t * conf)
 {
-    if (svc_ctx->svc_qname)
+    if(svc_ctx->svc_qname)
     {
-        axis2_char_t *svc_name =
-            axutil_qname_get_localpart(svc_ctx->svc_qname, env);
+        axis2_char_t *svc_name = axutil_qname_get_localpart(svc_ctx->svc_qname, env);
         svc_ctx->svc = axis2_conf_get_svc(conf, env, svc_name);
     }
 
@@ -168,8 +165,8 @@ axis2_svc_ctx_set_svc(
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
 
     svc_ctx->svc = svc;
-    svc_ctx->svc_qname = (axutil_qname_t *) axis2_svc_get_qname(svc, env);
-    if (svc_ctx->svc_qname)
+    svc_ctx->svc_qname = (axutil_qname_t *)axis2_svc_get_qname(svc, env);
+    if(svc_ctx->svc_qname)
     {
         svc_ctx->svc_id = axutil_qname_get_localpart(svc_ctx->svc_qname, env);
     }
@@ -192,7 +189,7 @@ axis2_svc_ctx_create_op_ctx(
 {
     axis2_op_t *op = NULL;
 
-    if (svc_ctx->svc)
+    if(svc_ctx->svc)
     {
         op = axis2_svc_get_op_with_qname(svc_ctx->svc, env, qname);
         return axis2_op_ctx_create(env, op, svc_ctx);

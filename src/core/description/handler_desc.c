@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -51,7 +50,7 @@ axis2_handler_desc_create(
     axis2_handler_desc_t *handler_desc = NULL;
 
     handler_desc = AXIS2_MALLOC(env->allocator, sizeof(axis2_handler_desc_t));
-    if (!handler_desc)
+    if(!handler_desc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
@@ -66,7 +65,7 @@ axis2_handler_desc_create(
     handler_desc->parent = NULL;
 
     handler_desc->param_container = axutil_param_container_create(env);
-    if (!handler_desc->param_container)
+    if(!handler_desc->param_container)
     {
 
         /** error code is already set by last param container create */
@@ -75,7 +74,7 @@ axis2_handler_desc_create(
     }
 
     handler_desc->rules = axis2_phase_rule_create(env, NULL);
-    if (!handler_desc->rules)
+    if(!handler_desc->rules)
     {
 
         /** error code is already set by last param container create */
@@ -83,7 +82,7 @@ axis2_handler_desc_create(
         return NULL;
     }
 
-    if (name)
+    if(name)
     {
         handler_desc->name = axutil_string_clone(name, env);
     }
@@ -105,13 +104,13 @@ axis2_handler_desc_set_name(
     const axutil_env_t * env,
     axutil_string_t * name)
 {
-    if (handler_desc->name)
+    if(handler_desc->name)
     {
         axutil_string_free(handler_desc->name, env);
         handler_desc->name = NULL;
     }
 
-    if (name)
+    if(name)
     {
         handler_desc->name = axutil_string_clone(name, env);
     }
@@ -133,20 +132,19 @@ axis2_handler_desc_set_rules(
     const axutil_env_t * env,
     axis2_phase_rule_t * phase_rule)
 {
-    const axutil_string_t *str_name = axis2_handler_desc_get_name(handler_desc, 
-        env);
+    const axutil_string_t *str_name = axis2_handler_desc_get_name(handler_desc, env);
     const axis2_char_t *name = axutil_string_get_buffer(str_name, env);
-    if (handler_desc->rules)
+    if(handler_desc->rules)
     {
         axis2_phase_rule_free(handler_desc->rules, env);
     }
 
-    if (phase_rule)
+    if(phase_rule)
     {
         handler_desc->rules = axis2_phase_rule_clone(phase_rule, env);
-        if (!(handler_desc->rules))
+        if(!(handler_desc->rules))
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                 "Phase rule cloning failed for handler description %s", name);
             return AXIS2_FAILURE;
         }
@@ -161,8 +159,7 @@ axis2_handler_desc_get_param(
     const axutil_env_t * env,
     const axis2_char_t * name)
 {
-    return axutil_param_container_get_param(handler_desc->param_container, env,
-                                            name);
+    return axutil_param_container_get_param(handler_desc->param_container, env, name);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -171,23 +168,18 @@ axis2_handler_desc_add_param(
     const axutil_env_t * env,
     axutil_param_t * param)
 {
-    const axutil_string_t *str_name = axis2_handler_desc_get_name(handler_desc, 
-        env);
+    const axutil_string_t *str_name = axis2_handler_desc_get_name(handler_desc, env);
     const axis2_char_t *name = axutil_string_get_buffer(str_name, env);
     axis2_char_t *param_name = axutil_param_get_name(param, env);
-    if (axutil_param_container_is_param_locked(handler_desc->parent, env, 
-        param_name))
+    if(axutil_param_container_is_param_locked(handler_desc->parent, env, param_name))
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
-                        AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Parameter %s is locked for handler %s", param_name, name);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Parameter %s is locked for handler %s",
+            param_name, name);
         return AXIS2_FAILURE;
     }
 
-    return axutil_param_container_add_param(handler_desc->param_container,
-                                            env, param);
+    return axutil_param_container_add_param(handler_desc->param_container, env, param);
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
@@ -195,8 +187,7 @@ axis2_handler_desc_get_all_params(
     const axis2_handler_desc_t * handler_desc,
     const axutil_env_t * env)
 {
-    return axutil_param_container_get_params(handler_desc->param_container,
-                                             env);
+    return axutil_param_container_get_params(handler_desc->param_container, env);
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -206,14 +197,12 @@ axis2_handler_desc_is_param_locked(
     const axis2_char_t * param_name)
 {
     /* See if it is locked in parent */
-    if (axutil_param_container_is_param_locked(handler_desc->parent, env,
-                                               param_name))
+    if(axutil_param_container_is_param_locked(handler_desc->parent, env, param_name))
     {
         return AXIS2_TRUE;
     }
 
-    return axutil_param_container_is_param_locked(handler_desc->param_container,
-                                                  env, param_name);
+    return axutil_param_container_is_param_locked(handler_desc->param_container, env, param_name);
 }
 
 AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
@@ -231,16 +220,16 @@ axis2_handler_desc_set_handler(
     axis2_handler_t * handler)
 {
     /* Handler description is the place where the handler really lives.
-       Hence this is a deep copy and should be freed by the free function. */
+     Hence this is a deep copy and should be freed by the free function. */
 
-    if (handler_desc->handler && (handler_desc->handler != handler))
+    if(handler_desc->handler && (handler_desc->handler != handler))
     {
         axis2_handler_free(handler_desc->handler, env);
     }
 
-    if (handler)
-        handler_desc->handler = handler;    /* Shallow copy, but free method
-                                               should free this */
+    if(handler)
+        handler_desc->handler = handler; /* Shallow copy, but free method
+         should free this */
 
     return AXIS2_SUCCESS;
 }
@@ -259,15 +248,15 @@ axis2_handler_desc_set_class_name(
     const axutil_env_t * env,
     const axis2_char_t * class_name)
 {
-    if (handler_desc->class_name)
+    if(handler_desc->class_name)
     {
         AXIS2_FREE(env->allocator, handler_desc->class_name);
     }
 
-    if (class_name)
+    if(class_name)
     {
         handler_desc->class_name = axutil_strdup(env, class_name);
-        if (!handler_desc->class_name)
+        if(!handler_desc->class_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
@@ -292,8 +281,8 @@ axis2_handler_desc_set_parent(
     const axutil_env_t * env,
     axutil_param_container_t * parent)
 {
-    handler_desc->parent = parent;  /* Shallow copy, because
-                                       the parent lives somewhere else */
+    handler_desc->parent = parent; /* Shallow copy, because
+     the parent lives somewhere else */
     return AXIS2_SUCCESS;
 }
 
@@ -302,31 +291,31 @@ axis2_handler_desc_free(
     axis2_handler_desc_t * handler_desc,
     const axutil_env_t * env)
 {
-    if (handler_desc->param_container)
+    if(handler_desc->param_container)
     {
         axutil_param_container_free(handler_desc->param_container, env);
     }
 
-    if (handler_desc->name)
+    if(handler_desc->name)
     {
         axutil_string_free(handler_desc->name, env);
     }
 
-    if (handler_desc->rules)
+    if(handler_desc->rules)
     {
         axis2_phase_rule_free(handler_desc->rules, env);
     }
 
-    if (handler_desc->handler)
+    if(handler_desc->handler)
     {
         axis2_handler_free(handler_desc->handler, env);
     }
 
-    if (handler_desc->class_name)
+    if(handler_desc->class_name)
     {
         AXIS2_FREE(env->allocator, handler_desc->class_name);
     }
-    if (handler_desc)
+    if(handler_desc)
     {
         AXIS2_FREE(env->allocator, handler_desc);
     }

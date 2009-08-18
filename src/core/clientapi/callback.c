@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -44,10 +43,12 @@ struct axis2_callback
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-     axis2_status_t(
-    AXIS2_CALL * on_complete) (
-    axis2_callback_t * callback,
-    const axutil_env_t * env);
+    axis2_status_t
+    (
+        AXIS2_CALL * on_complete)
+    (
+        axis2_callback_t * callback,
+        const axutil_env_t * env);
 
     /**
      * This function is called by report_error.
@@ -58,11 +59,12 @@ struct axis2_callback
      * @param exception error code representing the error
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-     axis2_status_t(
-    AXIS2_CALL * on_error) (
-    axis2_callback_t * callback,
-    const axutil_env_t * env,
-    const int exception);
+    axis2_status_t
+    (
+        AXIS2_CALL * on_error)
+( axis2_callback_t * callback,
+const axutil_env_t * env,
+const int exception);
 };
 
 static axis2_status_t AXIS2_CALL axis2_callback_on_complete(
@@ -83,7 +85,7 @@ axis2_callback_create(
     AXIS2_ENV_CHECK(env, NULL);
 
     callback = AXIS2_MALLOC(env->allocator, sizeof(axis2_callback_t));
-    if (!callback)
+    if(!callback)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create callback.");
@@ -98,8 +100,7 @@ axis2_callback_create(
     callback->on_complete = axis2_callback_on_complete;
     callback->on_error = axis2_callback_on_error;
 
-    callback->mutex = axutil_thread_mutex_create(env->allocator,
-                                                 AXIS2_THREAD_MUTEX_DEFAULT);
+    callback->mutex = axutil_thread_mutex_create(env->allocator, AXIS2_THREAD_MUTEX_DEFAULT);
     return callback;
 }
 
@@ -111,8 +112,7 @@ axis2_callback_invoke_on_complete(
 {
     axis2_status_t status = AXIS2_FAILURE;
 
-    axis2_callback_set_envelope(callback, env,
-                                axis2_async_result_get_envelope(result, env));
+    axis2_callback_set_envelope(callback, env, axis2_async_result_get_envelope(result, env));
     status = callback->on_complete(callback, env);
 
     return status;
@@ -187,7 +187,7 @@ axis2_callback_free(
     axis2_callback_t * callback,
     const axutil_env_t * env)
 {
-    if (callback->mutex)
+    if(callback->mutex)
     {
         axutil_thread_mutex_destroy(callback->mutex);
     }
@@ -200,7 +200,7 @@ axis2_callback_set_data(
     axis2_callback_t * callback,
     void *data)
 {
-    callback->data = (void *) data;
+    callback->data = (void *)data;
 
     return AXIS2_SUCCESS;
 }

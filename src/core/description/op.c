@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -54,9 +53,9 @@ axis2_op_create(
     axis2_op_t *op = NULL;
     axis2_msg_t *msg = NULL;
 
-    op = (axis2_op_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_op_t));
+    op = (axis2_op_t *)AXIS2_MALLOC(env->allocator, sizeof(axis2_op_t));
 
-    if (!op)
+    if(!op)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "");
@@ -79,30 +78,27 @@ axis2_op_create(
     op->rest_http_location = NULL;
     op->style = axutil_strdup(env, AXIS2_STYLE_DOC);
 
-    op->param_container = (axutil_param_container_t *)
-        axutil_param_container_create(env);
-    if (!op->param_container)
+    op->param_container = (axutil_param_container_t *)axutil_param_container_create(env);
+    if(!op->param_container)
     {
         axis2_op_free(op, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Param container creation failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Param container creation failed");
         return NULL;
     }
 
     op->base = axis2_desc_create(env);
-    if (!op->base)
+    if(!op->base)
     {
         axis2_op_free(op, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Operation base creation failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Operation base creation failed");
         return NULL;
     }
 
     /* Create and set up children messages */
     msg = axis2_msg_create(env);
-    if (!msg)
+    if(!msg)
     {
         axis2_op_free(op, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -114,7 +110,7 @@ axis2_op_create(
     axis2_op_add_msg(op, env, AXIS2_MSG_IN, msg);
 
     msg = axis2_msg_create(env);
-    if (!msg)
+    if(!msg)
     {
         axis2_op_free(op, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -126,7 +122,7 @@ axis2_op_create(
     axis2_op_add_msg(op, env, AXIS2_MSG_OUT, msg);
 
     msg = axis2_msg_create(env);
-    if (!msg)
+    if(!msg)
     {
         axis2_op_free(op, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -138,7 +134,7 @@ axis2_op_create(
     axis2_op_add_msg(op, env, AXIS2_MSG_IN_FAULT, msg);
 
     msg = axis2_msg_create(env);
-    if (!msg)
+    if(!msg)
     {
         axis2_op_free(op, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -149,8 +145,7 @@ axis2_op_create(
     axis2_msg_set_flow(msg, env, NULL);
     axis2_op_add_msg(op, env, AXIS2_MSG_OUT_FAULT, msg);
 
-    axis2_op_set_msg_exchange_pattern(op, env,
-                                      (axis2_char_t *) AXIS2_MEP_URI_IN_OUT);
+    axis2_op_set_msg_exchange_pattern(op, env, (axis2_char_t *)AXIS2_MEP_URI_IN_OUT);
 
     return op;
 }
@@ -161,7 +156,7 @@ axis2_op_create_from_module(
 {
     axis2_op_t *op = NULL;
 
-    op = (axis2_op_t *) axis2_op_create(env);
+    op = (axis2_op_t *)axis2_op_create(env);
     op->from_module = AXIS2_TRUE;
     return op;
 }
@@ -176,23 +171,21 @@ axis2_op_create_with_qname(
 
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
-    op = (axis2_op_t *) axis2_op_create(env);
+    op = (axis2_op_t *)axis2_op_create(env);
 
-    if (!op)
+    if(!op)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Operation creation failed for %s", 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Operation creation failed for %s",
             axutil_qname_get_localpart(qname, env));
         return NULL;
     }
 
     status = axis2_op_set_qname(op, env, qname);
-    if (AXIS2_SUCCESS != status)
+    if(AXIS2_SUCCESS != status)
     {
         axis2_op_free(op, env);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Setting name failed for operation %s", 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Setting name failed for operation %s",
             axutil_qname_get_localpart(qname, env));
         return NULL;
     }
@@ -205,81 +198,80 @@ axis2_op_free(
     axis2_op_t * op,
     const axutil_env_t * env)
 {
-    if (op->base)
+    if(op->base)
     {
         axis2_desc_free(op->base, env);
     }
-    if (op->param_container)
+    if(op->param_container)
     {
         axutil_param_container_free(op->param_container, env);
     }
 
     op->parent = NULL;
 
-    if (op->msg_recv)
+    if(op->msg_recv)
     {
         axis2_msg_recv_free(op->msg_recv, env);
     }
-    if (op->module_qnames)
+    if(op->module_qnames)
     {
         int i = 0;
-        for (i = 0; i < axutil_array_list_size(op->module_qnames, env); i++)
+        for(i = 0; i < axutil_array_list_size(op->module_qnames, env); i++)
         {
             axutil_qname_t *module_ref = NULL;
             module_ref = axutil_array_list_get(op->module_qnames, env, i);
 
-            if (module_ref)
+            if(module_ref)
             {
                 axutil_qname_free(module_ref, env);
             }
         }
         axutil_array_list_free(op->module_qnames, env);
     }
-    if (op->engaged_module_list)
+    if(op->engaged_module_list)
     {
         axutil_array_list_free(op->engaged_module_list, env);
     }
-    if (op->wsamapping_list)
+    if(op->wsamapping_list)
     {
         int i = 0;
         int size = 0;
         size = axutil_array_list_size(op->wsamapping_list, env);
         for(i = 0; i < size; i++)
         {
-            axis2_char_t *temp_str = axutil_array_list_get(op->wsamapping_list, 
-                env, i);
+            axis2_char_t *temp_str = axutil_array_list_get(op->wsamapping_list, env, i);
             if(temp_str)
                 AXIS2_FREE(env->allocator, temp_str);
         }
         axutil_array_list_free(op->wsamapping_list, env);
     }
 
-    if (op->qname)
+    if(op->qname)
     {
         axutil_qname_free(op->qname, env);
     }
 
-    if (op->msg_exchange_pattern)
+    if(op->msg_exchange_pattern)
     {
         AXIS2_FREE(env->allocator, op->msg_exchange_pattern);
     }
 
-    if (op->style)
+    if(op->style)
     {
         AXIS2_FREE(env->allocator, op->style);
     }
 
-    if (op->rest_http_method)
+    if(op->rest_http_method)
     {
         AXIS2_FREE(env->allocator, op->rest_http_method);
     }
 
-    if (op->rest_http_location)
+    if(op->rest_http_location)
     {
         AXIS2_FREE(env->allocator, op->rest_http_location);
     }
 
-    if (op)
+    if(op)
     {
         AXIS2_FREE(env->allocator, op);
     }
@@ -294,7 +286,7 @@ axis2_op_free_void_arg(
 {
     axis2_op_t *op_l = NULL;
 
-    op_l = (axis2_op_t *) op;
+    op_l = (axis2_op_t *)op;
     axis2_op_free(op_l, env);
     return;
 }
@@ -311,18 +303,16 @@ axis2_op_add_param(
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FALSE);
 
     param_name = axutil_param_get_name(param, env);
-    if (AXIS2_TRUE == axis2_op_is_param_locked(op, env, param_name))
+    if(AXIS2_TRUE == axis2_op_is_param_locked(op, env, param_name))
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Parameter %s is locked, cannot override", param_name);
-        AXIS2_ERROR_SET(env->error,
-            AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Parameter %s is locked, cannot override",
+            param_name);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     else
     {
-        status = axutil_param_container_add_param(op->param_container, env,
-                                                  param);
+        status = axutil_param_container_add_param(op->param_container, env, param);
     }
 
     return status;
@@ -338,9 +328,8 @@ axis2_op_get_param(
 
     AXIS2_PARAM_CHECK(env->error, param_name, NULL);
 
-    param =
-        axutil_param_container_get_param(op->param_container, env, param_name);
-    if (!param && op->parent)
+    param = axutil_param_container_get_param(op->param_container, env, param_name);
+    if(!param && op->parent)
     {
         param = axis2_svc_get_param(op->parent, env, param_name);
     }
@@ -369,11 +358,11 @@ axis2_op_is_param_locked(
 
     /* Checking the locked value of parent */
     parent = axis2_op_get_parent(op, env);
-    if (parent)
+    if(parent)
     {
         locked = axis2_svc_is_param_locked(parent, env, param_name);
     }
-    if (locked)
+    if(locked)
     {
         return AXIS2_TRUE;
     }
@@ -389,12 +378,12 @@ axis2_op_set_rest_http_method(
 {
     AXIS2_PARAM_CHECK(env->error, rest_http_method, AXIS2_FAILURE);
 
-    if (op->rest_http_method)
+    if(op->rest_http_method)
     {
         AXIS2_FREE(env->allocator, op->rest_http_method);
     }
     op->rest_http_method = NULL;
-    if (rest_http_method)
+    if(rest_http_method)
     {
         op->rest_http_method = axutil_strdup(env, rest_http_method);
         return AXIS2_SUCCESS;
@@ -407,11 +396,11 @@ axis2_op_get_rest_http_method(
     const axis2_op_t * op,
     const axutil_env_t * env)
 {
-    if (!op)
+    if(!op)
     {
         return NULL;
     }
-    if (op->rest_http_method)
+    if(op->rest_http_method)
     {
         return op->rest_http_method;
     }
@@ -421,11 +410,11 @@ axis2_op_get_rest_http_method(
 
         param = axis2_op_get_param(op, env, AXIS2_DEFAULT_REST_HTTP_METHOD);
 
-        if (!param)
+        if(!param)
         {
             return "POST"; /* Added hard-coded string to avoid inclusion of HTTP
-                            * Transport header
-                            */
+             * Transport header
+             */
         }
         return (axis2_char_t *)axutil_param_get_value(param, env);
     }
@@ -440,18 +429,18 @@ axis2_op_set_rest_http_location(
     axis2_char_t *opname = NULL;
     AXIS2_PARAM_CHECK(env->error, rest_http_location, AXIS2_FAILURE);
     opname = axutil_qname_get_localpart(axis2_op_get_qname(op, env), env);
-    if (op->rest_http_location)
+    if(op->rest_http_location)
     {
         AXIS2_FREE(env->allocator, op->rest_http_location);
     }
     op->rest_http_location = NULL;
-    if (rest_http_location)
+    if(rest_http_location)
     {
         op->rest_http_location = axutil_strdup(env, rest_http_location);
         return AXIS2_SUCCESS;
     }
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-        "Setting rest http location failed for operation %s", opname);
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Setting rest http location failed for operation %s",
+        opname);
     return AXIS2_FAILURE;
 }
 
@@ -460,10 +449,10 @@ axis2_op_get_rest_http_location(
     const axis2_op_t * op,
     const axutil_env_t * env)
 {
-    if (!op)
+    if(!op)
     {
         return NULL;
-    } 
+    }
     return op->rest_http_location;
 }
 
@@ -475,12 +464,12 @@ axis2_op_set_parent(
 {
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
 
-    if (op->parent)
+    if(op->parent)
     {
         op->parent = NULL;
     }
     op->parent = svc;
-    if (svc)
+    if(svc)
     {
         axis2_desc_set_parent(op->base, env, axis2_svc_get_base(svc, env));
     }
@@ -503,11 +492,11 @@ axis2_op_set_msg_recv(
 {
     AXIS2_PARAM_CHECK(env->error, msg_recv, AXIS2_FAILURE);
 
-    if (op->msg_recv == msg_recv)
+    if(op->msg_recv == msg_recv)
     {
         return AXIS2_SUCCESS;
     }
-    if (op->msg_recv)
+    if(op->msg_recv)
     {
         axis2_msg_recv_free(op->msg_recv, env);
         op->msg_recv = NULL;
@@ -531,15 +520,15 @@ axis2_op_set_qname(
     const axutil_env_t * env,
     const axutil_qname_t * qname)
 {
-    if (op->qname)
+    if(op->qname)
     {
         axutil_qname_free(op->qname, env);
         op->qname = NULL;
     }
 
-    if (qname)
+    if(qname)
     {
-        op->qname = axutil_qname_clone((axutil_qname_t *) qname, env);
+        op->qname = axutil_qname_clone((axutil_qname_t *)qname, env);
     }
 
     return AXIS2_SUCCESS;
@@ -550,7 +539,7 @@ axis2_op_get_qname(
     void *op,
     const axutil_env_t * env)
 {
-    return ((axis2_op_t *) op)->qname;
+    return ((axis2_op_t *)op)->qname;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -561,7 +550,7 @@ axis2_op_set_msg_exchange_pattern(
 {
     AXIS2_PARAM_CHECK(env->error, pattern, AXIS2_FAILURE);
 
-    if (op->msg_exchange_pattern)
+    if(op->msg_exchange_pattern)
     {
         AXIS2_FREE(env->allocator, op->msg_exchange_pattern);
         op->msg_exchange_pattern = NULL;
@@ -595,7 +584,7 @@ axis2_op_set_style(
 {
     AXIS2_PARAM_CHECK(env->error, style, AXIS2_FAILURE);
 
-    if (op->style)
+    if(op->style)
     {
         AXIS2_FREE(env->allocator, op->style);
         op->style = NULL;
@@ -625,32 +614,30 @@ axis2_op_engage_module(
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
     opname = axutil_qname_get_localpart(axis2_op_get_qname(op, env), env);
     collection_module = op->engaged_module_list;
-    if (collection_module)
+    if(collection_module)
     {
         size = axutil_array_list_size(collection_module, env);
     }
-    for (index = 0; index < size; index++)
+    for(index = 0; index < size; index++)
     {
         const axutil_qname_t *qname1 = NULL;
         const axutil_qname_t *qname2 = NULL;
 
-        module_desc =
-            (axis2_module_desc_t *) axutil_array_list_get(collection_module,
-                                                          env, index);
-        if (!module_desc)
+        module_desc = (axis2_module_desc_t *)axutil_array_list_get(collection_module, env, index);
+        if(!module_desc)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Retrieving a module failed from operation %s engaged module"\
-                " list", opname);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Retrieving a module failed from operation %s engaged module"
+                    " list", opname);
             return AXIS2_FAILURE;
         }
         qname1 = axis2_module_desc_get_qname(module_desc, env);
         qname2 = axis2_module_desc_get_qname(moduleref, env);
         modname = axutil_qname_get_localpart(qname2, env);
-        if (axutil_qname_equals(qname1, env, qname2))
+        if(axutil_qname_equals(qname1, env, qname2))
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Module %s already engaged to operation %s", modname, opname);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Module %s already engaged to operation %s",
+                modname, opname);
 
             need_to_add = AXIS2_FALSE;
             return AXIS2_FAILURE;
@@ -658,22 +645,22 @@ axis2_op_engage_module(
 
     }
     pr = axis2_phase_resolver_create_with_config(env, conf);
-    if (pr)
+    if(pr)
     {
         axis2_module_t *module = NULL;
         axis2_status_t status = AXIS2_FAILURE;
 
         status = axis2_phase_resolver_engage_module_to_op(pr, env, op, moduleref);
-        if (AXIS2_SUCCESS != status)
+        if(AXIS2_SUCCESS != status)
         {
             /* Ignore the status */
             AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_SUCCESS);
-            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, 
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
                 "Engaging module %s to operaion %s failed. But ignore this.", modname, opname);
         }
         module = axis2_module_desc_get_module(moduleref, env);
 
-        if (need_to_add)
+        if(need_to_add)
         {
             axutil_array_list_add(collection_module, env, moduleref);
         }
@@ -699,24 +686,22 @@ axis2_op_add_to_engaged_module_list(
 
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
 
-    if (!op->engaged_module_list)
+    if(!op->engaged_module_list)
     {
         op->engaged_module_list = axutil_array_list_create(env, 0);
     }
     size = axutil_array_list_size(op->engaged_module_list, env);
 
     module_qname = axis2_module_desc_get_qname(module_desc, env);
-    for (index = 0; index < size; index++)
+    for(index = 0; index < size; index++)
     {
         const axutil_qname_t *module_qname_l = NULL;
 
-        module_desc_l =
-            (axis2_module_desc_t *) axutil_array_list_get(op->
-                                                          engaged_module_list,
-                                                          env, index);
+        module_desc_l = (axis2_module_desc_t *)axutil_array_list_get(op-> engaged_module_list, env,
+            index);
         module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
 
-        if (axutil_qname_equals(module_qname, env, module_qname_l))
+        if(axutil_qname_equals(module_qname, env, module_qname_l))
         {
             return AXIS2_SUCCESS;
         }
@@ -743,17 +728,15 @@ axis2_op_remove_from_engaged_module_list(
     size = axutil_array_list_size(op->engaged_module_list, env);
 
     module_qname = axis2_module_desc_get_qname(module_desc, env);
-    for (index = 0; index < size; index++)
+    for(index = 0; index < size; index++)
     {
         const axutil_qname_t *module_qname_l = NULL;
 
-        module_desc_l =
-            (axis2_module_desc_t *) axutil_array_list_get(op->
-                                                          engaged_module_list,
-                                                          env, index);
+        module_desc_l = (axis2_module_desc_t *)axutil_array_list_get(op-> engaged_module_list, env,
+            index);
         module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
 
-        if (axutil_qname_equals(module_qname, env, module_qname_l))
+        if(axutil_qname_equals(module_qname, env, module_qname_l))
         {
             axutil_array_list_remove(op->engaged_module_list, env, index);
             return AXIS2_SUCCESS;
@@ -780,62 +763,58 @@ axis2_op_get_axis_specific_mep_const(
     axis2_char_t *opname = NULL;
 
     opname = axutil_qname_get_localpart(axis2_op_get_qname(op, env), env);
-    if (op->mep != AXIS2_MEP_CONSTANT_INVALID)
+    if(op->mep != AXIS2_MEP_CONSTANT_INVALID)
     {
         return op->mep;
     }
 
     temp = AXIS2_MEP_CONSTANT_INVALID;
 
-    if (axutil_strcmp(AXIS2_MEP_URI_IN_OUT,
-                      axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+    if(axutil_strcmp(AXIS2_MEP_URI_IN_OUT, axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_IN_OUT;
     }
-    else if (axutil_strcmp(AXIS2_MEP_URI_IN_ONLY,
-                           axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+    else if(axutil_strcmp(AXIS2_MEP_URI_IN_ONLY, axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_IN_ONLY;
     }
-    else if (axutil_strcmp(AXIS2_MEP_URI_IN_OPTIONAL_OUT,
-                           axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+    else if(axutil_strcmp(AXIS2_MEP_URI_IN_OPTIONAL_OUT, axis2_op_get_msg_exchange_pattern(op, env))
+        == 0)
     {
         temp = AXIS2_MEP_CONSTANT_IN_OPTIONAL_OUT;
     }
-    else if (axutil_strcmp(AXIS2_MEP_URI_OUT_IN,
-                           axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+    else if(axutil_strcmp(AXIS2_MEP_URI_OUT_IN, axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_OUT_IN;
     }
-    else if (axutil_strcmp(AXIS2_MEP_URI_OUT_ONLY,
-                           axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+    else if(axutil_strcmp(AXIS2_MEP_URI_OUT_ONLY, axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_OUT_ONLY;
     }
-    else if (axutil_strcmp(AXIS2_MEP_URI_OUT_OPTIONAL_IN,
-                           axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+    else if(axutil_strcmp(AXIS2_MEP_URI_OUT_OPTIONAL_IN, axis2_op_get_msg_exchange_pattern(op, env))
+        == 0)
     {
         temp = AXIS2_MEP_CONSTANT_OUT_OPTIONAL_IN;
     }
-    else if (axutil_strcmp(AXIS2_MEP_URI_ROBUST_IN_ONLY,
-                           axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+    else if(axutil_strcmp(AXIS2_MEP_URI_ROBUST_IN_ONLY, axis2_op_get_msg_exchange_pattern(op, env))
+        == 0)
     {
         temp = AXIS2_MEP_CONSTANT_ROBUST_IN_ONLY;
     }
-    else if (axutil_strcmp(AXIS2_MEP_URI_ROBUST_OUT_ONLY,
-                           axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+    else if(axutil_strcmp(AXIS2_MEP_URI_ROBUST_OUT_ONLY, axis2_op_get_msg_exchange_pattern(op, env))
+        == 0)
     {
         temp = AXIS2_MEP_CONSTANT_ROBUST_OUT_ONLY;
     }
 
-    if (temp == AXIS2_MEP_CONSTANT_INVALID)
+    if(temp == AXIS2_MEP_CONSTANT_INVALID)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Could not map the MEP URI %s to an Axis2/C MEP constant value "\
-            "in retrieving MEP for operation %s", 
-                axis2_op_get_msg_exchange_pattern(op, env), opname);
-        AXIS2_ERROR_SET(env->error,
-            AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Could not map the MEP URI %s to an Axis2/C MEP constant value "
+                "in retrieving MEP for operation %s", axis2_op_get_msg_exchange_pattern(op, env),
+            opname);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT,
+            AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     op->mep = temp;
@@ -848,11 +827,11 @@ axis2_op_get_fault_in_flow(
     const axis2_op_t * op,
     const axutil_env_t * env)
 {
-    if (op->base)
+    if(op->base)
     {
         axis2_msg_t *msg = NULL;
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_IN_FAULT);
-        if (msg)
+        if(msg)
         {
             return axis2_msg_get_flow(msg, env);
         }
@@ -865,11 +844,11 @@ axis2_op_get_fault_out_flow(
     const axis2_op_t * op,
     const axutil_env_t * env)
 {
-    if (op->base)
+    if(op->base)
     {
         axis2_msg_t *msg = NULL;
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_OUT_FAULT);
-        if (msg)
+        if(msg)
         {
             return axis2_msg_get_flow(msg, env);
         }
@@ -882,11 +861,11 @@ axis2_op_get_out_flow(
     const axis2_op_t * op,
     const axutil_env_t * env)
 {
-    if (op->base)
+    if(op->base)
     {
         axis2_msg_t *msg = NULL;
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_OUT);
-        if (msg)
+        if(msg)
         {
             return axis2_msg_get_flow(msg, env);
         }
@@ -899,11 +878,11 @@ axis2_op_get_in_flow(
     const axis2_op_t * op,
     const axutil_env_t * env)
 {
-    if (op->base)
+    if(op->base)
     {
         axis2_msg_t *msg = NULL;
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_IN);
-        if (msg)
+        if(msg)
         {
             return axis2_msg_get_flow(msg, env);
         }
@@ -919,11 +898,11 @@ axis2_op_set_fault_in_flow(
 {
     AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
 
-    if (op->base)
+    if(op->base)
     {
         axis2_msg_t *msg = NULL;
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_IN_FAULT);
-        if (msg)
+        if(msg)
         {
             return axis2_msg_set_flow(msg, env, list);
         }
@@ -938,11 +917,11 @@ axis2_op_set_fault_out_flow(
     axutil_array_list_t * list)
 {
     AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
-    if (op->base)
+    if(op->base)
     {
         axis2_msg_t *msg = NULL;
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_OUT_FAULT);
-        if (msg)
+        if(msg)
         {
             return axis2_msg_set_flow(msg, env, list);
         }
@@ -958,11 +937,11 @@ axis2_op_set_out_flow(
 {
     AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
 
-    if (op->base)
+    if(op->base)
     {
         axis2_msg_t *msg = NULL;
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_OUT);
-        if (msg)
+        if(msg)
         {
             return axis2_msg_set_flow(msg, env, list);
         }
@@ -979,11 +958,11 @@ axis2_op_set_in_flow(
 {
     AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
 
-    if (op->base)
+    if(op->base)
     {
         axis2_msg_t *msg = NULL;
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_IN);
-        if (msg)
+        if(msg)
         {
             return axis2_msg_set_flow(msg, env, list);
         }
@@ -1000,7 +979,7 @@ axis2_op_add_module_qname(
     axutil_qname_t *module_qname_l = NULL;
 
     AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
-    module_qname_l = axutil_qname_clone((axutil_qname_t *) module_qname, env);
+    module_qname_l = axutil_qname_clone((axutil_qname_t *)module_qname, env);
 
     return axutil_array_list_add(op->module_qnames, env, module_qname_l);
 }
@@ -1027,16 +1006,16 @@ axis2_op_find_op_ctx(
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     AXIS2_PARAM_CHECK(env->error, svc_ctx, NULL);
-    
+
     opname = axutil_qname_get_localpart(axis2_op_get_qname(op, env), env);
     relates_to = axis2_msg_ctx_get_relates_to(msg_ctx, env);
-    if (!relates_to)
+    if(!relates_to)
     {
         op_ctx = axis2_op_ctx_create(env, op, svc_ctx);
-        if (!op_ctx)
+        if(!op_ctx)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                 "Creating operation context failed for operation %s", opname);
             return NULL;
         }
@@ -1049,18 +1028,17 @@ axis2_op_find_op_ctx(
         conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
         value = axis2_relates_to_get_value(relates_to, env);
         op_ctx = axis2_conf_ctx_get_op_ctx(conf_ctx, env, value);
-        if (!op_ctx)
+        if(!op_ctx)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                 "Cannot correlate message to %s for operation %s", value, opname);
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG,
-                AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG, AXIS2_FAILURE);
             return NULL;
         }
     }
 
     status = axis2_op_register_op_ctx(op, env, msg_ctx, op_ctx);
-    if (AXIS2_FAILURE == status)
+    if(AXIS2_FAILURE == status)
     {
         axis2_op_ctx_free(op_ctx, env);
         return NULL;
@@ -1085,13 +1063,13 @@ axis2_op_find_existing_op_ctx(
 
     opname = axutil_qname_get_localpart(axis2_op_get_qname(op, env), env);
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-    if (op_ctx)
+    if(op_ctx)
     {
         return op_ctx;
     }
 
     relates_to = axis2_msg_ctx_get_relates_to(msg_ctx, env);
-    if (!relates_to)
+    if(!relates_to)
     {
         return NULL;
     }
@@ -1103,12 +1081,11 @@ axis2_op_find_existing_op_ctx(
         value = axis2_relates_to_get_value(relates_to, env);
         op_ctx = axis2_conf_ctx_get_op_ctx(conf_ctx, env, value);
 
-        if (!op_ctx)
+        if(!op_ctx)
         {
             AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
                 "Cannot correlate message to %s for operation %s", value, opname);
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG,
-                AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG, AXIS2_FAILURE);
             return NULL;
         }
     }
@@ -1134,35 +1111,35 @@ axis2_op_register_op_ctx(
 
     opname = axutil_qname_get_localpart(axis2_op_get_qname(op, env), env);
     conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
-    if (!conf_ctx)
+    if(!conf_ctx)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Configuration context not found for message context while "\
-            "registering operation context for operation %s", opname);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Configuration context not found for message context while "
+                "registering operation context for operation %s", opname);
         return AXIS2_FAILURE;
     }
 
     status = axis2_msg_ctx_set_op_ctx(msg_ctx, env, op_ctx);
 
-    if (AXIS2_SUCCESS != status)
+    if(AXIS2_SUCCESS != status)
     {
         axutil_hash_t *op_ctx_map = NULL;
 
         msg_id = axis2_msg_ctx_get_msg_id(msg_ctx, env);
-        if (msg_id)
+        if(msg_id)
         {
-            op_ctx_map = (axutil_hash_t *) axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
+            op_ctx_map = (axutil_hash_t *)axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
             axutil_hash_set(op_ctx_map, msg_id, AXIS2_HASH_KEY_STRING, NULL);
         }
         else
         {
-            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, 
-                "Message id not found for message context while registering operation context "\
-                "for operation %s. The reason could be that there is no addressing enabled for "\
-                "communication", opname);
+            AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
+                "Message id not found for message context while registering operation context "
+                    "for operation %s. The reason could be that there is no addressing enabled for "
+                    "communication", opname);
         }
     }
-    if (axis2_op_ctx_get_is_complete(op_ctx, env))
+    if(axis2_op_ctx_get_is_complete(op_ctx, env))
     {
         axis2_op_ctx_cleanup(op_ctx, env);
     }
@@ -1179,7 +1156,7 @@ axis2_op_add_msg_ctx_in_only(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_ctx, AXIS2_FAILURE);
 
-    if (!axis2_op_ctx_get_is_complete(op_ctx, env))
+    if(!axis2_op_ctx_get_is_complete(op_ctx, env))
     {
         axis2_msg_ctx_t **msg_ctxs = NULL;
         msg_ctxs = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
@@ -1188,12 +1165,11 @@ axis2_op_add_msg_ctx_in_only(
     }
     else
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Invalid message; adding operation context for the "\
-            "operation :%s is already completed", 
-            axutil_qname_get_localpart(axis2_op_get_qname(op, env), env));
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
-                        AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Invalid message; adding operation context for the "
+                "operation :%s is already completed", axutil_qname_get_localpart(
+                axis2_op_get_qname(op, env), env));
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
@@ -1210,7 +1186,7 @@ axis2_op_add_msg_ctx_out_only(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_ctx, AXIS2_FAILURE);
 
-    if (!axis2_op_ctx_get_is_complete(op_ctx, env))
+    if(!axis2_op_ctx_get_is_complete(op_ctx, env))
     {
         axis2_msg_ctx_t **msg_ctxs = NULL;
         msg_ctxs = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
@@ -1219,12 +1195,11 @@ axis2_op_add_msg_ctx_out_only(
     }
     else
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Invalid message; adding operation context for the "\
-            "operation :%s is already completed", 
-            axutil_qname_get_localpart(axis2_op_get_qname(op, env), env));
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
-            AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Invalid message; adding operation context for the "
+                "operation :%s is already completed", axutil_qname_get_localpart(
+                axis2_op_get_qname(op, env), env));
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
@@ -1249,17 +1224,16 @@ axis2_op_add_msg_ctx_in_out(
     in_msg_ctx = mep[AXIS2_WSDL_MESSAGE_LABEL_IN];
     out_msg_ctx = mep[AXIS2_WSDL_MESSAGE_LABEL_OUT];
 
-    if (in_msg_ctx && out_msg_ctx)
+    if(in_msg_ctx && out_msg_ctx)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Invalid message; adding operation context for the "\
-            "operation :%s is invalid", 
-            axutil_qname_get_localpart(axis2_op_get_qname(op, env), env));
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
-            AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Invalid message; adding operation context for the "
+                "operation :%s is invalid", axutil_qname_get_localpart(axis2_op_get_qname(op, env),
+                env));
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    if (!in_msg_ctx)
+    if(!in_msg_ctx)
     {
         mep[AXIS2_WSDL_MESSAGE_LABEL_IN] = msg_ctx;
     }
@@ -1288,17 +1262,16 @@ axis2_op_add_msg_ctx_out_in(
     mep = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
     in_msg_ctx = mep[AXIS2_WSDL_MESSAGE_LABEL_IN];
     out_msg_ctx = mep[AXIS2_WSDL_MESSAGE_LABEL_OUT];
-    if (in_msg_ctx && out_msg_ctx)
+    if(in_msg_ctx && out_msg_ctx)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Invalid message; adding operation context for the "\
-            "operation :%s is invalid", 
-            axutil_qname_get_localpart(axis2_op_get_qname(op, env), env));
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
-            AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Invalid message; adding operation context for the "
+                "operation :%s is invalid", axutil_qname_get_localpart(axis2_op_get_qname(op, env),
+                env));
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    if (!out_msg_ctx)
+    if(!out_msg_ctx)
     {
         mep[AXIS2_WSDL_MESSAGE_LABEL_OUT] = msg_ctx;
     }
@@ -1318,7 +1291,7 @@ axis2_op_get_msg(
 {
     AXIS2_PARAM_CHECK(env->error, label, NULL);
 
-    return (axis2_msg_t *) axis2_desc_get_child(op->base, env, label);
+    return (axis2_msg_t *)axis2_desc_get_child(op->base, env, label);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -1349,15 +1322,14 @@ axis2_op_set_wsamapping_list(
 {
     AXIS2_PARAM_CHECK(env->error, mapping_list, AXIS2_FAILURE);
 
-    if (op->wsamapping_list)
+    if(op->wsamapping_list)
     {
         int i = 0;
         int size = 0;
         size = axutil_array_list_size(op->wsamapping_list, env);
         for(i = 0; i < size; i++)
         {
-            axis2_char_t *temp_str = axutil_array_list_get(op->wsamapping_list, 
-                env, i);
+            axis2_char_t *temp_str = axutil_array_list_get(op->wsamapping_list, env, i);
             if(temp_str)
                 AXIS2_FREE(env->allocator, temp_str);
         }

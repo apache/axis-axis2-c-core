@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -33,12 +32,12 @@ typedef struct iis_stream_impl
     LPEXTENSION_CONTROL_BLOCK lpECB;
     unsigned int cur_pos;
     void *cur_position;
-}
-iis_stream_impl_t;
+} iis_stream_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(stream) ((iis_stream_impl_t *)(stream))
 
-axutil_stream_type_t AXIS2_CALL iis_stream_get_type(
+axutil_stream_type_t AXIS2_CALL
+iis_stream_get_type(
     axutil_stream_t * stream,
     const axutil_env_t * env);
 
@@ -72,11 +71,9 @@ axutil_stream_create_iis(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, lpECB, NULL);
 
-    stream_impl =
-        (iis_stream_impl_t *) AXIS2_MALLOC(env->allocator,
-                                           sizeof(iis_stream_impl_t));
+    stream_impl = (iis_stream_impl_t *)AXIS2_MALLOC(env->allocator, sizeof(iis_stream_impl_t));
 
-    if (!stream_impl)
+    if(!stream_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -103,25 +100,24 @@ iis_stream_read(
     void *temp_buff = NULL;
     unsigned int data_to_read = 0;
     DWORD ret_val = TRUE;
-    DWORD read_bytes = (DWORD) count;
+    DWORD read_bytes = (DWORD)count;
     iis_stream_impl_t *stream_impl = NULL;
     char *temp = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
-    stream_impl = (iis_stream_impl_t *) stream;
-    
-    if (stream_impl->cur_pos == 0)
+    stream_impl = (iis_stream_impl_t *)stream;
+
+    if(stream_impl->cur_pos == 0)
         stream_impl->cur_position = stream_impl->lpECB->lpbData;
 
     /* If this is the case all the bytes are in the lpECB->lpbData buffer*/
-    if (stream_impl->lpECB->cbAvailable == stream_impl->lpECB->cbTotalBytes)
+    if(stream_impl->lpECB->cbAvailable == stream_impl->lpECB->cbTotalBytes)
     {
         /* Cannot read more than in the buffer.*/
-        if (count + stream_impl->cur_pos <= stream_impl->lpECB->cbAvailable)
-            data_to_read = (unsigned) count;
+        if(count + stream_impl->cur_pos <= stream_impl->lpECB->cbAvailable)
+            data_to_read = (unsigned)count;
         else
-            data_to_read =
-                stream_impl->lpECB->cbTotalBytes - stream_impl->cur_pos;
+            data_to_read = stream_impl->lpECB->cbTotalBytes - stream_impl->cur_pos;
 
         memcpy(buffer, stream_impl->cur_position, data_to_read);
         temp = (char *)(stream_impl->cur_position);
@@ -131,48 +127,41 @@ iis_stream_read(
         stream_impl->cur_pos += data_to_read;
         read_bytes = data_to_read;
     }
-    else if (stream_impl->lpECB->cbAvailable == -1)
+    else if(stream_impl->lpECB->cbAvailable == -1)
     {
-        ret_val =
-            stream_impl->lpECB->ReadClient(stream_impl->lpECB->ConnID, buffer,
-                                           &read_bytes);
+        ret_val = stream_impl->lpECB->ReadClient(stream_impl->lpECB->ConnID, buffer, &read_bytes);
     }
-    else if (stream_impl->lpECB->cbAvailable < stream_impl->lpECB->cbTotalBytes)
+    else if(stream_impl->lpECB->cbAvailable < stream_impl->lpECB->cbTotalBytes)
     {
-        if (stream_impl->cur_pos > stream_impl->lpECB->cbAvailable)
+        if(stream_impl->cur_pos > stream_impl->lpECB->cbAvailable)
         {
-            ret_val =
-                stream_impl->lpECB->ReadClient(stream_impl->lpECB->ConnID,
-                                               buffer, &read_bytes);
+            ret_val = stream_impl->lpECB->ReadClient(stream_impl->lpECB->ConnID, buffer,
+                &read_bytes);
         }
-        else if (stream_impl->cur_pos + count > stream_impl->lpECB->cbAvailable
-                 && stream_impl->cur_pos < stream_impl->lpECB->cbAvailable)
+        else if(stream_impl->cur_pos + count > stream_impl->lpECB->cbAvailable
+            && stream_impl->cur_pos < stream_impl->lpECB->cbAvailable)
         {
             int read_length = 0;
-            if (count + stream_impl->cur_pos <= stream_impl->lpECB->cbAvailable)
-                read_length = (unsigned) count;
+            if(count + stream_impl->cur_pos <= stream_impl->lpECB->cbAvailable)
+                read_length = (unsigned)count;
             else
-                read_length = 
-                    stream_impl->lpECB->cbTotalBytes - stream_impl->cur_pos;
-            data_to_read =
-                stream_impl->lpECB->cbAvailable - stream_impl->cur_pos;
+                read_length = stream_impl->lpECB->cbTotalBytes - stream_impl->cur_pos;
+            data_to_read = stream_impl->lpECB->cbAvailable - stream_impl->cur_pos;
             memcpy(buffer, stream_impl->cur_position, data_to_read);
-            
-            read_bytes =
-                stream_impl->cur_pos + read_length - stream_impl->lpECB->cbAvailable;
+
+            read_bytes = stream_impl->cur_pos + read_length - stream_impl->lpECB->cbAvailable;
             temp_buff = malloc(read_bytes);
 
-            if (temp_buff == NULL)
+            if(temp_buff == NULL)
                 return data_to_read;
-            ret_val =
-                stream_impl->lpECB->ReadClient(stream_impl->lpECB->ConnID,
-                                               temp_buff, &read_bytes);
-            memcpy(((char *) buffer + data_to_read), temp_buff, read_bytes);
+            ret_val = stream_impl->lpECB->ReadClient(stream_impl->lpECB->ConnID, temp_buff,
+                &read_bytes);
+            memcpy(((char *)buffer + data_to_read), temp_buff, read_bytes);
             read_bytes += data_to_read;
             temp = (char *)(stream_impl->cur_position);
             temp += read_bytes;
             stream_impl->cur_position = temp;
-            stream_impl->cur_pos += (unsigned) read_bytes;
+            stream_impl->cur_pos += (unsigned)read_bytes;
         }
         else
         {
@@ -181,11 +170,11 @@ iis_stream_read(
             temp += count;
             stream_impl->cur_position = temp;
             temp = NULL;
-            stream_impl->cur_pos += (unsigned) count;
-            read_bytes = (int) count;
+            stream_impl->cur_pos += (unsigned)count;
+            read_bytes = (int)count;
         }
     }
-    if (ret_val == TRUE)
+    if(ret_val == TRUE)
         return read_bytes;
     else
         return -1;
@@ -206,18 +195,17 @@ iis_stream_write(
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, buf, AXIS2_FAILURE);
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    buffer = (axis2_char_t *) buf;
-    bytes_sent = (unsigned) strlen(buffer);
-    
-    if (count <= 0)
+    buffer = (axis2_char_t *)buf;
+    bytes_sent = (unsigned)strlen(buffer);
+
+    if(count <= 0)
     {
-        return (int) count;
+        return (int)count;
     }
     /* assume that buffer is not null terminated */
-    ret_val =
-        stream_impl->lpECB->WriteClient(stream_impl->lpECB->ConnID, buffer,
-                                        &bytes_sent, HSE_IO_SYNC);
-    if (ret_val == TRUE)
+    ret_val = stream_impl->lpECB->WriteClient(stream_impl->lpECB->ConnID, buffer, &bytes_sent,
+        HSE_IO_SYNC);
+    if(ret_val == TRUE)
         return (int)bytes_sent;
     else
         return -1;
@@ -233,22 +221,21 @@ iis_stream_skip(
     iis_stream_impl_t *stream_impl = NULL;
     void *temp_buff = NULL;
     int data_to_read = 0;
-    DWORD read_bytes = (DWORD) count;
+    DWORD read_bytes = (DWORD)count;
     char *temp = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
-    stream_impl = (iis_stream_impl_t *) stream;
+    stream_impl = (iis_stream_impl_t *)stream;
 
-    if (stream_impl->cur_pos == 0)
+    if(stream_impl->cur_pos == 0)
         stream_impl->cur_position = stream_impl->lpECB->lpbData;
 
-    if (stream_impl->lpECB->cbAvailable == stream_impl->lpECB->cbTotalBytes)
+    if(stream_impl->lpECB->cbAvailable == stream_impl->lpECB->cbTotalBytes)
     {
-        if (count + stream_impl->cur_pos <= stream_impl->lpECB->cbAvailable)
+        if(count + stream_impl->cur_pos <= stream_impl->lpECB->cbAvailable)
             data_to_read = count;
         else
-            data_to_read =
-                stream_impl->lpECB->cbAvailable - stream_impl->cur_pos;
+            data_to_read = stream_impl->lpECB->cbAvailable - stream_impl->cur_pos;
 
         temp = (char *)(stream_impl->cur_position);
         temp += data_to_read;
@@ -257,39 +244,34 @@ iis_stream_skip(
         stream_impl->cur_pos += data_to_read;
         read_bytes = data_to_read;
     }
-    else if (stream_impl->lpECB->cbAvailable == -1)
+    else if(stream_impl->lpECB->cbAvailable == -1)
     {
         temp_buff = malloc(read_bytes);
-        ret_val =
-            stream_impl->lpECB->ReadClient(stream_impl->lpECB->ConnID,
-                                           temp_buff, &read_bytes);
+        ret_val
+            = stream_impl->lpECB->ReadClient(stream_impl->lpECB->ConnID, temp_buff, &read_bytes);
         free(temp_buff);
     }
-    else if (stream_impl->lpECB->cbAvailable < stream_impl->lpECB->cbTotalBytes)
+    else if(stream_impl->lpECB->cbAvailable < stream_impl->lpECB->cbTotalBytes)
     {
-        if (stream_impl->cur_pos > stream_impl->lpECB->cbAvailable)
+        if(stream_impl->cur_pos > stream_impl->lpECB->cbAvailable)
         {
             temp_buff = malloc(read_bytes);
-            ret_val =
-                stream_impl->lpECB->ReadClient(stream_impl->lpECB->ConnID,
-                                               temp_buff, &read_bytes);
+            ret_val = stream_impl->lpECB->ReadClient(stream_impl->lpECB->ConnID, temp_buff,
+                &read_bytes);
             free(temp_buff);
         }
-        else if (stream_impl->cur_pos + count > stream_impl->lpECB->cbAvailable
-                 && stream_impl->cur_pos < stream_impl->lpECB->cbAvailable)
+        else if(stream_impl->cur_pos + count > stream_impl->lpECB->cbAvailable
+            && stream_impl->cur_pos < stream_impl->lpECB->cbAvailable)
         {
-            data_to_read =
-                stream_impl->lpECB->cbAvailable - stream_impl->cur_pos;
-            read_bytes =
-                stream_impl->cur_pos + count - stream_impl->lpECB->cbAvailable;
+            data_to_read = stream_impl->lpECB->cbAvailable - stream_impl->cur_pos;
+            read_bytes = stream_impl->cur_pos + count - stream_impl->lpECB->cbAvailable;
             temp_buff = malloc(read_bytes);
 
-            if (temp_buff == NULL)
+            if(temp_buff == NULL)
                 return data_to_read;
 
-            ret_val =
-                stream_impl->lpECB->ReadClient(stream_impl->lpECB->ConnID,
-                                               temp_buff, &read_bytes);
+            ret_val = stream_impl->lpECB->ReadClient(stream_impl->lpECB->ConnID, temp_buff,
+                &read_bytes);
             read_bytes += data_to_read;
             free(temp_buff);
         }
@@ -303,7 +285,7 @@ iis_stream_skip(
             read_bytes = count;
         }
     }
-    if (ret_val == FALSE)
+    if(ret_val == FALSE)
     {
         return -1;
     }

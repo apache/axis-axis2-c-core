@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -48,7 +47,7 @@ axis2_iis_out_transport_info_free(
 
     info = AXIS2_INTF_TO_IMPL(out_transport_info);
 
-    if (info->encoding)
+    if(info->encoding)
     {
         AXIS2_FREE(env->allocator, info->encoding);
         info->encoding = NULL;
@@ -66,7 +65,7 @@ axis2_iis_out_transport_info_free_void_arg(
     axis2_http_out_transport_info_t *transport_info_l = NULL;
 
     AXIS2_ENV_CHECK(env, void);
-    transport_info_l = (axis2_http_out_transport_info_t *) transport_info;
+    transport_info_l = (axis2_http_out_transport_info_t *)transport_info;
     axis2_http_out_transport_info_free(transport_info_l, env);
     return;
 }
@@ -81,10 +80,9 @@ axis2_iis_out_transport_info_set_content_type(
 
     info_impl = AXIS2_INTF_TO_IMPL(info);
     info_impl->content_type[0] = '\0';
-    if (info_impl->encoding)
+    if(info_impl->encoding)
     {
-        sprintf(info_impl->content_type, "%s%s%s", content_type, ";charser:",
-                info_impl->encoding);
+        sprintf(info_impl->content_type, "%s%s%s", content_type, ";charser:", info_impl->encoding);
     }
     else
     {
@@ -105,7 +103,7 @@ axis2_iis_out_transport_info_set_char_encoding(
 
     info_impl = AXIS2_INTF_TO_IMPL(info);
 
-    if (info_impl->encoding)
+    if(info_impl->encoding)
     {
         AXIS2_FREE(env->allocator, info_impl->encoding);
     }
@@ -123,10 +121,10 @@ axis2_iis_out_transport_info_create(
     axis2_http_out_transport_info_t *http_out_info = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    info = (axis2_iis_out_transport_info_t *) AXIS2_MALLOC
-        (env->allocator, sizeof(axis2_iis_out_transport_info_t));
+    info = (axis2_iis_out_transport_info_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(axis2_iis_out_transport_info_t));
 
-    if (!info)
+    if(!info)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -135,13 +133,12 @@ axis2_iis_out_transport_info_create(
 
     http_out_info = &(info->out_transport_info);
 
-    axis2_http_out_transport_info_set_content_type_func(http_out_info,
-                                                        env,
-                                                        axis2_iis_out_transport_info_set_content_type);
+    axis2_http_out_transport_info_set_content_type_func(http_out_info, env,
+        axis2_iis_out_transport_info_set_content_type);
     axis2_http_out_transport_info_set_char_encoding_func(http_out_info, env,
-                                                         axis2_iis_out_transport_info_set_char_encoding);
+        axis2_iis_out_transport_info_set_char_encoding);
     axis2_http_out_transport_info_set_free_func(http_out_info, env,
-                                                axis2_iis_out_transport_info_free);
+        axis2_iis_out_transport_info_free);
 
     return http_out_info;
 }

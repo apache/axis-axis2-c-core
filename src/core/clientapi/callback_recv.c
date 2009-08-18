@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -47,7 +46,7 @@ axis2_callback_recv_create(
 
     callback_recv = AXIS2_MALLOC(env->allocator, sizeof(axis2_callback_recv_t));
 
-    if (!callback_recv)
+    if(!callback_recv)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create callback receive.");
@@ -60,24 +59,22 @@ axis2_callback_recv_create(
     callback_recv->mutex = NULL;
 
     callback_recv->base = axis2_msg_recv_create(env);
-    if (!callback_recv->base)
+    if(!callback_recv->base)
     {
         axis2_callback_recv_free(callback_recv, env);
         return NULL;
     }
     axis2_msg_recv_set_derived(callback_recv->base, env, callback_recv);
-    axis2_msg_recv_set_receive(callback_recv->base, env,
-                               axis2_callback_recv_receive);
+    axis2_msg_recv_set_receive(callback_recv->base, env, axis2_callback_recv_receive);
 
     callback_recv->callback_map = axutil_hash_make(env);
-    if (!callback_recv->callback_map)
+    if(!callback_recv->callback_map)
     {
         axis2_callback_recv_free(callback_recv, env);
         return NULL;
     }
 
-    callback_recv->mutex = axutil_thread_mutex_create(env->allocator,
-                                                      AXIS2_THREAD_MUTEX_DEFAULT);
+    callback_recv->mutex = axutil_thread_mutex_create(env->allocator, AXIS2_THREAD_MUTEX_DEFAULT);
     return callback_recv;
 }
 
@@ -95,34 +92,34 @@ axis2_callback_recv_free(
     axis2_callback_recv_t * callback_recv,
     const axutil_env_t * env)
 {
-    if (callback_recv->mutex)
+    if(callback_recv->mutex)
     {
         axutil_thread_mutex_destroy(callback_recv->mutex);
     }
 
-    if (callback_recv->callback_map)
+    if(callback_recv->callback_map)
     {
         axutil_hash_index_t *hi = NULL;
         const void *key = NULL;
         void *val = NULL;
-        for (hi = axutil_hash_first(callback_recv->callback_map, env); hi;
-             hi = axutil_hash_next(env, hi))
+        for(hi = axutil_hash_first(callback_recv->callback_map, env); hi; hi = axutil_hash_next(
+            env, hi))
         {
             axutil_hash_this(hi, &key, NULL, &val);
-            if (key)
-                AXIS2_FREE(env->allocator, (char *) key);
+            if(key)
+                AXIS2_FREE(env->allocator, (char *)key);
 
         }
 
         axutil_hash_free(callback_recv->callback_map, env);
     }
 
-    if (callback_recv->base && callback_recv->base_deep_copy)
+    if(callback_recv->base && callback_recv->base_deep_copy)
     {
         axis2_msg_recv_free(callback_recv->base, env);
     }
 
-    if (callback_recv)
+    if(callback_recv)
     {
         AXIS2_FREE(env->allocator, callback_recv);
     }
@@ -135,11 +132,10 @@ axis2_callback_recv_add_callback(
     const axis2_char_t * msg_id,
     axis2_callback_t * callback)
 {
-    if (msg_id)
+    if(msg_id)
     {
         axis2_char_t *mid = axutil_strdup(env, msg_id);
-        axutil_hash_set(callback_recv->callback_map,
-                        mid, AXIS2_HASH_KEY_STRING, callback);
+        axutil_hash_set(callback_recv->callback_map, mid, AXIS2_HASH_KEY_STRING, callback);
     }
     return AXIS2_SUCCESS;
 }
@@ -164,23 +160,20 @@ axis2_callback_recv_receive(
     callback_recv = axis2_msg_recv_get_derived(msg_recv, env);
 
     msg_info_headers = axis2_msg_ctx_get_msg_info_headers(msg_ctx, env);
-    if (msg_info_headers)
+    if(msg_info_headers)
     {
-        relates_to =
-            axis2_msg_info_headers_get_relates_to(msg_info_headers, env);
-        if (relates_to)
+        relates_to = axis2_msg_info_headers_get_relates_to(msg_info_headers, env);
+        if(relates_to)
         {
-            const axis2_char_t *msg_id =
-                axis2_relates_to_get_value(relates_to, env);
-            if (msg_id)
+            const axis2_char_t *msg_id = axis2_relates_to_get_value(relates_to, env);
+            if(msg_id)
             {
                 axis2_async_result_t *result = NULL;
-                axis2_callback_t *callback = (axis2_callback_t *)
-                    axutil_hash_get(callback_recv->callback_map, msg_id,
-                                    AXIS2_HASH_KEY_STRING);
+                axis2_callback_t *callback = (axis2_callback_t *)axutil_hash_get(
+                    callback_recv->callback_map, msg_id, AXIS2_HASH_KEY_STRING);
 
                 result = axis2_async_result_create(env, msg_ctx);
-                if (callback && result)
+                if(callback && result)
                 {
                     axis2_callback_invoke_on_complete(callback, env, result);
                     axis2_callback_set_complete(callback, env, AXIS2_TRUE);
@@ -188,7 +181,7 @@ axis2_callback_recv_receive(
                 }
 
                 axis2_async_result_free(result, env);
-                if (callback && result)
+                if(callback && result)
                     return AXIS2_SUCCESS;
             }
         }

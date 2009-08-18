@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -29,8 +28,7 @@
 #include <axiom_soap.h>
 #include <axiom.h>
 
-const axis2_char_t *AXIS2_DISP_CHECKER_NAME =
-    "dispatch_post_conditions_evaluator";
+const axis2_char_t *AXIS2_DISP_CHECKER_NAME = "dispatch_post_conditions_evaluator";
 
 struct axis2_disp_checker
 {
@@ -42,7 +40,8 @@ struct axis2_disp_checker
     axutil_string_t *name;
 };
 
-axis2_status_t AXIS2_CALL axis2_disp_checker_invoke(
+axis2_status_t AXIS2_CALL
+axis2_disp_checker_invoke(
     axis2_handler_t * handler,
     const axutil_env_t * env,
     axis2_msg_ctx_t * msg_ctx);
@@ -55,7 +54,7 @@ axis2_disp_checker_create(
     axis2_handler_desc_t *handler_desc = NULL;
 
     disp_checker = AXIS2_MALLOC(env->allocator, sizeof(axis2_disp_checker_t));
-    if (!disp_checker)
+    if(!disp_checker)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -65,28 +64,25 @@ axis2_disp_checker_create(
     disp_checker->base = NULL;
 
     /* create default name */
-    disp_checker->name = axutil_string_create_const(env,
-                                                    (axis2_char_t **) &
-                                                    AXIS2_DISP_CHECKER_NAME);
+    disp_checker->name = axutil_string_create_const(env, (axis2_char_t **)&AXIS2_DISP_CHECKER_NAME);
 
-    if (!(disp_checker->name))
+    if(!(disp_checker->name))
     {
         axis2_disp_checker_free(disp_checker, env);
         return NULL;
     }
 
     disp_checker->base = axis2_handler_create(env);
-    if (!disp_checker->base)
+    if(!disp_checker->base)
     {
         axis2_disp_checker_free(disp_checker, env);
         return NULL;
     }
-    axis2_handler_set_invoke(disp_checker->base, env,
-                             axis2_disp_checker_invoke);
+    axis2_handler_set_invoke(disp_checker->base, env, axis2_disp_checker_invoke);
 
     /* handler desc of base handler */
     handler_desc = axis2_handler_desc_create(env, disp_checker->name);
-    if (!handler_desc)
+    if(!handler_desc)
     {
         axis2_disp_checker_free(disp_checker, env);
         return NULL;
@@ -118,16 +114,16 @@ axis2_disp_checker_set_name(
     const axutil_env_t * env,
     const axutil_string_t * name)
 {
-    if (disp_checker->name)
+    if(disp_checker->name)
     {
         axutil_string_free(disp_checker->name, env);
         disp_checker->name = NULL;
     }
 
-    if (name)
+    if(name)
     {
-        disp_checker->name = axutil_string_clone((axutil_string_t *) name, env);
-        if (!(disp_checker->name))
+        disp_checker->name = axutil_string_clone((axutil_string_t *)name, env);
+        if(!(disp_checker->name))
             return AXIS2_FAILURE;
     }
 
@@ -139,7 +135,7 @@ axis2_disp_checker_free(
     axis2_disp_checker_t * disp_checker,
     const axutil_env_t * env)
 {
-    if (disp_checker->name)
+    if(disp_checker->name)
     {
         axutil_string_free(disp_checker->name, env);
     }
@@ -173,118 +169,116 @@ axis2_disp_checker_invoke(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     /*if is client side, no point in proceeding */
-    if (!(axis2_msg_ctx_get_server_side(msg_ctx, env)))
+    if(!(axis2_msg_ctx_get_server_side(msg_ctx, env)))
         return AXIS2_SUCCESS;
 
     op = axis2_msg_ctx_get_op(msg_ctx, env);
 
-    if (!op)
+    if(!op)
     {
         op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-        if (op_ctx)
+        if(op_ctx)
         {
             axis2_op_t *op = axis2_op_ctx_get_op(op_ctx, env);
-            if (op)
+            if(op)
                 axis2_msg_ctx_set_op(msg_ctx, env, op);
         }
     }
 
     svc = axis2_msg_ctx_get_svc(msg_ctx, env);
 
-    if (!svc)
+    if(!svc)
     {
         svc_ctx = axis2_msg_ctx_get_svc_ctx(msg_ctx, env);
-        if (svc_ctx)
+        if(svc_ctx)
         {
             axis2_svc_t *tsvc = axis2_svc_ctx_get_svc(svc_ctx, env);
-            if (tsvc)
+            if(tsvc)
                 axis2_msg_ctx_set_svc(msg_ctx, env, tsvc);
         }
     }
     endpoint_ref = axis2_msg_ctx_get_to(msg_ctx, env);
 
-    if (endpoint_ref)
+    if(endpoint_ref)
     {
         address = axis2_endpoint_ref_get_address(endpoint_ref, env);
     }
 
     svc = axis2_msg_ctx_get_svc(msg_ctx, env);
-    if (!svc)
+    if(!svc)
     {
-        AXIS2_LOG_INFO(env->log,
-                       "Service Not found. Endpoint reference is : %s",
-                       (address) ? address : "NULL");
-        if (axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
+        AXIS2_LOG_INFO(env->log, "Service Not found. Endpoint reference is : %s",
+            (address) ? address : "NULL");
+        if(axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
         {
             soap_version = AXIOM_SOAP11;
-            fault_code =
-                AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
-                AXIOM_SOAP11_FAULT_CODE_RECEIVER;
-        }
-        else
-        {
-            fault_code =
-                AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
-                AXIOM_SOAP12_SOAP_FAULT_VALUE_RECEIVER;
-
-        }
-
-        soap_envelope =
-            axiom_soap_envelope_create_default_soap_envelope(env, soap_version);
-        soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
-        soap_fault =
-            axiom_soap_fault_create_default_fault(env, soap_body, fault_code,
-                                                  "Service Not Found",
-                                                  soap_version);
-
-        wsa_action = (axis2_char_t *)axis2_msg_ctx_get_wsa_action (msg_ctx, 
-                                                                   env);
-        sprintf (exception, "Service Not Found, Endpoint referance address is %s and wsa\
- actions is %s", address, wsa_action);
-
-        axiom_soap_fault_set_exception (soap_fault, env, exception);
-        axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, soap_envelope);
-        return AXIS2_FAILURE;
+fault_code        =
+        AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
+        AXIOM_SOAP11_FAULT_CODE_RECEIVER;
     }
-
-    op = axis2_msg_ctx_get_op(msg_ctx, env);
-    if (!op)
+    else
     {
-        AXIS2_LOG_INFO(env->log,
-                       "Operation Not found. Endpoint reference is : %s",
-                       (address) ? address : "NULL");
-        if (axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
-        {
-            soap_version = AXIOM_SOAP11;
-            fault_code =
-                AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
-                AXIOM_SOAP11_FAULT_CODE_RECEIVER;
-        }
-        else
-        {
-            fault_code =
-                AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
-                AXIOM_SOAP12_SOAP_FAULT_VALUE_RECEIVER;
-        }
+        fault_code =
+        AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
+        AXIOM_SOAP12_SOAP_FAULT_VALUE_RECEIVER;
 
+    }
 
-        soap_envelope =
-            axiom_soap_envelope_create_default_soap_envelope(env, soap_version);
-        soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
-        soap_fault =
-            axiom_soap_fault_create_default_fault(env, soap_body, fault_code,
-                                                  "Operation Not Found",
-                                                  soap_version);
+    soap_envelope =
+    axiom_soap_envelope_create_default_soap_envelope(env, soap_version);
+    soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
+    soap_fault =
+    axiom_soap_fault_create_default_fault(env, soap_body, fault_code,
+        "Service Not Found",
+        soap_version);
 
-        wsa_action = (axis2_char_t *)axis2_msg_ctx_get_wsa_action (msg_ctx, 
-                                                                   env);
-        sprintf (exception, "Operation Not Found, Endpoint referance address is %s and wsa\
+    wsa_action = (axis2_char_t *)axis2_msg_ctx_get_wsa_action (msg_ctx,
+        env);
+    sprintf (exception, "Service Not Found, Endpoint referance address is %s and wsa\
  actions is %s", address, wsa_action);
 
-        axiom_soap_fault_set_exception (soap_fault, env, exception);
-        axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, soap_envelope);
-        return AXIS2_FAILURE;
+    axiom_soap_fault_set_exception (soap_fault, env, exception);
+    axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, soap_envelope);
+    return AXIS2_FAILURE;
+}
+
+op = axis2_msg_ctx_get_op(msg_ctx, env);
+if (!op)
+{
+    AXIS2_LOG_INFO(env->log,
+        "Operation Not found. Endpoint reference is : %s",
+        (address) ? address : "NULL");
+    if (axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
+    {
+        soap_version = AXIOM_SOAP11;
+        fault_code =
+        AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
+        AXIOM_SOAP11_FAULT_CODE_RECEIVER;
     }
-    return AXIS2_SUCCESS;
+    else
+    {
+        fault_code =
+        AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
+        AXIOM_SOAP12_SOAP_FAULT_VALUE_RECEIVER;
+    }
+
+    soap_envelope =
+    axiom_soap_envelope_create_default_soap_envelope(env, soap_version);
+    soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
+    soap_fault =
+    axiom_soap_fault_create_default_fault(env, soap_body, fault_code,
+        "Operation Not Found",
+        soap_version);
+
+    wsa_action = (axis2_char_t *)axis2_msg_ctx_get_wsa_action (msg_ctx,
+        env);
+    sprintf (exception, "Operation Not Found, Endpoint referance address is %s and wsa\
+ actions is %s", address, wsa_action);
+
+    axiom_soap_fault_set_exception (soap_fault, env, exception);
+    axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, soap_envelope);
+    return AXIS2_FAILURE;
+}
+return AXIS2_SUCCESS;
 }
 

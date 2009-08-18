@@ -38,18 +38,22 @@ AXIS2_IMPORT extern axis2_char_t *axis2_request_url_prefix;
 #define DEFAULT_REPO_PATH "../"
 
 /***************************** Function headers *******************************/
-axutil_env_t *init_syetem_env(
+axutil_env_t *
+init_syetem_env(
     axutil_allocator_t * allocator,
     const axis2_char_t * log_file);
 
-void system_exit(
+void
+system_exit(
     axutil_env_t * env,
     int status);
 
-void usage(
+void
+usage(
     axis2_char_t * prog_name);
 
-void sig_handler(
+void
+sig_handler(
     int signal);
 
 /***************************** End of function headers ************************/

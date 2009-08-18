@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -28,7 +27,8 @@
 
 const axis2_char_t *AXIS2_REQ_URI_DISP_NAME = "request_uri_based_dispatcher";
 
-axis2_status_t AXIS2_CALL axis2_req_uri_disp_invoke(
+axis2_status_t AXIS2_CALL
+axis2_req_uri_disp_invoke(
     axis2_handler_t * handler,
     const axutil_env_t * env,
     struct axis2_msg_ctx *msg_ctx);
@@ -50,22 +50,19 @@ axis2_req_uri_disp_create(
     axis2_handler_t *handler = NULL;
     axutil_string_t *name = NULL;
 
-    name = axutil_string_create_const(env,
-                                      (axis2_char_t **) &
-                                      AXIS2_REQ_URI_DISP_NAME);
+    name = axutil_string_create_const(env, (axis2_char_t **)&AXIS2_REQ_URI_DISP_NAME);
 
     disp = axis2_disp_create(env, name);
-    if (!disp)
+    if(!disp)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
     handler = axis2_disp_get_base(disp, env);
-    if (!handler)
+    if(!handler)
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -84,47 +81,46 @@ axis2_req_uri_disp_find_svc(
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     axis2_svc_t *svc = NULL;
 
-    if (axis2_msg_ctx_get_doing_rest(msg_ctx, env))
+    if(axis2_msg_ctx_get_doing_rest(msg_ctx, env))
         return NULL;
 
     endpoint_ref = axis2_msg_ctx_get_to(msg_ctx, env);
 
-    if (endpoint_ref)
+    if(endpoint_ref)
     {
         const axis2_char_t *address = NULL;
 
         address = axis2_endpoint_ref_get_address(endpoint_ref, env);
-        if (address)
+        if(address)
         {
             axis2_char_t **url_tokens = NULL;
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                            "Checking for service using target endpoint address : %s",
-                            address);
+                "Checking for service using target endpoint address : %s", address);
 
             url_tokens = axutil_parse_request_url_for_svc_and_op(env, address);
 
-            if (url_tokens)
+            if(url_tokens)
             {
-                if (url_tokens[0])
+                if(url_tokens[0])
                 {
                     axis2_conf_ctx_t *conf_ctx = NULL;
 
                     conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
-                    if (conf_ctx)
+                    if(conf_ctx)
                     {
                         axis2_conf_t *conf = NULL;
                         conf = axis2_conf_ctx_get_conf(conf_ctx, env);
-                        if (conf)
+                        if(conf)
                         {
                             svc = axis2_conf_get_svc(conf, env, url_tokens[0]);
-                            if (svc)
+                            if(svc)
                                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                                                "Service found using target endpoint address");
+                                    "Service found using target endpoint address");
                         }
                     }
                     AXIS2_FREE(env->allocator, url_tokens[0]);
 
-                    if (url_tokens[1])
+                    if(url_tokens[1])
                     {
                         AXIS2_FREE(env->allocator, url_tokens[1]);
                     }
@@ -150,43 +146,44 @@ axis2_req_uri_disp_find_op(
 
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
 
-    if (axis2_msg_ctx_get_doing_rest(msg_ctx, env))
+    if(axis2_msg_ctx_get_doing_rest(msg_ctx, env))
         return NULL;
 
     endpoint_ref = axis2_msg_ctx_get_to(msg_ctx, env);
 
-    if (endpoint_ref)
+    if(endpoint_ref)
     {
         const axis2_char_t *address = NULL;
 
         address = axis2_endpoint_ref_get_address(endpoint_ref, env);
-        if (address)
+        if(address)
         {
             axis2_char_t **url_tokens = NULL;
 
             url_tokens = axutil_parse_request_url_for_svc_and_op(env, address);
 
-            if (url_tokens)
+            if(url_tokens)
             {
-                if (url_tokens[1])
+                if(url_tokens[1])
                 {
                     axutil_qname_t *op_qname = NULL;
-                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                                    "Checking for operation using \
-                             target endpoint uri fragment : %s", url_tokens[1]);
-                    op_qname =
-                        axutil_qname_create(env, url_tokens[1], NULL, NULL);
-                    op = axis2_svc_get_op_with_name(svc, env,
-                                                    axutil_qname_get_localpart
-                                                    (op_qname, env));
+                    AXIS2_LOG_DEBUG(
+                        env->log,
+                        AXIS2_LOG_SI,
+                        "Checking for operation using \
+                             target endpoint uri fragment : %s",
+                        url_tokens[1]);
+                    op_qname = axutil_qname_create(env, url_tokens[1], NULL, NULL);
+                    op = axis2_svc_get_op_with_name(svc, env, axutil_qname_get_localpart(op_qname,
+                        env));
                     axutil_qname_free(op_qname, env);
-                    if (op)
+                    if(op)
                         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                                        "Operation found using target endpoint uri fragment");
+                            "Operation found using target endpoint uri fragment");
                 }
-                if (url_tokens[0])
+                if(url_tokens[0])
                     AXIS2_FREE(env->allocator, url_tokens[0]);
-                if (url_tokens[1])
+                if(url_tokens[1])
                     AXIS2_FREE(env->allocator, url_tokens[1]);
                 AXIS2_FREE(env->allocator, url_tokens);
             }

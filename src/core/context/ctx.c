@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -39,7 +38,7 @@ axis2_ctx_create(
     AXIS2_ENV_CHECK(env, NULL);
 
     ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_ctx_t));
-    if (!ctx)
+    if(!ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -49,7 +48,7 @@ axis2_ctx_create(
 
     ctx->property_map = axutil_hash_make(env);
     ctx->property_map_deep_copy = AXIS2_TRUE;
-    if (!(ctx->property_map))
+    if(!(ctx->property_map))
     {
         axis2_ctx_free(ctx, env);
         return NULL;
@@ -67,24 +66,23 @@ axis2_ctx_set_property(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (value)
+    if(value)
     {
         /* handle the case where we are setting a new value with the 
-           same key, we would have to free the existing value */
-        axutil_property_t *temp_value = axutil_hash_get(ctx->property_map,
-                                                        key,
-                                                        AXIS2_HASH_KEY_STRING);
-        if (temp_value)
+         same key, we would have to free the existing value */
+        axutil_property_t *temp_value = axutil_hash_get(ctx->property_map, key,
+            AXIS2_HASH_KEY_STRING);
+        if(temp_value)
         {
             void *temp_value_value = axutil_property_get_value(temp_value, env);
             void *value_value = axutil_property_get_value(value, env);
-            if (temp_value_value != value_value)
+            if(temp_value_value != value_value)
             {
                 axutil_property_free(temp_value, env);
             }
         }
     }
-    if (ctx->property_map)
+    if(ctx->property_map)
     {
         axutil_hash_set(ctx->property_map, key, AXIS2_HASH_KEY_STRING, value);
     }
@@ -100,15 +98,15 @@ axis2_ctx_get_property(
 {
     axutil_property_t *ret = NULL;
 
-    if (ctx->property_map)
+    if(ctx->property_map)
     {
         ret = axutil_hash_get(ctx->property_map, key, AXIS2_HASH_KEY_STRING);
     }
 
     /** it is the responsibility of the caller to look-up parent if key is not found here
-        Note that in C implementation it is the responsibility of the deriving struct to 
-        handle the parent as we do not have the inheritance facility. In case of 
-        context it is not worth trying to mimic inheritance. */
+     Note that in C implementation it is the responsibility of the deriving struct to
+     handle the parent as we do not have the inheritance facility. In case of
+     context it is not worth trying to mimic inheritance. */
 
     return ret;
 }
@@ -136,20 +134,19 @@ axis2_ctx_free(
 {
     AXIS2_ENV_CHECK(env, void);
 
-    if (ctx->property_map && ctx->property_map_deep_copy)
+    if(ctx->property_map && ctx->property_map_deep_copy)
     {
         axutil_hash_index_t *hi = NULL;
         void *val = NULL;
         const void *key = NULL;
-        for (hi = axutil_hash_first(ctx->property_map, env);
-             hi; hi = axutil_hash_next(env, hi))
+        for(hi = axutil_hash_first(ctx->property_map, env); hi; hi = axutil_hash_next(env, hi))
         {
             axutil_property_t *property = NULL;
 
             axutil_hash_this(hi, &key, NULL, &val);
-            property = (axutil_property_t *) val;
+            property = (axutil_property_t *)val;
 
-            if (property)
+            if(property)
             {
                 axutil_property_free(property, env);
             }
@@ -170,25 +167,24 @@ axis2_ctx_set_property_map(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (ctx->property_map && ctx->property_map_deep_copy)
+    if(ctx->property_map && ctx->property_map_deep_copy)
     {
         axutil_hash_index_t *hi = NULL;
         void *val = NULL;
         const void *key = NULL;
-        for (hi = axutil_hash_first(ctx->property_map, env);
-             hi; hi = axutil_hash_next(env, hi))
+        for(hi = axutil_hash_first(ctx->property_map, env); hi; hi = axutil_hash_next(env, hi))
         {
             axutil_property_t *property = NULL;
 
             axutil_hash_this(hi, &key, NULL, &val);
-            property = (axutil_property_t *) val;
+            property = (axutil_property_t *)val;
 
-            if (property)
+            if(property)
             {
                 axutil_property_free(property, env);
             }
         }
-        if (ctx->property_map != map)   /* handle repeated invocation case */
+        if(ctx->property_map != map) /* handle repeated invocation case */
         {
             axutil_hash_free(ctx->property_map, env);
         }

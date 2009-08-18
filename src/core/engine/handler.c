@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -36,11 +35,10 @@ struct axis2_handler
      * @param msg_ctx pointer to message context
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-     axis2_status_t(
-    AXIS2_CALL * invoke) (
-    axis2_handler_t * handler,
-    const axutil_env_t * env,
-    struct axis2_msg_ctx * msg_ctx);
+    axis2_status_t(AXIS2_CALL * invoke)(
+        axis2_handler_t * handler,
+        const axutil_env_t * env,
+        struct axis2_msg_ctx * msg_ctx);
 };
 
 AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
@@ -50,7 +48,7 @@ axis2_handler_create(
     axis2_handler_t *handler = NULL;
 
     handler = AXIS2_MALLOC(env->allocator, sizeof(axis2_handler_t));
-    if (!handler)
+    if(!handler)
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
         AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
@@ -76,7 +74,7 @@ axis2_handler_get_name(
     const axis2_handler_t * handler,
     const axutil_env_t * env)
 {
-    if (!(handler->handler_desc))
+    if(!(handler->handler_desc))
         return NULL;
 
     return axis2_handler_desc_get_name(handler->handler_desc, env);
@@ -97,7 +95,7 @@ axis2_handler_get_param(
     const axutil_env_t * env,
     const axis2_char_t * name)
 {
-    if (!(handler->handler_desc))
+    if(!(handler->handler_desc))
         return NULL;
 
     return axis2_handler_desc_get_param(handler->handler_desc, env, name);

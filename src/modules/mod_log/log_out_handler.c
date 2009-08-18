@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -28,7 +27,8 @@
 #include <axis2_msg_info_headers.h>
 #include <axutil_property.h>
 
-axis2_status_t AXIS2_CALL axutil_log_out_handler_invoke(
+axis2_status_t AXIS2_CALL
+axutil_log_out_handler_invoke(
     struct axis2_handler * handler,
     const axutil_env_t * env,
     struct axis2_msg_ctx * msg_ctx);
@@ -43,7 +43,7 @@ axutil_log_out_handler_create(
     AXIS2_ENV_CHECK(env, NULL);
 
     handler = axis2_handler_create(env);
-    if (!handler)
+    if(!handler)
     {
         return NULL;
     }
@@ -69,15 +69,15 @@ axutil_log_out_handler_invoke(
 
     soap_envelope = axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
 
-    if (soap_envelope)
+    if(soap_envelope)
     {
         ret_node = axiom_soap_envelope_get_base_node(soap_envelope, env);
 
-        if (ret_node)
+        if(ret_node)
         {
             axis2_char_t *om_str = NULL;
             om_str = axiom_node_to_string(ret_node, env);
-            if (om_str)
+            if(om_str)
             {
                 AXIS2_LOG_INFO(env->log, "Output message: %s", om_str);
             }

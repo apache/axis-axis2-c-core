@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -31,12 +30,10 @@ axis2_phase_holder_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    phase_holder = (axis2_phase_holder_t *) AXIS2_MALLOC(env->
-                                                         allocator,
-                                                         sizeof
-                                                         (axis2_phase_holder_t));
+    phase_holder = (axis2_phase_holder_t *)AXIS2_MALLOC(env-> allocator,
+        sizeof(axis2_phase_holder_t));
 
-    if (!phase_holder)
+    if(!phase_holder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -56,12 +53,12 @@ axis2_phase_holder_create_with_phases(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (!phases)
+    if(!phases)
     {
         return NULL;
     }
 
-    phase_holder = (axis2_phase_holder_t *) axis2_phase_holder_create(env);
+    phase_holder = (axis2_phase_holder_t *)axis2_phase_holder_create(env);
     phase_holder->phase_list = phases;
 
     return phase_holder;
@@ -74,7 +71,7 @@ axis2_phase_holder_free(
 {
     AXIS2_ENV_CHECK(env, void);
 
-    if (phase_holder)
+    if(phase_holder)
     {
         AXIS2_FREE(env->allocator, phase_holder);
     }
@@ -97,14 +94,13 @@ axis2_phase_holder_is_phase_exist(
 
     size = axutil_array_list_size(phase_holder->phase_list, env);
 
-    for (i = 0; i < size; i++)
+    for(i = 0; i < size; i++)
     {
         const axis2_char_t *phase_name_l = NULL;
 
-        phase = (axis2_phase_t *) axutil_array_list_get(phase_holder->
-                                                        phase_list, env, i);
+        phase = (axis2_phase_t *)axutil_array_list_get(phase_holder-> phase_list, env, i);
         phase_name_l = axis2_phase_get_name(phase, env);
-        if (0 == axutil_strcmp(phase_name_l, phase_name))
+        if(0 == axutil_strcmp(phase_name_l, phase_name))
         {
             return AXIS2_TRUE;
         }
@@ -121,34 +117,27 @@ axis2_phase_holder_add_handler(
     const axis2_char_t *phase_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
-                    "axis2_phase_holder_add_handler start");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "axis2_phase_holder_add_handler start");
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, handler, AXIS2_FAILURE);
 
-    phase_name =
-        axis2_phase_rule_get_name(axis2_handler_desc_get_rules(handler, env),
-                                  env);
-    if (AXIS2_TRUE ==
-        axis2_phase_holder_is_phase_exist(phase_holder, env, phase_name))
+    phase_name = axis2_phase_rule_get_name(axis2_handler_desc_get_rules(handler, env), env);
+    if(AXIS2_TRUE == axis2_phase_holder_is_phase_exist(phase_holder, env, phase_name))
     {
         axis2_phase_t *phase = NULL;
 
         phase = axis2_phase_holder_get_phase(phase_holder, env, phase_name);
         status = axis2_phase_add_handler_desc(phase, env, handler);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Add handler %s to phase %s",
-                        axutil_string_get_buffer(axis2_handler_desc_get_name
-                                                 (handler, env), env),
-                        phase_name);
+            axutil_string_get_buffer(axis2_handler_desc_get_name(handler, env), env), phase_name);
     }
     else
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_PHASE, AXIS2_FAILURE);
         status = AXIS2_FAILURE;
     }
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
-                    "axis2_phase_holder_add_handler end status = %s",
-                    status ? "SUCCESS" : "FAILURE");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "axis2_phase_holder_add_handler end status = %s",
+        status ? "SUCCESS" : "FAILURE");
     return status;
 }
 
@@ -161,35 +150,27 @@ axis2_phase_holder_remove_handler(
     const axis2_char_t *phase_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
-                    "axis2_phase_holder_remove_handler start");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "axis2_phase_holder_remove_handler start");
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, handler, AXIS2_FAILURE);
 
-    phase_name =
-        axis2_phase_rule_get_name(axis2_handler_desc_get_rules(handler, env),
-                                  env);
-    if (AXIS2_TRUE ==
-        axis2_phase_holder_is_phase_exist(phase_holder, env, phase_name))
+    phase_name = axis2_phase_rule_get_name(axis2_handler_desc_get_rules(handler, env), env);
+    if(AXIS2_TRUE == axis2_phase_holder_is_phase_exist(phase_holder, env, phase_name))
     {
         axis2_phase_t *phase = NULL;
 
         phase = axis2_phase_holder_get_phase(phase_holder, env, phase_name);
         status = axis2_phase_remove_handler_desc(phase, env, handler);
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                        "Remove handler %s from phase %s",
-                        axutil_string_get_buffer(axis2_handler_desc_get_name
-                                                 (handler, env), env),
-                        phase_name);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Remove handler %s from phase %s",
+            axutil_string_get_buffer(axis2_handler_desc_get_name(handler, env), env), phase_name);
     }
     else
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_PHASE, AXIS2_FAILURE);
         status = AXIS2_FAILURE;
     }
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
-                    "axis2_phase_holder_remove_handler end status = %s",
-                    status ? "SUCCESS" : "FAILURE");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "axis2_phase_holder_remove_handler end status = %s",
+        status ? "SUCCESS" : "FAILURE");
     return status;
 }
 
@@ -207,13 +188,12 @@ axis2_phase_holder_get_phase(
 
     size = axutil_array_list_size(phase_holder->phase_list, env);
 
-    for (i = 0; i < size; i++)
+    for(i = 0; i < size; i++)
     {
         const axis2_char_t *phase_name_l = NULL;
-        phase = (axis2_phase_t *) axutil_array_list_get(phase_holder->
-                                                        phase_list, env, i);
+        phase = (axis2_phase_t *)axutil_array_list_get(phase_holder-> phase_list, env, i);
         phase_name_l = axis2_phase_get_name(phase, env);
-        if (0 == axutil_strcmp(phase_name_l, phase_name))
+        if(0 == axutil_strcmp(phase_name_l, phase_name))
         {
             return phase;
         }
@@ -242,18 +222,17 @@ axis2_phase_holder_build_transport_handler_chain(
 
     size = axutil_array_list_size(handlers, env);
 
-    for (i = 0; i < size; i++)
+    for(i = 0; i < size; i++)
     {
-        handler_desc =
-            (axis2_handler_desc_t *) axutil_array_list_get(handlers, env, i);
+        handler_desc = (axis2_handler_desc_t *)axutil_array_list_get(handlers, env, i);
         status = axis2_handler_init(handler, env, handler_desc);
-        if (AXIS2_FAILURE == status)
+        if(AXIS2_FAILURE == status)
         {
             return status;
         }
 
         status = axis2_handler_desc_set_handler(handler_desc, env, handler);
-        if (AXIS2_FAILURE == status)
+        if(AXIS2_FAILURE == status)
         {
             return status;
         }

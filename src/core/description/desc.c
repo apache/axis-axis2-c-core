@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -41,9 +40,9 @@ axis2_desc_create(
 {
     axis2_desc_t *desc = NULL;
 
-    desc = (axis2_desc_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_desc_t));
+    desc = (axis2_desc_t *)AXIS2_MALLOC(env->allocator, sizeof(axis2_desc_t));
 
-    if (!desc)
+    if(!desc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -54,16 +53,15 @@ axis2_desc_create(
     desc->parent = NULL;
     desc->policy_include = NULL;
 
-    desc->param_container = (axutil_param_container_t *)
-        axutil_param_container_create(env);
-    if (!(desc->param_container))
+    desc->param_container = (axutil_param_container_t *)axutil_param_container_create(env);
+    if(!(desc->param_container))
     {
         axis2_desc_free(desc, env);
         return NULL;
     }
 
     desc->children = axutil_hash_make(env);
-    if (!(desc->children))
+    if(!(desc->children))
     {
         axis2_desc_free(desc, env);
         return NULL;
@@ -79,36 +77,35 @@ axis2_desc_free(
     axis2_desc_t * desc,
     const axutil_env_t * env)
 {
-    if (desc->children)
+    if(desc->children)
     {
         axutil_hash_index_t *hi = NULL;
         void *val = NULL;
 
-        for (hi = axutil_hash_first(desc->children, env); hi;
-             hi = axutil_hash_next(env, hi))
+        for(hi = axutil_hash_first(desc->children, env); hi; hi = axutil_hash_next(env, hi))
         {
             axutil_hash_this(hi, NULL, NULL, &val);
 
-            if (val)
+            if(val)
             {
-                axis2_msg_free((axis2_msg_t *) val, env);
+                axis2_msg_free((axis2_msg_t *)val, env);
             }
         }
 
         axutil_hash_free(desc->children, env);
     }
 
-    if (desc->param_container)
+    if(desc->param_container)
     {
         axutil_param_container_free(desc->param_container, env);
     }
 
-    if (desc->policy_include)
+    if(desc->policy_include)
     {
         axis2_policy_include_free(desc->policy_include, env);
     }
 
-    if (desc)
+    if(desc)
     {
         AXIS2_FREE(env->allocator, desc);
     }
@@ -134,8 +131,7 @@ axis2_desc_get_param(
     const axis2_char_t * param_name)
 {
     AXIS2_PARAM_CHECK(env->error, param_name, NULL);
-    return axutil_param_container_get_param(desc->param_container, env,
-                                            param_name);
+    return axutil_param_container_get_param(desc->param_container, env, param_name);
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
@@ -170,10 +166,11 @@ axis2_desc_add_child(
     const axis2_char_t * key,
     const axis2_msg_t *child)
 {
-    if (desc->children)
+    if(desc->children)
     {
-        axis2_msg_t* msg = (axis2_msg_t *) axutil_hash_get(desc->children, key, AXIS2_HASH_KEY_STRING);
-        if ( msg != NULL )
+        axis2_msg_t* msg = (axis2_msg_t *)axutil_hash_get(desc->children, key,
+            AXIS2_HASH_KEY_STRING);
+        if(msg != NULL)
         {
             axis2_msg_free(msg, env);
             msg = NULL;
@@ -207,7 +204,7 @@ axis2_desc_remove_child(
     const axutil_env_t * env,
     const axis2_char_t * key)
 {
-    if (desc->children)
+    if(desc->children)
     {
         axutil_hash_set(desc->children, key, AXIS2_HASH_KEY_STRING, NULL);
         return AXIS2_SUCCESS;
@@ -239,7 +236,7 @@ axis2_desc_set_policy_include(
     const axutil_env_t * env,
     axis2_policy_include_t * policy_include)
 {
-    if (desc->policy_include)
+    if(desc->policy_include)
     {
         axis2_policy_include_free(desc->policy_include, env);
         desc->policy_include = NULL;
@@ -254,7 +251,7 @@ axis2_desc_get_policy_include(
     axis2_desc_t * desc,
     const axutil_env_t * env)
 {
-    if (!desc->policy_include)
+    if(!desc->policy_include)
     {
         /*desc->policy_include = axis2_policy_include_create(env); */
         desc->policy_include = axis2_policy_include_create_with_desc(env, desc);

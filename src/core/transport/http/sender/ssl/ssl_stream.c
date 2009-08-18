@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -16,7 +15,6 @@
  * limitations under the License.
  */
 #ifdef AXIS2_SSL_ENABLED
-
 
 #include <string.h>
 #include <stdlib.h>
@@ -80,8 +78,8 @@ axutil_stream_create_ssl(
     ssl_stream_impl_t *stream_impl = NULL;
 
     stream_impl =
-        (ssl_stream_impl_t *) AXIS2_MALLOC(env->allocator,
-                                           sizeof(ssl_stream_impl_t));
+    (ssl_stream_impl_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(ssl_stream_impl_t));
 
     if (!stream_impl)
     {
@@ -94,7 +92,7 @@ axutil_stream_create_ssl(
     stream_impl->ssl = NULL;
 
     stream_impl->ctx = axis2_ssl_utils_initialize_ctx(env, server_cert,
-                                                      key_file, ssl_pp);
+        key_file, ssl_pp);
     if (!stream_impl->ctx)
     {
         axis2_ssl_stream_free((axutil_stream_t *) stream_impl, env);
@@ -102,7 +100,7 @@ axutil_stream_create_ssl(
         return NULL;
     }
     stream_impl->ssl = axis2_ssl_utils_initialize_ssl(env, stream_impl->ctx,
-                                                      stream_impl->socket);
+        stream_impl->socket);
     if (!stream_impl->ssl)
     {
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_SSL_ENGINE, AXIS2_FAILURE);
@@ -112,7 +110,7 @@ axutil_stream_create_ssl(
 
     axutil_stream_set_read(&(stream_impl->stream), env, axis2_ssl_stream_read);
     axutil_stream_set_write(&(stream_impl->stream), env,
-                            axis2_ssl_stream_write);
+        axis2_ssl_stream_write);
     axutil_stream_set_skip(&(stream_impl->stream), env, axis2_ssl_stream_skip);
 
     return &(stream_impl->stream);
@@ -143,26 +141,25 @@ axis2_ssl_stream_read(
     int read = -1;
     int len = -1;
 
-
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    
-    SSL_set_mode(stream_impl->ssl, SSL_MODE_AUTO_RETRY); 
+
+    SSL_set_mode(stream_impl->ssl, SSL_MODE_AUTO_RETRY);
 
     read = SSL_read(stream_impl->ssl, buffer, (int)count);
     /* We are sure that the difference lies within the int range */
     switch (SSL_get_error(stream_impl->ssl, read))
     {
-    case SSL_ERROR_NONE:
+        case SSL_ERROR_NONE:
         len = read;
         break;
-    case SSL_ERROR_ZERO_RETURN:
+        case SSL_ERROR_ZERO_RETURN:
         len = -1;
         break;
-    case SSL_ERROR_SYSCALL:
+        case SSL_ERROR_SYSCALL:
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "SSL Error: Premature close");
         len = -1;
         break;
-    default:
+        default:
         len = -1;
         break;
     }
@@ -186,12 +183,12 @@ axis2_ssl_stream_write(
 
     switch (SSL_get_error(stream_impl->ssl, write))
     {
-    case SSL_ERROR_NONE:
+        case SSL_ERROR_NONE:
         if ((int)count != write)
-            /* We are sure that the difference lies within the int range */
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Incomplete SSL write!");
+        /* We are sure that the difference lies within the int range */
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Incomplete SSL write!");
         break;
-    default:
+        default:
         return -1;
     }
     return write;
@@ -239,10 +236,4 @@ axis2_ssl_stream_get_type(
 }
 
 #endif
-
-
-
-
-
-
 

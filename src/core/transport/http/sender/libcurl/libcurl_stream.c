@@ -73,8 +73,8 @@ axutil_stream_create_libcurl(
     AXIS2_PARAM_CHECK(env->error, buffer, NULL);
 
     stream_impl =
-        (libcurl_stream_impl_t *) AXIS2_MALLOC(env->allocator,
-                                               sizeof(libcurl_stream_impl_t));
+    (libcurl_stream_impl_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(libcurl_stream_impl_t));
 
     if (!stream_impl)
     {
@@ -129,7 +129,7 @@ libcurl_stream_read(
             /* We are sure that the difference lies within the int range */
             {
                 memcpy(buffer, &stream_impl->buffer[stream_impl->read_len],
-                       count);
+                    count);
                 read = (int)count;
                 /* We are sure that the difference lies within the int range */
                 stream_impl->read_len += read;
@@ -137,25 +137,25 @@ libcurl_stream_read(
             else
             {
                 memcpy(buffer, &stream_impl->buffer[stream_impl->read_len],
-                       unread);
+                    unread);
                 read = unread;
                 stream_impl->read_len += read;
             }
         }
         else
-            read = 0;
+        read = 0;
     }
     else
     {
         if (buffer && (stream_impl->size > stream_impl->read_len))
         {
             memcpy(buffer, &stream_impl->buffer[stream_impl->read_len],
-                   stream_impl->size - stream_impl->read_len);
+                stream_impl->size - stream_impl->read_len);
             read = stream_impl->size - stream_impl->read_len;
             stream_impl->read_len += read;
         }
         else
-            read = 0;
+        read = 0;
     }
     return read;
 }

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -19,25 +18,25 @@
 #include <axis2_addr_mod.h>
 #include <axis2_conf_ctx.h>
 
-axis2_status_t AXIS2_CALL axis2_mod_addr_shutdown(
+axis2_status_t AXIS2_CALL
+axis2_mod_addr_shutdown(
     axis2_module_t * module,
     const axutil_env_t * env);
 
-axis2_status_t AXIS2_CALL axis2_mod_addr_init(
+axis2_status_t AXIS2_CALL
+axis2_mod_addr_init(
     axis2_module_t * module,
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx,
     axis2_module_desc_t * module_desc);
 
-axis2_status_t AXIS2_CALL axis2_mod_addr_fill_handler_create_func_map(
+axis2_status_t AXIS2_CALL
+axis2_mod_addr_fill_handler_create_func_map(
     axis2_module_t * module,
     const axutil_env_t * env);
 
-static const axis2_module_ops_t addr_module_ops_var = {
-    axis2_mod_addr_init,
-    axis2_mod_addr_shutdown,
-    axis2_mod_addr_fill_handler_create_func_map
-};
+static const axis2_module_ops_t addr_module_ops_var = { axis2_mod_addr_init,
+    axis2_mod_addr_shutdown, axis2_mod_addr_fill_handler_create_func_map };
 
 axis2_module_t *
 axis2_mod_addr_create(
@@ -50,8 +49,7 @@ axis2_mod_addr_create(
     if(!module)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "No memory. Cannot create the addressing module");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create the addressing module");
         return NULL;
     }
 
@@ -77,13 +75,13 @@ axis2_mod_addr_shutdown(
     axis2_module_t * module,
     const axutil_env_t * env)
 {
-    if (module->handler_create_func_map)
+    if(module->handler_create_func_map)
     {
         axutil_hash_free(module->handler_create_func_map, env);
         module->handler_create_func_map = NULL;
     }
 
-    if (module)
+    if(module)
     {
         AXIS2_FREE(env->allocator, module);
         module = NULL;
@@ -101,18 +99,17 @@ axis2_mod_addr_fill_handler_create_func_map(
 
     module->handler_create_func_map = axutil_hash_make(env);
 
-    if (!module->handler_create_func_map)
+    if(!module->handler_create_func_map)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "No memory. Cannot create the function map");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create the function map");
         return AXIS2_FAILURE;
     }
-    axutil_hash_set(module->handler_create_func_map, ADDR_IN_HANDLER,
-                    AXIS2_HASH_KEY_STRING, axis2_addr_in_handler_create);
+    axutil_hash_set(module->handler_create_func_map, ADDR_IN_HANDLER, AXIS2_HASH_KEY_STRING,
+        axis2_addr_in_handler_create);
 
-    axutil_hash_set(module->handler_create_func_map, ADDR_OUT_HANDLER,
-                    AXIS2_HASH_KEY_STRING, axis2_addr_out_handler_create);
+    axutil_hash_set(module->handler_create_func_map, ADDR_OUT_HANDLER, AXIS2_HASH_KEY_STRING,
+        axis2_addr_out_handler_create);
 
     return AXIS2_SUCCESS;
 }
@@ -127,11 +124,10 @@ axis2_get_instance(
     const axutil_env_t * env)
 {
     *inst = axis2_mod_addr_create(env);
-    if (!(*inst))
+    if(!(*inst))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "No memory. Cannot create addressing module");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create addressing module");
         return AXIS2_FAILURE;
     }
 
@@ -144,17 +140,16 @@ axis2_remove_instance(
     const axutil_env_t * env)
 {
     axis2_status_t status = AXIS2_FAILURE;
-   
-    if (inst)
+
+    if(inst)
     {
         status = axis2_mod_addr_shutdown(inst, env);
     }
     else
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "Addressing module not found");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Addressing module not found");
     }
-    
+
     return status;
 }

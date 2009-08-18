@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -49,23 +48,27 @@ typedef struct axis2_tcp_transport_sender_impl
      (transport_sender))
 
 /***************************** Function headers *******************************/
-axis2_status_t AXIS2_CALL axis2_tcp_transport_sender_invoke(
+axis2_status_t AXIS2_CALL
+axis2_tcp_transport_sender_invoke(
     axis2_transport_sender_t * transport_sender,
     const axutil_env_t * env,
     axis2_msg_ctx_t * msg_ctx);
 
-axis2_status_t AXIS2_CALL axis2_tcp_transport_sender_clean_up(
+axis2_status_t AXIS2_CALL
+axis2_tcp_transport_sender_clean_up(
     axis2_transport_sender_t * transport_sender,
     const axutil_env_t * env,
     axis2_msg_ctx_t * msg_ctx);
 
-axis2_status_t AXIS2_CALL axis2_tcp_transport_sender_init(
+axis2_status_t AXIS2_CALL
+axis2_tcp_transport_sender_init(
     axis2_transport_sender_t * transport_sender,
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx,
     axis2_transport_out_desc_t * out_desc);
 
-axis2_status_t AXIS2_CALL axis2_tcp_transport_sender_write_message(
+axis2_status_t AXIS2_CALL
+axis2_tcp_transport_sender_write_message(
     axis2_transport_sender_t * transport_sender,
     const axutil_env_t * env,
     axis2_msg_ctx_t * msg_ctx,
@@ -78,11 +81,8 @@ void AXIS2_CALL axis2_tcp_transport_sender_free(
     const axutil_env_t * env);
 
 static const axis2_transport_sender_ops_t tcp_transport_sender_ops_var = {
-    axis2_tcp_transport_sender_init,
-    axis2_tcp_transport_sender_invoke,
-    axis2_tcp_transport_sender_clean_up,
-    axis2_tcp_transport_sender_free
-};
+    axis2_tcp_transport_sender_init, axis2_tcp_transport_sender_invoke,
+    axis2_tcp_transport_sender_clean_up, axis2_tcp_transport_sender_free };
 
 axis2_transport_sender_t *AXIS2_CALL
 axis2_tcp_transport_sender_create(
@@ -91,16 +91,15 @@ axis2_tcp_transport_sender_create(
     axis2_tcp_transport_sender_impl_t *transport_sender_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    transport_sender_impl = (axis2_tcp_transport_sender_impl_t *) AXIS2_MALLOC
-        (env->allocator, sizeof(axis2_tcp_transport_sender_impl_t));
+    transport_sender_impl = (axis2_tcp_transport_sender_impl_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(axis2_tcp_transport_sender_impl_t));
 
-    if (!transport_sender_impl)
+    if(!transport_sender_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    transport_sender_impl->connection_timeout =
-        AXIS2_TCP_DEFAULT_CONNECTION_TIMEOUT;
+    transport_sender_impl->connection_timeout = AXIS2_TCP_DEFAULT_CONNECTION_TIMEOUT;
     transport_sender_impl->so_timeout = AXIS2_TCP_DEFAULT_SO_TIMEOUT;
     transport_sender_impl->transport_sender.ops = &tcp_transport_sender_ops_var;
     return &(transport_sender_impl->transport_sender);
@@ -140,8 +139,7 @@ axis2_tcp_transport_sender_invoke(
     axutil_hash_t *transport_attrs = NULL;
     axis2_bool_t write_xml_declaration = AXIS2_FALSE;
 
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                    "start:tcp transport sender invoke");
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "start:tcp transport sender invoke");
 
     op = axis2_msg_ctx_get_op(msg_ctx, env);
     mep_uri = axis2_op_get_msg_exchange_pattern(op, env);
@@ -150,87 +148,82 @@ axis2_tcp_transport_sender_invoke(
 
     soap_envelope = axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
 
-    xml_writer = axiom_xml_writer_create_for_memory(env, NULL,
-                                                    AXIS2_TRUE, 0,
-                                                    AXIS2_XML_PARSER_TYPE_BUFFER);
-    if (!xml_writer)
+    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+        AXIS2_XML_PARSER_TYPE_BUFFER);
+    if(!xml_writer)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "[tcp]Failed to create XML writer");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[tcp]Failed to create XML writer");
         return AXIS2_FAILURE;
     }
 
     om_output = axiom_output_create(env, xml_writer);
-    if (!om_output)
+    if(!om_output)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "[tcp]Failed to create OM output");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[tcp]Failed to create OM output");
         axiom_xml_writer_free(xml_writer, env);
         xml_writer = NULL;
         return AXIS2_FAILURE;
     }
 
-    conf_ctx = axis2_msg_ctx_get_conf_ctx (msg_ctx, env);
-    if (conf_ctx)
+    conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
+    if(conf_ctx)
     {
-        conf = axis2_conf_ctx_get_conf (conf_ctx, env);
+        conf = axis2_conf_ctx_get_conf(conf_ctx, env);
     }
-    if (conf)
+    if(conf)
     {
-        trans_desc = axis2_conf_get_transport_out (conf,
-                                                   env, AXIS2_TRANSPORT_ENUM_TCP);
+        trans_desc = axis2_conf_get_transport_out(conf, env, AXIS2_TRANSPORT_ENUM_TCP);
     }
-    if (trans_desc)
+    if(trans_desc)
     {
-        write_xml_declaration_param =
-            axutil_param_container_get_param
-            (axis2_transport_out_desc_param_container (trans_desc, env), env,
-             AXIS2_XML_DECLARATION);
+        write_xml_declaration_param = axutil_param_container_get_param(
+            axis2_transport_out_desc_param_container(trans_desc, env), env, AXIS2_XML_DECLARATION);
     }
-    if (write_xml_declaration_param)
+    if(write_xml_declaration_param)
     {
-        transport_attrs = axutil_param_get_attributes (write_xml_declaration_param, env);
-        if (transport_attrs)
+        transport_attrs = axutil_param_get_attributes(write_xml_declaration_param, env);
+        if(transport_attrs)
         {
             axutil_generic_obj_t *obj = NULL;
             axiom_attribute_t *write_xml_declaration_attr = NULL;
             axis2_char_t *write_xml_declaration_attr_value = NULL;
 
-            obj = axutil_hash_get (transport_attrs, AXIS2_ADD_XML_DECLARATION,
-                           AXIS2_HASH_KEY_STRING);
-            if (obj)
+            obj
+                = axutil_hash_get(transport_attrs, AXIS2_ADD_XML_DECLARATION, AXIS2_HASH_KEY_STRING);
+            if(obj)
             {
-                write_xml_declaration_attr = (axiom_attribute_t *) axutil_generic_obj_get_value (obj,
-                                                                                         env);
+                write_xml_declaration_attr = (axiom_attribute_t *)axutil_generic_obj_get_value(obj,
+                    env);
             }
-            if (write_xml_declaration_attr)
+            if(write_xml_declaration_attr)
             {
-                write_xml_declaration_attr_value = axiom_attribute_get_value (write_xml_declaration_attr, env);
+                write_xml_declaration_attr_value = axiom_attribute_get_value(
+                    write_xml_declaration_attr, env);
             }
-            if (write_xml_declaration_attr_value && 0 == axutil_strcasecmp (write_xml_declaration_attr_value, AXIS2_VALUE_TRUE))
+            if(write_xml_declaration_attr_value && 0 == axutil_strcasecmp(
+                write_xml_declaration_attr_value, AXIS2_VALUE_TRUE))
             {
                 write_xml_declaration = AXIS2_TRUE;
             }
         }
     }
 
-    if (write_xml_declaration)
+    if(write_xml_declaration)
     {
-        axiom_output_write_xml_version_encoding (om_output, env);
+        axiom_output_write_xml_version_encoding(om_output, env);
     }
 
     axiom_soap_envelope_serialize(soap_envelope, env, om_output, AXIS2_FALSE);
 
-    buffer = (axis2_char_t *) axiom_xml_writer_get_xml(xml_writer, env);
-    if (!buffer)
+    buffer = (axis2_char_t *)axiom_xml_writer_get_xml(xml_writer, env);
+    if(!buffer)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "[tcp]Failed to serialize the SOAP envelope");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[tcp]Failed to serialize the SOAP envelope");
         return AXIS2_FAILURE;
     }
     buffer_size = axiom_xml_writer_get_xml_size(xml_writer, env);
     buffer[buffer_size] = 0;
-    if (is_server)
+    if(is_server)
     {
         out_stream = axis2_msg_ctx_get_transport_out_stream(msg_ctx, env);
         axutil_stream_write(out_stream, env, buffer, buffer_size);
@@ -247,8 +240,7 @@ axis2_tcp_transport_sender_invoke(
         int write = -1;
         int read = -1;
         axis2_char_t buff[1];
-        axis2_char_t *res_buffer = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-                                                                 RES_BUFF);
+        axis2_char_t *res_buffer = (axis2_char_t *)AXIS2_MALLOC(env->allocator, RES_BUFF);
         int res_size = 0;
         int size = 0;
         axiom_xml_reader_t *reader = NULL;
@@ -258,72 +250,68 @@ axis2_tcp_transport_sender_invoke(
 
         to = axis2_msg_ctx_get_to(msg_ctx, env);
 
-        if (!to)
+        if(!to)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "To epr not presant");
             return AXIS2_FAILURE;
         }
 
         to_str = axis2_endpoint_ref_get_address(to, env);
-        if (!to_str)
+        if(!to_str)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            "unable to convert epr to string");
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "unable to convert epr to string");
             return AXIS2_FAILURE;
         }
 
         to_url = axutil_url_parse_string(env, to_str);
 
-        if (!to_url)
+        if(!to_url)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            "unable to parser string to url");
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "unable to parser string to url");
             return AXIS2_FAILURE;
         }
 
         host = axutil_url_get_host(to_url, env);
-        if (!host)
+        if(!host)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "retrieving host failed");
             return AXIS2_FAILURE;
         }
 
         port = axutil_url_get_port(to_url, env);
-        if (!port)
+        if(!port)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "retrieving port failed");
             return AXIS2_FAILURE;
         }
-        socket = (int)axutil_network_handler_open_socket(env, (char *) host, port);
-        if (!socket)
+        socket = (int)axutil_network_handler_open_socket(env, (char *)host, port);
+        if(!socket)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "socket creation failed");
             return AXIS2_FAILURE;
         }
 
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                        "open socket for host:%s port:%d", host, port);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "open socket for host:%s port:%d", host, port);
 
         stream = axutil_stream_create_socket(env, socket);
-        if (!stream)
+        if(!stream)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "stream creation failed");
             return AXIS2_FAILURE;
         }
 
         write = axutil_stream_write(stream, env, buffer, buffer_size);
-        if (write < 0)
+        if(write < 0)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "stream write error");
             return AXIS2_FAILURE;
         }
-        AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "stream wrote soap msg: %s",
-                        buffer);
+        AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "stream wrote soap msg: %s", buffer);
         write = axutil_stream_write(stream, env, "\r\n\r\n", 4);
         size = RES_BUFF;
-        while ((read = axutil_stream_read(stream, env, &buff, 1)) > 0)
+        while((read = axutil_stream_read(stream, env, &buff, 1)) > 0)
         {
-            if (res_size >= size)
+            if(res_size >= size)
             {
                 axis2_char_t *tmp_buff = NULL;
                 size <<= 2;
@@ -342,40 +330,34 @@ axis2_tcp_transport_sender_invoke(
 
         AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "%s", res_buffer);
 
-        reader =
-            axiom_xml_reader_create_for_memory(env, res_buffer, (res_size - 1),
-                                               NULL,
-                                               AXIS2_XML_PARSER_TYPE_BUFFER);
+        reader = axiom_xml_reader_create_for_memory(env, res_buffer, (res_size - 1), NULL,
+            AXIS2_XML_PARSER_TYPE_BUFFER);
 
-        if (!reader)
+        if(!reader)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            "Failed to create XML reader");
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to create XML reader");
             return AXIS2_FAILURE;
         }
 
         builder = axiom_stax_builder_create(env, reader);
-        if (!builder)
+        if(!builder)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            "Failed to create Stax builder");
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to create Stax builder");
             return AXIS2_FAILURE;
         }
 
         soap_builder = axiom_soap_builder_create(env, builder,
-                                                 AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
-        if (!soap_builder)
+            AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+        if(!soap_builder)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            "Failed to create SOAP builder");
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to create SOAP builder");
             return AXIS2_FAILURE;
         }
         soap_envelope = axiom_soap_builder_get_soap_envelope(soap_builder, env);
 
-        if (!soap_envelope)
+        if(!soap_envelope)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            "Failed to create SOAP envelope");
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to create SOAP envelope");
             return AXIS2_FAILURE;
         }
 
@@ -414,31 +396,25 @@ axis2_tcp_transport_sender_init(
     AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, out_desc, AXIS2_FAILURE);
 
-    temp_param =
-        axutil_param_container_get_param
-        (axis2_transport_out_desc_param_container(out_desc, env), env,
-         AXIS2_TCP_SO_TIMEOUT);
-    if (temp_param)
+    temp_param = axutil_param_container_get_param(axis2_transport_out_desc_param_container(
+        out_desc, env), env, AXIS2_TCP_SO_TIMEOUT);
+    if(temp_param)
     {
         temp = axutil_param_get_value(temp_param, env);
     }
-    if (temp)
+    if(temp)
     {
         AXIS2_INTF_TO_IMPL(transport_sender)->so_timeout = AXIS2_ATOI(temp);
     }
-    temp =
-        (axis2_char_t *)
-        axutil_param_container_get_param
-        (axis2_transport_out_desc_param_container(out_desc, env), env,
-         AXIS2_TCP_CONNECTION_TIMEOUT);
-    if (temp_param)
+    temp = (axis2_char_t *)axutil_param_container_get_param(
+        axis2_transport_out_desc_param_container(out_desc, env), env, AXIS2_TCP_CONNECTION_TIMEOUT);
+    if(temp_param)
     {
         temp = axutil_param_get_value(temp_param, env);
     }
-    if (temp)
+    if(temp)
     {
-        AXIS2_INTF_TO_IMPL(transport_sender)->connection_timeout =
-            AXIS2_ATOI(temp);
+        AXIS2_INTF_TO_IMPL(transport_sender)->connection_timeout = AXIS2_ATOI(temp);
     }
 
     return AXIS2_SUCCESS;
@@ -468,15 +444,15 @@ axis2_tcp_transport_sender_write_message(
 
 AXIS2_EXPORT int
 #ifndef AXIS2_STATIC_DEPLOY
- axis2_get_instance(
+axis2_get_instance(
 #else
-axis2_tcp_transport_sender_get_instance(
+    axis2_tcp_transport_sender_get_instance(
 #endif
     struct axis2_transport_sender **inst,
     const axutil_env_t * env)
 {
     *inst = axis2_tcp_transport_sender_create(env);
-    if (!(*inst))
+    if(!(*inst))
     {
         return AXIS2_FAILURE;
     }
@@ -486,14 +462,14 @@ axis2_tcp_transport_sender_get_instance(
 
 AXIS2_EXPORT int
 #ifndef AXIS2_STATIC_DEPLOY
- axis2_remove_instance(
+axis2_remove_instance(
 #else
-axis2_tcp_transport_sender_remove_instance(
+    axis2_tcp_transport_sender_remove_instance(
 #endif
     axis2_transport_sender_t * inst,
     const axutil_env_t * env)
 {
-    if (inst)
+    if(inst)
     {
         AXIS2_TRANSPORT_SENDER_FREE(inst, env);
     }

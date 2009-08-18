@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -32,9 +31,9 @@ axis2_stub_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    stub = (axis2_stub_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_stub_t));
+    stub = (axis2_stub_t *)AXIS2_MALLOC(env->allocator, sizeof(axis2_stub_t));
 
-    if (!stub)
+    if(!stub)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create stub.");
@@ -57,23 +56,23 @@ axis2_stub_create_with_endpoint_ref_and_client_home(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, endpoint_ref, NULL);
 
-    stub = (axis2_stub_t *) axis2_stub_create(env);
+    stub = (axis2_stub_t *)axis2_stub_create(env);
 
-    if (!stub)
+    if(!stub)
     {
         return NULL;
     }
-   
+
     stub->svc_client = axis2_svc_client_create(env, client_home);
 
-    if (!stub->svc_client)
+    if(!stub->svc_client)
     {
         axis2_stub_free(stub, env);
         return NULL;
     }
 
     stub->options = axis2_options_create(env);
-    if (!stub->options)
+    if(!stub->options)
     {
         axis2_stub_free(stub, env);
         return NULL;
@@ -99,15 +98,14 @@ axis2_stub_create_with_endpoint_uri_and_client_home(
     AXIS2_PARAM_CHECK(env->error, endpoint_uri, NULL);
 
     endpoint_ref = axis2_endpoint_ref_create(env, endpoint_uri);
-    if (!endpoint_ref)
+    if(!endpoint_ref)
     {
         return NULL;
     }
-    stub = (axis2_stub_t *)
-        axis2_stub_create_with_endpoint_ref_and_client_home(env, endpoint_ref,
-                                                            client_home);
+    stub = (axis2_stub_t *)axis2_stub_create_with_endpoint_ref_and_client_home(env, endpoint_ref,
+        client_home);
 
-    if (!stub)
+    if(!stub)
     {
         return NULL;
     }
@@ -120,13 +118,13 @@ axis2_stub_free(
     axis2_stub_t * stub,
     const axutil_env_t * env)
 {
-    if (stub)
+    if(stub)
     {
-        if (stub->svc_client)
+        if(stub->svc_client)
         {
             axis2_svc_client_free(stub->svc_client, env);
         }
-        
+
         AXIS2_FREE(env->allocator, stub);
     }
 }
@@ -142,7 +140,6 @@ axis2_stub_set_endpoint_ref(
     return AXIS2_SUCCESS;
 }
 
-
 axis2_status_t AXIS2_CALL
 axis2_stub_set_endpoint_uri(
     axis2_stub_t * stub,
@@ -154,7 +151,7 @@ axis2_stub_set_endpoint_uri(
     AXIS2_PARAM_CHECK(env->error, endpoint_uri, AXIS2_FAILURE);
 
     endpoint_ref = axis2_endpoint_ref_create(env, endpoint_uri);
-    if (!endpoint_ref)
+    if(!endpoint_ref)
     {
         return AXIS2_FAILURE;
     }
@@ -169,8 +166,7 @@ axis2_stub_set_use_separate_listener(
     const axutil_env_t * env,
     const axis2_bool_t use_separate_listener)
 {
-    return axis2_options_set_use_separate_listener(stub->options, env,
-                                                   use_separate_listener);
+    return axis2_options_set_use_separate_listener(stub->options, env, use_separate_listener);
 }
 
 axis2_status_t AXIS2_CALL
@@ -190,9 +186,10 @@ axis2_stub_set_soap_version(
     const axutil_env_t * env,
     const int soap_version)
 {
-    if (!stub->options)
+    if(!stub->options)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot set soap version. Stub option is not valid.");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Cannot set soap version. Stub option is not valid.");
         return AXIS2_FAILURE;
     }
     return axis2_options_set_soap_version(stub->options, env, soap_version);
@@ -206,7 +203,7 @@ axis2_stub_get_svc_ctx_id(
     const axis2_svc_ctx_t *svc_ctx = NULL;
     const axis2_char_t *svc_ctx_id = NULL;
 
-    AXIS2_PARAM_CHECK (env->error, stub, NULL);
+    AXIS2_PARAM_CHECK(env->error, stub, NULL);
 
     svc_ctx = axis2_svc_client_get_svc_ctx(stub->svc_client, env);
     svc_ctx_id = axis2_svc_ctx_get_svc_id(svc_ctx, env);
@@ -218,7 +215,7 @@ axis2_stub_get_svc_client(
     const axis2_stub_t * stub,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, stub, NULL);
+    AXIS2_PARAM_CHECK(env->error, stub, NULL);
     return stub->svc_client;
 }
 

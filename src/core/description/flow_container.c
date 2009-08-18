@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -33,12 +32,10 @@ axis2_flow_container_create(
 {
     axis2_flow_container_t *flow_container = NULL;
 
-    flow_container = (axis2_flow_container_t *) AXIS2_MALLOC(env->
-                                                             allocator,
-                                                             sizeof
-                                                             (axis2_flow_container_t));
+    flow_container = (axis2_flow_container_t *)AXIS2_MALLOC(env-> allocator,
+        sizeof(axis2_flow_container_t));
 
-    if (!flow_container)
+    if(!flow_container)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -57,27 +54,27 @@ axis2_flow_container_free(
     axis2_flow_container_t * flow_container,
     const axutil_env_t * env)
 {
-    if (flow_container->in)
+    if(flow_container->in)
     {
         axis2_flow_free(flow_container->in, env);
     }
 
-    if (flow_container->out)
+    if(flow_container->out)
     {
         axis2_flow_free(flow_container->out, env);
     }
 
-    if (flow_container->in_fault)
+    if(flow_container->in_fault)
     {
         axis2_flow_free(flow_container->in_fault, env);
     }
 
-    if (flow_container->out_fault)
+    if(flow_container->out_fault)
     {
         axis2_flow_free(flow_container->out_fault, env);
     }
 
-    if (flow_container)
+    if(flow_container)
     {
         AXIS2_FREE(env->allocator, flow_container);
     }
@@ -99,7 +96,7 @@ axis2_flow_container_set_in_flow(
     const axutil_env_t * env,
     axis2_flow_t * in_flow)
 {
-    if (flow_container->in)
+    if(flow_container->in)
     {
         axis2_flow_free(flow_container->in, env);
     }
@@ -121,7 +118,7 @@ axis2_flow_container_set_out_flow(
     const axutil_env_t * env,
     axis2_flow_t * out_flow)
 {
-    if (flow_container->out)
+    if(flow_container->out)
     {
         axis2_flow_free(flow_container->out, env);
     }
@@ -143,7 +140,7 @@ axis2_flow_container_set_fault_in_flow(
     const axutil_env_t * env,
     axis2_flow_t * falut_in_flow)
 {
-    if (flow_container->in_fault)
+    if(flow_container->in_fault)
     {
         axis2_flow_free(flow_container->in_fault, env);
     }
@@ -166,7 +163,7 @@ axis2_flow_container_set_fault_out_flow(
     axis2_flow_t * fault_out_flow)
 {
     AXIS2_PARAM_CHECK(env->error, fault_out_flow, AXIS2_FAILURE);
-    if (flow_container->out_fault)
+    if(flow_container->out_fault)
     {
         axis2_flow_free(flow_container->out_fault, env);
     }

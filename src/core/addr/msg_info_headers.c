@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -32,7 +31,7 @@ struct axis2_msg_info_headers
     axis2_relates_to_t *relates_to;
 
     /** Identifies the intended receiver for replies to the message,
-        if this is set, none and anonymous settings are ignored */
+     if this is set, none and anonymous settings are ignored */
     axis2_endpoint_ref_t *reply_to;
 
     /** reply to should be none */
@@ -42,7 +41,7 @@ struct axis2_msg_info_headers
     axis2_bool_t reply_to_anonymous;
 
     /** identifies the intended receiver for faults related to the message
-        if this is set, none and anonymous settings are ignored */
+     if this is set, none and anonymous settings are ignored */
     axis2_endpoint_ref_t *fault_to;
 
     /** fault to should be none */
@@ -69,10 +68,9 @@ axis2_msg_info_headers_create(
 {
     axis2_msg_info_headers_t *msg_info_headers = NULL;
 
-    msg_info_headers =
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_msg_info_headers_t));
+    msg_info_headers = AXIS2_MALLOC(env->allocator, sizeof(axis2_msg_info_headers_t));
 
-    if (!msg_info_headers)
+    if(!msg_info_headers)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -91,15 +89,15 @@ axis2_msg_info_headers_create(
     msg_info_headers->message_id = NULL;
     msg_info_headers->ref_params = NULL;
 
-    if (to)
+    if(to)
     {
         msg_info_headers->to = to;
     }
 
-    if (action)
+    if(action)
     {
         msg_info_headers->action = axutil_strdup(env, action);
-        if (!(msg_info_headers->action))
+        if(!(msg_info_headers->action))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             axis2_msg_info_headers_free(msg_info_headers, env);
@@ -129,9 +127,9 @@ axis2_msg_info_headers_set_to(
     const axutil_env_t * env,
     axis2_endpoint_ref_t * to)
 {
-    if (msg_info_headers->to && to) /* if the incoming to is NULL,
-                                       we consider that to be a reset,
-                                       so don't free */
+    if(msg_info_headers->to && to) /* if the incoming to is NULL,
+     we consider that to be a reset,
+     so don't free */
     {
         axis2_endpoint_ref_free(msg_info_headers->to, env);
         msg_info_headers->to = NULL;
@@ -208,12 +206,12 @@ axis2_msg_info_headers_set_action(
     const axutil_env_t * env,
     const axis2_char_t * action)
 {
-    if (msg_info_headers->action)
+    if(msg_info_headers->action)
     {
         AXIS2_FREE(env->allocator, msg_info_headers->action);
         msg_info_headers->action = NULL;
     }
-    if (action)
+    if(action)
     {
         msg_info_headers->action = axutil_strdup(env, action);
     }
@@ -234,16 +232,16 @@ axis2_msg_info_headers_set_message_id(
     const axutil_env_t * env,
     const axis2_char_t * message_id)
 {
-    if (msg_info_headers->message_id)
+    if(msg_info_headers->message_id)
     {
         AXIS2_FREE(env->allocator, msg_info_headers->message_id);
         msg_info_headers->message_id = NULL;
     }
 
-    if (message_id)
+    if(message_id)
     {
         msg_info_headers->message_id = axutil_stracat(env, AXIS2_MESSAGE_ID_PREFIX, message_id);
-        if (!(msg_info_headers->message_id))
+        if(!(msg_info_headers->message_id))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -259,17 +257,17 @@ axis2_msg_info_headers_set_in_message_id(
     const axutil_env_t * env,
     const axis2_char_t * message_id)
 {
-    if (msg_info_headers->message_id)
+    if(msg_info_headers->message_id)
     {
         AXIS2_FREE(env->allocator, msg_info_headers->message_id);
         msg_info_headers->message_id = NULL;
     }
 
-    if (message_id)
+    if(message_id)
     {
         msg_info_headers->message_id = axutil_strdup(env, message_id);
-        
-        if (!(msg_info_headers->message_id))
+
+        if(!(msg_info_headers->message_id))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -293,9 +291,9 @@ axis2_msg_info_headers_set_relates_to(
     const axutil_env_t * env,
     axis2_relates_to_t * relates_to)
 {
-    if (msg_info_headers->relates_to)
+    if(msg_info_headers->relates_to)
     {
-        axis2_relates_to_free (msg_info_headers->relates_to, env);
+        axis2_relates_to_free(msg_info_headers->relates_to, env);
     }
     msg_info_headers->relates_to = relates_to;
     return AXIS2_SUCCESS;
@@ -315,17 +313,16 @@ axis2_msg_info_headers_add_ref_param(
     const axutil_env_t * env,
     axiom_node_t * ref_param)
 {
-    if (!(msg_info_headers->ref_params))
+    if(!(msg_info_headers->ref_params))
     {
         msg_info_headers->ref_params = axutil_array_list_create(env, 10);
-        if (!(msg_info_headers->ref_params))
+        if(!(msg_info_headers->ref_params))
             return AXIS2_FAILURE;
     }
 
-    if (ref_param)
+    if(ref_param)
     {
-        return axutil_array_list_add(msg_info_headers->ref_params, env,
-                                     ref_param);
+        return axutil_array_list_add(msg_info_headers->ref_params, env, ref_param);
     }
 
     return AXIS2_SUCCESS;
@@ -336,37 +333,37 @@ axis2_msg_info_headers_free(
     struct axis2_msg_info_headers *msg_info_headers,
     const axutil_env_t * env)
 {
-    if (msg_info_headers->to)
+    if(msg_info_headers->to)
     {
         axis2_endpoint_ref_free(msg_info_headers->to, env);
     }
-    if (msg_info_headers->from)
+    if(msg_info_headers->from)
     {
         axis2_endpoint_ref_free(msg_info_headers->from, env);
     }
-    if (msg_info_headers->reply_to)
+    if(msg_info_headers->reply_to)
     {
         axis2_endpoint_ref_free(msg_info_headers->reply_to, env);
     }
-    if (msg_info_headers->relates_to)
+    if(msg_info_headers->relates_to)
     {
         axis2_relates_to_free(msg_info_headers->relates_to, env);
     }
 
-    if (msg_info_headers->fault_to)
+    if(msg_info_headers->fault_to)
     {
         axis2_endpoint_ref_free(msg_info_headers->fault_to, env);
     }
 
-    if (msg_info_headers->ref_params)
+    if(msg_info_headers->ref_params)
     {
         axutil_array_list_free(msg_info_headers->ref_params, env);
     }
-    if (msg_info_headers->action)
+    if(msg_info_headers->action)
     {
         AXIS2_FREE(env->allocator, msg_info_headers->action);
     }
-    if (msg_info_headers->message_id)
+    if(msg_info_headers->message_id)
     {
         AXIS2_FREE(env->allocator, msg_info_headers->message_id);
     }

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -29,9 +28,9 @@ axis2_flow_create(
 {
     axis2_flow_t *flow = NULL;
 
-    flow = (axis2_flow_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_flow_t));
+    flow = (axis2_flow_t *)AXIS2_MALLOC(env->allocator, sizeof(axis2_flow_t));
 
-    if (!flow)
+    if(!flow)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -40,7 +39,7 @@ axis2_flow_create(
     flow->list = NULL;
 
     flow->list = axutil_array_list_create(env, 20);
-    if (!(flow->list))
+    if(!(flow->list))
     {
         axis2_flow_free(flow, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -55,25 +54,23 @@ axis2_flow_free(
     axis2_flow_t * flow,
     const axutil_env_t * env)
 {
-    if (flow->list)
+    if(flow->list)
     {
         int i = 0;
         int size = 0;
 
         size = axutil_array_list_size(flow->list, env);
-        for (i = 0; i < size; i++)
+        for(i = 0; i < size; i++)
         {
             axis2_handler_desc_t *handler_desc = NULL;
 
-            handler_desc =
-                (axis2_handler_desc_t *) axutil_array_list_get(flow->list, env,
-                                                               i);
+            handler_desc = (axis2_handler_desc_t *)axutil_array_list_get(flow->list, env, i);
             axis2_handler_desc_free(handler_desc, env);
         }
         axutil_array_list_free(flow->list, env);
     }
 
-    if (flow)
+    if(flow)
     {
         AXIS2_FREE(env->allocator, flow);
     }
@@ -88,7 +85,7 @@ axis2_flow_free_void_arg(
 {
     axis2_flow_t *flow_l = NULL;
 
-    flow_l = (axis2_flow_t *) flow;
+    flow_l = (axis2_flow_t *)flow;
     axis2_flow_free(flow_l, env);
     return;
 }
@@ -101,10 +98,10 @@ axis2_flow_add_handler(
 {
     AXIS2_PARAM_CHECK(env->error, handler, AXIS2_FAILURE);
 
-    if (!flow->list)
+    if(!flow->list)
     {
         flow->list = axutil_array_list_create(env, 0);
-        if (!flow->list)
+        if(!flow->list)
         {
             axis2_flow_free(flow, env);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

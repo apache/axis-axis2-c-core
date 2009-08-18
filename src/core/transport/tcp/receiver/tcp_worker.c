@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -46,16 +45,15 @@ axis2_tcp_worker_create(
 {
     axis2_tcp_worker_t *tcp_worker = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    tcp_worker = (axis2_tcp_worker_t *)
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_tcp_worker_t));
+    tcp_worker = (axis2_tcp_worker_t *)AXIS2_MALLOC(env->allocator, sizeof(axis2_tcp_worker_t));
 
-    if (!tcp_worker)
+    if(!tcp_worker)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     tcp_worker->conf_ctx = conf_ctx;
-    tcp_worker->svr_port = 9090;    /* default - must set later */
+    tcp_worker->svr_port = 9090; /* default - must set later */
 
     return tcp_worker;
 }
@@ -97,58 +95,51 @@ axis2_tcp_worker_process_request(
     int write = -1;
     axutil_stream_t *out_stream = NULL;
 
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
-                    "start:axis2_tcp_worker_process_request");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "start:axis2_tcp_worker_process_request");
 
     out_stream = axutil_stream_create_basic(env);
-    reader = axiom_xml_reader_create_for_memory(env, simple_request,
-                                                axutil_strlen(simple_request),
-                                                NULL,
-                                                AXIS2_XML_PARSER_TYPE_BUFFER);
-    if (!reader)
+    reader = axiom_xml_reader_create_for_memory(env, simple_request, axutil_strlen(simple_request),
+        NULL, AXIS2_XML_PARSER_TYPE_BUFFER);
+    if(!reader)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to create XML reader");
         return AXIS2_FAILURE;
     }
 
     builder = axiom_stax_builder_create(env, reader);
-    if (!builder)
+    if(!builder)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "Failed to create Stax builder");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to create Stax builder");
         return AXIS2_FAILURE;
     }
 
-    soap_builder = axiom_soap_builder_create(env, builder,
-                                             AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+    soap_builder
+        = axiom_soap_builder_create(env, builder, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
 
-    if (!soap_builder)
+    if(!soap_builder)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "Failed to create SOAP builder");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to create SOAP builder");
         return AXIS2_FAILURE;
     }
 
     conf_ctx = tcp_worker->conf_ctx;
 
-    if (!conf_ctx)
+    if(!conf_ctx)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "conf ctx not available");
         return AXIS2_FAILURE;
     }
 
-    out_desc =
-        axis2_conf_get_transport_out(axis2_conf_ctx_get_conf(conf_ctx, env),
-                                     env, AXIS2_TRANSPORT_ENUM_TCP);
-    if (!out_desc)
+    out_desc = axis2_conf_get_transport_out(axis2_conf_ctx_get_conf(conf_ctx, env), env,
+        AXIS2_TRANSPORT_ENUM_TCP);
+    if(!out_desc)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Transport out not set");
         return AXIS2_FAILURE;
     }
 
-    in_desc =
-        axis2_conf_get_transport_in(axis2_conf_ctx_get_conf(conf_ctx, env), env,
-                                    AXIS2_TRANSPORT_ENUM_TCP);
+    in_desc = axis2_conf_get_transport_in(axis2_conf_ctx_get_conf(conf_ctx, env), env,
+        AXIS2_TRANSPORT_ENUM_TCP);
 
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
     axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
@@ -164,18 +155,17 @@ axis2_tcp_worker_process_request(
     buffer = out_stream->buffer;
     len = out_stream->len;
     buffer[len] = 0;
-    if (svr_stream && buffer)
+    if(svr_stream && buffer)
     {
         write = axutil_stream_write(svr_stream, env, buffer, len + 1);
-        if (write < 0)
+        if(write < 0)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "stream write failed");
             return AXIS2_FAILURE;
         }
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "stream wrote:%s", buffer);
     }
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
-                    "end:axis2_tcp_worker_process_request");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "end:axis2_tcp_worker_process_request");
     return AXIS2_SUCCESS;
 }
 

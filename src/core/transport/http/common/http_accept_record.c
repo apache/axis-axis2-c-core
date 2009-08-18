@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -45,33 +44,32 @@ axis2_http_accept_record_create(
 
     AXIS2_PARAM_CHECK(env->error, str, NULL);
 
-    tmp_accept_record = (axis2_char_t *) axutil_strdup(env, str);
-    if (!tmp_accept_record)
+    tmp_accept_record = (axis2_char_t *)axutil_strdup(env, str);
+    if(!tmp_accept_record)
     {
-        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
-                         "unable to strdup string %s", str);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "unable to strdup string %s", str);
         return NULL;
     }
 
-    accept_record = (axis2_http_accept_record_t *) AXIS2_MALLOC
-        (env->allocator, sizeof(axis2_http_accept_record_t));
+    accept_record = (axis2_http_accept_record_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(axis2_http_accept_record_t));
 
-    if (!accept_record)
+    if(!accept_record)
     {
-        AXIS2_HANDLE_ERROR (env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    memset ((void *)accept_record, 0, sizeof (axis2_http_accept_record_t));
+    memset((void *)accept_record, 0, sizeof(axis2_http_accept_record_t));
     accept_record->record = axutil_strtrim(env, tmp_accept_record, AXIS2_SPACE_COMMA);
 
     tmp = strchr(tmp_accept_record, AXIS2_Q);
-    if (tmp)
+    if(tmp)
     {
         *tmp = AXIS2_ESC_NULL;
         tmp++;
         tmp = axutil_strtrim(env, tmp, AXIS2_EQ_N_SEMICOLON);
-        if (tmp)
+        if(tmp)
         {
             sscanf(tmp, "%f", &quality);
             AXIS2_FREE(env->allocator, tmp);
@@ -79,12 +77,12 @@ axis2_http_accept_record_create(
     }
 
     tmp = strstr(tmp_accept_record, AXIS2_LEVEL);
-    if (tmp)
+    if(tmp)
     {
         *tmp = AXIS2_ESC_NULL;
         tmp++;
         tmp = axutil_strtrim(env, tmp, AXIS2_EQ_N_SEMICOLON);
-        if (tmp)
+        if(tmp)
         {
             sscanf(tmp, "%d", &level);
             AXIS2_FREE(env->allocator, tmp);
@@ -92,12 +90,12 @@ axis2_http_accept_record_create(
     }
 
     tmp = axutil_strtrim(env, tmp_accept_record, AXIS2_SPACE_SEMICOLON);
-    if (tmp)
+    if(tmp)
     {
         name = tmp;
     }
 
-    if (!name || quality > 1.0 || quality < 0.0)
+    if(!name || quality > 1.0 || quality < 0.0)
     {
         axis2_http_accept_record_free(accept_record, env);
         return NULL;
@@ -117,16 +115,16 @@ axis2_http_accept_record_free(
     const axutil_env_t * env)
 {
 
-    if (!accept_record)
+    if(!accept_record)
     {
         return;
     }
 
-    if (accept_record->name)
+    if(accept_record->name)
     {
         AXIS2_FREE(env->allocator, accept_record->name);
     }
-    if (accept_record->record)
+    if(accept_record->record)
     {
         AXIS2_FREE(env->allocator, accept_record->record);
     }
@@ -141,7 +139,6 @@ axis2_http_accept_record_get_quality_factor(
 {
     return accept_record->quality;
 }
-
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_accept_record_get_name(

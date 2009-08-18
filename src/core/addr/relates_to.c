@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -40,7 +39,7 @@ axis2_relates_to_create(
     AXIS2_ENV_CHECK(env, NULL);
 
     relates_to = AXIS2_MALLOC(env->allocator, sizeof(axis2_relates_to_t));
-    if (!relates_to)
+    if(!relates_to)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -49,10 +48,10 @@ axis2_relates_to_create(
     relates_to->value = NULL;
     relates_to->relationship_type = NULL;
 
-    if (value)
+    if(value)
     {
         relates_to->value = axutil_strdup(env, value);
-        if (!(relates_to->value))
+        if(!(relates_to->value))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             axis2_relates_to_free(relates_to, env);
@@ -60,10 +59,10 @@ axis2_relates_to_create(
         }
     }
 
-    if (relationship_type)
+    if(relationship_type)
     {
         relates_to->relationship_type = axutil_strdup(env, relationship_type);
-        if (!(relates_to->relationship_type))
+        if(!(relates_to->relationship_type))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             axis2_relates_to_free(relates_to, env);
@@ -90,15 +89,15 @@ axis2_relates_to_set_value(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (relates_to->value)
+    if(relates_to->value)
     {
         AXIS2_FREE(env->allocator, relates_to->value);
     }
 
-    if (value)
+    if(value)
     {
-        relates_to->value = (axis2_char_t *) axutil_strdup(env, value);
-        if (!(relates_to->value))
+        relates_to->value = (axis2_char_t *)axutil_strdup(env, value);
+        if(!(relates_to->value))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -124,16 +123,15 @@ axis2_relates_to_set_relationship_type(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (relates_to->relationship_type)
+    if(relates_to->relationship_type)
     {
         AXIS2_FREE(env->allocator, relates_to->relationship_type);
     }
 
-    if (relationship_type)
+    if(relationship_type)
     {
-        relates_to->relationship_type =
-            (axis2_char_t *) axutil_strdup(env, relationship_type);
-        if (!(relates_to->relationship_type))
+        relates_to->relationship_type = (axis2_char_t *)axutil_strdup(env, relationship_type);
+        if(!(relates_to->relationship_type))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -150,12 +148,12 @@ axis2_relates_to_free(
 {
     AXIS2_ENV_CHECK(env, void);
 
-    if (relates_to->value)
+    if(relates_to->value)
     {
         AXIS2_FREE(env->allocator, relates_to->value);
     }
 
-    if (relates_to->relationship_type)
+    if(relates_to->relationship_type)
     {
         AXIS2_FREE(env->allocator, relates_to->relationship_type);
     }

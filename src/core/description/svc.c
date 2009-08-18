@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -120,8 +119,8 @@ struct axis2_svc
     /** Base description struct */
     axis2_desc_t *base;
 
-	/* Mutex to avoid loading the same service dll twice */
-	axutil_thread_mutex_t *mutex;
+    /* Mutex to avoid loading the same service dll twice */
+    axutil_thread_mutex_t *mutex;
 };
 
 AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
@@ -130,8 +129,8 @@ axis2_svc_create(
 {
     axis2_svc_t *svc = NULL;
 
-    svc = (axis2_svc_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_t));
-    if (!svc)
+    svc = (axis2_svc_t *)AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_t));
+    if(!svc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
@@ -169,102 +168,92 @@ axis2_svc_create(
     svc->base = NULL;
 
     svc->param_container = axutil_param_container_create(env);
-    if (!svc->param_container)
+    if(!svc->param_container)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Service param container creation failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service param container creation failed");
         return NULL;
     }
 
     svc->flow_container = axis2_flow_container_create(env);
-    if (!svc->flow_container)
+    if(!svc->flow_container)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Service flow container creation failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service flow container creation failed");
         return NULL;
     }
 
     svc->op_alias_map = axutil_hash_make(env);
-    if (!svc->op_alias_map)
+    if(!svc->op_alias_map)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Service operation alias map creation failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service operation alias map creation failed");
         return NULL;
     }
 
     svc->op_action_map = axutil_hash_make(env);
-    if (!svc->op_action_map)
+    if(!svc->op_action_map)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Service operation action map creation failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service operation action map creation failed");
         return NULL;
     }
 
     svc->op_rest_map = axutil_hash_make(env);
-    if (!svc->op_rest_map)
+    if(!svc->op_rest_map)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Service operation rest map creation failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service operation rest map creation failed");
         return NULL;
     }
 
     /** Create module list of default size */
     svc->module_list = axutil_array_list_create(env, 0);
-    if (!svc->module_list)
+    if(!svc->module_list)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Service module list creation failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service module list creation failed");
         return NULL;
     }
 
-    svc->schema_list = axutil_array_list_create(env,
-                                                AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
-    if (!svc->schema_list)
+    svc->schema_list = axutil_array_list_create(env, AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
+    if(!svc->schema_list)
     {
         axis2_svc_free(svc, env);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Service schema list creation failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service schema list creation failed");
         return NULL;
     }
 
-    svc->engaged_module_list = axutil_array_list_create(env,
-                                                    AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
-    if (!svc->engaged_module_list)
+    svc->engaged_module_list = axutil_array_list_create(env, AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
+    if(!svc->engaged_module_list)
     {
         axis2_svc_free(svc, env);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Service engaged modules list creation failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service engaged modules list creation failed");
         return NULL;
     }
 
     svc->schema_loc_adjusted = AXIS2_FALSE;
-    if (svc->schema_target_ns_prefix)
+    if(svc->schema_target_ns_prefix)
     {
         AXIS2_FREE(env->allocator, svc->schema_target_ns_prefix);
         svc->schema_target_ns_prefix = NULL;
     }
     svc->schema_target_ns_prefix = axutil_strdup(env, "ns");
 
-    if (svc->target_ns)
+    if(svc->target_ns)
     {
         AXIS2_FREE(env->allocator, svc->target_ns);
         svc->target_ns = NULL;
     }
     svc->target_ns = axutil_strdup(env, "http://ws.apache.org/axis2");
 
-    if (svc->target_ns_prefix)
+    if(svc->target_ns_prefix)
     {
         AXIS2_FREE(env->allocator, svc->target_ns_prefix);
         svc->target_ns_prefix = NULL;
@@ -273,19 +262,19 @@ axis2_svc_create(
     svc->sc_calc_count = 0;
 
     svc->base = axis2_desc_create(env);
-    if (!svc->base)
+    if(!svc->base)
     {
         axis2_svc_free(svc, env);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service base creation failed");
         return NULL;
     }
-	svc->mutex = axutil_thread_mutex_create(env->allocator, AXIS2_THREAD_MUTEX_DEFAULT);
-	if (!svc->mutex)
-	{
-		axis2_svc_free(svc, env);
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service mutex creation failed");
+    svc->mutex = axutil_thread_mutex_create(env->allocator, AXIS2_THREAD_MUTEX_DEFAULT);
+    if(!svc->mutex)
+    {
+        axis2_svc_free(svc, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service mutex creation failed");
         return NULL;
-	}
+    }
     return svc;
 }
 
@@ -300,21 +289,19 @@ axis2_svc_create_with_qname(
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
     svc = axis2_svc_create(env);
-    if (!svc)
+    if(!svc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Service creation failed for name %s", 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service creation failed for name %s",
             axutil_qname_get_localpart(qname, env));
         return NULL;
     }
 
     status = axis2_svc_set_qname(svc, env, qname);
-    if (AXIS2_FAILURE == status)
+    if(AXIS2_FAILURE == status)
     {
         axis2_svc_free(svc, env);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Setting name %s to service failed", 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Setting name %s to service failed",
             axutil_qname_get_localpart(qname, env));
         return NULL;
     }
@@ -327,27 +314,27 @@ axis2_svc_free(
     axis2_svc_t * svc,
     const axutil_env_t * env)
 {
-    if (svc->impl_class)
+    if(svc->impl_class)
     {
-        AXIS2_SVC_SKELETON_FREE((axis2_svc_skeleton_t *) svc->impl_class, env);
+        AXIS2_SVC_SKELETON_FREE((axis2_svc_skeleton_t *)svc->impl_class, env);
     }
-    if (svc->param_container)
+    if(svc->param_container)
     {
         axutil_param_container_free(svc->param_container, env);
     }
 
-    if (svc->flow_container)
+    if(svc->flow_container)
     {
         axis2_flow_container_free(svc->flow_container, env);
     }
 
-    if (svc->filename)
+    if(svc->filename)
     {
         AXIS2_FREE(env->allocator, svc->filename);
         svc->filename = NULL;
     }
 
-    if (svc->svc_desc)
+    if(svc->svc_desc)
     {
         AXIS2_FREE(env->allocator, svc->svc_desc);
         svc->svc_desc = NULL;
@@ -355,17 +342,17 @@ axis2_svc_free(
 
     svc->parent = NULL;
 
-    if (svc->module_list)
+    if(svc->module_list)
     {
         int i = 0;
         int size = 0;
 
         size = axutil_array_list_size(svc->module_list, env);
-        for (i = 0; i < size; i++)
+        for(i = 0; i < size; i++)
         {
             axutil_qname_t *qname = NULL;
             qname = axutil_array_list_get(svc->module_list, env, i);
-            if (qname)
+            if(qname)
             {
                 axutil_qname_free(qname, env);
             }
@@ -373,38 +360,36 @@ axis2_svc_free(
         axutil_array_list_free(svc->module_list, env);
     }
 
-    if (svc->schema_list)
+    if(svc->schema_list)
     {
         axutil_array_list_free(svc->schema_list, env);
     }
 
-    if (svc->engaged_module_list)
+    if(svc->engaged_module_list)
     {
         axutil_array_list_free(svc->engaged_module_list, env);
     }
 
-    if (svc->axis_svc_name)
+    if(svc->axis_svc_name)
     {
         AXIS2_FREE(env->allocator, svc->axis_svc_name);
         svc->axis_svc_name = NULL;
     }
 
-    if (svc->op_alias_map)
+    if(svc->op_alias_map)
     {
         axutil_hash_index_t *hi = NULL;
         void *val = NULL;
 
-        for (hi = axutil_hash_first(svc->op_alias_map, env); hi;
-             hi = axutil_hash_next(env, hi))
+        for(hi = axutil_hash_first(svc->op_alias_map, env); hi; hi = axutil_hash_next(env, hi))
         {
             axutil_hash_this(hi, NULL, NULL, &val);
 
-            if (val)
+            if(val)
             {
-                if (axis2_op_is_from_module((axis2_op_t *) val, env) ==
-                    AXIS2_FALSE)
+                if(axis2_op_is_from_module((axis2_op_t *)val, env) == AXIS2_FALSE)
                 {
-                    axis2_op_free((axis2_op_t *) val, env);
+                    axis2_op_free((axis2_op_t *)val, env);
                 }
                 val = NULL;
             }
@@ -413,79 +398,78 @@ axis2_svc_free(
         axutil_hash_free(svc->op_alias_map, env);
     }
 
-    if (svc->op_action_map)
+    if(svc->op_action_map)
     {
         axutil_hash_index_t *hi = NULL;
         const void *key = NULL;
 
-        for (hi = axutil_hash_first(svc->op_action_map, env); hi;
-             hi = axutil_hash_next(env, hi))
+        for(hi = axutil_hash_first(svc->op_action_map, env); hi; hi = axutil_hash_next(env, hi))
         {
             axutil_hash_this(hi, &key, NULL, NULL);
 
-            if (key)
+            if(key)
             {
-                AXIS2_FREE(env->allocator, (axis2_char_t *) key);
+                AXIS2_FREE(env->allocator, (axis2_char_t *)key);
                 key = NULL;
             }
         }
         axutil_hash_free(svc->op_action_map, env);
     }
 
-    if (svc->op_rest_map)
+    if(svc->op_rest_map)
     {
         axis2_core_utils_free_rest_map(env, svc->op_rest_map);
     }
 
-    if (svc->schema_target_ns_prefix)
+    if(svc->schema_target_ns_prefix)
     {
         AXIS2_FREE(env->allocator, svc->schema_target_ns_prefix);
         svc->schema_target_ns_prefix = NULL;
     }
 
-    if (svc->target_ns)
+    if(svc->target_ns)
     {
         AXIS2_FREE(env->allocator, svc->target_ns);
         svc->target_ns = NULL;
     }
 
-    if (svc->wsdl_path)
+    if(svc->wsdl_path)
     {
         AXIS2_FREE(env->allocator, svc->wsdl_path);
         svc->wsdl_path = NULL;
     }
 
-    if (svc->folder_path)
+    if(svc->folder_path)
     {
         AXIS2_FREE(env->allocator, svc->folder_path);
         svc->folder_path = NULL;
     }
 
-    if (svc->target_ns_prefix)
+    if(svc->target_ns_prefix)
     {
         AXIS2_FREE(env->allocator, svc->target_ns_prefix);
         svc->target_ns_prefix = NULL;
     }
 
-    if (svc->qname)
+    if(svc->qname)
     {
         axutil_qname_free(svc->qname, env);
     }
 
-    if (svc->style)
+    if(svc->style)
     {
         AXIS2_FREE(env->allocator, svc->style);
     }
 
-    if (svc->base)
+    if(svc->base)
     {
         axis2_desc_free(svc->base, env);
     }
-	if (svc->mutex)
-	{
-		axutil_thread_mutex_destroy(svc->mutex);
-	}
-    if (svc)
+    if(svc->mutex)
+    {
+        axutil_thread_mutex_destroy(svc->mutex);
+    }
+    if(svc)
     {
         AXIS2_FREE(env->allocator, svc);
         svc = NULL;
@@ -511,42 +495,40 @@ axis2_svc_add_op(
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
     svcname = axis2_svc_get_name(svc, env);
     qname = axis2_op_get_qname(op, env);
-    if (qname)
+    if(qname)
         key = axutil_qname_get_localpart(qname, env);
     mappings_list = axis2_op_get_wsamapping_list(op, env);
     /* Adding action mappings into service */
-    if (mappings_list)
+    if(mappings_list)
         size = axutil_array_list_size(mappings_list, env);
-    for (j = 0; j < size; j++)
+    for(j = 0; j < size; j++)
     {
         axis2_char_t *mapping = NULL;
 
-        mapping =
-            (axis2_char_t *) axutil_array_list_get(mappings_list, env, j);
+        mapping = (axis2_char_t *)axutil_array_list_get(mappings_list, env, j);
         status = axis2_svc_add_mapping(svc, env, mapping, op);
-        if (AXIS2_SUCCESS != status)
+        if(AXIS2_SUCCESS != status)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Adding operation %s to service %s mapping list failed", 
-                svcname, key);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Adding operation %s to service %s mapping list failed", svcname, key);
             return status;
         }
     }
 
     status = axis2_op_set_parent(op, env, svc);
-    if (AXIS2_SUCCESS != status)
+    if(AXIS2_SUCCESS != status)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Setting service %s as operation %s parent failed", svcname, key);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Setting service %s as operation %s parent failed",
+            svcname, key);
         return status;
     }
     msg_recv = axis2_op_get_msg_recv(op, env);
-    if (msg_recv == NULL)
+    if(msg_recv == NULL)
     {
         msg_recv = axis2_desc_builder_load_default_msg_recv(env);
         axis2_op_set_msg_recv(op, env, msg_recv);
     }
-    if (key)
+    if(key)
     {
         /* If service defines the operation, then we should not override with module level 
          * operation. Module operations are global. If any setting to be modified, those operations
@@ -580,29 +562,28 @@ axis2_svc_get_op_with_qname(
     nc_tmp = nc_name;
 
     op = axutil_hash_get(svc->op_alias_map, nc_tmp, AXIS2_HASH_KEY_STRING);
-    if (op)
+    if(op)
     {
         return op;
     }
     op = axutil_hash_get(svc->op_action_map, nc_tmp, AXIS2_HASH_KEY_STRING);
-    if (op)
+    if(op)
     {
         return op;
     }
-    
-    if (*nc_tmp && svc->op_action_map)
+
+    if(*nc_tmp && svc->op_action_map)
     {
         axutil_hash_index_t *hi = NULL;
         const void *key = NULL;
 
-        for (hi = axutil_hash_first(svc->op_action_map, env); hi;
-             hi = axutil_hash_next(env, hi))
+        for(hi = axutil_hash_first(svc->op_action_map, env); hi; hi = axutil_hash_next(env, hi))
         {
             axutil_hash_this(hi, &key, NULL, NULL);
 
             nc_tmp = nc_name;
 
-            if (key)
+            if(key)
             {
                 axis2_char_t *search = NULL;
                 axis2_bool_t match_start = AXIS2_TRUE;
@@ -610,14 +591,14 @@ axis2_svc_get_op_with_qname(
 
                 search = (axis2_char_t *)key;
 
-                if (!axutil_strchr(search, '*'))
+                if(!axutil_strchr(search, '*'))
                 {
-                    if (axutil_strstr(nc_tmp, search))
+                    if(axutil_strstr(nc_tmp, search))
                     {
                         axis2_char_t *comp_tmp = NULL;
 
                         comp_tmp = axutil_strstr(nc_tmp, search);
-                        if (strlen(comp_tmp) == strlen (search))
+                        if(strlen(comp_tmp) == strlen(search))
                         {
                             nc_tmp = (axis2_char_t *)key;
                             is_matched = AXIS2_TRUE;
@@ -627,52 +608,52 @@ axis2_svc_get_op_with_qname(
                     continue;
                 }
 
-                if (search[0] == '*')
+                if(search[0] == '*')
                 {
                     search++;
-                    if (!*search)
+                    if(!*search)
                     {
                         nc_tmp = (axis2_char_t *)key;
                         is_matched = AXIS2_TRUE;
                         break;
                     }
-                    else if (axutil_strchr(search, '*'))
+                    else if(axutil_strchr(search, '*'))
                     {
                         continue;
                     }
                     match_start = AXIS2_FALSE;
                 }
-                while (search && *search)
+                while(search && *search)
                 {
                     int length = 0;
                     axis2_char_t *loc_tmp = NULL;
 
-                    if (search_tmp)
+                    if(search_tmp)
                     {
                         AXIS2_FREE(env->allocator, search_tmp);
                         search_tmp = NULL;
                     }
                     loc_tmp = axutil_strchr(search, '*');
-                    if (loc_tmp && *loc_tmp)
+                    if(loc_tmp && *loc_tmp)
                     {
-                        if (!loc_tmp[1])
+                        if(!loc_tmp[1])
                         {
                             is_matched = AXIS2_TRUE;
                             break;
                         }
                         length = (int)(loc_tmp - search);
                         /* We are sure that the difference lies within the int range */
-                        search_tmp = (axis2_char_t *) (AXIS2_MALLOC (env->allocator,
-                                          sizeof (axis2_char_t) * (length + 1)));
+                        search_tmp = (axis2_char_t *)(AXIS2_MALLOC(env->allocator,
+                            sizeof(axis2_char_t) * (length + 1)));
                         strncpy(search_tmp, search, length);
                         search_tmp[length] = '\0';
                     }
-                    else if (axutil_strstr(nc_tmp, search))
+                    else if(axutil_strstr(nc_tmp, search))
                     {
                         axis2_char_t *comp_tmp = NULL;
 
                         comp_tmp = axutil_strstr(nc_tmp, search);
-                        if (strlen(comp_tmp) == strlen (search))
+                        if(strlen(comp_tmp) == strlen(search))
                         {
                             nc_tmp = (axis2_char_t *)key;
                             is_matched = AXIS2_TRUE;
@@ -684,13 +665,13 @@ axis2_svc_get_op_with_qname(
                     {
                         break;
                     }
-                    if (search_tmp && axutil_strstr(nc_tmp, search_tmp))
+                    if(search_tmp && axutil_strstr(nc_tmp, search_tmp))
                     {
-                        if (match_start && !(axutil_strncmp(nc_tmp, search, length) == 0))
+                        if(match_start && !(axutil_strncmp(nc_tmp, search, length) == 0))
                         {
                             break;
                         }
-                        else if (!match_start)
+                        else if(!match_start)
                         {
                             match_start = AXIS2_TRUE;
                         }
@@ -702,12 +683,12 @@ axis2_svc_get_op_with_qname(
                     search += axutil_strlen(search_tmp) + 1;
                     nc_tmp = axutil_strstr(nc_tmp, search_tmp) + axutil_strlen(search_tmp);
                 }
-                if (search_tmp)
+                if(search_tmp)
                 {
                     AXIS2_FREE(env->allocator, search_tmp);
                     search_tmp = NULL;
                 }
-                if (is_matched || !*search)
+                if(is_matched || !*search)
                 {
                     nc_tmp = (axis2_char_t *)key;
                     is_matched = AXIS2_TRUE;
@@ -716,13 +697,13 @@ axis2_svc_get_op_with_qname(
             }
         }
     }
-    if (!is_matched)
+    if(!is_matched)
     {
         nc_tmp = nc_name;
     }
 
     op = axutil_hash_get(svc->op_alias_map, nc_tmp, AXIS2_HASH_KEY_STRING);
-    if (op)
+    if(op)
     {
         return op;
     }
@@ -746,12 +727,12 @@ axis2_svc_get_rest_op_list_with_method_and_location(
     AXIS2_PARAM_CHECK(env->error, method, NULL);
     AXIS2_PARAM_CHECK(env->error, location, NULL);
 
-    loc_str_tmp = (axis2_char_t *) location; /* Casted to facilitate loop */
-    if (loc_str_tmp[1] == '/')
+    loc_str_tmp = (axis2_char_t *)location; /* Casted to facilitate loop */
+    if(loc_str_tmp[1] == '/')
     {
         loc_str_tmp++;
     } /* ignore any '/' at the beginning */
-    if (strchr(loc_str_tmp, '?'))
+    if(strchr(loc_str_tmp, '?'))
     {
         axis2_char_t *temp = NULL;
 
@@ -762,7 +743,7 @@ axis2_svc_get_rest_op_list_with_method_and_location(
     {
         axis2_char_t *temp = NULL;
         temp = strchr(loc_str_tmp, '{');
-        if (temp)
+        if(temp)
         {
             loc_str_tmp = temp;
         }
@@ -771,13 +752,13 @@ axis2_svc_get_rest_op_list_with_method_and_location(
             loc_str_tmp += strlen(loc_str_tmp);
             break;
         }
-    } while (loc_str_tmp[1] &&
-             loc_str_tmp[1] == '{');
+    }
+    while(loc_str_tmp[1] && loc_str_tmp[1] == '{');
 
-    loc_str = (axis2_char_t *) axutil_strmemdup(location, (loc_str_tmp - location), env);
+    loc_str = (axis2_char_t *)axutil_strmemdup(location, (loc_str_tmp - location), env);
 
     rindex = axutil_rindex(loc_str, '/');
-    if (rindex && *rindex)
+    if(rindex && *rindex)
     {
         loc_str_tmp = axutil_string_substring_ending_at(loc_str, (int)(rindex - loc_str));
         /* We are sure that the difference lies within the int range */
@@ -787,14 +768,12 @@ axis2_svc_get_rest_op_list_with_method_and_location(
         loc_str_tmp = loc_str;
     }
 
-    plen = axutil_strlen (method) + axutil_strlen (loc_str_tmp) + 2;
-    key = (axis2_char_t *) (AXIS2_MALLOC (env->allocator,
-                                          sizeof (axis2_char_t) * plen));
-    sprintf (key, "%s:%s", method, loc_str_tmp);
-    AXIS2_FREE (env->allocator, loc_str);
-    op_list = (axutil_array_list_t *) axutil_hash_get(svc->op_rest_map,
-                                                      key, AXIS2_HASH_KEY_STRING);
-    AXIS2_FREE (env->allocator, key);
+    plen = axutil_strlen(method) + axutil_strlen(loc_str_tmp) + 2;
+    key = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * plen));
+    sprintf(key, "%s:%s", method, loc_str_tmp);
+    AXIS2_FREE(env->allocator, loc_str);
+    op_list = (axutil_array_list_t *)axutil_hash_get(svc->op_rest_map, key, AXIS2_HASH_KEY_STRING);
+    AXIS2_FREE(env->allocator, key);
     return op_list;
 }
 
@@ -806,8 +785,7 @@ axis2_svc_get_op_with_name(
 {
     AXIS2_PARAM_CHECK(env->error, nc_name, NULL);
 
-    return (axis2_op_t *) axutil_hash_get(svc->op_alias_map, nc_name,
-                                          AXIS2_HASH_KEY_STRING);
+    return (axis2_op_t *)axutil_hash_get(svc->op_alias_map, nc_name, AXIS2_HASH_KEY_STRING);
 }
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
@@ -827,10 +805,9 @@ axis2_svc_set_parent(
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
 
     svc->parent = svc_grp;
-    if (svc_grp)
+    if(svc_grp)
     {
-        axis2_desc_set_parent(svc->base, env,
-                              axis2_svc_grp_get_base(svc_grp, env));
+        axis2_desc_set_parent(svc->base, env, axis2_svc_grp_get_base(svc_grp, env));
     }
 
     return AXIS2_SUCCESS;
@@ -851,14 +828,14 @@ axis2_svc_set_qname(
     const axutil_qname_t * qname)
 {
     AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
-    if (svc->qname)
+    if(svc->qname)
     {
         axutil_qname_free(svc->qname, env);
     }
 
-    if (qname)
+    if(qname)
     {
-        svc->qname = axutil_qname_clone((axutil_qname_t *) qname, env);
+        svc->qname = axutil_qname_clone((axutil_qname_t *)qname, env);
     }
     return AXIS2_SUCCESS;
 }
@@ -882,17 +859,14 @@ axis2_svc_add_param(
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
     paramname = axutil_param_get_name(param, env);
 
-    if (axis2_svc_is_param_locked(svc, env, axutil_param_get_name(param, env)))
+    if(axis2_svc_is_param_locked(svc, env, axutil_param_get_name(param, env)))
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
-                        AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Parameter %s is locked for service %s", paramname, svcname);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Parameter %s is locked for service %s", paramname,
+            svcname);
         return AXIS2_FAILURE;
     }
-    return axutil_param_container_add_param(svc->param_container, env,
-                                            param);
+    return axutil_param_container_add_param(svc->param_container, env, param);
 }
 
 AXIS2_EXTERN axutil_param_t *AXIS2_CALL
@@ -905,7 +879,7 @@ axis2_svc_get_param(
     AXIS2_PARAM_CHECK(env->error, name, NULL);
 
     param = axutil_param_container_get_param(svc->param_container, env, name);
-    if (!param && svc->parent)
+    if(!param && svc->parent)
     {
         param = axis2_svc_grp_get_param(svc->parent, env, name);
     }
@@ -936,14 +910,14 @@ axis2_svc_is_param_locked(
     /* Checking the locked value of parent */
 
     parent = axis2_svc_get_parent(svc, env);
-    if (parent)
+    if(parent)
         locked = axis2_svc_grp_is_param_locked(parent, env, param_name);
-    if (parent && locked)
+    if(parent && locked)
     {
         return AXIS2_TRUE;
     }
     param = axis2_svc_get_param(svc, env, param_name);
-    if (param)
+    if(param)
     {
         ret = axutil_param_is_locked(param, env);
     }
@@ -968,16 +942,16 @@ axis2_svc_engage_module(
 
     svcname = axis2_svc_get_name(svc, env);
     phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
-    if (!phase_resolver)
+    if(!phase_resolver)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Creating phase resolver failed for service %s", svcname);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating phase resolver failed for service %s",
+            svcname);
 
         return AXIS2_FAILURE;
     }
 
     status = axis2_phase_resolver_engage_module_to_svc(phase_resolver, env, svc, module_desc);
-    if (status)
+    if(status)
     {
         const axutil_qname_t *qname = NULL;
         status = axutil_array_list_add(svc->engaged_module_list, env, module_desc);
@@ -985,7 +959,7 @@ axis2_svc_engage_module(
         axis2_svc_add_module_qname(svc, env, qname);
     }
 
-    if (phase_resolver)
+    if(phase_resolver)
     {
         axis2_phase_resolver_free(phase_resolver, env);
     }
@@ -1001,21 +975,19 @@ axis2_svc_is_module_engaged(
     const axutil_env_t * env,
     axutil_qname_t * module_qname)
 {
-    int i = 0,
-        size = 0;
+    int i = 0, size = 0;
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_svc_is_module_engaged");
     size = axutil_array_list_size(svc->engaged_module_list, env);
-    for (i = 0; i < size; i++)
+    for(i = 0; i < size; i++)
     {
         const axutil_qname_t *module_qname_l = NULL;
         axis2_module_desc_t *module_desc_l = NULL;
 
-        module_desc_l =
-            (axis2_module_desc_t *) axutil_array_list_get(svc->engaged_module_list,
-                                                          env, i);
+        module_desc_l = (axis2_module_desc_t *)axutil_array_list_get(svc->engaged_module_list, env,
+            i);
         module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
 
-        if (axutil_qname_equals(module_qname, env, module_qname_l))
+        if(axutil_qname_equals(module_qname, env, module_qname_l))
         {
             return AXIS2_TRUE;
         }
@@ -1048,15 +1020,13 @@ axis2_svc_disengage_module(
     svcname = axis2_svc_get_name(svc, env);
 
     phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
-    if (!phase_resolver)
+    if(!phase_resolver)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Creating phase resolver failed for service %s", svcname);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating phase resolver failed for service %s",
+            svcname);
         return AXIS2_FAILURE;
     }
-    status =
-        axis2_phase_resolver_disengage_module_from_svc(phase_resolver, env, svc,
-                                                       module_desc);
+    status = axis2_phase_resolver_disengage_module_from_svc(phase_resolver, env, svc, module_desc);
 
     axis2_phase_resolver_free(phase_resolver, env);
 
@@ -1089,55 +1059,50 @@ axis2_svc_add_module_ops(
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
     svcname = axis2_svc_get_name(svc, env);
-    modname = axutil_qname_get_localpart(axis2_module_desc_get_qname(module_desc, 
-        env), env);
+    modname = axutil_qname_get_localpart(axis2_module_desc_get_qname(module_desc, env), env);
     map = axis2_module_desc_get_all_ops(module_desc, env);
-    phase_resolver = axis2_phase_resolver_create_with_config_and_svc(env, conf,
-                                                                     svc);
-    if (!phase_resolver)
+    phase_resolver = axis2_phase_resolver_create_with_config_and_svc(env, conf, svc);
+    if(!phase_resolver)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Creating phase resolver failed for service %s", svcname);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating phase resolver failed for service %s",
+            svcname);
         return AXIS2_FAILURE;
     }
-    for (index = axutil_hash_first(map, env); index; index =
-         axutil_hash_next(env, index))
+    for(index = axutil_hash_first(map, env); index; index = axutil_hash_next(env, index))
     {
         void *v = NULL;
         axutil_hash_this(index, NULL, NULL, &v);
-        op_desc = (axis2_op_t *) v;
-        opname = axutil_qname_get_localpart(axis2_op_get_qname(op_desc, env), 
-            env);
-        status =
-            axis2_phase_resolver_build_execution_chains_for_module_op(phase_resolver, env, op_desc);
+        op_desc = (axis2_op_t *)v;
+        opname = axutil_qname_get_localpart(axis2_op_get_qname(op_desc, env), env);
+        status = axis2_phase_resolver_build_execution_chains_for_module_op(phase_resolver, env,
+            op_desc);
 
-        if (AXIS2_SUCCESS != status)
+        if(AXIS2_SUCCESS != status)
         {
-            if (phase_resolver)
+            if(phase_resolver)
             {
                 axis2_phase_resolver_free(phase_resolver, env);
             }
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Builidng module operation %s failed for module %s", opname, 
-                modname);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Builidng module operation %s failed for module %s", opname, modname);
             return status;
         }
 
         status = axis2_svc_add_op(svc, env, op_desc);
-        if (AXIS2_SUCCESS != status)
+        if(AXIS2_SUCCESS != status)
         {
-            if (phase_resolver)
+            if(phase_resolver)
             {
                 axis2_phase_resolver_free(phase_resolver, env);
             }
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                "Adding operation %s to service %s failed", opname, svcname);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Adding operation %s to service %s failed",
+                opname, svcname);
             return status;
         }
 
     }
 
-    if (phase_resolver)
+    if(phase_resolver)
     {
         axis2_phase_resolver_free(phase_resolver, env);
     }
@@ -1150,7 +1115,7 @@ axis2_svc_get_name(
     const axis2_svc_t * svc,
     const axutil_env_t * env)
 {
-    if (svc->qname)
+    if(svc->qname)
     {
         return axutil_qname_get_localpart(svc->qname, env);
     }
@@ -1166,13 +1131,13 @@ axis2_svc_set_name(
 {
     AXIS2_PARAM_CHECK(env->error, axis_svc_name, AXIS2_FAILURE);
 
-    if (svc->axis_svc_name)
+    if(svc->axis_svc_name)
     {
         AXIS2_FREE(env->allocator, svc->axis_svc_name);
         svc->axis_svc_name = NULL;
     }
     svc->axis_svc_name = axutil_strdup(env, axis_svc_name);
-    if (!svc->axis_svc_name)
+    if(!svc->axis_svc_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
@@ -1213,13 +1178,13 @@ axis2_svc_set_file_name(
 {
     AXIS2_PARAM_CHECK(env->error, filename, AXIS2_FAILURE);
 
-    if (svc->filename)
+    if(svc->filename)
     {
         AXIS2_FREE(env->allocator, svc->filename);
         svc->filename = NULL;
     }
-    svc->filename = (axis2_char_t *) axutil_strdup(env, filename);
-    if (!svc->filename)
+    svc->filename = (axis2_char_t *)axutil_strdup(env, filename);
+    if(!svc->filename)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
@@ -1244,13 +1209,13 @@ axis2_svc_set_svc_desc(
 {
     AXIS2_PARAM_CHECK(env->error, svc_desc, AXIS2_FAILURE);
 
-    if (svc->svc_desc)
+    if(svc->svc_desc)
     {
         AXIS2_FREE(env->allocator, svc->svc_desc);
         svc->svc_desc = NULL;
     }
-    svc->svc_desc = (axis2_char_t *) axutil_strdup(env, svc_desc);
-    if (!svc->svc_desc)
+    svc->svc_desc = (axis2_char_t *)axutil_strdup(env, svc_desc);
+    if(!svc->svc_desc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory");
@@ -1269,8 +1234,8 @@ axis2_svc_add_mapping(
     AXIS2_PARAM_CHECK(env->error, mapping_key, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
 
-    axutil_hash_set(svc->op_action_map, axutil_strdup(env, mapping_key), 
-            AXIS2_HASH_KEY_STRING, op_desc);
+    axutil_hash_set(svc->op_action_map, axutil_strdup(env, mapping_key), AXIS2_HASH_KEY_STRING,
+        op_desc);
     return AXIS2_SUCCESS;
 }
 
@@ -1289,43 +1254,41 @@ axis2_svc_add_rest_mapping(
     axis2_char_t* local_location_str = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
 
-    local_location_str = (axis2_char_t *) location; /* Casted to facilitate loop */
+    local_location_str = (axis2_char_t *)location; /* Casted to facilitate loop */
 
     /* skip the beginning '/' */
-    if(*local_location_str == '/') 
+    if(*local_location_str == '/')
     {
-        local_location_str ++;
+        local_location_str++;
     }
     question_char = axutil_strchr(local_location_str, '?');
-    if(question_char) 
+    if(question_char)
     {
         *question_char = '\0';
     }
 
     key_len = axutil_strlen(method) + axutil_strlen(local_location_str) + 2;
 
-    mapping_url = (axis2_char_t *) (AXIS2_MALLOC (env->allocator,
-                                              sizeof (axis2_char_t) * key_len));
-    if(!mapping_url) {
-       AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-       AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "No memory. Cannot create the rest mapping url");
-       return AXIS2_FAILURE;
+    mapping_url = (axis2_char_t *)(AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * key_len));
+    if(!mapping_url)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create the rest mapping url");
+        return AXIS2_FAILURE;
     }
 
     sprintf(mapping_url, "%s:%s", method, local_location_str);
 
-    status = axis2_core_utils_prepare_rest_mapping(env,
-                    mapping_url,
-                    svc->op_rest_map,
-                    op_desc);
+    status = axis2_core_utils_prepare_rest_mapping(env, mapping_url, svc->op_rest_map, op_desc);
 
-    if(mapping_url) {
-        AXIS2_FREE(env->allocator, mapping_url);    
+    if(mapping_url)
+    {
+        AXIS2_FREE(env->allocator, mapping_url);
     }
 
     /* restore the question character */
-    if(question_char) {
+    if(question_char)
+    {
         *question_char = '?';
     }
 
@@ -1342,7 +1305,7 @@ axis2_svc_add_module_qname(
 
     AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
 
-    qmodule_qname_l = axutil_qname_clone((axutil_qname_t *) module_qname, env);
+    qmodule_qname_l = axutil_qname_clone((axutil_qname_t *)module_qname, env);
     return axutil_array_list_add(svc->module_list, env, qmodule_qname_l);
 }
 
@@ -1370,7 +1333,7 @@ axis2_svc_set_target_ns(
 {
     AXIS2_PARAM_CHECK(env->error, ns, AXIS2_FAILURE);
 
-    if (svc->target_ns)
+    if(svc->target_ns)
     {
         AXIS2_FREE(env->allocator, svc->target_ns);
         svc->target_ns = NULL;
@@ -1395,7 +1358,7 @@ axis2_svc_set_target_ns_prefix(
 {
     AXIS2_PARAM_CHECK(env->error, prefix, AXIS2_FAILURE);
 
-    if (svc->target_ns_prefix)
+    if(svc->target_ns_prefix)
     {
         AXIS2_FREE(env->allocator, svc->target_ns_prefix);
         svc->target_ns_prefix = NULL;
@@ -1422,20 +1385,19 @@ axis2_svc_set_ns_map(
 
     AXIS2_PARAM_CHECK(env->error, ns_map, AXIS2_FAILURE);
 
-    if (svc->ns_map)
+    if(svc->ns_map)
     {
-        for (hi = axutil_hash_first(svc->ns_map, env); hi;
-             hi = axutil_hash_next(env, hi))
+        for(hi = axutil_hash_first(svc->ns_map, env); hi; hi = axutil_hash_next(env, hi))
         {
             void *value = NULL;
             void *key = NULL;
-            axutil_hash_this(hi, (const void **) &key, NULL, (void **) &value);
-            if (key)
+            axutil_hash_this(hi, (const void **)&key, NULL, (void **)&value);
+            if(key)
             {
                 AXIS2_FREE(env->allocator, key);
                 key = NULL;
             }
-            if (value)
+            if(value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;
@@ -1460,13 +1422,12 @@ axis2_svc_swap_mapping_table(
 
     new_table = axutil_hash_make(env);
 
-    for (hi = axutil_hash_first(orig_table, env); env;
-         hi = axutil_hash_next(env, hi))
+    for(hi = axutil_hash_first(orig_table, env); env; hi = axutil_hash_next(env, hi))
     {
         void *value = NULL;
         void *key = NULL;
 
-        axutil_hash_this(hi, (const void **) &key, NULL, (void **) &value);
+        axutil_hash_this(hi, (const void **)&key, NULL, (void **)&value);
         axutil_hash_set(new_table, value, AXIS2_HASH_KEY_STRING, key);
     }
     return new_table;
@@ -1521,7 +1482,7 @@ axis2_svc_set_svc_wsdl_path(
     const axis2_char_t * wsdl_path)
 {
     AXIS2_PARAM_CHECK(env->error, wsdl_path, AXIS2_FAILURE);
-    svc->wsdl_path = (axis2_char_t *) axutil_strdup(env, wsdl_path);
+    svc->wsdl_path = (axis2_char_t *)axutil_strdup(env, wsdl_path);
     return AXIS2_SUCCESS;
 }
 
@@ -1540,7 +1501,7 @@ axis2_svc_set_svc_folder_path(
     const axis2_char_t * folder_path)
 {
     AXIS2_PARAM_CHECK(env->error, folder_path, AXIS2_FAILURE);
-    svc->folder_path = (axis2_char_t *) axutil_strdup(env, folder_path);
+    svc->folder_path = (axis2_char_t *)axutil_strdup(env, folder_path);
     return AXIS2_SUCCESS;
 }
 
@@ -1557,7 +1518,7 @@ axis2_svc_get_mutex(
     const axis2_svc_t * svc,
     const axutil_env_t * env)
 {
-	return svc->mutex;
+    return svc->mutex;
 }
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -32,10 +31,10 @@ axis2_svr_callback_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    svr_callback = (axis2_svr_callback_t *)
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_svr_callback_t));
+    svr_callback = (axis2_svr_callback_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(axis2_svr_callback_t));
 
-    if (!svr_callback)
+    if(!svr_callback)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -51,7 +50,7 @@ axis2_svr_callback_free(
 {
     AXIS2_ENV_CHECK(env, void);
 
-    if (svr_callback)
+    if(svr_callback)
     {
         AXIS2_FREE(env->allocator, svr_callback);
     }
@@ -77,7 +76,7 @@ axis2_svr_callback_handle_result(
     svc_ctx = axis2_op_ctx_get_parent(op_ctx, env);
     conf_ctx = axis2_svc_ctx_get_conf_ctx(svc_ctx, env);
     engine = axis2_engine_create(env, conf_ctx);
-    if (!engine)
+    if(!engine)
     {
         return AXIS2_FAILURE;
     }
@@ -103,12 +102,11 @@ axis2_svr_callback_handle_fault(
     svc_ctx = axis2_op_ctx_get_parent(op_ctx, env);
     conf_ctx = axis2_svc_ctx_get_conf_ctx(svc_ctx, env);
     engine = axis2_engine_create(env, conf_ctx);
-    if (!engine)
+    if(!engine)
     {
         return AXIS2_FAILURE;
     }
 
-    fault_ctx =
-        axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx, NULL, NULL);
+    fault_ctx = axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx, NULL, NULL);
     return axis2_engine_send_fault(engine, env, fault_ctx);
 }

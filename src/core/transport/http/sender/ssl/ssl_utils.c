@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -69,12 +68,12 @@ axis2_ssl_utils_initialize_ctx(
     /* Load our keys and certificates
      * If we need client certificates it has to be done here
      */
-    if (key_file)               /*can we check if the server needs client auth? */
+    if (key_file) /*can we check if the server needs client auth? */
     {
         if (!ssl_pp)
         {
-            AXIS2_LOG_INFO(env->log, 
-                           "[ssl client] No passphrase specified for \
+            AXIS2_LOG_INFO(env->log,
+                "[ssl client] No passphrase specified for \
 key file %s and server cert %s", key_file, server_cert);
         }
 
@@ -84,7 +83,7 @@ key file %s and server cert %s", key_file, server_cert);
         if (!(SSL_CTX_use_certificate_chain_file(ctx, key_file)))
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            "[ssl client] Loading client certificate failed \
+                "[ssl client] Loading client certificate failed \
 , key file %s", key_file);
             SSL_CTX_free(ctx);
             return NULL;
@@ -93,7 +92,7 @@ key file %s and server cert %s", key_file, server_cert);
         if (!(SSL_CTX_use_PrivateKey_file(ctx, key_file, SSL_FILETYPE_PEM)))
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                            "[ssl client] Loading client key failed, key file \
+                "[ssl client] Loading client key failed, key file \
 %s", key_file);
             SSL_CTX_free(ctx);
             return NULL;
@@ -101,16 +100,16 @@ key file %s and server cert %s", key_file, server_cert);
     }
     else
     {
-        AXIS2_LOG_INFO(env->log, 
-                       "[ssl client] Client certificate chain file"
-                       "not specified");
+        AXIS2_LOG_INFO(env->log,
+            "[ssl client] Client certificate chain file"
+            "not specified");
     }
 
     /* Load the CAs we trust */
     if (!(SSL_CTX_load_verify_locations(ctx, ca_file, 0)))
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "[ssl client] Loading CA certificate failed, \
+            "[ssl client] Loading CA certificate failed, \
 ca_file is %s", ca_file);
         SSL_CTX_free(ctx);
         return NULL;
@@ -133,17 +132,17 @@ axis2_ssl_utils_initialize_ssl(
     ssl = SSL_new(ctx);
     if (!ssl)
     {
-        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
-                         "[ssl]unable to create new ssl context");
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
+            "[ssl]unable to create new ssl context");
         return NULL;
     }
 
     sbio = BIO_new_socket((int)socket, BIO_NOCLOSE);
     if (!sbio)
     {
-        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI, 
-                         "[ssl]unable to create BIO new socket for socket %d", 
-                         (int)socket);
+        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
+            "[ssl]unable to create BIO new socket for socket %d",
+            (int)socket);
         return NULL;
     }
 
@@ -173,22 +172,22 @@ axis2_ssl_utils_initialize_ssl(
         if (peer_name && cert_store)
         {
             client_object = X509_OBJECT_retrieve_by_subject(cert_store->objs,
-                                                            X509_LU_X509,
-                                                            peer_name);
+                X509_LU_X509,
+                peer_name);
         }
         if (client_object)
         {
             client_cert = (client_object->data).x509;
-            if (client_cert && 
-		(M_ASN1_BIT_STRING_cmp(client_cert->signature, 
-                                       peer_cert->signature) == 0))
+            if (client_cert &&
+                (M_ASN1_BIT_STRING_cmp(client_cert->signature,
+                        peer_cert->signature) == 0))
             {
                 if (peer_cert)
                 {
                     X509_free(peer_cert);
                 }
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                        "[ssl client] SSL certificate verified against peer");
+                    "[ssl client] SSL certificate verified against peer");
                 return ssl;
             }
         }
@@ -198,8 +197,8 @@ axis2_ssl_utils_initialize_ssl(
         }
         ERR_error_string(SSL_get_verify_result(ssl), sslerror);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "[ssl client] SSL certificate verification failed (%s)",
-                        sslerror);
+            "[ssl client] SSL certificate verification failed (%s)",
+            sslerror);
         return NULL;
     }
 

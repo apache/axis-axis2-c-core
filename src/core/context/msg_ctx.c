@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -30,6 +29,7 @@
 #include <axiom_soap_envelope.h>
 #include <axiom_soap_const.h>
 #include <axis2_options.h>
+
 
 struct axis2_msg_ctx
 {
@@ -182,10 +182,12 @@ struct axis2_msg_ctx
      * @param env pointer to environment struct
      * @return pointer to service to be invoked
      */
-    struct axis2_svc *(
-    AXIS2_CALL * find_svc) (
-    axis2_msg_ctx_t * msg_ctx,
-    const axutil_env_t * env);
+    struct axis2_svc *
+    (
+        AXIS2_CALL * find_svc)
+    (
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env);
 
     /**
      * Finds the operation to be invoked in the given service. This function 
@@ -195,11 +197,13 @@ struct axis2_msg_ctx
      * @param svc pointer to service to whom the operation belongs 
      * @return pointer to the operation to be invoked
      */
-    struct axis2_op *(
-    AXIS2_CALL * find_op) (
-    axis2_msg_ctx_t * msg_ctx,
-    const axutil_env_t * env,
-    struct axis2_svc * svc);
+    struct axis2_op *
+    (
+        AXIS2_CALL * find_op)
+    (
+        axis2_msg_ctx_t * msg_ctx,
+        const axutil_env_t * env,
+        struct axis2_svc * svc);
 
     axutil_string_t *charset_encoding;
     axutil_stream_t *transport_out_stream;
@@ -231,13 +235,13 @@ axis2_msg_ctx_create(
     axis2_msg_ctx_t *msg_ctx = NULL;
 
     msg_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_msg_ctx_t));
-    if (!msg_ctx)
+    if(!msg_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    memset ((void *)msg_ctx, 0, sizeof (axis2_msg_ctx_t));
+    memset((void *)msg_ctx, 0, sizeof(axis2_msg_ctx_t));
     msg_ctx->base = NULL;
     msg_ctx->process_fault = AXIS2_FALSE;
     msg_ctx->msg_info_headers = NULL;
@@ -303,28 +307,27 @@ axis2_msg_ctx_create(
     msg_ctx->mime_parts = NULL;
 
     msg_ctx->base = axis2_ctx_create(env);
-    if (!(msg_ctx->base))
+    if(!(msg_ctx->base))
     {
         axis2_msg_ctx_free(msg_ctx, env);
         return NULL;
     }
 
-    if (transport_in_desc)
+    if(transport_in_desc)
         msg_ctx->transport_in_desc = transport_in_desc;
-    if (transport_out_desc)
+    if(transport_out_desc)
         msg_ctx->transport_out_desc = transport_out_desc;
-    if (conf_ctx)
+    if(conf_ctx)
         msg_ctx->conf_ctx = conf_ctx;
 
-    if (msg_ctx->transport_in_desc)
-        msg_ctx->transport_in_desc_enum =
-            axis2_transport_in_desc_get_enum(transport_in_desc, env);
-    if (msg_ctx->transport_out_desc)
-        msg_ctx->transport_out_desc_enum =
-            axis2_transport_out_desc_get_enum(transport_out_desc, env);
+    if(msg_ctx->transport_in_desc)
+        msg_ctx->transport_in_desc_enum = axis2_transport_in_desc_get_enum(transport_in_desc, env);
+    if(msg_ctx->transport_out_desc)
+        msg_ctx->transport_out_desc_enum = axis2_transport_out_desc_get_enum(transport_out_desc,
+            env);
 
     msg_ctx->msg_info_headers = axis2_msg_info_headers_create(env, NULL, NULL);
-    if (!(msg_ctx->msg_info_headers))
+    if(!(msg_ctx->msg_info_headers))
     {
         axis2_msg_ctx_free(msg_ctx, env);
         return NULL;
@@ -349,7 +352,7 @@ axis2_msg_ctx_get_parent(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->parent;
 }
 
@@ -359,8 +362,8 @@ axis2_msg_ctx_set_parent(
     const axutil_env_t * env,
     struct axis2_op_ctx * parent)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (parent)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(parent)
     {
         msg_ctx->parent = parent;
     }
@@ -373,90 +376,89 @@ axis2_msg_ctx_free(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    if (--(msg_ctx->ref) > 0)
+    if(--(msg_ctx->ref) > 0)
     {
         return;
     }
 
-    if (msg_ctx->keep_alive)
+    if(msg_ctx->keep_alive)
     {
         return;
     }
 
-    if (msg_ctx->base)
+    if(msg_ctx->base)
     {
         axis2_ctx_free(msg_ctx->base, env);
     }
 
-    if (msg_ctx->msg_info_headers && msg_ctx->msg_info_headers_deep_copy)
+    if(msg_ctx->msg_info_headers && msg_ctx->msg_info_headers_deep_copy)
     {
         axis2_msg_info_headers_free(msg_ctx->msg_info_headers, env);
     }
 
-    if (msg_ctx->message_id)
+    if(msg_ctx->message_id)
     {
         AXIS2_FREE(env->allocator, msg_ctx->message_id);
     }
 
-    if (msg_ctx->svc_ctx_id)
+    if(msg_ctx->svc_ctx_id)
     {
         AXIS2_FREE(env->allocator, msg_ctx->svc_ctx_id);
     }
 
-    if (msg_ctx->soap_action)
+    if(msg_ctx->soap_action)
     {
         axutil_string_free(msg_ctx->soap_action, env);
     }
 
-    if (msg_ctx->rest_http_method)
+    if(msg_ctx->rest_http_method)
     {
         AXIS2_FREE(env->allocator, msg_ctx->rest_http_method);
     }
 
-    if (msg_ctx->svc_grp_ctx_id)
+    if(msg_ctx->svc_grp_ctx_id)
     {
         axutil_string_free(msg_ctx->svc_grp_ctx_id, env);
     }
 
-    if (msg_ctx->soap_envelope)
+    if(msg_ctx->soap_envelope)
     {
         axiom_soap_envelope_free(msg_ctx->soap_envelope, env);
     }
 
-    if (msg_ctx->fault_soap_envelope)
+    if(msg_ctx->fault_soap_envelope)
     {
         axiom_soap_envelope_free(msg_ctx->fault_soap_envelope, env);
     }
 
-    if (msg_ctx->charset_encoding)
+    if(msg_ctx->charset_encoding)
     {
         axutil_string_free(msg_ctx->charset_encoding, env);
     }
 
-    if (msg_ctx->transport_out_stream)
+    if(msg_ctx->transport_out_stream)
     {
         axutil_stream_free(msg_ctx->transport_out_stream, env);
     }
 
-    if (msg_ctx->out_transport_info)
+    if(msg_ctx->out_transport_info)
     {
-        AXIS2_OUT_TRANSPORT_INFO_FREE(msg_ctx->out_transport_info,
-                                           env);
+        AXIS2_OUT_TRANSPORT_INFO_FREE(msg_ctx->out_transport_info, env);
     }
 
-    if (msg_ctx->transport_headers)
+    if(msg_ctx->transport_headers)
     {
         axutil_hash_free(msg_ctx->transport_headers, env);
     }
 
-    if (msg_ctx->accept_charset_record_list)
+    if(msg_ctx->accept_charset_record_list)
     {
         axis2_http_accept_record_t *rec = NULL;
-        while (axutil_array_list_size(msg_ctx->accept_charset_record_list, env))
+        while(axutil_array_list_size(msg_ctx->accept_charset_record_list, env))
         {
-            rec = (axis2_http_accept_record_t *)
-                axutil_array_list_remove(msg_ctx->accept_charset_record_list, env, 0);
-            if (rec)
+            rec = (axis2_http_accept_record_t *)axutil_array_list_remove(
+                msg_ctx->accept_charset_record_list, env, 0);
+            if(rec)
             {
                 axis2_http_accept_record_free(rec, env);
             }
@@ -464,14 +466,14 @@ axis2_msg_ctx_free(
         axutil_array_list_free(msg_ctx->accept_charset_record_list, env);
     }
 
-    if (msg_ctx->output_headers)
+    if(msg_ctx->output_headers)
     {
         axis2_http_header_t *header = NULL;
-        while (axutil_array_list_size(msg_ctx->output_headers, env))
+        while(axutil_array_list_size(msg_ctx->output_headers, env))
         {
-            header = (axis2_http_header_t *)
-                axutil_array_list_remove(msg_ctx->output_headers, env, 0);
-            if (header)
+            header = (axis2_http_header_t *)axutil_array_list_remove(msg_ctx->output_headers, env,
+                0);
+            if(header)
             {
                 axis2_http_header_free(header, env);
             }
@@ -479,14 +481,14 @@ axis2_msg_ctx_free(
         axutil_array_list_free(msg_ctx->output_headers, env);
     }
 
-    if (msg_ctx->accept_language_record_list)
+    if(msg_ctx->accept_language_record_list)
     {
         axis2_http_accept_record_t *rec = NULL;
-        while (axutil_array_list_size(msg_ctx->accept_language_record_list, env))
+        while(axutil_array_list_size(msg_ctx->accept_language_record_list, env))
         {
-            rec = (axis2_http_accept_record_t *)
-                axutil_array_list_remove(msg_ctx->accept_language_record_list, env, 0);
-            if (rec)
+            rec = (axis2_http_accept_record_t *)axutil_array_list_remove(
+                msg_ctx->accept_language_record_list, env, 0);
+            if(rec)
             {
                 axis2_http_accept_record_free(rec, env);
             }
@@ -494,14 +496,14 @@ axis2_msg_ctx_free(
         axutil_array_list_free(msg_ctx->accept_language_record_list, env);
     }
 
-    if (msg_ctx->accept_record_list)
+    if(msg_ctx->accept_record_list)
     {
         axis2_http_accept_record_t *rec = NULL;
-        while (axutil_array_list_size(msg_ctx->accept_record_list, env))
+        while(axutil_array_list_size(msg_ctx->accept_record_list, env))
         {
-            rec = (axis2_http_accept_record_t *)
-                axutil_array_list_remove(msg_ctx->accept_record_list, env, 0);
-            if (rec)
+            rec = (axis2_http_accept_record_t *)axutil_array_list_remove(
+                msg_ctx->accept_record_list, env, 0);
+            if(rec)
             {
                 axis2_http_accept_record_free(rec, env);
             }
@@ -509,32 +511,32 @@ axis2_msg_ctx_free(
         axutil_array_list_free(msg_ctx->accept_record_list, env);
     }
 
-    if (msg_ctx->transfer_encoding)
+    if(msg_ctx->transfer_encoding)
     {
         AXIS2_FREE(env->allocator, msg_ctx->transfer_encoding);
     }
 
-    if (msg_ctx->content_language)
+    if(msg_ctx->content_language)
     {
         AXIS2_FREE(env->allocator, msg_ctx->content_language);
     }
 
-    if (msg_ctx->auth_type)
+    if(msg_ctx->auth_type)
     {
         AXIS2_FREE(env->allocator, msg_ctx->auth_type);
     }
 
-    if (msg_ctx->supported_rest_http_methods)
+    if(msg_ctx->supported_rest_http_methods)
     {
         int i = 0;
         int size = 0;
 
         size = axutil_array_list_size(msg_ctx->supported_rest_http_methods, env);
-        for (i = 0; i < size; i++)
+        for(i = 0; i < size; i++)
         {
             axis2_char_t *rest_http_method = NULL;
             rest_http_method = axutil_array_list_get(msg_ctx->supported_rest_http_methods, env, i);
-            if (rest_http_method)
+            if(rest_http_method)
             {
                 AXIS2_FREE(env->allocator, rest_http_method);
             }
@@ -542,12 +544,12 @@ axis2_msg_ctx_free(
         axutil_array_list_free(msg_ctx->supported_rest_http_methods, env);
     }
 
-    if (msg_ctx->options)
+    if(msg_ctx->options)
     {
         /* freeing only axis2_options_t allocated space, should not
          * call axis2_options_free because it will free internal
          * properties as well. */
-        AXIS2_FREE (env->allocator, msg_ctx->options);
+        AXIS2_FREE(env->allocator, msg_ctx->options);
     }
 
     AXIS2_FREE(env->allocator, msg_ctx);
@@ -571,36 +573,29 @@ axis2_msg_ctx_init(
     struct axis2_conf * conf)
 {
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     msg_ctx->transport_in_desc = axis2_conf_get_transport_in(conf, env,
-                                                             msg_ctx->
-                                                             transport_in_desc_enum);
+        msg_ctx-> transport_in_desc_enum);
 
-    msg_ctx->transport_out_desc = axis2_conf_get_transport_out(conf,
-                                                               env,
-                                                               msg_ctx->
-                                                               transport_out_desc_enum);
+    msg_ctx->transport_out_desc = axis2_conf_get_transport_out(conf, env,
+        msg_ctx-> transport_out_desc_enum);
 
-    if (msg_ctx->svc_grp_id)
+    if(msg_ctx->svc_grp_id)
     {
-        msg_ctx->svc_grp = axis2_conf_get_svc_grp(conf, env,
-                                                  msg_ctx->svc_grp_id);
+        msg_ctx->svc_grp = axis2_conf_get_svc_grp(conf, env, msg_ctx->svc_grp_id);
     }
 
-    if (msg_ctx->svc_qname)
+    if(msg_ctx->svc_qname)
     {
-        msg_ctx->svc = axis2_conf_get_svc(conf, env,
-                                          axutil_qname_get_localpart(msg_ctx->
-                                                                     svc_qname,
-                                                                     env));
+        msg_ctx->svc = axis2_conf_get_svc(conf, env, axutil_qname_get_localpart(
+            msg_ctx-> svc_qname, env));
     }
 
-    if (msg_ctx->op_qname)
+    if(msg_ctx->op_qname)
     {
-        if (msg_ctx->svc)
-            msg_ctx->op = axis2_svc_get_op_with_qname(msg_ctx->svc,
-                                                      env, msg_ctx->op_qname);
+        if(msg_ctx->svc)
+            msg_ctx->op = axis2_svc_get_op_with_qname(msg_ctx->svc, env, msg_ctx->op_qname);
     }
 
     return AXIS2_SUCCESS;
@@ -611,12 +606,11 @@ axis2_msg_ctx_get_fault_to(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
-    if (msg_ctx->msg_info_headers)
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_get_fault_to(msg_ctx->msg_info_headers,
-                                                   env);
+        return axis2_msg_info_headers_get_fault_to(msg_ctx->msg_info_headers, env);
     }
 
     return NULL;
@@ -627,9 +621,9 @@ axis2_msg_ctx_get_from(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
-    if (msg_ctx->msg_info_headers)
+    if(msg_ctx->msg_info_headers)
     {
         return axis2_msg_info_headers_get_from(msg_ctx->msg_info_headers, env);
     }
@@ -642,7 +636,7 @@ axis2_msg_ctx_get_in_fault_flow(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     return msg_ctx->in_fault_flow;
 }
 
@@ -651,7 +645,7 @@ axis2_msg_ctx_get_soap_envelope(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->soap_envelope;
 }
 
@@ -660,7 +654,7 @@ axis2_msg_ctx_get_response_soap_envelope(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->response_soap_envelope;
 }
 
@@ -669,7 +663,7 @@ axis2_msg_ctx_get_fault_soap_envelope(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->fault_soap_envelope;
 }
 
@@ -678,11 +672,10 @@ axis2_msg_ctx_get_msg_id(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
-    if (msg_ctx->msg_info_headers)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_get_message_id(msg_ctx->msg_info_headers,
-                                                     env);
+        return axis2_msg_info_headers_get_message_id(msg_ctx->msg_info_headers, env);
     }
 
     return NULL;
@@ -694,11 +687,10 @@ axis2_msg_ctx_set_msg_id(
     const axutil_env_t * env,
     axis2_char_t * msg_id)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_id, AXIS2_FAILURE);
-    if (msg_ctx->msg_info_headers)
+    AXIS2_PARAM_CHECK(env->error, msg_id, AXIS2_FAILURE);
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_set_message_id(msg_ctx->msg_info_headers,
-                                                     env, msg_id);
+        return axis2_msg_info_headers_set_message_id(msg_ctx->msg_info_headers, env, msg_id);
     }
 
     return AXIS2_SUCCESS;
@@ -709,7 +701,7 @@ axis2_msg_ctx_get_process_fault(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     return msg_ctx->process_fault;
 }
 
@@ -718,11 +710,10 @@ axis2_msg_ctx_get_relates_to(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
-    if (msg_ctx->msg_info_headers)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_get_relates_to(msg_ctx->msg_info_headers,
-                                                     env);
+        return axis2_msg_info_headers_get_relates_to(msg_ctx->msg_info_headers, env);
     }
 
     return NULL;
@@ -733,11 +724,10 @@ axis2_msg_ctx_get_reply_to(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
-    if (msg_ctx->msg_info_headers)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_get_reply_to(msg_ctx->msg_info_headers,
-                                                   env);
+        return axis2_msg_info_headers_get_reply_to(msg_ctx->msg_info_headers, env);
     }
 
     return NULL;
@@ -748,7 +738,7 @@ axis2_msg_ctx_get_server_side(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     return msg_ctx->server_side;
 }
 
@@ -757,8 +747,8 @@ axis2_msg_ctx_get_to(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
-    if (msg_ctx->msg_info_headers)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
+    if(msg_ctx->msg_info_headers)
     {
         return axis2_msg_info_headers_get_to(msg_ctx->msg_info_headers, env);
     }
@@ -772,11 +762,10 @@ axis2_msg_ctx_set_fault_to(
     const axutil_env_t * env,
     axis2_endpoint_ref_t * reference)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (msg_ctx->msg_info_headers)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_set_to(msg_ctx->msg_info_headers,
-                                             env, reference);
+        return axis2_msg_info_headers_set_to(msg_ctx->msg_info_headers, env, reference);
     }
 
     return AXIS2_SUCCESS;
@@ -788,11 +777,10 @@ axis2_msg_ctx_set_from(
     const axutil_env_t * env,
     axis2_endpoint_ref_t * reference)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (msg_ctx->msg_info_headers)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_set_from(msg_ctx->msg_info_headers,
-                                               env, reference);
+        return axis2_msg_info_headers_set_from(msg_ctx->msg_info_headers, env, reference);
     }
 
     return AXIS2_SUCCESS;
@@ -814,14 +802,13 @@ axis2_msg_ctx_set_soap_envelope(
     const axutil_env_t * env,
     axiom_soap_envelope_t * soap_envelope)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    if (soap_envelope)
+    if(soap_envelope)
     {
         int soap_v = AXIOM_SOAP12;
         soap_v = axiom_soap_envelope_get_soap_version(soap_envelope, env);
-        msg_ctx->is_soap_11 =
-            (soap_v == AXIOM_SOAP12) ? AXIS2_FALSE : AXIS2_TRUE;
+        msg_ctx->is_soap_11 = (soap_v == AXIOM_SOAP12) ? AXIS2_FALSE : AXIS2_TRUE;
         msg_ctx->soap_envelope = soap_envelope;
     }
     else
@@ -838,9 +825,9 @@ axis2_msg_ctx_set_response_soap_envelope(
     const axutil_env_t * env,
     axiom_soap_envelope_t * soap_envelope)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    if (soap_envelope)
+    if(soap_envelope)
     {
         int soap_v = AXIOM_SOAP12;
         soap_v = axiom_soap_envelope_get_soap_version(soap_envelope, env);
@@ -859,7 +846,7 @@ axis2_msg_ctx_set_fault_soap_envelope(
     const axutil_env_t * env,
     axiom_soap_envelope_t * soap_envelope)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->fault_soap_envelope = soap_envelope;
     return AXIS2_SUCCESS;
 }
@@ -870,11 +857,10 @@ axis2_msg_ctx_set_message_id(
     const axutil_env_t * env,
     const axis2_char_t * message_id)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (msg_ctx->msg_info_headers)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_set_message_id(msg_ctx->msg_info_headers,
-                                                     env, message_id);
+        return axis2_msg_info_headers_set_message_id(msg_ctx->msg_info_headers, env, message_id);
     }
 
     return AXIS2_SUCCESS;
@@ -886,7 +872,7 @@ axis2_msg_ctx_set_process_fault(
     const axutil_env_t * env,
     const axis2_bool_t process_fault)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->process_fault = process_fault;
     return AXIS2_SUCCESS;
 }
@@ -897,12 +883,11 @@ axis2_msg_ctx_set_relates_to(
     const axutil_env_t * env,
     axis2_relates_to_t * reference)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    if (msg_ctx->msg_info_headers)
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_set_relates_to(msg_ctx->msg_info_headers,
-                                                     env, reference);
+        return axis2_msg_info_headers_set_relates_to(msg_ctx->msg_info_headers, env, reference);
     }
 
     return AXIS2_SUCCESS;
@@ -914,11 +899,10 @@ axis2_msg_ctx_set_reply_to(
     const axutil_env_t * env,
     axis2_endpoint_ref_t * reference)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (msg_ctx->msg_info_headers)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_set_reply_to(msg_ctx->msg_info_headers,
-                                                   env, reference);
+        return axis2_msg_info_headers_set_reply_to(msg_ctx->msg_info_headers, env, reference);
     }
 
     return AXIS2_SUCCESS;
@@ -930,7 +914,7 @@ axis2_msg_ctx_set_server_side(
     const axutil_env_t * env,
     const axis2_bool_t server_side)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->server_side = server_side;
     return AXIS2_SUCCESS;
 }
@@ -941,11 +925,10 @@ axis2_msg_ctx_set_to(
     const axutil_env_t * env,
     axis2_endpoint_ref_t * reference)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (msg_ctx->msg_info_headers)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_set_to(msg_ctx->msg_info_headers,
-                                             env, reference);
+        return axis2_msg_info_headers_set_to(msg_ctx->msg_info_headers, env, reference);
     }
 
     return AXIS2_SUCCESS;
@@ -956,7 +939,7 @@ axis2_msg_ctx_get_new_thread_required(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     return msg_ctx->new_thread_required;
 }
 
@@ -966,7 +949,7 @@ axis2_msg_ctx_set_new_thread_required(
     const axutil_env_t * env,
     const axis2_bool_t new_thread_required)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->new_thread_required = new_thread_required;
     return AXIS2_SUCCESS;
 }
@@ -977,12 +960,11 @@ axis2_msg_ctx_set_wsa_action(
     const axutil_env_t * env,
     const axis2_char_t * action_uri)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    if (msg_ctx->msg_info_headers)
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_set_action(msg_ctx->msg_info_headers,
-                                                 env, action_uri);
+        return axis2_msg_info_headers_set_action(msg_ctx->msg_info_headers, env, action_uri);
     }
 
     return AXIS2_SUCCESS;
@@ -993,12 +975,11 @@ axis2_msg_ctx_get_wsa_action(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
-    if (msg_ctx->msg_info_headers)
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_get_action(msg_ctx->msg_info_headers,
-                                                 env);
+        return axis2_msg_info_headers_get_action(msg_ctx->msg_info_headers, env);
     }
 
     return NULL;
@@ -1010,12 +991,11 @@ axis2_msg_ctx_set_wsa_message_id(
     const axutil_env_t * env,
     const axis2_char_t * message_id)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    if (msg_ctx->msg_info_headers)
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_set_message_id(msg_ctx->msg_info_headers,
-                                                     env, message_id);
+        return axis2_msg_info_headers_set_message_id(msg_ctx->msg_info_headers, env, message_id);
     }
 
     return AXIS2_SUCCESS;
@@ -1026,12 +1006,11 @@ axis2_msg_ctx_get_wsa_message_id(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
-    if (msg_ctx->msg_info_headers)
+    if(msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_get_message_id(msg_ctx->msg_info_headers,
-                                                     env);
+        return axis2_msg_info_headers_get_message_id(msg_ctx->msg_info_headers, env);
     }
 
     return NULL;
@@ -1043,7 +1022,7 @@ axis2_msg_ctx_get_msg_info_headers(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->msg_info_headers;
 }
 
@@ -1052,7 +1031,7 @@ axis2_msg_ctx_get_paused(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     return msg_ctx->paused;
 }
 
@@ -1062,7 +1041,7 @@ axis2_msg_ctx_set_paused(
     const axutil_env_t * env,
     const axis2_bool_t paused)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->paused = paused;
     msg_ctx->paused_phase_index = msg_ctx->current_phase_index;
     return AXIS2_SUCCESS;
@@ -1074,7 +1053,7 @@ axis2_msg_ctx_set_keep_alive(
     const axutil_env_t * env,
     const axis2_bool_t keep_alive)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->keep_alive = keep_alive;
     return AXIS2_SUCCESS;
 }
@@ -1084,7 +1063,7 @@ axis2_msg_ctx_is_keep_alive(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     return msg_ctx->keep_alive;
 }
 
@@ -1093,7 +1072,7 @@ axis2_msg_ctx_get_transport_in_desc(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->transport_in_desc;
 }
 
@@ -1102,7 +1081,7 @@ axis2_msg_ctx_get_transport_out_desc(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->transport_out_desc;
 }
 
@@ -1112,12 +1091,11 @@ axis2_msg_ctx_set_transport_in_desc(
     const axutil_env_t * env,
     struct axis2_transport_in_desc * transport_in_desc)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (transport_in_desc)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(transport_in_desc)
     {
         msg_ctx->transport_in_desc = transport_in_desc;
-        msg_ctx->transport_in_desc_enum =
-            axis2_transport_in_desc_get_enum(transport_in_desc, env);
+        msg_ctx->transport_in_desc_enum = axis2_transport_in_desc_get_enum(transport_in_desc, env);
     }
 
     return AXIS2_SUCCESS;
@@ -1129,12 +1107,12 @@ axis2_msg_ctx_set_transport_out_desc(
     const axutil_env_t * env,
     struct axis2_transport_out_desc * transport_out_desc)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (transport_out_desc)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(transport_out_desc)
     {
         msg_ctx->transport_out_desc = transport_out_desc;
-        msg_ctx->transport_out_desc_enum =
-            axis2_transport_out_desc_get_enum(transport_out_desc, env);
+        msg_ctx->transport_out_desc_enum = axis2_transport_out_desc_get_enum(transport_out_desc,
+            env);
     }
 
     return AXIS2_SUCCESS;
@@ -1145,7 +1123,7 @@ axis2_msg_ctx_get_op_ctx(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->op_ctx;
 }
 
@@ -1155,14 +1133,14 @@ axis2_msg_ctx_set_op_ctx(
     const axutil_env_t * env,
     struct axis2_op_ctx * op_ctx)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (op_ctx)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(op_ctx)
     {
         msg_ctx->op_ctx = op_ctx;
 
-        if (msg_ctx->svc_ctx)
+        if(msg_ctx->svc_ctx)
         {
-            if (!(axis2_op_ctx_get_parent(msg_ctx->op_ctx, env)))
+            if(!(axis2_op_ctx_get_parent(msg_ctx->op_ctx, env)))
             {
                 axis2_op_ctx_set_parent(msg_ctx->op_ctx, env, msg_ctx->svc_ctx);
             }
@@ -1178,7 +1156,7 @@ axis2_msg_ctx_get_output_written(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     return msg_ctx->output_written;
 }
 
@@ -1188,7 +1166,7 @@ axis2_msg_ctx_set_output_written(
     const axutil_env_t * env,
     const axis2_bool_t output_written)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->output_written = output_written;
     return AXIS2_SUCCESS;
 }
@@ -1198,7 +1176,7 @@ axis2_msg_ctx_get_rest_http_method(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->rest_http_method;
 }
 
@@ -1208,17 +1186,17 @@ axis2_msg_ctx_set_rest_http_method(
     const axutil_env_t * env,
     const axis2_char_t * rest_http_method)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (msg_ctx->rest_http_method)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(msg_ctx->rest_http_method)
     {
         AXIS2_FREE(env->allocator, msg_ctx->rest_http_method);
         msg_ctx->rest_http_method = NULL;
     }
 
-    if (rest_http_method)
+    if(rest_http_method)
     {
         msg_ctx->rest_http_method = axutil_strdup(env, rest_http_method);
-        if (!(msg_ctx->rest_http_method))
+        if(!(msg_ctx->rest_http_method))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -1232,7 +1210,7 @@ axis2_msg_ctx_get_svc_ctx_id(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->svc_ctx_id;
 }
 
@@ -1242,17 +1220,17 @@ axis2_msg_ctx_set_svc_ctx_id(
     const axutil_env_t * env,
     const axis2_char_t * svc_ctx_id)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (msg_ctx->svc_ctx_id)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(msg_ctx->svc_ctx_id)
     {
         AXIS2_FREE(env->allocator, msg_ctx->svc_ctx_id);
         msg_ctx->svc_ctx_id = NULL;
     }
 
-    if (svc_ctx_id)
+    if(svc_ctx_id)
     {
         msg_ctx->svc_ctx_id = axutil_strdup(env, svc_ctx_id);
-        if (!(msg_ctx->svc_ctx_id))
+        if(!(msg_ctx->svc_ctx_id))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -1266,7 +1244,7 @@ axis2_msg_ctx_get_conf_ctx(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->conf_ctx;
 }
 
@@ -1275,7 +1253,7 @@ axis2_msg_ctx_get_svc_ctx(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->svc_ctx;
 }
 
@@ -1285,8 +1263,8 @@ axis2_msg_ctx_set_conf_ctx(
     const axutil_env_t * env,
     struct axis2_conf_ctx * conf_ctx)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (conf_ctx)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(conf_ctx)
     {
         msg_ctx->conf_ctx = conf_ctx;
     }
@@ -1300,18 +1278,17 @@ axis2_msg_ctx_set_svc_ctx(
     const axutil_env_t * env,
     struct axis2_svc_ctx * svc_ctx)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (svc_ctx)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(svc_ctx)
     {
         msg_ctx->svc_ctx = svc_ctx;
 
-        if (msg_ctx->op_ctx)
+        if(msg_ctx->op_ctx)
         {
-            if (!axis2_op_ctx_get_parent(msg_ctx->op_ctx, env))
+            if(!axis2_op_ctx_get_parent(msg_ctx->op_ctx, env))
                 axis2_op_ctx_set_parent(msg_ctx->op_ctx, env, svc_ctx);
         }
-        axis2_msg_ctx_set_svc(msg_ctx, env,
-                              axis2_svc_ctx_get_svc(svc_ctx, env));
+        axis2_msg_ctx_set_svc(msg_ctx, env, axis2_svc_ctx_get_svc(svc_ctx, env));
     }
 
     return AXIS2_SUCCESS;
@@ -1323,11 +1300,11 @@ axis2_msg_ctx_set_msg_info_headers(
     const axutil_env_t * env,
     axis2_msg_info_headers_t * msg_info_headers)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_info_headers, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_info_headers, AXIS2_FAILURE);
 
-    if (msg_info_headers)
+    if(msg_info_headers)
     {
-        if (msg_ctx->msg_info_headers && msg_ctx->msg_info_headers_deep_copy)
+        if(msg_ctx->msg_info_headers && msg_ctx->msg_info_headers_deep_copy)
         {
             axis2_msg_info_headers_free(msg_ctx->msg_info_headers, env);
             msg_ctx->msg_info_headers = NULL;
@@ -1347,36 +1324,36 @@ axis2_msg_ctx_get_parameter(
 {
     axutil_param_t *param = NULL;
 
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
-    if (msg_ctx->op)
+    if(msg_ctx->op)
     {
         param = axis2_op_get_param(msg_ctx->op, env, key);
-        if (param)
+        if(param)
         {
             return param;
         }
     }
 
-    if (msg_ctx->svc)
+    if(msg_ctx->svc)
     {
         param = axis2_svc_get_param(msg_ctx->svc, env, key);
-        if (param)
+        if(param)
         {
             return param;
         }
     }
 
-    if (msg_ctx->svc_grp)
+    if(msg_ctx->svc_grp)
     {
         param = axis2_svc_grp_get_param(msg_ctx->svc_grp, env, key);
-        if (param)
+        if(param)
         {
             return param;
         }
     }
 
-    if (msg_ctx->conf_ctx)
+    if(msg_ctx->conf_ctx)
     {
         axis2_conf_t *conf = axis2_conf_ctx_get_conf(msg_ctx->conf_ctx, env);
         param = axis2_conf_get_param(conf, env, key);
@@ -1394,23 +1371,20 @@ axis2_msg_ctx_get_property_value(
     axutil_property_t *property;
     void *property_value = NULL;
 
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     property = axis2_msg_ctx_get_property(msg_ctx, env, property_str);
 
-    if (!property)
+    if(!property)
     {
-        AXIS2_LOG_WARNING(env->log,
-                          AXIS2_LOG_SI,
-                          "%s not set in message context", property_str);
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, "%s not set in message context", property_str);
         return NULL;
     }
 
     property_value = axutil_property_get_value(property, env);
-    if (!property_value)
+    if(!property_value)
     {
-        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
-                          "%s properties not set in message context",
-                          property_str);
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, "%s properties not set in message context",
+            property_str);
         return NULL;
     }
 
@@ -1427,70 +1401,70 @@ axis2_msg_ctx_get_property(
     axis2_ctx_t *ctx = NULL;
 
     /* Don't use AXIS2_PARAM_CHECK to verify msg_ctx, as it clobbers 
-       env->error->status_code destroying the information therein that 
-       an error has already occurred. */
-    if (!msg_ctx)
+     env->error->status_code destroying the information therein that
+     an error has already occurred. */
+    if(!msg_ctx)
     {
-        if (axutil_error_get_status_code(env->error) == AXIS2_SUCCESS)
+        if(axutil_error_get_status_code(env->error) == AXIS2_SUCCESS)
         {
-            AXIS2_ERROR_SET (env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         }
         return obj;
     }
 
     /* search in message context */
     obj = axis2_ctx_get_property(msg_ctx->base, env, key);
-    if (obj)
+    if(obj)
     {
         return obj;
     }
 
-    if (msg_ctx->op_ctx)
+    if(msg_ctx->op_ctx)
     {
         ctx = axis2_op_ctx_get_base(msg_ctx->op_ctx, env);
-        if (ctx)
+        if(ctx)
         {
             obj = axis2_ctx_get_property(ctx, env, key);
-            if (obj)
+            if(obj)
             {
                 return obj;
             }
         }
     }
 
-    if (msg_ctx->svc_ctx)
+    if(msg_ctx->svc_ctx)
     {
         ctx = axis2_svc_ctx_get_base(msg_ctx->svc_ctx, env);
-        if (ctx)
+        if(ctx)
         {
             obj = axis2_ctx_get_property(ctx, env, key);
-            if (obj)
+            if(obj)
             {
                 return obj;
             }
         }
     }
 
-    if (msg_ctx->svc_grp_ctx)
+    if(msg_ctx->svc_grp_ctx)
     {
         ctx = axis2_svc_grp_ctx_get_base(msg_ctx->svc_grp_ctx, env);
-        if (ctx)
+        if(ctx)
         {
             obj = axis2_ctx_get_property(ctx, env, key);
-            if (obj)
+            if(obj)
             {
                 return obj;
             }
         }
     }
 
-    if (msg_ctx->conf_ctx)
+    if(msg_ctx->conf_ctx)
     {
         ctx = axis2_conf_ctx_get_base(msg_ctx->conf_ctx, env);
-        if (ctx)
+        if(ctx)
         {
             obj = axis2_ctx_get_property(ctx, env, key);
-            if (obj)
+            if(obj)
             {
                 return obj;
             }
@@ -1507,7 +1481,7 @@ axis2_msg_ctx_set_property(
     const axis2_char_t * key,
     axutil_property_t * value)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     return axis2_ctx_set_property(msg_ctx->base, env, key, value);
 }
 
@@ -1516,7 +1490,7 @@ axis2_msg_ctx_get_paused_handler_name(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->paused_handler_name;
 }
 
@@ -1525,7 +1499,7 @@ axis2_msg_ctx_get_paused_phase_name(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->paused_phase_name;
 }
 
@@ -1535,9 +1509,9 @@ axis2_msg_ctx_set_paused_phase_name(
     const axutil_env_t * env,
     const axis2_char_t * paused_phase_name)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     /* a shallow copy is sufficient as phase lives beyond message */
-    msg_ctx->paused_phase_name = (axis2_char_t *) paused_phase_name;
+    msg_ctx->paused_phase_name = (axis2_char_t *)paused_phase_name;
     return AXIS2_SUCCESS;
 }
 
@@ -1546,7 +1520,7 @@ axis2_msg_ctx_get_soap_action(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->soap_action;
 }
 
@@ -1556,17 +1530,17 @@ axis2_msg_ctx_set_soap_action(
     const axutil_env_t * env,
     axutil_string_t * soap_action)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    if (msg_ctx->soap_action)
+    if(msg_ctx->soap_action)
     {
         axutil_string_free(msg_ctx->soap_action, env);
     }
 
-    if (soap_action)
+    if(soap_action)
     {
         msg_ctx->soap_action = axutil_string_clone(soap_action, env);
-        if (!(msg_ctx->soap_action))
+        if(!(msg_ctx->soap_action))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -1580,9 +1554,9 @@ axis2_msg_ctx_get_doing_mtom(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
 
-    if (!(msg_ctx->doing_mtom) && msg_ctx->conf_ctx)
+    if(!(msg_ctx->doing_mtom) && msg_ctx->conf_ctx)
     {
         axis2_conf_t *conf = axis2_conf_ctx_get_conf(msg_ctx->conf_ctx, env);
         msg_ctx->doing_mtom = axis2_conf_get_enable_mtom(conf, env);
@@ -1597,7 +1571,7 @@ axis2_msg_ctx_set_doing_mtom(
     const axutil_env_t * env,
     const axis2_bool_t doing_mtom)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->doing_mtom = doing_mtom;
     return AXIS2_SUCCESS;
 }
@@ -1608,13 +1582,13 @@ axis2_msg_ctx_get_doing_rest(
     const axutil_env_t * env)
 {
     /* Don't use AXIS2_PARAM_CHECK to verify msg_ctx, as it clobbers 
-       env->error->status_code destroying the information therein that 
-       an error has already occurred. */
-    if (!msg_ctx)
+     env->error->status_code destroying the information therein that
+     an error has already occurred. */
+    if(!msg_ctx)
     {
-        if (axutil_error_get_status_code(env->error) == AXIS2_SUCCESS)
+        if(axutil_error_get_status_code(env->error) == AXIS2_SUCCESS)
         {
-            AXIS2_ERROR_SET (env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         }
         return AXIS2_FALSE;
     }
@@ -1627,7 +1601,7 @@ axis2_msg_ctx_set_doing_rest(
     const axutil_env_t * env,
     const axis2_bool_t doing_rest)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->doing_rest = doing_rest;
     return AXIS2_SUCCESS;
 }
@@ -1638,7 +1612,7 @@ axis2_msg_ctx_set_do_rest_through_post(
     const axutil_env_t * env,
     const axis2_bool_t do_rest_through_post)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->do_rest_through_post = do_rest_through_post;
     return AXIS2_SUCCESS;
 }
@@ -1648,7 +1622,7 @@ axis2_msg_ctx_get_do_rest_through_post(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     return msg_ctx->do_rest_through_post;
 }
 
@@ -1657,7 +1631,7 @@ axis2_msg_ctx_get_manage_session(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     return msg_ctx->manage_session;
 }
 
@@ -1667,7 +1641,7 @@ axis2_msg_ctx_set_manage_session(
     const axutil_env_t * env,
     const axis2_bool_t manage_session)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->manage_session = manage_session;
     return AXIS2_SUCCESS;
 }
@@ -1677,7 +1651,7 @@ axis2_msg_ctx_get_is_soap_11(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     return msg_ctx->is_soap_11;
 }
 
@@ -1687,7 +1661,7 @@ axis2_msg_ctx_set_is_soap_11(
     const axutil_env_t * env,
     const axis2_bool_t is_soap11)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->is_soap_11 = is_soap11;
     return AXIS2_SUCCESS;
 }
@@ -1697,7 +1671,7 @@ axis2_msg_ctx_get_svc_grp_ctx(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->svc_grp_ctx;
 }
 
@@ -1707,8 +1681,8 @@ axis2_msg_ctx_set_svc_grp_ctx(
     const axutil_env_t * env,
     struct axis2_svc_grp_ctx * svc_grp_ctx)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (svc_grp_ctx)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(svc_grp_ctx)
     {
         msg_ctx->svc_grp_ctx = svc_grp_ctx;
     }
@@ -1721,7 +1695,7 @@ axis2_msg_ctx_get_op(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->op;
 }
 
@@ -1731,11 +1705,11 @@ axis2_msg_ctx_set_op(
     const axutil_env_t * env,
     axis2_op_t * op)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (op)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(op)
     {
         msg_ctx->op = op;
-        msg_ctx->op_qname = (axutil_qname_t *) axis2_op_get_qname(op, env);
+        msg_ctx->op_qname = (axutil_qname_t *)axis2_op_get_qname(op, env);
     }
 
     return AXIS2_SUCCESS;
@@ -1746,7 +1720,7 @@ axis2_msg_ctx_get_svc(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->svc;
 }
 
@@ -1756,19 +1730,18 @@ axis2_msg_ctx_set_svc(
     const axutil_env_t * env,
     axis2_svc_t * svc)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (svc)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(svc)
     {
         axis2_svc_grp_t *svc_grp = NULL;
         msg_ctx->svc = svc;
-        msg_ctx->svc_qname = (axutil_qname_t *) axis2_svc_get_qname(svc, env);
+        msg_ctx->svc_qname = (axutil_qname_t *)axis2_svc_get_qname(svc, env);
 
         svc_grp = axis2_svc_get_parent(svc, env);
-        if (svc_grp)
+        if(svc_grp)
         {
             msg_ctx->svc_grp = svc_grp;
-            msg_ctx->svc_grp_id =
-                (axis2_char_t *) axis2_svc_grp_get_name(svc_grp, env);
+            msg_ctx->svc_grp_id = (axis2_char_t *)axis2_svc_grp_get_name(svc_grp, env);
         }
     }
 
@@ -1780,7 +1753,7 @@ axis2_msg_ctx_get_svc_grp(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->svc_grp;
 }
 
@@ -1790,13 +1763,12 @@ axis2_msg_ctx_set_svc_grp(
     const axutil_env_t * env,
     axis2_svc_grp_t * svc_grp)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    if (svc_grp)
+    if(svc_grp)
     {
         msg_ctx->svc_grp = svc_grp;
-        msg_ctx->svc_grp_id =
-            (axis2_char_t *) axis2_svc_grp_get_name(svc_grp, env);
+        msg_ctx->svc_grp_id = (axis2_char_t *)axis2_svc_grp_get_name(svc_grp, env);
     }
 
     return AXIS2_SUCCESS;
@@ -1807,7 +1779,7 @@ axis2_msg_ctx_get_svc_grp_ctx_id(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->svc_grp_ctx_id;
 }
 
@@ -1817,15 +1789,15 @@ axis2_msg_ctx_set_svc_grp_ctx_id(
     const axutil_env_t * env,
     axutil_string_t * svc_grp_ctx_id)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    if (msg_ctx->svc_grp_ctx_id)
+    if(msg_ctx->svc_grp_ctx_id)
     {
         axutil_string_free(msg_ctx->svc_grp_ctx_id, env);
         msg_ctx->svc_grp_ctx_id = NULL;
     }
 
-    if (svc_grp_ctx_id)
+    if(svc_grp_ctx_id)
     {
         msg_ctx->svc_grp_ctx_id = axutil_string_clone(svc_grp_ctx_id, env);
     }
@@ -1837,7 +1809,7 @@ axis2_msg_ctx_is_paused(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     return msg_ctx->paused;
 }
 
@@ -1847,7 +1819,7 @@ axis2_msg_ctx_set_find_svc(
     const axutil_env_t * env,
     AXIS2_MSG_CTX_FIND_SVC func)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->find_svc = func;
     return AXIS2_SUCCESS;
 }
@@ -1858,7 +1830,7 @@ axis2_msg_ctx_set_find_op(
     const axutil_env_t * env,
     AXIS2_MSG_CTX_FIND_OP func)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->find_op = func;
     return AXIS2_SUCCESS;
 }
@@ -1869,13 +1841,13 @@ axis2_msg_ctx_get_options(
     const axutil_env_t * env)
 {
     axutil_hash_t *properties = NULL;
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
-    if (!msg_ctx->options)
+    if(!msg_ctx->options)
     {
         msg_ctx->options = axis2_options_create(env);
 
-        if (!msg_ctx->options)
+        if(!msg_ctx->options)
         {
             return NULL;
         }
@@ -1895,44 +1867,42 @@ axis2_msg_ctx_set_options(
 {
     axutil_property_t *rest_val = NULL;
     axis2_char_t *value;
-    axutil_string_t *soap_action = NULL;;
+    axutil_string_t *soap_action = NULL;
+    ;
 
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, options, AXIS2_FAILURE);
 
-    if (msg_ctx->msg_info_headers && msg_ctx->msg_info_headers_deep_copy)
+    if(msg_ctx->msg_info_headers && msg_ctx->msg_info_headers_deep_copy)
     {
         axis2_msg_info_headers_free(msg_ctx->msg_info_headers, env);
     }
-    msg_ctx->msg_info_headers =
-        axis2_options_get_msg_info_headers(options, env);
+    msg_ctx->msg_info_headers = axis2_options_get_msg_info_headers(options, env);
     msg_ctx->msg_info_headers_deep_copy = AXIS2_FALSE;
 
     msg_ctx->doing_mtom = axis2_options_get_enable_mtom(options, env);
 
     msg_ctx->manage_session = axis2_options_get_manage_session(options, env);
 
-    axis2_ctx_set_property_map(msg_ctx->base, env,
-                               axis2_options_get_properties(options, env));
-    rest_val = (axutil_property_t *) axis2_msg_ctx_get_property(msg_ctx, env,
-                                                                AXIS2_ENABLE_REST);
-    if (rest_val)
+    axis2_ctx_set_property_map(msg_ctx->base, env, axis2_options_get_properties(options, env));
+    rest_val = (axutil_property_t *)axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_ENABLE_REST);
+    if(rest_val)
     {
-        value = (axis2_char_t *) axutil_property_get_value(rest_val, env);
-        if (value)
+        value = (axis2_char_t *)axutil_property_get_value(rest_val, env);
+        if(value)
         {
-            if (axutil_strcmp(value, AXIS2_VALUE_TRUE) == 0)
+            if(axutil_strcmp(value, AXIS2_VALUE_TRUE) == 0)
                 axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
         }
     }
 
-    if (msg_ctx->soap_action)
+    if(msg_ctx->soap_action)
     {
         axutil_string_free(msg_ctx->soap_action, env);
     }
 
     soap_action = axis2_options_get_soap_action(options, env);
-    if (soap_action)
+    if(soap_action)
     {
         msg_ctx->soap_action = axutil_string_clone(soap_action, env);
     }
@@ -1946,7 +1916,7 @@ axis2_msg_ctx_set_flow(
     const axutil_env_t * env,
     int flow)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->flow = flow;
     return AXIS2_SUCCESS;
 }
@@ -1956,7 +1926,7 @@ axis2_msg_ctx_get_flow(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, 0);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, 0);
     return msg_ctx->flow;
 }
 
@@ -1966,7 +1936,7 @@ axis2_msg_ctx_set_execution_chain(
     const axutil_env_t * env,
     axutil_array_list_t * execution_chain)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->execution_chain = execution_chain;
     msg_ctx->current_handler_index = -1;
     msg_ctx->paused_handler_index = -1;
@@ -1980,7 +1950,7 @@ axis2_msg_ctx_get_execution_chain(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->execution_chain;
 }
 
@@ -1990,7 +1960,7 @@ axis2_msg_ctx_set_supported_rest_http_methods(
     const axutil_env_t * env,
     axutil_array_list_t * supported_rest_http_methods)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->supported_rest_http_methods = supported_rest_http_methods;
 
     return AXIS2_SUCCESS;
@@ -2001,7 +1971,7 @@ axis2_msg_ctx_get_supported_rest_http_methods(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->supported_rest_http_methods;
 }
 
@@ -2011,17 +1981,15 @@ axis2_msg_ctx_set_current_handler_index(
     const axutil_env_t * env,
     const int index)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->current_handler_index = index;
-    if (msg_ctx->execution_chain)
+    if(msg_ctx->execution_chain)
     {
-        axis2_handler_t *handler = (axis2_handler_t *)
-            axutil_array_list_get(msg_ctx->execution_chain,
-                                  env, index);
-        if (handler)
+        axis2_handler_t *handler = (axis2_handler_t *)axutil_array_list_get(
+            msg_ctx->execution_chain, env, index);
+        if(handler)
         {
-            msg_ctx->paused_handler_name =
-                (axutil_string_t *) axis2_handler_get_name(handler, env);
+            msg_ctx->paused_handler_name = (axutil_string_t *)axis2_handler_get_name(handler, env);
         }
     }
     return AXIS2_SUCCESS;
@@ -2032,7 +2000,7 @@ axis2_msg_ctx_get_current_handler_index(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, 0);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, 0);
     return msg_ctx->current_handler_index;
 }
 
@@ -2041,7 +2009,7 @@ axis2_msg_ctx_get_paused_handler_index(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, 0);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, 0);
     return msg_ctx->paused_handler_index;
 }
 
@@ -2051,7 +2019,7 @@ axis2_msg_ctx_set_current_phase_index(
     const axutil_env_t * env,
     const int index)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->current_phase_index = index;
     return AXIS2_SUCCESS;
 
@@ -2062,7 +2030,7 @@ axis2_msg_ctx_get_current_phase_index(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, 0);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, 0);
     return msg_ctx->current_phase_index;
 }
 
@@ -2071,7 +2039,7 @@ axis2_msg_ctx_get_paused_phase_index(
     const axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, 0);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, 0);
     return msg_ctx->paused_phase_index;
 }
 
@@ -2080,7 +2048,7 @@ axis2_msg_ctx_find_svc(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->find_svc(msg_ctx, env);
 }
 
@@ -2090,7 +2058,7 @@ axis2_msg_ctx_find_op(
     const axutil_env_t * env,
     axis2_svc_t * svc)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     return msg_ctx->find_op(msg_ctx, env, svc);
 }
 
@@ -2099,8 +2067,8 @@ axis2_msg_ctx_get_charset_encoding(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
-    if (msg_ctx)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
+    if(msg_ctx)
         return msg_ctx->charset_encoding;
     else
         return NULL;
@@ -2112,15 +2080,15 @@ axis2_msg_ctx_set_charset_encoding(
     const axutil_env_t * env,
     axutil_string_t * str)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (msg_ctx)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(msg_ctx)
     {
-        if (msg_ctx->charset_encoding)
+        if(msg_ctx->charset_encoding)
         {
             axutil_string_free(msg_ctx->charset_encoding, env);
             msg_ctx->charset_encoding = NULL;
         }
-        if (str)
+        if(str)
         {
             msg_ctx->charset_encoding = axutil_string_clone(str, env);
         }
@@ -2138,8 +2106,8 @@ axis2_msg_ctx_get_transport_out_stream(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
-    if (msg_ctx)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
+    if(msg_ctx)
     {
         return msg_ctx->transport_out_stream;
     }
@@ -2155,10 +2123,10 @@ axis2_msg_ctx_set_transport_out_stream(
     const axutil_env_t * env,
     axutil_stream_t * stream)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (msg_ctx)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(msg_ctx)
     {
-        if (msg_ctx->transport_out_stream)
+        if(msg_ctx->transport_out_stream)
         {
             axutil_stream_free(msg_ctx->transport_out_stream, env);
         }
@@ -2178,8 +2146,8 @@ axis2_msg_ctx_reset_transport_out_stream(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (msg_ctx)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(msg_ctx)
     {
         msg_ctx->transport_out_stream = NULL;
     }
@@ -2196,8 +2164,8 @@ axis2_msg_ctx_get_out_transport_info(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, NULL);
-    if (msg_ctx)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
+    if(msg_ctx)
     {
         return msg_ctx->out_transport_info;
     }
@@ -2213,13 +2181,12 @@ axis2_msg_ctx_set_out_transport_info(
     const axutil_env_t * env,
     axis2_out_transport_info_t * out_transport_info)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (msg_ctx)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(msg_ctx)
     {
-        if (msg_ctx->out_transport_info)
+        if(msg_ctx->out_transport_info)
         {
-            AXIS2_OUT_TRANSPORT_INFO_FREE(msg_ctx->out_transport_info,
-                                               env);
+            AXIS2_OUT_TRANSPORT_INFO_FREE(msg_ctx->out_transport_info, env);
         }
 
         msg_ctx->out_transport_info = out_transport_info;
@@ -2237,8 +2204,8 @@ axis2_msg_ctx_reset_out_transport_info(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
-    if (msg_ctx)
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    if(msg_ctx)
     {
         msg_ctx->out_transport_info = NULL;
     }
@@ -2255,7 +2222,7 @@ axis2_msg_ctx_get_transport_headers(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    if (msg_ctx)
+    if(msg_ctx)
     {
         return msg_ctx->transport_headers;
     }
@@ -2271,7 +2238,7 @@ axis2_msg_ctx_extract_transport_headers(
     const axutil_env_t * env)
 {
     axutil_hash_t *temp = NULL;
-    if (msg_ctx)
+    if(msg_ctx)
     {
         temp = msg_ctx->transport_headers;
         msg_ctx->transport_headers = NULL;
@@ -2289,9 +2256,9 @@ axis2_msg_ctx_set_transport_headers(
     const axutil_env_t * env,
     axutil_hash_t * transport_headers)
 {
-    if (msg_ctx)
+    if(msg_ctx)
     {
-        if (msg_ctx->transport_headers)
+        if(msg_ctx->transport_headers)
         {
             axutil_hash_free(msg_ctx->transport_headers, env);
         }
@@ -2311,7 +2278,7 @@ axis2_msg_ctx_get_http_accept_record_list(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    if (msg_ctx)
+    if(msg_ctx)
     {
         return msg_ctx->accept_record_list;
     }
@@ -2327,7 +2294,7 @@ axis2_msg_ctx_extract_http_accept_record_list(
     const axutil_env_t * env)
 {
     axutil_array_list_t *temp = NULL;
-    if (msg_ctx)
+    if(msg_ctx)
     {
         temp = msg_ctx->accept_record_list;
         msg_ctx->accept_record_list = NULL;
@@ -2345,17 +2312,16 @@ axis2_msg_ctx_set_http_accept_record_list(
     const axutil_env_t * env,
     axutil_array_list_t * accept_record_list)
 {
-    if (msg_ctx)
+    if(msg_ctx)
     {
-        if (msg_ctx->accept_record_list && 
-            msg_ctx->accept_record_list != accept_record_list)
+        if(msg_ctx->accept_record_list && msg_ctx->accept_record_list != accept_record_list)
         {
             axis2_http_accept_record_t *rec = NULL;
-            while (axutil_array_list_size(msg_ctx->accept_record_list, env))
+            while(axutil_array_list_size(msg_ctx->accept_record_list, env))
             {
-                rec = (axis2_http_accept_record_t *)
-                    axutil_array_list_remove(msg_ctx->accept_record_list, env, 0);
-                if (rec)
+                rec = (axis2_http_accept_record_t *)axutil_array_list_remove(
+                    msg_ctx->accept_record_list, env, 0);
+                if(rec)
                 {
                     axis2_http_accept_record_free(rec, env);
                 }
@@ -2377,7 +2343,7 @@ axis2_msg_ctx_get_http_accept_charset_record_list(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    if (msg_ctx)
+    if(msg_ctx)
     {
         return msg_ctx->accept_charset_record_list;
     }
@@ -2393,7 +2359,7 @@ axis2_msg_ctx_extract_http_accept_charset_record_list(
     const axutil_env_t * env)
 {
     axutil_array_list_t *temp = NULL;
-    if (msg_ctx)
+    if(msg_ctx)
     {
         temp = msg_ctx->accept_charset_record_list;
         msg_ctx->accept_charset_record_list = NULL;
@@ -2411,17 +2377,17 @@ axis2_msg_ctx_set_http_accept_charset_record_list(
     const axutil_env_t * env,
     axutil_array_list_t * accept_charset_record_list)
 {
-    if (msg_ctx)
+    if(msg_ctx)
     {
-        if (msg_ctx->accept_charset_record_list && 
-            msg_ctx->accept_charset_record_list != accept_charset_record_list)
+        if(msg_ctx->accept_charset_record_list && msg_ctx->accept_charset_record_list
+            != accept_charset_record_list)
         {
             axis2_http_accept_record_t *rec = NULL;
-            while (axutil_array_list_size(msg_ctx->accept_charset_record_list, env))
+            while(axutil_array_list_size(msg_ctx->accept_charset_record_list, env))
             {
-                rec = (axis2_http_accept_record_t *)
-                    axutil_array_list_remove(msg_ctx->accept_charset_record_list, env, 0);
-                if (rec)
+                rec = (axis2_http_accept_record_t *)axutil_array_list_remove(
+                    msg_ctx->accept_charset_record_list, env, 0);
+                if(rec)
                 {
                     axis2_http_accept_record_free(rec, env);
                 }
@@ -2443,7 +2409,7 @@ axis2_msg_ctx_get_http_output_headers(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    if (msg_ctx)
+    if(msg_ctx)
     {
         return msg_ctx->output_headers;
     }
@@ -2458,7 +2424,7 @@ axis2_msg_ctx_extract_http_output_headers(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    if (msg_ctx)
+    if(msg_ctx)
     {
         axutil_array_list_t *temp = NULL;
         temp = msg_ctx->output_headers;
@@ -2477,17 +2443,16 @@ axis2_msg_ctx_set_http_output_headers(
     const axutil_env_t * env,
     axutil_array_list_t * output_headers)
 {
-    if (msg_ctx)
+    if(msg_ctx)
     {
-        if (msg_ctx->output_headers && 
-            msg_ctx->output_headers != output_headers)
+        if(msg_ctx->output_headers && msg_ctx->output_headers != output_headers)
         {
             axis2_http_header_t *header = NULL;
-            while (axutil_array_list_size(msg_ctx->output_headers, env))
+            while(axutil_array_list_size(msg_ctx->output_headers, env))
             {
-                header = (axis2_http_header_t *)
-                    axutil_array_list_remove(msg_ctx->output_headers, env, 0);
-                if (header)
+                header = (axis2_http_header_t *)axutil_array_list_remove(msg_ctx->output_headers,
+                    env, 0);
+                if(header)
                 {
                     axis2_http_header_free(header, env);
                 }
@@ -2509,7 +2474,7 @@ axis2_msg_ctx_get_http_accept_language_record_list(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    if (msg_ctx)
+    if(msg_ctx)
     {
         return msg_ctx->accept_language_record_list;
     }
@@ -2525,7 +2490,7 @@ axis2_msg_ctx_extract_http_accept_language_record_list(
     const axutil_env_t * env)
 {
     axutil_array_list_t *temp = NULL;
-    if (msg_ctx)
+    if(msg_ctx)
     {
         temp = msg_ctx->accept_language_record_list;
         msg_ctx->accept_language_record_list = NULL;
@@ -2543,17 +2508,17 @@ axis2_msg_ctx_set_http_accept_language_record_list(
     const axutil_env_t * env,
     axutil_array_list_t * accept_language_record_list)
 {
-    if (msg_ctx)
+    if(msg_ctx)
     {
-        if (msg_ctx->accept_language_record_list && 
-            msg_ctx->accept_language_record_list != accept_language_record_list)
+        if(msg_ctx->accept_language_record_list && msg_ctx->accept_language_record_list
+            != accept_language_record_list)
         {
             axis2_http_accept_record_t *rec = NULL;
-            while (axutil_array_list_size(msg_ctx->accept_language_record_list, env))
+            while(axutil_array_list_size(msg_ctx->accept_language_record_list, env))
             {
-                rec = (axis2_http_accept_record_t *)
-                    axutil_array_list_remove(msg_ctx->accept_language_record_list, env, 0);
-                if (rec)
+                rec = (axis2_http_accept_record_t *)axutil_array_list_remove(
+                    msg_ctx->accept_language_record_list, env, 0);
+                if(rec)
                 {
                     axis2_http_accept_record_free(rec, env);
                 }
@@ -2575,7 +2540,7 @@ axis2_msg_ctx_get_transfer_encoding(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    if (msg_ctx)
+    if(msg_ctx)
         return msg_ctx->transfer_encoding;
     else
         return NULL;
@@ -2587,14 +2552,14 @@ axis2_msg_ctx_set_transfer_encoding(
     const axutil_env_t * env,
     axis2_char_t * str)
 {
-    if (msg_ctx)
+    if(msg_ctx)
     {
-        if (msg_ctx->transfer_encoding)
+        if(msg_ctx->transfer_encoding)
         {
             AXIS2_FREE(env->allocator, msg_ctx->transfer_encoding);
             msg_ctx->transfer_encoding = NULL;
         }
-        if (str)
+        if(str)
         {
             msg_ctx->transfer_encoding = str;
         }
@@ -2612,7 +2577,7 @@ axis2_msg_ctx_get_content_language(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    if (msg_ctx)
+    if(msg_ctx)
         return msg_ctx->content_language;
     else
         return NULL;
@@ -2624,14 +2589,14 @@ axis2_msg_ctx_set_content_language(
     const axutil_env_t * env,
     axis2_char_t * str)
 {
-    if (msg_ctx)
+    if(msg_ctx)
     {
-        if (msg_ctx->content_language)
+        if(msg_ctx->content_language)
         {
             AXIS2_FREE(env->allocator, msg_ctx->content_language);
             msg_ctx->content_language = NULL;
         }
-        if (str)
+        if(str)
         {
             msg_ctx->content_language = str;
         }
@@ -2649,7 +2614,7 @@ axis2_msg_ctx_get_transport_url(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    if (msg_ctx)
+    if(msg_ctx)
         return msg_ctx->transport_url;
     else
         return NULL;
@@ -2661,7 +2626,7 @@ axis2_msg_ctx_set_transport_url(
     const axutil_env_t * env,
     axis2_char_t * str)
 {
-    if (msg_ctx)
+    if(msg_ctx)
     {
         /* this is a shallow copy, no need to free */
         msg_ctx->transport_url = str;
@@ -2674,16 +2639,14 @@ axis2_msg_ctx_set_transport_url(
     return AXIS2_SUCCESS;
 }
 
-
 AXIS2_EXTERN int AXIS2_CALL
 axis2_msg_ctx_get_status_code(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, 0);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, 0);
     return msg_ctx->status_code;
 }
-
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_status_code(
@@ -2691,7 +2654,7 @@ axis2_msg_ctx_set_status_code(
     const axutil_env_t * env,
     const int status_code)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->status_code = status_code;
     return AXIS2_SUCCESS;
 }
@@ -2701,10 +2664,9 @@ axis2_msg_ctx_get_auth_failed(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     return msg_ctx->is_auth_failure;
 }
-
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_auth_failed(
@@ -2712,7 +2674,7 @@ axis2_msg_ctx_set_auth_failed(
     const axutil_env_t * env,
     const axis2_bool_t status)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->is_auth_failure = status;
     return AXIS2_SUCCESS;
 }
@@ -2722,10 +2684,9 @@ axis2_msg_ctx_get_no_content(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     return msg_ctx->no_content;
 }
-
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_no_content(
@@ -2733,7 +2694,7 @@ axis2_msg_ctx_set_no_content(
     const axutil_env_t * env,
     const axis2_bool_t no_content)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->no_content = no_content;
     return AXIS2_SUCCESS;
 }
@@ -2743,7 +2704,7 @@ axis2_msg_ctx_get_required_auth_is_http(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     return msg_ctx->required_auth_is_http;
 }
 
@@ -2753,7 +2714,7 @@ axis2_msg_ctx_set_required_auth_is_http(
     const axutil_env_t * env,
     const axis2_bool_t status)
 {
-    AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     msg_ctx->required_auth_is_http = status;
     return AXIS2_SUCCESS;
 }
@@ -2764,12 +2725,12 @@ axis2_msg_ctx_set_auth_type(
     const axutil_env_t * env,
     const axis2_char_t * auth_type)
 {
-    if (msg_ctx->auth_type)
+    if(msg_ctx->auth_type)
     {
         AXIS2_FREE(env->allocator, msg_ctx->auth_type);
     }
     msg_ctx->auth_type = NULL;
-    if (auth_type)
+    if(auth_type)
     {
         msg_ctx->auth_type = axutil_strdup(env, auth_type);
     }
@@ -2801,7 +2762,7 @@ axis2_msg_ctx_set_mime_parts(
     if(msg_ctx->mime_parts)
     {
         axutil_array_list_free(mime_parts, env);
-        msg_ctx->mime_parts = NULL;        
+        msg_ctx->mime_parts = NULL;
     }
     msg_ctx->mime_parts = mime_parts;
 }

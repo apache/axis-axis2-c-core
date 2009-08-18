@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -36,10 +35,10 @@ axis2_simple_tcp_svr_conn_create(
 {
     axis2_simple_tcp_svr_conn_t *svr_conn = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    svr_conn = (axis2_simple_tcp_svr_conn_t *)
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_simple_tcp_svr_conn_t));
+    svr_conn = (axis2_simple_tcp_svr_conn_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(axis2_simple_tcp_svr_conn_t));
 
-    if (!svr_conn)
+    if(!svr_conn)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -48,13 +47,12 @@ axis2_simple_tcp_svr_conn_create(
     svr_conn->stream = NULL;
     svr_conn->buffer = NULL;
 
-    if (-1 != svr_conn->socket)
+    if(-1 != svr_conn->socket)
     {
         svr_conn->stream = axutil_stream_create_socket(env, svr_conn->socket);
-        if (!svr_conn->stream)
+        if(!svr_conn->stream)
         {
-            axis2_simple_tcp_svr_conn_free((axis2_simple_tcp_svr_conn_t *)
-                                           svr_conn, env);
+            axis2_simple_tcp_svr_conn_free((axis2_simple_tcp_svr_conn_t *)svr_conn, env);
             return NULL;
         }
     }
@@ -81,7 +79,7 @@ axis2_simple_tcp_svr_conn_close(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     axutil_stream_free(svr_conn->stream, env);
-    if (-1 != svr_conn->socket)
+    if(-1 != svr_conn->socket)
     {
         axutil_network_handler_close_socket(env, svr_conn->socket);
         svr_conn->socket = -1;
@@ -95,7 +93,7 @@ axis2_simple_tcp_svr_conn_is_open(
     const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (-1 != svr_conn->socket)
+    if(-1 != svr_conn->socket)
     {
         return AXIS2_TRUE;
     }
@@ -123,15 +121,13 @@ axis2_simple_tcp_svr_conn_read_request(
     AXIS2_ENV_CHECK(env, NULL);
 
     memset(str_line, 0, size);
-    while ((read =
-            axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf,
-                                      size - 1)) > 0)
+    while((read = axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf, size - 1)) > 0)
     {
         tmp_buf[read] = '\0';
-        if (read > 0)
+        if(read > 0)
         {
             read = axutil_stream_read(svr_conn->stream, env, tmp_buf, size - 1);
-            if (read > 0)
+            if(read > 0)
             {
                 tmp_buf[read] = '\0';
                 strcat(str_line, tmp_buf);
@@ -143,7 +139,7 @@ axis2_simple_tcp_svr_conn_read_request(
             }
         }
     }
-    if (str_line > 0)
+    if(str_line > 0)
     {
         svr_conn->buffer = str_line;
     }
@@ -156,9 +152,7 @@ axis2_simple_tcp_svr_conn_set_rcv_timeout(
     const axutil_env_t * env,
     int timeout)
 {
-    return axutil_network_handler_set_sock_option(env,
-                                                  svr_conn->socket, SO_RCVTIMEO,
-                                                  timeout);
+    return axutil_network_handler_set_sock_option(env, svr_conn->socket, SO_RCVTIMEO, timeout);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -167,9 +161,7 @@ axis2_simple_tcp_svr_conn_set_snd_timeout(
     const axutil_env_t * env,
     int timeout)
 {
-    return axutil_network_handler_set_sock_option(env,
-                                                  svr_conn->socket, SO_SNDTIMEO,
-                                                  timeout);
+    return axutil_network_handler_set_sock_option(env, svr_conn->socket, SO_SNDTIMEO, timeout);
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL

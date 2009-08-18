@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #include "axis2_cgi_out_transport_info.h"
 #include <axutil_string.h>
 #include <axis2_http_transport.h>
@@ -30,11 +29,11 @@ typedef struct axis2_cgi_out_transport_info_s
     axis2_http_out_transport_info_t out_transport_info;
     axis2_cgi_request_t *request;
     axis2_char_t *encoding;
-} axis2_cgi_out_transport_info_t;   
+} axis2_cgi_out_transport_info_t;
 
 #define AXIS2_INTF_TO_IMPL(out_transport_info) \
                 ((axis2_cgi_out_transport_info_t *)(out_transport_info))
-               
+
 void AXIS2_CALL
 axis2_cgi_out_transport_info_free(
     axis2_http_out_transport_info_t * info,
@@ -44,9 +43,9 @@ axis2_cgi_out_transport_info_free(
     AXIS2_ENV_CHECK(env, void);
 
     info_impl = AXIS2_INTF_TO_IMPL(info);
-    
+
     info_impl->request = NULL; /* doesn't belong here so no need to free it here */
-    if (info_impl->encoding)
+    if(info_impl->encoding)
     {
         AXIS2_FREE(env->allocator, info_impl->encoding);
         info_impl->encoding = NULL;
@@ -64,7 +63,7 @@ axis2_cgi_out_transport_info_free_void_arg(
     axis2_http_out_transport_info_t *transport_info_l = NULL;
 
     AXIS2_ENV_CHECK(env, void);
-    transport_info_l = (axis2_http_out_transport_info_t *) transport_info;
+    transport_info_l = (axis2_http_out_transport_info_t *)transport_info;
     axis2_http_out_transport_info_free(transport_info_l, env);
     return;
 }
@@ -83,7 +82,7 @@ axis2_cgi_out_transport_info_set_content_type(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, content_type, AXIS2_FAILURE);
     info_impl = AXIS2_INTF_TO_IMPL(info);
-    if (info_impl->encoding)
+    if(info_impl->encoding)
     {
         temp1 = axutil_stracat(env, content_type, ";charset=");
         temp2 = axutil_stracat(env, temp1, info_impl->encoding);
@@ -103,19 +102,19 @@ axis2_cgi_out_transport_info_set_char_encoding(
     axis2_http_out_transport_info_t * info,
     const axutil_env_t * env,
     const axis2_char_t * encoding)
-{    
+{
     axis2_cgi_out_transport_info_t *info_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, encoding, AXIS2_FAILURE);
 
     info_impl = AXIS2_INTF_TO_IMPL(info);
-    
-    if (info_impl->encoding)
+
+    if(info_impl->encoding)
     {
         AXIS2_FREE(env->allocator, info_impl->encoding);
     }
     info_impl->encoding = axutil_strdup(env, encoding);
-    
+
     return AXIS2_SUCCESS;
 }
 
@@ -129,10 +128,10 @@ axis2_cgi_out_transport_info_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    info = (axis2_cgi_out_transport_info_t *) AXIS2_MALLOC
-        (env->allocator, sizeof(axis2_cgi_out_transport_info_t));
+    info = (axis2_cgi_out_transport_info_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(axis2_cgi_out_transport_info_t));
 
-    if (!info)
+    if(!info)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -142,11 +141,10 @@ axis2_cgi_out_transport_info_create(
 
     out_transport_info = &(info->out_transport_info);
 
-    axis2_http_out_transport_info_set_char_encoding_func(out_transport_info,
-                                                         env,
-                                                         axis2_cgi_out_transport_info_set_char_encoding);
+    axis2_http_out_transport_info_set_char_encoding_func(out_transport_info, env,
+        axis2_cgi_out_transport_info_set_char_encoding);
     axis2_http_out_transport_info_set_content_type_func(out_transport_info, env,
-                                                        axis2_cgi_out_transport_info_set_content_type);
+        axis2_cgi_out_transport_info_set_content_type);
 
     return out_transport_info;
 }

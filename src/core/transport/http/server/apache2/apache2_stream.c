@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -30,7 +29,8 @@ typedef struct apache2_stream_impl
 
 #define AXIS2_INTF_TO_IMPL(stream) ((apache2_stream_impl_t *)(stream))
 
-axutil_stream_type_t AXIS2_CALL apache2_stream_get_type(
+axutil_stream_type_t AXIS2_CALL
+apache2_stream_get_type(
     axutil_stream_t * stream,
     const axutil_env_t * env);
 
@@ -64,11 +64,10 @@ axutil_stream_create_apache2(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, request, NULL);
 
-    stream_impl =
-        (apache2_stream_impl_t *) AXIS2_MALLOC(env->allocator,
-                                               sizeof(apache2_stream_impl_t));
+    stream_impl = (apache2_stream_impl_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(apache2_stream_impl_t));
 
-    if (!stream_impl)
+    if(!stream_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -100,11 +99,10 @@ apache2_stream_read(
 
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
 
-    while (count - len > 0)
+    while(count - len > 0)
     {
-        read = ap_get_client_block(stream_impl->request, (char *) buffer + len,
-                                   count - len);
-        if (read > 0)
+        read = ap_get_client_block(stream_impl->request, (char *)buffer + len, count - len);
+        if(read > 0)
         {
             len += read;
         }
@@ -130,8 +128,8 @@ apache2_stream_write(
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, buf, AXIS2_FAILURE);
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    buffer = (axis2_char_t *) buf;
-    if (count <= 0)
+    buffer = (axis2_char_t *)buf;
+    if(count <= 0)
     {
         return (int)count;
         /* We are sure that the difference lies within the int range */
@@ -154,7 +152,7 @@ apache2_stream_skip(
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
 
     tmp_buffer = AXIS2_MALLOC(env->allocator, count * sizeof(axis2_char_t));
-    if (tmp_buffer == NULL)
+    if(tmp_buffer == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return -1;

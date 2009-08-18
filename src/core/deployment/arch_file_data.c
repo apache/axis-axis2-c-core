@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -42,20 +41,18 @@ axis2_arch_file_data_create(
     const axutil_env_t * env)
 {
     axis2_arch_file_data_t *arch_file_data = NULL;
-    arch_file_data = (axis2_arch_file_data_t *) AXIS2_MALLOC(env->
-                                                             allocator,
-                                                             sizeof
-                                                             (axis2_arch_file_data_t));
+    arch_file_data = (axis2_arch_file_data_t *)AXIS2_MALLOC(env-> allocator,
+        sizeof(axis2_arch_file_data_t));
 
-    if (!arch_file_data)
+    if(!arch_file_data)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-	memset ((void *)arch_file_data, 0, sizeof (axis2_arch_file_data_t));
+    memset((void *)arch_file_data, 0, sizeof(axis2_arch_file_data_t));
 
     arch_file_data->deployable_svcs = axutil_array_list_create(env, 0);
-    if (!arch_file_data->deployable_svcs)
+    if(!arch_file_data->deployable_svcs)
     {
         axis2_arch_file_data_free(arch_file_data, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -72,13 +69,12 @@ axis2_arch_file_data_create_with_type_and_file(
     axutil_file_t * file)
 {
     axis2_arch_file_data_t *arch_file_data = NULL;
-    arch_file_data = (axis2_arch_file_data_t *)
-        axis2_arch_file_data_create(env);
-    if (!arch_file_data)
+    arch_file_data = (axis2_arch_file_data_t *)axis2_arch_file_data_create(env);
+    if(!arch_file_data)
     {
         axis2_char_t *file_name = axutil_file_get_name(file, env);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Could not create arch_file_data for file %s", file_name);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Could not create arch_file_data for file %s",
+            file_name);
         return NULL;
     }
 
@@ -94,12 +90,10 @@ axis2_arch_file_data_create_with_type_and_name(
     const axis2_char_t * name)
 {
     axis2_arch_file_data_t *arch_file_data = NULL;
-    arch_file_data = (axis2_arch_file_data_t *)
-        axis2_arch_file_data_create(env);
-    if (!arch_file_data)
+    arch_file_data = (axis2_arch_file_data_t *)axis2_arch_file_data_create(env);
+    if(!arch_file_data)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Could not create arch_file_data for %s", name);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Could not create arch_file_data for %s", name);
         return NULL;
     }
     arch_file_data->type = type;
@@ -112,53 +106,53 @@ axis2_arch_file_data_free(
     axis2_arch_file_data_t * arch_file_data,
     const axutil_env_t * env)
 {
-    if (arch_file_data->file)
+    if(arch_file_data->file)
     {
         axutil_file_free(arch_file_data->file, env);
     }
-    if (arch_file_data->msg_recv)
+    if(arch_file_data->msg_recv)
     {
         AXIS2_FREE(env->allocator, arch_file_data->msg_recv);
     }
-    if (arch_file_data->module_name)
+    if(arch_file_data->module_name)
     {
         AXIS2_FREE(env->allocator, arch_file_data->module_name);
     }
-    if (arch_file_data->module_dll_name)
+    if(arch_file_data->module_dll_name)
     {
         AXIS2_FREE(env->allocator, arch_file_data->module_dll_name);
     }
-    if (arch_file_data->name)
+    if(arch_file_data->name)
     {
         AXIS2_FREE(env->allocator, arch_file_data->name);
     }
 
-    if (arch_file_data->svc_map)
+    if(arch_file_data->svc_map)
     {
         axutil_hash_index_t *hi = NULL;
         void *val = NULL;
 
-        for (hi = axutil_hash_first(arch_file_data->svc_map, env); hi;
-             hi = axutil_hash_next(env, hi))
+        for(hi = axutil_hash_first(arch_file_data->svc_map, env); hi; hi
+            = axutil_hash_next(env, hi))
         {
             axis2_svc_t *svc = NULL;
             axutil_hash_this(hi, NULL, NULL, &val);
-            svc = (axis2_svc_t *) val;
-            if (svc)
+            svc = (axis2_svc_t *)val;
+            if(svc)
             {
-                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Service name :%s",
-                                axis2_svc_get_name(svc, env));
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Service name :%s", axis2_svc_get_name(svc,
+                    env));
                 axis2_svc_free(svc, env);
             }
         }
         axutil_hash_free(arch_file_data->svc_map, env);
     }
-    if (arch_file_data->deployable_svcs)
+    if(arch_file_data->deployable_svcs)
     {
         axutil_array_list_free(arch_file_data->deployable_svcs, env);
     }
 
-    if (arch_file_data)
+    if(arch_file_data)
     {
         AXIS2_FREE(env->allocator, arch_file_data);
     }
@@ -182,7 +176,7 @@ axis2_arch_file_data_set_msg_recv(
 {
     AXIS2_PARAM_CHECK(env->error, msg_recv, AXIS2_FAILURE);
 
-    if (arch_file_data->msg_recv)
+    if(arch_file_data->msg_recv)
     {
         AXIS2_FREE(env->allocator, arch_file_data->msg_recv);
         arch_file_data->msg_recv = NULL;
@@ -206,7 +200,7 @@ axis2_arch_file_data_get_svc_name(
 {
     axis2_char_t *svc_name = NULL;
 
-    if (arch_file_data->file)
+    if(arch_file_data->file)
     {
         svc_name = axutil_file_get_name(arch_file_data->file, env);
     }
@@ -241,7 +235,7 @@ axis2_arch_file_data_get_module_name(
 {
     axis2_char_t *module_name = NULL;
 
-    if (arch_file_data->file)
+    if(arch_file_data->file)
     {
         module_name = axutil_file_get_name(arch_file_data->file, env);
     }
@@ -260,7 +254,7 @@ axis2_arch_file_data_set_module_name(
 {
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FAILURE);
 
-    if (arch_file_data->module_name)
+    if(arch_file_data->module_name)
     {
         AXIS2_FREE(env->allocator, arch_file_data->module_name);
         arch_file_data->module_name = NULL;
@@ -285,7 +279,7 @@ axis2_arch_file_data_set_module_dll_name(
 {
     AXIS2_PARAM_CHECK(env->error, module_dll_name, AXIS2_FAILURE);
 
-    if (arch_file_data->module_dll_name)
+    if(arch_file_data->module_dll_name)
     {
         AXIS2_FREE(env->allocator, arch_file_data->module_dll_name);
         arch_file_data->module_dll_name = NULL;
@@ -305,18 +299,17 @@ axis2_arch_file_data_add_svc(
     AXIS2_PARAM_CHECK(env->error, svc_desc, AXIS2_FAILURE);
 
     svc_qname = axis2_svc_get_qname(svc_desc, env);
-    svc_name = axutil_qname_to_string((axutil_qname_t *) svc_qname, env);
-    if (!arch_file_data->svc_map)
+    svc_name = axutil_qname_to_string((axutil_qname_t *)svc_qname, env);
+    if(!arch_file_data->svc_map)
     {
         arch_file_data->svc_map = axutil_hash_make(env);
-        if (!arch_file_data->svc_map)
+        if(!arch_file_data->svc_map)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    axutil_hash_set(arch_file_data->svc_map, svc_name, AXIS2_HASH_KEY_STRING,
-                    svc_desc);
+    axutil_hash_set(arch_file_data->svc_map, svc_name, AXIS2_HASH_KEY_STRING, svc_desc);
     return AXIS2_SUCCESS;
 }
 
@@ -330,10 +323,10 @@ axis2_arch_file_data_get_svc(
 
     AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
 
-    if (arch_file_data->svc_map)
+    if(arch_file_data->svc_map)
     {
-        svc = (axis2_svc_t *) axutil_hash_get(arch_file_data->svc_map, svc_name,
-                                              AXIS2_HASH_KEY_STRING);
+        svc = (axis2_svc_t *)axutil_hash_get(arch_file_data->svc_map, svc_name,
+            AXIS2_HASH_KEY_STRING);
     }
     else
     {
@@ -365,7 +358,7 @@ axis2_arch_file_data_set_deployable_svcs(
     axutil_array_list_t * deployable_svcs)
 {
     AXIS2_PARAM_CHECK(env->error, deployable_svcs, AXIS2_FAILURE);
-    if (arch_file_data->deployable_svcs)
+    if(arch_file_data->deployable_svcs)
     {
         AXIS2_FREE(env->allocator, arch_file_data->deployable_svcs);
         arch_file_data->deployable_svcs = NULL;

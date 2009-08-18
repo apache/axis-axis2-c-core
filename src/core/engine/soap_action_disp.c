@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -26,10 +25,10 @@
 #include <axis2_addr.h>
 #include <axutil_utils.h>
 
-const axis2_char_t *AXIS2_SOAP_ACTION_DISP_NAME =
-    "soap_action_based_dispatcher";
+const axis2_char_t *AXIS2_SOAP_ACTION_DISP_NAME = "soap_action_based_dispatcher";
 
-axis2_status_t AXIS2_CALL axis2_soap_action_disp_invoke(
+axis2_status_t AXIS2_CALL
+axis2_soap_action_disp_invoke(
     axis2_handler_t * handler,
     const axutil_env_t * env,
     struct axis2_msg_ctx *msg_ctx);
@@ -51,22 +50,19 @@ axis2_soap_action_disp_create(
     axis2_handler_t *handler = NULL;
     axutil_string_t *name = NULL;
 
-    name = axutil_string_create_const(env,
-                                      (axis2_char_t **) &
-                                      AXIS2_SOAP_ACTION_DISP_NAME);
+    name = axutil_string_create_const(env, (axis2_char_t **)&AXIS2_SOAP_ACTION_DISP_NAME);
 
     disp = axis2_disp_create(env, name);
-    if (!disp)
+    if(!disp)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
     handler = axis2_disp_get_base(disp, env);
-    if (!handler)
+    if(!handler)
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -82,12 +78,11 @@ axis2_soap_action_disp_find_svc(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    if (axis2_msg_ctx_get_doing_rest(msg_ctx, env))
+    if(axis2_msg_ctx_get_doing_rest(msg_ctx, env))
         return NULL;
 
-    AXIS2_LOG_DEBUG(env->log,
-                    AXIS2_LOG_SI,
-                    "Checking for service using SOAPAction is not implemented");
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+        "Checking for service using SOAPAction is not implemented");
     return NULL;
 }
 
@@ -103,24 +98,22 @@ axis2_soap_action_disp_find_op(
 
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
 
-    if (axis2_msg_ctx_get_doing_rest(msg_ctx, env))
+    if(axis2_msg_ctx_get_doing_rest(msg_ctx, env))
         return NULL;
 
-    action =
-        axutil_string_get_buffer(axis2_msg_ctx_get_soap_action(msg_ctx, env),
-                                 env);
+    action = axutil_string_get_buffer(axis2_msg_ctx_get_soap_action(msg_ctx, env), env);
 
-    if (action)
+    if(action)
     {
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                        "Checking for operation using SOAPAction : %s", action);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Checking for operation using SOAPAction : %s",
+            action);
 
-        if (!op)
+        if(!op)
         {
             const axis2_char_t *op_name = NULL;
             op_name = axutil_rindex(action, '/');
 
-            if (op_name)
+            if(op_name)
             {
                 op_name += 1;
             }
@@ -129,22 +122,21 @@ axis2_soap_action_disp_find_op(
                 op_name = action;
             }
 
-            if (op_name)
+            if(op_name)
             {
                 op = axis2_svc_get_op_with_name(svc, env, op_name);
             }
         }
-        
-        if (!op)
+
+        if(!op)
         {
             name = axutil_qname_create(env, action, NULL, NULL);
             op = axis2_svc_get_op_with_qname(svc, env, name);
             axutil_qname_free(name, env);
         }
 
-        if (op)
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                            "Operation found using SOAPAction");
+        if(op)
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Operation found using SOAPAction");
     }
     return op;
 }

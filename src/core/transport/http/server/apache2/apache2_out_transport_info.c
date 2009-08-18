@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -40,7 +39,7 @@ axis2_apache2_out_transport_info_free_void_arg(
     axis2_http_out_transport_info_t *transport_info_l = NULL;
 
     AXIS2_ENV_CHECK(env, void);
-    transport_info_l = (axis2_http_out_transport_info_t *) transport_info;
+    transport_info_l = (axis2_http_out_transport_info_t *)transport_info;
     axis2_http_out_transport_info_free(transport_info_l, env);
     return;
 }
@@ -55,8 +54,8 @@ axis2_apache_out_transport_info_free(
 
     info = AXIS2_INTF_TO_IMPL(out_transport_info);
 
-    info->request = NULL;       /* request doesn't belong to info */
-    if (info->encoding)
+    info->request = NULL; /* request doesn't belong to info */
+    if(info->encoding)
     {
         AXIS2_FREE(env->allocator, info->encoding);
         info->encoding = NULL;
@@ -81,7 +80,7 @@ axis2_apache_out_transport_info_set_content_type(
     AXIS2_PARAM_CHECK(env->error, content_type, AXIS2_FAILURE);
     info = AXIS2_INTF_TO_IMPL(out_transport_info);
 
-    if (info->encoding)
+    if(info->encoding)
     {
 
         tmp1 = axutil_stracat(env, content_type, ";charset=");
@@ -92,8 +91,7 @@ axis2_apache_out_transport_info_set_content_type(
     }
     else
     {
-        info->request->content_type = apr_pstrdup(info->request->pool,
-                                                  content_type);
+        info->request->content_type = apr_pstrdup(info->request->pool, content_type);
     }
     return AXIS2_SUCCESS;
 }
@@ -107,7 +105,7 @@ axis2_apache_out_transport_info_set_char_encoding(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, encoding, AXIS2_FAILURE);
 
-    if (info->encoding)
+    if(info->encoding)
     {
         AXIS2_FREE(env->allocator, info->encoding);
     }
@@ -126,10 +124,10 @@ axis2_apache2_out_transport_info_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    info = (axis2_apache2_out_transport_info_t *) AXIS2_MALLOC
-        (env->allocator, sizeof(axis2_apache2_out_transport_info_t));
+    info = (axis2_apache2_out_transport_info_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(axis2_apache2_out_transport_info_t));
 
-    if (!info)
+    if(!info)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -141,11 +139,10 @@ axis2_apache2_out_transport_info_create(
     out_transport_info->encoding = NULL;
     out_transport_info->response = NULL;
 
-    axis2_http_out_transport_info_set_char_encoding_func(out_transport_info,
-                                                         env,
-                                                         axis2_apache_out_transport_info_set_char_encoding);
+    axis2_http_out_transport_info_set_char_encoding_func(out_transport_info, env,
+        axis2_apache_out_transport_info_set_char_encoding);
     axis2_http_out_transport_info_set_content_type_func(out_transport_info, env,
-                                                        axis2_apache_out_transport_info_set_content_type);
+        axis2_apache_out_transport_info_set_content_type);
 
     return out_transport_info;
 }

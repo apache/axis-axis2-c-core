@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -44,11 +43,10 @@ axis2_transport_in_desc_create(
 {
     axis2_transport_in_desc_t *transport_in = NULL;
 
-    transport_in = (axis2_transport_in_desc_t *) AXIS2_MALLOC(env->allocator,
-                                                              sizeof
-                                                              (axis2_transport_in_desc_t));
+    transport_in = (axis2_transport_in_desc_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(axis2_transport_in_desc_t));
 
-    if (!transport_in)
+    if(!transport_in)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -63,7 +61,7 @@ axis2_transport_in_desc_create(
     transport_in->param_container = NULL;
 
     transport_in->param_container = axutil_param_container_create(env);
-    if (!transport_in->param_container)
+    if(!transport_in->param_container)
     {
         axis2_transport_in_desc_free(transport_in, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -78,32 +76,32 @@ axis2_transport_in_desc_free(
     axis2_transport_in_desc_t * transport_in,
     const axutil_env_t * env)
 {
-    if (transport_in->recv)
+    if(transport_in->recv)
     {
         axis2_transport_receiver_free(transport_in->recv, env);
     }
 
-    if (transport_in->param_container)
+    if(transport_in->param_container)
     {
         axutil_param_container_free(transport_in->param_container, env);
     }
 
-    if (transport_in->in_flow)
+    if(transport_in->in_flow)
     {
         axis2_flow_free(transport_in->in_flow, env);
     }
 
-    if (transport_in->fault_in_flow)
+    if(transport_in->fault_in_flow)
     {
         axis2_flow_free(transport_in->fault_in_flow, env);
     }
 
-    if (transport_in->in_phase)
+    if(transport_in->in_phase)
     {
         axis2_phase_free(transport_in->in_phase, env);
     }
 
-    if (transport_in->fault_phase)
+    if(transport_in->fault_phase)
     {
         axis2_phase_free(transport_in->fault_phase, env);
     }
@@ -120,7 +118,7 @@ axis2_transport_in_desc_free_void_arg(
 {
     axis2_transport_in_desc_t *transport_in_l = NULL;
 
-    transport_in_l = (axis2_transport_in_desc_t *) transport_in;
+    transport_in_l = (axis2_transport_in_desc_t *)transport_in;
     axis2_transport_in_desc_free(transport_in_l, env);
     return;
 }
@@ -159,7 +157,7 @@ axis2_transport_in_desc_set_in_flow(
 {
     AXIS2_PARAM_CHECK(env->error, in_flow, AXIS2_FAILURE);
 
-    if (transport_in->in_flow)
+    if(transport_in->in_flow)
     {
         axis2_flow_free(transport_in->in_flow, env);
     }
@@ -183,7 +181,7 @@ axis2_transport_in_desc_set_fault_in_flow(
 {
     AXIS2_PARAM_CHECK(env->error, fault_in_flow, AXIS2_FAILURE);
 
-    if (transport_in->fault_in_flow)
+    if(transport_in->fault_in_flow)
     {
         axis2_flow_free(transport_in->fault_in_flow, env);
     }
@@ -207,7 +205,7 @@ axis2_transport_in_desc_set_recv(
 {
     AXIS2_PARAM_CHECK(env->error, recv, AXIS2_FAILURE);
 
-    if (transport_in->recv)
+    if(transport_in->recv)
     {
         axis2_transport_receiver_free(transport_in->recv, env);
     }
@@ -232,7 +230,7 @@ axis2_transport_in_desc_set_in_phase(
 {
     AXIS2_PARAM_CHECK(env->error, in_phase, AXIS2_FAILURE);
 
-    if (transport_in->in_phase)
+    if(transport_in->in_phase)
     {
         axis2_phase_free(transport_in->in_phase, env);
     }
@@ -256,7 +254,7 @@ axis2_transport_in_desc_set_fault_phase(
 {
     AXIS2_PARAM_CHECK(env->error, fault_phase, AXIS2_FAILURE);
 
-    if (transport_in->fault_phase)
+    if(transport_in->fault_phase)
     {
         axis2_phase_free(transport_in->fault_phase, env);
     }
@@ -273,8 +271,7 @@ axis2_transport_in_desc_add_param(
 {
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
 
-    return axutil_param_container_add_param(transport_in_desc->
-                                            param_container, env, param);
+    return axutil_param_container_add_param(transport_in_desc-> param_container, env, param);
 }
 
 axutil_param_t *AXIS2_CALL
@@ -283,8 +280,7 @@ axis2_transport_in_desc_get_param(
     const axutil_env_t * env,
     const axis2_char_t * param_name)
 {
-    return axutil_param_container_get_param(transport_in_desc->param_container,
-                                            env, param_name);
+    return axutil_param_container_get_param(transport_in_desc->param_container, env, param_name);
 }
 
 axis2_bool_t AXIS2_CALL
@@ -295,9 +291,8 @@ axis2_transport_in_desc_is_param_locked(
 {
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FAILURE);
 
-    return axutil_param_container_is_param_locked(transport_in_desc->
-                                                  param_container, env,
-                                                  param_name);
+    return axutil_param_container_is_param_locked(transport_in_desc-> param_container, env,
+        param_name);
 }
 
 AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
