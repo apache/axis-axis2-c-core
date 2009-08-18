@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -27,7 +26,7 @@ axutil_rand(
     unsigned int *seedp)
 {
     *seedp = *seedp * 1103515245 + 12345;
-    return ((unsigned) (*seedp / (2 * AXIS2_RAND_MAX)) % AXIS2_RAND_MAX);
+    return ((unsigned)(*seedp / (2 * AXIS2_RAND_MAX)) % AXIS2_RAND_MAX);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
@@ -38,16 +37,16 @@ axutil_rand_with_range(
 {
     int rand = -1;
     float range = 0.0;
-    if (start < 0 || end <= 0)
+    if(start < 0 || end <= 0)
         return -1;
-    if (start >= AXIS2_RAND_MAX || end > AXIS2_RAND_MAX)
+    if(start >= AXIS2_RAND_MAX || end > AXIS2_RAND_MAX)
         return -1;
-    if (end <= start)
+    if(end <= start)
         return -1;
 
     range = (float)(end - start);
     rand = axutil_rand(seedp);
-    rand = start + (int) (range * rand / (AXIS2_RAND_MAX + 1.0));
+    rand = start + (int)(range * rand / (AXIS2_RAND_MAX + 1.0));
     return rand;
 }
 

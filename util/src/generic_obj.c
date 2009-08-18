@@ -31,10 +31,10 @@ axutil_generic_obj_create(
     axutil_generic_obj_t *generic_obj = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    generic_obj = (axutil_generic_obj_t *) AXIS2_MALLOC(env->allocator,
-                      sizeof(axutil_generic_obj_t));
+    generic_obj
+        = (axutil_generic_obj_t *)AXIS2_MALLOC(env->allocator, sizeof(axutil_generic_obj_t));
 
-    if (!generic_obj)
+    if(!generic_obj)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -51,9 +51,9 @@ axutil_generic_obj_free(
     axutil_generic_obj_t *generic_obj,
     const axutil_env_t *env)
 {
-    if (generic_obj->value)
+    if(generic_obj->value)
     {
-        if (generic_obj->free_func)
+        if(generic_obj->free_func)
         {
             generic_obj->free_func(generic_obj->value, env);
         }
@@ -64,7 +64,7 @@ axutil_generic_obj_free(
 
     }
 
-    if (generic_obj)
+    if(generic_obj)
     {
         AXIS2_FREE(env->allocator, generic_obj);
     }

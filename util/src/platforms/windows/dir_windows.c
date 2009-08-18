@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -35,21 +34,20 @@ axis2_opendir(
 
     filespec = malloc(strlen(_dirname) + 2 + 1);
     strcpy(filespec, _dirname);
-    index = (int) strlen(filespec) - 1;
-    if (index >= 0 &&
-        (filespec[index] == '/' ||
-         (filespec[index] == '\\' && !IsDBCSLeadByte(filespec[index - 1]))))
+    index = (int)strlen(filespec) - 1;
+    if(index >= 0 && (filespec[index] == '/' || (filespec[index] == '\\' && !IsDBCSLeadByte(
+        filespec[index - 1]))))
         filespec[index] = '\0';
     strcat(filespec, "/*");
 
-    dirp = (AXIS2_DIR *) malloc(sizeof(AXIS2_DIR));
+    dirp = (AXIS2_DIR *)malloc(sizeof(AXIS2_DIR));
     dirp->offset = 0;
     dirp->finished = 0;
 
-    if ((handle = (long)_findfirst(filespec, &(dirp->fileinfo))) < 0)
-        /* We are sure that the difference lies within the long range */
+    if((handle = (long)_findfirst(filespec, &(dirp->fileinfo))) < 0)
+    /* We are sure that the difference lies within the long range */
     {
-        if (errno == ENOENT || errno == EINVAL)
+        if(errno == ENOENT || errno == EINVAL)
             dirp->finished = 1;
         else
         {
@@ -71,12 +69,12 @@ axis2_closedir(
     AXIS2_DIR * _dirp)
 {
     int iret = -1;
-    if (!_dirp)
+    if(!_dirp)
         return iret;
     iret = _findclose(_dirp->handle);
-    if (_dirp->dirname)
+    if(_dirp->dirname)
         free(_dirp->dirname);
-    if (_dirp)
+    if(_dirp)
         free(_dirp);
 
     return iret;
@@ -86,12 +84,12 @@ struct dirent *AXIS2_CALL
 axis2_readdir(
     AXIS2_DIR * _dirp)
 {
-    if (!_dirp || _dirp->finished)
+    if(!_dirp || _dirp->finished)
         return NULL;
 
-    if (_dirp->offset != 0)
+    if(_dirp->offset != 0)
     {
-        if (_findnext(_dirp->handle, &(_dirp->fileinfo)) < 0)
+        if(_findnext(_dirp->handle, &(_dirp->fileinfo)) < 0)
         {
             _dirp->finished = 1;
             return NULL;
@@ -99,9 +97,9 @@ axis2_readdir(
     }
     _dirp->offset++;
 
-    strcpy(_dirp->dent.d_name, _dirp->fileinfo.name);   /*, _MAX_FNAME+1); */
+    strcpy(_dirp->dent.d_name, _dirp->fileinfo.name); /*, _MAX_FNAME+1); */
     _dirp->dent.d_ino = 1;
-    _dirp->dent.d_reclen = (unsigned short) strlen(_dirp->dent.d_name);
+    _dirp->dent.d_reclen = (unsigned short)strlen(_dirp->dent.d_name);
     _dirp->dent.d_off = _dirp->offset;
 
     return &(_dirp->dent);
@@ -113,15 +111,15 @@ axis2_readdir_r(
     struct dirent *_entry,
     struct dirent **__result)
 {
-    if (!_dirp || _dirp->finished)
+    if(!_dirp || _dirp->finished)
     {
         *__result = NULL;
         return -1;
     }
 
-    if (_dirp->offset != 0)
+    if(_dirp->offset != 0)
     {
-        if (_findnext(_dirp->handle, &(_dirp->fileinfo)) < 0)
+        if(_findnext(_dirp->handle, &(_dirp->fileinfo)) < 0)
         {
             _dirp->finished = 1;
             *__result = NULL;
@@ -130,9 +128,9 @@ axis2_readdir_r(
     }
     _dirp->offset++;
 
-    strcpy(_dirp->dent.d_name, _dirp->fileinfo.name);   /*, _MAX_FNAME+1); */
+    strcpy(_dirp->dent.d_name, _dirp->fileinfo.name); /*, _MAX_FNAME+1); */
     _dirp->dent.d_ino = 1;
-    _dirp->dent.d_reclen = (unsigned short) strlen(_dirp->dent.d_name);
+    _dirp->dent.d_reclen = (unsigned short)strlen(_dirp->dent.d_name);
     _dirp->dent.d_off = _dirp->offset;
 
     memcpy(_entry, &_dirp->dent, sizeof(*_entry));
@@ -157,15 +155,15 @@ axis2_rewinddir(
 
     filespec = malloc(strlen(dirp->dirname) + 2 + 1);
     strcpy(filespec, dirp->dirname);
-    index = (int) (strlen(filespec) - 1);
-    if (index >= 0 && (filespec[index] == '/' || filespec[index] == '\\'))
+    index = (int)(strlen(filespec) - 1);
+    if(index >= 0 && (filespec[index] == '/' || filespec[index] == '\\'))
         filespec[index] = '\0';
     strcat(filespec, "/*");
 
-    if ((handle = (long)_findfirst(filespec, &(dirp->fileinfo))) < 0)
-        /* We are sure that the difference lies within the int range */
+    if((handle = (long)_findfirst(filespec, &(dirp->fileinfo))) < 0)
+    /* We are sure that the difference lies within the int range */
     {
-        if (errno == ENOENT || errno == EINVAL)
+        if(errno == ENOENT || errno == EINVAL)
             dirp->finished = 1;
     }
     dirp->handle = handle;
@@ -186,9 +184,13 @@ int AXIS2_CALL
 axis2_scandir(
     const char *_dirname,
     struct dirent **__namelist[],
-    int (*selector) (const struct dirent * entry),
-    int (*compare) (const struct dirent ** __d1,
-                    const struct dirent ** __d2))
+    int
+    (*selector)(
+        const struct dirent * entry),
+    int
+    (*compare)(
+        const struct dirent ** __d1,
+        const struct dirent ** __d2))
 {
     AXIS2_DIR *dirp = NULL;
     struct dirent **vector = NULL;
@@ -196,31 +198,31 @@ axis2_scandir(
     int vector_size = 0;
     int nfiles = 0;
 
-    if (__namelist == NULL)
+    if(__namelist == NULL)
     {
         return -1;
     }
     dirp = axis2_opendir(_dirname);
-    if (!dirp)
+    if(!dirp)
     {
         return -1;
     }
     dp = axis2_readdir(dirp);
-    while (dp)
+    while(dp)
     {
         int dsize = 0;
         struct dirent *newdp = NULL;
 
-        if (selector && (*selector) (dp) == 0)
+        if(selector && (*selector)(dp) == 0)
         {
             dp = axis2_readdir(dirp);
             continue;
         }
 
-        if (nfiles == vector_size)
+        if(nfiles == vector_size)
         {
             struct dirent **newv;
-            if (vector_size == 0)
+            if(vector_size == 0)
             {
                 vector_size = 10;
             }
@@ -229,11 +231,8 @@ axis2_scandir(
                 vector_size *= 2;
             }
 
-            newv =
-                (struct dirent **) realloc(vector,
-                                           vector_size *
-                                           sizeof(struct dirent *));
-            if (!newv)
+            newv = (struct dirent **)realloc(vector, vector_size * sizeof(struct dirent *));
+            if(!newv)
             {
                 return -1;
             }
@@ -241,14 +240,14 @@ axis2_scandir(
         }
 
         /*dsize =
-            (int) sizeof(struct dirent) +
-            (int) ((strlen(dp->d_name) + 1) * sizeof(char));*/
-        dsize = (int) sizeof(struct dirent);
-        newdp = (struct dirent *) malloc(dsize);
+         (int) sizeof(struct dirent) +
+         (int) ((strlen(dp->d_name) + 1) * sizeof(char));*/
+        dsize = (int)sizeof(struct dirent);
+        newdp = (struct dirent *)malloc(dsize);
 
-        if (newdp == NULL)
+        if(newdp == NULL)
         {
-            while (nfiles-- > 0)
+            while(nfiles-- > 0)
             {
                 free(vector[nfiles]);
             }
@@ -256,7 +255,7 @@ axis2_scandir(
             return -1;
         }
 
-        vector[nfiles++] = (struct dirent *) memcpy(newdp, dp, dsize);
+        vector[nfiles++] = (struct dirent *)memcpy(newdp, dp, dsize);
         dp = axis2_readdir(dirp);
     }
 
@@ -264,7 +263,7 @@ axis2_scandir(
 
     *__namelist = vector;
 
-    if (compare)
+    if(compare)
     {
         qsort(*__namelist, nfiles, sizeof(struct dirent *), compare);
     }

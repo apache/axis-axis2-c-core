@@ -51,7 +51,7 @@ axutil_param_create(
     AXIS2_ENV_CHECK(env, NULL);
 
     param = AXIS2_MALLOC(env->allocator, sizeof(axutil_param_t));
-    if (!param)
+    if(!param)
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
@@ -60,7 +60,7 @@ axutil_param_create(
     }
 
     param->name = axutil_strdup(env, name);
-    param->value = value;       /* shallow copy. */
+    param->value = value; /* shallow copy. */
     param->locked = AXIS2_FALSE;
     param->type = AXIS2_TEXT_PARAM;
     param->attrs = NULL;
@@ -104,18 +104,18 @@ axutil_param_set_value(
 {
     void *param_value = NULL;
     param_value = axutil_param_get_value(param, env);
-    if (param_value)
+    if(param_value)
     {
-        if (param && param->value_free)
+        if(param && param->value_free)
         {
             param->value_free(param_value, env);
         }
-        else                    /* we assume that param value is axis2_char_t* */
+        else /* we assume that param value is axis2_char_t* */
         {
             AXIS2_FREE(env->allocator, param_value);
         }
     }
-    param->value = (void *) value;
+    param->value = (void *)value;
     return AXIS2_SUCCESS;
 }
 
@@ -163,13 +163,12 @@ axutil_param_set_attributes(
 {
     AXIS2_PARAM_CHECK(env->error, attrs, AXIS2_FAILURE);
 
-    if (param->attrs)
+    if(param->attrs)
     {
         axutil_hash_index_t *i = NULL;
         void *v = NULL;
 
-        for (i = axutil_hash_first(param->attrs, env); i;
-             i = axutil_hash_next(env, i))
+        for(i = axutil_hash_first(param->attrs, env); i; i = axutil_hash_next(env, i))
         {
             axutil_hash_this(i, NULL, NULL, &v);
             axutil_generic_obj_free(v, env);
@@ -197,19 +196,16 @@ axutil_param_set_value_list(
 {
     AXIS2_PARAM_CHECK(env->error, value_list, AXIS2_FAILURE);
 
-    if (param->value_list)
+    if(param->value_list)
     {
-        int i = 0,
-            size = 0;
+        int i = 0, size = 0;
 
         size = axutil_array_list_size(param->value_list, env);
-        for (i = 0; i < size; i++)
+        for(i = 0; i < size; i++)
         {
             axutil_param_t *param = NULL;
 
-            param =
-                (axutil_param_t *) axutil_array_list_get(param->value_list, env,
-                                                         i);
+            param = (axutil_param_t *)axutil_array_list_get(param->value_list, env, i);
             axutil_param_free(param, env);
         }
         axutil_array_list_free(param->value_list, env);
@@ -236,25 +232,24 @@ axutil_param_free(
     axis2_char_t *param_name = NULL;
 
     param_value = axutil_param_get_value(param, env);
-    if (param_value)
+    if(param_value)
     {
-        if (param && param->value_free)
+        if(param && param->value_free)
         {
             param->value_free(param_value, env);
         }
-        else                    /* we assume that param value is axis2_char_t* */
+        else /* we assume that param value is axis2_char_t* */
         {
             AXIS2_FREE(env->allocator, param_value);
         }
     }
 
-    if (param->attrs)
+    if(param->attrs)
     {
         axutil_hash_index_t *i = NULL;
         void *v = NULL;
 
-        for (i = axutil_hash_first(param->attrs, env); i;
-             i = axutil_hash_next(env, i))
+        for(i = axutil_hash_first(param->attrs, env); i; i = axutil_hash_next(env, i))
         {
             axutil_hash_this(i, NULL, NULL, &v);
             axutil_generic_obj_free(v, env);
@@ -262,20 +257,17 @@ axutil_param_free(
         axutil_hash_free(param->attrs, env);
     }
 
-    if (param->value_list)
+    if(param->value_list)
     {
-        int i = 0,
-            size = 0;
+        int i = 0, size = 0;
 
         size = axutil_array_list_size(param->value_list, env);
-        for (i = 0; i < size; i++)
+        for(i = 0; i < size; i++)
         {
             axutil_param_t *param_l = NULL;
 
-            param_l =
-                (axutil_param_t *) axutil_array_list_get(param->value_list, env,
-                                                         i);
-            if (param_l)
+            param_l = (axutil_param_t *)axutil_array_list_get(param->value_list, env, i);
+            if(param_l)
             {
                 axutil_param_free(param_l, env);
             }

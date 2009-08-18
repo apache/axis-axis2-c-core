@@ -40,13 +40,12 @@ axutil_dll_desc_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    dll_desc = (axutil_dll_desc_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axutil_dll_desc_t));
+    dll_desc = (axutil_dll_desc_t *)AXIS2_MALLOC(env->allocator, sizeof(axutil_dll_desc_t));
 
-    if (!dll_desc)
+    if(!dll_desc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
 
@@ -70,24 +69,24 @@ axutil_dll_desc_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (dll_desc->dl_handler)
+    if(dll_desc->dl_handler)
     {
         axutil_class_loader_delete_dll(env, dll_desc);
     }
 
-    if (dll_desc->dll_name)
+    if(dll_desc->dll_name)
     {
         AXIS2_FREE(env->allocator, dll_desc->dll_name);
         dll_desc->dll_name = NULL;
     }
 
-    if (dll_desc->path_qualified_dll_name)
+    if(dll_desc->path_qualified_dll_name)
     {
         AXIS2_FREE(env->allocator, dll_desc->path_qualified_dll_name);
         dll_desc->path_qualified_dll_name = NULL;
     }
 
-    if (dll_desc)
+    if(dll_desc)
     {
         AXIS2_FREE(env->allocator, dll_desc);
     }
@@ -102,7 +101,7 @@ axutil_dll_desc_free_void_arg(
     axutil_dll_desc_t *dll_desc_l = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    dll_desc_l = (axutil_dll_desc_t *) dll_desc;
+    dll_desc_l = (axutil_dll_desc_t *)dll_desc;
     axutil_dll_desc_free(dll_desc_l, env);
     return;
 }
@@ -116,14 +115,14 @@ axutil_dll_desc_set_name(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
 
-    if (dll_desc->path_qualified_dll_name)
+    if(dll_desc->path_qualified_dll_name)
     {
         AXIS2_FREE(env->allocator, dll_desc->path_qualified_dll_name);
         dll_desc->path_qualified_dll_name = NULL;
     }
 
     dll_desc->path_qualified_dll_name = axutil_strdup(env, name);
-    if (!dll_desc->path_qualified_dll_name)
+    if(!dll_desc->path_qualified_dll_name)
     {
         return AXIS2_FAILURE;
     }
@@ -187,7 +186,7 @@ axutil_dll_desc_set_dl_handler(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, dl_handler, AXIS2_FAILURE);
 
-    if (dll_desc->dl_handler)
+    if(dll_desc->dl_handler)
     {
         AXIS2_FREE(env->allocator, dll_desc->dl_handler);
     }

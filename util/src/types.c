@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,11 +21,10 @@ AXIS2_EXTERN int AXIS2_CALL
 axutil_atoi(
     const char *s)
 {
-    int i,
-     n;
+    int i, n;
 
     n = 0;
-    for (i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
+    for(i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
     {
         n = 10 * n + (s[i] - '0');
     }
@@ -41,7 +39,7 @@ axutil_atol(
     int64_t n;
 
     n = 0;
-    for (i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
+    for(i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
     {
         n = 10 * n + (s[i] - '0');
     }
@@ -58,7 +56,7 @@ axutil_strtoul(
     uint64_t n;
 
     n = 0;
-    for (i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
+    for(i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
     {
         n = 10 * n + (s[i] - '0');
     }
@@ -79,7 +77,7 @@ axutil_strtol(
     int64_t n;
 
     n = 0;
-    for (i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
+    for(i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
     {
         n = 10 * n + (s[i] - '0');
     }

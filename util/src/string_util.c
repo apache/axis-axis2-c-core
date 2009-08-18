@@ -33,12 +33,12 @@ axutil_tokenize(
 
     axis2_char_t *index = NULL;
 
-    if (!in || !*in)
+    if(!in || !*in)
     {
         return NULL;
     }
     list = axutil_array_list_create(env, 10);
-    if (!list)
+    if(!list)
     {
         return NULL;
     }
@@ -49,22 +49,20 @@ axutil_tokenize(
     do
     {
         index = strchr(str, delim);
-        if ((!index) && str && *str)
+        if((!index) && str && *str)
         {
-            axutil_array_list_add(list, env,
-                                  axutil_strdup(env, str));
+            axutil_array_list_add(list, env, axutil_strdup(env, str));
             break;
         }
 
         rest = index + 1;
         str[index - str] = '\0';
-        if (str && *str)
+        if(str && *str)
         {
-            axutil_array_list_add(list, env, 
-                                  axutil_strdup(env, str));
+            axutil_array_list_add(list, env, axutil_strdup(env, str));
         }
 
-        if (!rest || !*rest)
+        if(!rest || !*rest)
         {
             break;
         }
@@ -73,8 +71,8 @@ axutil_tokenize(
         index = NULL;
 
     }
-    while (loop_state);
-    if (temp)
+    while(loop_state);
+    if(temp)
     {
         AXIS2_FREE(env->allocator, temp);
     }
@@ -92,20 +90,20 @@ axutil_first_token(
     axis2_char_t *rest = NULL;
     axis2_char_t *index = NULL;
 
-    if (!in && !*in)
+    if(!in && !*in)
     {
         return NULL;
     }
 
     list = axutil_array_list_create(env, 2);
-    if (!list)
+    if(!list)
     {
         return NULL;
     }
     str = axutil_strdup(env, in);
 
     index = strchr(str, delim);
-    if (!index)
+    if(!index)
     {
         axutil_array_list_add(list, env, str);
         axutil_array_list_add(list, env, axutil_strdup(env, ""));
@@ -131,13 +129,13 @@ axutil_last_token(
     axis2_char_t *rest = NULL;
     axis2_char_t *index = NULL;
 
-    if (!in && !*in)
+    if(!in && !*in)
     {
         return NULL;
     }
 
     list = axutil_array_list_create(env, 2);
-    if (!list)
+    if(!list)
     {
         return NULL;
     }
@@ -145,7 +143,7 @@ axutil_last_token(
     str = axutil_strdup(env, in);
     index = axutil_rindex(str, (axis2_char_t)delim);
     /* We are sure that the conversion is safe */
-    if (!index)
+    if(!index)
     {
         axutil_array_list_add(list, env, axutil_strdup(env, ""));
         axutil_array_list_add(list, env, str);

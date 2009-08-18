@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -19,8 +18,7 @@
 #include <platforms/unix/axutil_date_time_util_unix.h>
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_platform_get_milliseconds(
-    )
+axis2_platform_get_milliseconds()
 {
     struct timeb t_current;
     int milliseconds;

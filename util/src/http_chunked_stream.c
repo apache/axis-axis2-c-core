@@ -31,7 +31,8 @@ struct axutil_http_chunked_stream
     axis2_bool_t chunk_started;
 };
 
-static axis2_status_t axutil_http_chunked_stream_start_chunk(
+static axis2_status_t
+axutil_http_chunked_stream_start_chunk(
     axutil_http_chunked_stream_t * chunked_stream,
     const axutil_env_t *env);
 
@@ -44,10 +45,10 @@ axutil_http_chunked_stream_create(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, stream, NULL);
 
-    chunked_stream = (axutil_http_chunked_stream_t *) AXIS2_MALLOC
-        (env->allocator, sizeof(axutil_http_chunked_stream_t));
+    chunked_stream = (axutil_http_chunked_stream_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(axutil_http_chunked_stream_t));
 
-    if (!chunked_stream)
+    if(!chunked_stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -84,45 +85,42 @@ axutil_http_chunked_stream_read(
     int yet_to_read = 0;
     axutil_stream_t *stream = chunked_stream->stream;
 
-    if (!buffer)
+    if(!buffer)
     {
         return -1;
     }
-    if (!stream)
+    if(!stream)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM,
-            AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM, AXIS2_FAILURE);
         return -1;
     }
-    if (AXIS2_TRUE == chunked_stream->end_of_chunks)
+    if(AXIS2_TRUE == chunked_stream->end_of_chunks)
     {
         return 0;
     }
-    if (AXIS2_FALSE == chunked_stream->chunk_started)
+    if(AXIS2_FALSE == chunked_stream->chunk_started)
     {
         axutil_http_chunked_stream_start_chunk(chunked_stream, env);
     }
     yet_to_read = (int)count;
     /* We are sure that the difference lies within the int range */
-    while (AXIS2_FALSE == chunked_stream->end_of_chunks && yet_to_read > 0)
+    while(AXIS2_FALSE == chunked_stream->end_of_chunks && yet_to_read > 0)
     {
-        if (chunked_stream->unread_len < yet_to_read)
+        if(chunked_stream->unread_len < yet_to_read)
         {
-            len = axutil_stream_read(chunked_stream->stream, env,
-                (axis2_char_t *) buffer + count -
-                yet_to_read, chunked_stream->unread_len);
+            len = axutil_stream_read(chunked_stream->stream, env, (axis2_char_t *)buffer + count
+                - yet_to_read, chunked_stream->unread_len);
             yet_to_read -= len;
             chunked_stream->unread_len -= len;
-            if (chunked_stream->unread_len <= 0)
+            if(chunked_stream->unread_len <= 0)
             {
                 axutil_http_chunked_stream_start_chunk(chunked_stream, env);
             }
         }
         else
         {
-            len = axutil_stream_read(chunked_stream->stream, env,
-                (axis2_char_t *) buffer + count -
-                yet_to_read, yet_to_read);
+            len = axutil_stream_read(chunked_stream->stream, env, (axis2_char_t *)buffer + count
+                - yet_to_read, yet_to_read);
             yet_to_read -= len;
             chunked_stream->unread_len -= len;
         }
@@ -142,17 +140,16 @@ axutil_http_chunked_stream_write(
     int len = -1;
     axis2_char_t tmp_buf[10];
 
-    if (!buffer)
+    if(!buffer)
     {
         return -1;
     }
-    if (!stream)
+    if(!stream)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM,
-            AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM, AXIS2_FAILURE);
         return -1;
     }
-    sprintf(tmp_buf, "%x%s", (unsigned int) count, AXIS2_HTTP_CRLF);
+    sprintf(tmp_buf, "%x%s", (unsigned int)count, AXIS2_HTTP_CRLF);
     len = axutil_stream_write(stream, env, tmp_buf, axutil_strlen(tmp_buf));
     len = axutil_stream_write(stream, env, buffer, count);
     axutil_stream_write(stream, env, AXIS2_HTTP_CRLF, 2);
@@ -178,31 +175,30 @@ axutil_http_chunked_stream_start_chunk(
     int read = -1;
 
     /* remove the last CRLF of the previous chunk if any */
-    if (AXIS2_TRUE == chunked_stream->chunk_started)
+    if(AXIS2_TRUE == chunked_stream->chunk_started)
     {
         read = axutil_stream_read(chunked_stream->stream, env, tmp_buf, 2);
         chunked_stream->chunk_started = AXIS2_FALSE;
     }
     /* read the len and chunk extension */
-    while ((read = axutil_stream_read(chunked_stream->stream, env, tmp_buf,
-                                      1)) > 0)
+    while((read = axutil_stream_read(chunked_stream->stream, env, tmp_buf, 1)) > 0)
     {
         tmp_buf[read] = '\0';
         strcat(str_chunk_len, tmp_buf);
-        if (0 != strstr(str_chunk_len, AXIS2_HTTP_CRLF))
+        if(0 != strstr(str_chunk_len, AXIS2_HTTP_CRLF))
         {
             break;
         }
     }
     /* check whether we have extensions */
     tmp = strchr(str_chunk_len, ';');
-    if (tmp)
+    if(tmp)
     {
         /* we don't use extensions right now */
         *tmp = '\0';
     }
     chunked_stream->current_chunk_size = strtol(str_chunk_len, NULL, 16);
-    if (0 == chunked_stream->current_chunk_size)
+    if(0 == chunked_stream->current_chunk_size)
     {
         /* Read the last CRLF */
         read = axutil_stream_read(chunked_stream->stream, env, tmp_buf, 2);
@@ -224,7 +220,7 @@ axutil_http_chunked_stream_write_last_chunk(
     axutil_stream_t *stream = NULL;
 
     stream = chunked_stream->stream;
-    if (axutil_stream_write(stream, env, "0\r\n\r\n", 5) == 5)
+    if(axutil_stream_write(stream, env, "0\r\n\r\n", 5) == 5)
     {
         return AXIS2_SUCCESS;
     }
@@ -236,6 +232,6 @@ axutil_http_chunked_stream_get_end_of_chunks(
     axutil_http_chunked_stream_t *chunked_stream,
     const axutil_env_t *env)
 {
-    return chunked_stream->end_of_chunks; 
+    return chunked_stream->end_of_chunks;
 }
 

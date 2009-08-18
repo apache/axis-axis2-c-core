@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,38 +21,39 @@
 #include <string.h>
 #include <axutil_utils_defines.h>
 
-AXIS2_EXTERN axis2_char_t * AXIS2_CALL 
-axutil_platform_uuid_gen(char *s) 
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL
+axutil_platform_uuid_gen(
+    char *s)
 {
     RPC_STATUS retval;
     UUID uuid;
     unsigned char *str;
     axis2_char_t * retstr;
 
-    if (!s)
+    if(!s)
     {
         return NULL;
     }
 
     retstr = s;
-    retval = UuidCreate(&uuid);   
-    if (retval == RPC_S_UUID_LOCAL_ONLY)
+    retval = UuidCreate(&uuid);
+    if(retval == RPC_S_UUID_LOCAL_ONLY)
     {
         printf("warning - unique within computer \n");
-    }  
-    else if (retval == RPC_S_UUID_NO_ADDRESS)
+    }
+    else if(retval == RPC_S_UUID_NO_ADDRESS)
     {
         return NULL;
     }
 
     retval = UuidToStringA(&uuid, &str);
 
-    if (retval == RPC_S_OK)
+    if(retval == RPC_S_OK)
     {
         strcpy(retstr, (char *)str);
         RpcStringFree(&str);
     }
-    else if (retval == RPC_S_OUT_OF_MEMORY)
+    else if(retval == RPC_S_OUT_OF_MEMORY)
     {
         return NULL;
     }

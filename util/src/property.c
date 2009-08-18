@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -35,11 +34,9 @@ axutil_property_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    property =
-        (axutil_property_t *) AXIS2_MALLOC(env->allocator,
-                                           sizeof(axutil_property_t));
+    property = (axutil_property_t *)AXIS2_MALLOC(env->allocator, sizeof(axutil_property_t));
 
-    if (!property)
+    if(!property)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -65,9 +62,9 @@ axutil_property_create_with_args(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    property = (axutil_property_t *) axutil_property_create(env);
+    property = (axutil_property_t *)axutil_property_create(env);
 
-    if (!property)
+    if(!property)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -87,22 +84,22 @@ axutil_property_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (property->value)
+    if(property->value)
     {
-        if (property->scope != AXIS2_SCOPE_APPLICATION)
+        if(property->scope != AXIS2_SCOPE_APPLICATION)
         {
-            if (property->free_func && property->own_value)
+            if(property->free_func && property->own_value)
             {
                 property->free_func(property->value, env);
             }
-            else if (property->own_value)
+            else if(property->own_value)
             {
                 AXIS2_FREE(env->allocator, property->value);
             }
         }
     }
 
-    if (property)
+    if(property)
     {
         AXIS2_FREE(env->allocator, property);
     }
@@ -141,15 +138,15 @@ axutil_property_set_value(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (property->value)
+    if(property->value)
     {
-        if (property->scope != AXIS2_SCOPE_APPLICATION)
+        if(property->scope != AXIS2_SCOPE_APPLICATION)
         {
-            if (property->free_func && property->own_value)
+            if(property->free_func && property->own_value)
             {
                 property->free_func(property->value, env);
             }
-            else if (property->own_value)
+            else if(property->own_value)
             {
                 AXIS2_FREE(env->allocator, property->value);
             }

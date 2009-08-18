@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,7 +24,7 @@ axutil_uuid_gen(
 
     axis2_char_t *str = AXIS2_MALLOC(env->allocator, 40 * sizeof(char));
     axutil_platform_uuid_gen(str);
-    if (!str)
+    if(!str)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_UUID_GEN_FAILED, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "AXIS2_ERROR_UUID_GEN_FAILED");

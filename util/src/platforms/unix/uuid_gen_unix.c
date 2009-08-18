@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -55,8 +54,7 @@ static axis2_bool_t axutil_uuid_gen_is_first = AXIS2_TRUE;
 static struct axutil_uuid_st axutil_uuid_static;
 
 axutil_uuid_t *AXIS2_CALL
-axutil_uuid_gen_v1(
-    )
+axutil_uuid_gen_v1()
 {
     struct timeval time_now;
     struct timeval tv;
@@ -66,7 +64,7 @@ axutil_uuid_gen_v1(
     axutil_uuid_t *ret_uuid = NULL;
     unsigned short int time_high_version = 0;
 
-    if (AXIS2_TRUE == axutil_uuid_gen_is_first)
+    if(AXIS2_TRUE == axutil_uuid_gen_is_first)
     {
         char *mac_addr = axutil_uuid_get_mac_addr();
         memcpy(axutil_uuid_static.mac, mac_addr, 6);
@@ -80,21 +78,20 @@ axutil_uuid_gen_v1(
      */
 
     /* determine current system time and sequence counter */
-    if (gettimeofday(&time_now, NULL) == -1)
+    if(gettimeofday(&time_now, NULL) == -1)
         return NULL;
 
     /* check whether system time changed since last retrieve */
-    if (!
-        (time_now.tv_sec == axutil_uuid_static.time_last.tv_sec &&
-         time_now.tv_usec == axutil_uuid_static.time_last.tv_usec))
+    if(!(time_now.tv_sec == axutil_uuid_static.time_last.tv_sec && time_now.tv_usec
+        == axutil_uuid_static.time_last.tv_usec))
     {
         /* reset time sequence counter and continue */
         axutil_uuid_static.time_seq = 0;
     }
 
     /* until we are out of UUIDs per tick, increment
-       the time/tick sequence counter and continue */
-    while (axutil_uuid_static.time_seq < UUIDS_PER_TICK)
+     the time/tick sequence counter and continue */
+    while(axutil_uuid_static.time_seq < UUIDS_PER_TICK)
     {
         axutil_uuid_static.time_seq++;
     }
@@ -102,27 +99,27 @@ axutil_uuid_gen_v1(
     tv.tv_sec = 0;
     tv.tv_usec = 1;
     /*
-       The following select causes severe performance problems. 
-       Hence commenting out. I am not sure why this is required. - Samisa.    
-       select(0, NULL, NULL, NULL, &tv); */
+     The following select causes severe performance problems.
+     Hence commenting out. I am not sure why this is required. - Samisa.
+     select(0, NULL, NULL, NULL, &tv); */
 
-    time_val = (unsigned long long) time_now.tv_sec * 10000000ull;
-    time_val += (unsigned long long) time_now.tv_usec * 10ull;
+    time_val = (unsigned long long)time_now.tv_sec * 10000000ull;
+    time_val += (unsigned long long)time_now.tv_usec * 10ull;
 
     ret_uuid = malloc(sizeof(axutil_uuid_t));
 
     time_val += UUID_TIMEOFFSET;
     /* compensate for low resolution system clock by adding
-       the time/tick sequence counter */
-    if (axutil_uuid_static.time_seq > 0)
-        time_val += (unsigned long long) axutil_uuid_static.time_seq;
+     the time/tick sequence counter */
+    if(axutil_uuid_static.time_seq > 0)
+        time_val += (unsigned long long)axutil_uuid_static.time_seq;
 
     time_val2 = time_val;
-    ret_uuid->time_low = (unsigned long) time_val2;
+    ret_uuid->time_low = (unsigned long)time_val2;
     time_val2 >>= 32;
-    ret_uuid->time_mid = (unsigned short int) time_val2;
+    ret_uuid->time_mid = (unsigned short int)time_val2;
     time_val2 >>= 16;
-    time_high_version = (unsigned short int) time_val2;
+    time_high_version = (unsigned short int)time_val2;
 
     /* store the 60 LSB of the time in the UUID and make version 1 */
     time_high_version <<= 4;
@@ -138,11 +135,10 @@ axutil_uuid_gen_v1(
     clck = axutil_uuid_static.clock;
 
     /* generate new random clock sequence (initially or if the
-       time has stepped backwards) or else just increase it */
-    if (clck == 0 ||
-        (time_now.tv_sec < axutil_uuid_static.time_last.tv_sec ||
-         (time_now.tv_sec == axutil_uuid_static.time_last.tv_sec &&
-          time_now.tv_usec < axutil_uuid_static.time_last.tv_usec)))
+     time has stepped backwards) or else just increase it */
+    if(clck == 0 || (time_now.tv_sec < axutil_uuid_static.time_last.tv_sec || (time_now.tv_sec
+        == axutil_uuid_static.time_last.tv_sec && time_now.tv_usec
+        < axutil_uuid_static.time_last.tv_usec)))
     {
         srand(time_now.tv_usec);
         clck = rand();
@@ -166,7 +162,7 @@ axutil_uuid_gen_v1(
     axutil_uuid_static.time_last.tv_sec = time_now.tv_sec;
     axutil_uuid_static.time_last.tv_usec = time_now.tv_usec;
 
-    if (!ret_uuid)
+    if(!ret_uuid)
     {
         return NULL;
     }
@@ -184,26 +180,24 @@ axutil_platform_uuid_gen(
     unsigned char mac[7];
     char mac_hex[13];
 
-    if (!s)
+    if(!s)
     {
         return NULL;
     }
     uuid_struct = axutil_uuid_gen_v1();
-    if (!uuid_struct)
+    if(!uuid_struct)
     {
         return NULL;
     }
     uuid_str = s;
-    if (!uuid_str)
+    if(!uuid_str)
     {
         return NULL;
     }
     memcpy(mac, uuid_struct->mac_addr, 6);
-    sprintf(mac_hex, "%02x%02x%02x%02x%02x%02x", mac[0], mac[1], mac[2], mac[3],
-            mac[4], mac[5]);
-    sprintf(uuid_str, "%08x-%04x-%04x-%04x-%s", uuid_struct->time_low,
-            uuid_struct->time_mid, uuid_struct->time_high_version,
-            uuid_struct->clock_variant, mac_hex);
+    sprintf(mac_hex, "%02x%02x%02x%02x%02x%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+    sprintf(uuid_str, "%08x-%04x-%04x-%04x-%s", uuid_struct->time_low, uuid_struct->time_mid,
+        uuid_struct->time_high_version, uuid_struct->clock_variant, mac_hex);
     free(uuid_struct);
     uuid_struct = NULL;
     return uuid_str;
@@ -213,7 +207,7 @@ axutil_platform_uuid_gen(
 
 char *AXIS2_CALL
 axutil_uuid_get_mac_addr(
-    )
+)
 {
     struct ifreq ifr;
     struct ifreq *IFR;
@@ -226,7 +220,7 @@ axutil_uuid_get_mac_addr(
     int ok = AXIS2_FALSE;
 
     if ((s = socket(PF_INET, SOCK_DGRAM, 0)) < 0)
-        return NULL;
+    return NULL;
 
     ifc.ifc_len = sizeof(buf);
     ifc.ifc_buf = buf;
@@ -254,12 +248,12 @@ axutil_uuid_get_mac_addr(
     {
         sa = (struct sockaddr *) &ifr.ifr_addr;
         for (i = 0; i < 6; i++)
-            buffer[i] = (unsigned char) (sa->sa_data[i] & 0xff);
+        buffer[i] = (unsigned char) (sa->sa_data[i] & 0xff);
     }
     else
     {
         for (i = 0; i < 6; i++)
-            buffer[i] = (unsigned char) ((AXIS2_LOCAL_MAC_ADDR[i]) - '0');
+        buffer[i] = (unsigned char) ((AXIS2_LOCAL_MAC_ADDR[i]) - '0');
     }
     close(s);
     return buffer;
@@ -275,7 +269,7 @@ axutil_uuid_get_mac_addr(
 
 char *AXIS2_CALL
 axutil_uuid_get_mac_addr(
-    )
+)
 {
     struct ifaddrs *ifap;
     struct ifaddrs *ifap_head;
@@ -285,7 +279,7 @@ axutil_uuid_get_mac_addr(
     char *data_ptr;
 
     if (getifaddrs(&ifap_head) < 0)
-        return NULL;
+    return NULL;
     for (ifap = ifap_head; ifap != NULL; ifap = ifap->ifa_next)
     {
         if (ifap->ifa_addr != NULL && ifap->ifa_addr->sa_family == AF_LINK)
@@ -296,7 +290,7 @@ axutil_uuid_get_mac_addr(
             {
                 data_ptr = malloc(6 * sizeof(char));
                 for (i = 0; i < 6 && i < sdl->sdl_alen; i++, ucp++)
-                    data_ptr[i] = (unsigned char) (*ucp & 0xff);
+                data_ptr[i] = (unsigned char) (*ucp & 0xff);
 
                 freeifaddrs(ifap_head);
                 return data_ptr;
@@ -309,12 +303,11 @@ axutil_uuid_get_mac_addr(
 # else                          /* Solaris-ish */
 
 /* code modified from that posted on:
-* http://forum.sun.com/jive/thread.jspa?threadID=84804&tstart=30
-*/
+ * http://forum.sun.com/jive/thread.jspa?threadID=84804&tstart=30
+ */
 
 char *AXIS2_CALL
-axutil_uuid_get_mac_addr(
-    )
+axutil_uuid_get_mac_addr()
 {
     char hostname[MAXHOSTNAMELEN];
     char *data_ptr;
@@ -324,27 +317,27 @@ axutil_uuid_get_mac_addr(
     int s;
     int i;
 
-    if (gethostname(hostname, sizeof(hostname)) < 0)
+    if(gethostname(hostname, sizeof(hostname)) < 0)
         return NULL;
-    if ((he = gethostbyname(hostname)) == NULL)
+    if((he = gethostbyname(hostname)) == NULL)
         return NULL;
-    if ((s = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
+    if((s = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0)
         return NULL;
     memset(&ar, 0, sizeof(ar));
-    sa = (struct sockaddr_in *) ((void *) &(ar.arp_pa));
+    sa = (struct sockaddr_in *)((void *)&(ar.arp_pa));
     sa->sin_family = AF_INET;
     memcpy(&(sa->sin_addr), *(he->h_addr_list), sizeof(struct in_addr));
-    if (ioctl(s, SIOCGARP, &ar) < 0)
+    if(ioctl(s, SIOCGARP, &ar) < 0)
     {
         close(s);
         return NULL;
     }
     close(s);
-    if (!(ar.arp_flags & ATF_COM))
+    if(!(ar.arp_flags & ATF_COM))
         return NULL;
     data_ptr = malloc(6 * sizeof(char));
-    for (i = 0; i < 6; i++)
-        data_ptr[i] = (unsigned char) (ar.arp_ha.sa_data[i] & 0xff);
+    for(i = 0; i < 6; i++)
+        data_ptr[i] = (unsigned char)(ar.arp_ha.sa_data[i] & 0xff);
 
     return data_ptr;
 }

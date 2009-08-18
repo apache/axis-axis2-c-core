@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -27,13 +26,13 @@ axutil_threadattr_create(
     axutil_threadattr_t *new = NULL;
 
     new = AXIS2_MALLOC(allocator, sizeof(axutil_threadattr_t));
-    if (!new)
+    if(!new)
     {
         return NULL;
     }
     stat = pthread_attr_init(&(new->attr));
 
-    if (stat != 0)
+    if(stat != 0)
     {
         AXIS2_FREE(allocator, new);
         return NULL;
@@ -51,7 +50,7 @@ threadattr_cleanup(
 
     rv = pthread_attr_destroy(&(attr->attr));
 
-    if (0 != rv)
+    if(0 != rv)
     {
         return AXIS2_FAILURE;
     }
@@ -65,7 +64,7 @@ axutil_threadattr_detach_set(
     axutil_threadattr_t * attr,
     axis2_bool_t detached)
 {
-    if (0 == pthread_attr_setdetachstate(&(attr->attr), DETACH_ARG(detached)))
+    if(0 == pthread_attr_setdetachstate(&(attr->attr), DETACH_ARG(detached)))
     {
         return AXIS2_SUCCESS;
     }
@@ -78,7 +77,7 @@ axutil_threadattr_detach_get(
 {
     int state = 0;
     pthread_attr_getdetachstate(&(attr->attr), &state);
-    if (state == 1)
+    if(state == 1)
     {
         return AXIS2_TRUE;
     }
@@ -89,7 +88,7 @@ static void *
 dummy_worker(
     void *opaque)
 {
-    axutil_thread_t *thread = (axutil_thread_t *) opaque;
+    axutil_thread_t *thread = (axutil_thread_t *)opaque;
     return thread->func(thread, thread->data);
 }
 
@@ -104,14 +103,14 @@ axutil_thread_create(
     pthread_attr_t *temp = NULL;
     axutil_thread_t *new = NULL;
 
-    new = (axutil_thread_t *) AXIS2_MALLOC(allocator, sizeof(axutil_thread_t));
+    new = (axutil_thread_t *)AXIS2_MALLOC(allocator, sizeof(axutil_thread_t));
 
-    if (!new)
+    if(!new)
     {
         return NULL;
     }
-    new->td = (pthread_t *) AXIS2_MALLOC(allocator, sizeof(pthread_t));
-    if (!new->td)
+    new->td = (pthread_t *)AXIS2_MALLOC(allocator, sizeof(pthread_t));
+    if(!new->td)
     {
         return NULL;
     }
@@ -120,7 +119,7 @@ axutil_thread_create(
     new->func = func;
     new->try_exit = AXIS2_FALSE;
 
-    if (attr)
+    if(attr)
     {
         temp = &(attr->attr);
     }
@@ -129,7 +128,7 @@ axutil_thread_create(
         temp = NULL;
     }
 
-    if ((stat = pthread_create(new->td, temp, dummy_worker, new)) == 0)
+    if((stat = pthread_create(new->td, temp, dummy_worker, new)) == 0)
     {
         return new;
     }
@@ -157,14 +156,14 @@ axutil_thread_exit(
     axutil_allocator_t * allocator)
 {
 
-    if (thd)
+    if(thd)
     {
-        while (!thd->try_exit)
-        {    
+        while(!thd->try_exit)
+        {
             sleep(1);
-        }    
-        
-        if (thd->td)
+        }
+
+        if(thd->td)
         {
             AXIS2_FREE(allocator, thd->td);
         }
@@ -179,7 +178,7 @@ axutil_thread_join(
     axutil_thread_t * thd)
 {
     void *thread_stat;
-    if (0 == pthread_join(*(thd->td), (void *) (&thread_stat)))
+    if(0 == pthread_join(*(thd->td), (void *)(&thread_stat)))
     {
         return AXIS2_SUCCESS;
     }
@@ -190,7 +189,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_thread_detach(
     axutil_thread_t * thd)
 {
-    if (0 == pthread_detach(*(thd->td)))
+    if(0 == pthread_detach(*(thd->td)))
     {
         thd->try_exit = AXIS2_TRUE;
         return AXIS2_SUCCESS;
@@ -205,7 +204,6 @@ axutil_thread_yield(
     return;
 }
 
-
 /**
  * function is used to allocate a new key. This key now becomes valid for all threads in our process. 
  * When a key is created, the value it points to defaults to NULL. Later on each thread may change 
@@ -214,12 +212,14 @@ axutil_thread_yield(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_thread_key_create(
     axutil_threadkey_t * axis2_key,
-    void (*destructor) (void *))
+    void
+    (*destructor)(
+        void *))
 {
     int rc = -1;
     pthread_key_t key = axis2_key->key;
     rc = pthread_key_create(&key, destructor);
-    if (0 == rc)
+    if(0 == rc)
         return AXIS2_SUCCESS;
     else
         return AXIS2_FAILURE;
@@ -252,7 +252,7 @@ axutil_thread_setspecific(
     int rc = -1;
     pthread_key_t key = axis2_key->key;
     rc = pthread_setspecific(key, value);
-    if (0 == rc)
+    if(0 == rc)
         return AXIS2_SUCCESS;
     else
         return AXIS2_FAILURE;
@@ -262,7 +262,7 @@ AXIS2_EXTERN axis2_os_thread_t *AXIS2_CALL
 axis2_os_thread_get(
     axutil_thread_t * thd)
 {
-    if (!thd)
+    if(!thd)
     {
         return NULL;
     }
@@ -274,16 +274,15 @@ axutil_thread_once_init(
     axutil_allocator_t * allocator)
 {
 #if defined(AXIS2_SOLARIS) && (__GNUC__ <= 3)
-    static const pthread_once_t once_init = { PTHREAD_ONCE_INIT };
+    static const pthread_once_t once_init =
+    {   PTHREAD_ONCE_INIT};
 #else
     static const pthread_once_t once_init = PTHREAD_ONCE_INIT;
 #endif
-    axutil_thread_once_t *control = AXIS2_MALLOC(allocator,
-                                                 sizeof(axutil_thread_once_t));
-    if (!control)
+    axutil_thread_once_t *control = AXIS2_MALLOC(allocator, sizeof(axutil_thread_once_t));
+    if(!control)
     {
-        return NULL;
-        ;
+        return NULL;;
     }
     (control)->once = once_init;
     return control;
@@ -292,7 +291,9 @@ axutil_thread_once_init(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_thread_once(
     axutil_thread_once_t * control,
-    void (*func) (void))
+    void
+    (*func)(
+        void))
 {
     return pthread_once(&(control->once), func);
 }
@@ -308,7 +309,7 @@ axutil_thread_mutex_create(
     new_mutex = AXIS2_MALLOC(allocator, sizeof(axutil_thread_mutex_t));
     new_mutex->allocator = allocator;
 
-    if (pthread_mutex_init(&(new_mutex->mutex), NULL) != 0)
+    if(pthread_mutex_init(&(new_mutex->mutex), NULL) != 0)
     {
         AXIS2_FREE(allocator, new_mutex);
         return NULL;
@@ -327,7 +328,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_thread_mutex_unlock(
     axutil_thread_mutex_t * mutex)
 {
-    if (pthread_mutex_unlock(&(mutex->mutex)) != 0)
+    if(pthread_mutex_unlock(&(mutex->mutex)) != 0)
     {
         return AXIS2_FAILURE;
     }
@@ -338,7 +339,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_thread_mutex_destroy(
     axutil_thread_mutex_t * mutex)
 {
-    if (0 != pthread_mutex_destroy(&(mutex->mutex)))
+    if(0 != pthread_mutex_destroy(&(mutex->mutex)))
     {
         return AXIS2_FAILURE;
     }

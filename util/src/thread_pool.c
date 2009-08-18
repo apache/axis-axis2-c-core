@@ -30,11 +30,9 @@ axutil_thread_pool_init(
 {
     axutil_thread_pool_t *pool = NULL;
 
-    pool =
-        (axutil_thread_pool_t *) AXIS2_MALLOC(allocator,
-                                              sizeof(axutil_thread_pool_t));
+    pool = (axutil_thread_pool_t *)AXIS2_MALLOC(allocator, sizeof(axutil_thread_pool_t));
 
-    if (!pool)
+    if(!pool)
     {
         return NULL;
     }
@@ -47,11 +45,11 @@ AXIS2_EXTERN void AXIS2_CALL
 axutil_thread_pool_free(
     axutil_thread_pool_t *pool)
 {
-    if (!pool)
+    if(!pool)
     {
         return;
     }
-    if (!pool->allocator)
+    if(!pool->allocator)
     {
         return;
     }
@@ -65,11 +63,11 @@ axutil_thread_pool_get_thread(
     axutil_thread_start_t func,
     void *data)
 {
-    if (!pool)
+    if(!pool)
     {
         return NULL;
     }
-    if (!pool->allocator)
+    if(!pool->allocator)
     {
         return NULL;
     }
@@ -81,7 +79,7 @@ axutil_thread_pool_join_thread(
     axutil_thread_pool_t *pool,
     axutil_thread_t *thd)
 {
-    if (!pool || !thd)
+    if(!pool || !thd)
     {
         return AXIS2_FAILURE;
     }
@@ -93,7 +91,7 @@ axutil_thread_pool_exit_thread(
     axutil_thread_pool_t *pool,
     axutil_thread_t *thd)
 {
-    if (!pool || !thd)
+    if(!pool || !thd)
     {
         return AXIS2_FAILURE;
     }
@@ -105,7 +103,7 @@ axutil_thread_pool_thread_detach(
     axutil_thread_pool_t *pool,
     axutil_thread_t *thd)
 {
-    if (!pool || !thd)
+    if(!pool || !thd)
     {
         return AXIS2_FAILURE;
     }
@@ -120,22 +118,20 @@ axutil_init_thread_env(
     axutil_error_t *error = NULL;
     allocator = axutil_allocator_clone(system_env->allocator);
     error = axutil_error_create(allocator);
-    return axutil_env_create_with_error_log_thread_pool(allocator,
-                                                        error, system_env->log,
-                                                        system_env->
-                                                        thread_pool);
+    return axutil_env_create_with_error_log_thread_pool(allocator, error, system_env->log,
+        system_env-> thread_pool);
 }
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_free_thread_env(
     struct axutil_env *thread_env)
 {
-    if (!thread_env)
+    if(!thread_env)
     {
         return;
     }
 
-    if (--(thread_env->ref) > 0)
+    if(--(thread_env->ref) > 0)
     {
         return;
     }
@@ -143,7 +139,7 @@ axutil_free_thread_env(
     /* log, thread_pool and allocator are shared, so do not free them */
     thread_env->log = NULL;
     thread_env->thread_pool = NULL;
-    if (thread_env->error)
+    if(thread_env->error)
     {
         AXIS2_ERROR_FREE(thread_env->error);
     }

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -16,11 +15,9 @@
  * limitations under the License.
  */
 
- 
-
 #include <windows/axutil_windows.h>
 #include <stdio.h>
-    
+
 
 /*
 
@@ -43,64 +40,54 @@ std::string* getPlatformErrorMessage(long errorNumber)
 
     return returningString;
 }
-*/ 
-AXIS2_EXTERN HMODULE AXIS2_CALL 
-callLoadLib(char *lib) 
+ */
+AXIS2_EXTERN HMODULE AXIS2_CALL
+callLoadLib(
+    char *lib)
 {
-	/* Disable display of the critical-error-handler message box */
-    SetErrorMode(SEM_FAILCRITICALERRORS); 
+    /* Disable display of the critical-error-handler message box */
+    SetErrorMode(SEM_FAILCRITICALERRORS);
     return LoadLibraryEx(lib, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
 }
 
-
-AXIS2_EXTERN struct tm *AXIS2_CALL 
+AXIS2_EXTERN struct tm *AXIS2_CALL
 axis2_win_gmtime(
     const time_t * timep,
-    struct tm *result) 
+    struct tm *result)
 {
     return gmtime(timep);
 }
 
-AXIS2_EXTERN void AXIS2_CALL 
-axutil_win32_get_last_error(axis2_char_t *buf, 
-							unsigned int buf_size)
+AXIS2_EXTERN void AXIS2_CALL
+axutil_win32_get_last_error(
+    axis2_char_t *buf,
+    unsigned int buf_size)
 {
-	LPVOID lpMsgBuf;	
-	int rc = GetLastError();
-	sprintf( buf, "DLL Load Error %d: ", rc );
-	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-				  NULL,
-	              rc,
-	              0, 
-				  (LPTSTR) &lpMsgBuf,
-				  0,
-				  NULL
-				);
-	if (lpMsgBuf)
-	{
-		strncat( buf, (char*)lpMsgBuf, buf_size - strlen( buf ) - 1 );
-	}
-	LocalFree( lpMsgBuf );
+    LPVOID lpMsgBuf;
+    int rc = GetLastError();
+    sprintf(buf, "DLL Load Error %d: ", rc);
+    FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, rc, 0,
+        (LPTSTR) & lpMsgBuf, 0, NULL);
+    if(lpMsgBuf)
+    {
+        strncat(buf, (char*)lpMsgBuf, buf_size - strlen(buf) - 1);
+    }
+    LocalFree(lpMsgBuf);
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axutil_win32_get_last_wsa_error(axis2_char_t *buf, 
-								unsigned int buf_size)
+axutil_win32_get_last_wsa_error(
+    axis2_char_t *buf,
+    unsigned int buf_size)
 {
-	LPVOID lpMsgBuf;	
-	int rc = WSAGetLastError();
-	sprintf( buf, "Winsock error %d: ", rc );
-	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-				  NULL,
-	              rc,
-	              0, 
-				  (LPTSTR) &lpMsgBuf,
-				  0,
-				  NULL
-				);
-	if (lpMsgBuf)
-	{
-		strncat( buf, (char*)lpMsgBuf, buf_size - strlen( buf ) - 1 );
-	}
-	LocalFree( lpMsgBuf );
+    LPVOID lpMsgBuf;
+    int rc = WSAGetLastError();
+    sprintf(buf, "Winsock error %d: ", rc);
+    FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, rc, 0,
+        (LPTSTR) & lpMsgBuf, 0, NULL);
+    if(lpMsgBuf)
+    {
+        strncat(buf, (char*)lpMsgBuf, buf_size - strlen(buf) - 1);
+    }
+    LocalFree(lpMsgBuf);
 }

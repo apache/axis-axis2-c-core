@@ -98,20 +98,22 @@ axutil_base64_decode_len(
     register const unsigned char *bufin;
     register int nprbytes;
 
-    if (!bufcoded)
+    if(!bufcoded)
     {
         return -1;
     }
 
-    bufin = (const unsigned char *) bufcoded;
-    while (pr2six[*(bufin++)] <= 63);
+    bufin = (const unsigned char *)bufcoded;
+    while(pr2six[*(bufin++)] <= 63)
+        ;
 
-    nprbytes = (int)(bufin - (const unsigned char *) bufcoded) - 1;
+    nprbytes = (int)(bufin - (const unsigned char *)bufcoded) - 1;
     /* We are sure that the difference lies within the int range */
 
     nbytesdecoded = ((nprbytes >> 2) * 3);
 
-    if (nprbytes & 0x03) nbytesdecoded += (nprbytes & 0x03) - 1;
+    if(nprbytes & 0x03)
+        nbytesdecoded += (nprbytes & 0x03) - 1;
 
     return nbytesdecoded;
 
@@ -123,7 +125,7 @@ axutil_base64_decode(
     const char *bufcoded)
 {
     int len;
-    len = axutil_base64_decode_binary((unsigned char *) bufplain, bufcoded);
+    len = axutil_base64_decode_binary((unsigned char *)bufplain, bufcoded);
     bufplain[len] = '\0';
     return len;
 }
@@ -142,55 +144,49 @@ axutil_base64_decode_binary(
     register unsigned char *bufout;
     register int nprbytes;
 
-    if (!bufcoded)
+    if(!bufcoded)
     {
         return -1;
     }
 
-    bufin = (const unsigned char *) bufcoded;
-    while (pr2six[*(bufin++)] <= 63);
-    nprbytes = (int)(bufin - (const unsigned char *) bufcoded) - 1;
+    bufin = (const unsigned char *)bufcoded;
+    while(pr2six[*(bufin++)] <= 63)
+        ;
+    nprbytes = (int)(bufin - (const unsigned char *)bufcoded) - 1;
     /* We are sure that the difference lies within the int range */
     nbytesdecoded = ((nprbytes + 3) / 4) * 3;
 
-    bufout = (unsigned char *) bufplain;
-    bufin = (const unsigned char *) bufcoded;
+    bufout = (unsigned char *)bufplain;
+    bufin = (const unsigned char *)bufcoded;
 
-    while (nprbytes > 4)
+    while(nprbytes > 4)
     {
-        *(bufout++) =
-            (unsigned char) (pr2six[*bufin] << 2 | pr2six[bufin[1]] >> 4);
-        *(bufout++) =
-            (unsigned char) (pr2six[bufin[1]] << 4 | pr2six[bufin[2]] >> 2);
-        *(bufout++) =
-            (unsigned char) (pr2six[bufin[2]] << 6 | pr2six[bufin[3]]);
+        *(bufout++) = (unsigned char)(pr2six[*bufin] << 2 | pr2six[bufin[1]] >> 4);
+        *(bufout++) = (unsigned char)(pr2six[bufin[1]] << 4 | pr2six[bufin[2]] >> 2);
+        *(bufout++) = (unsigned char)(pr2six[bufin[2]] << 6 | pr2six[bufin[3]]);
         bufin += 4;
         nprbytes -= 4;
     }
 
     /* Note: (nprbytes == 1) would be an error, so just ingore that case */
-    if (nprbytes > 1)
+    if(nprbytes > 1)
     {
-        *(bufout++) =
-            (unsigned char) (pr2six[*bufin] << 2 | pr2six[bufin[1]] >> 4);
+        *(bufout++) = (unsigned char)(pr2six[*bufin] << 2 | pr2six[bufin[1]] >> 4);
     }
-    if (nprbytes > 2)
+    if(nprbytes > 2)
     {
-        *(bufout++) =
-            (unsigned char) (pr2six[bufin[1]] << 4 | pr2six[bufin[2]] >> 2);
+        *(bufout++) = (unsigned char)(pr2six[bufin[1]] << 4 | pr2six[bufin[2]] >> 2);
     }
-    if (nprbytes > 3)
+    if(nprbytes > 3)
     {
-        *(bufout++) =
-            (unsigned char) (pr2six[bufin[2]] << 6 | pr2six[bufin[3]]);
+        *(bufout++) = (unsigned char)(pr2six[bufin[2]] << 6 | pr2six[bufin[3]]);
     }
 
     nbytesdecoded -= (4 - nprbytes) & 3;
     return nbytesdecoded;
 }
 
-static const char basis_64[] =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static const char basis_64[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_base64_encode_len(
@@ -206,8 +202,7 @@ axutil_base64_encode(
     int len)
 {
 #ifndef __OS400__
-    return axutil_base64_encode_binary(encoded, (const unsigned char *) string,
-                                       len);
+    return axutil_base64_encode_binary(encoded, (const unsigned char *)string, len);
 #else                           /* __OS400__ */
     int i;
     char *p;
@@ -217,11 +212,11 @@ axutil_base64_encode(
     {
         *p++ = basis_64[(os_toascii[string[i]] >> 2) & 0x3F];
         *p++ =
-            basis_64[((os_toascii[string[i]] & 0x3) << 4) |
-                     ((int) (os_toascii[string[i + 1]] & 0xF0) >> 4)];
+        basis_64[((os_toascii[string[i]] & 0x3) << 4) |
+        ((int) (os_toascii[string[i + 1]] & 0xF0) >> 4)];
         *p++ =
-            basis_64[((os_toascii[string[i + 1]] & 0xF) << 2) |
-                     ((int) (os_toascii[string[i + 2]] & 0xC0) >> 6)];
+        basis_64[((os_toascii[string[i + 1]] & 0xF) << 2) |
+        ((int) (os_toascii[string[i + 2]] & 0xC0) >> 6)];
         *p++ = basis_64[os_toascii[string[i + 2]] & 0x3F];
     }
     if (i < len)
@@ -235,8 +230,8 @@ axutil_base64_encode(
         else
         {
             *p++ =
-                basis_64[((os_toascii[string[i]] & 0x3) << 4) |
-                    ((int) (os_toascii[string[i + 1]] & 0xF0) >> 4)];
+            basis_64[((os_toascii[string[i]] & 0x3) << 4) |
+            ((int) (os_toascii[string[i + 1]] & 0xF0) >> 4)];
             *p++ = basis_64[((os_toascii[string[i + 1]] & 0xF) << 2)];
         }
         *p++ = '=';
@@ -260,30 +255,24 @@ axutil_base64_encode_binary(
     char *p;
 
     p = encoded;
-    for (i = 0; i < len - 2; i += 3)
+    for(i = 0; i < len - 2; i += 3)
     {
         *p++ = basis_64[(string[i] >> 2) & 0x3F];
-        *p++ =
-            basis_64[((string[i] & 0x3) << 4) |
-                ((int) (string[i + 1] & 0xF0) >> 4)];
-        *p++ =
-            basis_64[((string[i + 1] & 0xF) << 2) |
-                ((int) (string[i + 2] & 0xC0) >> 6)];
+        *p++ = basis_64[((string[i] & 0x3) << 4) | ((int)(string[i + 1] & 0xF0) >> 4)];
+        *p++ = basis_64[((string[i + 1] & 0xF) << 2) | ((int)(string[i + 2] & 0xC0) >> 6)];
         *p++ = basis_64[string[i + 2] & 0x3F];
     }
-    if (i < len)
+    if(i < len)
     {
         *p++ = basis_64[(string[i] >> 2) & 0x3F];
-        if (i == (len - 1))
+        if(i == (len - 1))
         {
             *p++ = basis_64[((string[i] & 0x3) << 4)];
             *p++ = '=';
         }
         else
         {
-            *p++ =
-                basis_64[((string[i] & 0x3) << 4) |
-                    ((int) (string[i + 1] & 0xF0) >> 4)];
+            *p++ = basis_64[((string[i] & 0x3) << 4) | ((int)(string[i + 1] & 0xF0) >> 4)];
             *p++ = basis_64[((string[i + 1] & 0xF) << 2)];
         }
         *p++ = '=';

@@ -32,7 +32,9 @@ struct axutil_url
     axis2_char_t *server;
 };
 
-static int is_safe_or_unreserve (char c);
+static int
+is_safe_or_unreserve(
+    char c);
 
 AXIS2_EXTERN axutil_url_t *AXIS2_CALL
 axutil_url_create(
@@ -46,16 +48,14 @@ axutil_url_create(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, protocol, NULL);
 
-    if (!protocol || !*protocol ||
-        strstr(protocol, "://") ||
-        (host && strchr(host, '/')))
+    if(!protocol || !*protocol || strstr(protocol, "://") || (host && strchr(host, '/')))
     {
         return NULL;
     }
 
-    url = (axutil_url_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_url_t));
+    url = (axutil_url_t *)AXIS2_MALLOC(env->allocator, sizeof(axutil_url_t));
 
-    if (!url)
+    if(!url)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -67,9 +67,9 @@ axutil_url_create(
     url->server = NULL;
     url->query = NULL;
 
-    if (host)
+    if(host)
     {
-        url->host = (axis2_char_t *) axutil_strdup(env, host);
+        url->host = (axis2_char_t *)axutil_strdup(env, host);
         url->port = port;
     }
     else
@@ -79,29 +79,29 @@ axutil_url_create(
 
     /** if the path is not starting with / we have to make it so
      */
-    if (path)
+    if(path)
     {
         axis2_char_t *params = NULL;
         axis2_char_t *temp = NULL;
-        if (path[0] == '/')
+        if(path[0] == '/')
         {
-            temp = (axis2_char_t *) axutil_strdup(env, path);
+            temp = (axis2_char_t *)axutil_strdup(env, path);
         }
         else
         {
             temp = axutil_stracat(env, "/", path);
         }
         params = strchr(temp, '?');
-        if (!params)
+        if(!params)
         {
             params = strchr(temp, '#');
         }
-        if (params)
+        if(params)
         {
-            url->query = (axis2_char_t *) axutil_strdup(env, params);
+            url->query = (axis2_char_t *)axutil_strdup(env, params);
             *params = '\0';
         }
-        url->path = (axis2_char_t *) axutil_strdup(env, temp);
+        url->path = (axis2_char_t *)axutil_strdup(env, temp);
         AXIS2_FREE(env->allocator, temp);
     }
 
@@ -116,7 +116,7 @@ axutil_url_parse_string(
     /**
      * Only accepted format is : 
      * protocol://host:port/path
-      * Added file:///path
+     * Added file:///path
      * port is optional and the default port is assumed
      * if path is not present / (root) is assumed
      */
@@ -132,20 +132,20 @@ axutil_url_parse_string(
     AXIS2_PARAM_CHECK(env->error, str_url, NULL);
 
     tmp_url_str = axutil_strdup(env, str_url);
-    if (!tmp_url_str)
+    if(!tmp_url_str)
     {
         return NULL;
     }
     protocol = tmp_url_str;
     host = strstr(tmp_url_str, "://");
-    if (!host)
+    if(!host)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
-  
+
         AXIS2_FREE(env->allocator, tmp_url_str);
         return NULL;
     }
-    if (axutil_strlen(host) < 3 * sizeof(axis2_char_t))
+    if(axutil_strlen(host) < 3 * sizeof(axis2_char_t))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid IP or hostname");
@@ -154,7 +154,7 @@ axutil_url_parse_string(
     }
     *host = '\0';
     host += 3 * sizeof(axis2_char_t); /* skip "://" part */
-    if (axutil_strlen(host) <= 0)
+    if(axutil_strlen(host) <= 0)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid IP or hostname");
@@ -164,7 +164,7 @@ axutil_url_parse_string(
     /* if the url is file:// thing we need the protocol and
      * path only
      */
-    if (0 == axutil_strcasecmp(protocol, (const axis2_char_t *) "file"))
+    if(0 == axutil_strcasecmp(protocol, (const axis2_char_t *)"file"))
     {
         ret = axutil_url_create(env, protocol, NULL, 0, host);
         AXIS2_FREE(env->allocator, tmp_url_str);
@@ -172,10 +172,10 @@ axutil_url_parse_string(
     }
 
     port_str = strchr(host, ':');
-    if (!port_str)
+    if(!port_str)
     {
         path = strchr(host, '/');
-        if (!path)
+        if(!path)
         {
             path = strchr(host, '?');
         }
@@ -183,11 +183,11 @@ axutil_url_parse_string(
         {
             *path++ = '\0';
         }
-        if (!path)
+        if(!path)
         {
             path = strchr(host, '#');
         }
-        if (!path)
+        if(!path)
         {
             /* No path - assume def path ('/') */
             /* here we have protocol + host + def port + def path */
@@ -212,10 +212,10 @@ axutil_url_parse_string(
     {
         *port_str++ = '\0';
         path = strchr(port_str, '/');
-        if (!path)
+        if(!path)
         {
             path = strchr(port_str, '?');
-            if (path)
+            if(path)
             {
                 *path = '\0';
                 port = AXIS2_ATOI(port_str);
@@ -227,17 +227,17 @@ axutil_url_parse_string(
             *path++ = '\0';
             port = AXIS2_ATOI(port_str);
         }
-        if (!path)
+        if(!path)
         {
             path = strchr(port_str, '#');
-            if (path)
+            if(path)
             {
                 *path = '\0';
                 port = AXIS2_ATOI(port_str);
                 *path = '#';
             }
         }
-        if (!path)
+        if(!path)
         {
             port = AXIS2_ATOI(port_str);
             /* here we have protocol + host + port + def path */
@@ -247,7 +247,7 @@ axutil_url_parse_string(
         }
         else
         {
-            if (axutil_strlen(path) > 0)
+            if(axutil_strlen(path) > 0)
             {
                 axis2_char_t *path_temp = NULL;
 
@@ -275,27 +275,27 @@ axutil_url_free(
     axutil_url_t *url,
     const axutil_env_t *env)
 {
-    if (url->protocol)
+    if(url->protocol)
     {
         AXIS2_FREE(env->allocator, url->protocol);
         url->protocol = NULL;
     }
-    if (url->host)
+    if(url->host)
     {
         AXIS2_FREE(env->allocator, url->host);
         url->host = NULL;
     }
-    if (url->server)
+    if(url->server)
     {
         AXIS2_FREE(env->allocator, url->server);
         url->server = NULL;
     }
-    if (url->path)
+    if(url->path)
     {
         AXIS2_FREE(env->allocator, url->path);
         url->path = NULL;
     }
-    if (url->query)
+    if(url->query)
     {
         AXIS2_FREE(env->allocator, url->query);
         url->query = NULL;
@@ -315,42 +315,38 @@ axutil_url_to_external_form(
     axis2_bool_t print_port = AXIS2_FALSE;
     AXIS2_PARAM_CHECK(env->error, url, NULL);
 
-    if (!url->protocol)
+    if(!url->protocol)
     {
         return NULL;
     }
 
-    if (url->port != 0 &&
-        url->port != axutil_uri_port_of_scheme(url->protocol))
+    if(url->port != 0 && url->port != axutil_uri_port_of_scheme(url->protocol))
     {
         print_port = AXIS2_TRUE;
         sprintf(port_str, "%d", url->port);
     }
 
     len = axutil_strlen(url->protocol) + 6;
-    if (url->host)
+    if(url->host)
     {
         len += axutil_strlen(url->host);
     }
-    if (url->path)
+    if(url->path)
     {
         len += axutil_strlen(url->path);
     }
-    if (url->query)
+    if(url->query)
     {
         len += axutil_strlen(url->query);
     }
-    if (print_port)
+    if(print_port)
     {
         len += axutil_strlen(port_str) + 1;
     }
-    external_form = (axis2_char_t *) AXIS2_MALLOC(env->allocator, len);
-    sprintf(external_form, "%s://%s%s%s%s%s", url->protocol,
-            (url->host) ? url->host : "",
-            (print_port) ? ":" : "",
-            (print_port) ? port_str : "",
-            (url->path) ? url->path : "",
-            (url->query) ? url->query : "");
+    external_form = (axis2_char_t *)AXIS2_MALLOC(env->allocator, len);
+    sprintf(external_form, "%s://%s%s%s%s%s", url->protocol, (url->host) ? url->host : "",
+        (print_port) ? ":" : "", (print_port) ? port_str : "", (url->path) ? url->path : "",
+        (url->query) ? url->query : "");
     return external_form;
 }
 
@@ -361,7 +357,7 @@ axutil_url_set_protocol(
     axis2_char_t *protocol)
 {
     AXIS2_PARAM_CHECK(env->error, protocol, AXIS2_FAILURE);
-    if (url->protocol)
+    if(url->protocol)
     {
         AXIS2_FREE(env->allocator, url->protocol);
         url->protocol = NULL;
@@ -389,31 +385,28 @@ axutil_url_set_host(
     axis2_bool_t print_port = AXIS2_FALSE;
     AXIS2_PARAM_CHECK(env->error, host, AXIS2_FAILURE);
 
-    if (url->host)
+    if(url->host)
     {
         AXIS2_FREE(env->allocator, url->host);
     }
     url->host = axutil_strdup(env, host);
-    if (url->server)
+    if(url->server)
     {
         AXIS2_FREE(env->allocator, url->server);
     }
-    if (!url->host)
+    if(!url->host)
     {
         return AXIS2_SUCCESS;
     }
     len += axutil_strlen(url->host);
-    if (url->port != 0 && (!url->protocol ||
-        url->port != axutil_uri_port_of_scheme(url->protocol)))
+    if(url->port != 0 && (!url->protocol || url->port != axutil_uri_port_of_scheme(url->protocol)))
     {
         print_port = AXIS2_TRUE;
         sprintf(port_str, "%d", url->port);
         len += axutil_strlen(port_str) + 1;
     }
-    url->server = (axis2_char_t *) AXIS2_MALLOC(env->allocator, len);
-    sprintf(url->server, "%s%s%s", url->host,
-            (print_port) ? ":" : "",
-            (print_port) ? port_str : "");   
+    url->server = (axis2_char_t *)AXIS2_MALLOC(env->allocator, len);
+    sprintf(url->server, "%s%s%s", url->host, (print_port) ? ":" : "", (print_port) ? port_str : "");
     return AXIS2_SUCCESS;
 }
 
@@ -436,23 +429,23 @@ axutil_url_set_server(
     AXIS2_PARAM_CHECK(env->error, server, AXIS2_FAILURE);
 
     temp = axutil_strdup(env, server);
-    if (temp && *temp == ':')
+    if(temp && *temp == ':')
     {
         AXIS2_FREE(env->allocator, temp);
         return AXIS2_FAILURE;
     }
 
-    if (strchr(temp, '/'))
+    if(strchr(temp, '/'))
     {
         AXIS2_FREE(env->allocator, temp);
         return AXIS2_FAILURE;
     }
 
-    if (url->server)
+    if(url->server)
     {
         AXIS2_FREE(env->allocator, url->server);
     }
-    if (url->host)
+    if(url->host)
     {
         AXIS2_FREE(env->allocator, url->host);
     }
@@ -461,7 +454,7 @@ axutil_url_set_server(
     url->server = axutil_strdup(env, server);
 
     port_str = strchr(temp, ':');
-    if (port_str)
+    if(port_str)
     {
         *port_str++ = '\0';
         url->port = AXIS2_ATOI(port_str);
@@ -481,31 +474,28 @@ axutil_url_get_server(
     axis2_char_t port_str[8];
     axis2_bool_t print_port = AXIS2_FALSE;
 
-    if (!url->server && !url->host)
+    if(!url->server && !url->host)
     {
         return NULL;
     }
-    else if (!url->host)
+    else if(!url->host)
     {
         AXIS2_FREE(env->allocator, url->server);
         return NULL;
     }
-    else if (url->server)
+    else if(url->server)
     {
         return url->server;
     }
     len += axutil_strlen(url->host);
-    if (url->port != 0 && (!url->protocol ||
-        url->port != axutil_uri_port_of_scheme(url->protocol)))
+    if(url->port != 0 && (!url->protocol || url->port != axutil_uri_port_of_scheme(url->protocol)))
     {
         print_port = AXIS2_TRUE;
         sprintf(port_str, "%d", url->port);
         len += axutil_strlen(port_str);
     }
-    url->server = (axis2_char_t *) AXIS2_MALLOC(env->allocator, len + 1);
-    sprintf(url->server, "%s%s%s", url->host,
-            (print_port) ? ":" : "",
-            (print_port) ? port_str : "");
+    url->server = (axis2_char_t *)AXIS2_MALLOC(env->allocator, len + 1);
+    sprintf(url->server, "%s%s%s", url->host, (print_port) ? ":" : "", (print_port) ? port_str : "");
     return url->server;
 }
 
@@ -518,31 +508,28 @@ axutil_url_set_port(
     axis2_ssize_t len = 0;
     axis2_char_t port_str[8];
     axis2_bool_t print_port = AXIS2_FALSE;
-    if (url->port == port)
+    if(url->port == port)
     {
         return AXIS2_SUCCESS;
     }
     url->port = port;
-    if (url->server)
+    if(url->server)
     {
         AXIS2_FREE(env->allocator, url->server);
     }
-    if (!url->host)
+    if(!url->host)
     {
         return AXIS2_SUCCESS;
     }
     len += axutil_strlen(url->host);
-    if (url->port != 0 && (!url->protocol ||
-        url->port != axutil_uri_port_of_scheme(url->protocol)))
+    if(url->port != 0 && (!url->protocol || url->port != axutil_uri_port_of_scheme(url->protocol)))
     {
         print_port = AXIS2_TRUE;
         sprintf(port_str, "%d", url->port);
         len += axutil_strlen(port_str) + 1;
     }
-    url->server = (axis2_char_t *) AXIS2_MALLOC(env->allocator, len);
-    sprintf(url->server, "%s%s%s", url->host,
-            (print_port) ? ":" : "",
-            (print_port) ? port_str : "");   
+    url->server = (axis2_char_t *)AXIS2_MALLOC(env->allocator, len);
+    sprintf(url->server, "%s%s%s", url->host, (print_port) ? ":" : "", (print_port) ? port_str : "");
     return AXIS2_SUCCESS;
 }
 
@@ -551,9 +538,9 @@ axutil_url_get_port(
     axutil_url_t *url,
     const axutil_env_t *env)
 {
-    if (!url->port)
+    if(!url->port)
     {
-       return axutil_uri_port_of_scheme(url->protocol);
+        return axutil_uri_port_of_scheme(url->protocol);
     }
     return url->port;
 }
@@ -565,7 +552,7 @@ axutil_url_set_path(
     axis2_char_t * path)
 {
     AXIS2_PARAM_CHECK(env->error, path, AXIS2_FAILURE);
-    if (url->path)
+    if(url->path)
     {
         AXIS2_FREE(env->allocator, url->path);
     }
@@ -589,22 +576,21 @@ axutil_url_clone(
     axis2_char_t *temp = NULL;
     axutil_url_t *ret = NULL;
 
-    if (url->path && url->query)
+    if(url->path && url->query)
     {
         temp = axutil_stracat(env, url->path, url->query);
     }
-    else if (url->path)
+    else if(url->path)
     {
         temp = axutil_strdup(env, url->path);
     }
-    else if (url->query)
+    else if(url->query)
     {
         temp = axutil_strdup(env, url->query);
     }
 
-    ret = axutil_url_create(env, url->protocol, url->host, url->port,
-                            url->path);
-    if (temp)
+    ret = axutil_url_create(env, url->protocol, url->host, url->port, url->path);
+    if(temp)
     {
         AXIS2_FREE(env->allocator, temp);
     }
@@ -623,86 +609,86 @@ axutil_url_to_uri(
     return uri;
 }
 
-AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-axutil_url_encode (
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axutil_url_encode(
     const axutil_env_t *env,
     axis2_char_t *dest,
-    axis2_char_t *buff, int len)
+    axis2_char_t *buff,
+    int len)
 {
     axis2_char_t string[4];
     axis2_char_t *expand_buffer = NULL;
-	axis2_char_t *temp = NULL;
+    axis2_char_t *temp = NULL;
     int i;
-    for (i = 0; i < len && buff[i]; i++)
+    for(i = 0; i < len && buff[i]; i++)
     {
-        if (isalnum (buff[i]) || is_safe_or_unreserve (buff[i]))
+        if(isalnum(buff[i]) || is_safe_or_unreserve(buff[i]))
         {
-            sprintf (string, "%c", buff[i]);
+            sprintf(string, "%c", buff[i]);
         }
         else
         {
             /* %%%x is to print % mark with the hex value */
-            sprintf (string, "%%%x", buff[i]);
+            sprintf(string, "%%%x", buff[i]);
         }
 
-        if (((int)strlen (dest) + 4) > len)
+        if(((int)strlen(dest) + 4) > len)
         {
-            expand_buffer =
-                (axis2_char_t *) AXIS2_MALLOC (env->allocator, len * 2);
-            memset (expand_buffer, 0, len * 2);
+            expand_buffer = (axis2_char_t *)AXIS2_MALLOC(env->allocator, len * 2);
+            memset(expand_buffer, 0, len * 2);
             len *= 2;
-            temp = memmove (expand_buffer, dest, strlen (dest));
-			if(dest)
-			{
-				AXIS2_FREE(env->allocator, dest);
-				dest = NULL;
-			}
-			dest = temp;
+            temp = memmove(expand_buffer, dest, strlen(dest));
+            if(dest)
+            {
+                AXIS2_FREE(env->allocator, dest);
+                dest = NULL;
+            }
+            dest = temp;
         }
-        strcat (dest, string);
+        strcat(dest, string);
     }
     return dest;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axutil_url_get_query(
-		axutil_url_t *url,
-		const axutil_env_t *env)
+    axutil_url_t *url,
+    const axutil_env_t *env)
 {
-	return url->query;
+    return url->query;
 }
 
-
 static int
-is_safe_or_unreserve (char c)
+is_safe_or_unreserve(
+    char c)
 {
-    char safe[] = { '-', '_', '.', '~'};
-    char reserve[] = { ';', '/', '?', ':', '@', '&', '=', '#', '[', ']', '!', 
-                       '$', '\'', '(', ')', '*', '+', ','};
+    char safe[] = { '-', '_', '.', '~' };
+    char reserve[] = { ';', '/', '?', ':', '@', '&', '=', '#', '[', ']', '!', '$', '\'', '(', ')',
+        '*', '+', ',' };
 
-/* These are reserved and safe charaters , got from RFC
- * 
- * reserved       = ";" | "/" | "?" | ":" | "@" | "&" | "="
- * safe           = "$" | "-" | "_" | "." | "+" 
- */
+    /* These are reserved and safe charaters , got from RFC
+     *
+     * reserved       = ";" | "/" | "?" | ":" | "@" | "&" | "="
+     * safe           = "$" | "-" | "_" | "." | "+"
+     */
 
     int flag = 0;
     int i = 0;
 
-    int size = sizeof (safe) / sizeof (safe[0]);
-    for (i = 0; i < size; i++)
+    int size = sizeof(safe) / sizeof(safe[0]);
+    for(i = 0; i < size; i++)
     {
-        if (c == safe[i])
+        if(c == safe[i])
         {
             flag = 1;
             return flag;
         }
     }
 
-    size = sizeof (reserve) / sizeof (reserve[0]);
-    for (i = 0; i < size; i++)
+    size = sizeof(reserve) / sizeof(reserve[0]);
+    for(i = 0; i < size; i++)
     {
-        if (c == reserve[i])
+        if(c == reserve[i])
         {
             flag = 0;
             return flag;

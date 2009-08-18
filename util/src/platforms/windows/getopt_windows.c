@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -41,45 +40,45 @@ _axis2_opt_error(
     int __err,
     int __showerr)
 {
-    switch (__err)
+    switch(__err)
     {
-    case AXIS2_OPT_ERR_NO_ARG:
-        if (__showerr)
-            fprintf(stderr, " option requires an argument -- %c\n", __optopt);
-        break;
-    case AXIS2_OPT_ERR_INVALID_OPTION:
-        if (__showerr)
-            fprintf(stderr, " illegal option -- %c\n", __optopt);
-        break;
-    case AXIS2_OPT_ERR_BAD_ARG:
-        return (int) ':';
-    default:
-        if (__showerr)
-            fprintf(stderr, "unknown\n");
+        case AXIS2_OPT_ERR_NO_ARG:
+            if(__showerr)
+                fprintf(stderr, " option requires an argument -- %c\n", __optopt);
+            break;
+        case AXIS2_OPT_ERR_INVALID_OPTION:
+            if(__showerr)
+                fprintf(stderr, " illegal option -- %c\n", __optopt);
+            break;
+        case AXIS2_OPT_ERR_BAD_ARG:
+            return (int)':';
+        default:
+            if(__showerr)
+                fprintf(stderr, "unknown\n");
     }
-    return (int) '?';
+    return (int)'?';
 }
 
 AXIS2_EXTERN int AXIS2_CALL
 axis2_getopt(
     int __argc,
-    char *const *__argv,
+    char * const *__argv,
     const char *__shortopts)
 {
     static char *pos = "";
     char *olstindex = NULL;
 
-    if (!*pos)
+    if(!*pos)
     {
         /* no option or invalid option */
-        if (optind >= __argc || *(pos = __argv[optind]) != '-')
+        if(optind >= __argc || *(pos = __argv[optind]) != '-')
         {
             pos = "";
             return -1;
         }
 
         /*-- option*/
-        if (pos[1] && *++pos == '-')
+        if(pos[1] && *++pos == '-')
         {
             ++optind;
             pos = "";
@@ -87,45 +86,45 @@ axis2_getopt(
         }
     }
 
-    if ((optopt = (int) *pos++) == (int) ':')
+    if((optopt = (int)*pos++) == (int)':')
     {
-        if (optopt == (int) '-')
+        if(optopt == (int)'-')
             return -1;
-        if (!*pos)
+        if(!*pos)
             ++optind;
-        if (*__shortopts != ':')
+        if(*__shortopts != ':')
             return _axis2_opt_error(optopt, AXIS2_OPT_ERR_BAD_ARG, opterr);
         _axis2_opt_error(optopt, AXIS2_OPT_ERR_INVALID_OPTION, opterr);
     }
     else
     {
         olstindex = strchr(__shortopts, optopt);
-        if (!olstindex)
+        if(!olstindex)
         {
-            if (optopt == (int) '-')
+            if(optopt == (int)'-')
                 return -1;
-            if (!*pos)
+            if(!*pos)
                 ++optind;
-            if (*__shortopts != ':')
+            if(*__shortopts != ':')
                 return _axis2_opt_error(optopt, AXIS2_OPT_ERR_BAD_ARG, opterr);
             _axis2_opt_error(optopt, AXIS2_OPT_ERR_INVALID_OPTION, opterr);
         }
     }
 
-    if (!olstindex || *++olstindex != ':')
+    if(!olstindex || *++olstindex != ':')
     {
         optarg = NULL;
-        if (!*pos)
+        if(!*pos)
             ++optind;
     }
     else
     {
-        if (*pos)
+        if(*pos)
             optarg = pos;
-        else if (__argc <= ++optind)
+        else if(__argc <= ++optind)
         {
             pos = "";
-            if (*__shortopts == ':')
+            if(*__shortopts == ':')
                 return _axis2_opt_error(-1, AXIS2_OPT_ERR_BAD_ARG, opterr);
             return _axis2_opt_error(optopt, AXIS2_OPT_ERR_NO_ARG, opterr);
         }

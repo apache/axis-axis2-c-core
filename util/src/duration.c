@@ -54,17 +54,16 @@ axutil_duration_create_from_values(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    duration = (axutil_duration_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axutil_duration_t));
-    if (!duration)
+    duration = (axutil_duration_t *)AXIS2_MALLOC(env->allocator, sizeof(axutil_duration_t));
+    if(!duration)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
 
     duration->is_negative = negative;
-    if (years > -1)
+    if(years > -1)
     {
         duration->years = years;
     }
@@ -72,7 +71,7 @@ axutil_duration_create_from_values(
     {
         duration->years = 0;
     }
-    if (months > -1)
+    if(months > -1)
     {
         duration->months = months;
     }
@@ -80,7 +79,7 @@ axutil_duration_create_from_values(
     {
         duration->months = 0;
     }
-    if (days > -1)
+    if(days > -1)
     {
         duration->days = days;
     }
@@ -88,7 +87,7 @@ axutil_duration_create_from_values(
     {
         duration->days = 0;
     }
-    if (hours > -1)
+    if(hours > -1)
     {
         duration->hours = hours;
     }
@@ -96,7 +95,7 @@ axutil_duration_create_from_values(
     {
         duration->hours = 0;
     }
-    if (minutes > -1)
+    if(minutes > -1)
     {
         duration->mins = minutes;
     }
@@ -104,7 +103,7 @@ axutil_duration_create_from_values(
     {
         duration->mins = 0;
     }
-    if (seconds >= 0)
+    if(seconds >= 0)
     {
         duration->secs = seconds;
     }
@@ -122,12 +121,11 @@ axutil_duration_create_from_string(
 {
     axutil_duration_t *duration = NULL;
 
-    duration = (axutil_duration_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axutil_duration_t));
-    if (!duration)
+    duration = (axutil_duration_t *)AXIS2_MALLOC(env->allocator, sizeof(axutil_duration_t));
+    if(!duration)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
 
@@ -144,7 +142,7 @@ axutil_duration_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (duration)
+    if(duration)
     {
         AXIS2_FREE(env->allocator, duration);
         duration = NULL;
@@ -171,30 +169,19 @@ axutil_duration_deserialize_duration(
     duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
     duration->secs = 0;
 
-    if (!duration_str)
+    if(!duration_str)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
-            AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
-    if (*cur == '-')
+    if(*cur == '-')
     {
         duration->is_negative = 1;
         cur++;
     }
 
-    if (*cur++ != 'P')
-    {
-        duration->is_negative = AXIS2_FALSE;
-        duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
-        duration->secs = 0;
-        
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE, AXIS2_FAILURE);
-        return AXIS2_FAILURE;
-    }
-
-    if (!*cur)
+    if(*cur++ != 'P')
     {
         duration->is_negative = AXIS2_FALSE;
         duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
@@ -204,21 +191,32 @@ axutil_duration_deserialize_duration(
         return AXIS2_FAILURE;
     }
 
-    while (*cur)
+    if(!*cur)
     {
-        if (seq >= sizeof(desig))
+        duration->is_negative = AXIS2_FALSE;
+        duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
+        duration->secs = 0;
+
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+
+    while(*cur)
+    {
+        if(seq >= sizeof(desig))
         {
             duration->is_negative = AXIS2_FALSE;
-            duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
+            duration->years = duration->months = duration->days = duration->hours = duration->mins
+                = 0;
             duration->secs = 0;
 
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
 
-        if (*cur == 'T')
+        if(*cur == 'T')
         {
-            if (!(seq > 3))
+            if(!(seq > 3))
             {
                 seq = 3;
                 cur++;
@@ -226,7 +224,8 @@ axutil_duration_deserialize_duration(
             else
             {
                 duration->is_negative = AXIS2_FALSE;
-                duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
+                duration->years = duration->months = duration->days = duration->hours
+                    = duration->mins = 0;
                 duration->secs = 0;
 
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE, AXIS2_FAILURE);
@@ -235,27 +234,27 @@ axutil_duration_deserialize_duration(
         }
         num = 0;
 
-        if ((*cur < '0') || (*cur > '9'))
+        if((*cur < '0') || (*cur > '9'))
             num_type = -1;
         else
         {
             num_type = 0;
-            while ((*cur >= '0') && (*cur <= '9'))
+            while((*cur >= '0') && (*cur <= '9'))
             {
                 num = num * 10 + (*cur - '0');
                 cur++;
             }
         }
 
-        if (!num_type && (*cur == '.'))
+        if(!num_type && (*cur == '.'))
         {
             double mult = 1;
             cur++;
-            if ((*cur < '0') || (*cur > '9'))
+            if((*cur < '0') || (*cur > '9'))
                 num_type = -1;
             else
                 num_type = 1;
-            while ((*cur >= '0') && (*cur <= '9'))
+            while((*cur >= '0') && (*cur <= '9'))
             {
                 mult /= 10;
                 num += (*cur - '0') * mult;
@@ -263,62 +262,63 @@ axutil_duration_deserialize_duration(
             }
         }
 
-        if ((num_type == -1) || (*cur == 0))
+        if((num_type == -1) || (*cur == 0))
         {
             duration->is_negative = AXIS2_FALSE;
-            duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
+            duration->years = duration->months = duration->days = duration->hours = duration->mins
+                = 0;
             duration->secs = 0;
 
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
 
-        while (seq < sizeof(desig))
+        while(seq < sizeof(desig))
         {
-            if (*cur == desig[seq])
+            if(*cur == desig[seq])
             {
                 num_type = 0;
                 /*if (seq < (sizeof(desig) - 1))
-                {
-                    duration->is_negative = AXIS2_FALSE;
-                    duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
-                    duration->secs = 0;
+                 {
+                 duration->is_negative = AXIS2_FALSE;
+                 duration->years = duration->months = duration->days = duration->hours = duration->mins = 0;
+                 duration->secs = 0;
 
-                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE,
-                                    AXIS2_FAILURE);
-                    return AXIS2_FAILURE;
-                }*/
+                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NONE,
+                 AXIS2_FAILURE);
+                 return AXIS2_FAILURE;
+                 }*/
 
-                switch (seq)
+                switch(seq)
                 {
-                case 0:
-                    duration->years = (int) num;
-                    seq++;
-                    break;
-                case 1:
-                    duration->months = (int) num;
-                    seq++;
-                    break;
-                case 2:
-                    duration->days = (int) num;
-                    seq++;
-                    break;
-                case 3:
-                    duration->hours = (int) num;
-                    seq++;
-                    break;
-                case 4:
-                    duration->mins = (int) num;
-                    seq++;
-                    break;
-                case 5:
-                    duration->secs = num;
-                    seq++;
-                    break;
+                    case 0:
+                        duration->years = (int)num;
+                        seq++;
+                        break;
+                    case 1:
+                        duration->months = (int)num;
+                        seq++;
+                        break;
+                    case 2:
+                        duration->days = (int)num;
+                        seq++;
+                        break;
+                    case 3:
+                        duration->hours = (int)num;
+                        seq++;
+                        break;
+                    case 4:
+                        duration->mins = (int)num;
+                        seq++;
+                        break;
+                    case 5:
+                        duration->secs = num;
+                        seq++;
+                        break;
                 }
                 break;
             }
-            if ((++seq == 3) || (seq == 6))
+            if((++seq == 3) || (seq == 6))
                 return AXIS2_SUCCESS;
         }
         cur++;
@@ -336,17 +336,14 @@ axutil_duration_serialize_duration(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    duration_str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-                       sizeof(axis2_char_t) * 64);
+    duration_str = (axis2_char_t *)AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 64);
 
-    if (duration->is_negative == 0)
-        sprintf(duration_str, "P%dY%dM%dDT%dH%dM%fS", duration->years,
-            duration->months, duration->days, duration->hours,
-            duration->mins, duration->secs);
+    if(duration->is_negative == 0)
+        sprintf(duration_str, "P%dY%dM%dDT%dH%dM%fS", duration->years, duration->months,
+            duration->days, duration->hours, duration->mins, duration->secs);
     else
-        sprintf(duration_str, "-P%dY%dM%dDT%dH%dM%fS", duration->years,
-            duration->months, duration->days, duration->hours,
-            duration->mins, duration->secs);
+        sprintf(duration_str, "-P%dY%dM%dDT%dH%dM%fS", duration->years, duration->months,
+            duration->days, duration->hours, duration->mins, duration->secs);
 
     return duration_str;
 }
@@ -365,17 +362,17 @@ axutil_duration_set_duration(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (years > -1)
+    if(years > -1)
         duration->years = years;
-    if (months > -1)
+    if(months > -1)
         duration->months = months;
-    if (days > -1)
+    if(days > -1)
         duration->days = days;
-    if (hours > -1)
+    if(hours > -1)
         duration->hours = hours;
-    if (mins > -1)
+    if(mins > -1)
         duration->mins = mins;
-    if (seconds >= 0)
+    if(seconds >= 0)
         duration->secs = seconds;
 
     return AXIS2_SUCCESS;
@@ -397,7 +394,7 @@ axutil_duration_set_years(
     int years)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (years > -1)
+    if(years > -1)
     {
         duration->years = years;
     }
@@ -421,7 +418,7 @@ axutil_duration_set_months(
     int months)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (months > -1)
+    if(months > -1)
     {
         duration->months = months;
     }
@@ -445,7 +442,7 @@ axutil_duration_set_days(
     int days)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (days > -1)
+    if(days > -1)
     {
         duration->days = days;
     }
@@ -469,7 +466,7 @@ axutil_duration_set_hours(
     int hours)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (hours > -1)
+    if(hours > -1)
     {
         duration->hours = hours;
     }
@@ -493,7 +490,7 @@ axutil_duration_set_mins(
     int mins)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (mins > -1)
+    if(mins > -1)
     {
         duration->mins = mins;
     }
@@ -517,7 +514,7 @@ axutil_duration_set_seconds(
     double seconds)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (seconds >= 0)
+    if(seconds >= 0)
     {
         duration->secs = seconds;
     }
@@ -554,26 +551,25 @@ axutil_duration_compare(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
 
-    if (!duration_one || !duration_two)
+    if(!duration_one || !duration_two)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
-            AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         return AXIS2_FALSE;
     }
 
-    if (duration_one->is_negative != duration_two->is_negative)
+    if(duration_one->is_negative != duration_two->is_negative)
         return AXIS2_FALSE;
-    if (duration_one->years != duration_two->years)
+    if(duration_one->years != duration_two->years)
         return AXIS2_FALSE;
-    if (duration_one->months != duration_two->months)
+    if(duration_one->months != duration_two->months)
         return AXIS2_FALSE;
-    if (duration_one->days != duration_two->days)
+    if(duration_one->days != duration_two->days)
         return AXIS2_FALSE;
-    if (duration_one->hours != duration_two->hours)
+    if(duration_one->hours != duration_two->hours)
         return AXIS2_FALSE;
-    if (duration_one->mins != duration_two->mins)
+    if(duration_one->mins != duration_two->mins)
         return AXIS2_FALSE;
-    if (duration_one->secs != duration_two->secs)
+    if(duration_one->secs != duration_two->secs)
         return AXIS2_FALSE;
     return AXIS2_SUCCESS;
 }

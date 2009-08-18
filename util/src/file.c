@@ -33,10 +33,9 @@ axutil_file_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    file =
-        (axutil_file_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_file_t));
+    file = (axutil_file_t *)AXIS2_MALLOC(env->allocator, sizeof(axutil_file_t));
 
-    if (!file)
+    if(!file)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -54,17 +53,17 @@ axutil_file_free(
     axutil_file_t *file,
     const axutil_env_t *env)
 {
-    if (file->name)
+    if(file->name)
     {
         AXIS2_FREE(env->allocator, file->name);
     }
 
-    if (file->path)
+    if(file->path)
     {
         AXIS2_FREE(env->allocator, file->path);
     }
 
-    if (file)
+    if(file)
     {
         AXIS2_FREE(env->allocator, file);
     }
@@ -79,13 +78,13 @@ axutil_file_set_name(
 {
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
 
-    if (file->name)
+    if(file->name)
     {
         AXIS2_FREE(env->allocator, file->name);
         file->name = NULL;
     }
     file->name = axutil_strdup(env, name);
-    if (!file->name)
+    if(!file->name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -99,10 +98,9 @@ axutil_file_get_name(
     axutil_file_t *file,
     const axutil_env_t *env)
 {
-    if (!file->name)
+    if(!file->name)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET,
-            AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET, AXIS2_FAILURE);
         return NULL;
     }
     return (file->name);
@@ -114,18 +112,18 @@ axutil_file_set_path(
     const axutil_env_t *env,
     axis2_char_t *path)
 {
-    if (!path)
+    if(!path)
     {
         return AXIS2_SUCCESS;
     }
 
-    if (file->path)
+    if(file->path)
     {
         AXIS2_FREE(env->allocator, file->path);
         file->path = NULL;
     }
     file->path = axutil_strdup(env, path);
-    if (!(file->path))
+    if(!(file->path))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -139,10 +137,9 @@ axutil_file_get_path(
     axutil_file_t *file,
     const axutil_env_t *env)
 {
-    if (!(file->path))
+    if(!(file->path))
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET,
-            AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -176,12 +173,12 @@ axutil_file_clone(
     axis2_status_t status = AXIS2_FAILURE;
     new_file = axutil_file_create(env);
     status = axutil_file_set_name(new_file, env, file->name);
-    if (AXIS2_SUCCESS != status)
+    if(AXIS2_SUCCESS != status)
     {
         return NULL;
     }
     status = axutil_file_set_path(new_file, env, file->path);
-    if (AXIS2_SUCCESS != status)
+    if(AXIS2_SUCCESS != status)
     {
         return NULL;
     }

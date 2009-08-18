@@ -30,10 +30,10 @@ axutil_file_handler_open(
 {
     FILE *file_ptr;
 
-    if (!file_name)
+    if(!file_name)
         return NULL;
 
-    if (!options)
+    if(!options)
         return NULL;
 
     file_ptr = fopen(file_name, options);
@@ -46,7 +46,7 @@ axutil_file_handler_close(
 {
     int status = 0;
 
-    if (!file_ptr)
+    if(!file_ptr)
         return AXIS2_FAILURE;
 
     status = fclose(file_ptr);
@@ -67,11 +67,11 @@ axutil_file_handler_access(
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
     i = AXIS2_ACCESS(path, mode);
-    if (0 == i)
+    if(0 == i)
     {
         status = AXIS2_SUCCESS;
     }
-    else if (-1 == i)
+    else if(-1 == i)
     {
         status = AXIS2_FAILURE;
     }
@@ -80,23 +80,24 @@ axutil_file_handler_access(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_file_handler_copy(
-    FILE *from, 
+    FILE *from,
     FILE *to)
 {
     axis2_char_t ch;
-    
+
     /* It is assumed that source and destination files are accessible and open*/
-    while(!feof(from)) 
+    while(!feof(from))
     {
         ch = (axis2_char_t)fgetc(from);
         /* We are sure that the conversion is safe */
-        if(ferror(from)) 
+        if(ferror(from))
         {
             /* Error reading source file */
             return AXIS2_FAILURE;
         }
-        if(!feof(from)) fputc(ch, to);
-        if(ferror(to)) 
+        if(!feof(from))
+            fputc(ch, to);
+        if(ferror(to))
         {
             /* Error writing destination file */
             return AXIS2_FAILURE;
@@ -107,7 +108,7 @@ axutil_file_handler_copy(
 
 AXIS2_EXTERN long AXIS2_CALL
 axutil_file_handler_size(
-    const axis2_char_t *const name)
+    const axis2_char_t * const name)
 {
     struct stat stbuf;
     if(stat(name, &stbuf) == -1)

@@ -43,10 +43,9 @@ axutil_stack_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    stack =
-        (axutil_stack_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_stack_t));
+    stack = (axutil_stack_t *)AXIS2_MALLOC(env->allocator, sizeof(axutil_stack_t));
 
-    if (!stack)
+    if(!stack)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -58,10 +57,8 @@ axutil_stack_create(
     stack->capacity = AXIS2_STACK_DEFAULT_CAPACITY;
     stack->is_empty_stack = AXIS2_TRUE;
 
-    stack->data =
-        AXIS2_MALLOC(env->allocator,
-                     sizeof(void *) * AXIS2_STACK_DEFAULT_CAPACITY);
-    if (!stack->data)
+    stack->data = AXIS2_MALLOC(env->allocator, sizeof(void *) * AXIS2_STACK_DEFAULT_CAPACITY);
+    if(!stack->data)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -79,7 +76,7 @@ axutil_stack_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (stack->data)
+    if(stack->data)
     {
         AXIS2_FREE(env->allocator, stack->data);
     }
@@ -95,16 +92,16 @@ axutil_stack_pop(
     void *value = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (stack->is_empty_stack == AXIS2_TRUE || stack->size == 0)
+    if(stack->is_empty_stack == AXIS2_TRUE || stack->size == 0)
     {
         return NULL;
     }
-    if (stack->size > 0)
+    if(stack->size > 0)
     {
         value = stack->data[stack->size - 1];
         stack->data[stack->size - 1] = NULL;
         stack->size--;
-        if (stack->size == 0)
+        if(stack->size == 0)
         {
             stack->is_empty_stack = AXIS2_TRUE;
         }
@@ -121,7 +118,7 @@ axutil_stack_push(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
 
-    if ((stack->size < stack->capacity) && (stack->capacity > 0))
+    if((stack->size < stack->capacity) && (stack->capacity > 0))
     {
         stack->data[stack->size++] = value;
     }
@@ -132,7 +129,7 @@ axutil_stack_push(
         int new_capacity = stack->capacity + AXIS2_STACK_DEFAULT_CAPACITY;
 
         new_data = AXIS2_MALLOC(env->allocator, sizeof(void *) * new_capacity);
-        if (!new_data)
+        if(!new_data)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -164,7 +161,7 @@ axutil_stack_get(
     axutil_stack_t *stack,
     const axutil_env_t *env)
 {
-    if (stack->size > 0)
+    if(stack->size > 0)
     {
         return stack->data[stack->size - 1];
     }
@@ -177,7 +174,7 @@ axutil_stack_get_at(
     const axutil_env_t *env,
     int i)
 {
-    if ((stack->size == 0) || (i < 0) || (i >= stack->size))
+    if((stack->size == 0) || (i < 0) || (i >= stack->size))
     {
         return NULL;
     }

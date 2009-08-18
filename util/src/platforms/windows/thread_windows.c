@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -28,7 +27,7 @@ axutil_threadattr_create(
     axutil_threadattr_t *new = NULL;
 
     new = AXIS2_MALLOC(allocator, sizeof(axutil_threadattr_t));
-    if (!new)
+    if(!new)
     {
         /*AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE) */
         return NULL;
@@ -63,7 +62,7 @@ axutil_threadattr_detach_get(
     axutil_threadattr_t * attr,
     const axutil_env_t * env)
 {
-    if (1 == attr->detach)
+    if(1 == attr->detach)
     {
         return AXIS2_TRUE;
     }
@@ -83,7 +82,7 @@ static void *
 dummy_worker(
     void *opaque)
 {
-    axutil_thread_t *thd = (axutil_thread_t *) opaque;
+    axutil_thread_t *thd = (axutil_thread_t *)opaque;
     TlsSetValue(tls_axutil_thread, thd->td);
     return thd->func(thd, thd->data);
 }
@@ -99,9 +98,9 @@ axutil_thread_create(
     unsigned long temp;
     axutil_thread_t *new = NULL;
 
-    new = (axutil_thread_t *) AXIS2_MALLOC(allocator, sizeof(axutil_thread_t));
+    new = (axutil_thread_t *)AXIS2_MALLOC(allocator, sizeof(axutil_thread_t));
 
-    if (!new)
+    if(!new)
     {
         return NULL;
     }
@@ -114,7 +113,7 @@ axutil_thread_create(
     /* Use 0 for Thread Stack Size, because that will default the stack to the
      * same size as the calling thread. 
      */
-    if ((handle =
+    if((handle =
          CreateThread(NULL, attr &&
                       attr->stacksize > 0 ? attr->stacksize : 0,
                       (unsigned long (AXIS2_THREAD_FUNC *) (void *))
@@ -123,7 +122,7 @@ axutil_thread_create(
         return NULL;
     }
 
-    if (attr && attr->detach)
+    if(attr && attr->detach)
     {
         CloseHandle(handle);
     }
@@ -139,11 +138,11 @@ axutil_thread_exit(
     axutil_allocator_t * allocator)
 {
     axis2_status_t status = AXIS2_SUCCESS;
-    if (thd)
+    if(thd)
     {
         AXIS2_FREE(allocator, thd);
     }
-    if (status)
+    if(status)
     {
         ExitThread(0);
     }
@@ -155,18 +154,17 @@ AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL
 axis2_os_thread_current(
     void)
 {
-    HANDLE hthread = (HANDLE) TlsGetValue(tls_axutil_thread);
+    HANDLE hthread = (HANDLE)TlsGetValue(tls_axutil_thread);
     HANDLE hproc;
 
-    if (hthread)
+    if(hthread)
     {
         return hthread;
     }
 
     hproc = GetCurrentProcess();
     hthread = GetCurrentThread();
-    if (!DuplicateHandle
-        (hproc, hthread, hproc, &hthread, 0, FALSE, DUPLICATE_SAME_ACCESS))
+    if(!DuplicateHandle(hproc, hthread, hproc, &hthread, 0, FALSE, DUPLICATE_SAME_ACCESS))
     {
         return NULL;
     }
@@ -186,16 +184,15 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_thread_join(
     axutil_thread_t * thd)
 {
-    axis2_status_t rv = AXIS2_SUCCESS,
-        rv1;
+    axis2_status_t rv = AXIS2_SUCCESS, rv1;
 
-    if (!thd->td)
+    if(!thd->td)
     {
         /* Can not join on detached threads */
         return AXIS2_FAILURE;
     }
     rv1 = WaitForSingleObject(thd->td, INFINITE);
-    if (rv1 == WAIT_OBJECT_0 || rv1 == WAIT_ABANDONED)
+    if(rv1 == WAIT_OBJECT_0 || rv1 == WAIT_ABANDONED)
     {
         /*rv = AXIS2_INCOMPLETE; */
     }
@@ -211,7 +208,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_thread_detach(
     axutil_thread_t * thd)
 {
-    if (thd->td && CloseHandle(thd->td))
+    if(thd->td && CloseHandle(thd->td))
     {
         thd->td = NULL;
         return AXIS2_SUCCESS;
@@ -242,9 +239,11 @@ axutil_thread_once_init(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_thread_once(
     axutil_thread_once_t * control,
-    void (*func) (void))
+    void
+    (*func)(
+        void))
 {
-    if (!InterlockedExchange(&control->value, 1))
+    if(!InterlockedExchange(&control->value, 1))
     {
         func();
     }

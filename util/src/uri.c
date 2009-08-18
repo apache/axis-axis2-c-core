@@ -194,9 +194,9 @@ axutil_uri_create(
     axutil_uri_t *uri = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    uri = (axutil_uri_t *) AXIS2_MALLOC(env->allocator, sizeof(axutil_uri_t));
+    uri = (axutil_uri_t *)AXIS2_MALLOC(env->allocator, sizeof(axutil_uri_t));
 
-    if (!uri)
+    if(!uri)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -213,7 +213,7 @@ axutil_uri_create(
     uri->fragment = NULL;
     uri->hostent = NULL;
     uri->port = 0;
-    uri->is_ipv6 = 0;    
+    uri->is_ipv6 = 0;
 
     return uri;
 }
@@ -225,55 +225,55 @@ axutil_uri_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (uri->scheme)
+    if(uri->scheme)
     {
         AXIS2_FREE(env->allocator, uri->scheme);
         uri->scheme = NULL;
     }
 
-    if (uri->hostinfo)
+    if(uri->hostinfo)
     {
         AXIS2_FREE(env->allocator, uri->hostinfo);
         uri->hostinfo = NULL;
     }
 
-    if (uri->user)
+    if(uri->user)
     {
         AXIS2_FREE(env->allocator, uri->user);
         uri->user = NULL;
     }
 
-    if (uri->password)
+    if(uri->password)
     {
         AXIS2_FREE(env->allocator, uri->password);
         uri->password = NULL;
     }
 
-    if (uri->hostname)
+    if(uri->hostname)
     {
         AXIS2_FREE(env->allocator, uri->hostname);
         uri->hostname = NULL;
     }
 
-    if (uri->port_str)
+    if(uri->port_str)
     {
         AXIS2_FREE(env->allocator, uri->port_str);
         uri->port_str = NULL;
     }
 
-    if (uri->path)
+    if(uri->path)
     {
         AXIS2_FREE(env->allocator, uri->path);
         uri->path = NULL;
     }
 
-    if (uri->query)
+    if(uri->query)
     {
         AXIS2_FREE(env->allocator, uri->query);
         uri->query = NULL;
     }
 
-    if (uri->fragment)
+    if(uri->fragment)
     {
         AXIS2_FREE(env->allocator, uri->fragment);
         uri->fragment = NULL;
@@ -304,12 +304,11 @@ axutil_uri_parse_string(
     const axis2_char_t *hostinfo;
     axis2_char_t *endstr;
     int port;
-    int v6_offset1 = 0,
-        v6_offset2 = 0;
+    int v6_offset1 = 0, v6_offset2 = 0;
 
     AXIS2_PARAM_CHECK(env->error, uri_str, NULL);
 
-    uri = (axutil_uri_t *) axutil_uri_create(env);
+    uri = (axutil_uri_t *)axutil_uri_create(env);
 
     /* Initialize the structure. parse_uri() and parse_uri_components()
      * can be called more than once per request.
@@ -320,7 +319,7 @@ axutil_uri_parse_string(
      * it assumes forward branches are untaken and backwards are taken.  That's
      * the reason for the gotos.
      */
-    if (uri_str[0] == '/')
+    if(uri_str[0] == '/')
     {
         /* RFC2396 #4.3 says that two leading slashes mean we have an
          * authority component, not a path!  Fixing this looks scary
@@ -331,44 +330,44 @@ axutil_uri_parse_string(
          * case of three or more slashes there would seem to be no
          * ambiguity, so it is a path after all.
          */
-        if (uri_str[1] == '/' && uri_str[2] != '/')
+        if(uri_str[1] == '/' && uri_str[2] != '/')
         {
             s = uri_str + 2;
             goto deal_with_authority;
         }
 
-      deal_with_path:
+        deal_with_path:
         /* we expect uri to point to first character of path ... remember
          * that the path could be empty -- http://foobar?query for example
          */
         s = uri_str;
-        if ((!uri->hostinfo && uri_str[0] == '/' && uri_str[1] == '/') ||
-            (!uri->scheme && uri_str[0] == ':'))
+        if((!uri->hostinfo && uri_str[0] == '/' && uri_str[1] == '/') || (!uri->scheme
+            && uri_str[0] == ':'))
         {
-            if (uri)
+            if(uri)
             {
                 axutil_uri_free(uri, env);
             }
             uri = NULL;
             goto end;
         }
-        while ((uri_delims[*(unsigned char *) s] & NOTEND_PATH) == 0)
+        while((uri_delims[*(unsigned char *)s] & NOTEND_PATH) == 0)
         {
             ++s;
         }
-        if (s != uri_str)
+        if(s != uri_str)
         {
             uri->path = axutil_strmemdup(uri_str, s - uri_str, env);
         }
-        if (*s == 0)
+        if(*s == 0)
         {
             goto end;
         }
-        if (*s == '?')
+        if(*s == '?')
         {
             ++s;
             s1 = strchr(s, '#');
-            if (s1)
+            if(s1)
             {
                 uri->fragment = axutil_strdup(env, s1 + 1);
                 uri->query = axutil_strmemdup(s, s1 - s, env);
@@ -387,33 +386,33 @@ axutil_uri_parse_string(
 
     /* find the scheme: */
     s = uri_str;
-    while ((uri_delims[*(unsigned char *) s] & NOTEND_SCHEME) == 0)
+    while((uri_delims[*(unsigned char *)s] & NOTEND_SCHEME) == 0)
     {
         ++s;
     }
     /* scheme must be non-empty and followed by :// */
-    if (s == uri_str || s[0] != ':' || s[1] != '/' || s[2] != '/')
+    if(s == uri_str || s[0] != ':' || s[1] != '/' || s[2] != '/')
     {
-        if (uri->scheme)
+        if(uri->scheme)
         {
             AXIS2_FREE(env->allocator, uri->scheme);
             uri->scheme = NULL;
         }
         s = uri_str; /* restart from beginning as the loop must have ended in
-                      * in a wrong place. */
-        goto deal_with_authority;    /* backwards predicted taken! */
+         * in a wrong place. */
+        goto deal_with_authority;
+        /* backwards predicted taken! */
     }
 
     uri->scheme = axutil_strmemdup(uri_str, s - uri_str, env);
     s += 3;
 
-  deal_with_authority:
-    hostinfo = s;
-    while ((uri_delims[*(unsigned char *) s] & NOTEND_HOSTINFO) == 0)
+    deal_with_authority: hostinfo = s;
+    while((uri_delims[*(unsigned char *)s] & NOTEND_HOSTINFO) == 0)
     {
         ++s;
     }
-    uri_str = s;                /* whatever follows hostinfo is start of uri */
+    uri_str = s; /* whatever follows hostinfo is start of uri */
     uri->hostinfo = axutil_strmemdup(hostinfo, uri_str - hostinfo, env);
 
     /* If there's a username:password@host:port, the @ we want is the last @...
@@ -425,36 +424,35 @@ axutil_uri_parse_string(
     {
         --s;
     }
-    while (s >= hostinfo && *s != '@');
-    if (s < hostinfo)
+    while(s >= hostinfo && *s != '@');
+    if(s < hostinfo)
     {
         /* again we want the common case to be fall through */
-      deal_with_host:
+        deal_with_host:
         /* We expect hostinfo to point to the first character of
          * the hostname.  If there's a port it is the first colon,
          * except with IPv6.
          */
-        if (*hostinfo == '[')
+        if(*hostinfo == '[')
         {
-            if (*(hostinfo + 1) == ']')
+            if(*(hostinfo + 1) == ']')
             {
-                if (uri)
+                if(uri)
                 {
                     axutil_uri_free(uri, env);
                 }
                 uri = NULL;
                 goto end;
             }
-            if ((*(hostinfo + 1) >= '0' && *(hostinfo + 1) <= '9') ||
-                (*(hostinfo + 1) >= 'a' && *(hostinfo + 1) <= 'z') ||
-                (*(hostinfo + 1) >= 'A' && *(hostinfo + 1) <= 'Z') ||
-                (*(hostinfo + 1) == ':' && *(hostinfo + 2) == ':'))
+            if((*(hostinfo + 1) >= '0' && *(hostinfo + 1) <= '9') || (*(hostinfo + 1) >= 'a'
+                && *(hostinfo + 1) <= 'z') || (*(hostinfo + 1) >= 'A' && *(hostinfo + 1) <= 'Z')
+                || (*(hostinfo + 1) == ':' && *(hostinfo + 2) == ':'))
             {
                 uri->is_ipv6 = 1;
             }
             else
             {
-                if (uri)
+                if(uri)
                 {
                     axutil_uri_free(uri, env);
                 }
@@ -464,60 +462,56 @@ axutil_uri_parse_string(
             v6_offset1 = 1;
             v6_offset2 = 2;
             s = axutil_memchr(hostinfo, ']', uri_str - hostinfo);
-            if (!s)
+            if(!s)
             {
-                if (uri)
+                if(uri)
                 {
                     axutil_uri_free(uri, env);
                 }
                 uri = NULL;
                 goto end;
             }
-            if (*++s != ':')
+            if(*++s != ':')
             {
-                s = NULL;       /* no port */
+                s = NULL; /* no port */
             }
         }
-        else if (!*hostinfo || (*hostinfo >= '0' && *hostinfo <= '9') ||
-                 (*hostinfo >= 'a' && *hostinfo <= 'z') ||
-                 (*hostinfo >= 'A' && *hostinfo <= 'Z') ||
-                 *hostinfo == '?' || *hostinfo == '/' || *hostinfo == '#')
+        else if(!*hostinfo || (*hostinfo >= '0' && *hostinfo <= '9') || (*hostinfo >= 'a'
+            && *hostinfo <= 'z') || (*hostinfo >= 'A' && *hostinfo <= 'Z') || *hostinfo == '?'
+            || *hostinfo == '/' || *hostinfo == '#')
         {
             s = axutil_memchr(hostinfo, ':', uri_str - hostinfo);
         }
         else
         {
-            if (uri)
+            if(uri)
             {
                 axutil_uri_free(uri, env);
             }
             uri = NULL;
             goto end;
         }
-        if (!s)
+        if(!s)
         {
             /* we expect the common case to have no port */
-            uri->hostname =
-                axutil_strmemdup(hostinfo + v6_offset1,
-                                 uri_str - hostinfo - v6_offset2, env);
+            uri->hostname = axutil_strmemdup(hostinfo + v6_offset1,
+                uri_str - hostinfo - v6_offset2, env);
             goto deal_with_path;
         }
-        uri->hostname =
-            axutil_strmemdup(hostinfo + v6_offset1, s - hostinfo - v6_offset2,
-                             env);
+        uri->hostname = axutil_strmemdup(hostinfo + v6_offset1, s - hostinfo - v6_offset2, env);
         ++s;
         uri->port_str = axutil_strmemdup(s, uri_str - s, env);
-        if (uri_str != s)
+        if(uri_str != s)
         {
             port = strtol(uri->port_str, &endstr, 10);
             uri->port = (axis2_port_t)port;
             /* We are sure that the conversion is safe */
-            if (*endstr == '\0')
+            if(*endstr == '\0')
             {
                 goto deal_with_path;
             }
             /* Invalid characters after ':' found */
-            if (uri)
+            if(uri)
             {
                 axutil_uri_free(uri, env);
             }
@@ -530,7 +524,7 @@ axutil_uri_parse_string(
 
     /* first colon delimits username:password */
     s1 = axutil_memchr(hostinfo, ':', s - hostinfo);
-    if (s1)
+    if(s1)
     {
         uri->user = axutil_strmemdup(hostinfo, s1 - hostinfo, env);
         ++s1;
@@ -543,9 +537,8 @@ axutil_uri_parse_string(
     hostinfo = s + 1;
     goto deal_with_host;
 
-  /* End of function call */
-  end:
-    return uri;
+    /* End of function call */
+    end: return uri;
 }
 
 /* Special case for CONNECT parsing: it comes with the hostinfo part only */
@@ -567,8 +560,8 @@ axutil_uri_parse_hostinfo(
 
     AXIS2_PARAM_CHECK(env->error, hostinfo, NULL);
 
-    uri = (axutil_uri_t *) axutil_uri_create(env);
-    if (!uri)
+    uri = (axutil_uri_t *)axutil_uri_create(env);
+    if(!uri)
     {
         return NULL;
     }
@@ -582,16 +575,16 @@ axutil_uri_parse_hostinfo(
     /* We expect hostinfo to point to the first character of
      * the hostname.  There must be a port, separated by a colon
      */
-    if (*hostinfo == '[')
+    if(*hostinfo == '[')
     {
-        if (*(hostinfo + 1) == ']')
+        if(*(hostinfo + 1) == ']')
         {
             axutil_uri_free(uri, env);
             return NULL;
         }
         uri->is_ipv6 = 1;
         rsb = strchr(hostinfo, ']');
-        if (!rsb || *(rsb + 1) != ':')
+        if(!rsb || *(rsb + 1) != ':')
         {
             axutil_uri_free(uri, env);
             return NULL;
@@ -601,10 +594,9 @@ axutil_uri_parse_hostinfo(
          * IPv6 addresses beginning with "::"
          */
         s = rsb + 1;
-        if ((*(hostinfo + 1) >= '0' && *(hostinfo + 1) <= '9') ||
-             (*(hostinfo + 1) >= 'a' && *(hostinfo + 1) <= 'z') ||
-             (*(hostinfo + 1) >= 'A' && *(hostinfo + 1) <= 'Z') ||
-             (*(hostinfo + 1) == ':' && *(hostinfo + 2) == ':'))
+        if((*(hostinfo + 1) >= '0' && *(hostinfo + 1) <= '9') || (*(hostinfo + 1) >= 'a'
+            && *(hostinfo + 1) <= 'z') || (*(hostinfo + 1) >= 'A' && *(hostinfo + 1) <= 'Z')
+            || (*(hostinfo + 1) == ':' && *(hostinfo + 2) == ':'))
         {
             ++hostinfo;
         }
@@ -615,9 +607,8 @@ axutil_uri_parse_hostinfo(
         }
         v6_offset1 = 1;
     }
-    else if ((*hostinfo >= '0' && *hostinfo <= '9') ||
-             (*hostinfo >= 'a' && *hostinfo <= 'z') ||
-             (*hostinfo >= 'A' && *hostinfo <= 'Z'))
+    else if((*hostinfo >= '0' && *hostinfo <= '9') || (*hostinfo >= 'a' && *hostinfo <= 'z')
+        || (*hostinfo >= 'A' && *hostinfo <= 'Z'))
     {
         s = strchr(hostinfo, ':');
     }
@@ -626,7 +617,7 @@ axutil_uri_parse_hostinfo(
         axutil_uri_free(uri, env);
         return NULL;
     }
-    if (!s)
+    if(!s)
     {
         axutil_uri_free(uri, env);
         return NULL;
@@ -635,10 +626,10 @@ axutil_uri_parse_hostinfo(
     /* We are sure that the difference lies within the int range */
     ++s;
     uri->port_str = axutil_strdup(env, s);
-    if (*s != '\0')
+    if(*s != '\0')
     {
-        uri->port = (unsigned short) strtol(uri->port_str, &endstr, 10);
-        if (*endstr == '\0')
+        uri->port = (unsigned short)strtol(uri->port_str, &endstr, 10);
+        if(*endstr == '\0')
         {
             return uri;
         }
@@ -658,14 +649,14 @@ axutil_uri_resolve_relative(
     AXIS2_PARAM_CHECK(env->error, base, NULL);
     AXIS2_PARAM_CHECK(env->error, uri, NULL);
 
-    if (!uri || !base || !base->is_initialized || !uri->is_initialized)
+    if(!uri || !base || !base->is_initialized || !uri->is_initialized)
     {
         return NULL;
     }
     /* The interesting bit is the path.  */
-    if (!uri->path)
+    if(!uri->path)
     {
-        if (!uri->hostname)
+        if(!uri->hostname)
         {
             /* is this compatible with is_initialised?  Harmless in any case */
             uri->path = base->path ? base->path : axutil_strdup(env, "/");
@@ -678,7 +669,7 @@ axutil_uri_resolve_relative(
             uri->path = axutil_strdup(env, "/");
         }
     }
-    else if (uri->path[0] != '/')
+    else if(uri->path[0] != '/')
     {
         size_t baselen;
         const char *basepath = base->path ? base->path : "/";
@@ -689,16 +680,16 @@ axutil_uri_resolve_relative(
         temp = path;
 
         /* if base is nonsensical, bail out */
-        if (basepath[0] != '/')
+        if(basepath[0] != '/')
         {
             return NULL;
         }
         /* munch "up" components at the start, and chop them from base path */
-        while (!strncmp(path, "../", 3))
+        while(!strncmp(path, "../", 3))
         {
-            while (base_end > basepath)
+            while(base_end > basepath)
             {
-                if (*--base_end == '/')
+                if(*--base_end == '/')
                 {
                     break;
                 }
@@ -706,52 +697,50 @@ axutil_uri_resolve_relative(
             path += 3;
         }
         /* munch "here" components at the start */
-        while (!strncmp(path, "./", 2))
+        while(!strncmp(path, "./", 2))
         {
             path += 2;
         }
         baselen = base_end - basepath + 1;
-        uri->path =
-            AXIS2_MALLOC(env->allocator,
-                         sizeof(axis2_char_t) * baselen + strlen(path) + 1);
+        uri->path = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * baselen + strlen(path) + 1);
         memcpy(uri->path, basepath, baselen);
         strcpy(uri->path + baselen, path);
-        if (temp)
+        if(temp)
         {
             AXIS2_FREE(env->allocator, temp);
         }
     }
 
     /* The trivial bits are everything-but-path */
-    if (!uri->scheme)
+    if(!uri->scheme)
     {
         uri->scheme = axutil_strdup(env, base->scheme);
     }
-    if (!uri->hostinfo)
+    if(!uri->hostinfo)
     {
         uri->hostinfo = axutil_strdup(env, base->hostinfo);
     }
-    if (!uri->user)
+    if(!uri->user)
     {
         uri->user = axutil_strdup(env, base->user);
     }
-    if (!uri->password)
+    if(!uri->password)
     {
         uri->password = axutil_strdup(env, base->password);
     }
-    if (!uri->hostname)
+    if(!uri->hostname)
     {
         uri->hostname = axutil_strdup(env, base->hostname);
     }
-    if (!uri->port_str)
+    if(!uri->port_str)
     {
         uri->port_str = axutil_strdup(env, base->port_str);
     }
-    if (!uri->hostent)
+    if(!uri->hostent)
     {
         uri->hostent = base->hostent;
     }
-    if (!uri->port)
+    if(!uri->port)
     {
         uri->port = base->port;
     }
@@ -770,14 +759,14 @@ axutil_uri_parse_relative(
     axutil_uri_t *temp = NULL;
 
     uptr = axutil_uri_parse_string(env, uri);
-    if (!uptr && AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(!uptr && AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         return uptr;
     }
     temp = uptr;
     uptr = axutil_uri_resolve_relative(env, base, uptr);
 
-    if (!uptr)
+    if(!uptr)
     {
         axutil_uri_free(temp, env);
     }
@@ -790,11 +779,11 @@ axutil_uri_port_of_scheme(
 {
     schemes_t *scheme;
 
-    if (scheme_str)
+    if(scheme_str)
     {
-        for (scheme = schemes; scheme->name; ++scheme)
+        for(scheme = schemes; scheme->name; ++scheme)
         {
-            if (axutil_strcasecmp(scheme_str, scheme->name) == 0)
+            if(axutil_strcasecmp(scheme_str, scheme->name) == 0)
             {
                 return scheme->default_port;
             }
@@ -810,7 +799,7 @@ axutil_uri_clone(
 {
     axutil_uri_t *new_uri = NULL;
 
-    new_uri = (axutil_uri_t *) axutil_uri_create(env);
+    new_uri = (axutil_uri_t *)axutil_uri_create(env);
 
     new_uri->scheme = axutil_strdup(env, uri->scheme);
     new_uri->hostinfo = axutil_strdup(env, uri->hostinfo);
@@ -845,58 +834,42 @@ axutil_uri_to_string(
     AXIS2_ENV_CHECK(env, NULL);
 
     /* If suppressing the site part, omit both user name & scheme://hostname */
-    if (!(flags & AXIS2_URI_UNP_OMITSITEPART))
+    if(!(flags & AXIS2_URI_UNP_OMITSITEPART))
     {
 
         /* Construct a "user:password@" string, honoring the passed
          * AXIS2_URI_UNP_ flags: */
-        if (uri->user || uri->password)
+        if(uri->user || uri->password)
         {
-            ret =
-                axutil_strcat(env,
-                              (uri->user &&
-                               !(flags & AXIS2_URI_UNP_OMITUSER)) ? uri->
-                              user : "", (uri->password &&
-                                          !(flags & AXIS2_URI_UNP_OMITPASSWORD))
-                              ? ":" : "", (uri->password &&
-                                           !(flags &
-                                             AXIS2_URI_UNP_OMITPASSWORD))
-                              ? ((flags & AXIS2_URI_UNP_REVEALPASSWORD) ? uri->
-                                 password : "XXXXXXXX") : "", ((uri->user &&
-                                                                !(flags &
-                                                                  AXIS2_URI_UNP_OMITUSER))
-                                                               || (uri->password
-                                                                   && !(flags &
-                                                                        AXIS2_URI_UNP_OMITPASSWORD)))
-                              ? "@" : "", NULL);
+            ret = axutil_strcat(env, (uri->user && !(flags & AXIS2_URI_UNP_OMITUSER)) ? uri-> user
+                : "", (uri->password && !(flags & AXIS2_URI_UNP_OMITPASSWORD)) ? ":" : "",
+                (uri->password && !(flags & AXIS2_URI_UNP_OMITPASSWORD)) ? ((flags
+                    & AXIS2_URI_UNP_REVEALPASSWORD) ? uri-> password : "XXXXXXXX") : "",
+                ((uri->user && !(flags & AXIS2_URI_UNP_OMITUSER)) || (uri->password && !(flags
+                    & AXIS2_URI_UNP_OMITPASSWORD))) ? "@" : "", NULL);
             temp = ret;
         }
 
         /* Construct scheme://site string */
-        if (uri->hostname)
+        if(uri->hostname)
         {
             int is_default_port;
-            const axis2_char_t *lbrk = "",
-                *rbrk = "";
+            const axis2_char_t *lbrk = "", *rbrk = "";
 
-            if (uri->is_ipv6)
-            {                   /* v6 literal */
+            if(uri->is_ipv6)
+            { /* v6 literal */
                 lbrk = "[";
                 rbrk = "]";
             }
 
-            is_default_port = (uri->port_str == NULL || uri->port == 0 ||
-                               uri->port ==
-                               axutil_uri_port_of_scheme(uri->scheme));
+            is_default_port = (uri->port_str == NULL || uri->port == 0 || uri->port
+                == axutil_uri_port_of_scheme(uri->scheme));
 
-            if (uri->scheme)
+            if(uri->scheme)
             {
-                ret =
-                    axutil_strcat(env, uri->scheme, "://", ret, lbrk,
-                                  uri->hostname, rbrk,
-                                  is_default_port ? "" : ":",
-                                  is_default_port ? "" : uri->port_str, NULL);
-                if (temp)
+                ret = axutil_strcat(env, uri->scheme, "://", ret, lbrk, uri->hostname, rbrk,
+                    is_default_port ? "" : ":", is_default_port ? "" : uri->port_str, NULL);
+                if(temp)
                 {
                     AXIS2_FREE(env->allocator, temp);
                 }
@@ -908,15 +881,13 @@ axutil_uri_to_string(
                  * Thus, if no scheme, we omit "//" too, eventhough
                  * it is a part of authority.
                  */
-                ret =
-                    axutil_strcat(env, ret, lbrk, uri->hostname, rbrk,
-                                  is_default_port ? "" : ":",
-                                  is_default_port ? "" : uri->port_str, NULL);
+                ret = axutil_strcat(env, ret, lbrk, uri->hostname, rbrk,
+                    is_default_port ? "" : ":", is_default_port ? "" : uri->port_str, NULL);
                 /*ret =
-                    axutil_strcat(env, "//", ret, lbrk, uri->hostname, rbrk,
-                                  is_default_port ? "" : ":",
-                                  is_default_port ? "" : uri->port_str, NULL);*/
-                if (temp)
+                 axutil_strcat(env, "//", ret, lbrk, uri->hostname, rbrk,
+                 is_default_port ? "" : ":",
+                 is_default_port ? "" : uri->port_str, NULL);*/
+                if(temp)
                 {
                     AXIS2_FREE(env->allocator, temp);
                 }
@@ -926,21 +897,15 @@ axutil_uri_to_string(
     }
 
     /* Should we suppress all path info? */
-    if (!(flags & AXIS2_URI_UNP_OMITPATHINFO))
+    if(!(flags & AXIS2_URI_UNP_OMITPATHINFO))
     {
         /* Append path, query and fragment strings: */
-        ret =
-            axutil_strcat(env, ret, (uri->path) ? uri->path : "",
-                          (uri->query &&
-                           !(flags & AXIS2_URI_UNP_OMITQUERY_ONLY)) ? "?" : "",
-                          (uri->query &&
-                           !(flags & AXIS2_URI_UNP_OMITQUERY_ONLY)) ? uri->
-                          query : "", (uri->fragment &&
-                                       !(flags & AXIS2_URI_UNP_OMITFRAGMENT_ONLY)) ? "#"
-                          : NULL, (uri->fragment &&
-                                   !(flags & AXIS2_URI_UNP_OMITFRAGMENT_ONLY)) ? uri->
-                          fragment : NULL, NULL);
-        if (temp)
+        ret = axutil_strcat(env, ret, (uri->path) ? uri->path : "", (uri->query && !(flags
+            & AXIS2_URI_UNP_OMITQUERY_ONLY)) ? "?" : "", (uri->query && !(flags
+            & AXIS2_URI_UNP_OMITQUERY_ONLY)) ? uri-> query : "", (uri->fragment && !(flags
+            & AXIS2_URI_UNP_OMITFRAGMENT_ONLY)) ? "#" : NULL, (uri->fragment && !(flags
+            & AXIS2_URI_UNP_OMITFRAGMENT_ONLY)) ? uri-> fragment : NULL, NULL);
+        if(temp)
         {
             AXIS2_FREE(env->allocator, temp);
         }
