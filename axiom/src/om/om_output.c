@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -37,7 +36,7 @@ struct axiom_output
 {
 
     /** axiom_xml_writer. any xml writer which
-        implemet axiom_xml_writer.h interface  */
+     implemet axiom_xml_writer.h interface  */
     axiom_xml_writer_t *xml_writer;
 
     axis2_bool_t do_optimize;
@@ -76,10 +75,9 @@ axiom_output_create(
     axiom_output_t *om_output = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    om_output = (axiom_output_t *) AXIS2_MALLOC(env->allocator,
-                                                sizeof(axiom_output_t));
+    om_output = (axiom_output_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_output_t));
 
-    if (!om_output)
+    if(!om_output)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -110,34 +108,34 @@ axiom_output_free(
 {
     AXIS2_ENV_CHECK(env, void);
 
-    if (om_output->xml_version)
+    if(om_output->xml_version)
     {
         AXIS2_FREE(env->allocator, om_output->xml_version);
     }
-    if (om_output->mime_boundary)
+    if(om_output->mime_boundary)
     {
         AXIS2_FREE(env->allocator, om_output->mime_boundary);
     }
-    if (om_output->next_content_id)
+    if(om_output->next_content_id)
     {
         AXIS2_FREE(env->allocator, om_output->next_content_id);
     }
-    if (om_output->root_content_id)
+    if(om_output->root_content_id)
     {
         AXIS2_FREE(env->allocator, om_output->root_content_id);
     }
 
-    if (om_output->xml_writer)
+    if(om_output->xml_writer)
     {
         axiom_xml_writer_free(om_output->xml_writer, env);
     }
 
-    if (om_output->binary_node_list)
+    if(om_output->binary_node_list)
     {
         axutil_array_list_free(om_output->binary_node_list, env);
     }
 
-    if (om_output->content_type)
+    if(om_output->content_type)
     {
         AXIS2_FREE(env->allocator, om_output->content_type);
     }
@@ -196,14 +194,14 @@ axiom_output_set_xml_version(
 
     AXIS2_PARAM_CHECK(env->error, xml_version, AXIS2_FAILURE);
 
-    if (om_output->xml_version)
+    if(om_output->xml_version)
     {
         AXIS2_FREE(env->allocator, om_output->xml_version);
         om_output->xml_version = NULL;
     }
 
     om_output->xml_version = axutil_strdup(env, xml_version);
-    if (!om_output->xml_version)
+    if(!om_output->xml_version)
     {
         return AXIS2_FAILURE;
     }
@@ -270,9 +268,9 @@ axiom_output_get_content_type(
     const axutil_env_t * env)
 {
     const axis2_char_t *soap_content_type = NULL;
-    if (AXIS2_TRUE == om_output->do_optimize)
+    if(AXIS2_TRUE == om_output->do_optimize)
     {
-        if (AXIS2_TRUE == om_output->is_soap11)
+        if(AXIS2_TRUE == om_output->is_soap11)
         {
             soap_content_type = AXIOM_SOAP11_CONTENT_TYPE;
         }
@@ -280,21 +278,18 @@ axiom_output_get_content_type(
         {
             soap_content_type = AXIOM_SOAP12_CONTENT_TYPE;
         }
-        if (om_output->content_type)
+        if(om_output->content_type)
         {
             AXIS2_FREE(env->allocator, om_output->content_type);
             om_output->content_type = NULL;
         }
 
-        om_output->content_type =
-            (axis2_char_t *)
-            axiom_mime_part_get_content_type_for_mime(env, om_output->mime_boundry,
-                                                        om_output->root_content_id,
-                                                        om_output->char_set_encoding,
-                                                        soap_content_type);
+        om_output->content_type = (axis2_char_t *)axiom_mime_part_get_content_type_for_mime(env,
+            om_output->mime_boundry, om_output->root_content_id, om_output->char_set_encoding,
+            soap_content_type);
         return om_output->content_type;
     }
-    else if (AXIS2_TRUE == om_output->is_soap11)
+    else if(AXIS2_TRUE == om_output->is_soap11)
     {
         return AXIOM_SOAP11_CONTENT_TYPE;
     }
@@ -308,14 +303,14 @@ axiom_output_write_optimized(
     axiom_text_t * om_text)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (om_output->binary_node_list)
+    if(om_output->binary_node_list)
     {
         axutil_array_list_add(om_output->binary_node_list, env, om_text);
     }
     else
     {
         om_output->binary_node_list = axutil_array_list_create(env, 5);
-        if (!(om_output->binary_node_list))
+        if(!(om_output->binary_node_list))
         {
             return AXIS2_FAILURE;
         }
@@ -336,14 +331,14 @@ axiom_output_get_next_content_id(
     om_output->next_id++;
 
     /** free existing id */
-    if (om_output->next_content_id)
+    if(om_output->next_content_id)
     {
         AXIS2_FREE(env->allocator, om_output->next_content_id);
         om_output->next_content_id = NULL;
     }
 
     uuid = axutil_uuid_gen(env);
-    if (!uuid)
+    if(!uuid)
     {
         return NULL;
     }
@@ -353,17 +348,17 @@ axiom_output_get_next_content_id(
     temp_str = axutil_stracat(env, id, ".");
     temp_str1 = axutil_stracat(env, temp_str, uuid);
     om_output->next_content_id = axutil_stracat(env, temp_str1, "@apache.org");
-    if (temp_str)
+    if(temp_str)
     {
         AXIS2_FREE(env->allocator, temp_str);
         temp_str = NULL;
     }
-    if (temp_str1)
+    if(temp_str1)
     {
         AXIS2_FREE(env->allocator, temp_str1);
         temp_str1 = NULL;
     }
-    if (uuid)
+    if(uuid)
     {
         AXIS2_FREE(env->allocator, uuid);
         uuid = NULL;
@@ -379,21 +374,20 @@ axiom_output_get_root_content_id(
     axis2_char_t *temp_str = NULL;
     axis2_char_t *uuid = NULL;
 
-    if (!om_output->root_content_id)
+    if(!om_output->root_content_id)
     {
         uuid = axutil_uuid_gen(env);
 
         temp_str = axutil_stracat(env, "0.", uuid);
 
-        om_output->root_content_id =
-            axutil_stracat(env, temp_str, "@apache.org");
+        om_output->root_content_id = axutil_stracat(env, temp_str, "@apache.org");
 
-        if (temp_str)
+        if(temp_str)
         {
             AXIS2_FREE(env->allocator, temp_str);
             temp_str = NULL;
         }
-        if (uuid)
+        if(uuid)
         {
             AXIS2_FREE(env->allocator, uuid);
             uuid = NULL;
@@ -409,12 +403,12 @@ axiom_output_get_mime_boundry(
     const axutil_env_t * env)
 {
     axis2_char_t *uuid = NULL;
-    if (!om_output->mime_boundary)
+    if(!om_output->mime_boundary)
     {
         uuid = axutil_uuid_gen(env);
 
         om_output->mime_boundary = axutil_stracat(env, "MIMEBoundary", uuid);
-        if (uuid)
+        if(uuid)
         {
             AXIS2_FREE(env->allocator, uuid);
             uuid = NULL;
@@ -441,161 +435,161 @@ axiom_output_write(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     va_start(ap, no_of_args);
-    for (i = 0; i < no_of_args; i++)
+    for(i = 0; i < no_of_args; i++)
     {
-        args_list[i] = va_arg(ap, axis2_char_t *);
-    }
-    va_end(ap);
+args_list    [i] = va_arg(ap, axis2_char_t *);
+}
+va_end(ap);
 
-    if (type == AXIOM_ELEMENT)
+if (type == AXIOM_ELEMENT)
+{
+    if (no_of_args == 0)
     {
-        if (no_of_args == 0)
+        status =
+        axiom_xml_writer_write_end_element(om_output->xml_writer, env);
+    }
+    else if (no_of_args == 1)
+    {
+        status =
+        axiom_xml_writer_write_start_element(om_output->xml_writer,
+            env, args_list[0]);
+    }
+    else if (no_of_args == 2)
+    {
+        status =
+        axiom_xml_writer_write_start_element_with_namespace(om_output->
+            xml_writer,
+            env,
+            args_list
+            [0],
+            args_list
+            [1]);
+    }
+    else if (no_of_args == 3)
+    {
+        status =
+        axiom_xml_writer_write_start_element_with_namespace_prefix
+        (om_output->xml_writer, env, args_list[0], args_list[1],
+            args_list[2]);
+    }
+    else if (no_of_args == 4)
+    {
+        if (!args_list[0])
+        {
+            status = AXIS2_FAILURE;
+        }
+        else if (!args_list[1])
         {
             status =
-                axiom_xml_writer_write_end_element(om_output->xml_writer, env);
+            axiom_xml_writer_write_empty_element(om_output->xml_writer,
+                env, args_list[0]);
         }
-        else if (no_of_args == 1)
+        else if (!args_list[2])
         {
             status =
-                axiom_xml_writer_write_start_element(om_output->xml_writer,
-                                                     env, args_list[0]);
+            axiom_xml_writer_write_empty_element_with_namespace(om_output->
+                xml_writer,
+                env,
+                args_list
+                [0],
+                args_list
+                [1]);
         }
-        else if (no_of_args == 2)
+        else
         {
             status =
-                axiom_xml_writer_write_start_element_with_namespace(om_output->
-                                                                    xml_writer,
-                                                                    env,
-                                                                    args_list
-                                                                    [0],
-                                                                    args_list
-                                                                    [1]);
-        }
-        else if (no_of_args == 3)
-        {
-            status =
-                axiom_xml_writer_write_start_element_with_namespace_prefix
-                (om_output->xml_writer, env, args_list[0], args_list[1],
-                 args_list[2]);
-        }
-        else if (no_of_args == 4)
-        {
-            if (!args_list[0])
-            {
-                status = AXIS2_FAILURE;
-            }
-            else if (!args_list[1])
-            {
-                status =
-                    axiom_xml_writer_write_empty_element(om_output->xml_writer,
-                                                         env, args_list[0]);
-            }
-            else if (!args_list[2])
-            {
-                status =
-                    axiom_xml_writer_write_empty_element_with_namespace(om_output->
-                                                                        xml_writer,
-                                                                        env,
-                                                                        args_list
-                                                                        [0],
-                                                                        args_list
-                                                                        [1]);
-            }
-            else
-            {
-                status =
-                    axiom_xml_writer_write_empty_element_with_namespace_prefix
-                    (om_output->xml_writer, env, args_list[0], args_list[1],
-                     args_list[2]);
-            }
+            axiom_xml_writer_write_empty_element_with_namespace_prefix
+            (om_output->xml_writer, env, args_list[0], args_list[1],
+                args_list[2]);
         }
     }
-    else if (type == AXIOM_DATA_SOURCE)
+}
+else if (type == AXIOM_DATA_SOURCE)
+{
+    status = axiom_xml_writer_write_raw(om_output->xml_writer,
+        env, args_list[0]);
+}
+else if (type == AXIOM_ATTRIBUTE)
+{
+    if (no_of_args == 2)
     {
-        status = axiom_xml_writer_write_raw(om_output->xml_writer,
-                                            env, args_list[0]);
+        status =
+        axiom_xml_writer_write_attribute(om_output->xml_writer,
+            env,
+            args_list[0], args_list[1]);
     }
-    else if (type == AXIOM_ATTRIBUTE)
+    else if (no_of_args == 3)
     {
-        if (no_of_args == 2)
-        {
-            status =
-                axiom_xml_writer_write_attribute(om_output->xml_writer,
-                                                 env,
-                                                 args_list[0], args_list[1]);
-        }
-        else if (no_of_args == 3)
-        {
-            status =
-                axiom_xml_writer_write_attribute_with_namespace(om_output->
-                                                                xml_writer, env,
-                                                                args_list[0],
-                                                                args_list[1],
-                                                                args_list[2]);
-        }
-        else if (no_of_args == 4)
-        {
-            status =
-                axiom_xml_writer_write_attribute_with_namespace_prefix
-                (om_output->xml_writer, env, args_list[0], args_list[1],
-                 args_list[2], args_list[3]);
-        }
+        status =
+        axiom_xml_writer_write_attribute_with_namespace(om_output->
+            xml_writer, env,
+            args_list[0],
+            args_list[1],
+            args_list[2]);
     }
-    else if (type == AXIOM_NAMESPACE)
+    else if (no_of_args == 4)
     {
-        /* If the namespace prefix is xml, it must be the pre-defined xml
-           namespace.  Although the XML spec allows it to be declared
-           explicitly, this is superfluous and not accepted by all xml
-           parsers. */
-        if ((!args_list[0]) || (strcmp(args_list[0], "xml") != 0))
-        {
-            status = axiom_xml_writer_write_namespace(om_output->xml_writer,
-                                                      env,
-                                                      args_list[0], args_list[1]);
-        }
+        status =
+        axiom_xml_writer_write_attribute_with_namespace_prefix
+        (om_output->xml_writer, env, args_list[0], args_list[1],
+            args_list[2], args_list[3]);
     }
-    else if (type == AXIOM_TEXT)
+}
+else if (type == AXIOM_NAMESPACE)
+{
+    /* If the namespace prefix is xml, it must be the pre-defined xml
+     namespace.  Although the XML spec allows it to be declared
+     explicitly, this is superfluous and not accepted by all xml
+     parsers. */
+    if ((!args_list[0]) || (strcmp(args_list[0], "xml") != 0))
     {
-        status = axiom_xml_writer_write_characters(om_output->xml_writer,
-                                                   env, args_list[0]);
+        status = axiom_xml_writer_write_namespace(om_output->xml_writer,
+            env,
+            args_list[0], args_list[1]);
     }
-    else if (type == AXIOM_COMMENT)
+}
+else if (type == AXIOM_TEXT)
+{
+    status = axiom_xml_writer_write_characters(om_output->xml_writer,
+        env, args_list[0]);
+}
+else if (type == AXIOM_COMMENT)
+{
+    status = axiom_xml_writer_write_comment(om_output->xml_writer,
+        env, args_list[0]);
+}
+else if (type == AXIOM_PROCESSING_INSTRUCTION)
+{
+    if (no_of_args == 1)
     {
-        status = axiom_xml_writer_write_comment(om_output->xml_writer,
-                                                env, args_list[0]);
+        status =
+        axiom_xml_writer_write_processing_instruction(om_output->
+            xml_writer, env,
+            args_list[0]);
     }
-    else if (type == AXIOM_PROCESSING_INSTRUCTION)
+    else if (no_of_args == 2)
     {
-        if (no_of_args == 1)
-        {
-            status =
-                axiom_xml_writer_write_processing_instruction(om_output->
-                                                              xml_writer, env,
-                                                              args_list[0]);
-        }
-        else if (no_of_args == 2)
-        {
-            status =
-                axiom_xml_writer_write_processing_instruction_data(om_output->
-                                                                   xml_writer,
-                                                                   env,
-                                                                   args_list[0],
-                                                                   args_list
-                                                                   [1]);
-        }
+        status =
+        axiom_xml_writer_write_processing_instruction_data(om_output->
+            xml_writer,
+            env,
+            args_list[0],
+            args_list
+            [1]);
     }
-    else if (type == AXIOM_DOCTYPE)
-    {
-        status = axiom_xml_writer_write_dtd(om_output->xml_writer,
-                                            env, args_list[0]);
-    }
+}
+else if (type == AXIOM_DOCTYPE)
+{
+    status = axiom_xml_writer_write_dtd(om_output->xml_writer,
+        env, args_list[0]);
+}
 
-    if (status == AXIS2_SUCCESS)
-    {
-        return AXIS2_SUCCESS;
-    }
-    else
-        return AXIS2_FAILURE;
+if (status == AXIS2_SUCCESS)
+{
+    return AXIS2_SUCCESS;
+}
+else
+return AXIS2_FAILURE;
 }
 
 axis2_status_t AXIS2_CALL
@@ -604,33 +598,26 @@ axiom_output_write_xml_version_encoding(
     const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (!om_output->xml_version)
+    if(!om_output->xml_version)
     {
         axiom_output_set_xml_version(om_output, env, "1.0");
     }
-    if (!om_output->char_set_encoding)
+    if(!om_output->char_set_encoding)
     {
         axiom_output_set_char_set_encoding(om_output, env, "UTF-8");
     }
-    return
-        axiom_xml_writer_write_start_document_with_version_encoding(om_output->
-                                                                    xml_writer,
-                                                                    env,
-                                                                    om_output->
-                                                                    xml_version,
-                                                                    om_output->
-                                                                    char_set_encoding);
+    return axiom_xml_writer_write_start_document_with_version_encoding(om_output-> xml_writer, env,
+        om_output-> xml_version, om_output-> char_set_encoding);
 
 }
 
 /* This method will be called from transport. After this method each and every
  * message part needs to be send are stored in an arraylits. So the transport 
  * sender should correctly figure out how to send from the given information.
- */ 
+ */
 
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axiom_output_flush(
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_output_flush(
     axiom_output_t * om_output,
     const axutil_env_t * env)
 {
@@ -638,16 +625,15 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (om_output->do_optimize)
+    if(om_output->do_optimize)
     {
         axis2_char_t *root_content_id = NULL;
         axis2_char_t *buffer = NULL;
 
         /* Extracting the soap part */
 
-        buffer = axiom_xml_writer_get_xml(om_output->xml_writer,
-                                                      env);
-        if (om_output->is_soap11)
+        buffer = axiom_xml_writer_get_xml(om_output->xml_writer, env);
+        if(om_output->is_soap11)
         {
             soap_content_type = AXIOM_SOAP11_CONTENT_TYPE;
         }
@@ -655,23 +641,20 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
         {
             soap_content_type = AXIOM_SOAP12_CONTENT_TYPE;
         }
-        
+
         /* The created mime_boundary for this soap message */
-        
+
         om_output->mime_boundry = axiom_output_get_mime_boundry(om_output, env);
-        
+
         /* This is also created for attachments*/
         root_content_id = axiom_output_get_root_content_id(om_output, env);
-        
+
         /* different parts of the message is added according to their order
          * to an arraylist */
-        om_output->mime_parts = axiom_mime_part_create_part_list( 
-                                    env, buffer, om_output->binary_node_list,
-                                    om_output->mime_boundry, 
-                                    om_output->root_content_id, 
-                                    om_output->char_set_encoding,
-                                    soap_content_type);
-        
+        om_output->mime_parts = axiom_mime_part_create_part_list(env, buffer,
+            om_output->binary_node_list, om_output->mime_boundry, om_output->root_content_id,
+            om_output->char_set_encoding, soap_content_type);
+
         if(om_output->mime_parts)
         {
             return AXIS2_SUCCESS;

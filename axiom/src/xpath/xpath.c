@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -24,7 +23,8 @@
 #include "xpath_streaming.h"
 
 /* Create XPath context */
-AXIS2_EXTERN axiom_xpath_context_t * AXIS2_CALL axiom_xpath_context_create(
+AXIS2_EXTERN axiom_xpath_context_t * AXIS2_CALL
+axiom_xpath_context_create(
     const axutil_env_t *env,
     axiom_node_t * root_node)
 {
@@ -35,9 +35,8 @@ AXIS2_EXTERN axiom_xpath_context_t * AXIS2_CALL axiom_xpath_context_create(
     dummy_root = axiom_node_create(env);
     axiom_node_add_child(dummy_root, env, root_node);
 
-
     context = AXIS2_MALLOC(env->allocator,
-            sizeof(axiom_xpath_context_t));
+        sizeof(axiom_xpath_context_t));
 
     context->env = env;
     context->root_node = dummy_root;
@@ -53,14 +52,15 @@ AXIS2_EXTERN axiom_xpath_context_t * AXIS2_CALL axiom_xpath_context_create(
 }
 
 /* Compile XPath expression */
-AXIS2_EXTERN axiom_xpath_expression_t * AXIS2_CALL axiom_xpath_compile_expression(
+AXIS2_EXTERN axiom_xpath_expression_t * AXIS2_CALL
+axiom_xpath_compile_expression(
     const axutil_env_t *env,
     const axis2_char_t* xpath_expr)
 {
     axiom_xpath_expression_t* expr;
 
     expr = AXIS2_MALLOC(env->allocator,
-            sizeof(axiom_xpath_expression_t));
+        sizeof(axiom_xpath_expression_t));
 
     expr->expr_str = axutil_strdup(env, xpath_expr);
 
@@ -76,18 +76,20 @@ AXIS2_EXTERN axiom_xpath_expression_t * AXIS2_CALL axiom_xpath_compile_expressio
 }
 
 /* Evaluate compiled XPath expression */
-AXIS2_EXTERN axiom_xpath_result_t * AXIS2_CALL axiom_xpath_evaluate(
+AXIS2_EXTERN axiom_xpath_result_t * AXIS2_CALL
+axiom_xpath_evaluate(
     axiom_xpath_context_t *context,
     axiom_xpath_expression_t *xpath_expr)
 {
     axiom_xpath_expression_copy(context, xpath_expr);
 
     context->streaming = AXIS2_FALSE;
-    
+
     return axiom_xpath_run(context);
 }
 
-AXIS2_EXTERN axiom_xpath_result_t * AXIS2_CALL axiom_xpath_evaluate_streaming(
+AXIS2_EXTERN axiom_xpath_result_t * AXIS2_CALL
+axiom_xpath_evaluate_streaming(
     axiom_xpath_context_t *context,
     axiom_xpath_expression_t *xpath_expr)
 {
@@ -103,7 +105,7 @@ AXIS2_EXTERN axiom_xpath_result_t * AXIS2_CALL axiom_xpath_evaluate_streaming(
     else
     {
         res = AXIS2_MALLOC(
-                    context->env->allocator, sizeof(axiom_xpath_result_t));
+            context->env->allocator, sizeof(axiom_xpath_result_t));
         res->nodes = NULL;
         res->flag = AXIOM_XPATH_ERROR_STREAMING_NOT_SUPPORTED;
 
@@ -111,15 +113,16 @@ AXIS2_EXTERN axiom_xpath_result_t * AXIS2_CALL axiom_xpath_evaluate_streaming(
     }
 }
 
-AXIS2_EXTERN void AXIS2_CALL axiom_xpath_register_default_functions_set(
+AXIS2_EXTERN void AXIS2_CALL
+axiom_xpath_register_default_functions_set(
     axiom_xpath_context_t *context)
 {
     axiom_xpath_register_function(
         context, "count", axiom_xpath_function_count);
 }
 
-
-AXIS2_EXTERN void AXIS2_CALL axiom_xpath_register_function(
+AXIS2_EXTERN void AXIS2_CALL
+axiom_xpath_register_function(
     axiom_xpath_context_t *context,
     axis2_char_t *name,
     axiom_xpath_function_t func)
@@ -135,13 +138,14 @@ AXIS2_EXTERN void AXIS2_CALL axiom_xpath_register_function(
     }
 }
 
-AXIS2_EXTERN axiom_xpath_function_t AXIS2_CALL axiom_xpath_get_function(
+AXIS2_EXTERN axiom_xpath_function_t AXIS2_CALL
+axiom_xpath_get_function(
     axiom_xpath_context_t *context,
     axis2_char_t *name)
 {
     axiom_xpath_function_t func = NULL;
 
-    if (context->functions)
+    if(context->functions)
     {
         func = axutil_hash_get(context->functions, name, AXIS2_HASH_KEY_STRING);
     }
@@ -149,7 +153,8 @@ AXIS2_EXTERN axiom_xpath_function_t AXIS2_CALL axiom_xpath_get_function(
     return func;
 }
 
-AXIS2_EXTERN void AXIS2_CALL axiom_xpath_register_namespace(
+AXIS2_EXTERN void AXIS2_CALL
+axiom_xpath_register_namespace(
     axiom_xpath_context_t *context,
     axiom_namespace_t *ns)
 {
@@ -169,7 +174,8 @@ AXIS2_EXTERN void AXIS2_CALL axiom_xpath_register_namespace(
     }
 }
 
-AXIS2_EXTERN axiom_namespace_t * AXIS2_CALL axiom_xpath_get_namespace(
+AXIS2_EXTERN axiom_namespace_t * AXIS2_CALL
+axiom_xpath_get_namespace(
     axiom_xpath_context_t *context,
     axis2_char_t *prefix)
 {
@@ -183,7 +189,9 @@ AXIS2_EXTERN axiom_namespace_t * AXIS2_CALL axiom_xpath_get_namespace(
     return ns;
 }
 
-AXIS2_EXTERN void AXIS2_CALL axiom_xpath_clear_namespaces(axiom_xpath_context_t *context)
+AXIS2_EXTERN void AXIS2_CALL
+axiom_xpath_clear_namespaces(
+    axiom_xpath_context_t *context)
 {
     axutil_hash_index_t *hi;
     void *val;
@@ -191,8 +199,8 @@ AXIS2_EXTERN void AXIS2_CALL axiom_xpath_clear_namespaces(axiom_xpath_context_t 
     if (context->namespaces)
     {
         for (hi = axutil_hash_first(context->namespaces, context->env);
-                hi;
-                hi = axutil_hash_next(context->env, hi))
+            hi;
+            hi = axutil_hash_next(context->env, hi))
         {
             axutil_hash_this(hi, NULL, NULL, &val);
             axiom_namespace_free((axiom_namespace_t *)val, context->env);
@@ -205,20 +213,20 @@ AXIS2_EXTERN void AXIS2_CALL axiom_xpath_clear_namespaces(axiom_xpath_context_t 
 }
 
 /* Cast to boolean */
-AXIS2_EXTERN axis2_bool_t AXIS2_CALL axiom_xpath_cast_node_to_boolean(
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axiom_xpath_cast_node_to_boolean(
     const axutil_env_t *env,
     axiom_xpath_result_node_t * node)
 {
-    if (node->type == AXIOM_XPATH_TYPE_BOOLEAN)
+    if(node->type == AXIOM_XPATH_TYPE_BOOLEAN)
     {
         return *(axis2_bool_t *)node->value;
     }
-    else if (node->type == AXIOM_XPATH_TYPE_NUMBER)
+    else if(node->type == AXIOM_XPATH_TYPE_NUMBER)
     {
         /* Cannot evaluate as *(double *)(node->value) == 1e-12
-           since there might be an precision error */
-        if (*(double *)(node->value) > 1e-12
-                || *(double *)(node->value) < -1e-12)
+         since there might be an precision error */
+        if(*(double *)(node->value) > 1e-12 || *(double *)(node->value) < -1e-12)
         {
             return AXIS2_TRUE;
         }
@@ -227,7 +235,7 @@ AXIS2_EXTERN axis2_bool_t AXIS2_CALL axiom_xpath_cast_node_to_boolean(
             return AXIS2_FALSE;
         }
     }
-    else if (node->value)
+    else if(node->value)
     {
         return AXIS2_TRUE;
     }
@@ -238,7 +246,8 @@ AXIS2_EXTERN axis2_bool_t AXIS2_CALL axiom_xpath_cast_node_to_boolean(
 }
 
 /* Cast to double */
-AXIS2_EXTERN double AXIS2_CALL axiom_xpath_cast_node_to_number(
+AXIS2_EXTERN double AXIS2_CALL
+axiom_xpath_cast_node_to_number(
     const axutil_env_t *env,
     axiom_xpath_result_node_t * node)
 {
@@ -268,7 +277,8 @@ AXIS2_EXTERN double AXIS2_CALL axiom_xpath_cast_node_to_number(
 }
 
 /* Cast to text */
-AXIS2_EXTERN axis2_char_t * AXIS2_CALL axiom_xpath_cast_node_to_string(
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL
+axiom_xpath_cast_node_to_string(
     const axutil_env_t *env,
     axiom_xpath_result_node_t * node)
 {
@@ -307,12 +317,12 @@ AXIS2_EXTERN axis2_char_t * AXIS2_CALL axiom_xpath_cast_node_to_string(
     else if (node->type == AXIOM_XPATH_TYPE_NODE)
     {
         ele = (axiom_element_t *)axiom_node_get_data_element(
-                    (axiom_node_t *)(node->value), env);
+            (axiom_node_t *)(node->value), env);
 
         if (ele)
         {
             return axiom_element_get_text(
-                        ele, env, (axiom_node_t *)(node->value));
+                ele, env, (axiom_node_t *)(node->value));
         }
         else
         {
@@ -322,19 +332,20 @@ AXIS2_EXTERN axis2_char_t * AXIS2_CALL axiom_xpath_cast_node_to_string(
     else if (node->type == AXIOM_XPATH_TYPE_ATTRIBUTE)
     {
         return axiom_attribute_get_value(
-                    (axiom_attribute_t *)(node->value), env);
+            (axiom_attribute_t *)(node->value), env);
     }
     else if (node->type == AXIOM_XPATH_TYPE_NAMESPACE)
     {
         return axiom_namespace_get_prefix(
-                    (axiom_namespace_t *)(node->value), env);
+            (axiom_namespace_t *)(node->value), env);
     }
 
     return NULL;
 }
 
 /* Cast to axiom node */
-AXIS2_EXTERN axiom_node_t * AXIS2_CALL axiom_xpath_cast_node2axiom_node(
+AXIS2_EXTERN axiom_node_t * AXIS2_CALL
+axiom_xpath_cast_node2axiom_node(
     const axutil_env_t *env,
     axiom_xpath_result_node_t * node)
 {
@@ -349,7 +360,8 @@ AXIS2_EXTERN axiom_node_t * AXIS2_CALL axiom_xpath_cast_node2axiom_node(
 }
 
 /* Free context */
-AXIS2_EXTERN void AXIS2_CALL axiom_xpath_free_context(
+AXIS2_EXTERN void AXIS2_CALL
+axiom_xpath_free_context(
     const axutil_env_t *env,
     axiom_xpath_context_t *context)
 {
@@ -368,7 +380,8 @@ AXIS2_EXTERN void AXIS2_CALL axiom_xpath_free_context(
 }
 
 /* Free expression */
-AXIS2_EXTERN void AXIS2_CALL axiom_xpath_free_expression(
+AXIS2_EXTERN void AXIS2_CALL
+axiom_xpath_free_expression(
     const axutil_env_t *env,
     axiom_xpath_expression_t * xpath_expr)
 {
@@ -386,7 +399,8 @@ AXIS2_EXTERN void AXIS2_CALL axiom_xpath_free_expression(
 }
 
 /* Free result set */
-AXIS2_EXTERN void AXIS2_CALL axiom_xpath_free_result(
+AXIS2_EXTERN void AXIS2_CALL
+axiom_xpath_free_result(
     const axutil_env_t *env,
     axiom_xpath_result_t* result)
 {
@@ -402,13 +416,14 @@ AXIS2_EXTERN void AXIS2_CALL axiom_xpath_free_result(
 }
 
 /* Check if the expression can be evaluated on streaming XML */
-AXIS2_EXTERN axis2_bool_t AXIS2_CALL axiom_xpath_streaming_check(
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axiom_xpath_streaming_check(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
     axiom_xpath_streaming_t r = AXIOM_XPATH_CHECK(expr->start);
 
-    if (r == AXIOM_XPATH_STREAMING_NOT_SUPPORTED)
+    if(r == AXIOM_XPATH_STREAMING_NOT_SUPPORTED)
     {
         return AXIS2_FALSE;
     }

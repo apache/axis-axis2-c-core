@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -41,29 +40,25 @@ axiom_processing_instruction_create(
     axiom_processing_instruction_t *processing_instruction = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (!node || !target || !value)
+    if(!node || !target || !value)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
-                        AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Node or target or value is NULL");
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Node or target or value is NULL");
         return NULL;
     }
 
     *node = axiom_node_create(env);
 
-    if (!*node)
+    if(!*node)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    processing_instruction =
-        (axiom_processing_instruction_t *) AXIS2_MALLOC(env->allocator,
-                                                        sizeof
-                                                        (axiom_processing_instruction_t));
+    processing_instruction = (axiom_processing_instruction_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(axiom_processing_instruction_t));
 
-    if (!processing_instruction)
+    if(!processing_instruction)
     {
         AXIS2_FREE(env->allocator, (*node));
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -71,11 +66,10 @@ axiom_processing_instruction_create(
     }
     processing_instruction->value = NULL;
 
-    if (value)
+    if(value)
     {
-        processing_instruction->value =
-            (axis2_char_t *) axutil_strdup(env, value);
-        if (!processing_instruction->value)
+        processing_instruction->value = (axis2_char_t *)axutil_strdup(env, value);
+        if(!processing_instruction->value)
         {
             AXIS2_FREE(env->allocator, processing_instruction);
             AXIS2_FREE(env->allocator, *node);
@@ -86,11 +80,10 @@ axiom_processing_instruction_create(
 
     processing_instruction->target = NULL;
 
-    if (target)
+    if(target)
     {
-        processing_instruction->target =
-            (axis2_char_t *) axutil_strdup(env, target);
-        if (!processing_instruction->target)
+        processing_instruction->target = (axis2_char_t *)axutil_strdup(env, target);
+        if(!processing_instruction->target)
         {
             AXIS2_FREE(env->allocator, processing_instruction->value);
             AXIS2_FREE(env->allocator, processing_instruction);
@@ -101,7 +94,7 @@ axiom_processing_instruction_create(
     }
     axiom_node_set_data_element(*node, env, processing_instruction);
     axiom_node_set_node_type(*node, env, AXIOM_PROCESSING_INSTRUCTION);
-    if (parent)
+    if(parent)
     {
         axiom_node_add_child(parent, env, (*node));
     }
@@ -116,13 +109,13 @@ axiom_processing_instruction_free(
 {
     AXIS2_ENV_CHECK(env, void);
 
-    if (om_pi->value)
+    if(om_pi->value)
     {
         AXIS2_FREE(env->allocator, om_pi->value);
         om_pi->value = NULL;
     }
 
-    if (om_pi->target)
+    if(om_pi->target)
     {
         AXIS2_FREE(env->allocator, om_pi->target);
         om_pi->target = NULL;
@@ -140,7 +133,7 @@ axiom_processing_instruction_set_value(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
-    om_pi->value = (axis2_char_t *) axutil_strdup(env, value);
+    om_pi->value = (axis2_char_t *)axutil_strdup(env, value);
     return AXIS2_SUCCESS;
 }
 
@@ -152,7 +145,7 @@ axiom_processing_instruction_set_target(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, target, AXIS2_FAILURE);
-    om_pi->target = (axis2_char_t *) axutil_strdup(env, target);
+    om_pi->target = (axis2_char_t *)axutil_strdup(env, target);
     return AXIS2_SUCCESS;
 }
 
@@ -180,17 +173,15 @@ axiom_processing_instruction_serialize(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
-    if (om_pi->target && om_pi->value)
+    if(om_pi->target && om_pi->value)
     {
-        return axiom_output_write(om_output, env,
-                                  AXIOM_PROCESSING_INSTRUCTION,
-                                  2, om_pi->target, om_pi->value);
+        return axiom_output_write(om_output, env, AXIOM_PROCESSING_INSTRUCTION, 2, om_pi->target,
+            om_pi->value);
     }
-    else if (om_pi->target)
+    else if(om_pi->target)
     {
-        return axiom_output_write(om_output, env,
-                                  AXIOM_PROCESSING_INSTRUCTION,
-                                  2, om_pi->target, om_pi->value);
+        return axiom_output_write(om_output, env, AXIOM_PROCESSING_INSTRUCTION, 2, om_pi->target,
+            om_pi->value);
     }
     return AXIS2_FAILURE;
 }

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -39,16 +38,15 @@ axiom_doctype_create(
     AXIS2_PARAM_CHECK(env->error, node, NULL);
 
     *node = axiom_node_create(env);
-    if (!*node)
+    if(!*node)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    doctype = (axiom_doctype_t *) AXIS2_MALLOC(env->allocator,
-                                               sizeof(axiom_doctype_t));
+    doctype = (axiom_doctype_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_doctype_t));
 
-    if (!doctype)
+    if(!doctype)
     {
         AXIS2_FREE(env->allocator, (*node));
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -57,10 +55,10 @@ axiom_doctype_create(
 
     doctype->value = NULL;
 
-    if (value)
+    if(value)
     {
-        doctype->value = (axis2_char_t *) axutil_strdup(env, value);
-        if (!doctype->value)
+        doctype->value = (axis2_char_t *)axutil_strdup(env, value);
+        if(!doctype->value)
         {
             AXIS2_FREE(env->allocator, doctype);
             AXIS2_FREE(env->allocator, (*node));
@@ -72,7 +70,7 @@ axiom_doctype_create(
     axiom_node_set_data_element((*node), env, doctype);
     axiom_node_set_node_type((*node), env, AXIOM_DOCTYPE);
 
-    if (parent)
+    if(parent)
     {
         axiom_node_add_child(parent, env, (*node));
     }
@@ -85,9 +83,9 @@ axiom_doctype_free(
     axiom_doctype_t * om_doctype,
     const axutil_env_t * env)
 {
-    if (om_doctype)
+    if(om_doctype)
     {
-        if (om_doctype->value)
+        if(om_doctype->value)
         {
             AXIS2_FREE(env->allocator, om_doctype->value);
         }
@@ -104,7 +102,7 @@ axiom_doctype_set_value(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
-    om_doctype->value = (axis2_char_t *) axutil_strdup(env, value);
+    om_doctype->value = (axis2_char_t *)axutil_strdup(env, value);
     return AXIS2_SUCCESS;
 }
 
@@ -126,9 +124,8 @@ axiom_doctype_serialize(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
-    if (om_doctype->value)
-        return axiom_output_write(om_output, env,
-                                  AXIOM_DOCTYPE, 1, om_doctype->value);
+    if(om_doctype->value)
+        return axiom_output_write(om_output, env, AXIOM_DOCTYPE, 1, om_doctype->value);
 
     return AXIS2_FAILURE;
 }

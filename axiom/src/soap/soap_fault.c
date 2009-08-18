@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -57,14 +56,11 @@ axiom_soap_fault_create(
     const axutil_env_t * env)
 {
     axiom_soap_fault_t *soap_fault = NULL;
-    soap_fault = (axiom_soap_fault_t *) AXIS2_MALLOC(env->allocator,
-                                                     sizeof
-                                                     (axiom_soap_fault_t));
-    if (!soap_fault)
+    soap_fault = (axiom_soap_fault_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_soap_fault_t));
+    if(!soap_fault)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                          "No memory. Cannot create a SOAP fault");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create a SOAP fault");
         return NULL;
     }
     soap_fault->exception = NULL;
@@ -75,7 +71,7 @@ axiom_soap_fault_create(
     soap_fault->frole = NULL;
     soap_fault->om_ele_node = NULL;
     soap_fault->soap_builder = NULL;
-	soap_fault->soap_version = -1;
+    soap_fault->soap_version = -1;
     return soap_fault;
 }
 
@@ -94,32 +90,29 @@ axiom_soap_fault_create_with_parent(
     AXIS2_PARAM_CHECK(env->error, body, NULL);
 
     soap_fault = axiom_soap_fault_create(env);
-    if (!soap_fault)
+    if(!soap_fault)
     {
         return NULL;
     }
     parent_node = axiom_soap_body_get_base_node(body, env);
-    if (!parent_node)
+    if(!parent_node)
     {
         AXIS2_FREE(env->allocator, soap_fault);
         return NULL;
     }
     soap_fault->soap_version = axiom_soap_body_get_soap_version(body, env);
 
-    parent_ele =
-        (axiom_element_t *) axiom_node_get_data_element(parent_node, env);
-    if (!parent_ele)
+    parent_ele = (axiom_element_t *)axiom_node_get_data_element(parent_node, env);
+    if(!parent_ele)
     {
         AXIS2_FREE(env->allocator, soap_fault);
         return NULL;
     }
     parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
 
-    this_ele = axiom_element_create(env,
-                                    parent_node,
-                                    AXIOM_SOAP_FAULT_LOCAL_NAME,
-                                    parent_ns, &this_node);
-    if (!this_ele)
+    this_ele = axiom_element_create(env, parent_node, AXIOM_SOAP_FAULT_LOCAL_NAME, parent_ns,
+        &this_node);
+    if(!this_ele)
     {
         AXIS2_FREE(env->allocator, soap_fault);
         return NULL;
@@ -141,12 +134,12 @@ axiom_soap_fault_create_with_exception(
     AXIS2_PARAM_CHECK(env->error, body, NULL);
     AXIS2_PARAM_CHECK(env->error, exception, NULL);
     soap_fault = axiom_soap_fault_create_with_parent(env, body);
-    if (!soap_fault)
+    if(!soap_fault)
     {
         return NULL;
     }
     status = axiom_soap_fault_set_exception(soap_fault, env, exception);
-    if (status == AXIS2_FAILURE)
+    if(status == AXIS2_FAILURE)
     {
         axiom_soap_fault_free(soap_fault, env);
         return NULL;
@@ -160,27 +153,27 @@ axiom_soap_fault_free(
     const axutil_env_t * env)
 {
 
-    if (soap_fault->fcode)
+    if(soap_fault->fcode)
     {
         axiom_soap_fault_code_free(soap_fault->fcode, env);
         soap_fault->fcode = NULL;
     }
-    if (soap_fault->fdetail)
+    if(soap_fault->fdetail)
     {
         axiom_soap_fault_detail_free(soap_fault->fdetail, env);
         soap_fault->fdetail = NULL;
     }
-    if (soap_fault->fnode)
+    if(soap_fault->fnode)
     {
         axiom_soap_fault_node_free(soap_fault->fnode, env);
         soap_fault->fnode = NULL;
     }
-    if (soap_fault->freason)
+    if(soap_fault->freason)
     {
         axiom_soap_fault_reason_free(soap_fault->freason, env);
         soap_fault->freason = NULL;
     }
-    if (soap_fault->frole)
+    if(soap_fault->frole)
     {
         axiom_soap_fault_role_free(soap_fault->frole, env);
         soap_fault->frole = NULL;
@@ -197,16 +190,15 @@ axiom_soap_fault_set_code(
     axiom_soap_fault_code_t * code)
 {
     AXIS2_PARAM_CHECK(env->error, code, AXIS2_FAILURE);
-    if (!(soap_fault->fcode))
+    if(!(soap_fault->fcode))
     {
         soap_fault->fcode = code;
         return AXIS2_SUCCESS;
     }
     else
     {
-        AXIS2_LOG_DEBUG(env->log,
-                        AXIS2_LOG_SI,
-                        "tring to set multiple code elements to soap_fault ");
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+            "tring to set multiple code elements to soap_fault ");
 
     }
     return AXIS2_SUCCESS;
@@ -218,17 +210,16 @@ axiom_soap_fault_get_code(
     const axutil_env_t * env)
 {
     int status = AXIS2_SUCCESS;
-    if (soap_fault->fcode)
+    if(soap_fault->fcode)
     {
         return soap_fault->fcode;
     }
-    else if (soap_fault->soap_builder)
+    else if(soap_fault->soap_builder)
     {
-        while (!(soap_fault->fcode) &&
-               !(axiom_node_is_complete(soap_fault->om_ele_node, env)))
+        while(!(soap_fault->fcode) && !(axiom_node_is_complete(soap_fault->om_ele_node, env)))
         {
             status = axiom_soap_builder_next(soap_fault->soap_builder, env);
-            if (status == AXIS2_FAILURE)
+            if(status == AXIS2_FAILURE)
             {
                 break;
             }
@@ -244,15 +235,14 @@ axiom_soap_fault_set_reason(
     axiom_soap_fault_reason_t * reason)
 {
     AXIS2_PARAM_CHECK(env->error, reason, AXIS2_FAILURE);
-    if (!(soap_fault->freason))
+    if(!(soap_fault->freason))
     {
         soap_fault->freason = reason;
         return AXIS2_SUCCESS;
     }
     else
     {
-        AXIS2_LOG_DEBUG(env->log,
-                        AXIS2_LOG_SI, "tring to set soap_fault reason twice");
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "tring to set soap_fault reason twice");
     }
     return AXIS2_FAILURE;
 }
@@ -263,17 +253,16 @@ axiom_soap_fault_get_reason(
     const axutil_env_t * env)
 {
     int status = AXIS2_SUCCESS;
-    if (soap_fault->freason)
+    if(soap_fault->freason)
     {
         return soap_fault->freason;
     }
-    else if (soap_fault->soap_builder)
+    else if(soap_fault->soap_builder)
     {
-        while (!(soap_fault->freason) &&
-               !(axiom_node_is_complete(soap_fault->om_ele_node, env)))
+        while(!(soap_fault->freason) && !(axiom_node_is_complete(soap_fault->om_ele_node, env)))
         {
             status = axiom_soap_builder_next(soap_fault->soap_builder, env);
-            if (status == AXIS2_FAILURE)
+            if(status == AXIS2_FAILURE)
             {
                 break;
             }
@@ -289,16 +278,14 @@ axiom_soap_fault_set_node(
     axiom_soap_fault_node_t * node)
 {
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
-    if (!(soap_fault->fnode))
+    if(!(soap_fault->fnode))
     {
         soap_fault->fnode = node;
         return AXIS2_SUCCESS;
     }
     else
     {
-        AXIS2_LOG_DEBUG(env->log,
-                        AXIS2_LOG_SI,
-                        "tring to set soap_fault node more than once");
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "tring to set soap_fault node more than once");
     }
     return AXIS2_FAILURE;
 }
@@ -310,17 +297,16 @@ axiom_soap_fault_get_node(
 {
     int status = AXIS2_SUCCESS;
 
-    if (soap_fault->fnode)
+    if(soap_fault->fnode)
     {
         return soap_fault->fnode;
     }
-    else if (soap_fault->soap_builder)
+    else if(soap_fault->soap_builder)
     {
-        while (!(soap_fault->fnode) &&
-               !(axiom_node_is_complete(soap_fault->om_ele_node, env)))
+        while(!(soap_fault->fnode) && !(axiom_node_is_complete(soap_fault->om_ele_node, env)))
         {
             status = axiom_soap_builder_next(soap_fault->soap_builder, env);
-            if (status == AXIS2_FAILURE)
+            if(status == AXIS2_FAILURE)
             {
                 break;
             }
@@ -337,16 +323,14 @@ axiom_soap_fault_set_role(
 {
     AXIS2_PARAM_CHECK(env->error, role, AXIS2_FAILURE);
 
-    if (!(soap_fault->frole))
+    if(!(soap_fault->frole))
     {
         soap_fault->frole = role;
         return AXIS2_FAILURE;
     }
     else
     {
-        AXIS2_LOG_DEBUG(env->log,
-                        AXIS2_LOG_SI,
-                        "tring to set soap_fault role more than once ");
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "tring to set soap_fault role more than once ");
     }
     return AXIS2_FAILURE;
 
@@ -358,17 +342,16 @@ axiom_soap_fault_get_role(
     const axutil_env_t * env)
 {
     int status = AXIS2_SUCCESS;
-    if (soap_fault->frole)
+    if(soap_fault->frole)
     {
         return soap_fault->frole;
     }
-    else if (soap_fault->soap_builder)
+    else if(soap_fault->soap_builder)
     {
-        while (!(soap_fault->frole) &&
-               !(axiom_node_is_complete(soap_fault->om_ele_node, env)))
+        while(!(soap_fault->frole) && !(axiom_node_is_complete(soap_fault->om_ele_node, env)))
         {
             status = axiom_soap_builder_next(soap_fault->soap_builder, env);
-            if (status == AXIS2_FAILURE)
+            if(status == AXIS2_FAILURE)
             {
                 break;
             }
@@ -385,16 +368,14 @@ axiom_soap_fault_set_detail(
 {
     AXIS2_PARAM_CHECK(env->error, detail, AXIS2_FAILURE);
 
-    if (!(soap_fault->fdetail))
+    if(!(soap_fault->fdetail))
     {
         soap_fault->fdetail = detail;
         return AXIS2_SUCCESS;
     }
     else
     {
-        AXIS2_LOG_DEBUG(env->log,
-                        AXIS2_LOG_SI,
-                        " tring to set soap_fault detail more than once");
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, " tring to set soap_fault detail more than once");
 
     }
     return AXIS2_FAILURE;
@@ -406,17 +387,16 @@ axiom_soap_fault_get_detail(
     const axutil_env_t * env)
 {
     int status = AXIS2_SUCCESS;
-    if (soap_fault->fdetail)
+    if(soap_fault->fdetail)
     {
         return soap_fault->fdetail;
     }
-    else if (soap_fault->soap_builder)
+    else if(soap_fault->soap_builder)
     {
-        while (!(soap_fault->fdetail) &&
-               !(axiom_node_is_complete(soap_fault->om_ele_node, env)))
+        while(!(soap_fault->fdetail) && !(axiom_node_is_complete(soap_fault->om_ele_node, env)))
         {
             status = axiom_soap_builder_next(soap_fault->soap_builder, env);
-            if (status == AXIS2_FAILURE)
+            if(status == AXIS2_FAILURE)
             {
                 break;
             }
@@ -433,10 +413,9 @@ axiom_soap_fault_set_base_node(
 {
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
-    if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
+    if(axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
-        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_BASE_TYPE,
-                        AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     soap_fault->om_ele_node = node;
@@ -466,30 +445,24 @@ axiom_soap_fault_get_exception(
     axis2_char_t *excep = NULL;
 
     detail = axiom_soap_fault_get_detail(soap_fault, env);
-    if (!detail)
+    if(!detail)
     {
         return NULL;
     }
     detail_node = axiom_soap_fault_detail_get_base_node(detail, env);
-    if (detail_node)
+    if(detail_node)
     {
-        detail_ele =
-            (axiom_element_t *) axiom_node_get_data_element(detail_node, env);
+        detail_ele = (axiom_element_t *)axiom_node_get_data_element(detail_node, env);
 
-        qn = axutil_qname_create(env,
-                                 AXIOM_SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, NULL,
-                                 NULL);
-        if (qn)
+        qn = axutil_qname_create(env, AXIOM_SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, NULL, NULL);
+        if(qn)
         {
-            exception_ele =
-                axiom_element_get_first_child_with_qname(detail_ele, env, qn,
-                                                         detail_node,
-                                                         &exception_node);
+            exception_ele = axiom_element_get_first_child_with_qname(detail_ele, env, qn,
+                detail_node, &exception_node);
             axutil_qname_free(qn, env);
-            if (exception_ele)
+            if(exception_ele)
             {
-                excep =
-                    axiom_element_get_text(exception_ele, env, exception_node);
+                excep = axiom_element_get_text(exception_ele, env, exception_node);
             }
             return excep;
         }
@@ -507,15 +480,14 @@ axiom_soap_fault_set_exception(
     axiom_node_t *fault_detail_entry_node = NULL;
     axiom_element_t *fault_detail_ele = NULL;
 
-
     AXIS2_PARAM_CHECK(env->error, exception, AXIS2_FAILURE);
 
     detail = axiom_soap_fault_get_detail(soap_fault, env);
 
-    if (!detail)
+    if(!detail)
     {
         detail = axiom_soap_fault_detail_create_with_parent(env, soap_fault);
-        if (!detail)
+        if(!detail)
         {
             return AXIS2_FAILURE;
         }
@@ -523,21 +495,18 @@ axiom_soap_fault_set_exception(
 
     /** create an om element with the exception enrty */
 
-    fault_detail_ele = axiom_element_create(env, NULL,
-                                            AXIOM_SOAP_FAULT_DETAIL_EXCEPTION_ENTRY,
-                                            NULL, &fault_detail_entry_node);
-    if (!fault_detail_ele)
+    fault_detail_ele = axiom_element_create(env, NULL, AXIOM_SOAP_FAULT_DETAIL_EXCEPTION_ENTRY,
+        NULL, &fault_detail_entry_node);
+    if(!fault_detail_ele)
     {
         return AXIS2_FAILURE;
     }
 
     /** set the exception string as a text node of newly created om element */
-    axiom_element_set_text(fault_detail_ele,
-                           env, exception, fault_detail_entry_node);
+    axiom_element_set_text(fault_detail_ele, env, exception, fault_detail_entry_node);
 
     /** now add this om element as a child of soap soap_fault detail om element node */
-    return axiom_soap_fault_detail_add_detail_entry(detail, env,
-                                                    fault_detail_entry_node);
+    return axiom_soap_fault_detail_add_detail_entry(detail, env, fault_detail_entry_node);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -578,36 +547,34 @@ axiom_soap_fault_create_default_fault(
     AXIS2_PARAM_CHECK(env->error, reason_text, NULL);
 
     soap_fault = axiom_soap_fault_create_with_parent(env, parent);
-    if (!soap_fault)
+    if(!soap_fault)
     {
         return NULL;
     }
     fault_node = axiom_soap_fault_get_base_node(soap_fault, env);
-    if (!fault_node)
+    if(!fault_node)
     {
         axiom_soap_fault_free(soap_fault, env);
         return NULL;
     }
 
     soap_fault_code = axiom_soap_fault_code_create_with_parent(env, soap_fault);
-    if (!soap_fault_code)
+    if(!soap_fault_code)
     {
         axiom_soap_fault_free(soap_fault, env);
         axiom_node_free_tree(fault_node, env);
         return NULL;
     }
-    soap_fault_reason =
-        axiom_soap_fault_reason_create_with_parent(env, soap_fault);
-    if (!soap_fault_reason)
+    soap_fault_reason = axiom_soap_fault_reason_create_with_parent(env, soap_fault);
+    if(!soap_fault_reason)
     {
         axiom_soap_fault_free(soap_fault, env);
         axiom_node_free_tree(fault_node, env);
         return NULL;
     }
 
-    soap_fault_value =
-        axiom_soap_fault_value_create_with_code(env, soap_fault_code);
-    if (!soap_fault_value)
+    soap_fault_value = axiom_soap_fault_value_create_with_code(env, soap_fault_code);
+    if(!soap_fault_value)
     {
         axiom_soap_fault_free(soap_fault, env);
         axiom_node_free_tree(fault_node, env);
@@ -615,18 +582,16 @@ axiom_soap_fault_create_default_fault(
     }
 
     value_node = axiom_soap_fault_value_get_base_node(soap_fault_value, env);
-    if (!value_node)
+    if(!value_node)
     {
         return NULL;
     }
-    value_ele =
-        (axiom_element_t *) axiom_node_get_data_element(value_node, env);
+    value_ele = (axiom_element_t *)axiom_node_get_data_element(value_node, env);
 
     axiom_element_set_text(value_ele, env, code_value, value_node);
 
-    soap_fault_text =
-        axiom_soap_fault_text_create_with_parent(env, soap_fault_reason);
-    if (!soap_fault_text)
+    soap_fault_text = axiom_soap_fault_text_create_with_parent(env, soap_fault_reason);
+    if(!soap_fault_text)
     {
         axiom_soap_fault_free(soap_fault, env);
         axiom_node_free_tree(fault_node, env);
@@ -635,11 +600,11 @@ axiom_soap_fault_create_default_fault(
     axiom_soap_fault_text_set_lang(soap_fault_text, env, "en");
 
     text_node = axiom_soap_fault_text_get_base_node(soap_fault_text, env);
-    if (!text_node)
+    if(!text_node)
     {
         return NULL;
     }
-    text_ele = (axiom_element_t *) axiom_node_get_data_element(text_node, env);
+    text_ele = (axiom_element_t *)axiom_node_get_data_element(text_node, env);
 
     axiom_element_set_text(text_ele, env, reason_text, text_node);
 

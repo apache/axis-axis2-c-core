@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -50,9 +49,8 @@ axiom_attribute_create(
     /* localname is mandatory */
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
 
-    attribute = (axiom_attribute_t *) AXIS2_MALLOC(env->allocator,
-                                                   sizeof(axiom_attribute_t));
-    if (!attribute)
+    attribute = (axiom_attribute_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_attribute_t));
+    if(!attribute)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -65,16 +63,16 @@ axiom_attribute_create(
     attribute->qname = NULL;
 
     attribute->localname = axutil_string_create(env, localname);
-    if (!(attribute->localname))
+    if(!(attribute->localname))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_FREE(env->allocator, attribute);
         return NULL;
     }
-    if (value)
+    if(value)
     {
         attribute->value = axutil_string_create(env, value);
-        if (!(attribute->value))
+        if(!(attribute->value))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             axutil_string_free(attribute->localname, env);
@@ -94,22 +92,22 @@ axiom_attribute_free(
     axiom_attribute_t * attribute,
     const axutil_env_t * env)
 {
-    if (--attribute->ref > 0)
+    if(--attribute->ref > 0)
     {
         return;
     }
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (attribute->localname)
+    if(attribute->localname)
     {
         axutil_string_free(attribute->localname, env);
     }
-    if (attribute->value)
+    if(attribute->value)
     {
         axutil_string_free(attribute->value, env);
     }
-    if (attribute->qname)
+    if(attribute->qname)
     {
         axutil_qname_free(attribute->qname, env);
     }
@@ -127,7 +125,7 @@ axiom_attribute_free_void_arg(
     axiom_attribute_t *om_attribute_l = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    om_attribute_l = (axiom_attribute_t *) attribute;
+    om_attribute_l = (axiom_attribute_t *)attribute;
     axiom_attribute_free(om_attribute_l, env);
     return;
 }
@@ -139,26 +137,18 @@ axiom_attribute_get_qname(
 {
     axutil_qname_t *qname = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    if (!(attribute->qname))
+    if(!(attribute->qname))
     {
-        if (attribute->ns)
+        if(attribute->ns)
         {
-            qname = axutil_qname_create(env,
-                                        axutil_string_get_buffer(attribute->
-                                                                 localname,
-                                                                 env),
-                                        axiom_namespace_get_uri(attribute->ns,
-                                                                env),
-                                        axiom_namespace_get_prefix(attribute->
-                                                                   ns, env));
+            qname = axutil_qname_create(env, axutil_string_get_buffer(attribute-> localname, env),
+                axiom_namespace_get_uri(attribute->ns, env), axiom_namespace_get_prefix(
+                    attribute-> ns, env));
         }
         else
         {
-            qname = axutil_qname_create(env,
-                                        axutil_string_get_buffer(attribute->
-                                                                 localname,
-                                                                 env), NULL,
-                                        NULL);
+            qname = axutil_qname_create(env, axutil_string_get_buffer(attribute-> localname, env),
+                NULL, NULL);
         }
         attribute->qname = qname;
         return qname;
@@ -177,7 +167,7 @@ axiom_attribute_serialize(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
-    if (attribute->ns)
+    if(attribute->ns)
     {
         axis2_char_t *uri = NULL;
         axis2_char_t *prefix = NULL;
@@ -185,34 +175,23 @@ axiom_attribute_serialize(
         uri = axiom_namespace_get_uri(attribute->ns, env);
         prefix = axiom_namespace_get_prefix(attribute->ns, env);
 
-        if ((uri) && (NULL != prefix) && (axutil_strcmp(prefix, "") != 0))
+        if((uri) && (NULL != prefix) && (axutil_strcmp(prefix, "") != 0))
         {
             status = axiom_output_write(om_output, env, AXIOM_ATTRIBUTE, 4,
-                                        axutil_string_get_buffer(attribute->
-                                                                 localname,
-                                                                 env),
-                                        axutil_string_get_buffer(attribute->
-                                                                 value, env),
-                                        uri, prefix);
+                axutil_string_get_buffer(attribute-> localname, env), axutil_string_get_buffer(
+                    attribute-> value, env), uri, prefix);
         }
-        else if (uri)
+        else if(uri)
         {
             status = axiom_output_write(om_output, env, AXIOM_ATTRIBUTE, 3,
-                                        axutil_string_get_buffer(attribute->
-                                                                 localname,
-                                                                 env),
-                                        axutil_string_get_buffer(attribute->
-                                                                 value, env),
-                                        uri);
+                axutil_string_get_buffer(attribute-> localname, env), axutil_string_get_buffer(
+                    attribute-> value, env), uri);
         }
     }
     else
     {
-        status = axiom_output_write(om_output, env, AXIOM_ATTRIBUTE, 2,
-                                    axutil_string_get_buffer(attribute->
-                                                             localname, env),
-                                    axutil_string_get_buffer(attribute->value,
-                                                             env));
+        status = axiom_output_write(om_output, env, AXIOM_ATTRIBUTE, 2, axutil_string_get_buffer(
+            attribute-> localname, env), axutil_string_get_buffer(attribute->value, env));
     }
     return status;
 }
@@ -222,10 +201,9 @@ axiom_attribute_get_localname(
     axiom_attribute_t * attribute,
     const axutil_env_t * env)
 {
-    if (attribute->localname)
+    if(attribute->localname)
     {
-        return (axis2_char_t *) axutil_string_get_buffer(attribute->localname,
-                                                         env);
+        return (axis2_char_t *)axutil_string_get_buffer(attribute->localname, env);
     }
     return NULL;
 }
@@ -235,9 +213,9 @@ axiom_attribute_get_value(
     axiom_attribute_t * attribute,
     const axutil_env_t * env)
 {
-    if (attribute->value)
+    if(attribute->value)
     {
-        return (axis2_char_t *) axutil_string_get_buffer(attribute->value, env);
+        return (axis2_char_t *)axutil_string_get_buffer(attribute->value, env);
     }
     return NULL;
 }
@@ -260,7 +238,7 @@ axiom_attribute_set_localname(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, localname, AXIS2_FAILURE);
 
-    if (attribute->localname)
+    if(attribute->localname)
     {
         axutil_string_free(attribute->localname, env);
         attribute->localname = NULL;
@@ -268,7 +246,7 @@ axiom_attribute_set_localname(
 
     attribute->localname = axutil_string_create(env, localname);
 
-    if (!(attribute->localname))
+    if(!(attribute->localname))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -286,14 +264,14 @@ axiom_attribute_set_value(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
 
-    if (attribute->value)
+    if(attribute->value)
     {
         axutil_string_free(attribute->value, env);
         attribute->value = NULL;
     }
 
     attribute->value = axutil_string_create(env, value);
-    if (!(attribute->value))
+    if(!(attribute->value))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -319,15 +297,14 @@ axiom_attribute_clone(
     const axutil_env_t * env)
 {
     axiom_attribute_t *cloned_attr = NULL;
-    if (!attribute)
+    if(!attribute)
         return NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     /** namespace is not cloned since it is a shollow copy*/
-    cloned_attr = axiom_attribute_create_str(env,
-                                             attribute->localname,
-                                             attribute->value, attribute->ns);
-    if (cloned_attr)
+    cloned_attr = axiom_attribute_create_str(env, attribute->localname, attribute->value,
+        attribute->ns);
+    if(cloned_attr)
     {
         return cloned_attr;
     }
@@ -357,9 +334,8 @@ axiom_attribute_create_str(
     /* localname is mandatory */
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
 
-    attribute = (axiom_attribute_t *) AXIS2_MALLOC(env->allocator,
-                                                   sizeof(axiom_attribute_t));
-    if (!attribute)
+    attribute = (axiom_attribute_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_attribute_t));
+    if(!attribute)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -372,16 +348,16 @@ axiom_attribute_create_str(
     attribute->qname = NULL;
 
     attribute->localname = axutil_string_clone(localname, env);
-    if (!(attribute->localname))
+    if(!(attribute->localname))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_FREE(env->allocator, attribute);
         return NULL;
     }
-    if (value)
+    if(value)
     {
         attribute->value = axutil_string_clone(value, env);
-        if (!(attribute->value))
+        if(!(attribute->value))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             axutil_string_free(attribute->localname, env);
@@ -421,7 +397,7 @@ axiom_attribute_set_localname_str(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, localname, AXIS2_FAILURE);
 
-    if (attribute->localname)
+    if(attribute->localname)
     {
         axutil_string_free(attribute->localname, env);
         attribute->localname = NULL;
@@ -441,14 +417,14 @@ axiom_attribute_set_value_str(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
 
-    if (attribute->value)
+    if(attribute->value)
     {
         axutil_string_free(attribute->value, env);
         attribute->value = NULL;
     }
 
     attribute->value = axutil_string_clone(value, env);
-    if (!(attribute->value))
+    if(!(attribute->value))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;

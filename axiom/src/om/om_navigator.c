@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,7 +17,8 @@
 
 #include <axiom_navigator.h>
 
-static void axiom_navigator_update_next_node(
+static void
+axiom_navigator_update_next_node(
     axiom_navigator_t * om_navigator,
     const axutil_env_t * env);
 
@@ -49,10 +49,8 @@ axiom_navigator_create(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, om_node, NULL);
 
-    om_navigator =
-        (axiom_navigator_t *) AXIS2_MALLOC(env->allocator,
-                                           sizeof(axiom_navigator_t));
-    if (!om_navigator)
+    om_navigator = (axiom_navigator_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_navigator_t));
+    if(!om_navigator)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -87,13 +85,13 @@ axiom_navigator_is_navigable(
     axiom_navigator_t * om_navigator,
     const axutil_env_t * env)
 {
-    if (AXIS2_TRUE == om_navigator->end)
+    if(AXIS2_TRUE == om_navigator->end)
     {
         return AXIS2_FALSE;
     }
     else
     {
-        if (om_navigator->next)
+        if(om_navigator->next)
         {
             return AXIS2_TRUE;
         }
@@ -124,7 +122,7 @@ axiom_navigator_next(
 {
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (!om_navigator->next)
+    if(!om_navigator->next)
     {
         return NULL;
     }
@@ -136,9 +134,9 @@ axiom_navigator_next(
     axiom_navigator_update_next_node(om_navigator, env);
 
     /** set the starting and ending flags */
-    if (om_navigator->root == om_navigator->next)
+    if(om_navigator->root == om_navigator->next)
     {
-        if (!(om_navigator->start))
+        if(!(om_navigator->start))
         {
             om_navigator->end = AXIS2_TRUE;
         }
@@ -156,25 +154,24 @@ axiom_navigator_update_next_node(
     axiom_navigator_t * om_navigator,
     const axutil_env_t * env)
 {
-    if (!om_navigator)
+    if(!om_navigator)
     {
         return;
     }
 
-    if (!om_navigator->next)
+    if(!om_navigator->next)
     {
         return;
     }
 
-    if ((AXIOM_ELEMENT == axiom_node_get_node_type(om_navigator->next, env)) &&
-        !(om_navigator->visited))
+    if((AXIOM_ELEMENT == axiom_node_get_node_type(om_navigator->next, env))
+        && !(om_navigator->visited))
     {
-        if (axiom_node_get_first_child(om_navigator->next, env))
+        if(axiom_node_get_first_child(om_navigator->next, env))
         {
-            om_navigator->next =
-                axiom_node_get_first_child(om_navigator->next, env);
+            om_navigator->next = axiom_node_get_first_child(om_navigator->next, env);
         }
-        else if (AXIS2_TRUE == axiom_node_is_complete(om_navigator->next, env))
+        else if(AXIS2_TRUE == axiom_node_is_complete(om_navigator->next, env))
         {
             om_navigator->backtracked = AXIS2_TRUE;
         }
@@ -192,11 +189,11 @@ axiom_navigator_update_next_node(
 
         parent = axiom_node_get_parent(om_navigator->next, env);
 
-        if (next_sibling)
+        if(next_sibling)
         {
             om_navigator->next = next_sibling;
         }
-        else if ((parent) && axiom_node_is_complete(parent, env))
+        else if((parent) && axiom_node_is_complete(parent, env))
         {
             om_navigator->next = parent;
             om_navigator->backtracked = AXIS2_TRUE;

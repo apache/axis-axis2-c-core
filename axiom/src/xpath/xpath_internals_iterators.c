@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,7 +22,8 @@
 
 
 /* child */
-int axiom_xpath_child_iterator(
+int
+axiom_xpath_child_iterator(
     axiom_xpath_context_t *context,
     int op_node_test,
     int op_next,
@@ -41,35 +41,33 @@ int axiom_xpath_child_iterator(
     AXIOM_XPATH_ITERATOR_INITIALIZE;
     cur = axiom_node_get_first_child(context->node, context->env);
 
-    while (cur != NULL)
+    while(cur != NULL)
     {
         n_nodes = 0;
         context->node = cur;
         prev = cur;
         cur = axiom_node_get_next_sibling(cur, context->env);
-        if (axiom_xpath_node_test_match(
-                    context, (axiom_xpath_node_test_t *)node_test_op->par1))
+        if(axiom_xpath_node_test_match(context, (axiom_xpath_node_test_t *)node_test_op->par1))
         {
-            n_nodes =
-                axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+            n_nodes = axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
             n_nodes_tot += n_nodes;
         }
-/*
-        if (context->streaming)
-        {
-            if (n_nodes)
-            {
-                next_operation = AXIOM_XPATH_OPR_GET(op_next);
-            }
+        /*
+         if (context->streaming)
+         {
+         if (n_nodes)
+         {
+         next_operation = AXIOM_XPATH_OPR_GET(op_next);
+         }
 
-            if (!n_nodes
-                    || next_operation->opr != AXIOM_XPATH_OPERATION_RESULT)
-            {
-                axiom_node_detach(prev, context->env);
-                axiom_node_free_tree(prev, context->env);
-            }
-        }
-*/
+         if (!n_nodes
+         || next_operation->opr != AXIOM_XPATH_OPERATION_RESULT)
+         {
+         axiom_node_detach(prev, context->env);
+         axiom_node_free_tree(prev, context->env);
+         }
+         }
+         */
     }
 
     /* Change the context node back to what it was */
@@ -79,7 +77,8 @@ int axiom_xpath_child_iterator(
 }
 
 /* descendant */
-int axiom_xpath_descendant_iterator(
+int
+axiom_xpath_descendant_iterator(
     axiom_xpath_context_t *context,
     int op_node_test,
     int op_next,
@@ -97,27 +96,25 @@ int axiom_xpath_descendant_iterator(
     stack = axutil_stack_create(context->env);
 
     child = axiom_node_get_first_child(context->node, context->env);
-    while (child)
+    while(child)
     {
         axutil_stack_push(stack, context->env, child);
         child = axiom_node_get_first_child(child, context->env);
     }
 
     /* Processing nodes */
-    while (axutil_stack_size(stack, context->env) > 0)
+    while(axutil_stack_size(stack, context->env) > 0)
     {
         child = (axiom_node_t *)axutil_stack_pop(stack, context->env);
 
         context->node = child;
-        if (axiom_xpath_node_test_match(
-                    context, (axiom_xpath_node_test_t *)node_test_op->par1))
+        if(axiom_xpath_node_test_match(context, (axiom_xpath_node_test_t *)node_test_op->par1))
         {
-            n_nodes +=
-                axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+            n_nodes += axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
         }
 
         child = axiom_node_get_next_sibling(child, context->env);
-        while (child)
+        while(child)
         {
             axutil_stack_push(stack, context->env, child);
             child = axiom_node_get_first_child(child, context->env);
@@ -130,7 +127,8 @@ int axiom_xpath_descendant_iterator(
 }
 
 /* parent */
-int axiom_xpath_parent_iterator(
+int
+axiom_xpath_parent_iterator(
     axiom_xpath_context_t *context,
     int op_node_test,
     int op_next,
@@ -145,14 +143,12 @@ int axiom_xpath_parent_iterator(
 
     parent = axiom_node_get_parent(context->node, context->env);
 
-    if (parent != NULL)
+    if(parent != NULL)
     {
         context->node = parent;
-        if (axiom_xpath_node_test_match(
-                    context, (axiom_xpath_node_test_t *)node_test_op->par1))
+        if(axiom_xpath_node_test_match(context, (axiom_xpath_node_test_t *)node_test_op->par1))
         {
-            n_nodes =
-                axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+            n_nodes = axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
         }
     }
 
@@ -163,7 +159,8 @@ int axiom_xpath_parent_iterator(
 }
 
 /* ancestor axis */
-int axiom_xpath_ancestor_iterator(
+int
+axiom_xpath_ancestor_iterator(
     axiom_xpath_context_t *context,
     int op_node_test,
     int op_next,
@@ -177,14 +174,12 @@ int axiom_xpath_ancestor_iterator(
     AXIOM_XPATH_ITERATOR_INITIALIZE;
     cur = axiom_node_get_parent(context->node, context->env);
 
-    while (cur != NULL)
+    while(cur != NULL)
     {
         context->node = cur;
-        if (axiom_xpath_node_test_match(
-                    context, (axiom_xpath_node_test_t *)node_test_op->par1))
+        if(axiom_xpath_node_test_match(context, (axiom_xpath_node_test_t *)node_test_op->par1))
         {
-            n_nodes +=
-                axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+            n_nodes += axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
         }
 
         cur = axiom_node_get_parent(cur, context->env);
@@ -197,7 +192,8 @@ int axiom_xpath_ancestor_iterator(
 }
 
 /* following-sibling axis */
-int axiom_xpath_following_sibling_iterator(
+int
+axiom_xpath_following_sibling_iterator(
     axiom_xpath_context_t *context,
     int op_node_test,
     int op_next,
@@ -211,14 +207,12 @@ int axiom_xpath_following_sibling_iterator(
     AXIOM_XPATH_ITERATOR_INITIALIZE;
     cur = axiom_node_get_next_sibling(context->node, context->env);
 
-    while (cur != NULL)
+    while(cur != NULL)
     {
         context->node = cur;
-        if (axiom_xpath_node_test_match(
-                    context, (axiom_xpath_node_test_t *)node_test_op->par1))
+        if(axiom_xpath_node_test_match(context, (axiom_xpath_node_test_t *)node_test_op->par1))
         {
-            n_nodes +=
-                axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+            n_nodes += axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
         }
 
         cur = axiom_node_get_next_sibling(cur, context->env);
@@ -231,7 +225,8 @@ int axiom_xpath_following_sibling_iterator(
 }
 
 /* preceding-sibling axis */
-int axiom_xpath_preceding_sibling_iterator(
+int
+axiom_xpath_preceding_sibling_iterator(
     axiom_xpath_context_t *context,
     int op_node_test,
     int op_next,
@@ -245,14 +240,12 @@ int axiom_xpath_preceding_sibling_iterator(
     AXIOM_XPATH_ITERATOR_INITIALIZE;
     cur = axiom_node_get_previous_sibling(context->node, context->env);
 
-    while (cur != NULL)
+    while(cur != NULL)
     {
         context->node = cur;
-        if (axiom_xpath_node_test_match(
-                    context, (axiom_xpath_node_test_t *)node_test_op->par1))
+        if(axiom_xpath_node_test_match(context, (axiom_xpath_node_test_t *)node_test_op->par1))
         {
-            n_nodes +=
-                axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+            n_nodes += axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
         }
 
         cur = axiom_node_get_previous_sibling(cur, context->env);
@@ -265,7 +258,8 @@ int axiom_xpath_preceding_sibling_iterator(
 }
 
 /* following  */
-int axiom_xpath_following_iterator(
+int
+axiom_xpath_following_iterator(
     axiom_xpath_context_t *context,
     int op_node_test,
     int op_next,
@@ -285,24 +279,23 @@ int axiom_xpath_following_iterator(
 
     parent = context->node;
 
-    while (parent)
+    while(parent)
     {
         axutil_stack_push(stack, context->env, parent);
 
-        while (axutil_stack_size(stack, context->env) > 0)
+        while(axutil_stack_size(stack, context->env) > 0)
         {
             child = (axiom_node_t *)axutil_stack_pop(stack, context->env);
 
             child = axiom_node_get_next_sibling(child, context->env);
 
-            while (child)
+            while(child)
             {
                 context->node = child;
-                if (axiom_xpath_node_test_match(
-                            context, (axiom_xpath_node_test_t *)node_test_op->par1))
+                if(axiom_xpath_node_test_match(context,
+                    (axiom_xpath_node_test_t *)node_test_op->par1))
                 {
-                    n_nodes +=
-                        axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+                    n_nodes += axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
                 }
 
                 axutil_stack_push(stack, context->env, child);
@@ -319,7 +312,8 @@ int axiom_xpath_following_iterator(
 }
 
 /* preceding */
-int axiom_xpath_preceding_iterator(
+int
+axiom_xpath_preceding_iterator(
     axiom_xpath_context_t *context,
     int op_node_test,
     int op_next,
@@ -338,24 +332,23 @@ int axiom_xpath_preceding_iterator(
 
     parent = context->node;
 
-    while (parent)
+    while(parent)
     {
         axutil_stack_push(stack, context->env, parent);
 
-        while (axutil_stack_size(stack, context->env) > 0)
+        while(axutil_stack_size(stack, context->env) > 0)
         {
             child = (axiom_node_t *)axutil_stack_pop(stack, context->env);
 
             child = axiom_node_get_previous_sibling(child, context->env);
 
-            while (child)
+            while(child)
             {
                 context->node = child;
-                if (axiom_xpath_node_test_match(
-                            context, (axiom_xpath_node_test_t *)node_test_op->par1))
+                if(axiom_xpath_node_test_match(context,
+                    (axiom_xpath_node_test_t *)node_test_op->par1))
                 {
-                    n_nodes +=
-                        axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+                    n_nodes += axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
                 }
 
                 axutil_stack_push(stack, context->env, child);
@@ -373,7 +366,8 @@ int axiom_xpath_preceding_iterator(
 }
 
 /* attribute axis */
-int axiom_xpath_attribute_iterator(
+int
+axiom_xpath_attribute_iterator(
     axiom_xpath_context_t *context,
     int op_node_test,
     int op_next,
@@ -396,7 +390,7 @@ int axiom_xpath_attribute_iterator(
 
     type = axiom_node_get_node_type(context_node, context->env);
 
-    if (type != AXIOM_ELEMENT)
+    if(type != AXIOM_ELEMENT)
     {
         return 0;
     }
@@ -407,20 +401,16 @@ int axiom_xpath_attribute_iterator(
 
     ht = axiom_element_get_all_attributes(element, context->env);
 
-    if (ht)
+    if(ht)
     {
-        for (hi = axutil_hash_first(ht, context->env);
-                hi;
-                hi = axutil_hash_next(context->env, hi))
+        for(hi = axutil_hash_first(ht, context->env); hi; hi = axutil_hash_next(context->env, hi))
         {
             attr = &context->attribute;
             axutil_hash_this(hi, NULL, NULL, attr);
 
-            if (axiom_xpath_node_test_match(
-                        context, (axiom_xpath_node_test_t *)node_test_op->par1))
+            if(axiom_xpath_node_test_match(context, (axiom_xpath_node_test_t *)node_test_op->par1))
             {
-                n_nodes +=
-                    axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+                n_nodes += axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
             }
         }
     }
@@ -432,7 +422,8 @@ int axiom_xpath_attribute_iterator(
 }
 
 /* namespace axis */
-int axiom_xpath_namespace_iterator(
+int
+axiom_xpath_namespace_iterator(
     axiom_xpath_context_t *context,
     int op_node_test,
     int op_next,
@@ -456,7 +447,7 @@ int axiom_xpath_namespace_iterator(
 
     type = axiom_node_get_node_type(context_node, context->env);
 
-    if (type != AXIOM_ELEMENT)
+    if(type != AXIOM_ELEMENT)
     {
         return 0;
     }
@@ -467,20 +458,16 @@ int axiom_xpath_namespace_iterator(
 
     ht = axiom_element_get_namespaces(element, context->env);
 
-    if (ht)
+    if(ht)
     {
-        for (hi = axutil_hash_first(ht, context->env);
-                hi;
-                hi = axutil_hash_next(context->env, hi))
+        for(hi = axutil_hash_first(ht, context->env); hi; hi = axutil_hash_next(context->env, hi))
         {
             ns = &context->ns;
             axutil_hash_this(hi, NULL, NULL, ns);
 
-            if (axiom_xpath_node_test_match(
-                        context, (axiom_xpath_node_test_t *)node_test_op->par1))
+            if(axiom_xpath_node_test_match(context, (axiom_xpath_node_test_t *)node_test_op->par1))
             {
-                n_nodes +=
-                    axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+                n_nodes += axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
             }
         }
     }
@@ -492,7 +479,8 @@ int axiom_xpath_namespace_iterator(
 }
 
 /* self axis */
-int axiom_xpath_self_iterator(
+int
+axiom_xpath_self_iterator(
     axiom_xpath_context_t *context,
     int op_node_test,
     int op_next,
@@ -503,11 +491,9 @@ int axiom_xpath_self_iterator(
     axiom_node_t *context_node = NULL;
 
     AXIOM_XPATH_ITERATOR_INITIALIZE;
-    if (axiom_xpath_node_test_match(
-                context, (axiom_xpath_node_test_t *)node_test_op->par1))
+    if(axiom_xpath_node_test_match(context, (axiom_xpath_node_test_t *)node_test_op->par1))
     {
-        n_nodes +=
-            axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+        n_nodes += axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
     }
 
     context->node = context_node;
@@ -516,7 +502,8 @@ int axiom_xpath_self_iterator(
 }
 
 /* descendant-or-self axis */
-int axiom_xpath_descendant_self_iterator(
+int
+axiom_xpath_descendant_self_iterator(
     axiom_xpath_context_t *context,
     int op_node_test,
     int op_next,
@@ -530,38 +517,34 @@ int axiom_xpath_descendant_self_iterator(
 
     AXIOM_XPATH_ITERATOR_INITIALIZE;
 
-    if (axiom_xpath_node_test_match(
-                context, (axiom_xpath_node_test_t *)node_test_op->par1))
+    if(axiom_xpath_node_test_match(context, (axiom_xpath_node_test_t *)node_test_op->par1))
     {
-        n_nodes +=
-            axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+        n_nodes += axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
     }
 
     /* Setting up the stack */
     stack = axutil_stack_create(context->env);
 
     child = axiom_node_get_first_child(context->node, context->env);
-    while (child)
+    while(child)
     {
         axutil_stack_push(stack, context->env, child);
         child = axiom_node_get_first_child(child, context->env);
     }
 
     /* Processing nodes */
-    while (axutil_stack_size(stack, context->env) > 0)
+    while(axutil_stack_size(stack, context->env) > 0)
     {
         child = (axiom_node_t *)axutil_stack_pop(stack, context->env);
 
         context->node = child;
-        if (axiom_xpath_node_test_match(
-                    context, (axiom_xpath_node_test_t *)node_test_op->par1))
+        if(axiom_xpath_node_test_match(context, (axiom_xpath_node_test_t *)node_test_op->par1))
         {
-            n_nodes +=
-                axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+            n_nodes += axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
         }
 
         child = axiom_node_get_next_sibling(child, context->env);
-        while (child)
+        while(child)
         {
             axutil_stack_push(stack, context->env, child);
             child = axiom_node_get_first_child(child, context->env);
@@ -575,7 +558,8 @@ int axiom_xpath_descendant_self_iterator(
 }
 
 /* ancestor-or-self axis */
-int axiom_xpath_ancestor_self_iterator(
+int
+axiom_xpath_ancestor_self_iterator(
     axiom_xpath_context_t *context,
     int op_node_test,
     int op_next,
@@ -588,23 +572,19 @@ int axiom_xpath_ancestor_self_iterator(
 
     AXIOM_XPATH_ITERATOR_INITIALIZE;
 
-    if (axiom_xpath_node_test_match(
-                context, (axiom_xpath_node_test_t *)node_test_op->par1))
+    if(axiom_xpath_node_test_match(context, (axiom_xpath_node_test_t *)node_test_op->par1))
     {
-        n_nodes +=
-            axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+        n_nodes += axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
     }
 
     parent = axiom_node_get_parent(context->node, context->env);
 
-    while (parent != NULL)
+    while(parent != NULL)
     {
         context->node = parent;
-        if (axiom_xpath_node_test_match(
-                    context, (axiom_xpath_node_test_t *)node_test_op->par1))
+        if(axiom_xpath_node_test_match(context, (axiom_xpath_node_test_t *)node_test_op->par1))
         {
-            n_nodes +=
-                axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
+            n_nodes += axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
         }
 
         parent = axiom_node_get_parent(parent, context->env);

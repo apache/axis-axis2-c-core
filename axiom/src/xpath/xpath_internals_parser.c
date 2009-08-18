@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,11 +21,12 @@
 #include <ctype.h>
 
 /* Compile an XPath expression */
-int axiom_xpath_compile(
+int
+axiom_xpath_compile(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
-    if (!expr || !expr->expr_str)
+    if(!expr || !expr->expr_str)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf("Expression in NULL.\n");
@@ -43,7 +43,7 @@ int axiom_xpath_compile(
 
     expr->start = axiom_xpath_compile_orexpr(env, expr);
 
-    if (expr->start == AXIOM_XPATH_PARSE_ERROR)
+    if(expr->start == AXIOM_XPATH_PARSE_ERROR)
     {
         axutil_array_list_free(expr->operations, env);
 
@@ -60,20 +60,21 @@ int axiom_xpath_compile(
 }
 
 /* Parse Or Expression */
-int axiom_xpath_compile_orexpr(
+int
+axiom_xpath_compile_orexpr(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
     int op1, op2;
 
-    if (!AXIOM_XPATH_HAS_MORE)
+    if(!AXIOM_XPATH_HAS_MORE)
     {
         return AXIOM_XPATH_PARSE_END;
     }
 
     op1 = axiom_xpath_compile_andexpr(env, expr);
 
-    if (op1 == AXIOM_XPATH_PARSE_ERROR)
+    if(op1 == AXIOM_XPATH_PARSE_ERROR)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -86,14 +87,14 @@ int axiom_xpath_compile_orexpr(
 
     AXIOM_XPATH_SKIP_WHITESPACES;
 
-    while (AXIOM_XPATH_CURRENT == 'o' && AXIOM_XPATH_NEXT(1) == 'r')
+    while(AXIOM_XPATH_CURRENT == 'o' && AXIOM_XPATH_NEXT(1) == 'r')
     {
         AXIOM_XPATH_READ(2);
         AXIOM_XPATH_SKIP_WHITESPACES;
 
         op2 = axiom_xpath_compile_andexpr(env, expr);
 
-        if (op2 == AXIOM_XPATH_PARSE_ERROR)
+        if(op2 == AXIOM_XPATH_PARSE_ERROR)
         {
 #ifdef AXIOM_XPATH_DEBUG
             printf(
@@ -113,20 +114,21 @@ int axiom_xpath_compile_orexpr(
 }
 
 /* Parse And Expression */
-int axiom_xpath_compile_andexpr(
+int
+axiom_xpath_compile_andexpr(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
     int op1, op2;
 
-    if (!AXIOM_XPATH_HAS_MORE)
+    if(!AXIOM_XPATH_HAS_MORE)
     {
         return AXIOM_XPATH_PARSE_END;
     }
 
     op1 = axiom_xpath_compile_equalexpr(env, expr);
 
-    if (op1 == AXIOM_XPATH_PARSE_ERROR)
+    if(op1 == AXIOM_XPATH_PARSE_ERROR)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -139,14 +141,14 @@ int axiom_xpath_compile_andexpr(
 
     AXIOM_XPATH_SKIP_WHITESPACES;
 
-    while (AXIOM_XPATH_CURRENT == 'a' && AXIOM_XPATH_NEXT(1) == 'n' && AXIOM_XPATH_NEXT(1) == 'd')
+    while(AXIOM_XPATH_CURRENT == 'a' && AXIOM_XPATH_NEXT(1) == 'n' && AXIOM_XPATH_NEXT(1) == 'd')
     {
         AXIOM_XPATH_READ(2);
         AXIOM_XPATH_SKIP_WHITESPACES;
 
         op2 = axiom_xpath_compile_equalexpr(env, expr);
 
-        if (op2 == AXIOM_XPATH_PARSE_ERROR)
+        if(op2 == AXIOM_XPATH_PARSE_ERROR)
         {
 #ifdef AXIOM_XPATH_DEBUG
             printf(
@@ -166,20 +168,21 @@ int axiom_xpath_compile_andexpr(
 }
 
 /* Parse Equality Expression */
-int axiom_xpath_compile_equalexpr(
+int
+axiom_xpath_compile_equalexpr(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
     int op1, op2;
 
-    if (!AXIOM_XPATH_HAS_MORE)
+    if(!AXIOM_XPATH_HAS_MORE)
     {
         return AXIOM_XPATH_PARSE_END;
     }
 
     op1 = axiom_xpath_compile_union(env, expr);
 
-    if (op1 == AXIOM_XPATH_PARSE_ERROR)
+    if(op1 == AXIOM_XPATH_PARSE_ERROR)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -190,7 +193,7 @@ int axiom_xpath_compile_equalexpr(
         return AXIOM_XPATH_PARSE_ERROR;
     }
 
-    while (AXIOM_XPATH_CURRENT == '=')
+    while(AXIOM_XPATH_CURRENT == '=')
     {
         AXIOM_XPATH_SKIP_WHITESPACES;
         AXIOM_XPATH_READ(1);
@@ -198,7 +201,7 @@ int axiom_xpath_compile_equalexpr(
 
         op2 = axiom_xpath_compile_union(env, expr);
 
-        if (op2 == AXIOM_XPATH_PARSE_ERROR)
+        if(op2 == AXIOM_XPATH_PARSE_ERROR)
         {
 #ifdef AXIOM_XPATH_DEBUG
             printf(
@@ -218,20 +221,21 @@ int axiom_xpath_compile_equalexpr(
 }
 
 /* Parse Union */
-int axiom_xpath_compile_union(
+int
+axiom_xpath_compile_union(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
     int op1, op2;
 
-    if (!AXIOM_XPATH_HAS_MORE)
+    if(!AXIOM_XPATH_HAS_MORE)
     {
         return AXIOM_XPATH_PARSE_END;
     }
 
     op1 = axiom_xpath_compile_path_expression(env, expr);
 
-    if (op1 == AXIOM_XPATH_PARSE_ERROR)
+    if(op1 == AXIOM_XPATH_PARSE_ERROR)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -244,13 +248,13 @@ int axiom_xpath_compile_union(
 
     AXIOM_XPATH_SKIP_WHITESPACES;
 
-    if (AXIOM_XPATH_CURRENT == '|')
+    if(AXIOM_XPATH_CURRENT == '|')
     {
         AXIOM_XPATH_READ(1);
         AXIOM_XPATH_SKIP_WHITESPACES;
         op2 = axiom_xpath_compile_union(env, expr);
 
-        if (op2 == AXIOM_XPATH_PARSE_ERROR)
+        if(op2 == AXIOM_XPATH_PARSE_ERROR)
         {
 #ifdef AXIOM_XPATH_DEBUG
             printf(
@@ -269,18 +273,19 @@ int axiom_xpath_compile_union(
 }
 
 /* Compile Filter expression */
-int axiom_xpath_compile_filter(
+int
+axiom_xpath_compile_filter(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
     int op = AXIOM_XPATH_PARSE_END;
 
-    if (AXIOM_XPATH_CURRENT == '(')
+    if(AXIOM_XPATH_CURRENT == '(')
     {
         AXIOM_XPATH_READ(1);
         op = axiom_xpath_compile_orexpr(env, expr);
         AXIOM_XPATH_SKIP_WHITESPACES;
-        if (AXIOM_XPATH_CURRENT == ')')
+        if(AXIOM_XPATH_CURRENT == ')')
         {
             AXIOM_XPATH_READ(1);
             return op;
@@ -290,22 +295,18 @@ int axiom_xpath_compile_filter(
             return AXIOM_XPATH_PARSE_ERROR;
         }
     }
-    else if (AXIOM_XPATH_CURRENT == '\'' || AXIOM_XPATH_CURRENT == '\"')
+    else if(AXIOM_XPATH_CURRENT == '\'' || AXIOM_XPATH_CURRENT == '\"')
     {
-        return AXIOM_XPATH_PUSH_PAR(
-                    AXIOM_XPATH_OPERATION_LITERAL,
-                    axiom_xpath_compile_literal(env, expr),
-                    NULL, AXIOM_XPATH_PARSE_END);
+        return AXIOM_XPATH_PUSH_PAR(AXIOM_XPATH_OPERATION_LITERAL, axiom_xpath_compile_literal(env,
+            expr), NULL, AXIOM_XPATH_PARSE_END);
     }
-    else if (isdigit(AXIOM_XPATH_CURRENT)
-            || (AXIOM_XPATH_CURRENT == '.' && isdigit(AXIOM_XPATH_NEXT(1))))
+    else if(isdigit(AXIOM_XPATH_CURRENT) || (AXIOM_XPATH_CURRENT == '.' && isdigit(
+        AXIOM_XPATH_NEXT(1))))
     {
-        return AXIOM_XPATH_PUSH_PAR(
-                    AXIOM_XPATH_OPERATION_NUMBER,
-                    axiom_xpath_compile_number(env, expr),
-                    NULL, AXIOM_XPATH_PARSE_END);
+        return AXIOM_XPATH_PUSH_PAR(AXIOM_XPATH_OPERATION_NUMBER, axiom_xpath_compile_number(env,
+            expr), NULL, AXIOM_XPATH_PARSE_END);
     }
-    else if (AXIOM_XPATH_CURRENT == '$')
+    else if(AXIOM_XPATH_CURRENT == '$')
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -329,7 +330,8 @@ int axiom_xpath_compile_filter(
 }
 
 /* Parse Path expression (not a location path) */
-int axiom_xpath_path_compile_path_expression_filter(
+int
+axiom_xpath_path_compile_path_expression_filter(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
@@ -337,7 +339,7 @@ int axiom_xpath_path_compile_path_expression_filter(
 
     op_filter = axiom_xpath_compile_filter(env, expr);
 
-    if (op_filter == AXIOM_XPATH_PARSE_ERROR)
+    if(op_filter == AXIOM_XPATH_PARSE_ERROR)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -350,13 +352,13 @@ int axiom_xpath_path_compile_path_expression_filter(
 
     AXIOM_XPATH_SKIP_WHITESPACES;
 
-    if (AXIOM_XPATH_NEXT(0) == '/' && AXIOM_XPATH_NEXT(1) == '/')
+    if(AXIOM_XPATH_NEXT(0) == '/' && AXIOM_XPATH_NEXT(1) == '/')
     {
         AXIOM_XPATH_READ(2);
 
         op_next = axiom_xpath_compile_relative_location(env, expr);
 
-        if (op_next == AXIOM_XPATH_PARSE_ERROR)
+        if(op_next == AXIOM_XPATH_PARSE_ERROR)
         {
 #ifdef AXIOM_XPATH_DEBUG
             printf(
@@ -369,13 +371,13 @@ int axiom_xpath_path_compile_path_expression_filter(
 
         op_next = AXIOM_XPATH_WRAP_SELF_DESCENDANT(op_next);
     }
-    else if (AXIOM_XPATH_NEXT(0) == '/')
+    else if(AXIOM_XPATH_NEXT(0) == '/')
     {
         AXIOM_XPATH_READ(1);
 
         op_next = axiom_xpath_compile_relative_location(env, expr);
 
-        if (op_next == AXIOM_XPATH_PARSE_ERROR)
+        if(op_next == AXIOM_XPATH_PARSE_ERROR)
         {
 #ifdef AXIOM_XPATH_DEBUG
             printf(
@@ -391,36 +393,33 @@ int axiom_xpath_path_compile_path_expression_filter(
         op_next = AXIOM_XPATH_PARSE_END;
     }
 
-    return AXIOM_XPATH_PUSH(
-                AXIOM_XPATH_OPERATION_PATH_EXPRESSION,
-                op_filter, op_next);
+    return AXIOM_XPATH_PUSH(AXIOM_XPATH_OPERATION_PATH_EXPRESSION, op_filter, op_next);
 }
 
 /* Parse Path expression */
-int axiom_xpath_compile_path_expression(
+int
+axiom_xpath_compile_path_expression(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
     int temp_ptr = expr->expr_ptr;
     axis2_char_t *name;
-    axis2_char_t *node_types[] =
-        {"comment", "node", "processing-instruction", "text"};
-    axis2_char_t filter_start[] = {'$', '\'', '\"', '('};
+    axis2_char_t *node_types[] = { "comment", "node", "processing-instruction", "text" };
+    axis2_char_t filter_start[] = { '$', '\'', '\"', '(' };
     int i;
 
     /* if  | FilterExpr
-           | FilterExpr '/' RelativeLocationPath
-           | FilterExpr '//' RelativeLocationPath */
-    for (i = 0; i < 4; i++)
+     | FilterExpr '/' RelativeLocationPath
+     | FilterExpr '//' RelativeLocationPath */
+    for(i = 0; i < 4; i++)
     {
-        if (AXIOM_XPATH_CURRENT == filter_start[i])
+        if(AXIOM_XPATH_CURRENT == filter_start[i])
         {
             return axiom_xpath_path_compile_path_expression_filter(env, expr);
         }
     }
 
-    if (isdigit(AXIOM_XPATH_CURRENT)
-            || (AXIOM_XPATH_CURRENT == '.' && isdigit(AXIOM_XPATH_NEXT(1))))
+    if(isdigit(AXIOM_XPATH_CURRENT) || (AXIOM_XPATH_CURRENT == '.' && isdigit(AXIOM_XPATH_NEXT(1))))
     {
         return axiom_xpath_path_compile_path_expression_filter(env, expr);
     }
@@ -429,13 +428,13 @@ int axiom_xpath_compile_path_expression(
     name = axiom_xpath_compile_ncname(env, expr);
     AXIOM_XPATH_SKIP_WHITESPACES;
 
-    if (name != NULL && AXIOM_XPATH_CURRENT == '(')
+    if(name != NULL && AXIOM_XPATH_CURRENT == '(')
     {
         expr->expr_ptr = temp_ptr;
-        for (i = 0; i < 4; i++)
+        for(i = 0; i < 4; i++)
         {
             /* If node type */
-            if (axutil_strcmp(name, node_types[i]) == 0)
+            if(axutil_strcmp(name, node_types[i]) == 0)
             {
                 return axiom_xpath_compile_location_path(env, expr);
             }
@@ -450,22 +449,23 @@ int axiom_xpath_compile_path_expression(
 }
 
 /* Parses Location Path */
-int axiom_xpath_compile_location_path(
+int
+axiom_xpath_compile_location_path(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
     int op1;
     axiom_xpath_operation_type_t opr;
 
-    if (!AXIOM_XPATH_HAS_MORE)
+    if(!AXIOM_XPATH_HAS_MORE)
     {
         return AXIOM_XPATH_PARSE_END;
     }
 
-    if (AXIOM_XPATH_CURRENT == '/')
+    if(AXIOM_XPATH_CURRENT == '/')
     {
         /* Descendent */
-        if (AXIOM_XPATH_NEXT(1) == '/')
+        if(AXIOM_XPATH_NEXT(1) == '/')
         {
             opr = AXIOM_XPATH_OPERATION_CONTEXT_NODE;
             AXIOM_XPATH_READ(2);
@@ -473,7 +473,7 @@ int axiom_xpath_compile_location_path(
 
             op1 = axiom_xpath_compile_relative_location(env, expr);
 
-            if (op1 == AXIOM_XPATH_PARSE_ERROR)
+            if(op1 == AXIOM_XPATH_PARSE_ERROR)
             {
 #ifdef AXIOM_XPATH_DEBUG
                 printf(
@@ -493,7 +493,7 @@ int axiom_xpath_compile_location_path(
 
             op1 = axiom_xpath_compile_relative_location(env, expr);
 
-            if (op1 == AXIOM_XPATH_PARSE_ERROR)
+            if(op1 == AXIOM_XPATH_PARSE_ERROR)
             {
 #ifdef AXIOM_XPATH_DEBUG
                 printf(
@@ -511,7 +511,7 @@ int axiom_xpath_compile_location_path(
 
         op1 = axiom_xpath_compile_relative_location(env, expr);
 
-        if (op1 == AXIOM_XPATH_PARSE_ERROR)
+        if(op1 == AXIOM_XPATH_PARSE_ERROR)
         {
 #ifdef AXIOM_XPATH_DEBUG
             printf(
@@ -523,7 +523,7 @@ int axiom_xpath_compile_location_path(
         }
     }
 
-    if (op1 == AXIOM_XPATH_PARSE_ERROR)
+    if(op1 == AXIOM_XPATH_PARSE_ERROR)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -538,13 +538,14 @@ int axiom_xpath_compile_location_path(
 }
 
 /* Parses Relative Location Path */
-int axiom_xpath_compile_relative_location(
+int
+axiom_xpath_compile_relative_location(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
     int op_step, op_next;
 
-    if (!AXIOM_XPATH_HAS_MORE)
+    if(!AXIOM_XPATH_HAS_MORE)
     {
         return AXIOM_XPATH_PARSE_END;
     }
@@ -552,7 +553,7 @@ int axiom_xpath_compile_relative_location(
     op_step = axiom_xpath_compile_step(env, expr);
     op_next = AXIOM_XPATH_PARSE_END; /* Will change if there are more steps */
 
-    if (op_step == AXIOM_XPATH_PARSE_ERROR)
+    if(op_step == AXIOM_XPATH_PARSE_ERROR)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -565,13 +566,13 @@ int axiom_xpath_compile_relative_location(
 
     AXIOM_XPATH_SKIP_WHITESPACES;
 
-    if (AXIOM_XPATH_NEXT(0) == '/' && AXIOM_XPATH_NEXT(1) == '/')
+    if(AXIOM_XPATH_NEXT(0) == '/' && AXIOM_XPATH_NEXT(1) == '/')
     {
         AXIOM_XPATH_READ(2);
 
         op_next = axiom_xpath_compile_relative_location(env, expr);
 
-        if (op_next == AXIOM_XPATH_PARSE_ERROR)
+        if(op_next == AXIOM_XPATH_PARSE_ERROR)
         {
 #ifdef AXIOM_XPATH_DEBUG
             printf(
@@ -584,13 +585,13 @@ int axiom_xpath_compile_relative_location(
 
         op_next = AXIOM_XPATH_WRAP_SELF_DESCENDANT(op_next);
     }
-    else if (AXIOM_XPATH_NEXT(0) == '/')
+    else if(AXIOM_XPATH_NEXT(0) == '/')
     {
         AXIOM_XPATH_READ(1);
 
         op_next = axiom_xpath_compile_relative_location(env, expr);
 
-        if (op_next == AXIOM_XPATH_PARSE_ERROR)
+        if(op_next == AXIOM_XPATH_PARSE_ERROR)
         {
 #ifdef AXIOM_XPATH_DEBUG
             printf(
@@ -603,19 +604,18 @@ int axiom_xpath_compile_relative_location(
     }
 
     /* End of the location path */
-    if (op_next == AXIOM_XPATH_PARSE_END)
+    if(op_next == AXIOM_XPATH_PARSE_END)
     {
-        op_next = AXIOM_XPATH_PUSH(
-                    AXIOM_XPATH_OPERATION_RESULT,
-                    AXIOM_XPATH_PARSE_END,
-                    AXIOM_XPATH_PARSE_END);
+        op_next = AXIOM_XPATH_PUSH(AXIOM_XPATH_OPERATION_RESULT, AXIOM_XPATH_PARSE_END,
+            AXIOM_XPATH_PARSE_END);
     }
 
     return AXIOM_XPATH_PUSH(AXIOM_XPATH_OPERATION_STEP, op_step, op_next);
 }
 
 /* Parses Step */
-int axiom_xpath_compile_step(
+int
+axiom_xpath_compile_step(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
@@ -628,9 +628,9 @@ int axiom_xpath_compile_step(
     AXIOM_XPATH_SKIP_WHITESPACES;
 
     /* . and .. */
-    if (AXIOM_XPATH_CURRENT == '.')
+    if(AXIOM_XPATH_CURRENT == '.')
     {
-        if (AXIOM_XPATH_NEXT(1) == '.')
+        if(AXIOM_XPATH_NEXT(1) == '.')
         {
             AXIOM_XPATH_READ(2);
             axis = AXIOM_XPATH_AXIS_PARENT;
@@ -641,12 +641,11 @@ int axiom_xpath_compile_step(
             axis = AXIOM_XPATH_AXIS_SELF;
         }
 
-        return AXIOM_XPATH_PUSH_PAR(
-                    AXIOM_XPATH_OPERATION_NODE_TEST,
-                    axiom_xpath_create_node_test_node(env),
-                    axiom_xpath_create_axis(env, axis), op_predicate);
+        return AXIOM_XPATH_PUSH_PAR(AXIOM_XPATH_OPERATION_NODE_TEST,
+            axiom_xpath_create_node_test_node(env), axiom_xpath_create_axis(env, axis),
+            op_predicate);
     }
-    else if (AXIOM_XPATH_CURRENT == '@')
+    else if(AXIOM_XPATH_CURRENT == '@')
     {
         axis = AXIOM_XPATH_AXIS_ATTRIBUTE;
 
@@ -659,16 +658,16 @@ int axiom_xpath_compile_step(
 
         name = axiom_xpath_compile_ncname(env, expr);
 
-        if (name)
+        if(name)
         {
             AXIOM_XPATH_SKIP_WHITESPACES;
 
             /* An axis */
-            if (AXIOM_XPATH_CURRENT == ':' && AXIOM_XPATH_NEXT(1) == ':')
+            if(AXIOM_XPATH_CURRENT == ':' && AXIOM_XPATH_NEXT(1) == ':')
             {
                 axis = axiom_xpath_get_axis(env, name);
 
-                if (axis == AXIOM_XPATH_AXIS_NONE)
+                if(axis == AXIOM_XPATH_AXIS_NONE)
                 {
 #ifdef AXIOM_XPATH_DEBUG
                     printf("Parse error: Invalid axis -  %s\n", name);
@@ -697,7 +696,7 @@ int axiom_xpath_compile_step(
 
     node_test = axiom_xpath_compile_node_test(env, expr);
 
-    if (!node_test)
+    if(!node_test)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -710,7 +709,7 @@ int axiom_xpath_compile_step(
 
     op_predicate = axiom_xpath_compile_predicate(env, expr);
 
-    if (op_predicate == AXIOM_XPATH_PARSE_ERROR)
+    if(op_predicate == AXIOM_XPATH_PARSE_ERROR)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -721,13 +720,12 @@ int axiom_xpath_compile_step(
         return AXIOM_XPATH_PARSE_ERROR;
     }
 
-    return AXIOM_XPATH_PUSH_PAR(
-                AXIOM_XPATH_OPERATION_NODE_TEST,
-                node_test, axiom_xpath_create_axis(env, axis),
-                op_predicate);
+    return AXIOM_XPATH_PUSH_PAR(AXIOM_XPATH_OPERATION_NODE_TEST, node_test,
+        axiom_xpath_create_axis(env, axis), op_predicate);
 }
 
-axiom_xpath_node_test_t* axiom_xpath_compile_node_test(
+axiom_xpath_node_test_t*
+axiom_xpath_compile_node_test(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
@@ -740,7 +738,7 @@ axiom_xpath_node_test_t* axiom_xpath_compile_node_test(
     node_test->name = NULL;
     node_test->lit = NULL;
 
-    if (AXIOM_XPATH_CURRENT == '*')
+    if(AXIOM_XPATH_CURRENT == '*')
     {
         AXIOM_XPATH_READ(1);
 
@@ -751,7 +749,7 @@ axiom_xpath_node_test_t* axiom_xpath_compile_node_test(
 
     name = axiom_xpath_compile_ncname(env, expr);
 
-    if (!name)
+    if(!name)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -766,33 +764,32 @@ axiom_xpath_node_test_t* axiom_xpath_compile_node_test(
 
     /* Node type */
 
-    if (AXIOM_XPATH_CURRENT == '(')
+    if(AXIOM_XPATH_CURRENT == '(')
     {
         AXIOM_XPATH_READ(1);
 
-        if (axutil_strcmp(name, "comment") == 0)
+        if(axutil_strcmp(name, "comment") == 0)
         {
             node_test->type = AXIOM_XPATH_NODE_TYPE_COMMENT;
         }
-        if (axutil_strcmp(name, "node") == 0)
+        if(axutil_strcmp(name, "node") == 0)
         {
             node_test->type = AXIOM_XPATH_NODE_TYPE_NODE;
         }
-        if (axutil_strcmp(name, "processing-instruction") == 0)
+        if(axutil_strcmp(name, "processing-instruction") == 0)
         {
             node_test->type = AXIOM_XPATH_NODE_TYPE_PI;
 
             node_test->lit = axiom_xpath_compile_literal(env, expr);
         }
-        if (axutil_strcmp(name, "text") == 0)
+        if(axutil_strcmp(name, "text") == 0)
         {
             node_test->type = AXIOM_XPATH_NODE_TYPE_TEXT;
         }
 
         AXIOM_XPATH_SKIP_WHITESPACES;
 
-        if (node_test->type == AXIOM_XPATH_NODE_TEST_NONE
-                || AXIOM_XPATH_CURRENT != ')')
+        if(node_test->type == AXIOM_XPATH_NODE_TEST_NONE || AXIOM_XPATH_CURRENT != ')')
         {
 #ifdef AXIOM_XPATH_DEBUG
             printf("Parse error: Invalid node type -  %s\n", name);
@@ -809,13 +806,13 @@ axiom_xpath_node_test_t* axiom_xpath_compile_node_test(
     {
         node_test->type = AXIOM_XPATH_NODE_TEST_STANDARD;
 
-        if (AXIOM_XPATH_CURRENT == ':')
+        if(AXIOM_XPATH_CURRENT == ':')
         {
             AXIOM_XPATH_READ(1);
 
             node_test->prefix = name;
 
-            if (AXIOM_XPATH_CURRENT == '*')
+            if(AXIOM_XPATH_CURRENT == '*')
             {
                 AXIOM_XPATH_READ(1);
 
@@ -826,7 +823,7 @@ axiom_xpath_node_test_t* axiom_xpath_compile_node_test(
 
             node_test->name = axiom_xpath_compile_ncname(env, expr);
 
-            if (!node_test->name)
+            if(!node_test->name)
             {
 #ifdef AXIOM_XPATH_DEBUG
                 printf(
@@ -848,7 +845,8 @@ axiom_xpath_node_test_t* axiom_xpath_compile_node_test(
     return node_test;
 }
 
-int axiom_xpath_compile_function_call(
+int
+axiom_xpath_compile_function_call(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
@@ -857,7 +855,7 @@ int axiom_xpath_compile_function_call(
 
     name = axiom_xpath_compile_ncname(env, expr);
 
-    if (!name)
+    if(!name)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -868,7 +866,7 @@ int axiom_xpath_compile_function_call(
         return AXIOM_XPATH_PARSE_ERROR;
     }
 
-    if (AXIOM_XPATH_CURRENT != '(')
+    if(AXIOM_XPATH_CURRENT != '(')
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -883,12 +881,12 @@ int axiom_xpath_compile_function_call(
 
     AXIOM_XPATH_SKIP_WHITESPACES;
 
-    if (AXIOM_XPATH_CURRENT != ')')
+    if(AXIOM_XPATH_CURRENT != ')')
     {
         op1 = axiom_xpath_compile_argument(env, expr);
     }
 
-    if (AXIOM_XPATH_CURRENT != ')')
+    if(AXIOM_XPATH_CURRENT != ')')
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -901,12 +899,11 @@ int axiom_xpath_compile_function_call(
 
     AXIOM_XPATH_READ(1);
 
-    return AXIOM_XPATH_PUSH_PAR(
-                AXIOM_XPATH_OPERATION_FUNCTION_CALL,
-                name, NULL, op1);
+    return AXIOM_XPATH_PUSH_PAR(AXIOM_XPATH_OPERATION_FUNCTION_CALL, name, NULL, op1);
 }
 
-int axiom_xpath_compile_argument(
+int
+axiom_xpath_compile_argument(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
@@ -917,7 +914,7 @@ int axiom_xpath_compile_argument(
 
     AXIOM_XPATH_SKIP_WHITESPACES;
 
-    if (AXIOM_XPATH_CURRENT == ',')
+    if(AXIOM_XPATH_CURRENT == ',')
     {
         op2 = axiom_xpath_compile_argument(env, expr);
     }
@@ -925,7 +922,8 @@ int axiom_xpath_compile_argument(
     return AXIOM_XPATH_PUSH(AXIOM_XPATH_OPERATION_ARGUMENT, op1, op2);
 }
 
-axiom_xpath_node_test_t* axiom_xpath_create_node_test_all(
+axiom_xpath_node_test_t*
+axiom_xpath_create_node_test_all(
     const axutil_env_t *env)
 {
     axiom_xpath_node_test_t *node_test;
@@ -939,7 +937,8 @@ axiom_xpath_node_test_t* axiom_xpath_create_node_test_all(
     return node_test;
 }
 
-axiom_xpath_node_test_t* axiom_xpath_create_node_test_node(
+axiom_xpath_node_test_t*
+axiom_xpath_create_node_test_node(
     const axutil_env_t *env)
 {
     axiom_xpath_node_test_t *node_test;
@@ -953,7 +952,8 @@ axiom_xpath_node_test_t* axiom_xpath_create_node_test_node(
     return node_test;
 }
 
-double* axiom_xpath_compile_number(
+double*
+axiom_xpath_compile_number(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
@@ -963,11 +963,11 @@ double* axiom_xpath_compile_number(
 
     *ret = 0;
 
-    while (1)
+    while(1)
     {
-        if (isdigit(AXIOM_XPATH_CURRENT))
+        if(isdigit(AXIOM_XPATH_CURRENT))
         {
-            if (!dot)
+            if(!dot)
             {
                 res = res * 10 + (AXIOM_XPATH_CURRENT - '0');
             }
@@ -977,9 +977,9 @@ double* axiom_xpath_compile_number(
                 dec /= 10;
             }
         }
-        else if (AXIOM_XPATH_CURRENT == '.')
+        else if(AXIOM_XPATH_CURRENT == '.')
         {
-            if (dot)
+            if(dot)
             {
                 return ret;
             }
@@ -1001,7 +1001,8 @@ double* axiom_xpath_compile_number(
     return ret;
 }
 
-axis2_char_t* axiom_xpath_compile_literal(
+axis2_char_t*
+axiom_xpath_compile_literal(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
@@ -1009,11 +1010,11 @@ axis2_char_t* axiom_xpath_compile_literal(
     int i = 0;
     axis2_char_t del;
 
-    if (AXIOM_XPATH_CURRENT == '\"')
+    if(AXIOM_XPATH_CURRENT == '\"')
     {
         del = '\"';
     }
-    else if (AXIOM_XPATH_CURRENT == '\'')
+    else if(AXIOM_XPATH_CURRENT == '\'')
     {
         del = '\'';
     }
@@ -1022,14 +1023,14 @@ axis2_char_t* axiom_xpath_compile_literal(
 
     AXIOM_XPATH_READ(1);
 
-    while (AXIOM_XPATH_HAS_MORE && AXIOM_XPATH_CURRENT != del)
+    while(AXIOM_XPATH_HAS_MORE && AXIOM_XPATH_CURRENT != del)
     {
         lit[i] = AXIOM_XPATH_CURRENT;
         AXIOM_XPATH_READ(1);
         ++i;
     }
 
-    if (AXIOM_XPATH_HAS_MORE)
+    if(AXIOM_XPATH_HAS_MORE)
     {
         AXIOM_XPATH_READ(1);
     }
@@ -1041,59 +1042,60 @@ axis2_char_t* axiom_xpath_compile_literal(
 }
 
 /* Get axis for name */
-axiom_xpath_axis_t axiom_xpath_get_axis(
+axiom_xpath_axis_t
+axiom_xpath_get_axis(
     const axutil_env_t *env,
     axis2_char_t* name)
 {
-    if (axutil_strcmp(name, "child") == 0)
+    if(axutil_strcmp(name, "child") == 0)
     {
         return AXIOM_XPATH_AXIS_CHILD;
     }
-    else if (axutil_strcmp(name, "descendant") == 0)
+    else if(axutil_strcmp(name, "descendant") == 0)
     {
         return AXIOM_XPATH_AXIS_DESCENDANT;
     }
-    else if (axutil_strcmp(name, "parent") == 0)
+    else if(axutil_strcmp(name, "parent") == 0)
     {
         return AXIOM_XPATH_AXIS_PARENT;
     }
-    else if (axutil_strcmp(name, "ancestor") == 0)
+    else if(axutil_strcmp(name, "ancestor") == 0)
     {
         return AXIOM_XPATH_AXIS_ANCESTOR;
     }
-    else if (axutil_strcmp(name, "following-sibling") == 0)
+    else if(axutil_strcmp(name, "following-sibling") == 0)
     {
         return AXIOM_XPATH_AXIS_FOLLOWING_SIBLING;
     }
-    else if (axutil_strcmp(name, "preceding-sibling") == 0)
+    else if(axutil_strcmp(name, "preceding-sibling") == 0)
     {
         return AXIOM_XPATH_AXIS_PRECEDING_SIBLING;
     }
-    else if (axutil_strcmp(name, "following") == 0)
+    else if(axutil_strcmp(name, "following") == 0)
     {
         return AXIOM_XPATH_AXIS_FOLLOWING;
     }
-    else if (axutil_strcmp(name, "preceding") == 0)
+    else if(axutil_strcmp(name, "preceding") == 0)
     {
         return AXIOM_XPATH_AXIS_PRECEDING;
     }
-    else if (axutil_strcmp(name, "attribute") == 0)
+    else if(axutil_strcmp(name, "attribute") == 0)
     {
         return AXIOM_XPATH_AXIS_ATTRIBUTE;
     }
-    else if (axutil_strcmp(name, "namespace") == 0)
+    else if(axutil_strcmp(name, "namespace") == 0)
     {
         return AXIOM_XPATH_AXIS_NAMESPACE;
     }
-    else if (axutil_strcmp(name, "self") == 0)
+    else if(axutil_strcmp(name, "self") == 0)
     {
         return AXIOM_XPATH_AXIS_SELF;
     }
-    else if (axutil_strcmp(name, "descendant-or-self") == 0)
+    else if(axutil_strcmp(name, "descendant-or-self") == 0)
     {
         return AXIOM_XPATH_AXIS_DESCENDANT_OR_SELF;
     }
-    else if (axutil_strcmp(name, "ancestor-or-self") == 0)
+    else if(axutil_strcmp(name, "ancestor-or-self") == 0)
     {
         return AXIOM_XPATH_AXIS_ANCESTOR_OR_SELF;
     }
@@ -1108,7 +1110,8 @@ axiom_xpath_axis_t axiom_xpath_get_axis(
 }
 
 /* Parse Predicate */
-int axiom_xpath_compile_predicate(
+int
+axiom_xpath_compile_predicate(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
@@ -1116,7 +1119,7 @@ int axiom_xpath_compile_predicate(
 
     AXIOM_XPATH_SKIP_WHITESPACES;
 
-    if (!AXIOM_XPATH_HAS_MORE || AXIOM_XPATH_CURRENT != '[')
+    if(!AXIOM_XPATH_HAS_MORE || AXIOM_XPATH_CURRENT != '[')
     {
         return AXIOM_XPATH_PARSE_END;
     }
@@ -1125,13 +1128,13 @@ int axiom_xpath_compile_predicate(
     AXIOM_XPATH_SKIP_WHITESPACES;
 
     /* A PredicateExpr is evaluated by evaluating the Expr and converting the result to a boolean.
-       If the result is a number, the result will be converted to true if the number is equal to the
-       context position and will be converted to false otherwise; if the result is not a number,
-       then the result will be converted as if by a call to the boolean function. */
+     If the result is a number, the result will be converted to true if the number is equal to the
+     context position and will be converted to false otherwise; if the result is not a number,
+     then the result will be converted as if by a call to the boolean function. */
 
     op1 = axiom_xpath_compile_orexpr(env, expr);
 
-    if (op1 == AXIOM_XPATH_PARSE_ERROR)
+    if(op1 == AXIOM_XPATH_PARSE_ERROR)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -1144,7 +1147,7 @@ int axiom_xpath_compile_predicate(
 
     AXIOM_XPATH_SKIP_WHITESPACES;
 
-    if (AXIOM_XPATH_CURRENT != ']')
+    if(AXIOM_XPATH_CURRENT != ']')
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -1159,7 +1162,7 @@ int axiom_xpath_compile_predicate(
 
     op_next_predicate = axiom_xpath_compile_predicate(env, expr);
 
-    if (op_next_predicate == AXIOM_XPATH_PARSE_ERROR)
+    if(op_next_predicate == AXIOM_XPATH_PARSE_ERROR)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf(
@@ -1170,31 +1173,27 @@ int axiom_xpath_compile_predicate(
         return AXIOM_XPATH_PARSE_ERROR;
     }
 
-    return AXIOM_XPATH_PUSH(
-                AXIOM_XPATH_OPERATION_PREDICATE,
-                op1, op_next_predicate);
+    return AXIOM_XPATH_PUSH(AXIOM_XPATH_OPERATION_PREDICATE, op1, op_next_predicate);
 }
 
 /* Parse Node Test */
-axis2_char_t * axiom_xpath_compile_ncname(
+axis2_char_t *
+axiom_xpath_compile_ncname(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr)
 {
     axis2_char_t name[255];
     int i = 0;
 
-    if (!isalpha(AXIOM_XPATH_CURRENT) && AXIOM_XPATH_CURRENT != '_')
+    if(!isalpha(AXIOM_XPATH_CURRENT) && AXIOM_XPATH_CURRENT != '_')
     {
         return NULL;
     }
 
     /* TODO: Add CombiningChar and Extender
      * Link http://www.w3.org/TR/REC-xml/#NT-NameChar */
-    while (AXIOM_XPATH_HAS_MORE
-            && (isalnum(AXIOM_XPATH_CURRENT)
-                    || AXIOM_XPATH_CURRENT == '_'
-                    || AXIOM_XPATH_CURRENT == '.'
-                    || AXIOM_XPATH_CURRENT == '-'))
+    while(AXIOM_XPATH_HAS_MORE && (isalnum(AXIOM_XPATH_CURRENT) || AXIOM_XPATH_CURRENT == '_'
+        || AXIOM_XPATH_CURRENT == '.' || AXIOM_XPATH_CURRENT == '-'))
     {
         name[i] = AXIOM_XPATH_CURRENT;
         AXIOM_XPATH_READ(1);
@@ -1207,11 +1206,15 @@ axis2_char_t * axiom_xpath_compile_ncname(
 }
 
 /* Supporting functions */
-int axiom_xpath_add_operation(
+int
+axiom_xpath_add_operation(
     const axutil_env_t *env,
     axiom_xpath_expression_t* expr,
     axiom_xpath_operation_type_t op_type,
-    int op1, int op2, void *par1, void *par2)
+    int op1,
+    int op2,
+    void *par1,
+    void *par2)
 {
     axiom_xpath_operation_t *op;
 
@@ -1230,12 +1233,12 @@ int axiom_xpath_add_operation(
     return axutil_array_list_size(expr->operations, env) - 1;
 }
 
-axiom_xpath_axis_t *axiom_xpath_create_axis(
+axiom_xpath_axis_t *
+axiom_xpath_create_axis(
     const axutil_env_t *env,
     axiom_xpath_axis_t axis)
 {
-    axiom_xpath_axis_t *axis_p =
-        AXIS2_MALLOC(env->allocator, sizeof(axiom_xpath_axis_t));
+    axiom_xpath_axis_t *axis_p = AXIS2_MALLOC(env->allocator, sizeof(axiom_xpath_axis_t));
 
     *axis_p = axis;
     return axis_p;

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -55,10 +54,9 @@ axiom_document_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    document = (axiom_document_t *) AXIS2_MALLOC(env->allocator,
-                                                 sizeof(axiom_document_t));
+    document = (axiom_document_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_document_t));
 
-    if (!document)
+    if(!document)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -82,7 +80,7 @@ axiom_document_free(
 {
     AXIS2_ENV_CHECK(env, void);
 
-    if (document->root_element)
+    if(document->root_element)
     {
         axiom_node_free_tree(document->root_element, env);
     }
@@ -108,28 +106,27 @@ axiom_document_build_next(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (!document->builder)
+    if(!document->builder)
     {
         return NULL;
     }
 
-    if (!(document->root_element))
+    if(!(document->root_element))
     {
         last_child = axiom_stax_builder_next(document->builder, env);
-        if (last_child)
+        if(last_child)
         {
             document->last_child = last_child;
             document->root_element = last_child;
         }
         return last_child;
     }
-    else if ((document->root_element) &&
-             (axiom_node_is_complete(document->root_element, env) ==
-              AXIS2_TRUE))
-        return NULL;            /* Nothing wrong but done with pulling */
+    else if((document->root_element) && (axiom_node_is_complete(document->root_element, env)
+        == AXIS2_TRUE))
+        return NULL; /* Nothing wrong but done with pulling */
 
     last_child = axiom_stax_builder_next(document->builder, env);
-    if (last_child)
+    if(last_child)
     {
         document->last_child = last_child;
     }
@@ -144,19 +141,17 @@ axiom_document_get_root_element(
     axiom_node_t *node = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (document->root_element)
+    if(document->root_element)
     {
         return document->root_element;
     }
     node = axiom_document_build_next(document, env);
 
-    if (document->root_element)
+    if(document->root_element)
     {
         return document->root_element;
     }
-    AXIS2_ERROR_SET(env->error,
-                    AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL,
-                    AXIS2_FAILURE);
+    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL, AXIS2_FAILURE);
     return NULL;
 }
 
@@ -169,7 +164,7 @@ axiom_document_set_root_element(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
-    if (document->root_element)
+    if(document->root_element)
     {
         axiom_node_free_tree(document->root_element, env);
         document->root_element = node;
@@ -188,24 +183,23 @@ axiom_document_build_all(
     const axutil_env_t * env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    if (!document)
+    if(!document)
     {
         return NULL;
     }
-    if (!document->root_element)
+    if(!document->root_element)
     {
         axiom_document_get_root_element(document, env);
     }
-    if (document->root_element)
+    if(document->root_element)
     {
         do
         {
             axiom_node_t *ret_val = NULL;
             ret_val = axiom_document_build_next(document, env);
-            if (!ret_val)
+            if(!ret_val)
             {
-                if (axiom_node_is_complete(document->root_element, env) ==
-                    AXIS2_TRUE)
+                if(axiom_node_is_complete(document->root_element, env) == AXIS2_TRUE)
                 {
 
                     /** document is completly build */
@@ -219,7 +213,7 @@ axiom_document_build_all(
                 }
             }
         }
-        while (!axiom_node_is_complete(document->root_element, env));
+        while(!axiom_node_is_complete(document->root_element, env));
         return document->root_element;
     }
     else
@@ -250,15 +244,15 @@ axiom_document_serialize(
     const axutil_env_t * env,
     axiom_output_t * om_output)
 {
-    if (!document)
+    if(!document)
         return AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (!(document->root_element))
+    if(!(document->root_element))
     {
         axiom_document_get_root_element(document, env);
     }
-    if (document->root_element)
+    if(document->root_element)
     {
         return axiom_node_serialize(document->root_element, env, om_output);
     }

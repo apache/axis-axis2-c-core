@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -20,7 +19,8 @@
 #include "xpath_internals.h"
 
 /* Make a copy of the xpath expression */
-void axiom_xpath_expression_copy(
+void
+axiom_xpath_expression_copy(
     axiom_xpath_context_t *context,
     axiom_xpath_expression_t* expr)
 {
@@ -30,9 +30,7 @@ void axiom_xpath_expression_copy(
     context->expr = expr;
 
     /* Set value of pos in every operation to 0 */
-    for (i = 0;
-            i < axutil_array_list_size(expr->operations, context->env);
-            i++)
+    for(i = 0; i < axutil_array_list_size(expr->operations, context->env); i++)
     {
         op = AXIOM_XPATH_OPR_GET(i);
         op->pos = 0;

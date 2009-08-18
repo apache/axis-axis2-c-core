@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -51,9 +50,7 @@ axiom_xml_writer_write_start_element_with_namespace(
     axis2_char_t * localname,
     axis2_char_t * namespace_uri)
 {
-    return (writer)->ops->write_start_element_with_namespace(writer, env,
-                                                             localname,
-                                                             namespace_uri);
+    return (writer)->ops->write_start_element_with_namespace(writer, env, localname, namespace_uri);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -64,11 +61,8 @@ axiom_xml_writer_write_start_element_with_namespace_prefix(
     axis2_char_t * namespace_uri,
     axis2_char_t * prefix)
 {
-    return (writer)->ops->write_start_element_with_namespace_prefix(writer,
-                                                                    env,
-                                                                    localname,
-                                                                    namespace_uri,
-                                                                    prefix);
+    return (writer)->ops->write_start_element_with_namespace_prefix(writer, env, localname,
+        namespace_uri, prefix);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -87,9 +81,7 @@ axiom_xml_writer_write_empty_element_with_namespace(
     axis2_char_t * localname,
     axis2_char_t * namespace_uri)
 {
-    return (writer)->ops->write_empty_element_with_namespace(writer, env,
-                                                             localname,
-                                                             namespace_uri);
+    return (writer)->ops->write_empty_element_with_namespace(writer, env, localname, namespace_uri);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -100,11 +92,8 @@ axiom_xml_writer_write_empty_element_with_namespace_prefix(
     axis2_char_t * namespace_uri,
     axis2_char_t * prefix)
 {
-    return (writer)->ops->write_empty_element_with_namespace_prefix(writer,
-                                                                    env,
-                                                                    localname,
-                                                                    namespace_uri,
-                                                                    prefix);
+    return (writer)->ops->write_empty_element_with_namespace_prefix(writer, env, localname,
+        namespace_uri, prefix);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -141,9 +130,8 @@ axiom_xml_writer_write_attribute_with_namespace(
     axis2_char_t * value,
     axis2_char_t * namespace_uri)
 {
-    return (writer)->ops->write_attribute_with_namespace(writer, env,
-                                                         localname, value,
-                                                         namespace_uri);
+    return (writer)->ops->write_attribute_with_namespace(writer, env, localname, value,
+        namespace_uri);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -155,11 +143,8 @@ axiom_xml_writer_write_attribute_with_namespace_prefix(
     axis2_char_t * namespace_uri,
     axis2_char_t * prefix)
 {
-    return (writer)->ops->write_attribute_with_namespace_prefix(writer, env,
-                                                                localname,
-                                                                value,
-                                                                namespace_uri,
-                                                                prefix);
+    return (writer)->ops->write_attribute_with_namespace_prefix(writer, env, localname, value,
+        namespace_uri, prefix);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -206,8 +191,7 @@ axiom_xml_writer_write_processing_instruction_data(
     axis2_char_t * target,
     axis2_char_t * data)
 {
-    return (writer)->ops->write_processing_instruction_data(writer, env,
-                                                            target, data);
+    return (writer)->ops->write_processing_instruction_data(writer, env, target, data);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -251,8 +235,7 @@ axiom_xml_writer_write_start_document_with_version(
     const axutil_env_t * env,
     axis2_char_t * version)
 {
-    return (writer)->ops->write_start_document_with_version(writer, env,
-                                                            version);
+    return (writer)->ops->write_start_document_with_version(writer, env, version);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -262,10 +245,7 @@ axiom_xml_writer_write_start_document_with_version_encoding(
     axis2_char_t * version,
     axis2_char_t * encoding)
 {
-    return (writer)->ops->write_start_document_with_version_encoding(writer,
-                                                                     env,
-                                                                     encoding,
-                                                                     version);
+    return (writer)->ops->write_start_document_with_version_encoding(writer, env, encoding, version);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

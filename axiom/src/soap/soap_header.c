@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -38,7 +37,7 @@ struct axiom_soap_header
     int hbnumber;
 
     axiom_soap_builder_t *soap_builder;
-    
+
     axiom_soap_envelope_t *soap_envelope;
 
     axutil_array_list_t *header_block_keys;
@@ -55,14 +54,11 @@ axiom_soap_header_create(
 {
     axiom_soap_header_t *soap_header = NULL;
 
-    soap_header = (axiom_soap_header_t *) AXIS2_MALLOC(env->allocator,
-                                                       sizeof
-                                                       (axiom_soap_header_t));
-    if (!soap_header)
+    soap_header = (axiom_soap_header_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_soap_header_t));
+    if(!soap_header)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                          "No memory. Cannot create SOAP header");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create SOAP header");
         return NULL;
     }
 
@@ -76,7 +72,7 @@ axiom_soap_header_create(
     soap_header->header_block_keys = NULL;
 
     soap_header->header_block_keys = axutil_array_list_create(env, 10);
-    if (!soap_header->header_block_keys)
+    if(!soap_header->header_block_keys)
     {
         AXIS2_FREE(env->allocator, soap_header);
         return NULL;
@@ -93,7 +89,7 @@ axiom_soap_header_create_with_parent(
     axiom_soap_header_t *soap_header = NULL;
 
     /*axiom_element_t *this_ele = NULL;
-    axiom_node_t *this_node = NULL;*/
+     axiom_node_t *this_node = NULL;*/
     axiom_node_t *body_node = NULL;
     axiom_node_t *parent_node = NULL;
     axiom_element_t *parent_ele = NULL;
@@ -103,54 +99,51 @@ axiom_soap_header_create_with_parent(
     AXIS2_PARAM_CHECK(env->error, envelope, NULL);
 
     soap_header = axiom_soap_header_create(env);
-    if (!soap_header)
+    if(!soap_header)
     {
         return NULL;
     }
-    soap_header->soap_version =
-        axiom_soap_envelope_get_soap_version(envelope, env);
+    soap_header->soap_version = axiom_soap_envelope_get_soap_version(envelope, env);
 
     parent_node = axiom_soap_envelope_get_base_node(envelope, env);
 
-    if (!parent_node ||
-        axiom_node_get_node_type(parent_node, env) != AXIOM_ELEMENT)
+    if(!parent_node || axiom_node_get_node_type(parent_node, env) != AXIOM_ELEMENT)
     {
         axiom_soap_header_free(soap_header, env);
         return NULL;
     }
 
-    parent_ele = (axiom_element_t *)
-        axiom_node_get_data_element(parent_node, env);
-    if (!parent_ele)
+    parent_ele = (axiom_element_t *)axiom_node_get_data_element(parent_node, env);
+    if(!parent_ele)
     {
         axiom_soap_header_free(soap_header, env);
         return NULL;
     }
-    if (axiom_node_get_first_element(parent_node, env))
+    if(axiom_node_get_first_element(parent_node, env))
     {
         body_node = axiom_node_get_first_element(parent_node, env);
         axiom_node_detach(body_node, env);
     }
 
     /*parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
-    this_ele = axiom_element_create(env, parent_node,
-                                    AXIOM_SOAP_HEADER_LOCAL_NAME, parent_ns,
-                                    &this_node);
-    if (!this_ele)
-    {
-        axiom_soap_header_free(soap_header, env);
-        return NULL;
-    }
+     this_ele = axiom_element_create(env, parent_node,
+     AXIOM_SOAP_HEADER_LOCAL_NAME, parent_ns,
+     &this_node);
+     if (!this_ele)
+     {
+     axiom_soap_header_free(soap_header, env);
+     return NULL;
+     }
 
-    soap_header->om_ele_node = this_node;*/
+     soap_header->om_ele_node = this_node;*/
 
     axiom_soap_envelope_set_header(envelope, env, soap_header);
 
-    if (body_node)
+    if(body_node)
     {
         axiom_node_add_child(parent_node, env, body_node);
     }
-    
+
     soap_header->soap_envelope = envelope;
 
     return soap_header;
@@ -162,37 +155,36 @@ axiom_soap_header_free(
     const axutil_env_t * env)
 {
 
-    if (soap_header->header_blocks)
+    if(soap_header->header_blocks)
     {
         axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axutil_hash_first(soap_header->header_blocks, env); hi;
-             hi = axutil_hash_next(env, hi))
+        for(hi = axutil_hash_first(soap_header->header_blocks, env); hi; hi = axutil_hash_next(env,
+            hi))
         {
             axutil_hash_this(hi, NULL, NULL, &val);
 
-            if (val)
+            if(val)
             {
-                axiom_soap_header_block_free((axiom_soap_header_block_t *) val,
-                                             env);
+                axiom_soap_header_block_free((axiom_soap_header_block_t *)val, env);
                 val = NULL;
             }
         }
 
         axutil_hash_free(soap_header->header_blocks, env);
     }
-    if (soap_header->header_block_keys)
+    if(soap_header->header_block_keys)
     {
         int size = 0;
         void *val = NULL;
         int i = 0;
         size = axutil_array_list_size(soap_header->header_block_keys, env);
-        for (i = 0; i < size; i++)
+        for(i = 0; i < size; i++)
         {
             val = axutil_array_list_get(soap_header->header_block_keys, env, i);
-            if (val)
+            if(val)
             {
-                AXIS2_FREE(env->allocator, (char *) val);
+                AXIS2_FREE(env->allocator, (char *)val);
                 val = NULL;
             }
         }
@@ -223,22 +215,20 @@ axiom_soap_header_add_header_block(
     AXIS2_PARAM_CHECK(env->error, ns, NULL);
 
     cloned_ns = axiom_namespace_clone(ns, env);
-    if (!cloned_ns)
+    if(!cloned_ns)
     {
         return NULL;
     }
-    header_block =
-        axiom_soap_header_block_create_with_parent(env, localname, cloned_ns,
-                                                   soap_header);
+    header_block = axiom_soap_header_block_create_with_parent(env, localname, cloned_ns,
+        soap_header);
 
-    if (!header_block)
+    if(!header_block)
     {
         return NULL;
     }
-    header_block_node =
-        axiom_soap_header_block_get_base_node(header_block, env);
+    header_block_node = axiom_soap_header_block_get_base_node(header_block, env);
 
-    if (header_block_node)
+    if(header_block_node)
     {
         axiom_node_set_complete(header_block_node, env, AXIS2_TRUE);
 
@@ -260,33 +250,28 @@ AXIS2_EXTERN axutil_hash_t *AXIS2_CALL axiom_soap_header_examine_header_blocks(
 }
 
 AXIS2_EXTERN axiom_children_qname_iterator_t *AXIS2_CALL
-    axiom_soap_header_examine_all_header_blocks(
+axiom_soap_header_examine_all_header_blocks(
     axiom_soap_header_t * soap_header,
     const axutil_env_t * env)
 {
     axiom_element_t *om_ele = NULL;
 
-
-    if (!soap_header->om_ele_node)
+    if(!soap_header->om_ele_node)
     {
         return NULL;
     }
-    om_ele =
-        (axiom_element_t *) axiom_node_get_data_element(soap_header->
-                                                        om_ele_node, env);
+    om_ele = (axiom_element_t *)axiom_node_get_data_element(soap_header-> om_ele_node, env);
 
-    if (om_ele)
+    if(om_ele)
     {
-        return axiom_element_get_children_with_qname(om_ele,
-                                                     env, NULL,
-                                                     soap_header->om_ele_node);
+        return axiom_element_get_children_with_qname(om_ele, env, NULL, soap_header->om_ele_node);
     }
     else
         return NULL;
 }
 
 AXIS2_EXTERN axiom_children_with_specific_attribute_iterator_t *AXIS2_CALL
-    axiom_soap_header_extract_header_blocks(
+axiom_soap_header_extract_header_blocks(
     axiom_soap_header_t * soap_header,
     const axutil_env_t * env,
     axis2_char_t * role)
@@ -302,41 +287,36 @@ AXIS2_EXTERN axiom_children_with_specific_attribute_iterator_t *AXIS2_CALL
     axiom_element_t *header_om_ele = NULL;
     axiom_children_with_specific_attribute_iterator_t *iter = NULL;
 
-    if (soap_header->soap_version == AXIOM_SOAP_VERSION_NOT_SET)
+    if(soap_header->soap_version == AXIOM_SOAP_VERSION_NOT_SET)
     {
         return NULL;
     }
-    if (soap_header->soap_version == AXIOM_SOAP11)
+    if(soap_header->soap_version == AXIOM_SOAP11)
     {
         localname = AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
         nsuri = AXIOM_SOAP11_ATTR_ACTOR;
     }
-    if (soap_header->soap_version == AXIOM_SOAP12)
+    if(soap_header->soap_version == AXIOM_SOAP12)
     {
         localname = AXIOM_SOAP12_SOAP_ROLE;
         nsuri = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     }
 
     qn = axutil_qname_create(env, localname, nsuri, NULL);
-    if (!qn)
+    if(!qn)
     {
         return NULL;
     }
-    header_om_ele = (axiom_element_t *)
-        axiom_node_get_data_element(soap_header->om_ele_node, env);
+    header_om_ele = (axiom_element_t *)axiom_node_get_data_element(soap_header->om_ele_node, env);
 
-    if (header_om_ele)
+    if(header_om_ele)
     {
-        first_ele = axiom_element_get_first_element(header_om_ele, env,
-                                                    soap_header->om_ele_node,
-                                                    &first_node);
-        if (first_node)
+        first_ele = axiom_element_get_first_element(header_om_ele, env, soap_header->om_ele_node,
+            &first_node);
+        if(first_node)
         {
-            return axiom_children_with_specific_attribute_iterator_create(env,
-                                                                          first_node,
-                                                                          qn,
-                                                                          role,
-                                                                          AXIS2_TRUE);
+            return axiom_children_with_specific_attribute_iterator_create(env, first_node, qn,
+                role, AXIS2_TRUE);
         }
     }
 
@@ -354,10 +334,9 @@ axiom_soap_header_set_base_node(
 {
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
-    if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
+    if(axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
-        AXIS2_HANDLE_ERROR(env,
-                        AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
@@ -378,47 +357,43 @@ axiom_soap_header_get_base_node(
         axiom_namespace_t *parent_ns = NULL;
         axiom_element_t *this_ele = NULL;
         axiom_node_t *this_node = NULL;
-        axiom_soap_body_t *soap_body  = NULL;
+        axiom_soap_body_t *soap_body = NULL;
         axiom_node_t *body_node = NULL;
 
         parent_node = axiom_soap_envelope_get_base_node(soap_header->soap_envelope, env);
 
-        if (!parent_node ||
-            axiom_node_get_node_type(parent_node, env) != AXIOM_ELEMENT)
+        if(!parent_node || axiom_node_get_node_type(parent_node, env) != AXIOM_ELEMENT)
         {
             axiom_soap_header_free(soap_header, env);
             return NULL;
         }
 
-        parent_ele = (axiom_element_t *)
-            axiom_node_get_data_element(parent_node, env);
-        if (!parent_ele)
+        parent_ele = (axiom_element_t *)axiom_node_get_data_element(parent_node, env);
+        if(!parent_ele)
         {
             axiom_soap_header_free(soap_header, env);
             return NULL;
         }
-
 
         parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
         this_ele = axiom_element_create(env, NULL, AXIOM_SOAP_HEADER_LOCAL_NAME, parent_ns,
-                                        &this_node);
-        if (!this_ele)
+            &this_node);
+        if(!this_ele)
         {
             axiom_soap_header_free(soap_header, env);
             return NULL;
         }
 
-		
         soap_body = axiom_soap_envelope_get_body(soap_header->soap_envelope, env);
         if(soap_body)
         {
             body_node = axiom_soap_body_get_base_node(soap_body, env);
-			axiom_node_insert_sibling_before(body_node, env, this_node);
+            axiom_node_insert_sibling_before(body_node, env, this_node);
         }
-		else 
-		{
-			axiom_node_add_child(parent_node, env, this_node);
-		}
+        else
+        {
+            axiom_node_add_child(parent_node, env, this_node);
+        }
         soap_header->om_ele_node = this_node;
     }
 
@@ -426,9 +401,9 @@ axiom_soap_header_get_base_node(
 }
 
 /**
-    set soap version and get soap version are internal functions
+ set soap version and get soap version are internal functions
 
-*/
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_header_get_soap_version(
     axiom_soap_header_t * soap_header,
@@ -457,28 +432,24 @@ axiom_soap_header_set_header_block(
     axis2_char_t *key = NULL;
     AXIS2_PARAM_CHECK(env->error, header_block, AXIS2_FAILURE);
 
-    key =
-        (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-                                      sizeof(axis2_char_t) * 10);
+    key = (axis2_char_t *)AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 10);
 
-    if (!key)
+    if(!key)
     {
         return AXIS2_FAILURE;
     }
     sprintf(key, "%d", soap_header->hbnumber++);
 
-    if (soap_header->header_blocks)
+    if(soap_header->header_blocks)
     {
-        axutil_hash_set(soap_header->header_blocks,
-                        key, AXIS2_HASH_KEY_STRING, header_block);
+        axutil_hash_set(soap_header->header_blocks, key, AXIS2_HASH_KEY_STRING, header_block);
     }
     else
     {
         soap_header->header_blocks = axutil_hash_make(env);
-        axutil_hash_set(soap_header->header_blocks,
-                        key, AXIS2_HASH_KEY_STRING, header_block);
+        axutil_hash_set(soap_header->header_blocks, key, AXIS2_HASH_KEY_STRING, header_block);
     }
-    if (soap_header->header_block_keys)
+    if(soap_header->header_block_keys)
     {
         axutil_array_list_add(soap_header->header_block_keys, env, key);
     }
@@ -498,7 +469,7 @@ axiom_soap_header_set_builder(
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-    axiom_soap_header_get_header_blocks_with_namespace_uri(
+axiom_soap_header_get_header_blocks_with_namespace_uri(
     axiom_soap_header_t * soap_header,
     const axutil_env_t * env,
     const axis2_char_t * ns_uri)
@@ -519,40 +490,39 @@ AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 
     AXIS2_PARAM_CHECK(env->error, ns_uri, NULL);
 
-    if (!(soap_header->header_blocks))
+    if(!(soap_header->header_blocks))
     {
         return NULL;
     }
     header_block_list = axutil_array_list_create(env, 10);
-    if (!header_block_list)
+    if(!header_block_list)
     {
         return NULL;
     }
-    for (hash_index = axutil_hash_first(soap_header->header_blocks, env);
-         hash_index; hash_index = axutil_hash_next(env, hash_index))
+    for(hash_index = axutil_hash_first(soap_header->header_blocks, env); hash_index; hash_index
+        = axutil_hash_next(env, hash_index))
     {
         axutil_hash_this(hash_index, NULL, NULL, &hb);
-        if (hb)
+        if(hb)
         {
-            header_block = (axiom_soap_header_block_t *) hb;
+            header_block = (axiom_soap_header_block_t *)hb;
 
-            header_block_om_node =
-                axiom_soap_header_block_get_base_node(header_block, env);
-            if (header_block_om_node)
+            header_block_om_node = axiom_soap_header_block_get_base_node(header_block, env);
+            if(header_block_om_node)
             {
-                header_block_om_ele = (axiom_element_t *)
-                    axiom_node_get_data_element(header_block_om_node, env);
-                if (header_block_om_ele)
+                header_block_om_ele = (axiom_element_t *)axiom_node_get_data_element(
+                    header_block_om_node, env);
+                if(header_block_om_ele)
                 {
-                    ns = axiom_element_get_namespace(header_block_om_ele, env,
-                                                     header_block_om_node);
-                    if (ns)
+                    ns
+                        = axiom_element_get_namespace(header_block_om_ele, env,
+                            header_block_om_node);
+                    if(ns)
                     {
                         hb_namespace_uri = axiom_namespace_get_uri(ns, env);
-                        if (axutil_strcmp(hb_namespace_uri, ns_uri) == 0)
+                        if(axutil_strcmp(hb_namespace_uri, ns_uri) == 0)
                         {
-                            axutil_array_list_add(header_block_list, env,
-                                                  header_block);
+                            axutil_array_list_add(header_block_list, env, header_block);
                             found++;
                         }
                     }
@@ -566,7 +536,7 @@ AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
             hb_namespace_uri = NULL;
         }
     }
-    if (found > 0)
+    if(found > 0)
     {
         return header_block_list;
     }
@@ -602,37 +572,35 @@ axiom_soap_header_remove_header_block(
     qname_ns = axutil_qname_get_uri(qname, env);
     qname_prefix = axutil_qname_get_prefix(qname, env);
 
-    if (!soap_header->header_blocks)
+    if(!soap_header->header_blocks)
     {
         return AXIS2_FAILURE;
     }
-    for (hi = axutil_hash_first(soap_header->header_blocks, env); hi; hi = axutil_hash_next(env, hi))
+    for(hi = axutil_hash_first(soap_header->header_blocks, env); hi; hi = axutil_hash_next(env, hi))
     {
         const void *key = NULL;
         void *val = NULL;
 
         axutil_hash_this(hi, &key, NULL, &val);
-        if (val)
+        if(val)
         {
             axiom_soap_header_block_t *header_block = NULL;
             axiom_element_t *ele = NULL;
             axiom_node_t *node = NULL;
 
-            header_block = (axiom_soap_header_block_t *) val;
+            header_block = (axiom_soap_header_block_t *)val;
             node = axiom_soap_header_block_get_base_node(header_block, env);
-            if (node)
+            if(node)
             {
                 axutil_qname_t *element_qname = NULL;
 
-                ele =
-                    (axiom_element_t *) axiom_node_get_data_element(node, env);
+                ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
                 element_qname = axiom_element_get_qname(ele, env, node);
-                if (axiom_soap_header_qname_matches(env, element_qname, qname) == AXIS2_TRUE)
+                if(axiom_soap_header_qname_matches(env, element_qname, qname) == AXIS2_TRUE)
                 {
                     axiom_node_detach(node, env);
                     /* axiom_node_free_tree(node, env); */
-                    axutil_hash_set(soap_header->header_blocks, key,
-                                    AXIS2_HASH_KEY_STRING, NULL);
+                    axutil_hash_set(soap_header->header_blocks, key, AXIS2_HASH_KEY_STRING, NULL);
                     axiom_soap_header_block_free(header_block, env);
                     axiom_node_free_tree(node, env);
                     break;
@@ -662,29 +630,26 @@ axiom_soap_header_qname_matches(
     axis2_char_t *ele_nsuri = NULL;
     axis2_char_t *match_nsuri = NULL;
 
-    if (!(qname_to_match))
+    if(!(qname_to_match))
     {
         return AXIS2_TRUE;
     }
-    if (qname_to_match)
+    if(qname_to_match)
     {
         match_lpart = axutil_qname_get_localpart(qname_to_match, env);
         match_nsuri = axutil_qname_get_uri(qname_to_match, env);
     }
-    if (element_qname)
+    if(element_qname)
     {
         ele_lpart = axutil_qname_get_localpart(element_qname, env);
         ele_nsuri = axutil_qname_get_uri(element_qname, env);
     }
 
-    lparts_match = (!match_lpart ||
-                    (axutil_strcmp(match_lpart, "") == 0) ||
-                    (element_qname &&
-                     (axutil_strcmp(ele_lpart, match_lpart) == 0)));
+    lparts_match = (!match_lpart || (axutil_strcmp(match_lpart, "") == 0) || (element_qname
+        && (axutil_strcmp(ele_lpart, match_lpart) == 0)));
 
-    uris_match = (!match_nsuri || (axutil_strcmp(match_nsuri, "") == 0) ||
-                  (element_qname &&
-                   (axutil_strcmp(ele_nsuri, match_nsuri) == 0)));
+    uris_match = (!match_nsuri || (axutil_strcmp(match_nsuri, "") == 0) || (element_qname
+        && (axutil_strcmp(ele_nsuri, match_nsuri) == 0)));
 
     return lparts_match && uris_match;
 }

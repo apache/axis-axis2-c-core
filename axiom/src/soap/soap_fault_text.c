@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -40,14 +39,12 @@ axiom_soap_fault_text_create(
 {
     axiom_soap_fault_text_t *fault_text = NULL;
 
-    fault_text = (axiom_soap_fault_text_t *) AXIS2_MALLOC(env->allocator,
-                                                          sizeof
-                                                          (axiom_soap_fault_text_t));
-    if (!fault_text)
+    fault_text = (axiom_soap_fault_text_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(axiom_soap_fault_text_t));
+    if(!fault_text)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                          "No memory. Cannot create SOAP fault text");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create SOAP fault text");
         return NULL;
     }
 
@@ -57,10 +54,10 @@ axiom_soap_fault_text_create(
     fault_text->lang_ns_used = AXIS2_FALSE;
 
     fault_text->lang_namespace = axiom_namespace_create(env,
-                                                        AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
-                                                        AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
+        AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
+        AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
 
-    if (!(fault_text->lang_namespace))
+    if(!(fault_text->lang_namespace))
     {
         return NULL;
     }
@@ -75,7 +72,7 @@ axiom_soap_fault_text_create_with_parent(
 {
     axiom_soap_fault_text_t *fault_text = NULL;
     axiom_element_t *this_ele = NULL;
-	int soap_version = -1;
+    int soap_version = -1;
     axiom_node_t *this_node = NULL;
     axiom_namespace_t *parent_ns = NULL;
     axiom_node_t *parent_node = NULL;
@@ -85,37 +82,34 @@ axiom_soap_fault_text_create_with_parent(
 
     fault_text = axiom_soap_fault_text_create(env);
 
-    if (!fault_text)
+    if(!fault_text)
     {
         return NULL;
     }
 
     parent_node = axiom_soap_fault_reason_get_base_node(parent, env);
-    if (!parent_node)
+    if(!parent_node)
     {
         axiom_soap_fault_text_free(fault_text, env);
         return NULL;
     }
 
-    parent_ele = (axiom_element_t *)
-        axiom_node_get_data_element(parent_node, env);
-    if (!parent_ele)
+    parent_ele = (axiom_element_t *)axiom_node_get_data_element(parent_node, env);
+    if(!parent_ele)
     {
         axiom_soap_fault_text_free(fault_text, env);
         return NULL;
     }
-    
-	soap_version = axiom_soap_fault_reason_get_soap_version(parent, env);
-	if (AXIOM_SOAP12 == soap_version)
+
+    soap_version = axiom_soap_fault_reason_get_soap_version(parent, env);
+    if(AXIOM_SOAP12 == soap_version)
     {
         parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
     }
-    this_ele = axiom_element_create(env,
-                                    parent_node,
-                                    AXIOM_SOAP12_SOAP_FAULT_TEXT_LOCAL_NAME,
-                                    parent_ns, &this_node);
+    this_ele = axiom_element_create(env, parent_node, AXIOM_SOAP12_SOAP_FAULT_TEXT_LOCAL_NAME,
+        parent_ns, &this_node);
 
-    if (!this_ele)
+    if(!this_ele)
     {
         axiom_soap_fault_text_free(fault_text, env);
         return NULL;
@@ -134,7 +128,7 @@ axiom_soap_fault_text_free(
     const axutil_env_t * env)
 {
 
-    if (fault_text->lang_ns_used == AXIS2_FALSE && fault_text->lang_namespace)
+    if(fault_text->lang_ns_used == AXIS2_FALSE && fault_text->lang_namespace)
     {
         axiom_namespace_free(fault_text->lang_namespace, env);
         fault_text->lang_namespace = NULL;
@@ -155,13 +149,13 @@ axiom_soap_fault_text_set_lang(
 
     AXIS2_PARAM_CHECK(env->error, lang, AXIS2_FAILURE);
 
-    if (fault_text->lang_attribute)
+    if(fault_text->lang_attribute)
     {
         axis2_char_t *attr_lang = NULL;
         attr_lang = axiom_attribute_get_value(fault_text->lang_attribute, env);
-        if (attr_lang)
+        if(attr_lang)
         {
-            if (axutil_strcmp(attr_lang, lang) == 0)
+            if(axutil_strcmp(attr_lang, lang) == 0)
             {
 
                 /** this attribute already exists */
@@ -173,32 +167,26 @@ axiom_soap_fault_text_set_lang(
     }
 
     fault_text->lang_attribute = axiom_attribute_create(env,
-                                                        AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
-                                                        lang,
-                                                        fault_text->
-                                                        lang_namespace);
-    if (!fault_text->lang_attribute)
+        AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME, lang, fault_text-> lang_namespace);
+    if(!fault_text->lang_attribute)
     {
         return AXIS2_FAILURE;
     }
 
-    if (!fault_text->om_ele_node)
+    if(!fault_text->om_ele_node)
     {
         return AXIS2_FAILURE;
     }
-    om_ele =
-        (axiom_element_t *) axiom_node_get_data_element(fault_text->om_ele_node,
-                                                        env);
-    if (!om_ele)
+    om_ele = (axiom_element_t *)axiom_node_get_data_element(fault_text->om_ele_node, env);
+    if(!om_ele)
     {
         return AXIS2_FAILURE;
     }
 
-    status =
-        axiom_element_add_attribute(om_ele, env, fault_text->lang_attribute,
-                                    fault_text->om_ele_node);
+    status = axiom_element_add_attribute(om_ele, env, fault_text->lang_attribute,
+        fault_text->om_ele_node);
 
-    if (status == AXIS2_SUCCESS)
+    if(status == AXIS2_SUCCESS)
     {
         fault_text->lang_ns_used = AXIS2_TRUE;
     }
@@ -218,30 +206,27 @@ axiom_soap_fault_text_get_lang(
     axiom_element_t *om_ele = NULL;
     axutil_qname_t *tmp_qname = NULL;
 
-    if (!fault_text->om_ele_node)
+    if(!fault_text->om_ele_node)
     {
         return NULL;
     }
-    om_ele = (axiom_element_t *)
-        axiom_node_get_data_element(fault_text->om_ele_node, env);
-    if (!om_ele)
+    om_ele = (axiom_element_t *)axiom_node_get_data_element(fault_text->om_ele_node, env);
+    if(!om_ele)
     {
         return NULL;
     }
-    if (!(fault_text->lang_attribute))
+    if(!(fault_text->lang_attribute))
     {
 
         /* this logic need to be rechecked */
-        tmp_qname = axutil_qname_create(env,
-                                        AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
-                                        AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
-                                        AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
+        tmp_qname = axutil_qname_create(env, AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
+            AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
+            AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
 
-        fault_text->lang_attribute =
-            axiom_element_get_attribute(om_ele, env, tmp_qname);
+        fault_text->lang_attribute = axiom_element_get_attribute(om_ele, env, tmp_qname);
         axutil_qname_free(tmp_qname, env);
     }
-    if (fault_text->lang_attribute)
+    if(fault_text->lang_attribute)
     {
         return axiom_attribute_get_value(fault_text->lang_attribute, env);
     }
@@ -256,10 +241,9 @@ axiom_soap_fault_text_set_base_node(
     axiom_node_t * node)
 {
 
-    if (node && (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT))
+    if(node && (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT))
     {
-        AXIS2_HANDLE_ERROR(env,
-                        AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     fault_text->om_ele_node = node;
@@ -283,16 +267,14 @@ axiom_soap_fault_text_set_text(
 {
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
 
-    if (fault_text->om_ele_node)
+    if(fault_text->om_ele_node)
     {
         axiom_element_t *text_ele = NULL;
-        text_ele = (axiom_element_t *)
-            axiom_node_get_data_element(fault_text->om_ele_node, env);
-        if (text_ele)
+        text_ele = (axiom_element_t *)axiom_node_get_data_element(fault_text->om_ele_node, env);
+        if(text_ele)
         {
-            axiom_element_set_text(text_ele, env, value,
-                                   fault_text->om_ele_node);
-            if (lang)
+            axiom_element_set_text(text_ele, env, value, fault_text->om_ele_node);
+            if(lang)
             {
                 axiom_soap_fault_text_set_lang(fault_text, env, lang);
             }
@@ -309,15 +291,13 @@ axiom_soap_fault_text_get_text(
 {
     axis2_char_t *text = NULL;
 
-    if (fault_text->om_ele_node)
+    if(fault_text->om_ele_node)
     {
         axiom_element_t *text_ele = NULL;
-        text_ele = (axiom_element_t *)
-            axiom_node_get_data_element(fault_text->om_ele_node, env);
-        if (text_ele)
+        text_ele = (axiom_element_t *)axiom_node_get_data_element(fault_text->om_ele_node, env);
+        if(text_ele)
         {
-            text = axiom_element_get_text(text_ele, env,
-                                          fault_text->om_ele_node);
+            text = axiom_element_get_text(text_ele, env, fault_text->om_ele_node);
             return text;
         }
     }

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -34,15 +33,13 @@ axiom_soap_fault_value_create(
 {
     axiom_soap_fault_value_t *fault_value = NULL;
 
-    fault_value = (axiom_soap_fault_value_t *) AXIS2_MALLOC(env->allocator,
-                                                            sizeof
-                                                            (axiom_soap_fault_value_t));
+    fault_value = (axiom_soap_fault_value_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(axiom_soap_fault_value_t));
 
-    if (!fault_value)
+    if(!fault_value)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                          "No memory. Cannot create SOAP fault value");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create SOAP fault value");
         return NULL;
     }
 
@@ -69,39 +66,36 @@ axiom_soap_fault_value_create_with_subcode(
 
     fault_value = axiom_soap_fault_value_create(env);
 
-    if (!fault_value)
+    if(!fault_value)
     {
         return NULL;
     }
 
     parent_node = axiom_soap_fault_sub_code_get_base_node(parent, env);
 
-    if (!parent_node)
+    if(!parent_node)
     {
         axiom_soap_fault_value_free(fault_value, env);
         return NULL;
     }
 
-    parent_ele = (axiom_element_t *)
-        axiom_node_get_data_element(parent_node, env);
+    parent_ele = (axiom_element_t *)axiom_node_get_data_element(parent_node, env);
 
-    if (!parent_ele)
+    if(!parent_ele)
     {
         axiom_soap_fault_value_free(fault_value, env);
         return NULL;
     }
     soap_version = axiom_soap_fault_sub_code_get_soap_version(parent, env);
-    if (soap_version == AXIOM_SOAP12)
+    if(soap_version == AXIOM_SOAP12)
     {
         parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
     }
 
-    this_ele = axiom_element_create(env,
-                                    parent_node,
-                                    AXIOM_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME,
-                                    parent_ns, &this_node);
+    this_ele = axiom_element_create(env, parent_node, AXIOM_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME,
+        parent_ns, &this_node);
 
-    if (!this_ele)
+    if(!this_ele)
     {
         axiom_soap_fault_value_free(fault_value, env);
         return NULL;
@@ -131,35 +125,32 @@ axiom_soap_fault_value_create_with_code(
 
     fault_value = axiom_soap_fault_value_create(env);
 
-    if (!fault_value)
+    if(!fault_value)
     {
         return NULL;
     }
 
     parent_node = axiom_soap_fault_code_get_base_node(parent, env);
-    if (!parent_node)
+    if(!parent_node)
     {
         axiom_soap_fault_value_free(fault_value, env);
         return NULL;
     }
-    parent_ele = (axiom_element_t *)
-        axiom_node_get_data_element(parent_node, env);
-    if (!parent_ele)
+    parent_ele = (axiom_element_t *)axiom_node_get_data_element(parent_node, env);
+    if(!parent_ele)
     {
         axiom_soap_fault_value_free(fault_value, env);
         return NULL;
     }
     soap_version = axiom_soap_fault_code_get_soap_version(parent, env);
-    if (soap_version == AXIOM_SOAP12)
+    if(soap_version == AXIOM_SOAP12)
     {
         parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
     }
-    this_ele = axiom_element_create(env,
-                                    parent_node,
-                                    AXIOM_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME,
-                                    parent_ns, &this_node);
+    this_ele = axiom_element_create(env, parent_node, AXIOM_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME,
+        parent_ns, &this_node);
 
-    if (!this_ele)
+    if(!this_ele)
     {
         axiom_soap_fault_value_free(fault_value, env);
         return NULL;
@@ -187,10 +178,9 @@ axiom_soap_fault_value_set_base_node(
     axiom_node_t * node)
 {
 
-    if (node && (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT))
+    if(node && (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT))
     {
-        AXIS2_HANDLE_ERROR(env,
-                        AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
+        AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
@@ -216,14 +206,13 @@ axiom_soap_fault_value_get_text(
 
     value_node = axiom_soap_fault_value_get_base_node(fault_value, env);
 
-    if (!value_node)
+    if(!value_node)
     {
         return NULL;
     }
-    value_element =
-        (axiom_element_t *) axiom_node_get_data_element(value_node, env);
+    value_element = (axiom_element_t *)axiom_node_get_data_element(value_node, env);
 
-    if (!value_element)
+    if(!value_element)
     {
         return NULL;
     }
@@ -237,15 +226,12 @@ axiom_soap_fault_value_set_text(
     axis2_char_t * text)
 {
     AXIS2_PARAM_CHECK(env->error, text, AXIS2_FAILURE);
-    if (fault_value->om_ele_node &&
-        axiom_node_get_node_type(fault_value->om_ele_node,
-                                 env) == AXIOM_ELEMENT)
+    if(fault_value->om_ele_node && axiom_node_get_node_type(fault_value->om_ele_node, env)
+        == AXIOM_ELEMENT)
     {
         axiom_element_t *om_ele = NULL;
-        om_ele = (axiom_element_t *)
-            axiom_node_get_data_element(fault_value->om_ele_node, env);
-        return axiom_element_set_text(om_ele, env, text,
-                                      fault_value->om_ele_node);
+        om_ele = (axiom_element_t *)axiom_node_get_data_element(fault_value->om_ele_node, env);
+        return axiom_element_set_text(om_ele, env, text, fault_value->om_ele_node);
     }
     return AXIS2_FAILURE;
 }

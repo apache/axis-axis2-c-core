@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -48,15 +47,13 @@ axiom_data_source_create(
 
     *node = axiom_node_create(env);
 
-    if (!(*node))
+    if(!(*node))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    data_source = (axiom_data_source_t *) AXIS2_MALLOC(env->allocator,
-                                                       sizeof
-                                                       (axiom_data_source_t));
-    if (!data_source)
+    data_source = (axiom_data_source_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_data_source_t));
+    if(!data_source)
     {
         AXIS2_FREE(env->allocator, *node);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -70,7 +67,7 @@ axiom_data_source_create(
     data_source->stream = NULL;
 
     data_source->stream = axutil_stream_create_basic(env);
-    if (!(data_source->stream))
+    if(!(data_source->stream))
     {
         AXIS2_FREE(env->allocator, *node);
         AXIS2_FREE(env->allocator, data_source);
@@ -78,7 +75,7 @@ axiom_data_source_create(
         return NULL;
     }
 
-    if (parent && axiom_node_get_node_type(parent, env) == AXIOM_ELEMENT)
+    if(parent && axiom_node_get_node_type(parent, env) == AXIOM_ELEMENT)
     {
         axiom_node_add_child(parent, env, (*node));
     }
@@ -93,7 +90,7 @@ axiom_data_source_free(
 {
     AXIS2_ENV_CHECK(env, void);
 
-    if (data_source->stream)
+    if(data_source->stream)
     {
         axutil_stream_free(data_source->stream, env);
     }
@@ -118,7 +115,7 @@ axiom_data_source_serialize(
 
     data = axutil_stream_get_buffer(data_source->stream, env);
     data_len = axutil_stream_get_len(data_source->stream, env);
-    if (data)
+    if(data)
     {
         data[data_len] = '\0';
         status = axiom_output_write(om_output, env, AXIOM_DATA_SOURCE, 1, data);

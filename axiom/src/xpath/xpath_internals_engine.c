@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,13 +21,14 @@
 #include "xpath_internals_iterators.h"
 
 /* Evaluates the expath expression */
-axiom_xpath_result_t * axiom_xpath_run(axiom_xpath_context_t *context)
+axiom_xpath_result_t *
+axiom_xpath_run(
+    axiom_xpath_context_t *context)
 {
     axiom_xpath_result_t* res;
 
     /* Initialize result ret */
-    res = AXIS2_MALLOC(context->env->allocator,
-            sizeof(axiom_xpath_result_t));
+    res = AXIS2_MALLOC(context->env->allocator, sizeof(axiom_xpath_result_t));
 
     res->flag = 0;
 
@@ -37,7 +37,7 @@ axiom_xpath_result_t * axiom_xpath_run(axiom_xpath_context_t *context)
     context->stack = axutil_stack_create(context->env);
 
     /* Expression is empty */
-    if (context->expr->start == AXIOM_XPATH_PARSE_END)
+    if(context->expr->start == AXIOM_XPATH_PARSE_END)
     {
         return res;
     }
@@ -45,18 +45,18 @@ axiom_xpath_result_t * axiom_xpath_run(axiom_xpath_context_t *context)
     axiom_xpath_evaluate_operation(context, context->expr->start);
 
     /* Add nodes to the result set from the stack */
-    while (axutil_stack_size(context->stack, context->env) > 0)
+    while(axutil_stack_size(context->stack, context->env) > 0)
     {
-        axutil_array_list_add(
-            res->nodes, context->env,
-            axutil_stack_pop(context->stack, context->env));
+        axutil_array_list_add(res->nodes, context->env, axutil_stack_pop(context->stack,
+            context->env));
     }
 
     return res;
 }
 
 /* Casting functions; these make use of the casting functions defined in xpath.h */
-void axiom_xpath_cast_boolean(
+void
+axiom_xpath_cast_boolean(
     axiom_xpath_result_node_t *node,
     axiom_xpath_context_t *context)
 {
@@ -67,7 +67,8 @@ void axiom_xpath_cast_boolean(
     node->type = AXIOM_XPATH_TYPE_BOOLEAN;
 }
 
-void axiom_xpath_cast_number(
+void
+axiom_xpath_cast_number(
     axiom_xpath_result_node_t *node,
     axiom_xpath_context_t *context)
 {
@@ -78,7 +79,8 @@ void axiom_xpath_cast_number(
     node->type = AXIOM_XPATH_TYPE_NUMBER;
 }
 
-void axiom_xpath_cast_string(
+void
+axiom_xpath_cast_string(
     axiom_xpath_result_node_t *node,
     axiom_xpath_context_t *context)
 {
@@ -89,21 +91,21 @@ void axiom_xpath_cast_string(
 
 /* Evaluate whether two results are equal
 
-   If either node is a boolean other is casted to a boolean;
-   Otherwise, if either node is a number other is casted to a number;
-   Otherwise, both nodes are casted to strings.*/
-axis2_bool_t axiom_xpath_compare_equal(
+ If either node is a boolean other is casted to a boolean;
+ Otherwise, if either node is a number other is casted to a number;
+ Otherwise, both nodes are casted to strings.*/
+axis2_bool_t
+axiom_xpath_compare_equal(
     axiom_xpath_result_node_t *node1,
     axiom_xpath_result_node_t *node2,
     axiom_xpath_context_t *context)
 {
-    if (node1->type == AXIOM_XPATH_TYPE_BOOLEAN
-            || node2->type == AXIOM_XPATH_TYPE_BOOLEAN)
+    if(node1->type == AXIOM_XPATH_TYPE_BOOLEAN || node2->type == AXIOM_XPATH_TYPE_BOOLEAN)
     {
         axiom_xpath_cast_boolean(node1, context);
         axiom_xpath_cast_boolean(node2, context);
 
-        if (*(axis2_bool_t*)(node1->value) == *(axis2_bool_t*)(node2->value))
+        if(*(axis2_bool_t*)(node1->value) == *(axis2_bool_t*)(node2->value))
         {
             return AXIS2_TRUE;
         }
@@ -113,13 +115,12 @@ axis2_bool_t axiom_xpath_compare_equal(
         }
     }
 
-    if (node1->type == AXIOM_XPATH_TYPE_NUMBER
-            || node2->type == AXIOM_XPATH_TYPE_NUMBER)
+    if(node1->type == AXIOM_XPATH_TYPE_NUMBER || node2->type == AXIOM_XPATH_TYPE_NUMBER)
     {
         axiom_xpath_cast_number(node1, context);
         axiom_xpath_cast_number(node2, context);
 
-        if (*(double *)(node1->value) == *(double *)(node2->value))
+        if(*(double *)(node1->value) == *(double *)(node2->value))
         {
             return AXIS2_TRUE;
         }
@@ -132,9 +133,7 @@ axis2_bool_t axiom_xpath_compare_equal(
     axiom_xpath_cast_string(node1, context);
     axiom_xpath_cast_string(node2, context);
 
-    if (axutil_strcmp(
-                (axis2_char_t *)(node1->value),
-                (axis2_char_t *)(node2->value)) == 0)
+    if(axutil_strcmp((axis2_char_t *)(node1->value), (axis2_char_t *)(node2->value)) == 0)
     {
         return AXIS2_TRUE;
     }
@@ -145,15 +144,16 @@ axis2_bool_t axiom_xpath_compare_equal(
 }
 
 /* Convert a node set to boolean */
-axis2_bool_t axiom_xpath_convert_to_boolean(
+axis2_bool_t
+axiom_xpath_convert_to_boolean(
     axutil_array_list_t *node_set,
     axiom_xpath_context_t *context)
 {
-    if (axutil_array_list_size(node_set, context->env) == 0)
+    if(axutil_array_list_size(node_set, context->env) == 0)
     {
         return AXIS2_FALSE;
     }
-    else if (axutil_array_list_size(node_set, context->env) >= 2)
+    else if(axutil_array_list_size(node_set, context->env) >= 2)
     {
         return AXIS2_TRUE;
     }
@@ -169,14 +169,14 @@ axis2_bool_t axiom_xpath_convert_to_boolean(
 /* Operators */
 
 /* Literal */
-int axiom_xpath_literal_operator(
+int
+axiom_xpath_literal_operator(
     axiom_xpath_context_t *context,
     axiom_xpath_operation_t * op)
 {
     axiom_xpath_result_node_t *node;
 
-    node = AXIS2_MALLOC(context->env->allocator,
-            sizeof(axiom_xpath_result_node_t));
+    node = AXIS2_MALLOC(context->env->allocator, sizeof(axiom_xpath_result_node_t));
 
     /* Set the context node to NULL */
     /* This is not required; it gives some problems */
@@ -191,14 +191,14 @@ int axiom_xpath_literal_operator(
 }
 
 /* Number */
-int axiom_xpath_number_operator(
+int
+axiom_xpath_number_operator(
     axiom_xpath_context_t *context,
     axiom_xpath_operation_t * op)
 {
     axiom_xpath_result_node_t *node;
 
-    node = AXIS2_MALLOC(context->env->allocator,
-            sizeof(axiom_xpath_result_node_t));
+    node = AXIS2_MALLOC(context->env->allocator, sizeof(axiom_xpath_result_node_t));
 
     /* Set the context node to NULL */
     /* This is not required; it gives some problems */
@@ -213,7 +213,8 @@ int axiom_xpath_number_operator(
 }
 
 /* Path Expression */
-int axiom_xpath_path_expression_operator(
+int
+axiom_xpath_path_expression_operator(
     axiom_xpath_context_t *context,
     axiom_xpath_operation_t * op)
 {
@@ -225,7 +226,7 @@ int axiom_xpath_path_expression_operator(
     int i;
 
     /* Filter operation */
-    if (op->op1 == AXIOM_XPATH_PARSE_END)
+    if(op->op1 == AXIOM_XPATH_PARSE_END)
     {
         return 0;
     }
@@ -233,7 +234,7 @@ int axiom_xpath_path_expression_operator(
     filter_res_n = axiom_xpath_evaluate_operation(context, op->op1);
 
     /* Relative location path */
-    if (op->op2 == AXIOM_XPATH_PARSE_END)
+    if(op->op2 == AXIOM_XPATH_PARSE_END)
     {
         return filter_res_n;
     }
@@ -244,23 +245,18 @@ int axiom_xpath_path_expression_operator(
     /* Array list to add all results from the filter expression */
     arr = axutil_array_list_create(context->env, 0);
 
-    for (i = 0; i < filter_res_n; i++)
+    for(i = 0; i < filter_res_n; i++)
     {
-        axutil_array_list_add(
-            arr,
-            context->env,
-            axutil_stack_pop(context->stack, context->env));
+        axutil_array_list_add(arr, context->env, axutil_stack_pop(context->stack, context->env));
     }
 
     /* Evaluate relative location path for all results from the
-       filter expression */
-    for (i = 0; i < axutil_array_list_size(arr, context->env); i++)
+     filter expression */
+    for(i = 0; i < axutil_array_list_size(arr, context->env); i++)
     {
-        res_node =
-            (axiom_xpath_result_node_t *)axutil_array_list_get(
-                arr, context->env, i);
+        res_node = (axiom_xpath_result_node_t *)axutil_array_list_get(arr, context->env, i);
 
-        if (res_node->type != AXIOM_XPATH_TYPE_NODE)
+        if(res_node->type != AXIOM_XPATH_TYPE_NODE)
         {
             continue;
         }
@@ -276,7 +272,8 @@ int axiom_xpath_path_expression_operator(
 }
 
 /* Or Expression */
-int axiom_xpath_orexpr_operator(
+int
+axiom_xpath_orexpr_operator(
     axiom_xpath_context_t *context,
     axiom_xpath_operation_t * op)
 {
@@ -290,9 +287,9 @@ int axiom_xpath_orexpr_operator(
     op12[1] = op->op2;
 
     /* Evaluate both operands and get number of results */
-    for (i = 0; i < 2; i++)
+    for(i = 0; i < 2; i++)
     {
-        if (op12[i] == AXIOM_XPATH_PARSE_END)
+        if(op12[i] == AXIOM_XPATH_PARSE_END)
         {
             continue;
         }
@@ -300,30 +297,27 @@ int axiom_xpath_orexpr_operator(
         n_nodes[i] = axiom_xpath_evaluate_operation(context, op12[i]);
     }
 
-
-    for (i = 1; i >= 0; i--)
+    for(i = 1; i >= 0; i--)
     {
         arr[i] = axutil_array_list_create(context->env, 0);
 
-        for (j = 0; j < n_nodes[i]; j++)
+        for(j = 0; j < n_nodes[i]; j++)
         {
-            axutil_array_list_add(
-                arr[i],
-                context->env,
-                axutil_stack_pop(context->stack, context->env));
+            axutil_array_list_add(arr[i], context->env, axutil_stack_pop(context->stack,
+                context->env));
         }
     }
 
-    node = AXIS2_MALLOC(context->env->allocator,
-            sizeof(axiom_xpath_result_node_t));
+    node = AXIS2_MALLOC(context->env->allocator, sizeof(axiom_xpath_result_node_t));
 
     node->type = AXIOM_XPATH_TYPE_BOOLEAN;
     node->value = NULL;
 
     /* Checking equality
-       - If any node from the first set is equal to any node from the second set
-         the result is true */
-    if (axiom_xpath_convert_to_boolean(arr[0], context) || axiom_xpath_convert_to_boolean(arr[1], context))
+     - If any node from the first set is equal to any node from the second set
+     the result is true */
+    if(axiom_xpath_convert_to_boolean(arr[0], context) || axiom_xpath_convert_to_boolean(arr[1],
+        context))
     {
         AXIOM_XPATH_CAST_SET_VALUE(axis2_bool_t, AXIS2_TRUE);
 
@@ -343,7 +337,8 @@ int axiom_xpath_orexpr_operator(
 }
 
 /* And Expression */
-int axiom_xpath_andexpr_operator(
+int
+axiom_xpath_andexpr_operator(
     axiom_xpath_context_t *context,
     axiom_xpath_operation_t * op)
 {
@@ -357,9 +352,9 @@ int axiom_xpath_andexpr_operator(
     op12[1] = op->op2;
 
     /* Evaluate both operands and get number of results */
-    for (i = 0; i < 2; i++)
+    for(i = 0; i < 2; i++)
     {
-        if (op12[i] == AXIOM_XPATH_PARSE_END)
+        if(op12[i] == AXIOM_XPATH_PARSE_END)
         {
             continue;
         }
@@ -367,30 +362,27 @@ int axiom_xpath_andexpr_operator(
         n_nodes[i] = axiom_xpath_evaluate_operation(context, op12[i]);
     }
 
-
-    for (i = 1; i >= 0; i--)
+    for(i = 1; i >= 0; i--)
     {
         arr[i] = axutil_array_list_create(context->env, 0);
 
-        for (j = 0; j < n_nodes[i]; j++)
+        for(j = 0; j < n_nodes[i]; j++)
         {
-            axutil_array_list_add(
-                arr[i],
-                context->env,
-                axutil_stack_pop(context->stack, context->env));
+            axutil_array_list_add(arr[i], context->env, axutil_stack_pop(context->stack,
+                context->env));
         }
     }
 
-    node = AXIS2_MALLOC(context->env->allocator,
-            sizeof(axiom_xpath_result_node_t));
+    node = AXIS2_MALLOC(context->env->allocator, sizeof(axiom_xpath_result_node_t));
 
     node->type = AXIOM_XPATH_TYPE_BOOLEAN;
     node->value = NULL;
 
     /* Checking equality
-       - If any node from the first set is equal to any node from the second set
-         the result is true */
-    if (axiom_xpath_convert_to_boolean(arr[0], context) && axiom_xpath_convert_to_boolean(arr[1], context))
+     - If any node from the first set is equal to any node from the second set
+     the result is true */
+    if(axiom_xpath_convert_to_boolean(arr[0], context) && axiom_xpath_convert_to_boolean(arr[1],
+        context))
     {
         AXIOM_XPATH_CAST_SET_VALUE(axis2_bool_t, AXIS2_TRUE);
 
@@ -410,7 +402,8 @@ int axiom_xpath_andexpr_operator(
 }
 
 /* Equal Expression */
-int axiom_xpath_equalexpr_operator(
+int
+axiom_xpath_equalexpr_operator(
     axiom_xpath_context_t *context,
     axiom_xpath_operation_t * op)
 {
@@ -424,9 +417,9 @@ int axiom_xpath_equalexpr_operator(
     op12[1] = op->op2;
 
     /* Evaluate both operands and get number of results */
-    for (i = 0; i < 2; i++)
+    for(i = 0; i < 2; i++)
     {
-        if (op12[i] == AXIOM_XPATH_PARSE_END)
+        if(op12[i] == AXIOM_XPATH_PARSE_END)
         {
             continue;
         }
@@ -434,37 +427,31 @@ int axiom_xpath_equalexpr_operator(
         n_nodes[i] = axiom_xpath_evaluate_operation(context, op12[i]);
     }
 
-
-    for (i = 1; i >= 0; i--)
+    for(i = 1; i >= 0; i--)
     {
         arr[i] = axutil_array_list_create(context->env, 0);
 
-        for (j = 0; j < n_nodes[i]; j++)
+        for(j = 0; j < n_nodes[i]; j++)
         {
-            axutil_array_list_add(
-                arr[i],
-                context->env,
-                axutil_stack_pop(context->stack, context->env));
+            axutil_array_list_add(arr[i], context->env, axutil_stack_pop(context->stack,
+                context->env));
         }
     }
 
-    node = AXIS2_MALLOC(context->env->allocator,
-            sizeof(axiom_xpath_result_node_t));
+    node = AXIS2_MALLOC(context->env->allocator, sizeof(axiom_xpath_result_node_t));
 
     node->type = AXIOM_XPATH_TYPE_BOOLEAN;
     node->value = NULL;
 
     /* Checking equality
-       - If any node from the first set is equal to any node from the second set
-         the result is true */
-    for (i = 0; i < n_nodes[0]; i++)
+     - If any node from the first set is equal to any node from the second set
+     the result is true */
+    for(i = 0; i < n_nodes[0]; i++)
     {
-        for (j = 0; j < n_nodes[1]; j++)
+        for(j = 0; j < n_nodes[1]; j++)
         {
-            if (axiom_xpath_compare_equal(
-                        axutil_array_list_get(arr[0], context->env, i),
-                        axutil_array_list_get(arr[1], context->env, j),
-                        context))
+            if(axiom_xpath_compare_equal(axutil_array_list_get(arr[0], context->env, i),
+                axutil_array_list_get(arr[1], context->env, j), context))
             {
                 AXIOM_XPATH_CAST_SET_VALUE(axis2_bool_t, AXIS2_TRUE);
 
@@ -474,13 +461,13 @@ int axiom_xpath_equalexpr_operator(
             }
         }
 
-        if (j < n_nodes[1])
+        if(j < n_nodes[1])
         {
             break;
         }
     }
 
-    if (!node->value)
+    if(!node->value)
     {
         AXIOM_XPATH_CAST_SET_VALUE(axis2_bool_t, AXIS2_FALSE);
 
@@ -494,7 +481,8 @@ int axiom_xpath_equalexpr_operator(
 }
 
 /* Union */
-int axiom_xpath_union_operator(
+int
+axiom_xpath_union_operator(
     axiom_xpath_context_t *context,
     axiom_xpath_operation_t * op)
 {
@@ -505,9 +493,9 @@ int axiom_xpath_union_operator(
     op12[0] = op->op1;
     op12[1] = op->op2;
 
-    for (i = 0; i < 2; i++)
+    for(i = 0; i < 2; i++)
     {
-        if (op12[i] == AXIOM_XPATH_PARSE_END)
+        if(op12[i] == AXIOM_XPATH_PARSE_END)
         {
             continue;
         }
@@ -519,23 +507,24 @@ int axiom_xpath_union_operator(
 }
 
 /* Set context node depending on whether relative or absolute location path */
-int axiom_xpath_start_node_operator(
+int
+axiom_xpath_start_node_operator(
     axiom_xpath_context_t *context,
     axiom_xpath_operation_t * op)
 {
     int n_nodes = 0;
 
-    if (op->op1 == AXIOM_XPATH_PARSE_END)
+    if(op->op1 == AXIOM_XPATH_PARSE_END)
     {
         return 0;
     }
 
-    if (op->opr == AXIOM_XPATH_OPERATION_ROOT_NODE)
+    if(op->opr == AXIOM_XPATH_OPERATION_ROOT_NODE)
     {
         context->node = context->root_node;
         n_nodes += axiom_xpath_evaluate_operation(context, op->op1);
     }
-    else if (op->opr == AXIOM_XPATH_OPERATION_CONTEXT_NODE)
+    else if(op->opr == AXIOM_XPATH_OPERATION_CONTEXT_NODE)
     {
         n_nodes += axiom_xpath_evaluate_operation(context, op->op1);
     }
@@ -544,7 +533,8 @@ int axiom_xpath_start_node_operator(
 }
 
 /* Step */
-int axiom_xpath_step_operator(
+int
+axiom_xpath_step_operator(
     axiom_xpath_context_t *context,
     axiom_xpath_operation_t * op)
 {
@@ -552,7 +542,7 @@ int axiom_xpath_step_operator(
     axiom_xpath_iterator_t iter;
     axiom_xpath_axis_t axis;
 
-    if (op->op1 == AXIOM_XPATH_PARSE_END)
+    if(op->op1 == AXIOM_XPATH_PARSE_END)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf("Node test operator empty\n");
@@ -561,7 +551,7 @@ int axiom_xpath_step_operator(
         return AXIOM_XPATH_EVALUATION_ERROR;
     }
 
-    if (op->op2 == AXIOM_XPATH_PARSE_END)
+    if(op->op2 == AXIOM_XPATH_PARSE_END)
     {
         return 0;
     }
@@ -570,7 +560,7 @@ int axiom_xpath_step_operator(
     node_test_op = AXIOM_XPATH_OPR_GET(op->op1);
 
     /* Get the axis */
-    if (!node_test_op->par2)
+    if(!node_test_op->par2)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf("axis is NULL in the step operator\n");
@@ -579,31 +569,28 @@ int axiom_xpath_step_operator(
     }
     axis = *((axiom_xpath_axis_t *)node_test_op->par2);
 
-
     /* Get the iteration for the axis */
     iter = axiom_xpath_get_iterator(axis);
 
-    return iter(context,
-            op->op1 /* node test */,
-            op->op2 /* next step */,
-            node_test_op->op1 /* predicate */);
+    return iter(context, op->op1 /* node test */, op->op2 /* next step */, node_test_op->op1 /* predicate */);
 }
 
 /* Predicates */
-axis2_bool_t axiom_xpath_evaluate_predicate_condition(
+axis2_bool_t
+axiom_xpath_evaluate_predicate_condition(
     axiom_xpath_context_t *context,
     int n_nodes)
 {
     axiom_xpath_result_node_t *res;
     int i;
 
-    if (n_nodes <= 0)
+    if(n_nodes <= 0)
     {
         return AXIS2_FALSE;
     }
-    else if (n_nodes > 1)
+    else if(n_nodes > 1)
     {
-        for (i = 0; i < n_nodes; i++)
+        for(i = 0; i < n_nodes; i++)
         {
             axutil_stack_pop(context->stack, context->env);
         }
@@ -612,12 +599,11 @@ axis2_bool_t axiom_xpath_evaluate_predicate_condition(
     }
     else
     {
-        res = (axiom_xpath_result_node_t *)axutil_stack_pop(
-                    context->stack, context->env);
+        res = (axiom_xpath_result_node_t *)axutil_stack_pop(context->stack, context->env);
 
-        if (res->type == AXIOM_XPATH_TYPE_NUMBER)
+        if(res->type == AXIOM_XPATH_TYPE_NUMBER)
         {
-            if (*(double *)(res->value) == context->position)
+            if(*(double *)(res->value) == context->position)
             {
                 return AXIS2_TRUE;
             }
@@ -626,7 +612,7 @@ axis2_bool_t axiom_xpath_evaluate_predicate_condition(
                 return AXIS2_FAILURE;
             }
         }
-        else if (res->type == AXIOM_XPATH_TYPE_BOOLEAN)
+        else if(res->type == AXIOM_XPATH_TYPE_BOOLEAN)
         {
             return *(axis2_bool_t *)(res->value);
         }
@@ -638,7 +624,8 @@ axis2_bool_t axiom_xpath_evaluate_predicate_condition(
 }
 
 /* Predicate */
-int axiom_xpath_evaluate_predicate(
+int
+axiom_xpath_evaluate_predicate(
     axiom_xpath_context_t *context,
     int op_next,
     int op_predicate)
@@ -649,7 +636,7 @@ int axiom_xpath_evaluate_predicate(
     axiom_xpath_operation_t * pred_op;
     axiom_node_t *context_node = context->node;
 
-    if (op_predicate == AXIOM_XPATH_PARSE_END)
+    if(op_predicate == AXIOM_XPATH_PARSE_END)
     {
         return axiom_xpath_evaluate_operation(context, op_next);
     }
@@ -660,7 +647,7 @@ int axiom_xpath_evaluate_predicate(
         pred_op->pos++;
 
         /* Evaluate the predicate */
-        if (pred_op->op1 != AXIOM_XPATH_PARSE_END)
+        if(pred_op->op1 != AXIOM_XPATH_PARSE_END)
         {
             n_res = axiom_xpath_evaluate_operation(context, pred_op->op1);
             context->position = pred_op->pos;
@@ -672,20 +659,19 @@ int axiom_xpath_evaluate_predicate(
             res = AXIS2_TRUE;
         }
         /* A PredicateExpr is evaluated by evaluating the Expr and
-           converting the result to a boolean. If the result is a number,
-           the result will be converted to true if the number is equal to the
-           context position and will be converted to false otherwise; if the
-           result is not a number, then the result will be converted as if
-           by a call to the boolean function. */
+         converting the result to a boolean. If the result is a number,
+         the result will be converted to true if the number is equal to the
+         context position and will be converted to false otherwise; if the
+         result is not a number, then the result will be converted as if
+         by a call to the boolean function. */
 
         /* Transform the result to number or boolean ? */
 
-        if (res)
+        if(res)
         {
             context->node = context_node;
 
-            return axiom_xpath_evaluate_predicate(
-                        context, op_next, pred_op->op2);
+            return axiom_xpath_evaluate_predicate(context, op_next, pred_op->op2);
         }
     }
 
@@ -693,7 +679,8 @@ int axiom_xpath_evaluate_predicate(
 }
 
 /* Node test match */
-axis2_bool_t axiom_xpath_node_test_match(
+axis2_bool_t
+axiom_xpath_node_test_match(
     axiom_xpath_context_t *context,
     axiom_xpath_node_test_t *node_test)
 {
@@ -702,7 +689,7 @@ axis2_bool_t axiom_xpath_node_test_match(
     axis2_char_t *name = NULL;
     axiom_namespace_t *ns = NULL, *xpath_ns = NULL;
 
-    if (!context->node && !context->attribute && !context->ns)
+    if(!context->node && !context->attribute && !context->ns)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf("Both context node and attribute are NULL.");
@@ -710,80 +697,74 @@ axis2_bool_t axiom_xpath_node_test_match(
 #endif
         return AXIS2_FALSE;
     }
-    else if (context->node)
+    else if(context->node)
     {
         /* Test if the node matches */
         type = axiom_node_get_node_type(context->node, context->env);
 
-        if (type == AXIOM_ELEMENT)
+        if(type == AXIOM_ELEMENT)
         {
-            element = axiom_node_get_data_element(
-                        context->node, context->env);
+            element = axiom_node_get_data_element(context->node, context->env);
 
-            name = axiom_element_get_localname(
-                        element, context->env);
+            name = axiom_element_get_localname(element, context->env);
 
-            ns = axiom_element_get_namespace(
-                        element, context->env, context->node);
+            ns = axiom_element_get_namespace(element, context->env, context->node);
         }
 
-        if (node_test->type == AXIOM_XPATH_NODE_TEST_NONE)
+        if(node_test->type == AXIOM_XPATH_NODE_TEST_NONE)
         {
             return AXIS2_FALSE;
         }
         else
         {
-            if (node_test->type == AXIOM_XPATH_NODE_TEST_ALL
-                    ||  node_test->type == AXIOM_XPATH_NODE_TEST_STANDARD)
+            if(node_test->type == AXIOM_XPATH_NODE_TEST_ALL || node_test->type
+                == AXIOM_XPATH_NODE_TEST_STANDARD)
             {
-                if (type != AXIOM_ELEMENT)
+                if(type != AXIOM_ELEMENT)
                 {
                     return AXIS2_FALSE;
                 }
 
                 /* Check namespace */
-                if (node_test->type == AXIOM_XPATH_NODE_TEST_ALL)
+                if(node_test->type == AXIOM_XPATH_NODE_TEST_ALL)
                 {
-                    if (!ns && node_test->prefix)
+                    if(!ns && node_test->prefix)
                     {
                         return AXIS2_FALSE;
                     }
                 }
                 else
                 {
-                    if ((ns && !node_test->prefix)
-                            || (!ns && node_test->prefix))
+                    if((ns && !node_test->prefix) || (!ns && node_test->prefix))
                     {
                         return AXIS2_FALSE;
                     }
                 }
 
-                if (ns && node_test->prefix)
+                if(ns && node_test->prefix)
                 {
-                    xpath_ns =
-                        axiom_xpath_get_namespace(context, node_test->prefix);
+                    xpath_ns = axiom_xpath_get_namespace(context, node_test->prefix);
 
-                    if (!xpath_ns)
+                    if(!xpath_ns)
                     {
                         return AXIS2_FALSE;
                     }
 
-                    if (axutil_strcmp(
-                                axiom_namespace_get_uri(ns, context->env),
-                                axiom_namespace_get_uri(xpath_ns, context->env)))
+                    if(axutil_strcmp(axiom_namespace_get_uri(ns, context->env),
+                        axiom_namespace_get_uri(xpath_ns, context->env)))
                     {
                         return AXIS2_FALSE;
                     }
                 }
 
                 /* Check local name */
-                if (node_test->type == AXIOM_XPATH_NODE_TEST_ALL)
+                if(node_test->type == AXIOM_XPATH_NODE_TEST_ALL)
                 {
                     return AXIS2_TRUE;
                 }
-                else if (node_test->type == AXIOM_XPATH_NODE_TEST_STANDARD)
+                else if(node_test->type == AXIOM_XPATH_NODE_TEST_STANDARD)
                 {
-                    if (name && axutil_strcmp(node_test->name, name) == 0)
+                    if(name && axutil_strcmp(node_test->name, name) == 0)
                     {
                         return AXIS2_TRUE;
                     }
@@ -793,9 +774,9 @@ axis2_bool_t axiom_xpath_node_test_match(
                     }
                 }
             }
-            else if (node_test->type == AXIOM_XPATH_NODE_TYPE_COMMENT)
+            else if(node_test->type == AXIOM_XPATH_NODE_TYPE_COMMENT)
             {
-                if (type == AXIOM_COMMENT)
+                if(type == AXIOM_COMMENT)
                 {
                     return AXIS2_TRUE;
                 }
@@ -804,9 +785,9 @@ axis2_bool_t axiom_xpath_node_test_match(
                     return AXIS2_FALSE;
                 }
             }
-            else if (node_test->type == AXIOM_XPATH_NODE_TYPE_PI)
+            else if(node_test->type == AXIOM_XPATH_NODE_TYPE_PI)
             {
-                if (type == AXIOM_PROCESSING_INSTRUCTION)
+                if(type == AXIOM_PROCESSING_INSTRUCTION)
                 {
                     return AXIS2_TRUE;
                 }
@@ -815,9 +796,9 @@ axis2_bool_t axiom_xpath_node_test_match(
                     return AXIS2_FALSE;
                 }
             }
-            else if (node_test->type == AXIOM_XPATH_NODE_TYPE_NODE)
+            else if(node_test->type == AXIOM_XPATH_NODE_TYPE_NODE)
             {
-                if (type == AXIOM_ELEMENT)
+                if(type == AXIOM_ELEMENT)
                 {
                     return AXIS2_TRUE;
                 }
@@ -826,9 +807,9 @@ axis2_bool_t axiom_xpath_node_test_match(
                     return AXIS2_FALSE;
                 }
             }
-            else if (node_test->type == AXIOM_XPATH_NODE_TYPE_TEXT)
+            else if(node_test->type == AXIOM_XPATH_NODE_TYPE_TEXT)
             {
-                if (type == AXIOM_TEXT)
+                if(type == AXIOM_TEXT)
                 {
                     return AXIS2_TRUE;
                 }
@@ -840,58 +821,57 @@ axis2_bool_t axiom_xpath_node_test_match(
         }
     }
     /* Attributes */
-    else if (context->attribute)
+    else if(context->attribute)
     {
         name = axiom_attribute_get_localname(context->attribute, context->env);
         ns = axiom_attribute_get_namespace(context->attribute, context->env);
 
-        if (node_test->type == AXIOM_XPATH_NODE_TEST_NONE)
+        if(node_test->type == AXIOM_XPATH_NODE_TEST_NONE)
         {
             return AXIS2_FALSE;
         }
         else
         {
             /* Check namespace */
-            if (node_test->type == AXIOM_XPATH_NODE_TEST_ALL)
+            if(node_test->type == AXIOM_XPATH_NODE_TEST_ALL)
             {
-                if (!ns && node_test->prefix)
+                if(!ns && node_test->prefix)
                 {
                     return AXIS2_FALSE;
                 }
             }
             else
             {
-                if ((ns && !node_test->prefix) || (!ns && node_test->prefix))
+                if((ns && !node_test->prefix) || (!ns && node_test->prefix))
                 {
                     return AXIS2_FALSE;
                 }
             }
 
-            if (ns && node_test->prefix)
+            if(ns && node_test->prefix)
             {
-                xpath_ns =
-                    axiom_xpath_get_namespace(context, node_test->prefix);
+                xpath_ns = axiom_xpath_get_namespace(context, node_test->prefix);
 
-                if (!xpath_ns)
+                if(!xpath_ns)
                 {
                     return AXIS2_FALSE;
                 }
 
-                if (axutil_strcmp(axiom_namespace_get_uri(ns, context->env),
-                        axiom_namespace_get_uri(xpath_ns, context->env)))
+                if(axutil_strcmp(axiom_namespace_get_uri(ns, context->env),
+                    axiom_namespace_get_uri(xpath_ns, context->env)))
                 {
                     return AXIS2_FALSE;
                 }
             }
 
             /* Check local name */
-            if (node_test->type == AXIOM_XPATH_NODE_TEST_ALL)
+            if(node_test->type == AXIOM_XPATH_NODE_TEST_ALL)
             {
                 return AXIS2_TRUE;
             }
-            else if (node_test->type == AXIOM_XPATH_NODE_TEST_STANDARD)
+            else if(node_test->type == AXIOM_XPATH_NODE_TEST_STANDARD)
             {
-                if (name && axutil_strcmp(node_test->name, name) == 0)
+                if(name && axutil_strcmp(node_test->name, name) == 0)
                 {
                     return AXIS2_TRUE;
                 }
@@ -904,60 +884,59 @@ axis2_bool_t axiom_xpath_node_test_match(
     }
 
     /* Namespace */
-    else if (context->ns)
+    else if(context->ns)
     {
         /* Prefix is checked ??? If changed to uri the cast
-           method in xpath.c needs to be changed as well */
+         method in xpath.c needs to be changed as well */
         name = axiom_namespace_get_prefix(context->ns, context->env);
         ns = NULL;
 
-        if (node_test->type == AXIOM_XPATH_NODE_TEST_NONE)
+        if(node_test->type == AXIOM_XPATH_NODE_TEST_NONE)
         {
             return AXIS2_FALSE;
         }
         else
         {
             /* Check namespace */
-            if (node_test->type == AXIOM_XPATH_NODE_TEST_ALL)
+            if(node_test->type == AXIOM_XPATH_NODE_TEST_ALL)
             {
-                if (!ns && node_test->prefix)
+                if(!ns && node_test->prefix)
                 {
                     return AXIS2_FALSE;
                 }
             }
             else
             {
-                if ((ns && !node_test->prefix) || (!ns && node_test->prefix))
+                if((ns && !node_test->prefix) || (!ns && node_test->prefix))
                 {
                     return AXIS2_FALSE;
                 }
             }
 
-            if (ns && node_test->prefix)
+            if(ns && node_test->prefix)
             {
-                xpath_ns =
-                    axiom_xpath_get_namespace(context, node_test->prefix);
+                xpath_ns = axiom_xpath_get_namespace(context, node_test->prefix);
 
-                if (!xpath_ns)
+                if(!xpath_ns)
                 {
                     return AXIS2_FALSE;
                 }
 
-                if (axutil_strcmp(axiom_namespace_get_uri(ns, context->env),
-                        axiom_namespace_get_uri(xpath_ns, context->env)))
+                if(axutil_strcmp(axiom_namespace_get_uri(ns, context->env),
+                    axiom_namespace_get_uri(xpath_ns, context->env)))
                 {
                     return AXIS2_FALSE;
                 }
             }
 
             /* Check local name */
-            if (node_test->type == AXIOM_XPATH_NODE_TEST_ALL)
+            if(node_test->type == AXIOM_XPATH_NODE_TEST_ALL)
             {
                 return AXIS2_TRUE;
             }
-            else if (node_test->type == AXIOM_XPATH_NODE_TEST_STANDARD)
+            else if(node_test->type == AXIOM_XPATH_NODE_TEST_STANDARD)
             {
-                if (name && axutil_strcmp(node_test->name, name) == 0)
+                if(name && axutil_strcmp(node_test->name, name) == 0)
                 {
                     return AXIS2_TRUE;
                 }
@@ -972,14 +951,15 @@ axis2_bool_t axiom_xpath_node_test_match(
     return AXIS2_FALSE;
 }
 
-int axiom_xpath_function_call_operator(
+int
+axiom_xpath_function_call_operator(
     axiom_xpath_context_t *context,
     axiom_xpath_operation_t * op)
 {
     axiom_xpath_function_t func = axiom_xpath_get_function(context, op->par1);
     int n_args = 0;
 
-    if (!func)
+    if(!func)
     {
 #ifdef AXIOM_XPATH_DEBUG
         printf("Function %s not found\n", (char *)op->par1);
@@ -988,7 +968,7 @@ int axiom_xpath_function_call_operator(
         return AXIOM_XPATH_EVALUATION_ERROR;
     }
 
-    if (op->op1 != AXIOM_XPATH_PARSE_END)
+    if(op->op1 != AXIOM_XPATH_PARSE_END)
     {
         n_args = axiom_xpath_evaluate_operation(context, op->op1);
     }
@@ -996,18 +976,19 @@ int axiom_xpath_function_call_operator(
     return func(context, n_args);
 }
 
-int axiom_xpath_argument_operator(
+int
+axiom_xpath_argument_operator(
     axiom_xpath_context_t *context,
     axiom_xpath_operation_t * op)
 {
     int n_args = 0;
 
-    if (op->op1 != AXIOM_XPATH_PARSE_END)
+    if(op->op1 != AXIOM_XPATH_PARSE_END)
     {
         n_args += axiom_xpath_evaluate_operation(context, op->op1);
     }
 
-    if (op->op2 != AXIOM_XPATH_PARSE_END)
+    if(op->op2 != AXIOM_XPATH_PARSE_END)
     {
         n_args += axiom_xpath_evaluate_operation(context, op->op1);
     }
@@ -1016,26 +997,26 @@ int axiom_xpath_argument_operator(
 }
 
 /* Collect the current node to the results list */
-int axiom_xpath_collect_operator(
+int
+axiom_xpath_collect_operator(
     axiom_xpath_context_t *context,
     axiom_xpath_operation_t * op)
 {
     axiom_xpath_result_node_t *node;
 
-    node = AXIS2_MALLOC(context->env->allocator,
-            sizeof(axiom_xpath_result_node_t));
+    node = AXIS2_MALLOC(context->env->allocator, sizeof(axiom_xpath_result_node_t));
 
-    if (context->node)
+    if(context->node)
     {
         node->value = context->node;
         node->type = AXIOM_XPATH_TYPE_NODE;
     }
-    else if (context->attribute)
+    else if(context->attribute)
     {
         node->value = context->attribute;
         node->type = AXIOM_XPATH_TYPE_ATTRIBUTE;
     }
-    else if (context->ns)
+    else if(context->ns)
     {
         node->value = context->ns;
         node->type = AXIOM_XPATH_TYPE_NAMESPACE;
@@ -1047,9 +1028,11 @@ int axiom_xpath_collect_operator(
 }
 
 /* Returns a pointer to the respective processing function */
-axiom_xpath_operator_t axiom_xpath_get_operator(axiom_xpath_operation_t * op)
+axiom_xpath_operator_t
+axiom_xpath_get_operator(
+    axiom_xpath_operation_t * op)
 {
-    switch (op->opr)
+    switch(op->opr)
     {
         case AXIOM_XPATH_OPERATION_STEP:
             return axiom_xpath_step_operator;
@@ -1098,9 +1081,11 @@ axiom_xpath_operator_t axiom_xpath_get_operator(axiom_xpath_operation_t * op)
 }
 
 /* Returns a pointer to the respective processing function */
-axiom_xpath_iterator_t axiom_xpath_get_iterator(axiom_xpath_axis_t axis)
+axiom_xpath_iterator_t
+axiom_xpath_get_iterator(
+    axiom_xpath_axis_t axis)
 {
-    switch (axis)
+    switch(axis)
     {
         case AXIOM_XPATH_AXIS_CHILD:
             return axiom_xpath_child_iterator;
@@ -1150,7 +1135,10 @@ axiom_xpath_iterator_t axiom_xpath_get_iterator(axiom_xpath_axis_t axis)
     }
 }
 
-int axiom_xpath_evaluate_operation(axiom_xpath_context_t *context, int op)
+int
+axiom_xpath_evaluate_operation(
+    axiom_xpath_context_t *context,
+    int op)
 {
     axiom_xpath_operation_t * operation;
     axiom_xpath_operator_t function;

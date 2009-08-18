@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -35,12 +34,10 @@ axiom_children_iterator_create(
     axiom_children_iterator_t *iterator = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    iterator =
-        (axiom_children_iterator_t *) AXIS2_MALLOC(env->allocator,
-                                                   sizeof
-                                                   (axiom_children_iterator_t));
+    iterator = (axiom_children_iterator_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(axiom_children_iterator_t));
 
-    if (!iterator)
+    if(!iterator)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -78,23 +75,21 @@ axiom_children_iterator_remove(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, iterator, AXIS2_FAILURE);
 
-    if (!(iterator->next_called))
+    if(!(iterator->next_called))
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED,
-                        AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED,
+            AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    if (iterator->remove_called)
+    if(iterator->remove_called)
     {
-        AXIS2_ERROR_SET(env->error,
-                        AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED,
-                        AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED,
+            AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     iterator->remove_called = AXIS2_TRUE;
 
-    if (!(iterator->last_child))
+    if(!(iterator->last_child))
     {
         return AXIS2_FAILURE;
     }
@@ -122,11 +117,10 @@ axiom_children_iterator_next(
 
     iterator->next_called = AXIS2_TRUE;
     iterator->remove_called = AXIS2_FALSE;
-    if (iterator->current_child)
+    if(iterator->current_child)
     {
         iterator->last_child = iterator->current_child;
-        iterator->current_child =
-            axiom_node_get_next_sibling(iterator->current_child, env);
+        iterator->current_child = axiom_node_get_next_sibling(iterator->current_child, env);
         return iterator->last_child;
     }
     return NULL;

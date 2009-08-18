@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -20,21 +19,23 @@
 #include "xpath_functions.h"
 #include "xpath_internals_engine.h"
 
-int axiom_xpath_function_count(axiom_xpath_context_t *context, int np)
+int
+axiom_xpath_function_count(
+    axiom_xpath_context_t *context,
+    int np)
 {
     axiom_xpath_result_node_t *node;
     double * v;
     int i;
 
-    node = AXIS2_MALLOC(
-                context->env->allocator, sizeof(axiom_xpath_result_node_t));
+    node = AXIS2_MALLOC(context->env->allocator, sizeof(axiom_xpath_result_node_t));
     v = AXIS2_MALLOC(context->env->allocator, sizeof(double));
 
     *v = np;
     node->value = v;
     node->type = AXIOM_XPATH_TYPE_NUMBER;
 
-    for (i = 0; i < np; i++)
+    for(i = 0; i < np; i++)
     {
         axutil_stack_pop(context->stack, context->env);
     }
