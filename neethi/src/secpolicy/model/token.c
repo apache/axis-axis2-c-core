@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -34,12 +33,12 @@ rp_token_create(
     const axutil_env_t * env)
 {
     rp_token_t *token = NULL;
-    token = (rp_token_t *) AXIS2_MALLOC(env->allocator, sizeof (rp_token_t));
+    token = (rp_token_t *)AXIS2_MALLOC(env->allocator, sizeof(rp_token_t));
 
-    if (!token)
+    if(!token)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[neethi] Token creation failed. Insufficient memory");
         return NULL;
     }
@@ -59,9 +58,9 @@ rp_token_free(
     rp_token_t * token,
     const axutil_env_t * env)
 {
-    if (token)
+    if(token)
     {
-        if (--(token->ref) > 0)
+        if(--(token->ref) > 0)
         {
             return;
         }
@@ -93,8 +92,8 @@ rp_token_set_issuer(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_token_set_derive_key_version(
-    rp_token_t *token, 
-    const axutil_env_t *env, 
+    rp_token_t *token,
+    const axutil_env_t *env,
     derive_key_version_t version)
 {
     token->derive_key_version = version;
@@ -103,7 +102,7 @@ rp_token_set_derive_key_version(
 
 AXIS2_EXTERN derive_key_version_t AXIS2_CALL
 rp_token_get_derive_key_version(
-    rp_token_t *token, 
+    rp_token_t *token,
     const axutil_env_t *env)
 {
     return token->derive_key_version;
@@ -111,8 +110,8 @@ rp_token_get_derive_key_version(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_token_set_inclusion(
-    rp_token_t *token, 
-    const axutil_env_t *env, 
+    rp_token_t *token,
+    const axutil_env_t *env,
     axis2_char_t *inclusion)
 {
     token->inclusion = inclusion;
@@ -121,7 +120,7 @@ rp_token_set_inclusion(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 rp_token_get_inclusion(
-    rp_token_t *token, 
+    rp_token_t *token,
     const axutil_env_t *env)
 {
     return token->inclusion;

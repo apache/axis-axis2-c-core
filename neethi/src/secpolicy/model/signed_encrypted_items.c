@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -33,12 +32,10 @@ rp_signed_encrypted_items_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    signed_encrypted_items =
-        (rp_signed_encrypted_items_t *) AXIS2_MALLOC(env->allocator,
-                                                     sizeof
-                                                     (rp_signed_encrypted_items_t));
+    signed_encrypted_items = (rp_signed_encrypted_items_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(rp_signed_encrypted_items_t));
 
-    if (signed_encrypted_items == NULL)
+    if(signed_encrypted_items == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -46,7 +43,7 @@ rp_signed_encrypted_items_create(
     signed_encrypted_items->elements = NULL;
 
     signed_encrypted_items->elements = axutil_array_list_create(env, 0);
-    if (!(signed_encrypted_items->elements))
+    if(!(signed_encrypted_items->elements))
     {
         rp_signed_encrypted_items_free(signed_encrypted_items, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -64,21 +61,18 @@ rp_signed_encrypted_items_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (signed_encrypted_items)
+    if(signed_encrypted_items)
     {
 
-        if (signed_encrypted_items->elements)
+        if(signed_encrypted_items->elements)
         {
             int i = 0;
-            for (i = 0;
-                 i < axutil_array_list_size(signed_encrypted_items->elements,
-                                            env); i++)
+            for(i = 0; i < axutil_array_list_size(signed_encrypted_items->elements, env); i++)
             {
                 rp_element_t *element = NULL;
-                element = (rp_element_t *)
-                    axutil_array_list_get(signed_encrypted_items->elements, env,
-                                          i);
-                if (element)
+                element = (rp_element_t *)axutil_array_list_get(signed_encrypted_items->elements,
+                    env, i);
+                if(element)
                     rp_element_free(element, env);
 
                 element = NULL;

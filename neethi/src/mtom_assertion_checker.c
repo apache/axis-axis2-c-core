@@ -46,29 +46,26 @@ neethi_is_mtom_required(
         alternatives = neethi_policy_get_alternatives(normalized_policy, env);
     }
 
-    component =
-        (neethi_operator_t *) axutil_array_list_get(alternatives, env, 0);
-    all = (neethi_all_t *) neethi_operator_get_value(component, env);
+    component = (neethi_operator_t *)axutil_array_list_get(alternatives, env, 0);
+    all = (neethi_all_t *)neethi_operator_get_value(component, env);
 
     arraylist = neethi_all_get_policy_components(all, env);
 
-    for (i = 0; i < axutil_array_list_size(arraylist, env); i++)
+    for(i = 0; i < axutil_array_list_size(arraylist, env); i++)
     {
-        operator =(neethi_operator_t *) axutil_array_list_get(arraylist, env,
-                                                              i);
-        assertion =
-            (neethi_assertion_t *) neethi_operator_get_value(operator, env);
+        operator = (neethi_operator_t *)axutil_array_list_get(arraylist, env, i);
+        assertion = (neethi_assertion_t *)neethi_operator_get_value(operator, env);
         value = neethi_assertion_get_value(assertion, env);
         type = neethi_assertion_get_type(assertion, env);
 
         /*if (value)
-        {*/
-            if (type == ASSERTION_TYPE_OPTIMIZED_MIME_SERIALIZATION)
-            {
-                neethi_policy_free(normalized_policy, env);
-                normalized_policy = NULL;
-                return AXIS2_TRUE;
-            }
+         {*/
+        if(type == ASSERTION_TYPE_OPTIMIZED_MIME_SERIALIZATION)
+        {
+            neethi_policy_free(normalized_policy, env);
+            normalized_policy = NULL;
+            return AXIS2_TRUE;
+        }
         /*}*/
     }
     neethi_policy_free(normalized_policy, env);

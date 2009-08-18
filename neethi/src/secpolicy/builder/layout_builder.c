@@ -38,10 +38,10 @@ rp_layout_builder_build(
 
     child_node = axiom_node_get_first_element(node, env);
 
-    if (child_node)
+    if(child_node)
     {
         layout_node = axiom_node_get_first_element(child_node, env);
-        if (!layout_node)
+        if(!layout_node)
         {
             return NULL;
         }
@@ -51,22 +51,19 @@ rp_layout_builder_build(
         return NULL;
     }
 
-    if (axiom_node_get_node_type(layout_node, env) == AXIOM_ELEMENT)
+    if(axiom_node_get_node_type(layout_node, env) == AXIOM_ELEMENT)
     {
-        layout_element =
-            (axiom_element_t *) axiom_node_get_data_element(layout_node, env);
-        if (layout_element)
+        layout_element = (axiom_element_t *)axiom_node_get_data_element(layout_node, env);
+        if(layout_element)
         {
             axis2_char_t *local_name = NULL;
 
             local_name = axiom_element_get_localname(layout_element, env);
-            if (!local_name)
+            if(!local_name)
                 return NULL;
             rp_layout_set_value(layout, env, local_name);
-            assertion =
-                neethi_assertion_create_with_args(env, (AXIS2_FREE_VOID_ARG)rp_layout_free,
-                                                  layout,
-                                                  ASSERTION_TYPE_LAYOUT);
+            assertion = neethi_assertion_create_with_args(env, (AXIS2_FREE_VOID_ARG)rp_layout_free,
+                layout, ASSERTION_TYPE_LAYOUT);
             return assertion;
         }
         else

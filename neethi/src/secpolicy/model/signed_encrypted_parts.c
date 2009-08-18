@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -32,22 +31,22 @@ rp_signed_encrypted_parts_create(
     const axutil_env_t * env)
 {
     rp_signed_encrypted_parts_t *signed_encrypted_parts = NULL;
-    signed_encrypted_parts = (rp_signed_encrypted_parts_t *) AXIS2_MALLOC(
-        env->allocator, sizeof(rp_signed_encrypted_parts_t));
+    signed_encrypted_parts = (rp_signed_encrypted_parts_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(rp_signed_encrypted_parts_t));
 
     if(!signed_encrypted_parts)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[neethi] Cannot create signed_encrypted_parts. Insuficient memory.");
         return NULL;
     }
 
     signed_encrypted_parts->headers = axutil_array_list_create(env, 0);
-    if (!signed_encrypted_parts->headers)
+    if(!signed_encrypted_parts->headers)
     {
         rp_signed_encrypted_parts_free(signed_encrypted_parts, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[neethi] Cannot create signed_encrypted_parts. Headers array list creation failed.");
         return NULL;
     }
@@ -64,22 +63,22 @@ rp_signed_encrypted_parts_free(
     rp_signed_encrypted_parts_t * signed_encrypted_parts,
     const axutil_env_t * env)
 {
-    if (signed_encrypted_parts)
+    if(signed_encrypted_parts)
     {
-        if (--(signed_encrypted_parts->ref) > 0)
+        if(--(signed_encrypted_parts->ref) > 0)
         {
             return;
         }
 
-        if (signed_encrypted_parts->headers)
+        if(signed_encrypted_parts->headers)
         {
             int i = 0;
-            for (i = 0; i < axutil_array_list_size(signed_encrypted_parts->headers, env); i++)
+            for(i = 0; i < axutil_array_list_size(signed_encrypted_parts->headers, env); i++)
             {
                 rp_header_t *header = NULL;
-                header = (rp_header_t *)axutil_array_list_get(
-                    signed_encrypted_parts->headers, env, i);
-                if (header)
+                header = (rp_header_t *)axutil_array_list_get(signed_encrypted_parts->headers, env,
+                    i);
+                if(header)
                 {
                     rp_header_free(header, env);
                 }

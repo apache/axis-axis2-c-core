@@ -24,7 +24,8 @@
 
 /*private functions*/
 
-axis2_status_t AXIS2_CALL security_context_token_process_alternatives(
+axis2_status_t AXIS2_CALL
+security_context_token_process_alternatives(
     const axutil_env_t *env,
     neethi_all_t *all,
     rp_security_context_token_t * security_context_token);
@@ -59,43 +60,42 @@ rp_security_context_token_builder_build(
     qname = NULL;
 
     rp_security_context_token_set_inclusion(security_context_token, env, inclusion_value);
-    rp_security_context_token_set_is_secure_conversation_token(
-        security_context_token, env, is_secure_conversation_token);
+    rp_security_context_token_set_is_secure_conversation_token(security_context_token, env,
+        is_secure_conversation_token);
 
     if(!axutil_strcmp(sp_ns_uri, RP_SP_NS_11))
     {
-        rp_security_context_token_set_sc10_security_context_token(
-            security_context_token, env, AXIS2_TRUE);
+        rp_security_context_token_set_sc10_security_context_token(security_context_token, env,
+            AXIS2_TRUE);
     }
     else
     {
-        rp_security_context_token_set_sc10_security_context_token(
-            security_context_token, env, AXIS2_FALSE);
+        rp_security_context_token_set_sc10_security_context_token(security_context_token, env,
+            AXIS2_FALSE);
     }
 
     child_node = axiom_node_get_first_element(node, env);
-    if (!child_node)
+    if(!child_node)
     {
         return NULL;
     }
 
     children_iter = axiom_element_get_children(element, env, node);
-    if (children_iter)
+    if(children_iter)
     {
-        while (axiom_children_iterator_has_next(children_iter, env))
+        while(axiom_children_iterator_has_next(children_iter, env))
         {
             child_node = axiom_children_iterator_next(children_iter, env);
-            if (child_node)
+            if(child_node)
             {
-                if (axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
+                if(axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
                 {
-                    child_element =
-                        (axiom_element_t *) axiom_node_get_data_element(child_node, env);
-                    if (child_element)
+                    child_element = (axiom_element_t *)axiom_node_get_data_element(child_node, env);
+                    if(child_element)
                     {
                         axis2_char_t *localname = NULL;
                         localname = axiom_element_get_localname(child_element, env);
-                        if (axutil_strcmp(localname, RP_ISSUER) == 0)
+                        if(axutil_strcmp(localname, RP_ISSUER) == 0)
                         {
                             axis2_char_t *ns = NULL;
                             axutil_qname_t *node_qname = NULL;
@@ -103,7 +103,7 @@ rp_security_context_token_builder_build(
                             node_qname = axiom_element_get_qname(child_element, env, child_node);
                             if(!node_qname)
                             {
-                                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                                     "[neethi] Cannot get qname from element %s.", localname);
                                 return NULL;
                             }
@@ -111,7 +111,7 @@ rp_security_context_token_builder_build(
                             ns = axutil_qname_get_uri(node_qname, env);
                             if(!ns)
                             {
-                                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                                     "[neethi] Cannot get namespace from element %s.", localname);
                                 return NULL;
                             }
@@ -119,40 +119,38 @@ rp_security_context_token_builder_build(
                             {
                                 axis2_char_t *issuer = NULL;
                                 issuer = axiom_element_get_text(child_element, env, child_node);
-                                rp_security_context_token_set_issuer(
-                                    security_context_token, env, issuer);
+                                rp_security_context_token_set_issuer(security_context_token, env,
+                                    issuer);
                             }
                             else
                             {
-                                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-                                    "[neethi] Unknown Assertion %s with namespace %s", localname, ns);
+                                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                                    "[neethi] Unknown Assertion %s with namespace %s", localname,
+                                    ns);
                                 return NULL;
                             }
                         }
                         else
                         {
                             policy = neethi_engine_get_policy(env, child_node, child_element);
-                            if (!policy)
+                            if(!policy)
                             {
                                 return NULL;
                             }
-                            normalized_policy =
-                                neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
+                            normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE,
+                                policy);
                             neethi_policy_free(policy, env);
                             policy = NULL;
-                            alternatives =
-                                neethi_policy_get_alternatives(normalized_policy, env);
-                            component =
-                                (neethi_operator_t *) axutil_array_list_get(alternatives, env,
-                                                                            0);
-                            all = (neethi_all_t *) neethi_operator_get_value(component, env);
-                            security_context_token_process_alternatives(env, all, security_context_token);
+                            alternatives = neethi_policy_get_alternatives(normalized_policy, env);
+                            component = (neethi_operator_t *)axutil_array_list_get(alternatives,
+                                env, 0);
+                            all = (neethi_all_t *)neethi_operator_get_value(component, env);
+                            security_context_token_process_alternatives(env, all,
+                                security_context_token);
 
-                            assertion =
-                                neethi_assertion_create_with_args(env,
-                                                                  (AXIS2_FREE_VOID_ARG)rp_security_context_token_free,
-                                                                  security_context_token,
-                                                                  ASSERTION_TYPE_SECURITY_CONTEXT_TOKEN);
+                            assertion = neethi_assertion_create_with_args(env,
+                                (AXIS2_FREE_VOID_ARG)rp_security_context_token_free,
+                                security_context_token, ASSERTION_TYPE_SECURITY_CONTEXT_TOKEN);
 
                             neethi_policy_free(normalized_policy, env);
                             normalized_policy = NULL;
@@ -180,40 +178,38 @@ security_context_token_process_alternatives(
 
     arraylist = neethi_all_get_policy_components(all, env);
 
-    for (i = 0; i < axutil_array_list_size(arraylist, env); i++)
+    for(i = 0; i < axutil_array_list_size(arraylist, env); i++)
     {
-        operator =(neethi_operator_t *) axutil_array_list_get(arraylist, env,
-                                                              i);
-        assertion =
-            (neethi_assertion_t *) neethi_operator_get_value(operator, env);
+        operator = (neethi_operator_t *)axutil_array_list_get(arraylist, env, i);
+        assertion = (neethi_assertion_t *)neethi_operator_get_value(operator, env);
         type = neethi_assertion_get_type(assertion, env);
 
         if(type == ASSERTION_TYPE_REQUIRE_DERIVED_KEYS_SC10)
         {
             rp_security_context_token_set_derivedkey(security_context_token, env, DERIVEKEY_NEEDED);
-            rp_security_context_token_set_derivedkey_version(
-                security_context_token, env, DERIVEKEY_VERSION_SC10);
-        }   
+            rp_security_context_token_set_derivedkey_version(security_context_token, env,
+                DERIVEKEY_VERSION_SC10);
+        }
         else if(type == ASSERTION_TYPE_REQUIRE_DERIVED_KEYS_SC13)
         {
             rp_security_context_token_set_derivedkey(security_context_token, env, DERIVEKEY_NEEDED);
-            rp_security_context_token_set_derivedkey_version(
-                security_context_token, env, DERIVEKEY_VERSION_SC13);
-        }    
+            rp_security_context_token_set_derivedkey_version(security_context_token, env,
+                DERIVEKEY_VERSION_SC13);
+        }
         else if(type == ASSERTION_TYPE_REQUIRE_EXTERNAL_URI)
         {
             rp_security_context_token_set_require_external_uri_ref(security_context_token, env,
-                                                     AXIS2_TRUE);
+                AXIS2_TRUE);
         }
         else if(type == ASSERTION_TYPE_SC10_SECURITY_CONTEXT_TOKEN)
         {
             rp_security_context_token_set_sc10_security_context_token(security_context_token, env,
-                                                     AXIS2_TRUE);
+                AXIS2_TRUE);
         }
         else if(type == ASSERTION_TYPE_SC13_SECURITY_CONTEXT_TOKEN)
         {
             rp_security_context_token_set_sc10_security_context_token(security_context_token, env,
-                                                     AXIS2_FALSE);
+                AXIS2_FALSE);
         }
         else if(type == ASSERTION_TYPE_ISSUER)
         {
@@ -225,7 +221,8 @@ security_context_token_process_alternatives(
         {
             neethi_policy_t *bootstrap_policy = NULL;
             bootstrap_policy = (neethi_policy_t *)neethi_assertion_get_value(assertion, env);
-            rp_security_context_token_set_bootstrap_policy(security_context_token, env, bootstrap_policy);
+            rp_security_context_token_set_bootstrap_policy(security_context_token, env,
+                bootstrap_policy);
         }
         else
             return AXIS2_FAILURE;

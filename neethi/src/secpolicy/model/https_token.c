@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -34,10 +33,9 @@ rp_https_token_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    https_token = (rp_https_token_t *) AXIS2_MALLOC(env->allocator,
-                                                    sizeof(rp_https_token_t));
+    https_token = (rp_https_token_t *)AXIS2_MALLOC(env->allocator, sizeof(rp_https_token_t));
 
-    if (https_token == NULL)
+    if(https_token == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -58,9 +56,9 @@ rp_https_token_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (https_token)
+    if(https_token)
     {
-        if (--(https_token->ref) > 0)
+        if(--(https_token->ref) > 0)
         {
             return;
         }
@@ -139,7 +137,7 @@ rp_https_token_set_require_client_certificate(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, require_client_certificate, AXIS2_FAILURE)
-        https_token->require_client_certificate = require_client_certificate;
+    https_token->require_client_certificate = require_client_certificate;
 
     return AXIS2_SUCCESS;
 }

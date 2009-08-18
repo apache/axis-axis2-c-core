@@ -19,8 +19,7 @@
 
 struct rp_asymmetric_binding_t
 {
-    rp_symmetric_asymmetric_binding_commons_t
-        *symmetric_asymmetric_binding_commons;
+    rp_symmetric_asymmetric_binding_commons_t *symmetric_asymmetric_binding_commons;
     rp_property_t *initiator_token;
     rp_property_t *recipient_token;
     int ref;
@@ -34,12 +33,10 @@ rp_asymmetric_binding_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    asymmetric_binding =
-        (rp_asymmetric_binding_t *) AXIS2_MALLOC(env->allocator,
-                                                 sizeof
-                                                 (rp_asymmetric_binding_t));
+    asymmetric_binding = (rp_asymmetric_binding_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(rp_asymmetric_binding_t));
 
-    if (asymmetric_binding == NULL)
+    if(asymmetric_binding == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -59,27 +56,26 @@ rp_asymmetric_binding_free(
     rp_asymmetric_binding_t *asymmetric_binding,
     const axutil_env_t *env)
 {
-    if (asymmetric_binding)
+    if(asymmetric_binding)
     {
 
-        if (--(asymmetric_binding->ref) > 0)
+        if(--(asymmetric_binding->ref) > 0)
         {
             return;
         }
 
-        if (asymmetric_binding->symmetric_asymmetric_binding_commons)
+        if(asymmetric_binding->symmetric_asymmetric_binding_commons)
         {
-            rp_symmetric_asymmetric_binding_commons_free(asymmetric_binding->
-                                                         symmetric_asymmetric_binding_commons,
-                                                         env);
+            rp_symmetric_asymmetric_binding_commons_free(
+                asymmetric_binding-> symmetric_asymmetric_binding_commons, env);
             asymmetric_binding->symmetric_asymmetric_binding_commons = NULL;
         }
-        if (asymmetric_binding->initiator_token)
+        if(asymmetric_binding->initiator_token)
         {
             rp_property_free(asymmetric_binding->initiator_token, env);
             asymmetric_binding->initiator_token = NULL;
         }
-        if (asymmetric_binding->recipient_token)
+        if(asymmetric_binding->recipient_token)
         {
             rp_property_free(asymmetric_binding->recipient_token, env);
             asymmetric_binding->recipient_token = NULL;
@@ -104,14 +100,11 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_asymmetric_binding_set_symmetric_asymmetric_binding_commons(
     rp_asymmetric_binding_t *asymmetric_binding,
     const axutil_env_t *env,
-    rp_symmetric_asymmetric_binding_commons_t *
-    symmetric_asymmetric_binding_commons)
+    rp_symmetric_asymmetric_binding_commons_t * symmetric_asymmetric_binding_commons)
 {
-    AXIS2_PARAM_CHECK(env->error, symmetric_asymmetric_binding_commons,
-                      AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, symmetric_asymmetric_binding_commons, AXIS2_FAILURE);
 
-    asymmetric_binding->symmetric_asymmetric_binding_commons
-        = symmetric_asymmetric_binding_commons;
+    asymmetric_binding->symmetric_asymmetric_binding_commons = symmetric_asymmetric_binding_commons;
     return AXIS2_SUCCESS;
 }
 

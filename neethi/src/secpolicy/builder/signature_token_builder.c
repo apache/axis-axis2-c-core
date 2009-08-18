@@ -25,7 +25,8 @@
 
 /*private functions*/
 
-axis2_status_t AXIS2_CALL signature_token_process_alternatives(
+axis2_status_t AXIS2_CALL
+signature_token_process_alternatives(
     const axutil_env_t *env,
     neethi_all_t *all,
     rp_property_t *signature_token);
@@ -51,39 +52,32 @@ rp_signature_token_builder_build(
     signature_token = rp_property_create(env);
 
     child_node = axiom_node_get_first_element(node, env);
-    if (!child_node)
+    if(!child_node)
     {
         return NULL;
     }
 
-    if (axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
+    if(axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
     {
-        child_element =
-            (axiom_element_t *) axiom_node_get_data_element(child_node, env);
-        if (child_element)
+        child_element = (axiom_element_t *)axiom_node_get_data_element(child_node, env);
+        if(child_element)
         {
             policy = neethi_engine_get_policy(env, child_node, child_element);
-            if (!policy)
+            if(!policy)
             {
                 return NULL;
             }
-            normalized_policy =
-                neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
+            normalized_policy = neethi_engine_get_normalize(env, AXIS2_FALSE, policy);
             neethi_policy_free(policy, env);
             policy = NULL;
-            alternatives =
-                neethi_policy_get_alternatives(normalized_policy, env);
-            component =
-                (neethi_operator_t *) axutil_array_list_get(alternatives, env,
-                                                            0);
-            all = (neethi_all_t *) neethi_operator_get_value(component, env);
+            alternatives = neethi_policy_get_alternatives(normalized_policy, env);
+            component = (neethi_operator_t *)axutil_array_list_get(alternatives, env, 0);
+            all = (neethi_all_t *)neethi_operator_get_value(component, env);
             signature_token_process_alternatives(env, all, signature_token);
 
-            assertion =
-                neethi_assertion_create_with_args(env,
-                                                  (AXIS2_FREE_VOID_ARG)rp_property_free,
-                                                  signature_token,
-                                                  ASSERTION_TYPE_SIGNATURE_TOKEN);
+            assertion = neethi_assertion_create_with_args(env,
+                (AXIS2_FREE_VOID_ARG)rp_property_free, signature_token,
+                ASSERTION_TYPE_SIGNATURE_TOKEN);
 
             neethi_policy_free(normalized_policy, env);
             normalized_policy = NULL;
@@ -114,27 +108,22 @@ signature_token_process_alternatives(
 
     arraylist = neethi_all_get_policy_components(all, env);
 
-    for (i = 0; i < axutil_array_list_size(arraylist, env); i++)
+    for(i = 0; i < axutil_array_list_size(arraylist, env); i++)
     {
-        operator =(neethi_operator_t *) axutil_array_list_get(arraylist, env,
-                                                              i);
-        assertion =
-            (neethi_assertion_t *) neethi_operator_get_value(operator, env);
+        operator = (neethi_operator_t *)axutil_array_list_get(arraylist, env, i);
+        assertion = (neethi_assertion_t *)neethi_operator_get_value(operator, env);
         value = neethi_assertion_get_value(assertion, env);
         type = neethi_assertion_get_type(assertion, env);
 
-        if (value)
+        if(value)
         {
-            if (type == ASSERTION_TYPE_X509_TOKEN)
+            if(type == ASSERTION_TYPE_X509_TOKEN)
             {
                 rp_x509_token_t *x509_token = NULL;
-                x509_token =
-                    (rp_x509_token_t *) neethi_assertion_get_value(assertion,
-                                                                   env);
-                if (x509_token)
+                x509_token = (rp_x509_token_t *)neethi_assertion_get_value(assertion, env);
+                if(x509_token)
                 {
-                    rp_property_set_value(signature_token, env, x509_token,
-                                          RP_PROPERTY_X509_TOKEN);
+                    rp_property_set_value(signature_token, env, x509_token, RP_PROPERTY_X509_TOKEN);
                 }
                 else
                     return AXIS2_FAILURE;
@@ -145,7 +134,8 @@ signature_token_process_alternatives(
                 issued_token = (rp_issued_token_t *)neethi_assertion_get_value(assertion, env);
                 if(issued_token)
                 {
-                    rp_property_set_value(signature_token, env, issued_token, RP_PROPERTY_ISSUED_TOKEN);
+                    rp_property_set_value(signature_token, env, issued_token,
+                        RP_PROPERTY_ISSUED_TOKEN);
                 }
                 else
                     return AXIS2_FAILURE;
@@ -161,15 +151,16 @@ signature_token_process_alternatives(
                 else
                     return AXIS2_FAILURE;
             }
-            else if (type == ASSERTION_TYPE_SECURITY_CONTEXT_TOKEN)
+            else if(type == ASSERTION_TYPE_SECURITY_CONTEXT_TOKEN)
             {
                 rp_security_context_token_t *security_context_token = NULL;
-                security_context_token = 
-                    (rp_security_context_token_t *) neethi_assertion_get_value(assertion, env);
+                security_context_token = (rp_security_context_token_t *)neethi_assertion_get_value(
+                    assertion, env);
 
-                if (security_context_token)
+                if(security_context_token)
                 {
-                    rp_property_set_value(signature_token, env, security_context_token, RP_PROPERTY_SECURITY_CONTEXT_TOKEN);
+                    rp_property_set_value(signature_token, env, security_context_token,
+                        RP_PROPERTY_SECURITY_CONTEXT_TOKEN);
                 }
                 else
                     return AXIS2_FAILURE;

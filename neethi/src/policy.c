@@ -37,7 +37,6 @@ neethi_policy_clear_attributes(
     axutil_hash_t *attributes,
     const axutil_env_t *env);
 
-
 /* Creates a neethi_policy object */
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
 neethi_policy_create(
@@ -324,7 +323,6 @@ neethi_policy_get_id(
         return NULL;
     }
 }
-
 
 /* When we encounter an attribute with wsu:Id we will store it in the hash. We are not
  * considering the prefix. Just the namespace and the local_name. */

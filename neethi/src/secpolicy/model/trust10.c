@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -36,9 +35,9 @@ rp_trust10_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    trust10 = (rp_trust10_t *) AXIS2_MALLOC(env->allocator, sizeof(rp_trust10_t));
+    trust10 = (rp_trust10_t *)AXIS2_MALLOC(env->allocator, sizeof(rp_trust10_t));
 
-    if (trust10 == NULL)
+    if(trust10 == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -61,9 +60,9 @@ rp_trust10_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (trust10)
+    if(trust10)
     {
-        if (--(trust10->ref) > 0)
+        if(--(trust10->ref) > 0)
         {
             return;
         }
@@ -92,8 +91,7 @@ rp_trust10_set_must_support_client_challenge(
     axis2_bool_t must_support_client_challenge)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, must_support_client_challenge,
-                      AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, must_support_client_challenge, AXIS2_FAILURE);
     trust10->must_support_client_challenge = must_support_client_challenge;
 
     return AXIS2_SUCCESS;
@@ -117,8 +115,7 @@ rp_trust10_set_must_support_server_challenge(
     axis2_bool_t must_support_server_challenge)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, must_support_server_challenge,
-                      AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, must_support_server_challenge, AXIS2_FAILURE);
     trust10->must_support_server_challenge = must_support_server_challenge;
 
     return AXIS2_SUCCESS;
@@ -192,7 +189,6 @@ rp_trust10_set_must_support_issued_token(
 
     return AXIS2_SUCCESS;
 }
-
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_trust10_increment_ref(

@@ -19,8 +19,6 @@
 
 /*private functions*/
 
-
-
 static axis2_status_t AXIS2_CALL
 axis2_rm_assertion_builder_process_sandesha2_assertions(
     const axutil_env_t *env,
@@ -49,12 +47,9 @@ axis2_rm_assertion_builder_process_delivery_assuarance(
     axiom_node_t *da_node,
     axiom_element_t *da_element);
 
-
-
 /* This functions retrives a rm_assertion axiom_node 
  * which may be 1.0 or 1.1 and return a rm_assertion
  * struct */
-
 
 AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 axis2_rm_assertion_builder_build(
@@ -72,21 +67,19 @@ axis2_rm_assertion_builder_build(
     node_qname = axiom_element_get_qname(rm_assertion_ele, env, rm_assertion_node);
     if(!node_qname)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "[neethi] Cannot get qname from element");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[neethi] Cannot get qname from element");
         return NULL;
     }
 
     ns = axutil_qname_get_uri(node_qname, env);
     if(!ns)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "[neethi] Cannot get namespace from element.");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[neethi] Cannot get namespace from element.");
         return NULL;
     }
 
     rm_assertion = axis2_rm_assertion_create(env);
-    if (!rm_assertion)
+    if(!rm_assertion)
     {
         return NULL;
     }
@@ -98,16 +91,16 @@ axis2_rm_assertion_builder_build(
 
     if(!axutil_strcmp(ns, AXIS2_RM_POLICY_10_NS))
     {
-        status = axis2_rm_assertion_builder_populate_for_10(env, rm_assertion, 
-            rm_assertion_node, rm_assertion_ele);
+        status = axis2_rm_assertion_builder_populate_for_10(env, rm_assertion, rm_assertion_node,
+            rm_assertion_ele);
 
         axiom_children_iterator_reset(children_iter, env);
 
     }
     else if(!axutil_strcmp(ns, AXIS2_RM_POLICY_11_NS))
     {
-        status = axis2_rm_assertion_builder_populate_for_11(env, rm_assertion, 
-            rm_assertion_node, rm_assertion_ele);
+        status = axis2_rm_assertion_builder_populate_for_11(env, rm_assertion, rm_assertion_node,
+            rm_assertion_ele);
     }
 
     if(status == AXIS2_FAILURE)
@@ -118,9 +111,9 @@ axis2_rm_assertion_builder_build(
     }
 
     /*children_iter = axiom_element_get_children(rm_assertion_ele, env, rm_assertion_node);*/
-    if (children_iter)
+    if(children_iter)
     {
-        while (axiom_children_iterator_has_next(children_iter, env))
+        while(axiom_children_iterator_has_next(children_iter, env))
         {
             axiom_node_t *node = NULL;
             axiom_element_t *ele = NULL;
@@ -128,13 +121,11 @@ axis2_rm_assertion_builder_build(
             axutil_qname_t *node_qname = NULL;
 
             node = axiom_children_iterator_next(children_iter, env);
-            if (node)
+            if(node)
             {
-                if (axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
+                if(axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
                 {
-                    ele =
-                        (axiom_element_t *) axiom_node_get_data_element(node,
-                                                                        env);
+                    ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
                     node_qname = axiom_element_get_qname(ele, env, node);
                     if(!node_qname)
                     {
@@ -151,8 +142,8 @@ axis2_rm_assertion_builder_build(
                     }
                     if(!axutil_strcmp(ns, AXIS2_SANDESHA2_NS))
                     {
-                        status = axis2_rm_assertion_builder_process_sandesha2_assertions(
-                            env, rm_assertion, node, ele);    
+                        status = axis2_rm_assertion_builder_process_sandesha2_assertions(env,
+                            rm_assertion, node, ele);
                         if(status == AXIS2_FAILURE)
                         {
                             axis2_rm_assertion_free(rm_assertion, env);
@@ -164,10 +155,8 @@ axis2_rm_assertion_builder_build(
             }
         }
     }
-    assertion =
-        neethi_assertion_create_with_args(env, (AXIS2_FREE_VOID_ARG)axis2_rm_assertion_free,
-                                          rm_assertion,
-                                          ASSERTION_TYPE_RM_ASSERTION);
+    assertion = neethi_assertion_create_with_args(env,
+        (AXIS2_FREE_VOID_ARG)axis2_rm_assertion_free, rm_assertion, ASSERTION_TYPE_RM_ASSERTION);
     return assertion;
 }
 
@@ -184,25 +173,21 @@ axis2_rm_assertion_builder_populate_for_10(
     /* In rm 1.0 it is just child elements which inside 
      * rm_assertion contains all the properties. */
 
-
-    children_iter = axiom_element_get_children(rm_assertion_element, 
-        env, rm_assertion_node);
-    if (children_iter)
+    children_iter = axiom_element_get_children(rm_assertion_element, env, rm_assertion_node);
+    if(children_iter)
     {
-        while (axiom_children_iterator_has_next(children_iter, env))
+        while(axiom_children_iterator_has_next(children_iter, env))
         {
             axiom_node_t *node = NULL;
             axiom_element_t *ele = NULL;
             axis2_char_t *local_name = NULL;
             node = axiom_children_iterator_next(children_iter, env);
-            if (node)
+            if(node)
             {
-                if (axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
+                if(axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
                 {
-                    ele =
-                        (axiom_element_t *) axiom_node_get_data_element(node,
-                                                                        env);
-                    if (ele)
+                    ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
+                    if(ele)
                     {
                         axutil_qname_t *node_qname = NULL;
                         axis2_char_t *ns = NULL;
@@ -221,36 +206,38 @@ axis2_rm_assertion_builder_populate_for_10(
                                 "[neethi] Cannot get namespace from element.");
                             return AXIS2_FAILURE;
                         }
-                        
+
                         if(axutil_strcmp(ns, AXIS2_RM_POLICY_10_NS))
                         {
                             continue;
                         }
 
                         local_name = axiom_element_get_localname(ele, env);
-                        if (local_name)
+                        if(local_name)
                         {
 
                             if(!axutil_strcmp(local_name, AXIS2_RM_INACTIVITY_TIMEOUT))
                             {
-                                axis2_char_t *inactivity_timeout  = NULL;
-                                axutil_qname_t *qname =NULL;
+                                axis2_char_t *inactivity_timeout = NULL;
+                                axutil_qname_t *qname = NULL;
 
-                                qname = axutil_qname_create(env, "Milliseconds", NULL, NULL);    
+                                qname = axutil_qname_create(env, "Milliseconds", NULL, NULL);
 
-                                inactivity_timeout = axiom_element_get_attribute_value(ele, env, qname);
+                                inactivity_timeout = axiom_element_get_attribute_value(ele, env,
+                                    qname);
                                 if(qname)
                                 {
                                     axutil_qname_free(qname, env);
                                     qname = NULL;
                                 }
-                                status = axis2_rm_assertion_set_inactivity_timeout(
-                                    rm_assertion, env, inactivity_timeout);
+                                status = axis2_rm_assertion_set_inactivity_timeout(rm_assertion,
+                                    env, inactivity_timeout);
                             }
-                            else if(!axutil_strcmp(local_name, AXIS2_RM_BASE_RETRANSMISSION_INTERVAL))
+                            else if(!axutil_strcmp(local_name,
+                                AXIS2_RM_BASE_RETRANSMISSION_INTERVAL))
                             {
                                 axis2_char_t *rti = NULL;
-                                axutil_qname_t *qname =NULL;
+                                axutil_qname_t *qname = NULL;
                                 qname = axutil_qname_create(env, "Milliseconds", NULL, NULL);
 
                                 rti = axiom_element_get_attribute_value(ele, env, qname);
@@ -259,17 +246,18 @@ axis2_rm_assertion_builder_populate_for_10(
                                     axutil_qname_free(qname, env);
                                     qname = NULL;
                                 }
-                                status = axis2_rm_assertion_set_retrans_interval(
-                                    rm_assertion, env, rti);
+                                status = axis2_rm_assertion_set_retrans_interval(rm_assertion, env,
+                                    rti);
                             }
                             else if(!axutil_strcmp(local_name, AXIS2_RM_EXPONENTIAL_BACK_OFF))
                             {
-                                status = axis2_rm_assertion_set_is_exp_backoff(rm_assertion, env, AXIS2_TRUE);
+                                status = axis2_rm_assertion_set_is_exp_backoff(rm_assertion, env,
+                                    AXIS2_TRUE);
                             }
                             else if(!axutil_strcmp(local_name, AXIS2_RM_ACKNOWLEDGEMENT_INTERVAL))
                             {
                                 axis2_char_t *ack_interval = NULL;
-                                axutil_qname_t *qname =NULL;
+                                axutil_qname_t *qname = NULL;
 
                                 qname = axutil_qname_create(env, "Milliseconds", NULL, NULL);
 
@@ -279,8 +267,8 @@ axis2_rm_assertion_builder_populate_for_10(
                                     axutil_qname_free(qname, env);
                                     qname = NULL;
                                 }
-                                status = axis2_rm_assertion_set_ack_interval(
-                                    rm_assertion, env, ack_interval);
+                                status = axis2_rm_assertion_set_ack_interval(rm_assertion, env,
+                                    ack_interval);
                             }
                             else
                             {
@@ -302,7 +290,6 @@ axis2_rm_assertion_builder_populate_for_10(
  * for policy element. Becasue then the processing become 
  * complex.So we just parse the axiom model */
 
-
 static axis2_status_t AXIS2_CALL
 axis2_rm_assertion_builder_populate_for_11(
     const axutil_env_t *env,
@@ -315,32 +302,27 @@ axis2_rm_assertion_builder_populate_for_11(
     axiom_node_t *child_node = NULL;
     axiom_element_t *child_element = NULL;
 
-
     child_node = axiom_node_get_first_element(rm_assertion_node, env);
-    if (child_node)
+    if(child_node)
     {
-        child_element =
-            (axiom_element_t *) axiom_node_get_data_element(child_node, env);
-        if (child_element)
+        child_element = (axiom_element_t *)axiom_node_get_data_element(child_node, env);
+        if(child_element)
         {
-            children_iter = axiom_element_get_children(child_element, 
-                env, child_node);
-            if (children_iter)
+            children_iter = axiom_element_get_children(child_element, env, child_node);
+            if(children_iter)
             {
-                while (axiom_children_iterator_has_next(children_iter, env))
+                while(axiom_children_iterator_has_next(children_iter, env))
                 {
                     axiom_node_t *node = NULL;
                     axiom_element_t *ele = NULL;
                     axis2_char_t *local_name = NULL;
                     node = axiom_children_iterator_next(children_iter, env);
-                    if (node)
+                    if(node)
                     {
-                        if (axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
+                        if(axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
                         {
-                            ele =
-                                (axiom_element_t *) axiom_node_get_data_element(node,
-                                                                        env);
-                            if (ele)
+                            ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
+                            if(ele)
                             {
                                 axutil_qname_t *node_qname = NULL;
                                 axis2_char_t *ns = NULL;
@@ -348,7 +330,7 @@ axis2_rm_assertion_builder_populate_for_11(
                                 if(!node)
                                 {
                                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                                    "[neethi] Cannot get qname from element");
+                                        "[neethi] Cannot get qname from element");
                                     return AXIS2_FAILURE;
                                 }
 
@@ -365,25 +347,30 @@ axis2_rm_assertion_builder_populate_for_11(
                                     continue;
                                 }
                                 local_name = axiom_element_get_localname(ele, env);
-                                if (local_name)
+                                if(local_name)
                                 {
-                                    if(!axutil_strcmp(local_name, AXIS2_RM_SEQUENCE_STR)) 
+                                    if(!axutil_strcmp(local_name, AXIS2_RM_SEQUENCE_STR))
                                     {
-                                        status = axis2_rm_assertion_set_is_sequence_str(rm_assertion, env, AXIS2_TRUE);
-                                    }   
-                                    else if(!axutil_strcmp(local_name, AXIS2_RM_SEQUENCE_TRANSPORT_SECURITY))
+                                        status = axis2_rm_assertion_set_is_sequence_str(
+                                            rm_assertion, env, AXIS2_TRUE);
+                                    }
+                                    else if(!axutil_strcmp(local_name,
+                                        AXIS2_RM_SEQUENCE_TRANSPORT_SECURITY))
                                     {
-                                        status = axis2_rm_assertion_set_is_sequence_transport_security(rm_assertion, env, AXIS2_TRUE);
+                                        status
+                                            = axis2_rm_assertion_set_is_sequence_transport_security(
+                                                rm_assertion, env, AXIS2_TRUE);
                                     }
                                     else if(!axutil_strcmp(local_name, AXIS2_RM_DELIVERY_ASSURANCE))
                                     {
-                                        status = axis2_rm_assertion_builder_process_delivery_assuarance(
-                                           env, rm_assertion, node, ele);                                        
+                                        status
+                                            = axis2_rm_assertion_builder_process_delivery_assuarance(
+                                                env, rm_assertion, node, ele);
                                     }
                                     else
                                     {
                                         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                                        "[neethi] Unknown Assertion %s ", local_name);
+                                            "[neethi] Unknown Assertion %s ", local_name);
                                         return AXIS2_FAILURE;
                                     }
                                 }
@@ -392,12 +379,11 @@ axis2_rm_assertion_builder_populate_for_11(
                     }
                 }
             }
-        }   
-    }   
+        }
+    }
 
     return status;
 }
-
 
 static axis2_status_t AXIS2_CALL
 axis2_rm_assertion_builder_process_delivery_assuarance(
@@ -412,49 +398,50 @@ axis2_rm_assertion_builder_process_delivery_assuarance(
     axiom_element_t *child_element = NULL;
 
     child_node = axiom_node_get_first_element(da_node, env);
-    if (child_node)
+    if(child_node)
     {
-        child_element =
-            (axiom_element_t *) axiom_node_get_data_element(child_node, env);
-        if (child_element)
+        child_element = (axiom_element_t *)axiom_node_get_data_element(child_node, env);
+        if(child_element)
         {
-            children_iter = axiom_element_get_children(child_element, 
-                env, child_node);
-            if (children_iter)
+            children_iter = axiom_element_get_children(child_element, env, child_node);
+            if(children_iter)
             {
-                while (axiom_children_iterator_has_next(children_iter, env))
+                while(axiom_children_iterator_has_next(children_iter, env))
                 {
                     axiom_node_t *node = NULL;
                     axiom_element_t *ele = NULL;
                     axis2_char_t *local_name = NULL;
                     node = axiom_children_iterator_next(children_iter, env);
-                    if (node)
+                    if(node)
                     {
-                        if (axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
+                        if(axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
                         {
-                            ele =
-                                (axiom_element_t *) axiom_node_get_data_element(node,
-                                                                        env);
-                            if (ele)
+                            ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
+                            if(ele)
                             {
                                 local_name = axiom_element_get_localname(ele, env);
-                                if (local_name)
+                                if(local_name)
                                 {
-                                    if(!axutil_strcmp(local_name, AXIS2_RM_EXACTLY_ONCE)) 
+                                    if(!axutil_strcmp(local_name, AXIS2_RM_EXACTLY_ONCE))
                                     {
-                                        status = axis2_rm_assertion_set_is_exactly_once(rm_assertion, env, AXIS2_TRUE);
-                                    }   
+                                        status = axis2_rm_assertion_set_is_exactly_once(
+                                            rm_assertion, env, AXIS2_TRUE);
+                                    }
                                     else if(!axutil_strcmp(local_name, AXIS2_RM_AT_LEAST_ONCE))
                                     {
-                                        status = axis2_rm_assertion_set_is_atleast_once(rm_assertion, env, AXIS2_TRUE);
+                                        status = axis2_rm_assertion_set_is_atleast_once(
+                                            rm_assertion, env, AXIS2_TRUE);
                                     }
                                     else if(!axutil_strcmp(local_name, AXIS2_RM_AT_MOST_ONCE))
                                     {
-                                        status = axis2_rm_assertion_set_is_atmost_once(rm_assertion, env, AXIS2_TRUE);
-                                    }                                    
+                                        status = axis2_rm_assertion_set_is_atmost_once(
+                                            rm_assertion, env, AXIS2_TRUE);
+                                    }
                                     else if(!axutil_strcmp(local_name, AXIS2_RM_IN_ORDER))
                                     {
-                                        status = axis2_rm_assertion_set_is_inorder(rm_assertion, env, AXIS2_TRUE);                                                               }       
+                                        status = axis2_rm_assertion_set_is_inorder(rm_assertion,
+                                            env, AXIS2_TRUE);
+                                    }
                                     else
                                     {
                                         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
@@ -467,12 +454,10 @@ axis2_rm_assertion_builder_process_delivery_assuarance(
                     }
                 }
             }
-        }   
-    }    
+        }
+    }
     return status;
 }
-
-
 
 static axis2_status_t AXIS2_CALL
 axis2_rm_assertion_builder_process_sandesha2_assertions(
@@ -484,10 +469,10 @@ axis2_rm_assertion_builder_process_sandesha2_assertions(
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *local_name = NULL;
 
-    if (element)
+    if(element)
     {
         local_name = axiom_element_get_localname(element, env);
-        if (local_name)
+        if(local_name)
         {
             if(!axutil_strcmp(local_name, AXIS2_RM_BASE_RETRANSMISSION_INTERVAL))
             {
@@ -499,7 +484,8 @@ axis2_rm_assertion_builder_process_sandesha2_assertions(
             {
                 axis2_char_t *inactivity_timeout = NULL;
                 inactivity_timeout = axiom_element_get_text(element, env, node);
-                return axis2_rm_assertion_set_inactivity_timeout(rm_assertion, env, inactivity_timeout);
+                return axis2_rm_assertion_set_inactivity_timeout(rm_assertion, env,
+                    inactivity_timeout);
             }
             else if(!axutil_strcmp(local_name, AXIS2_RM_ACKNOWLEDGEMENT_INTERVAL))
             {
@@ -523,7 +509,8 @@ axis2_rm_assertion_builder_process_sandesha2_assertions(
             {
                 axis2_char_t *message_types_to_drop = NULL;
                 message_types_to_drop = axiom_element_get_text(element, env, node);
-                return axis2_rm_assertion_set_message_types_to_drop(rm_assertion, env, message_types_to_drop);
+                return axis2_rm_assertion_set_message_types_to_drop(rm_assertion, env,
+                    message_types_to_drop);
             }
             else if(!axutil_strcmp(local_name, AXIS2_RM_MAX_RETRANS_COUNT))
             {
@@ -535,19 +522,22 @@ axis2_rm_assertion_builder_process_sandesha2_assertions(
             {
                 axis2_char_t *sender_sleep_time = NULL;
                 sender_sleep_time = axiom_element_get_text(element, env, node);
-                return axis2_rm_assertion_set_sender_sleep_time(rm_assertion, env, sender_sleep_time);
+                return axis2_rm_assertion_set_sender_sleep_time(rm_assertion, env,
+                    sender_sleep_time);
             }
             else if(!axutil_strcmp(local_name, AXIS2_RM_INVOKER_SLEEP_TIME))
             {
                 axis2_char_t *invoker_sleep_time = NULL;
                 invoker_sleep_time = axiom_element_get_text(element, env, node);
-                return axis2_rm_assertion_set_invoker_sleep_time(rm_assertion, env, invoker_sleep_time);
+                return axis2_rm_assertion_set_invoker_sleep_time(rm_assertion, env,
+                    invoker_sleep_time);
             }
             else if(!axutil_strcmp(local_name, AXIS2_RM_POLLING_WAIT_TIME))
             {
                 axis2_char_t *polling_wait_time = NULL;
                 polling_wait_time = axiom_element_get_text(element, env, node);
-                return axis2_rm_assertion_set_polling_wait_time(rm_assertion, env, polling_wait_time);
+                return axis2_rm_assertion_set_polling_wait_time(rm_assertion, env,
+                    polling_wait_time);
             }
             else if(!axutil_strcmp(local_name, AXIS2_RM_TERMINATE_DELAY))
             {
@@ -557,13 +547,12 @@ axis2_rm_assertion_builder_process_sandesha2_assertions(
             }
             else
             {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "[neethi] Unknown Assertion %s ", local_name);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[neethi] Unknown Assertion %s ",
+                    local_name);
                 return AXIS2_FAILURE;
             }
         }
     }
     return status;
 }
-
 

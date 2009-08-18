@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -20,8 +19,7 @@
 
 struct rp_symmetric_binding_t
 {
-    rp_symmetric_asymmetric_binding_commons_t
-        *symmetric_asymmetric_binding_commons;
+    rp_symmetric_asymmetric_binding_commons_t *symmetric_asymmetric_binding_commons;
     rp_property_t *protection_token;
     rp_property_t *signature_token;
     rp_property_t *encryption_token;
@@ -36,11 +34,10 @@ rp_symmetric_binding_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    symmetric_binding = (rp_symmetric_binding_t *) AXIS2_MALLOC(env->allocator,
-                                                                sizeof
-                                                                (rp_symmetric_binding_t));
+    symmetric_binding = (rp_symmetric_binding_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(rp_symmetric_binding_t));
 
-    if (symmetric_binding == NULL)
+    if(symmetric_binding == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -61,31 +58,30 @@ rp_symmetric_binding_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (symmetric_binding)
+    if(symmetric_binding)
     {
-        if (--(symmetric_binding->ref) > 0)
+        if(--(symmetric_binding->ref) > 0)
         {
             return;
         }
 
-        if (symmetric_binding->symmetric_asymmetric_binding_commons)
+        if(symmetric_binding->symmetric_asymmetric_binding_commons)
         {
-            rp_symmetric_asymmetric_binding_commons_free(symmetric_binding->
-                                                         symmetric_asymmetric_binding_commons,
-                                                         env);
+            rp_symmetric_asymmetric_binding_commons_free(
+                symmetric_binding-> symmetric_asymmetric_binding_commons, env);
             symmetric_binding->symmetric_asymmetric_binding_commons = NULL;
         }
-        if (symmetric_binding->protection_token)
+        if(symmetric_binding->protection_token)
         {
             rp_property_free(symmetric_binding->protection_token, env);
             symmetric_binding->protection_token = NULL;
         }
-        if (symmetric_binding->encryption_token)
+        if(symmetric_binding->encryption_token)
         {
             rp_property_free(symmetric_binding->encryption_token, env);
             symmetric_binding->encryption_token = NULL;
         }
-        if (symmetric_binding->signature_token)
+        if(symmetric_binding->signature_token)
         {
             rp_property_free(symmetric_binding->signature_token, env);
             symmetric_binding->signature_token = NULL;
@@ -112,15 +108,12 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rp_symmetric_binding_set_symmetric_asymmetric_binding_commons(
     rp_symmetric_binding_t * symmetric_binding,
     const axutil_env_t * env,
-    rp_symmetric_asymmetric_binding_commons_t *
-    symmetric_asymmetric_binding_commons)
+    rp_symmetric_asymmetric_binding_commons_t * symmetric_asymmetric_binding_commons)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, symmetric_asymmetric_binding_commons,
-                      AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, symmetric_asymmetric_binding_commons, AXIS2_FAILURE);
 
-    symmetric_binding->symmetric_asymmetric_binding_commons
-        = symmetric_asymmetric_binding_commons;
+    symmetric_binding->symmetric_asymmetric_binding_commons = symmetric_asymmetric_binding_commons;
 
     return AXIS2_SUCCESS;
 }
@@ -143,8 +136,7 @@ rp_symmetric_binding_set_protection_token(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, protection_token, AXIS2_FAILURE);
-    if (symmetric_binding->signature_token ||
-        symmetric_binding->encryption_token)
+    if(symmetric_binding->signature_token || symmetric_binding->encryption_token)
     {
         return AXIS2_FAILURE;
     }
@@ -163,7 +155,7 @@ rp_symmetric_binding_set_encryption_token(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, encryption_token, AXIS2_FAILURE);
-    if (symmetric_binding->protection_token)
+    if(symmetric_binding->protection_token)
     {
         return AXIS2_FAILURE;
     }
@@ -192,7 +184,7 @@ rp_symmetric_binding_set_signature_token(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, signature_token, AXIS2_FAILURE);
-    if (symmetric_binding->protection_token)
+    if(symmetric_binding->protection_token)
     {
         return AXIS2_FAILURE;
     }

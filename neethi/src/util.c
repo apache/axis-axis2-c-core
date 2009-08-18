@@ -30,30 +30,29 @@ neethi_util_create_policy_from_file(
 
     reader = axiom_xml_reader_create_for_file(env, file_name, NULL);
 
-    if (!reader)
+    if(!reader)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
-                        AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_READER, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
         return NULL;
     }
 
     builder = axiom_stax_builder_create(env, reader);
-    if (!builder)
+    if(!builder)
     {
         axiom_xml_reader_free(reader, env);
         return NULL;
     }
     document = axiom_stax_builder_get_document(builder, env);
 
-    if (!document)
+    if(!document)
     {
         axiom_stax_builder_free(builder, env);
         return NULL;
     }
 
     root_node = axiom_document_build_all(document, env);
-    if (!root_node)
+    if(!root_node)
     {
         axiom_stax_builder_free(builder, env);
         return NULL;
@@ -74,15 +73,14 @@ neethi_util_create_policy_from_om(
 
     axiom_element_t *root_ele = NULL;
 
-    if (axiom_node_get_node_type(root_node, env) == AXIOM_ELEMENT)
+    if(axiom_node_get_node_type(root_node, env) == AXIOM_ELEMENT)
     {
-        root_ele =
-            (axiom_element_t *) axiom_node_get_data_element(root_node, env);
-        if (root_ele)
+        root_ele = (axiom_element_t *)axiom_node_get_data_element(root_node, env);
+        if(root_ele)
         {
             neethi_policy_t *neethi_policy = NULL;
             neethi_policy = neethi_engine_get_policy(env, root_node, root_ele);
-            if (!neethi_policy)
+            if(!neethi_policy)
             {
                 return NULL;
             }

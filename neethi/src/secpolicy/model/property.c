@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -39,10 +38,9 @@ rp_property_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    property = (rp_property_t *) AXIS2_MALLOC(env->allocator,
-                                              sizeof(rp_property_t));
+    property = (rp_property_t *)AXIS2_MALLOC(env->allocator, sizeof(rp_property_t));
 
-    if (property == NULL)
+    if(property == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -61,109 +59,100 @@ rp_property_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (property)
+    if(property)
     {
-        if (--(property->ref) > 0)
+        if(--(property->ref) > 0)
         {
             return;
         }
 
-        if (property->value)
+        if(property->value)
         {
-            switch (property->type)
+            switch(property->type)
             {
-            case RP_PROPERTY_USERNAME_TOKEN:
-                rp_username_token_free((rp_username_token_t *) property->value,
-                                       env);
-                property->value = NULL;
-                break;
+                case RP_PROPERTY_USERNAME_TOKEN:
+                    rp_username_token_free((rp_username_token_t *)property->value, env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_X509_TOKEN:
-                rp_x509_token_free((rp_x509_token_t *) property->value, env);
-                property->value = NULL;
-                break;
-                
-            case RP_PROPERTY_ISSUED_TOKEN:
-                rp_issued_token_free((rp_issued_token_t *)property->value, env);
-                property->value = NULL;
-                break;
+                case RP_PROPERTY_X509_TOKEN:
+                    rp_x509_token_free((rp_x509_token_t *)property->value, env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_SAML_TOKEN:
-                rp_saml_token_free((rp_saml_token_t *)property->value, env);
-                property->value = NULL;
-            break;
+                case RP_PROPERTY_ISSUED_TOKEN:
+                    rp_issued_token_free((rp_issued_token_t *)property->value, env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_SECURITY_CONTEXT_TOKEN:
-                rp_security_context_token_free((rp_security_context_token_t *)
-                                               property->value, env);
-                property->value = NULL;
-                break;
+                case RP_PROPERTY_SAML_TOKEN:
+                    rp_saml_token_free((rp_saml_token_t *)property->value, env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_HTTPS_TOKEN:
-                rp_https_token_free((rp_https_token_t *) property->value, env);
-                property->value = NULL;
-                break;
+                case RP_PROPERTY_SECURITY_CONTEXT_TOKEN:
+                    rp_security_context_token_free((rp_security_context_token_t *)property->value,
+                        env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_SYMMETRIC_BINDING:
-                rp_symmetric_binding_free((rp_symmetric_binding_t *) property->
-                                          value, env);
-                property->value = NULL;
-                break;
+                case RP_PROPERTY_HTTPS_TOKEN:
+                    rp_https_token_free((rp_https_token_t *)property->value, env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_ASYMMETRIC_BINDING:
-                rp_asymmetric_binding_free((rp_asymmetric_binding_t *)
-                                           property->value, env);
-                property->value = NULL;
-                break;
+                case RP_PROPERTY_SYMMETRIC_BINDING:
+                    rp_symmetric_binding_free((rp_symmetric_binding_t *)property-> value, env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_TRANSPORT_BINDING:
-                rp_transport_binding_free((rp_transport_binding_t *) property->
-                                          value, env);
-                property->value = NULL;
-                break;
+                case RP_PROPERTY_ASYMMETRIC_BINDING:
+                    rp_asymmetric_binding_free((rp_asymmetric_binding_t *)property->value, env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_SIGNED_SUPPORTING_TOKEN:
-                rp_supporting_tokens_free((rp_supporting_tokens_t *) property->
-                                          value, env);
-                property->value = NULL;
-                break;
+                case RP_PROPERTY_TRANSPORT_BINDING:
+                    rp_transport_binding_free((rp_transport_binding_t *)property-> value, env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN:
-                rp_supporting_tokens_free((rp_supporting_tokens_t *) property->
-                                          value, env);
-                property->value = NULL;
-                break;
+                case RP_PROPERTY_SIGNED_SUPPORTING_TOKEN:
+                    rp_supporting_tokens_free((rp_supporting_tokens_t *)property-> value, env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_SUPPORTING_SUPPORTING_TOKEN:
-                rp_supporting_tokens_free((rp_supporting_tokens_t *) property->
-                                          value, env);
-                property->value = NULL;
-                break;
+                case RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN:
+                    rp_supporting_tokens_free((rp_supporting_tokens_t *)property-> value, env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_ENDORSING_SUPPORTING_TOKEN:
-                rp_supporting_tokens_free((rp_supporting_tokens_t *) property->
-                                          value, env);
-                property->value = NULL;
-                break;
+                case RP_PROPERTY_SUPPORTING_SUPPORTING_TOKEN:
+                    rp_supporting_tokens_free((rp_supporting_tokens_t *)property-> value, env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_SUPPORTING_TOKEN:
-                rp_supporting_tokens_free((rp_supporting_tokens_t *) property->
-                                          value, env);
-                property->value = NULL;
-                break;
+                case RP_PROPERTY_ENDORSING_SUPPORTING_TOKEN:
+                    rp_supporting_tokens_free((rp_supporting_tokens_t *)property-> value, env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_WSS10:
-                rp_wss10_free((rp_wss10_t *) property->value, env);
-                property->value = NULL;
-                break;
+                case RP_PROPERTY_SUPPORTING_TOKEN:
+                    rp_supporting_tokens_free((rp_supporting_tokens_t *)property-> value, env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_WSS11:
-                rp_wss11_free((rp_wss11_t *) property->value, env);
-                property->value = NULL;
-                break;
+                case RP_PROPERTY_WSS10:
+                    rp_wss10_free((rp_wss10_t *)property->value, env);
+                    property->value = NULL;
+                    break;
 
-            case RP_PROPERTY_UNKNOWN:
-                break;
+                case RP_PROPERTY_WSS11:
+                    rp_wss11_free((rp_wss11_t *)property->value, env);
+                    property->value = NULL;
+                    break;
+
+                case RP_PROPERTY_UNKNOWN:
+                    break;
             }
         }
         AXIS2_FREE(env->allocator, property);
@@ -195,68 +184,61 @@ rp_property_set_value(
 
     property->type = type;
 
-    if (type == RP_PROPERTY_X509_TOKEN)
+    if(type == RP_PROPERTY_X509_TOKEN)
     {
-        rp_x509_token_increment_ref((rp_x509_token_t *) value, env);
+        rp_x509_token_increment_ref((rp_x509_token_t *)value, env);
     }
-    else if (type == RP_PROPERTY_SECURITY_CONTEXT_TOKEN)
+    else if(type == RP_PROPERTY_SECURITY_CONTEXT_TOKEN)
     {
         rp_security_context_token_increment_ref((rp_security_context_token_t *)value, env);
     }
-    else if (type == RP_PROPERTY_WSS10)
+    else if(type == RP_PROPERTY_WSS10)
     {
-        rp_wss10_increment_ref((rp_wss10_t *) value, env);
+        rp_wss10_increment_ref((rp_wss10_t *)value, env);
     }
-    else if (type == RP_PROPERTY_WSS11)
+    else if(type == RP_PROPERTY_WSS11)
     {
-        rp_wss11_increment_ref((rp_wss11_t *) value, env);
+        rp_wss11_increment_ref((rp_wss11_t *)value, env);
     }
-    else if (type == RP_PROPERTY_USERNAME_TOKEN)
+    else if(type == RP_PROPERTY_USERNAME_TOKEN)
     {
-        rp_username_token_increment_ref((rp_username_token_t *) value, env);
+        rp_username_token_increment_ref((rp_username_token_t *)value, env);
     }
 
-    else if (type == RP_PROPERTY_HTTPS_TOKEN)
+    else if(type == RP_PROPERTY_HTTPS_TOKEN)
     {
-       rp_https_token_increment_ref((rp_https_token_t *) value, env);
-    }    
+        rp_https_token_increment_ref((rp_https_token_t *)value, env);
+    }
 
-    else if (type == RP_PROPERTY_SIGNED_SUPPORTING_TOKEN)
+    else if(type == RP_PROPERTY_SIGNED_SUPPORTING_TOKEN)
     {
-        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *) value,
-                                           env);
+        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *)value, env);
     }
-    else if (type == RP_PROPERTY_SUPPORTING_SUPPORTING_TOKEN)
+    else if(type == RP_PROPERTY_SUPPORTING_SUPPORTING_TOKEN)
     {
-        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *) value,
-                                           env);
+        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *)value, env);
     }
-    else if (type == RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN)
+    else if(type == RP_PROPERTY_SIGNED_ENDORSING_SUPPORTING_TOKEN)
     {
-        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *) value,
-                                           env);
+        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *)value, env);
     }
-    else if (type == RP_PROPERTY_ENDORSING_SUPPORTING_TOKEN)
+    else if(type == RP_PROPERTY_ENDORSING_SUPPORTING_TOKEN)
     {
-        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *) value,
-                                           env);
+        rp_supporting_tokens_increment_ref((rp_supporting_tokens_t *)value, env);
     }
-    else if (type == RP_PROPERTY_ASYMMETRIC_BINDING)
+    else if(type == RP_PROPERTY_ASYMMETRIC_BINDING)
     {
-        rp_asymmetric_binding_increment_ref((rp_asymmetric_binding_t *) value,
-                                            env);
+        rp_asymmetric_binding_increment_ref((rp_asymmetric_binding_t *)value, env);
     }
-    else if (type == RP_PROPERTY_TRANSPORT_BINDING)
+    else if(type == RP_PROPERTY_TRANSPORT_BINDING)
     {
-        rp_transport_binding_increment_ref((rp_transport_binding_t *) value,
-                                           env);
+        rp_transport_binding_increment_ref((rp_transport_binding_t *)value, env);
     }
-    else if (type == RP_PROPERTY_SYMMETRIC_BINDING)
+    else if(type == RP_PROPERTY_SYMMETRIC_BINDING)
     {
-        rp_symmetric_binding_increment_ref((rp_symmetric_binding_t *) value,
-                                           env);
+        rp_symmetric_binding_increment_ref((rp_symmetric_binding_t *)value, env);
     }
-    property->value = (void *) value;
+    property->value = (void *)value;
 
     return AXIS2_SUCCESS;
 

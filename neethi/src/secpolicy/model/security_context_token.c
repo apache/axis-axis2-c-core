@@ -33,12 +33,12 @@ rp_security_context_token_create(
 {
     rp_security_context_token_t *security_context_token = NULL;
 
-    security_context_token = (rp_security_context_token_t *) 
-        AXIS2_MALLOC(env->allocator, sizeof(rp_security_context_token_t));
+    security_context_token = (rp_security_context_token_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(rp_security_context_token_t));
 
     if(!security_context_token)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[neethi] Security context token assertion creation failed. Insufficient memory");
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -53,7 +53,7 @@ rp_security_context_token_create(
     security_context_token->token = rp_token_create(env);
     if(!security_context_token->token)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[neethi] Security context token assertion creation failed.");
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         rp_security_context_token_free(security_context_token, env);
@@ -68,9 +68,9 @@ rp_security_context_token_free(
     rp_security_context_token_t * security_context_token,
     const axutil_env_t * env)
 {
-    if (security_context_token)
+    if(security_context_token)
     {
-        if (--(security_context_token->ref) > 0)
+        if(--(security_context_token->ref) > 0)
         {
             return;
         }
@@ -177,8 +177,8 @@ rp_security_context_token_set_sc10_security_context_token(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 rp_security_context_token_get_issuer(
-     rp_security_context_token_t *security_context_token, 
-     const axutil_env_t *env)
+    rp_security_context_token_t *security_context_token,
+    const axutil_env_t *env)
 {
     return rp_token_get_issuer(security_context_token->token, env);
 }
@@ -194,8 +194,8 @@ rp_security_context_token_set_issuer(
 
 AXIS2_EXTERN neethi_policy_t *AXIS2_CALL
 rp_security_context_token_get_bootstrap_policy(
-     rp_security_context_token_t *security_context_token, 
-     const axutil_env_t *env)
+    rp_security_context_token_t *security_context_token,
+    const axutil_env_t *env)
 {
     return security_context_token->bootstrap_policy;
 }
@@ -212,8 +212,8 @@ rp_security_context_token_set_bootstrap_policy(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 rp_security_context_token_get_is_secure_conversation_token(
-     rp_security_context_token_t *security_context_token, 
-     const axutil_env_t *env)
+    rp_security_context_token_t *security_context_token,
+    const axutil_env_t *env)
 {
     return security_context_token->is_secure_conversation_token;
 }

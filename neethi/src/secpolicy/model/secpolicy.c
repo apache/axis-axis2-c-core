@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -45,10 +44,9 @@ rp_secpolicy_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    secpolicy = (rp_secpolicy_t *) AXIS2_MALLOC(env->allocator,
-                                                sizeof(rp_secpolicy_t));
+    secpolicy = (rp_secpolicy_t *)AXIS2_MALLOC(env->allocator, sizeof(rp_secpolicy_t));
 
-    if (secpolicy == NULL)
+    if(secpolicy == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -78,14 +76,14 @@ rp_secpolicy_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (secpolicy)
+    if(secpolicy)
     {
-        if (secpolicy->binding)
+        if(secpolicy->binding)
         {
             rp_property_free(secpolicy->binding, env);
             secpolicy->binding = NULL;
         }
-        if (secpolicy->wss)
+        if(secpolicy->wss)
         {
             rp_property_free(secpolicy->wss, env);
             secpolicy->wss = NULL;
@@ -94,61 +92,58 @@ rp_secpolicy_free(
         {
             rp_trust10_free(secpolicy->trust10, env);
             secpolicy->trust10 = NULL;
-        }    
-        if (secpolicy->supporting_tokens)
+        }
+        if(secpolicy->supporting_tokens)
         {
             rp_supporting_tokens_free(secpolicy->supporting_tokens, env);
             secpolicy->supporting_tokens = NULL;
         }
-        if (secpolicy->signed_supporting_tokens)
+        if(secpolicy->signed_supporting_tokens)
         {
             rp_supporting_tokens_free(secpolicy->signed_supporting_tokens, env);
             secpolicy->signed_supporting_tokens = NULL;
         }
-        if (secpolicy->endorsing_supporting_tokens)
+        if(secpolicy->endorsing_supporting_tokens)
         {
-            rp_supporting_tokens_free(secpolicy->endorsing_supporting_tokens,
-                                      env);
+            rp_supporting_tokens_free(secpolicy->endorsing_supporting_tokens, env);
             secpolicy->endorsing_supporting_tokens = NULL;
         }
-        if (secpolicy->signed_endorsing_supporting_tokens)
+        if(secpolicy->signed_endorsing_supporting_tokens)
         {
-            rp_supporting_tokens_free(secpolicy->
-                                      signed_endorsing_supporting_tokens, env);
+            rp_supporting_tokens_free(secpolicy-> signed_endorsing_supporting_tokens, env);
             secpolicy->signed_endorsing_supporting_tokens = NULL;
         }
-        if (secpolicy->signed_parts)
+        if(secpolicy->signed_parts)
         {
             rp_signed_encrypted_parts_free(secpolicy->signed_parts, env);
             secpolicy->signed_parts = NULL;
         }
-        if (secpolicy->encrypted_parts)
+        if(secpolicy->encrypted_parts)
         {
             rp_signed_encrypted_parts_free(secpolicy->encrypted_parts, env);
             secpolicy->encrypted_parts = NULL;
         }
-        if (secpolicy->signed_elements)
+        if(secpolicy->signed_elements)
         {
             rp_signed_encrypted_elements_free(secpolicy->signed_elements, env);
             secpolicy->signed_elements = NULL;
         }
-        if (secpolicy->encrypted_elements)
+        if(secpolicy->encrypted_elements)
         {
-            rp_signed_encrypted_elements_free(secpolicy->encrypted_elements,
-                                              env);
+            rp_signed_encrypted_elements_free(secpolicy->encrypted_elements, env);
             secpolicy->encrypted_elements = NULL;
         }
-        if (secpolicy->signed_items)
+        if(secpolicy->signed_items)
         {
             rp_signed_encrypted_items_free(secpolicy->signed_items, env);
             secpolicy->signed_items = NULL;
         }
-        if (secpolicy->encrypted_items)
+        if(secpolicy->encrypted_items)
         {
             rp_signed_encrypted_items_free(secpolicy->encrypted_items, env);
             secpolicy->encrypted_items = NULL;
         }
-        if (secpolicy->rampart_config)
+        if(secpolicy->rampart_config)
         {
             rp_rampart_config_free(secpolicy->rampart_config, env);
             secpolicy->rampart_config = NULL;
@@ -262,12 +257,10 @@ rp_secpolicy_set_signed_endorsing_supporting_tokens(
     rp_supporting_tokens_t * signed_endorsing_supporting_tokens)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, signed_endorsing_supporting_tokens,
-                      AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, signed_endorsing_supporting_tokens, AXIS2_FAILURE);
 
     rp_supporting_tokens_increment_ref(signed_endorsing_supporting_tokens, env);
-    secpolicy->signed_endorsing_supporting_tokens =
-        signed_endorsing_supporting_tokens;
+    secpolicy->signed_endorsing_supporting_tokens = signed_endorsing_supporting_tokens;
     return AXIS2_SUCCESS;
 }
 

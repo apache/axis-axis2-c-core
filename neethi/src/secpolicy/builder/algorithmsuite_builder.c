@@ -38,10 +38,10 @@ rp_algorithmsuite_builder_build(
 
     child_node = axiom_node_get_first_element(node, env);
 
-    if (child_node)
+    if(child_node)
     {
         algo_node = axiom_node_get_first_element(child_node, env);
-        if (!algo_node)
+        if(!algo_node)
         {
             return NULL;
         }
@@ -51,30 +51,27 @@ rp_algorithmsuite_builder_build(
         return NULL;
     }
 
-    if (axiom_node_get_node_type(algo_node, env) == AXIOM_ELEMENT)
+    if(axiom_node_get_node_type(algo_node, env) == AXIOM_ELEMENT)
     {
-        algo_element =
-            (axiom_element_t *) axiom_node_get_data_element(algo_node, env);
-        if (algo_element)
+        algo_element = (axiom_element_t *)axiom_node_get_data_element(algo_node, env);
+        if(algo_element)
         {
             axis2_status_t status = AXIS2_FAILURE;
             axis2_char_t *algosuite_string = NULL;
 
             algosuite_string = axiom_element_get_localname(algo_element, env);
-            if (!algosuite_string)
+            if(!algosuite_string)
             {
                 return NULL;
             }
-            status = rp_algorithmsuite_set_algosuite(algorithmsuite, env,
-                                            algosuite_string);
-            if(AXIS2_FAILURE == status){
+            status = rp_algorithmsuite_set_algosuite(algorithmsuite, env, algosuite_string);
+            if(AXIS2_FAILURE == status)
+            {
                 return NULL;
             }
-            assertion =
-                neethi_assertion_create_with_args(env,
-                                                  (AXIS2_FREE_VOID_ARG)rp_algorithmsuite_free,
-                                                  algorithmsuite,
-                                                  ASSERTION_TYPE_ALGORITHM_SUITE);
+            assertion = neethi_assertion_create_with_args(env,
+                (AXIS2_FREE_VOID_ARG)rp_algorithmsuite_free, algorithmsuite,
+                ASSERTION_TYPE_ALGORITHM_SUITE);
             return assertion;
         }
         else

@@ -176,8 +176,9 @@ neethi_exactlyone_serialize(
                 status = neethi_operator_serialize(operator, env, exactlyone_node);
                 if(status != AXIS2_SUCCESS)
                 {
-                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Neethi operator serialization failed. "
-                        "Cannot serialize 'ExactlyOne' assertion");
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                        "Neethi operator serialization failed. "
+                            "Cannot serialize 'ExactlyOne' assertion");
                     return AXIS2_FAILURE;
                 }
             }

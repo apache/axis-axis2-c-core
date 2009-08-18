@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -32,9 +31,9 @@ rp_layout_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    layout = (rp_layout_t *) AXIS2_MALLOC(env->allocator, sizeof(rp_layout_t));
+    layout = (rp_layout_t *)AXIS2_MALLOC(env->allocator, sizeof(rp_layout_t));
 
-    if (layout == NULL)
+    if(layout == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -52,9 +51,9 @@ rp_layout_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (layout)
+    if(layout)
     {
-        if (--(layout->ref) > 0)
+        if(--(layout->ref) > 0)
         {
             return;
         }

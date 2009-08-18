@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -33,11 +32,10 @@ rp_transport_binding_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    transport_binding = (rp_transport_binding_t *) AXIS2_MALLOC(env->allocator,
-                                                                sizeof
-                                                                (rp_transport_binding_t));
+    transport_binding = (rp_transport_binding_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(rp_transport_binding_t));
 
-    if (transport_binding == NULL)
+    if(transport_binding == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -57,18 +55,18 @@ rp_transport_binding_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (transport_binding)
+    if(transport_binding)
     {
-        if (--(transport_binding->ref) > 0)
+        if(--(transport_binding->ref) > 0)
         {
             return;
         }
-        if (transport_binding->binding_commons)
+        if(transport_binding->binding_commons)
         {
             rp_binding_commons_free(transport_binding->binding_commons, env);
             transport_binding->binding_commons = NULL;
         }
-        if (transport_binding->transport_token)
+        if(transport_binding->transport_token)
         {
             rp_property_free(transport_binding->transport_token, env);
             transport_binding->transport_token = NULL;

@@ -39,42 +39,40 @@ rp_token_identifier_set_token(
     value = neethi_assertion_get_value(assertion, env);
     type = neethi_assertion_get_type(assertion, env);
 
-    if (value)
+    if(value)
     {
-        if (type == ASSERTION_TYPE_USERNAME_TOKEN)
+        if(type == ASSERTION_TYPE_USERNAME_TOKEN)
         {
             rp_username_token_t *username_token = NULL;
-            username_token = (rp_username_token_t *) value;
-            rp_property_set_value(token, env, username_token,
-                                  RP_PROPERTY_USERNAME_TOKEN);
+            username_token = (rp_username_token_t *)value;
+            rp_property_set_value(token, env, username_token, RP_PROPERTY_USERNAME_TOKEN);
             return AXIS2_SUCCESS;
         }
-        else if (type == ASSERTION_TYPE_X509_TOKEN)
+        else if(type == ASSERTION_TYPE_X509_TOKEN)
         {
             rp_x509_token_t *x509_token = NULL;
-            x509_token = (rp_x509_token_t *) value;
-            rp_property_set_value(token, env, x509_token,
-                                  RP_PROPERTY_X509_TOKEN);
+            x509_token = (rp_x509_token_t *)value;
+            rp_property_set_value(token, env, x509_token, RP_PROPERTY_X509_TOKEN);
             return AXIS2_SUCCESS;
         }
-        else if (type == ASSERTION_TYPE_SAML_TOKEN)
+        else if(type == ASSERTION_TYPE_SAML_TOKEN)
         {
             rp_saml_token_t *saml_token = NULL;
-            saml_token = (rp_saml_token_t *) value;
+            saml_token = (rp_saml_token_t *)value;
             rp_property_set_value(token, env, saml_token, RP_PROPERTY_SAML_TOKEN);
             return AXIS2_SUCCESS;
         }
-        else if (type == ASSERTION_TYPE_ISSUED_TOKEN)
+        else if(type == ASSERTION_TYPE_ISSUED_TOKEN)
         {
             rp_issued_token_t *issued_token = NULL;
-            issued_token = (rp_issued_token_t *) value;
+            issued_token = (rp_issued_token_t *)value;
             rp_property_set_value(token, env, issued_token, RP_PROPERTY_ISSUED_TOKEN);
             return AXIS2_SUCCESS;
         }
         else
             return AXIS2_FAILURE;
     }
-        
-	return AXIS2_FAILURE;
+
+    return AXIS2_FAILURE;
 }
 

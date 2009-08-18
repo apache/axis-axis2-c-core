@@ -36,11 +36,10 @@ rp_binding_commons_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    binding_commons = (rp_binding_commons_t *) AXIS2_MALLOC(env->allocator,
-                                                            sizeof
-                                                            (rp_binding_commons_t));
+    binding_commons = (rp_binding_commons_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(rp_binding_commons_t));
 
-    if (binding_commons == NULL)
+    if(binding_commons == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -63,37 +62,34 @@ rp_binding_commons_free(
     rp_binding_commons_t *binding_commons,
     const axutil_env_t *env)
 {
-    if (binding_commons)
+    if(binding_commons)
     {
-        if (binding_commons->algorithmsuite)
+        if(binding_commons->algorithmsuite)
         {
             rp_algorithmsuite_free(binding_commons->algorithmsuite, env);
             binding_commons->algorithmsuite = NULL;
         }
-        if (binding_commons->layout)
+        if(binding_commons->layout)
         {
             rp_layout_free(binding_commons->layout, env);
             binding_commons->layout = NULL;
         }
-        if (binding_commons->signed_supporting_tokens)
+        if(binding_commons->signed_supporting_tokens)
         {
-            rp_supporting_tokens_free(binding_commons->signed_supporting_tokens,
-                                      env);
+            rp_supporting_tokens_free(binding_commons->signed_supporting_tokens, env);
             binding_commons->signed_supporting_tokens = NULL;
         }
-        if (binding_commons->signed_endorsing_supporting_tokens)
+        if(binding_commons->signed_endorsing_supporting_tokens)
         {
-            rp_supporting_tokens_free(binding_commons->
-                                      signed_endorsing_supporting_tokens, env);
+            rp_supporting_tokens_free(binding_commons-> signed_endorsing_supporting_tokens, env);
             binding_commons->signed_endorsing_supporting_tokens = NULL;
         }
-        if (binding_commons->endorsing_supporting_tokens)
+        if(binding_commons->endorsing_supporting_tokens)
         {
-            rp_supporting_tokens_free(binding_commons->
-                                      endorsing_supporting_tokens, env);
+            rp_supporting_tokens_free(binding_commons-> endorsing_supporting_tokens, env);
             binding_commons->endorsing_supporting_tokens = NULL;
         }
-        if (binding_commons->supporting_tokens)
+        if(binding_commons->supporting_tokens)
         {
             rp_supporting_tokens_free(binding_commons->supporting_tokens, env);
             binding_commons->supporting_tokens = NULL;
@@ -204,11 +200,9 @@ rp_binding_commons_set_signed_endorsing_supporting_tokens(
     const axutil_env_t *env,
     rp_supporting_tokens_t *signed_endorsing_supporting_tokens)
 {
-    AXIS2_PARAM_CHECK(env->error, signed_endorsing_supporting_tokens,
-                      AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, signed_endorsing_supporting_tokens, AXIS2_FAILURE);
 
-    binding_commons->signed_endorsing_supporting_tokens =
-        signed_endorsing_supporting_tokens;
+    binding_commons->signed_endorsing_supporting_tokens = signed_endorsing_supporting_tokens;
     return AXIS2_SUCCESS;
 }
 

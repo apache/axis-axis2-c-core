@@ -34,26 +34,23 @@ rp_bootstrap_policy_builder_build(
     neethi_assertion_t *assertion = NULL;
 
     child_node = axiom_node_get_first_element(node, env);
-    if (!child_node)
+    if(!child_node)
     {
         return NULL;
     }
 
-    if (axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
+    if(axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
     {
-        child_element =
-            (axiom_element_t *) axiom_node_get_data_element(child_node, env);
-        if (child_element)
+        child_element = (axiom_element_t *)axiom_node_get_data_element(child_node, env);
+        if(child_element)
         {
             policy = neethi_engine_get_policy(env, child_node, child_element);
-            if (!policy)
+            if(!policy)
             {
                 return NULL;
             }
-            assertion = neethi_assertion_create_with_args(env,
-                                                  NULL, /*this policy should not be deleted*/
-                                                  policy,
-                                                  ASSERTION_TYPE_BOOTSTRAP_POLICY);
+            assertion = neethi_assertion_create_with_args(env, NULL, /*this policy should not be deleted*/
+            policy, ASSERTION_TYPE_BOOTSTRAP_POLICY);
             return assertion;
         }
         else

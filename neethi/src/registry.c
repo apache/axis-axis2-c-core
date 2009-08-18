@@ -31,11 +31,9 @@ neethi_registry_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    neethi_registry = (neethi_registry_t *) AXIS2_MALLOC(env->allocator,
-                                                         sizeof
-                                                         (neethi_registry_t));
+    neethi_registry = (neethi_registry_t *)AXIS2_MALLOC(env->allocator, sizeof(neethi_registry_t));
 
-    if (neethi_registry == NULL)
+    if(neethi_registry == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -44,7 +42,7 @@ neethi_registry_create(
     neethi_registry->registry = NULL;
 
     neethi_registry->registry = axutil_hash_make(env);
-    if (!(neethi_registry->registry))
+    if(!(neethi_registry->registry))
     {
         neethi_registry_free(neethi_registry, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -64,7 +62,7 @@ neethi_registry_create_with_parent(
     neethi_registry_t *neethi_registry = NULL;
 
     neethi_registry = neethi_registry_create(env);
-    if (!neethi_registry)
+    if(!neethi_registry)
         return NULL;
 
     neethi_registry->parent = parent;
@@ -76,17 +74,17 @@ neethi_registry_free(
     neethi_registry_t *neethi_registry,
     const axutil_env_t *env)
 {
-    if (neethi_registry->registry)
+    if(neethi_registry->registry)
     {
         axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axutil_hash_first(neethi_registry->registry, env); hi;
-             hi = axutil_hash_next(env, hi))
+        for(hi = axutil_hash_first(neethi_registry->registry, env); hi; hi = axutil_hash_next(env,
+            hi))
         {
             neethi_policy_t *neethi_policy = NULL;
             axutil_hash_this(hi, NULL, NULL, &val);
-            neethi_policy = (neethi_policy_t *) val;
-            if (neethi_policy)
+            neethi_policy = (neethi_policy_t *)val;
+            if(neethi_policy)
                 neethi_policy_free(neethi_policy, env);
             val = NULL;
             neethi_policy = NULL;
@@ -94,7 +92,7 @@ neethi_registry_free(
         }
         axutil_hash_free(neethi_registry->registry, env);
     }
-    if (neethi_registry->parent)
+    if(neethi_registry->parent)
     {
         neethi_registry->parent = NULL;
     }
@@ -110,8 +108,7 @@ neethi_registry_register(
     axis2_char_t *key,
     neethi_policy_t *value)
 {
-    axutil_hash_set(neethi_registry->registry, key, AXIS2_HASH_KEY_STRING,
-                    value);
+    axutil_hash_set(neethi_registry->registry, key, AXIS2_HASH_KEY_STRING, value);
     return AXIS2_SUCCESS;
 }
 
@@ -123,10 +120,10 @@ neethi_registry_lookup(
 {
     neethi_policy_t *policy = NULL;
 
-    policy = (neethi_policy_t *) axutil_hash_get(neethi_registry->registry, key,
-                                                 AXIS2_HASH_KEY_STRING);
+    policy = (neethi_policy_t *)axutil_hash_get(neethi_registry->registry, key,
+        AXIS2_HASH_KEY_STRING);
 
-    if (!policy && neethi_registry->parent)
+    if(!policy && neethi_registry->parent)
     {
         return neethi_registry_lookup(neethi_registry->parent, env, key);
     }

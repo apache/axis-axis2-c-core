@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -38,16 +37,16 @@ neethi_assertion_builder_build(
     node_qname = axiom_element_get_qname(element, env, node);
     if(!node_qname)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "[neethi] Cannot get qname from element %s.", localname);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[neethi] Cannot get qname from element %s.",
+            localname);
         return NULL;
     }
 
     ns = axutil_qname_get_uri(node_qname, env);
     if(!ns)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "[neethi] Cannot get namespace from element %s.", localname);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[neethi] Cannot get namespace from element %s.",
+            localname);
         return NULL;
     }
 
@@ -135,7 +134,7 @@ neethi_assertion_builder_build(
         {
             neethi_assertion_t *assertion = NULL;
             assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, NULL, 
+            neethi_assertion_set_value(assertion, env, NULL,
                 ASSERTION_TYPE_ONLY_SIGN_ENTIRE_HEADERS_AND_BODY);
             return assertion;
         }
@@ -167,7 +166,7 @@ neethi_assertion_builder_build(
         {
             neethi_assertion_t *assertion = NULL;
             assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, NULL, 
+            neethi_assertion_set_value(assertion, env, NULL,
                 ASSERTION_TYPE_REQUIRE_THUMBPRINT_REFERENCE);
             return assertion;
         }
@@ -259,7 +258,7 @@ neethi_assertion_builder_build(
         {
             neethi_assertion_t *assertion = NULL;
             assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, NULL, 
+            neethi_assertion_set_value(assertion, env, NULL,
                 ASSERTION_TYPE_MUST_SUPPORT_REF_KEY_IDENTIFIER);
             return assertion;
         }
@@ -267,7 +266,7 @@ neethi_assertion_builder_build(
         {
             neethi_assertion_t *assertion = NULL;
             assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, NULL, 
+            neethi_assertion_set_value(assertion, env, NULL,
                 ASSERTION_TYPE_MUST_SUPPORT_REF_ISSUER_SERIAL);
             return assertion;
         }
@@ -283,7 +282,7 @@ neethi_assertion_builder_build(
         {
             neethi_assertion_t *assertion = NULL;
             assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, NULL, 
+            neethi_assertion_set_value(assertion, env, NULL,
                 ASSERTION_TYPE_MUST_SUPPORT_REF_EMBEDDED_TOKEN);
             return assertion;
         }
@@ -303,10 +302,10 @@ neethi_assertion_builder_build(
         {
             neethi_assertion_t *assertion = NULL;
             assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, NULL, 
+            neethi_assertion_set_value(assertion, env, NULL,
                 ASSERTION_TYPE_MUST_SUPPORT_REF_THUMBPRINT);
             return assertion;
-        }    
+        }
         else if(!axutil_strcmp(localname, RP_MUST_SUPPORT_REF_ENCRYPTED_KEY))
         {
             neethi_assertion_t *assertion = NULL;
@@ -340,7 +339,7 @@ neethi_assertion_builder_build(
             neethi_assertion_set_value(assertion, env, NULL,
                 ASSERTION_TYPE_MUST_SUPPORT_SERVER_CHALLENGE);
             return assertion;
-        }        
+        }
 
         else if(!axutil_strcmp(localname, RP_REQUIRE_CLIENT_ENTROPY))
         {
@@ -362,7 +361,7 @@ neethi_assertion_builder_build(
         {
             neethi_assertion_t *assertion = NULL;
             assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, NULL, 
+            neethi_assertion_set_value(assertion, env, NULL,
                 ASSERTION_TYPE_MUST_SUPPORT_ISSUED_TOKENS);
             return assertion;
         }
@@ -374,14 +373,14 @@ neethi_assertion_builder_build(
             if(!axutil_strcmp(ns, RP_SP_NS_11))
             {
                 /* derived key should be as defined in WS-SecConversation 1.0 */
-                neethi_assertion_set_value(
-                    assertion, env, NULL, ASSERTION_TYPE_REQUIRE_DERIVED_KEYS_SC10);
+                neethi_assertion_set_value(assertion, env, NULL,
+                    ASSERTION_TYPE_REQUIRE_DERIVED_KEYS_SC10);
             }
             else
             {
                 /* derived key should be as defined in WS-SecConversation 1.3 */
-                neethi_assertion_set_value(
-                    assertion, env, NULL, ASSERTION_TYPE_REQUIRE_DERIVED_KEYS_SC13);
+                neethi_assertion_set_value(assertion, env, NULL,
+                    ASSERTION_TYPE_REQUIRE_DERIVED_KEYS_SC13);
             }
             return assertion;
         }
@@ -396,7 +395,7 @@ neethi_assertion_builder_build(
         {
             neethi_assertion_t *assertion = NULL;
             assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, NULL, 
+            neethi_assertion_set_value(assertion, env, NULL,
                 ASSERTION_TYPE_SC10_SECURITY_CONTEXT_TOKEN);
             return assertion;
         }
@@ -404,7 +403,7 @@ neethi_assertion_builder_build(
         {
             neethi_assertion_t *assertion = NULL;
             assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, NULL, 
+            neethi_assertion_set_value(assertion, env, NULL,
                 ASSERTION_TYPE_SC13_SECURITY_CONTEXT_TOKEN);
             return assertion;
         }
@@ -422,7 +421,7 @@ neethi_assertion_builder_build(
         {
             neethi_assertion_t *assertion = NULL;
             assertion = neethi_assertion_create(env);
-            neethi_assertion_set_value(assertion, env, NULL, 
+            neethi_assertion_set_value(assertion, env, NULL,
                 ASSERTION_TYPE_REQUIRE_EXTERNAL_REFERENCE);
             return assertion;
         }
@@ -491,13 +490,14 @@ neethi_assertion_builder_build(
         if(!axutil_strcmp(localname, AXIS2_OPTIMIZED_MIME_SERIALIZATION))
         {
             neethi_assertion_t *assertion = NULL;
-            assertion = neethi_assertion_create(env);  
-            neethi_assertion_set_value(assertion, env, NULL, ASSERTION_TYPE_OPTIMIZED_MIME_SERIALIZATION) ;
-            return assertion;     
+            assertion = neethi_assertion_create(env);
+            neethi_assertion_set_value(assertion, env, NULL,
+                ASSERTION_TYPE_OPTIMIZED_MIME_SERIALIZATION);
+            return assertion;
         }
     }
-    else if((!axutil_strcmp(ns, AXIS2_RM_POLICY_10_NS))||
-        (!axutil_strcmp(ns, AXIS2_RM_POLICY_11_NS)))
+    else if((!axutil_strcmp(ns, AXIS2_RM_POLICY_10_NS)) || (!axutil_strcmp(ns,
+        AXIS2_RM_POLICY_11_NS)))
     {
         if(!axutil_strcmp(localname, AXIS2_RM_RMASSERTION))
         {
@@ -507,7 +507,7 @@ neethi_assertion_builder_build(
 
     /* This assertion cannot be processed */
     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NEETHI_UNKNOWN_ASSERTION, AXIS2_FAILURE);
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-        "[neethi] Unknown Assertion %s with namespace %s", localname, ns);
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[neethi] Unknown Assertion %s with namespace %s",
+        localname, ns);
     return NULL;
 }

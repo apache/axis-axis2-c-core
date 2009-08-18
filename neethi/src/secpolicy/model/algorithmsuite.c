@@ -51,11 +51,10 @@ rp_algorithmsuite_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    algorithmsuite = (rp_algorithmsuite_t *) AXIS2_MALLOC(env->allocator,
-                                                          sizeof
-                                                          (rp_algorithmsuite_t));
+    algorithmsuite = (rp_algorithmsuite_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(rp_algorithmsuite_t));
 
-    if (algorithmsuite == NULL)
+    if(algorithmsuite == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
@@ -76,7 +75,8 @@ rp_algorithmsuite_create(
     algorithmsuite->signature_key_derivation = NULL;
     algorithmsuite->encryption_key_derivation_keylength = 192;
     algorithmsuite->signature_key_derivation_keylength = 192;
-    algorithmsuite->min_symmetric_keylength = 0;;
+    algorithmsuite->min_symmetric_keylength = 0;
+    ;
     algorithmsuite->c14n = RP_EX_C14N;
     algorithmsuite->soap_normalization = NULL;
     algorithmsuite->str_transformation = NULL;
@@ -90,9 +90,9 @@ rp_algorithmsuite_free(
     rp_algorithmsuite_t *algorithmsuite,
     const axutil_env_t *env)
 {
-    if (algorithmsuite)
+    if(algorithmsuite)
     {
-        if (--(algorithmsuite->ref) > 0)
+        if(--(algorithmsuite->ref) > 0)
         {
             return;
         }
@@ -110,7 +110,7 @@ rp_algorithmsuite_get_algosuite_string(
     rp_algorithmsuite_t *algorithmsuite,
     const axutil_env_t *env)
 {
-    if (!algorithmsuite)
+    if(!algorithmsuite)
         return NULL;
     else
         return algorithmsuite->algosuite_string;
@@ -127,7 +127,7 @@ rp_algorithmsuite_set_algosuite(
 
     algorithmsuite->algosuite_string = algosuite_string;
 
-    if (axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC256) == 0)
+    if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC256) == 0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_AES256;
@@ -141,7 +141,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC192) == 0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC192) == 0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_AES192;
@@ -155,7 +155,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC128) == 0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC128) == 0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_AES128;
@@ -169,7 +169,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp(algosuite_string, RP_ALGO_SUITE_TRIPLE_DES) == 0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_TRIPLE_DES) == 0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_TRIPLE_DES;
@@ -183,7 +183,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC256_RSA15) == 0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC256_RSA15) == 0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_AES256;
@@ -197,7 +197,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC192_RSA15) == 0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC192_RSA15) == 0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_AES192;
@@ -211,7 +211,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC128_RSA15) == 0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC128_RSA15) == 0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_AES128;
@@ -225,8 +225,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp(algosuite_string, RP_ALGO_SUITE_TRIPLE_DES_RSA15) ==
-             0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_TRIPLE_DES_RSA15) == 0)
     {
         algorithmsuite->digest = RP_SHA1;
         algorithmsuite->encryption = RP_TRIPLE_DES;
@@ -240,8 +239,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC256_SHA256) ==
-             0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC256_SHA256) == 0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_AES256;
@@ -255,8 +253,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC192_SHA256) ==
-             0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC192_SHA256) == 0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_AES192;
@@ -270,8 +267,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC128_SHA256) ==
-             0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC128_SHA256) == 0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_AES128;
@@ -285,8 +281,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp(algosuite_string, RP_ALGO_SUITE_TRIPLE_DES_SHA256) ==
-             0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_TRIPLE_DES_SHA256) == 0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_TRIPLE_DES;
@@ -300,8 +295,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp
-             (algosuite_string, RP_ALGO_SUITE_BASIC256_SHA256_RSA15) == 0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC256_SHA256_RSA15) == 0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_AES256;
@@ -315,8 +309,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp
-             (algosuite_string, RP_ALGO_SUITE_BASIC192_SHA256_RSA15) == 0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC192_SHA256_RSA15) == 0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_AES192;
@@ -330,8 +323,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp
-             (algosuite_string, RP_ALGO_SUITE_BASIC128_SHA256_RSA15) == 0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_BASIC128_SHA256_RSA15) == 0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_AES128;
@@ -345,8 +337,7 @@ rp_algorithmsuite_set_algosuite(
 
         return AXIS2_SUCCESS;
     }
-    else if (axutil_strcmp
-             (algosuite_string, RP_ALGO_SUITE_TRIPLE_DES_SHA256_RSA15) == 0)
+    else if(axutil_strcmp(algosuite_string, RP_ALGO_SUITE_TRIPLE_DES_SHA256_RSA15) == 0)
     {
         algorithmsuite->digest = RP_SHA256;
         algorithmsuite->encryption = RP_TRIPLE_DES;

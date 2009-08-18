@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -34,13 +33,13 @@ rp_username_token_create(
     const axutil_env_t * env)
 {
     rp_username_token_t *username_token = NULL;
-    username_token = (rp_username_token_t *) AXIS2_MALLOC(
-        env->allocator, sizeof (rp_username_token_t));
+    username_token = (rp_username_token_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(rp_username_token_t));
 
-    if (!username_token)
+    if(!username_token)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[neethi] User name token creation failed. Insufficient memory");
         return NULL;
     }
@@ -48,8 +47,7 @@ rp_username_token_create(
     username_token->token = rp_token_create(env);
     if(!username_token->token)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "[neethi] User name token creation failed.");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[neethi] User name token creation failed.");
         rp_username_token_free(username_token, env);
         return NULL;
     }
@@ -70,7 +68,7 @@ rp_username_token_free(
 {
     if(username_token)
     {
-        if (--(username_token->ref) > 0)
+        if(--(username_token->ref) > 0)
         {
             return;
         }

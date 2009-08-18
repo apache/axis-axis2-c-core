@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -32,9 +31,9 @@ rp_header_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    header = (rp_header_t *) AXIS2_MALLOC(env->allocator, sizeof(rp_header_t));
+    header = (rp_header_t *)AXIS2_MALLOC(env->allocator, sizeof(rp_header_t));
 
-    if (header == NULL)
+    if(header == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -53,14 +52,14 @@ rp_header_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (header)
+    if(header)
     {
-        if (header->name)
+        if(header->name)
         {
             AXIS2_FREE(env->allocator, header->name);
             header->name = NULL;
         }
-        if (header->nspace)
+        if(header->nspace)
         {
             AXIS2_FREE(env->allocator, header->nspace);
             header->nspace = NULL;

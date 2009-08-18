@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -35,11 +34,11 @@ rp_x509_token_create(
     const axutil_env_t * env)
 {
     rp_x509_token_t *x509_token = NULL;
-    x509_token = (rp_x509_token_t *) AXIS2_MALLOC(env->allocator, sizeof(rp_x509_token_t));
+    x509_token = (rp_x509_token_t *)AXIS2_MALLOC(env->allocator, sizeof(rp_x509_token_t));
 
-    if (!x509_token)
+    if(!x509_token)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[neethi] X509 token assertion creation failed. Insufficient memory");
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -66,9 +65,9 @@ rp_x509_token_free(
     rp_x509_token_t * x509_token,
     const axutil_env_t * env)
 {
-    if (x509_token)
+    if(x509_token)
     {
-        if (--(x509_token->ref) > 0)
+        if(--(x509_token->ref) > 0)
         {
             return;
         }

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -40,7 +39,7 @@ struct axis2_rm_assertion_t
     axis2_char_t *storage_mgr;
     axis2_char_t *message_types_to_drop;
     axis2_char_t *max_retrans_count;
-    axis2_char_t *sender_sleep_time;    
+    axis2_char_t *sender_sleep_time;
     axis2_char_t *invoker_sleep_time;
     axis2_char_t *polling_wait_time;
     axis2_char_t *terminate_delay;
@@ -53,10 +52,10 @@ axis2_rm_assertion_create(
 {
     axis2_rm_assertion_t *rm_assertion;
 
-    rm_assertion = (axis2_rm_assertion_t *) AXIS2_MALLOC(env->allocator,
-                                                sizeof(axis2_rm_assertion_t));
+    rm_assertion = (axis2_rm_assertion_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(axis2_rm_assertion_t));
 
-    if (rm_assertion == NULL)
+    if(rm_assertion == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -121,7 +120,7 @@ axis2_rm_assertion_set_is_sequence_str(
     axis2_bool_t is_sequence_str)
 {
     rm_assertion->is_sequence_str = is_sequence_str;
- 
+
     return AXIS2_SUCCESS;
 }
 
@@ -139,9 +138,8 @@ axis2_rm_assertion_set_is_sequence_transport_security(
     const axutil_env_t * env,
     axis2_bool_t is_sequence_transport_security)
 {
-    rm_assertion->is_sequence_transport_security = 
-        is_sequence_transport_security;
- 
+    rm_assertion->is_sequence_transport_security = is_sequence_transport_security;
+
     return AXIS2_SUCCESS;
 }
 
@@ -160,10 +158,9 @@ axis2_rm_assertion_set_is_exactly_once(
     axis2_bool_t is_exactly_once)
 {
     rm_assertion->is_exactly_once = is_exactly_once;
- 
+
     return AXIS2_SUCCESS;
 }
-
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_rm_assertion_get_is_atleast_once(
@@ -180,7 +177,7 @@ axis2_rm_assertion_set_is_atleast_once(
     axis2_bool_t is_atleast_once)
 {
     rm_assertion->is_atleast_once = is_atleast_once;
- 
+
     return AXIS2_SUCCESS;
 }
 
@@ -199,7 +196,7 @@ axis2_rm_assertion_set_is_atmost_once(
     axis2_bool_t is_atmost_once)
 {
     rm_assertion->is_atmost_once = is_atmost_once;
- 
+
     return AXIS2_SUCCESS;
 }
 
@@ -218,7 +215,7 @@ axis2_rm_assertion_set_is_inorder(
     axis2_bool_t is_inorder)
 {
     rm_assertion->is_inorder = is_inorder;
- 
+
     return AXIS2_SUCCESS;
 }
 
@@ -237,7 +234,7 @@ axis2_rm_assertion_set_inactivity_timeout(
     axis2_char_t* inactivity_timeout)
 {
     rm_assertion->inactivity_timeout = inactivity_timeout;
- 
+
     return AXIS2_SUCCESS;
 }
 
@@ -256,10 +253,9 @@ axis2_rm_assertion_set_retrans_interval(
     axis2_char_t* retrans_interval)
 {
     rm_assertion->retrans_interval = retrans_interval;
- 
+
     return AXIS2_SUCCESS;
 }
-
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_rm_assertion_get_ack_interval(
@@ -276,10 +272,9 @@ axis2_rm_assertion_set_ack_interval(
     axis2_char_t* ack_interval)
 {
     rm_assertion->ack_interval = ack_interval;
- 
+
     return AXIS2_SUCCESS;
 }
-
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_rm_assertion_get_is_exp_backoff(
@@ -296,11 +291,9 @@ axis2_rm_assertion_set_is_exp_backoff(
     axis2_bool_t is_exp_backoff)
 {
     rm_assertion->is_exp_backoff = is_exp_backoff;
- 
+
     return AXIS2_SUCCESS;
 }
-
-
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_rm_assertion_get_storage_mgr(
@@ -317,11 +310,9 @@ axis2_rm_assertion_set_storage_mgr(
     axis2_char_t* storage_mgr)
 {
     rm_assertion->storage_mgr = storage_mgr;
- 
+
     return AXIS2_SUCCESS;
 }
-
-
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_rm_assertion_get_message_types_to_drop(
@@ -338,10 +329,9 @@ axis2_rm_assertion_set_message_types_to_drop(
     axis2_char_t* message_types_to_drop)
 {
     rm_assertion->message_types_to_drop = message_types_to_drop;
- 
+
     return AXIS2_SUCCESS;
 }
-
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_rm_assertion_get_max_retrans_count(
@@ -358,10 +348,9 @@ axis2_rm_assertion_set_max_retrans_count(
     axis2_char_t* max_retrans_count)
 {
     rm_assertion->max_retrans_count = max_retrans_count;
- 
+
     return AXIS2_SUCCESS;
 }
-
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_rm_assertion_get_sender_sleep_time(
@@ -378,10 +367,9 @@ axis2_rm_assertion_set_sender_sleep_time(
     axis2_char_t* sender_sleep_time)
 {
     rm_assertion->sender_sleep_time = sender_sleep_time;
- 
+
     return AXIS2_SUCCESS;
 }
-
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_rm_assertion_get_invoker_sleep_time(
@@ -398,11 +386,9 @@ axis2_rm_assertion_set_invoker_sleep_time(
     axis2_char_t* invoker_sleep_time)
 {
     rm_assertion->invoker_sleep_time = invoker_sleep_time;
- 
+
     return AXIS2_SUCCESS;
 }
-
-
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_rm_assertion_get_polling_wait_time(
@@ -419,7 +405,7 @@ axis2_rm_assertion_set_polling_wait_time(
     axis2_char_t* polling_wait_time)
 {
     rm_assertion->polling_wait_time = polling_wait_time;
- 
+
     return AXIS2_SUCCESS;
 }
 
@@ -438,10 +424,9 @@ axis2_rm_assertion_set_terminate_delay(
     axis2_char_t* terminate_delay)
 {
     rm_assertion->terminate_delay = terminate_delay;
- 
+
     return AXIS2_SUCCESS;
 }
-
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_rm_assertion_get_sandesha2_db(
@@ -458,10 +443,9 @@ axis2_rm_assertion_set_sandesha2_db(
     axis2_char_t* sandesha2_db)
 {
     rm_assertion->sandesha2_db = sandesha2_db;
- 
+
     return AXIS2_SUCCESS;
 }
-
 
 AXIS2_EXTERN axis2_rm_assertion_t* AXIS2_CALL
 axis2_rm_assertion_get_from_policy(
@@ -480,30 +464,27 @@ axis2_rm_assertion_get_from_policy(
 
     alternatives = neethi_policy_get_alternatives(policy, env);
 
-    component =
-        (neethi_operator_t *) axutil_array_list_get(alternatives, env, 0);
-    all = (neethi_all_t *) neethi_operator_get_value(component, env);
+    component = (neethi_operator_t *)axutil_array_list_get(alternatives, env, 0);
+    all = (neethi_all_t *)neethi_operator_get_value(component, env);
 
     arraylist = neethi_all_get_policy_components(all, env);
 
-    for (i = 0; i < axutil_array_list_size(arraylist, env); i++)
+    for(i = 0; i < axutil_array_list_size(arraylist, env); i++)
     {
-        operator =(neethi_operator_t *) axutil_array_list_get(arraylist, env,
-                                                              i);
-        assertion =
-            (neethi_assertion_t *) neethi_operator_get_value(operator, env);
+        operator = (neethi_operator_t *)axutil_array_list_get(arraylist, env, i);
+        assertion = (neethi_assertion_t *)neethi_operator_get_value(operator, env);
         value = neethi_assertion_get_value(assertion, env);
         type = neethi_assertion_get_type(assertion, env);
 
-        if (value)
+        if(value)
         {
-            if (type == ASSERTION_TYPE_RM_ASSERTION)
+            if(type == ASSERTION_TYPE_RM_ASSERTION)
             {
                 return (axis2_rm_assertion_t *)value;
             }
         }
     }
-    
+
     return NULL;
 }
 

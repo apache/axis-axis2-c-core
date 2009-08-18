@@ -22,11 +22,13 @@
 #include <neethi_all.h>
 #include <neethi_engine.h>
 
-static rp_header_t *AXIS2_CALL rp_signed_encrypted_parts_builder_build_header(
+static rp_header_t *AXIS2_CALL
+rp_signed_encrypted_parts_builder_build_header(
     axiom_element_t *element,
     const axutil_env_t *env);
 
-static axis2_status_t AXIS2_CALL rp_signed_encrypted_parts_builder_set_properties(
+static axis2_status_t AXIS2_CALL
+rp_signed_encrypted_parts_builder_set_properties(
     axiom_node_t *node,
     axiom_element_t *element,
     axis2_char_t *local_name,
@@ -45,7 +47,7 @@ AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
 rp_signed_encrypted_parts_builder_build(
     const axutil_env_t *env,
     axiom_node_t *parts,
-    axiom_element_t *parts_ele, 
+    axiom_element_t *parts_ele,
     axis2_bool_t is_signed)
 {
     rp_signed_encrypted_parts_t *signed_encrypted_parts = NULL;
@@ -54,44 +56,43 @@ rp_signed_encrypted_parts_builder_build(
     axis2_status_t status = AXIS2_SUCCESS;
 
     signed_encrypted_parts = rp_signed_encrypted_parts_create(env);
-    if (!signed_encrypted_parts)
+    if(!signed_encrypted_parts)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "[neethi] Cannot create signed_encrypted_parts.");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[neethi] Cannot create signed_encrypted_parts.");
         return NULL;
     }
 
     rp_signed_encrypted_parts_set_signedparts(signed_encrypted_parts, env, is_signed);
 
     children_iter = axiom_element_get_children(parts_ele, env, parts);
-    if (children_iter)
+    if(children_iter)
     {
-        while (axiom_children_iterator_has_next(children_iter, env))
+        while(axiom_children_iterator_has_next(children_iter, env))
         {
             axiom_node_t *node = NULL;
             axiom_element_t *ele = NULL;
             axis2_char_t *local_name = NULL;
             node = axiom_children_iterator_next(children_iter, env);
-            if (node)
+            if(node)
             {
-                if (axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
+                if(axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
                 {
-                    ele = (axiom_element_t *) axiom_node_get_data_element(node, env);
-                    if (ele)
+                    ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
+                    if(ele)
                     {
                         local_name = axiom_element_get_localname(ele, env);
-                        if (local_name)
+                        if(local_name)
                         {
-                            status = rp_signed_encrypted_parts_builder_set_properties
-                                (node, ele, local_name, signed_encrypted_parts, env);
-                            if (status != AXIS2_SUCCESS)
+                            status = rp_signed_encrypted_parts_builder_set_properties(node, ele,
+                                local_name, signed_encrypted_parts, env);
+                            if(status != AXIS2_SUCCESS)
                             {
-                                rp_signed_encrypted_parts_free (signed_encrypted_parts, env);
+                                rp_signed_encrypted_parts_free(signed_encrypted_parts, env);
                                 signed_encrypted_parts = NULL;
-                                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                                     "[neethi] Cannot create signed_encrypted_parts. "
-                                    "Error in processing child element %s", local_name);
-                                    return NULL;
+                                        "Error in processing child element %s", local_name);
+                                return NULL;
                             }
                         }
                     }
@@ -99,9 +100,9 @@ rp_signed_encrypted_parts_builder_build(
             }
         }
     }
-    assertion = neethi_assertion_create_with_args(
-        env, (AXIS2_FREE_VOID_ARG)rp_signed_encrypted_parts_free, 
-        signed_encrypted_parts, ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS);
+    assertion = neethi_assertion_create_with_args(env,
+        (AXIS2_FREE_VOID_ARG)rp_signed_encrypted_parts_free, signed_encrypted_parts,
+        ASSERTION_TYPE_SIGNED_ENCRYPTED_PARTS);
     return assertion;
 }
 
@@ -119,16 +120,16 @@ rp_signed_encrypted_parts_builder_set_properties(
     node_qname = axiom_element_get_qname(element, env, node);
     if(!node_qname)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "[neethi] Cannot get qname from element %s.", local_name);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[neethi] Cannot get qname from element %s.",
+            local_name);
         return AXIS2_FAILURE;
     }
 
     ns = axutil_qname_get_uri(node_qname, env);
     if(!ns)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "[neethi] Cannot get namespace from element %s.", local_name);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[neethi] Cannot get namespace from element %s.",
+            local_name);
         return AXIS2_FAILURE;
     }
 
@@ -147,7 +148,7 @@ rp_signed_encrypted_parts_builder_set_properties(
             header = rp_signed_encrypted_parts_builder_build_header(element, env);
             if(!header)
             {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                     "[neethi] Failed to process Header Assertion.");
                 return AXIS2_FAILURE;
             }
@@ -165,10 +166,10 @@ rp_signed_encrypted_parts_builder_set_properties(
             return AXIS2_SUCCESS;
         }
     }
-    
+
     /* either namespace or assertion is not understood */
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-        "[neethi] Unknown Assertion %s with namespace %s", local_name, ns);
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[neethi] Unknown Assertion %s with namespace %s",
+        local_name, ns);
     return AXIS2_FAILURE;
 }
 
@@ -183,22 +184,22 @@ rp_signed_encrypted_parts_builder_build_header(
 
     name = axiom_element_get_attribute_value_by_name(element, env, RP_NAME);
     nspace = axiom_element_get_attribute_value_by_name(element, env, RP_NAMESPACE);
-    if (!nspace)
+    if(!nspace)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[neethi] Header assertion should have namespace associated with it.");
         return NULL;
     }
 
     header = rp_header_create(env);
-    if (!header)
+    if(!header)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[neethi] Cannot create rp_header structure. Insufficient memory.");
         return NULL;
     }
 
-    if (name)
+    if(name)
     {
         rp_header_set_name(header, env, name);
     }

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -38,18 +37,17 @@ rp_supporting_tokens_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    supporting_tokens = (rp_supporting_tokens_t *) AXIS2_MALLOC(env->allocator,
-                                                                sizeof
-                                                                (rp_supporting_tokens_t));
+    supporting_tokens = (rp_supporting_tokens_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(rp_supporting_tokens_t));
 
-    if (supporting_tokens == NULL)
+    if(supporting_tokens == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     supporting_tokens->tokens = NULL;
     supporting_tokens->tokens = axutil_array_list_create(env, 0);
-    if (!(supporting_tokens->tokens))
+    if(!(supporting_tokens->tokens))
     {
         rp_supporting_tokens_free(supporting_tokens, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -73,24 +71,22 @@ rp_supporting_tokens_free(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (supporting_tokens)
+    if(supporting_tokens)
     {
 
-        if (--(supporting_tokens->ref) > 0)
+        if(--(supporting_tokens->ref) > 0)
         {
             return;
         }
 
-        if (supporting_tokens->tokens)
+        if(supporting_tokens->tokens)
         {
             int i = 0;
-            for (i = 0; i < axutil_array_list_size(supporting_tokens->tokens,
-                                                   env); i++)
+            for(i = 0; i < axutil_array_list_size(supporting_tokens->tokens, env); i++)
             {
                 rp_property_t *token = NULL;
-                token = (rp_property_t *)
-                    axutil_array_list_get(supporting_tokens->tokens, env, i);
-                if (token)
+                token = (rp_property_t *)axutil_array_list_get(supporting_tokens->tokens, env, i);
+                if(token)
                     rp_property_free(token, env);
 
                 token = NULL;
@@ -99,33 +95,29 @@ rp_supporting_tokens_free(
             supporting_tokens->tokens = NULL;
 
         }
-        if (supporting_tokens->algorithmsuite)
+        if(supporting_tokens->algorithmsuite)
         {
             rp_algorithmsuite_free(supporting_tokens->algorithmsuite, env);
             supporting_tokens->algorithmsuite = NULL;
         }
-        if (supporting_tokens->signed_parts)
+        if(supporting_tokens->signed_parts)
         {
-            rp_signed_encrypted_parts_free(supporting_tokens->signed_parts,
-                                           env);
+            rp_signed_encrypted_parts_free(supporting_tokens->signed_parts, env);
             supporting_tokens->signed_parts = NULL;
         }
-        if (supporting_tokens->signed_elements)
+        if(supporting_tokens->signed_elements)
         {
-            rp_signed_encrypted_elements_free(supporting_tokens->
-                                              signed_elements, env);
+            rp_signed_encrypted_elements_free(supporting_tokens-> signed_elements, env);
             supporting_tokens->signed_elements = NULL;
         }
-        if (supporting_tokens->encrypted_parts)
+        if(supporting_tokens->encrypted_parts)
         {
-            rp_signed_encrypted_parts_free(supporting_tokens->encrypted_parts,
-                                           env);
+            rp_signed_encrypted_parts_free(supporting_tokens->encrypted_parts, env);
             supporting_tokens->encrypted_parts = NULL;
         }
-        if (supporting_tokens->encrypted_elements)
+        if(supporting_tokens->encrypted_elements)
         {
-            rp_signed_encrypted_elements_free(supporting_tokens->
-                                              encrypted_elements, env);
+            rp_signed_encrypted_elements_free(supporting_tokens-> encrypted_elements, env);
             supporting_tokens->encrypted_elements = NULL;
         }
         AXIS2_FREE(env->allocator, supporting_tokens);
