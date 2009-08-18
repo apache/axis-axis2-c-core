@@ -39,7 +39,7 @@ START_TEST(
     guththila_read(env, parser);
     c = guththila_next(env, parser);
 
-    while ((c != GUTHTHILA_START_ELEMENT))
+    while((c != GUTHTHILA_START_ELEMENT))
         c = guththila_next(env, parser);
     p = guththila_get_name(env, parser);
     fail_unless((c == GUTHTHILA_START_ELEMENT), "no start element found");
@@ -47,7 +47,7 @@ START_TEST(
     fail_unless(!strcmp(p, "root"), "root element differed");
     c = 0;
 
-    while ((c != GUTHTHILA_START_ELEMENT))
+    while((c != GUTHTHILA_START_ELEMENT))
         c = guththila_next(env, parser);
     p = guththila_get_name(env, parser);
     fail_unless((c == GUTHTHILA_START_ELEMENT), "no start element found");
@@ -55,7 +55,7 @@ START_TEST(
     fail_unless(!strcmp(p, "a"), "a element differed");
 
     c = 0;
-    while ((c != GUTHTHILA_START_ELEMENT))
+    while((c != GUTHTHILA_START_ELEMENT))
         c = guththila_next(env, parser);
     p = guththila_get_name(env, parser);
     fail_unless(!strcmp(p, "b"), "b element differed");
@@ -72,7 +72,7 @@ START_TEST(
     guththila_read(env, parser);
     c = guththila_next(env, parser);
 
-    while ((c != GUTHTHILA_EMPTY_ELEMENT))
+    while((c != GUTHTHILA_EMPTY_ELEMENT))
         c = guththila_next(env, parser);
     p = guththila_get_name(env, parser);
     fail_unless((c == GUTHTHILA_EMPTY_ELEMENT), "no empty element found");
@@ -81,7 +81,7 @@ START_TEST(
 
     c = 0;
 
-    while ((c != GUTHTHILA_EMPTY_ELEMENT))
+    while((c != GUTHTHILA_EMPTY_ELEMENT))
         c = guththila_next(env, parser);
     p = guththila_get_name(env, parser);
     fail_unless((c == GUTHTHILA_EMPTY_ELEMENT), "no empty element found");
@@ -89,11 +89,11 @@ START_TEST(
     fail_unless(!strcmp(p, "a.2"), "a.2 element differed");
 
     c = 0;
-    while ((c != GUTHTHILA_START_ELEMENT))
+    while((c != GUTHTHILA_START_ELEMENT))
         c = guththila_next(env, parser);
 
     c = 0;
-    while ((c != GUTHTHILA_EMPTY_ELEMENT))
+    while((c != GUTHTHILA_EMPTY_ELEMENT))
         c = guththila_next(env, parser);
     p = guththila_get_name(env, parser);
     fail_unless((c == GUTHTHILA_EMPTY_ELEMENT), "no empty element found");
@@ -112,7 +112,7 @@ START_TEST(
     guththila_read(env, parser);
     c = guththila_next(env, parser);
 
-    while ((c != GUTHTHILA_END_ELEMENT))
+    while((c != GUTHTHILA_END_ELEMENT))
         c = guththila_next(env, parser);
     p = guththila_get_name(env, parser);
     fail_unless((c == GUTHTHILA_END_ELEMENT), "no end element found");
@@ -120,7 +120,7 @@ START_TEST(
     fail_unless(!strcmp(p, "a"), "a element differed");
 
     c = 0;
-    while ((c != GUTHTHILA_END_ELEMENT))
+    while((c != GUTHTHILA_END_ELEMENT))
         c = guththila_next(env, parser);
     p = guththila_get_name(env, parser);
     fail_unless((c == GUTHTHILA_END_ELEMENT), "no endelement found");
@@ -128,7 +128,7 @@ START_TEST(
     fail_unless(!strcmp(p, "b"), "b element differed");
 
     c = 0;
-    while ((c != GUTHTHILA_END_ELEMENT))
+    while((c != GUTHTHILA_END_ELEMENT))
         c = guththila_next(env, parser);
     p = guththila_get_name(env, parser);
     fail_unless((c == GUTHTHILA_END_ELEMENT), "no empty element found");
@@ -147,25 +147,27 @@ START_TEST(
     parser = guththila_create(env, red);
     guththila_read(env, parser);
     c = guththila_next(env, parser);
-    while (i < 3)
+    while(i < 3)
     {
-        if (c == GUTHTHILA_START_ELEMENT)
+        if(c == GUTHTHILA_START_ELEMENT)
             i++;
         c = guththila_next(env, parser);
     }
 
-    if (c == GUTHTHILA_CHARACTER)
+    if(c == GUTHTHILA_CHARACTER)
         p = guththila_get_value(env, parser);
     fail_unless(!strcmp(p, "3"), "3 not found");
 
     c = 0;
-    while ((c != GUTHTHILA_CHARACTER) || (parser->is_whitespace))
+    while((c != GUTHTHILA_CHARACTER) || (parser->is_whitespace))
         c = guththila_next(env, parser);
     p = guththila_get_value(env, parser);
     fail_unless(!strcmp(p, "24"), "24 not found");
 
 }
-END_TEST Suite * guththila_suite(void)
+END_TEST Suite *
+guththila_suite(
+    void)
 {
     Suite *s = suite_create("Guththila");
 

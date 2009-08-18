@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -41,24 +40,23 @@ main(
     guththila_write_start_element(env, parser, "two");
     guththila_write_default_namespace(env, parser, "http://another.host.com");
     guththila_write_start_element_with_prefix_and_namespace(env, parser, "ws",
-                                                            "http://www.wso2.org",
-                                                            "wso2");
+        "http://www.wso2.org", "wso2");
     guththila_write_start_element_with_prefix(env, parser, "ws", "stacks");
     guththila_write_attribute_with_prefix(env, parser, "ws", "stack", "axis2");
     guththila_write_characters(env, parser,
-                               "testadfjaldjf;ajf;lkajdfa;lkjfd;ajdf11111111111122334455");
+        "testadfjaldjf;ajf;lkajdfa;lkjfd;ajdf11111111111122334455");
     guththila_write_end_document(env, parser);
 
-    xml = (char *) AXIS2_MALLOC(env->allocator, MAXA + 1);
+    xml = (char *)AXIS2_MALLOC(env->allocator, MAXA + 1);
     memset(xml, 0, MAXA + 1);
-    if (!argv[1])
+    if(!argv[1])
     {
         file = fopen("/home/dinesh/tmp/mbox_backup/mbox.archived", "r");
     }
     else
         file = fopen(argv[1], "r");
 
-    if (file)
+    if(file)
         fread(xml, 1, MAXA, file);
 
     guththila_write_to_buffer(env, parser, xml);

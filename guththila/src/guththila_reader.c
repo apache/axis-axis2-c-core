@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,23 +13,25 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */  
+ */
 #include <stdlib.h>
 #include <string.h>
 #include <guththila_reader.h>
-GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL 
-guththila_reader_create_for_file(guththila_char_t *file_name, const axutil_env_t * env) 
+GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
+guththila_reader_create_for_file(
+    guththila_char_t *file_name,
+    const axutil_env_t * env)
 {
     guththila_reader_t * reader = NULL;
 
     FILE * f = NULL;
-    if (!file_name)
+    if(!file_name)
         return NULL;
-    reader =(guththila_reader_t *) AXIS2_MALLOC(env->allocator, sizeof(guththila_reader_t));
-    if (!reader)
+    reader = (guththila_reader_t *)AXIS2_MALLOC(env->allocator, sizeof(guththila_reader_t));
+    if(!reader)
         return NULL;
     f = fopen(file_name, "r");
-    if (!f)
+    if(!f)
     {
         AXIS2_FREE(env->allocator, reader);
         return NULL;
@@ -40,14 +41,15 @@ guththila_reader_create_for_file(guththila_char_t *file_name, const axutil_env_t
     return reader;
 }
 
-GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL 
-guththila_reader_create_for_memory(void *buffer, int size,
-                                   const axutil_env_t * env) 
+GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
+guththila_reader_create_for_memory(
+    void *buffer,
+    int size,
+    const axutil_env_t * env)
 {
-    guththila_reader_t * reader =
-        (guththila_reader_t *) AXIS2_MALLOC(env->allocator,
-                                            sizeof(guththila_reader_t));
-    if (reader)
+    guththila_reader_t * reader = (guththila_reader_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(guththila_reader_t));
+    if(reader)
     {
         reader->type = GUTHTHILA_MEMORY_READER;
         reader->buff = buffer;
@@ -58,15 +60,15 @@ guththila_reader_create_for_memory(void *buffer, int size,
     return NULL;
 }
 
-GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL 
-guththila_reader_create_for_io(GUTHTHILA_READ_INPUT_CALLBACK
-                               input_read_callback, void *ctx,
-                               const axutil_env_t * env) 
+GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
+guththila_reader_create_for_io(
+    GUTHTHILA_READ_INPUT_CALLBACK input_read_callback,
+    void *ctx,
+    const axutil_env_t * env)
 {
-    guththila_reader_t * reader =
-        (guththila_reader_t *) AXIS2_MALLOC(env->allocator,
-                                            sizeof(guththila_reader_t));
-    if (reader)
+    guththila_reader_t * reader = (guththila_reader_t *)AXIS2_MALLOC(env->allocator,
+        sizeof(guththila_reader_t));
+    if(reader)
     {
         reader->input_read_callback = input_read_callback;
         reader->context = ctx;
@@ -75,40 +77,39 @@ guththila_reader_create_for_io(GUTHTHILA_READ_INPUT_CALLBACK
     }
     return NULL;
 }
-GUTHTHILA_EXPORT void GUTHTHILA_CALL 
+GUTHTHILA_EXPORT void GUTHTHILA_CALL
 guththila_reader_free(
     guththila_reader_t * r,
-    const axutil_env_t * env) 
+    const axutil_env_t * env)
 {
-    if (r->type == GUTHTHILA_FILE_READER && r->fp)
+    if(r->type == GUTHTHILA_FILE_READER && r->fp)
     {
         fclose(r->fp);
     }
-    if (r->type == GUTHTHILA_IO_READER && r->context)
+    if(r->type == GUTHTHILA_IO_READER && r->context)
     {
-      AXIS2_FREE(env->allocator, r->context);
-    }  
+        AXIS2_FREE(env->allocator, r->context);
+    }
     AXIS2_FREE(env->allocator, r);
-    
+
 }
-GUTHTHILA_EXPORT int GUTHTHILA_CALL 
+GUTHTHILA_EXPORT int GUTHTHILA_CALL
 guththila_reader_read(
     guththila_reader_t * r,
     guththila_char_t * buffer,
     int offset,
     int length,
-    const axutil_env_t * env) 
+    const axutil_env_t * env)
 {
     int rt = r->type;
-    switch (rt)
+    switch(rt)
     {
-		case GUTHTHILA_FILE_READER:
-			return (int) fread(buffer + offset, 1, length, r->fp);
-		case GUTHTHILA_IO_READER:
-			return r->input_read_callback((buffer + offset), length, r->context);
-		default:
-			return 0;
+        case GUTHTHILA_FILE_READER:
+            return (int)fread(buffer + offset, 1, length, r->fp);
+        case GUTHTHILA_IO_READER:
+            return r->input_read_callback((buffer + offset), length, r->context);
+        default:
+            return 0;
     }
 }
-
 
