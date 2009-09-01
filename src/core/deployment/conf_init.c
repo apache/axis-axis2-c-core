@@ -32,7 +32,8 @@ axis2_init_modules(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx);
 
-static axis2_status_t AXIS2_CALL axis2_load_services(
+static axis2_status_t AXIS2_CALL
+axis2_load_services(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx);
 
@@ -41,30 +42,21 @@ axis2_init_transports(
     const axutil_env_t * env,
     axis2_conf_ctx_t * conf_ctx);
 
-AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
-axis2_build_conf_ctx(
+static axis2_conf_ctx_t *AXIS2_CALL
+axis2_build_conf_ctx_with_dep_engine(
     const axutil_env_t * env,
-    const axis2_char_t * repo_name)
+    axis2_dep_engine_t *dep_engine,
+    axis2_char_t *is_server_side)
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
-    axis2_dep_engine_t *dep_engine = NULL;
     axis2_conf_t *conf = NULL;
     axutil_property_t *property = NULL;
     axis2_ctx_t *conf_ctx_base = NULL;
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_build_conf_ctx");
-    dep_engine = axis2_dep_engine_create_with_repos_name(env, repo_name);
-    if(!dep_engine)
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Creating deployment engine failed for repository %s", repo_name);
-        return NULL;
-    }
 
     conf = axis2_dep_engine_load(dep_engine, env);
     if(!conf)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Loading deployment engine failed for repository %s.", repo_name);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Loading deployment engine failed");
         axis2_dep_engine_free(dep_engine, env);
         return NULL;
     }
@@ -78,12 +70,44 @@ axis2_build_conf_ctx(
     }
 
     conf_ctx_base = axis2_conf_ctx_get_base(conf_ctx, env);
-    property = axutil_property_create_with_args(env, 2, 0, 0, AXIS2_VALUE_TRUE);
+    property = axutil_property_create_with_args(env, 2, 0, 0, is_server_side);
     axis2_ctx_set_property(conf_ctx_base, env, AXIS2_IS_SVR_SIDE, property);
 
     axis2_init_modules(env, conf_ctx);
-    axis2_load_services(env, conf_ctx);
     axis2_init_transports(env, conf_ctx);
+
+    if(!axutil_strcmp(is_server_side, AXIS2_VALUE_TRUE))
+    {
+        axis2_load_services(env, conf_ctx);
+    }
+
+    return conf_ctx;
+}
+
+AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
+axis2_build_conf_ctx(
+    const axutil_env_t * env,
+    const axis2_char_t * repo_name)
+{
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axis2_dep_engine_t *dep_engine = NULL;
+
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_build_conf_ctx");
+    dep_engine = axis2_dep_engine_create_with_repos_name(env, repo_name);
+    if(!dep_engine)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Creating deployment engine failed for repository %s", repo_name);
+        return NULL;
+    }
+
+    conf_ctx = axis2_build_conf_ctx_with_dep_engine(env, dep_engine, AXIS2_VALUE_TRUE);
+    if(!conf_ctx)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Loading configuration context failed for repository %s.", repo_name);
+        return NULL;
+    }
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_build_conf_ctx");
     return conf_ctx;
@@ -96,7 +120,6 @@ axis2_build_conf_ctx_with_file(
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_dep_engine_t *dep_engine = NULL;
-    axis2_conf_t *conf = NULL;
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_build_conf_ctx_with_file");
     dep_engine = axis2_dep_engine_create_with_axis2_xml(env, file);
@@ -108,29 +131,13 @@ axis2_build_conf_ctx_with_file(
         return NULL;
     }
 
-    conf = axis2_dep_engine_load(dep_engine, env);
-
-    if(!conf)
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Loading deployment engine failed for given Axis2 configuration "
-                "file(axis2.xml)");
-        axis2_dep_engine_free(dep_engine, env);
-        return NULL;
-    }
-
-    axis2_conf_set_dep_engine(conf, env, dep_engine);
-
-    conf_ctx = axis2_conf_ctx_create(env, conf);
+    conf_ctx = axis2_build_conf_ctx_with_dep_engine(env, dep_engine, AXIS2_VALUE_TRUE);
     if(!conf_ctx)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating Axis2 configuration context failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Loading configuration context failed for given Axis2 configuration %s.", file);
         return NULL;
     }
-
-    axis2_init_modules(env, conf_ctx);
-    axis2_load_services(env, conf_ctx);
-    axis2_init_transports(env, conf_ctx);
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_build_conf_ctx_with_file");
     return conf_ctx;
@@ -143,12 +150,8 @@ axis2_build_client_conf_ctx(
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_dep_engine_t *dep_engine = NULL;
-    axis2_conf_t *conf = NULL;
-    axutil_property_t *property = NULL;
-    axis2_ctx_t *conf_ctx_base = NULL;
 
     axis2_status_t status;
-    unsigned int len = 0;
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_build_client_conf_ctx");
     /* Building conf using axis2.xml, in that case we check whether
@@ -159,6 +162,8 @@ axis2_build_client_conf_ctx(
     status = axutil_file_handler_access(axis2_home, AXIS2_R_OK);
     if(status == AXIS2_SUCCESS)
     {
+        unsigned int len = 0;
+
         len = (int)strlen(axis2_home);
         /* We are sure that the difference lies within the int range */
         if((len >= 9) && !strcmp((axis2_home + (len - 9)), "axis2.xml"))
@@ -184,28 +189,14 @@ axis2_build_client_conf_ctx(
             "Creating deployment engine for client repository %s failed.", axis2_home);
         return NULL;
     }
-    conf = axis2_dep_engine_load_client(dep_engine, env, axis2_home);
-    if(!conf)
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Loading deployment engine failed for client repository %s", axis2_home);
-        axis2_dep_engine_free(dep_engine, env);
-        return NULL;
-    }
-    axis2_conf_set_dep_engine(conf, env, dep_engine);
 
-    conf_ctx = axis2_conf_ctx_create(env, conf);
+    conf_ctx = axis2_build_conf_ctx_with_dep_engine(env, dep_engine, AXIS2_VALUE_FALSE);
     if(!conf_ctx)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating Axis2 configuration context failed");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Loading configuration context failed for repository %s.", axis2_home);
         return NULL;
     }
-    conf_ctx_base = axis2_conf_ctx_get_base(conf_ctx, env);
-    property = axutil_property_create_with_args(env, 2, 0, 0, AXIS2_VALUE_FALSE);
-    axis2_ctx_set_property(conf_ctx_base, env, AXIS2_IS_SVR_SIDE, property);
-
-    axis2_init_modules(env, conf_ctx);
-    axis2_init_transports(env, conf_ctx);
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_build_client_conf_ctx");
     return conf_ctx;
@@ -266,70 +257,71 @@ axis2_load_services(
 {
     axis2_conf_t *conf = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axutil_hash_t *svc_map = NULL;
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_load_services");
     AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
 
     conf = axis2_conf_ctx_get_conf(conf_ctx, env);
-    if(conf)
+    if(!conf)
     {
-        axutil_hash_t *svc_map = axis2_conf_get_all_svcs_to_load(conf, env);
-        if(svc_map)
+        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, "Retrieving Axis2 configuration from Axis2 "
+            "configuration context failed, Loading services failed");
+        return status;
+    }
+
+    svc_map = axis2_conf_get_all_svcs_to_load(conf, env);
+    if(svc_map)
+    {
+        axutil_hash_index_t *hi = NULL;
+        void *svc = NULL;
+        for(hi = axutil_hash_first(svc_map, env); hi; hi = axutil_hash_next(env, hi))
         {
-            axutil_hash_index_t *hi = NULL;
-            void *svc = NULL;
-            for(hi = axutil_hash_first(svc_map, env); hi; hi = axutil_hash_next(env, hi))
+            axis2_svc_t *svc_desc = NULL;
+            axutil_param_t *impl_info_param = NULL;
+            void *impl_class = NULL;
+            const axis2_char_t *svc_name = NULL;
+
+            axutil_hash_this(hi, NULL, NULL, &svc);
+            if(!svc)
             {
-                axutil_hash_this(hi, NULL, NULL, &svc);
-                if(svc)
-                {
-                    axis2_svc_t *svc_desc = (axis2_svc_t *)svc;
-                    if(svc_desc)
-                    {
-                        axutil_param_t *impl_info_param = NULL;
-                        void *impl_class = NULL;
-                        const axis2_char_t *svc_name = axis2_svc_get_name(svc_desc, env);
-                        impl_info_param = axis2_svc_get_param(svc_desc, env, AXIS2_SERVICE_CLASS);
+                continue;
+            }
 
-                        if(!impl_info_param)
-                        {
-                            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,
-                                AXIS2_FAILURE);
-                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                                "Invalid state of the service %s", svc_name);
-                            return AXIS2_FAILURE;
-                        }
-                        axutil_class_loader_init(env);
-                        impl_class = axutil_class_loader_create_dll(env, impl_info_param);
-                        if(!impl_class)
-                        {
-                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                                "Service %s could not be loaded", svc_name);
-                            return AXIS2_FAILURE;
-                        }
+            svc_desc = (axis2_svc_t *)svc;
+            if(!svc_desc)
+            {
+                continue;
+            }
 
-                        axis2_svc_set_impl_class(svc_desc, env, impl_class);
-                        status = AXIS2_SVC_SKELETON_INIT_WITH_CONF(
-                            (axis2_svc_skeleton_t *)impl_class, env, conf);
-                        if(!status)
-                        {
-                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                                "Initialization failed for the service %s. "
-                                    "Check the service's init_with_conf() "
-                                    "function for errors and retry", svc_name);
-                        }
-                    }
-                }
+            svc_name = axis2_svc_get_name(svc_desc, env);
+            impl_info_param = axis2_svc_get_param(svc_desc, env, AXIS2_SERVICE_CLASS);
+
+            if(!impl_info_param)
+            {
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid state of the service %s", svc_name);
+                return AXIS2_FAILURE;
+            }
+            axutil_class_loader_init(env);
+            impl_class = axutil_class_loader_create_dll(env, impl_info_param);
+            if(!impl_class)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Service %s could not be loaded", svc_name);
+                return AXIS2_FAILURE;
+            }
+
+            axis2_svc_set_impl_class(svc_desc, env, impl_class);
+            if(AXIS2_SVC_SKELETON_INIT_WITH_CONF((axis2_svc_skeleton_t *)impl_class, env, conf)
+                != AXIS2_SUCCESS)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Initialization failed for the service %s. "
+                    "Check the service's init_with_conf() function for errors and retry", svc_name);
             }
         }
-        status = AXIS2_SUCCESS;
     }
-    else
-    {
-        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
-            "Retrieving Axis2 configuration from Axis2 configuration context "
-                "failed, Loading services failed");
-    }
+    status = AXIS2_SUCCESS;
+
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_load_services");
     return status;
 }
@@ -364,7 +356,6 @@ axis2_init_transports(
                     status = axis2_transport_receiver_init(listener, env, conf_ctx,
                         transport_in_map[i]);
                 }
-
             }
         }
 
@@ -380,7 +371,6 @@ axis2_init_transports(
                     status = AXIS2_TRANSPORT_SENDER_INIT(sender, env, conf_ctx,
                         transport_out_map[i]);
                 }
-
             }
         }
         status = AXIS2_SUCCESS;

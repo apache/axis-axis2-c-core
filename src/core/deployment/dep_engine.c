@@ -713,15 +713,12 @@ axis2_dep_engine_load(
     if(!dep_engine->conf_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_PATH_TO_CONFIG_CAN_NOT_BE_NULL, AXIS2_FAILURE);
-
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "Path to axis2 configuration file is NULL. Unable to continue");
-
         return NULL;
     }
 
     dep_engine->conf = axis2_conf_create(env);
-
     if(!dep_engine->conf)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Allocation to configuration failed");
@@ -736,7 +733,6 @@ axis2_dep_engine_load(
 
     dep_engine->conf_builder = axis2_conf_builder_create_with_file_and_dep_engine_and_conf(env,
         dep_engine->conf_name, dep_engine, dep_engine->conf);
-
     if(!(dep_engine->conf_builder))
     {
         axis2_conf_free(dep_engine->conf, env);
@@ -747,7 +743,6 @@ axis2_dep_engine_load(
     /* Populate the axis2 configuration from reading axis2.xml.
      */
     status = axis2_conf_builder_populate_conf(dep_engine->conf_builder, env);
-
     if(AXIS2_SUCCESS != status)
     {
         axis2_conf_free(dep_engine->conf, env);
@@ -777,15 +772,12 @@ axis2_dep_engine_load(
 
     dep_engine->repos_listener = axis2_repos_listener_create_with_folder_name_and_dep_engine(env,
         dep_engine->folder_name, dep_engine);
-
     if(!dep_engine->repos_listener)
     {
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
-
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "dep_engine repos listener creation failed, folder name is %s", dep_engine->folder_name);
-
         return NULL;
     }
 
@@ -794,16 +786,13 @@ axis2_dep_engine_load(
         dep_engine->conf, env), dep_engine->conf);
 
     status = axis2_dep_engine_validate_system_predefined_phases(dep_engine, env);
-
     if(AXIS2_SUCCESS != status)
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
-
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Validating system predefined phases failed");
-
         return NULL;
     }
 
@@ -813,17 +802,15 @@ axis2_dep_engine_load(
         axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
-
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "Setting phases info into Axis2 Configuration failed");
-
         return NULL;
     }
 
     out_fault_phases = axis2_phases_info_get_op_out_faultphases(dep_engine->phases_info, env);
     if(out_fault_phases)
     {
-        axis2_conf_set_out_fault_phases(dep_engine->conf, env, out_fault_phases);
+        status = axis2_conf_set_out_fault_phases(dep_engine->conf, env, out_fault_phases);
     }
 
     if(AXIS2_SUCCESS != status)
@@ -831,10 +818,8 @@ axis2_dep_engine_load(
         axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
-
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "Setting out fault phases into Axis2 Configuratin failed");
-
         return NULL;
     }
 
@@ -844,7 +829,6 @@ axis2_dep_engine_load(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "dep engine failed to engaged_modules");
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
-
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED, AXIS2_FAILURE);
         return NULL;
     }
