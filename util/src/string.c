@@ -375,51 +375,51 @@ axutil_strcat(
             saved_lengths[nargs++] = cplen;
         }
         len += cplen;
-cp    = va_arg(adummy, axis2_char_t *);
-}
-
-va_end(adummy);
-
-/* Allocate the required string */
-str_len = (int)(sizeof(axis2_char_t) * (len + 1));
-/* We are sure that the difference lies within the int range */
-str = (axis2_char_t *) AXIS2_MALLOC(env->allocator, str_len);
-if (!str)
-{
-    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
-    return NULL;
-}
-cp = str;
-
-/* Pass two --- copy the argument strings into the result space */
-
-va_start(adummy, env);
-
-nargs = 0;
-argp = va_arg(adummy, axis2_char_t *);
-while (argp)
-{
-    if (nargs < MAX_SAVED_LENGTHS)
-    {
-        len = saved_lengths[nargs++];
-    }
-    else
-    {
-        len = strlen(argp);
+        cp    = va_arg(adummy, axis2_char_t *);
     }
 
-    memcpy(cp, argp, len);
-    cp += len;
+    va_end(adummy);
+
+    /* Allocate the required string */
+    str_len = (int)(sizeof(axis2_char_t) * (len + 1));
+    /* We are sure that the difference lies within the int range */
+    str = (axis2_char_t *) AXIS2_MALLOC(env->allocator, str_len);
+    if (!str)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
+        return NULL;
+    }
+    cp = str;
+
+    /* Pass two --- copy the argument strings into the result space */
+
+    va_start(adummy, env);
+
+    nargs = 0;
     argp = va_arg(adummy, axis2_char_t *);
-}
+    while (argp)
+    {
+        if (nargs < MAX_SAVED_LENGTHS)
+        {
+            len = saved_lengths[nargs++];
+        }
+        else
+        {
+            len = strlen(argp);
+        }
 
-va_end(adummy);
+        memcpy(cp, argp, len);
+        cp += len;
+        argp = va_arg(adummy, axis2_char_t *);
+    }
 
-/* Return the result string */
+    va_end(adummy);
 
-*cp = '\0';
-return str;
+    /* Return the result string */
+
+    *cp = '\0';
+    return str;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
