@@ -150,8 +150,12 @@ axis2_build_client_conf_ctx(
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_dep_engine_t *dep_engine = NULL;
+    axis2_conf_t *conf = NULL;
+    axutil_property_t *property = NULL;
+    axis2_ctx_t *conf_ctx_base = NULL;
 
     axis2_status_t status;
+    unsigned int len = 0;
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_build_client_conf_ctx");
     /* Building conf using axis2.xml, in that case we check whether
@@ -159,16 +163,16 @@ axis2_build_client_conf_ctx(
      * else treat it as a directory 
      */
 
-    status = axutil_file_handler_access(axis2_home, AXIS2_R_OK);
-    if(status == AXIS2_SUCCESS)
+    status = axutil_file_handler_access (axis2_home, AXIS2_R_OK);
+    if (status == AXIS2_SUCCESS)
     {
-        unsigned int len = 0;
-
-        len = (int)strlen(axis2_home);
+        len = (int)strlen (axis2_home);
         /* We are sure that the difference lies within the int range */
-        if((len >= 9) && !strcmp((axis2_home + (len - 9)), "axis2.xml"))
+        if ((len >= 9) &&
+            !strcmp ((axis2_home + (len - 9)), "axis2.xml"))
         {
-            dep_engine = axis2_dep_engine_create_with_axis2_xml(env, axis2_home);
+            dep_engine = axis2_dep_engine_create_with_axis2_xml (env,
+                axis2_home);
         }
         else
         {
@@ -177,26 +181,44 @@ axis2_build_client_conf_ctx(
     }
     else
     {
-        AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
-            "Provided client repository path %s does not exsist or no "
-                "permission to read, therefore set axis2c home to DEFAULT_REPO_PATH.", axis2_home);
+        AXIS2_LOG_WARNING (env->log, AXIS2_LOG_SI,
+            "Provided client repository path %s does not exsist or no "\
+            "permission to read, therefore set axis2c home to DEFAULT_REPO_PATH.",
+            axis2_home);
         axis2_home = DEFAULT_REPO_PATH;
         dep_engine = axis2_dep_engine_create(env);
     }
-    if(!dep_engine)
+    if (!dep_engine)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Creating deployment engine for client repository %s failed.", axis2_home);
+            "Creating deployment engine for client repository %s failed." ,
+            axis2_home);
         return NULL;
     }
+    conf = axis2_dep_engine_load_client(dep_engine, env, axis2_home);
+    if (!conf)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Loading deployment engine failed for client repository %s",
+            axis2_home);
+        axis2_dep_engine_free(dep_engine, env);
+        return NULL;
+    }
+    axis2_conf_set_dep_engine(conf, env, dep_engine);
 
-    conf_ctx = axis2_build_conf_ctx_with_dep_engine(env, dep_engine, AXIS2_VALUE_FALSE);
-    if(!conf_ctx)
+    conf_ctx = axis2_conf_ctx_create(env, conf);
+    if (!conf_ctx)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "Loading configuration context failed for repository %s.", axis2_home);
+            "Creating Axis2 configuration context failed");
         return NULL;
     }
+    conf_ctx_base = axis2_conf_ctx_get_base(conf_ctx, env);
+    property = axutil_property_create_with_args(env, 2, 0, 0, AXIS2_VALUE_FALSE);
+    axis2_ctx_set_property(conf_ctx_base, env, AXIS2_IS_SVR_SIDE, property);
+
+    axis2_init_modules(env, conf_ctx);
+    axis2_init_transports(env, conf_ctx);
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_build_client_conf_ctx");
     return conf_ctx;
