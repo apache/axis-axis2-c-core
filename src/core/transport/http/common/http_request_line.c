@@ -85,12 +85,19 @@ axis2_http_request_line_free(
     return;
 }
 
+/**
+ * Parses a line "<http method> <uri location> <http version>CRLF" and creates http_request_line
+ * object. E.g "POST /axis2/services/echo HTTP/1.1\r\n"
+ * @param env pointer to environment struct
+ * @param str pointer to the line to be parsed
+ * @return created object if success. NULL otherwise
+ */
 AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL
 axis2_http_request_line_parse_line(
     const axutil_env_t * env,
     const axis2_char_t * str)
 {
-    axis2_char_t *req_line = NULL;
+    /*axis2_char_t *req_line = NULL;*/
     axis2_char_t *method = NULL;
     axis2_char_t *uri = NULL;
     axis2_char_t *http_version = NULL;
@@ -98,18 +105,22 @@ axis2_http_request_line_parse_line(
     axis2_char_t *tmp = NULL;
     int i = 0;
 
-    AXIS2_PARAM_CHECK(env->error, str, NULL);
+    if(!str)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid parameter is given to parse");
+        return NULL;
+    }
 
     tmp = axutil_strstr(str, AXIS2_HTTP_CRLF);
-
     if(!tmp)
     {
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, AXIS2_FAILURE);
         return NULL;
     }
 
-    i = (int)(tmp - str);
-    /* We are sure that the difference lies within the int range */
+    i = (int)(tmp - str); /* We are sure that the difference lies within the int range */
+
+    /*
     req_line = AXIS2_MALLOC(env->allocator, i * sizeof(axis2_char_t) + 1);
     if(!req_line)
     {
@@ -119,28 +130,42 @@ axis2_http_request_line_parse_line(
     memcpy(req_line, str, i * sizeof(axis2_char_t));
     req_line[i] = AXIS2_ESC_NULL;
     tmp = req_line;
+    */
+    /* we don't need to do a malloc and memcpy, because this method is only used by
+     * axis2_simple_http_svr_conn_read_request and it passes a temporary string. So, we can just
+     * set it as req_line and set the escape characters. this is done after 1.6.0 and if no issues
+     * found until 1.8.0, above code comment can be removed after 1.8.0
+     */
 
+    tmp = (axis2_char_t *)str;
+    tmp[i] = AXIS2_ESC_NULL;
+
+    /* find http method */
     method = tmp;
     tmp = strchr(tmp, AXIS2_SPACE);
     if(!tmp)
     {
-        AXIS2_FREE(env->allocator, req_line);
+        /*AXIS2_FREE(env->allocator, req_line);*/
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, AXIS2_FAILURE);
         return NULL;
     }
     *tmp++ = AXIS2_ESC_NULL;
+
+    /* find URI */
     uri = tmp;
     tmp = strrchr(tmp, AXIS2_SPACE);
     if(!tmp)
     {
-        AXIS2_FREE(env->allocator, req_line);
+        /*AXIS2_FREE(env->allocator, req_line);*/
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, AXIS2_FAILURE);
         return NULL;
     }
     *tmp++ = AXIS2_ESC_NULL;
+
+    /* find HTTP version */
     http_version = tmp;
     ret = axis2_http_request_line_create(env, method, uri, http_version);
-    AXIS2_FREE(env->allocator, req_line);
+    /*AXIS2_FREE(env->allocator, req_line);*/
 
     return ret;
 }

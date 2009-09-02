@@ -3106,7 +3106,6 @@ return status;
 /* This method takes an array_list as the input. It has items some 
  may be buffers and some may be files. This will send these part
  one by one to the wire using the chunked stream.*/
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_send_mtom_message(
     axutil_http_chunked_stream_t * chunked_stream,
@@ -3115,189 +3114,23 @@ axis2_http_transport_utils_send_mtom_message(
     axis2_char_t *sending_callback_name)
 {
     int i = 0;
-    axiom_mime_part_t *mime_part = NULL;
-    axis2_status_t status = AXIS2_SUCCESS;
-    int written = 0;
-    int len = 0;
-
-    if(mime_parts)
-    {
-        for(i = 0; i < axutil_array_list_size(mime_parts, env); i++)
-        {
-            mime_part = (axiom_mime_part_t *)axutil_array_list_get(mime_parts, env, i);
-
-            /* If it is a buffer just write it to the wire. This includes mime_bounadaries,
-             * mime_headers and SOAP */
-
-            if((mime_part->type) == AXIOM_MIME_PART_BUFFER)
-            {
-                written = 0;
-                while(written < mime_part->part_size)
-                {
-                    len = 0;
-                    len = axutil_http_chunked_stream_write(chunked_stream, env, mime_part->part
-                        + written, mime_part->part_size - written);
-                    if(len == -1)
-                    {
-                        status = AXIS2_FAILURE;
-                        break;
-                    }
-                    else
-                    {
-                        written += len;
-                    }
-                }
-            }
-
-            /* If it is a file we load a very little portion to memory 
-             * and send it as chunked , we keep on doing this until we find
-             * the end of the file */
-            else if((mime_part->type) == AXIOM_MIME_PART_FILE)
-            {
-                FILE *f = NULL;
-                axis2_byte_t *output_buffer = NULL;
-                int output_buffer_size = 0;
-
-                f = fopen(mime_part->file_name, "rb");
-                if(!f)
-                {
-                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error opening file %s for reading",
-                        mime_part->file_name);
-                    return AXIS2_FAILURE;
-                }
-
-                /*If the part_size is less than the defined buffer size then 
-                 *from the first write to the wire we can send the file */
-
-                if(mime_part->part_size > AXIS2_MTOM_OUTPUT_BUFFER_SIZE)
-                {
-                    output_buffer_size = AXIS2_MTOM_OUTPUT_BUFFER_SIZE;
-                }
-                else
-                {
-                    output_buffer_size = mime_part->part_size;
-                }
-
-                output_buffer = AXIS2_MALLOC(env->allocator, (output_buffer_size + 1)
-                    * sizeof(axis2_char_t));
-
-                /*This is the method responsible for writing to the wire */
-                status = axis2_http_transport_utils_send_attachment_using_file(env, chunked_stream,
-                    f, output_buffer, output_buffer_size);
-                if(status == AXIS2_FAILURE)
-                {
-                    return status;
-                }
-            }
-            else if((mime_part->type) == AXIOM_MIME_PART_CALLBACK)
-            {
-                void *handler = NULL;
-                axiom_mtom_sending_callback_t *callback = NULL;
-
-                handler = axis2_http_transport_utils_initiate_callback(env, sending_callback_name,
-                    mime_part->user_param, &callback);
-
-                if(handler)
-                {
-                    status = axis2_http_transport_utils_send_attachment_using_callback(env,
-                        chunked_stream, callback, handler, mime_part->user_param);
-                }
-                else
-                {
-                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "MTOM Sending Callback loading failed");
-                    status = AXIS2_FAILURE;
-                }
-
-                if(callback)
-                {
-                    axutil_param_t *param = NULL;
-
-                    param = callback->param;
-
-                    AXIOM_MTOM_SENDING_CALLBACK_FREE(callback, env);
-                    callback = NULL;
-                    if(param)
-                    {
-                        axutil_param_free(param, env);
-                        param = NULL;
-                    }
-                }
-
-                if(status == AXIS2_FAILURE)
-                {
-                    return status;
-                }
-            }
-            else
-            {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unknown mime_part.");
-                return AXIS2_FAILURE;
-            }
-            if(status == AXIS2_FAILURE)
-            {
-                break;
-            }
-        }
-        if(status == AXIS2_SUCCESS)
-        {
-            /* send the end of chunk */
-            axutil_http_chunked_stream_write_last_chunk(chunked_stream, env);
-            return AXIS2_SUCCESS;
-        }
-        else
-        {
-            return status;
-        }
-    }
-    else
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot send the attachment.Mime"
-            "Parts are not set properly.");
-        return AXIS2_FAILURE;
-    }
-}
-
-static axis2_status_t
-axis2_http_transport_utils_send_attachment_using_file(
-    const axutil_env_t * env,
-    axutil_http_chunked_stream_t *chunked_stream,
-    FILE *fp,
-    axis2_byte_t *buffer,
-    int buffer_size)
-{
-
-    int count = 0;
-    int len = 0;
-    int written = 0;
     axis2_status_t status = AXIS2_SUCCESS;
 
-    /*We do not load the whole file to memory. Just load a buffer_size portion
-     *and send it. Keep on doing this until the end of file */
-
-    do
+    for(i = 0; i < axutil_array_list_size(mime_parts, env); i++)
     {
-        count = (int)fread(buffer, 1, buffer_size + 1, fp);
-        if(ferror(fp))
-        {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in reading file containg the attachment");
-            if(buffer)
-            {
-                AXIS2_FREE(env->allocator, buffer);
-                buffer = NULL;
-            }
-            fclose(fp);
-            return AXIS2_FAILURE;
-        }
+        axiom_mime_part_t *mime_part = NULL;
+        mime_part = (axiom_mime_part_t *)axutil_array_list_get(mime_parts, env, i);
 
-        /*Writing the part we loaded to memory to the wire*/
-        if(count > 0)
+        /* If it is a buffer just write it to the wire. This includes mime_bounadaries,
+         * mime_headers and SOAP */
+        if(mime_part->type == AXIOM_MIME_PART_BUFFER)
         {
-            written = 0;
-            while(written < count)
+            int written = 0;
+            while(written < mime_part->part_size)
             {
-                len = 0;
-                len = axutil_http_chunked_stream_write(chunked_stream, env, buffer + written, count
-                    - written);
+                int len = 0;
+                len = axutil_http_chunked_stream_write(chunked_stream, env,
+                    mime_part->part + written, mime_part->part_size - written);
                 if(len == -1)
                 {
                     status = AXIS2_FAILURE;
@@ -3309,44 +3142,136 @@ axis2_http_transport_utils_send_attachment_using_file(
                 }
             }
         }
+
+        /* If it is a file we load a very little portion to memory and send it as chunked ,
+         * we keep on doing this until we find the end of the file */
+        else if(mime_part->type == AXIOM_MIME_PART_FILE)
+        {
+            FILE *f = NULL;
+            axis2_byte_t *output_buffer = NULL;
+            int output_buffer_size = 0;
+
+            f = fopen(mime_part->file_name, "rb");
+            if(!f)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error opening file %s for reading",
+                    mime_part->file_name);
+                return AXIS2_FAILURE;
+            }
+
+            /* If the part_size is less than the defined buffer size then
+             * from the first write to the wire we can send the file */
+            if(mime_part->part_size > AXIS2_MTOM_OUTPUT_BUFFER_SIZE)
+            {
+                output_buffer_size = AXIS2_MTOM_OUTPUT_BUFFER_SIZE;
+            }
+            else
+            {
+                output_buffer_size = mime_part->part_size;
+            }
+
+            output_buffer = AXIS2_MALLOC(env->allocator, output_buffer_size * sizeof(axis2_char_t));
+
+            /*This is the method responsible for writing to the wire */
+            status = axis2_http_transport_utils_send_attachment_using_file(env, chunked_stream,
+                f, output_buffer, output_buffer_size);
+            AXIS2_FREE(env->allocator, output_buffer);
+            fclose(f);
+        }
+
+        /* if the callback is given, send data using callback */
+        else if((mime_part->type) == AXIOM_MIME_PART_CALLBACK)
+        {
+            void *handler = NULL;
+            axiom_mtom_sending_callback_t *callback = NULL;
+
+            handler = axis2_http_transport_utils_initiate_callback(env, sending_callback_name,
+                mime_part->user_param, &callback);
+            if(handler)
+            {
+                status = axis2_http_transport_utils_send_attachment_using_callback(env,
+                    chunked_stream, callback, handler, mime_part->user_param);
+            }
+            else
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "MTOM Sending Callback loading failed");
+                status = AXIS2_FAILURE;
+            }
+
+            if(callback)
+            {
+                axutil_param_t *param = NULL;
+                param = callback->param;
+                AXIOM_MTOM_SENDING_CALLBACK_FREE(callback, env);
+                if(param)
+                {
+                    axutil_param_free(param, env);
+                }
+            }
+        }
         else
         {
-            if(buffer)
-            {
-                AXIS2_FREE(env->allocator, buffer);
-                buffer = NULL;
-            }
-            fclose(fp);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unknown mime_part.");
+            status = AXIS2_FAILURE;
+        }
+
+        if(status != AXIS2_SUCCESS)
+        {
+            break;
+        }
+    }
+
+    if(status == AXIS2_SUCCESS)
+    {
+        /* send the end of chunk */
+        axutil_http_chunked_stream_write_last_chunk(chunked_stream, env);
+    }
+
+    return status;
+}
+
+static axis2_status_t
+axis2_http_transport_utils_send_attachment_using_file(
+    const axutil_env_t * env,
+    axutil_http_chunked_stream_t *chunked_stream,
+    FILE *fp,
+    axis2_byte_t *buffer,
+    int buffer_size)
+{
+    /*We do not load the whole file to memory. Just load a buffer_size portion
+     *and send it. Keep on doing this until the end of file */
+    do
+    {
+        int written = 0;
+        int count = (int)fread(buffer, 1, buffer_size, fp);
+        if(ferror(fp) || (count <= 0))
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Error in reading file containing the attachment");
             return AXIS2_FAILURE;
         }
 
-        /*We keep on loading the next part to the same buffer. So need to reset 
-         * te buffer */
-        memset(buffer, 0, buffer_size);
-        if(status == AXIS2_FAILURE)
+        /*Writing the part we loaded to memory to the wire*/
+        while(written < count)
         {
-            if(buffer)
+            int len = axutil_http_chunked_stream_write(chunked_stream, env,
+                buffer + written, count - written);
+            if(len == -1)
             {
-                AXIS2_FREE(env->allocator, buffer);
-                buffer = NULL;
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "error in writing file to stream");
+                return AXIS2_FAILURE;
             }
-            fclose(fp);
-            return AXIS2_FAILURE;
+
+            written += len;
         }
     }
     while(!feof(fp));
 
-    if(buffer)
-    {
-        AXIS2_FREE(env->allocator, buffer);
-        buffer = NULL;
-    }
-
-    fclose(fp);
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN void AXIS2_CALL axis2_http_transport_utils_destroy_mime_parts(
+AXIS2_EXTERN void AXIS2_CALL
+axis2_http_transport_utils_destroy_mime_parts(
     axutil_array_list_t *mime_parts,
     const axutil_env_t *env)
 {
@@ -3367,46 +3292,41 @@ AXIS2_EXTERN void AXIS2_CALL axis2_http_transport_utils_destroy_mime_parts(
     }
 }
 
-AXIS2_EXTERN void *AXIS2_CALL axis2_http_transport_utils_initiate_callback(
+AXIS2_EXTERN void *AXIS2_CALL
+axis2_http_transport_utils_initiate_callback(
     const axutil_env_t *env,
     axis2_char_t *callback_name,
     void *user_param,
     axiom_mtom_sending_callback_t **callback)
 {
-
     axutil_dll_desc_t *dll_desc = NULL;
     axutil_param_t *impl_info_param = NULL;
     void *ptr = NULL;
 
-    if(callback_name)
+    if(!callback_name)
     {
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Trying to load module = %s",
-            callback_name);
-        dll_desc = axutil_dll_desc_create(env);
-        axutil_dll_desc_set_name(dll_desc, env, callback_name);
-        impl_info_param = axutil_param_create(env, NULL, dll_desc);
-        /*Set the free function*/
-        axutil_param_set_value_free(impl_info_param, env, axutil_dll_desc_free_void_arg);
-        axutil_class_loader_init(env);
-        ptr = axutil_class_loader_create_dll(env, impl_info_param);
-
-        if (!ptr)
-        {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "Unable to load the module %s. ERROR", callback_name);
-            return NULL;
-        }
-
-        *callback = (axiom_mtom_sending_callback_t *)ptr;
-        (*callback)->param = impl_info_param;
-
-        return AXIOM_MTOM_SENDING_CALLBACK_INIT_HANDLER(*callback, env, user_param);
-    }
-
-    else
-    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "invalid callback name given");
         return NULL;
     }
+
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Trying to load module = %s", callback_name);
+
+    dll_desc = axutil_dll_desc_create(env);
+    axutil_dll_desc_set_name(dll_desc, env, callback_name);
+    impl_info_param = axutil_param_create(env, NULL, dll_desc);
+    axutil_param_set_value_free(impl_info_param, env, axutil_dll_desc_free_void_arg);
+    axutil_class_loader_init(env);
+    ptr = axutil_class_loader_create_dll(env, impl_info_param);
+    if (!ptr)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to load the module %s.", callback_name);
+        return NULL;
+    }
+
+    *callback = (axiom_mtom_sending_callback_t *)ptr;
+    (*callback)->param = impl_info_param;
+
+    return AXIOM_MTOM_SENDING_CALLBACK_INIT_HANDLER(*callback, env, user_param);
 }
 
 static axis2_status_t
@@ -3418,41 +3338,29 @@ axis2_http_transport_utils_send_attachment_using_callback(
     void *user_param)
 {
     int count = 0;
-    int len = 0;
-    int written = 0;
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_char_t *buffer = NULL;
 
-    /* Keep on loading the data in a loop until 
-     * all the data is sent */
-
+    /* Keep on loading the data in a loop until all the data is sent */
     while((count = AXIOM_MTOM_SENDING_CALLBACK_LOAD_DATA(callback, env, handler, &buffer)) > 0)
     {
-        written = 0;
+        int written = 0;
         while(written < count)
         {
-            len = 0;
-            len = axutil_http_chunked_stream_write(chunked_stream, env, buffer + written, count
-                - written);
+            int len = 0;
+            len = axutil_http_chunked_stream_write(chunked_stream, env,
+                buffer + written, count - written);
             if(len == -1)
             {
                 status = AXIS2_FAILURE;
                 break;
             }
-            else
-            {
-                written += len;
-            }
+
+            written += len;
         }
     }
 
-    if(status == AXIS2_FAILURE)
-    {
-        AXIOM_MTOM_SENDING_CALLBACK_CLOSE_HANDLER(callback, env, handler);
-        return status;
-    }
-
-    status = AXIOM_MTOM_SENDING_CALLBACK_CLOSE_HANDLER(callback, env, handler);
+    status = AXIOM_MTOM_SENDING_CALLBACK_CLOSE_HANDLER(callback, env, handler) && status;
     return status;
 }
 
@@ -3463,13 +3371,12 @@ axis2_http_transport_utils_is_callback_required(
 {
     int size = 0;
     int i = 0;
-    axiom_mime_part_t *mime_part = NULL;
     axis2_bool_t is_required = AXIS2_FALSE;
 
     size = axutil_array_list_size(mime_parts, env);
-
     for(i = 0; i < size; i++)
     {
+        axiom_mime_part_t *mime_part = NULL;
         mime_part = (axiom_mime_part_t *)axutil_array_list_get(mime_parts, env, i);
         if(mime_part)
         {
@@ -3482,5 +3389,4 @@ axis2_http_transport_utils_is_callback_required(
     }
 
     return is_required;
-
 }

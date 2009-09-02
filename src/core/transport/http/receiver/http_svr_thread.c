@@ -243,15 +243,26 @@ axis2_svr_thread_worker_func(
 
     socket = arg_list->socket;
     svr_conn = axis2_simple_http_svr_conn_create(thread_env, (int)socket);
+    if(!svr_conn)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "creating simple_http_svr_connection failed");
+        return NULL;
+    }
+
     axis2_simple_http_svr_conn_set_rcv_timeout(svr_conn, thread_env, axis2_http_socket_read_timeout);
+
+    /* read HTTPMethod, URL, HTTP Version and http headers. Leave the remaining in the stream */
     request = axis2_simple_http_svr_conn_read_request(svr_conn, thread_env);
+    if(!request)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Could not create request");
+        return NULL;
+    }
+
     tmp = arg_list->worker;
     status = axis2_http_worker_process_request(tmp, thread_env, svr_conn, request);
     axis2_simple_http_svr_conn_free(svr_conn, thread_env);
-    if(request)
-    {
-        axis2_http_simple_request_free(request, thread_env);
-    }
+    axis2_http_simple_request_free(request, thread_env);
 
     IF_AXIS2_LOG_DEBUG_ENABLED(env->log)
     {

@@ -32,34 +32,36 @@ struct axis2_simple_http_svr_conn
     axis2_bool_t keep_alive;
 };
 
+static axis2_char_t *
+axis2_simple_http_svr_conn_read_line(
+    axis2_simple_http_svr_conn_t * svr_conn,
+    const axutil_env_t * env);
+
 AXIS2_EXTERN axis2_simple_http_svr_conn_t *AXIS2_CALL
 axis2_simple_http_svr_conn_create(
     const axutil_env_t * env,
     int sockfd)
 {
     axis2_simple_http_svr_conn_t *svr_conn = NULL;
-
     svr_conn = (axis2_simple_http_svr_conn_t *)AXIS2_MALLOC(env->allocator,
         sizeof(axis2_simple_http_svr_conn_t));
-
     if(!svr_conn)
     {
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "server connection failed. Insufficient memory");
         return NULL;
     }
+
     memset((void *)svr_conn, 0, sizeof(axis2_simple_http_svr_conn_t));
     svr_conn->socket = sockfd;
-    svr_conn->stream = NULL;
-    svr_conn->keep_alive = AXIS2_FALSE;
 
     if(-1 != svr_conn->socket)
     {
         svr_conn->stream = axutil_stream_create_socket(env, svr_conn->socket);
         if(!svr_conn->stream)
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "socket creation failed, socket %d",
-                (int)sockfd);
-            axis2_simple_http_svr_conn_free((axis2_simple_http_svr_conn_t *)svr_conn, env);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "socket creation failed, socket %d", sockfd);
+            axis2_simple_http_svr_conn_free(svr_conn, env);
             return NULL;
         }
     }
@@ -68,18 +70,11 @@ axis2_simple_http_svr_conn_create(
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_simple_http_svr_conn_free(
-    axis2_simple_http_svr_conn_t * svr_conn,
+    axis2_simple_http_svr_conn_t *svr_conn,
     const axutil_env_t * env)
 {
-    if(!svr_conn)
-    {
-        return;
-    }
-
     axis2_simple_http_svr_conn_close(svr_conn, env);
     AXIS2_FREE(env->allocator, svr_conn);
-
-    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -148,61 +143,18 @@ axis2_simple_http_svr_conn_read_request(
     const axutil_env_t * env)
 {
     axis2_char_t* str_line = NULL;
-    axis2_char_t tmp_buf[2048];
-    int read = -1;
-    axis2_bool_t end_of_line = AXIS2_FALSE;
     axis2_bool_t end_of_headers = AXIS2_FALSE;
     axis2_http_request_line_t *request_line = NULL;
     axis2_http_simple_request_t *request = NULL;
 
-    while((read = axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf, 2048 - 1)) > 0)
+    /* read first line of the request (which is <HTTP METHOD> <URI> <HTTP VERSION> CRLF */
+    str_line = axis2_simple_http_svr_conn_read_line(svr_conn, env);
+    if(str_line)
     {
-        axis2_char_t *start = tmp_buf;
-        axis2_char_t *end = NULL;
-        tmp_buf[read] = AXIS2_ESC_NULL;
-        end = strstr(tmp_buf, AXIS2_HTTP_CRLF);
-        if(end)
-        {
-            read = axutil_stream_read(svr_conn->stream, env, tmp_buf, end - start + 2);
-            if(read > 0)
-            {
-                axis2_char_t* tmp_str_line = NULL;
-                tmp_buf[read] = AXIS2_ESC_NULL;
-                tmp_str_line = axutil_stracat(env, str_line, tmp_buf);
-                if(tmp_str_line)
-                {
-                    AXIS2_FREE(env->allocator, str_line);
-                    str_line = tmp_str_line;
-                }
-                break;
-            }
-            else
-            {
-                /* read returns 0 or negative value, this could be an error */
-                break;
-            }
-        }
-        else
-        {
-            /* not reached end yet */
-            read = axutil_stream_read(svr_conn->stream, env, tmp_buf, 2048 - 1);
-            if(read > 0)
-            {
-                axis2_char_t* tmp_str_line = NULL;
-                tmp_buf[read] = AXIS2_ESC_NULL;
-                tmp_str_line = axutil_stracat(env, str_line, tmp_buf);
-                if(tmp_str_line)
-                {
-                    AXIS2_FREE(env->allocator, str_line);
-                    str_line = tmp_str_line;
-                }
-            }
-        }
+        request_line = axis2_http_request_line_parse_line(env, str_line);
+        AXIS2_FREE(env->allocator, str_line);
+        str_line = NULL;
     }
-
-    request_line = axis2_http_request_line_parse_line(env, str_line);
-    AXIS2_FREE(env->allocator, str_line);
-    str_line = NULL;
 
     if(!request_line)
     {
@@ -210,80 +162,34 @@ axis2_simple_http_svr_conn_read_request(
         return NULL;
     }
     request = axis2_http_simple_request_create(env, request_line, NULL, 0, svr_conn->stream);
-    /* now read the headers */
-    end_of_line = AXIS2_FALSE;
+
+    /* now read the headers until we find a line only having CRLF */
     while(AXIS2_FALSE == end_of_headers)
     {
-        axis2_bool_t is_read = AXIS2_FALSE;
-        while((read = axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf, 2048 - 1)) > 0)
-        {
-            axis2_char_t *start = tmp_buf;
-            axis2_char_t *end = NULL;
-            is_read = AXIS2_TRUE;
-            tmp_buf[read] = AXIS2_ESC_NULL;
-            end = strstr(tmp_buf, AXIS2_HTTP_CRLF);
-            if(end)
-            {
-                read = axutil_stream_read(svr_conn->stream, env, tmp_buf, end - start + 2);
-                if(read > 0)
-                {
-                    axis2_char_t* tmp_str_line = NULL;
-                    tmp_buf[read] = AXIS2_ESC_NULL;
-                    tmp_str_line = axutil_stracat(env, str_line, tmp_buf);
-                    if(tmp_str_line)
-                    {
-                        AXIS2_FREE(env->allocator, str_line);
-                        str_line = tmp_str_line;
-                    }
-                    end_of_line = AXIS2_TRUE;
-                    break;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            else
-            {
-                read = axutil_stream_read(svr_conn->stream, env, tmp_buf, 2048 - 1);
-                if(read > 0)
-                {
-                    axis2_char_t* tmp_str_line = NULL;
-                    tmp_buf[read] = AXIS2_ESC_NULL;
-                    tmp_str_line = axutil_stracat(env, str_line, tmp_buf);
-                    if(tmp_str_line)
-                    {
-                        AXIS2_FREE(env->allocator, str_line);
-                        str_line = tmp_str_line;
-                    }
-                }
-            }
-
-        }
-
-        if(AXIS2_TRUE == end_of_line)
-        {
-            if(0 == axutil_strcmp(str_line, AXIS2_HTTP_CRLF))
-            {
-                end_of_headers = AXIS2_TRUE;
-            }
-            else
-            {
-                axis2_http_header_t *tmp_header = axis2_http_header_create_by_str(env, str_line);
-                AXIS2_FREE(env->allocator, str_line);
-                str_line = NULL;
-                if(tmp_header)
-                {
-                    axis2_http_simple_request_add_header(request, env, tmp_header);
-                }
-            }
-        }
-        end_of_line = AXIS2_FALSE;
-        if(!is_read)
+        str_line = axis2_simple_http_svr_conn_read_line(svr_conn, env);
+        if(!str_line)
         {
             /*if nothing is read, this loop should be broken. Otherwise, going to be endless loop */
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "reading http header failed");
             break;
         }
+
+        if(0 == axutil_strcmp(str_line, AXIS2_HTTP_CRLF))
+        {
+            /* line contains only CRLF, so should be end of headers */
+            end_of_headers = AXIS2_TRUE;
+        }
+        else
+        {
+            axis2_http_header_t *tmp_header = axis2_http_header_create_by_str(env, str_line);
+            if(tmp_header)
+            {
+                axis2_http_simple_request_add_header(request, env, tmp_header);
+            }
+        }
+
+        AXIS2_FREE(env->allocator, str_line);
+        str_line = NULL;
     }
     return request;
 }
@@ -299,7 +205,7 @@ axis2_simple_http_svr_conn_write_response(
     axutil_stream_t *response_stream = NULL;
     axis2_char_t *response_body = NULL;
     int body_size = 0;
-    int i = 0;
+
     axis2_http_header_t *enc_header = NULL;
     axis2_bool_t chuked_encoding = AXIS2_FALSE;
     axis2_char_t *status_line = NULL;
@@ -309,65 +215,69 @@ axis2_simple_http_svr_conn_write_response(
     AXIS2_PARAM_CHECK(env->error, response, AXIS2_FAILURE);
 
     response_writer = axis2_http_response_writer_create(env, svr_conn->stream);
+    if(!response_writer)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create http response writer");
+        return AXIS2_FAILURE;
+    }
+
     content_type = (axis2_char_t *)axis2_http_simple_response_get_content_type(response, env);
     if(content_type)
     {
-        if(strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED) && strstr(content_type,
-            AXIS2_HTTP_HEADER_ACCEPT_XOP_XML))
+        if(strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED)
+            && strstr(content_type,AXIS2_HTTP_HEADER_ACCEPT_XOP_XML))
+        {
             binary_content = AXIS2_TRUE;
+        }
     }
-    if(!response_writer)
-    {
-        return AXIS2_FAILURE;
-    }
+
     enc_header = axis2_http_simple_response_get_first_header(response, env,
         AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
     if(enc_header)
     {
         axis2_char_t *enc_value = axis2_http_header_get_value(enc_header, env);
-        if(enc_value)
+        if(enc_value && (0 == axutil_strcmp(enc_value, AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED)))
         {
-            if(0 == axutil_strcmp(enc_value, AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
-            {
-                chuked_encoding = AXIS2_TRUE;
-                /* remove the content length header */
-                if(AXIS2_TRUE == axis2_http_simple_response_contains_header(response, env,
-                    AXIS2_HTTP_HEADER_CONTENT_LENGTH))
-                {
-                    axis2_http_simple_response_remove_headers(response, env,
-                        AXIS2_HTTP_HEADER_CONTENT_LENGTH);
-                }
-            }
+            chuked_encoding = AXIS2_TRUE;
+
+            /* remove the content length header */
+            axis2_http_simple_response_remove_headers(response, env,
+                AXIS2_HTTP_HEADER_CONTENT_LENGTH);
         }
     }
+
+    /* print status line */
     status_line = axis2_http_simple_response_get_status_line(response, env);
     if(!status_line)
     {
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, AXIS2_FAILURE);
         axis2_http_response_writer_free(response_writer, env);
-        response_writer = NULL;
         return AXIS2_FAILURE;
     }
     axis2_http_response_writer_print_str(response_writer, env, status_line);
-    headers = axis2_http_simple_response_get_headers(response, env);
 
+    headers = axis2_http_simple_response_get_headers(response, env);
     if(headers)
     {
-        for(i = 0; i < axutil_array_list_size(headers, env); i++)
+        int i = 0;
+        int count = axutil_array_list_size(headers, env);
+        for(; i < count; i++)
         {
-            axis2_http_header_t *header = NULL;
-            header = (axis2_http_header_t *)axutil_array_list_get(headers, env, i);
+            axis2_http_header_t *header =
+                (axis2_http_header_t *)axutil_array_list_get(headers, env, i);
             if(header)
             {
-                axis2_char_t *header_ext_form = axis2_http_header_to_external_form(
-                    (axis2_http_header_t *)header, env);
+                axis2_char_t *header_ext_form = axis2_http_header_to_external_form(header, env);
                 axis2_http_response_writer_print_str(response_writer, env, header_ext_form);
                 AXIS2_FREE(env->allocator, header_ext_form);
             }
         }
     }
-    axis2_http_response_writer_println(response_writer, env);
 
+    /* write empty line after http headers */
+    axis2_http_response_writer_print_str(response_writer, env, AXIS2_HTTP_CRLF);
+
+    /* write the body */
     response_stream = axis2_http_simple_response_get_body(response, env);
     if(response_stream)
     {
@@ -379,83 +289,27 @@ axis2_simple_http_svr_conn_write_response(
 
     if(body_size <= 0 && !binary_content)
     {
+        /* no body available to write. Note that this is not an error. We might want to write only
+         * status information and hence, this is a valid case */
         axis2_http_response_writer_free(response_writer, env);
         return AXIS2_SUCCESS;
     }
 
-    /* This sending a normal SOAP response without chunk transfer encoding */
-    if(AXIS2_FALSE == chuked_encoding && !binary_content)
+    if(!chuked_encoding && !binary_content)
     {
+        /* This sending a normal SOAP response without chunk transfer encoding */
         axis2_status_t write_stat = AXIS2_FAILURE;
-        if(AXIS2_FALSE == binary_content)
-        {
-            write_stat
-                = axis2_http_response_writer_println_str(response_writer, env, response_body);
-        }
-        else
-        {
-            write_stat = axis2_http_response_writer_write_buf(response_writer, env, response_body,
-                0, body_size);
-        }
-
-        if(AXIS2_SUCCESS != write_stat)
+        write_stat = axis2_http_response_writer_println_str(response_writer, env, response_body);
+        if(write_stat != AXIS2_SUCCESS)
         {
             AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_WRITING_RESPONSE, AXIS2_FAILURE);
             axis2_http_response_writer_free(response_writer, env);
             return AXIS2_FAILURE;
         }
     }
-
-    /* In the MTOM case we enable chunking inorder to send the attachment */
-
-    else if(binary_content)
+    else if(!binary_content)
     {
-        axutil_http_chunked_stream_t *chunked_stream = NULL;
-        axis2_status_t write_stat = AXIS2_FAILURE;
-        axutil_array_list_t *mime_parts = NULL;
-        axis2_char_t *mtom_sending_callback_name = NULL;
-
-        mime_parts = axis2_http_simple_response_get_mime_parts(response, env);
-
-        mtom_sending_callback_name = axis2_http_simple_response_get_mtom_sending_callback_name(
-            response, env);
-
-        /* If the callback name is not there, then we will check whether there 
-         * is any mime_parts which has type callback. If we found then no point 
-         * of continuing we should return a failure */
-
-        if(!mtom_sending_callback_name)
-        {
-            if(axis2_http_transport_utils_is_callback_required(env, mime_parts))
-            {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Sender callback not specified");
-                return AXIS2_FAILURE;
-            }
-        }
-
-        chunked_stream = axutil_http_chunked_stream_create(env, svr_conn->stream);
-
-        if(mime_parts)
-        {
-            write_stat = axis2_http_transport_utils_send_mtom_message(chunked_stream, env,
-                mime_parts, mtom_sending_callback_name);
-            axutil_http_chunked_stream_free(chunked_stream, env);
-            chunked_stream = NULL;
-
-            if(write_stat == AXIS2_FAILURE)
-            {
-                return write_stat;
-            }
-        }
-        else
-        {
-            return AXIS2_FAILURE;
-        }
-    }
-
-    /* Sending a normal SOAP response enabling htpp chunking */
-    else
-    {
+        /* Sending a normal SOAP response enabling http chunking */
         axutil_http_chunked_stream_t *chunked_stream = NULL;
         int left = body_size;
         chunked_stream = axutil_http_chunked_stream_create(env, svr_conn->stream);
@@ -465,6 +319,49 @@ axis2_simple_http_svr_conn_write_response(
         }
         axutil_http_chunked_stream_write_last_chunk(chunked_stream, env);
         axutil_http_chunked_stream_free(chunked_stream, env);
+    }
+    else
+    {
+        /* In the MTOM case we enable chunking in order to send the attachment */
+        axutil_http_chunked_stream_t *chunked_stream = NULL;
+        axis2_status_t write_stat = AXIS2_FAILURE;
+        axutil_array_list_t *mime_parts = NULL;
+        axis2_char_t *mtom_sending_callback_name = NULL;
+
+        mime_parts = axis2_http_simple_response_get_mime_parts(response, env);
+        if(!mime_parts)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No mime parts are given");
+            axis2_http_response_writer_free(response_writer, env);
+            return AXIS2_FAILURE;
+        }
+
+        /* If the callback name is not there, then we will check whether there 
+         * is any mime_parts which has type callback. If we found then no point 
+         * of continuing we should return a failure */
+        mtom_sending_callback_name = axis2_http_simple_response_get_mtom_sending_callback_name(
+            response, env);
+        if(!mtom_sending_callback_name)
+        {
+            if(axis2_http_transport_utils_is_callback_required(env, mime_parts))
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Sender callback not specified");
+                axis2_http_response_writer_free(response_writer, env);
+                return AXIS2_FAILURE;
+            }
+        }
+
+        chunked_stream = axutil_http_chunked_stream_create(env, svr_conn->stream);
+        write_stat = axis2_http_transport_utils_send_mtom_message(chunked_stream, env, mime_parts,
+            mtom_sending_callback_name);
+        axutil_http_chunked_stream_free(chunked_stream, env);
+
+        if(write_stat != AXIS2_SUCCESS)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "writing mime parts failed");
+            axis2_http_response_writer_free(response_writer, env);
+            return AXIS2_FAILURE;
+        }
     }
 
     axis2_http_response_writer_free(response_writer, env);
@@ -505,3 +402,94 @@ axis2_simple_http_svr_conn_get_peer_ip(
     return axutil_network_handler_get_peer_ip(env, svr_conn->socket);
 }
 
+static axis2_char_t *
+axis2_simple_http_svr_conn_read_line(
+    axis2_simple_http_svr_conn_t * svr_conn,
+    const axutil_env_t * env)
+{
+    axis2_char_t* str_line = NULL;
+    axis2_char_t tmp_buf[2048];
+    int read = -1;
+
+    /* peek for 2047 characters to verify whether it contains CRLF character */
+    while((read = axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf, 2048 - 1)) > 0)
+    {
+        axis2_char_t *start = tmp_buf;
+        axis2_char_t *end = NULL;
+        tmp_buf[read] = AXIS2_ESC_NULL;
+        end = strstr(tmp_buf, AXIS2_HTTP_CRLF);
+        if(end)
+        {
+            axis2_char_t *buffer = NULL;
+            if(str_line)
+            {
+                /* header is more than 2048 character. this is not a common case, and not optimized
+                 * for performance (reading in a temp buffer and then strcat to get final buffer */
+                buffer = tmp_buf;
+            }
+            else
+            {
+                /* header is less than 2048 characters, this is the common case. So to improve
+                 * the performance, the buffer is malloc and then used to read the stream. */
+                buffer = (axis2_char_t *)AXIS2_MALLOC(env->allocator, end - start + 3);
+            }
+
+            /* read the data including CRLF (hence the size = end - start + 2) */
+            read = axutil_stream_read(svr_conn->stream, env, buffer, end - start + 2);
+            if(read > 0)
+            {
+                buffer[read] = AXIS2_ESC_NULL;
+
+                if(str_line)
+                {
+                    axis2_char_t* tmp_str_line = NULL;
+                    tmp_str_line = axutil_stracat(env, str_line, buffer);
+                    if(tmp_str_line)
+                    {
+                        AXIS2_FREE(env->allocator, str_line);
+                        str_line = tmp_str_line;
+                    }
+                }
+                else
+                {
+                    str_line = buffer;
+                }
+            }
+            else
+            {
+                /* read returns 0 or negative value, this could be an error */
+                if(str_line)
+                {
+                    AXIS2_FREE(env->allocator, str_line);
+                    str_line = NULL;
+                }
+                else
+                {
+                    AXIS2_FREE(env->allocator, buffer);
+                }
+            }
+            break;
+        }
+        else
+        {
+            /* not reached end yet */
+            read = axutil_stream_read(svr_conn->stream, env, tmp_buf, 2048 - 1);
+            if(read > 0)
+            {
+                axis2_char_t* tmp_str_line = NULL;
+                tmp_buf[read] = AXIS2_ESC_NULL;
+                tmp_str_line = axutil_stracat(env, str_line, tmp_buf);
+                if(tmp_str_line)
+                {
+                    if(str_line)
+                    {
+                        AXIS2_FREE(env->allocator, str_line);
+                    }
+                    str_line = tmp_str_line;
+                }
+            }
+        }
+    }
+
+    return str_line;
+}

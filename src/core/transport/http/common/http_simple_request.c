@@ -39,27 +39,24 @@ axis2_http_simple_request_create(
     axutil_stream_t * content)
 {
     axis2_http_simple_request_t *simple_request = NULL;
-
     simple_request = (axis2_http_simple_request_t *)AXIS2_MALLOC(env->allocator,
         sizeof(axis2_http_simple_request_t));
-
     if(!simple_request)
     {
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+
     memset((void *)simple_request, 0, sizeof(axis2_http_simple_request_t));
     simple_request->request_line = request_line;
     simple_request->stream = content;
-    simple_request->header_group = NULL;
-    simple_request->owns_stream = AXIS2_FALSE;
 
     if(!(simple_request->stream))
     {
         simple_request->stream = axutil_stream_create_basic(env);
         if(!simple_request->stream)
         {
-            axis2_http_simple_request_free((axis2_http_simple_request_t *)simple_request, env);
+            axis2_http_simple_request_free(simple_request, env);
             AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
@@ -86,18 +83,13 @@ axis2_http_simple_request_free(
     axis2_http_simple_request_t * simple_request,
     const axutil_env_t * env)
 {
-    if(!simple_request)
-    {
-        return;
-    }
-
-    if(AXIS2_TRUE == simple_request->owns_stream)
+    /* free the stream only if we own it. Otherwise shouldn't free the stream
+     * since it belongs to the socket
+     */
+    if(simple_request->owns_stream)
     {
         axutil_stream_free(simple_request->stream, env);
     }
-    /*
-     Don't free the stream since it belongs to the socket
-     */
 
     if(simple_request->request_line)
     {
@@ -110,16 +102,12 @@ axis2_http_simple_request_free(
         axis2_http_header_t *tmp = NULL;
         for(i = 0; i < axutil_array_list_size(simple_request->header_group, env); i++)
         {
-            tmp = (axis2_http_header_t *)axutil_array_list_get(simple_request-> header_group, env,
-                i);
+            tmp = (axis2_http_header_t*)axutil_array_list_get(simple_request->header_group, env, i);
             axis2_http_header_free(tmp, env);
-
         }
         axutil_array_list_free(simple_request->header_group, env);
     }
     AXIS2_FREE(env->allocator, simple_request);
-
-    return;
 }
 
 AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL
@@ -200,8 +188,6 @@ axis2_http_simple_request_get_first_header(
     axutil_array_list_t *header_group = NULL;
     int i = 0;
     int count = 0;
-    axis2_http_header_t *tmp_header = NULL;
-    axis2_char_t *tmp_name = NULL;
 
     AXIS2_PARAM_CHECK(env->error, str, NULL);
 
@@ -209,23 +195,22 @@ axis2_http_simple_request_get_first_header(
     if(!simple_request->header_group)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "http simple request \
-does not contain headers, unable to find: %s header", str);
+            "http simple request does not contain any headers; unable to find: %s header", str);
         return NULL;
     }
+
     if(0 == axutil_array_list_size(header_group, env))
     {
         AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI,
-            "http simple request \
- contain zero headers, unable to find: %s header", str);
+            "http simple request contain zero headers, unable to find: %s header", str);
         return NULL;
     }
 
     count = axutil_array_list_size(header_group, env);
-
     for(i = 0; i < count; i++)
     {
-
+        axis2_http_header_t *tmp_header = NULL;
+        axis2_char_t *tmp_name = NULL;
         tmp_header = (axis2_http_header_t *)axutil_array_list_get(header_group, env, i);
         tmp_name = axis2_http_header_get_name(tmp_header, env);
         if(0 == axutil_strcasecmp(str, tmp_name))

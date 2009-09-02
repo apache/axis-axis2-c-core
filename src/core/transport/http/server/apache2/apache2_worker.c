@@ -353,7 +353,7 @@ axis2_apache2_worker_process_request(
             while(token);
         }
         if(accept_charset_record_list && axutil_array_list_size(accept_charset_record_list, env)
-            > 0)
+        > 0)
         {
             axis2_msg_ctx_set_http_accept_charset_record_list(msg_ctx, env,
                 accept_charset_record_list);
@@ -391,7 +391,7 @@ axis2_apache2_worker_process_request(
             while(token);
         }
         if(accept_language_record_list && axutil_array_list_size(accept_language_record_list, env)
-            > 0)
+        > 0)
         {
             axis2_msg_ctx_set_http_accept_language_record_list(msg_ctx, env,
                 accept_language_record_list);
@@ -574,8 +574,7 @@ axis2_apache2_worker_process_request(
             else if(axis2_msg_ctx_get_status_code(msg_ctx, env)
                 == AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL)
             {
-                body_string
-                    = axis2_http_transport_utils_get_request_entity_too_large(env, conf_ctx);
+                body_string = axis2_http_transport_utils_get_request_entity_too_large(env, conf_ctx);
                 request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
                 request->status = HTTP_REQUEST_ENTITY_TOO_LARGE;
             }
@@ -711,549 +710,549 @@ axis2_apache2_worker_process_request(
             }
             if(axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
             {
-fault_code            = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
-            AXIOM_SOAP11_FAULT_CODE_SENDER;
-        }
-        else
-        {
-            fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
-            AXIOM_SOAP12_SOAP_FAULT_VALUE_SENDER;
-        }
-        fault_ctx = axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx,
-            fault_code,
-            axutil_error_get_message
-            (env->error));
-        axis2_engine_send_fault(engine, env, fault_ctx);
-        if (out_stream)
-        {
-            body_string = axutil_stream_get_buffer(out_stream, env);
-            body_string_len = axutil_stream_get_len(out_stream, env);
-        }
-
-        /* In case of a SOAP Fault, we have to set the status to 500,
-         but still return OK because the module has handled the error
-         */
-        send_status = OK;
-        request->status = HTTP_INTERNAL_SERVER_ERROR;
-    }
-}
-else
-{
-    body_string =
-    axis2_http_transport_utils_get_not_implemented(env, conf_ctx);
-    request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
-
-    if (body_string)
-    {
-        body_string_len = axutil_strlen(body_string);
-    }
-    send_status = OK;
-    request->status = HTTP_NOT_IMPLEMENTED;
-}
-
-op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-
-if (op_ctx)
-{
-    axis2_msg_ctx_t *out_msg_ctx = NULL;
-    axis2_msg_ctx_t **msg_ctx_map = NULL;
-
-    msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
-    out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
-    if (out_msg_ctx)
-    {
-        content_language_header_value = axis2_msg_ctx_get_content_language(out_msg_ctx, env);
-    }
-}
-
-if (send_status == DECLINED)
-{
-    axis2_bool_t do_rest = AXIS2_FALSE;
-    if (M_POST != request->method_number ||
-        axis2_msg_ctx_get_doing_rest(msg_ctx, env))
-    {
-        do_rest = AXIS2_TRUE;
-    }
-    if ((accept_header_value || accept_charset_header_value ||
-            accept_language_header_value) && do_rest)
-    {
-        axis2_char_t *content_type_header_value = NULL;
-        axis2_char_t *temp = NULL;
-        axis2_char_t *language_header_value = NULL;
-
-        content_type_header_value = (axis2_char_t *) request->content_type;
-        language_header_value = content_language_header_value;
-        if (content_type_header_value)
-        {
-            temp = axutil_strdup(env, content_type_header_value);
-        }
-        if (temp)
-        {
-            axis2_char_t *content_type = NULL;
-            axis2_char_t *char_set = NULL;
-            axis2_char_t *temp2 = NULL;
-
-            temp2 = strchr(temp, ';');
-            if (temp2)
-            {
-                *temp2 = '\0';
-                temp2++;
-                char_set = axutil_strcasestr(temp2, AXIS2_HTTP_CHAR_SET_ENCODING);
+                fault_code            = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
+                    AXIOM_SOAP11_FAULT_CODE_SENDER;
             }
-            if (char_set)
+            else
             {
-                char_set = axutil_strltrim(env, char_set, " \t=");
+                fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
+                    AXIOM_SOAP12_SOAP_FAULT_VALUE_SENDER;
             }
-            if (char_set)
-            {
-                temp2 = strchr(char_set, ';');
-            }
-            if (temp2)
-            {
-                *temp2 = '\0';
-            }
-            content_type = axutil_strtrim(env, temp, NULL);
-
-            if (temp)
-            {
-                AXIS2_FREE(env->allocator, temp);
-                temp = NULL;
-            }
-            if (content_type && accept_header_value &&
-                !axutil_strcasestr(accept_header_value, content_type))
-            {
-                temp2 = strchr(content_type, '/');
-                if (temp2)
-                {
-                    *temp2 = '\0';
-                    temp = AXIS2_MALLOC(env->allocator,
-                        sizeof(axis2_char_t) * ((int)strlen(content_type) + 3));
-                    if (!temp)
-                    {
-                        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-                        return AXIS2_FALSE;
-                    }
-                    sprintf(temp, "%s/*", content_type);
-                    if (!axutil_strcasestr(accept_header_value, temp) &&
-                        !strstr(accept_header_value, AXIS2_HTTP_HEADER_ACCEPT_ALL))
-                    {
-                        body_string =
-                        axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
-                        request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
-
-                        if (body_string)
-                        {
-                            body_string_len = axutil_strlen(body_string);
-                        }
-                        send_status = OK;
-                        request->status = HTTP_NOT_ACCEPTABLE;
-                    }
-                    AXIS2_FREE(env->allocator, temp);
-                }
-            }
-            if (content_type)
-            {
-                AXIS2_FREE(env->allocator, content_type);
-            }
-            if (char_set && accept_charset_header_value &&
-                !axutil_strcasestr(accept_charset_header_value, char_set))
-            {
-                body_string =
-                axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
-                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
-
-                if (body_string)
-                {
-                    body_string_len = axutil_strlen(body_string);
-                }
-                send_status = OK;
-                request->status = HTTP_NOT_ACCEPTABLE;
-            }
-            if (char_set)
-            {
-                AXIS2_FREE(env->allocator, char_set);
-            }
-        }
-        if (language_header_value)
-        {
-            if (accept_language_header_value &&
-                !axutil_strcasestr(accept_language_header_value, language_header_value))
-            {
-                body_string =
-                axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
-                request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
-
-                if (body_string)
-                {
-                    body_string_len = axutil_strlen(body_string);
-                }
-                send_status = OK;
-                request->status = HTTP_NOT_ACCEPTABLE;
-            }
-        }
-    }
-}
-if (send_status == DECLINED)
-{
-    axis2_bool_t do_rest = AXIS2_FALSE;
-    if (M_POST != request->method_number ||
-        axis2_msg_ctx_get_doing_rest(msg_ctx, env))
-    {
-        do_rest = AXIS2_TRUE;
-    }
-    if (op_ctx && axis2_op_ctx_get_response_written(op_ctx, env))
-    {
-        if (do_rest)
-        {
-            axis2_msg_ctx_t *out_msg_ctx = NULL;
-            axis2_msg_ctx_t *in_msg_ctx = NULL;
-            axis2_msg_ctx_t **msg_ctx_map = NULL;
-
-            msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
-            out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
-            in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
-            if (in_msg_ctx)
-            {
-                /* TODO: Add necessary handling */
-            }
-            if (out_msg_ctx)
-            {
-                int size = 0;
-                axutil_array_list_t *output_header_list = NULL;
-                output_header_list = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
-                if (output_header_list)
-                {
-                    size = axutil_array_list_size(output_header_list, env);
-                }
-                while (size)
-                {
-                    axis2_http_header_t *output_header = NULL;
-                    size--;
-                    output_header = (axis2_http_header_t *)
-                    axutil_array_list_get(output_header_list, env, size);
-                    apr_table_set(request->err_headers_out,
-                        axis2_http_header_get_name(output_header, env),
-                        axis2_http_header_get_value(output_header, env));
-                }
-                if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
-                {
-                    int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
-                    switch (status_code)
-                    {
-                        case AXIS2_HTTP_RESPONSE_CONTINUE_CODE_VAL:
-                        request->status = HTTP_CONTINUE;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_ACK_CODE_VAL:
-                        request->status = HTTP_ACCEPTED;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_MULTIPLE_CHOICES_CODE_VAL:
-                        request->status = HTTP_MULTIPLE_CHOICES;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_MOVED_PERMANENTLY_CODE_VAL:
-                        request->status = HTTP_MOVED_PERMANENTLY;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_SEE_OTHER_CODE_VAL:
-                        request->status = HTTP_SEE_OTHER;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_NOT_MODIFIED_CODE_VAL:
-                        request->status = HTTP_NOT_MODIFIED;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_TEMPORARY_REDIRECT_CODE_VAL:
-                        request->status = HTTP_TEMPORARY_REDIRECT;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL:
-                        request->status = HTTP_BAD_REQUEST;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL:
-                        request->status = HTTP_REQUEST_TIME_OUT;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_CONFLICT_CODE_VAL:
-                        request->status = HTTP_CONFLICT;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_GONE_CODE_VAL:
-                        request->status = HTTP_GONE;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_VAL:
-                        request->status = HTTP_PRECONDITION_FAILED;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL:
-                        request->status = HTTP_REQUEST_ENTITY_TOO_LARGE;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL:
-                        request->status = HTTP_SERVICE_UNAVAILABLE;
-                        break;
-                        default:
-                        request->status = HTTP_OK;
-                        break;
-                    }
-                    send_status = DONE;
-                }
-            }
-        }
-        if (send_status == DECLINED)
-        {
-            send_status = OK;
+            fault_ctx = axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx,
+                fault_code,
+                axutil_error_get_message
+                (env->error));
+            axis2_engine_send_fault(engine, env, fault_ctx);
             if (out_stream)
             {
                 body_string = axutil_stream_get_buffer(out_stream, env);
                 body_string_len = axutil_stream_get_len(out_stream, env);
             }
+
+            /* In case of a SOAP Fault, we have to set the status to 500,
+         but still return OK because the module has handled the error
+             */
+            send_status = OK;
+            request->status = HTTP_INTERNAL_SERVER_ERROR;
         }
     }
-    else if (op_ctx)
+    else
     {
-        if (do_rest)
-        {
-            axis2_msg_ctx_t *out_msg_ctx = NULL;
-            axis2_msg_ctx_t *in_msg_ctx = NULL;
-            axis2_msg_ctx_t **msg_ctx_map = NULL;
+        body_string =
+            axis2_http_transport_utils_get_not_implemented(env, conf_ctx);
+        request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
 
-            msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
-            out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
-            in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
-            if (in_msg_ctx)
+        if (body_string)
+        {
+            body_string_len = axutil_strlen(body_string);
+        }
+        send_status = OK;
+        request->status = HTTP_NOT_IMPLEMENTED;
+    }
+
+    op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
+
+    if (op_ctx)
+    {
+        axis2_msg_ctx_t *out_msg_ctx = NULL;
+        axis2_msg_ctx_t **msg_ctx_map = NULL;
+
+        msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+        out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+        if (out_msg_ctx)
+        {
+            content_language_header_value = axis2_msg_ctx_get_content_language(out_msg_ctx, env);
+        }
+    }
+
+    if (send_status == DECLINED)
+    {
+        axis2_bool_t do_rest = AXIS2_FALSE;
+        if (M_POST != request->method_number ||
+            axis2_msg_ctx_get_doing_rest(msg_ctx, env))
+        {
+            do_rest = AXIS2_TRUE;
+        }
+        if ((accept_header_value || accept_charset_header_value ||
+            accept_language_header_value) && do_rest)
+        {
+            axis2_char_t *content_type_header_value = NULL;
+            axis2_char_t *temp = NULL;
+            axis2_char_t *language_header_value = NULL;
+
+            content_type_header_value = (axis2_char_t *) request->content_type;
+            language_header_value = content_language_header_value;
+            if (content_type_header_value)
             {
-                /* TODO: Add necessary handling */
+                temp = axutil_strdup(env, content_type_header_value);
             }
-            if (out_msg_ctx)
+            if (temp)
             {
-                int size = 0;
-                axutil_array_list_t *output_header_list = NULL;
-                output_header_list = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
-                if (output_header_list)
+                axis2_char_t *content_type = NULL;
+                axis2_char_t *char_set = NULL;
+                axis2_char_t *temp2 = NULL;
+
+                temp2 = strchr(temp, ';');
+                if (temp2)
                 {
-                    size = axutil_array_list_size(output_header_list, env);
+                    *temp2 = '\0';
+                    temp2++;
+                    char_set = axutil_strcasestr(temp2, AXIS2_HTTP_CHAR_SET_ENCODING);
                 }
-                while (size)
+                if (char_set)
                 {
-                    axis2_http_header_t *output_header = NULL;
-                    size--;
-                    output_header = (axis2_http_header_t *)
-                    axutil_array_list_get(output_header_list, env, size);
-                    apr_table_set(request->err_headers_out,
-                        axis2_http_header_get_name(output_header, env),
-                        axis2_http_header_get_value(output_header, env));
+                    char_set = axutil_strltrim(env, char_set, " \t=");
                 }
-                if (axis2_msg_ctx_get_no_content(out_msg_ctx, env))
+                if (char_set)
                 {
+                    temp2 = strchr(char_set, ';');
+                }
+                if (temp2)
+                {
+                    *temp2 = '\0';
+                }
+                content_type = axutil_strtrim(env, temp, NULL);
+
+                if (temp)
+                {
+                    AXIS2_FREE(env->allocator, temp);
+                    temp = NULL;
+                }
+                if (content_type && accept_header_value &&
+                    !axutil_strcasestr(accept_header_value, content_type))
+                {
+                    temp2 = strchr(content_type, '/');
+                    if (temp2)
+                    {
+                        *temp2 = '\0';
+                        temp = AXIS2_MALLOC(env->allocator,
+                            sizeof(axis2_char_t) * ((int)strlen(content_type) + 3));
+                        if (!temp)
+                        {
+                            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                            return AXIS2_FALSE;
+                        }
+                        sprintf(temp, "%s/*", content_type);
+                        if (!axutil_strcasestr(accept_header_value, temp) &&
+                            !strstr(accept_header_value, AXIS2_HTTP_HEADER_ACCEPT_ALL))
+                        {
+                            body_string =
+                                axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
+                            request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+
+                            if (body_string)
+                            {
+                                body_string_len = axutil_strlen(body_string);
+                            }
+                            send_status = OK;
+                            request->status = HTTP_NOT_ACCEPTABLE;
+                        }
+                        AXIS2_FREE(env->allocator, temp);
+                    }
+                }
+                if (content_type)
+                {
+                    AXIS2_FREE(env->allocator, content_type);
+                }
+                if (char_set && accept_charset_header_value &&
+                    !axutil_strcasestr(accept_charset_header_value, char_set))
+                {
+                    body_string =
+                        axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
+                    request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+
+                    if (body_string)
+                    {
+                        body_string_len = axutil_strlen(body_string);
+                    }
+                    send_status = OK;
+                    request->status = HTTP_NOT_ACCEPTABLE;
+                }
+                if (char_set)
+                {
+                    AXIS2_FREE(env->allocator, char_set);
+                }
+            }
+            if (language_header_value)
+            {
+                if (accept_language_header_value &&
+                    !axutil_strcasestr(accept_language_header_value, language_header_value))
+                {
+                    body_string =
+                        axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
+                    request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+
+                    if (body_string)
+                    {
+                        body_string_len = axutil_strlen(body_string);
+                    }
+                    send_status = OK;
+                    request->status = HTTP_NOT_ACCEPTABLE;
+                }
+            }
+        }
+    }
+    if (send_status == DECLINED)
+    {
+        axis2_bool_t do_rest = AXIS2_FALSE;
+        if (M_POST != request->method_number ||
+            axis2_msg_ctx_get_doing_rest(msg_ctx, env))
+        {
+            do_rest = AXIS2_TRUE;
+        }
+        if (op_ctx && axis2_op_ctx_get_response_written(op_ctx, env))
+        {
+            if (do_rest)
+            {
+                axis2_msg_ctx_t *out_msg_ctx = NULL;
+                axis2_msg_ctx_t *in_msg_ctx = NULL;
+                axis2_msg_ctx_t **msg_ctx_map = NULL;
+
+                msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+                out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+                in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
+                if (in_msg_ctx)
+                {
+                    /* TODO: Add necessary handling */
+                }
+                if (out_msg_ctx)
+                {
+                    int size = 0;
+                    axutil_array_list_t *output_header_list = NULL;
+                    output_header_list = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
+                    if (output_header_list)
+                    {
+                        size = axutil_array_list_size(output_header_list, env);
+                    }
+                    while (size)
+                    {
+                        axis2_http_header_t *output_header = NULL;
+                        size--;
+                        output_header = (axis2_http_header_t *)
+                        axutil_array_list_get(output_header_list, env, size);
+                        apr_table_set(request->err_headers_out,
+                            axis2_http_header_get_name(output_header, env),
+                            axis2_http_header_get_value(output_header, env));
+                    }
                     if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
                     {
                         int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
                         switch (status_code)
                         {
-                            case AXIS2_HTTP_RESPONSE_RESET_CONTENT_CODE_VAL:
-                            request->status = HTTP_RESET_CONTENT;
-                            break;
+                            case AXIS2_HTTP_RESPONSE_CONTINUE_CODE_VAL:
+                                request->status = HTTP_CONTINUE;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_ACK_CODE_VAL:
+                                request->status = HTTP_ACCEPTED;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_MULTIPLE_CHOICES_CODE_VAL:
+                                request->status = HTTP_MULTIPLE_CHOICES;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_MOVED_PERMANENTLY_CODE_VAL:
+                                request->status = HTTP_MOVED_PERMANENTLY;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_SEE_OTHER_CODE_VAL:
+                                request->status = HTTP_SEE_OTHER;
+                                break;
                             case AXIS2_HTTP_RESPONSE_NOT_MODIFIED_CODE_VAL:
-                            request->status = HTTP_NOT_MODIFIED;
-                            break;
+                                request->status = HTTP_NOT_MODIFIED;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_TEMPORARY_REDIRECT_CODE_VAL:
+                                request->status = HTTP_TEMPORARY_REDIRECT;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL:
+                                request->status = HTTP_BAD_REQUEST;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL:
+                                request->status = HTTP_REQUEST_TIME_OUT;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_CONFLICT_CODE_VAL:
+                                request->status = HTTP_CONFLICT;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_GONE_CODE_VAL:
+                                request->status = HTTP_GONE;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_VAL:
+                                request->status = HTTP_PRECONDITION_FAILED;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL:
+                                request->status = HTTP_REQUEST_ENTITY_TOO_LARGE;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL:
+                                request->status = HTTP_SERVICE_UNAVAILABLE;
+                                break;
                             default:
-                            request->status = HTTP_NO_CONTENT;
-                            break;
+                                request->status = HTTP_OK;
+                                break;
                         }
+                        send_status = DONE;
                     }
-                    else
-                    {
-                        request->status = HTTP_NO_CONTENT;
-                    }
-                    send_status = DONE;
                 }
-                else if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
+            }
+            if (send_status == DECLINED)
+            {
+                send_status = OK;
+                if (out_stream)
                 {
-                    int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
-                    switch (status_code)
-                    {
-                        case AXIS2_HTTP_RESPONSE_CONTINUE_CODE_VAL:
-                        request->status = HTTP_CONTINUE;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_OK_CODE_VAL:
-                        request->status = HTTP_OK;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_MULTIPLE_CHOICES_CODE_VAL:
-                        request->status = HTTP_MULTIPLE_CHOICES;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_MOVED_PERMANENTLY_CODE_VAL:
-                        request->status = HTTP_MOVED_PERMANENTLY;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_SEE_OTHER_CODE_VAL:
-                        request->status = HTTP_SEE_OTHER;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_NOT_MODIFIED_CODE_VAL:
-                        request->status = HTTP_NOT_MODIFIED;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_TEMPORARY_REDIRECT_CODE_VAL:
-                        request->status = HTTP_TEMPORARY_REDIRECT;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL:
-                        request->status = HTTP_BAD_REQUEST;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL:
-                        request->status = HTTP_REQUEST_TIME_OUT;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_CONFLICT_CODE_VAL:
-                        request->status = HTTP_CONFLICT;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_GONE_CODE_VAL:
-                        request->status = HTTP_GONE;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_VAL:
-                        request->status = HTTP_PRECONDITION_FAILED;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL:
-                        request->status = HTTP_REQUEST_ENTITY_TOO_LARGE;
-                        break;
-                        case AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL:
-                        request->status = HTTP_SERVICE_UNAVAILABLE;
-                        break;
-                        default:
-                        request->status = HTTP_ACCEPTED;
-                        break;
-                    }
-                    send_status = DONE;
+                    body_string = axutil_stream_get_buffer(out_stream, env);
+                    body_string_len = axutil_stream_get_len(out_stream, env);
                 }
             }
         }
-        if (send_status == DECLINED)
+        else if (op_ctx)
         {
-            request->status = HTTP_ACCEPTED;
+            if (do_rest)
+            {
+                axis2_msg_ctx_t *out_msg_ctx = NULL;
+                axis2_msg_ctx_t *in_msg_ctx = NULL;
+                axis2_msg_ctx_t **msg_ctx_map = NULL;
+
+                msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+                out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+                in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
+                if (in_msg_ctx)
+                {
+                    /* TODO: Add necessary handling */
+                }
+                if (out_msg_ctx)
+                {
+                    int size = 0;
+                    axutil_array_list_t *output_header_list = NULL;
+                    output_header_list = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
+                    if (output_header_list)
+                    {
+                        size = axutil_array_list_size(output_header_list, env);
+                    }
+                    while (size)
+                    {
+                        axis2_http_header_t *output_header = NULL;
+                        size--;
+                        output_header = (axis2_http_header_t *)
+                        axutil_array_list_get(output_header_list, env, size);
+                        apr_table_set(request->err_headers_out,
+                            axis2_http_header_get_name(output_header, env),
+                            axis2_http_header_get_value(output_header, env));
+                    }
+                    if (axis2_msg_ctx_get_no_content(out_msg_ctx, env))
+                    {
+                        if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
+                        {
+                            int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
+                            switch (status_code)
+                            {
+                                case AXIS2_HTTP_RESPONSE_RESET_CONTENT_CODE_VAL:
+                                    request->status = HTTP_RESET_CONTENT;
+                                    break;
+                                case AXIS2_HTTP_RESPONSE_NOT_MODIFIED_CODE_VAL:
+                                    request->status = HTTP_NOT_MODIFIED;
+                                    break;
+                                default:
+                                    request->status = HTTP_NO_CONTENT;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            request->status = HTTP_NO_CONTENT;
+                        }
+                        send_status = DONE;
+                    }
+                    else if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
+                    {
+                        int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
+                        switch (status_code)
+                        {
+                            case AXIS2_HTTP_RESPONSE_CONTINUE_CODE_VAL:
+                                request->status = HTTP_CONTINUE;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_OK_CODE_VAL:
+                                request->status = HTTP_OK;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_MULTIPLE_CHOICES_CODE_VAL:
+                                request->status = HTTP_MULTIPLE_CHOICES;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_MOVED_PERMANENTLY_CODE_VAL:
+                                request->status = HTTP_MOVED_PERMANENTLY;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_SEE_OTHER_CODE_VAL:
+                                request->status = HTTP_SEE_OTHER;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_NOT_MODIFIED_CODE_VAL:
+                                request->status = HTTP_NOT_MODIFIED;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_TEMPORARY_REDIRECT_CODE_VAL:
+                                request->status = HTTP_TEMPORARY_REDIRECT;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL:
+                                request->status = HTTP_BAD_REQUEST;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL:
+                                request->status = HTTP_REQUEST_TIME_OUT;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_CONFLICT_CODE_VAL:
+                                request->status = HTTP_CONFLICT;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_GONE_CODE_VAL:
+                                request->status = HTTP_GONE;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_VAL:
+                                request->status = HTTP_PRECONDITION_FAILED;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL:
+                                request->status = HTTP_REQUEST_ENTITY_TOO_LARGE;
+                                break;
+                            case AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL:
+                                request->status = HTTP_SERVICE_UNAVAILABLE;
+                                break;
+                            default:
+                                request->status = HTTP_ACCEPTED;
+                                break;
+                        }
+                        send_status = DONE;
+                    }
+                }
+            }
+            if (send_status == DECLINED)
+            {
+                request->status = HTTP_ACCEPTED;
+                send_status = DONE;
+            }
+        }
+        else
+        {
             send_status = DONE;
+            request->status = HTTP_ACCEPTED;
         }
     }
-    else
+
+    if (content_language_header_value)
     {
-        send_status = DONE;
-        request->status = HTTP_ACCEPTED;
+        apr_table_set(request->err_headers_out, AXIS2_HTTP_HEADER_CONTENT_LANGUAGE,
+            content_language_header_value);
     }
-}
 
-if (content_language_header_value)
-{
-    apr_table_set(request->err_headers_out, AXIS2_HTTP_HEADER_CONTENT_LANGUAGE,
-        content_language_header_value);
-}
-
-if (op_ctx)
-{
-    axis2_msg_ctx_t *out_msg_ctx = NULL,
-    *in_msg_ctx = NULL;
-    axis2_msg_ctx_t **msg_ctx_map = NULL;
-    axis2_char_t *msg_id = NULL;
-    axis2_conf_ctx_t *conf_ctx = NULL;
-    msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
-
-    out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
-    in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
-
-    /* In mtom case we send the attachment differently */
-
-    /* status = AXIS2_FAILURE means fault scenario. We are not
-     * doing MTOM for fault cases. */
-
-    if(status != AXIS2_FAILURE)
+    if (op_ctx)
     {
-        do_mtom = axis2_msg_ctx_get_doing_mtom(out_msg_ctx, env);
-        if(do_mtom)
+        axis2_msg_ctx_t *out_msg_ctx = NULL,
+            *in_msg_ctx = NULL;
+        axis2_msg_ctx_t **msg_ctx_map = NULL;
+        axis2_char_t *msg_id = NULL;
+        axis2_conf_ctx_t *conf_ctx = NULL;
+        msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+
+        out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+        in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
+
+        /* In mtom case we send the attachment differently */
+
+        /* status = AXIS2_FAILURE means fault scenario. We are not
+         * doing MTOM for fault cases. */
+
+        if(status != AXIS2_FAILURE)
         {
-            mime_parts = axis2_msg_ctx_get_mime_parts(out_msg_ctx, env);
-            if(!mime_parts)
+            do_mtom = axis2_msg_ctx_get_doing_mtom(out_msg_ctx, env);
+            if(do_mtom)
             {
-                return AXIS2_FAILURE;
-            }
-            callback_name_param = axis2_msg_ctx_get_parameter(msg_ctx, env ,
-                AXIS2_MTOM_SENDING_CALLBACK);
-            if(callback_name_param)
-            {
-                mtom_sending_callback_name =
-                (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
+                mime_parts = axis2_msg_ctx_get_mime_parts(out_msg_ctx, env);
+                if(!mime_parts)
+                {
+                    return AXIS2_FAILURE;
+                }
+                callback_name_param = axis2_msg_ctx_get_parameter(msg_ctx, env ,
+                    AXIS2_MTOM_SENDING_CALLBACK);
+                if(callback_name_param)
+                {
+                    mtom_sending_callback_name =
+                        (axis2_char_t *) axutil_param_get_value (callback_name_param, env);
+                }
             }
         }
-    }
 
-    if (out_msg_ctx)
-    {
-        axis2_msg_ctx_free(out_msg_ctx, env);
-        out_msg_ctx = NULL;
-        msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = NULL;
-    }
-
-    if (in_msg_ctx)
-    {
-        msg_id =
-        axutil_strdup(env, axis2_msg_ctx_get_msg_id(in_msg_ctx, env));
-        conf_ctx = axis2_msg_ctx_get_conf_ctx(in_msg_ctx, env);
-        axis2_msg_ctx_reset_out_transport_info(in_msg_ctx, env);
-        axis2_msg_ctx_free(in_msg_ctx, env);
-        in_msg_ctx = NULL;
-        msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;
-    }
-
-    if (!axis2_op_ctx_is_in_use(op_ctx, env))
-    {
-        axis2_op_ctx_destroy_mutex(op_ctx, env);
-        if (conf_ctx && msg_id)
+        if (out_msg_ctx)
         {
-            axis2_conf_ctx_register_op_ctx(conf_ctx, env, msg_id, NULL);
-            AXIS2_FREE(env->allocator, msg_id);
+            axis2_msg_ctx_free(out_msg_ctx, env);
+            out_msg_ctx = NULL;
+            msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = NULL;
         }
-        axis2_op_ctx_free(op_ctx, env);
-    }
 
-} /* Done freeing message contexts */
+        if (in_msg_ctx)
+        {
+            msg_id =
+                axutil_strdup(env, axis2_msg_ctx_get_msg_id(in_msg_ctx, env));
+            conf_ctx = axis2_msg_ctx_get_conf_ctx(in_msg_ctx, env);
+            axis2_msg_ctx_reset_out_transport_info(in_msg_ctx, env);
+            axis2_msg_ctx_free(in_msg_ctx, env);
+            in_msg_ctx = NULL;
+            msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;
+        }
 
-/* We send the message in parts when doing MTOM */
+        if (!axis2_op_ctx_is_in_use(op_ctx, env))
+        {
+            axis2_op_ctx_destroy_mutex(op_ctx, env);
+            if (conf_ctx && msg_id)
+            {
+                axis2_conf_ctx_register_op_ctx(conf_ctx, env, msg_id, NULL);
+                AXIS2_FREE(env->allocator, msg_id);
+            }
+            axis2_op_ctx_free(op_ctx, env);
+        }
 
-if(do_mtom)
-{
-    axis2_status_t mtom_status = AXIS2_FAILURE;
+    } /* Done freeing message contexts */
 
-    if(!mtom_sending_callback_name)
+    /* We send the message in parts when doing MTOM */
+
+    if(do_mtom)
     {
-        /* If the callback name is not there, then we will check whether there
-         * is any mime_parts which has type callback. If we found then no point
-         * of continuing we should return a failure */
+        axis2_status_t mtom_status = AXIS2_FAILURE;
 
         if(!mtom_sending_callback_name)
         {
-            if(axis2_http_transport_utils_is_callback_required(
-                    env, mime_parts))
+            /* If the callback name is not there, then we will check whether there
+             * is any mime_parts which has type callback. If we found then no point
+             * of continuing we should return a failure */
+
+            if(!mtom_sending_callback_name)
             {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Sender callback not specified");
-                return AXIS2_FAILURE;
+                if(axis2_http_transport_utils_is_callback_required(
+                    env, mime_parts))
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Sender callback not specified");
+                    return AXIS2_FAILURE;
+                }
             }
         }
+
+        mtom_status = apache2_worker_send_mtom_message(request, env, mime_parts,
+            mtom_sending_callback_name);
+        if(mtom_status == AXIS2_SUCCESS)
+        {
+            send_status = DONE;
+        }
+        else
+        {
+            send_status = DECLINED;
+        }
+
+        axis2_http_transport_utils_destroy_mime_parts(mime_parts, env);
+        mime_parts = NULL;
     }
 
-    mtom_status = apache2_worker_send_mtom_message(request, env, mime_parts,
-        mtom_sending_callback_name);
-    if(mtom_status == AXIS2_SUCCESS)
+    else if (body_string)
     {
-        send_status = DONE;
+        ap_rwrite(body_string, body_string_len, request);
+        body_string = NULL;
     }
-    else
+
+    if (request_body)
     {
-        send_status = DECLINED;
+        axutil_stream_free(request_body, env);
+        request_body = NULL;
     }
 
-    axis2_http_transport_utils_destroy_mime_parts(mime_parts, env);
-    mime_parts = NULL;
-}
+    axutil_string_free(soap_action, env);
 
-else if (body_string)
-{
-    ap_rwrite(body_string, body_string_len, request);
-    body_string = NULL;
-}
-
-if (request_body)
-{
-    axutil_stream_free(request_body, env);
-    request_body = NULL;
-}
-
-axutil_string_free(soap_action, env);
-
-msg_ctx = NULL;
-return send_status;
+    msg_ctx = NULL;
+    return send_status;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
