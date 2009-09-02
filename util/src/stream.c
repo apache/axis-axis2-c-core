@@ -79,14 +79,11 @@ axutil_stream_create_internal(
     const axutil_env_t *env)
 {
     axutil_stream_t *stream = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-
     stream = (axutil_stream_t *)AXIS2_MALLOC(env->allocator, sizeof(axutil_stream_t));
-
     if(!stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Out of memory. Cannot create axutil stream");
         return NULL;
     }
     stream->buffer = NULL;
@@ -105,8 +102,6 @@ axutil_stream_free(
     axutil_stream_t *stream,
     const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     switch(stream->stream_type)
     {
         case AXIS2_STREAM_BASIC:
@@ -140,8 +135,6 @@ axutil_stream_free(
     }
 
     AXIS2_FREE(env->allocator, stream);
-
-    return;
 }
 
 void AXIS2_CALL
@@ -495,8 +488,6 @@ axutil_stream_create_socket(
     int socket)
 {
     axutil_stream_t *stream = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
     stream = axutil_stream_create_internal(env);
     if(!stream)
     {
@@ -510,7 +501,6 @@ axutil_stream_create_socket(
     stream->read = axutil_stream_read_socket;
     stream->write = axutil_stream_write_socket;
     stream->skip = axutil_stream_skip_socket;
-
     stream->stream_type = AXIS2_STREAM_SOCKET;
     stream->socket = socket;
     stream->fp = NULL;
@@ -526,9 +516,6 @@ axutil_stream_read_socket(
     size_t count)
 {
     int len = 0;
-#ifdef AXIS2_TCPMON
-    axis2_char_t *temp = NULL;
-#endif
 
     if(-1 == stream->socket)
     {
@@ -547,9 +534,8 @@ axutil_stream_read_socket(
 #ifdef AXIS2_TCPMON
     if (len > 1)
     {
-        temp =
-        (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-            (len + 1) * sizeof(axis2_char_t));
+        axis2_char_t *temp = NULL;
+        temp = (axis2_char_t *) AXIS2_MALLOC(env->allocator, (len + 1) * sizeof(axis2_char_t));
         if (temp)
         {
             memcpy(temp, buffer, len * sizeof(axis2_char_t));

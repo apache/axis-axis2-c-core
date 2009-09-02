@@ -42,12 +42,10 @@ axutil_http_chunked_stream_create(
     axutil_stream_t *stream)
 {
     axutil_http_chunked_stream_t *chunked_stream = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, stream, NULL);
 
     chunked_stream = (axutil_http_chunked_stream_t *)AXIS2_MALLOC(env->allocator,
         sizeof(axutil_http_chunked_stream_t));
-
     if(!chunked_stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -68,10 +66,7 @@ axutil_http_chunked_stream_free(
     axutil_http_chunked_stream_t *chunked_stream,
     const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, void);
-
     AXIS2_FREE(env->allocator, chunked_stream);
-    return;
 }
 
 AXIS2_EXTERN int AXIS2_CALL

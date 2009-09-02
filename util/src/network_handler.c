@@ -187,7 +187,6 @@ axutil_network_handler_close_socket(
 {
     int i = 0;
     char buf[32];
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     if(socket < 0)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOCKET, AXIS2_FAILURE);
