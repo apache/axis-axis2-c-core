@@ -92,11 +92,12 @@ extern "C"
         const axis2_char_t * value);
 
     /**
+     * Creates http header object from a string having format "header_name:     header_value"
+     * (e.g. "SOAPAction: urn:hello")
      * @param env pointer to environment struct
      * @param str pointer to str
      */
     AXIS2_EXTERN axis2_http_header_t *AXIS2_CALL
-
     axis2_http_header_create_by_str(
         const axutil_env_t * env,
         const axis2_char_t * str);

@@ -105,10 +105,16 @@ extern "C"
      * @param str pointer to str
      */
     AXIS2_EXTERN axis2_http_status_line_t *AXIS2_CALL
-
     axis2_http_status_line_create(
         const axutil_env_t * env,
         const axis2_char_t * str);
+
+    AXIS2_EXTERN axis2_http_status_line_t *AXIS2_CALL
+    axis2_http_status_line_create_with_values(
+        const axutil_env_t * env,
+        const axis2_char_t * http_ver,
+        const int status_code,
+        const axis2_char_t * phrase);
 
     AXIS2_EXTERN void AXIS2_CALL
     axis2_http_status_line_set_http_version(

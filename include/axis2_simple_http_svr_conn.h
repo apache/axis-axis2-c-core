@@ -110,7 +110,6 @@ extern "C"
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_http_simple_request_t *AXIS2_CALL
-
     axis2_simple_http_svr_conn_read_request(
         axis2_simple_http_svr_conn_t * svr_conn,
         const axutil_env_t * env);

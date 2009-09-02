@@ -104,11 +104,13 @@ extern "C"
         const axis2_char_t * http_version);
 
     /**
+     * Parses a line "<http method> <uri location> <http version>CRLF" and creates http_request_line
+     * object. E.g "POST /axis2/services/echo HTTP/1.1\r\n"
      * @param env pointer to environment struct
-     * @param str pointer to str
+     * @param str pointer to the line to be parsed
+     * @return created object if success. NULL otherwise
      */
     AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL
-
     axis2_http_request_line_parse_line(
         const axutil_env_t * env,
         const axis2_char_t * str);
