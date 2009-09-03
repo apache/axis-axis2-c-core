@@ -315,7 +315,16 @@ axis2_simple_http_svr_conn_write_response(
         chunked_stream = axutil_http_chunked_stream_create(env, svr_conn->stream);
         while(left > 0)
         {
-            left -= axutil_http_chunked_stream_write(chunked_stream, env, response_body, body_size);
+            int len = -1;
+            len = axutil_http_chunked_stream_write(chunked_stream, env, response_body, body_size);
+            if(len <= 0)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "cannot write data to chunked stream");
+                axutil_http_chunked_stream_free(chunked_stream, env);
+                axis2_http_response_writer_free(response_writer, env);
+                return AXIS2_FAILURE;
+            }
+            left -= len;
         }
         axutil_http_chunked_stream_write_last_chunk(chunked_stream, env);
         axutil_http_chunked_stream_free(chunked_stream, env);

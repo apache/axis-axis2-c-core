@@ -143,7 +143,8 @@ axis2_http_transport_utils_strdecode(
     axis2_char_t * dest,
     axis2_char_t * src);
 
-AXIS2_EXTERN int AXIS2_CALL axis2_http_transport_utils_hexit(
+AXIS2_EXTERN int AXIS2_CALL
+axis2_http_transport_utils_hexit(
     axis2_char_t c);
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -162,7 +163,8 @@ axis2_http_transport_utils_get_charset_enc(
     const axutil_env_t * env,
     const axis2_char_t * content_type);
 
-int AXIS2_CALL axis2_http_transport_utils_on_data_request(
+int AXIS2_CALL
+axis2_http_transport_utils_on_data_request(
     char *buffer,
     int size,
     void *ctx);
@@ -1672,7 +1674,7 @@ axis2_http_transport_utils_get_services_html(
         svcs_exists = AXIS2_TRUE;
         ret = axutil_stracat(env, tmp2,
             "<hr><h2><font color=\"red\">Faulty \
-                Services</font></h2>");
+        Services</font></h2>");
         AXIS2_FREE(env->allocator, tmp2);
         tmp2 = ret;
 
@@ -2667,7 +2669,7 @@ axis2_http_transport_utils_process_request(
 
                     response->http_status_code = AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_VAL;
                     response->http_status_code_name
-                        = AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_NAME;
+                    = AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_NAME;
                 }
                 else
                 {
@@ -2719,10 +2721,10 @@ axis2_http_transport_utils_process_request(
             {
                 /* 413, Request entity too large */
                 body_string
-                    = axis2_http_transport_utils_get_request_entity_too_large(env, conf_ctx);
+                = axis2_http_transport_utils_get_request_entity_too_large(env, conf_ctx);
                 response->http_status_code = AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL;
                 response->http_status_code_name
-                    = AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_NAME;
+                = AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_NAME;
             }
             else if(msg_ctx_status_code == AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL)
             {
@@ -2737,7 +2739,7 @@ axis2_http_transport_utils_process_request(
                 body_string = axis2_http_transport_utils_get_internal_server_error(env, conf_ctx);
                 response->http_status_code = AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_VAL;
                 response->http_status_code_name
-                    = AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_NAME;
+                = AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_NAME;
             }
 
             if(body_string)
@@ -2779,7 +2781,7 @@ axis2_http_transport_utils_process_request(
                     body_string = axis2_http_transport_utils_get_method_not_allowed(env, conf_ctx);
                     response->http_status_code = AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_VAL;
                     response->http_status_code_name
-                        = AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_NAME;
+                    = AXIS2_HTTP_RESPONSE_METHOD_NOT_ALLOWED_CODE_NAME;
                 }
                 else
                 {
@@ -2796,7 +2798,7 @@ axis2_http_transport_utils_process_request(
                 body_string = axis2_http_transport_utils_get_internal_server_error(env, conf_ctx);
                 response->http_status_code = AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_VAL;
                 response->http_status_code_name
-                    = AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_NAME;
+                = AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_NAME;
 
             }
 
@@ -2819,288 +2821,288 @@ axis2_http_transport_utils_process_request(
             }
             if(axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
             {
-fault_code            = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
-            AXIOM_SOAP11_FAULT_CODE_SENDER;
-        }
-        else
-        {
-            fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
-            AXIOM_SOAP12_SOAP_FAULT_VALUE_SENDER;
-        }
-        fault_ctx = axis2_engine_create_fault_msg_ctx(engine, env, request->msg_ctx,
-            fault_code, axutil_error_get_message(env->error));
+                fault_code            = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
+                    AXIOM_SOAP11_FAULT_CODE_SENDER;
+            }
+            else
+            {
+                fault_code = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
+                    AXIOM_SOAP12_SOAP_FAULT_VALUE_SENDER;
+            }
+            fault_ctx = axis2_engine_create_fault_msg_ctx(engine, env, request->msg_ctx,
+                fault_code, axutil_error_get_message(env->error));
 
-        axis2_engine_send_fault(engine, env, fault_ctx);
-        if (out_stream)
-        {
-            response->response_data = axutil_stream_get_buffer(out_stream, env);
-            response->response_data_length = axutil_stream_get_len (out_stream, env);
-        }
-        /* In case of a SOAP Fault, we have to set the status to 500, but still return */
-        status = AXIS2_SUCCESS;
-        response->http_status_code = AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_VAL;
-        response->http_status_code_name = AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_NAME;
-    }
-}
-else
-{
-    response->response_data = axis2_http_transport_utils_get_not_implemented(env, conf_ctx);
-    request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
-
-    if (response->response_data)
-    {
-        response->response_data_length = axutil_strlen(response->response_data);
-    }
-    response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_IMPLEMENTED_CODE_VAL;
-    response->http_status_code_name = AXIS2_HTTP_RESPONSE_NOT_IMPLEMENTED_CODE_NAME;
-    status = AXIS2_SUCCESS;
-}
-
-op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-
-if (op_ctx)
-{
-    msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
-    out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
-    response->msg_ctx = out_msg_ctx;
-}
-
-if (status == AXIS2_FAILURE)
-{
-    axis2_bool_t do_rest = AXIS2_FALSE;
-    if (AXIS2_HTTP_METHOD_POST != request->request_method ||
-        axis2_msg_ctx_get_doing_rest(msg_ctx, env))
-    {
-        do_rest = AXIS2_TRUE;
-    }
-    if ((request->accept_header || request->accept_charset_header ||
-            request->accept_language_header) && do_rest)
-    {
-        axis2_char_t *content_type_header_value = NULL;
-        axis2_char_t *temp = NULL;
-        axis2_char_t *language_header_value = NULL;
-
-        content_type_header_value = (axis2_char_t *) request->content_type;
-        language_header_value = axis2_msg_ctx_get_content_language(out_msg_ctx,env);
-        if (content_type_header_value)
-        {
-            temp = axutil_strdup(env, content_type_header_value);
-        }
-        if (temp)
-        {
-            axis2_char_t *content_type = NULL;
-            axis2_char_t *char_set = NULL;
-            axis2_char_t *temp2 = NULL;
-
-            temp2 = strchr(temp, ';');
-            if (temp2)
-            {
-                *temp2 = '\0';
-                temp2++;
-                char_set = axutil_strcasestr(temp2, AXIS2_HTTP_CHAR_SET_ENCODING);
-            }
-            if (char_set)
-            {
-                char_set = axutil_strltrim(env, char_set, " \t=");
-            }
-            if (char_set)
-            {
-                temp2 = strchr(char_set, ';');
-            }
-            if (temp2)
-            {
-                *temp2 = '\0';
-            }
-            content_type = axutil_strtrim(env, temp, NULL);
-
-            if (temp)
-            {
-                AXIS2_FREE(env->allocator, temp);
-                temp = NULL;
-            }
-            if (content_type && request->accept_header &&
-                !axutil_strcasestr(request->accept_header, content_type))
-            {
-                temp2 = strchr(content_type, '/');
-                if (temp2)
-                {
-                    *temp2 = '\0';
-                    temp = AXIS2_MALLOC(env->allocator,
-                        sizeof(axis2_char_t) * ((int)strlen(content_type) + 3));
-                    if (!temp)
-                    {
-                        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-                        return AXIS2_FALSE;
-                    }
-                    sprintf(temp, "%s/*", content_type);
-                    if (!axutil_strcasestr(request->accept_header, temp) &&
-                        !strstr(request->accept_header, AXIS2_HTTP_HEADER_ACCEPT_ALL))
-                    {
-                        response->response_data =
-                        axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
-                        response->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
-                        if (response->response_data)
-                        {
-                            response->response_data_length = axutil_strlen(response->response_data);
-                        }
-                        response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_VAL;
-                        response->http_status_code_name = AXIS2_HTTP_RESPONSE_NOT_IMPLEMENTED_CODE_NAME;
-                        status = AXIS2_TRUE;
-                    }
-                    AXIS2_FREE(env->allocator, temp);
-                }
-            }
-            if (content_type)
-            {
-                AXIS2_FREE(env->allocator, content_type);
-            }
-            if (char_set && request->accept_charset_header &&
-                !axutil_strcasestr(request->accept_charset_header , char_set))
-            {
-                response->response_data =
-                axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
-                response->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
-
-                if (response->response_data)
-                {
-                    response->response_data_length= axutil_strlen(response->response_data);
-                }
-                status = AXIS2_SUCCESS;
-                response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_VAL;
-                response->http_status_code_name = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_NAME;
-            }
-            if (char_set)
-            {
-                AXIS2_FREE(env->allocator, char_set);
-            }
-        }
-        if (language_header_value)
-        {
-            if (request->accept_language_header &&
-                !axutil_strcasestr(request->accept_language_header , language_header_value))
-            {
-                response->response_data =
-                axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
-                response->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
-                if (response->response_data)
-                {
-                    response->response_data_length = axutil_strlen(response->response_data);
-                }
-                response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_VAL;
-                response->http_status_code_name = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_NAME;
-            }
-        }
-    }
-}
-if (status == AXIS2_FAILURE)
-{
-    axis2_bool_t do_rest = AXIS2_FALSE;
-    if (AXIS2_HTTP_METHOD_POST != request->request_method ||
-        axis2_msg_ctx_get_doing_rest(msg_ctx, env))
-    {
-        do_rest = AXIS2_TRUE;
-    }
-    if (op_ctx && axis2_op_ctx_get_response_written(op_ctx, env))
-    {
-        if (do_rest)
-        {
-            if (out_msg_ctx)
-            {
-                int size = 0;
-                axutil_array_list_t *output_header_list = NULL;
-                output_header_list = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
-                if (output_header_list)
-                {
-                    size = axutil_array_list_size(output_header_list, env);
-                    response->output_headers = output_header_list;
-                }
-
-                if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
-                {
-                    int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
-                    response->http_status_code =
-                    axis2_http_transport_utils_check_status_code(status_code);
-                    status = AXIS2_SUCCESS;
-                }
-            }
-        }
-        if (status == AXIS2_FAILURE)
-        {
-            status = AXIS2_SUCCESS;
+            axis2_engine_send_fault(engine, env, fault_ctx);
             if (out_stream)
             {
                 response->response_data = axutil_stream_get_buffer(out_stream, env);
-                response->response_data_length = axutil_stream_get_len(out_stream, env);
-                response->http_status_code = AXIS2_HTTP_RESPONSE_OK_CODE_VAL;
-                response->http_status_code_name = AXIS2_HTTP_RESPONSE_OK_CODE_NAME;
+                response->response_data_length = axutil_stream_get_len (out_stream, env);
             }
-        }
-    }
-    else if (op_ctx)
-    {
-        if (do_rest)
-        {
-            if (out_msg_ctx)
-            {
-                int size = 0;
-                axutil_array_list_t *output_header_list = NULL;
-                output_header_list = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
-                if (output_header_list)
-                {
-                    size = axutil_array_list_size(output_header_list, env);
-                    response->output_headers = output_header_list;
-                }
-                if (axis2_msg_ctx_get_no_content(out_msg_ctx, env))
-                {
-                    if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
-                    {
-                        int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
-                        switch (status_code)
-                        {
-                            case AXIS2_HTTP_RESPONSE_RESET_CONTENT_CODE_VAL:
-                            response->http_status_code = AXIS2_HTTP_RESPONSE_RESET_CONTENT_CODE_VAL;
-                            break;
-                            case AXIS2_HTTP_RESPONSE_NOT_MODIFIED_CODE_VAL:
-                            response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_MODIFIED_CODE_VAL;
-                            break;
-                            default:
-                            response->http_status_code = AXIS2_HTTP_RESPONSE_NO_CONTENT_CODE_VAL;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        response->http_status_code = AXIS2_HTTP_RESPONSE_NO_CONTENT_CODE_VAL;
-                    }
-                    status = AXIS2_SUCCESS;
-                }
-                else if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
-                {
-                    int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
-                    response->http_status_code =
-                    axis2_http_transport_utils_check_status_code(status_code);
-                    status = AXIS2_SUCCESS;
-                }
-            }
-        }
-        if (status == AXIS2_FAILURE)
-        {
-            response->http_status_code = AXIS2_HTTP_RESPONSE_ACK_CODE_VAL;
-            response->http_status_code_name = AXIS2_HTTP_RESPONSE_ACK_CODE_NAME;
+            /* In case of a SOAP Fault, we have to set the status to 500, but still return */
             status = AXIS2_SUCCESS;
+            response->http_status_code = AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_VAL;
+            response->http_status_code_name = AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_NAME;
         }
     }
     else
     {
-        status = AXIS2_SUCCESS;
-        response->http_status_code = AXIS2_HTTP_RESPONSE_ACK_CODE_VAL;
-        response->http_status_code_name = AXIS2_HTTP_RESPONSE_ACK_CODE_NAME;
-    }
-}
-axutil_string_free(soap_action, env);
-msg_ctx = NULL;
+        response->response_data = axis2_http_transport_utils_get_not_implemented(env, conf_ctx);
+        request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
 
-return status;
+        if (response->response_data)
+        {
+            response->response_data_length = axutil_strlen(response->response_data);
+        }
+        response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_IMPLEMENTED_CODE_VAL;
+        response->http_status_code_name = AXIS2_HTTP_RESPONSE_NOT_IMPLEMENTED_CODE_NAME;
+        status = AXIS2_SUCCESS;
+    }
+
+    op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
+
+    if (op_ctx)
+    {
+        msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
+        out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+        response->msg_ctx = out_msg_ctx;
+    }
+
+    if (status == AXIS2_FAILURE)
+    {
+        axis2_bool_t do_rest = AXIS2_FALSE;
+        if (AXIS2_HTTP_METHOD_POST != request->request_method ||
+            axis2_msg_ctx_get_doing_rest(msg_ctx, env))
+        {
+            do_rest = AXIS2_TRUE;
+        }
+        if ((request->accept_header || request->accept_charset_header ||
+            request->accept_language_header) && do_rest)
+        {
+            axis2_char_t *content_type_header_value = NULL;
+            axis2_char_t *temp = NULL;
+            axis2_char_t *language_header_value = NULL;
+
+            content_type_header_value = (axis2_char_t *) request->content_type;
+            language_header_value = axis2_msg_ctx_get_content_language(out_msg_ctx,env);
+            if (content_type_header_value)
+            {
+                temp = axutil_strdup(env, content_type_header_value);
+            }
+            if (temp)
+            {
+                axis2_char_t *content_type = NULL;
+                axis2_char_t *char_set = NULL;
+                axis2_char_t *temp2 = NULL;
+
+                temp2 = strchr(temp, ';');
+                if (temp2)
+                {
+                    *temp2 = '\0';
+                    temp2++;
+                    char_set = axutil_strcasestr(temp2, AXIS2_HTTP_CHAR_SET_ENCODING);
+                }
+                if (char_set)
+                {
+                    char_set = axutil_strltrim(env, char_set, " \t=");
+                }
+                if (char_set)
+                {
+                    temp2 = strchr(char_set, ';');
+                }
+                if (temp2)
+                {
+                    *temp2 = '\0';
+                }
+                content_type = axutil_strtrim(env, temp, NULL);
+
+                if (temp)
+                {
+                    AXIS2_FREE(env->allocator, temp);
+                    temp = NULL;
+                }
+                if (content_type && request->accept_header &&
+                    !axutil_strcasestr(request->accept_header, content_type))
+                {
+                    temp2 = strchr(content_type, '/');
+                    if (temp2)
+                    {
+                        *temp2 = '\0';
+                        temp = AXIS2_MALLOC(env->allocator,
+                            sizeof(axis2_char_t) * ((int)strlen(content_type) + 3));
+                        if (!temp)
+                        {
+                            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                            return AXIS2_FALSE;
+                        }
+                        sprintf(temp, "%s/*", content_type);
+                        if (!axutil_strcasestr(request->accept_header, temp) &&
+                            !strstr(request->accept_header, AXIS2_HTTP_HEADER_ACCEPT_ALL))
+                        {
+                            response->response_data =
+                                axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
+                            response->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+                            if (response->response_data)
+                            {
+                                response->response_data_length = axutil_strlen(response->response_data);
+                            }
+                            response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_VAL;
+                            response->http_status_code_name = AXIS2_HTTP_RESPONSE_NOT_IMPLEMENTED_CODE_NAME;
+                            status = AXIS2_TRUE;
+                        }
+                        AXIS2_FREE(env->allocator, temp);
+                    }
+                }
+                if (content_type)
+                {
+                    AXIS2_FREE(env->allocator, content_type);
+                }
+                if (char_set && request->accept_charset_header &&
+                    !axutil_strcasestr(request->accept_charset_header , char_set))
+                {
+                    response->response_data =
+                        axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
+                    response->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+
+                    if (response->response_data)
+                    {
+                        response->response_data_length= axutil_strlen(response->response_data);
+                    }
+                    status = AXIS2_SUCCESS;
+                    response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_VAL;
+                    response->http_status_code_name = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_NAME;
+                }
+                if (char_set)
+                {
+                    AXIS2_FREE(env->allocator, char_set);
+                }
+            }
+            if (language_header_value)
+            {
+                if (request->accept_language_header &&
+                    !axutil_strcasestr(request->accept_language_header , language_header_value))
+                {
+                    response->response_data =
+                        axis2_http_transport_utils_get_not_acceptable(env, conf_ctx);
+                    response->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_HTML;
+                    if (response->response_data)
+                    {
+                        response->response_data_length = axutil_strlen(response->response_data);
+                    }
+                    response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_VAL;
+                    response->http_status_code_name = AXIS2_HTTP_RESPONSE_NOT_ACCEPTABLE_CODE_NAME;
+                }
+            }
+        }
+    }
+    if (status == AXIS2_FAILURE)
+    {
+        axis2_bool_t do_rest = AXIS2_FALSE;
+        if (AXIS2_HTTP_METHOD_POST != request->request_method ||
+            axis2_msg_ctx_get_doing_rest(msg_ctx, env))
+        {
+            do_rest = AXIS2_TRUE;
+        }
+        if (op_ctx && axis2_op_ctx_get_response_written(op_ctx, env))
+        {
+            if (do_rest)
+            {
+                if (out_msg_ctx)
+                {
+                    int size = 0;
+                    axutil_array_list_t *output_header_list = NULL;
+                    output_header_list = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
+                    if (output_header_list)
+                    {
+                        size = axutil_array_list_size(output_header_list, env);
+                        response->output_headers = output_header_list;
+                    }
+
+                    if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
+                    {
+                        int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
+                        response->http_status_code =
+                            axis2_http_transport_utils_check_status_code(status_code);
+                        status = AXIS2_SUCCESS;
+                    }
+                }
+            }
+            if (status == AXIS2_FAILURE)
+            {
+                status = AXIS2_SUCCESS;
+                if (out_stream)
+                {
+                    response->response_data = axutil_stream_get_buffer(out_stream, env);
+                    response->response_data_length = axutil_stream_get_len(out_stream, env);
+                    response->http_status_code = AXIS2_HTTP_RESPONSE_OK_CODE_VAL;
+                    response->http_status_code_name = AXIS2_HTTP_RESPONSE_OK_CODE_NAME;
+                }
+            }
+        }
+        else if (op_ctx)
+        {
+            if (do_rest)
+            {
+                if (out_msg_ctx)
+                {
+                    int size = 0;
+                    axutil_array_list_t *output_header_list = NULL;
+                    output_header_list = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
+                    if (output_header_list)
+                    {
+                        size = axutil_array_list_size(output_header_list, env);
+                        response->output_headers = output_header_list;
+                    }
+                    if (axis2_msg_ctx_get_no_content(out_msg_ctx, env))
+                    {
+                        if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
+                        {
+                            int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
+                            switch (status_code)
+                            {
+                                case AXIS2_HTTP_RESPONSE_RESET_CONTENT_CODE_VAL:
+                                    response->http_status_code = AXIS2_HTTP_RESPONSE_RESET_CONTENT_CODE_VAL;
+                                    break;
+                                case AXIS2_HTTP_RESPONSE_NOT_MODIFIED_CODE_VAL:
+                                    response->http_status_code = AXIS2_HTTP_RESPONSE_NOT_MODIFIED_CODE_VAL;
+                                    break;
+                                default:
+                                    response->http_status_code = AXIS2_HTTP_RESPONSE_NO_CONTENT_CODE_VAL;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            response->http_status_code = AXIS2_HTTP_RESPONSE_NO_CONTENT_CODE_VAL;
+                        }
+                        status = AXIS2_SUCCESS;
+                    }
+                    else if (axis2_msg_ctx_get_status_code(out_msg_ctx, env))
+                    {
+                        int status_code = axis2_msg_ctx_get_status_code(out_msg_ctx, env);
+                        response->http_status_code =
+                            axis2_http_transport_utils_check_status_code(status_code);
+                        status = AXIS2_SUCCESS;
+                    }
+                }
+            }
+            if (status == AXIS2_FAILURE)
+            {
+                response->http_status_code = AXIS2_HTTP_RESPONSE_ACK_CODE_VAL;
+                response->http_status_code_name = AXIS2_HTTP_RESPONSE_ACK_CODE_NAME;
+                status = AXIS2_SUCCESS;
+            }
+        }
+        else
+        {
+            status = AXIS2_SUCCESS;
+            response->http_status_code = AXIS2_HTTP_RESPONSE_ACK_CODE_VAL;
+            response->http_status_code_name = AXIS2_HTTP_RESPONSE_ACK_CODE_NAME;
+        }
+    }
+    axutil_string_free(soap_action, env);
+    msg_ctx = NULL;
+
+    return status;
 }
 
 /* This method takes an array_list as the input. It has items some 
@@ -3224,7 +3226,7 @@ axis2_http_transport_utils_send_mtom_message(
     if(status == AXIS2_SUCCESS)
     {
         /* send the end of chunk */
-        axutil_http_chunked_stream_write_last_chunk(chunked_stream, env);
+        status = axutil_http_chunked_stream_write_last_chunk(chunked_stream, env);
     }
 
     return status;
@@ -3244,12 +3246,16 @@ axis2_http_transport_utils_send_attachment_using_file(
     {
         int written = 0;
         int count = (int)fread(buffer, 1, buffer_size, fp);
-        if(ferror(fp) || (count <= 0))
+        if(ferror(fp) || (count < 0))
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                 "Error in reading file containing the attachment");
             return AXIS2_FAILURE;
         }
+
+        /* count == 0 is a valid case. If the file size is multiple of buffer_size, then last read
+         * will have count == 0
+         */
 
         /*Writing the part we loaded to memory to the wire*/
         while(written < count)
@@ -3282,7 +3288,7 @@ axis2_http_transport_utils_destroy_mime_parts(
         {
             axiom_mime_part_t *mime_part = NULL;
             mime_part = (axiom_mime_part_t *)
-            axutil_array_list_get(mime_parts, env, i);
+                axutil_array_list_get(mime_parts, env, i);
             if (mime_part)
             {
                 axiom_mime_part_free(mime_part, env);
