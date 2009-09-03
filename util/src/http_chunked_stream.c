@@ -145,7 +145,7 @@ axutil_http_chunked_stream_write(
         return -1;
     }
     sprintf(tmp_buf, "%x%s", (unsigned int)count, AXIS2_HTTP_CRLF);
-    len = axutil_stream_write(stream, env, tmp_buf, axutil_strlen(tmp_buf));
+    axutil_stream_write(stream, env, tmp_buf, axutil_strlen(tmp_buf));
     len = axutil_stream_write(stream, env, buffer, count);
     axutil_stream_write(stream, env, AXIS2_HTTP_CRLF, 2);
     return len;
