@@ -1486,8 +1486,7 @@ axiom_mime_parser_search_for_attachment(
 
     /* Here we are out of the loop. If there is no error then this means 
      * the searching string is found */
-
-    if(search_info->cached)
+    if(search_info->cached && found)
     {
         /* If the attachment is cached then we need to cache the 
          * final buffer */
