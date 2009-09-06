@@ -290,10 +290,6 @@ axiom_element_find_namespace(
                 {
                     return default_ns;
                 }
-                else
-                {
-                    return NULL;
-                }
             }
 
             /** prefix is null , so iterate the namespaces hash to find the namespace */
