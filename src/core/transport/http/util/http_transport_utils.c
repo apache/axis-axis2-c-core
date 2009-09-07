@@ -1761,7 +1761,7 @@ axis2_http_transport_utils_get_services_static_wsdl(
 
     if(wsdl_path)
     {
-        FILE *wsdl_file;
+        FILE *wsdl_file = NULL;
         axis2_char_t *content = NULL;
         int c;
         int size = AXIS2_FILE_READ_SIZE;
@@ -1788,7 +1788,9 @@ axis2_http_transport_utils_get_services_static_wsdl(
             }
             content[i] = AXIS2_ESC_NULL;
             wsdl_string = (axis2_char_t *)content;
+			fclose(wsdl_file);
         }
+		
         AXIS2_FREE(env->allocator, wsdl_path);
     }
     else
