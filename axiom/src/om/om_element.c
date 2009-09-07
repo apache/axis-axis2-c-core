@@ -516,10 +516,11 @@ axiom_element_find_declared_namespace(
             found_ns = (axiom_namespace_t *)ns;
             found_uri = axiom_namespace_get_uri(found_ns, env);
             /* If uri provided, ensure this namespace found by prefix matches the uri */
-            if(uri && axutil_strcmp(found_uri, uri) == 0)
+            if(uri)
             {
-                return found_ns;
+                return (axutil_strcmp(found_uri, uri) == 0) ? found_ns : NULL;
             }
+			return found_ns;
         }
     }
     return NULL;
