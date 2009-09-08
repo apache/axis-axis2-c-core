@@ -169,10 +169,12 @@ guththila_process_xml_dec(
 #endif  
 
 /*
- * Return non zero value if the given argument is a space.
+ * Return non zero value if the given argument is a space. (c < 0x21) is added to improve the
+ * performance. common case is printable characters. and if given character is printable, we can
+ * return false immediately.
  */
 #ifndef GUTHTHILA_IS_SPACE
-#define GUTHTHILA_IS_SPACE(c) (0x20 == c || 0xD == c || 0xA == c || 0x9 == c)     
+#define GUTHTHILA_IS_SPACE(c) ((c < 0x21) && (0x20 == c || 0xD == c || 0xA == c || 0x9 == c))
 #endif  
 
 /*
