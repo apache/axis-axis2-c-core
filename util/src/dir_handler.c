@@ -34,7 +34,7 @@ extern int AXIS2_ALPHASORT(
 int dir_select(
     struct dirent *entry);
 int file_select(
-    const struct dirent *entry);
+    struct dirent *entry);
 #else
 int dir_select(
     const struct dirent *entry);
@@ -191,8 +191,8 @@ axutil_dir_handler_list_service_or_module_dirs(
     int chdir_result = 0;
 
     /**FIXME:
-     * This magic number 500 was selected as a temperary solution. It has to be
-     * replaced with dinamic memory allocation. This will be done once the use of
+     * This magic number 500 was selected as a temporary solution. It has to be
+     * replaced with dynamic memory allocation. This will be done once the use of
      * errno after getwcd() on Windows is figured out.
      */
 
@@ -318,17 +318,12 @@ axutil_dir_handler_list_service_or_module_dirs(
     return file_list;
 }
 
-int
-file_select(
-    const struct dirent *entry)
-{
-
 #ifdef IS_MACOSX
-    int file_select(struct dirent *entry);
+    int file_select(struct dirent *entry)
+{
 #else
-    int
-    file_select(
-        const struct dirent *entry);
+	int file_select(const struct dirent *entry)
+{
 #endif
     /** FIXME:
      * This block of code has been sitting here doing nothing.
