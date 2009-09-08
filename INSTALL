@@ -745,7 +745,7 @@ Table of Contents
         /private/scripts/ for your cgi-bin URL and named your cgi exec as 'axis2.cgi',
 	Then you need to set AXIS2_URL_PREFIX environment variable as follows:
 
-        SetEnv AXIS2C_URL_PREFIX /private/scrips/axis2foo.cgi/
+        SetEnv AXIS2C_URL_PREFIX /private/scripts/axis2.cgi/
 
        
        Now we have configured apache such that all requests with URL  http://<domain-name>/cgi-bin/ requests
