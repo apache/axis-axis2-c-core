@@ -7,8 +7,7 @@ libaxis2_mod_addr_la_SOURCES = addr_in_handler.c \
                                 mod_addr.c
 
 libaxis2_mod_addr_la_LIBADD = $(top_builddir)/axiom/src/om/libaxis2_axiom.la \
-			      $(top_builddir)/util/src/libaxutil.la \
-			      $(top_builddir)/src/core/engine/libaxis2_engine.la
+			      $(top_builddir)/util/src/libaxutil.la 
 
 libaxis2_mod_addr_la_LDFLAGS = -version-info $(VERSION_NO)
 

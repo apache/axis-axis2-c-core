@@ -32,7 +32,6 @@ libaxis2_http_sender_la_LIBADD = $(top_builddir)/src/core/transport/http/common/
                                  $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la\
 				 				 $(top_builddir)/axiom/src/om/libaxis2_axiom.la\
 				 				 $(top_builddir)/util/src/libaxutil.la\
-								 $(top_builddir)/src/core/engine/libaxis2_engine.la\
 								 $(LIBCURL_LIBS)\
 								 $(SSL_LIBS)
 
