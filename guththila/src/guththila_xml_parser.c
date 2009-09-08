@@ -31,36 +31,66 @@ guththila_next_char(
     guththila_t * m,
     const axutil_env_t * env);
 
+/*
+ * Read until finding '<' character
+ */
+static int
+guththila_search_for_start_element(
+    guththila_t *m,
+    const axutil_env_t *env);
+
 /* part of guththila_next_char method. this was included as macro for performance. 99% of the time
  * following will be called, so having it as next_char method is very expensive (method calling
  * overhead is higher) so, common case is checked as part of the macro and if not satisfied, method
  * is called
  */
-#define GUTHTHILA_NEXT_CHAR(m, reader_type, env, c)\
+#define GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c)\
 {\
-    if(reader_type == GUTHTHILA_MEMORY_READER)\
+    int result_found = 0;\
+    if(!buffer)\
     {\
-        int index = m->next++;\
-        if(index < m->buffer.data_size[0])\
+        if(m->reader->type == GUTHTHILA_MEMORY_READER)\
         {\
-            c = m->buffer.buff[0][index];\
+            buffer = m->buffer.buff[0];\
+            data_size = m->buffer.data_size[0];\
+            previous_size = 0;\
         }\
         else\
         {\
-            c = -1;\
+            if(m->buffer.cur_buff != -1)\
+            {\
+                buffer = m->buffer.buff[m->buffer.cur_buff];\
+                data_size = GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer);\
+                previous_size = GUTHTHILA_BUFFER_PRE_DATA_SIZE(m->buffer);\
+            }\
+            else\
+            {\
+                c = guththila_next_char(m, env);\
+                result_found  = 1;\
+            }\
         }\
     }\
-    else\
+\
+    if(!result_found)\
     {\
-        if(m->buffer.cur_buff != -1 && m->next < GUTHTHILA_BUFFER_PRE_DATA_SIZE(m->buffer)\
-            + GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer))\
+        int index = m->next++ - previous_size;\
+        if(index < data_size)\
         {\
-            c = m->buffer.buff[m->buffer.cur_buff][m->next++ - GUTHTHILA_BUFFER_PRE_DATA_SIZE(\
-                m->buffer)];\
+            c = buffer[index];\
         }\
         else\
         {\
-            c = guththila_next_char(m, env);\
+            buffer = NULL;\
+            data_size = -1;\
+            --(m->next);\
+            if(m->reader->type == GUTHTHILA_MEMORY_READER)\
+            {\
+                c = -1;\
+            }\
+            else\
+            {\
+                c = guththila_next_char(m, env);\
+            }\
         }\
     }\
 }
@@ -99,14 +129,14 @@ guththila_process_xml_dec(
  * Read characters until all the white spaces are read.
  */
 #ifndef GUTHTHILA_SKIP_SPACES
-#define GUTHTHILA_SKIP_SPACES(m, c, reader_type, _env)while(0x20 == c || 0x9 == c || 0xD == c || 0xA == c){GUTHTHILA_NEXT_CHAR(m, reader_type, _env, c);}
+#define GUTHTHILA_SKIP_SPACES(m, c, buffer, data_size, previous_size, _env)while(0x20 == c || 0x9 == c || 0xD == c || 0xA == c){GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, _env, c);}
 #endif  
 
 /*
  * Read character including new line until a non white space character is met.
  */
 #ifndef GUTHTHILA_SKIP_SPACES_WITH_NEW_LINE
-#define GUTHTHILA_SKIP_SPACES_WITH_NEW_LINE(m, c, reader_type, _env) while (0x20 == c || 0x9 == c || 0xD == c || 0xA == c || '\n' == c){GUTHTHILA_NEXT_CHAR(m, reader_type, _env, c);}
+#define GUTHTHILA_SKIP_SPACES_WITH_NEW_LINE(m, c, buffer, data_size, previous_size, _env) while (0x20 == c || 0x9 == c || 0xD == c || 0xA == c || '\n' == c){GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, _env, c);}
 #endif  
 
 #ifndef GUTHTHILA_XML_NAME
@@ -141,11 +171,11 @@ guththila_process_xml_dec(
  * Read until we met a = character.
  */
 #ifndef GUTHTHILA_PROCESS_EQU
-#define GUTHTHILA_PROCESS_EQU(m, c, ic, reader_type, _env)							\
-    GUTHTHILA_SKIP_SPACES(m, c, reader_type, _env); \
+#define GUTHTHILA_PROCESS_EQU(m, c, ic, buffer, data_size, previous_size, _env)							\
+    GUTHTHILA_SKIP_SPACES(m, c, buffer, data_size, previous_size, _env); \
     if (0x3D == c) { \
-    GUTHTHILA_NEXT_CHAR(m, reader_type, _env, ic); \
-    GUTHTHILA_SKIP_SPACES(m, ic, reader_type, _env); \
+    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, _env, ic); \
+    GUTHTHILA_SKIP_SPACES(m, ic, buffer, data_size, previous_size, _env); \
     }
 #endif  
 
@@ -174,7 +204,7 @@ guththila_process_xml_dec(
  * return false immediately.
  */
 #ifndef GUTHTHILA_IS_SPACE
-#define GUTHTHILA_IS_SPACE(c) ((c < 0x21) && (0x20 == c || 0xD == c || 0xA == c || 0x9 == c))
+#define GUTHTHILA_IS_SPACE(c) ((c < 0x21) && (c == 0x20 || c == 0xD || c == 0xA || c == 0x9))
 #endif  
 
 /*
@@ -699,7 +729,10 @@ guththila_next(
     int c = -1;
     guththila_attr_t * attr = NULL;
     int size = 0, i = 0, nmsp_counter, loop = 0, white_space = 0;
-    int reader_type = m->reader->type;
+    int data_size = -1;
+    int previous_size = -1;
+    guththila_char_t *buffer = NULL;
+
     /* Need to release the resources for attributes */
     size = GUTHTHILA_STACK_SIZE(m->attrib);
     for(i = 0; i < size; i++)
@@ -755,12 +788,12 @@ guththila_next(
     do
     {
         loop = 0;
-        GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+        GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
         if(m->status == S_1)
         {
             while(isspace(c))
             {
-                GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                 if(c < 0)
                     return -1;
             }
@@ -775,27 +808,27 @@ guththila_next(
         }
         if('<' == c && m->status == S_2)
         {
-            GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
             if(c != '?' && c != '!' && c != '/')
             {
                 /* We are at the beginig of a xml element */
                 if(GUTHTHILA_IS_VALID_STARTING_CHAR(c))
                 {
                     GUTHTHILA_TOKEN_OPEN(m, tok, env);
-                    GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                     while(!GUTHTHILA_IS_SPACE(c) && c != '>' && c != '/')
                     {
                         if(c < 0)
                             return -1;
                         if(c != ':')
                         {
-                            GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                         }
                         else
                         {
                             /* We know for sure that this is a prefix */
                             guththila_token_close(m, tok, _prefix, 0, env);
-                            GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                             GUTHTHILA_TOKEN_OPEN(m, tok, env);
                         }
                     }
@@ -810,14 +843,14 @@ guththila_next(
                     guththila_stack_push(&m->elem, elem, env);
 #endif  
                 }
-                GUTHTHILA_SKIP_SPACES(m, c, reader_type, env);
+                GUTHTHILA_SKIP_SPACES(m, c, buffer, data_size, previous_size, env);
                 /* Process the attributes */
                 for(;;)
                 {
                     /* Empty element */
                     if(c == '/')
                     {
-                        GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                        GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                         if(c == '>')
                         {
                             m->guththila_event = GUTHTHILA_EMPTY_ELEMENT;
@@ -848,20 +881,20 @@ guththila_next(
                         {
                             GUTHTHILA_TOKEN_OPEN(m, tok, env);
 
-                            GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                             while(!GUTHTHILA_IS_SPACE(c) && c != '=')
                             {
                                 if(c < 0)
                                     return -1;
                                 if(c != ':')
                                 {
-                                    GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                                    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                                 }
                                 else if(c == ':')
                                 {
                                     /* Prefix */
                                     guththila_token_close(m, tok, _prefix, 0, env);
-                                    GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                                    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                                     GUTHTHILA_TOKEN_OPEN(m, tok, env);
                                 }
                             }
@@ -873,20 +906,20 @@ guththila_next(
                             return -1;
                         }
                         /* Attribute Value */
-                        GUTHTHILA_PROCESS_EQU(m, c, quote, reader_type, env);
+                        GUTHTHILA_PROCESS_EQU(m, c, quote, buffer, data_size, previous_size, env);
                         if('\'' == quote || '\"' == quote)
                         {
-                            GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                             GUTHTHILA_TOKEN_OPEN(m, tok, env);
                             while(c != quote)
                             {
                                 if(c < 0)
                                     return -1;
-                                GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                                GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                             }
                             guththila_token_close(m, tok, _attribute_value, 0, env);
-                            GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
-                            GUTHTHILA_SKIP_SPACES(m, c, reader_type, env);
+                            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
+                            GUTHTHILA_SKIP_SPACES(m, c, buffer, data_size, previous_size, env);
                         }
                         else
                         {
@@ -903,24 +936,24 @@ guththila_next(
             {
                 /* End Element */
                 m->guththila_event = GUTHTHILA_END_ELEMENT;
-                GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                 if(GUTHTHILA_IS_VALID_STARTING_CHAR(c))
                 {
                     GUTHTHILA_TOKEN_OPEN(m, tok, env);
-                    GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                     while(!GUTHTHILA_IS_SPACE(c) && c != '>')
                     {
                         if(c < 0)
                             return -1;
                         if(c != ':')
                         {
-                            GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                         }
                         else
                         {
                             /* Prefix */
                             guththila_token_close(m, tok, _prefix, 0, env);
-                            GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                             GUTHTHILA_TOKEN_OPEN(m, tok, env);
                         }
                     }
@@ -963,7 +996,7 @@ guththila_next(
                         guththila_tok_list_release_token(&m->tokens, elem->prefix, env);
                     AXIS2_FREE(env->allocator, elem);
 #endif  
-                    GUTHTHILA_SKIP_SPACES(m, c, reader_type, env);
+                    GUTHTHILA_SKIP_SPACES(m, c, buffer, data_size, previous_size, env);
                     if(c != '>')
                         return -1;
                     return GUTHTHILA_END_ELEMENT;
@@ -977,11 +1010,11 @@ guththila_next(
                     == c_arra[1])
                 {
                     int loop_state = 1;
-                    GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                     GUTHTHILA_TOKEN_OPEN(m, tok, env);
                     while(loop_state)
                     {
-                        GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                        GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                         if('-' == c)
                         {
                             if(2 == guththila_next_no_char(m, 0, c_arra, 2, env) && '-'
@@ -1006,12 +1039,12 @@ guththila_next(
                 }
                 else
                 {
-                    GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                     while('<' != c)
                     {
                         if(c < 0)
                             return -1;
-                        GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                        GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                     }
                 }
             }
@@ -1035,15 +1068,40 @@ guththila_next(
                 white_space = 1;
             GUTHTHILA_TOKEN_OPEN(m, tok, env);
 
+            /* code given below is having two do-while loop wrapped by another do-while loop.
+             * This is done to improve the performance for big messages. Most of the cases, the
+             * content will be not whitespace, so checking for whitespace even if we already found
+             * that we have some valid characters is big overhead. Hence better to do the looping
+             * separately to find white_space = false and normal case
+             */
             do
             {
-                GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
-                if(!GUTHTHILA_IS_SPACE(c) && c != '<')
-                    white_space = 0;
-                if(c < 0)
-                    return -1;
+                if(white_space)
+                {
+                    do
+                    {
+                        GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
+                        if(!GUTHTHILA_IS_SPACE(c) && c != '<')
+                        {
+                            white_space = 0;
+                            break;
+                        }
+                    }
+                    while((c != '<') && (c >= 0));
+                }
+                else
+                {
+                    do
+                    {
+                        /*GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);*/
+                        c = guththila_search_for_start_element(m, env);
+                    }
+                    while((c != '<') && (c >= 0));
+                }
             }
-            while(c != '<');
+            while((c != '<') && (c >= 0));
+            if(c < 0)
+                return -1;
             guththila_token_close(m, tok, _text_data, ref, env);
             m->next--;
             if(white_space)
@@ -1085,12 +1143,14 @@ guththila_process_xml_dec(
     int c = -1;
     int quote = -1;
     int nc = -1;
-    int reader_type = m->reader->type;
+    int data_size = -1;
+    int previous_size = -1;
+    guththila_char_t *buffer = NULL;
     if(3 == guththila_next_no_char(m, GUTHTHILA_EOF, c_arra, 3, env) && 'x' == c_arra[0] && 'm'
         == c_arra[1] && 'l' == c_arra[2])
     {
-        GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
-        GUTHTHILA_SKIP_SPACES(m, c, reader_type, env);
+        GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
+        GUTHTHILA_SKIP_SPACES(m, c, buffer, data_size, previous_size, env);
         if(c == 'v')
         {
             GUTHTHILA_TOKEN_OPEN(m, tok, env);
@@ -1098,20 +1158,20 @@ guththila_process_xml_dec(
                 == c_arra[1] && 's' == c_arra[2] && 'i' == c_arra[3] && 'o' == c_arra[4] && 'n'
                 == c_arra[5])
             {
-                GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                 guththila_token_close(m, tok, _attribute_name, 0, env);
-                GUTHTHILA_PROCESS_EQU(m, c, quote, reader_type, env);
-                GUTHTHILA_NEXT_CHAR(m, reader_type, env, nc);
+                GUTHTHILA_PROCESS_EQU(m, c, quote, buffer, data_size, previous_size, env);
+                GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, nc);
                 GUTHTHILA_TOKEN_OPEN(m, tok, env);
                 while(nc != quote)
                 {
                     if(nc < 0)
                         return -1;
-                    GUTHTHILA_NEXT_CHAR(m, reader_type, env, nc);
+                    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, nc);
                 }
                 guththila_token_close(m, tok, _attribute_value, 0, env);
-                GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
-                GUTHTHILA_SKIP_SPACES(m, c, reader_type, env);
+                GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
+                GUTHTHILA_SKIP_SPACES(m, c, buffer, data_size, previous_size, env);
             }
             else
             {
@@ -1125,20 +1185,20 @@ guththila_process_xml_dec(
                 == c_arra[1] && 'o' == c_arra[2] && 'd' == c_arra[3] && 'i' == c_arra[4] && 'n'
                 == c_arra[5] && 'g' == c_arra[6])
             {
-                GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                 guththila_token_close(m, tok, _attribute_name, 0, env);
-                GUTHTHILA_PROCESS_EQU(m, c, quote, reader_type, env);
-                GUTHTHILA_NEXT_CHAR(m, reader_type, env, nc);
+                GUTHTHILA_PROCESS_EQU(m, c, quote, buffer, data_size, previous_size, env);
+                GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, nc);
                 GUTHTHILA_TOKEN_OPEN(m, tok, env);
                 while(nc != quote)
                 {
                     if(nc < 0)
                         return -1;
-                    GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                 }
                 guththila_token_close(m, tok, _attribute_value, 0, env);
-                GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
-                GUTHTHILA_SKIP_SPACES(m, c, reader_type, env);
+                GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
+                GUTHTHILA_SKIP_SPACES(m, c, buffer, data_size, previous_size, env);
             }
         }
         if(c == 's')
@@ -1148,26 +1208,26 @@ guththila_process_xml_dec(
                 == c_arra[1] && 'n' == c_arra[2] && 'd' == c_arra[3] && 'a' == c_arra[4] && 'l'
                 == c_arra[5] && 'o' == c_arra[6] && 'n' == c_arra[7] && 'e' == c_arra[8])
             {
-                GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
+                GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                 guththila_token_close(m, tok, _attribute_name, 0, env);
-                GUTHTHILA_PROCESS_EQU(m, c, quote, reader_type, env);
-                GUTHTHILA_NEXT_CHAR(m, reader_type, env, nc);
+                GUTHTHILA_PROCESS_EQU(m, c, quote, buffer, data_size, previous_size, env);
+                GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, nc);
                 GUTHTHILA_TOKEN_OPEN(m, tok, env);
                 while(nc != quote)
                 {
                     if(nc < 0)
                         return -1;
-                    GUTHTHILA_NEXT_CHAR(m, reader_type, env, nc);
+                    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, nc);
                 }
                 guththila_token_close(m, tok, _attribute_value, 0, env);
-                GUTHTHILA_NEXT_CHAR(m, reader_type, env, c);
-                GUTHTHILA_SKIP_SPACES(m, c, reader_type, env);
+                GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
+                GUTHTHILA_SKIP_SPACES(m, c, buffer, data_size, previous_size, env);
             }
         }
         if(c == '?')
         {
             int nc;
-            GUTHTHILA_NEXT_CHAR(m, reader_type, env, nc);
+            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, nc);
             if('>' == nc)
             {
                 m->guththila_event = GUTHTHILA_START_DOCUMENT;
@@ -1754,5 +1814,42 @@ guththila_next_no_char(
         }
     }
     return -1;
+}
+
+static int
+guththila_search_for_start_element(
+    guththila_t *m,
+    const axutil_env_t *env)
+{
+    guththila_char_t *buffer = NULL;
+    int data_size = -1;
+    int previous_size = -1;
+
+    int c;
+    do
+    {
+        if(buffer)
+        {
+            guththila_char_t *pos = NULL;
+            int index = m->next - previous_size;
+            pos = (guththila_char_t*)memchr(buffer + index, '<', data_size - index);
+            if(pos)
+            {
+                m->next += pos - (buffer + index);
+            }
+            else
+            {
+                m->next = previous_size + data_size;
+            }
+
+            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
+        }
+        else
+        {
+            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
+        }
+    }while((c != '<') && (c >= 0));
+
+    return c;
 }
 
