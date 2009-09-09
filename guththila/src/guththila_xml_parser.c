@@ -1608,7 +1608,7 @@ guththila_next_char(
      * */
     if(m->reader->type == GUTHTHILA_MEMORY_READER)
     {
-        int index = m->next++;
+        size_t index = m->next++;
         if(index < m->buffer.data_size[0])
         {
             return m->buffer.buff[0][index];
