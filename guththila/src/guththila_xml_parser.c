@@ -31,14 +31,6 @@ guththila_next_char(
     guththila_t * m,
     const axutil_env_t * env);
 
-/*
- * Read until finding '<' character
- */
-static int
-guththila_search_for_start_element(
-    guththila_t *m,
-    const axutil_env_t *env);
-
 /* part of guththila_next_char method. this was included as macro for performance. 99% of the time
  * following will be called, so having it as next_char method is very expensive (method calling
  * overhead is higher) so, common case is checked as part of the macro and if not satisfied, method
@@ -451,10 +443,20 @@ guththila_token_evaluate_references(
 {
     size_t size = tok->size;
     guththila_char_t *start = tok->start;
+    guththila_char_t *pos = NULL;
     size_t i, j;
 
-    for(i = 0; (i < size) && (start[i] != '&'); i++)
-        ;
+    pos = (guththila_char_t *)memchr(start, '&', size);
+    if(pos)
+    {
+        i = pos - start;
+    }
+    else
+    {
+        i = size;
+    }
+    /*for(i = 0; (i < size) && (start[i] != '&'); i++)
+        ;*/
     if(i < size)
     {
         j = i;
@@ -1093,10 +1095,27 @@ guththila_next(
                 {
                     do
                     {
-                        /*GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);*/
-                        c = guththila_search_for_start_element(m, env);
-                    }
-                    while((c != '<') && (c >= 0));
+                        if(buffer)
+                        {
+                            guththila_char_t *pos = NULL;
+                            int index = m->next - previous_size;
+                            pos = (guththila_char_t*)memchr(buffer + index, '<', data_size - index);
+                            if(pos)
+                            {
+                                m->next += pos - (buffer + index);
+                            }
+                            else
+                            {
+                                m->next = previous_size + data_size;
+                            }
+
+                            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
+                        }
+                        else
+                        {
+                            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
+                        }
+                    }while((c != '<') && (c >= 0));
                 }
             }
             while((c != '<') && (c >= 0));
@@ -1815,41 +1834,3 @@ guththila_next_no_char(
     }
     return -1;
 }
-
-static int
-guththila_search_for_start_element(
-    guththila_t *m,
-    const axutil_env_t *env)
-{
-    guththila_char_t *buffer = NULL;
-    int data_size = -1;
-    int previous_size = -1;
-
-    int c;
-    do
-    {
-        if(buffer)
-        {
-            guththila_char_t *pos = NULL;
-            int index = m->next - previous_size;
-            pos = (guththila_char_t*)memchr(buffer + index, '<', data_size - index);
-            if(pos)
-            {
-                m->next += pos - (buffer + index);
-            }
-            else
-            {
-                m->next = previous_size + data_size;
-            }
-
-            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
-        }
-        else
-        {
-            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
-        }
-    }while((c != '<') && (c >= 0));
-
-    return c;
-}
-

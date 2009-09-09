@@ -725,9 +725,7 @@ guththila_write_characters(
     guththila_char_t *buff,
     const axutil_env_t * env)
 {
-    size_t i = 0;
     size_t len = strlen(buff);
-    guththila_char_t ch = 0;
     if(wr->status == START)
     {
         wr->status = BEGINING;
@@ -745,10 +743,19 @@ guththila_write_characters(
     }
     while(len > 0)
     {
-        /* scan buffer until the next special character */
-        for(i = 0; (i < len) && ((ch = buff[i]) != '&') && (ch != '<') && (ch != '>') && (ch
-            != '\"') && (ch != '\''); i++)
-            ;
+        size_t i = 0;
+        /* scan buffer until the next special character (&, <, >, ', ") these need to be escaped,
+         * otherwise XML will not be valid*/
+        guththila_char_t *pos = (guththila_char_t*)strpbrk(buff, "&<>'\"");
+        if(pos)
+        {
+            i = pos - buff;
+        }
+        else
+        {
+            i = len;
+        }
+
         /* write everything until the special character */
         if(i > 0)
         {
