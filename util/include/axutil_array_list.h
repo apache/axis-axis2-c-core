@@ -39,7 +39,7 @@ extern "C"
 {
 #endif
 
-    static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
+#define AXIS2_ARRAY_LIST_DEFAULT_CAPACITY 16
 
     /**
      * Array List struct
