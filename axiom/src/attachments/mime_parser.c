@@ -1497,6 +1497,9 @@ axiom_mime_parser_search_for_attachment(
              * So we need to cache previous buffer and the data up to the starting
              * point of the search string in the current buffer */
 
+            /* deduct last 2 CRLF character.
+             * For buffering case, it will be done when creating datahandler.*/
+
             if(mime_parser->mtom_caching_callback)
             {
                 status = AXIOM_MTOM_CACHING_CALLBACK_CACHE(mime_parser->mtom_caching_callback, env,
@@ -1505,7 +1508,7 @@ axiom_mime_parser_search_for_attachment(
                 {
                     status
                         = AXIOM_MTOM_CACHING_CALLBACK_CACHE(mime_parser->mtom_caching_callback,
-                            env, buf_array[*buf_num], found - buf_array[*buf_num],
+                            env, buf_array[*buf_num], found - buf_array[*buf_num] - 2,
                             search_info->handler);
                 }
             }
@@ -1517,7 +1520,7 @@ axiom_mime_parser_search_for_attachment(
                 if(status == AXIS2_SUCCESS)
                 {
                     status = axiom_mime_parser_cache_to_file(env, buf_array[*buf_num], found
-                        - buf_array[*buf_num], search_info->handler);
+                        - buf_array[*buf_num] - 2, search_info->handler);
                 }
             }
 
@@ -1542,13 +1545,13 @@ axiom_mime_parser_search_for_attachment(
             if(mime_parser->mtom_caching_callback)
             {
                 status = AXIOM_MTOM_CACHING_CALLBACK_CACHE(mime_parser->mtom_caching_callback, env,
-                    buf_array[*buf_num - 1], search_info->match_len1, search_info->handler);
+                    buf_array[*buf_num - 1], search_info->match_len1 - 2, search_info->handler);
             }
 
             else if(mime_parser->attachment_dir)
             {
                 status = axiom_mime_parser_cache_to_file(env, buf_array[*buf_num - 1],
-                    search_info->match_len1, search_info->handler);
+                    search_info->match_len1 - 2, search_info->handler);
             }
             else
             {
