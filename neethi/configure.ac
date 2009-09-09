@@ -37,7 +37,7 @@ if test "$GCC" = "yes"; then
     CFLAGS="$CFLAGS -ansi -Wall -Werror -Wno-implicit-function-declaration "
 fi
 
-LDFLAGS="$LDFLAGS -lpthread -lsocket"
+LDFLAGS="$LDFLAGS -lpthread"
 
 dnl Checks for header files.
 AC_HEADER_STDC
