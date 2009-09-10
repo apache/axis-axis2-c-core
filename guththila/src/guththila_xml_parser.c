@@ -1630,7 +1630,7 @@ guththila_next_char(
         {
             /* if we have don't have enough space in current buffer, have to create new buffer */
             if(m->buffer.buffs_size[m->buffer.cur_buff] <
-                GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer) + GUTHTHILA_BUFFER_DEF_SIZE)
+                GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer) + GUTHTHILA_BUFFER_DEF_MIN_SIZE)
             {
                 if(m->buffer.cur_buff == (int)m->buffer.no_buffers - 1)
                 {
