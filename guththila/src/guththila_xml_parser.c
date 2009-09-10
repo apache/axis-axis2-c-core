@@ -1628,53 +1628,57 @@ guththila_next_char(
         else if(m->buffer.cur_buff != -1 && m->next >= GUTHTHILA_BUFFER_PRE_DATA_SIZE(m->buffer)
             + GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer))
         {
-            /* We are sure that the difference lies within the int range */
-            if(m->buffer.cur_buff == (int)m->buffer.no_buffers - 1)
+            /* if we have don't have enough space in current buffer, have to create new buffer */
+            if(m->buffer.buffs_size[m->buffer.cur_buff] <
+                GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer) + GUTHTHILA_BUFFER_DEF_SIZE)
             {
-                /* we are out of allocated buffers. Need to allocate more buffers */
-                temp = m->buffer.no_buffers * 2;
-                temp1 = (guththila_char_t **)AXIS2_MALLOC(env->allocator,
-                    sizeof(guththila_char_t *) * temp);
-                temp2 = (size_t *)AXIS2_MALLOC(env->allocator, sizeof(size_t) * temp);
-                temp3 = (size_t *)AXIS2_MALLOC(env->allocator, sizeof(size_t) * temp);
-                if(!temp1 || !temp2 || !temp3)
-                    return (-1);
-                for(i = 0; i < m->buffer.no_buffers; i++)
+                if(m->buffer.cur_buff == (int)m->buffer.no_buffers - 1)
                 {
-                    temp1[i] = m->buffer.buff[i];
-                    temp2[i] = m->buffer.buffs_size[i];
-                    temp3[i] = m->buffer.data_size[i];
+                    /* we are out of allocated buffers. Need to allocate more buffers */
+                    temp = m->buffer.no_buffers * 2;
+                    temp1 = (guththila_char_t **)AXIS2_MALLOC(env->allocator,
+                        sizeof(guththila_char_t *) * temp);
+                    temp2 = (size_t *)AXIS2_MALLOC(env->allocator, sizeof(size_t) * temp);
+                    temp3 = (size_t *)AXIS2_MALLOC(env->allocator, sizeof(size_t) * temp);
+                    if(!temp1 || !temp2 || !temp3)
+                        return (-1);
+                    for(i = 0; i < m->buffer.no_buffers; i++)
+                    {
+                        temp1[i] = m->buffer.buff[i];
+                        temp2[i] = m->buffer.buffs_size[i];
+                        temp3[i] = m->buffer.data_size[i];
+                    }
+                    AXIS2_FREE(env->allocator, m->buffer.buff);
+                    AXIS2_FREE(env->allocator, m->buffer.data_size);
+                    AXIS2_FREE(env->allocator, m->buffer.buffs_size);
+                    m->buffer.buff = temp1;
+                    m->buffer.buffs_size = temp2;
+                    m->buffer.data_size = temp3;
+                    m->buffer.no_buffers *= 2;
                 }
-                AXIS2_FREE(env->allocator, m->buffer.buff);
-                AXIS2_FREE(env->allocator, m->buffer.data_size);
-                AXIS2_FREE(env->allocator, m->buffer.buffs_size);
-                m->buffer.buff = temp1;
-                m->buffer.buffs_size = temp2;
-                m->buffer.data_size = temp3;
-                m->buffer.no_buffers *= 2;
+                m->buffer.buff[m->buffer.cur_buff + 1] = (guththila_char_t *)AXIS2_MALLOC(
+                    env->allocator,
+                    sizeof(guththila_char_t) * m->buffer.buffs_size[m->buffer.cur_buff] * 2);
+                if(!m->buffer.buff[m->buffer.cur_buff + 1])
+                    return -1;
+                m->buffer.cur_buff++;
+                m->buffer.buffs_size[m->buffer.cur_buff] =
+                    m->buffer.buffs_size[m->buffer.cur_buff - 1] * 2;
+                m->buffer.data_size[m->buffer.cur_buff] = 0;
+                /* We need to have the content for one token in a single buffer.
+                 * So if the space is not sufficient we have to move first part
+                 * of the token to the next buffer */
+                if(m->last_start != -1)
+                {
+                    data_move = m->buffer.data_size[m->buffer.cur_buff - 1] -
+                        (m->last_start - m->buffer.pre_tot_data);
+                    memcpy(m->buffer.buff[m->buffer.cur_buff], m->buffer.buff[m->buffer.cur_buff - 1]
+                        + m->buffer.data_size[m->buffer.cur_buff - 1] - data_move, data_move);
+                    m->buffer.data_size[m->buffer.cur_buff - 1] -= data_move;
+                    m->buffer.data_size[m->buffer.cur_buff] += data_move;
+                }
+                m->buffer.pre_tot_data += m->buffer.data_size[m->buffer.cur_buff - 1];
             }
-            m->buffer.buff[m->buffer.cur_buff + 1] = (guththila_char_t *)AXIS2_MALLOC(
-                env->allocator, sizeof(guththila_char_t) * m->buffer.buffs_size[m->buffer.cur_buff]
-                    * 2);
-            if(!m->buffer.buff[m->buffer.cur_buff + 1])
-                return -1;
-            m->buffer.cur_buff++;
-            m->buffer.buffs_size[m->buffer.cur_buff] = m->buffer.buffs_size[m->buffer.cur_buff - 1]
-                * 2;
-            m->buffer.data_size[m->buffer.cur_buff] = 0;
-            /* We need to have the content for one token in a single buffer. 
-             * So if the space is not sufficient we have to move first part 
-             * of the token to the next buffer */
-            if(m->last_start != -1)
-            {
-                data_move = m->buffer.data_size[m->buffer.cur_buff - 1] - (m->last_start
-                    - m->buffer.pre_tot_data);
-                memcpy(m->buffer.buff[m->buffer.cur_buff], m->buffer.buff[m->buffer.cur_buff - 1]
-                    + m->buffer.data_size[m->buffer.cur_buff - 1] - data_move, data_move);
-                m->buffer.data_size[m->buffer.cur_buff - 1] -= data_move;
-                m->buffer.data_size[m->buffer.cur_buff] += data_move;
-            }
-            m->buffer.pre_tot_data += m->buffer.data_size[m->buffer.cur_buff - 1];
             temp = guththila_reader_read(m->reader, GUTHTHILA_BUFFER_CURRENT_BUFF(m->buffer), 0,
                 (int)GUTHTHILA_BUFFER_CURRENT_BUFF_SIZE(m->buffer), env);
             if(temp > 0)
