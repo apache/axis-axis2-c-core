@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-/*
 #include <axiom_output.h>
 #include <stdarg.h>
 #include <axutil_string.h>
@@ -25,7 +24,6 @@
 #include <axutil_array_list.h>
 #include <axutil_uuid_gen.h>
 #include <axiom_mime_part.h>
-*/
 
 #define AXIS2_DEFAULT_CHAR_SET_ENCODING  "UTF-8"
 
