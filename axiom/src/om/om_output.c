@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+/*
 #include <axiom_output.h>
 #include <stdarg.h>
 #include <axutil_string.h>
@@ -24,6 +25,7 @@
 #include <axutil_array_list.h>
 #include <axutil_uuid_gen.h>
 #include <axiom_mime_part.h>
+*/
 
 #define AXIS2_DEFAULT_CHAR_SET_ENCODING  "UTF-8"
 
@@ -437,159 +439,119 @@ axiom_output_write(
     va_start(ap, no_of_args);
     for(i = 0; i < no_of_args; i++)
     {
-args_list    [i] = va_arg(ap, axis2_char_t *);
-}
-va_end(ap);
+        args_list[i] = va_arg(ap, axis2_char_t *);
+    }
+    va_end(ap);
 
-if (type == AXIOM_ELEMENT)
-{
-    if (no_of_args == 0)
+    if(type == AXIOM_ELEMENT)
     {
-        status =
-        axiom_xml_writer_write_end_element(om_output->xml_writer, env);
-    }
-    else if (no_of_args == 1)
-    {
-        status =
-        axiom_xml_writer_write_start_element(om_output->xml_writer,
-            env, args_list[0]);
-    }
-    else if (no_of_args == 2)
-    {
-        status =
-        axiom_xml_writer_write_start_element_with_namespace(om_output->
-            xml_writer,
-            env,
-            args_list
-            [0],
-            args_list
-            [1]);
-    }
-    else if (no_of_args == 3)
-    {
-        status =
-        axiom_xml_writer_write_start_element_with_namespace_prefix
-        (om_output->xml_writer, env, args_list[0], args_list[1],
-            args_list[2]);
-    }
-    else if (no_of_args == 4)
-    {
-        if (!args_list[0])
+        if(no_of_args == 0)
         {
-            status = AXIS2_FAILURE;
+            status = axiom_xml_writer_write_end_element(om_output->xml_writer, env);
         }
-        else if (!args_list[1])
+        else if(no_of_args == 1)
         {
-            status =
-            axiom_xml_writer_write_empty_element(om_output->xml_writer,
-                env, args_list[0]);
+            status = axiom_xml_writer_write_start_element(om_output->xml_writer, env, args_list[0]);
         }
-        else if (!args_list[2])
+        else if(no_of_args == 2)
         {
-            status =
-            axiom_xml_writer_write_empty_element_with_namespace(om_output->
-                xml_writer,
-                env,
-                args_list
-                [0],
-                args_list
-                [1]);
+            status = axiom_xml_writer_write_start_element_with_namespace(
+                om_output->xml_writer, env, args_list[0], args_list[1]);
         }
-        else
+        else if(no_of_args == 3)
         {
-            status =
-            axiom_xml_writer_write_empty_element_with_namespace_prefix
-            (om_output->xml_writer, env, args_list[0], args_list[1],
-                args_list[2]);
+            status = axiom_xml_writer_write_start_element_with_namespace_prefix(
+                om_output->xml_writer, env, args_list[0], args_list[1], args_list[2]);
+        }
+        else if(no_of_args == 4)
+        {
+            if(!args_list[0])
+            {
+                status = AXIS2_FAILURE;
+            }
+            else if(!args_list[1])
+            {
+                status = axiom_xml_writer_write_empty_element(
+                    om_output->xml_writer, env,args_list[0]);
+            }
+            else if(!args_list[2])
+            {
+                status = axiom_xml_writer_write_empty_element_with_namespace(
+                    om_output->xml_writer, env, args_list[0], args_list[1]);
+            }
+            else
+            {
+                status = axiom_xml_writer_write_empty_element_with_namespace_prefix(
+                    om_output->xml_writer, env, args_list[0], args_list[1], args_list[2]);
+            }
         }
     }
-}
-else if (type == AXIOM_DATA_SOURCE)
-{
-    status = axiom_xml_writer_write_raw(om_output->xml_writer,
-        env, args_list[0]);
-}
-else if (type == AXIOM_ATTRIBUTE)
-{
-    if (no_of_args == 2)
+    else if(type == AXIOM_DATA_SOURCE)
     {
-        status =
-        axiom_xml_writer_write_attribute(om_output->xml_writer,
-            env,
-            args_list[0], args_list[1]);
+        status = axiom_xml_writer_write_raw(om_output->xml_writer, env, args_list[0]);
     }
-    else if (no_of_args == 3)
+    else if(type == AXIOM_ATTRIBUTE)
     {
-        status =
-        axiom_xml_writer_write_attribute_with_namespace(om_output->
-            xml_writer, env,
-            args_list[0],
-            args_list[1],
-            args_list[2]);
+        if(no_of_args == 2)
+        {
+            status = axiom_xml_writer_write_attribute(
+                om_output->xml_writer, env, args_list[0], args_list[1]);
+        }
+        else if(no_of_args == 3)
+        {
+            status = axiom_xml_writer_write_attribute_with_namespace(
+                om_output-> xml_writer, env, args_list[0], args_list[1], args_list[2]);
+        }
+        else if(no_of_args == 4)
+        {
+            status = axiom_xml_writer_write_attribute_with_namespace_prefix(
+                om_output->xml_writer, env, args_list[0], args_list[1], args_list[2], args_list[3]);
+        }
     }
-    else if (no_of_args == 4)
+    else if(type == AXIOM_NAMESPACE)
     {
-        status =
-        axiom_xml_writer_write_attribute_with_namespace_prefix
-        (om_output->xml_writer, env, args_list[0], args_list[1],
-            args_list[2], args_list[3]);
+        /* If the namespace prefix is xml, it must be the pre-defined xml
+         namespace.  Although the XML spec allows it to be declared
+         explicitly, this is superfluous and not accepted by all xml
+         parsers. */
+        if((!args_list[0]) || (strcmp(args_list[0], "xml") != 0))
+        {
+            status = axiom_xml_writer_write_namespace(
+                om_output->xml_writer, env, args_list[0], args_list[1]);
+        }
     }
-}
-else if (type == AXIOM_NAMESPACE)
-{
-    /* If the namespace prefix is xml, it must be the pre-defined xml
-     namespace.  Although the XML spec allows it to be declared
-     explicitly, this is superfluous and not accepted by all xml
-     parsers. */
-    if ((!args_list[0]) || (strcmp(args_list[0], "xml") != 0))
+    else if(type == AXIOM_TEXT)
     {
-        status = axiom_xml_writer_write_namespace(om_output->xml_writer,
-            env,
-            args_list[0], args_list[1]);
+        status = axiom_xml_writer_write_characters(om_output->xml_writer, env, args_list[0]);
     }
-}
-else if (type == AXIOM_TEXT)
-{
-    status = axiom_xml_writer_write_characters(om_output->xml_writer,
-        env, args_list[0]);
-}
-else if (type == AXIOM_COMMENT)
-{
-    status = axiom_xml_writer_write_comment(om_output->xml_writer,
-        env, args_list[0]);
-}
-else if (type == AXIOM_PROCESSING_INSTRUCTION)
-{
-    if (no_of_args == 1)
+    else if(type == AXIOM_COMMENT)
     {
-        status =
-        axiom_xml_writer_write_processing_instruction(om_output->
-            xml_writer, env,
-            args_list[0]);
+        status = axiom_xml_writer_write_comment(om_output->xml_writer, env, args_list[0]);
     }
-    else if (no_of_args == 2)
+    else if(type == AXIOM_PROCESSING_INSTRUCTION)
     {
-        status =
-        axiom_xml_writer_write_processing_instruction_data(om_output->
-            xml_writer,
-            env,
-            args_list[0],
-            args_list
-            [1]);
+        if(no_of_args == 1)
+        {
+            status = axiom_xml_writer_write_processing_instruction(
+                om_output-> xml_writer, env, args_list[0]);
+        }
+        else if(no_of_args == 2)
+        {
+            status = axiom_xml_writer_write_processing_instruction_data(
+                om_output-> xml_writer, env, args_list[0], args_list[1]);
+        }
     }
-}
-else if (type == AXIOM_DOCTYPE)
-{
-    status = axiom_xml_writer_write_dtd(om_output->xml_writer,
-        env, args_list[0]);
-}
+    else if(type == AXIOM_DOCTYPE)
+    {
+        status = axiom_xml_writer_write_dtd(om_output->xml_writer, env, args_list[0]);
+    }
 
-if (status == AXIS2_SUCCESS)
-{
-    return AXIS2_SUCCESS;
-}
-else
-return AXIS2_FAILURE;
+    if(status == AXIS2_SUCCESS)
+    {
+        return AXIS2_SUCCESS;
+    }
+    else
+        return AXIS2_FAILURE;
 }
 
 axis2_status_t AXIS2_CALL
