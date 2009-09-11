@@ -1213,7 +1213,7 @@ guththila_process_xml_dec(
                 {
                     if(nc < 0)
                         return -1;
-                    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
+                    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, nc);
                 }
                 guththila_token_close(m, tok, _attribute_value, 0, env);
                 GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
