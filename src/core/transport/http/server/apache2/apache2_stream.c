@@ -55,7 +55,7 @@ int AXIS2_CALL apache2_stream_get_char(
     axutil_stream_t * stream,
     const axutil_env_t * env);
 
-AP_DECLARE(long) apache2_ap_get_client_block(
+long apache2_ap_get_client_block(
     request_rec *r,
     char* buffer, 
     apr_size_t bufsiz);
@@ -98,7 +98,7 @@ apache2_stream_read(
     size_t count)
 {
     apache2_stream_impl_t *stream_impl = NULL;
-    ssize_t read = 0;
+    size_t read = 0;
     size_t len = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
@@ -205,8 +205,10 @@ apache2_stream_get_type(
  * Returns 0 on End-of-body, -1 on error or premature chunk end.
  *
  */
-AP_DECLARE(long) apache2_ap_get_client_block (request_rec *r, char *buffer,
-        apr_size_t bufsiz)
+long apache2_ap_get_client_block(
+    request_rec *r,
+    char *buffer,
+    apr_size_t bufsiz)
 {
     apr_status_t rv;
     apr_bucket_brigade *bb;
