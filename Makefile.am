@@ -45,6 +45,9 @@ bindist: $(bin_PROGRAMS)
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
 
 install-data-hook:
-	cp -r docs $(docsdir)
-	rm -rf `find $(docsdir)/ -type d -name .svn`
-	rm $(docsdir)/README
+	mkdir -p $(DESTDIR)$(docsdir)
+	cp -r docs $(DESTDIR)$(docsdir)
+	rm -rf `find $(DESTDIR)$(docsdir)/ -type d -name .svn`
+	rm $(DESTDIR)$(docsdir)/README
+
+
