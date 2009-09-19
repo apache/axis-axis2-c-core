@@ -223,7 +223,7 @@ deploy:
 clean:
 	if exist $(AXIS2_BINDIR) rmdir /S /Q $(AXIS2_BINDIR)
 	if exist $(AXIS2_INTDIR) rmdir /S /Q $(AXIS2_INTDIR)
-	
+	if exist ..\$(AXIS2_RELEASE_DIR) rmdir  /S /Q ..\$(AXIS2_RELEASE_DIR)
 
 # axutil 
 ###################
