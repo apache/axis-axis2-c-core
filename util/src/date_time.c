@@ -206,6 +206,10 @@ axutil_date_time_deserialize_date(
     {
         return AXIS2_FAILURE;
     }
+	if(strchr(date_str,'T'))
+	{
+		return AXIS2_FAILURE;
+	}
     if(*date_str == '-')
     {
         is_year_neg++;
