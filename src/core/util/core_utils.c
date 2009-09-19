@@ -210,7 +210,7 @@ axis2_core_utils_create_out_msg_ctx(
     axis2_msg_ctx_set_out_transport_info(new_msg_ctx, env, axis2_msg_ctx_get_out_transport_info(
         in_msg_ctx, env));
 
-    /* Setting the charater set encoding */
+    /* Setting the character set encoding */
     doing_rest = axis2_msg_ctx_get_doing_rest(in_msg_ctx, env);
     axis2_msg_ctx_set_doing_rest(new_msg_ctx, env, doing_rest);
 
