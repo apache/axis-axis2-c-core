@@ -578,6 +578,20 @@ axis2_engine_create_fault_msg_ctx(
         msg_uuid = NULL;
     }
 
+	/** Copy the property map from the current message context to the newly created fault message
+		context. */
+	{
+		axis2_ctx_t *ctx = axis2_msg_ctx_get_base(processing_context, env);
+		axis2_ctx_t *fault_base_ctx = axis2_msg_ctx_get_base(fault_ctx, env);
+
+		if(ctx && fault_ctx)
+		{
+			axis2_ctx_set_property_map(fault_base_ctx, env, axis2_ctx_get_property_map(ctx, env));
+		}
+
+	}
+
+
     axis2_msg_ctx_set_op_ctx(fault_ctx, env, axis2_msg_ctx_get_op_ctx(processing_context, env));
     axis2_msg_ctx_set_process_fault(fault_ctx, env, AXIS2_TRUE);
     axis2_msg_ctx_set_server_side(fault_ctx, env, AXIS2_TRUE);
