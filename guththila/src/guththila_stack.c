@@ -60,7 +60,7 @@ guththila_stack_pop(
 {
     if(stack->top > 0)
     {
-        return stack->data[stack->top-- - 1];
+        return stack->data[--(stack->top)];
     }
     return NULL;
 }
@@ -71,24 +71,21 @@ guththila_stack_push(
     void *data,
     const axutil_env_t * env)
 {
-    int i = 0;
-    void **temp = NULL;
-    if(stack->top >= stack->max)
+    int top = stack->top++;
+    if(top >= stack->max)
     {
-
-        temp = (void **)AXIS2_MALLOC(env->allocator, sizeof(void **) * (stack->max
-            += GUTHTHILA_STACK_DEFAULT));
-        for(i = 0; i < stack->top; i++)
+        void **temp = NULL;
+        int i = 0;
+        temp = (void **)AXIS2_MALLOC(env->allocator, sizeof(void **) * (stack->max *= 2));
+        for(i = 0; i < top; ++i)
         {
             temp[i] = stack->data[i];
         }
         AXIS2_FREE(env->allocator, stack->data);
         stack->data = temp;
-        if(!stack->data)
-            return GUTHTHILA_FAILURE;
     }
-    stack->data[stack->top] = data;
-    return stack->top++;
+    stack->data[top] = data;
+    return top;
 }
 
 void *GUTHTHILA_CALL

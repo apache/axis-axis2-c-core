@@ -31,35 +31,41 @@ guththila_tok_list_grow(
     const axutil_env_t * env)
 {
     int i = 0;
-    int cur = 0;
-    int cur_cap = 0;
-    guththila_token_t ** list = NULL;
+
     if(tok_list->cur_list < tok_list->no_list - 1)
     {
-        cur = ++tok_list->cur_list;
-        cur_cap = tok_list->capacity[cur - 1] * 2;
-        tok_list->list[cur] = (guththila_token_t *)AXIS2_MALLOC(env->allocator,
+        int cur = ++tok_list->cur_list;
+        int cur_cap = tok_list->capacity[cur - 1] * 2;
+        guththila_token_t *list = (guththila_token_t *)AXIS2_MALLOC(env->allocator,
             sizeof(guththila_token_t) * cur_cap);
-        for(i = 0; i < cur_cap; i++)
+        for(i = 0; i < cur_cap; ++i)
         {
-            guththila_stack_push(&tok_list->fr_stack, &tok_list->list[cur][i], env);
+            guththila_stack_push(&tok_list->fr_stack, &list[i], env);
         }
         tok_list->capacity[cur] = cur_cap;
+        tok_list->list[cur] = list;
         return GUTHTHILA_SUCCESS;
     }
     else
     {
+        guththila_token_t ** list = NULL;
+        int *capacity = NULL;
         list = (guththila_token_t **)AXIS2_MALLOC(env->allocator, sizeof(guththila_token_t *)
             * tok_list->no_list * 2);
+        capacity = (int *)AXIS2_MALLOC(env->allocator, sizeof(int) * tok_list->no_list * 2);
         if(list)
         {
-            for(i = 0; i <= tok_list->cur_list; i++)
+            int cur_list = tok_list->cur_list;
+            for(i = 0; i <= cur_list; ++i)
             {
                 list[i] = tok_list->list[i];
+                capacity[i] = tok_list->capacity[i];
             }
             tok_list->no_list = tok_list->no_list * 2;
             AXIS2_FREE(env->allocator, tok_list->list);
             tok_list->list = list;
+            AXIS2_FREE(env->allocator, tok_list->capacity);
+            tok_list->capacity = capacity;
             guththila_tok_list_grow(tok_list, env);
         }
     }

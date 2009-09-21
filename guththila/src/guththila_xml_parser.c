@@ -58,6 +58,8 @@ guththila_next_char(
             else\
             {\
                 c = guththila_next_char(m, env);\
+                if(c < 0)\
+                    return -1;\
                 result_found  = 1;\
             }\
         }\
@@ -77,11 +79,13 @@ guththila_next_char(
             --(m->next);\
             if(m->reader->type == GUTHTHILA_MEMORY_READER)\
             {\
-                c = -1;\
+                return -1;\
             }\
             else\
             {\
                 c = guththila_next_char(m, env);\
+                if(c < 0)\
+                    return -1;\
             }\
         }\
     }\
@@ -117,106 +121,70 @@ guththila_process_xml_dec(
     guththila_t * m,
     const axutil_env_t * env);
 
+/*
+ * Return non zero value if the given argument is a space. (c < 0x21) is added to improve the
+ * performance. common case is printable characters. and if given character is printable, we can
+ * return false immediately.
+ */
+#define GUTHTHILA_IS_SPACE(c) ((c < 0x21) && (c == 0x20 || c == 0xD || c == 0xA || c == 0x9))
+
 /* 
  * Read characters until all the white spaces are read.
  */
-#ifndef GUTHTHILA_SKIP_SPACES
-#define GUTHTHILA_SKIP_SPACES(m, c, buffer, data_size, previous_size, _env)while(0x20 == c || 0x9 == c || 0xD == c || 0xA == c){GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, _env, c);}
-#endif  
+#define GUTHTHILA_SKIP_SPACES(m, c, buffer, data_size, previous_size, _env)while(GUTHTHILA_IS_SPACE(c)){GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, _env, c);}
 
-/*
- * Read character including new line until a non white space character is met.
- */
-#ifndef GUTHTHILA_SKIP_SPACES_WITH_NEW_LINE
-#define GUTHTHILA_SKIP_SPACES_WITH_NEW_LINE(m, c, buffer, data_size, previous_size, _env) while (0x20 == c || 0x9 == c || 0xD == c || 0xA == c || '\n' == c){GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, _env, c);}
-#endif  
 
-#ifndef GUTHTHILA_XML_NAME
 #define GUTHTHILA_XML_NAME "xml"
-#endif
 
-#ifndef GUTHTHILA_XML_URI
 #define GUTHTHILA_XML_URI "http://www.w3.org/XML/1998/namespace"
-#endif    
-
-/* 
- * Return the last character that was read
- */
-#ifndef GUTHTHILA_LAST_CHAR
-#define GUTHTHILA_LAST_CHAR(m) (m->buffer.buff + m->buffer.next - 1)
-#endif  
 
 /*
  * Open a token. When we open a token we don't know it's type. We only 
  * set the starting values.
  */
-#ifndef GUTHTHILA_TOKEN_OPEN
 #define GUTHTHILA_TOKEN_OPEN(m, tok, _env)					\
     m->temp_tok = guththila_tok_list_get_token(&m->tokens, _env); \
     m->temp_tok->type = _Unknown; \
     m->temp_tok->_start = (int)m->next; \
     m->last_start = (int)m->next - 1;
 /* We are sure that the difference lies within the int range */
-#endif  
 
 /*
  * Read until we met a = character.
  */
-#ifndef GUTHTHILA_PROCESS_EQU
-#define GUTHTHILA_PROCESS_EQU(m, c, ic, buffer, data_size, previous_size, _env)							\
+#define GUTHTHILA_PROCESS_EQU(m, c, ic, buffer, data_size, previous_size, _env)\
+{\
     GUTHTHILA_SKIP_SPACES(m, c, buffer, data_size, previous_size, _env); \
-    if (0x3D == c) { \
-    GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, _env, ic); \
-    GUTHTHILA_SKIP_SPACES(m, ic, buffer, data_size, previous_size, _env); \
-    }
-#endif  
+    if (c == '=')\
+    { \
+        GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, _env, ic); \
+        GUTHTHILA_SKIP_SPACES(m, ic, buffer, data_size, previous_size, _env); \
+    }\
+}
 
 /*
  * Initialize a attribute to the values given.
  */
-#ifndef GUTHTHILA_ATTRIBUTE_INITIALIZE
 #define GUTHTHILA_ATTRIBUTE_INITIALIZE(_attr, _pref, _name, _val)	\
     (_attr->pref = (_pref)); \
     (_attr->name = (_name)); \
     (_attr->val = (_val));
-#endif  
 
 /*
  * Initialize namespace to the values given.
  */
-#ifndef GUTHTHILA_NAMESPACE_INITIALIZE
 #define GUTHTHILA_NAMESPACE_INITIALIZE(_namesp, _name, _uri)	\
     (_namesp->name = _name); \
     (_namesp->uri = _uri);
-#endif  
-
-/*
- * Return non zero value if the given argument is a space. (c < 0x21) is added to improve the
- * performance. common case is printable characters. and if given character is printable, we can
- * return false immediately.
- */
-#ifndef GUTHTHILA_IS_SPACE
-#define GUTHTHILA_IS_SPACE(c) ((c < 0x21) && (c == 0x20 || c == 0xD || c == 0xA || c == 0x9))
-#endif  
-
-/*
- * Deterine weather a given character is a valid xml string char.
- */
-#ifndef GUTHTHILA_IS_VALID_STRING_CHAR
-#define GUTHTHILA_IS_VALID_STRING_CHAR(c) (isalpha(c) || '_' == c || ':' == c)
-#endif 
 
 /*
  * Determine weahter a given character is a valid starting char for a xml name.
  */
-#ifndef GUTHTHILA_IS_VALID_STARTING_CHAR
 #define GUTHTHILA_IS_VALID_STARTING_CHAR(c) (isalpha(c) || '_' == c || ':' == c)
-#endif 
 
 /*
  * Initialize the variables in the guththila_t structure.
  */
-#ifndef GUTHTHILA_VARIABLE_INITIALZE
 #define GUTHTHILA_VARIABLE_INITIALZE(m) \
     m->temp_prefix = NULL; \
     m->temp_name = NULL; \
@@ -225,7 +193,6 @@ guththila_process_xml_dec(
     m->name = NULL; \
     m->prefix = NULL; \
     m->value = NULL;
-#endif 
 
 /*
  * Initialize the guththila_t structure with the reader. 
@@ -727,7 +694,6 @@ guththila_next(
     guththila_elem_namesp_t * nmsp = NULL;
     guththila_token_t * tok = NULL;
     int quote = 0, ref = 0;
-    guththila_char_t c_arra[16] = { 0 };
     int c = -1;
     guththila_attr_t * attr = NULL;
     int size = 0, i = 0, nmsp_counter, loop = 0, white_space = 0;
@@ -796,8 +762,6 @@ guththila_next(
             while(isspace(c))
             {
                 GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
-                if(c < 0)
-                    return -1;
             }
             if('<' == c)
             {
@@ -808,20 +772,22 @@ guththila_next(
                 return -1;
             }
         }
-        if('<' == c && m->status == S_2)
+        if(m->status != S_2)
+        {
+            return -1;
+        }
+        if(c == '<')
         {
             GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
             if(c != '?' && c != '!' && c != '/')
             {
-                /* We are at the beginig of a xml element */
+                /* We are at the beginning of a xml element */
                 if(GUTHTHILA_IS_VALID_STARTING_CHAR(c))
                 {
                     GUTHTHILA_TOKEN_OPEN(m, tok, env);
                     GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                     while(!GUTHTHILA_IS_SPACE(c) && c != '>' && c != '/')
                     {
-                        if(c < 0)
-                            return -1;
                         if(c != ':')
                         {
                             GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
@@ -876,7 +842,7 @@ guththila_next(
                             return GUTHTHILA_START_ELEMENT;
                     }
                     /* We are in the middle of a element */
-                    else if(c != -1)
+                    else
                     {
                         /* Process the attributes */
                         if(GUTHTHILA_IS_VALID_STARTING_CHAR(c))
@@ -886,8 +852,6 @@ guththila_next(
                             GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                             while(!GUTHTHILA_IS_SPACE(c) && c != '=')
                             {
-                                if(c < 0)
-                                    return -1;
                                 if(c != ':')
                                 {
                                     GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
@@ -909,14 +873,12 @@ guththila_next(
                         }
                         /* Attribute Value */
                         GUTHTHILA_PROCESS_EQU(m, c, quote, buffer, data_size, previous_size, env);
-                        if('\'' == quote || '\"' == quote)
+                        if(quote == '\'' || quote == '\"')
                         {
                             GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                             GUTHTHILA_TOKEN_OPEN(m, tok, env);
                             while(c != quote)
                             {
-                                if(c < 0)
-                                    return -1;
                                 GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                             }
                             guththila_token_close(m, tok, _attribute_value, 0, env);
@@ -928,11 +890,7 @@ guththila_next(
                             return -1;
                         }
                     }
-                    else
-                    {
-                        return -1;
-                    }
-                }
+                } /* for(;;) */
             }
             else if(c == '/')
             {
@@ -945,8 +903,6 @@ guththila_next(
                     GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                     while(!GUTHTHILA_IS_SPACE(c) && c != '>')
                     {
-                        if(c < 0)
-                            return -1;
                         if(c != ':')
                         {
                             GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
@@ -1008,6 +964,7 @@ guththila_next(
             else if(c == '!')
             {
                 /* Comment */
+                guththila_char_t c_arra[16] = { 0 };
                 if(2 == guththila_next_no_char(m, 0, c_arra, 2, env) && '-' == c_arra[0] && '-'
                     == c_arra[1])
                 {
@@ -1044,8 +1001,6 @@ guththila_next(
                     GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                     while('<' != c)
                     {
-                        if(c < 0)
-                            return -1;
                         GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                     }
                 }
@@ -1060,7 +1015,7 @@ guththila_next(
                     return -1;
             }
         }
-        else if(c != '<' && m->status == S_2 && c != -1)
+        else
         {
             /* Text */
             m->guththila_event = GUTHTHILA_CHARACTER;
@@ -1089,7 +1044,7 @@ guththila_next(
                             break;
                         }
                     }
-                    while((c != '<') && (c >= 0));
+                    while(c != '<');
                 }
                 else
                 {
@@ -1115,12 +1070,10 @@ guththila_next(
                         {
                             GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
                         }
-                    }while((c != '<') && (c >= 0));
+                    }while(c != '<');
                 }
             }
-            while((c != '<') && (c >= 0));
-            if(c < 0)
-                return -1;
+            while(c != '<');
             guththila_token_close(m, tok, _text_data, ref, env);
             m->next--;
             if(white_space)
@@ -1141,10 +1094,6 @@ guththila_next(
 
             else
                 return GUTHTHILA_CHARACTER;
-        }
-        else
-        {
-            return -1;
         }
     }
     while(loop);
@@ -1184,8 +1133,6 @@ guththila_process_xml_dec(
                 GUTHTHILA_TOKEN_OPEN(m, tok, env);
                 while(nc != quote)
                 {
-                    if(nc < 0)
-                        return -1;
                     GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, nc);
                 }
                 guththila_token_close(m, tok, _attribute_value, 0, env);
@@ -1211,8 +1158,6 @@ guththila_process_xml_dec(
                 GUTHTHILA_TOKEN_OPEN(m, tok, env);
                 while(nc != quote)
                 {
-                    if(nc < 0)
-                        return -1;
                     GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, nc);
                 }
                 guththila_token_close(m, tok, _attribute_value, 0, env);
@@ -1234,8 +1179,6 @@ guththila_process_xml_dec(
                 GUTHTHILA_TOKEN_OPEN(m, tok, env);
                 while(nc != quote)
                 {
-                    if(nc < 0)
-                        return -1;
                     GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, nc);
                 }
                 guththila_token_close(m, tok, _attribute_value, 0, env);
