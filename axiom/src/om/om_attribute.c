@@ -141,9 +141,12 @@ axiom_attribute_get_qname(
     {
         if(attribute->ns)
         {
+            /* Attribute qname should not include prefix */
             qname = axutil_qname_create(env, axutil_string_get_buffer(attribute-> localname, env),
+                axiom_namespace_get_uri(attribute->ns, env), NULL);
+            /*qname = axutil_qname_create(env, axutil_string_get_buffer(attribute-> localname, env),
                 axiom_namespace_get_uri(attribute->ns, env), axiom_namespace_get_prefix(
-                    attribute-> ns, env));
+                    attribute-> ns, env));*/
         }
         else
         {
