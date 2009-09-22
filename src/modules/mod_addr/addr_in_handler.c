@@ -440,26 +440,24 @@ axis2_addr_in_extract_addr_params(
             axis2_char_t *address = NULL;
             axutil_qname_t *rqn = NULL;
             axiom_attribute_t *relationship_type = NULL;
-            const axis2_char_t *relationship_type_default_value = NULL;
             const axis2_char_t *relationship_type_value = NULL;
             axis2_relates_to_t *relates_to = NULL;
-            if(!axutil_strcmp(AXIS2_WSA_NAMESPACE_SUBMISSION, addr_ns_str))
-            {
-                relationship_type_default_value
-                    = AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE_SUBMISSION;
-            }
-            else
-            {
-                relationship_type_default_value = AXIS2_WSA_ANONYMOUS_URL_SUBMISSION;
-            }
-            rqn = axutil_qname_create(env, AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE, NULL, NULL);
 
+            rqn = axutil_qname_create(env, AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE, NULL, NULL);
             relationship_type = axiom_element_get_attribute(header_block_ele, env, rqn);
 
             if(!relationship_type)
             {
-                relationship_type_value
-                    = AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE_SUBMISSION;
+                if(!axutil_strcmp(AXIS2_WSA_NAMESPACE_SUBMISSION, addr_ns_str))
+                {
+                    relationship_type_value =
+                        AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE_SUBMISSION;
+                }
+                else
+                {
+                    relationship_type_value =
+                        AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE;
+                }
             }
             else
             {
