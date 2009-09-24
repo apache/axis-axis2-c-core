@@ -983,6 +983,10 @@ axiom_element_get_children(
         om_element->children_iter = axiom_children_iterator_create(env, axiom_node_get_first_child(
             element_node, env));
     }
+    else
+    {
+        axiom_children_iterator_reset(om_element->children_iter, env);
+    }
     return om_element->children_iter;
 }
 
