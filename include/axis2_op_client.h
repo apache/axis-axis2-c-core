@@ -116,6 +116,12 @@ extern "C"
         const axutil_env_t * env,
         axis2_msg_ctx_t * msg_ctx);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_op_client_add_in_msg_ctx(
+        axis2_op_client_t * op_client,
+        const axutil_env_t * env,
+        axis2_msg_ctx_t * msg_ctx);
+
     /**
      * Gets a message corresponding to the given label.
      * @param op_client pointer to operation client struct
