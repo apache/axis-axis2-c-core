@@ -36,6 +36,7 @@ struct axis2_listener_manager
 
     /** hash map of listeners */
     axis2_transport_listener_state_t *listener_map[AXIS2_TRANSPORT_ENUM_MAX];
+    axutil_thread_t *listener_thread[AXIS2_TRANSPORT_ENUM_MAX];
 
     /** configuration context */
     axis2_conf_ctx_t *conf_ctx;
@@ -75,6 +76,7 @@ axis2_listener_manager_create(
     for(i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
         listener_manager->listener_map[i] = NULL;
+        listener_manager->listener_thread[i] = NULL;
     }
 
     return listener_manager;
@@ -154,8 +156,10 @@ axis2_listener_manager_make_sure_started(
                         }
                         else
                         {
-                            axutil_thread_pool_thread_detach(env->thread_pool,
-                                worker_thread);
+                            /*axutil_thread_pool_thread_detach(env->thread_pool,
+                                worker_thread);*/
+                            /* we should not detach this, because, in the dual channel case
+                            we should be able to terminate the thread before deleting the listener */
                         }
                     }
                     else
@@ -184,6 +188,7 @@ axis2_listener_manager_make_sure_started(
                         tl_state->listener = listener;
                         tl_state->waiting_calls = 0;
                         listener_manager->listener_map[transport] = tl_state;
+                        listener_manager->listener_thread[transport] = worker_thread;
                     }
                 }
             }
@@ -207,8 +212,10 @@ axis2_listener_manager_stop(
 {
     axis2_transport_listener_state_t *tl_state = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axutil_thread_t *listener_thread = NULL;
 
     tl_state = listener_manager->listener_map[transport];
+    listener_thread = listener_manager->listener_thread[transport];
 
     if(tl_state)
     {
@@ -219,6 +226,12 @@ axis2_listener_manager_stop(
             if(status == AXIS2_SUCCESS)
                 listener_manager->listener_map[transport] = NULL;
         }
+    }
+
+    if(listener_thread)
+    {
+        axutil_thread_pool_exit_thread(env->thread_pool, listener_thread);
+        listener_manager->listener_thread[transport] = NULL;
     }
 
     return status;
