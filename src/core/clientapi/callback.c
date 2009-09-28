@@ -28,6 +28,9 @@ struct axis2_callback
     /** envelope corresponding to the result */
     axiom_soap_envelope_t *envelope;
 
+    /** message context corresponding to the result */
+    axis2_msg_ctx_t *msg_ctx;
+
     /** error code */
     int error;
 
@@ -94,6 +97,7 @@ axis2_callback_create(
 
     callback->complete = AXIS2_FALSE;
     callback->envelope = NULL;
+    callback->msg_ctx = NULL;
     callback->error = AXIS2_ERROR_NONE;
     callback->data = NULL;
     callback->mutex = NULL;
@@ -112,7 +116,11 @@ axis2_callback_invoke_on_complete(
 {
     axis2_status_t status = AXIS2_FAILURE;
 
-    axis2_callback_set_envelope(callback, env, axis2_async_result_get_envelope(result, env));
+    callback->envelope = axis2_async_result_get_envelope(result, env);
+    callback->msg_ctx = axis2_async_result_get_result(result, env);
+    axis2_msg_ctx_increment_ref(callback->msg_ctx, env); /* this will be set in opclient's msgctx
+                                                            map and will be deleted from there */
+
     status = callback->on_complete(callback, env);
 
     return status;
@@ -161,6 +169,24 @@ axis2_callback_set_envelope(
     axiom_soap_envelope_t * envelope)
 {
     callback->envelope = envelope;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
+axis2_callback_get_msg_ctx(
+    const axis2_callback_t * callback,
+    const axutil_env_t * env)
+{
+    return callback->msg_ctx;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_callback_set_msg_ctx(
+    axis2_callback_t * callback,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx)
+{
+    callback->msg_ctx = msg_ctx;
     return AXIS2_SUCCESS;
 }
 

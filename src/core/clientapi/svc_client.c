@@ -664,16 +664,18 @@ axis2_svc_client_send_receive_with_op_qname(
         }
 
         soap_envelope = axis2_callback_get_envelope(callback, env);
+        msg_ctx = axis2_callback_get_msg_ctx(callback, env);
+        axis2_op_client_add_in_msg_ctx(svc_client->op_client, env, msg_ctx);
 
         /* start of hack to get rid of memory leak */
-        msg_ctx = axis2_msg_ctx_create(env, axis2_svc_ctx_get_conf_ctx(svc_client-> svc_ctx, env),
+        /*msg_ctx = axis2_msg_ctx_create(env, axis2_svc_ctx_get_conf_ctx(svc_client-> svc_ctx, env),
             NULL, NULL);
         if(!msg_ctx)
             return NULL;
 
-        axis2_op_client_add_msg_ctx(svc_client->op_client, env, msg_ctx);
+        axis2_op_client_add_in_msg_ctx(svc_client->op_client, env, msg_ctx);
 
-        axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
+        axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);*/
         /* end of hack to get rid of memory leak */
 
         /* process the result of the invocation */

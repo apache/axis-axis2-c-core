@@ -290,7 +290,30 @@ axis2_op_client_add_out_msg_ctx(
 
     msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_client->op_ctx, env);
 
+    if(msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT])
+    {
+        axis2_msg_ctx_free(msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT], env);
+    }
     msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = mc;
+
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_op_client_add_in_msg_ctx(
+    axis2_op_client_t * op_client,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * mc)
+{
+    axis2_msg_ctx_t **msg_ctx_map = NULL;
+
+    msg_ctx_map = axis2_op_ctx_get_msg_ctx_map(op_client->op_ctx, env);
+
+    if(msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN])
+    {
+        axis2_msg_ctx_free(msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN], env);
+    }
+    msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = mc;
 
     return AXIS2_SUCCESS;
 }
