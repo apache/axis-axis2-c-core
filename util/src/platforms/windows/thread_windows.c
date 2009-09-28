@@ -138,8 +138,16 @@ axutil_thread_exit(
     axutil_allocator_t * allocator)
 {
     axis2_status_t status = AXIS2_SUCCESS;
+
     if(thd)
     {
+        if(thd->td && (axis2_os_thread_current() != thd->td))
+        {
+            TerminateThread(thd->td, 0);
+            axutil_thread_join(thd);
+            AXIS2_FREE(allocator, thd);
+            return status;
+        }
         AXIS2_FREE(allocator, thd);
     }
     if(status)

@@ -155,7 +155,7 @@ axutil_thread_exit(
     axutil_thread_t * thd,
     axutil_allocator_t * allocator)
 {
-
+    axis2_bool_t same_thread = AXIS2_TRUE;
     if(thd)
     {
         while(!thd->try_exit)
@@ -165,11 +165,20 @@ axutil_thread_exit(
 
         if(thd->td)
         {
+            same_thread = pthread_equal(pthread_self(), thd->td);
+            if(!same_thread)
+            {
+                pthread_kill(thd->td, 0);
+                axutil_thread_join(thd);
+            }
             AXIS2_FREE(allocator, thd->td);
         }
         AXIS2_FREE(allocator, thd);
     }
-    pthread_exit(NULL);
+    if(same_thread)
+    {
+        pthread_exit(NULL);
+    }
     return AXIS2_SUCCESS;
 }
 
