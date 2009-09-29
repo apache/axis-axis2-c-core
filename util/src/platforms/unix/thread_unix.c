@@ -165,7 +165,7 @@ axutil_thread_exit(
 
         if(thd->td)
         {
-            same_thread = pthread_equal(pthread_self(), thd->td);
+            same_thread = pthread_equal(pthread_self(), *thd->td);
             if(!same_thread)
             {
                 pthread_kill(thd->td, 0);
