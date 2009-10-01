@@ -360,9 +360,16 @@ fault_value_str            =
     }
 
     err_msg = AXIS2_ERROR_GET_MESSAGE(env->error);
-    if (err_msg)
+    if (err_msg && axutil_strcmp(err_msg, ""))
     {
-        fault_reason_str = err_msg;
+        if(!axutil_strcmp(err_msg, "No Error"))
+        {
+            fault_reason_str = "An error has occured, but could not determine exact details";
+        }
+        else
+        {
+            fault_reason_str = err_msg;
+        }
     }
     else
     {
