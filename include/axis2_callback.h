@@ -94,8 +94,7 @@ extern "C"
      * e.g.
      * <code>
      *      <pre>
-     *          while(!AXIS2_CALL
-     * BACK_GET_COMPLETE(callback, env)
+     *          while(!axis2_callback_get_complete(callback, env)
      *          {
      *             sleep(10);
      *          }
