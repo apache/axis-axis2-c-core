@@ -364,7 +364,7 @@ fault_value_str            =
     {
         if(!axutil_strcmp(err_msg, "No Error"))
         {
-            fault_reason_str = "An error has occured, but could not determine exact details";
+            fault_reason_str = "An error has occurred, but could not determine exact details";
         }
         else
         {
@@ -373,7 +373,7 @@ fault_value_str            =
     }
     else
     {
-        fault_reason_str = "An error has occured, but could not determine exact details";
+        fault_reason_str = "An error has occurred, but could not determine exact details";
     }
 
     soap_fault = axiom_soap_fault_create_default_fault(env, out_body, fault_value_str,

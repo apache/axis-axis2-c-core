@@ -692,7 +692,6 @@ axis2_http_worker_process_request(
                 response, 0);
 
             axis2_simple_http_svr_conn_write_response(svr_conn, env, response);
-            axis2_http_simple_response_free(response, env);
             request_handled = AXIS2_TRUE;
             status = AXIS2_TRUE;
         }
@@ -717,7 +716,7 @@ axis2_http_worker_process_request(
             AXIS2_FREE(env->allocator, url_ext_form);
         if(AXIS2_FAILURE == status && (is_put || axis2_msg_ctx_get_doing_rest(msg_ctx, env)))
         {
-            /* Failure Occure while processing REST */
+            /* Failure Occur while processing REST */
 
             axis2_http_header_t *cont_len = NULL;
             axis2_http_header_t *cont_type = NULL;
@@ -902,7 +901,6 @@ axis2_http_worker_process_request(
             axis2_http_worker_set_response_headers(http_worker, env, svr_conn, simple_request,
                 response, 0);
             axis2_simple_http_svr_conn_write_response(svr_conn, env, response);
-            axis2_http_simple_response_free(response, env);
             request_handled = AXIS2_TRUE;
             status = AXIS2_TRUE;
         }
@@ -1040,7 +1038,6 @@ axis2_http_worker_process_request(
         axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
             simple_request, response, 0);
         axis2_simple_http_svr_conn_write_response(svr_conn, env, response);
-        axis2_http_simple_response_free(response, env);
         request_handled = AXIS2_TRUE;
         status = AXIS2_TRUE;
     }
@@ -1198,7 +1195,6 @@ axis2_http_worker_process_request(
                             axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
                                 simple_request, response, 0);
                             axis2_simple_http_svr_conn_write_response(svr_conn, env, response);
-                            axis2_http_simple_response_free(response, env);
                             request_handled = AXIS2_TRUE;
                             status = AXIS2_TRUE;
                             response_written = AXIS2_TRUE;
@@ -1471,7 +1467,7 @@ axis2_http_worker_process_request(
                     in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
                     if (in_msg_ctx)
                     {
-                        /* TODO: Add neccessary handling */
+                        /* TODO: Add neccssary handling */
                     }
                     if (out_msg_ctx)
                     {
@@ -1682,7 +1678,7 @@ axis2_http_worker_process_request(
                         axis2_http_simple_response_set_header(response, env,
                             transfer_enc_header);
 
-                        /* In the chunking case content-lenght is zero */
+                        /* In the chunking case content-length is zero */
                         axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
                             simple_request, response,
                             0);

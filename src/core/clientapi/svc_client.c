@@ -859,7 +859,7 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(
         }
         axis2_listener_manager_make_sure_started(svc_client->listener_manager, env,
             transport_in_protocol, svc_client->conf_ctx);
-        /* Following sleep is required to ensure the listner is ready to receive response.
+        /* Following sleep is required to ensure the listener is ready to receive response.
          If it is missing, the response gets lost. - Samisa */
         AXIS2_USLEEP(1);
 
