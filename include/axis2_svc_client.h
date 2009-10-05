@@ -623,6 +623,17 @@ extern "C"
         axis2_svc_client_t * svc_client,
         const axutil_env_t * env);
 
+    /**
+     * Close the service client. 
+     * @param svc_client pointer to service_client struct
+     * @param env pointer to environment struct
+     * @return AXIS2_FAILURE if there was a fault, else AXIS2_SUCCESS
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_client_close(
+        axis2_svc_client_t * svc_client,
+        const axutil_env_t * env);
+
     /** @} */
 #ifdef __cplusplus
 }

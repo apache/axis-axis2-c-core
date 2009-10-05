@@ -1592,3 +1592,18 @@ axis2_svc_client_set_http_info(
     }
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_svc_client_close(
+    axis2_svc_client_t * svc_client,
+    const axutil_env_t * env)
+{
+    axis2_status_t status = AXIS2_FAILURE;
+    axutil_property_t *property = NULL;
+
+    property = axutil_property_create_with_args(env, 0, 0, 0, AXIS2_VALUE_TRUE);
+    axis2_options_set_property(svc_client->options, env, AXIS2_SVC_CLIENT_CLOSED, property);
+    status = axis2_svc_client_send_robust(svc_client, env, NULL);
+
+    return status;
+}
+
