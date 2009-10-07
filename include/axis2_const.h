@@ -241,6 +241,8 @@ extern "C"
      */
 #define AXIS2_MEP_URI_IN_ONLY "http://www.w3.org/2004/08/wsdl/in-only"
 
+#define AXIS2_MEP_URI_IN_ONLY_WSDL2 "http://www.w3.org/ns/wsdl/in-only";
+
 #define AXIS2_MEP_CONSTANT_IN_ONLY 10
 
     /**
@@ -254,6 +256,8 @@ extern "C"
      * Field MEP_URI_IN_OUT
      */
 #define AXIS2_MEP_URI_IN_OUT "http://www.w3.org/2004/08/wsdl/in-out"
+
+#define AXIS2_MEP_URI_IN_OUT_WSDL2 "http://www.w3.org/ns/wsdl/in-out"
 
 #define AXIS2_MEP_CONSTANT_IN_OUT 12
 
