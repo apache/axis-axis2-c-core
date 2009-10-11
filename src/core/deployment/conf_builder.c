@@ -411,6 +411,7 @@ axis2_conf_builder_process_disp_order(
 
         found_disp = AXIS2_TRUE;
         disp_node = (axiom_node_t *)axiom_children_qname_iterator_next(disps, env);
+        disp_element = (axiom_element_t *) axiom_node_get_data_element(disp_node, env);
         class_qname = axutil_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
         disp_att = axiom_element_get_attribute(disp_element, env, class_qname);
         axutil_qname_free(class_qname, env);
