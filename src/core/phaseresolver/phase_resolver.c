@@ -1954,13 +1954,13 @@ axis2_phase_resolver_add_to_handler_list(
         AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_SUCCESS);
 
         count = axis2_flow_get_handler_count(flow, env);
-        if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        /*if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Getting hanlder count for the flow %s failed",
                 flowname);
 
             return AXIS2_ERROR_GET_STATUS_CODE(env->error);
-        }
+        }*/
 
         for(j = 0; j < count; j++)
         {
