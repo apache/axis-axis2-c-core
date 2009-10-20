@@ -1950,6 +1950,9 @@ axis2_phase_resolver_add_to_handler_list(
         int j = 0;
         int count = 0;
 
+        /* Ignore all the errors upto now */
+        AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_SUCCESS);
+
         count = axis2_flow_get_handler_count(flow, env);
         if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {

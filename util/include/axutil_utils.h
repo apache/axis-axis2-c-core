@@ -81,6 +81,10 @@ extern "C"
         AXIS2_ERROR_SET_ERROR_NUMBER(error, AXIS2_ERROR_INVALID_NULL_PARAM); \
         AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_FAILURE);              \
         return error_return;                                            \
+    }                                                                   \
+    else                                                                \
+    {                                                                   \
+        AXIS2_ERROR_SET_STATUS_CODE(error, AXIS2_SUCCESS);              \
     }
 
 

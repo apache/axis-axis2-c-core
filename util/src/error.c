@@ -470,6 +470,7 @@ axutil_error_create(
         return NULL;
 
     error->allocator = allocator;
+    error->status_code = AXIS2_SUCCESS;
 
     return error;
 }
