@@ -1599,10 +1599,25 @@ axis2_svc_client_close(
 {
     axis2_status_t status = AXIS2_FAILURE;
     axutil_property_t *property = NULL;
+    axis2_endpoint_ref_t *replyto = NULL;
 
     property = axutil_property_create_with_args(env, 0, 0, 0, AXIS2_VALUE_TRUE);
     axis2_options_set_property(svc_client->options, env, AXIS2_SVC_CLIENT_CLOSED, property);
-    status = axis2_svc_client_send_robust(svc_client, env, NULL);
+    replyto = axis2_options_get_reply_to(svc_client->options, env);
+    if(replyto)
+    {
+        axiom_node_t *reply = NULL;
+
+        reply = axis2_svc_client_send_receive(svc_client, env, NULL);
+        if(reply)
+        {
+            status = AXIS2_SUCCESS;
+        }
+    }
+    else
+    {
+        status = axis2_svc_client_send_robust(svc_client, env, NULL);
+    }
 
     return status;
 }
