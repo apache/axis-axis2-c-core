@@ -132,12 +132,12 @@ static const command_rec axis2_cmds[] = { AP_INIT_TAKE1("Axis2RepoPath", axis2_s
 
 /* Dispatch list for API hooks */
 module AP_MODULE_DECLARE_DATA axis2_module = { STANDARD20_MODULE_STUFF, NULL, /* create per-dir    config structures */
-NULL, /* merge  per-dir    config structures */
-axis2_create_svr, /* create per-server config structures */
-NULL, /* merge  per-server config structures */
-axis2_cmds, /* table of config file commands       */
-axis2_register_hooks /* register hooks                      */
-};
+    NULL, /* merge  per-dir    config structures */
+    axis2_create_svr, /* create per-server config structures */
+    NULL, /* merge  per-server config structures */
+    axis2_cmds, /* table of config file commands       */
+    axis2_register_hooks /* register hooks                      */
+    };
 
 static void *
 axis2_create_svr(
