@@ -44,6 +44,7 @@ struct axis2_rm_assertion_t
     axis2_char_t *polling_wait_time;
     axis2_char_t *terminate_delay;
     axis2_char_t *sandesha2_db;
+    axis2_char_t *spec_version;
 };
 
 AXIS2_EXTERN axis2_rm_assertion_t *AXIS2_CALL
@@ -83,6 +84,7 @@ axis2_rm_assertion_create(
     rm_assertion->polling_wait_time = NULL;
     rm_assertion->terminate_delay = NULL;
     rm_assertion->sandesha2_db = NULL;
+    rm_assertion->spec_version = NULL;
 
     return rm_assertion;
 }
@@ -443,6 +445,25 @@ axis2_rm_assertion_set_sandesha2_db(
     axis2_char_t* sandesha2_db)
 {
     rm_assertion->sandesha2_db = sandesha2_db;
+
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+axis2_rm_assertion_get_spec_version(
+    axis2_rm_assertion_t *rm_assertion,
+    const axutil_env_t * env)
+{
+    return rm_assertion->spec_version;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_rm_assertion_set_spec_version(
+    axis2_rm_assertion_t *rm_assertion,
+    const axutil_env_t * env,
+    axis2_char_t* spec_version)
+{
+    rm_assertion->spec_version = spec_version;
 
     return AXIS2_SUCCESS;
 }

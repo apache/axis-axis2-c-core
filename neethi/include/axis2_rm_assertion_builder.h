@@ -32,6 +32,8 @@
 extern "C"
 {
 #endif
+    #define RM_SPEC_VERSION_1_0 "Spec_2005_02"
+    #define RM_SPEC_VERSION_1_1 "Spec_2007_02"
 
    AXIS2_EXTERN neethi_assertion_t *AXIS2_CALL
     axis2_rm_assertion_builder_build(

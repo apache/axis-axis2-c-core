@@ -243,6 +243,17 @@ extern "C"
         const axutil_env_t * env,
         axis2_char_t* sandesha2_db);
 
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    axis2_rm_assertion_get_spec_version(
+        axis2_rm_assertion_t *rm_assertion,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_rm_assertion_set_spec_version(
+        axis2_rm_assertion_t *rm_assertion,
+        const axutil_env_t * env,
+        axis2_char_t* spec_version);
+
     AXIS2_EXTERN axis2_rm_assertion_t* AXIS2_CALL
         axis2_rm_assertion_get_from_policy(
         const axutil_env_t *env,

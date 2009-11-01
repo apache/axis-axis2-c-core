@@ -172,6 +172,8 @@ axis2_rm_assertion_builder_populate_for_10(
 
     /* In rm 1.0 it is just child elements which inside 
      * rm_assertion contains all the properties. */
+    
+    status = axis2_rm_assertion_set_spec_version(rm_assertion, env, RM_SPEC_VERSION_1_0);
 
     children_iter = axiom_element_get_children(rm_assertion_element, env, rm_assertion_node);
     if(children_iter)
@@ -301,6 +303,8 @@ axis2_rm_assertion_builder_populate_for_11(
     axis2_status_t status = AXIS2_FAILURE;
     axiom_node_t *child_node = NULL;
     axiom_element_t *child_element = NULL;
+    
+    status = axis2_rm_assertion_set_spec_version(rm_assertion, env, RM_SPEC_VERSION_1_1);
 
     child_node = axiom_node_get_first_element(rm_assertion_node, env);
     if(child_node)
