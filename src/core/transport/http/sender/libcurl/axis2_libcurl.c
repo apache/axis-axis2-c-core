@@ -85,6 +85,12 @@ axis2_libcurl_free_headers(
     axis2_libcurl_t *curl,
     const axutil_env_t * env);
 
+static axis2_status_t
+axis2_libcurl_set_options(
+    CURL *handler,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx);
+
 axis2_status_t AXIS2_CALL
 axis2_libcurl_send(
     axis2_libcurl_t *data,
@@ -111,7 +117,7 @@ axis2_libcurl_send(
     axis2_char_t *buffer = NULL;
     unsigned int buffer_size = 0;
     int content_length = -1;
-    axis2_char_t *content_type;
+    axis2_char_t *content_type = NULL;
     axis2_char_t *content_len = AXIS2_HTTP_HEADER_CONTENT_LENGTH_;
     const axis2_char_t *char_set_enc = NULL;
     axis2_char_t *content = AXIS2_HTTP_HEADER_CONTENT_TYPE_;
@@ -144,6 +150,12 @@ axis2_libcurl_send(
     headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_USER_AGENT_AXIS2C);
     headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_ACCEPT_);
     headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_EXPECT_);
+
+    if(AXIS2_FAILURE == axis2_libcurl_set_options(handler, env, msg_ctx))
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[axis2libcurl]Setting options in Libcurl failed");
+        return AXIS2_FAILURE;
+    }
 
     if (AXIS2_TRUE == axis2_msg_ctx_get_doing_rest(msg_ctx, env))
     {
@@ -839,6 +851,319 @@ axis2_libcurl_get_content_type(
 
     return rtn_value;
 }
+
+/**
+ * axis2_libcurl_set_auth_options maps authentication AXIS2/C options to
+ * libcURL options.
+ *
+ * CURLOPT_USERPWD - char * user:password for authentication
+ * CURLOPT_HTTPAUTH - long bitmask which authentication methods to use
+ */
+static axis2_status_t
+axis2_libcurl_set_auth_options(
+    CURL *handler,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx)
+{
+    axutil_property_t *property = NULL;
+    axis2_char_t *uname = NULL;
+    axis2_char_t *passwd = NULL;
+    axis2_char_t *auth_type = NULL;
+
+    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_AUTH_UNAME);
+    if (property)
+    {
+        uname = (axis2_char_t *) axutil_property_get_value(property, env);
+    }
+    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_AUTH_PASSWD);
+    if (property)
+    {
+        passwd = (axis2_char_t *) axutil_property_get_value(property, env);
+    }
+    if (uname && passwd)
+    {
+        axis2_char_t buffer[256];
+        strncpy(buffer, uname, 256);
+        strncat(buffer, ":", 256);
+        strncat(buffer, passwd, 256);
+        curl_easy_setopt(handler, CURLOPT_USERPWD, buffer);
+    }
+
+    property = (axutil_property_t *)axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_AUTH_TYPE);
+
+    if (property)
+    {
+        auth_type = (axis2_char_t *) axutil_property_get_value(property, env);
+    }
+
+    if (auth_type && 0 == axutil_strcmp(auth_type, AXIS2_HTTP_AUTH_TYPE_BASIC))
+    {
+        curl_easy_setopt(handler, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    }
+    else
+    {
+        /* Uses anonymous connection.*/
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+/**
+ * axis2_libcurl_set_proxy_options maps proxy AXIS2/C options to
+ * libcURL options.
+ *
+ * CURLOPT_PROXY - char * proxy hostname
+ * CURLOPT_PROXYPORT - long proxy listen port
+ * CURLOPT_PROXYUSERPWD - char * user:password to authenticate to proxy
+ *
+ * TODO:
+ * CURLOPT_PROXYTYPE - long enum type of proxy (HTTP, SOCKS)
+ * CURLOPT_PROXYAUTH - long bitmask which authentication methods to use for proxy
+ */
+static axis2_status_t
+axis2_libcurl_set_proxy_options(
+    CURL *handler,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx)
+{
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axis2_conf_t *conf = NULL;
+    axis2_transport_out_desc_t *trans_desc = NULL;
+    axutil_param_t *proxy_param = NULL;
+    axutil_hash_t *transport_attrs = NULL;
+    axutil_property_t *property = NULL;
+    axis2_char_t *uname = NULL;
+    axis2_char_t *passwd = NULL;
+    axis2_char_t *proxy_host = NULL;
+    axis2_char_t *proxy_port = NULL;
+
+    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_PROXY_AUTH_UNAME);
+    if (property)
+    {
+        uname = (axis2_char_t *) axutil_property_get_value(property, env);
+    }
+    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_PROXY_AUTH_PASSWD);
+    if (property)
+    {
+        passwd = (axis2_char_t *) axutil_property_get_value(property, env);
+    }
+
+    conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
+    if (conf_ctx)
+    {
+        conf = axis2_conf_ctx_get_conf(conf_ctx, env);
+        if (conf)
+        {
+            trans_desc = axis2_conf_get_transport_out(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
+        }
+    }
+    if (trans_desc)
+    {
+        proxy_param = axutil_param_container_get_param(
+            axis2_transport_out_desc_param_container(trans_desc, env), env, AXIS2_HTTP_PROXY_API);
+        if (!proxy_param)
+        {
+            proxy_param = axutil_param_container_get_param(
+                axis2_transport_out_desc_param_container(trans_desc, env), env, AXIS2_HTTP_PROXY);
+        }
+        if (proxy_param)
+        {
+            transport_attrs = axutil_param_get_attributes(proxy_param, env);
+        }
+    }
+
+    if (transport_attrs)
+    {
+        axutil_generic_obj_t *obj = NULL;
+        axiom_attribute_t *attr = NULL;
+
+        if (!uname || !passwd)
+        {
+            obj = axutil_hash_get(transport_attrs, AXIS2_HTTP_PROXY_USERNAME, AXIS2_HASH_KEY_STRING);
+            if (obj)
+            {
+                attr = (axiom_attribute_t *) axutil_generic_obj_get_value(obj, env);
+            }
+            if (attr)
+            {
+                uname = axiom_attribute_get_value(attr, env);
+            }
+
+            attr = NULL;
+            obj = axutil_hash_get(transport_attrs, AXIS2_HTTP_PROXY_PASSWORD, AXIS2_HASH_KEY_STRING);
+            if (obj)
+            {
+                attr = (axiom_attribute_t *)axutil_generic_obj_get_value(obj, env);
+            }
+            if (attr)
+            {
+                passwd = axiom_attribute_get_value(attr, env);
+            }
+        }
+
+        obj = axutil_hash_get(transport_attrs, AXIS2_HTTP_PROXY_HOST, AXIS2_HASH_KEY_STRING);
+        if (obj)
+        {
+            attr = (axiom_attribute_t *)axutil_generic_obj_get_value(obj, env);
+        }
+        if (attr)
+        {
+            proxy_host = axiom_attribute_get_value(attr, env);
+        }
+        if (proxy_host)
+        {
+            curl_easy_setopt(handler, CURLOPT_PROXY, proxy_host);
+        }
+
+        attr = NULL;
+        obj = axutil_hash_get(transport_attrs, AXIS2_HTTP_PROXY_PORT, AXIS2_HASH_KEY_STRING);
+        if (obj)
+        {
+            attr = (axiom_attribute_t *)axutil_generic_obj_get_value(obj, env);
+        }
+        if (attr)
+        {
+            proxy_port = axiom_attribute_get_value(attr, env);
+        }
+        if (proxy_port)
+        {
+            curl_easy_setopt(handler, CURLOPT_PROXYPORT, AXIS2_ATOI(proxy_port));
+        }
+    }
+    if (uname && passwd)
+    {
+        axis2_char_t buffer[256];
+        strncpy(buffer, uname, 256);
+        strncat(buffer, ":", 256);
+        strncat(buffer, passwd, 256);
+        curl_easy_setopt(handler, CURLOPT_PROXYUSERPWD, buffer);
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+/**
+ * axis2_libcurl_set_ssl_options maps SSL AXIS2/C options to
+ * libcURL options.
+ *
+ * CURLOPT_SSL_VERIFYHOST - long enum whether to verify the server identity
+ * CURLOPT_SSL_VERIFYPEER - long boolean whether to verify the server certificate
+ */
+static axis2_status_t
+axis2_libcurl_set_ssl_options(
+    CURL *handler,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx)
+{
+    axutil_property_t *property = NULL;
+    axis2_char_t *verify_peer = NULL;
+    axis2_char_t *verify_host = NULL;
+
+    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_SSL_VERIFY_PEER);
+    if (property)
+    {
+        verify_peer = (axis2_char_t *)axutil_property_get_value(property, env);
+    }
+    if (verify_peer)
+    {
+        if (0 == axutil_strcasecmp(verify_peer, AXIS2_VALUE_TRUE))
+        {
+            curl_easy_setopt(handler, CURLOPT_SSL_VERIFYPEER, 1);
+        }
+        else
+        {
+            curl_easy_setopt(handler, CURLOPT_SSL_VERIFYPEER, 0);
+        }
+    }
+
+    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_SSL_VERIFY_HOST);
+    if (property)
+    {
+        verify_host = (axis2_char_t *)axutil_property_get_value(property, env);
+    }
+    if (verify_host)
+    {
+        curl_easy_setopt(handler, CURLOPT_SSL_VERIFYHOST, AXIS2_ATOI(verify_host));
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+/**
+ * axis2_libcurl_set_connection_options maps connection AXIS2/C options to
+ * libcURL options.
+ * CURLOPT_CONNECTTIMEOUT_MS - long connection timeout in milliseconds
+ * CURLOPT_TIMEOUT_MS - long transfer timeout in milliseconds
+ */
+static axis2_status_t
+axis2_libcurl_set_connection_options(
+    CURL *handler,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx)
+{
+    axutil_property_t *property = NULL;
+    long long_property_value = 0;
+
+    /* check if timeout has been set by user using options
+     * with axis2_options_set_timeout_in_milli_seconds
+     */
+    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_CONNECTION_TIMEOUT);
+    if (property)
+    {
+        axis2_char_t *value = axutil_property_get_value(property, env);
+        if (value)
+        {
+            long_property_value = AXIS2_ATOI(value);
+            curl_easy_setopt(handler, CURLOPT_CONNECTTIMEOUT_MS, long_property_value);
+        }
+    }
+
+    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_SO_TIMEOUT);
+    if (property)
+    {
+        axis2_char_t *value = axutil_property_get_value(property, env);
+        if (value)
+        {
+            long_property_value = AXIS2_ATOI(value);
+            curl_easy_setopt(handler, CURLOPT_TIMEOUT_MS, long_property_value);
+        }
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+/**
+ * axis2_libcurl_set_options maps the AXIS2/C options to libcURL options.
+ */
+static axis2_status_t
+axis2_libcurl_set_options(
+    CURL *handler,
+    const axutil_env_t * env,
+    axis2_msg_ctx_t * msg_ctx)
+{
+    if (axis2_libcurl_set_auth_options(handler, env, msg_ctx) != AXIS2_SUCCESS)
+    {
+        return AXIS2_FAILURE;
+    }
+
+    if (axis2_libcurl_set_proxy_options(handler, env, msg_ctx) != AXIS2_SUCCESS)
+    {
+        return AXIS2_FAILURE;
+    }
+
+    if (axis2_libcurl_set_ssl_options(handler, env, msg_ctx) != AXIS2_SUCCESS)
+    {
+        return AXIS2_FAILURE;
+    }
+
+    if (axis2_libcurl_set_connection_options(handler, env, msg_ctx) != AXIS2_SUCCESS)
+    {
+        return AXIS2_FAILURE;
+    }
+
+    return AXIS2_SUCCESS;
+}
+
 
 #endif                          /* AXIS2_LIBCURL_ENABLED */
 
