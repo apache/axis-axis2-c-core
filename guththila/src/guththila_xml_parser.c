@@ -67,7 +67,7 @@ guththila_next_char(
 \
     if(!result_found)\
     {\
-        int index = m->next++ - previous_size;\
+        size_t index = m->next++ - previous_size;\
         if(index < data_size)\
         {\
             c = buffer[index];\
@@ -697,8 +697,8 @@ guththila_next(
     int c = -1;
     guththila_attr_t * attr = NULL;
     int size = 0, i = 0, nmsp_counter, loop = 0, white_space = 0;
-    int data_size = -1;
-    int previous_size = -1;
+    size_t data_size = -1;
+    size_t previous_size = -1;
     guththila_char_t *buffer = NULL;
 
     /* Need to release the resources for attributes */
@@ -1053,7 +1053,7 @@ guththila_next(
                         if(buffer)
                         {
                             guththila_char_t *pos = NULL;
-                            int index = m->next - previous_size;
+                            size_t index = m->next - previous_size;
                             pos = (guththila_char_t*)memchr(buffer + index, '<', data_size - index);
                             if(pos)
                             {
@@ -1111,8 +1111,8 @@ guththila_process_xml_dec(
     int c = -1;
     int quote = -1;
     int nc = -1;
-    int data_size = -1;
-    int previous_size = -1;
+    size_t data_size = -1;
+    size_t previous_size = -1;
     guththila_char_t *buffer = NULL;
     if(3 == guththila_next_no_char(m, GUTHTHILA_EOF, c_arra, 3, env) && 'x' == c_arra[0] && 'm'
         == c_arra[1] && 'l' == c_arra[2])
