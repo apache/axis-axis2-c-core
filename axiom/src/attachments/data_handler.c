@@ -32,7 +32,7 @@ struct axiom_data_handler
     axis2_byte_t *buffer;
 
     /* The length of the buffer */
-    int buffer_len;
+    size_t buffer_len;
 
     /* Is this a data_handler with a file name or a buffer*/
     axiom_data_handler_type_t data_handler_type;
@@ -182,7 +182,7 @@ axiom_data_handler_get_input_stream(
     return data_handler->buffer;
 }
 
-AXIS2_EXTERN int AXIS2_CALL
+AXIS2_EXTERN size_t AXIS2_CALL
 axiom_data_handler_get_input_stream_len(
     axiom_data_handler_t *data_handler,
     const axutil_env_t *env)
@@ -199,7 +199,7 @@ axiom_data_handler_read_from(
     axiom_data_handler_t *data_handler,
     const axutil_env_t *env,
     axis2_byte_t **output_stream,
-    int *output_stream_size)
+    size_t *output_stream_size)
 {
     if(data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_BUFFER)
     {
@@ -350,7 +350,7 @@ axiom_data_handler_set_binary_data(
     axiom_data_handler_t *data_handler,
     const axutil_env_t *env,
     axis2_byte_t *input_stream,
-    int input_stream_len)
+    size_t input_stream_len)
 {
     data_handler->buffer = input_stream;
     data_handler->buffer_len = input_stream_len;

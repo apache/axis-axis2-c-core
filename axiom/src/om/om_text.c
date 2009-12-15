@@ -512,7 +512,7 @@ axiom_text_get_text(
     else
     {
         axis2_char_t *data_handler_stream = NULL;
-        int data_handler_stream_size = 0;
+        size_t data_handler_stream_size = 0;
         if(om_text->data_handler)
         {
             int encoded_len = 0;
@@ -521,12 +521,12 @@ axiom_text_get_text(
                 &data_handler_stream_size);
             if(data_handler_stream)
             {
-                encoded_len = axutil_base64_encode_len(data_handler_stream_size);
+                encoded_len = axutil_base64_encode_len((int)data_handler_stream_size);
                 encoded_str = AXIS2_MALLOC(env->allocator, encoded_len + 2);
                 if(encoded_str)
                 {
                     encoded_len = axutil_base64_encode(encoded_str, data_handler_stream,
-                        data_handler_stream_size);
+                        (int)data_handler_stream_size);
                     encoded_str[encoded_len] = '\0';
                     return encoded_str;
                 }

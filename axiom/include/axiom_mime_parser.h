@@ -114,7 +114,7 @@ extern "C"
       * @param env Environment. MUST NOT be NULL.
       * @return the length of the SOAP Body
       */
-    AXIS2_EXTERN int AXIS2_CALL
+    AXIS2_EXTERN size_t AXIS2_CALL
     axiom_mime_parser_get_soap_body_len(
         axiom_mime_parser_t * mime_parser,
         const axutil_env_t * env);

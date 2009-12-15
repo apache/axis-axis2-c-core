@@ -112,7 +112,7 @@ extern "C"
      * @param env environment, MUST NOT be NULL.
      * @return status code, AXIS2_SUCCESS on success and AXIS2_FAILURE on error.
      */
-    AXIS2_EXTERN int AXIS2_CALL
+    AXIS2_EXTERN size_t AXIS2_CALL
     axiom_data_handler_get_input_stream_len(
         axiom_data_handler_t * data_handler,
         const axutil_env_t * env);
@@ -129,7 +129,7 @@ extern "C"
         axiom_data_handler_t * data_handler,
         const axutil_env_t * env,
         axis2_byte_t ** output_stream,
-        int *output_stream_size);
+        size_t *output_stream_size);
 
     /**
      * @param data_handler, a pointer to data handler struct
@@ -142,7 +142,7 @@ extern "C"
         axiom_data_handler_t * data_handler,
         const axutil_env_t * env,
         axis2_byte_t * input_stream,
-        int input_stream_len);
+        size_t input_stream_len);
 
     /**
      * @param data_handler, a pointer to data handler struct
