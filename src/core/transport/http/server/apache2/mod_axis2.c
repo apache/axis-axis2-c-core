@@ -741,9 +741,10 @@ axis2_get_session(
     apr_dbd_prepared_t *statement;
     apr_dbd_results_t *res = NULL;
     apr_dbd_row_t *row = NULL;
+    ap_dbd_t *dbd = NULL;
 
     request = (request_rec *) req;
-    ap_dbd_t *dbd = ap_dbd_acquire(request);
+    dbd = ap_dbd_acquire(request);
     if (!dbd) 
     {
         ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
@@ -802,10 +803,11 @@ axis2_set_session(
     request_rec *request = NULL;
     apr_dbd_prepared_t *statement;
     int affected_rows = -1;
+    ap_dbd_t *dbd = NULL;
 
     request = (request_rec *) req;
 
-    ap_dbd_t *dbd = ap_dbd_acquire(request);
+    dbd = ap_dbd_acquire(request);
     if (!dbd) 
     {
         ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
