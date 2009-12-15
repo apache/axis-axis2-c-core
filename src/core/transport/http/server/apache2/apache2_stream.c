@@ -46,7 +46,7 @@ int AXIS2_CALL apache2_stream_read(
     void *buffer,
     size_t count);
 
-static int
+static int AXIS2_CALL
 apache2_stream_skip(
     axutil_stream_t * stream,
     const axutil_env_t * env,
@@ -148,7 +148,7 @@ apache2_stream_write(
     /* We are sure that the difference lies within the int range */
 }
 
-static int
+static int AXIS2_CALL
 apache2_stream_skip(
     axutil_stream_t * stream,
     const axutil_env_t * env,

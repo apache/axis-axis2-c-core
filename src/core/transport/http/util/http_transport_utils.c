@@ -3149,7 +3149,7 @@ axis2_http_transport_utils_send_mtom_message(
          * mime_headers and SOAP */
         if(mime_part->type == AXIOM_MIME_PART_BUFFER)
         {
-            int written = 0;
+            size_t written = 0;
             while(written < mime_part->part_size)
             {
                 int len = 0;

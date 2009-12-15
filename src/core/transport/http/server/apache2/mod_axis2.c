@@ -742,9 +742,11 @@ axis2_get_session(
     apr_dbd_results_t *res = NULL;
     apr_dbd_row_t *row = NULL;
     ap_dbd_t *dbd = NULL;
-
+    ap_dbd_t *(*authn_dbd_acquire_fn)(request_rec*) = NULL;
     request = (request_rec *) req;
-    dbd = ap_dbd_acquire(request);
+
+    authn_dbd_acquire_fn = APR_RETRIEVE_OPTIONAL_FN(ap_dbd_acquire);
+    dbd = authn_dbd_acquire_fn(request);
     if (!dbd) 
     {
         ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
@@ -804,10 +806,11 @@ axis2_set_session(
     apr_dbd_prepared_t *statement;
     int affected_rows = -1;
     ap_dbd_t *dbd = NULL;
-
+    ap_dbd_t *(*authn_dbd_acquire_fn)(request_rec*) = NULL;
     request = (request_rec *) req;
 
-    dbd = ap_dbd_acquire(request);
+    authn_dbd_acquire_fn = APR_RETRIEVE_OPTIONAL_FN(ap_dbd_acquire);
+    dbd = authn_dbd_acquire_fn(request);
     if (!dbd) 
     {
         ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
