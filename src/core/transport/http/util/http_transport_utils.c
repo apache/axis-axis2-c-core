@@ -3759,7 +3759,7 @@ axis2_http_transport_utils_copy_key(
     if (p)
     {
         axis2_char_t c;
-        int len = p - pair;
+        size_t len = p - pair;
         c = pair[len];
         pair[len] = '\0';
         ret = axutil_strdup(env, pair);
@@ -3775,7 +3775,7 @@ axis2_http_transport_utils_copy_value(
         axis2_char_t *pair)
 {
     axis2_char_t *ret = NULL;
-    int len;
+    size_t len;
     axis2_char_t c;
 
     pair = axutil_strchr(pair, '=');
