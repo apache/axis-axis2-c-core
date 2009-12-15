@@ -1938,7 +1938,7 @@ axis2_http_worker_create_simple_response(
         axis2_char_t *date_str = NULL;
         char *date_str_tmp = NULL;
         time_t tp;
-        int date_str_len = 0;
+        size_t date_str_len = 0;
 
         /* create "Date: xxxx GMT" HTTP header */
         tp = time(&tp);

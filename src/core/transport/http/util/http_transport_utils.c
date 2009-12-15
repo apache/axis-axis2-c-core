@@ -508,7 +508,7 @@ axis2_http_transport_utils_process_http_post_request(
                     return AXIS2_FAILURE;
                 }
             }
-            soap_body_len = axiom_mime_parser_get_soap_body_len(mime_parser, env);
+            soap_body_len = (int)axiom_mime_parser_get_soap_body_len(mime_parser, env);
             soap_body_str = axiom_mime_parser_get_soap_body_str(mime_parser, env);
 
             if(!is_svc_callback)
@@ -973,7 +973,7 @@ axis2_http_transport_utils_process_http_put_request(
                 {
                     return AXIS2_FAILURE;
                 }
-                soap_body_len = axiom_mime_parser_get_soap_body_len(mime_parser, env);
+                soap_body_len = (int)axiom_mime_parser_get_soap_body_len(mime_parser, env);
                 soap_body_str = axiom_mime_parser_get_soap_body_str(mime_parser, env);
             }
 
@@ -2115,7 +2115,7 @@ axis2_http_transport_utils_create_soap_msg(
                     return NULL;
                 }
 
-                soap_body_len = axiom_mime_parser_get_soap_body_len(mime_parser, env);
+                soap_body_len = (int)axiom_mime_parser_get_soap_body_len(mime_parser, env);
                 soap_body_str = axiom_mime_parser_get_soap_body_str(mime_parser, env);
             }
 
@@ -3171,7 +3171,7 @@ axis2_http_transport_utils_send_mtom_message(
             }
             else
             {
-                output_buffer_size = mime_part->part_size;
+                output_buffer_size = (int)mime_part->part_size;
             }
 
             output_buffer = AXIS2_MALLOC(env->allocator, output_buffer_size * sizeof(axis2_char_t));
