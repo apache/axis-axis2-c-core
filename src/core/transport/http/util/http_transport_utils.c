@@ -3669,7 +3669,7 @@ axis2_http_transport_utils_store_cookie(
                         {
                             AXIS2_FREE(env->allocator, cookie);
                         }
-                        axutil_hash_set(session_map, server, AXIS2_HASH_KEY_STRING, NULL);
+                        axutil_hash_set(session_map, axutil_strdup(env, server), AXIS2_HASH_KEY_STRING, NULL);
                     }
                 }
                 axutil_url_free(url, env);

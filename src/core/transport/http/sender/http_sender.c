@@ -1598,7 +1598,7 @@ axis2_http_sender_get_header_info(
                                     if(http_client)
                                     {
                                         /* Dont' free http client here. It is freed by op_client */
-                                        axutil_hash_set(connection_map, server, 
+                                        axutil_hash_set(connection_map, axutil_strdup(env, server),
                                                 AXIS2_HASH_KEY_STRING, NULL);
                                     }
                                 }

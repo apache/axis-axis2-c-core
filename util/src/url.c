@@ -481,6 +481,7 @@ axutil_url_get_server(
     else if(!url->host)
     {
         AXIS2_FREE(env->allocator, url->server);
+        url->server = NULL;
         return NULL;
     }
     else if(url->server)
@@ -492,9 +493,9 @@ axutil_url_get_server(
     {
         print_port = AXIS2_TRUE;
         sprintf(port_str, "%d", url->port);
-        len += axutil_strlen(port_str);
+        len += axutil_strlen(port_str) + 1; /* +1 is for ':' */
     }
-    url->server = (axis2_char_t *)AXIS2_MALLOC(env->allocator, len + 1);
+    url->server = (axis2_char_t *)AXIS2_MALLOC(env->allocator, len + 1); /* +1 is for '/0' */
     sprintf(url->server, "%s%s%s", url->host, (print_port) ? ":" : "", (print_port) ? port_str : "");
     return url->server;
 }
