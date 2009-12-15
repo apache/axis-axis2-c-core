@@ -205,6 +205,8 @@ axis2_apache2_worker_process_request(
     axutil_array_list_t *mime_parts = NULL;
     axutil_param_t *callback_name_param = NULL;
     axis2_char_t *mtom_sending_callback_name = NULL;
+    axis2_char_t *cookie = NULL;
+    axis2_char_t *header_value = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
@@ -252,6 +254,18 @@ axis2_apache2_worker_process_request(
 
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
     axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
+
+    cookie = (axis2_char_t *)apr_table_get(request->headers_in,
+        AXIS2_HTTP_HEADER_COOKIE);
+    if(cookie)
+    {
+        char *session_str = NULL;
+        axis2_char_t *session_id = NULL;
+
+        session_id = axis2_http_transport_utils_get_session_id_from_cookie(env, cookie);
+        session_str = env->get_session_fn((void *) request, session_id);
+        axis2_http_transport_utils_set_session(env, msg_ctx, session_str);
+    }
 
     if(request->read_chunked == AXIS2_TRUE && 0 == content_length)
     {
@@ -891,6 +905,14 @@ axis2_apache2_worker_process_request(
                 }
             }
         }
+    }
+
+    header_value = axis2_http_transport_utils_get_session(env, msg_ctx);
+    if(header_value)
+    {
+        axis2_http_out_transport_info_t *out_info = NULL;
+        out_info = (axis2_http_out_transport_info_t *)axis2_msg_ctx_get_out_transport_info(msg_ctx, env);
+        AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_COOKIE_HEADER(out_info, env, header_value);
     }
     if (send_status == DECLINED)
     {

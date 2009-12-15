@@ -659,6 +659,8 @@ extern "C"
      */
     #define AXIS2_HTTP_HEADER_CONNECTION "Connection"
 
+#define AXIS2_HTTP_CONNECTION_MAP "connection_map"
+
     /**
      * HEADER_CONNECTION_CLOSE
      */
@@ -1002,8 +1004,19 @@ extern "C"
      */
     #define AXIS2_TRANSPORT_HEADER_PROPERTY "HTTP_HEADER_PROPERTY"
 
+    /**
+     * Default session duration
+     */
+#define AXIS2_TRANSPORT_SESSION_EXPIRE_DURATION 60 /* seconds */
+    /**
+     * When a service need session it need to set a hash table into message context.
+     */
+#define AXIS2_TRANSPORT_SESSION_TABLE "session-table"
 
-    #define AXIS2_TRANSPORT_URL_HTTPS "HTTPS"
+#define AXIS2_TRANSPORT_SESSION_ID "session_id"
+#define AXIS2_TRANSPORT_SESSION_MAP "session_map"
+
+#define AXIS2_TRANSPORT_URL_HTTPS "HTTPS"
 
     #define AXIS2_Q_MARK_STR "?"
 

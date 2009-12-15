@@ -95,7 +95,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         "[axis2]Entry:axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync");
 
     /* get the implementation class for the Web Service */
-    svc_obj = axis2_msg_recv_get_impl_obj(msg_recv, env, msg_ctx);
+    svc_obj = axis2_msg_recv_make_new_svc_obj(msg_recv, env, msg_ctx);
 
     if(!svc_obj)
     {

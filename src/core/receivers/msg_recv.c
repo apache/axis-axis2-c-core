@@ -255,7 +255,7 @@ axis2_msg_recv_make_new_svc_obj(
     }
 }
 
-AXIS2_EXPORT axis2_svc_skeleton_t *AXIS2_CALL
+/*AXIS2_EXPORT axis2_svc_skeleton_t *AXIS2_CALL
 axis2_msg_recv_get_impl_obj(
     axis2_msg_recv_t * msg_recv,
     const axutil_env_t * env,
@@ -276,7 +276,7 @@ axis2_msg_recv_get_impl_obj(
     }
 
     return axis2_msg_recv_make_new_svc_obj(msg_recv, env, msg_ctx);
-}
+}*/
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
 axis2_msg_recv_set_scope(

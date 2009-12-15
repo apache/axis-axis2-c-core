@@ -274,6 +274,7 @@ axis2_conf_ctx_get_root_dir(
     const axutil_env_t * env)
 {
     axis2_char_t *rv = NULL;
+    /* Do we need to lock here? - damitha */
     axutil_thread_mutex_lock(conf_ctx->mutex);
     rv = conf_ctx->root_dir;
     axutil_thread_mutex_unlock(conf_ctx->mutex);

@@ -58,6 +58,7 @@
     <transportSender name="http" class="axis2_http_sender">
         <parameter name="PROTOCOL" locked="false">HTTP/1.1</parameter>
         <parameter name="xml-declaration" insert="false"/>
+        <!--parameter name="Keep-Alive" locked="false">true</parameter-->
         <!--parameter name="Transfer-Encoding">chunked</parameter-->
         <!--parameter name="HTTP-Authentication" username="" password="" locked="true"/-->
         <!--parameter name="PROXY" proxy_host="127.0.0.1" proxy_port="8080" proxy_username="" proxy_password="" locked="true"/-->

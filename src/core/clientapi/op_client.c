@@ -641,10 +641,10 @@ axis2_op_client_free(
     if(!op_client)
         return;
 
-    if(op_client->callback)
+    /*if(op_client->callback)
     {
         axis2_callback_free(op_client->callback, env);
-    }
+    }*/
 
     if(op_client->op_ctx)
     {

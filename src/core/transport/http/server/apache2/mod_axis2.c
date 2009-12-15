@@ -29,6 +29,8 @@
 #include <axutil_version.h>
 #include <apr_rmm.h>
 #include <apr_shm.h>
+#include <apr_dbd.h>
+#include <mod_dbd.h>
 #include <axis2_http_transport.h>
 
 /* Configuration structure populated by apache2.conf */
@@ -42,7 +44,7 @@ typedef struct axis2_config_rec
 } axis2_config_rec_t;
 
 axis2_apache2_worker_t *axis2_worker = NULL;
-const axutil_env_t *axutil_env = NULL;
+axutil_env_t *axutil_env = NULL;
 apr_rmm_t* rmm = NULL;
 apr_global_mutex_t *global_mutex = NULL;
 
@@ -119,6 +121,16 @@ static void
 axis2_register_hooks(
     apr_pool_t * p);
 
+char * 
+axis2_get_session(
+        void *req, 
+        const char *id);
+
+axis2_status_t 
+axis2_set_session(
+        void *req, 
+        const char *id,
+        const char *session);
 /***************************End of Function Headers****************************/
 
 static const command_rec axis2_cmds[] = { AP_INIT_TAKE1("Axis2RepoPath", axis2_set_repo_path, NULL,
@@ -128,7 +140,8 @@ static const command_rec axis2_cmds[] = { AP_INIT_TAKE1("Axis2RepoPath", axis2_s
     axis2_set_max_log_file_size, NULL, RSRC_CONF, "Axis2/C maximum log file size"),
     AP_INIT_TAKE1("Axis2GlobalPoolSize", axis2_set_global_pool_size, NULL, RSRC_CONF,
         "Axis2/C global pool size"), AP_INIT_TAKE1("Axis2ServiceURLPrefix",
-        axis2_set_svc_url_prefix, NULL, RSRC_CONF, "Axis2/C service URL prifix"), { NULL } };
+        axis2_set_svc_url_prefix, NULL, RSRC_CONF, "Axis2/C service URL prifix"), 
+        { NULL } };
 
 /* Dispatch list for API hooks */
 module AP_MODULE_DECLARE_DATA axis2_module = { STANDARD20_MODULE_STUFF, NULL, /* create per-dir    config structures */
@@ -352,6 +365,8 @@ axis2_handler(
     thread_env = axutil_env_create_with_error_log_thread_pool(allocator, error, axutil_env->log,
         axutil_env-> thread_pool);
     thread_env->allocator = allocator;
+    thread_env->set_session_fn = axis2_set_session;
+    thread_env->get_session_fn = axis2_get_session;
 
     rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, thread_env, req);
     if(AXIS2_CRITICAL_FAILURE == rv)
@@ -561,6 +576,8 @@ axis2_post_config(
                 "Starting log with log level %d and max log file size %d",
                 conf->log_level, conf->max_log_file_size);
         }
+        axutil_env->set_session_fn = axis2_set_session;
+        axutil_env->get_session_fn = axis2_get_session;
 
         axis2_worker = axis2_apache2_worker_create(axutil_env,
             conf->axis2_repo_path);
@@ -675,6 +692,8 @@ axis2_module_init(
             axis2_version_string());
         AXIS2_LOG_INFO(axutil_env->log, "Starting log with log level %d", conf->log_level);
     }
+    axutil_env->set_session_fn = axis2_set_session;
+    axutil_env->get_session_fn = axis2_get_session;
     axis2_worker = axis2_apache2_worker_create(axutil_env, conf->axis2_repo_path);
     if(!axis2_worker)
     {
@@ -682,6 +701,11 @@ axis2_module_init(
             "[Axis2] Error creating mod_axis2 apache2 worker");
         exit(APEXIT_CHILDFATAL);
     }
+
+    /*ap_dbd_prepare(svr_rec, "SELECT value FROM session WHERE id = %s", "retrieve_session");
+    ap_dbd_prepare(svr_rec, "INSERT INTO session VALUES(?,?)", "insert_session");*/
+
+
     /* If we are initialized we register a clean up as well */
     /* apr_pool_cleanup_register(p, NULL, axis2_shutdown, apr_pool_cleanup_null);*/
 }
@@ -704,5 +728,109 @@ axis2_shutdown(
         axis2_apache2_worker_free(axis2_worker, axutil_env);
     }
     return APR_SUCCESS;
+}
+
+char * 
+axis2_get_session(
+        void *req, 
+        const char *id)
+{
+    request_rec *request = NULL;
+    apr_status_t rv;
+    const char *dbd_session = NULL;
+    apr_dbd_prepared_t *statement;
+    apr_dbd_results_t *res = NULL;
+    apr_dbd_row_t *row = NULL;
+
+    request = (request_rec *) req;
+    ap_dbd_t *dbd = ap_dbd_acquire(request);
+    if (!dbd) 
+    {
+        ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
+                      "Failed to acquire database connection to look up "
+                      "id '%s'", id);
+        return NULL;
+    }
+
+    statement = apr_hash_get(dbd->prepared, "retrieve_session", APR_HASH_KEY_STRING);
+    if (!statement) 
+    {
+        ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
+                      "A prepared statement could not be found for "
+                      "the key '%s'", "retrieve_session");
+        return NULL;
+    }
+    if (apr_dbd_pvselect(dbd->driver, request->pool, dbd->handle, &res, statement,
+                              0, id, NULL) != 0) 
+    {
+        ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
+                      "Query execution error looking up '%s' "
+                      "in database", id);
+        return NULL;
+    }
+    for (rv = apr_dbd_get_row(dbd->driver, request->pool, res, &row, -1); rv != -1;
+         rv = apr_dbd_get_row(dbd->driver, request->pool, res, &row, -1)) 
+    {
+        if (rv != 0) 
+        {
+            ap_log_rerror(APLOG_MARK, APLOG_ERR, rv, request,
+                          "Error retrieving results while looking up '%s' "
+                          "in database", id);
+            return NULL;
+        }
+        if (!dbd_session) 
+        {
+            dbd_session = apr_dbd_get_entry(dbd->driver, row, 0);
+        }
+        /* we can't break out here or row won't get cleaned up */
+    }
+
+    if (!dbd_session) 
+    {
+        return NULL;
+    }
+
+    return (char *) dbd_session;
+}
+
+axis2_status_t 
+axis2_set_session(
+        void *req, 
+        const char *id,
+        const char *session)
+{
+    request_rec *request = NULL;
+    apr_dbd_prepared_t *statement;
+    int affected_rows = -1;
+
+    request = (request_rec *) req;
+
+    ap_dbd_t *dbd = ap_dbd_acquire(request);
+    if (!dbd) 
+    {
+        ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
+                      "Failed to acquire database connection to insert session for "
+                      "id '%s'", id);
+        return AXIS2_FAILURE;
+    }
+
+    statement = apr_hash_get(dbd->prepared, "insert_session", APR_HASH_KEY_STRING);
+    if (!statement) 
+    {
+        ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
+                      "A prepared statement could not be found for "
+                      "the key '%s'", "insert_session");
+        return AXIS2_FAILURE;
+    }
+    if (apr_dbd_pvquery(dbd->driver, request->pool, dbd->handle, &affected_rows, statement, id, 
+                session, NULL) != 0) 
+    {
+        ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
+                      "Query execution error inserting session for '%s' "
+                      "in database", id);
+        return AXIS2_FAILURE;
+    }
+
+    return AXIS2_SUCCESS;
 }
 

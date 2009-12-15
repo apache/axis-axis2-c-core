@@ -47,6 +47,7 @@ typedef struct axis2_http_transport_sender_impl
     axis2_bool_t chunked;
     int connection_timeout;
     int so_timeout;
+    axis2_bool_t keep_alive;
 #ifdef AXIS2_LIBCURL_ENABLED
     axis2_libcurl_t *libcurl;
 #endif
@@ -114,6 +115,7 @@ axis2_http_transport_sender_create(
     transport_sender_impl->chunked = AXIS2_TRUE;
     transport_sender_impl->connection_timeout = AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT;
     transport_sender_impl->so_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
+    transport_sender_impl->keep_alive = AXIS2_TRUE;
     transport_sender_impl->transport_sender.ops = &http_transport_sender_ops_var;
 
 #ifdef AXIS2_LIBCURL_ENABLED
@@ -309,6 +311,7 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
             axis2_http_out_transport_info_t *out_info = NULL;
             axis2_bool_t is_soap11 = AXIS2_FALSE;
             axis2_op_ctx_t *op_ctx = NULL;
+            /*axis2_char_t *header_value = NULL;*/
 
             out_info = (axis2_http_out_transport_info_t *)axis2_msg_ctx_get_out_transport_info(
                 msg_ctx, env);
@@ -321,6 +324,11 @@ AXIS2_XML_PARSER_TYPE_BUFFER");
                 xml_writer = NULL;
                 return AXIS2_FAILURE;
             }
+            /*header_value = axis2_http_transport_utils_get_session(env, msg_ctx);
+            if(header_value)
+            {
+                AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_COOKIE_HEADER(out_info, env, header_value);
+            }*/
 
             is_soap11 = axis2_msg_ctx_get_is_soap_11(msg_ctx, env);
 
@@ -615,6 +623,7 @@ axis2_http_transport_sender_init(
             }
 
             AXIS2_INTF_TO_IMPL(transport_sender)->http_version = axutil_strdup(env, version);
+            AXIS2_INTF_TO_IMPL(transport_sender)->keep_alive = AXIS2_TRUE;
             encoding_param = axutil_param_container_get_param(
                 axis2_transport_out_desc_param_container(out_desc, env), env,
                 AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
@@ -637,6 +646,8 @@ axis2_http_transport_sender_init(
         }
         else if(0 == axutil_strcmp(version, AXIS2_HTTP_HEADER_PROTOCOL_10))
         {
+            axutil_param_t *keepalive_param = NULL;
+
             /* Handling HTTP 1.0 */
             if(AXIS2_INTF_TO_IMPL(transport_sender)->http_version)
             {
@@ -644,6 +655,18 @@ axis2_http_transport_sender_init(
             }
             AXIS2_INTF_TO_IMPL(transport_sender)->http_version = axutil_strdup(env, version);
             AXIS2_INTF_TO_IMPL(transport_sender)->chunked = AXIS2_FALSE;
+            keepalive_param = axutil_param_container_get_param(
+                    axis2_transport_out_desc_param_container(out_desc, env), env, 
+                    AXIS2_HTTP_HEADER_CONNECTION_KEEPALIVE);
+            if(keepalive_param)
+            {
+                axis2_char_t *keepalive_value = NULL;
+                keepalive_value = axutil_param_get_value(keepalive_param, env);
+                if(!axutil_strcmp(keepalive_value, AXIS2_VALUE_FALSE))
+                {
+                    AXIS2_INTF_TO_IMPL(transport_sender)->keep_alive = AXIS2_FALSE;
+                }
+            }
         }
     }
     else
@@ -726,6 +749,7 @@ axis2_http_transport_sender_write_message(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "http sender creation failed");
         return AXIS2_FAILURE;
     }
+    axis2_http_sender_set_keep_alive(sender, env, AXIS2_INTF_TO_IMPL(transport_sender)->keep_alive);
 
     /* For the MTOM case we should on chunking. And for chunking to work the
      * protocol should be http 1.1*/

@@ -46,6 +46,30 @@ axis2_out_transport_info_impl_set_char_encoding(
     return axis2_http_out_transport_info_set_char_encoding(http_transport_info, env, encoding);
 }
 
+axis2_status_t AXIS2_CALL
+axis2_out_transport_info_impl_set_cookie_header(
+    axis2_out_transport_info_t * out_transport_info,
+    const axutil_env_t * env,
+    const axis2_char_t * set_cookie)
+{
+    axis2_http_out_transport_info_t *http_transport_info = NULL;
+    http_transport_info = AXIS2_INTF_TO_IMPL(out_transport_info);
+    return axis2_http_out_transport_info_set_cookie_header(http_transport_info, env, set_cookie);
+}
+
+axis2_status_t AXIS2_CALL
+axis2_out_transport_info_impl_set_session(
+    axis2_out_transport_info_t * out_transport_info,
+    const axutil_env_t * env,
+    const axis2_char_t * session_id,
+    const axis2_char_t * session_value)
+{
+    axis2_http_out_transport_info_t *http_transport_info = NULL;
+    http_transport_info = AXIS2_INTF_TO_IMPL(out_transport_info);
+    return axis2_http_out_transport_info_set_session(http_transport_info, env, session_id, 
+            session_value);
+}
+
 void AXIS2_CALL
 axis2_out_transport_info_impl_free(
     axis2_out_transport_info_t * out_transport_info,
@@ -59,7 +83,10 @@ axis2_out_transport_info_impl_free(
 
 static const axis2_out_transport_info_ops_t ops_var = {
     axis2_out_transport_info_impl_set_content_type,
-    axis2_out_transport_info_impl_set_char_encoding, axis2_out_transport_info_impl_free };
+    axis2_out_transport_info_impl_set_char_encoding, 
+    axis2_out_transport_info_impl_set_cookie_header, 
+    axis2_out_transport_info_impl_set_session, 
+    axis2_out_transport_info_impl_free };
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_out_transport_info_impl_set_content_type(
@@ -118,6 +145,36 @@ axis2_http_out_transport_info_impl_set_char_encoding(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_http_out_transport_info_impl_set_cookie_header(
+    axis2_http_out_transport_info_t * http_out_transport_info,
+    const axutil_env_t * env,
+    const axis2_char_t * set_cookie)
+{
+    AXIS2_PARAM_CHECK(env->error, set_cookie, AXIS2_FAILURE);
+    if(http_out_transport_info->response)
+    {
+        axis2_http_simple_response_set_header(http_out_transport_info-> response, env,
+            axis2_http_header_create(env, AXIS2_HTTP_HEADER_SET_COOKIE, set_cookie));
+    }
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_http_out_transport_info_impl_set_session(
+    axis2_http_out_transport_info_t * http_out_transport_info,
+    const axutil_env_t * env,
+    const axis2_char_t * session_id,
+    const axis2_char_t * session_value)
+{
+    AXIS2_PARAM_CHECK(env->error, session_id, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, session_value, AXIS2_FAILURE);
+    if(http_out_transport_info->server)
+    {
+        env->set_session_fn((void *) http_out_transport_info->server, session_id, session_value);
+    }
+    return AXIS2_SUCCESS;
+}
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_out_transport_info_impl_free(
     axis2_http_out_transport_info_t * http_out_transport_info,
@@ -162,11 +219,15 @@ axis2_http_out_transport_info_create(
     http_out_transport_info->encoding = NULL;
     http_out_transport_info->set_char_encoding = NULL;
     http_out_transport_info->set_content_type = NULL;
+    http_out_transport_info->set_cookie_header = NULL;
+    http_out_transport_info->set_session = NULL;
     http_out_transport_info->free_function = NULL;
 
     http_out_transport_info->set_char_encoding
         = axis2_http_out_transport_info_impl_set_char_encoding;
     http_out_transport_info->set_content_type = axis2_http_out_transport_info_impl_set_content_type;
+    http_out_transport_info->set_cookie_header = axis2_http_out_transport_info_impl_set_cookie_header;
+    http_out_transport_info->set_session = axis2_http_out_transport_info_impl_set_session;
     http_out_transport_info->free_function = axis2_http_out_transport_info_impl_free;
 
     return http_out_transport_info;
@@ -211,6 +272,26 @@ axis2_http_out_transport_info_set_char_encoding(
     return http_out_transport_info->set_char_encoding(http_out_transport_info, env, encoding);
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_http_out_transport_info_set_cookie_header(
+    axis2_http_out_transport_info_t * http_out_transport_info,
+    const axutil_env_t * env,
+    const axis2_char_t * set_cookie)
+{
+    return http_out_transport_info->set_cookie_header(http_out_transport_info, env, set_cookie);
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_http_out_transport_info_set_session(
+    axis2_http_out_transport_info_t * http_out_transport_info,
+    const axutil_env_t * env,
+    const axis2_char_t * session_id,
+    const axis2_char_t * session_value)
+{
+    return http_out_transport_info->set_session(http_out_transport_info, env, session_id, 
+            session_value);
+}
+
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_out_transport_info_set_char_encoding_func(
     axis2_http_out_transport_info_t * out_transport_info,
@@ -233,6 +314,31 @@ axis2_http_out_transport_info_set_content_type_func(
         const axis2_char_t *))
 {
     out_transport_info->set_content_type = set_content_type;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axis2_http_out_transport_info_set_cookie_header_func(
+    axis2_http_out_transport_info_t * out_transport_info,
+    const axutil_env_t * env,
+    axis2_status_t(AXIS2_CALL *
+        set_cookie_header) (axis2_http_out_transport_info_t *,
+        const axutil_env_t *,
+        const axis2_char_t *))
+{
+    out_transport_info->set_cookie_header = set_cookie_header;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axis2_http_out_transport_info_set_session_func(
+    axis2_http_out_transport_info_t * out_transport_info,
+    const axutil_env_t * env,
+    axis2_status_t(AXIS2_CALL *
+        set_session) (axis2_http_out_transport_info_t *,
+        const axutil_env_t *,
+        const axis2_char_t *,
+        const axis2_char_t *))
+{
+    out_transport_info->set_session = set_session;
 }
 
 AXIS2_EXTERN void AXIS2_CALL

@@ -60,6 +60,21 @@ extern "C"
                 axis2_out_transport_info_t * info,
                 const axutil_env_t * env,
                 const axis2_char_t * encoding);
+        
+        axis2_status_t(
+            AXIS2_CALL
+            * set_cookie_header)(
+                axis2_out_transport_info_t * info,
+                const axutil_env_t * env,
+                const axis2_char_t * cookie_header);
+
+        axis2_status_t(
+            AXIS2_CALL
+            * set_session)(
+                axis2_out_transport_info_t * info,
+                const axutil_env_t * env,
+                const axis2_char_t * session_id,
+                const axis2_char_t * session_value);
 
         void(
             AXIS2_CALL
@@ -80,6 +95,14 @@ extern "C"
     /** Set cahr encoding. */
 #define AXIS2_OUT_TRANSPORT_INFO_SET_CHAR_ENCODING(out_transport_info, \
                env, encoding) ((out_transport_info->ops)->set_char_encoding(out_transport_info, env, encoding))
+    
+    /** Set cookie header. */
+#define AXIS2_OUT_TRANSPORT_INFO_SET_COOKIE_HEADER(out_transport_info, \
+               env, cookie_header) ((out_transport_info->ops)->set_cookie_header(out_transport_info, env, cookie_header))
+    
+    /** Set session. */
+#define AXIS2_OUT_TRANSPORT_INFO_SET_SESSION(out_transport_info, \
+               env, session_id, session_value) ((out_transport_info->ops)->set_session(out_transport_info, env, session_id, session_value))
 
     /** Free. */
 #define AXIS2_OUT_TRANSPORT_INFO_FREE(out_transport_info, env)\

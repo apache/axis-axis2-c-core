@@ -68,6 +68,7 @@ axis2_build_conf_ctx_with_dep_engine(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating Axis2 configuration context failed.");
         return NULL;
     }
+    axis2_conf_ctx_set_root_dir(conf_ctx, env, axis2_dep_engine_get_repos_path(dep_engine, env));
 
     conf_ctx_base = axis2_conf_ctx_get_base(conf_ctx, env);
     property = axutil_property_create_with_args(env, 2, 0, 0, is_server_side);
@@ -213,6 +214,8 @@ axis2_build_client_conf_ctx(
             "Creating Axis2 configuration context failed");
         return NULL;
     }
+    axis2_conf_ctx_set_root_dir(conf_ctx, env, axis2_dep_engine_get_repos_path(dep_engine, env));
+
     conf_ctx_base = axis2_conf_ctx_get_base(conf_ctx, env);
     property = axutil_property_create_with_args(env, 2, 0, 0, AXIS2_VALUE_FALSE);
     axis2_ctx_set_property(conf_ctx_base, env, AXIS2_IS_SVR_SIDE, property);

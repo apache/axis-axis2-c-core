@@ -144,6 +144,11 @@ axis2_http_worker_process_request(
     axis2_bool_t request_handled = AXIS2_FALSE;
 
     /* HTTP and Proxy authentication */
+    axis2_char_t *cookie_header_value = NULL;
+    /*axis2_char_t *set_cookie_header_value = NULL;
+    axis2_http_header_t *set_cookie_header = NULL;
+    axis2_http_header_t *connection_header = NULL;*/
+    axis2_http_header_t *cookie_header = NULL;
     axis2_char_t *accept_header_value = NULL;
     axis2_http_header_t *accept_header = NULL;
     axis2_char_t *accept_charset_header_value = NULL;
@@ -226,6 +231,33 @@ axis2_http_worker_process_request(
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
     axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
 
+    cookie_header = axis2_http_simple_request_get_first_header(simple_request, env,
+        AXIS2_HTTP_HEADER_COOKIE);
+    if(cookie_header)
+    {
+        char *session_str = NULL;
+        axis2_char_t *session_id = NULL;
+
+        cookie_header_value = axis2_http_header_get_value(cookie_header, env);
+        session_id = axis2_http_transport_utils_get_session_id_from_cookie(env, 
+                cookie_header_value);
+        session_str = env->get_session_fn((void *) conf_ctx, session_id);
+        axis2_http_transport_utils_set_session(env, msg_ctx, session_str);
+    }
+    
+    /*connection_header = axis2_http_simple_request_get_first_header(simple_request, env,
+        AXIS2_HTTP_HEADER_CONNECTION);
+    if(connection_header)
+    {
+        axutil_property_t *connection_header_property = NULL;
+        axis2_char_t *connection_header_value = NULL;
+        connection_header_value = axis2_http_header_get_value(connection_header, env);
+        connection_header_property = axutil_property_create_with_args(env, 
+                AXIS2_SCOPE_REQUEST, 0, 0, connection_header_value);
+        axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_HEADER_CONNECTION, 
+                connection_header_property);
+    }*/
+    
     /* Server and Peer IP's */
     svr_ip = axis2_simple_http_svr_conn_get_svr_ip(svr_conn, env);
     peer_ip = axis2_simple_http_svr_conn_get_peer_ip(svr_conn, env);
@@ -1779,11 +1811,12 @@ axis2_http_worker_set_response_headers(
 
             if(0 == axutil_strcasecmp(value, AXIS2_HTTP_HEADER_CONNECTION_KEEPALIVE))
             {
-                axis2_http_header_t *header = axis2_http_header_create(env,
+                /* Comment these until keep alive support is completed for simple Axis2/C server */
+                /*axis2_http_header_t *header = axis2_http_header_create(env,
                     AXIS2_HTTP_HEADER_CONNECTION, AXIS2_HTTP_HEADER_CONNECTION_KEEPALIVE);
 
                 axis2_http_simple_response_set_header(simple_response, env, header);
-                axis2_simple_http_svr_conn_set_keep_alive(svr_conn, env, AXIS2_TRUE);
+                axis2_simple_http_svr_conn_set_keep_alive(svr_conn, env, AXIS2_TRUE);*/
             }
 
             if(0 == axutil_strcasecmp(value, AXIS2_HTTP_HEADER_CONNECTION_CLOSE))
@@ -1799,9 +1832,18 @@ axis2_http_worker_set_response_headers(
         { /* Connection Header not available */
             axis2_char_t *http_version = NULL;
             http_version = axis2_http_simple_response_get_http_version(simple_response, env);
-            if(http_version && axutil_strcasecmp(http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
+            if(http_version && !axutil_strcasecmp(http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
             {
-                axis2_simple_http_svr_conn_set_keep_alive(svr_conn, env, AXIS2_TRUE);
+                /* Comment these until keep alive support is completed for simple Axis2/C server */
+                /*axis2_simple_http_svr_conn_set_keep_alive(svr_conn, env, AXIS2_TRUE);*/
+                /* Instead add following to always send close connection header to indicate that
+                 * we don't support http keep alive yet in simple Axis2/C server
+                 */
+                axis2_http_header_t *header = axis2_http_header_create(env,
+                    AXIS2_HTTP_HEADER_CONNECTION, AXIS2_HTTP_HEADER_CONNECTION_CLOSE);
+
+                axis2_http_simple_response_set_header(simple_response, env, header);
+                /*axis2_simple_http_svr_conn_set_keep_alive(svr_conn, env, AXIS2_FALSE);*/
             }
             else
             {

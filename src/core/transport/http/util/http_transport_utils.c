@@ -193,6 +193,11 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
     axutil_hash_t * param_map,
     axis2_char_t * method);
 
+AXIS2_EXTERN void AXIS2_CALL
+axis2_http_transport_utils_session_map_free_void_arg(
+    void *sm_void,
+    const axutil_env_t *env);
+
 static axis2_status_t
 axis2_http_transport_utils_send_attachment_using_file(
     const axutil_env_t * env,
@@ -209,6 +214,21 @@ axis2_http_transport_utils_send_attachment_using_callback(
     void *handler,
     void *user_param);
 
+static axis2_char_t *
+axis2_http_transport_utils_copy_key(
+        const axutil_env_t *env, 
+        axis2_char_t *);
+    
+static axis2_char_t *
+axis2_http_transport_utils_copy_value(
+        const axutil_env_t *env, 
+        axis2_char_t *pair);
+
+static void 
+axis2_http_transport_utils_parse_session_str(
+        const axutil_env_t *env, 
+        axis2_char_t *str, 
+        axutil_hash_t *ht);
 /***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -3398,3 +3418,409 @@ axis2_http_transport_utils_is_callback_required(
 
     return is_required;
 }
+
+static void 
+axis2_http_transport_utils_parse_session_str(const axutil_env_t *env, axis2_char_t *str, 
+        axutil_hash_t *ht)
+{
+    while (*str)
+    {
+        axis2_char_t *next = axutil_strstr(str, ";");
+        if (next)
+        {
+            axis2_char_t *key = NULL;
+            axis2_char_t *val = NULL;
+            
+
+            /* Get key and value pairs */
+            key = axis2_http_transport_utils_copy_key(env, str);
+            val = axis2_http_transport_utils_copy_value(env, str);
+            axutil_hash_set(ht, key, AXIS2_HASH_KEY_STRING, val);
+
+            /* find next token */
+            str = next + 1;
+        }
+           
+    }
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_session(
+        const axutil_env_t *env, 
+        axis2_msg_ctx_t *msg_ctx)
+{
+    axutil_hash_index_t *hi = NULL;
+    void *val = NULL;
+    const void *key = NULL;
+    axutil_hash_t *ht = NULL;
+    axis2_char_t *session_id = NULL;
+    axis2_char_t *time_str = NULL;
+    axis2_char_t *header_value = NULL;
+    axutil_date_time_t *expire_time = NULL;
+    axis2_char_t session_value[256];
+    axis2_http_out_transport_info_t *out_info = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
+
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_http_transport_utils_get_session");
+    ht = axis2_msg_ctx_get_property_value(msg_ctx, env, AXIS2_TRANSPORT_SESSION_TABLE);
+    if(!ht)
+    {
+        axis2_op_ctx_t *op_ctx = NULL;
+        axis2_msg_ctx_t *in_msg_ctx = NULL;
+        op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
+        in_msg_ctx = axis2_op_ctx_get_msg_ctx(op_ctx, env, AXIS2_WSDL_MESSAGE_LABEL_IN);
+        ht = axis2_msg_ctx_get_property_value(msg_ctx, env, AXIS2_TRANSPORT_SESSION_TABLE);
+        if(!ht)
+        {
+            return NULL;
+        }
+    }
+    session_id = axutil_hash_get(ht, "id", AXIS2_HASH_KEY_STRING);
+    if(!session_id)
+    {
+        /* Generate session and set it in session table */
+        session_id = axutil_uuid_gen(env);
+        axutil_hash_set(ht, axutil_strdup(env, "id"), AXIS2_HASH_KEY_STRING, axutil_strdup(env, 
+                    session_id));
+
+        /* Generate expire time and set it in session table */
+        expire_time = axutil_date_time_create_with_offset(env, AXIS2_TRANSPORT_SESSION_EXPIRE_DURATION);
+        time_str = axutil_strdup(env, axutil_date_time_serialize_date_time(expire_time, env));
+        axutil_date_time_free(expire_time, env);
+        axutil_hash_set(ht, axutil_strdup(env, "expires"), AXIS2_HASH_KEY_STRING, time_str);
+    
+        sprintf(session_value, "%s", "");
+
+        for(hi = axutil_hash_first(ht, env); hi; hi = axutil_hash_next(env, hi))
+        {
+            axis2_char_t *name = NULL;
+            axis2_char_t *value = NULL;
+            int len = -1;
+
+            axutil_hash_this(hi, &key, NULL, &val);
+            name = (axis2_char_t *) key;
+            value = (axis2_char_t *) val;
+            if(name)
+            {
+                len = axutil_strlen(session_value);
+                sprintf(session_value + len, "%s=", name); 
+                AXIS2_FREE(env->allocator, name);
+            }
+            if(value)
+            {
+                len = axutil_strlen(session_value);
+                sprintf(session_value + len, "%s;", value); 
+                AXIS2_FREE(env->allocator, value);
+            }
+        }
+
+        out_info = (axis2_http_out_transport_info_t *)axis2_msg_ctx_get_out_transport_info(
+            msg_ctx, env);
+        if(!out_info)
+        {
+            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL, AXIS2_FAILURE);
+            AXIS2_FREE(env->allocator, header_value);
+            return NULL;
+        }
+        status = AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_SESSION(out_info, env, session_id, session_value);
+        if(status != AXIS2_SUCCESS)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Inserting session value failed for session id %s", session_id);
+            return NULL;
+        }
+    }
+    else
+    {
+        time_str = axutil_hash_get(ht, "expires", AXIS2_HASH_KEY_STRING);
+    }
+    header_value = AXIS2_MALLOC(env->allocator, 256 * sizeof(axis2_char_t));
+    sprintf(header_value, "ID=%s; expires=%s;", session_id, time_str);
+
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_http_transport_utils_get_session");
+    return header_value;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axis2_http_transport_utils_set_session(
+        const axutil_env_t *env, 
+        axis2_msg_ctx_t *msg_ctx,
+        axis2_char_t *session_str)
+{
+    axutil_date_time_t *expire_time = NULL;
+    axutil_date_time_t *current_time = NULL;
+    axutil_date_time_comp_result_t result;
+    axis2_char_t *time_str = NULL;
+    axutil_hash_t *ht = NULL;
+    axutil_property_t *property = NULL;
+
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_http_tranpsport_utils_set_session");
+
+    /* Check whether session has expired. If so set error and return */
+    ht = axutil_hash_make(env);
+    axis2_http_transport_utils_parse_session_str(env, session_str, ht);
+    time_str = (axis2_char_t *) axutil_hash_get(ht, "time", AXIS2_HASH_KEY_STRING);
+    expire_time = axutil_date_time_create(env);
+    axutil_date_time_deserialize_date_time(expire_time, env, time_str);
+    current_time = axutil_date_time_create(env);
+    result = axutil_date_time_compare(current_time, env, expire_time);
+    axutil_date_time_free(current_time, env);
+    axutil_date_time_free(expire_time, env);
+    if(result == AXIS2_DATE_TIME_COMP_RES_EXPIRED)
+    {
+        axutil_hash_index_t *hi = NULL;
+        void *val = NULL;
+        const void *key = NULL;
+
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Session time out");
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SESSION_TIMEOUT, AXIS2_FAILURE);
+        for(hi = axutil_hash_first(ht, env); hi; hi = axutil_hash_next(env, hi))
+        {
+            axis2_char_t *name = NULL;
+            axis2_char_t *value = NULL;
+
+            axutil_hash_this(hi, &key, NULL, &val);
+            name = (axis2_char_t *) key;
+            if(name)
+            {
+                AXIS2_FREE(env->allocator, name);
+            }
+            value = (axis2_char_t *) val;
+            if(value)
+            {
+                AXIS2_FREE(env->allocator, value);
+            }
+        }
+        axutil_hash_free(ht, env);
+    }
+
+    property = axutil_property_create_with_args(env, 0, AXIS2_TRUE, 0, ht);
+    axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_SESSION_TABLE, property);
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_http_tranpsport_utils_set_session");
+}
+
+/**
+ * After receiving Set-Cookie header store it
+ */
+AXIS2_EXTERN void AXIS2_CALL
+axis2_http_transport_utils_store_cookie(
+        const axutil_env_t *env, 
+        axis2_msg_ctx_t *msg_ctx, 
+        axis2_char_t *cookie)
+{
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axutil_property_t *property = NULL;
+    axutil_hash_t *session_map = NULL;
+    axis2_endpoint_ref_t *endpoint = NULL;
+    const axis2_char_t *address = NULL;
+
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_http_transport_utils_store_cookie");
+    conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
+    property = axis2_conf_ctx_get_property(conf_ctx, env, AXIS2_TRANSPORT_SESSION_MAP);
+    if(property)
+    {
+        session_map = axutil_property_get_value(property, env);
+    }
+    if(!session_map)
+    {
+        if(!cookie)
+        {
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+                    "No session map found and no cookie set. So return");
+            return;
+        }
+        session_map = axutil_hash_make(env);
+        if(session_map)
+        {
+            property = axutil_property_create_with_args(env, AXIS2_SCOPE_APPLICATION, 1, 
+                axis2_http_transport_utils_session_map_free_void_arg, session_map); 
+            axis2_conf_ctx_set_property(conf_ctx, env, AXIS2_TRANSPORT_SESSION_MAP, property);
+        }
+        else
+        {
+            AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return;
+        }
+    }
+    endpoint = axis2_msg_ctx_get_to(msg_ctx, env);
+    if(endpoint)
+    {
+        address = axis2_endpoint_ref_get_address(endpoint, env);
+        if(address)
+        {
+            axutil_url_t *url = NULL;
+
+            url = axutil_url_parse_string(env, address);
+            if(url)
+            {
+                axis2_char_t *server = NULL;
+                server = axutil_url_get_server(url, env);
+                if(server)
+                {
+                    if(cookie)
+                    {
+                        axutil_hash_set(session_map, axutil_strdup(env, server), AXIS2_HASH_KEY_STRING, 
+                                axutil_strdup(env, cookie));
+                    }
+                    else /* We remove any cookie set for this endpoint */
+                    {
+                        cookie = axutil_hash_get(session_map, server, AXIS2_HASH_KEY_STRING);
+                        if(cookie)
+                        {
+                            AXIS2_FREE(env->allocator, cookie);
+                        }
+                        axutil_hash_set(session_map, server, AXIS2_HASH_KEY_STRING, NULL);
+                    }
+                }
+                axutil_url_free(url, env);
+            }
+        }
+    }
+
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_http_transport_utils_store_cookie");
+}
+
+/* Read from cookie store before sending */
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_read_from_cookie_store(
+        const axutil_env_t *env, 
+        axis2_msg_ctx_t *msg_ctx)
+{
+    axutil_property_t *property = NULL;
+    axutil_hash_t *session_map = NULL;
+    axis2_endpoint_ref_t *endpoint = NULL;
+    const axis2_char_t *address = NULL;
+    axis2_char_t *cookie = NULL;
+    axis2_conf_ctx_t *conf_ctx = NULL;
+
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_http_transport_utils_read_from_cookie_store");
+    conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
+    property = axis2_conf_ctx_get_property(conf_ctx, env, AXIS2_TRANSPORT_SESSION_MAP);
+    if(property)
+    {
+        session_map = axutil_property_get_value(property, env);
+    }
+    if(!session_map)
+    {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No session map stored");
+        return NULL;
+    }
+    endpoint = axis2_msg_ctx_get_to(msg_ctx, env);
+    if(endpoint)
+    {
+        address = axis2_endpoint_ref_get_address(endpoint, env);
+        if(address)
+        {
+            axutil_url_t *url = NULL; 
+            url = axutil_url_parse_string(env, address);
+            if(url)
+            {
+                axis2_char_t *server = NULL;
+                server = axutil_url_get_server(url, env);
+                if(server)
+                {
+                    cookie = axutil_hash_get(session_map, server, AXIS2_HASH_KEY_STRING);
+                }
+                axutil_url_free(url, env);
+            }
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "cookie:%s", cookie);
+        }
+    }
+    
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_http_transport_utils_read_from_cookie_store");
+    return cookie;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_session_id_from_cookie(
+        const axutil_env_t *env,
+        axis2_char_t *cookie)
+{
+    axis2_char_t *next = NULL;
+    axis2_char_t *session_id = NULL;
+
+    next = axutil_strstr(cookie, ";");
+    if (next)
+    {
+        session_id = axis2_http_transport_utils_copy_value(env, cookie);
+    }
+
+    return session_id;
+}
+
+static axis2_char_t *
+axis2_http_transport_utils_copy_key(
+        const axutil_env_t *env, 
+        axis2_char_t *pair)
+{
+    axis2_char_t *p = axutil_strchr(pair, '=');
+    axis2_char_t *ret = NULL;
+
+    if (p)
+    {
+        axis2_char_t c;
+        int len = p - pair;
+        c = pair[len];
+        pair[len] = '\0';
+        ret = axutil_strdup(env, pair);
+        pair[len] = c;
+    }
+
+    return ret;
+}
+
+static axis2_char_t *
+axis2_http_transport_utils_copy_value(
+        const axutil_env_t *env, 
+        axis2_char_t *pair)
+{
+    axis2_char_t *ret = NULL;
+    int len;
+    axis2_char_t c;
+
+    pair = axutil_strchr(pair, '=');
+    if (pair)
+    {
+        pair++;
+        len = axutil_strchr(pair, ';') - pair;
+        c = pair[len];
+        pair[len] = '\0';
+        ret = axutil_strdup(env, pair);
+        pair[len] = c;
+    }
+
+    return ret;
+}
+
+
+AXIS2_EXTERN void AXIS2_CALL
+axis2_http_transport_utils_session_map_free_void_arg(
+    void *sm_void,
+    const axutil_env_t *env)
+{
+    void *val = NULL;
+    const void *key = NULL;
+    axutil_hash_index_t *hi = NULL;
+    axutil_hash_t *ht = (axutil_hash_t *)sm_void;
+
+    for(hi = axutil_hash_first(ht, env); hi; hi = axutil_hash_next(env, hi))
+    {
+        axis2_char_t *name = NULL;
+        axis2_char_t *value = NULL;
+
+        axutil_hash_this(hi, &key, NULL, &val);
+        name = (axis2_char_t *) key;
+        if(name)
+        {
+            AXIS2_FREE(env->allocator, name);
+        }
+        value = (axis2_char_t *) val;
+        if(value)
+        {
+            AXIS2_FREE(env->allocator, value);
+        }
+    }
+    axutil_hash_free(ht, env);
+}
+
+

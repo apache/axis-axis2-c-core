@@ -219,14 +219,20 @@ axis2_http_client_send(
             return AXIS2_FAILURE;
         }
 
-        client->sockfd = (int)axutil_network_handler_open_socket(env, client->proxy_host,
-            client->proxy_port);
+        if(client->sockfd < 0)
+        {
+            client->sockfd = (int)axutil_network_handler_open_socket(env, client->proxy_host,
+                client->proxy_port);
+        }
     }
     else
     {
         /*Proxy is not enabled*/
 
-        client->sockfd = (int)axutil_network_handler_open_socket(env, host, port);
+        if(client->sockfd < 0)
+        {
+            client->sockfd = (int)axutil_network_handler_open_socket(env, host, port);
+        }
     }
 
     if(client->sockfd < 0)

@@ -128,6 +128,71 @@ extern "C"
 		
 	}axis2_http_transport_out_t;
 
+    /**
+     * size of the key stored in the session file
+     */
+    #define AXIS2_TRANSPORT_SESSION_KEY_SIZE 64 
+    /**
+     * size of the value stored in the session file
+     */
+    #define AXIS2_TRANSPORT_SESSION_VALUE_SIZE 256
+    typedef struct axis2_session_file_record
+    {
+        axis2_char_t key[AXIS2_TRANSPORT_SESSION_KEY_SIZE];
+        axis2_char_t value[AXIS2_TRANSPORT_SESSION_VALUE_SIZE];
+    } axis2_session_file_record_t;
+
+    /**
+     * This will retrieve the session table, set by a service or a module and store it in a session 
+     * file named with the unique session id, generated here in. Then it return the Set-Cookie http 
+     * header with value containing session id and session expire time.
+     * @param env, environments
+     * @param msg_ctx
+     * @return cookie_header
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_transport_utils_get_session(
+            const axutil_env_t *env, 
+            axis2_msg_ctx_t *msg_ctx);
+
+    /**
+     * When the transport receive a Cookie header it calls this function. This will retrieve the
+     * stored session info from the file related to the id value of the cookie. It also check 
+     * whether the session has timeout by comparing the session expire time contained in the cookie
+     * value with the expire time contained in the file. If session expired then it return nothing. 
+     * If session is still valid it put the values in a hash table and set it into message context.
+     * @param env, environments
+     * @param id
+     * @param msg_ctx
+     */
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_http_transport_utils_set_session(
+            const axutil_env_t *env, 
+            axis2_msg_ctx_t *msg_ctx,
+            axis2_char_t *session_str);
+
+    /**
+     * After receiving Set-Cookie header in client side store it
+     * @param env, environments
+     * @param msg_ctx  
+     * @param cookie 
+     */
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_http_transport_utils_store_cookie(
+            const axutil_env_t *env, 
+            axis2_msg_ctx_t *msg_ctx, 
+            axis2_char_t *cookie);
+
+    /** 
+     * Read from cookie store before sending from client side
+     * @param env, environments 
+     * @param msg_ctx
+     * @return cookie string
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_transport_utils_read_from_cookie_store(
+            const axutil_env_t *env, 
+            axis2_msg_ctx_t *msg_ctx);
 
 	/** 
 	 * Initialize the axis2_http_tranport_in_t. Before using this structure users should 
@@ -406,6 +471,11 @@ extern "C"
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL axis2_http_transport_utils_is_callback_required(
         const axutil_env_t *env,
         axutil_array_list_t *mime_parts);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_transport_utils_get_session_id_from_cookie(
+        const axutil_env_t *env,
+        axis2_char_t *cookie);
 
 
 

@@ -116,6 +116,9 @@ extern "C"
         AXIS2_ERROR_UNSUPPORTED_TYPE,
         /* Options object is not set */
         AXIS2_ERROR_OPTIONS_OBJECT_IS_NOT_SET,
+
+        /* Session Timeout */
+        AXIS2_ERROR_SESSION_TIMEOUT,
         /*
          * Group - core:clientapi:diclient
          */

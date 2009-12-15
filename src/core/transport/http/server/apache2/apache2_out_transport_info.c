@@ -114,6 +114,43 @@ axis2_apache_out_transport_info_set_char_encoding(
     return AXIS2_SUCCESS;
 }
 
+axis2_status_t AXIS2_CALL
+axis2_apache_out_transport_info_set_cookie_header(
+    axis2_http_out_transport_info_t * out_transport_info,
+    const axutil_env_t * env,
+    const axis2_char_t * cookie_header)
+{
+    axis2_apache2_out_transport_info_t *info = NULL;
+
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, cookie_header, AXIS2_FAILURE);
+    info = AXIS2_INTF_TO_IMPL(out_transport_info);
+
+    apr_table_set(info->request->headers_out, AXIS2_HTTP_HEADER_SET_COOKIE, cookie_header);
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_apache_out_transport_info_set_session(
+    axis2_http_out_transport_info_t * out_transport_info,
+    const axutil_env_t * env,
+    const axis2_char_t * session_id,
+    const axis2_char_t * session_value)
+{
+    axis2_apache2_out_transport_info_t *info = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, session_id, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, session_value, AXIS2_FAILURE);
+    info = AXIS2_INTF_TO_IMPL(out_transport_info);
+
+    status = env->set_session_fn(info->request, session_id, session_value);
+
+    return status;
+}
+
 axis2_http_out_transport_info_t *AXIS2_CALL
 axis2_apache2_out_transport_info_create(
     const axutil_env_t * env,
@@ -143,6 +180,12 @@ axis2_apache2_out_transport_info_create(
         axis2_apache_out_transport_info_set_char_encoding);
     axis2_http_out_transport_info_set_content_type_func(out_transport_info, env,
         axis2_apache_out_transport_info_set_content_type);
+    axis2_http_out_transport_info_set_cookie_header_func(out_transport_info, env,
+        axis2_apache_out_transport_info_set_cookie_header);
+    axis2_http_out_transport_info_set_session_func(out_transport_info, env,
+        axis2_apache_out_transport_info_set_session);
 
     return out_transport_info;
 }
+
+

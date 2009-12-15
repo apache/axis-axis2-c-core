@@ -75,6 +75,9 @@ extern "C"
         axutil_thread_pool_t *thread_pool;
 
         int ref;
+
+        axis2_status_t (*set_session_fn)(void*, const char*, const char*);
+        char * (*get_session_fn)(void*, const char*);
     }
     axutil_env_t;
 

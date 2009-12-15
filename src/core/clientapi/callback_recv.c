@@ -107,7 +107,14 @@ axis2_callback_recv_free(
         {
             axutil_hash_this(hi, &key, NULL, &val);
             if(key)
+            {
                 AXIS2_FREE(env->allocator, (char *)key);
+            }
+            if(val)
+            {
+                axis2_callback_t *callback = (axis2_callback_t *) val;
+                axis2_callback_free(callback, env);
+            }
 
         }
 

@@ -71,6 +71,7 @@ axutil_error_init()
     axutil_error_messages[AXIS2_ERROR_UNKNOWN_TRANSPORT] = "Unknown transport";
     axutil_error_messages[AXIS2_ERROR_UNSUPPORTED_TYPE] = "Type is not supported";
     axutil_error_messages[AXIS2_ERROR_OPTIONS_OBJECT_IS_NOT_SET] = "Options object is not set";
+    axutil_error_messages[AXIS2_ERROR_SESSION_TIMEOUT] = "Session Timeout";
     /* core:clientapi:diclient */
 
     /* core:context */
