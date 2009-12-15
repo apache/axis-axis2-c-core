@@ -62,7 +62,7 @@ caching_callback_init_handler(axiom_mtom_caching_callback_t *caching_callback,
 
         if(encoded_key)
         {
-            encoded_key = axutil_url_encode(env, encoded_key, key, strlen(key));
+            encoded_key = axutil_url_encode(env, encoded_key, key, (int)strlen(key));
         }
 
         file_name = axutil_stracat(env, "/opt/tmp/", encoded_key);
@@ -108,7 +108,7 @@ caching_callback_cache(axiom_mtom_caching_callback_t *caching_callback,
             int buf_len,
             void* handler)
 {
-    int len = 0;
+    size_t len = 0;
     FILE *fp = (FILE *)(handler);
 
 

@@ -105,7 +105,7 @@ axis2_mtom_mtom(
                         axiom_data_handler_t *data_handler_res = NULL;
                         axis2_byte_t *input_buff = NULL;
                         axis2_byte_t *buff = NULL;
-                        int buff_len = 0;
+                        size_t buff_len = 0;
 
 
                         axiom_data_handler_set_file_name(data_handler, env,
