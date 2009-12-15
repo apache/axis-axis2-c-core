@@ -46,7 +46,8 @@ int AXIS2_CALL apache2_stream_read(
     void *buffer,
     size_t count);
 
-int AXIS2_CALL apache2_stream_skip(
+static int
+apache2_stream_skip(
     axutil_stream_t * stream,
     const axutil_env_t * env,
     int count);
@@ -55,7 +56,8 @@ int AXIS2_CALL apache2_stream_get_char(
     axutil_stream_t * stream,
     const axutil_env_t * env);
 
-long apache2_ap_get_client_block(
+static apr_size_t
+apache2_ap_get_client_block(
     request_rec *r,
     char* buffer, 
     apr_size_t bufsiz);
@@ -146,7 +148,7 @@ apache2_stream_write(
     /* We are sure that the difference lies within the int range */
 }
 
-int AXIS2_CALL
+static int
 apache2_stream_skip(
     axutil_stream_t * stream,
     const axutil_env_t * env,
@@ -154,7 +156,7 @@ apache2_stream_skip(
 {
     apache2_stream_impl_t *stream_impl = NULL;
     axis2_char_t *tmp_buffer = NULL;
-    int len = -1;
+    apr_size_t len = -1;
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
 
@@ -166,7 +168,7 @@ apache2_stream_skip(
     }
     len = apache2_ap_get_client_block(stream_impl->request, tmp_buffer, count);
     AXIS2_FREE(env->allocator, tmp_buffer);
-    return len;
+    return (int)len;
 
 }
 
@@ -205,7 +207,8 @@ apache2_stream_get_type(
  * Returns 0 on End-of-body, -1 on error or premature chunk end.
  *
  */
-long apache2_ap_get_client_block(
+static apr_size_t
+apache2_ap_get_client_block(
     request_rec *r,
     char *buffer,
     apr_size_t bufsiz)
@@ -213,7 +216,7 @@ long apache2_ap_get_client_block(
     apr_status_t rv;
     apr_bucket_brigade *bb;
     int loop = 1;
-    int origBufSize = bufsiz;
+    apr_size_t origBufSize = bufsiz;
 
     if (r->remaining < 0 || (!r->read_chunked && r->remaining == 0)) {
         return 0;
@@ -285,5 +288,5 @@ long apache2_ap_get_client_block(
 
     }
 
-    return bufsiz;
+    return (long)bufsiz;
 }

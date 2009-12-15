@@ -1342,7 +1342,7 @@ apache2_worker_send_mtom_message(
             if((mime_part->type) == AXIOM_MIME_PART_BUFFER)
             {
                 len = 0;
-                len = ap_rwrite(mime_part->part, mime_part->part_size, request);
+                len = ap_rwrite(mime_part->part, (int)mime_part->part_size, request);
                 ap_rflush(request);
                 if(len == -1)
                 {
@@ -1369,7 +1369,7 @@ apache2_worker_send_mtom_message(
                 }
                 else
                 {
-                    output_buffer_size = mime_part->part_size;
+                    output_buffer_size = (int)mime_part->part_size;
                 }
 
                 output_buffer = AXIS2_MALLOC(env->allocator, (output_buffer_size + 1)
