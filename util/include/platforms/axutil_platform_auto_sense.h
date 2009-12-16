@@ -36,7 +36,7 @@ extern "C"
      * @{
      */
 
-#if defined( WIN32 )
+#if defined(_WIN32 )
 #include "windows/axutil_windows.h"
 #include "windows/axutil_dir_windows.h"
 #include "windows/axutil_uuid_gen_windows.h"

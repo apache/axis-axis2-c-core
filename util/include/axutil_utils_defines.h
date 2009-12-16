@@ -21,7 +21,7 @@
 
 #include <stddef.h>
 
-#if !defined(WIN32)
+#if !defined(_WIN32)
 #include <stdint.h> 
 #endif
 
@@ -30,7 +30,7 @@ extern "C"
 {
 #endif
 
-#if defined(WIN32) && !defined(AXIS2_SKIP_INT_TYPEDEFS)
+#if defined(_WIN32) && !defined(AXIS2_SKIP_INT_TYPEDEFS)
     /**
      * ANSI Type definitions for Windows
      */
@@ -49,7 +49,7 @@ extern "C"
  * for printf family of functions
  */
 
-#if defined(WIN32)
+#if defined(_WIN32)
 #define AXIS2_PRINTF_INT64_FORMAT_SPECIFIER "%I64d"
 #define AXIS2_PRINTF_UINT64_FORMAT_SPECIFIER "%I64u"
 #define AXIS2_PRINTF_INT32_FORMAT_SPECIFIER "%I32d"
@@ -100,7 +100,7 @@ extern "C"
     /**
       *   Exporting
       */
-#if defined(WIN32) && !defined(AXIS2_DECLARE_STATIC)
+#if defined(_WIN32) && !defined(AXIS2_DECLARE_STATIC)
 #define AXIS2_EXPORT __declspec(dllexport)
 #else
 #define AXIS2_EXPORT
@@ -109,7 +109,7 @@ extern "C"
     /**
       *   Importing
       */
-#if defined(WIN32)
+#if defined(_WIN32)
 #define AXIS2_IMPORT __declspec(dllimport)
 #else
 #define AXIS2_IMPORT
@@ -169,7 +169,7 @@ extern "C"
 
 #endif                          /* def DOXYGEN */
 
-#if !defined(WIN32)
+#if !defined(_WIN32)
 
     /**
      * Axis2 Core functions are declared with AXIS2_EXTERN  AXIS2_CALL
