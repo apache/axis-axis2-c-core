@@ -421,47 +421,7 @@ axis2_http_sender_send(
     if(!sender->client)
     {
         sender->client = axis2_http_client_create(env, url);
-        if(sender->client)
-        {
-            axis2_endpoint_ref_t *endpoint = NULL;
-            endpoint = axis2_msg_ctx_get_to(msg_ctx, env);
-            if(endpoint)
-            {
-                const axis2_char_t *address = NULL;
-
-                address = axis2_endpoint_ref_get_address(endpoint, env);
-                if(address)
-                {
-                    axutil_url_t *url = NULL;
-                    url = axutil_url_parse_string(env, address);
-                    if(url)
-                    {
-                        axis2_char_t *server = NULL;
-                        server = axutil_url_get_server(url, env);
-                        if(server)
-                        {
-                            /** 
-                             * We put the client into connection map  so that we can free it once the 
-                             * processing is done at client side. Need to check whether this is neccessary.
-                             */
-                            property = axutil_property_create_with_args(env, AXIS2_SCOPE_REQUEST, 0, 
-                                    axis2_http_client_free_void_arg, sender->client);
-                            axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_CLIENT, property);
-                            /**
-                             * If keep alive enabled we store the http client for reuse.
-                             */
-                            if(connection_map)
-                            {
-                                axutil_hash_set(connection_map, axutil_strdup(env, server), 
-                                        AXIS2_HASH_KEY_STRING, sender->client);
-                            }
-                        }
-                        axutil_url_free(url, env);
-                    } /* end if url */
-                } /* end if address */
-            } /* end if endpoint */
-        } /* end if sender->client */
-    } /* end if !sender->client */
+    }
     if(!sender->client)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "sender->client creation failed for url %s", url);
@@ -1490,66 +1450,106 @@ axis2_http_sender_get_header_info(
             if(!axutil_strcasecmp(name, AXIS2_HTTP_HEADER_CONNECTION))
             {
                 axis2_char_t *connection_header_value = NULL;
+                axutil_property_t *connection_map_property = NULL;
                 axutil_hash_t *connection_map = NULL;
+                axis2_conf_ctx_t *conf_ctx = NULL;
 
                 connection_header_present = AXIS2_TRUE;
                 connection_header_value = axis2_http_header_get_value(header, env);
+                conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
+                connection_map_property = axis2_conf_ctx_get_property(conf_ctx, env, 
+                    AXIS2_HTTP_CONNECTION_MAP);
 
+                if(connection_map_property)
+                {
+                    connection_map = axutil_property_get_value(connection_map_property, env);
+                }
                 /**
                  * In HTTP1.1 if connection header has value close then drop the connection
                  */
                 if(connection_header_value && !axutil_strcasecmp(connection_header_value, "close"))
                 {
                     axis2_endpoint_ref_t *endpoint = NULL;
-                    axutil_property_t *connection_map_property = NULL;
-                    axis2_conf_ctx_t *conf_ctx = NULL;
-
-                    conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
-                    connection_map_property = axis2_conf_ctx_get_property(conf_ctx, env, 
-                            AXIS2_HTTP_CONNECTION_MAP);
-                    if(connection_map_property)
+                    if(connection_map)
                     {
-                        connection_map = axutil_property_get_value(connection_map_property, env);
-                        if(connection_map)
+                        endpoint = axis2_msg_ctx_get_to(msg_ctx, env);
+                        if(endpoint)
                         {
-                            endpoint = axis2_msg_ctx_get_to(msg_ctx, env);
-                            if(endpoint)
+                            const axis2_char_t *address = NULL;
+                            address = axis2_endpoint_ref_get_address(endpoint, env);
+                            if(address)
                             {
-                                const axis2_char_t *address = NULL;
-
-                                address = axis2_endpoint_ref_get_address(endpoint, env);
-                                if(address)
+                                axutil_url_t *url = NULL;
+                                url = axutil_url_parse_string(env, address);
+                                if(url)
                                 {
-                                    axutil_url_t *url = NULL;
-                                    url = axutil_url_parse_string(env, address);
-                                    if(url)
+                                    axis2_char_t *server = NULL;
+                                    server = axutil_url_get_server(url, env);
+                                    if(server)
                                     {
-                                        axis2_char_t *server = NULL;
-                                        server = axutil_url_get_server(url, env);
-                                        if(server)
+                                        axis2_http_client_t *http_client = NULL;
+                                        /* We remove any connection set for this endpoint */
+                                        http_client = axutil_hash_get(connection_map, server, 
+                                            AXIS2_HASH_KEY_STRING);
+                                        if(http_client)
                                         {
-                                            axis2_http_client_t *http_client = NULL;
-                                            /* We remove any connection set for this endpoint */
-                                            http_client = axutil_hash_get(connection_map, server, 
-                                                AXIS2_HASH_KEY_STRING);
-                                            if(http_client)
-                                            {
-                                                /* Dont' free http client here. It is freed by 
-                                                 * op_client 
-                                                 */
-                                                axutil_hash_set(connection_map, server, 
-                                                    AXIS2_HASH_KEY_STRING, NULL);
-                                            }
+                                            /* Dont' free http client here. It is freed by 
+                                             * op_client 
+                                             */
+                                            axutil_hash_set(connection_map, server, 
+                                                AXIS2_HASH_KEY_STRING, NULL);
                                         }
-                                        axutil_url_free(url, env);
+                                    }
+                                    axutil_url_free(url, env);
+                                }
+                            }
+                        } /* End if endpoint */
+                    } /* End if connection_map */
+                } /* End if connection header has value close */
+                else if(connection_header_value && !axutil_strcasecmp(connection_header_value, "Keep-Alive"))
+                {
+                    /* We add the connection to connection map for reuse */
+                    axis2_endpoint_ref_t *endpoint = NULL;
+                    endpoint = axis2_msg_ctx_get_to(msg_ctx, env);
+                    if(endpoint)
+                    {
+                        const axis2_char_t *address = NULL;
+                        address = axis2_endpoint_ref_get_address(endpoint, env);
+                        if(address)
+                        {
+                            axutil_url_t *url = NULL;
+                            url = axutil_url_parse_string(env, address);
+                            if(url)
+                            {
+                                axis2_char_t *server = NULL;
+                                server = axutil_url_get_server(url, env);
+                                if(server)
+                                {
+                                    /** 
+                                     * We put the http client into message context so that we 
+                                     * can free it once the processing is done at client side.
+                                     */
+                                    property = axutil_property_create_with_args(env, 
+                                        AXIS2_SCOPE_REQUEST, 0, axis2_http_client_free_void_arg, 
+                                        sender->client);
+                                    axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_CLIENT, 
+                                            property);
+                                    /**
+                                     * If keep alive enabled we store the http client for reuse.
+                                     */
+                                    if(connection_map)
+                                    {
+                                        axutil_hash_set(connection_map, axutil_strdup(env, 
+                                            server), AXIS2_HASH_KEY_STRING, sender->client);
                                     }
                                 }
-                            } /* End if endpoint */
-                        }
-                    } /* End if connection_map_property */
-                } /* End if connection header has value close */
-            }
-                    } /* End if name of the header present */
+                                axutil_url_free(url, env);
+                            } /* end if url */
+                        } /* end if address */
+                    } /* end if endpoint */
+                } /* End if connection header is Keep-Alive */
+            } /* End if name is connection */
+        } /* End if name of the header present */
     }
     if(!set_cookie_header_present) /* We need to remove any cookie set previously for this endpoint */
     {
@@ -1560,55 +1560,95 @@ axis2_http_sender_get_header_info(
         /** In HTTP1.0 if there is no keep alive header sent back from server we drop the 
          * connection 
          */
+        axutil_property_t *connection_map_property = NULL;
+        axutil_hash_t *connection_map = NULL;
+        axis2_conf_ctx_t *conf_ctx = NULL;
+        conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
+        connection_map_property = axis2_conf_ctx_get_property(conf_ctx, env, 
+                AXIS2_HTTP_CONNECTION_MAP);
+        if(connection_map_property)
+        {
+            connection_map = axutil_property_get_value(connection_map_property, env);
+        } /* End if connectin_map_property */
         if(!axutil_strcasecmp(sender->http_version, AXIS2_HTTP_HEADER_PROTOCOL_10))
         {
-            axis2_endpoint_ref_t *endpoint = NULL;
-            axutil_property_t *connection_map_property = NULL;
-            axutil_hash_t *connection_map = NULL;
-            axis2_conf_ctx_t *conf_ctx = NULL;
-            
-            conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
-            connection_map_property = axis2_conf_ctx_get_property(conf_ctx, env, 
-                    AXIS2_HTTP_CONNECTION_MAP);
-            if(connection_map_property)
+            if(connection_map)
             {
-                connection_map = axutil_property_get_value(connection_map_property, env);
-                if(connection_map)
+                axis2_endpoint_ref_t *endpoint = NULL;
+                endpoint = axis2_msg_ctx_get_to(msg_ctx, env);
+                if(endpoint)
                 {
-                    endpoint = axis2_msg_ctx_get_to(msg_ctx, env);
-                    if(endpoint)
+                    const axis2_char_t *address = NULL;
+                    address = axis2_endpoint_ref_get_address(endpoint, env);
+                    if(address)
                     {
-                        const axis2_char_t *address = NULL;
-
-                        address = axis2_endpoint_ref_get_address(endpoint, env);
-                        if(address)
+                        axutil_url_t *url =  NULL;
+                        url = axutil_url_parse_string(env, address);
+                        if(url)
                         {
-                            axutil_url_t *url =  NULL;
-                            url = axutil_url_parse_string(env, address);
-                            if(url)
+                            axis2_char_t *server = NULL;
+                            server = axutil_url_get_server(url, env);
+                            if(server)
                             {
-                                axis2_char_t *server = NULL;
-                                server = axutil_url_get_server(url, env);
-                                if(server)
+                                axis2_http_client_t *http_client = NULL;
+                                /* We remove any connection set for this endpoint */
+                                http_client = axutil_hash_get(connection_map, server, 
+                                        AXIS2_HASH_KEY_STRING);
+                                if(http_client)
                                 {
-                                    axis2_http_client_t *http_client = NULL;
-                                    /* We remove any connection set for this endpoint */
-                                    http_client = axutil_hash_get(connection_map, server, 
-                                            AXIS2_HASH_KEY_STRING);
-                                    if(http_client)
-                                    {
-                                        /* Dont' free http client here. It is freed by op_client */
-                                        axutil_hash_set(connection_map, axutil_strdup(env, server),
-                                                AXIS2_HASH_KEY_STRING, NULL);
-                                    }
+                                    /* Dont' free http client here. It is freed by op_client */
+                                    axutil_hash_set(connection_map, axutil_strdup(env, server),
+                                            AXIS2_HASH_KEY_STRING, NULL);
                                 }
-                                axutil_url_free(url, env);
                             }
-                        } /* end if address */
-                    } /* end if endpoint */
-                }
-            } /* End if connectin_map_property */
+                            axutil_url_free(url, env);
+                        }
+                    } /* end if address */
+                } /* end if endpoint */
+            }
         } /* End if http version 1.0 */
+        else if(!axutil_strcasecmp(sender->http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
+        {
+            /* We add the connection to connection map for reuse */
+            axis2_endpoint_ref_t *endpoint = NULL;
+            endpoint = axis2_msg_ctx_get_to(msg_ctx, env);
+            if(endpoint)
+            {
+                const axis2_char_t *address = NULL;
+                address = axis2_endpoint_ref_get_address(endpoint, env);
+                if(address)
+                {
+                    axutil_url_t *url = NULL;
+                    url = axutil_url_parse_string(env, address);
+                    if(url)
+                    {
+                        axis2_char_t *server = NULL;
+                        server = axutil_url_get_server(url, env);
+                        if(server)
+                        {
+                            /** 
+                             * We put the http client into message context so that we 
+                             * can free it once the processing is done at client side.
+                             */
+                            property = axutil_property_create_with_args(env, 
+                                AXIS2_SCOPE_REQUEST, 0, axis2_http_client_free_void_arg, 
+                                sender->client);
+                            axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_CLIENT, 
+                                    property);
+                            /**
+                             * If keep alive enabled we store the http client for reuse.
+                             */
+                            if(connection_map)
+                            {
+                                axutil_hash_set(connection_map, axutil_strdup(env, 
+                                    server), AXIS2_HASH_KEY_STRING, sender->client);
+                            }
+                        }
+                        axutil_url_free(url, env);
+                    } /* end if url */
+                } /* end if address */
+            } /* end if endpoint */
+        } /* End if http version 1.1 */
     } /* End if !connection_header_present */
 
     content_type = (axis2_char_t *)axis2_http_simple_response_get_content_type(response, env);
