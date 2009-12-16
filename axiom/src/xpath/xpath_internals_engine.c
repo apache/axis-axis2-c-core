@@ -34,22 +34,24 @@ axiom_xpath_run(
 
     res->nodes = axutil_array_list_create(context->env, 0);
 
-    context->stack = axutil_stack_create(context->env);
-
     /* Expression is empty */
     if(context->expr->start == AXIOM_XPATH_PARSE_END)
     {
         return res;
     }
 
+    context->stack = axutil_stack_create(context->env);
+
     axiom_xpath_evaluate_operation(context, context->expr->start);
 
     /* Add nodes to the result set from the stack */
     while(axutil_stack_size(context->stack, context->env) > 0)
     {
-        axutil_array_list_add(res->nodes, context->env, axutil_stack_pop(context->stack,
-            context->env));
+        axutil_array_list_add(res->nodes, context->env,
+            axutil_stack_pop(context->stack, context->env));
     }
+
+    axutil_stack_free(context->stack, context->env);
 
     return res;
 }
@@ -256,17 +258,19 @@ axiom_xpath_path_expression_operator(
     {
         res_node = (axiom_xpath_result_node_t *)axutil_array_list_get(arr, context->env, i);
 
-        if(res_node->type != AXIOM_XPATH_TYPE_NODE)
+        if(res_node->type == AXIOM_XPATH_TYPE_NODE)
         {
-            continue;
+            context->node = (axiom_node_t *)res_node->value;
+            context->position = i + 1;
+            context->size = filter_res_n;
+
+            n_nodes += rel_loc_func(context, rel_loc_op);
         }
 
-        context->node = (axiom_node_t *)res_node->value;
-        context->position = i + 1;
-        context->size = filter_res_n;
-
-        n_nodes += rel_loc_func(context, rel_loc_op);
+        AXIS2_FREE(context->env->allocator, res_node);
     }
+
+    axutil_array_list_free(arr, context->env);
 
     return n_nodes;
 }
@@ -278,6 +282,7 @@ axiom_xpath_orexpr_operator(
     axiom_xpath_operation_t * op)
 {
     axiom_xpath_result_node_t *node;
+    axiom_xpath_result_node_t *res_node;
     int n_nodes[2];
     int i, j;
     int op12[2];
@@ -330,8 +335,16 @@ axiom_xpath_orexpr_operator(
         axutil_stack_push(context->stack, context->env, node);
     }
 
-    axutil_array_list_free(arr[0], context->env);
-    axutil_array_list_free(arr[1], context->env);
+    for (i = 1; i >= 0; i--)
+    {
+        for (j = 0; j < n_nodes[i]; j++)
+        {
+            res_node = (axiom_xpath_result_node_t *)axutil_array_list_get(arr[i], context->env, j);
+            AXIS2_FREE(context->env->allocator, res_node);
+        }
+
+        axutil_array_list_free(arr[i], context->env);
+    }
 
     return 1;
 }
@@ -343,6 +356,7 @@ axiom_xpath_andexpr_operator(
     axiom_xpath_operation_t * op)
 {
     axiom_xpath_result_node_t *node;
+    axiom_xpath_result_node_t *res_node;
     int n_nodes[2];
     int i, j;
     int op12[2];
@@ -395,8 +409,16 @@ axiom_xpath_andexpr_operator(
         axutil_stack_push(context->stack, context->env, node);
     }
 
-    axutil_array_list_free(arr[0], context->env);
-    axutil_array_list_free(arr[1], context->env);
+    for (i = 1; i >= 0; i--)
+    {
+        for (j = 0; j < n_nodes[i]; j++)
+        {
+            res_node = (axiom_xpath_result_node_t *)axutil_array_list_get(arr[i], context->env, j);
+            AXIS2_FREE(context->env->allocator, res_node);
+        }
+
+        axutil_array_list_free(arr[i], context->env);
+    }
 
     return 1;
 }
@@ -408,6 +430,7 @@ axiom_xpath_equalexpr_operator(
     axiom_xpath_operation_t * op)
 {
     axiom_xpath_result_node_t *node;
+    axiom_xpath_result_node_t *res_node;
     int n_nodes[2];
     int i, j;
     int op12[2];
@@ -474,8 +497,16 @@ axiom_xpath_equalexpr_operator(
         axutil_stack_push(context->stack, context->env, node);
     }
 
-    axutil_array_list_free(arr[0], context->env);
-    axutil_array_list_free(arr[1], context->env);
+    for (i = 1; i >= 0; i--)
+    {
+        for (j = 0; j < n_nodes[i]; j++)
+        {
+            res_node =(axiom_xpath_result_node_t *)axutil_array_list_get(arr[i], context->env, j);
+            AXIS2_FREE(context->env->allocator, res_node);
+        }
+
+        axutil_array_list_free(arr[i], context->env);
+    }
 
     return 1;
 }
@@ -592,7 +623,14 @@ axiom_xpath_evaluate_predicate_condition(
     {
         for(i = 0; i < n_nodes; i++)
         {
-            axutil_stack_pop(context->stack, context->env);
+            res = (axiom_xpath_result_node_t *)axutil_stack_pop(context->stack, context->env);
+
+            if (res->type > AXIOM_XPATH_TYPE_NAMESPACE)
+            {
+                AXIS2_FREE(context->env->allocator, res->value);
+            }
+
+            AXIS2_FREE(context->env->allocator, res);
         }
 
         return AXIS2_TRUE;
@@ -605,19 +643,31 @@ axiom_xpath_evaluate_predicate_condition(
         {
             if(*(double *)(res->value) == context->position)
             {
+                AXIS2_FREE(context->env->allocator, res);
                 return AXIS2_TRUE;
             }
             else
             {
-                return AXIS2_FAILURE;
+                AXIS2_FREE(context->env->allocator, res);
+                return AXIS2_FALSE;
             }
         }
         else if(res->type == AXIOM_XPATH_TYPE_BOOLEAN)
         {
-            return *(axis2_bool_t *)(res->value);
+            if(*(axis2_bool_t *)(res->value))
+            {
+                AXIS2_FREE(context->env->allocator, res);
+                return AXIS2_TRUE;
+            }
+            else
+            {
+                AXIS2_FREE(context->env->allocator, res);
+                return AXIS2_FALSE;
+            }
         }
         else
         {
+            AXIS2_FREE(context->env->allocator, res);
             return AXIS2_TRUE;
         }
     }

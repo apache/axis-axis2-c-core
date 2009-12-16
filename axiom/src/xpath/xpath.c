@@ -72,7 +72,9 @@ axiom_xpath_compile_expression(
         return NULL;
     }
     else
+    {
         return expr;
+    }
 }
 
 /* Evaluate compiled XPath expression */
@@ -375,6 +377,25 @@ axiom_xpath_free_context(
             context->expr = NULL;
         }
 
+        if (context->root_node)
+        {
+            axiom_node_detach(axiom_node_get_first_child(context->root_node, context->env), context->env);
+            axiom_node_free_tree(context->root_node, context->env);
+            context->root_node = NULL;
+        }
+
+        if (context->functions)
+        {
+            axutil_hash_free(context->functions, context->env);
+            context->functions = NULL;
+        }
+
+        if(context->namespaces)
+        {
+            axiom_xpath_clear_namespaces(context);
+            context->namespaces = NULL;
+        }
+
         AXIS2_FREE(env->allocator, context);
     }
 }
@@ -392,6 +413,12 @@ axiom_xpath_free_expression(
             AXIS2_FREE(env->allocator, xpath_expr->expr_str);
 
             xpath_expr->expr_str = NULL;
+        }
+
+        if (xpath_expr->operations)
+        {
+            axutil_array_list_free(xpath_expr->operations, env);
+            xpath_expr->operations = NULL;
         }
 
         AXIS2_FREE(env->allocator, xpath_expr);

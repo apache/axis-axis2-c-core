@@ -36,7 +36,6 @@ axiom_xpath_child_iterator(
     axiom_node_t *context_node = NULL;
     /* For streaming */
     axiom_node_t *prev = NULL;
-    /*axiom_xpath_operation_t * next_operation = NULL;*/
 
     AXIOM_XPATH_ITERATOR_INITIALIZE;
     cur = axiom_node_get_first_child(context->node, context->env);
@@ -52,22 +51,6 @@ axiom_xpath_child_iterator(
             n_nodes = axiom_xpath_evaluate_predicate(context, op_next, op_predicate);
             n_nodes_tot += n_nodes;
         }
-        /*
-         if (context->streaming)
-         {
-         if (n_nodes)
-         {
-         next_operation = AXIOM_XPATH_OPR_GET(op_next);
-         }
-
-         if (!n_nodes
-         || next_operation->opr != AXIOM_XPATH_OPERATION_RESULT)
-         {
-         axiom_node_detach(prev, context->env);
-         axiom_node_free_tree(prev, context->env);
-         }
-         }
-         */
     }
 
     /* Change the context node back to what it was */
@@ -122,6 +105,8 @@ axiom_xpath_descendant_iterator(
     }
 
     context->node = context_node;
+
+    axutil_stack_free(stack, context->env);
 
     return n_nodes;
 }
@@ -308,6 +293,8 @@ axiom_xpath_following_iterator(
     /* Change the context node back to what it was */
     context->node = context_node;
 
+    axutil_stack_free(stack, context->env);
+
     return n_nodes;
 }
 
@@ -361,6 +348,8 @@ axiom_xpath_preceding_iterator(
 
     /* Change the context node back to what it was */
     context->node = context_node;
+
+    axutil_stack_free(stack, context->env);
 
     return n_nodes;
 }
@@ -553,6 +542,8 @@ axiom_xpath_descendant_self_iterator(
 
     /* Change the context node back to what it was */
     context->node = context_node;
+
+    axutil_stack_free(stack, context->env);
 
     return n_nodes;
 }
