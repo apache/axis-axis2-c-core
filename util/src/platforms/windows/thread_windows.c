@@ -241,6 +241,10 @@ axutil_thread_once_init(
 {
     axutil_thread_once_t *control = NULL;
     control = AXIS2_MALLOC(allocator, sizeof(*control));
+    if(control)
+    {
+       control->value = 0;
+    }
     return control;
 }
 
