@@ -429,9 +429,12 @@ axis2_conf_ctx_free(
         axutil_thread_mutex_destroy(conf_ctx->mutex);
     }
 
-    AXIS2_FREE(env->allocator, conf_ctx);
+	if(conf_ctx->root_dir)
+	{
+		AXIS2_FREE(env->allocator, conf_ctx->root_dir);
+	}
 
-    return;
+    AXIS2_FREE(env->allocator, conf_ctx);
 }
 
 AXIS2_EXTERN axis2_svc_grp_ctx_t *AXIS2_CALL
