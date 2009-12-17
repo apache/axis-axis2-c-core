@@ -121,9 +121,32 @@ axis2_build_conf_ctx_with_file(
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_dep_engine_t *dep_engine = NULL;
+	axis2_char_t *repos_path = NULL;
+	axis2_char_t *temp_path = NULL;
+	axis2_char_t *index = NULL;
+	axis2_char_t *xmlfile = NULL;
+	
+	AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_build_conf_ctx_with_file");
+	temp_path = axutil_strdup(env, file);
+	index = axutil_rindex(temp_path, AXIS2_PATH_SEP_CHAR);
+	if(!index)
+	{/* searching from windows specific path seperator */
+		index = axutil_rindex(temp_path, '\\');
+	}
 
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_build_conf_ctx_with_file");
-    dep_engine = axis2_dep_engine_create_with_axis2_xml(env, file);
+	if(!index)
+	{
+		/** only the xml file name is provided. Assume the default repo path */
+		repos_path = AXIS2_GETENV("AXIS2C_HOME");
+		xmlfile = file;
+	}else
+	{
+		xmlfile = index+1;
+		temp_path[index-temp_path] = '\0';
+		repos_path = temp_path;
+	}
+	
+	dep_engine = axis2_dep_engine_create_with_repos_name_and_svr_xml_file(env, repos_path, xmlfile);
     if(!dep_engine)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
@@ -139,7 +162,7 @@ axis2_build_conf_ctx_with_file(
             "Loading configuration context failed for given Axis2 configuration %s.", file);
         return NULL;
     }
-
+	AXIS2_FREE(env->allocator, temp_path);
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_build_conf_ctx_with_file");
     return conf_ctx;
 }
