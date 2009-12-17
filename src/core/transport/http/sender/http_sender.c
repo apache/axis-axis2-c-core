@@ -377,7 +377,7 @@ axis2_http_sender_send(
                 return AXIS2_FAILURE;
             }
             connection_map_property = axutil_property_create_with_args(env, 
-                AXIS2_SCOPE_APPLICATION, 1, axis2_http_sender_connection_map_free, 
+                AXIS2_SCOPE_SESSION, 1, axis2_http_sender_connection_map_free, 
                 connection_map);
             axis2_conf_ctx_set_property(conf_ctx, env, AXIS2_HTTP_CONNECTION_MAP, 
                 connection_map_property);
