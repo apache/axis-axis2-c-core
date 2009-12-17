@@ -1514,8 +1514,7 @@ axis2_http_sender_get_header_info(
         conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
 
         /** 
-         * We put the http client into message context so that we can free it once the 
-         * processing is done at client side.
+         * Put the http client into message context. Is this neccessary?
          */
         property = axutil_property_create_with_args(env, AXIS2_SCOPE_REQUEST, AXIS2_FALSE, 
                 axis2_http_client_free_void_arg, sender->client);
