@@ -138,7 +138,7 @@ axis2_build_conf_ctx_with_file(
 	{
 		/** only the xml file name is provided. Assume the default repo path */
 		repos_path = AXIS2_GETENV("AXIS2C_HOME");
-		xmlfile = file;
+		xmlfile = (axis2_char_t*)file;
 	}else
 	{
 		xmlfile = index+1;
