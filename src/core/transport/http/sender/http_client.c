@@ -190,6 +190,11 @@ axis2_http_client_send(
     /* In the MTOM case request body is not set. Instead mime_parts
      array_list is there */
 
+    if(client->req_body)
+    {
+        AXIS2_FREE(env->allocator, client->req_body);
+        client->req_body = NULL;
+    }
     if(!client->req_body && !(client->doing_mtom))
     {
         client->req_body_size = axis2_http_simple_request_get_body_bytes(request, env,
