@@ -62,6 +62,12 @@ apache2_worker_send_attachment_using_callback(
     void *handler,
     void *user_param);
 
+static axutil_hash_t* 
+axis2_apache_worker_get_headers(
+	const axutil_env_t *env,
+	request_rec *request);
+
+
 struct axis2_apache2_worker
 {
     axis2_conf_ctx_t *conf_ctx;
@@ -208,6 +214,7 @@ axis2_apache2_worker_process_request(
     axis2_char_t *cookie = NULL;
     axis2_char_t *header_value = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+	axutil_hash_t *headers = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, request, AXIS2_CRITICAL_FAILURE);
@@ -419,6 +426,9 @@ axis2_apache2_worker_process_request(
     {
         soap_action = axutil_string_create(env, soap_action_header_txt);
     }
+
+	headers = axis2_apache_worker_get_headers(env, request);
+	axis2_msg_ctx_set_transport_headers(msg_ctx, env, headers);
 
     request_body = axutil_stream_create_apache2(env, request);
     if(!request_body)
@@ -1136,8 +1146,96 @@ axis2_apache2_worker_process_request(
             }
             if (send_status == DECLINED)
             {
-                request->status = HTTP_ACCEPTED;
-                send_status = DONE;
+                if (msg_ctx)
+                {
+					int size = 0;
+					int status_code;
+					axutil_array_list_t *output_header_list = NULL;
+					output_header_list = axis2_msg_ctx_get_http_output_headers(msg_ctx, env);
+					if (output_header_list)
+					{
+						size = axutil_array_list_size(output_header_list, env);
+					}
+					while (size)
+					{
+						axis2_http_header_t *output_header = NULL;
+						size--;
+						output_header = (axis2_http_header_t *)
+							axutil_array_list_get(output_header_list, env, size);
+						apr_table_set(request->err_headers_out,
+						axis2_http_header_get_name(output_header, env),
+						axis2_http_header_get_value(output_header, env));
+					}
+				
+					status_code = axis2_msg_ctx_get_status_code(msg_ctx, env);
+					switch (status_code)
+					{
+					case AXIS2_HTTP_RESPONSE_CONTINUE_CODE_VAL:
+						request->status = HTTP_CONTINUE;
+						break;
+					case AXIS2_HTTP_RESPONSE_OK_CODE_VAL:
+						request->status = HTTP_OK;
+						break;
+					case AXIS2_HTTP_RESPONSE_MULTIPLE_CHOICES_CODE_VAL:
+						request->status = HTTP_MULTIPLE_CHOICES;
+						break;
+					case AXIS2_HTTP_RESPONSE_MOVED_PERMANENTLY_CODE_VAL:
+						request->status = HTTP_MOVED_PERMANENTLY;
+						break;
+					case AXIS2_HTTP_RESPONSE_SEE_OTHER_CODE_VAL:
+						request->status = HTTP_SEE_OTHER;
+						break;
+					case AXIS2_HTTP_RESPONSE_NOT_MODIFIED_CODE_VAL:
+						request->status = HTTP_NOT_MODIFIED;
+						break;
+					case AXIS2_HTTP_RESPONSE_TEMPORARY_REDIRECT_CODE_VAL:
+						request->status = HTTP_TEMPORARY_REDIRECT;
+						break;
+					case AXIS2_HTTP_RESPONSE_BAD_REQUEST_CODE_VAL:
+						request->status = HTTP_BAD_REQUEST;
+						break;
+					case AXIS2_HTTP_RESPONSE_REQUEST_TIMEOUT_CODE_VAL:
+						request->status = HTTP_REQUEST_TIME_OUT;
+						break;
+					case AXIS2_HTTP_RESPONSE_CONFLICT_CODE_VAL:
+						request->status = HTTP_CONFLICT;
+						break;
+					case AXIS2_HTTP_RESPONSE_GONE_CODE_VAL:
+						request->status = HTTP_GONE;
+						break;
+					case AXIS2_HTTP_RESPONSE_PRECONDITION_FAILED_CODE_VAL:
+						request->status = HTTP_PRECONDITION_FAILED;
+						break;
+					case AXIS2_HTTP_RESPONSE_REQUEST_ENTITY_TOO_LARGE_CODE_VAL:
+						request->status = HTTP_REQUEST_ENTITY_TOO_LARGE;
+						break;
+					case AXIS2_HTTP_RESPONSE_SERVICE_UNAVAILABLE_CODE_VAL:
+						request->status = HTTP_SERVICE_UNAVAILABLE;
+						break;
+					case AXIS2_HTTP_RESPONSE_FORBIDDEN_CODE_VAL:
+						request->status = HTTP_FORBIDDEN;
+						break;
+					case AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL:
+						request->status = HTTP_UNAUTHORIZED;
+						break;
+					default:
+						request->status = HTTP_ACCEPTED;
+						break;
+					}
+					
+					out_stream = axis2_msg_ctx_get_transport_out_stream(msg_ctx, env);
+					if (out_stream)
+					{
+						body_string = axutil_stream_get_buffer(out_stream, env);
+						body_string_len = axutil_stream_get_len(out_stream, env);
+					}
+					send_status = DONE;
+				}
+				else
+				{
+					request->status = HTTP_ACCEPTED;
+					send_status = DONE;
+				}
             }
         }
         else
@@ -1545,4 +1643,34 @@ apache2_worker_send_attachment_using_callback(
 
     status = AXIOM_MTOM_SENDING_CALLBACK_CLOSE_HANDLER(callback, env, handler);
     return status;
+}
+
+
+static axutil_hash_t* 
+axis2_apache_worker_get_headers(
+	const axutil_env_t *env,
+	request_rec *request)
+{
+      int i = 0;
+      axutil_hash_t *header_map = NULL;
+	  const apr_array_header_t *tarr;
+	  const apr_table_entry_t *telts;
+	  axis2_http_header_t * tmp_http_header = NULL;
+
+
+      header_map = axutil_hash_make(env);
+      tarr = apr_table_elts(request->headers_in);
+	  telts  = (const apr_table_entry_t*)tarr->elts;
+
+      for (i = 0; i < tarr->nelts; i++)
+      {
+              axis2_char_t* tmp_key = (axis2_char_t*) telts[i].key;
+              axis2_char_t* tmp_value = (axis2_char_t*) telts[i].val;
+              tmp_http_header = axis2_http_header_create(env, tmp_key, tmp_value);
+			  axutil_hash_set(header_map, tmp_key, AXIS2_HASH_KEY_STRING, tmp_http_header);
+      }
+
+   return header_map;
+
+
 }
