@@ -3468,8 +3468,15 @@ axis2_http_transport_utils_get_session(
         axis2_op_ctx_t *op_ctx = NULL;
         axis2_msg_ctx_t *in_msg_ctx = NULL;
         op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-        in_msg_ctx = axis2_op_ctx_get_msg_ctx(op_ctx, env, AXIS2_WSDL_MESSAGE_LABEL_IN);
-        ht = axis2_msg_ctx_get_property_value(msg_ctx, env, AXIS2_TRANSPORT_SESSION_TABLE);
+        if(op_ctx)
+        {
+            in_msg_ctx = axis2_op_ctx_get_msg_ctx(op_ctx, env, AXIS2_WSDL_MESSAGE_LABEL_IN);
+            if(in_msg_ctx)
+            {
+                ht = axis2_msg_ctx_get_property_value(in_msg_ctx, env, 
+                        AXIS2_TRANSPORT_SESSION_TABLE);
+            }
+        }
         if(!ht)
         {
             return NULL;
