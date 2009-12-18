@@ -111,6 +111,23 @@ axis2_os_thread_get(
     axutil_thread_t * thd,
     const axutil_env_t * env);
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axutil_thread_key_create(
+    axutil_threadkey_t * axis2_key);
+
+AXIS2_EXTERN void *AXIS2_CALL
+axutil_thread_getspecific(
+    axutil_threadkey_t * axis2_key);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axutil_thread_setspecific(
+    axutil_threadkey_t * axis2_key,
+    void *value);
+
+AXIS2_EXTERN void AXIS2_CALL
+axutil_thread_key_free(
+    axutil_threadkey_t * axis2_key);
+
 AXIS2_EXTERN axutil_thread_once_t *AXIS2_CALL
 axutil_thread_once_init(
     axutil_allocator_t * allocator);

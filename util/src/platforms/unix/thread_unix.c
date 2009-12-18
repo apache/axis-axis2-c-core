@@ -220,14 +220,11 @@ axutil_thread_yield(
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_thread_key_create(
-    axutil_threadkey_t * axis2_key,
-    void
-    (*destructor)(
-        void *))
+    axutil_threadkey_t * axis2_key)
 {
     int rc = -1;
     pthread_key_t key = axis2_key->key;
-    rc = pthread_key_create(&key, destructor);
+    rc = pthread_key_create(&key, NULL);
     if(0 == rc)
         return AXIS2_SUCCESS;
     else
@@ -265,6 +262,14 @@ axutil_thread_setspecific(
         return AXIS2_SUCCESS;
     else
         return AXIS2_FAILURE;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axutil_thread_key_free(
+    axutil_threadkey_t * axis2_key)
+{
+    pthread_key_t key = axis2_key->key;
+    pthread_key_delete(key);
 }
 
 AXIS2_EXTERN axis2_os_thread_t *AXIS2_CALL

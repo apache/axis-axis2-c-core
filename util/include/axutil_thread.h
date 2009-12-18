@@ -140,6 +140,39 @@ extern "C"
     );
 
     /**
+     * function is used to allocate a new key. This key now becomes valid for all threads in our process. 
+     * When a key is created, the value it points to defaults to NULL. Later on each thread may change 
+     * its copy of the value as it wishes.
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_thread_key_create(
+        axutil_threadkey_t * axis2_key);
+    /**
+     * This function is used to get the value of a given key
+     * @return void*. A key's value is simply a void pointer (void*)
+     */
+    AXIS2_EXTERN void *AXIS2_CALL
+    axutil_thread_getspecific(
+        axutil_threadkey_t * axis2_key);
+
+    /**
+     * This function is used to get the value of a given key
+     * @param keys value. A key's value is simply a void pointer (void*), so we can 
+     *        store in it anything that we want
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_thread_setspecific(
+        axutil_threadkey_t * axis2_key,
+        void *value);
+
+    /**
+     * This function is used free the tls key.
+     */
+    AXIS2_EXTERN void AXIS2_CALL
+    axutil_thread_key_free(
+        axutil_threadkey_t * axis2_key);
+
+    /**
      * Initialize the control variable for axutil_thread_once.
      * @param control The control variable to initialize
      * @return The status of the operation
