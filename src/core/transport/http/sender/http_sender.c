@@ -168,7 +168,7 @@ axis2_http_sender_connection_map_get(
         const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
-static void 
+static void AXIS2_CALL
 axis2_http_sender_connection_map_free(
     void *cm_void,
     const axutil_env_t *env);
@@ -3372,7 +3372,7 @@ axis2_http_sender_connection_map_get(
     return http_client;
 }
 
-static void 
+static void AXIS2_CALL
 axis2_http_sender_connection_map_free(
     void *cm_void,
     const axutil_env_t *env)
