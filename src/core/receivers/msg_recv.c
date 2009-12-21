@@ -29,6 +29,10 @@
 struct axis2_msg_recv
 {
     axis2_char_t *scope;
+	/**
+	 * conf ctx is added to pass for the load_and_init_svc method
+	 */
+	axis2_conf_ctx_t *conf_ctx;
 
     void *derived;
 
@@ -135,7 +139,9 @@ axis2_msg_recv_load_and_init_svc_impl(
 
     if(impl_class)
     {
-        AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *)impl_class, env);
+		axis2_conf_t *conf = NULL;
+		conf = axis2_conf_ctx_get_conf(msg_recv->conf_ctx, env);
+        AXIS2_SVC_SKELETON_INIT_WITH_CONF((axis2_svc_skeleton_t *)impl_class, env, conf);
     }
 
     axis2_svc_set_impl_class(svc, env, impl_class);
@@ -160,7 +166,7 @@ axis2_msg_recv_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-
+    msg_recv->conf_ctx = NULL;
     msg_recv->scope = axutil_strdup(env, "app*");
     msg_recv->derived = NULL;
     msg_recv->load_and_init_svc = axis2_msg_recv_load_and_init_svc_impl;
@@ -534,4 +540,21 @@ axis2_msg_recv_load_and_init_svc(
         /* message receivers without physical service (e.g : programatical service injection) */
         return AXIS2_SUCCESS;
     }
+}
+AXIS2_EXPORT void AXIS2_CALL
+	axis2_msg_recv_set_conf_ctx(axis2_msg_recv_t *msg_recv,
+	const axutil_env_t *env,
+	struct axis2_conf_ctx *conf_ctx)
+{
+	msg_recv->conf_ctx = conf_ctx;
+}
+
+AXIS2_EXPORT struct axis2_conf_ctx* AXIS2_CALL
+axis2_msg_recv_get_msg_ctx(
+						   axis2_msg_recv_t *msg_recv,
+						   const axutil_env_t *env)
+{
+	if(msg_recv)
+		return msg_recv->conf_ctx;
+	return NULL;
 }
