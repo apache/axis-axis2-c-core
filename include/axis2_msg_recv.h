@@ -237,6 +237,29 @@ extern "C"
     axis2_msg_recv_create(
         const axutil_env_t * env);
 
+	/**
+	 * Configuration context is attached to the message receiver so that conf_ctx can be assccessed in load_and_init
+	 * method at service load time.
+	 * @param msg_recv axis2_msg_recv instance
+	 * @param env axutil environment 
+	 * @param axis2_conf_ctx Configuration context instance
+	 */
+	AXIS2_EXPORT void AXIS2_CALL
+		axis2_msg_recv_set_conf_ctx(
+		axis2_msg_recv_t *msg_recv,
+		const axutil_env_t *env,
+		struct axis2_conf_ctx *conf_ctx);
+
+	/**
+	 * Returns the Configuration context which is attached to the message receiver
+	 * @param msg_recv axis2_msg_recv instance
+	 * @param env axutil environment 
+	 * @returns configuration context
+	 */
+	AXIS2_EXPORT struct axis2_conf_ctx* AXIS2_CALL
+		axis2_msg_recv_get_conf_ctx(
+		axis2_msg_recv_t *msg_recv,
+		const axutil_env_t *env);
     /** @} */
 #ifdef __cplusplus
 }
