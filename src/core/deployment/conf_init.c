@@ -325,17 +325,40 @@ axis2_load_services(
         void *svc = NULL;
         for(hi = axutil_hash_first(svc_map, env); hi; hi = axutil_hash_next(env, hi))
         {
-            axis2_svc_t *svc_desc = NULL;
-            axutil_param_t *impl_info_param = NULL;
             void *impl_class = NULL;
-            const axis2_char_t *svc_name = NULL;
-
+			axutil_hash_t *ops_hash = NULL;
+			axis2_msg_recv_t *msg_recv = NULL;
             axutil_hash_this(hi, NULL, NULL, &svc);
             if(!svc)
             {
                 continue;
             }
+			impl_class = axis2_svc_get_impl_class(svc, env);
+			if(impl_class)
+				continue;
 
+			ops_hash = axis2_svc_get_all_ops(svc, env);
+			if(ops_hash)
+			{
+				axutil_hash_index_t *op_hi = NULL;
+				void *op = NULL;
+				op_hi = axutil_hash_first(ops_hash, env);
+				if(op_hi)
+				{
+					axutil_hash_this(op_hi, NULL, NULL, &op);
+					if(op)
+					{
+						msg_recv = axis2_op_get_msg_recv(op, env);
+						if(msg_recv)
+						{
+							axis2_msg_recv_set_conf_ctx(msg_recv, env, conf_ctx);
+							axis2_msg_recv_load_and_init_svc(msg_recv, env, svc);
+						}
+					}
+				}
+
+			}
+			/*
             svc_desc = (axis2_svc_t *)svc;
             if(!svc_desc)
             {
@@ -366,6 +389,8 @@ axis2_load_services(
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Initialization failed for the service %s. "
                     "Check the service's init_with_conf() function for errors and retry", svc_name);
             }
+			*/
+
         }
     }
     status = AXIS2_SUCCESS;
