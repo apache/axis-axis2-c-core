@@ -280,7 +280,7 @@ axutil_thread_setspecific(
     void *value)
 {
     DWORD tls_key = axis2_key->key;
-    if(!TlsSetValue(key, value))
+    if(!TlsSetValue(tls_key, value))
     {
         return AXIS2_FAILURE;
     }
@@ -290,7 +290,7 @@ axutil_thread_setspecific(
     }
 }
 
-AXIS2_EXTERN axis2_void AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axutil_thread_key_free(
     axutil_threadkey_t * axis2_key)
 {
