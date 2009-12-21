@@ -550,7 +550,7 @@ AXIS2_EXPORT void AXIS2_CALL
 }
 
 AXIS2_EXPORT struct axis2_conf_ctx* AXIS2_CALL
-axis2_msg_recv_get_msg_ctx(
+axis2_msg_recv_get_conf_ctx(
 						   axis2_msg_recv_t *msg_recv,
 						   const axutil_env_t *env)
 {
