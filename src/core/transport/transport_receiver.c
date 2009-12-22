@@ -82,6 +82,6 @@ axis2_transport_receiver_set_is_application_client_side(
     const axutil_env_t * env,
     axis2_bool_t is_application_client_side)
 {
-    return (transport_receiver)->ops->set_is_application_client_side(transport_receiver, env, 
+    (transport_receiver)->ops->set_is_application_client_side(transport_receiver, env,
             is_application_client_side);
 }

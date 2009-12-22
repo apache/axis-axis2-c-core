@@ -137,6 +137,10 @@ axis2_http_sender_configure_proxy_digest_auth(
     axis2_http_simple_request_t * request,
     axis2_char_t * header_data);
 
+
+
+#endif
+
 static axutil_hash_t *
 axis2_http_sender_connection_map_create(
     const axutil_env_t *env,
@@ -166,8 +170,6 @@ static void AXIS2_CALL
 axis2_http_sender_connection_map_free(
     void *cm_void,
     const axutil_env_t *env);
-
-#endif
 
 AXIS2_EXTERN axis2_http_sender_t *AXIS2_CALL
 axis2_http_sender_create(

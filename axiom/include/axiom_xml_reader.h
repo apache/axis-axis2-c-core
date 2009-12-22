@@ -678,7 +678,7 @@ extern "C"
         axiom_xml_reader_t * parser,
         const axutil_env_t * env);
 
-    axis2_char_t *AXIS2_CALL
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_xml_reader_get_current_buffer(
         axiom_xml_reader_t * parser,
         const axutil_env_t * env);
