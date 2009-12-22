@@ -1049,6 +1049,7 @@ axiom_stax_builder_next_with_token(
 
     if(!(om_builder->cache))
     {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Cacheing disabled");
         return -1;
     }
     switch(token)
@@ -1131,3 +1132,22 @@ axiom_stax_builder_next_with_token(
     }
     return token;
 }
+
+
+AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
+axiom_stax_builder_get_parser(
+    axiom_stax_builder_t * om_builder,
+    const axutil_env_t * env)
+{
+    return om_builder->parser;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axiom_stax_builder_set_cache(
+    axiom_stax_builder_t * om_builder,
+    const axutil_env_t * env,
+    axis2_bool_t enable_cache)
+{
+    om_builder->cache = enable_cache;
+}
+

@@ -671,6 +671,7 @@ extern "C"
      */
     #define AXIS2_HTTP_HEADER_CONNECTION_KEEPALIVE "Keep-Alive"
 
+    #define AXIS2_TRANPORT_IS_APPLICATION_CLIENT_SIDE "is_app_client_side"
     /**
      * HEADER_ACCEPT
      */

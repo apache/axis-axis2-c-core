@@ -172,6 +172,10 @@ extern "C"
         void *user_param,
         axis2_char_t *callback_name);
 
+    AXIS2_EXTERN struct axiom_soap_builder *AXIS2_CALL
+    axiom_soap_body_get_builder(
+        axiom_soap_body_t * soap_body,
+        const axutil_env_t * env);
 
 #ifdef __cplusplus
 }

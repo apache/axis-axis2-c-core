@@ -134,6 +134,17 @@ extern "C"
         struct axiom_stax_builder *builder,
         const axutil_env_t * env);
 
+    AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
+    axiom_stax_builder_get_parser(
+        axiom_stax_builder_t * om_builder,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_stax_builder_set_cache(
+        axiom_stax_builder_t * om_builder,
+        const axutil_env_t * env,
+        axis2_bool_t enable_cache);
+
     /** @} */
 
 #ifdef __cplusplus

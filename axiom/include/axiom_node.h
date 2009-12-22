@@ -365,6 +365,11 @@ extern "C"
     axiom_node_to_string_non_optimized(
         axiom_node_t * om_node,
         const axutil_env_t * env);
+    
+    AXIS2_EXTERN struct axiom_stax_builder *AXIS2_CALL
+                axiom_node_get_builder(
+                    axiom_node_t * om_node,
+                    const axutil_env_t * env);
     /** @} */
 
 #ifdef __cplusplus

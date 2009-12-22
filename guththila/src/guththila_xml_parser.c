@@ -1781,3 +1781,12 @@ guththila_next_no_char(
     }
     return -1;
 }
+
+GUTHTHILA_EXPORT guththila_char_t *GUTHTHILA_CALL
+guththila_get_current_buffer(
+    guththila_t * m,
+    const axutil_env_t * env)
+{
+    return guththila_buffer_get(&m->buffer, env);
+}
+

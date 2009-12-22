@@ -41,6 +41,7 @@ struct axis2_http_worker
 {
     axis2_conf_ctx_t *conf_ctx;
     int svr_port;
+    axis2_bool_t is_application_client_side;
 };
 
 static axis2_status_t
@@ -79,6 +80,8 @@ axis2_http_worker_create(
     }
     http_worker->conf_ctx = conf_ctx;
     http_worker->svr_port = 9090; /* default - must set later */
+    http_worker->is_application_client_side = AXIS2_FALSE; /* default is creating for application 
+                                                              server side */
 
     return http_worker;
 }
@@ -732,6 +735,19 @@ axis2_http_worker_process_request(
     {
         if(is_put)
         {
+            axutil_property_t *property = NULL;
+            if(http_worker->is_application_client_side)
+            {
+                property = axutil_property_create_with_args(env, AXIS2_SCOPE_REQUEST, AXIS2_TRUE, 0, 
+                        AXIS2_VALUE_TRUE);
+            }
+            else
+            {
+                property = axutil_property_create_with_args(env, AXIS2_SCOPE_REQUEST, AXIS2_FALSE, 
+                        0, AXIS2_VALUE_FALSE);
+            }
+            axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANPORT_IS_APPLICATION_CLIENT_SIDE, 
+                    property);
             status = axis2_http_transport_utils_process_http_put_request(env, msg_ctx,
                 request_body, out_stream, content_type, content_length, soap_action_str,
                 url_ext_form);
@@ -739,6 +755,19 @@ axis2_http_worker_process_request(
         }
         else
         {
+            axutil_property_t *property = NULL;
+            if(http_worker->is_application_client_side)
+            {
+                property = axutil_property_create_with_args(env, AXIS2_SCOPE_REQUEST, AXIS2_TRUE, 0,
+                        AXIS2_VALUE_TRUE);
+            }
+            else
+            {
+                property = axutil_property_create_with_args(env, AXIS2_SCOPE_REQUEST, AXIS2_FALSE,
+                        0, AXIS2_VALUE_FALSE);
+            }
+            axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANPORT_IS_APPLICATION_CLIENT_SIDE, 
+                    property);
             status = axis2_http_transport_utils_process_http_post_request(env, msg_ctx,
                 request_body, out_stream, content_type, content_length, soap_action_str,
                 url_ext_form);
@@ -2020,4 +2049,14 @@ axis2_http_worker_create_simple_response(
     }
     return response;
 }
+
+AXIS2_EXTERN void AXIS2_CALL
+axis2_http_worker_set_is_application_client_side(
+    axis2_http_worker_t *http_worker,
+    const axutil_env_t *env,
+    axis2_bool_t application_client_side)
+{
+    http_worker->is_application_client_side = application_client_side;
+}
+
 

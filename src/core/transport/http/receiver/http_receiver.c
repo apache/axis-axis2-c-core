@@ -37,6 +37,7 @@ typedef struct axis2_http_server_impl
     int port;
     axis2_conf_ctx_t *conf_ctx;
     axis2_conf_ctx_t *conf_ctx_private;
+    axis2_bool_t is_application_client_side;
 } axis2_http_server_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(http_server) \
@@ -78,13 +79,20 @@ axis2_http_server_is_running(
     const axutil_env_t * env);
 
 static void AXIS2_CALL
+axis2_http_server_set_is_application_client_side(
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env,
+    axis2_bool_t is_application_client_side);
+
+static void AXIS2_CALL
 axis2_http_server_free(
     axis2_transport_receiver_t * server,
     const axutil_env_t * env);
 
 static const axis2_transport_receiver_ops_t http_transport_receiver_ops_var = {
     axis2_http_server_init, axis2_http_server_start, axis2_http_server_get_reply_to_epr,
-    axis2_http_server_get_conf_ctx, axis2_http_server_is_running, axis2_http_server_stop,
+    axis2_http_server_get_conf_ctx, axis2_http_server_is_running, 
+    axis2_http_server_set_is_application_client_side, axis2_http_server_stop,
     axis2_http_server_free };
 
 AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
@@ -108,6 +116,7 @@ axis2_http_server_create(
     server_impl->conf_ctx = NULL;
     server_impl->conf_ctx_private = NULL;
     server_impl->port = port;
+    server_impl->is_application_client_side = AXIS2_FALSE;
 
     server_impl->http_server.ops = &http_transport_receiver_ops_var;
 
@@ -254,7 +263,6 @@ axis2_http_server_start(
     axis2_transport_receiver_t * server,
     const axutil_env_t * env)
 {
-
     axis2_http_server_impl_t *server_impl = NULL;
     axis2_http_worker_t *worker = NULL;
 
@@ -274,6 +282,8 @@ axis2_http_server_start(
         axis2_http_svr_thread_free(server_impl->svr_thread, env);
         return AXIS2_FAILURE;
     }
+    axis2_http_worker_set_is_application_client_side(worker, env, 
+            server_impl->is_application_client_side);
     axis2_http_worker_set_svr_port(worker, env, server_impl->port);
     AXIS2_LOG_INFO(env->log, "Starting HTTP server thread");
     axis2_http_svr_thread_set_worker(server_impl->svr_thread, env, worker);
@@ -342,6 +352,17 @@ axis2_http_server_is_running(
         return axis2_http_svr_thread_is_running(server_impl->svr_thread, env);
     }
     return AXIS2_FALSE;
+}
+
+static void AXIS2_CALL
+axis2_http_server_set_is_application_client_side(
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env,
+    axis2_bool_t is_application_client_side)
+{
+    axis2_http_server_impl_t *server_impl = NULL;
+    server_impl = AXIS2_INTF_TO_IMPL(server);
+    server_impl->is_application_client_side = is_application_client_side;
 }
 
 /**

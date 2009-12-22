@@ -402,6 +402,18 @@ axiom_soap_envelope_set_builder(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axiom_soap_builder_t *AXIS2_CALL
+axiom_soap_envelope_get_builder(
+    axiom_soap_envelope_t * soap_envelope,
+    const axutil_env_t * env)
+{
+    if(!soap_envelope)
+    {
+        return NULL;
+    }
+    return soap_envelope->soap_builder;
+}
+
 AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
 axiom_soap_envelope_create_default_soap_envelope(
     const axutil_env_t * env,

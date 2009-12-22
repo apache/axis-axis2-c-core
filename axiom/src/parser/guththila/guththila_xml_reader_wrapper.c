@@ -117,6 +117,16 @@ guththila_xml_reader_wrapper_get_namespace_uri_by_prefix(
     const axutil_env_t * env,
     axis2_char_t * prefix);
 
+void *AXIS2_CALL
+guththila_xml_reader_wrapper_get_context(
+    axiom_xml_reader_t * parser,
+    const axutil_env_t * env);
+
+axis2_char_t *AXIS2_CALL
+guththila_xml_reader_wrapper_get_current_buffer(
+    axiom_xml_reader_t * parser,
+    const axutil_env_t * env);
+
 /*********** guththila_xml_reader_wrapper_impl_t wrapper struct   *******************/
 
 typedef struct guththila_xml_reader_wrapper_impl
@@ -125,6 +135,7 @@ typedef struct guththila_xml_reader_wrapper_impl
     guththila_t *guththila_parser;
     guththila_reader_t *reader;
     int event_map[10];
+    void *context;
 
 } guththila_xml_reader_wrapper_impl_t;
 
@@ -169,7 +180,9 @@ static const axiom_xml_reader_ops_t axiom_xml_reader_ops_var = { guththila_xml_r
     guththila_xml_reader_wrapper_get_dtd, guththila_xml_reader_wrapper_xml_free,
     guththila_xml_reader_wrapper_get_char_set_encoding,
     guththila_xml_reader_wrapper_get_namespace_uri,
-    guththila_xml_reader_wrapper_get_namespace_uri_by_prefix };
+    guththila_xml_reader_wrapper_get_namespace_uri_by_prefix,
+    guththila_xml_reader_wrapper_get_context,
+    guththila_xml_reader_wrapper_get_current_buffer};
 
 /********************************************************************************/
 
@@ -211,6 +224,7 @@ axiom_xml_reader_create_for_file(
     }
 
     guththila_impl->guththila_parser = guththila;
+    guththila_impl->context = NULL;
     guththila_impl->parser.ops = NULL;
     /*    guththila_impl->parser.ops =
      (axiom_xml_reader_ops_t *) AXIS2_MALLOC(env->allocator,
@@ -276,6 +290,7 @@ axiom_xml_reader_create_for_io(
     }
 
     guththila_impl->guththila_parser = guththila;
+    guththila_impl->context = ctx;
     guththila_impl->parser.ops = NULL;
     /*  guththila_impl->parser.ops = (axiom_xml_reader_ops_t *)
      AXIS2_MALLOC(env->allocator, sizeof(axiom_xml_reader_ops_t));
@@ -353,6 +368,7 @@ axiom_xml_reader_create_for_memory(
     }
 
     guththila_impl->guththila_parser = guththila;
+    guththila_impl->context = NULL;
     guththila_impl->parser.ops = NULL;
     /*    guththila_impl->parser.ops = (axiom_xml_reader_ops_t *)
      AXIS2_MALLOC(env->allocator, sizeof(axiom_xml_reader_ops_t));
@@ -576,3 +592,22 @@ guththila_xml_reader_wrapper_get_namespace_uri_by_prefix(
 {
     return (axis2_char_t *)NULL;
 }
+
+void *AXIS2_CALL
+guththila_xml_reader_wrapper_get_context(
+    axiom_xml_reader_t * parser,
+    const axutil_env_t * env)
+{
+    guththila_xml_reader_wrapper_impl_t* parser_impl = NULL;
+    parser_impl = AXIS2_INTF_TO_IMPL(parser);
+    return parser_impl->context;
+}
+
+axis2_char_t *AXIS2_CALL
+guththila_xml_reader_wrapper_get_current_buffer(
+    axiom_xml_reader_t * parser,
+    const axutil_env_t * env)
+{
+    return guththila_get_current_buffer(AXIS2_INTF_TO_IMPL(parser)->guththila_parser, env);
+}
+

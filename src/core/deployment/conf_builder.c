@@ -1159,7 +1159,7 @@ axis2_conf_builder_process_transport_recvs(
                     axis2_transport_in_desc_free(transport_in, env);
                     return status;
                 }
-
+                axis2_transport_receiver_set_is_application_client_side(recv, env, AXIS2_TRUE);
                 stat = axis2_transport_in_desc_set_recv(transport_in, env, recv);
 
                 if(!stat)

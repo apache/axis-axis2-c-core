@@ -75,3 +75,13 @@ axis2_transport_receiver_is_running(
 {
     return (transport_receiver)->ops->is_running(transport_receiver, env);
 }
+
+AXIS2_EXTERN void AXIS2_CALL
+axis2_transport_receiver_set_is_application_client_side(
+    axis2_transport_receiver_t * transport_receiver,
+    const axutil_env_t * env,
+    axis2_bool_t is_application_client_side)
+{
+    return (transport_receiver)->ops->set_is_application_client_side(transport_receiver, env, 
+            is_application_client_side);
+}

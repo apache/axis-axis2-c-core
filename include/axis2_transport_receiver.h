@@ -112,6 +112,11 @@ extern "C"
         axis2_bool_t(AXIS2_CALL * is_running)(
             axis2_transport_receiver_t * server,
             const axutil_env_t * env);
+        
+        void(AXIS2_CALL * set_is_application_client_side)(
+            axis2_transport_receiver_t * server,
+            const axutil_env_t * env,
+            axis2_bool_t is_application_client_side);
 
         /**
          * @param transport_receiver pointer to transport receiver
@@ -191,6 +196,12 @@ extern "C"
     axis2_transport_receiver_is_running(
         axis2_transport_receiver_t * transport_receiver,
         const axutil_env_t * env);
+    
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_transport_receiver_set_is_application_client_side(
+        axis2_transport_receiver_t * transport_receiver,
+        const axutil_env_t * env,
+        axis2_bool_t is_application_client_side);
 
     /** @} */
 

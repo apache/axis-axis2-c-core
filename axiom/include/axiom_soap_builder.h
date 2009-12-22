@@ -254,6 +254,10 @@ extern "C"
         axiom_node_t *om_element_node,
         axiom_element_t *om_element);
         
+    AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
+    axiom_soap_builder_get_om_builder(
+        axiom_soap_builder_t * builder,
+        const axutil_env_t * env);
 
 
 

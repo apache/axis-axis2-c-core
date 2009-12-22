@@ -229,6 +229,11 @@ extern "C"
     axiom_soap_envelope_get_soap_builder(
         axiom_soap_envelope_t * envelope,
         const axutil_env_t * env);
+    
+    AXIS2_EXTERN struct axiom_soap_builder *AXIS2_CALL
+    axiom_soap_envelope_get_builder(
+        axiom_soap_envelope_t * envelope,
+        const axutil_env_t * env);
 
     /** @} */
 

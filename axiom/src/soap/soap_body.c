@@ -235,6 +235,18 @@ axiom_soap_body_set_builder(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axiom_soap_builder_t *AXIS2_CALL
+axiom_soap_body_get_builder(
+    axiom_soap_body_t * soap_body,
+    const axutil_env_t * env)
+{
+    if(!soap_body)
+    {
+        return NULL;
+    }
+    return soap_body->soap_builder;
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_body_build(
     axiom_soap_body_t * soap_body,
@@ -528,3 +540,5 @@ axiom_soap_body_process_attachments(
         return axiom_soap_body_build(soap_body, env);
     }
 }
+
+

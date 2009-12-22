@@ -342,6 +342,12 @@ guththila_get_encoding(guththila_t * p, const axutil_env_t * env);
 GUTHTHILA_EXPORT void GUTHTHILA_CALL
 guththila_set_error_handler(guththila_t * m, guththila_error_func, 
 							const axutil_env_t * env);
+
+GUTHTHILA_EXPORT guththila_char_t *GUTHTHILA_CALL
+guththila_get_current_buffer(
+    guththila_t * m,
+    const axutil_env_t * env);
+
 EXTERN_C_END() 
 #endif  
 

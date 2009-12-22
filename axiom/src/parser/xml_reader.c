@@ -184,3 +184,20 @@ axiom_xml_reader_get_namespace_uri_by_prefix(
 {
     return (parser)->ops->get_namespace_uri_by_prefix(parser, env, prefix);
 }
+
+AXIS2_EXTERN void *AXIS2_CALL
+axiom_xml_reader_get_context(
+    axiom_xml_reader_t * parser,
+    const axutil_env_t * env)
+{
+    return (parser)->ops->get_context(parser, env);
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axiom_xml_reader_get_current_buffer(
+    axiom_xml_reader_t * parser,
+    const axutil_env_t * env)
+{
+    return (parser)->ops->get_current_buffer(parser, env);
+}
+

@@ -1287,3 +1287,16 @@ axiom_soap_builder_replace_xop(
 
     return is_replaced;
 }
+
+AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
+axiom_soap_builder_get_om_builder(
+    axiom_soap_builder_t * soap_builder,
+    const axutil_env_t * env)
+{
+    if(!soap_builder)
+    {
+        return NULL;
+    }
+    return soap_builder->om_builder;
+}
+

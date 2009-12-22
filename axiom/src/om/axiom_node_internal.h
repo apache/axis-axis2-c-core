@@ -155,11 +155,6 @@ extern "C"
         const axutil_env_t * env,
         struct axiom_stax_builder *builder);
 
-    AXIS2_EXTERN struct axiom_stax_builder *AXIS2_CALL
-
-                axiom_node_get_builder(
-                    axiom_node_t * om_node,
-                    const axutil_env_t * env);
 
     /** @} */
 
