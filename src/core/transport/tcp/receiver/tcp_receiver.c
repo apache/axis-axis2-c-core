@@ -37,6 +37,7 @@ typedef struct axis2_tcp_server_impl
     axis2_conf_ctx_t *conf_ctx;
     axis2_conf_ctx_t *conf_ctx_private;
     axis2_conf_t *conf;
+	axis2_bool_t is_application_client_side;
 } axis2_tcp_server_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(tcp_server) \
@@ -75,13 +76,20 @@ axis2_tcp_server_is_running(
     axis2_transport_receiver_t * server,
     const axutil_env_t * env);
 
+static void AXIS2_CALL
+axis2_tcp_server_set_is_application_client_side(
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env,
+    axis2_bool_t is_application_client_side);
+
 void AXIS2_CALL axis2_tcp_server_free(
     axis2_transport_receiver_t * server,
     const axutil_env_t * env);
 
 static const axis2_transport_receiver_ops_t tcp_transport_receiver_ops_var = {
     axis2_tcp_server_init, axis2_tcp_server_start, axis2_tcp_server_get_reply_to_epr,
-    axis2_tcp_server_get_conf_ctx, axis2_tcp_server_is_running, axis2_tcp_server_stop,
+    axis2_tcp_server_get_conf_ctx, axis2_tcp_server_is_running,axis2_tcp_server_set_is_application_client_side,
+	axis2_tcp_server_stop,
     axis2_tcp_server_free };
 
 AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
@@ -156,6 +164,17 @@ axis2_tcp_server_free(
     server_impl->conf_ctx = NULL;
     AXIS2_FREE(env->allocator, server_impl);
     return;
+}
+
+static void AXIS2_CALL
+axis2_tcp_server_set_is_application_client_side(
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env,
+    axis2_bool_t is_application_client_side)
+{
+    axis2_tcp_server_impl_t *server_impl = NULL;
+    server_impl = AXIS2_INTF_TO_IMPL(server);
+    server_impl->is_application_client_side = is_application_client_side;
 }
 
 axis2_status_t AXIS2_CALL
