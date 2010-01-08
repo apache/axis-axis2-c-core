@@ -168,7 +168,7 @@ axutil_thread_exit(
             same_thread = pthread_equal(pthread_self(), *thd->td);
             if(!same_thread)
             {
-                pthread_kill(thd->td, 0);
+                pthread_kill(*(thd->td), 0);
                 axutil_thread_join(thd);
             }
             AXIS2_FREE(allocator, thd->td);
