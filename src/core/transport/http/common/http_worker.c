@@ -244,8 +244,10 @@ axis2_http_worker_process_request(
         cookie_header_value = axis2_http_header_get_value(cookie_header, env);
         session_id = axis2_http_transport_utils_get_session_id_from_cookie(env, 
                 cookie_header_value);
+		if(session_id)
         session_str = env->get_session_fn((void *) conf_ctx, session_id);
-        axis2_http_transport_utils_set_session(env, msg_ctx, session_str);
+		if(session_str)
+		axis2_http_transport_utils_set_session(env, msg_ctx, session_str);
     }
     
     /*connection_header = axis2_http_simple_request_get_first_header(simple_request, env,
