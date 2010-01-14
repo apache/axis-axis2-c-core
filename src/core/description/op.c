@@ -800,8 +800,8 @@ axis2_op_get_axis_specific_mep_const(
     {
         temp = AXIS2_MEP_CONSTANT_OUT_OPTIONAL_IN;
     }
-    else if((axutil_strcmp(AXIS2_MEP_URI_ROBUST_IN_ONLY, axis2_op_get_msg_exchange_pattern(op, env)) == 0)) ||
-		(axutil_strcmp(AXIS2_MEP_URI_ROBUST_IN_ONLY_WSDL2, axis2_op_get_msg_exchange_pattern(op, env)) == 0)))
+    else if((axutil_strcmp(AXIS2_MEP_URI_ROBUST_IN_ONLY, axis2_op_get_msg_exchange_pattern(op, env)) == 0) ||
+		(axutil_strcmp(AXIS2_MEP_URI_ROBUST_IN_ONLY_WSDL2, axis2_op_get_msg_exchange_pattern(op, env)) == 0))
     {
         temp = AXIS2_MEP_CONSTANT_ROBUST_IN_ONLY;
     }
