@@ -770,43 +770,46 @@ axis2_op_get_axis_specific_mep_const(
 
     temp = AXIS2_MEP_CONSTANT_INVALID;
 
-    if(axutil_strcmp(AXIS2_MEP_URI_IN_OUT, axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+    if((axutil_strcmp(AXIS2_MEP_URI_IN_OUT, axis2_op_get_msg_exchange_pattern(op, env)) == 0) ||
+		(axutil_strcmp(AXIS2_MEP_URI_IN_OUT_WSDL2, axis2_op_get_msg_exchange_pattern(op, env)) == 0))
     {
         temp = AXIS2_MEP_CONSTANT_IN_OUT;
     }
-    else if(axutil_strcmp(AXIS2_MEP_URI_IN_ONLY, axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+    else if((axutil_strcmp(AXIS2_MEP_URI_IN_ONLY, axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+		|| (axutil_strcmp(AXIS2_MEP_URI_IN_ONLY_WSDL2, axis2_op_get_msg_exchange_pattern(op, env)) == 0))
     {
         temp = AXIS2_MEP_CONSTANT_IN_ONLY;
-    }
-    else if(axutil_strcmp(AXIS2_MEP_URI_IN_OPTIONAL_OUT, axis2_op_get_msg_exchange_pattern(op, env))
-        == 0)
+    } 
+    else if((axutil_strcmp(AXIS2_MEP_URI_IN_OPTIONAL_OUT, axis2_op_get_msg_exchange_pattern(op, env))== 0) ||
+		(axutil_strcmp(AXIS2_MEP_URI_IN_OPTIONAL_OUT_WSDL2, axis2_op_get_msg_exchange_pattern(op, env))== 0))
     {
         temp = AXIS2_MEP_CONSTANT_IN_OPTIONAL_OUT;
     }
-    else if(axutil_strcmp(AXIS2_MEP_URI_OUT_IN, axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+    else if((axutil_strcmp(AXIS2_MEP_URI_OUT_IN, axis2_op_get_msg_exchange_pattern(op, env)) == 0) ||
+		(axutil_strcmp(AXIS2_MEP_URI_OUT_IN_WSDL2, axis2_op_get_msg_exchange_pattern(op, env)) == 0))
     {
         temp = AXIS2_MEP_CONSTANT_OUT_IN;
     }
-    else if(axutil_strcmp(AXIS2_MEP_URI_OUT_ONLY, axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+    else if((axutil_strcmp(AXIS2_MEP_URI_OUT_ONLY, axis2_op_get_msg_exchange_pattern(op, env)) == 0) ||
+		(axutil_strcmp(AXIS2_MEP_URI_OUT_ONLY_WSDL2, axis2_op_get_msg_exchange_pattern(op, env)) == 0))
     {
         temp = AXIS2_MEP_CONSTANT_OUT_ONLY;
     }
-    else if(axutil_strcmp(AXIS2_MEP_URI_OUT_OPTIONAL_IN, axis2_op_get_msg_exchange_pattern(op, env))
-        == 0)
+    else if((axutil_strcmp(AXIS2_MEP_URI_OUT_OPTIONAL_IN, axis2_op_get_msg_exchange_pattern(op, env)) == 0) ||
+		(axutil_strcmp(AXIS2_MEP_URI_OUT_OPTIONAL_IN_WSDL2, axis2_op_get_msg_exchange_pattern(op, env)) == 0))
     {
         temp = AXIS2_MEP_CONSTANT_OUT_OPTIONAL_IN;
     }
-    else if(axutil_strcmp(AXIS2_MEP_URI_ROBUST_IN_ONLY, axis2_op_get_msg_exchange_pattern(op, env))
-        == 0)
+    else if((axutil_strcmp(AXIS2_MEP_URI_ROBUST_IN_ONLY, axis2_op_get_msg_exchange_pattern(op, env)) == 0)) ||
+		(axutil_strcmp(AXIS2_MEP_URI_ROBUST_IN_ONLY_WSDL2, axis2_op_get_msg_exchange_pattern(op, env)) == 0)))
     {
         temp = AXIS2_MEP_CONSTANT_ROBUST_IN_ONLY;
     }
-    else if(axutil_strcmp(AXIS2_MEP_URI_ROBUST_OUT_ONLY, axis2_op_get_msg_exchange_pattern(op, env))
-        == 0)
+    else if((axutil_strcmp(AXIS2_MEP_URI_ROBUST_OUT_ONLY, axis2_op_get_msg_exchange_pattern(op, env)) == 0) ||
+		(axutil_strcmp(AXIS2_MEP_URI_ROBUST_OUT_ONLY_WSDL2, axis2_op_get_msg_exchange_pattern(op, env)) == 0))
     {
         temp = AXIS2_MEP_CONSTANT_ROBUST_OUT_ONLY;
     }
-
     if(temp == AXIS2_MEP_CONSTANT_INVALID)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
