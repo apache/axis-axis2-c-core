@@ -97,6 +97,16 @@ extern "C"
             const axutil_env_t * env,
             const axis2_char_t * svc_name);
 
+		     /**
+         * @param tranport_receiver pointer to transport receiver
+         * @param env pointer to environment struct
+         * @param svc_name pointer to service name
+         */
+        axis2_endpoint_ref_t *(AXIS2_CALL * get_epr_for_service)(
+            axis2_transport_receiver_t * transport_receiver,
+            const axutil_env_t * env,
+            const axis2_char_t * svc_name);
+
         /**
          * @param server pointer to server
          * @param env pointer to environment struct
@@ -202,6 +212,11 @@ extern "C"
         axis2_transport_receiver_t * transport_receiver,
         const axutil_env_t * env,
         axis2_bool_t is_application_client_side);
+
+	AXIS2_EXTERN axis2_endpoint_ref_t* AXIS2_CALL
+		axis2_transport_receiver_get_epr_for_service(axis2_transport_receiver_t *transport_receiver,
+		const axutil_env_t *env,
+		const axis2_char_t *svc_name);
 
     /** @} */
 
