@@ -73,6 +73,12 @@ axis2_http_server_get_reply_to_epr(
     const axutil_env_t * env,
     const axis2_char_t * svc_name);
 
+static axis2_endpoint_ref_t *AXIS2_CALL
+axis2_http_server_get_epr_for_service(
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env,
+    const axis2_char_t * svc_name);
+
 static axis2_bool_t AXIS2_CALL
 axis2_http_server_is_running(
     axis2_transport_receiver_t * server,
@@ -91,7 +97,7 @@ axis2_http_server_free(
 
 static const axis2_transport_receiver_ops_t http_transport_receiver_ops_var = {
     axis2_http_server_init, axis2_http_server_start, axis2_http_server_get_reply_to_epr,
-    axis2_http_server_get_conf_ctx, axis2_http_server_is_running, 
+	axis2_http_server_get_epr_for_service, axis2_http_server_get_conf_ctx, axis2_http_server_is_running, 
     axis2_http_server_set_is_application_client_side, axis2_http_server_stop,
     axis2_http_server_free };
 
@@ -328,6 +334,43 @@ axis2_http_server_get_reply_to_epr(
     svc_path = axutil_stracat(env, AXIS2_DEFAULT_SVC_PATH, svc_name);
     url = axutil_url_create(env, AXIS2_HTTP_PROTOCOL, host_address,
         AXIS2_INTF_TO_IMPL(server)->port, svc_path);
+		
+    AXIS2_FREE(env->allocator, svc_path);
+    if(!url)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create reply to epr for service %s.",
+            svc_name);
+        return NULL;
+    }
+    epr = axis2_endpoint_ref_create(env, axutil_url_to_external_form(url, env));
+    axutil_url_free(url, env);
+    return epr;
+}
+
+static axis2_endpoint_ref_t *AXIS2_CALL
+axis2_http_server_get_epr_for_service(
+    axis2_transport_receiver_t * server,
+    const axutil_env_t * env,
+    const axis2_char_t * svc_name)
+{
+    axis2_endpoint_ref_t *epr = NULL;
+    const axis2_char_t *host_address = NULL;
+    axis2_char_t *svc_path = NULL;
+    axutil_url_t *url = NULL;
+	axis2_http_svr_thread_t *svr_thread  = NULL;
+	int port = -1;
+
+    host_address = AXIS2_DEFAULT_HOST_ADDRESS; /* TODO : get from axis2.xml */
+    svc_path = axutil_stracat(env, AXIS2_DEFAULT_SVC_PATH, svc_name);
+    
+	svr_thread = AXIS2_INTF_TO_IMPL(server)->svr_thread;
+	if(svr_thread)
+	port = axis2_http_svr_thread_get_local_port(svr_thread, env);
+	
+	url = axutil_url_create(env, AXIS2_HTTP_PROTOCOL, host_address,
+        port, svc_path);
+
+		
     AXIS2_FREE(env->allocator, svc_path);
     if(!url)
     {
