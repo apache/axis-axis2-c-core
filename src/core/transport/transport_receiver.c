@@ -60,6 +60,15 @@ axis2_transport_receiver_get_reply_to_epr(
     return (transport_receiver->ops)->get_reply_to_epr(transport_receiver, env, svc_name);
 }
 
+AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
+axis2_transport_receiver_get_epr_for_service(
+    axis2_transport_receiver_t * transport_receiver,
+    const axutil_env_t * env,
+    const axis2_char_t * svc_name)
+{
+    return (transport_receiver->ops)->get_epr_for_service(transport_receiver, env, svc_name);
+}
+
 AXIS2_EXTERN struct axis2_conf_ctx *AXIS2_CALL
 axis2_transport_receiver_get_conf_ctx(
     axis2_transport_receiver_t * transport_receiver,
