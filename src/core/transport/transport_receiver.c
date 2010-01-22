@@ -69,6 +69,24 @@ axis2_transport_receiver_get_epr_for_service(
     return (transport_receiver->ops)->get_epr_for_service(transport_receiver, env, svc_name);
 }
 
+AXIS2_EXTERN  axis2_char_t* AXIS2_CALL
+axis2_transport_receiver_get_server_ip(
+axis2_transport_receiver_t *transport_receiver,
+const axutil_env_t *env)
+{
+	return (transport_receiver->ops)->get_server_ip(transport_receiver, env);
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axis2_transport_receiver_set_server_ip(
+axis2_transport_receiver_t *transport_receiver,
+const axutil_env_t *env,
+ axis2_char_t *serverip)
+{
+	(transport_receiver->ops)->set_server_ip(transport_receiver, env, serverip);
+}
+
+
 AXIS2_EXTERN struct axis2_conf_ctx *AXIS2_CALL
 axis2_transport_receiver_get_conf_ctx(
     axis2_transport_receiver_t * transport_receiver,
