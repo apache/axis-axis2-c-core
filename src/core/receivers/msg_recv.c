@@ -141,7 +141,7 @@ axis2_msg_recv_load_and_init_svc_impl(
     {
 		axis2_conf_t *conf = NULL;
 		conf = axis2_conf_ctx_get_conf(msg_recv->conf_ctx, env);
-        AXIS2_SVC_SKELETON_INIT_WITH_CONF((axis2_svc_skeleton_t *)impl_class, env, conf);
+        AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *)impl_class, env);
     }
 
     axis2_svc_set_impl_class(svc, env, impl_class);
