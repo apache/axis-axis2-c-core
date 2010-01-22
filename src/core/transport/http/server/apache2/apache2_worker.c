@@ -145,7 +145,10 @@ axis2_apache2_worker_create(
                 {
                     msg_recv = axis2_op_get_msg_recv(op, env);
                     if(msg_recv)
+					{
+						axis2_msg_recv_set_conf_ctx(msg_recv, env, apache2_worker->conf_ctx);
                         axis2_msg_recv_load_and_init_svc(msg_recv, env, svc);
+					}
                 }
             }
 
@@ -258,6 +261,12 @@ axis2_apache2_worker_process_request(
         env, AXIS2_TRANSPORT_ENUM_HTTP);
     in_desc = axis2_conf_get_transport_in(axis2_conf_ctx_get_conf(apache2_worker->conf_ctx, env),
         env, AXIS2_TRANSPORT_ENUM_HTTP);
+	{
+		axis2_transport_receiver_t *receiver = NULL;
+		receiver = axis2_transport_in_desc_get_recv(in_desc, env);
+		if(receiver)
+			axis2_transport_receiver_set_server_ip(receiver, env, request->connection->local_ip);
+	}
 
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
     axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
@@ -270,8 +279,10 @@ axis2_apache2_worker_process_request(
         axis2_char_t *session_id = NULL;
 
         session_id = axis2_http_transport_utils_get_session_id_from_cookie(env, cookie);
+		if(session_id)
         session_str = env->get_session_fn((void *) request, session_id);
-        axis2_http_transport_utils_set_session(env, msg_ctx, session_str);
+		if(session_str)
+		axis2_http_transport_utils_set_session(env, msg_ctx, session_str);
     }
 
     if(request->read_chunked == AXIS2_TRUE && 0 == content_length)
