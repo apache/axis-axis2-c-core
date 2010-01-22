@@ -21,6 +21,7 @@
 #include <axis2_transport_in_desc.h>
 #include <axutil_param_container.h>
 #include <axutil_url.h>
+#include <axutil_network_handler.h>
 #include <axis2_conf_init.h>
 #include <stdlib.h>
 
@@ -35,6 +36,7 @@ typedef struct axis2_http_server_impl
     axis2_transport_receiver_t http_server;
     axis2_http_svr_thread_t *svr_thread;
     int port;
+	axis2_char_t *svr_ip;
     axis2_conf_ctx_t *conf_ctx;
     axis2_conf_ctx_t *conf_ctx_private;
     axis2_bool_t is_application_client_side;
@@ -95,10 +97,28 @@ axis2_http_server_free(
     axis2_transport_receiver_t * server,
     const axutil_env_t * env);
 
+static  axis2_char_t* AXIS2_CALL
+axis2_http_server_get_server_ip(
+axis2_transport_receiver_t *transport_receiver,
+const axutil_env_t *env);
+
+static void AXIS2_CALL
+axis2_http_server_set_server_ip(
+axis2_transport_receiver_t *transport_receiver,
+const axutil_env_t *env,
+ axis2_char_t *serverip);
+
 static const axis2_transport_receiver_ops_t http_transport_receiver_ops_var = {
-    axis2_http_server_init, axis2_http_server_start, axis2_http_server_get_reply_to_epr,
-	axis2_http_server_get_epr_for_service, axis2_http_server_get_conf_ctx, axis2_http_server_is_running, 
-    axis2_http_server_set_is_application_client_side, axis2_http_server_stop,
+    axis2_http_server_init, 
+	axis2_http_server_start, 
+	axis2_http_server_get_reply_to_epr,
+	axis2_http_server_get_epr_for_service, 
+	axis2_http_server_get_server_ip, 
+	axis2_http_server_set_server_ip,
+	axis2_http_server_get_conf_ctx, 
+	axis2_http_server_is_running, 
+    axis2_http_server_set_is_application_client_side, 
+	axis2_http_server_stop,
     axis2_http_server_free };
 
 AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
@@ -122,13 +142,16 @@ axis2_http_server_create(
     server_impl->conf_ctx = NULL;
     server_impl->conf_ctx_private = NULL;
     server_impl->port = port;
+	server_impl->svr_ip = NULL;
     server_impl->is_application_client_side = AXIS2_FALSE;
 
     server_impl->http_server.ops = &http_transport_receiver_ops_var;
 
     if(repo)
     {
-
+		axis2_transport_in_desc_t *transport_in = NULL;
+		axis2_conf_t *conf = NULL;
+		axis2_transport_receiver_t *receiver = NULL;
         /**
          * We first create a private conf ctx which is owned by this server
          * we only free this private conf context. We should never free the
@@ -136,6 +159,7 @@ axis2_http_server_create(
          * may lead to double free
          */
         server_impl->conf_ctx_private = axis2_build_conf_ctx(env, repo);
+		
         if(!server_impl->conf_ctx_private)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
@@ -143,7 +167,12 @@ axis2_http_server_create(
             axis2_http_server_free((axis2_transport_receiver_t *)server_impl, env);
             return NULL;
         }
-        server_impl->conf_ctx = server_impl->conf_ctx_private;
+		conf = axis2_conf_ctx_get_conf(server_impl->conf_ctx_private, env);
+		transport_in = axis2_conf_get_transport_in(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
+		receiver = axis2_transport_in_desc_get_recv(transport_in, env);
+		AXIS2_INTF_TO_IMPL(receiver)->port = port;
+		
+		server_impl->conf_ctx = server_impl->conf_ctx_private;
     }
 
     return &(server_impl->http_server);
@@ -170,12 +199,14 @@ axis2_http_server_create_with_file(
     server_impl->conf_ctx = NULL;
     server_impl->conf_ctx_private = NULL;
     server_impl->port = port;
-
+	server_impl->svr_ip = NULL;
     server_impl->http_server.ops = &http_transport_receiver_ops_var;
 
     if(file)
     {
-
+		axis2_transport_in_desc_t *transport_in = NULL;
+		axis2_conf_t *conf = NULL;
+		axis2_transport_receiver_t *receiver = NULL;
         /**
          * We first create a private conf ctx which is owned by this server
          * we only free this private conf context. We should never free the
@@ -191,6 +222,12 @@ axis2_http_server_create_with_file(
                 "unable to create configuration context for file %s", file);
             return NULL;
         }
+		conf = axis2_conf_ctx_get_conf(server_impl->conf_ctx_private, env);
+		transport_in = axis2_conf_get_transport_in(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
+		receiver = axis2_transport_in_desc_get_recv(transport_in, env);
+		AXIS2_INTF_TO_IMPL(receiver)->port = port;
+		
+		
         server_impl->conf_ctx = server_impl->conf_ctx_private;
     }
 
@@ -271,7 +308,7 @@ axis2_http_server_start(
 {
     axis2_http_server_impl_t *server_impl = NULL;
     axis2_http_worker_t *worker = NULL;
-
+	
     server_impl = AXIS2_INTF_TO_IMPL(server);
     server_impl->svr_thread = axis2_http_svr_thread_create(env, server_impl->port);
     if(!server_impl->svr_thread)
@@ -291,9 +328,25 @@ axis2_http_server_start(
     axis2_http_worker_set_is_application_client_side(worker, env, 
             server_impl->is_application_client_side);
     axis2_http_worker_set_svr_port(worker, env, server_impl->port);
-    AXIS2_LOG_INFO(env->log, "Starting HTTP server thread");
+    {/** Obtain server IP and set it 
+		axis2_transport_in_desc_t *transport_in = NULL;
+		axis2_conf_t *conf = NULL;
+		axis2_transport_receiver_t *receiver = NULL;
+		conf = axis2_conf_ctx_get_conf(server_impl->conf_ctx_private, env);
+		transport_in = axis2_conf_get_transport_in(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
+		receiver = axis2_transport_in_desc_get_recv(transport_in, env);
+		if(receiver)
+		{
+			int listen_socket = axis2_http_svr_thread_get_listen_socket(server_impl->svr_thread, env);
+			server_impl->svr_ip = axutil_network_handler_get_svr_ip(env, listen_socket);
+			AXIS2_INTF_TO_IMPL(receiver)->svr_ip = server_impl->svr_ip;
+		}
+		*/
+	}
+	AXIS2_LOG_INFO(env->log, "Starting HTTP server thread");
     axis2_http_svr_thread_set_worker(server_impl->svr_thread, env, worker);
     axis2_http_svr_thread_run(server_impl->svr_thread, env);
+	
     return AXIS2_SUCCESS;
 }
 
@@ -357,19 +410,18 @@ axis2_http_server_get_epr_for_service(
     const axis2_char_t *host_address = NULL;
     axis2_char_t *svc_path = NULL;
     axutil_url_t *url = NULL;
-	axis2_http_svr_thread_t *svr_thread  = NULL;
-	int port = -1;
 
-    host_address = AXIS2_DEFAULT_HOST_ADDRESS; /* TODO : get from axis2.xml */
-    svc_path = axutil_stracat(env, AXIS2_DEFAULT_SVC_PATH, svc_name);
+	if(AXIS2_INTF_TO_IMPL(server)->svr_ip)
+	{
+		host_address = AXIS2_INTF_TO_IMPL(server)->svr_ip;
+	}else
+	{
+	    host_address = AXIS2_DEFAULT_HOST_ADDRESS; /* TODO : get from axis2.xml */
+	}
+	svc_path = axutil_stracat(env, AXIS2_DEFAULT_SVC_PATH, svc_name);
     
-	svr_thread = AXIS2_INTF_TO_IMPL(server)->svr_thread;
-	if(svr_thread)
-	port = axis2_http_svr_thread_get_local_port(svr_thread, env);
-	
 	url = axutil_url_create(env, AXIS2_HTTP_PROTOCOL, host_address,
-        port, svc_path);
-
+        AXIS2_INTF_TO_IMPL(server)->port, svc_path);
 		
     AXIS2_FREE(env->allocator, svc_path);
     if(!url)
@@ -408,6 +460,23 @@ axis2_http_server_set_is_application_client_side(
     server_impl->is_application_client_side = is_application_client_side;
 }
 
+static  axis2_char_t* AXIS2_CALL
+axis2_http_server_get_server_ip(
+axis2_transport_receiver_t *server,
+const axutil_env_t *env)
+{
+	return AXIS2_INTF_TO_IMPL(server)->svr_ip;
+}
+
+static void AXIS2_CALL
+axis2_http_server_set_server_ip(
+axis2_transport_receiver_t *server,
+const axutil_env_t *env,
+ axis2_char_t *serverip)
+{
+	AXIS2_INTF_TO_IMPL(server)->svr_ip = serverip;
+}
+
 /**
  * Following block distinguish the exposed part of the dll.
  */
@@ -436,3 +505,4 @@ axis2_remove_instance(
     }
     return AXIS2_SUCCESS;
 }
+

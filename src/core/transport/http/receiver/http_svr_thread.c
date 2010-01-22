@@ -303,3 +303,11 @@ axis2_svr_thread_worker_func(
     return NULL;
 }
 
+AXIS2_EXTERN int AXIS2_CALL
+	axis2_http_svr_thread_get_listen_socket(
+	axis2_http_svr_thread_t *svr_thread,
+	const axutil_env_t *env)
+{
+	return svr_thread->listen_socket;
+
+}
