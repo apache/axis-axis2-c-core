@@ -34,6 +34,7 @@ typedef struct axis2_tcp_server_impl
     axis2_transport_receiver_t tcp_server;
     axis2_tcp_svr_thread_t *svr_thread;
     int port;
+	axis2_char_t *svr_ip;
     axis2_conf_ctx_t *conf_ctx;
     axis2_conf_ctx_t *conf_ctx_private;
     axis2_conf_t *conf;
@@ -77,6 +78,7 @@ axis2_endpoint_ref_t *AXIS2_CALL axis2_tcp_server_get_epr_for_service(
     const axutil_env_t * env,
     const axis2_char_t * svc_name);
 
+
 axis2_bool_t AXIS2_CALL
 axis2_tcp_server_is_running(
     axis2_transport_receiver_t * server,
@@ -92,9 +94,27 @@ void AXIS2_CALL axis2_tcp_server_free(
     axis2_transport_receiver_t * server,
     const axutil_env_t * env);
 
+static  axis2_char_t* AXIS2_CALL
+axis2_tcp_server_get_server_ip(
+axis2_transport_receiver_t *server,
+const axutil_env_t *env);
+
+static void AXIS2_CALL
+axis2_tcp_server_set_server_ip(
+axis2_transport_receiver_t *transport_receiver,
+const axutil_env_t *env,
+ axis2_char_t *serverip);
+
 static const axis2_transport_receiver_ops_t tcp_transport_receiver_ops_var = {
-    axis2_tcp_server_init, axis2_tcp_server_start, axis2_tcp_server_get_reply_to_epr,axis2_tcp_server_get_epr_for_service,
-    axis2_tcp_server_get_conf_ctx, axis2_tcp_server_is_running,axis2_tcp_server_set_is_application_client_side,
+    axis2_tcp_server_init, 
+	axis2_tcp_server_start, 
+	axis2_tcp_server_get_reply_to_epr,
+	axis2_tcp_server_get_epr_for_service,
+	axis2_tcp_server_get_server_ip,
+	axis2_tcp_server_set_server_ip,
+    axis2_tcp_server_get_conf_ctx, 
+	axis2_tcp_server_is_running,
+	axis2_tcp_server_set_is_application_client_side,
 	axis2_tcp_server_stop,
     axis2_tcp_server_free };
 
@@ -120,7 +140,7 @@ axis2_tcp_server_create(
     server_impl->conf_ctx = NULL;
     server_impl->conf_ctx_private = NULL;
     server_impl->port = port;
-
+	server_impl->svr_ip = NULL;
     server_impl->tcp_server.ops = &tcp_transport_receiver_ops_var;
 
     if(repo)
@@ -301,18 +321,12 @@ axis2_tcp_server_get_epr_for_service(
     const axis2_char_t *host_address = NULL;
     axis2_char_t *svc_path = NULL;
     axutil_url_t *url = NULL;
-    
-	axis2_tcp_svr_thread_t *svr_thread = NULL;
-	int port = -1;
-	    AXIS2_ENV_CHECK(env, NULL);
 
-AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
+	AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
     host_address = "127.0.0.1"; /* TODO : get from axis2.xml */
     svc_path = axutil_stracat(env, "/axis2/services/", svc_name);
-	svr_thread = AXIS2_INTF_TO_IMPL(server)->svr_thread;
-	if(svr_thread)
-		port = axis2_tcp_svr_thread_get_local_port(svr_thread, env);
-    url = axutil_url_create(env, "tcp", host_address, port, svc_path);
+	
+    url = axutil_url_create(env, "tcp", host_address, AXIS2_INTF_TO_IMPL(server)->port, svc_path);
     AXIS2_FREE(env->allocator, svc_path);
     if(!url)
     {
@@ -337,6 +351,24 @@ axis2_tcp_server_is_running(
     }
     return axis2_tcp_svr_thread_is_running(server_impl->svr_thread, env);
 }
+
+static  axis2_char_t* AXIS2_CALL
+axis2_tcp_server_get_server_ip(
+axis2_transport_receiver_t *server,
+const axutil_env_t *env)
+{
+	return AXIS2_INTF_TO_IMPL(server)->svr_ip;
+}
+
+static void AXIS2_CALL
+axis2_tcp_server_set_server_ip(
+axis2_transport_receiver_t *server,
+const axutil_env_t *env,
+ axis2_char_t *serverip)
+{
+	AXIS2_INTF_TO_IMPL(server)->svr_ip = serverip;
+}
+
 
 /**
  * Following block distinguish the exposed part of the dll.
