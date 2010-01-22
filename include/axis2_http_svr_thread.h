@@ -108,6 +108,11 @@ extern "C"
         const axutil_env_t * env,
         int port);
 
+	AXIS2_EXTERN int AXIS2_CALL
+		axis2_http_svr_thread_get_listen_socket(
+		axis2_http_svr_thread_t *svr_thread,
+		const axutil_env_t *env);
+
     /** @} */
 #ifdef __cplusplus
 }
