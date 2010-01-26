@@ -286,8 +286,8 @@ axis2_apache2_worker_process_request(
 		axis2_http_transport_utils_set_session(env, msg_ctx, session_str);
     }
     stat_count_property_arg = axutil_property_create_with_args(env, AXIS2_SCOPE_REQUEST, 0, 
-            AXIS2_STATISTICS_COUNT_ARG, request);
-    axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_SCOPE_REQUEST, stat_count_property_arg);
+            0, request);
+    axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_STATISTICS_COUNT_ARG, stat_count_property_arg);
 
     if(request->read_chunked == AXIS2_TRUE && 0 == content_length)
     {
