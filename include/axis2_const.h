@@ -436,6 +436,8 @@ extern "C"
 
 #define AXIS2_SVC_CLIENT_CLOSED "closed"    
 
+#define AXIS2_STATISTICS_COUNT_ARG "stat_count_arg"    
+
 #ifdef __cplusplus
 }
 #endif
