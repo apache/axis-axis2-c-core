@@ -59,6 +59,8 @@ axutil_env_create(
     env->ref = 1;
     env->get_session_fn = NULL;
     env->set_session_fn = NULL;
+    env->get_statistics_count_fn = NULL;
+    env->set_statistics_count_fn = NULL;
 
     return env;
 }
@@ -94,6 +96,8 @@ axutil_env_create_with_error_log(
     env->ref = 1;
     env->get_session_fn = NULL;
     env->set_session_fn = NULL;
+    env->get_statistics_count_fn = NULL;
+    env->set_statistics_count_fn = NULL;
 
     return env;
 }
@@ -140,6 +144,8 @@ axutil_env_create_with_error_log_thread_pool(
     env->ref = 1;
     env->get_session_fn = NULL;
     env->set_session_fn = NULL;
+    env->get_statistics_count_fn = NULL;
+    env->set_statistics_count_fn = NULL;
 
     return env;
 }
@@ -188,6 +194,8 @@ axutil_env_create_all(
     env->ref = 1;
     env->get_session_fn = NULL;
     env->set_session_fn = NULL;
+    env->get_statistics_count_fn = NULL;
+    env->set_statistics_count_fn = NULL;
 
     return env;
 }
