@@ -91,7 +91,7 @@ AC_ARG_WITH(axis2,
     ;;
   *)
     AC_MSG_RESULT(yes)
-    dnl Find axiom include dir in the path
+    dnl Find axis2 include dir in the path
     if test -d $withval; then
         axis2inc="-I$withval"
     dnl else find the axiom include dir in ${AXIS2C_HOME}/include
@@ -102,6 +102,9 @@ AC_ARG_WITH(axis2,
     fi
     ;;
   esac ],
+  if test -d "${AXIS2C_HOME}/include"; then
+  	axis2inc="-I${AXIS2C_HOME}/include/axis2-1.6.0"
+  fi
   AC_MSG_RESULT(no)
 )
 
