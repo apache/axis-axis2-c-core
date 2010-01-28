@@ -541,7 +541,6 @@ axis2_op_client_execute(
         }
         else
         {
-            axutil_thread_t *worker_thread = NULL;
             axis2_op_client_worker_func_args_t *arg_list = NULL;
             arg_list = AXIS2_MALLOC(env->allocator, sizeof(axis2_op_client_worker_func_args_t));
             if(!arg_list)
@@ -559,6 +558,7 @@ axis2_op_client_execute(
 #ifdef AXIS2_SVR_MULTI_THREADED
             if (env->thread_pool)
             {
+				axutil_thread_t *worker_thread = NULL;
                 worker_thread = axutil_thread_pool_get_thread(env->thread_pool,
                     axis2_op_client_worker_func,
                     (void *)
