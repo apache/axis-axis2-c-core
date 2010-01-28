@@ -52,7 +52,6 @@ if test "$GCC" = "yes"; then
     CFLAGS="$CFLAGS -ansi -Werror -Wall -Wno-implicit-function-declaration "
 fi
 
-LDFLAGS="$LDFLAGS -lpthread"
 
 dnl Checks for header files.
 AC_HEADER_STDC

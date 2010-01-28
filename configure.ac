@@ -66,7 +66,6 @@ if test "$GCC" = "yes"; then
     CFLAGS="$CFLAGS -ansi -Wall -Werror -Wno-implicit-function-declaration -g -D_GNU_SOURCE"
 #    CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration"
 fi
-LDFLAGS="$LDFLAGS -lpthread"
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -355,7 +354,7 @@ AC_ARG_ENABLE(trace, [  --enable-trace
 
 AC_MSG_CHECKING(whether to enable multi threading)
 AC_ARG_ENABLE(multi-thread, [  --enable-multi-thread  
-                          enable multi threading (default=yes)],
+                          enable multi threaded axis2 worker (default=yes)],
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
