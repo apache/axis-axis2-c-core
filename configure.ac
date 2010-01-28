@@ -149,7 +149,8 @@ AC_ARG_ENABLE(xpath, [  --enable-xpath    build xpath. default=yes],
   XPATH_DIR="xpath"
 )
 
-GUTHTHILA_LIBS=""
+GUTHTHILA_LIBS=
+GUTHTHILA_DIR=
 
 AC_MSG_CHECKING(whether to build guththila xml parser library)
 AC_ARG_ENABLE(guththila, [  --enable-guththila
@@ -157,24 +158,26 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
+    guththilla_enabled=no
     ;;
   *)
     AC_MSG_RESULT(yes)
-    CFLAGS="$CFLAGS -DAXIS2_GUTHTHILA_ENABLED"
-    CPPFLAGS="$CPPFLAGS -DAXIS2_GUTHTHILA_ENABLED"
-    WRAPPER_DIR="guththila"
-
+    guththilla_enabled=yes
     ;;
-  esac ],
+  esac ], [
   AC_MSG_RESULT(yes)
-  WRAPPER_DIR="guththila"
+  guththilla_enabled=yes
+])
+
+AS_IF([test $guththilla_enabled = yes], [
   CFLAGS="$CFLAGS -DAXIS2_GUTHTHILA_ENABLED"
   CPPFLAGS="$CPPFLAGS -DAXIS2_GUTHTHILA_ENABLED"
+  WRAPPER_DIR="guththila"
   AC_CONFIG_SUBDIRS(guththila)
   GUTHTHILA_LIBS="/guththila/src/"
   GUTHTHILA_DIR="guththila"
-)
-
+])
+AS_UNSET(guththilla_enabled)
 
 AC_MSG_CHECKING(whether to build libxml2 xml parser library)
 AC_ARG_ENABLE(libxml2, [  --enable-libxml2    
