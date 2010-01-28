@@ -12,9 +12,6 @@ make -j 10
 make install
 
 cd samples
-sh autogen.sh
-sh configure --prefix=${AXIS2C_HOME} --with-axis2=${AXIS2C_HOME}/include/axis2-1.6.0
-make -j 10
-make install
-								
+sh build.sh
+
 cd ..
