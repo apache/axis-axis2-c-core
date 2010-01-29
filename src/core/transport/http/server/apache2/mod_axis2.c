@@ -32,6 +32,7 @@
 #include <apr_dbd.h>
 #include <mod_dbd.h>
 #include <axis2_http_transport.h>
+#include <axutil_types.h>
 
 /* Configuration structure populated by apache2.conf */
 typedef struct axis2_config_rec
