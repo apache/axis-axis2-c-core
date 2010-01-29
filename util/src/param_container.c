@@ -137,6 +137,7 @@ axutil_param_container_add_param(
         return AXIS2_FAILURE;
     }
     axutil_hash_set(param_container->params, param_name, AXIS2_HASH_KEY_STRING, param);
+	axutil_array_list_add(param_container->params_list, env, param);
 
     return AXIS2_SUCCESS;
 }
@@ -155,33 +156,6 @@ axutil_param_container_get_params(
     axutil_param_container_t *param_container,
     const axutil_env_t *env)
 {
-    axutil_hash_index_t *index_i = 0;
-    axis2_status_t status = AXIS2_FAILURE;
-    void *value = NULL;
-
-    if(!param_container->params_list)
-    {
-        param_container->params_list = axutil_array_list_create(env, 0);
-        if(!param_container->params_list)
-        {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Not enough memory");
-            return NULL;
-        }
-    }
-
-    for(index_i = axutil_hash_first(param_container->params, env); index_i; index_i
-        = axutil_hash_next(env, index_i))
-    {
-        axutil_hash_this(index_i, NULL, NULL, &value);
-        status = axutil_array_list_add(param_container->params_list, env, value);
-        if(AXIS2_SUCCESS != status)
-        {
-            axutil_array_list_free(param_container->params_list, env);
-            return NULL;
-        }
-    }
-
     return param_container->params_list;
 }
 
