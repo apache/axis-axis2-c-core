@@ -78,9 +78,6 @@ extern "C"
 
         axis2_status_t (*set_session_fn)(void*, const char*, const char*);
         char * (*get_session_fn)(void*, const char*);
-        
-        axis2_status_t (*set_statistics_count_fn)(void*, const char*, const char*, const int);
-        int (*get_statistics_count_fn)(void*, const char*, const char*);
     }
     axutil_env_t;
 
