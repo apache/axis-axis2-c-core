@@ -133,18 +133,6 @@ axis2_set_session(
         const char *id,
         const char *session);
 
-int 
-axis2_get_statistics_count(
-        void *req, 
-        const char *svc_name,
-        const char *op_name);
-
-axis2_status_t 
-axis2_set_statistics_count(
-        void *req, 
-        const char *svc_name,
-        const char *op_name,
-        const int count);
 /***************************End of Function Headers****************************/
 
 static const command_rec axis2_cmds[] = { AP_INIT_TAKE1("Axis2RepoPath", axis2_set_repo_path, NULL,
@@ -381,8 +369,6 @@ axis2_handler(
     thread_env->allocator = allocator;
     thread_env->set_session_fn = axis2_set_session;
     thread_env->get_session_fn = axis2_get_session;
-    thread_env->set_statistics_count_fn = axis2_set_statistics_count;
-    thread_env->get_statistics_count_fn = axis2_get_statistics_count;
 
     rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, thread_env, req);
     if(AXIS2_CRITICAL_FAILURE == rv)
@@ -594,8 +580,6 @@ axis2_post_config(
         }
         axutil_env->set_session_fn = axis2_set_session;
         axutil_env->get_session_fn = axis2_get_session;
-        axutil_env->set_statistics_count_fn = axis2_set_statistics_count;
-        axutil_env->get_statistics_count_fn = axis2_get_statistics_count;
 
         axis2_worker = axis2_apache2_worker_create(axutil_env,
             conf->axis2_repo_path);
@@ -712,8 +696,6 @@ axis2_module_init(
     }
     axutil_env->set_session_fn = axis2_set_session;
     axutil_env->get_session_fn = axis2_get_session;
-    axutil_env->set_statistics_count_fn = axis2_set_statistics_count;
-    axutil_env->get_statistics_count_fn = axis2_get_statistics_count;
     axis2_worker = axis2_apache2_worker_create(axutil_env, conf->axis2_repo_path);
     if(!axis2_worker)
     {
@@ -859,167 +841,4 @@ axis2_set_session(
     return AXIS2_SUCCESS;
 }
 
-int 
-axis2_get_statistics_count(
-        void *req, 
-        const char *svc_name,
-        const char *op_name)
-{
-    request_rec *request = NULL;
-    apr_status_t rv;
-    int dbd_count = -1;
-    apr_dbd_prepared_t *statement;
-    apr_dbd_results_t *res = NULL;
-    apr_dbd_row_t *row = NULL;
-    ap_dbd_t *dbd = NULL;
-    ap_dbd_t *(*authn_dbd_acquire_fn)(request_rec*) = NULL;
-    request = (request_rec *) req;
-
-    authn_dbd_acquire_fn = APR_RETRIEVE_OPTIONAL_FN(ap_dbd_acquire);
-    dbd = authn_dbd_acquire_fn(request);
-    if (!dbd) 
-    {
-        ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
-                      "Failed to acquire database connection retrieve statistics count");
-        return -1;
-    }
-
-    if(svc_name)
-    {
-        if(op_name)
-        {
-            statement = apr_hash_get(dbd->prepared, "retrieve_op_counter", APR_HASH_KEY_STRING);
-            if (!statement) 
-            {
-                ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
-                      "A prepared statement could not be found for "
-                      "the key '%s'", "retrieve_op_counter");
-                return -1;
-            }
-            if (apr_dbd_pvselect(dbd->driver, request->pool, dbd->handle, &res, statement,
-                                      0, op_name, svc_name, NULL) != 0) 
-            {
-                ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
-                              "Query execution error looking up '%s' "
-                              "in database", op_name);
-                return -1;
-            }
-        }
-        else
-        {
-            statement = apr_hash_get(dbd->prepared, "retrieve_svc_counter", APR_HASH_KEY_STRING);
-            if (!statement) 
-            {
-                ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
-                      "A prepared statement could not be found for "
-                      "the key '%s'", "retrieve_svc_counter");
-                return -1;
-            }
-            if (apr_dbd_pvselect(dbd->driver, request->pool, dbd->handle, &res, statement,
-                                      0, svc_name, NULL) != 0) 
-            {
-                ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
-                              "Query execution error looking up '%s' "
-                              "in database", svc_name);
-                return -1;
-            }
-        }
-    }
-    for (rv = apr_dbd_get_row(dbd->driver, request->pool, res, &row, -1); rv != -1;
-         rv = apr_dbd_get_row(dbd->driver, request->pool, res, &row, -1)) 
-    {
-        if (rv != 0) 
-        {
-            ap_log_rerror(APLOG_MARK, APLOG_ERR, rv, request,
-                          "Error retrieving results while looking up "
-                          "in database");
-            return -1;
-        }
-        if (dbd_count == -1) 
-        {
-            const char *str_count = NULL;
-            str_count = apr_dbd_get_entry(dbd->driver, row, 0);
-            if(str_count)
-            {
-                dbd_count = AXIS2_ATOI(str_count);
-            }
-        }
-        /* we can't break out here or row won't get cleaned up */
-    }
-
-    if (dbd_count == -1) 
-    {
-        return -1;
-    }
-
-    return (int) dbd_count;
-}
-
-axis2_status_t 
-axis2_set_statistics_count(
-        void *req, 
-        const char *svc_name,
-        const char *op_name,
-        const int count)
-{
-    request_rec *request = NULL;
-    apr_dbd_prepared_t *statement;
-    int affected_rows = -1;
-    ap_dbd_t *dbd = NULL;
-    ap_dbd_t *(*authn_dbd_acquire_fn)(request_rec*) = NULL;
-    request = (request_rec *) req;
-
-    authn_dbd_acquire_fn = APR_RETRIEVE_OPTIONAL_FN(ap_dbd_acquire);
-    dbd = authn_dbd_acquire_fn(request);
-    if (!dbd) 
-    {
-        ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
-                      "Failed to acquire database connection to insert statistics count");
-        return AXIS2_FAILURE;
-    }
-
-    if(svc_name)
-    {
-        if(op_name)
-        {
-            statement = apr_hash_get(dbd->prepared, "insert_op_counter", APR_HASH_KEY_STRING);
-            if (!statement) 
-            {
-                ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
-                      "A prepared statement could not be found for "
-                      "the key '%s'", "insert_op_counter");
-                return AXIS2_FAILURE;
-            }
-            if (apr_dbd_pvquery(dbd->driver, request->pool, dbd->handle, &affected_rows, statement, 
-                        op_name, svc_name, count, NULL) != 0) 
-            {
-                ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
-                          "Query execution error inserting session for '%s' "
-                          "in database", op_name);
-                return AXIS2_FAILURE;
-            }
-        }
-        else
-        {
-            statement = apr_hash_get(dbd->prepared, "insert_svc_counter", APR_HASH_KEY_STRING);
-            if (!statement) 
-            {
-                ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
-                      "A prepared statement could not be found for "
-                      "the key '%s'", "insert_svc_counter");
-                return AXIS2_FAILURE;
-            }
-            if (apr_dbd_pvquery(dbd->driver, request->pool, dbd->handle, &affected_rows, statement, 
-                        svc_name, count, NULL) != 0) 
-            {
-                ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
-                          "Query execution error inserting session for '%s' "
-                          "in database", svc_name);
-                return AXIS2_FAILURE;
-            }
-        }
-    }
-
-    return AXIS2_SUCCESS;
-}
 

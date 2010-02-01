@@ -205,7 +205,6 @@ axis2_apache2_worker_process_request(
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_char_t *peer_ip = NULL;
     axutil_property_t *peer_property = NULL;
-    axutil_property_t *stat_count_property_arg = NULL;
     axutil_url_t *request_url = NULL;
     axis2_char_t *accept_header_value = NULL;
     axis2_char_t *accept_charset_header_value = NULL;
@@ -285,10 +284,7 @@ axis2_apache2_worker_process_request(
 		if(session_str)
 		axis2_http_transport_utils_set_session(env, msg_ctx, session_str);
     }
-    stat_count_property_arg = axutil_property_create_with_args(env, AXIS2_SCOPE_REQUEST, 0, 
-            0, request);
-    axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_STATISTICS_COUNT_ARG, stat_count_property_arg);
-
+    
     if(request->read_chunked == AXIS2_TRUE && 0 == content_length)
     {
         content_length = -1;
