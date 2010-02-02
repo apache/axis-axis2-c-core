@@ -124,10 +124,10 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-      * moves the reader to next event and returns the token returned
-      * by the xml_reader , returns -1 on error 
-      * @param builder pointer to stax builder struct to be used
+      * moves the reader to next event and returns the token returned by the xml_reader ,
+      * @param builder pointer to STAX builder struct to be used
       * @param environment Environment. MUST NOT be NULL.
+      * @return next event axiom_xml_reader_event_types. Returns -1 on error
       */
     AXIS2_EXTERN int AXIS2_CALL
     axiom_stax_builder_next_with_token(

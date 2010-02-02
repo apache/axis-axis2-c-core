@@ -51,14 +51,14 @@ extern "C"
 
     typedef enum axiom_xml_reader_event_types
     {
-        AXIOM_XML_READER_START_DOCUMENT = 0,
-        AXIOM_XML_READER_START_ELEMENT,
-        AXIOM_XML_READER_END_ELEMENT,
-        AXIOM_XML_READER_SPACE,
-        AXIOM_XML_READER_EMPTY_ELEMENT,
-        AXIOM_XML_READER_CHARACTER,
+        AXIOM_XML_READER_START_DOCUMENT = 0,        /* <?xml version="1.0" encoding="utf-8"?> */
+        AXIOM_XML_READER_START_ELEMENT,             /* <element>  */
+        AXIOM_XML_READER_END_ELEMENT,               /* </element> */
+        AXIOM_XML_READER_SPACE,                     /* <x>  </x>*//*event is for value, not for x*/
+        AXIOM_XML_READER_EMPTY_ELEMENT,             /* <element/> */
+        AXIOM_XML_READER_CHARACTER,                 /* <x>text</x>*//*event is for text, not for x*/
         AXIOM_XML_READER_ENTITY_REFERENCE,
-        AXIOM_XML_READER_COMMENT,
+        AXIOM_XML_READER_COMMENT,                   /* <!--comment--> */
         AXIOM_XML_READER_PROCESSING_INSTRUCTION,
         AXIOM_XML_READER_CDATA,
         AXIOM_XML_READER_DOCUMENT_TYPE

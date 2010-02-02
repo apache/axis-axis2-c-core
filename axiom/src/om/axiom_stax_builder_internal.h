@@ -50,21 +50,21 @@ extern "C"
         const axutil_env_t * env,
         axiom_node_t * om_node);
 
-    AXIS2_EXTERN int AXIS2_CALL
-    axiom_stax_builder_get_element_level(
-        axiom_stax_builder_t * builder,
-        const axutil_env_t * env);
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+        axiom_stax_builder_get_lastnode(
+            axiom_stax_builder_t * builder,
+            const axutil_env_t * env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-
     axiom_stax_builder_set_element_level(
         axiom_stax_builder_t * builder,
         const axutil_env_t * env,
         int element_level);
-    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
-    axiom_stax_builder_get_lastnode(
-        axiom_stax_builder_t * builder,
-        const axutil_env_t * env);
+
+    AXIS2_EXTERN int AXIS2_CALL
+        axiom_stax_builder_get_element_level(
+            axiom_stax_builder_t * builder,
+            const axutil_env_t * env);
 
     /** @} */
 

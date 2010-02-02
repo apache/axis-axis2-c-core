@@ -196,32 +196,18 @@ axis2_libxml2_reader_wrapper_init_map(
         }
 
         parser->event_map[XML_READER_TYPE_ELEMENT] = AXIOM_XML_READER_START_ELEMENT;
-
-        parser->event_map[XML_READER_TYPE_ELEMENT] = AXIOM_XML_READER_START_ELEMENT;
-
         parser->event_map[XML_READER_TYPE_DOCUMENT] = AXIOM_XML_READER_START_DOCUMENT;
-
         parser->event_map[XML_READER_TYPE_TEXT] = AXIOM_XML_READER_CHARACTER;
-
         parser->event_map[XML_READER_TYPE_CDATA] = AXIOM_XML_READER_CHARACTER;
-
         parser->event_map[XML_READER_TYPE_SIGNIFICANT_WHITESPACE] = AXIOM_XML_READER_SPACE;
-
         parser->event_map[XML_READER_TYPE_WHITESPACE] = AXIOM_XML_READER_SPACE;
-
         parser->event_map[XML_READER_TYPE_END_ELEMENT] = AXIOM_XML_READER_END_ELEMENT;
-
         parser->event_map[XML_READER_TYPE_ENTITY_REFERENCE] = AXIOM_XML_READER_ENTITY_REFERENCE;
-
         parser->event_map[XML_READER_TYPE_END_ENTITY] = AXIOM_XML_READER_SPACE;
-
         parser->event_map[XML_READER_TYPE_ENTITY] = AXIOM_XML_READER_SPACE;
-
         parser->event_map[XML_READER_TYPE_PROCESSING_INSTRUCTION]
             = AXIOM_XML_READER_PROCESSING_INSTRUCTION;
-
         parser->event_map[XML_READER_TYPE_COMMENT] = AXIOM_XML_READER_COMMENT;
-
         parser->event_map[XML_READER_TYPE_DOCUMENT_TYPE] = AXIOM_XML_READER_DOCUMENT_TYPE;
         return AXIS2_SUCCESS;
     }

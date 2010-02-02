@@ -62,11 +62,9 @@ axiom_stax_builder_create(
     axiom_xml_reader_t * parser)
 {
     axiom_stax_builder_t *om_builder = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, parser, NULL);
 
     om_builder = (axiom_stax_builder_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_stax_builder_t));
-
     if(!om_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -82,9 +80,7 @@ axiom_stax_builder_create(
     om_builder->current_event = -1;
     om_builder->root_node = NULL;
     om_builder->element_level = 0;
-
     om_builder->declared_namespaces = axutil_hash_make(env);
-
     om_builder->document = axiom_document_create(env, NULL, om_builder);
     if(!om_builder->document)
     {
@@ -95,7 +91,7 @@ axiom_stax_builder_create(
     return om_builder;
 }
 
-axis2_status_t
+static axis2_status_t
 axiom_stax_builder_process_attributes(
     axiom_stax_builder_t * om_builder,
     const axutil_env_t * env,
@@ -205,7 +201,7 @@ axiom_stax_builder_process_attributes(
     return status;
 }
 
-axiom_node_t *
+static axiom_node_t *
 axiom_stax_builder_create_om_text(
     axiom_stax_builder_t * om_builder,
     const axutil_env_t * env)
@@ -259,54 +255,7 @@ axiom_stax_builder_create_om_text(
     return node;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_stax_builder_discard_current_element(
-    axiom_stax_builder_t * om_builder,
-    const axutil_env_t * env)
-{
-    axiom_node_t *element = NULL;
-    axiom_node_t *prev_node = NULL;
-    axiom_node_t *parent = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    element = om_builder->lastnode;
-
-    if(axiom_node_is_complete(element, env) || !(om_builder->cache))
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD, AXIS2_FAILURE);
-        return AXIS2_FAILURE;
-    }
-
-    om_builder->cache = AXIS2_FALSE;
-    do
-    {
-        while(axiom_xml_reader_next(om_builder->parser, env) != AXIOM_XML_READER_END_ELEMENT)
-            ;
-    }
-    while(!(axiom_node_is_complete(element, env)));
-
-    /*All children of this element is pulled now */
-
-    prev_node = axiom_node_get_previous_sibling(element, env);
-    if(prev_node)
-    {
-        axiom_node_free_tree(axiom_node_get_next_sibling(prev_node, env), env);
-        axiom_node_set_next_sibling(prev_node, env, NULL);
-    }
-    else
-    {
-        parent = axiom_node_get_parent(element, env);
-        axiom_node_free_tree(axiom_node_get_first_child(parent, env), env);
-        axiom_node_set_first_child(parent, env, NULL);
-        om_builder->lastnode = parent;
-    }
-    om_builder->cache = AXIS2_TRUE;
-
-    return AXIS2_SUCCESS;
-}
-
-axis2_status_t
+static axis2_status_t
 axiom_stax_builder_process_namespaces(
     axiom_stax_builder_t * om_builder,
     const axutil_env_t * env,
@@ -439,7 +388,7 @@ axiom_stax_builder_process_namespaces(
     return status;
 }
 
-axiom_node_t *
+static axiom_node_t *
 axiom_stax_builder_create_om_element(
     axiom_stax_builder_t * om_builder,
     const axutil_env_t * env,
@@ -533,7 +482,7 @@ axiom_stax_builder_create_om_element(
     return element_node;
 }
 
-axiom_node_t *
+static axiom_node_t *
 axiom_stax_builder_create_om_comment(
     axiom_stax_builder_t * om_builder,
     const axutil_env_t * env)
@@ -592,7 +541,7 @@ axiom_stax_builder_create_om_comment(
     return comment_node;
 }
 
-axiom_node_t *
+static axiom_node_t *
 axiom_stax_builder_create_om_doctype(
     axiom_stax_builder_t * om_builder,
     const axutil_env_t * env)
@@ -620,7 +569,7 @@ axiom_stax_builder_create_om_doctype(
     return doctype_node;
 }
 
-axiom_node_t *
+static axiom_node_t *
 axiom_stax_builder_create_om_processing_instruction(
     axiom_stax_builder_t * om_builder,
     const axutil_env_t * env)
@@ -675,7 +624,7 @@ axiom_stax_builder_create_om_processing_instruction(
     return pi_node;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+static axis2_status_t
 axiom_stax_builder_end_element(
     axiom_stax_builder_t * om_builder,
     const axutil_env_t * env)
@@ -933,125 +882,48 @@ axiom_stax_builder_get_document(
 }
 
 /**
- This is an internal function
- */
-
+  * moves the reader to next event and returns the token returned by the xml_reader ,
+  * @param builder pointer to STAX builder struct to be used
+  * @param environment Environment. MUST NOT be NULL.
+  * @return next event axiom_xml_reader_event_types. Returns -1 on error
+  */
 AXIS2_EXTERN int AXIS2_CALL
-axiom_stax_builder_get_current_event(
-    axiom_stax_builder_t * om_builder,
-    const axutil_env_t * env)
-{
-    AXIS2_PARAM_CHECK(env->error, om_builder, AXIS2_FAILURE);
-    return om_builder->current_event;
-}
-
-/**
- This is an internal function
- */
-AXIS2_EXTERN axiom_node_t *AXIS2_CALL
-axiom_stax_builder_get_lastnode(
-    axiom_stax_builder_t * om_builder,
-    const axutil_env_t * env)
-{
-    AXIS2_PARAM_CHECK(env->error, om_builder, NULL);
-    return om_builder->lastnode;
-}
-
-/**
- This is an internal function
- */
-AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axiom_stax_builder_is_complete(
-    axiom_stax_builder_t * om_builder,
-    const axutil_env_t * env)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-    return om_builder->done;
-}
-
-/**
- This is an internal function to be used by soap om_builder only
- */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_stax_builder_set_lastnode(
-    axiom_stax_builder_t * om_builder,
-    const axutil_env_t * env,
-    axiom_node_t * om_node)
-{
-    AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, om_builder, AXIS2_FAILURE);
-
-    om_builder->lastnode = om_node;
-    return AXIS2_SUCCESS;
-}
-
-/**
- internal function for soap om_builder only
- */
-AXIS2_EXTERN int AXIS2_CALL
-axiom_stax_builder_get_element_level(
-    axiom_stax_builder_t * om_builder,
-    const axutil_env_t * env)
-{
-    AXIS2_PARAM_CHECK(env->error, om_builder, -1);
-    return om_builder->element_level;
-}
-
-/**
- internal function for soap om_builder only
- */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_stax_builder_set_element_level(
-    axiom_stax_builder_t * om_builder,
-    const axutil_env_t * env,
-    int element_level)
-{
-    AXIS2_PARAM_CHECK(env->error, om_builder, AXIS2_FAILURE);
-    om_builder->element_level = element_level;
-    return AXIS2_SUCCESS;
-}
-
-int AXIS2_CALL
 axiom_stax_builder_next_with_token(
     axiom_stax_builder_t * om_builder,
     const axutil_env_t * env)
 {
     int token = 0;
     void *val = NULL;
-    /*	axutil_env_t* thread = NULL;*/
-    /*	thread = axutil_env_create(env->allocator);*/
-    /*	env = thread;*/
-    if(!om_builder)
+
+    if((!om_builder) || (!om_builder->parser))
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid OM builder");
         return -1;
     }
 
     if(om_builder->done)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL, AXIS2_FAILURE);
-        return -1;
-    }
-
-    if(!om_builder->parser)
-    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "OM is fully built. Nothing more to build");
         return -1;
     }
 
     token = axiom_xml_reader_next(om_builder->parser, env);
-
     om_builder->current_event = token;
 
     if(token == -1)
     {
         om_builder->done = AXIS2_TRUE;
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error when reading xml");
         return -1;
     }
 
-    if(!(om_builder->cache))
+    if(!om_builder->cache)
     {
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Cacheing disabled");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Caching disabled");
         return -1;
     }
+
     switch(token)
     {
         case AXIOM_XML_READER_START_DOCUMENT:
@@ -1133,6 +1005,52 @@ axiom_stax_builder_next_with_token(
     return token;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_stax_builder_discard_current_element(
+    axiom_stax_builder_t * om_builder,
+    const axutil_env_t * env)
+{
+    axiom_node_t *element = NULL;
+    axiom_node_t *prev_node = NULL;
+    axiom_node_t *parent = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    element = om_builder->lastnode;
+
+    if(axiom_node_is_complete(element, env) || !(om_builder->cache))
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+
+    om_builder->cache = AXIS2_FALSE;
+    do
+    {
+        while(axiom_xml_reader_next(om_builder->parser, env) != AXIOM_XML_READER_END_ELEMENT)
+            ;
+    }
+    while(!(axiom_node_is_complete(element, env)));
+
+    /*All children of this element is pulled now */
+
+    prev_node = axiom_node_get_previous_sibling(element, env);
+    if(prev_node)
+    {
+        axiom_node_free_tree(axiom_node_get_next_sibling(prev_node, env), env);
+        axiom_node_set_next_sibling(prev_node, env, NULL);
+    }
+    else
+    {
+        parent = axiom_node_get_parent(element, env);
+        axiom_node_free_tree(axiom_node_get_first_child(parent, env), env);
+        axiom_node_set_first_child(parent, env, NULL);
+        om_builder->lastnode = parent;
+    }
+    om_builder->cache = AXIS2_TRUE;
+
+    return AXIS2_SUCCESS;
+}
 
 AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
 axiom_stax_builder_get_parser(
@@ -1151,3 +1069,72 @@ axiom_stax_builder_set_cache(
     om_builder->cache = enable_cache;
 }
 
+/**
+ internal function for soap om_builder only
+ */
+AXIS2_EXTERN int AXIS2_CALL
+axiom_stax_builder_get_current_event(
+    axiom_stax_builder_t * om_builder,
+    const axutil_env_t * env)
+{
+    return om_builder->current_event;
+}
+
+/**
+ internal function for soap om_builder only
+ */
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+axiom_stax_builder_get_lastnode(
+    axiom_stax_builder_t * om_builder,
+    const axutil_env_t * env)
+{
+    return om_builder->lastnode;
+}
+
+/**
+ internal function for soap om_builder only
+ */
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axiom_stax_builder_is_complete(
+    axiom_stax_builder_t * om_builder,
+    const axutil_env_t * env)
+{
+    return om_builder->done;
+}
+
+/**
+ internal function for soap om_builder only
+ */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_stax_builder_set_lastnode(
+    axiom_stax_builder_t * om_builder,
+    const axutil_env_t * env,
+    axiom_node_t * om_node)
+{
+    om_builder->lastnode = om_node;
+    return AXIS2_SUCCESS;
+}
+
+/**
+ internal function for soap om_builder only
+ */
+AXIS2_EXTERN int AXIS2_CALL
+axiom_stax_builder_get_element_level(
+    axiom_stax_builder_t * om_builder,
+    const axutil_env_t * env)
+{
+    return om_builder->element_level;
+}
+
+/**
+ internal function for soap om_builder only
+ */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_stax_builder_set_element_level(
+    axiom_stax_builder_t * om_builder,
+    const axutil_env_t * env,
+    int element_level)
+{
+    om_builder->element_level = element_level;
+    return AXIS2_SUCCESS;
+}

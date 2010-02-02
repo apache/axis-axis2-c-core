@@ -73,8 +73,6 @@ axiom_soap11_builder_helper_create(
     builder_helper->fault_code_present = AXIS2_FALSE;
     builder_helper->fault_string_present = AXIS2_FALSE;
     builder_helper->last_processed_node = NULL;
-    builder_helper->om_builder = NULL;
-
     builder_helper->soap_builder = soap_builder;
     builder_helper->om_builder = om_builder;
 

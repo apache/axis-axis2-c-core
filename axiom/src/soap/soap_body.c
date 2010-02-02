@@ -127,40 +127,43 @@ axiom_soap_body_free(
     return;
 }
 
+/**
+ * Indicates whether a soap fault is available with this soap body
+ * @param soap_body axiom_soap_body struct
+ * @param env environment must not be null
+ * @return AXIS2_TRUE if fault is available, AXIS2_FALSE otherwise
+ */
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_soap_body_has_fault(
     axiom_soap_body_t * soap_body,
     const axutil_env_t * env)
 {
-    int status = AXIS2_SUCCESS;
-
     if(soap_body->soap_fault)
     {
         soap_body->has_fault = AXIS2_TRUE;
-        return AXIS2_TRUE;
     }
     else
     {
-        if(soap_body->soap_builder)
+        while(!axiom_node_is_complete(soap_body->om_ele_node, env))
         {
-            while(!(soap_body->soap_fault)
-                && !(axiom_node_is_complete(soap_body->om_ele_node, env)))
+            if(axiom_soap_builder_next(soap_body->soap_builder, env) != AXIS2_SUCCESS)
             {
-                status = axiom_soap_builder_next(soap_body->soap_builder, env);
-                if(status == AXIS2_FAILURE)
-                {
-                    return AXIS2_FALSE;
-                }
+                /* problem in building the SOAP body. Note that has_fault is about soap fault,
+                 * not about problem in building the node. So, even though there is a problem
+                 * building the body, has_fault should be AXIS2_FALSE
+                 */
+                break;
             }
+
             if(soap_body->soap_fault)
             {
                 soap_body->has_fault = AXIS2_TRUE;
-                return AXIS2_TRUE;
+                break;
             }
         }
     }
 
-    return AXIS2_FALSE;
+    return soap_body->has_fault;
 }
 
 /**

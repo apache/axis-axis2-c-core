@@ -89,10 +89,9 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     *
+     * Builds next element of the OM structure
      * @param builder pointer to the SOAP Builder struct
      * @param env Environment. MUST NOT be NULL
-     *
      * @return AXIS2_SUCCESS if the next element is present else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -161,20 +160,6 @@ extern "C"
     axiom_soap_builder_get_soap_version(
         axiom_soap_builder_t * builder,
         const axutil_env_t * env);
-
-    /**
-     * Process and verifies namespace data of @param om_node
-     * @param builder pointer to the SOAP Builder struct
-     * @param env Environment. MUST NOT be NULL
-     *
-     * @return AXIS2_SUCCESS on success else AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_soap_builder_process_namespace_data(
-        axiom_soap_builder_t * builder,
-        const axutil_env_t * env,
-        axiom_node_t * om_node,
-        axis2_bool_t is_soap_element);
 
     /**
      * Set the MIME body parts

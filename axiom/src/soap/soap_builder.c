@@ -27,20 +27,11 @@
 #include "_axiom_soap_fault.h"
 #include <axutil_http_chunked_stream.h>
 
-axis2_status_t
-axiom_soap_builder_create_om_element(
-    axiom_soap_builder_t * soap_builder,
-    const axutil_env_t * env,
-    axiom_node_t * current_node,
-    int current_event);
-
 static axis2_status_t
 axiom_soap_builder_construct_node(
     axiom_soap_builder_t * soap_builder,
     const axutil_env_t * env,
-    axiom_node_t * parent,
-    axiom_node_t * om_element_node,
-    axis2_bool_t is_soap_envelope);
+    axiom_node_t * om_element_node);
 
 static axis2_status_t
 axiom_soap_builder_identify_soap_version(
@@ -54,11 +45,22 @@ axiom_soap_builder_parse_headers(
     const axutil_env_t * env);
 
 static axis2_status_t
-axiom_soap_builder_construct_node_for_empty_element(
+axiom_soap_builder_process_namespace_data(
     axiom_soap_builder_t * soap_builder,
     const axutil_env_t * env,
-    axiom_node_t * parent,
-    axiom_node_t * om_element_node);
+    axiom_node_t * om_node);
+
+static axis2_status_t
+axiom_soap_builder_construct_soap_header(
+    axiom_soap_builder_t *soap_builder,
+    const axutil_env_t *env,
+    axiom_node_t *om_node);
+
+static axis2_status_t
+axiom_soap_builder_construct_soap_body(
+    axiom_soap_builder_t *soap_builder,
+    const axutil_env_t *env,
+    axiom_node_t *om_node);
 
 struct axiom_soap_builder
 {
@@ -297,172 +299,164 @@ AXIS2_EXTERN axiom_document_t *AXIS2_CALL axiom_soap_builder_get_document(
     return NULL;
 }
 
+/**
+ * Builds next element of the OM structure
+ * @param builder pointer to the SOAP Builder struct
+ * @param env Environment. MUST NOT be NULL
+ * @return AXIS2_SUCCESS if the next element is present else AXIS2_FAILURE
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_builder_next(
     axiom_soap_builder_t * soap_builder,
     const axutil_env_t * env)
 {
-    axiom_node_t *lastnode = NULL;
     int current_event = AXIS2_MAX_EVENT;
-    axiom_node_t *current_node = NULL;
     int status = AXIS2_SUCCESS;
 
-    if(!soap_builder)
+    if((!soap_builder) || (soap_builder->done) || (!soap_builder->om_builder))
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid soap builder");
         return AXIS2_FAILURE;
     }
-    if(soap_builder->done)
-    {
-        return AXIS2_FAILURE;
-    }
-    if(!(soap_builder->om_builder))
-    {
-        return AXIS2_FAILURE;
-    }
-    lastnode = axiom_stax_builder_get_lastnode(soap_builder->om_builder, env);
 
-    if(!lastnode)
-    {
-        soap_builder->last_node_status = AXIS2_BUILDER_LAST_NODE_NULL;
-    }
-    else
+    /* Get the status of previous node before building next node. We need the previous state of the
+     * node to identify very first element, which is SOAP Envelope. If last_node_status is
+     * AXIS2_BUILDER_LAST_NODE_NULL, then it means next node is SOAP Envelope
+     */
+    if(axiom_stax_builder_get_lastnode(soap_builder->om_builder, env))
     {
         soap_builder->last_node_status = AXIS2_BUILDER_LAST_NODE_NOT_NULL;
     }
-    current_event = axiom_stax_builder_next_with_token(soap_builder->om_builder, env);
-    if(current_event == -1)
+    else
     {
-        soap_builder->done = AXIS2_TRUE;
-        return AXIS2_FAILURE;
+        soap_builder->last_node_status = AXIS2_BUILDER_LAST_NODE_NULL;
     }
-    if(current_event == AXIOM_XML_READER_EMPTY_ELEMENT || current_event
-        == AXIOM_XML_READER_START_ELEMENT)
+
+    current_event = axiom_stax_builder_next_with_token(soap_builder->om_builder, env);
+    if(current_event == AXIOM_XML_READER_START_ELEMENT
+        || current_event == AXIOM_XML_READER_EMPTY_ELEMENT)
     {
-        current_node = axiom_stax_builder_get_lastnode(soap_builder->om_builder, env);
+        axiom_node_t *current_node = axiom_stax_builder_get_lastnode(soap_builder->om_builder, env);
         if(current_node)
         {
-            status = axiom_soap_builder_create_om_element(soap_builder, env, current_node,
-                current_event);
+            status = axiom_soap_builder_construct_node(soap_builder, env, current_node);
         }
         else
-            return AXIS2_FAILURE;
+        {
+            /* there is an error. So, don't continue building it */
+            soap_builder->done = AXIS2_TRUE;
+            status = AXIS2_FAILURE;
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occurred when building node");
+        }
     }
+    else if(current_event == -1)
+    {
+        /* there is an error. So, don't continue building it */
+        soap_builder->done = AXIS2_TRUE;
+        status = AXIS2_FAILURE;
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occurred when building node");
+    }
+
+    /* for any other event types, return AXIS2_SUCCESS as the return value. */
 
     return status;
 }
 
-AXIS2_EXTERN axiom_node_t *AXIS2_CALL axiom_soap_builder_get_document_element(
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+axiom_soap_builder_get_document_element(
     axiom_soap_builder_t * soap_builder,
     const axutil_env_t * env)
 {
-    if (soap_builder->soap_envelope)
+    axiom_node_t *document_node = NULL;
+    if(soap_builder->soap_envelope)
     {
-        return axiom_soap_envelope_get_base_node(soap_builder->soap_envelope,
-            env);
+        document_node = axiom_soap_envelope_get_base_node(soap_builder->soap_envelope, env);
     }
-    else
-    return NULL;
-}
 
-axis2_status_t
-axiom_soap_builder_create_om_element(
-    axiom_soap_builder_t * soap_builder,
-    const axutil_env_t * env,
-    axiom_node_t * current_node,
-    int current_event)
-{
-    int ret_val = AXIS2_SUCCESS;
-    AXIS2_PARAM_CHECK(env->error, current_node, AXIS2_FAILURE);
-    if(!soap_builder)
-    {
-        return AXIS2_FAILURE;
-    }
-    if(soap_builder->last_node_status == AXIS2_BUILDER_LAST_NODE_NULL)
-    {
-        ret_val = axiom_soap_builder_construct_node(soap_builder, env, NULL, current_node,
-            AXIS2_TRUE);
-    }
-    else
-    {
-        int element_level = 0;
-        axiom_node_t *parent_node = NULL;
-        parent_node = axiom_node_get_parent(current_node, env);
-        if(!soap_builder->om_builder)
-        {
-            return AXIS2_FAILURE;
-        }
-        element_level = axiom_stax_builder_get_element_level(soap_builder->om_builder, env);
-        if(parent_node && element_level == 1 && current_event == AXIOM_XML_READER_EMPTY_ELEMENT)
-        {
-            ret_val = axiom_soap_builder_construct_node_for_empty_element(soap_builder, env,
-                parent_node, current_node);
-        }
-        else if(parent_node)
-        {
-            ret_val = axiom_soap_builder_construct_node(soap_builder, env, parent_node,
-                current_node, AXIS2_FALSE);
-        }
-        else
-            return AXIS2_FAILURE;
-    }
-    return ret_val;
+    return document_node;
 }
 
 static axis2_status_t
 axiom_soap_builder_construct_node(
     axiom_soap_builder_t * soap_builder,
     const axutil_env_t * env,
-    axiom_node_t * parent,
-    axiom_node_t * om_element_node,
-    axis2_bool_t is_soap_envelope)
+    axiom_node_t * om_element_node)
 {
-    axiom_element_t *parent_ele = NULL;
-    axis2_char_t *parent_localname = NULL;
-
     axiom_element_t *om_element = NULL;
     const axis2_char_t *ele_localname = NULL;
-
     int element_level = 0;
     int status = AXIS2_SUCCESS;
+    axiom_node_t *parent = NULL;
 
-    AXIS2_PARAM_CHECK(env->error, om_element_node, AXIS2_FAILURE);
-    if(!soap_builder)
-    {
-        return AXIS2_FAILURE;
-    }
-    if(!soap_builder->om_builder)
-    {
-        return AXIS2_FAILURE;
-    }
-    /** get element level of this om element */
-    element_level = axiom_stax_builder_get_element_level(soap_builder->om_builder, env);
-    if(axiom_stax_builder_get_current_event(soap_builder->om_builder, env)
-        == AXIOM_XML_READER_EMPTY_ELEMENT)
-    {
-        /* if it is an empty element, increase the element level to ensurer processing
-         * header block logic, as the following logic assumes 
-         * empty elements to be full elements. */
-        element_level++;
-    }
-    /* get om element struct from node */
+    /* get OM element struct from node */
     om_element = (axiom_element_t *)axiom_node_get_data_element(om_element_node, env);
     if(!om_element)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot construct node. Invalid element");
         return AXIS2_FAILURE;
     }
-    /* get element localname */
+
+    /* get element local name */
     ele_localname = axiom_element_get_localname(om_element, env);
     if(!ele_localname)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot construct node. Invalid element name");
         return AXIS2_FAILURE;
     }
+
+    parent = axiom_node_get_parent(om_element_node, env);
+    if(!parent)
+    {
+        /* parent node doesn't exist means, this should be SOAP Envelope */
+        if(soap_builder->last_node_status != AXIS2_BUILDER_LAST_NODE_NULL)
+        {
+            /* this means, there are two elements in the first level */
+            AXIS2_ERROR_SET(env->error,
+                AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Soap message can contain only one SOAP Envelope as the top level element");
+            return AXIS2_FAILURE;
+        }
+
+        if(axutil_strcasecmp(ele_localname, AXIOM_SOAP_ENVELOPE_LOCAL_NAME) != 0)
+        {
+            AXIS2_ERROR_SET(env->error,
+                AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "SOAP message first element must be Envelope");
+            return AXIS2_FAILURE;
+        }
+
+        /** create a null soap envelope struct */
+        soap_builder->soap_envelope = axiom_soap_envelope_create_null(env);
+        if(!soap_builder->soap_envelope)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to create SOAP Envelope");
+            return AXIS2_FAILURE;
+        }
+
+        /** wrap this OM node in it */
+        axiom_soap_envelope_set_base_node(soap_builder->soap_envelope, env, om_element_node);
+        axiom_soap_envelope_set_builder(soap_builder->soap_envelope, env, soap_builder);
+        status = axiom_soap_builder_process_namespace_data(soap_builder, env, om_element_node);
+        if(status != AXIS2_SUCCESS)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "SOAP Envelope is having invalid namespace");
+        }
+
+        return status;
+    }
+
+    /** a parent node exist , so not soap envelope. Can be either header/body/children of them */
+
     /* start: handle MTOM stuff */
     if(axutil_strcmp(ele_localname, AXIS2_XOP_INCLUDE) == 0)
     {
         axiom_namespace_t *ns = NULL;
 
         while(!axiom_node_is_complete(om_element_node, env))
+        {
             axiom_stax_builder_next_with_token(soap_builder->om_builder, env);
+        }
 
         ns = axiom_element_get_namespace(om_element, env, om_element_node);
         if(ns)
@@ -497,8 +491,8 @@ axiom_soap_builder_construct_node(
                                     axutil_url_decode(env, id_decoded, id_decoded);
 
                                     data_handler = (axiom_data_handler_t *)axutil_hash_get(
-                                        soap_builder-> mime_body_parts, (void *)id_decoded,
-                                        AXIS2_HASH_KEY_STRING);
+                                    soap_builder-> mime_body_parts, (void *)id_decoded,
+                                    AXIS2_HASH_KEY_STRING);
                                     if(data_handler)
                                     {
                                         axiom_text_t *data_text = NULL;
@@ -508,11 +502,11 @@ axiom_soap_builder_construct_node(
                                         axiom_node_free_tree(om_element_node, env);
 
                                         data_text = axiom_text_create_with_data_handler(env,
-                                            parent, data_handler, &data_om_node);
+                                        parent, data_handler, &data_om_node);
 
                                         axiom_text_set_content_id(data_text, env, id_decoded);
                                         axiom_stax_builder_set_lastnode(soap_builder->om_builder,
-                                            env, parent);
+                                        env, parent);
                                     }
                                     if(id_decoded)
                                     {
@@ -529,282 +523,273 @@ axiom_soap_builder_construct_node(
     }
     /* end: handle MTOM stuff */
 
-    if(parent)
+    /** get element level of this OM element */
+    element_level = axiom_stax_builder_get_element_level(soap_builder->om_builder, env);
+    if(axiom_stax_builder_get_current_event(soap_builder->om_builder, env)
+        == AXIOM_XML_READER_EMPTY_ELEMENT)
     {
+        /* if it is an empty element, increase the element level to ensure processing header
+         * block logic, as the following logic assumes empty elements to be full elements. */
+        ++element_level;
+    }
 
-        /** a parent node exist , so not soap envelope element */
+    if(element_level == 2)
+    {
+        /* At this level, we can only have soap:Header or soap:Body */
+        status = axiom_soap_builder_process_namespace_data(soap_builder, env, om_element_node);
+        if(status != AXIS2_SUCCESS)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "invalid SOAP namespace");
+            return AXIS2_FAILURE;
+        }
+
+        if(axutil_strcmp(ele_localname, AXIOM_SOAP_HEADER_LOCAL_NAME) == 0)
+        {
+            /* this is the soap header element */
+            status = axiom_soap_builder_construct_soap_header(soap_builder, env, om_element_node);
+        }
+        else if(axutil_strcmp(ele_localname, AXIOM_SOAP_BODY_LOCAL_NAME) == 0)
+        {
+            /* This is the SOAP Body element */
+            status = axiom_soap_builder_construct_soap_body(soap_builder, env, om_element_node);
+        }
+        else
+        {
+            AXIS2_ERROR_SET(env->error,
+                AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "SOAP builder found a child element other than header or body in envelope element");
+            status = AXIS2_FAILURE;
+        }
+        return status;
+    }
+    else if(element_level == 3)
+    {
+        axiom_element_t *parent_ele = NULL;
+        axis2_char_t *parent_localname = NULL;
+
         parent_ele = (axiom_element_t *)axiom_node_get_data_element(parent, env);
         if(parent_ele)
         {
             parent_localname = axiom_element_get_localname(parent_ele, env);
         }
-    }
-    if(!parent && is_soap_envelope)
-    {
 
-        /** this is the soap envelope element */
-        if(axutil_strcasecmp(ele_localname, AXIOM_SOAP_ENVELOPE_LOCAL_NAME) != 0)
+        if(!parent_localname)
         {
-            AXIS2_ERROR_SET(env->error,
-                AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME, AXIS2_FAILURE);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "SOAP message first element must contain a localname");
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot identify parent element local name");
             return AXIS2_FAILURE;
         }
 
-        /** create a null soap envelope struct */
-        soap_builder->soap_envelope = axiom_soap_envelope_create_null(env);
-        if(!soap_builder->soap_envelope)
+        if(axutil_strcasecmp(parent_localname, AXIOM_SOAP_HEADER_LOCAL_NAME) == 0)
         {
-            return AXIS2_FAILURE;
-        }
-        /** wrap this om node in it */
-        status = axiom_soap_envelope_set_base_node(soap_builder->soap_envelope, env,
-            om_element_node);
-
-        axiom_soap_envelope_set_builder(soap_builder->soap_envelope, env, soap_builder);
-        status = axiom_soap_builder_process_namespace_data(soap_builder, env, om_element_node,
-            AXIS2_TRUE);
-        if(status == AXIS2_FAILURE)
-        {
-            return AXIS2_FAILURE;
-        }
-    }
-    else if(element_level == 2)
-    {
-        if(axutil_strcmp(ele_localname, AXIOM_SOAP_HEADER_LOCAL_NAME) == 0)
-        {
-
-            /** this is the soap header element */
+            axiom_soap_header_block_t *header_block = NULL;
             axiom_soap_header_t *soap_header = NULL;
-            if(soap_builder->header_present)
-            {
-                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED,
-                    AXIS2_FAILURE);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "SOAP builder encountered multiple headers");
-                return AXIS2_FAILURE;
-            }
-            if(soap_builder->body_present)
-            {
-                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_BUILDER_HEADER_BODY_WRONG_ORDER,
-                    AXIS2_FAILURE);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "SOAP builder encountered body element first and header next");
-                return AXIS2_FAILURE;
-            }
 
-            soap_builder->header_present = AXIS2_TRUE;
-
-            soap_header = axiom_soap_header_create(env);
+            soap_header = axiom_soap_envelope_get_header(soap_builder->soap_envelope, env);
             if(!soap_header)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot get SOAP Header from OM Envelope");
                 return AXIS2_FAILURE;
             }
-            axiom_soap_header_set_base_node(soap_header, env, om_element_node);
 
-            axiom_soap_envelope_set_header(soap_builder->soap_envelope, env, soap_header);
-
-            axiom_soap_header_set_builder(soap_header, env, soap_builder);
-
-            axiom_soap_header_set_soap_version(soap_header, env, soap_builder->soap_version);
-
-            status = axiom_soap_builder_process_namespace_data(soap_builder, env, om_element_node,
-                AXIS2_TRUE);
-            if(status == AXIS2_FAILURE)
+            header_block = axiom_soap_header_block_create(env);
+            if(!header_block)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create SOAP Header block");
                 return AXIS2_FAILURE;
             }
 
+            axiom_soap_header_block_set_base_node(header_block, env, om_element_node);
+            axiom_soap_header_set_header_block(soap_header, env, header_block);
+            axiom_soap_header_block_set_soap_version(header_block, env, soap_builder->soap_version);
+            return AXIS2_SUCCESS;
         }
-        else if(axutil_strcmp(ele_localname, AXIOM_SOAP_BODY_LOCAL_NAME) == 0)
+        else if(axutil_strcasecmp(parent_localname, AXIOM_SOAP_BODY_LOCAL_NAME) == 0)
         {
-
             axiom_soap_body_t *soap_body = NULL;
-            if(soap_builder->body_present)
+            axiom_soap_fault_t *soap_fault = NULL;
+            axiom_namespace_t *env_ns = NULL;
+
+            if(axutil_strcasecmp(ele_localname, AXIOM_SOAP_BODY_FAULT_LOCAL_NAME) != 0)
             {
-                AXIS2_ERROR_SET(env->error,
-                    AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_BODY_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "SOAP builder multiple body elements encountered");
-                return AXIS2_FAILURE;
-
+                /* We don't need to process any children of SOAP Body, which is not a soap fault. */
+                return AXIS2_SUCCESS;
             }
-            soap_builder->body_present = AXIS2_TRUE;
 
-            soap_body = axiom_soap_body_create(env);
+            env_ns = axiom_soap_envelope_get_namespace(soap_builder->soap_envelope, env);
+            if(!env_ns)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot get soap envelope namespace");
+                return AXIS2_FAILURE;
+            }
+
+            soap_body = axiom_soap_envelope_get_body(soap_builder->soap_envelope, env);
             if(!soap_body)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot get soap body from OM Envelope");
                 return AXIS2_FAILURE;
             }
-            axiom_soap_body_set_base_node(soap_body, env, om_element_node);
 
-            axiom_soap_body_set_builder(soap_body, env, soap_builder);
-
-            axiom_soap_envelope_set_body(soap_builder->soap_envelope, env, soap_body);
-
-            status = axiom_soap_builder_process_namespace_data(soap_builder, env, om_element_node,
-                AXIS2_TRUE);
-
-            if(status == AXIS2_FAILURE)
+            soap_fault = axiom_soap_fault_create(env);
+            if(!soap_fault)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create SOAP Fault structure");
                 return AXIS2_FAILURE;
             }
+
+            axiom_soap_fault_set_base_node(soap_fault, env, om_element_node);
+            axiom_soap_body_set_fault(soap_body, env, soap_fault);
+            axiom_soap_fault_set_builder(soap_fault, env, soap_builder);
+            soap_builder->processing_fault = AXIS2_TRUE;
+            soap_builder->processing_mandatory_fault_elements = AXIS2_TRUE;
+
+            if(axutil_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI,
+                axiom_namespace_get_uri(env_ns, env)) == 0)
+            {
+                soap_builder->builder_helper = axiom_soap12_builder_helper_create(env, soap_builder);
+            }
+            else if(axutil_strcmp(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI,
+                axiom_namespace_get_uri(env_ns, env)) == 0)
+            {
+                soap_builder->builder_helper = axiom_soap11_builder_helper_create(
+                    env, soap_builder,soap_builder->om_builder);
+            }
+
+            if(!soap_builder->builder_helper)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create soap builder helper");
+                return AXIS2_FAILURE;
+            }
+            return AXIS2_SUCCESS;
         }
-        else if(parent_localname && axutil_strcasecmp(parent_localname,
-            AXIOM_SOAP_HEADER_LOCAL_NAME) && axutil_strcasecmp(parent_localname,
-            AXIOM_SOAP_BODY_LOCAL_NAME))
+        else
         {
             AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY, AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "SOAP builder found a child element other than header or "
-                    "body in envelope element");
+                "SOAP builder found a child element other than header or body in envelope element");
             return AXIS2_FAILURE;
         }
-    }
-    else if((element_level == 3) && parent_localname && axutil_strcasecmp(parent_localname,
-        AXIOM_SOAP_HEADER_LOCAL_NAME) == 0)
-    {
-        axiom_soap_header_block_t *header_block = NULL;
-        axiom_soap_header_t *soap_header = NULL;
-
-        soap_header = axiom_soap_envelope_get_header(soap_builder->soap_envelope, env);
-        if(!soap_header)
-        {
-            return AXIS2_FAILURE;
-        }
-
-        header_block = axiom_soap_header_block_create(env);
-        if(!header_block)
-        {
-            return AXIS2_FAILURE;
-        }
-
-        axiom_soap_header_block_set_base_node(header_block, env, om_element_node);
-
-        axiom_soap_header_set_header_block(soap_header, env, header_block);
-
-        axiom_soap_header_block_set_soap_version(header_block, env, soap_builder->soap_version);
-
-    }
-    else if((element_level == 3) && parent_localname && axutil_strcasecmp(parent_localname,
-        AXIOM_SOAP_BODY_LOCAL_NAME) == 0 && axutil_strcasecmp(ele_localname,
-        AXIOM_SOAP_BODY_FAULT_LOCAL_NAME) == 0)
-    {
-        axiom_soap_body_t *soap_body = NULL;
-        axiom_soap_fault_t *soap_fault = NULL;
-        axiom_namespace_t *env_ns = NULL;
-
-        env_ns = axiom_soap_envelope_get_namespace(soap_builder->soap_envelope, env);
-        if(!env_ns)
-        {
-            return AXIS2_FAILURE;
-        }
-        soap_body = axiom_soap_envelope_get_body(soap_builder->soap_envelope, env);
-
-        if(!soap_body)
-        {
-            return AXIS2_FAILURE;
-        }
-        soap_fault = axiom_soap_fault_create(env);
-        if(!soap_fault)
-        {
-            return AXIS2_FAILURE;
-        }
-        axiom_soap_fault_set_base_node(soap_fault, env, om_element_node);
-
-        axiom_soap_body_set_fault(soap_body, env, soap_fault);
-
-        axiom_soap_fault_set_builder(soap_fault, env, soap_builder);
-
-        soap_builder->processing_fault = AXIS2_TRUE;
-
-        soap_builder->processing_mandatory_fault_elements = AXIS2_TRUE;
-
-        if(axutil_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, axiom_namespace_get_uri(env_ns,
-            env)) == 0)
-        {
-            soap_builder->builder_helper = axiom_soap12_builder_helper_create(env, soap_builder);
-            if(!(soap_builder->builder_helper))
-            {
-                return AXIS2_FAILURE;
-            }
-        }
-        else if(axutil_strcmp(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, axiom_namespace_get_uri(
-            env_ns, env)) == 0)
-        {
-            soap_builder->builder_helper = axiom_soap11_builder_helper_create(env, soap_builder,
-                soap_builder->om_builder);
-            if(!(soap_builder->builder_helper))
-            {
-                return AXIS2_FAILURE;
-            }
-        }
-
     }
     else if(element_level > 3 && soap_builder->processing_fault)
     {
         if(soap_builder->soap_version == AXIOM_SOAP11)
         {
-            status = axiom_soap11_builder_helper_handle_event(
-                ((axiom_soap11_builder_helper_t *)(soap_builder->builder_helper)), env,
-                om_element_node, element_level);
-
+            status = axiom_soap11_builder_helper_handle_event((axiom_soap11_builder_helper_t *)
+                soap_builder->builder_helper, env, om_element_node, element_level);
         }
         else if(soap_builder->soap_version == AXIOM_SOAP12)
         {
-            status = axiom_soap12_builder_helper_handle_event(
-                ((axiom_soap12_builder_helper_t *)(soap_builder->builder_helper)), env,
-                om_element_node, element_level);
+            status = axiom_soap12_builder_helper_handle_event((axiom_soap12_builder_helper_t *)
+                soap_builder->builder_helper, env, om_element_node, element_level);
         }
-
+        else
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unknown SOAP Version");
+            status = AXIS2_FAILURE;
+        }
     }
     return status;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_soap_builder_process_namespace_data(
-    axiom_soap_builder_t * soap_builder,
-    const axutil_env_t * env,
-    axiom_node_t * om_node,
-    axis2_bool_t is_soap_element)
+static axis2_status_t
+axiom_soap_builder_construct_soap_header(
+    axiom_soap_builder_t *soap_builder,
+    const axutil_env_t *env,
+    axiom_node_t *om_node)
 {
-    axiom_element_t *om_ele = NULL;
-    axiom_namespace_t *om_ns = NULL;
-    axis2_char_t *ns_uri = NULL;
-
-    if(!om_node)
+    axiom_soap_header_t *soap_header = NULL;
+    if(soap_builder->header_present)
     {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED,
+            AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "SOAP builder encountered multiple headers");
+        return AXIS2_FAILURE;
+    }
+    if(soap_builder->body_present)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_BUILDER_HEADER_BODY_WRONG_ORDER,
+            AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "SOAP builder encountered body element first and header next");
         return AXIS2_FAILURE;
     }
 
-    if(!is_soap_element)
+    soap_builder->header_present = AXIS2_TRUE;
+    soap_header = axiom_soap_header_create(env);
+    if(!soap_header)
     {
-        return AXIS2_SUCCESS;
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to create SOAP Header");
+        return AXIS2_FAILURE;
     }
-    if(axiom_node_get_node_type(om_node, env) == AXIOM_ELEMENT)
-    {
-        om_ele = (axiom_element_t *)axiom_node_get_data_element(om_node, env);
-        if(om_ele)
-        {
-            om_ns = axiom_element_get_namespace(om_ele, env, om_node);
-            if(om_ns)
-            {
-                ns_uri = axiom_namespace_get_uri(om_ns, env);
-                if(ns_uri && (axutil_strcmp(ns_uri, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) != 0)
-                    && (axutil_strcmp(ns_uri, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) != 0))
-                {
-                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI,
-                        AXIS2_FAILURE);
-                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                        "AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI");
-                    return AXIS2_FAILURE;
-                }
 
+    axiom_soap_header_set_base_node(soap_header, env, om_node);
+    axiom_soap_envelope_set_header(soap_builder->soap_envelope, env, soap_header);
+    axiom_soap_header_set_builder(soap_header, env, soap_builder);
+    axiom_soap_header_set_soap_version(soap_header, env, soap_builder->soap_version);
+
+    return AXIS2_SUCCESS;
+}
+
+static axis2_status_t
+axiom_soap_builder_construct_soap_body(
+    axiom_soap_builder_t *soap_builder,
+    const axutil_env_t *env,
+    axiom_node_t *om_node)
+{
+    axiom_soap_body_t *soap_body = NULL;
+    if(soap_builder->body_present)
+    {
+        AXIS2_ERROR_SET(env->error,
+            AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_BODY_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "SOAP builder multiple body elements encountered");
+        return AXIS2_FAILURE;
+    }
+
+    soap_builder->body_present = AXIS2_TRUE;
+    soap_body = axiom_soap_body_create(env);
+    if(!soap_body)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to create SOAP Body");
+        return AXIS2_FAILURE;
+    }
+
+    axiom_soap_body_set_base_node(soap_body, env, om_node);
+    axiom_soap_body_set_builder(soap_body, env, soap_builder);
+    axiom_soap_envelope_set_body(soap_builder->soap_envelope, env, soap_body);
+
+    return AXIS2_SUCCESS;
+}
+/* check whether the namespace of given node is either SOAP11 or SOAP12 namespace */
+static axis2_status_t
+axiom_soap_builder_process_namespace_data(
+    axiom_soap_builder_t * soap_builder,
+    const axutil_env_t * env,
+    axiom_node_t * om_node)
+{
+    axiom_element_t *om_ele = NULL;
+    axiom_namespace_t *om_ns = NULL;
+
+    om_ele = (axiom_element_t *)axiom_node_get_data_element(om_node, env);
+    om_ns = axiom_element_get_namespace(om_ele, env, om_node);
+    if(om_ns)
+    {
+        axis2_char_t *ns_uri = NULL;
+        ns_uri = axiom_namespace_get_uri(om_ns, env);
+        if(ns_uri)
+        {
+            if((axutil_strcmp(ns_uri, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+                || (axutil_strcmp(ns_uri, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) == 0))
+            {
+                return AXIS2_SUCCESS;
             }
         }
     }
-    return AXIS2_SUCCESS;
+
+    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI, AXIS2_FAILURE);
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid SOAP Namespace URI");
+    return AXIS2_FAILURE;
 }
 
 static axis2_status_t
@@ -975,149 +960,6 @@ axiom_soap_builder_set_mime_body_parts(
 {
     soap_builder->mime_body_parts = map;
     return AXIS2_SUCCESS;
-}
-
-static axis2_status_t
-axiom_soap_builder_construct_node_for_empty_element(
-    axiom_soap_builder_t * soap_builder,
-    const axutil_env_t * env,
-    axiom_node_t * parent,
-    axiom_node_t * om_element_node)
-{
-    axiom_element_t *parent_ele = NULL;
-    axis2_char_t *parent_localname = NULL;
-
-    axiom_element_t *om_element = NULL;
-    axis2_char_t *ele_localname = NULL;
-
-    int element_level = 0;
-    int status = AXIS2_SUCCESS;
-
-    AXIS2_PARAM_CHECK(env->error, om_element_node, AXIS2_FAILURE);
-    if(!soap_builder)
-    {
-        return AXIS2_FAILURE;
-    }
-    if(!soap_builder->om_builder)
-    {
-        return AXIS2_FAILURE;
-    }
-    element_level = axiom_stax_builder_get_element_level(soap_builder->om_builder, env);
-
-    om_element = (axiom_element_t *)axiom_node_get_data_element(om_element_node, env);
-    if(!om_element)
-    {
-        return AXIS2_FAILURE;
-    }
-    ele_localname = axiom_element_get_localname(om_element, env);
-    if(!ele_localname)
-    {
-        return AXIS2_FAILURE;
-    }
-    if(!parent)
-    {
-        return AXIS2_FAILURE;
-    }
-    parent_ele = (axiom_element_t *)axiom_node_get_data_element(parent, env);
-    if(!parent_ele)
-    {
-        return AXIS2_FAILURE;
-    }
-    parent_localname = axiom_element_get_localname(parent_ele, env);
-    if(!parent_localname)
-    {
-        return AXIS2_FAILURE;
-    }
-    if(element_level == 1)
-    {
-        if(axutil_strcmp(ele_localname, AXIOM_SOAP_HEADER_LOCAL_NAME) == 0)
-        {
-
-            /** this is the soap header element */
-            axiom_soap_header_t *soap_header = NULL;
-            if(soap_builder->header_present)
-            {
-                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_HEADERS_ENCOUNTERED,
-                    AXIS2_FAILURE);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "SOAP builder encountered multiple headers");
-                return AXIS2_FAILURE;
-            }
-            if(soap_builder->body_present)
-            {
-                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_BUILDER_HEADER_BODY_WRONG_ORDER,
-                    AXIS2_FAILURE);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "SOAP builder encountered body element first and header next");
-                return AXIS2_FAILURE;
-            }
-
-            soap_builder->header_present = AXIS2_TRUE;
-
-            soap_header = axiom_soap_header_create(env);
-            if(!soap_header)
-            {
-                return AXIS2_FAILURE;
-            }
-            axiom_soap_header_set_base_node(soap_header, env, om_element_node);
-
-            axiom_soap_envelope_set_header(soap_builder->soap_envelope, env, soap_header);
-
-            axiom_soap_header_set_builder(soap_header, env, soap_builder);
-
-            axiom_soap_header_set_soap_version(soap_header, env, soap_builder->soap_version);
-
-            status = axiom_soap_builder_process_namespace_data(soap_builder, env, om_element_node,
-                AXIS2_TRUE);
-            if(status == AXIS2_FAILURE)
-            {
-                return AXIS2_FAILURE;
-            }
-        }
-        else if(axutil_strcmp(ele_localname, AXIOM_SOAP_BODY_LOCAL_NAME) == 0)
-        {
-
-            axiom_soap_body_t *soap_body = NULL;
-            if(soap_builder->body_present)
-            {
-                AXIS2_ERROR_SET(env->error,
-                    AXIS2_ERROR_SOAP_BUILDER_MULTIPLE_BODY_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                    "SOAP builder multiple body elements encountered");
-                return AXIS2_FAILURE;
-
-            }
-            soap_builder->body_present = AXIS2_TRUE;
-
-            soap_body = axiom_soap_body_create(env);
-            if(!soap_body)
-            {
-                return AXIS2_FAILURE;
-            }
-            axiom_soap_body_set_base_node(soap_body, env, om_element_node);
-
-            axiom_soap_body_set_builder(soap_body, env, soap_builder);
-
-            axiom_soap_envelope_set_body(soap_builder->soap_envelope, env, soap_body);
-
-            status = axiom_soap_builder_process_namespace_data(soap_builder, env, om_element_node,
-                AXIS2_TRUE);
-
-            if(status == AXIS2_FAILURE)
-            {
-                return AXIS2_FAILURE;
-            }
-        }
-        else
-        {
-            AXIS2_ERROR_SET(env->error,
-                AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY, AXIS2_FAILURE);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "SOAP builder found a child element other than header or "
-                    "body in envelope element");
-            return AXIS2_FAILURE;
-        }
-    }
-    return status;
 }
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
