@@ -62,6 +62,18 @@ axiom_soap_builder_construct_soap_body(
     const axutil_env_t *env,
     axiom_node_t *om_node);
 
+static axis2_status_t
+axiom_soap_builder_construct_soap_fault(
+    axiom_soap_builder_t *soap_builder,
+    const axutil_env_t *env,
+    axiom_node_t *om_node);
+
+static axis2_status_t
+axiom_soap_builder_construct_xop_include(
+    axiom_soap_builder_t *soap_builder,
+    const axutil_env_t *env,
+    axiom_node_t *om_element_node);
+
 struct axiom_soap_builder
 {
     axiom_stax_builder_t *om_builder;
@@ -448,88 +460,16 @@ axiom_soap_builder_construct_node(
 
     /** a parent node exist , so not soap envelope. Can be either header/body/children of them */
 
-    /* start: handle MTOM stuff */
-    if(axutil_strcmp(ele_localname, AXIS2_XOP_INCLUDE) == 0)
-    {
-        axiom_namespace_t *ns = NULL;
-
-        while(!axiom_node_is_complete(om_element_node, env))
-        {
-            axiom_stax_builder_next_with_token(soap_builder->om_builder, env);
-        }
-
-        ns = axiom_element_get_namespace(om_element, env, om_element_node);
-        if(ns)
-        {
-            axis2_char_t *uri = axiom_namespace_get_uri(ns, env);
-            if(uri)
-            {
-                if(axutil_strcmp(uri, AXIS2_XOP_NAMESPACE_URI) == 0)
-                {
-                    axutil_qname_t *qname = NULL;
-                    qname = axutil_qname_create(env, "href", NULL, NULL);
-                    if(qname)
-                    {
-                        axis2_char_t *id = NULL;
-                        id = axiom_element_get_attribute_value(om_element, env, qname);
-                        if(id)
-                        {
-                            axis2_char_t *pos = NULL;
-                            pos = axutil_strstr(id, "cid:");
-                            if(pos)
-                            {
-                                axiom_data_handler_t *data_handler = NULL;
-                                id += 4;
-
-                                if(soap_builder->mime_body_parts)
-                                {
-
-                                    axis2_char_t *id_decoded = NULL;
-
-                                    id_decoded = axutil_strdup(env, id);
-
-                                    axutil_url_decode(env, id_decoded, id_decoded);
-
-                                    data_handler = (axiom_data_handler_t *)axutil_hash_get(
-                                    soap_builder-> mime_body_parts, (void *)id_decoded,
-                                    AXIS2_HASH_KEY_STRING);
-                                    if(data_handler)
-                                    {
-                                        axiom_text_t *data_text = NULL;
-                                        axiom_node_t *data_om_node = NULL;
-
-                                        /*remove the <xop:Include> element */
-                                        axiom_node_free_tree(om_element_node, env);
-
-                                        data_text = axiom_text_create_with_data_handler(env,
-                                        parent, data_handler, &data_om_node);
-
-                                        axiom_text_set_content_id(data_text, env, id_decoded);
-                                        axiom_stax_builder_set_lastnode(soap_builder->om_builder,
-                                        env, parent);
-                                    }
-                                    if(id_decoded)
-                                    {
-                                        AXIS2_FREE(env->allocator, id_decoded);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    axutil_qname_free(qname, env);
-                }
-            }
-        }
-    }
-    /* end: handle MTOM stuff */
-
-    /** get element level of this OM element */
+    /* get element level of this OM element. Envelope will be in element_level 1. Body and Header
+     * will be in element level 2. SOAP fault will be child of Body, so it will be in level 3*/
     element_level = axiom_stax_builder_get_element_level(soap_builder->om_builder, env);
     if(axiom_stax_builder_get_current_event(soap_builder->om_builder, env)
         == AXIOM_XML_READER_EMPTY_ELEMENT)
     {
-        /* if it is an empty element, increase the element level to ensure processing header
-         * block logic, as the following logic assumes empty elements to be full elements. */
+        /* if it is an empty element, increase the element level. This is because the element level
+         * is incremented by STAX builder only if <element> tag is identified. It will not be
+         * incremented if <element/> tag is seen. But for our logic, even empty element should be
+         * considered as full element. so, <element/> = <element> </element>. */
         ++element_level;
     }
 
@@ -559,9 +499,8 @@ axiom_soap_builder_construct_node(
                 AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY, AXIS2_FAILURE);
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                 "SOAP builder found a child element other than header or body in envelope element");
-            status = AXIS2_FAILURE;
+            return AXIS2_FAILURE;
         }
-        return status;
     }
     else if(element_level == 3)
     {
@@ -602,7 +541,6 @@ axiom_soap_builder_construct_node(
             axiom_soap_header_block_set_base_node(header_block, env, om_element_node);
             axiom_soap_header_set_header_block(soap_header, env, header_block);
             axiom_soap_header_block_set_soap_version(header_block, env, soap_builder->soap_version);
-            return AXIS2_SUCCESS;
         }
         else if(axutil_strcasecmp(parent_localname, AXIOM_SOAP_BODY_LOCAL_NAME) == 0)
         {
@@ -610,57 +548,18 @@ axiom_soap_builder_construct_node(
             axiom_soap_fault_t *soap_fault = NULL;
             axiom_namespace_t *env_ns = NULL;
 
-            if(axutil_strcasecmp(ele_localname, AXIOM_SOAP_BODY_FAULT_LOCAL_NAME) != 0)
+            /* if the node is <xop:Include> or MTOM message */
+            if(axutil_strcmp(ele_localname, AXIS2_XOP_INCLUDE) == 0)
             {
-                /* We don't need to process any children of SOAP Body, which is not a soap fault. */
-                return AXIS2_SUCCESS;
+                return axiom_soap_builder_construct_xop_include(soap_builder, env, om_element_node);
             }
 
-            env_ns = axiom_soap_envelope_get_namespace(soap_builder->soap_envelope, env);
-            if(!env_ns)
+            if(axutil_strcasecmp(ele_localname, AXIOM_SOAP_BODY_FAULT_LOCAL_NAME) == 0)
             {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot get soap envelope namespace");
-                return AXIS2_FAILURE;
+                return axiom_soap_builder_construct_soap_fault(soap_builder, env, om_element_node);
             }
 
-            soap_body = axiom_soap_envelope_get_body(soap_builder->soap_envelope, env);
-            if(!soap_body)
-            {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot get soap body from OM Envelope");
-                return AXIS2_FAILURE;
-            }
-
-            soap_fault = axiom_soap_fault_create(env);
-            if(!soap_fault)
-            {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create SOAP Fault structure");
-                return AXIS2_FAILURE;
-            }
-
-            axiom_soap_fault_set_base_node(soap_fault, env, om_element_node);
-            axiom_soap_body_set_fault(soap_body, env, soap_fault);
-            axiom_soap_fault_set_builder(soap_fault, env, soap_builder);
-            soap_builder->processing_fault = AXIS2_TRUE;
-            soap_builder->processing_mandatory_fault_elements = AXIS2_TRUE;
-
-            if(axutil_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI,
-                axiom_namespace_get_uri(env_ns, env)) == 0)
-            {
-                soap_builder->builder_helper = axiom_soap12_builder_helper_create(env, soap_builder);
-            }
-            else if(axutil_strcmp(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI,
-                axiom_namespace_get_uri(env_ns, env)) == 0)
-            {
-                soap_builder->builder_helper = axiom_soap11_builder_helper_create(
-                    env, soap_builder,soap_builder->om_builder);
-            }
-
-            if(!soap_builder->builder_helper)
-            {
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create soap builder helper");
-                return AXIS2_FAILURE;
-            }
-            return AXIS2_SUCCESS;
+            /* We don't need to process any other children of SOAP Body. */
         }
         else
         {
@@ -670,24 +569,37 @@ axiom_soap_builder_construct_node(
                 "SOAP builder found a child element other than header or body in envelope element");
             return AXIS2_FAILURE;
         }
+
+        return AXIS2_SUCCESS;
     }
-    else if(element_level > 3 && soap_builder->processing_fault)
+    else if(element_level > 3)
     {
-        if(soap_builder->soap_version == AXIOM_SOAP11)
+        if(soap_builder->processing_fault)
         {
-            status = axiom_soap11_builder_helper_handle_event((axiom_soap11_builder_helper_t *)
-                soap_builder->builder_helper, env, om_element_node, element_level);
+            if(soap_builder->soap_version == AXIOM_SOAP11)
+            {
+                status = axiom_soap11_builder_helper_handle_event((axiom_soap11_builder_helper_t *)
+                    soap_builder->builder_helper, env, om_element_node, element_level);
+            }
+            else if(soap_builder->soap_version == AXIOM_SOAP12)
+            {
+                status = axiom_soap12_builder_helper_handle_event((axiom_soap12_builder_helper_t *)
+                    soap_builder->builder_helper, env, om_element_node, element_level);
+            }
+            else
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unknown SOAP Version");
+                status = AXIS2_FAILURE;
+            }
         }
-        else if(soap_builder->soap_version == AXIOM_SOAP12)
+
+        /* if the node is <xop:Include> or MTOM message */
+        else if(axutil_strcmp(ele_localname, AXIS2_XOP_INCLUDE) == 0)
         {
-            status = axiom_soap12_builder_helper_handle_event((axiom_soap12_builder_helper_t *)
-                soap_builder->builder_helper, env, om_element_node, element_level);
+            return axiom_soap_builder_construct_xop_include(soap_builder, env, om_element_node);
         }
-        else
-        {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unknown SOAP Version");
-            status = AXIS2_FAILURE;
-        }
+
+        /* we don't need to consider any other elements at this level. */
     }
     return status;
 }
@@ -761,6 +673,160 @@ axiom_soap_builder_construct_soap_body(
 
     return AXIS2_SUCCESS;
 }
+
+static axis2_status_t
+axiom_soap_builder_construct_soap_fault(
+    axiom_soap_builder_t *soap_builder,
+    const axutil_env_t *env,
+    axiom_node_t *om_node)
+{
+    axiom_soap_body_t *soap_body = NULL;
+    axiom_soap_fault_t *soap_fault = NULL;
+    axiom_namespace_t *env_ns = NULL;
+
+    env_ns = axiom_soap_envelope_get_namespace(soap_builder->soap_envelope, env);
+    if(!env_ns)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot get soap envelope namespace");
+        return AXIS2_FAILURE;
+    }
+
+    soap_body = axiom_soap_envelope_get_body(soap_builder->soap_envelope, env);
+    if(!soap_body)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot get soap body from OM Envelope");
+        return AXIS2_FAILURE;
+    }
+
+    soap_fault = axiom_soap_fault_create(env);
+    if(!soap_fault)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create SOAP Fault structure");
+        return AXIS2_FAILURE;
+    }
+
+    axiom_soap_fault_set_base_node(soap_fault, env, om_node);
+    axiom_soap_body_set_fault(soap_body, env, soap_fault);
+    axiom_soap_fault_set_builder(soap_fault, env, soap_builder);
+    soap_builder->processing_fault = AXIS2_TRUE;
+    soap_builder->processing_mandatory_fault_elements = AXIS2_TRUE;
+
+    if(axutil_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI,
+        axiom_namespace_get_uri(env_ns, env)) == 0)
+    {
+        soap_builder->builder_helper = axiom_soap12_builder_helper_create(env, soap_builder);
+    }
+    else if(axutil_strcmp(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI,
+        axiom_namespace_get_uri(env_ns, env)) == 0)
+    {
+        soap_builder->builder_helper = axiom_soap11_builder_helper_create(
+            env, soap_builder,soap_builder->om_builder);
+    }
+
+    if(!soap_builder->builder_helper)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create soap builder helper");
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
+}
+
+static axis2_status_t
+axiom_soap_builder_construct_xop_include(
+    axiom_soap_builder_t *soap_builder,
+    const axutil_env_t *env,
+    axiom_node_t *om_element_node)
+{
+    axiom_namespace_t *ns = NULL;
+    axis2_char_t *uri = NULL;
+    axiom_element_t *om_element = NULL;
+    axutil_qname_t *qname = NULL;
+    axis2_char_t *id = NULL;
+
+    om_element = (axiom_element_t *)axiom_node_get_data_element(om_element_node, env);
+    ns = axiom_element_get_namespace(om_element, env, om_element_node);
+    if(!ns)
+    {
+        /* this is not a xop:include element. so, we can safely return success */
+        return AXIS2_SUCCESS;
+    }
+
+    uri = axiom_namespace_get_uri(ns, env);
+    if((!uri) || (axutil_strcmp(uri, AXIS2_XOP_NAMESPACE_URI) != 0))
+    {
+        /* this is not a xop:include element. so, we can safely return success */
+        return AXIS2_SUCCESS;
+    }
+
+    qname = axutil_qname_create(env, "href", NULL, NULL);
+    if(!qname)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create qname with value href");
+        return AXIS2_FAILURE;
+    }
+
+    id = axiom_element_get_attribute_value(om_element, env, qname);
+    axutil_qname_free(qname, env);
+    if(!id)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot get href ID of the xop:include element");
+        return AXIS2_FAILURE;
+    }
+
+    if(!axutil_strstr(id, "cid:"))
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "ID of xop:include doesn't include 'cid:' part");
+        return AXIS2_FAILURE;
+    }
+
+    /* everything looks fine, so recursively build the OM tree, so that we can get data handlers */
+    while(!axiom_node_is_complete(om_element_node, env))
+    {
+        axiom_stax_builder_next_with_token(soap_builder->om_builder, env);
+    }
+
+    if(soap_builder->mime_body_parts)
+    {
+        axiom_data_handler_t *data_handler = NULL;
+        axis2_char_t *id_decoded = NULL;
+        axiom_text_t *data_text = NULL;
+        axiom_node_t *data_om_node = NULL;
+        axiom_node_t *parent = NULL;
+
+        /* Get the value of href id, after "cid:" */
+        id += 4;
+        id_decoded = axutil_strdup(env, id);
+        axutil_url_decode(env, id_decoded, id_decoded);
+
+        /* Find the data handler of given xop:include */
+        data_handler = (axiom_data_handler_t *)axutil_hash_get(
+            soap_builder-> mime_body_parts, (void *)id_decoded, AXIS2_HASH_KEY_STRING);
+        if(!data_handler)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Cannot find data handler corresponding to id %s", id_decoded);
+            AXIS2_FREE(env->allocator, id_decoded);
+            return AXIS2_FAILURE;
+        }
+
+        /* remove the <xop:Include> element, and add the data handler as the child of
+         * xop:include's parent */
+        parent = axiom_node_get_parent(om_element_node, env);
+        axiom_node_free_tree(om_element_node, env);
+        data_text = axiom_text_create_with_data_handler(env, parent, data_handler, &data_om_node);
+        axiom_text_set_content_id(data_text, env, id_decoded);
+        axiom_stax_builder_set_lastnode(soap_builder->om_builder,env, parent);
+        AXIS2_FREE(env->allocator, id_decoded);
+    }
+    else
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot find mime_body_part in soap builder");
+        return AXIS2_FAILURE;
+    }
+
+    return AXIS2_SUCCESS;
+}
+
 /* check whether the namespace of given node is either SOAP11 or SOAP12 namespace */
 static axis2_status_t
 axiom_soap_builder_process_namespace_data(
