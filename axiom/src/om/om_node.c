@@ -16,6 +16,7 @@
  */
 
 #include "axiom_node_internal.h"
+#include "axiom_stax_builder_internal.h"
 #include <axiom_element.h>
 #include <axiom_text.h>
 #include <axiom_data_source.h>
@@ -268,8 +269,6 @@ axiom_node_detach_without_namespaces(
 {
     axiom_node_t *parent = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     parent = om_node->parent;
     if(!parent)
     {
@@ -278,7 +277,7 @@ axiom_node_detach_without_namespaces(
         return om_node;
     }
 
-    if(!(om_node->prev_sibling))
+    if(!om_node->prev_sibling)
     {
         parent->first_child = om_node->next_sibling;
     }
@@ -302,9 +301,22 @@ axiom_node_detach_without_namespaces(
         }
     }
 
-    if((parent->last_child) && ((parent->last_child) == om_node))
+    if(parent->last_child && (parent->last_child == om_node))
     {
         parent->last_child = om_node->prev_sibling;
+    }
+
+    if(om_node->builder && (axiom_stax_builder_get_lastnode(om_node->builder, env) == om_node))
+    {
+        axiom_node_t *lastnode = parent;
+
+        /* if previous sibling is available, set that as the builder's last node. Else set the
+         * parent as the last node */
+        if(om_node->prev_sibling)
+        {
+            lastnode = om_node->prev_sibling;
+        }
+        axiom_stax_builder_set_lastnode(om_node->builder, env, lastnode);
     }
 
     om_node->parent = NULL;
@@ -1302,7 +1314,6 @@ axiom_node_set_document(
     const axutil_env_t * env,
     struct axiom_document * om_doc)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
     om_node->om_doc = om_doc;
     return AXIS2_SUCCESS;
@@ -1312,18 +1323,15 @@ axiom_node_set_document(
  internal function only sets the builder reference ,
  should not be used by user
  */
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_node_set_builder(
     axiom_node_t * om_node,
     const axutil_env_t * env,
     axiom_stax_builder_t * builder)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
     om_node->builder = builder;
     return AXIS2_SUCCESS;
-
 }
 
 /**
