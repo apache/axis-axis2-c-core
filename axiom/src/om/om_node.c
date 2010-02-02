@@ -306,12 +306,12 @@ axiom_node_detach_without_namespaces(
         parent->last_child = om_node->prev_sibling;
     }
 
+    /* if the STAX builder's last node is what we are detaching, then we should adjust the
+     * last node if previous sibling is available, set that as the builder's last node. Else set the
+     * parent as the last node*/
     if(om_node->builder && (axiom_stax_builder_get_lastnode(om_node->builder, env) == om_node))
     {
         axiom_node_t *lastnode = parent;
-
-        /* if previous sibling is available, set that as the builder's last node. Else set the
-         * parent as the last node */
         if(om_node->prev_sibling)
         {
             lastnode = om_node->prev_sibling;
