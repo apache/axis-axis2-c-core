@@ -417,8 +417,6 @@ axiom_element_declare_namespace(
     axis2_char_t *prefix = NULL;
     axis2_char_t *uri = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if(!node || !ns || !om_element)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);

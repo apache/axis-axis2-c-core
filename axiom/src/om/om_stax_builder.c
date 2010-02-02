@@ -99,106 +99,75 @@ axiom_stax_builder_process_attributes(
 {
     int i = 0;
     int attribute_count;
-    axiom_attribute_t *attribute = NULL;
-    axiom_namespace_t *ns = NULL;
-    axis2_char_t *uri = NULL;
-    axis2_char_t *prefix = NULL;
-    axis2_char_t *attr_name = NULL;
-    axis2_char_t *attr_value = NULL;
-    axutil_string_t *attr_name_str = NULL;
-    axutil_string_t *attr_value_str = NULL;
-
+    axiom_element_t *om_ele = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, element_node, AXIS2_FAILURE);
-
+    om_ele = (axiom_element_t *)axiom_node_get_data_element(element_node, env);
     attribute_count = axiom_xml_reader_get_attribute_count(om_builder->parser, env);
-    for(i = 1; i <= attribute_count; i++)
+    for(i = 1; i <= attribute_count; ++i)
     {
-        axiom_element_t *temp_ele = NULL;
+        axiom_namespace_t *ns = NULL;
+        axis2_char_t *uri = NULL;
+        axis2_char_t *prefix = NULL;
+        axis2_char_t *attr_name = NULL;
+        axis2_char_t *attr_value = NULL;
 
         uri = axiom_xml_reader_get_attribute_namespace_by_number(om_builder-> parser, env, i);
-
         prefix = axiom_xml_reader_get_attribute_prefix_by_number(om_builder->parser, env, i);
-        if(uri)
+        if(uri && (axutil_strcmp(uri, "") != 0))
         {
-            if(axutil_strcmp(uri, "") != 0)
+            ns = axiom_element_find_namespace(om_ele, env, element_node, uri, prefix);
+            if(!ns)
             {
-                axiom_element_t *om_ele = NULL;
-                om_ele = (axiom_element_t *)axiom_node_get_data_element(element_node, env);
-                if(om_ele)
-                {
-                    ns = axiom_element_find_namespace(om_ele, env, element_node, uri, prefix);
-
-                    /* newly added to handle "xml:*" attributes" (axutil_strcmp(prefix, "xml") == 0) && */
-                    if(!ns)
-                    {
-                        ns = axiom_namespace_create(env, uri, prefix);
-                    }
-                }
-            }
-        }
-
-        attr_name = axiom_xml_reader_get_attribute_name_by_number(om_builder->parser, env, i);
-
-#ifdef WIN32
-        attr_name_str = axutil_string_create(env, attr_name);
-        axiom_xml_reader_xml_free(om_builder->parser, env, attr_name);
-#else
-        attr_name_str = axutil_string_create_assume_ownership(env, &attr_name);
-#endif
-
-        attr_value = axiom_xml_reader_get_attribute_value_by_number(om_builder->parser, env, i);
-
-#ifdef WIN32
-        attr_value_str = axutil_string_create(env, attr_value);
-        axiom_xml_reader_xml_free(om_builder->parser, env, attr_value);
-#else
-        attr_value_str = axutil_string_create_assume_ownership(env, &attr_value);
-#endif
-
-        if(attr_name)
-        {
-            attribute = axiom_attribute_create_str(env, attr_name_str, attr_value_str, ns);
-            if(!attribute)
-            {
-                return AXIS2_FAILURE;
-            }
-
-            temp_ele = (axiom_element_t *)axiom_node_get_data_element(element_node, env);
-            if(temp_ele)
-            {
-                status = axiom_element_add_attribute(temp_ele, env, attribute, element_node);
+                /* if namespace is not defined yet, create it */
+                ns = axiom_namespace_create(env, uri, prefix);
             }
         }
         if(uri)
         {
-#ifdef AXIS2_LIBXML2_ENABLED
             axiom_xml_reader_xml_free(om_builder->parser, env, uri);
-#else
-            AXIS2_FREE(env->allocator, uri);
-#endif
         }
         if(prefix)
         {
-#ifdef AXIS2_LIBXML2_ENABLED
             axiom_xml_reader_xml_free(om_builder->parser, env, prefix);
+        }
+
+        attr_name = axiom_xml_reader_get_attribute_name_by_number(om_builder->parser, env, i);
+        attr_value = axiom_xml_reader_get_attribute_value_by_number(om_builder->parser, env, i);
+
+        if(attr_name)
+        {
+            axutil_string_t *attr_name_str = NULL;
+            axutil_string_t *attr_value_str = NULL;
+            axiom_attribute_t *attribute = NULL;
+
+#ifdef AXIS2_LIBXML2_ENABLED
+            attr_name_str = axutil_string_create(env, attr_name);
+            attr_value_str = axutil_string_create(env, attr_value);
+            axiom_xml_reader_xml_free(om_builder->parser, env, attr_name);
+            axiom_xml_reader_xml_free(om_builder->parser, env, attr_value);
 #else
-            AXIS2_FREE(env->allocator, prefix);
+            attr_name_str = axutil_string_create_assume_ownership(env, &attr_name);
+            attr_value_str = axutil_string_create_assume_ownership(env, &attr_value);
 #endif
-        }
-        if(attr_name_str)
-        {
+
+            attribute = axiom_attribute_create_str(env, attr_name_str, attr_value_str, ns);
             axutil_string_free(attr_name_str, env);
-        }
-        if(attr_value_str)
-        {
             axutil_string_free(attr_value_str, env);
+
+            if(!attribute)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create attribute");
+                return AXIS2_FAILURE;
+            }
+            if(axiom_element_add_attribute(om_ele, env, attribute, element_node) != AXIS2_SUCCESS)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot add attribute to element");
+                return AXIS2_FAILURE;
+            }
         }
-        ns = NULL;
     }
-    return status;
+    return AXIS2_SUCCESS;
 }
 
 static axiom_node_t *
@@ -209,14 +178,14 @@ axiom_stax_builder_create_om_text(
     axis2_char_t *temp_value = NULL;
     axutil_string_t *temp_value_str = NULL;
     axiom_node_t *node = NULL;
+    axiom_node_t *parent = om_builder->lastnode;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
-    if(!om_builder->lastnode)
+    if(!parent)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL, AXIS2_FAILURE);
         return NULL;
     }
+
     temp_value = axiom_xml_reader_get_value(om_builder->parser, env);
     if(!temp_value)
     {
@@ -224,34 +193,34 @@ axiom_stax_builder_create_om_text(
         return NULL;
     }
 
-#ifdef WIN32
+#ifdef AXIS2_LIBXML2_ENABLED
     temp_value_str = axutil_string_create(env, temp_value);
     axiom_xml_reader_xml_free(om_builder->parser, env, temp_value);
 #else
     temp_value_str = axutil_string_create_assume_ownership(env, &temp_value);
 #endif
+
     if(!temp_value_str)
     {
         /* axutil_string_create will have set an error number */
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create OM Text value");
         return NULL;
     }
 
-    if(axiom_node_is_complete(om_builder->lastnode, env))
+    if(axiom_node_is_complete(parent, env))
     {
-        axiom_text_create_str(env, axiom_node_get_parent(om_builder->lastnode, env),
-            temp_value_str, &node);
+        parent = axiom_node_get_parent(om_builder->lastnode, env);
     }
-    else
-    {
-        axiom_text_create_str(env, om_builder->lastnode, temp_value_str, &node);
-    }
+
+    axiom_text_create_str(env, parent, temp_value_str, &node);
+    axutil_string_free(temp_value_str, env);
+
     if(node)
     {
         axiom_node_set_complete(node, env, AXIS2_TRUE);
         om_builder->lastnode = node;
     }
 
-    axutil_string_free(temp_value_str, env);
     return node;
 }
 
@@ -265,76 +234,64 @@ axiom_stax_builder_process_namespaces(
     axis2_status_t status = AXIS2_SUCCESS;
     int namespace_count = 0;
     axiom_namespace_t *om_ns = NULL;
+    axiom_element_t *om_ele = NULL;
+
     /* temp values */
-    axis2_char_t *temp_prefix = NULL;
-    axis2_char_t *temp_ns_prefix = NULL;
-    axis2_char_t *temp_ns_uri = NULL;
-    axutil_string_t *temp_ns_prefix_str = NULL;
-    axutil_string_t *temp_ns_uri_str = NULL;
+    axis2_char_t *tmp_prefix = NULL;
+    axis2_char_t *tmp_ns_prefix = NULL;
+    axis2_char_t *tmp_ns_uri = NULL;
+    axutil_string_t *tmp_ns_prefix_str = NULL;
+    axutil_string_t *tmp_ns_uri_str = NULL;
 
     int i = 0;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    om_ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
 
     namespace_count = axiom_xml_reader_get_namespace_count(om_builder->parser, env);
-    for(i = 1; i <= namespace_count; i++)
+    for(i = 1; i <= namespace_count; ++i)
     {
-        temp_ns_prefix
-            = axiom_xml_reader_get_namespace_prefix_by_number(om_builder->parser, env, i);
+        tmp_ns_prefix = axiom_xml_reader_get_namespace_prefix_by_number(om_builder->parser, env, i);
+        tmp_ns_uri = axiom_xml_reader_get_namespace_uri_by_number(om_builder->parser, env, i);
 
-        temp_ns_uri = axiom_xml_reader_get_namespace_uri_by_number(om_builder->parser, env, i);
-
-#ifdef WIN32
-        temp_ns_prefix_str = axutil_string_create(env, temp_ns_prefix);
+#ifdef AXIS2_LIBXML2_ENABLED
+        tmp_ns_prefix_str = axutil_string_create(env, tmp_ns_prefix);
+        tmp_ns_uri_str = axutil_string_create(env, tmp_ns_uri);
 #else
-        temp_ns_prefix_str = axutil_string_create_assume_ownership(env, &temp_ns_prefix);
+        tmp_ns_prefix_str = axutil_string_create_assume_ownership(env, &tmp_ns_prefix);
+        tmp_ns_uri_str = axutil_string_create_assume_ownership(env, &tmp_ns_uri);
 #endif
 
-#ifdef WIN32
-        temp_ns_uri_str = axutil_string_create(env, temp_ns_uri);
-#else
-        temp_ns_uri_str = axutil_string_create_assume_ownership(env, &temp_ns_uri);
-#endif
-        if(!temp_ns_prefix || axutil_strcmp(temp_ns_prefix, "xmlns") == 0)
+        if(!tmp_ns_prefix || axutil_strcmp(tmp_ns_prefix, "xmlns") == 0)
         {
+            /* default namespace case. !temp_ns_prefix is for guththila */
 
-            /** default namespace case */
-
-            /** !temp_ns_prefix is for guththila */
-            axiom_element_t *om_ele = NULL;
-
-            if(temp_ns_prefix_str)
+            if(tmp_ns_prefix_str)
             {
-                axutil_string_free(temp_ns_prefix_str, env);
-                temp_ns_prefix_str = NULL;
+                axutil_string_free(tmp_ns_prefix_str, env);
             }
 
-            temp_ns_prefix_str = axutil_string_create(env, "");
-            om_ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
-
-            om_ns = axiom_namespace_create_str(env, temp_ns_uri_str, temp_ns_prefix_str);
-            if(!om_ns || !om_ele)
+            tmp_ns_prefix_str = axutil_string_create(env, "");
+            om_ns = axiom_namespace_create_str(env, tmp_ns_uri_str, tmp_ns_prefix_str);
+            if(!om_ns)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create namespace");
                 return AXIS2_FAILURE;
             }
 
             status = axiom_element_declare_namespace(om_ele, env, node, om_ns);
-
             if(!status)
             {
                 axiom_namespace_free(om_ns, env);
-                om_ns = NULL;
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error when declaring namespace");
+                return AXIS2_FAILURE;
             }
         }
         else
         {
-            axiom_element_t *om_ele = NULL;
             axis2_char_t *prefix = NULL;
-            om_ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
-
-            om_ns = axiom_namespace_create_str(env, temp_ns_uri_str, temp_ns_prefix_str);
-            if(!om_ns || !om_ele)
+            om_ns = axiom_namespace_create_str(env, tmp_ns_uri_str, tmp_ns_prefix_str);
+            if(!om_ns)
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create namespace");
                 return AXIS2_FAILURE;
             }
 
@@ -343,46 +300,33 @@ axiom_stax_builder_process_namespaces(
             axutil_hash_set(om_builder->declared_namespaces, prefix, AXIS2_HASH_KEY_STRING, om_ns);
         }
 
-        axutil_string_free(temp_ns_uri_str, env);
-        axutil_string_free(temp_ns_prefix_str, env);
-#ifdef WIN32
-        axiom_xml_reader_xml_free(om_builder->parser, env, temp_ns_uri);
-        axiom_xml_reader_xml_free(om_builder->parser, env, temp_ns_prefix);
+        axutil_string_free(tmp_ns_uri_str, env);
+        axutil_string_free(tmp_ns_prefix_str, env);
+#ifdef AXIS2_LIBXML2_ENABLED
+        axiom_xml_reader_xml_free(om_builder->parser, env, tmp_ns_uri);
+        axiom_xml_reader_xml_free(om_builder->parser, env, tmp_ns_prefix);
 #endif
-        if(!om_ns)
-        {
-            /* something went wrong */
-            return AXIS2_FAILURE;
-        }
     }
+
     /* set own namespace */
-    temp_prefix = axiom_xml_reader_get_prefix(om_builder->parser, env);
-    if(temp_prefix)
+    tmp_prefix = axiom_xml_reader_get_prefix(om_builder->parser, env);
+    if(tmp_prefix)
     {
-        om_ns
-            = axutil_hash_get(om_builder->declared_namespaces, temp_prefix, AXIS2_HASH_KEY_STRING);
+        om_ns = axutil_hash_get(om_builder->declared_namespaces, tmp_prefix, AXIS2_HASH_KEY_STRING);
 
         if(om_ns)
         {
-            axiom_element_t *om_ele = NULL;
-            om_ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
-            if(om_ele)
-            {
-                axiom_element_set_namespace_assume_param_ownership(om_ele, env, om_ns);
-            }
+            axiom_element_set_namespace_assume_param_ownership(om_ele, env, om_ns);
         }
         else
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE,
-                AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error,
+                AXIS2_ERROR_INVALID_DOCUMENT_STATE_UNDEFINED_NAMESPACE, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error when setting namespace");
             return AXIS2_FAILURE;
         }
 
-#ifdef AXIS2_LIBXML2_ENABLED
-        axiom_xml_reader_xml_free(om_builder->parser, env, temp_prefix);
-#else
-        AXIS2_FREE(env->allocator, temp_prefix);
-#endif
+        axiom_xml_reader_xml_free(om_builder->parser, env, tmp_prefix);
     }
 
     return status;
@@ -399,18 +343,16 @@ axiom_stax_builder_create_om_element(
     axis2_char_t *temp_localname = NULL;
     axutil_string_t *temp_localname_str = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK(env->error, om_builder, NULL);
-
     temp_localname = axiom_xml_reader_get_name(om_builder->parser, env);
 
     if(!temp_localname)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_XML_READER_ELEMENT_NULL, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot find name of the element");
         return NULL;
     }
 
-#ifdef WIN32
+#ifdef AXIS2_LIBXML2_ENABLED
     temp_localname_str = axutil_string_create(env, temp_localname);
     axiom_xml_reader_xml_free(om_builder->parser, env, temp_localname);
 #else
@@ -419,66 +361,56 @@ axiom_stax_builder_create_om_element(
 
     om_builder->element_level++;
 
-    if(!(om_builder->lastnode))
+    if(!om_builder->lastnode)
     {
+        /* since last node is null, this should be the root node */
         om_ele = axiom_element_create_str(env, NULL, temp_localname_str, NULL, &element_node);
-        if(!om_ele)
-        {
-            return NULL;
-        }
-
         om_builder->root_node = element_node;
-
-        axiom_node_set_builder(element_node, env, om_builder);
-
         if(om_builder->document)
         {
-            axiom_node_set_document(element_node, env, om_builder->document);
             axiom_document_set_root_element(om_builder->document, env, element_node);
         }
     }
     else if(axiom_node_is_complete(om_builder->lastnode, env))
     {
-        om_ele = axiom_element_create_str(env, axiom_node_get_parent(om_builder-> lastnode, env),
-            temp_localname_str, NULL, &element_node);
-        if(!om_ele)
-        {
-            return NULL;
-        }
-
+        /* previous node building is finished. So, this node should be a sibling of previous node */
+        axiom_node_t *parent = axiom_node_get_parent(om_builder->lastnode, env);
+        om_ele = axiom_element_create_str(env, parent, temp_localname_str, NULL, &element_node);
         if(element_node)
         {
             axiom_node_set_next_sibling(om_builder->lastnode, env, element_node);
             axiom_node_set_previous_sibling(element_node, env, om_builder->lastnode);
-            axiom_node_set_document(element_node, env, om_builder->document);
-            axiom_node_set_builder(element_node, env, om_builder);
         }
     }
     else
     {
-        om_ele = axiom_element_create_str(env, om_builder->lastnode, temp_localname_str, NULL,
-            &element_node);
+        /* previous node building is not finished. This should be first child of previous node */
+        om_ele = axiom_element_create_str(
+            env, om_builder->lastnode, temp_localname_str, NULL, &element_node);
         if(element_node)
         {
             axiom_node_set_first_child(om_builder->lastnode, env, element_node);
             axiom_node_set_parent(element_node, env, om_builder->lastnode);
-            axiom_node_set_document(element_node, env, om_builder->document);
-            axiom_node_set_builder(element_node, env, om_builder);
         }
     }
 
     axutil_string_free(temp_localname_str, env);
 
-    /** order of processing namespaces first is important */
+    if((!om_ele) || (!element_node))
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create axiom element");
+        return NULL;
+    }
+
+    axiom_node_set_builder(element_node, env, om_builder);
+    axiom_node_set_document(element_node, env, om_builder->document);
+    axiom_element_set_is_empty(om_ele, env, is_empty);
+
+    /* order of processing name spaces first (before processing attributes) is important */
     axiom_stax_builder_process_namespaces(om_builder, env, element_node, 0);
     axiom_stax_builder_process_attributes(om_builder, env, element_node);
 
     om_builder->lastnode = element_node;
-    if(om_ele)
-    {
-        axiom_element_set_is_empty(om_ele, env, is_empty);
-    }
-
     return element_node;
 }
 
@@ -489,53 +421,42 @@ axiom_stax_builder_create_om_comment(
 {
     axiom_node_t *comment_node = NULL;
     axis2_char_t *comment_value = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
+
+    if(!om_builder->lastnode)
+    {
+        /* if the comment is at the root level, we will omit it */
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Top level comment is ignored");
+        return NULL;
+    }
 
     comment_value = axiom_xml_reader_get_value(om_builder->parser, env);
     if(!comment_value)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_XML_READER_ELEMENT_NULL, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in reading comment");
         return NULL;
     }
 
-    if(!(om_builder->lastnode))
+    if(axiom_node_is_complete(om_builder->lastnode, env))
     {
-
-#ifdef AXIS2_LIBXML2_ENABLED
-        axiom_xml_reader_xml_free(om_builder->parser, env, comment_value);
-#else
-        AXIS2_FREE(env->allocator, comment_value);
-#endif
-        return NULL;
-    }
-    else if(axiom_node_is_complete(om_builder->lastnode, env))
-    {
-        axiom_comment_create(env, axiom_node_get_parent(om_builder->lastnode, env), comment_value,
-            &comment_node);
-
+        /* Last node is completed means, this node should be a sibling of last node */
+        axiom_node_t *parent = axiom_node_get_parent(om_builder->lastnode, env);
+        axiom_comment_create(env, parent, comment_value, &comment_node);
         axiom_node_set_next_sibling(om_builder->lastnode, env, comment_node);
         axiom_node_set_previous_sibling(comment_node, env, om_builder->lastnode);
-        axiom_node_set_builder(comment_node, env, om_builder);
-        axiom_node_set_document(comment_node, env, om_builder->document);
     }
     else
     {
+        /* this node should be a child of last node */
         axiom_comment_create(env, om_builder->lastnode, comment_value, &comment_node);
-
         axiom_node_set_first_child(om_builder->lastnode, env, comment_node);
         axiom_node_set_parent(comment_node, env, om_builder->lastnode);
-        axiom_node_set_builder(comment_node, env, om_builder);
-        axiom_node_set_document(comment_node, env, om_builder->document);
     }
 
-    om_builder->element_level++;
-
-#ifdef AXIS2_LIBXML2_ENABLED
     axiom_xml_reader_xml_free(om_builder->parser,env,comment_value);
-#else
-    AXIS2_FREE(env->allocator, comment_value);
-#endif
-
+    axiom_node_set_builder(comment_node, env, om_builder);
+    axiom_node_set_document(comment_node, env, om_builder->document);
+    om_builder->element_level++;
     om_builder->lastnode = comment_node;
 
     return comment_node;
@@ -578,7 +499,6 @@ axiom_stax_builder_create_om_processing_instruction(
     axis2_char_t *target = NULL;
     axis2_char_t *value = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     target = axiom_xml_reader_get_pi_target(om_builder->parser, env);
     value = axiom_xml_reader_get_pi_data(om_builder->parser, env);
     if(!target)
@@ -586,15 +506,15 @@ axiom_stax_builder_create_om_processing_instruction(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_XML_READER_ELEMENT_NULL, AXIS2_FAILURE);
         return NULL;
     }
-    if(!(om_builder->lastnode))
+    if(!om_builder->lastnode)
     {
         /* do nothing */
         axiom_xml_reader_xml_free(om_builder->parser, env, target);
         axiom_xml_reader_xml_free(om_builder->parser, env, value);
         return NULL;
     }
-    else if(axiom_node_is_complete(om_builder->lastnode, env) || (axiom_node_get_node_type(
-        om_builder->lastnode, env) == AXIOM_TEXT))
+    else if(axiom_node_is_complete(om_builder->lastnode, env)
+        || (axiom_node_get_node_type(om_builder->lastnode, env) == AXIOM_TEXT))
     {
         axiom_processing_instruction_create(env, axiom_node_get_parent(om_builder-> lastnode, env),
             target, value, &pi_node);
@@ -629,33 +549,38 @@ axiom_stax_builder_end_element(
     axiom_stax_builder_t * om_builder,
     const axutil_env_t * env)
 {
-    axiom_node_t *parent = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    om_builder->element_level--;
+    /* if last node is not set, that means end_element is called before start_element,
+     * which is an error */
+    if(!om_builder->lastnode)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Invalid XML. End element is received before start element.");
+        return AXIS2_FAILURE;
+    }
 
-    if(om_builder->lastnode)
+    om_builder->element_level--;
+    if(axiom_node_is_complete(om_builder->lastnode, env))
     {
-        if(axiom_node_is_complete((om_builder->lastnode), env))
+        /* Last node completed means, this end element should be parent of the last node. */
+        axiom_node_t *parent = NULL;
+        parent = axiom_node_get_parent(om_builder->lastnode, env);
+        if(parent)
         {
-            parent = axiom_node_get_parent((om_builder->lastnode), env);
-            if(parent)
-            {
-                axiom_node_set_complete(parent, env, AXIS2_TRUE);
-                om_builder->lastnode = parent;
-            }
-        }
-        else
-        {
-            axiom_node_set_complete((om_builder->lastnode), env, AXIS2_TRUE);
+            axiom_node_set_complete(parent, env, AXIS2_TRUE);
+            om_builder->lastnode = parent;
         }
     }
-    if(om_builder->root_node)
+    else
     {
-        if(axiom_node_is_complete(om_builder->root_node, env))
-        {
-            om_builder->done = AXIS2_TRUE;
-        }
+        axiom_node_set_complete((om_builder->lastnode), env, AXIS2_TRUE);
     }
+
+    /* if we finish building the root node, then we can set the complete status of om_builder */
+    if(om_builder->root_node && axiom_node_is_complete(om_builder->root_node, env))
+    {
+        om_builder->done = AXIS2_TRUE;
+    }
+
     return AXIS2_SUCCESS;
 }
 
@@ -893,7 +818,6 @@ axiom_stax_builder_next_with_token(
     const axutil_env_t * env)
 {
     int token = 0;
-    void *val = NULL;
 
     if((!om_builder) || (!om_builder->parser))
     {
@@ -927,78 +851,86 @@ axiom_stax_builder_next_with_token(
     switch(token)
     {
         case AXIOM_XML_READER_START_DOCUMENT:
+        {
             /*Do nothing */
             break;
-
+        }
         case AXIOM_XML_READER_START_ELEMENT:
-            val = axiom_stax_builder_create_om_element(om_builder, env, AXIS2_FALSE);
-            if(!val)
+        {
+            if(!axiom_stax_builder_create_om_element(om_builder, env, AXIS2_FALSE))
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in creating start element");
                 return -1;
             }
             break;
-
+        }
         case AXIOM_XML_READER_EMPTY_ELEMENT:
-
+        {
+            axis2_bool_t is_empty = AXIS2_TRUE;
 #ifdef AXIS2_LIBXML2_ENABLED
-            val = axiom_stax_builder_create_om_element(om_builder, env, AXIS2_FALSE);
-#else
-            val = axiom_stax_builder_create_om_element(om_builder, env, AXIS2_TRUE);
+            is_empty = AXIS2_FALSE;
 #endif
-
-            if(!val)
+            if(!axiom_stax_builder_create_om_element(om_builder, env, is_empty))
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in creating empty element");
                 return -1;
             }
+            /* Let this to fall to AXIOM_XML_READER_END_ELEMENT case as well, since empty element
+             * = start element logic + end element logic */
+        }
         case AXIOM_XML_READER_END_ELEMENT:
-            axiom_stax_builder_end_element(om_builder, env);
+        {
+            if(axiom_stax_builder_end_element(om_builder, env) != AXIS2_SUCCESS)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in processing end element");
+                return -1;
+            }
             break;
-
+        }
         case AXIOM_XML_READER_SPACE:
+        {
             /* ignore white space before the root element */
             if(om_builder->lastnode)
             {
-                val = axiom_stax_builder_create_om_text(om_builder, env);
-                if(!val)
+                if(!axiom_stax_builder_create_om_text(om_builder, env))
                 {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in creating axiom text");
                     return -1;
                 }
             }
             break;
-
+        }
         case AXIOM_XML_READER_CHARACTER:
-            val = axiom_stax_builder_create_om_text(om_builder, env);
-            if(!val)
+        {
+            if(!axiom_stax_builder_create_om_text(om_builder, env))
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in creating axiom text");
                 return -1;
             }
             break;
-
+        }
         case AXIOM_XML_READER_ENTITY_REFERENCE:
+        {
             break;
-
+        }
         case AXIOM_XML_READER_COMMENT:
-            val = axiom_stax_builder_create_om_comment(om_builder, env);
-            if(val)
+        {
+            if(axiom_stax_builder_create_om_comment(om_builder, env))
             {
                 axiom_stax_builder_end_element(om_builder, env);
             }
             break;
-
+        }
         case AXIOM_XML_READER_PROCESSING_INSTRUCTION:
-            val = axiom_stax_builder_create_om_processing_instruction(om_builder, env);
-            if(val)
+        {
+            if(axiom_stax_builder_create_om_processing_instruction(om_builder, env))
             {
                 axiom_stax_builder_end_element(om_builder, env);
             }
-            break;
-
+           break;
+        }
         case AXIOM_XML_READER_CDATA:
-            break;
-
         case AXIOM_XML_READER_DOCUMENT_TYPE:
-            break;
-
         default:
             break;
     }
