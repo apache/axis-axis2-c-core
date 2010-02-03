@@ -100,7 +100,6 @@ axiom_stax_builder_process_attributes(
     int i = 0;
     int attribute_count;
     axiom_element_t *om_ele = NULL;
-    axis2_status_t status = AXIS2_SUCCESS;
 
     om_ele = (axiom_element_t *)axiom_node_get_data_element(element_node, env);
     attribute_count = axiom_xml_reader_get_attribute_count(om_builder->parser, env);
@@ -462,33 +461,6 @@ axiom_stax_builder_create_om_comment(
     return comment_node;
 }
 
-static axiom_node_t *
-axiom_stax_builder_create_om_doctype(
-    axiom_stax_builder_t * om_builder,
-    const axutil_env_t * env)
-{
-    axiom_node_t *doctype_node = NULL;
-    axis2_char_t *doc_value = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
-
-    doc_value = axiom_xml_reader_get_dtd(om_builder->parser, env);
-    if(!doc_value)
-    {
-        return NULL;
-    }
-    if(!(om_builder->lastnode))
-    {
-        axiom_doctype_create(env, NULL, doc_value, &doctype_node);
-        if(om_builder->document)
-        {
-            axiom_document_set_root_element(om_builder->document, env, doctype_node);
-        }
-    }
-    om_builder->lastnode = doctype_node;
-    axiom_xml_reader_xml_free(om_builder->parser, env, doc_value);
-    return doctype_node;
-}
 
 static axiom_node_t *
 axiom_stax_builder_create_om_processing_instruction(
@@ -1070,3 +1042,31 @@ axiom_stax_builder_set_element_level(
     om_builder->element_level = element_level;
     return AXIS2_SUCCESS;
 }
+
+#if 0
+static axiom_node_t *
+axiom_stax_builder_create_om_doctype(
+    axiom_stax_builder_t * om_builder,
+    const axutil_env_t * env)
+{
+    axiom_node_t *doctype_node = NULL;
+    axis2_char_t *doc_value = NULL;
+
+    doc_value = axiom_xml_reader_get_dtd(om_builder->parser, env);
+    if(!doc_value)
+    {
+        return NULL;
+    }
+    if(!(om_builder->lastnode))
+    {
+        axiom_doctype_create(env, NULL, doc_value, &doctype_node);
+        if(om_builder->document)
+        {
+            axiom_document_set_root_element(om_builder->document, env, doctype_node);
+        }
+    }
+    om_builder->lastnode = doctype_node;
+    axiom_xml_reader_xml_free(om_builder->parser, env, doc_value);
+    return doctype_node;
+}
+#endif
