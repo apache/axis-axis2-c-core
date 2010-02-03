@@ -544,10 +544,6 @@ axiom_soap_builder_construct_node(
         }
         else if(axutil_strcasecmp(parent_localname, AXIOM_SOAP_BODY_LOCAL_NAME) == 0)
         {
-            axiom_soap_body_t *soap_body = NULL;
-            axiom_soap_fault_t *soap_fault = NULL;
-            axiom_namespace_t *env_ns = NULL;
-
             /* if the node is <xop:Include> or MTOM message */
             if(axutil_strcmp(ele_localname, AXIS2_XOP_INCLUDE) == 0)
             {
