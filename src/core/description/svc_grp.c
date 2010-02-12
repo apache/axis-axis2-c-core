@@ -330,6 +330,17 @@ axis2_svc_grp_get_param(
     return param;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_svc_grp_remove_param(
+	const axis2_svc_grp_t *svc_grp,
+	const axutil_env_t *env,
+	const axis2_char_t *param_name)
+{
+	axis2_status_t status = AXIS2_FAILURE;
+	status = axutil_param_container_delete_param(svc_grp->param_container, env, param_name);
+	return status;
+}
+
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_svc_grp_get_all_params(
     const axis2_svc_grp_t * svc_grp,

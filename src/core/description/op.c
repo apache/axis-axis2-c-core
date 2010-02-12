@@ -336,6 +336,20 @@ axis2_op_get_param(
     return param;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+axis2_op_remove_param
+	(axis2_op_t *op,
+	const axutil_env_t *env,
+	const axis2_char_t *param_name)
+{
+	axis2_status_t status = AXIS2_FAILURE;
+	status = axutil_param_container_delete_param(op->param_container, env, param_name);
+	return status;
+
+
+}
+
+
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_op_get_all_params(
     const axis2_op_t * op,
