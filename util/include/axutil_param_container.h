@@ -115,6 +115,16 @@ extern "C"
         axutil_param_container_t * param_container,
         const axutil_env_t * env,
         const axis2_char_t * param_name);
+	
+	/** Remove parameter from the param container 
+	 * @param parameter name of the param to be removed
+	 * @return status of AXIS2_SUCCESS or AXIS2_FAILURE 
+	 */
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+		axutil_param_container_delete_param(
+		axutil_param_container_t *param_container,
+		const axutil_env_t *env,
+		const axis2_char_t *param_name);
 
     /** @} */
 
