@@ -130,6 +130,17 @@ extern "C"
         const axis2_op_t * op,
         const axutil_env_t * env,
         const axis2_char_t * name);
+	/**
+	 * Removes a parameter assiciated with the operation
+	 * @param op pointer to operation
+	 * @param env pointer to environment struct
+	 * @param param_name parameter name to be removed
+	 */
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+	axis2_op_remove_param
+		(axis2_op_t *op,
+		const axutil_env_t *env,
+		const axis2_char_t *param_name);
 
     /**
      * Gets all parameters.

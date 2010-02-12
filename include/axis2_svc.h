@@ -240,6 +240,18 @@ extern "C"
         const axutil_env_t * env,
         const axis2_char_t * name);
 
+	/**
+	 * Remove a parameter.
+	 * @param svc pointer to service struct
+	 * @param env pointer to the environment
+	 * @Param param_name parameter name to be removed
+	 */
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+	axis2_svc_remove_param(
+		const axis2_svc_t *svc,
+		const axutil_env_t *env,
+		const axis2_char_t *param_name);
+
     /**
      * Gets all parameters stored within service.
      * @param svc pointer to service struct
