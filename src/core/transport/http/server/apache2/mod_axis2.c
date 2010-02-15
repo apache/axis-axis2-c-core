@@ -27,6 +27,7 @@
 #include <axutil_thread_pool.h>
 #include <axiom_xml_reader.h>
 #include <axutil_version.h>
+#include <axutil_types.h>
 #include <apr_rmm.h>
 #include <apr_shm.h>
 #include <apr_dbd.h>
