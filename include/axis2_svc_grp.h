@@ -362,6 +362,20 @@ extern "C"
         const axis2_svc_grp_t * svc_grp,
         const axutil_env_t * env);
 
+	/**
+	 * Checks whether a given module is engaged to the service group
+	 * @param svc_grp point to service group
+	 * @param env pointer to the environment struct
+	 * @return pointer to base description struct
+	 */
+
+	AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+	axis2_svc_grp_is_module_engaged(
+		const axis2_svc_grp_t *svc_grp,
+		const axutil_env_t *env,
+		const axutil_qname_t *qname);
+
+
 #ifdef __cplusplus
 }
 #endif

@@ -1381,3 +1381,43 @@ axis2_op_get_base(
     return op->base;
 }
 
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_op_is_module_engaged(
+	const axis2_op_t *op,
+	const axutil_env_t *env,
+	const axutil_qname_t *mod_qname)
+{
+	int index = 0;
+    int size = 0;
+    axutil_array_list_t *collection_module = NULL;
+    axis2_module_desc_t *module_desc = NULL;
+    axis2_char_t *opname = NULL;
+    axis2_char_t *modname = NULL;
+
+    opname = axutil_qname_get_localpart(axis2_op_get_qname(op, env), env);
+    collection_module = op->engaged_module_list;
+    if(collection_module)
+    {
+        size = axutil_array_list_size(collection_module, env);
+    }
+    for(index = 0; index < size; index++)
+    {
+        const axutil_qname_t *qname1 = NULL;
+
+        module_desc = (axis2_module_desc_t *)axutil_array_list_get(collection_module, env, index);
+        if(!module_desc)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Retrieving a module failed from operation %s engaged module"
+                    " list", opname);
+            return AXIS2_FAILURE;
+        }
+        qname1 = axis2_module_desc_get_qname(module_desc, env);
+        if(axutil_qname_equals(qname1, env, mod_qname))
+        {
+			return AXIS2_TRUE;
+        }
+    }
+	return AXIS2_FALSE;
+}
+

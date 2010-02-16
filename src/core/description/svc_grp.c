@@ -598,3 +598,28 @@ axis2_svc_grp_get_base(
     return svc_grp->base;
 }
 
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_svc_grp_is_module_engaged(
+	const axis2_svc_grp_t *svc_grp,
+	const axutil_env_t *env,
+	const axutil_qname_t *module_name)
+{
+    int i = 0;
+    axutil_qname_t *modu = NULL;
+    axis2_char_t *modu_local = NULL;
+    axis2_char_t *module_name_local = NULL;
+    int size = 0;
+
+    size = axutil_array_list_size(svc_grp->module_qname_list, env);
+    for(i = 0; size; i++)
+    {
+        modu = axutil_array_list_get(svc_grp->module_qname_list, env, i);
+        modu_local = axutil_qname_get_localpart(modu, env);
+        module_name_local = axutil_qname_get_localpart(module_name, env);
+        if(!axutil_strcmp(modu_local, module_name_local))
+        {
+            return AXIS2_TRUE;
+        }
+    }
+	return AXIS2_FALSE;
+}
