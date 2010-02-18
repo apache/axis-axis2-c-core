@@ -1042,7 +1042,7 @@ axis2_svc_disengage_module(
 	if(status == AXIS2_SUCCESS)
 	{
 		/** Remove this module from the engaged modules list */
-		axutil_qname_t *mod_qname = NULL;
+		const axutil_qname_t *mod_qname = NULL;
 		int i = 0, size = 0;
 
 		mod_qname = axis2_module_desc_get_qname(module_desc, env);
