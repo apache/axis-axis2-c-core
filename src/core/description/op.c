@@ -1392,9 +1392,8 @@ axis2_op_is_module_engaged(
     axutil_array_list_t *collection_module = NULL;
     axis2_module_desc_t *module_desc = NULL;
     axis2_char_t *opname = NULL;
-    axis2_char_t *modname = NULL;
 
-    opname = axutil_qname_get_localpart(axis2_op_get_qname(op, env), env);
+    opname = axutil_qname_get_localpart(axis2_op_get_qname((void*)op, env), env);
     collection_module = op->engaged_module_list;
     if(collection_module)
     {
