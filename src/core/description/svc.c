@@ -1039,6 +1039,31 @@ axis2_svc_disengage_module(
         return AXIS2_FAILURE;
     }
     status = axis2_phase_resolver_disengage_module_from_svc(phase_resolver, env, svc, module_desc);
+	if(status == AXIS2_SUCCESS)
+	{
+		/** Remove this module from the engaged modules list */
+		axutil_qname_t *mod_qname = NULL;
+		int i = 0, size = 0;
+
+		mod_qname = axis2_module_desc_get_qname(module_desc, env);
+
+	    size = axutil_array_list_size(svc->engaged_module_list, env);
+		for(i = 0; i < size; i++)
+		{
+			const axutil_qname_t *module_qname_l = NULL;
+			axis2_module_desc_t *module_desc_l = NULL;
+
+			module_desc_l = (axis2_module_desc_t *)axutil_array_list_get(svc->engaged_module_list, env,
+				i);
+			module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
+
+			if(axutil_qname_equals(mod_qname, env, module_qname_l))
+			{
+				axutil_array_list_remove(svc->engaged_module_list, env, i);
+				break;
+			}
+		}
+	}
 
     axis2_phase_resolver_free(phase_resolver, env);
 
