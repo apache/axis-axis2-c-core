@@ -620,7 +620,6 @@ axis2_op_engage_module(
     axutil_array_list_t *collection_module = NULL;
     axis2_module_desc_t *module_desc = NULL;
     axis2_phase_resolver_t *pr = NULL;
-    axis2_bool_t need_to_add = AXIS2_FALSE;
     axis2_char_t *opname = NULL;
     axis2_char_t *modname = NULL;
 
@@ -653,7 +652,6 @@ axis2_op_engage_module(
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Module %s already engaged to operation %s",
                 modname, opname);
 
-            need_to_add = AXIS2_FALSE;
             return AXIS2_FAILURE;
         }
 
@@ -674,10 +672,7 @@ axis2_op_engage_module(
         }
         module = axis2_module_desc_get_module(moduleref, env);
 
-        if(need_to_add)
-        {
-            axutil_array_list_add(collection_module, env, moduleref);
-        }
+        axutil_array_list_add(collection_module, env, moduleref);
     }
     else
     {
