@@ -611,7 +611,7 @@ axis2_svc_grp_is_module_engaged(
     int size = 0;
 
     size = axutil_array_list_size(svc_grp->module_qname_list, env);
-    for(i = 0; size < i; i++)
+    for(i = 0; i < size ; i++)
     {
         modu = axutil_array_list_get(svc_grp->module_qname_list, env, i);
         modu_local = axutil_qname_get_localpart(modu, env);
