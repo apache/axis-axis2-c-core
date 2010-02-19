@@ -1415,3 +1415,60 @@ axis2_op_is_module_engaged(
 	return AXIS2_FALSE;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_op_disengage_module(
+const axis2_op_t *op,
+const axutil_env_t *env,
+axis2_module_desc_t *module_desc,
+axis2_conf_t *conf)
+{
+	axis2_phase_resolver_t *phase_resolver = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    const axis2_char_t *opname = NULL;
+	
+    AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
+
+	opname = axutil_qname_get_localpart(op->qname, env);
+
+    phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
+    if(!phase_resolver)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating phase resolver failed for operation",
+			opname);
+        return AXIS2_FAILURE;
+    }
+	status = axis2_phase_resolver_disengage_module_from_op(phase_resolver, env, (axis2_op_t*)op, module_desc);
+	if(status == AXIS2_SUCCESS)
+	{
+		
+		/** Remove this module from the engaged modules list */
+		const axutil_qname_t *mod_qname = NULL;
+		int i = 0, size = 0;
+
+		mod_qname = axis2_module_desc_get_qname(module_desc, env);
+
+	    size = axutil_array_list_size(op->engaged_module_list, env);
+		for(i = 0; i < size; i++)
+		{
+			const axutil_qname_t *module_qname_l = NULL;
+			axis2_module_desc_t *module_desc_l = NULL;
+
+			module_desc_l = (axis2_module_desc_t *)axutil_array_list_get(op->engaged_module_list, env,
+				i);
+			module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
+
+			if(axutil_qname_equals(mod_qname, env, module_qname_l))
+			{
+				axutil_array_list_remove(op->engaged_module_list, env, i);
+				break;
+			}
+		}
+	}
+
+    axis2_phase_resolver_free(phase_resolver, env);
+
+    return status;
+
+
+}
