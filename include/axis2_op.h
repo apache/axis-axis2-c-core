@@ -729,6 +729,19 @@ extern "C"
 		const axutil_env_t *env,
 		const axutil_qname_t *mod_qname);
 
+	/**
+	 * Disengages a module from operation.
+	 * @param op pointer to the operation
+	 * @param env pointer to environment struct
+	 * @param mod_qname module qname
+	 */
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+	axis2_op_disengage_module(
+	const axis2_op_t *op,
+	const axutil_env_t *env,
+	struct axis2_module_desc *mod_desc,
+	struct axis2_conf *conf);
+
 
     /** @} */
 #ifdef __cplusplus
