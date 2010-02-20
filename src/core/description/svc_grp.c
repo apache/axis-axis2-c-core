@@ -623,3 +623,92 @@ axis2_svc_grp_is_module_engaged(
     }
 	return AXIS2_FALSE;
 }
+
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+	axis2_svc_grp_disengage_module(
+		const axis2_svc_grp_t *svc_grp,
+		const axutil_env_t *env,
+		axis2_module_desc_t *module_desc,
+		axis2_conf_t *conf)
+{
+	int i = 0;
+    axis2_status_t status = AXIS2_FAILURE;
+    const axutil_qname_t *module_qname = NULL;
+	axis2_char_t *module_name = NULL;
+	axis2_svc_t *axis_svc = NULL;
+    axutil_hash_index_t *index = NULL;
+	axutil_hash_t *svc_map = NULL;
+    axis2_phase_resolver_t *phase_resolver = NULL;
+    int size = 0;
+
+	const axis2_char_t *svc_grp_name = axis2_svc_grp_get_name(svc_grp, env);
+	module_qname = axis2_module_desc_get_qname(module_desc, env);
+	module_name = axutil_qname_get_localpart(module_qname, env);
+
+	if(!axis2_svc_grp_is_module_engaged(svc_grp, env, module_qname))
+	{
+		AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "Module %s is not engaged to the service group %s",
+			axutil_qname_get_localpart(module_qname, env), svc_grp_name);
+		return AXIS2_FAILURE;
+	}
+	/** Module is engaged to the service group, now disengage all the services contained within the
+	service group */
+    svc_map = axis2_svc_grp_get_all_svcs(svc_grp, env);
+    if(!svc_map)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Services map not found for service group %s",
+            svc_grp_name);
+
+        return AXIS2_FAILURE;
+    }
+
+    phase_resolver = axis2_phase_resolver_create_with_config(env, svc_grp->parent);
+
+    if(!phase_resolver)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Creating phase resolver failed for service group %s", svc_grp_name);
+
+        return AXIS2_FAILURE;
+    }
+
+    index = axutil_hash_first(svc_map, env);
+    while(index)
+    {
+        const axis2_char_t *svc_name = NULL;
+        void *v = NULL;
+        /* engage in per each service */
+        axutil_hash_this(index, NULL, NULL, &v);
+        axis_svc = (axis2_svc_t *)v;
+        svc_name = axis2_svc_get_name(axis_svc, env);
+		status = axis2_phase_resolver_disengage_module_from_svc(phase_resolver, env, axis_svc,
+			module_desc);
+
+        if(!status)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "disengaging module %s to service %s failed",
+				module_name, svc_name);
+        }
+
+        index = axutil_hash_next(env, index);
+    }
+
+    if(phase_resolver)
+    {
+        axis2_phase_resolver_free(phase_resolver, env);
+    }
+	/** Remove module qname from the engaged module qname list */
+	size = axutil_array_list_size(svc_grp->module_qname_list, env);
+    for(i = 0; i < size ; i++)
+    {
+		axutil_qname_t *qname = NULL;
+        qname = axutil_array_list_get(svc_grp->module_qname_list, env, i);
+		if(axutil_qname_equals(qname, env, module_qname))
+		{
+			/** Remove the qname from the qname list */
+			axutil_array_list_remove(svc_grp->module_qname_list, env, i);
+			break;
+		}
+    }
+	return status;
+}
