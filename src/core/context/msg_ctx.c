@@ -1554,14 +1554,56 @@ axis2_msg_ctx_get_doing_mtom(
     axis2_msg_ctx_t * msg_ctx,
     const axutil_env_t * env)
 {
-    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
-
+	axutil_param_t *param = NULL;
+	if(msg_ctx->doing_mtom)
+		return msg_ctx->doing_mtom;
+	if(msg_ctx->op)
+	{
+		param = axis2_op_get_param(msg_ctx->op, env, AXIS2_ENABLE_MTOM);
+		if(param)
+		{
+			axis2_char_t *value = axutil_param_get_value(param, env);
+			if(value)
+			{
+				if(axutil_strcmp(value,"false") == 0)
+				{
+					msg_ctx->doing_mtom = AXIS2_FALSE;
+					return msg_ctx->doing_mtom;
+				}
+				if(axutil_strcmp(value,"true") == 0)
+				{
+					msg_ctx->doing_mtom = AXIS2_TRUE;
+					return msg_ctx->doing_mtom;
+				}
+			}
+		}
+	}
+	if(msg_ctx->svc)
+	{
+		param = axis2_svc_get_param(msg_ctx->svc, env, AXIS2_ENABLE_MTOM);
+		if(param)
+		{
+			axis2_char_t *value = axutil_param_get_value(param, env);
+			if(value)
+			{
+				if(axutil_strcmp(value,"false") == 0)
+				{
+					msg_ctx->doing_mtom = AXIS2_FALSE;
+					return msg_ctx->doing_mtom;
+				}
+				if(axutil_strcmp(value,"true") == 0)
+				{
+					msg_ctx->doing_mtom = AXIS2_TRUE;
+					return msg_ctx->doing_mtom;
+				}
+			}
+		}
+	}
     if(!(msg_ctx->doing_mtom) && msg_ctx->conf_ctx)
     {
         axis2_conf_t *conf = axis2_conf_ctx_get_conf(msg_ctx->conf_ctx, env);
         msg_ctx->doing_mtom = axis2_conf_get_enable_mtom(conf, env);
     }
-
     return msg_ctx->doing_mtom;
 }
 
