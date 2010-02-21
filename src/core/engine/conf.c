@@ -1833,3 +1833,63 @@ axis2_conf_get_handlers(
     return conf->handlers;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_conf_disengage_module(
+	const axis2_conf_t *conf,
+	const axutil_env_t *env,
+	const axutil_qname_t *module_ref)
+{
+	axis2_module_desc_t *module_desc = NULL;
+	axutil_hash_index_t *index = NULL;
+	axis2_char_t *mod_name  =  NULL;
+	int size = 0, i = 0;
+	if(!module_ref)
+		return AXIS2_FAILURE;
+
+	mod_name = axutil_qname_get_localpart(module_ref, env);
+    module_desc = axis2_conf_get_module(conf, env, module_ref);
+    if(!module_desc)
+    {
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "The requested module %s does not exist",
+			mod_name);
+		return AXIS2_FAILURE;
+    }
+	if(!axis2_conf_is_engaged((axis2_conf_t*)conf, env, module_ref))
+	{
+		AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "%s Module is not engaged globally", mod_name);
+		return AXIS2_FAILURE;
+	}
+	if(!conf->all_svcs)
+	{
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "configuration does not have any services");
+		return AXIS2_FAILURE;
+	
+	}
+	for(index = axutil_hash_first(conf->all_svcs, env); index; index = axutil_hash_next(env, index))
+	{
+		axis2_svc_t *svc = NULL;
+		void *v = NULL;
+		const axis2_char_t *svc_name = NULL;
+		axutil_hash_this(index, NULL, NULL, &v);
+		svc = (axis2_svc_t *)v;
+		if(svc)
+		{
+			svc_name = axis2_svc_get_name(svc, env);
+			axis2_svc_disengage_module(svc, env, module_desc,(axis2_conf_t*) conf);				
+		}
+	}
+	
+	size = axutil_array_list_size(conf->engaged_module_list, env);
+    for(i = 0; i < size; i++)
+    {
+        axutil_qname_t *qname = NULL;
+        qname = (axutil_qname_t *)axutil_array_list_get(conf->engaged_module_list, env, i);
+		if(axutil_qname_equals(module_ref, env, qname))
+        {
+			axutil_array_list_remove(conf->engaged_module_list, env, i);
+			return AXIS2_SUCCESS;
+		}
+    }
+
+	return AXIS2_FAILURE;
+}
