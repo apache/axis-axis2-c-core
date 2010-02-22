@@ -131,7 +131,7 @@ axutil_class_loader_create_dll(
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "%s shared lib loaded successfully",
             axutil_dll_desc_get_name(dll_desc, env));
     }
-
+	axutil_param_set_param_type(impl_info_param, env, AXIS2_DLL_PARAM);
     return obj;
 }
 
