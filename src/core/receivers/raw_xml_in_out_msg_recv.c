@@ -237,7 +237,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         {
             axis2_char_t *mep = (axis2_char_t *)axis2_op_get_msg_exchange_pattern(op_desc, env);
             if(axutil_strcmp(mep, AXIS2_MEP_URI_IN_ONLY) && axutil_strcmp(mep,
-                AXIS2_MEP_URI_ROBUST_IN_ONLY))
+				AXIS2_MEP_URI_ROBUST_IN_ONLY) && axutil_strcmp(mep, AXIS2_MEP_URI_IN_ONLY_WSDL2) &&						axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_IN_ONLY_WSDL2))
             {
                 status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
                 if(status == AXIS2_SUCCESS)
@@ -273,7 +273,8 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
                 {
                     axis2_msg_ctx_set_status_code(msg_ctx, env, axis2_msg_ctx_get_status_code(
                         new_msg_ctx, env));
-                    if(!axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_IN_ONLY))
+					if((!axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_IN_ONLY)) || 
+						(!axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_IN_ONLY_WSDL2)))
                     {
                         /* The new_msg_ctx is passed to the service. The status code must
                          * be taken from here and set to the old message context which is
