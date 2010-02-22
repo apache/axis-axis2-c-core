@@ -249,7 +249,7 @@ extern "C"
      * Field MEP_URI_ROBUST_IN_ONLY
      */
 #define AXIS2_MEP_URI_ROBUST_IN_ONLY "http://www.w3.org/2004/08/wsdl/robust-in-only"
-#define AXIS2_MEP_URI_ROBUST_IN_ONLY_WSDL2 "http://www.w3.org/wsdl/robust-in-only"
+#define AXIS2_MEP_URI_ROBUST_IN_ONLY_WSDL2 "http://www.w3.org/ns/wsdl/robust-in-only"
 
 
 #define AXIS2_MEP_CONSTANT_ROBUST_IN_ONLY 11
@@ -268,7 +268,7 @@ extern "C"
      */
 #define AXIS2_MEP_URI_IN_OPTIONAL_OUT "http://www.w3.org/2004/08/wsdl/in-opt-out"
 
-#define AXIS2_MEP_URI_IN_OPTIONAL_OUT_WSDL2 "http://www.w3.org/wsdl/in-opt-out"
+#define AXIS2_MEP_URI_IN_OPTIONAL_OUT_WSDL2 "http://www.w3.org/ns/wsdl/in-opt-out"
 
 #define AXIS2_MEP_CONSTANT_IN_OPTIONAL_OUT 13
 
@@ -277,7 +277,7 @@ extern "C"
      */
 #define AXIS2_MEP_URI_OUT_ONLY "http://www.w3.org/2004/08/wsdl/out-only"
 
-#define AXIS2_MEP_URI_OUT_ONLY_WSDL2 "http://www.w3.org/wsdl/out-only"
+#define AXIS2_MEP_URI_OUT_ONLY_WSDL2 "http://www.w3.org/ns/wsdl/out-only"
 
 #define AXIS2_MEP_CONSTANT_OUT_ONLY 14
 
@@ -286,7 +286,7 @@ extern "C"
      */
 #define AXIS2_MEP_URI_ROBUST_OUT_ONLY "http://www.w3.org/2004/08/wsdl/robust-out-only"
 
-#define AXIS2_MEP_URI_ROBUST_OUT_ONLY_WSDL2 "http://www.w3.org/wsdl/robust-out-only"
+#define AXIS2_MEP_URI_ROBUST_OUT_ONLY_WSDL2 "http://www.w3.org/ns/wsdl/robust-out-only"
 
 #define AXIS2_MEP_CONSTANT_ROBUST_OUT_ONLY 15
 
@@ -295,7 +295,7 @@ extern "C"
      */
 #define AXIS2_MEP_URI_OUT_IN "http://www.w3.org/2004/08/wsdl/out-in"
 
-#define AXIS2_MEP_URI_OUT_IN_WSDL2 "http://www.w3.org/wsdl/out-in"
+#define AXIS2_MEP_URI_OUT_IN_WSDL2 "http://www.w3.org/ns/wsdl/out-in"
 
 #define AXIS2_MEP_CONSTANT_OUT_IN 16
 
@@ -304,7 +304,7 @@ extern "C"
      */
 #define AXIS2_MEP_URI_OUT_OPTIONAL_IN "http://www.w3.org/2004/08/wsdl/out-opt-in"
 
-#define AXIS2_MEP_URI_OUT_OPTIONAL_IN_WSDL2 "http://www.w3.org/wsdl/out-opt-in"
+#define AXIS2_MEP_URI_OUT_OPTIONAL_IN_WSDL2 "http://www.w3.org/ns/wsdl/out-opt-in"
 
 #define AXIS2_MEP_CONSTANT_OUT_OPTIONAL_IN 17
 
