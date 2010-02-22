@@ -49,6 +49,11 @@ extern "C"
      * Field DOM_PARAM
      */
 #define AXIS2_DOM_PARAM 1
+	
+	/**
+	 * DLL param
+	 */
+#define AXIS2_DLL_PARAM 2
 
     typedef struct axutil_param axutil_param_t;
 
