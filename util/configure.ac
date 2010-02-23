@@ -10,7 +10,6 @@ AC_PREFIX_DEFAULT(/usr/local/axis2_util)
 
 dnl Checks for programs.
 AC_PROG_CC
-AC_PROG_CXX
 AC_PROG_CPP
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
@@ -62,6 +61,8 @@ dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([stdio.h stdlib.h string.h])
 AC_CHECK_HEADERS([sys/socket.h])
+AC_CHECK_HEADERS([sys/sockio.h])
+AC_CHECK_HEADERS([getopt.h])
 AC_CHECK_HEADERS([net/if.h], [], [],
 [#include <stdio.h>
 #if STDC_HEADERS

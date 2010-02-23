@@ -116,7 +116,9 @@ extern "C"
 #include "axutil_uuid_gen_unix.h"   /* uuid_gen unix implementation */
 #include <netinet/tcp.h>        /* TCP_NODELAY */
 #include <utime.h>
+#ifdef HAVE_GETOPT_H
 #include <getopt.h>
+#endif /*HAVE_GETOPT_H*/
 #include "axutil_date_time_util_unix.h"
 
     /* for file access handling */
