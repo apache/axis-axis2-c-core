@@ -8,7 +8,6 @@ libaxis2_parser_la_LIBADD = @LIBXML2_LIBS@ \
 							../../../../util/src/libaxutil.la
 
 libaxis2_parser_la_LDFLAGS = -version-info $(VERSION_NO)
-libaxis2_libxml2_la_LDFLAGS = -version-info $(VERSION_NO)
 
 
 INCLUDES = -I$(top_builddir)/include \

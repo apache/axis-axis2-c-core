@@ -3,7 +3,7 @@ lib_LTLIBRARIES = libguththila.la
 libguththila_la_LDFLAGS = -version-info $(VERSION_NO)
 
 libguththila_la_SOURCES = guththila_buffer.c \
-			  guththila_namespace.c \			  
+			  guththila_namespace.c \
 	 		  guththila_token.c \
 			  guththila_reader.c \
 			  guththila_attribute.c \
