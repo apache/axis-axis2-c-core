@@ -51,7 +51,6 @@ dnl ./util/src/platforms/unix/date_time_util_unix.c
 dnl is changed to call gettimeofday
 AC_CHECK_LIB(compat, ftime)
 
-#CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
     CFLAGS="$CFLAGS -ansi -Wall -Werror -Wno-implicit-function-declaration -D_GNU_SOURCE"

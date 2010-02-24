@@ -47,7 +47,10 @@ fi
 dnl Checks for libraries.
 AC_CHECK_LIB(dl, dlopen)
 
-CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
+CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE" 
+if test "$GCC" = "yes"; then
+	CFLAGS="$CFLAGS -ansi -Wall -Werror -Wno-implicit-function-declaration -g -D_GNU_SOURCE"
+fi
 
 dnl Checks for header files.
 AC_HEADER_STDC
