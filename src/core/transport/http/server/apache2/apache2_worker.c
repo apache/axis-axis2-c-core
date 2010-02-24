@@ -530,28 +530,28 @@ axis2_apache2_worker_process_request(
                             i));
                         temp += strlen(temp);
                         /* Conditions below is to assist down-stream modules */
-                        if(!strcasecmp(AXIS2_HTTP_PUT, (axis2_char_t *)axutil_array_list_get(
+                        if(!axutil_strcasecmp(AXIS2_HTTP_PUT, (axis2_char_t *)axutil_array_list_get(
                             method_list, env, i)))
                         {
                             request->allowed_methods->method_mask |= AP_METHOD_BIT << M_PUT;
                         }
-                        else if(!strcasecmp(AXIS2_HTTP_POST, (axis2_char_t *)axutil_array_list_get(
+                        else if(!axutil_strcasecmp(AXIS2_HTTP_POST, (axis2_char_t *)axutil_array_list_get(
                             method_list, env, i)))
                         {
                             request->allowed_methods->method_mask |= AP_METHOD_BIT << M_POST;
                         }
-                        else if(!strcasecmp(AXIS2_HTTP_GET, (axis2_char_t *)axutil_array_list_get(
+                        else if(!axutil_strcasecmp(AXIS2_HTTP_GET, (axis2_char_t *)axutil_array_list_get(
                             method_list, env, i)))
                         {
                             request->allowed_methods->method_mask |= AP_METHOD_BIT << M_GET;
                         }
-                        else if(!strcasecmp(AXIS2_HTTP_HEAD, (axis2_char_t *)axutil_array_list_get(
+                        else if(!axutil_strcasecmp(AXIS2_HTTP_HEAD, (axis2_char_t *)axutil_array_list_get(
                             method_list, env, i)))
                         {
                             /* Apache Can't differentiate between HEAD and GET */
                             request->allowed_methods->method_mask |= AP_METHOD_BIT << M_GET;
                         }
-                        else if(!strcasecmp(AXIS2_HTTP_DELETE,
+                        else if(!axutil_strcasecmp(AXIS2_HTTP_DELETE,
                             (axis2_char_t *)axutil_array_list_get(method_list, env, i)))
                         {
                             request->allowed_methods->method_mask |= AP_METHOD_BIT << M_DELETE;
@@ -677,28 +677,28 @@ axis2_apache2_worker_process_request(
                             i));
                         temp += strlen(temp);
                         /* Conditions below is to assist down-stream modules */
-                        if(!strcasecmp(AXIS2_HTTP_PUT, (axis2_char_t *)axutil_array_list_get(
+                        if(!axutil_strcasecmp(AXIS2_HTTP_PUT, (axis2_char_t *)axutil_array_list_get(
                             method_list, env, i)))
                         {
                             request->allowed_methods->method_mask |= AP_METHOD_BIT << M_PUT;
                         }
-                        else if(!strcasecmp(AXIS2_HTTP_POST, (axis2_char_t *)axutil_array_list_get(
+                        else if(!axutil_strcasecmp(AXIS2_HTTP_POST, (axis2_char_t *)axutil_array_list_get(
                             method_list, env, i)))
                         {
                             request->allowed_methods->method_mask |= AP_METHOD_BIT << M_POST;
                         }
-                        else if(!strcasecmp(AXIS2_HTTP_GET, (axis2_char_t *)axutil_array_list_get(
+                        else if(!axutil_strcasecmp(AXIS2_HTTP_GET, (axis2_char_t *)axutil_array_list_get(
                             method_list, env, i)))
                         {
                             request->allowed_methods->method_mask |= AP_METHOD_BIT << M_GET;
                         }
-                        else if(!strcasecmp(AXIS2_HTTP_HEAD, (axis2_char_t *)axutil_array_list_get(
+                        else if(!axutil_strcasecmp(AXIS2_HTTP_HEAD, (axis2_char_t *)axutil_array_list_get(
                             method_list, env, i)))
                         {
                             /* Apache Can't differentiate between HEAD and GET */
                             request->allowed_methods->method_mask |= AP_METHOD_BIT << M_GET;
                         }
-                        else if(!strcasecmp(AXIS2_HTTP_DELETE,
+                        else if(!axutil_strcasecmp(AXIS2_HTTP_DELETE,
                             (axis2_char_t *)axutil_array_list_get(method_list, env, i)))
                         {
                             request->allowed_methods->method_mask |= AP_METHOD_BIT << M_DELETE;

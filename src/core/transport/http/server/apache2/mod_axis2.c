@@ -260,31 +260,31 @@ axis2_set_log_level(
     str = ap_getword_conf(cmd->pool, &arg);
     if(str)
     {
-        if(!strcasecmp(str, "crit"))
+        if(!axutil_strcasecmp(str, "crit"))
         {
             level = AXIS2_LOG_LEVEL_CRITICAL;
         }
-        else if(!strcasecmp(str, "error"))
+        else if(!axutil_strcasecmp(str, "error"))
         {
             level = AXIS2_LOG_LEVEL_ERROR;
         }
-        else if(!strcasecmp(str, "warn"))
+        else if(!axutil_strcasecmp(str, "warn"))
         {
             level = AXIS2_LOG_LEVEL_WARNING;
         }
-        else if(!strcasecmp(str, "info"))
+        else if(!axutil_strcasecmp(str, "info"))
         {
             level = AXIS2_LOG_LEVEL_INFO;
         }
-        else if(!strcasecmp(str, "debug"))
+        else if(!axutil_strcasecmp(str, "debug"))
         {
             level = AXIS2_LOG_LEVEL_DEBUG;
         }
-        else if(!strcasecmp(str, "user"))
+        else if(!axutil_strcasecmp(str, "user"))
         {
             level = AXIS2_LOG_LEVEL_USER;
         }
-        else if(!strcasecmp(str, "trace"))
+        else if(!axutil_strcasecmp(str, "trace"))
         {
             level = AXIS2_LOG_LEVEL_TRACE;
         }
