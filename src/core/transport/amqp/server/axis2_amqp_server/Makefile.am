@@ -2,7 +2,7 @@ prgbindir = $(bindir)
 
 prgbin_PROGRAMS = axis2_amqp_server
 
-AM_CFLAGS = -g -pthread
+AM_CFLAGS = -g 
 
 axis2_amqp_server_SOURCES = axis2_amqp_server.c
 
@@ -17,8 +17,7 @@ axis2_amqp_server_LDADD = $(LDFLAGS) \
 						  $(top_builddir)/src/core/engine/libaxis2_engine.la \
 						  $(top_builddir)/neethi/src/libneethi.la \
 						  $(top_builddir)/src/core/transport/amqp/receiver/libaxis2_amqp_receiver.la \
-						  $(top_builddir)/src/core/transport/amqp/util/libaxis2_amqp_util.la \
-						  -lpthread
+						  $(top_builddir)/src/core/transport/amqp/util/libaxis2_amqp_util.la
                     
 INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/src/core/description \

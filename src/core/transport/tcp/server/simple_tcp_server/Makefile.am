@@ -1,7 +1,7 @@
 prgbindir=$(bindir)
 prgbin_PROGRAMS = axis2_tcp_server
 SUBDIRS =
-AM_CFLAGS = -g -pthread
+AM_CFLAGS = -g 
 axis2_tcp_server_SOURCES = tcp_server_main.c 
 
 axis2_tcp_server_LDADD   =  $(LDFLAGS) \
@@ -16,8 +16,7 @@ axis2_tcp_server_LDADD   =  $(LDFLAGS) \
 			     $(top_builddir)/src/core/engine/libaxis2_engine.la \
 			     $(top_builddir)/src/core/transport/tcp/sender/libaxis2_tcp_sender.la \
 			     $(top_builddir)/src/core/transport/tcp/receiver/libaxis2_tcp_receiver.la \
-			     $(top_builddir)/neethi/src/libneethi.la \
-                            -lpthread
+			     $(top_builddir)/neethi/src/libneethi.la
 
 INCLUDES =  -I$(top_builddir)/include \
             -I$(top_builddir)/src/core/description\

@@ -2,7 +2,7 @@ TESTS = test_engine
 check_PROGRAMS = test_engine
 noinst_PROGRAMS = test_engine
 SUBDIRS =
-AM_CFLAGS = -g -pthread
+AM_CFLAGS = -g
 test_engine_SOURCES = test_engine.c
 
 

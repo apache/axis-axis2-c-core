@@ -21,7 +21,6 @@ LINK_FLAGS = $(LDFLAGS) \
              -laxis2_axiom \
              -laxis2_engine \
              -laxis2_parser \
-             -lpthread \
              $(GUTHTHILA_LIBS)
 
 echo_blocking_LDADD = $(LINK_FLAGS)

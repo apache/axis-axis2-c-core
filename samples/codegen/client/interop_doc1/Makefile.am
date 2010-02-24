@@ -21,7 +21,6 @@ test_echo_date_LDADD   =  \
                     -laxis2_wsdl \
                     -laxis2_engine \
                     -laxis2_parser \
-                    -lpthread \
                     -laxis2_http_sender \
                     -laxis2_http_receiver \
                     $(GUTHTHILA_LIBS)
@@ -46,7 +45,6 @@ test_echo_struct_array_LDADD   =  \
                     -laxis2_wsdl \
                     -laxis2_engine \
                     -laxis2_parser \
-                    -lpthread \
                     -laxis2_http_sender \
                     -laxis2_http_receiver \
                     $(GUTHTHILA_LIBS)

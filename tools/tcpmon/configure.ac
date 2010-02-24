@@ -23,8 +23,6 @@ if test "$GCC" = "yes"; then
     CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration"
 fi
 
-LDFLAGS="$LDFLAGS -lpthread"
-
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([stdio.h stdlib.h string.h])

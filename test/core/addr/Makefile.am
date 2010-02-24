@@ -2,7 +2,7 @@ TESTS = test_addr
 check_PROGRAMS = test_addr
 noinst_PROGRAMS = test_addr
 SUBDIRS =
-AM_CFLAGS = -g -pthread
+AM_CFLAGS = -g 
 test_addr_SOURCES = test_addr.c
 
 test_addr_LDADD   =  \

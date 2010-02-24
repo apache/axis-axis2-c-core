@@ -2,7 +2,7 @@ TESTS = test_client test_clientapi test_svc_client_handler_count
 noinst_PROGRAMS = test_client test_clientapi test_svc_client_handler_count
 check_PROGRAMS = test_client test_clientapi test_svc_client_handler_count
 SUBDIRS =
-AM_CFLAGS = -g -pthread 
+AM_CFLAGS = -g
 test_client_SOURCES = test_client.c
 test_clientapi_SOURCES = test_clientapi.c
 test_svc_client_handler_count_SOURCES = test_svc_client_handler_count.c
@@ -12,7 +12,6 @@ test_clientapi_LDADD   =  \
                     ../../../axiom/src/om/libaxis2_axiom.la \
                     ../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 					$(top_builddir)/neethi/src/libneethi.la \
-                    -lpthread \
                     $(top_builddir)/src/core/engine/libaxis2_engine.la \
                     $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la
 
@@ -21,7 +20,6 @@ test_client_LDADD   =  \
                     ../../../axiom/src/om/libaxis2_axiom.la \
                     ../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 			$(top_builddir)/neethi/src/libneethi.la \
-                    -lpthread \
                     $(top_builddir)/src/core/engine/libaxis2_engine.la \
                     $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la
 
@@ -30,7 +28,6 @@ test_svc_client_handler_count_LDADD   =  \
 					../../../axiom/src/om/libaxis2_axiom.la \
 					../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 					$(top_builddir)/neethi/src/libneethi.la \
-					-lpthread \
 					$(top_builddir)/src/core/engine/libaxis2_engine.la \
 					$(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la
 

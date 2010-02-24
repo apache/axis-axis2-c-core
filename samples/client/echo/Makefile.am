@@ -8,7 +8,6 @@ echo_LDADD   = $(LDFLAGS) \
                     -laxis2_axiom \
                     -laxis2_engine \
                     -laxis2_parser \
-                    -lpthread \
                     -laxis2_http_sender \
                     -laxis2_http_receiver \
                     $(GUTHTHILA_LIBS)

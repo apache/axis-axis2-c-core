@@ -59,12 +59,10 @@ if test -d $srcdir/neethi; then
     AC_CONFIG_SUBDIRS(neethi)
 fi
 
-#CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 CPPFLAGS="$CPPFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
     CFLAGS="$CFLAGS -ansi -Wall -Werror -Wno-implicit-function-declaration -g -D_GNU_SOURCE"
-#    CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration"
 fi
 
 dnl Checks for header files.

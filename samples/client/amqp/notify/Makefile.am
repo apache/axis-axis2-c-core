@@ -9,7 +9,6 @@ notify_LDADD =  -L$(AXIS2C_HOME)/lib \
                 -laxis2_axiom \
                 -laxis2_engine \
                 -laxis2_parser \
-                -lpthread \
                 $(GUTHTHILA_LIBS)
 
 INCLUDES = @AXIS2INC@
