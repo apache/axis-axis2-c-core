@@ -10,7 +10,6 @@ AC_PREFIX_DEFAULT(/usr/local/md5)
 
 dnl Checks for programs.
 AC_PROG_CC
-AC_PROG_CXX
 AC_PROG_CPP
 LT_INIT
 AC_PROG_INSTALL
