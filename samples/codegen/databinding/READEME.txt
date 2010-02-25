@@ -6,8 +6,7 @@ Introduction
 
 These samples demonstrate the use of code generation using Axis2/Java WSDL2Java 
 (http://svn.apache.org/repos/asf/webservices/axis2/trunk/java)tool with Axis Data Binding.
-You can download the latest update of the tool from 
-http://people.apache.org/dist/axis2/nightly
+You can download Axis2/Java latest release from here, http://ws.apache.org/axis2/download.cgi.
 
 Files
 -----
