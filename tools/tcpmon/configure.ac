@@ -18,9 +18,9 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
 
-CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE -g"
+CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
-    CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration"
+    CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration -g"
 fi
 
 
