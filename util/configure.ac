@@ -1,36 +1,36 @@
 dnl run autogen.sh to generate the configure script.
 
-AC_PREREQ(2.63)
+AC_PREREQ(2.59)
 
-AC_INIT([axis2_util-src],[1.6.0])
-AC_CANONICAL_TARGET
-AC_CONFIG_HEADERS([config.h])
+AC_INIT(axis2_util-src, 1.6.0)
+AC_CANONICAL_SYSTEM
+AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE
 AC_PREFIX_DEFAULT(/usr/local/axis2_util)
 
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CPP
-LT_INIT
+AC_PROG_LIBTOOL
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
 dnl check for flavours of varargs macros (test from GLib)
 AC_MSG_CHECKING(for ISO C99 varargs macros in C)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
+AC_TRY_COMPILE([],[
 int a(int p1, int p2, int p3);
 #define call_a(...) a(1,__VA_ARGS__)
 call_a(2,3);
-]])],[axis2c_have_iso_c_varargs=yes],[axis2c_have_iso_c_varargs=no])
+],axis2c_have_iso_c_varargs=yes,axis2c_have_iso_c_varargs=no)
 AC_MSG_RESULT($axis2c_have_iso_c_varargs)
 
 AC_MSG_CHECKING(for GNUC varargs macros)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
+AC_TRY_COMPILE([],[
 int a(int p1, int p2, int p3);
 #define call_a(params...) a(1,params)
 call_a(2,3);
-]])],[axis2c_have_gnuc_varargs=yes],[axis2c_have_gnuc_varargs=no])
+],axis2c_have_gnuc_varargs=yes,axis2c_have_gnuc_varargs=no)
 AC_MSG_RESULT($axis2c_have_gnuc_varargs)
 
 dnl Output varargs tests
@@ -51,6 +51,7 @@ dnl ./util/src/platforms/unix/date_time_util_unix.c
 dnl is changed to call gettimeofday
 AC_CHECK_LIB(compat, ftime)
 
+#CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
     CFLAGS="$CFLAGS -ansi -Wall -Werror -Wno-implicit-function-declaration -D_GNU_SOURCE"

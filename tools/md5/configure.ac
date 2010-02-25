@@ -1,17 +1,18 @@
 dnl run autogen.sh to generate the configure script.
 
-AC_PREREQ(2.63)
+AC_PREREQ(2.59)
 
-AC_INIT([md5-src],[1.6.0])
-AC_CANONICAL_TARGET
-AC_CONFIG_HEADERS([config.h])
+AC_INIT(md5-src, 1.6.0)
+AC_CANONICAL_SYSTEM
+AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AC_PREFIX_DEFAULT(/usr/local/md5)
 
 dnl Checks for programs.
 AC_PROG_CC
+AC_PROG_CXX
 AC_PROG_CPP
-LT_INIT
+AC_PROG_LIBTOOL
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
@@ -22,6 +23,7 @@ if test "$GCC" = "yes"; then
     CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration"
 fi
 
+LDFLAGS="$LDFLAGS -lpthread"
 
 dnl Checks for header files.
 AC_HEADER_STDC

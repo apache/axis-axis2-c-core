@@ -7,7 +7,7 @@ export AXIS2C_HOME
 
 echo "AXIS2C_HOME = ${AXIS2C_HOME}"
 
-sh configure --prefix=${AXIS2C_HOME} --enable-tests=yes --with-apache2=/usr/include/httpd --with-apr=/usr/include/apr-1
+sh configure --prefix=${AXIS2C_HOME} --enable-tests=yes --with-apache2=/usr/local/apache2/include 
 make -j 10 
 make install
 

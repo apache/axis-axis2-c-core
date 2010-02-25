@@ -1,9 +1,9 @@
 dnl run autogen.sh to generate the configure script.
-AC_PREREQ(2.63)
+AC_PREREQ(2.59)
 
-AC_INIT([axis2c-src],[1.6.0])
-AC_CANONICAL_TARGET
-AC_CONFIG_HEADERS([config.h])
+AC_INIT(axis2c-src, 1.6.0)
+AC_CANONICAL_SYSTEM
+AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE([tar-ustar])
 AC_PREFIX_DEFAULT(/usr/local/axis2c)
 
@@ -11,7 +11,7 @@ dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_CPP
-LT_INIT
+AC_PROG_LIBTOOL
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
@@ -19,19 +19,19 @@ AC_PROG_MAKE_SET
 
 dnl check for flavours of varargs macros (test from GLib)
 AC_MSG_CHECKING(for ISO C99 varargs macros in C)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
+AC_TRY_COMPILE([],[
 int a(int p1, int p2, int p3);
 #define call_a(...) a(1,__VA_ARGS__)
 call_a(2,3);
-]])],[axis2c_have_iso_c_varargs=yes],[axis2c_have_iso_c_varargs=no])
+],axis2c_have_iso_c_varargs=yes,axis2c_have_iso_c_varargs=no)
 AC_MSG_RESULT($axis2c_have_iso_c_varargs)
 
 AC_MSG_CHECKING(for GNUC varargs macros)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
+AC_TRY_COMPILE([],[
 int a(int p1, int p2, int p3);
 #define call_a(params...) a(1,params)
 call_a(2,3);
-]])],[axis2c_have_gnuc_varargs=yes],[axis2c_have_gnuc_varargs=no])
+],axis2c_have_gnuc_varargs=yes,axis2c_have_gnuc_varargs=no)
 AC_MSG_RESULT($axis2c_have_gnuc_varargs)
 
 dnl Output varargs tests
@@ -59,10 +59,12 @@ if test -d $srcdir/neethi; then
     AC_CONFIG_SUBDIRS(neethi)
 fi
 
+#CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 CPPFLAGS="$CPPFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
     CFLAGS="$CFLAGS -ansi -Wall -Werror -Wno-implicit-function-declaration -g -D_GNU_SOURCE"
+#    CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration"
 fi
 
 dnl Checks for header files.
