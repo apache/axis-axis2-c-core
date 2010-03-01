@@ -400,6 +400,10 @@ axis2_http_server_get_reply_to_epr(
     return epr;
 }
 
+/** 
+ * If service name is set then this will return epr path for service. Otherwise it will return 
+ * server name
+ */
 static axis2_endpoint_ref_t *AXIS2_CALL
 axis2_http_server_get_epr_for_service(
     axis2_transport_receiver_t * server,
@@ -418,12 +422,18 @@ axis2_http_server_get_epr_for_service(
 	{
 	    host_address = AXIS2_DEFAULT_HOST_ADDRESS; /* TODO : get from axis2.xml */
 	}
-	svc_path = axutil_stracat(env, AXIS2_DEFAULT_SVC_PATH, svc_name);
+    if(svc_name)
+    {
+	    svc_path = axutil_stracat(env, AXIS2_DEFAULT_SVC_PATH, svc_name);
+    }
     
 	url = axutil_url_create(env, AXIS2_HTTP_PROTOCOL, host_address,
         AXIS2_INTF_TO_IMPL(server)->port, svc_path);
-		
-    AXIS2_FREE(env->allocator, svc_path);
+
+    if(svc_path)
+    {
+        AXIS2_FREE(env->allocator, svc_path);
+    }
     if(!url)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create reply to epr for service %s.",
