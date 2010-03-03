@@ -3,7 +3,6 @@ Axis2/C (1.7.0)
    * HTTP KeepAlive support
    * Performance improvement to Guththila Parser
 
-
 Axis2/C (1.6.0)
    * XPath support for Axiom XML object model
    * CGI support
@@ -19,7 +18,7 @@ Axis2/C (1.5.0)
    * Added a JScript file to automate IIS module registry configuration
    * Improved the in-only message handling
    * Specifying the MEP in the services.xml for non in-out messages made mandatory
-   * Improvements to Guthtila for better performance
+   * Improvements to Guththila for better performance
    * Improvements to TCPMon tool
    * Memory leak fixes
    * Bug fixes
