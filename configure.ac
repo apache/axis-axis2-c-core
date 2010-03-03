@@ -374,25 +374,39 @@ AC_ARG_ENABLE(multi-thread, [  --enable-multi-thread
 )
 
 AC_MSG_CHECKING(whether to use openssl)
-AC_ARG_ENABLE(openssl, [  --enable-openssl  
-                          enable OpenSSL support in client transport (default=no)],
-[ case "${enableval}" in
+AC_ARG_WITH(openssl,
+[  --with-openssl[=PATH]      Find the openssl header files in 'PATH'.
+    If this option is given, Openssl support in transport will be enabled.
+    'PATH' should point to openssl installation location.
+    If you omit the '=PATH' part completely, the configure script will search
+    '/usr/include/openssl' for openssl headers.],
+[ case "$withval" in
   no)
     AC_MSG_RESULT(no)
-    CFLAGS="$CFLAGS"
-    CPPFLAGS="$CPPFLAGS"
     ssl_enabled=false
     ;;
   *)
     AC_MSG_RESULT(yes)
-    CFLAGS="$CFLAGS -DAXIS2_SSL_ENABLED"
-    CPPFLAGS="$CPPFLAGS -DAXIS2_SSL_ENABLED"
-    ssl_enabled=true
+    dnl Find openssl dir in the path
+    if test -d $withval; then
+        opensslinc="-I$withval/include"
+		openssllib="-L$withval/lib"
+		CFLAGS="$CFLAGS -DAXIS2_SSL_ENABLED"
+		CPPFLAGS="$CPPFLAGS -DAXIS2_SSL_ENABLED"
+		ssl_enabled=true
+    dnl else find the include dir in /usr/local/openssl
+    elif test -d '/usr/include/openssl'; then
+		CFLAGS="$CFLAGS -DAXIS2_SSL_ENABLED"
+		CPPFLAGS="$CPPFLAGS -DAXIS2_SSL_ENABLED"
+        opensslinc="-I/usr/include/openssl"
+		openssllib=""
+		ssl_enabled=true
+    else
+        AC_MSG_ERROR(could not find openssl. stop)
+    fi
     ;;
   esac ],
   AC_MSG_RESULT(no)
-  CFLAGS="$CFLAGS"
-  CPPFLAGS="$CPPFLAGS"
 )
 
 AC_MSG_CHECKING(whether to use libcurl)
@@ -419,6 +433,8 @@ AC_ARG_ENABLE(libcurl, [  --enable-libcurl
 
 
 APACHE2INC=$apache2inc
+OPENSSLINC=$opensslinc
+OPENSSLLIB=$openssllib
 IKSEMELINC=$iksemelinc
 APRINC=$aprinc
 VERSION_NO="6:0:6"
@@ -426,6 +442,8 @@ QPID_HOME=$qpidhome
 
 AC_SUBST(VERSION_NO)
 AC_SUBST(APACHE2INC)
+AC_SUBST(OPENSSLINC)
+AC_SUBST(OPENSSLLIB)
 AC_SUBST(APRINC)
 AC_SUBST(DICLIENT_DIR)
 AC_SUBST(TESTDIR)
