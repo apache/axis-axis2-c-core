@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <!--
-/*
-* Copyright 2001-2004 The Apache Software Foundation.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
+* Licensed to the Apache Software Foundation (ASF) under one or more
+* contributor license agreements.  See the NOTICE file distributed with
+* this work for additional information regarding copyright ownership.
+* The ASF licenses this file to You under the Apache License, Version 2.0
+* (the "License"); you may not use this file except in compliance with
+* the License.  You may obtain a copy of the License at
 *
 *      http://www.apache.org/licenses/LICENSE-2.0
 *
@@ -14,7 +14,6 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*/
 -->
 
 <project>
@@ -52,8 +51,8 @@
   <mailingLists>
     <mailingList>
       <name>Axis C Developer List</name>
-      <subscribe>axis-c-dev-subscribe@ws.apache.org?subject=subscribe</subscribe>
-      <unsubscribe>axis-c-dev-unsubscribe@ws.apache.org?subject=unsubscribe</unsubscribe>
+      <subscribe>c-dev-subscribe@axis.apache.org?subject=subscribe</subscribe>
+      <unsubscribe>c-dev-unsubscribe@axis.apache.org?subject=unsubscribe</unsubscribe>
       <archive>http://marc.theaimsgroup.com/?l=axis-c-dev&amp;r=1&amp;w=2</archive>
 	  <otherArchives>
         <otherArchive>http://markmail.org/search/list:org.apache.ws.axis-c-dev</otherArchive>
@@ -61,8 +60,8 @@
     </mailingList>
     <mailingList>
       <name>Axis C User List</name>
-      <subscribe>axis-c-user-subscribe@ws.apache.org?subject=subscribe</subscribe>
-      <unsubscribe>axis-c-user-unsubscribe@ws.apache.org?subject=unsubscribe</unsubscribe>
+      <subscribe>c-user-subscribe@axis.apache.org?subject=subscribe</subscribe>
+      <unsubscribe>c-user-unsubscribe@axis.apache.org?subject=unsubscribe</unsubscribe>
       <archive>http://marc.theaimsgroup.com/?l=axis-c-user&amp;r=1&amp;w=2</archive>
 	  <otherArchives>
         <otherArchive>http://markmail.org/search/list:org.apache.ws.axis-c-user</otherArchive>
@@ -70,9 +69,9 @@
     </mailingList>
 	 <mailingList>
             <name>CVS Commit Message List</name>
-            <subscribe>axis-cvs-subscribe@ws.apache.org</subscribe>
-            <unsubscribe>axis-cvs-unsubscribe@ws.apache.org</unsubscribe>
-            <post>axis-cvs@ws.apache.org</post>
+            <subscribe>c-commits-subscribe@axis.apache.org</subscribe>
+            <unsubscribe>c-commits-unsubscribe@axis.apache.org</unsubscribe>
+            <post>c-commits@axis.apache.org</post>
             <archive>http://markmail.org/search/list:org.apache.ws.axis-cvs</archive>
         </mailingList>
   </mailingLists>
