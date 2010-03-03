@@ -2,7 +2,7 @@ dnl run autogen.sh to generate the configure script.
 
 AC_PREREQ(2.59)
 
-AC_INIT(axis2_util-src, 1.6.0)
+AC_INIT(axis2_util-src, 1.7.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE
@@ -241,7 +241,7 @@ CFLAGS="$CFLAGS $GUTHTHILA_CFLAGS"
 UTILINC=$axis2_utilinc
 ZLIBINC=$zlibinc
 ZLIBLIBS=$zliblibs
-VERSION_NO="6:0:6"
+VERSION_NO="7:0:7"
 
 AC_SUBST(VERSION_NO)
 AC_SUBST(UTILINC)
