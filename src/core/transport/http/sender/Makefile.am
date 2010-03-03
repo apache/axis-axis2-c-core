@@ -16,10 +16,12 @@ endif
 if AXIS2_SSL_ENABLED
 SSL_SOURCES = ssl/ssl_stream.c\
                ssl/ssl_utils.c
-SSL_LIBS = -lssl -lcrypto
+SSL_LIBS = @OPENSSLLIB@ -lssl -lcrypto
+SSL_INC = @OPENSSLINC@
 else
 SSL_SOURCES=
 SSL_LIBS=
+SSL_INC =
 endif
 
 libaxis2_http_sender_la_SOURCES = http_transport_sender.c \
@@ -48,4 +50,5 @@ INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/src/core/engine \
            -I$(top_builddir)/src/core/deployment \
            -I$(top_builddir)/util/include \
-           -I$(top_builddir)/axiom/include
+           -I$(top_builddir)/axiom/include \
+		   $(SSL_INC)
