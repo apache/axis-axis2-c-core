@@ -437,7 +437,7 @@ OPENSSLINC=$opensslinc
 OPENSSLLIB=$openssllib
 IKSEMELINC=$iksemelinc
 APRINC=$aprinc
-VERSION_NO="6:0:6"
+VERSION_NO="7:0:7"
 QPID_HOME=$qpidhome
 
 AC_SUBST(VERSION_NO)
@@ -520,7 +520,10 @@ AC_CONFIG_FILES([Makefile \
     tools/md5/src/Makefile \
     ides/Makefile \
     include/Makefile \
-    axis2c.pc
+    axis2c.pc \
+	dist.sh \
+	bindist.sh \
+	axis2c_build.sh
     ])
     
 AC_OUTPUT
