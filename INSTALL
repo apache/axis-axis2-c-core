@@ -49,12 +49,14 @@ Table of Contents
 		3.1.2 On Windows (Win32)
 	3.2 Deploying in Apache2 Web Server
 
-4. Installing IIS (Interner Information Server) Integration Module 
+4. Installing IIS (Internet Information Server) Integration Module 
    (mod_axis2_IIS)
 	
 	4.1 Building mod_axis2_IIS from Source
 	4.2 Deploying in the IIS
+	
 5. Using Axis2/C with CGI
+
 	5.1  Deploying in Apache2
 	5.2  Deploying in IIS
 
@@ -67,17 +69,18 @@ Table of Contents
 	1.1 Setting up Prerequisites
 	----------------------------
 
-    1.1.1 Mandotory
+    1.1.1 Mandatory
     --------------
-    By default Axis2/C is not depenendent on any other software libraries.
+    By default Axis2/C is not dependent on any other software libraries.
 
 	1.1.2 Optional
 	--------------
     (a) libxml2 - http://www.xmlsoft.org/
     (b) zlib - http://www.zlib.net/
     (c) libiconv - http://www.gnu.org/software/libiconv/
+    (d) openssl - http://www.openssl.org/
 	
-	(d) Apache Qpid - You need to have Qpid libraries installed on your machine 
+	(e) Apache Qpid - You need to have Qpid libraries installed on your machine 
 	                  if you are going to use AMQP transport. It is imperative 
 					  that you compile and install Qpid from SVN source. 
 					  You can checkout Qpid SVN source from 
@@ -149,12 +152,7 @@ Table of Contents
 
 	(a) With Guththila
 	------------------
-	You may need to try Axis2/C with Guththila XML parser. You can do it by 
-	giving '--enable-guththila=yes' as a configure option.
-
-	$ ./configure --enable-guththila=yes [other configuration options]
-	$ make
-	$ make install
+	- Now Guththila is the default parser. Unless you enable libxml2 Guththila will be built.
 
 	(b) With libxml2
 	----------------
@@ -175,6 +173,18 @@ Table of Contents
 	$ ./configure --with-qpid=/path/to/qpid/home [other configuration options]
 	$ make
  	$ make install
+ 	
+ 	(d) With openssl
+    ----------------
+    
+    You may need to try Axis2/C with openssl. You can do it by 
+    giving '--with-openssl=[Path to openssl directory]' as a configure option. Path will contain
+    openssl include directory and lib directory. If path is not given, include files will be 
+    taken from /usr/include/openssl and lib will be taken from /usr/lib (or /usr/lib64).
+    
+    $ ./configure --with-openssl=/opt/openssl [other configuration options]
+    $ make
+    $ make install
 
 	1.3.3 Building Samples
 	----------------------
@@ -284,7 +294,7 @@ Table of Contents
 	$ ./axis2_amqp_server -h
 		
 	NOTE 1 : You have the flexibility of starting the Qpid broker first and 
-			 then axis2_amqp_server or vise versa.
+			 then axis2_amqp_server or vice-versa.
    	NOTE 2 : You may need to login as superuser to run the axis2_amqp_server.
 	NOTE 3 : If you run into shared lib problems, set the LD_LIBRARY_PATH as 
 			 follows.
@@ -339,6 +349,9 @@ Table of Contents
 
     (c) iconv [http://www.zlatkovic.com/pub/libxml 
 			   version >= iconv-1.9.1.win32]
+	   
+    (d) openssl [http://www.slproweb.com/products/Win32OpenSSL.html
+               version >= openssl 0.9.8e]
 
 	2.2 Using Binary Release
 	------------------------
@@ -389,7 +402,7 @@ Table of Contents
 	(a) Enable Guththila
 	--------------------
 	
-		- Now Guththila is the defualt parser. Unless you enable libxml2 Guththila will be built.
+		- Now Guththila is the default parser. Unless you enable libxml2 Guththila will be built.
 
    	(b) Enable libxml2
 	------------------
@@ -570,11 +583,11 @@ Table of Contents
     NOTE : To do the following tasks, you might need super user privileges 
 		   on your machine.
 
-    Copy the mod_axis2 (libmod_axis2.so.0.6.0 on Linux and mod_axis2.dll 
+    Copy the mod_axis2 (libmod_axis2.so.0.7.0 on Linux and mod_axis2.dll 
 	on Windows) to "<apache2 modules directory>" as mod_axis2.so 
     
 	Example:
-    	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.6.0 
+    	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.7.0 
 		/usr/lib/apache2/modules/mod_axis2.so (on Linux)
 		
 		copy C:\axis2c\build\deploy\lib\mod_axis2.dll 
@@ -661,24 +674,24 @@ Table of Contents
 		debug	 - Log debug and above (default)
 	 	warning  - Log warnings
 
-    You can add a string value with the name services_url_prefix. This is optional and defaults to "/services".
-    As an example, if you have "/web_services" as the prefix, then all the services hosted would have the endpoint prefix of : 
-    http://localhost/axis2/web_services.
+    You can add a string value with the name services_url_prefix. This is optional and defaults 
+    to "/services". As an example, if you have "/web_services" as the prefix, then all the 
+    services hosted would have the endpoint prefix of : http://localhost/axis2/web_services.
     Note: don't forget the / at the begining.
 
-    If you wish, you can also change the location as well by adding a string value with the name axis2_location. 
-    This is also optional and defaults to /axis2. If you have /myserser as the value you can access your web 
-    services with a url like http://localhost/myserver/services.
+    If you wish, you can also change the location as well by adding a string value with the name 
+    axis2_location. This is also optional and defaults to /axis2. If you have /myserser as the 
+    value you can access your web  services with a url like http://localhost/myserver/services.
     Note: Don't forget the / at the beginning.
 
     Now you can do all the registry editing using the JScript file axis2_iis_regedit.js 
     provided with the distribution. When you build axis2/C with the IIS module the file 
     is copied to the root directory of the binary distribution. Just double click it and 
     everything will be set to the defaults. The axis2c_home is taken as the current directory, 
-    so make sure you run the file in the Axis2/C repository location (or root of the binary distribution). 
-    If you want to change the values you can manually edit the the .js file or give it as command line arguments 
-    to the script when running the script. To run the jscript from the command line use the command 
-    :\cscript axis2_iis_regedit.js optional arguments. 
+    so make sure you run the file in the Axis2/C repository location (or root of the binary 
+    distribution). If you want to change the values you can manually edit the the .js file or 
+    give it as command line arguments to the script when running the script. To run the jscript 
+    from the command line use the command :\cscript axis2_iis_regedit.js optional arguments. 
     We recomend the manual editing as it is the easiest way to specify the values
 
     IIS 5.1 or Below
@@ -816,16 +829,16 @@ Table of Contents
 	Then you can ask from Axis2/C users or Axis2/C developers about it by
     sending your question to 
 	
-	user      = axis-c-user@ws.apache.org
-	developer = axis-c-dev@ws.apache.org 
+	user      = c-user@axis.apache.org
+	developer = c-dev@axis.apache.org 
 
 	You can subscribe to 
 	
-	axis-c-user list by sending a request to 
-	<axis-c-user-subscribe@ws.apache.org> with the subject "subscribe"
+	c-user list by sending a request to 
+	<c-user-subscribe@axis.apache.org> with the subject "subscribe"
 	
-	axis-c-dev list by sending request to 
-	<axis-c-dev-subscribe@ws.apache.org> with the subject "subscribe"
+	c-dev list by sending request to 
+	<c-dev-subscribe@axis.apache.org> with the subject "subscribe"
 
 6. This FAQ is not enough...
 
