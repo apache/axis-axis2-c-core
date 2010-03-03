@@ -1686,10 +1686,10 @@ installed <a href="http://www.openssl.org/" class="externalLink" title="External
 on your machine. Then
 you can start building with SSL client support. This can be achieved on
 Linux
-by configuring Axis2/C with the <code>--enable-openssl=yes</code>
+by configuring Axis2/C with the <code>--with-openssl=[path to Openssl installation directory]</code>
 option.</p>
 <p>Example <code><br />
-%./configure --enable-openssl=yes --prefix=${AXIS2C_HOME}/deploy<br />
+%./configure --with-openssl=/opt/openssl --prefix=${AXIS2C_HOME}/deploy<br />
 %make<br />
 %make install<br />
 </code></p>
