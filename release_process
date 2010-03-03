@@ -15,7 +15,7 @@ AXIS2/C release process
       project.xml
       samples/AUTHORS
 	  samples/configure.ac
-      configure.ac & Makefile.am (in configure.ac change the VERSION_NO also) 
+      configure.ac (in configure.ac change the VERSION_NO also) in following locations
         util, util/include, guththila, axiom, neethi, samples, tools/tcpmon, tools/md5
       INSTALL file
       project.properties
