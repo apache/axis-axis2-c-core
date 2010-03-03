@@ -84,10 +84,10 @@ AXIS2/C release process
         
         #!/bin/bash
 
-        SRC_TAR_GZ=axis2c-src-1.6.0.tar.gz
-        LIN_BIN_TAR_GZ=axis2c-bin-1.6.0-linux.tar.gz
-        SRC_ZIP=axis2c-src-1.6.0.zip
-        WIN32_BIN_ZIP=axis2c-bin-1.6.0-win32.zip
+        SRC_TAR_GZ=axis2c-src-1.7.0.tar.gz
+        LIN_BIN_TAR_GZ=axis2c-bin-1.7.0-linux.tar.gz
+        SRC_ZIP=axis2c-src-1.7.0.zip
+        WIN32_BIN_ZIP=axis2c-bin-1.7.0-win32.zip
         SRC_TAR_GZ_MD5=$SRC_TAR_GZ.md5
         LIN_BIN_TAR_GZ_MD5=$LIN_BIN_TAR_GZ.md5
         SRC_ZIP_MD5=$SRC_ZIP.md5
@@ -116,13 +116,13 @@ AXIS2/C release process
 
 10. Copy the source, binary packs to your directory in people.apache.org
 
-        rm -rf 1.6.0
-        rm -f 1.6.0.tar.gz
-        mkdir 1.6.0
-        cp -f ../KEYS 1.6.0
-        cp -f axis2c-* 1.6.0
-        tar -zcf axis2c_1.6.0.tar.gz 1.6.0
-        scp axis2c_1.6.0.tar.gz manjula@people.apache.org:~/
+        rm -rf 1.7.0
+        rm -f 1.7.0.tar.gz
+        mkdir 1.7.0
+        cp -f ../KEYS 1.7.0
+        cp -f axis2c-* 1.7.0
+        tar -zcf axis2c_1.7.0.tar.gz 1.7.0
+        scp axis2c_1.7.0.tar.gz manjula@people.apache.org:~/
 
 11. Put RCs till all the packs are throughly tested and there are no more 
     known issues.
