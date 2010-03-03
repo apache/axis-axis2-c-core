@@ -62,7 +62,7 @@ axis2_ssl_utils_initialize_ctx(
     }
 
     /* Create our context */
-    meth = SSLv23_method();
+    meth = (SSL_METHOD*)SSLv23_method();
     ctx = SSL_CTX_new(meth);
 
     /* Load our keys and certificates
