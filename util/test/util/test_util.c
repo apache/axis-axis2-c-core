@@ -243,7 +243,7 @@ void
 test_log_write(
     )
 {
-    char msg[10];
+    char msg[20];
     printf("start of test_log_write\n\n");
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     if (!allocator)
