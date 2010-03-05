@@ -31,10 +31,10 @@
 #define GUTHTHILA_CALL
 #endif
 #else
-#if defined(__unix)
-#define GUTHTHILA_CALL
-#else
+#if defined(_WIN32)
 #define GUTHTHILA_CALL __stdcall
+#else
+#define GUTHTHILA_CALL
 #endif
 #endif
 
