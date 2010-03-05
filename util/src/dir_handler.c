@@ -197,25 +197,49 @@ axutil_dir_handler_list_service_or_module_dirs(
      */
 
     axis2_status_t status = AXIS2_FAILURE;
-    AXIS2_ENV_CHECK(env, NULL);
-    file_list = axutil_array_list_create(env, 0);
+
     if(!AXIS2_GETCWD(cwd, 500))
+    {
+        /* if we can't identify working directory, it will be a critical failure */
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot identify working directory");
         exit(1);
+    }
 
     /* pathname is path of services directory or modules directory. */
     chdir_result = AXIS2_CHDIR(pathname);
+    if(chdir_result == -1)
+    {
+        /* we could not be able to find the path given. However, this will not be a problem
+         * because services and modules are optional.
+         */
+        AXIS2_LOG_INFO(env->log, "Cannot find path %s.", pathname);
+        return NULL;
+    }
 #ifdef AXIS2_ARCHIVE_ENABLED
     axis2_archive_extract();
 #endif
 
     count = AXIS2_SCANDIR(pathname, &files, dir_select, AXIS2_ALPHASORT);
     chdir_result = AXIS2_CHDIR(cwd);
+    if(chdir_result == -1)
+    {
+        /* we are changing back to working directory. If we can't change, this will be critical*/
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot change directory to working directory");
+        exit(1);
+    }
 
     /* If no files found, make a non-selectable menu item */
     if(count <= 0)
     {
-        axutil_array_list_free(file_list, env);
         AXIS2_LOG_INFO(env->log, "No files in the path %s.", pathname);
+        return NULL;
+    }
+
+    file_list = axutil_array_list_create(env, 0);
+    if(!file_list)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create file list.");
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
