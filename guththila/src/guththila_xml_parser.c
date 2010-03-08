@@ -401,87 +401,180 @@ guththila_un_init(
     return GUTHTHILA_SUCCESS;
 }
 
-/* 
+static int
+guththila_utf8_bytes_len(
+    unsigned int c)
+{
+    if (c < 0x80)
+        return 1;
+    else if (c < 0x800)
+        return 2;
+    else if (c < 0x10000)
+        return 3;
+    else if (c < 0x200000)
+        return 4;
+    else if (c < 0x4000000)
+        return 5;
+    else
+        return 6;
+}
+
+/*
+ * Stores the given unicode char as UTF-8
+ */
+static guththila_char_t*
+guththila_utf8_bytes(
+    unsigned int c,
+    guththila_char_t *start)
+{
+    int first;
+    guththila_char_t *end, *p;
+
+    if(c <           0x80)
+    {
+        *start = c;
+        return start + 1;
+    }
+    if(c <          0x800)
+    {
+        first = 0xc0;
+        end = start + 2;
+    }
+    else if(c <   0x10000)
+    {
+        first = 0xe0;
+        end = start + 3;
+    }
+    else if(c <  0x200000)
+    {
+        first = 0xf0;
+        end = start + 4;
+    }
+    else if(c < 0x4000000)
+    {
+        first = 0xf8;
+        end = start + 5;
+    }
+    else
+    {
+        first = 0xfc;
+        end = start + 6;
+    }
+
+    p = end;
+    while(--p > start)
+    {
+        *p = (c & 0x3f) | 0x80;
+        c >>= 6;
+    }
+    *start = c | first;
+    return end;
+}
+
+
+/*
  * Replace the references with the corresponding actual values.
  */
 static void
 guththila_token_evaluate_references(
     guththila_token_t * tok)
 {
-    size_t size = tok->size;
     guththila_char_t *start = tok->start;
-    guththila_char_t *pos = NULL;
-    size_t i, j;
+    guththila_char_t *end = start + tok->size;
+    guththila_char_t *p = start;
+    guththila_char_t *q = NULL;
+    guththila_char_t *entity = NULL;
+    int entity_len = 0;
 
-    pos = (guththila_char_t *)memchr(start, '&', size);
-    if(pos)
+    while(p < end && *p != '&')
     {
-        i = pos - start;
+        p++;
     }
-    else
+    q = p;
+    while(p < end)
     {
-        i = size;
-    }
-    /*for(i = 0; (i < size) && (start[i] != '&'); i++)
-        ;*/
-    if(i < size)
-    {
-        j = i;
-        while(i < size)
+        /* Copy characters until the next ampersand */
+        if(*p != '&')
         {
-            if(((i + 3) < size) && (start[i + 1] == 'g') && (start[i + 2] == 't') && (start[i + 3]
-                == ';'))
+            *q++ = *p++;
+            continue;
+        }
+        entity = ++p;
+        /* Find the end of the entity, marked by ';' */
+        while(p < end && *p != ';')
+        {
+            p++;
+        }
+        if(p == end)
+        {
+            break; /* Drop unterminated entity */
+        }
+        entity_len = p - entity;
+        if(entity_len == 2 && entity[1] == 't')
+        {
+            if(entity[0] == 'g')
+                *q++ = '>';
+            else if(entity[0] == 'l')
+                *q++ = '<';
+            /* else drop */
+        }
+        else if(entity_len == 3 && entity[0] == 'a' && entity[1] == 'm' && entity[2] == 'p')
+        {
+            *q++ = '&';
+        }
+        else if(entity_len == 4 && entity[2] == 'o')
+        {
+            if(entity[0] == 'q' && entity[1] == 'u' && entity[3] == 't')
             {
-                /* replace first char of sequence with > */
-                start[j++] = '>';
-                /* skip remainder of sequence */
-                i += 4;
+                *q++ = '"';
             }
-            else if(((i + 3) < size) && (start[i + 1] == 'l') && (start[i + 2] == 't') && (start[i
-                + 3] == ';'))
+            else if(entity[0] == 'a' && entity[1] == 'p' && entity[3] == 's')
             {
-                /* replace first char of sequence with < */
-                start[j++] = '<';
-                /* skip remainder of sequence */
-                i += 4;
+                *q++ = '\'';
             }
-            else if(((i + 4) < size) && (start[i + 1] == 'a') && (start[i + 2] == 'm') && (start[i
-                + 3] == 'p') && (start[i + 4] == ';'))
-            {
-                /* replace first char of sequence with & */
-                start[j++] = '&';
-                /* skip remainder of sequence */
-                i += 5;
-            }
-            else if(((i + 5) < size) && (start[i + 1] == 'a') && (start[i + 2] == 'p') && (start[i
-                + 3] == 'o') && (start[i + 4] == 's') && (start[i + 5] == ';'))
-            {
-                /* replace first char of sequence with ' */
-                start[j++] = '\'';
-                /* skip remainder of sequence */
-                i += 6;
-            }
-            else if(((i + 5) < size) && (start[i + 1] == 'q') && (start[i + 2] == 'u') && (start[i
-                + 3] == 'o') && (start[i + 4] == 't') && (start[i + 5] == ';'))
-            {
-                /* replace first char of sequence with " */
-                start[j++] = '\"';
-                /* skip remainder of sequence */
-                i += 6;
+        }
+        else if(entity_len >= 2 && entity[0] == '#')
+        {
+            /* p points to the ';' */
+            int c = 0;
+            guththila_char_t b;
+            guththila_char_t *digit = entity + 1;
+            if(*digit == 'x')
+            { /* &#x...; */
+                while(++digit < p)
+                {
+                    b = *digit;
+                    if(b >= '0' && b <= '9')
+                        c = c << 4 | (b - '0');
+                    else if(b >= 'A' && b <= 'F')
+                        c = c << 4 | (b - 'A' + 10);
+                    else if(b >= 'a' && b <= 'f')
+                        c = c << 4 | (b - 'a' + 10);
+                    else
+                        break; /* stop and drop */
+                }
             }
             else
-            {
-                /* ampersand does not start a sequence;
-                 skip it and continue scanning */
-                /* could insert character reference decoding here */
-                start[j++] = start[i++];
+            { /* &#...; */
+                while(digit < p)
+                {
+                    b = *digit;
+                    if(b >= '0' && b <= '9')
+                        c = c * 10 + (b - '0');
+                    else
+                        break; /* stop and drop */
+                    digit++;
+                }
             }
-            /* copy characters downward until the next ampersand */
-            for(; (i < size) && ('&' != (start[j] = start[i])); i++, j++)
-                ;
-        }
-        tok->size = j;
+            if(digit == p && c != 0)
+            { /* drop null char or unparsable entity */
+                /* Replace the entity with the UTF-8 representation */
+                q = guththila_utf8_bytes(c, q);
+            }
+        } /* else drop unknown entity */
+        p++; /* go over ';' */
     }
+    tok->size = q - start;
 }
 
 /*
