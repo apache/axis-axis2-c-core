@@ -1079,6 +1079,7 @@ axis2_svc_client_create_annonymous_svc(
     tmp_qname = axutil_qname_create(env, AXIS2_ANON_SERVICE, NULL, NULL);
     if(!tmp_qname)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,"Error creating QName for service");
         return NULL;
     }
 
@@ -1086,12 +1087,14 @@ axis2_svc_client_create_annonymous_svc(
     axutil_qname_free(tmp_qname, env);
     if(!svc)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error creating the service");
         return NULL;
     }
 
     tmp_qname = axutil_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
     if(!tmp_qname)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error creating the QName for out-in operation");
         return NULL;
     }
     op_out_in = axis2_op_create_with_qname(env, tmp_qname);
@@ -1100,6 +1103,7 @@ axis2_svc_client_create_annonymous_svc(
     tmp_qname = axutil_qname_create(env, AXIS2_ANON_OUT_ONLY_OP, NULL, NULL);
     if(!tmp_qname)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error creating the QName for out-only operation");
         return NULL;
     }
     op_out_only = axis2_op_create_with_qname(env, tmp_qname);
@@ -1108,6 +1112,8 @@ axis2_svc_client_create_annonymous_svc(
     tmp_qname = axutil_qname_create(env, AXIS2_ANON_ROBUST_OUT_ONLY_OP, NULL, NULL);
     if(!tmp_qname)
     {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Error creating the QName for robust-out-only operation");
         return NULL;
     }
     op_robust_out_only = axis2_op_create_with_qname(env, tmp_qname);
