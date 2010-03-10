@@ -262,7 +262,7 @@ AC_ARG_WITH(apache2,
     If this option is given, the Apache2 httpd module would be built.
     'PATH' should point to Apache2 httpd include files location.
     If you omit the '=PATH' part completely, the configure script will search
-    '/usr/include/apache2' for Apache2 headers.],
+    '/usr/include/apache2' or '/usr/include/httpd' for Apache2 headers.],
 [ case "$withval" in
   no)
     AC_MSG_RESULT(no)
@@ -276,6 +276,8 @@ AC_ARG_WITH(apache2,
     dnl else find the apache2 include dir in /usr/local/apache2
     elif test -d '/usr/include/apache2'; then
         apache2inc="-I/usr/include/apache2"
+    elif test -d '/usr/include/httpd'; then
+        apache2inc="-I/usr/include/httpd"
     else
         AC_MSG_ERROR(could not find apache2. stop)
     fi
@@ -293,7 +295,7 @@ AC_ARG_WITH(apr,
     In that case, to build Apache2 httpd module, this option is also required.
     'PATH' should point to APR include files location.
     If you omit the '=PATH' part completely, the configure script will search
-    '/usr/include/apr-0' for APR headers.],
+    '/usr/include/apr-0' or '/usr/include/apr-1' for APR headers.],
 [ case "$withval" in
   no)
     AC_MSG_RESULT(no)
@@ -306,6 +308,8 @@ AC_ARG_WITH(apr,
     dnl else find the apache2 include dir in /usr/local/apache2
     elif test -d '/usr/include/apr-0'; then
         aprinc="-I/usr/include/apr-0"
+    elif test -d '/usr/include/apr-1'; then
+        aprinc="-I/usr/include/apr-1"
     else
         AC_MSG_ERROR(could not find apr. stop)
     fi
