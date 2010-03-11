@@ -190,11 +190,11 @@ axis2_http_client_send(
     /* In the MTOM case request body is not set. Instead mime_parts
      array_list is there */
 
-    if(client->req_body)
+    /*if(client->req_body)
     {
         AXIS2_FREE(env->allocator, client->req_body);
         client->req_body = NULL;
-    }
+    }*/
     if(!client->req_body && !(client->doing_mtom))
     {
         client->req_body_size = axis2_http_simple_request_get_body_bytes(request, env,
@@ -961,5 +961,34 @@ axis2_http_client_set_mtom_sending_callback_name(
     axis2_char_t *callback_name)
 {
     client->mtom_sending_callback_name = callback_name;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_http_client_consume_stream(
+    axis2_http_client_t * client,
+    const axutil_env_t * env)
+{
+    /*axutil_stream_close(client->data_stream, env);*/
+    axis2_char_t tmp_buffer[512];
+    int read;
+    
+    while((read = axutil_stream_read(client->data_stream, env, tmp_buffer, 511)) == 511)
+    {
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_http_client_reset(
+    axis2_http_client_t * client,
+    const axutil_env_t * env)
+{
+    if(client->req_body)
+    {
+        AXIS2_FREE(env->allocator, client->req_body);
+        client->req_body = NULL;
+    }
     return AXIS2_SUCCESS;
 }

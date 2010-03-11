@@ -261,6 +261,16 @@ extern "C"
         const axutil_env_t * env,
         axis2_char_t *callback_name);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_client_consume_stream(
+        axis2_http_client_t * client,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_client_reset(
+        axis2_http_client_t * client,
+        const axutil_env_t * env);
+
 
     /** @} */
 #ifdef __cplusplus

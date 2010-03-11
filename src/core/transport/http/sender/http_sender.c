@@ -1190,6 +1190,9 @@ header");
 
     if(AXIS2_HTTP_RESPONSE_HTTP_UNAUTHORIZED_CODE_VAL == status_code && !test_http_auth)
     {
+        /* consume the buffer */
+        axis2_http_client_consume_stream(sender->client, env);
+
         if(!http_auth_header_added)
         {
             if(force_proxy_auth_with_head)
@@ -3292,6 +3295,10 @@ axis2_http_sender_connection_map_get(
                 if(server)
                 {
                     http_client = axutil_hash_get(connection_map, server, AXIS2_HASH_KEY_STRING);
+                    if(http_client)
+                    {
+                        axis2_http_client_reset(http_client, env);
+                    }
                 }
                 axutil_url_free(url, env);
             }
