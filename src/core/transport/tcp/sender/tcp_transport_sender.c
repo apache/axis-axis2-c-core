@@ -346,8 +346,7 @@ axis2_tcp_transport_sender_invoke(
             return AXIS2_FAILURE;
         }
 
-        soap_builder = axiom_soap_builder_create(env, builder,
-            AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+        soap_builder = axiom_soap_builder_create(env, builder, NULL);
         if(!soap_builder)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to create SOAP builder");

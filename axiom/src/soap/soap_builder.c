@@ -133,45 +133,33 @@ axiom_soap_builder_create(
     axiom_soap_builder_t *soap_builder = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
 
-    AXIS2_PARAM_CHECK(env->error, stax_builder, NULL);
-
-    soap_builder = (axiom_soap_builder_t *)AXIS2_MALLOC(env->allocator,
-        sizeof(axiom_soap_builder_t));
-
-    if(soap_builder == NULL)
+    if(!stax_builder)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "STAX builder is invalid.");
         return NULL;
     }
 
-    soap_builder->done = AXIS2_FALSE;
-    soap_builder->body_present = AXIS2_FALSE;
-    soap_builder->builder_helper = NULL;
-    soap_builder->element_level = 0;
-    soap_builder->header_present = AXIS2_FALSE;
-    soap_builder->processing_detail_elements = AXIS2_FALSE;
-    soap_builder->processing_fault = AXIS2_FALSE;
-    soap_builder->processing_mandatory_fault_elements = AXIS2_FALSE;
-    soap_builder->receiver_fault_code = NULL;
-    soap_builder->sender_fault_code = NULL;
+    soap_builder = (axiom_soap_builder_t*)AXIS2_MALLOC(env->allocator, sizeof(axiom_soap_builder_t));
+    if(!soap_builder)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Insufficient memory to create soap builder");
+        return NULL;
+    }
+    soap_builder = (axiom_soap_builder_t*)memset(soap_builder, 0, sizeof(axiom_soap_builder_t));
     soap_builder->soap_version = AXIOM_SOAP12;
     soap_builder->last_node_status = -1;
-    soap_builder->envelope_ns = NULL;
-    soap_builder->soap_envelope = NULL;
-    soap_builder->mime_body_parts = NULL;
     soap_builder->om_builder = stax_builder;
-    soap_builder->mime_parser = NULL;
-    soap_builder->callback = NULL;
-    soap_builder->callback_ctx = NULL;
 
     status = axiom_soap_builder_identify_soap_version(soap_builder, env, soap_version);
-    if(status == AXIS2_FAILURE)
+    if(status != AXIS2_SUCCESS)
     {
         axiom_soap_builder_free(soap_builder, env);
         return NULL;
     }
     status = axiom_soap_builder_parse_headers(soap_builder, env);
-    if(status == AXIS2_FAILURE)
+    if(status != AXIS2_SUCCESS)
     {
         axiom_soap_builder_free(soap_builder, env);
         return NULL;
@@ -865,13 +853,7 @@ axiom_soap_builder_identify_soap_version(
     axiom_element_t *om_ele = NULL;
     axis2_char_t *ns_uri = NULL;
 
-    AXIS2_PARAM_CHECK(env->error, soap_version_uri_from_transport, AXIS2_FAILURE);
-    if(!soap_builder)
-    {
-        return AXIS2_FAILURE;
-    }
     soap_builder->soap_envelope = axiom_soap_builder_get_soap_envelope(soap_builder, env);
-
     if(soap_builder->soap_envelope == NULL)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_MESSAGE_DOES_NOT_CONTAIN_AN_ENVELOPE,
@@ -882,7 +864,6 @@ axiom_soap_builder_identify_soap_version(
     }
 
     envelope_node = axiom_soap_envelope_get_base_node(soap_builder->soap_envelope, env);
-
     if(!envelope_node)
     {
         return AXIS2_FAILURE;
