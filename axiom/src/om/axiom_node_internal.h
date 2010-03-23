@@ -49,7 +49,7 @@ extern "C"
      * @param parent_node the node that will be set as parent. , cannot be NULL.
      * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_status_t AXIS2_CALL
     axiom_node_set_parent(
         axiom_node_t * om_node,
         const axutil_env_t * env,
@@ -61,7 +61,7 @@ extern "C"
      * @param env environment, MUST NOT be NULL.
      * @param first_child child to be set as first child
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_status_t AXIS2_CALL
     axiom_node_set_first_child(
         axiom_node_t * om_node,
         const axutil_env_t * env,
@@ -75,7 +75,7 @@ extern "C"
      * @return status of the op, AXIS2_SUCCESS on success
      *     AXIS2_FAILURE on error
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_status_t AXIS2_CALL
     axiom_node_set_previous_sibling(
         axiom_node_t * om_node,
         const axutil_env_t * env,
@@ -89,7 +89,7 @@ extern "C"
      * @return status of the op, AXIS2_SUCCESS on success,
      *     AXIS2_FAILURE on error
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_status_t AXIS2_CALL
     axiom_node_set_next_sibling(
         axiom_node_t * om_node,
         const axutil_env_t * env,
@@ -103,7 +103,7 @@ extern "C"
      * @return status code of the op AXIS2_SUCCESS on success,
      *     AXIS2_FAILURE on error
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_status_t AXIS2_CALL
     axiom_node_set_node_type(
         axiom_node_t * om_node,
         const axutil_env_t * env,
@@ -117,7 +117,7 @@ extern "C"
      * @return status code of the op AXIS2_SUCCESS on success,
      *     AXIS2_FAILURE on error
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_status_t AXIS2_CALL
     axiom_node_set_data_element(
         axiom_node_t * om_node,
         const axutil_env_t * env,
@@ -130,12 +130,29 @@ extern "C"
      * @param env environment, MUST NOT be NULL.
      * @param done
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_status_t AXIS2_CALL
     axiom_node_set_complete(
         axiom_node_t * om_node,
         const axutil_env_t * env,
         axis2_bool_t done);
 
+    /**
+     * Sets the builder
+     */
+    axis2_status_t AXIS2_CALL
+    axiom_node_set_builder(
+        axiom_node_t * om_node,
+        const axutil_env_t * env,
+        struct axiom_stax_builder *builder);
+
+    void AXIS2_CALL
+    axiom_node_assume_builder_ownership(
+        axiom_node_t *om_node,
+        const axutil_env_t * env);
+
+
+
+#if 0
     /**
      * This functions is only to be used by builder
      * do not use this function
@@ -146,14 +163,12 @@ extern "C"
         const axutil_env_t * env,
         struct axiom_document *om_doc);
 
-    /**
-     * Sets the builder
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_node_set_builder(
+    AXIS2_EXTERN struct axiom_stax_builder *AXIS2_CALL
+    axiom_node_get_builder(
         axiom_node_t * om_node,
-        const axutil_env_t * env,
-        struct axiom_stax_builder *builder);
+        const axutil_env_t * env);
+
+#endif
 
 
     /** @} */

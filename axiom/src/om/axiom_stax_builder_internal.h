@@ -66,6 +66,11 @@ extern "C"
         axiom_stax_builder_t * builder,
         const axutil_env_t * env);
 
+    /* this will be called from root node to free the stax builder */
+    void AXIS2_CALL
+    axiom_stax_builder_free_internal(
+        axiom_stax_builder_t * builder,
+        const axutil_env_t * env);
 
 
     /**

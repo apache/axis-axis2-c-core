@@ -141,14 +141,26 @@ extern "C"
         axiom_node_t * child);
 
     /**
-    * Detaches given node from the parent and reset the links
+    * Detaches given node from the parent and reset the links. Will recreate "namespace defined in
+    * the parent and used in detached node" within detached node itself
     * @param om_node node to be detached, cannot be NULL.
     * @param env Environment. MUST NOT be NULL, .
-    * @return a pointer to detached node,returns NULL on error with error
-    *           code set to environment's error struct
+    * @return a pointer to detached node,returns NULL on error
     */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
     axiom_node_detach(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
+
+    /**
+     * Detaches given node from the parent and reset the links. will not adjust the namespace as
+     * in the case of axiom_node_detach.
+     * @param om_node node to be detached, cannot be NULL.
+     * @param env Environment. MUST NOT be NULL, .
+     * @return a pointer to detached node,returns NULL on error
+     */
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_node_detach_without_namespaces(
         axiom_node_t * om_node,
         const axutil_env_t * env);
 
@@ -366,10 +378,7 @@ extern "C"
         axiom_node_t * om_node,
         const axutil_env_t * env);
     
-    AXIS2_EXTERN struct axiom_stax_builder *AXIS2_CALL
-                axiom_node_get_builder(
-                    axiom_node_t * om_node,
-                    const axutil_env_t * env);
+
     /** @} */
 
 #ifdef __cplusplus

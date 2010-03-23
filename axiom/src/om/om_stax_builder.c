@@ -53,13 +53,25 @@ struct axiom_stax_builder
     axutil_hash_t *declared_namespaces;
 };
 
+/**
+ * Creates an stax builder
+ * @param environment Environment. MUST NOT be NULL.
+ * @param parser parser to be used with builder. The builder will take ownership of the parser.
+ * @return a pointer to the newly created builder struct.
+ */
 AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
 axiom_stax_builder_create(
     const axutil_env_t * env,
     axiom_xml_reader_t * parser)
 {
     axiom_stax_builder_t *om_builder = NULL;
-    AXIS2_PARAM_CHECK(env->error, parser, NULL);
+
+    if(!parser)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid xml parser given for stax builder");
+        return NULL;
+    }
 
     om_builder = (axiom_stax_builder_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_stax_builder_t));
     if(!om_builder)
@@ -69,144 +81,85 @@ axiom_stax_builder_create(
         return NULL;
     }
 
-    om_builder->done = AXIS2_FALSE;
-    om_builder->lastnode = NULL;
-    om_builder->document = NULL;
-    om_builder->parser = parser;
-    om_builder->current_event = -1;
-    om_builder->root_node = NULL;
-    om_builder->element_level = 0;
-    om_builder->declared_namespaces = axutil_hash_make(env);
     om_builder->document = axiom_document_create(env, NULL, om_builder);
     if(!om_builder->document)
     {
         AXIS2_FREE(env->allocator, om_builder);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to create axiom document");
         return NULL;
     }
 
+    om_builder->declared_namespaces = axutil_hash_make(env);
+    if(!om_builder->declared_namespaces)
+    {
+        AXIS2_FREE(env->allocator, om_builder);
+        axiom_document_free(om_builder->document, env);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to create namespace hashmap");
+        return NULL;
+    }
+
+    om_builder->done = AXIS2_FALSE;
+    om_builder->lastnode = NULL;
+    om_builder->parser = parser;
+    om_builder->current_event = -1;
+    om_builder->root_node = NULL;
+    om_builder->element_level = 0;
     return om_builder;
 }
 
+/**
+ * Free the build struct instance and its associated document,axiom tree.
+ * @param builder pointer to builder struct
+ * @param env environment, MUST NOT be NULL
+ * @return status of the operation AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
+ */
 AXIS2_EXTERN void AXIS2_CALL
 axiom_stax_builder_free(
     axiom_stax_builder_t * om_builder,
     const axutil_env_t * env)
 {
-    if(!om_builder)
-    {
-        return;
-    }
-    if(om_builder->declared_namespaces)
-    {
-        axutil_hash_free(om_builder->declared_namespaces, env);
-        om_builder->declared_namespaces = NULL;
-    }
-
-    if(om_builder->document)
-    {
-        axiom_document_free(om_builder->document, env);
-        om_builder->document = NULL;
-    }
-    else
-    {
-        if(om_builder->root_node)
-        {
-            axiom_node_free_tree(om_builder->root_node, env);
-            om_builder->root_node = NULL;
-        }
-    }
-
-    if(om_builder->parser)
-    {
-        axiom_xml_reader_free(om_builder->parser, env);
-        om_builder->parser = NULL;
-    }
-
+    axutil_hash_free(om_builder->declared_namespaces, env);
+    axiom_document_free(om_builder->document, env);
+    axiom_xml_reader_free(om_builder->parser, env);
     AXIS2_FREE(env->allocator, om_builder);
-
-    return;
 }
 
+/* this will be called from root node to free the stax builder */
+void AXIS2_CALL
+axiom_stax_builder_free_internal(
+    axiom_stax_builder_t * om_builder,
+    const axutil_env_t * env)
+{
+    axutil_hash_free(om_builder->declared_namespaces, env);
+    axiom_xml_reader_free(om_builder->parser, env);
+    axiom_document_free_self(om_builder->document, env);
+    AXIS2_FREE(env->allocator, om_builder);
+}
+
+/**
+ * Give the responsibility of freeing the stax builder to the root node. This method will not
+ * free anything. When the root node is freed, it will call axiom_stax_builder_free_internal
+ * which will free the stax builder, document and xml reader.
+ * @param builder pointer to builder struct
+ * @param env environment, MUST NOT be NULL
+ * @return status of the operation AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
+ */
 AXIS2_EXTERN void AXIS2_CALL
 axiom_stax_builder_free_self(
     axiom_stax_builder_t * om_builder,
     const axutil_env_t * env)
 {
-
-    axiom_node_t *temp_node = NULL;
-    axiom_node_t *nodes[256];
-    axiom_node_t *om_node = NULL;
-    int count = 0;
-
-    om_node = om_builder->root_node;
-
-    nodes[count++] = om_node;
-
-    if(om_node)
+    if(om_builder->root_node)
     {
-        do
-        {
-
-            axiom_node_set_builder(om_node, env, NULL);
-            axiom_node_set_document(om_node, env, NULL);
-
-            temp_node = axiom_node_get_first_child(om_node, env);
-            /* serialize children of this node */
-            if(temp_node)
-            {
-                om_node = temp_node;
-                nodes[count++] = om_node;
-            }
-            else
-            {
-                temp_node = axiom_node_get_next_sibling(om_node, env);
-                if(temp_node)
-                {
-                    om_node = temp_node;
-                    nodes[count - 1] = om_node;
-                }
-                else
-                {
-                    while(count > 1 && !temp_node)
-                    {
-                        count--;
-                        om_node = nodes[count - 1];
-                        temp_node = axiom_node_get_next_sibling(om_node, env);
-                    }
-                    if(temp_node && count > 1)
-                    {
-                        om_node = temp_node;
-                        nodes[count - 1] = om_node;
-                    }
-                    else
-                    {
-                        count--;
-                    }
-                }
-            }
-        }
-        while(count > 0);
+        axiom_node_assume_builder_ownership(om_builder->root_node, env);
     }
-    if(om_builder->declared_namespaces)
-    {
-        axutil_hash_free(om_builder->declared_namespaces, env);
-        om_builder->declared_namespaces = NULL;
-    }
-
-    if(om_builder->parser)
-    {
-        axiom_xml_reader_free(om_builder->parser, env);
-        om_builder->parser = NULL;
-    }
-    if(om_builder->document)
-    {
-        axiom_document_free_self(om_builder->document, env);
-        om_builder->document = NULL;
-    }
-    AXIS2_FREE(env->allocator, om_builder);
-    return;
 }
 
+/** Gets the document associated with the builder
+ * @param builder axiom_stax_builder
+ * @param env environment
+ * @return pointer to document struct associated with builder NULL if an error occurred.
+ */
 AXIS2_EXTERN axiom_document_t *AXIS2_CALL
 axiom_stax_builder_get_document(
     axiom_stax_builder_t * om_builder,
@@ -531,7 +484,6 @@ axiom_stax_builder_create_om_element(
     }
 
     axiom_node_set_builder(element_node, env, om_builder);
-    axiom_node_set_document(element_node, env, om_builder->document);
     axiom_element_set_is_empty(om_ele, env, is_empty);
 
     /* order of processing name spaces first (before processing attributes) is important */
@@ -583,7 +535,6 @@ axiom_stax_builder_create_om_comment(
 
     axiom_xml_reader_xml_free(om_builder->parser,env,comment_value);
     axiom_node_set_builder(comment_node, env, om_builder);
-    axiom_node_set_document(comment_node, env, om_builder->document);
     om_builder->element_level++;
     om_builder->lastnode = comment_node;
 
@@ -1052,5 +1003,74 @@ axiom_stax_builder_next(
     }
     while(!node && !axiom_node_is_complete(om_builder->root_node, env));
     return node;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axiom_stax_builder_free_self_original(
+    axiom_stax_builder_t * om_builder,
+    const axutil_env_t * env)
+{
+
+    axiom_node_t *temp_node = NULL;
+    axiom_node_t *nodes[256];
+    axiom_node_t *om_node = NULL;
+    int count = 0;
+
+    om_node = om_builder->root_node;
+
+    nodes[count++] = om_node;
+
+    if(om_node)
+    {
+        do
+        {
+
+            axiom_node_set_builder(om_node, env, NULL);
+
+            temp_node = axiom_node_get_first_child(om_node, env);
+            if(temp_node)
+            {
+                /* process the child node */
+                om_node = temp_node;
+                nodes[count++] = om_node;
+            }
+            else
+            {
+                /* no child node. check whether current node has any siblings */
+                temp_node = axiom_node_get_next_sibling(om_node, env);
+                if(temp_node)
+                {
+                    /*  process sibling nodes */
+                    om_node = temp_node;
+                    nodes[count - 1] = om_node;
+                }
+                else
+                {
+                    /* no siblings. so fallback to parent of current node and process */
+                    while(count > 1 && !temp_node)
+                    {
+                        count--;
+                        om_node = nodes[count - 1];
+                        temp_node = axiom_node_get_next_sibling(om_node, env);
+                    }
+                    if(temp_node && count > 1)
+                    {
+                        om_node = temp_node;
+                        nodes[count - 1] = om_node;
+                    }
+                    else
+                    {
+                        count--;
+                    }
+                }
+            }
+        }
+        while(count > 0);
+    }
+
+    axutil_hash_free(om_builder->declared_namespaces, env);
+    axiom_xml_reader_free(om_builder->parser, env);
+    axiom_document_free_self(om_builder->document, env);
+    AXIS2_FREE(env->allocator, om_builder);
 }
 #endif

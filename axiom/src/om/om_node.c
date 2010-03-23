@@ -28,11 +28,11 @@
 
 struct axiom_node
 {
-
-    /** document only available if build through builder */
-    struct axiom_document *om_doc;
-
+    /* stax builder */
     axiom_stax_builder_t *builder;
+
+    /* whether current node is the owner of stax builder. If so, it has to free it */
+    axis2_bool_t own_builder;
 
     /** parent node */
     axiom_node_t *parent;
@@ -60,11 +60,6 @@ struct axiom_node
 
 };
 
-static axiom_node_t *
-axiom_node_detach_without_namespaces(
-    axiom_node_t * om_node,
-    const axutil_env_t * env);
-
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 axiom_node_create(
     const axutil_env_t * env)
@@ -86,8 +81,8 @@ axiom_node_create(
     node->node_type = AXIOM_INVALID;
     node->done = AXIS2_FALSE;
     node->data_element = NULL;
-    node->om_doc = NULL;
     node->builder = NULL;
+    node->own_builder = AXIS2_FALSE;
     return node;
 }
 
@@ -195,8 +190,6 @@ axiom_node_free_detached_subtree(
     }
 
     AXIS2_FREE(env->allocator, om_node);
-
-    return;
 }
 
 /**
@@ -217,10 +210,14 @@ axiom_node_free_tree(
     /* Detach this node before freeing it and its subtree. */
     axiom_node_detach_without_namespaces(om_node, env);
 
+    /* if the owner of the builder, then free the builder */
+    if(om_node->own_builder)
+    {
+        axiom_stax_builder_free_internal(om_node->builder, env);
+    }
+
     /* Free this node and its subtree */
     axiom_node_free_detached_subtree(om_node, env);
-
-    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -259,10 +256,13 @@ axiom_node_add_child(
 }
 
 /**
- * Detach the node without regard to any namespace references in the node or
- * its children.
+ * Detaches given node from the parent and reset the links. will not adjust the namespace as
+ * in the case of axiom_node_detach.
+ * @param om_node node to be detached, cannot be NULL.
+ * @param env Environment. MUST NOT be NULL, .
+ * @return a pointer to detached node,returns NULL on error
  */
-static axiom_node_t *
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 axiom_node_detach_without_namespaces(
     axiom_node_t * om_node,
     const axutil_env_t * env)
@@ -273,7 +273,6 @@ axiom_node_detach_without_namespaces(
     if(!parent)
     {
         /* Node is already detached */
-        om_node->builder = NULL;
         return om_node;
     }
 
@@ -326,6 +325,13 @@ axiom_node_detach_without_namespaces(
     return om_node;
 }
 
+/**
+ * Detaches given node from the parent and reset the links. Will recreate "namespace defined in
+ * the parent and used in detached node" within detached node itself
+ * @param om_node node to be detached, cannot be NULL.
+ * @param env Environment. MUST NOT be NULL, .
+ * @return a pointer to detached node,returns NULL on error
+ */
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 axiom_node_detach(
     axiom_node_t * om_node,
@@ -370,7 +376,7 @@ axiom_node_detach(
  Internal function , only used in om and soap
  not to be used by users
  */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 axiom_node_set_parent(
     axiom_node_t * om_node,
     const axutil_env_t * env,
@@ -1182,7 +1188,12 @@ axiom_node_get_document(
     axiom_node_t * om_node,
     const axutil_env_t * env)
 {
-    return om_node->om_doc;
+    if(om_node->builder)
+    {
+        return axiom_stax_builder_get_document(om_node->builder, env);
+    }
+
+    return NULL;
 }
 
 AXIS2_EXTERN void *AXIS2_CALL
@@ -1197,7 +1208,7 @@ axiom_node_get_data_element(
  internal function , not to be used by users
  only sets the first_child link because this is needed by builder
  */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 axiom_node_set_first_child(
     axiom_node_t * om_node,
     const axutil_env_t * env,
@@ -1219,7 +1230,7 @@ axiom_node_set_first_child(
  only sets the previous sibling link as it is needed by builders
 
  */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 axiom_node_set_previous_sibling(
     axiom_node_t * om_node,
     const axutil_env_t * env,
@@ -1238,7 +1249,7 @@ axiom_node_set_previous_sibling(
  internal function, not to be used by users
  only sets the next sibling link;
  */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 axiom_node_set_next_sibling(
     axiom_node_t * om_node,
     const axutil_env_t * env,
@@ -1256,7 +1267,7 @@ axiom_node_set_next_sibling(
  sets the node type only used in soap and om
  */
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 axiom_node_set_node_type(
     axiom_node_t * om_node,
     const axutil_env_t * env,
@@ -1273,7 +1284,7 @@ axiom_node_set_node_type(
  internal function , not to be used by users
  only used in om and soap
  */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 axiom_node_set_data_element(
     axiom_node_t * om_node,
     const axutil_env_t * env,
@@ -1291,7 +1302,7 @@ axiom_node_set_data_element(
  only sets the build status
 
  */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 axiom_node_set_complete(
     axiom_node_t * om_node,
     const axutil_env_t * env,
@@ -1304,49 +1315,26 @@ axiom_node_set_complete(
 }
 
 /**
- internal function not to be used by users
- only used by om builder
-
- */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_node_set_document(
-    axiom_node_t * om_node,
-    const axutil_env_t * env,
-    struct axiom_document * om_doc)
-{
-    AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
-    om_node->om_doc = om_doc;
-    return AXIS2_SUCCESS;
-}
-
-/**
  internal function only sets the builder reference ,
  should not be used by user
  */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 axiom_node_set_builder(
     axiom_node_t * om_node,
     const axutil_env_t * env,
     axiom_stax_builder_t * builder)
 {
-    AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
+    /* builder == NULL is a valid case */
     om_node->builder = builder;
     return AXIS2_SUCCESS;
 }
 
-/**
- * This is an internal function
- */
-AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
-axiom_node_get_builder(
-    axiom_node_t * om_node,
+void AXIS2_CALL
+axiom_node_assume_builder_ownership(
+    axiom_node_t *om_node,
     const axutil_env_t * env)
 {
-    if(!om_node)
-    {
-        return NULL;
-    }
-    return om_node->builder;
+    om_node->own_builder = AXIS2_TRUE;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -1453,3 +1441,36 @@ axiom_node_to_string_non_optimized(
     return xml;
 }
     
+#if 0
+
+/**
+ internal function not to be used by users
+ only used by om builder
+ */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_node_set_document(
+    axiom_node_t * om_node,
+    const axutil_env_t * env,
+    struct axiom_document * om_doc)
+{
+    /* om_doc == NULL is a valid case */
+    om_node->om_doc = om_doc;
+    return AXIS2_SUCCESS;
+}
+
+/**
+ * This is an internal function
+ */
+AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
+axiom_node_get_builder(
+    axiom_node_t * om_node,
+    const axutil_env_t * env)
+{
+    if(!om_node)
+    {
+        return NULL;
+    }
+    return om_node->builder;
+}
+
+#endif
