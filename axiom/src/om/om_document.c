@@ -89,16 +89,20 @@ axiom_document_get_root_element(
     axiom_document_t * document,
     const axutil_env_t * env)
 {
-    if(document->root_element)
+    if(!document->root_element)
     {
-        return document->root_element;
-    }
-
-    /* force to build the root node */
-    if(!axiom_stax_builder_next(document->builder, env))
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to get root node");
+        /* force to build the root node */
+        int token;
+        do{
+            token = axiom_stax_builder_next_with_token(document->builder, env);
+            if(token == -1)
+            {
+                AXIS2_ERROR_SET(env->error,
+                    AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL, AXIS2_FAILURE);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to get root node");
+                return NULL;
+            }
+        }while(token != AXIOM_XML_READER_START_ELEMENT);
     }
 
     return document->root_element;
@@ -111,12 +115,11 @@ axiom_document_build_all(
 {
     do
     {
-        axiom_node_t *ret_val = NULL;
-        ret_val = axiom_stax_builder_next(document->builder, env);
-        if(!ret_val && !axiom_node_is_complete(document->root_element, env))
+        int token = axiom_stax_builder_next_with_token(document->builder, env);
+        if((token == -1) && (!axiom_node_is_complete(document->root_element, env)))
         {
-            /* if return value is null and root node is not fully completed, this means there is
-             * an error occurred */
+            /* if returned token is "invalid token" and root node is not fully completed,
+             * this means there is an error occurred */
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                 "Error occurred when building all nodes of document");
             return NULL;

@@ -283,7 +283,8 @@ axiom_soap_builder_get_soap_envelope(
     return soap_builder->soap_envelope;
 }
 
-AXIS2_EXTERN axiom_document_t *AXIS2_CALL axiom_soap_builder_get_document(
+AXIS2_EXTERN axiom_document_t *AXIS2_CALL
+axiom_soap_builder_get_document(
     axiom_soap_builder_t * soap_builder,
     const axutil_env_t * env)
 {

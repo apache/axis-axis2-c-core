@@ -685,91 +685,6 @@ axiom_stax_builder_end_element(
     return AXIS2_SUCCESS;
 }
 
-axiom_node_t *AXIS2_CALL
-axiom_stax_builder_next(
-    axiom_stax_builder_t * om_builder,
-    const axutil_env_t * env)
-{
-    int token = 0;
-    axiom_node_t *node = NULL;
-
-    do
-    {
-        if(om_builder->done)
-        {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL, AXIS2_FAILURE);
-            return NULL;
-        }
-
-        token = axiom_xml_reader_next(om_builder->parser, env);
-        if(token == -1)
-        {
-            return NULL;
-        }
-
-        om_builder->current_event = token;
-
-        switch(token)
-        {
-            case AXIOM_XML_READER_START_DOCUMENT:
-                /*Do nothing */
-                break;
-
-            case AXIOM_XML_READER_START_ELEMENT:
-                node = axiom_stax_builder_create_om_element(om_builder, env, AXIS2_FALSE);
-                break;
-
-            case AXIOM_XML_READER_EMPTY_ELEMENT:
-
-#ifdef AXIS2_LIBXML2_ENABLED
-                node = axiom_stax_builder_create_om_element(om_builder, env, AXIS2_FALSE);
-#else
-                node = axiom_stax_builder_create_om_element(om_builder, env, AXIS2_TRUE);
-#endif
-
-            case AXIOM_XML_READER_END_ELEMENT:
-                axiom_stax_builder_end_element(om_builder, env);
-                break;
-
-            case AXIOM_XML_READER_SPACE:
-                node = axiom_stax_builder_create_om_text(om_builder, env);
-                break;
-
-            case AXIOM_XML_READER_CHARACTER:
-                node = axiom_stax_builder_create_om_text(om_builder, env);
-                break;
-
-            case AXIOM_XML_READER_ENTITY_REFERENCE:
-                break;
-
-            case AXIOM_XML_READER_COMMENT:
-
-                node = axiom_stax_builder_create_om_comment(om_builder, env);
-                axiom_stax_builder_end_element(om_builder, env);
-                break;
-
-            case AXIOM_XML_READER_PROCESSING_INSTRUCTION:
-
-                node = axiom_stax_builder_create_om_processing_instruction(om_builder, env);
-                axiom_stax_builder_end_element(om_builder, env);
-                break;
-
-            case AXIOM_XML_READER_CDATA:
-                break;
-
-            case AXIOM_XML_READER_DOCUMENT_TYPE:
-                break;
-
-            default:
-                break;
-        }
-    }
-    while(!node && !axiom_node_is_complete(om_builder->root_node, env));
-    return node;
-}
-
-
-
 /**
   * moves the reader to next event and returns the token returned by the xml_reader ,
   * @param builder pointer to STAX builder struct to be used
@@ -1054,5 +969,88 @@ axiom_stax_builder_set_cache(
     axis2_bool_t enable_cache)
 {
     om_builder->cache = enable_cache;
+}
+
+axiom_node_t *AXIS2_CALL
+axiom_stax_builder_next(
+    axiom_stax_builder_t * om_builder,
+    const axutil_env_t * env)
+{
+    int token = 0;
+    axiom_node_t *node = NULL;
+
+    do
+    {
+        if(om_builder->done)
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL, AXIS2_FAILURE);
+            return NULL;
+        }
+
+        token = axiom_xml_reader_next(om_builder->parser, env);
+        if(token == -1)
+        {
+            return NULL;
+        }
+
+        om_builder->current_event = token;
+
+        switch(token)
+        {
+            case AXIOM_XML_READER_START_DOCUMENT:
+                /*Do nothing */
+                break;
+
+            case AXIOM_XML_READER_START_ELEMENT:
+                node = axiom_stax_builder_create_om_element(om_builder, env, AXIS2_FALSE);
+                break;
+
+            case AXIOM_XML_READER_EMPTY_ELEMENT:
+
+#ifdef AXIS2_LIBXML2_ENABLED
+                node = axiom_stax_builder_create_om_element(om_builder, env, AXIS2_FALSE);
+#else
+                node = axiom_stax_builder_create_om_element(om_builder, env, AXIS2_TRUE);
+#endif
+
+            case AXIOM_XML_READER_END_ELEMENT:
+                axiom_stax_builder_end_element(om_builder, env);
+                break;
+
+            case AXIOM_XML_READER_SPACE:
+                node = axiom_stax_builder_create_om_text(om_builder, env);
+                break;
+
+            case AXIOM_XML_READER_CHARACTER:
+                node = axiom_stax_builder_create_om_text(om_builder, env);
+                break;
+
+            case AXIOM_XML_READER_ENTITY_REFERENCE:
+                break;
+
+            case AXIOM_XML_READER_COMMENT:
+
+                node = axiom_stax_builder_create_om_comment(om_builder, env);
+                axiom_stax_builder_end_element(om_builder, env);
+                break;
+
+            case AXIOM_XML_READER_PROCESSING_INSTRUCTION:
+
+                node = axiom_stax_builder_create_om_processing_instruction(om_builder, env);
+                axiom_stax_builder_end_element(om_builder, env);
+                break;
+
+            case AXIOM_XML_READER_CDATA:
+                break;
+
+            case AXIOM_XML_READER_DOCUMENT_TYPE:
+                break;
+
+            default:
+                break;
+        }
+    }
+    while(!node && !axiom_node_is_complete(om_builder->root_node, env));
+    return node;
 }
 #endif
