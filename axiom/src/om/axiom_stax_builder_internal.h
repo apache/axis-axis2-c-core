@@ -39,32 +39,94 @@ extern "C"
      * @{
      */
 
-    AXIS2_EXTERN int AXIS2_CALL
+    int AXIS2_CALL
     axiom_stax_builder_get_current_event(
         axiom_stax_builder_t * builder,
         const axutil_env_t * env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_status_t AXIS2_CALL
     axiom_stax_builder_set_lastnode(
         axiom_stax_builder_t * builder,
         const axutil_env_t * env,
         axiom_node_t * om_node);
 
-    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
-        axiom_stax_builder_get_lastnode(
-            axiom_stax_builder_t * builder,
-            const axutil_env_t * env);
+    axiom_node_t *AXIS2_CALL
+    axiom_stax_builder_get_lastnode(
+        axiom_stax_builder_t * builder,
+        const axutil_env_t * env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_status_t AXIS2_CALL
     axiom_stax_builder_set_element_level(
         axiom_stax_builder_t * builder,
         const axutil_env_t * env,
         int element_level);
 
-    AXIS2_EXTERN int AXIS2_CALL
-        axiom_stax_builder_get_element_level(
-            axiom_stax_builder_t * builder,
-            const axutil_env_t * env);
+    int AXIS2_CALL
+    axiom_stax_builder_get_element_level(
+        axiom_stax_builder_t * builder,
+        const axutil_env_t * env);
+
+    /**
+      * Builds the next node from stream. Moves pull parser forward and reacts
+      * to events.
+      * @param builder pointer to stax builder struct to be used
+      * @param environment Environment. MUST NOT be NULL.
+      * @return a pointer to the next node, or NULL if there are no more nodes.
+      *     On erros sets the error and returns NULL.
+      */
+    axiom_node_t *AXIS2_CALL
+    axiom_stax_builder_next(
+        struct axiom_stax_builder *builder,
+        const axutil_env_t * env);
+
+    /**
+      * builder is finished building om structure
+      * @param builder pointer to stax builder struct to be used
+      * @param environment Environment. MUST NOT be NULL.
+      *
+      * @return AXIS2_TRUE if is complete or AXIS2_FALSE otherwise
+      */
+
+    axis2_bool_t AXIS2_CALL
+    axiom_stax_builder_is_complete(
+        struct axiom_stax_builder *builder,
+        const axutil_env_t * env);
+
+    /**
+      * moves the reader to next event and returns the token returned by the xml_reader ,
+      * @param builder pointer to STAX builder struct to be used
+      * @param environment Environment. MUST NOT be NULL.
+      * @return next event axiom_xml_reader_event_types. Returns -1 on error
+      */
+    int AXIS2_CALL
+    axiom_stax_builder_next_with_token(
+        struct axiom_stax_builder *builder,
+        const axutil_env_t * env);
+
+#if 0
+    /**
+      * Discards the element that is being built currently.
+      * @param environment Environment. MUST NOT be NULL, .
+      * @param builder pointer to stax builder struct to be used
+      * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+      */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_stax_builder_discard_current_element(
+        struct axiom_stax_builder *builder,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
+    axiom_stax_builder_get_parser(
+        axiom_stax_builder_t * om_builder,
+        const axutil_env_t * env);
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_stax_builder_set_cache(
+        axiom_stax_builder_t * om_builder,
+        const axutil_env_t * env,
+        axis2_bool_t enable_cache);
+
+#endif
 
     /** @} */
 

@@ -1231,38 +1231,7 @@ axiom_element_get_child_elements(
     return NULL;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_element_build(
-    axiom_element_t * om_element,
-    const axutil_env_t * env,
-    axiom_node_t * om_ele_node)
-{
-    axiom_stax_builder_t *builder = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    AXIS2_PARAM_CHECK(env->error, om_ele_node, AXIS2_FAILURE);
-    if(axiom_node_get_node_type(om_ele_node, env) != AXIOM_ELEMENT)
-    {
-        return AXIS2_FAILURE;
-    }
-
-    builder = axiom_node_get_builder(om_ele_node, env);
-    if(!builder)
-    {
-        return AXIS2_FAILURE;
-    }
-    while(!axiom_node_is_complete(om_ele_node, env)
-        && !axiom_stax_builder_is_complete(builder, env))
-    {
-        void *value = NULL;
-        value = axiom_stax_builder_next(builder, env);
-        if(!value)
-        {
-            return AXIS2_FAILURE;
-        }
-    }
-    return AXIS2_SUCCESS;
-}
 
 AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
 axiom_element_get_default_namespace(
@@ -1816,3 +1785,38 @@ axiom_element_redeclare_parent_namespaces(
         child_node = axiom_node_get_next_sibling(child_node, env);
     }
 }
+
+#if 0
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_element_build(
+    axiom_element_t * om_element,
+    const axutil_env_t * env,
+    axiom_node_t * om_ele_node)
+{
+    axiom_stax_builder_t *builder = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    AXIS2_PARAM_CHECK(env->error, om_ele_node, AXIS2_FAILURE);
+    if(axiom_node_get_node_type(om_ele_node, env) != AXIOM_ELEMENT)
+    {
+        return AXIS2_FAILURE;
+    }
+
+    builder = axiom_node_get_builder(om_ele_node, env);
+    if(!builder)
+    {
+        return AXIS2_FAILURE;
+    }
+    while(!axiom_node_is_complete(om_ele_node, env)
+        && !axiom_stax_builder_is_complete(builder, env))
+    {
+        void *value = NULL;
+        value = axiom_stax_builder_next(builder, env);
+        if(!value)
+        {
+            return AXIS2_FAILURE;
+        }
+    }
+    return AXIS2_SUCCESS;
+}
+#endif

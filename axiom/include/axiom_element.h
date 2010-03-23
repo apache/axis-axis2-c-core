@@ -506,22 +506,7 @@ extern "C"
         const axutil_env_t * env,
         axiom_node_t * element_node);
 
-    /**
-     * builds this om_element_node completely, This is only possible 
-     * if the om_stax_builder is associated with the om_element_node,
-     * @param om_element pointer to om_element
-     * @param env environment MUST not be NULL
-     * @param om_node pointer to this element node
-     * @param element_node corresponding om element node of this om element
-     * struct 
-     * @returns AXIS2_SUCCESS if this element node was successfully completed,
-     * otherwise returns AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_element_build(
-        axiom_element_t * om_element,
-        const axutil_env_t * env,
-        axiom_node_t * element_node);
+
 
     /**
      * retrieves the default namespace of this element , if available,
@@ -738,6 +723,25 @@ extern "C"
         axiom_element_t * root_element,
         axutil_hash_t *inscope_namespaces);
 
+#if 0
+    /**
+     * builds this om_element_node completely, This is only possible
+     * if the om_stax_builder is associated with the om_element_node,
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param om_node pointer to this element node
+     * @param element_node corresponding om element node of this om element
+     * struct
+     * @returns AXIS2_SUCCESS if this element node was successfully completed,
+     * otherwise returns AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_element_build(
+        axiom_element_t * om_element,
+        const axutil_env_t * env,
+        axiom_node_t * element_node);
+
+#endif
     /** @} */
 
 #ifdef __cplusplus
