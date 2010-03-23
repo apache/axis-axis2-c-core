@@ -17,27 +17,46 @@
 #include <stdlib.h>
 #include <string.h>
 #include <guththila_reader.h>
+
 GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
 guththila_reader_create_for_file(
     guththila_char_t *file_name,
     const axutil_env_t * env)
 {
-    guththila_reader_t * reader = NULL;
-
+    guththila_reader_t * reader;
     FILE * f = NULL;
+
     if(!file_name)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[guththila] invalid file name");
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_COULD_NOT_OPEN_FILE, AXIS2_FAILURE);
         return NULL;
+    }
+
     reader = (guththila_reader_t *)AXIS2_MALLOC(env->allocator, sizeof(guththila_reader_t));
     if(!reader)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[guththila]insufficient memory to create guththila parser");
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
+    }
+
     f = fopen(file_name, "r");
     if(!f)
     {
         AXIS2_FREE(env->allocator, reader);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_COULD_NOT_OPEN_FILE, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[guththila] unable to open file %s", file_name);
         return NULL;
     }
+
     reader->fp = f;
     reader->type = GUTHTHILA_FILE_READER;
+    reader->buff = NULL;
+    reader->buff_size = 0;
+    reader->input_read_callback = NULL;
+    reader->context = NULL;
     return reader;
 }
 
@@ -47,17 +66,23 @@ guththila_reader_create_for_memory(
     int size,
     const axutil_env_t * env)
 {
-    guththila_reader_t * reader = (guththila_reader_t *)AXIS2_MALLOC(env->allocator,
-        sizeof(guththila_reader_t));
-    if(reader)
+    guththila_reader_t * reader;
+    reader = (guththila_reader_t *)AXIS2_MALLOC(env->allocator, sizeof(guththila_reader_t));
+    if(!reader)
     {
-        reader->type = GUTHTHILA_MEMORY_READER;
-        reader->buff = buffer;
-        reader->buff_size = size;
-        reader->fp = NULL;
-        return reader;
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[guththila]insufficient memory to create guththila parser");
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
-    return NULL;
+
+    reader->type = GUTHTHILA_MEMORY_READER;
+    reader->buff = buffer;
+    reader->buff_size = size;
+    reader->fp = NULL;
+    reader->input_read_callback = NULL;
+    reader->context = NULL;
+    return reader;
 }
 
 GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
@@ -66,17 +91,25 @@ guththila_reader_create_for_io(
     void *ctx,
     const axutil_env_t * env)
 {
-    guththila_reader_t * reader = (guththila_reader_t *)AXIS2_MALLOC(env->allocator,
-        sizeof(guththila_reader_t));
-    if(reader)
+    guththila_reader_t * reader;
+    reader = (guththila_reader_t *)AXIS2_MALLOC(env->allocator, sizeof(guththila_reader_t));
+    if(!reader)
     {
-        reader->input_read_callback = input_read_callback;
-        reader->context = ctx;
-        reader->type = GUTHTHILA_IO_READER;
-        return reader;
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "[guththila]insufficient memory to create guththila parser");
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
     }
-    return NULL;
+
+    reader->input_read_callback = input_read_callback;
+    reader->context = ctx;
+    reader->type = GUTHTHILA_IO_READER;
+    reader->buff = NULL;
+    reader->buff_size = 0;
+    reader->fp = NULL;
+    return reader;
 }
+
 GUTHTHILA_EXPORT void GUTHTHILA_CALL
 guththila_reader_free(
     guththila_reader_t * r,
@@ -93,6 +126,7 @@ guththila_reader_free(
     AXIS2_FREE(env->allocator, r);
 
 }
+
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
 guththila_reader_read(
     guththila_reader_t * r,

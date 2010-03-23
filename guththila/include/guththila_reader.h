@@ -60,8 +60,9 @@ typedef struct guththila_reader_s
  * @param env environment
  */
 GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
-guththila_reader_create_for_file(guththila_char_t *filename,
-        const axutil_env_t * env);
+guththila_reader_create_for_file(
+    guththila_char_t *filename,
+    const axutil_env_t * env);
 
 /*
  * Reading from a call back function.
@@ -70,9 +71,10 @@ guththila_reader_create_for_file(guththila_char_t *filename,
  * @param env environment
  */
 GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
-guththila_reader_create_for_io(GUTHTHILA_READ_INPUT_CALLBACK
-        input_read_callback, void *ctx,
-        const axutil_env_t * env);
+guththila_reader_create_for_io(
+    GUTHTHILA_READ_INPUT_CALLBACK input_read_callback,
+    void *ctx,
+    const axutil_env_t * env);
 
 /*
  * Reading from memory buffer.
@@ -81,9 +83,10 @@ guththila_reader_create_for_io(GUTHTHILA_READ_INPUT_CALLBACK
  * @param env environment
  */
 GUTHTHILA_EXPORT guththila_reader_t * GUTHTHILA_CALL
-guththila_reader_create_for_memory(void *buffer,
-        int size,
-        const axutil_env_t * env);
+guththila_reader_create_for_memory(
+    void *buffer,
+    int size,
+    const axutil_env_t * env);
 
 /* 
  * Read the specified number of character to the given buffer.
@@ -94,7 +97,8 @@ guththila_reader_create_for_memory(void *buffer,
  * @param env environment
  * @return number of bytes put in to the buffer. -1 if end of the read. 
  */
-GUTHTHILA_EXPORT int GUTHTHILA_CALL  guththila_reader_read(
+GUTHTHILA_EXPORT int GUTHTHILA_CALL
+guththila_reader_read(
     guththila_reader_t * r,
     guththila_char_t * buffer,
     int offset,
@@ -106,7 +110,8 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL  guththila_reader_read(
  * @param r reader
  * @param env environment
  */
-GUTHTHILA_EXPORT void GUTHTHILA_CALL  guththila_reader_free(
+GUTHTHILA_EXPORT void GUTHTHILA_CALL
+guththila_reader_free(
     guththila_reader_t * r,
     const axutil_env_t * env);
 
