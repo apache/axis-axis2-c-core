@@ -764,7 +764,7 @@ axiom_stax_builder_next(
                 break;
         }
     }
-    while(!node);
+    while(!node && !axiom_node_is_complete(om_builder->root_node, env));
     return node;
 }
 
