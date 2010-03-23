@@ -66,18 +66,7 @@ extern "C"
         axiom_stax_builder_t * builder,
         const axutil_env_t * env);
 
-    /**
-      * Builds the next node from stream. Moves pull parser forward and reacts
-      * to events.
-      * @param builder pointer to stax builder struct to be used
-      * @param environment Environment. MUST NOT be NULL.
-      * @return a pointer to the next node, or NULL if there are no more nodes.
-      *     On erros sets the error and returns NULL.
-      */
-    axiom_node_t *AXIS2_CALL
-    axiom_stax_builder_next(
-        struct axiom_stax_builder *builder,
-        const axutil_env_t * env);
+
 
     /**
       * builder is finished building om structure
@@ -103,6 +92,19 @@ extern "C"
         struct axiom_stax_builder *builder,
         const axutil_env_t * env);
 
+    /**
+      * Builds the next node from stream. Moves pull parser forward and reacts
+      * to events.
+      * @param builder pointer to stax builder struct to be used
+      * @param environment Environment. MUST NOT be NULL.
+      * @return a pointer to the next node, or NULL if there are no more nodes.
+      *     On erros sets the error and returns NULL.
+      */
+    axiom_node_t *AXIS2_CALL
+    axiom_stax_builder_next(
+        struct axiom_stax_builder *builder,
+        const axutil_env_t * env);
+
 #if 0
     /**
       * Discards the element that is being built currently.
@@ -125,6 +127,7 @@ extern "C"
         axiom_stax_builder_t * om_builder,
         const axutil_env_t * env,
         axis2_bool_t enable_cache);
+
 
 #endif
 

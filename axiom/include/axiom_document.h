@@ -56,7 +56,7 @@ extern "C"
       */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
     axiom_document_get_root_element(
-        struct axiom_document *document,
+        axiom_document_t *document,
         const axutil_env_t * env);
 
     /**
@@ -67,7 +67,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
     axiom_document_build_all(
-        struct axiom_document *document,
+        axiom_document_t *document,
         const axutil_env_t * env);
 
     /** @} */

@@ -488,6 +488,11 @@ axiom_stax_builder_create_om_element(
     {
         /* since last node is null, this should be the root node */
         om_ele = axiom_element_create_str(env, NULL, temp_localname_str, NULL, &element_node);
+        if(!element_node)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create element");
+            return NULL;
+        }
         om_builder->root_node = element_node;
         if(om_builder->document)
         {
