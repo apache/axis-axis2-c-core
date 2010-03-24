@@ -39,22 +39,39 @@ struct axiom_element
     /** List of namespaces */
     axutil_hash_t *namespaces;
 
-    axutil_qname_t *qname;
-
-    axiom_child_element_iterator_t *child_ele_iter;
-
-    axiom_children_iterator_t *children_iter;
-
-    axiom_children_qname_iterator_t *children_qname_iter;
-
-    axis2_char_t *text_value;
-
-    int next_ns_prefix_number;
-
+    /* denotes whether current element is an empty element. i.e. <element/>
+     * Used only when writing the output */
     axis2_bool_t is_empty;
+
+    /* Following members are kept as a result of some operations. Reason for keeping them is,
+     * (1) we can free them without memory leak
+     * (2) Improve the performance, so that we don't need to re-do the calculation again
+     */
+    axutil_qname_t *qname;                          /* result of axiom_element_get_qname */
+    axiom_child_element_iterator_t *child_ele_iter; /* result of axiom_element_get_child_elements*/
+    axiom_children_iterator_t *children_iter;       /* result of axiom_element_get_children */
+    axiom_children_qname_iterator_t *children_qname_iter; /*axiom_element_get_children_with_qname */
+    axis2_char_t *text_value;                       /* result of axiom_element_get_text */
 
 };
 
+/**
+ * Creates an AXIOM element with given local name
+ * @param env Environment. MUST NOT be NULL.
+ * @param parent parent of the element node to be created. can be NULL.
+ * @param localname local name of the elment. cannot be NULL.
+ * @param ns namespace of the element.  can be NULL.
+ *                       If the value of the namespace has not already been declared
+ *                       then the namespace structure ns will be declared and will be
+ *                       freed when the tree is freed.
+ *                       If the value of the namespace has already been declared using
+ *                       another namespace structure then the namespace structure ns
+ *                       will be freed.
+ * @param node This is an out parameter. cannot be NULL.
+ *                       Returns the node corresponding to the comment created.
+ *                       Node type will be set to AXIOM_ELEMENT
+ * @return a pointer to the newly created element struct
+ */
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 axiom_element_create(
     const axutil_env_t * env,
@@ -64,7 +81,6 @@ axiom_element_create(
     axiom_node_t ** node)
 {
     axiom_element_t *element;
-    AXIS2_ENV_CHECK(env, NULL);
 
     if(!localname || !node)
     {
@@ -77,29 +93,19 @@ axiom_element_create(
     if(!(*node))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No Memory");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to create axiom node needed by element");
         return NULL;
     }
-    element = (axiom_element_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_element_t));
 
+    element = (axiom_element_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_element_t));
     if(!element)
     {
         AXIS2_FREE(env->allocator, (*node));
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No Memory");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Insufficient memory to create axiom element");
         return NULL;
     }
-    element->ns = NULL;
-    element->localname = NULL;
-    element->attributes = NULL;
-    element->namespaces = NULL;
-    element->qname = NULL;
-    element->child_ele_iter = NULL;
-    element->children_iter = NULL;
-    element->children_qname_iter = NULL;
-    element->text_value = NULL;
-    element->next_ns_prefix_number = 0;
-    element->is_empty = AXIS2_FALSE;
+    memset(element, 0, sizeof(axiom_element_t));
 
     element->localname = axutil_string_create(env, localname);
     if(!element->localname)
@@ -107,13 +113,14 @@ axiom_element_create(
         AXIS2_FREE(env->allocator, element);
         AXIS2_FREE(env->allocator, (*node));
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to create string to store local name");
         return NULL;
     }
+
     if(parent)
     {
         axiom_node_add_child(parent, env, (*node));
     }
-    axiom_node_set_complete((*node), env, AXIS2_FALSE);
     axiom_node_set_node_type((*node), env, AXIOM_ELEMENT);
     axiom_node_set_data_element((*node), env, element);
 
@@ -125,13 +132,6 @@ axiom_element_create(
         uri = axiom_namespace_get_uri(ns, env);
         prefix = axiom_namespace_get_prefix(ns, env);
 
-        /*
-         if (prefix && axutil_strcmp(prefix, "") == 0)
-         {
-         element->ns = NULL;
-         return element;
-         }
-         */
         element->ns = axiom_element_find_namespace(element, env, *node, uri, prefix);
 
         if(element->ns)
@@ -142,20 +142,13 @@ axiom_element_create(
                 ns = NULL;
             }
         }
-
-        if(!(element->ns))
+        else
         {
             if(axiom_element_declare_namespace(element, env, *node, ns) == AXIS2_SUCCESS)
             {
                 element->ns = ns;
             }
         }
-
-        /*if (prefix && axutil_strcmp(prefix, "") == 0)
-         {
-         element->ns = NULL;
-         }
-         */
     }
 
     return element;
@@ -397,7 +390,6 @@ axiom_element_declare_namespace_assume_param_ownership(
         axis2_char_t *key = NULL;
         key = AXIS2_MALLOC(env->allocator, sizeof(char) * 10);
         memset(key, 0, sizeof(char) * 10);
-        om_element->next_ns_prefix_number++;
         key[0] = '\0';
         axutil_hash_set(om_element->namespaces, key, AXIS2_HASH_KEY_STRING, ns);
     }
@@ -455,7 +447,6 @@ axiom_element_declare_namespace(
         axis2_char_t *key = NULL;
         key = AXIS2_MALLOC(env->allocator, sizeof(char) * 10);
         memset(key, 0, sizeof(char) * 10);
-        om_element->next_ns_prefix_number++;
         key[0] = '\0';
         axutil_hash_set(om_element->namespaces, key, AXIS2_HASH_KEY_STRING, ns);
     }
@@ -1179,7 +1170,6 @@ axiom_element_set_text(
 {
     axiom_node_t *temp_node, *next_node;
     axiom_text_t *om_text = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, text, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, element_node, AXIS2_FAILURE);
 
@@ -1194,8 +1184,7 @@ axiom_element_set_text(
         }
     }
 
-    om_text = axiom_text_create(env, NULL, text, &temp_node);
-    axiom_node_add_child(element_node, env, temp_node);
+    om_text = axiom_text_create(env, element_node, text, &temp_node);
     return AXIS2_SUCCESS;
 }
 
