@@ -44,7 +44,7 @@ extern "C"
         axiom_stax_builder_t * builder,
         const axutil_env_t * env);
 
-    axis2_status_t AXIS2_CALL
+    void AXIS2_CALL
     axiom_stax_builder_set_lastnode(
         axiom_stax_builder_t * builder,
         const axutil_env_t * env,
@@ -55,7 +55,7 @@ extern "C"
         axiom_stax_builder_t * builder,
         const axutil_env_t * env);
 
-    axis2_status_t AXIS2_CALL
+    void AXIS2_CALL
     axiom_stax_builder_set_element_level(
         axiom_stax_builder_t * builder,
         const axutil_env_t * env,

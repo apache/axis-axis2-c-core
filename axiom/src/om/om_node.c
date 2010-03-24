@@ -226,7 +226,6 @@ axiom_node_add_child(
     const axutil_env_t * env,
     axiom_node_t * child)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, child, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
 
@@ -235,19 +234,15 @@ axiom_node_add_child(
         child = axiom_node_detach(child, env);
     }
 
-    if(!(om_node->first_child))
+    if(!om_node->first_child)
     {
         om_node->first_child = child;
     }
     else
     {
-        axiom_node_t *last_sib = NULL;
-        last_sib = om_node->last_child;
-        if(last_sib)
-        {
-            last_sib->next_sibling = child;
-            child->prev_sibling = last_sib;
-        }
+        axiom_node_t *last_sib = om_node->last_child;
+        last_sib->next_sibling = child;
+        child->prev_sibling = last_sib;
     }
 
     child->parent = om_node;
@@ -382,24 +377,17 @@ axiom_node_set_parent(
     const axutil_env_t * env,
     axiom_node_t * parent)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if(!om_node)
-    {
-        return AXIS2_FAILURE;
-    }
-
-    AXIS2_PARAM_CHECK(env->error, parent, AXIS2_FAILURE);
 
     if(parent == om_node->parent)
     { /* same parent already exist */
         return AXIS2_SUCCESS;
     }
-    /* if a new parent is assigned in  place of existing
-     one first the node should  be detached
+
+    /* if a new parent is assigned in  place of existing one first the node should  be detached
      */
     if(om_node->parent)
     {
-        om_node = axiom_node_detach_without_namespaces(om_node, env);
+        om_node = axiom_node_detach(om_node, env);
     }
 
     om_node->parent = parent;
@@ -1208,21 +1196,15 @@ axiom_node_get_data_element(
  internal function , not to be used by users
  only sets the first_child link because this is needed by builder
  */
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_node_set_first_child(
     axiom_node_t * om_node,
     const axutil_env_t * env,
     axiom_node_t * first_child)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, first_child, AXIS2_FAILURE);
-
     /** set the parent */
     axiom_node_set_parent(first_child, env, om_node);
-
     om_node->first_child = first_child;
-    return AXIS2_SUCCESS;
 }
 
 /**
@@ -1230,36 +1212,26 @@ axiom_node_set_first_child(
  only sets the previous sibling link as it is needed by builders
 
  */
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_node_set_previous_sibling(
     axiom_node_t * om_node,
     const axutil_env_t * env,
     axiom_node_t * prev_sibling)
 {
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, prev_sibling, AXIS2_FAILURE);
-
     om_node->prev_sibling = prev_sibling;
-    return AXIS2_SUCCESS;
 }
 
 /**
  internal function, not to be used by users
  only sets the next sibling link;
  */
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_node_set_next_sibling(
     axiom_node_t * om_node,
     const axutil_env_t * env,
     axiom_node_t * next_sibling)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, next_sibling, AXIS2_FAILURE);
     om_node->next_sibling = next_sibling;
-    return AXIS2_SUCCESS;
 }
 
 /**
@@ -1273,9 +1245,6 @@ axiom_node_set_node_type(
     const axutil_env_t * env,
     axiom_types_t type)
 {
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
     om_node->node_type = type;
     return AXIS2_SUCCESS;
 }
@@ -1284,17 +1253,13 @@ axiom_node_set_node_type(
  internal function , not to be used by users
  only used in om and soap
  */
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_node_set_data_element(
     axiom_node_t * om_node,
     const axutil_env_t * env,
     void *data_element)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, data_element, AXIS2_FAILURE);
     om_node->data_element = data_element;
-    return AXIS2_SUCCESS;
 }
 
 /**
@@ -1302,23 +1267,20 @@ axiom_node_set_data_element(
  only sets the build status
 
  */
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_node_set_complete(
     axiom_node_t * om_node,
     const axutil_env_t * env,
     axis2_bool_t done)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
     om_node->done = done;
-    return AXIS2_SUCCESS;
 }
 
 /**
  internal function only sets the builder reference ,
  should not be used by user
  */
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_node_set_builder(
     axiom_node_t * om_node,
     const axutil_env_t * env,
@@ -1326,7 +1288,6 @@ axiom_node_set_builder(
 {
     /* builder == NULL is a valid case */
     om_node->builder = builder;
-    return AXIS2_SUCCESS;
 }
 
 void AXIS2_CALL

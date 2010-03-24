@@ -155,7 +155,8 @@ axiom_stax_builder_free_self(
     }
 }
 
-/** Gets the document associated with the builder
+/**
+ * Gets the document associated with the builder
  * @param builder axiom_stax_builder
  * @param env environment
  * @return pointer to document struct associated with builder NULL if an error occurred.
@@ -418,9 +419,9 @@ axiom_stax_builder_create_om_element(
     axiom_element_t *om_ele = NULL;
     axis2_char_t *temp_localname = NULL;
     axutil_string_t *temp_localname_str = NULL;
+    axiom_node_t *parent = NULL;
 
     temp_localname = axiom_xml_reader_get_name(om_builder->parser, env);
-
     if(!temp_localname)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_XML_READER_ELEMENT_NULL, AXIS2_FAILURE);
@@ -436,55 +437,36 @@ axiom_stax_builder_create_om_element(
 #endif
 
     om_builder->element_level++;
-
-    if(!om_builder->lastnode)
+    if(om_builder->lastnode)
     {
-        /* since last node is null, this should be the root node */
-        om_ele = axiom_element_create_str(env, NULL, temp_localname_str, NULL, &element_node);
-        if(!element_node)
+        if(axiom_node_is_complete(om_builder->lastnode, env))
         {
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create element");
-            return NULL;
+            /*previous node building is finished. This node should be a sibling of previous node */
+            parent = axiom_node_get_parent(om_builder->lastnode, env);
         }
-        om_builder->root_node = element_node;
-        if(om_builder->document)
+        else
         {
-            axiom_document_set_root_element(om_builder->document, env, element_node);
-        }
-    }
-    else if(axiom_node_is_complete(om_builder->lastnode, env))
-    {
-        /* previous node building is finished. So, this node should be a sibling of previous node */
-        axiom_node_t *parent = axiom_node_get_parent(om_builder->lastnode, env);
-        om_ele = axiom_element_create_str(env, parent, temp_localname_str, NULL, &element_node);
-        if(element_node)
-        {
-            axiom_node_set_next_sibling(om_builder->lastnode, env, element_node);
-            axiom_node_set_previous_sibling(element_node, env, om_builder->lastnode);
-        }
-    }
-    else
-    {
-        /* previous node building is not finished. This should be first child of previous node */
-        om_ele = axiom_element_create_str(
-            env, om_builder->lastnode, temp_localname_str, NULL, &element_node);
-        if(element_node)
-        {
-            axiom_node_set_first_child(om_builder->lastnode, env, element_node);
-            axiom_node_set_parent(element_node, env, om_builder->lastnode);
+            /*previous node building is not finished. This should be child of previous node */
+            parent = om_builder->lastnode;
         }
     }
 
+    om_ele = axiom_element_create_str(env, parent, temp_localname_str, NULL, &element_node);
     axutil_string_free(temp_localname_str, env);
-
     if((!om_ele) || (!element_node))
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create axiom element");
         return NULL;
     }
-
     axiom_node_set_builder(element_node, env, om_builder);
     axiom_element_set_is_empty(om_ele, env, is_empty);
+
+    if(!om_builder->lastnode)
+    {
+        /* since last node is null, this should be the root node */
+        om_builder->root_node = element_node;
+        axiom_document_set_root_element(om_builder->document, env, element_node);
+    }
 
     /* order of processing name spaces first (before processing attributes) is important */
     axiom_stax_builder_process_namespaces(om_builder, env, element_node, 0);
@@ -649,12 +631,6 @@ axiom_stax_builder_next_with_token(
 {
     int token = 0;
 
-    if((!om_builder) || (!om_builder->parser))
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid OM builder");
-        return -1;
-    }
-
     if(om_builder->done)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL, AXIS2_FAILURE);
@@ -668,6 +644,7 @@ axiom_stax_builder_next_with_token(
     if(token == -1)
     {
         om_builder->done = AXIS2_TRUE;
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error when reading xml");
         return -1;
     }
@@ -684,6 +661,7 @@ axiom_stax_builder_next_with_token(
             if(!axiom_stax_builder_create_om_element(om_builder, env, AXIS2_FALSE))
             {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in creating start element");
+                /* error is set in the create_om_element method. No need to set here */
                 return -1;
             }
             break;
@@ -797,14 +775,13 @@ axiom_stax_builder_is_complete(
 /**
  internal function for soap om_builder only
  */
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_stax_builder_set_lastnode(
     axiom_stax_builder_t * om_builder,
     const axutil_env_t * env,
     axiom_node_t * om_node)
 {
     om_builder->lastnode = om_node;
-    return AXIS2_SUCCESS;
 }
 
 /**
@@ -821,14 +798,13 @@ axiom_stax_builder_get_element_level(
 /**
  internal function for soap om_builder only
  */
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_stax_builder_set_element_level(
     axiom_stax_builder_t * om_builder,
     const axutil_env_t * env,
     int element_level)
 {
     om_builder->element_level = element_level;
-    return AXIS2_SUCCESS;
 }
 
 #if 0

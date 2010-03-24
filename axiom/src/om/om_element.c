@@ -1518,7 +1518,6 @@ axiom_element_create_str(
     axiom_node_t ** node)
 {
     axiom_element_t *element;
-    AXIS2_ENV_CHECK(env, NULL);
 
     if(!localname || !node)
     {
@@ -1531,36 +1530,23 @@ axiom_element_create_str(
     if(!(*node))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to create axiom node");
         return NULL;
     }
-    element = (axiom_element_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_element_t));
 
+    element = (axiom_element_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_element_t));
     if(!element)
     {
         AXIS2_FREE(env->allocator, (*node));
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Insufficient memory to create axiom element");
         return NULL;
     }
-    element->ns = NULL;
-    element->localname = NULL;
-    element->attributes = NULL;
-    element->namespaces = NULL;
-    element->qname = NULL;
-    element->child_ele_iter = NULL;
-    element->children_iter = NULL;
-    element->children_qname_iter = NULL;
-    element->text_value = NULL;
-    element->next_ns_prefix_number = 0;
-    element->is_empty = AXIS2_FALSE;
 
+    memset(element, 0, sizeof(axiom_element_t));
     element->localname = axutil_string_clone(localname, env);
-    if(!element->localname)
-    {
-        AXIS2_FREE(env->allocator, element);
-        AXIS2_FREE(env->allocator, (*node));
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
+    /* clone can't be null so, no need to check for null validity*/
+
     if(parent)
     {
         axiom_node_add_child(parent, env, (*node));

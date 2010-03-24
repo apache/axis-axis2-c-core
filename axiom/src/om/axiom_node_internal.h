@@ -61,7 +61,7 @@ extern "C"
      * @param env environment, MUST NOT be NULL.
      * @param first_child child to be set as first child
      */
-    axis2_status_t AXIS2_CALL
+    void AXIS2_CALL
     axiom_node_set_first_child(
         axiom_node_t * om_node,
         const axutil_env_t * env,
@@ -72,10 +72,8 @@ extern "C"
      * @param om_node
      * @param env environment, MUST NOT be NULL.
      * @param prev_sibling
-     * @return status of the op, AXIS2_SUCCESS on success
-     *     AXIS2_FAILURE on error
      */
-    axis2_status_t AXIS2_CALL
+    void AXIS2_CALL
     axiom_node_set_previous_sibling(
         axiom_node_t * om_node,
         const axutil_env_t * env,
@@ -86,10 +84,8 @@ extern "C"
      * @param om_node
      * @param env environment, MUST NOT be NULL.
      * @param last_sibling
-     * @return status of the op, AXIS2_SUCCESS on success,
-     *     AXIS2_FAILURE on error
      */
-    axis2_status_t AXIS2_CALL
+    void AXIS2_CALL
     axiom_node_set_next_sibling(
         axiom_node_t * om_node,
         const axutil_env_t * env,
@@ -100,8 +96,6 @@ extern "C"
      * @param om_node
      * @param env environment, MUST NOT be NULL.
      * @param type type of the node
-     * @return status code of the op AXIS2_SUCCESS on success,
-     *     AXIS2_FAILURE on error
      */
     axis2_status_t AXIS2_CALL
     axiom_node_set_node_type(
@@ -114,10 +108,8 @@ extern "C"
      * @param om_node  node struct
      * @param env environment, MUST NOT be NULL.
      * @param data_element
-     * @return status code of the op AXIS2_SUCCESS on success,
-     *     AXIS2_FAILURE on error
      */
-    axis2_status_t AXIS2_CALL
+    void AXIS2_CALL
     axiom_node_set_data_element(
         axiom_node_t * om_node,
         const axutil_env_t * env,
@@ -130,7 +122,7 @@ extern "C"
      * @param env environment, MUST NOT be NULL.
      * @param done
      */
-    axis2_status_t AXIS2_CALL
+    void AXIS2_CALL
     axiom_node_set_complete(
         axiom_node_t * om_node,
         const axutil_env_t * env,
@@ -139,7 +131,7 @@ extern "C"
     /**
      * Sets the builder
      */
-    axis2_status_t AXIS2_CALL
+    void AXIS2_CALL
     axiom_node_set_builder(
         axiom_node_t * om_node,
         const axutil_env_t * env,

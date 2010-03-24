@@ -70,7 +70,8 @@ extern "C"
         axiom_stax_builder_t *builder,
         const axutil_env_t * env);
 
-    /** Gets the document associated with the builder
+    /**
+     * Gets the document associated with the builder
      * @param builder axiom_stax_builder
      * @param env environment
      * @return pointer to document struct associated with builder NULL if an error occurred.
