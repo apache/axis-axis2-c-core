@@ -34,14 +34,13 @@ axiom_comment_create(
     axiom_node_t ** node)
 {
     axiom_comment_t *comment = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, value, NULL);
     AXIS2_PARAM_CHECK(env->error, node, NULL);
-    *node = NULL;
     *node = axiom_node_create(env);
     if(!*node)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to create node needed by om comment");
         return NULL;
     }
 
@@ -50,10 +49,9 @@ axiom_comment_create(
     {
         AXIS2_FREE(env->allocator, (*node));
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Insufficient memory to create om comment");
         return NULL;
     }
-
-    comment->value = NULL;
 
     if(value)
     {
@@ -61,10 +59,15 @@ axiom_comment_create(
         if(!comment->value)
         {
             AXIS2_FREE(env->allocator, comment);
-            AXIS2_FREE(env->allocator, (*node));
+            axiom_node_free_tree(*node, env);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Insufficient memory to create comment value");
             return NULL;
         }
+    }
+    else
+    {
+        comment->value = NULL;
     }
 
     axiom_node_set_data_element((*node), env, comment);
@@ -83,14 +86,11 @@ axiom_comment_free(
     axiom_comment_t * comment,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if(comment->value)
     {
         AXIS2_FREE(env->allocator, comment->value);
     }
     AXIS2_FREE(env->allocator, comment);
-    return;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -98,7 +98,6 @@ axiom_comment_get_value(
     axiom_comment_t * comment,
     const axutil_env_t * env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return comment->value;
 }
 
@@ -108,7 +107,6 @@ axiom_comment_set_value(
     const axutil_env_t * env,
     const axis2_char_t * value)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
     if(comment->value)
     {
@@ -131,7 +129,6 @@ axiom_comment_serialize(
     const axutil_env_t * env,
     axiom_output_t * om_output)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
     if(comment->value)

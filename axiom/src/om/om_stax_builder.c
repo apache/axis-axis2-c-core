@@ -260,6 +260,7 @@ axiom_stax_builder_create_om_text(
     if(!parent)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BUILDER_STATE_LAST_NODE_NULL, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create OM Text without a node");
         return NULL;
     }
 
@@ -267,6 +268,7 @@ axiom_stax_builder_create_om_text(
     if(!temp_value)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_XML_READER_VALUE_NULL, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid OM Text value");
         return NULL;
     }
 
@@ -292,12 +294,14 @@ axiom_stax_builder_create_om_text(
     axiom_text_create_str(env, parent, temp_value_str, &node);
     axutil_string_free(temp_value_str, env);
 
-    if(node)
+    if(!node)
     {
-        axiom_node_set_complete(node, env, AXIS2_TRUE);
-        om_builder->lastnode = node;
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create axiom_text");
+        return NULL;
     }
 
+    axiom_node_set_complete(node, env, AXIS2_TRUE);
+    om_builder->lastnode = node;
     return node;
 }
 
@@ -483,13 +487,7 @@ axiom_stax_builder_create_om_comment(
 {
     axiom_node_t *comment_node = NULL;
     axis2_char_t *comment_value = NULL;
-
-    if(!om_builder->lastnode)
-    {
-        /* if the comment is at the root level, we will omit it */
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Top level comment is ignored");
-        return NULL;
-    }
+    axiom_node_t *parent = NULL;
 
     comment_value = axiom_xml_reader_get_value(om_builder->parser, env);
     if(!comment_value)
@@ -502,20 +500,22 @@ axiom_stax_builder_create_om_comment(
     if(axiom_node_is_complete(om_builder->lastnode, env))
     {
         /* Last node is completed means, this node should be a sibling of last node */
-        axiom_node_t *parent = axiom_node_get_parent(om_builder->lastnode, env);
-        axiom_comment_create(env, parent, comment_value, &comment_node);
-        axiom_node_set_next_sibling(om_builder->lastnode, env, comment_node);
-        axiom_node_set_previous_sibling(comment_node, env, om_builder->lastnode);
+        parent = axiom_node_get_parent(om_builder->lastnode, env);
     }
     else
     {
         /* this node should be a child of last node */
-        axiom_comment_create(env, om_builder->lastnode, comment_value, &comment_node);
-        axiom_node_set_first_child(om_builder->lastnode, env, comment_node);
-        axiom_node_set_parent(comment_node, env, om_builder->lastnode);
+        parent = om_builder->lastnode;
     }
 
+    axiom_comment_create(env, parent, comment_value, &comment_node);
     axiom_xml_reader_xml_free(om_builder->parser,env,comment_value);
+    if(!comment_node)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Failed to create axiom element");
+        return NULL;
+    }
+
     axiom_node_set_builder(comment_node, env, om_builder);
     om_builder->element_level++;
     om_builder->lastnode = comment_node;
@@ -596,8 +596,7 @@ axiom_stax_builder_end_element(
     if(axiom_node_is_complete(om_builder->lastnode, env))
     {
         /* Last node completed means, this end element should be parent of the last node. */
-        axiom_node_t *parent = NULL;
-        parent = axiom_node_get_parent(om_builder->lastnode, env);
+        axiom_node_t *parent = axiom_node_get_parent(om_builder->lastnode, env);
         if(parent)
         {
             axiom_node_set_complete(parent, env, AXIS2_TRUE);
@@ -610,7 +609,7 @@ axiom_stax_builder_end_element(
     }
 
     /* if we finish building the root node, then we can set the complete status of om_builder */
-    if(om_builder->root_node && axiom_node_is_complete(om_builder->root_node, env))
+    if(axiom_node_is_complete(om_builder->root_node, env))
     {
         om_builder->done = AXIS2_TRUE;
     }
@@ -661,7 +660,6 @@ axiom_stax_builder_next_with_token(
             if(!axiom_stax_builder_create_om_element(om_builder, env, AXIS2_FALSE))
             {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in creating start element");
-                /* error is set in the create_om_element method. No need to set here */
                 return -1;
             }
             break;
@@ -677,7 +675,8 @@ axiom_stax_builder_next_with_token(
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in creating empty element");
                 return -1;
             }
-            /* Let this to fall to AXIOM_XML_READER_END_ELEMENT case as well, since empty element
+            /* Note that we don't have a break here.
+             * Let this to fall to AXIOM_XML_READER_END_ELEMENT case as well, since empty element
              * = start element logic + end element logic */
         }
         case AXIOM_XML_READER_END_ELEMENT:
@@ -717,9 +716,20 @@ axiom_stax_builder_next_with_token(
         }
         case AXIOM_XML_READER_COMMENT:
         {
-            if(axiom_stax_builder_create_om_comment(om_builder, env))
+            /* if the comment is at the root level, we will omit it */
+            if(om_builder->lastnode)
             {
-                axiom_stax_builder_end_element(om_builder, env);
+                axis2_status_t status = AXIS2_FAILURE;
+                if(axiom_stax_builder_create_om_comment(om_builder, env))
+                {
+                    status = axiom_stax_builder_end_element(om_builder, env);
+                }
+
+                if(status != AXIS2_SUCCESS)
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in creating axiom comment");
+                    return -1;
+                }
             }
             break;
         }

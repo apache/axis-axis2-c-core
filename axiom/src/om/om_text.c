@@ -43,7 +43,6 @@ struct axiom_text
     /** The following fields are for MTOM */
     axis2_char_t *mime_type;
     axis2_bool_t optimize;
-    const axis2_char_t *localname;
     axis2_bool_t is_binary;
     axis2_bool_t is_swa;
     axis2_char_t *content_id;
@@ -80,7 +79,6 @@ axiom_text_create(
 
     om_text->mime_type = NULL;
     om_text->optimize = AXIS2_FALSE;
-    om_text->localname = "Include";
     om_text->is_binary = AXIS2_FALSE;
     om_text->is_swa = AXIS2_FALSE;
     om_text->content_id = NULL;
@@ -341,14 +339,6 @@ axiom_text_set_is_binary(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-axiom_text_get_localname(
-    axiom_text_t * om_text,
-    const axutil_env_t * env)
-{
-    return om_text->localname;
-}
-
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_text_get_content_id(
     axiom_text_t * om_text,
@@ -383,7 +373,7 @@ axiom_text_serialize_start_part(
     axis2_char_t *prefix = NULL;
     const axis2_char_t *local_name = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    local_name = axiom_text_get_localname(om_text, env);
+    local_name = "Include";
 
     om_text->ns = axiom_namespace_create(env, "http://www.w3.org/2004/08/xop/include", "xop");
 
@@ -552,35 +542,26 @@ axiom_text_create_str(
     axiom_node_t ** node)
 {
     axiom_text_t *om_text = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, node, NULL);
 
     *node = axiom_node_create(env);
-
     if(!(*node))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to create node needed by om text");
         return NULL;
     }
+
     om_text = (axiom_text_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_text_t));
     if(!om_text)
     {
         AXIS2_FREE(env->allocator, *node);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Insufficient memory to create om text");
         return NULL;
     }
 
-    om_text->mime_type = NULL;
-    om_text->optimize = AXIS2_FALSE;
-    om_text->localname = "Include";
-    om_text->is_binary = AXIS2_FALSE;
-    om_text->content_id = NULL;
-    om_text->om_attribute = NULL;
-    om_text->value = NULL;
-    om_text->ns = NULL;
-    om_text->data_handler = NULL;
-    om_text->mime_type = NULL;
-
+    memset(om_text, 0, sizeof(axiom_text_t));
     if(value)
     {
         om_text->value = axutil_string_clone(value, env);
@@ -588,7 +569,6 @@ axiom_text_create_str(
 
     axiom_node_set_data_element((*node), env, om_text);
     axiom_node_set_node_type((*node), env, AXIOM_TEXT);
-    axiom_node_set_complete((*node), env, AXIS2_FALSE);
 
     if(parent && axiom_node_get_node_type(parent, env) == AXIOM_ELEMENT)
     {

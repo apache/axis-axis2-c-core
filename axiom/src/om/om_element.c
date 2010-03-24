@@ -1551,7 +1551,6 @@ axiom_element_create_str(
     {
         axiom_node_add_child(parent, env, (*node));
     }
-    axiom_node_set_complete((*node), env, AXIS2_FALSE);
     axiom_node_set_node_type((*node), env, AXIOM_ELEMENT);
     axiom_node_set_data_element((*node), env, element);
 

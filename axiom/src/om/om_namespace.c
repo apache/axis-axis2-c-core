@@ -301,7 +301,6 @@ axiom_namespace_create_str(
 {
     axiom_namespace_t *om_namespace = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     if(!uri)
     {
         uri = axutil_string_create(env, "");
