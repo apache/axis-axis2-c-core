@@ -135,11 +135,11 @@ cygwin)
   ;;
 darwin*)
   darwin=yes
-  if test x"$GCC" = xyes
-  then
-    CFLAGS="$CFLAGS -Wno-long-double"
-    CXXFLAGS="$CXXFLAGS -Wno-long-double"
-  fi
+dnl   if test x"$GCC" = xyes
+dnl  then
+dnl    CFLAGS="$CFLAGS -Wno-long-double"
+dnl    CXXFLAGS="$CXXFLAGS -Wno-long-double"
+dnl  fi
   ;;
 solaris*)
   solaris=yes
