@@ -16,8 +16,8 @@
  */
 
 #include "axiom_node_internal.h"
+#include "axiom_element_internal.h"
 #include "axiom_stax_builder_internal.h"
-#include <axiom_element.h>
 #include <axiom_text.h>
 #include <axiom_data_source.h>
 #include <axiom_comment.h>
@@ -332,10 +332,9 @@ axiom_node_detach(
     axiom_node_t * om_node,
     const axutil_env_t * env)
 {
-    axutil_hash_t *inscope_namespaces = NULL;
+    axutil_hash_t *namespaces = NULL;
     axiom_element_t *om_element = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     if(!om_node)
     {
         return NULL;
@@ -345,7 +344,7 @@ axiom_node_detach(
      from its parent nodes. */
     if((om_node->node_type == AXIOM_ELEMENT) && (om_element = om_node->data_element))
     {
-        inscope_namespaces = axiom_element_gather_parent_namespaces(om_element, env, om_node);
+        namespaces = axiom_element_gather_parent_namespaces(om_element, env, om_node);
     }
 
     /* Detach this node from its parent. */
@@ -353,15 +352,14 @@ axiom_node_detach(
 
     /* If this is an element node, ensure that any namespaces available to it or its
      children remain available after the detach. */
-    if(om_node && inscope_namespaces)
+    if(om_node && namespaces)
     {
-        axiom_element_redeclare_parent_namespaces(om_element, env, om_node, om_element,
-            inscope_namespaces);
+        axiom_element_redeclare_parent_namespaces(om_element, env, om_node, namespaces);
     }
 
-    if(inscope_namespaces)
+    if(namespaces)
     {
-        axutil_hash_free(inscope_namespaces, env);
+        axutil_hash_free(namespaces, env);
     }
 
     return om_node;

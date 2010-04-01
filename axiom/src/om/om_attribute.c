@@ -201,11 +201,9 @@ axiom_attribute_get_localname(
     axiom_attribute_t * attribute,
     const axutil_env_t * env)
 {
-    if(attribute->localname)
-    {
-        return (axis2_char_t *)axutil_string_get_buffer(attribute->localname, env);
-    }
-    return NULL;
+    AXIS2_ASSERT(attribute);
+    AXIS2_ASSERT(attribute->localname);
+    return (axis2_char_t *)axutil_string_get_buffer(attribute->localname, env);
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL

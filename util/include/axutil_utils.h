@@ -24,6 +24,7 @@
 #include <axutil_env.h>
 #include <axutil_date_time.h>
 #include <axutil_base64_binary.h>
+#include <assert.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -42,6 +43,9 @@ extern "C"
 
 #define AXUTIL_LOG_FILE_SIZE 1024 * 1024 * 32
 #define AXUTIL_LOG_FILE_NAME_SIZE 512
+
+
+#define AXIS2_ASSERT assert
 
     /** This macro is called to check whether structure on which function is called
      *  is NULL and to check whether the environment structure passed is valid.

@@ -16,7 +16,7 @@
  */
 
 #include <axiom_stax_builder.h>
-#include <axiom_element.h>
+#include "axiom_element_internal.h"
 #include <axiom_text.h>
 #include <axiom_processing_instruction.h>
 #include <axiom_comment.h>
@@ -376,7 +376,7 @@ axiom_stax_builder_process_namespaces(
                 return AXIS2_FAILURE;
             }
 
-            status = axiom_element_declare_namespace_assume_param_ownership(om_ele, env, om_ns);
+            status = axiom_element_declare_namespace(om_ele, env, node, om_ns);
             prefix = axiom_namespace_get_prefix(om_ns, env);
             axutil_hash_set(om_builder->declared_namespaces, prefix, AXIS2_HASH_KEY_STRING, om_ns);
         }
@@ -397,7 +397,7 @@ axiom_stax_builder_process_namespaces(
 
         if(om_ns)
         {
-            axiom_element_set_namespace_assume_param_ownership(om_ele, env, om_ns);
+            axiom_element_set_namespace(om_ele, env, om_ns, node);
         }
         else
         {
@@ -422,7 +422,6 @@ axiom_stax_builder_create_om_element(
     axiom_node_t *element_node = NULL;
     axiom_element_t *om_ele = NULL;
     axis2_char_t *temp_localname = NULL;
-    axutil_string_t *temp_localname_str = NULL;
     axiom_node_t *parent = NULL;
 
     temp_localname = axiom_xml_reader_get_name(om_builder->parser, env);
@@ -432,13 +431,6 @@ axiom_stax_builder_create_om_element(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot find name of the element");
         return NULL;
     }
-
-#ifdef AXIS2_LIBXML2_ENABLED
-    temp_localname_str = axutil_string_create(env, temp_localname);
-    axiom_xml_reader_xml_free(om_builder->parser, env, temp_localname);
-#else
-    temp_localname_str = axutil_string_create_assume_ownership(env, &temp_localname);
-#endif
 
     om_builder->element_level++;
     if(om_builder->lastnode)
@@ -455,8 +447,8 @@ axiom_stax_builder_create_om_element(
         }
     }
 
-    om_ele = axiom_element_create_str(env, parent, temp_localname_str, NULL, &element_node);
-    axutil_string_free(temp_localname_str, env);
+    om_ele = axiom_element_create(env, parent, temp_localname, NULL, &element_node);
+    axiom_xml_reader_xml_free(om_builder->parser, env, temp_localname);
     if((!om_ele) || (!element_node))
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create axiom element");
