@@ -775,8 +775,7 @@ axis2_http_worker_process_request(
                 url_ext_form);
 
         }
-        if(url_ext_form)
-            AXIS2_FREE(env->allocator, url_ext_form);
+        
         if(AXIS2_FAILURE == status && (is_put || axis2_msg_ctx_get_doing_rest(msg_ctx, env)))
         {
             /* Failure Occur while processing REST */
@@ -1104,6 +1103,11 @@ axis2_http_worker_process_request(
         request_handled = AXIS2_TRUE;
         status = AXIS2_TRUE;
     }
+
+	if(url_ext_form)
+	{
+		AXIS2_FREE(env->allocator, url_ext_form);
+	}
 
     op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx)
@@ -1807,6 +1811,11 @@ axis2_http_worker_process_request(
         }
 
     } /* Done freeing message contexts */
+	else
+	{
+		/* cases like HEAD, WSDL */
+		axis2_msg_ctx_free(msg_ctx, env);
+	}
 
     msg_ctx = NULL;
     axutil_url_free(request_url, env);
