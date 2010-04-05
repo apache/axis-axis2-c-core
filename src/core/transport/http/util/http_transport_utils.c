@@ -2458,9 +2458,17 @@ axis2_http_transport_utils_dispatch_and_verify(
 
     if(axis2_msg_ctx_get_doing_rest(msg_ctx, env))
     {
+		axis2_handler_desc_t *desc;
         rest_disp = axis2_rest_disp_create(env);
         handler = axis2_disp_get_base(rest_disp, env);
         axis2_handler_invoke(handler, env, msg_ctx);
+		axis2_disp_free(rest_disp, env);
+		desc = axis2_handler_get_handler_desc(handler, env);
+		axis2_handler_free(handler, env);
+		if(desc)
+		{
+			axis2_handler_desc_free(desc, env);
+		}
 
         if(!axis2_msg_ctx_get_svc(msg_ctx, env) || !axis2_msg_ctx_get_op(msg_ctx, env))
         {

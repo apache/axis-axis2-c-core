@@ -189,6 +189,12 @@ axiom_node_free_detached_subtree(
         }
     }
 
+	/* if the owner of the builder, then free the builder */
+    if(om_node->own_builder)
+    {
+        axiom_stax_builder_free_internal(om_node->builder, env);
+    }
+
     AXIS2_FREE(env->allocator, om_node);
 }
 
@@ -209,12 +215,6 @@ axiom_node_free_tree(
 
     /* Detach this node before freeing it and its subtree. */
     axiom_node_detach_without_namespaces(om_node, env);
-
-    /* if the owner of the builder, then free the builder */
-    if(om_node->own_builder)
-    {
-        axiom_stax_builder_free_internal(om_node->builder, env);
-    }
 
     /* Free this node and its subtree */
     axiom_node_free_detached_subtree(om_node, env);

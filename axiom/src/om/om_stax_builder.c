@@ -153,6 +153,10 @@ axiom_stax_builder_free_self(
     {
         axiom_node_assume_builder_ownership(om_builder->root_node, env);
     }
+	else
+	{
+		axiom_stax_builder_free_internal(om_builder, env);
+	}
 }
 
 /**
