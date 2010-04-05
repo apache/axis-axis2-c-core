@@ -2464,7 +2464,6 @@ axis2_http_transport_utils_dispatch_and_verify(
         axis2_handler_invoke(handler, env, msg_ctx);
 		axis2_disp_free(rest_disp, env);
 		desc = axis2_handler_get_handler_desc(handler, env);
-		axis2_handler_free(handler, env);
 		if(desc)
 		{
 			axis2_handler_desc_free(desc, env);
