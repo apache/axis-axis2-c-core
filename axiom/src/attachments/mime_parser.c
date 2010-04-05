@@ -297,6 +297,11 @@ axiom_mime_parser_free(
         mime_parser->len_array = NULL;
     }
 
+	if(mime_parser->mime_boundary)
+	{
+		AXIS2_FREE(env->allocator, mime_parser->mime_boundary);
+	}
+
     if(mime_parser)
     {
         AXIS2_FREE(env->allocator, mime_parser);

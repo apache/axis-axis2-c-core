@@ -433,6 +433,7 @@ axiom_soap_envelope_create_default_soap_envelope(
             return NULL;
         }
         soap_envelope = axiom_soap_envelope_create(env, om_ns);
+		axiom_namespace_free(om_ns, env);
 
         soap_header = axiom_soap_header_create_with_parent(env, soap_envelope);
         soap_body = axiom_soap_body_create_with_parent(env, soap_envelope);
@@ -449,6 +450,7 @@ axiom_soap_envelope_create_default_soap_envelope(
             return NULL;
         }
         soap_envelope = axiom_soap_envelope_create(env, om_ns);
+		axiom_namespace_free(om_ns, env);
 
         soap_header = axiom_soap_header_create_with_parent(env, soap_envelope);
         soap_body = axiom_soap_body_create_with_parent(env, soap_envelope);

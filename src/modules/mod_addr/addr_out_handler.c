@@ -325,6 +325,8 @@ axis2_addr_out_handler_invoke(
             }
         }/* if(epr_to) */
 
+		axiom_namespace_free(addressing_namespace, env);
+
         action = axis2_msg_info_headers_get_action(msg_info_headers, env);
         if(action && *action)
         {
@@ -599,6 +601,7 @@ axis2_addr_out_handler_add_to_soap_header(
         addr_ns_obj = axiom_namespace_create(env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
 
         address_ele = axiom_element_create(env, hb_node, EPR_ADDRESS, addr_ns_obj, &address_node);
+		axiom_namespace_free(addr_ns_obj, env);
         if(address_ele)
         {
             axiom_namespace_t *dec_ns = NULL;
@@ -623,6 +626,7 @@ axis2_addr_out_handler_add_to_soap_header(
 
         reference_ele = axiom_element_create(env, header_block_node, EPR_REFERENCE_PARAMETERS,
             addr_ns_obj, &reference_node);
+		axiom_namespace_free(addr_ns_obj, env);
 
         ref_attribute_list = axis2_endpoint_ref_get_ref_attribute_list(endpoint_ref, env);
         if(ref_attribute_list)
@@ -667,6 +671,7 @@ axis2_addr_out_handler_add_to_soap_header(
 
             reference_ele = axiom_element_create(env, header_block_node, AXIS2_WSA_METADATA,
                 addr_ns_obj, &reference_node);
+			axiom_namespace_free(addr_ns_obj, env);
         }
 
         meta_attribute_list = axis2_endpoint_ref_get_metadata_attribute_list(endpoint_ref, env);

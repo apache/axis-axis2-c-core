@@ -176,15 +176,12 @@ build_om_payload_for_echo_svc(
     axiom_namespace_t *ns1 = NULL;
     axis2_char_t *om_str = NULL;
 
-    ns1 =
-       axiom_namespace_create(env, "http://ws.apache.org/axis2/services/echo",
-                               "ns1");
-    echo_om_ele =
-        axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
-    text_om_ele =
-        axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
+    ns1 = axiom_namespace_create(env, "http://ws.apache.org/axis2/services/echo", "ns1");
+    echo_om_ele = axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
+    text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
     axiom_element_set_text(text_om_ele, env, "Hello World!", text_om_node);
     om_str = axiom_node_to_string(echo_om_node, env);
+	axiom_namespace_free(ns1, env);
 
     if (om_str)
     {

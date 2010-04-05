@@ -126,6 +126,7 @@ AXIS2_EXTERN void AXIS2_CALL
 axutil_free_thread_env(
     struct axutil_env *thread_env)
 {
+	axutil_allocator_t * allocator;
     if(!thread_env)
     {
         return;
@@ -143,5 +144,7 @@ axutil_free_thread_env(
     {
         AXIS2_ERROR_FREE(thread_env->error);
     }
-    AXIS2_FREE(thread_env->allocator, thread_env);
+	allocator = thread_env->allocator;
+    AXIS2_FREE(allocator, thread_env);
+	axutil_allocator_free(allocator);
 }

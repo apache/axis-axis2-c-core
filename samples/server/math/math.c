@@ -132,10 +132,10 @@ axis2_math_add(
         result = param1 + param2;
         sprintf(result_str, "%ld", result);
 
-        ns1 = axiom_namespace_create(env,
-                                     "http://axis2/test/namespace1", "ns1");
+        ns1 = axiom_namespace_create(env, "http://axis2/test/namespace1", "ns1");
         ele1 = axiom_element_create(env, NULL, "result", ns1, &node1);
         text1 = axiom_text_create(env, node1, result_str, &node2);
+		axiom_namespace_free(ns1, env);
 
         return node1;
     }
@@ -261,11 +261,10 @@ axis2_math_sub(
         result = param1 - param2;
         sprintf(result_str, "%ld", result);
 
-        ns1 = axiom_namespace_create(env,
-                                     "http://axis2/test/namespace1", "ns1");
+        ns1 = axiom_namespace_create(env, "http://axis2/test/namespace1", "ns1");
         ele1 = axiom_element_create(env, NULL, "result", ns1, &node1);
         text1 = axiom_text_create(env, node1, result_str, &node2);
-
+		axiom_namespace_free(ns1, env);
         return node1;
     }
 
@@ -390,10 +389,10 @@ axis2_math_mul(
         result = param1 * param2;
         sprintf(result_str, "%ld", result);
 
-        ns1 = axiom_namespace_create(env,
-                                     "http://axis2/test/namespace1", "ns1");
+        ns1 = axiom_namespace_create(env, "http://axis2/test/namespace1", "ns1");
         ele1 = axiom_element_create(env, NULL, "result", ns1, &node1);
         text1 = axiom_text_create(env, node1, result_str, &node2);
+		axiom_namespace_free(ns1, env);
 
         return node1;
     }
@@ -521,10 +520,10 @@ axis2_math_div(
         result = param1 / param2;
         sprintf(result_str, "%ld", result);
 
-        ns1 = axiom_namespace_create(env,
-                                     "http://axis2/test/namespace1", "ns1");
+        ns1 = axiom_namespace_create(env,"http://axis2/test/namespace1", "ns1");
         ele1 = axiom_element_create(env, NULL, "result", ns1, &node1);
         text1 = axiom_text_create(env, node1, result_str, &node2);
+		axiom_namespace_free(ns1, env);
 
         return node1;
     }

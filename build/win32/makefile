@@ -1160,7 +1160,7 @@ AXIS2_SAMPLES_BIN = $(AXIS2_BINDIR)\samples\bin
 
 $(AXIS2_SAMPLES_BIN)\math.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\math\*.c /Fo$(AXIS2_INTDIR_CLI)\math\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\math\*.obj $(AXUTIL).lib $(AXIOM).lib \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR_CLI)\math\*.obj $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\math.exe
 	-@$(_VC_MANIFEST_EMBED_EXE)
 
@@ -1168,7 +1168,7 @@ axis2_client_math: $(AXIS2_SAMPLES_BIN)\math.exe
 
 $(AXIS2_SAMPLES_BIN)\echo.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\echo\echo.c /Fo$(AXIS2_INTDIR_CLI)\echo\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\echo\*.obj $(AXUTIL).lib $(AXIOM).lib \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR_CLI)\echo\*.obj $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\echo.exe 
 	-@$(_VC_MANIFEST_EMBED_EXE)
 
@@ -1176,7 +1176,7 @@ axis2_client_echo: $(AXIS2_SAMPLES_BIN)\echo.exe
 
 $(AXIS2_SAMPLES_BIN)\google.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\google\*.c /Fo$(AXIS2_INTDIR_CLI)\gslc\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\gslc\*.obj $(AXUTIL).lib $(AXIOM).lib \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR_CLI)\gslc\*.obj $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\google.exe
 	-@$(_VC_MANIFEST_EMBED_EXE)
 
@@ -1184,7 +1184,7 @@ axis2_client_google_spell : $(AXIS2_SAMPLES_BIN)\google.exe
 
 $(AXIS2_SAMPLES_BIN)\yahoo.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\yahoo\*.c /Fo$(AXIS2_INTDIR_CLI)\yahoo\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\yahoo\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR_CLI)\yahoo\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
 	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\yahoo.exe
 	-@$(_VC_MANIFEST_EMBED_EXE)
 
@@ -1192,7 +1192,7 @@ axis2_client_yahoo: $(AXIS2_SAMPLES_BIN)\yahoo.exe
 
 $(AXIS2_SAMPLES_BIN)\notify.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\notify\*.c /Fo$(AXIS2_INTDIR_CLI)\notify\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\notify\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR_CLI)\notify\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
 	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\notify.exe
 	-@$(_VC_MANIFEST_EMBED_EXE)
 
@@ -1201,7 +1201,7 @@ axis2_client_notify: $(AXIS2_SAMPLES_BIN)\notify.exe
 
 $(AXIS2_SAMPLES_BIN)\mtom.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\mtom\*.c /Fo$(AXIS2_INTDIR_CLI)\mtom\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\mtom\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR_CLI)\mtom\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
 	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\mtom.exe
 	-@$(_VC_MANIFEST_EMBED_EXE)
 
@@ -1212,7 +1212,7 @@ axis2_client_mtom: $(AXIS2_SAMPLES_BIN)\mtom.exe
 
 $(AXIS2_SAMPLES_BIN)\mtom_callback.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\mtom_callback\*.c /Fo$(AXIS2_INTDIR_CLI)\mtom_callback\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\mtom_callback\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR_CLI)\mtom_callback\*.obj $(AXUTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
 	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\mtom_callback.exe
 	-@$(_VC_MANIFEST_EMBED_EXE)
 
@@ -1231,14 +1231,14 @@ axis2_client_userguide_int:
 $(AXIS2_SAMPLES_BIN)\echo_blocking.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking\*.obj $(AXUTIL).lib \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR)\userguide\echo_blocking\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\echo_blocking.exe
 	-@$(_VC_MANIFEST_EMBED_EXE)
 
 $(AXIS2_SAMPLES_BIN)\echo_non_blocking.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_non_blocking.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_non_blocking\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_non_blocking\*.obj $(AXUTIL).lib \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR)\userguide\echo_non_blocking\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
 	/OUT:$(AXIS2_SAMPLES_BIN)\echo_non_blocking.exe
 	-@$(_VC_MANIFEST_EMBED_EXE)
@@ -1246,7 +1246,7 @@ $(AXIS2_SAMPLES_BIN)\echo_non_blocking.exe :
 $(AXIS2_SAMPLES_BIN)\echo_blocking_addr.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_addr.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking_addr\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking_addr\*.obj $(AXUTIL).lib \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR)\userguide\echo_blocking_addr\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
 	/OUT:$(AXIS2_SAMPLES_BIN)\echo_blocking_addr.exe
         -@$(_VC_MANIFEST_EMBED_EXE)
@@ -1254,7 +1254,7 @@ $(AXIS2_SAMPLES_BIN)\echo_blocking_addr.exe :
 $(AXIS2_SAMPLES_BIN)\echo_rest.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_rest.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_rest\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_rest\*.obj $(AXUTIL).lib \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR)\userguide\echo_rest\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
 	/OUT:$(AXIS2_SAMPLES_BIN)\echo_rest.exe
         -@$(_VC_MANIFEST_EMBED_EXE)
@@ -1262,14 +1262,14 @@ $(AXIS2_SAMPLES_BIN)\echo_rest.exe :
 $(AXIS2_SAMPLES_BIN)\echo_blocking_dual.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_dual.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking_dual\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking_dual\*.obj $(AXUTIL).lib \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR)\userguide\echo_blocking_dual\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\echo_blocking_dual.exe
 	-@$(_VC_MANIFEST_EMBED_EXE)
 
 $(AXIS2_SAMPLES_BIN)\echo_non_blocking_dual.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_non_blocking_dual.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_non_blocking_dual\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_non_blocking_dual\*.obj $(AXUTIL).lib \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR)\userguide\echo_non_blocking_dual\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
 	/OUT:$(AXIS2_SAMPLES_BIN)\echo_non_blocking_dual.exe
         -@$(_VC_MANIFEST_EMBED_EXE)
@@ -1277,7 +1277,7 @@ $(AXIS2_SAMPLES_BIN)\echo_non_blocking_dual.exe :
 $(AXIS2_SAMPLES_BIN)\echo_blocking_soap11.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_soap11.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking_soap11\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking_soap11\*.obj $(AXUTIL).lib \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR)\userguide\echo_blocking_soap11\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
 	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\echo_blocking_soap11.exe
         -@$(_VC_MANIFEST_EMBED_EXE)
@@ -1286,7 +1286,7 @@ $(AXIS2_SAMPLES_BIN)\echo_blocking_soap11.exe :
 $(AXIS2_SAMPLES_BIN)\echo_blocking_auth.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_auth.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking_auth\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking_auth\*.obj $(AXUTIL).lib \
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR)\userguide\echo_blocking_auth\*.obj $(AXUTIL).lib \
 	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
 	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\echo_blocking_auth.exe
         -@$(_VC_MANIFEST_EMBED_EXE)
@@ -1310,7 +1310,7 @@ $(MTOM_SENDING_CALLBACK_INTDIR) :
 $(MTOM_SENDING_CALLBACK_OBJS) : $(MTOM_SENDING_CALLBACK_INTDIR)
 
 $(AXIS2_SAMPLES_LIB)\mtom_sending_callback\mtom_sending_callback.dll : $(MTOM_SENDING_CALLBACK_OBJS)
-	$(LD) $(LDFLAGS) $(MTOM_SENDING_CALLBACK_OBJS) $(AXUTIL).lib $(AXIOM).lib \
+	$(LD) $(LDFLAGS) /FIXED:No $(MTOM_SENDING_CALLBACK_OBJS) $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_SAMPLES_LIB)\mtom_sending_callback\mtom_sending_callback.dll  
 	-@$(_VC_MANIFEST_EMBED_DLL)
 
@@ -1331,7 +1331,7 @@ $(MTOM_CACHING_CALLBACK_INTDIR) :
 $(MTOM_CACHING_CALLBACK_OBJS) : $(MTOM_CACHING_CALLBACK_INTDIR)
 
 $(AXIS2_SAMPLES_LIB)\mtom_caching_callback\mtom_caching_callback.dll : $(MTOM_CACHING_CALLBACK_OBJS)
-	$(LD) $(LDFLAGS) $(MTOM_CACHING_CALLBACK_OBJS) $(AXUTIL).lib $(AXIOM).lib \
+	$(LD) $(LDFLAGS) /FIXED:No $(MTOM_CACHING_CALLBACK_OBJS) $(AXUTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_SAMPLES_LIB)\mtom_caching_callback\mtom_caching_callback.dll  
 	-@$(_VC_MANIFEST_EMBED_DLL)
 

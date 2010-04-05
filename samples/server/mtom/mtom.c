@@ -245,14 +245,10 @@ axiom_node_t *build_response2(
     axiom_node_t *text_node = NULL;
     axiom_namespace_t *ns1 = NULL;
 
-    ns1 =
-        axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samples",
-                               "ns1");
-    mtom_om_ele =
-        axiom_element_create(env, NULL, "response", ns1, &mtom_om_node);
-
-    axiom_text_create_with_data_handler(env, mtom_om_node, data_handler,
-        &text_node);
+    ns1 = axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samples","ns1");
+    mtom_om_ele = axiom_element_create(env, NULL, "response", ns1, &mtom_om_node);
+    axiom_text_create_with_data_handler(env, mtom_om_node, data_handler, &text_node);
+	axiom_namespace_free(ns1, env);
 
     return mtom_om_node;
 }
