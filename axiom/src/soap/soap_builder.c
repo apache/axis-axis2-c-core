@@ -151,6 +151,7 @@ axiom_soap_builder_create(
     soap_builder->soap_version = AXIOM_SOAP12;
     soap_builder->last_node_status = -1;
     soap_builder->om_builder = stax_builder;
+    soap_builder->done = AXIS2_FALSE;
 
     status = axiom_soap_builder_identify_soap_version(soap_builder, env, soap_version);
     if(status != AXIS2_SUCCESS)

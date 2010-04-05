@@ -59,7 +59,7 @@ axis2_notify_notify(
         {
             axis2_char_t *text_str =
                 (axis2_char_t *) axiom_text_get_value(text, env);
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Notification received :  %s", text_str);
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Notification received :  %s", text_str);
         }
     }
     else

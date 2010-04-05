@@ -38,8 +38,6 @@ axiom_children_qname_iterator_create(
 {
     axiom_children_qname_iterator_t *iterator = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK(env->error, current_child, NULL);
 
     iterator = (axiom_children_qname_iterator_t *)AXIS2_MALLOC(env->allocator,
         sizeof(axiom_children_qname_iterator_t));

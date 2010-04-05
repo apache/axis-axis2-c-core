@@ -144,21 +144,26 @@ axiom_soap_body_has_fault(
     }
     else
     {
-        while(!axiom_node_is_complete(soap_body->om_ele_node, env))
+        /* This soap body could have been built programatically. Do the following only if soap
+         * body is created from soap_builder */
+        if(soap_body->soap_builder)
         {
-            if(axiom_soap_builder_next(soap_body->soap_builder, env) != AXIS2_SUCCESS)
+            while(!axiom_node_is_complete(soap_body->om_ele_node, env))
             {
-                /* problem in building the SOAP body. Note that has_fault is about soap fault,
-                 * not about problem in building the node. So, even though there is a problem
-                 * building the body, has_fault should be AXIS2_FALSE
-                 */
-                break;
-            }
+                if(axiom_soap_builder_next(soap_body->soap_builder, env) != AXIS2_SUCCESS)
+                {
+                    /* problem in building the SOAP body. Note that has_fault is about soap fault,
+                     * not about problem in building the node. So, even though there is a problem
+                     * building the body, has_fault should be AXIS2_FALSE
+                     */
+                    break;
+                }
 
-            if(soap_body->soap_fault)
-            {
-                soap_body->has_fault = AXIS2_TRUE;
-                break;
+                if(soap_body->soap_fault)
+                {
+                    soap_body->has_fault = AXIS2_TRUE;
+                    break;
+                }
             }
         }
     }
