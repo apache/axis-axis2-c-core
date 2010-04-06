@@ -148,17 +148,17 @@ axis2_http_sender_connection_map_create(
 
 static void
 axis2_http_sender_connection_map_remove(
-        axutil_hash_t *connection_map,
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx,
-        axis2_http_client_t *http_client);
+    axutil_hash_t *connection_map,
+    const axutil_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    axis2_http_client_t *http_client);
 
 static void
 axis2_http_sender_connection_map_add(
-        axutil_hash_t *connection_map,
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx,
-        axis2_http_client_t *http_client);
+    axis2_http_sender_t * sender,
+    axutil_hash_t *connection_map,
+    const axutil_env_t *env,
+    axis2_msg_ctx_t *msg_ctx);
 
 static axis2_http_client_t *
 axis2_http_sender_connection_map_get(
@@ -209,9 +209,11 @@ axis2_http_sender_free(
         AXIS2_FREE(env->allocator, sender->http_version);
     }
 
-    /* Do not free this here since it will be required in later processing
-     * of the response soap message
-     */
+    if(!sender->keep_alive)
+    {
+
+        axis2_http_client_free(sender->client, env);
+    }
     sender->client = NULL;
     AXIS2_FREE(env->allocator, sender);
     return;
@@ -388,7 +390,12 @@ axis2_http_sender_send(
     /* Because keep alive is not still supported at callback receiver we check
      * for client side
      */
-    if(sender->keep_alive && !axis2_msg_ctx_get_server_side(msg_ctx, env))
+    if(axis2_msg_ctx_get_server_side(msg_ctx, env))
+    {
+        sender->keep_alive = AXIS2_FALSE;
+    }
+
+    if(sender->keep_alive)
     {
         axutil_property_t *connection_map_property = NULL;
 
@@ -1479,8 +1486,7 @@ axis2_http_sender_get_header_info(
                 {
                     if(connection_map)
                     {
-                        axis2_http_sender_connection_map_add(connection_map, env, 
-                            msg_ctx, sender->client);    
+                        axis2_http_sender_connection_map_add(sender, connection_map, env, msg_ctx);
                     }
                 } 
             } /* End if name is connection */
@@ -1521,8 +1527,7 @@ axis2_http_sender_get_header_info(
              */
             if(connection_map)
             {
-                axis2_http_sender_connection_map_add(connection_map, env, msg_ctx, 
-                        sender->client);
+                axis2_http_sender_connection_map_add(sender, connection_map, env, msg_ctx);
             }
         } /* End if http version 1.1 */
     } /* End if !connection_header_present */
@@ -3236,13 +3241,16 @@ axis2_http_sender_connection_map_remove(
 
 static void
 axis2_http_sender_connection_map_add(
+    axis2_http_sender_t *sender,
         axutil_hash_t *connection_map,
         const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx,
-        axis2_http_client_t *http_client)
+        axis2_msg_ctx_t *msg_ctx)
 {
     axutil_property_t *property = NULL;
     axis2_endpoint_ref_t *endpoint = NULL;
+    axis2_http_client_t *http_client = sender->client;
+
+    sender->keep_alive = AXIS2_FALSE;
     /** 
      * Put the http client into message context. Is this neccessary?
      */
@@ -3265,6 +3273,7 @@ axis2_http_sender_connection_map_add(
                 {
                     axutil_hash_set(connection_map, axutil_strdup(env, server), 
                         AXIS2_HASH_KEY_STRING, http_client);
+                    sender->keep_alive = AXIS2_TRUE;
                 }
                 axutil_url_free(url, env);
             }
