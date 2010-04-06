@@ -117,9 +117,9 @@ axis2_status_t build_and_serialize_om(axutil_env_t *env)
     child = axiom_node_get_last_child(node, env); 
     axiom_util_new_document(env,uri1);
     printf("\nmy_ele = ");
-    printf("%s\n ",axiom_element_to_string(my_ele,env,child));
+    printf("%s\n ",axiom_node_to_string(child, env));
     first_element =  axiom_util_get_first_child_element(my_ele,env,child,&child);
-    printf("The first element = %s\n",axiom_element_to_string(first_element,env,node));
+    printf("The first element = %s\n",axiom_node_to_string(node, env));
     last_element = axiom_util_get_last_child_element(my_ele,env,root_node,&child);
     localname = axiom_element_get_localname(my_ele,env); 
     localname_last_child = axiom_util_get_last_child_element_with_localname(my_ele,env,root_node,localname,&child);       
@@ -141,7 +141,7 @@ axis2_status_t build_and_serialize_om(axutil_env_t *env)
     axiom_util_get_child_node_text(node,env);
     node_namespace_uri = axiom_util_get_node_namespace_uri(node,env);
     child_element =  axiom_util_get_child_elements(my_ele,env,node);
-    printf("%s\n",axiom_element_to_string(localname_attr_next_sibling,env,node));
+    printf("%s\n",axiom_node_to_string(node, env));
     printf("%s\n","test is SUCCESS");
     return AXIS2_SUCCESS;
 }
