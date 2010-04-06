@@ -130,6 +130,33 @@ axiom_document_build_all(
     return document->root_element;
 }
 
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+axiom_document_build_next(
+    axiom_document_t * document,
+    const axutil_env_t * env)
+{
+    axiom_node_t *return_node = NULL;
+    axiom_node_t *last_node = axiom_stax_builder_get_lastnode(document->builder, env);
+    while(document->root_element && !axiom_node_is_complete(document->root_element, env))
+    {
+        int token = axiom_stax_builder_next_with_token(document->builder, env);
+        if(token == -1)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "failed to create next node");
+            return_node = NULL;
+            break;
+        }
+        return_node = axiom_stax_builder_get_lastnode(document->builder, env);
+        if(last_node != return_node)
+        {
+            /* this is a new node created */
+            break;
+        }
+    }
+
+    return return_node;
+}
+
 #if 0
 AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
 axiom_document_get_builder(

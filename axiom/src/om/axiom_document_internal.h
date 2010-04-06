@@ -60,16 +60,6 @@ extern "C"
         struct axiom_document *document,
         const axutil_env_t * env);
 
-    /** Builds the next node if the builder is not finished with input xml stream
-      * @param document document whose next node is to be built. cannot be NULL
-      * @param env Environment. MUST NOT be NULL.
-      * @return pointer to the next node. NULL on error.
-      */
-    axiom_node_t *AXIS2_CALL
-    axiom_document_build_next(
-        struct axiom_document *document,
-        const axutil_env_t * env);
-
     /**
       * set the root element of the document. IF a root node is already exist,it is freed
       * before setting to root element
@@ -119,6 +109,8 @@ extern "C"
         struct axiom_document *document,
         const axutil_env_t * env,
         axiom_output_t * om_output);
+
+
 #endif
 
 #ifdef __cplusplus

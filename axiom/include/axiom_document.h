@@ -70,6 +70,16 @@ extern "C"
         axiom_document_t *document,
         const axutil_env_t * env);
 
+    /** Builds the next node if the builder is not finished with input xml stream
+     * @param document document whose next node is to be built. cannot be NULL
+     * @param env Environment. MUST NOT be NULL.
+     * @return pointer to the next node. NULL on error.
+     */
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_document_build_next(
+        struct axiom_document *document,
+        const axutil_env_t * env);
+
     /** @} */
 
 #ifdef __cplusplus
