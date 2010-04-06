@@ -1139,8 +1139,16 @@ axiom_node_get_next_sibling(
         return NULL;
     }
 
-    while(!(om_node->next_sibling) && om_node->parent && om_node->builder
-        && !(axiom_node_is_complete(om_node->parent, env)))
+    /* we have to build the tree using stax builder if
+     * (1) om_node's next_sibling is not given (if available, we can just return that)
+     * (2) om_node is having a parent (otherwise, no concept of sibling)
+     * (3) om_node is having a stax builder (otherwise, it is a programatically built node)
+     * (4) parent is having a stax builder (otherwise, om_node is the only child,
+     *          or sibling is programatically created)
+     * (5) parent is not yet fully built
+     */
+    while((!om_node->next_sibling) && om_node->parent && om_node->parent->builder
+        && om_node->builder && (!axiom_node_is_complete(om_node->parent, env)))
     {
         token = axiom_stax_builder_next_with_token(om_node->builder, env);
         if(token == -1)

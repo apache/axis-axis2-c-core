@@ -315,7 +315,10 @@ axiom_soap_builder_next(
     int current_event = AXIS2_MAX_EVENT;
     int status = AXIS2_SUCCESS;
 
-    if((!soap_builder) || (soap_builder->done) || (!soap_builder->om_builder))
+    AXIS2_ASSERT(soap_builder != NULL);
+    AXIS2_ASSERT(soap_builder->om_builder != NULL);
+
+    if(soap_builder->done)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Invalid soap builder");
         return AXIS2_FAILURE;
