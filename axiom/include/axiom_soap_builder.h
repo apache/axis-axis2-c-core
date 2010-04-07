@@ -245,7 +245,6 @@ extern "C"
         const axutil_env_t * env);
 
 
-
     /** @} */
 #ifdef __cplusplus
 }

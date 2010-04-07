@@ -25,6 +25,7 @@
 #include <axiom_doctype.h>
 #include "axiom_node_internal.h"
 #include "axiom_stax_builder_internal.h"
+#include <axiom_soap_builder_internal.h>
 #include "axiom_document_internal.h"
 
 struct axiom_stax_builder
@@ -49,6 +50,9 @@ struct axiom_stax_builder
 
     /** Indicate the  current element level. */
     int element_level;
+
+    /** reference to the soap builder, to build soap releated elements */
+    axiom_soap_builder_t *soap_builder;
 
     axutil_hash_t *declared_namespaces;
 };
@@ -104,6 +108,7 @@ axiom_stax_builder_create(
     om_builder->current_event = -1;
     om_builder->root_node = NULL;
     om_builder->element_level = 0;
+    om_builder->soap_builder = NULL;
     return om_builder;
 }
 
@@ -742,6 +747,20 @@ axiom_stax_builder_next_with_token(
         default:
             break;
     }
+
+    /* if stax builder is also a soap builder, build soap related elements */
+    if(om_builder->soap_builder &&
+        (token == AXIOM_XML_READER_START_ELEMENT || token == AXIOM_XML_READER_EMPTY_ELEMENT))
+    {
+        AXIS2_ASSERT(om_builder->lastnode != NULL);
+        if(axiom_soap_builder_construct_node(om_builder->soap_builder, env, om_builder->lastnode)
+            != AXIS2_SUCCESS)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occurred when building soap node");
+            om_builder->done = AXIS2_TRUE;
+            return -1;
+        }
+    }
     return token;
 }
 
@@ -813,6 +832,22 @@ axiom_stax_builder_set_element_level(
     om_builder->element_level = element_level;
 }
 
+void AXIS2_CALL
+axiom_stax_builder_set_soap_builder(
+    axiom_stax_builder_t *om_builder,
+    const axutil_env_t *env,
+    axiom_soap_builder_t *soap_builder)
+{
+    om_builder->soap_builder = soap_builder;
+}
+
+axiom_node_t *AXIS2_CALL
+axiom_stax_builder_get_root_node(
+    axiom_stax_builder_t *om_builder,
+    const axutil_env_t * env)
+{
+    return om_builder->root_node;
+}
 #if 0
 static axiom_node_t *
 axiom_stax_builder_create_om_doctype(

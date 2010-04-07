@@ -24,14 +24,9 @@
 #include "_axiom_soap_body.h"
 #include "_axiom_soap_header_block.h"
 #include <axiom_stax_builder_internal.h>
+#include "axiom_soap_builder_internal.h"
 #include "_axiom_soap_fault.h"
 #include <axutil_http_chunked_stream.h>
-
-static axis2_status_t
-axiom_soap_builder_construct_node(
-    axiom_soap_builder_t * soap_builder,
-    const axutil_env_t * env,
-    axiom_node_t * om_element_node);
 
 static axis2_status_t
 axiom_soap_builder_identify_soap_version(
@@ -151,6 +146,7 @@ axiom_soap_builder_create(
     soap_builder->soap_version = AXIOM_SOAP12;
     soap_builder->last_node_status = -1;
     soap_builder->om_builder = stax_builder;
+    axiom_stax_builder_set_soap_builder(stax_builder, env, soap_builder);
     soap_builder->done = AXIS2_FALSE;
 
     status = axiom_soap_builder_identify_soap_version(soap_builder, env, soap_version);
@@ -324,37 +320,8 @@ axiom_soap_builder_next(
         return AXIS2_FAILURE;
     }
 
-    /* Get the status of previous node before building next node. We need the previous state of the
-     * node to identify very first element, which is SOAP Envelope. If last_node_status is
-     * AXIS2_BUILDER_LAST_NODE_NULL, then it means next node is SOAP Envelope
-     */
-    if(axiom_stax_builder_get_lastnode(soap_builder->om_builder, env))
-    {
-        soap_builder->last_node_status = AXIS2_BUILDER_LAST_NODE_NOT_NULL;
-    }
-    else
-    {
-        soap_builder->last_node_status = AXIS2_BUILDER_LAST_NODE_NULL;
-    }
-
     current_event = axiom_stax_builder_next_with_token(soap_builder->om_builder, env);
-    if(current_event == AXIOM_XML_READER_START_ELEMENT
-        || current_event == AXIOM_XML_READER_EMPTY_ELEMENT)
-    {
-        axiom_node_t *current_node = axiom_stax_builder_get_lastnode(soap_builder->om_builder, env);
-        if(current_node)
-        {
-            status = axiom_soap_builder_construct_node(soap_builder, env, current_node);
-        }
-        else
-        {
-            /* there is an error. So, don't continue building it */
-            soap_builder->done = AXIS2_TRUE;
-            status = AXIS2_FAILURE;
-            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occurred when building node");
-        }
-    }
-    else if(current_event == -1)
+    if(current_event == -1)
     {
         /* there is an error. So, don't continue building it */
         soap_builder->done = AXIS2_TRUE;
@@ -381,7 +348,7 @@ axiom_soap_builder_get_document_element(
     return document_node;
 }
 
-static axis2_status_t
+axis2_status_t AXIS2_CALL
 axiom_soap_builder_construct_node(
     axiom_soap_builder_t * soap_builder,
     const axutil_env_t * env,
@@ -392,6 +359,18 @@ axiom_soap_builder_construct_node(
     int element_level = 0;
     int status = AXIS2_SUCCESS;
     axiom_node_t *parent = NULL;
+
+    /* Check whether current node is the very first element, which is SOAP Envelope.
+     * If last_node_status is AXIS2_BUILDER_LAST_NODE_NULL, then it means next node is SOAP Envelope
+     */
+    if(om_element_node == axiom_stax_builder_get_root_node(soap_builder->om_builder, env))
+    {
+        soap_builder->last_node_status = AXIS2_BUILDER_LAST_NODE_NULL;
+    }
+    else
+    {
+        soap_builder->last_node_status = AXIS2_BUILDER_LAST_NODE_NOT_NULL;
+    }
 
     /* get OM element struct from node */
     om_element = (axiom_element_t *)axiom_node_get_data_element(om_element_node, env);

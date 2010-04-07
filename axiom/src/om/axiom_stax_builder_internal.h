@@ -24,9 +24,8 @@
  * @{
  */
 
-/** @} */
-
 #include <axiom_stax_builder.h>
+#include <axiom_soap_builder.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -95,6 +94,17 @@ extern "C"
     int AXIS2_CALL
     axiom_stax_builder_next_with_token(
         struct axiom_stax_builder *builder,
+        const axutil_env_t * env);
+
+    void AXIS2_CALL
+    axiom_stax_builder_set_soap_builder(
+        axiom_stax_builder_t *om_builder,
+        const axutil_env_t *env,
+        axiom_soap_builder_t *soap_builder);
+
+    axiom_node_t *AXIS2_CALL
+    axiom_stax_builder_get_root_node(
+        axiom_stax_builder_t *om_builder,
         const axutil_env_t * env);
 
 

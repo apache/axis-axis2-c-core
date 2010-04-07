@@ -2258,16 +2258,7 @@ axis2_http_transport_utils_create_soap_msg(
             axiom_soap_builder_set_mime_body_parts(soap_builder, env, binary_data_map);
         }
 
-        if(soap_envelope)
-        {
-            /* hack to get around MTOM problem */
-            axiom_soap_body_t *soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
 
-            if(soap_body)
-            {
-                axiom_soap_body_has_fault(soap_body, env);
-            }
-        }
         if(stream)
         {
             axutil_stream_free(stream, env);

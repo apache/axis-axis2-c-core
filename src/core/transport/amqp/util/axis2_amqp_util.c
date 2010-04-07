@@ -264,18 +264,6 @@ axis2_amqp_util_get_soap_envelope(
     }
 
     soap_envelope = axiom_soap_builder_get_soap_envelope(soap_builder, env);
-
-    if(soap_envelope)
-    {
-        /* hack to get around MTOM problem */
-        axiom_soap_body_t *soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
-
-        if(soap_body)
-        {
-            axiom_soap_body_has_fault(soap_body, env);
-        }
-    }
-
     return soap_envelope;
 }
 
