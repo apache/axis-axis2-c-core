@@ -145,25 +145,17 @@ axiom_soap_body_has_fault(
     else
     {
         /* This soap body could have been built programatically. Do the following only if soap
-         * body is created from soap_builder */
-        if(soap_body->soap_builder)
+         * body is created from soap_builder. Check for last child is to make sure body's child
+         * are not yet built. If atleast one child is built, we don't need to build it again,
+         * because , if fault, first child node of body node should be the fault node. If the child
+         * is not built yet, trigger it to be built. */
+        if(soap_body->soap_builder && !axiom_node_is_complete(soap_body->om_ele_node, env) &&
+            !axiom_node_get_last_child(soap_body->om_ele_node, env))
         {
-            while(!axiom_node_is_complete(soap_body->om_ele_node, env))
+            axiom_soap_builder_next(soap_body->soap_builder, env);
+            if(soap_body->soap_fault)
             {
-                if(axiom_soap_builder_next(soap_body->soap_builder, env) != AXIS2_SUCCESS)
-                {
-                    /* problem in building the SOAP body. Note that has_fault is about soap fault,
-                     * not about problem in building the node. So, even though there is a problem
-                     * building the body, has_fault should be AXIS2_FALSE
-                     */
-                    break;
-                }
-
-                if(soap_body->soap_fault)
-                {
-                    soap_body->has_fault = AXIS2_TRUE;
-                    break;
-                }
+                soap_body->has_fault = AXIS2_TRUE;
             }
         }
     }
