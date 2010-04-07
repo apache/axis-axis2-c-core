@@ -104,11 +104,9 @@ mtom_on_fault(
      * called 'EchoServiceError' 
      */
     axiom_node_t *error_node = NULL;
-    axiom_node_t *text_node = NULL;
     axiom_element_t *error_ele = NULL;
-    error_ele = axiom_element_create(env, node, "EchoServiceError", NULL,
-                                     &error_node);
-    axiom_element_set_text(error_ele, env, "Echo service failed ", text_node);
+    error_ele = axiom_element_create(env, node, "EchoServiceError", NULL, &error_node);
+    axiom_element_set_text(error_ele, env, "Echo service failed ", error_node);
     return error_node;
 }
 
