@@ -705,12 +705,8 @@ axis2_module_init(
         exit(APEXIT_CHILDFATAL);
     }
 
-    /*ap_dbd_prepare(svr_rec, "SELECT value FROM session WHERE id = %s", "retrieve_session");
-    ap_dbd_prepare(svr_rec, "INSERT INTO session VALUES(?,?)", "insert_session");*/
-
-
     /* If we are initialized we register a clean up as well */
-    /* apr_pool_cleanup_register(p, NULL, axis2_shutdown, apr_pool_cleanup_null);*/
+    apr_pool_pre_cleanup_register(p, NULL, axis2_shutdown);
 }
 
 static void
