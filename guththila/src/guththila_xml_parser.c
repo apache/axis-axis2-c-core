@@ -484,7 +484,7 @@ guththila_token_evaluate_references(
     guththila_char_t *p = start;
     guththila_char_t *q = NULL;
     guththila_char_t *entity = NULL;
-    int entity_len = 0;
+    size_t entity_len = 0;
 
     while(p < end && *p != '&')
     {
