@@ -578,7 +578,7 @@ resend_request(
         int end_reached = 0;
         size_t rounds = 0;
 
-        offset = (int)strlen(search);
+        offset = strlen(search);
         tmp3 = buffer;
         if (read_len >= SIZE)
         {
@@ -593,15 +593,15 @@ resend_request(
         }
         while (loop_state)
         {
-            int temp_len = 0;
+            size_t temp_len = 0;
             tmp1 = strstr(tmp3, search);
-            temp_len = (int)strlen(tmp3) + 1;
+            temp_len = strlen(tmp3) + 1;
             /* loop below is for mtom cases */
             while (!tmp1 && (read_len - rounds > temp_len))
             {
-                tmp3 += (int)strlen(tmp3) + 1;
+                tmp3 += strlen(tmp3) + 1;
                 tmp1 = strstr(tmp3, search);
-                temp_len += (int)strlen(tmp3) + 1;
+                temp_len += strlen(tmp3) + 1;
             }
             if (!tmp1)
             {
@@ -610,7 +610,7 @@ resend_request(
                     break;
                 }
                 memmove(buffer, buffer + (SIZE - 1 - offset), offset);
-                read_len = (int)fread(buffer + offset, sizeof(char),
+                read_len = fread(buffer + offset, sizeof(char),
                                  SIZE - 1 - offset, file) + offset;
                 break;
             }
@@ -619,7 +619,7 @@ resend_request(
                 rounds = tmp1 - tmp3 + offset + 36;
                 tmp3 = tmp1 + offset + 36;
             }
-            if (read_len - offset - 36 < (int)(tmp1 - buffer))
+            if (read_len - offset - 36 < (size_t)(tmp1 - buffer))
             {
                 if (end_reached)
                 {
@@ -627,7 +627,7 @@ resend_request(
                 }
                 offset += 36;
                 memmove(buffer, buffer + (SIZE - 1 - offset), offset);
-                read_len = (int)fread(buffer + offset, sizeof(char),
+                read_len = fread(buffer + offset, sizeof(char),
                                  SIZE - 1 - offset, file) + offset;
                 break;
             }
@@ -654,7 +654,7 @@ resend_request(
                 end_reached = 1;
                 tmp2 += 36;
                 offset = strlen(header_str);
-                if (read_len - offset < (int)(tmp2 - buffer))
+                if (read_len - offset < (size_t)(tmp2 - buffer))
                 {
                     seek_len = tmp2 - buffer + offset - read_len;
                     if (seek_len > 0)
@@ -665,7 +665,7 @@ resend_request(
                 }
                 else
                 {
-                    seek_len = read_len - (int)(tmp2 - buffer) - offset;
+                    seek_len = read_len - (size_t)(tmp2 - buffer) - offset;
                 }
                 request_buffer = AXIS2_MALLOC(env->allocator,
                                               sizeof(axis2_char_t) * (48 * 1024 + 1));
