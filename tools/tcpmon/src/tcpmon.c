@@ -517,7 +517,7 @@ resend_request(
     FILE *file;
     axis2_char_t *uuid = NULL;
     axis2_char_t *buffer = NULL;
-    int read_len = 0;
+    size_t read_len = 0;
 
     if (status == 0)
     {
@@ -573,10 +573,10 @@ resend_request(
         axis2_char_t *tmp2 = NULL;
         axis2_char_t *tmp3 = NULL;
         axis2_char_t *uuid_match = NULL;
-        int offset = 0;
+        size_t offset = 0;
         int loop_state = 1;
         int end_reached = 0;
-        int rounds = 0;
+        size_t rounds = 0;
 
         offset = (int)strlen(search);
         tmp3 = buffer;
@@ -616,7 +616,7 @@ resend_request(
             }
             else
             {
-                rounds = (int)(tmp1 - tmp3) + offset + 36;
+                rounds = tmp1 - tmp3 + offset + 36;
                 tmp3 = tmp1 + offset + 36;
             }
             if (read_len - offset - 36 < (int)(tmp1 - buffer))
@@ -646,17 +646,17 @@ resend_request(
                 axis2_char_t *header_str = "*/\n---------------------\n";
                 axis2_char_t *footer_str =
                     "\n= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =";
-                int seek_len = 0;
+                size_t seek_len = 0;
                 int has_raw_binary = 0;
                 axis2_char_t *request_buffer = NULL;
                 AXIS2_FREE(env->allocator, uuid_match);
                 AXIS2_FREE(env->allocator, uuid);
                 end_reached = 1;
                 tmp2 += 36;
-                offset = (int)strlen(header_str);
+                offset = strlen(header_str);
                 if (read_len - offset < (int)(tmp2 - buffer))
                 {
-                    seek_len = (int)(tmp2 - buffer) + offset - read_len;
+                    seek_len = tmp2 - buffer + offset - read_len;
                     if (seek_len > 0)
                     {
                         read_len = fread(buffer, sizeof(char), seek_len, file);
