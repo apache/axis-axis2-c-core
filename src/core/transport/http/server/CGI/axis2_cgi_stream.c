@@ -45,7 +45,7 @@ int AXIS2_CALL cgi_stream_write(
     const void *buffer,
     size_t count);
 
-int AXIS2_CALL cgi_stream_read(
+size_t AXIS2_CALL cgi_stream_read(
     axutil_stream_t * stream,
     const axutil_env_t * env,
     void *buffer,
@@ -85,7 +85,7 @@ axutil_stream_create_cgi(
 
     return &(stream_impl->stream);
 }
-int AXIS2_CALL
+size_t AXIS2_CALL
 cgi_stream_read(
     axutil_stream_t * stream,
     const axutil_env_t * env,
@@ -94,7 +94,7 @@ cgi_stream_read(
 {
     /*void *temp_buff = NULL;*/
     /*unsigned int data_to_read = 0;*/
-    unsigned int read_bytes = 0;
+    size_t read_bytes = 0;
     /*axis2_bool_t ret_ok = AXIS2_TRUE;*/
 
     cgi_stream_impl_t *stream_impl = NULL;

@@ -229,8 +229,8 @@ axis2_cgi_write_response(
 {
     if(buffer && length)
     {
-        unsigned int completed = 0;
-        unsigned int written = 0;
+        size_t completed = 0;
+        size_t written = 0;
 
         while(completed < length)
         {
