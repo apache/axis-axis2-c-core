@@ -32,5 +32,5 @@ INCLUDES =	-I$(top_builddir)/include \
 			-I$(top_builddir)/src/soap \
 			-I ../../../util/include 
 
-EXTRA_DIST = axiom_namespace_internal.h  axiom_node_internal.h  axiom_stax_builder_internal.h
+EXTRA_DIST = axiom_namespace_internal.h  axiom_node_internal.h  axiom_stax_builder_internal.h axiom_document_internal.h axiom_element_internal.h
 
