@@ -139,7 +139,7 @@ axis2_simple_tcp_svr_conn_read_request(
             }
         }
     }
-    if(str_line > 0)
+    if(str_line[0] > 0)
     {
         svr_conn->buffer = str_line;
     }
