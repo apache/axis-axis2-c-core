@@ -432,6 +432,21 @@ extern "C"
         const axutil_env_t * env,
         axiom_node_t * element_node);
 
+    /**
+	 * This method will declare the namespace without checking whether it is already declared. 
+	 * (This method is only used by codegen. We have to remove this method in future)
+     * @param om_element pointer to om_element
+     * @param env environment MUST not be NULL
+     * @param om_node pointer to this element node
+     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+     *
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_element_declare_namespace_assume_param_ownership(
+        axiom_element_t * om_element,
+        const axutil_env_t * env,
+        axiom_namespace_t * ns);
+
 #if 0
     /**
      * builds this om_element_node completely, This is only possible
@@ -508,18 +523,6 @@ extern "C"
         const axutil_env_t * env,
         axiom_namespace_t * om_ns);
 
-    /**
-     * @param om_element pointer to om_element
-     * @param env environment MUST not be NULL
-     * @param om_node pointer to this element node
-     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
-     *
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axiom_element_declare_namespace_assume_param_ownership(
-        axiom_element_t * om_element,
-        const axutil_env_t * env,
-        axiom_namespace_t * ns);
 
     /**
      * unconditionally set the namespace of the element

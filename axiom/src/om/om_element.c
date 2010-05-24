@@ -1565,6 +1565,63 @@ axiom_element_set_is_empty(
     om_element->is_empty = is_empty;
 }
 
+/**
+ * This method will declare the namespace without checking whether it is already declared. 
+ * (This method is only used by codegen. We have to remove this method in future)
+ * @param om_element pointer to om_element
+ * @param env environment MUST not be NULL
+ * @param om_node pointer to this element node
+ * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+ *
+ */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_element_declare_namespace_assume_param_ownership(
+    axiom_element_t * om_element,
+    const axutil_env_t * env,
+    axiom_namespace_t * ns)
+{
+    axis2_char_t *prefix = NULL;
+
+    if(!ns || !om_element)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "namespace or om_element is NULL");
+        return AXIS2_FAILURE;
+    }
+
+    if(!(om_element->namespaces))
+    {
+        om_element->namespaces = axutil_hash_make(env);
+        if(!(om_element->namespaces))
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to create namespaces hash map");
+            return AXIS2_FAILURE;
+        }
+    }
+	
+    prefix = axiom_namespace_get_prefix(ns, env);
+    if(prefix)
+    {
+        axutil_hash_set(om_element->namespaces, prefix, AXIS2_HASH_KEY_STRING, ns);
+    }
+    else
+    {
+        /* create a key with empty string */
+        axis2_char_t *key;
+        key = AXIS2_MALLOC(env->allocator, sizeof(char) * 1);
+        if(!key)
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Insufficient memory to create key to store namespace");
+        }
+        key[0] = '\0';
+        axutil_hash_set(om_element->namespaces, key, AXIS2_HASH_KEY_STRING, ns);
+    }
+    axiom_namespace_increment_ref(ns, env);
+    return AXIS2_SUCCESS;
+}
+
 #if 0
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_element_build(
@@ -1681,50 +1738,6 @@ axiom_element_set_namespace_with_no_find_in_current_scope(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_ns, AXIS2_FAILURE);
     om_element->ns = om_ns;
-    return AXIS2_SUCCESS;
-}
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_element_declare_namespace_assume_param_ownership(
-    axiom_element_t * om_element,
-    const axutil_env_t * env,
-    axiom_namespace_t * ns)
-{
-    axis2_char_t *prefix = NULL;
-    axis2_char_t *uri = NULL;
-
-    if(!ns || !om_element)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "namespace or om_element is NULL");
-        return AXIS2_FAILURE;
-    }
-
-    uri = axiom_namespace_get_uri(ns, env);
-    prefix = axiom_namespace_get_prefix(ns, env);
-
-    if(!(om_element->namespaces))
-    {
-        om_element->namespaces = axutil_hash_make(env);
-        if(!(om_element->namespaces))
-        {
-            return AXIS2_FAILURE;
-        }
-    }
-    if(prefix)
-    {
-        axutil_hash_set(om_element->namespaces, prefix, AXIS2_HASH_KEY_STRING, ns);
-    }
-    else
-    {
-        axis2_char_t *key = NULL;
-        key = AXIS2_MALLOC(env->allocator, sizeof(char) * 10);
-        memset(key, 0, sizeof(char) * 10);
-        key[0] = '\0';
-        axutil_hash_set(om_element->namespaces, key, AXIS2_HASH_KEY_STRING, ns);
-    }
-    axiom_namespace_increment_ref(ns, env);
-
     return AXIS2_SUCCESS;
 }
 
