@@ -28,7 +28,9 @@
 #undef PACKAGE_VERSION
 #undef VERSION
 
+#ifdef HAVE_CONFIG_H
 #include <config.h>
+#endif
 
 /* undef unwated cnfig macros to avoid conflicts with APR macros */
 #undef PACKAGE
