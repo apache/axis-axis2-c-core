@@ -27,9 +27,8 @@ axutil_threadattr_create(
 
     new = AXIS2_MALLOC(allocator, sizeof(axutil_threadattr_t));
     if(!new)
-    {
         return NULL;
-    }
+
     stat = pthread_attr_init(&(new->attr));
 
     if(stat != 0)
@@ -104,14 +103,13 @@ axutil_thread_create(
     axutil_thread_t *new = NULL;
 
     new = (axutil_thread_t *)AXIS2_MALLOC(allocator, sizeof(axutil_thread_t));
-
     if(!new)
-    {
         return NULL;
-    }
+
     new->td = (pthread_t *)AXIS2_MALLOC(allocator, sizeof(pthread_t));
     if(!new->td)
     {
+        AXIS2_FREE(allocator, new);
         return NULL;
     }
 
@@ -120,18 +118,15 @@ axutil_thread_create(
     new->try_exit = AXIS2_FALSE;
 
     if(attr)
-    {
         temp = &(attr->attr);
-    }
-    else
-    {
-        temp = NULL;
-    }
 
     if((stat = pthread_create(new->td, temp, dummy_worker, new)) == 0)
     {
         return new;
     }
+
+    AXIS2_FREE(allocator, new->td);
+    AXIS2_FREE(allocator, new);
     return NULL;
 }
 
@@ -296,7 +291,7 @@ axutil_thread_once_init(
     axutil_thread_once_t *control = AXIS2_MALLOC(allocator, sizeof(axutil_thread_once_t));
     if(!control)
     {
-        return NULL;;
+        return NULL;
     }
     (control)->once = once_init;
     return control;
