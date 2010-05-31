@@ -37,24 +37,20 @@ AXIS2_EXTERN axutil_allocator_t *AXIS2_CALL
 axutil_allocator_init(
     axutil_allocator_t * allocator)
 {
-    if(allocator)
-        return allocator;
-
-    else
+    if(!allocator)
     {
         allocator = (axutil_allocator_t *)malloc(sizeof(axutil_allocator_t));
-        memset(allocator, 0, sizeof(axutil_allocator_t));
-        if(allocator)
+        if (allocator)
         {
+            memset(allocator, 0, sizeof(axutil_allocator_t));
             allocator->malloc_fn = axutil_allocator_malloc_impl;
             allocator->realloc = axutil_allocator_realloc_impl;
             allocator->free_fn = axutil_allocator_free_impl;
             allocator->global_pool_ref = 0;
-
-            return allocator;
         }
     }
-    return NULL;
+
+    return allocator;
 }
 
 AXIS2_EXTERN axutil_allocator_t *AXIS2_CALL
