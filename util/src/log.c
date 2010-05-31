@@ -329,7 +329,7 @@ axutil_log_impl_log_user(
             va_start(ap, format);
             AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, format, ap);
             va_end(ap);
-            log->ops->write(log, value, AXIS2_LOG_LEVEL_DEBUG, file, line);
+            log->ops->write(log, value, AXIS2_LOG_LEVEL_USER, file, line);
         }
     }
 #ifndef AXIS2_NO_LOG_FILE
