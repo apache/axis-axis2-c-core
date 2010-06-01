@@ -526,8 +526,17 @@ axis2_http_client_send(
     return status;
 }
 
+/* Following is deprecated and should be removed after 1.8 - spelling of API is not correct */
 AXIS2_EXTERN int AXIS2_CALL
 axis2_http_client_recieve_header(
+    axis2_http_client_t * client,
+    const axutil_env_t * env)
+{
+    return axis2_http_client_receive_header(client, env);
+}
+
+AXIS2_EXTERN int AXIS2_CALL
+axis2_http_client_receive_header(
     axis2_http_client_t * client,
     const axutil_env_t * env)
 {
@@ -549,8 +558,7 @@ axis2_http_client_recieve_header(
         port = axutil_url_get_port(client->url, env);
 
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "client data stream  null or socket error for host \
-%s and %d port", host, port);
+            "Client data stream null or socket error for host %s and %d port", host, port);
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_HTTP_REQUEST_NOT_SENT, AXIS2_FAILURE);
         return -1;
     }
@@ -797,8 +805,7 @@ axis2_http_client_connect_ssl_host(
     if(!tmp_stream)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-            "unable to create open socket for ssl host %s and %d \
-port", host, port);
+            "Unable to create socket for SSL host %s and %d port", host, port);
         return AXIS2_FAILURE;
     }
 

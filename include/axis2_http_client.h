@@ -66,7 +66,7 @@ extern "C"
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_http_client_recieve_header(
+    axis2_http_client_receive_header(
         axis2_http_client_t * client,
         const axutil_env_t * env);
 

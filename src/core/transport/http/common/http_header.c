@@ -75,7 +75,7 @@ axis2_http_header_create_by_str(
     */
     /*
      * strdup is removed to increase the performance. This method is called from
-     * axis2_simple_http_svr_conn_read_request and axis2_http_client_recieve_header and both of them
+     * axis2_simple_http_svr_conn_read_request and axis2_http_client_receive_header and both of them
      * passes a temporary string. hence we can modify the contents without doing a strdup.
      * Above code is commented after 1.6.0 . If no issue is found until 1.8.0, above can be removed
      */
