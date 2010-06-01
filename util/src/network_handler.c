@@ -160,7 +160,8 @@ axutil_network_handler_create_server_socket(
 #endif
 
     /* Exec behaviour */
-    AXIS2_CLOSE_SOCKET_ON_EXIT(sock) memset(&sock_addr, 0, sizeof(sock_addr));
+    AXIS2_CLOSE_SOCKET_ON_EXIT(sock);
+    memset(&sock_addr, 0, sizeof(sock_addr));
 
     sock_addr.sin_family = AF_INET;
     sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -369,7 +370,8 @@ axutil_network_handler_create_dgram_svr_socket(
     }
 #endif
     /* Exec behaviour */
-    AXIS2_CLOSE_SOCKET_ON_EXIT(sock) memset(&sock_addr, 0, sizeof(sock_addr));
+    AXIS2_CLOSE_SOCKET_ON_EXIT(sock);
+    memset(&sock_addr, 0, sizeof(sock_addr));
 
     sock_addr.sin_family = AF_INET;
     sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -607,7 +609,8 @@ axutil_network_hadler_create_multicast_svr_socket(
 #endif
 
     /* Exec behaviour */
-    AXIS2_CLOSE_SOCKET_ON_EXIT(sock) memset(&sock_addr, 0, sizeof(sock_addr));
+    AXIS2_CLOSE_SOCKET_ON_EXIT(sock);
+    memset(&sock_addr, 0, sizeof(sock_addr));
 
     sock_addr.sin_family = AF_INET;
     sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);

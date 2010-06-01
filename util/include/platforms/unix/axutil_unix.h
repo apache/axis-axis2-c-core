@@ -141,7 +141,7 @@ extern "C"
 
 #define AXIS2_STRRCHR(x, y) (strrchr(x, y))
 
-#define AXIS2_PLATFORM_SLEEP(x) sleep(0);
+#define AXIS2_PLATFORM_SLEEP(x) sleep(0)
 
     /** sleep function abstraction */
 #define AXIS2_SLEEP sleep
@@ -253,7 +253,7 @@ extern "C"
 #define AXIS2_INADDR_NONE                   (in_addr_t)-1
 #define axis2_unsigned_short_t                uint16_t
 #define AXIS2_CLOSE_SOCKET(sock)            close(sock)
-#define AXIS2_CLOSE_SOCKET_ON_EXIT(sock)    fcntl(sock,F_SETFD, FD_CLOEXEC);
+#define AXIS2_CLOSE_SOCKET_ON_EXIT(sock)    fcntl(sock,F_SETFD, FD_CLOEXEC)
 #define axis2_socket_len_t                  socklen_t
 #define AXIS2_SHUT_WR                       SHUT_WR
 
@@ -262,7 +262,7 @@ extern "C"
 
     /** minizip functions */
 #define axis2_fill_win32_filefunc(ffunc)
-#define AXIS2_UNZOPEN2(zipfilename,ffunc) unzOpen2(zipfilename,NULL); memset(&ffunc, 0, sizeof(ffunc));
+#define AXIS2_UNZOPEN2(zipfilename,ffunc) do { unzOpen2(zipfilename,NULL); memset(&ffunc, 0, sizeof(ffunc)); } while (0)
 
     /**
       * handling variable number of arguments (for log.c)

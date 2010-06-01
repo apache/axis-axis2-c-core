@@ -149,10 +149,10 @@ extern "C"
 
 #define AXIS2_STRRCHR(x, y) (strrchr(x, y))
 
-#define AXIS2_PLATFORM_SLEEP(x) Sleep(0);
+#define AXIS2_PLATFORM_SLEEP(x) Sleep(0)
 
 #define AXIS2_SLEEP(x) Sleep((x)*1000)
-#define AXIS2_USLEEP(x) Sleep((x)/1000);
+#define AXIS2_USLEEP(x) Sleep((x)/1000)
 
     /**
      * Get the last error code from the system.
@@ -160,7 +160,7 @@ extern "C"
      * and that it returns a long
      * @return long the last error message for this thread
      */
-#define AXIS2_GETLASTERROR GetLastError();
+#define AXIS2_GETLASTERROR GetLastError()
 
     /**
      * From the last error number get a sensible std::string representing it
