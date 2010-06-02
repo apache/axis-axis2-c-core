@@ -105,11 +105,14 @@ axis2_mod_addr_fill_handler_create_func_map(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "No memory. Cannot create the function map");
         return AXIS2_FAILURE;
     }
-    axutil_hash_set(module->handler_create_func_map, ADDR_IN_HANDLER, AXIS2_HASH_KEY_STRING,
-        axis2_addr_in_handler_create);
 
-    axutil_hash_set(module->handler_create_func_map, ADDR_OUT_HANDLER, AXIS2_HASH_KEY_STRING,
-        axis2_addr_out_handler_create);
+    axutil_hash_set(module->handler_create_func_map,
+                    ADDR_IN_HANDLER, AXIS2_HASH_KEY_STRING,
+                    (const void *)axis2_addr_in_handler_create);
+
+    axutil_hash_set(module->handler_create_func_map,
+                    ADDR_OUT_HANDLER, AXIS2_HASH_KEY_STRING,
+                    (const void *)axis2_addr_out_handler_create);
 
     return AXIS2_SUCCESS;
 }

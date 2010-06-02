@@ -136,7 +136,7 @@ axiom_xpath_register_function(
             context->functions = axutil_hash_make(context->env);
         }
 
-        axutil_hash_set(context->functions, name, AXIS2_HASH_KEY_STRING, func);
+        axutil_hash_set(context->functions, name, AXIS2_HASH_KEY_STRING, (const void *)func);
     }
 }
 
@@ -149,7 +149,7 @@ axiom_xpath_get_function(
 
     if(context->functions)
     {
-        func = axutil_hash_get(context->functions, name, AXIS2_HASH_KEY_STRING);
+        func = (axiom_xpath_function_t)axutil_hash_get(context->functions, name, AXIS2_HASH_KEY_STRING);
     }
 
     return func;
@@ -171,8 +171,7 @@ axiom_xpath_register_namespace(
 
     if (prefix)
     {
-        axutil_hash_set(
-            context->namespaces, prefix, AXIS2_HASH_KEY_STRING, ns);
+        axutil_hash_set(context->namespaces, prefix, AXIS2_HASH_KEY_STRING, (const void *)ns);
     }
 }
 
@@ -185,7 +184,7 @@ axiom_xpath_get_namespace(
 
     if (context->namespaces)
     {
-        ns = axutil_hash_get(context->namespaces, prefix, AXIS2_HASH_KEY_STRING);
+        ns = (axiom_namespace_t *)axutil_hash_get(context->namespaces, prefix, AXIS2_HASH_KEY_STRING);
     }
 
     return ns;
