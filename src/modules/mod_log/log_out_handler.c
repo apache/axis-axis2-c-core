@@ -80,6 +80,7 @@ axutil_log_out_handler_invoke(
             if(om_str)
             {
                 AXIS2_LOG_INFO(env->log, "Output message: %s", om_str);
+                AXIS2_FREE(env->allocator, om_str);
             }
         }
     }

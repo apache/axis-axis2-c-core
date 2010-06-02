@@ -384,11 +384,17 @@ fault_value_str            =
     if (fault_node)
     {
         axiom_node_t *fault_detail_node = NULL;
+        axis2_char_t *om_str = NULL;
 
         fault_detail = axiom_soap_fault_detail_create_with_parent(env, soap_fault);
         fault_detail_node = axiom_soap_fault_detail_get_base_node(fault_detail, env);
-        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "fault_detail:%s", axiom_node_to_string(
-                fault_detail_node, env));
+
+        om_str = axiom_node_to_string(fault_detail_node, env);
+        if (om_str)
+        {
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "fault_detail:%s", om_str);
+            AXIS2_FREE(env->allocator, om_str);
+        }
 
         axiom_soap_fault_detail_add_detail_entry(fault_detail, env, fault_node);
     }

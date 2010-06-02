@@ -71,7 +71,7 @@ axutil_log_in_handler_invoke(
 
     if(soap_envelope)
     {
-        /* ensure SOAP buider state is in sync */
+        /* ensure SOAP builder state is in sync */
         axiom_soap_envelope_get_body(soap_envelope, env);
         ret_node = axiom_soap_envelope_get_base_node(soap_envelope, env);
 
@@ -82,6 +82,7 @@ axutil_log_in_handler_invoke(
             if(om_str)
             {
                 AXIS2_LOG_INFO(env->log, "Input message: %s", om_str);
+                AXIS2_FREE(env->allocator, om_str);
             }
         }
     }
