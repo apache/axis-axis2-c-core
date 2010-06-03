@@ -99,7 +99,7 @@ axis2_status_t test_date_time(axutil_env_t *env)
     }
     year = axutil_date_time_get_year(date_time,env);
     month=axutil_date_time_get_month(date_time,env);
-    date = axutil_date_time_get_date(date_time,env);
+    date = axutil_date_time_get_day(date_time,env);
     hour = axutil_date_time_get_hour(date_time,env);
     min  = axutil_date_time_get_minute(date_time,env);
     sec  = axutil_date_time_get_second(date_time,env);

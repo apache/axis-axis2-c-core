@@ -216,13 +216,13 @@ extern "C"
         const axutil_env_t * env);
 
     /**
-     * retrieve the date of the date time
+     * retrieve the day of the date time
      * @param date_time represet the type object
      * @param env pointer to environment struct. MUST NOT be NULL
-     * @return date as an integer 
+     * @return day as an integer
      */
     AXIS2_EXTERN int AXIS2_CALL
-    axutil_date_time_get_date(
+    axutil_date_time_get_day(
         axutil_date_time_t * date_time,
         const axutil_env_t * env);
 

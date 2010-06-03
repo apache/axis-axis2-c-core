@@ -731,8 +731,16 @@ axutil_date_time_get_month(
     return (date_time->mon + 1);
 }
 
+/* Deprecated...should have been get_day, remove in 1.8 */
 AXIS2_EXTERN int AXIS2_CALL
 axutil_date_time_get_date(
+    axutil_date_time_t *date_time,
+    const axutil_env_t *env)
+{
+    return (date_time->day);
+}
+AXIS2_EXTERN int AXIS2_CALL
+axutil_date_time_get_day(
     axutil_date_time_t *date_time,
     const axutil_env_t *env)
 {
