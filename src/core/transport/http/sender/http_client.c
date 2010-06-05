@@ -662,7 +662,7 @@ str_status_line %s", str_status_line);
         && axis2_http_simple_response_get_content_length(client->response, env) > 0)
     {
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Response does not contain" " Content-Type");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Response does not contain Content-Type");
         return -1;
     }
     return status_code;
