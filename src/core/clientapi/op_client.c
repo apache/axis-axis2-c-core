@@ -1236,6 +1236,8 @@ axis2_op_client_two_way_send(
                 }
             }
             status = axis2_engine_receive(engine, env, response);
+	    if(status != AXIS2_SUCCESS )  
+		    return NULL;
         }
     }
     else
