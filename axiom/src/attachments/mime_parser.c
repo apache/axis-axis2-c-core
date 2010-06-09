@@ -100,7 +100,7 @@ typedef struct axiom_search_info axiom_search_info_t;
 #define AXIOM_MIME_PARSER_CONTENT_ID "content-id"
 #define AXIOM_MIME_PARSER_CONTENT_TYPE "content-type"
 
-#define AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT 100
+#define AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT 1000
 
 static axis2_char_t *
 axiom_mime_parser_search_for_soap(
@@ -725,7 +725,7 @@ axiom_mime_parser_parse_for_attachments(
 
     /* This loop will extract all the attachments in the message. The condition
      * with the count is needed because if the sender not marked the end of the 
-     * attachment wiht -- then this loop may run infinitely. To prevent that
+     * attachment with -- then this loop may run infinitely. To prevent that
      * this additional condition has been put */
 
     temp_mime_boundary = axutil_stracat(env, "--", mime_boundary);
