@@ -437,11 +437,10 @@ axutil_network_handler_read_dgram(
 {
     struct sockaddr_in sender_address;
     int received = 0;
-    int sender_address_size = sizeof(sender_address);
-
-    received = recvfrom(sock, buffer, *buf_len, 0, (struct sockaddr *)&sender_address,
-        &sender_address_size);
-
+    socklen_t sender_address_size;
+    
+    sender_address_size = sizeof(sender_address);
+    received = recvfrom(sock, buffer, *buf_len, 0, (struct sockaddr *)&sender_address, &sender_address_size);
 #ifdef WIN32
     if (SOCKET_ERROR == received)
     {
@@ -483,7 +482,7 @@ axutil_network_handler_send_dgram(
     struct sockaddr_in recv_addr, source_addr;
     int send_bytes = 0;
     unsigned int recv_addr_size = 0;
-    int source_addr_size = sizeof(source_addr);
+    socklen_t source_addr_size = sizeof(source_addr);
     recv_addr_size = sizeof(recv_addr);
 
     memset(&recv_addr, 0, sizeof(recv_addr));
