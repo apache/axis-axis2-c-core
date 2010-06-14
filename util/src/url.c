@@ -325,7 +325,7 @@ axutil_url_to_external_form(
         len += axutil_strlen(port_str) + 1; /* +1 is for ':' */
     }
 
-    len = axutil_strlen(url->protocol) + 6;
+    len += axutil_strlen(url->protocol) + 6;
 
     if(url->host)
         len += axutil_strlen(url->host);
