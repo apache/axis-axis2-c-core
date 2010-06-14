@@ -552,6 +552,11 @@ axis2_msg_ctx_free(
         AXIS2_FREE(env->allocator, msg_ctx->options);
     }
 
+	if(msg_ctx->transport_url)
+	{
+		AXIS2_FREE(env->allocator, msg_ctx->transport_url);
+	}
+
     AXIS2_FREE(env->allocator, msg_ctx);
 
     return;
@@ -1910,7 +1915,7 @@ axis2_msg_ctx_set_options(
     axutil_property_t *rest_val = NULL;
     axis2_char_t *value;
     axutil_string_t *soap_action = NULL;
-    ;
+	axutil_property_t *transport_url_prop = NULL;
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, options, AXIS2_FAILURE);
@@ -1937,6 +1942,15 @@ axis2_msg_ctx_set_options(
                 axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
         }
     }
+
+	transport_url_prop = (axutil_property_t*)axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_TRANSPORT_URL);
+	if(transport_url_prop)
+	{
+		if(axutil_property_get_value(transport_url_prop, env))
+		{
+			msg_ctx->transport_url = axutil_strdup(env, (axis2_char_t*)axutil_property_get_value(transport_url_prop, env));
+		}
+	}	
 
     if(msg_ctx->soap_action)
     {
