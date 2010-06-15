@@ -164,6 +164,8 @@ extern "C"
     /** WS-Addressing Param Service Group Context ID */
 #define PARAM_SERVICE_GROUP_CONTEXT_ID "ServiceGroupContextIdFromAddressing"
 
+#define AXIS2_ADDR_ADD_MUST_UNDERSTAND_TO_ADDR_HEADERS "addMustUnderstandToAddr"
+
     /** @} */
 
 #ifdef __cplusplus
