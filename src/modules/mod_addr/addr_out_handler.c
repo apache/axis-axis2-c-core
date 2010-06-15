@@ -60,7 +60,8 @@ axis2_addr_out_handler_process_string_info(
     const axis2_char_t * value,
     const axis2_char_t * type,
     axiom_soap_header_t ** soap_header,
-    const axis2_char_t * addr_ns);
+    const axis2_char_t * addr_ns,
+	axis2_bool_t set_must_understand);
 
 AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
 axis2_addr_out_handler_create(
@@ -104,6 +105,8 @@ axis2_addr_out_handler_invoke(
     axis2_endpoint_ref_t *epr_fault_to = NULL;
     axutil_property_t *property = NULL;
     const axis2_char_t *wsa_action = NULL;
+	axis2_bool_t set_must_understand = AXIS2_FALSE;
+	axutil_property_t *must_understand_prop;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -135,6 +138,7 @@ axis2_addr_out_handler_invoke(
         return AXIS2_SUCCESS; /* If no action present, assume no addressing in use */
     }
 
+
     ctx = axis2_msg_ctx_get_base(msg_ctx, env);
     property = axis2_ctx_get_property(ctx, env, AXIS2_WSA_VERSION);
 
@@ -143,6 +147,14 @@ axis2_addr_out_handler_invoke(
         addr_ver_from_msg_ctx = axutil_property_get_value(property, env);
         property = NULL;
     }
+
+	must_understand_prop = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_ADDR_ADD_MUST_UNDERSTAND_TO_ADDR_HEADERS);
+	if(must_understand_prop)
+	{
+		axis2_char_t *value = axutil_property_get_value(must_understand_prop, env);
+		if(axutil_strcmp(value, AXIS2_VALUE_TRUE) == 0)
+			set_must_understand = AXIS2_TRUE;
+	}
 
     /* Setting version 1.0 as the default addressing namespace */
     addr_ns = AXIS2_WSA_NAMESPACE;
@@ -254,7 +266,11 @@ axis2_addr_out_handler_invoke(
 
                 to_header_block = axiom_soap_header_add_header_block(soap_header, env,
                     AXIS2_WSA_TO, addressing_namespace);
-                to_header_block_node = axiom_soap_header_block_get_base_node(to_header_block, env);
+				if(set_must_understand == AXIS2_TRUE)
+				{
+					axiom_soap_header_block_set_must_understand_with_bool(to_header_block, env, AXIS2_TRUE);
+				}
+				to_header_block_node = axiom_soap_header_block_get_base_node(to_header_block, env);
                 if(to_header_block_node)
                 {
                     axiom_element_t *to_header_block_element = NULL;
@@ -291,6 +307,10 @@ axis2_addr_out_handler_invoke(
                                 reference_header_block = axiom_soap_header_add_header_block(
                                     soap_header, env, axiom_element_get_localname(temp_ele, env),
                                     axiom_element_get_namespace(temp_ele, env, temp_node));
+								if(set_must_understand)
+								{
+									axiom_soap_header_block_set_must_understand_with_bool(reference_header_block, env, AXIS2_TRUE);
+								}
 
                                 reference_node = axiom_soap_header_block_get_base_node(
                                     reference_header_block, env);
@@ -331,7 +351,7 @@ axis2_addr_out_handler_invoke(
         if(action && *action)
         {
             axis2_addr_out_handler_process_string_info(env, action, AXIS2_WSA_ACTION, &soap_header,
-                addr_ns);
+				addr_ns, set_must_understand);
         }
 
         epr_reply_to = axis2_msg_info_headers_get_reply_to(msg_info_headers, env);
@@ -435,7 +455,7 @@ axis2_addr_out_handler_invoke(
         if(message_id)
         {
             axis2_addr_out_handler_process_string_info(env, message_id, AXIS2_WSA_MESSAGE_ID,
-                &soap_header, addr_ns);
+				&soap_header, addr_ns, set_must_understand);
         }
 
         relates_to = axis2_msg_info_headers_get_relates_to(msg_info_headers, env);
@@ -445,7 +465,7 @@ axis2_addr_out_handler_invoke(
             const axis2_char_t *value = NULL;
             value = axis2_relates_to_get_value(relates_to, env);
             relates_to_header_node = axis2_addr_out_handler_process_string_info(env, value,
-                AXIS2_WSA_RELATES_TO, &soap_header, addr_ns);
+				AXIS2_WSA_RELATES_TO, &soap_header, addr_ns, set_must_understand);
         }
 
         if(relates_to_header_node)
@@ -517,7 +537,8 @@ axis2_addr_out_handler_process_string_info(
     const axis2_char_t * value,
     const axis2_char_t * type,
     axiom_soap_header_t ** soap_header_p,
-    const axis2_char_t * addr_ns)
+    const axis2_char_t * addr_ns,
+	axis2_bool_t set_must_understand)
 {
     axiom_soap_header_t *soap_header = NULL;
     axiom_soap_header_block_t *header_block = NULL;
@@ -551,6 +572,10 @@ axis2_addr_out_handler_process_string_info(
                 addr_ns_obj = NULL;
             }
         }
+		if(set_must_understand)
+		{
+			axiom_soap_header_block_set_must_understand_with_bool(header_block, env, AXIS2_TRUE);
+		}
     }
     return header_block_node;
 }
@@ -581,7 +606,6 @@ axis2_addr_out_handler_add_to_soap_header(
 
     addr_ns_obj = axiom_namespace_create(env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
     header_block = axiom_soap_header_add_header_block(soap_header, env, type, addr_ns_obj);
-
     if(addr_ns_obj)
     {
         axiom_namespace_free(addr_ns_obj, env);
