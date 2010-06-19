@@ -311,7 +311,7 @@ axiom_stax_builder_create_om_text(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Cannot create axiom_text");
         return NULL;
     }
-
+    axiom_node_set_builder(node, env, om_builder);
     axiom_node_set_complete(node, env, AXIS2_TRUE);
     om_builder->lastnode = node;
     return node;
