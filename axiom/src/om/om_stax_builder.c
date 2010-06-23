@@ -637,7 +637,7 @@ axiom_stax_builder_next_with_token(
     if(om_builder->done)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "OM is fully built. Nothing more to build");
+		AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "OM is fully built. Nothing more to build");
         return -1;
     }
 
@@ -648,7 +648,7 @@ axiom_stax_builder_next_with_token(
     {
         om_builder->done = AXIS2_TRUE;
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL, AXIS2_FAILURE);
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error when reading xml");
+		AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "-1 returned from the xml reader when reading xml");
         return -1;
     }
 
