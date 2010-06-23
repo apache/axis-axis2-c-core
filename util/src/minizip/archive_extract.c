@@ -266,7 +266,7 @@ aar_extract(
         filename_try[MAXFILENAME] = '\0';
 
         axis2_fill_win32_filefunc(&ffunc);
-
+        ((void)(ffunc)); /* Just to avoid unused variable warning */
         uf = AXIS2_UNZOPEN2(zipfilename, ffunc);
 
         if (uf == NULL)
