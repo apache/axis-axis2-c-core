@@ -226,10 +226,10 @@ extern "C"
     /**
      * Quotes an XML string.
      * Replace '<', '>', and '&' with '&lt;', '&gt;', and '&amp;'.
-     * If quotes is true, then replace '"' with '&quot;'.
+     * If quotes is true, then replace double quote with '&quot;'.
      * @param env pointer to environment struct
      * @param s string to be quoted
-     * @param quotes if AXIS2_TRUE then replace '"' with '&quot;'.
+     * @param quotes if AXIS2_TRUE then replace double quote with '&quot;'.
      * quotes is typically set to true for XML strings that will occur within
      * double quotes -- attribute values.
      * @return Encoded string if there are characters to be encoded, else NULL. 

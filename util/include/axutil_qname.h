@@ -50,7 +50,7 @@ extern "C"
      *  @ns_uri      optional
      *  The prefix. Must not be null. Use "" (empty string) to indicate that no
      * namespace URI is present or the namespace URI is not relevant
-     *  if null is passed for prefix and uri , "'(empty string ) will be assinged to
+     *  if null is passed for prefix and uri , ""(empty string ) will be assinged to
      * those fields
      * @return a pointer to newly created qname struct
      */
