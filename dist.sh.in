@@ -1,7 +1,7 @@
 #!/bin/bash
 
 rm -rf xdocs/api/html
-mvn site
+maven site
 cd xdocs/api
 doxygen doxygenconf
 cd ../..
