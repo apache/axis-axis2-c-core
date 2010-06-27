@@ -42,7 +42,7 @@ main(
     axiom_node_t *ret_node2 = NULL;
 
     /* Set up the environment */
-    env = axutil_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("session.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */
     address = "http://localhost:9090/axis2/services/session";
