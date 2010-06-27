@@ -3549,6 +3549,10 @@ axis2_http_transport_utils_get_session(
     
         sprintf(session_value, "%s", "");
 
+        /* Note that in addition to storing the values in the session table into a string, we also 
+         * free the session table entries in the following loop,  because we are going to store them 
+         * into the session database.
+         */
         for(hi = axutil_hash_first(ht, env); hi; hi = axutil_hash_next(env, hi))
         {
             axis2_char_t *name = NULL;
@@ -3580,6 +3584,7 @@ axis2_http_transport_utils_get_session(
             AXIS2_FREE(env->allocator, header_value);
             return NULL;
         }
+        /* Store the session in the session database */
         status = AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_SESSION(out_info, env, session_id, session_value);
         if(status != AXIS2_SUCCESS)
         {
@@ -3590,11 +3595,34 @@ axis2_http_transport_utils_get_session(
     }
     else
     {
+        /* This means session is already created in a previous request.*/
         time_str = axutil_hash_get(ht, "expires", AXIS2_HASH_KEY_STRING);
+        /* Free the session hash table entries, because session entries are already in the
+         * session database.
+         */
+        for(hi = axutil_hash_first(ht, env); hi; hi = axutil_hash_next(env, hi))
+        {
+            axis2_char_t *name = NULL;
+            axis2_char_t *value = NULL;
+
+            axutil_hash_this(hi, &key, NULL, &val);
+            name = (axis2_char_t *) key;
+            value = (axis2_char_t *) val;
+            if(name)
+            {
+                AXIS2_FREE(env->allocator, name);
+            }
+            if(value)
+            {
+                AXIS2_FREE(env->allocator, value);
+            }
+        }
     }
     header_value = AXIS2_MALLOC(env->allocator, 256 * sizeof(axis2_char_t));
     sprintf(header_value, "ID=%s; expires=%s;", session_id, time_str);
 
+    /* Free the session hash table here */
+    axutil_hash_free(ht, env);
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_http_transport_utils_get_session");
     return header_value;
 }
@@ -3651,8 +3679,8 @@ axis2_http_transport_utils_set_session(
         }
         axutil_hash_free(ht, env);
     }
-
-    property = axutil_property_create_with_args(env, 0, AXIS2_TRUE, 0, ht);
+    /* session hash table does not belong to property.*/
+    property = axutil_property_create_with_args(env, AXIS2_SCOPE_REQUEST, AXIS2_FALSE, 0, ht);
     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_SESSION_TABLE, property);
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_http_tranpsport_utils_set_session");
 }
