@@ -38,8 +38,7 @@ main(
     axis2_svc_client_t *svc_client = NULL;
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
-    axiom_node_t *payload2 = NULL;
-    axiom_node_t *ret_node2 = NULL;
+    int i = 0;
 
     /* Set up the environment */
     env = axutil_env_create_all("session.log", AXIS2_LOG_LEVEL_TRACE);
@@ -101,52 +100,33 @@ main(
     /* Engage addressing module */
     axis2_svc_client_engage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);
 
-    /* Build the SOAP request message payload using OM API. */
-    payload = build_om_payload_for_echo_svc(env);
 
     /* Send request */
-    ret_node = axis2_svc_client_send_receive(svc_client, env, payload);
-
-    if (ret_node)
+    for(i = 0; i < 5; i++)
     {
-        axis2_char_t *om_str = NULL;
-        om_str = axiom_node_to_string(ret_node, env);
-        if (om_str)
-            printf("\nReceived OM : %s\n", om_str);
-        printf("\necho client invoke SUCCESSFUL!\n");
+        /* Build the SOAP request message payload using OM API. */
+        payload = build_om_payload_for_echo_svc(env);
+        ret_node = axis2_svc_client_send_receive(svc_client, env, payload);
 
-        AXIS2_FREE(env->allocator, om_str);
-        ret_node = NULL;
-    }
-    else
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "Stub invoke FAILED: Error code:" " %d :: %s",
-                        env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
-        printf("echo client invoke FAILED!\n");
-    }
+        if (ret_node)
+        {
+            axis2_char_t *om_str = NULL;
+            om_str = axiom_node_to_string(ret_node, env);
+            if (om_str)
+                printf("\nReceived OM : %s\n", om_str);
+            printf("\necho client invoke SUCCESSFUL!\n");
 
-    payload2 = build_om_payload_for_echo_svc(env);
-    ret_node2 = axis2_svc_client_send_receive(svc_client, env, payload2);
-    if (ret_node2)
-    {
-        axis2_char_t *om_str = NULL;
-        om_str = axiom_node_to_string(ret_node2, env);
-        if (om_str)
-            printf("\nReceived OM : %s\n", om_str);
-        printf("\necho client invoke SUCCESSFUL!\n");
-
-        AXIS2_FREE(env->allocator, om_str);
-        ret_node2 = NULL;
-    }
-    else
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        "Stub invoke FAILED: Error code:" " %d :: %s",
-                        env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
-        printf("echo client invoke FAILED!\n");
+            AXIS2_FREE(env->allocator, om_str);
+            ret_node = NULL;
+        }
+        else
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "Stub invoke FAILED: Error code:" " %d :: %s",
+                            env->error->error_number,
+                            AXIS2_ERROR_GET_MESSAGE(env->error));
+            printf("echo client invoke FAILED!\n");
+        }
     }
 
     if (svc_client)
