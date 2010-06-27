@@ -131,6 +131,7 @@ AC_CONFIG_FILES([Makefile \
     server/sg_math/Makefile \
     server/mtom/Makefile \
     server/mtom_callback/Makefile \
+    server/session/Makefile \
     client/Makefile \
     client/echo/Makefile \
     client/math/Makefile \
@@ -146,6 +147,7 @@ AC_CONFIG_FILES([Makefile \
     client/amqp/notify/Makefile \
     client/amqp/mtom/Makefile \
     client/amqp/mtom/resources/Makefile \
+    client/session/Makefile \
     user_guide/Makefile \
     user_guide/clients/Makefile \
     mtom_caching_callback/Makefile \
