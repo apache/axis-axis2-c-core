@@ -1329,8 +1329,8 @@ axis2_dep_engine_add_module_flow_handlers(
 
         handlermd = axis2_flow_get_handler(flow, env, j);
         handler_name = axis2_handler_desc_get_name(handlermd, env);
-        handler_create_func = axutil_hash_get(handler_create_func_map, axutil_string_get_buffer(
-            handler_name, env), AXIS2_HASH_KEY_STRING);
+        handler_create_func = (AXIS2_HANDLER_CREATE_FUNC) axutil_hash_get(handler_create_func_map, 
+                axutil_string_get_buffer(handler_name, env), AXIS2_HASH_KEY_STRING);
 
         handler = handler_create_func(env, handler_name);
         axis2_handler_init(handler, env, handlermd);
