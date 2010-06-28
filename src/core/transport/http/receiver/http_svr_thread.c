@@ -248,6 +248,11 @@ axis2_svr_thread_worker_func(
     if(!svr_conn)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "creating simple_http_svr_connection failed");
+        axutil_free_thread_env(thread_env);
+        thread_env = NULL;
+        #ifdef AXIS2_SVR_MULTI_THREADED
+            axutil_thread_pool_exit_thread(env->thread_pool, thd);
+        #endif 
         return NULL;
     }
 
