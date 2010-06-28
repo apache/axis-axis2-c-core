@@ -401,7 +401,7 @@ guththila_un_init(
     return GUTHTHILA_SUCCESS;
 }
 
-static int
+/*static int
 guththila_utf8_bytes_len(
     unsigned int c)
 {
@@ -417,7 +417,7 @@ guththila_utf8_bytes_len(
         return 5;
     else
         return 6;
-}
+}*/
 
 /*
  * Stores the given unicode char as UTF-8
