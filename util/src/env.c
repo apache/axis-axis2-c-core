@@ -42,7 +42,7 @@ axutil_env_create(
 
     env->log = axutil_log_create_default(allocator);
     env->log->level = AXIS2_LOG_LEVEL_DEBUG; /* default log level is debug */
-    env->log_enabled = AXIS2_TRUE;
+    env->log->enabled = AXIS2_TRUE;
 
     /* Create default error struct */
     env->error = axutil_error_create(allocator);
@@ -84,11 +84,6 @@ axutil_env_create_with_error_log(
     env->error = error;
     env->log = log;
 
-    if(env->log)
-        env->log_enabled = AXIS2_TRUE;
-    else
-        env->log_enabled = AXIS2_FALSE;
-
     axutil_error_init();
 
     env->ref = 1;
@@ -129,11 +124,6 @@ axutil_env_create_with_error_log_thread_pool(
     env->log = log;
 
     env->thread_pool = pool;
-
-    if(env->log)
-        env->log_enabled = AXIS2_TRUE;
-    else
-        env->log_enabled = AXIS2_FALSE;
 
     axutil_error_init();
 
@@ -207,9 +197,9 @@ axutil_env_enable_log(
     axutil_env_t *env,
     axis2_bool_t enable)
 {
-    if(env)
+    if(env && env->log)
     {
-        env->log_enabled = enable;
+        env->log->enabled = enable;
         return AXIS2_SUCCESS;
     }
 

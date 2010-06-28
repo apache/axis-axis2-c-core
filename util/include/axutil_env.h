@@ -69,7 +69,7 @@ extern "C"
         axutil_log_t *log;
 
         /** This flag indicate whether logging is enabled or not */
-        axis2_bool_t log_enabled;
+        /* axis2_bool_t log_enabled; */ /* Deprecated use instead log->enabled */
 
         /** Thread pool routines */
         axutil_thread_pool_t *thread_pool;
