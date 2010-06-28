@@ -441,12 +441,21 @@ axis2_libcurl_send(
         else
         buffer_size = output_stream_size;
         {
-            char tmp_buf[10];
+            /*
+             * Curl calculates the content-length automatically.
+             * This commented section is not only unnecessary,
+             * it interferes with authentication.
+             *
+             * NTLM, for example, will send an empty request
+             * first (no body) to get the auth challenge
+             * before resending with actual content.
+             */
+            /*char tmp_buf[10];
             sprintf(tmp_buf, "%d", buffer_size);
             tmp_strcat = axutil_stracat(env, content_len, tmp_buf);
             headers = curl_slist_append(headers, tmp_strcat);
             AXIS2_FREE(env->allocator, tmp_strcat);
-            tmp_strcat = NULL;
+            tmp_strcat = NULL;*/
 
             tmp_strcat = axutil_stracat(env, content, content_type);
             headers = curl_slist_append(headers, tmp_strcat);
