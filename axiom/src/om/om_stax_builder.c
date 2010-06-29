@@ -566,7 +566,7 @@ axiom_stax_builder_create_om_processing_instruction(
         axiom_node_set_first_child(om_builder->lastnode, env, pi_node);
         axiom_node_set_parent(pi_node, env, om_builder->lastnode);
     }
-
+    axiom_node_set_builder(pi_node, env, om_builder);
     om_builder->element_level++;
 
     if(target)

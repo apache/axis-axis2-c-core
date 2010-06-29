@@ -102,7 +102,7 @@ axiom_document_get_root_element(
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to get root node");
                 return NULL;
             }
-        }while(token != AXIOM_XML_READER_START_ELEMENT);
+        }while(token != AXIOM_XML_READER_START_ELEMENT && !document->root_element);
     }
 
     return document->root_element;
