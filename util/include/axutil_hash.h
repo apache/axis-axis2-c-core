@@ -103,7 +103,7 @@ extern "C"
      * @param ht The hash table to clone
      * @param env The environment from which to allocate the new hash table
      * @return The hash table just created
-     * @remark Makes a shallow copy
+     * @remark Makes a shallow copy. axutil_hash_free should not be used to free the copy.
      */
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axutil_hash_copy(
