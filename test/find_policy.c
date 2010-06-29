@@ -96,7 +96,7 @@ main(
     environment =
         axutil_env_create_with_error_log(allocator, error, axis_log);
     policy_array = axutil_array_list_create(environment, 10);
-    
+    
         /*get all the policy values of "Binding_2B"*/
         get_all_policy("Binding-2B", environment, policy_array, file_name);
     node =
@@ -175,7 +175,7 @@ main(
         axiom_stax_builder_free(builder, environment);
         return NULL;
     }
-    
+    
     do
         
     {

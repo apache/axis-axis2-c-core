@@ -25,9 +25,9 @@ extern "C"
 {
 
 #endif  /*  */
-    
+    
     /* Function prototypes */
-    
+    
 
     /**
       * Generate universally unique id
@@ -36,7 +36,7 @@ extern "C"
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
      axutil_platform_uuid_gen(
         char *s);
-    
+    
 
     /** @} */
 #ifdef __cplusplus
