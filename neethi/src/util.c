@@ -50,7 +50,7 @@ neethi_util_create_policy_from_file(
         axiom_stax_builder_free(builder, env);
         return NULL;
     }
-
+	root_node = axiom_document_get_root_element(document,env);
     root_node = axiom_document_build_all(document, env);
     if(!root_node)
     {
