@@ -188,16 +188,17 @@ axis2_desc_builder_build_om(
      */
     document = axiom_stax_builder_get_document(builder, env);
 
-    /**
+	/**
+     get root element , building starts hear
+     */
+
+	desc_builder->root = axiom_document_get_root_element(document, env);
+	/**
      * In description building we don't want defferred building. So build
      * the whole tree at once
      */
     axiom_document_build_all(document, env);
-
-    /**
-     get root element , building starts hear
-     */
-    desc_builder->root = axiom_document_get_root_element(document, env);
+    
     /**
      We have built the whole document. So no need of keeping the builder.
      */
