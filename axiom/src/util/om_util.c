@@ -1091,6 +1091,7 @@ axiom_util_new_document(
     }
     if(doc)
     {
+		axiom_document_get_root_element(doc, env);
         axiom_document_build_all(doc, env);
     }
     else
