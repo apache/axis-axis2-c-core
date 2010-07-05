@@ -777,12 +777,14 @@ axis2_http_transport_sender_write_message(
     status = AXIS2_HTTP_SENDER_SEND(sender, env, msg_ctx, out, url, soap_action);
 #endif
 
-    AXIS2_HTTP_SENDER_FREE(sender, env);
-    sender = NULL;
 
     /* if the send was not successful, do not process any response */
     if(status != AXIS2_SUCCESS)
+    {
+        AXIS2_HTTP_SENDER_FREE(sender, env);
+        sender = NULL;
         return status;
+    }
 
     op = axis2_msg_ctx_get_op(msg_ctx, env);
     if(op)
@@ -793,6 +795,8 @@ axis2_http_transport_sender_write_message(
         if(axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 || axutil_strcmp(mep,
             AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0 || axutil_strcmp(mep, AXIS2_MEP_URI_IN_ONLY) == 0)
         {
+            AXIS2_HTTP_SENDER_FREE(sender, env);
+            sender = NULL;
             return status;
         }
         else
@@ -810,6 +814,9 @@ axis2_http_transport_sender_write_message(
             }
         }
     }
+
+    AXIS2_HTTP_SENDER_FREE(sender, env);
+    sender = NULL;
 
     return status;
 }
