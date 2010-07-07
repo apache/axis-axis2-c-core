@@ -349,78 +349,76 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         {
             if(axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
             {
-fault_value_str            =
-            AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
-            AXIOM_SOAP11_FAULT_CODE_RECEIVER;
+                fault_value_str = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
+                    AXIOM_SOAP11_FAULT_CODE_RECEIVER;
+            }
+            else
+            {
+                fault_value_str = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
+                    AXIOM_SOAP12_SOAP_FAULT_VALUE_RECEIVER;
+            }
+        }
+
+        err_msg = AXIS2_ERROR_GET_MESSAGE(env->error);
+        if (err_msg && axutil_strcmp(err_msg, ""))
+        {
+            if(!axutil_strcmp(err_msg, "No Error"))
+            {
+                fault_reason_str = "An error has occurred, but could not determine exact details";
+            }
+            else
+            {
+                fault_reason_str = err_msg;
+            }
         }
         else
-        {
-            fault_value_str =
-            AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX ":"
-            AXIOM_SOAP12_SOAP_FAULT_VALUE_RECEIVER;
-        }
-    }
-
-    err_msg = AXIS2_ERROR_GET_MESSAGE(env->error);
-    if (err_msg && axutil_strcmp(err_msg, ""))
-    {
-        if(!axutil_strcmp(err_msg, "No Error"))
         {
             fault_reason_str = "An error has occurred, but could not determine exact details";
         }
-        else
+
+        soap_fault = axiom_soap_fault_create_default_fault(env, out_body, fault_value_str,
+            fault_reason_str, soap_version);
+
+        if (fault_node)
         {
-            fault_reason_str = err_msg;
+            axiom_node_t *fault_detail_node = NULL;
+            axis2_char_t *om_str = NULL;
+
+            fault_detail = axiom_soap_fault_detail_create_with_parent(env, soap_fault);
+            fault_detail_node = axiom_soap_fault_detail_get_base_node(fault_detail, env);
+
+            om_str = axiom_node_to_string(fault_detail_node, env);
+            if (om_str)
+            {
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "fault_detail:%s", om_str);
+                AXIS2_FREE(env->allocator, om_str);
+            }
+
+            axiom_soap_fault_detail_add_detail_entry(fault_detail, env, fault_node);
         }
+    }
+
+    if (body_content_node)
+    {
+        axiom_node_add_child(out_node, env, body_content_node);
+        status = axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
+    }
+    else if (soap_fault)
+    {
+        axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
+        status = AXIS2_SUCCESS;
     }
     else
     {
-        fault_reason_str = "An error has occurred, but could not determine exact details";
+        /* we should free the memory as the envelope is not used, one way case */
+        axiom_soap_envelope_free(default_envelope, env);
+        default_envelope = NULL;
     }
 
-    soap_fault = axiom_soap_fault_create_default_fault(env, out_body, fault_value_str,
-        fault_reason_str, soap_version);
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
+        "[axis2]Exit:axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync");
 
-    if (fault_node)
-    {
-        axiom_node_t *fault_detail_node = NULL;
-        axis2_char_t *om_str = NULL;
-
-        fault_detail = axiom_soap_fault_detail_create_with_parent(env, soap_fault);
-        fault_detail_node = axiom_soap_fault_detail_get_base_node(fault_detail, env);
-
-        om_str = axiom_node_to_string(fault_detail_node, env);
-        if (om_str)
-        {
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "fault_detail:%s", om_str);
-            AXIS2_FREE(env->allocator, om_str);
-        }
-
-        axiom_soap_fault_detail_add_detail_entry(fault_detail, env, fault_node);
-    }
-}
-
-if (body_content_node)
-{
-    axiom_node_add_child(out_node, env, body_content_node);
-    status = axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
-}
-else if (soap_fault)
-{
-    axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
-    status = AXIS2_SUCCESS;
-}
-else
-{
-    /* we should free the memory as the envelope is not used, one way case */
-    axiom_soap_envelope_free(default_envelope, env);
-    default_envelope = NULL;
-}
-
-AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
-    "[axis2]Exit:axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync");
-
-return status;
+    return status;
 }
 
 AXIS2_EXPORT int
