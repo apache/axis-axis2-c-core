@@ -267,12 +267,12 @@ aar_extract(
 
         axis2_fill_win32_filefunc(&ffunc);
         ((void)(ffunc)); /* Just to avoid unused variable warning */
-        uf = AXIS2_UNZOPEN2(zipfilename, ffunc);
+        AXIS2_UNZOPEN2(zipfilename, ffunc, uf);
 
         if (uf == NULL)
         {
             strcat(filename_try, ".zip");
-            uf = AXIS2_UNZOPEN2(zipfilename, ffunc);
+            AXIS2_UNZOPEN2(zipfilename, ffunc, uf);
         }
     }
 

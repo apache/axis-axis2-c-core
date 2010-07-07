@@ -258,7 +258,11 @@ static int os400_ftime(struct os400_timeb * tp)
 
     /** minizip functions */
 #define axis2_fill_win32_filefunc(ffunc)
-#define AXIS2_UNZOPEN2(zipfilename,ffunc) do { unzOpen2(zipfilename,NULL); memset(&ffunc, 0, sizeof(ffunc)); } while (0)
+#define AXIS2_UNZOPEN2(zipfilename, ffunc, uf) \
+    { \
+        uf = unzOpen2(zipfilename,NULL); \
+        memset(&ffunc, 0, sizeof(ffunc)); \
+    }
 
     /**
       * handling variable number of arguments (for log.c)

@@ -1062,6 +1062,12 @@ axis2_http_worker_process_request(
                 axis2_http_status_line_free(tmp_stat_line, env);
                 tmp_stat_line = NULL;
             }
+
+            axis2_engine_free(engine, env);
+            if(fault_ctx)
+            {
+                axis2_msg_ctx_free(fault_ctx, env);
+            }
         }
     }
     else
