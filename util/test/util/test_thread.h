@@ -24,7 +24,7 @@
 
 void init_func(
     void);
-void thread_init(
+void test_thread_init(
     const axutil_env_t * env);
 void *AXIS2_CALL
 test_function(
