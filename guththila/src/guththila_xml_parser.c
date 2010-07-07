@@ -1773,8 +1773,8 @@ guththila_next_no_char(
     }
     else if(m->reader->type == GUTHTHILA_IO_READER || m->reader->type == GUTHTHILA_FILE_READER)
     {
-        if(m->next < GUTHTHILA_BUFFER_PRE_DATA_SIZE(m->buffer)
-            + GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer) + no && m->buffer.cur_buff != -1)
+        if(m->next + no <= GUTHTHILA_BUFFER_PRE_DATA_SIZE(m->buffer)
+            + GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer) && m->buffer.cur_buff != -1) 
         {
             for(i = 0; i < no; i++)
             {
@@ -1784,8 +1784,8 @@ guththila_next_no_char(
             return (int)no;
             /* We are sure that the difference lies within the int range */
         }
-        else if(m->next >= GUTHTHILA_BUFFER_PRE_DATA_SIZE(m->buffer)
-            + GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer) + no && m->buffer.cur_buff != -1)
+        else if(m->next + no > GUTHTHILA_BUFFER_PRE_DATA_SIZE(m->buffer)
+            + GUTHTHILA_BUFFER_CURRENT_DATA_SIZE(m->buffer) && m->buffer.cur_buff != -1) 
         {
             /* We are sure that the difference lies within the int range */
             if(m->buffer.cur_buff == (int)m->buffer.no_buffers - 1)
