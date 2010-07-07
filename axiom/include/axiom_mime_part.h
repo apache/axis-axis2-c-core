@@ -30,6 +30,7 @@
 #include <axutil_allocator.h>
 #include <axutil_string.h>
 #include <axutil_array_list.h>
+#include <axiom_mtom_sending_callback.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -52,6 +53,9 @@ extern "C"
 
         /* User specified callback */
         AXIOM_MIME_PART_CALLBACK,
+        
+        /* User specified handler functions */
+        AXIOM_MIME_PART_HANDLER,
         
         /* unknown type*/
         AXIOM_MIME_PART_UNKNOWN
@@ -78,6 +82,15 @@ extern "C"
 
         /* This is required in the case of the callback */
         void *user_param;
+
+        /* Required for type AXIOM_MIME_PART_HANDLER, specify
+         * functions for reading data */
+        int (* read_handler_create)(
+                axiom_mtom_sending_callback_t ** inst,
+                const axutil_env_t * env);
+        int (* read_handler_remove)(
+                axiom_mtom_sending_callback_t * inst,
+                const axutil_env_t * env);
     };
 
 

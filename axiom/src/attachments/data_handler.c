@@ -43,6 +43,14 @@ struct axiom_data_handler
     /* The Content Id */
     axis2_char_t *mime_id;
 
+    /* In the case of TYPE_HANDLER these are required */
+    int (* read_handler_create)(
+            axiom_mtom_sending_callback_t ** inst,
+            const axutil_env_t * env);
+    int (* read_handler_remove)(
+            axiom_mtom_sending_callback_t * inst,
+            const axutil_env_t * env);
+
     /* In the case of sending callback this is required */
     void *user_param;
 
@@ -206,8 +214,7 @@ axiom_data_handler_read_from(
         *output_stream = data_handler->buffer;
         *output_stream_size = data_handler->buffer_len;
     }
-    else if(data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_FILE
-        && data_handler->file_name)
+    else if(data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_FILE)
     {
         FILE *f = NULL;
         axis2_byte_t *byte_stream = NULL;
@@ -218,6 +225,11 @@ axiom_data_handler_read_from(
         int read_stream_size = 0;
         int count = 0;
         struct stat stat_p;
+
+        if (!data_handler->file_name)
+        {
+            return AXIS2_FAILURE;
+        }
 
         f = fopen(data_handler->file_name, "rb");
         if(!f)
@@ -336,9 +348,79 @@ axiom_data_handler_read_from(
         *output_stream = byte_stream;
         *output_stream_size = byte_stream_size;
     }
+    else if (data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_HANDLER)
+    {
+        axis2_byte_t *byte_stream = NULL;
+        axis2_byte_t *buffer_ptr = NULL;
+        axis2_byte_t *temp_buffer = NULL;
+        int byte_stream_size = 0;
+        int temp_buffer_size = 1;
+        int total_byte_size = 0;
+        axiom_mtom_sending_callback_t *callback = NULL;
+        void *handler_data = NULL;
+        axis2_status_t status = AXIS2_FAILURE;
+
+        if (data_handler->read_handler_create(&callback, env) == AXIS2_FAILURE)
+        {
+            return AXIS2_FAILURE;
+        }
+
+        handler_data = AXIOM_MTOM_SENDING_CALLBACK_INIT_HANDLER(callback, env,
+            data_handler->user_param);
+
+        if (handler_data)
+        {
+            total_byte_size = AXIOM_MTOM_SENDING_CALLBACK_DATA_SIZE(callback,
+                env, handler_data);
+
+            byte_stream = (axis2_byte_t *)AXIS2_MALLOC(env->allocator,
+                sizeof(axis2_byte_t) * total_byte_size);
+            buffer_ptr = byte_stream;
+
+            while ((temp_buffer_size > 0) &&
+                   (byte_stream_size < total_byte_size))
+            {
+                temp_buffer_size = AXIOM_MTOM_SENDING_CALLBACK_LOAD_DATA(
+                    callback, env, handler_data, &temp_buffer);
+
+                if (temp_buffer_size > 0)
+                {
+                    if ((byte_stream_size + temp_buffer_size) > total_byte_size)
+                    {
+                        temp_buffer_size = total_byte_size - byte_stream_size;
+                    }
+
+                    memcpy(buffer_ptr, temp_buffer, temp_buffer_size);
+                    buffer_ptr += temp_buffer_size;
+                    byte_stream_size += temp_buffer_size;
+
+                    AXIS2_FREE(env->allocator, temp_buffer);
+                }
+            }
+
+            status = AXIOM_MTOM_SENDING_CALLBACK_CLOSE_HANDLER(callback, env,
+                handler_data);
+        }
+        else
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "No data received from handler init function");
+            status = AXIS2_FAILURE;
+        }
+
+        data_handler->read_handler_remove(callback, env);
+
+        if (status == AXIS2_FAILURE)
+        {
+            return status;
+        }
+
+        *output_stream = byte_stream;
+        *output_stream_size = byte_stream_size;
+    }
     else
     {
-        /* Data Handler File Name is missing */
+        /* unsupported handler type */
         return AXIS2_FAILURE;
     }
 
@@ -489,6 +571,16 @@ axiom_data_handler_add_binary_data(
             binary_part->type = AXIOM_MIME_PART_FILE;
         }
     }
+    /* In the case where the user has specified some handler functions. Set
+     * the correct type and pass the handler functions on to the MIME part */
+
+    else if(data_handler->data_handler_type == AXIOM_DATA_HANDLER_TYPE_HANDLER)
+    {
+        binary_part->type = AXIOM_MIME_PART_HANDLER;
+        binary_part->user_param = data_handler->user_param;
+        binary_part->read_handler_create = data_handler->read_handler_create;
+        binary_part->read_handler_remove = data_handler->read_handler_remove;
+    }
     /* In the case of Callback the user should specify the callback name in the
      * configuration file. We just set the correct type. Inside the transport 
      * it will load the callback and send the attachment appropriately */
@@ -550,6 +642,17 @@ axiom_data_handler_set_data_handler_type(
 {
     data_handler->data_handler_type = data_handler_type;
     return;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axiom_data_handler_set_read_handler(
+    axiom_data_handler_t *data_handler,
+    const axutil_env_t *env,
+    int (* handler_create)(axiom_mtom_sending_callback_t **, const axutil_env_t *),
+    int (* handler_remove)(axiom_mtom_sending_callback_t *, const axutil_env_t *))
+{
+    data_handler->read_handler_create = handler_create;
+    data_handler->read_handler_remove = handler_remove;
 }
 
 AXIS2_EXTERN void *AXIS2_CALL

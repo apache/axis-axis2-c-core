@@ -73,6 +73,11 @@ extern "C"
             void *handler,
             axis2_char_t **buffer);
 
+        int (AXIS2_CALL*
+            data_size)(axiom_mtom_sending_callback_t *mtom_sending_callback,
+            const axutil_env_t* env,
+            void *handler);
+
         axis2_status_t (AXIS2_CALL*
             close_handler)(axiom_mtom_sending_callback_t *mtom_sending_callback,
             const axutil_env_t* env,
@@ -95,6 +100,9 @@ extern "C"
 
 #define AXIOM_MTOM_SENDING_CALLBACK_LOAD_DATA(mtom_sending_callback, env, handler, buffer) \
         ((mtom_sending_callback)->ops->load_data(mtom_sending_callback, env, handler, buffer))
+
+#define AXIOM_MTOM_SENDING_CALLBACK_DATA_SIZE(mtom_sending_callback, env, handler) \
+        ((mtom_sending_callback)->ops->data_size(mtom_sending_callback, env, handler))
 
 #define AXIOM_MTOM_SENDING_CALLBACK_CLOSE_HANDLER(mtom_sending_callback, env, handler) \
         ((mtom_sending_callback)->ops->close_handler(mtom_sending_callback, env, handler))

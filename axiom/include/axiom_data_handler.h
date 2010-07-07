@@ -31,6 +31,7 @@
 #include <axutil_allocator.h>
 #include <axutil_string.h>
 #include <axutil_array_list.h>
+#include <axiom_mtom_sending_callback.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -41,6 +42,7 @@ extern "C"
     {
         AXIOM_DATA_HANDLER_TYPE_FILE,
         AXIOM_DATA_HANDLER_TYPE_BUFFER,
+        AXIOM_DATA_HANDLER_TYPE_HANDLER,
         AXIOM_DATA_HANDLER_TYPE_CALLBACK
     } axiom_data_handler_type_t;
 
@@ -239,6 +241,17 @@ extern "C"
         axiom_data_handler_t *data_handler,
         const axutil_env_t *env,
         axiom_data_handler_type_t data_handler_type);
+
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_data_handler_set_read_handler(
+        axiom_data_handler_t *data_handler,
+        const axutil_env_t *env,
+        int (* handler_create)(
+                axiom_mtom_sending_callback_t **,
+                const axutil_env_t *),
+        int (* handler_remove)(
+                axiom_mtom_sending_callback_t *,
+                const axutil_env_t *));
 
     AXIS2_EXTERN void *AXIS2_CALL
     axiom_data_handler_get_user_param(

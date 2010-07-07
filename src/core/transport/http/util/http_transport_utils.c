@@ -3256,7 +3256,37 @@ axis2_http_transport_utils_send_mtom_message(
             AXIS2_FREE(env->allocator, output_buffer);
             fclose(f);
         }
+        else if((mime_part->type) == AXIOM_MIME_PART_HANDLER) 
+        {
+            void *handler_data = NULL;
+            axiom_mtom_sending_callback_t *callback = NULL;
 
+            status = mime_part->read_handler_create(&callback, env);
+
+            if(callback)
+            {
+                handler_data = AXIOM_MTOM_SENDING_CALLBACK_INIT_HANDLER(callback, env,
+                    mime_part->user_param);
+
+                if (handler_data)
+                {
+                    status = axis2_http_transport_utils_send_attachment_using_callback(env,
+                        chunked_stream, callback, handler_data, mime_part->user_param);
+                }
+                else
+                {
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "MTOM Sending Handler loading failed");
+                    status = AXIS2_FAILURE;
+                }
+
+                mime_part->read_handler_remove(callback, env);
+            }
+
+            if(status == AXIS2_FAILURE)
+            {
+                return status;
+            }
+        }
         /* if the callback is given, send data using callback */
         else if((mime_part->type) == AXIOM_MIME_PART_CALLBACK)
         {
