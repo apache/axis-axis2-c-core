@@ -1,45 +1,35 @@
 #include "../util/create_env.h"
 #include <axutil_utils.h>
+#include <cut_defs.h>
 
-axutil_env_t *env = NULL;
-axis2_char_t * request = "This is a requset";
-axis2_char_t * s = "<root>This is a & '""xml string</root>";
+axis2_char_t * request = "This is a request";
+axis2_char_t * s = "<root>This is a & in xml string</root>";
 axis2_char_t c = 'c';
 
 /** @brief test utils 
  *  test quote string  
  */
 
-axis2_status_t test_utils()
+void test_utils(axutil_env_t *env)
 {
     axis2_char_t **op, *quote_string;
     int hexit;
-    env = create_environment();
     op = axutil_parse_request_url_for_svc_and_op(env,request);
+	CUT_ASSERT_PTR_NOT_EQUAL(op, NULL, 0);
     quote_string = axutil_xml_quote_string(env,s,1);
-    printf("The quote string is%s\n",(char *)quote_string);
+    CUT_ASSERT_STR_EQUAL(quote_string, "&lt;root&gt;This is a &amp; in xml string&lt;/root&gt;", 0);
     hexit = axutil_hexit(c);
-    printf("%d\n",hexit);
-    if(op && quote_string)
-    {
-    printf("The test is SUCCESS\n"); 
-    }
-    if(!op || !quote_string)
-    {
-    printf("The test is FAIL");
-    }
-    return AXIS2_SUCCESS;
+    CUT_ASSERT_INT_EQUAL(hexit,12, 0);
 }
 int main()
 {
-    int status = AXIS2_SUCCESS;
-    env = create_environment();
-    status = test_utils();
-    if(status == AXIS2_FAILURE)
-    {
-        printf(" test  failed");
+    axutil_env_t *env = cut_setup_env("util");
+	CUT_ASSERT(env != NULL);
+	if (env) {
+       test_utils(env);
+       axutil_env_free(env);
     }
-    axutil_env_free(env);
+    CUT_RETURN_ON_FAILURE(-1);
     return 0;
 }
 

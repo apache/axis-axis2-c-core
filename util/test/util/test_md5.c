@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-#include <test_md5.h>
+#include "test_md5.h"
 #include <stdio.h>
 #include <axutil_string.h>
 #include <axutil_md5.h>

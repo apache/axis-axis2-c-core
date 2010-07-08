@@ -1,9 +1,10 @@
 #include <axutil_uri.h>
+#include <cut_defs.h>
 #include "../util/create_env.h"
 /** @brief test uri 
  *  * create URI and get the values of it's components  
  *   */
-axis2_status_t test_uri(axutil_env_t *env)
+void test_uri(axutil_env_t *env)
 {   
     axis2_char_t * uri_str = "http://user:pass@example.com:80/foo?bar#item5";
     axis2_char_t * host = "home.netscape.com:443";
@@ -14,124 +15,64 @@ axis2_status_t test_uri(axutil_env_t *env)
     axutil_uri_t * uri = NULL;
     axutil_uri_t * clone = NULL;
     axutil_uri_t * rel = NULL;
-    axis2_char_t * protocol = NULL;
-    axis2_char_t * server = NULL;
-    axis2_char_t * path = NULL;
     axis2_port_t scheme_port;
     axis2_port_t port;
+	axis2_char_t * str;
 
     hostinfo = axutil_uri_parse_hostinfo(env,host);
-    if(hostinfo)
-    {
-        printf("The host information of uri is %s\n",axutil_uri_to_string(hostinfo,env,0));
-    }
-    else
-    {
-        printf("Test hostinfo faild\n");
-    } 
+    CUT_ASSERT_PTR_NOT_EQUAL(hostinfo, NULL, 0);
     
     scheme_port = axutil_uri_port_of_scheme(scheme_str); 
-    if(scheme_port)
-    {
-        printf("port of scheme is %u\n", scheme_port);
-    }
-    else
-    {
-        printf("Test port failed\n");
-    }
+    CUT_ASSERT_INT_NOT_EQUAL(scheme_port, 0, 0);
     
     uri = axutil_uri_parse_string(env,uri_str);    
-    if(uri)
-    {
-        printf("The uri is %s\n",axutil_uri_to_string(uri,env,0));
-        axutil_uri_free(uri, env);
-    }
-    else     
-    { 
-         return AXIS2_FAILURE;
-    }
+    CUT_ASSERT_PTR_NOT_EQUAL(uri, NULL, 0);
+    str = axutil_uri_get_protocol(uri,env);
+	CUT_ASSERT_STR_EQUAL(str, "http", 0);
+    port = axutil_uri_get_port(uri,env);
+    CUT_ASSERT_INT_EQUAL(port, 80, 0);
+    str = axutil_uri_get_path(uri,env);
+	CUT_ASSERT_STR_EQUAL(str, "/foo", 0);
+    str = axutil_uri_get_host(uri,env);
+	CUT_ASSERT_STR_EQUAL(str, "example.com", 0);
 
     base = axutil_uri_parse_string(env,uri_str_base);
-    if(base)
+    CUT_ASSERT_PTR_NOT_EQUAL(base, NULL, 0);
+	if (base)
     {
-         printf("The base of uri is %s\n",axutil_uri_to_string(base,env,0));
-    }
-    else 
-    {
-       printf("Test base failed\n");
+        str = axutil_uri_to_string(base,env,0);
+		CUT_ASSERT_STR_EQUAL(str, "http://user:XXXXXXXX@example.com/foo?bar", 0);
     }
 
     clone = axutil_uri_clone(uri,env);
-    if(clone)
+    CUT_ASSERT_PTR_NOT_EQUAL(clone, NULL, 0);
+	if (clone)
     {
-        printf("The clone of uri is %s\n",axutil_uri_to_string(clone,env,0));
+        str = axutil_uri_to_string(clone,env,0);
+		CUT_ASSERT_STR_EQUAL(str, "http://user:XXXXXXXX@example.com/foo?bar#item5", 0);
         axutil_uri_free(clone,env);
-    }
-    else
+   }
+    
+    rel = axutil_uri_resolve_relative(env,base,uri);
+    CUT_ASSERT_PTR_NOT_EQUAL(rel, NULL, 0);
+	if (rel)
     {
-        printf("Test clone failed");
+        str = axutil_uri_to_string(rel,env,0);
+		CUT_ASSERT_STR_EQUAL(str, "http://user:XXXXXXXX@example.com/foo?bar#item5", 0);
     }
     
-    rel = axutil_uri_resolve_relative(env,base,clone);
-    if(rel)
-    {
-        printf("The resolved relative uri is %s\n",axutil_uri_to_string(rel,env,0));
-    }
-    else
-    {
-        printf("Test resolve relative failed");
-    }
-    
-    protocol = axutil_uri_get_protocol(uri,env);
-    if (!protocol)
-    {
-        axutil_uri_free(uri,env);
-        return AXIS2_FAILURE;
-    }
-    
-    server = axutil_uri_get_server(uri,env);
-    if (!server)
-    {
-        axutil_uri_free(uri,env);
-        return AXIS2_FAILURE;
-    }
-    
-    port = axutil_uri_get_port(uri,env);
-    if (!port)
-    {
-        axutil_uri_free(uri,env);
-        return AXIS2_FAILURE;
-    }
-    
-    path = axutil_uri_get_path(uri,env);
-    if (!path)
-    {
-        axutil_uri_free(uri,env);
-        return AXIS2_FAILURE;
-    }
-   
-    printf("The protocol is %s\n",protocol);
-    printf("The server is %s \n",server);
-    printf("The port is %u \n",port);
-    printf("The path is %s\n",path); 
     axutil_uri_free(uri,env);
-    return AXIS2_SUCCESS;
 }
 
 int main()
 {   
-    int status = AXIS2_SUCCESS;
-    axutil_env_t *env = NULL;
-    
-    env = create_environment();
-    status = test_uri(env);
-    
-    if(status == AXIS2_FAILURE)
-    {
-        printf("The Test failed");
+    axutil_env_t *env = cut_setup_env("Uri");
+	CUT_ASSERT(env != NULL);
+	if (env) {
+        test_uri(env);
+        axutil_env_free(env);
     }
-    axutil_env_free(env);
-    
+    CUT_RETURN_ON_FAILURE(-1);
     return 0;
 }
 

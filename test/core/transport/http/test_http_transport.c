@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,29 +22,15 @@
 #include <axutil_error_default.h>
 #include <axutil_url.h>
 #include <axis2_http_client.h>
-
-typedef struct a
-{
-    axis2_char_t *value;
-}
-a;
-
-axutil_env_t *
-test_init(
-    )
-{
-    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    axutil_error_t *error = axutil_error_create(allocator);
-    axutil_env_t *env = axutil_env_create_with_error(allocator, error);
-    return env;
-}
+#include <cut_defs.h>
+#include <cut_http_server.h>
 
 void
 test_http_request_line(
     const axutil_env_t * env)
 {
-    const char *request_line_str =
-        "POST http://ws.apache.org/axis2/c/services/test_svc/test_op?x=1 HTTP/1.1\r\n";
+    char *request_line_str = axutil_strdup(env,
+        "POST http://ws.apache.org/axis2/c/services/test_svc/test_op?x=1 HTTP/1.1\r\n");
     axis2_http_request_line_t *request_line;
 
     printf("Starting http_request_line tests\n");
@@ -54,6 +39,14 @@ test_http_request_line(
            axis2_http_request_line_get_method(request_line, env),
            axis2_http_request_line_get_uri(request_line, env),
            axis2_http_request_line_get_http_version(request_line, env));
+    
+    /* To avoid warning of not using cut_ptr_equal */
+    CUT_ASSERT_PTR_EQUAL(NULL, NULL, 0);
+    /* To avoid warning of not using cut_int_equal */
+    CUT_ASSERT_INT_EQUAL(0, 0, 0);
+    /* To avoid warning of not using cut_str_equal */
+    CUT_ASSERT_STR_EQUAL("", "", 0);
+
     axis2_http_request_line_free(request_line, env);
     printf("Finished http_request_line tests ..........\n\n");
 }
@@ -85,14 +78,14 @@ test_http_header(
 {
     const char *header_name = "Content-Type";
     const char *header_value = "text/xml";
-    const char *str_header = "Content-Type: text/xml; charset=UTF-8\r\n";
+    const char *str_header =  axutil_strdup(env,"Content-Type: text/xml; charset=UTF-8\r\n");
     axis2_http_header_t *http_header;
     axis2_char_t *external_form = NULL;
 
     printf("Starting http_header tests\n");
     http_header = axis2_http_header_create(env, header_name, header_value);
     external_form = axis2_http_header_to_external_form(http_header, env);
-    printf("Heder Name :%s|Header Value:%s|External Form:%s\n",
+    printf("Header Name :%s|Header Value:%s|External Form:%s\n",
            axis2_http_header_get_name(http_header, env),
            axis2_http_header_get_value(http_header, env), external_form);
     AXIS2_FREE(env->allocator, external_form);
@@ -124,46 +117,59 @@ test_url(
 
 void
 test_http_client(
-    const axutil_env_t * env)
+    axutil_env_t * env)
 {
     axis2_http_client_t *client = NULL;
     axis2_http_simple_request_t *request = NULL;
     axis2_http_request_line_t *request_line = NULL;
     axutil_url_t *url = NULL;
     axis2_http_header_t *header = NULL;
-    axutil_stream_t *request_body = NULL;
     axis2_http_simple_response_t *response = NULL;
-    int status = 0;
+    axis2_status_t status;
     char *body_bytes = NULL;
     int body_bytes_len = 0;
-
+    char * content ="<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\"><soapenv:Body><echoString><text>echo5</text></echoString></soapenv:Body></soapenv:Envelope>";
+    char tmpbuf[100];
     printf("Starting http_client tests\n");
-    request_line = axis2_http_request_line_create(env, "GET",
-                                                  "/axis2/services",
-                                                  "HTTP/1.0");
-    request_body = axutil_stream_create_basic(env);
+	if ( ut_start_http_server(env) != 0 ) return;
+    request_line = axis2_http_request_line_create(env, "POST",
+                                                  "/axis2/services/echo/echo",
+                                                  "HTTP/1.1");
     request = axis2_http_simple_request_create(env, request_line,
                                                NULL, 0, NULL);
-    url = axutil_url_create(env, "http", "localhost", 80, NULL);
+    axis2_http_simple_request_set_body_string(request, env, content, strlen(content));
+    url = axutil_url_create(env, "http", "localhost", 9090, NULL);
+	sprintf(tmpbuf,"%s:%d", axutil_url_get_host(url, env), axutil_url_get_port(url, env));
     header =
-        axis2_http_header_create(env, "Host", axutil_url_get_host(url, env));
+        axis2_http_header_create(env, "Host", tmpbuf);
+    axis2_http_simple_request_add_header(request, env, header);
+    header =
+        axis2_http_header_create(env, "Content-Type", "application/soap+xml");
+    axis2_http_simple_request_add_header(request, env, header);
+	sprintf(tmpbuf,"%d", (int) strlen(content));
+    header =
+        axis2_http_header_create(env, "Content-Length", tmpbuf);
     axis2_http_simple_request_add_header(request, env, header);
     client = axis2_http_client_create(env, url);
 
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Trying to call axis2_http_client_send");
     status = axis2_http_client_send(client, env, request, NULL);
-    if (status < 0)
+ 	CUT_ASSERT(status == AXIS2_SUCCESS);
+    if (status != AXIS2_SUCCESS)
     {
-        printf("Test FAILED .........Can't send the request. Status :%d\n",
+        printf("Test FAILED .........Can't send the request. Status : %d\n",
                status);
         return;
     }
-    status = axis2_http_client_receive_header(client, env);
-    if (status < 0)
+    status = axis2_http_client_recieve_header(client, env);
+    CUT_ASSERT(status == 200);
+    if (status != 200)
     {
         printf("Test FAILED ......... Can't recieve. Status: %d\n", status);
         return;
     }
     response = axis2_http_client_get_response(client, env);
+	CUT_ASSERT(response != NULL);
     if (!response)
     {
         printf("Test Failed : NULL response");
@@ -180,7 +186,7 @@ test_http_client(
 
     axis2_http_client_free(client, env);
     axis2_http_simple_request_free(request, env);
-    axutil_stream_free(request_body, env);
+	ut_stop_http_server(env);
     AXIS2_FREE(env->allocator, body_bytes);
     printf("Finished http_client tests ..........\n\n");
 }
@@ -208,7 +214,7 @@ test_https_client(
     request_body = axutil_stream_create_basic(env);
     request = axis2_http_simple_request_create(env, request_line,
                                                NULL, 0, NULL);
-    url = axutil_url_create(env, "https", "localhost", 9090, NULL);
+    url = axutil_url_create(env, "https", "localhost", 9099, NULL);
 
     header =
         axis2_http_header_create(env, "Host", axutil_url_get_host(url, env));
@@ -229,10 +235,10 @@ test_https_client(
                status);
         return;
     }
-    status = axis2_http_client_receive_header(client, env);
+    status = axis2_http_client_recieve_header(client, env);
     if (status < 0)
     {
-        printf("Test FAILED ......... Can't receive. Status: %d\n", status);
+        printf("Test FAILED ......... Can't recieve. Status: %d\n", status);
         return;
     }
     response = axis2_http_client_get_response(client, env);
@@ -261,14 +267,18 @@ int
 main(
     void)
 {
-    axutil_env_t *env = test_init();
-    test_http_request_line(env);
-    test_http_status_line(env);
-    test_http_header(env);
-    test_http_client(env);
-    test_https_client(env);
-    test_url(env);
-
-    axutil_env_free(env);
+    axutil_env_t *env = cut_setup_env("test HTTP server");
+    CUT_ASSERT(env != NULL);
+	if ( env != NULL ) {
+       test_http_request_line(env);
+       test_http_status_line(env);
+       test_http_header(env);
+       test_http_client(env);
+       test_https_client(env);
+       test_url(env);
+       axutil_env_free(env);
+	}
+    CUT_RETURN_ON_FAILURE(-1);
     return 0;
 }
+

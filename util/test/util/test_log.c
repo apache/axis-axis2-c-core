@@ -21,26 +21,30 @@
 #include <axutil_log.h>
 #include <axutil_log_default.h>
 #include <axutil_allocator.h>
-#include <test_log.h>
+#include "test_log.h"
 #include <string.h>
-const axutil_env_t *
+
+axutil_env_t *
 create_env_with_error_log(
     )
 {
+    axutil_env_t *env = NULL;
+    axutil_log_t *log22 = NULL;
+    axutil_error_t *error = NULL;
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     if (!allocator)
     {
         printf("allocator is NULL\n");
         return NULL;
     }
-    axutil_error_t *error = axutil_error_create(allocator);
+    error = axutil_error_create(allocator);
     if (!error)
     {
         printf("cannot create error\n");
         return NULL;
     }
 
-    axutil_log_t *log22 = axutil_log_create(allocator, NULL, NULL);
+    log22 = axutil_log_create(allocator, NULL, NULL);
     if (!log22)
     {
         printf("cannot create log\n");
@@ -51,7 +55,7 @@ create_env_with_error_log(
      */
     log22->level = AXIS2_LOG_LEVEL_DEBUG;
     /*   log22->enabled = 0; */
-    const axutil_env_t *env =
+    env =
         axutil_env_create_with_error_log(allocator, error, log22);
     if (!env)
     {
@@ -161,8 +165,8 @@ void
 run_test_log(
     )
 {
-    printf("\n####start of run_test_log test suite\n\n");
     const axutil_env_t *env = create_env_with_error_log();
+    printf("\n####start of run_test_log test suite\n\n");
     if (!env)
         return;
     test_axutil_log_write(env);

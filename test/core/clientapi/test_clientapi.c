@@ -42,11 +42,11 @@ axis2_test_svc_client_blocking(
     axis2_endpoint_ref_t *endpoint_ref = NULL;
 
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    env = axutil_env_create(allocator);
     axiom_element_t *result_ele = NULL;
     const axis2_char_t *echo_text = "echo_text";
     axis2_char_t *result = NULL;
 
+    env = axutil_env_create(allocator);
     address = "http://localhost:9090/axis2/services/echo/echo";
     endpoint_ref = axis2_endpoint_ref_create(env, address);
     client_home = AXIS2_GETENV("AXIS2C_HOME");
@@ -83,6 +83,7 @@ axis2_test_svc_client_blocking(
                 printf("axis2_test SVC_CLIENT_SEND_RECEIVE FAILURE\n");
         }
     }
+
     axis2_svc_client_free(svc_client, env);
 }
 

@@ -8,6 +8,7 @@ allocator_test_LDADD   =   \
 
 INCLUDES = -I$(top_builddir)/include \
 			-I ../../../axiom/include \
-			-I ../../../include
+			-I ../../../include \
+		 	-I ../../../cutest/include
 
 

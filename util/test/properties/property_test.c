@@ -1,13 +1,31 @@
-#include <stdio.h>
 #include <axutil_env.h>
 #include "../util/create_env.h"
+#include <axutil_string.h>
 #include <axutil_properties.h>
 
-axis2_char_t *
-axutil_properties_read(
-    FILE *input,
-    const axutil_env_t *env);
-
+void printProperties(axutil_properties_t * properties, axutil_env_t *env)
+{
+    axutil_hash_t* all_properties = NULL;
+    all_properties = axutil_properties_get_all(properties,env);
+    if(all_properties)
+    {
+       axutil_hash_index_t *hi = NULL;
+       axis2_char_t *key = NULL;
+       axis2_char_t *value = NULL;
+       for(hi = axutil_hash_first(all_properties, env); hi; hi = axutil_hash_next(env, hi))
+        {
+          axutil_hash_this(hi, (void *)&key, NULL, (void *)&value);
+            if(key)
+            {
+                if(!value)
+                {
+                    value = axutil_strdup(env, "");
+                }
+                printf("%s=%s\n", key, value);
+            }
+        }
+    }
+}
 /** @brief test properties
   * read file and give the output
   */
@@ -15,7 +33,6 @@ axis2_status_t test_properties(axutil_env_t *env)
 { 
     axutil_hash_t* all_properties = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_char_t* cur = NULL;
     axis2_char_t* input_filename = "test.doc";
     axutil_properties_t * properties = NULL;
     axis2_status_t  store_properties ;
@@ -23,70 +40,69 @@ axis2_status_t test_properties(axutil_env_t *env)
     axis2_char_t * key = "key";
     axis2_char_t * value = "value";
     FILE *input = fopen("input.doc","rb");
-    FILE *output = fopen("output.doc","rb");
-    if (!(input && output))
+    FILE *output = fopen("output.doc","wb");
+	
+    if (!input)
     {
+        printf("Can't open input.doc\n");
         return AXIS2_FAILURE;
     }
-    
+    if (!output)
+    {
+        printf("Can't open output.doc\n");
+        return AXIS2_FAILURE;
+    }
+
     properties = axutil_properties_create(env);
     if(!properties)
     {
         printf("Properties are not created\n");
-        axutil_property_free(properties,env);
+        axutil_properties_free(properties,env);
         return AXIS2_FAILURE;
     }
     else
     printf("The the axutil_properties_create is successfull\n");
- 
-    cur = axutil_properties_read(input,env);
-    if(!cur)
-    {
-        printf("Can't read properties\n");
-        axutil_property_free(properties,env);
-        return AXIS2_FAILURE;
-    }
-    else
-    printf("The test axutil_properties_read is successfull\n");
-
     status = axutil_properties_set_property(properties,env, key, value);
     if (status == AXIS2_SUCCESS)
         printf("The test axutil_properties_set_property is successful\n");
     else
         printf("The test axutil_properties_set_property failed\n") ;
-
-  
-    store_properties = axutil_properties_store(properties,env,output);
+		
+    printProperties(properties, env);
+	store_properties = AXIS2_SUCCESS;
+/* Not used, program aborts on Windows with MSVC (Visual Studio 2008 Express Edition)
+	store_properties = axutil_properties_store(properties,env,output);
     if(!store_properties)
     {
         printf("Can not store the properties\n");
-        axutil_property_free(properties,env);
+        axutil_properties_free(properties,env);
         return AXIS2_FAILURE;
     }
     else 
     printf("The test axutil_properties_store is successfull\n");
-    
+*/    
     load_properties = axutil_properties_load(properties,env,input_filename);   
     if(!load_properties)
     {
         printf("Properties can't be loaded\n");
-        axutil_property_free(properties,env);
+        axutil_properties_free(properties,env);
         return AXIS2_FAILURE;
     }
     else 
     printf("The test axutil_properties_load is successfull\n");
-    
+    printProperties(properties, env);
+
     all_properties = axutil_properties_get_all(properties,env);
     if(!all_properties)
     {
         printf("Can't call properties_get_all\n");
-        axutil_property_free(properties,env);
+        axutil_properties_free(properties,env);
         return AXIS2_FAILURE;
     }
     else
     printf("The test axutil_properties_get_all is successfull\n");
     
-    axutil_property_free(properties,env);   
+    axutil_properties_free(properties,env);   
  
     return AXIS2_SUCCESS;
 }

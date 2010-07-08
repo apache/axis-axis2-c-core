@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,119 +22,100 @@
 #include <axis2_phases_info.h>
 #include <axutil_env.h>
 #include <axutil_allocator.h>
+#include <cut_defs.h>
 
-struct axis2_module_desc *create_module_desc(
-    const axutil_env_t * env);
-
-int
-axis2_test_op_engage_module(
+void
+axis2_test_op_engage_module(axutil_env_t *env
     )
 {
     struct axis2_module_desc *moduleref = NULL;
     axis2_conf_t *conf = NULL;
-
+    struct axutil_qname *qname = NULL;
+    axis2_op_t *op = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    printf("******************************************\n");
-    printf("testing axis2_op_engage_module\n");
-    printf("******************************************\n");
-
-    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    axutil_env_t *env = axutil_env_create(allocator);
-    axis2_op_t *op = axis2_op_create(env);
+    qname = axutil_qname_create(env, "op1", NULL, NULL);
+    CUT_ASSERT_PTR_NOT_EQUAL(qname, NULL, 0);
+    CUT_ASSERT_INT_EQUAL(env->error->status_code, AXIS2_SUCCESS, 0);
+    op = axis2_op_create_with_qname(env, qname);
+    CUT_ASSERT_PTR_NOT_EQUAL(op, NULL, 0);
+    CUT_ASSERT(env->error->status_code == AXIS2_SUCCESS);
 
     moduleref = axis2_module_desc_create(env);
+    CUT_ASSERT(moduleref != NULL);
+    CUT_ASSERT(env->error->status_code == AXIS2_SUCCESS);
     conf = axis2_conf_create(env);
+    CUT_ASSERT(conf != NULL);
+    CUT_ASSERT(env->error->status_code == AXIS2_SUCCESS);
 
     status = axis2_op_engage_module(op, env, moduleref, conf);
-    moduleref = NULL;
-    if (status != AXIS2_SUCCESS)
-    {
-        axis2_op_free(op, env);
-        printf("ERROR %d\n", status);
-    }
+    CUT_ASSERT(status == AXIS2_SUCCESS);
+    CUT_ASSERT(env->error->status_code == AXIS2_SUCCESS);
+
+    /* To avoid warning of not using cut_str_equal */
+    CUT_ASSERT_STR_EQUAL("", "", 0);
 
     axis2_op_free(op, env);
-    axutil_env_free(env);
-    return 0;
 }
 
-int
-axis2_test_svc_add_module_ops(
+void
+axis2_test_svc_add_module_ops(axutil_env_t *env
     )
 {
     struct axis2_svc *svc = NULL;
     struct axutil_qname *qname = NULL;
+    struct axutil_qname *qname1 = NULL;
     struct axis2_module_desc *module_desc = NULL;
     struct axis2_conf *axis2_config = NULL;
 
     axis2_status_t status = AXIS2_FAILURE;
 
-    printf("******************************************\n");
-    printf("testing axis2_svc_add_module_ops\n");
-    printf("******************************************\n");
-
-    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    const axutil_env_t *env = axutil_env_create(allocator);
-    qname = axutil_qname_create(env, "name1", NULL, NULL);
+    qname = axutil_qname_create(env, "svc1", NULL, NULL);
     svc = axis2_svc_create_with_qname(env, qname);
-    module_desc = axis2_module_desc_create(env);
+    CUT_ASSERT(svc != NULL);
+    CUT_ASSERT(env->error->status_code == AXIS2_SUCCESS);
+    qname1 = axutil_qname_create(env, "mod1", NULL, NULL);
+    module_desc = axis2_module_desc_create_with_qname(env, qname1);
+    CUT_ASSERT(module_desc != NULL);
+    CUT_ASSERT(env->error->status_code == AXIS2_SUCCESS);
     axis2_config = axis2_conf_create(env);
+    CUT_ASSERT(axis2_config != NULL);
+    CUT_ASSERT(env->error->status_code == AXIS2_SUCCESS);
     status = axis2_svc_add_module_ops(svc, env, module_desc, axis2_config);
-    if (status != AXIS2_SUCCESS)
-    {
-        printf("axis2_test_description_add_module_ops ERROR %d\n", status);
-    }
-    else
-        printf("axis2_test_add_module_ops SUCCESS\n");
+    CUT_ASSERT(status == AXIS2_SUCCESS);
+    CUT_ASSERT(env->error->status_code == AXIS2_SUCCESS);
 
     axis2_svc_free(svc, env);
-    axutil_qname_free(qname, env);
     axis2_module_desc_free(module_desc, env);
     axis2_conf_free(axis2_config, env);
-
-    return 0;
 }
 
-int
-axis2_test_svc_engage_module(
+void axis2_test_svc_engage_module(axutil_env_t *env
     )
 {
     axis2_svc_t *svc = NULL;
     axutil_qname_t *qname = NULL;
+    axutil_qname_t *qname1 = NULL;
     axis2_module_desc_t *moduleref = NULL;
     axis2_conf_t *axis2_config = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    printf("******************************************\n");
-    printf("testing axis2_svc_engage_module\n");
-    printf("******************************************\n");
-
-    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    const axutil_env_t *env = axutil_env_create(allocator);
-    qname = axutil_qname_create(env, "name1", NULL, NULL);
+    qname = axutil_qname_create(env, "svc1", NULL, NULL);
     svc = axis2_svc_create_with_qname(env, qname);
-    moduleref = axis2_module_desc_create(env);
+    qname1 = axutil_qname_create(env, "mod1", NULL, NULL);
+    moduleref = axis2_module_desc_create_with_qname(env, qname1);
     axis2_config = axis2_conf_create(env);
 
     status = axis2_svc_engage_module(svc, env, moduleref, axis2_config);
-    moduleref = NULL;
-    if (status != AXIS2_SUCCESS)
-    {
-        printf("axis2_test_description_svc_engage_module ERROR %d\n", status);
-    }
-    else
-        printf("axis2_test_svc_engage_module SUCCESS\n");
+    CUT_ASSERT(status == AXIS2_SUCCESS);
+    CUT_ASSERT(env->error->status_code == AXIS2_SUCCESS);
 
     axis2_svc_free(svc, env);
-    axutil_qname_free(qname, env);
     axis2_conf_free(axis2_config, env);
-
-    return 0;
 }
 
-int
-axis2_test_svc_get_op(
+void
+axis2_test_svc_get_op(axutil_env_t *env
     )
 {
     struct axis2_svc *svc = NULL;
@@ -144,12 +124,6 @@ axis2_test_svc_get_op(
     struct axis2_op *op = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
 
-    printf("******************************************\n");
-    printf("testing axis2_svc_get_op\n");
-    printf("******************************************\n");
-
-    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    const axutil_env_t *env = axutil_env_create(allocator);
     qname = axutil_qname_create(env, "op1", NULL, NULL);
     op = axis2_op_create_with_qname(env, qname);
     qname = axutil_qname_create(env, "svc1", NULL, NULL);
@@ -162,23 +136,16 @@ axis2_test_svc_get_op(
     status = axis2_svc_add_op(svc, env, op);
 
     ops = axis2_svc_get_all_ops(svc, env);
-
-    if (ops)
-        printf("SUCCESS AXIS2_SVC_GET_OPS\n");
-    else
-    {
-        printf("ERROR AXIS2_SVC_GET_OPS\n");
-        return -1;
-    }
+    CUT_ASSERT(ops != NULL);
+    CUT_ASSERT(env->error->status_code == AXIS2_SUCCESS);
 
     if (ops)
     {
-        printf("ops count = %d\n", axutil_hash_count(ops));
-
         axutil_hash_index_t *hi2 = NULL;
         void *op2 = NULL;
         axis2_char_t *oname = NULL;
         int count = 0;
+        printf("ops count = %d\n", axutil_hash_count(ops));
 
         for (hi2 = axutil_hash_first(ops, env); hi2;
              hi2 = axutil_hash_next(env, hi2))
@@ -199,17 +166,23 @@ axis2_test_svc_get_op(
     }
     else
         printf("ops count = zero\n");
+    CUT_ASSERT(env->error->status_code == AXIS2_SUCCESS);
 
-    return 0;
 }
 
 int
 main(
     )
 {
-    axis2_test_op_engage_module();
-    axis2_test_svc_add_module_ops();
-    axis2_test_svc_engage_module();
-    axis2_test_svc_get_op();
+    axutil_env_t *env = cut_setup_env("Core description");
+ 	CUT_ASSERT(env != NULL);
+	if (env) {
+       axis2_test_op_engage_module(env);
+        axis2_test_svc_add_module_ops(env);
+        axis2_test_svc_engage_module(env);
+        axis2_test_svc_get_op(env);
+        axutil_env_free(env);
+	}
+    CUT_RETURN_ON_FAILURE(-1);
     return 0;
 }

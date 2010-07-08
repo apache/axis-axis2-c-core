@@ -21,17 +21,15 @@
 #include <axis2_engine.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_msg_ctx.h>
-#include <axis2_conf_builder.h>
+#include <cut_defs.h>
+/* #include <axis2_conf_builder.h> */
 
-int
-axis2_test_engine_send(
+void
+axis2_test_engine_send(axutil_env_t *env
     )
 {
     axis2_status_t status = AXIS2_FAILURE;
-    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    const axutil_env_t *env = axutil_env_create(allocator);
     struct axis2_conf *conf = NULL;
-    conf = axis2_conf_create(env);
 
     struct axis2_conf_ctx *conf_ctx;
     struct axis2_msg_ctx *msg_ctx;
@@ -42,7 +40,9 @@ axis2_test_engine_send(
     struct axis2_svc_grp *svc_grp;
     struct axis2_svc_grp_ctx *svc_grp_ctx;
     struct axutil_qname *qname;
-
+    axis2_engine_t *engine = NULL;
+	
+    conf = axis2_conf_create(env);
     conf_ctx = axis2_conf_ctx_create(env, conf);
 
     svc_grp = axis2_svc_grp_create(env);
@@ -61,14 +61,15 @@ axis2_test_engine_send(
     axis2_msg_ctx_set_op_ctx(msg_ctx, env, op_ctx);
     axis2_msg_ctx_set_svc_ctx(msg_ctx, env, svc_ctx);
 
-    axis2_engine_t *engine = axis2_engine_create(env, conf_ctx);
+    engine = axis2_engine_create(env, conf_ctx);
     status = axis2_engine_send(engine, env, msg_ctx);
-    if (status != AXIS2_SUCCESS)
-    {
-        printf("axis2_test_engine_send ERROR %d\n", status);
-    }
-    else
-        printf("axis2_test_engine_send SUCCESS\n");
+    CUT_ASSERT_INT_NOT_EQUAL(status, AXIS2_SUCCESS, 0);
+    printf("Error code : %d\n", env->error->error_number);
+
+    /* To avoid warning of not using cut_str_equal */
+    CUT_ASSERT_STR_EQUAL("", "", 0);
+    /* To avoid warning of not using cut_ptr_equal */
+    CUT_ASSERT_PTR_EQUAL("", "", 0);
 
     axis2_conf_ctx_free(conf_ctx, env);
     axis2_msg_ctx_free(msg_ctx, env);
@@ -79,45 +80,43 @@ axis2_test_engine_send(
     axis2_op_ctx_free(op_ctx, env);
     axis2_op_free(op, env);
     axis2_engine_free(engine, env);
-    return 0;
 }
 
-int
-axis2_test_engine_receive(
+void
+axis2_test_engine_receive(axutil_env_t *env
     )
 {
     axis2_status_t status = AXIS2_FAILURE;
-    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    const axutil_env_t *env = axutil_env_create(allocator);
     axis2_conf_t *conf = NULL;
-    conf = axis2_conf_create(env);
-
     struct axis2_conf_ctx *conf_ctx;
     struct axis2_msg_ctx *msg_ctx;
+    axis2_engine_t *engine = NULL;
+	
+	conf = axis2_conf_create(env);
     conf_ctx = axis2_conf_ctx_create(env, conf);
 
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, NULL, NULL);
 
-    axis2_engine_t *engine = axis2_engine_create(env, conf_ctx);
+    engine = axis2_engine_create(env, conf_ctx);
 
     status = axis2_engine_receive(engine, env, msg_ctx);
-    if (status != AXIS2_SUCCESS)
-    {
-        printf("axis2_test_engine_receive ERROR %d\n", status);
-    }
-    else
-        printf("axis2_test_engine_receive SUCCESS\n");
+    CUT_ASSERT_INT_EQUAL(status, AXIS2_SUCCESS, 0);
     axis2_conf_ctx_free(conf_ctx, env);
     axis2_msg_ctx_free(msg_ctx, env);
     axis2_engine_free(engine, env);
-    return 0;
 }
 
 int
 main(
     )
 {
-    axis2_test_engine_send();
-    axis2_test_engine_receive();
+    axutil_env_t *env = cut_setup_env("Core engine");
+ 	CUT_ASSERT(env != NULL);
+	if (env) {
+       axis2_test_engine_send(env);
+       axis2_test_engine_receive(env);
+       axutil_env_free(env);
+	}
+    CUT_RETURN_ON_FAILURE(-1);
     return 0;
 }

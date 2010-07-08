@@ -31,11 +31,10 @@
 #include <axis2_transport_sender.h>
 #include <axis2_transport_receiver.h>
 #include <axis2_core_utils.h>
+#include <cut_defs.h>
 
-const axutil_env_t *env = NULL;
-
-int
-axis2_test_dep_engine_load(
+void
+axis2_test_dep_engine_load(axutil_env_t *env
     )
 {
     axis2_dep_engine_t *dep_engine = NULL;
@@ -44,35 +43,19 @@ axis2_test_dep_engine_load(
     axutil_array_list_t *in_phases = NULL;
     axis2_char_t *axis2c_home = NULL;
 
-    printf("******************************************\n");
-    printf("testing dep_engine_load method \n");
-    printf("******************************************\n");
-
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
     dep_engine = axis2_dep_engine_create_with_repos_name(env, axis2c_home);
-    if (!dep_engine)
-    {
-        printf("dep engine is not created \n");
-        return -1;
-    }
+    CUT_ASSERT_PTR_NOT_EQUAL(dep_engine, NULL, 1);
     conf = axis2_dep_engine_load(dep_engine, env);
     axis2_conf_set_dep_engine(conf, env, dep_engine);
-    if (!conf)
-    {
-        printf("conf is NULL\n)");
-        return -1;
-    }
-
+    CUT_ASSERT_PTR_NOT_EQUAL(conf, NULL, 1);
     svc_map = axis2_conf_get_all_svcs(conf, env);
-    if (svc_map)
-        printf("svc_map count = %d\n", axutil_hash_count(svc_map));
-    else
-        printf("svc_map count = zero\n");
-
+    CUT_ASSERT_PTR_NOT_EQUAL(svc_map, NULL, 0);
     if (svc_map)
     {
         axutil_hash_index_t *hi = NULL;
         void *service = NULL;
+        printf("svc_map count = %d\n", axutil_hash_count(svc_map));
         for (hi = axutil_hash_first(svc_map, env);
              hi; hi = axutil_hash_next(env, hi))
         {
@@ -91,12 +74,11 @@ axis2_test_dep_engine_load(
             ops = axis2_svc_get_all_ops(svc, env);
             if (ops)
             {
-                printf("ops count = %d\n", axutil_hash_count(ops));
-
                 axutil_hash_index_t *hi2 = NULL;
                 void *op = NULL;
                 axis2_char_t *oname = NULL;
-
+                printf("ops count = %d\n", axutil_hash_count(ops));
+ 
                 for (hi2 = axutil_hash_first(ops, env); hi2;
                      hi2 = axutil_hash_next(env, hi2))
                 {
@@ -119,21 +101,18 @@ axis2_test_dep_engine_load(
 
     in_phases =
         axis2_conf_get_in_phases_upto_and_including_post_dispatch(conf, env);
-    if (!in_phases)
-    {
-        printf("in phases up to and including post dispatch is NULL\n");
-    }
-    else
-    {
-        printf("dep engine load is successfull\n");
-    }
+    CUT_ASSERT_PTR_NOT_EQUAL(in_phases, NULL, 0);
+    CUT_ASSERT_INT_EQUAL(env->error->status_code, AXIS2_SUCCESS, 0);
+    
+    /* To avoid warning of not using cut_str_equal */
+    CUT_ASSERT_STR_EQUAL("", "", 0);
+
     axis2_conf_free(conf, env);
 
-    return 0;
 }
 
 int
-axis2_test_transport_receiver_load(
+axis2_test_transport_receiver_load(axutil_env_t *env
     )
 {
     axutil_dll_desc_t *dll_desc = NULL;
@@ -169,7 +148,7 @@ axis2_test_transport_receiver_load(
 }
 
 int
-axis2_test_transport_sender_load(
+axis2_test_transport_sender_load(axutil_env_t *env
     )
 {
     axutil_dll_desc_t *dll_desc = NULL;
@@ -203,8 +182,8 @@ axis2_test_transport_sender_load(
     return 0;
 }
 
-int
-axis2_test_default_module_version(
+void
+axis2_test_default_module_version(axutil_env_t *env
     )
 {
 
@@ -226,9 +205,6 @@ axis2_test_default_module_version(
     axis2_bool_t found2 = AXIS2_FALSE;
     axis2_bool_t found3 = AXIS2_FALSE;
 
-    printf("******************************************\n");
-    printf("testing axis2_default_module_version\n");
-    printf("******************************************\n");
 
     axis_conf = axis2_conf_create(env);
     mod_qname1 = axutil_qname_create(env, "module1", NULL, NULL);
@@ -256,24 +232,13 @@ axis2_test_default_module_version(
                                                       (axis_conf, env),
                                                       axis_conf);
     def_mod = axis2_conf_get_default_module(axis_conf, env, "module1");
-    if (def_mod != module1)
-    {
-        printf("axis2_default_module_version (module1) .. FAILED\n");
-        return AXIS2_FAILURE;
-    }
-    def_mod = axis2_conf_get_default_module(axis_conf, env, "module2");
-    if (def_mod != module3)
-    {
-        printf("axis2_default_module_version (module2) .. FAILED\n");
-        return AXIS2_FAILURE;
-    }
-    def_mod = axis2_conf_get_default_module(axis_conf, env, "test_module");
-    if (def_mod != module5)
-    {
-        printf("axis2_default_module_version (test_module) .. FAILED\n");
-        return AXIS2_FAILURE;
-    }
-    engage_qname = axutil_qname_create(env, "module2", NULL, NULL);
+    CUT_ASSERT_PTR_EQUAL(def_mod, module1, 0);
+    def_mod = axis2_conf_get_default_module(axis_conf, env, "module2-0.92");
+    CUT_ASSERT_PTR_EQUAL(def_mod, module3, 0);
+    def_mod = axis2_conf_get_default_module(axis_conf, env, "test_module-1.92");
+    CUT_ASSERT_PTR_EQUAL(def_mod, module5, 0);
+	
+    engage_qname = axutil_qname_create(env, "module2-0.92", NULL, NULL);
     axis2_conf_engage_module(axis_conf, env, engage_qname);
     axutil_qname_free(engage_qname, env);
     engage_qname = NULL;
@@ -287,12 +252,13 @@ axis2_test_default_module_version(
                                           "1.92");
 
     engaged_modules = axis2_conf_get_all_engaged_modules(axis_conf, env);
-
+    CUT_ASSERT_PTR_NOT_EQUAL(engaged_modules, NULL, 0);
     if (engaged_modules)
     {
         int list_size = 0;
         int i = 0;
         list_size = axutil_array_list_size(engaged_modules, env);
+		CUT_ASSERT_INT_EQUAL(list_size, 3, 0);
         for (i = 0; i < list_size; i++)
         {
             axutil_qname_t *engaged_mod_qname = NULL;
@@ -318,43 +284,24 @@ axis2_test_default_module_version(
 
         }
     }
-    if (AXIS2_FALSE == found1)
-    {
-        printf("axis2_default_module_version (module2 engaging) .. FAILED\n");
-        return AXIS2_FAILURE;
-    }
-    if (AXIS2_FALSE == found2)
-    {
-        printf("axis2_default_module_version (module1 engaging) .. FAILED\n");
-        return AXIS2_FAILURE;
-    }
-    if (AXIS2_FALSE == found3)
-    {
-        printf
-            ("axis2_default_module_version (test_module engaging) .. FAILED\n");
-        return AXIS2_FAILURE;
-    }
-    printf("axis2_default_module_version  .. SUCCESS\n");
+    CUT_ASSERT_INT_NOT_EQUAL(found1, AXIS2_FALSE, 0);
+    CUT_ASSERT_INT_NOT_EQUAL(found2, AXIS2_FALSE, 0);
+    CUT_ASSERT_INT_NOT_EQUAL(found3, AXIS2_FALSE, 0);
     axis2_conf_free(axis_conf, env);
-    return AXIS2_SUCCESS;
+    CUT_ASSERT_INT_EQUAL(env->error->status_code, AXIS2_SUCCESS, 0);
 }
 
 int
 main(
     )
 {
-    axutil_allocator_t *allocator = NULL;
-    axutil_error_t *error = NULL;
-    axutil_log_t *log = NULL;
-
-    allocator = axutil_allocator_init(NULL);
-    error = axutil_error_create(allocator);
-    log = axutil_log_create(allocator, NULL, "test_deployment.log");
-    env = axutil_env_create_with_error_log(allocator, error, log);
-    env->log->level = AXIS2_LOG_LEVEL_INFO;
-    /*axis2_test_transport_receiver_load();
-       axis2_test_transport_sender_load(); */
-    axis2_test_dep_engine_load();
-    axis2_test_default_module_version();
+    axutil_env_t *env = cut_setup_env("Context");
+	CUT_ASSERT(env != NULL);
+	if (env) {
+        axis2_test_dep_engine_load(env);
+        axis2_test_default_module_version(env);
+        axutil_env_free(env);
+    }
+    CUT_RETURN_ON_FAILURE(-1);
     return 0;
 }

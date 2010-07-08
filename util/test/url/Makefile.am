@@ -7,7 +7,9 @@ url_test_LDADD   =   \
                     $(top_builddir)/src/libaxutil.la 
 
 INCLUDES = -I$(top_builddir)/include \
+			-I$(CUTEST_HOME)/include \
 			-I ../../../axiom/include \
-			-I ../../../include
+			-I ../../../include \
+		 	-I ../../../cutest/include
 
 

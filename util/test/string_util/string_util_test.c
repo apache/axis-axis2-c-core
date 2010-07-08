@@ -2,12 +2,13 @@
 #include "../util/create_env.h"
 #include <axutil_string_util.h>
 #include <axutil_array_list.h>
+#include <cut_defs.h>
 
 /** @brief test string 
  *  tokenize a string  
  */
 
-axis2_status_t test_string(axutil_env_t *env)
+void test_string(axutil_env_t *env)
 {   
     int delim = ' ';
     void *token = NULL;
@@ -17,48 +18,47 @@ axis2_status_t test_string(axutil_env_t *env)
     axis2_char_t * in =  "this is a test string";
     
     axutil_array_list_t * tokenize = axutil_tokenize(env, in, delim);
-    if(tokenize)
-    {
-        token  = axutil_array_list_get(tokenize,env,4);
-        printf("The test axutil_tokenize is successfull\n");
-        printf("The tokenize string is %s\n",(char *)token);
-    }
-    else 
-        return AXIS2_FAILURE;
+	CUT_ASSERT(tokenize != NULL);
+    if(!tokenize) return;
+    token  = axutil_array_list_get(tokenize,env,4);
+	CUT_ASSERT(token != NULL);
+ 	CUT_ASSERT(strcmp(token, "string") == 0);
 
     first_token = axutil_first_token(env,in,delim);
+	CUT_ASSERT(first_token != NULL);
     if(first_token)
     {
         first_token_string = axutil_array_list_get(first_token,env,1);
-        printf("The test axutil_first_token is successfull\n");
-        printf("First token string is %s\n",(char *)first_token_string);
+		CUT_ASSERT(first_token_string != NULL);
+ 	    CUT_ASSERT(strcmp(first_token_string, "is a test string") == 0);
     }
-    else
-        return AXIS2_FAILURE;
     
     last_token = axutil_last_token(env,in,delim);
+ 	CUT_ASSERT(last_token != NULL);
     if(last_token)
     {
         last_token_string = axutil_array_list_get(last_token,env,1);
-        printf("The test axutil_last_token is successfull\n");
-        printf("Last token string is %s\n",(char *)last_token_string);
+ 		CUT_ASSERT(last_token_string != NULL);
+ 	    CUT_ASSERT(strcmp(last_token_string, "string") == 0);
     }
-    else
-        return AXIS2_FAILURE;
+    
+    /* To avoid warning of not using cut_ptr_equal */
+    CUT_ASSERT_PTR_EQUAL(NULL, NULL, 0);
+    /* To avoid warning of not using cut_int_equal */
+    CUT_ASSERT_INT_EQUAL(0, 0, 0);
+    /* To avoid warning of not using cut_str_equal */
+    CUT_ASSERT_STR_EQUAL("", "", 0);
 
-    return AXIS2_SUCCESS;
 }
 int main()
 {
-    axutil_env_t *env = NULL;
-    int status = AXIS2_SUCCESS;
-    env = create_environment();
-    status = test_string(env);
-    if(status == AXIS2_FAILURE)
-    {
-        printf("build  failed");
+    axutil_env_t *env = cut_setup_env("String util");
+	CUT_ASSERT(env != NULL);
+	if (env) {
+        test_string(env);
+        axutil_env_free(env);
     }
-    axutil_env_free(env);
+    CUT_RETURN_ON_FAILURE(-1);
     return 0;
 }
 

@@ -19,6 +19,7 @@
 #ifndef TEST_LOG_H
 #define TEST_LOG_H
 
+#include <platforms/axutil_platform_auto_sense.h>
 #include <axutil_env.h>
 #include <axutil_thread.h>
 

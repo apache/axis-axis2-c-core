@@ -16,19 +16,15 @@
  * limitations under the License.
  */
 
-#include <stdio.h>
-#include <strings.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
+#include <platforms/axutil_platform_auto_sense.h>
 #include <axis2_const.h>
-#include <stdlib.h>
+#include <cut_defs.h>
+#include <cut_http_server.h>
+
+#if defined (WIN32)
+#define bcopy(s, d, n) 	memcpy(d, s, n)
+#define bzero(s, n)  	memset(s, 0, n)
+#endif
 
 /* Function prototypes */
 int write_to_socket(
@@ -44,7 +40,18 @@ error(
     const char *msg)
 {
     perror(msg);
-    exit(0);
+    exit(-1);
+}
+
+void
+axis2_test_temp(axutil_env_t *env)
+{
+    /* To avoid warning of not using cut_ptr_equal */
+    CUT_ASSERT_PTR_EQUAL(NULL, NULL, 0);
+    /* To avoid warning of not using cut_int_equal */
+    CUT_ASSERT_INT_EQUAL(0, 0, 0);
+    /* To avoid warning of not using cut_str_equal */
+    CUT_ASSERT_STR_EQUAL("", "", 0);
 }
 
 int
@@ -56,6 +63,9 @@ main(
     const axis2_char_t *port = "9090";
     const axis2_char_t *filename = "echo.xml";
     const axis2_char_t *endpoint = "/axis2/services/echo/echo";
+    axutil_env_t *env = NULL;
+	
+#ifndef WIN32
     int c;
     extern char *optarg;
 
@@ -77,11 +87,19 @@ main(
             break;
         }
     }
+#endif
+  env = cut_setup_env("test HTTP server");
+  CUT_ASSERT(env != NULL);
+  if ( ut_start_http_server(env) != 0 ) return -1;
+  write_to_socket(hostname, port, filename, endpoint);
+  ut_stop_http_server(env);
 
-    write_to_socket(hostname, port, filename, endpoint);
-    return 0;
+  axis2_test_temp(env);
+  CUT_RETURN_ON_FAILURE(-1);
+  return 0;
 }
 
+#define TEST_BUF_LEN	4999
 int
 write_to_socket(
     const char *address,
@@ -89,17 +107,16 @@ write_to_socket(
     const char *filename,
     const char *endpoint)
 {
-    axis2_char_t buffer_l[4999];
-    int sockfd,
-     portno,
-     n,
-     i;
+    axis2_char_t buffer_l[TEST_BUF_LEN];
+    int sockfd, portno, n, i, fd;
     struct sockaddr_in serv_addr;
     struct hostent *server;
     struct stat buf;
     axis2_char_t *buffer;
     axis2_char_t tmpstr[10];
     int bufsize = 0;
+    int reste;
+    axis2_char_t *pbuf;
 
     portno = atoi(port);
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -123,7 +140,7 @@ write_to_socket(
     stat(filename, &buf);
     bufsize = (buf.st_size + 1) * sizeof(char);
     buffer = (char *) malloc(bufsize);
-    int fd = open(filename, O_RDONLY, 0);
+    fd = open(filename, O_RDONLY, 0);
     if (fd == -1)
     {
         printf("can't open file %s\n", filename);
@@ -154,22 +171,25 @@ write_to_socket(
     strcat(buffer_l, "\r\n");
 
     printf("Writing buffer_1...\n%s", buffer_l);
-    n = write(sockfd, buffer_l, strlen(buffer_l));
+    n = send(sockfd, buffer_l, strlen(buffer_l), 0);
 
-    n = write(sockfd, buffer, strlen(buffer));
+    n = send(sockfd, buffer, strlen(buffer), 0);
     if (n < 0)
         error("ERROR writing to socket");
 
     printf("Done writing to server\n");
 
     buffer[0] = '\0';
-
-    printf("Reading the reply from server :\n");
-    while ((n = read(sockfd, buffer, bufsize - 1)) > 0)
+    pbuf = buffer_l;
+    reste = TEST_BUF_LEN - 1;
+ 	printf("Read server response %s\n", filename);
+    while ((n = recv(sockfd, pbuf, reste, 0)) > 0)
     {
-        buffer[n] = '\0';
-        printf("%s", buffer);
+        pbuf += n;
+        reste -= n;
     }
+    buffer_l[pbuf - buffer_l] = '\0';
+
     printf("\nReading from server done ...\n");
 
     if (n < 0)
@@ -177,6 +197,7 @@ write_to_socket(
         error("ERROR reading from socket");
         buffer[0] = '\0';
     }
+    
     free(buffer);
     return 0;
 }

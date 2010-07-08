@@ -12,10 +12,10 @@ main(
     int i;
     for (i = 1; i <= TIMES; ++i)
     {
-        printf("%d\n", i);
         axis2_svc_client_t *svc_client =
             axis2_svc_client_create(env, AXIS2_GETENV("AXIS2C_HOME"));
         axis2_svc_client_free(svc_client, env);
+        printf("%d\n", i);
     }
     axutil_env_free(env);
     return 0;

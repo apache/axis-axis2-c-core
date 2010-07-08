@@ -13,6 +13,7 @@ test_description_LDADD   =  \
 			$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la
 
 INCLUDES = -I$(top_builddir)/include \
+            -I$(CUTEST_HOME)/include \
             -I$(top_builddir)/src/core/description \
             -I$(top_builddir)/src/core/context \
             -I$(top_builddir)/src/core/phaseresolver \
@@ -21,5 +22,6 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/core/engine \
             -I$(top_builddir)/src/core/clientapi \
 			-I ../../../util/include \
-			-I ../../../axiom/include 
+			-I ../../../axiom/include \
+		 	-I ../../../cutest/include
 

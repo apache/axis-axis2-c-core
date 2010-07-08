@@ -21,10 +21,10 @@
 #include <axutil_allocator.h>
 #include <axis2_endpoint_ref.h>
 #include <stdio.h>
+#include <cut_defs.h>
 
-int
-axis2_test_msg_info_headers(
-    )
+void
+axis2_test_msg_info_headers(axutil_env_t *env)
 {
     axis2_endpoint_ref_t *to = NULL;
     axis2_endpoint_ref_t *from = NULL;
@@ -33,9 +33,7 @@ axis2_test_msg_info_headers(
     axis2_endpoint_ref_t *axis2_endpoint_ref = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_msg_info_headers_t *axis2_msg_info_headers = NULL;
-    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    const axutil_env_t *env = axutil_env_create(allocator);
-    const axis2_char_t *action = "test action";
+    axis2_char_t *action = "test action";
     const axis2_char_t *get_action = NULL;
     to = axis2_endpoint_ref_create(env, "to");
     from = axis2_endpoint_ref_create(env, "from");
@@ -43,140 +41,57 @@ axis2_test_msg_info_headers(
     fault_to = axis2_endpoint_ref_create(env, "fault to");
 
     axis2_msg_info_headers = axis2_msg_info_headers_create(env, NULL, action);
-    if (axis2_msg_info_headers)
-        printf("SUCCESS axis2_msg_info_headers_create\n");
-    else
-    {
-        printf("ERROR AXIS2_MSG_INFO_HEADERS_CREATE\n");
-        return -1;
-    }
-
+    CUT_ASSERT_PTR_NOT_EQUAL(axis2_msg_info_headers, NULL, 1);
     status = axis2_msg_info_headers_set_to(axis2_msg_info_headers, env, to);
-
-    if (status == AXIS2_SUCCESS)
-        printf("SUCCESS axis2_msg_info_headers_set_to\n");
-    else
-    {
-        printf("ERROR axis2_msg_info_headers_set_to");
-        return -1;
-    }
+    CUT_ASSERT_INT_EQUAL(status, AXIS2_SUCCESS, 1);
 
     axis2_endpoint_ref =
         axis2_msg_info_headers_get_to(axis2_msg_info_headers, env);
+    CUT_ASSERT_PTR_NOT_EQUAL(axis2_endpoint_ref, NULL, 1);
 
-    if (axis2_endpoint_ref)
-        printf("SUCCESS axis2_msg_info_headers_get_to\n");
-    else
-    {
-        printf("ERROR axis2_msg_info_headers_get_to\n");
-        return -1;
-    }
-
-    status = AXIS2_FAILURE;
     status = axis2_msg_info_headers_set_from(axis2_msg_info_headers, env, from);
+    CUT_ASSERT_INT_EQUAL(status, AXIS2_SUCCESS, 1);
 
-    if (status)
-        printf("SUCCESS axis2_msg_info_headers_set_from\n");
-    else
-    {
-        printf("ERROR axis2_msg_info_headers_set_from\n");
-        return -1;
-    }
-
-    axis2_endpoint_ref = NULL;
     axis2_endpoint_ref =
         axis2_msg_info_headers_get_from(axis2_msg_info_headers, env);
+    CUT_ASSERT_PTR_NOT_EQUAL(axis2_endpoint_ref, NULL, 1);
 
-    if (axis2_endpoint_ref)
-        printf("SUCCESS axis2_msg_info_headers_get_from\n");
-    else
-    {
-        printf("ERROR axis2_msg_info_headers_get_from\n");
-        return -1;
-    }
-
-    axis2_endpoint_ref = NULL;
     axis2_endpoint_ref =
         axis2_msg_info_headers_get_reply_to(axis2_msg_info_headers, env);
+    CUT_ASSERT_PTR_EQUAL(axis2_endpoint_ref, NULL, 0);
 
-    if (status)
-        printf("SUCCESS axis2_msg_info_headers_get_reply_to\n");
-    else
-    {
-        printf("ERROR axis2_msg_info_headers_get_reply_to\n");
-        return -1;
-    }
-
-    status = AXIS2_FAILURE;
     status =
-        axis2_msg_info_headers_set_reply_to(axis2_msg_info_headers, env,
-                                            reply_to);
-
-    if (status)
-        printf("SUCCESS axis2_msg_info_headers_set_reply_to\n");
-    else
-    {
-        printf("ERROR axis2_msg_info_headers_set_reply_to\n");
-        return -1;
-    }
-
-    status = AXIS2_FAILURE;
+        axis2_msg_info_headers_set_reply_to(axis2_msg_info_headers, env, reply_to);
+    CUT_ASSERT_INT_EQUAL(status, AXIS2_SUCCESS, 1);
+    axis2_endpoint_ref =
+        axis2_msg_info_headers_get_reply_to(axis2_msg_info_headers, env);
+    CUT_ASSERT_PTR_NOT_EQUAL(axis2_endpoint_ref, NULL, 1);
     status =
-        axis2_msg_info_headers_set_fault_to(axis2_msg_info_headers, env,
-                                            fault_to);
-    if (status)
-        printf("SUCCESS axis2_msg_info_headers_set_fault_to\n");
-    else
-    {
-        printf("ERROR axis2_msg_info_headers_set_fault_to\n");
-        return -1;
-    }
+        axis2_msg_info_headers_set_fault_to(axis2_msg_info_headers, env, fault_to);
+    CUT_ASSERT_INT_EQUAL(status, AXIS2_SUCCESS, 0);
 
-    axis2_endpoint_ref = NULL;
     axis2_endpoint_ref =
         axis2_msg_info_headers_get_fault_to(axis2_msg_info_headers, env);
-    if (axis2_endpoint_ref)
-        printf("SUCCESS axis2_msg_info_headers_get_fault_to\n");
-    else
-    {
-        printf("ERROR axis2_msg_info_headers_get_fault_to\n");
-        return -1;
-    }
+    CUT_ASSERT_PTR_NOT_EQUAL(axis2_endpoint_ref, NULL, 0);
 
     get_action = axis2_msg_info_headers_get_action(axis2_msg_info_headers, env);
-    if (get_action)
-        printf("SUCCESS axis2_msg_info_headers_get_action\n");
-    else
-    {
-        printf("ERROR axis2_msg_info_headers_get_action\n");
-        return -1;
-    }
-
-    status = AXIS2_FAILURE;
+    CUT_ASSERT_STR_EQUAL(get_action, action, 0);
+	
     status =
         axis2_msg_info_headers_set_action(axis2_msg_info_headers, env, action);
-    if (status)
-        printf("SUCCESS axis2_msg_info_headers_set_action\n");
-    else
-    {
-        printf("ERROR axis2_msg_info_headers_set_action\n");
-    }
+    CUT_ASSERT_INT_EQUAL(status, AXIS2_SUCCESS, 0);
 
-    status = AXIS2_FAILURE;
-    /* status = axis2_msg_info_headers_free(axis2_msg_info_headers, env); */
-    if (status)
-        printf("SUCCESS axis2_msg_info_headers_free\n");
-    else
-    {
-        printf("ERROR axis2_msg_info_headers_free\n");
-    }
-    return 0;
+    axis2_msg_info_headers_free(axis2_msg_info_headers, env);
 }
 
-int
-main(
-    )
+int main()
 {
-    axis2_test_msg_info_headers();
-    return 0;
+    axutil_env_t *env = cut_setup_env("Core Addr");
+	CUT_ASSERT(env != NULL);
+	if (env) {
+       axis2_test_msg_info_headers(env);
+       axutil_env_free(env);
+    }
+    CUT_RETURN_ON_FAILURE(-1);
+   return 0;
 }

@@ -4,12 +4,13 @@
 #include <stdio.h>
 #include <axutil_env.h>
 #include "../util/create_env.h"
+#include <cut_defs.h>
 
 /** @brief test_rand 
  *  *   deserialize and serialize the time 
  *   */
 
-axis2_status_t test_date_time(axutil_env_t *env)
+void test_date_time(axutil_env_t *env)
 {
     axutil_date_time_t *date_time = NULL;
     axutil_date_time_t *ref = NULL;
@@ -23,116 +24,78 @@ axis2_status_t test_date_time(axutil_env_t *env)
     int year , month , date , hour , min , sec , msec;
     
     date_time_offset = axutil_date_time_create_with_offset(env, 100);
-    if(!date_time_offset)
-    {
-        printf("axutil_date_time_t creation failed.\n");
-        return AXIS2_FAILURE;
-    }
+    CUT_ASSERT(date_time_offset != NULL);
+    if (date_time_offset != NULL) axutil_date_time_free(date_time_offset, env);
     date_time = axutil_date_time_create(env);
-    if(!date_time)
+    CUT_ASSERT(date_time != NULL);
+    if(date_time)
     {
-        printf("axutil_date_time_t creation failed.\n");
-        return AXIS2_FAILURE;
-    }
-    status = axutil_date_time_deserialize_time(date_time, env, time_str);
-    if(status)
-        printf("axutil_date_time_t time string deserialization success.\n");
-    status = axutil_date_time_deserialize_date(date_time, env, date_str);
-    if(status)
-        printf("axutil_date_time_t date string deserialization success.\n");
-    status = axutil_date_time_deserialize_date_time(date_time, env, date_time_str);
-    if(status)
-        printf("axutil_date_time_t date time string deserialization success.\n");
-    
-    ref = axutil_date_time_create(env);
-    if(!ref)
-    {
-        printf("axutil_date_time_t creation failed.\n");
-        return AXIS2_FAILURE;
-    }
-    compare_res = axutil_date_time_compare(date_time, env, ref);
-    if(compare_res == AXIS2_DATE_TIME_COMP_RES_FAILURE)
-    {
-        printf("axutil_date_time comparison failed.\n");
-    }
-    
-    status = axutil_date_time_deserialize_date_time(ref, env, date_time_str);
-    if(status)
-        printf("axutil_date_time_t date time string deserialization success.\n");
-    compare_res = axutil_date_time_compare(date_time, env, ref);
-    if(compare_res == AXIS2_DATE_TIME_COMP_RES_EQUAL)
-    {
-        printf("axutil_date_time_t comparison success.");
-    }
-    status = axutil_date_time_set_date_time(date_time, env, 2008, 1, 8, 12, 18, 57, 799);
-    if(status)
-    {
-        printf("axutil_date_time_t set date time success.\n");
-    }
-    
-    t_str = axutil_date_time_serialize_time(date_time, env);
-    if(!t_str)
-    {
-        printf("axutil_date_time_t time serialization failed.\n");
-    }
-    else
-    {
-        printf("axutil_date_time_t Time: %s\n", t_str);
-    }
-    d_str = axutil_date_time_serialize_date(date_time, env);
-    if(!d_str)
-    {
-        printf("axutil_date_time_t date serialization failed.\n");
-    }
-    else
-    {
-        printf("axutil_date_time_t Date: %s\n", d_str);
-    }
-    dt_str = axutil_date_time_serialize_date_time(date_time, env);
-    if(!dt_str)
-    {
-        printf("axutil_date_time_t date time serialization failed.\n");
-    }
-    else
-    {
-        printf("axutil_date_time_t Date Time: %s\n", dt_str);
-    }
-    year = axutil_date_time_get_year(date_time,env);
-    month=axutil_date_time_get_month(date_time,env);
-    date = axutil_date_time_get_day(date_time,env);
-    hour = axutil_date_time_get_hour(date_time,env);
-    min  = axutil_date_time_get_minute(date_time,env);
-    sec  = axutil_date_time_get_second(date_time,env);
-    msec = axutil_date_time_get_msec(date_time,env);
-    printf("axutil_date_time_t year: %d \n",year);
-    printf("axutil_date_time_t month: %d \n",month);
-    printf("axutil_date_time_t date: %d \n",date);
-    printf("axutil_date_time_t hour: %d \n",hour);
-    printf("axutil_date_time_t min: %d \n",min);
-    printf("axutil_date_time_t sec: %d \n",sec);
-    printf("axutil_date_time_t msec: %d \n",msec);
-    
-    axutil_date_time_free(date_time,env);
-    axutil_date_time_free(ref, env);
-    axutil_date_time_free(date_time_offset, env);
-    return AXIS2_SUCCESS;
+        status = axutil_date_time_deserialize_time(date_time, env, time_str);
+        CUT_ASSERT(status == AXIS2_SUCCESS);
+        status = axutil_date_time_deserialize_date(date_time, env, date_str);
+        CUT_ASSERT(status == AXIS2_SUCCESS);
+        status = axutil_date_time_deserialize_date_time(date_time, env, date_time_str);
+        CUT_ASSERT(status == AXIS2_SUCCESS);
+
+        ref = axutil_date_time_create(env);
+        CUT_ASSERT(ref != NULL);
+        if(ref)
+        {
+            compare_res = axutil_date_time_compare(date_time, env, ref);
+            CUT_ASSERT(compare_res != AXIS2_DATE_TIME_COMP_RES_FAILURE);
+
+            status = axutil_date_time_deserialize_date_time(ref, env, date_time_str);
+            CUT_ASSERT(status == AXIS2_SUCCESS);
+            compare_res = axutil_date_time_compare(date_time, env, ref);
+            CUT_ASSERT(compare_res == AXIS2_DATE_TIME_COMP_RES_EQUAL);
+            axutil_date_time_free(ref, env);
+        }
+        status = axutil_date_time_set_date_time(date_time, env, 2008, 1, 8, 12, 18, 57, 799);
+        CUT_ASSERT(status == AXIS2_SUCCESS);
+
+        t_str = axutil_date_time_serialize_time(date_time, env);
+        CUT_ASSERT(t_str != NULL);
+        d_str = axutil_date_time_serialize_date(date_time, env);
+        CUT_ASSERT(d_str != NULL);
+        dt_str = axutil_date_time_serialize_date_time(date_time, env);
+        CUT_ASSERT(d_str != NULL);
+        year = axutil_date_time_get_year(date_time,env);
+        month=axutil_date_time_get_month(date_time,env);
+        date = axutil_date_time_get_date(date_time,env);
+        hour = axutil_date_time_get_hour(date_time,env);
+        min  = axutil_date_time_get_minute(date_time,env);
+        sec  = axutil_date_time_get_second(date_time,env);
+        msec = axutil_date_time_get_msec(date_time,env);
+        CUT_ASSERT(year == 2008);
+        CUT_ASSERT(month == 1);
+        CUT_ASSERT(date == 8);
+        CUT_ASSERT(hour == 12);
+        CUT_ASSERT(min == 18);
+        CUT_ASSERT(sec == 57);
+        CUT_ASSERT(msec == 799); 
+        
+        /* To avoid warning of not using cut_ptr_equal */
+        CUT_ASSERT_PTR_EQUAL(NULL, NULL, 0);
+        /* To avoid warning of not using cut_int_equal */
+        CUT_ASSERT_INT_EQUAL(0, 0, 0);
+        /* To avoid warning of not using cut_str_equal */
+        CUT_ASSERT_STR_EQUAL("", "", 0);
+
+        axutil_date_time_free(date_time,env);
+   }
 }
 
 int main()
 {
     axutil_env_t *env = NULL;
-    int status = AXIS2_SUCCESS;
-    env = create_environment();
-    status = test_date_time(env);
-    if(status != AXIS2_SUCCESS)
+    env = cut_setup_env("Date Time");
+    CUT_ASSERT(env != NULL);
+    if (env) 
     {
-        printf("axutil_date_time_t test failed");
+        test_date_time(env);
+        axutil_env_free(env);
     }
-    else
-    {
-        printf("axutil_date_time_t test successful");
-    }
-    axutil_env_free(env);
+    CUT_RETURN_ON_FAILURE(-1);
     return 0;
 }
 

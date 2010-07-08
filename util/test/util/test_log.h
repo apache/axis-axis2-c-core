@@ -23,7 +23,7 @@
 
 void run_test_log(
 );
-const axutil_env_t *create_env_with_error_log(
+axutil_env_t *create_env_with_error_log(
 );
 void test_axutil_log_write(
     const axutil_env_t * env);
