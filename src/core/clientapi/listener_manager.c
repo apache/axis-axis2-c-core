@@ -127,7 +127,9 @@ axis2_listener_manager_make_sure_started(
                 listener = axis2_transport_in_desc_get_recv(transport_in, env);
                 if(listener)
                 {
+#ifdef AXIS2_SVR_MULTI_THREADED
                     axutil_thread_t *worker_thread = NULL;
+#endif
                     axis2_listener_manager_worker_func_args_t *arg_list = NULL;
                     arg_list = AXIS2_MALLOC(env->allocator,
                         sizeof(axis2_listener_manager_worker_func_args_t));
@@ -188,7 +190,9 @@ axis2_listener_manager_make_sure_started(
                         tl_state->listener = listener;
                         tl_state->waiting_calls = 0;
                         listener_manager->listener_map[transport] = tl_state;
+#ifdef AXIS2_SVR_MULTI_THREADED
                         listener_manager->listener_thread[transport] = worker_thread;
+#endif
                     }
                 }
             }

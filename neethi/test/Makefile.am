@@ -10,5 +10,6 @@ INCLUDES = -I$(top_builddir)/include \
 
 test_LDADD = $(top_builddir)/src/libneethi.la \
 			../../axiom/src/om/libaxis2_axiom.la \
+			../../axiom/src/parser/guththila/libaxis2_parser.la \
 			../../util/src/libaxutil.la \
 			../src/libneethi.la

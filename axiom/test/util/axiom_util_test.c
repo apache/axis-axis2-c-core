@@ -3,7 +3,9 @@
 #include <axiom.h>
 #include <axis2_util.h>
 #include <axiom_node.h>
+#include <axiom_xml_reader.h>
 #include "../../../util/test/util/create_env.h"
+
     FILE *f = NULL;
     axiom_node_t *node = NULL;
     axiom_node_t *child = NULL;
