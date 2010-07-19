@@ -382,7 +382,10 @@ axis2_http_transport_utils_process_http_post_request(
         encoding_header = (axis2_http_header_t *)axutil_hash_get(headers,
             AXIS2_HTTP_HEADER_TRANSFER_ENCODING, AXIS2_HASH_KEY_STRING);
 
-        if(encoding_header)
+        if((encoding_header)&& (!strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED)))
+            /* (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED)) is a hack. we have to fix it properly. When 
+            combining chunking and MTOM it is not working. Normal MTOM processing takes care of the chunking as well. so, 
+            we don't need to specifically read using chunked_stream. But, this is not a proper way to do it. FIX IT */
         {
             axis2_char_t *encoding_value = NULL;
             encoding_value = axis2_http_header_get_value(encoding_header, env);
