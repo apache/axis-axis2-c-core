@@ -440,7 +440,20 @@ axis2_apache2_worker_process_request(
 
 	headers = axis2_apache_worker_get_headers(env, request);
 	axis2_msg_ctx_set_transport_headers(msg_ctx, env, headers);
+	if(headers)
+	{   
+		/** Transfer encoding property set in message context is used to check whether to 
+			create a chunked stream or not in transport_utils_process_request. For apache stream,
+			using chunked stream will fail. */
+		axis2_http_header_t *encoding_header = NULL;
+		encoding_header = (axis2_http_header_t *)axutil_hash_get(headers,
+            AXIS2_HTTP_HEADER_TRANSFER_ENCODING, AXIS2_HASH_KEY_STRING);
 
+        if(encoding_header)
+        {
+			axis2_msg_ctx_set_transfer_encoding(msg_ctx, env, axutil_strdup(env, AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED));
+		}
+	}
     request_body = axutil_stream_create_apache2(env, request);
     if(!request_body)
     {
