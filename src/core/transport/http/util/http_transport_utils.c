@@ -335,6 +335,7 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_char_t *mime_boundary = NULL;
     axis2_bool_t check_for_fault = AXIS2_FALSE;
     axis2_bool_t has_fault = AXIS2_FALSE;
+	axis2_char_t *encoding_header_value = NULL;
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, in_stream, AXIS2_FAILURE);
@@ -375,17 +376,25 @@ axis2_http_transport_utils_process_http_post_request(
             AXIS2_ACTION);
     }
 
-    headers = axis2_msg_ctx_get_transport_headers(msg_ctx, env);
-    if(headers)
+	headers = axis2_msg_ctx_get_transport_headers(msg_ctx, env);
+    
+	encoding_header_value = axis2_msg_ctx_get_transfer_encoding(msg_ctx, env);
+
+    if(encoding_header_value && axutil_strstr(encoding_header_value, AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
+    {
+        /* In case Transfer encoding is set to message context, some streams strip chunking meta
+         data, so chunked streams should not be created */
+
+        callback_ctx->content_length = -1;
+        callback_ctx->unread_len = -1;
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[chunked ] setting length to -1");
+    }else if(headers)
     {
         axis2_http_header_t *encoding_header = NULL;
         encoding_header = (axis2_http_header_t *)axutil_hash_get(headers,
             AXIS2_HTTP_HEADER_TRANSFER_ENCODING, AXIS2_HASH_KEY_STRING);
 
-        if((encoding_header)&& (!strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED)))
-            /* (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED)) is a hack. we have to fix it properly. When 
-            combining chunking and MTOM it is not working. Normal MTOM processing takes care of the chunking as well. so, 
-            we don't need to specifically read using chunked_stream. But, this is not a proper way to do it. FIX IT */
+        if(encoding_header)
         {
             axis2_char_t *encoding_value = NULL;
             encoding_value = axis2_http_header_get_value(encoding_header, env);
@@ -405,23 +414,22 @@ axis2_http_transport_utils_process_http_post_request(
                     " stream chunked");
             }
         }
-    }
+    }/*
     else
     {
-        /* Encoding header is not available */
-        /* check content encoding from msg ctx property */
+        
         axis2_char_t *value = axis2_msg_ctx_get_transfer_encoding(msg_ctx, env);
 
         if(value && axutil_strstr(value, AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
         {
-            /* In case Transfer encoding is set to message context, some streams strip chunking meta
-             data, so chunked streams should not be created */
+            // In case Transfer encoding is set to message context, some streams strip chunking meta
+            // data, so chunked streams should not be created 
 
             callback_ctx->content_length = -1;
             callback_ctx->unread_len = -1;
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[chunked ] setting length to -1");
         }
-    }
+    }*/
 
     /* when the message contains does not contain pure XML we can't send it 
      * directly to the parser, First we need to separate the SOAP part from
