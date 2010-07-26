@@ -3,7 +3,7 @@ AXIS2/C release process
                             
 1. Get a svn checkout from the trunk.
 2. Change the version numbers and update the following files.
-    * ChangeLog
+      ChangeLog
       NEWS
       samples/ChangeLog
       axutil_version.h 
