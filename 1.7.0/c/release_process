@@ -1,0 +1,140 @@
+AXIS2/C release process
+==========================
+                            
+1. Get a svn checkout from the trunk.
+2. Change the version numbers and update the following files.
+      ChangeLog
+      NEWS
+      samples/ChangeLog
+      axutil_version.h 
+      config.h 
+      doxygenconf
+      AUTHORS (if there are new)
+      NOTICE (for years)
+      NEWS
+      project.xml
+      samples/AUTHORS
+	  samples/configure.ac
+      configure.ac (in configure.ac change the VERSION_NO also) in following locations
+        util, util/include, guththila, axiom, neethi, samples, tools/tcpmon, tools/md5
+      INSTALL file
+      project.properties
+      build/win32/makefile
+        
+
+3. Update the documents inside xdocs
+    * download.html
+    * index.html
+    * installationguide.html
+    * axis2c_manual
+
+4. Run the build.sh
+    make sure for the configure option you have the following.
+    sh configure --prefix=${AXIS2C_HOME} --enable-tests=yes --with-apache2=/usr/local/apache2/include --enable-tcp=yes --with-archive=/usr/include
+
+5. Create the source distribution
+    * Should have maven 1.0.2 installed (for "maven site" command)
+    * make dist
+
+6. Create the binay distribution
+    * make bindist
+
+7. Test the source and binary distributions
+
+8. Test the source distribution in Windows and create the Sorce zip
+   and the windows binary
+
+   Building Windows Binary
+   --------------------------
+
+    Edit the build/win32/configure.in as follows
+
+    * CRUNTIME = /MT
+    * EMBED_MANIFEST = 0
+    * DEBUG = 0
+
+    To create the binary distribution
+
+    * nmake dist  
+
+
+9. Sign the packs
+    * use existing key pair if you have
+    * To create a new key pair
+        gpg --gen-key
+        key selection default
+        key size 2048
+        key never expire
+        real name:Manjula Peiris
+        comment:
+        generated user id is:
+        "Manjula Peiris<manjula@wso2.com>"
+        passphrase temp_12_word
+
+        keys will be created in ~/.gnupg directory.
+
+    * cd to the directory which contains the pack and export keys
+        gpg --armor --export manjula@wso2.com > KEYS
+
+        generated message is:
+        You need a Passphrase to protect your secret key.
+        by default key is created in ~/.gnupg
+
+    * Use following script to sign the keys
+        
+        #!/bin/bash
+
+        SRC_TAR_GZ=axis2c-src-1.7.0.tar.gz
+        LIN_BIN_TAR_GZ=axis2c-bin-1.7.0-linux.tar.gz
+        SRC_ZIP=axis2c-src-1.7.0.zip
+        WIN32_BIN_ZIP=axis2c-bin-1.7.0-win32.zip
+        SRC_TAR_GZ_MD5=$SRC_TAR_GZ.md5
+        LIN_BIN_TAR_GZ_MD5=$LIN_BIN_TAR_GZ.md5
+        SRC_ZIP_MD5=$SRC_ZIP.md5
+        WIN32_BIN_ZIP_MD5=$WIN32_BIN_ZIP.md5
+        SRC_TAR_GZ_ASC=$SRC_TAR_GZ.asc
+        LIN_BIN_TAR_GZ_ASC=$LIN_BIN_TAR_GZ.asc
+        SRC_ZIP_ASC=$SRC_ZIP.asc
+        WIN32_BIN_ZIP_ASC=$WIN32_BIN_ZIP.asc
+
+        rm -f *.asc
+        rm -f *.md5
+
+        echo "Creating MD5"
+        openssl md5 < $SRC_TAR_GZ > $SRC_TAR_GZ_MD5
+        openssl md5 < $LIN_BIN_TAR_GZ > $LIN_BIN_TAR_GZ_MD5
+        openssl md5 < $SRC_ZIP > $SRC_ZIP_MD5
+        openssl md5 < $WIN32_BIN_ZIP > $WIN32_BIN_ZIP_MD5
+
+        echo "To sign please enter password for the private key"
+        gpg --armor --output $SRC_TAR_GZ_ASC --detach-sig $SRC_TAR_GZ
+        gpg --armor --output $LIN_BIN_TAR_GZ_ASC --detach-sig $LIN_BIN_TAR_GZ
+        gpg --armor --output $SRC_ZIP_ASC --detach-sig $SRC_ZIP
+        gpg --armor --output $WIN32_BIN_ZIP_ASC --detach-sig $WIN32_BIN_ZIP
+
+        echo "DONE"
+
+10. Copy the source, binary packs to your directory in people.apache.org
+
+        rm -rf 1.7.0
+        rm -f 1.7.0.tar.gz
+        mkdir 1.7.0
+        cp -f ../KEYS 1.7.0
+        cp -f axis2c-* 1.7.0
+        tar -zcf axis2c_1.7.0.tar.gz 1.7.0
+        scp axis2c_1.7.0.tar.gz manjula@people.apache.org:~/
+
+11. Put RCs till all the packs are throughly tested and there are no more 
+    known issues.
+12. Then upload the release packs to your directory at apache
+13. Call for vote
+14. When the required number of votes is received, upload the release.
+        Copy the release from your home to /www/www.apache.org/dist/ws/axis2-c/
+        update the keys (cat KEYS >> /www/www.apache.org/dist/ws/axis2-c/KEYS)
+        Move earlier releases to archive.apache.org (/www/archive.apache.org/dist/ws/axis2/c/)
+        Update the site at [WWW] https://svn.apache.org/repos/asf/webservices/axis2/site/c/
+        svn update the site at /www/ws.apache.org/axis2/c
+        Test Main Site Downloads (wait until mirros pickup the distributables, before sending the release note.)
+
+15. When the site is updated announce the release.
+

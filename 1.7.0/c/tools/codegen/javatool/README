@@ -1,0 +1,29 @@
+WSDL2C.sh and WSDL2C.bat
+========================
+
+These scripts are provided to simplify the C code generation using WSDL2C Java tool that comes with Apache Axis2/Java. 
+
+How to use
+----------
+1. Set AXIS2_HOME envionment vaiable to you Axis2 Java installation directory. 
+   eg: 'export AXIS2_HOME=/home/axis2java' 
+3. Run WSDL2C.sh giving WSDL2C command line arguments as the arguments to the shell script.
+
+Note: Do the same for the bat file on Windows. 
+
+
+Examples
+--------
+
+To generate a sevice skeleton in C:
+Linux:
+	sh WSDL2C.sh -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u
+Windows:
+      WSDL2C.bat -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u
+
+To generate a client stub in C: 
+Linux: 
+	sh WSDL2C.sh -uri interoptestdoclitparameters.wsdl -d adb -u 
+Windows
+      WSDL2C.bat -uri interoptestdoclitparameters.wsdl -d adb -u 
+

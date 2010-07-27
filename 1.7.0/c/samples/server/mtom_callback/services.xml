@@ -1,0 +1,16 @@
+<service name="mtom_callback">
+    <parameter name="ServiceClass" locked="xsd:false">mtom_callback</parameter>
+
+    <!--parameter name="MTOMCachingCallback" locked="false">/home/manjula/axis2/c/deploy/bin/mtom_caching_callback/libmtom_caching_callback.so</parameter-->
+
+    <!--parameter name="MTOMSendingCallback" locked="false">/home/manjula/axis2/c/deploy/bin/mtom_sending_callback/libmtom_sending_callback.so</parameter-->
+
+   <description>
+        This is a testing service , to test the system is working or not
+   </description>
+
+    <operation name="mtomSample">
+            <parameter name="wsamapping" >http://ws.apache.org/axis2/c/samples/mtomCallbackSample</parameter>
+    </operation>
+
+</service>

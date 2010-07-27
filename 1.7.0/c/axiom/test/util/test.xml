@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<d:student type="student" xmlns:d='http://www.develop.com/student'>
+  <d:id type="student">3235329</d:id>
+  <d:name type="student">Jeff Smith</d:name>
+  <d:language type="student">C#</d:language>
+  <d:rating type="student">9.5</d:rating>
+</d:student>

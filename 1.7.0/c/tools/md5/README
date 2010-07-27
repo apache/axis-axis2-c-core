@@ -1,0 +1,21 @@
+                            Axis2C MD5 Generator
+                           ======================
+
+What is it?
+-----------
+
+Axis2 MD5 project is aimed at generating md5 checksums for files. It works only in command line interface.
+
+How to run the MD5 Generator?
+-----------------------------
+
+Run the file called md5 with the File Name.
+For instruction run md5 -h
+
+
+Installation
+------------
+
+Please see the file called INSTALL. 
+
+

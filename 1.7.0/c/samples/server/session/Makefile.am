@@ -1,0 +1,9 @@
+prglibdir=$(prefix)/services/session
+prglib_LTLIBRARIES = libsession.la
+prglib_DATA= services.xml
+EXTRA_DIST = services.xml session.mk session.h
+noinst_HEADERS = session.h
+SUBDIRS =
+libsession_la_SOURCES = session.c session_skeleton.c
+libsession_la_LIBADD  =
+INCLUDES = @AXIS2INC@
