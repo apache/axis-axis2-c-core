@@ -1022,6 +1022,55 @@ $(AXIS2_SERVICES)\math\math.dll  : $(MATH_OBJS)
 
 axis2_services_math: $(AXIS2_SERVICES)\math\math.dll
 
+### session
+
+SESSION_SRC =  $(AXIS2_SOURCE_DIR)\samples\server\session
+SESSION_INTDIR = $(AXIS2_INTDIR_SAMPLES)\services\session
+
+SESSION_OBJS = $(SESSION_INTDIR)\*.obj
+
+$(SESSION_INTDIR) :
+	@if not exist $(SESSION_INTDIR) mkdir $(SESSION_INTDIR)
+	@if not exist $(AXIS2_SERVICES)\session mkdir $(AXIS2_SERVICES)\session
+
+{$(SESSION_SRC)}.c{$(SESSION_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(SESSION_INTDIR)\ /c $<
+
+$(SESSION_OBJS) : $(SESSION_INTDIR)
+
+$(AXIS2_SERVICES)\session\session.dll  : $(SESSION_OBJS)
+	$(LD) $(LDFLAGS) $(SESSION_OBJS) $(AXUTIL).lib $(AXIOM).lib \
+	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_SERVICES)\session\session.dll 
+	-@$(_VC_MANIFEST_EMBED_DLL)
+	@copy $(AXIS2_SOURCE_DIR)\samples\server\session\services.xml $(AXIS2_SERVICES)\session
+
+axis2_services_session: $(AXIS2_SERVICES)\session\session.dll
+
+
+### version
+
+VERSION_SRC =  $(AXIS2_SOURCE_DIR)\samples\server\version
+VERSION_INTDIR = $(AXIS2_INTDIR_SAMPLES)\services\version
+
+VERSION_OBJS = $(VERSION_INTDIR)\*.obj
+
+$(VERSION_INTDIR) :
+	@if not exist $(VERSION_INTDIR) mkdir $(VERSION_INTDIR)
+	@if not exist $(AXIS2_SERVICES)\version mkdir $(AXIS2_SERVICES)\version
+
+{$(VERSION_SRC)}.c{$(VERSION_INTDIR)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(VERSION_INTDIR)\ /c $<
+
+$(VERSION_OBJS) : $(VERSION_INTDIR)
+
+$(AXIS2_SERVICES)\version\version.dll  : $(VERSION_OBJS)
+	$(LD) $(LDFLAGS) $(VERSION_OBJS) $(AXUTIL).lib $(AXIOM).lib \
+	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:$(AXIS2_SERVICES)\version\version.dll 
+	-@$(_VC_MANIFEST_EMBED_DLL)
+	@copy $(AXIS2_SOURCE_DIR)\samples\server\version\services.xml $(AXIS2_SERVICES)\version
+
+axis2_services_version: $(AXIS2_SERVICES)\version\version.dll
+
 ### mtom
 
 MTOM_SRC =  $(AXIS2_SOURCE_DIR)\samples\server\mtom
@@ -1148,6 +1197,8 @@ AXIS2_INTDIR_CLI = $(AXIS2_INTDIR)\samples\clients
 axis2_clients_intdir:
 	@if not exist $(AXIS2_BINDIR)\samples\bin mkdir $(AXIS2_BINDIR)\samples\bin
 	@if not exist $(AXIS2_INTDIR_CLI)\math mkdir $(AXIS2_INTDIR_CLI)\math
+	@if not exist $(AXIS2_INTDIR_CLI)\session mkdir $(AXIS2_INTDIR_CLI)\session
+	@if not exist $(AXIS2_INTDIR_CLI)\version mkdir $(AXIS2_INTDIR_CLI)\version
 	@if not exist $(AXIS2_INTDIR_CLI)\echo mkdir $(AXIS2_INTDIR_CLI)\echo
 	@if not exist $(AXIS2_INTDIR_CLI)\dyn_cli mkdir $(AXIS2_INTDIR_CLI)\dyn_cli
 	@if not exist $(AXIS2_INTDIR_CLI)\gslc mkdir $(AXIS2_INTDIR_CLI)\gslc
@@ -1165,6 +1216,23 @@ $(AXIS2_SAMPLES_BIN)\math.exe :
 	-@$(_VC_MANIFEST_EMBED_EXE)
 
 axis2_client_math: $(AXIS2_SAMPLES_BIN)\math.exe
+
+$(AXIS2_SAMPLES_BIN)\session.exe :
+	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\session\*.c /Fo$(AXIS2_INTDIR_CLI)\session\ /c
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR_CLI)\session\*.obj $(AXUTIL).lib $(AXIOM).lib \
+	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\session.exe
+	-@$(_VC_MANIFEST_EMBED_EXE)
+
+axis2_client_session: $(AXIS2_SAMPLES_BIN)\session.exe
+
+
+$(AXIS2_SAMPLES_BIN)\version.exe :
+	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\version\*.c /Fo$(AXIS2_INTDIR_CLI)\version\ /c
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR_CLI)\version\*.obj $(AXUTIL).lib $(AXIOM).lib \
+	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\version.exe
+	-@$(_VC_MANIFEST_EMBED_EXE)
+
+axis2_client_version: $(AXIS2_SAMPLES_BIN)\version.exe
 
 $(AXIS2_SAMPLES_BIN)\echo.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\echo\echo.c /Fo$(AXIS2_INTDIR_CLI)\echo\ /c
@@ -1398,9 +1466,9 @@ mv_dist:
 	@xcopy /Y /E /I deploy $(AXIS2_RELEASE_DIR)
 
 
-all_services: axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_services_mtom_callback axis2_services_calculator 
+all_services: axis2_services_echo axis2_services_math axis2_services_session axis2_services_version axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_services_mtom_callback axis2_services_calculator 
 
-all_clients: axis2_clients_intdir axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_yahoo axis2_client_notify axis2_client_mtom axis2_client_mtom_callback axis2_client_userguide 
+all_clients: axis2_clients_intdir axis2_client_echo axis2_client_math axis2_client_session axis2_client_version axis2_client_google_spell axis2_client_yahoo axis2_client_notify axis2_client_mtom axis2_client_mtom_callback axis2_client_userguide 
 
 all_callback: axis2_mtom_sending_callback axis2_mtom_caching_callback
 axis2_samples: axis2_mod_log all_services all_clients all_callback
