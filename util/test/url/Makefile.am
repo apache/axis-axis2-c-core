@@ -10,6 +10,6 @@ INCLUDES = -I$(top_builddir)/include \
 			-I$(CUTEST_HOME)/include \
 			-I ../../../axiom/include \
 			-I ../../../include \
-		 	-I ../../../cutest/include
+		 	-I ../../../test/cutest/include
 
 
