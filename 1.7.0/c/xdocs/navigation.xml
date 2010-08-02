@@ -22,7 +22,7 @@
       <item name="Project Information" href="team-list.html">
         <item name="Project Team" href="team-list.html"/>
         <item name="Source Code"
-          href="http://svn.apache.org/viewcvs.cgi/webservices/axis2/trunk/c/"/>
+          href="http://svn.apache.org/viewvc/axis/axis2/c/core/trunk/"
       </item>
     </menu>
   </body>
