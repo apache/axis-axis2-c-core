@@ -15,4 +15,5 @@ test_thread_LDADD   =  $(top_builddir)/src/libaxutil.la
 
 INCLUDES = -I$(top_builddir)/include \
 			 -I$(CUTEST_HOME)/include \
-		 	-I ../../../cutest/include
+		 	-I ../../../test/cutest/include
+EXTRA_DIST = test_string.c
