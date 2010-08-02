@@ -49,5 +49,5 @@ INCLUDES = -I$(CUTEST_HOME)/include \
 		 -I ../../../util/include \
 		 -I ../../../neethi/include \
 		 -I ../../../axiom/include \
-		 -I ../../../cutest/include
+		 -I ../../cutest/include
 

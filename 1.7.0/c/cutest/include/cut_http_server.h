@@ -15,6 +15,9 @@
  * limitations under the License.
  */
 
+#ifndef CUT_HTTP_SERVER_H
+#define CUT_HTTP_SERVER_H
+
 #include <axis2_http_server.h>
 #include <axis2_http_transport.h>
 #include <platforms/axutil_platform_auto_sense.h>
@@ -27,6 +30,11 @@
 #include <axutil_thread.h>
 #include <axutil_file_handler.h>
 #include <axis2_const.h>
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 axutil_env_t *system_env = NULL;
 axutil_thread_t *td_http_server = NULL;
@@ -200,3 +208,8 @@ static void ut_stop_http_server(axutil_env_t *env)
 	rv = axutil_thread_exit(thread_http_server, env->allocator);
 	thread_http_server = NULL;
 }
+
+#ifdef __cplusplus
+}
+#endif
+#endif                          /* CUT_HTTP_SERVER_H */

@@ -23,5 +23,5 @@ INCLUDES =	-I$(top_builddir)/src/xml/guththila \
             -I ../../../util/include \
             -I ../../../axiom/include \
             -I ../../../neethi/include \
-		 	-I ../../../cutest/include
+		 	-I ../../cutest/include
 
