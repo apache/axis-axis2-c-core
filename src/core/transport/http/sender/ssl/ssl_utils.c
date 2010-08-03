@@ -56,6 +56,7 @@ axis2_ssl_utils_initialize_ctx(
         /* Global system initialization */
         SSL_library_init();
         SSL_load_error_strings();
+	OpenSSL_add_all_algorithms();
 
         /* An error write context */
         bio_err = BIO_new_fp(stderr, BIO_NOCLOSE);
@@ -106,7 +107,7 @@ key file %s and server cert %s", key_file, server_cert);
     }
 
     /* Load the CAs we trust */
-    if (!(SSL_CTX_load_verify_locations(ctx, ca_file, 0)))
+    if (!(SSL_CTX_load_verify_locations(ctx, ca_file, 0) ||  (!SSL_CTX_set_default_verify_paths(ctx))))
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             "[ssl client] Loading CA certificate failed, \
