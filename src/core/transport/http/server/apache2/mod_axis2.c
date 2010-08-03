@@ -809,12 +809,15 @@ axis2_set_session(
     request = (request_rec *) req;
 
     authn_dbd_acquire_fn = APR_RETRIEVE_OPTIONAL_FN(ap_dbd_acquire);
-    dbd = authn_dbd_acquire_fn(request);
+    if(authn_dbd_acquire_fn)
+    {
+        dbd = authn_dbd_acquire_fn(request);
+    }
     if (!dbd) 
     {
         ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, request,
                       "Failed to acquire database connection to insert session for "
-                      "id '%s'", id);
+                      "id '%s'. Check whether apache2 is installed with mod-dbd enabled", id);
         return AXIS2_FAILURE;
     }
 
