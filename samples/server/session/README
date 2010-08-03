@@ -1,0 +1,28 @@
+Before you run session client you need to deploy the session service running on Axis2/C Apache module.
+
+You need to build apache with mod-dbd enabled. I have the following configuration for Apache build.
+./configure --prefix=/usr/local/apache2 --enable-ssl --enable-setenvif --with-included-apr --with-mpm=prefork --enable-ssl --enable-setenvif --enable-dbd --enable-mods-shared="mod_log_config mod_status mod-mime mod-dir" 
+
+Then you need to add the following into to httpd.conf
+---------------------------------------------------------------------------
+DBDriver mysql
+DBDParams "dbname=axis2c user=<username> pass=<password>"
+
+DBDMin  4
+DBDKeep 8
+DBDMax  20
+DBDExptime 300
+DBDPrepareSQL "SELECT value FROM session WHERE id = %s" retrieve_session
+DBDPrepareSQL "INSERT INTO session(id, value) VALUES(%s,%s)" insert_session
+
+---------------------------------------------------------------------------
+
+You need to create a mysql table called session with following schema.
+
+mysql> desc session;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| id    | varchar(128) | YES  |     | NULL    |       | 
+| value | varchar(512) | YES  |     | NULL    |       | 
++-------+--------------+------+-----+---------+-------+
