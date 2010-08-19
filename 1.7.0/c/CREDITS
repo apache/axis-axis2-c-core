@@ -1,0 +1,11 @@
+James Clark, author of Expat, for having provided very useful guidance on the 
+proper way to design and implement a highly reusable C library. 
+
+Apache Project's 
+----------------
+Apache Axis2 [http://ws.apache.org/axis2]			   - Initial Architecture
+Apache Maven [http://maven.apache.org/]				   - Site generation
+Apache APR   [http://apr.apache.org/]				   - Versioning Guideline, 
+														 Some codes in util
+Apache HTTPD [http://httpd.apache.org/]     		   - mod_axis2
+Apache Qpid  [http://cwiki.apache.org/qpid/index.html] - AMQP implementation

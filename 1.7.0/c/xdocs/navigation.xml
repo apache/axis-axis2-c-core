@@ -1,0 +1,43 @@
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.  See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<project name="Axis2C">
+  <body>
+      <menu name="Apache Axis2/C">
+      <item name="Apache Axis2/C Home" href="index.html"/>
+      <item name="Download Axis2/C" href="http://ws.apache.org/axis2/c/download.cgi">
+        <item name="Releases" href="http://ws.apache.org/axis2/c/download.cgi"/>
+      </item>
+      <item name="Documentation" href="docs/index.html">
+	<item name="Installation Guide" href="docs/installationguide.html"/>
+	<item name="Axis2/C manual" href="docs/axis2c_manual.html"/>
+        <item name="Axis2/C FAQ" href="docs/faq.html"/>
+      </item>
+    <item name="Get Involved" href="lists_issues.html">
+	    <item name="Mailing Lists &amp; Issue Tracking" href="lists_issues.html"/>
+        <item name="Checkout Source Code" href="svn.html"/>
+      </item>
+      <item name="Developer Guidelines" href="coding_conventions.html">
+	<item name="Coding Convention" href="coding_conventions.html"/>
+        <item name="Versionning" href="versioning.html"/>
+      </item>
+      <item name="Project Information" href="team-list.html">
+        <item name="Project Team" href="team-list.html"/>
+        <item name="Source Code" href="http://svn.apache.org/viewvc/axis/axis2/c/core/trunk/"/>
+      </item>
+    </menu>
+  </body>
+</project>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<test xmlns:ns1="http://xpath/test">
+
+	<ns1:node1 xmlns:nsx="http://xpath/test" attr1="attribute_value_1">10</ns1:node1>
+
+	<ns1:node2>
+		<child>1<grandchild>1</grandchild></child>
+		<child>2<grandchild>2</grandchild></child>
+		<child xmlns:ns44="http://xpath/testsasd">3<grandchild>3</grandchild></child>
+		<child>4<grandchild>4</grandchild></child>
+		<child>5<grandchild>5</grandchild></child>
+		<child>6<grandchild>6</grandchild></child>
+		<child>7<grandchild>7</grandchild></child>
+		<child>8<grandchild>8</grandchild></child>
+		<child>9<grandchild>9</grandchild></child>
+		<child>10<grandchild>10</grandchild></child>
+		<child>11<grandchild>11</grandchild></child>
+		<child>12<grandchild>12</grandchild></child>
+		<child>13<grandchild>13</grandchild></child>
+		<child>14<grandchild>14</grandchild></child>
+		<child>15<grandchild>15</grandchild></child>
+		<child>16<grandchild>16</grandchild></child>
+		<child>17<grandchild>17</grandchild></child>
+		<child>18<grandchild>18</grandchild></child>
+		<child>19<grandchild>19</grandchild></child>
+		<child>20<grandchild>20</grandchild></child>
+	</ns1:node2>
+
+	<node1 xmlns:nsp="http://xpath/test" attr1="attribute_value_2">5</node1>
+
+	<node2>
+		<child>1<grandchild>1</grandchild></child>
+		<child>2<grandchild>2</grandchild></child>
+		<child>3<grandchild>3</grandchild></child>
+		<child>4<grandchild>4</grandchild></child>
+		<child>5<grandchild>5</grandchild></child>
+		<child>6<grandchild>6</grandchild></child>
+		<child>7<grandchild>7</grandchild></child>
+		<child>8<grandchild>8</grandchild></child>
+		<child>9<grandchild>9</grandchild></child>
+		<child>10<grandchild>10</grandchild></child>
+		<child>11<grandchild>11</grandchild></child>
+		<child>12<grandchild>12</grandchild></child>
+		<child>13<grandchild>13</grandchild></child>
+		<child>14<grandchild>14</grandchild></child>
+		<child>15<grandchild>15</grandchild></child>
+		<child>16<grandchild>16</grandchild></child>
+		<child>17<grandchild>17</grandchild></child>
+		<child>18<grandchild>18</grandchild></child>
+		<child>19<grandchild>19</grandchild></child>
+		<child>20<grandchild>20</grandchild></child>
+	</node2>
+
+</test>

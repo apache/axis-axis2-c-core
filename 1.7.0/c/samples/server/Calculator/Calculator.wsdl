@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                          -->
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more       -->
+<!-- contributor license agreements.  See the NOTICE file distributed with    -->
+<!-- this work for additional information regarding copyright ownership.      -->
+<!-- The ASF licenses this file to You under the Apache License, Version 2.0  -->
+<!-- (the "License"); you may not use this file except in compliance with     -->
+<!-- the License.  You may obtain a copy of the License at                    -->
+<!--                                                                          -->
+<!--      http://www.apache.org/licenses/LICENSE-2.0                          -->
+<!--                                                                          -->
+<!-- Unless required by applicable law or agreed to in writing, software      -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,        -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. -->
+<!-- See the License for the specific language governing permissions and      -->
+<!-- limitations under the License.                                           -->
+<!--                                                                          -->
+<wsdl:definitions
+    targetNamespace="http://ws.apache.org/axis2/services/Calculator" 
+    xmlns:impl="http://ws.apache.org/axis2/services/Calculator"
+    xmlns:type="http://ws.apache.org/axis2/services/Calculator/types" 
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"> 
+    <wsdl:types>
+        <schema
+            targetNamespace="http://ws.apache.org/axis2/services/Calculator/types"
+            xmlns="http://www.w3.org/2001/XMLSchema" 
+            xmlns:impl="http://ws.apache.org/axis2/services/Calculator"
+            xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <element name="add">
+                <complexType>
+                    <sequence>
+                        <element name="param_1" type="xsd:int"/>
+                        <element name="param_2" type="xsd:int"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="addResponse">
+                <complexType>
+                    <sequence>
+                        <element name="result" type="xsd:int"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="sub">
+                <complexType>
+                    <sequence>
+                        <element name="param_1" type="xsd:int"/>
+                        <element name="param_2" type="xsd:int"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="subResponse">
+                <complexType>
+                    <sequence>
+                        <element name="result" type="xsd:int"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="mul">
+                <complexType>
+                    <sequence>
+                        <element name="param_1" type="xsd:int"/>
+                        <element name="param_2" type="xsd:int"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="mulResponse">
+                <complexType>
+                    <sequence>
+                        <element name="result" type="xsd:int"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="div">
+                <complexType>
+                    <sequence>
+                        <element name="param_1" type="xsd:int"/>
+                        <element name="param_2" type="xsd:int"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="divResponse">
+                <complexType>
+                    <sequence>
+                        <element name="result" type="xsd:int"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+    </wsdl:types>
+
+    <wsdl:message name="addResponse">
+        <wsdl:part element="type:addResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="addRequest">
+        <wsdl:part element="type:add" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="subResponse">
+        <wsdl:part element="type:subResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="subRequest">
+        <wsdl:part element="type:sub" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="divResponse">
+        <wsdl:part element="type:divResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="divRequest">
+        <wsdl:part element="type:div" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="mulResponse">
+        <wsdl:part element="type:mulResponse" name="parameters"/>
+    </wsdl:message>
+    <wsdl:message name="mulRequest">
+        <wsdl:part element="type:mul" name="parameters"/>
+    </wsdl:message>
+
+    <wsdl:portType name="CalculatorPortType">
+        <wsdl:operation name="add">
+            <wsdl:input message="impl:addRequest" name="addRequest"/>
+            <wsdl:output message="impl:addResponse" name="addResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="sub">
+            <wsdl:input message="impl:subRequest" name="subRequest"/>
+            <wsdl:output message="impl:subResponse" name="subResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="mul">
+            <wsdl:input message="impl:mulRequest" name="mulRequest"/>
+            <wsdl:output message="impl:mulResponse" name="mulResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="div">
+            <wsdl:input message="impl:divRequest" name="divRequest"/>
+            <wsdl:output message="impl:divResponse" name="divResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="CalculatorSoapBinding" type="impl:CalculatorPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="add">
+            <soap:operation soapAction="Calculator#add"/>
+            <wsdl:input name="addRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="addResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="sub">
+            <soap:operation soapAction="Calculator#sub"/>
+            <wsdl:input name="subRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="subResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="mul">
+            <soap:operation soapAction="Calculator#mul"/>
+            <wsdl:input name="mulRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="mulResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="div">
+            <soap:operation soapAction="Calculator#div"/>
+            <wsdl:input name="divRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="divResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="Calculator">
+        <wsdl:port binding="impl:CalculatorSoapBinding" name="CalculatorSOAPport_http">
+            <soap:address location="http://localhost:9090/axis2/services/Calculator"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Apache Axis2/C - modules/mod_log/mod_log.c</title><div class="contentBox"><div class="section"><font face="Monospace">
+<font color="#808080"><i>/*<br></br>
+ * Licensed to the Apache Software Foundation (ASF) under one or more<br></br>
+ * contributor license agreements.  See the NOTICE file distributed with<br></br>
+ * this work for additional information regarding copyright ownership.<br></br>
+ * The ASF licenses this file to You under the Apache License, Version 2.0<br></br>
+ * (the "License"); you may not use this file except in compliance with<br></br>
+ * the License.  You may obtain a copy of the License at<br></br>
+ *<br></br>
+ *      http://www.apache.org/licenses/LICENSE-2.0<br></br>
+ *<br></br>
+ * Unless required by applicable law or agreed to in writing, software<br></br>
+ * distributed under the License is distributed on an "AS IS" BASIS,<br></br>
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<br></br>
+ * See the License for the specific language governing permissions and<br></br>
+ * limitations under the License.<br></br>
+ */</i></font><br></br>
+<font color="#008000">#include &lt;axis2_module.h&gt;<br></br></font>
+<font color="#008000">#include &lt;axis2_conf_ctx.h&gt;<br></br></font>
+<br></br>
+<font color="#008000">#include "mod_log.h"<br></br></font>
+<br></br>
+<font color="#000000">axis2_status_t</font> <font color="#000000">AXIS2_CALL</font><br></br>
+<font color="#000000">axis2_mod_log_shutdown</font>(<font color="#000000">axis2_module_t</font> *<font color="#000000">module</font>,<br></br>
+    <font color="#800000">const</font> <font color="#000000">axutil_env_t</font> *<font color="#000000">env</font>);<br></br>
+<br></br>
+<font color="#000000">axis2_status_t</font> <font color="#000000">AXIS2_CALL</font><br></br>
+<font color="#000000">axis2_mod_log_init</font>(<br></br>
+    <font color="#000000">axis2_module_t</font> *<font color="#000000">module</font>,<br></br>
+    <font color="#800000">const</font> <font color="#000000">axutil_env_t</font> *<font color="#000000">env</font>,<br></br>
+    <font color="#000000">axis2_conf_ctx_t</font> *<font color="#000000">conf_ctx</font>,<br></br>
+    <font color="#000000">axis2_module_desc_t</font> *<font color="#000000">module_desc</font>);<br></br>
+<br></br>
+<font color="#000000">axis2_status_t</font> <font color="#000000">AXIS2_CALL</font><br></br>
+<font color="#000000">axis2_mod_log_fill_handler_create_func_map</font>(<font color="#000000">axis2_module_t</font> *<font color="#000000">module</font>,<br></br>
+    <font color="#800000">const</font> <font color="#000000">axutil_env_t</font> *<font color="#000000">env</font>);<br></br>
+<br></br>
+<font color="#808080"><i>/**<br></br>
+ * Module operations struct variable with functions assigned to members<br></br>
+ */</i></font><br></br>
+<font color="#800000">static</font> <font color="#800000">const</font> <font color="#000000">axis2_module_ops_t</font> <font color="#000000">log_module_ops_var</font> = {<br></br>
+    <font color="#000000">axis2_mod_log_init</font>,<br></br>
+    <font color="#000000">axis2_mod_log_shutdown</font>,<br></br>
+    <font color="#000000">axis2_mod_log_fill_handler_create_func_map</font><br></br>
+};<br></br>
+<br></br>
+<font color="#000000">axis2_module_t</font> *<br></br>
+<font color="#000000">axis2_mod_log_create</font>(<font color="#800000">const</font> <font color="#000000">axutil_env_t</font> *<font color="#000000">env</font>)<br></br>
+{<br></br>
+    <font color="#000000">axis2_module_t</font> *<font color="#000000">module</font> = <font color="#000000">NULL</font>;<br></br>
+    <font color="#000000">module</font> = <font color="#000000">AXIS2_MALLOC</font>(<font color="#000000">env</font>-&gt;<font color="#000000">allocator</font>, <br></br>
+        <font color="#000000"><b>sizeof</b></font>(<font color="#000000">axis2_module_t</font>));<br></br>
+<br></br>
+    <font color="#808080"><i>/* initialize operations */</i></font><br></br>
+    <font color="#000000">module</font>-&gt;<font color="#000000">ops</font> = &amp;<font color="#000000">log_module_ops_var</font>;<br></br>
+<br></br>
+    <font color="#000000"><b>return</b></font> <font color="#000000">module</font>;<br></br>
+}<br></br>
+<br></br>
+<font color="#000000">axis2_status_t</font> <font color="#000000">AXIS2_CALL</font><br></br>
+<font color="#000000">axis2_mod_log_init</font>(<br></br>
+        <font color="#000000">axis2_module_t</font> *<font color="#000000">module</font>,<br></br>
+        <font color="#800000">const</font> <font color="#000000">axutil_env_t</font> *<font color="#000000">env</font>,<br></br>
+        <font color="#000000">axis2_conf_ctx_t</font> *<font color="#000000">conf_ctx</font>,<br></br>
+        <font color="#000000">axis2_module_desc_t</font> *<font color="#000000">module_desc</font>)<br></br>
+{<br></br>
+    <font color="#808080"><i>/* Any initialization stuff related to this module can be here */</i></font><br></br>
+    <font color="#000000"><b>return</b></font> <font color="#000000">AXIS2_SUCCESS</font>;<br></br>
+}<br></br>
+<br></br>
+<font color="#000000">axis2_status_t</font> <font color="#000000">AXIS2_CALL</font><br></br>
+<font color="#000000">axis2_mod_log_shutdown</font>(<font color="#000000">axis2_module_t</font> *<font color="#000000">module</font>,<br></br>
+                        <font color="#800000">const</font> <font color="#000000">axutil_env_t</font> *<font color="#000000">env</font>)<br></br>
+{<br></br>
+    <font color="#000000"><b>if</b></font>(<font color="#000000">module</font>-&gt;<font color="#000000">handler_create_func_map</font>)<br></br>
+    {<br></br>
+        <font color="#000000">axutil_hash_free</font>(<font color="#000000">module</font>-&gt;<font color="#000000">handler_create_func_map</font>, <font color="#000000">env</font>);<br></br>
+    }<br></br>
+    <br></br>
+    <font color="#000000"><b>if</b></font>(<font color="#000000">module</font>)<br></br>
+    {<br></br>
+        <font color="#000000">AXIS2_FREE</font>(<font color="#000000">env</font>-&gt;<font color="#000000">allocator</font>, <font color="#000000">module</font>);<br></br>
+    }<br></br>
+    <font color="#000000"><b>return</b></font> <font color="#000000">AXIS2_SUCCESS</font>; <br></br>
+}<br></br>
+<br></br>
+<font color="#000000">axis2_status_t</font> <font color="#000000">AXIS2_CALL</font><br></br>
+<font color="#000000">axis2_mod_log_fill_handler_create_func_map</font>(<font color="#000000">axis2_module_t</font> *<font color="#000000">module</font>,<br></br>
+                                            <font color="#800000">const</font> <font color="#000000">axutil_env_t</font> *<font color="#000000">env</font>)<br></br>
+{<br></br>
+    <font color="#000000">AXIS2_ENV_CHECK</font>(<font color="#000000">env</font>, <font color="#000000">AXIS2_FAILURE</font>);<br></br>
+    <br></br>
+    <font color="#000000">module</font>-&gt;<font color="#000000">handler_create_func_map</font> = <font color="#000000">axutil_hash_make</font>(<font color="#000000">env</font>);<br></br>
+    <font color="#000000"><b>if</b></font>(!<font color="#000000">module</font>-&gt;<font color="#000000">handler_create_func_map</font>)<br></br>
+    {<br></br>
+        <font color="#000000">AXIS2_ERROR_SET</font>(<font color="#000000">env</font>-&gt;<font color="#000000">error</font>, <font color="#000000">AXIS2_ERROR_NO_MEMORY</font>, <br></br>
+            <font color="#000000">AXIS2_FAILURE</font>);<br></br>
+        <font color="#000000"><b>return</b></font> <font color="#000000">AXIS2_FAILURE</font>;<br></br>
+    }<br></br>
+<br></br>
+    <font color="#808080"><i>/* add in handler */</i></font><br></br>
+    <font color="#000000">axutil_hash_set</font>(<font color="#000000">module</font>-&gt;<font color="#000000">handler_create_func_map</font>, <font color="#FF0000">"LoggingInHandler"</font>, <br></br>
+        <font color="#000000">AXIS2_HASH_KEY_STRING</font>, <font color="#000000">axutil_log_in_handler_create</font>);<br></br>
+<br></br>
+    <font color="#808080"><i>/* add out handler */</i></font><br></br>
+    <font color="#000000">axutil_hash_set</font>(<font color="#000000">module</font>-&gt;<font color="#000000">handler_create_func_map</font>, <font color="#FF0000">"LoggingOutHandler"</font>, <br></br>
+        <font color="#000000">AXIS2_HASH_KEY_STRING</font>, <font color="#000000">axutil_log_out_handler_create</font>);<br></br>
+    <br></br>
+    <font color="#000000"><b>return</b></font> <font color="#000000">AXIS2_SUCCESS</font>;<br></br>
+}<br></br>
+<br></br>
+<font color="#808080"><i>/**<br></br>
+ * Following functions are expected to be there in the module lib <br></br>
+ * that helps to create and remove module instances <br></br>
+ */</i></font><br></br>
+<br></br>
+<font color="#000000">AXIS2_EXPORT</font> <font color="#800000">int</font> <br></br>
+<font color="#000000">axis2_get_instance</font>(<font color="#000000">axis2_module_t</font> **<font color="#000000">inst</font>,<br></br>
+                   <font color="#800000">const</font> <font color="#000000">axutil_env_t</font> *<font color="#000000">env</font>)<br></br>
+{<br></br>
+   *<font color="#000000">inst</font> = <font color="#000000">axis2_mod_log_create</font>(<font color="#000000">env</font>);<br></br>
+    <font color="#000000"><b>if</b></font>(!(*<font color="#000000">inst</font>))<br></br>
+    {<br></br>
+        <font color="#000000"><b>return</b></font> <font color="#000000">AXIS2_FAILURE</font>;<br></br>
+    }<br></br>
+<br></br>
+    <font color="#000000"><b>return</b></font> <font color="#000000">AXIS2_SUCCESS</font>;<br></br>
+}<br></br>
+<br></br>
+<font color="#000000">AXIS2_EXPORT</font> <font color="#800000">int</font> <br></br>
+<font color="#000000">axis2_remove_instance</font>(<font color="#000000">axis2_module_t</font> *<font color="#000000">inst</font>,<br></br>
+                      <font color="#800000">const</font> <font color="#000000">axutil_env_t</font> *<font color="#000000">env</font>)<br></br>
+{<br></br>
+    <font color="#000000">axis2_status_t</font> <font color="#000000">status</font> = <font color="#000000">AXIS2_FAILURE</font>;<br></br>
+   <font color="#000000"><b>if</b></font> (<font color="#000000">inst</font>)<br></br>
+   {<br></br>
+        <font color="#000000">status</font> = <font color="#000000">axis2_mod_log_shutdown</font>(<font color="#000000">inst</font>, <font color="#000000">env</font>);<br></br>
+    }<br></br>
+    <font color="#000000"><b>return</b></font> <font color="#000000">status</font>;<br></br>
+}<br></br>
+<br></br>
+<br></br>
+		</font></div></div></div><div class="clear"><hr></hr></div></body></html>
