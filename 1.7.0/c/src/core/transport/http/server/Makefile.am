@@ -1,2 +1,0 @@
-SUBDIRS=@APACHE2BUILD@ simple_axis2_server ${CGI_DIR}
-EXTRA_DIST=IIS CGI

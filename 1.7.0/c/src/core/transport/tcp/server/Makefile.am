@@ -1,1 +1,0 @@
-SUBDIRS=simple_tcp_server

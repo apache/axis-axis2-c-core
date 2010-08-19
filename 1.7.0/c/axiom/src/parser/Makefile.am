@@ -1,3 +1,0 @@
-SUBDIRS = $(WRAPPER_DIR)
-
-DIST_SUBDIRS=guththila libxml2
