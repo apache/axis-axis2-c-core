@@ -124,7 +124,7 @@ axis2_http_client_free(
 		if(http_client->data_stream->stream_type == AXIS2_STREAM_SOCKET)
 		{
 			axutil_network_handler_close_socket(env, http_client->sockfd);
-			// ssl streams of type AXIS2_STREAM_BASIC  will be handled by SSL_shutdown();
+			/** ssl streams of type AXIS2_STREAM_BASIC  will be handled by SSL_shutdown(); */
 		}
 #else
 		axutil_network_handler_close_socket(env, http_client->sockfd);
