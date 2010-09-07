@@ -23,7 +23,6 @@
 #include <axutil_env.h>
 #include <axutil_stream.h>
 #include <platforms/axutil_platform_auto_sense.h>
-#include <openssl/ssl.h>
 
 #ifdef __cplusplus
 extern "C"
