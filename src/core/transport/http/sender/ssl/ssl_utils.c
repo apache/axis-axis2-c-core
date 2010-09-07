@@ -215,7 +215,10 @@ axis2_ssl_utils_cleanup_ssl(
 
     if (ssl)
     {
-        SSL_shutdown(ssl);
+        if(SSL_shutdown(ssl)==0)
+		{
+			SSL_free(ssl);
+		}
     }
     if (ctx)
     {

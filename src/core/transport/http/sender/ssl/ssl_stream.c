@@ -38,10 +38,6 @@ struct ssl_stream_impl
 
 #define AXIS2_INTF_TO_IMPL(stream) ((ssl_stream_impl_t *)(stream))
 
-void AXIS2_CALL axis2_ssl_stream_free(
-    axutil_stream_t * stream,
-    const axutil_env_t * env);
-
 axutil_stream_type_t AXIS2_CALL axis2_ssl_stream_get_type(
     axutil_stream_t * stream,
     const axutil_env_t * env);
