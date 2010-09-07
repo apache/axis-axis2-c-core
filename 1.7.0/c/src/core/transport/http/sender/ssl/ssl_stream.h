@@ -41,6 +41,11 @@ extern "C"
         axis2_char_t * key_file,
         axis2_char_t * ssl_pp);
 
+	void AXIS2_CALL
+	axis2_ssl_stream_free(
+		void *stream, 
+		const axutil_env_t *env);
+
     /** @} */
 
 #ifdef __cplusplus

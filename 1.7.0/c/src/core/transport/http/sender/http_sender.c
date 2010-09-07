@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#include <axutil_stream.h>
 #include <axis2_http_sender.h>
 #include <axutil_string.h>
 #include <axis2_http_transport.h>
@@ -36,12 +36,15 @@
 #include <axis2_util.h>
 #include <axiom_soap.h>
 #include <axutil_version.h>
+#include "ssl/ssl_stream.h"
 
 #ifdef AXIS2_LIBCURL_ENABLED
 #include "libcurl/axis2_libcurl.h"
 #else
 #define CLIENT_NONCE_LENGTH 8
 #endif
+
+
 
 struct axis2_http_sender
 {
@@ -1594,7 +1597,14 @@ axis2_http_sender_process_response(
         response, env));
     property = axutil_property_create(env);
     axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
-    axutil_property_set_free_func(property, env, axutil_stream_free_void_arg);
+#ifdef AXIS2_SSL_ENABLED
+	if(in_stream->stream_type == AXIS2_STREAM_SOCKET)
+		axutil_property_set_free_func(property, env, axutil_stream_free_void_arg);
+	else /** SSL Streams are AXIS2_STREAM_BASIC */
+		axutil_property_set_free_func(property, env, axis2_ssl_stream_free);
+#else
+   axutil_property_set_free_func(property, env, axutil_stream_free_void_arg);
+#endif
     axutil_property_set_value(property, env, in_stream);
     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property);
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Exit:axis2_http_sender_process_response");
