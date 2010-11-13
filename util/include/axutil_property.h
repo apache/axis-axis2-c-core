@@ -113,6 +113,11 @@ extern "C"
         axutil_property_t * property,
         const axutil_env_t * env);
 
+	AXIS2_EXTERN axis2_scope_t AXIS2_CALL
+		axutil_property_get_scope(
+			axutil_property_t *property,
+			const axutil_env_t *env);
+
     /*************************** End of function macros ***************************/
 
     /** @} */

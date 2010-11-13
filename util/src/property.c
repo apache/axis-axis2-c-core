@@ -191,3 +191,12 @@ axutil_property_clone(
     axutil_property_set_value(new_property, env, property->value);
     return new_property;
 }
+
+
+AXIS2_EXTERN axis2_scope_t AXIS2_CALL
+axutil_property_get_scope(
+	axutil_property_t *prop,
+	const axutil_env_t *env)
+{
+	return prop->scope;
+}
