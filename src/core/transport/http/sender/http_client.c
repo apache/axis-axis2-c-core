@@ -277,8 +277,9 @@ axis2_http_client_send(
                 return AXIS2_FAILURE;
             }
         }
-        client->data_stream =
-        axutil_stream_create_ssl(env, client->sockfd, axis2_http_client_get_server_cert(client,
+		if(!client->data_stream)
+			client->data_stream =
+			axutil_stream_create_ssl(env, client->sockfd, axis2_http_client_get_server_cert(client,
                 env), axis2_http_client_get_key_file(client, env), ssl_pp);
 #else
         axutil_network_handler_close_socket(env, client->sockfd);
