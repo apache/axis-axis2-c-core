@@ -207,6 +207,7 @@ axis2_ssl_stream_skip(
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return -1;
     }
+	SSL_set_mode(stream_impl->ssl, SSL_MODE_AUTO_RETRY);
     len = SSL_read(stream_impl->ssl, tmp_buffer, count);
     AXIS2_FREE(env->allocator, tmp_buffer);
     return len;
