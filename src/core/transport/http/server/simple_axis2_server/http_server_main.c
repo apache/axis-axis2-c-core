@@ -110,9 +110,14 @@ main(
     unsigned int file_flag = 0;
     axutil_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
     const axis2_char_t *log_file = "axis2.log";
-    const axis2_char_t *repo_path = DEFAULT_REPO_PATH;
     int port = 9090;
     axis2_status_t status;
+
+	axis2_char_t *repo_path = AXIS2_GETENV("AXIS2C_HOME");
+	if(!repo_path)
+	{
+		repo_path = DEFAULT_REPO_PATH;
+	}
 
     /* Set the service URL prefix to be used. This could default to services if not 
      set with AXIS2_REQUEST_URL_PREFIX macro at compile time */
