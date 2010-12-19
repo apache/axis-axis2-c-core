@@ -129,7 +129,11 @@ main(
     axutil_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
     const axis2_char_t *log_file = AXIS2_TCP_SERVER_LOG_FILE_NAME;
     int port = AXIS2_TCP_SERVER_PORT;
-    const axis2_char_t *repo_path = AXIS2_TCP_SERVER_REPO_PATH;
+	axis2_char_t *repo_path = AXIS2_GETENV("AXIS2C_HOME");
+	if(!repo_path)
+	{
+		repo_path = AXIS2_TCP_SERVER_REPO_PATH;
+	}
 
     while((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:s:f:")) != -1)
     {
