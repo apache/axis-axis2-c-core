@@ -785,7 +785,7 @@ axiom_util_get_first_child_element_with_localname_attr(
                                     om_attr_name, attr_name) == 0 && axutil_strcmp(om_attr_value,
                                     attr_value) == 0)
                                 {
-                                    *child_node = child;
+                                    *child_node = next_sibling;
                                     return om_ele;
                                 }
                                 om_attr = NULL;
