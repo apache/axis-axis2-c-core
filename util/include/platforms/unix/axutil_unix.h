@@ -104,7 +104,6 @@ extern "C"
 #include <sys/time.h>
 #include <sys/timeb.h>
 
-    /*#include <unistd.h> */
 #include <errno.h>
 #include <sys/param.h>
 #include <stdio.h>
@@ -122,9 +121,9 @@ extern "C"
 #include "axutil_date_time_util_unix.h"
 
     /* for file access handling */
-#ifdef HAVE_UNISTD_H
+#ifdef HAVE_UNISTD_H && !defined __APPLE__
 #include <unistd.h>
-#endif /*HAVE_UNISTD_H */
+#endif /*HAVE_UNISTD_H && !defined __APPLE__*/
 
     /* network handling */
 #include <sys/socket.h>
