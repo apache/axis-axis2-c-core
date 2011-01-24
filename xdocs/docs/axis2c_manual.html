@@ -20,15 +20,15 @@
 <h2>Preamble</h2>
 <p style="margin-bottom: 0in;">This document is intended
 to be a reference
-manual for <a href="http://ws.apache.org/axis2/c" class="externalLink" title="External Link">Apache
+manual for <a href="http://axis.apache.org/axis2/c/core/" class="externalLink" title="External Link">Apache
 Axis2/C</a>. This
 manual details how Axis2/C can be used to provide and consume Web
 services.</p>
 <p style="margin-bottom: 0in;">Please send your feedback
 to the Apache Axis2/C
-developer mailing list (<a href="mailto:axis-c-dev@apache.org">axis-c-dev@apache.org</a>).
+developer mailing list (<a href="mailto:c-dev@axis.apache.org">c-dev@axis.apache.org</a>).
 Subscription
-details are available on the <a href="http://ws.apache.org/axis2/c/mail-lists.html" class="externalLink" title="External Link">Apache
+details are available on the <a href="http://axis.apache.org/axis2/c/core/mail-lists.html" class="externalLink" title="External Link">Apache
 Axis2/C website</a>.</p>
 <p>This document uses the following conventions:</p>
 <ul>
@@ -82,7 +82,7 @@ options</a></li>
 <p>This section is aimed to help you get a Web service running in
 a short
 time using Axis2/C, and consume that service using an Axis2/C client.</p>
-<p>First, <a href="http://ws.apache.org/axis2/c/download.cgi" class="externalLink" title="External Link">download</a>
+<p>First, <a href="http://axis.apache.org/axis2/c/core/download.cgi" class="externalLink" title="External Link">download</a>
 the latest binary release from Apache Axis2/C. Once you download the
 correct
 binary that suits your platform, all that you require to get it running
@@ -103,7 +103,7 @@ change the directory to samples/bin in another command shell and run
 any of
 the samples there (you may have to set the environment variables in
 this new
-shell as well). Please see the <a href="http://ws.apache.org/axis2/c/docs/installationguide.html" class="externalLink" title="External Link">installation
+shell as well). Please see the <a href="http://axis.apache.org/axis2/c/core/docs/installationguide.html" class="externalLink" title="External Link">installation
 guide</a> for more details.</p>
 <p>Once you have Axis2/C up and running successfully, you can
 start writing
@@ -1500,12 +1500,12 @@ the commands given below,
 you might require super user privileges on your machine. If you are
 using the binary release of Axis2/C, please note that it is built with
 Apache 2.2.</font></p>
-<p>Copy the mod_axis2 shared library <font color="#4169e1">(libmod_axis2.so.0.6.0
+<p>Copy the mod_axis2 shared library <font color="#4169e1">(libmod_axis2.so.0.7.0
 on Linux and mod_axis2.dll on MS
 Windows)</font> to the Apache2 modules directory as mod_axis2.so</p>
 <p>On Linux</p>
 <div class="source">
-<pre>	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.6.0 /usr/lib/apache2/modules/mod_axis2.so<br /></pre>
+<pre>	cp $AXIS2C_HOME/lib/libmod_axis2.so.0.7.0 /usr/lib/apache2/modules/mod_axis2.so<br /></pre>
 </div>
 <p>On MS Windows</p>
 <div class="source">
@@ -1995,9 +1995,9 @@ HTTP Authentication requirements.</p>
 of Axis2/C
 stubs and skeletons for WSDL files. This is a Java tool that can be
 used to
-generate C code that works with Axis2/C API. You should use <a href="http://svn.apache.org/viewvc/webservices/axis2/trunk/java" class="externalLink" title="External Link">Axis2/Java
-SVN</a> revision 529533 or later revisions. You can download the <a href="http://ws.apache.org/axis2/download.cgi" class="externalLink" title="External Link">Axis2/Java latest
-release</a> and use those binaries to generate the code. Check out a <a href="http://ws.apache.org/axis2/1_5/reference.html#wsdl2java" class="externalLink" title="External Link">basic
+generate C code that works with Axis2/C API. You should use <a href="https://svn.apache.org/repos/asf/axis/axis2/java/core/trunk" class="externalLink" title="External Link">Axis2/Java
+SVN</a> revision 529533 or later revisions. You can download the <a href="http://axis.apache.org/axis2/java/core/download.cgi" class="externalLink" title="External Link">Axis2/Java latest
+release</a> and use those binaries to generate the code. Check out a <a href="http://axis.apache.org/axis2/java/core/docs/reference.html#wsdl2java" class="externalLink" title="External Link">basic
 guide</a> on the Java tool.</p>
 <p>Before you run the tool, make sure that all the .jar library
 files that
@@ -2017,7 +2017,7 @@ skeleton and other required files with ADB (Axis Data Binding) support.</p>
 </div>
 <p>To understand the meanings of the options used with the tool,
 please have
-a look at the <a href="http://ws.apache.org/axis2/1_4_1/reference.html#wsdl2java" class="externalLink" title="External Link"> Java tool
+a look at the <a href="http://axis.apache.org/axis2/java/core/docs/reference.html#wsdl2java" class="externalLink" title="External Link"> Java tool
 documentation</a>.</p>
 <p>If you need an XML in/out programming model, you can just
 ignore the data
