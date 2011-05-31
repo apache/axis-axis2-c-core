@@ -12,5 +12,5 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-SUBDIRS = echo math google notify mtom yahoo amqp version mtom_callback session
+SUBDIRS = echo math google notify mtom yahoo amqp version mtom_callback session $(NTLM_SAMPLE_DIR)
 EXTRA_DIST= Makefile.am

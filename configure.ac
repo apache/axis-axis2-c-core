@@ -211,6 +211,29 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2
   AC_MSG_RESULT(no)
 )
 
+AC_MSG_CHECKING(whether to build heimdal ntlm wrapper library)
+AC_ARG_ENABLE(heimdal, [  --enable-heimdal    
+                          build heimdal ntlm library wrapper (default=no)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    NTLM_WRAPPER_DIR="default"
+    NTLM_SAMPLE_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    NTLM_WRAPPER_DIR="heimdal"
+    NTLM_SAMPLE_DIR="ntlm"
+    #PKG_CHECK_MODULES(HEIMDAL, heimdal-1.4)
+    CFLAGS="$CFLAGS -DAXIS2_HEIMDAL_ENABLED -DAXIS2_NTLM_ENABLED"
+    CPPFLAGS="$CPPFLAGS $NTLM_CFLAGS -DAXIS2_HEIMDAL_ENABLED -DAXIS2_NTLM_ENABLED"
+    LDFLAGS="$LDFLAGS $NTLM_LDFLAGS"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+
 
 AC_MSG_CHECKING(whether to build tcp transport)
 AC_ARG_ENABLE(tcp, [  --enable-tcp
@@ -467,7 +490,11 @@ AC_SUBST(DICLIENT_DIR)
 AC_SUBST(TESTDIR)
 AC_SUBST(SAMPLES)
 AC_SUBST(APACHE2BUILD)
+AC_SUBST(NTLM_CFLAGS)
+AC_SUBST(NTLM_LDFLAGS)
 AC_SUBST(WRAPPER_DIR)
+AC_SUBST(NTLM_WRAPPER_DIR)
+AC_SUBST(NTLM_SAMPLE_DIR)
 AC_SUBST(TCP_DIR)
 AC_SUBST(CGI_DIR)
 AC_SUBST(AMQP_DIR)
@@ -478,7 +505,10 @@ AC_SUBST(ZLIBBUILD)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_LIBCURL_ENABLED, test x$libcurl_enabled = xtrue)
 
+export NTLM_LDFLAGS
 export WRAPPER_DIR
+export NTLM_WRAPPER_DIR
+export NTLM_SAMPLE_DIR
 export prefix 
 
 AC_CONFIG_FILES([Makefile \
@@ -496,6 +526,11 @@ AC_CONFIG_FILES([Makefile \
     src/core/transport/http/sender/Makefile \
     src/core/transport/http/sender/ssl/Makefile \
     src/core/transport/http/sender/libcurl/Makefile \
+    src/core/transport/http/sender/ntlm/Makefile \
+    src/core/transport/http/sender/ntlm/heimdal/Makefile \
+    src/core/transport/http/sender/ntlm/default/Makefile \
+    src/core/transport/http/sender/ntlm/test/Makefile \
+    src/core/transport/http/sender/ntlm/test/mock_server/Makefile \
     src/core/transport/http/receiver/Makefile \
     src/core/transport/http/server/simple_axis2_server/Makefile \
     src/core/transport/http/server/Makefile \

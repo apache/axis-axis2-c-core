@@ -12,7 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-SUBDIRS=ssl libcurl
+SUBDIRS=ssl libcurl ntlm
 lib_LTLIBRARIES = libaxis2_http_sender.la
 
 
@@ -48,6 +48,7 @@ libaxis2_http_sender_la_LIBADD = $(top_builddir)/src/core/transport/http/common/
                                  $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la\
 				 				 $(top_builddir)/axiom/src/om/libaxis2_axiom.la\
 				 				 $(top_builddir)/util/src/libaxutil.la\
+								 $(top_builddir)/src/core/transport/http/sender/ntlm/${NTLM_WRAPPER_DIR}/libaxis2_ntlm.la \
 								 $(LIBCURL_LIBS)\
 								 $(SSL_LIBS)
 
@@ -65,4 +66,5 @@ INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/src/core/deployment \
            -I$(top_builddir)/util/include \
            -I$(top_builddir)/axiom/include \
+           -I$(top_builddir)/ntlm/include \
 		   $(SSL_INC)
