@@ -144,6 +144,11 @@ AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(OPENSSL_BIN_DIR)\include
 AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(LIBCURL_BIN_DIR)\include
 !endif
 
+
+!if "$(ENABLE_NTLM)" == "1"
+AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(OPENSSL_BIN_DIR)\include /I$(HEIMDAL_BIN_DIR)\inc
+!endif
+
 # Compiler Options
 ###################
 
@@ -166,6 +171,8 @@ CFLAGS = $(CFLAGS) /D "AXIS2_LIBXML2_ENABLED" $(LIBXML2_INCLUDE_PATH)
 !else
 CFLAGS = $(CFLAGS) /D "AXIS2_GUTHTHILA_ENABLED" $(GUTHTHILA_INCLUDE_PATH)
 !endif
+
+
 
 # Linker Options
 ####################
@@ -190,6 +197,11 @@ LIBS = $(LIBS) libcurl_imp.lib
 APACHE_LIBS = apr.lib xml.lib libhttpd.lib libaprutil.lib libapr.lib
 !else
 APACHE_LIBS = apr-1.lib xml.lib libhttpd.lib libapr-1.lib libaprutil-1.lib
+!endif
+
+!if "$(ENABLE_NTLM)" == "1"
+LDFLAGS = $(LDFLAGS) /LIBPATH:$(HEIMDAL_BIN_DIR)\lib /LIBPATH:$(OPENSSL_BIN_DIR)\lib\VC
+LIBS = $(LIBS) libheimntlm.lib libeay32MD.lib ssleay32MD.lib 
 !endif
 
 # Manifest Options
@@ -628,6 +640,9 @@ HTTP_SENDER_SRC = $(AXIS2_SOURCE_DIR)\src\core\transport\http\sender
 HTTP_SENDER_INTDIR = $(AXIS2_INTDIR)\http_sender
 HTTP_SENDER_INTDIR1 = $(AXIS2_INTDIR)\http_sender\ssl
 HTTP_SENDER_INTDIR2 = $(AXIS2_INTDIR)\http_sender\libcurl
+HTTP_SENDER_INTDIR3 = $(AXIS2_INTDIR)\http_sender\ntlm
+HTTP_SENDER_INTDIR4 = $(AXIS2_INTDIR)\http_sender\ntlm\heimdal
+
 
 HTTP_SENDER_OBJS = $(HTTP_SENDER_INTDIR)\*.obj
 
@@ -640,6 +655,12 @@ $(HTTP_SENDER_INTDIR1) :
 $(HTTP_SENDER_INTDIR2) :
 	@if not exist $(HTTP_SENDER_INTDIR2) mkdir $(HTTP_SENDER_INTDIR2)
 
+$(HTTP_SENDER_INTDIR3) :
+	@if not exist $(HTTP_SENDER_INTDIR3) mkdir $(HTTP_SENDER_INTDIR3)
+
+$(HTTP_SENDER_INTDIR4) :
+	@if not exist $(HTTP_SENDER_INTDIR4) mkdir $(HTTP_SENDER_INTDIR4)
+
 {$(HTTP_SENDER_SRC)}.c{$(HTTP_SENDER_INTDIR)}.obj ::
 	$(CC) $(CFLAGS) /Fo$(HTTP_SENDER_INTDIR)\ /c $<
 
@@ -648,6 +669,13 @@ $(HTTP_SENDER_INTDIR2) :
 
 {$(HTTP_SENDER_SRC)\libcurl}.c{$(HTTP_SENDER_INTDIR2)}.obj ::
 	$(CC) $(CFLAGS) /Fo$(HTTP_SENDER_INTDIR2)\ /c $<
+
+{$(HTTP_SENDER_SRC)\ntlm}.c{$(HTTP_SENDER_INTDIR3)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(HTTP_SENDER_INTDIR3)\ /c $<
+
+
+{$(HTTP_SENDER_SRC)\ntlm\heimdal}.c{$(HTTP_SENDER_INTDIR4)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(HTTP_SENDER_INTDIR4)\ /c $<
 
 !if "$(ENABLE_SSL)" == "1"
 !if "$(ENABLE_LIBCURL)" == "1"
@@ -669,6 +697,14 @@ HTTP_SENDER_OBJS = $(HTTP_SENDER_OBJS) \
 $(HTTP_SENDER_OBJS) : $(HTTP_SENDER_INTDIR) $(HTTP_SENDER_INTDIR2)
 !else
 $(HTTP_SENDER_OBJS) : $(HTTP_SENDER_INTDIR)
+!endif
+
+!if "$(ENABLE_NTLM)" == "1"
+HTTP_SENDER_OBJS = $(HTTP_SENDER_OBJS) \
+		$(HTTP_SENDER_INTDIR3)\*.obj \
+		  $(HTTP_SENDER_INTDIR4)\*.obj 
+
+$(HTTP_SENDER_OBJS) : $(HTTP_SENDER_INTDIR3) $(HTTP_SENDER_INTDIR4)
 !endif
 
 $(AXIS2_LIBS)\$(AXIS2_HTTP_SENDER).dll : $(HTTP_SENDER_OBJS)

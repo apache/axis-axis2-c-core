@@ -32,6 +32,8 @@ WITH_TCP = 1
 # build with archive based deployment
 WITH_ARCHIVE = 0
 #
+# enable NTLM authentication support.
+ENABLE_NTLM = 1
 #
 #############################################################################
 ### Dependant Binary Locations (Required) ###
@@ -54,18 +56,20 @@ ZLIB_BIN_DIR= E:\zlib-1.2.3.win32
 #
 # openssl  binary location
 # required if ENABLE_SSL = 1
-OPENSSL_BIN_DIR = F:\OpenSSL
+OPENSSL_BIN_DIR = D:\OpenSSL
 #
 # libcurl binary location, only required if libcurl transport is enabled
 LIBCURL_BIN_DIR = E:\libcurl-7.15.1-msvc-win32-ssl-0.9.8a-zlib-1.2.3
 #
+#Heimdal
+HEIMDAL_BIN_DIR=D:\NTLM\heimdal-bin
 #
 #############################################################################
 ### Apache Server module (required when building Axis2/C Apache Module) ###
 #############################################################################
 #
 # apache binary location
-APACHE_BIN_DIR = "F:\Apache2.2"
+APACHE_BIN_DIR = "D:\Apache2.2"
 #
 # apache 2 server family
 # To use apache 2.2 family, use  APACHE_VERSION_IS_2_0_X = 0
@@ -84,5 +88,5 @@ EMBED_MANIFEST = 0
 #
 # debug symbols
 # To build with debug symbols use DEBUG = 1
-DEBUG = 0
+DEBUG = 1
 #
