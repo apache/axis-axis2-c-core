@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include <axis2_ntlm.h>
+#include "axis2_ntlm.h"
 #include <axutil_utils_defines.h>
 #include <axutil_utils.h>
 #include <string.h>
@@ -24,6 +24,7 @@
 #include <roken.h>
 #include <krb5-types.h> /* or <inttypes.h> */
 #include <heimntlm.h>
+#include <openssl/rand.h>
 
 void AXIS2_CALL
 heimdal_ntlm_wrapper_free(
@@ -110,13 +111,14 @@ heimdal_ntlm_wrapper_create_type1_message(
     const int flags,
     const axis2_char_t *domain)
 {
+	struct ntlm_type1 type1;
+    struct ntlm_buf data;
+    int ret;
     heimdal_ntlm_wrapper_impl_t *ntlm_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ntlm_impl = AXIS2_INTF_TO_IMPL(ntlm);
 
-    struct ntlm_type1 type1;
-    struct ntlm_buf data;
-    int ret;
+
     memset(&type1, 0, sizeof(type1));
 
     if(flags != 0)
@@ -176,24 +178,29 @@ heimdal_ntlm_wrapper_create_type3_message(
     const axis2_char_t *domain,
     const axis2_char_t *workstation)
 {
-    heimdal_ntlm_wrapper_impl_t *ntlm_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    ntlm_impl = AXIS2_INTF_TO_IMPL(ntlm);
-
+    
+	heimdal_ntlm_wrapper_impl_t *ntlm_impl = NULL;
     struct ntlm_type3 type3;
     struct ntlm_type2 type2;
     struct ntlm_buf data;
     int ret;
+    int len;
+
+	
+	
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    ntlm_impl = AXIS2_INTF_TO_IMPL(ntlm);
+
     
     memset(&type2, 0, sizeof(type2));
 
-    int len = axutil_strlen(header_value);
+    len = axutil_strlen(header_value);
     len = 2 * len + 1;
-    char temp_value[len];
-    data.data = temp_value;
+	data.data = AXIS2_MALLOC(env->allocator, sizeof(char)*len);
     data.length = axutil_base64_decode_binary(data.data, header_value);
     ret = heim_ntlm_decode_type2(&data, &type2);
-    data.data = NULL;
+	AXIS2_FREE(env->allocator, data.data);
+	data.data = NULL;
     if (ret)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
@@ -230,8 +237,9 @@ heimdal_ntlm_wrapper_create_type3_message(
 
             if (type2.flags & NTLM_NEG_NTLM2_SESSION) 
             {
+				unsigned char nonce[8];
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[heimdal_wrapper] ntlm2 session");
-                unsigned char nonce[8];
+                
 
                 if (RAND_bytes(nonce, sizeof(nonce)) != 1) 
                 {
