@@ -840,6 +840,53 @@ extern "C"
         const axis2_char_t * password,
         const axis2_char_t * auth_type);
 
+    /**
+      * Sets ntlm http authentication information.
+      * @param env pointer to environment struct
+      * @param parent pointer to parent struct
+      * @param username string representing username
+      * @param password string representing password
+      * @param flags int pointer representing flags
+      * @param domain string representing domain
+      * @param workstation string representing workstation
+      * @param auth_type use "NTLM" to force ntlm http authentication
+      * or NULL for not forcing authentication
+      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+      */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_options_set_ntlm_http_auth_info(
+        axis2_options_t * options,
+        const axutil_env_t * env,
+        const axis2_char_t * username,
+        const axis2_char_t * password,
+        const int * flags,
+        const axis2_char_t * domain,
+        const axis2_char_t * workstation,
+        const axis2_char_t * auth_type);
+
+    /**
+      * Sets ntlm proxy authentication information.
+      * @param env pointer to environment struct
+      * @param parent pointer to parent struct
+      * @param username string representing username
+      * @param password string representing password
+      * @param flags int pointer representing flags
+      * @param domain string representing domain
+      * @param workstation string representing workstation
+      * @param auth_type use "NTLM" to force ntlm proxy authentication
+      * or NULL for not forcing authentication
+      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+      */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_options_set_ntlm_proxy_auth_info(
+        axis2_options_t * options,
+        const axutil_env_t * env,
+        const axis2_char_t * username,
+        const axis2_char_t * password,
+        const int * flags,
+        const axis2_char_t * domain,
+        const axis2_char_t * workstation,
+        const axis2_char_t * auth_type);
     /** @} */
 #ifdef __cplusplus
 }

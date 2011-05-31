@@ -166,3 +166,18 @@ axis2_http_header_get_value(
 {
     return http_header->value;
 }
+
+AXIS2_EXTERN void AXIS2_CALL
+axis2_http_header_set_value(
+    axis2_http_header_t * http_header,
+    const axutil_env_t * env,
+    const axis2_char_t *value)
+{
+    if(http_header->value)
+    {
+        AXIS2_FREE(env->allocator, http_header->value);
+        http_header->value = NULL;
+    }
+    http_header->value = (axis2_char_t *)axutil_strdup(env, value);
+}
+
