@@ -15,7 +15,7 @@
 prgbindir=$(prefix)/samples/bin
 prgbin_PROGRAMS = ntlm_client 
 AM_CFLAGS = -g -O2
-ntlm_client_SOURCES = client.c
+ntlm_client_SOURCES = ntlm_post.c
 
 LINK_FLAGS   = $(LDFLAGS) \
                 -L$(AXIS2C_HOME)/lib \
