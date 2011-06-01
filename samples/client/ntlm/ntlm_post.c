@@ -130,7 +130,6 @@ main(
     /* un-comment line below to setup proxy from code*/
     /*axis2_svc_client_set_proxy_with_auth(svc_client, env, "127.0.0.1", "3128", NULL, NULL);*/
 
-    /* Sending robust authentication test message */
 
     /* Set http-auth information */
     if (un && pw)

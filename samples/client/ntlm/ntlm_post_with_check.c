@@ -49,7 +49,7 @@ main(
     /* Set up the environment */
     env = axutil_env_create_all("ntlm_auth_client_with_check.log", AXIS2_LOG_LEVEL_TRACE);
 
-    /* Set end point reference of echo service */
+    /* Set end point reference of ntlm service */
     address = "http://172.16.176.132:80/myservice/Service1.asmx";
     if (argc > 1)
     {
@@ -221,7 +221,7 @@ main(
             om_str = axiom_node_to_string(ret_node, env);
             if (om_str)
                 printf("\nReceived OM : %s\n", om_str);
-            printf("\necho client invoke SUCCESSFUL!\n");
+            printf("\nntlm client invoke SUCCESSFUL!\n");
 
             AXIS2_FREE(env->allocator, om_str);
             ret_node = NULL;
@@ -232,7 +232,7 @@ main(
                             "Stub invoke FAILED: Error code:" " %d :: %s",
                             env->error->error_number,
                             AXIS2_ERROR_GET_MESSAGE(env->error));
-            printf("echo client invoke FAILED!\n");
+            printf("ntlm client invoke FAILED!\n");
         }
     }
     if (svc_client)
