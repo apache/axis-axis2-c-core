@@ -16,9 +16,6 @@
 #include <stdio.h>
 #include <axis2_ntlm.h>
 
-#define NTLM_NEG_NTLM           0x00000200
-#define NTLM_NEG_UNICODE        0x00000001
-#define NTLM_TARGET_DOMAIN      0x00010000
 
 int main()
 {
