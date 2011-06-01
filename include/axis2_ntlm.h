@@ -32,6 +32,10 @@ extern "C"
 {
 #endif
 
+    #define NTLM_NEG_NTLM           0x00000200
+    #define NTLM_NEG_UNICODE        0x00000001
+    #define NTLM_TARGET_DOMAIN      0x00010000
+
     typedef struct axis2_ntlm_ops axis2_ntlm_ops_t;
     typedef struct axis2_ntlm axis2_ntlm_t;
 
