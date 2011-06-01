@@ -47,7 +47,7 @@ main(
     axutil_string_t *soap_action = NULL;
 
     /* Set up the environment */
-    env = axutil_env_create_all("ntlm_auth_client_with_check.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("ntlm_post_with_check.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of ntlm service */
     address = "http://172.16.176.132:80/myservice/Service1.asmx";
@@ -135,7 +135,7 @@ main(
     /* Sending dummy authentication info */
     if (un && pw)
     {
-        axis2_options_set_ntlm_proxy_auth_info(options, env, "", "", NULL, NULL, NULL, NULL);
+        axis2_options_set_ntlm_proxy_auth_info(options, env, "", "", 0, NULL, NULL, NULL);
     }
     if(flags)
     {
@@ -167,7 +167,7 @@ main(
         /* Set proxy-auth information */
         if (un && pw)
         {
-            axis2_options_set_ntlm_proxy_auth_info(options, env, un, pw, &fg, domain, workstation,
+            axis2_options_set_ntlm_proxy_auth_info(options, env, un, pw, fg, domain, workstation,
                                               axis2_svc_client_get_auth_type(svc_client, env));
         }
 
@@ -180,7 +180,7 @@ main(
         /* Set http-auth information */
         if (un && pw)
         {
-            axis2_options_set_ntlm_http_auth_info(options, env, un, pw, &fg, domain, workstation,
+            axis2_options_set_ntlm_http_auth_info(options, env, un, pw, fg, domain, workstation,
                                              axis2_svc_client_get_auth_type(svc_client, env));
         }
     }

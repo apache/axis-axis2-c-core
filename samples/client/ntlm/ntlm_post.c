@@ -45,7 +45,7 @@ main(
     axutil_string_t *soap_action = NULL;
 
     /* Set up the environment */
-    env = axutil_env_create_all("ntlm_auth_client.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("ntlm_post.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of ntlm service */
     address = "http://172.16.176.132:80/myservice/Service1.asmx";
@@ -134,7 +134,7 @@ main(
     /* Set http-auth information */
     if (un && pw)
     {
-        axis2_options_set_ntlm_http_auth_info(options, env, un, pw, &fg, domain, workstation, 
+        axis2_options_set_ntlm_http_auth_info(options, env, un, pw, fg, domain, workstation, 
                 AXIS2_HTTP_AUTH_TYPE_NTLM);
     }
 
