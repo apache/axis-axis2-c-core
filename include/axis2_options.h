@@ -846,7 +846,7 @@ extern "C"
       * @param parent pointer to parent struct
       * @param username string representing username
       * @param password string representing password
-      * @param flags int pointer representing flags
+      * @param flags int representing flags
       * @param domain string representing domain
       * @param workstation string representing workstation
       * @param auth_type use "NTLM" to force ntlm http authentication
@@ -859,7 +859,7 @@ extern "C"
         const axutil_env_t * env,
         const axis2_char_t * username,
         const axis2_char_t * password,
-        const int * flags,
+        const int flags,
         const axis2_char_t * domain,
         const axis2_char_t * workstation,
         const axis2_char_t * auth_type);
@@ -870,7 +870,7 @@ extern "C"
       * @param parent pointer to parent struct
       * @param username string representing username
       * @param password string representing password
-      * @param flags int pointer representing flags
+      * @param flags pointer representing flags
       * @param domain string representing domain
       * @param workstation string representing workstation
       * @param auth_type use "NTLM" to force ntlm proxy authentication
@@ -883,7 +883,7 @@ extern "C"
         const axutil_env_t * env,
         const axis2_char_t * username,
         const axis2_char_t * password,
-        const int * flags,
+        const int flags,
         const axis2_char_t * domain,
         const axis2_char_t * workstation,
         const axis2_char_t * auth_type);

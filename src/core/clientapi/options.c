@@ -1073,12 +1073,13 @@ axis2_options_set_ntlm_proxy_auth_info(
     const axutil_env_t * env,
     const axis2_char_t * username,
     const axis2_char_t * password,
-    const int * flags,
+    const int flags,
     const axis2_char_t * domain,
     const axis2_char_t * workstation,
     const axis2_char_t * auth_type)
 {
     axis2_bool_t force_proxy_auth = AXIS2_FALSE;
+    axis2_char_t temp_str[4];
     axutil_property_t *prop_pw = NULL;
     axutil_property_t *prop_un = NULL;
     axutil_property_t *prop_fg = NULL;
@@ -1093,14 +1094,10 @@ axis2_options_set_ntlm_proxy_auth_info(
     axutil_property_set_value(prop_pw, env, axutil_strdup(env, password));
     axis2_options_set_property(options, env, AXIS2_PROXY_AUTH_PASSWD, prop_pw);
     
-    if(flags)
-    {
-        axis2_char_t temp_str[4];
-        sprintf(temp_str, "%d", *flags);
-        prop_fg = axutil_property_create(env);
-        axutil_property_set_value(prop_fg, env, axutil_strdup(env, temp_str));
-        axis2_options_set_property(options, env, AXIS2_NTLM_AUTH_FLAGS, prop_fg);
-    }
+    sprintf(temp_str, "%d", flags);
+    prop_fg = axutil_property_create(env);
+    axutil_property_set_value(prop_fg, env, axutil_strdup(env, temp_str));
+    axis2_options_set_property(options, env, AXIS2_NTLM_AUTH_FLAGS, prop_fg);
 
     if(domain)
     {
@@ -1149,12 +1146,13 @@ axis2_options_set_ntlm_http_auth_info(
     const axutil_env_t * env,
     const axis2_char_t * username,
     const axis2_char_t * password,
-    const int * flags,
+    const int flags,
     const axis2_char_t * domain,
     const axis2_char_t * workstation,
     const axis2_char_t * auth_type)
 {
     axis2_bool_t force_http_auth = AXIS2_FALSE;
+    axis2_char_t temp_str[4];
     axutil_property_t *prop_un = NULL;
     axutil_property_t *prop_pw = NULL;
     axutil_property_t *prop_fg = NULL;
@@ -1169,14 +1167,10 @@ axis2_options_set_ntlm_http_auth_info(
     axutil_property_set_value(prop_pw, env, axutil_strdup(env, password));
     axis2_options_set_property(options, env, AXIS2_HTTP_AUTH_PASSWD, prop_pw);
 
-    if(flags)
-    {
-        axis2_char_t temp_str[4];
-        sprintf(temp_str, "%d", *flags);
-        prop_fg = axutil_property_create(env);
-        axutil_property_set_value(prop_fg, env, axutil_strdup(env, temp_str));
-        axis2_options_set_property(options, env, AXIS2_NTLM_AUTH_FLAGS, prop_fg);
-    }
+    sprintf(temp_str, "%d", flags);
+    prop_fg = axutil_property_create(env);
+    axutil_property_set_value(prop_fg, env, axutil_strdup(env, temp_str));
+    axis2_options_set_property(options, env, AXIS2_NTLM_AUTH_FLAGS, prop_fg);
 
     if(domain)
     {
