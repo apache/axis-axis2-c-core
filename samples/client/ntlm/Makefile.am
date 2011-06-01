@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 prgbindir=$(prefix)/samples/bin
-prgbin_PROGRAMS = ntlm_client 
+prgbin_PROGRAMS = ntlm_post_with_check ntlm_post
 AM_CFLAGS = -g -O2
-ntlm_client_SOURCES = ntlm_post.c
+ntlm_post_with_check_SOURCES = ntlm_post_with_check.c ntlm_util.c
+ntlm_post_SOURCES = ntlm_post.c ntlm_util.c
 
 LINK_FLAGS   = $(LDFLAGS) \
                 -L$(AXIS2C_HOME)/lib \
@@ -28,6 +29,7 @@ LINK_FLAGS   = $(LDFLAGS) \
 					-laxis2_ntlm \
                     $(GUTHTHILA_LIBS)
 
-ntlm_client_LDADD   = $(LINK_FLAGS)
+ntlm_post_with_check_LDADD   = $(LINK_FLAGS)
+ntlm_post_LDADD   = $(LINK_FLAGS)
 INCLUDES = @AXIS2INC@
 

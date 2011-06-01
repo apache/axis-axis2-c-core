@@ -42,12 +42,14 @@ main(
     const int fg = 0;
     const axis2_char_t *domain = NULL;
     const axis2_char_t *workstation = NULL;
+    axis2_bool_t http_auth_required = AXIS2_FALSE;
+    axis2_bool_t proxy_auth_required = AXIS2_FALSE;
     axutil_string_t *soap_action = NULL;
 
     /* Set up the environment */
-    env = axutil_env_create_all("ntlm_auth_client.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("ntlm_auth_client_with_check.log", AXIS2_LOG_LEVEL_TRACE);
 
-    /* Set end point reference of ntlm service */
+    /* Set end point reference of echo service */
     address = "http://172.16.176.132:80/myservice/Service1.asmx";
     if (argc > 1)
     {
@@ -124,6 +126,30 @@ main(
         return -1;
     }
 
+    /* Enabling REST for HTTP HEAD Request */
+    axis2_options_set_enable_rest(options, env, AXIS2_TRUE);
+
+    /* Setting Request as HTTP HEAD Request */
+    axis2_options_set_http_method(options, env, AXIS2_HTTP_HEAD);
+
+    /* Sending dummy authentication info */
+    if (un && pw)
+    {
+        axis2_options_set_ntlm_proxy_auth_info(options, env, "", "", NULL, NULL, NULL, NULL);
+    }
+    if(flags)
+    {
+        fg = atoi(flags);
+    }
+    else
+    {
+        fg = 0;
+    }
+
+    /* Force authentication tests */
+    axis2_options_set_test_http_auth(options, env, AXIS2_TRUE);
+    axis2_options_set_test_proxy_auth(options, env, AXIS2_TRUE);
+
     /* Set service client options */
     axis2_svc_client_set_options(svc_client, env, options);
 
@@ -131,14 +157,50 @@ main(
     /*axis2_svc_client_set_proxy_with_auth(svc_client, env, "127.0.0.1", "3128", NULL, NULL);*/
 
     /* Sending robust authentication test message */
+    axis2_svc_client_send_robust(svc_client, env, NULL);
 
-    /* Set http-auth information */
-    if (un && pw)
+    /* Checking whether authentication is required */
+    if (axis2_svc_client_get_proxy_auth_required(svc_client, env))
     {
-        axis2_options_set_ntlm_http_auth_info(options, env, un, pw, &fg, domain, workstation, 
-                AXIS2_HTTP_AUTH_TYPE_NTLM);
+        proxy_auth_required = AXIS2_TRUE;
+
+        /* Set proxy-auth information */
+        if (un && pw)
+        {
+            axis2_options_set_ntlm_proxy_auth_info(options, env, un, pw, &fg, domain, workstation,
+                                              axis2_svc_client_get_auth_type(svc_client, env));
+        }
+
+        /* Sending robust authentication test message */
+        axis2_svc_client_send_robust(svc_client, env, NULL);
+    }
+    if (axis2_svc_client_get_http_auth_required(svc_client, env))
+    {
+        http_auth_required = AXIS2_TRUE;
+        /* Set http-auth information */
+        if (un && pw)
+        {
+            axis2_options_set_ntlm_http_auth_info(options, env, un, pw, &fg, domain, workstation,
+                                             axis2_svc_client_get_auth_type(svc_client, env));
+        }
     }
 
+    /* Cancel authentication tests */
+    axis2_options_set_test_http_auth(options, env, AXIS2_FALSE);
+    axis2_options_set_test_proxy_auth(options, env, AXIS2_FALSE);
+
+    /* Print whether authentication was required */
+    if (http_auth_required)
+    {
+        printf("\nHTTP Authentication info required.\n");
+    }
+    if (proxy_auth_required)
+    {
+        printf("\nProxy Authentication info required.\n");
+    }
+
+    /* Disabling REST for SOAP Request */
+    axis2_options_set_enable_rest(options, env, AXIS2_FALSE);
 
     /* Setting Request as HTTP POST Request */
     axis2_options_set_http_method(options, env, AXIS2_HTTP_POST);
@@ -159,7 +221,7 @@ main(
             om_str = axiom_node_to_string(ret_node, env);
             if (om_str)
                 printf("\nReceived OM : %s\n", om_str);
-            printf("\nntlm client invoke SUCCESSFUL!\n");
+            printf("\necho client invoke SUCCESSFUL!\n");
 
             AXIS2_FREE(env->allocator, om_str);
             ret_node = NULL;
@@ -170,7 +232,7 @@ main(
                             "Stub invoke FAILED: Error code:" " %d :: %s",
                             env->error->error_number,
                             AXIS2_ERROR_GET_MESSAGE(env->error));
-            printf("ntlm client invoke FAILED!\n");
+            printf("echo client invoke FAILED!\n");
         }
     }
     if (svc_client)
@@ -187,5 +249,4 @@ main(
 
     return 0;
 }
-
 
