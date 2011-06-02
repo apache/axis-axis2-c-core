@@ -1,0 +1,22 @@
+NTLM authentication for Axis2/C clients using default http transport is made possible with this
+package. By default NTLM authentication is disabled in Axis2/C build. to enable NTLM authentication
+user need to configure Axis2/C with an external  NTLM library like Heimdal[1] 
+
+NTLM support is added to Axis2/C client transport as a dynamically loadedable library called axis2c_ntlm.
+This library will wrap a external NTLM library like Heimdal to provide NTLM support. Axis2/C is shipped with
+a wrapper to Heimdal which you can find under heimdal subdirectory here. Developers have tested successfully with a
+wrapper to libntlm[2] as well.
+
+One can write a wrapper to any other external NTLM libary of his choice by implementing axis2_ntlm.h header file and
+studying the heimdal wrapper here.
+
+To enable heimdal NTLM library at build time configure Axis2/C with following option
+configure --enable-heimdal=yes
+
+There are some examples of using NTLM authenticaion with Axis2/C clients under
+<AXIS2C_SOURCE>/samples/client/ntlm subdirecory.
+
+
+
+[1] http://www.h5l.org/
+[2] http://josefsson.org/libntlm/
