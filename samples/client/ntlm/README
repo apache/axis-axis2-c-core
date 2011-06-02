@@ -1,0 +1,23 @@
+This folder contain examples of using NTLM authentication for Axis2/C clients.
+Before running the samples you need to build Axis2/C enabling NTLM authentication with a valid
+NTLM external library. For example to enable NTLM support with Heimdal NTML library give configure option
+configure --ehanble-heimdal when building Axis2/C
+
+ntlm_post: 
+This sample send a HelloWorld web service POST request to the Windows IIS server
+secured with NTLM authentication.
+
+Usage : ./ntlm_post [endpoint_url] (-n [username] [password] [flags] [domain] [workstation])
+use -n option for NTLM HTTP Authentication
+use -h for help
+
+ntlm_post_with_check: 
+This sample send a HellowWorld web service POST request to the Windows IIS server
+secured with NTLM authentication.
+In this sample before sending the actual message, the client send a 
+test head request to check whether server require authentication. If server require
+NTLM authentication, then only the client send the security credentials.
+
+Usage : ./ntlm_post_with_check [endpoint_url] (-n [username] [password] [flags] [domain] [workstation])
+use -n option for NTLM HTTP Authentication
+use -h for help
