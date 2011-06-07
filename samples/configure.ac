@@ -117,6 +117,27 @@ AC_ARG_ENABLE(heimdal, [  --enable-heimdal
   AC_MSG_RESULT(no)
 )
 
+AC_MSG_CHECKING(whether to build libntlm ntlm wrapper library)
+AC_ARG_ENABLE(libntlm, [  --enable-libntlm    
+                          build libntlm ntlm library wrapper (default=no)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    NTLM_WRAPPER_DIR="default"
+    NTLM_SAMPLE_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    NTLM_WRAPPER_DIR="libntlm"
+    NTLM_SAMPLE_DIR="ntlm"
+    CFLAGS="$CFLAGS -DAXIS2_LIBNTLM_ENABLED -DAXIS2_NTLM_ENABLED"
+    CPPFLAGS="$CPPFLAGS $NTLM_CFLAGS -DAXIS2_LIBNTLM_ENABLED -DAXIS2_NTLM_ENABLED"
+    LDFLAGS="$LDFLAGS $NTLM_LDFLAGS"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
 AC_MSG_CHECKING(To Use Axis2 C . This is a compulsory module to build Axis2 C samples)
 AC_ARG_WITH(axis2,
 [  --with-axis2[=PATH]     Find the AXIS2 header files in 'PATH'.
