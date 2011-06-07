@@ -16,7 +16,6 @@ TESTS =
 SUBDIRS = mock_server
 noinst_PROGRAMS = test_ntlm mock_client
 check_PROGRAMS = test_ntlm mock_client
-SUBDIRS =
 AM_CFLAGS = -g -O2
 test_ntlm_SOURCES = client.c
 mock_client_SOURCES = mock_client.c

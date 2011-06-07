@@ -233,6 +233,27 @@ AC_ARG_ENABLE(heimdal, [  --enable-heimdal
   AC_MSG_RESULT(no)
 )
 
+AC_MSG_CHECKING(whether to build libntlm ntlm wrapper library)
+AC_ARG_ENABLE(libntlm, [  --enable-libntlm    
+                          build libntlm ntlm library wrapper (default=no)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    NTLM_WRAPPER_DIR="default"
+    NTLM_SAMPLE_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    NTLM_WRAPPER_DIR="libntlm"
+    NTLM_SAMPLE_DIR="ntlm"
+    CFLAGS="$CFLAGS -DAXIS2_LIBNTLM_ENABLED -DAXIS2_NTLM_ENABLED"
+    CPPFLAGS="$CPPFLAGS $NTLM_CFLAGS -DAXIS2_LIBNTLM_ENABLED -DAXIS2_NTLM_ENABLED"
+    LDFLAGS="$LDFLAGS $NTLM_LDFLAGS"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
 
 
 AC_MSG_CHECKING(whether to build tcp transport)
@@ -528,6 +549,7 @@ AC_CONFIG_FILES([Makefile \
     src/core/transport/http/sender/libcurl/Makefile \
     src/core/transport/http/sender/ntlm/Makefile \
     src/core/transport/http/sender/ntlm/heimdal/Makefile \
+    src/core/transport/http/sender/ntlm/libntlm/Makefile \
     src/core/transport/http/sender/ntlm/default/Makefile \
     src/core/transport/http/sender/ntlm/test/Makefile \
     src/core/transport/http/sender/ntlm/test/mock_server/Makefile \
