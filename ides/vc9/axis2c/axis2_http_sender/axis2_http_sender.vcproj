@@ -41,8 +41,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\..\..\..\..\src\core\transport\http\sender;.\..\..\..\..\include;.\..\..\..\..\src\core\deployment;.\..\..\..\..\util\include;.\..\..\..\..\axiom\include;&quot;$(OPENSSL_HOME)\include&quot;;&quot;$(CURL_HOME)\include&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;AXIS2_DECLARE_EXPORT"
+				AdditionalIncludeDirectories=".\..\..\..\..\src\core\transport\http\sender;.\..\..\..\..\include;.\..\..\..\..\src\core\deployment;.\..\..\..\..\util\include;.\..\..\..\..\axiom\include;&quot;$(OPENSSL_HOME)\include&quot;;&quot;$(CURL_HOME)\include&quot;;&quot;$(HEIMDAL_HOME)\inc&quot;;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;AXIS2_DECLARE_EXPORT;AXIS2_SSL_ENABLED;AXIS2_NTLM_ENABLED"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -65,9 +65,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="axutil.lib axis2_engine.lib axiom.lib axis2_parser.lib"
+				AdditionalDependencies="axutil.lib axis2_engine.lib axiom.lib axis2_parser.lib libeay32.lib ssleay32.lib libheimntlm.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)\deploy\lib&quot;;&quot;$(OPENSSL_HOME)\lib&quot;;&quot;$(CURL_HOME)\lib&quot;"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\deploy\lib&quot;;&quot;$(OPENSSL_HOME)\lib&quot;;&quot;$(CURL_HOME)\lib&quot;;D:\OpenSSL\lib;&quot;$(HEIMDAL_HOME)\lib&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -178,15 +178,15 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
+			RelativePathToProject=".\axutil\axutil.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{9524B8C5-79D9-4470-9A47-8BD163ABBB15}"
+			RelativePathToProject=".\axis2_engine\axis2_engine.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{7C816A64-FA96-4C6C-8DB0-5256441F54BC}"
-		/>
-		<ProjectReference
-			ReferencedProjectIdentifier="{D7D7FBA1-5E43-4586-8F69-D4ED2628D2D8}"
+			RelativePathToProject=".\axiom\axiom.vcproj"
 		/>
 	</References>
 	<Files>
@@ -244,6 +244,18 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\src\core\transport\http\sender\libcurl\libcurl_stream.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="ntlm"
+				>
+				<File
+					RelativePath="..\..\..\..\src\core\transport\http\sender\ntlm\heimdal\heimdal_ntlm_wrapper.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\src\core\transport\http\sender\ntlm\ntlm.c"
 					>
 				</File>
 			</Filter>
