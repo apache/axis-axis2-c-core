@@ -1279,6 +1279,7 @@ axis2_clients_intdir:
 	@if not exist $(AXIS2_INTDIR_CLI)\mtom mkdir $(AXIS2_INTDIR_CLI)\mtom
 	@if not exist $(AXIS2_INTDIR_CLI)\mtom_callback mkdir $(AXIS2_INTDIR_CLI)\mtom_callback
 	@if not exist $(AXIS2_INTDIR_CLI)\ntlm mkdir $(AXIS2_INTDIR_CLI)\ntlm
+	@if not exist $(AXIS2_INTDIR_CLI)\ntlm_postcheck mkdir $(AXIS2_INTDIR_CLI)\ntlm_postcheck
 
 AXIS2_SAMPLES_BIN = $(AXIS2_BINDIR)\samples\bin
 
@@ -1370,14 +1371,14 @@ $(AXIS2_SAMPLES_BIN)\ntlm.exe :
 axis2_client_ntlm: $(AXIS2_SAMPLES_BIN)\ntlm.exe
 
 
-$(AXIS2_SAMPLES_BIN)\ntlmpost.exe :
+$(AXIS2_SAMPLES_BIN)\ntlm_postcheck.exe :
 	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\ntlm\ntlm_post_with_check.c \
-	$(AXIS2_SOURCE_DIR)\samples\client\ntlm\ntlm_util.c /Fo$(AXIS2_INTDIR_CLI)\ntlm\ /c
-	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR_CLI)\ntlm\*.obj $(AXUTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\ntlm.exe
+	$(AXIS2_SOURCE_DIR)\samples\client\ntlm\ntlm_util.c /Fo$(AXIS2_INTDIR_CLI)\ntlm_postcheck\ /c
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR_CLI)\ntlm_postcheck\*.obj $(AXUTIL).lib $(AXIOM).lib \
+	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\ntlm_postcheck.exe
 	-@$(_VC_MANIFEST_EMBED_EXE)
 	
-axis2_client_ntlmpost: $(AXIS2_SAMPLES_BIN)\ntlm_post.exe
+axis2_client_ntlmpost: $(AXIS2_SAMPLES_BIN)\ntlm_postcheck.exe
 
 axis2_client_userguide_int:
 	@if not exist $(AXIS2_INTDIR)\userguide\echo_blocking mkdir $(AXIS2_INTDIR)\userguide\echo_blocking
