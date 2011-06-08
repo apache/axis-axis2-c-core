@@ -35,8 +35,7 @@ default_ntlm_wrapper_create_type1_message(
     const axis2_char_t *uname,
     const axis2_char_t *passwd,
     const int flags,
-    const axis2_char_t *domain,
-    const axis2_char_t *workstation);
+    const axis2_char_t *domain);
 
 axis2_status_t AXIS2_CALL
 default_ntlm_wrapper_create_type3_message(
@@ -47,7 +46,6 @@ default_ntlm_wrapper_create_type3_message(
     int *encoded_len,
     const axis2_char_t *uname,
     const axis2_char_t *passwd,
-    const int flags,
     const axis2_char_t *domain,
     const axis2_char_t *workstation);
 
@@ -110,8 +108,7 @@ default_ntlm_wrapper_create_type1_message(
     const axis2_char_t *user,
     const axis2_char_t *password,
     const int flags,
-    const axis2_char_t *domain,
-    const axis2_char_t *workstation)
+    const axis2_char_t *domain)
 {
     axis2_status_t status = AXIS2_FAILURE;
     return status;
@@ -126,7 +123,6 @@ default_ntlm_wrapper_create_type3_message(
     int *encoded_len,
     const axis2_char_t *user,
     const axis2_char_t *password,
-    const int flags,
     const axis2_char_t *domain,
     const axis2_char_t *workstation)
 {
