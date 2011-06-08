@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include "axis2_ntlm.h"
+#include <axis2_ntlm.h>
 #include <axutil_utils_defines.h>
 #include <axutil_utils.h>
 #include <string.h>
@@ -186,11 +186,8 @@ heimdal_ntlm_wrapper_create_type3_message(
     int ret;
     int len;
 
-	
-	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ntlm_impl = AXIS2_INTF_TO_IMPL(ntlm);
-
     
     memset(&type2, 0, sizeof(type2));
 
