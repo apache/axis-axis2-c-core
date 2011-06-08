@@ -145,8 +145,11 @@ AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(LIBCURL_BIN_DIR)\include
 !endif
 
 
-!if "$(ENABLE_NTLM)" == "1"
+!if "$(ENABLE_NTLM_WITH_HEIMDAL)" == "1"
 AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(OPENSSL_BIN_DIR)\include /I$(HEIMDAL_BIN_DIR)\inc
+!endif
+!if "$(ENABLE_NTLM_WITH_LIBNTLM)" == "1"
+AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(LIBNTLM_BIN_DIR)\include
 !endif
 
 # Compiler Options
@@ -199,9 +202,14 @@ APACHE_LIBS = apr.lib xml.lib libhttpd.lib libaprutil.lib libapr.lib
 APACHE_LIBS = apr-1.lib xml.lib libhttpd.lib libapr-1.lib libaprutil-1.lib
 !endif
 
-!if "$(ENABLE_NTLM)" == "1"
+!if "$(ENABLE_NTLM_WITH_HEIMDAL)" == "1"
 LDFLAGS = $(LDFLAGS) /LIBPATH:$(HEIMDAL_BIN_DIR)\lib /LIBPATH:$(OPENSSL_BIN_DIR)\lib\VC
 LIBS = $(LIBS) libheimntlm.lib libeay32MD.lib ssleay32MD.lib 
+!endif
+
+!if "$(ENABLE_NTLM_WITH_LIBNTLM)" == "1"
+LDFLAGS = $(LDFLAGS) /LIBPATH:$(LIBNTLM_BIN_DIR)\lib
+LIBS = $(LIBS) libntlm.a
 !endif
 
 # Manifest Options
@@ -241,7 +249,6 @@ deploy:
 	@if not exist $(AXIS2_INCLUDE) mkdir $(AXIS2_INCLUDE)
 	@if not exist $(AXIS2_LOG) mkdir $(AXIS2_LOG)
 	@if not exist $(AXIS2_MODULES)\addressing mkdir $(AXIS2_MODULES)\addressing
-			
 	@if not exist $(AXIS2_INTDIR) mkdir $(AXIS2_INTDIR)
 	@if not exist $(AXIS2_INTDIR_SAMPLES) mkdir $(AXIS2_INTDIR_SAMPLES)
 	
@@ -642,7 +649,7 @@ HTTP_SENDER_INTDIR1 = $(AXIS2_INTDIR)\http_sender\ssl
 HTTP_SENDER_INTDIR2 = $(AXIS2_INTDIR)\http_sender\libcurl
 HTTP_SENDER_INTDIR3 = $(AXIS2_INTDIR)\http_sender\ntlm
 HTTP_SENDER_INTDIR4 = $(AXIS2_INTDIR)\http_sender\ntlm\heimdal
-
+HTTP_SENDER_INTDIR5 = $(AXIS2_INTDIR)\http_sender\ntlm\libntlm
 
 HTTP_SENDER_OBJS = $(HTTP_SENDER_INTDIR)\*.obj
 
@@ -661,6 +668,9 @@ $(HTTP_SENDER_INTDIR3) :
 $(HTTP_SENDER_INTDIR4) :
 	@if not exist $(HTTP_SENDER_INTDIR4) mkdir $(HTTP_SENDER_INTDIR4)
 
+$(HTTP_SENDER_INTDIR5) :
+	@if not exist $(HTTP_SENDER_INTDIR5) mkdir $(HTTP_SENDER_INTDIR5)
+
 {$(HTTP_SENDER_SRC)}.c{$(HTTP_SENDER_INTDIR)}.obj ::
 	$(CC) $(CFLAGS) /Fo$(HTTP_SENDER_INTDIR)\ /c $<
 
@@ -676,6 +686,9 @@ $(HTTP_SENDER_INTDIR4) :
 
 {$(HTTP_SENDER_SRC)\ntlm\heimdal}.c{$(HTTP_SENDER_INTDIR4)}.obj ::
 	$(CC) $(CFLAGS) /Fo$(HTTP_SENDER_INTDIR4)\ /c $<
+
+{$(HTTP_SENDER_SRC)\ntlm\libntlm}.c{$(HTTP_SENDER_INTDIR5)}.obj ::
+	$(CC) $(CFLAGS) /Fo$(HTTP_SENDER_INTDIR5)\ /c $<
 
 !if "$(ENABLE_SSL)" == "1"
 !if "$(ENABLE_LIBCURL)" == "1"
@@ -699,12 +712,21 @@ $(HTTP_SENDER_OBJS) : $(HTTP_SENDER_INTDIR) $(HTTP_SENDER_INTDIR2)
 $(HTTP_SENDER_OBJS) : $(HTTP_SENDER_INTDIR)
 !endif
 
-!if "$(ENABLE_NTLM)" == "1"
+!if "$(ENABLE_NTLM_WITH_HEIMDAL)" == "1"
 HTTP_SENDER_OBJS = $(HTTP_SENDER_OBJS) \
 		$(HTTP_SENDER_INTDIR3)\*.obj \
 		  $(HTTP_SENDER_INTDIR4)\*.obj 
 
 $(HTTP_SENDER_OBJS) : $(HTTP_SENDER_INTDIR3) $(HTTP_SENDER_INTDIR4)
+!endif
+
+
+!if "$(ENABLE_NTLM_WITH_LIBNTLM)" == "1"
+HTTP_SENDER_OBJS = $(HTTP_SENDER_OBJS) \
+		   $(HTTP_SENDER_INTDIR3)\*.obj \
+		   $(HTTP_SENDER_INTDIR5)\*.obj 
+
+$(HTTP_SENDER_OBJS) : $(HTTP_SENDER_INTDIR3) $(HTTP_SENDER_INTDIR5)
 !endif
 
 $(AXIS2_LIBS)\$(AXIS2_HTTP_SENDER).dll : $(HTTP_SENDER_OBJS)

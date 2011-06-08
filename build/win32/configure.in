@@ -33,7 +33,9 @@ WITH_TCP = 1
 WITH_ARCHIVE = 0
 #
 # enable NTLM authentication support.
-ENABLE_NTLM = 1
+ENABLE_NTLM_WITH_HEIMDAL = 0
+#
+ENABLE_NTLM_WITH_LIBNTLM = 1
 #
 #############################################################################
 ### Dependant Binary Locations (Required) ###
@@ -41,14 +43,12 @@ ENABLE_NTLM = 1
 #
 # libxml2 binary location ( axis2c is built with libxml2 )
 LIBXML2_BIN_DIR = E:\libxml2-2.6.30.win32
-
 #
 # iconv binary location
 ICONV_BIN_DIR = E:\iconv-1.9.2.win32
 #
 # zlib binary location
 ZLIB_BIN_DIR= E:\zlib-1.2.3.win32
-#
 #
 #############################################################################
 ### Dependant Binary Locations (Optional) ###
@@ -63,6 +63,8 @@ LIBCURL_BIN_DIR = E:\libcurl-7.15.1-msvc-win32-ssl-0.9.8a-zlib-1.2.3
 #
 #Heimdal
 HEIMDAL_BIN_DIR=D:\NTLM\heimdal-bin
+#
+LIBNTLM_BIN_DIR=D:\libntlm
 #
 #############################################################################
 ### Apache Server module (required when building Axis2/C Apache Module) ###
