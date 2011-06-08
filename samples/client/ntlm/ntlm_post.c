@@ -40,6 +40,7 @@ main(
     const axis2_char_t *pw = NULL;
     const axis2_char_t *flags = NULL;
     const int fg = 0;
+	int i = 0;
     const axis2_char_t *domain = NULL;
     const axis2_char_t *workstation = NULL;
     axutil_string_t *soap_action = NULL;
@@ -142,7 +143,7 @@ main(
     /* Setting Request as HTTP POST Request */
     axis2_options_set_http_method(options, env, AXIS2_HTTP_POST);
 
-    int i = 0;
+
     for(i = 0; i < 1; i++)
     {
         /* Build the SOAP request message payload using OM API. */
