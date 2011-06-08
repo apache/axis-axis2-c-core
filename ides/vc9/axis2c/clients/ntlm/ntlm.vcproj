@@ -174,7 +174,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\..\..\..\samples\client\ntlm\ntlm_post.c"
+				RelativePath="..\..\..\..\..\samples\client\ntlm\ntlm_post_with_check.c"
 				>
 			</File>
 			<File
@@ -188,11 +188,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\..\..\..\samples\client\ntlm\ntlm_util.h"
+				RelativePath="..\..\..\..\..\..\samples\client\ntlm\ntlm_util.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\..\..\samples\client\ntlm\ntlm_util.h"
+				RelativePath="..\..\..\..\..\samples\client\ntlm\ntlm_util.h"
 				>
 			</File>
 		</Filter>
