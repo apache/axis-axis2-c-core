@@ -29,22 +29,23 @@ main(
     char **argv)
 {
     const axutil_env_t *env = NULL;
-    const axis2_char_t *address = NULL;
+    axis2_char_t *address = NULL;
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     axis2_options_t *options = NULL;
-    const axis2_char_t *client_home = NULL;
+    axis2_char_t *client_home = NULL;
     axis2_svc_client_t *svc_client = NULL;
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
-    const axis2_char_t *un = NULL;
-    const axis2_char_t *pw = NULL;
-    const axis2_char_t *flags = NULL;
-    const int fg = 0;
-    const axis2_char_t *domain = NULL;
-    const axis2_char_t *workstation = NULL;
+    axis2_char_t *un = NULL;
+    axis2_char_t *pw = NULL;
+    axis2_char_t *flags = NULL;
+    int fg = 0;
+    axis2_char_t *domain = NULL;
+    axis2_char_t *workstation = NULL;
     axis2_bool_t http_auth_required = AXIS2_FALSE;
     axis2_bool_t proxy_auth_required = AXIS2_FALSE;
     axutil_string_t *soap_action = NULL;
+	int i = 0;
 
     /* Set up the environment */
     env = axutil_env_create_all("ntlm_post_with_check.log", AXIS2_LOG_LEVEL_TRACE);
@@ -205,7 +206,7 @@ main(
     /* Setting Request as HTTP POST Request */
     axis2_options_set_http_method(options, env, AXIS2_HTTP_POST);
 
-    int i = 0;
+
     for(i = 0; i < 1; i++)
     {
         /* Build the SOAP request message payload using OM API. */
