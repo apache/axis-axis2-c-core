@@ -33,9 +33,9 @@ WITH_TCP = 1
 WITH_ARCHIVE = 0
 #
 # enable NTLM authentication support.
-ENABLE_NTLM_WITH_HEIMDAL = 0
+ENABLE_NTLM_WITH_HEIMDAL = 1
 #
-ENABLE_NTLM_WITH_LIBNTLM = 1
+ENABLE_NTLM_WITH_LIBNTLM = 0
 #
 #############################################################################
 ### Dependant Binary Locations (Required) ###
