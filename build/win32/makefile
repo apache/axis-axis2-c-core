@@ -1369,6 +1369,16 @@ $(AXIS2_SAMPLES_BIN)\ntlm.exe :
 	
 axis2_client_ntlm: $(AXIS2_SAMPLES_BIN)\ntlm.exe
 
+
+$(AXIS2_SAMPLES_BIN)\ntlmpost.exe :
+	$(CC) $(CFLAGS) $(AXIS2_SOURCE_DIR)\samples\client\ntlm\ntlm_post_with_check.c \
+	$(AXIS2_SOURCE_DIR)\samples\client\ntlm\ntlm_util.c /Fo$(AXIS2_INTDIR_CLI)\ntlm\ /c
+	$(LD) $(LDFLAGS) /FIXED:No $(AXIS2_INTDIR_CLI)\ntlm\*.obj $(AXUTIL).lib $(AXIOM).lib \
+	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_SAMPLES_BIN)\ntlm.exe
+	-@$(_VC_MANIFEST_EMBED_EXE)
+	
+axis2_client_ntlmpost: $(AXIS2_SAMPLES_BIN)\ntlm_post.exe
+
 axis2_client_userguide_int:
 	@if not exist $(AXIS2_INTDIR)\userguide\echo_blocking mkdir $(AXIS2_INTDIR)\userguide\echo_blocking
 	@if not exist $(AXIS2_INTDIR)\userguide\echo_non_blocking mkdir $(AXIS2_INTDIR)\userguide\echo_non_blocking
@@ -1551,7 +1561,7 @@ mv_dist:
 
 all_services: axis2_services_echo axis2_services_math axis2_services_session axis2_services_version axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_services_mtom_callback axis2_services_calculator 
 
-all_clients: axis2_clients_intdir axis2_client_echo axis2_client_math axis2_client_session axis2_client_version axis2_client_google_spell axis2_client_yahoo axis2_client_notify axis2_client_mtom axis2_client_mtom_callback axis2_client_userguide axis2_client_ntlm
+all_clients: axis2_clients_intdir axis2_client_echo axis2_client_math axis2_client_session axis2_client_version axis2_client_google_spell axis2_client_yahoo axis2_client_notify axis2_client_mtom axis2_client_mtom_callback axis2_client_userguide axis2_client_ntlm axis2_client_ntlmpost
  
 all_callback: axis2_mtom_sending_callback axis2_mtom_caching_callback
 axis2_samples: axis2_mod_log all_services all_clients all_callback
