@@ -211,6 +211,8 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2
   AC_MSG_RESULT(no)
 )
 
+NTLM_WRAPPER_DIR="default"
+
 AC_MSG_CHECKING(whether to build heimdal ntlm wrapper library)
 AC_ARG_ENABLE(heimdal, [  --enable-heimdal    
                           build heimdal ntlm library wrapper (default=no)],
@@ -253,7 +255,6 @@ AC_ARG_ENABLE(libntlm, [  --enable-libntlm
   esac ],
   AC_MSG_RESULT(no)
 )
-
 
 
 AC_MSG_CHECKING(whether to build tcp transport)
