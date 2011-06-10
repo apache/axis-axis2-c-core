@@ -14,3 +14,4 @@
 # limitations under the License.
 SUBDIRS = $(NTLM_WRAPPER_DIR)
 DIST_SUBDIRS=heimdal libntlm
+EXTRA_DIST=README
