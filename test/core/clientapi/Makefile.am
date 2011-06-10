@@ -28,7 +28,8 @@ test_clientapi_LDADD   =  \
 				$(top_builddir)/neethi/src/libneethi.la \
 				 -lpthread \
 				 $(top_builddir)/src/core/engine/libaxis2_engine.la \
-				 $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la 
+				 $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
+				 $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la 
 
 test_client_LDADD   =  \
 				 ../../../util/src/libaxutil.la \
@@ -40,7 +41,8 @@ test_client_LDADD   =  \
 				 $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 				 $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
 			 $(top_builddir)/src/core/transport/http/receiver/libaxis2_http_receiver.la \
-				 $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la 
+				 $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
+				 $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la 
 
 test_svc_client_handler_count_LDADD   =  \
 				../../../util/src/libaxutil.la \
@@ -49,7 +51,8 @@ test_svc_client_handler_count_LDADD   =  \
 				$(top_builddir)/neethi/src/libneethi.la \
 				-lpthread \
 				$(top_builddir)/src/core/engine/libaxis2_engine.la \
-				$(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la 
+				$(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
+				$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la 
 
 
 INCLUDES = -I$(CUTEST_HOME)/include \
