@@ -555,9 +555,6 @@ AC_CONFIG_FILES([Makefile \
     src/core/transport/http/sender/ntlm/Makefile \
     src/core/transport/http/sender/ntlm/heimdal/Makefile \
     src/core/transport/http/sender/ntlm/libntlm/Makefile \
-    src/core/transport/http/sender/ntlm/default/Makefile \
-    src/core/transport/http/sender/ntlm/test/Makefile \
-    src/core/transport/http/sender/ntlm/test/mock_server/Makefile \
     src/core/transport/http/receiver/Makefile \
     src/core/transport/http/server/simple_axis2_server/Makefile \
     src/core/transport/http/server/Makefile \
