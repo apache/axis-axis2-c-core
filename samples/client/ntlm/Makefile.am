@@ -32,4 +32,4 @@ LINK_FLAGS   = $(LDFLAGS) \
 ntlm_post_with_check_LDADD   = $(LINK_FLAGS)
 ntlm_post_LDADD   = $(LINK_FLAGS)
 INCLUDES = @AXIS2INC@
-EXTRA_DIST=README ntlm.mk
+EXTRA_DIST=ntlm_util.h README ntlm.mk
