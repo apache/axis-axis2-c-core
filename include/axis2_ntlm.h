@@ -83,7 +83,6 @@ extern "C"
          * @param passwd password
          * @param flags NTLM flags
          * @param domain domain
-         * @param workstation
          * @returns status , AXIS2_FAILURE on error 
          */
 
@@ -109,9 +108,8 @@ extern "C"
          * @param encoded_len length of the encoded message
          * @param uname user name
          * @param passwd password
-         * @param flags NTLM flags
          * @param domain domain
-         * @param workstation
+         * @param workstation workstation
          * @returns status , AXIS2_FAILURE on error 
          */
 
@@ -175,7 +173,6 @@ extern "C"
      * @param passwd password
      * @param flags NTLM flags
      * @param domain domain
-     * @param workstation
      * @returns status , AXIS2_FAILURE on error 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -199,9 +196,8 @@ extern "C"
      * @param encoded_len length of the encoded message
      * @param uname user name
      * @param passwd password
-     * @param flags NTLM flags
      * @param domain domain
-     * @param workstation
+     * @param workstation workstation
      * @returns status , AXIS2_FAILURE on error 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
