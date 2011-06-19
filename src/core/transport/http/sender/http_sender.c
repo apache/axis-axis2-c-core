@@ -2417,6 +2417,13 @@ axis2_http_sender_configure_http_ntlm_auth(
     axis2_http_simple_request_t * request,
     axis2_char_t * header_data)
 {
+
+#ifndef AXIS2_NTLM_ENABLED
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "NTLM is not enabled. Please consider building "\
+            "Axis2/C enabling a ntlm client library");
+    return AXIS2_FAILURE;
+#else
+
     axutil_property_t *http_auth_un = NULL;
     axutil_property_t *http_auth_pw = NULL;
     axutil_property_t *ntlm_auth_dm = NULL;
@@ -2428,11 +2435,6 @@ axis2_http_sender_configure_http_ntlm_auth(
     axis2_char_t *domain = NULL;
     axis2_char_t *workstation = NULL;
 
-#ifndef AXIS2_NTLM_ENABLED
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "NTLM is not enabled. Please consider building "\
-            "Axis2/C enabling a ntlm client library");
-    return AXIS2_FAILURE;
-#endif
 
     http_auth_un = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_AUTH_UNAME);
     http_auth_pw = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_AUTH_PASSWD);
@@ -2594,6 +2596,7 @@ axis2_http_sender_configure_http_ntlm_auth(
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
+#endif
 } /* axis2_http_sender_configure_http_ntlm_auth */
 
 static axis2_status_t
@@ -2937,6 +2940,11 @@ axis2_http_sender_configure_proxy_ntlm_auth(
     axis2_http_simple_request_t * request,
     axis2_char_t * header_data)
 {
+#ifndef AXIS2_NTLM_ENABLED
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "NTLM is not enabled. Please consider building "\
+            "Axis2/C enabling a ntlm client library");
+    return AXIS2_FAILURE;
+#else
     axutil_property_t *proxy_auth_un = NULL;
     axutil_property_t *proxy_auth_pw = NULL;
     axutil_property_t *ntlm_auth_dm = NULL;
@@ -2948,11 +2956,7 @@ axis2_http_sender_configure_proxy_ntlm_auth(
     axis2_char_t *domain = NULL;
     axis2_char_t *workstation = NULL;
 
-#ifndef AXIS2_NTLM_ENABLED
-    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "NTLM is not enabled. Please consider building "\
-            "Axis2/C enabling a ntlm client library");
-    return AXIS2_FAILURE;
-#endif
+
 
     if(!header_data || !*header_data)
         return AXIS2_FAILURE;
@@ -3135,6 +3139,7 @@ axis2_http_sender_configure_proxy_ntlm_auth(
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
+#endif
 } /* configure_proxy_ntlm_auth */
 
 #endif
