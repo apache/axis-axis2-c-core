@@ -904,6 +904,7 @@ axis2_http_sender_send(
     if(!doing_mtom)
     {
         axis2_http_simple_request_set_body_string(request, env, buffer, buffer_size);
+	AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, buffer);
     }
 
     /* HTTPS request processing */
@@ -1330,6 +1331,12 @@ axis2_http_sender_send(
 
     /* Start processing response */
     response = axis2_http_client_get_response(sender->client, env);
+	if(response)
+	{
+		AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+			axis2_http_simple_response_get_status_line(response, env));
+	}
+
     if(!is_soap)
     {
         return axis2_http_sender_process_response(sender, env, msg_ctx, response);
