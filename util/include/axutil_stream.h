@@ -76,6 +76,14 @@ extern "C"
             const axutil_env_t * env,
             int count);
 
+    typedef int(
+        AXIS2_CALL
+        * AXUTIL_STREAM_PEEK)(
+            axutil_stream_t * stream,
+            const axutil_env_t * env,
+            void *buffer,
+            size_t count);
+
     struct axutil_stream
     {
         axutil_stream_type_t stream_type;
@@ -130,6 +138,22 @@ extern "C"
                 axutil_stream_t * stream,
                 const axutil_env_t * env,
                 int count);
+
+
+        /**
+         * peeks into stream
+         * @param buffer buffer into which the content is to be read
+         * @param count size of the buffer
+         * @return no: of bytes read
+         */
+        int(
+            AXIS2_CALL
+            * peek)(
+                axutil_stream_t * stream,
+                const axutil_env_t * env,
+                void *buffer,
+                size_t count);
+
     };
 
     /**
@@ -182,6 +206,20 @@ extern "C"
         axutil_stream_t * stream,
         const axutil_env_t * env,
         int count);
+
+     /**
+    * peeks into stream
+    * @param buffer buffer into which the content is to be read
+    * @param count size of the buffer
+    * @return no: of bytes read
+    */
+    AXIS2_EXTERN int AXIS2_CALL
+    axutil_stream_peek(
+        axutil_stream_t * stream,
+        const axutil_env_t * env,
+        void *buffer,
+        int count);
+
 
     /**
      * Returns the length of the stream (applicable only to basic stream)
@@ -284,6 +322,13 @@ extern "C"
         axutil_stream_t * stream,
         const axutil_env_t * env,
         AXUTIL_STREAM_SKIP func);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axutil_stream_set_peek(
+        axutil_stream_t * stream,
+        const axutil_env_t * env,
+        AXUTIL_STREAM_PEEK func);
+
 
     /** @} */
 

@@ -501,6 +501,7 @@ axutil_stream_create_socket(
     stream->read = axutil_stream_read_socket;
     stream->write = axutil_stream_write_socket;
     stream->skip = axutil_stream_skip_socket;
+    stream->peek = axutil_stream_peek_socket;
     stream->stream_type = AXIS2_STREAM_SOCKET;
     stream->socket = socket;
     stream->fp = NULL;
@@ -689,6 +690,16 @@ axutil_stream_set_skip(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axutil_stream_set_peek(
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
+    AXUTIL_STREAM_PEEK func)
+{
+    stream->peek = func;
+    return AXIS2_SUCCESS;
+}
+
 AXIS2_EXTERN int AXIS2_CALL
 axutil_stream_read(
     axutil_stream_t *stream,
@@ -717,3 +728,14 @@ axutil_stream_skip(
 {
     return stream->skip(stream, env, count);
 }
+
+AXIS2_EXTERN int AXIS2_CALL
+axutil_stream_peek(
+    axutil_stream_t *stream,
+    const axutil_env_t *env,
+    void *buffer,
+    int count)
+{
+    return stream->peek(stream, env, buffer, count);
+}
+

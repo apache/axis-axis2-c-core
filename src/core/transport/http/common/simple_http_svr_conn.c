@@ -421,7 +421,7 @@ axis2_simple_http_svr_conn_read_line(
     int read = -1;
 
     /* peek for 2047 characters to verify whether it contains CRLF character */
-    while((read = axutil_stream_peek_socket(svr_conn->stream, env, tmp_buf, 2048 - 1)) > 0)
+    while((read = axutil_stream_peek(svr_conn->stream, env, tmp_buf, 2048 - 1)) > 0)
     {
         axis2_char_t *start = tmp_buf;
         axis2_char_t *end = NULL;
