@@ -291,6 +291,14 @@ axutil_dll_desc_create_platform_specific_dll_name(
 
     AXIS2_ENV_CHECK(env, NULL);
 
+    /* allow config to give a literal lib name since it may want a 
+     * versioned lib like "libfoo.so.0" */
+    if (axutil_strstr(class_name, AXIS2_LIB_SUFFIX)) {
+            /* assume the class_name is the literal lib file name */
+            dll_desc->dll_name = axutil_strdup(env,class_name);
+            return dll_desc->dll_name;
+    }
+
     temp_name = axutil_stracat(env, AXIS2_LIB_PREFIX, class_name);
     dll_desc->dll_name = axutil_stracat(env, temp_name, AXIS2_LIB_SUFFIX);
     AXIS2_FREE(env->allocator, temp_name);
