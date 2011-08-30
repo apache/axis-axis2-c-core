@@ -188,12 +188,12 @@ axis2_desc_builder_build_om(
      */
     document = axiom_stax_builder_get_document(builder, env);
 
-	/**
+    /**
      get root element , building starts hear
      */
 
-	desc_builder->root = axiom_document_get_root_element(document, env);
-	/**
+    desc_builder->root = axiom_document_get_root_element(document, env);
+    /**
      * In description building we don't want defferred building. So build
      * the whole tree at once
      */
@@ -973,8 +973,27 @@ axis2_desc_builder_load_msg_recv(
         msg_recv_dll_name = axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
             class_name);
         repos_name = axis2_dep_engine_get_repos_path(desc_builder->engine, env);
-        temp_path = axutil_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
-        temp_path2 = axutil_stracat(env, temp_path, AXIS2_LIB_FOLDER);
+        if (!repos_name) 
+        {
+            /* If we rely solely on an axis2.xml repo then the engine still expects
+             * to find a message receiver shared lib in a "lib" dir off some unspecified repo folder;
+             * So we must tell it to instead look at what we specified for a libDir param in the axis2.xml */
+            axutil_param_t* lib_dir_param = axis2_conf_get_param(conf, env, AXIS2_LIB_DIR);
+            if (lib_dir_param) 
+            {
+                temp_path2 = (axis2_char_t *) axutil_strdup(env, (axis2_char_t *)axutil_param_get_value(lib_dir_param, env));
+            }
+            else 
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unable to resolve lib dir for deployment engine");
+                return NULL;
+            }
+        }
+        else 
+        {
+            temp_path = axutil_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
+            temp_path2 = axutil_stracat(env, temp_path, AXIS2_LIB_FOLDER);
+        }
         temp_path3 = axutil_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
         dll_name = axutil_stracat(env, temp_path3, msg_recv_dll_name);
         AXIS2_FREE(env->allocator, temp_path);
