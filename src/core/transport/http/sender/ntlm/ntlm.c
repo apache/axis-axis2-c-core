@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+#ifdef AXIS2_NTLM_ENABLED
+
 #include <axis2_ntlm.h>
 
 AXIS2_EXTERN void AXIS2_CALL
@@ -56,3 +58,4 @@ axis2_ntlm_auth_create_type3_message(
             uname, passwd, domain, workstation);
 }
 
+#endif

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#ifdef AXIS2_NTLM_ENABLED
 
 #include <axis2_ntlm.h>
 #include <axutil_utils_defines.h>
@@ -380,4 +381,4 @@ heimdal_ntlm_wrapper_create_type3_message(
     return AXIS2_SUCCESS;
 }
 
-
+#endif

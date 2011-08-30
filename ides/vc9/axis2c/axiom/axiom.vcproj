@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\..\..\..\..\axiom\include;.\..\..\..\..\axiom\src\om;.\..\..\..\..\axiom\src\attachments;.\..\..\..\..\util\include;"
+				AdditionalIncludeDirectories=".\..\..\..\..\axiom\include;.\..\..\..\..\axiom\src\om;.\..\..\..\..\axiom\src\attachments;.\..\..\..\..\util\include;.\..\..\..\..\axiom\src\soap"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIOM_EXPORTS;AXIS2_DECLARE_EXPORT; _CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -186,9 +186,11 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
+			RelativePathToProject="..\ides\vc9\axis2c\axutil\axutil.vcproj"
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{D7D7FBA1-5E43-4586-8F69-D4ED2628D2D8}"
+			RelativePathToProject="..\ides\vc9\axis2c\axis2_parser\axis2_parser.vcproj"
 		/>
 	</References>
 	<Files>
