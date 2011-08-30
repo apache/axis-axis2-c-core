@@ -40,7 +40,6 @@ axis2_ssl_utils_initialize_ctx(
     axis2_char_t * key_file,
     axis2_char_t * ssl_pp)
 {
-    SSL_METHOD *meth = NULL;
     SSL_CTX *ctx = NULL;
     axis2_char_t *ca_file = server_cert;
 
@@ -63,7 +62,11 @@ axis2_ssl_utils_initialize_ctx(
     }
 
     /* Create our context */
-    meth = (SSL_METHOD*)SSLv23_method();
+ # if defined OPENSSL_VERSION_NUMBER && (OPENSSL_VERSION_NUMBER >= 0x1000000fL)
+    const SSL_METHOD *meth = SSLv23_method();
+ # else
+    SSL_METHOD *meth = SSLv23_method();
+ # endif
     ctx = SSL_CTX_new(meth);
 
     /* Load our keys and certificates
