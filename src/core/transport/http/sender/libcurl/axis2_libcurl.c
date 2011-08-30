@@ -146,7 +146,7 @@ axis2_libcurl_send(
 
     handler = data->handler;
     curl_easy_reset(handler);
-    curl_easy_setopt(handler, CURLOPT_ERRORBUFFER, &data->errorbuffer);
+    curl_easy_setopt(handler, CURLOPT_ERRORBUFFER, data->errorbuffer);
     headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_USER_AGENT_AXIS2C);
     headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_ACCEPT_);
     headers = curl_slist_append(headers, AXIS2_HTTP_HEADER_EXPECT_);
