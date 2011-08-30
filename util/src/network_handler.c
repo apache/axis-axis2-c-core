@@ -95,6 +95,7 @@ axutil_network_handler_open_socket(
         }
         else
         {
+            AXIS2_CLOSE_SOCKET(sock);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS, AXIS2_FAILURE);
             return AXIS2_INVALID_SOCKET;
         }
