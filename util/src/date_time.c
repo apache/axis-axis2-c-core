@@ -22,6 +22,7 @@
 #include <axutil_error.h>
 #include <axutil_utils.h>
 #include <axutil_date_time_util.h>
+#include <axutil_string.h>
 
 struct axutil_date_time
 {
@@ -619,12 +620,21 @@ axutil_date_time_serialize_time(
     axutil_date_time_t *date_time,
     const axutil_env_t *env)
 {
-    axis2_char_t *time_str = NULL;
+    axis2_char_t *time_str = NULL, *p = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     time_str = (axis2_char_t *)AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 32);
     sprintf(time_str, "%02d:%02d:%06.3fZ", date_time->hour, date_time->min, date_time->sec);
+
+    /* 
+     * Ensure that milliseconds are separated with dot, 
+     * no matter which separator is specified in locale.
+     * Dot is required by http://www.w3.org/TR/xmlschema-2/#dateTime 
+     */
+    p = axutil_strchr(time_str, ',');
+    if (p) *p = '.';
+
     return time_str;
 }
 
@@ -633,7 +643,7 @@ axutil_date_time_serialize_time_with_time_zone(
     axutil_date_time_t *date_time,
     const axutil_env_t *env)
 {
-    axis2_char_t *time_str = NULL;
+    axis2_char_t *time_str = NULL, *p = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -645,6 +655,15 @@ axutil_date_time_serialize_time_with_time_zone(
     time_str = (axis2_char_t *)AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * 37);
     sprintf(time_str, "%02d:%02d:%06.3f%c%02d:%02d", date_time->hour, date_time->min,
         date_time->sec, date_time->tz_pos ? '+' : '-', date_time->tz_hour, date_time->tz_min);
+
+    /* 
+     * Ensure that milliseconds are separated with dot, 
+     * no matter which separator is specified in locale.
+     * Dot is required by http://www.w3.org/TR/xmlschema-2/#dateTime 
+     */
+    p = axutil_strchr(time_str, ',');
+    if (p) *p = '.';
+
     return time_str;
 }
 
@@ -668,13 +687,22 @@ axutil_date_time_serialize_date_time(
     axutil_date_time_t *date_time,
     const axutil_env_t *env)
 {
-    axis2_char_t *date_time_str = NULL;
+    axis2_char_t *date_time_str = NULL, *p = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     date_time_str = AXIS2_MALLOC(env->allocator, sizeof(char) * 32);
     sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%06.3fZ", date_time->year + 1900, date_time->mon
         + 1, date_time->day, date_time->hour, date_time->min, date_time->sec);
+    
+    /* 
+     * Ensure that milliseconds are separated with dot, 
+     * no matter which separator is specified in locale.
+     * Dot is required by http://www.w3.org/TR/xmlschema-2/#dateTime 
+     */
+    p = axutil_strchr(date_time_str, ',');
+    if (p) *p = '.';
+
     return date_time_str;
 }
 
@@ -698,7 +726,7 @@ axutil_date_time_serialize_date_time_with_time_zone(
     axutil_date_time_t *date_time,
     const axutil_env_t *env)
 {
-    axis2_char_t *date_time_str = NULL;
+    axis2_char_t *date_time_str = NULL, *p = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -711,6 +739,15 @@ axutil_date_time_serialize_date_time_with_time_zone(
     sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%06.3f%c%02d:%02d", date_time->year + 1900,
         date_time->mon + 1, date_time->day, date_time->hour, date_time->min, date_time->sec,
         date_time->tz_pos ? '+' : '-', date_time->tz_hour, date_time->tz_min);
+
+    /* 
+     * Ensure that milliseconds are separated with dot, 
+     * no matter which separator is specified in locale.
+     * Dot is required by http://www.w3.org/TR/xmlschema-2/#dateTime 
+     */
+    p = axutil_strchr(date_time_str, ',');
+    if (p) *p = '.';
+
     return date_time_str;
 }
 
