@@ -42,7 +42,7 @@ axis2_ssl_utils_initialize_ctx(
 {
     SSL_CTX *ctx = NULL;
     axis2_char_t *ca_file = server_cert;
-
+	SSL_METHOD *meth;
     if (!ca_file)
     {
         AXIS2_LOG_INFO(env->log, "[ssl client] CA certificate not specified");
@@ -63,9 +63,12 @@ axis2_ssl_utils_initialize_ctx(
 
     /* Create our context */
  # if defined OPENSSL_VERSION_NUMBER && (OPENSSL_VERSION_NUMBER >= 0x1000000fL)
-    const SSL_METHOD *meth = SSLv23_method();
+	
+	meth = SSLv23_method();
  # else
-    SSL_METHOD *meth = SSLv23_method();
+	
+	meth = SSLv23_method();
+	
  # endif
     ctx = SSL_CTX_new(meth);
 
