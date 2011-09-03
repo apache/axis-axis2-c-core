@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 SUBDIRS=ssl libcurl $(NTLM_DIR)
+DIST_SUBDIRS=ssl libcurl ntlm
 lib_LTLIBRARIES = libaxis2_http_sender.la
 
 
