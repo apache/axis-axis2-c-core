@@ -17,6 +17,7 @@
 
 #include <neethi_assertion.h>
 #include <axiom_util.h>
+#include <axiom_node.h>
 #include <rp_x509_token.h>
 #include <rp_property.h>
 #include <rp_layout.h>
@@ -242,6 +243,11 @@ neethi_assertion_free(
             {
                 neethi_assertion->free_func(neethi_assertion->value, env);
             }
+        }
+        if(neethi_assertion->node)
+        {
+            axiom_node_free_tree(neethi_assertion->node, env);
+            neethi_assertion->node = NULL;
         }
         AXIS2_FREE(env->allocator, neethi_assertion);
         neethi_assertion = NULL;
