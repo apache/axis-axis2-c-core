@@ -1471,14 +1471,15 @@ axis2_conf_engage_module(
 
         axutil_file_set_path(file, env, path);
         file_data = axis2_arch_file_data_create_with_type_and_file(env, AXIS2_MODULE, file);
-        if(!flag)
+        /*if(!flag)
         {
             dep_engine = axis2_dep_engine_create_with_repos_name(env, repos_path);
         }
         else
         {
             dep_engine = axis2_dep_engine_create_with_axis2_xml(env, axis2_xml);
-        }
+        }*/
+        dep_engine = conf->dep_engine;
 
         axis2_dep_engine_set_current_file_item(dep_engine, env, file_data);
 

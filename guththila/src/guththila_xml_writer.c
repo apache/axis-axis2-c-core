@@ -1755,6 +1755,11 @@ guththila_write_empty_element_with_prefix_and_namespace(
             guththila_stack_push(&wr->namesp, namesp, env);
             elem->name_sp_stack_no = GUTHTHILA_STACK_TOP_INDEX(wr->namesp);
         }
+        else 
+        {
+            AXIS2_FREE(env->allocator, namesp);
+            namesp = NULL;
+        }
 
 #ifndef GUTHTHILA_XML_WRITER_TOKEN
         elem->name = strdup(local_name);

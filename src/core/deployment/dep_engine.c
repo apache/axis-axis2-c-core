@@ -903,6 +903,7 @@ axis2_dep_engine_load_client(
             "No memory. Allocation for Axis2 Configuration failed");
         return NULL;
     }
+    axis2_conf_set_dep_engine(dep_engine->conf, env, dep_engine);
     dep_engine->conf_builder = axis2_conf_builder_create_with_file_and_dep_engine_and_conf(env,
         dep_engine->conf_name, dep_engine, dep_engine->conf);
 
@@ -1789,7 +1790,7 @@ axis2_dep_engine_build_module(
             module->handler_create_func_map);
     }
 
-    dep_engine->curr_file = NULL;
+    /*dep_engine->curr_file = NULL;*/
 
     return module_desc;
 }
