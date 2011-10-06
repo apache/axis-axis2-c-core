@@ -1218,7 +1218,12 @@ axis2_op_client_two_way_send(
     response_envelope = axis2_msg_ctx_get_response_soap_envelope(msg_ctx, env);
     if(response_envelope)
     {
+		axiom_soap_body_t * soap_body = NULL;
+		axis2_bool_t has_fault = AXIS2_FALSE;
         axis2_msg_ctx_set_soap_envelope(response, env, response_envelope);
+		soap_body = axiom_soap_envelope_get_body(response_envelope, env);
+		has_fault = axiom_soap_body_has_fault(soap_body, env);
+        
         engine = axis2_engine_create(env, conf_ctx);
         if(engine)
         {
@@ -1235,10 +1240,17 @@ axis2_op_client_two_way_send(
                     return response;
                 }
             }
-            status = axis2_engine_receive(engine, env, response);
-	    if(status != AXIS2_SUCCESS )  
-		    return NULL;
-        }
+			if(has_fault)
+			{
+				 status = axis2_engine_receive_fault(engine, env, msg_ctx);
+			}
+			else
+			{
+				status = axis2_engine_receive(engine, env, response);
+			}
+			if(status != AXIS2_SUCCESS )  
+				return NULL;
+		}
     }
     else
     {
