@@ -29,6 +29,7 @@
 #include "_axiom_soap_fault_role.h"
 #include <axiom_stax_builder_internal.h>
 #include <axiom_node_internal.h>
+#include <axiom_element_internal.h>
 
 static axis2_status_t
 axiom_soap11_builder_helper_process_text(
@@ -223,12 +224,15 @@ axiom_soap11_builder_helper_handle_event(
                 return AXIS2_FAILURE;
             }
             axiom_stax_builder_set_lastnode(builder_helper->om_builder, env, fault_text_node);
-
-            status = axiom_soap11_builder_helper_process_text(builder_helper, env);
-            if(status == AXIS2_FAILURE)
-            {
-                return AXIS2_FAILURE;
-            }
+			
+			if (axiom_element_get_is_empty(om_ele, env) != AXIS2_TRUE)
+			{
+				status = axiom_soap11_builder_helper_process_text(builder_helper, env);
+				if(status == AXIS2_FAILURE)
+				{
+					return AXIS2_FAILURE;
+				}
+			}
             axiom_stax_builder_set_lastnode(builder_helper->om_builder, env, om_element_node);
 
             axiom_node_set_complete(om_element_node, env, AXIS2_TRUE);
