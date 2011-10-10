@@ -129,6 +129,7 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(
     status = axis2_repos_listener_init(repos_listener, env);
     if(AXIS2_SUCCESS != status)
     {
+        axis2_repos_listener_free(repos_listener, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_REPOS_LISTENER_INIT_FAILED, AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Repository listener initialization failed");
 
