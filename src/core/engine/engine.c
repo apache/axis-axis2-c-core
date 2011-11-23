@@ -536,6 +536,7 @@ axis2_engine_create_fault_msg_ctx(
     if(stream)
     {
         axis2_msg_ctx_set_transport_out_stream(fault_ctx, env, stream);
+        axis2_msg_ctx_reset_transport_out_stream(processing_context, env);
     }
 
     if(!fault_to && !stream)
@@ -618,6 +619,10 @@ axis2_engine_create_fault_msg_ctx(
             return NULL;
         }
     }
+    else
+    {
+        axis2_msg_ctx_set_fault_soap_envelope(processing_context, env, NULL);
+    }
 
     doing_rest = axis2_msg_ctx_get_doing_rest(processing_context, env);
     axis2_msg_ctx_set_doing_rest(fault_ctx, env, doing_rest);
@@ -625,6 +630,7 @@ axis2_engine_create_fault_msg_ctx(
     axis2_msg_ctx_set_soap_envelope(fault_ctx, env, envelope);
     axis2_msg_ctx_set_out_transport_info(fault_ctx, env, axis2_msg_ctx_get_out_transport_info(
         processing_context, env));
+    axis2_msg_ctx_reset_out_transport_info(processing_context, env);
     return fault_ctx;
 }
 
