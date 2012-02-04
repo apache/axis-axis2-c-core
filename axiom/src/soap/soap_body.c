@@ -309,6 +309,20 @@ axiom_soap_body_set_fault(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_soap_body_remove_fault(
+    axiom_soap_body_t * soap_body,
+    const axutil_env_t * env)
+{
+    if(soap_body->soap_fault)
+    {
+        soap_body->soap_fault = NULL;
+        soap_body->has_fault = AXIS2_FALSE;
+        return AXIS2_SUCCESS;
+    }
+    return AXIS2_FAILURE;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_body_add_child(
     axiom_soap_body_t * soap_body,
     const axutil_env_t * env,

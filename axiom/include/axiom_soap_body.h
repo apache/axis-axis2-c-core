@@ -105,6 +105,18 @@ extern "C"
         const axutil_env_t * env);
 
     /**
+     * in rare occasions we need to remove the fault associated
+     * with the body, e.g. when the body content is being encrypted
+     * @param body soap_body 
+     * @param env environment must not be null
+     * @return AXIS2_SUCCESS if fault was removed
+    */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_body_remove_fault(
+        axiom_soap_body_t * soap_body,
+        const axutil_env_t * env);
+
+    /**
      * get the underlying om_node 
      * @param body soap_body
      * @param env environment must not be null
