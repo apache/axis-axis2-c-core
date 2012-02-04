@@ -1129,6 +1129,17 @@ axiom_node_get_previous_sibling(
 }
 
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+axiom_node_get_previous_sibling_element(
+    axiom_node_t * om_node,
+    const axutil_env_t * env)
+{
+    axiom_node_t * result = axiom_node_get_previous_sibling( om_node, env );
+    while ( result && axiom_node_get_node_type(result, env) != AXIOM_ELEMENT )
+        result = axiom_node_get_previous_sibling( result, env );
+    return result;
+}
+
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 axiom_node_get_next_sibling(
     axiom_node_t * om_node,
     const axutil_env_t * env)
@@ -1159,6 +1170,18 @@ axiom_node_get_next_sibling(
 
     return om_node->next_sibling;
 }
+
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+axiom_node_get_next_sibling_element(
+    axiom_node_t * om_node,
+    const axutil_env_t * env)
+{
+    axiom_node_t * result = axiom_node_get_next_sibling( om_node, env );
+    while ( result && axiom_node_get_node_type(result, env) != AXIOM_ELEMENT )
+        result = axiom_node_get_next_sibling( result, env );
+    return result;
+}
+
 
 AXIS2_EXTERN axiom_types_t AXIS2_CALL
 axiom_node_get_node_type(

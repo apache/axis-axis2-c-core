@@ -263,6 +263,18 @@ extern "C"
         const axutil_env_t * env);
 
     /**
+    * get the previous sibling of type AXIOM_ELEMENT
+    * @param om_node om_node struct 
+    * @param env environment , must node be null
+    * @returns a pointer to previous sibling , NULL if a previous sibling does not exits
+    *                (happens when this node is the first element of a node )
+    */
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_node_get_previous_sibling_element(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
+
+    /**
     * get next sibling
     * @param om_node om_node struct
     * @param env environment, MUST NOT be NULL.
@@ -270,6 +282,17 @@ extern "C"
     */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
     axiom_node_get_next_sibling(
+        axiom_node_t * om_node,
+        const axutil_env_t * env);
+
+    /**
+    * get next sibling of type AXIOM_ELEMENT
+    * @param om_node om_node struct
+    * @param env environment, MUST NOT be NULL.
+    * @return next sibling of this node.
+    */
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    axiom_node_get_next_sibling_element(
         axiom_node_t * om_node,
         const axutil_env_t * env);
 
