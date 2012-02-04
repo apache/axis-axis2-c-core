@@ -677,6 +677,17 @@ extern "C"
         struct axis2_dep_engine *dep_engine);
 
     /**
+     * Gets the deployment engine.
+     * @param conf pointer to conf struct
+     * @param env pointer to environment struct
+     * @return dep_engine pointer to dep_engine struct
+     */
+    AXIS2_EXTERN struct axis2_dep_engine * AXIS2_CALL
+    axis2_conf_get_dep_engine(
+        axis2_conf_t * conf,
+        const axutil_env_t * env);
+
+    /**
      * Gets the default module version for the named module.
      * @param conf pointer to conf struct
      * @param env pointer to environment struct
