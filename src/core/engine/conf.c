@@ -1610,6 +1610,14 @@ axis2_conf_set_axis2_xml(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN struct axis2_dep_engine * AXIS2_CALL
+axis2_conf_get_dep_engine(
+    axis2_conf_t * conf,
+    const axutil_env_t * env)
+{
+    return conf->dep_engine;
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_set_dep_engine(
     axis2_conf_t * conf,
