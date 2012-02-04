@@ -2737,7 +2737,7 @@ axis2_http_transport_utils_process_request(
                 {
                     body_string = axis2_http_transport_utils_get_services_static_wsdl(env,
                         conf_ctx, request->request_uri);
-                    request->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
+                    response->content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
                     response->http_status_code = AXIS2_HTTP_RESPONSE_OK_CODE_VAL;
                     response->http_status_code_name = AXIS2_HTTP_RESPONSE_OK_CODE_NAME;
                 }
