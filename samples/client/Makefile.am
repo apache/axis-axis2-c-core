@@ -13,4 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 SUBDIRS = echo math google notify mtom yahoo amqp version mtom_callback session $(NTLM_DIR)
+DIST_SUBDIRS = echo math google notify mtom yahoo amqp version mtom_callback session ntlm
 EXTRA_DIST= Makefile.am
