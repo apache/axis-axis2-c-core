@@ -61,8 +61,21 @@ AC_CHECK_LIB(z, inflate)
 
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
-    CFLAGS="$CFLAGS -ansi -Werror -Wall -Wno-implicit-function-declaration "
+    CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration "
 fi
+
+AC_MSG_CHECKING(whether to set -Werror)
+AC_ARG_ENABLE(werror, [  --disable-werror  do not treat warnings as errors during build],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -Werror"
+    ;;
+  esac ],
+)
 
 
 dnl Checks for header files.
