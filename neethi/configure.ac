@@ -62,6 +62,52 @@ AC_ARG_ENABLE(werror, [  --disable-werror        do not treat warnings as errors
   esac ],
 )
 
+AC_MSG_CHECKING(whether to build guththila xml parser library)
+AC_ARG_ENABLE(guththila, [  --enable-guththila
+                          build Guththila XML parser library wrapper (default=yes)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    guththilla_enabled=no
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    guththilla_enabled=yes
+    ;;
+  esac ], [
+  AC_MSG_RESULT(yes)
+  guththilla_enabled=yes
+])
+
+AS_IF([test $guththilla_enabled = yes], [
+  CFLAGS="$CFLAGS -DAXIS2_GUTHTHILA_ENABLED"
+  CPPFLAGS="$CPPFLAGS -DAXIS2_GUTHTHILA_ENABLED"
+  WRAPPER_DIR="guththila"
+  AC_CONFIG_SUBDIRS(guththila)
+  GUTHTHILA_LIBS="/guththila/src/"
+  GUTHTHILA_DIR="guththila"
+])
+AS_UNSET(guththilla_enabled)
+
+AC_MSG_CHECKING(whether to build libxml2 xml parser library)
+AC_ARG_ENABLE(libxml2, [  --enable-libxml2    
+                          build Libxml2 XML parser library wrapper (default=no)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    WRAPPER_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    WRAPPER_DIR="libxml2"
+    PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
+    CFLAGS="$CFLAGS -DAXIS2_LIBXML2_ENABLED"
+    CPPFLAGS="$CPPFLAGS $PARSER_CFLAGS -DAXIS2_LIBXML2_ENABLED"
+    LDFLAGS="$LDFLAGS $PARSER_LIBS"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -84,7 +130,9 @@ dnl AC_FUNC_REALLOC
 VERSION_NO="7:0:7"
 
 AC_SUBST(VERSION_NO)
+AC_SUBST(WRAPPER_DIR)
 
+export WRAPPER_DIR
 
 AC_CONFIG_FILES([Makefile \
     src/Makefile \
