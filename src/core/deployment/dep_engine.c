@@ -909,6 +909,9 @@ axis2_dep_engine_load_client(
 
     if(!(dep_engine->conf_builder))
     {
+        /* Set the dep_engine to NULL before freeing conf in order to
+         avoid deleting it twice*/
+        axis2_conf_set_dep_engine(dep_engine->conf,env,NULL);
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
     }
@@ -924,6 +927,9 @@ axis2_dep_engine_load_client(
     status = axis2_conf_builder_populate_conf(dep_engine->conf_builder, env);
     if(AXIS2_SUCCESS != status)
     {
+        /* Set the dep_engine to NULL before freeing conf in order to
+         avoid deleting it twice*/
+        axis2_conf_set_dep_engine(dep_engine->conf,env,NULL);
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Populating Axis2 Configuration failed");
@@ -933,6 +939,9 @@ axis2_dep_engine_load_client(
     status = axis2_dep_engine_set_svc_and_module_dir_path(dep_engine, env);
     if(AXIS2_SUCCESS != status)
     {
+        /* Set the dep_engine to NULL before freeing conf in order to
+              avoid deleting it twice*/
+        axis2_conf_set_dep_engine(dep_engine->conf,env,NULL);
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Setting service and module paths failed");
@@ -961,6 +970,9 @@ axis2_dep_engine_load_client(
     if(AXIS2_SUCCESS != status)
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
+        /* Set the dep_engine to NULL before freeing conf in order to
+              avoid deleting it twice*/
+        axis2_conf_set_dep_engine(dep_engine->conf,env,NULL);
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED, AXIS2_FAILURE);
