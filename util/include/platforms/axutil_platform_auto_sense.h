@@ -45,10 +45,6 @@ extern "C"
 #include "windows/axutil_thread_windows.h"
 #elif defined ( __OS400__  )
 #include "os400/axutil_os400.h"
-#elif defined ( AIX )
-#include <aix/aix.h>
-#elif defined ( HPUX )
-#include <hp-ux/axis2_ht-ux.h>
 #else
 #include <platforms/unix/axutil_unix.h>
 #endif
