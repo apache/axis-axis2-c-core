@@ -163,13 +163,13 @@ axis2_svc_builder_populate_svc(
     axiom_node_t *desc_node = NULL;
     axiom_children_qname_iterator_t *module_refs = NULL;
     axiom_node_t *in_flow_node = NULL;
-    axiom_element_t *in_flow_element = NULL;
+    /*axiom_element_t *in_flow_element = NULL; */
     axiom_node_t *out_flow_node = NULL;
-    axiom_element_t *out_flow_element = NULL;
+    /*axiom_element_t *out_flow_element = NULL; */
     axiom_node_t *in_faultflow_node = NULL;
-    axiom_element_t *in_faultflow_element = NULL;
+    /*axiom_element_t *in_faultflow_element = NULL; */
     axiom_node_t *out_faultflow_node = NULL;
-    axiom_element_t *out_faultflow_element = NULL;
+    /*axiom_element_t *out_faultflow_element = NULL; */
     axiom_attribute_t *name_attr = NULL;
     axutil_array_list_t *ops = NULL;
     axis2_char_t *svc_name = NULL;
@@ -230,11 +230,12 @@ axis2_svc_builder_populate_svc(
     qdesc = NULL;
     if(desc_element)
     {
-        axiom_element_t *desc_value_element = NULL;
+        /*axiom_element_t *desc_value_element = NULL; */
         axiom_node_t *desc_value_node = NULL;
         axis2_char_t *description_text = NULL;
 
-        desc_value_element = axiom_element_get_first_element(desc_element, env, desc_node,
+        /*desc_value_element = */ 
+	axiom_element_get_first_element(desc_element, env, desc_node,
             &desc_value_node);
         description_text = axiom_element_get_text(desc_element, env, desc_node);
         if(description_text)
@@ -349,25 +350,29 @@ axis2_svc_builder_populate_svc(
 
     /* process IN_FLOW */
     qinflowst = axutil_qname_create(env, AXIS2_IN_FLOW_START, NULL, NULL);
-    in_flow_element = axiom_element_get_first_child_with_qname(
+    /*in_flow_element = */
+    axiom_element_get_first_child_with_qname(
         svc_element, env, qinflowst, svc_node, &in_flow_node);
     axutil_qname_free(qinflowst, env);
     qinflowst = NULL;
 
     qoutflowst = axutil_qname_create(env, AXIS2_OUT_FLOW_START, NULL, NULL);
-    out_flow_element = axiom_element_get_first_child_with_qname(
+    /*out_flow_element = */
+    axiom_element_get_first_child_with_qname(
         svc_element, env, qoutflowst, svc_node, &out_flow_node);
     axutil_qname_free(qoutflowst, env);
     qoutflowst = NULL;
 
     qin_faultflowst = axutil_qname_create(env, AXIS2_IN_FAILTFLOW, NULL, NULL);
-    in_faultflow_element = axiom_element_get_first_child_with_qname(
+    /*in_faultflow_element = */
+    axiom_element_get_first_child_with_qname(
         svc_element, env, qin_faultflowst, svc_node, &in_faultflow_node);
     axutil_qname_free(qin_faultflowst, env);
     qin_faultflowst = NULL;
 
     qout_faultflowst = axutil_qname_create(env, AXIS2_OUT_FAILTFLOW, NULL, NULL);
-    out_faultflow_element = axiom_element_get_first_child_with_qname(
+    /*out_faultflow_element = */
+    axiom_element_get_first_child_with_qname(
         svc_element, env, qout_faultflowst, svc_node, &out_faultflow_node);
     axutil_qname_free(qout_faultflowst, env);
     qout_faultflowst = NULL;
