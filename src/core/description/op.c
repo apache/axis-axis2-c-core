@@ -659,7 +659,7 @@ axis2_op_engage_module(
     pr = axis2_phase_resolver_create_with_config(env, conf);
     if(pr)
     {
-        axis2_module_t *module = NULL;
+        /* axis2_module_t *module = NULL; */
         axis2_status_t status = AXIS2_FAILURE;
 
         status = axis2_phase_resolver_engage_module_to_op(pr, env, op, moduleref);
@@ -670,7 +670,7 @@ axis2_op_engage_module(
             AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI,
                 "Engaging module %s to operaion %s failed. But ignore this.", modname, opname);
         }
-        module = axis2_module_desc_get_module(moduleref, env);
+        /* module = axis2_module_desc_get_module(moduleref, env); */
 
         axutil_array_list_add(collection_module, env, moduleref);
     }

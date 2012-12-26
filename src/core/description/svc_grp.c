@@ -281,12 +281,12 @@ axis2_svc_grp_remove_svc(
     const axutil_env_t * env,
     const axutil_qname_t * svc_qname)
 {
-    axis2_svc_t *svc = NULL;
+    /* axis2_svc_t *svc = NULL; */
     axis2_char_t *svc_name = NULL;
 
     AXIS2_PARAM_CHECK(env->error, svc_name, AXIS2_FAILURE);
 
-    svc = axis2_svc_grp_get_svc(svc_grp, env, svc_qname);
+    /* svc = axis2_svc_grp_get_svc(svc_grp, env, svc_qname); */
 
     svc_name = axutil_qname_to_string((axutil_qname_t *)svc_qname, env);
     axutil_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
