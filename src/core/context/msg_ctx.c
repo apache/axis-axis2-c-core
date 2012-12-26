@@ -836,6 +836,7 @@ axis2_msg_ctx_set_response_soap_envelope(
     {
         int soap_v = AXIOM_SOAP12;
         soap_v = axiom_soap_envelope_get_soap_version(soap_envelope, env);
+	msg_ctx->is_soap_11 = (soap_v == AXIOM_SOAP12) ? AXIS2_FALSE : AXIS2_TRUE;
         msg_ctx->response_soap_envelope = soap_envelope;
     }
     else
