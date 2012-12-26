@@ -32,6 +32,7 @@ axis2_cgi_LDADD   =  $(LDFLAGS) \
 			     $(top_builddir)/src/core/clientapi/libaxis2_clientapi.la \
 			     $(top_builddir)/src/core/engine/libaxis2_engine.la \
 			     $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
+			     $(top_builddir)/neethi/src/libneethi.la \
 			     $(top_builddir)/src/core/transport/http/receiver/libaxis2_http_receiver.la
                     
 INCLUDES =  -I$(top_builddir)/include \
