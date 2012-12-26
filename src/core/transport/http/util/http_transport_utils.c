@@ -2505,7 +2505,7 @@ axis2_http_transport_utils_process_accept_headers(
                 rec = axis2_http_accept_record_create(env, token);
                 if(rec)
                 {
-                    axutil_array_list_add(accept_field_list, env, rec);
+					axutil_array_list_add(accept_record_list, env, rec);
                 }
                 AXIS2_FREE(env->allocator, token);
             }
