@@ -82,7 +82,7 @@ axis2_iis_out_transport_info_set_content_type(
     info_impl->content_type[0] = '\0';
     if(info_impl->encoding)
     {
-        sprintf(info_impl->content_type, "%s%s%s", content_type, ";charser:", info_impl->encoding);
+        sprintf(info_impl->content_type, "%s%s%s", content_type, ";charset:", info_impl->encoding);
     }
     else
     {
