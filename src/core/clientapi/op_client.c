@@ -1451,3 +1451,4 @@ axis2_op_client_set_reuse(
 {
     op_client->reuse = reuse;
 }
+
