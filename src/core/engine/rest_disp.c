@@ -160,7 +160,7 @@ axis2_rest_disp_find_op(
     axis2_op_t *op = NULL;
     axiom_soap_envelope_t *soap_env = NULL;
     axiom_soap_body_t *soap_body = NULL;
-    axiom_element_t *body_child = NULL;
+    /*axiom_element_t *body_child = NULL; */
     axiom_node_t *body_child_node = NULL;
     axiom_node_t *body_element_node = NULL;
     axis2_bool_t soap_env_exists = AXIS2_TRUE;
@@ -299,7 +299,8 @@ axis2_rest_disp_find_op(
 
     if(!body_child_node)
     {
-        body_child = axiom_element_create_with_qname(env, NULL, axis2_op_get_qname(op, env),
+        /*body_child = */
+         axiom_element_create_with_qname(env, NULL, axis2_op_get_qname(op, env),
             &body_child_node);
         axiom_soap_body_add_child(soap_body, env, body_child_node);
     }
