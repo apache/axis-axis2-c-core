@@ -1154,13 +1154,13 @@ axis2_process_policy_reference_elements(
         node = axiom_children_qname_iterator_next(iterator, env);
         if(node)
         {
+            /* TODO: add neethi_engine_get_policy_reference 
             axiom_element_t *element = NULL;
             neethi_reference_t *reference = NULL;
 
             element = axiom_node_get_data_element(node, env);
-            /* TODO: add neethi_engine_get_policy_reference
-             reference = neethi_engine_get_policy_reference(env, node, element); */
-            axis2_policy_include_add_policy_reference_element(policy_include, env, type, reference);
+            reference = neethi_engine_get_policy_reference(env, node, element); */
+            axis2_policy_include_add_policy_reference_element(policy_include, env, type, NULL);
         }
     }
     return AXIS2_SUCCESS;
