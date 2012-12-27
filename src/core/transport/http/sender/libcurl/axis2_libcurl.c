@@ -118,7 +118,7 @@ axis2_libcurl_send(
     unsigned int buffer_size = 0;
     int content_length = -1;
     axis2_char_t *content_type = NULL;
-    axis2_char_t *content_len = AXIS2_HTTP_HEADER_CONTENT_LENGTH_;
+    /*axis2_char_t *content_len = AXIS2_HTTP_HEADER_CONTENT_LENGTH_; */
     const axis2_char_t *char_set_enc = NULL;
     axis2_char_t *content = AXIS2_HTTP_HEADER_CONTENT_TYPE_;
     axis2_char_t *soap_action_header = AXIS2_HTTP_HEADER_SOAP_ACTION_;
