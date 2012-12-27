@@ -86,14 +86,14 @@ void
 server_free(
     axutil_env_t * env)
 {
-    axutil_allocator_t *allocator = NULL;
+/*    axutil_allocator_t *allocator = NULL; */
     if(server)
     {
         axis2_transport_receiver_free(server, system_env);
     }
     if(env)
     {
-        allocator = env->allocator;
+    /*    allocator = env->allocator; */
         axutil_env_free(env);
     }
     /*axutil_allocator_free(allocator); */
@@ -203,9 +203,9 @@ static int ut_start_http_server(axutil_env_t *env)
 
 static void ut_stop_http_server(axutil_env_t *env)
 {
-    axis2_status_t rv;
+    /*axis2_status_t rv;*/
     if ( !thread_http_server ) return;
-	rv = axutil_thread_exit(thread_http_server, env->allocator);
+	/*rv = */axutil_thread_exit(thread_http_server, env->allocator);
 	thread_http_server = NULL;
 }
 

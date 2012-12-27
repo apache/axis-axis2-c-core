@@ -153,16 +153,14 @@ axis2_test_transport_sender_load(axutil_env_t *env
 {
     axutil_dll_desc_t *dll_desc = NULL;
     axis2_char_t *dll_name = NULL;
-    axis2_transport_sender_t *transport_sender = NULL;
+    /*axis2_transport_sender_t *transport_sender = NULL;*/
     axutil_param_t *impl_info_param = NULL;
     axis2_char_t *axis2c_home = NULL;
-    axis2_msg_ctx_t *msg_ctx = NULL;
 
     printf("******************************************\n");
     printf("testing axis2_transport_sender load\n");
     printf("******************************************\n");
 
-    msg_ctx = (axis2_msg_ctx_t *) AXIS2_MALLOC(env->allocator, 5);
     dll_desc = axutil_dll_desc_create(env);
 
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
@@ -173,8 +171,8 @@ axis2_test_transport_sender_load(axutil_env_t *env
     impl_info_param = axutil_param_create(env, NULL, NULL);
     axutil_param_set_value(impl_info_param, env, dll_desc);
     axutil_class_loader_init(env);
-    transport_sender =
-        (axis2_transport_sender_t *) axutil_class_loader_create_dll(env,
+    /*    transport_sender =
+        (axis2_transport_sender_t *) */axutil_class_loader_create_dll(env,
                                                                     impl_info_param);
 
     AXIS2_FREE(env->allocator, dll_name);

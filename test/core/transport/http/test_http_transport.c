@@ -182,7 +182,7 @@ test_http_client(
     printf("Status code :%d\n", status);
     body_bytes_len =
         axis2_http_simple_response_get_body_bytes(response, env, &body_bytes);
-    printf("body :%s\n", body_bytes);
+    printf("body :%s\n%d", body_bytes , body_bytes_len);
 
     axis2_http_client_free(client, env);
     axis2_http_simple_request_free(request, env);
