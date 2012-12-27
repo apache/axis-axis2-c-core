@@ -2395,7 +2395,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
 {
     axiom_soap_envelope_t *soap_env = NULL;
     axiom_soap_body_t *soap_body = NULL;
-    axiom_element_t *body_child = NULL;
+    /*axiom_element_t *body_child = NULL; */
     axiom_node_t *body_child_node = NULL;
     axiom_node_t *body_element_node = NULL;
 
@@ -2428,7 +2428,8 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
         {
             return NULL;
         }
-        body_child = axiom_element_create_with_qname(env, NULL, axis2_op_get_qname(
+        /*body_child = */
+        axiom_element_create_with_qname(env, NULL, axis2_op_get_qname(
             axis2_msg_ctx_get_op(msg_ctx, env), env), &body_child_node);
         axiom_soap_body_add_child(soap_body, env, body_child_node);
     }
@@ -3095,12 +3096,12 @@ axis2_http_transport_utils_process_request(
             {
                 if (out_msg_ctx)
                 {
-                    int size = 0;
+                    /*int size = 0; */
                     axutil_array_list_t *output_header_list = NULL;
                     output_header_list = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
                     if (output_header_list)
                     {
-                        size = axutil_array_list_size(output_header_list, env);
+                        /*size = axutil_array_list_size(output_header_list, env); */
                         response->output_headers = output_header_list;
                     }
 
@@ -3131,12 +3132,12 @@ axis2_http_transport_utils_process_request(
             {
                 if (out_msg_ctx)
                 {
-                    int size = 0;
+                    /*int size = 0; */
                     axutil_array_list_t *output_header_list = NULL;
                     output_header_list = axis2_msg_ctx_get_http_output_headers(out_msg_ctx, env);
                     if (output_header_list)
                     {
-                        size = axutil_array_list_size(output_header_list, env);
+                        /*size = axutil_array_list_size(output_header_list, env);*/
                         response->output_headers = output_header_list;
                     }
                     if (axis2_msg_ctx_get_no_content(out_msg_ctx, env))
