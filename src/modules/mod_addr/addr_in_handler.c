@@ -539,9 +539,9 @@ axis2_addr_in_extract_epr_information(
                 while(AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(ref_param_iter, env))
                 {
                     axiom_node_t *om_node = NULL;
-                    axiom_element_t *om_ele = NULL;
+                    /*axiom_element_t *om_ele = NULL; */
                     om_node = AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(ref_param_iter, env);
-                    om_ele = (axiom_element_t *)axiom_node_get_data_element(om_node, env);
+                    /*om_ele = (axiom_element_t *)axiom_node_get_data_element(om_node, env); */
                     axis2_endpoint_ref_add_ref_param(endpoint_ref, env, om_node);
                 }
             }
