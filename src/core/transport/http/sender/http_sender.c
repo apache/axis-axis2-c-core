@@ -161,10 +161,12 @@ axis2_http_sender_configure_proxy_ntlm_auth(
 
 #endif
 
+#ifndef AXIS2_LIBCURL_ENABLED
 static axutil_hash_t *
 axis2_http_sender_connection_map_create(
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
+#endif
 
 static void
 axis2_http_sender_connection_map_remove(
@@ -180,6 +182,7 @@ axis2_http_sender_connection_map_add(
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
+#ifndef AXIS2_LIBCURL_ENABLED
 static axis2_http_client_t *
 axis2_http_sender_connection_map_get(
         axutil_hash_t *connection_map, 
@@ -190,6 +193,7 @@ static void AXIS2_CALL
 axis2_http_sender_connection_map_free(
     void *cm_void,
     const axutil_env_t *env);
+#endif
 
 AXIS2_EXTERN axis2_http_sender_t *AXIS2_CALL
 axis2_http_sender_create(
@@ -1421,7 +1425,7 @@ axis2_http_sender_get_header_info(
     int *content_length = NULL;
     axutil_property_t *property = NULL;
     axis2_char_t *content_type = NULL;
-    int status_code = 0;
+    /*int status_code = 0;*/
     axis2_bool_t set_cookie_header_present = AXIS2_FALSE;
     axis2_bool_t connection_header_present = AXIS2_FALSE;
 
@@ -1593,7 +1597,7 @@ axis2_http_sender_get_header_info(
         axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH, property);
     }
 
-    status_code = axis2_http_simple_response_get_status_code(response, env);
+    /*status_code = */axis2_http_simple_response_get_status_code(response, env);
     return AXIS2_SUCCESS;
 }
 
@@ -3629,6 +3633,7 @@ axis2_http_sender_get_keep_alive(
     return sender->keep_alive;
 }
 
+#ifndef AXIS2_LIBCURL_ENABLED
 static axutil_hash_t *
 axis2_http_sender_connection_map_create(
     const axutil_env_t *env,
@@ -3652,6 +3657,7 @@ axis2_http_sender_connection_map_create(
     }
     return connection_map;
 }
+#endif
 
 static void
 axis2_http_sender_connection_map_remove(
@@ -3733,6 +3739,7 @@ axis2_http_sender_connection_map_add(
     }
 }
 
+#ifndef AXIS2_LIBCURL_ENABLED
 static axis2_http_client_t *
 axis2_http_sender_connection_map_get(
         axutil_hash_t *connection_map, 
@@ -3767,7 +3774,9 @@ axis2_http_sender_connection_map_get(
     }
     return http_client;
 }
+#endif
 
+#ifndef AXIS2_LIBCURL_ENABLED
 static void AXIS2_CALL
 axis2_http_sender_connection_map_free(
     void *cm_void,
@@ -3797,4 +3806,4 @@ axis2_http_sender_connection_map_free(
     }
     axutil_hash_free(ht, env);
 }
-
+#endif
