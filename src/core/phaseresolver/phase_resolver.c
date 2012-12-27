@@ -691,7 +691,7 @@ axis2_phase_resolver_build_execution_chains_for_op(
     int i = 0;
     int size = 0;
     int status = AXIS2_FAILURE;
-    axis2_char_t *flowname = NULL;
+    /*axis2_char_t *flowname = NULL; */
     axis2_phase_holder_t *phase_holder = NULL;
     axutil_array_list_t *engaged_module_list_for_parent_svc = NULL;
 
@@ -811,7 +811,7 @@ axis2_phase_resolver_build_execution_chains_for_op(
 
             phase_list = axis2_op_get_in_flow(op, env);
             phase_holder = axis2_phase_holder_create_with_phases(env, phase_list);
-            flowname = "in flow";
+            /*flowname = "in flow";*/
             break;
         }
         case AXIS2_OUT_FLOW:
@@ -820,7 +820,7 @@ axis2_phase_resolver_build_execution_chains_for_op(
 
             phase_list = axis2_op_get_out_flow(op, env);
             phase_holder = axis2_phase_holder_create_with_phases(env, phase_list);
-            flowname = "out flow";
+            /*flowname = "out flow";*/
             break;
         }
         case AXIS2_FAULT_IN_FLOW:
@@ -829,7 +829,7 @@ axis2_phase_resolver_build_execution_chains_for_op(
 
             phase_list = axis2_op_get_fault_in_flow(op, env);
             phase_holder = axis2_phase_holder_create_with_phases(env, phase_list);
-            flowname = "fault in flow";
+            /*flowname = "fault in flow";*/
             break;
         }
         case AXIS2_FAULT_OUT_FLOW:
@@ -838,7 +838,7 @@ axis2_phase_resolver_build_execution_chains_for_op(
 
             phase_list = axis2_op_get_fault_out_flow(op, env);
             phase_holder = axis2_phase_holder_create_with_phases(env, phase_list);
-            flowname = "fault out flow";
+            /*flowname = "fault out flow";*/
             break;
         }
     }
@@ -1910,12 +1910,13 @@ axis2_phase_resolver_add_to_handler_list(
 {
     axis2_flow_t *flow = NULL;
     axis2_char_t *flowname = NULL;
-    const axutil_qname_t *opqname = NULL;
-    axis2_char_t *opname = NULL;
+    
+    /*const axutil_qname_t *opqname = NULL;
+    axis2_char_t *opname = NULL; */
     axis2_status_t status = AXIS2_FAILURE;
 
-    opqname = axis2_op_get_qname(op, env);
-    opname = axutil_qname_get_localpart(opqname, env);
+    /*opqname = axis2_op_get_qname(op, env);
+    opname = axutil_qname_get_localpart(opqname, env);*/
 
     switch(type)
     {
