@@ -442,7 +442,7 @@ axis2_http_client_send(
 
     if(client->doing_mtom)
     {
-        axis2_status_t status = AXIS2_SUCCESS;
+        /*axis2_status_t status = AXIS2_SUCCESS; */
         axutil_http_chunked_stream_t *chunked_stream = NULL;
 
         /* If the callback name is not there, then we will check whether there 
