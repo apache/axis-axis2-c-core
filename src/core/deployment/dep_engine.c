@@ -565,6 +565,15 @@ axis2_dep_engine_free(
         axis2_repos_listener_free(dep_engine->repos_listener, env);
     }
 
+    if(dep_engine->module_dir)
+    {
+	AXIS2_FREE(env->allocator, dep_engine->module_dir);
+    }
+    if(dep_engine->svc_dir)
+    {
+	AXIS2_FREE(env->allocator, dep_engine->svc_dir);
+    }
+
     if(dep_engine)
     {
         AXIS2_FREE(env->allocator, dep_engine);
@@ -1978,7 +1987,7 @@ axis2_dep_engine_set_svc_and_module_dir_path(
             dirpath = (axis2_char_t *)axutil_param_get_value(dep_param, env);
             if(dirpath)
             {
-                dep_engine->module_dir = dirpath;
+                dep_engine->module_dir = axutil_strdup(env, dirpath);
                 dirpath = NULL;
             }
         }
@@ -1990,7 +1999,7 @@ axis2_dep_engine_set_svc_and_module_dir_path(
             dirpath = (axis2_char_t *)axutil_param_get_value(dep_param, env);
             if(dirpath)
             {
-                dep_engine->svc_dir = dirpath;
+                dep_engine->svc_dir = axutil_strdup(env, dirpath);
                 dirpath = NULL;
             }
         }
