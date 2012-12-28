@@ -464,6 +464,7 @@ extern "C"
         axiom_element_t * om_element,
         const axutil_env_t * env,
         axiom_node_t * element_node);
+#endif
 
     /**
      * checks for the namespace in the context of this element
@@ -609,7 +610,7 @@ extern "C"
         axiom_element_t * om_element,
         const axutil_env_t * env,
         axiom_node_t * element_node);
-#endif
+
     /** @} */
 
 #ifdef __cplusplus

@@ -1663,7 +1663,7 @@ axiom_element_build(
     }
     return AXIS2_SUCCESS;
 }
-
+#endif
 /**
  * checks for the namespace in the context of this element
  * with the given prefix
@@ -1899,4 +1899,4 @@ axiom_element_to_string(
 {
     return axiom_node_to_string(element_node, env);
 }
-#endif
+
