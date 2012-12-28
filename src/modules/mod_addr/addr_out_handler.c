@@ -399,6 +399,18 @@ axis2_addr_out_handler_invoke(
         svc_group_context_id = axutil_string_get_buffer(axis2_msg_ctx_get_svc_grp_ctx_id(msg_ctx,
             env), env);
 
+		if(svc_group_context_id) 
+		{
+			axiom_node_t *node = NULL;
+			axiom_element_t *element = NULL;
+			axutil_qname_t *qname = axutil_qname_create(env, AXIS2_SVC_GRP_ID, AXIS2_NAMESPACE_URI,
+            AXIS2_NAMESPACE_PREFIX);
+			element = axiom_element_create_with_qname(env, NULL, qname, &node);
+			axiom_element_set_text(element, env, svc_group_context_id, node);
+			axis2_endpoint_ref_add_ref_param(epr_reply_to, env, node);
+			axutil_qname_free(qname, env);
+		}
+
         axis2_addr_out_handler_add_to_soap_header(env, epr_reply_to, AXIS2_WSA_REPLY_TO,
             soap_header, addr_ns);
 
