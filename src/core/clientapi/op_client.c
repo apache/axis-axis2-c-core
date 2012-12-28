@@ -1138,6 +1138,7 @@ axis2_op_client_two_way_send(
     long index = -1;
     axis2_bool_t wait_indefinitely = AXIS2_FALSE;
     axis2_char_t *mep = NULL;
+    axis2_char_t *msg_id = NULL;
 
     conf_ctx = axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
     engine = axis2_engine_create(env, conf_ctx);
@@ -1200,6 +1201,14 @@ axis2_op_client_two_way_send(
     axis2_msg_ctx_set_conf_ctx(response, env, axis2_msg_ctx_get_conf_ctx(msg_ctx, env));
     axis2_msg_ctx_set_svc_grp_ctx(response, env, axis2_msg_ctx_get_svc_grp_ctx(msg_ctx, env));
 
+    msg_id = (axis2_char_t *)axutil_uuid_gen(env);
+    axis2_msg_ctx_set_message_id(response, env, msg_id);
+    if(msg_id)
+    {
+        AXIS2_FREE(env->allocator, msg_id);
+        msg_id = NULL;
+    }
+	
     /* If request is REST we assume the response is REST, so set the variable */
     axis2_msg_ctx_set_doing_rest(response, env, axis2_msg_ctx_get_doing_rest(msg_ctx, env));
     axis2_msg_ctx_set_status_code(response, env, axis2_msg_ctx_get_status_code(msg_ctx, env));
