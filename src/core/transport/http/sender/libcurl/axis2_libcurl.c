@@ -428,7 +428,7 @@ axis2_libcurl_send(
             }
             else
             {
-                content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
+                content_type = axutil_strdup(env,AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML);
             }
 
         }
