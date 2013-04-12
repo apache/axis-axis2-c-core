@@ -276,6 +276,11 @@ build_soap_body_content(
     buffer = axiom_node_to_string(google_om_node, env);
     printf("%s\n", buffer);
     AXIS2_FREE (env->allocator, buffer);
+
+    axiom_namespace_free(ns0, env);
+    axiom_namespace_free(ns1, env);
+    axiom_namespace_free(ns2, env);
+    axiom_namespace_free(ns3, env);
     return google_om_node;
 }
 

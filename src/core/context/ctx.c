@@ -65,6 +65,8 @@ axis2_ctx_set_property(
     axutil_property_t * value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, ctx->property_map, AXIS2_FAILURE);
 
     if(value)
     {
@@ -74,12 +76,8 @@ axis2_ctx_set_property(
             AXIS2_HASH_KEY_STRING);
         if(temp_value)
         {
-            void *temp_value_value = axutil_property_get_value(temp_value, env);
-            void *value_value = axutil_property_get_value(value, env);
-            if(temp_value_value != value_value)
-            {
-                axutil_property_free(temp_value, env);
-            }
+            /**Free the previous value (it will be replaced)*/
+            axutil_property_free(temp_value, env);
         }
     }
     if(ctx->property_map)

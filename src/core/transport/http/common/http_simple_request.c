@@ -50,6 +50,7 @@ axis2_http_simple_request_create(
     memset((void *)simple_request, 0, sizeof(axis2_http_simple_request_t));
     simple_request->request_line = request_line;
     simple_request->stream = content;
+    simple_request->owns_stream = AXIS2_FALSE;
 
     if(!(simple_request->stream))
     {

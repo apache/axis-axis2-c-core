@@ -230,6 +230,8 @@ build_om_programatically(
         printf("%s", om_str);
         AXIS2_FREE(env->allocator, om_str);
     }
+
+    axiom_namespace_free(ns1, env);
     return mtom_om_node;
 }
 

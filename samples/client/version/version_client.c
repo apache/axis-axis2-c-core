@@ -181,5 +181,6 @@ build_om_programatically(
         om_output = NULL;
     }
 
+    axiom_namespace_free(ns1, env);
     return version_om_node;
 }

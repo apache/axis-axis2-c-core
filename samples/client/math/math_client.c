@@ -197,5 +197,6 @@ build_om_programatically(
         om_output = NULL;
     }
 
+    axiom_namespace_free(ns1, env);
     return math_om_node;
 }

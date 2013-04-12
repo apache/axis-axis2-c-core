@@ -339,8 +339,6 @@ axis2_http_sender_send(
         is_soap = AXIS2_TRUE;
     }
 
-    url = axutil_url_parse_string(env, str_url);
-
     if(!is_soap)
     {
         if(soap_body)
@@ -375,12 +373,6 @@ axis2_http_sender_send(
         {
             send_via_delete = AXIS2_TRUE;
         }
-    }
-
-    if(!url)
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "url is null for string %s", str_url);
-        return AXIS2_FAILURE;
     }
 
     /*if(sender->client)
@@ -447,18 +439,44 @@ axis2_http_sender_send(
             add_keepalive_header = AXIS2_TRUE;
         }
     } /* End if sender->keep_alive */
+
+    url = axutil_url_parse_string(env, str_url);
+
+    if(!url)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "url is null for string %s", str_url);
+        return AXIS2_FAILURE;
+    }
+
+    /*If the client didn't already exist for this sender (it could be fetched from connection_map) */
     if(!sender->client)
     {
         sender->client = axis2_http_client_create(env, url);
+
+        /* Fail when creating the client*/
+        if(sender->client && sender->keep_alive)
+        {
+            /* While using keepalive the client must be kept for future use*/
+            if(connection_map)
+                axis2_http_sender_connection_map_add(sender, connection_map, env, msg_ctx);
+        }
+        else
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "sender->client creation failed for url %s", url);
+            return AXIS2_FAILURE;
+        }
     }
-    if(!sender->client)
+    else
+        axis2_http_client_set_url(sender->client,env,url);
+
+    if(!url)
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "sender->client creation failed for url %s", url);
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "url is null for string %s", str_url);
         return AXIS2_FAILURE;
     }
+
     /* configure proxy settings if we have set so
      */
-
     axis2_http_sender_configure_proxy(sender, env, msg_ctx);
 
     if(conf)
@@ -1383,6 +1401,13 @@ axis2_http_sender_send(
         {
             return axis2_http_sender_process_response(sender, env, msg_ctx, response);
         }
+    }
+    else
+    {
+        /*In case of a not found error, process the response, but end with an ERROR
+          this way the resources allocated by the client will be freed*/
+        if(AXIS2_HTTP_RESPONSE_NOT_FOUND_CODE_VAL == status_code)
+            axis2_http_sender_process_response(sender, env, msg_ctx, response);
     }
 
     AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR, AXIS2_FAILURE);

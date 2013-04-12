@@ -296,7 +296,8 @@ axis2_http_client_send(
     }
     else
     {
-        client->data_stream = axutil_stream_create_socket(env, client->sockfd);
+        if(!client->data_stream)
+            client->data_stream = axutil_stream_create_socket(env, client->sockfd);
     }
 
     if(!client->data_stream)
