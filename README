@@ -6,7 +6,7 @@
   The Apache Axis2/C is a SOAP engine implementation that can be used 
   to provide and consume Web Services. Axis2/C is an effort to implement Axis2 
   architecture, in C. Please have a look at 
-  http://ws.apache.org/axis2/1_0/Axis2ArchitectureGuide.html
+  http://axis.apache.org/axis2/java/core/docs/Axis2ArchitectureGuide.html
   for an overview on Axis2 architecture.
   
   Axis2/C supports both SOAP 1.1 and SOAP 1.2. The soap processing model is
@@ -27,7 +27,7 @@
   ------------------
 
   Details of the latest version can be found on the Apache Axis2/C
-  project page under http://ws.apache.org/axis2/c.
+  project page under http://axis.apache.org/axis2/c/core/.
 
   Documentation
   -------------
@@ -35,7 +35,7 @@
   The documentation available as of the date of this release is
   included in HTML format in the docs/ directory. The most
   up-to-date documentation can be found at
-  http://ws.apache.org/axis2/c/docs/index.html.
+  http://axis.apache.org/axis2/c/core/docs/index.html.
 
   Installation
   ------------
@@ -54,35 +54,17 @@
      o If you want freely available support for using Apache Axis2/C please 
        join the Apache Axis2/C user community by subscribing to users mailing 
        list, c-user@axis.apache.org' as described at 
-       http://ws.apache.org/axis2/c/mail-lists.html
+       http://axis.apache.org/axis2/c/core/mail-lists.html
 
      o If you have a bug report for Apache Axis2/C please go log a Jira issue 
        at http://issues.apache.org/jira/browse/AXIS2C
 
      o If you want to participate in actively developing Apache Axis2/C please
        subscribe to the `c-dev@axis.apache.org' mailing list as described at
-       http://ws.apache.org/axis2/c/mail-lists.html
+       http://axis.apache.org/axis2/c/core/mail-lists.html
 
   Acknowledgements
   ----------------
 
   Apache Axis2/C relies heavily on the use of autoconf and libtool to provide
   a build environment.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
