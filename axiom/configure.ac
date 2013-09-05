@@ -21,6 +21,7 @@ AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE
 AC_PREFIX_DEFAULT(/usr/local/axis2_axiom)
+m4_include(pkg.m4)
 
 dnl Checks for programs.
 AC_PROG_CC
