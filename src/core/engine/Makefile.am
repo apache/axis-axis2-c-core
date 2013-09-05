@@ -59,3 +59,6 @@ INCLUDES =  -I$(top_builddir)/include \
 
 EXTRA_DIST=axis2_disp_checker.h
 
+if AXIS2_JSON_ENABLED
+libaxis2_engine_la_LIBADD += $(JSON_LIBS)
+endif

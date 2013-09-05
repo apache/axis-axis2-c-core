@@ -742,6 +742,13 @@ extern "C"
      */
     #define AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED AXIOM_MIME_TYPE_MULTIPART_RELATED
 
+#ifdef AXIS2_JSON_ENABLED
+    /**
+     * AXIS2_HTTP_HEADER_ACCEPT_JSON
+     */
+#define AXIS2_HTTP_HEADER_ACCEPT_JSON "application/json"
+#endif
+
     /**
      * HEADER_ACCEPT_APPLICATION_DIME
      */

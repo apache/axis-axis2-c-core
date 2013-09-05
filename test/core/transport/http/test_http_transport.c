@@ -24,6 +24,13 @@
 #include <axis2_http_client.h>
 #include <cut_defs.h>
 #include <cut_http_server.h>
+#ifdef AXIS2_JSON_ENABLED
+#include <axiom.h>
+#include <axutil_utils.h>
+#include <json.h>
+#include <axis2_json_writer.h>
+#include <axis2_json_reader.h>
+#endif
 
 void
 test_http_request_line(
@@ -263,6 +270,152 @@ test_https_client(
 #endif
 }
 
+#ifdef AXIS2_JSON_ENABLED
+void
+test_json(
+    const axutil_env_t * env)
+{
+    axiom_node_t* root_node = NULL;
+
+    /* JSON_C */
+    axis2_json_writer_t* json_writer;
+    axis2_json_reader_t* json_reader;
+    unsigned i;
+    axis2_char_t* xml_str;
+    const axis2_char_t* result_str;
+    int passed = 0;
+    int failed = 0;
+
+
+    const char* xml_data[] =
+    {
+        "<root><child1>value 1</child1><child2>value 2</child2></root>",
+        "<root> \t\r\n<child1>value 1</child1> <child2>value 2</child2>\n</root>",
+        "<root><child1><sub>value 1</sub></child1><child2>value 2</child2></root>",
+        "<root><child></child><ch>value 1</ch><ch>value 2</ch><ch>value 3</ch></root>",
+        "<root><child></child><ch><sub>11</sub><sub>12</sub></ch><ch><sub>11</sub><sub>12</sub></ch></root>",
+        "<root><ch xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:nil=\"true\"></ch></root>"
+    };
+
+    const char* json_data_mapped[] =
+    {
+        "{\"root\":{\"child1\":\"value 1\",\"child2\":\"value 2\"}}",
+        "{\"root\":{\"child1\":{\"sub\":\"value 1\"},\"child2\":\"value 2\"}}",
+        "{\"root\":{\"child\":\"\",\"ch\":[\"value 1\",\"value 2\",\"value 3\"]}}",
+        "{\"root\":{\"child\":\"\",\"ch\":[{\"sub\":[\"11\",\"12\"]},{\"sub\":[\"11\",\"12\"]}]}}",
+        "{\"root\":{\"ch\":null}}"
+    };
+
+    int xml2mapped[sizeof(xml_data) / sizeof(xml_data[0])] =
+    {
+        0, 0, 1, 2, 3, 4
+    };
+
+    int mapped2xml[sizeof(json_data_mapped) / sizeof(json_data_mapped[0])] =
+    {
+        0, 2, 3, 4, 5
+    };
+
+    printf(" ######################## testing xml -> json ########################## \n");
+
+    for (i = 0; i < sizeof(xml_data) / sizeof(xml_data[0]); ++i)
+    {
+        const char* xml = xml_data[i];
+
+        root_node = axiom_node_create_from_buffer(env, (axis2_char_t*)xml);
+
+        xml_str = axiom_node_to_string(root_node, env);
+
+        printf(" =============== source XML ================\n%s\n"
+               " ===========================================\n",
+               xml_str);
+        AXIS2_FREE(env->allocator, xml_str);
+
+        json_writer = axis2_json_writer_create(env);
+        axis2_json_writer_write(json_writer, root_node, env);
+
+        result_str = axis2_json_writer_get_json_string(json_writer, env, 0);
+        printf(" ============= resulting JSON ==============\n%s\n"
+               " ===========================================\n",
+               result_str);
+
+        if (strcmp(result_str, json_data_mapped[xml2mapped[i]]))
+        {
+            ++failed;
+            printf("TEST FAILED\nexpected result: %s\n", json_data_mapped[xml2mapped[i]]);
+        }
+        else
+        {
+            ++passed;
+            printf("test passed\n\n");
+        }
+
+        axis2_json_writer_free(json_writer, env);
+
+        axiom_node_free_tree(root_node, env);
+    }
+
+
+    printf(" ######################## testing json -> xml ########################## \n");
+
+    for (i = 0; i < sizeof(json_data_mapped) / sizeof(json_data_mapped[0]); ++i)
+    {
+        const char* json = json_data_mapped[i];
+        int length = strlen(json);
+
+        json_reader = axis2_json_reader_create_for_memory(env, json, length);
+        if (!json_reader)
+        {
+            printf("Failed to create json_reader");
+            return;
+        }
+
+        if (axis2_json_reader_read(json_reader, env) != AXIS2_SUCCESS)
+        {
+            printf("Failed to axis2_json_reader_read");
+            return;
+        }
+
+        root_node = axis2_json_reader_get_root_node(json_reader, env);
+        if (!root_node)
+        {
+            printf("Failed to get root_node");
+            return;
+        }
+
+
+        printf(" =============== source JSON ================\n%s\n"
+               " ===========================================\n",
+               json);
+
+
+        xml_str = axiom_node_to_string(root_node, env);
+
+        printf(" =============== resulting XML ================\n%s\n"
+               " ===========================================\n",
+               xml_str);
+
+        if (strcmp(xml_str, xml_data[mapped2xml[i]]))
+        {
+            ++failed;
+            printf("TEST FAILED\nExpected result: %s\n", xml_data[mapped2xml[i]]);
+        }
+        else
+        {
+            ++passed;
+            printf("test passed\n\n");
+        }
+        AXIS2_FREE(env->allocator, xml_str);
+
+        axis2_json_reader_free(json_reader, env);
+        axiom_node_free_tree(root_node, env);
+    }
+
+    printf("JSON tests passed: %d, failed: %d\n", passed, failed);
+}
+#endif
+
+
 int
 main(
     void)
@@ -276,6 +429,9 @@ main(
        test_http_client(env);
        test_https_client(env);
        test_url(env);
+#ifdef AXIS2_JSON_ENABLED
+       test_json(env);
+#endif
        axutil_env_free(env);
 	}
     CUT_RETURN_ON_FAILURE(-1);

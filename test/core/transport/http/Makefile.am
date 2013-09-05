@@ -36,3 +36,9 @@ INCLUDES = -I$(CUTEST_HOME)/include \
 		 -I ../../../../axiom/include \
 		 -I ../../../cutest/include
 
+if AXIS2_JSON_ENABLED
+test_http_transport_LDADD += $(JSON_LIBS) \
+							$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la
+
+INCLUDES += $(JSON_CFLAGS)
+endif

@@ -102,6 +102,9 @@ axis2_core_utils_create_out_msg_ctx(
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_bool_t doing_rest = AXIS2_FALSE;
     axis2_bool_t doing_mtom = AXIS2_FALSE;
+#ifdef AXIS2_JSON_ENABLED
+    axis2_bool_t doing_json = AXIS2_FALSE;
+#endif
     axis2_bool_t server_side = AXIS2_FALSE;
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     axis2_char_t *msg_uuid = NULL;
@@ -216,6 +219,11 @@ axis2_core_utils_create_out_msg_ctx(
 
     doing_mtom = axis2_msg_ctx_get_doing_mtom(in_msg_ctx, env);
     axis2_msg_ctx_set_doing_mtom(new_msg_ctx, env, doing_mtom);
+
+#ifdef AXIS2_JSON_ENABLED
+    doing_json = axis2_msg_ctx_get_doing_json(in_msg_ctx, env);
+    axis2_msg_ctx_set_doing_json(new_msg_ctx, env, doing_json);
+#endif
 
     server_side = axis2_msg_ctx_get_server_side(in_msg_ctx, env);
     axis2_msg_ctx_set_server_side(new_msg_ctx, env, server_side);

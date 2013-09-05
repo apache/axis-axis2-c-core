@@ -35,6 +35,10 @@
 #include "libcurl/axis2_libcurl.h"
 #endif
 
+#ifdef AXIS2_JSON_ENABLED
+#include <axis2_json_writer.h>
+#endif
+
 /**
  * HTTP Transport Sender struct impl
  * Axis2 HTTP Transport Sender impl
@@ -257,6 +261,89 @@ axis2_http_transport_sender_invoke(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s", AXIS2_ERROR_GET_MESSAGE(env->error));
         return AXIS2_SUCCESS;
     }
+
+#ifdef AXIS2_JSON_ENABLED
+    if (AXIS2_TRUE == axis2_msg_ctx_get_doing_json(msg_ctx, env))
+    {
+        axis2_json_writer_t* json_writer;
+        axiom_node_t *body_node = NULL;
+        axiom_soap_body_t* soap_body =
+                axiom_soap_envelope_get_body(soap_data_out, env);
+        axutil_stream_t* out_stream =
+            axis2_msg_ctx_get_transport_out_stream(msg_ctx, env);
+
+        if (!soap_body)
+        {
+            AXIS2_ERROR_SET(env->error,
+                    AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
+                    AXIS2_FAILURE);
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
+                    AXIS2_ERROR_GET_MESSAGE(env->error));
+            return AXIS2_FAILURE;
+        }
+
+        body_node = axiom_soap_body_get_base_node(soap_body, env);
+        if (!body_node)
+        {
+            return AXIS2_FAILURE;
+        }
+
+        data_out = axiom_node_get_first_element(body_node, env);
+        if (!data_out || axiom_node_get_node_type(data_out, env)
+                != AXIOM_ELEMENT)
+        {
+            return AXIS2_FAILURE;
+        }
+
+        json_writer = axis2_json_writer_create(env);
+        if (!json_writer)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "Failed to create JSON writer");
+            return AXIS2_FAILURE;
+        }
+
+        axis2_json_writer_write(json_writer, data_out, env);
+
+        buffer = (axis2_char_t*)axis2_json_writer_get_json_string(
+                    json_writer, env, &buffer_size);
+        if (!buffer)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                            "Failed to get resulting JSON string");
+            return AXIS2_FAILURE;
+        }
+
+        if (AXIS2_TRUE == axis2_msg_ctx_get_server_side(msg_ctx, env))
+        {
+            axis2_op_ctx_t *op_ctx = NULL;
+            axis2_http_out_transport_info_t* out_info =
+                    (axis2_http_out_transport_info_t *)
+                    axis2_msg_ctx_get_out_transport_info(msg_ctx, env);
+
+            if (!out_info)
+            {
+                AXIS2_HANDLE_ERROR(env,
+                                   AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL,
+                                   AXIS2_FAILURE);
+                return AXIS2_FAILURE;
+            }
+
+            AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CHAR_ENCODING(
+                        out_info, env, char_set_enc);
+            AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(
+                        out_info, env, AXIS2_HTTP_HEADER_ACCEPT_JSON);
+            op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
+            axis2_op_ctx_set_response_written(op_ctx, env, AXIS2_TRUE);
+        }
+
+        axutil_stream_write(out_stream, env, buffer, buffer_size);
+
+        axis2_json_writer_free(json_writer, env);
+
+        return AXIS2_SUCCESS;
+    }
+#endif
 
     xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
         AXIS2_XML_PARSER_TYPE_BUFFER);

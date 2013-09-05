@@ -127,6 +127,11 @@ struct axis2_msg_ctx
     /** Rest through HTTP POST? */
     axis2_bool_t do_rest_through_post;
 
+#ifdef AXIS2_JSON_ENABLED
+    /** are we doing json now? */
+    axis2_bool_t doing_json;
+#endif
+
     /** Session management enabled? */
     axis2_bool_t manage_session;
 
@@ -2823,3 +2828,22 @@ axis2_msg_ctx_set_mime_parts(
     }
     msg_ctx->mime_parts = mime_parts;
 }
+
+#ifdef AXIS2_JSON_ENABLED
+axis2_bool_t AXIS2_CALL
+axis2_msg_ctx_get_doing_json(
+    const axis2_msg_ctx_t *msg_ctx,
+    const axutil_env_t *env)
+{
+    return msg_ctx->doing_json;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_doing_json(axis2_msg_ctx_t *msg_ctx,
+        const axutil_env_t *env,
+        const axis2_bool_t doing_json)
+{
+    msg_ctx->doing_json = doing_json;
+    return AXIS2_SUCCESS;
+}
+#endif

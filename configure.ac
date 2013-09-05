@@ -496,6 +496,29 @@ AC_ARG_ENABLE(libcurl, [  --enable-libcurl
   CPPFLAGS="$CPPFLAGS"
 )
 
+AC_MSG_CHECKING(whether to use JSON)
+AC_ARG_ENABLE(json, [  --enable-json  
+                          enable json support (default=no)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    CFLAGS="$CFLAGS"
+    CPPFLAGS="$CPPFLAGS"
+    json_enabled=false
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS $JSON_CFLAGS -DAXIS2_JSON_ENABLED"
+    CPPFLAGS="$CPPFLAGS $JSON_LIBS -DAXIS2_JSON_ENABLED"
+    json_enabled=true
+    PKG_CHECK_MODULES(JSON, json)
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  CFLAGS="$CFLAGS"
+  CPPFLAGS="$CPPFLAGS"
+)
+
 
 APACHE2INC=$apache2inc
 OPENSSLINC=$opensslinc
@@ -529,6 +552,7 @@ AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(ZLIBBUILD)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_LIBCURL_ENABLED, test x$libcurl_enabled = xtrue)
+AM_CONDITIONAL(AXIS2_JSON_ENABLED, test x$json_enabled = xtrue)
 
 export NTLM_LDFLAGS
 export WRAPPER_DIR
