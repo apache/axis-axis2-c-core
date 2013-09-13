@@ -87,7 +87,10 @@ test_om_build(
 
     f = fopen(filename, "r");
     if (!f)
+    {
+        printf("FILE COULDN'T BE OPENED %s \n",filename);
         return -1;
+    }
 
     /** create pull parser */
     reader =
@@ -121,7 +124,10 @@ test_om_build(
         get root element , building starts hear 
      */
     if (!document)
+    {
+        printf("COULDN'T BUILD DOCUMENT");
         return -1;
+    }
 
     node1 = axiom_document_get_root_element(document, environment);
     if (!node1)
@@ -269,6 +275,44 @@ test_om_build(
     return 0;
 }
 
+
+int test_om_buffer()
+{
+    /*AXIS2C-1628 buffer modified by axiom_node_create_from_buffer */
+    axis2_char_t * output;
+
+    char * xml = strdup("<foo>T1 &amp; T2</foo>");
+    char * xml_unaltered= strdup("<foo>T1 &amp; T2</foo>");
+
+    printf("\nstart test_om_bufer\n");
+
+    axiom_node_t * om_node = axiom_node_create_from_buffer(environment, xml);
+
+    output = axiom_node_to_string(om_node,environment);
+
+    if(axutil_strcmp(xml,xml_unaltered))
+    {
+        printf("ERROR BUFFER MODIFIED\n");
+        return -1;
+    }
+
+    if(axutil_strcmp(output,xml_unaltered))
+    {
+        printf("ERROR OUTPUT DOESNT MATCH\n");
+        return -1;
+    }
+
+    axiom_node_free_tree(om_node,environment);
+    AXIS2_FREE(environment->allocator, output);
+    AXIS2_FREE(environment->allocator, xml);
+    AXIS2_FREE(environment->allocator, xml_unaltered);
+
+    printf("\nend test_om_bufer\n");
+
+    return 0;
+}
+
+
 int
 test_om_serialize(
     )
@@ -396,6 +440,7 @@ main(
     environment = axutil_env_create_with_error_log(allocator, error, axis_log);
     test_om_build(file_name);
     test_om_serialize();
+    test_om_buffer();
 
     axutil_env_free(environment);
     return 0;
