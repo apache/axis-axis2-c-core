@@ -313,10 +313,14 @@ axiom_node_detach_without_namespaces(
         axiom_stax_builder_set_lastnode(om_node->builder, env, lastnode);
     }
 
+    /* If the node is the owner of the builder, keep a reference to the builder
+     * the builder will be freed when this node is destroyed*/
+    if(!om_node->own_builder)
+        om_node->builder = NULL;
+
     om_node->parent = NULL;
     om_node->prev_sibling = NULL;
     om_node->next_sibling = NULL;
-    om_node->builder = NULL;
     return om_node;
 }
 
