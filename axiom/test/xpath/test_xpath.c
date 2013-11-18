@@ -100,6 +100,7 @@ int main(int argc, char *argv[])
     {
         test_tree_str = axiom_node_to_string(test_tree, env);
         printf("\nTesting XML\n-----------\n\"%s\"\n\n\n", test_tree_str);
+        AXIS2_FREE(env->allocator, test_tree_str);
 
         /* Create XPath Context */
         context = axiom_xpath_context_create(env, test_tree);
@@ -111,6 +112,7 @@ int main(int argc, char *argv[])
 
         test_tree_str = axiom_node_to_string(test_tree, env);
         printf("\n\nFinal XML\n-----------\n\"%s\"\n\n\n", test_tree_str);
+        AXIS2_FREE(env->allocator, test_tree_str);
     }
 
     /* Freeing memory */
@@ -336,8 +338,8 @@ void output_results(const axutil_env_t *env,
         axiom_xpath_result_t *xpath_result)
 {
     axiom_xpath_result_node_t *xpath_result_node;
-    axiom_node_t *result_node;
-    axis2_char_t *result_str;
+    axiom_node_t *result_node=NULL;
+    axis2_char_t *result_str=NULL;
     axis2_char_t result_set[100000];
     axis2_char_t temp_res[100000];
 
@@ -364,6 +366,7 @@ void output_results(const axutil_env_t *env,
 
                 sprintf(temp_res, "\"%s\"\n", result_str);
                 strcat(result_set, temp_res);
+                AXIS2_FREE(env->allocator, result_str);
             }
         }
         else if (xpath_result_node->type == AXIOM_XPATH_TYPE_ATTRIBUTE)
@@ -462,6 +465,8 @@ axiom_node_t *read_test_xml(const axutil_env_t *env, axis2_char_t *file_name)
     }
 
     while (axiom_document_build_next(document, env));
+
+    axiom_stax_builder_free_self(builder, env);
 
     return root;
 }
