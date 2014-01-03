@@ -49,10 +49,17 @@ static void AXIS2_CALL axutil_log_impl_free(
     axutil_allocator_t *allocator,
     axutil_log_t *log);
 
+typedef enum axutil_log_stream_type
+{
+    AXUTIL_LOG_FILE = 1,
+    AXUTIL_LOG_STDERR
+}axutil_log_stream_type_t;
+
 struct axutil_log_impl
 {
     axutil_log_t log;
     void *stream;
+    axutil_log_stream_type_t stream_type;
     axis2_char_t *file_name;
     axutil_thread_mutex_t *mutex;
 };
@@ -76,7 +83,7 @@ axutil_log_impl_free(
         {
             axutil_thread_mutex_destroy(log_impl->mutex);
         }
-        if(log_impl->stream)
+        if(log_impl->stream && log_impl->stream_type == AXUTIL_LOG_FILE)
         {
             axutil_file_handler_close(log_impl->stream);
         }
@@ -165,12 +172,20 @@ axutil_log_create(
     axutil_thread_mutex_lock(log_impl->mutex);
 
     log_impl->stream = axutil_file_handler_open(log_file_name, "a+");
+
+    /*If the stream was opened succesfully set the log type*/
+    if(log_impl->stream)
+        log_impl->stream_type = AXUTIL_LOG_FILE;
+    /*Else, use stderr*/
+    else
+    {
+        log_impl->stream_type = AXUTIL_LOG_STDERR;
+        log_impl->stream = stderr;
+    }
+
     axutil_log_impl_rotate((axutil_log_t *)log_impl);
 
     axutil_thread_mutex_unlock(log_impl->mutex);
-
-    if(!log_impl->stream)
-        log_impl->stream = stderr;
 
     /* by default, log is enabled */
     log_impl->log.enabled = 1;
@@ -281,33 +296,38 @@ axutil_log_impl_rotate(
     FILE *old_log_fd = NULL;
     axis2_char_t old_log_file_name[AXUTIL_LOG_FILE_NAME_SIZE];
     axutil_log_impl_t *log_impl = AXUTIL_INTF_TO_IMPL(log);
-    if(log_impl->file_name)
-        size = axutil_file_handler_size(log_impl->file_name);
 
-    if(size >= log->size)
+    /*If the log stream is a file*/
+    if(log_impl->stream_type == AXUTIL_LOG_FILE)
     {
-        AXIS2_SNPRINTF(old_log_file_name, AXUTIL_LOG_FILE_NAME_SIZE, "%s%s", log_impl->file_name,
-            ".old");
-        axutil_file_handler_close(log_impl->stream);
-        old_log_fd = axutil_file_handler_open(old_log_file_name, "w+");
-        log_impl->stream = axutil_file_handler_open(log_impl->file_name, "r");
-        if(old_log_fd && log_impl->stream)
+        if(log_impl->file_name)
+            size = axutil_file_handler_size(log_impl->file_name);
+
+        if(size >= log->size)
         {
-            axutil_file_handler_copy(log_impl->stream, old_log_fd);
-            axutil_file_handler_close(old_log_fd);
+            AXIS2_SNPRINTF(old_log_file_name, AXUTIL_LOG_FILE_NAME_SIZE, "%s%s", log_impl->file_name,
+                ".old");
             axutil_file_handler_close(log_impl->stream);
-            old_log_fd = NULL;
-            log_impl->stream = NULL;
+            old_log_fd = axutil_file_handler_open(old_log_file_name, "w+");
+            log_impl->stream = axutil_file_handler_open(log_impl->file_name, "r");
+            if(old_log_fd && log_impl->stream)
+            {
+                axutil_file_handler_copy(log_impl->stream, old_log_fd);
+                axutil_file_handler_close(old_log_fd);
+                axutil_file_handler_close(log_impl->stream);
+                old_log_fd = NULL;
+                log_impl->stream = NULL;
+            }
+            if(old_log_fd)
+            {
+                axutil_file_handler_close(old_log_fd);
+            }
+            if(log_impl->stream)
+            {
+                axutil_file_handler_close(log_impl->stream);
+            }
+            log_impl->stream = axutil_file_handler_open(log_impl->file_name, "w+");
         }
-        if(old_log_fd)
-        {
-            axutil_file_handler_close(old_log_fd);
-        }
-        if(log_impl->stream)
-        {
-            axutil_file_handler_close(log_impl->stream);
-        }
-        log_impl->stream = axutil_file_handler_open(log_impl->file_name, "w+");
     }
     return AXIS2_SUCCESS;
 }
@@ -505,6 +525,8 @@ axutil_log_create_default(
     log_impl->file_name = NULL;
     log_impl->log.size = AXUTIL_LOG_FILE_SIZE;
     log_impl->stream = stderr;
+    /* This log doesn't own the stream (stderr) */
+    log_impl->stream_type = AXUTIL_LOG_STDERR;
     axutil_thread_mutex_unlock(log_impl->mutex);
     /* by default, log is enabled */
     log_impl->log.enabled = 1;
