@@ -476,11 +476,10 @@ guththila_utf8_bytes(
  * Replace the references with the corresponding actual values.
  */
 static void
-guththila_token_evaluate_references(
-    guththila_token_t * tok)
+guththila_string_evaluate_references(
+    guththila_char_t *start, size_t size)
 {
-    guththila_char_t *start = tok->start;
-    guththila_char_t *end = start + tok->size;
+    guththila_char_t *end = start + size;
     guththila_char_t *p = start;
     guththila_char_t *q = NULL;
     guththila_char_t *entity = NULL;
@@ -510,6 +509,7 @@ guththila_token_evaluate_references(
             break; /* Drop unterminated entity */
         }
         entity_len = p - entity;
+        /*Replace lt '<' or gt '>'*/
         if(entity_len == 2 && entity[1] == 't')
         {
             if(entity[0] == 'g')
@@ -518,27 +518,33 @@ guththila_token_evaluate_references(
                 *q++ = '<';
             /* else drop */
         }
+        /*Replace amp '&' */
         else if(entity_len == 3 && entity[0] == 'a' && entity[1] == 'm' && entity[2] == 'p')
         {
             *q++ = '&';
         }
         else if(entity_len == 4 && entity[2] == 'o')
         {
+        	/*Replace quot '"' */
             if(entity[0] == 'q' && entity[1] == 'u' && entity[3] == 't')
             {
                 *q++ = '"';
             }
+            /*Replace apos '\' */
             else if(entity[0] == 'a' && entity[1] == 'p' && entity[3] == 's')
             {
                 *q++ = '\'';
             }
         }
+        /*  numeric character reference */
         else if(entity_len >= 2 && entity[0] == '#')
         {
             /* p points to the ';' */
             int c = 0;
             guththila_char_t b;
             guththila_char_t *digit = entity + 1;
+
+            /* The digit is in hex*/
             if(*digit == 'x')
             { /* &#x...; */
                 while(++digit < p)
@@ -554,6 +560,7 @@ guththila_token_evaluate_references(
                         break; /* stop and drop */
                 }
             }
+            /*The digit is in decimal*/
             else
             { /* &#...; */
                 while(digit < p)
@@ -574,7 +581,7 @@ guththila_token_evaluate_references(
         } /* else drop unknown entity */
         p++; /* go over ';' */
     }
-    tok->size = q - start;
+    start[q - start] = '\0';
 }
 
 /*
@@ -610,12 +617,10 @@ guththila_token_close(
             m->temp_tok = NULL;
             break;
         case _text_data:
-            guththila_token_evaluate_references(m->temp_tok);
             m->value = m->temp_tok;
             m->temp_tok = NULL;
             break;
         case _attribute_value:
-            guththila_token_evaluate_references(m->temp_tok);
             /* Chech weather we are at a xml namespace declaration */
             if((m->temp_prefix && (guththila_tok_str_cmp(m->temp_prefix, "xmlns", 5u, env) == 0))
                 || (guththila_tok_str_cmp(m->temp_name, "xmlns", 5u, env) == 0))
@@ -1329,6 +1334,7 @@ guththila_get_attribute_value(
     if(att->val)
     {
         GUTHTHILA_TOKEN_TO_STRING(att->val, str, env);
+        guththila_string_evaluate_references(str, GUTHTHILA_TOKEN_LEN(att->val));
         return str;
     }
     return NULL;
@@ -1386,6 +1392,7 @@ guththila_get_attribute_value_by_number(
     if(attr->val)
     {
         GUTHTHILA_TOKEN_TO_STRING(attr->val, str, env);
+        guththila_string_evaluate_references(str, GUTHTHILA_TOKEN_LEN(attr->val));
         return str;
     }
     return NULL;
@@ -1445,6 +1452,7 @@ guththila_get_value(
     if(m->value)
     {
         GUTHTHILA_TOKEN_TO_STRING(m->value, str, env);
+        guththila_string_evaluate_references(str, GUTHTHILA_TOKEN_LEN(m->value));
         return str;
     }
     return NULL;

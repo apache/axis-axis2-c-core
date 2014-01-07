@@ -77,7 +77,7 @@ guththila_reader_create_for_memory(
     }
 
     reader->type = GUTHTHILA_MEMORY_READER;
-    reader->buff = strdup(buffer);
+    reader->buff = buffer;
     reader->buff_size = size;
     reader->fp = NULL;
     reader->input_read_callback = NULL;
@@ -115,10 +115,6 @@ guththila_reader_free(
     guththila_reader_t * r,
     const axutil_env_t * env)
 {
-    if(r->type == GUTHTHILA_MEMORY_READER && r->buff)
-    {
-    	AXIS2_FREE(env->allocator,r->buff);
-    }
     if(r->type == GUTHTHILA_FILE_READER && r->fp)
     {
         fclose(r->fp);
