@@ -111,7 +111,8 @@ axutil_allocator_free_impl(
     axutil_allocator_t * allocator,
     void *ptr)
 {
-    free(ptr);
+	if (ptr)
+        free(ptr);
 }
 
 AXIS2_EXTERN void AXIS2_CALL
