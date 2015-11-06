@@ -20,24 +20,41 @@
 #include <stdlib.h>
 #include <string.h>
 
-void *AXIS2_CALL axutil_allocator_malloc_impl(
+void *AXIS2_CALL
+axutil_allocator_malloc_impl(
     axutil_allocator_t * allocator,
-    size_t size);
+    size_t size)
+{
+    if (allocator)
+        return malloc(size);
+    return NULL;
+}
 
-void *AXIS2_CALL axutil_allocator_realloc_impl(
+void *AXIS2_CALL
+axutil_allocator_realloc_impl(
     axutil_allocator_t * allocator,
     void *ptr,
-    size_t size);
+    size_t size)
+{
+    if (allocator)
+        return realloc(ptr, size);
+    return NULL;
+}
 
-void AXIS2_CALL axutil_allocator_free_impl(
+void AXIS2_CALL
+axutil_allocator_free_impl(
     axutil_allocator_t * allocator,
-    void *ptr);
+    void *ptr)
+{
+    if (allocator && ptr)
+        free(ptr);
+}
 
 AXIS2_EXTERN axutil_allocator_t *AXIS2_CALL
 axutil_allocator_init(
     axutil_allocator_t * allocator)
 {
-    if(!allocator)
+    if (!allocator)
     {
         allocator = (axutil_allocator_t *)malloc(sizeof(axutil_allocator_t));
         if (allocator)
@@ -87,32 +104,6 @@ axutil_allocator_free(
         allocator->free_fn(allocator, allocator);
 
     return;
-}
-
-void *AXIS2_CALL
-axutil_allocator_malloc_impl(
-    axutil_allocator_t * allocator,
-    size_t size)
-{
-    return malloc(size);
-}
-
-void *AXIS2_CALL
-axutil_allocator_realloc_impl(
-    axutil_allocator_t * allocator,
-    void *ptr,
-    size_t size)
-{
-    return realloc(ptr, size);
-}
-
-void AXIS2_CALL
-axutil_allocator_free_impl(
-    axutil_allocator_t * allocator,
-    void *ptr)
-{
-	if (ptr)
-        free(ptr);
 }
 
 AXIS2_EXTERN void AXIS2_CALL
