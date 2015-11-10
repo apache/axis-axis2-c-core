@@ -430,12 +430,12 @@ axiom_mime_part_create_part_list(
     temp_header_value = axutil_stracat(env, header_value, "\";");
     AXIS2_FREE(env->allocator, header_value);
     header_value = temp_header_value;
-    AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, AXIOM_MIME_HEADER_CONTENT_TYPE,
+    axiom_mime_body_part_add_header(root_mime_body_part, env, AXIOM_MIME_HEADER_CONTENT_TYPE,
         header_value);
 
     /* Adding Content Transfer Encoding header */
 
-    AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env,
+    axiom_mime_body_part_add_header(root_mime_body_part, env,
         AXIOM_MIME_HEADER_CONTENT_TRANSFER_ENCODING, axutil_strdup(env,
             AXIOM_MIME_CONTENT_TRANSFER_ENCODING_BINARY));
 
@@ -446,7 +446,7 @@ axiom_mime_part_create_part_list(
     temp_content_id_string = axutil_stracat(env, content_id_string, ">");
     AXIS2_FREE(env->allocator, content_id_string);
     content_id_string = temp_content_id_string;
-    AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, AXIOM_MIME_HEADER_CONTENT_ID,
+    axiom_mime_body_part_add_header(root_mime_body_part, env, AXIOM_MIME_HEADER_CONTENT_ID,
         content_id_string);
 
     /* Now first insert the headers needed for SOAP */
@@ -463,7 +463,7 @@ axiom_mime_part_create_part_list(
 
     /* Now add the SOAP body */
 
-    AXIOM_MIME_BODY_PART_FREE(root_mime_body_part, env);
+    axiom_mime_body_part_free(root_mime_body_part, env);
     root_mime_body_part = NULL;
 
     soap_part = axiom_mime_part_create(env);
@@ -516,7 +516,7 @@ axiom_mime_part_create_part_list(
                     return NULL;
                 }
 
-                AXIOM_MIME_BODY_PART_FREE(mime_body_part, env);
+                axiom_mime_body_part_free(mime_body_part, env);
                 mime_body_part = NULL;
             }
         }

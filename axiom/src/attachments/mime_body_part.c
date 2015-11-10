@@ -94,7 +94,7 @@ axiom_mime_body_part_create_from_om_text(
         content_type = axiom_data_handler_get_content_type(data_handler, env);
     }
 
-    AXIOM_MIME_BODY_PART_SET_DATA_HANDLER(mime_body_part, env, data_handler);
+    axiom_mime_body_part_set_data_handler(mime_body_part, env, data_handler);
     content_id = (axis2_char_t *)"<";
     content_id = axutil_stracat(env, content_id, axiom_text_get_content_id(text, env));
     temp_content_id = axutil_stracat(env, content_id, ">");
@@ -103,14 +103,14 @@ axiom_mime_body_part_create_from_om_text(
     content_id = temp_content_id;
 
     /* Adding the content-id */
-    AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, AXIOM_MIME_HEADER_CONTENT_ID, content_id);
+    axiom_mime_body_part_add_header(mime_body_part, env, AXIOM_MIME_HEADER_CONTENT_ID, content_id);
 
     /* Adding the content-type */
-    AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, AXIOM_MIME_HEADER_CONTENT_TYPE,
+    axiom_mime_body_part_add_header(mime_body_part, env, AXIOM_MIME_HEADER_CONTENT_TYPE,
         axutil_strdup(env, content_type));
 
     /* Adding the content-transfer encoding */
-    AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env,
+    axiom_mime_body_part_add_header(mime_body_part, env,
         AXIOM_MIME_HEADER_CONTENT_TRANSFER_ENCODING, axutil_strdup(env,
             AXIOM_MIME_CONTENT_TRANSFER_ENCODING_BINARY));
 

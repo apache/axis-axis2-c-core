@@ -100,19 +100,6 @@ extern "C"
         const axutil_env_t *env,    
         axiom_text_t *text);
         
-
-#define AXIOM_MIME_BODY_PART_FREE(mime_body_part, env) \
-    axiom_mime_body_part_free (mime_body_part, env)
-
-#define AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, name, value) \
-    axiom_mime_body_part_add_header (mime_body_part, env, name, value)
-
-#define AXIOM_MIME_BODY_PART_SET_DATA_HANDLER(mime_body_part, env, data_handler) \
-    axiom_mime_body_part_set_data_handler (mime_body_part, env, data_handler)
-
-#define AXIOM_MIME_BODY_PART_WRITE_TO(mime_body_part, env, output_stream, output_stream_size) \
-    axiom_mime_body_part_write_to (mime_body_part, env, output_stream, output_stream_size)
-
     /** @} */
 
 #ifdef __cplusplus
