@@ -107,18 +107,6 @@ extern "C"
         axis2_char_t * attr_value,
         axis2_bool_t detach);
 
-#define AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_FREE(iterator, env) \
-        axiom_children_with_specific_attribute_iterator_free(iterator, env)
-
-#define AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_REMOVE(iterator, env) \
-        axiom_children_with_specific_attribute_iterator_remove(iterator, env)
-
-#define AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_HAS_NEXT(iterator, env) \
-        axiom_children_with_specific_attribute_iterator_has_next(iterator, env)
-
-#define AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_NEXT(iterator, env) \
-        axiom_children_with_specific_attribute_iterator_next(iterator, env)
-
     /** @} */
 
 #ifdef __cplusplus
