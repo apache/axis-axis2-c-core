@@ -82,8 +82,13 @@ axutil_hash_alloc_array(
     axutil_hash_t *ht,
     unsigned int max)
 {
-    return memset(AXIS2_MALLOC(ht->env->allocator, sizeof(*ht->array) * (max + 1)), 0,
-        sizeof(*ht->array) * (max + 1));
+    axutil_hash_entry_t **he = AXIS2_MALLOC(ht->env->allocator, sizeof(*ht->array) * (max + 1));
+
+    if (!he)
+        return NULL;
+
+    memset(he, 0, sizeof(*ht->array) * (max + 1));
+    return he;
 }
 
 AXIS2_EXTERN axutil_hash_t *AXIS2_CALL

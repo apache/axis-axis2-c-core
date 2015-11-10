@@ -515,12 +515,12 @@ axis2_addr_in_extract_epr_information(
     epr_ref_qn = axutil_qname_create(env, EPR_REFERENCE_PARAMETERS, addr_ns_str, NULL);
     wsa_meta_qn = axutil_qname_create(env, AXIS2_WSA_METADATA, addr_ns_str, NULL);
 
-    while(AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(child_ele_iter, env))
+    while (axiom_child_element_iterator_has_next(child_ele_iter, env))
     {
         axiom_node_t *child_node = NULL;
         axiom_element_t *child_ele = NULL;
         axutil_qname_t *child_qn = NULL;
-        child_node = AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(child_ele_iter, env);
+        child_node = axiom_child_element_iterator_next(child_ele_iter, env);
         child_ele = (axiom_element_t *)axiom_node_get_data_element(child_node, env);
 
         child_qn = axiom_element_get_qname(child_ele, env, child_node);
@@ -536,11 +536,11 @@ axis2_addr_in_extract_epr_information(
             ref_param_iter = axiom_element_get_child_elements(child_ele, env, child_node);
             if(ref_param_iter)
             {
-                while(AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(ref_param_iter, env))
+                while (axiom_child_element_iterator_has_next(ref_param_iter, env))
                 {
                     axiom_node_t *om_node = NULL;
                     /*axiom_element_t *om_ele = NULL; */
-                    om_node = AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(ref_param_iter, env);
+                    om_node = axiom_child_element_iterator_next(ref_param_iter, env);
                     /*om_ele = (axiom_element_t *)axiom_node_get_data_element(om_node, env); */
                     axis2_endpoint_ref_add_ref_param(endpoint_ref, env, om_node);
                 }

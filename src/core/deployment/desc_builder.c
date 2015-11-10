@@ -575,14 +575,14 @@ set_attrs_and_value(
         value_list = axutil_array_list_create(env, 0);
         axutil_param_set_value_list(param, env, value_list);
 
-        while(AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(childs, env))
+        while (axiom_child_element_iterator_has_next(childs, env))
         {
             axiom_node_t *node = NULL;
             axiom_element_t *element = NULL;
             axutil_param_t *param = NULL;
             axis2_char_t *pname = NULL;
 
-            node = AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(childs, env);
+            node = axiom_child_element_iterator_next(childs, env);
             element = axiom_node_get_data_element(node, env);
             param = axutil_param_create(env, NULL, NULL);
             pname = axiom_element_get_localname(element, env);

@@ -212,13 +212,11 @@ axutil_env_free(
 {
     axutil_allocator_t *allocator = NULL;
 
-    if(!env)
+    if (!env)
         return;
 
-    if(--(env->ref) > 0)
-    {
+    if (--(env->ref) > 0)
         return;
-    }
 
     allocator = env->allocator;
 
@@ -227,27 +225,25 @@ axutil_env_free(
         AXIS2_LOG_FREE(env->allocator, env->log);
     }
 
-    if(env->error)
+    if (env->error)
     {
         AXIS2_ERROR_FREE(env->error);
     }
 
-    if(env->thread_pool)
+    if (env->thread_pool)
     {
         axutil_thread_pool_free(env->thread_pool);
     }
 
-    if(env->allocator)
+    if (env->allocator)
     {
         AXIS2_FREE(env->allocator, env);
     }
 
-    if(allocator)
+    if (allocator)
     {
         AXIS2_FREE(allocator, allocator);
     }
-
-    return;
 }
 
 AXIS2_EXTERN void AXIS2_CALL
@@ -258,27 +254,25 @@ axutil_env_free_masked(
     if(!env)
         return;
 
-    if(--(env->ref) > 0)
-    {
+    if (--(env->ref) > 0)
         return;
-    }
 
-    if(mask & AXIS_ENV_FREE_LOG)
+    if (mask & AXIS_ENV_FREE_LOG)
     {
         AXIS2_LOG_FREE(env->allocator, env->log);
     }
 
-    if(mask & AXIS_ENV_FREE_ERROR)
+    if (mask & AXIS_ENV_FREE_ERROR)
     {
         AXIS2_ERROR_FREE(env->error);
     }
 
-    if(mask & AXIS_ENV_FREE_THREADPOOL)
+    if (mask & AXIS_ENV_FREE_THREADPOOL)
     {
         axutil_thread_pool_free(env->thread_pool);
     }
 
-    if(env)
+    if (env)
         AXIS2_FREE(env->allocator, env);
 
     return;

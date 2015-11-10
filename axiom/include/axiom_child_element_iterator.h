@@ -32,8 +32,7 @@ extern "C"
 {
 #endif
 
-    typedef struct axiom_child_element_iterator
-                axiom_child_element_iterator_t;
+    typedef struct axiom_child_element_iterator axiom_child_element_iterator_t;
 
     /**
      * @defgroup axiom_child_element_iterator child element iterator
@@ -43,6 +42,7 @@ extern "C"
     
     /**
      * Free the iterator
+     *
      * @param iterator a pointer to child element iterator struct
      * @param env environment, MUST NOT be NULL.
      */
@@ -58,6 +58,7 @@ extern "C"
     * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
     * the underlying collection is modified while the iteration is in
     * progress in any way other than by calling this method.
+    *
     *  @param iterator a pointer to child element iterator struct
      * @param env environment, MUST NOT be NULL.
     */
@@ -71,11 +72,11 @@ extern "C"
      * returns true if the iteration has more elements 
      * in otherwords it returns true if the next() would return an element
      * rather than null with an error code set to environments error
+     *
      * @param iterator a pointer to child element iterator struct
      * @param env environment, MUST NOT be NULL.
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-
     axiom_child_element_iterator_has_next(
         axiom_child_element_iterator_t * iterator,
         const axutil_env_t * env);
@@ -83,6 +84,7 @@ extern "C"
     /**
      * Returns the next element in the iteration. Returns null if there 
      * is no more elements 
+     *
      * @param iterator a pointer to child element iterator struct
      * @param env environment, MUST NOT be NULL.
      */
@@ -93,8 +95,10 @@ extern "C"
 
     /**
      * Create a child element interator for the current child
+     *
      * @param current child
      * @param env environment, MUST NOT be NULL.
+     *
      * return axiom_child_element_iterator_t
      */
 
@@ -102,18 +106,6 @@ extern "C"
     axiom_child_element_iterator_create(
         const axutil_env_t * env,
         axiom_node_t * current_child);
-
-#define AXIOM_CHILD_ELEMENT_ITERATOR_FREE(iterator, env) \
-        axiom_child_element_iterator_free(iterator, env)
-
-#define AXIOM_CHILD_ELEMENT_ITERATOR_REMOVE(iterator, env) \
-        axiom_child_element_iterator_remove(iterator, env)
-
-#define AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(iterator, env) \
-        axiom_child_element_iterator_has_next(iterator, env)
-
-#define AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(iterator, env) \
-        axiom_child_element_iterator_next(iterator, env)
 
     /** @} */
 
