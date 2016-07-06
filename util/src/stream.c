@@ -102,6 +102,14 @@ axutil_stream_free(
     axutil_stream_t *stream,
     const axutil_env_t *env)
 {
+	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+	//avoid access violation / segment fault
+	if (stream == NULL)
+	{
+		return;
+	}
+
     switch(stream->stream_type)
     {
         case AXIS2_STREAM_BASIC:
