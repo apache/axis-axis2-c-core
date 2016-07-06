@@ -212,7 +212,11 @@ extern "C"
 #define AXIS2_DECLARE_DATA
 
 #elif defined(AXIS2_DECLARE_STATIC)
+#ifdef __cplusplus
+#define AXIS2_EXTERN extern "C"
+#else
 #define AXIS2_EXTERN
+#endif
 #define AXIS2_EXTERN_NONSTD
 #define AXIS2_DECLARE_DATA
 #elif defined(AXIS2_DECLARE_EXPORT)
