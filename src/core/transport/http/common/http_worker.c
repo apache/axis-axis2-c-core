@@ -1915,6 +1915,9 @@ axis2_http_worker_set_response_headers(
                     axis2_char_t content_len_str[10];
                     axis2_http_header_t *content_len_hdr = NULL;
 
+					//Adds more 2 to http content length to involve CR and LF chars
+					content_length += 2;
+
                     sprintf(content_len_str, "%d", content_length);
                     content_len_hdr = axis2_http_header_create(env,
                         AXIS2_HTTP_HEADER_CONTENT_LENGTH, content_len_str);
