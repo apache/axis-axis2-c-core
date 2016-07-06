@@ -42,10 +42,10 @@ struct dirent
 /* def struct DIR - different from Unix DIR */
 typedef struct
 {
-    long handle;          /* _findfirst/_findnext handle */
+	HANDLE handle;          /* FindFirstFile/FindNextFile handle */
     short offset;         /* offset into directory */
     short finished;       /* 1 if there are not more files */
-    struct _finddata_t fileinfo;  /* from _findfirst/_findnext */
+	WIN32_FIND_DATA fileinfo;  /* from FindFirstFile/FindNextFile */
     char *dirname;        /* the dir we are reading */
     struct dirent dent;   /* the dirent to return */
     
