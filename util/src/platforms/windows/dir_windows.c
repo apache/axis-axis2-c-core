@@ -29,10 +29,10 @@ axis2_opendir(
 {
     AXIS2_DIR *dirp;
     char *filespec;
-    long handle;
+    HANDLE handle;
     int index;
 
-    filespec = malloc(strlen(_dirname) + 2 + 1);
+    filespec = (char*)malloc(strlen(_dirname) + 2 + 1);
     strcpy(filespec, _dirname);
     index = (int)strlen(filespec) - 1;
     if(index >= 0 && (filespec[index] == '/' || (filespec[index] == '\\' && !IsDBCSLeadByte(
@@ -44,18 +44,26 @@ axis2_opendir(
     dirp->offset = 0;
     dirp->finished = 0;
 
-    if((handle = (long)_findfirst(filespec, &(dirp->fileinfo))) < 0)
-    /* We are sure that the difference lies within the long range */
-    {
-        if(errno == ENOENT || errno == EINVAL)
-            dirp->finished = 1;
-        else
-        {
-            free(dirp);
-            free(filespec);
-            return NULL;
-        }
-    }
+	handle = FindFirstFile(filespec, &(dirp->fileinfo));
+	if (handle == INVALID_HANDLE_VALUE)
+	{ 
+		DWORD dwErr = GetLastError();
+		if (dwErr == ERROR_FILE_NOT_FOUND || dwErr == ERROR_PATH_NOT_FOUND
+						|| dwErr == ERROR_NO_MORE_FILES || dwErr == ERROR_NOT_READY)
+		{
+			fprintf(stderr, "FindFirstFile with unexpected result. Error code: %u\r\n", dwErr);
+
+			dirp->finished = 1;
+		}
+		else
+		{
+			free(dirp);
+			free(filespec);
+			fprintf(stderr, "FindFirstFile failed. Error code: %u\r\n", dwErr);
+			return NULL;
+		}
+	}
+		
     /* We are using the ISO C++ conformant name: _strdup, as demanded by VS 2005 */
     dirp->dirname = _strdup(_dirname);
     dirp->handle = handle;
@@ -71,7 +79,7 @@ axis2_closedir(
     int iret = -1;
     if(!_dirp)
         return iret;
-    iret = _findclose(_dirp->handle);
+    iret = FindClose(_dirp->handle);
     if(_dirp->dirname)
         free(_dirp->dirname);
     if(_dirp)
@@ -89,7 +97,7 @@ axis2_readdir(
 
     if(_dirp->offset != 0)
     {
-        if(_findnext(_dirp->handle, &(_dirp->fileinfo)) < 0)
+        if(FindNextFile(_dirp->handle, &(_dirp->fileinfo)) == 0)
         {
             _dirp->finished = 1;
             return NULL;
@@ -97,7 +105,7 @@ axis2_readdir(
     }
     _dirp->offset++;
 
-    strcpy(_dirp->dent.d_name, _dirp->fileinfo.name); /*, _MAX_FNAME+1); */
+    strcpy(_dirp->dent.d_name, _dirp->fileinfo.cFileName); /*, _MAX_FNAME+1); */
     _dirp->dent.d_ino = 1;
     _dirp->dent.d_reclen = (unsigned short)strlen(_dirp->dent.d_name);
     _dirp->dent.d_off = _dirp->offset;
@@ -119,7 +127,7 @@ axis2_readdir_r(
 
     if(_dirp->offset != 0)
     {
-        if(_findnext(_dirp->handle, &(_dirp->fileinfo)) < 0)
+        if(FindNextFile(_dirp->handle, &(_dirp->fileinfo)) < 0)
         {
             _dirp->finished = 1;
             *__result = NULL;
@@ -128,7 +136,7 @@ axis2_readdir_r(
     }
     _dirp->offset++;
 
-    strcpy(_dirp->dent.d_name, _dirp->fileinfo.name); /*, _MAX_FNAME+1); */
+    strcpy(_dirp->dent.d_name, _dirp->fileinfo.cFileName); /*, _MAX_FNAME+1); */
     _dirp->dent.d_ino = 1;
     _dirp->dent.d_reclen = (unsigned short)strlen(_dirp->dent.d_name);
     _dirp->dent.d_off = _dirp->offset;
@@ -145,10 +153,10 @@ axis2_rewinddir(
     AXIS2_DIR * dirp)
 {
     char *filespec;
-    long handle;
+    HANDLE handle;
     int index;
 
-    _findclose(dirp->handle);
+    FindClose(dirp->handle);
 
     dirp->offset = 0;
     dirp->finished = 0;
@@ -160,12 +168,17 @@ axis2_rewinddir(
         filespec[index] = '\0';
     strcat(filespec, "/*");
 
-    if((handle = (long)_findfirst(filespec, &(dirp->fileinfo))) < 0)
-    /* We are sure that the difference lies within the int range */
+	handle = FindFirstFile(filespec, &(dirp->fileinfo));
+    if(handle == INVALID_HANDLE_VALUE)
     {
-        if(errno == ENOENT || errno == EINVAL)
-            dirp->finished = 1;
+		DWORD dwErr = GetLastError();
+		if (dwErr == ERROR_FILE_NOT_FOUND || dwErr == ERROR_PATH_NOT_FOUND
+						|| dwErr == ERROR_NO_MORE_FILES || dwErr == ERROR_NOT_READY)
+		{
+			dirp->finished = 1;
+		}
     }
+
     dirp->handle = handle;
     free(filespec);
 
