@@ -401,6 +401,20 @@ extern "C"
         axiom_node_t * om_node,
         const axutil_env_t * env);
     
+	/**
+	* Adds nodeElemSibling to nodeElem as a sibling. It can be used to generates a multipart envelop payload.
+	* @param env pointer to environment struct
+	* @param nodeElem pointer to first part, element to has sibling added
+	* @param nodeElemSibling pointer to second part, sibling to be added
+	*
+	* @return axiom_node_t pointer to param nodeElem pointer with sibling added
+	*/
+	AXIS2_EXTERN axiom_node_t * AXIS2_CALL
+		axiom_node_add_sibling(
+			const axutil_env_t *env,
+			axiom_node_t *nodeElem,
+			axiom_node_t *nodeElemSibling);
+
 
     /** @} */
 
