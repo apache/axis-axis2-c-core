@@ -1434,7 +1434,33 @@ axiom_node_to_string_non_optimized(
     axiom_output_free(om_output, env);
     return xml;
 }
-    
+
+AXIS2_EXTERN axiom_node_t * AXIS2_CALL
+axiom_node_add_sibling(
+	const axutil_env_t *env,
+	axiom_node_t *nodeElem,
+	axiom_node_t *nodeElemSibling)
+{
+	assert(env != NULL);
+
+	AXIS2_ENV_CHECK(env, NULL);
+	AXIS2_PARAM_CHECK(env->error, nodeElem, NULL);
+	AXIS2_PARAM_CHECK(env->error, nodeElemSibling, NULL);
+
+	axiom_node_t *next_sib = NULL;
+	nodeElemSibling->parent = nodeElem->parent;
+	nodeElemSibling->prev_sibling = nodeElem;
+	next_sib = nodeElem->next_sibling;
+	if (next_sib)
+	{
+		next_sib->prev_sibling = nodeElemSibling;
+	}
+	nodeElemSibling->next_sibling = nodeElem->next_sibling;
+	nodeElem->next_sibling = nodeElemSibling;
+
+	return nodeElem;
+}
+  
 #if 0
 
 /**
@@ -1468,3 +1494,4 @@ axiom_node_get_builder(
 }
 
 #endif
+
