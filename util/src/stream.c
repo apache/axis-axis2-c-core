@@ -104,7 +104,7 @@ axutil_stream_free(
 {
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-	//avoid access violation / segment fault
+	/* avoid access violation / segment fault */
 	if (stream == NULL)
 	{
 		return;
