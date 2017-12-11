@@ -147,7 +147,7 @@ extern "C"
 
     /**
      * @param phases_info pointer to phases info
-     * @parma env pointer to environment struct
+     * @param env pointer to environment struct
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 
