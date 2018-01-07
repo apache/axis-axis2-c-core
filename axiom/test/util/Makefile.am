@@ -12,13 +12,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-noinst_PROGRAMS = axiom
-axiom_SOURCES = axiom_util_test.c
-axiom_LDADD   =   \
+TESTS = test_util
+check_PROGRAMS = test_util
+noinst_PROGRAMS = test_util
+test_util_SOURCES = test_util.cc
+test_util_LDADD   =   \
                     $(top_builddir)/src/om/libaxis2_axiom.la \
                     $(top_builddir)/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
-		    $(top_builddir)/../util/src/libaxutil.la
+					$(top_builddir)/../util/src/libaxutil.la \
+					$(top_builddir)/$(GTEST)/libgtest.a \
+					$(top_builddir)/$(GTEST)/libgtest_main.a
 
-INCLUDES = -I$(top_builddir)/include \
+AM_CPPFLAGS = -I$(top_builddir)/include \
 			-I ../../../util/include \
-			-I ../../../include
+			-I ../../../include \
+			-I $(GTEST_DIR)/include
