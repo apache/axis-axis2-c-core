@@ -12,17 +12,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-TESTS = 
+TESTS = test_om
 noinst_PROGRAMS = test_om
 check_PROGRAMS = test_om
 SUBDIRS =
-AM_CFLAGS = -g -O2
-test_om_SOURCES = test_om.c
 
-test_om_LDADD   =	../../../util/src/libaxutil.la \
-		    $(top_builddir)/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
-                    $(top_builddir)/src/om/libaxis2_axiom.la 
+test_om_SOURCES = test_om.cc
 
-INCLUDES = -I$(top_builddir)/include \
+test_om_LDADD = ../../../util/src/libaxutil.la \
+				 $(top_builddir)/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
+				 $(top_builddir)/src/om/libaxis2_axiom.la \
+				 $(top_builddir)/$(GTEST)/libgtest.a \
+				 $(top_builddir)/$(GTEST)/libgtest_main.a
+
+AM_CPPFLAGS = -I$(top_builddir)/include \
             -I$(top_builddir)/src/parser \
-			-I ../../../util/include 
+			-I ../../../util/include \
+			-I $(GTEST_DIR)/include
