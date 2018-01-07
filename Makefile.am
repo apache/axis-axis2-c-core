@@ -22,7 +22,7 @@ wsdl2cdir=$(prefix)/bin/tools/wsdl2c
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = axis2c.pc
 
-SUBDIRS = util $(GUTHTHILA_DIR) axiom neethi src $(TESTDIR) include ides tools/tcpmon tools/md5
+SUBDIRS = $(GTEST) util $(GUTHTHILA_DIR) axiom neethi src $(TESTDIR) include ides tools/tcpmon tools/md5
 include_HEADERS=$(top_builddir)/include/*.h
 data_DATA= samples/server/axis2.xml README \
 	INSTALL CREDITS COPYING NEWS NOTICE AUTHORS

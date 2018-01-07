@@ -378,6 +378,27 @@ AC_ARG_WITH(apr,
   AC_MSG_RESULT(no)
 )
 
+AC_MSG_CHECKING(whether to use use the Google test framework)
+AC_ARG_WITH(gtest,
+            [  --with-gtest[=PATH]      Find the gtest source files in 'PATH'.],
+[ case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    USE_GTEST=""
+    GTEST_DIR=""
+    GTEST=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    GTEST_DIR="$withval"
+    GTEST="gtest"
+    CXXFLAGS="$CXXFLAGS -g -Wall -Wextra -pthread"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+
 AC_MSG_CHECKING(whether to build tests)
 AC_ARG_ENABLE(tests, [  --enable-tests    
                           build tests (default=no)],
@@ -554,6 +575,8 @@ AC_SUBST(OPENSSLLIB)
 AC_SUBST(APRINC)
 AC_SUBST(DICLIENT_DIR)
 AC_SUBST(TESTDIR)
+AC_SUBST(GTEST_DIR)
+AC_SUBST(GTEST)
 AC_SUBST(SAMPLES)
 AC_SUBST(APACHE2BUILD)
 AC_SUBST(NTLM_CFLAGS)
@@ -624,6 +647,7 @@ AC_CONFIG_FILES([Makefile \
     src/modules/Makefile \
     src/modules/mod_addr/Makefile \
     src/modules/mod_log/Makefile \
+    gtest/Makefile \
     test/Makefile \
     test/core/Makefile \
     test/core/description/Makefile \
