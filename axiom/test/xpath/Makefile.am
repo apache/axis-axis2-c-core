@@ -12,25 +12,30 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-TESTS = 
+TESTS = test_xpath test_xpath_streaming
 noinst_PROGRAMS = test_xpath test_xpath_streaming
 check_PROGRAMS = test_xpath test_xpath_streaming
 SUBDIRS =
-test_xpath_SOURCES = test_xpath.c
+test_xpath_SOURCES = test_xpath.cc
 
-test_xpath_streaming_SOURCES = test_xpath_streaming.c
+test_xpath_streaming_SOURCES = test_xpath_streaming.cc
 
 test_xpath_LDADD   =	../../../util/src/libaxutil.la \
-                    $(top_builddir)/src/om/libaxis2_axiom.la \
-		    $(top_builddir)/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
-                    $(top_builddir)/src/xpath/libaxis2_xpath.la 
+					$(top_builddir)/src/om/libaxis2_axiom.la \
+					$(top_builddir)/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
+					$(top_builddir)/src/xpath/libaxis2_xpath.la  \
+					$(top_builddir)/$(GTEST)/libgtest.a \
+					$(top_builddir)/$(GTEST)/libgtest_main.a
 
 test_xpath_streaming_LDADD   =	../../../util/src/libaxutil.la \
-                    $(top_builddir)/src/om/libaxis2_axiom.la \
-		    $(top_builddir)/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
-                    $(top_builddir)/src/xpath/libaxis2_xpath.la 
+					$(top_builddir)/src/om/libaxis2_axiom.la \
+					$(top_builddir)/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
+					$(top_builddir)/src/xpath/libaxis2_xpath.la \
+					$(top_builddir)/$(GTEST)/libgtest.a \
+					$(top_builddir)/$(GTEST)/libgtest_main.a
 
-INCLUDES = -I$(top_builddir)/include \
+AM_CPPFLAGS = -I$(top_builddir)/include \
             -I$(top_builddir)/src/parser \
 			-I ../../../include \
-			-I ../../../util/include 
+			-I ../../../util/include \
+			-I $(GTEST_DIR)/include
