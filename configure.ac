@@ -197,7 +197,6 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
-    WRAPPER_DIR=""
     ;;
   *)
     AC_MSG_RESULT(yes)
