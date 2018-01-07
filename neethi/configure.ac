@@ -109,6 +109,28 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2
   AC_MSG_RESULT(no)
 )
 
+
+AC_MSG_CHECKING(whether to enable code coverage statistics)
+AC_ARG_ENABLE(coverage, [  --enable-coverage  
+                          enable code coverage statistics (default=no)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    CFLAGS="$CFLAGS"
+    CPPFLAGS="$CPPFLAGS"
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -fprofile-arcs -ftest-coverage"
+    CPPFLAGS="$CPPFLAGS -fprofile-arcs -ftest-coverage"
+    ;;
+  esac ],[
+  AC_MSG_RESULT(no)
+  CFLAGS="$CFLAGS"
+  CPPFLAGS="$CPPFLAGS"]
+)
+
+
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([stdio.h stdlib.h string.h])

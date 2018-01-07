@@ -217,6 +217,27 @@ AC_ARG_ENABLE(trace, [  --enable-trace
   CFLAGS="$CFLAGS"
 )
 
+AC_MSG_CHECKING(whether to enable code coverage statistics)
+AC_ARG_ENABLE(coverage, [  --enable-coverage  
+                          enable code coverage statistics (default=no)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    CFLAGS="$CFLAGS"
+    CPPFLAGS="$CPPFLAGS"
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -fprofile-arcs -ftest-coverage"
+    CPPFLAGS="$CPPFLAGS -fprofile-arcs -ftest-coverage"
+    ;;
+  esac ],[
+  AC_MSG_RESULT(no)
+  CFLAGS="$CFLAGS"
+  CPPFLAGS="$CPPFLAGS"]
+)
+
+
 AC_MSG_CHECKING(whether to build tests)
 AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=yes],
 [ case "${enableval}" in
