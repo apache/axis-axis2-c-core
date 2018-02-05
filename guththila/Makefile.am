@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 datadir=$(prefix)
-SUBDIRS = src 
+SUBDIRS = src $(GTEST) $(TESTDIR)
 includedir=$(prefix)/include/axis2-${PACKAGE_VERSION}/
 include_HEADERS=$(top_builddir)/include/*.h
 data_DATA= INSTALL README AUTHORS NEWS LICENSE COPYING

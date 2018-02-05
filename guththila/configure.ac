@@ -28,6 +28,7 @@ m4_ifdef([_A][M_PROG_TAR],[_A][M_SET_OPTION([tar-ustar])])
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CPP
+AC_PROG_CXX
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
 AC_PROG_LN_S
@@ -79,12 +80,51 @@ AC_ARG_ENABLE(coverage, [  --enable-coverage       enable code coverage statisti
     AC_MSG_RESULT(yes)
     CFLAGS="$CFLAGS -fprofile-arcs -ftest-coverage"
     CPPFLAGS="$CPPFLAGS -fprofile-arcs -ftest-coverage"
+    LDFLAGS="$LDFLAGS -lgcov --coverage"
     ;;
   esac ],[
   AC_MSG_RESULT(no)
   CFLAGS="$CFLAGS"
   CPPFLAGS="$CPPFLAGS"]
 )
+
+AC_MSG_CHECKING(whether to use the Google test framework)
+AC_ARG_WITH(gtest,
+            [  --with-gtest[=PATH]      Find the gtest source files in 'PATH'.],
+[ case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    USE_GTEST=""
+    GTEST_DIR=""
+    GTEST=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    GTEST_DIR="$withval"
+    GTEST="gtest"
+    CXXFLAGS="$CXXFLAGS -g -Wall -Wextra -pthread"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+AC_MSG_CHECKING(whether to build tests)
+AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
+[ case "${enableval}" in
+  yes)
+    AC_MSG_RESULT(yes)
+    TESTDIR="tests"
+    ;;
+  *)
+    AC_MSG_RESULT(no)
+    TESTDIR=""
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  TESTDIR=""
+)
+
 
 
 
@@ -106,9 +146,14 @@ VERSION_NO="7:0:7"
 
 AC_SUBST(UTILINC)
 AC_SUBST(VERSION_NO)
+AC_SUBST(GTEST_DIR)
+AC_SUBST(GTEST)
+AC_SUBST(TESTDIR)
 
 AC_CONFIG_FILES([Makefile \
     src/Makefile \
+    gtest/Makefile \
+    tests/Makefile \
     ])
-    
+
 AC_OUTPUT
