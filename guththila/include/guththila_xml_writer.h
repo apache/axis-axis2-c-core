@@ -500,7 +500,7 @@ GUTHTHILA_EXPORT void GUTHTHILA_CALL guththila_xml_writer_free(
  */
 GUTHTHILA_EXPORT char *GUTHTHILA_CALL guththila_get_prefix_for_namespace(
     guththila_xml_writer_t * wr,
-    char *namespace,
+    char *namespace_uri,
     const axutil_env_t * env);
 
 EXTERN_C_END()
