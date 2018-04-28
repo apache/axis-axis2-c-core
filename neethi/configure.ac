@@ -130,6 +130,26 @@ AC_ARG_ENABLE(coverage, [  --enable-coverage
 )
 
 
+AC_MSG_CHECKING(whether to build tests)
+AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
+[ case "${enableval}" in
+  yes)
+    AC_MSG_RESULT(yes)
+    TESTDIR="test"
+    ;;
+  *)
+    AC_MSG_RESULT(no)
+    TESTDIR=""
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  TESTDIR=""
+)
+
+
+
+
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([stdio.h stdlib.h string.h])
@@ -152,6 +172,7 @@ VERSION_NO="7:0:7"
 
 AC_SUBST(VERSION_NO)
 AC_SUBST(WRAPPER_DIR)
+AC_SUBST(TESTDIR)
 
 export WRAPPER_DIR
 
