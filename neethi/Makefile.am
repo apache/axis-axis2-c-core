@@ -12,6 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-SUBDIRS = src $(TESTDIR)
+SUBDIRS = src $(GTEST) $(TESTDIR)
 includedir=$(prefix)/include/axis2-${PACKAGE_VERSION}
 include_HEADERS=$(top_builddir)/include/*.h

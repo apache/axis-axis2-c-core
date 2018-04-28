@@ -27,6 +27,7 @@ AC_PREFIX_DEFAULT(/usr/local/neethi)
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CPP
+AC_PROG_CXX
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
 AC_PROG_LN_S
@@ -129,6 +130,25 @@ AC_ARG_ENABLE(coverage, [  --enable-coverage
   CPPFLAGS="$CPPFLAGS"]
 )
 
+AC_MSG_CHECKING(whether to use the Google test framework)
+AC_ARG_WITH(gtest,
+            [  --with-gtest[=PATH]      Find the gtest source files in 'PATH'.],
+[ case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    USE_GTEST=""
+    GTEST_DIR=""
+    GTEST=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    GTEST_DIR="$withval"
+    GTEST="gtest"
+    CXXFLAGS="$CXXFLAGS -g -Wall -Wextra -pthread"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
 
 AC_MSG_CHECKING(whether to build tests)
 AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
@@ -172,6 +192,8 @@ VERSION_NO="7:0:7"
 
 AC_SUBST(VERSION_NO)
 AC_SUBST(WRAPPER_DIR)
+AC_SUBST(GTEST_DIR)
+AC_SUBST(GTEST)
 AC_SUBST(TESTDIR)
 
 export WRAPPER_DIR
@@ -182,7 +204,8 @@ AC_CONFIG_FILES([Makefile \
     src/secpolicy/model/Makefile \
     src/secpolicy/builder/Makefile \
     src/rmpolicy/Makefile \
+    gtest/Makefile \
     test/Makefile
     ])
-    
+
 AC_OUTPUT
