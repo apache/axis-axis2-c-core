@@ -12,18 +12,23 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-TESTS = 
+TESTS = test
 noinst_PROGRAMS = test
+check_PROGRAMS = test
+SUBDIRS =
 
-test_SOURCES = test.c
+test_SOURCES = test.cc
 
-INCLUDES = -I$(top_builddir)/include \
-			-I ../../util/include \
-			-I ../../axiom/include \
-		    -I ../../include
+AM_CPPFLAGS = -I$(top_builddir)/include \
+				-I ../../util/include \
+				-I ../../axiom/include \
+				-I ../../include \
+				-I $(GTEST_DIR)/include
 
 test_LDADD = $(top_builddir)/src/libneethi.la \
 			../../axiom/src/om/libaxis2_axiom.la \
 			../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 			../../util/src/libaxutil.la \
-			../src/libneethi.la
+			../src/libneethi.la \
+			$(top_builddir)/$(GTEST)/libgtest.a \
+			$(top_builddir)/$(GTEST)/libgtest_main.a
