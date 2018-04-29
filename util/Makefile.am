@@ -15,7 +15,7 @@
 datadir=$(prefix)
 tmpincludedir=$(prefix)/include/axis2-${PACKAGE_VERSION}/
 includedir=$(prefix)/include/axis2-${PACKAGE_VERSION}/
-SUBDIRS = src $(TESTDIR) include
+SUBDIRS = src $(GTEST) $(TESTDIR) include
 include_HEADERS=$(top_builddir)/include/*.h
 tmpinclude_DATA=config.h
 data_DATA= INSTALL README AUTHORS NEWS CREDITS LICENSE COPYING

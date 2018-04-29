@@ -25,6 +25,7 @@ AC_PREFIX_DEFAULT(/usr/local/axis2_util)
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CPP
+AC_PROG_CXX
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
 AC_PROG_LN_S
@@ -239,6 +240,26 @@ AC_ARG_ENABLE(coverage, [  --enable-coverage
   CPPFLAGS="$CPPFLAGS"]
 )
 
+AC_MSG_CHECKING(whether to use use the Google test framework)
+AC_ARG_WITH(gtest,
+            [  --with-gtest[=PATH]      Find the gtest source files in 'PATH'.],
+[ case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    USE_GTEST=""
+    GTEST_DIR=""
+    GTEST=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    GTEST_DIR="$withval"
+    GTEST="gtest"
+    CXXFLAGS="$CXXFLAGS -g -Wall -Wextra -pthread"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
 
 AC_MSG_CHECKING(whether to build tests)
 AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=yes],
@@ -302,12 +323,15 @@ AC_SUBST(ZLIBBUILD)
 AC_SUBST(GUTHTHILA_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(TESTDIR)
+AC_SUBST(GTEST_DIR)
+AC_SUBST(GTEST)
 
 AC_CONFIG_FILES([Makefile \
     src/Makefile \
     src/platforms/unix/Makefile \
     src/minizip/Makefile \
     include/Makefile \
+    gtest/Makefile \
     test/Makefile \
     test/util/Makefile \
     test/allocator/Makefile \
