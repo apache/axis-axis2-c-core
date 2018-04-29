@@ -16,10 +16,15 @@
  * limitations under the License.
  */
 
+#include <gtest/gtest.h>
+
 #include "test_md5.h"
 #include <stdio.h>
 #include <axutil_string.h>
 #include <axutil_md5.h>
+#include <axutil_log_default.h>
+#include <axutil_log.h>
+#include <axutil_error_default.h>
 
 /* Digests a string and prints the result.
  */
@@ -41,15 +46,44 @@ static void MDString (char * string, const axutil_env_t * env)
   printf ("\n");
 }
 
-void test_md5(const axutil_env_t *env)
+class TestMD5: public ::testing::Test
 {
+
+    protected:
+        void SetUp()
+        {
+
+            m_allocator = axutil_allocator_init(NULL);
+            m_axis_log = axutil_log_create(m_allocator, NULL, NULL);
+            m_error = axutil_error_create(m_allocator);
+
+            m_env = axutil_env_create_with_error_log(m_allocator, m_error, m_axis_log);
+
+        }
+
+        void TearDown()
+        {
+            axutil_env_free(m_env);
+        }
+
+
+        axutil_allocator_t *m_allocator = NULL;
+        axutil_env_t *m_env = NULL;
+        axutil_error_t *m_error = NULL;
+        axutil_log_t *m_axis_log = NULL;
+
+};
+
+TEST_F(TestMD5, test_md5)
+{
+
     printf ("\nMD5 test suite:\n");
     printf ("test confirmation: Rivest, R., \"The MD5 Message-Digest Algorithm\", RFC 1321, April 1992.\n");
-    MDString ("", env);
-    MDString ("a", env);
-    MDString ("abc", env);
-    MDString ("message digest", env);
-    MDString ("abcdefghijklmnopqrstuvwxyz", env);
-    MDString ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", env);
-    MDString ("12345678901234567890123456789012345678901234567890123456789012345678901234567890", env);
+    MDString ("", m_env);
+    MDString ("a", m_env);
+    MDString ("abc", m_env);
+    MDString ("message digest", m_env);
+    MDString ("abcdefghijklmnopqrstuvwxyz", m_env);
+    MDString ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", m_env);
+    MDString ("12345678901234567890123456789012345678901234567890123456789012345678901234567890", m_env);
 }

@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+#include <gtest/gtest.h>
+
 #include <stdio.h>
 #include <string.h>
 #include <axutil_error_default.h>
@@ -24,7 +26,6 @@
 #include <axutil_allocator.h>
 #include <axutil_utils.h>
 #include "test_thread.h"
-#include <cut_defs.h>
 
 const axutil_env_t *env = NULL;
 static axutil_thread_mutex_t *thread_lock = NULL;
@@ -56,14 +57,11 @@ test_thread_init(
     allocator = env->allocator;
 
     control = axutil_thread_once_init(allocator);
-    CUT_ASSERT_PTR_NOT_EQUAL(control, NULL, 0);
+    ASSERT_NE(control, nullptr);
 
     thread_lock =
         axutil_thread_mutex_create(allocator, AXIS2_THREAD_MUTEX_DEFAULT);
-    CUT_ASSERT_PTR_NOT_EQUAL(thread_lock, NULL, 0);
-    /* To avoid warning of not using cut_str_equal */
-    CUT_ASSERT_STR_EQUAL("", "", 0);
-
+    ASSERT_NE(thread_lock, nullptr);
 }
 
 void *AXIS2_CALL
@@ -74,9 +72,9 @@ test_function(
     int i  = *((int *) param);
     printf("thread data = %d \n", i);
 	param_data = i;
-	
+
     axutil_thread_once(control, init_func);
-    CUT_ASSERT(value==1);
+    EXPECT_EQ(value, 1);
     axutil_thread_mutex_lock(thread_lock);
     printf("x = %d \n", ++x);
     axutil_thread_mutex_unlock(thread_lock);
@@ -96,28 +94,28 @@ test_axutil_thread_create(
         *j = NULL;
 
     allocator = env->allocator;
-    i = AXIS2_MALLOC(allocator, sizeof(int));
+    i = (int*)AXIS2_MALLOC(allocator, sizeof(int));
     *i = 5;
     param_data = -1;
     t1 = axutil_thread_create(allocator, NULL, test_function, (void *) i);
-    CUT_ASSERT_PTR_NOT_EQUAL(t1, NULL, 0);
+    ASSERT_NE(t1, nullptr);
     AXIS2_SLEEP(1);
-    CUT_ASSERT_INT_EQUAL(param_data, *i, 0);
+    ASSERT_EQ(param_data, *i);
 
 
-    j = AXIS2_MALLOC(allocator, sizeof(int));
+    j = (int*)AXIS2_MALLOC(allocator, sizeof(int));
     *j = 25;
     param_data = -1;
     t2 = axutil_thread_create(allocator, NULL, test_function, (void *) j);
-    CUT_ASSERT_PTR_NOT_EQUAL(t2, NULL, 0);
+    ASSERT_NE(t2, nullptr);
     AXIS2_SLEEP(1);
-    CUT_ASSERT_INT_EQUAL(param_data, *j, 0);
+    ASSERT_EQ(param_data, *j);
 
     rv = axutil_thread_join(t1);
-    CUT_ASSERT_INT_EQUAL(rv, AXIS2_SUCCESS, 0);
+    ASSERT_EQ(rv, AXIS2_SUCCESS);
 
     rv = axutil_thread_join(t2);
-    CUT_ASSERT_INT_EQUAL(rv, AXIS2_SUCCESS, 0);
+    ASSERT_EQ(rv, AXIS2_SUCCESS);
 
 }
 
@@ -140,17 +138,17 @@ test_axutil_thread_detach(
 
     allocator = env->allocator;
     attr = axutil_threadattr_create(allocator);
-    CUT_ASSERT_PTR_NOT_EQUAL(attr, NULL, 1);
+    ASSERT_NE(attr, nullptr);
     rv = axutil_threadattr_detach_set(attr, 1);
-    CUT_ASSERT_INT_EQUAL(rv, AXIS2_SUCCESS, 1);
+    ASSERT_EQ(rv, AXIS2_SUCCESS);
     t3 = axutil_thread_create(allocator, attr, test_function2, NULL);
-    CUT_ASSERT_PTR_NOT_EQUAL(t3, NULL, 1);
+    ASSERT_NE(t3, nullptr);
 
     /*
      * thread is already detached - should return AXIS2_FAILURE
      */
     rv = axutil_thread_detach(t3);
-    CUT_ASSERT_INT_EQUAL(rv, AXIS2_FAILURE, 1);
+    ASSERT_EQ(rv, AXIS2_FAILURE);
  }
 
 void
@@ -163,41 +161,69 @@ test_axutil_thread_detach2(
 
     allocator = env->allocator;
     attr = axutil_threadattr_create(allocator);
-    CUT_ASSERT_PTR_NOT_EQUAL(attr, NULL, 1);
+    ASSERT_NE(attr, nullptr);
 
     t4 = axutil_thread_create(allocator, attr, test_function2, NULL);
-    CUT_ASSERT_PTR_NOT_EQUAL(t4, NULL, 1);
+    ASSERT_NE(t4, nullptr);
     /*
      * thread is not detached yet - should return AXIS2_SUCCESS
      */
     rv = axutil_thread_detach(t4);
-    CUT_ASSERT_INT_EQUAL(rv, AXIS2_SUCCESS, 1);
+    ASSERT_EQ(rv, AXIS2_SUCCESS);
 }
 
 void
 check_locks(
     )
 {
-    CUT_ASSERT_INT_EQUAL(x, 2, 0);
+    ASSERT_EQ(x, 2);
 }
 
 void
 check_thread_once(
     )
 {
-    CUT_ASSERT_INT_EQUAL(value, 1, 0);
+    ASSERT_EQ(value, 1);
 }
 
-void
-run_test_thread(
-    const axutil_env_t * env)
+class TestThread: public ::testing::Test
 {
-    test_thread_init(env);
-    test_axutil_thread_create(env);
+
+    protected:
+        void SetUp()
+        {
+
+            m_allocator = axutil_allocator_init(NULL);
+            m_axis_log = axutil_log_create(m_allocator, NULL, NULL);
+            m_error = axutil_error_create(m_allocator);
+
+            m_env = axutil_env_create_with_error_log(m_allocator, m_error, m_axis_log);
+
+        }
+
+        void TearDown()
+        {
+            axutil_env_free(m_env);
+        }
+
+
+        axutil_allocator_t *m_allocator = NULL;
+        axutil_env_t *m_env = NULL;
+        axutil_error_t *m_error = NULL;
+        axutil_log_t *m_axis_log = NULL;
+
+};
+
+
+TEST_F(TestThread, test_thread)
+{
+
+    test_thread_init(m_env);
+    test_axutil_thread_create(m_env);
     check_locks();
     check_thread_once();
-    test_axutil_thread_detach(env);
-    test_axutil_thread_detach2(env);
+    test_axutil_thread_detach(m_env);
+    test_axutil_thread_detach2(m_env);
 
 #if defined (WIN32)
     Sleep(1000);                /*to give time for detached threads to execute */
@@ -206,18 +232,4 @@ run_test_thread(
 #endif
 
     axutil_thread_mutex_destroy(thread_lock);
-}
-
-int
-main(
-    void)
-{
-    axutil_env_t *env = cut_setup_env("util thread");
-	CUT_ASSERT(env != NULL);
-	if (env) {
-       run_test_thread(env);
-       axutil_env_free(env);
-    }
-    CUT_RETURN_ON_FAILURE(-1);
-    return 0;
 }
