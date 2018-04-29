@@ -451,6 +451,8 @@ AC_ARG_ENABLE(coverage, [  --enable-coverage
     AC_MSG_RESULT(yes)
     CFLAGS="$CFLAGS -fprofile-arcs -ftest-coverage"
     CPPFLAGS="$CPPFLAGS -fprofile-arcs -ftest-coverage"
+    CXXFLAGS="$CXXFLAGS -fprofile-arcs -ftest-coverage"
+    LDFLAGS="$LDFLAGS -lgcov --coverage"
     ;;
   esac ],[
   AC_MSG_RESULT(no)
