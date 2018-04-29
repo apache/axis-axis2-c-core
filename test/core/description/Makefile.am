@@ -16,7 +16,7 @@ TESTS = test_description
 noinst_PROGRAMS = test_description
 SUBDIRS =
 AM_CFLAGS = -g -O2
-test_description_SOURCES = test_description.c
+test_description_SOURCES = test_description.cc
 
 test_description_LDADD   =  \
 			../../../util/src/libaxutil.la \
@@ -24,10 +24,11 @@ test_description_LDADD   =  \
 			../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 			$(top_builddir)/neethi/src/libneethi.la \
 			$(top_builddir)/src/core/engine/libaxis2_engine.la \
-			$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la
+			$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+			$(top_builddir)/$(GTEST)/libgtest.a \
+			$(top_builddir)/$(GTEST)/libgtest_main.a
 
-INCLUDES = -I$(top_builddir)/include \
-            -I$(CUTEST_HOME)/include \
+AM_CPPFLAGS =  -I$(top_builddir)/include \
             -I$(top_builddir)/src/core/description \
             -I$(top_builddir)/src/core/context \
             -I$(top_builddir)/src/core/phaseresolver \
@@ -37,5 +38,5 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/core/clientapi \
 			-I ../../../util/include \
 			-I ../../../axiom/include \
-		 	-I ../../cutest/include
+			-I $(GTEST_DIR)/include
 

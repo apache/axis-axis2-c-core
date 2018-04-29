@@ -17,32 +17,36 @@ noinst_PROGRAMS = test_client test_clientapi test_svc_client_handler_count
 check_PROGRAMS = test_client test_clientapi test_svc_client_handler_count
 SUBDIRS =
 AM_CFLAGS = -g -pthread 
-test_client_SOURCES = test_client.c
-test_clientapi_SOURCES = test_clientapi.c
-test_svc_client_handler_count_SOURCES = test_svc_client_handler_count.c
+test_client_SOURCES = test_client.cc
+test_clientapi_SOURCES = test_clientapi.cc
+test_svc_client_handler_count_SOURCES = test_svc_client_handler_count.cc
 
 test_clientapi_LDADD   =  \
 				 ../../../util/src/libaxutil.la \
 				 ../../../axiom/src/om/libaxis2_axiom.la \
 				 ../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
-				$(top_builddir)/neethi/src/libneethi.la \
+				 $(top_builddir)/neethi/src/libneethi.la \
 				 -lpthread \
 				 $(top_builddir)/src/core/engine/libaxis2_engine.la \
 				 $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
-				 $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la 
+				 $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la  \
+				 $(top_builddir)/$(GTEST)/libgtest.a \
+				 $(top_builddir)/$(GTEST)/libgtest_main.a
 
 test_client_LDADD   =  \
 				 ../../../util/src/libaxutil.la \
 				 ../../../axiom/src/om/libaxis2_axiom.la \
 				 ../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
-		$(top_builddir)/neethi/src/libneethi.la \
+				 $(top_builddir)/neethi/src/libneethi.la \
 				 -lpthread \
 				 $(top_builddir)/src/core/engine/libaxis2_engine.la \
 				 $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
 				 $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
-			 $(top_builddir)/src/core/transport/http/receiver/libaxis2_http_receiver.la \
+				 $(top_builddir)/src/core/transport/http/receiver/libaxis2_http_receiver.la \
 				 $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
-				 $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la 
+				 $(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+				 $(top_builddir)/$(GTEST)/libgtest.a \
+				 $(top_builddir)/$(GTEST)/libgtest_main.a
 
 test_svc_client_handler_count_LDADD   =  \
 				../../../util/src/libaxutil.la \
@@ -52,10 +56,12 @@ test_svc_client_handler_count_LDADD   =  \
 				-lpthread \
 				$(top_builddir)/src/core/engine/libaxis2_engine.la \
 				$(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
-				$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la 
+				$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+				$(top_builddir)/$(GTEST)/libgtest.a \
+				$(top_builddir)/$(GTEST)/libgtest_main.a
 
 
-INCLUDES = -I$(CUTEST_HOME)/include \
+AM_CPPFLAGS = \
 		 -I$(top_builddir)/include \
 		 -I$(top_builddir)/src/core/description \
 		 -I$(top_builddir)/src/core/context \
@@ -66,5 +72,5 @@ INCLUDES = -I$(CUTEST_HOME)/include \
 		 -I ../../../util/include \
 		 -I ../../../neethi/include \
 		 -I ../../../axiom/include \
-		 -I ../../cutest/include
+		 -I $(GTEST_DIR)/include
 

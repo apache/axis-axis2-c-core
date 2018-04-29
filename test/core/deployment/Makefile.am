@@ -16,7 +16,7 @@ TESTS = test_deployment
 noinst_PROGRAMS = test_deployment
 SUBDIRS =
 AM_CFLAGS = $(CFLAGS) -g
-test_deployment_SOURCES = test_deployment.c
+test_deployment_SOURCES = test_deployment.cc
 
 test_deployment_LDADD   =  \
                     ../../../util/src/libaxutil.la \
@@ -24,10 +24,11 @@ test_deployment_LDADD   =  \
                     ../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 		            $(top_builddir)/neethi/src/libneethi.la \
 					$(top_builddir)/src/core/engine/libaxis2_engine.la \
-					$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la 
+					$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
+					$(top_builddir)/$(GTEST)/libgtest.a \
+					$(top_builddir)/$(GTEST)/libgtest_main.a
 
-INCLUDES = -I ../../../include \
-			-I$(CUTEST_HOME)/include \
+AM_CPPFLAGS = -I ../../../include \
             -I ../../../src/core/description \
             -I ../../../src/core/context \
             -I ../../../src/core/phaseresolver \
@@ -38,4 +39,4 @@ INCLUDES = -I ../../../include \
             -I ../../../util/include \
             -I ../../../axiom/include \
             -I ../../../neethi/include \
-		 	-I ../../cutest/include
+			-I $(GTEST_DIR)/include

@@ -130,7 +130,7 @@ http_server(axutil_thread_t *td, void *param)
     }
 
     env = init_system_env(allocator, log_file);
-    CUT_ASSERT(env != NULL);
+    EXPECT_NE(env, nullptr);
     if (env == NULL) 
     {
         server_free(NULL);
@@ -195,7 +195,7 @@ http_server(axutil_thread_t *td, void *param)
 static int ut_start_http_server(axutil_env_t *env)
 {
     thread_http_server = axutil_thread_create(env->allocator, NULL, http_server, NULL);
-    CUT_ASSERT(thread_http_server != NULL);
+    EXPECT_NE(thread_http_server, nullptr);
     if (!thread_http_server) return -1;
     AXIS2_SLEEP(2);
 	return 0;

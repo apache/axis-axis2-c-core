@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+#include <gtest/gtest.h>
+
 #include <axis2_const.h>
 #include <axutil_env.h>
 #include <axis2_engine.h>
@@ -28,11 +30,39 @@ axiom_node_t *build_om_payload_for_echo_svc(
     const axutil_env_t * env,
     const axis2_char_t * echo_str);
 
-void
-axis2_test_svc_client_blocking(
-    )
+class TestClientAPI: public ::testing::Test
 {
-    axutil_env_t *env = NULL;
+
+    protected:
+        void SetUp()
+        {
+
+            m_allocator = axutil_allocator_init(NULL);
+            m_axis_log = axutil_log_create(m_allocator, NULL, NULL);
+            m_error = axutil_error_create(m_allocator);
+
+            m_env = axutil_env_create_with_error_log(m_allocator, m_error, m_axis_log);
+
+        }
+
+        void TearDown()
+        {
+            axutil_env_free(m_env);
+        }
+
+
+        axutil_allocator_t *m_allocator = NULL;
+        axutil_env_t *m_env = NULL;
+        axutil_error_t *m_error = NULL;
+        axutil_log_t *m_axis_log = NULL;
+
+};
+
+/* Note: This test fails unless you have a deployed axis2c instance running the
+ * echo service on the appropriate port, and AXIS2C_HOME defined in your
+ * environment */
+TEST_F(TestClientAPI, test_svc_client_blocking)
+{
     axis2_options_t *options = NULL;
     const axis2_char_t *client_home = NULL;
     axis2_svc_client_t *svc_client = NULL;
@@ -41,20 +71,18 @@ axis2_test_svc_client_blocking(
     const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t *endpoint_ref = NULL;
 
-    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     axiom_element_t *result_ele = NULL;
     const axis2_char_t *echo_text = "echo_text";
     axis2_char_t *result = NULL;
 
-    env = axutil_env_create(allocator);
     address = "http://localhost:9090/axis2/services/echo/echo";
-    endpoint_ref = axis2_endpoint_ref_create(env, address);
+    endpoint_ref = axis2_endpoint_ref_create(m_env, address);
     client_home = AXIS2_GETENV("AXIS2C_HOME");
     if (!client_home)
         client_home = "../../deploy";
 
-    svc_client = axis2_svc_client_create(env, client_home);
-
+    svc_client = axis2_svc_client_create(m_env, client_home);
+    ASSERT_NE(svc_client, nullptr);
     if (!svc_client)
     {
         printf("axis2_test axis2_svc_client_create FAILURE\n");
@@ -63,20 +91,20 @@ axis2_test_svc_client_blocking(
         return;
     }
 
-    options = axis2_options_create(env);
-    axis2_options_set_to(options, env, endpoint_ref);
-    axis2_svc_client_set_options(svc_client, env, options);
+    options = axis2_options_create(m_env);
+    axis2_options_set_to(options, m_env, endpoint_ref);
+    axis2_svc_client_set_options(svc_client, m_env, options);
 
-    payload = build_om_payload_for_echo_svc(env, echo_text);
-    ret_node = axis2_svc_client_send_receive(svc_client, env, payload);
+    payload = build_om_payload_for_echo_svc(m_env, echo_text);
+    ret_node = axis2_svc_client_send_receive(svc_client, m_env, payload);
     if (ret_node)
     {
-        if (axiom_node_get_node_type(ret_node, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(ret_node, m_env) == AXIOM_ELEMENT)
         {
-            ret_node = axiom_node_get_first_child(ret_node, env);
+            ret_node = axiom_node_get_first_child(ret_node, m_env);
             result_ele =
-                (axiom_element_t *) axiom_node_get_data_element(ret_node, env);
-            result = axiom_element_get_text(result_ele, env, ret_node);
+                (axiom_element_t *) axiom_node_get_data_element(ret_node, m_env);
+            result = axiom_element_get_text(result_ele, m_env, ret_node);
             if (!strcmp(result, echo_text))
                 printf("axis2_test SVC_CLIENT_SEND_RECEIVE SUCCESS\n");
             else
@@ -84,7 +112,7 @@ axis2_test_svc_client_blocking(
         }
     }
 
-    axis2_svc_client_free(svc_client, env);
+    axis2_svc_client_free(svc_client, m_env);
 }
 
 /* build SOAP request message content using OM */
@@ -111,10 +139,3 @@ build_om_payload_for_echo_svc(
     return echo_om_node;
 }
 
-int
-main(
-    )
-{
-    axis2_test_svc_client_blocking();
-    return 0;
-}

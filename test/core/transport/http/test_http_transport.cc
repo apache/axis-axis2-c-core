@@ -15,15 +15,16 @@
  * limitations under the License.
  */
 
+#include <gtest/gtest.h>
+
 #include <stdio.h>
 #include <axis2_http_request_line.h>
 #include <axis2_http_status_line.h>
 #include <axis2_http_header.h>
 #include <axutil_error_default.h>
+#include <axutil_log_default.h>
 #include <axutil_url.h>
 #include <axis2_http_client.h>
-#include <cut_defs.h>
-#include <cut_http_server.h>
 #ifdef AXIS2_JSON_ENABLED
 #include <axiom.h>
 #include <axutil_utils.h>
@@ -32,99 +33,128 @@
 #include <axis2_json_reader.h>
 #endif
 
-void
-test_http_request_line(
-    const axutil_env_t * env)
+#include "../../../cutest/include/cut_http_server.h"
+
+class TestHTTPTransport: public ::testing::Test
 {
-    char *request_line_str = axutil_strdup(env,
+
+    protected:
+        void SetUp()
+        {
+
+            m_allocator = axutil_allocator_init(NULL);
+            m_axis_log = axutil_log_create(m_allocator, NULL, NULL);
+            m_error = axutil_error_create(m_allocator);
+
+            m_env = axutil_env_create_with_error_log(m_allocator, m_error, m_axis_log);
+
+        }
+
+        void TearDown()
+        {
+            axutil_env_free(m_env);
+        }
+
+
+        axutil_allocator_t *m_allocator = NULL;
+        axutil_env_t *m_env = NULL;
+        axutil_error_t *m_error = NULL;
+        axutil_log_t *m_axis_log = NULL;
+
+};
+
+
+TEST_F(TestHTTPTransport, test_http_request_line)
+{
+    char *request_line_str = (char *) axutil_strdup(m_env,
         "POST http://ws.apache.org/axis2/c/services/test_svc/test_op?x=1 HTTP/1.1\r\n");
     axis2_http_request_line_t *request_line;
 
     printf("Starting http_request_line tests\n");
-    request_line = axis2_http_request_line_parse_line(env, request_line_str);
+    request_line = axis2_http_request_line_parse_line(m_env, request_line_str);
+    ASSERT_STREQ(axis2_http_request_line_get_method(request_line, m_env), "POST");
+    ASSERT_STREQ(axis2_http_request_line_get_uri(request_line, m_env),
+            "http://ws.apache.org/axis2/c/services/test_svc/test_op?x=1");
+    ASSERT_STREQ(axis2_http_request_line_get_http_version(request_line, m_env), "HTTP/1.1");
     printf("Method: %s|URI: %s|HTTP Version: %s|\n",
-           axis2_http_request_line_get_method(request_line, env),
-           axis2_http_request_line_get_uri(request_line, env),
-           axis2_http_request_line_get_http_version(request_line, env));
-    
-    /* To avoid warning of not using cut_ptr_equal */
-    CUT_ASSERT_PTR_EQUAL(NULL, NULL, 0);
-    /* To avoid warning of not using cut_int_equal */
-    CUT_ASSERT_INT_EQUAL(0, 0, 0);
-    /* To avoid warning of not using cut_str_equal */
-    CUT_ASSERT_STR_EQUAL("", "", 0);
+           axis2_http_request_line_get_method(request_line, m_env),
+           axis2_http_request_line_get_uri(request_line, m_env),
+           axis2_http_request_line_get_http_version(request_line, m_env));
 
-    axis2_http_request_line_free(request_line, env);
+    axis2_http_request_line_free(request_line, m_env);
     printf("Finished http_request_line tests ..........\n\n");
 }
 
-void
-test_http_status_line(
-    const axutil_env_t * env)
+TEST_F(TestHTTPTransport, test_http_status_line)
 {
     const char *status_line_str = "HTTP/1.1 202 Accepted\r\n";
     axis2_http_status_line_t *status_line;
 
     printf("Starting http_status_line tests\n");
-    status_line = axis2_http_status_line_create(env, status_line_str);
+    status_line = axis2_http_status_line_create(m_env, status_line_str);
+    ASSERT_TRUE(axis2_http_status_line_starts_with_http);
     printf("Staus Line starts with HTTP ? :%d\n",
-           axis2_http_status_line_starts_with_http(status_line, env));
+           axis2_http_status_line_starts_with_http(status_line, m_env));
+    ASSERT_STREQ(axis2_http_status_line_get_http_version(status_line, m_env), "HTTP/1.1");
+    ASSERT_EQ(axis2_http_status_line_get_status_code(status_line, m_env), 202);
+    ASSERT_STREQ(axis2_http_status_line_get_reason_phrase(status_line, m_env), "Accepted");
     printf("HTTP Version :%s|Status Code:%d|Reason Phrase:%s|\n",
-           axis2_http_status_line_get_http_version(status_line, env),
-           axis2_http_status_line_get_status_code(status_line, env),
-           axis2_http_status_line_get_reason_phrase(status_line, env));
+           axis2_http_status_line_get_http_version(status_line, m_env),
+           axis2_http_status_line_get_status_code(status_line, m_env),
+           axis2_http_status_line_get_reason_phrase(status_line, m_env));
     printf("to_string :%s\n",
-           axis2_http_status_line_to_string(status_line, env));
-    axis2_http_status_line_free(status_line, env);
+           axis2_http_status_line_to_string(status_line, m_env));
+    ASSERT_STREQ(axis2_http_status_line_to_string(status_line, m_env), status_line_str);
+    axis2_http_status_line_free(status_line, m_env);
     printf("Finished http_status_line tests ..........\n\n");
 }
 
-void
-test_http_header(
-    const axutil_env_t * env)
+TEST_F(TestHTTPTransport, test_http_header)
 {
     const char *header_name = "Content-Type";
     const char *header_value = "text/xml";
-    const char *str_header =  axutil_strdup(env,"Content-Type: text/xml; charset=UTF-8\r\n");
+    const char *str_header = (const char*) axutil_strdup(m_env,"Content-Type: text/xml; charset=UTF-8\r\n");
     axis2_http_header_t *http_header;
     axis2_char_t *external_form = NULL;
 
     printf("Starting http_header tests\n");
-    http_header = axis2_http_header_create(env, header_name, header_value);
-    external_form = axis2_http_header_to_external_form(http_header, env);
+    http_header = axis2_http_header_create(m_env, header_name, header_value);
+    external_form = axis2_http_header_to_external_form(http_header, m_env);
+    ASSERT_STREQ(header_name, axis2_http_header_get_name(http_header, m_env));
+    ASSERT_STREQ(header_value, axis2_http_header_get_value(http_header, m_env));
+    ASSERT_STREQ(external_form, "Content-Type: text/xml\r\n");
     printf("Header Name :%s|Header Value:%s|External Form:%s\n",
-           axis2_http_header_get_name(http_header, env),
-           axis2_http_header_get_value(http_header, env), external_form);
-    AXIS2_FREE(env->allocator, external_form);
-    axis2_http_header_free(http_header, env);
+           axis2_http_header_get_name(http_header, m_env),
+           axis2_http_header_get_value(http_header, m_env), external_form);
+    AXIS2_FREE(m_env->allocator, external_form);
+    axis2_http_header_free(http_header, m_env);
 
-    http_header = axis2_http_header_create_by_str(env, str_header);
+    http_header = axis2_http_header_create_by_str(m_env, str_header);
     printf("Finished http_header tests ..........\n\n");
 }
 
-void
-test_url(
-    const axutil_env_t * env)
+TEST_F(TestHTTPTransport, test_url)
 {
     const axis2_char_t *str_url = "http://ws.apache.org/axis2/";
-    axutil_url_t *url = axutil_url_parse_string(env, str_url);
-    if (!url)
-    {
-        printf("URL is NULL\n");
-        return;
-    }
+    axutil_url_t *url = axutil_url_parse_string(m_env, str_url);
+    ASSERT_NE(url, nullptr);
     printf("Starting URL Test ....\n");
     printf
         ("Parsed URL : \n Protocol :%s|\n Host :%s|\n Port :%d|\n Path : %s|\n",
-         axutil_url_get_protocol(url, env), axutil_url_get_host(url, env),
-         axutil_url_get_port(url, env), axutil_url_get_path(url, env));
+         axutil_url_get_protocol(url, m_env), axutil_url_get_host(url, m_env),
+         axutil_url_get_port(url, m_env), axutil_url_get_path(url, m_env));
+    ASSERT_STREQ(axutil_url_get_protocol(url, m_env), "http");
+    ASSERT_STREQ(axutil_url_get_host(url, m_env), "ws.apache.org");
+    ASSERT_EQ(axutil_url_get_port(url, m_env), 80);
+    ASSERT_STREQ(axutil_url_get_path(url, m_env), "/axis2/");
     printf("End of URL Test ... \n");
-    axutil_url_free(url, env);
+    axutil_url_free(url, m_env);
 }
 
-void
-test_http_client(
-    axutil_env_t * env)
+/* Note: This test fails unless you have a deployed axis2c instance running the
+ * echo service on the appropriate port, and AXIS2C_HOME defined in your
+ * environment */
+TEST_F(TestHTTPTransport, test_http_client)
 {
     axis2_http_client_t *client = NULL;
     axis2_http_simple_request_t *request = NULL;
@@ -137,70 +167,70 @@ test_http_client(
     int body_bytes_len = 0;
     char * content ="<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\"><soapenv:Body><echoString><text>echo5</text></echoString></soapenv:Body></soapenv:Envelope>";
     char tmpbuf[100];
+    int server_status;
     printf("Starting http_client tests\n");
-	if ( ut_start_http_server(env) != 0 ) return;
-    request_line = axis2_http_request_line_create(env, "POST",
+    server_status = ut_start_http_server(m_env);
+    ASSERT_EQ(server_status, 0);
+    request_line = axis2_http_request_line_create(m_env, "POST",
                                                   "/axis2/services/echo/echo",
                                                   "HTTP/1.1");
-    request = axis2_http_simple_request_create(env, request_line,
+    request = axis2_http_simple_request_create(m_env, request_line,
                                                NULL, 0, NULL);
-    axis2_http_simple_request_set_body_string(request, env, content, strlen(content));
-    url = axutil_url_create(env, "http", "localhost", 9090, NULL);
-	sprintf(tmpbuf,"%s:%d", axutil_url_get_host(url, env), axutil_url_get_port(url, env));
+    axis2_http_simple_request_set_body_string(request, m_env, content, strlen(content));
+    url = axutil_url_create(m_env, "http", "localhost", 9090, NULL);
+	sprintf(tmpbuf,"%s:%d", axutil_url_get_host(url, m_env), axutil_url_get_port(url, m_env));
     header =
-        axis2_http_header_create(env, "Host", tmpbuf);
-    axis2_http_simple_request_add_header(request, env, header);
+        axis2_http_header_create(m_env, "Host", tmpbuf);
+    axis2_http_simple_request_add_header(request, m_env, header);
     header =
-        axis2_http_header_create(env, "Content-Type", "application/soap+xml");
-    axis2_http_simple_request_add_header(request, env, header);
+        axis2_http_header_create(m_env, "Content-Type", "application/soap+xml");
+    axis2_http_simple_request_add_header(request, m_env, header);
 	sprintf(tmpbuf,"%d", (int) strlen(content));
     header =
-        axis2_http_header_create(env, "Content-Length", tmpbuf);
-    axis2_http_simple_request_add_header(request, env, header);
-    client = axis2_http_client_create(env, url);
+        axis2_http_header_create(m_env, "Content-Length", tmpbuf);
+    axis2_http_simple_request_add_header(request, m_env, header);
+    client = axis2_http_client_create(m_env, url);
 
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Trying to call axis2_http_client_send");
-    status = axis2_http_client_send(client, env, request, NULL);
- 	CUT_ASSERT(status == AXIS2_SUCCESS);
+    AXIS2_LOG_DEBUG(m_env->log, AXIS2_LOG_SI, "Trying to call axis2_http_client_send");
+    status = axis2_http_client_send(client, m_env, request, NULL);
+    ASSERT_EQ(status, AXIS2_SUCCESS);
     if (status != AXIS2_SUCCESS)
     {
         printf("Test FAILED .........Can't send the request. Status : %d\n",
                status);
         return;
     }
-    status = axis2_http_client_recieve_header(client, env);
-    CUT_ASSERT(status == 200);
+    status = axis2_http_client_receive_header(client, m_env);
+    ASSERT_EQ(status, 200);
     if (status != 200)
     {
         printf("Test FAILED ......... Can't recieve. Status: %d\n", status);
         return;
     }
-    response = axis2_http_client_get_response(client, env);
-	CUT_ASSERT(response != NULL);
+    response = axis2_http_client_get_response(client, m_env);
+	ASSERT_NE(response, nullptr);
     if (!response)
     {
         printf("Test Failed : NULL response");
         return;
     }
     printf("Content Type :%s\n",
-           axis2_http_simple_response_get_content_type(response, env));
+           axis2_http_simple_response_get_content_type(response, m_env));
     printf("Content Length :%d\n",
-           axis2_http_simple_response_get_content_length(response, env));
+           axis2_http_simple_response_get_content_length(response, m_env));
     printf("Status code :%d\n", status);
     body_bytes_len =
-        axis2_http_simple_response_get_body_bytes(response, env, &body_bytes);
+        axis2_http_simple_response_get_body_bytes(response, m_env, &body_bytes);
     printf("body :%s\n%d", body_bytes , body_bytes_len);
 
-    axis2_http_client_free(client, env);
-    axis2_http_simple_request_free(request, env);
-	ut_stop_http_server(env);
-    AXIS2_FREE(env->allocator, body_bytes);
+    axis2_http_client_free(client, m_env);
+    axis2_http_simple_request_free(request, m_env);
+    ut_stop_http_server(m_env);
+    AXIS2_FREE(m_env->allocator, body_bytes);
     printf("Finished http_client tests ..........\n\n");
 }
 
-void
-test_https_client(
-    const axutil_env_t * env)
+TEST_F(TestHTTPTransport, test_https_client)
 {
 #ifndef AXIS2_SSL_ENABLED
     return;
@@ -217,63 +247,64 @@ test_https_client(
     int body_bytes_len = 0;
 
     printf("Starting https_client tests\n");
-    request_line = axis2_http_request_line_create(env, "GET", "/", "HTTP/1.0");
-    request_body = axutil_stream_create_basic(env);
-    request = axis2_http_simple_request_create(env, request_line,
+    request_line = axis2_http_request_line_create(m_env, "GET", "/", "HTTP/1.0");
+    request_body = axutil_stream_create_basic(m_env);
+    request = axis2_http_simple_request_create(m_env, request_line,
                                                NULL, 0, NULL);
-    url = axutil_url_create(env, "https", "localhost", 9099, NULL);
+    url = axutil_url_create(m_env, "https", "localhost", 9099, NULL);
 
     header =
-        axis2_http_header_create(env, "Host", axutil_url_get_host(url, env));
-    axis2_http_simple_request_add_header(request, env, header);
-    client = axis2_http_client_create(env, url);
+        axis2_http_header_create(m_env, "Host", axutil_url_get_host(url, m_env));
+    axis2_http_simple_request_add_header(request, m_env, header);
+    client = axis2_http_client_create(m_env, url);
 
     /* if you weant to test the proxy uncomment following */
     /*axis2_http_client_set_proxy(client, env, "127.0.0.1", 8080); */
 
     /* Add CA/Server certificate */
-    status = axis2_http_client_set_server_cert(client, env,
+    status = axis2_http_client_set_server_cert(client, m_env,
                                                "/home/dummy/dummyCA/demoCA/cacert.pem");
 
-    status = axis2_http_client_send(client, env, request, NULL);
+    status = axis2_http_client_send(client, m_env, request, NULL);
+    ASSERT_GE(status, 0);
     if (status < 0)
     {
         printf("Test FAILED .........Can't send the request. Status :%d\n",
                status);
         return;
     }
-    status = axis2_http_client_recieve_header(client, env);
+    status = axis2_http_client_recieve_header(client, m_env);
+    ASSERT_GE(status, 0);
     if (status < 0)
     {
         printf("Test FAILED ......... Can't recieve. Status: %d\n", status);
         return;
     }
     response = axis2_http_client_get_response(client, env);
+    ASSERT_NE(response, nullptr);
     if (!response)
     {
         printf("Test Failed : NULL response");
         return;
     }
     printf("Content Type :%s\n",
-           axis2_http_simple_response_get_content_type(response, env));
+           axis2_http_simple_response_get_content_type(response, m_env));
     printf("Content Length :%d\n",
-           axis2_http_simple_response_get_content_length(response, env));
+           axis2_http_simple_response_get_content_length(response, m_env));
     printf("Status code :%d\n", status);
     body_bytes_len =
-        axis2_http_simple_response_get_body_bytes(response, env, &body_bytes);
+        axis2_http_simple_response_get_body_bytes(response, m_env, &body_bytes);
 
-    axis2_http_client_free(client, env);
-    axis2_http_simple_request_free(request, env);
-    axutil_stream_free(request_body, env);
-    AXIS2_FREE(env->allocator, body_bytes);
+    axis2_http_client_free(client, m_env);
+    axis2_http_simple_request_free(request, m_env);
+    axutil_stream_free(request_body, m_env);
+    AXIS2_FREE(m_env->allocator, body_bytes);
     printf("Finished https_client tests ..........\n\n");
 #endif
 }
 
 #ifdef AXIS2_JSON_ENABLED
-void
-test_json(
-    const axutil_env_t * env)
+TEST_F(TestHTTPTransport, test_json)
 {
     axiom_node_t* root_node = NULL;
 
@@ -322,19 +353,19 @@ test_json(
     {
         const char* xml = xml_data[i];
 
-        root_node = axiom_node_create_from_buffer(env, (axis2_char_t*)xml);
+        root_node = axiom_node_create_from_buffer(m_env, (axis2_char_t*)xml);
 
-        xml_str = axiom_node_to_string(root_node, env);
+        xml_str = axiom_node_to_string(root_node, m_env);
 
         printf(" =============== source XML ================\n%s\n"
                " ===========================================\n",
                xml_str);
         AXIS2_FREE(env->allocator, xml_str);
 
-        json_writer = axis2_json_writer_create(env);
-        axis2_json_writer_write(json_writer, root_node, env);
+        json_writer = axis2_json_writer_create(m_env);
+        axis2_json_writer_write(json_writer, root_node, m_env);
 
-        result_str = axis2_json_writer_get_json_string(json_writer, env, 0);
+        result_str = axis2_json_writer_get_json_string(json_writer, m_env, 0);
         printf(" ============= resulting JSON ==============\n%s\n"
                " ===========================================\n",
                result_str);
@@ -350,9 +381,9 @@ test_json(
             printf("test passed\n\n");
         }
 
-        axis2_json_writer_free(json_writer, env);
+        axis2_json_writer_free(json_writer, m_env);
 
-        axiom_node_free_tree(root_node, env);
+        axiom_node_free_tree(root_node, m_env);
     }
 
 
@@ -363,20 +394,20 @@ test_json(
         const char* json = json_data_mapped[i];
         int length = strlen(json);
 
-        json_reader = axis2_json_reader_create_for_memory(env, json, length);
+        json_reader = axis2_json_reader_create_for_memory(m_env, json, length);
         if (!json_reader)
         {
             printf("Failed to create json_reader");
             return;
         }
 
-        if (axis2_json_reader_read(json_reader, env) != AXIS2_SUCCESS)
+        if (axis2_json_reader_read(json_reader, m_env) != AXIS2_SUCCESS)
         {
             printf("Failed to axis2_json_reader_read");
             return;
         }
 
-        root_node = axis2_json_reader_get_root_node(json_reader, env);
+        root_node = axis2_json_reader_get_root_node(json_reader, m_env);
         if (!root_node)
         {
             printf("Failed to get root_node");
@@ -389,7 +420,7 @@ test_json(
                json);
 
 
-        xml_str = axiom_node_to_string(root_node, env);
+        xml_str = axiom_node_to_string(root_node, m_env);
 
         printf(" =============== resulting XML ================\n%s\n"
                " ===========================================\n",
@@ -405,36 +436,13 @@ test_json(
             ++passed;
             printf("test passed\n\n");
         }
-        AXIS2_FREE(env->allocator, xml_str);
+        AXIS2_FREE(m_env->allocator, xml_str);
 
-        axis2_json_reader_free(json_reader, env);
-        axiom_node_free_tree(root_node, env);
+        axis2_json_reader_free(json_reader, m_env);
+        axiom_node_free_tree(root_node, m_env);
     }
 
     printf("JSON tests passed: %d, failed: %d\n", passed, failed);
 }
 #endif
-
-
-int
-main(
-    void)
-{
-    axutil_env_t *env = cut_setup_env("test HTTP server");
-    CUT_ASSERT(env != NULL);
-	if ( env != NULL ) {
-       test_http_request_line(env);
-       test_http_status_line(env);
-       test_http_header(env);
-       test_http_client(env);
-       test_https_client(env);
-       test_url(env);
-#ifdef AXIS2_JSON_ENABLED
-       test_json(env);
-#endif
-       axutil_env_free(env);
-	}
-    CUT_RETURN_ON_FAILURE(-1);
-    return 0;
-}
 

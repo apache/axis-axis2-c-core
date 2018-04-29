@@ -16,10 +16,11 @@
  * limitations under the License.
  */
 
+#include <gtest/gtest.h>
+
 #include <platforms/axutil_platform_auto_sense.h>
 #include <axis2_const.h>
-#include <cut_defs.h>
-#include <cut_http_server.h>
+#include "../../cutest/include/cut_http_server.h"
 
 #if defined (WIN32)
 #define bcopy(s, d, n) 	memcpy(d, s, n)
@@ -35,6 +36,54 @@ int write_to_socket(
 
 /* End of function prototypes */
 
+
+class TestClient: public ::testing::Test
+{
+
+    protected:
+        void SetUp()
+        {
+
+            m_allocator = axutil_allocator_init(NULL);
+            m_axis_log = axutil_log_create(m_allocator, NULL, NULL);
+            m_error = axutil_error_create(m_allocator);
+
+            m_env = axutil_env_create_with_error_log(m_allocator, m_error, m_axis_log);
+
+        }
+
+        void TearDown()
+        {
+            axutil_env_free(m_env);
+        }
+
+
+        axutil_allocator_t *m_allocator = NULL;
+        axutil_env_t *m_env = NULL;
+        axutil_error_t *m_error = NULL;
+        axutil_log_t *m_axis_log = NULL;
+
+};
+
+/* Note: This test fails unless you have a deployed axis2c instance running the
+ * echo service on the appropriate port, and AXIS2C_HOME defined in your
+ * environment */
+TEST_F(TestClient, test_client)
+{
+    const axis2_char_t *hostname = "localhost";
+    const axis2_char_t *port = "9090";
+    const axis2_char_t *filename = "echo.xml";
+    const axis2_char_t *endpoint = "/axis2/services/echo/echo";
+    axutil_env_t *env = NULL;
+    int server_status;
+
+    server_status = ut_start_http_server(m_env);
+    ASSERT_EQ(server_status, 0);
+    write_to_socket(hostname, port, filename, endpoint);
+    ut_stop_http_server(m_env);
+
+}
+
 void
 error(
     const char *msg)
@@ -43,61 +92,6 @@ error(
     exit(-1);
 }
 
-void
-axis2_test_temp(axutil_env_t *env)
-{
-    /* To avoid warning of not using cut_ptr_equal */
-    CUT_ASSERT_PTR_EQUAL(NULL, NULL, 0);
-    /* To avoid warning of not using cut_int_equal */
-    CUT_ASSERT_INT_EQUAL(0, 0, 0);
-    /* To avoid warning of not using cut_str_equal */
-    CUT_ASSERT_STR_EQUAL("", "", 0);
-}
-
-int
-main(
-    int argc,
-    char *argv[])
-{
-    const axis2_char_t *hostname = "localhost";
-    const axis2_char_t *port = "9090";
-    const axis2_char_t *filename = "echo.xml";
-    const axis2_char_t *endpoint = "/axis2/services/echo/echo";
-    axutil_env_t *env = NULL;
-	
-#ifndef WIN32
-    int c;
-    extern char *optarg;
-
-    while ((c = getopt(argc, argv, ":h:p:f:e:")) != -1)
-    {
-        switch (c)
-        {
-        case 'h':
-            hostname = optarg;
-            break;
-        case 'p':
-            port = optarg;
-            break;
-        case 'f':
-            filename = optarg;
-            break;
-        case 'e':
-            endpoint = optarg;
-            break;
-        }
-    }
-#endif
-  env = cut_setup_env("test HTTP server");
-  CUT_ASSERT(env != NULL);
-  if ( ut_start_http_server(env) != 0 ) return -1;
-  write_to_socket(hostname, port, filename, endpoint);
-  ut_stop_http_server(env);
-
-  axis2_test_temp(env);
-  CUT_RETURN_ON_FAILURE(-1);
-  return 0;
-}
 
 #define TEST_BUF_LEN	4999
 int

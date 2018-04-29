@@ -15,25 +15,50 @@
 * limitations under the License.
 */
 
+#include <gtest/gtest.h>
+
 #include <stdio.h>
 #include <axis2_util.h>
 #include <axis2_client.h>
 
-int
-main(
-    )
+class TestSvcClientHandler: public ::testing::Test
 {
-    axutil_env_t *env =
-        axutil_env_create_all("hello_client.log", AXIS2_LOG_LEVEL_TRACE);
+
+    protected:
+        void SetUp()
+        {
+
+            m_allocator = axutil_allocator_init(NULL);
+            m_axis_log = axutil_log_create(m_allocator, NULL, NULL);
+            m_error = axutil_error_create(m_allocator);
+
+            m_env = axutil_env_create_with_error_log(m_allocator, m_error, m_axis_log);
+
+        }
+
+        void TearDown()
+        {
+            axutil_env_free(m_env);
+        }
+
+
+        axutil_allocator_t *m_allocator = NULL;
+        axutil_env_t *m_env = NULL;
+        axutil_error_t *m_error = NULL;
+        axutil_log_t *m_axis_log = NULL;
+
+};
+
+
+TEST_F(TestSvcClientHandler, test_count)
+{
     const int TIMES = 1000;
     int i;
     for (i = 1; i <= TIMES; ++i)
     {
         axis2_svc_client_t *svc_client =
-            axis2_svc_client_create(env, AXIS2_GETENV("AXIS2C_HOME"));
-        axis2_svc_client_free(svc_client, env);
+            axis2_svc_client_create(m_env, AXIS2_GETENV("AXIS2C_HOME"));
+        axis2_svc_client_free(svc_client, m_env);
         printf("%d\n", i);
     }
-    axutil_env_free(env);
-    return 0;
 }
