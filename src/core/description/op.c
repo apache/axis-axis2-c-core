@@ -672,7 +672,8 @@ axis2_op_engage_module(
         }
         /* module = axis2_module_desc_get_module(moduleref, env); */
 
-        axutil_array_list_add(collection_module, env, moduleref);
+        /*axutil_array_list_add(collection_module, env, moduleref);*/
+        status = axis2_op_add_to_engaged_module_list(op, env, moduleref);
     }
     else
     {
