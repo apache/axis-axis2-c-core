@@ -1087,7 +1087,6 @@ axiom_element_get_children_with_qname(
     axiom_node_t * element_node)
 {
     AXIS2_ASSERT(element_node != NULL);
-    AXIS2_ASSERT(element_qname != NULL);
     AXIS2_ASSERT(om_element != NULL);
 
     if (om_element->children_qname_iter)
