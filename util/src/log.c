@@ -120,6 +120,7 @@ axutil_log_create(
     if(!log_impl->mutex)
     {
         fprintf(stderr, "cannot create log mutex \n");
+        AXIS2_FREE(allocator, log_impl);
         return NULL;
     }
 
