@@ -197,6 +197,7 @@ static int ut_start_http_server(axutil_env_t *env)
     thread_http_server = axutil_thread_create(env->allocator, NULL, http_server, NULL);
     EXPECT_NE(thread_http_server, nullptr);
     if (!thread_http_server) return -1;
+    axutil_thread_detach(thread_http_server);
     AXIS2_SLEEP(2);
 	return 0;
 }
