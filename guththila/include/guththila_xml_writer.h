@@ -260,6 +260,19 @@ GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_write_escape_character(
     const axutil_env_t * env);
 
 /*
+ * Write a buffer with special chars on it
+ * The special chars will be escaped
+ * @param wr pointer to the writer
+ * @param buff character string
+ * @param env pointer to the environment
+ */
+GUTHTHILA_EXPORT int GUTHTHILA_CALL guththila_write_escaped_buffer(
+    guththila_xml_writer_t * wr,
+    char *buff,
+    const axutil_env_t * env);
+
+
+/*
  * Start to write an empty element with the given name. 
  * @param wr pointer to the writer
  * @param name name of the element

@@ -18,6 +18,7 @@
 #include <gtest/gtest.h>
 
 #include <guththila.h>
+#include <axiom.h>
 
 
 #define BUF_SIZE 256
@@ -43,15 +44,11 @@ class TestAttribute: public ::testing::Test
         void TearDown()
         {
 
-            guththila_reader_free(m_reader, m_env);
-            m_reader = nullptr;
-            guththila_un_init(m_parser, m_env);
-            m_parser = nullptr;
             axutil_env_free(m_env);
 
         }
 
-        guththila_reader_t *m_reader;
+        guththila_reader_t *m_reader = nullptr;
         axutil_allocator_t *m_allocator;
         axutil_env_t *m_env;
         guththila_t *m_parser;
@@ -84,6 +81,11 @@ TEST_F(TestAttribute, test_attribute) {
     ASSERT_NE(count, 0);
     ASSERT_STREQ(guththila_get_attribute_name(m_parser, att, m_env), "color");
     ASSERT_STREQ(guththila_get_attribute_value(m_parser, att, m_env), "brown");
+
+    guththila_reader_free(m_reader, m_env);
+    m_reader = nullptr;
+    guththila_un_init(m_parser, m_env);
+    m_parser = nullptr;
 
 }
 
@@ -128,5 +130,27 @@ TEST_F(TestAttribute, test_attribute_prefix) {
     ASSERT_STREQ(guththila_get_attribute_prefix(m_parser, att, m_env), "soapenv");
     ASSERT_STREQ(guththila_get_attribute_name(m_parser, att, m_env), "mustUnderstand");
     ASSERT_STREQ(guththila_get_attribute_value(m_parser, att, m_env), "0");
+
+    guththila_reader_free(m_reader, m_env);
+    m_reader = nullptr;
+    guththila_un_init(m_parser, m_env);
+    m_parser = nullptr;
+
+}
+
+/* AXIS2C-1627 */
+TEST_F(TestAttribute, test_special_char_serialization)
+{
+     axiom_namespace_t * ns = axiom_namespace_create(m_env, "namespace", "ns");
+
+     axiom_node_t * node;
+     axiom_element_t * element = axiom_element_create(m_env, NULL, "el", ns, &node);
+
+     axiom_element_set_text(element, m_env, "T1 & T2", node);
+     axiom_element_add_attribute(element, m_env, axiom_attribute_create(m_env, "name", "A1 & A2", NULL), node);
+
+     axis2_char_t * xml = axiom_node_to_string(node, m_env);
+
+     ASSERT_STREQ(xml, "<ns:el xmlns:ns=\"namespace\" name=\"A1 &amp; A2\">T1 &amp; T2</ns:el>");
 
 }

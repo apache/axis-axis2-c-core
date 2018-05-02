@@ -20,7 +20,8 @@ SUBDIRS =
 test_guththila_SOURCES = test_guththila.cc
 
 AM_CPPFLAGS = -I$(top_builddir)/include \
-				-I ../../util/include
+				-I ../../util/include \
+				-I ../../axiom/include
 
 test_guththila_LDADD = \
 				 $(top_builddir)/src/libguththila.la \
@@ -33,5 +34,6 @@ test_attribute_SOURCES = test_attribute.cc
 test_attribute_LDADD = \
 				 $(top_builddir)/src/libguththila.la \
 				 ../../util/src/libaxutil.la \
+				 ../../axiom/src/om/libaxis2_axiom.la \
 				 $(top_builddir)/$(GTEST)/libgtest.a \
 				 $(top_builddir)/$(GTEST)/libgtest_main.a

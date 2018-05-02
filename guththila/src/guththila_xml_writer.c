@@ -725,7 +725,7 @@ guththila_write_characters(
     guththila_char_t *buff,
     const axutil_env_t * env)
 {
-    size_t len = strlen(buff);
+
     if(wr->status == START)
     {
         wr->status = BEGINING;
@@ -741,39 +741,7 @@ guththila_write_characters(
     {
         return GUTHTHILA_FAILURE;
     }
-    while(len > 0)
-    {
-        size_t i = 0;
-        /* scan buffer until the next special character (&, <, >, ', ") these need to be escaped,
-         * otherwise XML will not be valid*/
-        guththila_char_t *pos = (guththila_char_t*)strpbrk(buff, "&<>'\"");
-        if(pos)
-        {
-            i = pos - buff;
-        }
-        else
-        {
-            i = len;
-        }
-
-        /* write everything until the special character */
-        if(i > 0)
-        {
-            guththila_write(wr, buff, i, env);
-            buff += i;
-            len -= i;
-        }
-        /* replace the character with the appropriate sequence */
-        if(len > 0)
-        {
-            if(AXIS2_SUCCESS != guththila_write_escape_character(wr, buff, env))
-                return GUTHTHILA_FAILURE;
-            /* skip the character */
-            buff++;
-            len--;
-        }
-    }
-    return GUTHTHILA_SUCCESS;
+    return guththila_write_escaped_buffer(wr,buff,env);
 }
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
@@ -839,6 +807,50 @@ guththila_write_escape_character(
         };
     }
     return GUTHTHILA_SUCCESS;
+}
+
+GUTHTHILA_EXPORT int GUTHTHILA_CALL
+guththila_write_escaped_buffer(
+    guththila_xml_writer_t * wr,
+    char *buff,
+    const axutil_env_t * env)
+{
+    size_t len = strlen(buff);
+
+    while(len > 0)
+    {
+        size_t i = 0;
+        /* scan buffer until the next special character (&, <, >, ', ") these need to be escaped,
+         * otherwise XML will not be valid*/
+        guththila_char_t *pos = (guththila_char_t*)strpbrk(buff, "&<>'\"");
+        if(pos)
+        {
+            i = pos - buff;
+        }
+        else
+        {
+            i = len;
+        }
+
+        /* write everything until the special character */
+        if(i > 0)
+        {
+            guththila_write(wr, buff, i, env);
+            buff += i;
+            len -= i;
+        }
+        /* replace the character with the appropriate sequence */
+        if(len > 0)
+        {
+            if(AXIS2_SUCCESS != guththila_write_escape_character(wr, buff, env))
+                return GUTHTHILA_FAILURE;
+            /* skip the character */
+            buff++;
+            len--;
+        }
+    }
+    return GUTHTHILA_SUCCESS;
+
 }
 
 GUTHTHILA_EXPORT int GUTHTHILA_CALL
@@ -1087,7 +1099,8 @@ guththila_write_attribute(
         guththila_write(wr, " ", 1u, env);
         guththila_write(wr, localname, strlen(localname), env);
         guththila_write(wr, "=\"", 2u, env);
-        guththila_write(wr, value, strlen(value), env);
+        if(guththila_write_escaped_buffer(wr, value, env)!=GUTHTHILA_SUCCESS)
+        	return GUTHTHILA_FAILURE;
         guththila_write(wr, "\"", 1u, env);
         return GUTHTHILA_SUCCESS;
     }
@@ -1147,7 +1160,8 @@ guththila_write_attribute_with_prefix(
                     guththila_write(wr, ":", 1u, env);
                     guththila_write(wr, localname, strlen(localname), env);
                     guththila_write(wr, "=\"", 2u, env);
-                    guththila_write(wr, value, strlen(value), env);
+                    if(guththila_write_escaped_buffer(wr, value, env)!=GUTHTHILA_SUCCESS)
+                    	return GUTHTHILA_FAILURE;
                     guththila_write(wr, "\"", 1u, env);
                     return GUTHTHILA_SUCCESS;
                 }
@@ -1194,7 +1208,8 @@ guththila_write_attribute_with_namespace(
                     guththila_write(wr, ":", 1u, env);
                     guththila_write(wr, loc_name, strlen(loc_name), env);
                     guththila_write(wr, "=\"", 2u, env);
-                    guththila_write(wr, value, strlen(value), env);
+                    if(guththila_write_escaped_buffer(wr, value, env)!=GUTHTHILA_SUCCESS)
+                    	return GUTHTHILA_FAILURE;
                     guththila_write(wr, "\"", 1u, env);
                     return GUTHTHILA_SUCCESS;
                 }
