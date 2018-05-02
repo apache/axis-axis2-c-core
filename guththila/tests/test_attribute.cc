@@ -139,11 +139,13 @@ TEST_F(TestAttribute, test_attribute_prefix) {
 }
 
 /* AXIS2C-1627 */
-TEST_F(TestAttribute, test_special_char_serialization)
+TEST_F(TestAttribute, test_special_chars)
 {
      axiom_namespace_t * ns = axiom_namespace_create(m_env, "namespace", "ns");
 
+     char * attribute;
      axiom_node_t * node;
+     axiom_node_t * deserialized_node;
      axiom_element_t * element = axiom_element_create(m_env, NULL, "el", ns, &node);
 
      axiom_element_set_text(element, m_env, "T1 & T2", node);
@@ -152,5 +154,15 @@ TEST_F(TestAttribute, test_special_char_serialization)
      axis2_char_t * xml = axiom_node_to_string(node, m_env);
 
      ASSERT_STREQ(xml, "<ns:el xmlns:ns=\"namespace\" name=\"A1 &amp; A2\">T1 &amp; T2</ns:el>");
+
+     deserialized_node = axiom_node_create_from_buffer(m_env, xml);
+
+     axiom_element_t * deserialized_element = (axiom_element_t*)axiom_node_get_data_element(deserialized_node, m_env);
+
+     attribute = axiom_element_get_attribute_value_by_name(deserialized_element, m_env,"name");
+     char * text = axiom_element_get_text(deserialized_element, m_env, deserialized_node);
+
+     ASSERT_STREQ(attribute, "A1 & A2");
+     ASSERT_STREQ(text, "T1 & T2");
 
 }
