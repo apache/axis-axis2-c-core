@@ -133,6 +133,12 @@ axis2_module_builder_populate_module(
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "Entry:axis2_module_builder_populate_module");
 
     module_node = axis2_desc_builder_build_om(module_builder->desc_builder, env);
+    if(!module_node)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Could not get module node. Unable to proceed");
+        return AXIS2_FAILURE;
+    }
     module_element = axiom_node_get_data_element(module_node, env);
     if(!module_element)
     {
