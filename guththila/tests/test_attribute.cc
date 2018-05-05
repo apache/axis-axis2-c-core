@@ -18,8 +18,6 @@
 #include <gtest/gtest.h>
 
 #include <guththila.h>
-#include <axiom.h>
-
 
 #define BUF_SIZE 256
 
@@ -34,7 +32,7 @@ class TestAttribute: public ::testing::Test
             m_env = axutil_env_create(m_allocator);
             ASSERT_NE(m_env, nullptr);
 
-            m_parser = (guththila_t*) calloc(1, sizeof(guththila_t));
+            m_parser = (guththila_t*) AXIS2_MALLOC(m_allocator, sizeof(guththila_t));
             ASSERT_NE(m_parser, nullptr);
 
             memset(m_buffer, 0, BUF_SIZE);
