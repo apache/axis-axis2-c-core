@@ -34,6 +34,5 @@ test_attribute_SOURCES = test_attribute.cc
 test_attribute_LDADD = \
 				 $(top_builddir)/src/libguththila.la \
 				 ../../util/src/libaxutil.la \
-				 ../../axiom/src/om/libaxis2_axiom.la \
 				 $(top_builddir)/$(GTEST)/libgtest.a \
 				 $(top_builddir)/$(GTEST)/libgtest_main.a
