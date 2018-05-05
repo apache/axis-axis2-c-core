@@ -137,3 +137,57 @@ TEST_F(TestAttribute, test_attribute_prefix) {
     m_parser = nullptr;
 
 }
+
+/* AXIS2C-1627 */
+TEST_F(TestAttribute, test_deserialize_special_chars)
+{
+
+    int c = 0;
+    guththila_attr_t *att;
+
+    const char * xml = "<ns:el xmlns:ns=\"namespace\" name=\"A1 &amp; A2\">T1 &amp; T2</ns:el>";
+
+    m_reader = guththila_reader_create_for_memory((void*)xml, strlen(xml), m_env);
+    ASSERT_NE(m_reader, nullptr);
+    guththila_init(m_parser, m_reader, m_env);
+
+    guththila_reader_read(m_parser->reader, m_buffer, 0, BUF_SIZE,  m_env);
+
+    c = guththila_next(m_parser, m_env);
+    att = guththila_get_attribute(m_parser, m_env);
+    ASSERT_NE(att, nullptr);
+
+    ASSERT_STREQ(guththila_get_attribute_name(m_parser, att, m_env), "name");
+    ASSERT_STREQ(guththila_get_attribute_value(m_parser, att, m_env), "A1 & A2");
+
+    ASSERT_STREQ(guththila_get_name(m_parser, m_env), "el");
+
+    c = guththila_next(m_parser, m_env);
+    ASSERT_STREQ(guththila_get_value(m_parser, m_env), "T1 & T2");
+
+    guththila_reader_free(m_reader, m_env);
+    m_reader = nullptr;
+    guththila_un_init(m_parser, m_env);
+    m_parser = nullptr;
+}
+
+/* AXIS2C-1627 */
+TEST_F(TestAttribute, test_serialize_special_chars)
+{
+    char buffer[BUF_SIZE];
+    const char * xml = "<ns:el xmlns:ns=\"namespace\" name=\"A1 &amp; A2\">T1 &amp; T2</ns:el>";
+
+    guththila_xml_writer_t * writer = nullptr;
+
+    writer = guththila_create_xml_stream_writer_for_memory(m_env);
+
+    guththila_write_start_element_with_prefix_and_namespace(writer, "ns", "namespace", "el", m_env);
+    guththila_write_attribute(writer, "name", "A1 & A2", m_env);
+    guththila_write_characters(writer, "T1 & T2", m_env);
+    guththila_write_end_element(writer, m_env);
+
+    ASSERT_STREQ(guththila_get_memory_buffer(writer, m_env), xml);
+
+    guththila_xml_writer_free(writer, m_env);
+
+}
