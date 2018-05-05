@@ -42,18 +42,18 @@ class TestNeethi: public ::testing::Test
             m_axis_log = axutil_log_create(m_allocator, NULL, NULL);
             m_error = axutil_error_create(m_allocator);
 
-            m_environment = axutil_env_create_with_error_log(m_allocator, m_error, m_axis_log);
+            m_env = axutil_env_create_with_error_log(m_allocator, m_error, m_axis_log);
 
         }
 
         void TearDown()
         {
-            axutil_env_free(m_environment);
+            axutil_env_free(m_env);
         }
 
 
         axutil_allocator_t *m_allocator = NULL;
-        axutil_env_t *m_environment = NULL;
+        axutil_env_t *m_env = NULL;
         axutil_error_t *m_error = NULL;
         axutil_log_t *m_axis_log = NULL;
 
@@ -71,29 +71,29 @@ TEST_F(TestNeethi, test_get_policy)
 
     char *filename = "policies/symmetric_binding_policy.xml";
 
-    reader = axiom_xml_reader_create_for_file(m_environment, filename, NULL);
+    reader = axiom_xml_reader_create_for_file(m_env, filename, NULL);
     ASSERT_NE(reader, nullptr);
 
-    builder = axiom_stax_builder_create(m_environment, reader);
+    builder = axiom_stax_builder_create(m_env, reader);
     ASSERT_NE(builder, nullptr);
 
-    document = axiom_stax_builder_get_document(builder, m_environment);
+    document = axiom_stax_builder_get_document(builder, m_env);
     ASSERT_NE(document, nullptr);
 
-    root = axiom_document_get_root_element(document, m_environment);
-    /*root = axiom_document_build_all(document, m_environment); */
+    root = axiom_document_get_root_element(document, m_env);
+    /*root = axiom_document_build_all(document, m_env); */
     ASSERT_NE(root, nullptr);
 
     if (root)
     {
-        if (axiom_node_get_node_type(root, m_environment) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(root, m_env) == AXIOM_ELEMENT)
         {
             root_ele =
-                (axiom_element_t *) axiom_node_get_data_element(root, m_environment);
+                (axiom_element_t *) axiom_node_get_data_element(root, m_env);
             if (root_ele)
             {
                 neethi_policy_t *neethi_policy = NULL;
-                neethi_policy = neethi_engine_get_policy(m_environment, root, root_ele);
+                neethi_policy = neethi_engine_get_policy(m_env, root, root_ele);
                 ASSERT_NE(neethi_policy, nullptr);
 
                 if(neethi_policy)
@@ -101,17 +101,17 @@ TEST_F(TestNeethi, test_get_policy)
                     axis2_char_t *id = NULL;
                     axis2_char_t *name = NULL;
 
-                    id = neethi_policy_get_id(neethi_policy, m_environment); 
+                    id = neethi_policy_get_id(neethi_policy, m_env); 
                     if(id)
                     {
                         printf("Id is : %s\n", id);
                     }   
-                    name = neethi_policy_get_name(neethi_policy, m_environment);
+                    name = neethi_policy_get_name(neethi_policy, m_env);
                     if(name)
                     {
                         printf("Name is : %s\n", name);
                     }
-                    neethi_policy_free(neethi_policy, m_environment);
+                    neethi_policy_free(neethi_policy, m_env);
                     neethi_policy = NULL;
 
                     printf("Successful \n");
@@ -135,7 +135,7 @@ TEST_F(TestNeethi, test_get_policy)
 
     if(builder)
     {
-        axiom_stax_builder_free(builder, m_environment);
+        axiom_stax_builder_free(builder, m_env);
         builder = NULL;
     }
 

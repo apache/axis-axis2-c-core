@@ -69,18 +69,18 @@ class TestOM: public ::testing::Test
             m_axis_log = axutil_log_create(m_allocator, NULL, NULL);
             m_error = axutil_error_create(m_allocator);
 
-            m_environment = axutil_env_create_with_error_log(m_allocator, m_error, m_axis_log);
+            m_env = axutil_env_create_with_error_log(m_allocator, m_error, m_axis_log);
 
         }
 
         void TearDown()
         {
-            axutil_env_free(m_environment);
+            axutil_env_free(m_env);
         }
 
 
         axutil_allocator_t *m_allocator = NULL;
-        axutil_env_t *m_environment = NULL;
+        axutil_env_t *m_env = NULL;
         axutil_error_t *m_error = NULL;
         axutil_log_t *m_axis_log = NULL;
 
@@ -114,60 +114,60 @@ TEST_F(TestOM, test_om_build) {
 
     /** create pull parser */
     reader =
-        axiom_xml_reader_create_for_io(m_environment, read_input, NULL, f,
+        axiom_xml_reader_create_for_io(m_env, read_input, NULL, f,
                                        NULL);
     ASSERT_NE(reader, nullptr);
 
      /** create axiom_stax_builder by parsing pull_parser struct */
-    builder = axiom_stax_builder_create(m_environment, reader);
+    builder = axiom_stax_builder_create(m_env, reader);
     ASSERT_NE(builder, nullptr);
 
     /**
         create an om document
         document is the container of om model created using builder
     */
-    document = axiom_stax_builder_get_document(builder, m_environment);
+    document = axiom_stax_builder_get_document(builder, m_env);
     ASSERT_NE(document, nullptr);
 
-    node1 = axiom_document_get_root_element(document, m_environment);
+    node1 = axiom_document_get_root_element(document, m_env);
     ASSERT_NE(node1, nullptr);
     if (node1)
     {
         /** print root node information */
-        ele1 = (axiom_element_t*)axiom_node_get_data_element(node1, m_environment);
+        ele1 = (axiom_element_t*)axiom_node_get_data_element(node1, m_env);
         if (ele1)
         {
             printf("root localname %s\n",
-                   axiom_element_get_localname(ele1, m_environment));
+                   axiom_element_get_localname(ele1, m_env));
 
-            hash = axiom_element_get_all_attributes(ele1,m_environment);
+            hash = axiom_element_get_all_attributes(ele1,m_env);
             if(hash)
             {
                 axutil_hash_index_t *hi;
                 const void *key= NULL;
                 void *val = NULL;
-                for (hi = axutil_hash_first(hash,m_environment); hi; hi = axutil_hash_next(m_environment, hi))
+                for (hi = axutil_hash_first(hash,m_env); hi; hi = axutil_hash_next(m_env, hi))
                 {
                     axutil_hash_this(hi, &key, NULL,&val);
                     if(val)
                     {
                         printf(" Attribute name: %s",
-                            axiom_attribute_get_localname((axiom_attribute_t *)val,m_environment));
+                            axiom_attribute_get_localname((axiom_attribute_t *)val,m_env));
                         printf("   value: %s\n",
-                            axiom_attribute_get_value((axiom_attribute_t *)val,m_environment));
+                            axiom_attribute_get_value((axiom_attribute_t *)val,m_env));
                     }
                 }
             }
         }
 
-        ns = axiom_element_get_namespace(ele1, m_environment, node1);
+        ns = axiom_element_get_namespace(ele1, m_env, node1);
 
         if (ns)
         {
             printf("root ns prefix %s\n",
-                   axiom_namespace_get_prefix(ns, m_environment));
+                   axiom_namespace_get_prefix(ns, m_env));
             printf("root ns uri %s\n",
-                   axiom_namespace_get_uri(ns, m_environment));
+                   axiom_namespace_get_uri(ns, m_env));
                         printf("=============================================");
 
         }
@@ -178,39 +178,39 @@ TEST_F(TestOM, test_om_build) {
 
     /** build the document continuously untill all the xml file is built in to a om model */
 
-    node2 = axiom_document_build_next(document, m_environment);
+    node2 = axiom_document_build_next(document, m_env);
     do
     {
 
         if (!node2)
             break;
 
-        switch (axiom_node_get_node_type(node2, m_environment))
+        switch (axiom_node_get_node_type(node2, m_env))
         {
         case AXIOM_ELEMENT:
             ele2 =
                 (axiom_element_t *) axiom_node_get_data_element(node2,
-                                                                m_environment);
+                                                                m_env);
                     printf("=============================================");
-            if (ele2 && axiom_element_get_localname(ele2, m_environment))
+            if (ele2 && axiom_element_get_localname(ele2, m_env))
             {
                 printf("\n localname %s\n",
-                           axiom_element_get_localname(ele2, m_environment));
-                hash = axiom_element_get_all_attributes(ele2,m_environment);
+                           axiom_element_get_localname(ele2, m_env));
+                hash = axiom_element_get_all_attributes(ele2,m_env);
                 if(hash)
                 {
                     axutil_hash_index_t *hi;
                     const void *key= NULL;
                     void *val = NULL;
-                    for (hi = axutil_hash_first(hash,m_environment); hi; hi = axutil_hash_next(m_environment, hi))
+                    for (hi = axutil_hash_first(hash,m_env); hi; hi = axutil_hash_next(m_env, hi))
                     {
                         axutil_hash_this(hi, &key, NULL,&val);
                         if(val)
                         {
                             printf(" Attribute name: %s",
-                                axiom_attribute_get_localname((axiom_attribute_t *)val,m_environment));
+                                axiom_attribute_get_localname((axiom_attribute_t *)val,m_env));
                             printf("   value: %s\n",
-                                axiom_attribute_get_value((axiom_attribute_t *)val,m_environment));
+                                axiom_attribute_get_value((axiom_attribute_t *)val,m_env));
                         }
                     }
                 }
@@ -227,17 +227,17 @@ TEST_F(TestOM, test_om_build) {
 
             text =
                 (axiom_text_t *) axiom_node_get_data_element(node2,
-                                                             m_environment);
-            if (text && axiom_text_get_value(text, m_environment))
+                                                             m_env);
+            if (text && axiom_text_get_value(text, m_env))
                 printf("\n text value  %s \n",
-                       axiom_text_get_value(text, m_environment));
+                       axiom_text_get_value(text, m_env));
             break;
 
         default:
             break;
         }
 
-        node2 = axiom_document_build_next(document, m_environment);
+        node2 = axiom_document_build_next(document, m_env);
     }
     while (node2);
     printf("END: pull document\n");
@@ -245,24 +245,24 @@ TEST_F(TestOM, test_om_build) {
     printf("Serialize pulled document\n");
 
     writer =
-        axiom_xml_writer_create_for_memory(m_environment, NULL, AXIS2_TRUE, 0,
+        axiom_xml_writer_create_for_memory(m_env, NULL, AXIS2_TRUE, 0,
                                            AXIS2_XML_PARSER_TYPE_BUFFER);
-    om_output = axiom_output_create(m_environment, writer);
+    om_output = axiom_output_create(m_env, writer);
 
-    axiom_node_serialize_sub_tree(node3, m_environment, om_output);
+    axiom_node_serialize_sub_tree(node3, m_env, om_output);
 
-    buffer = (axis2_char_t *) axiom_xml_writer_get_xml(writer, m_environment);
+    buffer = (axis2_char_t *) axiom_xml_writer_get_xml(writer, m_env);
 
     if (buffer)
         printf("Sub Tree = %s\n", buffer);
 
-    axiom_output_free(om_output, m_environment);
+    axiom_output_free(om_output, m_env);
 
-    //axiom_stax_builder_free(builder, m_environment);
+    //axiom_stax_builder_free(builder, m_env);
 
 /*     if (buffer) */
 
-/*         AXIS2_FREE(m_environment->allocator, buffer); */
+/*         AXIS2_FREE(m_env->allocator, buffer); */
     printf("\nend test_om_build\n");
     fclose(f);
     return;
@@ -308,38 +308,38 @@ TEST_F(TestOM, test_om_serialize) {
     printf("\nstart test_om_serialize\n");
 
     ns1 =
-        axiom_namespace_create(m_environment,
+        axiom_namespace_create(m_env,
                                "http://ws.apache.org/axis2/c/om", "axiom");
-    ns2 = axiom_namespace_create(m_environment, "urn:ISBN:0-395-74341-6", "isbn");
-    ele1 = axiom_element_create(m_environment, NULL, "book", ns1, &node1);
-    axiom_element_declare_namespace(ele1, m_environment, node1, ns2);
+    ns2 = axiom_namespace_create(m_env, "urn:ISBN:0-395-74341-6", "isbn");
+    ele1 = axiom_element_create(m_env, NULL, "book", ns1, &node1);
+    axiom_element_declare_namespace(ele1, m_env, node1, ns2);
 
-    ele2 = axiom_element_create(m_environment, node1, "title", ns1, &node2);
-    attr1 = axiom_attribute_create(m_environment, "title22", NULL, NULL);
+    ele2 = axiom_element_create(m_env, node1, "title", ns1, &node2);
+    attr1 = axiom_attribute_create(m_env, "title22", NULL, NULL);
 
-    axiom_element_add_attribute(ele2, m_environment, attr1, node2);
+    axiom_element_add_attribute(ele2, m_env, attr1, node2);
 
-    text1 = axiom_text_create(m_environment, node2, "Axis2/C OM HOWTO", &node3);
+    text1 = axiom_text_create(m_env, node2, "Axis2/C OM HOWTO", &node3);
 
-    ele3 = axiom_element_create(m_environment, node1, "number", ns2, &node4);
+    ele3 = axiom_element_create(m_env, node1, "number", ns2, &node4);
 
-    text1 = axiom_text_create(m_environment, node4, "1748491379", &node5);
+    text1 = axiom_text_create(m_env, node4, "1748491379", &node5);
 
-    ele4 = axiom_element_create(m_environment, node1, "author", ns1, &node6);
+    ele4 = axiom_element_create(m_env, node1, "author", ns1, &node6);
 
-    attr1 = axiom_attribute_create(m_environment, "title", "Mr", ns1);
+    attr1 = axiom_attribute_create(m_env, "title", "Mr", ns1);
 
-    axiom_element_add_attribute(ele4, m_environment, attr1, node6);
+    axiom_element_add_attribute(ele4, m_env, attr1, node6);
 
-    attr2 = axiom_attribute_create(m_environment, "name", "Axitoc Oman", ns1);
+    attr2 = axiom_attribute_create(m_env, "name", "Axitoc Oman", ns1);
 
-    axiom_element_add_attribute(ele4, m_environment, attr2, node6);
+    axiom_element_add_attribute(ele4, m_env, attr2, node6);
 
-    data_source = axiom_data_source_create(m_environment, node1, &node6);
-    stream = axiom_data_source_get_stream(data_source, m_environment);
+    data_source = axiom_data_source_create(m_env, node1, &node6);
+    stream = axiom_data_source_get_stream(data_source, m_env);
     if (stream)
     {
-        axutil_stream_write(stream, m_environment,
+        axutil_stream_write(stream, m_env,
                             "<this xmlns:axiom=\"http://ws.apache.org/axis2/c/om\">is a test</this>",
                             axutil_strlen
                             ("<this xmlns:axiom=\"http://ws.apache.org/axis2/c/om\">is a test</this>"));
@@ -347,26 +347,26 @@ TEST_F(TestOM, test_om_serialize) {
 
     /* serializing stuff */
     writer =
-        axiom_xml_writer_create_for_memory(m_environment, NULL, AXIS2_TRUE, 0,
+        axiom_xml_writer_create_for_memory(m_env, NULL, AXIS2_TRUE, 0,
                                            AXIS2_XML_PARSER_TYPE_BUFFER);
-    om_output = axiom_output_create(m_environment, writer);
+    om_output = axiom_output_create(m_env, writer);
 
     printf("Serialize built document\n");
-    status = axiom_node_serialize(node1, m_environment, om_output);
+    status = axiom_node_serialize(node1, m_env, om_output);
     ASSERT_EQ(status, AXIS2_SUCCESS);
 
     printf("\naxiom_node_serialize success\n");
     /* end serializing stuff */
 
-    axiom_node_free_tree(node1, m_environment);
+    axiom_node_free_tree(node1, m_env);
     output_buffer =
-        (axis2_char_t *) axiom_xml_writer_get_xml(writer, m_environment);
+        (axis2_char_t *) axiom_xml_writer_get_xml(writer, m_env);
 
-    axiom_output_free(om_output, m_environment);
+    axiom_output_free(om_output, m_env);
     /*    if (output_buffer) */
     /*     { */
     /*         printf("%s", output_buffer); */
-    /*         AXIS2_FREE(m_environment->allocator, output_buffer); */
+    /*         AXIS2_FREE(m_env->allocator, output_buffer); */
     /*     } */
 
     printf("\nend test_om_serialize\n");
@@ -385,18 +385,18 @@ TEST_F(TestOM, test_om_buffer) {
 
     printf("\nstart test_om_bufer\n");
 
-    axiom_node_t * om_node = axiom_node_create_from_buffer(m_environment, xml);
+    axiom_node_t * om_node = axiom_node_create_from_buffer(m_env, xml);
 
-    output = axiom_node_to_string(om_node,m_environment);
+    output = axiom_node_to_string(om_node,m_env);
 
     ASSERT_EQ(0, axutil_strcmp(xml,xml_unaltered));
 
     ASSERT_EQ(0, axutil_strcmp(output,xml_unaltered));
 
-    axiom_node_free_tree(om_node,m_environment);
-    AXIS2_FREE(m_environment->allocator, output);
-    AXIS2_FREE(m_environment->allocator, xml);
-    AXIS2_FREE(m_environment->allocator, xml_unaltered);
+    axiom_node_free_tree(om_node,m_env);
+    AXIS2_FREE(m_env->allocator, output);
+    AXIS2_FREE(m_env->allocator, xml);
+    AXIS2_FREE(m_env->allocator, xml_unaltered);
 
     printf("\nend test_om_bufer\n");
 
@@ -406,26 +406,26 @@ TEST_F(TestOM, test_om_buffer) {
 /* AXIS2C-1627 */
 TEST_F(TestOM, test_attr_special_chars)
 {
-     axiom_namespace_t * ns = axiom_namespace_create(m_environment, "namespace", "ns");
+     axiom_namespace_t * ns = axiom_namespace_create(m_env, "namespace", "ns");
 
      char * attribute;
      axiom_node_t * node;
      axiom_node_t * deserialized_node;
-     axiom_element_t * element = axiom_element_create(m_environment, NULL, "el", ns, &node);
+     axiom_element_t * element = axiom_element_create(m_env, NULL, "el", ns, &node);
 
-     axiom_element_set_text(element, m_environment, "T1 & T2", node);
-     axiom_element_add_attribute(element, m_environment, axiom_attribute_create(m_environment, "name", "A1 & A2", NULL), node);
+     axiom_element_set_text(element, m_env, "T1 & T2", node);
+     axiom_element_add_attribute(element, m_env, axiom_attribute_create(m_env, "name", "A1 & A2", NULL), node);
 
-     axis2_char_t * xml = axiom_node_to_string(node, m_environment);
+     axis2_char_t * xml = axiom_node_to_string(node, m_env);
 
      ASSERT_STREQ(xml, "<ns:el xmlns:ns=\"namespace\" name=\"A1 &amp; A2\">T1 &amp; T2</ns:el>");
 
-     deserialized_node = axiom_node_create_from_buffer(m_environment, xml);
+     deserialized_node = axiom_node_create_from_buffer(m_env, xml);
 
-     axiom_element_t * deserialized_element = (axiom_element_t*)axiom_node_get_data_element(deserialized_node, m_environment);
+     axiom_element_t * deserialized_element = (axiom_element_t*)axiom_node_get_data_element(deserialized_node, m_env);
 
-     attribute = axiom_element_get_attribute_value_by_name(deserialized_element, m_environment,"name");
-     char * text = axiom_element_get_text(deserialized_element, m_environment, deserialized_node);
+     attribute = axiom_element_get_attribute_value_by_name(deserialized_element, m_env,"name");
+     char * text = axiom_element_get_text(deserialized_element, m_env, deserialized_node);
 
      ASSERT_STREQ(attribute, "A1 & A2");
      ASSERT_STREQ(text, "T1 & T2");
