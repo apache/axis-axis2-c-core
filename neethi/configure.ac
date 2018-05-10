@@ -132,6 +132,28 @@ AC_ARG_ENABLE(coverage, [  --enable-coverage
   CPPFLAGS="$CPPFLAGS"]
 )
 
+AC_MSG_CHECKING(whether to enable address sanitizer)
+AC_ARG_ENABLE(asan, [  --enable-asan
+                          enable address sanitizer (default=no)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    CFLAGS="$CFLAGS"
+    CPPFLAGS="$CPPFLAGS"
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -fsanitize=address -fno-omit-frame-pointer"
+    CPPFLAGS="$CPPFLAGS -fsanitize=address -fno-omit-frame-pointer"
+    CXXFLAGS="$CXXFLAGS -fsanitize=address -fno-omit-frame-pointer"
+    ;;
+  esac ],[
+  AC_MSG_RESULT(no)
+  CFLAGS="$CFLAGS"
+  CPPFLAGS="$CPPFLAGS"]
+)
+
+
 AC_MSG_CHECKING(whether to use the Google test framework)
 AC_ARG_WITH(gtest,
             [  --with-gtest[=PATH]      Find the gtest source files in 'PATH'.],

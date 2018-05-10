@@ -460,6 +460,28 @@ AC_ARG_ENABLE(coverage, [  --enable-coverage
   CPPFLAGS="$CPPFLAGS"]
 )
 
+AC_MSG_CHECKING(whether to enable address sanitizer)
+AC_ARG_ENABLE(asan, [  --enable-asan
+                          enable address sanitizer (default=no)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    CFLAGS="$CFLAGS"
+    CPPFLAGS="$CPPFLAGS"
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -fsanitize=address -fno-omit-frame-pointer"
+    CPPFLAGS="$CPPFLAGS -fsanitize=address -fno-omit-frame-pointer"
+    CXXFLAGS="$CXXFLAGS -fsanitize=address -fno-omit-frame-pointer"
+    ;;
+  esac ],[
+  AC_MSG_RESULT(no)
+  CFLAGS="$CFLAGS"
+  CPPFLAGS="$CPPFLAGS"]
+)
+
+
 AC_MSG_CHECKING(whether to enable multi threading)
 AC_ARG_ENABLE(multi-thread, [  --enable-multi-thread  
                           enable multi threaded axis2 worker (default=yes)],
