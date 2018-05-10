@@ -107,6 +107,8 @@ TEST_F(TestDuration, test_duration) {
     axutil_duration_free(duration_two, m_env);
     axutil_duration_free(duration_three, m_env);
     axutil_duration_free(duration_four, m_env);
+    AXIS2_FREE(m_allocator, serialize);
+    AXIS2_FREE(m_allocator, serialize1);
 }
 
 /** @brief set values

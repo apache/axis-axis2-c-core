@@ -144,6 +144,7 @@ TEST_F(TestUtil, test_axutil_dir_handler_list_service_or_module_dirs)
         axutil_dir_handler_list_service_or_module_dirs(m_env, pathname);
     if (arr_folders == NULL)
     {
+        AXIS2_FREE(m_env->allocator, pathname);
         printf("List of folders is NULL\n");
         return;
     }
@@ -160,6 +161,7 @@ TEST_F(TestUtil, test_axutil_dir_handler_list_service_or_module_dirs)
     printf
         ("----end of test_axutil_dir_handler_list_service_or_module_dirs----\n");
 
+    AXIS2_FREE(m_env->allocator, pathname);
 }
 
 /**
@@ -176,6 +178,7 @@ TEST_F(TestUtil, test_array_list)
 
     axutil_array_list_t *al;
     a *entry = NULL;
+    a *tmpentry = NULL;
     int size;
 
     al = axutil_array_list_create(m_env, 1);
@@ -208,8 +211,24 @@ TEST_F(TestUtil, test_array_list)
 
     entry = (a *) AXIS2_MALLOC(m_env->allocator, sizeof(a));
     entry->value = (axis2_char_t*) axutil_strdup(m_env, "value7");
+    size = axutil_array_list_size(al, m_env);
+    ASSERT_EQ(size, 6);
+
+    tmpentry = (a *) axutil_array_list_get(al, m_env, 3);
     axutil_array_list_set(al, m_env, 3, (void *) entry);
+    size = axutil_array_list_size(al, m_env);
+    ASSERT_EQ(size, 6);
+    AXIS2_FREE(m_env->allocator, tmpentry->value);
+    AXIS2_FREE(m_env->allocator, tmpentry);
+    tmpentry = NULL;
+
+    tmpentry = (a *) axutil_array_list_get(al, m_env, 2);
     axutil_array_list_remove(al, m_env, 2);
+    size = axutil_array_list_size(al, m_env);
+    ASSERT_EQ(size, 5);
+    AXIS2_FREE(m_env->allocator, tmpentry->value);
+    AXIS2_FREE(m_env->allocator, tmpentry);
+    tmpentry = NULL;
 
     entry = (a *) axutil_array_list_get(al, m_env, 0);
     ASSERT_STREQ(entry->value, "value1");
@@ -218,6 +237,14 @@ TEST_F(TestUtil, test_array_list)
     ASSERT_STREQ(entry->value, "value7");
     size = axutil_array_list_size(al, m_env);
     ASSERT_EQ(size, 5);
+
+    while (size = axutil_array_list_size(al, m_env)) {
+        entry = (a *) axutil_array_list_remove(al, m_env, 0);
+        AXIS2_FREE(m_env->allocator, entry->value);
+        AXIS2_FREE(m_env->allocator, entry);
+    }
+
+    axutil_array_list_free(al, m_env);
 }
 
 

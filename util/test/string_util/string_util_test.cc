@@ -1,23 +1,23 @@
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #include <gtest/gtest.h>
 
-#include <string.h>   
+#include <string.h>
 #include "../util/create_env.h"
 #include <axutil_string_util.h>
 #include <axutil_array_list.h>
@@ -52,8 +52,8 @@ class TestString: public ::testing::Test
 };
 
 
-/** @brief test string 
- *  tokenize a string  
+/** @brief test string
+ *  tokenize a string
  */
 
 TEST_F(TestString, test_string)
@@ -69,7 +69,7 @@ TEST_F(TestString, test_string)
     ASSERT_NE(tokenize, nullptr);
     token  = axutil_array_list_get(tokenize,m_env,4);
     ASSERT_NE(token, nullptr);
- 	ASSERT_STREQ((const char *)token, "string");
+    ASSERT_STREQ((const char *)token, "string");
 
     first_token = axutil_first_token(m_env,in,delim);
     ASSERT_NE(first_token, nullptr);
@@ -77,16 +77,34 @@ TEST_F(TestString, test_string)
     {
         first_token_string = axutil_array_list_get(first_token,m_env,1);
         ASSERT_NE(first_token_string, nullptr);
- 	    ASSERT_STREQ((const char *)first_token_string, "is a test string");
+        ASSERT_STREQ((const char *)first_token_string, "is a test string");
+        while(axutil_array_list_size(first_token, m_env)) {
+            token = axutil_array_list_remove(first_token, m_env, 0);
+            AXIS2_FREE(m_allocator, token);
+        }
+        axutil_array_list_free(first_token, m_env);
     }
 
     last_token = axutil_last_token(m_env,in,delim);
- 	ASSERT_NE(last_token, nullptr);
+    ASSERT_NE(last_token, nullptr);
     if(last_token)
     {
         last_token_string = axutil_array_list_get(last_token,m_env,1);
- 		ASSERT_NE(last_token_string, nullptr);
- 	    ASSERT_STREQ((const char *)last_token_string, "string");
+        ASSERT_NE(last_token_string, nullptr);
+        ASSERT_STREQ((const char *)last_token_string, "string");
+        while(axutil_array_list_size(last_token, m_env)) {
+            token = axutil_array_list_remove(last_token, m_env, 0);
+            AXIS2_FREE(m_allocator, token);
+        }
+        axutil_array_list_free(last_token, m_env);
     }
+
+    while(axutil_array_list_size(tokenize, m_env)) {
+        token = axutil_array_list_remove(tokenize, m_env, 0);
+        AXIS2_FREE(m_allocator, token);
+    }
+
+    axutil_array_list_free(tokenize, m_env);
+
 
 }

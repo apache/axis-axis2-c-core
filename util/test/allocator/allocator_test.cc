@@ -60,7 +60,7 @@ TEST_F(TestAllocator, test_base64)
     axis2_status_t status = AXIS2_FAILURE;
     axutil_base64_binary_t *base64_binary;
     axutil_base64_binary_t *plain_base64_binary;
-    const char *encoded_binary;
+    char *encoded_binary;
     unsigned char * get_binary = NULL;
     int plain_binary_len, b_len;
     unsigned char * plain_binary = NULL;
@@ -77,7 +77,7 @@ TEST_F(TestAllocator, test_base64)
 
     plain_base64_binary = axutil_base64_binary_create_with_plain_binary(m_env,
                                                                         plain_binary,
-                                                                        plain_binary_len); 
+                                                                        plain_binary_len);
     ASSERT_NE(plain_base64_binary, nullptr);
 
     encoded_binary = axutil_base64_binary_get_encoded_binary(plain_base64_binary, m_env);
@@ -88,25 +88,32 @@ TEST_F(TestAllocator, test_base64)
     ASSERT_EQ(status, AXIS2_SUCCESS);
     plain_binary = axutil_base64_binary_get_plain_binary(base64_binary,m_env,&b_len);
     ASSERT_NE(plain_binary, nullptr);
+    ASSERT_NE(plain_binary, buffer);
+    ASSERT_EQ(memcmp(plain_binary, buffer, plain_binary_len), 0);
+
     status = axutil_base64_binary_set_encoded_binary(base64_binary,m_env,encoded_binary);
     ASSERT_EQ(status, AXIS2_SUCCESS);
     get_binary = (unsigned char *) axutil_base64_binary_get_encoded_binary(base64_binary,m_env);
     ASSERT_NE(get_binary, nullptr);
+    AXIS2_FREE(m_env->allocator, get_binary);
+    get_binary = NULL;
     b_len = axutil_base64_binary_get_encoded_binary_len(base64_binary,m_env);
     ASSERT_NE(b_len, 0);
 
     axutil_base64_binary_free(base64_binary, m_env);
-	base64_binary = axutil_base64_binary_create_with_encoded_binary(m_env, encoded_binary);
+    base64_binary = axutil_base64_binary_create_with_encoded_binary(m_env, encoded_binary);
     ASSERT_NE(base64_binary, nullptr);
     if (base64_binary != nullptr)
-	{
-		int binary_len;
-		get_binary = axutil_base64_binary_get_plain_binary(base64_binary,m_env, &binary_len);
-		ASSERT_EQ(binary_len, plain_binary_len);
+    {
+        int binary_len;
+        get_binary = axutil_base64_binary_get_plain_binary(base64_binary,m_env, &binary_len);
+        ASSERT_EQ(binary_len, plain_binary_len);
         ASSERT_EQ(memcmp(get_binary, plain_binary, plain_binary_len), 0);
         axutil_base64_binary_free(base64_binary, m_env);
-	}
+    }
 
-	axutil_base64_binary_free(plain_base64_binary, m_env);
+    axutil_base64_binary_free(plain_base64_binary, m_env);
+    AXIS2_FREE(m_env->allocator, encoded_binary);
+    AXIS2_FREE(m_env->allocator, plain_binary);
 }
 

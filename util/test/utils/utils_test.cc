@@ -1,19 +1,19 @@
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #include <gtest/gtest.h>
 
@@ -49,8 +49,8 @@ class TestUtils: public ::testing::Test
 };
 
 
-/** @brief test utils 
- *  test quote string  
+/** @brief test utils
+ *  test quote string
  */
 
 TEST_F(TestUtils, test_utils)
@@ -63,8 +63,10 @@ TEST_F(TestUtils, test_utils)
     int hexit;
     op = axutil_parse_request_url_for_svc_and_op(m_env,request);
     ASSERT_NE(op, nullptr);
+    AXIS2_FREE(m_allocator, op);
     quote_string = axutil_xml_quote_string(m_env,s,1);
     ASSERT_STREQ(quote_string, "&lt;root&gt;This is a &amp; in xml string&lt;/root&gt;");
+    AXIS2_FREE(m_allocator, quote_string);
     hexit = axutil_hexit(c);
     ASSERT_EQ(hexit, 12);
 }

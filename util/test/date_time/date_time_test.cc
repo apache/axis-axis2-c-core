@@ -122,6 +122,9 @@ TEST_F(TestDateTime, test_date_time) {
         ASSERT_EQ(msec, 799);
 
         axutil_date_time_free(date_time,m_env);
+        AXIS2_FREE(m_allocator, t_str);
+        AXIS2_FREE(m_allocator, d_str);
+        AXIS2_FREE(m_allocator, dt_str);
    }
 }
 

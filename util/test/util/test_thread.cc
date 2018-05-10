@@ -149,6 +149,7 @@ test_axutil_thread_detach(
      */
     rv = axutil_thread_detach(t3);
     ASSERT_EQ(rv, AXIS2_FAILURE);
+    AXIS2_FREE(allocator, attr);
  }
 
 void
@@ -170,6 +171,7 @@ test_axutil_thread_detach2(
      */
     rv = axutil_thread_detach(t4);
     ASSERT_EQ(rv, AXIS2_SUCCESS);
+    AXIS2_FREE(allocator, attr);
 }
 
 void
