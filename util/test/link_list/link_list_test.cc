@@ -1,19 +1,19 @@
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #include <gtest/gtest.h>
 
@@ -60,55 +60,73 @@ TEST_F(TestLinkedList, test_link_list)
 
     axutil_linked_list_t * linked_list = NULL;
     int index_of_item;
-	int index_of_last_item;
-	entry_t * entry;
-	void *get_item;
-	axis2_status_t status;
-	axis2_bool_t bresult;
-	void **array_from_list;
+    int index_of_last_item;
+    entry_t * entry;
+    void *get_item;
+    axis2_status_t status;
+    axis2_bool_t bresult;
+    void **array_from_list;
 
-	linked_list = axutil_linked_list_create(m_env);
+    linked_list = axutil_linked_list_create(m_env);
     ASSERT_NE(linked_list, nullptr);
+
     status = axutil_linked_list_add_first(linked_list,m_env,(void *)first_item);
     ASSERT_EQ(status, AXIS2_SUCCESS);
+
     bresult = axutil_linked_list_contains(linked_list,m_env,(void *)second_item);
-	ASSERT_EQ(bresult, AXIS2_FALSE);
+    ASSERT_EQ(bresult, AXIS2_FALSE);
+
     status = axutil_linked_list_add(linked_list,m_env,(void *)third_item);
     ASSERT_EQ(status, AXIS2_SUCCESS);
+
     status = axutil_linked_list_add_last(linked_list,m_env,(void *)last_item);
     ASSERT_EQ(status, AXIS2_SUCCESS);
- 	ASSERT_EQ(axutil_linked_list_size(linked_list,m_env), 3);
+    ASSERT_EQ(axutil_linked_list_size(linked_list,m_env), 3);
+
     index_of_item = axutil_linked_list_index_of(linked_list,m_env,third_item);
     ASSERT_EQ(index_of_item, 1);
+
     index_of_last_item = axutil_linked_list_last_index_of(linked_list,m_env,last_item);
     ASSERT_EQ(index_of_last_item, 2);
+
     entry = axutil_linked_list_get_entry(linked_list,m_env,0);
     ASSERT_NE(entry, nullptr);
+
     get_item = axutil_linked_list_get(linked_list,m_env,1);
     ASSERT_NE(get_item, nullptr);
-	ASSERT_EQ(strcmp((char*)get_item, third_item), 0);
+    ASSERT_STREQ((char*)get_item, third_item);
+
     get_item = axutil_linked_list_set(linked_list,m_env,1,(void *)array);
     ASSERT_NE(get_item, nullptr);
-	ASSERT_EQ(strcmp((char*)get_item, third_item), 0);
+    ASSERT_STREQ((char*)get_item, third_item);
+
     array_from_list = axutil_linked_list_to_array(linked_list,m_env);
-	ASSERT_NE(array_from_list, nullptr);
+    ASSERT_NE(array_from_list, nullptr);
+
     status = axutil_linked_list_add_at_index(linked_list,m_env,1,(void *)second_item);
     ASSERT_EQ(status, AXIS2_SUCCESS);
+
     get_item = axutil_linked_list_remove_at_index(linked_list,m_env,1);
-	ASSERT_NE(get_item, nullptr);
+    ASSERT_NE(get_item, nullptr);
+
     bresult = axutil_linked_list_check_bounds_inclusive(linked_list,m_env,1);
-	ASSERT_EQ(bresult, AXIS2_TRUE);
+    ASSERT_EQ(bresult, AXIS2_TRUE);
+
     status = axutil_linked_list_remove_entry(linked_list,m_env,entry);
     ASSERT_EQ(status, AXIS2_SUCCESS);
+    AXIS2_FREE(m_allocator, entry);
+
     get_item = axutil_linked_list_remove_first(linked_list,m_env);
-	ASSERT_NE(get_item, nullptr);
+    ASSERT_NE(get_item, nullptr);
+
     get_item = axutil_linked_list_remove_last(linked_list,m_env);
-	ASSERT_NE(get_item, nullptr);
-	ASSERT_EQ(axutil_linked_list_size(linked_list,m_env), 0);
+    ASSERT_NE(get_item, nullptr);
+    ASSERT_EQ(axutil_linked_list_size(linked_list,m_env), 0);
 
     bresult = axutil_linked_list_remove(linked_list,m_env,(void *)third_item);
- 	ASSERT_EQ(bresult, AXIS2_FALSE);
+    ASSERT_EQ(bresult, AXIS2_FALSE);
 
     axutil_linked_list_free(linked_list,m_env);
+    AXIS2_FREE(m_allocator, array_from_list);
 }
 

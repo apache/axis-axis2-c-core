@@ -283,7 +283,9 @@ axutil_linked_list_remove_first(
         linked_list->last = NULL;
     }
 
+    entry_t * orphan = linked_list->first;
     linked_list->first = linked_list->first->next;
+    AXIS2_FREE(env->allocator, orphan);
 
     return r;
 }
@@ -314,7 +316,9 @@ axutil_linked_list_remove_last(
         linked_list->first = NULL;
     }
 
+    entry_t * orphan = linked_list->last;
     linked_list->last = linked_list->last->previous;
+    AXIS2_FREE(env->allocator, orphan);
 
     return r;
 }
@@ -507,7 +511,9 @@ axutil_linked_list_remove_at_index(
     axutil_linked_list_check_bounds_exclusive(linked_list, env, index);
     e = axutil_linked_list_get_entry(linked_list, env, index);
     axutil_linked_list_remove_entry(linked_list, env, e);
-    return e->data;
+    void *data = e->data;
+    AXIS2_FREE(env->allocator, e);
+    return data;
 }
 
 AXIS2_EXTERN int AXIS2_CALL
