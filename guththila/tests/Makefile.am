@@ -12,9 +12,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-TESTS = test_guththila test_attribute
-noinst_PROGRAMS = test_guththila test_attribute
-check_PROGRAMS = test_guththila test_attribute
+TESTS = test_guththila test_attribute test_stack
+noinst_PROGRAMS = test_guththila test_attribute test_stack
+check_PROGRAMS = test_guththila test_attribute test_stack
 SUBDIRS =
 
 test_guththila_SOURCES = test_guththila.cc
@@ -32,6 +32,14 @@ test_guththila_LDADD = \
 test_attribute_SOURCES = test_attribute.cc
 
 test_attribute_LDADD = \
+				 $(top_builddir)/src/libguththila.la \
+				 ../../util/src/libaxutil.la \
+				 $(top_builddir)/$(GTEST)/libgtest.a \
+				 $(top_builddir)/$(GTEST)/libgtest_main.a
+
+test_stack_SOURCES = test_stack.cc
+
+test_stack_LDADD = \
 				 $(top_builddir)/src/libguththila.la \
 				 ../../util/src/libaxutil.la \
 				 $(top_builddir)/$(GTEST)/libgtest.a \
