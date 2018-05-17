@@ -50,7 +50,10 @@ guththila_stack_un_init(
     const axutil_env_t * env)
 {
     if(stack->data)
+    {
         AXIS2_FREE(env->allocator, stack->data);
+        stack->data = NULL;
+    }
 }
 
 void *GUTHTHILA_CALL
@@ -110,7 +113,7 @@ guththila_stack_del_top(
 {
     if(stack->top > 0)
     {
-        AXIS2_FREE(env->allocator, stack->data[stack->top]);
+        stack->data[stack->top--] = NULL;
         return GUTHTHILA_SUCCESS;
     }
     return GUTHTHILA_FAILURE;
