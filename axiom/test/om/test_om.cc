@@ -176,7 +176,7 @@ TEST_F(TestOM, test_om_build) {
 
     }
 
-    /** build the document continuously untill all the xml file is built in to a om model */
+    /** build the document continuously until all the xml file is built in to a om model */
 
     node2 = axiom_document_build_next(document, m_env);
     do

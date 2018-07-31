@@ -1,4 +1,4 @@
-Util module seperated from Axis2/C
+Util module separated from Axis2/C
 ======================================
 Initially this was inside Axis2/C code base as util directory. As the
 project expands it's moved to the top level with the view of making it a

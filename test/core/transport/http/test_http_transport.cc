@@ -204,7 +204,7 @@ TEST_F(TestHTTPTransport, test_http_client)
     ASSERT_EQ(status, 200);
     if (status != 200)
     {
-        printf("Test FAILED ......... Can't recieve. Status: %d\n", status);
+        printf("Test FAILED ......... Can't receive. Status: %d\n", status);
         return;
     }
     response = axis2_http_client_get_response(client, m_env);
