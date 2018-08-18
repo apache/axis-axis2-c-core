@@ -274,11 +274,6 @@ void evaluate(
     {
         axiom_xpath_free_result(env, result);
     }
-
-    if (expr)
-    {
-        axiom_xpath_free_expression(env, expr);
-    }
 }
 
 int compare_result(axis2_char_t *rs)

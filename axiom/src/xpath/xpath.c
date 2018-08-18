@@ -66,9 +66,7 @@ axiom_xpath_compile_expression(
 
     if (axiom_xpath_compile(env, expr) == AXIOM_XPATH_PARSE_ERROR)
     {
-        AXIS2_FREE(env->allocator, expr->expr_str);
-        AXIS2_FREE(env->allocator, expr);
-
+        axiom_xpath_free_expression(env, expr);
         return NULL;
     }
     else
@@ -371,7 +369,7 @@ axiom_xpath_free_context(
         /* Free the expression if not freed */
         if (context->expr)
         {
-            /* axiom_xpath_free_expression(env, context->expr); */
+            axiom_xpath_free_expression(env, context->expr);
 
             context->expr = NULL;
         }
@@ -416,6 +414,15 @@ axiom_xpath_free_expression(
 
         if (xpath_expr->operations)
         {
+            axiom_xpath_operation_t *op = NULL;
+            while(axutil_array_list_size(xpath_expr->operations, env)) {
+                op = axutil_array_list_remove(xpath_expr->operations, env, 0);
+                if (op->par1)
+                    AXIS2_FREE(env->allocator, op->par1);
+                if (op->par2)
+                    AXIS2_FREE(env->allocator, op->par2);
+                AXIS2_FREE(env->allocator, op);
+            }
             axutil_array_list_free(xpath_expr->operations, env);
             xpath_expr->operations = NULL;
         }
@@ -434,6 +441,11 @@ axiom_xpath_free_result(
     {
         if (result->nodes)
         {
+            axiom_xpath_result_node_t *node = NULL;
+            while(axutil_array_list_size(result->nodes, env)) {
+                node = axutil_array_list_remove(result->nodes, env, 0);
+                AXIS2_FREE(env->allocator, node);
+            }
             axutil_array_list_free(result->nodes, env);
         }
 

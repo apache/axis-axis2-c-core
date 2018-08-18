@@ -52,6 +52,7 @@ axiom_xpath_run(
     }
 
     axutil_stack_free(context->stack, context->env);
+    context->stack = NULL;
 
     return res;
 }

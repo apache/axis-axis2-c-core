@@ -45,8 +45,6 @@ axiom_xpath_compile(
 
     if(expr->start == AXIOM_XPATH_PARSE_ERROR)
     {
-        axutil_array_list_free(expr->operations, env);
-
         return AXIOM_XPATH_PARSE_ERROR;
     }
     else
@@ -717,6 +715,7 @@ axiom_xpath_compile_step(
             expr->expr_str + expr->expr_ptr);
 #endif
 
+        AXIS2_FREE(env->allocator, node_test);
         return AXIOM_XPATH_PARSE_ERROR;
     }
 
@@ -1202,7 +1201,7 @@ axiom_xpath_compile_ncname(
 
     name[i] = '\0';
 
-    return axutil_strdup(env, name);
+    return name;
 }
 
 /* Supporting functions */
