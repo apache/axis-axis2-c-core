@@ -119,6 +119,7 @@ TEST_F(TestUtil, test_build_and_serialize_om) {
     axis2_char_t * target = NULL;
     axis2_char_t * value = NULL;
     axiom_node_t *temp_node = NULL;
+    axis2_char_t *temp_str = NULL;
 
     names = axutil_array_list_create(m_env, 1);
     axutil_array_list_add(names, m_env, "language");
@@ -150,15 +151,24 @@ TEST_F(TestUtil, test_build_and_serialize_om) {
     axiom_document_build_all(document, m_env);
     first_node = axiom_node_get_first_child(root_node, m_env);
     ASSERT_NE(first_node, nullptr);
-    printf ("%s\n", axiom_node_to_string (first_node, m_env)); 
+    temp_str = axiom_node_to_string(first_node, m_env);
+    printf (" %s\n", temp_str);
+    AXIS2_FREE(m_allocator, temp_str);
+    temp_str = NULL;
 
     node = axiom_node_get_next_sibling(first_node, m_env);
     ASSERT_NE(node, nullptr);
-    printf (" %s\n", axiom_node_to_string (node, m_env));
+    temp_str = axiom_node_to_string(node, m_env);
+    printf (" %s\n", temp_str);
+    AXIS2_FREE(m_allocator, temp_str);
+    temp_str = NULL;
 
     temp_node = axiom_node_get_next_sibling  (node, m_env);
     ASSERT_NE(temp_node, nullptr);
-    printf (" %s\n", axiom_node_to_string (temp_node, m_env));
+    temp_str = axiom_node_to_string(temp_node, m_env);
+    printf (" %s\n", temp_str);
+    AXIS2_FREE(m_allocator, temp_str);
+    temp_str = NULL;
 
     child = axiom_node_get_first_child(node, m_env);
     node_type = axiom_node_get_node_type(child,m_env);
@@ -193,10 +203,16 @@ TEST_F(TestUtil, test_build_and_serialize_om) {
     ASSERT_NE(child, nullptr);
     axiom_util_new_document(m_env,uri1);
     printf("\nmy_ele = ");
-    printf("%s\n ",axiom_node_to_string(child, m_env));
+    temp_str = axiom_node_to_string(child, m_env);
+    printf("The first element = %s\n", temp_str);
+    AXIS2_FREE(m_allocator, temp_str);
+    temp_str = NULL;
 
     first_element =  axiom_util_get_first_child_element(my_ele,m_env,child,&child);
-    printf("The first element = %s\n",axiom_node_to_string(node, m_env));
+    temp_str = axiom_node_to_string(node, m_env);
+    printf("The first element = %s\n", temp_str);
+    AXIS2_FREE(m_allocator, temp_str);
+    temp_str = NULL;
     last_element = axiom_util_get_last_child_element(my_ele,m_env,root_node,&child);
     /* FIXME
     localname = axiom_element_get_localname(my_ele,m_env); 
@@ -220,8 +236,16 @@ TEST_F(TestUtil, test_build_and_serialize_om) {
     axiom_util_get_child_text(node,m_env);
     node_namespace_uri = axiom_util_get_node_namespace_uri(node,m_env);
     child_element =  axiom_util_get_child_elements(my_ele,m_env,node);
-    printf("%s\n",axiom_node_to_string(node, m_env));
+    temp_str = axiom_node_to_string(node, m_env);
+    printf("%s\n", temp_str);
+    AXIS2_FREE(m_allocator, temp_str);
+    temp_str = NULL;
     printf("%s\n","test is SUCCESS");
+
+    axutil_qname_free(qname, m_env);
+    axutil_array_list_free(names, m_env);
+
+    axiom_stax_builder_free(om_builder, m_env);
 
 }
 
