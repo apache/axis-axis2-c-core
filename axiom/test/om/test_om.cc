@@ -433,6 +433,8 @@ TEST_F(TestOM, test_attribute)
     //TODO test clone
 
     //TODO free?  Also trace down other invalid free(s) in test (per valgrind)
+    axiom_attribute_free(attr, m_env);
+    axiom_namespace_free(ns1, m_env);
 
 
 }
