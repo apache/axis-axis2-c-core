@@ -247,9 +247,7 @@ TEST_F(TestSOAP, test_build_soap) {
 
     printf("\n\nThe serialized xml is >>>>>>>>>>>>>\n\n\n%s \n\n\n", buffer);
 
-    if (buffer)
-        AXIS2_FREE(m_env->allocator, buffer);
-
+    axiom_output_free(om_output, m_env);
     axiom_soap_envelope_free(soap_envelope, m_env);
 
     printf(" \n __________ END TEST SOAP BUILD ____________ \n");
@@ -327,16 +325,15 @@ TEST_F(TestSOAP, test_build_programatically) {
 
     axiom_soap_envelope_free(soap_envelope, m_env);
 
-    AXIS2_FREE(m_env->allocator, buffer);
+    axiom_namespace_free(env_ns, m_env);
+    axiom_namespace_free(test_ns, m_env);
+    /* multiple references requires multiple frees */
+    axiom_namespace_free(role_ns, m_env);
+    axiom_namespace_free(role_ns, m_env);
 
-    buffer = NULL;
-
-    /* FIXME this causes a double free?
-     * axiom_output_free(om_output, m_env);
-     */
+    axiom_output_free(om_output, m_env);
 
     printf("\n __________ END BUILD SOAP PROGRAMATICALLY ____________\n");
-
 }
 
 
@@ -374,10 +371,8 @@ TEST_F(TestSOAP, test_create_soap_fault) {
 
     printf(" Testing soap fault set exception \n");
     printf("Actual = %s Expected = %s |", exception_text, "MyNewException");
-    if (status && (0 == strcmp(exception_text, "MyNewException")))
-        printf("SUCCESS\n");
-    else
-        printf("FAILURE\n");
+    ASSERT_EQ(status, AXIS2_SUCCESS);
+    ASSERT_STREQ(exception_text, "MyNewException");
 
     axiom_soap_envelope_free(soap_envelope, m_env);
     axiom_output_free(om_output, m_env);
@@ -387,6 +382,7 @@ TEST_F(TestSOAP, test_create_soap_fault_with_exception) {
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_soap_body_t *soap_body = NULL;
     axiom_soap_fault_t *soap_fault = NULL;
+    axiom_soap_fault_detail_t *fault_detail = NULL;
     axiom_xml_writer_t *xml_writer = NULL;
     axiom_output_t *om_output = NULL;
     axis2_char_t *exception_text = NULL;
@@ -401,7 +397,8 @@ TEST_F(TestSOAP, test_create_soap_fault_with_exception) {
     soap_fault =
         axiom_soap_fault_create_with_exception(m_env, soap_body, "MyException");
 
-    axiom_soap_fault_detail_create_with_parent(m_env, soap_fault);
+    fault_detail = axiom_soap_fault_detail_create_with_parent(m_env, soap_fault);
+    ASSERT_NE(fault_detail, nullptr);
     axiom_soap_fault_role_create_with_parent(m_env, soap_fault);
     xml_writer =
         axiom_xml_writer_create_for_memory(m_env, NULL, AXIS2_FALSE, AXIS2_FALSE,
@@ -412,11 +409,10 @@ TEST_F(TestSOAP, test_create_soap_fault_with_exception) {
     exception_text = axiom_soap_fault_get_exception(soap_fault, m_env);
     printf(" Testing Create soap fault with exception \n");
     printf("Actual = %s Expected = %s |", exception_text, "MyException");
-    if (0 == strcmp(exception_text, "MyException"))
-        printf("SUCCESS\n");
-    else
-        printf("FAILURE\n");
+    ASSERT_STREQ(exception_text, "MyException");
 
+    axiom_soap_fault_free(soap_fault, m_env);
+    axiom_soap_fault_detail_free(fault_detail, m_env);
     axiom_soap_envelope_free(soap_envelope, m_env);
     axiom_output_free(om_output, m_env);
 }
@@ -443,11 +439,8 @@ TEST_F(TestSOAP, test_soap_fault_node) {
     status = axiom_soap_fault_node_set_value(fault_node, m_env, "MyFaultNode");
     node_text = axiom_soap_fault_node_get_value(fault_node, m_env);
 
-    printf("Actual = %s Expected = %s |", node_text, "MyFaultNode");
-    if (0 == strcmp(node_text, "MyFaultNode"))
-        printf("SUCCESS\n");
-    else
-        printf("FAILURE\n");
+    ASSERT_STREQ(node_text, "MyFaultNode");
+
     axiom_soap_envelope_free(soap_envelope, m_env);
 }
 
@@ -474,10 +467,7 @@ TEST_F(TestSOAP, test_soap_fault_value) {
     value_text = axiom_soap_fault_value_get_text(value, m_env);
 
     printf("Actual = %s Expected = %s |", value_text, "env:Receiver");
-    if (0 == strcmp(value_text, "env:Receiver"))
-        printf("SUCCESS\n");
-    else
-        printf("FAILURE\n");
+    ASSERT_STREQ(value_text, "env:Receiver");
 
     axiom_soap_envelope_free(soap_envelope, m_env);
 }
