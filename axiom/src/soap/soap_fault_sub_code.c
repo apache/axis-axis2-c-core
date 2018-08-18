@@ -248,7 +248,7 @@ axiom_soap_fault_sub_code_get_sub_code(
             status = axiom_soap_builder_next(fault_sub_code->builder, env);
             if(status == AXIS2_FAILURE)
             {
-                break;
+                return NULL;
             }
         }
     }
