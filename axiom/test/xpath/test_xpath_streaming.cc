@@ -101,6 +101,7 @@ TEST_F(TestXPathStreaming, test_xpath_streaming) {
 
     test_tree_str = axiom_node_to_string(test_tree, m_env);
     printf("\nTesting XML\n-----------\n\"%s\"\n\n\n", test_tree_str);
+    AXIS2_FREE(m_env->allocator, test_tree_str);
 
     axiom_node_free_tree(test_tree, m_env);
 
@@ -231,6 +232,7 @@ void evaluate(
     if(!context)
     {
         printf("Could not initialise XPath context\n");
+        axiom_node_free_tree(test_tree, env);
         return;
     }
 
@@ -246,6 +248,9 @@ void evaluate(
         printf("Compilation error.");
         printf("Please check the systax of the XPath query.\n");
 
+        axiom_xpath_free_context(env, context);
+        axiom_node_free_tree(test_tree, env);
+
         return;
     }
 
@@ -258,7 +263,8 @@ void evaluate(
         compare_result("");
         printf("An error occured while evaluating the expression.\n");
 
-        axiom_xpath_free_expression(env, expr);
+        axiom_xpath_free_context(env, context);
+        axiom_node_free_tree(test_tree, env);
 
         return;
     }
@@ -268,7 +274,9 @@ void evaluate(
         compare_result("");
         printf("Streaming not supported.\n");
 
-        axiom_xpath_free_expression(env, expr);
+        axiom_xpath_free_result(env, result);
+        axiom_xpath_free_context(env, context);
+        axiom_node_free_tree(test_tree, env);
 
         return;
     }
@@ -280,10 +288,9 @@ void evaluate(
         axiom_xpath_free_result(env, result);
     }
 
-    if (expr)
-    {
-        axiom_xpath_free_expression(env, expr);
-    }
+    axiom_xpath_free_context(env, context);
+    axiom_node_free_tree(test_tree, env);
+
 }
 
 int compare_result(axis2_char_t *rs)
@@ -460,6 +467,8 @@ axiom_node_t *read_test_xml(const axutil_env_t *env, axis2_char_t *file_name)
     }
 
     while (axiom_document_build_next(document, env));
+
+    axiom_stax_builder_free_self(builder, env);
 
     return root;
 }
