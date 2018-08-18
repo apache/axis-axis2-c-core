@@ -603,6 +603,24 @@ axiom_soap12_builder_helper_handle_event(
                             "fault subcode null when it should not be null");
                         return AXIS2_FAILURE;
                     }
+
+                    /* Since subcodes can be nested arbitrarily deep, we can't
+                     * just take the first subcode - we need to descend until
+                     * we find the correct parent
+                     */
+                    while (sub_code &&
+                           axiom_soap_fault_sub_code_get_base_node(sub_code, env) != parent_node)
+                    {
+
+                        sub_code = axiom_soap_fault_sub_code_get_sub_code(sub_code, env);
+                    }
+                    if(!sub_code)
+                    {
+                        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                            "found null when searching for parent subcode");
+                        return AXIS2_FAILURE;
+                    }
+
                     value = axiom_soap_fault_value_create(env);
                     if(!value)
                     {
@@ -643,11 +661,28 @@ axiom_soap12_builder_helper_handle_event(
                                 "fault code null when it should not be null");
                             return AXIS2_FAILURE;
                         }
+
                         parent_subcode = axiom_soap_fault_code_get_sub_code(fault_code, env);
                         if(!parent_subcode)
                         {
                             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                                 "fault subcode null when it should not be null");
+                            return AXIS2_FAILURE;
+                        }
+
+                        /* Since subcodes can be nested arbitrarily deep, we can't
+                        * just take the first subcode - we need to descend until
+                        * we find the correct parent
+                        */
+                        while (parent_subcode &&
+                            axiom_soap_fault_sub_code_get_base_node(parent_subcode, env) != parent_node) {
+
+                            parent_subcode = axiom_soap_fault_sub_code_get_sub_code(parent_subcode, env);
+                        }
+                        if(!parent_subcode)
+                        {
+                            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                                "found null when searching for parent subcode");
                             return AXIS2_FAILURE;
                         }
 
