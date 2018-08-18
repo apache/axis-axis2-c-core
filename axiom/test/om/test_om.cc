@@ -32,31 +32,10 @@
 #include <axiom_xml_writer.h>
 #include <axutil_env.h>
 
-
-int AXIS2_CALL
-read_input(
-    char *buffer,
-    int size,
-    void *ctx)
-{
-    int len = 0;
-    char *pos = NULL;
-    len = fread(buffer, sizeof(char), size, (FILE*)ctx);
-    if (buffer)
-        pos = strstr(buffer, "---");
-    if (pos)
-    {
-        len = pos - buffer;
-        *pos = '\0';
-    }
-    return len;
-}
-
 /* FIXME 
  * These tests exercise code, but don't actually check that the output is
  * correct.  They didn't when they were in the old test format, either.
  */
-
 
 class TestOM: public ::testing::Test
 {
@@ -86,11 +65,9 @@ class TestOM: public ::testing::Test
 
 };
 
-
 TEST_F(TestOM, test_om_build) {
 
-    const char *filename = "../resources/xml/om/test.xml";
-
+    char *filename = "../resources/xml/om/test.xml";
 
     FILE *f = NULL;
     axiom_element_t *ele1 = NULL;
@@ -109,13 +86,9 @@ TEST_F(TestOM, test_om_build) {
     char *buffer = NULL;
     axutil_hash_t* hash = NULL;
 
-    f = fopen(filename, "r");
-    ASSERT_NE(f, nullptr);
-
     /** create pull parser */
     reader =
-        axiom_xml_reader_create_for_io(m_env, read_input, NULL, f,
-                                       NULL);
+        axiom_xml_reader_create_for_file(m_env, filename, NULL);
     ASSERT_NE(reader, nullptr);
 
      /** create axiom_stax_builder by parsing pull_parser struct */
@@ -258,14 +231,9 @@ TEST_F(TestOM, test_om_build) {
 
     axiom_output_free(om_output, m_env);
 
-    //axiom_stax_builder_free(builder, m_env);
+    axiom_stax_builder_free(builder, m_env);
 
-/*     if (buffer) */
-
-/*         AXIS2_FREE(m_env->allocator, buffer); */
     printf("\nend test_om_build\n");
-    fclose(f);
-    return;
 }
 
 
@@ -371,7 +339,8 @@ TEST_F(TestOM, test_om_serialize) {
 
     printf("\nend test_om_serialize\n");
 
-    return;
+    axiom_namespace_free(ns1, m_env);
+    axiom_namespace_free(ns2, m_env);
 }
 
 
@@ -411,13 +380,16 @@ TEST_F(TestOM, test_attr_special_chars)
      char * attribute;
      axiom_node_t * node;
      axiom_node_t * deserialized_node;
+     axiom_attribute_t * attr;
      axiom_element_t * element = axiom_element_create(m_env, NULL, "el", ns, &node);
 
      axiom_element_set_text(element, m_env, "T1 & T2", node);
-     axiom_element_add_attribute(element, m_env, axiom_attribute_create(m_env, "name", "A1 & A2", NULL), node);
+     attr = axiom_attribute_create(m_env, "name", "A1 & A2", NULL);
+     axiom_element_add_attribute(element, m_env, attr, node);
 
      axis2_char_t * xml = axiom_node_to_string(node, m_env);
 
+     //TODO with libxml2, the order of the attrs is different, so this test fails.
      ASSERT_STREQ(xml, "<ns:el xmlns:ns=\"namespace\" name=\"A1 &amp; A2\">T1 &amp; T2</ns:el>");
 
      deserialized_node = axiom_node_create_from_buffer(m_env, xml);
@@ -429,4 +401,38 @@ TEST_F(TestOM, test_attr_special_chars)
 
      ASSERT_STREQ(attribute, "A1 & A2");
      ASSERT_STREQ(text, "T1 & T2");
+
+     axiom_node_free_tree(deserialized_node, m_env);
+     axiom_node_free_tree(node, m_env);
+     axiom_namespace_free(ns, m_env);
+     AXIS2_FREE(m_allocator, xml);
+}
+
+TEST_F(TestOM, test_attribute)
+{
+    axiom_attribute_t *attr;
+    axiom_namespace_t * ns1;
+    axiom_namespace_t * ns2;
+
+    ns1 = axiom_namespace_create(m_env, "urn:123456", "abc");
+    ASSERT_NE(ns1, nullptr);
+
+    attr = axiom_attribute_create(m_env, "foo", "bar", ns1);
+    ASSERT_NE(attr, nullptr);
+
+    ASSERT_STREQ("foo", axiom_attribute_get_localname(attr, m_env));
+    ASSERT_STREQ("bar", axiom_attribute_get_value(attr, m_env));
+    ns2 = axiom_attribute_get_namespace(attr, m_env);
+    ASSERT_STREQ("abc", axiom_namespace_get_prefix(ns2, m_env));
+    ASSERT_STREQ("urn:123456", axiom_namespace_get_uri(ns2, m_env));
+
+
+
+    //TODO set/check name, value, namespace
+    //TODO set/check string functions?
+    //TODO test clone
+
+    //TODO free?  Also trace down other invalid free(s) in test (per valgrind)
+
+
 }
