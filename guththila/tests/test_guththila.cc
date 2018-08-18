@@ -78,6 +78,7 @@ TEST_F(TestGuththila, test_start_element) {
     ASSERT_NE(p, nullptr);
     ASSERT_EQ(c, GUTHTHILA_START_ELEMENT);
     ASSERT_STREQ(p, "root");
+    AXIS2_FREE(m_allocator, p);
     c = 0;
 
     while((c != GUTHTHILA_START_ELEMENT))
@@ -87,6 +88,7 @@ TEST_F(TestGuththila, test_start_element) {
     ASSERT_NE(p, nullptr);
     ASSERT_EQ(c, GUTHTHILA_START_ELEMENT);
     ASSERT_STREQ(p, "a");
+    AXIS2_FREE(m_allocator, p);
 
     c = 0;
     while((c != GUTHTHILA_START_ELEMENT))
@@ -95,6 +97,7 @@ TEST_F(TestGuththila, test_start_element) {
     p = guththila_get_name(m_parser, m_env);
     ASSERT_NE(p, nullptr);
     ASSERT_STREQ(p, "b");
+    AXIS2_FREE(m_allocator, p);
 }
 
 TEST_F(TestGuththila, test_empty_element) {
@@ -117,6 +120,7 @@ TEST_F(TestGuththila, test_empty_element) {
 
     ASSERT_EQ(c, GUTHTHILA_EMPTY_ELEMENT);
     ASSERT_STREQ(p, "a.1");
+    AXIS2_FREE(m_allocator, p);
 
     c = 0;
 
@@ -128,6 +132,7 @@ TEST_F(TestGuththila, test_empty_element) {
 
     ASSERT_EQ(c, GUTHTHILA_EMPTY_ELEMENT);
     ASSERT_STREQ(p, "a.2");
+    AXIS2_FREE(m_allocator, p);
 
     c = 0;
     while((c != GUTHTHILA_START_ELEMENT))
@@ -142,6 +147,7 @@ TEST_F(TestGuththila, test_empty_element) {
 
     ASSERT_EQ(c, GUTHTHILA_EMPTY_ELEMENT);
     ASSERT_STREQ(p, "b.1");
+    AXIS2_FREE(m_allocator, p);
 
 }
 
@@ -166,6 +172,7 @@ TEST_F(TestGuththila, test_end_element) {
 
     ASSERT_EQ(c, GUTHTHILA_END_ELEMENT);
     ASSERT_STREQ(p, "a");
+    AXIS2_FREE(m_allocator, p);
 
     c = 0;
     while((c != GUTHTHILA_END_ELEMENT))
@@ -176,6 +183,7 @@ TEST_F(TestGuththila, test_end_element) {
 
     ASSERT_EQ(c, GUTHTHILA_END_ELEMENT);
     ASSERT_STREQ(p, "b");
+    AXIS2_FREE(m_allocator, p);
 
     c = 0;
     while((c != GUTHTHILA_END_ELEMENT))
@@ -186,6 +194,7 @@ TEST_F(TestGuththila, test_end_element) {
 
     ASSERT_EQ(c, GUTHTHILA_END_ELEMENT);
     ASSERT_STREQ(p, "root");
+    AXIS2_FREE(m_allocator, p);
 }
 
 TEST_F(TestGuththila, test_character) {
@@ -211,6 +220,7 @@ TEST_F(TestGuththila, test_character) {
         p = guththila_get_value(m_parser, m_env);
     ASSERT_NE(p, nullptr);
     ASSERT_STREQ(p, "3");
+    AXIS2_FREE(m_allocator, p);
 
     c = 0;
     while(c != GUTHTHILA_CHARACTER)
@@ -218,4 +228,5 @@ TEST_F(TestGuththila, test_character) {
     p = guththila_get_value(m_parser, m_env);
     ASSERT_NE(p, nullptr);
     ASSERT_STREQ(p, "24");
+    AXIS2_FREE(m_allocator, p);
 }
