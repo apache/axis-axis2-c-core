@@ -59,6 +59,7 @@ TEST_F(TestAttribute, test_attribute) {
     int count = 0;
     int c = 0;
     guththila_attr_t *att;
+    char * str;
 
     m_reader = guththila_reader_create_for_file("resources/om/evaluate.xml", m_env);
     ASSERT_NE(m_reader, nullptr);
@@ -72,13 +73,22 @@ TEST_F(TestAttribute, test_attribute) {
         /* FIXME:  This is potentially an infinite loop */
         c = guththila_next(m_parser, m_env);
         count = guththila_get_attribute_count(m_parser, m_env);
-        if (count)
+        if (count) {
             att = guththila_get_attribute(m_parser, m_env);
+            str = guththila_get_attribute_name(m_parser, att, m_env);
+            if (strcmp("color", str) != 0) {
+                AXIS2_FREE(m_allocator, att);
+            }
+            AXIS2_FREE(m_allocator, str);
+        }
     }
 
     ASSERT_NE(count, 0);
-    ASSERT_STREQ(guththila_get_attribute_name(m_parser, att, m_env), "color");
-    ASSERT_STREQ(guththila_get_attribute_value(m_parser, att, m_env), "brown");
+    ASSERT_STREQ(str = guththila_get_attribute_name(m_parser, att, m_env), "color");
+    AXIS2_FREE(m_allocator, str);
+    ASSERT_STREQ(str = guththila_get_attribute_value(m_parser, att, m_env), "brown");
+    AXIS2_FREE(m_allocator, str);
+    AXIS2_FREE(m_allocator, att);
 
     guththila_reader_free(m_reader, m_env);
     m_reader = nullptr;
@@ -87,12 +97,12 @@ TEST_F(TestAttribute, test_attribute) {
 
 }
 
-
 TEST_F(TestAttribute, test_attribute_prefix) {
 
     int count = 0;
     int c = 0;
     guththila_attr_t *att;
+    char * str;
 
     m_reader = guththila_reader_create_for_file("resources/soap/soapmessage.xml", m_env);
     ASSERT_NE(m_reader, nullptr);
@@ -106,14 +116,24 @@ TEST_F(TestAttribute, test_attribute_prefix) {
         /* FIXME:  This is potentially an infinite loop */
         c = guththila_next(m_parser, m_env);
         count = guththila_get_attribute_count(m_parser, m_env);
-        if (count)
+        if (count) {
             att = guththila_get_attribute(m_parser, m_env);
+            str = guththila_get_attribute_name(m_parser, att, m_env);
+            if (strcmp("mustUnderstand", str) != 0) {
+                AXIS2_FREE(m_allocator, att);
+            }
+            AXIS2_FREE(m_allocator, str);
+        }
     }
 
     ASSERT_NE(count, 0);
-    ASSERT_STREQ(guththila_get_attribute_prefix(m_parser, att, m_env), "soapenv");
-    ASSERT_STREQ(guththila_get_attribute_name(m_parser, att, m_env), "mustUnderstand");
-    ASSERT_STREQ(guththila_get_attribute_value(m_parser, att, m_env), "0");
+    ASSERT_STREQ(str = guththila_get_attribute_prefix(m_parser, att, m_env), "soapenv");
+    AXIS2_FREE(m_allocator, str);
+    ASSERT_STREQ(str = guththila_get_attribute_name(m_parser, att, m_env), "mustUnderstand");
+    AXIS2_FREE(m_allocator, str);
+    ASSERT_STREQ(str = guththila_get_attribute_value(m_parser, att, m_env), "0");
+    AXIS2_FREE(m_allocator, str);
+    AXIS2_FREE(m_allocator, att);
 
     count = 0;
     while(!count)
@@ -121,13 +141,23 @@ TEST_F(TestAttribute, test_attribute_prefix) {
         /* FIXME:  This is potentially an infinite loop */
         c = guththila_next(m_parser, m_env);
         count = guththila_get_attribute_count(m_parser, m_env);
-        if (count)
+        if (count) {
             att = guththila_get_attribute(m_parser, m_env);
+            str = guththila_get_attribute_name(m_parser, att, m_env);
+            if (strcmp("mustUnderstand", str) != 0) {
+                AXIS2_FREE(m_allocator, att);
+            }
+            AXIS2_FREE(m_allocator, str);
+        }
     }
     ASSERT_NE(count, 0);
-    ASSERT_STREQ(guththila_get_attribute_prefix(m_parser, att, m_env), "soapenv");
-    ASSERT_STREQ(guththila_get_attribute_name(m_parser, att, m_env), "mustUnderstand");
-    ASSERT_STREQ(guththila_get_attribute_value(m_parser, att, m_env), "0");
+    ASSERT_STREQ(str = guththila_get_attribute_prefix(m_parser, att, m_env), "soapenv");
+    AXIS2_FREE(m_allocator, str);
+    ASSERT_STREQ(str = guththila_get_attribute_name(m_parser, att, m_env), "mustUnderstand");
+    AXIS2_FREE(m_allocator, str);
+    ASSERT_STREQ(str = guththila_get_attribute_value(m_parser, att, m_env), "0");
+    AXIS2_FREE(m_allocator, str);
+    AXIS2_FREE(m_allocator, att);
 
     guththila_reader_free(m_reader, m_env);
     m_reader = nullptr;
@@ -142,6 +172,7 @@ TEST_F(TestAttribute, test_deserialize_special_chars)
 
     int c = 0;
     guththila_attr_t *att;
+    char * str;
 
     const char * xml = "<ns:el xmlns:ns=\"namespace\" name=\"A1 &amp; A2\">T1 &amp; T2</ns:el>";
 
@@ -155,13 +186,18 @@ TEST_F(TestAttribute, test_deserialize_special_chars)
     att = guththila_get_attribute(m_parser, m_env);
     ASSERT_NE(att, nullptr);
 
-    ASSERT_STREQ(guththila_get_attribute_name(m_parser, att, m_env), "name");
-    ASSERT_STREQ(guththila_get_attribute_value(m_parser, att, m_env), "A1 & A2");
+    ASSERT_STREQ(str = guththila_get_attribute_name(m_parser, att, m_env), "name");
+    AXIS2_FREE(m_allocator, str);
+    ASSERT_STREQ(str = guththila_get_attribute_value(m_parser, att, m_env), "A1 & A2");
+    AXIS2_FREE(m_allocator, str);
+    AXIS2_FREE(m_allocator, att);
 
-    ASSERT_STREQ(guththila_get_name(m_parser, m_env), "el");
+    ASSERT_STREQ(str = guththila_get_name(m_parser, m_env), "el");
+    AXIS2_FREE(m_allocator, str);
 
     c = guththila_next(m_parser, m_env);
-    ASSERT_STREQ(guththila_get_value(m_parser, m_env), "T1 & T2");
+    ASSERT_STREQ(str = guththila_get_value(m_parser, m_env), "T1 & T2");
+    AXIS2_FREE(m_allocator, str);
 
     guththila_reader_free(m_reader, m_env);
     m_reader = nullptr;
@@ -172,8 +208,12 @@ TEST_F(TestAttribute, test_deserialize_special_chars)
 /* AXIS2C-1627 */
 TEST_F(TestAttribute, test_serialize_special_chars)
 {
+    //Because m_parser is allocated in Setup, but we're not using it here.
+    AXIS2_FREE(m_allocator, m_parser);
+
     char buffer[BUF_SIZE];
     const char * xml = "<ns:el xmlns:ns=\"namespace\" name=\"A1 &amp; A2\">T1 &amp; T2</ns:el>";
+    char * str;
 
     guththila_xml_writer_t * writer = nullptr;
 
@@ -184,8 +224,7 @@ TEST_F(TestAttribute, test_serialize_special_chars)
     guththila_write_characters(writer, "T1 & T2", m_env);
     guththila_write_end_element(writer, m_env);
 
-    ASSERT_STREQ(guththila_get_memory_buffer(writer, m_env), xml);
+    ASSERT_STREQ(str = guththila_get_memory_buffer(writer, m_env), xml);
 
     guththila_xml_writer_free(writer, m_env);
-
 }
