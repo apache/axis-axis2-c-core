@@ -222,8 +222,19 @@ axiom_soap_fault_sub_code_set_value(
     return AXIS2_FAILURE;
 }
 
+/* Deprecated - use axiom_soap_fault_sub_code_get_sub_code */
+/* TODO remove in 2.0 */
 AXIS2_EXTERN axiom_soap_fault_sub_code_t *AXIS2_CALL
 axiom_soap_fault_sub_code_get_subcode(
+    axiom_soap_fault_sub_code_t * fault_sub_code,
+    const axutil_env_t * env)
+{
+    return axiom_soap_fault_sub_code_get_sub_code(fault_sub_code, env);
+}
+
+
+AXIS2_EXTERN axiom_soap_fault_sub_code_t *AXIS2_CALL
+axiom_soap_fault_sub_code_get_sub_code(
     axiom_soap_fault_sub_code_t * fault_sub_code,
     const axutil_env_t * env)
 {
