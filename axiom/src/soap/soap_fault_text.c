@@ -128,7 +128,15 @@ axiom_soap_fault_text_free(
     const axutil_env_t * env)
 {
 
+    /*
+     * Investigation of the call stack shows that namespace_free is never
+     * getting called for this namespace, whether or not the namespace was
+     * used.  This results in a memory leak.  Removing the used check should
+     * in theory result in a double free, but doesn't.
+     * TODO: figure out the underlying problem and fix it
     if(fault_text->lang_ns_used == AXIS2_FALSE && fault_text->lang_namespace)
+    */
+    if(fault_text->lang_namespace)
     {
         axiom_namespace_free(fault_text->lang_namespace, env);
         fault_text->lang_namespace = NULL;
