@@ -100,6 +100,7 @@ TEST_F(TestEngine, test_engine_send)
     axis2_conf_ctx_free(conf_ctx, m_env);
     axis2_msg_ctx_free(msg_ctx, m_env);
     axutil_qname_free(qname, m_env);
+    axis2_svc_grp_free(svc_grp, m_env);
     axis2_svc_grp_ctx_free(svc_grp_ctx, m_env);
     axis2_svc_ctx_free(svc_ctx, m_env);
     axis2_svc_free(svc, m_env);

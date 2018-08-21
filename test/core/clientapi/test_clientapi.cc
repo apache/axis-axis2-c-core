@@ -136,6 +136,8 @@ build_om_payload_for_echo_svc(
         axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
     axiom_element_set_text(text_om_ele, env, echo_text, text_om_node);
 
+    axiom_namespace_free(ns1, env);
+
     return echo_om_node;
 }
 

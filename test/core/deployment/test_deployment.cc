@@ -108,7 +108,7 @@ TEST_F(TestDeployment, test_dep_engine_load)
                 void *op = NULL;
                 axis2_char_t *oname = NULL;
                 printf("ops count = %d\n", axutil_hash_count(ops));
- 
+
                 for (hi2 = axutil_hash_first(ops, m_env); hi2;
                      hi2 = axutil_hash_next(m_env, hi2))
                 {
@@ -163,6 +163,7 @@ TEST_F(TestDeployment, test_transport_receiver_load)
     axutil_dll_desc_set_type(dll_desc, m_env, AXIS2_TRANSPORT_RECV_DLL);
     impl_info_param = axutil_param_create(m_env, NULL, NULL);
     axutil_param_set_value(impl_info_param, m_env, dll_desc);
+    axutil_param_set_value_free(impl_info_param, m_env, axutil_dll_desc_free_void_arg);
     axutil_class_loader_init(m_env);
     transport_recv =
         (axis2_transport_receiver_t *) axutil_class_loader_create_dll(m_env,
@@ -170,18 +171,26 @@ TEST_F(TestDeployment, test_transport_receiver_load)
     ASSERT_NE(transport_recv, nullptr);
     is_running = axis2_transport_receiver_is_running(transport_recv, m_env);
     printf("is_running:%d\n", is_running);
-    AXIS2_FREE(m_env->allocator, dll_name);
     printf("transport receiver load test successful\n");
-}
 
+    /* TODO wrap this in something cleaner? */
+    DELETE_FUNCT delete_funct = axutil_dll_desc_get_delete_funct(dll_desc, m_env);
+    if (delete_funct)
+    {
+        delete_funct(transport_recv, m_env);
+    }
+
+    AXIS2_FREE(m_env->allocator, dll_name);
+    axutil_param_free(impl_info_param, m_env);
+}
 
 TEST_F(TestDeployment, test_transport_sender_load)
 {
     axutil_dll_desc_t *dll_desc = NULL;
     axis2_char_t *dll_name = NULL;
-    /*axis2_transport_sender_t *transport_sender = NULL;*/
     axutil_param_t *impl_info_param = NULL;
     axis2_char_t *axis2c_home = NULL;
+    axis2_transport_sender_t *transport_send = NULL;
 
     printf("******************************************\n");
     printf("testing axis2_transport_sender load\n");
@@ -196,12 +205,19 @@ TEST_F(TestDeployment, test_transport_sender_load)
     axutil_dll_desc_set_type(dll_desc, m_env, AXIS2_TRANSPORT_SENDER_DLL);
     impl_info_param = axutil_param_create(m_env, NULL, NULL);
     axutil_param_set_value(impl_info_param, m_env, dll_desc);
+    axutil_param_set_value_free(impl_info_param, m_env, axutil_dll_desc_free_void_arg);
     axutil_class_loader_init(m_env);
-    /*    transport_sender =
-        (axis2_transport_sender_t *) */axutil_class_loader_create_dll(m_env,
-                                                                    impl_info_param);
+    transport_send = (axis2_transport_sender_t *) axutil_class_loader_create_dll(m_env, impl_info_param);
+
+    /* TODO wrap this in something cleaner? */
+    DELETE_FUNCT delete_funct = axutil_dll_desc_get_delete_funct(dll_desc, m_env);
+    if (delete_funct)
+    {
+        delete_funct(transport_send, m_env);
+    }
 
     AXIS2_FREE(m_env->allocator, dll_name);
+    axutil_param_free(impl_info_param, m_env);
     printf("transport sender load test successful\n");
 }
 
@@ -252,6 +268,7 @@ TEST_F(TestDeployment, test_default_module_version)
                                                       axis2_conf_get_all_modules
                                                       (axis_conf, m_env),
                                                       axis_conf);
+
     def_mod = axis2_conf_get_default_module(axis_conf, m_env, "module1");
     ASSERT_EQ(def_mod, module1);
     def_mod = axis2_conf_get_default_module(axis_conf, m_env, "module2-0.92");
@@ -308,6 +325,7 @@ TEST_F(TestDeployment, test_default_module_version)
     ASSERT_NE(found1, AXIS2_FALSE);
     ASSERT_NE(found2, AXIS2_FALSE);
     ASSERT_NE(found3, AXIS2_FALSE);
+
     axis2_conf_free(axis_conf, m_env);
     ASSERT_EQ(m_env->error->status_code, AXIS2_SUCCESS);
 }

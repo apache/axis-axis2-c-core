@@ -82,6 +82,7 @@ TEST_F(TestHTTPTransport, test_http_request_line)
            axis2_http_request_line_get_http_version(request_line, m_env));
 
     axis2_http_request_line_free(request_line, m_env);
+    AXIS2_FREE(m_env->allocator, request_line_str);
     printf("Finished http_request_line tests ..........\n\n");
 }
 
@@ -113,7 +114,7 @@ TEST_F(TestHTTPTransport, test_http_header)
 {
     const char *header_name = "Content-Type";
     const char *header_value = "text/xml";
-    const char *str_header = (const char*) axutil_strdup(m_env,"Content-Type: text/xml; charset=UTF-8\r\n");
+    char *str_header = (char *)axutil_strdup(m_env,"Content-Type: text/xml; charset=UTF-8\r\n");
     axis2_http_header_t *http_header;
     axis2_char_t *external_form = NULL;
 
@@ -130,6 +131,8 @@ TEST_F(TestHTTPTransport, test_http_header)
     axis2_http_header_free(http_header, m_env);
 
     http_header = axis2_http_header_create_by_str(m_env, str_header);
+    axis2_http_header_free(http_header, m_env);
+    AXIS2_FREE(m_env->allocator, str_header);
     printf("Finished http_header tests ..........\n\n");
 }
 
@@ -151,9 +154,10 @@ TEST_F(TestHTTPTransport, test_url)
     axutil_url_free(url, m_env);
 }
 
-/* Note: This test fails unless you have a deployed axis2c instance running the
+/* Note: This test fails unless you have a deployed axis2c instance with the
  * echo service on the appropriate port, and AXIS2C_HOME defined in your
- * environment */
+ * environment.
+ */
 TEST_F(TestHTTPTransport, test_http_client)
 {
     axis2_http_client_t *client = NULL;

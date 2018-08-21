@@ -85,6 +85,9 @@ TEST_F(TestDescription, test_op_engage_module)
     ASSERT_EQ(m_env->error->status_code, AXIS2_SUCCESS);
 
     axis2_op_free(op, m_env);
+    axis2_conf_free(conf, m_env);
+    axis2_module_desc_free(moduleref, m_env);
+    axutil_qname_free(qname, m_env);
 }
 
 TEST_F(TestDescription, test_svc_add_module_ops)
@@ -115,6 +118,7 @@ TEST_F(TestDescription, test_svc_add_module_ops)
     axis2_svc_free(svc, m_env);
     axis2_module_desc_free(module_desc, m_env);
     axis2_conf_free(axis2_config, m_env);
+    axutil_qname_free(qname, m_env);
 }
 
 TEST_F(TestDescription, test_svc_engage_module)
@@ -138,24 +142,28 @@ TEST_F(TestDescription, test_svc_engage_module)
 
     axis2_svc_free(svc, m_env);
     axis2_conf_free(axis2_config, m_env);
+    axis2_module_desc_free(moduleref, m_env);
+    axutil_qname_free(qname, m_env);
 }
 
 TEST_F(TestDescription, test_svc_get_op)
 {
     struct axis2_svc *svc = NULL;
     struct axutil_qname *qname = NULL;
+    struct axutil_qname *qname1 = NULL;
+    struct axutil_qname *qname2 = NULL;
     struct axutil_hash_t *ops = NULL;
     struct axis2_op *op = NULL;
 
     qname = axutil_qname_create(m_env, "op1", NULL, NULL);
     op = axis2_op_create_with_qname(m_env, qname);
-    qname = axutil_qname_create(m_env, "svc1", NULL, NULL);
-    svc = axis2_svc_create_with_qname(m_env, qname);
+    qname1 = axutil_qname_create(m_env, "svc1", NULL, NULL);
+    svc = axis2_svc_create_with_qname(m_env, qname1);
 
     axis2_svc_add_op(svc, m_env, op);
 
-    qname = axutil_qname_create(m_env, "op2", NULL, NULL);
-    op = axis2_op_create_with_qname(m_env, qname);
+    qname2 = axutil_qname_create(m_env, "op2", NULL, NULL);
+    op = axis2_op_create_with_qname(m_env, qname2);
     axis2_svc_add_op(svc, m_env, op);
 
     ops = axis2_svc_get_all_ops(svc, m_env);
@@ -190,5 +198,10 @@ TEST_F(TestDescription, test_svc_get_op)
     else
         printf("ops count = zero\n");
     ASSERT_EQ(m_env->error->status_code, AXIS2_SUCCESS);
+
+    axis2_svc_free(svc, m_env);
+    axutil_qname_free(qname, m_env);
+    axutil_qname_free(qname1, m_env);
+    axutil_qname_free(qname2, m_env);
 
 }

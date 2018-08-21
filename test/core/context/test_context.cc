@@ -83,7 +83,7 @@ TEST_F(TestContext, test_conf_ctx_init)
 
     conf_ctx = axis2_conf_ctx_create(m_env, conf);
     ASSERT_NE(conf_ctx, nullptr);
-	
+
     svc_grp1 = axis2_svc_grp_create(m_env);
     ASSERT_NE(svc_grp1, nullptr);
     svc_grp2 = axis2_svc_grp_create(m_env);
@@ -141,9 +141,9 @@ TEST_F(TestContext, test_conf_ctx_init)
 
     if (svc_grp_ctx_map)
     {
-        axutil_hash_set(svc_ctx_map, "svc_grp_ctx1", AXIS2_HASH_KEY_STRING,
+        axutil_hash_set(svc_grp_ctx_map, "svc_grp_ctx1", AXIS2_HASH_KEY_STRING,
                         svc_grp_ctx1);
-        axutil_hash_set(svc_ctx_map, "svc_grp_ctx2", AXIS2_HASH_KEY_STRING,
+        axutil_hash_set(svc_grp_ctx_map, "svc_grp_ctx2", AXIS2_HASH_KEY_STRING,
                         svc_grp_ctx2);
     }
 
@@ -153,6 +153,14 @@ TEST_F(TestContext, test_conf_ctx_init)
 	/*
     CUT_ASSERT_INT_EQUAL(env->error->status_code, AXIS2_SUCCESS, 0);
     */
+
+    axutil_qname_free(qname1, m_env);
+    axutil_qname_free(qname2, m_env);
+    axis2_op_free(op, m_env);
+    axis2_svc_grp_free(svc_grp1, m_env);
+    axis2_svc_grp_free(svc_grp2, m_env);
+    axis2_svc_free(svc1, m_env);
+    axis2_svc_free(svc2, m_env);
 
     axis2_conf_ctx_free(conf_ctx, m_env);
 }
