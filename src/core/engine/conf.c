@@ -1684,6 +1684,8 @@ axis2_conf_get_default_module(
     ret_mod = (axis2_module_desc_t *)axutil_hash_get(all_modules, axutil_qname_to_string(mod_qname,
         env), AXIS2_HASH_KEY_STRING);
 
+    axutil_qname_free(mod_qname, env);
+
     return ret_mod;
 }
 
