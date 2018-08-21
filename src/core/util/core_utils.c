@@ -352,30 +352,44 @@ axis2_core_utils_calculate_default_module_version(
                         if(module_ver_str && AXIS2_TRUE == axis2_core_utils_is_latest_mod_ver(env,
                             module_ver_str, current_def_ver))
                         {
+                            axis2_char_t *old_ver = NULL;
+                            old_ver = axutil_hash_get(default_modules,
+                                                      module_name_str,
+                                                      AXIS2_HASH_KEY_STRING);
+                            if (old_ver) {
+                                AXIS2_FREE(env->allocator, old_ver);
+                                old_ver = NULL;
+                            }
                             axutil_hash_set(default_modules, module_name_str,
                                 AXIS2_HASH_KEY_STRING, module_ver_str);
+                            AXIS2_FREE(env->allocator, module_name_str);
+                            module_name_str = NULL;
                         }
                         else
                         {
                             if(module_name_str)
                             {
                                 AXIS2_FREE(env->allocator, module_name_str);
+                                module_name_str = NULL;
                             }
                             if(module_ver_str)
                             {
                                 AXIS2_FREE(env->allocator, module_ver_str);
+                                module_ver_str = NULL;
                             }
                         }
                     }
                     else
                     {
-                        axutil_hash_set(default_modules, module_name_str, AXIS2_HASH_KEY_STRING,
-                            module_ver_str);
-                    }
-
-                    if(module_name_str)
-                    {
-                        AXIS2_FREE(env->allocator, module_name_str);
+                        if (module_ver_str)
+                        {
+                            axutil_hash_set(default_modules, module_name_str, AXIS2_HASH_KEY_STRING,
+                                module_ver_str);
+                        }
+                        else
+                        {
+                                AXIS2_FREE(env->allocator, module_name_str);
+                        }
                     }
                 }
             }
@@ -395,6 +409,12 @@ axis2_core_utils_calculate_default_module_version(
                 (axis2_char_t *)val);
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Added default module"
                 " version : %s for module : %s", (axis2_char_t *)val, (axis2_char_t *)key_string);
+            AXIS2_FREE(env->allocator, val);
+            /* the key stored in the hash is the dynamically allocated module_name,
+             * so to avoid a memleak we have to free it before freeing the hash.
+             * TODO: find a better way to deal with this
+             */
+            AXIS2_FREE(env->allocator, key_string);
         }
     }
 

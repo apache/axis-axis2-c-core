@@ -374,16 +374,21 @@ axis2_conf_free(
     if(conf->name_to_version_map)
     {
         axutil_hash_index_t *hi = NULL;
+        void *key = NULL;
         void *val = NULL;
         for(hi = axutil_hash_first(conf->name_to_version_map, env); hi; hi = axutil_hash_next(env,
             hi))
         {
             axis2_char_t *module_ver = NULL;
-            axutil_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, &key, NULL, &val);
             module_ver = (axis2_char_t *)val;
             if(module_ver)
             {
                 AXIS2_FREE(env->allocator, module_ver);
+            }
+            if(key)
+            {
+                AXIS2_FREE(env->allocator, key);
             }
         }
         axutil_hash_free(conf->name_to_version_map, env);
@@ -1713,7 +1718,14 @@ axis2_conf_add_default_module_version(
         {
             return AXIS2_FAILURE;
         }
-        axutil_hash_set(name_to_ver_map, module_name, AXIS2_HASH_KEY_STRING, new_entry);
+        axis2_char_t *new_name = axutil_strdup(env, module_name);
+        if(!new_entry)
+        {
+            AXIS2_FREE(env->allocator, new_entry);
+            return AXIS2_FAILURE;
+        }
+
+        axutil_hash_set(name_to_ver_map, new_name, AXIS2_HASH_KEY_STRING, new_entry);
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
