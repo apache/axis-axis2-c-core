@@ -503,7 +503,11 @@ axiom_xpath_equalexpr_operator(
         for (j = 0; j < n_nodes[i]; j++)
         {
             res_node =(axiom_xpath_result_node_t *)axutil_array_list_get(arr[i], context->env, j);
-            AXIS2_FREE(context->env->allocator, res_node);
+            if (res_node)
+            {
+                AXIS2_FREE(context->env->allocator, res_node);
+            }
+
         }
 
         axutil_array_list_free(arr[i], context->env);
@@ -576,9 +580,8 @@ axiom_xpath_step_operator(
 
     if(op->op1 == AXIOM_XPATH_PARSE_END)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf("Node test operator empty\n");
-#endif
+        AXIS2_LOG_ERROR(context->env->log, AXIS2_LOG_SI,
+        	"Node test operator empty");
 
         return AXIOM_XPATH_EVALUATION_ERROR;
     }
@@ -594,9 +597,8 @@ axiom_xpath_step_operator(
     /* Get the axis */
     if(!node_test_op->par2)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf("axis is NULL in the step operator\n");
-#endif
+        AXIS2_LOG_ERROR(context->env->log, AXIS2_LOG_SI,
+        	"axis is NULL in the step operator");
         return AXIOM_XPATH_EVALUATION_ERROR;
     }
     axis = *((axiom_xpath_axis_t *)node_test_op->par2);
@@ -657,11 +659,13 @@ axiom_xpath_evaluate_predicate_condition(
         {
             if(*(axis2_bool_t *)(res->value))
             {
+                AXIS2_FREE(context->env->allocator, res->value);
                 AXIS2_FREE(context->env->allocator, res);
                 return AXIS2_TRUE;
             }
             else
             {
+                AXIS2_FREE(context->env->allocator, res->value);
                 AXIS2_FREE(context->env->allocator, res);
                 return AXIS2_FALSE;
             }
@@ -742,10 +746,8 @@ axiom_xpath_node_test_match(
 
     if(!context->node && !context->attribute && !context->ns)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf("Both context node and attribute are NULL.");
-        printf(" May be a literal or a number.\n");
-#endif
+        AXIS2_LOG_ERROR(context->env->log, AXIS2_LOG_SI,
+        	"Both context node and attribute are NULL. May be a literal or a number.");
         return AXIS2_FALSE;
     }
     else if(context->node)
@@ -1012,9 +1014,8 @@ axiom_xpath_function_call_operator(
 
     if(!func)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf("Function %s not found\n", (char *)op->par1);
-#endif
+        AXIS2_LOG_ERROR(context->env->log, AXIS2_LOG_SI,
+        	"Function %s not found", (char *)op->par1);
 
         return AXIOM_XPATH_EVALUATION_ERROR;
     }

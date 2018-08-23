@@ -74,9 +74,7 @@ axiom_xpath_streaming_check_operation(
             return axiom_xpath_streaming_check_predicate(env, expr, op_p);
 
         default:
-#ifdef AXIOM_XPATH_DEBUG
-            printf("Unidentified operation.\n");
-#endif
+			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unidentified operation.");
 
             return AXIOM_XPATH_STREAMING_NOT_SUPPORTED;
     }
@@ -112,9 +110,7 @@ axiom_xpath_streaming_check_node_test(
 
     if(!op->par2)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf("axis is NULL in the step operator\n");
-#endif
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "axis is NULL in the step operator");
         return AXIOM_XPATH_STREAMING_NOT_SUPPORTED;
     }
 

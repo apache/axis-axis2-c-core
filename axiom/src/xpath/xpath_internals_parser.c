@@ -28,9 +28,7 @@ axiom_xpath_compile(
 {
     if(!expr || !expr->expr_str)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf("Expression in NULL.\n");
-#endif
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Expression in NULL.");
 
         return AXIS2_FAILURE;
     }
@@ -49,9 +47,7 @@ axiom_xpath_compile(
     }
     else
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf("Expression successfully parsed\n");
-#endif
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Expression successfully parsed");
 
         return AXIOM_XPATH_PARSE_SUCCESS;
     }
@@ -74,11 +70,9 @@ axiom_xpath_compile_orexpr(
 
     if(op1 == AXIOM_XPATH_PARSE_ERROR)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: AndEpxr expected - %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            "Parse error: AndEpxr expected - %s",
             expr->expr_str + expr->expr_ptr);
-#endif
 
         return AXIOM_XPATH_PARSE_ERROR;
     }
@@ -94,11 +88,9 @@ axiom_xpath_compile_orexpr(
 
         if(op2 == AXIOM_XPATH_PARSE_ERROR)
         {
-#ifdef AXIOM_XPATH_DEBUG
-            printf(
-                "Parse error: AndEpxr expected - %s\n",
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Parse error: AndEpxr expected - %s",
                 expr->expr_str + expr->expr_ptr);
-#endif
 
             return AXIOM_XPATH_PARSE_ERROR;
         }
@@ -128,11 +120,9 @@ axiom_xpath_compile_andexpr(
 
     if(op1 == AXIOM_XPATH_PARSE_ERROR)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: EqualityExpr expected - %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+             "Parse error: EqualityExpr expected - %s",
             expr->expr_str + expr->expr_ptr);
-#endif
 
         return AXIOM_XPATH_PARSE_ERROR;
     }
@@ -148,11 +138,9 @@ axiom_xpath_compile_andexpr(
 
         if(op2 == AXIOM_XPATH_PARSE_ERROR)
         {
-#ifdef AXIOM_XPATH_DEBUG
-            printf(
-                "Parse error: EqualityExpr expected - %s\n",
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            	"Parse error: EqualityExpr expected - %s",
                 expr->expr_str + expr->expr_ptr);
-#endif
 
             return AXIOM_XPATH_PARSE_ERROR;
         }
@@ -182,11 +170,9 @@ axiom_xpath_compile_equalexpr(
 
     if(op1 == AXIOM_XPATH_PARSE_ERROR)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: UnionExpr expected - %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: UnionExpr expected - %s",
             expr->expr_str + expr->expr_ptr);
-#endif
 
         return AXIOM_XPATH_PARSE_ERROR;
     }
@@ -201,11 +187,9 @@ axiom_xpath_compile_equalexpr(
 
         if(op2 == AXIOM_XPATH_PARSE_ERROR)
         {
-#ifdef AXIOM_XPATH_DEBUG
-            printf(
-                "Parse error: UnionExpr expected - %s\n",
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            	"Parse error: UnionExpr expected - %s",
                 expr->expr_str + expr->expr_ptr);
-#endif
 
             return AXIOM_XPATH_PARSE_ERROR;
         }
@@ -235,11 +219,9 @@ axiom_xpath_compile_union(
 
     if(op1 == AXIOM_XPATH_PARSE_ERROR)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: PathExpr expected - %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: PathExpr expected - %s",
             expr->expr_str + expr->expr_ptr);
-#endif
 
         return AXIOM_XPATH_PARSE_ERROR;
     }
@@ -254,11 +236,9 @@ axiom_xpath_compile_union(
 
         if(op2 == AXIOM_XPATH_PARSE_ERROR)
         {
-#ifdef AXIOM_XPATH_DEBUG
-            printf(
-                "Parse error: UnionExpr expected - %s\n",
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            	"Parse error: UnionExpr expected - %s",
                 expr->expr_str + expr->expr_ptr);
-#endif
 
             return AXIOM_XPATH_PARSE_ERROR;
         }
@@ -306,22 +286,18 @@ axiom_xpath_compile_filter(
     }
     else if(AXIOM_XPATH_CURRENT == '$')
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: Variables are not supported, yet -  %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: Variables are not supported, yet -  %s",
             expr->expr_str + expr->expr_ptr);
-#endif
     }
     else
     {
         return axiom_xpath_compile_function_call(env, expr);
     }
 
-#ifdef AXIOM_XPATH_DEBUG
-    printf(
-        "Parse error: Invalid Filter expression -  %s\n",
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+    	"Parse error: Invalid Filter expression -  %s",
         expr->expr_str + expr->expr_ptr);
-#endif
 
     return AXIOM_XPATH_PARSE_ERROR;
     /* TODO: functions and variables */
@@ -339,11 +315,9 @@ axiom_xpath_path_compile_path_expression_filter(
 
     if(op_filter == AXIOM_XPATH_PARSE_ERROR)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: FilterExpr expected -  %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: FilterExpr expected -  %s",
             expr->expr_str + expr->expr_ptr);
-#endif
 
         return AXIOM_XPATH_PARSE_ERROR;
     }
@@ -358,11 +332,9 @@ axiom_xpath_path_compile_path_expression_filter(
 
         if(op_next == AXIOM_XPATH_PARSE_ERROR)
         {
-#ifdef AXIOM_XPATH_DEBUG
-            printf(
-                "Parse error: RelativeLocation expected -  %s\n",
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            	"Parse error: RelativeLocation expected -  %s",
                 expr->expr_str + expr->expr_ptr);
-#endif
 
             return AXIOM_XPATH_PARSE_ERROR;
         }
@@ -377,11 +349,9 @@ axiom_xpath_path_compile_path_expression_filter(
 
         if(op_next == AXIOM_XPATH_PARSE_ERROR)
         {
-#ifdef AXIOM_XPATH_DEBUG
-            printf(
-                "Parse error: RelativeLocation expected -  %s\n",
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            	"Parse error: RelativeLocation expected -  %s",
                 expr->expr_str + expr->expr_ptr);
-#endif
 
             return AXIOM_XPATH_PARSE_ERROR;
         }
@@ -473,11 +443,9 @@ axiom_xpath_compile_location_path(
 
             if(op1 == AXIOM_XPATH_PARSE_ERROR)
             {
-#ifdef AXIOM_XPATH_DEBUG
-                printf(
-                    "Parse error: RelativeLocation expected -  %s\n",
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                	"Parse error: RelativeLocation expected -  %s",
                     expr->expr_str + expr->expr_ptr);
-#endif
 
                 return AXIOM_XPATH_PARSE_ERROR;
             }
@@ -493,11 +461,9 @@ axiom_xpath_compile_location_path(
 
             if(op1 == AXIOM_XPATH_PARSE_ERROR)
             {
-#ifdef AXIOM_XPATH_DEBUG
-                printf(
-                    "Parse error: RelativeLocation expected -  %s\n",
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                	"Parse error: RelativeLocation expected -  %s",
                     expr->expr_str + expr->expr_ptr);
-#endif
 
                 return AXIOM_XPATH_PARSE_ERROR;
             }
@@ -511,11 +477,9 @@ axiom_xpath_compile_location_path(
 
         if(op1 == AXIOM_XPATH_PARSE_ERROR)
         {
-#ifdef AXIOM_XPATH_DEBUG
-            printf(
-                "Parse error: RelativeLocation expected -  %s\n",
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            	"Parse error: RelativeLocation expected -  %s",
                 expr->expr_str + expr->expr_ptr);
-#endif
 
             return AXIOM_XPATH_PARSE_ERROR;
         }
@@ -523,11 +487,9 @@ axiom_xpath_compile_location_path(
 
     if(op1 == AXIOM_XPATH_PARSE_ERROR)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: RelativeLocation expected -  %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: RelativeLocation expected -  %s",
             expr->expr_str + expr->expr_ptr);
-#endif
 
         return AXIOM_XPATH_PARSE_ERROR;
     }
@@ -553,11 +515,9 @@ axiom_xpath_compile_relative_location(
 
     if(op_step == AXIOM_XPATH_PARSE_ERROR)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: Step expected -  %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: Step expected -  %s",
             expr->expr_str + expr->expr_ptr);
-#endif
 
         return AXIOM_XPATH_PARSE_ERROR;
     }
@@ -572,11 +532,9 @@ axiom_xpath_compile_relative_location(
 
         if(op_next == AXIOM_XPATH_PARSE_ERROR)
         {
-#ifdef AXIOM_XPATH_DEBUG
-            printf(
-                "Parse error: RelativeLocation expected -  %s\n",
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            	"Parse error: RelativeLocation expected -  %s",
                 expr->expr_str + expr->expr_ptr);
-#endif
 
             return AXIOM_XPATH_PARSE_ERROR;
         }
@@ -591,11 +549,9 @@ axiom_xpath_compile_relative_location(
 
         if(op_next == AXIOM_XPATH_PARSE_ERROR)
         {
-#ifdef AXIOM_XPATH_DEBUG
-            printf(
-                "Parse error: RelativeLocation expected -  %s\n",
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            	"Parse error: RelativeLocation expected -  %s",
                 expr->expr_str + expr->expr_ptr);
-#endif
 
             return AXIOM_XPATH_PARSE_ERROR;
         }
@@ -618,7 +574,7 @@ axiom_xpath_compile_step(
     axiom_xpath_expression_t* expr)
 {
     int op_predicate = AXIOM_XPATH_PARSE_END;
-    axiom_xpath_node_test_t *node_test;
+    axiom_xpath_node_test_t *node_test = NULL;
     int temp_ptr;
     axis2_char_t *name = NULL;
     axiom_xpath_axis_t axis = AXIOM_XPATH_AXIS_NONE;
@@ -667,10 +623,8 @@ axiom_xpath_compile_step(
 
                 if(axis == AXIOM_XPATH_AXIS_NONE)
                 {
-#ifdef AXIOM_XPATH_DEBUG
-                    printf("Parse error: Invalid axis -  %s\n", name);
-#endif
-
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                    	"Parse error: Invalid axis -  %s", name);
                     return AXIOM_XPATH_PARSE_ERROR;
                 }
 
@@ -680,14 +634,13 @@ axiom_xpath_compile_step(
             else
             {
                 axis = AXIOM_XPATH_AXIS_CHILD;
-
                 expr->expr_ptr = temp_ptr;
             }
+
         }
         else
         {
             axis = AXIOM_XPATH_AXIS_CHILD;
-
             expr->expr_ptr = temp_ptr;
         }
     }
@@ -696,11 +649,9 @@ axiom_xpath_compile_step(
 
     if(!node_test)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: NodeTest expected -  %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: NodeTest expected -  %s",
             expr->expr_str + expr->expr_ptr);
-#endif
 
         return AXIOM_XPATH_PARSE_ERROR;
     }
@@ -709,11 +660,9 @@ axiom_xpath_compile_step(
 
     if(op_predicate == AXIOM_XPATH_PARSE_ERROR)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: Predicate expected -  %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: Predicate expected -  %s",
             expr->expr_str + expr->expr_ptr);
-#endif
 
         AXIS2_FREE(env->allocator, node_test);
         return AXIOM_XPATH_PARSE_ERROR;
@@ -750,11 +699,9 @@ axiom_xpath_compile_node_test(
 
     if(!name)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: NCName expected -  %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: NCName expected -  %s",
             expr->expr_str + expr->expr_ptr);
-#endif
 
         AXIS2_FREE(env->allocator, node_test);
 
@@ -784,16 +731,15 @@ axiom_xpath_compile_node_test(
         if(axutil_strcmp(name, "text") == 0)
         {
             node_test->type = AXIOM_XPATH_NODE_TYPE_TEXT;
+            node_test->name = name;
         }
 
         AXIOM_XPATH_SKIP_WHITESPACES;
 
         if(node_test->type == AXIOM_XPATH_NODE_TEST_NONE || AXIOM_XPATH_CURRENT != ')')
         {
-#ifdef AXIOM_XPATH_DEBUG
-            printf("Parse error: Invalid node type -  %s\n", name);
-#endif
-
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+            	"Parse error: Invalid node type -  %s", name);
             AXIS2_FREE(env->allocator, node_test);
 
             return NULL;
@@ -824,11 +770,9 @@ axiom_xpath_compile_node_test(
 
             if(!node_test->name)
             {
-#ifdef AXIOM_XPATH_DEBUG
-                printf(
-                    "Parse error: NCName expected -  %s\n",
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                	"Parse error: NCName expected -  %s",
                     expr->expr_str + expr->expr_ptr);
-#endif
 
                 AXIS2_FREE(env->allocator, node_test);
 
@@ -856,23 +800,18 @@ axiom_xpath_compile_function_call(
 
     if(!name)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: NCName expected -  %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: NCName expected -  %s",
             expr->expr_str + expr->expr_ptr);
-#endif
 
         return AXIOM_XPATH_PARSE_ERROR;
     }
 
     if(AXIOM_XPATH_CURRENT != '(')
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: '(' expected -  %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: '(' expected -  %s",
             expr->expr_str + expr->expr_ptr);
-#endif
-
         return AXIOM_XPATH_PARSE_ERROR;
     }
 
@@ -887,12 +826,9 @@ axiom_xpath_compile_function_call(
 
     if(AXIOM_XPATH_CURRENT != ')')
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: ')' expected -  %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: ')' expected -  %s",
             expr->expr_str + expr->expr_ptr);
-#endif
-
         return AXIOM_XPATH_PARSE_ERROR;
     }
 
@@ -1036,7 +972,7 @@ axiom_xpath_compile_literal(
 
     lit[i] = '\0';
 
-    return axutil_strdup(env, lit);
+    return lit;
 
 }
 
@@ -1100,9 +1036,7 @@ axiom_xpath_get_axis(
     }
     else
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf("Unidentified axis name.\n");
-#endif
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Unidentified axis name.");
 
         return AXIOM_XPATH_AXIS_NONE;
     }
@@ -1135,11 +1069,9 @@ axiom_xpath_compile_predicate(
 
     if(op1 == AXIOM_XPATH_PARSE_ERROR)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: EqualExpr expected -  %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: EqualExpr expected -  %s",
             expr->expr_str + expr->expr_ptr);
-#endif
 
         return AXIOM_XPATH_PARSE_ERROR;
     }
@@ -1148,11 +1080,9 @@ axiom_xpath_compile_predicate(
 
     if(AXIOM_XPATH_CURRENT != ']')
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: ] expected -  %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: ] expected -  %s",
             expr->expr_str + expr->expr_ptr);
-#endif
 
         return AXIOM_XPATH_PARSE_ERROR;
     }
@@ -1163,11 +1093,9 @@ axiom_xpath_compile_predicate(
 
     if(op_next_predicate == AXIOM_XPATH_PARSE_ERROR)
     {
-#ifdef AXIOM_XPATH_DEBUG
-        printf(
-            "Parse error: Predicate expected -  %s\n",
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+        	"Parse error: Predicate expected -  %s",
             expr->expr_str + expr->expr_ptr);
-#endif
 
         return AXIOM_XPATH_PARSE_ERROR;
     }
