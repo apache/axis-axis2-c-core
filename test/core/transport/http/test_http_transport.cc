@@ -277,14 +277,14 @@ TEST_F(TestHTTPTransport, test_https_client)
                status);
         return;
     }
-    status = axis2_http_client_recieve_header(client, m_env);
+    status = axis2_http_client_receive_header(client, m_env);
     ASSERT_GE(status, 0);
     if (status < 0)
     {
         printf("Test FAILED ......... Can't recieve. Status: %d\n", status);
         return;
     }
-    response = axis2_http_client_get_response(client, env);
+    response = axis2_http_client_get_response(client, m_env);
     ASSERT_NE(response, nullptr);
     if (!response)
     {
