@@ -298,7 +298,11 @@ axis2_apache2_worker_process_request(
     out_stream = axutil_stream_create_basic(env);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Client HTTP version %s", http_version);
 
+#if (AP_SERVER_MAJORVERSION_NUMBER == 2 && AP_SERVER_MINORVERSION_NUMBER >= 4)
+    peer_ip = request->connection->client_ip;
+#else
     peer_ip = request->connection->remote_ip;
+#endif
 
     if(peer_ip)
     {
