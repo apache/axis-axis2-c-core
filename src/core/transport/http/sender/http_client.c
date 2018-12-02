@@ -885,6 +885,12 @@ axis2_http_client_connect_ssl_host(
             {
                 end_of_response = AXIS2_TRUE;
             }
+            else
+            {
+                end_of_line == AXIS2_FALSE;
+                memset(str_status_line, 0, AXIS2_HTTP_STATUS_LINE_LENGTH);
+            }
+
         }
     }
     AXIS2_FREE(env->allocator, connect_string);
