@@ -404,15 +404,19 @@ axiom_xpath_compile_path_expression(
             /* If node type */
             if(axutil_strcmp(name, node_types[i]) == 0)
             {
+                AXIS2_FREE(env->allocator, name);
                 return axiom_xpath_compile_location_path(env, expr);
             }
         }
 
+        AXIS2_FREE(env->allocator, name);
         return axiom_xpath_path_compile_path_expression_filter(env, expr);
     }
 
     expr->expr_ptr = temp_ptr;
 
+    if(name)
+        AXIS2_FREE(env->allocator, name);
     return axiom_xpath_compile_location_path(env, expr);
 }
 
@@ -625,6 +629,7 @@ axiom_xpath_compile_step(
                 {
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                     	"Parse error: Invalid axis -  %s", name);
+                    AXIS2_FREE(env->allocator, name);
                     return AXIOM_XPATH_PARSE_ERROR;
                 }
 
@@ -636,6 +641,7 @@ axiom_xpath_compile_step(
                 axis = AXIOM_XPATH_AXIS_CHILD;
                 expr->expr_ptr = temp_ptr;
             }
+            AXIS2_FREE(env->allocator, name);
 
         }
         else
@@ -740,6 +746,7 @@ axiom_xpath_compile_node_test(
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
             	"Parse error: Invalid node type -  %s", name);
+            AXIS2_FREE(env->allocator, name);
             AXIS2_FREE(env->allocator, node_test);
 
             return NULL;
@@ -829,6 +836,7 @@ axiom_xpath_compile_function_call(
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
         	"Parse error: ')' expected -  %s",
             expr->expr_str + expr->expr_ptr);
+        AXIS2_FREE(env->allocator, name);
         return AXIOM_XPATH_PARSE_ERROR;
     }
 
@@ -972,7 +980,10 @@ axiom_xpath_compile_literal(
 
     lit[i] = '\0';
 
-    return lit;
+    if (strlen(lit))
+        return axutil_strdup(env, lit);
+    else
+    return NULL;
 
 }
 
@@ -1129,7 +1140,10 @@ axiom_xpath_compile_ncname(
 
     name[i] = '\0';
 
-    return name;
+    if (strlen(name))
+        return axutil_strdup(env, name);
+    else
+        return NULL;
 }
 
 /* Supporting functions */

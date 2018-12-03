@@ -369,6 +369,7 @@ void output_results(const axutil_env_t *env,
 
                 sprintf(temp_res, "\"%s\"\n", result_str);
                 strcat(result_set, temp_res);
+                AXIS2_FREE(env->allocator, result_str);
             }
         }
         else if (xpath_result_node->type == AXIOM_XPATH_TYPE_ATTRIBUTE)

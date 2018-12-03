@@ -393,6 +393,12 @@ axiom_xpath_free_context(
             context->namespaces = NULL;
         }
 
+        if(context->attribute)
+        {
+            axiom_attribute_free(context->attribute, context->env);
+            context->attribute = NULL;
+        }
+
         AXIS2_FREE(env->allocator, context);
     }
 }
@@ -403,6 +409,11 @@ axiom_xpath_free_expression(
     const axutil_env_t *env,
     axiom_xpath_expression_t * xpath_expr)
 {
+    int num = 0;
+    int i = 0;
+    axiom_xpath_operation_t * op = NULL;
+    axiom_xpath_node_test_t * node_test = NULL;
+
     if (xpath_expr)
     {
         if (xpath_expr->expr_str)
@@ -414,20 +425,57 @@ axiom_xpath_free_expression(
 
         if (xpath_expr->operations)
         {
-            axiom_xpath_operation_t *op = NULL;
-            while(axutil_array_list_size(xpath_expr->operations, env)) {
-                op = axutil_array_list_remove(xpath_expr->operations, env, 0);
-                if (op->par1)
-                    AXIS2_FREE(env->allocator, op->par1);
-                if (op->par2)
-                    AXIS2_FREE(env->allocator, op->par2);
-                AXIS2_FREE(env->allocator, op);
+            num = axutil_array_list_size(xpath_expr->operations, env);
+            for (i=0; i<num; i++)
+            {
+                op = (axiom_xpath_operation_t *) axutil_array_list_get(xpath_expr->operations, env, i);
+                if (op)
+                {
+                    if(op->opr)
+                    {
+                        if (op->opr != AXIOM_XPATH_OPERATION_LITERAL)
+                        {
+                            if ((op->par1) && (op->par1 != AXIOM_XPATH_PARSE_END))
+                            {
+                                node_test = (axiom_xpath_node_test_t *)op->par1;
+                                if (node_test)
+                                {
+                                    if (node_test->type >= 1 && node_test->type <= 6)
+                                    {
+                                        if (node_test->name)
+                                        {
+                                            AXIS2_FREE(env->allocator, node_test->name);
+                                        }
+
+                                        if (node_test->prefix)
+                                        {
+                                            AXIS2_FREE(env->allocator, node_test->prefix);
+                                        }
+
+                                        if (node_test->lit)
+                                        {
+                                            AXIS2_FREE(env->allocator, node_test->lit);
+                                        }
+                                    }
+                                } 
+                            }
+                        }
+                        AXIS2_FREE(env->allocator, op->par1);
+                    }
+
+                    if ((op->par2) && (op->par2 != AXIOM_XPATH_PARSE_END))
+                    {
+                        AXIS2_FREE(env->allocator, op->par2);
+                    }
+                    AXIS2_FREE(env->allocator, op);
+                }
             }
             axutil_array_list_free(xpath_expr->operations, env);
             xpath_expr->operations = NULL;
         }
 
         AXIS2_FREE(env->allocator, xpath_expr);
+        xpath_expr = NULL;
     }
 }
 
@@ -444,7 +492,19 @@ axiom_xpath_free_result(
             axiom_xpath_result_node_t *node = NULL;
             while(axutil_array_list_size(result->nodes, env)) {
                 node = axutil_array_list_remove(result->nodes, env, 0);
-                AXIS2_FREE(env->allocator, node);
+                if (node)
+                {
+                    if (node->value)
+                    {
+                        if (node->type != AXIOM_XPATH_TYPE_NODE &&
+                            node->type != AXIOM_XPATH_TYPE_ATTRIBUTE &&
+                            node->type != AXIOM_XPATH_TYPE_NAMESPACE)
+                        {
+                            AXIS2_FREE(env->allocator, node->value);
+                        }
+                    }
+                    AXIS2_FREE(env->allocator, node);
+                }
             }
             axutil_array_list_free(result->nodes, env);
         }

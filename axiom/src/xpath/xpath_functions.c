@@ -37,7 +37,7 @@ axiom_xpath_function_count(
 
     for(i = 0; i < np; i++)
     {
-        axutil_stack_pop(context->stack, context->env);
+        AXIS2_FREE(context->env->allocator, axutil_stack_pop(context->stack, context->env));
     }
 
     axutil_stack_push(context->stack, context->env, node);

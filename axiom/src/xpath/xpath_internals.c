@@ -27,6 +27,9 @@ axiom_xpath_expression_copy(
     int i;
     axiom_xpath_operation_t *op;
 
+    if (context->expr)
+        axiom_xpath_free_expression(context->env, context->expr);
+
     context->expr = expr;
 
     /* Set value of pos in every operation to 0 */
