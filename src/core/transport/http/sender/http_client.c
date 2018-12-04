@@ -819,6 +819,7 @@ axis2_http_client_connect_ssl_host(
     axutil_stream_t *tmp_stream = NULL;
     axis2_char_t *connect_string = NULL;
     axis2_char_t str_status_line[AXIS2_HTTP_STATUS_LINE_LENGTH];
+    axis2_char_t str_header[AXIS2_HTTP_HEADER_LENGTH];
     axis2_char_t tmp_buf[3];
     int read = 0;
     axis2_bool_t end_of_line = AXIS2_FALSE;
@@ -889,12 +890,13 @@ axis2_http_client_connect_ssl_host(
     if(200 != axis2_http_status_line_get_status_code(status_line, env))
     {
         AXIS2_FREE(env->allocator, connect_string);
+        axis2_http_status_line_free(status_line, env);
         axutil_stream_free(tmp_stream, env);
         return AXIS2_FAILURE;
     }
     /* We need to empty the stream before we return
      */
-    memset(str_status_line, 0, AXIS2_HTTP_STATUS_LINE_LENGTH);
+    memset(str_header, 0, AXIS2_HTTP_HEADER_LENGTH);
     unsigned int str_header_length = 0;
     while(AXIS2_FALSE == end_of_response)
     {
@@ -909,8 +911,8 @@ axis2_http_client_connect_ssl_host(
                 end_of_line = AXIS2_TRUE;
                 break;
             }
-            strcat(str_status_line, tmp_buf);
-            if(0 != strstr(str_status_line, AXIS2_HTTP_CRLF))
+            strcat(str_header, tmp_buf);
+            if(0 != strstr(str_header, AXIS2_HTTP_CRLF))
             {
                 end_of_line = AXIS2_TRUE;
                 break;
@@ -918,19 +920,20 @@ axis2_http_client_connect_ssl_host(
         }
         if(AXIS2_TRUE == end_of_line)
         {
-            if(0 == axutil_strcmp(str_status_line, AXIS2_HTTP_CRLF))
+            if(0 == axutil_strcmp(str_header, AXIS2_HTTP_CRLF))
             {
                 end_of_response = AXIS2_TRUE;
             }
             else
             {
                 end_of_line == AXIS2_FALSE;
-                memset(str_status_line, 0, AXIS2_HTTP_STATUS_LINE_LENGTH);
+                memset(str_header, 0, AXIS2_HTTP_HEADER_LENGTH);
             }
 
         }
     }
     AXIS2_FREE(env->allocator, connect_string);
+    axis2_http_status_line_free(status_line, env);
     axutil_stream_free(tmp_stream, env);
     return AXIS2_SUCCESS;
 }
