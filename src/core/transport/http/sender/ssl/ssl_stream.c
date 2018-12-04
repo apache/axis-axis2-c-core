@@ -119,9 +119,15 @@ axis2_ssl_stream_free(
 {
     ssl_stream_impl_t *stream_impl = NULL;
     axutil_stream_t* stream = (axutil_stream_t*)streamv;
-    stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    axis2_ssl_utils_cleanup_ssl(env, stream_impl->ctx, stream_impl->ssl);
-    AXIS2_FREE(env->allocator, stream_impl);
+    if (stream)
+    {
+        stream_impl = AXIS2_INTF_TO_IMPL(stream);
+        if (stream_impl)
+        {
+            axis2_ssl_utils_cleanup_ssl(env, stream_impl->ctx, stream_impl->ssl);
+            AXIS2_FREE(env->allocator, stream_impl);
+        }
+    }
 
     return;
 }
