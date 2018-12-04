@@ -515,7 +515,13 @@ axis2_options_set_property(
     const axis2_char_t * property_key,
     const void *property)
 {
+	/* free old property */
+	axutil_property_t *old_property =
+		(axutil_property_t *)axutil_hash_get(
+			options->properties, property_key, AXIS2_HASH_KEY_STRING);
     axutil_hash_set(options->properties, property_key, AXIS2_HASH_KEY_STRING, property);
+    if (old_property)
+    	axutil_property_free(old_property, env);
     return AXIS2_SUCCESS;
 }
 
