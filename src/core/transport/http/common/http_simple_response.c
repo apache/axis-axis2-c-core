@@ -29,6 +29,7 @@ struct axis2_http_simple_response
     axis2_http_status_line_t *status_line;
     axutil_array_list_t *header_group;
     axutil_stream_t *stream;
+    axis2_bool_t stream_owned;
     axutil_array_list_t *mime_parts;
     axis2_char_t *mtom_sending_callback_name;
 };
@@ -62,6 +63,7 @@ axis2_http_simple_response_create(
         }
     }
     ret->stream = content;
+    ret->stream_owned = AXIS2_FALSE;
     return ret;
 }
 
@@ -122,7 +124,13 @@ axis2_http_simple_response_free(
         axutil_array_list_free(simple_response->mime_parts, env);
     }
 
-     /* Stream is not freed. Assumption : stream doesn't belong to the response */
+     /* Only free stream if we created it. */
+    if (simple_response->stream_owned == AXIS2_TRUE)
+    {
+        axutil_stream_free(simple_response->stream, env);
+        simple_response->stream = NULL;
+        simple_response->stream_owned = AXIS2_FALSE;
+    }
 
     AXIS2_FREE(env->allocator, simple_response);
 }
@@ -458,6 +466,7 @@ axis2_http_simple_response_set_body_string(
             return AXIS2_FAILURE;
         }
         simple_response->stream = body_stream;
+	simple_response->stream_owned = AXIS2_TRUE;
     }
     axutil_stream_write(body_stream, env, str, axutil_strlen(str));
     return AXIS2_SUCCESS;
