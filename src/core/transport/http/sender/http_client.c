@@ -32,7 +32,7 @@
 #include "ssl/ssl_stream.h"
 #endif
 
-#define AXIS2_HTTP_HEADER_LENGTH 1024
+#define AXIS2_HTTP_HEADER_LENGTH 4096
 #define AXIS2_HTTP_STATUS_LINE_LENGTH 512
 
 struct axis2_http_client
@@ -584,10 +584,19 @@ axis2_http_client_receive_header(
     do
     {
         memset(str_status_line, 0, AXIS2_HTTP_STATUS_LINE_LENGTH);
+        unsigned int str_status_line_length = 0;
         while((read = axutil_stream_read(client->data_stream, env, tmp_buf, 1)) > 0)
         {
             /* "read" variable is number of characters read by stream */
             tmp_buf[read] = '\0';
+            str_status_line_length += read;
+            if (str_status_line_length + 1 > AXIS2_HTTP_STATUS_LINE_LENGTH)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "reached maximum status line length %i",
+                        AXIS2_HTTP_STATUS_LINE_LENGTH);
+                end_of_line = AXIS2_TRUE;
+                break;
+            }
             strcat(str_status_line, tmp_buf);
             if(0 != strstr(str_status_line, AXIS2_HTTP_CRLF))
             {
@@ -635,12 +644,21 @@ str_status_line %s", str_status_line);
 
     /* now read the headers */
     memset(str_header, 0, AXIS2_HTTP_HEADER_LENGTH);
+    unsigned int str_header_length = 0;
     end_of_line = AXIS2_FALSE;
     while(AXIS2_FALSE == end_of_headers)
     {
         while((read = axutil_stream_read(client->data_stream, env, tmp_buf, 1)) > 0)
         {
             tmp_buf[read] = '\0';
+            str_header_length += read;
+            if (str_header_length + 1 > AXIS2_HTTP_HEADER_LENGTH)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "reached maximum header line length %i",
+                        AXIS2_HTTP_HEADER_LENGTH);
+                end_of_line = AXIS2_TRUE;
+                break;
+            }
             strcat(str_header, tmp_buf);
             if(0 != strstr(str_header, AXIS2_HTTP_CRLF))
             {
@@ -833,9 +851,19 @@ axis2_http_client_connect_ssl_host(
         * sizeof(axis2_char_t));
 
     memset(str_status_line, 0, AXIS2_HTTP_STATUS_LINE_LENGTH);
+    unsigned int str_status_line_length = 0;
+    end_of_line = AXIS2_FALSE;
     while((read = axutil_stream_read(tmp_stream, env, tmp_buf, 1)) > 0)
     {
         tmp_buf[read] = '\0';
+        str_status_line_length += read;
+        if (str_status_line_length + 1 > AXIS2_HTTP_STATUS_LINE_LENGTH)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "reached maximum status line length %i",
+                    AXIS2_HTTP_STATUS_LINE_LENGTH);
+            end_of_line = AXIS2_TRUE;
+            break;
+        }
         strcat(str_status_line, tmp_buf);
         if(0 != strstr(str_status_line, AXIS2_HTTP_CRLF))
         {
@@ -867,11 +895,20 @@ axis2_http_client_connect_ssl_host(
     /* We need to empty the stream before we return
      */
     memset(str_status_line, 0, AXIS2_HTTP_STATUS_LINE_LENGTH);
+    unsigned int str_header_length = 0;
     while(AXIS2_FALSE == end_of_response)
     {
         while((read = axutil_stream_read(tmp_stream, env, tmp_buf, 1)) > 0)
         {
             tmp_buf[read] = '\0';
+            str_header_length += read;
+            if (str_header_length + 1 > AXIS2_HTTP_HEADER_LENGTH)
+            {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "reached maximum header line length %i",
+                        AXIS2_HTTP_HEADER_LENGTH);
+                end_of_line = AXIS2_TRUE;
+                break;
+            }
             strcat(str_status_line, tmp_buf);
             if(0 != strstr(str_status_line, AXIS2_HTTP_CRLF))
             {
