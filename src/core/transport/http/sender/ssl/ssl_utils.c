@@ -18,6 +18,48 @@
 
 #include "ssl_utils.h"
 #include <openssl/err.h>
+
+
+/* compatibility functions for openssl < 1.1.0 */
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+
+STACK_OF(X509_OBJECT) * X509_STORE_get0_objects(X509_STORE *st)
+{
+    if (st)
+    {
+        return st->objs;
+    }
+    return NULL;
+};
+
+X509 * X509_OBJECT_get0_X509(const X509_OBJECT *obj)
+{
+    if (obj)
+    {
+        return (obj->data).x509;
+    }
+    return NULL;
+};
+
+void X509_get0_signature(const ASN1_BIT_STRING **psig,
+                         const X509_ALGOR **palg,
+                         const X509 *x)
+{
+    if (x) {
+        *psig = x->signature;
+        *palg = x->sig_alg;
+    }
+}
+
+int ASN1_STRING_cmp(const ASN1_BIT_STRING *a, const ASN1_BIT_STRING *b)
+{
+    return M_ASN1_BIT_STRING_cmp(a, b);
+}
+
+#endif
+
+
+
 BIO *bio_err = 0;
 
 static int
@@ -170,32 +212,44 @@ axis2_ssl_utils_initialize_ssl(
         X509 *client_cert = NULL;
 
         peer_cert = SSL_get_peer_certificate(ssl);
-        if (peer_cert && peer_cert->cert_info)
+        if (peer_cert)
         {
-            peer_name = (peer_cert->cert_info)->subject;
+            peer_name = X509_get_subject_name(peer_cert);
         }
 
         cert_store = SSL_CTX_get_cert_store(ctx);
         if (peer_name && cert_store)
         {
-            client_object = X509_OBJECT_retrieve_by_subject(cert_store->objs,
-                X509_LU_X509,
-                peer_name);
+            client_object = X509_OBJECT_retrieve_by_subject(
+                    X509_STORE_get0_objects(cert_store),
+                    X509_LU_X509,
+                    peer_name);
         }
+
         if (client_object)
         {
-            client_cert = (client_object->data).x509;
-            if (client_cert &&
-                (M_ASN1_BIT_STRING_cmp(client_cert->signature,
-                        peer_cert->signature) == 0))
+            client_cert = X509_OBJECT_get0_X509(client_object);
+            if (client_cert)
             {
-                if (peer_cert)
+                const ASN1_BIT_STRING *peer_sig = NULL;
+                const X509_ALGOR *peer_alg = NULL;
+
+                const ASN1_BIT_STRING *client_sig = NULL;
+                const X509_ALGOR *client_alg = NULL;
+
+                X509_get0_signature(&peer_sig, &peer_alg, peer_cert);
+                X509_get0_signature(&client_sig, &client_alg, client_cert);
+
+                if (ASN1_STRING_cmp(peer_sig, client_sig) == 0)
                 {
-                    X509_free(peer_cert);
+                    if (peer_cert)
+                    {
+                        X509_free(peer_cert);
+                    }
+                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                            "[ssl client] SSL certificate verified against peer");
+                    return ssl;
                 }
-                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                    "[ssl client] SSL certificate verified against peer");
-                return ssl;
             }
         }
         if (peer_cert)
