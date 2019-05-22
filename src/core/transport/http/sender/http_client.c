@@ -916,7 +916,7 @@ axis2_http_client_connect_ssl_host(
             }
             else
             {
-                end_of_line == AXIS2_FALSE;
+                end_of_line = AXIS2_FALSE;
                 memset(str_header, 0, AXIS2_HTTP_HEADER_LENGTH);
             }
 
