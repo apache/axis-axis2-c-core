@@ -274,6 +274,31 @@ axis2_ssl_utils_initialize_ssl(
             sslerror);
         return NULL;
     }
+    else {
+        /* X509_V_OK means verification succeeded or no peer cert was presented.
+         * We need to check which is the case, so let's see if there's a
+         * peer cert.
+         */
+        X509 *peer_cert = NULL;
+        peer_cert = SSL_get_peer_certificate(ssl);
+        if (peer_cert) {
+            /* if the caller passed a hostname, verify it against the cert */
+            if (host) {
+                if (X509_check_host(peer_cert, host, strlen(host), 0, NULL) == 1) {
+                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                            "[ssl client] peer name matches certificate CN/SAN");
+                } else {
+                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                            "[ssl client] peer name does not match certificate CN/SAN");
+                    X509_free(peer_cert);
+                    return NULL;
+                }
+            }
+
+            X509_free(peer_cert);
+        }
+
+    }
 
     return ssl;
 }
