@@ -243,19 +243,19 @@ axis2_ssl_utils_initialize_ssl(
 
                 if (ASN1_STRING_cmp(peer_sig, client_sig) == 0)
                 {
-                    /* if the caller passed a hostname, verify it against the cert */
-                    if (host) {
-                        if (X509_check_host(peer_cert, host, strlen(host), 0, NULL) == 1) {
-                            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                                    "[ssl client] peer name matches certificate CN/SAN");
-                        } else {
-                            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                                    "[ssl client] peer name does not match certificate CN/SAN");
-                            return NULL;
+                    if (peer_cert) {
+                        /* if the caller passed a hostname, verify it against the cert */
+                        if (host) {
+                            if (X509_check_host(peer_cert, host, strlen(host), 0, NULL) == 1) {
+                                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                                        "[ssl client] peer name matches certificate CN/SAN");
+                            } else {
+                                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                                        "[ssl client] peer name does not match certificate CN/SAN");
+                                X509_free(peer_cert);
+                                return NULL;
+                            }
                         }
-                    }
-                    if (peer_cert)
-                    {
                         X509_free(peer_cert);
                     }
                     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
