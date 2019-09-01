@@ -69,7 +69,8 @@ axutil_stream_create_ssl(
     axis2_socket_t socket,
     axis2_char_t * server_cert,
     axis2_char_t * key_file,
-    axis2_char_t * ssl_pp)
+    axis2_char_t * ssl_pp,
+    axis2_char_t * host)
 {
     ssl_stream_impl_t *stream_impl = NULL;
 
@@ -96,7 +97,7 @@ axutil_stream_create_ssl(
         return NULL;
     }
     stream_impl->ssl = axis2_ssl_utils_initialize_ssl(env, stream_impl->ctx,
-        stream_impl->socket);
+        stream_impl->socket, host);
     if (!stream_impl->ssl)
     {
         AXIS2_HANDLE_ERROR(env, AXIS2_ERROR_SSL_ENGINE, AXIS2_FAILURE);

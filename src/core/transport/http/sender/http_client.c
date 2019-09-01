@@ -52,6 +52,7 @@ struct axis2_http_client
     axis2_char_t *key_file;
     axis2_char_t *req_body;
     int req_body_size;
+    axis2_bool_t validate_ssl_hostname;
 
     /* These are for mtom case */
     axutil_array_list_t *mime_parts;
@@ -96,6 +97,11 @@ axis2_http_client_create(
     http_client->mime_parts = NULL;
     http_client->doing_mtom = AXIS2_FALSE;
     http_client->mtom_sending_callback_name = NULL;
+
+    /* TODO default this to false for now, but this should default
+     * to true in a future version (after 1.8)
+     */
+    http_client->validate_ssl_hostname = AXIS2_FALSE;
 
     return http_client;
 }
@@ -277,7 +283,8 @@ axis2_http_client_send(
 		if(!client->data_stream)
 			client->data_stream =
 			axutil_stream_create_ssl(env, client->sockfd, axis2_http_client_get_server_cert(client,
-                env), axis2_http_client_get_key_file(client, env), ssl_pp);
+                env), axis2_http_client_get_key_file(client, env), ssl_pp,
+                    client->validate_ssl_hostname == AXIS2_TRUE ? host : NULL);
 #else
         axutil_network_handler_close_socket(env, client->sockfd);
         client->sockfd = -1;
@@ -1052,3 +1059,22 @@ axis2_http_client_reset(
     }
     return AXIS2_SUCCESS;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_http_client_set_validate_ssl_hostname(
+        axis2_http_client_t * client,
+        const axutil_env_t * env,
+        axis2_bool_t validate_ssl_hostname)
+{
+    client->validate_ssl_hostname = validate_ssl_hostname;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_http_client_get_validate_ssl_hostname(
+        const axis2_http_client_t * client,
+        const axutil_env_t * env)
+{
+    return client->validate_ssl_hostname;
+}
+

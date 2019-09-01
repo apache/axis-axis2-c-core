@@ -38,7 +38,8 @@ extern "C"
         axis2_socket_t socket,
         axis2_char_t * server_cert,
         axis2_char_t * key_file,
-        axis2_char_t * ssl_pp);
+        axis2_char_t * ssl_pp,
+        axis2_char_t * host);
 
 	void AXIS2_CALL
 	axis2_ssl_stream_free(

@@ -271,6 +271,18 @@ extern "C"
         axis2_http_client_t * client,
         const axutil_env_t * env);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_client_set_validate_ssl_hostname(
+        axis2_http_client_t * client,
+        const axutil_env_t * env,
+        axis2_bool_t validate_host);
+
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_http_client_get_validate_ssl_hostname(
+        const axis2_http_client_t * client,
+        const axutil_env_t * env);
+
+
 
     /** @} */
 #ifdef __cplusplus
