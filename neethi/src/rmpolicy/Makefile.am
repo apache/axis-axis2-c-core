@@ -20,7 +20,7 @@ librm_policy_la_SOURCES = rm_assertion.c rm_assertion_builder.c
 
 librm_policy_la_LIBADD  = $(top_builddir)/../util/src/libaxutil.la
 
-INCLUDES = -I$(top_srcdir)/include \
-			-I $(top_srcdir)/../include \
-			-I $(top_srcdir)/../util/include \
-	        -I $(top_srcdir)/../axiom/include
+librm_policy_la_CPPFLAGS = -I$(top_srcdir)/include \
+						   -I $(top_srcdir)/../include \
+						   -I $(top_srcdir)/../util/include \
+						   -I $(top_srcdir)/../axiom/include

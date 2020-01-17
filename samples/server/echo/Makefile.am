@@ -20,4 +20,4 @@ noinst_HEADERS = echo.h
 SUBDIRS =
 libecho_la_SOURCES = echo.c echo_skeleton.c
 libecho_la_LIBADD  =
-INCLUDES = @AXIS2INC@
+libecho_la_CPPFLAGS = @AXIS2INC@

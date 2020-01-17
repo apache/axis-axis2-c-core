@@ -44,7 +44,7 @@ echo_non_blocking_dual_LDADD = $(LINK_FLAGS)
 echo_blocking_soap11_LDADD = $(LINK_FLAGS)
 echo_blocking_auth_LDADD = $(LINK_FLAGS)
 
-INCLUDES = @AXIS2INC@
+AM_CPPFLAGS = @AXIS2INC@
 
 EXTRA_DIST=echo_util.h echo_blocking_addr.mk echo_blocking.mk echo_non_blocking_dual.mk  echo_rest.mk echo_blocking_dual.mk echo_blocking_soap11.mk echo_non_blocking.mk echo_blocking_auth.mk
 

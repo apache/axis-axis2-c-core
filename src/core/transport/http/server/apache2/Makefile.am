@@ -18,7 +18,7 @@ libmod_axis2_la_SOURCES = mod_axis2.c\
                        apache2_out_transport_info.c\
                        apache2_worker.c
 
-AM_CFLAGS = -DLINUX=2 -D_REENTRANT -D_XOPEN_SOURCE=500 -D_BSD_SOURCE -D_SVID_SOURCE -D_GNU_SOURCE
+libmod_axis2_la_CFLAGS = -DLINUX=2 -D_REENTRANT -D_XOPEN_SOURCE=500 -D_BSD_SOURCE -D_SVID_SOURCE -D_GNU_SOURCE
 
 libmod_axis2_la_LIBADD   = $(LDFLAGS) \
 		     $(top_builddir)/axiom/src/om/libaxis2_axiom.la \
@@ -30,17 +30,17 @@ libmod_axis2_la_LIBADD   = $(LDFLAGS) \
 
 libmod_axis2_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES = -I$(top_srcdir)/include \
-	       -I$(top_srcdir)/src/core/transport/http \
-           -I$(top_srcdir)/src/core/description \
-           -I$(top_srcdir)/src/core/context \
-           -I$(top_srcdir)/src/core/phaseresolver \
-           -I$(top_srcdir)/src/core/engine \
-           -I$(top_srcdir)/src/core/deployment \
-           -I$(top_srcdir)/axiom/include\
-           -I$(top_srcdir)/util/include\
-            @APACHE2INC@ \
-            @APRINC@
+libmod_axis2_la_CPPFLAGS = -I$(top_srcdir)/include \
+						   -I$(top_srcdir)/src/core/transport/http \
+						   -I$(top_srcdir)/src/core/description \
+						   -I$(top_srcdir)/src/core/context \
+						   -I$(top_srcdir)/src/core/phaseresolver \
+						   -I$(top_srcdir)/src/core/engine \
+						   -I$(top_srcdir)/src/core/deployment \
+						   -I$(top_srcdir)/axiom/include\
+						   -I$(top_srcdir)/util/include\
+						   @APACHE2INC@ \
+						   @APRINC@
 
 EXTRA_DIST=axis2_apache2_worker.h apache2_stream.h axis2_apache2_out_transport_info.h
 

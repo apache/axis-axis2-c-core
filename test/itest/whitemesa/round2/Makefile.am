@@ -23,7 +23,7 @@ round2_LDADD   =    $(LDFLAGS) \
 					$(top_builddir)/modules/core/transport/http/sender/libaxis2_http_sender.la \
 					$(top_builddir)/modules/core/transport/http/receiver/libaxis2_http_receiver.la
 
-INCLUDES = -I$(top_builddir)/include \
-           -I ../../../../util/include \
-            -I ../../../../axiom/include
+round2_CPPFLAGS = -I$(top_builddir)/include \
+				  -I ../../../../util/include \
+				  -I ../../../../axiom/include
 

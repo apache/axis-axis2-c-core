@@ -21,14 +21,14 @@ libaxis2_amqp_request_processor_la_LIBADD = $(top_builddir)/util/src/libaxutil.l
 
 libaxis2_amqp_request_processor_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES = -I$(top_srcdir)/include \
-	       -I$(top_srcdir)/src/core/transport/amqp/receiver/qpid_receiver/request_processor \
-	       -I$(top_srcdir)/src/core/transport/amqp/util \
-           -I$(top_srcdir)/src/core/description \
-           -I$(top_srcdir)/src/core/context \
-           -I$(top_srcdir)/src/core/phaseresolver \
-           -I$(top_srcdir)/src/core/engine \
-           -I$(top_srcdir)/src/core/deployment \
-           -I$(top_srcdir)/util/include \
-           -I$(top_srcdir)/axiom/include
+libaxis2_amqp_request_processor_la_CPPFLAGS = -I$(top_srcdir)/include \
+											  -I$(top_srcdir)/src/core/transport/amqp/receiver/qpid_receiver/request_processor \
+											  -I$(top_srcdir)/src/core/transport/amqp/util \
+											  -I$(top_srcdir)/src/core/description \
+											  -I$(top_srcdir)/src/core/context \
+											  -I$(top_srcdir)/src/core/phaseresolver \
+											  -I$(top_srcdir)/src/core/engine \
+											  -I$(top_srcdir)/src/core/deployment \
+											  -I$(top_srcdir)/util/include \
+											  -I$(top_srcdir)/axiom/include
 

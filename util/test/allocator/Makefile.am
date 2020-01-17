@@ -23,9 +23,9 @@ allocator_test_LDADD   =   \
 					$(top_builddir)/$(GTEST)/libgtest_main.a
 
 
-INCLUDES = -I$(top_srcdir)/include \
-			-I ../../../axiom/include \
-			-I ../../../include \
-			-I $(GTEST_DIR)/include
+allocator_test_CPPFLAGS = -I$(top_srcdir)/include \
+						  -I ../../../axiom/include \
+						  -I ../../../include \
+						  -I $(GTEST_DIR)/include
 
 

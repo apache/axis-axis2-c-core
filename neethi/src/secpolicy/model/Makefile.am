@@ -25,10 +25,10 @@ librp_model_la_SOURCES = algorithmsuite.c asymmetric_binding.c \
 							trust10.c issued_token.c saml_token.c token.c
 
 
-librp_model_la_LIBADD  = ../../../../util/src/libaxutil.la
+librp_model_la_LIBADD  = $(top_builddir)/../util/src/libaxutil.la
 
 
-INCLUDES = -I$(top_srcdir)/include \
-			-I $(top_srcdir)/../include \
-			-I $(top_srcdir)/../util/include \
-	        -I $(top_srcdir)/../axiom/include
+librp_model_la_CPPFLAGS = -I$(top_srcdir)/include \
+						  -I $(top_srcdir)/../include \
+						  -I $(top_srcdir)/../util/include \
+						  -I $(top_srcdir)/../axiom/include

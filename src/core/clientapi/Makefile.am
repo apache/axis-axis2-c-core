@@ -14,18 +14,18 @@
 # limitations under the License.
 noinst_LTLIBRARIES = libaxis2_clientapi.la
 libaxis2_clientapi_la_SOURCES = async_result.c \
-                                callback.c \
-                                listener_manager.c \
-                                callback_recv.c \
-                                stub.c \
-				options.c \
-				op_client.c \
-				svc_client.c
+								callback.c \
+								listener_manager.c \
+								callback_recv.c \
+								stub.c \
+								options.c \
+								op_client.c \
+								svc_client.c
 
-INCLUDES = -I$(top_srcdir)/include \
-            -I$(top_srcdir)/src/core/engine \
-            -I$(top_srcdir)/src/core/deployment \
-            -I$(top_srcdir)/util/include \
-           -I$(top_srcdir)/util/include/platforms \
-            -I$(top_srcdir)/axiom/include \
-			-I$(top_srcdir)/neethi/include
+libaxis2_clientapi_la_CPPFLAGS = -I$(top_srcdir)/include \
+								 -I$(top_srcdir)/src/core/engine \
+								 -I$(top_srcdir)/src/core/deployment \
+								 -I$(top_srcdir)/util/include \
+								 -I$(top_srcdir)/util/include/platforms \
+								 -I$(top_srcdir)/axiom/include \
+								 -I$(top_srcdir)/neethi/include

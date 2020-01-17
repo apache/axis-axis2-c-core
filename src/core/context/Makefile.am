@@ -21,7 +21,7 @@ libaxis2_context_la_SOURCES =	ctx.c \
                             svc_grp_ctx.c \
                             conf_ctx.c
 
-INCLUDES = -I$(top_srcdir)/include \
-            -I$(top_srcdir)/src/core/engine \
-            -I$(top_srcdir)/util/include \
-            -I$(top_srcdir)/axiom/include
+libaxis2_context_la_CPPFLAGS = -I$(top_srcdir)/include \
+							   -I$(top_srcdir)/src/core/engine \
+							   -I$(top_srcdir)/util/include \
+							   -I$(top_srcdir)/axiom/include

@@ -20,4 +20,4 @@ noinst_HEADERS = math.h
 SUBDIRS =
 libmath_la_SOURCES = math.c math_skeleton.c
 libmath_la_LIBADD  =
-INCLUDES = @AXIS2INC@
+libmath_la_CPPFLAGS = @AXIS2INC@

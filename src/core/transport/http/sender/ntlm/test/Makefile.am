@@ -16,14 +16,17 @@ TESTS =
 SUBDIRS = mock_server
 noinst_PROGRAMS = test_ntlm mock_client
 check_PROGRAMS = test_ntlm mock_client
-AM_CFLAGS = -g -O2
 test_ntlm_SOURCES = client.c
 mock_client_SOURCES = mock_client.c
 
 LINK_FLAGS   =	$(top_builddir)/src/core/transport/http/sender/ntlm/$(NTLM_WRAPPER_DIR)/libaxis2_ntlm.la \
 					$(top_builddir)/util/src/libaxutil.la
 
+PREPROCESSOR_FLAGS = -I$(top_srcdir)/include \
+					 -I$(top_srcdir)/util/include
+
 test_ntlm_LDADD   =	$(LINK_FLAGS)
 mock_client_LDADD   =	$(LINK_FLAGS)
-INCLUDES = -I$(top_srcdir)/include \
-            -I$(top_srcdir)/util/include
+
+test_ntlm_CPPFLAGS   =	$(PREPROCESSOR_FLAGS)
+mock_client_CPPFLAGS   =	$(PREPROCESSOR_FLAGS)

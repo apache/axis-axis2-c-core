@@ -34,6 +34,6 @@ Calculator_LDADD   = $(LDFLAGS) \
                     -laxis2_http_receiver \
                     $(GUTHTHILA_LIBS)
 
-INCLUDES = -I$(AXIS2C_HOME)/include \
-			@UTILINC@ \
-			@AXIOMINC@
+Calculator_CPPFLAGS = -I$(AXIS2C_HOME)/include \
+					  @UTILINC@ \
+					  @AXIOMINC@

@@ -26,6 +26,6 @@ google_LDADD   =    $(LDFLAGS) \
                     -laxis2_http_receiver \
                     $(GUTHTHILA_LIBS)
 
-INCLUDES = @AXIS2INC@
+google_CPPFLAGS = @AXIS2INC@
 
 EXTRA_DIST=README.txt google.mk

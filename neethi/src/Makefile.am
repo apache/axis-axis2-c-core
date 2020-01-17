@@ -33,35 +33,11 @@ libneethi_la_LIBADD  = $(top_builddir)/../axiom/src/om/libaxis2_axiom.la \
 			$(top_builddir)/src/secpolicy/model/librp_model.la \
 			$(top_builddir)/src/rmpolicy/librm_policy.la
 
-#libneethi_LIBADD=$(top_builddir)/src/core/description/libaxis2_description.la \
-#                    $(top_builddir)/src/core/receivers/libaxis2_receivers.la \
-#					$(top_builddir)/src/core/deployment/libaxis2_deployment.la \
-#					$(top_builddir)/src/core/context/libaxis2_context.la \
-#					$(top_builddir)/src/core/addr/libaxis2_addr.la \
-#					$(top_builddir)/src/core/clientapi/libaxis2_clientapi.la \
-#					$(top_builddir)/src/core/phaseresolver/libaxis2_phaseresolver.la \
-#					$(top_builddir)/src/core/util/libaxis2_core_utils.la \
-#					$(top_builddir)/src/core/transport/http/common/libaxis2_http_common.la \
-#					$(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la \
-#					$(top_builddir)/util/src/libaxutil.la \
-#					$(top_builddir)/axiom/src/om/libaxis2_axiom.la 
-
 
 libneethi_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES = -I$(top_srcdir)/include \
-		-I $(top_srcdir)/../util/include \
-		-I $(top_srcdir)/../axiom/include \
-		-I $(top_srcdir)/../include
-
-#            -I$(top_builddir)/src/wsdl \
-#            -I$(top_builddir)/src/core/description \
-#            -I$(top_builddir)/src/core/engine \
-#            -I$(top_builddir)/src/core/phaseresolver \
-#            -I$(top_builddir)/src/core/deployment \
-#            -I$(top_builddir)/src/core/context \
-#            -I$(top_builddir)/src/core/util \
-#            -I$(top_builddir)/src/core/clientapi \
-#            -I$(top_builddir)/util/include \
-#            -I$(top_builddir)/axiom/include
+libneethi_la_CPPFLAGS = -I$(top_srcdir)/include \
+						-I $(top_srcdir)/../util/include \
+						-I $(top_srcdir)/../axiom/include \
+						-I $(top_srcdir)/../include
 

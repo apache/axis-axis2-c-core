@@ -32,6 +32,6 @@ axis2_echoFloatArrayResponse.c  axis2_echoString.c \
 axis2_echoFloat.c               axis2_echoStringResponse.c
 
 libInteropTestPortTypeDocService_la_LIBADD  =
-INCLUDES = -I$(AXIS2C_HOME)/include \
-			@UTILINC@ \
-			@AXIOMINC@
+libInteropTestPortTypeDocService_la_CPPFLAGS = -I$(AXIS2C_HOME)/include \
+											   @UTILINC@ \
+											   @AXIOMINC@

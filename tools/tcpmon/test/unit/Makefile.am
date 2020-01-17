@@ -27,7 +27,7 @@ tcpmon_unit_test_suite_LDADD   =   \
                      $(NULL)
 
 
-INCLUDES = -I${CUTEST_HOME}/include \
-           -I$(top_builddir)/include \
-		   -I ../../../../util/include \
-           $(NULL)
+tcpmon_unit_test_suite_CPPFLAGS = -I${CUTEST_HOME}/include \
+								  -I$(top_builddir)/include \
+								  -I ../../../../util/include \
+								  $(NULL)

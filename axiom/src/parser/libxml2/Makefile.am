@@ -24,7 +24,7 @@ libaxis2_parser_la_LIBADD = @LIBXML2_LIBS@ \
 libaxis2_parser_la_LDFLAGS = -version-info $(VERSION_NO)
 
 
-INCLUDES = -I$(top_srcdir)/include \
-            -I$(top_srcdir)/src/parser \
-            -I$(top_srcdir)/../util/include \
-			@LIBXML2_CFLAGS@
+libaxis2_parse_la_CPPFLAGS = -I$(top_srcdir)/include \
+							 -I$(top_srcdir)/src/parser \
+							 -I$(top_srcdir)/../util/include \
+							 @LIBXML2_CFLAGS@

@@ -16,8 +16,6 @@ prgbindir = $(bindir)
 
 prgbin_PROGRAMS = axis2_amqp_server
 
-AM_CFLAGS = -g 
-
 axis2_amqp_server_SOURCES = axis2_amqp_server.c
 
 axis2_amqp_server_LDADD = $(LDFLAGS) \
@@ -33,14 +31,14 @@ axis2_amqp_server_LDADD = $(LDFLAGS) \
 						  $(top_builddir)/src/core/transport/amqp/receiver/libaxis2_amqp_receiver.la \
 						  $(top_builddir)/src/core/transport/amqp/util/libaxis2_amqp_util.la
                     
-INCLUDES = -I$(top_srcdir)/include \
-           -I$(top_srcdir)/src/core/description \
-           -I$(top_srcdir)/src/core/context \
-           -I$(top_srcdir)/src/core/deploymenti \
-           -I$(top_srcdir)/src/core/phaseresolver \
-           -I$(top_srcdir)/src/core/engine \
-           -I$(top_srcdir)/src/core/transport/amqp/receiver \
-           -I$(top_srcdir)/src/core/transport/amqp/receiver/qpid_receiver \
-           -I$(top_srcdir)/src/core/transport/amqp/util \
-           -I$(top_srcdir)/util/include \
-           -I$(top_srcdir)/axiom/include
+axis2_amqp_server_CPPFLAGS = -I$(top_srcdir)/include \
+							 -I$(top_srcdir)/src/core/description \
+							 -I$(top_srcdir)/src/core/context \
+							 -I$(top_srcdir)/src/core/deploymenti \
+							 -I$(top_srcdir)/src/core/phaseresolver \
+							 -I$(top_srcdir)/src/core/engine \
+							 -I$(top_srcdir)/src/core/transport/amqp/receiver \
+							 -I$(top_srcdir)/src/core/transport/amqp/receiver/qpid_receiver \
+							 -I$(top_srcdir)/src/core/transport/amqp/util \
+							 -I$(top_srcdir)/util/include \
+							 -I$(top_srcdir)/axiom/include

@@ -39,12 +39,12 @@ libaxis2_axiom_la_LIBADD =	$(top_builddir)/src/soap/libaxis2_soap.la \
 
 libaxis2_axiom_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES =	-I$(top_srcdir)/include \
-            -I$(top_srcdir)/src/parser \
-            -I$(top_srcdir)/src/om \
-            -I$(top_srcdir)/src/attachments \
-			-I$(top_srcdir)/src/soap \
-			-I$(top_srcdir)/../util/include 
+libaxis2_axiom_la_CPPFLAGS =	-I$(top_srcdir)/include \
+								-I$(top_srcdir)/src/parser \
+								-I$(top_srcdir)/src/om \
+								-I$(top_srcdir)/src/attachments \
+								-I$(top_srcdir)/src/soap \
+								-I$(top_srcdir)/../util/include 
 
 EXTRA_DIST = axiom_namespace_internal.h  axiom_node_internal.h  axiom_stax_builder_internal.h axiom_document_internal.h axiom_element_internal.h
 

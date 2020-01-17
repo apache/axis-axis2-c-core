@@ -30,9 +30,9 @@ libaxis2_description_la_SOURCES =desc.c \
 
 libaxis2_description_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES = -I$(top_srcdir)/include \
-            -I$(top_srcdir)/src/core/engine \
-            -I$(top_srcdir)/util/include \
-            -I$(top_srcdir)/axiom/include \
-            -I$(top_srcdir)/neethi/include
+libaxis2_description_la_CPPFLAGS = -I$(top_srcdir)/include \
+								   -I$(top_srcdir)/src/core/engine \
+								   -I$(top_srcdir)/util/include \
+								   -I$(top_srcdir)/axiom/include \
+								   -I$(top_srcdir)/neethi/include
 

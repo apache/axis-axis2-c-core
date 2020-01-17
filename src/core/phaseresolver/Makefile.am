@@ -17,7 +17,7 @@ noinst_LTLIBRARIES = libaxis2_phaseresolver.la
 libaxis2_phaseresolver_la_SOURCES =	phase_holder.c \
                                 	phase_resolver.c
 
-INCLUDES = -I$(top_srcdir)/include \
-            -I$(top_srcdir)/src/core/engine \
-            -I$(top_srcdir)/axiom/include	\
-            -I$(top_srcdir)/util/include
+libaxis2_phaseresolver_la_CPPFLAGS = -I$(top_srcdir)/include \
+									 -I$(top_srcdir)/src/core/engine \
+									 -I$(top_srcdir)/axiom/include	\
+									 -I$(top_srcdir)/util/include

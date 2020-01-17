@@ -19,6 +19,6 @@ libmtom_caching_callback_la_LIBADD  = $(LDFLAGS) \
 						   		-L$(AXIS2C_HOME)/lib \
 								-laxutil
 
-INCLUDES = -I ../../util/include \
-			-I ../../axiom/include \
-		@AXIS2INC@
+libmtom_caching_callback_la_CPPFLAGS = -I ../../util/include \
+									   -I ../../axiom/include \
+									   @AXIS2INC@

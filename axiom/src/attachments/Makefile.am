@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 noinst_LTLIBRARIES = libaxis2_attachments.la
-AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_attachments_la_SOURCES = mime_part.c \
 					data_handler.c \
 					mime_body_part.c \
@@ -21,9 +20,9 @@ libaxis2_attachments_la_SOURCES = mime_part.c \
 
 libaxis2_attachments_la_LIBADD = $(top_builddir)/../util/src/libaxutil.la 
 
-INCLUDES =	-I$(top_srcdir)/include \
-            -I$(top_srcdir)/parser \
-			-I$(top_srcdir)/../util/include
+libaxis2_attachments_la_CPPFLAGS =	-I$(top_srcdir)/include \
+									-I$(top_srcdir)/parser \
+									-I$(top_srcdir)/../util/include
 
 EXTRA_DIST = axiom_mime_body_part.h 
 

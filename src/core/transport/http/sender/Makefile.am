@@ -57,22 +57,22 @@ libaxis2_http_sender_la_LIBADD = $(top_builddir)/src/core/transport/http/common/
 
 libaxis2_http_sender_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES = -I$(top_srcdir)/include \
-	       -I$(top_srcdir)/src/core/transport\
-           -I$(top_srcdir)/src/core/transport/http \
-           -I$(top_srcdir)/src/core/transport/http/sender/libcurl \
-           -I$(top_srcdir)/src/core/description \
-           -I$(top_srcdir)/src/core/context \
-           -I$(top_srcdir)/src/core/phaseresolver \
-           -I$(top_srcdir)/src/core/engine \
-           -I$(top_srcdir)/src/core/deployment \
-           -I$(top_srcdir)/util/include \
-           -I$(top_srcdir)/axiom/include \
-		   $(SSL_INC)
+libaxis2_http_sender_la_CPPFLAGS = -I$(top_srcdir)/include \
+								   -I$(top_srcdir)/src/core/transport\
+								   -I$(top_srcdir)/src/core/transport/http \
+								   -I$(top_srcdir)/src/core/transport/http/sender/libcurl \
+								   -I$(top_srcdir)/src/core/description \
+								   -I$(top_srcdir)/src/core/context \
+								   -I$(top_srcdir)/src/core/phaseresolver \
+								   -I$(top_srcdir)/src/core/engine \
+								   -I$(top_srcdir)/src/core/deployment \
+								   -I$(top_srcdir)/util/include \
+								   -I$(top_srcdir)/axiom/include \
+								   $(SSL_INC)
 
 
 if AXIS2_JSON_ENABLED
 libaxis2_http_sender_la_SOURCES += axis2_json_writer.c
 libaxis2_http_sender_la_LIBADD += $(JSON_LIBS)
-INCLUDES += $(JSON_CFLAGS)
+libaxis2_http_sender_la_CPPFLAGS += $(JSON_CFLAGS)
 endif

@@ -22,6 +22,6 @@ libaxis2_parser_la_SOURCES = ../xml_reader.c ../xml_writer.c guththila_xml_write
 
 libaxis2_parser_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES = -I$(top_srcdir)/include \
-			-I $(top_srcdir)/../util/include \
-			-I $(top_srcdir)/../guththila/include
+libaxis2_parser_la_CPPFLAGS = -I$(top_srcdir)/include \
+							  -I $(top_srcdir)/../util/include \
+							  -I $(top_srcdir)/../guththila/include

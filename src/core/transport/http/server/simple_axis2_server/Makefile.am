@@ -15,7 +15,6 @@
 prgbindir=$(bindir)
 prgbin_PROGRAMS = axis2_http_server
 SUBDIRS =
-AM_CFLAGS = -g 
 axis2_http_server_SOURCES = http_server_main.c
 
 axis2_http_server_LDADD   =  $(LDFLAGS) \
@@ -32,12 +31,12 @@ axis2_http_server_LDADD   =  $(LDFLAGS) \
 			     $(top_builddir)/src/core/transport/http/sender/libaxis2_http_sender.la \
 			     $(top_builddir)/src/core/transport/http/receiver/libaxis2_http_receiver.la \
 			     $(top_builddir)/neethi/src/libneethi.la
-                    
-INCLUDES =  -I$(top_srcdir)/include \
-            -I$(top_srcdir)/src/core/description\
-            -I$(top_srcdir)/src/core/context \
-            -I$(top_srcdir)/src/core/deployment\
-            -I$(top_srcdir)/src/core/phaseresolver \
-            -I$(top_srcdir)/src/core/engine \
-            -I$(top_srcdir)/util/include \
-            -I$(top_srcdir)/axiom/include
+
+axis2_http_server_CPPFLAGS =  -I$(top_srcdir)/include \
+							  -I$(top_srcdir)/src/core/description\
+							  -I$(top_srcdir)/src/core/context \
+							  -I$(top_srcdir)/src/core/deployment\
+							  -I$(top_srcdir)/src/core/phaseresolver \
+							  -I$(top_srcdir)/src/core/engine \
+							  -I$(top_srcdir)/util/include \
+							  -I$(top_srcdir)/axiom/include

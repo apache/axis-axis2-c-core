@@ -31,5 +31,5 @@ LINK_FLAGS   = $(LDFLAGS) \
 
 ntlm_post_with_check_LDADD   = $(LINK_FLAGS)
 ntlm_post_LDADD   = $(LINK_FLAGS)
-INCLUDES = @AXIS2INC@
+AM_CPPFLAGS = @AXIS2INC@
 EXTRA_DIST=ntlm_util.h README ntlm.mk

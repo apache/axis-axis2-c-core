@@ -28,4 +28,4 @@ mtom_LDADD = $(LDFLAGS) \
              -laxis2_parser \
              $(GUTHTHILA_LIBS)
 
-INCLUDES = @AXIS2INC@
+mtom_CPPFLAGS = @AXIS2INC@

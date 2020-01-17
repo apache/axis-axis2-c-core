@@ -27,6 +27,6 @@ libguththila_la_SOURCES = guththila_buffer.c \
 
 libguththila_la_LIBADD = ../../util/src/libaxutil.la
 
-INCLUDES = -I$(top_srcdir)/include \
-		   -I$(top_srcdir)/../util/include
+libguththila_la_CPPFLAGS = -I$(top_srcdir)/include \
+						   -I$(top_srcdir)/../util/include
 

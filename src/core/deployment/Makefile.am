@@ -41,12 +41,12 @@ libaxis2_deployment_la_SOURCES =phases_info.c \
                                 repos_listener.c \
                                 conf_init.c
 
-INCLUDES = -I$(top_srcdir)/include \
-            -I$(top_srcdir)/src/core/description \
-            -I$(top_srcdir)/src/core/engine \
-            -I$(top_srcdir)/src/core/phaseresolver \
-            -I$(top_srcdir)/src/core/deployment \
-            -I$(top_srcdir)/src/core/util \
-            -I$(top_srcdir)/axiom/include \
-            -I$(top_srcdir)/neethi/include \
-            -I$(top_srcdir)/util/include
+libaxis2_deployment_la_CPPFLAGS = -I$(top_srcdir)/include \
+								  -I$(top_srcdir)/src/core/description \
+								  -I$(top_srcdir)/src/core/engine \
+								  -I$(top_srcdir)/src/core/phaseresolver \
+								  -I$(top_srcdir)/src/core/deployment \
+								  -I$(top_srcdir)/src/core/util \
+								  -I$(top_srcdir)/axiom/include \
+								  -I$(top_srcdir)/neethi/include \
+								  -I$(top_srcdir)/util/include

@@ -16,10 +16,9 @@ TESTS =
 noinst_PROGRAMS = mock_server
 check_PROGRAMS = mock_server
 SUBDIRS =
-AM_CFLAGS = -g -O2
 mock_server_SOURCES = mock_server.c
 
 mock_server_LDADD   = $(top_builddir)/util/src/libaxutil.la
 
-INCLUDES = -I$(top_srcdir)/include \
-            -I$(top_srcdir)/util/include
+mock_server_CPPFLAGS = -I$(top_srcdir)/include \
+					   -I$(top_srcdir)/util/include

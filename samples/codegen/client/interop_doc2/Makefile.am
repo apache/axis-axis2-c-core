@@ -51,6 +51,6 @@ test_echo_string_array_LDADD = \
             -laxis2_http_receiver \
            $(GUTHTHILA_LIBS)
 
-INCLUDES = -I$(AXIS2C_HOME)/include \
-               @UTILINC@ \
-               @AXIOMINC@
+AM_CPPFLAGS = -I$(AXIS2C_HOME)/include \
+			  @UTILINC@ \
+			  @AXIOMINC@

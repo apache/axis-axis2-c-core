@@ -28,5 +28,5 @@ version_LDADD   =  \
                     -laxis2_http_receiver \
                     $(GUTHTHILA_LIBS)
 
-INCLUDES = @AXIS2INC@
+version_CPPFLAGS = @AXIS2INC@
 

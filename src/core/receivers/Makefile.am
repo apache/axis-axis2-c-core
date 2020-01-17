@@ -18,8 +18,8 @@ libaxis2_receivers_la_SOURCES = msg_recv.c \
                                 raw_xml_in_out_msg_recv.c \
                                 svr_callback.c
 
-INCLUDES = -I$(top_srcdir)/include \
-            -I$(top_srcdir)/src/core/engine \
-            -I$(top_srcdir)/src/core/util \
-            -I$(top_srcdir)/util/include	\
-            -I$(top_srcdir)/axiom/include
+libaxis2_receivers_la_CPPFLAGS = -I$(top_srcdir)/include \
+								 -I$(top_srcdir)/src/core/engine \
+								 -I$(top_srcdir)/src/core/util \
+								 -I$(top_srcdir)/util/include	\
+								 -I$(top_srcdir)/axiom/include

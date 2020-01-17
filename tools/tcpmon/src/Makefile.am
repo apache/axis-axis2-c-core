@@ -26,9 +26,9 @@ tcpmon_LDADD =  \
 			 $(top_builddir)//axiom/src/om/libaxis2_axiom.la \
 			 $(top_builddir)/axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la
 
-INCLUDES = -I$(top_srcdir)/tools/tcpmon/include \
-		   -I $(top_srcdir)/util/include \
-		   -I $(top_srcdir)/axiom/include \
-		   -I $(top_srcdir)/include 
+tcpmon_CPPFLAGS = -I$(top_srcdir)/tools/tcpmon/include \
+				  -I $(top_srcdir)/util/include \
+				  -I $(top_srcdir)/axiom/include \
+				  -I $(top_srcdir)/include 
 
 EXTRA_DIST=tcpmon_entry_local.h tcpmon_session_local.h

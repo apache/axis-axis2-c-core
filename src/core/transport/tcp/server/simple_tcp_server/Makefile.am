@@ -15,7 +15,6 @@
 prgbindir=$(bindir)
 prgbin_PROGRAMS = axis2_tcp_server
 SUBDIRS =
-AM_CFLAGS = -g 
 axis2_tcp_server_SOURCES = tcp_server_main.c 
 
 axis2_tcp_server_LDADD   =  $(LDFLAGS) \
@@ -32,12 +31,12 @@ axis2_tcp_server_LDADD   =  $(LDFLAGS) \
 			     $(top_builddir)/src/core/transport/tcp/receiver/libaxis2_tcp_receiver.la \
 			     $(top_builddir)/neethi/src/libneethi.la
 
-INCLUDES =  -I$(top_srcdir)/include \
-            -I$(top_srcdir)/src/core/description\
-            -I$(top_srcdir)/src/core/context \
-            -I$(top_srcdir)/src/core/deployment\
-            -I$(top_srcdir)/src/core/phaseresolver \
-            -I$(top_srcdir)/src/core/engine \
-            -I$(top_srcdir)/util/include \
-            -I$(top_srcdir)/src/core/transport/tcp/ \
-            -I$(top_srcdir)/axiom/include
+axis2_tcp_server_CPPFLAGS =  -I$(top_srcdir)/include \
+							 -I$(top_srcdir)/src/core/description\
+							 -I$(top_srcdir)/src/core/context \
+							 -I$(top_srcdir)/src/core/deployment\
+							 -I$(top_srcdir)/src/core/phaseresolver \
+							 -I$(top_srcdir)/src/core/engine \
+							 -I$(top_srcdir)/util/include \
+							 -I$(top_srcdir)/src/core/transport/tcp/ \
+							 -I$(top_srcdir)/axiom/include

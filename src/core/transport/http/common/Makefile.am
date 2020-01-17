@@ -31,13 +31,13 @@ libaxis2_http_common_la_SOURCES = http_header.c\
 
 libaxis2_http_common_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES = -I$(top_srcdir)/include \
-	       -I$(top_srcdir)/src/core/transport\
-	       -I$(top_srcdir)/src/core/transport/http \
-           -I$(top_srcdir)/src/core/description \
-           -I$(top_srcdir)/src/core/context \
-           -I$(top_srcdir)/src/core/phaseresolver \
-           -I$(top_srcdir)/src/core/engine \
-           -I$(top_srcdir)/src/core/deployment \
-           -I$(top_srcdir)/util/include \
-           -I$(top_srcdir)/axiom/include
+libaxis2_http_common_la_CPPFLAGS = -I$(top_srcdir)/include \
+								   -I$(top_srcdir)/src/core/transport\
+								   -I$(top_srcdir)/src/core/transport/http \
+								   -I$(top_srcdir)/src/core/description \
+								   -I$(top_srcdir)/src/core/context \
+								   -I$(top_srcdir)/src/core/phaseresolver \
+								   -I$(top_srcdir)/src/core/engine \
+								   -I$(top_srcdir)/src/core/deployment \
+								   -I$(top_srcdir)/util/include \
+								   -I$(top_srcdir)/axiom/include

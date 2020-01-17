@@ -24,6 +24,6 @@ axis2_addRequest.c     axis2_Calculator_svc_skeleton.c  axis2_divResponse.c    a
 axis2_addResponse20.c  axis2_div.c                      axis2_mul.c            axis2_sub.c \
 axis2_addResponse.c    axis2_divRequest.c               axis2_mulRequest.c     axis2_subRequest.c 
 libCalculator_la_LIBADD  =
-INCLUDES = -I$(AXIS2C_HOME)/include \
-			@UTILINC@ \
-			@AXIOMINC@
+libCalculator_la_CPPFLAGS = -I$(AXIS2C_HOME)/include \
+							@UTILINC@ \
+							@AXIOMINC@

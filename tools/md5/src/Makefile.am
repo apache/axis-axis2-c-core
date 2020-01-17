@@ -21,7 +21,7 @@ md5_SOURCES =  md5.c
 md5_LDADD =  \
 			 $(top_builddir)/util/src/libaxutil.la
 
-INCLUDES = -I$(top_src)/include \
-		   -I $(top_srcdir)/util/include \
-		   -I $(top_srcdir)/tools/md5/include
+md5_CPPFLAGS = -I$(top_src)/include \
+			   -I $(top_srcdir)/util/include \
+			   -I $(top_srcdir)/tools/md5/include
 

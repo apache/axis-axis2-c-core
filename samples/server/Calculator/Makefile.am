@@ -20,4 +20,4 @@ noinst_HEADERS = calc.h
 SUBDIRS =
 libCalculator_la_SOURCES = calc.c calc_skeleton.c
 libCalculator_la_LIBADD  =
-INCLUDES = @AXIS2INC@
+libCalculator_la_CPPFLAGS = @AXIS2INC@

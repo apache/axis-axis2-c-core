@@ -26,6 +26,6 @@ echo_LDADD   = $(LDFLAGS) \
                     -laxis2_http_receiver \
                     $(GUTHTHILA_LIBS)
 
-INCLUDES = @AXIS2INC@
+echo_CPPFLAGS = @AXIS2INC@
 
 EXTRA_DIST=README.txt echo.mk

@@ -31,10 +31,10 @@ libaxis2_soap_la_SOURCES = soap_fault.c \
                            soap12_builder_helper.c
 
 libaxis2_soap_la_LIBADD = 
-INCLUDES = -I$(top_srcdir)/include \
-            -I$(top_srcdir)/src/parser \
-            -I$(top_srcdir)/src/om \
-			-I$(top_srcdir)/../util/include
+libaxis2_soap_la_CPPFLAGS = -I$(top_srcdir)/include \
+							-I$(top_srcdir)/src/parser \
+							-I$(top_srcdir)/src/om \
+							-I$(top_srcdir)/../util/include
 
 EXTRA_DIST =     axiom_soap11_builder_helper.h axiom_soap_builder_internal.h \
 		_axiom_soap_fault_code.h _axiom_soap_fault_reason.h \

@@ -26,6 +26,6 @@ notify_LDADD   =  \
                     -laxis2_http_receiver \
                     $(GUTHTHILA_LIBS)
 
-INCLUDES = @AXIS2INC@
+notify_CPPFLAGS = @AXIS2INC@
 
 EXTRA_DIST=notify.mk

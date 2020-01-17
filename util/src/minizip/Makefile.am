@@ -21,8 +21,8 @@ libaxis2_minizip_la_SOURCES =	ioapi.c \
 
 libaxis2_minizip_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES = 	-I$(top_srcdir)/include \
-            -I$(top_srcdir)/platforms
+libaxis2_minizip_la_CPPFLAGS = 	-I$(top_srcdir)/include \
+								-I$(top_srcdir)/platforms
 
 EXTRA_DIST=	axis2_archive_extract.h \
 			axis2_crypt.h  \
