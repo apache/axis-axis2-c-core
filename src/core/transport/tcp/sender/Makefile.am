@@ -26,15 +26,15 @@ libaxis2_tcp_sender_la_LIBADD = $(top_builddir)/src/core/transport/http/common/l
 
 libaxis2_tcp_sender_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES = -I$(top_builddir)/include \
-	   -I$(top_builddir)/src/core/transport\
-           -I$(top_builddir)/src/core/transport/tcp \
-           -I$(top_builddir)/src/core/transport/tcp/sender/libcurl \
-           -I$(top_builddir)/src/core/description \
-           -I$(top_builddir)/src/core/context \
-           -I$(top_builddir)/src/core/phaseresolver \
-           -I$(top_builddir)/src/core/engine \
-           -I$(top_builddir)/src/core/deployment \
-           -I$(top_builddir)/util/include \
-	   -I.. \
-           -I$(top_builddir)/axiom/include
+INCLUDES = -I$(top_srcdir)/include \
+		   -I$(top_srcdir)/src/core/transport\
+           -I$(top_srcdir)/src/core/transport/tcp \
+           -I$(top_srcdir)/src/core/transport/tcp/sender/libcurl \
+           -I$(top_srcdir)/src/core/description \
+           -I$(top_srcdir)/src/core/context \
+           -I$(top_srcdir)/src/core/phaseresolver \
+           -I$(top_srcdir)/src/core/engine \
+           -I$(top_srcdir)/src/core/deployment \
+           -I$(top_srcdir)/util/include \
+		   -I$(top_srcdir)/src/core/transport/tcp \
+           -I$(top_srcdir)/axiom/include

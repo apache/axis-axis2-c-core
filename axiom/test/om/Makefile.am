@@ -19,13 +19,13 @@ SUBDIRS =
 
 test_om_SOURCES = test_om.cc
 
-test_om_LDADD = ../../../util/src/libaxutil.la \
+test_om_LDADD = $(top_builddir)/../util/src/libaxutil.la \
 				 $(top_builddir)/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 				 $(top_builddir)/src/om/libaxis2_axiom.la \
 				 $(top_builddir)/$(GTEST)/libgtest.a \
 				 $(top_builddir)/$(GTEST)/libgtest_main.a
 
-AM_CPPFLAGS = -I$(top_builddir)/include \
-            -I$(top_builddir)/src/parser \
-			-I ../../../util/include \
+AM_CPPFLAGS = -I$(top_srcdir)/include \
+            -I$(top_srcdir)/src/parser \
+			-I $(top_srcdir)/../util/include \
 			-I $(GTEST_DIR)/include

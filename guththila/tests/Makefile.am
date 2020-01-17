@@ -19,14 +19,14 @@ SUBDIRS =
 
 test_guththila_SOURCES = test_guththila.cc
 
-AM_CPPFLAGS = -I$(top_builddir)/include \
-				-I ../../util/include \
-				-I ../../axiom/include \
-				-I $(GTEST_DIR)/include
+AM_CPPFLAGS = -I$(top_srcdir)/include \
+				-I$(top_srcdir)/../util/include \
+				-I$(top_srcdir)/../axiom/include \
+				-I$(GTEST_DIR)/include
 
 test_guththila_LDADD = \
 				 $(top_builddir)/src/libguththila.la \
-				 ../../util/src/libaxutil.la \
+				 $(top_builddir)/../util/src/libaxutil.la \
 				 $(top_builddir)/$(GTEST)/libgtest.a \
 				 $(top_builddir)/$(GTEST)/libgtest_main.a
 
@@ -34,7 +34,7 @@ test_attribute_SOURCES = test_attribute.cc
 
 test_attribute_LDADD = \
 				 $(top_builddir)/src/libguththila.la \
-				 ../../util/src/libaxutil.la \
+				 $(top_builddir)/../util/src/libaxutil.la \
 				 $(top_builddir)/$(GTEST)/libgtest.a \
 				 $(top_builddir)/$(GTEST)/libgtest_main.a
 
@@ -42,7 +42,7 @@ test_stack_SOURCES = test_stack.cc
 
 test_stack_LDADD = \
 				 $(top_builddir)/src/libguththila.la \
-				 ../../util/src/libaxutil.la \
+				 $(top_builddir)/../util/src/libaxutil.la \
 				 $(top_builddir)/$(GTEST)/libgtest.a \
 				 $(top_builddir)/$(GTEST)/libgtest_main.a
 
@@ -50,6 +50,6 @@ test_token_SOURCES = test_token.cc
 
 test_token_LDADD = \
 				 $(top_builddir)/src/libguththila.la \
-				 ../../util/src/libaxutil.la \
+				 $(top_builddir)/../util/src/libaxutil.la \
 				 $(top_builddir)/$(GTEST)/libgtest.a \
 				 $(top_builddir)/$(GTEST)/libgtest_main.a

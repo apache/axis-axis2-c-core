@@ -22,10 +22,10 @@ libaxis2_http_util_la_LIBADD=$(top_builddir)/util/src/libaxutil.la \
 			$(top_builddir)/axiom/src/om/libaxis2_axiom.la 
 
 
-INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/src/core/engine \
-            -I$(top_builddir)/util/include \
-            -I$(top_builddir)/axiom/include
+INCLUDES = -I$(top_srcdir)/include \
+            -I$(top_srcdir)/src/core/engine \
+            -I$(top_srcdir)/util/include \
+            -I$(top_srcdir)/axiom/include
 
 if AXIS2_JSON_ENABLED
 libaxis2_http_util_la_SOURCES += axis2_json_reader.c

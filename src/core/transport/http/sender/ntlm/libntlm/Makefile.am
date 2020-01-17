@@ -24,6 +24,6 @@ libaxis2_ntlm_la_LIBADD = @NTLM_LDFLAGS@ \
 #libaxis2_ntlm_la_LDFLAGS = -version-info $(VERSION_NO)
 
 
-INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/util/include \
+INCLUDES = -I$(top_srcdir)/include \
+            -I$(top_srcdir)/util/include \
 			@NTLM_CFLAGS@

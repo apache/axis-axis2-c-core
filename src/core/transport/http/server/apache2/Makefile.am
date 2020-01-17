@@ -30,15 +30,15 @@ libmod_axis2_la_LIBADD   = $(LDFLAGS) \
 
 libmod_axis2_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES = -I$(top_builddir)/include \
-	       -I$(top_builddir)/src/core/transport/http \
-           -I$(top_builddir)/src/core/description \
-           -I$(top_builddir)/src/core/context \
-           -I$(top_builddir)/src/core/phaseresolver \
-           -I$(top_builddir)/src/core/engine \
-           -I$(top_builddir)/src/core/deployment \
-           -I$(top_builddir)/axiom/include\
-           -I$(top_builddir)/util/include\
+INCLUDES = -I$(top_srcdir)/include \
+	       -I$(top_srcdir)/src/core/transport/http \
+           -I$(top_srcdir)/src/core/description \
+           -I$(top_srcdir)/src/core/context \
+           -I$(top_srcdir)/src/core/phaseresolver \
+           -I$(top_srcdir)/src/core/engine \
+           -I$(top_srcdir)/src/core/deployment \
+           -I$(top_srcdir)/axiom/include\
+           -I$(top_srcdir)/util/include\
             @APACHE2INC@ \
             @APRINC@
 

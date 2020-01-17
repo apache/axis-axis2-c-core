@@ -41,12 +41,12 @@ libaxis2_deployment_la_SOURCES =phases_info.c \
                                 repos_listener.c \
                                 conf_init.c
 
-INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/src/core/description \
-            -I$(top_builddir)/src/core/engine \
-            -I$(top_builddir)/src/core/phaseresolver \
-            -I$(top_builddir)/src/core/deployment \
-            -I$(top_builddir)/src/core/util \
-            -I$(top_builddir)/axiom/include \
-            -I$(top_builddir)/neethi/include \
-            -I$(top_builddir)/util/include
+INCLUDES = -I$(top_srcdir)/include \
+            -I$(top_srcdir)/src/core/description \
+            -I$(top_srcdir)/src/core/engine \
+            -I$(top_srcdir)/src/core/phaseresolver \
+            -I$(top_srcdir)/src/core/deployment \
+            -I$(top_srcdir)/src/core/util \
+            -I$(top_srcdir)/axiom/include \
+            -I$(top_srcdir)/neethi/include \
+            -I$(top_srcdir)/util/include

@@ -33,11 +33,11 @@ axis2_http_server_LDADD   =  $(LDFLAGS) \
 			     $(top_builddir)/src/core/transport/http/receiver/libaxis2_http_receiver.la \
 			     $(top_builddir)/neethi/src/libneethi.la
                     
-INCLUDES =  -I$(top_builddir)/include \
-            -I$(top_builddir)/src/core/description\
-            -I$(top_builddir)/src/core/context \
-            -I$(top_builddir)/src/core/deployment\
-            -I$(top_builddir)/src/core/phaseresolver \
-            -I$(top_builddir)/src/core/engine \
-            -I$(top_builddir)/util/include \
-            -I$(top_builddir)/axiom/include
+INCLUDES =  -I$(top_srcdir)/include \
+            -I$(top_srcdir)/src/core/description\
+            -I$(top_srcdir)/src/core/context \
+            -I$(top_srcdir)/src/core/deployment\
+            -I$(top_srcdir)/src/core/phaseresolver \
+            -I$(top_srcdir)/src/core/engine \
+            -I$(top_srcdir)/util/include \
+            -I$(top_srcdir)/axiom/include

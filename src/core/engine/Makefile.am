@@ -44,18 +44,18 @@ libaxis2_engine_la_LIBADD+=$(top_builddir)/src/core/transport/http/common/libaxi
 			   $(top_builddir)/src/core/transport/http/util/libaxis2_http_util.la
 
 
-INCLUDES =  -I$(top_builddir)/include \
-            -I$(top_builddir)/src/wsdl \
-            -I$(top_builddir)/src/core/description \
-            -I$(top_builddir)/src/core/engine \
-            -I$(top_builddir)/src/core/phaseresolver \
-            -I$(top_builddir)/src/core/deployment \
-            -I$(top_builddir)/src/core/context \
-            -I$(top_builddir)/src/core/util \
-            -I$(top_builddir)/src/core/clientapi \
-            -I$(top_builddir)/util/include \
-            -I$(top_builddir)/neethi/include \
-            -I$(top_builddir)/axiom/include
+INCLUDES =  -I$(top_srcdir)/include \
+            -I$(top_srcdir)/src/wsdl \
+            -I$(top_srcdir)/src/core/description \
+            -I$(top_srcdir)/src/core/engine \
+            -I$(top_srcdir)/src/core/phaseresolver \
+            -I$(top_srcdir)/src/core/deployment \
+            -I$(top_srcdir)/src/core/context \
+            -I$(top_srcdir)/src/core/util \
+            -I$(top_srcdir)/src/core/clientapi \
+            -I$(top_srcdir)/util/include \
+            -I$(top_srcdir)/neethi/include \
+            -I$(top_srcdir)/axiom/include
 
 EXTRA_DIST=axis2_disp_checker.h
 

@@ -29,11 +29,10 @@ librp_builder_la_SOURCES = algorithmsuite_builder.c \
 						   bootstrap_policy_builder.c security_context_token_builder.c \
 						   issued_token_builder.c saml_token_builder.c
 
-librp_builder_la_LIBADD  = ../../../../axiom/src/om/libaxis2_axiom.la \
-				../../../../util/src/libaxutil.la
+librp_builder_la_LIBADD  = $(top_builddir)/../axiom/src/om/libaxis2_axiom.la \
+				$(top_builddir)/../util/src/libaxutil.la
 
-INCLUDES = -I$(top_builddir)/include \
-			-I ../../../include \
-			-I ../../../../util/include \
-            -I ../../../../axiom/include \
-            -I ../../../../include
+INCLUDES = -I$(top_srcdir)/include \
+			-I $(top_srcdir)/../include \
+			-I $(top_srcdir)/../util/include \
+            -I $(top_srcdir)/../axiom/include

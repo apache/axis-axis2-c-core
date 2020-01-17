@@ -34,17 +34,17 @@ libaxis2_axiom_la_SOURCES = om_attribute.c \
 libaxis2_axiom_la_LIBADD =	$(top_builddir)/src/soap/libaxis2_soap.la \
 				$(top_builddir)/src/attachments/libaxis2_attachments.la \
                     		$(top_builddir)/src/util/libaxis2_axiom_util.la \
-							../parser/${WRAPPER_DIR}/libaxis2_parser.la \
-							../../../util/src/libaxutil.la
+							$(top_builddir)/src/parser/${WRAPPER_DIR}/libaxis2_parser.la \
+							$(top_builddir)/../util/src/libaxutil.la
 
 libaxis2_axiom_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES =	-I$(top_builddir)/include \
-            -I$(top_builddir)/src/parser \
-            -I$(top_builddir)/src/om \
-            -I$(top_builddir)/src/attachments \
-			-I$(top_builddir)/src/soap \
-			-I ../../../util/include 
+INCLUDES =	-I$(top_srcdir)/include \
+            -I$(top_srcdir)/src/parser \
+            -I$(top_srcdir)/src/om \
+            -I$(top_srcdir)/src/attachments \
+			-I$(top_srcdir)/src/soap \
+			-I$(top_srcdir)/../util/include 
 
 EXTRA_DIST = axiom_namespace_internal.h  axiom_node_internal.h  axiom_stax_builder_internal.h axiom_document_internal.h axiom_element_internal.h
 

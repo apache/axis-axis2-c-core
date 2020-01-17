@@ -17,7 +17,7 @@ noinst_LTLIBRARIES = libaxis2_core_utils.la
 
 libaxis2_core_utils_la_SOURCES =	core_utils.c
 
-INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/src/core/engine \
-            -I$(top_builddir)/util/include \
-            -I$(top_builddir)/axiom/include
+INCLUDES = -I$(top_srcdir)/include \
+            -I$(top_srcdir)/src/core/engine \
+            -I$(top_srcdir)/util/include \
+            -I$(top_srcdir)/axiom/include

@@ -14,14 +14,14 @@
 # limitations under the License.
 lib_LTLIBRARIES = libaxis2_parser.la
 
-libaxis2_parser_la_LIBADD = ../../../../guththila/src/libguththila.la \
-							../../../../util/src/libaxutil.la
+libaxis2_parser_la_LIBADD = $(top_builddir)/../guththila/src/libguththila.la \
+							$(top_builddir)/../util/src/libaxutil.la
 
 libaxis2_parser_la_SOURCES = ../xml_reader.c ../xml_writer.c guththila_xml_writer_wrapper.c \
                                 guththila_xml_reader_wrapper.c 
 
 libaxis2_parser_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES = -I$(top_builddir)/include \
-			-I ../../../../util/include \
-			-I ../../../../guththila/include
+INCLUDES = -I$(top_srcdir)/include \
+			-I $(top_srcdir)/../util/include \
+			-I $(top_srcdir)/../guththila/include

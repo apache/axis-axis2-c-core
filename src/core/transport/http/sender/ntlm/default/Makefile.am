@@ -20,5 +20,5 @@ libaxis2_ntlm_la_SOURCES = ../ntlm.c \
 
 libaxis2_ntlm_la_LIBADD =  $(top_builddir)/util/src/libaxutil.la
 
-INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/util/include
+INCLUDES = -I$(top_srcdir)/include \
+            -I$(top_srcdir)/util/include

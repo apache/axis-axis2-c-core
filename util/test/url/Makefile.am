@@ -22,7 +22,7 @@ url_test_LDADD   =   \
 				$(top_builddir)/$(GTEST)/libgtest.a \
 				$(top_builddir)/$(GTEST)/libgtest_main.a
 
-AM_CPPFLAGS = -I$(top_builddir)/include \
+AM_CPPFLAGS = -I$(top_srcdir)/include \
 			-I ../../../axiom/include \
 			-I ../../../include \
 			-I $(GTEST_DIR)/include

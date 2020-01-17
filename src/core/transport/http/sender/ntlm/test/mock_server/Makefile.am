@@ -21,5 +21,5 @@ mock_server_SOURCES = mock_server.c
 
 mock_server_LDADD   = $(top_builddir)/util/src/libaxutil.la
 
-INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/util/include
+INCLUDES = -I$(top_srcdir)/include \
+            -I$(top_srcdir)/util/include

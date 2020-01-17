@@ -19,11 +19,11 @@ libaxis2_attachments_la_SOURCES = mime_part.c \
 					mime_body_part.c \
                     mime_parser.c
 
-libaxis2_attachments_la_LIBADD = ../../../util/src/libaxutil.la 
+libaxis2_attachments_la_LIBADD = $(top_builddir)/../util/src/libaxutil.la 
 
-INCLUDES =	-I$(top_builddir)/include \
-            -I$(top_builddir)/parser \
-			-I ../../../util/include
+INCLUDES =	-I$(top_srcdir)/include \
+            -I$(top_srcdir)/parser \
+			-I$(top_srcdir)/../util/include
 
 EXTRA_DIST = axiom_mime_body_part.h 
 

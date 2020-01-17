@@ -22,14 +22,13 @@ tcpmon_SOURCES =  tcpmon.c \
             util.c
 
 tcpmon_LDADD =  \
-			 ../../../util/src/libaxutil.la \
-			 ../../../axiom/src/om/libaxis2_axiom.la \
-			 ../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la
+			 $(top_builddir)/util/src/libaxutil.la \
+			 $(top_builddir)//axiom/src/om/libaxis2_axiom.la \
+			 $(top_builddir)/axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la
 
-INCLUDES = -I$(top_builddir)/include \
-		   -I ../../../util/include \
-		   -I ../../../axiom/include \
-		   -I ../../../include \
-		   -I ../include
+INCLUDES = -I$(top_srcdir)/tools/tcpmon/include \
+		   -I $(top_srcdir)/util/include \
+		   -I $(top_srcdir)/axiom/include \
+		   -I $(top_srcdir)/include 
 
 EXTRA_DIST=tcpmon_entry_local.h tcpmon_session_local.h

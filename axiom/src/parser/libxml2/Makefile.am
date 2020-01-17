@@ -19,12 +19,12 @@ libaxis2_parser_la_SOURCES = ../xml_reader.c ../xml_writer.c \
 							libxml2_reader_wrapper.c  libxml2_writer_wrapper.c
 
 libaxis2_parser_la_LIBADD = @LIBXML2_LIBS@ \
-							../../../../util/src/libaxutil.la
+							$(top_builddir)/../util/src/libaxutil.la
 
 libaxis2_parser_la_LDFLAGS = -version-info $(VERSION_NO)
 
 
-INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/src/parser \
-            -I ../../../../util/include \
+INCLUDES = -I$(top_srcdir)/include \
+            -I$(top_srcdir)/src/parser \
+            -I$(top_srcdir)/../util/include \
 			@LIBXML2_CFLAGS@

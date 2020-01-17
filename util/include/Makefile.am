@@ -13,4 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 includedir=$(prefix)/include/axis2-${PACKAGE_VERSION}/
-nobase_include_HEADERS= platforms/axutil_platform_auto_sense.h platforms/unix/*.h platforms/windows/*.h
+nobase_include_HEADERS= $(top_srcdir)/include/platforms/axutil_platform_auto_sense.h \
+						$(top_srcdir)/include/platforms/unix/*.h \
+						$(top_srcdir)/include/platforms/windows/*.h

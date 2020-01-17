@@ -23,13 +23,13 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = axis2c.pc
 
 SUBDIRS = $(GTEST) util $(GUTHTHILA_DIR) axiom neethi src $(TESTDIR) include ides tools/tcpmon tools/md5
-include_HEADERS=$(top_builddir)/include/*.h
+include_HEADERS=$(top_srcdir)/include/*.h
 data_DATA= samples/server/axis2.xml README \
 	INSTALL CREDITS COPYING NEWS NOTICE AUTHORS
 logs_DATA=
 docs_DATA= 
 wsdl2c_DATA=tools/codegen/javatool/WSDL2C.sh tools/codegen/javatool/README
-EXTRA_DIST = CREDITS LICENSE build axis2c_build.sh guththila tools AUTHORS NOTICE tools/codegen/javatool/README  tools/codegen/javatool/WSDL2C.bat  tools/codegen/javatool/WSDL2C.sh docs docs/README
+EXTRA_DIST = CREDITS LICENSE build axis2c_build.sh guththila tools AUTHORS NOTICE tools/codegen/javatool/README  tools/codegen/javatool/WSDL2C.bat  tools/codegen/javatool/WSDL2C.sh docs docs/README samples
 
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
@@ -42,6 +42,7 @@ dist-hook:
 	rm -rf `find $(distdir)/ -type f -name Makefile`
 	rm -rf `find $(distdir)/ -type f -name axis2c-sample-src-${PACKAGE_VERSION}.tar.gz`
 	rm -rf `find $(distdir)/ -type d -name autom4te.cache`
+	rm -rf `find $(distdir)/ -type f -name config.status`
 	rm -rf $(distdir)/tools/tcpmon/src/tcpmon
 	rm -rf $(distdir)/tools/md5/src/md5
 	find $(distdir) -name "makefile" | xargs sed -i "s/\/WX//g"

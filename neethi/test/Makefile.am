@@ -19,16 +19,16 @@ SUBDIRS =
 
 test_SOURCES = test.cc
 
-AM_CPPFLAGS = -I$(top_builddir)/include \
-				-I ../../util/include \
-				-I ../../axiom/include \
-				-I ../../include \
+AM_CPPFLAGS = -I$(top_srcdir)/include \
+				-I $(top_srcdir)/../util/include \
+				-I $(top_srcdir)/../axiom/include \
+				-I $(top_srcdir)/../include \
 				-I $(GTEST_DIR)/include
 
 test_LDADD = $(top_builddir)/src/libneethi.la \
-			../../axiom/src/om/libaxis2_axiom.la \
-			../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
-			../../util/src/libaxutil.la \
-			../src/libneethi.la \
+			$(top_builddir)/../axiom/src/om/libaxis2_axiom.la \
+			$(top_builddir)/../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
+			$(top_builddir)/../util/src/libaxutil.la \
+			$(top_builddir)/src/libneethi.la \
 			$(top_builddir)/$(GTEST)/libgtest.a \
 			$(top_builddir)/$(GTEST)/libgtest_main.a

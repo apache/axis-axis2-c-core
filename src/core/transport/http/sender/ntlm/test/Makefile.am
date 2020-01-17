@@ -20,10 +20,10 @@ AM_CFLAGS = -g -O2
 test_ntlm_SOURCES = client.c
 mock_client_SOURCES = mock_client.c
 
-LINK_FLAGS   =	../$(NTLM_WRAPPER_DIR)/libaxis2_ntlm.la \
+LINK_FLAGS   =	$(top_builddir)/src/core/transport/http/sender/ntlm/$(NTLM_WRAPPER_DIR)/libaxis2_ntlm.la \
 					$(top_builddir)/util/src/libaxutil.la
 
 test_ntlm_LDADD   =	$(LINK_FLAGS)
 mock_client_LDADD   =	$(LINK_FLAGS)
-INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/util/include
+INCLUDES = -I$(top_srcdir)/include \
+            -I$(top_srcdir)/util/include

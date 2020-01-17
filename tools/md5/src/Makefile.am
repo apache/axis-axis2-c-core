@@ -19,10 +19,9 @@ prgbin_PROGRAMS = md5
 md5_SOURCES =  md5.c
 
 md5_LDADD =  \
-			 ../../../util/src/libaxutil.la
+			 $(top_builddir)/util/src/libaxutil.la
 
-INCLUDES = -I$(top_builddir)/include \
-		   -I ../../../util/include \
-		   -I ../../../include \
-		   -I ../include
+INCLUDES = -I$(top_src)/include \
+		   -I $(top_srcdir)/util/include \
+		   -I $(top_srcdir)/tools/md5/include
 

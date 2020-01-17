@@ -16,7 +16,7 @@ noinst_LTLIBRARIES = libaxis2_axiom_util.la
 libaxis2_axiom_util_la_SOURCES =	om_util.c
 
 libaxis2_axiom_util_la_LIBADD = 
-INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/src/parser \
-            -I$(top_builddir)/src/om \
-			-I ../../../util/include
+INCLUDES = -I$(top_srcdir)/include \
+            -I$(top_srcdir)/src/parser \
+            -I$(top_srcdir)/src/om \
+			-I$(top_srcdir)/../util/include

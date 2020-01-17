@@ -60,6 +60,6 @@ libaxutil_la_LIBADD =	$(top_builddir)/src/platforms/unix/libaxis2_unix.la \
 
 libaxutil_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES = -I$(top_builddir)/include
+INCLUDES = -I$(top_srcdir)/include
 
 EXTRA_DIST=platforms/windows string_util.c

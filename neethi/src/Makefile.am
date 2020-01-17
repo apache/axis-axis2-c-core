@@ -27,11 +27,11 @@ libneethi_la_SOURCES= all.c   \
 				mtom_assertion_checker.c \
 				util.c
 
-libneethi_la_LIBADD  = ../../axiom/src/om/libaxis2_axiom.la \
-			../../util/src/libaxutil.la \
-			secpolicy/builder/librp_builder.la \
-			secpolicy/model/librp_model.la \
-			rmpolicy/librm_policy.la
+libneethi_la_LIBADD  = $(top_builddir)/../axiom/src/om/libaxis2_axiom.la \
+			$(top_builddir)/../util/src/libaxutil.la \
+			$(top_builddir)/src/secpolicy/builder/librp_builder.la \
+			$(top_builddir)/src/secpolicy/model/librp_model.la \
+			$(top_builddir)/src/rmpolicy/librm_policy.la
 
 #libneethi_LIBADD=$(top_builddir)/src/core/description/libaxis2_description.la \
 #                    $(top_builddir)/src/core/receivers/libaxis2_receivers.la \
@@ -49,10 +49,10 @@ libneethi_la_LIBADD  = ../../axiom/src/om/libaxis2_axiom.la \
 
 libneethi_la_LDFLAGS = -version-info $(VERSION_NO)
 
-INCLUDES = -I$(top_builddir)/include \
-		-I ../../util/include \
-		-I ../../axiom/include \
-		-I ../../include
+INCLUDES = -I$(top_srcdir)/include \
+		-I $(top_srcdir)/../util/include \
+		-I $(top_srcdir)/../axiom/include \
+		-I $(top_srcdir)/../include
 
 #            -I$(top_builddir)/src/wsdl \
 #            -I$(top_builddir)/src/core/description \

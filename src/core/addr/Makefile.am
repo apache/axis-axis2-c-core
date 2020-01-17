@@ -21,7 +21,7 @@ libaxis2_addr_la_SOURCES =	relates_to.c \
                             msg_info_headers.c
 
 
-INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/src/core/engine \
-            -I$(top_builddir)/util/include \
-            -I$(top_builddir)/axiom/include 
+INCLUDES = -I$(top_srcdir)/include \
+            -I$(top_srcdir)/src/core/engine \
+            -I$(top_srcdir)/util/include \
+            -I$(top_srcdir)/axiom/include 
