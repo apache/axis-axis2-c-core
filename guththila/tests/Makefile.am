@@ -21,7 +21,8 @@ test_guththila_SOURCES = test_guththila.cc
 
 AM_CPPFLAGS = -I$(top_builddir)/include \
 				-I ../../util/include \
-				-I ../../axiom/include
+				-I ../../axiom/include \
+				-I $(GTEST_DIR)/include
 
 test_guththila_LDADD = \
 				 $(top_builddir)/src/libguththila.la \
