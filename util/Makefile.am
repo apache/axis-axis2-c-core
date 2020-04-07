@@ -15,8 +15,21 @@
 datadir=$(prefix)
 tmpincludedir=$(prefix)/include/axis2-${PACKAGE_VERSION}/
 includedir=$(prefix)/include/axis2-${PACKAGE_VERSION}/
-SUBDIRS = src $(GTEST) $(TESTDIR) include
+SUBDIRS = src $(GTEST) $(TESTDIR)
 include_HEADERS=$(top_srcdir)/include/*.h
+
+platformincludedir=$(includedir)/platforms/
+platforminclude_HEADERS=$(top_srcdir)/include/platforms/*.h
+
+unixincludedir=$(platformincludedir)/unix/
+unixinclude_HEADERS= $(top_srcdir)/include/platforms/unix/*.h
+
+os400includedir=$(platformincludedir)/os400/
+os400include_HEADERS= $(top_srcdir)/include/platforms/os400/*.h
+
+windowsincludedir=$(platformincludedir)/windows/
+windowsinclude_HEADERS= $(top_srcdir)/include/platforms/windows/*.h
+
 tmpinclude_DATA=config.h
 data_DATA= INSTALL README AUTHORS NEWS CREDITS LICENSE COPYING
 EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE

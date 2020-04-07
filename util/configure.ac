@@ -352,7 +352,6 @@ AC_CONFIG_FILES([Makefile \
     src/Makefile \
     src/platforms/unix/Makefile \
     src/minizip/Makefile \
-    include/Makefile \
     gtest/Makefile \
     test/Makefile \
     test/util/Makefile \
