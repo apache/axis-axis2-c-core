@@ -563,6 +563,7 @@ axis2_dep_engine_free(
     if(dep_engine->repos_listener)
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
+        dep_engine->repos_listener = NULL;
     }
 
     if(dep_engine->module_dir)
@@ -777,6 +778,7 @@ axis2_dep_engine_load(
     if(dep_engine->repos_listener)
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
+        dep_engine->repos_listener = NULL;
     }
 
     dep_engine->repos_listener = axis2_repos_listener_create_with_folder_name_and_dep_engine(env,
@@ -798,6 +800,7 @@ axis2_dep_engine_load(
     if(AXIS2_SUCCESS != status)
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
+        dep_engine->repos_listener = NULL;
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED, AXIS2_FAILURE);
@@ -809,6 +812,7 @@ axis2_dep_engine_load(
     if(AXIS2_SUCCESS != status)
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
+        dep_engine->repos_listener = NULL;
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
@@ -825,6 +829,7 @@ axis2_dep_engine_load(
     if(AXIS2_SUCCESS != status)
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
+        dep_engine->repos_listener = NULL;
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
@@ -964,6 +969,7 @@ axis2_dep_engine_load_client(
         if(dep_engine->repos_listener)
         {
             axis2_repos_listener_free(dep_engine->repos_listener, env);
+            dep_engine->repos_listener = NULL;
         }
 
         dep_engine->repos_listener = axis2_repos_listener_create_with_folder_name_and_dep_engine(
@@ -979,6 +985,7 @@ axis2_dep_engine_load_client(
     if(AXIS2_SUCCESS != status)
     {
         axis2_repos_listener_free(dep_engine->repos_listener, env);
+        dep_engine->repos_listener = NULL;
         /* Set the dep_engine to NULL before freeing conf in order to
               avoid deleting it twice*/
         axis2_conf_set_dep_engine(dep_engine->conf,env,NULL);
