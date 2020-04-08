@@ -77,8 +77,8 @@ TEST_F(TestDeployment, test_dep_engine_load)
     dep_engine = axis2_dep_engine_create_with_repos_name(m_env, axis2c_home);
     ASSERT_NE(dep_engine, nullptr);
     conf = axis2_dep_engine_load(dep_engine, m_env);
-    axis2_conf_set_dep_engine(conf, m_env, dep_engine);
     ASSERT_NE(conf, nullptr);
+    axis2_conf_set_dep_engine(conf, m_env, dep_engine);
     svc_map = axis2_conf_get_all_svcs(conf, m_env);
     ASSERT_NE(svc_map, nullptr);
     if (svc_map)
