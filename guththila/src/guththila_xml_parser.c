@@ -1094,6 +1094,46 @@ guththila_next(
                         }
                     }
                 }
+                else if ('[' == c_arra[0] && 'C' == c_arra[1])
+                {
+                    if (5 == guththila_next_no_char(m, 0, c_arra, 5, env) &&
+                        'D' == c_arra[0] && 'A' == c_arra[1] && 'T' == c_arra[2] &&
+                        'A' == c_arra[3] && '[' == c_arra[4])
+                    {
+                        /* CDATA */
+
+                        int loop_state = 1;
+                        GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
+                        GUTHTHILA_TOKEN_OPEN(m, tok, env);
+                        while(loop_state)
+                        {
+                            if (']' == c)
+                            {
+                                if (2 == guththila_next_no_char(m, 0, c_arra, 2, env) &&
+                                        ']' == c_arra[0])
+                                {
+                                    if ('>' == c_arra[1])
+                                    {
+                                        m->next = m->next - 2;
+                                        guththila_token_close(m, tok, _char_data, 0, env);
+                                        m->next = m->next + 2;
+                                        loop_state = 0;
+                                        m->guththila_event = GUTHTHILA_CHARACTER;
+                                        return GUTHTHILA_CHARACTER;
+                                    }
+                                }
+                            }
+                            if (-1 == c) {
+                                return -1;
+                            }
+                            GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
+                        }
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
                 else
                 {
                     GUTHTHILA_NEXT_CHAR(m, buffer, data_size, previous_size, env, c);
@@ -1452,7 +1492,11 @@ guththila_get_value(
     if(m->value)
     {
         GUTHTHILA_TOKEN_TO_STRING(m->value, str, env);
-        guththila_string_evaluate_references(str, GUTHTHILA_TOKEN_LEN(m->value));
+        /* don't eval references in comments or cdata sections */
+        if (m->value->type != _char_data)
+        {
+            guththila_string_evaluate_references(str, GUTHTHILA_TOKEN_LEN(m->value));
+        }
         return str;
     }
     return NULL;

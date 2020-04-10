@@ -12,6 +12,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-TESTS =
-SUBDIRS = om soap util xpath parser
-EXTRA_DIST = resources
+TESTS = test_parser
+noinst_PROGRAMS = test_parser
+check_PROGRAMS = test_parser
+SUBDIRS =
+
+test_parser_SOURCES = test_parser.cc
+
+test_parser_LDADD = $(top_builddir)/../util/src/libaxutil.la \
+				 $(top_builddir)/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
+				 $(top_builddir)/src/om/libaxis2_axiom.la \
+				 $(top_builddir)/$(GTEST)/libgtest.a \
+				 $(top_builddir)/$(GTEST)/libgtest_main.a
+
+AM_CPPFLAGS = -I$(top_srcdir)/include \
+            -I$(top_srcdir)/src/parser \
+			-I $(top_srcdir)/../util/include \
+			-I $(GTEST_DIR)/include

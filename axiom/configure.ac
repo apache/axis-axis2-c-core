@@ -266,6 +266,7 @@ AC_CONFIG_FILES([Makefile \
     gtest/Makefile \
     test/Makefile \
     test/om/Makefile \
+    test/parser/Makefile \
     test/soap/Makefile \
     test/util/Makefile \
     test/xpath/Makefile \
