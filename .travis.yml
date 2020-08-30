@@ -1,0 +1,3 @@
+language: c
+os: linux
+script: ./build_for_tests.sh
