@@ -1,5 +1,11 @@
 language: c
 os: linux
+
+addons:
+    apt:
+        packages:
+            googletest
+
 script: ./build_for_tests.sh
 notifications:
     email:
