@@ -1,3 +1,7 @@
 language: c
 os: linux
 script: ./build_for_tests.sh
+notifications:
+    email:
+        # c-dev@apache.axis.org doesn't work here because it's not an address registered on GitHub.
+        - billblough@apache.org
