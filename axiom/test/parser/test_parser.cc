@@ -54,6 +54,8 @@ TEST_F(TestParser, test_axisc_1453) {
     ASSERT_NE(output1, nullptr);
     ASSERT_STREQ(output1, expected1);
 
+    axiom_node_free_tree(node_input1, m_env);
+    AXIS2_FREE(m_env->allocator, output1);
 
     axis2_char_t input2[] = "<root><![CDATA[abc</root>def]]></root>";
     axis2_char_t expected2[] = "<root>abc&lt;/root&gt;def</root>";
@@ -64,6 +66,9 @@ TEST_F(TestParser, test_axisc_1453) {
     ASSERT_NE(output2, nullptr);
     ASSERT_STREQ(output2, expected2);
 
+    axiom_node_free_tree(node_input2, m_env);
+    AXIS2_FREE(m_env->allocator, output2);
+
     axis2_char_t input3[] = "<root><![CDATA[]]></root>";
     axis2_char_t expected3[] = "<root></root>";
 
@@ -73,4 +78,6 @@ TEST_F(TestParser, test_axisc_1453) {
     ASSERT_NE(output3, nullptr);
     ASSERT_STREQ(output3, expected3);
 
+    axiom_node_free_tree(node_input3, m_env);
+    AXIS2_FREE(m_env->allocator, output3);
 }
