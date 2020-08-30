@@ -78,7 +78,7 @@ caching_callback_init_handler(axiom_mtom_caching_callback_t *caching_callback,
     }
 
     #if !defined(WIN32)
-    {
+    if (file_name) {
         int ret = 0;
         axis2_char_t permission_str[256];
         sprintf(permission_str, "chmod 777 %s", file_name);
