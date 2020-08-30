@@ -7,7 +7,7 @@ addons:
         packages:
             googletest
 
-script: ./build_for_tests.sh
+script: ./build_for_tests.sh && ./run_tests.sh
 notifications:
     email:
         # c-dev@apache.axis.org doesn't work here because it's not an address registered on GitHub.
