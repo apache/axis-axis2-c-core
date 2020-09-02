@@ -52,6 +52,7 @@ AC_CHECK_FUNCS([memmove])
 AC_CHECK_LIB(z, inflate)
 dnl AC_CHECK_LIB(cutest, CuTestInit)
 
+AC_PATH_TOOL(PKGCONFIG, pkg-config)
 
 AC_MSG_CHECKING(whether to build tests)
 AC_ARG_ENABLE(tests,

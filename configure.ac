@@ -116,6 +116,8 @@ dnl AC_FUNC_MALLOC
 dnl AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
+AC_PATH_TOOL(PKGCONFIG, pkg-config)
+
 AC_MSG_CHECKING(whether to use archive)
 AC_ARG_WITH(archive,
 [  --with-archive[=PATH]      Find the zlib header files in 'PATH'.

@@ -66,6 +66,8 @@ if test "$GCC" = "yes"; then
     CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration "
 fi
 
+AC_PATH_TOOL(PKGCONFIG, pkg-config)
+
 AC_MSG_CHECKING(whether to set -Werror)
 AC_ARG_ENABLE(werror, [  --disable-werror  do not treat warnings as errors during build],
 [ case "${enableval}" in
