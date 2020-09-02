@@ -51,15 +51,14 @@ axis2_opendir(
 		if (dwErr == ERROR_FILE_NOT_FOUND || dwErr == ERROR_PATH_NOT_FOUND
 						|| dwErr == ERROR_NO_MORE_FILES || dwErr == ERROR_NOT_READY)
 		{
-			fprintf(stderr, "FindFirstFile with unexpected result. Error code: %u\r\n", dwErr);
-
+            errno = dwErr;
 			dirp->finished = 1;
 		}
 		else
 		{
 			free(dirp);
 			free(filespec);
-			fprintf(stderr, "FindFirstFile failed. Error code: %u\r\n", dwErr);
+            errno = dwErr;
 			return NULL;
 		}
 	}
