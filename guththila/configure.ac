@@ -68,6 +68,21 @@ if test "$GCC" = "yes"; then
     CFLAGS="$CFLAGS -ansi -ggdb3 -Wall -Wno-implicit-function-declaration "
 fi
 
+AC_MSG_CHECKING(whether to set -Werror)
+AC_ARG_ENABLE(werror, [  --enable-werror  treat warnings as errors during build],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -Werror"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+
 AC_MSG_CHECKING(whether to enable code coverage statistics)
 AC_ARG_ENABLE(coverage, [  --enable-coverage       enable code coverage statistics (default=no)],
 [ case "${enableval}" in

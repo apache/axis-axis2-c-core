@@ -73,7 +73,7 @@ if test "$GCC" = "yes"; then
 fi
 
 AC_MSG_CHECKING(whether to set -Werror)
-AC_ARG_ENABLE(werror, [  --disable-werror      do not treat warnings as errors during build],
+AC_ARG_ENABLE(werror, [  --enable-werror  treat warnings as errors during build],
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
@@ -83,7 +83,9 @@ AC_ARG_ENABLE(werror, [  --disable-werror      do not treat warnings as errors d
     CFLAGS="$CFLAGS -Werror"
     ;;
   esac ],
+  AC_MSG_RESULT(no)
 )
+
 
 dnl Checks for header files.
 AC_HEADER_STDC

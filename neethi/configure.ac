@@ -53,7 +53,7 @@ fi
 AC_PATH_TOOL(PKGCONFIG, pkg-config)
 
 AC_MSG_CHECKING(whether to set -Werror)
-AC_ARG_ENABLE(werror, [  --disable-werror        do not treat warnings as errors during build],
+AC_ARG_ENABLE(werror, [  --enable-werror  treat warnings as errors during build],
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
@@ -63,6 +63,7 @@ AC_ARG_ENABLE(werror, [  --disable-werror        do not treat warnings as errors
     CFLAGS="$CFLAGS -Werror"
     ;;
   esac ],
+  AC_MSG_RESULT(no)
 )
 
 AC_MSG_CHECKING(whether to build guththila xml parser library)

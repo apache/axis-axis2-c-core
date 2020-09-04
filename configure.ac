@@ -147,6 +147,21 @@ AC_ARG_WITH(archive,
   AC_MSG_RESULT(no)
 )
 
+AC_MSG_CHECKING(whether to set -Werror)
+AC_ARG_ENABLE(werror, [  --enable-werror  treat warnings as errors during build],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -Werror"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+
 AC_MSG_CHECKING(whether to build xpath)
 AC_ARG_ENABLE(xpath, [  --enable-xpath    build xpath. default=yes],
 [ case "${enableval}" in

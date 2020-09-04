@@ -52,6 +52,21 @@ AC_CHECK_FUNCS([memmove])
 AC_CHECK_LIB(z, inflate)
 dnl AC_CHECK_LIB(cutest, CuTestInit)
 
+AC_MSG_CHECKING(whether to set -Werror)
+AC_ARG_ENABLE(werror, [  --enable-werror  treat warnings as errors during build],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    CFLAGS="$CFLAGS -Werror"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+
 
 AC_MSG_CHECKING(whether to build tests)
 AC_ARG_ENABLE(tests,
