@@ -283,6 +283,16 @@ extern "C"
         const axutil_stream_t * stream,
         const axutil_env_t * env);
 
+    /**
+     * Appends a null terminator to the buffer, allocating additional memory
+     * if necessary.
+     * @return Length of the buffer plus null terminator, or -1 on error
+     */
+    AXIS2_EXTERN int AXIS2_CALL
+        axutil_stream_set_buffer_end_null(
+                axutil_stream_t *stream,
+                axutil_env_t *env);
+
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_stream_flush_buffer(
         axutil_stream_t * stream,

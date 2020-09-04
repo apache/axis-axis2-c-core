@@ -32,6 +32,7 @@
 #include <axis2_json_writer.h>
 #include <axis2_json_reader.h>
 #endif
+#include <axis2_simple_http_svr_conn.h>
 
 #include "../../../cutest/include/cut_http_server.h"
 
@@ -450,3 +451,23 @@ TEST_F(TestHTTPTransport, test_json)
 }
 #endif
 
+
+TEST_F(TestHTTPTransport, test_AXIS2C_1600)
+{
+    axis2_simple_http_svr_conn_t* conn = axis2_simple_http_svr_conn_create(
+            m_env, -1);
+
+    axis2_http_simple_response_t* resp = axis2_http_simple_response_create(
+            m_env, NULL, NULL, 0, NULL);
+    axis2_char_t body[AXIS2_STREAM_DEFAULT_BUF_SIZE+1];
+    memset(body, 'A', AXIS2_STREAM_DEFAULT_BUF_SIZE+1);
+    body[AXIS2_STREAM_DEFAULT_BUF_SIZE] = '\0';
+
+    axis2_http_simple_response_set_status_line(resp, m_env, "1.1", 200, "OK");
+    axis2_http_simple_response_set_body_string(resp, m_env, body);
+
+    axis2_simple_http_svr_conn_write_response(conn, m_env, resp);
+
+    axis2_http_simple_response_free(resp, m_env);
+    axis2_simple_http_svr_conn_free(conn, m_env);
+}

@@ -377,6 +377,33 @@ axutil_stream_get_buffer(
     return stream->buffer;
 }
 
+AXIS2_EXTERN int AXIS2_CALL
+axutil_stream_set_buffer_end_null(
+    axutil_stream_t *stream,
+    axutil_env_t *env)
+{
+    if (!stream || !env) return -1;
+
+    if (stream->len + 1 >= stream->max_len) {
+
+        axis2_char_t *tmp = (axis2_char_t *)AXIS2_MALLOC(env->allocator,
+                sizeof(axis2_char_t) * (stream->len + 1));
+        if(!tmp)
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return -1;
+        }
+        stream->max_len = stream->len + 1;
+        memcpy(tmp, stream->buffer_head, sizeof(axis2_char_t) * stream->len);
+        AXIS2_FREE(env->allocator, stream->buffer_head);
+        stream->buffer = tmp;
+        stream->buffer_head = tmp;
+    }
+    *(stream->buffer_head + stream->len) = '\0';
+    return stream->len + 1;
+
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_stream_flush_buffer(
     axutil_stream_t *stream,

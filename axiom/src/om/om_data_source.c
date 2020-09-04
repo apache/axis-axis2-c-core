@@ -108,16 +108,14 @@ axiom_data_source_serialize(
 {
     int status = AXIS2_SUCCESS;
     axis2_char_t *data = NULL;
-    unsigned int data_len = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
+    axutil_stream_set_buffer_end_null(data_source->stream, env);
     data = axutil_stream_get_buffer(data_source->stream, env);
-    data_len = axutil_stream_get_len(data_source->stream, env);
     if(data)
     {
-        data[data_len] = '\0';
         status = axiom_output_write(om_output, env, AXIOM_DATA_SOURCE, 1, data);
     }
     return status;

@@ -282,9 +282,9 @@ axis2_simple_http_svr_conn_write_response(
     if(response_stream)
     {
         body_size = axutil_stream_get_len(response_stream, env);
+        axutil_stream_set_buffer_end_null(response_stream, env);
         response_body = axutil_stream_get_buffer(response_stream, env);
         axutil_stream_flush_buffer(response_stream, env);
-        response_body[body_size] = AXIS2_ESC_NULL;
     }
 
     if(body_size <= 0 && !binary_content)
