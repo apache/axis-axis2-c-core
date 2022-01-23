@@ -26,4 +26,6 @@ set -e
 AXIS2C_HOME=${AXIS2C_HOME:=`pwd`/deploy}
 export AXIS2C_HOME
 
+export ASAN_OPTIONS=detect_odr_violation=1
+
 make check
