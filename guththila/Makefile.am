@@ -22,5 +22,5 @@ dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
 	rm -rf `find $(distdir)/ -type d -name .deps`
 
-EXTRA_DIST=LICENSE
+EXTRA_DIST=LICENSE gtest
 

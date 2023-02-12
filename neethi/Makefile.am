@@ -15,3 +15,4 @@
 SUBDIRS = src $(GTEST) $(TESTDIR)
 includedir=$(prefix)/include/axis2-${PACKAGE_VERSION}
 include_HEADERS=$(top_srcdir)/include/*.h
+EXTRA_DIST=gtest
