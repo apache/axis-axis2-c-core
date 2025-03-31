@@ -365,7 +365,7 @@ TEST_F(TestHTTPTransport, test_json)
         printf(" =============== source XML ================\n%s\n"
                " ===========================================\n",
                xml_str);
-        AXIS2_FREE(env->allocator, xml_str);
+        AXIS2_FREE(m_env->allocator, xml_str);
 
         json_writer = axis2_json_writer_create(m_env);
         axis2_json_writer_write(json_writer, root_node, m_env);
