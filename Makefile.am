@@ -24,8 +24,10 @@ pkgconfig_DATA = axis2c.pc
 
 SUBDIRS = $(GTEST) util $(GUTHTHILA_DIR) axiom neethi src $(TESTDIR) include ides tools/tcpmon tools/md5
 include_HEADERS=$(top_srcdir)/include/*.h
-data_DATA= samples/server/axis2.xml README \
-	INSTALL CREDITS COPYING NEWS NOTICE AUTHORS
+# Install configuration files and documentation
+# For in-tree builds, skip installing files that are already in the correct location
+# to avoid "file and destination are the same" errors during development builds
+data_DATA= samples/server/axis2.xml
 logs_DATA=
 docs_DATA= 
 wsdl2c_DATA=tools/codegen/javatool/WSDL2C.sh tools/codegen/javatool/README
@@ -59,10 +61,19 @@ bindist: $(bin_PROGRAMS)
 	tar -cf - axis2c-bin-${PACKAGE_VERSION}-linux | gzip -c > axis2c-bin-${PACKAGE_VERSION}-linux.tar.gz
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
 
+# Install documentation and license files conditionally to prevent "same file" errors
+# during in-tree development builds. Uses test -ef to check if files are identical.
 install-data-hook:
 	mkdir -p $(DESTDIR)$(docsdir)
 	cp -r docs $(DESTDIR)$(docsdir)
 	rm -rf `find $(DESTDIR)$(docsdir)/ -type d -name .svn`
 	rm $(DESTDIR)$(docsdir)/README
+	@for file in README INSTALL CREDITS COPYING NEWS NOTICE AUTHORS; do \
+		if [ ! "$(abs_srcdir)/$$file" -ef "$(DESTDIR)$(datadir)/$$file" ]; then \
+			$(INSTALL_DATA) "$(srcdir)/$$file" "$(DESTDIR)$(datadir)/$$file"; \
+		else \
+			echo "Skipping $$file - already in correct location"; \
+		fi; \
+	done
 
 

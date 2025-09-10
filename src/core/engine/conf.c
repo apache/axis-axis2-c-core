@@ -380,7 +380,8 @@ axis2_conf_free(
             hi))
         {
             axis2_char_t *module_ver = NULL;
-            axutil_hash_this(hi, &key, NULL, &val);
+            /* Cast to const void** for const-correctness with newer GCC versions */
+            axutil_hash_this(hi, (const void **)&key, NULL, &val);
             module_ver = (axis2_char_t *)val;
             if(module_ver)
             {

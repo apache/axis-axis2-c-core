@@ -24,7 +24,8 @@ echo "AXIS2C_HOME = ${AXIS2C_HOME}"
 sh configure --prefix=${AXIS2C_HOME} \
     --enable-tests --with-gtest=/usr/src/googletest/googletest \
     --enable-coverage \
-    --enable-asan
+    --enable-asan \
+    --enable-json=yes
 make -j 10 
 make install
 

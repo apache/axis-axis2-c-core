@@ -59,6 +59,12 @@ const char* json_tokener_error_to_str(enum json_tokener_error error)
         return "error_parse_string";
     case json_tokener_error_parse_comment:
         return "error_parse_comment";
+    case json_tokener_error_parse_utf8_string:
+        return "error_parse_utf8_string";
+    case json_tokener_error_memory:
+        return "error_memory";
+    case json_tokener_error_size:
+        return "error_size";
     }
     return "UNKNOWN";
 }

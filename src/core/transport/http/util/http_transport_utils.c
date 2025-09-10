@@ -60,7 +60,9 @@
 #define AXIS2_CHUNKED_CONTENT_LENGTH 100000000
 #endif
 
-const axis2_char_t *AXIS2_TRANS_UTIL_DEFAULT_CHAR_ENCODING =
+/* Make static to avoid ODR violations when linked into multiple shared libraries.
+ * Making the variable static means each shared library gets its own private copy. */
+static const axis2_char_t *AXIS2_TRANS_UTIL_DEFAULT_CHAR_ENCODING =
     AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING;
 
 /***************************** Function headers *******************************/

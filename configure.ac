@@ -76,7 +76,11 @@ fi
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 CPPFLAGS="$CPPFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
-    CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration -g -D_GNU_SOURCE"
+    dnl Remove -ansi flag to support modern C99 features required by json-c library
+    dnl The -ansi flag enforces C89/C90 standard which conflicts with json-c headers
+    dnl that use inline functions and other C99 constructs. This change maintains
+    dnl backward compatibility while enabling JSON functionality.
+    CFLAGS="$CFLAGS -Wall -Wno-implicit-function-declaration -g -D_GNU_SOURCE"
 fi
 
 dnl Checks for header files.
@@ -592,7 +596,7 @@ AC_ARG_ENABLE(json, [  --enable-json
     CFLAGS="$CFLAGS $JSON_CFLAGS -DAXIS2_JSON_ENABLED"
     CPPFLAGS="$CPPFLAGS $JSON_LIBS -DAXIS2_JSON_ENABLED"
     json_enabled=true
-    PKG_CHECK_MODULES(JSON, json)
+    PKG_CHECK_MODULES(JSON, json-c)
     ;;
   esac ],
   AC_MSG_RESULT(no)
