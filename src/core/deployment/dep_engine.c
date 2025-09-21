@@ -928,6 +928,8 @@ axis2_dep_engine_load_client(
         axis2_conf_set_dep_engine(dep_engine->conf,env,NULL);
         axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creating config builder failed");
+        return NULL;
     }
 
     /**
