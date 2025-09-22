@@ -116,9 +116,14 @@ axutil_thread_create(
     new->data = data;
     new->func = func;
     new->try_exit = AXIS2_FALSE;
+    new->detached = AXIS2_FALSE;
 
     if(attr)
+    {
         temp = &(attr->attr);
+        new->detached = axutil_threadattr_detach_get(temp);
+    }
+
 
     if((stat = pthread_create(new->td, temp, dummy_worker, new)) == 0)
     {
@@ -164,7 +169,8 @@ axutil_thread_exit(
             if(!same_thread)
             {
                 pthread_kill(*(thd->td), 0);
-                axutil_thread_join(thd);
+                if (!thd->detached)
+                    axutil_thread_join(thd);
             }
             AXIS2_FREE(allocator, thd->td);
         }
@@ -196,6 +202,7 @@ axutil_thread_detach(
     if(0 == pthread_detach(*(thd->td)))
     {
         thd->try_exit = AXIS2_TRUE;
+        thd->detached = AXIS2_TRUE;
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;

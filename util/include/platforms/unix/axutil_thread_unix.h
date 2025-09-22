@@ -32,6 +32,7 @@ struct axutil_thread_t
     void *data;
     axutil_thread_start_t func;
     axis2_bool_t try_exit;
+    axis2_bool_t detached;
 };
 
 struct axutil_threadattr_t
