@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://test.apache.org/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://test.apache.org/">
+  <types>
+    <xsd:schema targetNamespace="http://test.apache.org/">
+      <xsd:simpleType name="ColorType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="Red"/>
+          <xsd:enumeration value="Green"/>
+          <xsd:enumeration value="Blue"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="ColoredObjectType">
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string"/>
+          <xsd:element name="color" type="tns:ColorType"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="ColoredObjectRequest" type="tns:ColoredObjectType"/>
+      <xsd:element name="ColoredObjectResponse" type="tns:ColoredObjectType"/>
+    </xsd:schema>
+  </types>
+  <message name="ColoredObjectMessage">
+    <part name="body" element="tns:ColoredObjectRequest"/>
+  </message>
+  <message name="ColoredObjectResponseMessage">
+    <part name="body" element="tns:ColoredObjectResponse"/>
+  </message>
+  <portType name="ColoredObjectPortType">
+    <operation name="ColoredObjectOperation">
+      <input message="tns:ColoredObjectMessage"/>
+      <output message="tns:ColoredObjectResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="ColoredObjectBinding" type="tns:ColoredObjectPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="ColoredObjectOperation">
+      <soap:operation soapAction="urn:ColoredObjectOperation"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+  <service name="ColoredObjectService">
+    <port name="ColoredObjectPort" binding="tns:ColoredObjectBinding">
+      <soap:address location="http://localhost:8080/axis2/services/ColoredObjectService"/>
+    </port>
+  </service>
+</definitions>

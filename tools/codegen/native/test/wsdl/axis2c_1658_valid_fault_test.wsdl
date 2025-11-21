@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:apachesoap="http://xml.apache.org/xml-soap"
+                  xmlns:impl="http://es.ubi.it/srv/datifondi"
+                  xmlns:intf="http://es.ubi.it/srv/datifondi"
+                  xmlns:tns1="http://es.ubi.it/typ/cm"
+                  xmlns:tns2="it.objectway.owfs.external.data.impl"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  targetNamespace="http://es.ubi.it/srv/datifondi">
+  <wsdl:types>
+    <schema targetNamespace="http://es.ubi.it/srv/datifondi" xmlns="http://www.w3.org/2001/XMLSchema">
+      <import namespace="http://es.ubi.it/typ/cm"/>
+      
+      <complexType name="tDatiFondiFault">
+        <sequence>
+          <element name="id" nillable="true" type="xsd:string"/>
+          <element name="tipo" nillable="true" type="xsd:string"/>
+          <element name="messaggio" nillable="true" type="xsd:string"/>
+          <element name="guid" nillable="true" type="xsd:string"/>
+        </sequence>
+      </complexType>
+      
+      <!-- CORRECT: Define element for fault message -->
+      <element name="DatiFondiFaultElement" type="intf:tDatiFondiFault"/>
+      
+      <complexType name="TestRequest">
+        <sequence>
+          <element name="input" type="xsd:string"/>
+        </sequence>
+      </complexType>
+      
+      <complexType name="TestResponse">
+        <sequence>
+          <element name="output" type="xsd:string"/>
+        </sequence>
+      </complexType>
+    </schema>
+  </wsdl:types>
+  
+  <!-- Messages -->
+  <wsdl:message name="TestRequest">
+    <wsdl:part name="TestRequest" type="intf:TestRequest"/>
+  </wsdl:message>
+  
+  <wsdl:message name="TestResponse">
+    <wsdl:part name="TestResponse" type="intf:TestResponse"/>
+  </wsdl:message>
+  
+  <!-- CORRECT FAULT MESSAGE: using element= instead of type= -->
+  <wsdl:message name="TDatiFondiFault">
+    <wsdl:part name="DatiFondiFault" element="intf:DatiFondiFaultElement"/>  <!-- CORRECT: using element= -->
+  </wsdl:message>
+  
+  <!-- Port Type -->
+  <wsdl:portType name="TestServices">
+    <wsdl:operation name="TestOperation" parameterOrder="TestRequest">
+      <wsdl:input name="TestRequest" message="impl:TestRequest"/>
+      <wsdl:output name="TestResponse" message="impl:TestResponse"/>
+      <wsdl:fault name="TDatiFondiFault" message="impl:TDatiFondiFault"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <!-- Binding -->
+  <wsdl:binding name="TestSOAPSoapBinding" type="intf:TestServices">
+    <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="TestOperation">
+      <wsdlsoap:operation soapAction="http://es.ubi.it/srv/test/TestOperation"/>
+      <wsdl:input name="TestRequest">
+        <wsdlsoap:body use="literal" namespace="http://es.ubi.it/srv/test"/>
+      </wsdl:input>
+      <wsdl:output name="TestResponse">
+        <wsdlsoap:body use="literal" namespace="http://es.ubi.it/srv/datifondi"/>
+      </wsdl:output>
+      <wsdl:fault name="TDatiFondiFault">
+        <wsdlsoap:fault name="TDatiFondiFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <!-- Service -->
+  <wsdl:service name="TestServices">
+    <wsdl:port name="TestSOAP" binding="intf:TestSOAPSoapBinding">
+      <wsdlsoap:address location="http://localhost:8080/services/TestSOAP"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

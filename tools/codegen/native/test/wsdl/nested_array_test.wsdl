@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://soapinterop.org/xsd"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://soapinterop.org/xsd">
+  <types>
+    <xsd:schema targetNamespace="http://soapinterop.org/xsd">
+      <!-- Nested array structure similar to Java PopulateArrayInArrayTest -->
+      <xsd:complexType name="SoapStructure">
+        <xsd:sequence>
+          <xsd:element name="varFloat" type="xsd:float"/>
+          <xsd:element name="varInt" type="xsd:int"/>
+          <!-- Array of strings within each structure -->
+          <xsd:element name="varString" type="xsd:string" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:complexType name="NestedArrayType">
+        <xsd:sequence>
+          <!-- Array of structures, each containing arrays -->
+          <xsd:element name="soapStructures" type="tns:SoapStructure" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <!-- Multi-level nested arrays -->
+      <xsd:complexType name="MatrixType">
+        <xsd:sequence>
+          <xsd:element name="rows" type="tns:RowType" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:complexType name="RowType">
+        <xsd:sequence>
+          <xsd:element name="columns" type="xsd:int" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:element name="NestedArrayRequest" type="tns:NestedArrayType"/>
+      <xsd:element name="NestedArrayResponse" type="tns:NestedArrayType"/>
+      <xsd:element name="MatrixRequest" type="tns:MatrixType"/>
+      <xsd:element name="MatrixResponse" type="tns:MatrixType"/>
+    </xsd:schema>
+  </types>
+  <message name="NestedArrayMessage">
+    <part name="body" element="tns:NestedArrayRequest"/>
+  </message>
+  <message name="NestedArrayResponseMessage">
+    <part name="body" element="tns:NestedArrayResponse"/>
+  </message>
+  <message name="MatrixMessage">
+    <part name="body" element="tns:MatrixRequest"/>
+  </message>
+  <message name="MatrixResponseMessage">
+    <part name="body" element="tns:MatrixResponse"/>
+  </message>
+  <portType name="NestedArrayPortType">
+    <operation name="NestedArrayOperation">
+      <input message="tns:NestedArrayMessage"/>
+      <output message="tns:NestedArrayResponseMessage"/>
+    </operation>
+    <operation name="MatrixOperation">
+      <input message="tns:MatrixMessage"/>
+      <output message="tns:MatrixResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="NestedArrayBinding" type="tns:NestedArrayPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="NestedArrayOperation">
+      <soap:operation soapAction="urn:NestedArrayOperation"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+    <operation name="MatrixOperation">
+      <soap:operation soapAction="urn:MatrixOperation"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+  <service name="NestedArrayService">
+    <port name="NestedArrayPort" binding="tns:NestedArrayBinding">
+      <soap:address location="http://localhost:8080/axis2/services/NestedArrayService"/>
+    </port>
+  </service>
+</definitions>

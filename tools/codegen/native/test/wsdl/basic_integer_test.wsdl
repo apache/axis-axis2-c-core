@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://test.apache.org/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://test.apache.org/">
+  <types>
+    <xsd:schema targetNamespace="http://test.apache.org/">
+      <xsd:element name="IntegerRequest" type="xsd:int"/>
+      <xsd:element name="IntegerResponse" type="xsd:int"/>
+    </xsd:schema>
+  </types>
+  <message name="IntegerMessage">
+    <part name="body" element="tns:IntegerRequest"/>
+  </message>
+  <message name="IntegerResponseMessage">
+    <part name="body" element="tns:IntegerResponse"/>
+  </message>
+  <portType name="IntegerPortType">
+    <operation name="IntegerOperation">
+      <input message="tns:IntegerMessage"/>
+      <output message="tns:IntegerResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="IntegerBinding" type="tns:IntegerPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="IntegerOperation">
+      <soap:operation soapAction="urn:IntegerOperation"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+  <service name="IntegerService">
+    <port name="IntegerPort" binding="tns:IntegerBinding">
+      <soap:address location="http://localhost:8080/axis2/services/IntegerService"/>
+    </port>
+  </service>
+</definitions>

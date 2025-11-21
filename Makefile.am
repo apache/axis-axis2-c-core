@@ -22,7 +22,7 @@ wsdl2cdir=$(prefix)/bin/tools/wsdl2c
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = axis2c.pc
 
-SUBDIRS = $(GTEST) util $(GUTHTHILA_DIR) axiom neethi src $(TESTDIR) include ides tools/tcpmon tools/md5
+SUBDIRS = $(GTEST) util $(GUTHTHILA_DIR) axiom neethi src $(TESTDIR) include ides tools/tcpmon tools/md5 tools/codegen
 include_HEADERS=$(top_srcdir)/include/*.h
 # Install configuration files and documentation
 # For in-tree builds, skip installing files that are already in the correct location

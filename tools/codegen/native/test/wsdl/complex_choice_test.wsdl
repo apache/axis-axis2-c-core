@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://test.apache.org/complex"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://test.apache.org/complex">
+  <types>
+    <xsd:schema targetNamespace="http://test.apache.org/complex">
+      <!-- Complex choice with nested sequences and arrays -->
+      <xsd:complexType name="ComplexChoiceType">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:int"/>
+          <xsd:choice>
+            <!-- Simple choice elements -->
+            <xsd:element name="simpleString" type="xsd:string"/>
+            <!-- Array choice elements -->
+            <xsd:element name="stringArray" type="xsd:string" maxOccurs="unbounded"/>
+            <xsd:element name="intArray" type="xsd:int" maxOccurs="unbounded"/>
+            <!-- Nested complex choice -->
+            <xsd:element name="nestedChoice" type="tns:NestedChoiceType"/>
+          </xsd:choice>
+          <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <!-- Nested choice type -->
+      <xsd:complexType name="NestedChoiceType">
+        <xsd:choice>
+          <xsd:element name="innerString" type="xsd:string"/>
+          <xsd:element name="innerInt" type="xsd:int"/>
+          <xsd:element name="innerArray" type="xsd:string" maxOccurs="unbounded"/>
+        </xsd:choice>
+      </xsd:complexType>
+      
+      <xsd:element name="ComplexChoiceRequest" type="tns:ComplexChoiceType"/>
+      <xsd:element name="ComplexChoiceResponse" type="tns:ComplexChoiceType"/>
+    </xsd:schema>
+  </types>
+  <message name="ComplexChoiceMessage">
+    <part name="body" element="tns:ComplexChoiceRequest"/>
+  </message>
+  <message name="ComplexChoiceResponseMessage">
+    <part name="body" element="tns:ComplexChoiceResponse"/>
+  </message>
+  <portType name="ComplexChoicePortType">
+    <operation name="ComplexChoiceOperation">
+      <input message="tns:ComplexChoiceMessage"/>
+      <output message="tns:ComplexChoiceResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="ComplexChoiceBinding" type="tns:ComplexChoicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="ComplexChoiceOperation">
+      <soap:operation soapAction="urn:ComplexChoiceOperation"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+  <service name="ComplexChoiceService">
+    <port name="ComplexChoicePort" binding="tns:ComplexChoiceBinding">
+      <soap:address location="http://localhost:8080/axis2/services/ComplexChoiceService"/>
+    </port>
+  </service>
+</definitions>

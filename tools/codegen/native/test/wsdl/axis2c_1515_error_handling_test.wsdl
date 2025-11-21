@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://example.com/errorhandling/service"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://example.com/errorhandling/service">
+  <types>
+    <xsd:schema targetNamespace="http://example.com/errorhandling/service"
+                xmlns:tns="http://example.com/errorhandling/service">
+      
+      <!-- Request type that could trigger errors -->
+      <xsd:complexType name="ValidateDataRequest">
+        <xsd:sequence>
+          <xsd:element name="inputData" type="xsd:string"/>
+          <xsd:element name="validationRules" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <!-- Response type -->
+      <xsd:complexType name="ValidateDataResponse">
+        <xsd:sequence>
+          <xsd:element name="isValid" type="xsd:boolean"/>
+          <xsd:element name="validationMessage" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <!-- Root elements -->
+      <xsd:element name="ValidateDataRequest" type="tns:ValidateDataRequest"/>
+      <xsd:element name="ValidateDataResponse" type="tns:ValidateDataResponse"/>
+      
+    </xsd:schema>
+  </types>
+  
+  <!-- Messages -->
+  <message name="ValidateDataSoapIn">
+    <part name="parameters" element="tns:ValidateDataRequest"/>
+  </message>
+  
+  <message name="ValidateDataSoapOut">
+    <part name="parameters" element="tns:ValidateDataResponse"/>
+  </message>
+  
+  <!-- Port Type -->
+  <portType name="ErrorHandlingTestPortType">
+    <operation name="ValidateData">
+      <input message="tns:ValidateDataSoapIn"/>
+      <output message="tns:ValidateDataSoapOut"/>
+    </operation>
+  </portType>
+  
+  <!-- Binding -->
+  <binding name="ErrorHandlingTestSoap" type="tns:ErrorHandlingTestPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="ValidateData">
+      <soap:operation soapAction="http://example.com/errorhandling/service/ValidateData"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  
+  <!-- Service -->
+  <service name="ErrorHandlingTestService">
+    <port name="ErrorHandlingTestSoap" binding="tns:ErrorHandlingTestSoap">
+      <soap:address location="http://localhost:8080/services/ErrorHandlingTestService"/>
+    </port>
+  </service>
+</definitions>

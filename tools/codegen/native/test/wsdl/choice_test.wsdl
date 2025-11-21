@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://test.apache.org/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://test.apache.org/">
+  <types>
+    <xsd:schema targetNamespace="http://test.apache.org/">
+      <xsd:complexType name="ChoiceType">
+        <xsd:choice>
+          <xsd:element name="stringChoice" type="xsd:string"/>
+          <xsd:element name="intChoice" type="xsd:int"/>
+          <xsd:element name="booleanChoice" type="xsd:boolean"/>
+        </xsd:choice>
+      </xsd:complexType>
+      <xsd:element name="ChoiceRequest" type="tns:ChoiceType"/>
+      <xsd:element name="ChoiceResponse" type="tns:ChoiceType"/>
+    </xsd:schema>
+  </types>
+  <message name="ChoiceMessage">
+    <part name="body" element="tns:ChoiceRequest"/>
+  </message>
+  <message name="ChoiceResponseMessage">
+    <part name="body" element="tns:ChoiceResponse"/>
+  </message>
+  <portType name="ChoicePortType">
+    <operation name="ChoiceOperation">
+      <input message="tns:ChoiceMessage"/>
+      <output message="tns:ChoiceResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="ChoiceBinding" type="tns:ChoicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="ChoiceOperation">
+      <soap:operation soapAction="urn:ChoiceOperation"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+  <service name="ChoiceService">
+    <port name="ChoicePort" binding="tns:ChoiceBinding">
+      <soap:address location="http://localhost:8080/axis2/services/ChoiceService"/>
+    </port>
+  </service>
+</definitions>

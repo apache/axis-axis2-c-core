@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://test.apache.org/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://test.apache.org/">
+  <types>
+    <xsd:schema targetNamespace="http://test.apache.org/">
+      <xsd:complexType name="PersonType">
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string"/>
+          <xsd:element name="age" type="xsd:int"/>
+          <xsd:element name="email" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="PersonRequest" type="tns:PersonType"/>
+      <xsd:element name="PersonResponse" type="tns:PersonType"/>
+    </xsd:schema>
+  </types>
+  <message name="PersonMessage">
+    <part name="body" element="tns:PersonRequest"/>
+  </message>
+  <message name="PersonResponseMessage">
+    <part name="body" element="tns:PersonResponse"/>
+  </message>
+  <portType name="PersonPortType">
+    <operation name="PersonOperation">
+      <input message="tns:PersonMessage"/>
+      <output message="tns:PersonResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="PersonBinding" type="tns:PersonPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="PersonOperation">
+      <soap:operation soapAction="urn:PersonOperation"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+  <service name="PersonService">
+    <port name="PersonPort" binding="tns:PersonBinding">
+      <soap:address location="http://localhost:8080/axis2/services/PersonService"/>
+    </port>
+  </service>
+</definitions>

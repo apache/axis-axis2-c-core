@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://test.apache.org/numeric"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://test.apache.org/numeric">
+  <types>
+    <xsd:schema targetNamespace="http://test.apache.org/numeric">
+      <!-- Numeric enumeration based on integer type -->
+      <xsd:simpleType name="StatusCode">
+        <xsd:restriction base="xsd:int">
+          <xsd:enumeration value="100"/>
+          <xsd:enumeration value="200"/>
+          <xsd:enumeration value="404"/>
+          <xsd:enumeration value="500"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      
+      <!-- Priority levels using byte -->
+      <xsd:simpleType name="Priority">
+        <xsd:restriction base="xsd:byte">
+          <xsd:enumeration value="1"/>
+          <xsd:enumeration value="2"/>
+          <xsd:enumeration value="3"/>
+          <xsd:enumeration value="5"/>
+          <xsd:enumeration value="8"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      
+      <xsd:complexType name="NumericEnumRequest">
+        <xsd:sequence>
+          <xsd:element name="statusCode" type="tns:StatusCode"/>
+          <xsd:element name="priority" type="tns:Priority"/>
+          <xsd:element name="message" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:element name="NumericEnumRequest" type="tns:NumericEnumRequest"/>
+      <xsd:element name="NumericEnumResponse" type="tns:NumericEnumRequest"/>
+    </xsd:schema>
+  </types>
+  <message name="NumericEnumMessage">
+    <part name="body" element="tns:NumericEnumRequest"/>
+  </message>
+  <message name="NumericEnumResponseMessage">
+    <part name="body" element="tns:NumericEnumResponse"/>
+  </message>
+  <portType name="NumericEnumPortType">
+    <operation name="NumericEnumOperation">
+      <input message="tns:NumericEnumMessage"/>
+      <output message="tns:NumericEnumResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="NumericEnumBinding" type="tns:NumericEnumPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="NumericEnumOperation">
+      <soap:operation soapAction="urn:NumericEnumOperation"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+  <service name="NumericEnumService">
+    <port name="NumericEnumPort" binding="tns:NumericEnumBinding">
+      <soap:address location="http://localhost:8080/axis2/services/NumericEnumService"/>
+    </port>
+  </service>
+</definitions>

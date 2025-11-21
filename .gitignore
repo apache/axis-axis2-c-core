@@ -1,0 +1,87 @@
+# Apache Axis2/C .gitignore
+# Excludes build artifacts, generated files, and personal configuration
+
+# Generated pkg-config files with personal paths
+axis2c.pc
+deploy/lib/pkgconfig/axis2c.pc
+
+# Build output directories
+deploy/
+build/
+**/build/
+
+# CMake build artifacts
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+install_manifest.txt
+
+# Autotools generated files
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache/
+config.guess
+config.sub
+config.h
+config.h.in
+config.log
+config.status
+configure
+depcomp
+install-sh
+libtool
+ltmain.sh
+missing
+stamp-h*
+test-driver
+compile
+
+# Build artifacts
+*.o
+*.lo
+*.la
+*.so
+*.so.*
+*.a
+*.libs/
+.deps/
+.dirstamp
+
+# Generated binaries
+src/core/transport/http/server/simple_axis2_server/axis2_http_server
+tools/md5/src/md5
+tools/tcpmon/src/tcpmon
+
+# Test and log files
+axis2.log
+*.log
+test_*.o
+
+# Build scripts (generated)
+axis2c_build.sh
+bindist.sh
+dist.sh
+clean
+
+# Personal/temporary files
+*~
+*.bak
+*.swp
+*.tmp
+wtf.txt
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://test.apache.org/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://test.apache.org/">
+  <types>
+    <xsd:schema targetNamespace="http://test.apache.org/">
+      <xsd:complexType name="OptionalFieldsType">
+        <xsd:sequence>
+          <xsd:element name="requiredField" type="xsd:string"/>
+          <xsd:element name="optionalField" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="anotherOptionalField" type="xsd:int" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="OptionalFieldsRequest" type="tns:OptionalFieldsType"/>
+      <xsd:element name="OptionalFieldsResponse" type="tns:OptionalFieldsType"/>
+    </xsd:schema>
+  </types>
+  <message name="OptionalFieldsMessage">
+    <part name="body" element="tns:OptionalFieldsRequest"/>
+  </message>
+  <message name="OptionalFieldsResponseMessage">
+    <part name="body" element="tns:OptionalFieldsResponse"/>
+  </message>
+  <portType name="OptionalFieldsPortType">
+    <operation name="OptionalFieldsOperation">
+      <input message="tns:OptionalFieldsMessage"/>
+      <output message="tns:OptionalFieldsResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="OptionalFieldsBinding" type="tns:OptionalFieldsPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="OptionalFieldsOperation">
+      <soap:operation soapAction="urn:OptionalFieldsOperation"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+  <service name="OptionalFieldsService">
+    <port name="OptionalFieldsPort" binding="tns:OptionalFieldsBinding">
+      <soap:address location="http://localhost:8080/axis2/services/OptionalFieldsService"/>
+    </port>
+  </service>
+</definitions>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://test.apache.org/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://test.apache.org/">
+  <types>
+    <xsd:schema targetNamespace="http://test.apache.org/">
+      <xsd:complexType name="AddressType">
+        <xsd:sequence>
+          <xsd:element name="street" type="xsd:string"/>
+          <xsd:element name="city" type="xsd:string"/>
+          <xsd:element name="zipCode" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PersonWithAddressType">
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string"/>
+          <xsd:element name="age" type="xsd:int"/>
+          <xsd:element name="address" type="tns:AddressType"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="PersonWithAddressRequest" type="tns:PersonWithAddressType"/>
+      <xsd:element name="PersonWithAddressResponse" type="tns:PersonWithAddressType"/>
+    </xsd:schema>
+  </types>
+  <message name="PersonWithAddressMessage">
+    <part name="body" element="tns:PersonWithAddressRequest"/>
+  </message>
+  <message name="PersonWithAddressResponseMessage">
+    <part name="body" element="tns:PersonWithAddressResponse"/>
+  </message>
+  <portType name="PersonWithAddressPortType">
+    <operation name="PersonWithAddressOperation">
+      <input message="tns:PersonWithAddressMessage"/>
+      <output message="tns:PersonWithAddressResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="PersonWithAddressBinding" type="tns:PersonWithAddressPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="PersonWithAddressOperation">
+      <soap:operation soapAction="urn:PersonWithAddressOperation"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+  <service name="PersonWithAddressService">
+    <port name="PersonWithAddressPort" binding="tns:PersonWithAddressBinding">
+      <soap:address location="http://localhost:8080/axis2/services/PersonWithAddressService"/>
+    </port>
+  </service>
+</definitions>

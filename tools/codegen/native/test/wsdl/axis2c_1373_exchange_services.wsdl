@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://schemas.microsoft.com/exchange/services/2006/messages"
+             xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://schemas.microsoft.com/exchange/services/2006/messages">
+  <types>
+    <xsd:schema targetNamespace="http://schemas.microsoft.com/exchange/services/2006/messages"
+                xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages">
+      
+      <!-- Base response message types -->
+      <xsd:complexType name="ResponseMessageType">
+        <xsd:sequence>
+          <xsd:element name="ResponseCode" type="xsd:string"/>
+        </xsd:sequence>
+        <xsd:attribute name="ResponseClass" type="xsd:string"/>
+      </xsd:complexType>
+      
+      <xsd:complexType name="ItemInfoResponseMessageType">
+        <xsd:complexContent>
+          <xsd:extension base="m:ResponseMessageType">
+            <xsd:sequence>
+              <xsd:element name="ItemId" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      
+      <xsd:complexType name="FindItemResponseMessageType">
+        <xsd:complexContent>
+          <xsd:extension base="m:ResponseMessageType">
+            <xsd:sequence>
+              <xsd:element name="RootFolder" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      
+      <!-- THE PROBLEMATIC CHOICE TYPE FROM AXIS2C-1373 -->
+      <xsd:complexType name="ArrayOfResponseMessagesType">
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="CreateItemResponseMessage" type="m:ItemInfoResponseMessageType"/>
+          <xsd:element name="DeleteItemResponseMessage" type="m:ResponseMessageType"/>
+          <xsd:element name="GetItemResponseMessage" type="m:ItemInfoResponseMessageType"/>
+          <xsd:element name="UpdateItemResponseMessage" type="m:ResponseMessageType"/>
+          <xsd:element name="SendItemResponseMessage" type="m:ResponseMessageType"/>
+          <xsd:element name="DeleteFolderResponseMessage" type="m:ResponseMessageType"/>
+          <xsd:element name="CreateFolderResponseMessage" type="m:ResponseMessageType"/>
+          <xsd:element name="GetFolderResponseMessage" type="m:ResponseMessageType"/>
+          <!-- The key element that was failing in the original issue -->
+          <xsd:element name="FindItemResponseMessage" type="m:FindItemResponseMessageType"/>
+          <xsd:element name="MoveItemResponseMessage" type="m:ItemInfoResponseMessageType"/>
+          <xsd:element name="CopyItemResponseMessage" type="m:ItemInfoResponseMessageType"/>
+        </xsd:choice>
+      </xsd:complexType>
+      
+      <!-- Root elements -->
+      <xsd:element name="FindItemResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="ResponseMessages" type="m:ArrayOfResponseMessagesType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="FindItemRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="FolderId" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      
+    </xsd:schema>
+  </types>
+  
+  <message name="FindItemSoapIn">
+    <part name="parameters" element="tns:FindItemRequest"/>
+  </message>
+  
+  <message name="FindItemSoapOut">
+    <part name="parameters" element="tns:FindItemResponse"/>
+  </message>
+  
+  <portType name="ExchangeServicePortType">
+    <operation name="FindItem">
+      <input message="tns:FindItemSoapIn"/>
+      <output message="tns:FindItemSoapOut"/>
+    </operation>
+  </portType>
+  
+  <binding name="ExchangeServiceSoap" type="tns:ExchangeServicePortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="FindItem">
+      <soap:operation soapAction="http://schemas.microsoft.com/exchange/services/2006/messages/FindItem"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  
+  <service name="ExchangeServices">
+    <port name="ExchangeServiceSoap" binding="tns:ExchangeServiceSoap">
+      <soap:address location="https://exchange.example.com/EWS/Exchange.asmx"/>
+    </port>
+  </service>
+</definitions>

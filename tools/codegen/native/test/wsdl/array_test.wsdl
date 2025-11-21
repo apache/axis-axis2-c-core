@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://test.apache.org/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://test.apache.org/">
+  <types>
+    <xsd:schema targetNamespace="http://test.apache.org/">
+      <xsd:complexType name="StringArrayType">
+        <xsd:sequence>
+          <xsd:element name="values" type="xsd:string" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IntArrayType">
+        <xsd:sequence>
+          <xsd:element name="numbers" type="xsd:int" maxOccurs="10"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="StringArrayRequest" type="tns:StringArrayType"/>
+      <xsd:element name="IntArrayRequest" type="tns:IntArrayType"/>
+      <xsd:element name="ArrayResponse" type="xsd:string"/>
+    </xsd:schema>
+  </types>
+  <message name="StringArrayMessage">
+    <part name="body" element="tns:StringArrayRequest"/>
+  </message>
+  <message name="IntArrayMessage">
+    <part name="body" element="tns:IntArrayRequest"/>
+  </message>
+  <message name="ArrayResponseMessage">
+    <part name="body" element="tns:ArrayResponse"/>
+  </message>
+  <portType name="ArrayPortType">
+    <operation name="StringArrayOperation">
+      <input message="tns:StringArrayMessage"/>
+      <output message="tns:ArrayResponseMessage"/>
+    </operation>
+    <operation name="IntArrayOperation">
+      <input message="tns:IntArrayMessage"/>
+      <output message="tns:ArrayResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="ArrayBinding" type="tns:ArrayPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="StringArrayOperation">
+      <soap:operation soapAction="urn:StringArrayOperation"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+    <operation name="IntArrayOperation">
+      <soap:operation soapAction="urn:IntArrayOperation"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+  <service name="ArrayService">
+    <port name="ArrayPort" binding="tns:ArrayBinding">
+      <soap:address location="http://localhost:8080/axis2/services/ArrayService"/>
+    </port>
+  </service>
+</definitions>

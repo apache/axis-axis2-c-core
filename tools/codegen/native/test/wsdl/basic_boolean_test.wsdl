@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://test.apache.org/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://test.apache.org/">
+  <types>
+    <xsd:schema targetNamespace="http://test.apache.org/">
+      <xsd:element name="BooleanRequest" type="xsd:boolean"/>
+      <xsd:element name="BooleanResponse" type="xsd:boolean"/>
+    </xsd:schema>
+  </types>
+  <message name="BooleanMessage">
+    <part name="body" element="tns:BooleanRequest"/>
+  </message>
+  <message name="BooleanResponseMessage">
+    <part name="body" element="tns:BooleanResponse"/>
+  </message>
+  <portType name="BooleanPortType">
+    <operation name="BooleanOperation">
+      <input message="tns:BooleanMessage"/>
+      <output message="tns:BooleanResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="BooleanBinding" type="tns:BooleanPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="BooleanOperation">
+      <soap:operation soapAction="urn:BooleanOperation"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+  <service name="BooleanService">
+    <port name="BooleanPort" binding="tns:BooleanBinding">
+      <soap:address location="http://localhost:8080/axis2/services/BooleanService"/>
+    </port>
+  </service>
+</definitions>

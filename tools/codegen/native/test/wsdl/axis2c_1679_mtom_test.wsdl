@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://example.com/mtom/service"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://example.com/mtom/service">
+  <types>
+    <xsd:schema targetNamespace="http://example.com/mtom/service"
+                xmlns:tns="http://example.com/mtom/service">
+      
+      <!-- Binary content types for MTOM optimization -->
+      <xsd:complexType name="DocumentType">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:string"/>
+          <xsd:element name="filename" type="xsd:string"/>
+          <xsd:element name="content" type="xsd:base64Binary"/>  <!-- Key: Should map to axiom_data_handler_t -->
+          <xsd:element name="mimeType" type="xsd:string" minOccurs="0"/>
+          <xsd:element name="size" type="xsd:long" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <!-- Multiple binary attachments -->
+      <xsd:complexType name="AttachmentCollectionType">
+        <xsd:sequence>
+          <xsd:element name="title" type="xsd:string"/>
+          <xsd:element name="attachments" type="tns:AttachmentType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:complexType name="AttachmentType">
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string"/>
+          <xsd:element name="data" type="xsd:base64Binary"/>  <!-- Another binary field -->
+          <xsd:element name="contentType" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <!-- Service operation types -->
+      <xsd:complexType name="UploadDocumentRequest">
+        <xsd:sequence>
+          <xsd:element name="document" type="tns:DocumentType"/>
+          <xsd:element name="metadata" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:complexType name="UploadDocumentResponse">
+        <xsd:sequence>
+          <xsd:element name="success" type="xsd:boolean"/>
+          <xsd:element name="documentId" type="xsd:string"/>
+          <xsd:element name="message" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:complexType name="DownloadDocumentRequest">
+        <xsd:sequence>
+          <xsd:element name="documentId" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:complexType name="DownloadDocumentResponse">
+        <xsd:sequence>
+          <xsd:element name="document" type="tns:DocumentType"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <!-- Root elements -->
+      <xsd:element name="UploadDocumentRequest" type="tns:UploadDocumentRequest"/>
+      <xsd:element name="UploadDocumentResponse" type="tns:UploadDocumentResponse"/>
+      <xsd:element name="DownloadDocumentRequest" type="tns:DownloadDocumentRequest"/>
+      <xsd:element name="DownloadDocumentResponse" type="tns:DownloadDocumentResponse"/>
+      
+    </xsd:schema>
+  </types>
+  
+  <!-- Messages -->
+  <message name="UploadDocumentSoapIn">
+    <part name="parameters" element="tns:UploadDocumentRequest"/>
+  </message>
+  
+  <message name="UploadDocumentSoapOut">
+    <part name="parameters" element="tns:UploadDocumentResponse"/>
+  </message>
+  
+  <message name="DownloadDocumentSoapIn">
+    <part name="parameters" element="tns:DownloadDocumentRequest"/>
+  </message>
+  
+  <message name="DownloadDocumentSoapOut">
+    <part name="parameters" element="tns:DownloadDocumentResponse"/>
+  </message>
+  
+  <!-- Port Type -->
+  <portType name="MTOMServicePortType">
+    <operation name="UploadDocument">
+      <input message="tns:UploadDocumentSoapIn"/>
+      <output message="tns:UploadDocumentSoapOut"/>
+    </operation>
+    <operation name="DownloadDocument">
+      <input message="tns:DownloadDocumentSoapIn"/>
+      <output message="tns:DownloadDocumentSoapOut"/>
+    </operation>
+  </portType>
+  
+  <!-- Binding -->
+  <binding name="MTOMServiceSoap" type="tns:MTOMServicePortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="UploadDocument">
+      <soap:operation soapAction="http://example.com/mtom/service/UploadDocument"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="DownloadDocument">
+      <soap:operation soapAction="http://example.com/mtom/service/DownloadDocument"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  
+  <!-- Service -->
+  <service name="MTOMService">
+    <port name="MTOMServiceSoap" binding="tns:MTOMServiceSoap">
+      <soap:address location="http://localhost:8080/services/MTOMService"/>
+    </port>
+  </service>
+</definitions>

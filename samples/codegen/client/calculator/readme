@@ -1,15 +1,25 @@
-This sample demonstrates the use of code generation using Axis2/Java WSDL2Java
-tool (Axis2/Java source revision 414253).
+This sample demonstrates the use of code generation from WSDL files using the
+native C WSDL2C generator.
 
 sample source        test_calcultor.c
 wsdl                 $AXIS2C_SRC_HOME/test/resources/wsdl/Calculator.wsdl
 
-
 Command to execute the code generation:
 
-WSDL2C.sh -uri Calculator.wsdl -u -d adb
-WSDL2C.bat -uri Calculator.wsdl -u -d adb
+Native C Generator
+==================
 
-Please check the instruction of $AXIS2C_SRC_HOME/c/tools/codegen/javatool/README.txt
-on how to use the script
+First, build the native generator:
+	cd $AXIS2C_SRC_HOME/tools/codegen/native
+	mkdir build && cd build
+	cmake ..
+	make
+
+Then generate code:
+	./wsdl2c-native -uri Calculator.wsdl -u -d adb
+
+Prerequisites: libxml2-dev and pkgconf packages must be installed.
+
+Please check the instructions in $AXIS2C_SRC_HOME/tools/codegen/README
+for complete documentation on using the native generator.
 

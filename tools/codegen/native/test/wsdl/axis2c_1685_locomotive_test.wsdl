@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:ns0="http://www.nscorp.com"
+                  xmlns:tns="http://www.nscorp.com"
+                  xmlns:ns1="java:com.nscorp.wlis.locoinfo"
+                  name="LocomotiveService"
+                  targetNamespace="http://www.nscorp.com">
+  <wsdl:types>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               targetNamespace="http://www.nscorp.com"
+               elementFormDefault="qualified"
+               attributeFormDefault="unqualified">
+      <xs:import namespace="java:com.nscorp.wlis.locoinfo"/>
+      <!-- The problematic element from AXIS2C-1685 -->
+      <xs:element name="UpdateLocoStatus" nillable="true" type="ns1:LocomotiveInformationTransaction"/>
+      <xs:element name="UpdateLocoStatusResponse" nillable="true" type="ns1:LocomotiveResponse"/>
+      <xs:element name="isAliveResponse" nillable="true" type="xs:string"/>
+    </xs:schema>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:stns="java:com.nscorp.wlis.locoinfo"
+                xmlns="java:com.nscorp.wlis.locoinfo"
+                targetNamespace="java:com.nscorp.wlis.locoinfo"
+                elementFormDefault="qualified"
+                attributeFormDefault="qualified">
+      
+      <!-- The pattern that causes runtime errors in AXIS2C-1685 -->
+      <xsd:complexType name="ArrayOfCondition">
+        <xsd:sequence>
+          <xsd:element name="Condition" nillable="true" type="stns:Condition" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:complexType name="Condition">
+        <xsd:sequence>
+          <xsd:element name="conditionId" type="xsd:string"/>
+          <xsd:element name="description" type="xsd:string"/>
+          <xsd:element name="severity" type="xsd:int" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:complexType name="LocomotiveInformationTransaction">
+        <xsd:sequence>
+          <xsd:element name="locomotiveId" type="xsd:string"/>
+          <xsd:element name="conditions" type="stns:ArrayOfCondition" minOccurs="0"/>
+          <xsd:element name="timestamp" type="xsd:dateTime"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:complexType name="LocomotiveResponse">
+        <xsd:sequence>
+          <xsd:element name="success" type="xsd:boolean"/>
+          <xsd:element name="message" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+    </xsd:schema>
+  </wsdl:types>
+  
+  <!-- Messages -->
+  <wsdl:message name="UpdateLocoStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateLocoStatus"/>
+  </wsdl:message>
+  
+  <wsdl:message name="UpdateLocoStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateLocoStatusResponse"/>
+  </wsdl:message>
+  
+  <!-- Port Type -->
+  <wsdl:portType name="LocomotiveServicePortType">
+    <wsdl:operation name="UpdateLocoStatus">
+      <wsdl:input message="tns:UpdateLocoStatusSoapIn"/>
+      <wsdl:output message="tns:UpdateLocoStatusSoapOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <!-- Binding -->
+  <wsdl:binding name="LocomotiveServiceSoap" type="tns:LocomotiveServicePortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="UpdateLocoStatus">
+      <soap:operation soapAction="http://www.nscorp.com/UpdateLocoStatus"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <!-- Service -->
+  <wsdl:service name="LocomotiveService">
+    <wsdl:port name="LocomotiveServiceSoap" binding="tns:LocomotiveServiceSoap">
+      <soap:address location="http://localhost:8080/services/LocomotiveService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

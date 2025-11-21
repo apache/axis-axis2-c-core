@@ -79,12 +79,46 @@ Table of Contents
     (b) zlib - http://www.zlib.net/
     (c) libiconv - http://www.gnu.org/software/libiconv/
     (d) openssl - http://www.openssl.org/
-	
-	(e) Apache Qpid - You need to have Qpid libraries installed on your machine 
-	                  if you are going to use AMQP transport. It is imperative 
-					  that you compile and install Qpid from SVN source. 
-					  You can checkout Qpid SVN source from 
+
+	(e) Apache Qpid - You need to have Qpid libraries installed on your machine
+	                  if you are going to use AMQP transport. It is imperative
+					  that you compile and install Qpid from SVN source.
+					  You can checkout Qpid SVN source from
 					  https://svn.apache.org/repos/asf/qpid/trunk.
+
+	1.1.3 For WSDL2C Code Generator (New in 2.0.0)
+	-----------------------------------------------
+	To build and use the WSDL2C code generator, you need:
+
+    (a) libxml2-dev - Development headers for libxml2
+        Ubuntu/Debian: sudo apt install libxml2-dev
+        RedHat/CentOS: sudo yum install libxml2-devel
+
+    (b) pkgconf - pkg-config implementation for dependency detection
+        Ubuntu/Debian: sudo apt install pkgconf
+        RedHat/CentOS: sudo yum install pkgconfig
+
+    The native C generator provides fast, reliable WSDL to C code generation
+    for SOAP-based web services with minimal dependencies (libxml2 only).
+
+    Complete development package installation for Ubuntu/Debian:
+        $ sudo apt update
+        $ sudo apt install libxml2-dev pkgconf autoconf \
+          automake libtool make gcc g++ libssl-dev zlib1g-dev
+
+    For testing and development (optional):
+        $ sudo apt install libgtest-dev valgrind
+
+    Note: On modern Ubuntu/Debian systems, libgtest-dev provides pre-built
+    libraries that are automatically detected by the build system.
+
+    Note: Apache httpd web server is NOT required for unit tests or basic
+    development. Axis2/C includes a built-in simple HTTP server for testing.
+    Apache httpd is only needed for production deployment via mod_axis2 module
+    (see section 3 for Apache2 Web Server Integration).
+
+    For production mod_axis2 development (optional):
+        $ sudo apt install apache2-dev libapr1-dev libaprutil1-dev
 
 	1.2 Using Binary Release
 	------------------------
@@ -141,11 +175,34 @@ Table of Contents
 
    	You could run 'make check' to test if everything is working fine. However,
    	note that the test/core/clientapi/test_clientapi program would fail unless
-   	AXIS2C_HOME points to the installed location. (It's looking for Axis2/C 
-   	repository)  This means you really should run 'make && make install', 
-   	then set 'AXIS2C_HOME=/path/to/install', and then 'make check'.  
+   	AXIS2C_HOME points to the installed location. (It's looking for Axis2/C
+   	repository)  This means you really should run 'make && make install',
+   	then set 'AXIS2C_HOME=/path/to/install', and then 'make check'.
    	That's a little different than the usual 'make && make check && make
    	install' process.
+
+	1.3.1.1 Convenience Build Scripts
+	---------------------------------
+	For developers familiar with C project conventions, Axis2/C provides
+	convenience scripts that automate the typical autotools build process:
+
+		$ ./build_for_tests.sh    # Build with testing enabled
+		$ ./run_tests.sh          # Run the test suite
+
+	These scripts handle the complete configure-make-install-test cycle with
+	appropriate options for development and testing. They are equivalent to
+	the traditional C development workflow of running autogen.sh, configure
+	with various flags, make, make install, and running tests.
+
+	For a quick one-liner to build and basic test (typical C project approach):
+
+		$ make clean; ./autogen.sh && ./configure --prefix=$(pwd)/deploy --enable-json=yes && make -j4 && make install && export AXIS2C_HOME=$(pwd)/deploy
+
+	This command demonstrates the standard C autotools workflow that the
+	convenience scripts automate for you. Note: --enable-json=yes is optional
+	and only needed for REST API support (requires libjson-c-dev package).
+	This build creates a working Axis2/C installation without running the
+	unit test suite (which requires Google Test setup).
 
 	1.3.2 Build with Options
 	------------------------
@@ -186,6 +243,85 @@ Table of Contents
     $ make
     $ make install
 
+ 	(e) With JSON Support (REST API Alternative)
+    --------------------------------------------
+
+    If you need REST API support as an alternative to SOAP-based web services,
+    you can enable JSON processing support. This requires the JSON-C library
+    and can be enabled with '--enable-json=yes' as a configure option.
+
+    Prerequisites for JSON support:
+        Ubuntu/Debian: sudo apt install libjson-c-dev
+        RedHat/CentOS: sudo yum install json-c-devel
+
+    $ ./configure --enable-json=yes [other configuration options]
+    $ make
+    $ make install
+
+    Note: JSON support is NOT required for SOAP-based web services or the
+    WSDL2C code generator. It provides REST API capabilities as an alternative
+    to traditional SOAP messaging.
+
+ 	(f) With Google Test (C++ Unit Testing Support) - ADVANCED
+    -----------------------------------------------------------
+
+    IMPORTANT: Google Test C++ unit tests are optional. The basic build and
+    functionality testing works without Google Test (recommended for most users).
+
+    WHY BUILD GOOGLE TEST FROM SOURCE?
+    ----------------------------------
+    Axis2/C's build system (dating from ~2015) expects to compile Google Test
+    source files directly (gtest-all.cc, gtest_main.cc) rather than using
+    modern pre-built libraries. This is because:
+
+    1. Ubuntu's libgtest-dev provides CMake integration and pre-built libraries
+    2. Axis2/C's autotools build expects source compilation for direct control
+    3. Axis2/C Makefile.am files reference $(GTEST_DIR)/src/gtest-all.cc explicitly
+    4. Converting to modern Google Test would require significant build system changes
+
+    This approach ensures compatibility with the existing test infrastructure
+    while avoiding the complexity of modernizing the entire build system.
+
+    Method 1 - Build Google Test from source (required for C++ unit tests):
+        $ sudo apt install cmake git
+        $ cd /tmp
+        $ git clone https://github.com/google/googletest.git -b v1.17.0
+        $ cd googletest
+        $ mkdir build && cd build
+        $ cmake .. && make
+        $ sudo make install
+
+    Then configure Axis2/C with:
+        $ ./configure --enable-tests --with-gtest=/tmp/googletest/googletest [other options]
+
+    Method 2 - Skip unit tests entirely (recommended for most users):
+        $ ./configure [other configuration options]
+        $ make && make install
+
+    Method 3 - Manual functionality verification (after Method 2):
+        # Test WSDL2C native generator
+        $ cd tools/codegen/native/build
+        $ ./wsdl2c-native --help
+
+        # Test code generation and compilation
+        $ mkdir /tmp/axis2c_test && cd /tmp/axis2c_test
+        $ echo '<?xml version="1.0"?><definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://test/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://test/"><types><xsd:schema targetNamespace="http://test/"><xsd:element name="TestRequest" type="xsd:string"/><xsd:element name="TestResponse" type="xsd:string"/></xsd:schema></types><message name="TestMessage"><part name="body" element="tns:TestRequest"/></message><message name="TestResponseMessage"><part name="body" element="tns:TestResponse"/></message><portType name="TestPortType"><operation name="TestOperation"><input message="tns:TestMessage"/><output message="tns:TestResponseMessage"/></operation></portType><binding name="TestBinding" type="tns:TestPortType"><soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/><operation name="TestOperation"><soap:operation soapAction="urn:TestOperation"/><input><soap:body use="literal"/></input><output><soap:body use="literal"/></output></operation></binding><service name="TestService"><port name="TestPort" binding="tns:TestBinding"><soap:address location="http://localhost:8080/axis2/services/TestService"/></port></service></definitions>' > test.wsdl
+        $ ${AXIS2C_HOME}/../tools/codegen/native/build/wsdl2c-native -uri test.wsdl -o output -d adb -u
+        $ cd output/src && gcc -c adb_*.c -I. -I${AXIS2C_HOME}/include/axis2-2.0.0 -I/usr/include/libxml2 -Wall -Wno-unused-parameter
+
+    Note: Methods 2 and 3 avoid the C++ Google Test compilation issues and
+    are sufficient for most development and testing purposes. If all commands
+    above succeed, your Axis2/C installation is working correctly.
+
+    FUTURE IMPROVEMENT OPPORTUNITY:
+    ------------------------------
+    The Axis2/C build system could be modernized to use system Google Test
+    packages (libgtest-dev) with CMake integration, which would eliminate
+    the need for source compilation. This would involve:
+    - Updating util/test/util/Makefile.am to use pkg-config or CMake
+    - Converting from direct source compilation to library linking
+    - Testing compatibility across different Linux distributions
+
 	1.3.3 Building Samples
 	----------------------
 
@@ -196,7 +332,7 @@ Table of Contents
 	$ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${AXIS2C_HOME}/lib/
     $ cd samples
     $ ./configure --prefix=${AXIS2C_HOME} 
-				  --with-axis2=${AXIS2C_HOME}/include/axis2-1.7.0
+				  --with-axis2=${AXIS2C_HOME}/include/axis2-2.0.0
     $ make
     $ make install
 
@@ -541,19 +677,35 @@ Table of Contents
 	3.1.1 On Linux
 	--------------
 		
-	Provide the Apache2 include file location as a configure option
+	First, install Apache2 development packages:
 
-    $ ./configure --with-apache2="<apache2 httpd include files location>" 
+	Ubuntu/Debian:
+		$ sudo apt install apache2-dev libapr1-dev libaprutil1-dev
+
+	RedHat/CentOS:
+		$ sudo yum install httpd-devel apr-devel apr-util-devel
+
+	Then provide the Apache2 include file location as a configure option:
+
+    $ ./configure --with-apache2="<apache2 httpd include files location>"
 				  [other configure options]
+
+	Common locations:
+		Ubuntu/Debian: --with-apache2="/usr/include/apache2"
+		RedHat/CentOS: --with-apache2="/usr/include/httpd"
 
    	NOTE : Some apache2 distributions install APR (Apache Portable Runtime) 
 		   include files in a separate location which is required to build 
 		   mod_axis2.
     		   
 		   In that case use:
-       	   $ ./configure --with-apache2="<apache2 include files location>" 
-		   				 --with-apr="<apr include files location>" 
+       	   $ ./configure --with-apache2="<apache2 include files location>"
+		   				 --with-apr="<apr include files location>"
 						 [other configure options]
+
+		   Common APR locations:
+		   Ubuntu/Debian: --with-apr="/usr/include/apr-1.0"
+		   RedHat/CentOS: --with-apr="/usr/include/apr-1"
 
    	Then build the source tree
         

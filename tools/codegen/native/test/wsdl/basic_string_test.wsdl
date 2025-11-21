@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://test.apache.org/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://test.apache.org/">
+  <types>
+    <xsd:schema targetNamespace="http://test.apache.org/">
+      <xsd:element name="StringRequest" type="xsd:string"/>
+      <xsd:element name="StringResponse" type="xsd:string"/>
+    </xsd:schema>
+  </types>
+  <message name="StringMessage">
+    <part name="body" element="tns:StringRequest"/>
+  </message>
+  <message name="StringResponseMessage">
+    <part name="body" element="tns:StringResponse"/>
+  </message>
+  <portType name="StringPortType">
+    <operation name="StringOperation">
+      <input message="tns:StringMessage"/>
+      <output message="tns:StringResponseMessage"/>
+    </operation>
+  </portType>
+  <binding name="StringBinding" type="tns:StringPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="StringOperation">
+      <soap:operation soapAction="urn:StringOperation"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+  <service name="StringService">
+    <port name="StringPort" binding="tns:StringBinding">
+      <soap:address location="http://localhost:8080/axis2/services/StringService"/>
+    </port>
+  </service>
+</definitions>

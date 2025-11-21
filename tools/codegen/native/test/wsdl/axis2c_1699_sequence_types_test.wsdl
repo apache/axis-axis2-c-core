@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://example.com/sequencetypes/service"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://example.com/sequencetypes/service">
+  <types>
+    <xsd:schema targetNamespace="http://example.com/sequencetypes/service"
+                xmlns:tns="http://example.com/sequencetypes/service">
+      
+      <!-- The problematic pattern from AXIS2C-1699 -->
+      <xsd:complexType name="MyType">
+        <xsd:sequence>
+          <xsd:element name="MyName" type="tns:MyElementType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <!-- The element type that gets confused with parent type -->
+      <xsd:complexType name="MyElementType">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:int"/>
+          <xsd:element name="name" type="xsd:string"/>
+          <xsd:element name="value" type="xsd:double" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <!-- Another test case with nested sequences -->
+      <xsd:complexType name="ContainerType">
+        <xsd:sequence>
+          <xsd:element name="items" type="tns:ItemType" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element name="metadata" type="tns:MetadataType" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:complexType name="ItemType">
+        <xsd:sequence>
+          <xsd:element name="itemId" type="xsd:string"/>
+          <xsd:element name="quantity" type="xsd:int"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:complexType name="MetadataType">
+        <xsd:sequence>
+          <xsd:element name="version" type="xsd:string"/>
+          <xsd:element name="created" type="xsd:dateTime"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <!-- Request and Response types -->
+      <xsd:complexType name="ProcessSequenceRequest">
+        <xsd:sequence>
+          <xsd:element name="myTypeData" type="tns:MyType"/>
+          <xsd:element name="containerData" type="tns:ContainerType" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <xsd:complexType name="ProcessSequenceResponse">
+        <xsd:sequence>
+          <xsd:element name="success" type="xsd:boolean"/>
+          <xsd:element name="processedCount" type="xsd:int"/>
+          <xsd:element name="errors" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      
+      <!-- Root elements -->
+      <xsd:element name="ProcessSequenceRequest" type="tns:ProcessSequenceRequest"/>
+      <xsd:element name="ProcessSequenceResponse" type="tns:ProcessSequenceResponse"/>
+      
+    </xsd:schema>
+  </types>
+  
+  <!-- Messages -->
+  <message name="ProcessSequenceSoapIn">
+    <part name="parameters" element="tns:ProcessSequenceRequest"/>
+  </message>
+  
+  <message name="ProcessSequenceSoapOut">
+    <part name="parameters" element="tns:ProcessSequenceResponse"/>
+  </message>
+  
+  <!-- Port Type -->
+  <portType name="SequenceTypesTestPortType">
+    <operation name="ProcessSequence">
+      <input message="tns:ProcessSequenceSoapIn"/>
+      <output message="tns:ProcessSequenceSoapOut"/>
+    </operation>
+  </portType>
+  
+  <!-- Binding -->
+  <binding name="SequenceTypesTestSoap" type="tns:SequenceTypesTestPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="ProcessSequence">
+      <soap:operation soapAction="http://example.com/sequencetypes/service/ProcessSequence"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  
+  <!-- Service -->
+  <service name="SequenceTypesTestService">
+    <port name="SequenceTypesTestSoap" binding="tns:SequenceTypesTestSoap">
+      <soap:address location="http://localhost:8080/services/SequenceTypesTestService"/>
+    </port>
+  </service>
+</definitions>

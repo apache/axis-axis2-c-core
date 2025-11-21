@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:apachesoap="http://xml.apache.org/xml-soap"
+                  xmlns:impl="http://es.ubi.it/srv/datifondi"
+                  xmlns:intf="http://es.ubi.it/srv/datifondi"
+                  xmlns:tns1="http://es.ubi.it/typ/cm"
+                  xmlns:tns2="it.objectway.owfs.external.data.impl"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  targetNamespace="http://es.ubi.it/srv/datifondi">
+  <wsdl:types>
+    <schema targetNamespace="http://es.ubi.it/typ/cm" xmlns="http://www.w3.org/2001/XMLSchema">
+      <import namespace="http://es.ubi.it/srv/datifondi"/>
+      <import namespace="it.objectway.owfs.external.data.impl"/>
+      
+      <complexType name="Contesto">
+        <sequence>
+          <element name="guid" type="xsd:string"/>
+          <element name="token" nillable="true" type="xsd:string"/>
+          <element name="abi" type="xsd:integer"/>
+          <element name="codRichiedente" type="xsd:string"/>
+        </sequence>
+      </complexType>
+      
+      <complexType name="BustaIN">
+        <sequence>
+          <element name="contesto" type="tns1:Contesto"/>
+        </sequence>
+      </complexType>
+      
+      <complexType name="Esito">
+        <sequence>
+          <element name="esito" nillable="true" type="xsd:boolean"/>
+          <element name="codice" nillable="true" type="xsd:string"/>
+          <element name="messaggio" nillable="true" type="xsd:string"/>
+        </sequence>
+      </complexType>
+      
+      <complexType name="BustaOUT">
+        <sequence>
+          <element name="esito" type="tns1:Esito"/>
+        </sequence>
+      </complexType>
+      
+      <complexType name="Errore">
+        <sequence>
+          <element name="id" nillable="true" type="xsd:string"/>
+          <element name="tipo" nillable="true" type="xsd:string"/>
+          <element name="messaggio" nillable="true" type="xsd:string"/>
+          <element name="guid" nillable="true" type="xsd:string"/>
+        </sequence>
+      </complexType>
+    </schema>
+    
+    <schema targetNamespace="http://es.ubi.it/srv/datifondi" xmlns="http://www.w3.org/2001/XMLSchema">
+      <import namespace="it.objectway.owfs.external.data.impl"/>
+      <import namespace="http://es.ubi.it/typ/cm"/>
+      
+      <complexType name="BINDatiFondi">
+        <complexContent>
+          <extension base="tns1:BustaIN">
+            <sequence>
+              <element name="inputDatiFondi" type="xsd:string"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      
+      <complexType name="BOUDatiFondi">
+        <complexContent>
+          <extension base="tns1:BustaOUT">
+            <sequence>
+              <element name="outputDatiFondi" type="tns2:listaPosizioni"/>
+            </sequence>
+          </extension>
+        </complexContent>
+      </complexType>
+      
+      <!-- The problematic fault type from AXIS2C-1658 -->
+      <complexType name="tDatiFondiFault">
+        <complexContent>
+          <extension base="tns1:Errore">
+            <sequence/>
+          </extension>
+        </complexContent>
+      </complexType>
+      
+      <!-- Define element for proper fault definition -->
+      <element name="DatiFondiFaultElement" type="intf:tDatiFondiFault"/>
+    </schema>
+    
+    <schema elementFormDefault="qualified" targetNamespace="it.objectway.owfs.external.data.impl" xmlns="http://www.w3.org/2001/XMLSchema">
+      <complexType name="listaPosizioni">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:string"/>
+        </sequence>
+      </complexType>
+    </schema>
+  </wsdl:types>
+  
+  <!-- Messages -->
+  <wsdl:message name="DatiFondiRequest">
+    <wsdl:part name="DatiFondiRequest" type="intf:BINDatiFondi"/>
+  </wsdl:message>
+  
+  <wsdl:message name="DatiFondiResponse">
+    <wsdl:part name="DatiFondiResponse" type="intf:BOUDatiFondi"/>
+  </wsdl:message>
+  
+  <!-- THE PROBLEMATIC FAULT MESSAGE: using type= instead of element= -->
+  <wsdl:message name="TDatiFondiFault">
+    <wsdl:part name="DatiFondiFault" type="intf:tDatiFondiFault"/>  <!-- INVALID: should use element= -->
+  </wsdl:message>
+  
+  <!-- Port Type -->
+  <wsdl:portType name="DatiFondiServices">
+    <wsdl:operation name="DatiFondi" parameterOrder="DatiFondiRequest">
+      <wsdl:input name="DatiFondiRequest" message="impl:DatiFondiRequest"/>
+      <wsdl:output name="DatiFondiResponse" message="impl:DatiFondiResponse"/>
+      <wsdl:fault name="TDatiFondiFault" message="impl:TDatiFondiFault"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <!-- Binding -->
+  <wsdl:binding name="DatiFondiSOAPSoapBinding" type="intf:DatiFondiServices">
+    <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="DatiFondi">
+      <wsdlsoap:operation soapAction="http://es.ubi.it/srv/analysis/DatiFondi"/>
+      <wsdl:input name="DatiFondiRequest">
+        <wsdlsoap:body use="literal" namespace="http://es.ubi.it/srv/analysis"/>
+      </wsdl:input>
+      <wsdl:output name="DatiFondiResponse">
+        <wsdlsoap:body use="literal" namespace="http://es.ubi.it/srv/datifondi"/>
+      </wsdl:output>
+      <wsdl:fault name="TDatiFondiFault">
+        <wsdlsoap:fault name="TDatiFondiFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <!-- Service -->
+  <wsdl:service name="DatiFondiServices">
+    <wsdl:port name="DatiFondiSOAP" binding="intf:DatiFondiSOAPSoapBinding">
+      <wsdlsoap:address location="http://192.168.132.231:9081/FFWsPcf/services/DatiFondiSOAP"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

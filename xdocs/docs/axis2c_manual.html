@@ -1990,50 +1990,71 @@ HTTP Authentication requirements.</p>
 </div>
 </div>
 <div class="section"><a name="17__WSDL2C_Tool"></a>
-<h2>17. WSDL2C Tool</h2>
-<p>WSDL2C tool that comes with Axis2/Java supports the generation
-of Axis2/C
-stubs and skeletons for WSDL files. This is a Java tool that can be
-used to
-generate C code that works with Axis2/C API. You should use <a href="https://svn.apache.org/repos/asf/axis/axis2/java/core/trunk" class="externalLink" title="External Link">Axis2/Java
-SVN</a> revision 529533 or later revisions. You can download the <a href="http://axis.apache.org/axis2/java/core/download.cgi" class="externalLink" title="External Link">Axis2/Java latest
-release</a> and use those binaries to generate the code. Check out a <a href="http://axis.apache.org/axis2/java/core/docs/reference.html#wsdl2java" class="externalLink" title="External Link">basic
-guide</a> on the Java tool.</p>
-<p>Before you run the tool, make sure that all the .jar library
-files that
-come with Axis2/Java are added to the CLASSPATH environment variable. 
-</p>
-<p>
-<em>Note: You can use the WSDL2C.sh or WSDL2C.bat that shipped with the axis2/c binaries 
-(inside the &lt;axis2_src_dir&gt;/bin/tools/wsdl2c directory) to run the tool. 
-The README comes in the directory guide you how to use that scripts.</em></p>
+<h2>17. WSDL2C Code Generation</h2>
+<p><strong>New in Axis2/C 2.0.0:</strong> The native C WSDL2C generator is a standalone tool that
+eliminates external dependencies and provides fast, reliable code generation for creating C stubs
+and skeletons from WSDL files.</p>
+
+<div class="subsection"><a name="17_0_Native_Generator"></a>
+<h3>17.0 Native C Generator</h3>
+
+<h4>Prerequisites</h4>
+<p>To build and use the native generator, install these packages:</p>
+<ul>
+<li><strong>libxml2-dev</strong> - Development headers for libxml2
+<ul>
+<li>Ubuntu/Debian: <code>sudo apt install libxml2-dev</code></li>
+<li>RedHat/CentOS: <code>sudo yum install libxml2-devel</code></li>
+</ul>
+</li>
+<li><strong>pkgconf</strong> - pkg-config implementation for dependency detection
+<ul>
+<li>Ubuntu/Debian: <code>sudo apt install pkgconf</code></li>
+<li>RedHat/CentOS: <code>sudo yum install pkgconfig</code></li>
+</ul>
+</li>
+</ul>
+
+<h4>Building the Native Generator</h4>
+<p>From the Axis2/C source directory:</p>
+<div class="source">
+<pre>cd tools/codegen/native
+mkdir build && cd build
+cmake ..
+make</pre>
+</div>
+<p>This creates the <code>wsdl2c-native</code> executable in the build directory.</p>
+</div>
 <div class="subsection"><a name="17_1_Generating_Service_Skeletons"></a>
 <h3>17.1 Generating Service Skeletons</h3>
-<p>The tool can be run with the following parameters and generate
-the service
-skeleton and other required files with ADB (Axis Data Binding) support.</p>
+<p>Generate service skeleton and other required files with ADB (Axis Data Binding) support:</p>
 <div class="source">
-<pre>java org.apache.axis2.wsdl.WSDL2C -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u <br /><br /></pre>
+<pre>./wsdl2c-native -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u</pre>
 </div>
-<p>To understand the meanings of the options used with the tool,
-please have
-a look at the <a href="http://axis.apache.org/axis2/java/core/docs/reference.html#wsdl2java" class="externalLink" title="External Link"> Java tool
-documentation</a>.</p>
-<p>If you need an XML in/out programming model, you can just
-ignore the data
-binding support. To generate code with no data binding support, just
-replace
-<code>-d adb -u</code>, that was used in a previous
-command, with <code>-d
-none</code>.</p>
+
+<p>For an XML in/out programming model without data binding support:</p>
 <div class="source">
-<pre>java org.apache.axis2.wsdl.WSDL2C -uri interoptestdoclitparameters.wsdl -ss -sd -d none<br /><br /></pre>
+<pre>./wsdl2c-native -uri interoptestdoclitparameters.wsdl -ss -sd -d none</pre>
 </div>
-<p>The WSDL file, <code>interoptestdoclitparameters.wsdl</code>,
-used in the
-above command examples can be found in
-&lt;axis2_src_dir&gt;/test/resources
-directory.</p>
+
+<h4>Command Line Options</h4>
+<p>The native generator supports these command-line options:</p>
+<ul>
+<li><code>-uri &lt;path&gt;</code> - WSDL file path or URL (Required)</li>
+<li><code>-ss</code> - Generate server side code (skeletons)</li>
+<li><code>-sd</code> - Generate service descriptor (services.xml)</li>
+<li><code>-d &lt;databinding&gt;</code> - Data binding: adb, none (Default: adb)</li>
+<li><code>-u</code> - Unwrap parameters</li>
+<li><code>-o &lt;path&gt;</code> - Output directory</li>
+<li><code>-g</code> - Generate all classes (client and server)</li>
+<li><code>-a</code> - Generate async code only</li>
+<li><code>-s</code> - Generate sync code only</li>
+<li><code>-t</code> - Generate test cases</li>
+<li><code>-p &lt;package&gt;</code> - Custom package name</li>
+</ul>
+
+<p>The WSDL file <code>interoptestdoclitparameters.wsdl</code> used in the
+examples can be found in &lt;axis2_src_dir&gt;/test/resources directory.</p>
 <p>Once the code is generated, you have to implement the business
 logic for
 the service. For this, locate the skeleton source file from the
@@ -2053,22 +2074,16 @@ line with the WSDL file that you used to generate the code.
 </div>
 <div class="subsection"><a name="17_2_Generating_Client_Stubs"></a>
 <h3>17.2 Generating Client Stubs</h3>
-<p>The WSDL2C code generator tool provides support for generating
-client
-stubs as well. You can generate the required stubs from a given WSDL
-with the
-other supporting files. Use following parameters to generate the
-Axis2/C
-client stub code with ADB support.</p>
+<p>Generate client stubs from a WSDL with ADB (Axis Data Binding) support:</p>
 <div class="source">
-<pre>java WSDL2C -uri interoptestdoclitparameters.wsdl -d adb -u<br /><br /></pre>
+<pre>./wsdl2c-native -uri interoptestdoclitparameters.wsdl -d adb -u</pre>
 </div>
-<p>In order to ignore the data binding support and use a raw XML
-in/out
-model, just use the following parameters.</p>
+
+<p>For a raw XML in/out model without data binding support:</p>
 <div class="source">
-<pre>java WSDL2C -uri interoptestdoclitparameters.wsdl -d none<br /><br /></pre>
+<pre>./wsdl2c-native -uri interoptestdoclitparameters.wsdl -d none</pre>
 </div>
+
 <p>Like in the case of service skeletons, you have to fill in the
 business
 logic as required in the client stubs as well. To do this, go through

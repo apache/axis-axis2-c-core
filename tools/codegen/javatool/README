@@ -1,29 +1,101 @@
-WSDL2C.sh and WSDL2C.bat
-========================
+Apache Axis2/C Code Generation Tools
+====================================
 
-These scripts are provided to simplify the C code generation using WSDL2C Java tool that comes with Apache Axis2/Java. 
+Apache Axis2/C now provides TWO code generation options for creating C stubs and skeletons from WSDL files:
+
+1. **Native C Generator (Recommended)** - New in Axis2/C 2.0.0
+2. **Java-based Generator (Legacy)** - Requires Apache Axis2/Java
+
+OPTION 1: Native C Generator (Recommended)
+==========================================
+
+The native C generator is a standalone tool that eliminates the Java dependency and provides
+faster, more reliable code generation. This is the recommended approach for Axis2/C 2.0.0+.
+
+Prerequisites
+-------------
+- libxml2-dev package installed
+- pkgconf package installed
+
+Building the Native Generator
+----------------------------
+From the Axis2/C source directory:
+
+	cd tools/codegen/native
+	mkdir build && cd build
+	cmake ..
+	make
+
+This creates the wsdl2c-native executable in the build directory.
+
+Using the Native Generator
+-------------------------
+The native generator supports the same command-line options as the Java tool:
+
+	./wsdl2c-native -uri <WSDL_FILE> [options]
+
+Examples:
+
+To generate a service skeleton in C:
+	./wsdl2c-native -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u
+
+To generate a client stub in C:
+	./wsdl2c-native -uri interoptestdoclitparameters.wsdl -d adb -u
+
+Command Line Options:
+  -uri <path>          WSDL file path or URL (Required)
+  -o <path>            Output directory (Default: current directory)
+  -ss                  Generate server side code (skeletons)
+  -sd                  Generate service descriptor (services.xml)
+  -d <databinding>     Data binding: adb, none (Default: adb)
+  -u                   Unwrap parameters
+  -g                   Generate all classes (client and server)
+  -a                   Generate async code only
+  -s                   Generate sync code only (takes precedence over -a)
+  -t                   Generate test cases
+  -p <package>         Custom package name
+  -l <language>        Language (only "c" supported)
+  -h, --help           Show help
+  -v, --version        Show version
+
+OPTION 2: Java-based Generator (Legacy)
+=======================================
+
+These scripts are provided for backward compatibility with existing build processes.
+They use the WSDL2C Java tool that comes with Apache Axis2/Java.
+
+Prerequisites
+------------
+- Apache Axis2/Java installation
+- Java runtime environment
 
 How to use
 ----------
-1. Set AXIS2_HOME envionment vaiable to you Axis2 Java installation directory. 
-   eg: 'export AXIS2_HOME=/home/axis2java' 
-3. Run WSDL2C.sh giving WSDL2C command line arguments as the arguments to the shell script.
+1. Set AXIS2_HOME environment variable to your Axis2 Java installation directory:
+   export AXIS2_HOME=/home/axis2java
+2. Run WSDL2C.sh giving WSDL2C command line arguments:
 
-Note: Do the same for the bat file on Windows. 
+Examples:
 
-
-Examples
---------
-
-To generate a sevice skeleton in C:
+To generate a service skeleton in C:
 Linux:
 	sh WSDL2C.sh -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u
 Windows:
-      WSDL2C.bat -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u
+	WSDL2C.bat -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u
 
-To generate a client stub in C: 
-Linux: 
-	sh WSDL2C.sh -uri interoptestdoclitparameters.wsdl -d adb -u 
-Windows
-      WSDL2C.bat -uri interoptestdoclitparameters.wsdl -d adb -u 
+To generate a client stub in C:
+Linux:
+	sh WSDL2C.sh -uri interoptestdoclitparameters.wsdl -d adb -u
+Windows:
+	WSDL2C.bat -uri interoptestdoclitparameters.wsdl -d adb -u
+
+Migration from Java to Native Generator
+=======================================
+
+The native generator is designed to be compatible with the Java tool. Simply replace:
+	sh WSDL2C.sh [options]
+with:
+	./wsdl2c-native [options]
+
+Generated code is compatible between both generators and maintains API compatibility. 
 

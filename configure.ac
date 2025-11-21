@@ -15,7 +15,7 @@ dnl limitations under the License.
 dnl run autogen.sh to generate the configure script.
 AC_PREREQ(2.59)
 
-AC_INIT(axis2c-src, 1.7.0)
+AC_INIT(axis2c-src, 2.0.0)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE([tar-ustar])
@@ -582,7 +582,7 @@ AC_ARG_ENABLE(libcurl, [  --enable-libcurl
 )
 
 AC_MSG_CHECKING(whether to use JSON)
-AC_ARG_ENABLE(json, [  --enable-json  
+AC_ARG_ENABLE(json, [  --enable-json
                           enable json support (default=no)],
 [ case "${enableval}" in
   no)
@@ -603,6 +603,31 @@ AC_ARG_ENABLE(json, [  --enable-json
   CFLAGS="$CFLAGS"
   CPPFLAGS="$CPPFLAGS"
 )
+
+AC_MSG_CHECKING(whether to build native WSDL2C generator)
+AC_ARG_ENABLE(native-codegen, [  --enable-native-codegen
+                          build native C WSDL2C code generator (default=yes)],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    NATIVE_CODEGEN_DIR=""
+    native_codegen_enabled=false
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    NATIVE_CODEGEN_DIR="tools/codegen/native"
+    native_codegen_enabled=true
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+  NATIVE_CODEGEN_DIR="tools/codegen/native"
+  native_codegen_enabled=true
+)
+
+# Check for libxml2 when native codegen is enabled
+AS_IF([test x$native_codegen_enabled = xtrue], [
+  PKG_CHECK_MODULES([LIBXML2], [libxml-2.0 >= 2.6.0])
+])
 
 
 APACHE2INC=$apache2inc
@@ -637,9 +662,11 @@ AC_SUBST(QPID_HOME)
 AC_SUBST(GUTHTHILA_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(ZLIBBUILD)
+AC_SUBST(NATIVE_CODEGEN_DIR)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_LIBCURL_ENABLED, test x$libcurl_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_JSON_ENABLED, test x$json_enabled = xtrue)
+AM_CONDITIONAL(AXIS2_NATIVE_CODEGEN_ENABLED, test x$native_codegen_enabled = xtrue)
 
 export NTLM_LDFLAGS
 export WRAPPER_DIR
@@ -707,6 +734,9 @@ AC_CONFIG_FILES([Makefile \
     tools/tcpmon/src/Makefile \
     tools/md5/Makefile \
     tools/md5/src/Makefile \
+    tools/codegen/Makefile \
+    tools/codegen/native/Makefile \
+    tools/codegen/native/test/Makefile \
     ides/Makefile \
     include/Makefile \
     axis2c.pc \
