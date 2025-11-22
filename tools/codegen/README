@@ -1,0 +1,81 @@
+Apache Axis2/C Code Generation
+=============================
+
+Apache Axis2/C 2.0.0 includes a native C WSDL2C generator that eliminates the Java dependency
+and provides faster, more reliable code generation for creating C stubs and skeletons from WSDL files.
+
+Native C Generator
+==================
+
+The native C generator is a standalone tool that provides all the functionality previously
+available through the Java-based tool, with improved performance and no external dependencies.
+
+Prerequisites
+-------------
+- libxml2-dev package installed
+- pkgconf package installed
+
+Building the Native Generator
+----------------------------
+From the Axis2/C source directory:
+
+	cd tools/codegen/native
+	mkdir build && cd build
+	cmake ..
+	make
+
+This creates the wsdl2c-native executable in the build directory.
+
+Using the Native Generator
+-------------------------
+The native generator supports comprehensive command-line options:
+
+	./wsdl2c-native -uri <WSDL_FILE> [options]
+
+Command Line Options:
+  -uri <path>          WSDL file path or URL (Required)
+  -o <path>            Output directory (Default: current directory)
+  -ss                  Generate server side code (skeletons)
+  -sd                  Generate service descriptor (services.xml)
+  -d <databinding>     Data binding: adb, none (Default: adb)
+  -u                   Unwrap parameters
+  -g                   Generate all classes (client and server)
+  -a                   Generate async code only
+  -s                   Generate sync code only (takes precedence over -a)
+  -t                   Generate test cases
+  -p <package>         Custom package name
+  -l <language>        Language (only "c" supported)
+  -h, --help           Show help
+  -v, --version        Show version
+
+Examples
+--------
+
+Generate a service skeleton in C:
+	./wsdl2c-native -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u
+
+Generate a client stub in C:
+	./wsdl2c-native -uri interoptestdoclitparameters.wsdl -d adb -u
+
+Generate with XML in/out model (no data binding):
+	./wsdl2c-native -uri interoptestdoclitparameters.wsdl -d none
+
+Migration from Java Tools
+=========================
+
+Previous versions of Axis2/C relied on Java-based WSDL2C tools. The native generator
+provides the same functionality with these advantages:
+
+- No Java runtime dependency
+- Faster code generation
+- Better error handling
+- Consistent with Axis2/C philosophy
+- Easier to maintain and debug
+
+Simply replace any previous Java-based WSDL2C commands with the native generator.
+
+Generated Code Compatibility
+============================
+
+The native generator produces code that is fully compatible with existing Axis2/C applications.
+Generated stubs and skeletons maintain the same API and behavior as the previous Java-based tools.
