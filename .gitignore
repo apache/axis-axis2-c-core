@@ -70,7 +70,7 @@ clean
 *.bak
 *.swp
 *.tmp
-wtf.txt
+log.txt
 
 # IDE files
 .vscode/
