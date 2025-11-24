@@ -26,7 +26,8 @@ libaxis2_http_common_la_SOURCES = http_header.c\
                                   http_accept_record.c\
                                   http_response_writer.c\
                                   simple_http_svr_conn.c\
-                                  http_worker.c
+                                  http_worker.c\
+                                  http_socket_timeout.c
 
 
 libaxis2_http_common_la_LDFLAGS = -version-info $(VERSION_NO)

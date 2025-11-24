@@ -479,12 +479,39 @@ axis2_http_simple_response_set_body_stream(
     axutil_stream_t * stream)
 {
     /*
-     * We don't free the stream
-     * Problem in freeing is most of the time the stream doesn't belong
-     * to the http_simple_response
+     * Take ownership of the stream to prevent double-free issues
+     * The HTTP response will be responsible for freeing the stream
      */
     simple_response->stream = stream;
+    simple_response->stream_owned = AXIS2_TRUE;
     return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_http_simple_response_set_body_stream_with_ownership(
+    axis2_http_simple_response_t * simple_response,
+    const axutil_env_t * env,
+    axutil_stream_t * stream)
+{
+    /*
+     * Accept ownership of the stream from the caller (HTTP client)
+     * The caller should clear its reference to avoid double-free
+     */
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Response accepting stream ownership (stream_owned = TRUE)");
+    simple_response->stream = stream;
+    simple_response->stream_owned = AXIS2_TRUE;
+    return AXIS2_SUCCESS;
+}
+
+axis2_bool_t AXIS2_CALL
+axis2_http_simple_response_owns_body_stream(
+    axis2_http_simple_response_t * simple_response,
+    const axutil_env_t * env)
+{
+    axis2_bool_t owns = simple_response->stream_owned;
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Response ownership check: stream_owned = %s",
+                    owns ? "TRUE" : "FALSE");
+    return owns;
 }
 
 axutil_stream_t *AXIS2_CALL

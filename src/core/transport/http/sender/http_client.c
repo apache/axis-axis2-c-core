@@ -129,8 +129,11 @@ axis2_http_client_free(
     }
     if(-1 != http_client->sockfd)
     {
-        axutil_stream_free(http_client->data_stream, env);
-        http_client->data_stream = NULL;
+        if(http_client->data_stream)
+        {
+            axutil_stream_free(http_client->data_stream, env);
+            http_client->data_stream = NULL;
+        }
 		axutil_network_handler_close_socket(env, http_client->sockfd);
         http_client->sockfd = -1;
     }
@@ -682,6 +685,8 @@ str_status_line %s", str_status_line);
         end_of_line = AXIS2_FALSE;
     }
     axis2_http_simple_response_set_body_stream(client->response, env, client->data_stream);
+    /* Clear our reference since response now owns the stream */
+    client->data_stream = NULL;
     if(status_line)
     {
         status_code = axis2_http_status_line_get_status_code(status_line, env);

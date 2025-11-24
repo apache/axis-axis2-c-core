@@ -243,6 +243,32 @@ extern "C"
         axutil_stream_t * stream);
 
     /**
+     * Set body stream and take ownership (for HTTP client ownership transfer)
+     * @param simple_response pointer to simple response struct
+     * @param env pointer to environment struct
+     * @param stream pointer to stream
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+    axis2_http_simple_response_set_body_stream_with_ownership(
+        axis2_http_simple_response_t * simple_response,
+        const axutil_env_t * env,
+        axutil_stream_t * stream);
+
+    /**
+     * Check if the response owns its body stream
+     * @param simple_response pointer to simple response struct
+     * @param env pointer to environment struct
+     * @return AXIS2_TRUE if response owns the stream, else AXIS2_FALSE
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+
+    axis2_http_simple_response_owns_body_stream(
+        axis2_http_simple_response_t * simple_response,
+        const axutil_env_t * env);
+
+    /**
      * @param simple_response pointer to simple response struct
      * @param env pointer to environment struct
      */

@@ -214,6 +214,43 @@ Table of Contents
 	and only needed for REST API support (requires libjson-c-dev package).
 	The build with testing requires proper Google Test setup for full coverage.
 
+	1.3.1.2 Development Workflow - Making Code Changes
+	-------------------------------------------------
+
+	When modifying Axis2/C source code during development, you MUST rebuild
+	AND reinstall before running tests, because tests use installed libraries
+	from the ./deploy directory:
+
+	After making source changes:
+		$ make && make install    # Rebuild and install updated libraries
+		$ bash run_tests.sh       # Run tests with updated code
+
+	Or as one-liner:
+		$ make && make install && bash run_tests.sh
+
+	IMPORTANT: Simply running 'make' is not sufficient - tests will use old
+	installed libraries in ./deploy/ until 'make install' copies the updated
+	libraries there. This is different from most C projects where 'make check'
+	tests the build tree directly.
+
+	Role of build_for_tests.sh:
+	----------------------------
+	The build_for_tests.sh convenience script is designed for INITIAL setup
+	and FULL rebuilds from scratch. It runs the complete configure-make-install
+	cycle with proper testing options. For incremental development after making
+	code changes, you only need 'make && make install' since configuration is
+	already done.
+
+	Use build_for_tests.sh when:
+	- Setting up a fresh checkout
+	- Changing build configuration options
+	- Doing a complete clean rebuild
+
+	Use 'make && make install' when:
+	- Making incremental source code changes
+	- Continuing development after initial setup
+	- You want to test your modifications quickly
+
 	1.3.2 Build with Options
 	------------------------
 
