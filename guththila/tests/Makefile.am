@@ -17,6 +17,22 @@ noinst_PROGRAMS = test_guththila test_attribute test_stack test_token
 check_PROGRAMS = test_guththila test_attribute test_stack test_token
 SUBDIRS =
 
+# Set up test resources before running tests
+check-local:
+	$(MKDIR_P) $(builddir)/resources/om
+	$(MKDIR_P) $(builddir)/resources/soap
+	cp -f $(top_srcdir)/../axiom/test/resources/xml/om/axis.xml $(builddir)/resources/om/axis.xml
+	cp -f $(top_srcdir)/../axiom/test/resources/xml/om/evaluate.xml $(builddir)/resources/om/evaluate.xml
+	cp -f $(top_srcdir)/../axiom/test/resources/xml/om/numbers.xml $(builddir)/resources/om/numbers.xml
+	cp -f $(top_srcdir)/../axiom/test/resources/xml/soap/soapmessage.xml $(builddir)/resources/soap/soapmessage.xml
+
+# Clean up test resources
+clean-local:
+	-rm -rf $(builddir)/resources
+
+# Ensure resources are copied before running any tests
+$(TESTS): check-local
+
 test_guththila_SOURCES = test_guththila.cc
 
 AM_CPPFLAGS = -I$(top_srcdir)/include \

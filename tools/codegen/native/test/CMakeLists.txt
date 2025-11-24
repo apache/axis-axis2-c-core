@@ -58,7 +58,7 @@ add_custom_target(run_adb_tests
 # Integration test that uses the native generator
 add_custom_target(integration_adb_test
     COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/integration/run_integration_tests.sh
-    DEPENDS ../build/wsdl2c-native
+    DEPENDS ../wsdl2c-native
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "Running ADB integration tests with native generator"
 )

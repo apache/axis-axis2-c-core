@@ -30,6 +30,7 @@ axis2_bool_t axis2_json_element_is_nil(axiom_element_t* om_element, const axutil
     axiom_attribute_t* attr = NULL;
     axutil_hash_index_t* index;
     axutil_hash_t* attr_hash = axiom_element_get_all_attributes(om_element, env);
+    axis2_bool_t result = AXIS2_FALSE;
 
     if (!attr_hash)
         return AXIS2_FALSE;
@@ -47,13 +48,21 @@ axis2_bool_t axis2_json_element_is_nil(axiom_element_t* om_element, const axutil
             {
                 axis2_char_t* attr_value =
                         axiom_attribute_get_value(attr, env);
-                return (!strcmp(attr_value, "true") || !strcmp(attr_value, "1")) ?
+                result = (!strcmp(attr_value, "true") || !strcmp(attr_value, "1")) ?
                             AXIS2_TRUE : AXIS2_FALSE;
+                /* Found what we're looking for, but continue iteration to ensure proper cleanup */
+                break;
             }
         }
     }
 
-    return AXIS2_FALSE;
+    /* If we broke out early, manually free the iterator */
+    if (index != NULL)
+    {
+        AXIS2_FREE(env->allocator, index);
+    }
+
+    return result;
 }
 
 void axis2_json_write_node(json_object* parent, axiom_node_t* om_node, const axutil_env_t* env)

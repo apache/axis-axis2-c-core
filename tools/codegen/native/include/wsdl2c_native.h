@@ -65,6 +65,15 @@ typedef char axis2_char_t;
 #define AXIS2_FALSE 0
 #endif
 
+/* Error codes for standalone build */
+#ifndef AXIS2_ERROR_NO_MEMORY
+#define AXIS2_ERROR_NO_MEMORY 1001
+#endif
+
+#ifndef AXIS2_ERROR_INVALID_WSDL
+#define AXIS2_ERROR_INVALID_WSDL 1002
+#endif
+
 /* Environment structure - simplified for standalone use */
 typedef struct axutil_allocator {
     void *(*malloc_fn)(void *allocator, size_t size);

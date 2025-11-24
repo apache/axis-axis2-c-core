@@ -9,7 +9,7 @@ set -e
 echo "=== ADB Native Generator Integration Tests ==="
 
 # Test configuration
-NATIVE_GENERATOR="../build/wsdl2c-native"
+NATIVE_GENERATOR="../../wsdl2c-native"
 TEST_OUTPUT_DIR="integration_output"
 TEST_WSDL_DIR="../../../test/resources/wsdl"
 

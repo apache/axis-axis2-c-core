@@ -17,6 +17,10 @@
 # Build the native WSDL2C generator
 bin_PROGRAMS = wsdl2c-native
 
+# Ensure binary is executable after build
+all-local:
+	chmod +x $(srcdir)/wsdl2c-native 2>/dev/null || true
+
 # Source files
 wsdl2c_native_SOURCES = \
     src/main.c \

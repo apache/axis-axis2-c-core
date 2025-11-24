@@ -36,16 +36,25 @@ class TestGuththila: public ::testing::Test
             m_parser = (guththila_t*) AXIS2_MALLOC(m_allocator, sizeof(guththila_t));
             ASSERT_NE(m_parser, nullptr);
 
+            // Initialize to null
+            m_reader = nullptr;
+
             memset(m_buffer, 0, BUF_SIZE);
 
         }
 
         void TearDown()
         {
-            guththila_reader_free(m_reader, m_env);
-            m_reader = nullptr;
-            guththila_un_init(m_parser, m_env);
-            m_parser = nullptr;
+            if (m_reader != nullptr)
+            {
+                guththila_reader_free(m_reader, m_env);
+                m_reader = nullptr;
+            }
+            if (m_parser != nullptr)
+            {
+                guththila_un_init(m_parser, m_env);
+                m_parser = nullptr;
+            }
             axutil_env_free(m_env);
 
         }

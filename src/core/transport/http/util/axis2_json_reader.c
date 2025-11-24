@@ -175,6 +175,9 @@ axis2_json_read_child_node(
             return AXIS2_FAILURE;
         }
 
+        /* Free the namespace after successful use */
+        axiom_namespace_free(ns, env);
+
         break;
     }
     }

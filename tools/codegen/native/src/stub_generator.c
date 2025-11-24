@@ -134,18 +134,27 @@ generate_stub_header(wsdl2c_context_t *context, const axutil_env_t *env)
     write_file_header(header_file, header_path, description);
 
     /* Write header guard */
-    fprintf(header_file, "        #ifndef AXIS2_STUB_%s_H\n",
-            axutil_string_toupper(service_name, env));
-    fprintf(header_file, "        #define AXIS2_STUB_%s_H\n\n",
-            axutil_string_toupper(service_name, env));
+    char *upper_service_name = axutil_string_toupper(service_name, env);
+    fprintf(header_file, "        #ifndef AXIS2_STUB_%s_H\n", upper_service_name);
+    fprintf(header_file, "        #define AXIS2_STUB_%s_H\n\n", upper_service_name);
+    if (upper_service_name) {
+        free(upper_service_name);
+    }
 
     /* Write includes */
     fprintf(header_file, "        #include <stdio.h>\n");
     fprintf(header_file, "        #include <axiom.h>\n");
     fprintf(header_file, "        #include <axutil_utils.h>\n");
     fprintf(header_file, "        #include <axiom_soap.h>\n");
-    fprintf(header_file, "        #include <axis2_client.h>\n");
-    fprintf(header_file, "        #include <axis2_stub.h>\n\n");
+    fprintf(header_file, "        #include <axis2_client.h>\n\n");
+
+    /* Define axis2_stub_t type directly in generated header */
+    fprintf(header_file, "        /* Core stub type definition */\n");
+    fprintf(header_file, "        typedef struct axis2_stub {\n");
+    fprintf(header_file, "            axis2_svc_client_t *svc_client;\n");
+    fprintf(header_file, "            axis2_char_t *endpoint_uri;\n");
+    fprintf(header_file, "            axutil_qname_t *qname;\n");
+    fprintf(header_file, "        } axis2_stub_t;\n\n");
 
     /* Include ADB headers if ADB databinding is used */
     if (strcmp(context->options->databinding, "adb") == 0) {
@@ -196,6 +205,21 @@ generate_stub_header(wsdl2c_context_t *context, const axutil_env_t *env)
     fprintf(header_file, "         * @param env environment ( mandatory)\n");
     fprintf(header_file, "         */\n");
     fprintf(header_file, "        void axis2_stub_populate_services_for_%s( axis2_stub_t *stub, const axutil_env_t *env);\n\n", service_name);
+
+    /* Additional required stub functions */
+    fprintf(header_file, "        /**\n");
+    fprintf(header_file, "         * Create stub with endpoint reference and client home\n");
+    fprintf(header_file, "         */\n");
+    fprintf(header_file, "        axis2_stub_t*\n");
+    fprintf(header_file, "        axis2_stub_create_with_endpoint_ref_and_client_home(const axutil_env_t *env,\n");
+    fprintf(header_file, "                                                           axis2_endpoint_ref_t *endpoint_ref,\n");
+    fprintf(header_file, "                                                           const axis2_char_t *client_home);\n\n");
+
+    fprintf(header_file, "        /**\n");
+    fprintf(header_file, "         * Get service client from stub\n");
+    fprintf(header_file, "         */\n");
+    fprintf(header_file, "        axis2_svc_client_t*\n");
+    fprintf(header_file, "        axis2_stub_get_svc_client(const axis2_stub_t *stub, const axutil_env_t *env);\n\n");
 
     /* Endpoint URI function */
     fprintf(header_file, "        /**\n");
@@ -351,6 +375,48 @@ generate_stub_source(wsdl2c_context_t *context, const axutil_env_t *env)
     fprintf(source_file, "        axis2_stub_get_endpoint_uri_of_%s(const axutil_env_t *env)\n", service_name);
     fprintf(source_file, "        {\n");
     fprintf(source_file, "            return (axis2_char_t*)default_endpoint_uri;\n");
+    fprintf(source_file, "        }\n\n");
+
+    /* Implementation of missing stub functions */
+    fprintf(source_file, "        /**\n");
+    fprintf(source_file, "         * Create stub with endpoint reference and client home\n");
+    fprintf(source_file, "         */\n");
+    fprintf(source_file, "        axis2_stub_t* AXIS2_CALL\n");
+    fprintf(source_file, "        axis2_stub_create_with_endpoint_ref_and_client_home(const axutil_env_t *env,\n");
+    fprintf(source_file, "                                                           axis2_endpoint_ref_t *endpoint_ref,\n");
+    fprintf(source_file, "                                                           const axis2_char_t *client_home)\n");
+    fprintf(source_file, "        {\n");
+    fprintf(source_file, "            axis2_stub_t *stub = NULL;\n");
+    fprintf(source_file, "            axis2_svc_client_t *svc_client = NULL;\n");
+    fprintf(source_file, "            \n");
+    fprintf(source_file, "            stub = (axis2_stub_t*)AXIS2_MALLOC(env->allocator, sizeof(axis2_stub_t));\n");
+    fprintf(source_file, "            if (!stub) {\n");
+    fprintf(source_file, "                return NULL;\n");
+    fprintf(source_file, "            }\n");
+    fprintf(source_file, "            \n");
+    fprintf(source_file, "            svc_client = axis2_svc_client_create(env, client_home);\n");
+    fprintf(source_file, "            if (!svc_client) {\n");
+    fprintf(source_file, "                AXIS2_FREE(env->allocator, stub);\n");
+    fprintf(source_file, "                return NULL;\n");
+    fprintf(source_file, "            }\n");
+    fprintf(source_file, "            \n");
+    fprintf(source_file, "            stub->svc_client = svc_client;\n");
+    fprintf(source_file, "            stub->endpoint_uri = axutil_strdup(env, axis2_endpoint_ref_get_address(endpoint_ref, env));\n");
+    fprintf(source_file, "            stub->qname = NULL;\n");
+    fprintf(source_file, "            \n");
+    fprintf(source_file, "            return stub;\n");
+    fprintf(source_file, "        }\n\n");
+
+    fprintf(source_file, "        /**\n");
+    fprintf(source_file, "         * Get service client from stub\n");
+    fprintf(source_file, "         */\n");
+    fprintf(source_file, "        axis2_svc_client_t* AXIS2_CALL\n");
+    fprintf(source_file, "        axis2_stub_get_svc_client(const axis2_stub_t *stub, const axutil_env_t *env)\n");
+    fprintf(source_file, "        {\n");
+    fprintf(source_file, "            if (!stub) {\n");
+    fprintf(source_file, "                return NULL;\n");
+    fprintf(source_file, "            }\n");
+    fprintf(source_file, "            return stub->svc_client;\n");
     fprintf(source_file, "        }\n\n");
 
     /* Implementation of operation functions */
@@ -725,8 +791,12 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
         fprintf(header_file, "        * This file was auto-generated from WSDL\n");
         fprintf(header_file, "        * by the Apache Axis2/C Native version: 1.0.0\n");
         fprintf(header_file, "        */\n\n");
-        fprintf(header_file, "        #ifndef ADB_%s_H\n", axutil_string_toupper(response_classes[i], env));
-        fprintf(header_file, "        #define ADB_%s_H\n\n", axutil_string_toupper(response_classes[i], env));
+        char *upper_class_name = axutil_string_toupper(response_classes[i], env);
+        fprintf(header_file, "        #ifndef ADB_%s_H\n", upper_class_name);
+        fprintf(header_file, "        #define ADB_%s_H\n\n", upper_class_name);
+        if (upper_class_name) {
+            free(upper_class_name);
+        }
         fprintf(header_file, "        #include <stdio.h>\n");
         fprintf(header_file, "        #include <axiom.h>\n");
         fprintf(header_file, "        #include <axutil_utils.h>\n");
@@ -765,7 +835,11 @@ generate_adb_classes(wsdl2c_context_t *context, const axutil_env_t *env)
         fprintf(header_file, "        #ifdef __cplusplus\n");
         fprintf(header_file, "        }\n");
         fprintf(header_file, "        #endif\n\n");
-        fprintf(header_file, "        #endif /* ADB_%s_H */\n", axutil_string_toupper(response_classes[i], env));
+        char *upper_class_name_end = axutil_string_toupper(response_classes[i], env);
+        fprintf(header_file, "        #endif /* ADB_%s_H */\n", upper_class_name_end);
+        if (upper_class_name_end) {
+            free(upper_class_name_end);
+        }
 
         fclose(header_file);
 
