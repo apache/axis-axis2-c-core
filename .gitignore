@@ -54,10 +54,21 @@ src/core/transport/http/server/simple_axis2_server/axis2_http_server
 tools/md5/src/md5
 tools/tcpmon/src/tcpmon
 
+# Native codegen test outputs (generated code - should not be committed)
+tools/codegen/native/test/output/
+tools/codegen/native/test/adb_test_runner
+tools/codegen/native/test/wsdl/
+tools/codegen/native/wsdl2c-native
+
 # Test and log files
 axis2.log
 *.log
 test_*.o
+wtf.txt
+
+# Code coverage files
+*.gcno
+*.gcda
 
 # Build scripts (generated)
 axis2c_build.sh
