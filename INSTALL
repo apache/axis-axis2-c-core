@@ -186,23 +186,33 @@ Table of Contents
 	For developers familiar with C project conventions, Axis2/C provides
 	convenience scripts that automate the typical autotools build process:
 
-		$ ./build_for_tests.sh    # Build with testing enabled
-		$ ./run_tests.sh          # Run the test suite
+		$ ./build_for_tests.sh          # Build with testing enabled
+		$ ./run_tests.sh                # Run the full test suite (make check)
+		$ ./run_native_codegen_tests.sh # Run only native WSDL2C generator tests
 
 	These scripts handle the complete configure-make-install-test cycle with
 	appropriate options for development and testing. They are equivalent to
 	the traditional C development workflow of running autogen.sh, configure
 	with various flags, make, make install, and running tests.
 
-	For a quick one-liner to build and basic test (typical C project approach):
+	For quick one-liners equivalent to the convenience scripts:
 
+	Build and install with testing enabled (equivalent to build_for_tests.sh):
+		$ ./autogen.sh && ./configure --prefix=$(pwd)/deploy --enable-tests --enable-json=yes && make -j4 && make install && export AXIS2C_HOME=$(pwd)/deploy
+
+	Run full test suite (equivalent to run_tests.sh):
+		$ export AXIS2C_HOME=$(pwd)/deploy && export ASAN_OPTIONS=detect_odr_violation=1 && make check
+
+	Run only native WSDL2C generator tests (equivalent to run_native_codegen_tests.sh):
+		$ cd tools/codegen/native/test && make clean && make check
+
+	Build and basic install (no unit tests):
 		$ make clean; ./autogen.sh && ./configure --prefix=$(pwd)/deploy --enable-json=yes && make -j4 && make install && export AXIS2C_HOME=$(pwd)/deploy
 
-	This command demonstrates the standard C autotools workflow that the
+	These commands demonstrate the standard C autotools workflow that the
 	convenience scripts automate for you. Note: --enable-json=yes is optional
 	and only needed for REST API support (requires libjson-c-dev package).
-	This build creates a working Axis2/C installation without running the
-	unit test suite (which requires Google Test setup).
+	The build with testing requires proper Google Test setup for full coverage.
 
 	1.3.2 Build with Options
 	------------------------

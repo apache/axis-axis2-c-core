@@ -55,20 +55,52 @@ tools/md5/src/md5
 tools/tcpmon/src/tcpmon
 
 # Native codegen test outputs (generated code - should not be committed)
-tools/codegen/native/test/output/
+tools/codegen/native/test/output/**
 tools/codegen/native/test/adb_test_runner
-tools/codegen/native/test/wsdl/
+tools/codegen/native/test/wsdl/**
 tools/codegen/native/wsdl2c-native
+
+# Test executables (all test binaries - comprehensive patterns)
+**/test
+**/test_*
+**/*_test
+**/*Test
+test/Makefile
+test/Makefile.in
+
+# Sample executables (all sample binaries)
+samples/client/*/echo
+samples/client/*/google
+samples/client/*/math
+samples/client/*/mtom*
+samples/client/*/notify
+samples/client/*/session
+samples/client/*/version
+samples/client/*/yahoosearch
+samples/user_guide/clients/echo*
+samples/user_guide/clients/*blocking*
+samples/**/*.o
+samples/**/*.lo
+samples/**/*.la
+
+# Test resources
+guththila/tests/resources/
 
 # Test and log files
 axis2.log
 *.log
 test_*.o
 wtf.txt
+wtf2.txt
+*.trs
 
 # Code coverage files
 *.gcno
 *.gcda
+*.gcov
+
+# Test result files
+test-suite.log
 
 # Build scripts (generated)
 axis2c_build.sh
