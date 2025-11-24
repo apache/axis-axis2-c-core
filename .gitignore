@@ -68,7 +68,7 @@ tools/codegen/native/wsdl2c-native
 test/Makefile
 test/Makefile.in
 
-# Sample executables (all sample binaries)
+# Sample executables (comprehensive patterns)
 samples/client/*/echo
 samples/client/*/google
 samples/client/*/math
