@@ -60,15 +60,51 @@ tools/codegen/native/test/adb_test_runner
 tools/codegen/native/test/wsdl/
 tools/codegen/native/wsdl2c-native
 
+# All test executables and resources (comprehensive)
+axiom/test/*/test_*
+guththila/tests/test_*
+guththila/tests/resources/
+neethi/test/test
+samples/client/*/echo/echo_*
+samples/client/*/mtom/mtom*
+samples/client/*/notify/notify*
+samples/client/*/math/math*
+samples/client/*/google/google*
+samples/client/*/amazon_ecc/amazon*
+samples/client/*/yahoo/yahoo*
+samples/client/*/interop/*/interop*
+
+# Sample executables (all platforms)
+samples/**/*
+!samples/**/*.c
+!samples/**/*.h
+!samples/**/*.am
+!samples/**/*.ac
+!samples/**/*.in
+!samples/**/*.sh
+!samples/**/*.wsdl
+!samples/**/*.xml
+!samples/**/Makefile*
+!samples/**/configure*
+!samples/**/README*
+!samples/**/COPYING*
+!samples/**/LICENSE*
+
 # Test and log files
 axis2.log
 *.log
 test_*.o
 wtf.txt
+wtf2.txt
+*.trs
 
 # Code coverage files
 *.gcno
 *.gcda
+*.gcov
+
+# Test result files
+test-suite.log
 
 # Build scripts (generated)
 axis2c_build.sh
