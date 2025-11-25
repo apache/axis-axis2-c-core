@@ -1056,6 +1056,10 @@ axis2_http_worker_process_request(
             axis2_http_simple_response_set_body_stream(response, env,
                 out_stream);
 
+            /* Clear the message context's reference to avoid double-free.
+             * The HTTP response now owns the stream and will be responsible for freeing it. */
+            axis2_msg_ctx_reset_transport_out_stream(msg_ctx, env);
+
             stream_len = axutil_stream_get_len (out_stream, env);
             axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
                 simple_request, response,
@@ -1530,6 +1534,10 @@ axis2_http_worker_process_request(
                     {
                         /* This is where we append the message into the http back channel.*/
                         axis2_http_simple_response_set_body_stream(response, env, out_stream);
+
+                        /* Clear the message context's reference to avoid double-free.
+                         * The HTTP response now owns the stream and will be responsible for freeing it. */
+                        axis2_msg_ctx_reset_transport_out_stream(msg_ctx, env);
                     }
                 }
             }
