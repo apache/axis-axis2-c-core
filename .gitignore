@@ -60,13 +60,19 @@ tools/codegen/native/test/adb_test_runner
 tools/codegen/native/test/wsdl/**
 tools/codegen/native/wsdl2c-native
 
-# Test executables (all test binaries - comprehensive patterns)
-**/test
+# Test executables (generated test binaries - specific patterns)
+# Note: test/ source directories should remain trackable
 **/test_*
 **/*_test
 **/*Test
 test/Makefile
 test/Makefile.in
+# Specific test executables that are generated
+util/test/util/test_util
+util/test/util/test_thread
+test/core/clientapi/test_client
+test/core/clientapi/test_clientapi
+test/core/clientapi/test_svc_client_handler_count
 
 # Sample executables (comprehensive patterns)
 samples/client/*/echo
